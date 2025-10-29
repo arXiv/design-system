@@ -43,7 +43,7 @@ Examples in this tier:
   --arxiv-sys-color-primary                  : var(--arxiv-brand-color-archival-blue);
   --arxiv-sys-color-primary--invert          : var(--arxiv-brand-color-open-blue);
   --arxiv-sys-color-stroke-on-primary        : var(--arxiv-brand-color-cool-wash);
-  --arxiv-sys-color-stroke-on-primary--invert: var(--arxiv-brand-color-charcoal);
+  --arxiv-sys-color-stroke-on-primary--invert: var(--arxiv-brand-color-repository-brown);
 }
 ```
 
@@ -99,4 +99,3 @@ Then the frontend developers can attach component-tier properties as:
   color           : var(--c-btn-primary-fg-color--hover);
 }
 ```
-
