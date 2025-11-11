@@ -1,25 +1,28 @@
-# Visual Audit of the arXiv Platform
+# Design Audit of the arXiv Platform
 
-> **Audience:** Internal arXiv Stakeholders
-> **Prepared by:** Shamsi Brinn
-> **Date:** 11/10/2025
+**Audience:** Internal arXiv Stakeholders\
+**Prepared by:** Shamsi Brinn\
+**Date:** 11/10/2025
 
 
 ## 1. Executive Summary
 
-The audit reveals the extent of arXiv's inconsistent interfaces: **arXiv's visual identity is made up of a patchwork of distinct, conflicting, incomplete, and fragmented visual languages.** The lack of a "single source of truth" for design results in a high level of inconsistency in layouts and user flow, as well as critical components like **Buttons**, **Forms**, and **Navigation**.
+This audit revealed the extent of visual inconsistency across our systems. **arXiv's visual identity is made up of a patchwork of distinct, conflicting, incomplete, and fragmented visual languages.** 
 
-**The Impact:** An inconsistent, confusing, and dated user experience that errodes trust. On the development side it directly increases technical debt and slows down front-end development. Poor UI and HTML in forms also lowers data quality at the point of collection.
-**The Path Forward:** We can turn it around with a single, unified design system applied across all of arXiv. A redesign is not a simple "reskin." It is a **unification project** to replace the patchwork of 8 systems with a single, modern design system that is consistent with our values (utilitarian, international, fast-loading) and goals (improve user experience and speed up development).
+The lack of a "single source of truth" for design results in a high level of inconsistency for layouts and critical components like **Buttons**, **Forms**, and **Navigation**. The inconsistent, confusing, and dated user experience errodes trust. On the development side it directly increases technical debt and slows down front-end development. Poor UI and HTML in forms also lowers data quality at the point of collection.
 
-*Note: For this audit I reviewed newer versions of systems if they will be replacing legacy in a reasonable amount of time and with a resonable degree of certainty. ie: Admin Console, new Account and Registration, new Login, and Submit 2.0.*
+We can turn it around with a single, unified design system applied across all of arXiv. The redesign goes beyond a simple "reskin." It is a **unification project** to replace the patchwork of visual languages and code with a single, modern design system that is consistent with our **values** (utilitarian, international, fast-loading) and **goals** (improve user experience and speed up development).
 
 > The short story: arXiv's design is highly inconsistent. The current state is bad for users and data quality and slows development. A unified design system is a foundational necessity for the platform's future.
 
+<br>
+<br>
 
 ## 2. The 11 Visual Languages We Currently Maintain
 
-This audit identified *eleven* distinct (though incomplete) design systems, each with its own visual language, components, and layout. They are often mixed and matched on the same page.
+This audit identified *eleven* distinct (though incomplete) visual languages, each with its own colors, components, and layouts. A closer look at similar-looking elements, like headers, reveals critical inconsistencies. On the back end, even similar looking elements are handled by unrelated code in different languages.
+
+*Note: For the audit I reviewed newer versions of Submit and Accounts, because they will be replacing legacy in a reasonable amount of time*
 
 | **Description** | **Example** |
 | :--- | :--- |
@@ -36,12 +39,16 @@ This audit identified *eleven* distinct (though incomplete) design systems, each
 | **Submission**: The code and styling is from the NG era but modified recently to accomodate newer changes to submission functionality and content. The NG design introduces a prominent stepper, 2 column layout, box shadows, green primary buttons, and more modern form elements (but not consistent with the account and login form elements). | ![thumbnail of the upload page in the new submission](images/thumb-submit.png) |
 
 
----
+
+<br>
+<br>
 
 ## 3. Examples
 
 ### Buttons
 A platform's button is the single most critical component. As the primary user flow signal, it should be consistent across all areas of arXiv that a users group access. But the only consistent aspect of arXiv's buttons styles is their inconsistency!
+
+Users should never have to hunt around for or guess what the primary action on a page looks like. The visual fragmentation in arXiv buttons damages user trust, and is the first component being addressed by the new design system.
 
 | **Description** | **Example** |
 | :--- | :--- |
@@ -55,12 +62,12 @@ A platform's button is the single most critical component. As the primary user f
 | **Special**: Used in the header on browse to draw attention to limited-time messages, like Giving Week or the annual survey. | ![alt](images/button-special.png) 
 
 
-> Users should never have to hunt around for or guess what the primary action on a page looks like. The visual fragmentation in arXiv buttons damages user trust, and is the first component being addressed by the new design system.
-
 ---
 
 ### Headers
 A user should always know where they are and headers (along with navigation and breadcrumbs) provide that mental map. arXiv uses many different header and navigation styles, providing no consistent wayfinding or brand anchor for our users.
+
+The new Design System will introduce a shared header with the right amount of controlled customization to balance the needs of arXiv's different platform sections. It will include navigation and search elements, branding, and other content deemed strategically necessary.
 
 #### Seven unique Black & Red headers
 Though these headers have some visual similarities they all use different code. Note the differences in logo use and spacing, breadcrumb styles, the thank you messages and donate links, and search. 
@@ -93,13 +100,13 @@ Though these headers have some visual similarities they all use different code. 
 *Admin Console*
 ![alt](images/header-admin-console.png)
 
-> The new Design System will introduce a shared header with the right amount of controlled customization to balance the needs of arXiv's different platform sections. It will include navigation and search elements, branding, and other content deemed strategically necessary.
-
 
 ---
 
 ### Forms
 After buttons, form inputs are the most important interactive elements. Forms play a critical role in data quality by increasing user comprehension and accessibility. arXivs platform currently waffles between a variety of custom styles as well as browser defaults.
+
+This inconsistency is a classic sign of high technical debt. With no design system, new front end work usually meant introducing new styles instead of reusing existing components. The Design System will make it easy to build forms with high usability and accessibility, and that are consistent with our brand guidelines.
 
 | **Description** | **Example** |
 | :--- | :--- |
@@ -110,9 +117,9 @@ After buttons, form inputs are the most important interactive elements. Forms pl
 |  **HTML Papers**: This is our only form on the HTML papers page, but is a good example of how the lack of a Design System leads to a vacuum in which new visual languages get created ad hoc. |  ![alt](images/form-html.png) |
 |  **Search**: These styles share the most with Submit 2.0, as they are both NG era. But there are still significant differences between them and they do not have a shared underlying base so will likely diverge more as time goes on. |  ![alt](images/form-search.png) |
 
-> This inconsistency is a classic sign of high technical debt. With no design system, new front end work usually meant introducing new styles instead of reusing existing components. The Design System will make it easy to build forms with high usability and accessibility, and that are consistent with our brand guidelines.
 
----
+<br>
+<br>
 
 ## 4. Conclusion & Path Forward
 
@@ -127,3 +134,6 @@ The visual evidence is clear: the platform is suffering from severe design fragm
 4.  **Integration:** Systematically apply the Design System to each repository once that repo code is moved to the cloud. Implementation order will probably follow which code is ready (ie: Submit and Wombat) rather than prioritizing our most high traffic systems (Browse and HTML papers).
 
 > The implementation of the Design System will reduce technical debt, ease development pain, and—most importantly—provide a coherent, professional, and trustworthy experience for users.
+
+<br>
+<br>
