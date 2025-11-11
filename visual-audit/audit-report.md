@@ -7,9 +7,9 @@
 
 ## 1. Executive Summary
 
-The audit reveals the extent of arXiv's inconsistent interfaces: **arXiv's visual identity is made up of a patchwork of eleven distinct, conflicting, incomplete, and fragmented design systems.** The lack of a "single source of truth" for design results in severe inconsistencies in critical components like **Buttons**, **Forms**, and **Navigation**. As an example, I found 7+ styles for the primary "Submit" button, 3+ styles for text inputs, and at least 8 different page headers across arXiv.
+The audit reveals the extent of arXiv's inconsistent interfaces: **arXiv's visual identity is made up of a patchwork of distinct, conflicting, incomplete, and fragmented visual languages.** The lack of a "single source of truth" for design results in a high level of inconsistency in layouts and user flow, as well as critical components like **Buttons**, **Forms**, and **Navigation**.
 
-**The Impact:** This fragmentation results in a inconsistent, confusing, and dated user experience that errodes trust. On the development side it directly increases technical debt and slows down front-end development. Poor UI and HTML in forms also lowers data quality at the point of entry.
+**The Impact:** An inconsistent, confusing, and dated user experience that errodes trust. On the development side it directly increases technical debt and slows down front-end development. Poor UI and HTML in forms also lowers data quality at the point of collection.
 **The Path Forward:** We can turn it around with a single, unified design system applied across all of arXiv. A redesign is not a simple "reskin." It is a **unification project** to replace the patchwork of 8 systems with a single, modern design system that is consistent with our values (utilitarian, international, fast-loading) and goals (improve user experience and speed up development).
 
 *Note: For this audit I reviewed newer versions of systems if they will be replacing legacy in a reasonable amount of time and with a resonable degree of certainty. ie: Admin Console, new Account and Registration, new Login, and Submit 2.0.*
@@ -17,23 +17,23 @@ The audit reveals the extent of arXiv's inconsistent interfaces: **arXiv's visua
 > The short story: arXiv's design is highly inconsistent. The current state is bad for users and data quality and slows development. A unified design system is a foundational necessity for the platform's future.
 
 
-## 2. The 11 Design Systems We Currently Run
+## 2. The 11 Visual Languages We Currently Maintain
 
 This audit identified *eleven* distinct (though incomplete) design systems, each with its own visual language, components, and layout. They are often mixed and matched on the same page.
 
-| **System #** | **Name** | **Key Identifier(s)** | **Example Pages** |
-| :--- | :--- | :--- | :--- |
-| **2** | **"Browse"** | Primary double red & black header, browser default link color. | ![Thumbnail of abstract page](images/thumb-browse.png) |
-| **2** | **"Search"** | Different red & black header, link color, tag chicklets, colors. | ![thumbnail of search results](images/thumb-search.png)|
-| **6** | **"Super-legacy Forms"** | Massive serif "arXiv.org" title, 90s-styled inputs. | ![thumbnail of claim ownership page](images/thumb-old-legacy.png) |
-| **1** | **Admin Console** | Some overlap with arXiv Check styles. Introduces right sidebar, Material UI inffluence | ![thumbnail of paper details in Admin Console](images/thumb-admin-console.png) |
-| **4** | **arXiv Check** | Some overlap with Admin Console. Introduces right panels, multiple new UI paradigms, Bootstrap inffluence | ![thumbnail of todo queue in arXiv Check](images/thumb-check.png) |
-| **3** | **"HTML pages"**| Red header, dark mode, dynamic | ![Thumbnail of a paper rendered as HTML](images/thumb-html.png) |
-| **3** | **"PDF"**| Largely user-determined, with arXiv watermark | ![Thumbnail of the first page of a PDF with the arXiv watermark](images/thumb-PDF.png) |
-| **5** | **"Info site"** | 3-column layout, unique header, embedded search. | ![Thumbnail of the donate page on the info site](images/thumb-info.png) |
-| **7** | **"Transactional Emails"**| No branding, system fonts, plain HTML. | ![thumbnail of an endorsement-related email](images/thumb-email.png) |
-| **8** | **"Accounts and Login"** | Emerging design style, introduces navigation, simplifies header | ![Thumbnail of the new user account page, still in progress](images/thumb-account.png) |
-| **8** | **"Submission"** | Emerging design style, introduces navigation, simplifies header | ![thumbnail of the upload page in the new submission](images/thumb-submit.png) |
+| **Description** | **Example** |
+| :--- | :--- |
+| **Browse**: These pages are arXiv's most visited and have the greatest impact on the user experience as well as building the brand. They feature the 'standard' double red & black header, browser default link colors, Lucida font, and the use of tables for content organization. | ![Thumbnail of abstract page](images/thumb-browse.png) |
+| **Search**: These pages were built more recently than Browse, in the 'NG' era. They use a different version of the red & black header and the Open Sans font. New UI elements were introduced including tag chicklets, colors, and cards. | ![thumbnail of search results](images/thumb-search.png)|
+| **Super-legacy Forms**: Some of the oldest legacy code on arXiv can be found in forms that are still in use, immediately distinguised by the massive serif "arXiv.org" title in lieue of the logo, and their 90s-styled form inputs. | ![thumbnail of claim ownership page](images/thumb-old-legacy.png) |
+| **arXiv Check**: arXiv Check introduces a right panel and reliance on accordions, and a color pallete that highlights access lime from the brand guide. Uses font IBM Plex Sans, our secondary brand font. Layouts and components have Bootstrap inffluence. Has dark mode, is responsive, accessibility is fair. | ![thumbnail of todo queue in arXiv Check](images/thumb-check.png) |
+| **Admin Console**: This new system has some overlap with arXiv Check styles and we are working on bringing both systems closer together. This system introduces a right sidebar and shows strong Material UI inffluence. Has dark mode, is responsive, accessibility is fair. | ![thumbnail of paper details in Admin Console](images/thumb-admin-console.png) |
+| **HTML pages**: The HTML paper pages were introduced a few years ago, relying mainly on student and new developer work. The header reinforced a 'in-progress' message which we are now ready to retire. It has a dark mode, is responsive, and accessibility is high. It uses the Rival Sans font with STIX Two for math and shows ar5iv stylistic inffluence. | ![Thumbnail of a paper rendered as HTML](images/thumb-html.png) |
+| **PDF**: The look and feel are user-determined and vary. The arXiv watermark is our sole branding element on PDFs and uses a serif font (is it Lucida?). | ![Thumbnail of the first page of a PDF with the arXiv watermark](images/thumb-PDF.png) |
+| **Info site** | The mkdocs-based sub site introduces a 3-column layout and a new version of the black & red header. It uses arXiv's brand fonts of Freight Sans Pro and Freight Text Pro. It also adds navigation, in-page section nav, and it's own search. It includes arXiv's first dark mode and is responsive and accessible. | ![Thumbnail of the donate page on the info site](images/thumb-info.png) |
+| **Transactional Emails**: No branding, system fonts, plain HTML. | ![thumbnail of an endorsement-related email](images/thumb-email.png) |
+| **Accounts and Login**: Emerging design style, introduces navigation, simplifies header | ![Thumbnail of the new user account page, still in progress](images/thumb-account.png) |
+| **Submission**: The code and styling is from the NG era but modified recently to accomodate newer changes to submission functionality and content. It introduces a prominent stepper, 2 column layout, box shadows, green primary buttons, and more modern form elements. | ![thumbnail of the upload page in the new submission](images/thumb-submit.png) |
 
 
 ---
@@ -41,22 +41,21 @@ This audit identified *eleven* distinct (though incomplete) design systems, each
 ## 3. Examples
 
 ### Buttons
-A platform's button is its single most critical component because it is the primary user flow signal. The only consistent aspect of arXiv's buttons styles is their inconsistency.
+A platform's button is the single most critical component. As the primary user flow signal, it should be consistent across all areas of arXiv that a users group access. But the only consistent aspect of arXiv's buttons styles is their inconsistency!
 
-#### Main Styles
-| **Solid Blue** | **Solid Green** | **Solid Olive** | **Solid Gray** | **White w/ Black Text** | **White w/ Red Text** | **Light Blue "Donate"** |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Used for login and search. | Used for the submission flow. | Used only in the "CHECK" tool. | Used for "Search" on the homepage. |    |   | A unique, bordered style with a drop shadow. |
-| `(Image: account-login.jpg)` | `(Image: submit-license.jpg)` | `(Image: check-home.png)` | `(Image: browse-home.jpg)` | `(Image: browse-search-advanced.jpg)` | `(Image: browse-abs.jpg)` | `(Image: info-donate.jpg)` |
+| **Description** | **Example** |
+| :--- | :--- |
+| **Abstract and HTML**: The single most performed action on our site is to view a PDF. At desktop widths, it is a simple 90s style text link using the browser default color. At mobile it takes on button styling. HTML pages use the third button style. | ![alt](images/button-abs.png) ![alt](images/button-abs-mobile.png) ![alt](images/button-html.png) |
+| **User Account**: The new user accounts use the first button style, the current account uses the second style. | ![alt](images/button-account.png) ![alt](images/button-account-current.png) ![alt](images/button-secondary-reg.png) |
+| **arXiv Check and Admin Console**: We are working to bring arXiv Check and Admin Console in line with each others visual languages because this will improve efficiency for the EUST. | ![alt](images/button-check.png) ![alt](images/button-check-green.png) ![alt](images/button-admin-console.png) ![alt](images/button-secondary-admin-console.png) ![alt](images/button-secondary-check.png) |
+| **Info site**: | ![alt](images/button-info.png) |
+| **Legacy**: | ![alt](images/button-legacy.png) |
+| **Submission**: | ![alt](images/button-submit.png) ![alt](images/button-secondary-submit.png)|
+| **Search**: | ![alt](images/button-search.png) |
+| **Special**: Used in the header on browse to draw attention to limited-time messages, like Giving Week or the annual survey. | ![alt](images/button-special.png) 
 
-#### Legacy Styles
-| **Tiny Native Gray** | **Beveled Dark Blue** | 
-| :--- | :--- | 
-| The default HTML button. | A unique, 3D style. | 
-| `(Image: registration - page 2.jpg)` | `(Image: you-are-not-endorsed.png)` | 
 
-
-> Users should never have to guess what the primary action on a page looks like. This fragmentation damages user trust, and is the first component being addressed by the new design system.
+> Users should never have to hunt around for or guess what the primary action on a page looks like. The visual fragmentation in arXiv buttons damages user trust, and is the first component being addressed by the new design system.
 
 ---
 
