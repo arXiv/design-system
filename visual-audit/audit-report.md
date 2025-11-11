@@ -23,17 +23,17 @@ This audit identified *eleven* distinct (though incomplete) design systems, each
 
 | **System #** | **Name** | **Key Identifier(s)** | **Example Pages** |
 | :--- | :--- | :--- | :--- |
-| **2** | **"Browse"** | Primary double red & black header, browser default link color. | !(thumb-browse.png) |
-| **2** | **"Search"** | Different red & black header, link color, tag chicklets, colors. | !(thumb-search.png)|
-| **6** | **"Super-legacy Forms"** | Massive serif "arXiv.org" title, 90s-styled inputs. | !(thumb-old-legacy.png) |
-| **1** | **Admin Console** | Some overlap with arXiv Check styles. Introduces right sidebar, Material UI inffluence | !(thumb-admin-console.png) |
-| **4** | **arXiv Check** | Some overlap with Admin Console. Introduces right panels, multiple new UI paradigms, Bootstrap inffluence | !(thumb-check.png) |
-| **3** | **"HTML pages"**| Red header, dark mode, dynamic | !(thumb-html.png) |
-| **3** | **"PDF"**| Largely user-determined, with arXiv watermark | !(thumb-PDF.png) |
-| **5** | **"Info site"** | 3-column layout, unique header, embedded search. | !(thumb-info.png) |
-| **7** | **"Transactional Emails"**| No branding, system fonts, plain HTML. | !(thumb-email.png) |
-| **8** | **"Accounts and Login"** | Emerging design style, introduces navigation, simplifies header | !(thumb-account.png) |
-| **8** | **"Submission"** | Emerging design style, introduces navigation, simplifies header | !(thumb-submit.png) |
+| **2** | **"Browse"** | Primary double red & black header, browser default link color. | ![Thumbnail of abstract page](images/thumb-browse.png) |
+| **2** | **"Search"** | Different red & black header, link color, tag chicklets, colors. | ![thumbnail of search results](images/thumb-search.png)|
+| **6** | **"Super-legacy Forms"** | Massive serif "arXiv.org" title, 90s-styled inputs. | ![thumbnail of claim ownership page](images/thumb-old-legacy.png) |
+| **1** | **Admin Console** | Some overlap with arXiv Check styles. Introduces right sidebar, Material UI inffluence | ![thumbnail of paper details in Admin Console](images/thumb-admin-console.png) |
+| **4** | **arXiv Check** | Some overlap with Admin Console. Introduces right panels, multiple new UI paradigms, Bootstrap inffluence | ![thumbnail of todo queue in arXiv Check](images/thumb-check.png) |
+| **3** | **"HTML pages"**| Red header, dark mode, dynamic | ![Thumbnail of a paper rendered as HTML](images/thumb-html.png) |
+| **3** | **"PDF"**| Largely user-determined, with arXiv watermark | ![Thumbnail of the first page of a PDF with the arXiv watermark](images/thumb-PDF.png) |
+| **5** | **"Info site"** | 3-column layout, unique header, embedded search. | ![Thumbnail of the donate page on the info site](images/thumb-info.png) |
+| **7** | **"Transactional Emails"**| No branding, system fonts, plain HTML. | ![thumbnail of an endorsement-related email](images/thumb-email.png) |
+| **8** | **"Accounts and Login"** | Emerging design style, introduces navigation, simplifies header | ![Thumbnail of the new user account page, still in progress](images/thumb-account.png) |
+| **8** | **"Submission"** | Emerging design style, introduces navigation, simplifies header | ![thumbnail of the upload page in the new submission](images/thumb-submit.png) |
 
 
 ---
