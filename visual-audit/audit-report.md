@@ -23,17 +23,17 @@ This audit identified *eleven* distinct (though incomplete) design systems, each
 
 | **System #** | **Name** | **Key Identifier(s)** | **Example Pages** |
 | :--- | :--- | :--- | :--- |
-| **2** | **"Browse"** | Primary double red & black header, browser default link color. | `thumb-browse.png` |
-| **2** | **"Search"** | Different red & black header, link color, tag chicklets, colors. | `thumb-search.png`|
-| **6** | **"Super-legacy Forms"** | Massive serif "arXiv.org" title, 90s-styled inputs. | `thumb-old-legacy.png` |
-| **1** | **Admin Console** | Some overlap with arXiv Check styles. Introduces right sidebar, Material UI inffluence | `thumb-admin-console.png` |
-| **4** | **arXiv Check** | Some overlap with Admin Console. Introduces right panels, multiple new UI paradigms, Bootstrap inffluence | `thumb-check.png` |
-| **3** | **"HTML pages"**| Red header, dark mode, dynamic | `thumb-html.png` |
-| **3** | **"PDF"**| Largely user-determined, with arXiv watermark | `thumb-PDF.png` |
-| **5** | **"Info site"** | 3-column layout, unique header, embedded search. | `thumb-info.png` |
-| **7** | **"Transactional Emails"**| No branding, system fonts, plain HTML. | `thumb-email.png` |
-| **8** | **"Accounts and Login"** | Emerging design style, introduces navigation, simplifies header | `thumb-account.png` |
-| **8** | **"Submission"** | Emerging design style, introduces navigation, simplifies header | `thumb-submit.png` |
+| **2** | **"Browse"** | Primary double red & black header, browser default link color. | !(thumb-browse.png) |
+| **2** | **"Search"** | Different red & black header, link color, tag chicklets, colors. | !(thumb-search.png)|
+| **6** | **"Super-legacy Forms"** | Massive serif "arXiv.org" title, 90s-styled inputs. | !(thumb-old-legacy.png) |
+| **1** | **Admin Console** | Some overlap with arXiv Check styles. Introduces right sidebar, Material UI inffluence | !(thumb-admin-console.png) |
+| **4** | **arXiv Check** | Some overlap with Admin Console. Introduces right panels, multiple new UI paradigms, Bootstrap inffluence | !(thumb-check.png) |
+| **3** | **"HTML pages"**| Red header, dark mode, dynamic | !(thumb-html.png) |
+| **3** | **"PDF"**| Largely user-determined, with arXiv watermark | !(thumb-PDF.png) |
+| **5** | **"Info site"** | 3-column layout, unique header, embedded search. | !(thumb-info.png) |
+| **7** | **"Transactional Emails"**| No branding, system fonts, plain HTML. | !(thumb-email.png) |
+| **8** | **"Accounts and Login"** | Emerging design style, introduces navigation, simplifies header | !(thumb-account.png) |
+| **8** | **"Submission"** | Emerging design style, introduces navigation, simplifies header | !(thumb-submit.png) |
 
 
 ---
