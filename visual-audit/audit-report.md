@@ -1,8 +1,8 @@
 # Visual Audit of the arXiv Platform
 
-**Audience:** Internal arXiv Stakeholders
-**Prepared by:** Shamsi Brinn
-**Date:** 11/10/2025
+> **Audience:** Internal arXiv Stakeholders
+> **Prepared by:** Shamsi Brinn
+> **Date:** 11/10/2025
 
 
 ## 1. Executive Summary
@@ -114,7 +114,7 @@ After buttons, form inputs are the most important interactive elements. Forms pl
 
 ---
 
-## 8. Conclusion & Path Forward
+## 4. Conclusion & Path Forward
 
 The visual evidence is clear: the platform is suffering from severe design fragmentation. This is not a simple "visual cleanup" project; We need a **single, unified design system** that we can apply across our systems, and that maintains the right balance of consistency and flexibility to meet the needs of each repository.
 
