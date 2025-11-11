@@ -5,39 +5,101 @@
 **Date:** 11/10/2025
 
 
-
 ## 1. Executive Summary
 
-This audit of 53 platform screenshots reveals a critical finding: **arXiv is not one platform, but a patchwork of at least eight distinct, conflicting, and fragmented design systems.**
+The audit reveals the extent of arXiv's inconsistent interfaces: **arXiv's visual identity is made up of a patchwork of eleven distinct, conflicting, incomplete, and fragmented design systems.** The lack of a "single source of truth" for design results in severe inconsistencies in critical components like **Buttons**, **Forms**, and **Navigation**. As an example, I found 7+ styles for the primary "Submit" button, 3+ styles for text inputs, and at least 8 different page headers across arXiv.
 
-This fragmentation has created a disjointed, confusing, and dated user experience. The lack of a "single source of truth" for design results in severe inconsistencies in the most critical components—specifically **Buttons**, **Forms**, and **Navigation**.
+**The Impact:** This fragmentation results in a inconsistent, confusing, and dated user experience that errodes trust. On the development side it directly increases technical debt and slows down front-end development. Poor UI and HTML in forms also lowers data quality at the point of entry.
+**The Path Forward:** We can turn it around with a single, unified design system applied across all of arXiv. A redesign is not a simple "reskin." It is a **unification project** to replace the patchwork of 8 systems with a single, modern design system that is consistent with our values (utilitarian, international, fast-loading) and goals (improve user experience and speed up development).
 
-* **The Problem:** We found 7+ styles for the primary "Submit" button, 3+ styles for text inputs, and at least 8 different page headers.
-* **The Impact:** This fragmentation directly increases technical debt, slows down feature development, confuses users, and erodes brand trust.
-* **The Path Forward:** A redesign is not a simple "reskin." It must be a **unification project** to replace these 8+ legacy systems with a single, modern, and enforceable design system.
+*Note: For this audit I reviewed newer versions of systems if they will be replacing legacy in a reasonable amount of time and with a resonable degree of certainty. ie: Admin Console, new Account and Registration, new Login, and Submit 2.0.*
 
-> This report visually demonstrates the scale of this dysfunction. The evidence is clear: the current state is unmanageable, and a unified design system is a foundational necessity for the platform's future.
+> The short story: arXiv's design is highly inconsistent. The current state is bad for users and data quality and slows development. A unified design system is a foundational necessity for the platform's future.
 
----
 
-## 2. The 8 Systems Currently Running Your Platform
+## 2. The 11 Design Systems We Currently Run
 
-Our audit identified eight distinct "mini" design systems, each with its own visual language, components, and layout. They are often mixed and matched on the same page.
+This audit identified *eleven* distinct (though incomplete) design systems, each with its own visual language, components, and layout. They are often mixed and matched on the same page.
 
-| **System #** | **Name** | **Key Identifier(s)** | **Example Screen(s)** |
+| **System #** | **Name** | **Key Identifier(s)** | **Example Pages** |
 | :--- | :--- | :--- | :--- |
-| **1** | **"Admin Console"** | Pale Green sidebar (`#EFF5E0`), light-gray header. | `admin-console-dashboard.jpg` |
-| **2** | **"Public-Facing"** | Red & Black header (`#B31B1B`), Blue action color. | `account-login.jpg`, `browse-abs.jpg` |
-| **3** | **"Reading Experience"**| Minimal dark/black header, focus on content. | `browse-html.jpg`, `browse-PDF.jpg` |
-| **4** | **"CHECK Tool"** | `CHECK` logo, Olive-Green primary button. | `check-home.png` |
-| **5** | **"Info & Brand"** | 3-column layout, header with embedded search. | `info-donate.jpg`, `info-policies.jpg` |
-| **6** | **"Bare-Bones Forms"** | Massive serif "arXiv.org" title, 3D-inset inputs. | `claim-with-paper-password.png` |
-| **7** | **"Transactional Email"**| No branding, system fonts, plain HTML. | `endorsement-code-email.png` |
-| **8** | **"Headerless Forms"** | No header/footer, plain black text title. | `registration - page 2.jpg` |
+| **2** | **"Browse"** | Primary double red & black header, browser default link color. | `thumb-browse.png` |
+| **2** | **"Search"** | Different red & black header, link color, tag chicklets, colors. | `thumb-search.png`|
+| **6** | **"Super-legacy Forms"** | Massive serif "arXiv.org" title, 90s-styled inputs. | `thumb-old-legacy.png` |
+| **1** | **Admin Console** | Some overlap with arXiv Check styles. Introduces right sidebar, Material UI inffluence | `thumb-admin-console.png` |
+| **4** | **arXiv Check** | Some overlap with Admin Console. Introduces right panels, multiple new UI paradigms, Bootstrap inffluence | `thumb-check.png` |
+| **3** | **"HTML pages"**| Red header, dark mode, dynamic | `thumb-html.png` |
+| **3** | **"PDF"**| Largely user-determined, with arXiv watermark | `thumb-PDF.png` |
+| **5** | **"Info site"** | 3-column layout, unique header, embedded search. | `thumb-info.png` |
+| **7** | **"Transactional Emails"**| No branding, system fonts, plain HTML. | `thumb-email.png` |
+| **8** | **"Accounts and Login"** | Emerging design style, introduces navigation, simplifies header | `thumb-account.png` |
+| **8** | **"Submission"** | Emerging design style, introduces navigation, simplifies header | `thumb-submit.png` |
+
 
 ---
 
-## 3. Anatomy of a "Frankenstein" Page
+## 3. Examples
+
+### Buttons
+A platform's button is its single most critical component because it is the primary user flow signal. The only consistent aspect of arXiv's buttons styles is their inconsistency.
+
+#### Main Styles
+| **Solid Blue** | **Solid Green** | **Solid Olive** | **Solid Gray** | **White w/ Black Text** | **White w/ Red Text** | **Light Blue "Donate"** |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| Used for login and search. | Used for the submission flow. | Used only in the "CHECK" tool. | Used for "Search" on the homepage. |    |   | A unique, bordered style with a drop shadow. |
+| `(Image: account-login.jpg)` | `(Image: submit-license.jpg)` | `(Image: check-home.png)` | `(Image: browse-home.jpg)` | `(Image: browse-search-advanced.jpg)` | `(Image: browse-abs.jpg)` | `(Image: info-donate.jpg)` |
+
+#### Legacy Styles
+| **Tiny Native Gray** | **Beveled Dark Blue** | 
+| :--- | :--- | 
+| The default HTML button. | A unique, 3D style. | 
+| `(Image: registration - page 2.jpg)` | `(Image: you-are-not-endorsed.png)` | 
+
+
+> Users should never have to guess what the primary action on a page looks like. This fragmentation damages user trust, and is the first component being addressed by the new design system.
+
+---
+
+### Forms
+After buttons, form inputs are the most common interactive element. Forms play a critical role in data quality by increasing user comprehension and accessibility. arXivs platform currently waffles between a variety of custom styles and browser defaults.
+
+#### Checkboxes
+| **Custom Blue Checkbox** | **Native Browser Checkbox** |
+| :--- | :--- |
+| `(Image: account-login.jpg)` | `(Image: submit-verify.jpg)` |
+
+#### Text Inputs
+| **New Auth** | **Admin Console** | **Legacy** |
+| :--- | :--- | :--- |
+| White background, thin gray border. | Light gray background, no border. | 3D `inset` border, white background. |
+| `(Image: account-login.jpg)` | `(Image: admin-console-memb-inst.jpg)` | `(Image: claim-with-paper-password.png)` |
+
+
+> This inconsistency is a classic sign of high technical debt. With no design system, new front end work usually meant introducing new styles instead of reusing existing components.
+
+---
+
+### Headers
+A user should always know where they are and headers (along with navigation and breadcrumbs) provide that mental map. arXiv uses many different header and navigation styles, providing no consistent wayfinding or brand anchor.
+
+| **Browse** | **Older browse** | **?** |
+| :--- | :--- | :--- |
+| ? | ? | ?|
+| `(Image: admin-console-dashboard.jpg)` | `(Image: account-user-page.jpg)` | `(Image: info-policies.jpg)` |
+
+| **Admin Console** | **New Account page** | **Info site** |
+| :--- | :--- | :--- |
+| Light gray, "ADMIN" logo, right-nav. | Black top bar, main red bar, `user` sub-nav. | Red bar *with search embedded in it*. |
+| `(Image: admin-console-dashboard.jpg)` | `(Image: account-user-page.jpg)` | `(Image: info-policies.jpg)` |
+
+| **HTML pages** | **arXiv Check** | **Super-legacy** |
+| :--- | :--- | :--- |
+| Minimal dark gray/black bar. | Light gray bar, "CHECK" logo. | No header, just a massive serif title. |
+| `(Image: browse-html.jpg)` | `(Image: check-home.png)` | `(Image: endorsement-form-for-endorsER.png)` |
+
+---
+
+## 3. A "Frankenstein" Page
 
 Many pages are built by "stitching together" components from multiple systems. This creates an incoherent and jarring user experience.
 
@@ -52,83 +114,6 @@ The screen `you-are-not-endorsed.png` is a perfect example, combining **five dif
 
 > **"So What?"**
 > When a single page has no internal visual consistency, the user cannot learn the platform's interaction patterns. This page alone has 3 new button/banner styles not seen anywhere else.
-
----
-
-## 4. CRITICAL FAILURE: 7+ Styles for One Primary Action
-
-A platform's "Submit" or "Continue" button is its most critical component. We found **seven** different styles for this single action, demonstrating a total lack of standardization.
-
-### Style 1: The "Solid Color" Button (4 Variations)
-
-The most common pattern, but the color is inconsistent and context-dependent.
-
-| **Solid Blue** | **Solid Green** | **Solid Olive** | **Solid Gray** |
-| :--- | :--- | :--- | :--- |
-| Used for login and search. | Used for the submission flow. | Used only in the "CHECK" tool. | Used for "Search" on the homepage. |
-| `(Image: account-login.jpg)` | `(Image: submit-license.jpg)` | `(Image: check-home.png)` | `(Image: browse-home.jpg)` |
-
-### Style 2: The "Ghost/White" Button (2 Variations)
-
-Used as a primary action, but its styling is inconsistent.
-
-| **White w/ Black Text** | **White w/ Red Text** |
-| :--- | :--- |
-| `(Image: browse-search-advanced.jpg)` | `(Image: browse-abs.jpg)` |
-
-### Style 3: The "Legacy/One-Off" Button (3 Variations)
-
-These styles appear to be from different eras of development.
-
-| **Tiny Native Gray** | **Beveled Dark Blue** | **Light Blue "Donate"** |
-| :--- | :--- | :--- |
-| The default HTML button. | A unique, 3D style. | A unique, bordered style with a drop shadow. |
-| `(Image: registration - page 2.jpg)` | `(Image: you-are-not-endorsed.png)` | `(Image: info-donate.jpg)` |
-
-> **"So What?"**
-> Users should never have to guess what the primary action on a page looks like. This fragmentation is the single most damaging inconsistency on the platform.
-
----
-
-## 5. INCONSISTENCY: Forms & Inputs
-
-After buttons, form inputs are the most common interactive element. The platform is undecided on whether to use native browser styles or custom styles.
-
-### The "Checkbox Test": Custom vs. Native
-
-Even within the **same user flow (System 2)**, the checkbox style is inconsistent.
-
-| **Custom Blue Checkbox** | **Native Browser Checkbox** |
-| :--- | :--- |
-| `(Image: account-login.jpg)` | `(Image: submit-verify.jpg)` |
-
-### The "Text Input Test": 3 Competing Styles
-
-Users are presented with different text fields on almost every form.
-
-| **Style 1: Modern** | **Style 2: Admin** | **Style 3: Legacy** |
-| :--- | :--- | :--- |
-| White background, thin gray border. | Light gray background, no border. | 3D `inset` border, white background. |
-| `(Image: account-login.jpg)` | `(Image: admin-console-memb-inst.jpg)` | `(Image: claim-with-paper-password.png)` |
-
-> **"So What?"**
-> This inconsistency makes the platform feel unpolished and untrustworthy. It's a classic sign of high technical debt, where new code is written instead of reusing existing components.
-
----
-
-## 6. INCONSISTENCY: Page Headers & Navigation
-
-A user should always know "where" they are. The platform uses at least 6 different header styles, providing no single, consistent brand anchor.
-
-| **Header 1: Admin (Sys 1)** | **Header 2: Public (Sys 2)** | **Header 3: Info (Sys 5)** |
-| :--- | :--- | :--- |
-| Light gray, "ADMIN" logo, right-nav. | Black top bar, main red bar, `user` sub-nav. | Red bar *with search embedded in it*. |
-| `(Image: admin-console-dashboard.jpg)` | `(Image: account-user-page.jpg)` | `(Image: info-policies.jpg)` |
-
-| **Header 4: Reader (Sys 3)** | **Header 5: CHECK (Sys 4)** | **Header 6: Bare-Bones (Sys 6)** |
-| :--- | :--- | :--- |
-| Minimal dark gray/black bar. | Light gray bar, "CHECK" logo. | No header, just a massive serif title. |
-| `(Image: browse-html.jpg)` | `(Image: check-home.png)` | `(Image: endorsement-form-for-endorsER.png)` |
 
 ---
 
