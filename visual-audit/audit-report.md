@@ -84,7 +84,7 @@ Though these headers have some visual similarities they all use different code. 
 ![alt](images/header-submit.png)
 
 *Endorsement*
-![alt](header-endorsement.png)
+![alt](images/header-endorsement.png)
 
 #### Admin and Moderation Headers
 *arXiv Check*
@@ -103,13 +103,12 @@ After buttons, form inputs are the most important interactive elements. Forms pl
 
 | **Description** | **Example** |
 | :--- | :--- |
-|  **Browse** |  ![alt](images/form-browse.png) ![alt](images/form-header.png) |
-|  **Submission** |  ![alt](images/form-submit.png) |
-|  **Account pages** |  ![alt](images/form-account.png) |
-|  **Legacy** |  ![alt](images/form-legacy.png) |
-|  **HTML Papers** |  ![alt](images/form-html.png) |
-|  **Search** |  ![alt](images/form-search.png) |
-
+|  **Browse**: The forms in this section can both be seen on the homepage: the catchup form and search in the header. Each employs it's own styles without refences to the other's visual language. And both predate arXiv's brand guidelines. |  ![alt](images/form-browse.png) ![alt](images/form-header.png) |
+|  **Submission**: These styles are from the NG era. They are more modern, and have improved usability and accessibility over Browse, but also add to the visual and design patchwork. |  ![alt](images/form-submit.png) |
+|  **Account pages**: This is some of our most recent and modern code and probably our most accessible forms to date. But without a Design System to build on they are heavily influenced by Material UI rather than arXiv's brand guidelines. |  ![alt](images/form-account.png) |
+|  **Legacy**: Not much to say here! These legacy forms fall back to browser default styles. They are surprisingly compatible with screen readers but usability is low. |  ![alt](images/form-legacy.png) |
+|  **HTML Papers**: This is our only form on the HTML papers page, but is a good example of how the lack of a Design System leads to a vacuum in which new visual languages get created ad hoc. |  ![alt](images/form-html.png) |
+|  **Search**: These styles share the most with Submit 2.0, as they are both NG era. But there are still significant differences between them and they do not have a shared underlying base so will likely diverge more as time goes on. |  ![alt](images/form-search.png) |
 
 > This inconsistency is a classic sign of high technical debt. With no design system, new front end work usually meant introducing new styles instead of reusing existing components. The Design System will make it easy to build forms with high usability and accessibility, and that are consistent with our brand guidelines.
 
