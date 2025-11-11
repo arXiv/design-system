@@ -62,7 +62,9 @@ A platform's button is the single most critical component. As the primary user f
 ### Headers
 A user should always know where they are and headers (along with navigation and breadcrumbs) provide that mental map. arXiv uses many different header and navigation styles, providing no consistent wayfinding or brand anchor for our users.
 
-#### Black & Red Headers
+#### Seven unique Black & Red headers
+Though these headers have some visual similarities they all use different code. Note the differences in logo use and spacing, breadcrumb styles, the thank you messages and donate links, and search. 
+
 *Account*
 ![alt](images/header-account.png)
 
@@ -81,90 +83,48 @@ A user should always know where they are and headers (along with navigation and 
 *Submit*
 ![alt](images/header-submit.png)
 
+*Endorsement*
+![alt](header-endorsement.png)
+
 #### Admin and Moderation Headers
+*arXiv Check*
 ![alt](images/header-check-mod.png)
+
+*Admin Console*
 ![alt](images/header-admin-console.png)
 
 > The new Design System will introduce a shared header with the right amount of controlled customization to balance the needs of arXiv's different platform sections. It will include navigation and search elements, branding, and other content deemed strategically necessary.
 
+
 ---
 
 ### Forms
-After buttons, form inputs are the most common interactive element. Forms play a critical role in data quality by increasing user comprehension and accessibility. arXivs platform currently waffles between a variety of custom styles and browser defaults.
+After buttons, form inputs are the most important interactive elements. Forms play a critical role in data quality by increasing user comprehension and accessibility. arXivs platform currently waffles between a variety of custom styles as well as browser defaults.
 
 | **Description** | **Example** |
 | :--- | :--- |
-|   |   |
+|  **Browse** |  ![alt](images/form-browse.png) ![alt](images/form-header.png) |
+|  **Submission** |  ![alt](images/form-submit.png) |
+|  **Account pages** |  ![alt](images/form-account.png) |
+|  **Legacy** |  ![alt](images/form-legacy.png) |
+|  **HTML Papers** |  ![alt](images/form-html.png) |
+|  **Search** |  ![alt](images/form-search.png) |
 
 
-> This inconsistency is a classic sign of high technical debt. With no design system, new front end work usually meant introducing new styles instead of reusing existing components.
-
----
-
-### Headers
-A user should always know where they are and headers (along with navigation and breadcrumbs) provide that mental map. arXiv uses many different header and navigation styles, providing no consistent wayfinding or brand anchor.
-
-| **Browse** | **Older browse** | **?** |
-| :--- | :--- | :--- |
-| ? | ? | ?|
-| `(Image: admin-console-dashboard.jpg)` | `(Image: account-user-page.jpg)` | `(Image: info-policies.jpg)` |
-
-| **Admin Console** | **New Account page** | **Info site** |
-| :--- | :--- | :--- |
-| Light gray, "ADMIN" logo, right-nav. | Black top bar, main red bar, `user` sub-nav. | Red bar *with search embedded in it*. |
-| `(Image: admin-console-dashboard.jpg)` | `(Image: account-user-page.jpg)` | `(Image: info-policies.jpg)` |
-
-| **HTML pages** | **arXiv Check** | **Super-legacy** |
-| :--- | :--- | :--- |
-| Minimal dark gray/black bar. | Light gray bar, "CHECK" logo. | No header, just a massive serif title. |
-| `(Image: browse-html.jpg)` | `(Image: check-home.png)` | `(Image: endorsement-form-for-endorsER.png)` |
-
----
-
-## 3. A "Frankenstein" Page
-
-Many pages are built by "stitching together" components from multiple systems. This creates an incoherent and jarring user experience.
-
-The screen `you-are-not-endorsed.png` is a perfect example, combining **five different visual styles** into one view:
-
-1.  **Header:** From **System 2** (Public-Facing).
-2.  **Stepper:** A new, text-based `>>` style. **(Style 1)**
-3.  **Error Banner:** A new, red banner style. **(Style 2)**
-4.  **Section Headers:** New, solid-red background headers. **(Style 3)**
-5.  **Info Box:** A new, bordered-box style. **(Style 4)**
-6.  **Primary Button:** A new, 3D/beveled dark blue "Continue" button. **(Style 5)**
-
-> **"So What?"**
-> When a single page has no internal visual consistency, the user cannot learn the platform's interaction patterns. This page alone has 3 new button/banner styles not seen anywhere else.
-
----
-
-## 7. The Root Cause: An Ignored "Source of Truth"
-
-The audit of `info-brand-colors.jpg` revealed an **"official" brand guideline**.
-
-**This guideline is almost universally ignored.**
-
-This is the "smoking gun" of the platform's dysfunction. A design system exists, but it is not being used or enforced.
-
-* **The "Official" Blue:** `Open Blue (#006FBA)`
-* **The "Actual" Blue:** `Brighter Blue (#007BFF)`
-* **The Conflict:** The "Public-Facing" system (System 2), the most visible part of the platform, uses a different blue than the one specified in its *own* brand documentation.
-
-> **"So What?"**
-> This proves that the root cause is a lack of **process and governance**. Without a team empowered to build, maintain, and enforce a single system, fragmentation will continue indefinitely.
+> This inconsistency is a classic sign of high technical debt. With no design system, new front end work usually meant introducing new styles instead of reusing existing components. The Design System will make it easy to build forms with high usability and accessibility, and that are consistent with our brand guidelines.
 
 ---
 
 ## 8. Conclusion & Path Forward
 
-The visual evidence is clear: the platform is suffering from severe design fragmentation. This is not a simple "visual cleanup" project; it is a foundational imperative to create a **single, unified design system**.
+The visual evidence is clear: the platform is suffering from severe design fragmentation. This is not a simple "visual cleanup" project; We need a **single, unified design system** that we can apply across our systems, and that maintains the right balance of consistency and flexibility to meet the needs of each repository.
 
-### Recommendations
+### Next Steps
 
-1.  **Establish a Design Authority:** Form a dedicated team (Design, Product, Engineering) with the authority and resources to own the new design system.
-2.  **Unify "Money Components" First:** The new system must start by solving the most fragmented components: **Buttons**, **Form Inputs**, and **Colors**.
-3.  **Consolidate Page Shells:** The next priority is to create one global **Header** and **Footer** to be used across the entire platform.
-4.  **Create a Migration Plan:** Systematically replace the 8+ legacy systems, starting with the highest-traffic user flows (System 2: Public-Facing) before migrating internal tools.
+1.  **Form a Design System team:** A dedicated team has been formed (Carly, Deyan, Shamsi) with the authority and resources to own the new design system. 
+2.  **Focus on high value components:** The first step of the team is to roll out our most high value component: **The Button**. This will be a right-sized proof of concept for the design system framework, as well as an opportunity for the dev team to see it in action and get to know how it works. 
+3.  **Expand the Design System to more components:** The next priority is to create one global **Header** and **Footer** to be used across the entire platform. The header includes multiple components (links, forms, logo, message boxes) so this is a significant expansion of the Design System. Our next priority after these shared element groups is **Forms**, also extremely high value.
+4. **Complete the visual design system:** Simultaneously with #3 (expanding to more components) we will be making decisions about their visual display and coherence with a redesign. arXiv's redesign will emphasize utilitarianism, increasing usability, fast page load, internationalization, and accessibility. All design decisions will be embedded directly into the Design System so they can be deployed everywhere, consistently, with ease.
+4.  **Integration:** Systematically apply the Design System to each repository once that repo code is moved to the cloud. Implementation order will probably follow which code is ready (ie: Submit and Wombat) rather than prioritizing our most high traffic systems (Browse and HTML papers).
 
-This unification will reduce technical debt, accelerate development, and—most importantly—provide a coherent, professional, and trustworthy experience for your users.
+> The implementation of the Design System will reduce technical debt, ease development pain, and—most importantly—provide a coherent, professional, and trustworthy experience for users.
