@@ -52,14 +52,14 @@ Users should never have to hunt around for or guess what the primary action on a
 
 | **Description** | **Example** |
 | :--- | :--- |
-| **Abstract and HTML**: The single most performed action on our site is to view a PDF. At desktop widths, it is a simple 90s style text link using the browser default color. At mobile it takes on button styling. HTML pages use the third button style. | ![alt](images/button-abs.png) ![alt](images/button-abs-mobile.png) ![alt](images/button-html.png) |
-| **User Account**: The new user accounts use the first button style, the current account uses the second style. | ![alt](images/button-account.png) ![alt](images/button-account-current.png) ![alt](images/button-secondary-reg.png) |
+| **Abstract and HTML**: The single most performed action on our site is to view a PDF. At desktop widths, it is a simple 90s style text link using the browser default color. At mobile it takes on button styling. HTML pages, linked to from Abs, shift to the red button style. | ![alt](images/button-abs.png) ![alt](images/button-abs-mobile.png) ![alt](images/button-html.png) |
+| **User Account**: The new user accounts use the first two buttons styles for primary and secondary. The third button style is from the existing user account page, included as an example of how quickly new visual styles are born without a standard Design System. | ![alt](images/button-account.png) ![alt](images/button-secondary-reg.png) ![alt](images/button-account-current.png) |
 | **arXiv Check and Admin Console**: We are working to bring arXiv Check and Admin Console in line with each others visual languages to improve efficiency for the EUST. It is a work in progress, but visible here is the prominence of the Access Lime color that distinguishes moderation tools from other parts of the site (an example of strategic inconsistency). | ![alt](images/button-check.png) ![alt](images/button-check-green.png) ![alt](images/button-admin-console.png) ![alt](images/button-secondary-admin-console.png) ![alt](images/button-secondary-check.png) |
-| **Info site**: The info site heavily relies on text links, but when we use buttons they have this style that is consistent with our brand guide. | ![alt](images/button-info.png) |
-| **Legacy**: You will still come across legacy code in some parts of the arXiv platform that fall back to browser default styles, including the catchup form on the arXiv homepage.  | ![alt](images/button-legacy.png) |
-| **Submission**: The new Submit 2.0 introduces green primary action buttons and a subtle secondary button style. | ![alt](images/button-submit.png) ![alt](images/button-secondary-submit.png)|
-| **Search**: The button style, though blue like on some other parts of the site, is not consistent with the blue used on the user account, info site, and abs buttons. The font and margins also differ. | ![alt](images/button-search.png) |
-| **Special**: Used in the header on browse to draw attention to limited-time messages, like Giving Week or the annual survey. | ![alt](images/button-special.png) 
+| **Info site**: The info site heavily relies on text links, but when we use buttons they have this style. Though consistent with our brand guide it is inconsistent with other parts of the system. | ![alt](images/button-info.png) |
+| **Legacy**: You will still come across legacy code in some parts of the arXiv platform that fall back to browser default styles, including the catchup form prominently above the fold on the arXiv homepage.  | ![alt](images/button-legacy.png) |
+| **Submission**: The new Submit 2.0 introduces green primary action buttons and a subtle secondary button style. Submit 2.0 has more complex button needs than other parts of the site (for example it uses both disabled and processing states) and moving forward it should lead the Design System's level of button complexity. | ![alt](images/button-submit.png) ![alt](images/button-secondary-submit.png)|
+| **Search**: This button style, though blue like on some other parts of the site, has a different color, font, and margins than the blue buttons on user account, info site, and abs. | ![alt](images/button-search.png) |
+| **Special**: Sometimes used in the header on browse to draw attention to limited-time messages, like Giving Week or the annual survey. | ![alt](images/button-special.png) 
 
 
 ---
@@ -67,10 +67,10 @@ Users should never have to hunt around for or guess what the primary action on a
 ### Headers
 A user should always know where they are and headers (along with navigation and breadcrumbs) provide that mental map. arXiv uses many different header and navigation styles, providing no consistent wayfinding or brand anchor for our users.
 
-The new Design System will introduce a shared header with the right amount of controlled customization to balance the needs of arXiv's different platform sections. It will include navigation and search elements, branding, and other content deemed strategically necessary.
+The new Design System will introduce a shared header with the right amount of customization to balance the needs of arXiv's different platform sections. It will include navigation and search elements, branding, and other content deemed strategically necessary.
 
 #### Seven unique Black & Red headers
-Though these headers have some visual similarities they all use different code. Note the differences in logo use and spacing, breadcrumb styles, the thank you messages and donate links, and search. 
+Though these headers have some visual similarities they all use different code. Note the content and style difference in the logo, breadcrumbs, thank you message, donate link, and search. 
 
 *Account*
 ![alt](images/header-account.png)
@@ -104,9 +104,9 @@ Though these headers have some visual similarities they all use different code. 
 ---
 
 ### Forms
-After buttons, form inputs are the most important interactive elements. Forms play a critical role in data quality by increasing user comprehension and accessibility. arXivs platform currently waffles between a variety of custom styles as well as browser defaults.
+After buttons, form inputs are the most important interactive element. They play a critical role in data quality and legal compliance by increasing user comprehension and accessibility. arXiv's platform currently waffles between a variety of custom styles as well as browser defaults in our forms, and accessibility is low.
 
-This inconsistency is a classic sign of high technical debt. With no design system, new front end work usually meant introducing new styles instead of reusing existing components. The Design System will make it easy to build forms with high usability and accessibility, and that are consistent with our brand guidelines.
+This inconsistency is a classic sign of high technical debt. With no shared design system, new front end work usually meant introducing new styles instead of reusing existing components. The Design System will make it easy to build forms with high usability and accessibility, and that are consistent with our brand guidelines.
 
 | **Description** | **Example** |
 | :--- | :--- |
@@ -127,10 +127,10 @@ The visual evidence is clear: the platform is suffering from severe design fragm
 
 ### Next Steps
 
-1.  **Form a Design System team:** A dedicated team has been formed (Carly, Deyan, Shamsi) with the authority and resources to own the new design system. 
-2.  **Focus on high value components:** The first step of the team is to roll out our most high value component: **The Button**. This will be a right-sized proof of concept for the design system framework, as well as an opportunity for the dev team to see it in action and get to know how it works. 
-3.  **Expand the Design System to more components:** The next priority is to create one global **Header** and **Footer** to be used across the entire platform. The header includes multiple components (links, forms, logo, message boxes) so this is a significant expansion of the Design System. Our next priority after these shared element groups is **Forms**, also extremely high value.
-4. **Complete the visual design system:** Simultaneously with #3 (expanding to more components) we will be making decisions about their visual display and coherence with a redesign. arXiv's redesign will emphasize utilitarianism, increasing usability, fast page load, internationalization, and accessibility. All design decisions will be embedded directly into the Design System so they can be deployed everywhere, consistently, with ease.
+1.  **Form a Design System team:** Done! A dedicated team has been formed (Carly, Deyan, Shamsi) with the authority and resources to own the new design system. We have been meeting for several months, and though time resource allocation is low, are making steady progress.
+2.  **Focus on high value components:** The first step of the team is to roll out our most high value component: **The Button**. This will be a right-sized proof of concept for the design system framework, as well as an opportunity for the dev team to see it in action and provide feedback. 
+3.  **Expand the Design System to more components:** The next priority is a significant expansion of the Design Systsem: the global **Header** and **Footer** to be used across the platform. The header, for example, will need to be customizeable, mobile optimized, and include multiple components (links, forms, nav, logo, message boxes). After that we will tackle **Forms**, then remaining components.
+4. **Complete the *visual* design system:** Simultaneously with #3, we will be making decisions about the visual display of components and layouts and coherence with our values:  utilitarianism, usability, fast page load, internationalization, and accessibility. All design decisions will be embedded directly into the Design System so they can be deployed everywhere, consistently, and with relatively low dev effort.
 4.  **Integration:** Systematically apply the Design System to each repository once that repo code is moved to the cloud. Implementation order will probably follow which code is ready (ie: Submit and Wombat) rather than prioritizing our most high traffic systems (Browse and HTML papers).
 
 > The implementation of the Design System will reduce technical debt, ease development pain, and—most importantly—provide a coherent, professional, and trustworthy experience for users.
