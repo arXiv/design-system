@@ -2,27 +2,29 @@
 
 **Audience:** Internal arXiv Stakeholders\
 **Prepared by:** Shamsi Brinn\
-**Date:** 11/10/2025
+**Date:** 11/11/2025
 
 
 ## 1. Executive Summary
 
 This audit revealed the extent of visual inconsistency across our systems. **arXiv's visual identity is made up of a patchwork of distinct, conflicting, incomplete, and fragmented visual languages.** 
 
-The lack of a "single source of truth" for design results in a high level of inconsistency for layouts and critical components like **Buttons**, **Forms**, and **Navigation**. The inconsistent, confusing, and dated user experience errodes trust. On the development side it directly increases technical debt and slows down front-end development. Poor UI and HTML in forms also lowers data quality at the point of collection.
+The lack of a "single source of truth" for design results in a high level of inconsistency for layouts and critical components like **Buttons**, **Forms**, and **Navigation**. The inconsistent, confusing, and dated user experience errodes trust. On the development side it directly increases technical debt and slows down front-end development. Poor UI and HTML in forms also lowers data quality at the point of collection. We are also not in compliance with Federal accessibility requirements, work that requires specialized knowledge applied consistently across all UIs.
 
-We can turn it around with a single, unified design system applied across all of arXiv. The redesign goes beyond a simple "reskin." It is a **unification project** to replace the patchwork of visual languages and code with a single, modern design system that is consistent with our **values** (utilitarian, international, fast-loading) and **goals** (improve user experience and speed up development).
+We can turn it around with a single, unified Design System. The redesign goes beyond a simple "reskin." It is a **unification project** to replace our patchwork of visual languages and code with a single, modern Design System that is consistent with our **values** (useful, open to all, fast-loading) and **goals** (improve user experience and speed up development).
 
-> The short story: arXiv's design is highly inconsistent. The current state is bad for users and data quality and slows development. A unified design system is a foundational necessity for the platform's future.
+The timing is right. As arXiv spins out into a 501c3 it will no longer need to comply with Cornell Tech brand guidelines or balance two primary logos in the header.
+
+> The short story: arXiv's design is highly inconsistent. The current state is bad for users and data quality and slows development. A unified design system is a foundational necessity for the platform's future, and the time to build it is now.
 
 <br>
 <br>
 
 ## 2. The 11 Visual Languages We Currently Maintain
 
-This audit identified *eleven* distinct (though incomplete) visual languages, each with its own colors, components, and layouts. A closer look at similar-looking elements, like headers, reveals critical inconsistencies. On the back end, even similar looking elements are handled by unrelated code in different languages.
+This audit identified *eleven* distinct (though incomplete) visual languages, each with its own colors, components, and layouts. Even similar-looking elements are handled by unrelated code in different languages and are inconsistent.
 
-*Note: For the audit I reviewed newer versions of Submit and Accounts, because they will be replacing legacy in a reasonable amount of time*
+*Note: For the audit I reviewed newer versions of Submit and Accounts, because they will be replacing legacy within a reasonable amount of time*
 
 | **Description** | **Example** |
 | :--- | :--- |
@@ -32,7 +34,7 @@ This audit identified *eleven* distinct (though incomplete) visual languages, ea
 | **arXiv Check**: arXiv Check introduces a right panel and reliance on accordions, and a color pallete that highlights access lime from the brand guide. Uses font IBM Plex Sans, our secondary brand font. Layouts and components have Bootstrap inffluence. Has dark mode, is responsive, accessibility is fair. | ![thumbnail of todo queue in arXiv Check](images/thumb-check.png) |
 | **Admin Console**: This new system has some overlap with arXiv Check styles and we are working on bringing both systems closer together. This system introduces a right sidebar and shows strong Material UI inffluence. Has dark mode, is responsive, accessibility is fair. | ![thumbnail of paper details in Admin Console](images/thumb-admin-console.png) |
 | **HTML pages**: The HTML paper pages were introduced a few years ago, relying mainly on student and new developer work. The header reinforced a 'in-progress' message which we are now ready to retire. It has a dark mode, is responsive, and accessibility is high. It uses the Rival Sans font with STIX Two for math and shows ar5iv stylistic inffluence. | ![Thumbnail of a paper rendered as HTML](images/thumb-html.png) |
-| **PDF**: The look and feel are user-determined and vary. The arXiv watermark is our sole branding element on PDFs and uses the Times Roman font. | ![Thumbnail of the first page of a PDF with the arXiv watermark](images/thumb-pdf.png) |
+| **PDF**: The look and feel are user-determined and vary. The arXiv watermark is our sole branding element on PDFs and—for reasons that are lost in the mists of time—uses the Times Roman font. | ![Thumbnail of the first page of a PDF with the arXiv watermark](images/thumb-pdf.png) |
 | **Info site**: The mkdocs-based sub site introduces a 3-column layout and a new version of the black & red header. It uses arXiv's brand fonts of Freight Sans Pro and Freight Text Pro. It also adds navigation, in-page section nav, and it's own search. It includes arXiv's first dark mode and is responsive and accessible. | ![Thumbnail of the donate page on the info site](images/thumb-info.png) |
 | **Transactional Emails**: Emails are also a canvas for consistent branding. Setting content entirely aside, arXiv system emails have no branding even in text form, leaving them feeling 'unsigned' and un-anchored. | ![thumbnail of an endorsement-related email](images/thumb-email.png) |
 | **Accounts and Login**: The account and registration pages have an emerging design style that is still in progress. They introduce breadcrumb navigation in the header, simplify the user flow, and feature modern form components and validation. | ![Thumbnail of the new user account page, still in progress](images/thumb-account.png) |
