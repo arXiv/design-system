@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>arXiv Card Styles — Component Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-system.css">
+  <style>
+    /* ── Page chrome (reference doc only, not part of the component system) ── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+      background: #f9f7f7;
+      color: #1c1a17;
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 48px 28px 80px;
+    }
+
+    /* Header */
+    .page-header {
+      margin-bottom: 52px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #c4d82e;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .page-header-text { flex: 1; min-width: 0; }
+    .page-header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0 0 6px;
+    }
+    .page-header p {
+      margin: 0;
+      color: #6b6459;
+      font-size: 13px;
+      max-width: 680px;
+    }
+
+    /* Theme toggle — page chrome only */
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #cbc5be;
+      border-radius: 6px;
+      overflow: hidden;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+    .theme-toggle-btn {
+      padding: 5px 12px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: #6b6459;
+      border-right: 1px solid #cbc5be;
+      transition: background 0.1s, color 0.1s;
+      white-space: nowrap;
+    }
+    .theme-toggle-btn:last-child { border-right: none; }
+    .theme-toggle-btn:hover { background: #f0eeec; color: #1c1a17; }
+    .theme-toggle-btn.active { background: #1c1a17; color: #c4d82e; }
+
+    /* Sections */
+    .section { margin-bottom: 60px; }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 4px;
+      color: #1c1a17;
+    }
+    .section-desc {
+      font-size: 13px;
+      color: #6b6459;
+      margin: 0 0 20px;
+    }
+
+    /* Demo grid */
+    .demo-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    .demo-item {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .demo-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6b6459;
+    }
+    .demo-card-wrap {
+      width: 240px;
+    }
+
+    /* Token table */
+    .token-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1px solid #e0dbd7;
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+    .token-table th {
+      background: #f0eeec;
+      text-align: left;
+      padding: 10px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6b6459;
+      border-bottom: 1px solid #e0dbd7;
+    }
+    .token-table td {
+      padding: 10px 16px;
+      border-bottom: 1px solid #e0dbd7;
+      vertical-align: middle;
+    }
+    .token-table tr:last-child td { border-bottom: none; }
+
+    .swatch {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      border-radius: 3px;
+      border: 1px solid rgba(255,255,255,0.2);
+      vertical-align: middle;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+    .swatch-row { display: flex; align-items: center; }
+
+    code {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 12px;
+      background: #f0eeec;
+      padding: 2px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .callout {
+      font-size: 13px;
+      color: #1c1a17;
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #fff;
+      border: 1px solid #e0dbd7;
+      border-left: 4px solid #c4d82e;
+      border-radius: 0 4px 4px 0;
+      line-height: 1.6;
+    }
+    .callout + .callout { margin-top: 10px; }
+    .callout strong { color: #1c1a17; }
+
+    .usage-list {
+      margin: 0;
+      padding-left: 20px;
+      line-height: 2;
+    }
+
+    /* Context example: card beside a content area */
+    .context-example {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      padding: 28px;
+      background: #fff;
+      border: 1px solid #e0dbd7;
+      border-radius: 8px;
+    }
+    .context-main {
+      flex: 1;
+      min-width: 0;
+    }
+    .context-placeholder {
+      background: #f0eeec;
+      border-radius: 4px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #b0aba6;
+      font-style: italic;
+    }
+    .context-sidebar {
+      flex: 0 0 240px;
+      width: 240px;
+    }
+
+    /* Dark mode overrides for page chrome */
+    html[data-theme="dark"] body           { background: #1c1a17; color: #f0eeec; }
+    html[data-theme="dark"] .section-title { color: #f0eeec; }
+    html[data-theme="dark"] .section-desc  { color: #b0aba6; }
+    html[data-theme="dark"] .page-header p { color: #b0aba6; }
+    html[data-theme="dark"] .demo-label    { color: #b0aba6; }
+
+    html[data-theme="dark"] .token-table   { background: #252118; border-color: #3a3530; }
+    html[data-theme="dark"] .token-table th { background: #302c28; color: #b0aba6; border-color: #3a3530; }
+    html[data-theme="dark"] .token-table td { border-color: #3a3530; color: #f0eeec; }
+
+    html[data-theme="dark"] .callout       { background: #252118; border-color: #3a3530; color: #f0eeec; }
+    html[data-theme="dark"] .callout strong { color: #f0eeec; }
+
+    html[data-theme="dark"] .context-example  { background: #252118; border-color: #3a3530; }
+    html[data-theme="dark"] .context-placeholder { background: #302c28; }
+
+    html[data-theme="dark"] code { background: #302c28; color: #f0eeec; }
+
+    html[data-theme="dark"] .theme-toggle-btn:hover { background: #302c28; color: #f0eeec; }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header class="page-header">
+      <div class="page-header-text">
+        <h1>arXiv Card Styles — Component Reference</h1>
+        <p>The dark info card is a read-only metadata panel for displaying system-supplied context (user identity, submission details, IP/date stamps). Its dark charcoal surface creates a deliberate visual boundary from editable content areas.</p>
+      </div>
+      <div class="theme-toggle" role="group" aria-label="Color scheme">
+        <button class="theme-toggle-btn" id="toggle-light" type="button">☀ Light</button>
+        <button class="theme-toggle-btn" id="toggle-dark"  type="button">☾ Dark</button>
+      </div>
+    </header>
+
+
+    <!-- ── Live Examples ─────────────────────────────────────── -->
+    <section class="section">
+      <h2 class="section-title">Variants</h2>
+      <p class="section-desc">Each row stacks a label over a value. Values can be plain text, a link, or a monospace ID. The card always reads correctly against both the warm-wash page background and a white content area.</p>
+
+      <div class="demo-grid">
+
+        <div class="demo-item">
+          <span class="demo-label">User info (typical)</span>
+          <div class="demo-card-wrap">
+            <div class="info-card" role="region" aria-label="User information">
+              <div class="info-card-row">
+                <span class="info-label">User</span>
+                <a href="#" class="info-value info-link">Christos Dimitrakakis</a>
+              </div>
+              <div class="info-card-row">
+                <span class="info-label">Email</span>
+                <a href="#" class="info-value info-link">christos.dimitrakakis@gmail.com</a>
+              </div>
+              <div class="info-card-row">
+                <span class="info-label">Remote host</span>
+                <span class="info-value">128.84.12.201</span>
+              </div>
+              <div class="info-card-row">
+                <span class="info-label">Date</span>
+                <span class="info-value">2024-12-31</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-item">
+          <span class="demo-label">Submission context</span>
+          <div class="demo-card-wrap">
+            <div class="info-card" role="region" aria-label="Submission information">
+              <div class="info-card-row">
+                <span class="info-label">Submitter</span>
+                <a href="#" class="info-value info-link">Anne-Marie George</a>
+              </div>
+              <div class="info-card-row">
+                <span class="info-label">arXiv ID</span>
+                <span class="info-value" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px;">2311.04082</span>
+              </div>
+              <div class="info-card-row">
+                <span class="info-label">Submitted</span>
+                <span class="info-value">2023-11-07</span>
+              </div>
+              <div class="info-card-row">
+                <span class="info-label">Status</span>
+                <span class="info-value">Pending review</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-item">
+          <span class="demo-label">Minimal (2 rows)</span>
+          <div class="demo-card-wrap">
+            <div class="info-card" role="region" aria-label="Request details">
+              <div class="info-card-row">
+                <span class="info-label">Requested by</span>
+                <a href="#" class="info-value info-link">brath</a>
+              </div>
+              <div class="info-card-row">
+                <span class="info-label">Date</span>
+                <span class="info-value">2025-01-15</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ── In Context ─────────────────────────────────────────── -->
+    <section class="section">
+      <h2 class="section-title">In Context</h2>
+      <p class="section-desc">The card sits in a fixed-width sidebar (240px) alongside the main content area. The dark surface anchors the page without competing with the editable content.</p>
+
+      <div class="context-example">
+        <div class="context-main">
+          <div class="context-placeholder">Main content area — table, form, or detail view</div>
+        </div>
+        <div class="context-sidebar">
+          <div class="info-card" role="region" aria-label="User information">
+            <div class="info-card-row">
+              <span class="info-label">User</span>
+              <a href="#" class="info-value info-link">Christos Dimitrakakis</a>
+            </div>
+            <div class="info-card-row">
+              <span class="info-label">Email</span>
+              <a href="#" class="info-value info-link">christos.dimitrakakis@gmail.com</a>
+            </div>
+            <div class="info-card-row">
+              <span class="info-label">Remote host</span>
+              <span class="info-value">128.84.12.201</span>
+            </div>
+            <div class="info-card-row">
+              <span class="info-label">Date</span>
+              <span class="info-value">2024-12-31</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ── Color Values ───────────────────────────────────────── -->
+    <section class="section">
+      <h2 class="section-title">Color Values</h2>
+      <p class="section-desc">The dark card uses hardcoded values rather than global tokens — the palette is intentionally self-contained and only valid on the dark surface.</p>
+
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Value</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Card background</td>
+            <td><span class="swatch-row"><span class="swatch" style="background:#2e2b26;"></span><code>#2e2b26</code></span></td>
+            <td>Container background — Repository Brown darkened</td>
+          </tr>
+          <tr>
+            <td>Row divider</td>
+            <td><code>rgba(255,255,255,0.07)</code></td>
+            <td>Hairline between rows — subtle on dark surface</td>
+          </tr>
+          <tr>
+            <td>Label</td>
+            <td><span class="swatch-row"><span class="swatch" style="background:#cbcdac; border-color:rgba(0,0,0,0.15);"></span><code>#cbcdac</code></span></td>
+            <td>Field name — sage-green tint, ~6.4:1 on card bg ✓</td>
+          </tr>
+          <tr>
+            <td>Value</td>
+            <td><span class="swatch-row"><span class="swatch" style="background:#c4d82e; border-color:rgba(0,0,0,0.15);"></span><code>#c4d82e</code></span></td>
+            <td>Plain value text — brand lime, ~8.4:1 on card bg ✓ AAA</td>
+          </tr>
+          <tr>
+            <td>Link (rest)</td>
+            <td><span class="swatch-row"><span class="swatch" style="background:#c4d82e; border-color:rgba(0,0,0,0.15);"></span><code>#c4d82e</code></span></td>
+            <td>Linked value at rest — same as plain value + underline</td>
+          </tr>
+          <tr>
+            <td>Link (hover)</td>
+            <td><span class="swatch-row"><span class="swatch" style="background:#d8ee50; border-color:rgba(0,0,0,0.15);"></span><code>#d8ee50</code></span></td>
+            <td>Brightened lime on hover</td>
+          </tr>
+          <tr>
+            <td>Link (visited)</td>
+            <td><span class="swatch-row"><span class="swatch" style="background:#a8c020; border-color:rgba(0,0,0,0.15);"></span><code>#a8c020</code></span></td>
+            <td>Slightly muted lime — signals page was visited</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+
+    <!-- ── Usage Rules ────────────────────────────────────────── -->
+    <section class="section">
+      <h2 class="section-title">Usage Rules</h2>
+      <ul class="usage-list">
+        <li><strong>Read-only only.</strong> Never place editable fields inside an <code>.info-card</code>. The dark surface signals "this is system context, not something you control here."</li>
+        <li><strong>Sidebar placement.</strong> Use at a fixed 240px width in a flex sidebar alongside the main content area. The contrast between the dark card and the warm-wash page background creates the visual hierarchy.</li>
+        <li><strong>Links in the card.</strong> Use <code>.info-link</code> on values that navigate to a related record (user profile, submission detail). Limit links to navigational items — do not use them for inline actions.</li>
+        <li><strong>Monospace IDs.</strong> For arXiv IDs or other identifiers, apply <code>font-family: "IBM Plex Mono"</code> and <code>font-size: 12px</code> directly on the <code>.info-value</code> element inline. There is no separate class for this since it is an occasional override.</li>
+        <li><strong>Row count.</strong> 2–6 rows is the intended range. If more fields are needed, consider grouping into two separate cards or a different layout rather than a very tall single card.</li>
+        <li><strong>Accessibility.</strong> Always add <code>role="region"</code> and <code>aria-label</code> on the <code>.info-card</code> container so screen readers can navigate directly to it.</li>
+      </ul>
+
+      <p class="callout">
+        <strong>Why lime on dark, not white?</strong> White text on the dark card would create a generic "dark panel" with no connection to the arXiv palette. Lime (#c4d82e) on the dark surface passes AAA contrast (8.4:1) while using the same brand accent as primary buttons and the action bar — reinforcing that this information belongs to the same system.
+      </p>
+      <p class="callout">
+        <strong>Why two greens (label vs value)?</strong> The two-tone treatment comes from the admin console pattern: a muted sage label (<code>#cbcdac</code>) that recedes, and a bright lime value that the eye lands on first. The hierarchy guides reading order — label names the field, value delivers the content.
+      </p>
+    </section>
+
+  </div>
+
+  <script>
+    (function () {
+      const html = document.documentElement;
+      const btnLight = document.getElementById('toggle-light');
+      const btnDark  = document.getElementById('toggle-dark');
+
+      function setTheme(theme) {
+        html.setAttribute('data-theme', theme);
+        btnLight.classList.toggle('active', theme === 'light');
+        btnDark.classList.toggle('active',  theme === 'dark');
+      }
+
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setTheme(prefersDark ? 'dark' : 'light');
+
+      btnLight.addEventListener('click', function () { setTheme('light'); });
+      btnDark.addEventListener('click',  function () { setTheme('dark');  });
+    })();
+  </script>
+</body>
+</html>
