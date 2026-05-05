@@ -65,19 +65,27 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px 18px;
+  padding: 10px 20px;
   font-family: inherit;
   font-size: 14px;
   font-weight: 500;
   line-height: 1;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
   white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
   transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease,
-    color 0.15s ease;
+    background-color 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease,
+    box-shadow 0.12s ease,
+    transform 0.08s ease;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: none;
 }
 
 .btn:focus-visible {
@@ -109,7 +117,7 @@
 
 /* Simulated states — for documentation display only */
 .btn-primary.sim-hover  { background: var(--lime-hover); }
-.btn-primary.sim-active { background: var(--lime-active); }
+.btn-primary.sim-active { background: var(--lime-active); transform: translateY(1px); box-shadow: none; }
 .btn-primary.sim-focus  { box-shadow: 0 0 0 3px var(--focus-ring); outline: none; }
 
 
@@ -138,7 +146,7 @@
 
 /* Simulated states */
 .btn-secondary.sim-hover  { background: var(--sec-bg-hover); }
-.btn-secondary.sim-active { background: var(--sec-bg-active); border-color: var(--sec-border-active); }
+.btn-secondary.sim-active { background: var(--sec-bg-active); border-color: var(--sec-border-active); transform: translateY(1px); box-shadow: none; }
 .btn-secondary.sim-focus  { box-shadow: 0 0 0 3px var(--focus-ring); outline: none; }
 
 
@@ -169,7 +177,7 @@
 
 /* Simulated states */
 .btn-tertiary.sim-hover  { background: var(--grey-hover-bg); border-color: var(--grey-hover-dark); color: var(--grey-hover-dark); }
-.btn-tertiary.sim-active { background: var(--grey-active-bg); border-color: var(--grey-hover-dark); color: var(--grey-hover-dark); }
+.btn-tertiary.sim-active { background: var(--grey-active-bg); border-color: var(--grey-hover-dark); color: var(--grey-hover-dark); transform: translateY(1px); box-shadow: none; }
 .btn-tertiary.sim-focus  { box-shadow: 0 0 0 3px var(--focus-ring); outline: none; }
 
 
@@ -208,7 +216,7 @@
 
 /* Simulated states */
 .btn-destructive.sim-hover  { background: var(--danger-hover); }
-.btn-destructive.sim-active { background: var(--danger-active); }
+.btn-destructive.sim-active { background: var(--danger-active); transform: translateY(1px); box-shadow: none; }
 .btn-destructive.sim-focus  { box-shadow: 0 0 0 3px var(--focus-ring); outline: none; }
 
 
@@ -236,13 +244,13 @@
   box-sizing: border-box;
   background: transparent;
   border: 1px solid var(--icon-border); /* subtle outline — clarifies click affordance */
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   color: var(--grey);
   line-height: 1;
   flex-shrink: 0;
   padding: 0;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
 
   /* Standard size — height matches the standard text button */
   width: 36px;
@@ -449,7 +457,7 @@
   display: flex;
   flex-direction: column;
   background: #e8e4dc;
-  border-radius: 5px;
+  border-radius: 6px;
   overflow: hidden;
   border-top: 4px solid #c4d82e;
 }
@@ -517,6 +525,8 @@
     --grey-hover-dark:   #d4cfc9; /* 11.22:1 on dark ✓ */
     --grey-active-bg:    #302c28;
     --grey-dis:          #484340;
+    --grey-ui:           #8b8680; /* 5.91:1 on dark ✓ — same value, passes on both surfaces */
+    --icon-border:       #8b8680;
 
     /* Primary disabled — dark tint so it doesn't look active */
     --lime-dis-bg:       #252f08;
@@ -637,7 +647,7 @@
   font-size: 13px;
   background: #fff;
   border: 1px solid #ddd8d2;
-  border-radius: 4px;
+  border-radius: 6px;
   overflow: hidden;
 }
 
@@ -809,13 +819,13 @@
   background: #fff;
   color: #6b6459;
   margin-left: -1px;
-  transition: background 0.1s, color 0.1s, border-color 0.1s;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
   position: relative;
   white-space: nowrap;
 }
 
-.seg-btn:first-child { border-radius: 4px 0 0 4px; margin-left: 0; }
-.seg-btn:last-child  { border-radius: 0 4px 4px 0; }
+.seg-btn:first-child { border-radius: 6px 0 0 6px; margin-left: 0; }
+.seg-btn:last-child  { border-radius: 0 6px 6px 0; }
 .seg-btn:hover:not(:disabled) { background: #f5f3f1; color: #1c1a17; z-index: 1; }
 .seg-btn:focus-visible {
   outline: 3px solid var(--focus-ring);

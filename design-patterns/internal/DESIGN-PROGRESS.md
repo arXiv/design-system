@@ -60,6 +60,7 @@ Retired from body-text use — fails 4.5:1 on white. Kept as a brand reference c
 - [ ] **Form input base styles** — text inputs, checkboxes, radio buttons, full select styling (beyond filter select)
 - [ ] **Modal / dialog pattern** — backdrop, container, footer button grouping
 - [ ] **Dark mode** for new components — tables, segmented control, filter select, validation states
+- [ ] **Typography migration** — move from Google Fonts to self-hosted IBM Plex woff2 files. See `../typography.md` for the full spec
 
 ## Completed
 - [x] All button tokens finalized and committed
