@@ -75,7 +75,7 @@ Barely perceptible tints for creating section depth without hard borders.
 | Element | Color | Token |
 |---|---|---|
 | Primary button | Access Lime `#c4d82e` | `--lime` |
-| Secondary button | Lime tint `#f0f9e8` border `#8a9b1e` | `--sec-bg`, `--sec-border` |
+| Secondary button | Lime tint `#f0f9e8` border `#9cb522` | `--sec-bg`, `--sec-border` |
 | Page background | Warm Wash `#f9f7f7` | — |
 | Header | (varies by tool) | — |
 | Text | Repository Brown `#1c1a17` | `--text` |
