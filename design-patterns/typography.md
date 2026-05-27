@@ -14,7 +14,7 @@ arXiv uses the IBM Plex type family for all text, and STIX Two Math for mathemat
 
 - **Open source** — SIL Open Font License. No licensing cost, no vendor dependency.
 - **Self-hostable** — woff2 files served from arXiv's own static assets. No external requests.
-- **Complete family** — Sans, Sans Condensed, and Mono variants cover all use cases without mixing font families from different designers.
+- **Complete family** — Sans, Sans Condensed, Mono, and Serif variants cover all use cases without mixing font families from different designers.
 - **Language coverage** — supports Latin Extended, Cyrillic, Greek, Arabic, Hebrew, Devanagari, Thai, and more. Critical for an international research platform.
 - **Math compatibility** — pairs well with STIX Two Math. Both are designed for technical/scientific contexts.
 
@@ -33,6 +33,7 @@ arXiv uses the IBM Plex type family for all text, and STIX Two Math for mathemat
 | **Body text** | IBM Plex Sans | 400 (regular), 500 (medium), 600 (semibold) | All body copy, paragraphs, author names, abstracts |
 | **Labels & captions** | IBM Plex Sans Condensed | 500 (medium), 600 (semibold) | Section labels, metadata labels, table headers, uppercase captions |
 | **Code & identifiers** | IBM Plex Mono | 400 (regular), 500 (medium) | arXiv IDs, DOIs, BibTeX, code blocks, monospace content |
+| **Annotation** | IBM Plex Serif | 400 italic | Secondary editorial commentary — footnote text in margin, figure alt-text in margin (see `.ds-annotation`) |
 | **Math notation** | STIX Two Math | 400 (regular) | Inline and display math in HTML paper pages |
 
 ### CSS custom properties
@@ -42,6 +43,7 @@ arXiv uses the IBM Plex type family for all text, and STIX Two Math for mathemat
   --font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-condensed: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
   --font-mono: "IBM Plex Mono", "SF Mono", "Fira Code", "Consolas", monospace;
+  --font-serif: "IBM Plex Serif", Georgia, "STIX Two Text", "Times New Roman", serif;
   --font-math: "STIX Two Math", "Cambria Math", math;
 }
 ```
@@ -68,6 +70,7 @@ All font files are self-hosted as woff2 from arXiv's static assets directory. No
   IBMPlexSansCondensed-SemiBold.woff2
   IBMPlexMono-Regular.woff2
   IBMPlexMono-Medium.woff2
+  IBMPlexSerif-Italic.woff2
   STIXTwoMath-Regular.woff2       ← already self-hosted
 ```
 
@@ -127,6 +130,14 @@ All font files are self-hosted as woff2 from arXiv's static assets directory. No
 }
 
 @font-face {
+  font-family: "IBM Plex Serif";
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url("/static/fonts/IBMPlexSerif-Italic.woff2") format("woff2");
+}
+
+@font-face {
   font-family: "STIX Two Math";
   font-weight: 400;
   font-style: normal;
@@ -140,7 +151,7 @@ All font files are self-hosted as woff2 from arXiv's static assets directory. No
 
 - **`font-display: swap`** for text fonts — shows fallback immediately, swaps when loaded. Prioritizes readability over visual stability.
 - **`font-display: auto`** for STIX Two Math — math rendering can look wrong in fallback fonts, so it's better to wait briefly for the correct font.
-- **Total download:** ~120KB for all 7 Plex woff2 files + ~300KB for STIX Two Math. STIX is large but only needed on HTML paper pages, not abstract pages.
+- **Total download:** ~135KB for all 8 Plex woff2 files (Serif Italic adds ~15KB) + ~300KB for STIX Two Math. STIX is large but only needed on HTML paper pages, not abstract pages.
 - **`local()` check** for STIX Two Math — skips download if the user already has it installed.
 
 ---
@@ -178,6 +189,7 @@ Not yet formalized. The following sizes are used consistently across mockups and
 | Metadata labels | 11px uppercase | 600 | Plex Sans Condensed |
 | Table headers | 11px uppercase | 600 | Plex Sans Condensed |
 | Secondary text / captions | 13px | 400–500 | Plex Sans |
+| Annotation (footnote, alt-text in margin) | 13px italic | 400 | Plex Serif |
 | Code / identifiers | 12–13px | 400 | Plex Mono |
 | Nav links | 13px | 500 | Plex Sans |
 
@@ -185,6 +197,7 @@ Not yet formalized. The following sizes are used consistently across mockups and
 
 ## Open questions
 
+- [ ] **Plex Serif weights** — currently loading Italic only (for `.ds-annotation`). Roman/regular weight could be added later if a non-italic serif use case appears, but italic is the only validated use today.
 - [ ] **Italic weights** — do we need italic variants of Plex Sans? Currently not loaded. Abstracts sometimes contain italic terms. MathJax handles math italics separately.
 - [ ] **Bold weight (700)** — currently using 600 (semibold) as the heaviest weight. Do any contexts need true bold?
 - [ ] **CJK support** — IBM Plex has CJK variants (Plex Sans JP, KR, TC, SC). Should these be loaded for author names and abstracts in those languages, or fall back to system fonts?

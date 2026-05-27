@@ -37,9 +37,14 @@ These live in the working directory (`/Desktop/arXiv-mockups/arxiv-public/`) and
 - **abstract-redesign.html** — bold reimagining of the abstract page. Single column, no sidebar, integrated citation section, Labs toggles. Phase 2 vision.
 - **html-redesign.html** — HTML paper reader with light header variant. Sibling of the abstract page.
 
-## Planned pattern pages
+## Pattern pages
 
-- [ ] Button styles (primary Open Blue, secondary grey, tertiary text-only)
+- [x] **Button styles** — primary (Open Blue) and secondary (white + warm-grey border) with V3 construction validated 2026-05-14. The `.on-tint` modifier for secondary buttons on tinted surfaces (Card Grey fill, hover-brightens to Warm Wash) was added 2026-05-22 — see `button-styles.html` and `design-system.css`.
+- [x] **Inline active state** (`.ds-inline-active`) — light-blue background + underline applied to inline interactive elements (citation chips, footnote markers) when they're the active anchor. Validated 2026-05-27 in `arxiv-mockups/arxiv-public/html-redesign.html`. See `design-system.css`.
+- [x] **Annotation typography** (`.ds-annotation`) — serif italic in warm-grey for secondary editorial commentary (footnote text, figure alt-text in margin). Uses `--arxiv-font-serif` (IBM Plex Serif). Validated 2026-05-27. See `design-system.css`.
+- [x] **Popover panel** (`.ds-popover` + parts) — light-blue tint floating panel anchored to inline elements. Used by citation chips and footnote markers. Validated 2026-05-27. See `design-system.css`.
+- [x] **Element pill** (`.ds-element-pill`) — small white pill that floats anchored to a piece of content (equation, figure) to host action affordances. Distill-style chrome. Validated 2026-05-27. See `design-system.css`.
+- [ ] Tertiary / text-only button
 - [ ] Header component (dark bar for abstract pages, light bar for HTML reader)
 - [ ] Footer component
 - [ ] Citation section (BibTeX, APA, Chicago, MLA with source toggle)
