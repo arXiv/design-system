@@ -1,0 +1,446 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   arXiv public design-system stylesheet
+   ───────────────────────────────────────────────────────────────────────
+   Canonical CSS for arxiv.org public-facing pages (abstract page,
+   HTML paper reader, search, browse, info pages). Internal/admin pages
+   use design-patterns/internal/design-system.css instead.
+
+   Naming: shared design-system classes use the `.ds-` prefix
+   (DESIGN-POLICIES.md). Mockup-specific classes belong in the mockup's
+   own <style> block.
+
+   Tokens live in `:root` as CSS custom properties (see color-mapping.md
+   for the full palette and why each color exists).
+
+   STATUS: in-progress extraction from mockups. Currently codifies:
+     - Color tokens (palette, popover tints, active-state wash, pill border)
+     - Typography token shorthand (sans, condensed, mono, serif)
+     - Primary + secondary button (Variant 3, validated 2026-05-14)
+     - Inline active state (.ds-inline-active, validated 2026-05-27)
+     - Annotation typography (.ds-annotation, validated 2026-05-27)
+     - Popover panel (.ds-popover and parts, validated 2026-05-27)
+     - Element pill (.ds-element-pill, validated 2026-05-27)
+
+   More patterns will land here as they stabilize in the mockups.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Brand and surface colors (public side) ──
+     Open Blue is the public primary-action color. Internal pages use
+     Access Lime instead (see color-mapping.md). Don't mix the two on
+     the same surface — they signal different contexts. */
+  --arxiv-open-blue:       #a5d6fe;
+  --arxiv-open-blue-bright:#c2e2ff;   /* hover fill (lighter than canonical) */
+  --arxiv-archival-blue:   #1f5e96;   /* section accents, anchor color */
+  --arxiv-link-blue:       #1565c0;   /* link text, focus ring */
+
+  /* ── Warm grey ladder ──
+     Three stops for three contrast tiers. Don't introduce intermediate
+     values without DESIGN-POLICIES.md approval. */
+  --arxiv-grey-dis:        #b0aba6;   /* disabled / exempt only (below AA) */
+  --arxiv-grey-ui:         #8b8680;   /* UI borders / tracks (3.61:1 on white) */
+  --arxiv-grey:            #6b6459;   /* body-weight muted text (5.83:1) */
+  --arxiv-ink:             #1c1a17;   /* primary text */
+
+  /* ── Surface tints ── */
+  --arxiv-warm-wash:       #f9f7f7;   /* subtle warm page-section tint */
+  --arxiv-card-grey:       #f0eeec;   /* slightly darker surface band */
+
+  /* ── Active-state / popover tints ──
+     A small light-blue family that signals "this is an arXiv-layer
+     interactive surface in its active form." Used by:
+       --arxiv-active-bg: inline state (citation chips when their
+         popover is open; footnote markers on hover/active/paired)
+       --arxiv-tint-light: popover panel background (citation refs,
+         footnote content)
+       --arxiv-tint-border: matching border for popover panels. */
+  --arxiv-active-bg:       #d6e8f7;   /* inline active wash */
+  --arxiv-tint-light:      #edf4fc;   /* popover panel surface */
+  --arxiv-tint-border:     #c4dcf0;   /* popover panel border */
+
+  /* ── Floating-pill border ──
+     Soft warm-grey for white pills that float above page content
+     (action-anchor pills for equations, figures). */
+  --arxiv-pill-border:     #e4e0db;
+
+  /* ── Focus ring ──
+     Used by all interactive elements. `outline: 3px solid` with `2px`
+     offset is the established treatment. */
+  --arxiv-focus-ring:      var(--arxiv-link-blue);
+
+  /* ── Typography stack ──
+     IBM Plex hosted by arXiv. See typography.md for the self-hosting
+     plan; do not load from Google Fonts. IBM Plex Serif is used for
+     secondary editorial commentary (.ds-annotation); the Plex family
+     keeps brand voice unified across surfaces instead of dropping into
+     Georgia or Times for our serif needs. */
+  --arxiv-font-sans:       "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --arxiv-font-condensed:  "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  --arxiv-font-mono:       "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --arxiv-font-serif:      "IBM Plex Serif", Georgia, "STIX Two Text", "Times New Roman", serif;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   BUTTONS  (.ds-btn / .ds-btn-primary / .ds-btn-secondary)
+   ───────────────────────────────────────────────────────────────────────
+   Two variants, ONE construction. Primary and secondary share:
+     - dimensions (padding 10px 20px, font-size 14px / weight 600)
+     - shape (border-radius 6px)
+     - 1.5px transparent border, with the actual color carried by a
+       linear-gradient painted on the border-box via the dual-background
+       technique. Lighter at the top, darker at the bottom — "lit from
+       above." Solid hex colors (not low-opacity tints), so the hue stays
+       unambiguous regardless of what's behind the button.
+     - an equal-on-all-sides inner vignette (inset 0 0 6px) that softly
+       darkens the perimeter so the surface doesn't read as flat. Center
+       of the button stays the canonical fill color.
+     - a soft outer drop shadow that grounds the button on the page.
+
+   Hover direction: BRIGHTEN, not darken. Primary fill lightens
+   (#a5d6fe → #c2e2ff); secondary fill stays at #ffffff (already maximum
+   brightness) but the inner vignette nearly vanishes so the surface
+   reads as cleaner / more luminous. Border deepens slightly for visual
+   feedback. Outer drop shadow does not change on hover.
+
+   Pressed: 1px drop via translateY, outer drop removed, vignette
+   deepened, border gradient flattened to a single mid-tone (no
+   "lit from above" read anymore).
+
+   Why the dual-background trick: a single `border-color` can't carry a
+   vertical gradient. We use two backgrounds — one clipped to
+   padding-box (the fill) and one to border-box (the border gradient) —
+   with `border: 1.5px solid transparent` so the gradient shows through.
+   Follows border-radius correctly; universal browser support.
+
+   Naming and usage:
+     .ds-btn                Base shell (always applied).
+     .ds-btn-primary        Open Blue fill, blue gradient border.
+     .ds-btn-secondary      White fill, warm-grey gradient border.
+
+   Example:
+     <a href="/html/..." class="ds-btn ds-btn-primary">HTML</a>
+     <a href="/src/..."  class="ds-btn ds-btn-secondary">TeX Source</a>
+
+   Reference: design-patterns/public/button-styles.html.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 20px;
+  min-width: 120px;
+  font-family: var(--arxiv-font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  border-radius: 6px;
+  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, transform 0.08s, color 0.12s;
+}
+.ds-btn:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Primary (Open Blue) ─────────────────────────────────────────── */
+.ds-btn-primary {
+  background:
+    linear-gradient(#a5d6fe, #a5d6fe) padding-box,
+    linear-gradient(to bottom, #b0d5ed, #6ba8da) border-box;
+  color: var(--arxiv-ink);
+  box-shadow:
+    inset 0 0 6px rgba(31, 94, 150, 0.20),
+    0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.ds-btn-primary:hover {
+  background:
+    linear-gradient(#c2e2ff, #c2e2ff) padding-box,
+    linear-gradient(to bottom, #8fc1e8, #4a86b8) border-box;
+  box-shadow:
+    inset 0 0 8px rgba(31, 94, 150, 0.10),
+    0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.ds-btn-primary:active {
+  transform: translateY(1px);
+  background:
+    linear-gradient(#a5d6fe, #a5d6fe) padding-box,
+    linear-gradient(#6ba8da, #6ba8da) border-box;
+  box-shadow: inset 0 0 10px rgba(31, 94, 150, 0.35);
+}
+
+/* ── Secondary (white) ───────────────────────────────────────────── */
+.ds-btn-secondary {
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(to bottom, #ddd8d2, #b3ada4) border-box;
+  color: var(--arxiv-grey);
+  box-shadow:
+    inset 0 0 6px rgba(0, 0, 0, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.ds-btn-secondary:hover {
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(to bottom, #c8c4be, var(--arxiv-grey-ui)) border-box;
+  color: var(--arxiv-ink);
+  box-shadow:
+    inset 0 0 8px rgba(0, 0, 0, 0.03),
+    0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.ds-btn-secondary:active {
+  transform: translateY(1px);
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(var(--arxiv-grey-ui), var(--arxiv-grey-ui)) border-box;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.13);
+}
+
+/* ── Secondary on tinted surface (.on-tint modifier) ─────────────────
+   Apply the `on-tint` class IN ADDITION to `.ds-btn-secondary` when
+   the button sits inside a tinted section (e.g., the HTML reader's
+   light-blue footer band). The default white fill creates too much
+   contrast on a tinted surface and reads as "primary"; this variant
+   swaps the fill to Card Grey — same luminance as the surface, warm
+   hue — so the button reads as intentionally secondary via warm-on-
+   cool material differentiation, not via low contrast.
+   Hover brightens to Warm Wash (lighter step in the same warm family),
+   echoing the primary button's brighten-on-hover behavior.
+
+   Validated 2026-05-22 in arxiv-mockups/arxiv-public/html-redesign.html
+   footer ("Help improve HTML papers" section).
+
+   Example:
+     <a class="ds-btn ds-btn-secondary on-tint" href="...">Submit a fix</a>
+*/
+.ds-btn-secondary.on-tint {
+  background:
+    linear-gradient(var(--arxiv-card-grey), var(--arxiv-card-grey)) padding-box,
+    linear-gradient(to bottom, #ddd8d2, #b3ada4) border-box;
+}
+.ds-btn-secondary.on-tint:hover {
+  background:
+    linear-gradient(var(--arxiv-warm-wash), var(--arxiv-warm-wash)) padding-box,
+    linear-gradient(to bottom, #c8c4be, var(--arxiv-grey-ui)) border-box;
+}
+.ds-btn-secondary.on-tint:active {
+  background:
+    linear-gradient(var(--arxiv-card-grey), var(--arxiv-card-grey)) padding-box,
+    linear-gradient(var(--arxiv-grey-ui), var(--arxiv-grey-ui)) border-box;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   INLINE ACTIVE STATE  (.ds-inline-active)
+   ───────────────────────────────────────────────────────────────────────
+   Apply to any inline interactive element (citation chip, footnote
+   marker, inline reference) when it is the SOURCE of a currently-open
+   popover, the target of a hover-paired highlight, or otherwise the
+   active anchor right now. Light-blue background + underline reads
+   the same across surfaces, so the user learns one visual once.
+
+   This is a modifier — not a complete component. The element should
+   carry its own base typography and color; .ds-inline-active layers
+   the "I am active" treatment on top.
+
+   The element should pre-allocate its padding at rest so that adding
+   the background on state change doesn't reflow surrounding text
+   (e.g., `padding: 0 3px` at rest for a superscript marker). Citation
+   chips and footnote markers in the HTML reader use this pattern.
+
+   Triggered by the consumer via:
+     - JS-set class (e.g., when a popover opens)
+     - attribute selector (e.g., [aria-expanded="true"])
+     - paired-hover from a related element (e.g., hovering a footnote's
+       margin note lights up its inline marker)
+
+   Example:
+     <a class="ftn-marker" aria-expanded="true">3</a>
+       ↳ separately, CSS adds .ds-inline-active styling to
+         [aria-expanded="true"] (or a copy of the rule)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-inline-active {
+  background: var(--arxiv-active-bg);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ANNOTATION TYPOGRAPHY  (.ds-annotation)
+   ───────────────────────────────────────────────────────────────────────
+   Secondary editorial commentary in serif italic — "the voice of the
+   editor speaking quietly next to the main text." Used wherever arXiv
+   surfaces content as an annotation alongside the author's prose:
+     - Footnote text in the margin or popover
+     - Figure alt-text surfaced as a visible margin note
+     - Editorial asides, contextual notes
+
+   Intentionally NOT a "marginalia" class. The treatment is a
+   typographic voice, not a layout role. A consumer chooses placement
+   (margin, popover, inline aside) separately and applies this class
+   to get the right voice.
+
+   Validated 2026-05-27 in arxiv-mockups/arxiv-public/html-redesign.html
+   (footnote marginalia, figure alt-text marginalia).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-annotation {
+  font-family: var(--arxiv-font-serif);
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--arxiv-grey);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   POPOVER PANEL  (.ds-popover and parts)
+   ───────────────────────────────────────────────────────────────────────
+   Light-blue tint floating panel anchored to an inline element on
+   click. Same shape and material across:
+     - Citation chip popover (reference details + jump-to-reference)
+     - Footnote popover (narrow-viewport surfacing of footnote content)
+     - Any future "click an inline chip → see more context" pattern
+
+   The popover element itself is `position: fixed` (consumer is
+   responsible for setting top/left and for portaling to <body> if
+   the inline source has a transformed ancestor). Hidden by the
+   `hidden` HTML attribute; visible when the attribute is removed.
+
+   Parts:
+     .ds-popover            The panel itself.
+     .ds-popover-title      Small uppercase condensed label at the
+                            top of the panel (e.g., "Reference 47",
+                            "Footnote 3").
+     .ds-popover-close      Small × button at top-right.
+
+   Validated 2026-05-27 in arxiv-mockups/arxiv-public/html-redesign.html
+   (citation popover, footnote popover).
+
+   Example:
+     <span class="ds-popover" role="region" aria-label="Reference 47" hidden>
+       <div class="ds-popover-title">Reference 47</div>
+       <button class="ds-popover-close" aria-label="Close">&times;</button>
+       <!-- panel content -->
+     </span>
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-popover {
+  position: fixed;
+  z-index: 50;
+  background: var(--arxiv-tint-light);
+  border: 1px solid var(--arxiv-tint-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  padding: 12px 14px;
+  font-family: var(--arxiv-font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--arxiv-ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ds-popover[hidden] { display: none; }
+
+.ds-popover-title {
+  font-family: var(--arxiv-font-condensed);
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--arxiv-grey);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 8px;
+  padding-right: 28px;  /* room for the close button */
+}
+
+.ds-popover-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--arxiv-grey);
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.ds-popover-close:hover {
+  color: var(--arxiv-ink);
+  background: var(--arxiv-active-bg);
+}
+.ds-popover-close:focus-visible {
+  outline: 2px solid var(--arxiv-link-blue);
+  outline-offset: 1px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ELEMENT PILL  (.ds-element-pill)
+   ───────────────────────────────────────────────────────────────────────
+   Small white pill that floats anchored to a piece of content
+   (an equation, a figure) to host action affordances for it. Used
+   wherever arXiv adds metadata chrome (permalink, copy TeX, alt-text
+   actions, etc.) that should live on the element rather than in a
+   margin lane.
+
+   The pill is `position: absolute`; the consumer is responsible for
+   the positioning context (typically `position: relative` on the
+   element's wrapper) and for the offset (typically `bottom: -14px;
+   left: 50%; transform: translateX(-50%);` to straddle the element's
+   bottom edge by ~50%).
+
+   Hidden at rest. Add `.is-revealed` to the pill (or whatever class
+   the consumer's hover/focus rule applies) to fade it in.
+
+   Chips inside the pill are styled by the consumer — the pill itself
+   only provides the floating-panel material.
+
+   Validated 2026-05-27 in arxiv-mockups/arxiv-public/html-redesign.html
+   (equation actions, figure actions — Distill-style anchored chrome).
+
+   Example:
+     <div class="eqn-wrap" style="position: relative;">
+       <!-- equation here -->
+       <div class="ds-element-pill" style="bottom: -14px; left: 50%; transform: translateX(-50%);">
+         <button>View TeX</button>
+         <button>Permalink</button>
+         <button>Copy</button>
+       </div>
+     </div>
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-element-pill {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 14px;
+  width: max-content;
+  max-width: calc(100% - 16px);
+  padding: 6px 14px;
+  background: #ffffff;
+  border: 1px solid var(--arxiv-pill-border);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s ease, visibility 0s linear 0.18s;
+  z-index: 2;
+}
+.ds-element-pill.is-revealed {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.18s ease, visibility 0s linear 0s;
+}
