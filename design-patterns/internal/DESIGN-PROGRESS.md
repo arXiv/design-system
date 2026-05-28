@@ -1,6 +1,6 @@
 # arXiv Shared Design System — Progress Notes
 **Project:** Admin Console + arXiv Check shared component library
-**Last updated:** 2026-03-16
+**Last updated:** 2026-05-28
 
 ---
 
@@ -53,6 +53,27 @@ Retired from body-text use — fails 4.5:1 on white. Kept as a brand reference c
 
 ---
 
+## Decisions made — Status / alert colors
+
+A shared four-state semantic palette (success, info, warning, error/failure) driving a token-based `.ds-alert` component, light + dark. Promoted from `arxiv-mockups/design-patterns/alert-styles.html` (2026-05-28). Full rationale + the dark-mode table live in `../color-mapping.md`.
+
+| State | Light bg / border / text | Dark bg / border / text | Text contrast (light / dark) |
+|---|---|---|---|
+| `--success-*` | `#e8f5d8` / `#6b8e1e` / `#4a5a0a` | `#1e2b0d` / `#8fbd3a` / `#c5e1a5` | 6.7:1 / 10.4:1 |
+| `--info-*` | `#e7f1fd` / `#5a82c8` / `#1a3a78` | `#132433` / `#64b5f6` / `#90caf9` | 9.6:1 / 9.0:1 |
+| `--warning-*` | `#fff8e1` / `#e8b800` / `#7a5c00` | `#2e2410` / `#e8b800` / `#ffe082` | 5.9:1 / 11.8:1 |
+| `--error-*` | `#fdeaea` / `#c62828` / `#8b0000` | `#2d1414` / `#e57373` / `#ef9a9a` | 8.6:1 / 8.0:1 |
+
+Key decisions:
+- **Success is lime-olive, not a new forest green.** Access Lime `#c4d82e` stays the "staff tools" signal and fails text contrast, so success reuses the `.seg-positive` lime-olive with the border tuned off-yellow (`#6b8e1e`) to read as success, not brand accent.
+- **Reuse over invention** — info = `.seg-neutral` navy (darker than `--link` so it isn't read as a link); warning = the abstract version-warning amber; error = `--danger` red.
+- **Color is never the sole signal** — each variant pairs with a distinct icon shape + leading word (WCAG 1.4.1), so the states survive grayscale and `forced-colors` mode.
+- **OS signals honored** — `prefers-color-scheme` (dark tokens), `forced-colors` (links → `LinkText`, never `forced-color-adjust:none`), `prefers-reduced-motion`. `prefers-contrast` needs nothing (all pairings clear AA).
+
+Deferred: a **toast** pattern (transient/positioned/animated) and an **action-button slot** (Retry / Undo) on alerts.
+
+---
+
 ## What is still pending
 
 ### Longer term (open questions)
@@ -76,6 +97,7 @@ Retired from body-text use — fails 4.5:1 on white. Kept as a brand reference c
 - [x] **Toggle switch** (`.toggle-switch`, `.toggle-track`, `.toggle-thumb`, `.toggle-label`) — boolean on/off with lime-green checked state
 - [x] **Form validation** (`.field-required`, `.is-invalid`, `.field-error`) — required indicators, invalid border/ring, inline error messages
 - [x] **WCAG AA audit** — added `--grey-ui` (`#8b8680`, 3.61:1 on white) to fill palette gap between `--grey-dis` (2.24:1) and `--grey` (5.83:1). Updated toggle track, toggle off-label, sort arrow, filter underline, seg control border, icon button border, and info card label to pass 3:1 UI / 4.5:1 text thresholds
+- [x] **Status / alert colors + `.ds-alert`** — four-state semantic palette (success/info/warning/error) and a token-driven alert banner, light + dark, with `forced-colors` / `prefers-reduced-motion` handling. Mirrored into the public stylesheet. See "Decisions made — Status / alert colors" above
 
 ---
 

@@ -54,6 +54,26 @@ These serve specific UI functions and are not part of the brand identity.
 | **Danger Red** | `#c62828` | Destructive actions, error states. Distinct from Campus Red — this is functional, not brand. |
 | **Focus Ring** | `#1565c0` light / `#64b5f6` dark | Keyboard focus indicator |
 
+### Status & alert colors — shared
+
+Semantic colors for the `.ds-alert` component and any success / informational / warning / error messaging. One system on both public (white) and internal (Warm Wash) surfaces, light and dark. Each state is also distinguished by an icon and a leading word — never color alone (WCAG 1.4.1). All text/background pairings clear AA; most clear AAA.
+
+| State | Light bg | Light border | Light text/icon | Dark bg | Dark border | Dark text/icon | Text contrast (light / dark) |
+|---|---|---|---|---|---|---|---|
+| **Success** | `#e8f5d8` | `#6b8e1e` | `#4a5a0a` | `#1e2b0d` | `#8fbd3a` | `#c5e1a5` | 6.7:1 / 10.4:1 |
+| **Info** | `#e7f1fd` | `#5a82c8` | `#1a3a78` | `#132433` | `#64b5f6` | `#90caf9` | 9.6:1 / 9.0:1 |
+| **Warning** | `#fff8e1` | `#e8b800` | `#7a5c00` | `#2e2410` | `#e8b800` | `#ffe082` | 5.9:1 / 11.8:1 |
+| **Error / failure** | `#fdeaea` | `#c62828` | `#8b0000` | `#2d1414` | `#e57373` | `#ef9a9a` | 8.6:1 / 8.0:1 |
+
+Why these values:
+
+- **Success is lime-olive, not forest green.** arXiv has no success-green, and Access Lime `#c4d82e` is reserved as the "staff tools" signal *and* fails text contrast — so it can't double as success. Rather than introduce a new green family, success reuses the existing `.seg-positive` lime-olive (bg `#e8f5d8`, text `#4a5a0a`) with the border pulled off-yellow (`#6b8e1e` — lower red channel than `--sec-border` `#9cb522`) so it reads as "success," not "brand accent." A forest-green alternative was considered and rejected to keep the palette tight.
+- **Info is navy, deliberately darker than Link Blue** `#1565c0`, so an info banner is never mistaken for a link. Reuses the `.seg-neutral` / `.type-new` family.
+- **Warning is the existing version-warning amber** (`#fff8e1` / `#e8b800` / `#7a5c00`), promoted from the one-off abstract-page banner.
+- **Error reuses Danger Red** `#c62828` for the border, with a light tint background and the `.seg-negative` deep-red text `#8b0000`.
+
+Tokens: internal `design-system.css` exposes `--success-*` / `--info-*` / `--warning-*` / `--error-*` (matching the unprefixed `--danger`); public `design-system.css` exposes the `--arxiv-`-prefixed equivalents. Both drive an identical `.ds-alert` component (icon + leading word, `role="status"` vs `role="alert"`, light + dark, plus `forced-colors` / `prefers-reduced-motion` handling).
+
 ### Background tints
 
 Barely perceptible tints for creating section depth without hard borders.
@@ -140,6 +160,8 @@ Barely perceptible tints for creating section depth without hard borders.
 - **Public buttons need a strong color identity.** Repository Brown is a placeholder. A distinct, high-contrast button color is needed — Archival Blue is the leading candidate but may need to shift to differentiate from Link Blue. This is a key usability priority.
 
 - **Dark mode** — the internal tools' dark mode tokens are a good foundation for public pages.
+
+- **Status / alert colors defined (2026-05-28).** A shared four-state semantic palette (success, info, warning, error/failure) plus a `.ds-alert` component, light + dark, on both internal and public surfaces. Success stays in the lime-olive family rather than adding a forest green. See "Status & alert colors — shared" above. This also lands the *first* dark-aware tokens in the public stylesheet.
 
 - **Header color phasing:**
   - **Phase 1 (spinout):** Black header. Clean break from the red era.
