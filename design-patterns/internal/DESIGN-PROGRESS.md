@@ -15,6 +15,7 @@
 | `link-styles.html` | Text link color reference — states, contexts, visited |
 | `table-styles.html` | Data table, sortable headers, filter toolbar |
 | `form-styles.html` | Segmented control, toggle switch, form validation |
+| `alert-styles.html` | Alert / status banner — live examples + self-syncing token table |
 
 ---
 
