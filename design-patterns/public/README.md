@@ -29,14 +29,6 @@ Key differences from internal:
 - Segmented controls: same semantic variants (positive/neutral/negative)
 - Form validation: same patterns (`.is-invalid`, `.field-error`, `.field-required`)
 
-## Mockups in development
-
-These live in the working directory (`/Desktop/arXiv-mockups/arxiv-public/`) and will be codified into pattern pages here as they stabilize:
-
-- **abstract-spinout.html** — interim header for the Cornell spinout. Original page content preserved, only header and footer changed. Production-ready proposal.
-- **abstract-redesign.html** — bold reimagining of the abstract page. Single column, no sidebar, integrated citation section, Labs toggles. Phase 2 vision.
-- **html-redesign.html** — HTML paper reader with light header variant. Sibling of the abstract page.
-
 ## Pattern pages
 
 - [x] **Button styles** — primary (Open Blue) and secondary (white + warm-grey border) with V3 construction validated 2026-05-14. The `.on-tint` modifier for secondary buttons on tinted surfaces (Card Grey fill, hover-brightens to Warm Wash) was added 2026-05-22 — see `button-styles.html` and `design-system.css`.
