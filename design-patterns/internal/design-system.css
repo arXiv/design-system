@@ -56,6 +56,24 @@
   --focus-ring:        #1565c0; /* Link Blue Light Mode — 5.74:1 on white ✓; overridden to #64b5f6 in dark mode */
   --icon-border:       #8b8680; /* Icon button rest outline — passes 3:1 on white (3.61:1) and warm wash (3.38:1) */
   --grey-ui:           #8b8680; /* UI boundary grey — 3.61:1 on white, 3.38:1 on warm wash, 3.12:1 on table header bg. Use for interactive borders, tracks, and arrows needing WCAG 3:1. */
+
+  /* Status / alert families — semantic messaging (.ds-alert)              */
+  /* Shared functional colors (like --danger). Each state is also keyed by */
+  /* an icon + leading word, never color alone (WCAG 1.4.1). Dark mode     */
+  /* overrides in the @media block at end of file. Full rationale +        */
+  /* contrast table in color-mapping.md.                                   */
+  --success-bg:        #e8f5d8; /* lime-olive — .seg-positive DNA */
+  --success-border:    #6b8e1e; /* off-yellow vs --sec-border so success ≠ brand accent */
+  --success-fg:        #4a5a0a; /* text + icon — 6.7:1 on --success-bg ✓ AA */
+  --info-bg:           #e7f1fd;
+  --info-border:       #5a82c8;
+  --info-fg:           #1a3a78; /* navy, darker than --link — 9.6:1 ✓ AAA */
+  --warning-bg:        #fff8e1;
+  --warning-border:    #e8b800;
+  --warning-fg:        #7a5c00; /* 5.9:1 on --warning-bg ✓ AA */
+  --error-bg:          #fdeaea;
+  --error-border:      #c62828; /* = --danger */
+  --error-fg:          #8b0000; /* 8.6:1 on --error-bg ✓ AAA */
 }
 
 
@@ -546,6 +564,20 @@
 
     /* Focus ring */
     --focus-ring:        #64b5f6; /* 7.84:1 on Repository Brown ✓ AAA */
+
+    /* Status / alert families — dark surfaces */
+    --success-bg:        #1e2b0d;
+    --success-border:    #8fbd3a;
+    --success-fg:        #c5e1a5; /* 10.4:1 ✓ AAA */
+    --info-bg:           #132433;
+    --info-border:       #64b5f6;
+    --info-fg:           #90caf9; /* 9.0:1 ✓ AAA */
+    --warning-bg:        #2e2410;
+    --warning-border:    #e8b800;
+    --warning-fg:        #ffe082; /* 11.8:1 ✓ AAA */
+    --error-bg:          #2d1414;
+    --error-border:      #e57373; /* lighter red, matches dark destructive icon */
+    --error-fg:          #ef9a9a; /* 8.0:1 ✓ AAA */
   }
 
   /* Secondary button — dark lime-tint bg needs lime text, not near-black */
@@ -980,4 +1012,92 @@
 .toggle-switch input:checked ~ .toggle-label {
   color: #1c1a17;
   font-weight: 700;
+}
+
+
+/* ─── Alert / Status Message ────────────────────────────────── */
+/*
+ * Inline status banner — success, info, warning, error/failure.
+ * Token-driven (status families in :root + the dark @media block above),
+ * so dark mode needs no per-component overrides.
+ *
+ * Anatomy: icon + optional title + message + optional inline link or
+ * dismiss button. Color is never the sole signal — pair each variant
+ * with a distinct icon shape AND a leading word (WCAG 1.4.1).
+ *
+ * ARIA: role="status" for success/info (polite); role="alert" for
+ * warning/error (assertive). Icons must carry aria-hidden="true".
+ *
+ * Promoted from arxiv-mockups/design-patterns/alert-styles.html (2026-05-28).
+ *
+ * Usage:
+ *   <div class="ds-alert ds-alert-warning" role="alert">
+ *     <svg class="ds-alert-icon" aria-hidden="true">…</svg>
+ *     <div class="ds-alert-content">
+ *       <p class="ds-alert-title">Unsaved changes</p>
+ *       <p>Leaving this page will discard them.</p>
+ *     </div>
+ *   </div>
+ */
+.ds-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px 14px;
+  border: 1px solid;
+  border-left-width: 4px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.ds-alert-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  stroke: currentColor; /* Lucide line icons inherit the variant fg */
+  fill: none;
+}
+.ds-alert-content { margin: 0; min-width: 0; }
+.ds-alert-title { font-weight: 700; margin: 0 0 2px; }
+.ds-alert-content p { margin: 0; }
+.ds-alert a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.ds-alert-dismiss {
+  flex-shrink: 0;
+  margin-left: auto;
+  margin-top: -2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+  padding: 2px;
+  border-radius: 3px;
+  line-height: 0;
+  transition: opacity 0.15s ease;
+}
+.ds-alert-dismiss:hover { opacity: 1; }
+.ds-alert-dismiss:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+.ds-alert-dismiss svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+
+/* Variants — bg + border + fg (icon uses currentColor = fg) */
+.ds-alert-success { background: var(--success-bg); border-color: var(--success-border); color: var(--success-fg); }
+.ds-alert-info    { background: var(--info-bg);    border-color: var(--info-border);    color: var(--info-fg); }
+.ds-alert-warning { background: var(--warning-bg); border-color: var(--warning-border); color: var(--warning-fg); }
+.ds-alert-error   { background: var(--error-bg);   border-color: var(--error-border);   color: var(--error-fg); }
+
+/* OS accessibility signals. forced-colors: the OS replaces our palette
+   and the hues collapse, but icon shape + leading word still carry
+   meaning and icons follow system text color; pin links to LinkText.
+   Never set forced-color-adjust:none. */
+@media (forced-colors: active) {
+  .ds-alert a { color: LinkText; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-alert-dismiss { transition: none; }
 }

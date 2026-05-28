@@ -20,6 +20,8 @@
      - Annotation typography (.ds-annotation, validated 2026-05-27)
      - Popover panel (.ds-popover and parts, validated 2026-05-27)
      - Element pill (.ds-element-pill, validated 2026-05-27)
+     - Alert / status message (.ds-alert) + status color tokens,
+       light + dark — the first dark-aware tokens here (validated 2026-05-28)
 
    More patterns will land here as they stabilize in the mockups.
    ═══════════════════════════════════════════════════════════════════════ */
@@ -78,6 +80,26 @@
   --arxiv-font-condensed:  "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
   --arxiv-font-mono:       "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --arxiv-font-serif:      "IBM Plex Serif", Georgia, "STIX Two Text", "Times New Roman", serif;
+
+  /* ── Status / alert colors (shared functional family) ──
+     Semantic colors for the .ds-alert component (success / info /
+     warning / error). These mirror the internal stylesheet and the
+     "Status & alert colors — shared" table in color-mapping.md, so
+     public pages get the same messaging palette. Each state is also
+     keyed by an icon + leading word, never color alone (WCAG 1.4.1).
+     Dark overrides live in the @media block at the end of this file. */
+  --arxiv-success-bg:      #e8f5d8;  /* lime-olive — not a forest green; Access Lime stays staff-only */
+  --arxiv-success-border:  #6b8e1e;  /* off-yellow so success ≠ brand accent */
+  --arxiv-success-fg:      #4a5a0a;  /* 6.7:1 on bg ✓ AA */
+  --arxiv-info-bg:         #e7f1fd;
+  --arxiv-info-border:     #5a82c8;
+  --arxiv-info-fg:         #1a3a78;  /* navy, darker than --arxiv-link-blue — 9.6:1 ✓ AAA */
+  --arxiv-warning-bg:      #fff8e1;
+  --arxiv-warning-border:  #e8b800;
+  --arxiv-warning-fg:      #7a5c00;  /* 5.9:1 on bg ✓ AA */
+  --arxiv-error-bg:        #fdeaea;
+  --arxiv-error-border:    #c62828;  /* Danger Red (functional, not Campus Red) */
+  --arxiv-error-fg:        #8b0000;  /* 8.6:1 on bg ✓ AAA */
 }
 
 
@@ -443,4 +465,117 @@
   visibility: visible;
   pointer-events: auto;
   transition: opacity 0.18s ease, visibility 0s linear 0s;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ALERT / STATUS MESSAGE  (.ds-alert)
+   ───────────────────────────────────────────────────────────────────────
+   Inline status banner — success / info / warning / error (failure).
+   Token-driven via the --arxiv-{success,info,warning,error}-* families
+   (see color-mapping.md "Status & alert colors — shared"). Structurally
+   identical to the internal stylesheet's .ds-alert; only the token names
+   differ (--arxiv- prefix here).
+
+   Color is never the sole signal — pair each variant with a distinct icon
+   shape AND a leading word (WCAG 1.4.1). ARIA: role="status" for
+   success/info (polite), role="alert" for warning/error (assertive);
+   icons carry aria-hidden="true". Inline links inherit the variant color
+   and stay underlined, per the link policy.
+
+   Promoted from arxiv-mockups/design-patterns/alert-styles.html (2026-05-28).
+
+   Example:
+     <div class="ds-alert ds-alert-info" role="status">
+       <svg class="ds-alert-icon" aria-hidden="true">…</svg>
+       <div class="ds-alert-content">
+         <p class="ds-alert-title">Viewing an older version</p>
+         <p>A newer version of this paper exists — <a href="...">see v3</a>.</p>
+       </div>
+     </div>
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px 14px;
+  border: 1px solid;
+  border-left-width: 4px;
+  border-radius: 6px;
+  font-family: var(--arxiv-font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.ds-alert-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  stroke: currentColor;
+  fill: none;
+}
+.ds-alert-content { margin: 0; min-width: 0; }
+.ds-alert-title { font-weight: 700; margin: 0 0 2px; }
+.ds-alert-content p { margin: 0; }
+.ds-alert a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.ds-alert-dismiss {
+  flex-shrink: 0;
+  margin-left: auto;
+  margin-top: -2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+  padding: 2px;
+  border-radius: 3px;
+  line-height: 0;
+  transition: opacity 0.15s ease;
+}
+.ds-alert-dismiss:hover { opacity: 1; }
+.ds-alert-dismiss:focus-visible { outline: 3px solid var(--arxiv-focus-ring); outline-offset: 2px; }
+.ds-alert-dismiss svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+
+/* Variants — bg + border + fg (icon uses currentColor = fg) */
+.ds-alert-success { background: var(--arxiv-success-bg); border-color: var(--arxiv-success-border); color: var(--arxiv-success-fg); }
+.ds-alert-info    { background: var(--arxiv-info-bg);    border-color: var(--arxiv-info-border);    color: var(--arxiv-info-fg); }
+.ds-alert-warning { background: var(--arxiv-warning-bg); border-color: var(--arxiv-warning-border); color: var(--arxiv-warning-fg); }
+.ds-alert-error   { background: var(--arxiv-error-bg);   border-color: var(--arxiv-error-border);   color: var(--arxiv-error-fg); }
+
+/* Dark mode — overrides the status tokens only. This is the first
+   dark-aware block in the public stylesheet; broader public dark mode is
+   still pending (color-mapping.md open question). Guarded by data-theme
+   so a page can lock to light with <html data-theme="light">. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --arxiv-success-bg:      #1e2b0d;
+    --arxiv-success-border:  #8fbd3a;
+    --arxiv-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
+    --arxiv-info-bg:         #132433;
+    --arxiv-info-border:     #64b5f6;
+    --arxiv-info-fg:         #90caf9;  /* 9.0:1 ✓ AAA */
+    --arxiv-warning-bg:      #2e2410;
+    --arxiv-warning-border:  #e8b800;
+    --arxiv-warning-fg:      #ffe082;  /* 11.8:1 ✓ AAA */
+    --arxiv-error-bg:        #2d1414;
+    --arxiv-error-border:    #e57373;
+    --arxiv-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
+  }
+}
+
+/* OS accessibility signals. forced-colors: the OS replaces our palette
+   and the hues collapse, but icon shape + leading word still carry meaning
+   and icons follow system text color; pin links to LinkText. Never set
+   forced-color-adjust:none. */
+@media (forced-colors: active) {
+  .ds-alert a { color: LinkText; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-alert-dismiss { transition: none; }
 }
