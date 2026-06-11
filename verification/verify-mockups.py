@@ -166,6 +166,114 @@ async def run():
         check("lightbox closes on Esc", closed, "dialog semantics")
         await pg.close()
 
+        # ── 5. Anchor offset under the sticky header ──
+        # The #2 closed-issue theme (12 filings) and still-live open theme:
+        # anchor jumps land the target underneath the sticky header. Test a
+        # deep bibliography anchor (header is in compact state there).
+        pg = await b.new_page(viewport={"width": 1440, "height": 900})
+        await pg.goto(READER + "#bib.bib18")
+        await pg.wait_for_timeout(1500)
+        offset_ok = await pg.evaluate(
+            """(() => {
+              const t = document.getElementById('bib.bib18');
+              const h = document.querySelector('.arxiv-html-header');
+              if (!t || !h) return false;
+              return t.getBoundingClientRect().top >= h.getBoundingClientRect().bottom - 1;
+            })()"""
+        )
+        check(
+            "anchor jump lands below sticky header (compact state)",
+            offset_ok,
+            "html_feedback #1285 #3709 #3975 #5217 et al.",
+        )
+        await pg.close()
+
+        # ── 6. 100+ author tier (?authors=many) ──
+        pg = await b.new_page(viewport={"width": 1440, "height": 900})
+        await pg.goto(ABS + "?authors=many")
+        await pg.wait_for_timeout(800)
+        label = await pg.eval_on_selector("#authors-toggle", "e => e.textContent")
+        check("100+ tier: toggle shows full count", "1,247" in label, "LIGO/HEP stress case")
+        await pg.click("#authors-toggle")
+        await pg.wait_for_timeout(400)
+        tier = await pg.evaluate(
+            """(() => {
+              const o = document.getElementById('authors-overflow');
+              const cs = getComputedStyle(o);
+              return {scrollable: cs.overflowY === 'auto' && o.scrollHeight > o.clientHeight,
+                      collapses: o.querySelectorAll('.abs-authors-collapse').length,
+                      focused: document.activeElement === o};
+            })()"""
+        )
+        check(
+            "100+ tier: expansion is bounded + scrollable with collapse at both ends",
+            tier["scrollable"] and tier["collapses"] == 2,
+            "scrollable-inline-region decision 2026-06-11",
+        )
+        check("100+ tier: focus moves into region on expand", tier["focused"], "keyboard/AT orientation")
+        await pg.close()
+
+        # ── 7. Section-heading permalinks ──
+        pg = await b.new_page(viewport={"width": 1440, "height": 900})
+        await pg.goto(READER)
+        await pg.wait_for_timeout(1500)
+        perma = await pg.evaluate(
+            """(() => {
+              const btns = document.querySelectorAll('.heading-permalink');
+              const labeled = Array.from(btns).every(b => (b.getAttribute('aria-label')||'').includes('Copy link'));
+              return {count: btns.length, labeled};
+            })()"""
+        )
+        check(
+            "section headings carry labeled permalink buttons",
+            perma["count"] >= 5 and perma["labeled"],
+            "html_feedback #4776",
+        )
+        await pg.close()
+
+        # ── 8. BibTeX fidelity ──
+        pg = await b.new_page(viewport={"width": 1440, "height": 900})
+        await pg.goto(ABS)
+        await pg.wait_for_timeout(800)
+        bib = await pg.eval_on_selector("#cite-bibtex", "e => e.textContent")
+        check(
+            "BibTeX lists all authors (no 'and others')",
+            "and others" not in bib and "Tanaka, Takahiro" in bib,
+            "citation text is the highest-trust copy surface",
+        )
+        await pg.close()
+
+        # ── 9. axe-core scan ──
+        # Abstract: zero critical or serious violations, no exceptions.
+        # Reader: zero critical; serious allowlist = color-contrast (bulk
+        # is upstream ar5iv CSS — needs its own design pass) and
+        # svg-img-alt (figure 2 intentionally demos the missing-alt
+        # state). Tighten this allowlist as those are addressed.
+        axe_path = Path(__file__).parent / "node_modules" / "axe-core" / "axe.min.js"
+        if not axe_path.exists():
+            print("SKIP  axe-core scan (run: npm install axe-core in verification/)")
+        else:
+            for name, url, allow in [
+                ("abstract", ABS, set()),
+                ("reader", READER, {"color-contrast", "svg-img-alt"}),
+            ]:
+                pg = await b.new_page(viewport={"width": 1440, "height": 900})
+                await pg.goto(url)
+                await pg.wait_for_timeout(1500)
+                await pg.add_script_tag(path=str(axe_path))
+                res = await pg.evaluate("axe.run(document, {resultTypes:['violations']})")
+                bad = [
+                    v["id"]
+                    for v in res["violations"]
+                    if v["impact"] in ("critical", "serious") and v["id"] not in allow
+                ]
+                check(
+                    f"axe: no unexpected critical/serious violations ({name})",
+                    not bad,
+                    "found: " + ", ".join(bad) if bad else "",
+                )
+                await pg.close()
+
         await b.close()
 
     print(f"\n{len(PASSES)} passed, {len(FAILS)} failed")
