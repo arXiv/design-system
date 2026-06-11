@@ -104,6 +104,17 @@
        1. In production this is the source of truth for dark/light.
        2. The TOC and reading-mode state restoration ARE used by our chrome.  -->
 <script>
+  /* Progressive-enhancement marker: the `js` class gates every style
+     that HIDES content expecting JS to reveal it elsewhere (footnotes
+     → marginalia, etc.). If this script never runs — JS disabled, CDN
+     blocked, script error on a slow connection — the page falls back
+     to fully readable static HTML. The reader must be completely
+     readable with no JavaScript at all: enhancement scripts add
+     conveniences (popovers, TOC dropdown, marginalia), never carry
+     content. Michel Coornaert (2022-11-14) browses with JS off by
+     choice; low-bandwidth readers get it off by circumstance. */
+  document.documentElement.classList.add('js');
+
   function initializeReadingPreferences() {
     let saved_theme = localStorage.getItem("ar5iv_theme") || "automatic";
     if (saved_theme === "automatic") {
@@ -1678,10 +1689,34 @@ article.ltx_document {
 
 /* The footnote SOURCE content. Stays in the DOM but hidden at rest —
    the marginalia treatment is what becomes visible. (We don't move
-   or edit the author's content; we clone-render it into the margin.) */
-.footnote {
+   or edit the author's content; we clone-render it into the margin.)
+
+   Scoped to html.js: hiding is only safe when the JS that re-renders
+   the content into marginalia/popovers actually ran. Without JS the
+   fallback below shows the footnote inline, styled as a quiet aside —
+   no content is ever lost to a missing script. This also fixes the
+   production bug class where hover-only footnotes make their links
+   unclickable (html_feedback #805, #1616, #2570, #2968, #3040, #4444,
+   #4572 — eight independent filings). */
+html.js .footnote {
   display: none;
 }
+html:not(.js) .footnote {
+  display: block;
+  margin: 8px 0 8px 24px;
+  padding: 6px 12px;
+  border-left: 2px solid #ddd8d2;
+  font-size: 0.85em;
+  color: #555;
+}
+
+/* No-JS fallbacks for chrome that depends on scripts: the TOC trigger
+   and reading-progress bar do nothing without JS, so they're hidden
+   rather than shown dead. The LaTeXML TOC (.ltx_page_navbar) remains
+   sr-only and announceable either way; sighted no-JS readers navigate
+   the linear document. */
+html:not(.js) .toc-trigger { display: none !important; }
+html:not(.js) .reading-progress { display: none !important; }
 
 /* Right-margin marginalia — positioned absolutely so JS can vertically
    center each note on its source marker. Tufte-style serif italic with
@@ -2059,6 +2094,157 @@ article.ltx_document {
 
 
 /* ┌──────────────────────────────────────────────────────────────────┐
+   │  10b. FIGURE LIGHTBOX                                            │
+   ├──────────────────────────────────────────────────────────────────┤
+   │  Persistent full-viewport figure viewer.                         │
+   │                                                                  │
+   │  Research basis: figure viewing is the DOMINANT theme in the     │
+   │  open html_feedback queue — ~15 independent filings              │
+   │  (github-open-ux-issues-synthesis.md A1): zoom that releases on  │
+   │  mouse-up (#1661 #3998 #4653 #4669 #5804 #5995), z-index stacking│
+   │  failures (#522 #3119 #3147 #5760), center-only zoom with no pan │
+   │  (#3599 #6081), broken mobile interaction (#1372 #4712).         │
+   │  Also research Q14 (low vision): independent zoom + pan for      │
+   │  figures.                                                        │
+   │                                                                  │
+   │  Design decisions:                                               │
+   │  - Native <dialog> + showModal(): top-layer paint kills the      │
+   │    entire z-index bug class structurally; Esc + inert-behind +   │
+   │    closedby="any" come free. Same rationale as the report modal. │
+   │  - Zoom PERSISTS until explicitly closed (close button, Esc,     │
+   │    backdrop click) — the #1 complaint about the current          │
+   │    hold-to-view behavior.                                        │
+   │  - Pan by pointer drag when zoomed; wheel / buttons / double-    │
+   │    click to zoom; pinch via two-pointer distance on touch.       │
+   │  - Zoom level announced via aria-live for AT users.              │
+   │  - prefers-reduced-motion: transform transitions are disabled.   │
+   └──────────────────────────────────────────────────────────────────┘ */
+
+dialog.fig-lightbox {
+  border: none;
+  border-radius: 8px;
+  padding: 0;
+  width: min(94vw, 1400px);
+  height: min(92vh, 1000px);
+  background: #fff;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.3);
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+}
+dialog.fig-lightbox[open] { display: flex; }
+dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
+
+.fig-lightbox-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #e4e0db;
+  background: #f9f7f7;
+  flex-shrink: 0;
+}
+.fig-lightbox-title {
+  flex: 1;
+  min-width: 0;
+  font-family: "IBM Plex Sans", -apple-system, sans-serif;
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+  color: #1c1a17;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fig-lightbox-zoombtn,
+.fig-lightbox-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid #ddd8d2;
+  border-radius: 6px;
+  background: #fff;
+  color: #1c1a17;
+  font-family: "IBM Plex Sans", -apple-system, sans-serif;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.fig-lightbox-zoombtn:hover,
+.fig-lightbox-close:hover { background: #f0eeec; }
+.fig-lightbox-zoombtn:focus-visible,
+.fig-lightbox-close:focus-visible {
+  outline: 3px solid #1565c0;
+  outline-offset: 1px;
+}
+.fig-lightbox-zoomlevel {
+  min-width: 48px;
+  text-align: center;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.75rem; /* 12px */
+  color: #6b6459;
+}
+.fig-lightbox-close { margin-left: 8px; font-size: 1.25rem; line-height: 1; }
+
+/* The stage: clips the panned/zoomed image. Cursor signals pannability. */
+.fig-lightbox-stage {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+  background: #fafaf8;
+  touch-action: none; /* we handle pan/pinch with pointer events */
+}
+.fig-lightbox-stage.is-pannable { cursor: grab; }
+.fig-lightbox-stage.is-panning { cursor: grabbing; }
+/* The transformed element is a plain DIV wrapper, never the image
+   itself: Chromium fails to rasterize an <svg> root carrying a
+   percentage-translate CSS transform (the box lays out — correct
+   getBoundingClientRect — but nothing paints). HTML wrappers paint
+   reliably; the cloned img/svg inside is untransformed at 100%. */
+.fig-lightbox-stage > .fig-lightbox-content {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform-origin: center center;
+  transition: transform 0.15s ease-out;
+  max-width: none;
+  background: #fff;
+}
+.fig-lightbox-stage > .fig-lightbox-content > img,
+.fig-lightbox-stage > .fig-lightbox-content > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fig-lightbox-stage > .fig-lightbox-content { transition: none; }
+}
+
+.fig-lightbox-caption {
+  flex-shrink: 0;
+  max-height: 20%;
+  overflow-y: auto;
+  padding: 10px 16px;
+  border-top: 1px solid #e4e0db;
+  font-size: 0.8125rem; /* 13px */
+  line-height: 1.5;
+  color: #1c1a17;
+  text-align: left;
+}
+
+/* In-article affordances: the image itself signals it opens larger,
+   and an Expand chip provides the discoverable, keyboard-reachable
+   path (issue #1372: "Tried to enlarge… No luck. Expected image to
+   pop out as on other sites"). */
+.fig-region .fig-image-wrap { cursor: zoom-in; }
+
+@media print {
+  dialog.fig-lightbox { display: none !important; }
+}
+
+/* ┌──────────────────────────────────────────────────────────────────┐
    │  11.  UTILITIES                                                  │
    └──────────────────────────────────────────────────────────────────┘ */
 
@@ -2338,10 +2524,19 @@ article.ltx_document {
           var refTitle = anchor.querySelector('.ltx_ref_title');
           var tag = refTitle && refTitle.querySelector('.ltx_tag_ref');
           var tagText = tag ? tag.textContent.trim() : '';
-          // The remaining text is everything in .ltx_ref_title minus the tag.
+          // The remaining text is everything in .ltx_ref_title minus the
+          // tag. IMPORTANT: extract from a clone with MathML <annotation>
+          // elements removed. Section titles containing math carry the
+          // TeX source in <annotation encoding="application/x-tex">, and
+          // naive textContent concatenates rendered symbols AND raw TeX —
+          // the dropdown showed "Evolution of Ψ\Psi and Φ\Phi"
+          // (verified by rendering 2026-06-11).
           var titleText = '';
           if (refTitle) {
-            titleText = refTitle.textContent;
+            var titleClone = refTitle.cloneNode(true);
+            var anns = titleClone.querySelectorAll('annotation, annotation-xml');
+            Array.prototype.forEach.call(anns, function(a) { a.remove(); });
+            titleText = titleClone.textContent;
             if (tagText) titleText = titleText.replace(tagText, '').trim();
           }
           if (!titleText) titleText = anchor.textContent.trim();
@@ -5650,9 +5845,22 @@ We thus see that</p>
         return link, replaceState the URL, focus the source chip, and
         smooth-scroll back.
 
-   ARIA wiring:
-     - Each cluster's anchors get role="button" + aria-expanded +
-       aria-controls pointing at the popover id.
+   ARIA wiring (push-list commitments, accessibility-priorities.md
+   "Citation experience for screen readers and beyond"):
+     - Every inline citation carries FULL CONTEXT in its accessible
+       name: aria-label="Reference 46: Stelle (1977) · Renormalization
+       of Higher Derivative Quantum Gravity". Sighted readers see the
+       compact "[46]"; AT users get the same context an author-year
+       style gives sighted readers. (Tigwell: "what is reference 10?
+       Is that the paper I have in mind?")
+     - Aurally compact at rest: anchors keep native LINK semantics.
+       An earlier iteration set role="button" + persistent
+       aria-expanded="false" on every chip — which made a cluster like
+       [15, 44, 45, 26, 31, 3] announce as six "collapsed buttons,"
+       MORE noise than the plain links it replaced (Dan Miner's
+       "auditory disturbance you cannot skip"). aria-expanded +
+       aria-controls now exist only WHILE a popover is open, on the
+       cluster that owns it, and are removed entirely on close.
      - Popover itself is role="region" with aria-label naming the count.
 */
 (function() {
@@ -5660,6 +5868,15 @@ We thus see that</p>
   var openPopover = null;
   var openCite = null;
   var openScrollY = 0;
+
+  // prefers-reduced-motion: the CSS media query kills CSS animations,
+  // but scrollIntoView({behavior:'smooth'}) is JS-driven motion that
+  // bypasses CSS entirely. Gate it here. Evaluated per-call (not cached)
+  // because the OS setting can change mid-session.
+  function scrollBehavior() {
+    return (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+      ? 'auto' : 'smooth';
+  }
 
   // Arrow icons: Jump goes DOWN (references are below in the document),
   // Back goes UP (citation is above). Following the natural reading flow.
@@ -5792,10 +6009,14 @@ We thus see that</p>
 
     cite.appendChild(pop);
 
-    Array.prototype.forEach.call(cite.querySelectorAll('a.ltx_ref'), function(a) {
-      a.setAttribute('role', 'button');
-      a.setAttribute('aria-expanded', 'false');
-      a.setAttribute('aria-controls', popId);
+    // Contextual accessible names — see ARIA wiring note above. The
+    // visible "[46]" stays compact; the label carries author/year/title
+    // pulled from the bibliography entry. No role override, no resting
+    // aria-expanded: chips announce as ordinary links with rich names.
+    refs.forEach(function(ref) {
+      if (ref.text && ref.anchor) {
+        ref.anchor.setAttribute('aria-label', 'Reference ' + ref.num + ': ' + ref.text);
+      }
     });
     return pop;
   }
@@ -5912,8 +6133,11 @@ We thus see that</p>
     pop.hidden = false;
     openCite = cite;            // set before position so resize fallback works
     positionPopover(pop, e);
+    // aria-expanded/-controls exist only while the popover is open —
+    // resting chips stay aurally compact (see ARIA wiring note).
     Array.prototype.forEach.call(cite.querySelectorAll('a.ltx_ref'), function(a) {
       a.setAttribute('aria-expanded', 'true');
+      a.setAttribute('aria-controls', pop.id);
     });
     openPopover = pop;
     openScrollY = window.pageYOffset;
@@ -5926,7 +6150,8 @@ We thus see that</p>
     openPopover.style.left = '';
     openPopover.style.maxHeight = '';
     Array.prototype.forEach.call(openCite.querySelectorAll('a.ltx_ref'), function(a) {
-      a.setAttribute('aria-expanded', 'false');
+      a.removeAttribute('aria-expanded');
+      a.removeAttribute('aria-controls');
     });
     openPopover = null;
     openCite = null;
@@ -5957,7 +6182,7 @@ We thus see that</p>
         sourceCite.classList.add('cite-active-source');
         var firstAnchor = sourceCite.querySelector('a.ltx_ref');
         if (firstAnchor) firstAnchor.focus({ preventScroll: true });
-        sourceCite.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        sourceCite.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
       }
       if (window.history && window.history.replaceState) {
         window.history.replaceState(null, '', window.location.pathname + window.location.search);
@@ -6071,7 +6296,7 @@ We thus see that</p>
         // both oriented on the destination.
         targetItem.setAttribute('tabindex', '-1');
         targetItem.focus({ preventScroll: true });
-        targetItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        targetItem.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
       }
     });
 
@@ -6795,6 +7020,278 @@ We thus see that</p>
 
   document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('article figure').forEach(buildFigureRegion);
+  });
+})();
+
+/* ─────────────────────────────────────────────────────────────────
+   BEHAVIOR 6: Figure lightbox
+   ─────────────────────────────────────────────────────────────────
+   See the FIGURE LIGHTBOX CSS block for the research basis (~15 open
+   html_feedback issues — the dominant open-queue theme) and design
+   decisions. Summary of the interaction contract:
+
+     OPEN:  click anywhere on the figure image, or the "Expand" chip
+            (the chip is the discoverable + keyboard path; the image
+            click is the muscle-memory path).
+     VIEW:  opens at fit-to-stage. Wheel to zoom toward 8x max / 0.5x
+            min. Drag to pan. Double-click toggles fit <-> 2x. Pinch
+            zooms on touch. +/- and arrow keys work while open.
+            Zoom level is announced via an aria-live label.
+     CLOSE: close button, Esc, or backdrop click (closedby="any").
+            Zoom state PERSISTS until close — never released on
+            mouse-up (the #1 complaint class). Focus returns to the
+            element that opened the dialog.
+
+   One dialog is shared by all figures and populated per-open with a
+   CLONE of the figure's image and caption — the in-article figure is
+   never moved or modified. Built lazily on first open.
+
+   Runs after Behavior 5's DOMContentLoaded handler (registration
+   order), so .fig-region / .fig-image-wrap / .fig-chips exist.
+*/
+(function() {
+  var ICON_EXPAND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>';
+
+  var dialog = null, stage = null, contentEl = null, titleEl = null,
+      captionEl = null, zoomLabel = null, invoker = null;
+  var scale = 1, fitScale = 1, tx = 0, ty = 0;
+  var natW = 0, natH = 0;
+  var MIN_FACTOR = 0.5, MAX_FACTOR = 8;
+
+  function prm() {
+    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+  function setTransform(animate) {
+    if (!contentEl) return;
+    contentEl.style.transition = (animate && !prm()) ? '' : 'none';
+    contentEl.style.transform =
+      'translate(-50%, -50%) translate(' + tx + 'px, ' + ty + 'px) scale(' + scale + ')';
+    zoomLabel.textContent = Math.round((scale / fitScale) * 100) + '%';
+    stage.classList.toggle('is-pannable', true);
+  }
+
+  function zoomBy(factor, animate) {
+    scale = clamp(scale * factor, fitScale * MIN_FACTOR, fitScale * MAX_FACTOR);
+    setTransform(animate);
+  }
+
+  function resetFit(animate) {
+    var sw = stage.clientWidth - 32, sh = stage.clientHeight - 32;
+    fitScale = (natW > 0 && natH > 0) ? Math.min(sw / natW, sh / natH) : 1;
+    scale = fitScale; tx = 0; ty = 0;
+    setTransform(animate);
+  }
+
+  function buildDialog() {
+    if (dialog) return;
+    dialog = document.createElement('dialog');
+    dialog.className = 'fig-lightbox';
+    dialog.setAttribute('closedby', 'any');
+    dialog.setAttribute('aria-labelledby', 'fig-lightbox-title');
+    dialog.innerHTML =
+      '<div class="fig-lightbox-toolbar">' +
+        '<span class="fig-lightbox-title" id="fig-lightbox-title"></span>' +
+        '<button type="button" class="fig-lightbox-zoombtn" data-zoom="out" aria-label="Zoom out">&minus;</button>' +
+        '<span class="fig-lightbox-zoomlevel" aria-live="polite" aria-label="Zoom level">100%</span>' +
+        '<button type="button" class="fig-lightbox-zoombtn" data-zoom="in" aria-label="Zoom in">+</button>' +
+        '<button type="button" class="fig-lightbox-zoombtn" data-zoom="fit">Fit</button>' +
+        '<button type="button" class="fig-lightbox-close" aria-label="Close figure viewer" autofocus>&times;</button>' +
+      '</div>' +
+      '<div class="fig-lightbox-stage"></div>' +
+      '<div class="fig-lightbox-caption"></div>';
+    document.body.appendChild(dialog);
+
+    stage = dialog.querySelector('.fig-lightbox-stage');
+    titleEl = dialog.querySelector('.fig-lightbox-title');
+    captionEl = dialog.querySelector('.fig-lightbox-caption');
+    zoomLabel = dialog.querySelector('.fig-lightbox-zoomlevel');
+
+    dialog.querySelector('[data-zoom="in"]').addEventListener('click', function() { zoomBy(1.25, true); });
+    dialog.querySelector('[data-zoom="out"]').addEventListener('click', function() { zoomBy(0.8, true); });
+    dialog.querySelector('[data-zoom="fit"]').addEventListener('click', function() { resetFit(true); });
+    dialog.querySelector('.fig-lightbox-close').addEventListener('click', function() { dialog.close(); });
+
+    // Focus restoration: 'close' fires for every path (button, Esc,
+    // closedby backdrop click) so this is the single restore point.
+    // The chips pill is visibility:hidden at rest, and a hidden element
+    // can't receive focus — so reveal the region (.is-active, the same
+    // class the touch path uses) before focusing, and clear it once
+    // focus moves on so the chips return to their quiet resting state.
+    dialog.addEventListener('close', function() {
+      if (invoker && typeof invoker.focus === 'function') {
+        var region = invoker.closest ? invoker.closest('.fig-region') : null;
+        if (region) {
+          region.classList.add('is-active');
+          region.addEventListener('focusout', function onOut(e) {
+            if (!region.contains(e.relatedTarget)) {
+              region.classList.remove('is-active');
+              region.removeEventListener('focusout', onOut);
+            }
+          });
+        }
+        invoker.focus();
+      }
+      invoker = null;
+    });
+
+    // Wheel zoom. preventDefault keeps the page behind from scrolling.
+    stage.addEventListener('wheel', function(e) {
+      e.preventDefault();
+      zoomBy(e.deltaY < 0 ? 1.12 : 1 / 1.12, false);
+    }, { passive: false });
+
+    // Double-click: toggle fit <-> 2x fit.
+    stage.addEventListener('dblclick', function() {
+      if (scale > fitScale * 1.05) { resetFit(true); }
+      else { scale = fitScale * 2; setTransform(true); }
+    });
+
+    // Pointer pan + two-pointer pinch. pointer-events unify mouse,
+    // touch, and pen; touch-action:none on the stage (CSS) hands us
+    // the gestures. Zoom state persists after release — only the
+    // close affordances reset the view.
+    var pointers = {};        // pointerId -> {x, y}
+    var pinchStartDist = 0, pinchStartScale = 1;
+    var panLast = null;
+
+    stage.addEventListener('pointerdown', function(e) {
+      pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
+      var ids = Object.keys(pointers);
+      if (ids.length === 1) {
+        panLast = { x: e.clientX, y: e.clientY };
+        stage.classList.add('is-panning');
+        stage.setPointerCapture(e.pointerId);
+      } else if (ids.length === 2) {
+        var a = pointers[ids[0]], b = pointers[ids[1]];
+        pinchStartDist = Math.hypot(a.x - b.x, a.y - b.y);
+        pinchStartScale = scale;
+        panLast = null;
+      }
+    });
+    stage.addEventListener('pointermove', function(e) {
+      if (!pointers[e.pointerId]) return;
+      pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
+      var ids = Object.keys(pointers);
+      if (ids.length === 2 && pinchStartDist > 0) {
+        var a = pointers[ids[0]], b = pointers[ids[1]];
+        var dist = Math.hypot(a.x - b.x, a.y - b.y);
+        scale = clamp(pinchStartScale * (dist / pinchStartDist),
+                      fitScale * MIN_FACTOR, fitScale * MAX_FACTOR);
+        setTransform(false);
+      } else if (ids.length === 1 && panLast) {
+        tx += e.clientX - panLast.x;
+        ty += e.clientY - panLast.y;
+        panLast = { x: e.clientX, y: e.clientY };
+        setTransform(false);
+      }
+    });
+    function endPointer(e) {
+      delete pointers[e.pointerId];
+      if (Object.keys(pointers).length === 0) {
+        panLast = null;
+        pinchStartDist = 0;
+        stage.classList.remove('is-panning');
+      }
+    }
+    stage.addEventListener('pointerup', endPointer);
+    stage.addEventListener('pointercancel', endPointer);
+
+    // Keyboard: +/- zoom, arrows pan, 0 = fit. Esc is native <dialog>.
+    dialog.addEventListener('keydown', function(e) {
+      var step = 40;
+      if (e.key === '+' || e.key === '=') { zoomBy(1.25, true); e.preventDefault(); }
+      else if (e.key === '-' || e.key === '_') { zoomBy(0.8, true); e.preventDefault(); }
+      else if (e.key === '0') { resetFit(true); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft')  { tx += step; setTransform(true); e.preventDefault(); }
+      else if (e.key === 'ArrowRight') { tx -= step; setTransform(true); e.preventDefault(); }
+      else if (e.key === 'ArrowUp')    { ty += step; setTransform(true); e.preventDefault(); }
+      else if (e.key === 'ArrowDown')  { ty -= step; setTransform(true); e.preventDefault(); }
+    });
+
+    window.addEventListener('resize', function() {
+      if (dialog.open) resetFit(false);
+    });
+  }
+
+  function naturalSize(el) {
+    if (el.tagName.toLowerCase() === 'img') {
+      return { w: el.naturalWidth || el.width || 800, h: el.naturalHeight || el.height || 600 };
+    }
+    // SVG: derive from viewBox; fall back to rendered box.
+    var vb = el.viewBox && el.viewBox.baseVal;
+    if (vb && vb.width > 0) return { w: vb.width, h: vb.height };
+    var r = el.getBoundingClientRect();
+    return { w: r.width || 800, h: r.height || 600 };
+  }
+
+  function openLightbox(figure, opener) {
+    var image = figure.querySelector('img, svg');
+    if (!image) return;
+    buildDialog();
+    invoker = opener;
+
+    // Populate from CLONES — never move the in-article content. The
+    // clone goes inside a DIV wrapper that carries the pan/zoom
+    // transform (see the CSS note: transformed <svg> roots don't
+    // rasterize in Chromium).
+    var clone = image.cloneNode(true);
+    clone.removeAttribute('id');
+    clone.removeAttribute('style');
+    var size = naturalSize(image);
+    natW = size.w; natH = size.h;
+    // Render at 2x natural dimensions so SVG figures stay crisp under
+    // zoom and raster images have headroom before upscale softens them.
+    natW *= 2; natH *= 2;
+    var holder = document.createElement('div');
+    holder.className = 'fig-lightbox-content';
+    holder.style.width = natW + 'px';
+    holder.style.height = natH + 'px';
+    holder.appendChild(clone);
+    stage.innerHTML = '';
+    stage.appendChild(holder);
+    contentEl = holder;
+
+    var figcap = figure.querySelector('figcaption');
+    var strong = figcap && figcap.querySelector('strong');
+    titleEl.textContent = strong ? strong.textContent.replace(/\.\s*$/, '') : 'Figure';
+    captionEl.innerHTML = figcap ? figcap.innerHTML : '';
+
+    dialog.showModal();
+    // Stage has its laid-out size only after showModal.
+    resetFit(false);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('article .fig-region').forEach(function(region) {
+      var figure = region.querySelector('figure');
+      var wrap = region.querySelector('.fig-image-wrap');
+      if (!figure || !wrap) return;
+
+      // Click-the-image path. Ignore clicks on chips inside the wrap.
+      wrap.addEventListener('click', function(e) {
+        if (e.target.closest('.fig-chip, .fig-chips, .fig-alt-action')) return;
+        openLightbox(figure, wrap.querySelector('.fig-chip-expand') || wrap);
+      });
+
+      // Discoverable + keyboard path: an Expand chip, first in the pill.
+      var chips = region.querySelector('.fig-chips');
+      if (chips) {
+        var expand = document.createElement('button');
+        expand.type = 'button';
+        expand.className = 'fig-chip fig-chip-expand';
+        expand.setAttribute('aria-label', 'Open figure in large view');
+        expand.innerHTML = ICON_EXPAND + '<span class="fig-chip-label">Expand</span>';
+        expand.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          openLightbox(figure, expand);
+        });
+        chips.insertBefore(expand, chips.firstChild);
+      }
+    });
   });
 })();
 </script>

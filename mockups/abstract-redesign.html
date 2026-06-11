@@ -89,9 +89,18 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+
+/* Type sizes are rem throughout (px equivalents in comments assume the
+   16px browser default). This is a hard requirement from
+   accessibility-priorities.md (cognitive/dyslexia track): "Use rem
+   units… The user's own browser/extension/OS choices should propagate
+   to arXiv content." A reader who sets their browser's base font size
+   to 20px gets a proportionally larger page; px-based type would
+   silently ignore that choice. Layout dimensions (padding, borders,
+   breakpoints) stay px — only type scales with user preference. */
 body {
   font-family: var(--arxiv-font-sans);
-  font-size: 15px;
+  font-size: 0.9375rem; /* 15px */
   line-height: 1.5;
   color: #1c1a17;
   background: #fff;
@@ -210,7 +219,7 @@ img { max-width: 100%; height: auto; }
 .arxiv-header-nav a,
 .arxiv-header-nav button {
   font-family: var(--arxiv-font-sans);
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   font-weight: 500;
   color: #b0aba6;
   text-decoration: none;
@@ -243,6 +252,31 @@ img { max-width: 100%; height: auto; }
 .arxiv-header-login {
   font-weight: 600 !important;
   color: #f0eeec !important;
+}
+
+/* Narrow-viewport reflow (WCAG 1.4.10).
+   Below ~520px the five nav items no longer fit on one row beside the
+   logo. Without this block the nav overflows and forces horizontal
+   scrolling on the whole page at 320px (the 1.4.10 test width / 400%
+   zoom equivalent) — verified by rendering 2026-06-11. The fix is the
+   simplest robust one: let the header wrap to a second row. No JS, no
+   hamburger, nothing hidden — every nav item stays visible and
+   reachable, which also keeps voice-control users (visible label =
+   accessible name) working. */
+@media (max-width: 520px) {
+  .arxiv-header {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 52px;
+    padding: 6px 12px;
+    row-gap: 0;
+  }
+  .arxiv-header-nav {
+    flex-wrap: wrap;
+    row-gap: 2px;
+  }
+  .arxiv-header-nav a,
+  .arxiv-header-nav button { padding: 6px 8px; }
 }
 
 /*
@@ -294,7 +328,7 @@ img { max-width: 100%; height: auto; }
 .arxiv-search-panel input[type="text"] {
   width: 100%;
   font-family: var(--arxiv-font-sans);
-  font-size: 16px;
+  font-size: 1rem; /* 16px */
   padding: 10px 14px;
   border: 2px solid #ddd8d2;
   border-radius: 6px;
@@ -309,11 +343,11 @@ img { max-width: 100%; height: auto; }
 .arxiv-search-panel input[type="text"]::placeholder { color: #b0aba6; }
 .arxiv-search-hint {
   font-family: var(--arxiv-font-sans);
-  font-size: 12px;
+  font-size: 0.75rem; /* 12px */
   color: #6b6459;
   margin-top: 8px;
 }
-.arxiv-search-hint a { font-size: 12px; }
+.arxiv-search-hint a { font-size: 0.75rem; /* 12px */ }
 
 /*
 ╔════════════════════════════════════════════════════════════════════╗
@@ -367,7 +401,7 @@ img { max-width: 100%; height: auto; }
 */
 
 .abs-title {
-  font-size: 32px;
+  font-size: 2rem; /* 32px */
   font-weight: 700;
   line-height: 1.2;
   margin: 0 0 10px;
@@ -375,16 +409,16 @@ img { max-width: 100%; height: auto; }
 }
 
 .abs-date {
-  font-size: 14px;
+  font-size: 0.875rem; /* 14px */
   color: #6b6459;
   margin-bottom: 14px;
 }
-.abs-date a { font-size: 14px; color: #1565c0; text-decoration: none; }
+.abs-date a { font-size: 0.875rem; /* 14px */ color: #1565c0; text-decoration: none; }
 .abs-date a:hover { text-decoration: underline; }
 
 .abs-version-pill {
   font-family: var(--arxiv-font-mono);
-  font-size: 14px;
+  font-size: 0.875rem; /* 14px */
   margin-left: 6px;
   padding: 0;
   border: none;
@@ -443,12 +477,12 @@ img { max-width: 100%; height: auto; }
   border: 1px solid #e8b800;
   border-radius: 4px;
   padding: 10px 14px;
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   color: #7a5c00;
   margin: 4px 0 20px;
 }
 .abs-version-warning a {
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   color: #7a5c00;
   font-weight: 600;
   text-decoration: underline;
@@ -494,23 +528,27 @@ img { max-width: 100%; height: auto; }
 */
 
 .abs-authors {
-  font-size: 16px;
+  font-size: 1rem; /* 16px */
   line-height: 1.5;
   margin-bottom: 24px;
 }
 .abs-authors a {
-  font-size: 16px;
+  font-size: 1rem; /* 16px */
   color: #1565c0;
   text-decoration: none;
 }
 .abs-authors a:hover { text-decoration: underline; }
 
-.abs-authors-overflow { display: none; }
-.abs-authors-overflow.is-expanded { display: inline; }
+/* Hidden-author tail is js-scoped: collapsing content is only safe
+   when the script that re-expands it actually runs. Without JS, all
+   22 authors render and the dead toggle button is hidden (see the
+   no-JS fallback block below). */
+html.js .abs-authors-overflow { display: none; }
+html.js .abs-authors-overflow.is-expanded { display: inline; }
 
 .abs-authors-toggle {
   font-family: inherit;
-  font-size: 15px;
+  font-size: 0.9375rem; /* 15px */
   color: #6b6459;
   background: none;
   border: none;
@@ -619,7 +657,7 @@ img { max-width: 100%; height: auto; }
   padding: 10px 20px;
   border-radius: 6px;
   font-family: var(--arxiv-font-sans);
-  font-size: 14px;
+  font-size: 0.875rem; /* 14px */
   font-weight: 600;
   line-height: 1;
   text-decoration: none;
@@ -686,8 +724,23 @@ img { max-width: 100%; height: auto; }
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.13);
 }
 
+/* File-format hint inside the TeX Source button (.tar.gz). Slightly
+   smaller and lighter than the label, but inherits the button's color
+   states so it never drops below the button's own contrast. Sits on
+   its own centered line below the label so the label never wraps
+   mid-word in the 130px action column. */
+.abs-btn-tex { flex-wrap: wrap; }
+.abs-btn-ext {
+  flex-basis: 100%;
+  text-align: center;
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 400;
+  opacity: 0.85;
+  line-height: 1.2;
+}
+
 .abs-abstract {
-  font-size: 15px;
+  font-size: 0.9375rem; /* 15px */
   line-height: 1.7;
   color: #1c1a17;
   margin: 8px 0 0;
@@ -766,7 +819,7 @@ img { max-width: 100%; height: auto; }
 }
 .abs-a11y-heading {
   font-family: var(--arxiv-font-sans);
-  font-size: 20px;
+  font-size: 1.25rem; /* 20px */
   font-weight: 600;
   color: #1c1a17;
   margin: 0 0 14px 0;
@@ -785,7 +838,7 @@ img { max-width: 100%; height: auto; }
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   color: #1c1a17;
   line-height: 1.5;
 }
@@ -838,18 +891,18 @@ img { max-width: 100%; height: auto; }
   font-weight: 600;
   color: #6b6459;
   text-transform: uppercase;
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   letter-spacing: 0.04em;
   white-space: nowrap;
   padding-top: 1px;
 }
 .abs-meta-value {
   color: #1c1a17;
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   line-height: 1.5;
 }
 .abs-meta-value a {
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   color: #1565c0;
 }
 
@@ -871,9 +924,16 @@ img { max-width: 100%; height: auto; }
     HTML. So citations stay focused on the arXiv ID."
 
   Accessibility decisions (priorities.md)
-    - Source and Style switchers are role="radiogroup" with role="radio"
-      and aria-checked. Without these the switchers announce as generic
-      "button" "button" — AT user has no idea they're mutually exclusive.
+    - Source and Style switchers are toggle buttons with aria-pressed
+      inside a role="group" with aria-label. An earlier iteration used
+      role="radiogroup"/role="radio", but the ARIA radio pattern is a
+      contract: it promises arrow-key navigation and roving tabindex,
+      and we hadn't implemented either — screen readers announced
+      "radio button" while arrow keys did nothing (broken pattern,
+      worse than no roles). aria-pressed buttons carry no keyboard
+      contract beyond Tab/Enter, which is exactly what's implemented,
+      and still announce pressed state + group label so AT users know
+      the buttons are related and which is active.
     - Copy buttons say "Copy" visually; aria-label disambiguates ("Copy
       BibTeX" / "Copy formatted citation").
     - arXiv identifier "arXiv:2604.22725 [gr-qc]" wraps the visible string
@@ -905,7 +965,7 @@ img { max-width: 100%; height: auto; }
 }
 .abs-section-heading {
   font-family: var(--arxiv-font-sans);
-  font-size: 20px;
+  font-size: 1.25rem; /* 20px */
   font-weight: 600;
   color: #1c1a17;
   letter-spacing: 0;
@@ -922,7 +982,7 @@ img { max-width: 100%; height: auto; }
   background: none;
   border: none;
   font-family: var(--arxiv-font-sans);
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   color: #6b6459;
   padding: 4px 12px;
   cursor: pointer;
@@ -983,7 +1043,7 @@ img { max-width: 100%; height: auto; }
   border: 1px solid #ddd8d2;
   border-left-width: 0;
   font-family: var(--arxiv-font-sans);
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   color: #6b6459;
   padding: 4px 10px;
   cursor: pointer;
@@ -1014,7 +1074,7 @@ img { max-width: 100%; height: auto; }
   border-radius: 3px;
   padding: 10px 12px;
   font-family: var(--arxiv-font-mono);
-  font-size: 12px;
+  font-size: 0.75rem; /* 12px */
   line-height: 1.5;
   color: #1c1a17;
 }
@@ -1033,7 +1093,7 @@ img { max-width: 100%; height: auto; }
   background: #fff;
   border: 1px solid #c4dcf0;
   font-family: var(--arxiv-font-sans);
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   color: #1565c0;
   padding: 2px 8px;
   border-radius: 3px;
@@ -1051,18 +1111,18 @@ img { max-width: 100%; height: auto; }
 .abs-cite-id-list dd { margin: 0; }
 .abs-cite-id-list dd + dt { margin-top: 4px; }
 .abs-cite-id-value {
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   color: #1c1a17;
   margin-bottom: 10px;
 }
-.abs-cite-id-value a { font-size: 13px; }
+.abs-cite-id-value a { font-size: 0.8125rem; /* 13px */ }
 .abs-cite-id-value:last-child { margin-bottom: 0; }
 
 /* Generic panel label used inside Cite columns */
 .abs-panel-label {
   font-family: var(--arxiv-font-condensed);
   font-weight: 600;
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   color: #6b6459;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -1078,7 +1138,7 @@ img { max-width: 100%; height: auto; }
   margin: 0;
 }
 .abs-cite-citations-list li {
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   margin-bottom: 10px;
 }
 .abs-cite-citations-list li:last-child { margin-bottom: 0; }
@@ -1193,11 +1253,11 @@ img { max-width: 100%; height: auto; }
 }
 
 .abs-labs-name {
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   color: #1c1a17;
 }
 .abs-labs-name a {
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   color: #6b6459;
   text-decoration: none;
   margin-left: 4px;
@@ -1210,7 +1270,7 @@ img { max-width: 100%; height: auto; }
   background: #f9f7f7;
   border: 1px dashed #ddd8d2;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 0.75rem; /* 12px */
   color: #6b6459;
   font-style: italic;
   margin-bottom: 10px;
@@ -1220,7 +1280,7 @@ img { max-width: 100%; height: auto; }
 
 .abs-labs-empty {
   padding: 24px 18px;
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   color: #b0aba6;
   font-style: italic;
 }
@@ -1234,7 +1294,7 @@ img { max-width: 100%; height: auto; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 0.75rem; /* 12px */
   color: #6b6459;
   text-decoration: none;
 }
@@ -1293,26 +1353,26 @@ footer.arxiv-page-footer {
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
 }
 footer.arxiv-page-footer .new-footer-ack {
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   color: #6b6459;
   margin-bottom: 14px;
   line-height: 1.6;
   max-width: 900px;
 }
 footer.arxiv-page-footer .new-footer-ack a {
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   color: #1565c0;
 }
 footer.arxiv-page-footer .new-footer-links {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   line-height: 1.8;
   max-width: 900px;
 }
 footer.arxiv-page-footer .new-footer-links a {
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   color: #6b6459;
   text-decoration: none;
 }
@@ -1344,7 +1404,7 @@ footer.arxiv-page-footer .new-footer-sep { color: #ddd8d2; }
 }
 .footer-funders-label {
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem; /* 14px */
   font-weight: 600;
   color: #1c1a17;
   margin-bottom: 12px;
@@ -1387,7 +1447,73 @@ footer.arxiv-page-footer .new-footer-sep { color: #ddd8d2; }
    later. */
 .member-footer-callout { display: none; }
 
+/*
+╔════════════════════════════════════════════════════════════════════╗
+║  PROGRESSIVE ENHANCEMENT: no-JS fallbacks                          ║
+╚════════════════════════════════════════════════════════════════════╝
+  Requirement: the page must be fully readable and every piece of
+  content reachable with JavaScript disabled or failed. Scripts add
+  conveniences; they never carry content. (Michel Coornaert browses
+  with JS off by choice; low-bandwidth readers get it off by
+  circumstance; a blocked CDN should never blank a control.)
+
+  Mechanics: a one-line head script adds class="js" to <html>. Styles
+  that HIDE content pending a JS reveal are scoped to html.js (see
+  .abs-authors-overflow). Controls that DO nothing without JS are
+  hidden here so users never face dead buttons. The search control is
+  an <a href="/search"> that JS upgrades to open the overlay — without
+  JS it simply navigates to the search page. */
+html:not(.js) .abs-authors-toggle { display: none; }   /* dead toggle; all authors already shown */
+html:not(.js) .abs-cite-copy { display: none; }        /* clipboard requires JS */
+html:not(.js) .abs-cite-styles,
+html:not(.js) .abs-cite-source { display: none; }      /* switchers dead; APA + BibTeX defaults visible */
+html:not(.js) .abs-labs-toggle { display: none; }      /* Labs switches dead; names + info links still work */
+html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt is meaningless without JS */
+
+/*
+╔════════════════════════════════════════════════════════════════════╗
+║  PRINT                                                             ║
+╚════════════════════════════════════════════════════════════════════╝
+  Strip interactive chrome for print: header, search overlay, Labs,
+  version pills and warning stay OUT; title, authors, abstract,
+  accessibility notes, metadata, and the default citations stay IN.
+  External link URLs are expanded inline so a printout retains the
+  information a click would have reached (same convention as the HTML
+  reader's print block). Validates against html_feedback #4218 (print
+  obscured by chrome). */
+@media print {
+  .arxiv-header,
+  .arxiv-search-overlay,
+  .abs-version-warning,
+  .abs-actions,
+  .abs-related-section,
+  .abs-cite-copy,
+  .abs-cite-styles,
+  .abs-cite-source,
+  footer.arxiv-page-footer { display: none !important; }
+  body { background: #fff !important; color: #000 !important; }
+  .abs-body::after { display: none; }
+  .abs-reference-zone {
+    background: #fff;
+    border-top: 1px solid #999;
+    margin: 0; padding: 24px 0 0;
+  }
+  a { color: #000 !important; }
+  .abs-meta-value a[href^="http"]::after,
+  .abs-cite-id-value a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #555;
+    word-break: break-all;
+  }
+}
+
 </style>
+<script>
+  /* Progressive-enhancement marker — see the no-JS fallback CSS block.
+     Runs in <head> so there is no flash of pre-enhancement layout. */
+  document.documentElement.classList.add('js');
+</script>
 </head>
 
 <body>
@@ -1409,13 +1535,16 @@ footer.arxiv-page-footer .new-footer-sep { color: #ddd8d2; }
     <img src="images/arxiv-logo.png" alt="archive">
   </a>
   <nav class="arxiv-header-nav" aria-label="Main navigation">
-    <button type="button" id="search-toggle" aria-label="Search archive">
+    <!-- Search is an <a> upgraded by JS: with scripts running, click
+         opens the Cmd+K overlay (preventDefault); without scripts it
+         navigates to the search page. Never a dead control. -->
+    <a href="https://arxiv.org/search" id="search-toggle" aria-label="Search archive">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
         <circle cx="11" cy="11" r="8"/>
         <line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
       Search
-    </button>
+    </a>
     <a href="https://info.arxiv.org/about/">About</a>
     <a href="https://arxiv.org/submit">Submit</a>
     <a href="https://info.arxiv.org/about/donate.html">Donate</a>
@@ -1522,7 +1651,12 @@ footer.arxiv-page-footer .new-footer-sep { color: #ddd8d2; }
       <nav class="abs-actions" aria-label="Paper downloads">
         <a href="https://arxiv.org/html/2604.22725v1" class="abs-btn abs-btn-html">HTML</a>
         <a href="https://arxiv.org/pdf/2604.22725v1" class="abs-btn abs-btn-pdf">PDF</a>
-        <a href="https://arxiv.org/src/2604.22725v1" class="abs-btn abs-btn-tex">TeX Source</a>
+        <!-- Format hint: Robin Williams (2022-09-14) — "When you download
+             source there isn't a file extension. It's not obvious if it is
+             a zip or a tar, don't know quite what you've got or how to open
+             it." The visible .tar.gz hint tells users what they're getting
+             before they commit to the download. -->
+        <a href="https://arxiv.org/src/2604.22725v1" class="abs-btn abs-btn-tex">TeX Source&nbsp;<span class="abs-btn-ext">(.tar.gz)</span></a>
       </nav>
       <div class="abs-body-main">
         <div class="abs-abstract" lang="en">
@@ -1577,6 +1711,21 @@ footer.arxiv-page-footer .new-footer-sep { color: #ddd8d2; }
           <dd class="abs-meta-value"><a href="https://doi.org/10.48550/arXiv.2604.22725">10.48550/arXiv.2604.22725</a></dd>
           <dt class="abs-meta-label">License</dt>
           <dd class="abs-meta-value"><a href="https://creativecommons.org/licenses/by/4.0/"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">CC BY 4.0</abbr></a></dd>
+          <!-- Ancillary files: validated priority (priorities.md "Ancillary
+               files surfaced on the abstract page, not hidden under other
+               formats" — Joseph Smith 2022-08-22, Ben Firshman 2022-08-23,
+               DOE OSTI). Data/code are accessibility surfaces in their own
+               right: "Source data, or code, is much easier to understand.
+               Then you don't need to read the paper." (Smith). In production
+               this row renders only when the source bundle contains an /anc
+               directory; filenames link to direct downloads. -->
+          <dt class="abs-meta-label">Ancillary files</dt>
+          <dd class="abs-meta-value">
+            <a href="#">perturbation_solver.py</a>,
+            <a href="#">planck_comparison_data.csv</a>
+            <span aria-hidden="true">&middot;</span>
+            <a href="#">view all 5 files</a>
+          </dd>
           <dt class="abs-meta-label">Journal</dt>
           <dd class="abs-meta-value"><a href="https://doi.org/10.1088/1475-7516/2026/05/012">Journal of Cosmology and Astroparticle Physics, 2026(05), 012</a></dd>
           <dt class="abs-meta-label">Comments</dt>
@@ -1588,12 +1737,12 @@ footer.arxiv-page-footer .new-footer-sep { color: #ddd8d2; }
       <section class="abs-cite-section" aria-labelledby="cite-heading">
         <div class="abs-cite-header">
           <h2 class="abs-section-heading" id="cite-heading">Cite this paper</h2>
-          <div class="abs-cite-source" role="radiogroup" aria-label="Citation source">
-            <button class="abs-cite-source-btn is-active" data-source="preprint" role="radio" aria-checked="true">
+          <div class="abs-cite-source" role="group" aria-label="Citation source">
+            <button class="abs-cite-source-btn is-active" data-source="preprint" aria-pressed="true">
               <span class="arxiv-word"><span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span></span> preprint
             </button>
             <span class="abs-cite-source-sep" aria-hidden="true">|</span>
-            <button class="abs-cite-source-btn" data-source="journal" role="radio" aria-checked="false">Journal article</button>
+            <button class="abs-cite-source-btn" data-source="journal" aria-pressed="false">Journal article</button>
           </div>
         </div>
         <div class="abs-cite-columns">
@@ -1615,10 +1764,10 @@ footer.arxiv-page-footer .new-footer-sep { color: #ddd8d2; }
 
           <!-- Formatted citation column (with style switcher) -->
           <div class="abs-cite-col abs-cite-col-formatted">
-            <div class="abs-cite-styles" role="radiogroup" aria-label="Citation style">
-              <button class="abs-cite-style-btn is-active" data-style="apa" role="radio" aria-checked="true">APA</button>
-              <button class="abs-cite-style-btn" data-style="chicago" role="radio" aria-checked="false">Chicago</button>
-              <button class="abs-cite-style-btn" data-style="mla" role="radio" aria-checked="false">MLA</button>
+            <div class="abs-cite-styles" role="group" aria-label="Citation style">
+              <button class="abs-cite-style-btn is-active" data-style="apa" aria-pressed="true">APA</button>
+              <button class="abs-cite-style-btn" data-style="chicago" aria-pressed="false">Chicago</button>
+              <button class="abs-cite-style-btn" data-style="mla" aria-pressed="false">MLA</button>
             </div>
             <div class="abs-cite-display">
               <button class="abs-cite-copy" id="cite-copy-formatted" aria-label="Copy formatted citation">Copy</button>
@@ -1666,6 +1815,12 @@ footer.arxiv-page-footer .new-footer-sep { color: #ddd8d2; }
 
         <!-- Toggle list -->
         <div class="abs-labs-list">
+          <!-- Order within each group encodes the labs audit
+               (references/labs-audit.md, 2026-04-28): frictionless,
+               working integrations first; degraded or login-walled
+               integrations last. DESIGN-POLICIES.md: "Labs that require
+               login should be deprioritized in placement." Group
+               membership is unchanged — only order within groups. -->
           <div class="abs-labs-group">
             <div class="abs-panel-label">Papers &amp; Citations</div>
             <div class="abs-labs-row">
@@ -1677,12 +1832,14 @@ footer.arxiv-page-footer .new-footer-sep { color: #ddd8d2; }
               <span class="abs-labs-name">Litmaps <a href="https://www.litmaps.co/" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
             <div class="abs-labs-row">
-              <label class="abs-labs-toggle"><input type="checkbox" data-lab="scite"><span class="abs-labs-track"></span></label>
-              <span class="abs-labs-name">scite Smart Citations <a href="https://www.scite.ai/" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-            </div>
-            <div class="abs-labs-row">
               <label class="abs-labs-toggle"><input type="checkbox" data-lab="core"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">CORE Recommender <a href="https://core.ac.uk/services/recommender" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+            </div>
+            <!-- scite last in group: integration currently broken (DOI
+                 lookup failure — audit item 4). Restore position when fixed. -->
+            <div class="abs-labs-row">
+              <label class="abs-labs-toggle"><input type="checkbox" data-lab="scite"><span class="abs-labs-track"></span></label>
+              <span class="abs-labs-name">scite Smart Citations <a href="https://www.scite.ai/" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
           </div>
 
@@ -1697,12 +1854,15 @@ footer.arxiv-page-footer .new-footer-sep { color: #ddd8d2; }
               <span class="abs-labs-name">Hugging Face <a href="https://huggingface.co/huggingface" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
             <div class="abs-labs-row">
-              <label class="abs-labs-toggle"><input type="checkbox" data-lab="alphaxiv"><span class="abs-labs-track"></span></label>
-              <span class="abs-labs-name">alphaXiv <a href="https://alphaxiv.org/" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-            </div>
-            <div class="abs-labs-row">
               <label class="abs-labs-toggle"><input type="checkbox" data-lab="sciencecast"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">ScienceCast <a href="https://sciencecast.org/welcome" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+            </div>
+            <!-- alphaXiv last in group: requires login to interact
+                 (audit item 5; policy: login-walled Labs deprioritized
+                 in placement). -->
+            <div class="abs-labs-row">
+              <label class="abs-labs-toggle"><input type="checkbox" data-lab="alphaxiv"><span class="abs-labs-track"></span></label>
+              <span class="abs-labs-name">alphaXiv <a href="https://alphaxiv.org/" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
           </div>
 
@@ -1843,7 +2003,12 @@ footer.arxiv-page-footer .new-footer-sep { color: #ddd8d2; }
     }
   }
 
-  toggle.addEventListener('click', openOverlay);
+  toggle.addEventListener('click', function(e) {
+    // The trigger is an <a href="/search"> for no-JS fallback; with JS
+    // running we intercept the navigation and open the overlay instead.
+    e.preventDefault();
+    openOverlay();
+  });
   overlay.addEventListener('click', function(e) {
     if (e.target === overlay) closeOverlay();
   });
@@ -1937,29 +2102,29 @@ footer.arxiv-page-footer .new-footer-sep { color: #ddd8d2; }
     citeFormatted.innerHTML = citeData[currentSource][currentStyle].html;
   }
 
-  // Style switcher (APA / Chicago / MLA)
+  // Style switcher (APA / Chicago / MLA) — aria-pressed toggle group
   document.querySelectorAll('.abs-cite-style-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.abs-cite-style-btn').forEach(function(b) {
         b.classList.remove('is-active');
-        b.setAttribute('aria-checked', 'false');
+        b.setAttribute('aria-pressed', 'false');
       });
       btn.classList.add('is-active');
-      btn.setAttribute('aria-checked', 'true');
+      btn.setAttribute('aria-pressed', 'true');
       currentStyle = btn.dataset.style;
       updateCitations();
     });
   });
 
-  // Source switcher (preprint vs. journal)
+  // Source switcher (preprint vs. journal) — aria-pressed toggle group
   document.querySelectorAll('.abs-cite-source-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.abs-cite-source-btn').forEach(function(b) {
         b.classList.remove('is-active');
-        b.setAttribute('aria-checked', 'false');
+        b.setAttribute('aria-pressed', 'false');
       });
       btn.classList.add('is-active');
-      btn.setAttribute('aria-checked', 'true');
+      btn.setAttribute('aria-pressed', 'true');
       currentSource = btn.dataset.source;
       updateCitations();
     });
