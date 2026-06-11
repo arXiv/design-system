@@ -2094,6 +2094,61 @@ html:not(.js) .reading-progress { display: none !important; }
 
 
 /* ┌──────────────────────────────────────────────────────────────────┐
+   │  10a. SECTION-HEADING PERMALINKS                                 │
+   ├──────────────────────────────────────────────────────────────────┤
+   │  Copy-link affordance on every section/subsection heading.       │
+   │  Research: html_feedback #4776 — "Add a clickable link icon next │
+   │  to each section heading (possibly only visible when hovering)   │
+   │  that copies a link to that section. One major advantage of HTML │
+   │  over PDFs is the ability to easily target specific objects."    │
+   │  Same interaction family as the equation/figure permalink chips. │
+   │                                                                  │
+   │  Quiet-by-default: invisible until the heading is hovered or the │
+   │  button itself is focused (keyboard path stays available — the   │
+   │  button is always in tab order). Icon-only with aria-label +     │
+   │  title; "Copied!" feedback swaps the icon for a brief check.     │
+   └──────────────────────────────────────────────────────────────────┘ */
+
+.heading-permalink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  margin-left: 8px;
+  vertical-align: middle;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: #8b8680;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, background 0.12s, color 0.12s;
+}
+.heading-permalink svg { width: 14px; height: 14px; }
+h2:hover .heading-permalink,
+h3:hover .heading-permalink,
+h4:hover .heading-permalink,
+.heading-permalink:focus-visible {
+  opacity: 1;
+}
+.heading-permalink:hover { background: #f0eeec; color: #1565c0; }
+.heading-permalink:focus-visible {
+  outline: 2px solid #1565c0;
+  outline-offset: 1px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .heading-permalink { transition: none; }
+}
+/* Touch devices have no hover: keep the affordance faintly visible so
+   it's discoverable at all. */
+@media (hover: none) {
+  .heading-permalink { opacity: 0.45; }
+}
+@media print {
+  .heading-permalink { display: none !important; }
+}
+
+/* ┌──────────────────────────────────────────────────────────────────┐
    │  10b. FIGURE LIGHTBOX                                            │
    ├──────────────────────────────────────────────────────────────────┤
    │  Persistent full-viewport figure viewer.                         │
@@ -2796,7 +2851,11 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 <li class="ltx_tocentry ltx_tocentry_bibliography"><a href="https://arxiv.org/html/2604.22725v1#bib" title="In Gauge-independent approach to inflation in quadratic gravity" class="ltx_ref"><span class="ltx_text ltx_ref_title">References</span></a></li>
 </ol></nav>
 </nav>
-<div class="ltx_page_main">
+<!-- role="main": LaTeXML emits no <main> landmark, so screen-reader
+     users had no "jump to main content" target and axe flagged all
+     page content as outside landmarks. The page chrome (header,
+     footer) already uses real landmark elements. -->
+<div class="ltx_page_main" role="main">
 <div id="infobox" class="infobox"></div>
 <p class="new-watermark"><img src="images/smileybones-small-grayscale.svg" alt=""><span aria-hidden="true">arXiv:2604.22725v1 [gr-qc] 24 April 2026</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1, primary category gr-qc, submitted 24 April 2026</span> &ensp; <a href="https://info.arxiv.org/help/license/index.html#licenses-available"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">License: CC BY 4.0</abbr></a></p><div class="ltx_page_content">
 <article class="ltx_document ltx_authors_1line" lang="en">
@@ -7020,6 +7079,53 @@ We thus see that</p>
 
   document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('article figure').forEach(buildFigureRegion);
+  });
+})();
+
+/* ─────────────────────────────────────────────────────────────────
+   BEHAVIOR 5b: Section-heading permalinks
+   ─────────────────────────────────────────────────────────────────
+   See the SECTION-HEADING PERMALINKS CSS block (research: #4776).
+   For each section/subsection/appendix heading whose enclosing
+   <section> carries a LaTeXML id (S1, S2.SS1, A1 …), append an
+   icon-only button that copies the heading's deep link. The accessible
+   name includes the section's own title ("Copy link to section
+   2.1 Background equations") so the buttons are distinguishable in a
+   screen reader's controls list. Pure enhancement — absent without JS.
+*/
+(function() {
+  var ICON_LINK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
+  var ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12"/></svg>';
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var headings = document.querySelectorAll(
+      'article .ltx_section > .ltx_title, article .ltx_subsection > .ltx_title, article .ltx_appendix > .ltx_title'
+    );
+    Array.prototype.forEach.call(headings, function(h) {
+      var sectionEl = h.closest('section, .ltx_appendix');
+      var id = sectionEl && sectionEl.id;
+      if (!id) return;
+      var titleText = h.textContent.replace(/\s+/g, ' ').trim();
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'heading-permalink';
+      btn.setAttribute('aria-label', 'Copy link to section ' + titleText);
+      btn.setAttribute('title', 'Copy link to this section');
+      btn.innerHTML = ICON_LINK;
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var url = window.location.href.split('#')[0] + '#' + id;
+        if (navigator.clipboard) navigator.clipboard.writeText(url);
+        btn.innerHTML = ICON_CHECK;
+        btn.setAttribute('title', 'Copied!');
+        setTimeout(function() {
+          btn.innerHTML = ICON_LINK;
+          btn.setAttribute('title', 'Copy link to this section');
+        }, 1500);
+      });
+      h.appendChild(btn);
+    });
   });
 })();
 

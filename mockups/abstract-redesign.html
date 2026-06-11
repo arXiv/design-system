@@ -515,11 +515,22 @@ img { max-width: 100%; height: auto; }
     1–8 authors:    show all, no toggle
     9–30 authors:   show first 8 + "… show all N authors" toggle (inline)
     31–100 authors: same toggle pattern; volume warns but inline is okay
-    100+ authors:   different pattern needed (modal/dedicated page),
-                    NOT implemented in this mockup. HEP/LIGO papers with
-                    1000+ authors are the stress test case.
+    100+ authors:   SCROLLABLE INLINE REGION (decision 2026-06-11).
+                    "Show all" opens a max-height scrollable block in
+                    place with collapse controls at both ends. Rationale:
+                    inline expansion of 1000+ names dumps the reader into
+                    pages of links with the collapse control scrolled
+                    away; a modal or separate page adds a surface. The
+                    scrollable region keeps the reader's place, caps the
+                    page-length cost, works without JS (region renders
+                    fully open — content is never lost), and AT users
+                    scroll/navigate at their own pace. HEP/LIGO papers
+                    with 1000+ authors are the stress test case.
 
   Sample paper has 22 authors → first 8 visible, toggle reveals 14 more.
+  To preview the 100+ tier, open this mockup with ?authors=many — the
+  JS swaps in a generated 1,247-author list (includes diacritic names,
+  doubling as a non-ASCII rendering check — priorities.md).
 
   Visual choice
     Inline comma separation matches print convention. Names wrap to multi-
@@ -541,10 +552,44 @@ img { max-width: 100%; height: auto; }
 
 /* Hidden-author tail is js-scoped: collapsing content is only safe
    when the script that re-expands it actually runs. Without JS, all
-   22 authors render and the dead toggle button is hidden (see the
+   authors render and the dead toggle button is hidden (see the
    no-JS fallback block below). */
 html.js .abs-authors-overflow { display: none; }
 html.js .abs-authors-overflow.is-expanded { display: inline; }
+
+/* 100+ author tier: the expanded tail becomes a bounded scrollable
+   region instead of inline flow (see the component comment for the
+   rationale). Applied via .is-scrollable when author count > 100. */
+html.js .abs-authors-overflow.is-expanded.is-scrollable {
+  display: block;
+  max-height: 16em;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 10px 0 4px;
+  padding: 10px 14px;
+  border: 1px solid #ddd8d2;
+  border-radius: 4px;
+  background: #fafaf9;
+}
+.abs-authors-collapse {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-size: 0.8125rem; /* 13px */
+  font-style: italic;
+  color: #6b6459;
+  background: none;
+  border: none;
+  padding: 4px 0;
+  cursor: pointer;
+}
+.abs-authors-collapse:hover { color: #1c1a17; text-decoration: underline; }
+.abs-authors-collapse:focus-visible {
+  outline: 2px solid #1565c0;
+  outline-offset: 1px;
+  border-radius: 2px;
+}
 
 .abs-authors-toggle {
   font-family: inherit;
@@ -735,7 +780,9 @@ html.js .abs-authors-overflow.is-expanded { display: inline; }
   text-align: center;
   font-size: 0.6875rem; /* 11px */
   font-weight: 400;
-  opacity: 0.85;
+  /* No opacity dimming: the button label is #6b6459 (5.83:1 on white)
+     and an opacity fade pushed the hint below the 4.5:1 AA threshold
+     (caught by axe). Size + weight already de-emphasize it. */
   line-height: 1.2;
 }
 
@@ -1281,7 +1328,10 @@ html.js .abs-authors-overflow.is-expanded { display: inline; }
 .abs-labs-empty {
   padding: 24px 18px;
   font-size: 0.8125rem; /* 13px */
-  color: #b0aba6;
+  /* --grey, not --grey-dis: this is real instructional text and must
+     meet 4.5:1 (axe finding). The disabled-grey ladder stop is for
+     disabled controls only, per color-mapping.md. */
+  color: #6b6459;
   font-style: italic;
 }
 
@@ -1751,11 +1801,18 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
             <div class="abs-panel-label">BibTeX</div>
             <div class="abs-cite-display">
               <button class="abs-cite-copy" id="cite-copy-bibtex" aria-label="Copy BibTeX">Copy</button>
-              <div class="abs-cite-text is-bibtex" id="cite-bibtex">@article{palomares2026gauge,
-  title={Gauge-independent approach to
-    inflation in quadratic gravity},
-  author={Palomares, Adrian and Shapiro,
-    Ilya L. and others},
+              <!-- BibTeX shows the FULL author list, exactly as arXiv's
+                   export produces it. An earlier iteration truncated to
+                   "and others" — but researchers paste this into .bib
+                   files where "and others" renders as "et al." and the
+                   author list is silently lost. Citation text is the
+                   highest-trust copy surface on the page: the display
+                   must match what Copy yields and what production emits.
+                   Single-line author field per real export; the panel's
+                   white-space:pre + overflow-x handles the width. -->
+              <div class="abs-cite-text is-bibtex" id="cite-bibtex" tabindex="0" role="region" aria-label="BibTeX citation">@article{palomares2026gauge,
+  title={Gauge-independent approach to inflation in quadratic gravity},
+  author={Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and Castellani, Elena and Maeda, Kei-ichi and Vidotto, Francesca and Ashtekar, Abhay and Emparan, Roberto and Castro, Alejandra and de Boer, Jan and Nojiri, Shin'ichi and Odintsov, Sergei D. and Mukhanov, Viatcheslav and Sasaki, Misao and Soda, Jiro and Tsujikawa, Shinji and Padilla, Antonio and Gregory, Ruth and Malik, Karim A. and Wands, David and Tanaka, Takahiro},
   journal={arXiv preprint arXiv:2604.22725},
   year={2026}
 }</div>
@@ -1771,7 +1828,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
             </div>
             <div class="abs-cite-display">
               <button class="abs-cite-copy" id="cite-copy-formatted" aria-label="Copy formatted citation">Copy</button>
-              <div class="abs-cite-text" id="cite-formatted">Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., Castellani, E., Maeda, K., ... &amp; Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. <em>arXiv preprint</em> arXiv:2604.22725.</div>
+              <div class="abs-cite-text" id="cite-formatted" tabindex="0" role="region" aria-label="Formatted citation">Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., Castellani, E., Maeda, K., ... &amp; Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. <em>arXiv preprint</em> arXiv:2604.22725.</div>
             </div>
           </div>
 
@@ -1824,21 +1881,21 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
           <div class="abs-labs-group">
             <div class="abs-panel-label">Papers &amp; Citations</div>
             <div class="abs-labs-row">
-              <label class="abs-labs-toggle"><input type="checkbox" data-lab="connected-papers"><span class="abs-labs-track"></span></label>
+              <label class="abs-labs-toggle"><input type="checkbox" data-lab="connected-papers" aria-label="Connected Papers"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">Connected Papers <a href="https://www.connectedpapers.com/about" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
             <div class="abs-labs-row">
-              <label class="abs-labs-toggle"><input type="checkbox" data-lab="litmaps"><span class="abs-labs-track"></span></label>
+              <label class="abs-labs-toggle"><input type="checkbox" data-lab="litmaps" aria-label="Litmaps"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">Litmaps <a href="https://www.litmaps.co/" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
             <div class="abs-labs-row">
-              <label class="abs-labs-toggle"><input type="checkbox" data-lab="core"><span class="abs-labs-track"></span></label>
+              <label class="abs-labs-toggle"><input type="checkbox" data-lab="core" aria-label="CORE Recommender"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">CORE Recommender <a href="https://core.ac.uk/services/recommender" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
             <!-- scite last in group: integration currently broken (DOI
                  lookup failure — audit item 4). Restore position when fixed. -->
             <div class="abs-labs-row">
-              <label class="abs-labs-toggle"><input type="checkbox" data-lab="scite"><span class="abs-labs-track"></span></label>
+              <label class="abs-labs-toggle"><input type="checkbox" data-lab="scite" aria-label="scite Smart Citations"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">scite Smart Citations <a href="https://www.scite.ai/" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
           </div>
@@ -1846,22 +1903,22 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
           <div class="abs-labs-group">
             <div class="abs-panel-label">Code, Data &amp; Models</div>
             <div class="abs-labs-row">
-              <label class="abs-labs-toggle"><input type="checkbox" data-lab="catalyzex"><span class="abs-labs-track"></span></label>
+              <label class="abs-labs-toggle"><input type="checkbox" data-lab="catalyzex" aria-label="CatalyzeX Code Finder"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">CatalyzeX Code Finder <a href="https://www.catalyzex.com" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
             <div class="abs-labs-row">
-              <label class="abs-labs-toggle"><input type="checkbox" data-lab="huggingface"><span class="abs-labs-track"></span></label>
+              <label class="abs-labs-toggle"><input type="checkbox" data-lab="huggingface" aria-label="Hugging Face"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">Hugging Face <a href="https://huggingface.co/huggingface" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
             <div class="abs-labs-row">
-              <label class="abs-labs-toggle"><input type="checkbox" data-lab="sciencecast"><span class="abs-labs-track"></span></label>
+              <label class="abs-labs-toggle"><input type="checkbox" data-lab="sciencecast" aria-label="ScienceCast"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">ScienceCast <a href="https://sciencecast.org/welcome" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
             <!-- alphaXiv last in group: requires login to interact
                  (audit item 5; policy: login-walled Labs deprioritized
                  in placement). -->
             <div class="abs-labs-row">
-              <label class="abs-labs-toggle"><input type="checkbox" data-lab="alphaxiv"><span class="abs-labs-track"></span></label>
+              <label class="abs-labs-toggle"><input type="checkbox" data-lab="alphaxiv" aria-label="alphaXiv"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">alphaXiv <a href="https://alphaxiv.org/" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
           </div>
@@ -1869,11 +1926,11 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
           <div class="abs-labs-group">
             <div class="abs-panel-label">Demos</div>
             <div class="abs-labs-row">
-              <label class="abs-labs-toggle"><input type="checkbox" data-lab="replicate"><span class="abs-labs-track"></span></label>
+              <label class="abs-labs-toggle"><input type="checkbox" data-lab="replicate" aria-label="Replicate"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">Replicate <a href="https://replicate.com/docs/arxiv/about" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
             <div class="abs-labs-row">
-              <label class="abs-labs-toggle"><input type="checkbox" data-lab="hf-spaces"><span class="abs-labs-track"></span></label>
+              <label class="abs-labs-toggle"><input type="checkbox" data-lab="hf-spaces" aria-label="Hugging Face Spaces"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">Hugging Face Spaces <a href="https://huggingface.co/docs/hub/spaces" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
           </div>
@@ -2023,20 +2080,88 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
 })();
 
 /* ─────────────────────────────────────────────────────────────────
-   BEHAVIOR: Author list show/hide toggle
+   BEHAVIOR: Author list show/hide toggle (+ 100+ scrollable tier)
    ─────────────────────────────────────────────────────────────────
    Intent
      Reveal the hidden author tail when the user clicks "show all N
      authors." Toggle updates aria-expanded so screen readers announce
-     the state change correctly. */
+     the state change correctly.
+
+   100+ tier (see the component comment for the design rationale)
+     When the paper has more than 100 authors, the expanded tail
+     renders as a bounded scrollable region (.is-scrollable) with a
+     collapse control at both ends — the reader is never stranded
+     pages away from the way back. On expand, focus moves to the
+     region (tabindex=-1) so keyboard/AT users land at the start of
+     the list; on collapse, focus returns to the main toggle.
+
+   Demo hook
+     ?authors=many swaps in a generated 1,247-author list so the tier
+     can be previewed with this 22-author sample paper. Generated
+     names include diacritics (Müller, Gonçalves, Chéreau …) so the
+     preview doubles as a non-ASCII rendering check. */
 (function() {
   var toggle = document.getElementById('authors-toggle');
   var overflow = document.getElementById('authors-overflow');
   if (!toggle || !overflow) return;
-  toggle.addEventListener('click', function() {
-    var expanded = overflow.classList.toggle('is-expanded');
+
+  var SCROLL_TIER_MIN = 100;
+  var totalAuthors = 22;
+
+  // ── Demo hook: ?authors=many generates a LIGO-scale list ──
+  if (/[?&]authors=many\b/.test(window.location.search)) {
+    var first = ['Adrian','Ilya','María','Tomohiro','Elena','Kei-ichi','Francesca','Abhay',
+      'Roberto','Alejandra','Jan','Sergei','Viatcheslav','Misao','Jiro','Shinji','Antonio',
+      'Ruth','Karim','David','Takahiro','Åsa','Jürgen','François','Penélope','Søren',
+      'Zhènyà','Ngozi','Priya','Václav','Łukasz','Renée'];
+    var last = ['Palomares','Shapiro','González-García','Harada','Castellani','Maeda',
+      'Vidotto','Ashtekar','Emparan','Castro','de Boer','Nojiri','Odintsov','Mukhanov',
+      'Sasaki','Soda','Tsujikawa','Padilla','Gregory','Malik','Wands','Tanaka','Müller',
+      'Gonçalves','Chéreau','Dalla Bontà','Nguyễn','Öztürk','Žižek','O’Connell',
+      'Ibáñez','Þórsson','Šimůnková','Kowalczyk','Yamamoto','Okafor','Srinivasan','Petrov',
+      'Lindqvist'];
+    totalAuthors = 1247;
+    var parts = [];
+    for (var i = 8; i < totalAuthors; i++) {  // 8 names are visible in the static HTML
+      var name = first[(i * 7) % first.length] + ' ' + last[(i * 13) % last.length];
+      parts.push('<a href="#">' + name + '</a>');
+    }
+    overflow.innerHTML = ', ' + parts.join(', ');
+  }
+
+  var isScrollTier = totalAuthors > SCROLL_TIER_MIN;
+  var expandLabel = '… show all ' + totalAuthors.toLocaleString() + ' authors';
+  toggle.textContent = expandLabel;
+
+  if (isScrollTier) {
+    overflow.classList.add('is-scrollable');
+    overflow.setAttribute('role', 'region');
+    overflow.setAttribute('aria-label', 'Full author list');
+    overflow.setAttribute('tabindex', '-1');
+    // Collapse affordances at both ends of the scrollable region.
+    ['afterbegin', 'beforeend'].forEach(function(pos) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'abs-authors-collapse';
+      btn.textContent = 'Collapse author list';
+      btn.addEventListener('click', function() {
+        setExpanded(false);
+        toggle.focus();
+      });
+      overflow.insertAdjacentElement(pos, btn);
+    });
+  }
+
+  function setExpanded(expanded) {
+    overflow.classList.toggle('is-expanded', expanded);
     toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-    toggle.textContent = expanded ? 'show fewer' : '… show all 22 authors';
+    toggle.textContent = expanded ? 'show fewer' : expandLabel;
+  }
+
+  toggle.addEventListener('click', function() {
+    var expanded = !overflow.classList.contains('is-expanded');
+    setExpanded(expanded);
+    if (expanded && isScrollTier) overflow.focus();
   });
 })();
 
@@ -2056,8 +2181,8 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
   var citeData = {
     preprint: {
       bibtex: {
-        html:  '@article{palomares2026gauge,\n  title={Gauge-independent approach to inflation in quadratic gravity},\n  author={Palomares, Adrian and Shapiro, Ilya L. and others},\n  journal={arXiv preprint arXiv:2604.22725},\n  year={2026}\n}',
-        plain: '@article{palomares2026gauge,\n  title={Gauge-independent approach to inflation in quadratic gravity},\n  author={Palomares, Adrian and Shapiro, Ilya L. and others},\n  journal={arXiv preprint arXiv:2604.22725},\n  year={2026}\n}'
+        html:  '@article{palomares2026gauge,\n  title={Gauge-independent approach to inflation in quadratic gravity},\n  author={Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and Castellani, Elena and Maeda, Kei-ichi and Vidotto, Francesca and Ashtekar, Abhay and Emparan, Roberto and Castro, Alejandra and de Boer, Jan and Nojiri, Shin\'ichi and Odintsov, Sergei D. and Mukhanov, Viatcheslav and Sasaki, Misao and Soda, Jiro and Tsujikawa, Shinji and Padilla, Antonio and Gregory, Ruth and Malik, Karim A. and Wands, David and Tanaka, Takahiro},\n  journal={arXiv preprint arXiv:2604.22725},\n  year={2026}\n}',
+        plain: '@article{palomares2026gauge,\n  title={Gauge-independent approach to inflation in quadratic gravity},\n  author={Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and Castellani, Elena and Maeda, Kei-ichi and Vidotto, Francesca and Ashtekar, Abhay and Emparan, Roberto and Castro, Alejandra and de Boer, Jan and Nojiri, Shin\'ichi and Odintsov, Sergei D. and Mukhanov, Viatcheslav and Sasaki, Misao and Soda, Jiro and Tsujikawa, Shinji and Padilla, Antonio and Gregory, Ruth and Malik, Karim A. and Wands, David and Tanaka, Takahiro},\n  journal={arXiv preprint arXiv:2604.22725},\n  year={2026}\n}'
       },
       apa: {
         html:  'Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., Castellani, E., Maeda, K., ... &amp; Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. <em>arXiv preprint</em> arXiv:2604.22725.',
@@ -2074,8 +2199,8 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
     },
     journal: {
       bibtex: {
-        html:  '@article{palomares2026gauge,\n  title={Gauge-independent approach to inflation in quadratic gravity},\n  author={Palomares, Adrian and Shapiro, Ilya L. and others},\n  journal={Journal of Cosmology and Astroparticle Physics},\n  volume={2026},\n  number={05},\n  pages={012},\n  year={2026},\n  publisher={IOP Publishing},\n  doi={10.1088/1475-7516/2026/05/012}\n}',
-        plain: '@article{palomares2026gauge,\n  title={Gauge-independent approach to inflation in quadratic gravity},\n  author={Palomares, Adrian and Shapiro, Ilya L. and others},\n  journal={Journal of Cosmology and Astroparticle Physics},\n  volume={2026},\n  number={05},\n  pages={012},\n  year={2026},\n  publisher={IOP Publishing},\n  doi={10.1088/1475-7516/2026/05/012}\n}'
+        html:  '@article{palomares2026gauge,\n  title={Gauge-independent approach to inflation in quadratic gravity},\n  author={Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and Castellani, Elena and Maeda, Kei-ichi and Vidotto, Francesca and Ashtekar, Abhay and Emparan, Roberto and Castro, Alejandra and de Boer, Jan and Nojiri, Shin\'ichi and Odintsov, Sergei D. and Mukhanov, Viatcheslav and Sasaki, Misao and Soda, Jiro and Tsujikawa, Shinji and Padilla, Antonio and Gregory, Ruth and Malik, Karim A. and Wands, David and Tanaka, Takahiro},\n  journal={Journal of Cosmology and Astroparticle Physics},\n  volume={2026},\n  number={05},\n  pages={012},\n  year={2026},\n  publisher={IOP Publishing},\n  doi={10.1088/1475-7516/2026/05/012}\n}',
+        plain: '@article{palomares2026gauge,\n  title={Gauge-independent approach to inflation in quadratic gravity},\n  author={Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and Castellani, Elena and Maeda, Kei-ichi and Vidotto, Francesca and Ashtekar, Abhay and Emparan, Roberto and Castro, Alejandra and de Boer, Jan and Nojiri, Shin\'ichi and Odintsov, Sergei D. and Mukhanov, Viatcheslav and Sasaki, Misao and Soda, Jiro and Tsujikawa, Shinji and Padilla, Antonio and Gregory, Ruth and Malik, Karim A. and Wands, David and Tanaka, Takahiro},\n  journal={Journal of Cosmology and Astroparticle Physics},\n  volume={2026},\n  number={05},\n  pages={012},\n  year={2026},\n  publisher={IOP Publishing},\n  doi={10.1088/1475-7516/2026/05/012}\n}'
       },
       apa: {
         html:  'Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., Castellani, E., Maeda, K., ... &amp; Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. <em>Journal of Cosmology and Astroparticle Physics</em>, 2026(05), 012. https://doi.org/10.1088/1475-7516/2026/05/012',
