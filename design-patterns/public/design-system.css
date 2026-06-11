@@ -631,3 +631,163 @@
 @media (prefers-reduced-motion: reduce) {
   .ds-alert-dismiss { transition: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SITE FOOTER  (.ds-site-footer)
+   ═══════════════════════════════════════════════════════════════════════
+   The universal arXiv public-page footer. Design approved 2026-06-11,
+   validated in three places that agree almost exactly: the approved
+   spinout-header-footer Cloud Run deployment, mockups/abstract-redesign.html,
+   and mockups/html-redesign.html (see audits/2026-06-11/AUDIT-COMPONENTS.md
+   addendum — "the most validated component on this list").
+
+   Structure (three pieces):
+     1. Acknowledgment line — "We gratefully acknowledge support from our
+        **major funders**, **member institutions**, and all contributors."
+        Optional inline institutional mention (IP-matched) follows
+        "member institutions".
+     2. Footer nav — About · Help · Contact · Subscribe · Copyright ·
+        Privacy · Accessibility · Operational Status, dot-separated.
+     3. Funders column — "Major funding support from" + Simons + Schmidt
+        wordmark logos, right-aligned; drops below the main column at
+        narrow widths.
+
+   Markup contract:
+     <footer class="ds-site-footer">
+       <div class="ds-site-footer-grid">
+         <div class="ds-site-footer-main">
+           <div class="ds-site-footer-ack">We gratefully acknowledge … </div>
+           <nav class="ds-site-footer-links" aria-label="Site navigation">
+             <a href="…">About</a>
+             <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+             …
+           </nav>
+         </div>
+         <div class="ds-site-footer-funders">
+           <div class="ds-site-footer-funders-label">Major funding support from</div>
+           <div class="ds-site-footer-funders-logos">
+             <img class="ds-funder-logo" src="…" alt="Simons Foundation">
+             <img class="ds-funder-logo" src="…" alt="Schmidt Sciences">
+           </div>
+         </div>
+       </div>
+     </footer>
+
+   Accessibility notes (the behavior contract travels with the pattern):
+     - Real <footer> landmark; nav has aria-label="Site navigation".
+     - Dot separators carry aria-hidden="true" (screen readers otherwise
+       announce "middot" between every link).
+     - Funder logos carry real alt text (organization names).
+     - External links (Operational Status) need target="_blank" +
+       rel="noopener noreferrer" + sr-only "(opens in new tab)".
+     - Type sizes in rem so user font-size overrides propagate.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-site-footer {
+  clear: both;
+  border-top: 1px solid var(--arxiv-pill-border);
+  background: var(--arxiv-warm-wash);
+  padding: 24px 24px 28px;
+  margin: 0;
+  font-family: var(--arxiv-font-sans);
+}
+.ds-site-footer-grid {
+  display: flex;
+  row-gap: 24px;
+  column-gap: 32px;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.ds-site-footer-main {
+  flex: 0 1 auto;
+  min-width: 280px;
+  max-width: 720px;
+}
+.ds-site-footer-ack {
+  font-size: 0.8125rem; /* 13px */
+  color: var(--arxiv-grey);
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+.ds-site-footer-ack a {
+  font-size: 0.8125rem;
+  color: var(--arxiv-link-blue);
+}
+.ds-site-footer-ack strong { color: var(--arxiv-ink); font-weight: 600; }
+.ds-site-footer-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.8125rem; /* 13px */
+  line-height: 1.8;
+}
+.ds-site-footer-links a {
+  font-size: 0.8125rem;
+  color: var(--arxiv-grey);
+  text-decoration: none;
+}
+.ds-site-footer-links a:hover {
+  color: var(--arxiv-ink);
+  text-decoration: underline;
+}
+.ds-site-footer-links a:focus-visible {
+  outline: 2px solid var(--arxiv-link-blue);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.ds-site-footer-sep { color: var(--arxiv-border-light, #ddd8d2); }
+.ds-site-footer-funders {
+  flex-shrink: 0;
+  text-align: center;
+}
+.ds-site-footer-funders-label {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+  color: var(--arxiv-ink);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+.ds-site-footer-funders-logos {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.ds-funder-logo {
+  /* content-box so height:40px describes the IMAGE content height —
+     with the global border-box, padding + border would shrink the
+     logo to ~30px (visibly small vs the approved layout). */
+  box-sizing: content-box;
+  display: block;
+  height: 40px;
+  width: auto;
+  flex-shrink: 0;
+  padding: 4px 8px;
+  border: 1px solid var(--arxiv-pill-border);
+  border-radius: 3px;
+  background: #fff;
+}
+@media (max-width: 720px) {
+  .ds-site-footer-funders { width: 100%; margin-top: 8px; }
+}
+@media print {
+  .ds-site-footer { display: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   UTILITY: screen-reader-only  (.is-sr-only)
+   ═══════════════════════════════════════════════════════════════════════
+   Visually hidden, available to assistive technology. Both mockups
+   define this identically; promoted here because every composed pattern
+   (footer external links, dual-span "arXiv"→"archive" pronunciation,
+   sr-only headings) depends on it. */
+.is-sr-only {
+  position: absolute !important;
+  width: 1px !important; height: 1px !important;
+  padding: 0 !important; margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
