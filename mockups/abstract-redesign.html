@@ -193,6 +193,64 @@ img { max-width: 100%; height: auto; }
     in phase 1 was visually identical so no transition work needed.
 */
 
+/* Top announcement banner — light-blue dismissable strip above the
+   black header. Matches the approved spinout-header-footer treatment.
+   Stacked above the header (header stays sticky; banner scrolls away). */
+.arxiv-announcement-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: #d6e8f7;
+  color: #1c1a17;
+  font-family: var(--arxiv-font-sans);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  position: relative;
+}
+.arxiv-announcement-glyph {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.arxiv-announcement-text {
+  font-weight: 600;
+}
+.arxiv-announcement-link {
+  color: #1565c0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+.arxiv-announcement-link:hover { color: #1050a0; }
+.arxiv-announcement-close {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  color: #6b6459;
+  padding: 4px 8px;
+  border-radius: 3px;
+}
+.arxiv-announcement-close:hover { color: #1c1a17; background: rgba(0,0,0,0.05); }
+.arxiv-announcement-close:focus-visible {
+  outline: 2px solid #1565c0;
+  outline-offset: 1px;
+}
+@media (max-width: 520px) {
+  .arxiv-announcement-banner {
+    flex-wrap: wrap;
+    padding-right: 36px;  /* keep clear of the close button */
+    text-align: center;
+  }
+}
+
 .arxiv-header {
   display: flex;
   align-items: center;
@@ -252,6 +310,61 @@ img { max-width: 100%; height: auto; }
 .arxiv-header-login {
   font-weight: 600 !important;
   color: #f0eeec !important;
+}
+
+/* Breadcrumb bar — warm-wash band beneath the black header providing
+   upward navigation back to category and home. Matches the approved
+   spinout treatment. NOT sticky (only the header is); breadcrumb
+   scrolls away with the page. */
+.arxiv-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 24px;
+  background: #f9f7f7;
+  border-bottom: 1px solid #e4e0db;
+  font-family: var(--arxiv-font-sans);
+  font-size: 0.8125rem;
+}
+.arxiv-breadcrumb-home {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.arxiv-breadcrumb-logomark {
+  width: 22px;
+  height: 22px;
+}
+.arxiv-breadcrumb-sep {
+  color: #6b6459;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+.arxiv-breadcrumb-link {
+  color: #1565c0;
+  text-decoration: none;
+  font-weight: 500;
+}
+.arxiv-breadcrumb-link:hover {
+  color: #1050a0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.arxiv-breadcrumb-link:focus-visible {
+  outline: 2px solid #1565c0;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.arxiv-breadcrumb-current {
+  color: #1c1a17;
+  font-weight: 500;
+}
+@media (max-width: 520px) {
+  .arxiv-breadcrumb {
+    padding: 6px 16px;
+    flex-wrap: wrap;
+  }
 }
 
 /* Narrow-viewport reflow (WCAG 1.4.10).
@@ -1580,6 +1693,19 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
   with "archive" so screen readers say the intended pronunciation.
 -->
 
+<!-- Top announcement banner (dismissable). Matches the approved
+     spinout-header-footer treatment: light-blue band with the
+     smileybones glyph + "arXiv is now an independent nonprofit!"
+     copy + Learn-more link + close button. Static in this mockup;
+     in production the close button writes a cookie so the dismissal
+     persists. -->
+<div class="arxiv-announcement-banner" role="region" aria-label="Announcement">
+  <img class="arxiv-announcement-glyph" src="images/smileybones-small-grayscale.svg" alt="" aria-hidden="true">
+  <span class="arxiv-announcement-text">arXiv is now an independent nonprofit!</span>
+  <a class="arxiv-announcement-link" href="https://info.arxiv.org/about/index.html">Learn more</a>
+  <button type="button" class="arxiv-announcement-close" aria-label="Dismiss announcement">&times;</button>
+</div>
+
 <header class="arxiv-header">
   <a href="https://arxiv.org/" class="arxiv-header-logo" aria-label="archive home">
     <img src="images/arxiv-logo.png" alt="archive">
@@ -1595,13 +1721,26 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
       </svg>
       Search
     </a>
-    <a href="https://info.arxiv.org/about/">About</a>
     <a href="https://arxiv.org/submit">Submit</a>
     <a href="https://info.arxiv.org/about/donate.html">Donate</a>
     <span class="arxiv-header-divider" aria-hidden="true"></span>
     <a href="https://arxiv.org/login" class="arxiv-header-login">Log in</a>
   </nav>
 </header>
+
+<!-- Breadcrumb bar. Matches the approved spinout deployment: light
+     warm-wash band with mini arXiv logomark + category +
+     paper identifier, separated by ">" glyphs. Provides upward
+     navigation back to the category listing or to arxiv.org. -->
+<nav class="arxiv-breadcrumb" aria-label="Breadcrumb">
+  <a class="arxiv-breadcrumb-home" href="https://arxiv.org/" aria-label="archive home">
+    <img src="images/arxiv-logomark-small-square.svg" alt="archive" class="arxiv-breadcrumb-logomark">
+  </a>
+  <span class="arxiv-breadcrumb-sep" aria-hidden="true">&gt;</span>
+  <a class="arxiv-breadcrumb-link" href="https://arxiv.org/list/gr-qc/recent">gr-qc</a>
+  <span class="arxiv-breadcrumb-sep" aria-hidden="true">&gt;</span>
+  <span class="arxiv-breadcrumb-current" aria-current="page">arXiv:2604.22725</span>
+</nav>
 
 <!--
 ═══════════════════════════════════════════════════════════════════════
@@ -1983,7 +2122,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
   <div class="footer-grid">
     <div class="footer-main">
       <div class="new-footer-ack">
-        We gratefully acknowledge support from our major funders, <a href="#"><strong>member institutions</strong></a><span class="ack-member-inline">, <strong>Rheinisch-Westfälische Technische Hochschule Aachen</strong></span>, and <a href="#">all contributors</a>.
+        We gratefully acknowledge support from our <strong>major funders</strong>, <a href="#"><strong>member institutions</strong></a><span class="ack-member-inline">, <strong>Rheinisch-Westfälische Technische Hochschule Aachen</strong></span>, and all contributors.
       </div>
       <nav class="new-footer-links" aria-label="Site navigation">
         <a href="https://info.arxiv.org/about">About</a> <span class="new-footer-sep" aria-hidden="true">&middot;</span>
@@ -1993,7 +2132,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
         <a href="https://info.arxiv.org/help/license/index.html">Copyright</a> <span class="new-footer-sep" aria-hidden="true">&middot;</span>
         <a href="https://info.arxiv.org/help/policies/privacy_policy.html">Privacy</a> <span class="new-footer-sep" aria-hidden="true">&middot;</span>
         <a href="https://info.arxiv.org/help/web_accessibility.html">Accessibility</a> <span class="new-footer-sep" aria-hidden="true">&middot;</span>
-        <a href="https://status.arxiv.org/" target="_blank" rel="noopener noreferrer">Status</a>
+        <a href="https://status.arxiv.org/" target="_blank" rel="noopener noreferrer">Operational Status</a>
       </nav>
     </div>
     <div class="footer-funders">

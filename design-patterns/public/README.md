@@ -38,8 +38,9 @@ Key differences from internal:
 - [x] **Popover panel** (`.ds-popover` + parts) — light-blue tint floating panel anchored to inline elements. Used by citation chips and footnote markers. Validated 2026-05-27. See `design-system.css`.
 - [x] **Element pill** (`.ds-element-pill`) — small white pill that floats anchored to a piece of content (equation, figure) to host action affordances. Distill-style chrome. Validated 2026-05-27. See `design-system.css`.
 - [ ] Tertiary / text-only button
-- [ ] Header component (dark bar for abstract pages, light bar for HTML reader)
-- [ ] Footer component
+- [ ] **Header component (abstract page variant)** — *Design approved 2026-06-11*, codification pending. Validated against the spinout-header-footer Cloud Run deployment (`arxiv-browse-spinout-header-footer-874717964009.us-central1.run.app/abs/2604.02161`). Three-part structure: dismissable announcement banner (light-blue) + black header (logo + Search / Submit / Donate / Log in) + breadcrumb bar (warm-wash with mini logomark + category + paper identifier). Reference implementation: `mockups/abstract-redesign.html`. Next step: codify as `.ds-site-header` using the `/promote-pattern` workflow.
+- [ ] **Header component (HTML reader variant)** — *Design approved 2026-06-11* as part of the reader redesign, codification pending. Light Card Grey three-column header with center-anchored Contents dropdown. Reference implementation: `mockups/html-redesign.html`.
+- [ ] **Footer component** — *Design approved 2026-06-11*, codification pending. Wording exact-match to the spinout-header-footer Cloud Run deployment. Three pieces: ack line ("We gratefully acknowledge support from our **major funders**, **member institutions**, and all contributors." — with optional inline institutional mention via IP-targeted insertion), footer nav (About · Help · Contact · Subscribe · Copyright · Privacy · Accessibility · Operational Status), and "Major funding support from" + Simons + Schmidt funder logos on the right. Reference implementation: `mockups/abstract-redesign.html`. Next step: codify as `.ds-site-footer` using the `/promote-pattern` workflow.
 - [ ] Citation section (BibTeX, APA, Chicago, MLA with source toggle)
 - [ ] Version display (pills, warning banner)
 - [ ] Author list with truncation
