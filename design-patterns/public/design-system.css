@@ -17,6 +17,8 @@
      - Typography token shorthand (sans, condensed, mono, serif)
      - Primary + secondary button (Variant 3, validated 2026-05-14)
      - Inline active state (.ds-inline-active, validated 2026-05-27)
+     - Link (.ds-link) + link state tokens (hover, visited), light + dark
+       (validated 2026-05-28)
      - Annotation typography (.ds-annotation, validated 2026-05-27)
      - Popover panel (.ds-popover and parts, validated 2026-05-27)
      - Element pill (.ds-element-pill, validated 2026-05-27)
@@ -34,7 +36,9 @@
   --arxiv-open-blue:       #a5d6fe;
   --arxiv-open-blue-bright:#c2e2ff;   /* hover fill (lighter than canonical) */
   --arxiv-archival-blue:   #1f5e96;   /* section accents, anchor color */
-  --arxiv-link-blue:       #1565c0;   /* link text, focus ring */
+  --arxiv-link-blue:       #1565c0;   /* link text, focus ring (5.74:1 ✓ AA) */
+  --arxiv-link-hover:      #1050a0;   /* link hover, ~20% darker (7.83:1 ✓ AAA) */
+  --arxiv-link-visited:    #7b2fbe;   /* visited purple (7.02:1 on white ✓ AAA) */
 
   /* ── Warm grey ladder ──
      Three stops for three contrast tiers. Don't introduce intermediate
@@ -290,6 +294,51 @@
   background: var(--arxiv-active-bg);
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LINK  (.ds-link)
+   ───────────────────────────────────────────────────────────────────────
+   Inline text link with all four interactive states. Link Blue at rest,
+   darkens on hover (~20% darker, more saturated), Visited Purple after
+   a successful visit (the visited memory aids researchers tracking
+   what they've already read).
+
+   Underlined per DESIGN-POLICIES.md ("Inline links in body text must be
+   underlined"). Standalone navigation links may omit the underline by
+   overriding text-decoration locally.
+
+   Use as a utility class on any <a> in body text, or as the
+   declarative target the consumer's CSS can mirror onto a base `a`
+   rule scoped to its content surface (article, paragraph, etc.).
+   Both patterns are valid — utility for cherry-picking, base rule
+   for surfaces where every anchor should follow the convention.
+
+   Reference: design-patterns/color-mapping.md (link tier).
+
+   Example:
+     <a class="ds-link" href="https://arxiv.org/abs/...">2604.22725</a>
+
+     OR, scoped to an article:
+       article a { color: var(--arxiv-link-blue); ... }
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-link {
+  color: var(--arxiv-link-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.ds-link:hover {
+  color: var(--arxiv-link-hover);
+}
+.ds-link:visited {
+  color: var(--arxiv-link-visited);
+}
+.ds-link:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 
@@ -554,6 +603,9 @@
    so a page can lock to light with <html data-theme="light">. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    --arxiv-link-blue:       #64b5f6;  /* 7.84:1 on Repository Brown ✓ AAA */
+    --arxiv-link-hover:      #90caf9;
+    --arxiv-link-visited:    #c084e0;  /* 6.30:1 on Repository Brown ✓ AA */
     --arxiv-success-bg:      #1e2b0d;
     --arxiv-success-border:  #8fbd3a;
     --arxiv-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
