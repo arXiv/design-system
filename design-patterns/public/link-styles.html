@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>arXiv Public Link Styles — Component Reference</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+  /* Page chrome — not part of the component system; only here to host
+     the reference itself. Mirrors button-styles.html. */
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: var(--arxiv-font-sans);
+    color: var(--arxiv-ink);
+    background: var(--arxiv-warm-wash);
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .page { max-width: 980px; margin: 0 auto; padding: 48px 28px 80px; }
+
+  .page-header { margin-bottom: 40px; padding-bottom: 18px; border-bottom: 3px solid var(--arxiv-open-blue); }
+  .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+  .page-header p { margin: 0; color: var(--arxiv-grey); font-size: 13px; max-width: 680px; }
+
+  .back-link {
+    display: inline-block; margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--arxiv-link-blue);
+    text-decoration: none;
+  }
+  .back-link:hover { text-decoration: underline; text-underline-offset: 2px; color: var(--arxiv-link-hover); }
+
+  .section { margin-bottom: 44px; }
+  .section-title { font-size: 18px; font-weight: 600; margin: 0 0 6px; }
+  .section-desc { margin: 0 0 18px; color: var(--arxiv-grey); font-size: 13px; max-width: 680px; line-height: 1.55; }
+
+  /* Side-by-side light/dark preview panels — same pattern as
+     alert-styles.html in the working mockups. The dark panel scopes
+     the dark-mode token overrides locally so both modes are visible
+     simultaneously without depending on the user's OS theme. */
+  .preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  @media (max-width: 760px) { .preview-grid { grid-template-columns: 1fr; } }
+  .preview-panel { padding: 22px 22px 24px; border-radius: 8px; border: 1px solid #e0dbd7; }
+  .preview-panel.light { background: #ffffff; color: var(--arxiv-ink); }
+  .preview-panel.dark {
+    background: #1c1a17;
+    border-color: #33302c;
+    color: #e0dbd7;
+    /* Mirror the @media (prefers-color-scheme: dark) token overrides
+       from design-system.css so the dark panel renders correctly
+       regardless of the viewer's OS theme. */
+    --arxiv-link-blue:    #64b5f6;
+    --arxiv-link-hover:   #90caf9;
+    --arxiv-link-visited: #c084e0;
+  }
+  .preview-panel > h3 {
+    font-family: var(--arxiv-font-condensed);
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--arxiv-grey); margin: 0 0 16px; font-weight: 600;
+  }
+  .preview-panel.dark > h3 { color: #9e9891; }
+
+  /* State strip — one row of label + sample per state. */
+  .state-row { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 8px; }
+  .state-cell { display: flex; flex-direction: column; gap: 6px; min-width: 110px; }
+  .state-label {
+    font-family: var(--arxiv-font-condensed);
+    font-weight: 600; font-size: 10px;
+    color: var(--arxiv-grey);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .preview-panel.dark .state-label { color: #9e9891; }
+
+  /* Forced-state classes so we can demo :hover and :visited without
+     waiting for the user to actually hover or visit. These are
+     scaffolding for the demo only — they would never appear in
+     production code. */
+  .ds-link.sim-hover    { color: var(--arxiv-link-hover); }
+  .ds-link.sim-visited  { color: var(--arxiv-link-visited); }
+
+  .ratio {
+    display: block; margin-top: 6px;
+    font-family: var(--arxiv-font-mono); font-size: 11px;
+    color: var(--arxiv-grey);
+  }
+  .preview-panel.dark .ratio { color: #9e9891; }
+
+  /* In-context paragraph */
+  .body-text {
+    font-size: 14px; line-height: 1.7;
+    margin: 16px 0 0;
+  }
+  .body-text + .body-text { margin-top: 12px; }
+  .body-meta {
+    margin: 12px 0 0;
+    font-size: 12.5px;
+    color: var(--arxiv-grey);
+  }
+  .preview-panel.dark .body-meta { color: #9e9891; }
+
+  /* Callout */
+  .callout {
+    font-size: 13px; line-height: 1.6; margin-top: 18px; padding: 12px 16px;
+    background: #ffffff; border: 1px solid #e0dbd7;
+    border-left: 4px solid var(--arxiv-link-blue);
+    border-radius: 0 4px 4px 0;
+  }
+  .callout + .callout { margin-top: 10px; }
+  .callout strong { color: var(--arxiv-ink); }
+
+  code {
+    font-family: var(--arxiv-font-mono); font-size: 12px;
+    background: var(--arxiv-card-grey); padding: 2px 5px; border-radius: 3px;
+  }
+  .preview-panel.dark code { background: #2a2724; color: #e0dbd7; }
+
+  /* Token reference table */
+  .token-table {
+    width: 100%; border-collapse: collapse; background: #fff;
+    border: 1px solid #e0dbd7; border-radius: 8px; overflow: hidden; font-size: 13px;
+  }
+  .token-table th {
+    background: var(--arxiv-card-grey); text-align: left; padding: 9px 14px; font-size: 11px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--arxiv-grey); border-bottom: 1px solid #e0dbd7;
+    font-family: var(--arxiv-font-condensed);
+  }
+  .token-table td { padding: 9px 14px; border-bottom: 1px solid #e0dbd7; vertical-align: middle; }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table .group-row td {
+    background: var(--arxiv-warm-wash); font-weight: 700; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--arxiv-grey); padding: 7px 14px;
+    font-family: var(--arxiv-font-condensed);
+  }
+  .swatch { display: inline-block; width: 18px; height: 18px; border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.12); vertical-align: middle; margin-right: 6px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back-link" href="README.md">← back to Public-Facing Design Patterns</a>
+
+  <header class="page-header">
+    <h1>Link Styles</h1>
+    <p>The canonical <code>.ds-link</code> utility class for inline text links on public-facing pages.
+    Four interactive states (default, hover, visited, focus) driven by the
+    <code>--arxiv-link-blue</code> / <code>--arxiv-link-hover</code> / <code>--arxiv-link-visited</code>
+    tokens, with dark-mode overrides scoped to <code>@media (prefers-color-scheme: dark)</code>.
+    DESIGN-POLICIES.md: inline body links must be underlined; standalone nav links may omit it.</p>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SECTION 1 — The four states
+       ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">The four states</h2>
+    <p class="section-desc">Default is Link Blue with a 2px-offset underline. Hover deepens the color
+    (no underline thickness change — kept subtle to avoid layout shift). Visited shifts to Visited
+    Purple. Focus shows the 3px Link Blue ring via <code>:focus-visible</code>.</p>
+
+    <div class="preview-grid">
+
+      <!-- LIGHT -->
+      <div class="preview-panel light">
+        <h3>Light</h3>
+        <div class="state-row">
+          <div class="state-cell">
+            <span class="state-label">Default</span>
+            <a class="ds-link" href="#default">Read more</a>
+          </div>
+          <div class="state-cell">
+            <span class="state-label">Hover</span>
+            <a class="ds-link sim-hover" href="#hover">Read more</a>
+          </div>
+          <div class="state-cell">
+            <span class="state-label">Visited</span>
+            <a class="ds-link sim-visited" href="#visited">Read more</a>
+          </div>
+          <div class="state-cell">
+            <span class="state-label">Focus</span>
+            <a class="ds-link" href="#focus">Read more</a>
+            <span class="ratio">tab to focus</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DARK -->
+      <div class="preview-panel dark">
+        <h3>Dark</h3>
+        <div class="state-row">
+          <div class="state-cell">
+            <span class="state-label">Default</span>
+            <a class="ds-link" href="#default-dk">Read more</a>
+          </div>
+          <div class="state-cell">
+            <span class="state-label">Hover</span>
+            <a class="ds-link sim-hover" href="#hover-dk">Read more</a>
+          </div>
+          <div class="state-cell">
+            <span class="state-label">Visited</span>
+            <a class="ds-link sim-visited" href="#visited-dk">Read more</a>
+          </div>
+          <div class="state-cell">
+            <span class="state-label">Focus</span>
+            <a class="ds-link" href="#focus-dk">Read more</a>
+            <span class="ratio">tab to focus</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SECTION 2 — Links in context (paragraph)
+       ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">In context</h2>
+    <p class="section-desc">Inline within body text and within muted-grey secondary text.
+    The visited state matters most for inline references in long articles, where it helps
+    a reader scan papers they've already followed up on.</p>
+
+    <div class="preview-grid">
+
+      <!-- LIGHT -->
+      <div class="preview-panel light">
+        <h3>Light</h3>
+        <p class="body-text">
+          Submissions that include figures must reference each in the
+          <a class="ds-link" href="#a">article body</a>. Co-authors are added on the
+          <a class="ds-link" href="#b">author management page</a> before finalisation.
+          Previously read
+          <a class="ds-link sim-visited" href="#c">submission guidelines</a> appear in violet.
+        </p>
+        <p class="body-meta">
+          Submitted 14 Jan 2024 · Updated 22 Feb 2024 ·
+          <a class="ds-link" href="#d">view revision history</a> ·
+          category <a class="ds-link sim-visited" href="#e">cs.CV</a>,
+          <a class="ds-link" href="#f">cs.LG</a>
+        </p>
+      </div>
+
+      <!-- DARK -->
+      <div class="preview-panel dark">
+        <h3>Dark</h3>
+        <p class="body-text">
+          Submissions that include figures must reference each in the
+          <a class="ds-link" href="#a-dk">article body</a>. Co-authors are added on the
+          <a class="ds-link" href="#b-dk">author management page</a> before finalisation.
+          Previously read
+          <a class="ds-link sim-visited" href="#c-dk">submission guidelines</a> appear in lavender.
+        </p>
+        <p class="body-meta">
+          Submitted 14 Jan 2024 · Updated 22 Feb 2024 ·
+          <a class="ds-link" href="#d-dk">view revision history</a> ·
+          category <a class="ds-link sim-visited" href="#e-dk">cs.CV</a>,
+          <a class="ds-link" href="#f-dk">cs.LG</a>
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SECTION 3 — Token reference
+       ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">Tokens</h2>
+    <p class="section-desc">Defined in <code>design-system.css</code>. Light values in <code>:root</code>;
+    dark-mode overrides scoped to <code>@media (prefers-color-scheme: dark)</code> with a
+    <code>[data-theme="light"]</code> opt-out.</p>
+
+    <table class="token-table">
+      <thead>
+        <tr><th>Token</th><th>Light</th><th>Dark</th><th>Contrast notes</th></tr>
+      </thead>
+      <tbody>
+        <tr class="group-row"><td colspan="4">Inline text link</td></tr>
+        <tr>
+          <td><code>--arxiv-link-blue</code></td>
+          <td><span class="swatch" style="background:#1565c0"></span><code>#1565c0</code></td>
+          <td><span class="swatch" style="background:#64b5f6"></span><code>#64b5f6</code></td>
+          <td>Light 5.74:1 on white ✓ AA · Dark 7.84:1 on Repository Brown ✓ AAA</td>
+        </tr>
+        <tr>
+          <td><code>--arxiv-link-hover</code></td>
+          <td><span class="swatch" style="background:#1050a0"></span><code>#1050a0</code></td>
+          <td><span class="swatch" style="background:#90caf9"></span><code>#90caf9</code></td>
+          <td>Light 7.83:1 on white ✓ AAA</td>
+        </tr>
+        <tr>
+          <td><code>--arxiv-link-visited</code></td>
+          <td><span class="swatch" style="background:#7b2fbe"></span><code>#7b2fbe</code></td>
+          <td><span class="swatch" style="background:#c084e0"></span><code>#c084e0</code></td>
+          <td>Light 7.02:1 on white ✓ AAA · Dark 6.30:1 on Repository Brown ✓ AA</td>
+        </tr>
+        <tr>
+          <td><code>--arxiv-focus-ring</code></td>
+          <td><span class="swatch" style="background:#1565c0"></span><code>= Link Blue</code></td>
+          <td><span class="swatch" style="background:#64b5f6"></span><code>= Link Blue (dark)</code></td>
+          <td>3px outline, 2px offset on <code>:focus-visible</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="callout"><strong>Inline body links must be underlined.</strong> Color contrast against
+    body text is only 3.0:1 in light mode — too marginal to rely on alone. Underlines are mandatory
+    for inline links per DESIGN-POLICIES.md and WCAG 1.4.1 (use of color). Standalone navigation
+    links (header, footer, button-like surfaces) may omit the underline.</p>
+
+    <p class="callout"><strong>Disabled state.</strong> Use <code>--arxiv-grey-dis</code> (<code>#b0aba6</code>)
+    for the disabled color and set <code>pointer-events: none</code>. The underline stays so it's still
+    recognisable as a (currently-unavailable) link. The disabled state falls below AA on contrast — WCAG
+    exempts disabled controls from contrast requirements.</p>
+
+    <p class="callout"><strong>Visited memory.</strong> The Visited Purple is intentionally strong, not
+    a faint after-state. Researchers reading long bibliographies and listings benefit from seeing what
+    they've already followed up on; a too-subtle visited treatment defeats the purpose. If a specific
+    surface (e.g., a navigation breadcrumb) needs to suppress visited styling, override
+    <code>:visited { color: inherit }</code> locally.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SECTION 4 — Usage
+       ══════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">Usage</h2>
+    <p class="section-desc">Two patterns for applying the styles.</p>
+
+    <p class="callout"><strong>Utility class.</strong> Add <code>.ds-link</code> to specific anchors
+    you want to style. Use this when you're cherry-picking — for example, in a page where some links
+    should follow the public-side treatment and others (button-styled, nav-styled) should not.</p>
+    <pre style="background: #fff; border: 1px solid #e0dbd7; padding: 12px 14px; border-radius: 4px; font-family: var(--arxiv-font-mono); font-size: 12px; overflow-x: auto;"><code style="background: none; padding: 0;">&lt;a class="ds-link" href="..."&gt;link text&lt;/a&gt;</code></pre>
+
+    <p class="callout"><strong>Scoped base rule.</strong> Apply the same styling to every <code>&lt;a&gt;</code>
+    inside a content surface (article, paragraph block) without per-anchor classes.</p>
+    <pre style="background: #fff; border: 1px solid #e0dbd7; padding: 12px 14px; border-radius: 4px; font-family: var(--arxiv-font-mono); font-size: 12px; overflow-x: auto;"><code style="background: none; padding: 0;">.article-body a {
+  color: var(--arxiv-link-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.article-body a:hover    { color: var(--arxiv-link-hover); }
+.article-body a:visited  { color: var(--arxiv-link-visited); }
+.article-body a:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring);
+  outline-offset: 2px;
+}</code></pre>
+  </section>
+
+</div>
+</body>
+</html>

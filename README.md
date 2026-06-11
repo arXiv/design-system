@@ -29,11 +29,26 @@ design-patterns/
     table-styles.html               data tables, sortable headers, filter toolbar
     form-styles.html                segmented controls, toggle switches, validation
     DESIGN-PROGRESS.md              decisions + status
-  public/                         arxiv.org + abstract page patterns (in progress)
-    README.md                       scope + status
+  public/                         arxiv.org + abstract page patterns
+    README.md                       scope + status (incl. promoted patterns list)
+    design-system.css               public-side tokens + components
+    button-styles.html, link-styles.html, accessibility-priorities.md, ...
+
+mockups/                          in-progress whole-page mockups (preview, NOT canonical)
+  README.md                       what these are and what they're not
+  html-redesign.html              HTML paper reader mockup
+  abstract-redesign.html          abstract page mockup
 
 visual-audit/                     platform-wide visual audit (11 silos documented)
 ```
+
+## Mockups vs. canonical patterns
+
+`design-patterns/` is the **canonical** library — tokens, components, and demo pages that have been validated and are intended for production adoption. Anything in there is fair game to reference from production code.
+
+`mockups/` is the **preview surface** — whole-page work-in-progress for stakeholder review. Patterns that stabilize in the mockups get promoted to `design-patterns/public/` and *then* are considered canonical. Mockups themselves are not promised to remain stable.
+
+When this repo is served via GitHub Pages, both surfaces are visible at the same URL — that's deliberate (stakeholders see component demos and page mockups in one place) — but the README in each folder makes the distinction clear.
 
 ## Key links
 
