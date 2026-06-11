@@ -232,7 +232,7 @@ img { max-width: 100%; height: auto; }
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1;
   color: #6b6459;
   padding: 4px 8px;
@@ -1060,6 +1060,13 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   color: #1c1a17;
   font-size: 0.8125rem; /* 13px */
   line-height: 1.5;
+  /* min-width: 0 lets the 1fr grid column actually shrink below its
+     min-content; without this, long URLs / DOIs / arXiv IDs force
+     the grid wider than the viewport at narrow widths and trip the
+     320px reflow check (WCAG 1.4.10). overflow-wrap then lets those
+     long unbreakable strings break across lines. */
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .abs-meta-value a {
   font-size: 0.8125rem; /* 13px */
