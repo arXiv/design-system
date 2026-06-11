@@ -231,6 +231,32 @@
 </dialog>
 
 <style>
+/* ── Color tokens ──
+   Same names and values as design-patterns/public/design-system.css
+   (and the abstract-redesign mockup) so both mockups speak the design
+   system's vocabulary. Self-contained by design; production imports
+   the shared design-system.css instead. */
+:root {
+  --arxiv-ink: #1c1a17;
+  --arxiv-grey: #6b6459;
+  --arxiv-grey-ui: #8b8680;
+  --arxiv-grey-dis: #b0aba6;
+  --arxiv-link-blue: #1565c0;
+  --arxiv-link-hover: #1050a0;
+  --arxiv-open-blue: #a5d6fe;
+  --arxiv-open-blue-bright: #c2e2ff;
+  --arxiv-warm-wash: #f9f7f7;
+  --arxiv-card-grey: #f0eeec;
+  --arxiv-active-bg: #d6e8f7;
+  --arxiv-tint-light: #edf4fc;
+  --arxiv-tint-border: #c4dcf0;
+  --arxiv-pill-border: #e4e0db;
+  --arxiv-border-light: #ddd8d2;
+  --arxiv-warning-bg: #fff8e1;
+  --arxiv-warning-border: #e8b800;
+  --arxiv-warning-text: #7a5c00;
+  --arxiv-focus-ring-dark: #64b5f6;
+}
 /*
 ╔══════════════════════════════════════════════════════════════════════╗
 ║                        OVERRIDE STYLES                               ║
@@ -291,7 +317,7 @@ html { scroll-padding-top: 80px; }
    │  2.  HEADER CHROME                                               │
    ├──────────────────────────────────────────────────────────────────┤
    │  The redesigned header for the HTML reader. Uses warm Card Grey  │
-   │  (#f0eeec) for the bar, lighter than the abstract-page's         │
+   │  (var(--arxiv-card-grey)) for the bar, lighter than the abstract-page's         │
    │  Repository Brown — the reader is a content-first context, so    │
    │  the chrome recedes more here.                                   │
    │                                                                  │
@@ -308,8 +334,8 @@ html { scroll-padding-top: 80px; }
    ships specificity that wins by default. In a production refactor we
    would scope this with a body-class flag and drop most !important. */
 .arxiv-html-header {
-  background: #f0eeec !important;
-  border-bottom: 1px solid #e4e0db !important;
+  background: var(--arxiv-card-grey) !important;
+  border-bottom: 1px solid var(--arxiv-pill-border) !important;
   height: 52px !important;
   min-height: 52px !important;
   max-height: 52px !important;
@@ -370,7 +396,7 @@ html { scroll-padding-top: 80px; }
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 13px;
   font-weight: 500;
-  color: #6b6459;
+  color: var(--arxiv-grey);
   text-decoration: none;
   padding: 6px 10px;
   border-radius: 6px;
@@ -383,16 +409,16 @@ html { scroll-padding-top: 80px; }
   align-items: center;
   gap: 5px;
 }
-.new-html-nav a:visited { color: #6b6459; }
+.new-html-nav a:visited { color: var(--arxiv-grey); }
 .new-html-nav a:hover,
-.new-html-nav button:hover { background: #a5d6fe; color: #1c1a17; }
+.new-html-nav button:hover { background: var(--arxiv-open-blue); color: var(--arxiv-ink); }
 .new-html-nav a:focus-visible,
-.new-html-nav button:focus-visible { outline: 3px solid #1565c0; outline-offset: 1px; }
+.new-html-nav button:focus-visible { outline: 3px solid var(--arxiv-link-blue); outline-offset: 1px; }
 /* Nav icons are sized at the header level (not scoped to .new-html-nav)
    so they work for any nav-icon in the header — including the TOC
    trigger in the center cell, which lives outside .new-html-nav. */
 .arxiv-html-header .nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
-.new-html-divider { width: 1px; height: 20px; background: #e4e0db; margin: 0 4px; flex-shrink: 0; }
+.new-html-divider { width: 1px; height: 20px; background: var(--arxiv-pill-border); margin: 0 4px; flex-shrink: 0; }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  TOC TRIGGER + DROPDOWN                                          │
@@ -420,9 +446,9 @@ html { scroll-padding-top: 80px; }
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 13px;
   font-weight: 500;
-  color: #1c1a17;
+  color: var(--arxiv-ink);
   background: #ffffff;
-  border: 1px solid #e4e0db;
+  border: 1px solid var(--arxiv-pill-border);
   border-radius: 6px;
   padding: 6px 8px 6px 10px;
   cursor: pointer;
@@ -430,16 +456,16 @@ html { scroll-padding-top: 80px; }
   transition: background 0.12s, border-color 0.12s, color 0.12s;
 }
 .toc-trigger:hover {
-  background: #f9f7f7;
+  background: var(--arxiv-warm-wash);
   border-color: #b3ada4;
 }
 .toc-trigger:focus-visible {
-  outline: 3px solid #1565c0;
+  outline: 3px solid var(--arxiv-link-blue);
   outline-offset: 1px;
 }
 .toc-trigger[aria-expanded="true"] {
-  background: #d6e8f7;
-  border-color: #c4dcf0;
+  background: var(--arxiv-active-bg);
+  border-color: var(--arxiv-tint-border);
 }
 .toc-trigger .toc-trigger-label {
   overflow: hidden;
@@ -448,7 +474,7 @@ html { scroll-padding-top: 80px; }
   min-width: 0;
 }
 .toc-trigger .toc-trigger-prefix {
-  color: #6b6459;
+  color: var(--arxiv-grey);
   font-weight: 400;
   font-variant-numeric: tabular-nums;
   margin-right: 4px;
@@ -469,7 +495,7 @@ html { scroll-padding-top: 80px; }
    radius; only bottom corners are rounded so the seam with the
    header's bottom border is flush. Light-blue tint matches the
    citation/footnote popover family so all "arXiv-layer surfaces"
-   read as related (popover panels share #edf4fc background). */
+   read as related (popover panels share var(--arxiv-tint-light) background). */
 .toc-dropdown {
   position: fixed;
   top: 52px;             /* matches header height, no gap */
@@ -477,8 +503,8 @@ html { scroll-padding-top: 80px; }
   width: 380px;
   max-width: calc(100vw - 32px);
   max-height: calc(100vh - 72px);
-  background: #edf4fc;
-  border: 1px solid #c4dcf0;
+  background: var(--arxiv-tint-light);
+  border: 1px solid var(--arxiv-tint-border);
   border-top: none;
   border-radius: 0 0 6px 6px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
@@ -497,14 +523,14 @@ html { scroll-padding-top: 80px; }
   justify-content: space-between;
   gap: 12px;
   padding: 10px 14px;
-  border-bottom: 1px solid #c4dcf0;
+  border-bottom: 1px solid var(--arxiv-tint-border);
   flex-shrink: 0;
 }
 .toc-dropdown-title {
   font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
   font-weight: 600;
   font-size: 11px;
-  color: #6b6459;
+  color: var(--arxiv-grey);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -519,11 +545,11 @@ html { scroll-padding-top: 80px; }
   padding: 6px;
   margin: -6px -8px -6px 0;  /* negative margin expands the touch target without enlarging the layout */
   border-radius: 4px;
-  color: #6b6459;
+  color: var(--arxiv-grey);
   line-height: 0;
 }
-.toc-dropdown-close:hover { color: #1c1a17; background: rgba(0, 0, 0, 0.05); }
-.toc-dropdown-close:focus-visible { outline: 2px solid #1565c0; outline-offset: 1px; }
+.toc-dropdown-close:hover { color: var(--arxiv-ink); background: rgba(0, 0, 0, 0.05); }
+.toc-dropdown-close:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
 .toc-dropdown-close svg { width: 18px; height: 18px; }
 
 .toc-dropdown-list {
@@ -544,21 +570,21 @@ html { scroll-padding-top: 80px; }
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 13px;
   line-height: 1.4;
-  color: #1c1a17;
+  color: var(--arxiv-ink);
   text-decoration: none;
   border-left: 3px solid transparent;
   transition: background 0.10s, border-color 0.10s, color 0.10s;
 }
 .toc-dropdown-link:hover {
-  background: #d6e8f7;  /* one step more saturated than the panel bg */
+  background: var(--arxiv-active-bg);  /* one step more saturated than the panel bg */
 }
 .toc-dropdown-link:focus-visible {
-  outline: 2px solid #1565c0;
+  outline: 2px solid var(--arxiv-link-blue);
   outline-offset: -2px;
 }
 .toc-dropdown-link .toc-num {
   flex-shrink: 0;
-  color: #6b6459;
+  color: var(--arxiv-grey);
   font-variant-numeric: tabular-nums;
   font-weight: 500;
   min-width: 28px;
@@ -568,9 +594,9 @@ html { scroll-padding-top: 80px; }
   min-width: 0;
 }
 /* Indent levels: section (depth 1, default), subsection (depth 2), paragraph (depth 3). */
-.toc-dropdown-item[data-depth="2"] .toc-dropdown-link { padding-left: 32px; font-size: 12.5px; color: #6b6459; }
+.toc-dropdown-item[data-depth="2"] .toc-dropdown-link { padding-left: 32px; font-size: 12.5px; color: var(--arxiv-grey); }
 .toc-dropdown-item[data-depth="2"] .toc-dropdown-link .toc-num { min-width: 36px; }
-.toc-dropdown-item[data-depth="3"] .toc-dropdown-link { padding-left: 50px; font-size: 12.5px; color: #6b6459; font-style: italic; }
+.toc-dropdown-item[data-depth="3"] .toc-dropdown-link { padding-left: 50px; font-size: 12.5px; color: var(--arxiv-grey); font-style: italic; }
 /* Abstract/appendix/bibliography are treated as top-level for orientation. */
 .toc-dropdown-item[data-kind="abstract"] .toc-dropdown-link,
 .toc-dropdown-item[data-kind="appendix"] .toc-dropdown-link,
@@ -579,13 +605,13 @@ html { scroll-padding-top: 80px; }
 }
 
 /* Current-section highlight — left accent in Link Blue + slightly
-   more saturated blue wash than the dropdown's #edf4fc body. Same
+   more saturated blue wash than the dropdown's var(--arxiv-tint-light) body. Same
    visual family as the inline active state we use for citations and
    footnote markers, so the system reads as related. */
 .toc-dropdown-item.is-current .toc-dropdown-link {
-  background: #d6e8f7;
-  border-left-color: #1565c0;
-  color: #1c1a17;
+  background: var(--arxiv-active-bg);
+  border-left-color: var(--arxiv-link-blue);
+  color: var(--arxiv-ink);
 }
 
 /* ── Mobile: full-screen menu ────────────────────────────────────────
@@ -614,7 +640,7 @@ html { scroll-padding-top: 80px; }
      interactive against it. */
   .toc-dropdown-header {
     padding: 16px 20px;
-    background: #d6e8f7;
+    background: var(--arxiv-active-bg);
   }
   .toc-dropdown-title { font-size: 13px; }
   /* Close button: visible, big, comfortable touch target. */
@@ -682,7 +708,7 @@ html { scroll-padding-top: 80px; }
   .toc-trigger-prefix { display: none !important; }
 }
 .toc-dropdown-item.is-current .toc-dropdown-link .toc-num {
-  color: #1565c0;
+  color: var(--arxiv-link-blue);
   font-weight: 600;
 }
 
@@ -766,7 +792,7 @@ html { scroll-padding-top: 80px; }
 .reading-progress-fill {
   height: 100%;
   width: 0%;
-  background: #1565c0;
+  background: var(--arxiv-link-blue);
   transition: width 0.1s linear;
 }
 
@@ -799,7 +825,7 @@ h1.ltx_title.ltx_title_document {
   font-size: 32px !important;
   font-weight: 700 !important;
   line-height: 1.2 !important;
-  color: #1c1a17 !important;
+  color: var(--arxiv-ink) !important;
 }
 .ltx_title_section,
 .ltx_title_acknowledgements,
@@ -808,13 +834,13 @@ h1.ltx_title.ltx_title_document {
   font-family: "IBM Plex Sans", -apple-system, sans-serif !important;
   font-size: 20px !important;
   font-weight: 600 !important;
-  color: #1c1a17 !important;
+  color: var(--arxiv-ink) !important;
 }
 .ltx_title_subsection {
   font-family: "IBM Plex Sans", -apple-system, sans-serif !important;
   font-size: 16px !important;
   font-weight: 600 !important;
-  color: #1c1a17 !important;
+  color: var(--arxiv-ink) !important;
 }
 .ltx_title_abstract {
   font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif !important;
@@ -822,13 +848,13 @@ h1.ltx_title.ltx_title_document {
   font-weight: 600 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
-  color: #6b6459 !important;
+  color: var(--arxiv-grey) !important;
 }
 .ltx_p {
   font-family: "IBM Plex Sans", -apple-system, sans-serif !important;
   font-size: 15px !important;
   line-height: 1.7 !important;
-  color: #1c1a17 !important;
+  color: var(--arxiv-ink) !important;
   text-align: justify !important;
   hyphens: auto !important;
 }
@@ -851,7 +877,7 @@ h1.ltx_title.ltx_title_document {
   display: block !important;
   text-align: center !important;
   font-size: 15px !important;
-  color: #1c1a17 !important;
+  color: var(--arxiv-ink) !important;
   line-height: 1.6 !important;
   margin-bottom: 1.5rem !important;
   max-width: 100% !important;
@@ -874,7 +900,7 @@ h1.ltx_title.ltx_title_document {
   .ltx_abstract {
     padding: 12px 14px !important;
     margin: 1rem 0 2rem !important;
-    border: 1px solid #e4e0db !important;
+    border: 1px solid var(--arxiv-pill-border) !important;
     border-radius: 4px !important;
   }
 }
@@ -900,7 +926,7 @@ h1.ltx_title.ltx_title_document {
   font-size: 15px;
   font-weight: 600;
   line-height: 1.45;
-  color: #b0aba6;
+  color: var(--arxiv-grey-dis);
   /* Wraps naturally at narrow widths — the &ensp; between the
      identifier and the license link breaks across lines so the two
      parts stack vertically when there isn't room for one row. */
@@ -926,17 +952,28 @@ h1.ltx_title.ltx_title_document {
   margin-right: 6px;
 }
 .new-watermark a {
-  color: #6b6459;
+  color: var(--arxiv-grey);
   text-decoration: none;
   font-size: 15px;
   font-weight: 600;
 }
-.new-watermark a:hover { color: #1c1a17; text-decoration: underline; }
+.new-watermark a:hover { color: var(--arxiv-ink); text-decoration: underline; }
+/* The license link wraps an <abbr>, whose browser-default dotted
+   underline rendered at this small size like a line struck THROUGH
+   the text (responsiveness audit 2026-06-11, issue 1 — visible at
+   every viewport). Replace with a clean solid underline, pushed
+   clear of the descenders. The abbr's title tooltip is unaffected. */
+.new-watermark a abbr[title] {
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
 
 /* Reference band: full-bleed using negative-margin viewport-width trick.
    Production should achieve this with proper full-bleed grid layout. */
 .ltx_bibliography {
-  background: #f0eeec !important;
+  background: var(--arxiv-card-grey) !important;
   margin-left: calc(-50vw + 50%) !important;
   margin-right: calc(-50vw + 50%) !important;
   padding-left: calc(50vw - 50%) !important;
@@ -968,7 +1005,7 @@ section.ltx_bibliography {
   max-width: none !important;
   padding: 28px 24px 32px !important;
   margin: 0 !important;
-  border-top: 2px solid #a5d6fe !important;
+  border-top: 2px solid var(--arxiv-open-blue) !important;
 }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
@@ -995,7 +1032,7 @@ section.ltx_bibliography {
 }
 .ltx_authors-list li:not(:last-child)::after { content: ', '; }
 .ltx_authors-list li a {
-  color: #1565c0;
+  color: var(--arxiv-link-blue);
   text-decoration: none;
   font-size: 15px;
 }
@@ -1005,7 +1042,7 @@ section.ltx_bibliography {
 .ltx_authors-toggle {
   font-family: inherit;
   font-size: 15px;
-  color: #6b6459;
+  color: var(--arxiv-grey);
   background: none;
   border: none;
   padding: 0;
@@ -1014,9 +1051,9 @@ section.ltx_bibliography {
   display: block;
   margin: 0.25rem auto 1.5rem;
 }
-.ltx_authors-toggle:hover { color: #1c1a17; text-decoration: underline; }
+.ltx_authors-toggle:hover { color: var(--arxiv-ink); text-decoration: underline; }
 .ltx_authors-toggle:focus-visible {
-  outline: 3px solid #1565c0;
+  outline: 3px solid var(--arxiv-link-blue);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -1056,7 +1093,7 @@ cite.cite-chip {
   position: relative;
 }
 .cite-chip a.ltx_ref {
-  color: #6b6459 !important;
+  color: var(--arxiv-grey) !important;
   text-decoration: none !important;
   font-size: 0.9em;
   padding: 0 2px;
@@ -1072,13 +1109,13 @@ cite.cite-chip {
    currently-open popover. */
 .cite-chip a.ltx_ref:hover,
 .cite-chip a.ltx_ref:focus-visible {
-  color: #1565c0 !important;
+  color: var(--arxiv-link-blue) !important;
   text-decoration: underline !important;
   text-underline-offset: 2px;
 }
 .cite-chip a.ltx_ref[aria-expanded="true"] {
-  color: #1565c0 !important;
-  background: #d6e8f7;
+  color: var(--arxiv-link-blue) !important;
+  background: var(--arxiv-active-bg);
   text-decoration: underline !important;
 }
 
@@ -1094,15 +1131,15 @@ cite.cite-chip {
      across the two "arXiv layer" surfaces (formula chrome + citation
      popover). Solid (not semitransparent) since the popover is a
      floating panel on top of other content. */
-  background: #edf4fc;
-  border: 1px solid #c4dcf0;
+  background: var(--arxiv-tint-light);
+  border: 1px solid var(--arxiv-tint-border);
   border-radius: 6px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   padding: 12px 14px 8px;
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 13px;
   line-height: 1.5;
-  color: #1c1a17;
+  color: var(--arxiv-ink);
   text-align: left;
   font-style: normal;
 }
@@ -1122,7 +1159,7 @@ cite.cite-chip {
   font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
   font-weight: 600;
   font-size: 11px;
-  color: #6b6459;
+  color: var(--arxiv-grey);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin: 0 0 8px;
@@ -1134,18 +1171,18 @@ cite.cite-chip {
   line-height: 1.5;
   margin: 0 0 8px;
   padding: 6px 0;
-  border-top: 1px solid #f0eeec;
+  border-top: 1px solid var(--arxiv-card-grey);
   break-inside: avoid;
 }
 .cite-popover-item:first-child { border-top: none; padding-top: 0; }
 .cite-popover-item:last-child { margin-bottom: 0; }
 .cite-popover-item-num {
   font-family: "IBM Plex Mono", monospace;
-  color: #1565c0;
+  color: var(--arxiv-link-blue);
   font-weight: 600;
   margin-right: 4px;
 }
-.cite-popover-item-text { color: #1c1a17; }
+.cite-popover-item-text { color: var(--arxiv-ink); }
 
 .cite-popover-item-jump {
   display: inline-flex;
@@ -1154,7 +1191,7 @@ cite.cite-chip {
   margin-left: 6px;
   padding: 1px 6px;
   font-size: 12px;
-  color: #1565c0;
+  color: var(--arxiv-link-blue);
   text-decoration: none;
   border-radius: 3px;
   white-space: nowrap;
@@ -1165,7 +1202,7 @@ cite.cite-chip {
   text-underline-offset: 2px;
 }
 .cite-popover-item-jump:focus-visible {
-  outline: 2px solid #1565c0;
+  outline: 2px solid var(--arxiv-link-blue);
   outline-offset: 1px;
 }
 .cite-popover-item-jump svg { width: 11px; height: 11px; }
@@ -1177,14 +1214,14 @@ cite.cite-chip {
   border: none;
   font-size: 22px;
   line-height: 1;
-  color: #6b6459;
+  color: var(--arxiv-grey);
   cursor: pointer;
   padding: 2px 8px;
   border-radius: 4px;
 }
-.cite-popover-close:hover { color: #1c1a17; background: #d6e8f7; }
+.cite-popover-close:hover { color: var(--arxiv-ink); background: var(--arxiv-active-bg); }
 .cite-popover-close:focus-visible {
-  outline: 2px solid #1565c0;
+  outline: 2px solid var(--arxiv-link-blue);
   outline-offset: 1px;
 }
 
@@ -1221,7 +1258,7 @@ cite.cite-chip {
    │  clears the class via the popstate handler so we don't leave    │
    │  orphan highlights after history navigation.                     │
    │                                                                  │
-   │  Color choice: light-blue #d6e8f7, the same active-state wash    │
+   │  Color choice: light-blue var(--arxiv-active-bg), the same active-state wash    │
    │  used by inline interactive elements (citation chips when their  │
    │  popover is open, footnote markers on hover / aria-expanded /    │
    │  paired). Reusing it for "you just jumped here" / "you just      │
@@ -1238,7 +1275,7 @@ cite.cite-chip {
    left padding so the bibitem's content stays in the same horizontal
    position as its unhighlighted siblings. */
 li.ltx_bibitem.cite-active-target {
-  background: #d6e8f7 !important;
+  background: var(--arxiv-active-bg) !important;
   padding: 12px 12px 12px 50px !important;
   margin: -12px -12px 8px -50px !important;
   border-radius: 4px;
@@ -1269,22 +1306,22 @@ li.ltx_bibitem.cite-active-target {
    sized for inline text. Persists until the user clicks elsewhere or
    presses Esc. */
 cite.ltx_cite.cite-active-source {
-  background: #d6e8f7;
+  background: var(--arxiv-active-bg);
   border-radius: 3px;
   padding: 1px 4px;
   margin: 0 -4px;
   transition: background 0.4s ease;
 }
 cite.ltx_cite.cite-active-source a.ltx_ref {
-  color: #1c1a17 !important;
+  color: var(--arxiv-ink) !important;
 }
 /* V3 secondary button (see design-system.css `.ds-btn-secondary`):
    white fill, warm-grey dual-gradient border, soft inset vignette
    and outer drop shadow. The link sits inside a .cite-active-target
-   bibitem (which now has a #d6e8f7 light-blue background), so the
+   bibitem (which now has a var(--arxiv-active-bg) light-blue background), so the
    white fill creates clear figure/ground separation without
    conflicting with the blue active-state language. Icon stroke is
-   set explicitly to var(--arxiv-grey, #6b6459) so the up-arrow is
+   set explicitly to var(--arxiv-grey, var(--arxiv-grey)) so the up-arrow is
    visible regardless of ar5iv's inherited SVG defaults. */
 .cite-return-link {
   display: inline-flex;
@@ -1297,10 +1334,10 @@ cite.ltx_cite.cite-active-source a.ltx_ref {
   font-size: 14px;
   font-weight: 600;
   line-height: 1;
-  color: #6b6459;
+  color: var(--arxiv-grey);
   background:
     linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(to bottom, #ddd8d2, #b3ada4) border-box;
+    linear-gradient(to bottom, var(--arxiv-border-light), #b3ada4) border-box;
   border: 1.5px solid transparent;
   border-radius: 6px;
   box-shadow:
@@ -1313,8 +1350,8 @@ cite.ltx_cite.cite-active-source a.ltx_ref {
 .cite-return-link:hover {
   background:
     linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(to bottom, #c8c4be, #8b8680) border-box;
-  color: #1c1a17;
+    linear-gradient(to bottom, #c8c4be, var(--arxiv-grey-ui)) border-box;
+  color: var(--arxiv-ink);
   box-shadow:
     inset 0 0 8px rgba(0, 0, 0, 0.03),
     0 1px 3px rgba(0, 0, 0, 0.08);
@@ -1324,11 +1361,11 @@ cite.ltx_cite.cite-active-source a.ltx_ref {
   transform: translateY(1px);
   background:
     linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(#8b8680, #8b8680) border-box;
+    linear-gradient(var(--arxiv-grey-ui), var(--arxiv-grey-ui)) border-box;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.13);
 }
 .cite-return-link:focus-visible {
-  outline: 3px solid #1565c0;
+  outline: 3px solid var(--arxiv-link-blue);
   outline-offset: 2px;
 }
 /* Explicit stroke colors (no currentColor) so the icon stays visible
@@ -1342,11 +1379,11 @@ cite.ltx_cite.cite-active-source a.ltx_ref {
   height: 14px;
   flex-shrink: 0;
   fill: none;
-  stroke: #6b6459;
+  stroke: var(--arxiv-grey);
   position: relative;
   z-index: 1;
 }
-.cite-return-link:hover svg { stroke: #1c1a17; }
+.cite-return-link:hover svg { stroke: var(--arxiv-ink); }
 .cite-return-link svg line,
 .cite-return-link svg polyline {
   stroke: inherit;
@@ -1444,7 +1481,7 @@ table.ltx_equationgroup math.ltx_math_unparsed {
 .eqn-region:hover,
 .eqn-region.is-active,
 .eqn-region:focus-within {
-  border-color: var(--arxiv-pill-border, #e4e0db);
+  border-color: var(--arxiv-pill-border, var(--arxiv-pill-border));
 }
 
 /* Zero out the equation table's own margins — the wrapper's padding
@@ -1480,6 +1517,19 @@ table.ltx_equationgroup math.ltx_math_unparsed {
     max-width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+  }
+  /* Equation numbers stay visible while the equation scrolls
+     (responsiveness audit 2026-06-11, issue: tags like "(4.7)" sat
+     beyond the initial viewport on 119 of 145 equations at 320px —
+     the reader had no way to know which equation they were looking
+     at without scrolling away from it). position:sticky pins the tag
+     to the right edge of the scrollable container; the opaque
+     background keeps math from showing through beneath it. */
+  .eqn-region > table.ltx_equationgroup td.ltx_eqn_eqno {
+    position: sticky;
+    right: 0;
+    background: #fff;
+    padding-left: 6px;
   }
 }
 
@@ -1518,7 +1568,7 @@ table.ltx_equationgroup math.ltx_math_unparsed {
   align-items: center;
   gap: 4px 14px;
   background: #ffffff;
-  border: 1px solid #e4e0db;
+  border: 1px solid var(--arxiv-pill-border);
   border-radius: 999px;
   padding: 6px 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
@@ -1549,7 +1599,7 @@ table.ltx_equationgroup math.ltx_math_unparsed {
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 11px;
   font-weight: 500;
-  color: #6b6459;
+  color: var(--arxiv-grey);
   background: none;
   border: none;
   border-radius: 0;
@@ -1559,12 +1609,12 @@ table.ltx_equationgroup math.ltx_math_unparsed {
   line-height: 1.2;
 }
 .eqn-chip:hover {
-  color: #1565c0;
+  color: var(--arxiv-link-blue);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 .eqn-chip:focus-visible {
-  outline: 2px solid #1565c0;
+  outline: 2px solid var(--arxiv-link-blue);
   outline-offset: 1px;
   border-radius: 2px;
 }
@@ -1580,7 +1630,7 @@ table.ltx_equationgroup math.ltx_math_unparsed {
 }
 .eqn-chip[disabled]:hover,
 .eqn-chip[aria-disabled="true"]:hover {
-  color: #6b6459;
+  color: var(--arxiv-grey);
   text-decoration: none;
 }
 
@@ -1590,9 +1640,9 @@ table.ltx_equationgroup math.ltx_math_unparsed {
   font-family: "IBM Plex Mono", monospace;
   font-size: 13px;
   line-height: 1.5;
-  color: #1c1a17;
+  color: var(--arxiv-ink);
   background: #fafaf8;
-  border: 1px solid #e4e0db;
+  border: 1px solid var(--arxiv-pill-border);
   border-radius: 4px;
   padding: 12px 16px;
   margin: 0.5em 0;
@@ -1658,7 +1708,7 @@ article.ltx_document {
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 0.75em;
   font-weight: 600;
-  color: #1565c0;
+  color: var(--arxiv-link-blue);
   text-decoration: none;
   vertical-align: super;
   line-height: 0;
@@ -1678,12 +1728,12 @@ article.ltx_document {
 .ftn-marker.is-paired-hover,
 .ftn-marker[aria-expanded="true"],
 .ftn-marker.is-active-source {
-  background: #d6e8f7;
+  background: var(--arxiv-active-bg);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 .ftn-marker:focus-visible {
-  outline: 2px solid #1565c0;
+  outline: 2px solid var(--arxiv-link-blue);
   outline-offset: 1px;
 }
 
@@ -1705,7 +1755,7 @@ html:not(.js) .footnote {
   display: block;
   margin: 8px 0 8px 24px;
   padding: 6px 12px;
-  border-left: 2px solid #ddd8d2;
+  border-left: 2px solid var(--arxiv-border-light);
   font-size: 0.85em;
   color: #555;
 }
@@ -1734,23 +1784,23 @@ html:not(.js) .reading-progress { display: none !important; }
   font-style: italic;
   font-size: 13px;
   line-height: 1.45;
-  color: #6b6459;
+  color: var(--arxiv-grey);
   transition: color 0.15s ease;
 }
 .ftn-marginalia .ftn-num {
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-style: normal;
   font-weight: 600;
-  color: #1565c0;
+  color: var(--arxiv-link-blue);
   margin-right: 4px;
   font-size: 12px;
 }
 .ftn-marginalia a {
-  color: #1565c0;
+  color: var(--arxiv-link-blue);
   font-style: normal;
 }
 .ftn-marginalia.is-paired-hover {
-  color: #1c1a17;
+  color: var(--arxiv-ink);
 }
 /* Active source (wide viewports) — applied when the user clicks a
    marker. The highlight extends beyond the marginalia bounds via a
@@ -1758,14 +1808,14 @@ html:not(.js) .reading-progress { display: none !important; }
    (the marginalia layout algorithm depends on stable heights to keep
    notes from re-overlapping when one is toggled active). */
 .ftn-marginalia.is-active-source {
-  color: #1c1a17;
+  color: var(--arxiv-ink);
   z-index: 1;  /* creates a stacking context for ::before below text */
 }
 .ftn-marginalia.is-active-source::before {
   content: '';
   position: absolute;
   inset: -6px -10px;
-  background: #d6e8f7;
+  background: var(--arxiv-active-bg);
   border-radius: 4px;
   z-index: -1;
 }
@@ -1780,22 +1830,22 @@ html:not(.js) .reading-progress { display: none !important; }
   max-height: 50vh;
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: #edf4fc;
-  border: 1px solid #c4dcf0;
+  background: var(--arxiv-tint-light);
+  border: 1px solid var(--arxiv-tint-border);
   border-radius: 6px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   padding: 12px 14px;
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 13px;
   line-height: 1.5;
-  color: #1c1a17;
+  color: var(--arxiv-ink);
 }
 .ftn-popover[hidden] { display: none; }
 .ftn-popover-title {
   font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
   font-weight: 600;
   font-size: 11px;
-  color: #6b6459;
+  color: var(--arxiv-grey);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin: 0 0 8px;
@@ -1808,12 +1858,12 @@ html:not(.js) .reading-progress { display: none !important; }
   border: none;
   font-size: 22px;
   line-height: 1;
-  color: #6b6459;
+  color: var(--arxiv-grey);
   cursor: pointer;
   padding: 0 6px;
   border-radius: 4px;
 }
-.ftn-popover-close:hover { color: #1c1a17; background: #d6e8f7; }
+.ftn-popover-close:hover { color: var(--arxiv-ink); background: var(--arxiv-active-bg); }
 
 /* Hide the right-margin marginalia on narrow viewports (no room). */
 @media (max-width: 1199px) {
@@ -1898,7 +1948,7 @@ html:not(.js) .reading-progress { display: none !important; }
 .fig-region:hover .fig-image-wrap,
 .fig-region.is-active .fig-image-wrap,
 .fig-region:focus-within .fig-image-wrap {
-  border-color: var(--arxiv-pill-border, #e4e0db);
+  border-color: var(--arxiv-pill-border, var(--arxiv-pill-border));
 }
 /* Force the SVG to honor its viewBox aspect ratio even when wrapped.
    Without this, some browsers compute height: auto as 0 when the SVG
@@ -1909,7 +1959,7 @@ html:not(.js) .reading-progress { display: none !important; }
 .fig-region figcaption {
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 13px;
-  color: #1c1a17;
+  color: var(--arxiv-ink);
   margin-top: 22px;  /* leaves room for the chip pill straddling the image's bottom edge */
   line-height: 1.5;
   max-width: 640px;
@@ -1936,7 +1986,7 @@ html:not(.js) .reading-progress { display: none !important; }
   align-items: center;
   gap: 4px 14px;
   background: #ffffff;
-  border: 1px solid #e4e0db;
+  border: 1px solid var(--arxiv-pill-border);
   border-radius: 999px;
   padding: 6px 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
@@ -1962,7 +2012,7 @@ html:not(.js) .reading-progress { display: none !important; }
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 11px;
   font-weight: 500;
-  color: #6b6459;
+  color: var(--arxiv-grey);
   background: none;
   border: none;
   cursor: pointer;
@@ -1971,19 +2021,19 @@ html:not(.js) .reading-progress { display: none !important; }
   text-align: left;
 }
 .fig-chip:hover {
-  color: #1565c0;
+  color: var(--arxiv-link-blue);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 .fig-chip:focus-visible {
-  outline: 2px solid #1565c0;
+  outline: 2px solid var(--arxiv-link-blue);
   outline-offset: 1px;
   border-radius: 2px;
 }
 .fig-chip svg { width: 11px; height: 11px; flex-shrink: 0; }
 /* CTA variant — calls attention to the missing-alt prompt. */
 .fig-chip.is-cta {
-  color: #1565c0;
+  color: var(--arxiv-link-blue);
   font-weight: 600;
 }
 /* Inline notice — not interactive, just informational text. */
@@ -2023,13 +2073,13 @@ html:not(.js) .reading-progress { display: none !important; }
   font-style: italic;
   font-size: 13px;
   line-height: 1.45;
-  color: #6b6459;
+  color: var(--arxiv-grey);
 }
 .fig-alt-marginalia .fig-alt-label {
   font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
   font-weight: 600;
   font-size: 10px;
-  color: #6b6459;
+  color: var(--arxiv-grey);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-style: normal;
@@ -2059,7 +2109,7 @@ html:not(.js) .reading-progress { display: none !important; }
   font-style: normal;
   font-size: 11px;
   font-weight: 500;
-  color: #1565c0;
+  color: var(--arxiv-link-blue);
   background: none;
   border: none;
   padding: 0;
@@ -2071,7 +2121,7 @@ html:not(.js) .reading-progress { display: none !important; }
 }
 .fig-alt-action:hover { color: #0d4a96; }
 .fig-alt-action:focus-visible {
-  outline: 2px solid #1565c0;
+  outline: 2px solid var(--arxiv-link-blue);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -2119,7 +2169,7 @@ html:not(.js) .reading-progress { display: none !important; }
   border: none;
   border-radius: 4px;
   background: none;
-  color: #8b8680;
+  color: var(--arxiv-grey-ui);
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.15s ease, background 0.12s, color 0.12s;
@@ -2131,9 +2181,9 @@ h4:hover .heading-permalink,
 .heading-permalink:focus-visible {
   opacity: 1;
 }
-.heading-permalink:hover { background: #f0eeec; color: #1565c0; }
+.heading-permalink:hover { background: var(--arxiv-card-grey); color: var(--arxiv-link-blue); }
 .heading-permalink:focus-visible {
-  outline: 2px solid #1565c0;
+  outline: 2px solid var(--arxiv-link-blue);
   outline-offset: 1px;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -2195,8 +2245,8 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   align-items: center;
   gap: 8px;
   padding: 10px 14px;
-  border-bottom: 1px solid #e4e0db;
-  background: #f9f7f7;
+  border-bottom: 1px solid var(--arxiv-pill-border);
+  background: var(--arxiv-warm-wash);
   flex-shrink: 0;
 }
 .fig-lightbox-title {
@@ -2205,7 +2255,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 0.875rem; /* 14px */
   font-weight: 600;
-  color: #1c1a17;
+  color: var(--arxiv-ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2218,19 +2268,19 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   min-width: 32px;
   height: 32px;
   padding: 0 8px;
-  border: 1px solid #ddd8d2;
+  border: 1px solid var(--arxiv-border-light);
   border-radius: 6px;
   background: #fff;
-  color: #1c1a17;
+  color: var(--arxiv-ink);
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 0.875rem;
   cursor: pointer;
 }
 .fig-lightbox-zoombtn:hover,
-.fig-lightbox-close:hover { background: #f0eeec; }
+.fig-lightbox-close:hover { background: var(--arxiv-card-grey); }
 .fig-lightbox-zoombtn:focus-visible,
 .fig-lightbox-close:focus-visible {
-  outline: 3px solid #1565c0;
+  outline: 3px solid var(--arxiv-link-blue);
   outline-offset: 1px;
 }
 .fig-lightbox-zoomlevel {
@@ -2238,7 +2288,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   text-align: center;
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: 0.75rem; /* 12px */
-  color: #6b6459;
+  color: var(--arxiv-grey);
 }
 .fig-lightbox-close { margin-left: 8px; font-size: 1.25rem; line-height: 1; }
 
@@ -2282,10 +2332,10 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   max-height: 20%;
   overflow-y: auto;
   padding: 10px 16px;
-  border-top: 1px solid #e4e0db;
+  border-top: 1px solid var(--arxiv-pill-border);
   font-size: 0.8125rem; /* 13px */
   line-height: 1.5;
-  color: #1c1a17;
+  color: var(--arxiv-ink);
   text-align: left;
 }
 
