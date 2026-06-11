@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>arXiv Public Site Footer — Component Reference</title>
+  <link rel="stylesheet" href="design-system.css">
+  <style>
+    /* ── Page chrome (reference doc only). Mirrors the other public
+       pattern pages. This page CONSUMES design-system.css — it never
+       redefines .ds-site-footer; the rendered footer reads straight
+       from the stylesheet. ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: var(--arxiv-font-sans);
+      color: var(--arxiv-ink);
+      background: var(--arxiv-warm-wash);
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .page { max-width: 980px; margin: 0 auto; padding: 48px 28px 80px; }
+    .back-link { display: inline-block; margin-bottom: 20px; font-size: 13px; color: var(--arxiv-link-blue); text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+    .page-header { margin-bottom: 44px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p { margin: 0; color: var(--arxiv-grey); font-size: 13px; max-width: 720px; }
+    .section { margin-bottom: 48px; }
+    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+    .section-desc { font-size: 13px; color: var(--arxiv-grey); margin: 0 0 20px; max-width: 720px; line-height: 1.55; }
+    .live-demo { background: #fff; border: 1px solid var(--arxiv-card-grey); border-radius: 8px; overflow: hidden; }
+    .usage-list { font-size: 13px; color: var(--arxiv-grey); line-height: 1.7; max-width: 720px; }
+    .usage-list code { font-family: var(--arxiv-font-mono); font-size: 12px; background: var(--arxiv-card-grey); padding: 1px 5px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <a class="back-link" href="README.md">&larr; Public design patterns</a>
+
+  <header class="page-header">
+    <h1>Site footer</h1>
+    <p>
+      The universal arXiv public-page footer (<code>.ds-site-footer</code>).
+      Design approved 2026-06-11 — validated by exact agreement across the
+      spinout-header-footer Cloud Run deployment and both redesign mockups
+      (see <code>audits/2026-06-11/AUDIT-COMPONENTS.md</code>, addendum).
+    </p>
+  </header>
+
+  <section class="section">
+    <h2 class="section-title">Live component</h2>
+    <p class="section-desc">
+      Rendered directly from <code>design-system.css</code>. Resize the
+      window: the funders column drops below the main column under 720px.
+      The institutional mention after &ldquo;member institutions&rdquo; is
+      the optional IP-matched insertion — omit the
+      <code>.ack-member-inline</code> span when no match exists.
+    </p>
+    <div class="live-demo">
+      <footer class="ds-site-footer">
+        <div class="ds-site-footer-grid">
+          <div class="ds-site-footer-main">
+            <div class="ds-site-footer-ack">
+              We gratefully acknowledge support from our <strong>major funders</strong>,
+              <a href="#"><strong>member institutions</strong></a><span class="ack-member-inline">,
+              <strong>Rheinisch-Westfälische Technische Hochschule Aachen</strong></span>,
+              and <a href="#">all contributors</a>.
+            </div>
+            <nav class="ds-site-footer-links" aria-label="Site navigation">
+              <a href="https://info.arxiv.org/about">About</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+              <a href="https://info.arxiv.org/help">Help</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+              <a href="https://info.arxiv.org/help/contact.html">Contact</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+              <a href="https://info.arxiv.org/help/subscribe">Subscribe</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+              <a href="https://info.arxiv.org/help/license/index.html">Copyright</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+              <a href="https://info.arxiv.org/help/policies/privacy_policy.html">Privacy</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+              <a href="https://info.arxiv.org/help/web_accessibility.html">Accessibility</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+              <a href="https://status.arxiv.org/" target="_blank" rel="noopener noreferrer">Operational Status<span class="is-sr-only"> (opens in new tab)</span></a>
+            </nav>
+          </div>
+          <div class="ds-site-footer-funders">
+            <div class="ds-site-footer-funders-label">Major funding support from</div>
+            <div class="ds-site-footer-funders-logos">
+              <img class="ds-funder-logo" src="../../mockups/images/Simons-wordmark.png" alt="Simons Foundation">
+              <img class="ds-funder-logo" src="../../mockups/images/Schmidt-wordmark.png" alt="Schmidt Sciences">
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Behavior contract</h2>
+    <ul class="usage-list">
+      <li>Real <code>&lt;footer&gt;</code> landmark; the link row is a <code>&lt;nav aria-label="Site navigation"&gt;</code>.</li>
+      <li>Dot separators must carry <code>aria-hidden="true"</code> — screen readers otherwise announce &ldquo;middot&rdquo; between every link.</li>
+      <li>Funder logos carry organization names as alt text.</li>
+      <li>External links (Operational Status) use <code>target="_blank"</code> + <code>rel="noopener noreferrer"</code> + a screen-reader-only &ldquo;(opens in new tab)&rdquo; notice.</li>
+      <li>Type sizes are rem so browser font-size overrides propagate (accessibility-priorities.md).</li>
+      <li>Hidden in print (<code>@media print</code>) — printouts keep the content, not the chrome.</li>
+      <li>Wording is exact-match to the approved deployment; do not paraphrase the acknowledgment line.</li>
+    </ul>
+  </section>
+</div>
+</body>
+</html>
