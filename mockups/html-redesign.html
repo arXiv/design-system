@@ -182,6 +182,18 @@
   WORKFLOW layer (zoom / copy / permalink), not the math
   accessibility layer (which is Deyan's territory).
 
+  UPDATE 2026-06-12: the read-aloud ("Listen") feature now runs Speech
+  Rule Engine client-side to SPEAK equations (ClearSpeak, lazy-loaded,
+  self-hosted in lib/sre/). This does not change the position above —
+  the AT path (screen readers) remains browser+AT over native MathML,
+  where NVDA/JAWS already run MathCAT/SRE themselves. SRE here serves
+  only arXiv's own Listen feature, which targets listeners WITHOUT
+  screen readers. It needs no Intent annotations to work today;
+  Intent adoption will improve its semantic accuracy over time. A
+  production alternative worth evaluating: precompute speech strings
+  at LaTeXML conversion time (data-semantic-speech attributes) for
+  zero client-side cost.
+
   What stays in the mockup, then, is reader-workflow tooling that
   COMPLEMENTS Deyan's work:
     - Click a display equation → it expands in place (zoom without
@@ -7280,11 +7292,20 @@ We thus see that</p>
    Content handling (quality of listening over completeness):
      - Reads: section headings (announced as "Section. Title"),
        paragraph prose, figure captions.
-     - Math: display equations announce as "Equation N" and are
-       otherwise skipped — speaking raw LaTeX or MathML text is noise,
-       and proper math speech belongs to the MathML+AT pipeline
-       (Deyan's track), not this feature. Inline math speaks its
-       alttext only when short (≤24 chars), else says "formula".
+     - Math SPEAKS FOR REAL (added 2026-06-12 after internal testing:
+       "Equation 2.3 is not what a blind user needs — they need to
+       hear the equation itself"). Display equations announce their
+       number, then the mathematics via Speech Rule Engine (ClearSpeak)
+       run on the LaTeXML MathML — the same engine family behind
+       MathJax's a11y extensions and screen-reader math. Inline math
+       speaks the same way. SRE is lazy-loaded on first Listen (~1 MB,
+       self-hosted); invisible operators (U+2061/2062/200B) are
+       stripped first (the historical "zero width space" misreadings).
+       If the engine fails to load, reading degrades to the previous
+       equation-number fallback rather than blocking. This is the
+       TODAY answer; MathML Intent improves speech as author adoption
+       grows, and a production alternative is precomputing speech
+       strings at conversion time (zero client cost).
      - Skips: inline citation brackets (Miner's "auditory disturbance"
        — the skim-suppression research applied to ears), footnote
        markers, the bibliography, chrome.
@@ -7317,6 +7338,68 @@ We thus see that</p>
                         // utterance, whose onend would otherwise race a
                         // chained speakFrom against the skip's own.
 
+  /* ── Math speech: Speech Rule Engine (lazy-loaded) ──
+     SRE converts the LaTeXML-emitted MathML to spoken English
+     (ClearSpeak rules — the same engine family behind MathJax's
+     accessibility extensions and screen-reader math support). Loaded
+     on the FIRST Listen click only (~1 MB total: engine + English
+     locale), self-hosted in lib/sre/ per the no-external-services
+     policy. If loading fails, reading proceeds with the previous
+     "Equation N" fallback rather than blocking. Speech per equation
+     is computed once and cached on the element. */
+  var sreState = 'none';   // none | loading | ready | failed
+  var sreCache = new WeakMap();
+
+  function loadScript(src) {
+    return new Promise(function(res, rej) {
+      var sc = document.createElement('script');
+      sc.src = src;
+      sc.onload = res;
+      sc.onerror = rej;
+      document.head.appendChild(sc);
+    });
+  }
+
+  function ensureSRE() {
+    if (sreState === 'ready' || sreState === 'failed') return Promise.resolve();
+    if (sreState === 'loading') return ensureSRE._p;
+    sreState = 'loading';
+    // Custom locale loader reads the bundled global — works over
+    // file:// where JSON fetches are blocked.
+    window.SREfeature = {
+      custom: function(loc) {
+        var maps = window.__SRE_MATHMAPS || {};
+        return maps[loc] ? Promise.resolve(maps[loc]) : Promise.reject('no locale ' + loc);
+      }
+    };
+    ensureSRE._p = loadScript('lib/sre/mathmaps-en.js')
+      .then(function() { return loadScript('lib/sre/sre.js'); })
+      .then(function() {
+        return window.SRE.setupEngine({ locale: 'en', domain: 'clearspeak', modality: 'speech' });
+      })
+      .then(function() { return window.SRE.engineReady(); })
+      .then(function() { sreState = 'ready'; })
+      .catch(function() { sreState = 'failed'; });
+    return ensureSRE._p;
+  }
+
+  // Spoken form of one <math> element. LaTeXML emits invisible
+  // operators (function application U+2061, invisible times U+2062,
+  // zero-width space) that have historically produced "zero width
+  // space" / "application" misreadings — stripped before SRE sees
+  // the markup.
+  function mathSpeech(mathEl) {
+    if (sreState !== 'ready') return null;
+    if (sreCache.has(mathEl)) return sreCache.get(mathEl);
+    var out = null;
+    try {
+      var mml = mathEl.outerHTML.replace(/[\u2061\u2062\u2063\u200B\u2064]/g, '');
+      out = window.SRE.toSpeech(mml) || null;
+    } catch (e) { out = null; }
+    sreCache.set(mathEl, out);
+    return out;
+  }
+
   function prm() {
     return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
@@ -7329,11 +7412,19 @@ We thus see that</p>
       '.heading-permalink, .ltx_tag_section, .ltx_tag_subsection, .ltx_note, .is-sr-only'
     );
     Array.prototype.forEach.call(strip, function(n) { n.remove(); });
+    // Math speaks for real via SRE. NOTE: speech is computed from the
+    // ORIGINAL elements (the clone's math nodes lack layout but share
+    // structure; we map by index). Fallback when SRE is unavailable:
+    // short alttext or "formula".
+    var origMaths = el.querySelectorAll('math');
     var maths = clone.querySelectorAll('math');
-    Array.prototype.forEach.call(maths, function(m) {
-      var alt = (m.getAttribute('alttext') || '').trim();
-      var stand = (alt && alt.length <= 24) ? alt : 'formula';
-      m.parentNode.replaceChild(document.createTextNode(' ' + stand + ' '), m);
+    Array.prototype.forEach.call(maths, function(m, i) {
+      var speech = origMaths[i] ? mathSpeech(origMaths[i]) : null;
+      if (!speech) {
+        var alt = (m.getAttribute('alttext') || '').trim();
+        speech = (alt && alt.length <= 24) ? alt : 'formula';
+      }
+      m.parentNode.replaceChild(document.createTextNode(' ' + speech + ' '), m);
     });
     return clone.textContent.replace(/\s+/g, ' ').trim();
   }
@@ -7350,9 +7441,20 @@ We thus see that</p>
     Array.prototype.forEach.call(blocks, function(el) {
       if (el.closest('.ltx_bibliography')) return; // never read the bib
       if (el.tagName === 'TABLE') {
+        // Display equation: announce its number for orientation, then
+        // speak the mathematics itself (SRE ClearSpeak). Multi-line
+        // alignments speak line by line with sentence pauses.
         var tag = el.querySelector('.ltx_tag_equation');
         var num = tag ? tag.textContent.replace(/[()]/g, '').trim() : '';
-        queue.push({ el: el, text: num ? 'Equation ' + num + '.' : 'Equation.' });
+        var label = num ? 'Equation ' + num + '. ' : 'Equation. ';
+        var parts = [];
+        var maths = el.querySelectorAll('math');
+        Array.prototype.forEach.call(maths, function(m) {
+          var sp = mathSpeech(m);
+          if (sp) parts.push(sp);
+        });
+        var spoken = parts.length ? label + parts.join('. ') : label.trim();
+        queue.push({ el: el, text: spoken });
         return;
       }
       var txt = blockText(el);
@@ -7433,8 +7535,26 @@ We thus see that</p>
       setLabel('Pause', true);
       return;
     }
+    // First play: fetch the math-speech engine so equations are spoken,
+    // not skipped. The label shows progress; reading starts as soon as
+    // the engine is ready (or immediately, with the fallback, if it
+    // fails to load).
+    if (sreState === 'none' || sreState === 'loading') {
+      setLabel('Loading\u2026', true);
+      state = 'speaking';            // reflects intent; Esc during load stops cleanly
+      var myGen = ++gen;
+      ensureSRE().then(function() {
+        // Only start if the user didn't stop/pause during the load.
+        if (gen === myGen && state === 'speaking') beginReading();
+      });
+      return;
+    }
+    beginReading();
+  }
+
+  function beginReading() {
     buildQueue();
-    if (!queue.length) return;
+    if (!queue.length) { stop(); return; }
     gen++;
     synth.cancel();
     state = 'speaking';
