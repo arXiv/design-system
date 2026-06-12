@@ -77,14 +77,6 @@
      mockups 2026-06-11. */
   --arxiv-border-light:    #ddd8d2;
 
-  /* ── Version-warning amber ──
-     The canonical Warning row from color-mapping.md's status table
-     (light mode). Matches the .ds-alert warning tokens; exposed
-     standalone for the version-warning banner composition. */
-  --arxiv-warning-bg:      #fff8e1;
-  --arxiv-warning-border:  #e8b800;
-  --arxiv-warning-text:    #7a5c00;   /* 5.9:1 on the bg ✓ AA */
-
   /* ── Focus ring on dark surfaces ──
      color-mapping.md functional colors: Focus Ring is #1565c0 light /
      #64b5f6 dark. The standard ring is invisible against
@@ -831,7 +823,8 @@
         persists dismissal (cookie/localStorage in production).
      2. .ds-site-header — the black bar (Repository Brown #1c1a17,
         phase-2 spinout brand): logo left, nav right (Search / Submit /
-        Donate | Log in). Sticky.
+        Donate | Log in). NOT sticky — scrolls away like content
+        (decided 2026-06-11; sticky chrome is reader-only).
      3. .ds-breadcrumb — warm-wash band with mini logomark › category ›
         paper id. NOT sticky; scrolls away with the page. Provides the
         upward path back to the category listing (research item
@@ -966,8 +959,12 @@
   padding: 0 24px;
   height: 52px;
   background: var(--arxiv-ink);
-  position: sticky; top: 0;
-  z-index: 100;
+  /* NO sticky positioning — decided 2026-06-11 (Shamsi): the header
+     scrolls away like any other content. Sticky chrome is exceptional
+     at arXiv (DESIGN-POLICIES.md, "Chrome and interaction structure");
+     only the HTML reader's header earns it. Static positioning also
+     returns the bar's height to the mobile viewport and removes the
+     anchor-offset hazard class from every page using this pattern. */
   font-family: var(--arxiv-font-sans);
 }
 .ds-site-header-logo {

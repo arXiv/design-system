@@ -104,7 +104,7 @@
   --arxiv-border-light: #ddd8d2;
   --arxiv-warning-bg: #fff8e1;
   --arxiv-warning-border: #e8b800;
-  --arxiv-warning-text: #7a5c00;
+  --arxiv-warning-fg: #7a5c00;
   --arxiv-focus-ring-dark: #64b5f6;
 
   --arxiv-font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -203,7 +203,9 @@ img { max-width: 100%; height: auto; }
 ╚════════════════════════════════════════════════════════════════════╝
   Intent
     The black bar at the top of every arXiv public page (post-Cornell
-    spinout). Sticky. Contains the logo and primary nav.
+    spinout). NOT sticky — it scrolls away like any other content
+    (decided 2026-06-11; sticky chrome is exceptional at arXiv and
+    reader-only). Contains the logo and primary nav.
 
   Accessibility decisions (priorities.md: information architecture,
                            arxiv→archive pronunciation)
@@ -291,8 +293,9 @@ img { max-width: 100%; height: auto; }
   padding: 0 24px;
   height: 52px;
   background: var(--arxiv-ink);
-  position: sticky; top: 0;
-  z-index: 100;
+  /* NO sticky positioning — decided 2026-06-11 (Shamsi): the header
+     scrolls away like any other content. Sticky chrome is exceptional
+     at arXiv; only the HTML reader earns it (DESIGN-POLICIES.md). */
 }
 .ds-site-header-logo {
   display: flex;
@@ -615,7 +618,7 @@ img { max-width: 100%; height: auto; }
     be coherent.
 
   Visual choice
-    Amber (var(--arxiv-warning-bg) / var(--arxiv-warning-border) / var(--arxiv-warning-text)) signals "advisory, not error."
+    Amber (var(--arxiv-warning-bg) / var(--arxiv-warning-border) / var(--arxiv-warning-fg)) signals "advisory, not error."
     Uses alert-triangle icon (Lucide) at 18px to draw the eye without
     feeling alarming.
 */
@@ -629,12 +632,12 @@ img { max-width: 100%; height: auto; }
   border-radius: 4px;
   padding: 10px 14px;
   font-size: 0.8125rem; /* 13px */
-  color: var(--arxiv-warning-text);
+  color: var(--arxiv-warning-fg);
   margin: 4px 0 20px;
 }
 .abs-version-warning a {
   font-size: 0.8125rem; /* 13px */
-  color: var(--arxiv-warning-text);
+  color: var(--arxiv-warning-fg);
   font-weight: 600;
   text-decoration: underline;
 }
@@ -713,7 +716,11 @@ html.js .abs-authors-overflow.is-expanded { display: inline; }
    rationale). Applied via .is-scrollable when author count > 100. */
 html.js .abs-authors-overflow.is-expanded.is-scrollable {
   display: block;
-  max-height: 16em;
+  /* Half-item peek (DESIGN-POLICIES.md, truncation): 9.5 line-heights
+     guarantees the last visible text line is cut mid-line — a
+     geometric "scroll for more" signal that survives forced-colors,
+     zoom, and user stylesheets (unlike fade masks, which are paint). */
+  max-height: calc(9.5 * 1.5em);
   overflow-y: auto;
   overscroll-behavior: contain;
   margin: 10px 0 4px;

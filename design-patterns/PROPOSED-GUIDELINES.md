@@ -12,7 +12,7 @@
 
 **Resolved 2026-06-11 (Shamsi):** promoted to DESIGN-POLICIES.md, with a sharper framing: **sticky chrome is exceptional at arXiv.** The HTML reader is intended to be the *only* page with a sticky header — arXiv is not a complex site (discovery, documentation, account, submission, and papers), and only the long-document reading surface earns persistent chrome. The policy therefore covers both halves: don't add sticky chrome elsewhere without explicit approval; where it exists, the scroll-offset rule applies.
 
-**Flag raised during review:** the abstract-page mockup and the codified `.ds-site-header` currently use `position: sticky` — contradicting the reader-only intent. Needs a decision: keep it sticky (then the abstract page is a second sticky-chrome page and inherits the scroll-offset duty) or make it static (consistent with the stated view; also returns ~52px of mobile viewport). See the discussion note in DESIGN-POLICIES.md.
+**Flag resolved 2026-06-11 (Shamsi):** the abstract-page header uses no special positioning — it scrolls away like any other content. Changed in the mockup and the codified `.ds-site-header` the same day. The HTML reader is now, in fact as well as intent, the only sticky-chrome surface.
 
 ## G2. Chrome recedes on content-first surfaces
 

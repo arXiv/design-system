@@ -28,10 +28,6 @@
     .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
     .section-desc { font-size: 13px; color: var(--arxiv-grey); margin: 0 0 20px; max-width: 720px; line-height: 1.55; }
     .live-demo { background: #fff; border: 1px solid var(--arxiv-card-grey); border-radius: 8px; overflow: hidden; }
-    /* The header is position:sticky in production; inside this demo
-       card it would stick to the card, which is confusing — relax it
-       for the reference page only. */
-    .live-demo .ds-site-header { position: static; }
     .usage-list { font-size: 13px; color: var(--arxiv-grey); line-height: 1.7; max-width: 720px; }
     .usage-list code { font-family: var(--arxiv-font-mono); font-size: 12px; background: var(--arxiv-card-grey); padding: 1px 5px; border-radius: 3px; }
   </style>
@@ -60,8 +56,8 @@
       window: below 520px the nav wraps to a second row (no hamburger, no
       JS — every item stays visible, which keeps voice-control users
       working and passes WCAG 1.4.10 reflow at 320px). The header is
-      <code>position: sticky</code> in production; relaxed here so the demo
-      card scrolls naturally.
+      static — it scrolls away with the page (sticky chrome is
+      reader-only; DESIGN-POLICIES.md, decided 2026-06-11).
     </p>
     <div class="live-demo">
       <div class="ds-announcement" role="region" aria-label="Announcement">
@@ -109,7 +105,7 @@
       <li>Focus rings on the dark bar use <code>--arxiv-focus-ring-dark</code> (#64b5f6); the standard Link Blue ring is invisible against #1c1a17.</li>
       <li>Breadcrumb separators carry <code>aria-hidden="true"</code>; the current page is a <code>&lt;span aria-current="page"&gt;</code>, not a link. The breadcrumb is the page's <strong>upward path</strong> to the category listing (research item AUXDH-950/951).</li>
       <li>The announcement is temporal: render only while active, persist dismissal in production, and never attach page-critical function to it.</li>
-      <li>The breadcrumb is <em>not</em> sticky; only the black bar is. Anchor-jump targets must account for the sticky bar's height (<code>scroll-padding</code>).</li>
+      <li>Nothing in this unit is sticky — the whole header scrolls away with the page (decided 2026-06-11; sticky chrome is exceptional at arXiv and reader-only). No <code>scroll-padding</code> duty applies.</li>
       <li>Type sizes are rem so browser font-size overrides propagate; all three bands are hidden in print.</li>
     </ul>
   </section>
