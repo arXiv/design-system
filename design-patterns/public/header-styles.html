@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>arXiv Public Site Header — Component Reference</title>
+  <link rel="stylesheet" href="design-system.css">
+  <style>
+    /* ── Page chrome (reference doc only). This page CONSUMES
+       design-system.css — it never redefines the header pieces; the
+       rendered unit reads straight from the stylesheet. ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: var(--arxiv-font-sans);
+      color: var(--arxiv-ink);
+      background: var(--arxiv-warm-wash);
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .page { max-width: 980px; margin: 0 auto; padding: 48px 28px 80px; }
+    .back-link { display: inline-block; margin-bottom: 20px; font-size: 13px; color: var(--arxiv-link-blue); text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+    .page-header { margin-bottom: 44px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p { margin: 0; color: var(--arxiv-grey); font-size: 13px; max-width: 720px; }
+    .section { margin-bottom: 48px; }
+    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+    .section-desc { font-size: 13px; color: var(--arxiv-grey); margin: 0 0 20px; max-width: 720px; line-height: 1.55; }
+    .live-demo { background: #fff; border: 1px solid var(--arxiv-card-grey); border-radius: 8px; overflow: hidden; }
+    /* The header is position:sticky in production; inside this demo
+       card it would stick to the card, which is confusing — relax it
+       for the reference page only. */
+    .live-demo .ds-site-header { position: static; }
+    .usage-list { font-size: 13px; color: var(--arxiv-grey); line-height: 1.7; max-width: 720px; }
+    .usage-list code { font-family: var(--arxiv-font-mono); font-size: 12px; background: var(--arxiv-card-grey); padding: 1px 5px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <a class="back-link" href="README.md">&larr; Public design patterns</a>
+
+  <header class="page-header">
+    <h1>Site header unit</h1>
+    <p>
+      The universal arXiv public-page header: announcement band +
+      black bar + breadcrumb (<code>.ds-announcement</code> /
+      <code>.ds-site-header</code> / <code>.ds-breadcrumb</code>), plus the
+      <code>.ds-skip-link</code> utility. Design approved 2026-06-11 against
+      the spinout-header-footer Cloud Run deployment. Codified as one unit —
+      the approved deployment treats the three pieces together
+      (<code>audits/2026-06-11/AUDIT-EVALUATION.md</code>).
+    </p>
+  </header>
+
+  <section class="section">
+    <h2 class="section-title">Live component</h2>
+    <p class="section-desc">
+      Rendered directly from <code>design-system.css</code>. Resize the
+      window: below 520px the nav wraps to a second row (no hamburger, no
+      JS — every item stays visible, which keeps voice-control users
+      working and passes WCAG 1.4.10 reflow at 320px). The header is
+      <code>position: sticky</code> in production; relaxed here so the demo
+      card scrolls naturally.
+    </p>
+    <div class="live-demo">
+      <div class="ds-announcement" role="region" aria-label="Announcement">
+        <img class="ds-announcement-glyph" src="../../mockups/images/smileybones-small-grayscale.svg" alt="" aria-hidden="true">
+        <span class="ds-announcement-text">arXiv is now an independent nonprofit!</span>
+        <a class="ds-announcement-link" href="https://info.arxiv.org/about/index.html">Learn more</a>
+        <button type="button" class="ds-announcement-close" aria-label="Dismiss announcement">&times;</button>
+      </div>
+      <header class="ds-site-header">
+        <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
+          <img src="../../mockups/images/arxiv-logo.png" alt="archive">
+        </a>
+        <nav class="ds-site-header-nav" aria-label="Main navigation">
+          <a href="https://arxiv.org/search">
+            <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            Search
+          </a>
+          <a href="https://arxiv.org/submit">Submit</a>
+          <a href="https://info.arxiv.org/about/donate.html">Donate</a>
+          <span class="ds-site-header-divider" aria-hidden="true"></span>
+          <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
+        </nav>
+      </header>
+      <nav class="ds-breadcrumb" aria-label="Breadcrumb">
+        <a class="ds-breadcrumb-home" href="https://arxiv.org/" aria-label="archive home">
+          <img src="../../mockups/images/arxiv-logomark-small-square.svg" alt="archive" class="ds-breadcrumb-logomark">
+        </a>
+        <span class="ds-breadcrumb-sep" aria-hidden="true">&gt;</span>
+        <a class="ds-breadcrumb-link" href="https://arxiv.org/list/gr-qc/recent">gr-qc</a>
+        <span class="ds-breadcrumb-sep" aria-hidden="true">&gt;</span>
+        <span class="ds-breadcrumb-current" aria-current="page">arXiv:2604.22725</span>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Behavior contract</h2>
+    <ul class="usage-list">
+      <li>The skip link (<code>.ds-skip-link</code>) is the <strong>first focusable element</strong> on the page, visible only on keyboard focus.</li>
+      <li>Logo alt text and aria-labels say <strong>"archive"</strong> — the spoken form of "arXiv" (Dan Miner: screen readers otherwise produce "ar-zhiv" / Roman-numeral gibberish).</li>
+      <li>The Search control is an <code>&lt;a href="/search"&gt;</code> that JS may upgrade to open a search overlay. <strong>Never a dead button</strong> — without JS it navigates to the search page.</li>
+      <li>Focus rings on the dark bar use <code>--arxiv-focus-ring-dark</code> (#64b5f6); the standard Link Blue ring is invisible against #1c1a17.</li>
+      <li>Breadcrumb separators carry <code>aria-hidden="true"</code>; the current page is a <code>&lt;span aria-current="page"&gt;</code>, not a link. The breadcrumb is the page's <strong>upward path</strong> to the category listing (research item AUXDH-950/951).</li>
+      <li>The announcement is temporal: render only while active, persist dismissal in production, and never attach page-critical function to it.</li>
+      <li>The breadcrumb is <em>not</em> sticky; only the black bar is. Anchor-jump targets must account for the sticky bar's height (<code>scroll-padding</code>).</li>
+      <li>Type sizes are rem so browser font-size overrides propagate; all three bands are hidden in print.</li>
+    </ul>
+  </section>
+</div>
+</body>
+</html>
