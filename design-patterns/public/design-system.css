@@ -1083,3 +1083,417 @@
   .ds-breadcrumb,
   .ds-skip-link { display: none !important; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   READER HEADER  (.ds-reader-header + .ds-toc-trigger/.ds-toc-dropdown
+                   + .ds-reading-progress)
+   ═══════════════════════════════════════════════════════════════════════
+   The HTML-reader variant of the site header. Design approved 2026-06-11.
+   Reference implementation: mockups/html-redesign.html (which carries
+   ar5iv-specificity !important overrides this codified version drops —
+   production should scope under a body class instead).
+
+   Why a second header variant exists: the reader is a content-first
+   surface, so the chrome recedes — light Card Grey instead of the
+   abstract page's Repository Brown, and a compact-on-scroll state that
+   releases vertical space once the reader is into the paper. The center
+   cell hosts the TOC trigger doing double duty as orientation ("you are
+   in §3.1") and navigation (Stripe-docs pattern). Replaces the permanent
+   left sidebar (10+ GitHub UX issues on sidebar friction); frees the
+   left margin for equation/figure chrome and widens the reading column.
+
+   Structure:
+     <header class="ds-reader-header">
+       <div class="ds-reader-header-inner">
+         <a class="ds-reader-header-logo" href="…" aria-label="archive home">
+           <img class="ds-logo-full" src="…" alt="archive">
+           <img class="ds-logo-mark" src="…" alt="archive">
+         </a>
+         <div class="ds-reader-header-center">
+           <button class="ds-toc-trigger" aria-haspopup="true"
+                   aria-expanded="false" aria-controls="toc-dropdown">…</button>
+         </div>
+         <nav class="ds-reader-header-nav" aria-label="Paper navigation">…</nav>
+       </div>
+       <div class="ds-reading-progress" role="progressbar"
+            aria-label="Reading progress" aria-valuemin="0"
+            aria-valuemax="100" aria-valuenow="0">
+         <div class="ds-reading-progress-fill"></div>
+       </div>
+       <div class="ds-toc-dropdown" role="region"
+            aria-label="Table of contents" hidden>…</div>
+     </header>
+
+   Behavior contract (travels with the pattern):
+     - ANY page with sticky chrome MUST set `html { scroll-padding-top }`
+       to chrome height + breathing room (reference uses 80px for a
+       52px/36px bar). This closed a 12-filing bug class (anchor targets
+       landing under the header). See PROPOSED-GUIDELINES.md G1.
+     - Compact-on-scroll: JS adds .compact after the reader scrolls past
+       the abstract; removed again at top. 52px → 36px, wordmark swaps
+       to the small mark, nav labels hide (icons remain). Never toggles
+       on scroll-direction alone (jitter).
+     - Narrow widths (≤700px) reuse the SAME condensed treatment as
+       .compact rather than introducing a third visual mode — one
+       compact grammar everywhere (PROPOSED-GUIDELINES.md G3). Only the
+       TOC trigger keeps its label: "you are here" is its purpose.
+     - TOC trigger label shows the current section (IntersectionObserver
+       on section anchors); at rest it reads "Contents". The label is a
+       passive indicator — no aria-live (it would announce on every
+       scroll; AT users get position from headings navigation instead).
+     - Dropdown: closes on outside-click, Esc (focus returns to
+       trigger), and item activation. Item for the current section gets
+       .is-current and is scrolled into view on open. At ≤700px the
+       dropdown becomes a full-screen overlay with a prominent close
+       button and ≥44px touch targets.
+     - No-JS: the trigger and progress bar are hidden (they do nothing);
+       the document's native TOC (kept sr-only in the reference) remains
+       available to AT. Enhancement never carries content.
+     - Reading progress is chrome, not a metric: it shows position in
+       the document, never engagement numbers. aria-valuenow updates on
+       scroll; the fill transition (and the header height transition)
+       are disabled under prefers-reduced-motion.
+     - Reading-time estimates, if shown, must exclude non-prose content
+       (math, figures, bibliography) from the word count — a precise-
+       looking wrong number is worse than none.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-reader-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--arxiv-card-grey);
+  border-bottom: 1px solid var(--arxiv-pill-border);
+  height: 52px;
+  transition: height 0.25s ease, background 0.25s ease;
+  font-family: var(--arxiv-font-sans);
+}
+.ds-reader-header-inner {
+  /* Three-column grid: logo | TOC trigger (true center) | nav.
+     Grid over flex+space-between so the center cell stays viewport-
+     centered regardless of the side cells' widths (1fr | auto | 1fr). */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  height: 52px;
+  width: 100%;
+  transition: height 0.2s ease;
+}
+.ds-reader-header-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  justify-self: start;
+}
+.ds-reader-header-logo img { height: 39px; width: auto; transition: height 0.2s ease; }
+.ds-reader-header-logo .ds-logo-full { display: block; }
+.ds-reader-header-logo .ds-logo-mark { display: none; height: 22px; width: auto; }
+.ds-reader-header-center {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+}
+.ds-reader-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-self: end;
+}
+.ds-reader-header-nav a,
+.ds-reader-header-nav button {
+  font-family: var(--arxiv-font-sans);
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 500;
+  color: var(--arxiv-grey);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.ds-reader-header-nav a:visited { color: var(--arxiv-grey); }
+.ds-reader-header-nav a:hover,
+.ds-reader-header-nav button:hover { background: var(--arxiv-open-blue); color: var(--arxiv-ink); }
+.ds-reader-header-nav a:focus-visible,
+.ds-reader-header-nav button:focus-visible {
+  outline: 3px solid var(--arxiv-link-blue);
+  outline-offset: 1px;
+}
+.ds-reader-header .ds-nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
+.ds-reader-header-divider {
+  width: 1px; height: 20px;
+  background: var(--arxiv-pill-border);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* ── Compact state (JS adds .compact past the abstract) ── */
+.ds-reader-header.compact { height: 36px; }
+.ds-reader-header.compact .ds-reader-header-inner { height: 36px; }
+.ds-reader-header.compact .ds-logo-full { display: none; }
+.ds-reader-header.compact .ds-logo-mark { display: block; }
+.ds-reader-header.compact .ds-nav-label { display: none; }
+.ds-reader-header.compact .ds-reader-header-nav a,
+.ds-reader-header.compact .ds-reader-header-nav button {
+  font-size: 0.75rem; /* 12px */
+  padding: 4px 6px;
+  gap: 0;
+}
+.ds-reader-header.compact .ds-nav-icon { width: 15px; height: 15px; }
+.ds-reader-header.compact .ds-reader-header-divider { height: 14px; }
+
+/* ── TOC trigger ── */
+.ds-toc-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 320px;
+  font-family: var(--arxiv-font-sans);
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 500;
+  color: var(--arxiv-ink);
+  background: #fff;
+  border: 1px solid var(--arxiv-pill-border);
+  border-radius: 6px;
+  padding: 6px 8px 6px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.ds-toc-trigger:hover {
+  background: var(--arxiv-warm-wash);
+  border-color: var(--arxiv-grey-ui);
+}
+.ds-toc-trigger:focus-visible {
+  outline: 3px solid var(--arxiv-link-blue);
+  outline-offset: 1px;
+}
+.ds-toc-trigger[aria-expanded="true"] {
+  background: var(--arxiv-active-bg);
+  border-color: var(--arxiv-tint-border);
+}
+.ds-toc-trigger-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.ds-toc-trigger-prefix {
+  color: var(--arxiv-grey);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  margin-right: 4px;
+}
+.ds-toc-trigger-chevron {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  transition: transform 0.15s ease;
+}
+.ds-toc-trigger[aria-expanded="true"] .ds-toc-trigger-chevron { transform: rotate(180deg); }
+
+/* ── TOC dropdown ──
+   Hangs from the header's bottom edge (no top border/radius) so it
+   reads as chrome, not a floating popover. Shares the tint-light /
+   tint-border family with the popover panels — all "arXiv-layer
+   surfaces" read as related. */
+.ds-toc-dropdown {
+  position: fixed;
+  top: 52px;
+  z-index: 60; /* above popovers (50), below modal dialogs (top layer) */
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 72px);
+  background: var(--arxiv-tint-light);
+  border: 1px solid var(--arxiv-tint-border);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.ds-toc-dropdown[hidden] { display: none; }
+.ds-reader-header.compact .ds-toc-dropdown { top: 36px; }
+
+.ds-toc-dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--arxiv-tint-border);
+  flex-shrink: 0;
+}
+.ds-toc-dropdown-title {
+  font-family: var(--arxiv-font-condensed);
+  font-weight: 600;
+  font-size: 0.6875rem; /* 11px */
+  color: var(--arxiv-grey);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.ds-toc-dropdown-close {
+  display: none; /* desktop: click-outside / Esc close; mobile shows it */
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  margin: -6px -8px -6px 0; /* expand touch target without enlarging layout */
+  border-radius: 4px;
+  color: var(--arxiv-grey);
+  line-height: 0;
+}
+.ds-toc-dropdown-close:hover { color: var(--arxiv-ink); background: rgba(0, 0, 0, 0.05); }
+.ds-toc-dropdown-close:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
+.ds-toc-dropdown-close svg { width: 18px; height: 18px; }
+
+.ds-toc-dropdown-list {
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ds-toc-dropdown-link {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 14px;
+  font-family: var(--arxiv-font-sans);
+  font-size: 0.8125rem; /* 13px */
+  line-height: 1.4;
+  color: var(--arxiv-ink);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: background 0.10s, border-color 0.10s, color 0.10s;
+}
+.ds-toc-dropdown-link:hover { background: var(--arxiv-active-bg); }
+.ds-toc-dropdown-link:focus-visible {
+  outline: 2px solid var(--arxiv-link-blue);
+  outline-offset: -2px;
+}
+.ds-toc-num {
+  flex-shrink: 0;
+  color: var(--arxiv-grey);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  min-width: 28px;
+}
+.ds-toc-text { flex: 1; min-width: 0; }
+.ds-toc-dropdown-item[data-depth="2"] .ds-toc-dropdown-link {
+  padding-left: 32px;
+  font-size: 0.78rem;
+  color: var(--arxiv-grey);
+}
+.ds-toc-dropdown-item[data-depth="2"] .ds-toc-dropdown-link .ds-toc-num { min-width: 36px; }
+.ds-toc-dropdown-item[data-depth="3"] .ds-toc-dropdown-link {
+  padding-left: 50px;
+  font-size: 0.78rem;
+  color: var(--arxiv-grey);
+  font-style: italic;
+}
+.ds-toc-dropdown-item[data-kind="abstract"] .ds-toc-dropdown-link,
+.ds-toc-dropdown-item[data-kind="appendix"] .ds-toc-dropdown-link,
+.ds-toc-dropdown-item[data-kind="bibliography"] .ds-toc-dropdown-link { font-weight: 500; }
+.ds-toc-dropdown-item.is-current .ds-toc-dropdown-link {
+  background: var(--arxiv-active-bg);
+  border-left-color: var(--arxiv-link-blue);
+  color: var(--arxiv-ink);
+}
+.ds-toc-dropdown-item.is-current .ds-toc-dropdown-link .ds-toc-num {
+  color: var(--arxiv-link-blue);
+  font-weight: 600;
+}
+
+/* ── Mobile: full-screen menu (≤700px) ── */
+@media (max-width: 700px) {
+  .ds-toc-dropdown {
+    top: 0 !important; /* overrides desktop top + any JS inline position */
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0;
+    width: 100vw;
+    max-width: 100vw;
+    max-height: 100vh;
+    height: 100vh;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .ds-toc-dropdown-header {
+    padding: 16px 20px;
+    background: var(--arxiv-active-bg);
+  }
+  .ds-toc-dropdown-title { font-size: 0.8125rem; }
+  .ds-toc-dropdown-close {
+    display: inline-flex;
+    padding: 10px;
+    margin: -10px -10px -10px 0;
+  }
+  .ds-toc-dropdown-close svg { width: 24px; height: 24px; }
+  .ds-toc-dropdown-link {
+    padding: 14px 20px;
+    font-size: 0.9375rem; /* 15px */
+    min-height: 44px; /* WCAG touch-target floor for full-screen menus */
+    box-sizing: border-box;
+  }
+  .ds-toc-num { min-width: 32px; }
+  .ds-toc-dropdown-item[data-depth="2"] .ds-toc-dropdown-link { padding-left: 42px; font-size: 0.875rem; }
+  .ds-toc-dropdown-item[data-depth="3"] .ds-toc-dropdown-link { padding-left: 62px; font-size: 0.875rem; }
+  .ds-toc-dropdown-list {
+    flex: 1;
+    /* fade the cut edge so it reads "scroll for more", not truncation */
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent 100%);
+  }
+
+  /* Header condenses with the SAME grammar as .compact — not a third
+     mode. Only the TOC trigger keeps its label. */
+  .ds-reader-header-inner { padding: 0 12px; gap: 8px; }
+  .ds-reader-header .ds-logo-full { display: none; }
+  .ds-reader-header .ds-logo-mark { display: block; }
+  .ds-reader-header .ds-nav-label { display: none; }
+  .ds-reader-header-nav a,
+  .ds-reader-header-nav button { font-size: 0.75rem; padding: 6px; gap: 0; }
+  .ds-toc-trigger { max-width: 200px; padding: 6px 6px 6px 8px; }
+  .ds-toc-trigger-prefix { display: none !important; }
+}
+
+/* ── Reading progress ── */
+.ds-reading-progress {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: transparent;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ds-reading-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--arxiv-link-blue);
+  transition: width 0.1s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-reading-progress-fill { transition: none; }
+  .ds-reader-header,
+  .ds-reader-header-inner,
+  .ds-reader-header-logo img,
+  .ds-toc-trigger-chevron { transition: none !important; }
+}
+@media print {
+  .ds-reader-header { display: none !important; }
+}
