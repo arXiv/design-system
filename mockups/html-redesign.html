@@ -629,8 +629,16 @@ html { scroll-padding-top: 80px; }
     bottom: 0;
     width: 100vw;
     max-width: 100vw;
+    /* dvh, not vh (internal mobile testing 2026-06-11: a tester could
+       not scroll to the END of the ToC on their phone). 100vh on iOS
+       Safari includes the area behind the collapsing URL bar, so the
+       list's tail was clipped offscreen. Dynamic viewport units track
+       the real visible height; the vh lines remain as fallback for
+       older browsers. */
     max-height: 100vh;
+    max-height: 100dvh;
     height: 100vh;
+    height: 100dvh;
     border: none;
     border-radius: 0;
     box-shadow: none;
@@ -980,6 +988,27 @@ h1.ltx_title.ltx_title_document {
   padding-right: calc(50vw - 50%) !important;
   padding-top: 32px !important;
   padding-bottom: 36px !important;
+}
+
+/* Everything AFTER the references keeps the references tint (internal
+   feedback 2026-06-11): in many papers an appendix or acknowledgments
+   section follows the bibliography in the DOM, and snapping back to
+   white after the grey band is jarring. The general-sibling combinator
+   (~) selects every later sibling of the bibliography at the same DOM
+   level, regardless of element type — robust against the variety of
+   user TeX, as long as LaTeXML emits them as siblings (it does for
+   sections/appendices inside .ltx_page_content). Each later sibling
+   gets the same full-bleed treatment so the band is continuous.
+   The sample paper has nothing after its references, so this rule is
+   dormant here — verify against a paper with post-references content
+   (e.g. appendix-after-bib) before promoting. */
+.ltx_bibliography ~ * {
+  background: var(--arxiv-card-grey) !important;
+  margin-left: calc(-50vw + 50%) !important;
+  margin-right: calc(-50vw + 50%) !important;
+  padding-left: calc(50vw - 50%) !important;
+  padding-right: calc(50vw - 50%) !important;
+  padding-bottom: 24px !important;
 }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
@@ -2907,7 +2936,12 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
      footer) already uses real landmark elements. -->
 <div class="ltx_page_main" role="main">
 <div id="infobox" class="infobox"></div>
-<p class="new-watermark"><img src="images/smileybones-small-grayscale.svg" alt=""><span aria-hidden="true">arXiv:2604.22725v1 [gr-qc] 24 April 2026</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1, primary category gr-qc, submitted 24 April 2026</span> &ensp; <a href="https://info.arxiv.org/help/license/index.html#licenses-available"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">License: CC BY 4.0</abbr></a></p><div class="ltx_page_content">
+<!-- Watermark line carries the full identity of the paper: arXiv ID,
+     full category name (internal feedback 2026-06-11: one tester missed
+     the category when only the [gr-qc] code was shown), DOI (many
+     readers land here directly without passing the abstract page —
+     internal feedback 2026-06-11), and license. -->
+<p class="new-watermark"><img src="images/smileybones-small-grayscale.svg" alt=""><span aria-hidden="true">arXiv:2604.22725v1 [gr-qc] General Relativity and Quantum Cosmology &middot; 24 April 2026</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1, primary category General Relativity and Quantum Cosmology, submitted 24 April 2026</span> &ensp; <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a> &ensp; <a href="https://info.arxiv.org/help/license/index.html#licenses-available"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">License: CC BY 4.0</abbr></a></p><div class="ltx_page_content">
 <article class="ltx_document ltx_authors_1line" lang="en">
 <h1 class="ltx_title ltx_title_document" lang="en">Gauge-independent approach to inflation in quadratic gravity</h1>
 <div class="ltx_authors">

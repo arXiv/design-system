@@ -357,8 +357,12 @@ img { max-width: 100%; height: auto; }
   align-items: center;
   gap: 8px;
   padding: 6px 24px;
-  background: var(--arxiv-warm-wash);
-  border-bottom: 1px solid var(--arxiv-pill-border);
+  /* White row, per the approved spinout deployment (verified against
+     audits/2026-06-11/screenshots/components/10-spinout-header-detail.png).
+     An earlier iteration used a warm-wash band — that was a deviation
+     from the approved treatment, corrected 2026-06-11. */
+  background: #fff;
+  border-bottom: 1px solid var(--arxiv-border-light);
   font-family: var(--arxiv-font-sans);
   font-size: 0.8125rem;
 }
@@ -369,8 +373,10 @@ img { max-width: 100%; height: auto; }
   flex-shrink: 0;
 }
 .ds-breadcrumb-logomark {
-  width: 22px;
-  height: 22px;
+  /* Small full wordmark (with the red X), per the approved deployment —
+     not the square logomark. */
+  height: 16px;
+  width: auto;
 }
 .ds-breadcrumb-sep {
   color: var(--arxiv-grey);
@@ -932,7 +938,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
    states so it never drops below the button's own contrast. Sits on
    its own centered line below the label so the label never wraps
    mid-word in the 130px action column. */
-.abs-btn-tex { flex-wrap: wrap; }
+.abs-btn-tex, .abs-btn-pdf { flex-wrap: wrap; }
 .abs-btn-ext {
   flex-basis: 100%;
   text-align: center;
@@ -1170,10 +1176,13 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-cite-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* Toggle sits directly AFTER the heading, not right-aligned: internal
+     testing (2026-06-11) found the right-aligned source switcher went
+     unnoticed. Proximity to the heading puts it in the reading path. */
+  justify-content: flex-start;
   margin-bottom: 14px;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 4px 18px;
 }
 .abs-section-heading {
   font-family: var(--arxiv-font-sans);
@@ -1282,7 +1291,11 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 /* The citation text display + copy button */
 .abs-cite-display {
   position: relative;
+  /* Code-block treatment (internal feedback 2026-06-11): copyable text
+     is semantically <code> and visibly a code block — bordered, mono,
+     quiet background. */
   background: #fafaf9;
+  border: 1px solid var(--arxiv-border-light);
   border-radius: 3px;
   padding: 10px 12px;
   font-family: var(--arxiv-font-mono);
@@ -1291,14 +1304,22 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   color: var(--arxiv-ink);
 }
 .abs-cite-text {
+  display: block; /* <code> is inline by default */
   white-space: pre-wrap;
   word-break: break-word;
-  max-height: 140px;
+  /* Wrap + vertical scroll for BOTH columns (internal feedback
+     2026-06-11): unwrapped BibTeX confused testers, and long author
+     lists make formatted styles long too. pre-wrap preserves the real
+     newlines and spaces (copy fidelity is unaffected — the Copy button
+     reads from data, and selection copies logical text), while the
+     half-line cut at max-height signals "scroll for more"
+     (DESIGN-POLICIES.md, truncation). */
+  max-height: calc(7.5 * 1.5em);
   overflow-y: auto;
   overscroll-behavior: contain;
   padding-right: 50px;
 }
-.abs-cite-text.is-bibtex { white-space: pre; overflow-x: auto; }
+.abs-cite-text.is-bibtex { white-space: pre-wrap; }
 .abs-cite-copy {
   position: absolute;
   top: 6px; right: 8px;
@@ -1759,7 +1780,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
      in production the close button writes a cookie so the dismissal
      persists. -->
 <div class="ds-announcement" role="region" aria-label="Announcement">
-  <img class="ds-announcement-glyph" src="images/smileybones-small-grayscale.svg" alt="" aria-hidden="true">
+  <img class="ds-announcement-glyph" src="images/smileybones-small.svg" alt="" aria-hidden="true">
   <span class="ds-announcement-text">arXiv is now an independent nonprofit!</span>
   <a class="ds-announcement-link" href="https://info.arxiv.org/about/index.html">Learn more</a>
   <button type="button" class="ds-announcement-close" aria-label="Dismiss announcement">&times;</button>
@@ -1793,7 +1814,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
      navigation back to the category listing or to arxiv.org. -->
 <nav class="ds-breadcrumb" aria-label="Breadcrumb">
   <a class="ds-breadcrumb-home" href="https://arxiv.org/" aria-label="archive home">
-    <img src="images/arxiv-logomark-small-square.svg" alt="archive" class="ds-breadcrumb-logomark">
+    <img src="images/arxiv-logo-primary-light.png" alt="archive" class="ds-breadcrumb-logomark">
   </a>
   <span class="ds-breadcrumb-sep" aria-hidden="true">&gt;</span>
   <a class="ds-breadcrumb-link" href="https://arxiv.org/list/gr-qc/recent">gr-qc</a>
@@ -1898,13 +1919,18 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
     <div class="abs-body">
       <nav class="abs-actions" aria-label="Paper downloads">
         <a href="https://arxiv.org/html/2604.22725v1" class="abs-btn abs-btn-html">HTML</a>
-        <a href="https://arxiv.org/pdf/2604.22725v1" class="abs-btn abs-btn-pdf">PDF</a>
+        <!-- File sizes (internal feedback 2026-06-11): tell users what
+             they're committing to before the download — especially
+             valuable on slow connections. Mock values here; production
+             renders the real size from file metadata. HTML carries no
+             size (it's a streamed page, not a download). -->
+        <a href="https://arxiv.org/pdf/2604.22725v1" class="abs-btn abs-btn-pdf">PDF&nbsp;<span class="abs-btn-ext">(1.2&hairsp;MB)</span></a>
         <!-- Format hint: Robin Williams (2022-09-14) — "When you download
              source there isn't a file extension. It's not obvious if it is
              a zip or a tar, don't know quite what you've got or how to open
              it." The visible .tar.gz hint tells users what they're getting
              before they commit to the download. -->
-        <a href="https://arxiv.org/src/2604.22725v1" class="abs-btn abs-btn-tex">TeX Source&nbsp;<span class="abs-btn-ext">(.tar.gz)</span></a>
+        <a href="https://arxiv.org/src/2604.22725v1" class="abs-btn abs-btn-tex">TeX Source&nbsp;<span class="abs-btn-ext">(.tar.gz &middot; 486&hairsp;KB)</span></a>
       </nav>
       <div class="abs-body-main">
         <div class="abs-abstract" lang="en">
@@ -1987,7 +2013,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
           <h2 class="abs-section-heading" id="cite-heading">Cite this paper</h2>
           <div class="abs-cite-source" role="group" aria-label="Citation source">
             <button class="abs-cite-source-btn is-active" data-source="preprint" aria-pressed="true">
-              <span class="arxiv-word"><span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span></span> preprint
+              This <span class="arxiv-word"><span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span></span> version
             </button>
             <span class="abs-cite-source-sep" aria-hidden="true">|</span>
             <button class="abs-cite-source-btn" data-source="journal" aria-pressed="false">Journal article</button>
@@ -2008,12 +2034,13 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
                    must match what Copy yields and what production emits.
                    Single-line author field per real export; the panel's
                    white-space:pre + overflow-x handles the width. -->
-              <div class="abs-cite-text is-bibtex" id="cite-bibtex" tabindex="0" role="region" aria-label="BibTeX citation">@article{palomares2026gauge,
+              <code class="abs-cite-text is-bibtex" id="cite-bibtex" tabindex="0" role="region" aria-label="BibTeX citation">@article{palomares2026gauge,
   title={Gauge-independent approach to inflation in quadratic gravity},
   author={Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and Castellani, Elena and Maeda, Kei-ichi and Vidotto, Francesca and Ashtekar, Abhay and Emparan, Roberto and Castro, Alejandra and de Boer, Jan and Nojiri, Shin'ichi and Odintsov, Sergei D. and Mukhanov, Viatcheslav and Sasaki, Misao and Soda, Jiro and Tsujikawa, Shinji and Padilla, Antonio and Gregory, Ruth and Malik, Karim A. and Wands, David and Tanaka, Takahiro},
   journal={arXiv preprint arXiv:2604.22725},
-  year={2026}
-}</div>
+  year={2026},
+  doi={10.48550/arXiv.2604.22725}
+}</code>
             </div>
           </div>
 
@@ -2026,7 +2053,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
             </div>
             <div class="abs-cite-display">
               <button class="abs-cite-copy" id="cite-copy-formatted" aria-label="Copy formatted citation">Copy</button>
-              <div class="abs-cite-text" id="cite-formatted" tabindex="0" role="region" aria-label="Formatted citation">Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., Castellani, E., Maeda, K., ... &amp; Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. <em>arXiv preprint</em> arXiv:2604.22725.</div>
+              <code class="abs-cite-text" id="cite-formatted" tabindex="0" role="region" aria-label="Formatted citation">Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., Castellani, E., Maeda, K., ... &amp; Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. <em>arXiv preprint</em> arXiv:2604.22725. https://doi.org/10.48550/arXiv.2604.22725</code>
             </div>
           </div>
 
@@ -2379,20 +2406,20 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
   var citeData = {
     preprint: {
       bibtex: {
-        html:  '@article{palomares2026gauge,\n  title={Gauge-independent approach to inflation in quadratic gravity},\n  author={Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and Castellani, Elena and Maeda, Kei-ichi and Vidotto, Francesca and Ashtekar, Abhay and Emparan, Roberto and Castro, Alejandra and de Boer, Jan and Nojiri, Shin\'ichi and Odintsov, Sergei D. and Mukhanov, Viatcheslav and Sasaki, Misao and Soda, Jiro and Tsujikawa, Shinji and Padilla, Antonio and Gregory, Ruth and Malik, Karim A. and Wands, David and Tanaka, Takahiro},\n  journal={arXiv preprint arXiv:2604.22725},\n  year={2026}\n}',
-        plain: '@article{palomares2026gauge,\n  title={Gauge-independent approach to inflation in quadratic gravity},\n  author={Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and Castellani, Elena and Maeda, Kei-ichi and Vidotto, Francesca and Ashtekar, Abhay and Emparan, Roberto and Castro, Alejandra and de Boer, Jan and Nojiri, Shin\'ichi and Odintsov, Sergei D. and Mukhanov, Viatcheslav and Sasaki, Misao and Soda, Jiro and Tsujikawa, Shinji and Padilla, Antonio and Gregory, Ruth and Malik, Karim A. and Wands, David and Tanaka, Takahiro},\n  journal={arXiv preprint arXiv:2604.22725},\n  year={2026}\n}'
+        html:  '@article{palomares2026gauge,\n  title={Gauge-independent approach to inflation in quadratic gravity},\n  author={Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and Castellani, Elena and Maeda, Kei-ichi and Vidotto, Francesca and Ashtekar, Abhay and Emparan, Roberto and Castro, Alejandra and de Boer, Jan and Nojiri, Shin\'ichi and Odintsov, Sergei D. and Mukhanov, Viatcheslav and Sasaki, Misao and Soda, Jiro and Tsujikawa, Shinji and Padilla, Antonio and Gregory, Ruth and Malik, Karim A. and Wands, David and Tanaka, Takahiro},\n  journal={arXiv preprint arXiv:2604.22725},\n  year={2026},\n  doi={10.48550/arXiv.2604.22725}\n}',
+        plain: '@article{palomares2026gauge,\n  title={Gauge-independent approach to inflation in quadratic gravity},\n  author={Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and Castellani, Elena and Maeda, Kei-ichi and Vidotto, Francesca and Ashtekar, Abhay and Emparan, Roberto and Castro, Alejandra and de Boer, Jan and Nojiri, Shin\'ichi and Odintsov, Sergei D. and Mukhanov, Viatcheslav and Sasaki, Misao and Soda, Jiro and Tsujikawa, Shinji and Padilla, Antonio and Gregory, Ruth and Malik, Karim A. and Wands, David and Tanaka, Takahiro},\n  journal={arXiv preprint arXiv:2604.22725},\n  year={2026},\n  doi={10.48550/arXiv.2604.22725}\n}'
       },
       apa: {
-        html:  'Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., Castellani, E., Maeda, K., ... &amp; Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. <em>arXiv preprint</em> arXiv:2604.22725.',
-        plain: 'Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., Castellani, E., Maeda, K., ... & Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. arXiv preprint arXiv:2604.22725.'
+        html:  'Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., Castellani, E., Maeda, K., ... &amp; Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. <em>arXiv preprint</em> arXiv:2604.22725. https://doi.org/10.48550/arXiv.2604.22725',
+        plain: 'Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., Castellani, E., Maeda, K., ... & Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. arXiv preprint arXiv:2604.22725. https://doi.org/10.48550/arXiv.2604.22725'
       },
       chicago: {
-        html:  'Palomares, Adrian, Ilya L. Shapiro, Maria C. Gonzalez-Garcia, Tomohiro Harada, Elena Castellani, Kei-ichi Maeda, et al. &ldquo;Gauge-independent approach to inflation in quadratic gravity.&rdquo; <em>arXiv preprint</em> arXiv:2604.22725 (2026).',
-        plain: 'Palomares, Adrian, Ilya L. Shapiro, Maria C. Gonzalez-Garcia, Tomohiro Harada, Elena Castellani, Kei-ichi Maeda, et al. "Gauge-independent approach to inflation in quadratic gravity." arXiv preprint arXiv:2604.22725 (2026).'
+        html:  'Palomares, Adrian, Ilya L. Shapiro, Maria C. Gonzalez-Garcia, Tomohiro Harada, Elena Castellani, Kei-ichi Maeda, et al. &ldquo;Gauge-independent approach to inflation in quadratic gravity.&rdquo; <em>arXiv preprint</em> arXiv:2604.22725 (2026). https://doi.org/10.48550/arXiv.2604.22725.',
+        plain: 'Palomares, Adrian, Ilya L. Shapiro, Maria C. Gonzalez-Garcia, Tomohiro Harada, Elena Castellani, Kei-ichi Maeda, et al. "Gauge-independent approach to inflation in quadratic gravity." arXiv preprint arXiv:2604.22725 (2026). https://doi.org/10.48550/arXiv.2604.22725.'
       },
       mla: {
-        html:  'Palomares, Adrian, et al. &ldquo;Gauge-independent approach to inflation in quadratic gravity.&rdquo; <em>arXiv preprint</em> arXiv:2604.22725 (2026).',
-        plain: 'Palomares, Adrian, et al. "Gauge-independent approach to inflation in quadratic gravity." arXiv preprint arXiv:2604.22725 (2026).'
+        html:  'Palomares, Adrian, et al. &ldquo;Gauge-independent approach to inflation in quadratic gravity.&rdquo; <em>arXiv preprint</em> arXiv:2604.22725 (2026). https://doi.org/10.48550/arXiv.2604.22725.',
+        plain: 'Palomares, Adrian, et al. "Gauge-independent approach to inflation in quadratic gravity." arXiv preprint arXiv:2604.22725 (2026). https://doi.org/10.48550/arXiv.2604.22725.'
       }
     },
     journal: {
