@@ -348,66 +348,6 @@ img { max-width: 100%; height: auto; }
   color: var(--arxiv-card-grey) !important;
 }
 
-/* Breadcrumb bar — warm-wash band beneath the black header providing
-   upward navigation back to category and home. Matches the approved
-   spinout treatment. NOT sticky (only the header is); breadcrumb
-   scrolls away with the page. */
-.ds-breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 24px;
-  /* White row, per the approved spinout deployment (verified against
-     audits/2026-06-11/screenshots/components/10-spinout-header-detail.png).
-     An earlier iteration used a warm-wash band — that was a deviation
-     from the approved treatment, corrected 2026-06-11. */
-  background: #fff;
-  border-bottom: 1px solid var(--arxiv-border-light);
-  font-family: var(--arxiv-font-sans);
-  font-size: 0.8125rem;
-}
-.ds-breadcrumb-home {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  flex-shrink: 0;
-}
-.ds-breadcrumb-logomark {
-  /* Small full wordmark (with the red X), per the approved deployment —
-     not the square logomark. */
-  height: 16px;
-  width: auto;
-}
-.ds-breadcrumb-sep {
-  color: var(--arxiv-grey);
-  font-size: 0.875rem;
-  flex-shrink: 0;
-}
-.ds-breadcrumb-link {
-  color: var(--arxiv-link-blue);
-  text-decoration: none;
-  font-weight: 500;
-}
-.ds-breadcrumb-link:hover {
-  color: var(--arxiv-link-hover);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.ds-breadcrumb-link:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
-.ds-breadcrumb-current {
-  color: var(--arxiv-ink);
-  font-weight: 500;
-}
-@media (max-width: 520px) {
-  .ds-breadcrumb {
-    padding: 6px 16px;
-    flex-wrap: wrap;
-  }
-}
 
 /* Narrow-viewport reflow (WCAG 1.4.10).
    Below ~520px the five nav items no longer fit on one row beside the
@@ -1762,7 +1702,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
   UNIVERSAL HEADER
 ═══════════════════════════════════════════════════════════════════════
   CODIFIED 2026-06-11: the chrome below uses the design system's own
-  class names (.ds-announcement / .ds-site-header / .ds-breadcrumb /
+  class names (.ds-announcement / .ds-site-header /
   .ds-site-footer / .ds-skip-link). The canonical CSS lives in
   design-patterns/public/design-system.css; this mockup carries a
   matching local copy only to stay self-contained for GitHub Pages
@@ -1808,19 +1748,12 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
   </nav>
 </header>
 
-<!-- Breadcrumb bar. Matches the approved spinout deployment: light
-     warm-wash band with mini arXiv logomark + category +
-     paper identifier, separated by ">" glyphs. Provides upward
-     navigation back to the category listing or to arxiv.org. -->
-<nav class="ds-breadcrumb" aria-label="Breadcrumb">
-  <a class="ds-breadcrumb-home" href="https://arxiv.org/" aria-label="archive home">
-    <img src="images/arxiv-logo-primary-light.png" alt="archive" class="ds-breadcrumb-logomark">
-  </a>
-  <span class="ds-breadcrumb-sep" aria-hidden="true">&gt;</span>
-  <a class="ds-breadcrumb-link" href="https://arxiv.org/list/gr-qc/recent">gr-qc</a>
-  <span class="ds-breadcrumb-sep" aria-hidden="true">&gt;</span>
-  <span class="ds-breadcrumb-current" aria-current="page">arXiv:2604.22725</span>
-</nav>
+<!-- NO breadcrumb bar (decided 2026-06-11, Shamsi): the approved spinout
+     treatment covers ONLY the announcement banner and the black header —
+     nothing below it. A breadcrumb iteration was tried and removed: at
+     2 levels deep it doesn't justify the real estate, and its links
+     (home, category listing) are available elsewhere on the page
+     (header logo; Subjects in the metadata block). -->
 
 <!--
 ═══════════════════════════════════════════════════════════════════════
@@ -1931,6 +1864,15 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
              it." The visible .tar.gz hint tells users what they're getting
              before they commit to the download. -->
         <a href="https://arxiv.org/src/2604.22725v1" class="abs-btn abs-btn-tex">TeX Source&nbsp;<span class="abs-btn-ext">(.tar.gz &middot; 486&hairsp;KB)</span></a>
+        <!-- Ancillary download (decided 2026-06-11): data/code from the
+             source bundle's /anc directory gets its own secondary
+             download action — the strongest scent for a validated
+             priority (Joseph Smith, Ben Firshman, DOE OSTI: ancillary
+             surfaced, not hidden under formats). Renders only when
+             ancillary files exist. Mock count + size; production reads
+             real values. The Paper Information row below lists the
+             individual filenames. -->
+        <a href="#" class="abs-btn abs-btn-tex">Ancillary&nbsp;<span class="abs-btn-ext">(5 files &middot; 2.3&hairsp;MB)</span></a>
       </nav>
       <div class="abs-body-main">
         <div class="abs-abstract" lang="en">

@@ -807,16 +807,17 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   SITE HEADER UNIT  (.ds-announcement + .ds-site-header + .ds-breadcrumb)
+   SITE HEADER UNIT  (.ds-announcement + .ds-site-header)
    ═══════════════════════════════════════════════════════════════════════
    The universal arXiv public-page header. Design approved 2026-06-11,
    validated against the spinout-header-footer Cloud Run deployment.
    Reference implementation: mockups/abstract-redesign.html.
 
-   This is ONE pattern with three stacked pieces — codified together
-   because the approved deployment treats them as a unit (see
-   audits/2026-06-11/AUDIT-EVALUATION.md: codifying only the black bar
-   would re-fragment the chrome on day one):
+   This is ONE pattern with two stacked pieces — codified together
+   because the approved deployment treats them as a unit. (A third
+   piece, a breadcrumb band, was briefly part of this pattern and
+   removed 2026-06-11 — the approved deployment covers only the banner
+   and the black bar; see the note below the header rules.)
 
      1. .ds-announcement — dismissable light-blue announcement band.
         Render only while an announcement is active; the close button
@@ -825,10 +826,6 @@
         phase-2 spinout brand): logo left, nav right (Search / Submit /
         Donate | Log in). NOT sticky — scrolls away like content
         (decided 2026-06-11; sticky chrome is reader-only).
-     3. .ds-breadcrumb — warm-wash band with mini logomark › category ›
-        paper id. NOT sticky; scrolls away with the page. Provides the
-        upward path back to the category listing (research item
-        AUXDH-950/951 — resolved by this piece).
 
    Markup contract (abridged; see header-styles.html for the full demo):
      <a class="ds-skip-link" href="#main">Skip to main content</a>
@@ -851,14 +848,6 @@
          <a href="/login" class="ds-site-header-login">Log in</a>
        </nav>
      </header>
-     <nav class="ds-breadcrumb" aria-label="Breadcrumb">
-       <a class="ds-breadcrumb-home" href="/" aria-label="archive home">
-         <img class="ds-breadcrumb-logomark" src="…" alt="archive"></a>
-       <span class="ds-breadcrumb-sep" aria-hidden="true">&gt;</span>
-       <a class="ds-breadcrumb-link" href="/list/gr-qc/recent">gr-qc</a>
-       <span class="ds-breadcrumb-sep" aria-hidden="true">&gt;</span>
-       <span class="ds-breadcrumb-current" aria-current="page">arXiv:…</span>
-     </nav>
 
    Behavior contract (travels with the pattern):
      - The skip link (.ds-skip-link) is the FIRST focusable element on
@@ -868,8 +857,6 @@
      - The Search control is an <a href="/search"> that JS may upgrade
        to open a search overlay (preventDefault). Never a dead button:
        without JS it navigates to the search page.
-     - Breadcrumb separators carry aria-hidden="true"; the current page
-       is a <span aria-current="page">, not a link.
      - Focus rings on the dark bar use --arxiv-focus-ring-dark (#64b5f6)
        — the standard Link Blue ring is invisible against #1c1a17.
      - Below 520px the bar wraps to two rows (flex-wrap) rather than
@@ -1031,56 +1018,17 @@
   .ds-site-header-nav button { padding: 6px 8px; }
 }
 
-/* ── 3. Breadcrumb band ── */
-.ds-breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 24px;
-  /* White row per the approved spinout deployment (verified against
-     audits/2026-06-11/screenshots/components/10-spinout-header-detail.png;
-     an earlier warm-wash band was a deviation, corrected 2026-06-11). */
-  background: #fff;
-  border-bottom: 1px solid var(--arxiv-border-light);
-  font-family: var(--arxiv-font-sans);
-  font-size: 0.8125rem; /* 13px */
-}
-.ds-breadcrumb-home {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  flex-shrink: 0;
-}
-.ds-breadcrumb-logomark { height: 16px; width: auto; } /* small full wordmark, per deployment */
-.ds-breadcrumb-sep {
-  color: var(--arxiv-grey);
-  font-size: 0.875rem;
-  flex-shrink: 0;
-}
-.ds-breadcrumb-link {
-  color: var(--arxiv-link-blue);
-  text-decoration: none;
-  font-weight: 500;
-}
-.ds-breadcrumb-link:hover {
-  color: var(--arxiv-link-hover);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.ds-breadcrumb-link:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
-.ds-breadcrumb-current {
-  color: var(--arxiv-ink);
-  font-weight: 500;
-}
+/* ── NO breadcrumb band ──
+   Decided 2026-06-11 (Shamsi): the approved spinout treatment covers
+   ONLY the announcement banner and the black header bar; nothing below
+   the header is approved chrome. A breadcrumb iteration was tried and
+   removed — at 2 levels deep it doesn't justify the real estate, and
+   its links are available elsewhere (header logo = home; Subjects in
+   the abstract metadata = category listing). */
 
 @media print {
   .ds-announcement,
   .ds-site-header,
-  .ds-breadcrumb,
   .ds-skip-link { display: none !important; }
 }
 

@@ -701,6 +701,10 @@ html { scroll-padding-top: 80px; }
     margin: 0 !important;
   }
   .new-html-nav .nav-label { display: none; }
+  /* Dividers separate LABELED groups; between icon-only buttons they
+     are noise and cost width (adding the Listen control pushed the
+     320px header to 322px — caught by the reflow harness). */
+  .new-html-nav .new-html-divider { display: none; }
   .new-html-nav a,
   .new-html-nav button {
     font-size: 12px;
@@ -2181,6 +2185,43 @@ html:not(.js) .reading-progress { display: none !important; }
 
 
 /* ┌──────────────────────────────────────────────────────────────────┐
+   │  9b.  READ-ALOUD (text-to-speech)                                │
+   ├──────────────────────────────────────────────────────────────────┤
+   │  Functional whole-paper read-aloud via the browser's built-in    │
+   │  Web Speech API (speechSynthesis) — no external service, no      │
+   │  audio files, consistent with the no-third-party-tools position. │
+   │                                                                  │
+   │  Audience note: this serves SIGHTED listeners — dyslexia (Smith: │
+   │  "I can read the maths but not the text"), fatigue (Wayne Dick:  │
+   │  "text to speech combats fatigue"), and multitask reading.       │
+   │  Screen-reader users have their own, better TTS — this feature   │
+   │  must never interfere with AT (it only speaks on explicit        │
+   │  request).                                                       │
+   │                                                                  │
+   │  The currently-spoken paragraph carries a quiet active-family    │
+   │  wash (G4: light blue = arXiv layer speaking) — doubling as the  │
+   │  reading-line tracking that dyslexia research asks for.          │
+   └──────────────────────────────────────────────────────────────────┘ */
+
+.tts-trigger.is-speaking {
+  background: var(--arxiv-active-bg) !important;
+  color: var(--arxiv-ink) !important;
+}
+.tts-now-reading {
+  background: var(--arxiv-active-bg);
+  border-radius: 3px;
+  box-shadow: 0 0 0 6px var(--arxiv-active-bg); /* bleed past the text box */
+  transition: background 0.2s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tts-now-reading { transition: none; }
+}
+/* Hidden without JS (pure enhancement) and when speechSynthesis is
+   unsupported (JS removes the control). */
+html:not(.js) .tts-trigger { display: none !important; }
+@media print { .tts-trigger { display: none !important; } }
+
+/* ┌──────────────────────────────────────────────────────────────────┐
    │  10a. SECTION-HEADING PERMALINKS                                 │
    ├──────────────────────────────────────────────────────────────────┤
    │  Copy-link affordance on every section/subsection heading.       │
@@ -2491,6 +2532,17 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
       </button>
     </div>
     <nav class="new-html-nav" aria-label="Paper navigation">
+      <!-- Read aloud (decided 2026-06-11): functional text-to-speech of
+           the paper body via the browser's speechSynthesis API. Targets
+           sighted listeners (dyslexia, fatigue, multitasking); screen-
+           reader users have their own TTS. aria-pressed reflects
+           playing state. JS removes this button entirely when the
+           browser lacks speechSynthesis. -->
+      <button type="button" id="tts-trigger" class="tts-trigger" aria-pressed="false" title="Read this paper aloud">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        <span class="nav-label" id="tts-trigger-label">Listen</span>
+      </button>
+      <span class="new-html-divider" aria-hidden="true"></span>
       <!-- Back to abstract: the abstract page is the paper's "home." Arrow
            points left to suggest navigating backward in the paper's hierarchy. -->
       <a href="https://arxiv.org/abs/2604.22725v1" title="Back to abstract">
@@ -7171,6 +7223,189 @@ We thus see that</p>
 
   document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('article figure').forEach(buildFigureRegion);
+  });
+})();
+
+/* ─────────────────────────────────────────────────────────────────
+   BEHAVIOR 4b: Read-aloud (Web Speech API)
+   ─────────────────────────────────────────────────────────────────
+   Functional text-to-speech of the paper body. See the READ-ALOUD CSS
+   block for audience rationale. Interaction contract:
+
+     - Click "Listen": speaks from the first paragraph currently in
+       view (not the top — the reader resumes where the user is).
+       Button becomes "Pause" (aria-pressed=true).
+     - Click again: pauses. Click again: resumes. Esc: stops fully.
+     - The paragraph being spoken carries .tts-now-reading (visual
+       reading-line tracking — the dyslexia research ask) and is kept
+       in view with reduced-motion-aware scrolling.
+     - One utterance per paragraph (long single utterances break in
+       Chrome); onend chains to the next block.
+
+   Content handling (quality of listening over completeness):
+     - Reads: section headings (announced as "Section. Title"),
+       paragraph prose, figure captions.
+     - Math: display equations announce as "Equation N" and are
+       otherwise skipped — speaking raw LaTeX or MathML text is noise,
+       and proper math speech belongs to the MathML+AT pipeline
+       (Deyan's track), not this feature. Inline math speaks its
+       alttext only when short (≤24 chars), else says "formula".
+     - Skips: inline citation brackets (Miner's "auditory disturbance"
+       — the skim-suppression research applied to ears), footnote
+       markers, the bibliography, chrome.
+
+   Lifecycle safety: speechSynthesis.cancel() on page hide (browsers
+   otherwise keep speaking after navigation); the control is removed
+   when the API is unavailable; never auto-starts. Screen-reader users
+   have their own TTS — this speaks only on explicit request.
+*/
+(function() {
+  if (!('speechSynthesis' in window)) {
+    document.addEventListener('DOMContentLoaded', function() {
+      var t = document.getElementById('tts-trigger');
+      if (t) {
+        var d = t.nextElementSibling;
+        if (d && d.classList.contains('new-html-divider')) d.remove();
+        t.remove();
+      }
+    });
+    return;
+  }
+
+  var synth = window.speechSynthesis;
+  var trigger = null, triggerLabel = null;
+  var queue = [];       // [{el, text}]
+  var idx = -1;
+  var state = 'idle';   // idle | speaking | paused
+  var currentEl = null;
+
+  function prm() {
+    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  // Spoken text for one block, applying the content rules above.
+  function blockText(el) {
+    var clone = el.cloneNode(true);
+    var strip = clone.querySelectorAll(
+      'cite.ltx_cite, .ftn-marker, .cite-popover, .eqn-chips, .fig-chips, ' +
+      '.heading-permalink, .ltx_tag_section, .ltx_tag_subsection, .ltx_note, .is-sr-only'
+    );
+    Array.prototype.forEach.call(strip, function(n) { n.remove(); });
+    var maths = clone.querySelectorAll('math');
+    Array.prototype.forEach.call(maths, function(m) {
+      var alt = (m.getAttribute('alttext') || '').trim();
+      var stand = (alt && alt.length <= 24) ? alt : 'formula';
+      m.parentNode.replaceChild(document.createTextNode(' ' + stand + ' '), m);
+    });
+    return clone.textContent.replace(/\s+/g, ' ').trim();
+  }
+
+  function buildQueue() {
+    queue = [];
+    var article = document.querySelector('article');
+    if (!article) return;
+    var blocks = article.querySelectorAll(
+      'h1.ltx_title_document, .ltx_abstract .ltx_p, ' +
+      '.ltx_section > .ltx_title, .ltx_subsection > .ltx_title, .ltx_appendix > .ltx_title, ' +
+      '.ltx_para > .ltx_p, figure figcaption, table.ltx_equationgroup'
+    );
+    Array.prototype.forEach.call(blocks, function(el) {
+      if (el.closest('.ltx_bibliography')) return; // never read the bib
+      if (el.tagName === 'TABLE') {
+        var tag = el.querySelector('.ltx_tag_equation');
+        var num = tag ? tag.textContent.replace(/[()]/g, '').trim() : '';
+        queue.push({ el: el, text: num ? 'Equation ' + num + '.' : 'Equation.' });
+        return;
+      }
+      var txt = blockText(el);
+      if (!txt) return;
+      if (/ltx_title_section/.test(el.className)) txt = 'Section. ' + txt + '.';
+      else if (/ltx_title_subsection/.test(el.className)) txt = 'Subsection. ' + txt + '.';
+      queue.push({ el: el, text: txt });
+    });
+  }
+
+  function firstVisibleIndex() {
+    for (var i = 0; i < queue.length; i++) {
+      var r = queue[i].el.getBoundingClientRect();
+      if (r.bottom > 80 && r.top < window.innerHeight) return i;
+    }
+    return 0;
+  }
+
+  function setLabel(text, pressed) {
+    if (triggerLabel) triggerLabel.textContent = text;
+    trigger.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+    trigger.classList.toggle('is-speaking', pressed);
+    trigger.setAttribute('title', pressed ? 'Pause reading' : 'Read this paper aloud');
+  }
+
+  function highlight(el) {
+    clearHighlight();
+    currentEl = el;
+    el.classList.add('tts-now-reading');
+    var r = el.getBoundingClientRect();
+    if (r.top < 60 || r.bottom > window.innerHeight - 40) {
+      el.scrollIntoView({ behavior: prm() ? 'auto' : 'smooth', block: 'center' });
+    }
+  }
+  function clearHighlight() {
+    if (currentEl) currentEl.classList.remove('tts-now-reading');
+    currentEl = null;
+  }
+
+  function speakFrom(i) {
+    if (i >= queue.length) { stop(); return; }
+    idx = i;
+    var item = queue[i];
+    highlight(item.el);
+    var u = new SpeechSynthesisUtterance(item.text);
+    u.onend = function() {
+      if (state === 'speaking') speakFrom(idx + 1);
+    };
+    u.onerror = function() { stop(); };
+    synth.speak(u);
+  }
+
+  function play() {
+    if (state === 'paused') {
+      synth.resume();
+      state = 'speaking';
+      setLabel('Pause', true);
+      return;
+    }
+    buildQueue();
+    if (!queue.length) return;
+    synth.cancel();
+    state = 'speaking';
+    setLabel('Pause', true);
+    speakFrom(firstVisibleIndex());
+  }
+  function pause() {
+    synth.pause();
+    state = 'paused';
+    setLabel('Resume', true);
+  }
+  function stop() {
+    synth.cancel();
+    state = 'idle';
+    setLabel('Listen', false);
+    clearHighlight();
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    trigger = document.getElementById('tts-trigger');
+    triggerLabel = document.getElementById('tts-trigger-label');
+    if (!trigger) return;
+    trigger.addEventListener('click', function() {
+      if (state === 'speaking') pause();
+      else play();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && state !== 'idle') stop();
+    });
+    // Browsers keep speaking after navigation unless cancelled.
+    window.addEventListener('pagehide', function() { synth.cancel(); });
   });
 })();
 
