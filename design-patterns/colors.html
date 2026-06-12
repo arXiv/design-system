@@ -76,7 +76,10 @@
       <a href="../doc.html?src=design-patterns/color-mapping.md">color-mapping.md</a> (source of truth — if this page
       and the spec disagree, the spec wins). Hard rules live in
       <a href="../doc.html?src=DESIGN-POLICIES.md">DESIGN-POLICIES.md</a>: all colors come from this
-      palette; no one-off hex values.
+      palette; no one-off hex values. Tints are part of the palette —
+      see <a href="#tinted">Working on tinted backgrounds</a> for the tint
+      families, the three tiers of color use, and which combinations stay
+      accessible.
     </p>
   </header>
 
@@ -161,8 +164,8 @@
   </section>
 
   <section class="section">
-    <h2 class="section-title">Background tints</h2>
-    <p class="section-desc">Barely-perceptible tints for section depth without hard borders.</p>
+    <h2 class="section-title">Background tints — the warm family</h2>
+    <p class="section-desc">Repository Brown stepped toward white: barely-perceptible warm tints for section depth without hard borders. Together with the text greys above, these form the brown family's full ladder — every warm neutral in the system descends from the same hue.</p>
     <div class="swatches">
       <div class="swatch-card"><div class="swatch-chip" style="background:#f9f7f7"></div><div class="swatch-body"><div class="swatch-name">Warm Wash</div><div class="swatch-hex">#f9f7f7</div><div class="swatch-token">--arxiv-warm-wash</div><div class="swatch-role">Footer, metadata bands, internal page background</div></div></div>
       <div class="swatch-card"><div class="swatch-chip" style="background:#f7fafc"></div><div class="swatch-body"><div class="swatch-name">Cool Wash</div><div class="swatch-hex">#f7fafc</div><div class="swatch-role">Cool section differentiation</div></div></div>
@@ -174,12 +177,67 @@
   </section>
 
   <section class="section">
-    <h2 class="section-title">The arXiv-layer family</h2>
-    <p class="section-desc">Light blues reserved for arXiv-added interactive surfaces over paper content — popovers, the TOC dropdown, active inline states, the read-aloud highlight. The reader-recognizable rule: <em>light blue = arXiv chrome speaking, not the paper</em>. (PROPOSED-GUIDELINES.md G4.)</p>
+    <h2 class="section-title">The arXiv-layer family — Open Blue's tints</h2>
+    <p class="section-desc">Open Blue stepped toward white (plus its hover step <span class="swatch-hex" style="display:inline">#c2e2ff</span>): light blues reserved for arXiv-added interactive surfaces over paper content — popovers, the TOC dropdown, active inline states, the read-aloud highlight. The reader-recognizable rule: <em>light blue = arXiv chrome speaking, not the paper</em>. (PROPOSED-GUIDELINES.md G4.)</p>
     <div class="swatches">
       <div class="swatch-card"><div class="swatch-chip" style="background:#edf4fc"></div><div class="swatch-body"><div class="swatch-name">Tint Light</div><div class="swatch-hex">#edf4fc</div><div class="swatch-token">--arxiv-tint-light</div><div class="swatch-role">Popover and dropdown panel surface</div></div></div>
       <div class="swatch-card"><div class="swatch-chip" style="background:#c4dcf0"></div><div class="swatch-body"><div class="swatch-name">Tint Border</div><div class="swatch-hex">#c4dcf0</div><div class="swatch-token">--arxiv-tint-border</div><div class="swatch-role">Matching panel edge</div></div></div>
       <div class="swatch-card"><div class="swatch-chip" style="background:#d6e8f7"></div><div class="swatch-body"><div class="swatch-name">Active Wash</div><div class="swatch-hex">#d6e8f7</div><div class="swatch-token">--arxiv-active-bg</div><div class="swatch-role">Active inline states; hover within panels; read-aloud highlight</div></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="tinted">
+    <h2 class="section-title">Working on tinted backgrounds</h2>
+    <p class="section-desc">
+      "No one-off hex values" has three tiers. <strong>Tier 1 — palette
+      tokens</strong> (everything on this page): free to use in their
+      documented roles. <strong>Tier 2 — component-internal constants</strong>:
+      a handful of values that exist only inside a component's own CSS —
+      the button-border gradient stops, the dark header's hover and divider
+      shades. They are part of those components, not the palette; don't
+      lift them for new uses. <strong>Tier 3 — everything else</strong>:
+      doesn't exist. If a new value seems needed, it's a
+      <a href="../doc.html?src=design-patterns/color-mapping.md">color-mapping.md</a>
+      change, not a local invention.
+    </p>
+
+    <h3 style="font-size:15px; margin:24px 0 6px">Contrast on the tints (computed, WCAG)</h3>
+    <p class="section-desc">Every approved text/UI color against every approved surface. <strong>AA</strong> = passes 4.5:1 for normal text · <strong>ui</strong> = passes only the 3:1 tier (large text ≥18px, or UI boundaries) · <strong>✗</strong> = don't.</p>
+    <table class="status-table">
+      <tr><th>on ↓ / against →</th><th>White</th><th>Warm Wash<br>#f9f7f7</th><th>Card Grey<br>#f0eeec</th><th>Grey Active<br>#e4e0db</th><th>Tint Light<br>#edf4fc</th><th>Active Wash<br>#d6e8f7</th><th>Open Blue<br>#a5d6fe</th></tr>
+      <tr><td><strong>Ink</strong> #1c1a17</td><td>17.4 AA</td><td>16.3 AA</td><td>15.0 AA</td><td>13.2 AA</td><td>15.7 AA</td><td>13.8 AA</td><td>11.3 AA</td></tr>
+      <tr><td><strong>Library Grey</strong> #6b6459</td><td>5.9 AA</td><td>5.5 AA</td><td>5.1 AA</td><td style="background:var(--arxiv-warning-bg)">4.5 ui</td><td>5.3 AA</td><td>4.7 AA</td><td style="background:var(--arxiv-warning-bg)">3.8 ui</td></tr>
+      <tr><td><strong>UI Boundary Grey</strong> #8b8680</td><td>3.6 ui</td><td>3.4 ui</td><td>3.1 ui</td><td style="background:var(--arxiv-error-bg)">2.8 ✗</td><td>3.3 ui</td><td style="background:var(--arxiv-error-bg)">2.9 ✗</td><td style="background:var(--arxiv-error-bg)">2.4 ✗</td></tr>
+      <tr><td><strong>Link Blue</strong> #1565c0</td><td>5.8 AA</td><td>5.4 AA</td><td>5.0 AA</td><td style="background:var(--arxiv-warning-bg)">4.4 ui</td><td>5.2 AA</td><td>4.6 AA</td><td style="background:var(--arxiv-warning-bg)">3.7 ui</td></tr>
+      <tr><td><strong>Link Hover</strong> #1050a0</td><td>7.8 AA</td><td>7.4 AA</td><td>6.8 AA</td><td>6.0 AA</td><td>7.1 AA</td><td>6.3 AA</td><td>5.1 AA</td></tr>
+      <tr><td><strong>Archival Blue</strong> #1f5e96</td><td>6.8 AA</td><td>6.4 AA</td><td>5.9 AA</td><td>5.2 AA</td><td>6.1 AA</td><td>5.4 AA</td><td style="background:var(--arxiv-warning-bg)">4.4 ui</td></tr>
+      <tr><td><strong>Visited Purple</strong> #7b2fbe</td><td>7.0 AA</td><td>6.6 AA</td><td>6.1 AA</td><td>5.3 AA</td><td>6.3 AA</td><td>5.6 AA</td><td>4.6 AA</td></tr>
+    </table>
+    <p class="section-desc" style="margin-top:14px"><strong>The rules that fall out of the math:</strong>
+      Ink works everywhere — which is why buttons put ink on Open Blue.
+      The deepest safe tint for normal-size Library Grey text and Link Blue links is Active Wash;
+      on <em>Grey Active</em>, body-size grey text and links technically miss AA — use Ink, Link Hover, or large text there.
+      UI Boundary Grey borders hold their 3:1 only through Tint Light — on Grey Active, Active Wash, or Open Blue,
+      draw boundaries with Library Grey instead.
+      On Open Blue itself, treat Ink as the only text color.</p>
+
+    <h3 style="font-size:15px; margin:28px 0 6px">Buttons change clothes on tinted surfaces</h3>
+    <p class="section-desc">
+      The secondary button's white fill reads as "primary" against a tinted band, so tinted
+      sections add the <code style="font-family:var(--arxiv-font-mono); font-size:12px">.on-tint</code>
+      modifier: the fill swaps to Card Grey — same luminance as the surface, <em>warm</em> hue —
+      so the button reads as secondary through warm-on-cool material difference, not through
+      low contrast. Live from <a href="public/button-styles.html">the button pattern</a>:
+    </p>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; max-width:760px">
+      <div style="background:#fff; border:1px solid var(--arxiv-border-light); border-radius:8px; padding:22px; text-align:center">
+        <div style="font-family:var(--arxiv-font-condensed); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--arxiv-grey-ui); margin-bottom:12px">On white — default secondary</div>
+        <span class="ds-btn ds-btn-secondary">TeX Source</span>
+      </div>
+      <div style="background:var(--arxiv-tint-light); border:1px solid var(--arxiv-tint-border); border-radius:8px; padding:22px; text-align:center">
+        <div style="font-family:var(--arxiv-font-condensed); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--arxiv-grey); margin-bottom:12px">On a tinted band — add .on-tint</div>
+        <span class="ds-btn ds-btn-secondary on-tint">Submit a fix</span>
+      </div>
     </div>
   </section>
 </div>
