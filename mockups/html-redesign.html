@@ -959,24 +959,32 @@ h1.ltx_title.ltx_title_document {
   vertical-align: middle;
   margin-right: 6px;
 }
+/* Watermark links (DOI, License) use the canonical design-system link
+   treatment (.ds-link: Link Blue, underlined, hover/visited states) —
+   decided 2026-06-11. An earlier iteration styled them as quiet grey
+   chrome links, which left the DOI and License visibly inconsistent
+   with each other and with the same DOI link on the abstract page.
+   These are genuine destinations (doi.org, the license page), not
+   chrome navigation — they get the real link grammar. */
 .new-watermark a {
-  color: var(--arxiv-grey);
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 600;
-}
-.new-watermark a:hover { color: var(--arxiv-ink); text-decoration: underline; }
-/* The license link wraps an <abbr>, whose browser-default dotted
-   underline rendered at this small size like a line struck THROUGH
-   the text (responsiveness audit 2026-06-11, issue 1 — visible at
-   every viewport). Replace with a clean solid underline, pushed
-   clear of the descenders. The abbr's title tooltip is unaffected. */
-.new-watermark a abbr[title] {
+  color: var(--arxiv-link-blue);
   text-decoration: underline;
-  text-decoration-style: solid;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
+  text-underline-offset: 2px;
+  font-size: 15px;
+  font-weight: 500;
 }
+.new-watermark a:hover { color: var(--arxiv-link-hover); }
+.new-watermark a:visited { color: var(--arxiv-link-visited); }
+.new-watermark a:focus-visible {
+  outline: 3px solid var(--arxiv-link-blue);
+  outline-offset: 1px;
+  border-radius: 2px;
+}
+/* Kill the abbr's browser-default dotted underline so it doesn't stack
+   with the link underline (it rendered like a strikethrough at this
+   size — responsiveness audit 2026-06-11). The parent link's underline
+   still draws through the abbr; the title tooltip is unaffected. */
+.new-watermark a abbr[title] { text-decoration: none; }
 
 /* Reference band: full-bleed using negative-margin viewport-width trick.
    Production should achieve this with proper full-bleed grid layout. */
