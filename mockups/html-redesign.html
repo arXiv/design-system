@@ -189,10 +189,15 @@
   where NVDA/JAWS already run MathCAT/SRE themselves. SRE here serves
   only arXiv's own Listen feature, which targets listeners WITHOUT
   screen readers. It needs no Intent annotations to work today;
-  Intent adoption will improve its semantic accuracy over time. A
-  production alternative worth evaluating: precompute speech strings
-  at LaTeXML conversion time (data-semantic-speech attributes) for
-  zero client-side cost.
+  Intent adoption will improve its semantic accuracy over time.
+  Expert review (Deyan Ginev, 2026-06-12) set the direction: literal
+  readouts as the baseline (SRE now runs MathSpeak here, not
+  ClearSpeak), with MathCAT-as-WebAssembly the named successor — it
+  respects the intent=":literal" baseline LaTeXML already emits.
+  Production alternatives worth evaluating side by side: client-side
+  MathCAT WASM vs. precomputing speech strings at LaTeXML conversion
+  time (zero client-side cost, regenerable corpus-wide as rules
+  improve).
 
   What stays in the mockup, then, is reader-workflow tooling that
   COMPLEMENTS Deyan's work:
@@ -7295,8 +7300,10 @@ We thus see that</p>
      - Math SPEAKS FOR REAL (added 2026-06-12 after internal testing:
        "Equation 2.3 is not what a blind user needs — they need to
        hear the equation itself"). Display equations announce their
-       number, then the mathematics via Speech Rule Engine (ClearSpeak)
-       run on the LaTeXML MathML — the same engine family behind
+       number, then the mathematics via Speech Rule Engine (MathSpeak —
+       literal rules; expert review chose verbose-but-correct over
+       interpretive-but-misleading) run on the LaTeXML MathML — the
+       same engine family behind
        MathJax's a11y extensions and screen-reader math. Inline math
        speaks the same way. SRE is lazy-loaded on first Listen (~1 MB,
        self-hosted); invisible operators (U+2061/2062/200B) are
@@ -7340,13 +7347,21 @@ We thus see that</p>
 
   /* ── Math speech: Speech Rule Engine (lazy-loaded) ──
      SRE converts the LaTeXML-emitted MathML to spoken English
-     (ClearSpeak rules — the same engine family behind MathJax's
-     accessibility extensions and screen-reader math support). Loaded
-     on the FIRST Listen click only (~1 MB total: engine + English
-     locale), self-hosted in lib/sre/ per the no-external-services
-     policy. If loading fails, reading proceeds with the previous
-     "Equation N" fallback rather than blocking. Speech per equation
-     is computed once and cached on the element. */
+     (MathSpeak rules — see the domain note in ensureSRE for why
+     literal beats interpretive on research math, per Deyan Ginev's
+     review). Loaded on the FIRST Listen click only (~1 MB total:
+     engine + English locale), self-hosted in lib/sre/ per the
+     no-external-services policy. If loading fails, reading proceeds
+     with the "Equation N" fallback rather than blocking. Speech per
+     equation is computed once and cached on the element.
+
+     Named successor (not yet integrated): MathCAT compiled to
+     WebAssembly. Unlike SRE it respects the intent=":literal"
+     baseline that LaTeXML already emits (666 instances in this very
+     sample paper) — the natural improvement path as Intent adoption
+     grows. No prebuilt npm/wasm distribution exists today; it would
+     need a wasm-pack build from the Rust crate. Tracked in
+     PROPOSED-GUIDELINES follow-ups. */
   var sreState = 'none';   // none | loading | ready | failed
   var sreCache = new WeakMap();
 
@@ -7375,7 +7390,16 @@ We thus see that</p>
     ensureSRE._p = loadScript('lib/sre/mathmaps-en.js')
       .then(function() { return loadScript('lib/sre/sre.js'); })
       .then(function() {
-        return window.SRE.setupEngine({ locale: 'en', domain: 'clearspeak', modality: 'speech' });
+        // MathSpeak, not ClearSpeak (expert review, Deyan Ginev
+        // 2026-06-12): interpretive rule sets have strong K-12
+        // defaults but "can sound pretty broken over higher math" —
+        // verified on this very paper, where ClearSpeak reads the
+        // product Ht as the function application "H of t". MathSpeak
+        // is verbose but literal: "upper H t" never claims structure
+        // it doesn't know. "Literal readouts are verbose but correct,
+        // which is a better baseline since they won't mislead. And
+        // there is a natural path to improvement from there."
+        return window.SRE.setupEngine({ locale: 'en', domain: 'mathspeak', modality: 'speech' });
       })
       .then(function() { return window.SRE.engineReady(); })
       .then(function() { sreState = 'ready'; })
