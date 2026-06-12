@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>arXiv Design System — Document</title>
+  <link rel="stylesheet" href="design-patterns/public/design-system.css">
+  <style>
+    /* ── Markdown document viewer.
+       STRATEGY (decided 2026-06-13): markdown files stay the canonical,
+       editable source of truth — they diff cleanly, render on GitHub,
+       and are the easiest format for both humans and AI agents to edit
+       without drift. This single viewer gives every report a readable
+       web presentation with the design system's own type and the shared
+       docs nav — no per-document HTML copies to fall out of sync.
+       Usage: doc.html?src=visual-audit/audit-report.md
+       Relative images and .md links inside documents are resolved
+       against the document's own directory; .md links stay inside the
+       viewer. Requires http(s) (GitHub Pages) — file:// blocks fetch,
+       in which case we link out to the raw markdown instead. ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: var(--arxiv-font-sans); color: var(--arxiv-ink); background: var(--arxiv-warm-wash); margin: 0; font-size: 15px; line-height: 1.6; }
+    .page { max-width: 880px; margin: 0 auto; padding: 36px 28px 96px; }
+    .doc-meta { font-family: var(--arxiv-font-mono); font-size: 12px; color: var(--arxiv-grey-ui); margin-bottom: 24px; }
+    .doc-meta a { color: var(--arxiv-link-blue); }
+
+    /* Rendered-markdown typography */
+    .doc h1 { font-size: 26px; line-height: 1.25; margin: 0 0 16px; padding-bottom: 14px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .doc h2 { font-size: 20px; margin: 40px 0 10px; }
+    .doc h3 { font-size: 16px; margin: 28px 0 8px; }
+    .doc h4 { font-size: 14px; margin: 22px 0 6px; }
+    .doc p, .doc li { font-size: 15px; color: var(--arxiv-ink); }
+    .doc li { margin: 4px 0; }
+    .doc a { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; }
+    .doc a:hover { color: var(--arxiv-link-hover); }
+    .doc a:visited { color: var(--arxiv-link-visited); }
+    .doc code { font-family: var(--arxiv-font-mono); font-size: 0.875em; background: var(--arxiv-card-grey); padding: 1px 5px; border-radius: 3px; }
+    .doc pre { background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 6px; padding: 14px 16px; overflow-x: auto; }
+    .doc pre code { background: none; padding: 0; font-size: 13px; }
+    .doc blockquote { margin: 16px 0; padding: 8px 18px; border-left: 3px solid var(--arxiv-open-blue); background: #fff; border-radius: 0 6px 6px 0; color: var(--arxiv-grey); }
+    .doc table { border-collapse: collapse; background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 8px; font-size: 13.5px; margin: 16px 0; display: block; overflow-x: auto; }
+    .doc th { background: var(--arxiv-card-grey); text-align: left; padding: 9px 13px; font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-grey); white-space: nowrap; }
+    .doc td { padding: 9px 13px; border-top: 1px solid var(--arxiv-card-grey); vertical-align: top; }
+    .doc img { max-width: 100%; height: auto; border: 1px solid var(--arxiv-border-light); border-radius: 6px; margin: 6px 0; }
+    .doc hr { border: none; border-top: 1px solid var(--arxiv-border-light); margin: 36px 0; }
+    .doc-error { background: var(--arxiv-warning-bg); border: 1px solid var(--arxiv-warning-border); color: var(--arxiv-warning-fg); border-radius: 6px; padding: 14px 18px; font-size: 14px; }
+    .doc-error a { color: inherit; font-weight: 600; }
+
+    /* ── Shared docs nav strip ── */
+    .docs-nav { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-ink); text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
+    .docs-nav a:not(.docs-nav-brand) { color: var(--arxiv-grey); text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: var(--arxiv-ink); text-decoration: underline; }
+    .docs-nav a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 2px; }
+    .docs-nav-spacer { flex: 1; }
+    .docs-nav .docs-nav-mock { color: var(--arxiv-grey-ui); font-size: 12px; }
+  </style>
+</head>
+<body>
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="index.html">arXiv Design System</a>
+  <a href="design-patterns/colors.html">Colors</a>
+  <a href="design-patterns/typography.html">Typography</a>
+  <a href="doc.html?src=DESIGN-POLICIES.md">Policies</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="docs-nav-mock">Mockups:</span>
+  <a href="mockups/abstract-redesign.html">Abstract</a>
+  <a href="mockups/html-redesign.html">Reader</a>
+</nav>
+<div class="page">
+  <p class="doc-meta" id="doc-meta"></p>
+  <main class="doc" id="doc">Loading…</main>
+</div>
+<script src="docs-assets/marked.js"></script>
+<script>
+(function() {
+  var docEl = document.getElementById('doc');
+  var metaEl = document.getElementById('doc-meta');
+
+  var src = new URLSearchParams(location.search).get('src') || '';
+  // Same-origin relative paths only: no schemes, no protocol-relative,
+  // no parent traversal. The viewer renders THIS repo's documents.
+  var valid = /^[\w./-]+\.md$/.test(src) && src.indexOf('..') === -1 && src.charAt(0) !== '/';
+  if (!valid) {
+    docEl.innerHTML = '<div class="doc-error">No document specified. Start from the <a href="index.html">design-system home</a>.</div>';
+    return;
+  }
+
+  var dir = src.indexOf('/') >= 0 ? src.slice(0, src.lastIndexOf('/') + 1) : '';
+  metaEl.innerHTML = 'Rendered from <a href="' + src + '">' + src + '</a> (canonical source — edit the markdown, not this view)';
+
+  fetch(src).then(function(r) {
+    if (!r.ok) throw new Error(r.status);
+    return r.text();
+  }).then(function(md) {
+    docEl.innerHTML = marked.parse(md);
+    document.title = (docEl.querySelector('h1') ? docEl.querySelector('h1').textContent + ' — ' : '') + 'arXiv Design System';
+    // Resolve relative targets against the document's directory; keep
+    // .md links inside the viewer so navigation stays readable.
+    docEl.querySelectorAll('a[href]').forEach(function(a) {
+      var h = a.getAttribute('href');
+      if (/^(https?:|mailto:|#)/.test(h)) return;
+      var resolved = h.charAt(0) === '/' ? h : dir + h;
+      if (/\.md(#.*)?$/.test(resolved)) {
+        var parts = resolved.split('#');
+        a.setAttribute('href', 'doc.html?src=' + parts[0] + (parts[1] ? '#' + parts[1] : ''));
+      } else {
+        a.setAttribute('href', resolved);
+      }
+    });
+    docEl.querySelectorAll('img[src]').forEach(function(img) {
+      var h = img.getAttribute('src');
+      if (/^(https?:|data:)/.test(h) || h.charAt(0) === '/') return;
+      img.setAttribute('src', dir + h);
+    });
+    if (location.hash) {
+      var t = document.getElementById(location.hash.slice(1));
+      if (t) t.scrollIntoView();
+    }
+  }).catch(function() {
+    docEl.innerHTML = '<div class="doc-error">Couldn’t load <code>' + src +
+      '</code> here. If you opened this page from your local disk (file://), browsers block the fetch — ' +
+      'read it <a href="' + src + '">as raw markdown</a> or on the hosted site.</div>';
+  });
+})();
+</script>
+</body>
+</html>
