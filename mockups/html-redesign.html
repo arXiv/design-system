@@ -708,13 +708,14 @@ html { scroll-padding-top: 80px; }
   .new-html-nav a,
   .new-html-nav button {
     font-size: 12px;
-    padding: 6px;
+    padding: 6px 4px; /* tightened when the Listen control joined the nav
+                         (320px reflow budget — harness-enforced) */
     gap: 0;
   }
   /* Trigger gets a tighter cap and drops the section-number prefix
      (it's noise at this width; the open dropdown still shows it). */
   .toc-trigger {
-    max-width: 200px;
+    max-width: 150px;
     padding: 6px 6px 6px 8px;
   }
   .toc-trigger-prefix { display: none !important; }
@@ -1013,8 +1014,18 @@ h1.ltx_title.ltx_title_document {
    gets the same full-bleed treatment so the band is continuous.
    The sample paper has nothing after its references, so this rule is
    dormant here — verify against a paper with post-references content
-   (e.g. appendix-after-bib) before promoting. */
-.ltx_bibliography ~ * {
+   (e.g. appendix-after-bib) before promoting.
+
+   SCOPED to LaTeXML structural elements, NOT `~ *` (bug found in
+   internal testing 2026-06-12): our own JS appends footnote marginalia
+   to the article element, making them DOM-siblings of the bibliography
+   even though they render in the right margin beside earlier prose —
+   the universal selector painted them with full-bleed grey slabs. */
+.ltx_bibliography ~ section,
+.ltx_bibliography ~ .ltx_section,
+.ltx_bibliography ~ .ltx_appendix,
+.ltx_bibliography ~ .ltx_acknowledgements,
+.ltx_bibliography ~ .ltx_para {
   background: var(--arxiv-card-grey) !important;
   margin-left: calc(-50vw + 50%) !important;
   margin-right: calc(-50vw + 50%) !important;
@@ -1675,22 +1686,20 @@ table.ltx_equationgroup math.ltx_math_unparsed {
   text-decoration: none;
 }
 
-/* TeX-source view — replaces the rendered equation when toggled. */
+/* TeX-source view — replaces the rendered equation when toggled.
+   Plain mono text, NO code-block box (internal feedback 2026-06-12:
+   the bordered block read as unnecessary chrome) — the monospace face
+   and the toggle context already say "source". Same max-width/scroll
+   behavior as the rendered equation it replaces. */
 .eqn-tex-view {
-  display: none;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--arxiv-ink);
-  background: #fafaf8;
-  border: 1px solid var(--arxiv-pill-border);
-  border-radius: 4px;
-  padding: 12px 16px;
-  margin: 0.5em 0;
-  max-width: 100%;
-  overflow-x: auto;
+  font-family: var(--arxiv-font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
   white-space: pre-wrap;
   word-break: break-word;
+  color: var(--arxiv-ink);
+  margin: 0.5em 0;
+  max-width: 100%;
 }
 .eqn-region.show-tex .eqn-tex-view {
   display: block;
@@ -2203,6 +2212,12 @@ html:not(.js) .reading-progress { display: none !important; }
    │  reading-line tracking that dyslexia research asks for.          │
    └──────────────────────────────────────────────────────────────────┘ */
 
+/* The hidden attribute loses to our explicit display:inline-flex on
+   nav buttons (UA [hidden] rule has lower precedence than author
+   display) — without this, the skip buttons occupy invisible width
+   and blow the 320px reflow budget. */
+.tts-skip[hidden] { display: none !important; }
+
 .tts-trigger.is-speaking {
   background: var(--arxiv-active-bg) !important;
   color: var(--arxiv-ink) !important;
@@ -2541,6 +2556,15 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
       <button type="button" id="tts-trigger" class="tts-trigger" aria-pressed="false" title="Read this paper aloud">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
         <span class="nav-label" id="tts-trigger-label">Listen</span>
+      </button>
+      <!-- Skip controls: visible only while listening. Media-player
+           grammar (the closest thing to a convention users know for
+           spoken content): previous/next block, plus arrow keys. -->
+      <button type="button" id="tts-prev" class="tts-skip" aria-label="Previous paragraph" title="Previous paragraph (left arrow)" hidden>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+      </button>
+      <button type="button" id="tts-next" class="tts-skip" aria-label="Next paragraph" title="Next paragraph (right arrow)" hidden>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
       </button>
       <span class="new-html-divider" aria-hidden="true"></span>
       <!-- Back to abstract: the abstract page is the paper's "home." Arrow
@@ -6601,7 +6625,11 @@ We thus see that</p>
     var maths = table.querySelectorAll('math.ltx_Math, math.ltx_math_unparsed');
     var sources = Array.prototype.map.call(maths, function(m) {
       var ann = m.querySelector('annotation[encoding="application/x-tex"]');
-      return ann ? ann.textContent.trim() : (m.getAttribute('alttext') || '');
+      var tex = ann ? ann.textContent.trim() : (m.getAttribute('alttext') || '');
+      // LaTeXML prefixes every aligned cell with \displaystyle — noise
+      // for reading and for pasting back into a document (the user's
+      // own math environment determines the style). Strip it.
+      return tex.replace(/\\displaystyle\s*/g, '').trim();
     }).filter(Boolean);
     return sources.join('\n\n');
   }
@@ -7234,8 +7262,15 @@ We thus see that</p>
 
      - Click "Listen": speaks from the first paragraph currently in
        view (not the top — the reader resumes where the user is).
-       Button becomes "Pause" (aria-pressed=true).
+       Button becomes "Pause" (aria-pressed=true); previous/next skip
+       buttons appear beside it.
      - Click again: pauses. Click again: resumes. Esc: stops fully.
+     - KEYBOARD (active only while listening; media-player grammar —
+       the closest convention users know for spoken content; there is
+       no formal web standard for TTS widgets): Left/Right arrows skip
+       a paragraph, Space pauses/resumes, Esc stops. Never intercepted
+       while focus is in an interactive element. At rest all keys
+       behave normally.
      - The paragraph being spoken carries .tts-now-reading (visual
        reading-line tracking — the dyslexia research ask) and is kept
        in view with reduced-motion-aware scrolling.
@@ -7273,11 +7308,14 @@ We thus see that</p>
   }
 
   var synth = window.speechSynthesis;
-  var trigger = null, triggerLabel = null;
+  var trigger = null, triggerLabel = null, prevBtn = null, nextBtn = null;
   var queue = [];       // [{el, text}]
   var idx = -1;
   var state = 'idle';   // idle | speaking | paused
   var currentEl = null;
+  var gen = 0;          // generation guard: skipping cancels the current
+                        // utterance, whose onend would otherwise race a
+                        // chained speakFrom against the skip's own.
 
   function prm() {
     return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -7357,14 +7395,35 @@ We thus see that</p>
   function speakFrom(i) {
     if (i >= queue.length) { stop(); return; }
     idx = i;
+    var myGen = ++gen;
     var item = queue[i];
     highlight(item.el);
     var u = new SpeechSynthesisUtterance(item.text);
     u.onend = function() {
-      if (state === 'speaking') speakFrom(idx + 1);
+      if (gen === myGen && state === 'speaking') speakFrom(idx + 1);
     };
-    u.onerror = function() { stop(); };
+    u.onerror = function() {
+      if (gen === myGen) stop();
+    };
     synth.speak(u);
+  }
+
+  // Skip to an adjacent block. Skipping always resumes speech (a
+  // paused listener who skips wants to hear the new position).
+  function skip(delta) {
+    if (state === 'idle' || !queue.length) return;
+    var target = Math.max(0, Math.min(queue.length - 1, idx + delta));
+    gen++;              // invalidate the cancelled utterance's onend
+    synth.cancel();
+    if (state === 'paused') synth.resume();
+    state = 'speaking';
+    setLabel('Pause', true);
+    speakFrom(target);
+  }
+
+  function showSkips(show) {
+    if (prevBtn) prevBtn.hidden = !show;
+    if (nextBtn) nextBtn.hidden = !show;
   }
 
   function play() {
@@ -7376,9 +7435,11 @@ We thus see that</p>
     }
     buildQueue();
     if (!queue.length) return;
+    gen++;
     synth.cancel();
     state = 'speaking';
     setLabel('Pause', true);
+    showSkips(true);
     speakFrom(firstVisibleIndex());
   }
   function pause() {
@@ -7387,22 +7448,46 @@ We thus see that</p>
     setLabel('Resume', true);
   }
   function stop() {
+    gen++;
     synth.cancel();
     state = 'idle';
     setLabel('Listen', false);
+    showSkips(false);
     clearHighlight();
   }
 
   document.addEventListener('DOMContentLoaded', function() {
     trigger = document.getElementById('tts-trigger');
     triggerLabel = document.getElementById('tts-trigger-label');
+    prevBtn = document.getElementById('tts-prev');
+    nextBtn = document.getElementById('tts-next');
     if (!trigger) return;
     trigger.addEventListener('click', function() {
       if (state === 'speaking') pause();
       else play();
     });
+    if (prevBtn) prevBtn.addEventListener('click', function() { skip(-1); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { skip(1); });
+
+    // Keyboard, media-player grammar, ACTIVE ONLY WHILE LISTENING so
+    // normal page keys are untouched at rest: left/right arrows skip
+    // a paragraph (the page auto-scrolls with speech anyway, so the
+    // arrows' scroll duty is already covered), Space pauses/resumes,
+    // Esc stops. Guarded so typing in inputs/buttons is never hijacked.
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && state !== 'idle') stop();
+      if (state === 'idle') {
+        return;
+      }
+      var t = e.target;
+      var interactive = t && (/^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(t.tagName) || t.isContentEditable);
+      if (e.key === 'Escape') { stop(); return; }
+      if (interactive) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); skip(1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); skip(-1); }
+      else if (e.key === ' ') {
+        e.preventDefault();
+        if (state === 'speaking') pause(); else play();
+      }
     });
     // Browsers keep speaking after navigation unless cancelled.
     window.addEventListener('pagehide', function() { synth.cancel(); });
