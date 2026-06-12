@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Typography — arXiv Design System</title>
+  <link rel="stylesheet" href="public/design-system.css">
+  <style>
+    /* ── Foundation reference page. The written spec is typography.md
+       (source of truth — fonts, weights, self-hosting plan); this page
+       renders the specimens. ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: var(--arxiv-font-sans); color: var(--arxiv-ink); background: var(--arxiv-warm-wash); margin: 0; font-size: 14px; line-height: 1.5; }
+    .page { max-width: 1080px; margin: 0 auto; padding: 28px 28px 80px; }
+    .page-header { margin: 28px 0 40px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p { margin: 0; color: var(--arxiv-grey); font-size: 13px; max-width: 760px; }
+    .section { margin-bottom: 44px; }
+    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+    .section-desc { font-size: 13px; color: var(--arxiv-grey); margin: 0 0 18px; max-width: 760px; line-height: 1.55; }
+
+    .specimen { background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 20px 24px; margin-bottom: 14px; display: grid; grid-template-columns: 200px 1fr; gap: 18px; align-items: start; }
+    @media (max-width: 640px) { .specimen { grid-template-columns: 1fr; } }
+    .specimen-meta .name { font-weight: 600; font-size: 13px; }
+    .specimen-meta .detail { font-size: 12px; color: var(--arxiv-grey); line-height: 1.5; margin-top: 4px; }
+    .specimen-meta code { font-family: var(--arxiv-font-mono); font-size: 11px; color: var(--arxiv-archival-blue); }
+    .specimen-sample .big { font-size: 28px; line-height: 1.25; margin-bottom: 8px; }
+    .specimen-sample .body { font-size: 15px; line-height: 1.6; color: var(--arxiv-ink); max-width: 620px; }
+    .weights { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; font-size: 15px; }
+
+    .note { background: var(--arxiv-info-bg); border: 1px solid var(--arxiv-info-border); color: var(--arxiv-info-fg); border-radius: 6px; padding: 12px 16px; font-size: 13px; max-width: 760px; line-height: 1.55; }
+    .rule-card { background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 16px 20px; margin-bottom: 12px; max-width: 760px; }
+    .rule-card h3 { font-size: 14px; margin: 0 0 6px; }
+    .rule-card p { font-size: 13px; color: var(--arxiv-grey); margin: 0; line-height: 1.55; }
+    .rule-card code { font-family: var(--arxiv-font-mono); font-size: 12px; background: var(--arxiv-card-grey); padding: 1px 5px; border-radius: 3px; }
+
+    /* ── Shared docs nav strip (same on every design-system doc page;
+       mockups deliberately excluded — they simulate real arXiv pages
+       and stay free of docs chrome). ── */
+    .docs-nav { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-ink); text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
+    .docs-nav a:not(.docs-nav-brand) { color: var(--arxiv-grey); text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: var(--arxiv-ink); text-decoration: underline; }
+    .docs-nav a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 2px; }
+    .docs-nav .is-here { color: var(--arxiv-ink); font-weight: 600; }
+    .docs-nav-spacer { flex: 1; }
+    .docs-nav .docs-nav-mock { color: var(--arxiv-grey-ui); font-size: 12px; }
+  </style>
+</head>
+<body>
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
+  <a href="../design-patterns/colors.html">Colors</a>
+  <span class="is-here" aria-current="page">Typography</span>
+  <a href="../DESIGN-POLICIES.md">Policies</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="docs-nav-mock">Mockups:</span>
+  <a href="../mockups/abstract-redesign.html">Abstract</a>
+  <a href="../mockups/html-redesign.html">Reader</a>
+</nav>
+<div class="page">
+  <header class="page-header">
+    <h1>Typography</h1>
+    <p>
+      arXiv sets all text in the IBM Plex family with STIX Two Math for notation,
+      self-hosted — no external font services. Written spec, weights, and the
+      self-hosting plan: <a href="typography.md">typography.md</a> (source of truth).
+    </p>
+  </header>
+
+  <div class="note" style="margin-bottom:36px">
+    <strong>Specimen honesty:</strong> until the self-hosted Plex woff2 files land in
+    the static assets, these samples render in each stack's <em>system fallbacks</em>
+    (the same graceful degradation production users get if fonts fail). The stacks,
+    weights, and rules below are the spec either way.
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">The stack</h2>
+
+    <div class="specimen">
+      <div class="specimen-meta">
+        <div class="name">IBM Plex Sans</div>
+        <div class="detail">Body text — paragraphs, author names, abstracts, UI.<br>Weights: 400 / 500 / 600<br><code>--arxiv-font-sans</code></div>
+      </div>
+      <div class="specimen-sample" style="font-family:var(--arxiv-font-sans)">
+        <div class="big">Gauge-independent approach to inflation in quadratic gravity</div>
+        <div class="body">We explore inflation driven by the Starobinsky-like R + R² term using a manifestly gauge-independent approach to cosmological perturbation theory.</div>
+        <div class="weights"><span style="font-weight:400">Regular 400</span><span style="font-weight:500">Medium 500</span><span style="font-weight:600">Semibold 600</span></div>
+      </div>
+    </div>
+
+    <div class="specimen">
+      <div class="specimen-meta">
+        <div class="name">IBM Plex Sans Condensed</div>
+        <div class="detail">Labels &amp; captions — metadata labels, table headers, uppercase section labels.<br>Weights: 500 / 600<br><code>--arxiv-font-condensed</code></div>
+      </div>
+      <div class="specimen-sample" style="font-family:var(--arxiv-font-condensed)">
+        <div class="big" style="font-size:22px">SUBJECTS · DOI · LICENSE · ANCILLARY FILES</div>
+        <div class="body" style="font-size:11px; text-transform:uppercase; letter-spacing:0.04em; font-weight:600; color:var(--arxiv-grey)">ArXiv identifier &nbsp; Journal DOI &nbsp; Who cites this paper</div>
+      </div>
+    </div>
+
+    <div class="specimen">
+      <div class="specimen-meta">
+        <div class="name">IBM Plex Mono</div>
+        <div class="detail">Code &amp; identifiers — arXiv IDs, DOIs, BibTeX, code blocks.<br>Weights: 400 / 500<br><code>--arxiv-font-mono</code></div>
+      </div>
+      <div class="specimen-sample" style="font-family:var(--arxiv-font-mono)">
+        <div class="big" style="font-size:18px">arXiv:2604.22725 [gr-qc]</div>
+        <div class="body" style="font-size:13px">@article{palomares2026gauge, doi={10.48550/arXiv.2604.22725}}</div>
+      </div>
+    </div>
+
+    <div class="specimen">
+      <div class="specimen-meta">
+        <div class="name">IBM Plex Serif <em>Italic</em></div>
+        <div class="detail">Annotation voice — footnote text and figure alt-text in the reader margins. "The editor speaking quietly next to the body text."<br>Weight: 400 italic<br><code>--arxiv-font-serif</code> / <code>.ds-annotation</code></div>
+      </div>
+      <div class="specimen-sample" style="font-family:var(--arxiv-font-serif); font-style:italic; color:var(--arxiv-grey)">
+        <div class="body">Starobinsky's 1980 model adds only the R² term; the resulting scalaron drives inflation while leaving the gravitational sector otherwise unmodified.</div>
+      </div>
+    </div>
+
+    <div class="specimen">
+      <div class="specimen-meta">
+        <div class="name">STIX Two Math</div>
+        <div class="detail">Mathematical notation in HTML papers, rendered from MathML.<br><code>--font-math</code> (falls back to Cambria Math, then the CSS <code>math</code> family)</div>
+      </div>
+      <div class="specimen-sample" style="font-family:'STIX Two Math','Cambria Math',math">
+        <div class="big" style="font-size:22px">𝑑𝑠² = −𝑑𝑡² + 𝑎²(𝑡) δ<sub>𝑖𝑗</sub> 𝑑𝑥<sup>𝑖</sup>𝑑𝑥<sup>𝑗</sup></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Rules that travel with the type</h2>
+
+    <div class="rule-card">
+      <h3>Sizes are rem, never px</h3>
+      <p>Browser font-size overrides must propagate to arXiv content (accessibility-priorities.md, cognitive/dyslexia track). The verification harness enforces this on the mockups. Layout dimensions stay px — only type scales with the user's preference.</p>
+    </div>
+    <div class="rule-card">
+      <h3>Self-hosted, with honest fallbacks</h3>
+      <p>No Google Fonts, no Typekit, no CDN fonts (DESIGN-POLICIES.md). Every <code>font-family</code> declaration carries system fallbacks; text fonts load with <code>font-display: swap</code> (readability first), STIX Two Math with <code>font-display: auto</code> (math must render in the correct face).</p>
+    </div>
+    <div class="rule-card">
+      <h3>Don't fight the reader</h3>
+      <p>No fixed line-heights, no pinned letter-spacing, no <code>!important</code> on font-family in content areas. User stylesheets, reader-mode extensions, and OS settings win — "HTML gives you freedom: you can use software to change colors or typefaces" (research, dyslexia track).</p>
+    </div>
+    <div class="rule-card">
+      <h3>Fluid where titles meet phones</h3>
+      <p>Paper titles use <code>clamp()</code> between rem bounds (22px–32px equivalent) so a seven-word title doesn't wrap to five lines at 320px. Body text never scales fluidly — it tracks the user's base size exactly.</p>
+    </div>
+  </section>
+</div>
+</body>
+</html>
