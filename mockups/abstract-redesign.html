@@ -878,9 +878,14 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
    states so it never drops below the button's own contrast. Sits on
    its own centered line below the label so the label never wraps
    mid-word in the 130px action column. */
-.abs-btn-tex, .abs-btn-pdf { flex-wrap: wrap; }
-.abs-btn-ext {
+/* PDF keeps its size hint inline on ONE line ("PDF (1.2 MB)" fits the
+   130px column); the longer TeX/Ancillary hints wrap to a second
+   centered line. Only wrapping buttons get the full-width ext line. */
+.abs-btn-tex { flex-wrap: wrap; }
+.abs-btn-tex .abs-btn-ext {
   flex-basis: 100%;
+}
+.abs-btn-ext {
   text-align: center;
   font-size: 0.6875rem; /* 11px */
   font-weight: 400;
