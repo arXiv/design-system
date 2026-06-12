@@ -150,6 +150,28 @@ Barely perceptible tints for creating section depth without hard borders.
 
 ---
 
+## Tints, tiers, and combinations on tinted backgrounds
+
+*(Added 2026-06-13. Rendered with computed ratios on the colors page: `colors.html#tinted`.)*
+
+Every tint in the system belongs to one of two families: the **warm family** (Repository Brown stepped toward white — Warm Wash, Grey Hover/Card Grey, Grey Active, Border Light, plus the text greys) and the **blue family** (Open Blue's tints — Tint Light, Tint Border, Active Wash, and the hover step `#c2e2ff`).
+
+**"No one-off hex values" has three tiers:**
+
+1. **Palette tokens** — everything in this document. Free to use in their documented roles.
+2. **Component-internal constants** — values that exist only inside a component's own CSS: the button-border gradient stops (`#b0d5ed`, `#6ba8da`, `#8fc1e8`, `#4a86b8`, `#c8c4be`, `#b3ada4`, `#7eb8e0`), the dark header's hover fill `#302c28` and divider `#4a433d`. They are part of those components, not the palette — don't lift them for new uses.
+3. **Everything else** — doesn't exist. A new value is a change to this document, not a local invention.
+
+**Accessible combinations on tints** (computed, WCAG; full matrix on the colors page):
+
+- **Ink `#1c1a17` passes AA on every approved surface** — including Open Blue (11.3:1), which is why buttons set ink on Open Blue.
+- **Library Grey and Link Blue hold AA through Active Wash** (`#d6e8f7`) but miss it on **Grey Active** (`#e4e0db`: 4.45 / 4.37) — on Grey Active use Ink, Link Hover `#1050a0` (6.0:1), or large text.
+- **UI Boundary Grey holds its 3:1 only through Tint Light** — on Grey Active, Active Wash, or Open Blue, draw boundaries with Library Grey instead.
+- **On Open Blue itself, Ink is the only text color.**
+- **Secondary buttons on tinted bands take the `.on-tint` modifier** (fill swaps to Card Grey — secondary via warm-on-cool material difference, not low contrast). See `public/design-system.css`.
+
+---
+
 ## Decisions made
 
 - **Browns and blues are the primary palette.** Post-spinout, arXiv's visual identity is built on Repository Brown, Library Grey, and the blue family. These carry the brand.
