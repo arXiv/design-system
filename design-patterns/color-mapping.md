@@ -84,6 +84,7 @@ Barely perceptible tints for creating section depth without hard borders.
 | **Cool Wash** | `#f7fafc` | Cool background — section differentiation |
 | **Grey Hover** | `#f0eeec` | Table headers, hover fills, Related section background |
 | **Grey Active** | `#e4e0db` | Active/pressed fills, footer background |
+| **Border Light** | `#ddd8d2` | Component hairline borders — inputs, toggle tracks, card edges. Decorative only (below 3:1); not for sole interactive boundaries. Promoted from the mockups 2026-06-11. |
 | **Blue tint** | `#f0f5ff` | Code/identifier backgrounds, citation display boxes |
 
 ---
