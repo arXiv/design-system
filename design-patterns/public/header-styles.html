@@ -40,12 +40,14 @@
     <h1>Site header unit</h1>
     <p>
       The universal arXiv public-page header: announcement band +
-      black bar + breadcrumb (<code>.ds-announcement</code> /
-      <code>.ds-site-header</code> / <code>.ds-breadcrumb</code>), plus the
+      black bar (<code>.ds-announcement</code> /
+      <code>.ds-site-header</code>), plus the
       <code>.ds-skip-link</code> utility. Design approved 2026-06-11 against
-      the spinout-header-footer Cloud Run deployment. Codified as one unit —
-      the approved deployment treats the three pieces together
-      (<code>audits/2026-06-11/AUDIT-EVALUATION.md</code>).
+      the spinout-header-footer Cloud Run deployment — which covers
+      ONLY these two pieces; nothing below the black bar is approved
+      chrome. (A breadcrumb band was briefly part of this pattern and
+      removed 2026-06-11: too shallow to justify the real estate, and
+      its links exist elsewhere on the page.)
     </p>
   </header>
 
@@ -84,15 +86,6 @@
           <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
         </nav>
       </header>
-      <nav class="ds-breadcrumb" aria-label="Breadcrumb">
-        <a class="ds-breadcrumb-home" href="https://arxiv.org/" aria-label="archive home">
-          <img src="../../mockups/images/arxiv-logo-primary-light.png" alt="archive" class="ds-breadcrumb-logomark">
-        </a>
-        <span class="ds-breadcrumb-sep" aria-hidden="true">&gt;</span>
-        <a class="ds-breadcrumb-link" href="https://arxiv.org/list/gr-qc/recent">gr-qc</a>
-        <span class="ds-breadcrumb-sep" aria-hidden="true">&gt;</span>
-        <span class="ds-breadcrumb-current" aria-current="page">arXiv:2604.22725</span>
-      </nav>
     </div>
   </section>
 
@@ -103,10 +96,9 @@
       <li>Logo alt text and aria-labels say <strong>"archive"</strong> — the spoken form of "arXiv" (Dan Miner: screen readers otherwise produce "ar-zhiv" / Roman-numeral gibberish).</li>
       <li>The Search control is an <code>&lt;a href="/search"&gt;</code> that JS may upgrade to open a search overlay. <strong>Never a dead button</strong> — without JS it navigates to the search page.</li>
       <li>Focus rings on the dark bar use <code>--arxiv-focus-ring-dark</code> (#64b5f6); the standard Link Blue ring is invisible against #1c1a17.</li>
-      <li>Breadcrumb separators carry <code>aria-hidden="true"</code>; the current page is a <code>&lt;span aria-current="page"&gt;</code>, not a link. The breadcrumb is the page's <strong>upward path</strong> to the category listing (research item AUXDH-950/951).</li>
       <li>The announcement is temporal: render only while active, persist dismissal in production, and never attach page-critical function to it.</li>
       <li>Nothing in this unit is sticky — the whole header scrolls away with the page (decided 2026-06-11; sticky chrome is exceptional at arXiv and reader-only). No <code>scroll-padding</code> duty applies.</li>
-      <li>Type sizes are rem so browser font-size overrides propagate; all three bands are hidden in print.</li>
+      <li>Type sizes are rem so browser font-size overrides propagate; both bands are hidden in print.</li>
     </ul>
   </section>
 </div>

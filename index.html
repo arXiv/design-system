@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>arXiv Design System</title>
+  <link rel="stylesheet" href="design-patterns/public/design-system.css">
+  <style>
+    /* ── Showcase home. This page is itself built from the design
+       system: every rendered teaser below consumes design-system.css
+       directly, so the directory doubles as a living proof that the
+       tokens and components work. Page-chrome styles here are
+       documentation furniture only. ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: var(--arxiv-font-sans);
+      color: var(--arxiv-ink);
+      background: var(--arxiv-warm-wash);
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .page { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+    .masthead { margin-bottom: 12px; display: flex; align-items: center; gap: 14px; }
+    .masthead img { height: 44px; width: auto; }
+    .masthead h1 { font-size: 28px; font-weight: 700; margin: 0; }
+    .intro { color: var(--arxiv-grey); font-size: 15px; max-width: 760px; margin: 0 0 8px; line-height: 1.6; }
+    .intro-meta { color: var(--arxiv-grey-ui); font-size: 13px; margin: 0 0 44px; }
+
+    .group { margin-bottom: 44px; }
+    .group-title {
+      font-family: var(--arxiv-font-condensed);
+      font-size: 13px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--arxiv-grey);
+      margin: 0 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--arxiv-open-blue);
+    }
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 16px; }
+    .card {
+      display: block;
+      background: #fff;
+      border: 1px solid var(--arxiv-border-light);
+      border-radius: 8px;
+      padding: 18px 20px;
+      text-decoration: none;
+      color: var(--arxiv-ink);
+      transition: border-color 0.12s, box-shadow 0.12s;
+    }
+    .card:hover { border-color: var(--arxiv-grey-ui); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .card:focus-visible { outline: 3px solid var(--arxiv-focus-ring); outline-offset: 2px; }
+    .card h2 { font-size: 16px; font-weight: 600; margin: 0 0 4px; }
+    .card p { font-size: 13px; color: var(--arxiv-grey); margin: 0 0 14px; line-height: 1.5; }
+    .card .teaser {
+      border-top: 1px dashed var(--arxiv-border-light);
+      padding-top: 14px;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      pointer-events: none; /* teasers are illustrations; the card is the link */
+    }
+    .card.is-doc .teaser { font-family: var(--arxiv-font-mono); font-size: 12px; color: var(--arxiv-grey); }
+    .swatch-row { display: flex; gap: 4px; }
+    .swatch { width: 22px; height: 22px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.12); }
+    .mini-alert {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--arxiv-warning-bg); border: 1px solid var(--arxiv-warning-border);
+      color: var(--arxiv-warning-fg); border-radius: 4px;
+      font-size: 12px; padding: 4px 10px;
+    }
+    .mini-header { display: flex; align-items: center; gap: 8px; background: var(--arxiv-ink); border-radius: 4px; padding: 6px 10px; flex: 1; }
+    .mini-header span { color: var(--arxiv-grey-dis); font-size: 11px; }
+    .mini-header b { color: var(--arxiv-card-grey); font-size: 11px; font-weight: 600; }
+    .mini-reader-header { display: flex; align-items: center; gap: 8px; background: var(--arxiv-card-grey); border: 1px solid var(--arxiv-pill-border); border-radius: 4px; padding: 5px 10px; flex: 1; }
+    .mini-toc-trigger { font-size: 11px; background: #fff; border: 1px solid var(--arxiv-pill-border); border-radius: 4px; padding: 2px 8px; color: var(--arxiv-ink); }
+    .mini-progress { height: 2px; background: var(--arxiv-link-blue); width: 40%; border-radius: 1px; }
+    .mini-footer { font-size: 11px; color: var(--arxiv-grey); background: var(--arxiv-warm-wash); border: 1px solid var(--arxiv-pill-border); border-radius: 4px; padding: 6px 10px; flex: 1; }
+    .mini-pop { background: var(--arxiv-tint-light); border: 1px solid var(--arxiv-tint-border); border-radius: 4px; font-size: 11px; padding: 4px 10px; color: var(--arxiv-ink); }
+    .mini-cite { background: var(--arxiv-active-bg); border-radius: 3px; font-size: 12px; padding: 1px 4px; color: var(--arxiv-link-blue); }
+    .teaser .ds-btn { font-size: 12px; padding: 6px 12px; }
+    footer.docs-footer { margin-top: 16px; font-size: 13px; color: var(--arxiv-grey); border-top: 1px solid var(--arxiv-border-light); padding-top: 20px; }
+    footer.docs-footer a { color: var(--arxiv-link-blue); }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="masthead">
+    <img src="mockups/images/arxiv-logo-primary-light.png" alt="arXiv">
+    <h1>Design System</h1>
+  </div>
+  <p class="intro">
+    The visual language and interaction patterns for arXiv's public pages —
+    tokens, components, page mockups, and the policies behind them. Every
+    rendered sample on this page is drawn live from
+    <code>design-system.css</code>: the directory is itself built from the
+    system it documents.
+  </p>
+  <p class="intro-meta">Work in progress · everything here iterates freely · feedback to Shamsi</p>
+
+  <div class="group">
+    <h2 class="group-title">Components</h2>
+    <div class="cards">
+      <a class="card" href="design-patterns/public/button-styles.html">
+        <h2>Buttons</h2>
+        <p>Primary (Open Blue) and secondary, V3 construction: gradient border, inner vignette, brighten-on-hover.</p>
+        <div class="teaser">
+          <span class="ds-btn ds-btn-primary">HTML</span>
+          <span class="ds-btn ds-btn-secondary">TeX Source</span>
+        </div>
+      </a>
+      <a class="card" href="design-patterns/public/link-styles.html">
+        <h2>Links</h2>
+        <p>Inline link grammar: Link Blue, underlined, hover-darken, visited purple. Light and dark.</p>
+        <div class="teaser"><span class="ds-link" style="font-size:13px">Gauge-independent approach to inflation…</span></div>
+      </a>
+      <a class="card" href="design-patterns/public/alert-styles.html">
+        <h2>Alerts</h2>
+        <p>Success / info / warning / error — icon + leading word, never color alone. Light and dark.</p>
+        <div class="teaser"><span class="mini-alert">&#9888; You're viewing version 1.</span></div>
+      </a>
+      <a class="card" href="design-patterns/public/header-styles.html">
+        <h2>Site header</h2>
+        <p>Announcement band + black bar. Skip link, "archive" pronunciation, search-as-link enhancement.</p>
+        <div class="teaser">
+          <span class="mini-header"><b>arXiv</b><span style="margin-left:auto">Search · Submit · Donate</span></span>
+        </div>
+      </a>
+      <a class="card" href="design-patterns/public/reader-header-styles.html">
+        <h2>Reader header</h2>
+        <p>Light chrome for the HTML paper reader: compact-on-scroll, TOC trigger, reading progress.</p>
+        <div class="teaser">
+          <span class="mini-reader-header"><span class="mini-toc-trigger">&#9776; 3.1 Evolution of Ψ and Φ</span><span class="mini-progress" style="margin-left:auto"></span></span>
+        </div>
+      </a>
+      <a class="card" href="design-patterns/public/footer-styles.html">
+        <h2>Site footer</h2>
+        <p>Acknowledgment line, footer nav, funder logos. The most-validated component in the system.</p>
+        <div class="teaser"><span class="mini-footer">We gratefully acknowledge support from our <b>major funders</b>…</span></div>
+      </a>
+      <a class="card" href="design-patterns/public/link-styles.html">
+        <h2>arXiv-layer surfaces</h2>
+        <p>Popovers, inline active states, element pills — the light-blue family that means "arXiv chrome speaking."</p>
+        <div class="teaser"><span class="mini-cite">[46]</span><span class="mini-pop">Stelle (1977) · Renormalization of…</span></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2 class="group-title">The system in use — page mockups</h2>
+    <div class="cards">
+      <a class="card is-doc" href="mockups/abstract-redesign.html">
+        <h2>Abstract page</h2>
+        <p>arXiv's most-visited page: title, authors, downloads with sizes, accessibility notes, citation workshop, Labs.</p>
+        <div class="teaser">mockups/abstract-redesign.html</div>
+      </a>
+      <a class="card is-doc" href="mockups/html-redesign.html">
+        <h2>HTML paper reader</h2>
+        <p>Citation popovers, footnote marginalia, figure lightbox, read-aloud, section permalinks, equation tools.</p>
+        <div class="teaser">mockups/html-redesign.html</div>
+      </a>
+      <a class="card is-doc" href="mockups/README.md">
+        <h2>About these mockups</h2>
+        <p>What's preview vs. validated, what to try, where the source of truth lives.</p>
+        <div class="teaser">mockups/README.md</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2 class="group-title">Foundations</h2>
+    <div class="cards">
+      <a class="card" href="design-patterns/color-mapping.md">
+        <h2>Color</h2>
+        <p>The full palette and usage rules — browns and blues, warm grey ladder, status family, heritage colors.</p>
+        <div class="teaser">
+          <span class="swatch-row">
+            <span class="swatch" style="background:var(--arxiv-ink)"></span>
+            <span class="swatch" style="background:var(--arxiv-grey)"></span>
+            <span class="swatch" style="background:var(--arxiv-open-blue)"></span>
+            <span class="swatch" style="background:var(--arxiv-link-blue)"></span>
+            <span class="swatch" style="background:var(--arxiv-warm-wash)"></span>
+            <span class="swatch" style="background:var(--arxiv-card-grey)"></span>
+          </span>
+        </div>
+      </a>
+      <a class="card is-doc" href="design-patterns/typography.md">
+        <h2>Typography</h2>
+        <p>IBM Plex family, self-hosted. Rem-based sizing so user font preferences propagate.</p>
+        <div class="teaser" style="font-family:var(--arxiv-font-sans); font-size:14px; color:var(--arxiv-ink); pointer-events:none">Aa <span style="font-family:var(--arxiv-font-condensed)">Aa</span> <span style="font-family:var(--arxiv-font-mono)">Aa</span> <span style="font-family:var(--arxiv-font-serif); font-style:italic">Aa</span></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2 class="group-title">Principles</h2>
+    <div class="cards">
+      <a class="card is-doc" href="DESIGN-POLICIES.md">
+        <h2>Design policies</h2>
+        <p>The non-negotiables: WCAG 2.2 AA, tokens, self-hosted fonts, no metrics, sticky-chrome-is-exceptional, progressive enhancement.</p>
+        <div class="teaser">DESIGN-POLICIES.md</div>
+      </a>
+      <a class="card is-doc" href="design-patterns/PROPOSED-GUIDELINES.md">
+        <h2>Proposed guidelines</h2>
+        <p>Rules the patterns embody, under universality review — each with evidence and disposition.</p>
+        <div class="teaser">design-patterns/PROPOSED-GUIDELINES.md</div>
+      </a>
+      <a class="card is-doc" href="design-patterns/public/accessibility-priorities.md">
+        <h2>Accessibility priorities</h2>
+        <p>Decisions and rationale for the public pages, grounded in 42 interviews and four research datasets.</p>
+        <div class="teaser">accessibility-priorities.md</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2 class="group-title">Process</h2>
+    <div class="cards">
+      <a class="card is-doc" href="audits/2026-06-11/AUDIT-COMPONENTS.md">
+        <h2>Audits</h2>
+        <p>Component inventory across nine pages, responsiveness review, and the evaluation pass.</p>
+        <div class="teaser">audits/2026-06-11/</div>
+      </a>
+      <a class="card is-doc" href="verification/README.md">
+        <h2>Verification harness</h2>
+        <p>29 automated checks — reflow, ARIA, no-JS, axe-core — each annotated with its research basis.</p>
+        <div class="teaser">verification/verify-mockups.py</div>
+      </a>
+      <a class="card is-doc" href="visual-audit/audit-report.md">
+        <h2>Visual audit (the "why")</h2>
+        <p>The 2025 platform-wide audit that motivated the design system.</p>
+        <div class="teaser">visual-audit/audit-report.md</div>
+      </a>
+    </div>
+  </div>
+
+  <footer class="docs-footer">
+    Canonical CSS: <a href="design-patterns/public/design-system.css">design-patterns/public/design-system.css</a> ·
+    Internal-tools patterns: <a href="design-patterns/internal/DESIGN-PROGRESS.md">design-patterns/internal/</a> ·
+    Feedback: open an issue or message Shamsi.
+  </footer>
+</div>
+</body>
+</html>
