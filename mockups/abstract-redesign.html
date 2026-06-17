@@ -1181,22 +1181,21 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 /* Three-column layout for cite content */
 .abs-cite-columns {
   display: flex;
-  gap: 0;
+  gap: 16px 24px;
   flex-wrap: wrap;
-  border: 1px solid var(--arxiv-tint-border);
-  border-radius: 4px;
-  overflow: hidden;
+  /* No outer box: the blue tint-border read as a different system from the
+     subtle, shadow-layered sections around it. The columns now sit directly
+     in the Cite card, separated by gap; the BibTeX/formatted code blocks
+     provide their own quiet warm-border containers. */
 }
-.abs-cite-col { padding: 14px 16px; }
+.abs-cite-col { padding: 0; }
 .abs-cite-col-bibtex {
   flex: 1;
   min-width: 220px;
-  border-right: 1px solid var(--arxiv-tint-border);
 }
 .abs-cite-col-formatted {
   flex: 1;
   min-width: 240px;
-  border-right: 1px solid var(--arxiv-tint-border);
 }
 .abs-cite-col-ids {
   flex: 0 0 auto;
@@ -1327,14 +1326,14 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   per-section rules above so these overrides win ties in the cascade.
 */
 .abs-ref-card {
-  background: #fff;
+  /* Transparent fill: the card body sits directly on the Warm Wash band, so
+     only the soft bottom-right shadow hints "another layer underneath" —
+     maximally subtle, keeping each section subordinate to the title/abstract. */
+  background: transparent;
+  margin-bottom: 1em !important;
   border-radius: 6px;
-  padding: 18px 22px 22px;
-  /* No full border — that read as a hard box and pulled too much attention.
-     A soft bottom-right shadow hints "another layer underneath" while keeping
-     each section subordinate to the title/abstract. The top/left edges melt
-     into the Warm Wash band; only the lifted bottom-right is delineated. */
-  box-shadow: 2px 3px 5px rgba(28, 26, 23, 0.06);
+  padding: 18px 22px 22px !important;
+  box-shadow: 5px 5px 3px rgba(28, 26, 23, 0.03);
 }
 .abs-ref-card-head {
   margin: 0 0 14px;
