@@ -15,9 +15,11 @@
     .page-header { margin: 28px 0 40px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
     .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
     .page-header p { margin: 0; color: var(--arxiv-grey); font-size: 13px; max-width: 760px; }
-    .section { margin-bottom: 44px; }
+    .section { margin-bottom: 52px; }
     .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
     .section-desc { font-size: 13px; color: var(--arxiv-grey); margin: 0 0 18px; max-width: 760px; line-height: 1.55; }
+    .subgroup-title { font-family: var(--arxiv-font-condensed); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-grey); margin: 26px 0 10px; }
+    .minor-title { font-size: 15px; font-weight: 600; margin: 28px 0 6px; }
 
     .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)); gap: 14px; }
     .swatch-card { background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 8px; overflow: hidden; }
@@ -55,6 +57,11 @@
     .docs-nav .is-here { color: var(--arxiv-ink); font-weight: 600; }
     .docs-nav-spacer { flex: 1; }
     .docs-nav .docs-nav-mock { color: var(--arxiv-grey-ui); font-size: 12px; }
+
+    /* In-page section nav */
+    .toc-nav { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 0 36px; font-size: 13px; }
+    .toc-nav a { color: var(--arxiv-link-blue); text-decoration: none; }
+    .toc-nav a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -76,33 +83,57 @@
       <a href="../doc.html?src=design-patterns/color-mapping.md">color-mapping.md</a> (source of truth — if this page
       and the spec disagree, the spec wins). Hard rules live in
       <a href="../doc.html?src=DESIGN-POLICIES.md">DESIGN-POLICIES.md</a>: all colors come from this
-      palette; no one-off hex values. Tints are part of the palette —
-      see <a href="#uses">Which tint for which job</a> for picking one, and
-      <a href="#tinted">Working on tinted backgrounds</a> for the tint
-      families, the three tiers of color use, and which combinations stay
-      accessible.
+      palette; no one-off hex values.
     </p>
   </header>
 
-  <section class="section">
-    <h2 class="section-title">Primary — browns &amp; blues</h2>
-    <p class="section-desc">arXiv's core post-spinout identity. These carry the brand on every surface.</p>
+  <nav class="toc-nav" aria-label="On this page">
+    <a href="#brand">Brand colors</a>
+    <a href="#links">Links &amp; interactive</a>
+    <a href="#status">Status &amp; alerts</a>
+    <a href="#backgrounds">Backgrounds</a>
+    <a href="#uses">Which tint for which job</a>
+    <a href="#tinted">Working on tinted backgrounds</a>
+  </nav>
+
+  <!-- ═══════════════════ BRAND COLORS ═══════════════════ -->
+  <section class="section" id="brand">
+    <h2 class="section-title">Brand colors</h2>
+    <p class="section-desc">arXiv's core post-spinout identity, grouped by the role each color plays. Primary and secondary carry the brand; support colors do the quieter structural and accent work.</p>
+
+    <h3 class="subgroup-title">Primary</h3>
     <div class="swatches">
       <div class="swatch-card"><div class="swatch-chip" style="background:#a5d6fe"></div><div class="swatch-body"><div class="swatch-name">Open Blue</div><div class="swatch-hex">#a5d6fe</div><div class="swatch-token">--arxiv-open-blue</div><div class="swatch-role"><strong>arXiv’s primary brand color.</strong> Public primary actions (HTML/PDF buttons), highlights, section accents.</div></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#1c1a17"></div><div class="swatch-body"><div class="swatch-name">Repository Brown</div><div class="swatch-hex">#1c1a17</div><div class="swatch-token">--arxiv-ink</div><div class="swatch-role">Body text, dark backgrounds, primary headers</div></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#6b6459"></div><div class="swatch-body"><div class="swatch-name">Library Grey</div><div class="swatch-hex">#6b6459</div><div class="swatch-token">--arxiv-grey</div><div class="swatch-role">Secondary text, labels, muted interactive elements</div><span class="ratio">5.83:1 on white ✓ AA</span></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#8b8680"></div><div class="swatch-body"><div class="swatch-name">UI Boundary Grey</div><div class="swatch-hex">#8b8680</div><div class="swatch-token">--arxiv-grey-ui</div><div class="swatch-role">Interactive borders, tracks, arrows</div><span class="ratio">3.61:1 on white ✓ 3:1 UI</span></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#b0aba6"></div><div class="swatch-body"><div class="swatch-name">Disabled Grey</div><div class="swatch-hex">#b0aba6</div><div class="swatch-token">--arxiv-grey-dis</div><div class="swatch-role">Disabled states only — exempt from contrast requirements</div><span class="ratio">2.24:1 — below AA, by design</span></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#1565c0"></div><div class="swatch-body"><div class="swatch-name">Link Blue</div><div class="swatch-hex">#1565c0</div><div class="swatch-token">--arxiv-link-blue</div><div class="swatch-role">All interactive links (light mode); the standard focus ring</div><span class="ratio">5.74:1 on white ✓ AA</span></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#1050a0"></div><div class="swatch-body"><div class="swatch-name">Link Hover</div><div class="swatch-hex">#1050a0</div><div class="swatch-token">--arxiv-link-hover</div><div class="swatch-role">Link hover state</div><span class="ratio">7.83:1 on white ✓ AAA</span></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#7b2fbe"></div><div class="swatch-body"><div class="swatch-name">Visited Purple</div><div class="swatch-hex">#7b2fbe</div><div class="swatch-token">--arxiv-link-visited</div><div class="swatch-role">Visited link state</div><span class="ratio">7.02:1 on white ✓ AAA</span></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#1f5e96"></div><div class="swatch-body"><div class="swatch-name">Archival Blue</div><div class="swatch-hex">#1f5e96</div><div class="swatch-token">--arxiv-archival-blue</div><div class="swatch-role">Brand accent blue; public section headings</div></div></div>
-          </div>
-    <p class="footnote" style="margin-top:14px">The three warm greys form a deliberate ladder — one stop per contrast tier (disabled / UI boundary / text). Don't introduce intermediate values without a DESIGN-POLICIES.md change.</p>
-  </section>
+      <div class="swatch-card"><div class="swatch-chip" style="background:#1c1a17"></div><div class="swatch-body"><div class="swatch-name">Repository Brown</div><div class="swatch-hex">#1c1a17</div><div class="swatch-token">--arxiv-ink</div><div class="swatch-role">Body text, dark backgrounds, primary headers. The text workhorse — clears AA on every approved surface.</div></div></div>
+    </div>
 
-  <section class="section">
-    <h2 class="section-title">Two contexts, two accents — never crossed</h2>
+    <h3 class="subgroup-title">Secondary</h3>
+    <div class="swatches">
+      <div class="swatch-card"><div class="swatch-chip" style="background:#1f5e96"></div><div class="swatch-body"><div class="swatch-name">Archival Blue</div><div class="swatch-hex">#1f5e96</div><div class="swatch-token">--arxiv-archival-blue</div><div class="swatch-role">Brand accent blue; public section headings.</div><span class="ratio">6.8:1 on white ✓ AA</span></div></div>
+      <div class="swatch-card"><div class="swatch-chip" style="background:#6b6459"></div><div class="swatch-body"><div class="swatch-name">Library Grey</div><div class="swatch-hex">#6b6459</div><div class="swatch-token">--arxiv-grey</div><div class="swatch-role">Secondary text, labels, muted interactive elements.</div><span class="ratio">5.83:1 on white ✓ AA</span></div></div>
+    </div>
+
+    <h3 class="subgroup-title">Support</h3>
+    <div class="swatches">
+      <div class="swatch-card"><div class="swatch-chip" style="background:#8b8680"></div><div class="swatch-body"><div class="swatch-name">UI Boundary Grey</div><div class="swatch-hex">#8b8680</div><div class="swatch-token">--arxiv-grey-ui</div><div class="swatch-role">Interactive borders, tracks, arrows.</div><span class="ratio">3.61:1 on white ✓ 3:1 UI</span></div></div>
+      <div class="swatch-card"><div class="swatch-chip" style="background:#b0aba6"></div><div class="swatch-body"><div class="swatch-name">Disabled Grey</div><div class="swatch-hex">#b0aba6</div><div class="swatch-token">--arxiv-grey-dis</div><div class="swatch-role">Disabled states only — exempt from contrast requirements.</div><span class="ratio">2.24:1 — below AA, by design</span></div></div>
+      <div class="swatch-card"><div class="swatch-chip" style="background:#ffe000"></div><div class="swatch-body"><div class="swatch-name">Smileybones Yellow</div><div class="swatch-hex">#ffe000</div><div class="swatch-role">The smileybones mascot; celebratory and playful contexts; callout fills. Fails text contrast — fills and graphics only.</div><span class="ratio">~1.3:1 — fills only</span></div></div>
+    </div>
+    <p class="footnote" style="margin-top:14px">The three warm greys form a deliberate ladder — one stop per contrast tier (Disabled / UI Boundary / Library, the last living in Secondary above). Don't introduce intermediate values without a DESIGN-POLICIES.md change.</p>
+
+    <h3 class="subgroup-title">Internal accent</h3>
+    <div class="swatches">
+      <div class="swatch-card"><div class="swatch-chip" style="background:#c4d82e"></div><div class="swatch-body"><div class="swatch-name">Access Lime</div><div class="swatch-hex">#c4d82e</div><div class="swatch-token">--lime <span style="color:var(--arxiv-grey-ui)">(internal)</span></div><div class="swatch-role">Internal primary-action identity — signals "you are in a staff tool." On public pages: small highlights only (accent stripe, badge fill), never buttons. Fails text contrast — fills only.</div><span class="ratio">~1.5:1 — fills only</span></div></div>
+    </div>
+    <p class="footnote" style="margin-top:14px">The internal palette is documented only lightly so far — Access Lime and its secondary lime tint. A fuller internal-tools color reference (and a refresh of the internal components, which predate the public ones) is on the <a href="../doc.html?src=NEXT-STEPS.md">backlog</a>.</p>
+
+    <h3 class="subgroup-title">Heritage — used sparingly</h3>
+    <div class="swatches">
+      <div class="swatch-card"><div class="swatch-chip" style="background:#b31b1b"></div><div class="swatch-body"><div class="swatch-name">Campus Red</div><div class="swatch-hex">#b31b1b</div><div class="swatch-role">The X in the logo mark; very occasional accent. Never headers, buttons, large fields, or text.</div></div></div>
+      <div class="swatch-card"><div class="swatch-chip" style="background:#fb595a"></div><div class="swatch-body"><div class="swatch-name">Publishing Pink</div><div class="swatch-hex">#fb595a</div><div class="swatch-role">Rare: time-limited announcements, celebratory accents. Never errors or body text.</div></div></div>
+    </div>
+
+    <h3 class="subgroup-title">Two contexts — never crossed</h3>
     <div class="context-cards">
       <div class="context-card">
         <h3><span class="context-dot" style="background:#a5d6fe"></span>Public pages — clean, fast, brown-and-blue</h3>
@@ -126,32 +157,26 @@
     <p class="never" style="margin-top:14px"><strong>Do not cross the accents.</strong> Access Lime never appears on public pages as an interactive color; Open Blue never on internal tools. The color difference is functional — it tells staff which context they're working in. (DESIGN-POLICIES.md)</p>
   </section>
 
-  <section class="section">
-    <h2 class="section-title">Accents — big gestures only</h2>
-    <p class="section-desc">High-energy "pop" colors. Both fail text contrast on white, so they are restricted to fills, thick borders, and graphic elements — never text or small UI.</p>
-    <div class="swatches">
-      <div class="swatch-card"><div class="swatch-chip" style="background:#c4d82e"></div><div class="swatch-body"><div class="swatch-name">Access Lime</div><div class="swatch-hex">#c4d82e</div><div class="swatch-role">Internal primary-action identity. On public pages: small highlights only (accent stripe, badge fill) — never buttons.</div><span class="ratio">~1.5:1 — fills only</span></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#ffe000"></div><div class="swatch-body"><div class="swatch-name">Smileybones Yellow</div><div class="swatch-hex">#ffe000</div><div class="swatch-role">The smileybones mascot; celebratory and playful contexts; callout fills.</div><span class="ratio">~1.3:1 — fills only</span></div></div>
-    </div>
-  </section>
+  <!-- ═══════════════════ LINKS & INTERACTIVE ═══════════════════ -->
+  <section class="section" id="links">
+    <h2 class="section-title">Links &amp; interactive</h2>
+    <p class="section-desc">Colors that signal "you can act on this." Link-vs-body contrast fails 3:1, so inline links are also underlined — color is never the only signal (WCAG 1.4.1).</p>
 
-  <section class="section">
-    <h2 class="section-title">Heritage — used sparingly</h2>
-    <p class="section-desc">Nods to arXiv's roots, no longer primary brand colors post-spinout.</p>
+    <h3 class="subgroup-title">Text links</h3>
     <div class="swatches">
-      <div class="swatch-card"><div class="swatch-chip" style="background:#b31b1b"></div><div class="swatch-body"><div class="swatch-name">Campus Red</div><div class="swatch-hex">#b31b1b</div><div class="swatch-role">The X in the logo mark; very occasional accent. Never headers, buttons, large fields, or text.</div></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#fb595a"></div><div class="swatch-body"><div class="swatch-name">Publishing Pink</div><div class="swatch-hex">#fb595a</div><div class="swatch-role">Rare: time-limited announcements, celebratory accents. Never errors or body text.</div></div></div>
+      <div class="swatch-card"><div class="swatch-chip" style="background:#1565c0"></div><div class="swatch-body"><div class="swatch-name">Link Blue</div><div class="swatch-hex">#1565c0</div><div class="swatch-token">--arxiv-link-blue</div><div class="swatch-role">All interactive links, light mode. Author names, category links, DOIs.</div><span class="ratio">5.74:1 on white ✓ AA</span></div></div>
+      <div class="swatch-card"><div class="swatch-chip" style="background:#1050a0"></div><div class="swatch-body"><div class="swatch-name">Link Hover</div><div class="swatch-hex">#1050a0</div><div class="swatch-token">--arxiv-link-hover</div><div class="swatch-role">Link hover state.</div><span class="ratio">7.83:1 on white ✓ AAA</span></div></div>
+      <div class="swatch-card"><div class="swatch-chip" style="background:#7b2fbe"></div><div class="swatch-body"><div class="swatch-name">Visited Purple</div><div class="swatch-hex">#7b2fbe</div><div class="swatch-token">--arxiv-link-visited</div><div class="swatch-role">Visited link state.</div><span class="ratio">7.02:1 on white ✓ AAA</span></div></div>
     </div>
-  </section>
 
-  <section class="section">
-    <h2 class="section-title">Focus indicators</h2>
+    <h3 class="subgroup-title">Focus indicators</h3>
     <div class="swatches">
       <div class="swatch-card"><div class="swatch-chip" style="background:linear-gradient(90deg,#1565c0 50%,#64b5f6 50%)"></div><div class="swatch-body"><div class="swatch-name">Focus Ring</div><div class="swatch-hex">#1565c0 light &middot; #64b5f6 dark</div><div class="swatch-token">--arxiv-focus-ring / --arxiv-focus-ring-dark</div><div class="swatch-role">Keyboard focus indicator; the dark variant is required on Repository Brown surfaces, where the standard ring is invisible.</div></div></div>
     </div>
   </section>
 
-  <section class="section">
+  <!-- ═══════════════════ STATUS & ALERTS ═══════════════════ -->
+  <section class="section" id="status">
     <h2 class="section-title">Status &amp; alerts</h2>
     <p class="section-desc">One semantic system on public and internal surfaces. Every state also carries an icon and a leading word — never color alone (WCAG 1.4.1). Light-mode values shown; dark overrides live in <a href="public/design-system.css">design-system.css</a>.</p>
     <table class="status-table">
@@ -164,9 +189,13 @@
     <p class="footnote" style="margin-top:10px">Success is lime-olive, not forest green — arXiv has no success-green, and introducing one would loosen the palette. Info is navy, deliberately darker than Link Blue so banners are never mistaken for links. The error border is <strong>Danger Red #c62828</strong> — the functional color for destructive actions and error states everywhere, deliberately distinct from heritage Campus Red. Component usage and dark-mode variants: <a href="public/alert-styles.html">alert-styles.html</a>.</p>
   </section>
 
-  <section class="section">
-    <h2 class="section-title">Background tints — the warm family</h2>
-    <p class="section-desc">Repository Brown stepped toward white: barely-perceptible warm tints for section depth without hard borders. Together with the text greys above, these form the brown family's full ladder — every warm neutral in the system descends from the same hue.</p>
+  <!-- ═══════════════════ BACKGROUNDS ═══════════════════ -->
+  <section class="section" id="backgrounds">
+    <h2 class="section-title">Backgrounds</h2>
+    <p class="section-desc">Tints for section depth without hard borders, plus the light-blue surfaces arXiv lays over paper content. Picking one and staying accessible on it are covered in the two subsections that follow.</p>
+
+    <h3 class="subgroup-title">Background tints</h3>
+    <p class="section-desc">Barely-perceptible tints for section depth without hard borders. Mostly warm (Repository Brown stepped toward white), with a cool wash and a code-block blue tint for jobs that read better cool.</p>
     <div class="swatches">
       <div class="swatch-card"><div class="swatch-chip" style="background:#f9f7f7"></div><div class="swatch-body"><div class="swatch-name">Warm Wash</div><div class="swatch-hex">#f9f7f7</div><div class="swatch-token">--arxiv-warm-wash</div><div class="swatch-role">Footer, metadata bands, internal page background</div></div></div>
       <div class="swatch-card"><div class="swatch-chip" style="background:#f7fafc"></div><div class="swatch-body"><div class="swatch-name">Cool Wash</div><div class="swatch-hex">#f7fafc</div><div class="swatch-role">Cool section differentiation</div></div></div>
@@ -175,39 +204,39 @@
       <div class="swatch-card"><div class="swatch-chip" style="background:#ddd8d2"></div><div class="swatch-body"><div class="swatch-name">Border Light</div><div class="swatch-hex">#ddd8d2</div><div class="swatch-token">--arxiv-border-light</div><div class="swatch-role">Component hairlines — inputs, tracks, card edges. Decorative only (below 3:1); never the sole boundary of an interactive control.</div></div></div>
       <div class="swatch-card"><div class="swatch-chip" style="background:#f0f5ff"></div><div class="swatch-body"><div class="swatch-name">Blue Tint</div><div class="swatch-hex">#f0f5ff</div><div class="swatch-role">Code and identifier backgrounds</div></div></div>
     </div>
-  </section>
 
-  <section class="section">
-    <h2 class="section-title">The arXiv-layer family — Open Blue's tints</h2>
-    <p class="section-desc">Open Blue stepped toward white (plus its hover step <span class="swatch-hex" style="display:inline">#c2e2ff</span>): light blues reserved for arXiv-added interactive surfaces over paper content — popovers, the TOC dropdown, active inline states, the read-aloud highlight. The reader-recognizable rule: <em>light blue = arXiv chrome speaking, not the paper</em>. (PROPOSED-GUIDELINES.md G4.)</p>
+    <h3 class="subgroup-title">The arXiv Chrome family — Open Blue's tints</h3>
+    <p class="section-desc">Open Blue stepped toward white (plus its hover step <span class="swatch-hex" style="display:inline">#c2e2ff</span>): light blues reserved for arXiv-added chrome layered over content — popovers, the TOC dropdown, active inline states, the read-aloud highlight, the reader footer band. The recognizable rule: <em>light blue = arXiv chrome speaking, not the paper</em>. (PROPOSED-GUIDELINES.md G4.)</p>
     <div class="swatches">
-      <div class="swatch-card"><div class="swatch-chip" style="background:#edf4fc"></div><div class="swatch-body"><div class="swatch-name">Tint Light</div><div class="swatch-hex">#edf4fc</div><div class="swatch-token">--arxiv-tint-light</div><div class="swatch-role">Popover and dropdown panel surface</div></div></div>
+      <div class="swatch-card"><div class="swatch-chip" style="background:#edf4fc"></div><div class="swatch-body"><div class="swatch-name">Tint Light</div><div class="swatch-hex">#edf4fc</div><div class="swatch-token">--arxiv-tint-light</div><div class="swatch-role">Popover, dropdown, and footer-band surface</div></div></div>
       <div class="swatch-card"><div class="swatch-chip" style="background:#c4dcf0"></div><div class="swatch-body"><div class="swatch-name">Tint Border</div><div class="swatch-hex">#c4dcf0</div><div class="swatch-token">--arxiv-tint-border</div><div class="swatch-role">Matching panel edge</div></div></div>
       <div class="swatch-card"><div class="swatch-chip" style="background:#d6e8f7"></div><div class="swatch-body"><div class="swatch-name">Active Wash</div><div class="swatch-hex">#d6e8f7</div><div class="swatch-token">--arxiv-active-bg</div><div class="swatch-role">Active inline states; hover within panels; read-aloud highlight</div></div></div>
     </div>
   </section>
 
+  <!-- ═══════════════════ WHICH TINT FOR WHICH JOB ═══════════════════ -->
   <section class="section" id="uses">
     <h2 class="section-title">Which tint for which job</h2>
-    <p class="section-desc">The tints above, sorted by the job they do. Reach for the named token. If your job isn't listed, that's a <a href="../doc.html?src=design-patterns/color-mapping.md">color-mapping.md</a> question — not a new value (see the three tiers below).</p>
+    <p class="section-desc">The backgrounds above, sorted by the job they do. Reach for the named token. If your job isn't listed, that's a <a href="../doc.html?src=design-patterns/color-mapping.md">color-mapping.md</a> question — not a new value (see the three tiers below).</p>
     <table class="status-table">
       <tr><th>The job</th><th>Reach for</th><th>Where it shows up</th></tr>
       <tr><td>Page / section background, warm</td><td><span class="status-sample" style="background:#f9f7f7;border-color:#ddd8d2;color:#1c1a17">Warm Wash</span><br><span class="swatch-token">--arxiv-warm-wash</span></td><td>The default subtle ground — footer, metadata bands, internal page background</td></tr>
       <tr><td>Section background, cooler</td><td><span class="status-sample" style="background:#f7fafc;border-color:#ddd8d2;color:#1c1a17">Cool Wash</span><br><span class="swatch-hex">#f7fafc</span></td><td>When a band should read cooler than Warm Wash to differentiate adjacent sections</td></tr>
       <tr><td>Secondary content band</td><td><span class="status-sample" style="background:#f0eeec;border-color:#ddd8d2;color:#1c1a17">Card Grey</span><br><span class="swatch-token">--arxiv-card-grey</span></td><td>Related band, reader header — one step down from the page, no hard border needed</td></tr>
       <tr><td>Card surface / hover fill</td><td><span class="status-sample" style="background:#f0eeec;border-color:#ddd8d2;color:#1c1a17">Card Grey</span><br><span class="swatch-token">--arxiv-card-grey</span></td><td>Card fills and hover fills — same tint as the secondary band, doing a smaller job</td></tr>
-      <tr><td>Active / pressed fill, deepest warm band</td><td><span class="status-sample" style="background:#e4e0db;border-color:#c8c4be;color:#1c1a17">Grey Active</span><br><span class="swatch-token">--arxiv-pill-border</span></td><td>Footer edge, pressed states, pill borders. The darkest warm tint — body-size grey text and links miss AA here (use Ink or Link Hover)</td></tr>
+      <tr><td>Active / pressed fill, deepest warm band</td><td><span class="status-sample" style="background:#e4e0db;border-color:#c8c4be;color:#1c1a17">Grey Active</span><br><span class="swatch-token">--arxiv-pill-border</span></td><td>Footer edge, pressed states, pill borders. The darkest warm tint — body-size grey text and links miss AA here (use Repository Brown or Link Hover)</td></tr>
       <tr><td>Decorative hairline</td><td><span class="status-sample" style="background:#fff;border-color:#ddd8d2;color:#1c1a17">Border Light</span><br><span class="swatch-token">--arxiv-border-light</span></td><td>Input / card / track edges. Below 3:1 — never the sole boundary of an interactive control</td></tr>
-      <tr><td>arXiv chrome floating over paper</td><td><span class="status-sample" style="background:#edf4fc;border-color:#c4dcf0;color:#1c1a17">Tint Light + Border</span><br><span class="swatch-token">--arxiv-tint-light</span></td><td>Popovers, the TOC dropdown — the "light blue = arXiv speaking, not the paper" rule (G4)</td></tr>
-      <tr><td>Inline active anchor · read-aloud highlight · panel hover</td><td><span class="status-sample" style="background:#d6e8f7;border-color:#c4dcf0;color:#1c1a17">Active Wash</span><br><span class="swatch-token">--arxiv-active-bg</span></td><td>The deepest arXiv-layer blue that still holds AA for normal-size text</td></tr>
+      <tr><td>arXiv chrome floating over paper</td><td><span class="status-sample" style="background:#edf4fc;border-color:#c4dcf0;color:#1c1a17">Tint Light + Border</span><br><span class="swatch-token">--arxiv-tint-light</span></td><td>Popovers, the TOC dropdown, the reader footer band — the "light blue = arXiv speaking, not the paper" rule (G4)</td></tr>
+      <tr><td>Inline active anchor · read-aloud highlight · panel hover</td><td><span class="status-sample" style="background:#d6e8f7;border-color:#c4dcf0;color:#1c1a17">Active Wash</span><br><span class="swatch-token">--arxiv-active-bg</span></td><td>The deepest arXiv-chrome blue that still holds AA for normal-size text</td></tr>
       <tr><td>Open Blue hover step</td><td><span class="status-sample" style="background:#c2e2ff;border-color:#8fc1e8;color:#1c1a17">Open Blue Bright</span><br><span class="swatch-token">--arxiv-open-blue-bright</span></td><td>Hover state for Open Blue primary fills</td></tr>
       <tr><td>Code / identifier background</td><td><span class="status-sample" style="background:#f0f5ff;border-color:#ddd8d2;color:#1c1a17">Blue Tint</span><br><span class="swatch-hex">#f0f5ff</span></td><td>Code blocks, citation and identifier display boxes</td></tr>
-      <tr><td>Public primary action fill</td><td><span class="status-sample" style="background:#a5d6fe;border-color:#6ba8da;color:#1c1a17">Open Blue</span><br><span class="swatch-token">--arxiv-open-blue</span></td><td>The one brand fill that carries Ink text at AA (11.3:1) — see pairings below</td></tr>
+      <tr><td>Public primary action fill</td><td><span class="status-sample" style="background:#a5d6fe;border-color:#6ba8da;color:#1c1a17">Open Blue</span><br><span class="swatch-token">--arxiv-open-blue</span></td><td>The one brand fill that carries Repository Brown text at AA (11.3:1) — see pairings below</td></tr>
       <tr><td>Status surface (success / info / warning / error)</td><td><span class="status-sample" style="background:#e8f5d8;border-color:#6b8e1e;color:#4a5a0a">the status tints</span></td><td>See <strong>Status &amp; alerts</strong> above — each pairs with a distinct icon and leading word</td></tr>
     </table>
-    <p class="footnote" style="margin-top:12px">Note on near-whites: <span class="swatch-hex" style="display:inline">#fafaf8</span> / <span class="swatch-hex" style="display:inline">#fafaf9</span> appear in the mockups as lighter-than-Warm-Wash card grounds. They are not palette tokens — treat them as drift to reconcile to Warm Wash unless a genuine need for a lighter step is established in color-mapping.md.</p>
+    <p class="footnote" style="margin-top:12px">No near-whites lighter than Warm Wash: the one-offs <span class="swatch-hex" style="display:inline">#fafaf8</span> / <span class="swatch-hex" style="display:inline">#fafaf9</span> were reconciled to Warm Wash (2026-06-17). If a lighter step is ever genuinely needed, add it in color-mapping.md first rather than inventing it locally.</p>
   </section>
 
+  <!-- ═══════════════════ WORKING ON TINTED BACKGROUNDS ═══════════════════ -->
   <section class="section" id="tinted">
     <h2 class="section-title">Working on tinted backgrounds</h2>
     <p class="section-desc">
@@ -223,11 +252,11 @@
       change, not a local invention.
     </p>
 
-    <h3 style="font-size:15px; margin:24px 0 6px">Contrast on the tints (computed, WCAG)</h3>
+    <h4 class="minor-title">Contrast on the tints (computed, WCAG)</h4>
     <p class="section-desc">Every approved text/UI color against every approved surface. <strong>AA</strong> = passes 4.5:1 for normal text · <strong>ui</strong> = passes only the 3:1 tier (large text ≥18px, or UI boundaries) · <strong>✗</strong> = don't.</p>
     <table class="status-table">
       <tr><th>on ↓ / against →</th><th>White</th><th>Warm Wash<br>#f9f7f7</th><th>Card Grey<br>#f0eeec</th><th>Grey Active<br>#e4e0db</th><th>Tint Light<br>#edf4fc</th><th>Active Wash<br>#d6e8f7</th><th>Open Blue<br>#a5d6fe</th></tr>
-      <tr><td><strong>Ink</strong> #1c1a17</td><td>17.4 AA</td><td>16.3 AA</td><td>15.0 AA</td><td>13.2 AA</td><td>15.7 AA</td><td>13.8 AA</td><td>11.3 AA</td></tr>
+      <tr><td><strong>Repository Brown</strong> #1c1a17</td><td>17.4 AA</td><td>16.3 AA</td><td>15.0 AA</td><td>13.2 AA</td><td>15.7 AA</td><td>13.8 AA</td><td>11.3 AA</td></tr>
       <tr><td><strong>Library Grey</strong> #6b6459</td><td>5.9 AA</td><td>5.5 AA</td><td>5.1 AA</td><td style="background:var(--arxiv-warning-bg)">4.5 ui</td><td>5.3 AA</td><td>4.7 AA</td><td style="background:var(--arxiv-warning-bg)">3.8 ui</td></tr>
       <tr><td><strong>UI Boundary Grey</strong> #8b8680</td><td>3.6 ui</td><td>3.4 ui</td><td>3.1 ui</td><td style="background:var(--arxiv-error-bg)">2.8 ✗</td><td>3.3 ui</td><td style="background:var(--arxiv-error-bg)">2.9 ✗</td><td style="background:var(--arxiv-error-bg)">2.4 ✗</td></tr>
       <tr><td><strong>Link Blue</strong> #1565c0</td><td>5.8 AA</td><td>5.4 AA</td><td>5.0 AA</td><td style="background:var(--arxiv-warning-bg)">4.4 ui</td><td>5.2 AA</td><td>4.6 AA</td><td style="background:var(--arxiv-warning-bg)">3.7 ui</td></tr>
@@ -235,18 +264,19 @@
       <tr><td><strong>Archival Blue</strong> #1f5e96</td><td>6.8 AA</td><td>6.4 AA</td><td>5.9 AA</td><td>5.2 AA</td><td>6.1 AA</td><td>5.4 AA</td><td style="background:var(--arxiv-warning-bg)">4.4 ui</td></tr>
       <tr><td><strong>Visited Purple</strong> #7b2fbe</td><td>7.0 AA</td><td>6.6 AA</td><td>6.1 AA</td><td>5.3 AA</td><td>6.3 AA</td><td>5.6 AA</td><td>4.6 AA</td></tr>
     </table>
-    <h3 style="font-size:15px; margin:28px 0 6px">Ready-to-use pairings</h3>
+
+    <h4 class="minor-title">Ready-to-use pairings</h4>
     <p class="section-desc">The same matrix as recipes — what to reach for on each surface without rechecking ratios.</p>
     <table class="status-table">
       <tr><th>On this surface</th><th>Body text &amp; links (AA)</th><th>Large text / borders only (3:1)</th><th>Don't use</th></tr>
-      <tr><td><strong>White · Warm Wash · Card Grey · Tint Light</strong></td><td>Ink, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple</td><td>UI Boundary Grey (borders)</td><td>—</td></tr>
-      <tr><td><strong>Active Wash</strong> #d6e8f7</td><td>Ink, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple</td><td>—</td><td>UI Boundary Grey</td></tr>
-      <tr><td><strong>Grey Active</strong> #e4e0db</td><td>Ink, Link Hover, Archival Blue, Visited Purple</td><td>Library Grey, Link Blue (≥18px)</td><td>UI Boundary Grey</td></tr>
-      <tr><td><strong>Open Blue</strong> #a5d6fe</td><td>Ink only</td><td>Library Grey, Link Blue, Archival Blue (≥18px)</td><td>UI Boundary Grey; body-size grey &amp; links</td></tr>
+      <tr><td><strong>White · Warm Wash · Card Grey · Tint Light</strong></td><td>Repository Brown, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple</td><td>UI Boundary Grey (borders)</td><td>—</td></tr>
+      <tr><td><strong>Active Wash</strong> #d6e8f7</td><td>Repository Brown, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple</td><td>—</td><td>UI Boundary Grey</td></tr>
+      <tr><td><strong>Grey Active</strong> #e4e0db</td><td>Repository Brown, Link Hover, Archival Blue, Visited Purple</td><td>Library Grey, Link Blue (≥18px)</td><td>UI Boundary Grey</td></tr>
+      <tr><td><strong>Open Blue</strong> #a5d6fe</td><td>Repository Brown only</td><td>Library Grey, Link Blue, Archival Blue (≥18px)</td><td>UI Boundary Grey; body-size grey &amp; links</td></tr>
     </table>
-    <p class="footnote" style="margin-top:12px">Ink is the workhorse — it clears AA on every approved surface, which is why buttons set Ink on Open Blue. Everything in this table is the matrix above, read as instructions instead of numbers.</p>
+    <p class="footnote" style="margin-top:12px">Repository Brown is the workhorse — it clears AA on every approved surface, which is why buttons set Repository Brown on Open Blue. Everything in this table is the matrix above, read as instructions instead of numbers.</p>
 
-    <h3 style="font-size:15px; margin:28px 0 6px">Buttons change clothes on tinted surfaces</h3>
+    <h4 class="minor-title">Buttons change clothes on tinted surfaces</h4>
     <p class="section-desc">
       The secondary button's white fill reads as "primary" against a tinted band, so tinted
       sections add the <code style="font-family:var(--arxiv-font-mono); font-size:12px">.on-tint</code>
