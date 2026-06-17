@@ -18,7 +18,9 @@ The design system serves two audiences with different visual treatments but shar
 
 ```
 CONTEXT.md                        ← this file: project overview
+BRAND.md                          ← voice + brand statement + the design principles they drive
 DESIGN-POLICIES.md                ← hard constraints (a11y, tokens, conventions)
+NEXT-STEPS.md                     ← program-level backlog and priorities
 CLAUDE.md                         ← AI agent entry point (pointer to context files)
 
 visual-audit/                     ← platform-wide visual audit (the "why")
