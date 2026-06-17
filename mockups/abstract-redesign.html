@@ -1141,27 +1141,31 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   margin: 0;
 }
 
-/* Source switcher (preprint / journal) — text-only toggle with vertical bar */
+/* Source switcher (preprint / journal) — styled as tabs with a clear selected
+   state (ink-bold + Link Blue underline indicator on a shared rail) so it
+   reads as a control, not as more body text. Distinct from the segmented
+   APA/Chicago/MLA style switcher. */
 .abs-cite-source {
-  display: flex;
-  align-items: center;
-  gap: 0;
+  display: inline-flex;
+  align-items: stretch;
+  gap: 2px;
+  border-bottom: 1px solid var(--arxiv-border-light);
 }
 .abs-cite-source-btn {
   background: none;
   border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px; /* sit the indicator on the shared rail */
   font-family: var(--arxiv-font-sans);
   font-size: 0.8125rem; /* 13px */
   color: var(--arxiv-grey);
-  padding: 4px 12px;
+  padding: 5px 12px;
   cursor: pointer;
-  border-radius: 0;
 }
 .abs-cite-source-btn.is-active {
   color: var(--arxiv-ink);
   font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  border-bottom-color: var(--arxiv-link-blue);
 }
 .abs-cite-source-btn:hover:not(.is-active) { color: var(--arxiv-ink); }
 .abs-cite-source-btn:focus-visible {
@@ -1169,10 +1173,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   outline-offset: 1px;
   border-radius: 3px;
 }
-.abs-cite-source-sep {
-  color: var(--arxiv-border-light);
-  font-weight: normal;
-}
+.abs-cite-source-sep { display: none; }
 
 /* Three-column layout for cite content */
 .abs-cite-columns {
@@ -1297,8 +1298,14 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   outline-offset: 1px;
 }
 
-/* Cite IDs column (arXiv ID, DOIs) as a description list */
-.abs-cite-id-list { margin: 0; }
+/* Cite IDs column (arXiv ID, DOIs) as a description list — outlined panel
+   (links, not copyable code, so an outline rather than the code-block fill). */
+.abs-cite-id-list {
+  margin: 0;
+  border: 1px solid var(--arxiv-border-light);
+  border-radius: 4px;
+  padding: 10px 12px;
+}
 .abs-cite-id-list dt,
 .abs-cite-id-list dd { margin: 0; }
 .abs-cite-id-list dd + dt { margin-top: 4px; }
@@ -2073,7 +2080,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
       </section>
 
       <!-- Cite this paper -->
-      <section class="abs-cite-section" aria-labelledby="cite-heading">
+      <section class="abs-cite-section abs-ref-card" aria-labelledby="cite-heading">
         <div class="abs-cite-header">
           <div class="abs-ref-card-head">
             <h2 class="abs-section-heading abs-ref-card-title" id="cite-heading">Cite this paper</h2>
