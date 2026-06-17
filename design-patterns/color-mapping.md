@@ -162,25 +162,25 @@ The tints sorted by the job they do. Reach for the named token; if a job isn't l
 | Section background, cooler | **Cool Wash** `#f7fafc` | When a band should read cooler than Warm Wash to differentiate adjacent sections |
 | Secondary content band | **Card Grey** `--arxiv-card-grey` | Related band, reader header — one step down from the page, no hard border |
 | Card surface / hover fill | **Card Grey** `--arxiv-card-grey` | Card fills and hover fills |
-| Active / pressed fill, deepest warm band | **Grey Active** `--arxiv-pill-border` `#e4e0db` | Footer edge, pressed states, pill borders. Body-size grey/links miss AA here — use Ink or Link Hover |
+| Active / pressed fill, deepest warm band | **Grey Active** `--arxiv-pill-border` `#e4e0db` | Footer edge, pressed states, pill borders. Body-size grey/links miss AA here — use Repository Brown or Link Hover |
 | Decorative hairline | **Border Light** `--arxiv-border-light` | Input / card / track edges. Below 3:1 — never the sole boundary of a control |
 | arXiv chrome floating over paper | **Tint Light** + **Tint Border** | Popovers, TOC dropdown — the "light blue = arXiv speaking, not the paper" rule (G4) |
-| Inline active anchor · read-aloud highlight · panel hover | **Active Wash** `--arxiv-active-bg` | Deepest arXiv-layer blue that still holds AA for normal-size text |
+| Inline active anchor · read-aloud highlight · panel hover | **Active Wash** `--arxiv-active-bg` | Deepest arXiv-chrome blue that still holds AA for normal-size text |
 | Open Blue hover step | **Open Blue Bright** `--arxiv-open-blue-bright` `#c2e2ff` | Hover state for Open Blue primary fills |
 | Code / identifier background | **Blue Tint** `#f0f5ff` | Code blocks, citation/identifier display boxes |
-| Public primary action fill | **Open Blue** `--arxiv-open-blue` | The one brand fill that carries Ink text at AA |
+| Public primary action fill | **Open Blue** `--arxiv-open-blue` | The one brand fill that carries Repository Brown text at AA |
 | Status surface | the four status tints | See "Status & alert colors" above — each pairs with an icon + leading word |
 
 **Ready-to-use pairings** (the contrast matrix read as instructions):
 
 | On this surface | Body text & links (AA) | Large text / borders only (3:1) | Don't use |
 |---|---|---|---|
-| White · Warm Wash · Card Grey · Tint Light | Ink, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | UI Boundary Grey (borders) | — |
-| Active Wash `#d6e8f7` | Ink, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | — | UI Boundary Grey |
-| Grey Active `#e4e0db` | Ink, Link Hover, Archival Blue, Visited Purple | Library Grey, Link Blue (≥18px) | UI Boundary Grey |
-| Open Blue `#a5d6fe` | Ink only | Library Grey, Link Blue, Archival Blue (≥18px) | UI Boundary Grey; body-size grey & links |
+| White · Warm Wash · Card Grey · Tint Light | Repository Brown, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | UI Boundary Grey (borders) | — |
+| Active Wash `#d6e8f7` | Repository Brown, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | — | UI Boundary Grey |
+| Grey Active `#e4e0db` | Repository Brown, Link Hover, Archival Blue, Visited Purple | Library Grey, Link Blue (≥18px) | UI Boundary Grey |
+| Open Blue `#a5d6fe` | Repository Brown only | Library Grey, Link Blue, Archival Blue (≥18px) | UI Boundary Grey; body-size grey & links |
 
-> **Drift to reconcile:** the mockups use near-white grounds `#fafaf8` / `#fafaf9` (lighter than Warm Wash), a one-off light blue `#e8f4ff`, and a hover blue `#0d4a96` (close to Link Hover `#1050a0`). These are not palette tokens — reconcile to the nearest token unless a genuine gap is established here.
+> **Drift reconciled (2026-06-17):** the mockups' off-palette one-offs were snapped to tokens — near-white grounds `#fafaf8` / `#fafaf9` → Warm Wash; light-blue footer band `#e8f4ff` → Tint Light; hover blue `#0d4a96` → Link Hover `#1050a0`. Don't reintroduce near-whites lighter than Warm Wash; if a lighter step is ever needed, add it here first.
 
 ---
 
@@ -188,7 +188,7 @@ The tints sorted by the job they do. Reach for the named token; if a job isn't l
 
 *(Added 2026-06-13. Rendered with computed ratios on the colors page: `colors.html#tinted`.)*
 
-Every tint in the system belongs to one of two families: the **warm family** (Repository Brown stepped toward white — Warm Wash, Grey Hover/Card Grey, Grey Active, Border Light, plus the text greys) and the **blue family** (Open Blue's tints — Tint Light, Tint Border, Active Wash, and the hover step `#c2e2ff`).
+Every tint in the system belongs to one of two families: the **warm tints** (Repository Brown stepped toward white — Warm Wash, Grey Hover/Card Grey, Grey Active, Border Light, plus the text greys) and the **arXiv Chrome family** (Open Blue's tints — Tint Light, Tint Border, Active Wash, and the hover step `#c2e2ff`).
 
 **"No one-off hex values" has three tiers:**
 
@@ -198,10 +198,10 @@ Every tint in the system belongs to one of two families: the **warm family** (Re
 
 **Accessible combinations on tints** (computed, WCAG; full matrix on the colors page):
 
-- **Ink `#1c1a17` passes AA on every approved surface** — including Open Blue (11.3:1), which is why buttons set ink on Open Blue.
-- **Library Grey and Link Blue hold AA through Active Wash** (`#d6e8f7`) but miss it on **Grey Active** (`#e4e0db`: 4.45 / 4.37) — on Grey Active use Ink, Link Hover `#1050a0` (6.0:1), or large text.
+- **Repository Brown `#1c1a17` passes AA on every approved surface** — including Open Blue (11.3:1), which is why buttons set Repository Brown on Open Blue.
+- **Library Grey and Link Blue hold AA through Active Wash** (`#d6e8f7`) but miss it on **Grey Active** (`#e4e0db`: 4.45 / 4.37) — on Grey Active use Repository Brown, Link Hover `#1050a0` (6.0:1), or large text.
 - **UI Boundary Grey holds its 3:1 only through Tint Light** — on Grey Active, Active Wash, or Open Blue, draw boundaries with Library Grey instead.
-- **On Open Blue itself, Ink is the only text color.**
+- **On Open Blue itself, Repository Brown is the only text color.**
 - **Secondary buttons on tinted bands take the `.on-tint` modifier** (fill swaps to Card Grey — secondary via warm-on-cool material difference, not low contrast). See `public/design-system.css`.
 
 ---

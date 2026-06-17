@@ -32,7 +32,7 @@
 
 **Resolved 2026-06-11 (Shamsi):** the universal navigation stays deliberately short — the cap is the policy, and link-creep into the header will be resisted over time. A hamburger remains a permitted *fallback* at very narrow viewports if the short nav still doesn't fit, but is never the default pattern. Recorded in DESIGN-POLICIES.md.
 
-## G4. The arXiv-layer surface family shares one tint vocabulary
+## G4. The arXiv Chrome surface family shares one tint vocabulary
 
 **Rule:** Every "arXiv-added interactive surface" over paper content — citation popovers, footnote popovers, TOC dropdown, inline active states — draws from the same three-token family: `--arxiv-tint-light` (panel surface), `--arxiv-tint-border` (panel edge), `--arxiv-active-bg` (active/hover wash). Reader-recognizable rule: "light blue = arXiv chrome speaking, not the paper."
 
@@ -108,7 +108,7 @@ Screen-reader support, beyond the keyboard corollary (tabindex="0" + accessible 
 | G1 | Sticky chrome exceptional + scroll offset | ✅ DESIGN-POLICIES.md. Open flag: abstract header is currently sticky — decide. |
 | G2 | Chrome recedes | Pattern rationale (PDF-parity intent recorded). HTML-first strategic question logged, undecided. |
 | G3 | Short universal nav; one compact grammar | ✅ DESIGN-POLICIES.md (nav cap). Hamburger = permitted narrow-viewport fallback, never default. |
-| G4 | arXiv-layer tint family | Working rule; promote after dark-mode family exists. |
+| G4 | arXiv Chrome tint family | Working rule; promote after dark-mode family exists. |
 | G5 | Z-layer scale | ✅ DESIGN-POLICIES.md, with minimal-toasts values note. |
 | G6 | Touch targets: 24px floor / 44px touch-primary | ✅ DESIGN-POLICIES.md (industry-converged two-tier rule). |
 | G7 | Reduced-motion incl. JS scrolling | ✅ DESIGN-POLICIES.md. |
