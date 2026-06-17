@@ -929,7 +929,14 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   border-top: 1px solid var(--arxiv-pill-border);
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
-  padding: 48px calc(50vw - 50%) 0;
+  padding: 40px calc(50vw - 50%) 44px;
+  /* Cards-on-a-band: each sub-section is its own white card floating on the
+     Warm Wash, so the eye chunks "accessibility / paper info / cite" instead
+     of reading one undifferentiated wall. The whole zone stays subordinate to
+     the title+abstract above via smaller headings (15px vs the 24px title). */
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 /*
@@ -1307,19 +1314,113 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   margin-bottom: 6px;
 }
 
-/* "Who cites this paper" sub-nav inside the IDs column */
-.abs-cite-citations { margin-top: 6px; }
-.abs-cite-citations h3.abs-panel-label { margin: 0 0 4px 0; }
-.abs-cite-citations-list {
-  list-style: none;
-  padding: 0;
+/* "Who cites this paper" — styles moved to the reference-zone cards block
+   below (B2, 2026-06-17): it's now a wrapping row beneath the citation box,
+   not a sub-nav in the IDs column. */
+
+/*
+╔════════════════════════════════════════════════════════════════════╗
+║  COMPONENT: Reference-zone cards (shared chrome)                   ║
+╚════════════════════════════════════════════════════════════════════╝
+  The three reference-zone sections (Accessibility, Paper information,
+  Cite) each become a white card on the Warm Wash band. Defined AFTER the
+  per-section rules above so these overrides win ties in the cascade.
+*/
+.abs-ref-card {
+  background: #fff;
+  border: 1px solid var(--arxiv-border-light);
+  border-radius: 8px;
+  padding: 18px 22px 22px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+.abs-ref-card-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 14px;
+}
+.abs-ref-card-icon {
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+  color: var(--arxiv-archival-blue);
+}
+.abs-ref-card-title {
+  font-family: var(--arxiv-font-sans);
+  font-size: 0.9375rem; /* 15px — subordinate to the 24px title */
+  font-weight: 600;
+  color: var(--arxiv-ink);
+  letter-spacing: 0;
   margin: 0;
 }
-.abs-cite-citations-list li {
-  font-size: 0.8125rem; /* 13px */
-  margin-bottom: 10px;
+/* De-border the sections that used to separate via rules/padding — the card
+   chrome now does the separating. */
+.abs-a11y { padding: 0; margin-bottom: 0; border-bottom: none; }
+.abs-meta { padding: 0; }
+.abs-cite-section { padding: 0; }
+/* Cite header gains the icon; keep the heading and source toggle on one row. */
+.abs-cite-header .abs-ref-card-head { margin: 0; }
+
+/* B2: "Who cites this paper" relocated out of the IDs column to a single
+   wrapping line below the citation box. */
+.abs-cite-citations {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 16px;
 }
-.abs-cite-citations-list li:last-child { margin-bottom: 0; }
+.abs-cite-citations h3.abs-panel-label { margin: 0; }
+.abs-cite-citations-list {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-wrap: wrap; gap: 6px 16px;
+}
+.abs-cite-citations-list li { font-size: 0.8125rem; margin: 0; }
+
+/*
+╔════════════════════════════════════════════════════════════════════╗
+║  COMPONENT: Ancillary files (disclosure)                          ║
+╚════════════════════════════════════════════════════════════════════╝
+  B3 — scales gracefully from 0 → 1 → many files. Native <details> so it
+  works with no JS and needs no maintenance. In production:
+    0 files → the whole row is omitted (no /anc directory)
+    1 file  → summary can name the single file directly
+    many    → collapsed summary "N files · total size"; expand for the
+              typed, sized, linked list. Demo shows the "many" case.
+*/
+.abs-anc { font-size: 0.8125rem; }
+.abs-anc-summary {
+  display: inline-flex; align-items: center; gap: 7px;
+  cursor: pointer; color: var(--arxiv-ink);
+  list-style: none;
+}
+.abs-anc-summary::-webkit-details-marker { display: none; }
+.abs-anc-summary::marker { content: ""; }
+.abs-anc-summary:focus-visible {
+  outline: 2px solid var(--arxiv-link-blue);
+  outline-offset: 2px; border-radius: 3px;
+}
+.abs-anc-clip { width: 14px; height: 14px; color: var(--arxiv-grey); flex-shrink: 0; }
+.abs-anc-toggle { color: var(--arxiv-link-blue); margin-left: 4px; }
+.abs-anc-toggle::after { content: "show"; }
+.abs-anc[open] .abs-anc-toggle::after { content: "hide"; }
+.abs-anc-list {
+  list-style: none; margin: 12px 0 0; padding: 0;
+  display: flex; flex-direction: column; gap: 7px;
+  max-width: 460px;
+}
+.abs-anc-list li { display: flex; align-items: center; gap: 10px; }
+.abs-anc-ext {
+  font-family: var(--arxiv-font-condensed);
+  font-size: 0.5625rem; /* 9px */ font-weight: 600; letter-spacing: 0.04em;
+  color: var(--arxiv-grey); background: var(--arxiv-card-grey);
+  border-radius: 3px; padding: 2px 5px; min-width: 36px; text-align: center;
+  flex-shrink: 0;
+}
+.abs-anc-list a { color: var(--arxiv-link-blue); overflow-wrap: anywhere; }
+.abs-anc-size {
+  margin-left: auto; color: var(--arxiv-grey);
+  font-family: var(--arxiv-font-mono); font-size: 0.6875rem; /* 11px */ white-space: nowrap;
+}
 
 /*
 ╔════════════════════════════════════════════════════════════════════╗
@@ -1891,8 +1992,14 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
     <div class="abs-reference-zone">
 
       <!-- Accessibility Notes (present-only capability advertisement) -->
-      <section class="abs-a11y" aria-labelledby="a11y-heading">
-        <h2 class="abs-a11y-heading" id="a11y-heading">Accessibility Notes</h2>
+      <section class="abs-a11y abs-ref-card" aria-labelledby="a11y-heading">
+        <div class="abs-ref-card-head">
+          <svg class="abs-ref-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <polyline points="9 12 12 15 16 10"/>
+          </svg>
+          <h2 class="abs-ref-card-title" id="a11y-heading">Accessibility Notes</h2>
+        </div>
         <ul class="abs-a11y-list">
           <li>
             <svg class="abs-a11y-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -1919,8 +2026,16 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
       </section>
 
       <!-- Paper information (metadata as description list) -->
-      <section class="abs-meta" aria-labelledby="meta-heading">
-        <h2 id="meta-heading" class="is-sr-only">Paper information</h2>
+      <section class="abs-meta abs-ref-card" aria-labelledby="meta-heading">
+        <div class="abs-ref-card-head">
+          <svg class="abs-ref-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="8" y1="13" x2="16" y2="13"/>
+            <line x1="8" y1="17" x2="14" y2="17"/>
+          </svg>
+          <h2 class="abs-ref-card-title" id="meta-heading">Paper information</h2>
+        </div>
         <dl class="abs-meta-grid">
           <dt class="abs-meta-label">Subjects</dt>
           <dd class="abs-meta-value">
@@ -1942,10 +2057,20 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
                directory; filenames link to direct downloads. -->
           <dt class="abs-meta-label">Ancillary files</dt>
           <dd class="abs-meta-value">
-            <a href="#">perturbation_solver.py</a>,
-            <a href="#">planck_comparison_data.csv</a>
-            <span aria-hidden="true">&middot;</span>
-            <a href="#">view all 5 files</a>
+            <details class="abs-anc">
+              <summary class="abs-anc-summary">
+                <svg class="abs-anc-clip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                <span><strong>5 files</strong> &middot; 2.3 MB</span>
+                <span class="abs-anc-toggle" aria-hidden="true"></span>
+              </summary>
+              <ul class="abs-anc-list">
+                <li><span class="abs-anc-ext">PY</span><a href="#">perturbation_solver.py</a><span class="abs-anc-size">12 KB</span></li>
+                <li><span class="abs-anc-ext">CSV</span><a href="#">planck_comparison_data.csv</a><span class="abs-anc-size">2.1 MB</span></li>
+                <li><span class="abs-anc-ext">PY</span><a href="#">mcmc_chains.py</a><span class="abs-anc-size">48 KB</span></li>
+                <li><span class="abs-anc-ext">DAT</span><a href="#">spectrum_v3.dat</a><span class="abs-anc-size">96 KB</span></li>
+                <li><span class="abs-anc-ext">TXT</span><a href="#">README.txt</a><span class="abs-anc-size">3 KB</span></li>
+              </ul>
+            </details>
           </dd>
           <dt class="abs-meta-label">Journal</dt>
           <dd class="abs-meta-value"><a href="https://doi.org/10.1088/1475-7516/2026/05/012">Journal of Cosmology and Astroparticle Physics, 2026(05), 012</a></dd>
@@ -1957,7 +2082,13 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
       <!-- Cite this paper -->
       <section class="abs-cite-section" aria-labelledby="cite-heading">
         <div class="abs-cite-header">
-          <h2 class="abs-section-heading" id="cite-heading">Cite this paper</h2>
+          <div class="abs-ref-card-head">
+            <svg class="abs-ref-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/>
+              <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/>
+            </svg>
+            <h2 class="abs-section-heading abs-ref-card-title" id="cite-heading">Cite this paper</h2>
+          </div>
           <div class="abs-cite-source" role="group" aria-label="Citation source">
             <button class="abs-cite-source-btn is-active" data-source="preprint" aria-pressed="true">
               This <span class="arxiv-word"><span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span></span> version
@@ -2021,17 +2152,20 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
               <dt class="abs-panel-label">Journal DOI</dt>
               <dd class="abs-cite-id-value"><a href="https://doi.org/10.1088/1475-7516/2026/05/012">10.1088/1475-7516/2026/05/012</a></dd>
             </dl>
-
-            <nav class="abs-cite-citations" aria-labelledby="cites-heading">
-              <h3 id="cites-heading" class="abs-panel-label">Who cites this paper</h3>
-              <ul class="abs-cite-citations-list">
-                <li><a href="https://scholar.google.com/scholar?cites=arXiv:2604.22725" target="_blank" rel="noopener noreferrer">Google Scholar<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></li>
-                <li><a href="https://ui.adsabs.harvard.edu/abs/arXiv:2604.22725/citations" target="_blank" rel="noopener noreferrer">NASA ADS<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></li>
-                <li><a href="https://api.semanticscholar.org/arXiv:2604.22725#citing-papers" target="_blank" rel="noopener noreferrer">Semantic Scholar<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></li>
-              </ul>
-            </nav>
           </div>
         </div>
+
+        <!-- B2 (2026-06-17): "Who cites this paper" moved out of the IDs
+             column to its own line below the citation box — label + the three
+             services on one row that wraps on small screens. -->
+        <nav class="abs-cite-citations" aria-labelledby="cites-heading">
+          <h3 id="cites-heading" class="abs-panel-label">Who cites this paper</h3>
+          <ul class="abs-cite-citations-list">
+            <li><a href="https://scholar.google.com/scholar?cites=arXiv:2604.22725" target="_blank" rel="noopener noreferrer">Google Scholar<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></li>
+            <li><a href="https://ui.adsabs.harvard.edu/abs/arXiv:2604.22725/citations" target="_blank" rel="noopener noreferrer">NASA ADS<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></li>
+            <li><a href="https://api.semanticscholar.org/arXiv:2604.22725#citing-papers" target="_blank" rel="noopener noreferrer">Semantic Scholar<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></li>
+          </ul>
+        </nav>
       </section>
 
     </div><!-- /.abs-reference-zone -->
