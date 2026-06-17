@@ -929,14 +929,10 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   border-top: 1px solid var(--arxiv-pill-border);
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
-  padding: 40px calc(50vw - 50%) 44px;
-  /* Cards-on-a-band: each sub-section is its own white card floating on the
-     Warm Wash, so the eye chunks "accessibility / paper info / cite" instead
-     of reading one undifferentiated wall. The whole zone stays subordinate to
-     the title+abstract above via smaller headings (15px vs the 24px title). */
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+  padding: 32px calc(50vw - 50%) 40px;
+  /* Secondary reference band. Sub-sections within are separated by a single
+     hairline rule (see .abs-ref-card) — space-efficient, no boxes. The whole
+     zone stays subordinate to the title+abstract via smaller (15px) headings. */
 }
 
 /*
@@ -1201,6 +1197,20 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   flex: 0 0 auto;
   min-width: 160px;
 }
+/* Consistent header row across all three citation columns so the headings —
+   and the content blocks below them — line up. The style toggle lives in the
+   formatted column's header. Column heads are ink (stronger) to set them apart
+   from the grey per-identifier sub-labels in the Identifiers column. */
+.abs-cite-col-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 28px;
+  margin-bottom: 8px;
+}
+.abs-cite-col-head .abs-panel-label { margin: 0; color: var(--arxiv-ink); }
+.abs-cite-col-head .abs-cite-styles { margin: 0; }
 
 /* Style switcher (APA / Chicago / MLA) — segmented control inside the
    formatted-citation column */
@@ -1242,12 +1252,10 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 /* The citation text display + copy button */
 .abs-cite-display {
   position: relative;
-  /* Code-block treatment (internal feedback 2026-06-11): copyable text
-     is semantically <code> and visibly a code block — bordered, mono,
-     quiet background. */
-  background: var(--arxiv-warm-wash);
-  border: 1px solid var(--arxiv-border-light);
-  border-radius: 3px;
+  /* Recessed code block: Card Grey (#f0eeec) — one warm step darker than the
+     Warm Wash band, so it reads as inset without a border or any blue. */
+  background: var(--arxiv-card-grey);
+  border-radius: 4px;
   padding: 10px 12px;
   font-family: var(--arxiv-font-mono);
   font-size: 0.75rem; /* 12px */
@@ -1326,17 +1334,18 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   per-section rules above so these overrides win ties in the cascade.
 */
 .abs-ref-card {
-  /* Transparent fill: the card body sits directly on the Warm Wash band, so
-     only the soft bottom-right shadow hints "another layer underneath" —
-     maximally subtle, keeping each section subordinate to the title/abstract. */
+  /* Sections divided by a single hairline rule only — no box, shadow, radius,
+     or side padding. Space-efficient and quiet; the heading + rule carry the
+     differentiation. */
   background: transparent;
-  margin-bottom: 1em !important;
-  border-radius: 6px;
-  padding: 18px 22px 22px !important;
-  box-shadow: 5px 5px 3px rgba(28, 26, 23, 0.03);
+}
+.abs-ref-card + .abs-ref-card {
+  margin-top: 26px;
+  padding-top: 26px;
+  border-top: 1px solid var(--arxiv-border-light);
 }
 .abs-ref-card-head {
-  margin: 0 0 14px;
+  margin: 0 0 12px;
 }
 .abs-ref-card-title {
   font-family: var(--arxiv-font-sans);
@@ -2078,9 +2087,29 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
           </div>
         </div>
         <div class="abs-cite-columns">
+          <!-- Identifiers column — arXiv identifier first (reorganized 2026-06-17) -->
+          <div class="abs-cite-col abs-cite-col-ids">
+            <div class="abs-cite-col-head"><span class="abs-panel-label">Identifiers</span></div>
+            <dl class="abs-cite-id-list">
+              <dt class="abs-panel-label">
+                <span class="arxiv-word"><span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span></span> identifier
+              </dt>
+              <dd class="abs-cite-id-value">
+                <span aria-hidden="true">arXiv:2604.22725 [gr-qc]</span>
+                <span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, primary category gr-qc</span>
+              </dd>
+              <dt class="abs-panel-label">
+                <span class="arxiv-word"><span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span></span> DOI
+              </dt>
+              <dd class="abs-cite-id-value"><a href="https://doi.org/10.48550/arXiv.2604.22725">10.48550/arXiv.2604.22725</a></dd>
+              <dt class="abs-panel-label">Journal DOI</dt>
+              <dd class="abs-cite-id-value"><a href="https://doi.org/10.1088/1475-7516/2026/05/012">10.1088/1475-7516/2026/05/012</a></dd>
+            </dl>
+          </div>
+
           <!-- BibTeX column -->
           <div class="abs-cite-col abs-cite-col-bibtex">
-            <div class="abs-panel-label">BibTeX</div>
+            <div class="abs-cite-col-head"><span class="abs-panel-label">BibTeX</span></div>
             <div class="abs-cite-display">
               <button class="abs-cite-copy" id="cite-copy-bibtex" aria-label="Copy BibTeX">Copy</button>
               <!-- BibTeX shows the FULL author list, exactly as arXiv's
@@ -2102,36 +2131,20 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
             </div>
           </div>
 
-          <!-- Formatted citation column (with style switcher) -->
+          <!-- Formatted citation column (style switcher in the header) -->
           <div class="abs-cite-col abs-cite-col-formatted">
-            <div class="abs-cite-styles" role="group" aria-label="Citation style">
-              <button class="abs-cite-style-btn is-active" data-style="apa" aria-pressed="true">APA</button>
-              <button class="abs-cite-style-btn" data-style="chicago" aria-pressed="false">Chicago</button>
-              <button class="abs-cite-style-btn" data-style="mla" aria-pressed="false">MLA</button>
+            <div class="abs-cite-col-head">
+              <span class="abs-panel-label">Formatted</span>
+              <div class="abs-cite-styles" role="group" aria-label="Citation style">
+                <button class="abs-cite-style-btn is-active" data-style="apa" aria-pressed="true">APA</button>
+                <button class="abs-cite-style-btn" data-style="chicago" aria-pressed="false">Chicago</button>
+                <button class="abs-cite-style-btn" data-style="mla" aria-pressed="false">MLA</button>
+              </div>
             </div>
             <div class="abs-cite-display">
               <button class="abs-cite-copy" id="cite-copy-formatted" aria-label="Copy formatted citation">Copy</button>
               <code class="abs-cite-text" id="cite-formatted" tabindex="0" role="region" aria-label="Formatted citation">Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., Castellani, E., Maeda, K., ... &amp; Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. <em>arXiv preprint</em> arXiv:2604.22725. https://doi.org/10.48550/arXiv.2604.22725</code>
             </div>
-          </div>
-
-          <!-- IDs and external-citation services column -->
-          <div class="abs-cite-col abs-cite-col-ids">
-            <dl class="abs-cite-id-list">
-              <dt class="abs-panel-label">
-                <span class="arxiv-word"><span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span></span> identifier
-              </dt>
-              <dd class="abs-cite-id-value">
-                <span aria-hidden="true">arXiv:2604.22725 [gr-qc]</span>
-                <span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, primary category gr-qc</span>
-              </dd>
-              <dt class="abs-panel-label">
-                <span class="arxiv-word"><span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span></span> DOI
-              </dt>
-              <dd class="abs-cite-id-value"><a href="https://doi.org/10.48550/arXiv.2604.22725">10.48550/arXiv.2604.22725</a></dd>
-              <dt class="abs-panel-label">Journal DOI</dt>
-              <dd class="abs-cite-id-value"><a href="https://doi.org/10.1088/1475-7516/2026/05/012">10.1088/1475-7516/2026/05/012</a></dd>
-            </dl>
           </div>
         </div>
 
