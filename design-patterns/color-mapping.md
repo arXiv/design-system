@@ -150,6 +150,40 @@ Barely perceptible tints for creating section depth without hard borders.
 
 ---
 
+## Which tint for which job
+
+*(Added 2026-06-17. Rendered on the colors page: `colors.html#uses`.)*
+
+The tints sorted by the job they do. Reach for the named token; if a job isn't listed, it's a change to this document, not a new local value.
+
+| The job | Reach for | Where it shows up |
+|---|---|---|
+| Page / section background, warm | **Warm Wash** `--arxiv-warm-wash` | Default subtle ground — footer, metadata bands, internal page background |
+| Section background, cooler | **Cool Wash** `#f7fafc` | When a band should read cooler than Warm Wash to differentiate adjacent sections |
+| Secondary content band | **Card Grey** `--arxiv-card-grey` | Related band, reader header — one step down from the page, no hard border |
+| Card surface / hover fill | **Card Grey** `--arxiv-card-grey` | Card fills and hover fills |
+| Active / pressed fill, deepest warm band | **Grey Active** `--arxiv-pill-border` `#e4e0db` | Footer edge, pressed states, pill borders. Body-size grey/links miss AA here — use Ink or Link Hover |
+| Decorative hairline | **Border Light** `--arxiv-border-light` | Input / card / track edges. Below 3:1 — never the sole boundary of a control |
+| arXiv chrome floating over paper | **Tint Light** + **Tint Border** | Popovers, TOC dropdown — the "light blue = arXiv speaking, not the paper" rule (G4) |
+| Inline active anchor · read-aloud highlight · panel hover | **Active Wash** `--arxiv-active-bg` | Deepest arXiv-layer blue that still holds AA for normal-size text |
+| Open Blue hover step | **Open Blue Bright** `--arxiv-open-blue-bright` `#c2e2ff` | Hover state for Open Blue primary fills |
+| Code / identifier background | **Blue Tint** `#f0f5ff` | Code blocks, citation/identifier display boxes |
+| Public primary action fill | **Open Blue** `--arxiv-open-blue` | The one brand fill that carries Ink text at AA |
+| Status surface | the four status tints | See "Status & alert colors" above — each pairs with an icon + leading word |
+
+**Ready-to-use pairings** (the contrast matrix read as instructions):
+
+| On this surface | Body text & links (AA) | Large text / borders only (3:1) | Don't use |
+|---|---|---|---|
+| White · Warm Wash · Card Grey · Tint Light | Ink, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | UI Boundary Grey (borders) | — |
+| Active Wash `#d6e8f7` | Ink, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | — | UI Boundary Grey |
+| Grey Active `#e4e0db` | Ink, Link Hover, Archival Blue, Visited Purple | Library Grey, Link Blue (≥18px) | UI Boundary Grey |
+| Open Blue `#a5d6fe` | Ink only | Library Grey, Link Blue, Archival Blue (≥18px) | UI Boundary Grey; body-size grey & links |
+
+> **Drift to reconcile:** the mockups use near-white grounds `#fafaf8` / `#fafaf9` (lighter than Warm Wash), a one-off light blue `#e8f4ff`, and a hover blue `#0d4a96` (close to Link Hover `#1050a0`). These are not palette tokens — reconcile to the nearest token unless a genuine gap is established here.
+
+---
+
 ## Tints, tiers, and combinations on tinted backgrounds
 
 *(Added 2026-06-13. Rendered with computed ratios on the colors page: `colors.html#tinted`.)*
