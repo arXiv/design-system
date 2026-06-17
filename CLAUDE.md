@@ -1,10 +1,11 @@
 Read these files in order before making any frontend changes:
 
 1. `CONTEXT.md` — project overview, key decisions, Cornell spinout context
-2. `DESIGN-POLICIES.md` — hard constraints (accessibility, colors, typography, buttons, components)
-3. `design-patterns/typography.md` — font families, weights, self-hosting plan
-4. `design-patterns/color-mapping.md` — full palette, internal vs public color usage
-5. `design-patterns/internal/DESIGN-PROGRESS.md` — current status and completed decisions
+2. `BRAND.md` — voice, brand statement, and the design principles they drive (the *why* behind the system)
+3. `DESIGN-POLICIES.md` — hard constraints (accessibility, colors, typography, buttons, components)
+4. `design-patterns/typography.md` — font families, weights, self-hosting plan
+5. `design-patterns/color-mapping.md` — full palette, internal vs public color usage
+6. `design-patterns/internal/DESIGN-PROGRESS.md` — current status and completed decisions
 
 For internal tool work, reference `design-patterns/internal/design-system.css` for all tokens and component styles.
 For public page work, reference `design-patterns/public/` (in progress) and the color/typography specs above.
