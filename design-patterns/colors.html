@@ -77,7 +77,8 @@
       and the spec disagree, the spec wins). Hard rules live in
       <a href="../doc.html?src=DESIGN-POLICIES.md">DESIGN-POLICIES.md</a>: all colors come from this
       palette; no one-off hex values. Tints are part of the palette —
-      see <a href="#tinted">Working on tinted backgrounds</a> for the tint
+      see <a href="#uses">Which tint for which job</a> for picking one, and
+      <a href="#tinted">Working on tinted backgrounds</a> for the tint
       families, the three tiers of color use, and which combinations stay
       accessible.
     </p>
@@ -186,6 +187,27 @@
     </div>
   </section>
 
+  <section class="section" id="uses">
+    <h2 class="section-title">Which tint for which job</h2>
+    <p class="section-desc">The tints above, sorted by the job they do. Reach for the named token. If your job isn't listed, that's a <a href="../doc.html?src=design-patterns/color-mapping.md">color-mapping.md</a> question — not a new value (see the three tiers below).</p>
+    <table class="status-table">
+      <tr><th>The job</th><th>Reach for</th><th>Where it shows up</th></tr>
+      <tr><td>Page / section background, warm</td><td><span class="status-sample" style="background:#f9f7f7;border-color:#ddd8d2;color:#1c1a17">Warm Wash</span><br><span class="swatch-token">--arxiv-warm-wash</span></td><td>The default subtle ground — footer, metadata bands, internal page background</td></tr>
+      <tr><td>Section background, cooler</td><td><span class="status-sample" style="background:#f7fafc;border-color:#ddd8d2;color:#1c1a17">Cool Wash</span><br><span class="swatch-hex">#f7fafc</span></td><td>When a band should read cooler than Warm Wash to differentiate adjacent sections</td></tr>
+      <tr><td>Secondary content band</td><td><span class="status-sample" style="background:#f0eeec;border-color:#ddd8d2;color:#1c1a17">Card Grey</span><br><span class="swatch-token">--arxiv-card-grey</span></td><td>Related band, reader header — one step down from the page, no hard border needed</td></tr>
+      <tr><td>Card surface / hover fill</td><td><span class="status-sample" style="background:#f0eeec;border-color:#ddd8d2;color:#1c1a17">Card Grey</span><br><span class="swatch-token">--arxiv-card-grey</span></td><td>Card fills and hover fills — same tint as the secondary band, doing a smaller job</td></tr>
+      <tr><td>Active / pressed fill, deepest warm band</td><td><span class="status-sample" style="background:#e4e0db;border-color:#c8c4be;color:#1c1a17">Grey Active</span><br><span class="swatch-token">--arxiv-pill-border</span></td><td>Footer edge, pressed states, pill borders. The darkest warm tint — body-size grey text and links miss AA here (use Ink or Link Hover)</td></tr>
+      <tr><td>Decorative hairline</td><td><span class="status-sample" style="background:#fff;border-color:#ddd8d2;color:#1c1a17">Border Light</span><br><span class="swatch-token">--arxiv-border-light</span></td><td>Input / card / track edges. Below 3:1 — never the sole boundary of an interactive control</td></tr>
+      <tr><td>arXiv chrome floating over paper</td><td><span class="status-sample" style="background:#edf4fc;border-color:#c4dcf0;color:#1c1a17">Tint Light + Border</span><br><span class="swatch-token">--arxiv-tint-light</span></td><td>Popovers, the TOC dropdown — the "light blue = arXiv speaking, not the paper" rule (G4)</td></tr>
+      <tr><td>Inline active anchor · read-aloud highlight · panel hover</td><td><span class="status-sample" style="background:#d6e8f7;border-color:#c4dcf0;color:#1c1a17">Active Wash</span><br><span class="swatch-token">--arxiv-active-bg</span></td><td>The deepest arXiv-layer blue that still holds AA for normal-size text</td></tr>
+      <tr><td>Open Blue hover step</td><td><span class="status-sample" style="background:#c2e2ff;border-color:#8fc1e8;color:#1c1a17">Open Blue Bright</span><br><span class="swatch-token">--arxiv-open-blue-bright</span></td><td>Hover state for Open Blue primary fills</td></tr>
+      <tr><td>Code / identifier background</td><td><span class="status-sample" style="background:#f0f5ff;border-color:#ddd8d2;color:#1c1a17">Blue Tint</span><br><span class="swatch-hex">#f0f5ff</span></td><td>Code blocks, citation and identifier display boxes</td></tr>
+      <tr><td>Public primary action fill</td><td><span class="status-sample" style="background:#a5d6fe;border-color:#6ba8da;color:#1c1a17">Open Blue</span><br><span class="swatch-token">--arxiv-open-blue</span></td><td>The one brand fill that carries Ink text at AA (11.3:1) — see pairings below</td></tr>
+      <tr><td>Status surface (success / info / warning / error)</td><td><span class="status-sample" style="background:#e8f5d8;border-color:#6b8e1e;color:#4a5a0a">the status tints</span></td><td>See <strong>Status &amp; alerts</strong> above — each pairs with a distinct icon and leading word</td></tr>
+    </table>
+    <p class="footnote" style="margin-top:12px">Note on near-whites: <span class="swatch-hex" style="display:inline">#fafaf8</span> / <span class="swatch-hex" style="display:inline">#fafaf9</span> appear in the mockups as lighter-than-Warm-Wash card grounds. They are not palette tokens — treat them as drift to reconcile to Warm Wash unless a genuine need for a lighter step is established in color-mapping.md.</p>
+  </section>
+
   <section class="section" id="tinted">
     <h2 class="section-title">Working on tinted backgrounds</h2>
     <p class="section-desc">
@@ -213,13 +235,16 @@
       <tr><td><strong>Archival Blue</strong> #1f5e96</td><td>6.8 AA</td><td>6.4 AA</td><td>5.9 AA</td><td>5.2 AA</td><td>6.1 AA</td><td>5.4 AA</td><td style="background:var(--arxiv-warning-bg)">4.4 ui</td></tr>
       <tr><td><strong>Visited Purple</strong> #7b2fbe</td><td>7.0 AA</td><td>6.6 AA</td><td>6.1 AA</td><td>5.3 AA</td><td>6.3 AA</td><td>5.6 AA</td><td>4.6 AA</td></tr>
     </table>
-    <p class="section-desc" style="margin-top:14px"><strong>The rules that fall out of the math:</strong>
-      Ink works everywhere — which is why buttons put ink on Open Blue.
-      The deepest safe tint for normal-size Library Grey text and Link Blue links is Active Wash;
-      on <em>Grey Active</em>, body-size grey text and links technically miss AA — use Ink, Link Hover, or large text there.
-      UI Boundary Grey borders hold their 3:1 only through Tint Light — on Grey Active, Active Wash, or Open Blue,
-      draw boundaries with Library Grey instead.
-      On Open Blue itself, treat Ink as the only text color.</p>
+    <h3 style="font-size:15px; margin:28px 0 6px">Ready-to-use pairings</h3>
+    <p class="section-desc">The same matrix as recipes — what to reach for on each surface without rechecking ratios.</p>
+    <table class="status-table">
+      <tr><th>On this surface</th><th>Body text &amp; links (AA)</th><th>Large text / borders only (3:1)</th><th>Don't use</th></tr>
+      <tr><td><strong>White · Warm Wash · Card Grey · Tint Light</strong></td><td>Ink, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple</td><td>UI Boundary Grey (borders)</td><td>—</td></tr>
+      <tr><td><strong>Active Wash</strong> #d6e8f7</td><td>Ink, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple</td><td>—</td><td>UI Boundary Grey</td></tr>
+      <tr><td><strong>Grey Active</strong> #e4e0db</td><td>Ink, Link Hover, Archival Blue, Visited Purple</td><td>Library Grey, Link Blue (≥18px)</td><td>UI Boundary Grey</td></tr>
+      <tr><td><strong>Open Blue</strong> #a5d6fe</td><td>Ink only</td><td>Library Grey, Link Blue, Archival Blue (≥18px)</td><td>UI Boundary Grey; body-size grey &amp; links</td></tr>
+    </table>
+    <p class="footnote" style="margin-top:12px">Ink is the workhorse — it clears AA on every approved surface, which is why buttons set Ink on Open Blue. Everything in this table is the matrix above, read as instructions instead of numbers.</p>
 
     <h3 style="font-size:15px; margin:28px 0 6px">Buttons change clothes on tinted surfaces</h3>
     <p class="section-desc">
