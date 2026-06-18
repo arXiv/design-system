@@ -1141,41 +1141,47 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   margin: 0;
 }
 
-/* Source switcher (preprint / journal) — styled as tabs with a clear selected
-   state (ink-bold + Link Blue underline indicator on a shared rail) so it
-   reads as a control, not as more body text. Distinct from the segmented
-   APA/Chicago/MLA style switcher. */
+/* Source switcher (preprint / journal) — classic "folder tab" styling. The
+   strip's bottom border is the rail (and the top edge of the content area);
+   each tab overlaps it by -1px. Inactive tabs keep their bottom border = rail
+   colour (recessed, sitting on the rail); the active tab's bottom border +
+   background match the Warm Wash band below, erasing the rail so the tab
+   "opens into" the content. Canonical CSS folder-tab technique (css-tricks.com).
+   Outlines use UI-Boundary Grey (3:1-compliant for an interactive control;
+   Border Light would fail it). */
 .abs-cite-source {
-  display: inline-flex;
-  align-items: stretch;
-  gap: 2px;
-  border-bottom: 1px solid var(--arxiv-border-light);
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  border-bottom: 1px solid var(--arxiv-grey-ui);
 }
 .abs-cite-source-btn {
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px; /* sit the indicator on the shared rail */
+  position: relative;
+  background: var(--arxiv-card-grey);
+  border: 1px solid var(--arxiv-grey-ui);
+  border-radius: 5px 5px 0 0;
+  margin-bottom: -1px;             /* overlap the rail */
   font-family: var(--arxiv-font-sans);
-  font-size: 0.8125rem; /* 13px — a step below the 15px heading */
-  font-weight: 400;     /* lighter than the 600 heading */
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 400;
   color: var(--arxiv-grey);
-  padding: 5px 12px;
+  padding: 6px 14px;
   cursor: pointer;
 }
-.abs-cite-source-btn.is-active {
-  /* Selected tab reads as a control, not a heading: Link Blue (the interactive
-     color) + medium weight + the underline indicator — clearly distinct from
-     the ink-600 "Cite this paper" heading beside it. */
-  color: var(--arxiv-link-blue);
-  font-weight: 500;
-  border-bottom-color: var(--arxiv-link-blue);
+.abs-cite-source-btn:hover:not(.is-active) {
+  background: var(--arxiv-pill-border);
+  color: var(--arxiv-ink);
 }
-.abs-cite-source-btn:hover:not(.is-active) { color: var(--arxiv-ink); }
+.abs-cite-source-btn.is-active {
+  background: var(--arxiv-warm-wash);            /* match the band/content below */
+  border-bottom-color: var(--arxiv-warm-wash);   /* erase the rail → connect */
+  color: var(--arxiv-ink);
+  font-weight: 600;
+  z-index: 1;
+}
 .abs-cite-source-btn:focus-visible {
   outline: 2px solid var(--arxiv-link-blue);
-  outline-offset: 1px;
-  border-radius: 3px;
+  outline-offset: 2px;
 }
 .abs-cite-source-sep { display: none; }
 
@@ -1184,6 +1190,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   display: flex;
   gap: 16px 24px;
   flex-wrap: wrap;
+  margin-top: 18px; /* content area sits just below the folder-tab rail */
   /* No outer box: the blue tint-border read as a different system from the
      subtle, shadow-layered sections around it. The columns now sit directly
      in the Cite card, separated by gap; the BibTeX/formatted code blocks
@@ -2089,13 +2096,15 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
           <div class="abs-ref-card-head">
             <h2 class="abs-section-heading abs-ref-card-title" id="cite-heading">Cite this paper</h2>
           </div>
-          <div class="abs-cite-source" role="group" aria-label="Citation source">
-            <button class="abs-cite-source-btn is-active" data-source="preprint" aria-pressed="true">
-              This <span class="arxiv-word"><span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span></span> version
-            </button>
-            <span class="abs-cite-source-sep" aria-hidden="true">|</span>
-            <button class="abs-cite-source-btn" data-source="journal" aria-pressed="false">Journal article</button>
-          </div>
+        </div>
+        <!-- Source switcher as classic folder tabs: the rail (strip's bottom
+             border) spans the full content width; the selected tab breaks
+             through it to connect to the content area below. -->
+        <div class="abs-cite-source" role="group" aria-label="Citation source">
+          <button class="abs-cite-source-btn is-active" data-source="preprint" aria-pressed="true">
+            This <span class="arxiv-word"><span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span></span> version
+          </button>
+          <button class="abs-cite-source-btn" data-source="journal" aria-pressed="false">Journal article</button>
         </div>
         <div class="abs-cite-columns">
           <!-- Identifiers column — arXiv identifier first (reorganized 2026-06-17) -->
