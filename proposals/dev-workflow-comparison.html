@@ -17,16 +17,11 @@
   .wrap { max-width: 980px; margin: 0 auto; padding: 30px 22px 60px; }
   h1 { font-size: 23px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; }
   .sub { color: var(--arxiv-grey); margin: 0 0 16px; font-size: 14.5px; }
-  .intro { color: var(--arxiv-grey); font-size: 13.5px; max-width: 760px; line-height: 1.6; margin: 0 0 14px; }
-  .intro b { color: var(--arxiv-ink); }
   .glossary { font-size: 12.5px; color: var(--arxiv-grey); background: #fff;
     border: 1px solid var(--arxiv-border-light); border-radius: 10px; padding: 10px 14px; margin: 0 0 14px; max-width: 760px; }
   .glossary b { color: var(--arxiv-ink); }
   .keyline { font-size: 12px; color: var(--arxiv-grey); margin: 0 0 10px; }
   .keyline b { color: var(--arxiv-ink); }
-  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12.5px; color: var(--arxiv-grey); margin: 0 0 22px; }
-  .legend b { color: var(--arxiv-ink); }
-  .sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: middle; border: 1.5px solid rgba(0,0,0,.2); }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   .card { border: 1px solid var(--arxiv-border-light); border-radius: 14px; padding: 15px 16px 13px; background: #fff; }
   .ct { font-size: 15px; font-weight: 700; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; }
@@ -38,8 +33,6 @@
   .r { display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; color: var(--arxiv-ink); }
   .d i { display: inline-block; width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid var(--arxiv-grey-ui); margin-left: 3px; vertical-align: middle; }
   .d i.on { background: var(--arxiv-ink); border-color: var(--arxiv-ink); }
-  .note { font-size: 12px; color: var(--arxiv-grey); margin-top: 18px; max-width: 760px; line-height: 1.55; }
-  .note a { color: var(--arxiv-link-blue); }
   .is-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
   /* Shared docs nav strip (matches the other design-system doc pages) */
@@ -66,19 +59,11 @@
 </nav>
 <div class="wrap">
   <h1>How a dev's active repo gets the design system</h1>
-  <p class="sub">Four workflows, scored 1&ndash;5 (5 = best). Draft for discussion.</p>
+  <p class="sub">Draft for discussion.</p>
 
-  <p class="intro">arXiv turns design decisions into production code with help from <b>Claude</b> (an AI coding agent). This compares four ways a developer's <b>active repository</b> could consume the design system &mdash; rebuild by hand, sync via an agent, depend on a published package, or a hybrid &mdash; across six dimensions. It's a draft to start a conversation, not a decision.</p>
-
-  <p class="glossary"><b>Canonical Hub</b> &mdash; a shared Claude project that holds the current design system. &nbsp; <b>/design-sync</b> &mdash; a Claude command that pulls the current system into a repo. &nbsp; <b>Context efficiency</b> &mdash; how little LLM context the workflow burns (was &ldquo;token efficiency&rdquo;; renamed so it isn't read as <em>design</em> tokens).</p>
+  <p class="glossary"><b>Canonical Hub</b> &mdash; the up-to-date design artifacts Claude Design produces (held in a Claude project) that dev repos sync from &mdash; not the git repo itself, which holds the spec / source of truth. &nbsp; <b>/design-sync</b> &mdash; a Claude command that pulls those artifacts into a repo. &nbsp; <b>Context efficiency</b> &mdash; how little LLM context the workflow burns.</p>
 
   <p class="keyline"><b>Arrow styles:</b> dashed = one-time copy that drifts &middot; &#8635; = re-syncable &middot; &#9711; hollow end = linked, not copied in.</p>
-
-  <p class="legend">
-    <span><span class="sw" style="background:#edf4fc;border-color:#1f5e96"></span><b>Design-System repo</b> &mdash; source</span>
-    <span><span class="sw" style="background:#f9f7f7;border-color:#8b8680"></span>intermediary</span>
-    <span><span class="sw" style="background:#f0eeec;border-color:#1c1a17"></span><b>Active dev repo</b> &mdash; destination</span>
-  </p>
 
   <div class="grid">
 
@@ -172,6 +157,7 @@
           <text x="364" y="79" font-size="11" fill="#1c1a17">link</text>
         </g>
       </svg>
+      <p class="cap"><b>What it takes:</b> a fully-specified system shipped as versioned code &mdash; a framework-agnostic CSS file (tokens + component classes) any stack can link, with fixed names devs use in their markup. Per-framework builds (React, Jinja, PHP) are optional extra.</p>
       <div class="rates">
         <div class="r"><span>Design fidelity</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="is-sr-only">4 out of 5</span></div>
         <div class="r"><span>Dev ease</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="is-sr-only">5 out of 5</span></div>
@@ -227,7 +213,6 @@
 
   </div>
 
-  <p class="note">The scores are a starting point, not gospel &mdash; argue with them. To weigh in, open an issue or PR on the <a href="../index.html">design-system repo</a>. (Hybrid currently scores highest on most rows; that reflects a lean, not a settled decision.)</p>
 </div>
 </body>
 </html>
