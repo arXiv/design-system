@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design System → Dev Repo — Workflow Comparison</title>
+<link rel="stylesheet" href="../design-patterns/public/design-system.css">
+<style>
+  /* Proposal page — a discussion draft, built from the design system it
+     discusses: IBM Plex + arXiv palette tokens via design-system.css.
+     Diagram colors map to the brown+blue identity: Design-System repo =
+     Archival Blue, Active dev repo = Repository Brown, intermediaries neutral.
+     SVG hexes are palette literals (var() is unreliable in SVG attributes). */
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--arxiv-warm-wash); color: var(--arxiv-ink);
+    font-family: var(--arxiv-font-sans); line-height: 1.5; font-size: 14px; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 30px 22px 60px; }
+  h1 { font-size: 23px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: var(--arxiv-grey); margin: 0 0 16px; font-size: 14.5px; }
+  .intro { color: var(--arxiv-grey); font-size: 13.5px; max-width: 760px; line-height: 1.6; margin: 0 0 14px; }
+  .intro b { color: var(--arxiv-ink); }
+  .glossary { font-size: 12.5px; color: var(--arxiv-grey); background: #fff;
+    border: 1px solid var(--arxiv-border-light); border-radius: 10px; padding: 10px 14px; margin: 0 0 14px; max-width: 760px; }
+  .glossary b { color: var(--arxiv-ink); }
+  .keyline { font-size: 12px; color: var(--arxiv-grey); margin: 0 0 10px; }
+  .keyline b { color: var(--arxiv-ink); }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12.5px; color: var(--arxiv-grey); margin: 0 0 22px; }
+  .legend b { color: var(--arxiv-ink); }
+  .sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: middle; border: 1.5px solid rgba(0,0,0,.2); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .card { border: 1px solid var(--arxiv-border-light); border-radius: 14px; padding: 15px 16px 13px; background: #fff; }
+  .ct { font-size: 15px; font-weight: 700; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; }
+  .num { display: inline-flex; width: 22px; height: 22px; border-radius: 50%; background: var(--arxiv-ink); color: #fff; font-size: 12px; align-items: center; justify-content: center; flex: none; }
+  .cap { font-size: 12px; color: var(--arxiv-grey); line-height: 1.45; margin: 0 0 10px; }
+  .cap b { color: var(--arxiv-ink); }
+  svg { width: 100%; height: auto; display: block; margin: 2px 0 8px; }
+  .rates { display: flex; flex-direction: column; gap: 5px; border-top: 1px solid var(--arxiv-border-light); padding-top: 9px; }
+  .r { display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; color: var(--arxiv-ink); }
+  .d i { display: inline-block; width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid var(--arxiv-grey-ui); margin-left: 3px; vertical-align: middle; }
+  .d i.on { background: var(--arxiv-ink); border-color: var(--arxiv-ink); }
+  .note { font-size: 12px; color: var(--arxiv-grey); margin-top: 18px; max-width: 760px; line-height: 1.55; }
+  .note a { color: var(--arxiv-link-blue); }
+  .is-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+  /* Shared docs nav strip (matches the other design-system doc pages) */
+  .docs-nav { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+  .docs-nav-brand { font-weight: 600; color: var(--arxiv-ink); text-decoration: none; margin-right: 8px; }
+  .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
+  .docs-nav a:not(.docs-nav-brand) { color: var(--arxiv-grey); text-decoration: none; }
+  .docs-nav a:not(.docs-nav-brand):hover { color: var(--arxiv-ink); text-decoration: underline; }
+  .docs-nav a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 2px; }
+  .docs-nav .is-here { color: var(--arxiv-ink); font-weight: 600; }
+  .docs-nav-spacer { flex: 1; }
+
+  @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
+  <a href="../design-patterns/colors.html">Colors</a>
+  <a href="../design-patterns/typography.html">Typography</a>
+  <a href="../doc.html?src=DESIGN-POLICIES.md">Policies</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="is-here" aria-current="page">Proposal: dev workflow</span>
+</nav>
+<div class="wrap">
+  <h1>How a dev's active repo gets the design system</h1>
+  <p class="sub">Four workflows, scored 1&ndash;5 (5 = best). Draft for discussion.</p>
+
+  <p class="intro">arXiv turns design decisions into production code with help from <b>Claude</b> (an AI coding agent). This compares four ways a developer's <b>active repository</b> could consume the design system &mdash; rebuild by hand, sync via an agent, depend on a published package, or a hybrid &mdash; across six dimensions. It's a draft to start a conversation, not a decision.</p>
+
+  <p class="glossary"><b>Canonical Hub</b> &mdash; a shared Claude project that holds the current design system. &nbsp; <b>/design-sync</b> &mdash; a Claude command that pulls the current system into a repo. &nbsp; <b>Context efficiency</b> &mdash; how little LLM context the workflow burns (was &ldquo;token efficiency&rdquo;; renamed so it isn't read as <em>design</em> tokens).</p>
+
+  <p class="keyline"><b>Arrow styles:</b> dashed = one-time copy that drifts &middot; &#8635; = re-syncable &middot; &#9711; hollow end = linked, not copied in.</p>
+
+  <p class="legend">
+    <span><span class="sw" style="background:#edf4fc;border-color:#1f5e96"></span><b>Design-System repo</b> &mdash; source</span>
+    <span><span class="sw" style="background:#f9f7f7;border-color:#8b8680"></span>intermediary</span>
+    <span><span class="sw" style="background:#f0eeec;border-color:#1c1a17"></span><b>Active dev repo</b> &mdash; destination</span>
+  </p>
+
+  <div class="grid">
+
+    <!-- CARD 1 -->
+    <div class="card">
+      <div class="ct"><span class="num">1</span> Manual reference</div>
+      <svg viewBox="0 0 540 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Any agent reads the design-system repo once and rebuilds by hand into the active dev repo, producing a diverging copy with no live link.">
+        <defs><marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#1c1a17"/></marker></defs>
+        <g fill="none" stroke="#1c1a17" stroke-width="2" stroke-dasharray="6 5"><path d="M162 89 L192 89" marker-end="url(#m1)"/><path d="M348 89 L378 89" marker-end="url(#m1)"/></g>
+        <rect x="8" y="60" width="154" height="58" rx="11" fill="#edf4fc" stroke="#1f5e96" stroke-width="2"/>
+        <text x="85" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#1c1a17">Design-System Repo</text>
+        <text x="85" y="104" text-anchor="middle" font-size="10.5" fill="#6b6459">read as reference</text>
+        <rect x="196" y="60" width="152" height="58" rx="11" fill="#f9f7f7" stroke="#8b8680" stroke-width="1.4"/>
+        <text x="272" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#1c1a17">Any Agent / Dev</text>
+        <text x="272" y="104" text-anchor="middle" font-size="10.5" fill="#6b6459">interprets &amp; rebuilds</text>
+        <rect x="382" y="60" width="150" height="58" rx="11" fill="#f0eeec" stroke="#1c1a17" stroke-width="2"/>
+        <text x="457" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#1c1a17">Active Dev Repo</text>
+        <text x="457" y="104" text-anchor="middle" font-size="10.5" fill="#6b6459">diverging copy</text>
+        <g paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">
+          <text x="270" y="26" font-size="11" fill="#6b6459" stroke-width="3.5">To update from design-system: rebuild by hand (drifts)</text>
+          <text x="178" y="79" font-size="11" fill="#1c1a17">read</text>
+          <text x="364" y="79" font-size="11" fill="#1c1a17">rebuild</text>
+        </g>
+      </svg>
+      <div class="rates">
+        <div class="r"><span>Design fidelity</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span class="is-sr-only">2 out of 5</span></div>
+        <div class="r"><span>Dev ease</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span class="is-sr-only">2 out of 5</span></div>
+        <div class="r"><span>Maintainability</span><span class="d" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="is-sr-only">1 out of 5</span></div>
+        <div class="r"><span>Stack agnostic</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="is-sr-only">5 out of 5</span></div>
+        <div class="r"><span>Agent agnostic</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="is-sr-only">5 out of 5</span></div>
+        <div class="r"><span>Context efficiency</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span class="is-sr-only">2 out of 5</span></div>
+      </div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="card">
+      <div class="ct"><span class="num">2</span> Claude Code tool</div>
+      <svg viewBox="0 0 540 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The repo pushes to a Claude hub; the active repo pulls a synced copy via design-sync and can re-pull to refresh.">
+        <defs>
+          <marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#1c1a17"/></marker>
+          <marker id="m2g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6b6459"/></marker>
+        </defs>
+        <g fill="none" stroke="#1c1a17" stroke-width="2"><path d="M162 89 L192 89" marker-end="url(#m2)"/><path d="M348 89 L378 89" marker-end="url(#m2)"/></g>
+        <rect x="8" y="60" width="154" height="58" rx="11" fill="#edf4fc" stroke="#1f5e96" stroke-width="2"/>
+        <text x="85" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#1c1a17">Design-System Repo</text>
+        <text x="85" y="104" text-anchor="middle" font-size="10.5" fill="#6b6459">source of truth</text>
+        <rect x="196" y="60" width="152" height="58" rx="11" fill="#f9f7f7" stroke="#8b8680" stroke-width="1.4"/>
+        <text x="272" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#1c1a17">Canonical Hub</text>
+        <text x="272" y="104" text-anchor="middle" font-size="10.5" fill="#6b6459">Claude Design project</text>
+        <rect x="382" y="60" width="150" height="58" rx="11" fill="#f0eeec" stroke="#1c1a17" stroke-width="2"/>
+        <text x="457" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#1c1a17">Active Dev Repo</text>
+        <text x="457" y="104" text-anchor="middle" font-size="10.5" fill="#6b6459">synced copy</text>
+        <path d="M455 62 Q 364 6 274 62" fill="none" stroke="#6b6459" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#m2g)"/>
+        <g paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">
+          <text x="270" y="16" font-size="11" fill="#6b6459" stroke-width="3.5">To update from design-system: re-pull &#8635;</text>
+          <text x="178" y="79" font-size="11" fill="#1c1a17">push</text>
+          <text x="364" y="79" font-size="11" fill="#1c1a17">/design-sync</text>
+        </g>
+      </svg>
+      <div class="rates">
+        <div class="r"><span>Design fidelity</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="is-sr-only">3 out of 5</span></div>
+        <div class="r"><span>Dev ease</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="is-sr-only">4 out of 5</span></div>
+        <div class="r"><span>Maintainability</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="is-sr-only">3 out of 5</span></div>
+        <div class="r"><span>Stack agnostic</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="is-sr-only">4 out of 5</span></div>
+        <div class="r"><span>Agent agnostic</span><span class="d" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="is-sr-only">1 out of 5</span></div>
+        <div class="r"><span>Context efficiency</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="is-sr-only">3 out of 5</span></div>
+      </div>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="card">
+      <div class="ct"><span class="num">3</span> Package dependency</div>
+      <svg viewBox="0 0 540 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The repo publishes a version-pinned package; the active repo links to it as an import that is not copied in, updated by version bump.">
+        <defs>
+          <marker id="m3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#1c1a17"/></marker>
+          <marker id="dot3" viewBox="0 0 12 12" refX="6" refY="6" markerWidth="9" markerHeight="9"><circle cx="6" cy="6" r="4" fill="#fff" stroke="#1c1a17" stroke-width="1.6"/></marker>
+        </defs>
+        <g fill="none" stroke="#1c1a17" stroke-width="2"><path d="M162 89 L192 89" marker-end="url(#m3)"/><path d="M348 89 L376 89" marker-end="url(#dot3)"/></g>
+        <rect x="8" y="60" width="154" height="58" rx="11" fill="#edf4fc" stroke="#1f5e96" stroke-width="2"/>
+        <text x="85" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#1c1a17">Design-System Repo</text>
+        <text x="85" y="104" text-anchor="middle" font-size="10.5" fill="#6b6459">source of truth</text>
+        <rect x="196" y="60" width="152" height="58" rx="11" fill="#f9f7f7" stroke="#8b8680" stroke-width="1.4"/>
+        <text x="272" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#1c1a17">Package @arxiv/ds</text>
+        <text x="272" y="104" text-anchor="middle" font-size="10.5" fill="#6b6459">version-pinned</text>
+        <rect x="382" y="60" width="150" height="58" rx="11" fill="#f0eeec" stroke="#1c1a17" stroke-width="2"/>
+        <text x="457" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#1c1a17">Active Dev Repo</text>
+        <text x="457" y="104" text-anchor="middle" font-size="10.5" fill="#6b6459">linked import</text>
+        <g paint-order="stroke" stroke="#fff" stroke-width="4" stroke-linejoin="round" text-anchor="middle">
+          <text x="270" y="26" font-size="11" fill="#6b6459" stroke-width="3.5">To update from design-system: bump version (pinned v1.2)</text>
+          <text x="178" y="79" font-size="11" fill="#1c1a17">publish</text>
+          <text x="364" y="79" font-size="11" fill="#1c1a17">link</text>
+        </g>
+      </svg>
+      <div class="rates">
+        <div class="r"><span>Design fidelity</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="is-sr-only">4 out of 5</span></div>
+        <div class="r"><span>Dev ease</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="is-sr-only">5 out of 5</span></div>
+        <div class="r"><span>Maintainability</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="is-sr-only">4 out of 5</span></div>
+        <div class="r"><span>Stack agnostic</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span class="is-sr-only">2 out of 5</span></div>
+        <div class="r"><span>Agent agnostic</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="is-sr-only">5 out of 5</span></div>
+        <div class="r"><span>Context efficiency</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="is-sr-only">5 out of 5</span></div>
+      </div>
+    </div>
+
+    <!-- CARD 4 -->
+    <div class="card">
+      <div class="ct"><span class="num">4</span> Hybrid</div>
+      <svg viewBox="0 0 540 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The repo feeds stack-agnostic invariants as a linked package and flexible components through a Claude hub; the active repo links the package and syncs the components.">
+        <defs>
+          <marker id="m4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#1c1a17"/></marker>
+          <marker id="dot4" viewBox="0 0 12 12" refX="6" refY="6" markerWidth="9" markerHeight="9"><circle cx="6" cy="6" r="4" fill="#fff" stroke="#1c1a17" stroke-width="1.6"/></marker>
+        </defs>
+        <g fill="none" stroke="#1c1a17" stroke-width="2">
+          <path d="M160 88 L198 58" marker-end="url(#m4)"/>
+          <path d="M160 112 L198 142" marker-end="url(#m4)"/>
+          <path d="M352 58 L388 86" marker-end="url(#dot4)"/>
+          <path d="M352 142 L390 112" marker-end="url(#m4)"/>
+        </g>
+        <rect x="8" y="71" width="150" height="58" rx="11" fill="#edf4fc" stroke="#1f5e96" stroke-width="2"/>
+        <text x="83" y="97" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1c1a17">Design-System Repo</text>
+        <text x="83" y="114" text-anchor="middle" font-size="10" fill="#6b6459">source of truth</text>
+        <rect x="200" y="28" width="152" height="50" rx="11" fill="#f9f7f7" stroke="#8b8680" stroke-width="1.4"/>
+        <text x="276" y="48" text-anchor="middle" font-size="12" font-weight="700" fill="#1c1a17">Partial package</text>
+        <text x="276" y="64" text-anchor="middle" font-size="10" fill="#6b6459">for invariants</text>
+        <rect x="200" y="122" width="152" height="50" rx="11" fill="#f9f7f7" stroke="#8b8680" stroke-width="1.4"/>
+        <text x="276" y="142" text-anchor="middle" font-size="12" font-weight="700" fill="#1c1a17">Flexible parts</text>
+        <text x="276" y="158" text-anchor="middle" font-size="10" fill="#6b6459">via Canonical Hub</text>
+        <rect x="390" y="71" width="142" height="58" rx="11" fill="#f0eeec" stroke="#1c1a17" stroke-width="2"/>
+        <text x="461" y="97" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1c1a17">Active Dev Repo</text>
+        <text x="461" y="114" text-anchor="middle" font-size="10" fill="#6b6459">link + sync</text>
+        <g paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" text-anchor="middle" font-size="10" fill="#1c1a17">
+          <text x="270" y="16" font-size="11" fill="#6b6459">To update from design-system: version bump + re-pull</text>
+          <text x="172" y="64">publish</text><text x="368" y="62">link</text>
+          <text x="174" y="142">push</text><text x="368" y="142">sync</text>
+        </g>
+      </svg>
+      <p class="cap"><b>The split is the point:</b> invariants (tokens, plain web components) ship as a partial package &mdash; any stack, no LLM; only the flexible parts sync through Claude.</p>
+      <div class="rates">
+        <div class="r"><span>Design fidelity</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="is-sr-only">5 out of 5</span></div>
+        <div class="r"><span>Dev ease</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="is-sr-only">4 out of 5</span></div>
+        <div class="r"><span>Maintainability</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="is-sr-only">5 out of 5</span></div>
+        <div class="r"><span>Stack agnostic</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="is-sr-only">4 out of 5</span></div>
+        <div class="r"><span>Agent agnostic</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="is-sr-only">3 out of 5</span></div>
+        <div class="r"><span>Context efficiency</span><span class="d" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="is-sr-only">4 out of 5</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="note">The scores are a starting point, not gospel &mdash; argue with them. To weigh in, open an issue or PR on the <a href="../index.html">design-system repo</a>. (Hybrid currently scores highest on most rows; that reflects a lean, not a settled decision.)</p>
+</div>
+</body>
+</html>
