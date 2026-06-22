@@ -1060,6 +1060,9 @@
   .ds-site-header.is-collapsible .ds-site-header-nav-toggle { display: inline-flex; }
   /* Dropdown drops below the 52px bar; absolute (the header is non-sticky) so
      it tracks the bar wherever it sits. z-index 60 = header-attached dropdown. */
+  /* Clean stacked list: flush full-width rows separated by hairlines (no gaps,
+     no rounded item backgrounds). Drops below the 52px bar; absolute (the header
+     is non-sticky) so it tracks the bar. z-index 60 = header-attached dropdown. */
   .ds-site-header.is-collapsible .ds-site-header-nav {
     display: none;
     position: absolute;
@@ -1070,8 +1073,8 @@
     align-items: stretch;
     flex-wrap: nowrap;
     width: auto;
-    gap: 2px;
-    padding: 8px;
+    gap: 0;
+    padding: 0;
     background: var(--arxiv-ink);
     border-top: 1px solid #4a433d;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* matches .ds-toc-dropdown / popovers */
@@ -1082,11 +1085,17 @@
   .ds-site-header.is-collapsible .ds-site-header-nav button {
     width: 100%;
     justify-content: flex-start;
-    padding: 10px 12px;
+    padding: 12px 16px;
     min-height: 44px; /* WCAG touch-target floor for menu items (matches .ds-toc-dropdown-link) */
     box-sizing: border-box;
-    border-radius: 6px;
+    border-radius: 0;
+    font-size: 0.875rem; /* 14px — matches the showcase mobile menu */
+    border-bottom: 1px solid #4a433d; /* hairline row separator */
   }
+  .ds-site-header.is-collapsible .ds-site-header-nav > :last-child { border-bottom: none; }
+  /* The desktop vertical divider is meaningless in a stacked list — hide it
+     (each row already carries its own separator). */
+  .ds-site-header.is-collapsible .ds-site-header-divider { display: none; }
 }
 
 /* ── NO breadcrumb band ──
