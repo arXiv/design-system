@@ -62,6 +62,9 @@
   .arr b { display: block; font-size: 9.5px; font-weight: 600; color: var(--arxiv-grey);
     text-transform: uppercase; letter-spacing: 0.03em; }
 
+  /* Lifecycle loop diagrams */
+  svg.loop { width: 100%; height: auto; display: block; margin: 4px 0 10px; }
+
   /* Includes / gives / missing blocks */
   .blocks { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 2px 0 12px; }
   .block h4 { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600;
@@ -141,8 +144,8 @@
   <!-- Stepper -->
   <div class="stepper" aria-hidden="true">
     <div class="step"><span class="step-dot">1</span><div class="step-when">Now</div><div class="step-name">Manual reference</div></div>
-    <div class="step"><span class="step-dot">2</span><div class="step-when">Soon</div><div class="step-name">Package + discipline</div></div>
-    <div class="step is-future"><span class="step-dot">3</span><div class="step-when">Later</div><div class="step-name">Verified contract</div></div>
+    <div class="step"><span class="step-dot">2</span><div class="step-when">Soon</div><div class="step-name">Package + manual testing</div></div>
+    <div class="step is-future"><span class="step-dot">3</span><div class="step-when">Later</div><div class="step-name">Package + automated testing</div></div>
   </div>
 
   <div class="stages">
@@ -153,14 +156,41 @@
         <span class="when">Now</span>
         <h2 class="stage-title">Manual reference</h2>
       </div>
-      <p class="stack-line">design-system repo (prose) &rarr; rebuild by hand</p>
-      <div class="flow">
-        <span class="chip src">Design-system repo<small>read as reference</small></span>
-        <span class="arr"><b>read &middot; drifts</b>&rarr;</span>
-        <span class="chip">Agent / dev<small>interprets &amp; rebuilds</small></span>
-        <span class="arr">&rarr;</span>
-        <span class="chip dst">Dev repo<small>diverging copy</small></span>
-      </div>
+      <p class="stack-line">Point your agent at the design system repo and manually verify alignment.</p>
+      <svg class="loop" viewBox="0 0 720 175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The same lifecycle run by hand. Across the top: the design system repo (a cylinder, a prose reference), a versioned package that does not exist yet (shown dashed), build, ad-hoc testing (shown dashed), production. Issues noticed at build, testing or production are told to the designer, who edits the repo by hand.">
+        <defs><marker id="nw" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8b8680"/></marker></defs>
+        <path d="M8 32 v32 a60 6 0 0 0 120 0 v-32" fill="#edf4fc" stroke="#1f5e96" stroke-width="1.6"/>
+        <ellipse cx="68" cy="32" rx="60" ry="6" fill="#edf4fc" stroke="#1f5e96" stroke-width="1.6"/>
+        <path d="M148 26 L256 26 L268 38 L268 70 L148 70 Z" fill="#fff" stroke="#8b8680" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <rect x="288" y="26" width="120" height="44" rx="9" fill="#f9f7f7" stroke="#8b8680" stroke-width="1.5"/>
+        <rect x="428" y="26" width="120" height="44" rx="9" fill="#fff" stroke="#8b8680" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <rect x="568" y="26" width="120" height="44" rx="9" fill="#f9f7f7" stroke="#8b8680" stroke-width="1.5"/>
+        <rect x="35" y="139" width="150" height="26" rx="13" fill="#f9f7f7" stroke="#8b8680" stroke-width="1.4"/>
+        <text x="110" y="156" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1c1a17">Designer edits by hand</text>
+        <g fill="none" stroke="#8b8680" stroke-width="1.6">
+          <path d="M130 48 L146 48" marker-end="url(#nw)"/>
+          <path d="M270 48 L286 48" marker-end="url(#nw)"/>
+          <path d="M410 48 L426 48" marker-end="url(#nw)"/>
+          <path d="M550 48 L566 48" marker-end="url(#nw)"/>
+        </g>
+        <g fill="none" stroke="#8b8680" stroke-width="1.5" stroke-dasharray="5 4">
+          <path d="M348 70 L348 150" marker-end="url(#nw)"/>
+          <path d="M488 70 L488 150" marker-end="url(#nw)"/>
+          <path d="M628 70 L628 150" marker-end="url(#nw)"/>
+          <path d="M628 150 L185 150"/>
+          <path d="M110 139 L110 112 C 110 92 96 82 86 72" marker-end="url(#nw)"/>
+        </g>
+        <g text-anchor="middle" fill="#1c1a17" font-weight="700">
+          <text x="68" y="46" font-size="11.5">Design system</text>
+          <text x="68" y="59" font-size="11.5">repo</text>
+          <text x="208" y="46" font-size="11.5">Versioned</text>
+          <text x="208" y="59" font-size="11.5">package</text>
+          <text x="348" y="53" font-size="12.5">Build</text>
+          <text x="488" y="46" font-size="11.5">Manual</text>
+          <text x="488" y="59" font-size="11.5">testing</text>
+          <text x="628" y="53" font-size="12.5">Production</text>
+        </g>
+      </svg>
       <div class="blocks">
         <div class="block"><h4>Includes</h4><ul>
           <li>The repo as a written reference</li>
@@ -172,7 +202,7 @@
         <div class="block"><h4>Still missing</h4><ul>
           <li>Output drifts &mdash; no live link</li>
           <li>Token-intensive: the agent reads the whole prose corpus each time</li>
-          <li>Conformance is unverified</li>
+          <li>Verification is manual and ad hoc &mdash; easy to miss</li>
         </ul></div>
       </div>
       <p class="contract"><b>Contract status:</b> none. The design system is re-interpreted from scratch each time, so nothing holds the repos to it.</p>
@@ -182,21 +212,52 @@
     <div class="card">
       <div class="stage-head">
         <span class="when">Soon</span>
-        <h2 class="stage-title">Versioned package + discipline + manual checks</h2>
+        <h2 class="stage-title">Versioned package + manual testing</h2>
       </div>
-      <p class="stack-line">tokens.json + plain-CSS package &rarr; version-pinned link &rarr; human review</p>
-      <div class="flow">
-        <span class="chip src">Design-system repo<small>source of truth</small></span>
-        <span class="arr"><b>publish</b>&rarr;</span>
-        <span class="chip">Versioned package<small>DTCG tokens + CSS vars</small></span>
-        <span class="arr"><b>link &middot; pin</b>&rarr;</span>
-        <span class="chip dst">Dev repo<small>+ manual review</small></span>
-      </div>
+      <p class="stack-line">For repos with semantic markup. Will start building out automated testing but will still need human review.</p>
+      <svg class="loop" viewBox="0 0 720 175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The lifecycle with a versioned package. Across the top: the design system repo (a cylinder), a versioned package (a document), build, manual testing, production. Issues found at build, testing or production are raised as pull requests, which the designer reviews and applies to the repo.">
+        <defs>
+          <marker id="snk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1c1a17"/></marker>
+          <marker id="sng" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8b8680"/></marker>
+        </defs>
+        <path d="M8 32 v32 a60 6 0 0 0 120 0 v-32" fill="#edf4fc" stroke="#1f5e96" stroke-width="1.6"/>
+        <ellipse cx="68" cy="32" rx="60" ry="6" fill="#edf4fc" stroke="#1f5e96" stroke-width="1.6"/>
+        <path d="M148 26 L256 26 L268 38 L268 70 L148 70 Z" fill="#edf4fc" stroke="#1f5e96" stroke-width="1.6"/>
+        <path d="M256 26 L256 38 L268 38" fill="none" stroke="#1f5e96" stroke-width="1.2"/>
+        <rect x="288" y="26" width="120" height="44" rx="9" fill="#f9f7f7" stroke="#8b8680" stroke-width="1.5"/>
+        <rect x="428" y="26" width="120" height="44" rx="9" fill="#f9f7f7" stroke="#8b8680" stroke-width="1.5"/>
+        <rect x="568" y="26" width="120" height="44" rx="9" fill="#f9f7f7" stroke="#8b8680" stroke-width="1.5"/>
+        <rect x="35" y="139" width="150" height="26" rx="13" fill="#f9f7f7" stroke="#8b8680" stroke-width="1.4"/>
+        <text x="110" y="156" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1c1a17">Designer reviews PRs</text>
+        <g fill="none" stroke="#1c1a17" stroke-width="1.8">
+          <path d="M130 48 L146 48" marker-end="url(#snk)"/>
+          <path d="M270 48 L286 48" marker-end="url(#snk)"/>
+          <path d="M410 48 L426 48" marker-end="url(#snk)"/>
+          <path d="M550 48 L566 48" marker-end="url(#snk)"/>
+        </g>
+        <g fill="none" stroke="#8b8680" stroke-width="1.5" stroke-dasharray="5 4">
+          <path d="M348 70 L348 150" marker-end="url(#sng)"/>
+          <path d="M488 70 L488 150" marker-end="url(#sng)"/>
+          <path d="M628 70 L628 150" marker-end="url(#sng)"/>
+          <path d="M628 150 L185 150"/>
+          <path d="M110 139 L110 112 C 110 92 96 82 86 72" marker-end="url(#sng)"/>
+        </g>
+        <g text-anchor="middle" fill="#1c1a17" font-weight="700">
+          <text x="68" y="46" font-size="11.5">Design system</text>
+          <text x="68" y="59" font-size="11.5">repo</text>
+          <text x="208" y="46" font-size="11.5">Versioned</text>
+          <text x="208" y="59" font-size="11.5">package</text>
+          <text x="348" y="53" font-size="12.5">Build</text>
+          <text x="488" y="46" font-size="11.5">Manual</text>
+          <text x="488" y="59" font-size="11.5">testing</text>
+          <text x="628" y="53" font-size="12.5">Production</text>
+        </g>
+      </svg>
       <div class="blocks">
         <div class="block"><h4>Includes</h4><ul>
           <li>A versioned, framework-agnostic package: DTCG <code>tokens.json</code> + plain-CSS custom properties</li>
           <li>An agent-readable spec, restructured (tables, tokens) to cut token load</li>
-          <li>Conformance by human review / checklist</li>
+          <li>Manual testing and human review &mdash; automated checks beginning to be built out</li>
         </ul></div>
         <div class="block"><h4>Gives you</h4><ul>
           <li>One source of truth for values, version-pinned (ends the drift)</li>
@@ -209,29 +270,56 @@
           <li>Structure the design-system content</li>
         </ul></div>
       </div>
-      <p class="contract"><b>Contract status:</b> emerging. A shared vocabulary plus manual accessibility review make it <em>begin</em> to be a semantic structure contract &mdash; but not all the way, because the consuming markup is still inconsistent and enforcement is human.</p>
+      <p class="contract"><b>Contract status:</b> emerging. The shared design vocabulary can be applied to restructured repos, and manual review makes it <em>begin</em> to be a semantic structure contract. However, the consuming markup may still be inconsistent and enforcement is human.</p>
     </div>
 
     <!-- STAGE 3 -->
     <div class="card">
       <div class="stage-head">
         <span class="when is-future">Later</span>
-        <h2 class="stage-title">Verified contract &mdash; once the HTML is structured</h2>
+        <h2 class="stage-title">Versioned package + automated testing</h2>
       </div>
-      <p class="stack-line">versioned package + automated tests/linting in CI + two-way contribution loop</p>
-      <div class="flow">
-        <span class="chip src">Design-system repo<small>spec + checks</small></span>
-        <span class="arr"><b>publish</b>&rarr;</span>
-        <span class="chip">Package + checks<small>tokens, CSS, lint rules</small></span>
-        <span class="arr"><b>link</b>&rarr;</span>
-        <span class="chip dst">Dev repo<small>agent builds, CI verifies</small></span>
-        <span class="arr"><b>&larr; PR (improvements)</b></span>
-      </div>
+      <p class="stack-line">Build out automated tests/linting in CI. Add in two-way contribution loop for continuous improvement of the design system.</p>
+      <svg class="loop" viewBox="0 0 720 175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The full cycle, automated. Across the top: the design system repo (a cylinder, owned by the designer), a versioned package with checks (a document), build, automated CI testing, production. Build, testing and production each send improvements down a return channel through PR and governance, back up into the design system repo.">
+        <defs><marker id="lt" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1c1a17"/></marker></defs>
+        <path d="M8 32 v32 a60 6 0 0 0 120 0 v-32" fill="#edf4fc" stroke="#1f5e96" stroke-width="1.6"/>
+        <ellipse cx="68" cy="32" rx="60" ry="6" fill="#edf4fc" stroke="#1f5e96" stroke-width="1.6"/>
+        <path d="M148 26 L256 26 L268 38 L268 70 L148 70 Z" fill="#edf4fc" stroke="#1f5e96" stroke-width="1.6"/>
+        <path d="M256 26 L256 38 L268 38" fill="none" stroke="#1f5e96" stroke-width="1.2"/>
+        <rect x="288" y="26" width="120" height="44" rx="9" fill="#f0eeec" stroke="#1c1a17" stroke-width="1.6"/>
+        <rect x="428" y="26" width="120" height="44" rx="9" fill="#f0eeec" stroke="#1c1a17" stroke-width="1.6"/>
+        <rect x="568" y="26" width="120" height="44" rx="9" fill="#f0eeec" stroke="#1c1a17" stroke-width="1.6"/>
+        <rect x="35" y="139" width="150" height="26" rx="13" fill="#f0eeec" stroke="#1c1a17" stroke-width="1.4"/>
+        <text x="110" y="156" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1c1a17">PR + governance</text>
+        <g fill="none" stroke="#1c1a17" stroke-width="1.8">
+          <path d="M130 48 L146 48" marker-end="url(#lt)"/>
+          <path d="M270 48 L286 48" marker-end="url(#lt)"/>
+          <path d="M410 48 L426 48" marker-end="url(#lt)"/>
+          <path d="M550 48 L566 48" marker-end="url(#lt)"/>
+        </g>
+        <g fill="none" stroke="#1c1a17" stroke-width="1.5">
+          <path d="M348 70 L348 150" marker-end="url(#lt)"/>
+          <path d="M488 70 L488 150" marker-end="url(#lt)"/>
+          <path d="M628 70 L628 150" marker-end="url(#lt)"/>
+          <path d="M628 150 L185 150"/>
+          <path d="M110 139 L110 112 C 110 92 96 82 86 72" marker-end="url(#lt)"/>
+        </g>
+        <g text-anchor="middle" fill="#1c1a17" font-weight="700">
+          <text x="68" y="46" font-size="11.5">Design system</text>
+          <text x="68" y="59" font-size="11.5">repo</text>
+          <text x="208" y="46" font-size="11.5">Versioned</text>
+          <text x="208" y="59" font-size="11.5">package</text>
+          <text x="348" y="53" font-size="12.5">Build</text>
+          <text x="488" y="46" font-size="11.5">Automated</text>
+          <text x="488" y="59" font-size="11.5">testing</text>
+          <text x="628" y="53" font-size="12.5">Production</text>
+        </g>
+      </svg>
       <div class="blocks">
         <div class="block"><h4>Includes</h4><ul>
           <li>Everything in <em>Soon</em>, plus&hellip;</li>
           <li>Automated conformance: linting + tests in CI (contrast, palette/font allowlists, <code>:focus-visible</code>, semantic-structure checks)</li>
-          <li>A two-way contribution loop with trust-level governance (mechanical fixes auto-merge; spec changes are reviewed PRs)</li>
+          <li>A two-way contribution loop with trust-level governance &mdash; automated checks merge mechanical fixes; a person always reviews higher-judgment and spec-level changes</li>
           <li>An agent-agnostic entry point (<code>AGENTS.md</code> beside <code>CLAUDE.md</code>) &mdash; not locked to one tool</li>
           <li>Semantically structured HTML across surfaces</li>
         </ul></div>
@@ -242,7 +330,7 @@
           <li>A11y invariants encoded as checks, so no future reskin can regress them</li>
         </ul></div>
         <div class="block"><h4>Requires first</h4><ul>
-          <li>The markup restructured to be semantically sound (done per-surface, agent-assisted)</li>
+          <li>All target surfaces restructured to semantically sound markup (done per-surface, agent-assisted)</li>
           <li>The design system stabilized and versioned enough to enforce</li>
           <li>Team capacity to maintain the checks (start small, grow)</li>
         </ul></div>
@@ -267,17 +355,17 @@
         <td class="mark"><span class="mk" title="partial">&#9680;</span><span class="is-sr-only">partial</span></td>
         <td class="mark"><span class="mk" title="in place">&#9679;</span><span class="is-sr-only">in place</span></td>
         <td class="mark"><span class="mk" title="in place">&#9679;</span><span class="is-sr-only">in place</span></td></tr>
-      <tr><td>Manual conformance checks (review / checklist)</td>
-        <td class="mark"><span class="mk" title="not yet">&#9675;</span><span class="is-sr-only">not yet</span></td>
+      <tr><td>Manual testing &amp; review</td>
+        <td class="mark"><span class="mk" title="partial">&#9680;</span><span class="is-sr-only">partial</span></td>
         <td class="mark"><span class="mk" title="in place">&#9679;</span><span class="is-sr-only">in place</span></td>
         <td class="mark"><span class="mk" title="in place">&#9679;</span><span class="is-sr-only">in place</span></td></tr>
       <tr><td>Automated tests + linting in CI</td>
         <td class="mark"><span class="mk" title="not yet">&#9675;</span><span class="is-sr-only">not yet</span></td>
-        <td class="mark"><span class="mk" title="not yet">&#9675;</span><span class="is-sr-only">not yet</span></td>
+        <td class="mark"><span class="mk" title="partial">&#9680;</span><span class="is-sr-only">partial</span></td>
         <td class="mark"><span class="mk" title="in place">&#9679;</span><span class="is-sr-only">in place</span></td></tr>
-      <tr><td>Two-way contribution loop + governance</td>
+      <tr><td>Two-way contribution loop (PRs &rarr; governed)</td>
         <td class="mark"><span class="mk" title="not yet">&#9675;</span><span class="is-sr-only">not yet</span></td>
-        <td class="mark"><span class="mk" title="not yet">&#9675;</span><span class="is-sr-only">not yet</span></td>
+        <td class="mark"><span class="mk" title="partial">&#9680;</span><span class="is-sr-only">partial</span></td>
         <td class="mark"><span class="mk" title="in place">&#9679;</span><span class="is-sr-only">in place</span></td></tr>
       <tr><td>Semantically structured HTML</td>
         <td class="mark"><span class="mk" title="not yet">&#9675;</span><span class="is-sr-only">not yet</span></td>
@@ -293,7 +381,6 @@
 
   <!-- Rejected -->
   <h2 class="rej-h">Considered and set aside</h2>
-  <p class="rej-sub">Recorded so the team knows these were weighed, not overlooked.</p>
 
   <div class="rej">
     <p class="rej-title">Claude Design as the pipeline <span class="tag">Rejected as the backbone</span></p>
@@ -307,7 +394,6 @@
     <p class="why"><b>Why not:</b> the staged path already subsumes it &mdash; the package is <em>Soon</em>, the agent-built work is <em>Later</em>. As a standalone option it adds complexity without adding a distinct capability.</p>
   </div>
 
-  <p class="glossary"><b>Folded in, not dropped:</b> the old &ldquo;manual reference&rdquo; option is now the <em>Now</em> stage, and the old &ldquo;package dependency&rdquo; option is the versioned package inside <em>Soon</em> and <em>Later</em> &mdash; so they are no longer listed as separate options. &nbsp; <b>Claude Code</b> &mdash; Anthropic's coding agent that builds against the repo and (in <em>Later</em>) runs the checks. The git design-system repo stays the spec / source of truth throughout.</p>
 </div>
 </body>
 </html>
