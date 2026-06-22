@@ -946,11 +946,15 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
     proof feedback.
 
   Decisions baked in
-    - PRESENT-ONLY items. We do NOT show "X is missing" indicators.
-      Shamsi's rationale: "arXiv is not here to punish hard-working
-      researchers who managed to finish their paper, only to help all
-      researchers as much as we can." The shield-check icon reinforces
-      "earned" framing.
+    - EXPLORATION (2026-06-22, draft for team discussion): show present
+      vs MISSING capabilities, so colleagues have something concrete to
+      react to. This revisits the earlier PRESENT-ONLY stance and its
+      rationale (Shamsi: "arXiv is not here to punish hard-working
+      researchers who managed to finish their paper, only to help") —
+      which is exactly the choice under discussion: can we flag a fixable
+      gap, with a fix path, WITHOUT shaming authors in front of readers?
+      Not color-alone — present/missing also differ by icon shape and
+      wording (WCAG 1.4.1).
     - Tension this resolves (research): Charles + Arvind wanted a public
       grade visible to readers; Avneesh Singh warned that a single score
       misleads. Our compromise: per-capability indicators only, no
@@ -961,9 +965,10 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
       data, or code is much easier to understand than reading the paper").
 
   Visual choice
-    Shield-check icon (Lucide style) reads as "credential earned" without
-    being aggressively gamified. Library Grey color for icon body keeps
-    the block restrained — it's information, not celebration.
+    Present = success-green shield-check + green text (reusing the success
+    palette — arXiv has no other green). Missing = grey dashed shield +
+    Library Grey text (muted, never red — reads "not yet," not "broken").
+    The fix link is the only interactive element (Link Blue).
 
   Note for production
     Capability list comes from per-paper metadata (does the paper have
@@ -1003,8 +1008,21 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 }
 .abs-a11y-icon {
   flex-shrink: 0;
-  color: var(--arxiv-grey);
   width: 14px; height: 14px;
+}
+/* Present vs missing capability states (2026-06-22 exploration). Triple-
+   encoded — color + icon shape + wording — so it never relies on color
+   alone (WCAG 1.4.1). */
+.abs-a11y-list li.is-present { color: #4a5a0a; }                  /* success-green text, 6.7:1 AA */
+.abs-a11y-list li.is-present .abs-a11y-icon { color: #6b8e1e; }   /* success-green check */
+.abs-a11y-list li.is-missing { color: var(--arxiv-grey); }       /* greyed, still AA-legible */
+.abs-a11y-list li.is-missing .abs-a11y-icon { color: var(--arxiv-grey-ui); }
+.abs-a11y-fix {
+  color: var(--arxiv-link-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+  margin-left: 4px;
 }
 
 /*
@@ -2018,26 +2036,28 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
           <h2 class="abs-ref-card-title" id="a11y-heading">Accessibility Notes</h2>
         </div>
         <ul class="abs-a11y-list">
-          <li>
+          <li class="is-present">
             <svg class="abs-a11y-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               <polyline points="9 12 12 15 16 10"/>
             </svg>
             <span>Multiple sources: HTML, PDF, LaTeX</span>
           </li>
-          <li>
+          <li class="is-present">
             <svg class="abs-a11y-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               <polyline points="9 12 12 15 16 10"/>
             </svg>
             <span>Structured math</span>
           </li>
-          <li>
+          <!-- Missing state (exploration): greyed, dashed circle, explicit
+               "missing" wording + a quiet fix nudge (start of the C2
+               contribution journey). -->
+          <li class="is-missing">
             <svg class="abs-a11y-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              <polyline points="9 12 12 15 16 10"/>
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/>
             </svg>
-            <span>Alt text on all figures</span>
+            <span>Alt text on figures &mdash; <strong>missing</strong>.<a href="#" class="abs-a11y-fix">How to add it</a></span>
           </li>
         </ul>
       </section>
