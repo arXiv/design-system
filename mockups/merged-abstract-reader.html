@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Merged abstract + HTML reader — arXiv mockup</title>
+
+<!--
+╔════════════════════════════════════════════════════════════════════╗
+║  MERGED ABSTRACT + HTML READER — exploratory mockup (2026-06-22)   ║
+╚════════════════════════════════════════════════════════════════════╝
+  WHAT THIS IS
+    A design mockup exploring an HTML-FIRST merged page: the abstract-page
+    metadata and the full HTML paper on ONE URL, so a reader (or someone
+    you share the link with) lands directly in the readable paper. PDF is
+    always available as a download. A "Reader view" toggle strips the
+    landing apparatus for distraction-free reading.
+
+    This is a leadership-discussion artifact for the co-equal-vs-HTML-first
+    question (PROPOSED-GUIDELINES G2). It is NOT production code, and it is
+    a representative slice — the article body is abbreviated, not a full
+    paper. Patterns/colors come from design-patterns/public/design-system.css
+    (tokens mirrored inline so the mockup is self-contained).
+
+  KEY MOVES TO EVALUATE
+    1. One page, one URL: identity → abstract → full article → references,
+       with the "abstract page" apparatus demoted below the reading.
+    2. HTML-first framing: the page IS the paper; PDF is a download.
+    3. Reader view: hides apparatus + chrome for a clean read.
+-->
+
+<style>
+  :root {
+    --arxiv-ink: #1c1a17;
+    --arxiv-grey: #6b6459;
+    --arxiv-grey-ui: #8b8680;
+    --arxiv-link-blue: #1565c0;
+    --arxiv-link-hover: #1050a0;
+    --arxiv-archival-blue: #1f5e96;
+    --arxiv-open-blue: #a5d6fe;
+    --arxiv-warm-wash: #f9f7f7;
+    --arxiv-card-grey: #f0eeec;
+    --arxiv-active-bg: #d6e8f7;
+    --arxiv-tint-light: #edf4fc;
+    --arxiv-tint-border: #c4dcf0;
+    --arxiv-pill-border: #e4e0db;
+    --arxiv-border-light: #ddd8d2;
+    --arxiv-font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --arxiv-font-condensed: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+    --arxiv-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --measure: 720px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--arxiv-font-sans);
+    font-size: 1rem; line-height: 1.6;
+    color: var(--arxiv-ink); background: #fff;
+  }
+  a { color: var(--arxiv-link-blue); }
+  a:hover { color: var(--arxiv-link-hover); }
+
+  /* ── Site header (dark bar) ── */
+  .site { background: #000; color: #fff; padding: 11px 22px; display: flex; align-items: center; gap: 18px; }
+  .site .logo { font-weight: 700; font-size: 1.1rem; letter-spacing: -0.01em; }
+  .site .logo .x { color: #b31b1b; }
+  .site nav { margin-left: auto; display: flex; gap: 18px; font-size: 0.82rem; }
+  .site nav a { color: #d8d4ce; text-decoration: none; }
+  .site nav a:hover { color: #fff; }
+
+  /* ── Scroll progress ── */
+  .progress { position: sticky; top: 0; height: 3px; background: transparent; z-index: 40; }
+  .progress-bar { height: 100%; width: 0; background: var(--arxiv-link-blue); }
+
+  /* ── Sticky action bar (HTML-first framing) ── */
+  .actionbar { position: sticky; top: 0; z-index: 30; background: var(--arxiv-card-grey);
+    border-bottom: 1px solid var(--arxiv-border-light); }
+  .actionbar-inner { max-width: 1160px; margin: 0 auto; padding: 8px 24px;
+    display: flex; align-items: center; gap: 12px 16px; flex-wrap: wrap; }
+  .format-note { font-size: 0.8rem; color: var(--arxiv-grey); }
+  .format-note strong { color: var(--arxiv-ink); }
+  .actions { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .btn { font: inherit; font-size: 0.8rem; border-radius: 6px; padding: 6px 13px;
+    text-decoration: none; cursor: pointer; border: 1px solid var(--arxiv-grey-ui);
+    background: #fff; color: var(--arxiv-ink); white-space: nowrap; }
+  .btn-pdf { background: var(--arxiv-open-blue); border-color: #6ba8da; font-weight: 600; }
+  .btn:hover { background: var(--arxiv-warm-wash); }
+  .btn-pdf:hover { background: var(--arxiv-open-blue-bright, #c2e2ff); }
+  .btn small { color: var(--arxiv-grey); font-weight: 400; }
+  /* Reader-view toggle (a labeled switch) */
+  .reader-toggle { display: inline-flex; align-items: center; gap: 7px; font: inherit;
+    font-size: 0.8rem; border: 1px solid var(--arxiv-grey-ui); background: #fff;
+    border-radius: 20px; padding: 5px 12px 5px 10px; cursor: pointer; color: var(--arxiv-ink); }
+  .reader-toggle .track { width: 28px; height: 16px; border-radius: 10px; background: var(--arxiv-pill-border);
+    position: relative; transition: background .15s; flex: none; }
+  .reader-toggle .track::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px;
+    border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.3); transition: left .15s; }
+  .reader-toggle[aria-pressed="true"] .track { background: var(--arxiv-link-blue); }
+  .reader-toggle[aria-pressed="true"] .track::after { left: 14px; }
+  .btn:focus-visible, .reader-toggle:focus-visible, a:focus-visible {
+    outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 4px; }
+
+  /* ── Layout: article column + right TOC ── */
+  .shell { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+  .main { max-width: var(--measure); margin: 0 auto; padding: 30px 0 60px; }
+  .toc { display: none; }
+  @media (min-width: 1160px) {
+    .shell { display: grid; grid-template-columns: minmax(0, 1fr) 200px; column-gap: 44px; align-items: start; }
+    .main { margin: 0; }
+    .toc { display: block; position: sticky; top: 64px; padding-top: 34px; font-size: 0.8rem; }
+  }
+  .toc h2 { font-family: var(--arxiv-font-condensed); font-size: 0.7rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-grey); margin: 0 0 8px; }
+  .toc a { display: block; color: var(--arxiv-grey); text-decoration: none; padding: 3px 0; line-height: 1.3; }
+  .toc a:hover { color: var(--arxiv-link-blue); }
+
+  /* ── Identity ── */
+  .subjects { font-family: var(--arxiv-font-condensed); font-size: 0.78rem; color: var(--arxiv-grey);
+    text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 8px; }
+  h1.title { font-size: 1.85rem; line-height: 1.25; font-weight: 700; margin: 0 0 12px; letter-spacing: -0.01em; }
+  .authors { font-size: 1.02rem; margin: 0 0 12px; }
+  .authors a { text-decoration: none; }
+  .ids { font-size: 0.82rem; color: var(--arxiv-grey); font-family: var(--arxiv-font-mono);
+    border-top: 1px solid var(--arxiv-border-light); border-bottom: 1px solid var(--arxiv-border-light);
+    padding: 9px 0; margin: 0 0 26px; display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  .ids a { text-decoration: none; }
+
+  /* ── Article ── */
+  .article h2.sec { font-size: 1.28rem; font-weight: 700; margin: 34px 0 10px; line-height: 1.3; }
+  .article h3.sub { font-size: 1.08rem; font-weight: 600; margin: 24px 0 8px; }
+  .abstract-label, .article h2.sec.abstract-label { font-size: 1.28rem; }
+  .article p { margin: 0 0 14px; }
+  .lead { color: var(--arxiv-ink); }
+  .citchip { color: var(--arxiv-link-blue); cursor: pointer; text-decoration: none;
+    background: var(--arxiv-active-bg); border-radius: 3px; padding: 0 4px; font-size: 0.92em; }
+  .eq { background: var(--arxiv-warm-wash); border: 1px solid var(--arxiv-border-light);
+    border-radius: 6px; padding: 14px 16px; margin: 16px 0; text-align: center;
+    font-family: var(--arxiv-font-mono); font-size: 0.95rem; overflow-x: auto; }
+  .eq .num { float: right; color: var(--arxiv-grey); font-family: var(--arxiv-font-sans); }
+  figure { margin: 20px 0; }
+  .fig-img { background: var(--arxiv-warm-wash); border: 1px solid var(--arxiv-border-light);
+    border-radius: 8px; height: 180px; display: flex; align-items: center; justify-content: center;
+    color: var(--arxiv-grey-ui); font-size: 0.85rem; }
+  figcaption { font-size: 0.85rem; color: var(--arxiv-grey); margin-top: 8px; line-height: 1.5; }
+  figcaption b { color: var(--arxiv-ink); }
+  .alt-note { font-size: 0.78rem; color: var(--arxiv-grey); font-style: italic; margin-top: 4px; }
+
+  ol.refs { font-size: 0.9rem; color: var(--arxiv-ink); padding-left: 22px; }
+  ol.refs li { margin: 0 0 9px; line-height: 1.5; }
+
+  /* ── Secondary apparatus (the "landing" stuff; hidden in reader view) ── */
+  .apparatus { margin-top: 44px; border-top: 3px solid var(--arxiv-open-blue); padding-top: 8px; }
+  .appa-hint { font-size: 0.8rem; color: var(--arxiv-grey); margin: 10px 0 0; }
+  .appa { padding: 20px 0; border-bottom: 1px solid var(--arxiv-border-light); }
+  .appa:last-child { border-bottom: none; }
+  .appa h2 { font-size: 1.05rem; font-weight: 600; margin: 0 0 12px; }
+  .codeblock { background: var(--arxiv-card-grey); border-radius: 6px; padding: 11px 13px;
+    font-family: var(--arxiv-font-mono); font-size: 0.78rem; line-height: 1.5; white-space: pre-wrap;
+    color: var(--arxiv-ink); overflow-x: auto; }
+  .meta-grid { display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; font-size: 0.85rem; }
+  .meta-grid dt { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.7rem;
+    letter-spacing: 0.04em; color: var(--arxiv-grey); white-space: nowrap; }
+  .meta-grid dd { margin: 0; }
+  .a11y-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 0.82rem; }
+  .a11y-list li { display: flex; align-items: center; gap: 8px; }
+  .a11y-list .ic { width: 14px; height: 14px; flex: none; }
+  .a11y-list li.present { color: #4a5a0a; }
+  .a11y-list li.present .ic { color: #6b8e1e; }
+  .a11y-list li.missing { color: var(--arxiv-grey); }
+  .a11y-list li.missing .ic { color: var(--arxiv-grey-ui); }
+  .a11y-fix { color: var(--arxiv-link-blue); margin-left: 4px; }
+
+  /* ── Reader view: strip the landing apparatus and chrome ── */
+  body.is-reader .apparatus { display: none; }
+  body.is-reader .format-note { display: none; }
+  body.is-reader .actions .btn-tex,
+  body.is-reader .actions .btn-cite { display: none; }
+  body.is-reader .subjects,
+  body.is-reader .ids { display: none; }
+  body.is-reader .main { max-width: 680px; }
+  .reader-only { display: none; }
+  body.is-reader .reader-only { display: inline; }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <span class="logo">ar<span class="x">X</span>iv</span>
+  <nav aria-label="Main"><a href="#">Search</a><a href="#">Browse</a><a href="#">About</a></nav>
+</header>
+
+<div class="progress" aria-hidden="true"><div class="progress-bar" id="progress-bar"></div></div>
+
+<!-- Sticky action bar: the paper IS this page (HTML-first). PDF is a download. -->
+<div class="actionbar">
+  <div class="actionbar-inner">
+    <span class="format-note">Reading the <strong>HTML</strong> &middot; arXiv's primary format<span class="reader-only"> &middot; reader view</span></span>
+    <div class="actions">
+      <a class="btn btn-pdf" href="#">Download PDF <small>(1.2&nbsp;MB)</small></a>
+      <a class="btn btn-tex" href="#">TeX Source</a>
+      <a class="btn btn-cite" href="#cite">Cite</a>
+      <button class="reader-toggle" id="reader-toggle" type="button" aria-pressed="false">
+        <span class="track" aria-hidden="true"></span> Reader view
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+  <main class="main">
+
+    <!-- ── Identity ── -->
+    <div class="identity">
+      <p class="subjects">General Relativity &amp; Quantum Cosmology (gr-qc) &middot; Cosmology (astro-ph.CO) &middot; hep-th</p>
+      <h1 class="title">Gauge-independent approach to inflation in quadratic gravity</h1>
+      <p class="authors"><a href="#">Adrian Palomares</a>, <a href="#">Ilya L. Shapiro</a>, <a href="#">Maria C. Gonzalez-Garcia</a>, <a href="#">Tomohiro Harada</a>, <a href="#">+ 18 more</a></p>
+      <p class="ids">
+        <span>arXiv:2604.22725</span>
+        <a href="https://doi.org/10.48550/arXiv.2604.22725">DOI&nbsp;10.48550/arXiv.2604.22725</a>
+        <span>Submitted 12 Jun 2026</span>
+        <span>v3 &middot; latest</span>
+      </p>
+    </div>
+
+    <!-- ── Abstract (lead of the article) ── -->
+    <section class="article" id="abstract">
+      <h2 class="sec abstract-label">Abstract</h2>
+      <p class="lead">We explore inflation driven by the Starobinsky-like R + R&sup2; term using a manifestly gauge-independent approach to cosmological perturbation theory. Working directly with the metric degrees of freedom in quadratic gravity, we derive the evolution equations for gauge-invariant scalar perturbations without recourse to an auxiliary scalar field or conformal transformation. We compute the scalar spectral index and tensor-to-scalar ratio and demonstrate agreement with Planck constraints.</p>
+    </section>
+
+    <!-- ── Full article (representative slice) ── -->
+    <section class="article" id="intro">
+      <h2 class="sec">1. Introduction</h2>
+      <p>Higher-derivative gravity has long been studied both as a route to renormalizable quantum gravity and as a source of viable inflationary dynamics. The Starobinsky model, with its characteristic R&sup2; term, remains among the best fits to current data <a class="citchip" href="#refs">[12]</a>, yet the standard treatment relies on a conformal transformation to the Einstein frame that obscures the physical degrees of freedom.</p>
+      <p>In this work we take a different route. Rather than transforming the theory, we work directly with gauge-invariant combinations of the metric perturbations, following the spirit of the Bardeen formalism <a class="citchip" href="#refs">[3]</a> but extended to the higher-derivative setting.</p>
+    </section>
+
+    <section class="article" id="perturbations">
+      <h2 class="sec">2. Gauge-invariant perturbations</h2>
+      <p>We begin from the perturbed FLRW metric and construct the Mukhanov–Sasaki variable from first principles. The background line element is</p>
+      <div class="eq" role="img" aria-label="d s squared equals minus d t squared plus a squared of t, d x squared"><span class="num">(2.1)</span>ds&sup2; = &minus;dt&sup2; + a&sup2;(t)&thinsp;d<b>x</b>&sup2;</div>
+      <p>and the gauge-invariant scalar perturbation satisfies the standard equation of motion, confirming consistency with the scalar–tensor formulation.</p>
+      <figure>
+        <div class="fig-img" role="img" aria-label="Figure 1: scalar spectral index n_s versus tensor-to-scalar ratio r, with the model's prediction inside the Planck 68% and 95% confidence contours.">[ Figure 1 — n_s vs. r, with Planck contours ]</div>
+        <figcaption><b>Figure 1.</b> Predicted (n<sub>s</sub>, r) for the quadratic-gravity model against Planck 2018 constraints. The prediction lies within the 68% contour.</figcaption>
+        <p class="alt-note">Alt text present in this mockup for illustration — see the accessibility notes below.</p>
+      </figure>
+    </section>
+
+    <section class="article" id="results">
+      <h2 class="sec">3. Results and discussion</h2>
+      <p>Evaluating at horizon crossing, we find a scalar spectral index and tensor-to-scalar ratio in agreement with current bounds. The gauge-independent construction makes the physical content transparent and avoids frame ambiguities entirely.</p>
+      <h3 class="sub">3.1 Additional gauge-invariant variables</h3>
+      <p>We further analyze variables that arise naturally in the higher-derivative theory and clarify their role during and after inflation.</p>
+    </section>
+
+    <section class="article" id="refs">
+      <h2 class="sec">References</h2>
+      <ol class="refs">
+        <li>A. A. Starobinsky, <em>A new type of isotropic cosmological models without singularity</em>, Phys. Lett. B <b>91</b>, 99 (1980).</li>
+        <li>J. M. Bardeen, <em>Gauge-invariant cosmological perturbations</em>, Phys. Rev. D <b>22</b>, 1882 (1980).</li>
+        <li>V. F. Mukhanov, H. A. Feldman, R. H. Brandenberger, <em>Theory of cosmological perturbations</em>, Phys. Rep. <b>215</b>, 203 (1992).</li>
+        <li>Planck Collaboration, <em>Planck 2018 results. X. Constraints on inflation</em>, A&amp;A <b>641</b>, A10 (2020).</li>
+      </ol>
+    </section>
+
+    <!-- ══ Secondary apparatus — the "landing page" stuff, demoted below the
+         reading and hidden in reader view ══ -->
+    <div class="apparatus" id="apparatus">
+      <p class="appa-hint">Below the paper: the things you come to an abstract page for &mdash; cite, formats, accessibility, related. (Hidden in reader view.)</p>
+
+      <section class="appa" id="cite">
+        <h2>Cite this paper</h2>
+        <div class="codeblock">@article{palomares2026gauge,
+  title={Gauge-independent approach to inflation in quadratic gravity},
+  author={Palomares, Adrian and others},
+  journal={arXiv preprint arXiv:2604.22725},
+  year={2026},
+  doi={10.48550/arXiv.2604.22725}
+}</div>
+      </section>
+
+      <section class="appa">
+        <h2>Paper information</h2>
+        <dl class="meta-grid">
+          <dt>Subjects</dt><dd>gr-qc; astro-ph.CO; hep-th</dd>
+          <dt>License</dt><dd><a href="#">CC BY 4.0</a></dd>
+          <dt>Journal</dt><dd><a href="#">J. Cosmol. Astropart. Phys. 2026(05), 012</a></dd>
+          <dt>Ancillary</dt><dd><a href="#">5 files &middot; 2.3 MB</a></dd>
+        </dl>
+      </section>
+
+      <section class="appa">
+        <h2>Accessibility notes</h2>
+        <ul class="a11y-list">
+          <li class="present">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+            <span>Multiple sources: HTML, PDF, LaTeX</span>
+          </li>
+          <li class="present">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+            <span>Structured math</span>
+          </li>
+          <li class="missing">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg>
+            <span>Alt text on figures &mdash; <strong>missing</strong>.<a class="a11y-fix" href="#">How to add it</a></span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="appa">
+        <h2>Related</h2>
+        <p style="font-size:0.88rem"><a href="#">Semantic Scholar</a> &middot; <a href="#">NASA ADS</a> &middot; <a href="#">Connected Papers</a> &middot; <a href="#">Papers with Code</a></p>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- Sticky right-margin TOC (wide widths) -->
+  <aside class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <a href="#abstract">Abstract</a>
+    <a href="#intro">1. Introduction</a>
+    <a href="#perturbations">2. Gauge-invariant perturbations</a>
+    <a href="#results">3. Results and discussion</a>
+    <a href="#refs">References</a>
+    <a href="#cite">Cite &amp; info</a>
+  </aside>
+</div>
+
+<script>
+  /* Reader-view toggle: strips the landing apparatus + chrome for a clean read. */
+  var rt = document.getElementById('reader-toggle');
+  rt.addEventListener('click', function () {
+    var on = document.body.classList.toggle('is-reader');
+    rt.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  /* Scroll-progress bar (illustrative). */
+  var bar = document.getElementById('progress-bar');
+  function upd() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  }
+  document.addEventListener('scroll', upd, { passive: true });
+  upd();
+</script>
+</body>
+</html>
