@@ -1004,18 +1004,78 @@
   font-weight: 600 !important;
   color: var(--arxiv-card-grey) !important;
 }
-/* Narrow-viewport reflow (WCAG 1.4.10): wrap to a second row rather
-   than overflow. Verified at 320px (no horizontal scroll). */
-@media (max-width: 520px) {
-  .ds-site-header {
+
+/* Hamburger toggle — the approved mobile treatment (4383 spinout showcase;
+   QA'd as "<599px phone hamburger" in ARXIVCE-4426). It is meaningful only with
+   JS, so it stays hidden until revealed at the phone breakpoint under html.js;
+   the no-JS path below falls back to the WCAG-reflow wrap. Behavior contract:
+   the host's JS sets html.js, toggles .is-open on .ds-site-header-nav, and keeps
+   aria-expanded in sync here (reference impl: arxiv-header.js). */
+.ds-site-header-nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: 4px;
+  color: var(--arxiv-grey-dis);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.12s, color 0.12s;
+}
+.ds-site-header-nav-toggle:hover { background: #302c28; color: var(--arxiv-card-grey); }
+.ds-site-header-nav-toggle:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring-dark, #64b5f6);
+  outline-offset: 1px;
+}
+.ds-site-header-nav-toggle svg { width: 22px; height: 22px; display: block; }
+
+/* Narrow viewport (≤599px). WITH JS: collapse the nav behind the hamburger
+   (the approved mobile UX). WITHOUT JS: the toggle can't operate, so wrap the
+   full nav to a second row instead — WCAG 1.4.10 reflow, verified at 320px (no
+   horizontal scroll). The wrap is the fallback here, not the default. */
+@media (max-width: 599px) {
+  .js .ds-site-header { position: relative; }
+  .js .ds-site-header-nav-toggle { display: inline-flex; }
+  /* Dropdown drops below the 52px bar; absolute (the header is non-sticky) so
+     it tracks the bar wherever it sits. z-index 60 = header-attached dropdown. */
+  .js .ds-site-header-nav {
+    display: none;
+    position: absolute;
+    top: 52px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    gap: 2px;
+    padding: 8px;
+    background: var(--arxiv-ink);
+    border-top: 1px solid #4a433d;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    z-index: 60;
+  }
+  .js .ds-site-header-nav.is-open { display: flex; }
+  .js .ds-site-header-nav a,
+  .js .ds-site-header-nav button {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 10px 12px;
+    border-radius: 6px;
+  }
+
+  html:not(.js) .ds-site-header {
     flex-wrap: wrap;
     height: auto;
     min-height: 52px;
     padding: 6px 12px;
   }
-  .ds-site-header-nav { flex-wrap: wrap; row-gap: 2px; }
-  .ds-site-header-nav a,
-  .ds-site-header-nav button { padding: 6px 8px; }
+  html:not(.js) .ds-site-header-nav { flex-wrap: wrap; row-gap: 2px; width: 100%; }
+  html:not(.js) .ds-site-header-nav a,
+  html:not(.js) .ds-site-header-nav button { padding: 6px 8px; }
 }
 
 /* ── NO breadcrumb band ──
