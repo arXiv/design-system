@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <script>document.documentElement.classList.add('js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>arXiv Public Site Header — Component Reference</title>
   <link rel="stylesheet" href="design-system.css">
@@ -77,11 +78,11 @@
     <h2 class="section-title">Live component</h2>
     <p class="section-desc">
       Rendered directly from <code>design-system.css</code>. Resize the
-      window: below 520px the nav wraps to a second row (no hamburger, no
-      JS — every item stays visible, which keeps voice-control users
-      working and passes WCAG 1.4.10 reflow at 320px). The header is
-      static — it scrolls away with the page (sticky chrome is
-      reader-only; DESIGN-POLICIES.md, decided 2026-06-11).
+      window: at &le;599px the nav collapses behind the hamburger (the approved
+      mobile treatment); <strong>without JS it wraps to a second row instead</strong> —
+      every item stays visible, passing WCAG 1.4.10 reflow at 320px and keeping
+      voice-control working. The header is static — it scrolls away with the
+      page (sticky chrome is reader-only; DESIGN-POLICIES.md, decided 2026-06-11).
     </p>
     <div class="live-demo">
       <div class="ds-announcement" role="region" aria-label="Announcement">
@@ -94,7 +95,13 @@
         <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
           <img src="../../mockups/images/arxiv-logo.png" alt="archive">
         </a>
-        <nav class="ds-site-header-nav" aria-label="Main navigation">
+        <button type="button" id="ds-nav-toggle" class="ds-site-header-nav-toggle"
+          aria-label="Open menu" aria-controls="ds-site-header-nav" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation">
           <a href="https://arxiv.org/search">
             <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
               <circle cx="11" cy="11" r="8"/>
@@ -117,6 +124,7 @@
       <li>The skip link (<code>.ds-skip-link</code>) is the <strong>first focusable element</strong> on the page, visible only on keyboard focus.</li>
       <li>Logo alt text and aria-labels say <strong>"archive"</strong> — the spoken form of "arXiv" (Dan Miner: screen readers otherwise produce "ar-zhiv" / Roman-numeral gibberish).</li>
       <li>The Search control is an <code>&lt;a href="/search"&gt;</code> that JS may upgrade to open a search overlay. <strong>Never a dead button</strong> — without JS it navigates to the search page.</li>
+      <li>At &le;599px the nav collapses behind a hamburger (host JS toggles <code>.is-open</code> on the nav and keeps <code>aria-expanded</code> in sync). <strong>Without JS it wraps to a second row</strong>, all items visible — the wrap is the no-JS fallback, not the default.</li>
       <li>Focus rings on the dark bar use <code>--arxiv-focus-ring-dark</code> (#64b5f6); the standard Link Blue ring is invisible against #1c1a17.</li>
       <li>The announcement is temporal: render only while active, persist dismissal in production, and never attach page-critical function to it.</li>
       <li>Nothing in this unit is sticky — the whole header scrolls away with the page (decided 2026-06-11; sticky chrome is exceptional at arXiv and reader-only). No <code>scroll-padding</code> duty applies.</li>
@@ -124,5 +132,18 @@
     </ul>
   </section>
 </div>
+<script>
+  /* Demo only — production hosts drive this via arxiv-header.js. */
+  (function () {
+    var t = document.getElementById('ds-nav-toggle');
+    var n = document.getElementById('ds-site-header-nav');
+    if (!t || !n) return;
+    t.addEventListener('click', function () {
+      var open = n.classList.toggle('is-open');
+      t.setAttribute('aria-expanded', open ? 'true' : 'false');
+      t.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    });
+  })();
+</script>
 </body>
 </html>
