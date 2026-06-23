@@ -9,7 +9,7 @@
   /* Proposal page — a discussion draft, built from the design system it
      discusses: IBM Plex + arXiv palette tokens via design-system.css.
      Reframed (2026-06-22) from four parallel options into one staged path:
-     Now → Soon → Once HTML is structured. The destination is an
+     Now → Next → Once HTML is structured. The destination is an
      accessibility-led semantic structure contract, reached in stages.
      Rejected approaches are kept at the bottom for the team's record. */
   *, *::before, *::after { box-sizing: border-box; }
@@ -137,14 +137,14 @@
 </nav>
 <div class="wrap">
   <h1>Implementing the design system: workflow explorations</h1>
-  <p class="sub">A staged path &mdash; draft for discussion.</p>
+  <p class="sub">Draft for discussion. June 2026. Shamsi Brinn.</p>
 
   <p class="intro">The goal of arXiv's design system is an <em>accessibility-led semantic structure contract</em>. It lives in git, ships as versioned code, is enforced through automated and maintainable tests, and improves as developers use it and bump against its weaknesses. We can't reach it in one step. The big lift is first making arXiv's markup semantically sound across all repos. The stages below describe what we can do now, soon, and once the HTML is semantically restructured.</p>
 
   <!-- Stepper -->
   <div class="stepper" aria-hidden="true">
     <div class="step"><span class="step-dot">1</span><div class="step-when">Now</div><div class="step-name">Manual reference</div></div>
-    <div class="step"><span class="step-dot">2</span><div class="step-when">Soon</div><div class="step-name">Package + manual testing</div></div>
+    <div class="step"><span class="step-dot">2</span><div class="step-when">Next</div><div class="step-name">Package + manual testing</div></div>
     <div class="step is-future"><span class="step-dot">3</span><div class="step-when">Later</div><div class="step-name">Package + automated testing</div></div>
   </div>
 
@@ -192,12 +192,12 @@
         </g>
       </svg>
       <div class="blocks">
-        <div class="block"><h4>Includes</h4><ul>
+        <div class="block"><h4>Description</h4><ul>
           <li>The repo as a written reference</li>
           <li>Works on any stack, any agent, today</li>
         </ul></div>
-        <div class="block"><h4>Gives you</h4><ul>
-          <li>Something usable right now, nothing to build first</li>
+        <div class="block"><h4>Benefits</h4><ul>
+          <li>Usable today for low-risk or urgent applications</li>
         </ul></div>
         <div class="block"><h4>Still missing</h4><ul>
           <li>Output drifts &mdash; no live link</li>
@@ -211,7 +211,7 @@
     <!-- STAGE 2 -->
     <div class="card">
       <div class="stage-head">
-        <span class="when">Soon</span>
+        <span class="when">Next</span>
         <h2 class="stage-title">Versioned package + manual testing</h2>
       </div>
       <p class="stack-line">For repos with semantic markup. Will start building out automated testing but will still need human review.</p>
@@ -254,18 +254,17 @@
         </g>
       </svg>
       <div class="blocks">
-        <div class="block"><h4>Includes</h4><ul>
+        <div class="block"><h4>Description</h4><ul>
           <li>A versioned, framework-agnostic package: DTCG <code>tokens.json</code> + plain-CSS custom properties</li>
           <li>An agent-readable spec, restructured (tables, tokens) to cut token load</li>
           <li>Manual testing and human review &mdash; automated checks beginning to be built out</li>
         </ul></div>
-        <div class="block"><h4>Gives you</h4><ul>
-          <li>One source of truth for values, version-pinned (ends the drift)</li>
-          <li>Much lower token load &mdash; values are structured, not prose</li>
-          <li>A shared semantic token vocabulary begins</li>
+        <div class="block"><h4>Benefits</h4><ul>
+          <li>Fidelity increases as semantic HTML is applied</li>
+          <li>Reduced token load</li>
+          <li>Shared semantic vocabulary is built out</li>
         </ul></div>
         <div class="block"><h4>Requires first</h4><ul>
-          <li>Fix the version contract (one deterministic pin across repos)</li>
           <li>Stabilize the token + naming foundation</li>
           <li>Structure the design-system content</li>
         </ul></div>
@@ -316,18 +315,16 @@
         </g>
       </svg>
       <div class="blocks">
-        <div class="block"><h4>Includes</h4><ul>
-          <li>Everything in <em>Soon</em>, plus&hellip;</li>
+        <div class="block"><h4>Description</h4><ul>
+          <li>Everything in <em>Next</em>, plus&hellip;</li>
           <li>Automated conformance: linting + tests in CI (contrast, palette/font allowlists, <code>:focus-visible</code>, semantic-structure checks)</li>
           <li>A two-way contribution loop with trust-level governance &mdash; automated checks merge mechanical fixes; a person always reviews higher-judgment and spec-level changes</li>
           <li>An agent-agnostic entry point (<code>AGENTS.md</code> beside <code>CLAUDE.md</code>) &mdash; not locked to one tool</li>
           <li>Semantically structured HTML across surfaces</li>
         </ul></div>
-        <div class="block"><h4>Gives you</h4><ul>
-          <li>Brand + accessibility fidelity proven automatically across every repo</li>
-          <li>The designer owns the spec and the checks &mdash; not every PR</li>
-          <li>Cheap, reliable redesigns: change tokens &rarr; agents propagate &rarr; checks verify</li>
-          <li>A11y invariants encoded as checks, so no future reskin can regress them</li>
+        <div class="block"><h4>Benefits</h4><ul>
+          <li>Strong governance layer</li>
+          <li>Less human oversight needed</li>
         </ul></div>
         <div class="block"><h4>Requires first</h4><ul>
           <li>All target surfaces restructured to semantically sound markup (done per-surface, agent-assisted)</li>
@@ -344,7 +341,7 @@
   <h2 class="matrix-h">What comes online at each stage</h2>
   <table class="matrix">
     <thead>
-      <tr><th>Capability</th><th class="mark">Now</th><th class="mark">Soon</th><th class="mark">Later</th></tr>
+      <tr><th>Capability</th><th class="mark">Now</th><th class="mark">Next</th><th class="mark">Later</th></tr>
     </thead>
     <tbody>
       <tr><td>Versioned token + CSS package</td>
@@ -391,7 +388,7 @@
   <div class="rej">
     <p class="rej-title">Hybrid (split package + agent track) <span class="tag">Rejected as redundant</span></p>
     <p>Ship invariants as a partial package; route flexible parts through an agent that prototypes then builds them.</p>
-    <p class="why"><b>Why not:</b> the staged path already subsumes it &mdash; the package is <em>Soon</em>, the agent-built work is <em>Later</em>. As a standalone option it adds complexity without adding a distinct capability.</p>
+    <p class="why"><b>Why not:</b> the staged path already subsumes it &mdash; the package is <em>Next</em>, the agent-built work is <em>Later</em>. As a standalone option it adds complexity without adding a distinct capability.</p>
   </div>
 
 </div>
