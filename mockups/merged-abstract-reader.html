@@ -305,10 +305,23 @@ footer.ds-site-footer .ds-site-footer-sep { color: var(--arxiv-border-light); }
 body:not(.mg-reader) .arxiv-html-header { display: none !important; }
 body.mg-reader .mg-abs-only { display: none; }
 body.mg-reader { background: #fff; }
+
+/* The reader lays out <body> as a multi-column grid (content + margins).
+   Our injected top-level blocks are direct children of <body>, so without
+   this they each land in a different grid column. Force them to span every
+   column = full page width, stacked in source order above the paper. */
+.mg-shell, footer.ds-site-footer { grid-column: 1 / -1; }
+/* Pin the injected layer to the first grid row so it stays at the top in
+   both modes (otherwise, when reader mode reveals the reader header at row 1
+   and the shell shrinks, auto-flow relocates the shell to the bottom). The
+   reader header is pushed below it in reader mode. */
+.mg-shell { grid-row: 1; }
+body.mg-reader .arxiv-html-header { grid-row: 2; }
 </style>
 </head>
 <body>
 
+<div class="mg-shell">
 <!-- ══ MERGED ABSTRACT LAYER (mg-) — grafted on top of the reader ══ -->
 <div class="mg-abs-only">
   <div class="ds-announcement" role="region" aria-label="Announcement">
@@ -387,6 +400,7 @@ body.mg-reader { background: #fff; }
     </section>
   </div>
 </div>
+</div><!-- /.mg-shell -->
 
 <!--
 ═══════════════════════════════════════════════════════════════════════
