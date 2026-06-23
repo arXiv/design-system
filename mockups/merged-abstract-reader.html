@@ -220,6 +220,21 @@
    switches between abstract-page mode (default) and reader mode.
    ════════════════════════════════════════════════════════════════════ */
 
+/* ---- Plex font tokens (the reader's :root doesn't define these; without
+   them the abstract layer falls back to Times). Mirrors abstract-redesign. ---- */
+:root {
+  --arxiv-font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --arxiv-font-condensed: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  --arxiv-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* The reader has a global `img { background-color: var(--image-background-color) }`
+   rule (from the ar5iv stylesheet, intentional so paper figures stay legible
+   in dark mode). It catches our header logo and announcement glyph and paints
+   them white. Scope an override to images inside the injected layer only. */
+.mg-shell img, .ds-site-header-logo img, .ds-announcement-glyph,
+footer.ds-site-footer img { background-color: transparent !important; }
+
 /* ---- Exact header (ported from abstract-redesign.html) ---- */
 .ds-announcement { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 6px 16px; background: var(--arxiv-active-bg); color: var(--arxiv-ink); font-family: var(--arxiv-font-sans); font-size: 0.8125rem; font-weight: 500; position: relative; }
 .ds-announcement-glyph { width: 18px; height: 18px; flex-shrink: 0; }
