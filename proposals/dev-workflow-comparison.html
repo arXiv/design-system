@@ -139,13 +139,13 @@
   <h1>Implementing the design system: workflow explorations</h1>
   <p class="sub">Draft for discussion. June 2026. Shamsi Brinn.</p>
 
-  <p class="intro">The goal of arXiv's design system is an <em>accessibility-led semantic structure contract</em>. It lives in git, ships as versioned code, is enforced through automated and maintainable tests, and improves as developers use it and bump against its weaknesses. We can't reach it in one step. The big lift is first making arXiv's markup semantically sound across all repos. The stages below describe what we can do now, soon, and once the HTML is semantically restructured.</p>
+  <p class="intro">The goal of arXiv's design system is an <em>accessibility-led semantic structure contract</em>. It lives in git, ships as versioned code, is enforced through automated and maintainable tests, and improves as developers use it and bump against its weaknesses. <br><br>We can't reach it in one step. The big lift is first making arXiv's markup semantically sound across all repos. It is not only necessary for the design system, but is also the primary pillar of accessibility. Below are three stages that I think are realistic based on arXiv's resources.</p>
 
   <!-- Stepper -->
   <div class="stepper" aria-hidden="true">
-    <div class="step"><span class="step-dot">1</span><div class="step-when">Now</div><div class="step-name">Manual reference</div></div>
-    <div class="step"><span class="step-dot">2</span><div class="step-when">Next</div><div class="step-name">Package + manual testing</div></div>
-    <div class="step is-future"><span class="step-dot">3</span><div class="step-when">Later</div><div class="step-name">Package + automated testing</div></div>
+    <div class="step is-future"><span class="step-dot">1</span><div class="step-when">Now</div><div class="step-name">Manual reference</div></div>
+    <div class="step"><span class="step-dot">2</span><div class="step-when">Next</div><div class="step-name">Package + manual testing<br>(transitional)</div></div>
+    <div class="step"><span class="step-dot">3</span><div class="step-when">Later</div><div class="step-name">Package + automated testing</div></div>
   </div>
 
   <div class="stages">
@@ -153,7 +153,7 @@
     <!-- STAGE 1 -->
     <div class="card">
       <div class="stage-head">
-        <span class="when">Now</span>
+        <span class="when is-future">Now</span>
         <h2 class="stage-title">Manual reference</h2>
       </div>
       <p class="stack-line">Point your agent at the design system repo and manually verify alignment.</p>
@@ -193,16 +193,16 @@
       </svg>
       <div class="blocks">
         <div class="block"><h4>Description</h4><ul>
-          <li>The repo as a written reference</li>
+          <li>The design system repo as a valid, if less formally structured, reference</li>
           <li>Works on any stack, any agent, today</li>
         </ul></div>
         <div class="block"><h4>Benefits</h4><ul>
-          <li>Usable today for low-risk or urgent applications</li>
+          <li>Usable today for low-risk or urgent applications (opt-in, transitional header and footer, internal tools, what next?)</li>
         </ul></div>
         <div class="block"><h4>Still missing</h4><ul>
-          <li>Output drifts &mdash; no live link</li>
-          <li>Token-intensive: the agent reads the whole prose corpus each time</li>
-          <li>Verification is manual and ad hoc &mdash; easy to miss</li>
+          <li>Output drifts (no versioned package)</li>
+          <li>Token-intensive: prose corpus, agent reads all of it each time</li>
+          <li>Verification is manual, no formal tests written yet, easy to miss things</li>
         </ul></div>
       </div>
       <p class="contract"><b>Contract status:</b> none. The design system is re-interpreted from scratch each time, so nothing holds the repos to it.</p>
@@ -211,10 +211,10 @@
     <!-- STAGE 2 -->
     <div class="card">
       <div class="stage-head">
-        <span class="when">Next</span>
+        <span class="when">Next (transitional)</span>
         <h2 class="stage-title">Versioned package + manual testing</h2>
       </div>
-      <p class="stack-line">For repos with semantic markup. Will start building out automated testing but will still need human review.</p>
+      <p class="stack-line">Convert at least one repo to semantic markup and apply the design system'sversioned package. Start building out automated testing but mostly human review (designer is still a bottleneck).</p>
       <svg class="loop" viewBox="0 0 720 175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The lifecycle with a versioned package. Across the top: the design system repo (a cylinder), a versioned package (a document), build, manual testing, production. Issues found at build, testing or production are raised as pull requests, which the designer reviews and applies to the repo.">
         <defs>
           <marker id="snk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1c1a17"/></marker>
@@ -255,30 +255,30 @@
       </svg>
       <div class="blocks">
         <div class="block"><h4>Description</h4><ul>
-          <li>A versioned, framework-agnostic package: DTCG <code>tokens.json</code> + plain-CSS custom properties</li>
-          <li>An agent-readable spec, restructured (tables, tokens) to cut token load</li>
-          <li>Manual testing and human review &mdash; automated checks beginning to be built out</li>
+          <li>A versioned, framework-agnostic package: DTCG <code>tokens.json</code>, CSS custom properties</li>
+          <li>An agent-readable spec that is structured to reduce token load</li>
+          <li>Manual testing and human review &mdash; some automated checks</li>
         </ul></div>
         <div class="block"><h4>Benefits</h4><ul>
-          <li>Fidelity increases as semantic HTML is applied</li>
-          <li>Reduced token load</li>
-          <li>Shared semantic vocabulary is built out</li>
+          <li>Fidelity increases as semantic HTML and design system stabilize</li>
+          <li>Reduced token load from more structured design system content</li>
+          <li>The shared semantic vocabulary is emerging</li>
         </ul></div>
         <div class="block"><h4>Requires first</h4><ul>
           <li>Stabilize the token + naming foundation</li>
           <li>Structure the design-system content</li>
         </ul></div>
       </div>
-      <p class="contract"><b>Contract status:</b> emerging. The shared design vocabulary can be applied to restructured repos, and manual review makes it <em>begin</em> to be a semantic structure contract. However, the consuming markup may still be inconsistent and enforcement is human.</p>
+      <p class="contract"><b>Contract status:</b> emerging. The shared design vocabulary can be applied to restructured repos, and manual review makes it <em>begin</em> to be a semantic structure contract. However, the consuming markup will probably still be in flux and human oversight is needed.</p>
     </div>
 
     <!-- STAGE 3 -->
     <div class="card">
       <div class="stage-head">
-        <span class="when is-future">Later</span>
+        <span class="when">Later</span>
         <h2 class="stage-title">Versioned package + automated testing</h2>
       </div>
-      <p class="stack-line">Build out automated tests/linting in CI. Add in two-way contribution loop for continuous improvement of the design system.</p>
+      <p class="stack-line">All repos converted, build out robust automated tests/linting in CI. Stabilize contribution loop for continuous improvement of the design system.</p>
       <svg class="loop" viewBox="0 0 720 175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The full cycle, automated. Across the top: the design system repo (a cylinder, owned by the designer), a versioned package with checks (a document), build, automated CI testing, production. Build, testing and production each send improvements down a return channel through PR and governance, back up into the design system repo.">
         <defs><marker id="lt" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1c1a17"/></marker></defs>
         <path d="M8 32 v32 a60 6 0 0 0 120 0 v-32" fill="#edf4fc" stroke="#1f5e96" stroke-width="1.6"/>
@@ -317,22 +317,22 @@
       <div class="blocks">
         <div class="block"><h4>Description</h4><ul>
           <li>Everything in <em>Next</em>, plus&hellip;</li>
-          <li>Automated conformance: linting + tests in CI (contrast, palette/font allowlists, <code>:focus-visible</code>, semantic-structure checks)</li>
-          <li>A two-way contribution loop with trust-level governance &mdash; automated checks merge mechanical fixes; a person always reviews higher-judgment and spec-level changes</li>
-          <li>An agent-agnostic entry point (<code>AGENTS.md</code> beside <code>CLAUDE.md</code>) &mdash; not locked to one tool</li>
-          <li>Semantically structured HTML across surfaces</li>
+          <li>Automated conformance: linting + tests in CI (contrast, palette/font allowlists, <code>:focus-visible</code>, semantic-structure checks, more)</li>
+          <li>All-team contribution loop with trust-level governance &mdash; automated checks merge mechanical fixes; human review of spec-level changes that require higher judgement</li>
+          <li>Semantically structured HTML across all repos</li>
         </ul></div>
         <div class="block"><h4>Benefits</h4><ul>
           <li>Strong governance layer</li>
-          <li>Less human oversight needed</li>
+          <li>Less human oversight, increased efficiency</li>
+          <li>Designer is no longer a bottleneck</li>
         </ul></div>
         <div class="block"><h4>Requires first</h4><ul>
-          <li>All target surfaces restructured to semantically sound markup (done per-surface, agent-assisted)</li>
+          <li>All repos restructured to semantically sound markup</li>
           <li>The design system stabilized and versioned enough to enforce</li>
-          <li>Team capacity to maintain the checks (start small, grow)</li>
+          <li>Team capacity to maintain automated tests</li>
         </ul></div>
       </div>
-      <p class="contract"><b>Contract status:</b> realized. This is where it comes into its own &mdash; the accessibility-led semantic structure contract is real and automatically enforced.</p>
+      <p class="contract"><b>Contract status:</b> realized. This is where it comes into its own and the <em>accessibility-led semantic structure contract</em> can be automatically enforced.</p>
     </div>
 
   </div>
@@ -344,16 +344,20 @@
       <tr><th>Capability</th><th class="mark">Now</th><th class="mark">Next</th><th class="mark">Later</th></tr>
     </thead>
     <tbody>
-      <tr><td>Versioned token + CSS package</td>
-        <td class="mark"><span class="mk" title="not yet">&#9675;</span><span class="is-sr-only">not yet</span></td>
+      <tr><td>Redeisgn</td>
+        <td class="mark"><span class="mk" title="partial">&#9680;</span><span class="is-sr-only">partial</span></td>
         <td class="mark"><span class="mk" title="in place">&#9679;</span><span class="is-sr-only">in place</span></td>
         <td class="mark"><span class="mk" title="in place">&#9679;</span><span class="is-sr-only">in place</span></td></tr>
-      <tr><td>Agent-readable spec, structured for low token load</td>
+      <tr><td>Agent-readable spec</td>
         <td class="mark"><span class="mk" title="partial">&#9680;</span><span class="is-sr-only">partial</span></td>
         <td class="mark"><span class="mk" title="in place">&#9679;</span><span class="is-sr-only">in place</span></td>
         <td class="mark"><span class="mk" title="in place">&#9679;</span><span class="is-sr-only">in place</span></td></tr>
       <tr><td>Manual testing &amp; review</td>
         <td class="mark"><span class="mk" title="partial">&#9680;</span><span class="is-sr-only">partial</span></td>
+        <td class="mark"><span class="mk" title="in place">&#9679;</span><span class="is-sr-only">in place</span></td>
+        <td class="mark"><span class="mk" title="in place">&#9679;</span><span class="is-sr-only">in place</span></td></tr>
+      <tr><td>Versioned token + CSS package</td>
+        <td class="mark"><span class="mk" title="not yet">&#9675;</span><span class="is-sr-only">not yet</span></td>
         <td class="mark"><span class="mk" title="in place">&#9679;</span><span class="is-sr-only">in place</span></td>
         <td class="mark"><span class="mk" title="in place">&#9679;</span><span class="is-sr-only">in place</span></td></tr>
       <tr><td>Automated tests + linting in CI</td>
@@ -377,18 +381,18 @@
   <p class="legend"><span><span class="mk">&#9679;</span> in place</span><span><span class="mk">&#9680;</span> partial / emerging</span><span><span class="mk">&#9675;</span> not yet</span></p>
 
   <!-- Rejected -->
-  <h2 class="rej-h">Considered and set aside</h2>
+  <h2 class="rej-h">Considered and rejected</h2>
 
   <div class="rej">
-    <p class="rej-title">Claude Design as the pipeline <span class="tag">Rejected as the backbone</span></p>
+    <p class="rej-title">Claude Design as the pipeline <span class="tag">Insufficient</span></p>
     <p>Claude Design imports the system and produces a brand-checked <em>prototype</em>, handed to Claude Code to build as production code.</p>
-    <p class="why"><b>Why not:</b> it couples our workflow to one vendor's tool, produces prototypes rather than a canonical artifact, and our source of truth must live in git and stay tool-neutral. <b>We keep it in the toolbox</b> as a prototyping and exploration tool (it built the transitional spinout chrome) &mdash; just not as the integration path.</p>
+    <p class="why"><b>Why not:</b> Claude-specific; produces prototypes for handoff and not production code; handoff artifacts are not canonical.</p>
   </div>
 
   <div class="rej">
-    <p class="rej-title">Hybrid (split package + agent track) <span class="tag">Rejected as redundant</span></p>
+    <p class="rej-title">Hybrid (split package + agent track) <span class="tag">Redundant</span></p>
     <p>Ship invariants as a partial package; route flexible parts through an agent that prototypes then builds them.</p>
-    <p class="why"><b>Why not:</b> the staged path already subsumes it &mdash; the package is <em>Next</em>, the agent-built work is <em>Later</em>. As a standalone option it adds complexity without adding a distinct capability.</p>
+    <p class="why"><b>Why not:</b> Subsumed. A more complete package is in <em>Next</em>, the agent workflows are in<em>Later</em>.</p>
   </div>
 
 </div>
