@@ -306,7 +306,14 @@
 }
 .mg-band-inner { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
 .mg-band-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 22px 36px; margin: 0 0 22px; }
-@media (max-width: 880px) { .mg-band-row { grid-template-columns: 1fr; } }
+/* Tablet: drop Files into its own row below Cite + A11y so Cite has room
+   to breathe (the BibTeX/citation code needs width to be readable). */
+@media (max-width: 1024px) {
+  .mg-band-row { grid-template-columns: 1.5fr 1fr; }
+  .mg-band-row > .mg-files-col { grid-column: 1 / -1; }
+}
+/* Phone: stack everything. */
+@media (max-width: 680px) { .mg-band-row { grid-template-columns: 1fr; } .mg-band-row > .mg-files-col { grid-column: auto; } }
 .mg-band h3 { font-family: var(--arxiv-font-condensed); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-grey); margin: 0 0 10px; }
 
 /* Cite column */
@@ -314,7 +321,7 @@
 .mg-cite-head h3 { margin: 0; }
 .mg-cite-select { font-family: var(--arxiv-font-sans); font-size: 0.8rem; padding: 3px 8px; border: 1px solid var(--arxiv-grey-ui); border-radius: 4px; background: #fff; color: var(--arxiv-ink); cursor: pointer; }
 .mg-cite-select:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
-.mg-cite-code { background: var(--arxiv-card-grey); border-radius: 6px; padding: 11px 13px; font-family: var(--arxiv-font-mono); font-size: 0.72rem; line-height: 1.5; white-space: pre-wrap; overflow-x: auto; color: var(--arxiv-ink); max-height: 200px; overflow-y: auto; margin: 0; }
+.mg-cite-code { background: var(--arxiv-card-grey); border-radius: 6px; padding: 11px 13px; font-family: var(--arxiv-font-mono); font-size: 0.72rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: auto; color: var(--arxiv-ink); max-height: 220px; overflow-y: auto; margin: 0; }
 
 /* A11y column */
 .mg-a11y { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; font-size: 0.82rem; }
@@ -362,7 +369,7 @@
    below it so it doesn't hide behind the header. */
 body.mg-reader .mg-toc-bar { top: 52px; }
 .mg-toc-wrap { position: relative; }
-.mg-toc-trigger { display: inline-flex; align-items: center; gap: 9px; font-family: var(--arxiv-font-sans); font-size: 0.85rem; font-weight: 600; background: #fff; color: var(--arxiv-ink); border: 1px solid var(--arxiv-pill-border); border-radius: 22px; padding: 7px 14px 7px 14px; cursor: pointer; max-width: 480px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.mg-toc-trigger { display: inline-flex; align-items: center; gap: 9px; font-family: var(--arxiv-font-sans); font-size: 0.85rem; font-weight: 600; background: #fff; color: var(--arxiv-ink); border: 1px solid var(--arxiv-pill-border); border-radius: 22px; padding: 7px 14px 7px 14px; cursor: pointer; max-width: min(480px, calc(100vw - 48px)); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 .mg-toc-trigger:hover { background: var(--arxiv-warm-wash); }
 .mg-toc-trigger:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
 .mg-toc-trigger .toc-ic { width: 16px; height: 16px; flex: none; color: var(--arxiv-grey); }
