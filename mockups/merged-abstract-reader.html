@@ -270,17 +270,23 @@
   .ds-site-header-center { grid-column: 1 / -1; order: 3; justify-content: center; padding-bottom: 4px; }
 }
 
-/* ══ READER-VIEW TOGGLE (lives in each header's center) ══ */
+/* ══ READER-VIEW TOGGLE (lives in each header's center) ══
+   Variant A (default — on the BLACK ds-site-header in abstract mode):
+     dark fill (#2a2723), light card-grey text, neutral grey-ui track.
+   Variant B (on the LIGHT reader header in reader mode):
+     transparent fill, ink text, ui-grey track.
+   Active state in BOTH variants uses Open Blue (#a5d6fe) for the track —
+   on-brand and consistent across modes. */
 .mg-reader-toggle { display: inline-flex; align-items: center; gap: 8px; font-family: var(--arxiv-font-sans); font-size: 0.8125rem; font-weight: 500; border: 1px solid #4a433d; background: #2a2723; color: var(--arxiv-card-grey); border-radius: 20px; padding: 5px 14px 5px 10px; cursor: pointer; }
 .mg-reader-toggle:hover { background: #3a3631; }
 .mg-reader-toggle .tk { width: 28px; height: 16px; border-radius: 10px; background: var(--arxiv-grey-ui); position: relative; flex: none; transition: background .15s; }
 .mg-reader-toggle .tk::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.3); transition: left .15s; }
-.mg-reader-toggle[aria-pressed="true"] .tk { background: var(--arxiv-link-blue); }
+.mg-reader-toggle[aria-pressed="true"] .tk { background: var(--arxiv-open-blue); }
 .mg-reader-toggle[aria-pressed="true"] .tk::after { left: 14px; }
 .mg-reader-toggle:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
-/* The reader header's center variant uses the same dark surface — it's also
-   on a dark bar. Reader header center cell holds our toggle (its TOC trigger
-   is hidden — see mode rules below). */
+/* Variant B (reader header — light background): transparent + ink text. */
+.arxiv-html-header .mg-reader-toggle { background: transparent; color: var(--arxiv-ink); border-color: var(--arxiv-grey-ui); }
+.arxiv-html-header .mg-reader-toggle:hover { background: rgba(0,0,0,0.04); }
 .arxiv-html-header .new-html-center { display: flex; justify-content: center; align-items: center; }
 
 /* ══ TINTED BAND (full-bleed, abstract mode only) ══ */
@@ -342,9 +348,16 @@
 .mg-acc-body a { color: var(--arxiv-link-blue); }
 .mg-acc-body .mg-who-row { display: flex; flex-wrap: wrap; gap: 6px 16px; }
 
-/* ══ CENTERED STICKY TOC BAR ══ */
-.mg-toc-bar { position: sticky; top: 0; z-index: 30; display: flex; justify-content: center; padding: 14px 24px; background: rgba(255,255,255, 0.72); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 1px solid transparent; transition: border-color .15s, background .15s; }
-.mg-toc-bar.is-stuck { background: rgba(255,255,255, 0.92); border-bottom-color: var(--arxiv-border-light); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+/* ══ CENTERED STICKY TOC BAR — full-bleed, semi-transparent ══ */
+.mg-toc-bar { position: sticky; top: 0; z-index: 30; display: flex; justify-content: center; padding: 14px 24px;
+  /* full-bleed: break out of any constrained parent so the bar spans the viewport */
+  width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
+  background: rgba(255,255,255, 0.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  border-bottom: 1px solid transparent; transition: border-color .15s, background .15s; }
+.mg-toc-bar.is-stuck { background: rgba(255,255,255, 0.85); border-bottom-color: var(--arxiv-border-light); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+/* In reader mode the sticky reader header is at top:0; push the sticky TOC
+   below it so it doesn't hide behind the header. */
+body.mg-reader .mg-toc-bar { top: 52px; }
 .mg-toc-wrap { position: relative; }
 .mg-toc-trigger { display: inline-flex; align-items: center; gap: 9px; font-family: var(--arxiv-font-sans); font-size: 0.85rem; font-weight: 600; background: #fff; color: var(--arxiv-ink); border: 1px solid var(--arxiv-pill-border); border-radius: 22px; padding: 7px 14px 7px 14px; cursor: pointer; max-width: 480px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 .mg-toc-trigger:hover { background: var(--arxiv-warm-wash); }
@@ -388,31 +401,92 @@ body:not(.mg-reader) .arxiv-html-header { display: none !important; }
 body.mg-reader .mg-abs-only { display: none; }
 body.mg-reader .mg-band { display: none; }
 body.mg-reader { background: #fff; }
+/* In reader mode the sticky reader header (52px) overlaps the top of the
+   article (watermark / title). Reserve space for it on the main column. */
+body.mg-reader .ltx_page_main { padding-top: 52px; }
 /* In both modes, the reader's own toc-trigger (which lived in the reader-header
    center) is hidden — we put the Reader-view toggle in that cell instead, and
    the TOC moves to its own centered sticky button below. */
 .arxiv-html-header .toc-trigger { display: none; }
 
-/* ══ GRID PINNING ══
-   The reader uses <body> as a multi-column grid. Force our injected top-level
-   blocks to span every column so they sit full-width and stacked. */
-.mg-shell, footer.ds-site-footer { grid-column: 1 / -1; }
-.mg-shell { grid-row: 1; }
-body.mg-reader .arxiv-html-header { grid-row: 2; }
+/* Defensive: never show MathML TeX annotations visually. Browsers should
+   hide these by default, but pin display:none so the rendered equation is
+   the only visible representation. */
+math annotation, math annotation-xml { display: none !important; }
+
+/* ══ GRID INSERTION ══
+   The reader's <body> is a 5-column grid with named areas:
+     "header header header header header"   <- reader header lives here
+     ".      nav    article .      .     "   <- ltx_page_main is `article`
+     "footer footer footer footer footer"
+   Putting my chrome on row 1 or 2 would stack with those (caused a visual
+   overlap where the watermark intercepted clicks on my toggle). Instead,
+   insert two new rows at the very top for announcement + mg-shell; the
+   reader's three existing rows shift down unchanged. */
+body {
+  grid-template-rows: auto auto auto auto auto !important;
+  grid-template-areas:
+    "mgann mgann mgann mgann mgann"
+    "mgsh  mgsh  mgsh  mgsh  mgsh"
+    "header header header header header"
+    ".      nav    article .      ."
+    "footer footer footer footer footer" !important;
+}
+.ds-announcement { grid-area: mgann; }
+.mg-shell        { grid-area: mgsh; }
+footer.ds-site-footer { grid-area: footer; }
+/* TOC bar lives INSIDE .ltx_page_main (article area), so it doesn't need
+   grid placement at the body level. */
+
+/* ══ RELATED — Labs section (ported from abstract-redesign.html) ══
+   Renamed to .mg-labs-* to keep this self-contained. */
+.mg-labs-layout { display: flex; gap: 24px; }
+.mg-labs-list { flex: 0 0 auto; min-width: 240px; }
+.mg-labs-content { flex: 1; min-width: 0; }
+.mg-labs-group { margin-bottom: 16px; }
+.mg-labs-group:last-child { margin-bottom: 0; }
+.mg-labs-grouplabel { font-family: var(--arxiv-font-condensed); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--arxiv-grey); margin-bottom: 6px; }
+.mg-labs-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; }
+.mg-labs-toggle { position: relative; display: inline-block; width: 28px; height: 16px; flex-shrink: 0; }
+.mg-labs-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+.mg-labs-track { position: absolute; inset: 0; background: var(--arxiv-border-light); border: 1px solid var(--arxiv-grey-dis); border-radius: 999px; cursor: pointer; transition: background 0.18s, border-color 0.18s; }
+.mg-labs-track::after { content: ''; position: absolute; top: 1px; left: 1px; width: 12px; height: 12px; background: #fff; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.2); transition: transform 0.18s; }
+.mg-labs-toggle input:checked + .mg-labs-track { background: var(--arxiv-open-blue); border-color: #7eb8e0; }
+.mg-labs-toggle input:checked + .mg-labs-track::after { transform: translateX(12px); }
+.mg-labs-toggle input:focus-visible + .mg-labs-track { outline: 3px solid var(--arxiv-link-blue); outline-offset: 2px; }
+.mg-labs-name { font-size: 0.8125rem; color: var(--arxiv-ink); }
+.mg-labs-name .mg-labs-what { font-size: 0.6875rem; color: var(--arxiv-grey); text-decoration: none; margin-left: 4px; }
+.mg-labs-name .mg-labs-what:hover { text-decoration: underline; }
+.mg-labs-placeholder { display: none; padding: 16px 18px; background: var(--arxiv-warm-wash); border: 1px dashed var(--arxiv-border-light); border-radius: 4px; font-size: 0.75rem; color: var(--arxiv-grey); font-style: italic; margin-bottom: 10px; }
+.mg-labs-placeholder:last-child { margin-bottom: 0; }
+.mg-labs-placeholder.is-visible { display: block; }
+.mg-labs-empty { padding: 20px 18px; font-size: 0.8125rem; color: var(--arxiv-grey); font-style: italic; }
+.mg-labs-info { display: flex; justify-content: flex-end; margin-top: 12px; }
+.mg-labs-info a { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--arxiv-grey); text-decoration: none; }
+.mg-labs-info a img { width: 14px; height: 14px; }
+.mg-labs-info a:hover { color: var(--arxiv-ink); }
+.mg-ext { width: 11px; height: 11px; opacity: 0.6; margin-left: 2px; vertical-align: middle; }
+@media (max-width: 700px) {
+  .mg-labs-layout { flex-direction: column; }
+  .mg-labs-list { min-width: 0; }
+}
 </style>
 </head>
 <body>
 
+<!-- ══ Announcement banner — OUTSIDE .mg-abs-only so it persists in BOTH
+     modes (closeable by the reader). ══ -->
+<div class="ds-announcement" id="mg-announcement" role="region" aria-label="Announcement">
+  <img class="ds-announcement-glyph" src="images/smileybones-small.svg" alt="" aria-hidden="true">
+  <span class="ds-announcement-text">arXiv is now an independent nonprofit!</span>
+  <a class="ds-announcement-link" href="https://info.arxiv.org/about/index.html">Learn more</a>
+  <button type="button" class="ds-announcement-close" id="mg-announcement-close" aria-label="Dismiss announcement">&times;</button>
+</div>
+
 <div class="mg-shell">
-<!-- ══ ABSTRACT-MODE CHROME (mg-abs-only): announcement + ds-site-header
-        with the Reader-view toggle in the center cell ══ -->
+<!-- ══ ABSTRACT-MODE CHROME (mg-abs-only): ds-site-header with the
+        Reader-view toggle in the center cell ══ -->
 <div class="mg-abs-only">
-  <div class="ds-announcement" role="region" aria-label="Announcement">
-    <img class="ds-announcement-glyph" src="images/smileybones-small.svg" alt="" aria-hidden="true">
-    <span class="ds-announcement-text">arXiv is now an independent nonprofit!</span>
-    <a class="ds-announcement-link" href="https://info.arxiv.org/about/index.html">Learn more</a>
-    <button type="button" class="ds-announcement-close" aria-label="Dismiss announcement">&times;</button>
-  </div>
   <header class="ds-site-header">
     <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
       <img src="images/arxiv-logo.png" alt="archive">
@@ -3374,7 +3448,83 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
       <details class="mg-acc">
         <summary>Related</summary>
         <div class="mg-acc-body">
-          <p><a href="#">Connected Papers</a> &middot; <a href="#">Papers with Code</a> &middot; <a href="#">Replicate</a> &middot; <a href="#">arXiv Labs experiments</a></p>
+          <!-- Full arXiv Labs section (ported from abstract-redesign.html):
+               grouped toggle list on the left, content area on the right.
+               Toggling a Lab reveals its placeholder; the empty-state hides. -->
+          <div class="mg-labs-layout">
+            <div class="mg-labs-list">
+              <div class="mg-labs-group">
+                <div class="mg-labs-grouplabel">Papers &amp; Citations</div>
+                <div class="mg-labs-row">
+                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="connected-papers" aria-label="Connected Papers"><span class="mg-labs-track"></span></label>
+                  <span class="mg-labs-name">Connected Papers <a class="mg-labs-what" href="https://www.connectedpapers.com/about" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+                </div>
+                <div class="mg-labs-row">
+                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="litmaps" aria-label="Litmaps"><span class="mg-labs-track"></span></label>
+                  <span class="mg-labs-name">Litmaps <a class="mg-labs-what" href="https://www.litmaps.co/" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+                </div>
+                <div class="mg-labs-row">
+                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="core" aria-label="CORE Recommender"><span class="mg-labs-track"></span></label>
+                  <span class="mg-labs-name">CORE Recommender <a class="mg-labs-what" href="https://core.ac.uk/services/recommender" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+                </div>
+                <div class="mg-labs-row">
+                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="scite" aria-label="scite Smart Citations"><span class="mg-labs-track"></span></label>
+                  <span class="mg-labs-name">scite Smart Citations <a class="mg-labs-what" href="https://www.scite.ai/" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+                </div>
+              </div>
+              <div class="mg-labs-group">
+                <div class="mg-labs-grouplabel">Code, Data &amp; Models</div>
+                <div class="mg-labs-row">
+                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="catalyzex" aria-label="CatalyzeX Code Finder"><span class="mg-labs-track"></span></label>
+                  <span class="mg-labs-name">CatalyzeX Code Finder <a class="mg-labs-what" href="https://www.catalyzex.com" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+                </div>
+                <div class="mg-labs-row">
+                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="huggingface" aria-label="Hugging Face"><span class="mg-labs-track"></span></label>
+                  <span class="mg-labs-name">Hugging Face <a class="mg-labs-what" href="https://huggingface.co/huggingface" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+                </div>
+                <div class="mg-labs-row">
+                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="sciencecast" aria-label="ScienceCast"><span class="mg-labs-track"></span></label>
+                  <span class="mg-labs-name">ScienceCast <a class="mg-labs-what" href="https://sciencecast.org/welcome" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+                </div>
+                <div class="mg-labs-row">
+                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="alphaxiv" aria-label="alphaXiv"><span class="mg-labs-track"></span></label>
+                  <span class="mg-labs-name">alphaXiv <a class="mg-labs-what" href="https://alphaxiv.org/" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+                </div>
+              </div>
+              <div class="mg-labs-group">
+                <div class="mg-labs-grouplabel">Demos</div>
+                <div class="mg-labs-row">
+                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="replicate" aria-label="Replicate"><span class="mg-labs-track"></span></label>
+                  <span class="mg-labs-name">Replicate <a class="mg-labs-what" href="https://replicate.com/docs/arxiv/about" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+                </div>
+                <div class="mg-labs-row">
+                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="hf-spaces" aria-label="Hugging Face Spaces"><span class="mg-labs-track"></span></label>
+                  <span class="mg-labs-name">Hugging Face Spaces <a class="mg-labs-what" href="https://huggingface.co/docs/hub/spaces" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+                </div>
+              </div>
+            </div>
+            <div class="mg-labs-content" id="mg-labs-content-area">
+              <div class="mg-labs-empty" id="mg-labs-empty-msg">Toggle a tool on the left to see its content here.</div>
+              <div class="mg-labs-placeholder" data-lab-content="connected-papers">Content for Connected Papers will display here</div>
+              <div class="mg-labs-placeholder" data-lab-content="litmaps">Content for Litmaps will display here</div>
+              <div class="mg-labs-placeholder" data-lab-content="core">Content for CORE Recommender will display here</div>
+              <div class="mg-labs-placeholder" data-lab-content="scite">Content for scite Smart Citations will display here</div>
+              <div class="mg-labs-placeholder" data-lab-content="catalyzex">Content for CatalyzeX will display here</div>
+              <div class="mg-labs-placeholder" data-lab-content="huggingface">Content for Hugging Face will display here</div>
+              <div class="mg-labs-placeholder" data-lab-content="sciencecast">Content for ScienceCast will display here</div>
+              <div class="mg-labs-placeholder" data-lab-content="alphaxiv">Content for alphaXiv will display here</div>
+              <div class="mg-labs-placeholder" data-lab-content="replicate">Content for Replicate will display here</div>
+              <div class="mg-labs-placeholder" data-lab-content="hf-spaces">Content for Hugging Face Spaces will display here</div>
+            </div>
+          </div>
+          <div class="mg-labs-info">
+            <a href="https://info.arxiv.org/labs/index.html" target="_blank" rel="noopener noreferrer">
+              <img src="images/smileybones-labs-small.svg" alt="">
+              What are arXiv Labs?
+              <svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              <span class="is-sr-only">(opens in new tab)</span>
+            </a>
+          </div>
         </div>
       </details>
     </div>
@@ -8704,6 +8854,29 @@ We thus see that</p>
   window.addEventListener('scroll', onScroll, { passive: true });
   // Initial pass after layout settles
   setTimeout(function () { measureTocBar(); onScroll(); }, 50);
+
+  /* ── 4. Announcement close button: hide the banner on click ── */
+  var annClose = document.getElementById('mg-announcement-close');
+  var annEl = document.getElementById('mg-announcement');
+  if (annClose && annEl) {
+    annClose.addEventListener('click', function () { annEl.style.display = 'none'; });
+  }
+
+  /* ── 5. Labs toggles (Related accordion): show/hide content placeholder ── */
+  var labsEmpty = document.getElementById('mg-labs-empty-msg');
+  function updateLabsEmpty() {
+    if (!labsEmpty) return;
+    var anyVisible = document.querySelector('.mg-labs-placeholder.is-visible');
+    labsEmpty.style.display = anyVisible ? 'none' : 'block';
+  }
+  document.querySelectorAll('.mg-labs-toggle input').forEach(function (input) {
+    input.addEventListener('change', function () {
+      var labName = this.dataset.lab;
+      var placeholder = document.querySelector('[data-lab-content="' + labName + '"]');
+      if (placeholder) placeholder.classList.toggle('is-visible', this.checked);
+      updateLabsEmpty();
+    });
+  });
 })();
 </script>
 </body></html>
