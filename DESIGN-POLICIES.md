@@ -3,6 +3,13 @@
 Hard constraints for all arXiv frontend work — internal tools and public-facing pages. These are non-negotiable rules, not suggestions. Verify compliance before submitting changes.
 
 ---
+## Internal vs. Public pages
+
+Every arXiv frontend belongs to one of two surfaces, and the surface sets the primary-action color. 
+- **Internal tools:** Staff-facing workspaces such as the moderation queue and the Admin Console (arXiv Check) use Access Lime as the primary action color and lighter green tints for backgrounds.
+- **Public pages:** Everything a reader or author sees on arxiv.org, including listing, abstract, and HTML paper pages, use Open Blue as the primary action and tints of Repository Brown for backgrounds.
+- This is not a stylistic choice: the accent tells the person which context they are working in, so the two must never be crossed. A lime primary button on a public page, or an Open Blue primary button on a staff tool, is a violation regardless of how well it reads. When a surface is genuinely ambiguous (a shared component or an embedded widget), ask and determine which context the user is in first and document it in a code comment.
+- Token naming is a separate concern, governed under Design tokens below — the prefix follows the consuming codebase's rules, not the surface, so never infer the surface from a token name or use a token prefix to signal context.
 
 ## Accessibility (WCAG 2.0 AA)
 
@@ -65,10 +72,11 @@ Hard constraints for all arXiv frontend work — internal tools and public-facin
 ## Public pages — additional policies
 
 - **No metrics display:** arXiv does not display view counts, download counts, or citation counts on public pages. This is a core operating value — arXiv does not promote or rank papers.
-- **Citation export:** Provide BibTeX (default), APA, Chicago, and MLA formats. Generate from metadata — no manual work.
-- **arXiv Labs:** Labs tools that collect user data must be behind an opt-in toggle (not on by default). Labs that require login should be deprioritized in placement.
-- **Header:** Single bar. Black (phase 1, spinout) transitioning to Repository Brown (phase 2). Logo, Search, Submit, Donate, Log in. No Cornell branding.
-- **Footer:** Acknowledgment text (Simons Foundation, member institutions), then links: About, Help, Contact, Subscribe, Copyright, Privacy, Accessibility, Status.
+- **Citation export:** On abstract pages, we provide BibTeX (default), APA, Chicago, and MLA formats. Generate from metadata to save manual work for the user.
+- **arXiv Labs:** Labs tools that collect user data must be behind an opt-in toggle, not on by default (this policy is still in the early implementation phase as 6/24/26 and not enforced for Labs yet). Labs that require login to a third party platform should be deprioritized in placement.
+- **Header:** Single bar. Black (phase 1, spinout) transitioning to Repository Brown (phase 2). Logo, Search, Submit, Donate, Log in. No Cornell branding post-spinout.
+- **Footer:** Acknowledgment text (Simons Foundation, member institutions, IP matched institution name). Links: About, Help, Contact, Subscribe, Copyright, Privacy, Accessibility, Status. Special section for major funders on the right side. All acknowledgements are presented in the footer, never in the header.
+- **Banner:** A minimal and time-bound banner can be displayed with short announcements. It includes a small icon, a short sentence and link, and a dismiss button. After dismissing, the banner should not display for that user again.
 
 ## Chrome and interaction structure
 
