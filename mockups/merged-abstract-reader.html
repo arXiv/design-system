@@ -292,6 +292,13 @@
 .arxiv-html-header .mg-reader-toggle:hover { background: rgba(0,0,0,0.04); }
 .arxiv-html-header .new-html-center { display: flex; justify-content: center; align-items: center; }
 
+/* The ar5iv stylesheet applies a 16px right margin to .ltx_page_content,
+   making the page_content's center 8px LEFT of the viewport center. With
+   symmetric negative-margin full-bleed, that 8px asymmetry leaves a gap
+   on the right of the tinted band. Remove the margin so the band's center
+   aligns with the viewport's center. */
+.ltx_page_content { margin-right: 0 !important; }
+
 /* ══ TINTED BAND (full-bleed, abstract mode only) ══ */
 .mg-band {
   background: var(--arxiv-warm-wash);
@@ -307,13 +314,20 @@
 .mg-band-inner { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
 .mg-band-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 22px 36px; margin: 0 0 22px; }
 /* Tablet: drop Files into its own row below Cite + A11y so Cite has room
-   to breathe (the BibTeX/citation code needs width to be readable). */
+   to breathe (the BibTeX/citation code needs width to be readable). When
+   Files spans the full row, lay its items out horizontally so they use
+   the available width efficiently rather than stacking vertically. */
 @media (max-width: 1024px) {
   .mg-band-row { grid-template-columns: 1.5fr 1fr; }
   .mg-band-row > .mg-files-col { grid-column: 1 / -1; }
+  .mg-band-row > .mg-files-col .mg-files { flex-direction: row; align-items: center; gap: 12px 24px; flex-wrap: wrap; }
 }
-/* Phone: stack everything. */
-@media (max-width: 680px) { .mg-band-row { grid-template-columns: 1fr; } .mg-band-row > .mg-files-col { grid-column: auto; } }
+/* Phone: stack everything; Files goes back to vertical inside its own row. */
+@media (max-width: 680px) {
+  .mg-band-row { grid-template-columns: 1fr; }
+  .mg-band-row > .mg-files-col { grid-column: auto; }
+  .mg-band-row > .mg-files-col .mg-files { flex-direction: column; align-items: stretch; gap: 12px; }
+}
 .mg-band h3 { font-family: var(--arxiv-font-condensed); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-grey); margin: 0 0 10px; }
 
 /* Cite column */
