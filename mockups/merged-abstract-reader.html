@@ -433,8 +433,12 @@
   border-bottom: 1px solid transparent; transition: border-color .15s, background .15s; }
 .mg-toc-bar.is-stuck { background: rgba(255,255,255, 0.85); border-bottom-color: var(--arxiv-border-light); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
 /* In reader mode the sticky reader header is at top:0; push the sticky TOC
-   below it so it doesn't hide behind the header. */
-body.mg-reader .mg-toc-bar { top: 52px; }
+   below it. Use 36px to match the COMPACT header height (the reader's
+   compact-on-scroll script shrinks the 52px header to 36px when the page is
+   scrolled — which is when the TOC is sticking). At top of page the TOC is
+   in its natural position (below the abstract), so the larger header height
+   doesn't matter there. */
+body.mg-reader .mg-toc-bar { top: 36px; }
 .mg-toc-wrap { position: relative; }
 .mg-toc-trigger { display: inline-flex; align-items: center; gap: 9px; font-family: var(--arxiv-font-sans); font-size: 0.85rem; font-weight: 600; background: #fff; color: var(--arxiv-ink); border: 1px solid var(--arxiv-pill-border); border-radius: 22px; padding: 7px 14px 7px 14px; cursor: pointer; max-width: min(480px, calc(100vw - 48px)); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 .mg-toc-trigger:hover { background: var(--arxiv-warm-wash); }
@@ -478,9 +482,9 @@ body:not(.mg-reader) .arxiv-html-header { display: none !important; }
 body.mg-reader .mg-abs-only { display: none; }
 body.mg-reader .mg-band { display: none; }
 body.mg-reader { background: #fff; }
-/* In reader mode the sticky reader header (52px) overlaps the top of the
-   article (watermark / title). Reserve space for it on the main column. */
-body.mg-reader .ltx_page_main { padding-top: 52px; }
+/* (Old reader-mode top padding removed — once grid-template-areas put the
+   reader header in its own grid row above .ltx_page_main, the padding-top
+   became redundant and visible as a 52px gap at narrow widths.) */
 /* In both modes, the reader's own toc-trigger (which lived in the reader-header
    center) is hidden — we put the Reader-view toggle in that cell instead, and
    the TOC moves to its own centered sticky button below. */
