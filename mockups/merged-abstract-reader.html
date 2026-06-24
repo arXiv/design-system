@@ -312,35 +312,88 @@
   padding: 26px 0 22px;
 }
 .mg-band-inner { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+/* Desktop: 3 cols — VISUAL order Cite | Files | A11y, but DOM order is
+   Files → Cite → A11y so screen readers hear Files first (highest-value
+   action). Explicit grid-column placement decouples visual order from
+   source order without changing tab/AT reading order. */
 .mg-band-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 22px 36px; margin: 0 0 22px; }
-/* Tablet: drop Files into its own row below Cite + A11y so Cite has room
-   to breathe (the BibTeX/citation code needs width to be readable). When
-   Files spans the full row, lay its items out horizontally so they use
-   the available width efficiently rather than stacking vertically. */
+/* Explicit grid-row on all three (Files is DOM-first; without explicit rows
+   the Grid algorithm advances the placement cursor past col 1 after placing
+   Files at col 2, dropping Cite and A11y to row 2). */
+.mg-band-row > .mg-cite      { grid-column: 1; grid-row: 1; }
+.mg-band-row > .mg-files-col { grid-column: 2; grid-row: 1; }
+.mg-band-row > .mg-a11y-col  { grid-column: 3; grid-row: 1; }
+
+/* Tablet: Cite + Files on row 1; A11y spans row 2 full-width and its
+   items lay out horizontally to fill the available space. */
 @media (max-width: 1024px) {
   .mg-band-row { grid-template-columns: 1.5fr 1fr; }
-  .mg-band-row > .mg-files-col { grid-column: 1 / -1; }
-  .mg-band-row > .mg-files-col .mg-files { flex-direction: row; align-items: center; gap: 12px 24px; flex-wrap: wrap; }
+  .mg-band-row > .mg-cite      { grid-column: 1; grid-row: 1; }
+  .mg-band-row > .mg-files-col { grid-column: 2; grid-row: 1; }
+  .mg-band-row > .mg-a11y-col  { grid-column: 1 / -1; grid-row: 2; }
+  .mg-band-row > .mg-a11y-col .mg-a11y { flex-direction: row; flex-wrap: wrap; gap: 10px 28px; }
 }
-/* Phone: stack everything; Files goes back to vertical inside its own row. */
+/* Phone: stack everything 1 col. Use explicit grid-row to preserve the
+   VISUAL order Cite → Files → A11y, even though the DOM order (for screen
+   readers) stays Files → Cite → A11y. */
 @media (max-width: 680px) {
   .mg-band-row { grid-template-columns: 1fr; }
-  .mg-band-row > .mg-files-col { grid-column: auto; }
-  .mg-band-row > .mg-files-col .mg-files { flex-direction: column; align-items: stretch; gap: 12px; }
+  .mg-band-row > .mg-cite      { grid-column: auto; grid-row: 1; }
+  .mg-band-row > .mg-files-col { grid-column: auto; grid-row: 2; }
+  .mg-band-row > .mg-a11y-col  { grid-column: auto; grid-row: 3; }
+  .mg-band-row > .mg-a11y-col .mg-a11y { flex-direction: column; gap: 7px; }
 }
 .mg-band h3 { font-family: var(--arxiv-font-condensed); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-grey); margin: 0 0 10px; }
 
-/* Cite column */
-.mg-cite-head { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; }
+/* Skip-to-paper link: visually hidden by default; appears on focus so
+   keyboard / screen-reader users can jump past the tinted-band metadata
+   directly into the paper. Pairs with the <aside> wrapper around the band
+   so screen readers announce it as a complementary region. */
+.mg-skip-to-paper {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.mg-skip-to-paper:focus, .mg-skip-to-paper:focus-visible {
+  position: static; width: auto; height: auto; margin: 14px auto;
+  clip: auto; white-space: normal;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; border: 2px solid var(--arxiv-link-blue);
+  color: var(--arxiv-link-blue);
+  padding: 8px 16px; border-radius: 6px;
+  font-family: var(--arxiv-font-sans); font-size: 0.85rem; font-weight: 600;
+  text-decoration: underline;
+}
+.mg-skip-wrap { text-align: center; }
+
+/* Cite column — dropdown on the right side of the header row */
+.mg-cite-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 10px; }
 .mg-cite-head h3 { margin: 0; }
 .mg-cite-select { font-family: var(--arxiv-font-sans); font-size: 0.8rem; padding: 3px 8px; border: 1px solid var(--arxiv-grey-ui); border-radius: 4px; background: #fff; color: var(--arxiv-ink); cursor: pointer; }
 .mg-cite-select:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
+.mg-cite-code-wrap { position: relative; }
 .mg-cite-code { background: var(--arxiv-card-grey); border-radius: 6px; padding: 11px 13px; font-family: var(--arxiv-font-mono); font-size: 0.72rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: auto; color: var(--arxiv-ink); max-height: 220px; overflow-y: auto; margin: 0; }
+/* Copy button: sits inside the code wrapper, top-right */
+.mg-cite-copy {
+  position: absolute; top: 6px; right: 6px;
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--arxiv-font-sans); font-size: 0.72rem; font-weight: 600;
+  color: var(--arxiv-link-blue); background: #fff;
+  border: 1px solid var(--arxiv-grey-ui); border-radius: 4px;
+  padding: 3px 8px; cursor: pointer;
+}
+.mg-cite-copy svg { width: 12px; height: 12px; flex: none; }
+.mg-cite-copy:hover { background: var(--arxiv-warm-wash); }
+.mg-cite-copy:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
+.mg-cite-copy.is-copied { background: var(--arxiv-active-bg); border-color: var(--arxiv-tint-border); }
 
 /* A11y column */
 .mg-a11y { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; font-size: 0.82rem; }
 .mg-a11y li { display: flex; align-items: flex-start; gap: 8px; line-height: 1.45; }
-.mg-a11y .ic { width: 14px; height: 14px; flex: none; margin-top: 2px; }
+/* The ar5iv stylesheet sets `svg { z-index: -1 }` globally (to keep
+   LaTeXML-emitted SVG content under text). That hid these shield icons
+   behind the band's opaque background. Lift them with explicit positioning
+   so they paint above the band fill. */
+.mg-a11y .ic { width: 14px; height: 14px; flex: none; margin-top: 2px; position: relative; z-index: 1; }
 .mg-a11y li.present { color: #4a5a0a; }
 .mg-a11y li.present .ic { color: #6b8e1e; }
 .mg-a11y li.missing { color: var(--arxiv-grey); }
@@ -3385,53 +3438,25 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 <p class="ltx_p">We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
 </div>
 
-<!-- ══ MERGED LAYER: tinted band + centered sticky TOC button.
-        Injected between the abstract and section 1. Hidden in reader mode
-        (the .mg-band rule); the TOC bar shows in both modes. ══ -->
-<div class="mg-band mg-abs-only" aria-label="Paper metadata, citation, files">
+<!-- Skip-to-paper link: positioned right before the tinted-band aside so
+     keyboard / screen-reader users can jump past the metadata directly
+     into the paper. Visually hidden by default; visible on focus. -->
+<p class="mg-abs-only mg-skip-wrap">
+  <a class="mg-skip-to-paper" href="#S1">Skip past document tools to paper content</a>
+</p>
+
+<!-- ══ MERGED LAYER: tinted band (an <aside> "complementary" landmark so
+        screen readers announce it as supplementary content) + centered
+        sticky TOC button. Hidden in reader mode (the .mg-band rule).
+        DOM order inside the band-row is Files → Cite → Accessibility
+        (Files first for screen readers); VISUAL order on desktop is
+        Cite | Files | Accessibility, set via CSS grid-column placement. ══ -->
+<aside class="mg-band mg-abs-only" aria-label="Document tools and metadata">
   <div class="mg-band-inner">
     <div class="mg-band-row">
-      <!-- Cite column: BibTeX (default) / APA / Chicago / MLA via native select -->
-      <section class="mg-cite" aria-labelledby="mg-cite-heading">
-        <div class="mg-cite-head">
-          <h3 id="mg-cite-heading">Cite</h3>
-          <label class="is-sr-only" for="mg-cite-style">Citation style</label>
-          <select class="mg-cite-select" id="mg-cite-style" aria-controls="mg-cite-code">
-            <option value="bibtex" selected>BibTeX</option>
-            <option value="apa">APA</option>
-            <option value="chicago">Chicago</option>
-            <option value="mla">MLA</option>
-          </select>
-        </div>
-        <pre class="mg-cite-code" id="mg-cite-code"><code>@article{palomares2026gauge,
-  title = {Gauge-independent approach to inflation in quadratic gravity},
-  author = {Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and others},
-  journal = {arXiv preprint arXiv:2604.22725},
-  year = {2026},
-  doi = {10.48550/arXiv.2604.22725}
-}</code></pre>
-      </section>
 
-      <!-- A11y column: present (green shield-check) / missing (greyed dashed shield) -->
-      <section class="mg-a11y-col" aria-labelledby="mg-a11y-heading">
-        <h3 id="mg-a11y-heading">Accessibility notes</h3>
-        <ul class="mg-a11y">
-          <li class="present">
-            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
-            <span>Multiple sources: HTML, PDF, LaTeX</span>
-          </li>
-          <li class="present">
-            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
-            <span>Structured math</span>
-          </li>
-          <li class="missing">
-            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg>
-            <span>Alt text on figures &mdash; <strong>missing</strong>.<a class="mg-a11y-fix" href="#">How to add it</a></span>
-          </li>
-        </ul>
-      </section>
-
-      <!-- Files column: PDF primary + TeX source + Ancillary as links with meta -->
+      <!-- Files column — FIRST IN DOM (screen readers hear this first).
+           CSS grid-column places it visually in column 2 on desktop. -->
       <section class="mg-files-col" aria-labelledby="mg-files-heading">
         <h3 id="mg-files-heading">Files</h3>
         <div class="mg-files">
@@ -3448,6 +3473,54 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
             <small>5 files &middot; 2.3&nbsp;MB</small>
           </div>
         </div>
+      </section>
+
+      <!-- Cite column — BibTeX/APA/Chicago/MLA via native select. Dropdown
+           is on the RIGHT of the column header (CSS justify-content). A
+           Copy button sits in the top-right of the code block. -->
+      <section class="mg-cite" aria-labelledby="mg-cite-heading">
+        <div class="mg-cite-head">
+          <h3 id="mg-cite-heading">Cite</h3>
+          <label class="is-sr-only" for="mg-cite-style">Citation style</label>
+          <select class="mg-cite-select" id="mg-cite-style" aria-controls="mg-cite-code">
+            <option value="bibtex" selected>BibTeX</option>
+            <option value="apa">APA</option>
+            <option value="chicago">Chicago</option>
+            <option value="mla">MLA</option>
+          </select>
+        </div>
+        <div class="mg-cite-code-wrap">
+          <pre class="mg-cite-code" id="mg-cite-code"><code>@article{palomares2026gauge,
+  title = {Gauge-independent approach to inflation in quadratic gravity},
+  author = {Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and others},
+  journal = {arXiv preprint arXiv:2604.22725},
+  year = {2026},
+  doi = {10.48550/arXiv.2604.22725}
+}</code></pre>
+          <button class="mg-cite-copy" id="mg-cite-copy" type="button" aria-label="Copy citation to clipboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="mg-cite-copy-label">Copy</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- A11y column — present (green shield-check) / missing (greyed dashed shield) -->
+      <section class="mg-a11y-col" aria-labelledby="mg-a11y-heading">
+        <h3 id="mg-a11y-heading">Accessibility notes</h3>
+        <ul class="mg-a11y">
+          <li class="present">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+            <span>Multiple sources: HTML, PDF, LaTeX</span>
+          </li>
+          <li class="present">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+            <span>Structured math</span>
+          </li>
+          <li class="missing">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg>
+            <span>Alt text on figures &mdash; <strong>missing</strong>.<a class="mg-a11y-fix" href="#">How to add it</a></span>
+          </li>
+        </ul>
       </section>
     </div>
 
@@ -3560,7 +3633,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
       </details>
     </div>
   </div>
-</div>
+</aside>
 
 <!-- ══ Centered sticky TOC button (both modes). Becomes sticky at top on scroll. ══ -->
 <div class="mg-toc-bar" id="mg-toc-bar">
@@ -8893,7 +8966,41 @@ We thus see that</p>
     annClose.addEventListener('click', function () { annEl.style.display = 'none'; });
   }
 
-  /* ── 5. Labs toggles (Related accordion): show/hide content placeholder ── */
+  /* ── 5. Citation Copy button: copy the visible code to the clipboard,
+        with a short "Copied!" success state. ── */
+  var copyBtn = document.getElementById('mg-cite-copy');
+  var copyCode = document.getElementById('mg-cite-code');
+  if (copyBtn && copyCode) {
+    var copyLabel = copyBtn.querySelector('.mg-cite-copy-label');
+    copyBtn.addEventListener('click', function () {
+      var text = copyCode.textContent;
+      var done = function () {
+        copyBtn.classList.add('is-copied');
+        if (copyLabel) copyLabel.textContent = 'Copied!';
+        setTimeout(function () {
+          copyBtn.classList.remove('is-copied');
+          if (copyLabel) copyLabel.textContent = 'Copy';
+        }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () {
+          // fallback: select the text so the user can Ctrl/Cmd-C
+          var range = document.createRange();
+          range.selectNodeContents(copyCode);
+          var sel = window.getSelection();
+          sel.removeAllRanges(); sel.addRange(range);
+        });
+      } else {
+        var range = document.createRange();
+        range.selectNodeContents(copyCode);
+        var sel = window.getSelection();
+        sel.removeAllRanges(); sel.addRange(range);
+        done();
+      }
+    });
+  }
+
+  /* ── 6. Labs toggles (Related accordion): show/hide content placeholder ── */
   var labsEmpty = document.getElementById('mg-labs-empty-msg');
   function updateLabsEmpty() {
     if (!labsEmpty) return;
