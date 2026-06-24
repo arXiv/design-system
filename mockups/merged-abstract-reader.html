@@ -212,30 +212,38 @@
 -->
 <style id="mg-merge-styles">
 /* ════════════════════════════════════════════════════════════════════
-   MERGED ABSTRACT + HTML READER — added layer (2026-06-22, 2nd pass)
-   This file is html-redesign.html (the full reader) with the abstract
-   page grafted on top via uniquely-prefixed `mg-` classes + the real
-   ds-* header/footer ported verbatim from abstract-redesign.html, so the
-   reader's own CSS/JS/paper are untouched. A body-class toggle (.mg-reader)
-   switches between abstract-page mode (default) and reader mode.
+   MERGED ABSTRACT + HTML READER — added layer (2026-06-23, 3rd pass)
+   Layout (per Shamsi's spec):
+     ABSTRACT MODE
+       1. Black ds-site-header with Reader-view toggle in the center
+       2. Reader's native .new-watermark (ID line) + .ltx_title + authors + .ltx_abstract
+       3. Tinted band (Warm Wash) full-bleed:
+          row1: Cite (BibTeX/APA/Chicago/MLA select) | A11y | Files
+          row2: <details> Paper Information | <details> Related (closed)
+       4. Centered TOC button (becomes sticky on scroll)
+       5. White background — the rest of the LaTeXML article
+       6. Ported ds-site-footer
+     READER MODE
+       1. Reader's own arxiv-html-header (with Reader-view toggle in its center
+          instead of the TOC); compacts on scroll
+       2. Centered TOC button (same as abstract mode, sticky immediately)
+       3. White background — full paper
    ════════════════════════════════════════════════════════════════════ */
 
-/* ---- Plex font tokens (the reader's :root doesn't define these; without
-   them the abstract layer falls back to Times). Mirrors abstract-redesign. ---- */
+/* Plex font tokens (reader's :root doesn't define these). */
 :root {
   --arxiv-font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --arxiv-font-condensed: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
   --arxiv-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
-/* The reader has a global `img { background-color: var(--image-background-color) }`
-   rule (from the ar5iv stylesheet, intentional so paper figures stay legible
-   in dark mode). It catches our header logo and announcement glyph and paints
-   them white. Scope an override to images inside the injected layer only. */
+/* Scope a transparent-bg override to images in the injected layer (the reader
+   has a global `img { background-color: var(--image-background-color) }` for
+   dark-mode figure legibility — leave that for paper figures). */
 .mg-shell img, .ds-site-header-logo img, .ds-announcement-glyph,
-footer.ds-site-footer img { background-color: transparent !important; }
+.mg-band img, .mg-toc-bar img, footer.ds-site-footer img { background-color: transparent !important; }
 
-/* ---- Exact header (ported from abstract-redesign.html) ---- */
+/* ══ ABSTRACT-MODE HEADER (black ds-site-header) ══ */
 .ds-announcement { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 6px 16px; background: var(--arxiv-active-bg); color: var(--arxiv-ink); font-family: var(--arxiv-font-sans); font-size: 0.8125rem; font-weight: 500; position: relative; }
 .ds-announcement-glyph { width: 18px; height: 18px; flex-shrink: 0; }
 .ds-announcement-text { font-weight: 600; }
@@ -243,10 +251,12 @@ footer.ds-site-footer img { background-color: transparent !important; }
 .ds-announcement-link:hover { color: var(--arxiv-link-hover); }
 .ds-announcement-close { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.125rem; line-height: 1; color: var(--arxiv-grey); padding: 4px 8px; border-radius: 3px; }
 .ds-announcement-close:hover { color: var(--arxiv-ink); background: rgba(0,0,0,0.05); }
-.ds-site-header { display: flex; align-items: center; gap: 12px; padding: 0 24px; height: 52px; background: var(--arxiv-ink); }
-.ds-site-header-logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; margin-right: auto; }
+/* 3-column header: logo | center toggle | nav */
+.ds-site-header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 0 24px; height: 52px; background: var(--arxiv-ink); }
+.ds-site-header-logo { display: flex; align-items: center; text-decoration: none; }
 .ds-site-header-logo img { height: 39px; width: auto; }
-.ds-site-header-nav { display: flex; align-items: center; gap: 4px; }
+.ds-site-header-center { display: flex; justify-content: center; }
+.ds-site-header-nav { display: flex; align-items: center; gap: 4px; justify-self: end; }
 .ds-site-header-nav a, .ds-site-header-nav button { font-family: var(--arxiv-font-sans); font-size: 0.8125rem; font-weight: 500; color: var(--arxiv-grey-dis); text-decoration: none; padding: 6px 10px; border-radius: 4px; border: none; background: none; cursor: pointer; white-space: nowrap; transition: background 0.12s, color 0.12s; display: inline-flex; align-items: center; gap: 5px; }
 .ds-site-header-nav a:visited { color: var(--arxiv-grey-dis); }
 .ds-site-header-nav a:hover, .ds-site-header-nav button:hover { background: #302c28; color: var(--arxiv-card-grey); }
@@ -254,14 +264,107 @@ footer.ds-site-footer img { background-color: transparent !important; }
 .ds-site-header-nav .ds-nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
 .ds-site-header-divider { width: 1px; height: 20px; background: #4a433d; margin: 0 4px; flex-shrink: 0; }
 .ds-site-header-login { font-weight: 600 !important; color: var(--arxiv-card-grey) !important; }
-@media (max-width: 520px) {
+@media (max-width: 680px) {
   .ds-announcement { flex-wrap: wrap; padding-right: 36px; text-align: center; }
-  .ds-site-header { flex-wrap: wrap; height: auto; min-height: 52px; padding: 6px 12px; }
-  .ds-site-header-nav { flex-wrap: wrap; row-gap: 2px; }
-  .ds-site-header-nav a, .ds-site-header-nav button { padding: 6px 8px; }
+  .ds-site-header { grid-template-columns: auto auto; height: auto; min-height: 52px; padding: 6px 12px; row-gap: 4px; }
+  .ds-site-header-center { grid-column: 1 / -1; order: 3; justify-content: center; padding-bottom: 4px; }
 }
 
-/* ---- Exact footer (ported) — reader's own footer is hidden ---- */
+/* ══ READER-VIEW TOGGLE (lives in each header's center) ══ */
+.mg-reader-toggle { display: inline-flex; align-items: center; gap: 8px; font-family: var(--arxiv-font-sans); font-size: 0.8125rem; font-weight: 500; border: 1px solid #4a433d; background: #2a2723; color: var(--arxiv-card-grey); border-radius: 20px; padding: 5px 14px 5px 10px; cursor: pointer; }
+.mg-reader-toggle:hover { background: #3a3631; }
+.mg-reader-toggle .tk { width: 28px; height: 16px; border-radius: 10px; background: var(--arxiv-grey-ui); position: relative; flex: none; transition: background .15s; }
+.mg-reader-toggle .tk::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.3); transition: left .15s; }
+.mg-reader-toggle[aria-pressed="true"] .tk { background: var(--arxiv-link-blue); }
+.mg-reader-toggle[aria-pressed="true"] .tk::after { left: 14px; }
+.mg-reader-toggle:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
+/* The reader header's center variant uses the same dark surface — it's also
+   on a dark bar. Reader header center cell holds our toggle (its TOC trigger
+   is hidden — see mode rules below). */
+.arxiv-html-header .new-html-center { display: flex; justify-content: center; align-items: center; }
+
+/* ══ TINTED BAND (full-bleed, abstract mode only) ══ */
+.mg-band {
+  background: var(--arxiv-warm-wash);
+  border-top: 1px solid var(--arxiv-pill-border);
+  border-bottom: 1px solid var(--arxiv-pill-border);
+  margin: 32px 0 0;
+  /* full-bleed: break out of any constrained parent width */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 26px 0 22px;
+}
+.mg-band-inner { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.mg-band-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 22px 36px; margin: 0 0 22px; }
+@media (max-width: 880px) { .mg-band-row { grid-template-columns: 1fr; } }
+.mg-band h3 { font-family: var(--arxiv-font-condensed); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-grey); margin: 0 0 10px; }
+
+/* Cite column */
+.mg-cite-head { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; }
+.mg-cite-head h3 { margin: 0; }
+.mg-cite-select { font-family: var(--arxiv-font-sans); font-size: 0.8rem; padding: 3px 8px; border: 1px solid var(--arxiv-grey-ui); border-radius: 4px; background: #fff; color: var(--arxiv-ink); cursor: pointer; }
+.mg-cite-select:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
+.mg-cite-code { background: var(--arxiv-card-grey); border-radius: 6px; padding: 11px 13px; font-family: var(--arxiv-font-mono); font-size: 0.72rem; line-height: 1.5; white-space: pre-wrap; overflow-x: auto; color: var(--arxiv-ink); max-height: 200px; overflow-y: auto; margin: 0; }
+
+/* A11y column */
+.mg-a11y { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; font-size: 0.82rem; }
+.mg-a11y li { display: flex; align-items: flex-start; gap: 8px; line-height: 1.45; }
+.mg-a11y .ic { width: 14px; height: 14px; flex: none; margin-top: 2px; }
+.mg-a11y li.present { color: #4a5a0a; }
+.mg-a11y li.present .ic { color: #6b8e1e; }
+.mg-a11y li.missing { color: var(--arxiv-grey); }
+.mg-a11y li.missing .ic { color: var(--arxiv-grey-ui); }
+.mg-a11y-fix { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; margin-left: 4px; }
+
+/* Files column */
+.mg-files { display: flex; flex-direction: column; gap: 12px; }
+.mg-files-pdf { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; background: var(--arxiv-open-blue); border: 1px solid #6ba8da; color: var(--arxiv-ink); font-family: var(--arxiv-font-sans); font-weight: 600; font-size: 0.85rem; border-radius: 6px; padding: 8px 16px; text-decoration: none; }
+.mg-files-pdf:hover { background: var(--arxiv-open-blue-bright); }
+.mg-files-pdf small { font-weight: 400; color: var(--arxiv-ink); }
+.mg-files-link { font-size: 0.82rem; }
+.mg-files-link a { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; }
+.mg-files-link small { display: block; color: var(--arxiv-grey); font-size: 0.74rem; margin-top: 2px; }
+
+/* Accordions */
+.mg-accordions { display: flex; flex-direction: column; gap: 8px; }
+.mg-acc { background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 6px; }
+.mg-acc > summary { cursor: pointer; list-style: none; font-family: var(--arxiv-font-sans); font-size: 0.92rem; font-weight: 600; color: var(--arxiv-ink); padding: 11px 16px; display: flex; align-items: center; gap: 10px; }
+.mg-acc > summary::-webkit-details-marker { display: none; }
+.mg-acc > summary::marker { content: ""; }
+.mg-acc > summary::after { content: "+"; margin-left: auto; font-weight: 400; color: var(--arxiv-grey); font-size: 1.25rem; line-height: 1; }
+.mg-acc[open] > summary::after { content: "−"; }
+.mg-acc[open] > summary { border-bottom: 1px solid var(--arxiv-border-light); }
+.mg-acc-body { padding: 14px 16px 16px; font-size: 0.85rem; color: var(--arxiv-ink); }
+.mg-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; margin: 0; }
+.mg-acc-body dt { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.04em; color: var(--arxiv-grey); white-space: nowrap; padding-top: 2px; }
+.mg-acc-body dd { margin: 0; }
+.mg-acc-body a { color: var(--arxiv-link-blue); }
+.mg-acc-body .mg-who-row { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+
+/* ══ CENTERED STICKY TOC BAR ══ */
+.mg-toc-bar { position: sticky; top: 0; z-index: 30; display: flex; justify-content: center; padding: 14px 24px; background: rgba(255,255,255, 0.72); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 1px solid transparent; transition: border-color .15s, background .15s; }
+.mg-toc-bar.is-stuck { background: rgba(255,255,255, 0.92); border-bottom-color: var(--arxiv-border-light); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.mg-toc-wrap { position: relative; }
+.mg-toc-trigger { display: inline-flex; align-items: center; gap: 9px; font-family: var(--arxiv-font-sans); font-size: 0.85rem; font-weight: 600; background: #fff; color: var(--arxiv-ink); border: 1px solid var(--arxiv-pill-border); border-radius: 22px; padding: 7px 14px 7px 14px; cursor: pointer; max-width: 480px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.mg-toc-trigger:hover { background: var(--arxiv-warm-wash); }
+.mg-toc-trigger:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
+.mg-toc-trigger .toc-ic { width: 16px; height: 16px; flex: none; color: var(--arxiv-grey); }
+.mg-toc-trigger .toc-prefix { font-weight: 400; color: var(--arxiv-grey); }
+.mg-toc-trigger .toc-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mg-toc-trigger .toc-chev { width: 14px; height: 14px; flex: none; color: var(--arxiv-grey); transition: transform .15s; }
+.mg-toc-trigger[aria-expanded="true"] .toc-chev { transform: rotate(180deg); }
+.mg-toc-dropdown { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 8px; box-shadow: 0 8px 28px rgba(0,0,0,0.14); padding: 8px 0; min-width: 280px; max-height: 60vh; overflow-y: auto; z-index: 40; }
+.mg-toc-dropdown[hidden] { display: none; }
+.mg-toc-dropdown ol { list-style: none; margin: 0; padding: 0; counter-reset: tocsec; }
+.mg-toc-dropdown li { counter-increment: tocsec; }
+.mg-toc-dropdown a { display: flex; gap: 10px; padding: 6px 18px; text-decoration: none; color: var(--arxiv-ink); font-size: 0.85rem; line-height: 1.4; }
+.mg-toc-dropdown a:hover { background: var(--arxiv-warm-wash); }
+.mg-toc-dropdown a.is-current { background: var(--arxiv-active-bg); color: var(--arxiv-link-blue); font-weight: 600; }
+.mg-toc-dropdown a .toc-num { color: var(--arxiv-grey); font-variant-numeric: tabular-nums; min-width: 22px; }
+.mg-toc-dropdown a.is-current .toc-num { color: var(--arxiv-link-blue); }
+
+/* ══ FOOTER (ported from abstract-redesign.html) ══ */
 .arxiv-html-footer { display: none !important; }
 footer.ds-site-footer { clear: both; border-top: 1px solid var(--arxiv-pill-border); background: var(--arxiv-warm-wash); padding: 24px 24px 28px; margin: 0; font-family: "IBM Plex Sans", -apple-system, sans-serif; }
 footer.ds-site-footer .ds-site-footer-ack { font-size: 0.8125rem; color: var(--arxiv-grey); margin-bottom: 14px; line-height: 1.6; max-width: 900px; }
@@ -278,58 +381,22 @@ footer.ds-site-footer .ds-site-footer-sep { color: var(--arxiv-border-light); }
 .ds-funder-logo { height: 40px; width: auto; box-sizing: content-box; }
 .member-footer-callout { display: none; }
 
-/* ---- Persistent action row (both modes) ---- */
-.mg-actionbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; max-width: 1080px; margin: 0 auto; padding: 10px 24px; border-bottom: 1px solid var(--arxiv-border-light); }
-.mg-actionbar .mg-spacer { margin-left: auto; }
-.mg-btn { font-family: var(--arxiv-font-sans); font-size: 0.8125rem; border-radius: 6px; padding: 7px 14px; border: 1px solid var(--arxiv-grey-ui); background: #fff; color: var(--arxiv-ink); text-decoration: none; cursor: pointer; white-space: nowrap; }
-.mg-btn:hover { background: var(--arxiv-warm-wash); }
-.mg-btn-pdf { background: var(--arxiv-open-blue); border-color: #6ba8da; font-weight: 600; }
-.mg-btn-pdf:hover { background: var(--arxiv-open-blue-bright); }
-.mg-btn small { color: var(--arxiv-grey); font-weight: 400; }
-.mg-reader-toggle { display: inline-flex; align-items: center; gap: 7px; font-family: var(--arxiv-font-sans); font-size: 0.8125rem; border: 1px solid var(--arxiv-grey-ui); background: #fff; border-radius: 20px; padding: 5px 12px 5px 10px; cursor: pointer; color: var(--arxiv-ink); }
-.mg-reader-toggle .tk { width: 28px; height: 16px; border-radius: 10px; background: var(--arxiv-pill-border); position: relative; flex: none; transition: background .15s; }
-.mg-reader-toggle .tk::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.3); transition: left .15s; }
-.mg-reader-toggle[aria-pressed="true"] .tk { background: var(--arxiv-link-blue); }
-.mg-reader-toggle[aria-pressed="true"] .tk::after { left: 14px; }
-.mg-btn:focus-visible, .mg-reader-toggle:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
-
-/* ---- Metadata top zone (abstract mode) ---- */
-.mg-top { max-width: 1080px; margin: 0 auto; padding: 20px 24px 8px; }
-.mg-subjects { font-family: var(--arxiv-font-condensed); text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.72rem; color: var(--arxiv-grey); margin: 0 0 8px; }
-.mg-ids { font-family: var(--arxiv-font-mono); font-size: 0.78rem; color: var(--arxiv-grey); display: flex; flex-wrap: wrap; gap: 4px 16px; border-top: 1px solid var(--arxiv-border-light); border-bottom: 1px solid var(--arxiv-border-light); padding: 9px 0; margin: 0 0 18px; }
-.mg-ids a { text-decoration: none; color: var(--arxiv-link-blue); }
-.mg-appa-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px 28px; margin: 0 0 8px; }
-.mg-appa h3 { font-family: var(--arxiv-font-condensed); text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.72rem; color: var(--arxiv-grey); margin: 0 0 8px; }
-.mg-meta { margin: 0; }
-.mg-meta dt { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.66rem; letter-spacing: 0.04em; color: var(--arxiv-grey); }
-.mg-meta dd { margin: 0 0 7px; font-size: 0.85rem; }
-.mg-meta a { color: var(--arxiv-link-blue); }
-.mg-a11y { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 0.82rem; }
-.mg-a11y li { display: flex; align-items: center; gap: 8px; }
-.mg-a11y .ic { width: 14px; height: 14px; flex: none; }
-.mg-a11y li.present { color: #4a5a0a; } .mg-a11y li.present .ic { color: #6b8e1e; }
-.mg-a11y li.missing { color: var(--arxiv-grey); } .mg-a11y li.missing .ic { color: var(--arxiv-grey-ui); }
-.mg-code { background: var(--arxiv-card-grey); border-radius: 6px; padding: 10px 12px; font-family: var(--arxiv-font-mono); font-size: 0.72rem; line-height: 1.5; white-space: pre-wrap; overflow-x: auto; color: var(--arxiv-ink); }
-.mg-appa p { font-size: 0.85rem; margin: 0; }
-.mg-appa a { color: var(--arxiv-link-blue); }
-
-/* ---- Mode switching ----
-   Abstract mode (default): show the abs layer, hide the reader's sticky header.
-   Reader mode (.mg-reader): hide the abs layer, reveal the reader header (TOC),
-   light reading canvas. The action row persists in both. */
+/* ══ MODE SWITCHING ══ */
+/* Abstract mode (default): hide reader header. */
 body:not(.mg-reader) .arxiv-html-header { display: none !important; }
+/* Reader mode: hide ds-* abstract chrome and the tinted band; white reading canvas. */
 body.mg-reader .mg-abs-only { display: none; }
+body.mg-reader .mg-band { display: none; }
 body.mg-reader { background: #fff; }
+/* In both modes, the reader's own toc-trigger (which lived in the reader-header
+   center) is hidden — we put the Reader-view toggle in that cell instead, and
+   the TOC moves to its own centered sticky button below. */
+.arxiv-html-header .toc-trigger { display: none; }
 
-/* The reader lays out <body> as a multi-column grid (content + margins).
-   Our injected top-level blocks are direct children of <body>, so without
-   this they each land in a different grid column. Force them to span every
-   column = full page width, stacked in source order above the paper. */
+/* ══ GRID PINNING ══
+   The reader uses <body> as a multi-column grid. Force our injected top-level
+   blocks to span every column so they sit full-width and stacked. */
 .mg-shell, footer.ds-site-footer { grid-column: 1 / -1; }
-/* Pin the injected layer to the first grid row so it stays at the top in
-   both modes (otherwise, when reader mode reveals the reader header at row 1
-   and the shell shrinks, auto-flow relocates the shell to the bottom). The
-   reader header is pushed below it in reader mode. */
 .mg-shell { grid-row: 1; }
 body.mg-reader .arxiv-html-header { grid-row: 2; }
 </style>
@@ -337,7 +404,8 @@ body.mg-reader .arxiv-html-header { grid-row: 2; }
 <body>
 
 <div class="mg-shell">
-<!-- ══ MERGED ABSTRACT LAYER (mg-) — grafted on top of the reader ══ -->
+<!-- ══ ABSTRACT-MODE CHROME (mg-abs-only): announcement + ds-site-header
+        with the Reader-view toggle in the center cell ══ -->
 <div class="mg-abs-only">
   <div class="ds-announcement" role="region" aria-label="Announcement">
     <img class="ds-announcement-glyph" src="images/smileybones-small.svg" alt="" aria-hidden="true">
@@ -349,6 +417,11 @@ body.mg-reader .arxiv-html-header { grid-row: 2; }
     <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
       <img src="images/arxiv-logo.png" alt="archive">
     </a>
+    <div class="ds-site-header-center">
+      <button class="mg-reader-toggle" id="mg-reader-toggle-abs" type="button" aria-pressed="false">
+        <span class="tk" aria-hidden="true"></span> Reader view
+      </button>
+    </div>
     <nav class="ds-site-header-nav" aria-label="Main navigation">
       <a href="https://arxiv.org/search" aria-label="Search archive">
         <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -360,60 +433,6 @@ body.mg-reader .arxiv-html-header { grid-row: 2; }
       <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
     </nav>
   </header>
-</div>
-
-<!-- Persistent action row: same place in both modes -->
-<div class="mg-actionbar">
-  <a class="mg-btn mg-btn-pdf" href="#">Download PDF <small>(1.2&nbsp;MB)</small></a>
-  <a class="mg-btn" href="#">TeX Source</a>
-  <a class="mg-btn" href="#mg-cite">Cite</a>
-  <span class="mg-spacer"></span>
-  <button class="mg-reader-toggle" id="mg-reader-toggle" type="button" aria-pressed="false">
-    <span class="tk" aria-hidden="true"></span> Reader view
-  </button>
-</div>
-
-<!-- Metadata-rich top zone (abstract mode) — the paper's title/authors/abstract
-     follow in the article itself below. -->
-<div class="mg-abs-only mg-top">
-  <p class="mg-subjects">General Relativity &amp; Quantum Cosmology (gr-qc) &middot; Cosmology and Nongalactic Astrophysics (astro-ph.CO) &middot; High Energy Physics &ndash; Theory (hep-th)</p>
-  <p class="mg-ids">
-    <span>arXiv:2604.22725</span>
-    <a href="https://doi.org/10.48550/arXiv.2604.22725">DOI&nbsp;10.48550/arXiv.2604.22725</a>
-    <span>Submitted 12 Jun 2026</span>
-    <span>v3 &middot; latest</span>
-  </p>
-  <div class="mg-appa-grid">
-    <section class="mg-appa" id="mg-cite">
-      <h3>Cite</h3>
-      <div class="mg-code">@article{palomares2026gauge,
-  title={Gauge-independent approach to inflation in quadratic gravity},
-  author={Palomares, Adrian and others},
-  year={2026},
-  doi={10.48550/arXiv.2604.22725}
-}</div>
-    </section>
-    <section class="mg-appa">
-      <h3>Paper information</h3>
-      <dl class="mg-meta">
-        <dt>License</dt><dd><a href="#">CC BY 4.0</a></dd>
-        <dt>Journal</dt><dd><a href="#">J. Cosmol. Astropart. Phys. 2026(05), 012</a></dd>
-        <dt>Ancillary</dt><dd><a href="#">5 files &middot; 2.3 MB</a></dd>
-      </dl>
-    </section>
-    <section class="mg-appa">
-      <h3>Accessibility</h3>
-      <ul class="mg-a11y">
-        <li class="present"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg> Multiple sources: HTML, PDF, LaTeX</li>
-        <li class="present"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg> Structured math</li>
-        <li class="missing"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg> Alt text on figures &mdash; <strong>missing</strong></li>
-      </ul>
-    </section>
-    <section class="mg-appa">
-      <h3>Related</h3>
-      <p><a href="#">Semantic Scholar</a> &middot; <a href="#">NASA ADS</a> &middot; <a href="#">Connected Papers</a></p>
-    </section>
-  </div>
 </div>
 </div><!-- /.mg-shell -->
 
@@ -2759,12 +2778,12 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
          logo (left) and the format/abstract nav (right). Source order
          (logo → center → nav) matches the grid columns. -->
     <div class="new-html-center">
-      <button type="button" class="toc-trigger" id="toc-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="toc-dropdown" title="Jump to a section">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-        <span class="toc-trigger-label" id="toc-trigger-label">
-          <span class="toc-trigger-prefix" id="toc-trigger-prefix" hidden></span><span id="toc-trigger-text">Contents</span>
-        </span>
-        <svg class="toc-trigger-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>
+      <!-- Reader-view toggle for the reader header (matches the one in the
+           black ds-site-header center). The original toc-trigger has been
+           replaced; the TOC now lives as a centered sticky button below the
+           header in both modes. -->
+      <button class="mg-reader-toggle" id="mg-reader-toggle-reader" type="button" aria-pressed="true">
+        <span class="tk" aria-hidden="true"></span> Reader view
       </button>
     </div>
     <nav class="new-html-nav" aria-label="Paper navigation">
@@ -3260,6 +3279,128 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 <h2 class="ltx_title ltx_title_abstract">Abstract</h2>
 <p class="ltx_p">We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
 </div>
+
+<!-- ══ MERGED LAYER: tinted band + centered sticky TOC button.
+        Injected between the abstract and section 1. Hidden in reader mode
+        (the .mg-band rule); the TOC bar shows in both modes. ══ -->
+<div class="mg-band mg-abs-only" aria-label="Paper metadata, citation, files">
+  <div class="mg-band-inner">
+    <div class="mg-band-row">
+      <!-- Cite column: BibTeX (default) / APA / Chicago / MLA via native select -->
+      <section class="mg-cite" aria-labelledby="mg-cite-heading">
+        <div class="mg-cite-head">
+          <h3 id="mg-cite-heading">Cite</h3>
+          <label class="is-sr-only" for="mg-cite-style">Citation style</label>
+          <select class="mg-cite-select" id="mg-cite-style" aria-controls="mg-cite-code">
+            <option value="bibtex" selected>BibTeX</option>
+            <option value="apa">APA</option>
+            <option value="chicago">Chicago</option>
+            <option value="mla">MLA</option>
+          </select>
+        </div>
+        <pre class="mg-cite-code" id="mg-cite-code"><code>@article{palomares2026gauge,
+  title = {Gauge-independent approach to inflation in quadratic gravity},
+  author = {Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and others},
+  journal = {arXiv preprint arXiv:2604.22725},
+  year = {2026},
+  doi = {10.48550/arXiv.2604.22725}
+}</code></pre>
+      </section>
+
+      <!-- A11y column: present (green shield-check) / missing (greyed dashed shield) -->
+      <section class="mg-a11y-col" aria-labelledby="mg-a11y-heading">
+        <h3 id="mg-a11y-heading">Accessibility notes</h3>
+        <ul class="mg-a11y">
+          <li class="present">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+            <span>Multiple sources: HTML, PDF, LaTeX</span>
+          </li>
+          <li class="present">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+            <span>Structured math</span>
+          </li>
+          <li class="missing">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg>
+            <span>Alt text on figures &mdash; <strong>missing</strong>.<a class="mg-a11y-fix" href="#">How to add it</a></span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Files column: PDF primary + TeX source + Ancillary as links with meta -->
+      <section class="mg-files-col" aria-labelledby="mg-files-heading">
+        <h3 id="mg-files-heading">Files</h3>
+        <div class="mg-files">
+          <a class="mg-files-pdf" href="https://arxiv.org/pdf/2604.22725v1">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+            Download PDF <small>&middot; 1.2&nbsp;MB</small>
+          </a>
+          <div class="mg-files-link">
+            <a href="https://arxiv.org/src/2604.22725v1">TeX Source</a>
+            <small>.tar.gz &middot; 286&nbsp;KB</small>
+          </div>
+          <div class="mg-files-link">
+            <a href="#">Ancillary files</a>
+            <small>5 files &middot; 2.3&nbsp;MB</small>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Two accordions, closed by default -->
+    <div class="mg-accordions">
+      <details class="mg-acc">
+        <summary>Paper Information</summary>
+        <div class="mg-acc-body">
+          <dl>
+            <dt>Subjects</dt>
+            <dd>General Relativity and Quantum Cosmology (<a href="#">gr-qc</a>); Cosmology and Nongalactic Astrophysics (<a href="#">astro-ph.CO</a>); High Energy Physics &mdash; Theory (<a href="#">hep-th</a>)</dd>
+            <dt>arXiv DOI</dt>
+            <dd><a href="https://doi.org/10.48550/arXiv.2604.22725">10.48550/arXiv.2604.22725</a></dd>
+            <dt>License</dt>
+            <dd><a href="https://creativecommons.org/licenses/by/4.0/"><abbr title="Creative Commons Attribution 4.0">CC BY 4.0</abbr></a></dd>
+            <dt>Journal</dt>
+            <dd><a href="https://doi.org/10.1088/1475-7516/2026/05/012">Journal of Cosmology and Astroparticle Physics, 2026(05), 012</a></dd>
+            <dt>Comments</dt>
+            <dd>v3: 18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.</dd>
+            <dt>Who cites this</dt>
+            <dd class="mg-who-row">
+              <a href="#">Google Scholar</a>
+              <a href="#">NASA ADS</a>
+              <a href="#">Semantic Scholar</a>
+            </dd>
+          </dl>
+        </div>
+      </details>
+      <details class="mg-acc">
+        <summary>Related</summary>
+        <div class="mg-acc-body">
+          <p><a href="#">Connected Papers</a> &middot; <a href="#">Papers with Code</a> &middot; <a href="#">Replicate</a> &middot; <a href="#">arXiv Labs experiments</a></p>
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Centered sticky TOC button (both modes). Becomes sticky at top on scroll. ══ -->
+<div class="mg-toc-bar" id="mg-toc-bar">
+  <div class="mg-toc-wrap">
+    <button class="mg-toc-trigger" id="mg-toc-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mg-toc-dropdown">
+      <svg class="toc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <span class="toc-text" id="mg-toc-text"><span class="toc-prefix">Contents</span></span>
+      <svg class="toc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <nav class="mg-toc-dropdown" id="mg-toc-dropdown" aria-label="Table of contents" hidden>
+      <ol>
+        <li><a href="#S1"><span class="toc-num">1.</span>Introduction</a></li>
+        <li><a href="#S2"><span class="toc-num">2.</span>Background</a></li>
+        <li><a href="#S3"><span class="toc-num">3.</span>Gauge-invariant perturbations in quadratic gravity</a></li>
+        <li><a href="#S4"><span class="toc-num">4.</span>Constrained optimization</a></li>
+        <li><a href="#S5"><span class="toc-num">5.</span>Conclusions and future research</a></li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
 <section id="S1" class="ltx_section">
 <h2 class="ltx_title ltx_title_section">
 <span class="ltx_tag ltx_tag_section">1 </span>Introduction</h2>
@@ -8445,17 +8586,124 @@ We thus see that</p>
 </footer>
 
 <script>
-/* Reader-view toggle: .mg-reader on <body> hides the abstract layer and
-   reveals the reader's own sticky header (TOC) + reading canvas. The
-   persistent action row stays put in both modes. */
+/* ════════════════════════════════════════════════════════════════════
+   MERGED PAGE — added behaviors (2026-06-23)
+   1) Reader-view toggle (two buttons, one per header; they stay in sync)
+   2) Cite dropdown (native <select> swaps the displayed citation)
+   3) Centered sticky TOC button (open/close dropdown; sticky-state class;
+      highlight the current section as user scrolls)
+   ════════════════════════════════════════════════════════════════════ */
 (function () {
-  var t = document.getElementById('mg-reader-toggle');
-  if (!t) return;
-  t.addEventListener('click', function () {
-    var on = document.body.classList.toggle('mg-reader');
-    t.setAttribute('aria-pressed', on ? 'true' : 'false');
-    t.querySelector ? null : null;
+
+  /* ── 1. Reader-view toggles (sync state between abs/reader headers) ── */
+  var togAbs = document.getElementById('mg-reader-toggle-abs');
+  var togReader = document.getElementById('mg-reader-toggle-reader');
+  function setReader(on) {
+    document.body.classList.toggle('mg-reader', on);
+    if (togAbs) togAbs.setAttribute('aria-pressed', on ? 'true' : 'false');
+    if (togReader) togReader.setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+  function flipReader() { setReader(!document.body.classList.contains('mg-reader')); }
+  if (togAbs) togAbs.addEventListener('click', flipReader);
+  if (togReader) togReader.addEventListener('click', flipReader);
+
+  /* ── 2. Cite dropdown: swap the displayed code by selected style ── */
+  var citeSel = document.getElementById('mg-cite-style');
+  var citeCode = document.getElementById('mg-cite-code');
+  var CITES = {
+    bibtex: "@article{palomares2026gauge,\n  title = {Gauge-independent approach to inflation in quadratic gravity},\n  author = {Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and others},\n  journal = {arXiv preprint arXiv:2604.22725},\n  year = {2026},\n  doi = {10.48550/arXiv.2604.22725}\n}",
+    apa: "Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., … & Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. arXiv preprint arXiv:2604.22725. https://doi.org/10.48550/arXiv.2604.22725",
+    chicago: "Palomares, Adrian, Ilya L. Shapiro, Maria C. Gonzalez-Garcia, Tomohiro Harada, et al. “Gauge-Independent Approach to Inflation in Quadratic Gravity.” arXiv preprint arXiv:2604.22725, 2026. https://doi.org/10.48550/arXiv.2604.22725.",
+    mla: "Palomares, Adrian, et al. “Gauge-Independent Approach to Inflation in Quadratic Gravity.” arXiv, 2026, arXiv:2604.22725, https://doi.org/10.48550/arXiv.2604.22725."
+  };
+  if (citeSel && citeCode) {
+    citeSel.addEventListener('change', function () {
+      var code = citeCode.querySelector('code') || citeCode;
+      code.textContent = CITES[citeSel.value] || CITES.bibtex;
+    });
+  }
+
+  /* ── 3. Centered TOC: open/close + sticky-state + current-section sync ── */
+  var tocBar = document.getElementById('mg-toc-bar');
+  var tocTrig = document.getElementById('mg-toc-trigger');
+  var tocDrop = document.getElementById('mg-toc-dropdown');
+  var tocText = document.getElementById('mg-toc-text');
+  function closeToc() {
+    if (!tocDrop) return;
+    tocDrop.hidden = true;
+    tocTrig.setAttribute('aria-expanded', 'false');
+  }
+  function openToc() {
+    if (!tocDrop) return;
+    tocDrop.hidden = false;
+    tocTrig.setAttribute('aria-expanded', 'true');
+  }
+  if (tocTrig && tocDrop) {
+    tocTrig.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (tocDrop.hidden) openToc(); else closeToc();
+    });
+    document.addEventListener('click', function (e) {
+      if (!tocDrop.hidden && !tocDrop.contains(e.target) && e.target !== tocTrig) closeToc();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !tocDrop.hidden) { closeToc(); tocTrig.focus(); }
+    });
+    // Close on link click (and let the anchor navigate)
+    tocDrop.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { closeToc(); });
+    });
+  }
+
+  // Sticky state: add .is-stuck when the bar reaches the viewport top
+  var tocBarTop = 0;
+  function measureTocBar() {
+    if (!tocBar) return;
+    var prev = tocBar.style.position; tocBar.style.position = 'static';
+    tocBarTop = tocBar.getBoundingClientRect().top + window.pageYOffset;
+    tocBar.style.position = prev;
+  }
+  function onScroll() {
+    if (!tocBar) return;
+    tocBar.classList.toggle('is-stuck', window.pageYOffset >= tocBarTop - 1);
+    syncCurrentSection();
+  }
+
+  // Highlight current section in the TOC + update the button label
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.ltx_section'));
+  var tocLinks = tocDrop ? Array.prototype.slice.call(tocDrop.querySelectorAll('a')) : [];
+  var linksById = {};
+  tocLinks.forEach(function (a) {
+    var id = (a.getAttribute('href') || '').slice(1);
+    if (id) linksById[id] = a;
   });
+  function syncCurrentSection() {
+    if (!sections.length || !tocText) return;
+    var current = null;
+    var threshold = window.pageYOffset + 120;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].offsetTop <= threshold) current = sections[i];
+      else break;
+    }
+    tocLinks.forEach(function (a) { a.classList.remove('is-current'); });
+    if (current) {
+      var link = linksById[current.id];
+      if (link) link.classList.add('is-current');
+      var title = current.querySelector('.ltx_title_section');
+      var text = title ? title.textContent.replace(/\s+/g, ' ').trim() : 'Contents';
+      // Trim long titles to fit the trigger button
+      if (text.length > 64) text = text.slice(0, 61) + '…';
+      tocText.innerHTML = '<span class="toc-prefix">Contents ·</span> ' + text;
+    } else {
+      tocText.innerHTML = '<span class="toc-prefix">Contents</span>';
+    }
+  }
+
+  // Recompute on resize (layout shifts move the bar's home position)
+  window.addEventListener('resize', function () { measureTocBar(); onScroll(); });
+  window.addEventListener('scroll', onScroll, { passive: true });
+  // Initial pass after layout settles
+  setTimeout(function () { measureTocBar(); onScroll(); }, 50);
 })();
 </script>
 </body></html>
