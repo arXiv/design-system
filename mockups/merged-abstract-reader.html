@@ -438,6 +438,13 @@ body.mg-reader .ltx_page_main { padding-top: 52px; }
    the only visible representation. */
 math annotation, math annotation-xml { display: none !important; }
 
+/* The reader's CSS has `.eqn-region.show-tex .eqn-tex-view { display: block }`
+   for the "View TeX" toggled state, but is missing the default-hide rule.
+   Without it the <pre class="eqn-tex-view"> defaults to `display: block` (the
+   browser's default for <pre>) and the TeX source leaks under every equation.
+   Hide by default; the toggle's rule restores it. */
+.eqn-tex-view { display: none; }
+
 /* ══ GRID INSERTION ══
    The reader's <body> is a 5-column grid with named areas:
      "header header header header header"   <- reader header lives here
