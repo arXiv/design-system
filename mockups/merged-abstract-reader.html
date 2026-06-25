@@ -336,7 +336,12 @@ article.ltx_document { overflow-x: visible !important; }
    metadata felt like a scroll interruption; raw BibTeX needn't be open by
    default; rail should live within the content width, content left-aligned,
    title full width.) */
-.mg-band { margin: 0; }
+/* Default the whole rail to IBM Plex Sans (typography.md body face).
+   Without this, text without its own font-family (files links, a11y lines,
+   accordion <dd>, labs items) inherits the ar5iv article's serif and renders
+   in Times. Explicit condensed (labels) and mono (cite code) children keep
+   their own faces — inheritance only fills in the un-set ones. */
+.mg-band { margin: 0; font-family: var(--arxiv-font-sans); }
 .mg-rail { display: flex; flex-direction: column; gap: 18px; }
 /* Hairline separators keep the rail light — no heavy cards or tint fill. */
 .mg-rail > * + * { border-top: 1px solid var(--arxiv-border-light); padding-top: 16px; }
