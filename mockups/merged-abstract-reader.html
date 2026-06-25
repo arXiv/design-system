@@ -324,47 +324,59 @@
    cell of fixed body-grid width, so no new page-overflow risk. */
 article.ltx_document { overflow-x: visible !important; }
 
-/* ══ DOCUMENT-TOOLS RAIL (abstract mode only) ══
+/* ══ DOCUMENT-TOOLS RAIL ══
    Replaces the old full-bleed tinted band. A LIGHT vertical stack of
-   document tools that, at wide widths (≥1200px), floats in a reserved
-   right gutter beside a consistent-width reading column; at narrow widths
-   it stacks below the abstract. Never sticky — it scrolls away (the reader
-   header already carries persistent PDF / Abstract access once you scroll).
-   The band stays in its DOM slot (after the abstract, before §1) so screen
-   readers reach the tools right after the abstract; CSS alone relocates it
-   visually. (2026-06-25, researcher feedback: metadata felt like a scroll
-   interruption + raw BibTeX didn't need to be open by default.) */
-.mg-band { margin: 30px 0 0; }
+   document tools. In ABSTRACT mode it sits in the right column of a two-up
+   top layout (authors+abstract on the left, rail on the right) INSIDE the
+   normal content width — so it never competes with the figure marginalia
+   in the outer margin. In READER mode the rail is hidden and the column
+   collapses to a single centered reading column (matching html-redesign).
+   Never sticky — it scrolls away (the reader header carries persistent
+   PDF / Abstract access once you scroll). (2026-06-25 researcher feedback:
+   metadata felt like a scroll interruption; raw BibTeX needn't be open by
+   default; rail should live within the content width, content left-aligned,
+   title full width.) */
+.mg-band { margin: 0; }
 .mg-rail { display: flex; flex-direction: column; gap: 18px; }
 /* Hairline separators keep the rail light — no heavy cards or tint fill. */
 .mg-rail > * + * { border-top: 1px solid var(--arxiv-border-light); padding-top: 16px; }
 
-/* Wide viewports (≥1280px): the reader's body becomes a 3-column grid that
-   reserves a right margin for figure/footnote marginalia (the article stays
-   a centered 832px column). Float the rail into that same right margin,
-   top-aligned beside the title/abstract, exactly as the marginalia does
-   (absolute, anchored past the article's right edge). Because the article
-   itself is untouched, the full-bleed sticky TOC bar keeps working with no
-   override. The rail scrolls away; body marginalia appears lower (beside
-   figures), so it doesn't collide with this abstract-zone rail.
-   offsetParent is article.ltx_document (ar5iv sets position: relative). */
-@media (min-width: 1280px) {
-  body:not(.mg-reader) .mg-band {
-    position: absolute;
-    top: 0;
-    left: 100%;            /* start at the article's right edge */
-    margin-left: 28px;     /* gap into the margin */
-    /* fill the right margin minus gaps, clamped to a comfortable range.
-       50vw - 416px (= 832/2) is the right-margin width. */
-    width: clamp(180px, calc(50vw - 472px), 300px);
-  }
+/* ══ ABSTRACT-MODE TOP LAYOUT ══
+   Title spans the full content width (titles can be very long). Below it, a
+   two-column row: authors+abstract (left, fluid) and the rail (right, fixed
+   width), both within the centered article column. */
+.mg-top-cols { display: flex; gap: 40px; align-items: flex-start; }
+.mg-top-main { flex: 1 1 auto; min-width: 0; }
+.mg-band { flex: 0 0 288px; }
+
+/* Left-justify the title / authors / abstract in abstract mode (overriding
+   the centered reader defaults below) so they read cleanly beside the rail. */
+body:not(.mg-reader) .ltx_title.ltx_title_document { text-align: left !important; }
+body:not(.mg-reader) .ltx_authors {
+  text-align: left !important;
+  margin-left: 0 !important; margin-right: 0 !important;
+  justify-content: flex-start !important;
 }
-/* Narrow viewports (≤1279px, body is single-column block): the rail stacks
-   under the abstract, set off by a single hairline (no full-bleed tint). Its
-   light content (collapsed cite, condensed a11y, collapsed disclosures)
-   keeps it from reading as a wall the way the old band did. */
-@media (max-width: 1279px) {
-  .mg-band { border-top: 1px solid var(--arxiv-border-light); padding-top: 22px; }
+/* The author NAMES live in an inner list that carries its own
+   text-align:center — override it too so they left-align in abstract mode.
+   The "show all authors" toggle is display:block with margin:auto — pin it
+   left as well. */
+body:not(.mg-reader) .ltx_authors-list { text-align: left !important; }
+body:not(.mg-reader) .ltx_authors-toggle { margin-left: 0 !important; margin-right: auto !important; }
+/* Abstract: drop the centered 12% indent AND the narrow-width box border
+   (the box was a phone treatment for the centered layout; in the left
+   column it isn't needed and looked flush with padding:0). */
+body:not(.mg-reader) .mg-top-main .ltx_abstract { padding: 0 !important; margin: 1rem 0 0 !important; border: 0 !important; }
+
+/* Reader mode: collapse to one centered column; rail hides via the existing
+   `body.mg-reader .mg-band { display:none }` rule. Title/authors/abstract
+   keep their centered reader styling. */
+body.mg-reader .mg-top-cols { display: block; }
+
+/* Narrow: stack the rail beneath the abstract, set off by a hairline. */
+@media (max-width: 767px) {
+  .mg-top-cols { flex-direction: column; gap: 0; }
+  .mg-band { flex-basis: auto; width: 100%; border-top: 1px solid var(--arxiv-border-light); padding-top: 22px; margin-top: 22px; }
   .mg-rail { max-width: 560px; }
 }
 .mg-band h3 { font-family: var(--arxiv-font-condensed); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-grey); margin: 0 0 10px; }
@@ -472,6 +484,7 @@ article.ltx_document { overflow-x: visible !important; }
    press translateY(1px) with deeper vignette and flat-mid-tone border. */
 .ds-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  box-sizing: border-box;   /* so width:100% (full-rail PDF button) includes padding+border */
   padding: 10px 20px; min-width: 120px;
   font-family: var(--arxiv-font-sans); font-size: 14px; font-weight: 600; line-height: 1;
   text-decoration: none; cursor: pointer;
@@ -3627,7 +3640,13 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
      internal feedback 2026-06-11), and license. -->
 <p class="new-watermark"><img src="images/smileybones-small-grayscale.svg" alt=""><span aria-hidden="true">arXiv:2604.22725v1 [gr-qc] General Relativity and Quantum Cosmology &middot; 24 April 2026</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1, primary category General Relativity and Quantum Cosmology, submitted 24 April 2026</span> &ensp; <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a> &ensp; <a href="https://info.arxiv.org/help/license/index.html#licenses-available"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">License: CC BY 4.0</abbr></a></p><div class="ltx_page_content">
 <article class="ltx_document ltx_authors_1line" lang="en">
+<!-- mg-top: title spans full content width; the row below puts
+     authors+abstract (left) beside the document-tools rail (right). In
+     reader mode .mg-top-cols collapses to a single centered column. -->
+<div class="mg-top">
 <h1 class="ltx_title ltx_title_document" lang="en">Gauge-independent approach to inflation in quadratic gravity</h1>
+<div class="mg-top-cols">
+<div class="mg-top-main">
 <div class="ltx_authors">
   <ul class="ltx_authors-list">
     <li class="ltx_authors-shown"><a href="#">Adrian Palomares</a></li><li class="ltx_authors-shown"><a href="#">Ilya L. Shapiro</a></li><li class="ltx_authors-shown"><a href="#">Maria C. Gonzalez-Garcia</a></li><li class="ltx_authors-shown"><a href="#">Tomohiro Harada</a></li><li class="ltx_authors-shown"><a href="#">Elena Castellani</a></li><li class="ltx_authors-shown"><a href="#">Kei-ichi Maeda</a></li><li class="ltx_authors-shown"><a href="#">Francesca Vidotto</a></li><li class="ltx_authors-shown"><a href="#">Abhay Ashtekar</a></li><li class="ltx_authors-overflow" id="html-authors-overflow"><a href="#">Roberto Emparan</a></li><li class="ltx_authors-overflow"><a href="#">Alejandra Castro</a></li><li class="ltx_authors-overflow"><a href="#">Jan de Boer</a></li><li class="ltx_authors-overflow"><a href="#">Shin'ichi Nojiri</a></li><li class="ltx_authors-overflow"><a href="#">Sergei D. Odintsov</a></li><li class="ltx_authors-overflow"><a href="#">Viatcheslav Mukhanov</a></li><li class="ltx_authors-overflow"><a href="#">Misao Sasaki</a></li><li class="ltx_authors-overflow"><a href="#">Jiro Soda</a></li><li class="ltx_authors-overflow"><a href="#">Shinji Tsujikawa</a></li><li class="ltx_authors-overflow"><a href="#">Antonio Padilla</a></li><li class="ltx_authors-overflow"><a href="#">Ruth Gregory</a></li><li class="ltx_authors-overflow"><a href="#">Karim A. Malik</a></li><li class="ltx_authors-overflow"><a href="#">David Wands</a></li><li class="ltx_authors-overflow"><a href="#">Takahiro Tanaka</a></li>
@@ -3646,13 +3665,13 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 <p class="mg-abs-only mg-skip-wrap">
   <a class="mg-skip-to-paper" href="#S1">Skip past document tools to paper content</a>
 </p>
+</div><!-- /.mg-top-main -->
 
-<!-- ══ MERGED LAYER: tinted band (an <aside> "complementary" landmark so
-        screen readers announce it as supplementary content) + centered
-        sticky TOC button. Hidden in reader mode (the .mg-band rule).
-        DOM order inside the band-row is Files → Cite → Accessibility
-        (Files first for screen readers); VISUAL order on desktop is
-        Cite | Files | Accessibility, set via CSS grid-column placement. ══ -->
+<!-- ══ MERGED LAYER: the document-tools rail (an <aside> "complementary"
+        landmark so screen readers announce it as supplementary content).
+        Right column of the abstract-mode top row; hidden in reader mode
+        (the .mg-band rule). DOM order is Files → Cite → Accessibility →
+        disclosures (Files first for screen readers). ══ -->
 <aside class="mg-band mg-abs-only" aria-label="Document tools and metadata">
   <div class="mg-rail">
 
@@ -3829,6 +3848,8 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
     </div>
   </div>
 </aside>
+</div><!-- /.mg-top-cols -->
+</div><!-- /.mg-top -->
 
 <!-- ══ Centered sticky TOC button (both modes). Becomes sticky at top on scroll. ══ -->
 <div class="mg-toc-bar" id="mg-toc-bar">
