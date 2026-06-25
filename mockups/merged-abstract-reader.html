@@ -522,7 +522,10 @@ article.ltx_document { overflow-x: visible !important; }
   /* full-bleed: break out of any constrained parent so the bar spans the viewport */
   width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
   background: rgba(255,255,255, 0.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-  border-bottom: 1px solid transparent; transition: border-color .15s, background .15s; }
+  border-bottom: 1px solid transparent;
+  /* Transition `top` and `padding` so the reader-mode SWAP (see .mg-toc-stuck
+     below) animates smoothly instead of snapping. */
+  transition: top .25s ease, padding .25s ease, background .25s ease, backdrop-filter .25s ease, border-color .15s; }
 .mg-toc-bar.is-stuck { background: rgba(255,255,255, 0.85); border-bottom-color: var(--arxiv-border-light); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
 /* In reader mode the sticky reader header is at top:0; push the sticky TOC
    below it. Use 36px to match the COMPACT header height (the reader's
@@ -532,23 +535,51 @@ article.ltx_document { overflow-x: visible !important; }
    doesn't matter there. */
 body.mg-reader .mg-toc-bar { top: 36px; }
 
-/* ══ TOC SCROLL-SWAP ══
-   When reading (mg-reader) AND scrolled past the abstract, the standalone
-   TOC bar's content (.mg-toc-wrap) jumps into the reader header center cell
-   — replacing the Reader-view toggle. Saves a sticky row (no more stacked
-   header + TOC), matches the html-redesign pattern. JS handles the DOM move
-   and adds .mg-toc-stuck on body. */
-body.mg-reader.mg-toc-stuck .mg-toc-bar { display: none; }
-body.mg-reader.mg-toc-stuck #mg-reader-toggle-reader { display: none; }
-/* When the TOC wrap is INSIDE the reader header center, tighten the trigger
-   to feel like chrome (not a card-on-page button) — smaller, lighter. */
-.arxiv-html-header .mg-toc-wrap .mg-toc-trigger {
-  font-size: 0.78rem; padding: 4px 12px;
+/* ══ TOC SCROLL-SWAP (reader mode only) ══
+   When the user scrolls past the abstract in reader view, animate the TOC
+   bar UP from `top: 36px` to `top: 0` so its trigger visually slides into
+   the header's center cell — and simultaneously fade+translate the
+   Reader-view toggle out. Pure CSS transitions; no DOM mutation. The bar's
+   padding also tightens to 2px so the trigger sits centered in the 36px
+   header area instead of protruding below it, and the bar's background
+   fades to transparent so the header chrome (logo, nav) shows through.
+   JS just toggles `body.mg-toc-stuck` past the threshold. */
+body.mg-reader.mg-toc-stuck .mg-toc-bar {
+  top: 0;
+  padding: 2px 24px;
   background: transparent;
-  border-color: var(--arxiv-grey-ui);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  border-bottom-color: transparent;
   box-shadow: none;
 }
-.arxiv-html-header .mg-toc-wrap .mg-toc-trigger:hover { background: rgba(0,0,0,0.04); }
+/* .ltx_page_main has `contain: layout` (ar5iv default), which creates a
+   stacking context — trapping the bar's z-index: 100 INSIDE the page-main,
+   below the header's z-index: 2 at body level. When stuck, the bar needs
+   to paint OVER the header chrome, so drop containment so the bar's
+   z-index works at body level. (At rest, the bar is at top: 36px and
+   never overlaps the header, so containment doesn't matter there.) */
+body.mg-reader.mg-toc-stuck .ltx_page_main { contain: none; }
+/* When riding in the header chrome, the trigger drops its shadow and
+   tightens — reads as chrome, not a card-on-page button. The transition
+   matches the bar's so they animate together. */
+.mg-toc-trigger {
+  transition: padding .25s ease, font-size .25s ease, box-shadow .25s ease;
+}
+body.mg-reader.mg-toc-stuck .mg-toc-trigger {
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  box-shadow: none;
+}
+/* Reader-view toggle fades + slides up out of view, with pointer-events
+   disabled so it can't be clicked through during/after the fade. */
+body.mg-reader .arxiv-html-header .mg-reader-toggle {
+  transition: opacity .2s ease, transform .2s ease;
+}
+body.mg-reader.mg-toc-stuck .arxiv-html-header .mg-reader-toggle {
+  opacity: 0;
+  transform: translateY(-30px);
+  pointer-events: none;
+}
 .mg-toc-wrap { position: relative; }
 .mg-toc-trigger { display: inline-flex; align-items: center; gap: 9px; font-family: var(--arxiv-font-sans); font-size: 0.85rem; font-weight: 600; background: #fff; color: var(--arxiv-ink); border: 1px solid var(--arxiv-pill-border); border-radius: 22px; padding: 7px 14px 7px 14px; cursor: pointer; max-width: min(480px, calc(100vw - 48px)); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 .mg-toc-trigger:hover { background: var(--arxiv-warm-wash); }
@@ -9059,33 +9090,25 @@ We thus see that</p>
   var tocBarTop = 0;
   function measureTocBar() {
     if (!tocBar) return;
-    // Re-home the wrap into the bar before measuring, otherwise the bar is
-    // empty (when stuck-in-header) and its natural y is meaningless.
-    if (tocWrap && tocWrap.parentElement !== tocBar) tocBar.appendChild(tocWrap);
+    // Temporarily neutralize sticky + the .mg-toc-stuck override so the bar
+    // reports its NATURAL document y (not its currently-stuck top: 0).
+    var hadStuck = document.body.classList.contains('mg-toc-stuck');
+    if (hadStuck) document.body.classList.remove('mg-toc-stuck');
     var prev = tocBar.style.position; tocBar.style.position = 'static';
     tocBarTop = tocBar.getBoundingClientRect().top + window.pageYOffset;
     tocBar.style.position = prev;
+    if (hadStuck) document.body.classList.add('mg-toc-stuck');
   }
 
-  /* TOC scroll-swap: in reader mode, when the user has scrolled past the
-     point where the bar would otherwise stick, move the TOC trigger+dropdown
-     (.mg-toc-wrap) up into the reader header's center cell — replacing the
-     Reader-view toggle. Scroll back to top → move it back into the bar.
-     Threshold: tocBarTop - 36 (matches the compact reader header height).
-     Abstract mode always keeps the wrap in the bar; the swap is reader-only. */
-  var tocWrap = document.querySelector('.mg-toc-wrap');
-  var readerHeaderCenter = document.querySelector('.arxiv-html-header .new-html-center');
+  /* TOC scroll-swap: in reader mode, past the threshold, add `mg-toc-stuck`
+     on body. CSS handles the actual visual move (bar animates top: 36 → 0,
+     padding tightens, bg fades; Reader-view toggle fades+translates up). No
+     DOM mutation — both elements stay put, transitions do the work. */
   function syncTocLocation() {
-    if (!tocWrap || !tocBar) return;
+    if (!tocBar) return;
     var inReader = document.body.classList.contains('mg-reader');
-    var shouldStick = inReader && readerHeaderCenter && window.pageYOffset > (tocBarTop - 36);
-    if (shouldStick) {
-      if (tocWrap.parentElement !== readerHeaderCenter) readerHeaderCenter.appendChild(tocWrap);
-      document.body.classList.add('mg-toc-stuck');
-    } else {
-      if (tocWrap.parentElement !== tocBar) tocBar.appendChild(tocWrap);
-      document.body.classList.remove('mg-toc-stuck');
-    }
+    var shouldStick = inReader && window.pageYOffset > (tocBarTop - 36);
+    document.body.classList.toggle('mg-toc-stuck', !!shouldStick);
   }
 
   function onScroll() {
