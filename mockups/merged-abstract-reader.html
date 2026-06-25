@@ -367,7 +367,6 @@ body:not(.mg-reader) .ltx_authors {
    The "show all authors" toggle is display:block with margin:auto — pin it
    left as well. */
 body:not(.mg-reader) .ltx_authors-list { text-align: left !important; }
-body:not(.mg-reader) .ltx_authors-toggle { margin-left: 0 !important; margin-right: auto !important; }
 /* Abstract: drop the centered 12% indent AND the narrow-width box border
    (the box was a phone treatment for the centered layout; in the left
    column it isn't needed and looked flush with padding:0). */
@@ -1715,10 +1714,10 @@ section.ltx_bibliography {
    └──────────────────────────────────────────────────────────────────┘ */
 
 .ltx_authors-list {
-  display: block !important;
+  display: inline !important;   /* flow inline so the "show all" toggle can sit at the end of the list */
   list-style: none !important;
   padding: 0 !important;
-  margin: 0 0 0.5rem 0 !important;
+  margin: 0 !important;
   text-align: center;
   line-height: 1.6;
 }
@@ -1745,8 +1744,9 @@ section.ltx_bibliography {
   padding: 0;
   cursor: pointer;
   font-style: italic;
-  display: block;
-  margin: 0.25rem auto 1.5rem;
+  display: inline;            /* sit inline at the end of the author list */
+  white-space: nowrap;
+  margin: 0 0 0 6px;
 }
 .ltx_authors-toggle:hover { color: var(--arxiv-ink); text-decoration: underline; }
 .ltx_authors-toggle:focus-visible {
