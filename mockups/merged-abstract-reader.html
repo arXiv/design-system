@@ -237,7 +237,7 @@
   --arxiv-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   /* Status tokens (color-mapping.md "Status & alert colors — shared").
      Mirrors design-system.css; only the success family is consumed here
-     (by .mg-a11y "present" items). */
+     (by .mg-a11y-line.present items). */
   --arxiv-success-bg:     #e8f5d8;
   --arxiv-success-border: #6b8e1e;
   --arxiv-success-fg:     #4a5a0a;
@@ -324,49 +324,48 @@
    cell of fixed body-grid width, so no new page-overflow risk. */
 article.ltx_document { overflow-x: visible !important; }
 
-/* ══ TINTED BAND (full-bleed, abstract mode only) ══ */
-.mg-band {
-  background: var(--arxiv-warm-wash);
-  border-top: 1px solid var(--arxiv-pill-border);
-  border-bottom: 1px solid var(--arxiv-pill-border);
-  margin: 32px 0 0;
-  /* full-bleed: break out of any constrained parent width */
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  padding: 26px 0 22px;
-}
-.mg-band-inner { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
-/* Desktop: 3 cols — VISUAL order Cite | Files | A11y, but DOM order is
-   Files → Cite → A11y so screen readers hear Files first (highest-value
-   action). Explicit grid-column placement decouples visual order from
-   source order without changing tab/AT reading order. */
-.mg-band-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 22px 36px; margin: 0 0 22px; }
-/* Explicit grid-row on all three (Files is DOM-first; without explicit rows
-   the Grid algorithm advances the placement cursor past col 1 after placing
-   Files at col 2, dropping Cite and A11y to row 2). */
-.mg-band-row > .mg-cite      { grid-column: 1; grid-row: 1; }
-.mg-band-row > .mg-files-col { grid-column: 2; grid-row: 1; }
-.mg-band-row > .mg-a11y-col  { grid-column: 3; grid-row: 1; }
+/* ══ DOCUMENT-TOOLS RAIL (abstract mode only) ══
+   Replaces the old full-bleed tinted band. A LIGHT vertical stack of
+   document tools that, at wide widths (≥1200px), floats in a reserved
+   right gutter beside a consistent-width reading column; at narrow widths
+   it stacks below the abstract. Never sticky — it scrolls away (the reader
+   header already carries persistent PDF / Abstract access once you scroll).
+   The band stays in its DOM slot (after the abstract, before §1) so screen
+   readers reach the tools right after the abstract; CSS alone relocates it
+   visually. (2026-06-25, researcher feedback: metadata felt like a scroll
+   interruption + raw BibTeX didn't need to be open by default.) */
+.mg-band { margin: 30px 0 0; }
+.mg-rail { display: flex; flex-direction: column; gap: 18px; }
+/* Hairline separators keep the rail light — no heavy cards or tint fill. */
+.mg-rail > * + * { border-top: 1px solid var(--arxiv-border-light); padding-top: 16px; }
 
-/* Tablet: Cite + Files on row 1; A11y spans row 2 full-width and its
-   items lay out horizontally to fill the available space. */
-@media (max-width: 1024px) {
-  .mg-band-row { grid-template-columns: 1.5fr 1fr; }
-  .mg-band-row > .mg-cite      { grid-column: 1; grid-row: 1; }
-  .mg-band-row > .mg-files-col { grid-column: 2; grid-row: 1; }
-  .mg-band-row > .mg-a11y-col  { grid-column: 1 / -1; grid-row: 2; }
-  .mg-band-row > .mg-a11y-col .mg-a11y { flex-direction: row; flex-wrap: wrap; gap: 10px 28px; }
+/* Wide viewports (≥1280px): the reader's body becomes a 3-column grid that
+   reserves a right margin for figure/footnote marginalia (the article stays
+   a centered 832px column). Float the rail into that same right margin,
+   top-aligned beside the title/abstract, exactly as the marginalia does
+   (absolute, anchored past the article's right edge). Because the article
+   itself is untouched, the full-bleed sticky TOC bar keeps working with no
+   override. The rail scrolls away; body marginalia appears lower (beside
+   figures), so it doesn't collide with this abstract-zone rail.
+   offsetParent is article.ltx_document (ar5iv sets position: relative). */
+@media (min-width: 1280px) {
+  body:not(.mg-reader) .mg-band {
+    position: absolute;
+    top: 0;
+    left: 100%;            /* start at the article's right edge */
+    margin-left: 28px;     /* gap into the margin */
+    /* fill the right margin minus gaps, clamped to a comfortable range.
+       50vw - 416px (= 832/2) is the right-margin width. */
+    width: clamp(180px, calc(50vw - 472px), 300px);
+  }
 }
-/* Phone: stack everything 1 col. Use explicit grid-row to preserve the
-   VISUAL order Cite → Files → A11y, even though the DOM order (for screen
-   readers) stays Files → Cite → A11y. */
-@media (max-width: 680px) {
-  .mg-band-row { grid-template-columns: 1fr; }
-  .mg-band-row > .mg-cite      { grid-column: auto; grid-row: 1; }
-  .mg-band-row > .mg-files-col { grid-column: auto; grid-row: 2; }
-  .mg-band-row > .mg-a11y-col  { grid-column: auto; grid-row: 3; }
-  .mg-band-row > .mg-a11y-col .mg-a11y { flex-direction: column; gap: 7px; }
+/* Narrow viewports (≤1279px, body is single-column block): the rail stacks
+   under the abstract, set off by a single hairline (no full-bleed tint). Its
+   light content (collapsed cite, condensed a11y, collapsed disclosures)
+   keeps it from reading as a wall the way the old band did. */
+@media (max-width: 1279px) {
+  .mg-band { border-top: 1px solid var(--arxiv-border-light); padding-top: 22px; }
+  .mg-rail { max-width: 560px; }
 }
 .mg-band h3 { font-family: var(--arxiv-font-condensed); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-grey); margin: 0 0 10px; }
 
@@ -408,54 +407,64 @@ article.ltx_document { overflow-x: visible !important; }
 }
 .mg-skip-wrap { text-align: center; }
 
-/* Cite column — dropdown on the right side of the header row */
+/* Cite — collapsed by default. The format <select> sits beside the heading;
+   a one-click Copy (copies the selected format WITHOUT expanding) and a Show
+   toggle sit on the actions row; the raw code is hidden until Show is
+   pressed. (Researcher feedback 2026-06-25: raw BibTeX is a gift, but it
+   doesn't need to be open by default — and one-click copy avoids "a billion
+   clicks".) */
 .mg-cite-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 10px; }
 .mg-cite-head h3 { margin: 0; }
 .mg-cite-select { font-family: var(--arxiv-font-sans); font-size: 0.8rem; padding: 3px 8px; border: 1px solid var(--arxiv-grey-ui); border-radius: 4px; background: #fff; color: var(--arxiv-ink); cursor: pointer; }
 .mg-cite-select:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
-.mg-cite-code-wrap { position: relative; }
-.mg-cite-code { background: var(--arxiv-card-grey); border-radius: 6px; padding: 11px 13px; font-family: var(--arxiv-font-mono); font-size: 0.72rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: auto; color: var(--arxiv-ink); max-height: 220px; overflow-y: auto; margin: 0; }
-/* Copy button: sits inside the code wrapper, top-right. Padding sized so
-   the visible target clears the WCAG 2.5.8 24x24 CSS-px hard floor
-   (DESIGN-POLICIES.md → "Chrome and interaction structure"). */
-.mg-cite-copy {
-  position: absolute; top: 6px; right: 6px;
-  display: inline-flex; align-items: center; gap: 6px;
+.mg-cite-actions { display: flex; align-items: center; gap: 8px; }
+/* Copy + Show share one button treatment. Padding sized so each target
+   clears the WCAG 2.5.8 24×24 CSS-px hard floor (DESIGN-POLICIES.md →
+   "Chrome and interaction structure"). */
+.mg-cite-copy, .mg-cite-show {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   font-family: var(--arxiv-font-sans); font-size: 0.78rem; font-weight: 600;
   color: var(--arxiv-link-blue); background: #fff;
-  border: 1px solid var(--arxiv-grey-ui); border-radius: 4px;
-  padding: 6px 12px; cursor: pointer; min-height: 24px;
+  border: 1px solid var(--arxiv-grey-ui); border-radius: 5px;
+  padding: 6px 14px; cursor: pointer; min-height: 30px;
 }
+.mg-cite-copy { flex: 1 1 auto; }
 .mg-cite-copy svg { width: 13px; height: 13px; flex: none; }
-.mg-cite-copy:hover { background: var(--arxiv-warm-wash); }
-.mg-cite-copy:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
+.mg-cite-copy:hover, .mg-cite-show:hover { background: var(--arxiv-warm-wash); }
+.mg-cite-copy:focus-visible, .mg-cite-show:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
 .mg-cite-copy.is-copied { background: var(--arxiv-active-bg); border-color: var(--arxiv-tint-border); }
+.mg-cite-show::after { content: "▾"; font-size: 0.7em; line-height: 1; }
+.mg-cite-show[aria-expanded="true"]::after { content: "▴"; }
+.mg-cite-code { background: var(--arxiv-card-grey); border-radius: 6px; padding: 11px 13px; margin: 10px 0 0; font-family: var(--arxiv-font-mono); font-size: 0.72rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: auto; color: var(--arxiv-ink); max-height: 260px; overflow-y: auto; }
+.mg-cite-code[hidden] { display: none; }
 
-/* A11y column */
-.mg-a11y { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; font-size: 0.82rem; }
-.mg-a11y li { display: flex; align-items: flex-start; gap: 8px; line-height: 1.45; }
+/* Accessibility — condensed to two status lines (present / missing) instead
+   of a full checklist, to keep the rail light. */
+.mg-a11y-line { display: flex; align-items: flex-start; gap: 8px; line-height: 1.45; font-size: 0.82rem; margin: 0; }
+.mg-a11y-line + .mg-a11y-line { margin-top: 7px; }
 /* The ar5iv stylesheet sets `svg { z-index: -1 }` globally (to keep
-   LaTeXML-emitted SVG content under text). That hid these shield icons
-   behind the band's opaque background. Lift them with explicit positioning
-   so they paint above the band fill. */
-.mg-a11y .ic { width: 14px; height: 14px; flex: none; margin-top: 2px; position: relative; z-index: 1; }
+   LaTeXML-emitted SVG content under text). Lift these shield icons with
+   explicit positioning so they paint above their background. */
+.mg-a11y-line .ic { width: 14px; height: 14px; flex: none; margin-top: 2px; position: relative; z-index: 1; }
 /* Greens map to the canonical --arxiv-success-* tokens
    (color-mapping.md "Status & alert colors — shared"). */
-.mg-a11y li.present { color: var(--arxiv-success-fg); }
-.mg-a11y li.present .ic { color: var(--arxiv-success-border); }
-.mg-a11y li.missing { color: var(--arxiv-grey); }
-.mg-a11y li.missing .ic { color: var(--arxiv-grey-ui); }
+.mg-a11y-line.present { color: var(--arxiv-success-fg); }
+.mg-a11y-line.present .ic { color: var(--arxiv-success-border); }
+.mg-a11y-line.missing { color: var(--arxiv-grey); }
+.mg-a11y-line.missing .ic { color: var(--arxiv-grey-ui); }
 .mg-a11y-fix { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; margin-left: 4px; }
 
 /* Files column. Primary action uses the canonical `.ds-btn-primary`
    (defined below) — DESIGN-POLICIES.md → Buttons + button-styles.html
    are the source of truth. */
-.mg-files { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
-.mg-files .ds-btn-primary { min-width: 0; }   /* tighten min-width inside the Files column */
+.mg-files { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+/* PDF is the primary action — full rail width so it reads as the anchor. */
+.mg-files .ds-btn-primary { min-width: 0; width: 100%; }
 .mg-files .ds-btn-primary small { font-weight: 400; color: var(--arxiv-ink); margin-left: 4px; }
+.mg-files-links { display: flex; flex-direction: column; gap: 8px; }
 .mg-files-link { font-size: 0.82rem; }
 .mg-files-link a { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; }
-.mg-files-link small { display: block; color: var(--arxiv-grey); font-size: 0.74rem; margin-top: 2px; }
+.mg-files-link small { color: var(--arxiv-grey); font-size: 0.74rem; margin-left: 6px; }
 
 /* ══ CANONICAL BUTTONS (ported from design-patterns/public/design-system.css) ══
    Source of truth: button-styles.html. Construction = 1.5px transparent border
@@ -506,6 +515,26 @@ article.ltx_document { overflow-x: visible !important; }
 .mg-acc-body dd { margin: 0; }
 .mg-acc-body a { color: var(--arxiv-link-blue); }
 .mg-acc-body .mg-who-row { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+
+/* ── Accordions INSIDE the rail: drop the card chrome so they read as part
+   of the light hairline-separated stack (the rail provides the dividers).
+   Their internals go single-column to fit the narrow rail. ── */
+.mg-rail .mg-acc { background: transparent; border: 0; border-radius: 0; }
+.mg-rail .mg-acc > summary { padding: 0; font-size: 0.82rem; }
+.mg-rail .mg-acc > summary::after { font-size: 1.1rem; }
+.mg-rail .mg-acc[open] > summary { border-bottom: 0; margin-bottom: 10px; }
+.mg-rail .mg-acc-body { padding: 0; }
+.mg-rail .mg-acc-body dl { grid-template-columns: 1fr; gap: 0; }
+.mg-rail .mg-acc-body dt { margin-top: 10px; }
+.mg-rail .mg-acc-body dt:first-child { margin-top: 0; }
+.mg-rail .mg-acc-body dd { margin: 1px 0 0; }
+/* Labs/Related list stacks single-column in the narrow rail (the viewport
+   media query at max-width:700 won't fire when the rail is narrow but the
+   viewport is wide, so override directly). */
+.mg-rail .mg-labs-layout { flex-direction: column; gap: 12px; }
+.mg-rail .mg-labs-list { min-width: 0; }
+.mg-rail .mg-labs-content { width: 100%; }
+.mg-rail .mg-labs-info { justify-content: flex-start; }
 
 /* ══ CENTERED STICKY TOC BAR — full-bleed, semi-transparent ══
    z-index: 100 (sticky-headers tier per DESIGN-POLICIES.md Z-layer scale).
@@ -3625,18 +3654,17 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
         (Files first for screen readers); VISUAL order on desktop is
         Cite | Files | Accessibility, set via CSS grid-column placement. ══ -->
 <aside class="mg-band mg-abs-only" aria-label="Document tools and metadata">
-  <div class="mg-band-inner">
-    <div class="mg-band-row">
+  <div class="mg-rail">
 
-      <!-- Files column — FIRST IN DOM (screen readers hear this first).
-           CSS grid-column places it visually in column 2 on desktop. -->
-      <section class="mg-files-col" aria-labelledby="mg-files-heading">
-        <h3 id="mg-files-heading">Files</h3>
-        <div class="mg-files">
-          <a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
-            Download PDF <small>&middot; 1.2&nbsp;MB</small>
-          </a>
+    <!-- Files / actions — DOM-first so screen readers reach the PDF first. -->
+    <section class="mg-files-col" aria-labelledby="mg-files-heading">
+      <h3 id="mg-files-heading">Files</h3>
+      <div class="mg-files">
+        <a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+          Download PDF <small>&middot; 1.2&nbsp;MB</small>
+        </a>
+        <div class="mg-files-links">
           <div class="mg-files-link">
             <a href="https://arxiv.org/src/2604.22725v1">TeX Source</a>
             <small>.tar.gz &middot; 286&nbsp;KB</small>
@@ -3646,58 +3674,52 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
             <small>5 files &middot; 2.3&nbsp;MB</small>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- Cite column — BibTeX/APA/Chicago/MLA via native select. Dropdown
-           is on the RIGHT of the column header (CSS justify-content). A
-           Copy button sits in the top-right of the code block. -->
-      <section class="mg-cite" aria-labelledby="mg-cite-heading">
-        <div class="mg-cite-head">
-          <h3 id="mg-cite-heading">Cite</h3>
-          <label class="is-sr-only" for="mg-cite-style">Citation style</label>
-          <select class="mg-cite-select" id="mg-cite-style" aria-controls="mg-cite-code">
-            <option value="bibtex" selected>BibTeX</option>
-            <option value="apa">APA</option>
-            <option value="chicago">Chicago</option>
-            <option value="mla">MLA</option>
-          </select>
-        </div>
-        <div class="mg-cite-code-wrap">
-          <pre class="mg-cite-code" id="mg-cite-code"><code>@article{palomares2026gauge,
+    <!-- Cite — COLLAPSED by default. Copy works without expanding (copies
+         the selected format); Show toggles the raw code (JS in section 6). -->
+    <section class="mg-cite" aria-labelledby="mg-cite-heading">
+      <div class="mg-cite-head">
+        <h3 id="mg-cite-heading">Cite</h3>
+        <label class="is-sr-only" for="mg-cite-style">Citation style</label>
+        <select class="mg-cite-select" id="mg-cite-style" aria-controls="mg-cite-code">
+          <option value="bibtex" selected>BibTeX</option>
+          <option value="apa">APA</option>
+          <option value="chicago">Chicago</option>
+          <option value="mla">MLA</option>
+        </select>
+      </div>
+      <div class="mg-cite-actions">
+        <button class="mg-cite-copy" id="mg-cite-copy" type="button" aria-label="Copy citation to clipboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span class="mg-cite-copy-label">Copy</span>
+        </button>
+        <button class="mg-cite-show" id="mg-cite-show" type="button" aria-expanded="false" aria-controls="mg-cite-code">Show</button>
+      </div>
+      <pre class="mg-cite-code" id="mg-cite-code" hidden><code>@article{palomares2026gauge,
   title = {Gauge-independent approach to inflation in quadratic gravity},
   author = {Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and others},
   journal = {arXiv preprint arXiv:2604.22725},
   year = {2026},
   doi = {10.48550/arXiv.2604.22725}
 }</code></pre>
-          <button class="mg-cite-copy" id="mg-cite-copy" type="button" aria-label="Copy citation to clipboard">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            <span class="mg-cite-copy-label">Copy</span>
-          </button>
-        </div>
-      </section>
+    </section>
 
-      <!-- A11y column — present (green shield-check) / missing (greyed dashed shield) -->
-      <section class="mg-a11y-col" aria-labelledby="mg-a11y-heading">
-        <h3 id="mg-a11y-heading">Accessibility notes</h3>
-        <ul class="mg-a11y">
-          <li class="present">
-            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
-            <span>Multiple sources: HTML, PDF, LaTeX</span>
-          </li>
-          <li class="present">
-            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
-            <span>Structured math</span>
-          </li>
-          <li class="missing">
-            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg>
-            <span>Alt text on figures &mdash; <strong>missing</strong>.<a class="mg-a11y-fix" href="#">How to add it</a></span>
-          </li>
-        </ul>
-      </section>
-    </div>
+    <!-- Accessibility — condensed to a present line + a missing line. -->
+    <section class="mg-a11y-col" aria-labelledby="mg-a11y-heading">
+      <h3 id="mg-a11y-heading">Accessibility</h3>
+      <p class="mg-a11y-line present">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+        <span>HTML, PDF &amp; LaTeX &middot; structured math</span>
+      </p>
+      <p class="mg-a11y-line missing">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg>
+        <span>Alt text on figures &mdash; <strong>missing</strong>. <a class="mg-a11y-fix" href="#">How to add it</a></span>
+      </p>
+    </section>
 
-    <!-- Two accordions, closed by default -->
+    <!-- Two disclosures, closed by default -->
     <div class="mg-accordions">
       <details class="mg-acc">
         <summary>Paper Information</summary>
@@ -9192,6 +9214,19 @@ We thus see that</p>
         sel.removeAllRanges(); sel.addRange(range);
         done();
       }
+    });
+  }
+
+  /* ── 5b. Citation Show/Hide: reveal the raw code on demand. Copy (above)
+        works whether or not the code is shown, so the common path is a
+        single click with the code kept out of the way by default. ── */
+  var showBtn = document.getElementById('mg-cite-show');
+  if (showBtn && copyCode) {
+    showBtn.addEventListener('click', function () {
+      var nowHidden = copyCode.hasAttribute('hidden');
+      if (nowHidden) { copyCode.removeAttribute('hidden'); } else { copyCode.setAttribute('hidden', ''); }
+      showBtn.setAttribute('aria-expanded', nowHidden ? 'true' : 'false');
+      showBtn.firstChild.nodeValue = nowHidden ? 'Hide' : 'Show';
     });
   }
 
