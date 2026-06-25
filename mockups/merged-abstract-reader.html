@@ -347,7 +347,7 @@ article.ltx_document { overflow-x: visible !important; }
    width), both within the centered article column. */
 .mg-top-cols { display: flex; gap: 40px; align-items: flex-start; }
 .mg-top-main { flex: 1 1 auto; min-width: 0; }
-.mg-band { flex: 0 0 288px; }
+.mg-band { flex: 0 0 250px; }
 
 /* Left-justify the title / authors / abstract in abstract mode (overriding
    the centered reader defaults below) so they read cleanly beside the rail. */
@@ -419,35 +419,49 @@ body.mg-reader .mg-top-cols { display: block; }
 }
 .mg-skip-wrap { text-align: center; }
 
-/* Cite — collapsed by default. The format <select> sits beside the heading;
-   a one-click Copy (copies the selected format WITHOUT expanding) and a Show
-   toggle sit on the actions row; the raw code is hidden until Show is
-   pressed. (Researcher feedback 2026-06-25: raw BibTeX is a gift, but it
-   doesn't need to be open by default — and one-click copy avoids "a billion
-   clicks".) */
+/* Cite — heading + a minimal format dropdown on one row; below it a tinted
+   "codeblock" that is one row tall until expanded. The bar carries a
+   "Display <format>" toggle (left) and a codeblock-style copy button
+   (right). Copy works whether or not the code is shown. (Researcher
+   feedback 2026-06-25: raw BibTeX needn't be open by default; one-click
+   copy; codeblock affordances; minimal dropdown.) */
 .mg-cite-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 10px; }
 .mg-cite-head h3 { margin: 0; }
-.mg-cite-select { font-family: var(--arxiv-font-sans); font-size: 0.8rem; padding: 3px 8px; border: 1px solid var(--arxiv-grey-ui); border-radius: 4px; background: #fff; color: var(--arxiv-ink); cursor: pointer; }
-.mg-cite-select:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
-.mg-cite-actions { display: flex; align-items: center; gap: 8px; }
-/* Copy + Show share one button treatment. Padding sized so each target
-   clears the WCAG 2.5.8 24×24 CSS-px hard floor (DESIGN-POLICIES.md →
-   "Chrome and interaction structure"). */
-.mg-cite-copy, .mg-cite-show {
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  font-family: var(--arxiv-font-sans); font-size: 0.78rem; font-weight: 600;
-  color: var(--arxiv-link-blue); background: #fff;
-  border: 1px solid var(--arxiv-grey-ui); border-radius: 5px;
-  padding: 6px 14px; cursor: pointer; min-height: 30px;
+/* Minimal native <select>: no border/fill, link-blue, tight padding. Keeps
+   the OS dropdown affordance (semantic <select>) while reading as light
+   inline chrome. */
+.mg-cite-select { font-family: var(--arxiv-font-sans); font-size: 0.8rem; font-weight: 600; padding: 2px 2px; border: none; background: transparent; color: var(--arxiv-link-blue); cursor: pointer; }
+.mg-cite-select:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 3px; }
+
+/* Tinted codeblock container. overflow:hidden keeps the rounded corners
+   clean as the code region grows in. */
+.mg-cite-block { background: var(--arxiv-card-grey); border-radius: 6px; overflow: hidden; }
+.mg-cite-block-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 8px 6px 12px; }
+/* "Display <format>" toggle — link-styled, with a leading caret. */
+.mg-cite-show {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 24px;
+  font-family: var(--arxiv-font-sans); font-size: 0.78rem; font-weight: 500;
+  color: var(--arxiv-link-blue); background: none; border: none; padding: 0;
+  cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
 }
-.mg-cite-copy { flex: 1 1 auto; }
+.mg-cite-show::before { content: "▸"; text-decoration: none; font-size: 0.7em; }
+.mg-cite-show[aria-expanded="true"]::before { content: "▾"; }
+.mg-cite-show:hover { color: var(--arxiv-link-hover); }
+.mg-cite-show:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 3px; }
+/* Codeblock-style copy button (icon + small label), top-right of the bar. */
+.mg-cite-copy {
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  min-height: 24px; padding: 4px 7px;
+  font-family: var(--arxiv-font-sans); font-size: 0.72rem; font-weight: 600;
+  color: var(--arxiv-grey); background: none; border: none; border-radius: 4px;
+  cursor: pointer;
+}
 .mg-cite-copy svg { width: 13px; height: 13px; flex: none; }
-.mg-cite-copy:hover, .mg-cite-show:hover { background: var(--arxiv-warm-wash); }
-.mg-cite-copy:focus-visible, .mg-cite-show:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
-.mg-cite-copy.is-copied { background: var(--arxiv-active-bg); border-color: var(--arxiv-tint-border); }
-.mg-cite-show::after { content: "▾"; font-size: 0.7em; line-height: 1; }
-.mg-cite-show[aria-expanded="true"]::after { content: "▴"; }
-.mg-cite-code { background: var(--arxiv-card-grey); border-radius: 6px; padding: 11px 13px; margin: 10px 0 0; font-family: var(--arxiv-font-mono); font-size: 0.72rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: auto; color: var(--arxiv-ink); max-height: 260px; overflow-y: auto; }
+.mg-cite-copy:hover { color: var(--arxiv-ink); background: rgba(0,0,0,0.05); }
+.mg-cite-copy:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
+.mg-cite-copy.is-copied { color: var(--arxiv-success-fg); }
+/* Code region: sits inside the block, no own background; grows on expand. */
+.mg-cite-code { background: none; margin: 0; padding: 2px 12px 12px; font-family: var(--arxiv-font-mono); font-size: 0.72rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--arxiv-ink); max-height: 260px; overflow-y: auto; }
 .mg-cite-code[hidden] { display: none; }
 
 /* Accessibility — condensed to two status lines (present / missing) instead
@@ -3650,8 +3664,6 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
      reader mode .mg-top-cols collapses to a single centered column. -->
 <div class="mg-top">
 <h1 class="ltx_title ltx_title_document" lang="en">Gauge-independent approach to inflation in quadratic gravity</h1>
-<div class="mg-top-cols">
-<div class="mg-top-main">
 <div class="ltx_authors">
   <ul class="ltx_authors-list">
     <li class="ltx_authors-shown"><a href="#">Adrian Palomares</a></li><li class="ltx_authors-shown"><a href="#">Ilya L. Shapiro</a></li><li class="ltx_authors-shown"><a href="#">Maria C. Gonzalez-Garcia</a></li><li class="ltx_authors-shown"><a href="#">Tomohiro Harada</a></li><li class="ltx_authors-shown"><a href="#">Elena Castellani</a></li><li class="ltx_authors-shown"><a href="#">Kei-ichi Maeda</a></li><li class="ltx_authors-shown"><a href="#">Francesca Vidotto</a></li><li class="ltx_authors-shown"><a href="#">Abhay Ashtekar</a></li><li class="ltx_authors-overflow" id="html-authors-overflow"><a href="#">Roberto Emparan</a></li><li class="ltx_authors-overflow"><a href="#">Alejandra Castro</a></li><li class="ltx_authors-overflow"><a href="#">Jan de Boer</a></li><li class="ltx_authors-overflow"><a href="#">Shin'ichi Nojiri</a></li><li class="ltx_authors-overflow"><a href="#">Sergei D. Odintsov</a></li><li class="ltx_authors-overflow"><a href="#">Viatcheslav Mukhanov</a></li><li class="ltx_authors-overflow"><a href="#">Misao Sasaki</a></li><li class="ltx_authors-overflow"><a href="#">Jiro Soda</a></li><li class="ltx_authors-overflow"><a href="#">Shinji Tsujikawa</a></li><li class="ltx_authors-overflow"><a href="#">Antonio Padilla</a></li><li class="ltx_authors-overflow"><a href="#">Ruth Gregory</a></li><li class="ltx_authors-overflow"><a href="#">Karim A. Malik</a></li><li class="ltx_authors-overflow"><a href="#">David Wands</a></li><li class="ltx_authors-overflow"><a href="#">Takahiro Tanaka</a></li>
@@ -3659,6 +3671,10 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   <button type="button" class="ltx_authors-toggle" id="html-authors-toggle" aria-expanded="false" aria-controls="html-authors-overflow">&hellip; show all 22 authors</button>
 </div>
 
+<!-- Two-column row (abstract mode): abstract on the left, the document-tools
+     rail on the right, sitting below the full-width authors list. -->
+<div class="mg-top-cols">
+<div class="mg-top-main">
 <div id="abstract1" class="ltx_abstract" lang="en">
 <h2 class="ltx_title ltx_title_abstract">Abstract</h2>
 <p class="ltx_p">We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
@@ -3714,20 +3730,22 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
           <option value="mla">MLA</option>
         </select>
       </div>
-      <div class="mg-cite-actions">
-        <button class="mg-cite-copy" id="mg-cite-copy" type="button" aria-label="Copy citation to clipboard">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          <span class="mg-cite-copy-label">Copy</span>
-        </button>
-        <button class="mg-cite-show" id="mg-cite-show" type="button" aria-expanded="false" aria-controls="mg-cite-code">Show</button>
-      </div>
-      <pre class="mg-cite-code" id="mg-cite-code" hidden><code>@article{palomares2026gauge,
+      <div class="mg-cite-block">
+        <div class="mg-cite-block-bar">
+          <button class="mg-cite-show" id="mg-cite-show" type="button" aria-expanded="false" aria-controls="mg-cite-code">Display BibTeX</button>
+          <button class="mg-cite-copy" id="mg-cite-copy" type="button" aria-label="Copy citation to clipboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="mg-cite-copy-label">Copy</span>
+          </button>
+        </div>
+        <pre class="mg-cite-code" id="mg-cite-code" hidden><code>@article{palomares2026gauge,
   title = {Gauge-independent approach to inflation in quadratic gravity},
   author = {Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and others},
   journal = {arXiv preprint arXiv:2604.22725},
   year = {2026},
   doi = {10.48550/arXiv.2604.22725}
 }</code></pre>
+      </div>
     </section>
 
     <!-- Accessibility — condensed to a present line + a missing line. -->
@@ -3735,7 +3753,11 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
       <h3 id="mg-a11y-heading">Accessibility</h3>
       <p class="mg-a11y-line present">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
-        <span>HTML, PDF &amp; LaTeX &middot; structured math</span>
+        <span>HTML, PDF &amp; LaTeX</span>
+      </p>
+      <p class="mg-a11y-line present">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+        <span>Structured math</span>
       </p>
       <p class="mg-a11y-line missing">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg>
@@ -9086,21 +9108,35 @@ We thus see that</p>
   if (togAbs) togAbs.addEventListener('click', flipReader);
   if (togReader) togReader.addEventListener('click', flipReader);
 
-  /* ── 2. Cite dropdown: swap the displayed code by selected style ── */
+  /* ── 2. Cite dropdown: swap the displayed code AND the "Display <format>"
+        toggle label by selected style ── */
   var citeSel = document.getElementById('mg-cite-style');
   var citeCode = document.getElementById('mg-cite-code');
+  var citeShow = document.getElementById('mg-cite-show');
   var CITES = {
     bibtex: "@article{palomares2026gauge,\n  title = {Gauge-independent approach to inflation in quadratic gravity},\n  author = {Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and others},\n  journal = {arXiv preprint arXiv:2604.22725},\n  year = {2026},\n  doi = {10.48550/arXiv.2604.22725}\n}",
     apa: "Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., … & Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. arXiv preprint arXiv:2604.22725. https://doi.org/10.48550/arXiv.2604.22725",
     chicago: "Palomares, Adrian, Ilya L. Shapiro, Maria C. Gonzalez-Garcia, Tomohiro Harada, et al. “Gauge-Independent Approach to Inflation in Quadratic Gravity.” arXiv preprint arXiv:2604.22725, 2026. https://doi.org/10.48550/arXiv.2604.22725.",
     mla: "Palomares, Adrian, et al. “Gauge-Independent Approach to Inflation in Quadratic Gravity.” arXiv, 2026, arXiv:2604.22725, https://doi.org/10.48550/arXiv.2604.22725."
   };
+  var CITE_NAMES = { bibtex: "BibTeX", apa: "APA", chicago: "Chicago", mla: "MLA" };
+  /* Label tracks both the selected format and the open/closed state. The
+     leading caret is a CSS ::before pseudo-element, so setting textContent
+     here leaves it intact. */
+  function updateCiteShowLabel() {
+    if (!citeShow || !citeSel) return;
+    var name = CITE_NAMES[citeSel.value] || "citation";
+    var shown = citeShow.getAttribute('aria-expanded') === 'true';
+    citeShow.textContent = (shown ? "Hide " : "Display ") + name;
+  }
   if (citeSel && citeCode) {
     citeSel.addEventListener('change', function () {
       var code = citeCode.querySelector('code') || citeCode;
       code.textContent = CITES[citeSel.value] || CITES.bibtex;
+      updateCiteShowLabel();
     });
   }
+  updateCiteShowLabel();
 
   /* ── 3. Centered TOC: open/close + sticky-state + current-section sync ── */
   var tocBar = document.getElementById('mg-toc-bar');
@@ -9252,7 +9288,7 @@ We thus see that</p>
       var nowHidden = copyCode.hasAttribute('hidden');
       if (nowHidden) { copyCode.removeAttribute('hidden'); } else { copyCode.setAttribute('hidden', ''); }
       showBtn.setAttribute('aria-expanded', nowHidden ? 'true' : 'false');
-      showBtn.firstChild.nodeValue = nowHidden ? 'Hide' : 'Show';
+      updateCiteShowLabel();
     });
   }
 
