@@ -314,6 +314,16 @@
    aligns with the viewport's center. */
 .ltx_page_content { margin-right: 0 !important; }
 
+/* The LaTeXML <article> has `overflow-x: clip` (from ar5iv.css — meant to
+   contain wide equations). That clips my band's full-bleed negative-margin
+   extension to the article's visual width (~832px), even though the band's
+   box-model rect says it's at x=0..100vw. Reported in browser review at
+   1025-1199px where the band visibly stopped short of the viewport edges.
+   Override to allow the band to render at its true width; wide equations
+   inside the article are still contained by .ltx_page_main being a grid
+   cell of fixed body-grid width, so no new page-overflow risk. */
+article.ltx_document { overflow-x: visible !important; }
+
 /* ══ TINTED BAND (full-bleed, abstract mode only) ══ */
 .mg-band {
   background: var(--arxiv-warm-wash);
@@ -500,8 +510,15 @@
 /* ══ CENTERED STICKY TOC BAR — full-bleed, semi-transparent ══
    z-index: 100 (sticky-headers tier per DESIGN-POLICIES.md Z-layer scale).
    The TOC bar is functionally sticky header chrome, so it sits at the
-   sticky-header tier (100), and its dropdown sits just above (110). */
-.mg-toc-bar { position: sticky; top: 0; z-index: 100; display: flex; justify-content: center; padding: 14px 24px;
+   sticky-header tier (100), and its dropdown sits just above (110).
+
+   box-sizing: border-box so the 24px horizontal padding is INCLUDED in
+   width: 100vw. Without this the bar was 100vw + 48px wide, overflowing
+   the viewport by 48px at every width — which expanded the body's scroll
+   width, shifted the article's center, and made the band's symmetric
+   negative-margin trick (calc(50% - 50vw)) come out asymmetric. Caught
+   in browser review at 1025-1199px (2026-06-24). */
+.mg-toc-bar { box-sizing: border-box; position: sticky; top: 0; z-index: 100; display: flex; justify-content: center; padding: 14px 24px;
   /* full-bleed: break out of any constrained parent so the bar spans the viewport */
   width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
   background: rgba(255,255,255, 0.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
