@@ -353,6 +353,11 @@ article.ltx_document { overflow-x: visible !important; }
   border: 1px solid var(--arxiv-pill-border);
   border-radius: 10px;
   padding: 16px;
+  /* Cap the card height and scroll internally so expanding a disclosure
+     never pushes the paper down / leaves whitespace beside the abstract.
+     Unset when the card stacks full-width on narrow screens. */
+  max-height: 70vh;
+  overflow-y: auto;
 }
 .mg-rail { display: flex; flex-direction: column; gap: 18px; }
 /* Hairline separators between sections within the card. */
@@ -392,7 +397,7 @@ body.mg-reader .mg-top-cols { display: block; }
 /* Narrow: stack the card beneath the abstract (full width, capped). */
 @media (max-width: 767px) {
   .mg-top-cols { flex-direction: column; gap: 0; }
-  .mg-band { flex-basis: auto; width: 100%; max-width: 560px; margin-top: 24px; }
+  .mg-band { flex-basis: auto; width: 100%; max-width: 560px; margin-top: 24px; max-height: none; overflow-y: visible; }
 }
 .mg-band h3 { font-family: var(--arxiv-font-condensed); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-grey); margin: 0 0 10px; }
 
@@ -774,6 +779,26 @@ footer.ds-site-footer { grid-area: footer; }
 
 /* ══ RELATED — Labs section (ported from abstract-redesign.html) ══
    Renamed to .mg-labs-* to keep this self-contained. */
+
+/* ══ RELATED ZONE — full-bleed band below the paper, above the footer ══
+   A darker tint than the page (card-grey) signals "supporting material, not
+   paper content" (mirrors abstract-redesign's reference zone). Full-bleed
+   via the viewport-width negative-margin trick, same as the TOC bar. Lives
+   at the end of the article, so it sits above the footer in both modes. */
+.mg-related-zone {
+  box-sizing: border-box;   /* so width:100vw includes the padding (no 48px overflow) */
+  width: 100vw;
+  margin: 56px 0 0;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: var(--arxiv-card-grey);
+  border-top: 1px solid var(--arxiv-border-light);
+  padding: 32px 24px 40px;
+  font-family: var(--arxiv-font-sans);
+}
+.mg-related-inner { max-width: 1080px; margin: 0 auto; }
+.mg-related-heading { font-family: var(--arxiv-font-sans); font-size: 1.1rem; font-weight: 700; color: var(--arxiv-ink); margin: 0 0 20px; }
+
 .mg-labs-layout { display: flex; gap: 24px; }
 .mg-labs-list { flex: 0 0 auto; min-width: 240px; }
 .mg-labs-content { flex: 1; min-width: 0; }
@@ -3850,88 +3875,10 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
           </dl>
         </div>
       </details>
-      <details class="mg-acc">
-        <summary>Related</summary>
-        <div class="mg-acc-body">
-          <!-- Full arXiv Labs section (ported from abstract-redesign.html):
-               grouped toggle list on the left, content area on the right.
-               Toggling a Lab reveals its placeholder; the empty-state hides. -->
-          <div class="mg-labs-layout">
-            <div class="mg-labs-list">
-              <div class="mg-labs-group">
-                <div class="mg-labs-grouplabel">Papers &amp; Citations</div>
-                <div class="mg-labs-row">
-                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="connected-papers" aria-label="Connected Papers"><span class="mg-labs-track"></span></label>
-                  <span class="mg-labs-name">Connected Papers <a class="mg-labs-what" href="https://www.connectedpapers.com/about" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-                </div>
-                <div class="mg-labs-row">
-                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="litmaps" aria-label="Litmaps"><span class="mg-labs-track"></span></label>
-                  <span class="mg-labs-name">Litmaps <a class="mg-labs-what" href="https://www.litmaps.co/" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-                </div>
-                <div class="mg-labs-row">
-                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="core" aria-label="CORE Recommender"><span class="mg-labs-track"></span></label>
-                  <span class="mg-labs-name">CORE Recommender <a class="mg-labs-what" href="https://core.ac.uk/services/recommender" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-                </div>
-                <div class="mg-labs-row">
-                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="scite" aria-label="scite Smart Citations"><span class="mg-labs-track"></span></label>
-                  <span class="mg-labs-name">scite Smart Citations <a class="mg-labs-what" href="https://www.scite.ai/" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-                </div>
-              </div>
-              <div class="mg-labs-group">
-                <div class="mg-labs-grouplabel">Code, Data &amp; Models</div>
-                <div class="mg-labs-row">
-                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="catalyzex" aria-label="CatalyzeX Code Finder"><span class="mg-labs-track"></span></label>
-                  <span class="mg-labs-name">CatalyzeX Code Finder <a class="mg-labs-what" href="https://www.catalyzex.com" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-                </div>
-                <div class="mg-labs-row">
-                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="huggingface" aria-label="Hugging Face"><span class="mg-labs-track"></span></label>
-                  <span class="mg-labs-name">Hugging Face <a class="mg-labs-what" href="https://huggingface.co/huggingface" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-                </div>
-                <div class="mg-labs-row">
-                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="sciencecast" aria-label="ScienceCast"><span class="mg-labs-track"></span></label>
-                  <span class="mg-labs-name">ScienceCast <a class="mg-labs-what" href="https://sciencecast.org/welcome" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-                </div>
-                <div class="mg-labs-row">
-                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="alphaxiv" aria-label="alphaXiv"><span class="mg-labs-track"></span></label>
-                  <span class="mg-labs-name">alphaXiv <a class="mg-labs-what" href="https://alphaxiv.org/" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-                </div>
-              </div>
-              <div class="mg-labs-group">
-                <div class="mg-labs-grouplabel">Demos</div>
-                <div class="mg-labs-row">
-                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="replicate" aria-label="Replicate"><span class="mg-labs-track"></span></label>
-                  <span class="mg-labs-name">Replicate <a class="mg-labs-what" href="https://replicate.com/docs/arxiv/about" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-                </div>
-                <div class="mg-labs-row">
-                  <label class="mg-labs-toggle"><input type="checkbox" data-lab="hf-spaces" aria-label="Hugging Face Spaces"><span class="mg-labs-track"></span></label>
-                  <span class="mg-labs-name">Hugging Face Spaces <a class="mg-labs-what" href="https://huggingface.co/docs/hub/spaces" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-                </div>
-              </div>
-            </div>
-            <div class="mg-labs-content" id="mg-labs-content-area">
-              <div class="mg-labs-empty" id="mg-labs-empty-msg">Toggle a tool on the left to see its content here.</div>
-              <div class="mg-labs-placeholder" data-lab-content="connected-papers">Content for Connected Papers will display here</div>
-              <div class="mg-labs-placeholder" data-lab-content="litmaps">Content for Litmaps will display here</div>
-              <div class="mg-labs-placeholder" data-lab-content="core">Content for CORE Recommender will display here</div>
-              <div class="mg-labs-placeholder" data-lab-content="scite">Content for scite Smart Citations will display here</div>
-              <div class="mg-labs-placeholder" data-lab-content="catalyzex">Content for CatalyzeX will display here</div>
-              <div class="mg-labs-placeholder" data-lab-content="huggingface">Content for Hugging Face will display here</div>
-              <div class="mg-labs-placeholder" data-lab-content="sciencecast">Content for ScienceCast will display here</div>
-              <div class="mg-labs-placeholder" data-lab-content="alphaxiv">Content for alphaXiv will display here</div>
-              <div class="mg-labs-placeholder" data-lab-content="replicate">Content for Replicate will display here</div>
-              <div class="mg-labs-placeholder" data-lab-content="hf-spaces">Content for Hugging Face Spaces will display here</div>
-            </div>
-          </div>
-          <div class="mg-labs-info">
-            <a href="https://info.arxiv.org/labs/index.html" target="_blank" rel="noopener noreferrer">
-              <img src="images/smileybones-labs-small.svg" alt="">
-              What are arXiv Labs?
-              <svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-              <span class="is-sr-only">(opens in new tab)</span>
-            </a>
-          </div>
-        </div>
-      </details>
+      <!-- "Related" (arXiv Labs) moved OUT of the rail to a full-width band
+           below the paper (see <section id="mg-related"> before </article>) —
+           it was too big for the narrow card. -->
+
     </div>
     </section>
   </div>
@@ -6919,6 +6866,89 @@ We thus see that</p>
 <aside class="footnote" id="fn-lambda">Note that <math class="ltx_Math" alttext="\lambda" display="inline" intent=":literal"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math> corresponds to <math class="ltx_Math" alttext="\beta" display="inline" intent=":literal"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math> in Ref.&nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a href="https://arxiv.org/html/2604.22725v1#bib.bib26" title="Starobinsky inflation with a quadratic Weyl tensor" class="ltx_ref">18</a>]</cite>.</aside>
 <aside class="footnote" id="fn-omega">Note that <math class="ltx_Math" alttext="\omega" display="inline" intent=":literal"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math> corresponds to <math class="ltx_Math" alttext="2\alpha" display="inline" intent=":literal"><semantics><mrow><mn>2</mn><mo lspace="0em" rspace="0em">​</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">2\alpha</annotation></semantics></math> in Ref.&nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a href="https://arxiv.org/html/2604.22725v1#bib.bib26" title="Starobinsky inflation with a quadratic Weyl tensor" class="ltx_ref">18</a>]</cite>.</aside>
 
+<!-- ══ RELATED — full-width arXiv Labs band below the paper, above the
+        footer. Full-bleed darker-tint band (like abstract-redesign's
+        reference zone) signals it is NOT part of the paper content. An
+        <aside> complementary landmark since it is supplementary. ══ -->
+<aside class="mg-related-zone" id="mg-related" aria-labelledby="mg-related-heading">
+  <div class="mg-related-inner">
+    <h2 id="mg-related-heading" class="mg-related-heading">Related</h2>
+    <div class="mg-labs-layout">
+      <div class="mg-labs-list">
+        <div class="mg-labs-group">
+          <div class="mg-labs-grouplabel">Papers &amp; Citations</div>
+          <div class="mg-labs-row">
+            <label class="mg-labs-toggle"><input type="checkbox" data-lab="connected-papers" aria-label="Connected Papers"><span class="mg-labs-track"></span></label>
+            <span class="mg-labs-name">Connected Papers <a class="mg-labs-what" href="https://www.connectedpapers.com/about" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+          </div>
+          <div class="mg-labs-row">
+            <label class="mg-labs-toggle"><input type="checkbox" data-lab="litmaps" aria-label="Litmaps"><span class="mg-labs-track"></span></label>
+            <span class="mg-labs-name">Litmaps <a class="mg-labs-what" href="https://www.litmaps.co/" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+          </div>
+          <div class="mg-labs-row">
+            <label class="mg-labs-toggle"><input type="checkbox" data-lab="core" aria-label="CORE Recommender"><span class="mg-labs-track"></span></label>
+            <span class="mg-labs-name">CORE Recommender <a class="mg-labs-what" href="https://core.ac.uk/services/recommender" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+          </div>
+          <div class="mg-labs-row">
+            <label class="mg-labs-toggle"><input type="checkbox" data-lab="scite" aria-label="scite Smart Citations"><span class="mg-labs-track"></span></label>
+            <span class="mg-labs-name">scite Smart Citations <a class="mg-labs-what" href="https://www.scite.ai/" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+          </div>
+        </div>
+        <div class="mg-labs-group">
+          <div class="mg-labs-grouplabel">Code, Data &amp; Models</div>
+          <div class="mg-labs-row">
+            <label class="mg-labs-toggle"><input type="checkbox" data-lab="catalyzex" aria-label="CatalyzeX Code Finder"><span class="mg-labs-track"></span></label>
+            <span class="mg-labs-name">CatalyzeX Code Finder <a class="mg-labs-what" href="https://www.catalyzex.com" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+          </div>
+          <div class="mg-labs-row">
+            <label class="mg-labs-toggle"><input type="checkbox" data-lab="huggingface" aria-label="Hugging Face"><span class="mg-labs-track"></span></label>
+            <span class="mg-labs-name">Hugging Face <a class="mg-labs-what" href="https://huggingface.co/huggingface" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+          </div>
+          <div class="mg-labs-row">
+            <label class="mg-labs-toggle"><input type="checkbox" data-lab="sciencecast" aria-label="ScienceCast"><span class="mg-labs-track"></span></label>
+            <span class="mg-labs-name">ScienceCast <a class="mg-labs-what" href="https://sciencecast.org/welcome" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+          </div>
+          <div class="mg-labs-row">
+            <label class="mg-labs-toggle"><input type="checkbox" data-lab="alphaxiv" aria-label="alphaXiv"><span class="mg-labs-track"></span></label>
+            <span class="mg-labs-name">alphaXiv <a class="mg-labs-what" href="https://alphaxiv.org/" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+          </div>
+        </div>
+        <div class="mg-labs-group">
+          <div class="mg-labs-grouplabel">Demos</div>
+          <div class="mg-labs-row">
+            <label class="mg-labs-toggle"><input type="checkbox" data-lab="replicate" aria-label="Replicate"><span class="mg-labs-track"></span></label>
+            <span class="mg-labs-name">Replicate <a class="mg-labs-what" href="https://replicate.com/docs/arxiv/about" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+          </div>
+          <div class="mg-labs-row">
+            <label class="mg-labs-toggle"><input type="checkbox" data-lab="hf-spaces" aria-label="Hugging Face Spaces"><span class="mg-labs-track"></span></label>
+            <span class="mg-labs-name">Hugging Face Spaces <a class="mg-labs-what" href="https://huggingface.co/docs/hub/spaces" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
+          </div>
+        </div>
+      </div>
+      <div class="mg-labs-content" id="mg-labs-content-area">
+        <div class="mg-labs-empty" id="mg-labs-empty-msg">Toggle a tool on the left to see its content here.</div>
+        <div class="mg-labs-placeholder" data-lab-content="connected-papers">Content for Connected Papers will display here</div>
+        <div class="mg-labs-placeholder" data-lab-content="litmaps">Content for Litmaps will display here</div>
+        <div class="mg-labs-placeholder" data-lab-content="core">Content for CORE Recommender will display here</div>
+        <div class="mg-labs-placeholder" data-lab-content="scite">Content for scite Smart Citations will display here</div>
+        <div class="mg-labs-placeholder" data-lab-content="catalyzex">Content for CatalyzeX will display here</div>
+        <div class="mg-labs-placeholder" data-lab-content="huggingface">Content for Hugging Face will display here</div>
+        <div class="mg-labs-placeholder" data-lab-content="sciencecast">Content for ScienceCast will display here</div>
+        <div class="mg-labs-placeholder" data-lab-content="alphaxiv">Content for alphaXiv will display here</div>
+        <div class="mg-labs-placeholder" data-lab-content="replicate">Content for Replicate will display here</div>
+        <div class="mg-labs-placeholder" data-lab-content="hf-spaces">Content for Hugging Face Spaces will display here</div>
+      </div>
+    </div>
+    <div class="mg-labs-info">
+      <a href="https://info.arxiv.org/labs/index.html" target="_blank" rel="noopener noreferrer">
+        <img src="images/smileybones-labs-small.svg" alt="">
+        What are arXiv Labs?
+        <svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        <span class="is-sr-only">(opens in new tab)</span>
+      </a>
+    </div>
+  </div>
+</aside>
 </article>
 <!--
 ═══════════════════════════════════════════════════════════════════════
