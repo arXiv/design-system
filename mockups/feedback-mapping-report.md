@@ -5,7 +5,7 @@ Working draft. 06/26/26. Shamsi Brinn.
 
 ## Description
 
-The mockups I am working on make a lot of design decisions. This document links those decisions back to user research findings, and points out gaps where more research and user testing is needed.
+The mockup of the combined abstract page and HTML papers page necessarily incorporates a lot of design decisions. This document links those decisions back to user research findings and points out gaps where more research and user testing is needed.
 
 ---
 
@@ -80,12 +80,12 @@ The mockups I am working on make a lot of design decisions. This document links 
 
 ## Sources
 
-| Tag | Description | Size |
-|---|---|---|---|
+| Tag | Description | Details |
+|---|---|---|
 | **BPS** | Design/UX comments filtered from the BPS 2025 annual survey (open-ended) | 9,419 respondents, ~80 design comments |
 | **AUXDH** | UX Data Hub / Jira observations, ~2019→present | ~2,950 observations, 14 themes |
 | **Interviews** | Interviewer-mediated AT-user & expert interviews | 42 interviews, Jul 2022–Jun 2023 |
 | **Github issues** | GitHub issues submitted by HTML paper readers | 107 relevant issues closed, 72 open |
-| **Labs** | Functional audit of 16 arXiv Labs integrations | Apr 2026 |
+| **Labs** | Functional audit of 16 arXiv Labs integrations | Single report, Apr 2026 |
 
 > One caution: The A11y interviews **pre-date arXiv's HTML papers launch**. Many feature asks are now met, and the tech landscape has changed profoundly, so we need a new round of interviews.
