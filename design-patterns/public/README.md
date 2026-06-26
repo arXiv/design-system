@@ -52,4 +52,4 @@ Key differences from internal:
 - Color palette: `../color-mapping.md`
 - Typography: `../typography.md`
 - Internal patterns (shared foundations): `../internal/`
-- Visual audit (the "why"): `../../visual-audit/audit-report.md`
+- Visual audit (the "why"): `../../audits/audit-visual.md`
