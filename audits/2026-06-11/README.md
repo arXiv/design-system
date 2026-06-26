@@ -2,7 +2,7 @@
 
 Two parallel audits of the redesign mockups and the current arXiv site, captured via Playwright.
 
-**See also:** [`../../visual-audit/`](../../visual-audit/) — the platform-wide strategic visual audit from 2025-11-11 (the "11 visual languages" report). That's a stakeholder-facing narrative document; this folder is operational tool output. Different artifacts, both useful, kept separate on purpose.
+**See also:** [`../audit-visual.md`](../audit-visual.md) — the platform-wide strategic visual audit from 2025-11-11 (the "11 visual languages" report). That's a stakeholder-facing narrative document; this folder is operational tool output. Different artifacts, both useful, kept separate on purpose.
 
 ## Files
 

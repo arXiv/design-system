@@ -39,7 +39,7 @@ mockups/                          in-progress whole-page mockups (preview, NOT c
   html-redesign.html              HTML paper reader mockup
   abstract-redesign.html          abstract page mockup
 
-visual-audit/                     platform-wide visual audit (11 silos documented)
+audits/                           visual audit, labs audit, and component audit runs
 ```
 
 ## Mockups vs. canonical patterns
