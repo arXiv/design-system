@@ -341,18 +341,30 @@ article.ltx_document { overflow-x: visible !important; }
    accordion <dd>, labs items) inherits the ar5iv article's serif and renders
    in Times. Explicit condensed (labels) and mono (cite code) children keep
    their own faces — inheritance only fills in the un-set ones. */
-.mg-band { margin: 0; font-family: var(--arxiv-font-sans); }
+/* The rail is a tinted CARD (warm-wash) so it reads as a distinct "document
+   tools" surface; Open Blue accents (PDF button, cite chip, a11y shields)
+   pop against the neutral tint. font-family defaults the card to IBM Plex
+   Sans (typography.md body face) so un-set text doesn't inherit the ar5iv
+   article's serif. */
+.mg-band {
+  margin: 0; box-sizing: border-box;
+  font-family: var(--arxiv-font-sans);
+  background: var(--arxiv-warm-wash);
+  border: 1px solid var(--arxiv-pill-border);
+  border-radius: 10px;
+  padding: 16px;
+}
 .mg-rail { display: flex; flex-direction: column; gap: 18px; }
-/* Hairline separators keep the rail light — no heavy cards or tint fill. */
+/* Hairline separators between sections within the card. */
 .mg-rail > * + * { border-top: 1px solid var(--arxiv-border-light); padding-top: 16px; }
 
 /* ══ ABSTRACT-MODE TOP LAYOUT ══
    Title spans the full content width (titles can be very long). Below it, a
    two-column row: authors+abstract (left, fluid) and the rail (right, fixed
    width), both within the centered article column. */
-.mg-top-cols { display: flex; gap: 40px; align-items: flex-start; }
+.mg-top-cols { display: flex; gap: 36px; align-items: flex-start; }
 .mg-top-main { flex: 1 1 auto; min-width: 0; }
-.mg-band { flex: 0 0 250px; }
+.mg-band { flex: 0 0 268px; }   /* card outer width (border-box; ~236px content after padding) */
 
 /* Left-justify the title / authors / abstract in abstract mode (overriding
    the centered reader defaults below) so they read cleanly beside the rail. */
@@ -377,11 +389,10 @@ body:not(.mg-reader) .mg-top-main .ltx_abstract { padding: 0 !important; margin:
    keep their centered reader styling. */
 body.mg-reader .mg-top-cols { display: block; }
 
-/* Narrow: stack the rail beneath the abstract, set off by a hairline. */
+/* Narrow: stack the card beneath the abstract (full width, capped). */
 @media (max-width: 767px) {
   .mg-top-cols { flex-direction: column; gap: 0; }
-  .mg-band { flex-basis: auto; width: 100%; border-top: 1px solid var(--arxiv-border-light); padding-top: 22px; margin-top: 22px; }
-  .mg-rail { max-width: 560px; }
+  .mg-band { flex-basis: auto; width: 100%; max-width: 560px; margin-top: 24px; }
 }
 .mg-band h3 { font-family: var(--arxiv-font-condensed); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-grey); margin: 0 0 10px; }
 
@@ -434,7 +445,10 @@ body.mg-reader .mg-top-cols { display: block; }
 /* Minimal native <select>: no border/fill, link-blue, tight padding. Keeps
    the OS dropdown affordance (semantic <select>) while reading as light
    inline chrome. */
-.mg-cite-select { font-family: var(--arxiv-font-sans); font-size: 0.8rem; font-weight: 600; padding: 2px 2px; border: none; background: transparent; color: var(--arxiv-link-blue); cursor: pointer; }
+/* Open Blue chip: ink text on the light Open-Blue fill (same contrast-safe
+   pairing as the PDF button) so the format selector reads as "good stuff".
+   Still a semantic native <select>. */
+.mg-cite-select { font-family: var(--arxiv-font-sans); font-size: 0.78rem; font-weight: 600; padding: 3px 6px; border: none; border-radius: 5px; background: var(--arxiv-open-blue); color: var(--arxiv-ink); cursor: pointer; }
 .mg-cite-select:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 3px; }
 
 /* Codeblock styled as an "empty field" when collapsed: a tinted, dashed-
@@ -491,10 +505,15 @@ body.mg-reader .mg-top-cols { display: block; }
 .mg-a11y-line .ic { width: 14px; height: 14px; flex: none; margin-top: 2px; position: relative; z-index: 1; }
 /* Greens map to the canonical --arxiv-success-* tokens
    (color-mapping.md "Status & alert colors — shared"). */
-.mg-a11y-line.present { color: var(--arxiv-success-fg); }
-.mg-a11y-line.present .ic { color: var(--arxiv-success-border); }
-.mg-a11y-line.missing { color: var(--arxiv-grey); }
-.mg-a11y-line.missing .ic { color: var(--arxiv-grey-ui); }
+/* "Present" rows use an Open Blue shield badge as the positive signal:
+   light Open-Blue fill with a link-blue outline/check (the fill alone is
+   too light to meet 3:1, so the darker stroke carries the contrast). Text
+   stays ink for readability. */
+.mg-a11y-line.present { color: var(--arxiv-ink); }
+.mg-a11y-line.present .ic { color: var(--arxiv-link-blue); fill: var(--arxiv-open-blue); }
+/* "Partial" (e.g. some figures lack alt text) stays muted grey. */
+.mg-a11y-line.partial { color: var(--arxiv-grey); }
+.mg-a11y-line.partial .ic { color: var(--arxiv-grey-ui); }
 .mg-a11y-fix { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; margin-left: 4px; }
 
 /* Files column. Primary action uses the canonical `.ds-btn-primary`
@@ -508,6 +527,22 @@ body.mg-reader .mg-top-cols { display: block; }
 .mg-files-link { font-size: 0.82rem; }
 .mg-files-link a { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; }
 .mg-files-link small { color: var(--arxiv-grey); font-size: 0.74rem; margin-left: 6px; }
+
+/* Ancillary files: per-file name.ext + size, with an optional "Download all"
+   link and "Show all N" toggle (shown only when >2 files). */
+.mg-anc { display: flex; flex-direction: column; gap: 6px; }
+.mg-anc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.mg-anc-label { font-size: 0.78rem; font-weight: 600; color: var(--arxiv-grey); }
+.mg-anc-all { font-size: 0.74rem; color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+.mg-anc-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+.mg-anc-list li { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 0.8rem; }
+.mg-anc-list li[hidden] { display: none; }   /* beats `.mg-anc-list li { display:flex }` for the collapsed rows */
+.mg-anc-list li a { color: var(--arxiv-link-blue); text-decoration: none; overflow-wrap: anywhere; }
+.mg-anc-list li a:hover { text-decoration: underline; }
+.mg-anc-size { flex: none; color: var(--arxiv-grey); font-size: 0.72rem; font-variant-numeric: tabular-nums; }
+.mg-anc-toggle { align-self: flex-start; background: none; border: none; padding: 2px 0; font-family: var(--arxiv-font-sans); font-size: 0.76rem; font-weight: 600; color: var(--arxiv-link-blue); cursor: pointer; }
+.mg-anc-toggle:hover { color: var(--arxiv-link-hover); text-decoration: underline; }
+.mg-anc-toggle:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 3px; }
 
 /* ══ CANONICAL BUTTONS (ported from design-patterns/public/design-system.css) ══
    Source of truth: button-styles.html. Construction = 1.5px transparent border
@@ -565,7 +600,11 @@ body.mg-reader .mg-top-cols { display: block; }
    Their internals go single-column to fit the narrow rail. ── */
 .mg-rail .mg-acc { background: transparent; border: 0; border-radius: 0; }
 .mg-rail .mg-acc > summary { padding: 0; font-size: 0.82rem; }
-.mg-rail .mg-acc > summary::after { font-size: 1.1rem; }
+/* Blue +/- marker so the disclosures read as interactive "good stuff"
+   (Open Blue itself is too light for a glyph; link-blue is its readable
+   sibling). Hovering tints the label to match. */
+.mg-rail .mg-acc > summary::after { font-size: 1.1rem; color: var(--arxiv-link-blue); }
+.mg-rail .mg-acc > summary:hover { color: var(--arxiv-link-blue); }
 .mg-rail .mg-acc[open] > summary { border-bottom: 0; margin-bottom: 10px; }
 .mg-rail .mg-acc-body { padding: 0; }
 .mg-rail .mg-acc-body dl { grid-template-columns: 1fr; gap: 0; }
@@ -3730,10 +3769,24 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
             <a href="https://arxiv.org/src/2604.22725v1">TeX Source</a>
             <small>.tar.gz &middot; 286&nbsp;KB</small>
           </div>
-          <div class="mg-files-link">
-            <a href="#">Ancillary files</a>
-            <small>5 files &middot; 2.3&nbsp;MB</small>
+        </div>
+        <!-- Ancillary files — each file listed by name.ext (so the type is
+             obvious) + size. With >2 files we show the first two, a
+             "Download all" link, and a "Show all N" toggle; with ≤2 files
+             we'd just list them (no toggle / no download-all). -->
+        <div class="mg-anc" id="mg-anc">
+          <div class="mg-anc-head">
+            <span class="mg-anc-label">Ancillary files</span>
+            <a class="mg-anc-all" href="https://arxiv.org/src/2604.22725v1/anc">Download all</a>
           </div>
+          <ul class="mg-anc-list">
+            <li><a href="#">supplementary_notes.pdf</a><span class="mg-anc-size">1.4&nbsp;MB</span></li>
+            <li><a href="#">data_tables.csv</a><span class="mg-anc-size">312&nbsp;KB</span></li>
+            <li class="mg-anc-extra" hidden><a href="#">evolution_code.py</a><span class="mg-anc-size">48&nbsp;KB</span></li>
+            <li class="mg-anc-extra" hidden><a href="#">perturbation_growth.mp4</a><span class="mg-anc-size">1.8&nbsp;MB</span></li>
+            <li class="mg-anc-extra" hidden><a href="#">README.txt</a><span class="mg-anc-size">2&nbsp;KB</span></li>
+          </ul>
+          <button class="mg-anc-toggle" id="mg-anc-toggle" type="button" aria-expanded="false" aria-controls="mg-anc">Show all 5 files</button>
         </div>
       </div>
     </section>
@@ -3780,9 +3833,9 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
         <span>Structured math</span>
       </p>
-      <p class="mg-a11y-line missing">
+      <p class="mg-a11y-line partial">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg>
-        <span>Alt text on figures &mdash; <strong>missing</strong>. <a class="mg-a11y-fix" href="#">How to add it</a></span>
+        <span>Alt text (partial)</span>
       </p>
     </section>
 
@@ -9312,6 +9365,22 @@ We thus see that</p>
       showBtn.setAttribute('aria-expanded', nowHidden ? 'true' : 'false');
       if (citeBlock) citeBlock.classList.toggle('is-open', nowHidden);
       updateCiteShowLabel();
+    });
+  }
+
+  /* ── 5c. Ancillary files "Show all N" toggle: reveal/hide the rows past
+        the first two. ── */
+  var ancToggle = document.getElementById('mg-anc-toggle');
+  if (ancToggle) {
+    var ancExtras = Array.prototype.slice.call(document.querySelectorAll('.mg-anc-extra'));
+    var ancTotal = document.querySelectorAll('.mg-anc-list li').length;
+    ancToggle.addEventListener('click', function () {
+      var expanded = ancToggle.getAttribute('aria-expanded') === 'true';
+      ancExtras.forEach(function (li) {
+        if (expanded) li.setAttribute('hidden', ''); else li.removeAttribute('hidden');
+      });
+      ancToggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      ancToggle.textContent = expanded ? ('Show all ' + ancTotal + ' files') : 'Show fewer';
     });
   }
 
