@@ -1,6 +1,7 @@
-# Linking mockups to user feedback
+# Linking the Abstract/HTML Paper mockup to user feedback
+[Github-hosted Mockup](https://arxiv.github.io/design-system/mockups/merged-abstract-reader.html)
 
-**Working draft. 06/26/26. Shamsi Brinn.**
+Working draft. 06/26/26. Shamsi Brinn.
 
 ## Description
 
