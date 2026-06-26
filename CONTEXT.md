@@ -23,9 +23,10 @@ DESIGN-POLICIES.md                ← hard constraints (a11y, tokens, convention
 NEXT-STEPS.md                     ← program-level backlog and priorities
 CLAUDE.md                         ← AI agent entry point (pointer to context files)
 
-visual-audit/                     ← platform-wide visual audit (the "why")
-  audit-report.md                 ←   11-silo audit with screenshots
-  images/
+audits/                           ← all audits (the "why")
+  audit-visual.md                 ←   platform-wide 11-silo visual audit (+ images/)
+  audit-labs.md                   ←   functional audit of 16 arXiv Labs (+ labs-screenshots/)
+  2026-06-11/                     ←   component / responsiveness audit run
 
 design-patterns/
   typography.md                   ← font families, weights, self-hosting plan (shared)
@@ -73,6 +74,29 @@ arXiv is spinning out from Cornell into an independent 501(c)(3). This drives se
 - Typekit font access (Rival Sans, Freight) will be lost — replaced by self-hosted IBM Plex
 - The new public header is a single dark bar with the arXiv logo and minimal navigation
 - Campus Red is retained as a heritage accent, not a primary color
+
+## What the design draws from — user feedback
+
+The decisions in this system are grounded in arXiv user research, not taste. The major recurring themes below are what the design responds to; each notes roughly what it drove. For the raw feedback, see *Where the feedback lives* at the end.
+
+1. **HTML is first-class, not a PDF afterthought.** The strongest, most consistent signal — loudest from accessibility users ("HTML + MathML and you are done"). *(accessibility interviews; UX Research Hub; GitHub issues)*
+2. **The interface should get out of the way.** Roughly half of closed UX issues reduce to "your interface is in my way". *(GitHub issues; UX Research Hub)*
+3. **Core tasks must be obvious and easy.** Make it easy to read a paper, download a PDF, find a citation, and surface ancially files. *(UX Research Hub; BPS 2025; accessibility interviews)*
+4. **Keep the paper sovereign — don't crowd it with non-paper content.** Most user feedback after adding the Labs tabs to the abstract page were highly negative ("This is an actively bad idea," "keep it simple and clean"). A small minority welcomed the new features. *(UX Research Hub; BPS 2025)*
+5. **Reference and citation navigation must work for both sighted and AT users** The single most-filed reader bug was that footnote/citation links and hover popups were unusable. Wayfinding should be seamless and users whould never feel like they have lost their place. *(GitHub issues; accessibility interviews)*
+6. **Core tasks should be owned by arXiv.** Example: Bibliographic Explorer was the most-used Lab, but was unsupported and buggy. Finding citation info is a core task for researchers so we are bringing the feature in-house. *(Labs audit; UX Research Hub)*
+8. **Accessibility is a floor, not a feature.** Accessibility goes way beyond color contrast and aria tags. It includes semantic structure (headings/landmarks), wayfinding that works for all users, keeping extraneous content to a minimum, providing multiple formats for papers and math, keyboard reachability, reduced motion, forced colors, JS-off usability, and flexible and responsive typography. *(accessibility interviews; GitHub issues)*
+9. **Mobile reality: small screens, small targets.** Never let header chrome eat the mobile viewport, keep tap targets generous, and ensure flexible layouts still make sense when stacking in narrow viewports. *(UX Research Hub; GitHub issues)*
+
+### Where the feedback lives
+
+- **BPS 2025 Annual Survey** — 9,419 respondents; design/UX comments volunteered in open-ended responses.
+- **UX Research Hub (Jira)** — the running log of user observations and quotes (2019–present).
+- **GitHub — arXiv/html_feedback** — ~180 UX-labeled issues (open + closed), mostly HTML-reader bugs.
+- **Accessibility interviews** — 42 interviews with assistive-technology users and experts (2022–2023).
+- **arXiv Labs audit** — functional review of 16 Labs integrations (2026).
+
+Synthesized writeups of each (themes, quotes, provenance) live in the UX research references folder.
 
 ## Scope
 
