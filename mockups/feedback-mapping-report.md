@@ -73,7 +73,7 @@ The mockup of the combined abstract page and HTML papers page necessarily incorp
 - **Additive features vs. paper sovereignty** Adding the Labs/tabs section drew a measured backlash (*"it just adds clutter, confusion and distraction"* AUXDH-1101; *"Leave arxiv UNMODIFIED… avoid social nonsense"* 1117; **and** a measured welcome (*"great improvements!"* 1146; CORE Recommender *"useful… nice that this is here"* 1184; The solution is not to freeze progress but to add new features in ways that don't disrupt the practicality, efficiency and speed that users want from arXiv.
 - **Metrics:** a vocal minority wants views/downloads/citations; Heavy users object. Our design policy bars them on public pages and heavy users object. *Confirm this is official arXiv policy.*
 - **Typography: Browser and user settings vs. UI controls:** Research proves dyslexia fonts don't improve reading; Some user requests for UI controls over font size, color, fonts; Browser controls like zooming in and out, or user settings, already provide excellent control; UI controls will add clutter to an already busy page.
-- **arXiv PDF vs. publisher Version-of-Record prominence** — a publisher voice (Elsevier) says the arXiv PDF button is "too prominent relative to the journal version." Currently unaddressed.
+- **arXiv PDF vs. VoR prominence** — Elsevier respondent wrote that arXiv PDF button is "too prominent relative to the journal version." Overlay Journals also want clear differentiation between arXiv and other versions. Unadressed in mockup because it lacks metadata support.
 - **Math rendering: MathML vs. LaTeX-source vs. MathJax** — Ask Deyan and Bruce, formalize decision and why. Placeholder so I don't forget to ask.
 
 ---
@@ -86,6 +86,6 @@ The mockup of the combined abstract page and HTML papers page necessarily incorp
 | **AUXDH** | UX Data Hub / Jira observations, ~2019→present | ~2,950 observations, 14 themes |
 | **Interviews** | Interviewer-mediated AT-user & expert interviews | 42 interviews, Jul 2022–Jun 2023 |
 | **Github issues** | GitHub issues submitted by HTML paper readers | 107 relevant issues closed, 72 open |
-| **Labs** | Functional audit of 16 arXiv Labs integrations | Single report, Apr 2026 |
+| **Labs** | Functional audit of 16 arXiv Labs integrations | Single report, Apr 2026 
 
 > One caution: The A11y interviews **pre-date arXiv's HTML papers launch**. Many feature asks are now met, and the tech landscape has changed profoundly, so we need a new round of interviews.
