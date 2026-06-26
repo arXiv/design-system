@@ -364,7 +364,7 @@ article.ltx_document { overflow-x: visible !important; }
    width), both within the centered article column. */
 .mg-top-cols { display: flex; gap: 36px; align-items: flex-start; }
 .mg-top-main { flex: 1 1 auto; min-width: 0; }
-.mg-band { flex: 0 0 268px; }   /* card outer width (border-box; ~236px content after padding) */
+.mg-band { flex: 0 0 275px; }   /* card outer width (border-box; ~243px content after padding) */
 
 /* Left-justify the title / authors / abstract in abstract mode (overriding
    the centered reader defaults below) so they read cleanly beside the rail. */
@@ -528,21 +528,12 @@ body.mg-reader .mg-top-cols { display: block; }
 .mg-files-link a { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; }
 .mg-files-link small { color: var(--arxiv-grey); font-size: 0.74rem; margin-left: 6px; }
 
-/* Ancillary files: per-file name.ext + size, with an optional "Download all"
-   link and "Show all N" toggle (shown only when >2 files). */
-.mg-anc { display: flex; flex-direction: column; gap: 6px; }
-.mg-anc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
-.mg-anc-label { font-size: 0.78rem; font-weight: 600; color: var(--arxiv-grey); }
-.mg-anc-all { font-size: 0.74rem; color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
-.mg-anc-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
-.mg-anc-list li { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 0.8rem; }
-.mg-anc-list li[hidden] { display: none; }   /* beats `.mg-anc-list li { display:flex }` for the collapsed rows */
-.mg-anc-list li a { color: var(--arxiv-link-blue); text-decoration: none; overflow-wrap: anywhere; }
-.mg-anc-list li a:hover { text-decoration: underline; }
-.mg-anc-size { flex: none; color: var(--arxiv-grey); font-size: 0.72rem; font-variant-numeric: tabular-nums; }
-.mg-anc-toggle { align-self: flex-start; background: none; border: none; padding: 2px 0; font-family: var(--arxiv-font-sans); font-size: 0.76rem; font-weight: 600; color: var(--arxiv-link-blue); cursor: pointer; }
-.mg-anc-toggle:hover { color: var(--arxiv-link-hover); text-decoration: underline; }
-.mg-anc-toggle:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 3px; }
+/* Ancillary files (>2): one compact line — label + total beside it, with a
+   right-aligned "Download all" link. (≤2 files would list each by name+size.) */
+.mg-anc { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 0.82rem; }
+.mg-anc-label { color: var(--arxiv-ink); }
+.mg-anc-total { color: var(--arxiv-grey); font-size: 0.74rem; }
+.mg-anc-all { flex: none; font-size: 0.78rem; color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
 
 /* ══ CANONICAL BUTTONS (ported from design-patterns/public/design-system.css) ══
    Source of truth: button-styles.html. Construction = 1.5px transparent border
@@ -696,10 +687,12 @@ body.mg-reader.mg-toc-stuck .arxiv-html-header .mg-reader-toggle {
 .mg-toc-trigger { display: inline-flex; align-items: center; gap: 9px; font-family: var(--arxiv-font-sans); font-size: 0.85rem; font-weight: 600; background: #fff; color: var(--arxiv-ink); border: 1px solid var(--arxiv-pill-border); border-radius: 22px; padding: 7px 14px 7px 14px; cursor: pointer; max-width: min(480px, calc(100vw - 48px)); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 .mg-toc-trigger:hover { background: var(--arxiv-warm-wash); }
 .mg-toc-trigger:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
-.mg-toc-trigger .toc-ic { width: 16px; height: 16px; flex: none; color: var(--arxiv-grey); }
+/* position:relative + z-index lift both icons above the pill background;
+   ar5iv's global `svg { z-index:-1 }` otherwise hides them. */
+.mg-toc-trigger .toc-ic { width: 16px; height: 16px; flex: none; color: var(--arxiv-grey); position: relative; z-index: 1; }
 .mg-toc-trigger .toc-prefix { font-weight: 400; color: var(--arxiv-grey); }
 .mg-toc-trigger .toc-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mg-toc-trigger .toc-chev { width: 14px; height: 14px; flex: none; color: var(--arxiv-grey); transition: transform .15s; }
+.mg-toc-trigger .toc-chev { width: 14px; height: 14px; flex: none; color: var(--arxiv-grey); transition: transform .15s; position: relative; z-index: 1; }
 .mg-toc-trigger[aria-expanded="true"] .toc-chev { transform: rotate(180deg); }
 .mg-toc-dropdown { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 8px; box-shadow: 0 8px 28px rgba(0,0,0,0.14); padding: 8px 0; min-width: 280px; max-height: 60vh; overflow-y: auto; z-index: 110; }
 .mg-toc-dropdown[hidden] { display: none; }
@@ -3770,23 +3763,13 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
             <small>.tar.gz &middot; 286&nbsp;KB</small>
           </div>
         </div>
-        <!-- Ancillary files — each file listed by name.ext (so the type is
-             obvious) + size. With >2 files we show the first two, a
-             "Download all" link, and a "Show all N" toggle; with ≤2 files
-             we'd just list them (no toggle / no download-all). -->
-        <div class="mg-anc" id="mg-anc">
-          <div class="mg-anc-head">
-            <span class="mg-anc-label">Ancillary files</span>
-            <a class="mg-anc-all" href="https://arxiv.org/src/2604.22725v1/anc">Download all</a>
-          </div>
-          <ul class="mg-anc-list">
-            <li><a href="#">supplementary_notes.pdf</a><span class="mg-anc-size">1.4&nbsp;MB</span></li>
-            <li><a href="#">data_tables.csv</a><span class="mg-anc-size">312&nbsp;KB</span></li>
-            <li class="mg-anc-extra" hidden><a href="#">evolution_code.py</a><span class="mg-anc-size">48&nbsp;KB</span></li>
-            <li class="mg-anc-extra" hidden><a href="#">perturbation_growth.mp4</a><span class="mg-anc-size">1.8&nbsp;MB</span></li>
-            <li class="mg-anc-extra" hidden><a href="#">README.txt</a><span class="mg-anc-size">2&nbsp;KB</span></li>
-          </ul>
-          <button class="mg-anc-toggle" id="mg-anc-toggle" type="button" aria-expanded="false" aria-controls="mg-anc">Show all 5 files</button>
+        <!-- Ancillary files — with >2 files we keep it to one line: the
+             label + total (count · size) and a "Download all" link, rather
+             than listing every file (keeps the card short). With ≤2 files
+             we'd list them individually by name.ext + size. -->
+        <div class="mg-anc">
+          <span class="mg-anc-label">Ancillary files <span class="mg-anc-total">&middot; 3.6&nbsp;MB</span></span>
+          <a class="mg-anc-all" href="https://arxiv.org/src/2604.22725v1/anc">Download all</a>
         </div>
       </div>
     </section>
@@ -3822,27 +3805,30 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
       </div>
     </section>
 
-    <!-- Accessibility — condensed to a present line + a missing line. -->
-    <section class="mg-a11y-col" aria-labelledby="mg-a11y-heading">
-      <h3 id="mg-a11y-heading">Accessibility</h3>
-      <p class="mg-a11y-line present">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
-        <span>HTML, PDF &amp; LaTeX</span>
-      </p>
-      <p class="mg-a11y-line present">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
-        <span>Structured math</span>
-      </p>
-      <p class="mg-a11y-line partial">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg>
-        <span>Alt text (partial)</span>
-      </p>
-    </section>
-
-    <!-- Two disclosures, closed by default -->
-    <div class="mg-accordions">
-      <details class="mg-acc">
-        <summary>Paper Information</summary>
+    <!-- Paper Information — a collapsible group (Accessibility, Metadata,
+         Related). Deferring the detail to disclosures keeps the card short. -->
+    <section class="mg-paper-info" aria-labelledby="mg-pi-heading">
+      <h3 id="mg-pi-heading">Paper Information</h3>
+      <div class="mg-accordions">
+        <details class="mg-acc">
+          <summary>Accessibility</summary>
+          <div class="mg-acc-body mg-acc-a11y">
+            <p class="mg-a11y-line present">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+              <span>HTML, PDF &amp; LaTeX</span>
+            </p>
+            <p class="mg-a11y-line present">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+              <span>Structured math</span>
+            </p>
+            <p class="mg-a11y-line partial">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg>
+              <span>Alt text (partial)</span>
+            </p>
+          </div>
+        </details>
+        <details class="mg-acc">
+          <summary>Metadata</summary>
         <div class="mg-acc-body">
           <dl>
             <dt>Subjects</dt>
@@ -3947,6 +3933,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
         </div>
       </details>
     </div>
+    </section>
   </div>
 </aside>
 </div><!-- /.mg-top-cols -->
@@ -3956,7 +3943,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 <div class="mg-toc-bar" id="mg-toc-bar">
   <div class="mg-toc-wrap">
     <button class="mg-toc-trigger" id="mg-toc-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mg-toc-dropdown">
-      <svg class="toc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg class="toc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
       <span class="toc-text" id="mg-toc-text"><span class="toc-prefix">Contents</span></span>
       <svg class="toc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
@@ -9365,22 +9352,6 @@ We thus see that</p>
       showBtn.setAttribute('aria-expanded', nowHidden ? 'true' : 'false');
       if (citeBlock) citeBlock.classList.toggle('is-open', nowHidden);
       updateCiteShowLabel();
-    });
-  }
-
-  /* ── 5c. Ancillary files "Show all N" toggle: reveal/hide the rows past
-        the first two. ── */
-  var ancToggle = document.getElementById('mg-anc-toggle');
-  if (ancToggle) {
-    var ancExtras = Array.prototype.slice.call(document.querySelectorAll('.mg-anc-extra'));
-    var ancTotal = document.querySelectorAll('.mg-anc-list li').length;
-    ancToggle.addEventListener('click', function () {
-      var expanded = ancToggle.getAttribute('aria-expanded') === 'true';
-      ancExtras.forEach(function (li) {
-        if (expanded) li.setAttribute('hidden', ''); else li.removeAttribute('hidden');
-      });
-      ancToggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-      ancToggle.textContent = expanded ? ('Show all ' + ancTotal + ' files') : 'Show fewer';
     });
   }
 
