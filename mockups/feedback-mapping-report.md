@@ -82,11 +82,10 @@ The mockup of the combined abstract page and HTML papers page necessarily incorp
 
 | Tag | Description | Details |
 |---|---|---|
-| **[BPS](https://docs.google.com/spreadsheets/d/1dut__Vh9lEARrVGkHw-2w1e-ptaKA4XUsNkIAixLDR8/edit?usp=sharing)** | Design/UX comments filtered from the BPS 2025 annual survey (open-ended) | 9,419 respondents, ~80 design comments |
-| **[AUXDH](https://arxiv-org.atlassian.net/jira/software/c/projects/AUXDH/boards/80)** | UX Data Hub / Jira observations, ~2019→present | ~2,950 observations, 14 themes |
+| **[BPS](https://docs.google.com/spreadsheets/d/1dut__Vh9lEARrVGkHw-2w1e-ptaKA4XUsNkIAixLDR8/edit?usp=sharing)** | Design/UX comments filtered from the Brand Perception Survey 2025 | 9,419 respondents, ~80 design comments |
+| **[AUXDH](https://arxiv-org.atlassian.net/jira/software/c/projects/AUXDH/boards/80)** | UX Data Hub Jira project ~2019→present | ~2,950 observations, 14 themes |
 | **[A11Y Interviews](https://cornell.box.com/s/i388v9x90md4mqawuen1o601bm6bjxdu)** | Mediated interviews with AT users and experts | 42  interviews, Jul 2022–Jun 2023 |
-| **[Reader Interviews](https://cornell.box.com/s/injxn6g4d5kkdfkprzkwd09mggak2ars)** | Mediated interviews with diverse arXiv readers | 11 interviews, Feb 2021 |
-| **[Github issues](https://github.com/arXiv/html_feedback/issues)** | GitHub issues submitted by HTML paper readers | 107 relevant issues closed, 72 open |
+| **[Github issues](https://github.com/arXiv/html_feedback/issues)** | GitHub issues submitted by HTML paper readers | 107 relevant closed issues, 72 open |
 | **[Labs](https://github.com/arXiv/design-system/blob/master/audits/audit-labs.md)** | Functional audit of 16 arXiv Labs integrations | Single report, Apr 2026  |
 | **[Overlay Journals](https://docs.google.com/document/d/1FOFxM6pqDFMdMTGOoX65c47rieHPGOcqKxhl3gCMo0A/edit?usp=sharing)** | Interview-based report on Overlay Journals and arXiv | Jan 2025 |
 
