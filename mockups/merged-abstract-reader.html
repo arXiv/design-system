@@ -626,15 +626,31 @@ body.mg-reader .mg-top-cols { display: block; }
    width, shifted the article's center, and made the band's symmetric
    negative-margin trick (calc(50% - 50vw)) come out asymmetric. Caught
    in browser review at 1025-1199px (2026-06-24). */
-.mg-toc-bar { box-sizing: border-box; position: sticky; top: 0; z-index: 100; display: flex; justify-content: center; padding: 14px 24px;
+.mg-toc-bar { box-sizing: border-box; position: sticky; top: 0; z-index: 100; padding: 10px 0;
   /* full-bleed: break out of any constrained parent so the bar spans the viewport */
   width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
   background: rgba(255,255,255, 0.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   border-bottom: 1px solid transparent;
-  /* Transition `top` and `padding` so the reader-mode SWAP (see .mg-toc-stuck
-     below) animates smoothly instead of snapping. */
-  transition: top .25s ease, padding .25s ease, background .25s ease, backdrop-filter .25s ease, border-color .15s; }
+  /* Transition padding so the compact-on-scroll state animates smoothly. */
+  transition: padding .2s ease, background .25s ease, backdrop-filter .25s ease, border-color .15s; }
 .mg-toc-bar.is-stuck { background: rgba(255,255,255, 0.85); border-bottom-color: var(--arxiv-border-light); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+/* 1fr | auto | 1fr keeps the TOC lozenge centered in the viewport (the left
+   spacer balances the right-hand tools column). */
+.mg-toc-bar-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; }
+.mg-toc-wrap { justify-self: center; }
+.mg-toc-tools { justify-self: end; }
+.mg-toc-bar .nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
+/* Compact on scroll (mirrors the retired reader header): tighter row, drop
+   the tool text labels to icons, and shrink the lozenge. */
+.mg-toc-bar.is-stuck { padding: 4px 0; }
+.mg-toc-bar.is-stuck .mg-toc-tools .nav-label { display: none; }
+.mg-toc-bar.is-stuck .new-html-divider { height: 14px; }
+.mg-toc-bar.is-stuck .mg-toc-trigger { padding: 4px 13px; font-size: 0.8rem; }
+/* On narrow viewports the labels would crowd the lozenge — show icons only. */
+@media (max-width: 760px) {
+  .mg-toc-tools .nav-label { display: none; }
+  .mg-toc-bar-inner { gap: 6px; padding: 0 12px; }
+}
 /* In reader mode the sticky reader header is at top:0; push the sticky TOC
    below it. Use 36px to match the COMPACT header height (the reader's
    compact-on-scroll script shrinks the 52px header to 36px when the page is
@@ -881,11 +897,9 @@ footer.ds-site-footer { grid-area: footer; }
     <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
       <img src="images/arxiv-logo.png" alt="archive">
     </a>
-    <div class="ds-site-header-center">
-      <button class="mg-reader-toggle" id="mg-reader-toggle-abs" type="button" aria-pressed="false">
-        <span class="tk" aria-hidden="true"></span> Reader view
-      </button>
-    </div>
+    <!-- (Reader-view toggle removed 2026-06-26: the single default page is
+         the reading surface; paper tools now live in the sticky TOC bar.) -->
+    <div class="ds-site-header-center"></div>
     <nav class="ds-site-header-nav" aria-label="Main navigation">
       <a href="https://arxiv.org/search" aria-label="Search archive">
         <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -3257,26 +3271,9 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
       </button>
     </div>
     <nav class="new-html-nav" aria-label="Paper navigation">
-      <!-- Read aloud (decided 2026-06-11): functional text-to-speech of
-           the paper body via the browser's speechSynthesis API. Targets
-           sighted listeners (dyslexia, fatigue, multitasking); screen-
-           reader users have their own TTS. aria-pressed reflects
-           playing state. JS removes this button entirely when the
-           browser lacks speechSynthesis. -->
-      <button type="button" id="tts-trigger" class="tts-trigger" aria-pressed="false" title="Read this paper aloud">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-        <span class="nav-label" id="tts-trigger-label">Listen</span>
-      </button>
-      <!-- Skip controls: visible only while listening. Media-player
-           grammar (the closest thing to a convention users know for
-           spoken content): previous/next block, plus arrow keys. -->
-      <button type="button" id="tts-prev" class="tts-skip" aria-label="Previous paragraph" title="Previous paragraph (left arrow)" hidden>
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
-      </button>
-      <button type="button" id="tts-next" class="tts-skip" aria-label="Next paragraph" title="Next paragraph (right arrow)" hidden>
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
-      </button>
-      <span class="new-html-divider" aria-hidden="true"></span>
+      <!-- (Listen / read-aloud controls moved to the sticky TOC bar when the
+           reader-view toggle was removed; this header is now vestigial,
+           kept hidden via `body:not(.mg-reader)`.) -->
       <!-- Back to abstract: the abstract page is the paper's "home." Arrow
            points left to suggest navigating backward in the paper's hierarchy. -->
       <a href="https://arxiv.org/abs/2604.22725v1" title="Back to abstract">
@@ -3889,22 +3886,54 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 </div><!-- /.mg-top-cols -->
 </div><!-- /.mg-top -->
 
-<!-- ══ Centered sticky TOC button (both modes). Becomes sticky at top on scroll. ══ -->
+<!-- ══ Sticky paper-tools bar: TOC lozenge (centered, emphasis) flanked by
+        plain-text Listen / PDF / TeX Source tools (right). Borrows the
+        reader-view nav, minus the logo. Compacts on scroll (see
+        .mg-toc-bar.is-stuck). The left spacer keeps the lozenge centered in
+        the viewport via the 1fr | auto | 1fr grid. ══ -->
 <div class="mg-toc-bar" id="mg-toc-bar">
-  <div class="mg-toc-wrap">
-    <button class="mg-toc-trigger" id="mg-toc-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mg-toc-dropdown">
-      <svg class="toc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
-      <span class="toc-text" id="mg-toc-text"><span class="toc-prefix">Contents</span></span>
-      <svg class="toc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
-    <nav class="mg-toc-dropdown" id="mg-toc-dropdown" aria-label="Table of contents" hidden>
-      <ol>
-        <li><a href="#S1"><span class="toc-num">1.</span>Introduction</a></li>
-        <li><a href="#S2"><span class="toc-num">2.</span>Background</a></li>
-        <li><a href="#S3"><span class="toc-num">3.</span>Gauge-invariant perturbations in quadratic gravity</a></li>
-        <li><a href="#S4"><span class="toc-num">4.</span>Constrained optimization</a></li>
-        <li><a href="#S5"><span class="toc-num">5.</span>Conclusions and future research</a></li>
-      </ol>
+  <div class="mg-toc-bar-inner">
+    <span class="mg-toc-bar-spacer" aria-hidden="true"></span>
+    <div class="mg-toc-wrap">
+      <button class="mg-toc-trigger" id="mg-toc-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mg-toc-dropdown">
+        <svg class="toc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+        <span class="toc-text" id="mg-toc-text"><span class="toc-prefix">Contents</span></span>
+        <svg class="toc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <nav class="mg-toc-dropdown" id="mg-toc-dropdown" aria-label="Table of contents" hidden>
+        <ol>
+          <li><a href="#S1"><span class="toc-num">1.</span>Introduction</a></li>
+          <li><a href="#S2"><span class="toc-num">2.</span>Background</a></li>
+          <li><a href="#S3"><span class="toc-num">3.</span>Gauge-invariant perturbations in quadratic gravity</a></li>
+          <li><a href="#S4"><span class="toc-num">4.</span>Constrained optimization</a></li>
+          <li><a href="#S5"><span class="toc-num">5.</span>Conclusions and future research</a></li>
+        </ol>
+      </nav>
+    </div>
+    <nav class="new-html-nav mg-toc-tools" aria-label="Paper tools">
+      <!-- Listen / read-aloud (moved here from the retired reader header).
+           Same IDs so the existing TTS script keeps driving it. -->
+      <button type="button" id="tts-trigger" class="tts-trigger" aria-pressed="false" title="Read this paper aloud">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        <span class="nav-label" id="tts-trigger-label">Listen</span>
+      </button>
+      <button type="button" id="tts-prev" class="tts-skip" aria-label="Previous paragraph" title="Previous paragraph (left arrow)" hidden>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+      </button>
+      <button type="button" id="tts-next" class="tts-skip" aria-label="Next paragraph" title="Next paragraph (right arrow)" hidden>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+      </button>
+      <span class="new-html-divider" aria-hidden="true"></span>
+      <a href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener noreferrer" title="Download PDF">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+        <span class="nav-label">PDF</span>
+        <span class="is-sr-only">(opens in new tab)</span>
+      </a>
+      <a href="https://arxiv.org/src/2604.22725v1" title="Download TeX source">
+        <span class="tex-logo" aria-hidden="true">T<span class="tex-logo-e">E</span>X</span>
+        <span class="nav-label">Source</span>
+        <span class="is-sr-only">TeX source</span>
+      </a>
     </nav>
   </div>
 </div>
@@ -9186,21 +9215,8 @@ We thus see that</p>
    ════════════════════════════════════════════════════════════════════ */
 (function () {
 
-  /* ── 1. Reader-view toggles (sync state between abs/reader headers) ── */
-  var togAbs = document.getElementById('mg-reader-toggle-abs');
-  var togReader = document.getElementById('mg-reader-toggle-reader');
-  function setReader(on) {
-    document.body.classList.toggle('mg-reader', on);
-    if (togAbs) togAbs.setAttribute('aria-pressed', on ? 'true' : 'false');
-    if (togReader) togReader.setAttribute('aria-pressed', on ? 'true' : 'false');
-    // Mode change reshapes the layout (abstract chrome shows/hides), so the
-    // bar's natural y shifts. Re-measure, then re-run the swap logic.
-    if (typeof measureTocBar === 'function') measureTocBar();
-    if (typeof syncTocLocation === 'function') syncTocLocation();
-  }
-  function flipReader() { setReader(!document.body.classList.contains('mg-reader')); }
-  if (togAbs) togAbs.addEventListener('click', flipReader);
-  if (togReader) togReader.addEventListener('click', flipReader);
+  /* ── 1. (Reader-view toggle removed — single default page. The sticky TOC
+        bar below carries the paper tools and compacts on scroll.) ── */
 
   /* ── 2. Cite dropdown: swap the displayed code AND the "Display <format>"
         toggle label by selected style ── */
@@ -9264,35 +9280,19 @@ We thus see that</p>
     });
   }
 
-  // Sticky state: add .is-stuck when the bar reaches the viewport top
+  // Sticky/compact state: add .is-stuck once the bar reaches the viewport top
   var tocBarTop = 0;
   function measureTocBar() {
     if (!tocBar) return;
-    // Temporarily neutralize sticky + the .mg-toc-stuck override so the bar
-    // reports its NATURAL document y (not its currently-stuck top: 0).
-    var hadStuck = document.body.classList.contains('mg-toc-stuck');
-    if (hadStuck) document.body.classList.remove('mg-toc-stuck');
     var prev = tocBar.style.position; tocBar.style.position = 'static';
     tocBarTop = tocBar.getBoundingClientRect().top + window.pageYOffset;
     tocBar.style.position = prev;
-    if (hadStuck) document.body.classList.add('mg-toc-stuck');
-  }
-
-  /* TOC scroll-swap: in reader mode, past the threshold, add `mg-toc-stuck`
-     on body. CSS handles the actual visual move (bar animates top: 36 → 0,
-     padding tightens, bg fades; Reader-view toggle fades+translates up). No
-     DOM mutation — both elements stay put, transitions do the work. */
-  function syncTocLocation() {
-    if (!tocBar) return;
-    var inReader = document.body.classList.contains('mg-reader');
-    var shouldStick = inReader && window.pageYOffset > (tocBarTop - 36);
-    document.body.classList.toggle('mg-toc-stuck', !!shouldStick);
   }
 
   function onScroll() {
     if (!tocBar) return;
+    // .is-stuck drives both the stuck styling and the compact-on-scroll row.
     tocBar.classList.toggle('is-stuck', window.pageYOffset >= tocBarTop - 1);
-    syncTocLocation();
     syncCurrentSection();
   }
 
