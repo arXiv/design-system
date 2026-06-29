@@ -64,8 +64,9 @@ The mockup of the combined abstract page and HTML papers page necessarily incorp
 
 ### E. Populations we have insufficient data on
 
-16. **Deaf/signing users (n=1).** "Getting spoken or signed information in print is a challenge." 
-17. **Newcomers vs. experts.** New users feel arXiv looks dated, is hard to use. Long-term users value the heritage and non-commercial nature ("don't ruin this.")
+16. **Deaf/signing users (n=1).** ASL rarely available as a language option. Default read-aloud in browsers is sub-optimal. "Getting spoken or signed information in print is a challenge." 
+17. **Neurodivergent users**, including ADHD, Dyslexia, and other forms of non-visual reading impairment
+18. **Newcomers vs. experts.** New users feel arXiv looks dated and is hard to use. Long-term users value the heritage and non-commercial nature ("don't ruin this.")
 ---
 
 ## Tensions to resolve (feedback conflicts)
@@ -73,7 +74,7 @@ The mockup of the combined abstract page and HTML papers page necessarily incorp
 - **Additive features vs. paper sovereignty** Adding the Labs/tabs section drew a measured backlash (*"it just adds clutter, confusion and distraction"* AUXDH-1101; *"Leave arxiv UNMODIFIED… avoid social nonsense"* 1117; **and** a measured welcome (*"great improvements!"* 1146; CORE Recommender *"useful… nice that this is here"* 1184; The solution is not to freeze progress but to add new features in ways that don't disrupt the practicality, efficiency and speed that users want from arXiv.
 - **Metrics:** a vocal minority wants views/downloads/citations; Heavy users object. Our design policy bars them on public pages and heavy users object. *Confirm this is official arXiv policy.*
 - **Typography: Browser and user settings vs. UI controls:** Research proves dyslexia fonts don't improve reading; Some user requests for UI controls over font size, color, fonts; Browser controls like zooming in and out, or user settings, already provide excellent control; UI controls will add clutter to an already busy page.
-- **arXiv PDF vs. VoR prominence** — Elsevier respondent wrote that arXiv PDF button is "too prominent relative to the journal version." Overlay Journals also want clear differentiation between arXiv and other versions. Unadressed in mockup because it lacks metadata support.
+- **arXiv PDF vs. VoR prominence** — Elsevier respondent wrote that arXiv PDF button is "too prominent relative to the journal version." Overlay Journals also want clear differentiation between the arXiv versions and other VoRs. Unadressed in mockup because it currently lacks metadata support on the back end.
 - **Math rendering: MathML vs. LaTeX-source vs. MathJax** — Ask Deyan and Bruce, formalize decision and why. Placeholder so I don't forget to ask.
 
 ---
@@ -89,4 +90,4 @@ The mockup of the combined abstract page and HTML papers page necessarily incorp
 | **[Labs](https://github.com/arXiv/design-system/blob/master/audits/audit-labs.md)** | Functional audit of 16 arXiv Labs integrations | Single report, Apr 2026  |
 | **[Overlay Journals](https://docs.google.com/document/d/1FOFxM6pqDFMdMTGOoX65c47rieHPGOcqKxhl3gCMo0A/edit?usp=sharing)** | Interview-based report on Overlay Journals and arXiv | Jan 2025 |
 
-> One caution: The A11y interviews **pre-date arXiv's HTML papers launch**. Many feature asks are now met, and the tech landscape has changed profoundly, so we need a new round of interviews.
+> One caution: The A11y interviews **pre-date arXiv's HTML papers launch**. Many feature asks are now met and the tech landscape has changed profoundly. A new round of research is called for.
