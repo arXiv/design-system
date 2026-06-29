@@ -637,18 +637,19 @@ body.mg-reader .mg-top-cols { display: block; }
 /* 1fr | auto | 1fr keeps the TOC lozenge centered in the viewport (the left
    spacer balances the right-hand tools column). */
 .mg-toc-bar-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; }
+/* .mg-toc-bar scope beats the base `.new-html-nav { justify-self: end }`. */
+.mg-toc-bar .mg-toc-listen { justify-self: start; }
 .mg-toc-wrap { justify-self: center; }
 .mg-toc-tools { justify-self: end; }
 .mg-toc-bar .nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
 /* Compact on scroll (mirrors the retired reader header): tighter row, drop
    the tool text labels to icons, and shrink the lozenge. */
 .mg-toc-bar.is-stuck { padding: 4px 0; }
-.mg-toc-bar.is-stuck .mg-toc-tools .nav-label { display: none; }
-.mg-toc-bar.is-stuck .new-html-divider { height: 14px; }
+.mg-toc-bar.is-stuck .nav-label { display: none; }
 .mg-toc-bar.is-stuck .mg-toc-trigger { padding: 4px 13px; font-size: 0.8rem; }
 /* On narrow viewports the labels would crowd the lozenge — show icons only. */
 @media (max-width: 760px) {
-  .mg-toc-tools .nav-label { display: none; }
+  .mg-toc-bar .nav-label { display: none; }
   .mg-toc-bar-inner { gap: 6px; padding: 0 12px; }
 }
 /* In reader mode the sticky reader header is at top:0; push the sticky TOC
@@ -3893,7 +3894,20 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
         the viewport via the 1fr | auto | 1fr grid. ══ -->
 <div class="mg-toc-bar" id="mg-toc-bar">
   <div class="mg-toc-bar-inner">
-    <span class="mg-toc-bar-spacer" aria-hidden="true"></span>
+    <!-- Listen / read-aloud on the LEFT (moved from the retired reader
+         header; same IDs so the existing TTS script keeps driving it). -->
+    <nav class="new-html-nav mg-toc-listen" aria-label="Listen">
+      <button type="button" id="tts-trigger" class="tts-trigger" aria-pressed="false" title="Read this paper aloud">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        <span class="nav-label" id="tts-trigger-label">Listen</span>
+      </button>
+      <button type="button" id="tts-prev" class="tts-skip" aria-label="Previous paragraph" title="Previous paragraph (left arrow)" hidden>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+      </button>
+      <button type="button" id="tts-next" class="tts-skip" aria-label="Next paragraph" title="Next paragraph (right arrow)" hidden>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+      </button>
+    </nav>
     <div class="mg-toc-wrap">
       <button class="mg-toc-trigger" id="mg-toc-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mg-toc-dropdown">
         <svg class="toc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
@@ -3911,19 +3925,6 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
       </nav>
     </div>
     <nav class="new-html-nav mg-toc-tools" aria-label="Paper tools">
-      <!-- Listen / read-aloud (moved here from the retired reader header).
-           Same IDs so the existing TTS script keeps driving it. -->
-      <button type="button" id="tts-trigger" class="tts-trigger" aria-pressed="false" title="Read this paper aloud">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-        <span class="nav-label" id="tts-trigger-label">Listen</span>
-      </button>
-      <button type="button" id="tts-prev" class="tts-skip" aria-label="Previous paragraph" title="Previous paragraph (left arrow)" hidden>
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
-      </button>
-      <button type="button" id="tts-next" class="tts-skip" aria-label="Next paragraph" title="Next paragraph (right arrow)" hidden>
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
-      </button>
-      <span class="new-html-divider" aria-hidden="true"></span>
       <a href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener noreferrer" title="Download PDF">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
         <span class="nav-label">PDF</span>
