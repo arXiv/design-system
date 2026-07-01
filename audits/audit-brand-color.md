@@ -32,7 +32,7 @@ Most big players in the research publishing ecosystem have adopted a primary bra
 | Platform | Category | Brand colors (role · swatch · hex) |
 |---|---|---|
 | Elsevier | Publisher | Primary ![](swatches/e87511.png) `#e87511` · Accent ![](swatches/2354ff.png) `#2354ff` |
-| bioRxiv | Preprint | Primary ![](swatches/982726.png) `#982726` · Tint ![](swatches/fdf2e0.png) `#fdf2e0` |
+| bioRxiv | Preprint | Primary ![](swatches/982726.png) `#982726` · BG ![](swatches/fdf2e0.png) `#fdf2e0` |
 | IOP Publishing | Publisher | Primary ![](swatches/eb1b24.png) `#eb1b24` · Accent ![](swatches/006eb2.png) `#006eb2` |
 
 **Teal / cyan.**
@@ -40,7 +40,7 @@ Most big players in the research publishing ecosystem have adopted a primary bra
 | Platform | Category | Brand colors (role · swatch · hex) |
 |---|---|---|
 | ACM Digital Library | Publisher | Primary ![](swatches/0d6e6e.png) `#0d6e6e` |
-| ResearchGate | Social / Discovery | Primary ![](swatches/00ccbb.png) `#00ccbb` |
+| ResearchGate | Discovery | Primary ![](swatches/00ccbb.png) `#00ccbb` |
 | HAL | Repository | Primary ![](swatches/2ab6b8.png) `#2ab6b8` · Accent ![](swatches/4e4093.png) `#4e4093` |
 | ORCID | Identity | Primary ![](swatches/a6ce39.png) `#a6ce39` · Accent ![](swatches/2e7f9f.png) `#2e7f9f` |
 
