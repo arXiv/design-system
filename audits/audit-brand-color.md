@@ -21,7 +21,7 @@ Most big players in the research publishing ecosystem have adopted a primary bra
 | PubMed | Discovery | Primary ![](swatches/20558a.png) `#20558a` · Bg ![](swatches/f0f0f0.png) `#f0f0f0` |
 | SSRN | Preprint | Primary ![](swatches/0067b5.png) `#0067b5` · Bg ![](swatches/ffffff.png) `#ffffff` |
 | APS | Publisher | Primary ![](swatches/0074b7.png) `#0074b7` · Bg ![](swatches/ffffff.png) `#ffffff` |
-| IOP Science | Publisher | Primary ![](swatches/006eb2.png) `#006eb2` · B ![](swatches/d4eaf7.png) `~#d4eaf7` |
+| IOP Science | Publisher | Primary ![](swatches/006eb2.png) `#006eb2` · BG ![](swatches/d4eaf7.png) `~#d4eaf7` |
 | Semantic Scholar | Discovery | Primary ![](swatches/1857b6.png) `#1857b6` · Bg ![](swatches/ffffff.png) `#ffffff` |
 | Zenodo | Repository | Primary ![](swatches/0d6efd.png) `#0d6efd` · Bg ![](swatches/ffffff.png) `#ffffff` |
 | Google Scholar | Discovery | Primary ![](swatches/1a0dab.png) `#1a0dab` · BG ![](swatches/f5f5f5.png) `#f5f5f5` |
