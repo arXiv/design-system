@@ -12,41 +12,39 @@ Most big players in the research publishing ecosystem have adopted a primary bra
 
 **Primarily navy / dark blue — 12 of 18 platforms.** Lightness ranges from 12% (Taylor & Francis) to 52% (Zenodo). Extremely crowded.
 
-| Platform | Category | Brand colors (role · hex) |
+| Platform | Category | Brand colors (role · swatch · hex) |
 |---|---|---|
-| Taylor & Francis | Publisher | Primary `#00233c` · Accent `#0d6efd` · Bg `#ffffff` |
-| AMS | Publisher (math) | Primary `#00467f` · Bg `#f0f0f0` |
-| Springer Nature | Publisher | Primary `#025e8d` · Bg `#ffffff` |
-| IEEE Xplore | Publisher (eng) | Primary `#005a9c` · Bg `#f5f5f5` |
-| PubMed | Discovery | Primary `#20558a` · Bg `#f0f0f0` |
-| SSRN | Preprint (Elsevier) | Primary `#0067b5` · Bg `#ffffff` |
-| APS | Publisher (physics) | Primary `#0074b7` · Bg `#ffffff` |
-| IOP Science | Publisher (physics) | Platform `#006eb2` · Light-blue tint `~#d4eaf7` · IOP brand `#cc0000` |
-| Semantic Scholar | Discovery | Primary `#1857b6` · Bg `#ffffff` |
-| Zenodo | Repository (CERN) | Primary `#0d6efd` · Bg `#ffffff` |
-| Google Scholar | Discovery | Links `#1a0dab` · Header `#f5f5f5` |
-| Wikipedia | Reference | Links `#3366cc` · Bg `#f8f9fa` |
+| Taylor & Francis | Publisher | Primary ![](swatches/00233c.png) `#00233c` · Accent ![](swatches/0d6efd.png) `#0d6efd` · Bg ![](swatches/ffffff.png) `#ffffff` |
+| AMS | Publisher (math) | Primary ![](swatches/00467f.png) `#00467f` · Bg ![](swatches/f0f0f0.png) `#f0f0f0` |
+| Springer Nature | Publisher | Primary ![](swatches/025e8d.png) `#025e8d` · Bg ![](swatches/ffffff.png) `#ffffff` |
+| IEEE Xplore | Publisher (eng) | Primary ![](swatches/005a9c.png) `#005a9c` · Bg ![](swatches/f5f5f5.png) `#f5f5f5` |
+| PubMed | Discovery | Primary ![](swatches/20558a.png) `#20558a` · Bg ![](swatches/f0f0f0.png) `#f0f0f0` |
+| SSRN | Preprint (Elsevier) | Primary ![](swatches/0067b5.png) `#0067b5` · Bg ![](swatches/ffffff.png) `#ffffff` |
+| APS | Publisher (physics) | Primary ![](swatches/0074b7.png) `#0074b7` · Bg ![](swatches/ffffff.png) `#ffffff` |
+| IOP Science | Publisher (physics) | Platform ![](swatches/006eb2.png) `#006eb2` · Light-blue tint ![](swatches/d4eaf7.png) `~#d4eaf7` · IOP brand ![](swatches/cc0000.png) `#cc0000` |
+| Semantic Scholar | Discovery | Primary ![](swatches/1857b6.png) `#1857b6` · Bg ![](swatches/ffffff.png) `#ffffff` |
+| Zenodo | Repository (CERN) | Primary ![](swatches/0d6efd.png) `#0d6efd` · Bg ![](swatches/ffffff.png) `#ffffff` |
+| Google Scholar | Discovery | Links ![](swatches/1a0dab.png) `#1a0dab` · Header ![](swatches/f5f5f5.png) `#f5f5f5` |
+| Wikipedia | Reference | Links ![](swatches/3366cc.png) `#3366cc` · Bg ![](swatches/f8f9fa.png) `#f8f9fa` |
 
 **Primarily red / orange.**
 
-| Platform | Category | Brand colors (role · hex) |
+| Platform | Category | Brand colors (role · swatch · hex) |
 |---|---|---|
-| Elsevier | Publisher | Primary `#e87511` · Bg `#ffffff` |
-| bioRxiv | Preprint (bio) | Primary `#982726` · Tint `#fdf2e0` |
-| IOP Publishing | Publisher (corp) | Corporate `#eb1b24` · Platform `#006eb2` |
+| Elsevier | Publisher | Primary ![](swatches/e87511.png) `#e87511` · Bg ![](swatches/ffffff.png) `#ffffff` |
+| bioRxiv | Preprint (bio) | Primary ![](swatches/982726.png) `#982726` · Tint ![](swatches/fdf2e0.png) `#fdf2e0` |
+| IOP Publishing | Publisher (corp) | Corporate ![](swatches/eb1b24.png) `#eb1b24` · Platform ![](swatches/006eb2.png) `#006eb2` |
 
 **Teal / cyan.**
 
-| Platform | Category | Brand colors (role · hex) |
+| Platform | Category | Brand colors (role · swatch · hex) |
 |---|---|---|
-| ACM Digital Library | Publisher (CS) | Primary `#0d6e6e` · Bg `#ffffff` |
-| ResearchGate | Social / Discovery | Primary `#00ccbb` · Bg `#ffffff` |
-| HAL | Repository (France) | Primary `#2ab6b8` · Accent `#4e4093` |
-| ORCID | Identity | Primary `#a6ce39` · Secondary `#2e7f9f` |
+| ACM Digital Library | Publisher (CS) | Primary ![](swatches/0d6e6e.png) `#0d6e6e` · Bg ![](swatches/ffffff.png) `#ffffff` |
+| ResearchGate | Social / Discovery | Primary ![](swatches/00ccbb.png) `#00ccbb` · Bg ![](swatches/ffffff.png) `#ffffff` |
+| HAL | Repository (France) | Primary ![](swatches/2ab6b8.png) `#2ab6b8` · Accent ![](swatches/4e4093.png) `#4e4093` |
+| ORCID | Identity | Primary ![](swatches/a6ce39.png) `#a6ce39` · Secondary ![](swatches/2e7f9f.png) `#2e7f9f` |
 
-ORCID's lime green is unique in the landscape. Notably similar to arXiv's Access Lime (`#c4d82e`) used for internal tools.
-
-![Competitor brand colors grouped by hue family — navy/dark-blue, red/orange, and teal/cyan, with per-platform role-tagged swatches.](audit-brand-color.jpg)
+ORCID's lime green is unique in the landscape. Notably similar to arXiv's Access Lime (![](swatches/c4d82e.png) `#c4d82e`) used for internal tools.
 
 ## Resolution
 
