@@ -53,3 +53,6 @@ Key differences from internal:
 - Typography: `../typography.md`
 - Internal patterns (shared foundations): `../internal/`
 - Visual audit (the "why"): `../../audits/audit-visual.md`
+- **Production rollout process** for the codified header / footer / banner — how the chrome is
+  propagated into the live repos (arxiv-base, browse, auth, search, submit, docs, status):
+  `header-footer-rollout.md`

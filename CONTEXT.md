@@ -44,6 +44,9 @@ design-patterns/
 
   public/                         ← arxiv.org + abstract pages (in progress)
     README.md                     ←   scope and status
+    header-styles.html            ←   codified spinout header (.ds-site-header + .ds-announcement)
+    footer-styles.html            ←   codified spinout footer (.ds-site-footer)
+    header-footer-rollout.md      ←   cross-repo rollout process for the chrome (the "how/where")
 ```
 
 ## Tech context
