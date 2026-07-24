@@ -607,6 +607,24 @@ body.mg-reader .mg-top-cols { display: block; }
 .mg-rail .mg-acc-body dt { margin-top: 10px; }
 .mg-rail .mg-acc-body dt:first-child { margin-top: 0; }
 .mg-rail .mg-acc-body dd { margin: 1px 0 0; }
+
+/* ── Versions accordion (rail) — inline version links per the version-display
+   pattern (design-patterns/version-display.html): the current version is bold
+   ink + aria-current and is NOT a link; prior versions are Link Blue links. A
+   quiet left rule gives the list a timeline feel; the current row's rule is
+   Link Blue. ── */
+.mg-ver-count { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.66rem; letter-spacing: 0.04em; color: var(--arxiv-grey); font-weight: 600; }
+.mg-ver-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.mg-ver { padding-left: 12px; border-left: 2px solid var(--arxiv-border-light); }
+.mg-ver-current { border-left-color: var(--arxiv-link-blue); }
+.mg-ver-top { display: flex; align-items: baseline; flex-wrap: wrap; gap: 3px 8px; }
+.mg-ver-id { font-family: var(--arxiv-font-mono); font-size: 0.82rem; font-weight: 700; color: var(--arxiv-ink); text-decoration: none; }
+a.mg-ver-id { color: var(--arxiv-link-blue); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
+.mg-ver-tag { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.6rem; letter-spacing: 0.05em; font-weight: 700; color: var(--arxiv-link-blue); }
+.mg-ver-date { font-size: 0.72rem; color: var(--arxiv-grey); font-variant-numeric: tabular-nums; }
+.mg-ver-note { margin: 3px 0 0; font-size: 0.78rem; color: var(--arxiv-ink); line-height: 1.45; }
+.mg-ver-foot { margin: 13px 0 0; font-size: 0.78rem; }
 /* Labs/Related list stacks single-column in the narrow rail (the viewport
    media query at max-width:700 won't fire when the rail is narrow but the
    viewport is wide, so override directly). */
@@ -3840,6 +3858,36 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
     <section class="mg-paper-info" aria-labelledby="mg-pi-heading">
       <h3 id="mg-pi-heading">Paper Information</h3>
       <div class="mg-accordions">
+        <details class="mg-acc" id="mg-versions">
+          <summary>Versions <span class="mg-ver-count">[v3] &middot; latest</span></summary>
+          <div class="mg-acc-body">
+            <ol class="mg-ver-list">
+              <li class="mg-ver mg-ver-current" aria-current="true">
+                <div class="mg-ver-top">
+                  <span class="mg-ver-id">[v3]</span>
+                  <span class="mg-ver-tag">current</span>
+                  <span class="mg-ver-date">28 Jun 2026</span>
+                </div>
+                <p class="mg-ver-note">Matches the published version (JCAP). Added the Planck 2018 comparison in Sec.&nbsp;4.</p>
+              </li>
+              <li class="mg-ver">
+                <div class="mg-ver-top">
+                  <a class="mg-ver-id" href="https://arxiv.org/abs/2604.22725v2">[v2]</a>
+                  <span class="mg-ver-date">19 May 2026</span>
+                </div>
+                <p class="mg-ver-note">Revised the scalar spectral-index discussion; corrected Eq.&nbsp;(4.7).</p>
+              </li>
+              <li class="mg-ver">
+                <div class="mg-ver-top">
+                  <a class="mg-ver-id" href="https://arxiv.org/abs/2604.22725v1">[v1]</a>
+                  <span class="mg-ver-date">24 Apr 2026</span>
+                </div>
+                <p class="mg-ver-note">Original submission.</p>
+              </li>
+            </ol>
+            <p class="mg-ver-foot"><a href="https://arxiv.org/abs/2604.22725">Full version history</a></p>
+          </div>
+        </details>
         <details class="mg-acc">
           <summary>Accessibility</summary>
           <div class="mg-acc-body mg-acc-a11y">
