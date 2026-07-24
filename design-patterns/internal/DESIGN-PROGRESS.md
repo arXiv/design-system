@@ -73,6 +73,19 @@ Key decisions:
 
 Deferred: a **toast** pattern (transient/positioned/animated) and an **action-button slot** (Retry / Undo) on alerts.
 
+## Decisions made — Admin console session (paper detail + edit metadata)
+
+Session mockup: `../../mockups/admin-paper-detail.html`. Codified in the files noted; items marked *pending* still want a fuller pattern page.
+
+- **Spacing scale** — `--space-1`…`--space-12` added to `design-system.css`; scale + proximity rule in `DESIGN-POLICIES.md` (Spacing).
+- **Layout & content width** — content-driven, not audience-driven (measure for text; shell width by density). In `DESIGN-POLICIES.md` (Layout and content width).
+- **Versions** — context + current text-link treatment in `../../CONTEXT.md` (Versions); stale filled "version pills" retired in `../color-mapping.md`. *Pending:* a proper `version-nav` pattern page covering the one-version → many-versions spectrum on both surfaces.
+- **Read-only vs editable cards** — `card-styles.html` now documents the editable "section card" alongside the read-only `.info-card`, and the deliberate visual distinction. *Pending:* extract the section-card CSS into `design-system.css`.
+- **Form layout + category editor** — documented in `form-styles.html` (Form layout): top-aligned labels, typographic grouping, content-matched field widths, standardized action bar. *Pending:* interactive demos + extracting the category-editor / form-field classes into `design-system.css`.
+- **Nav selected state** — reuses the existing active/pressed convention (tint fill + darkened text, from the `--sec-bg` ladder), not a bespoke white pill. No new rule needed.
+- **Raw / Browse display** — two variants of one toggle: a *display swap* on read-only pages, a *preview reveal* on editable forms.
+- **To reconcile:** the Edit-Endorsements modal uses a blue Save — internal primary is Access Lime (existing rule); update the modal.
+
 ---
 
 ## What is still pending
