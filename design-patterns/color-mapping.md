@@ -119,8 +119,8 @@ Barely perceptible tints for creating section depth without hard borders.
 | **Links** | Link Blue `#1565c0` | All interactive links. Author names, category links, DOIs. |
 | **Action buttons (PDF, HTML)** | Repository Brown `#1c1a17` (placeholder) | Will get a strong color identity — TBD. |
 | **Secondary buttons (TeX Source)** | White with UI Boundary Grey border `#8b8680` | Lighter weight for secondary actions. |
-| **Version pills (current)** | Repository Brown `#1c1a17` | — |
-| **Version pills (other)** | Grey Hover `#f0eeec` background | — |
+| **Version link (current)** | Repository Brown `#1c1a17`, bold | Inline text link, **not** a filled pill; sets `aria-current`. |
+| **Version link (other)** | Link Blue `#1565c0`, underlined | Navigates to that version. (Supersedes the earlier filled "version pills" — see Versions in `../CONTEXT.md`.) |
 | **Version warning banner** | Light amber `#fff8e1` border `#e8b800` | — |
 | **Cite section borders** | `#e4e0db` | Bordered columns within the cite section. |
 | **Labs toggles (on)** | Link Blue `#1565c0` | Indicates active state. |

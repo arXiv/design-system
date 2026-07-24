@@ -68,6 +68,12 @@ All platforms use the IBM Plex type family, self-hosted (no Google Fonts, no Ado
 ### Accessibility
 WCAG 2.0 AA compliance is mandatory. See `DESIGN-POLICIES.md` for all accessibility rules. The color palette was audited and a new token (`--grey-ui` at `#8b8680`) was added to fill a contrast gap.
 
+### Versions
+Version information appears on both admin tools and public pages, so treat it as one shared pattern — but design it from the context below rather than a fixed layout, so future work isn't boxed in.
+- **Who cares, and who doesn't.** Authors, publishers, and overlay journals care a lot about versions — provenance, and citing or linking a *specific* version. Readers usually don't: they want the latest and dive straight into reading.
+- **The distribution is lopsided.** The vast majority of papers have a single version; some have two or three; a tiny minority have many. Any version affordance must accommodate the whole spectrum: near-silent when there's only one version, scannable at a few, and unbroken when there are 20+.
+- **Current treatment.** Prior versions render as inline text links (Link Blue, underlined); the version being viewed is bold Repository Brown with `aria-current`, not a link. An older-version notice uses the `.ds-alert` warning variant. This supersedes the earlier "filled version pills" idea (see `design-patterns/color-mapping.md`).
+
 ### Cornell spinout
 arXiv is spinning out from Cornell into an independent 501(c)(3). This drives several design changes:
 - Cornell logo and red header bar are being removed

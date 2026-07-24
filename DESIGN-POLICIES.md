@@ -36,6 +36,17 @@ Every arXiv frontend belongs to one of two surfaces, and the surface sets the pr
 - **Namespace in production.** Each codebase should add a prefix appropriate to its context to avoid collisions with framework variables (e.g., `--arxiv-lime` in a React/MUI app, `$arxiv-lime` in Sass). The prefixed names should map 1:1 to the canonical names.
 - **Values are the source of truth.** When in doubt, the hex values and behavior defined in `design-system.css` are authoritative. If a framework's token differs from the design system value, the design system wins.
 
+## Spacing
+
+- **Scale.** Use the 4px-based / 8-point spacing scale (`--space-1`…`--space-12` in `design-system.css`): 4, 8, 12, 16, 24, 32, 48. Don't introduce off-scale values (14, 26, …).
+- **Proximity.** The gap *between* sections should be clearly larger than the gap *within* a section — aim for ~3× (e.g., 16px within, 48px between). This is what makes grouping read without borders or boxes.
+
+## Layout and content width
+
+- **Content-driven, not audience-driven.** The same usability principle applies to every surface; only the content differs, so there is no separate rule for "public" vs "internal."
+- **Text respects the measure.** Any block of continuous prose targets a ~65-character line length (~640–720px), on public and internal surfaces alike.
+- **Shell width follows density.** The page container's max-width is set by content type: data-dense layouts (tables, multi-column metadata) get more room (internal tools land around 1080px, centered); reading-first pages hug the measure (abstract pages around 920px). These px values are a consequence of content, not a rule about the audience.
+
 ## Colors
 
 - **Use the palette.** All colors must come from the documented palette in `design-patterns/color-mapping.md`. Do not introduce one-off hex values.
