@@ -56,6 +56,9 @@ Demo / reference `.html` pages that don't exist yet — each renders the compone
 **Shared / foundations**
 
 - [x] **Spacing** — built: `design-patterns/spacing.html` (visual reference for the `--space-1`…`--space-12` scale + the proximity rule).
+- [x] **Buttons (flagship page)** — built 2026-07-27: `design-patterns/buttons.html` unifies the public + internal button references (two-context rule, states, `.on-tint`, internal hierarchy, shared mechanics). The internal-parity and public-tertiary gaps are flagged on the page; detailed per-surface pages remain the deep references.
+- [x] **Alerts & messaging (flagship page)** — built 2026-07-27: `design-patterns/alerts.html` (four `.ds-alert` states, announcement band, inline form errors, live token table, writing guidance).
+- [x] **Organizing content (flagship page)** — built 2026-07-27: `design-patterns/organizing-content.html` (main-column vs rail placement rule, card + rail accordion variants, cards vs whitespace, popover + element pill). *Next: promote the mockup's `.mg-acc` accordion CSS into `design-system.css` as `.ds-acc` (also listed under Version display extraction).*
 - [ ] **Search input** — standardize the multiple variants in use (promotion order above).
 - [ ] **Modal / dialog** — native `<dialog>` backdrop, container, footer button grouping (pending).
 
