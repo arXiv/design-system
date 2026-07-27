@@ -38,6 +38,7 @@
     .live-row::before { content: 'Live (hover / focus / press):'; font-size: 12px; color: var(--arxiv-grey); margin-right: 8px; }
     .tinted-row { background: #e8f4ff; border: 1px solid #d0e3f4; border-radius: 6px; padding: 16px 18px; margin-top: 4px; max-width: 720px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
     .tinted-row + .tinted-row { margin-top: 12px; }
+    .tinted-row.warm { background: var(--arxiv-card-grey); border-color: var(--arxiv-border-light); }
     .row-note { font-size: 12px; color: var(--arxiv-grey); font-style: italic; }
 
     /* Forced states for the public state grid — same recipe as
@@ -205,10 +206,14 @@
       <button class="ds-btn ds-btn-secondary" type="button">TeX Source</button>
     </div>
 
-    <h3 class="subgroup-title">Secondary on a tinted surface — .on-tint</h3>
-    <p class="section-desc">On a tinted band (e.g., the reader's light-blue footer), a white secondary
-    pops too hard and reads as primary. <code>.on-tint</code> swaps the fill to Card Grey — same luminance,
-    warm hue — so it reads as secondary by material, not by contrast. Hover brightens to Warm Wash.</p>
+    <h3 class="subgroup-title">Buttons on tinted surfaces</h3>
+    <p class="section-desc">The primary holds its own on both tint families: Open Blue is cool-on-cool on the
+    reader's light-blue bands and cool-on-warm on Card Grey sections — its gradient border and vignette keep the
+    edge legible either way. The secondary is the one that needs help, and only on <em>cool</em> tints: white pops
+    too hard there and reads as primary. <code>.on-tint</code> swaps the fill to Card Grey — same luminance, warm
+    hue — so it reads as secondary by material, not by contrast. Hover brightens to Warm Wash.</p>
+
+    <p class="section-desc" style="margin-bottom: 6px;"><strong>Cool tint</strong> (reader footer band):</p>
     <div class="tinted-row">
       <button class="ds-btn ds-btn-primary" type="button">HTML</button>
       <button class="ds-btn ds-btn-secondary" type="button">TeX Source</button>
@@ -218,6 +223,21 @@
       <button class="ds-btn ds-btn-primary" type="button">HTML</button>
       <button class="ds-btn ds-btn-secondary on-tint" type="button">TeX Source</button>
       <span class="row-note">— with <code>.on-tint</code>: reads as secondary</span>
+    </div>
+
+    <p class="section-desc" style="margin: 18px 0 6px;"><strong>Warm tint</strong> (Card Grey section fill):
+    the default secondary already sits comfortably — don't use <code>.on-tint</code> here, or the fill melts
+    into the surface:</p>
+    <div class="tinted-row warm">
+      <button class="ds-btn ds-btn-primary" type="button">HTML</button>
+      <button class="ds-btn ds-btn-primary" type="button">PDF</button>
+      <button class="ds-btn ds-btn-secondary" type="button">TeX Source</button>
+      <span class="row-note">— primary + default secondary, both read correctly</span>
+    </div>
+    <div class="tinted-row warm">
+      <button class="ds-btn ds-btn-primary" type="button">HTML</button>
+      <button class="ds-btn ds-btn-secondary on-tint" type="button">TeX Source</button>
+      <span class="row-note">— <code>.on-tint</code> on a warm tint: fill disappears into the surface ✗</span>
     </div>
 
 <pre class="code"><span class="c">&lt;!-- Primary / secondary / secondary-on-tint --&gt;</span>
