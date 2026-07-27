@@ -11,7 +11,9 @@ Every arXiv frontend belongs to one of two surfaces, and the surface sets the pr
 - This is not a stylistic choice: the accent tells the person which context they are working in, so the two must never be crossed. A lime primary button on a public page, or an Open Blue primary button on a staff tool, is a violation regardless of how well it reads. When a surface is genuinely ambiguous (a shared component or an embedded widget), ask and determine which context the user is in first and document it in a code comment.
 - Token naming is a separate concern, governed under Design tokens below — the prefix follows the consuming codebase's rules, not the surface, so never infer the surface from a token name or use a token prefix to signal context.
 
-## Accessibility (WCAG 2.0 AA)
+## Accessibility (WCAG 2.1 AA floor, 2.2 AA target)
+
+arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessible Canada Act adopts through CAN/ASC–EN 301 549. We build toward **WCAG 2.2 AA** in practice (e.g., the target-size rule under *Chrome and interaction structure* is a 2.2 criterion). Where a 2.2 success criterion is named, treat it as the target; 2.1 AA is the non-negotiable minimum.
 
 - **Text contrast:** 4.5:1 minimum for normal text, 3:1 for large text (18px+ regular or 14px+ bold)
 - **UI component contrast:** 3:1 minimum for interactive boundaries (borders, outlines, tracks) against their background

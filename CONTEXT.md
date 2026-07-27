@@ -12,7 +12,7 @@ The design system serves two audiences with different visual treatments but shar
 
 - **Designers / product owners** — open any `.html` file in a browser to see component references. Read `color-mapping.md` and `typography.md` for brand decisions.
 - **Developers** — reference `design-patterns/` for component specs, tokens, and accessibility requirements. Start with `DESIGN-POLICIES.md` for hard constraints.
-- **AI coding agents** — read this file first, then `DESIGN-POLICIES.md`, then `design-patterns/typography.md` and `design-patterns/color-mapping.md`. Check `design-patterns/internal/DESIGN-PROGRESS.md` for current status. Follow all policies strictly. **If a request conflicts with any policy, flag the conflict to the user before proceeding.** See `CLAUDE.md` for detailed guardrail instructions.
+- **AI coding agents** — read this file first, then `BRAND.md`, then `DESIGN-POLICIES.md`, then `design-patterns/typography.md` and `design-patterns/color-mapping.md`. Check `design-patterns/internal/DESIGN-PROGRESS.md` for current status. Follow all policies strictly. **If a request conflicts with any policy, flag the conflict to the user before proceeding.** See `CLAUDE.md` for detailed guardrail instructions.
 
 ## Directory structure
 
@@ -66,7 +66,7 @@ All platforms use the IBM Plex type family, self-hosted (no Google Fonts, no Ado
 - See `design-patterns/color-mapping.md` for the full palette and usage rules
 
 ### Accessibility
-WCAG 2.0 AA compliance is mandatory. See `DESIGN-POLICIES.md` for all accessibility rules. The color palette was audited and a new token (`--grey-ui` at `#8b8680`) was added to fill a contrast gap.
+WCAG 2.1 AA compliance is mandatory — the Accessible Canada Act floor, adopted via CAN/ASC–EN 301 549. arXiv targets WCAG 2.2 AA in practice. See `DESIGN-POLICIES.md` for all accessibility rules. The color palette was audited and a new token (`--grey-ui` at `#8b8680`) was added to fill a contrast gap.
 
 ### Versions
 Version information appears on both admin tools and public pages, so treat it as one shared pattern — but design it from the context below rather than a fixed layout, so future work isn't boxed in.

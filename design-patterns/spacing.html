@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spacing — arXiv Design System</title>
+  <link rel="stylesheet" href="internal/design-system.css">
+  <style>
+    /* ── Foundation reference page. The written spec is DESIGN-POLICIES.md
+       (Spacing) — source of truth for the scale and the proximity rule;
+       the tokens live in internal/design-system.css. This page renders
+       them. Page chrome uses literal hex (not component tokens) so it is
+       never mistaken for part of the system. ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif; color: #1c1a17; background: #f9f7f7; margin: 0; font-size: 14px; line-height: 1.5; }
+    .page { max-width: 1080px; margin: 0 auto; padding: 28px 28px 80px; }
+    .page-header { margin: 28px 0 40px; padding-bottom: 20px; border-bottom: 3px solid #c4d82e; }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p { margin: 0; color: #6b6459; font-size: 13px; max-width: 760px; line-height: 1.55; }
+    .page-header code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; color: #1f5e96; }
+
+    .section { margin-bottom: 52px; }
+    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+    .section-desc { font-size: 13px; color: #6b6459; margin: 0 0 20px; max-width: 760px; line-height: 1.55; }
+
+    /* ── Scale specimens ── */
+    .scale { background: #fff; border: 1px solid #ddd8d2; border-radius: 8px; overflow: hidden; max-width: 860px; }
+    .scale-row { display: grid; grid-template-columns: 132px 1fr 150px; gap: 20px; align-items: center; padding: 14px 20px; border-bottom: 1px solid #efeae4; }
+    .scale-row:last-child { border-bottom: 0; }
+    .scale-meta code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12.5px; color: #1c1a17; font-weight: 500; }
+    .scale-meta .px { display: block; font-size: 11px; color: #8b8680; margin-top: 2px; letter-spacing: .02em; }
+    .scale-bar { height: 20px; background: #c4d82e; border-radius: 3px; }
+    .scale-use { font-size: 12px; color: #6b6459; line-height: 1.45; }
+    @media (max-width: 640px) { .scale-row { grid-template-columns: 110px 1fr; } .scale-use { display: none; } }
+
+    /* ── Proximity demo ── */
+    .prox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 860px; }
+    @media (max-width: 720px) { .prox-grid { grid-template-columns: 1fr; } }
+    .prox-card { background: #fff; border: 1px solid #ddd8d2; border-radius: 8px; padding: 22px 24px; }
+    .prox-card h3 { font-size: 13px; margin: 0 0 2px; }
+    .prox-card .verdict { font-size: 12px; margin: 0 0 18px; font-weight: 600; }
+    .prox-card.good .verdict { color: #4a5a0a; }
+    .prox-card.bad .verdict { color: #8b0000; }
+    .demo-label { font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif; font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: #8b8680; }
+    .demo-value { font-size: 14px; color: #1c1a17; }
+    /* GOOD: 4px label->value, 48px between groups */
+    .grp { }
+    .good .grp + .grp { margin-top: var(--space-12); }
+    .good .demo-label + .demo-value { margin-top: var(--space-1); }
+    .good .demo-value + .demo-label { margin-top: var(--space-3); }
+    /* BAD: one flat gap everywhere */
+    .bad .grp + .grp,
+    .bad .demo-label + .demo-value,
+    .bad .demo-value + .demo-label { margin-top: 14px; }
+
+    .rule-card { background: #fff; border: 1px solid #ddd8d2; border-radius: 8px; padding: 16px 20px; margin-bottom: 12px; max-width: 760px; }
+    .rule-card h3 { font-size: 14px; margin: 0 0 6px; }
+    .rule-card p { font-size: 13px; color: #6b6459; margin: 0; line-height: 1.55; }
+    .rule-card code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; background: #f0eeec; padding: 1px 5px; border-radius: 3px; color: #1c1a17; }
+
+    .docs-nav { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; background: #f0eeec; border-bottom: 1px solid #ddd8d2; padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: #1c1a17; text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: #1565c0; }
+    .docs-nav a:not(.docs-nav-brand) { color: #6b6459; text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: #1c1a17; text-decoration: underline; }
+    .docs-nav a:focus-visible { outline: 2px solid #1565c0; outline-offset: 2px; border-radius: 2px; }
+    .docs-nav .is-here { color: #1c1a17; font-weight: 600; }
+    .docs-nav-spacer { flex: 1; }
+    .docs-nav .docs-nav-mock { color: #8b8680; font-size: 12px; }
+  </style>
+</head>
+<body>
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
+  <a href="colors.html">Colors</a>
+  <a href="typography.html">Typography</a>
+  <span class="is-here" aria-current="page">Spacing</span>
+  <a href="version-display.html">Version display</a>
+  <a href="../doc.html?src=DESIGN-POLICIES.md">Policies</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="docs-nav-mock">Mockups:</span>
+  <a href="../mockups/abstract-redesign.html">Abstract</a>
+  <a href="../mockups/html-redesign.html">Reader</a>
+</nav>
+<div class="page">
+  <header class="page-header">
+    <h1>Spacing</h1>
+    <p>
+      One 4px-based / 8-point scale, and one rule about how to use it. Every gap on
+      every arXiv surface comes from these seven steps — no off-scale values (14, 26, …).
+      Written spec: <a href="../doc.html?src=DESIGN-POLICIES.md">DESIGN-POLICIES.md</a> (Spacing);
+      tokens: <code>--space-1</code>…<code>--space-12</code> in <code>internal/design-system.css</code>.
+    </p>
+  </header>
+
+  <section class="section">
+    <h2 class="section-title">The scale</h2>
+    <p class="section-desc">
+      Seven steps, each roughly 1.5× the last. The gaps in the bars below <em>are</em> the
+      token values — the page pulls them live from <code>--space-*</code>. Production code
+      namespaces them (<code>--arxiv-space-4</code> in a React/MUI app); the values map 1:1.
+    </p>
+    <div class="scale">
+      <div class="scale-row">
+        <div class="scale-meta"><code>--space-1</code><span class="px">4px</span></div>
+        <div class="scale-bar" style="width: var(--space-1)"></div>
+        <div class="scale-use">Tightest — label→value, icon→text.</div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-meta"><code>--space-2</code><span class="px">8px</span></div>
+        <div class="scale-bar" style="width: var(--space-2)"></div>
+        <div class="scale-use">Closely related inline items.</div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-meta"><code>--space-3</code><span class="px">12px</span></div>
+        <div class="scale-bar" style="width: var(--space-3)"></div>
+        <div class="scale-use">Related stacked elements.</div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-meta"><code>--space-4</code><span class="px">16px</span></div>
+        <div class="scale-bar" style="width: var(--space-4)"></div>
+        <div class="scale-use">Default gap between elements in a section.</div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-meta"><code>--space-6</code><span class="px">24px</span></div>
+        <div class="scale-bar" style="width: var(--space-6)"></div>
+        <div class="scale-use">Sub-section separation / card padding.</div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-meta"><code>--space-8</code><span class="px">32px</span></div>
+        <div class="scale-bar" style="width: var(--space-8)"></div>
+        <div class="scale-use">Larger internal padding.</div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-meta"><code>--space-12</code><span class="px">48px</span></div>
+        <div class="scale-bar" style="width: var(--space-12)"></div>
+        <div class="scale-use">Breathing space <em>between</em> major sections.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">The proximity rule</h2>
+    <p class="section-desc">
+      The gap <em>between</em> sections should be clearly larger than the gap <em>within</em>
+      one — aim for ~3× (e.g., 16px within, 48px between). This is what makes grouping read
+      without borders or boxes. Same content, same words, both cards below — only the spacing
+      differs.
+    </p>
+    <div class="prox-grid">
+      <div class="prox-card good">
+        <h3>Proximity applied</h3>
+        <p class="verdict">✓ Two groups, read instantly</p>
+        <div class="grp">
+          <div class="demo-label">Submitter</div>
+          <div class="demo-value">A. Palomares</div>
+          <div class="demo-label">Submitted</div>
+          <div class="demo-value">14 Jul 2026</div>
+        </div>
+        <div class="grp">
+          <div class="demo-label">Primary category</div>
+          <div class="demo-value">gr-qc</div>
+          <div class="demo-label">License</div>
+          <div class="demo-value">CC BY 4.0</div>
+        </div>
+      </div>
+      <div class="prox-card bad">
+        <h3>One flat gap (14px everywhere)</h3>
+        <p class="verdict">✗ One undifferentiated list</p>
+        <div class="grp">
+          <div class="demo-label">Submitter</div>
+          <div class="demo-value">A. Palomares</div>
+          <div class="demo-label">Submitted</div>
+          <div class="demo-value">14 Jul 2026</div>
+        </div>
+        <div class="grp">
+          <div class="demo-label">Primary category</div>
+          <div class="demo-value">gr-qc</div>
+          <div class="demo-label">License</div>
+          <div class="demo-value">CC BY 4.0</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Rules that travel with the scale</h2>
+    <div class="rule-card">
+      <h3>Stay on the scale</h3>
+      <p>Reach for a token, never a hand-picked pixel. If a layout seems to want 14px or 26px, it wants an existing step (12 or 24) — or the design is fighting the grid. New values are a change to DESIGN-POLICIES, not a local override.</p>
+    </div>
+    <div class="rule-card">
+      <h3>Between ≈ 3× within</h3>
+      <p>Grouping is carried by contrast in spacing, not by lines. <code>--space-4</code> within, <code>--space-12</code> between is the workhorse pair. When a border feels necessary to separate two blocks, first try widening the gap.</p>
+    </div>
+    <div class="rule-card">
+      <h3>Layout is px; type is rem</h3>
+      <p>These spacing tokens set layout distances in px so structure stays stable. Font sizes stay in <code>rem</code> so a reader's browser zoom still governs text (see <a href="../doc.html?src=design-patterns/typography.md">typography.md</a>). Don't scale gaps with the user's font preference.</p>
+    </div>
+    <div class="rule-card">
+      <h3>Namespaced in production</h3>
+      <p>The canonical names are unprefixed (<code>--space-6</code>). Each codebase adds its own prefix to avoid collisions (<code>--arxiv-space-6</code> in React/MUI, <code>$arxiv-space-6</code> in Sass), mapping 1:1 to the values here.</p>
+    </div>
+  </section>
+</div>
+</body>
+</html>

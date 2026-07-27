@@ -1,6 +1,6 @@
 # arXiv Shared Design System — Progress Notes
 **Project:** Admin Console + arXiv Check shared component library
-**Last updated:** 2026-05-28
+**Last updated:** 2026-07-24
 
 ---
 
@@ -58,12 +58,7 @@ Retired from body-text use — fails 4.5:1 on white. Kept as a brand reference c
 
 A shared four-state semantic palette (success, info, warning, error/failure) driving a token-based `.ds-alert` component, light + dark. Promoted from `arxiv-mockups/design-patterns/alert-styles.html` (2026-05-28). Full rationale + the dark-mode table live in `../color-mapping.md`.
 
-| State | Light bg / border / text | Dark bg / border / text | Text contrast (light / dark) |
-|---|---|---|---|
-| `--success-*` | `#e8f5d8` / `#6b8e1e` / `#4a5a0a` | `#1e2b0d` / `#8fbd3a` / `#c5e1a5` | 6.7:1 / 10.4:1 |
-| `--info-*` | `#e7f1fd` / `#5a82c8` / `#1a3a78` | `#132433` / `#64b5f6` / `#90caf9` | 9.6:1 / 9.0:1 |
-| `--warning-*` | `#fff8e1` / `#e8b800` / `#7a5c00` | `#2e2410` / `#e8b800` / `#ffe082` | 5.9:1 / 11.8:1 |
-| `--error-*` | `#fdeaea` / `#c62828` / `#8b0000` | `#2d1414` / `#e57373` / `#ef9a9a` | 8.6:1 / 8.0:1 |
+The full four-state table (light + dark bg / border / text, with contrast ratios) is single-sourced in [`../color-mapping.md`](../color-mapping.md) → *Status & alert colors — shared*; not duplicated here.
 
 Key decisions:
 - **Success is lime-olive, not a new forest green.** Access Lime `#c4d82e` stays the "staff tools" signal and fails text contrast, so success reuses the `.seg-positive` lime-olive with the border tuned off-yellow (`#6b8e1e`) to read as success, not brand accent.
@@ -120,7 +115,7 @@ Session mockup: `../../mockups/admin-paper-detail.html`. Codified in the files n
 | Name | Hex |
 |---|---|
 | Repository Brown | `#1c1a17` |
-| Dark Surface (cards) | `#252320` |
+| Dark Surface (cards) | `#2e2b26` |
 | Warm Wash | `#f9f7f7` |
 | UI Boundary Grey | `#8b8680` |
 | Library Grey | `#6b6459` |

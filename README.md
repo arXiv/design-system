@@ -17,30 +17,12 @@ For design decisions and guidelines, start with:
 ## Structure
 
 ```
-design-patterns/
-  typography.md                   shared font spec
-  color-mapping.md                shared color palette + usage rules
-  internal/                       arXiv Check + Admin Console patterns
-    design-system.css               component CSS + design tokens
-    button-styles.html              buttons (primary, secondary, tertiary, icon, destructive)
-    card-styles.html                info cards
-    color-tokens.html               color palette reference
-    link-styles.html                link color states
-    table-styles.html               data tables, sortable headers, filter toolbar
-    form-styles.html                segmented controls, toggle switches, validation
-    DESIGN-PROGRESS.md              decisions + status
-  public/                         arxiv.org + abstract page patterns
-    README.md                       scope + status (incl. promoted patterns list)
-    design-system.css               public-side tokens + components
-    button-styles.html, link-styles.html, accessibility-priorities.md, ...
-
-mockups/                          in-progress whole-page mockups (preview, NOT canonical)
-  README.md                       what these are and what they're not
-  html-redesign.html              HTML paper reader mockup
-  abstract-redesign.html          abstract page mockup
-
-audits/                           visual audit, labs audit, and component audit runs
+design-patterns/   canonical tokens, components, and demo pages (internal/ + public/)
+mockups/           in-progress whole-page mockups (preview, NOT canonical)
+audits/            visual, labs, and component audit runs
 ```
+
+See [`CONTEXT.md`](CONTEXT.md) for the full annotated directory guide.
 
 ## Mockups vs. canonical patterns
 
