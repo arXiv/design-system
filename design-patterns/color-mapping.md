@@ -1,7 +1,7 @@
 # Color Mapping — Internal vs Public
 
-**Status:** Draft
-**Last updated:** 2026-04-29
+**Status:** Active
+**Last updated:** 2026-07-24
 
 ---
 
@@ -21,7 +21,7 @@ These are arXiv's core identity colors post-spinout. They carry the weight of th
 | **Link Hover** | `#1050a0` | Link hover state (7.83:1 on white) |
 | **Visited Purple** | `#7b2fbe` | Visited link state (7.02:1 on white) |
 | **Archival Blue** | `#1f5e96` | Brand accent blue. Candidate for public button identity. Close to Link Blue — may need to shift for differentiation. |
-| **Open Blue** | `#a5d6fe` | Light blue tint for section backgrounds, highlights, dark mode hover states |
+| **Open Blue** | `#a5d6fe` | Public primary action fill (with Repository Brown text, 11.3:1 AA); also a light-blue tint for section backgrounds and highlights |
 
 ### Accent colors
 
@@ -117,7 +117,7 @@ Barely perceptible tints for creating section depth without hard borders.
 | **Body text** | Repository Brown `#1c1a17` | — |
 | **Secondary text** | Library Grey `#6b6459` | Metadata labels, dates, muted captions. |
 | **Links** | Link Blue `#1565c0` | All interactive links. Author names, category links, DOIs. |
-| **Action buttons (PDF, HTML)** | Repository Brown `#1c1a17` (placeholder) | Will get a strong color identity — TBD. |
+| **Primary action buttons (PDF, HTML)** | Open Blue `#a5d6fe`, Repository Brown text | Locked public primary. Repository Brown is the only AA text color on Open Blue (11.3:1). |
 | **Secondary buttons (TeX Source)** | White with UI Boundary Grey border `#8b8680` | Lighter weight for secondary actions. |
 | **Version link (current)** | Repository Brown `#1c1a17`, bold | Inline text link, **not** a filled pill; sets `aria-current`. |
 | **Version link (other)** | Link Blue `#1565c0`, underlined | Navigates to that version. (Supersedes the earlier filled "version pills" — see Versions in `../CONTEXT.md`.) |
@@ -214,7 +214,7 @@ Every tint in the system belongs to one of two families: the **warm tints** (Rep
 
 - **Campus Red and Publishing Pink are heritage colors.** They stay in the palette as nods to arXiv's roots but are no longer primary. Campus Red lives in the logo X; Publishing Pink is for rare celebratory use.
 
-- **Public buttons need a strong color identity.** Repository Brown is a placeholder. A distinct, high-contrast button color is needed — Archival Blue is the leading candidate but may need to shift to differentiate from Link Blue. This is a key usability priority.
+- **Public primary buttons are Open Blue (locked).** The public primary action fill is Open Blue `#a5d6fe` with Repository Brown text (11.3:1, AA). Archival Blue stays available as a secondary brand-accent blue, not the primary.
 
 - **Dark mode** — the internal tools' dark mode tokens are a good foundation for public pages.
 
@@ -226,7 +226,6 @@ Every tint in the system belongs to one of two families: the **warm tints** (Rep
 
 ## Open questions
 
-- [ ] **Archival Blue shift** — explore shifting `#1f5e96` to create more differentiation from Link Blue `#1565c0`. It could anchor the public button identity.
-- [ ] **Public primary button color** — what color best serves the "unmissable primary action" role? Candidates: shifted Archival Blue, a dedicated new blue, or something derived from the existing palette.
+- [ ] **Archival Blue shift** — optionally shift `#1f5e96` for more differentiation from Link Blue `#1565c0` in its secondary-accent role. (The public *primary* button is settled: Open Blue — see Decisions made.)
 - [ ] **Smileybones Yellow as a darker variant** — if a golden variant is needed for smaller accents, explore `#d4b800` or similar. Must stay in the yellow family.
 - [ ] **Dark mode token extension** — extend the internal dark mode overrides to cover public page components.

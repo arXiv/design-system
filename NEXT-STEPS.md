@@ -9,7 +9,7 @@ Program-level backlog for the design system: cross-cutting work and priorities. 
 ## Next — gating user testing of the two mockups
 
 - [ ] **User-testing plan** for `abstract-redesign.html` and `html-redesign.html` — moderated-test script, tasks, recruitment criteria (working researchers first), what to measure.
-- [ ] **Create `accessibility-research-questions.md`** (currently referenced by G9 and the audit evaluation but missing). Seed it with the already-parked questions: G9 silent ambient indicators, the "Journal article vs Related DOI" label tension, newcomer signposting after the announcement banner retires, justify/hyphenation reconsideration (issues #6533, #5028).
+- [x] **Created `accessibility-research-questions.md`** (2026-07-24) at `design-patterns/public/accessibility-research-questions.md`, seeded with the parked questions (G9 silent ambient indicators, the "Journal article vs Related DOI" label tension, newcomer signposting after the announcement banner retires, justify/hyphenation reconsideration — issues #6533, #5028). Add findings as testing rounds complete.
 - [ ] **Lightweight decision log** for open product questions so test findings have a home: co-equal vs HTML-first (G2), DOI-replaces-arXiv-ID in citations, the citation label question, newcomer signposting.
 
 ## Foundations
@@ -27,10 +27,37 @@ Footer and both header variants are already promoted. Next, by frequency × drif
 - [ ] **Search input** — multiple variants in use today; standardize a shared base.
 - [ ] **Form atoms** (label + input + fieldset + validation) — bridges legacy and modern; used on login, advanced search, submission.
 - [ ] **Citation export panel** (BibTeX / APA / Chicago / MLA with source toggle)
-- [ ] **Version display** (pills + warning banner)
+- [ ] **Version display** (inline version links + `.ds-alert` warning)
 - [ ] **Author list with truncation** (including the 100+ author case)
 - [ ] **Labs toggle section**
 - [ ] **Announcement / banner component**
+
+## Pattern pages to build
+
+Demo / reference `.html` pages that don't exist yet — each renders the component with its tokens, states, and accessibility notes, like the existing `button-styles.html`. Ordered by leverage. (Building a page usually means extracting its CSS into the relevant `design-system.css` at the same time.)
+
+**Internal (arXiv Check / Admin Console)**
+
+- [ ] **Form layout + fields** — top-aligned labels, content-matched field widths (`.w-sm` / `.w-md` / `.w-lg`), the standardized action bar, and the editable "section card" container. From the admin-console session; today it lives only in the mockup + `form-styles.html`.
+- [ ] **Category editor** — lozenge rows, combo-search, drag-to-reorder (primary = first, bold), inline remove. Admin-console session, pending.
+- [x] **Version display** — built: `design-patterns/version-display.html` (inline-version-links + `.ds-alert` warning across the one-version → many-versions spectrum). *Next: extract the `.versions` / `.v-current` CSS into `design-system.css`.*
+- [ ] **Type badges** — `.type-new` / `.type-rep` / `.type-wdr` / `.type-cross`, referenced in DESIGN-POLICIES but never demoed.
+- [ ] **Icon buttons** — constructive / destructive, light + dark variants (documented in DESIGN-PROGRESS, no dedicated page).
+
+**Public (arxiv.org / abstract / reader)**
+
+- [ ] **Citation export panel** — BibTeX / APA / Chicago / MLA with a source toggle.
+- [ ] **Author list with truncation** — "show all N authors" disclosure + half-item peek for the 100+ case (G10).
+- [ ] **Labs toggle section** — opt-in toggles; third-party-login items deprioritized.
+- [ ] **Announcement / banner** — `.ds-announcement` as a standalone dismissible pattern.
+- [ ] **Reader chrome family** — popover, element-pill, inline-active, annotation on one page (the G4 tint vocabulary); today only in `design-system.css`.
+- [ ] **Tertiary / text-only button** — the unchecked item on `public/README.md`.
+
+**Shared / foundations**
+
+- [x] **Spacing** — built: `design-patterns/spacing.html` (visual reference for the `--space-1`…`--space-12` scale + the proximity rule).
+- [ ] **Search input** — standardize the multiple variants in use (promotion order above).
+- [ ] **Modal / dialog** — native `<dialog>` backdrop, container, footer button grouping (pending).
 
 ## Audit follow-ups
 

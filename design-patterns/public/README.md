@@ -22,7 +22,7 @@ Key differences from internal:
 ## What is shared with internal
 
 - Typography: IBM Plex Sans, Condensed, Mono (see `../typography.md`)
-- Accessibility: all WCAG 2.0 AA rules (see `../../DESIGN-POLICIES.md`)
+- Accessibility: all WCAG 2.1 AA rules — the ACA floor; 2.2 AA is the working target (see `../../DESIGN-POLICIES.md`)
 - Button mechanics: 6px radius, 10px 20px padding, subtle shadow, press effect, 0.12s transitions
 - Focus ring: `var(--focus-ring)` with dark mode override
 - Warm grey ladder: same tokens (`--grey`, `--grey-ui`, `--grey-dis`)
@@ -42,7 +42,7 @@ Key differences from internal:
 - [x] **Header component (HTML reader variant)** (`.ds-reader-header` + `.ds-toc-trigger` / `.ds-toc-dropdown` / `.ds-reading-progress`) — *Design approved and codified 2026-06-11.* Light Card Grey three-column header, compact-on-scroll state (reused as the narrow-viewport mode), center-anchored Contents trigger showing the current section, header-hung TOC dropdown (full-screen overlay at ≤700px), reading-progress bar. Behavior contracts documented with the pattern; the conventions it embodies are written up for universality review in `../PROPOSED-GUIDELINES.md`. See `reader-header-styles.html` and `design-system.css`.
 - [x] **Footer component** (`.ds-site-footer`) — *Design approved and codified 2026-06-11.* Wording exact-match to the spinout-header-footer Cloud Run deployment. Three pieces: ack line (with optional IP-matched institutional mention), footer nav (About · Help · Contact · Subscribe · Copyright · Privacy · Accessibility · Operational Status), and "Major funding support from" + Simons + Schmidt funder logos. The behavior contract (landmarks, aria-hidden separators, sr-only external-link notices, rem type) is documented with the pattern. See `footer-styles.html` and `design-system.css`. The `.is-sr-only` utility was promoted alongside it.
 - [ ] Citation section (BibTeX, APA, Chicago, MLA with source toggle)
-- [ ] Version display (pills, warning banner)
+- [ ] Version display (inline version links + warning banner)
 - [ ] Author list with truncation
 - [ ] Labs toggle section
 - [ ] Announcement/banner component

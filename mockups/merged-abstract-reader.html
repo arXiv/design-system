@@ -625,6 +625,24 @@ a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
 .mg-ver-date { font-size: 0.72rem; color: var(--arxiv-grey); font-variant-numeric: tabular-nums; }
 .mg-ver-note { margin: 3px 0 0; font-size: 0.78rem; color: var(--arxiv-ink); line-height: 1.45; }
 .mg-ver-foot { margin: 13px 0 0; font-size: 0.78rem; }
+
+/* ── In-flow version line + older-version warning (main reading column).
+   The rich version history lives in the sidebar "Versions" accordion; the
+   two time-critical pieces — the dates and the newer-version warning —
+   surface here in the reading column so every reader (AT, mobile,
+   citation-arrival) meets them near the title. ── */
+.mg-verline { font-size: 0.9rem; color: var(--arxiv-grey); margin: 10px 0 0; font-variant-numeric: tabular-nums; }
+.mg-verline time { color: inherit; }
+.mg-vl { font-family: var(--arxiv-font-mono); font-size: 0.9rem; margin-left: 6px; }
+.mg-vl.is-other { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 3px; }
+.mg-vl.is-other:hover { color: var(--arxiv-link-hover); }
+.mg-vl.is-current { color: var(--arxiv-ink); font-weight: 700; }
+.mg-vl:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 2px; }
+.mg-verwarn { display: flex; align-items: flex-start; gap: 10px; max-width: 680px; margin: 12px 0 0; background: var(--arxiv-warning-bg); border: 1px solid var(--arxiv-warning-border); border-radius: 4px; padding: 10px 14px; font-size: 0.8125rem; color: var(--arxiv-warning-fg); }
+.mg-verwarn-icon { flex-shrink: 0; width: 18px; height: 18px; color: #b88c00; margin-top: 1px; }
+.mg-verwarn p { margin: 0; line-height: 1.5; }
+.mg-verwarn a { color: var(--arxiv-warning-fg); font-weight: 600; text-decoration: underline; }
+.mg-verwarn a:hover { color: #5a4400; }
 /* Labs/Related list stacks single-column in the narrow rail (the viewport
    media query at max-width:700 won't fire when the rail is narrow but the
    viewport is wide, so override directly). */
@@ -3762,6 +3780,17 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
      reader mode .mg-top-cols collapses to a single centered column. -->
 <div class="mg-top">
 <h1 class="ltx_title ltx_title_document" lang="en">Gauge-independent approach to inflation in quadratic gravity</h1>
+<p class="mg-verline">
+  Submitted <time datetime="2026-04-24">24 Apr 2026</time> (this version)
+  &nbsp;
+  <span class="mg-vl is-current" aria-current="true" aria-label="Version 1, the version you are viewing">v1</span>
+  <a href="#v2" class="mg-vl is-other" aria-label="View version 2">v2</a>
+  <a href="#v3" class="mg-vl is-other" aria-label="View version 3">v3</a>
+</p>
+<div class="mg-verwarn" role="status">
+  <svg class="mg-verwarn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+  <p><strong>You are viewing version 1.</strong> A newer version is available &mdash; <a href="#v3">version 3, revised 28 Jun 2026</a>.</p>
+</div>
 <div class="ltx_authors">
   <ul class="ltx_authors-list">
     <li class="ltx_authors-shown"><a href="#">Adrian Palomares</a></li><li class="ltx_authors-shown"><a href="#">Ilya L. Shapiro</a></li><li class="ltx_authors-shown"><a href="#">Maria C. Gonzalez-Garcia</a></li><li class="ltx_authors-shown"><a href="#">Tomohiro Harada</a></li><li class="ltx_authors-shown"><a href="#">Elena Castellani</a></li><li class="ltx_authors-shown"><a href="#">Kei-ichi Maeda</a></li><li class="ltx_authors-shown"><a href="#">Francesca Vidotto</a></li><li class="ltx_authors-shown"><a href="#">Abhay Ashtekar</a></li><li class="ltx_authors-overflow" id="html-authors-overflow"><a href="#">Roberto Emparan</a></li><li class="ltx_authors-overflow"><a href="#">Alejandra Castro</a></li><li class="ltx_authors-overflow"><a href="#">Jan de Boer</a></li><li class="ltx_authors-overflow"><a href="#">Shin'ichi Nojiri</a></li><li class="ltx_authors-overflow"><a href="#">Sergei D. Odintsov</a></li><li class="ltx_authors-overflow"><a href="#">Viatcheslav Mukhanov</a></li><li class="ltx_authors-overflow"><a href="#">Misao Sasaki</a></li><li class="ltx_authors-overflow"><a href="#">Jiro Soda</a></li><li class="ltx_authors-overflow"><a href="#">Shinji Tsujikawa</a></li><li class="ltx_authors-overflow"><a href="#">Antonio Padilla</a></li><li class="ltx_authors-overflow"><a href="#">Ruth Gregory</a></li><li class="ltx_authors-overflow"><a href="#">Karim A. Malik</a></li><li class="ltx_authors-overflow"><a href="#">David Wands</a></li><li class="ltx_authors-overflow"><a href="#">Takahiro Tanaka</a></li>
@@ -3859,16 +3888,16 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
       <h3 id="mg-pi-heading">Paper Information</h3>
       <div class="mg-accordions">
         <details class="mg-acc" id="mg-versions">
-          <summary>Versions <span class="mg-ver-count">[v3] &middot; latest</span></summary>
+          <summary>Version History</summary>
           <div class="mg-acc-body">
             <ol class="mg-ver-list">
-              <li class="mg-ver mg-ver-current" aria-current="true">
+              <li class="mg-ver">
                 <div class="mg-ver-top">
-                  <span class="mg-ver-id">[v3]</span>
-                  <span class="mg-ver-tag">current</span>
+                  <a class="mg-ver-id" href="https://arxiv.org/abs/2604.22725v3">[v3]</a>
+                  <span class="mg-ver-tag">latest</span>
                   <span class="mg-ver-date">28 Jun 2026</span>
                 </div>
-                <p class="mg-ver-note">Matches the published version (JCAP). Added the Planck 2018 comparison in Sec.&nbsp;4.</p>
+                <p class="mg-ver-note">Latest &mdash; matches the published version (JCAP). Added the Planck 2018 comparison in Sec.&nbsp;4.</p>
               </li>
               <li class="mg-ver">
                 <div class="mg-ver-top">
@@ -3877,12 +3906,13 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
                 </div>
                 <p class="mg-ver-note">Revised the scalar spectral-index discussion; corrected Eq.&nbsp;(4.7).</p>
               </li>
-              <li class="mg-ver">
+              <li class="mg-ver mg-ver-current" aria-current="true">
                 <div class="mg-ver-top">
-                  <a class="mg-ver-id" href="https://arxiv.org/abs/2604.22725v1">[v1]</a>
+                  <span class="mg-ver-id">[v1]</span>
+                  <span class="mg-ver-tag">viewing</span>
                   <span class="mg-ver-date">24 Apr 2026</span>
                 </div>
-                <p class="mg-ver-note">Original submission.</p>
+                <p class="mg-ver-note">Original submission &mdash; the version you're viewing.</p>
               </li>
             </ol>
             <p class="mg-ver-foot"><a href="https://arxiv.org/abs/2604.22725">Full version history</a></p>

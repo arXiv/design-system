@@ -80,7 +80,7 @@ Operationalize as a template helper (Jinja/PHP/Smarty macro) emitting the dual-s
 **Respect OS-level visual signals.** `prefers-color-scheme`, `prefers-contrast`, `forced-colors`, `prefers-reduced-motion` are honored as defaults. Design works in both light and dark; design works in Windows High Contrast Mode; animations are reduced when the user has requested it. **No arXiv-internal dark-mode toggle, font picker, or motion toggle.**
 *Status: needs verification on the mockups.*
 
-**Color independence on all status badges, version pills, type markers.** Color is never the sole carrier of meaning. Each marker has text or icon redundancy. (WCAG 1.4.1.)
+**Color independence on all status badges, version links, type markers.** Color is never the sole carrier of meaning. Each marker has text or icon redundancy. (WCAG 1.4.1.)
 *Status: design-side validation needed.*
 
 **Low vision is its own track.** Wayne Dick's principle: low-vision users have distinct needs from screen-reader users — magnification, line length at zoom, independent equation enlargement, custom stylesheet support. Optimizing for blind users does not solve low-vision needs.
@@ -159,7 +159,7 @@ Six independent voices in the research described distinct problems with the same
 
 ## Standards posture
 
-- **WCAG 2.2 AA** on the abstract page and HTML reader. Audit date and methodology stated publicly when reached.
+- **WCAG 2.1 AA** is the compliance floor (the Accessible Canada Act, via CAN/ASC–EN 301 549). We **target WCAG 2.2 AA** on the abstract page and HTML reader. Audit date and methodology stated publicly when reached.
 - **MathML 4** (with `intent`) for math. arXiv contributes to the W3C Math Working Group via Deyan Ginev.
 - **Speech Rule Engine / MathCAT** for math read-aloud where the AT toolchain supports it.
 - **EPUB Accessibility 1.1** principles applied to HTML reader where they translate (structured navigation, alt text, language tagging).

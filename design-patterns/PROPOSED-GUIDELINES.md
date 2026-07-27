@@ -83,7 +83,7 @@ Promoted to DESIGN-POLICIES.md in exactly this two-tier form with the inline exe
 
 **Evidence:** reader header (trigger label and progress are silent; the zoom-level readout in the lightbox *does* announce because zooming is user-initiated). This distinction — *who caused the change* decides announcement — is the generalizable principle.
 
-**Resolved 2026-06-11 (Shamsi):** added to the future user-testing wish list (accessibility-research-questions.md) — interviews/surveys are being planned; this question waits for that round. Until then the rule stands as pattern convention, not policy.
+**Resolved 2026-06-11 (Shamsi):** added to the future user-testing wish list (`public/accessibility-research-questions.md`) — interviews/surveys are being planned; this question waits for that round. Until then the rule stands as pattern convention, not policy.
 
 ## G10. Truncation always signals continuation
 

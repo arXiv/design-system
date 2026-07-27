@@ -49,7 +49,7 @@ The light-side metaphor is built into the palette: warm Repository Brown and lig
 "Best-in-class for readability" includes machines: clean semantic HTML, real headings and landmarks, content present before JavaScript runs ([progressive enhancement policy](DESIGN-POLICIES.md)). Co-equal HTML and PDF formats serve the same goal. *(Open strategic question: whether to move from co-equal to HTML-first — see G2. A brand decision waiting on leadership, not a design-system one.)*
 
 ### 5. Accessibility is a brand value, not a checkbox
-"The light side" and "open to all" mean WCAG 2.2 AA is a floor, not a target — spoken math, keyboard-reachable everything, forced-colors and reduced-motion support, JS-off usability. The accessibility rules in [DESIGN-POLICIES.md](DESIGN-POLICIES.md) are the brand made concrete.
+"The light side" and "open to all" mean WCAG 2.1 AA is the legal floor (the Accessible Canada Act) and 2.2 AA is the target we build toward — spoken math, keyboard-reachable everything, forced-colors and reduced-motion support, JS-off usability. The accessibility rules in [DESIGN-POLICIES.md](DESIGN-POLICIES.md) are the brand made concrete.
 
 ### 6. Honest, plainspoken copy — with a wink
 UI text is direct and never overclaims (the [feedback changelog](mockups/FEEDBACK-CHANGELOG.md) is a good model: "this is a prototype," "open for discussion"). The mischief lives in small, optional places — the smileybones, a dry empty state — never in anything load-bearing or anything a stressed researcher has to parse.
