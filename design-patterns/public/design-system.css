@@ -24,6 +24,8 @@
      - Element pill (.ds-element-pill, validated 2026-05-27)
      - Alert / status message (.ds-alert) + status color tokens,
        light + dark — the first dark-aware tokens here (validated 2026-05-28)
+     - Accordion (.ds-acc + .ds-acc-stack/.ds-acc-body, rail variant
+       .ds-acc-rail; no new tokens, validated 2026-07-27)
 
    More patterns will land here as they stabilize in the mockups.
    ═══════════════════════════════════════════════════════════════════════ */
@@ -645,6 +647,117 @@
 @media (prefers-reduced-motion: reduce) {
   .ds-alert-dismiss { transition: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ACCORDION  (.ds-acc / .ds-acc-stack / .ds-acc-body / .ds-acc-rail)
+   ───────────────────────────────────────────────────────────────────────
+   Native <details>/<summary> disclosure — no JS, keyboard and screen-
+   reader semantics for free, and find-in-page can auto-expand panels.
+   A +/− glyph replaces the default marker. Two dressings, one element:
+
+     - Card (default): white surface, hairline border, 6px radius —
+       stands alone on the page. Stack several in .ds-acc-stack (8px gap).
+     - Rail (.ds-acc-rail, added to .ds-acc): card chrome dropped —
+       background, border, and radius go; the surrounding rail's hairline
+       dividers do the separating. Internals go single-column for the
+       narrow rail, and the +/− marker turns Link Blue so closed
+       disclosures still read as interactive (Open Blue is too light
+       for a glyph).
+
+   Body internals: a <dl> inside .ds-acc-body gets the standard metadata
+   layout — condensed-caps <dt> labels beside regular <dd> values
+   (two-column in cards, single-column in the rail variant).
+
+   Content rule (organizing-content.html): never put must-see information
+   ONLY inside a closed accordion — required warnings also surface in
+   always-visible flow. Default state is closed; a single most-relevant
+   panel may start open. Open state is not persisted.
+
+   Adds over the mockup source: a :focus-visible ring on the summary, and
+   the rail summary grows its hit area to the 24px target-size floor via
+   the padding + negative-margin technique (DESIGN-POLICIES.md, Chrome
+   and interaction structure) with no layout change. No transitions —
+   nothing for prefers-reduced-motion to disable.
+
+   Validated 2026-06-22 → 2026-07-27 as .mg-acc in
+   mockups/merged-abstract-reader.html (paper-info card group + abstract
+   rail); treatment agreed on design-patterns/organizing-content.html.
+
+   Example:
+     <div class="ds-acc-stack">
+       <details class="ds-acc" open>
+         <summary>Paper information</summary>
+         <div class="ds-acc-body">
+           <dl>
+             <dt>arXiv ID</dt><dd><a href="…">2604.22725</a></dd>
+             <dt>License</dt><dd><a href="…">CC BY 4.0</a></dd>
+           </dl>
+         </div>
+       </details>
+     </div>
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-acc-stack { display: flex; flex-direction: column; gap: 8px; }
+.ds-acc {
+  background: #fff;
+  border: 1px solid var(--arxiv-border-light);
+  border-radius: 6px;
+  font-family: var(--arxiv-font-sans);
+}
+.ds-acc > summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--arxiv-ink);
+  padding: 11px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ds-acc > summary::-webkit-details-marker { display: none; }
+.ds-acc > summary::marker { content: ""; }
+.ds-acc > summary::after {
+  content: "+";
+  content: "+" / "";  /* alt-text form: the glyph is decorative to AT —
+                         <details> already announces expanded/collapsed */
+  margin-left: auto;
+  font-weight: 400;
+  color: var(--arxiv-grey);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+.ds-acc[open] > summary::after { content: "−"; content: "−" / ""; }
+.ds-acc[open] > summary { border-bottom: 1px solid var(--arxiv-border-light); }
+.ds-acc > summary:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring);
+  outline-offset: -2px;  /* ring sits inside the card edge */
+  border-radius: 6px;
+}
+.ds-acc-body { padding: 14px 16px 16px; font-size: 0.85rem; color: var(--arxiv-ink); }
+.ds-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; margin: 0; }
+.ds-acc-body dt { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.04em; color: var(--arxiv-grey); white-space: nowrap; padding-top: 2px; }
+.ds-acc-body dd { margin: 0; }
+.ds-acc-body a { color: var(--arxiv-link-blue); }
+
+/* Rail variant — chrome dropped; the rail's hairlines separate. */
+.ds-acc-rail { background: transparent; border: 0; border-radius: 0; }
+.ds-acc-rail > summary {
+  font-size: 0.82rem;
+  /* 4px padding + matching negative margin: the ~20px text line grows to
+     a ≥24px hit target with zero layout shift (target-size floor). */
+  padding: 4px 0;
+  margin: -4px 0;
+}
+.ds-acc-rail > summary::after { font-size: 1.1rem; color: var(--arxiv-link-blue); }
+.ds-acc-rail > summary:hover { color: var(--arxiv-link-blue); }
+.ds-acc-rail > summary:focus-visible { outline-offset: 2px; border-radius: 3px; }
+.ds-acc-rail[open] > summary { border-bottom: 0; margin-bottom: 6px; }  /* + 4px hit-area padding = 10px visual gap */
+.ds-acc-rail .ds-acc-body { padding: 0; }
+.ds-acc-rail .ds-acc-body dl { grid-template-columns: 1fr; gap: 0; }
+.ds-acc-rail .ds-acc-body dt { margin-top: 10px; }
+.ds-acc-rail .ds-acc-body dt:first-child { margin-top: 0; }
+.ds-acc-rail .ds-acc-body dd { margin: 1px 0 0; }
 
 /* ═══════════════════════════════════════════════════════════════════════
    SITE FOOTER  (.ds-site-footer)

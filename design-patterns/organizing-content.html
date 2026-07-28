@@ -8,9 +8,9 @@
   <style>
     /* ── Flagship pattern page: the containers that group and organize
        content — the reading column + rail model, accordions, cards, and
-       anchored chrome (popover / element pill). The accordion styles here
-       mirror .mg-acc in mockups/merged-abstract-reader.html; promotion into
-       design-system.css as .ds-acc is pending (NEXT-STEPS). ── */
+       anchored chrome (popover / element pill). Accordion, popover, and
+       element-pill demos render the real .ds- classes from
+       public/design-system.css; only demo staging is page-local. ── */
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: var(--arxiv-font-sans); color: var(--arxiv-ink); background: var(--arxiv-warm-wash); margin: 0; font-size: 14px; line-height: 1.5; }
     .page { max-width: 1080px; margin: 0 auto; padding: 28px 28px 80px; }
@@ -36,37 +36,13 @@
     .layout-demo .slot.hot { background: var(--arxiv-warning-bg); border: 1px solid var(--arxiv-warning-border); color: var(--arxiv-warning-fg); }
     @media (max-width: 640px) { .layout-demo { grid-template-columns: 1fr; } }
 
-    /* ── Accordion demo styles — mirror .mg-acc from the merged mockup.
-       Card variant (stands alone on a page) + rail variant (chrome
-       dropped; the rail's hairlines do the separating). ── */
-    .acc-stack { display: flex; flex-direction: column; gap: 8px; max-width: 480px; }
-    .acc { background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 6px; }
-    .acc > summary { cursor: pointer; list-style: none; font-size: 0.92rem; font-weight: 600; color: var(--arxiv-ink); padding: 11px 16px; display: flex; align-items: center; gap: 10px; }
-    .acc > summary::-webkit-details-marker { display: none; }
-    .acc > summary::marker { content: ""; }
-    .acc > summary::after { content: "+"; margin-left: auto; font-weight: 400; color: var(--arxiv-grey); font-size: 1.25rem; line-height: 1; }
-    .acc[open] > summary::after { content: "−"; }
-    .acc[open] > summary { border-bottom: 1px solid var(--arxiv-border-light); }
-    .acc > summary:focus-visible { outline: 3px solid var(--arxiv-focus-ring); outline-offset: -2px; border-radius: 6px; }
-    .acc-body { padding: 14px 16px 16px; font-size: 0.85rem; color: var(--arxiv-ink); }
-    .acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; margin: 0; }
-    .acc-body dt { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.04em; color: var(--arxiv-grey); white-space: nowrap; padding-top: 2px; }
-    .acc-body dd { margin: 0; }
-    .acc-body a { color: var(--arxiv-link-blue); }
-
-    /* Rail variant: chrome dropped */
+    /* ── Accordion demo staging — the accordions themselves are the real
+       .ds-acc classes from public/design-system.css; page-local styles
+       only stage them (width cap for the card stack, a stand-in rail
+       whose hairlines separate the chrome-dropped variant). ── */
+    .acc-demo { max-width: 480px; }
     .rail-demo { max-width: 300px; background: #fff; border: 1px solid var(--arxiv-card-grey); border-radius: 8px; padding: 18px 20px; }
     .rail-demo > * + * { border-top: 1px solid var(--arxiv-border-light); margin-top: 14px; padding-top: 14px; }
-    .rail-demo .acc { background: transparent; border: 0; border-radius: 0; }
-    .rail-demo .acc > summary { padding: 0; font-size: 0.82rem; }
-    .rail-demo .acc > summary::after { font-size: 1.1rem; color: var(--arxiv-link-blue); }
-    .rail-demo .acc > summary:hover { color: var(--arxiv-link-blue); }
-    .rail-demo .acc[open] > summary { border-bottom: 0; margin-bottom: 10px; }
-    .rail-demo .acc-body { padding: 0; }
-    .rail-demo .acc-body dl { grid-template-columns: 1fr; gap: 0; }
-    .rail-demo .acc-body dt { margin-top: 10px; }
-    .rail-demo .acc-body dt:first-child { margin-top: 0; }
-    .rail-demo .acc-body dd { margin: 1px 0 0; }
 
     /* ── Card demo ── */
     .card-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; max-width: 800px; }
@@ -173,10 +149,10 @@
     <div style="display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-start;">
       <div>
         <p class="subgroup-title">Card variant — stands alone on the page</p>
-        <div class="acc-stack">
-          <details class="acc" open>
+        <div class="ds-acc-stack acc-demo">
+          <details class="ds-acc" open>
             <summary>Paper information</summary>
-            <div class="acc-body">
+            <div class="ds-acc-body">
               <dl>
                 <dt>arXiv ID</dt><dd><a href="#">2604.22725</a></dd>
                 <dt>Subjects</dt><dd>gr-qc · hep-th</dd>
@@ -184,18 +160,18 @@
               </dl>
             </div>
           </details>
-          <details class="acc">
+          <details class="ds-acc">
             <summary>Related</summary>
-            <div class="acc-body">Connected papers, datasets, and code links.</div>
+            <div class="ds-acc-body">Connected papers, datasets, and code links.</div>
           </details>
         </div>
       </div>
       <div>
         <p class="subgroup-title">Rail variant — chrome dropped</p>
         <div class="rail-demo">
-          <details class="acc" open>
+          <details class="ds-acc ds-acc-rail" open>
             <summary>Versions</summary>
-            <div class="acc-body">
+            <div class="ds-acc-body">
               <dl>
                 <dt>v3 · current</dt><dd>24 Apr 2026</dd>
                 <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
@@ -203,9 +179,9 @@
               </dl>
             </div>
           </details>
-          <details class="acc">
+          <details class="ds-acc ds-acc-rail">
             <summary>Paper information</summary>
-            <div class="acc-body">Single-column inside the narrow rail.</div>
+            <div class="ds-acc-body">Single-column inside the narrow rail.</div>
           </details>
         </div>
       </div>
@@ -218,13 +194,31 @@
       <li>Default state: closed, except a single most-relevant panel may start open. Open state is not persisted — predictability beats memory here.</li>
     </ul>
 
+    <p class="subgroup-title">Usage</p>
+    <pre class="code-block">&lt;!-- Card variant — standalone on the page --&gt;
+&lt;div class="ds-acc-stack"&gt;
+  &lt;details class="ds-acc" open&gt;
+    &lt;summary&gt;Paper information&lt;/summary&gt;
+    &lt;div class="ds-acc-body"&gt;
+      &lt;dl&gt;&lt;dt&gt;arXiv ID&lt;/dt&gt;&lt;dd&gt;…&lt;/dd&gt;&lt;/dl&gt;
+    &lt;/div&gt;
+  &lt;/details&gt;
+&lt;/div&gt;
+
+&lt;!-- Rail variant — inside an &lt;aside&gt; rail; the rail's hairlines separate --&gt;
+&lt;details class="ds-acc ds-acc-rail"&gt;
+  &lt;summary&gt;Versions&lt;/summary&gt;
+  &lt;div class="ds-acc-body"&gt;…&lt;/div&gt;
+&lt;/details&gt;</pre>
+
     <div class="ds-alert ds-alert-info note-alert">
       <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
       <div class="ds-alert-content">
         <p class="ds-alert-title">Status</p>
-        <p>These styles live in the merged mockup as <code>.mg-acc</code>; promoting them into
-        <code>design-system.css</code> as <code>.ds-acc</code> is pending (NEXT-STEPS: extract the versions/accordion
-        CSS). This page documents the agreed treatment so the promotion is a copy job, not a redesign.</p>
+        <p>Promoted 2026-07-28: <code>.ds-acc</code> is a real class in <code>public/design-system.css</code>
+        (the demos above render it directly). Validated as <code>.mg-acc</code> in
+        <a href="../mockups/merged-abstract-reader.html">the merged abstract/reader mockup</a>, which remains
+        the reference in context — the codified version is now the source of truth.</p>
       </div>
     </div>
   </section>
