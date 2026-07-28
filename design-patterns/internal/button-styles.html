@@ -278,6 +278,7 @@
     }
     .callout + .callout { margin-top: 10px; }
     .callout strong { color: #1c1a17; }
+    .note-alert { margin-top: 16px; }
     .usage-list {
       margin: 0;
       padding-left: 20px;
@@ -455,9 +456,16 @@
         </tbody>
       </table>
 
-      <p class="callout" style="border-left-color: #c62828;">
-        <strong>Destructive buttons always require a confirmation step</strong> — a dialog, an inline confirm/cancel reveal, or at minimum a clear undo path. Never fire a destructive action on single click without giving the user a chance to reconsider. The button colour signals danger; the UX pattern must back that signal up.
-      </p>
+      <!-- Hard rule → real .ds-alert-error (docs convention: advisory notes are
+           .ds-alert-info, hard prohibitions .ds-alert-error; quiet .callout is for
+           neutral usage notes only). -->
+      <div class="ds-alert ds-alert-error note-alert">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">Destructive buttons always require a confirmation step</p>
+          <p>A dialog, an inline confirm/cancel reveal, or at minimum a clear undo path. Never fire a destructive action on single click without giving the user a chance to reconsider. The button colour signals danger; the UX pattern must back that signal up.</p>
+        </div>
+      </div>
 
       <p class="callout">
         <strong>Focus ring note:</strong> The simulated focus above uses <code>box-shadow</code> so it is visible inside the table cell. In production, the real rule is <code>:focus-visible { outline: 3px solid #1f5e96; outline-offset: 2px; }</code> — the live demo below shows the real behavior.
