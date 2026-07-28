@@ -1,0 +1,77 @@
+{
+  "tool_calls": {
+    "Read": 9,
+    "Write": 1
+  },
+  "file_reads": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Cy6PWe/repo/CONTEXT.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Cy6PWe/repo/BRAND.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Cy6PWe/repo/DESIGN-POLICIES.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Cy6PWe/repo/design-patterns/color-mapping.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Cy6PWe/repo/design-patterns/internal/DESIGN-PROGRESS.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Cy6PWe/repo/design-patterns/typography.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Cy6PWe/repo/design-patterns/internal/design-system.css",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Cy6PWe/repo/design-patterns/internal/table-styles.html",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Cy6PWe/repo/design-patterns/internal/alert-styles.html"
+  ],
+  "greps": [],
+  "bash": [],
+  "files_written": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Cy6PWe/repo/design-patterns/internal/bulk-action-styles.html"
+  ],
+  "final_message": "`design-patterns/internal/bulk-action-styles.html` is written. Here's a full accounting of what was built and every design-system rule applied:\n\n---\n\n## What was built\n\nA single demo page at `design-patterns/internal/bulk-action-styles.html` rendering the bulk action bar in five labeled states:\n\n| Section | What it shows |\n|---|---|\n| Nothing selected | Bar absent; table renders alone inside the shared wrapper |\n| Selection active | Bar visible with 3 selected rows, then 1 selected row |\n| Destructive confirm | Bar shifts to danger tint with inline \"Remove 3 submissions? / Confirm / Cancel\" |\n| Success | `.ds-alert-success` above a reset table; bar gone |\n| Failure | `.ds-alert-error` above the bar, which remains visible with the intact selection |\n\n### Architecture\n\n- **`.bulk-action-wrap`** \u2014 a single border container (`border: 1px solid #ddd8d2; border-radius: 6px; overflow: hidden`) that wraps both bar and table so they read as one connected unit. The table inside strips its own border via `.bulk-action-wrap .ds-table { border: none; border-radius: 0 }`.\n- **`.bulk-action-bar`** \u2014 the bar itself; shown/hidden at the DOM level (no JS in this static demo). Uses `var(--sec-bg)` lime tint with `var(--sec-border)` bottom border when in default selection state, and `var(--error-bg)` / `var(--error-border)` in the confirming state.\n- **`.is-selected`** rows get `background: var(--sec-bg)` \u2014 same lime tint as the bar, creating the visual link between bar and selection.\n\n---\n\n## Design-system rules applied\n\n**Internal vs public surface (DESIGN-POLICIES.md)**\n- `Approve selected` \u2192 `.btn-primary` (Access Lime `#c4d82e`). Internal tool surface; Open Blue never appears.\n- `Put on hold` \u2192 `.btn-secondary` (lime tint).\n- `Remove selected` \u2192 `.btn-destructive` (Danger Red `#c62828`, white text 5.17:1 AA \u2713).\n\n**Destructive action confirmation (design-system.css)**\n- Per the button docs: *\"Always pair with a confirmation step (dialog or inline confirm).\"* The confirming state replaces the action group with an inline prompt rather than a modal (appropriate since the affected rows are visible in the same view).\n\n**Status / alert component (design-system.css `.ds-alert`)**\n- Reused verbatim. Success \u2192 `.ds-alert-success` with `role=\"status\"` (polite). Failure \u2192 `.ds-alert-error` with `role=\"alert\"` (assertive). Each pairs the color with a distinct icon shape and leading word, satisfying WCAG 1.4.1.\n\n**Color palette (color-mapping.md)**\n- All values are palette tokens: `var(--sec-bg)`, `var(--sec-border)`, `var(--error-bg)`, `var(--error-border)`, `var(--error-fg)`, `var(--text)`, `var(--grey)`. The wrapper border uses `#ddd8d2` (Border Light), which is how `.ds-table` itself declares its border. Zero one-off hex values introduced.\n\n**Accessibility (DESIGN-POLICIES.md)**\n- `:focus-visible` (never `:focus`) \u2014 inherited from `.btn`, `.btn-link`, `.ds-alert-dismiss`.\n- `aria-live=\"polite\"` + `aria-atomic=\"true\"` on `.bulk-count` for count updates.\n- `role=\"toolbar\"` on active bar; `role=\"group\"` on the action cluster; `role=\"alert\"` on the confirmation message.\n- Every checkbox has an `aria-label`; the select column header has `.sr-only` text.\n- Button height in the bar: `6px + 13px + 6px = 25px`, clearing the WCAG 2.5.8 24px minimum.\n- Color is never the sole signal for selected rows (checkbox + background tint).\n- `@media (forced-colors: active)` block degrades bar backgrounds to `Canvas` and selected rows to `Highlight`/`HighlightText`.\n\n**Typography (typography.md)**\n- IBM Plex Sans body, IBM Plex Mono for badge text (inherited from `.type-badge`), IBM Plex Sans Condensed for table headers (inherited from `.ds-table`). Loaded via Google Fonts, consistent with every other pattern page in the repo while self-hosting migration is pending.\n\n**Spacing (DESIGN-POLICIES.md)**\n- Bar padding: `10px 14px` \u2014 matches `.ds-table td` exactly, so bar and table rows feel rhythmically linked. Button gap: `var(--space-2)` (8px). Bar gap: `var(--space-3)` (12px). Status margin: `var(--space-2)`.\n\n**Page structure**\n- Follows the pattern established by `table-styles.html` and `alert-styles.html`: `docs-nav` strip, `.page-header` with lime rule, `.section` + `.demo` + `.callout` layout, page-specific CSS in the `<style>` block.",
+  "usage": {
+    "input_tokens": 13,
+    "cache_creation_input_tokens": 91466,
+    "cache_read_input_tokens": 463955,
+    "output_tokens": 43890,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 91466,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 1,
+        "output_tokens": 1275,
+        "cache_read_input_tokens": 98747,
+        "cache_creation_input_tokens": 9546,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9546
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "cost_usd": 1.3473155,
+  "num_turns": 11,
+  "duration_ms": 645415,
+  "transcript_lines": 364,
+  "parse_errors": 0,
+  "model": "claude-sonnet-4-6",
+  "is_error": false,
+  "unique_files_read": 9,
+  "re_reads": 0,
+  "task": "02-fidelity-internal",
+  "artifacts": [
+    "design-patterns/internal/bulk-action-styles.html"
+  ],
+  "auto_checks": {
+    "design-patterns/internal/bulk-action-styles.html": {
+      "external font service": [
+        "fonts.googleapis",
+        "fonts.gstatic"
+      ]
+    }
+  },
+  "non_palette_hexes": {},
+  "exit": 0,
+  "wall_seconds": 647
+}

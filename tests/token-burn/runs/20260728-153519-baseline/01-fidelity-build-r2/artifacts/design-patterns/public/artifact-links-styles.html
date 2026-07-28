@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>arXiv Public — Dataset &amp; Code Links Card — Component Reference</title>
+  <link rel="stylesheet" href="design-system.css">
+  <style>
+    /* ── Page chrome (reference doc only — not part of .ds-artifact-links).
+       Mirrors the layout of other public pattern pages for consistency.
+       Uses only --arxiv- tokens from design-system.css. ── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: var(--arxiv-font-sans);
+      color: var(--arxiv-ink);
+      background: var(--arxiv-warm-wash);
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .page { max-width: 980px; margin: 0 auto; padding: 48px 28px 80px; }
+
+    .page-header { margin-bottom: 44px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p  { margin: 4px 0 0; color: var(--arxiv-grey); font-size: 13px; max-width: 720px; line-height: 1.55; }
+
+    .section { margin-bottom: 52px; }
+    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+    .section-desc  { font-size: 13px; color: var(--arxiv-grey); margin: 0 0 20px; max-width: 680px; line-height: 1.55; }
+
+    /* Demo surface: white card matching the abstract-page body */
+    .live-demo {
+      background: #fff;
+      border: 1px solid var(--arxiv-card-grey);
+      border-radius: 8px;
+      padding: 22px;
+    }
+    .live-demo + .live-demo { margin-top: 16px; }
+
+    /* Sub-labels inside demos */
+    .demo-sub {
+      font-family: var(--arxiv-font-condensed);
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--arxiv-grey-ui);
+      margin: 24px 0 10px;
+    }
+    .demo-sub:first-child { margin-top: 0; }
+
+    /* Abstract-page context wrapper: shows the card at realistic page width */
+    .page-context {
+      background: #fff;
+      border: 1px solid var(--arxiv-card-grey);
+      border-radius: 8px;
+      padding: 28px;
+      max-width: 640px;
+    }
+
+    /* Forced-state helpers — used to render static state screenshots in
+       the reference without JS. Applied only inside this reference page. */
+    .is-hover-demo { background: var(--arxiv-card-grey) !important; }
+    .is-link-focus .ds-artifact-link {
+      outline: 3px solid var(--arxiv-focus-ring);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+    .is-list-focus .ds-artifact-links-list {
+      outline: 3px solid var(--arxiv-focus-ring);
+      outline-offset: -3px;
+    }
+    .is-visited .ds-artifact-link { color: var(--arxiv-link-visited); }
+
+    /* Spec table */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1px solid var(--arxiv-card-grey);
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+    .spec-table th {
+      background: var(--arxiv-card-grey);
+      text-align: left;
+      padding: 10px 14px;
+      font-family: var(--arxiv-font-condensed);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--arxiv-grey);
+      border-bottom: 1px solid var(--arxiv-border-light);
+    }
+    .spec-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--arxiv-border-light);
+      vertical-align: top;
+    }
+    .spec-table tr:last-child td { border-bottom: none; }
+    .spec-table td:first-child { font-weight: 600; white-space: nowrap; }
+
+    code {
+      font-family: var(--arxiv-font-mono);
+      font-size: 12px;
+      background: var(--arxiv-card-grey);
+      padding: 2px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .code-block {
+      background: var(--arxiv-ink);
+      color: #f0eeec;
+      border-radius: 6px;
+      padding: 16px 18px;
+      font-family: var(--arxiv-font-mono);
+      font-size: 12px;
+      line-height: 1.65;
+      overflow-x: auto;
+      margin: 0;
+      white-space: pre;
+    }
+
+    .callout {
+      font-size: 13px;
+      color: var(--arxiv-ink);
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #fff;
+      border: 1px solid var(--arxiv-card-grey);
+      border-left: 4px solid var(--arxiv-open-blue);
+      border-radius: 0 4px 4px 0;
+      line-height: 1.6;
+    }
+    .callout + .callout { margin-top: 10px; }
+    .callout strong { color: var(--arxiv-ink); }
+
+    /* ── Shared docs nav strip ── */
+    .docs-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px 14px;
+      flex-wrap: wrap;
+      background: var(--arxiv-card-grey);
+      border-bottom: 1px solid var(--arxiv-border-light);
+      padding: 8px 28px;
+      font-size: 13px;
+    }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-ink); text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
+    .docs-nav a:not(.docs-nav-brand) { color: var(--arxiv-grey); text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: var(--arxiv-ink); text-decoration: underline; }
+    .docs-nav a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 2px; }
+    .docs-nav .is-here { color: var(--arxiv-ink); font-weight: 600; }
+    .docs-nav-spacer { flex: 1; }
+    .docs-nav .docs-nav-mock { color: var(--arxiv-grey-ui); font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../../index.html">arXiv Design System</a>
+  <a href="../colors.html">Colors</a>
+  <a href="../typography.html">Typography</a>
+  <a href="../spacing.html">Spacing</a>
+  <a href="../buttons.html">Buttons</a>
+  <a href="../alerts.html">Alerts</a>
+  <a href="../version-display.html">Versions</a>
+  <a href="../organizing-content.html">Organizing content</a>
+  <a href="../../doc.html?src=DESIGN-POLICIES.md">Policies</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="docs-nav-mock">Mockups:</span>
+  <a href="../../mockups/abstract-redesign.html">Abstract</a>
+  <a href="../../mockups/merged-abstract-reader.html">Reader</a>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <h1>Dataset &amp; Code Links Card</h1>
+    <p>The <code>.ds-artifact-links</code> component — a card listing a paper's
+    external research artifacts (datasets, code repositories, supplementary material)
+    on the abstract page. Reads as browsable supplementary material, not a
+    primary call to action. All styles are live from <code>design-system.css</code>.</p>
+    <p>Added 2026-07-28. See also: <a class="ds-link" href="button-styles.html">button styles</a>,
+    <a class="ds-link" href="alert-styles.html">alert styles</a>.</p>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       1. SINGLE ARTIFACT
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">Single artifact</h2>
+    <p class="section-desc">The minimum case — one row. The card scales naturally to its content;
+    no overflow control is needed.</p>
+
+    <div class="live-demo">
+      <section class="ds-artifact-links" aria-labelledby="art-single-heading">
+        <h2 class="ds-artifact-links-heading" id="art-single-heading">
+          Datasets &amp; code
+        </h2>
+        <ul class="ds-artifact-links-list" role="list"
+            tabindex="0" aria-label="1 research artifact">
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Source code</span>
+            <span class="ds-artifact-dest">GitHub</span>
+            <a class="ds-artifact-link"
+               href="https://github.com/example/paper-repo"
+               target="_blank" rel="noopener noreferrer">
+              github.com/example/paper-repo
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true"
+                   viewBox="0 0 12 12" width="12" height="12"
+                   stroke="currentColor" fill="none" stroke-width="1.75"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 10L10 2M5 2h5v5"/>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       2. MULTIPLE ARTIFACTS — within threshold (≤6)
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">Multiple artifacts — within threshold (1–6 rows)</h2>
+    <p class="section-desc">Up to 6 rows show at native height. No overflow, no scroll,
+    no truncation signal needed. The count badge in the heading is optional — useful
+    when the consumer wants to telegraph the total upfront.</p>
+
+    <div class="live-demo">
+      <section class="ds-artifact-links" aria-labelledby="art-few-heading">
+        <h2 class="ds-artifact-links-heading" id="art-few-heading">
+          Datasets &amp; code
+          <span class="ds-artifact-links-count">4 artifacts</span>
+        </h2>
+        <ul class="ds-artifact-links-list" role="list"
+            tabindex="0" aria-label="4 research artifacts">
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Training data</span>
+            <span class="ds-artifact-dest">Zenodo</span>
+            <a class="ds-artifact-link"
+               href="https://zenodo.org/record/123456"
+               target="_blank" rel="noopener noreferrer">
+              zenodo.org/record/123456
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true"
+                   viewBox="0 0 12 12" width="12" height="12"
+                   stroke="currentColor" fill="none" stroke-width="1.75"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 10L10 2M5 2h5v5"/>
+              </svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Evaluation benchmark</span>
+            <span class="ds-artifact-dest">Zenodo</span>
+            <a class="ds-artifact-link"
+               href="https://zenodo.org/record/789012"
+               target="_blank" rel="noopener noreferrer">
+              zenodo.org/record/789012
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true"
+                   viewBox="0 0 12 12" width="12" height="12"
+                   stroke="currentColor" fill="none" stroke-width="1.75"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 10L10 2M5 2h5v5"/>
+              </svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Source code</span>
+            <span class="ds-artifact-dest">GitHub</span>
+            <a class="ds-artifact-link"
+               href="https://github.com/example/llm-eval"
+               target="_blank" rel="noopener noreferrer">
+              github.com/example/llm-eval
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true"
+                   viewBox="0 0 12 12" width="12" height="12"
+                   stroke="currentColor" fill="none" stroke-width="1.75"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 10L10 2M5 2h5v5"/>
+              </svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Supplementary material</span>
+            <span class="ds-artifact-dest">arXiv</span>
+            <a class="ds-artifact-link"
+               href="https://arxiv.org/src/2506.12345"
+               target="_blank" rel="noopener noreferrer">
+              arxiv.org/src/2506.12345
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true"
+                   viewBox="0 0 12 12" width="12" height="12"
+                   stroke="currentColor" fill="none" stroke-width="1.75"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 10L10 2M5 2h5v5"/>
+              </svg>
+            </a>
+          </li>
+
+        </ul>
+      </section>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       3. OVERFLOW — 12 artifacts (> 6 rows)
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">Overflow — 12 artifacts (7+ rows)</h2>
+    <p class="section-desc">When the list exceeds 6 rows (approximately 272px),
+    <code>overflow-y: auto</code> kicks in. The last fully visible row is followed by
+    roughly half of the next row — the half-item peek — which is the geometric signal
+    that the list continues. The <code>&lt;ul&gt;</code> carries <code>tabindex="0"</code>
+    so keyboard users can Tab into the region and scroll with arrow keys, and
+    <code>aria-label="12 research artifacts"</code> so screen-reader users know the
+    total without scrolling to discover it.</p>
+
+    <div class="live-demo">
+      <section class="ds-artifact-links" aria-labelledby="art-many-heading">
+        <h2 class="ds-artifact-links-heading" id="art-many-heading">
+          Datasets &amp; code
+          <span class="ds-artifact-links-count">12 artifacts</span>
+        </h2>
+        <ul class="ds-artifact-links-list" role="list"
+            tabindex="0" aria-label="12 research artifacts">
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Pre-training corpus</span>
+            <span class="ds-artifact-dest">Zenodo</span>
+            <a class="ds-artifact-link"
+               href="https://zenodo.org/record/100001"
+               target="_blank" rel="noopener noreferrer">
+              zenodo.org/record/100001
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Fine-tuning dataset</span>
+            <span class="ds-artifact-dest">Hugging Face</span>
+            <a class="ds-artifact-link"
+               href="https://huggingface.co/datasets/example/ft-v2"
+               target="_blank" rel="noopener noreferrer">
+              huggingface.co/datasets/example/ft-v2
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Evaluation benchmark</span>
+            <span class="ds-artifact-dest">Zenodo</span>
+            <a class="ds-artifact-link"
+               href="https://zenodo.org/record/100002"
+               target="_blank" rel="noopener noreferrer">
+              zenodo.org/record/100002
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Held-out test split</span>
+            <span class="ds-artifact-dest">Zenodo</span>
+            <a class="ds-artifact-link"
+               href="https://zenodo.org/record/100003"
+               target="_blank" rel="noopener noreferrer">
+              zenodo.org/record/100003
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Source code</span>
+            <span class="ds-artifact-dest">GitHub</span>
+            <a class="ds-artifact-link"
+               href="https://github.com/example/main-repo"
+               target="_blank" rel="noopener noreferrer">
+              github.com/example/main-repo
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Evaluation scripts</span>
+            <span class="ds-artifact-dest">GitHub</span>
+            <a class="ds-artifact-link"
+               href="https://github.com/example/eval-scripts"
+               target="_blank" rel="noopener noreferrer">
+              github.com/example/eval-scripts
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Pre-trained model weights</span>
+            <span class="ds-artifact-dest">Hugging Face</span>
+            <a class="ds-artifact-link"
+               href="https://huggingface.co/example/model-v3"
+               target="_blank" rel="noopener noreferrer">
+              huggingface.co/example/model-v3
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Fine-tuned checkpoint</span>
+            <span class="ds-artifact-dest">Hugging Face</span>
+            <a class="ds-artifact-link"
+               href="https://huggingface.co/example/checkpoint-ft"
+               target="_blank" rel="noopener noreferrer">
+              huggingface.co/example/checkpoint-ft
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Demo notebook</span>
+            <span class="ds-artifact-dest">Google Colab</span>
+            <a class="ds-artifact-link"
+               href="https://colab.research.google.com/drive/XXXXXXXXX"
+               target="_blank" rel="noopener noreferrer">
+              colab.research.google.com/drive/XXXXXXXXX
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Supplementary material</span>
+            <span class="ds-artifact-dest">arXiv</span>
+            <a class="ds-artifact-link"
+               href="https://arxiv.org/src/2506.12345"
+               target="_blank" rel="noopener noreferrer">
+              arxiv.org/src/2506.12345
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Raw experiment logs</span>
+            <span class="ds-artifact-dest">OSF</span>
+            <a class="ds-artifact-link"
+               href="https://osf.io/abc12"
+               target="_blank" rel="noopener noreferrer">
+              osf.io/abc12
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Annotation guidelines</span>
+            <span class="ds-artifact-dest">OSF</span>
+            <a class="ds-artifact-link"
+               href="https://osf.io/xyz99"
+               target="_blank" rel="noopener noreferrer">
+              osf.io/xyz99
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+        </ul>
+      </section>
+    </div>
+
+    <div class="callout">
+      <strong>Half-item peek in action:</strong> Scroll down to see the last row clip mid-item.
+      The list above holds 12 rows but clips at ~272px, showing approximately 6.5 rows.
+      The partially visible row is the geometric continuation signal
+      (<a class="ds-link" href="../../DESIGN-POLICIES.md">DESIGN-POLICIES.md</a>,
+      "Truncation always signals continuation").
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       4. INTERACTION STATES
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">Interaction states</h2>
+    <p class="section-desc">Forced-state renderings of the three interactive treatments.
+    Hover and focus are live on the demos above — these statics freeze one state each for
+    reference.</p>
+
+    <div class="live-demo">
+
+      <p class="demo-sub">Row hover</p>
+      <section class="ds-artifact-links" aria-labelledby="art-state-row">
+        <h2 class="ds-artifact-links-heading" id="art-state-row">Datasets &amp; code</h2>
+        <ul class="ds-artifact-links-list" role="list"
+            tabindex="0" aria-label="2 research artifacts">
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Source code</span>
+            <span class="ds-artifact-dest">GitHub</span>
+            <a class="ds-artifact-link"
+               href="https://github.com/example/repo"
+               target="_blank" rel="noopener noreferrer">
+              github.com/example/repo
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+          <!-- Second row forced into hover state for the static reference -->
+          <li class="ds-artifact-links-row is-hover-demo">
+            <span class="ds-artifact-label">Training data</span>
+            <span class="ds-artifact-dest">Zenodo</span>
+            <a class="ds-artifact-link"
+               href="https://zenodo.org/record/999"
+               target="_blank" rel="noopener noreferrer">
+              zenodo.org/record/999
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <p class="demo-sub">Keyboard focus — link</p>
+      <!-- is-link-focus forces .ds-artifact-link:focus-visible ring via page CSS -->
+      <section class="ds-artifact-links is-link-focus" aria-labelledby="art-state-focus">
+        <h2 class="ds-artifact-links-heading" id="art-state-focus">Datasets &amp; code</h2>
+        <ul class="ds-artifact-links-list" role="list"
+            tabindex="0" aria-label="1 research artifact">
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Source code</span>
+            <span class="ds-artifact-dest">GitHub</span>
+            <a class="ds-artifact-link"
+               href="https://github.com/example/repo"
+               target="_blank" rel="noopener noreferrer">
+              github.com/example/repo
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <p class="demo-sub">Keyboard focus — list region (scroll by arrow key)</p>
+      <section class="ds-artifact-links is-list-focus" aria-labelledby="art-state-list-focus">
+        <h2 class="ds-artifact-links-heading" id="art-state-list-focus">Datasets &amp; code</h2>
+        <ul class="ds-artifact-links-list" role="list"
+            tabindex="0" aria-label="1 research artifact">
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Training data</span>
+            <span class="ds-artifact-dest">Zenodo</span>
+            <a class="ds-artifact-link"
+               href="https://zenodo.org/record/999"
+               target="_blank" rel="noopener noreferrer">
+              zenodo.org/record/999
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <p class="demo-sub">Visited link</p>
+      <section class="ds-artifact-links is-visited" aria-labelledby="art-state-visited">
+        <h2 class="ds-artifact-links-heading" id="art-state-visited">Datasets &amp; code</h2>
+        <ul class="ds-artifact-links-list" role="list"
+            tabindex="0" aria-label="1 research artifact">
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Source code</span>
+            <span class="ds-artifact-dest">GitHub</span>
+            <a class="ds-artifact-link"
+               href="https://github.com/example/repo"
+               target="_blank" rel="noopener noreferrer">
+              github.com/example/repo
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       5. ABSTRACT PAGE CONTEXT
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">Abstract page context</h2>
+    <p class="section-desc">The card at realistic abstract-page column width (~640px),
+    sitting as a supplementary section below the main metadata. The white-on-white
+    surface is separated by the card border only — a decorative hairline at
+    <code>--arxiv-border-light</code> — so the card reads as content, not chrome.</p>
+
+    <div class="page-context">
+      <!-- Simulated abstract metadata above the card -->
+      <p style="font-size:13px; color:var(--arxiv-grey); margin:0 0 4px;">
+        <strong style="color:var(--arxiv-ink);">Submitted:</strong> 14 Jun 2026</p>
+      <p style="font-size:13px; color:var(--arxiv-grey); margin:0 0 20px;">
+        <strong style="color:var(--arxiv-ink);">License:</strong>
+        <a class="ds-link" href="#">CC BY 4.0</a></p>
+
+      <section class="ds-artifact-links" aria-labelledby="art-ctx-heading">
+        <h2 class="ds-artifact-links-heading" id="art-ctx-heading">
+          Datasets &amp; code
+          <span class="ds-artifact-links-count">3 artifacts</span>
+        </h2>
+        <ul class="ds-artifact-links-list" role="list"
+            tabindex="0" aria-label="3 research artifacts">
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Training data</span>
+            <span class="ds-artifact-dest">Zenodo</span>
+            <a class="ds-artifact-link"
+               href="https://zenodo.org/record/123456"
+               target="_blank" rel="noopener noreferrer">
+              zenodo.org/record/123456
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Source code</span>
+            <span class="ds-artifact-dest">GitHub</span>
+            <a class="ds-artifact-link"
+               href="https://github.com/example/paper-code"
+               target="_blank" rel="noopener noreferrer">
+              github.com/example/paper-code
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+          <li class="ds-artifact-links-row">
+            <span class="ds-artifact-label">Supplementary material</span>
+            <span class="ds-artifact-dest">arXiv</span>
+            <a class="ds-artifact-link"
+               href="https://arxiv.org/src/2506.12345"
+               target="_blank" rel="noopener noreferrer">
+              arxiv.org/src/2506.12345
+              <span class="is-sr-only"> (opens in new tab)</span>
+              <svg class="ds-artifact-ext-icon" aria-hidden="true" viewBox="0 0 12 12" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M5 2h5v5"/></svg>
+            </a>
+          </li>
+
+        </ul>
+      </section>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       6. DESIGN DECISIONS
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">Design decisions</h2>
+    <p class="section-desc">Every decision traces back to a policy or palette rule.</p>
+
+    <table class="spec-table">
+      <thead>
+        <tr>
+          <th>Decision</th>
+          <th>Value / treatment</th>
+          <th>Policy source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Primary surface</td>
+          <td>White <code>#fff</code> — same as the abstract page body</td>
+          <td>color-mapping.md: "Page background: White #ffffff — clean reading surface"</td>
+        </tr>
+        <tr>
+          <td>Card border</td>
+          <td><code>--arxiv-border-light</code> <code>#ddd8d2</code> — decorative hairline</td>
+          <td>color-mapping.md: "Component hairline borders — inputs, toggle tracks, card edges. Decorative only (below 3:1); not for sole interactive boundaries."</td>
+        </tr>
+        <tr>
+          <td>Row separator</td>
+          <td>Same <code>--arxiv-border-light</code> token — consistent hairline</td>
+          <td>Same as above; these borders are decorative, not interactive boundaries</td>
+        </tr>
+        <tr>
+          <td>Row hover fill</td>
+          <td><code>--arxiv-card-grey</code> <code>#f0eeec</code></td>
+          <td>color-mapping.md: "Card surface / hover fill — Card Grey"</td>
+        </tr>
+        <tr>
+          <td>Label text (artifact role)</td>
+          <td>13px / weight 500 / <code>--arxiv-ink</code> <code>#1c1a17</code></td>
+          <td>typography.md type scale: body text 15px, secondary 13px / 400–500</td>
+        </tr>
+        <tr>
+          <td>Destination column</td>
+          <td>11px uppercase condensed / <code>--arxiv-grey</code> <code>#6b6459</code> (5.83:1 ✓ AA)</td>
+          <td>typography.md: "Metadata labels — 11px uppercase / 600 / Plex Sans Condensed"</td>
+        </tr>
+        <tr>
+          <td>Link color</td>
+          <td><code>--arxiv-link-blue</code> <code>#1565c0</code> with underline (5.74:1 on white ✓ AA)</td>
+          <td>DESIGN-POLICIES.md: "Inline links in body text must be underlined." color-mapping.md link tier.</td>
+        </tr>
+        <tr>
+          <td>Link hover</td>
+          <td><code>--arxiv-link-hover</code> <code>#1050a0</code> (7.83:1 ✓ AAA)</td>
+          <td>color-mapping.md: "Link Hover — link hover state"</td>
+        </tr>
+        <tr>
+          <td>Visited link</td>
+          <td><code>--arxiv-link-visited</code> <code>#7b2fbe</code> Visited Purple (7.02:1 ✓ AAA)</td>
+          <td>color-mapping.md: visited link state; DESIGN-PROGRESS.md: "visited memory aids researchers tracking what they've already read"</td>
+        </tr>
+        <tr>
+          <td>Focus ring — link</td>
+          <td><code>outline: 3px solid var(--arxiv-focus-ring)</code> / offset 2px</td>
+          <td>DESIGN-POLICIES.md: "Use :focus-visible (not :focus). All interactive elements must have a visible focus ring."</td>
+        </tr>
+        <tr>
+          <td>Focus ring — list region</td>
+          <td>Same ring, <code>outline-offset: -3px</code> (inside card border)</td>
+          <td>DESIGN-POLICIES.md: "Every scrollable region is keyboard-reachable (tabindex='0')."</td>
+        </tr>
+        <tr>
+          <td>Off-site signal</td>
+          <td>Destination name (text) + arrow-up-right icon (geometric) + sr-only "(opens in new tab)" (AT) + <code>target="_blank"</code></td>
+          <td>DESIGN-POLICIES.md: "Never use color as the sole means of conveying information (WCAG 1.4.1). Always provide a secondary cue."</td>
+        </tr>
+        <tr>
+          <td>Overflow threshold</td>
+          <td>6 rows; 7+ scrolls internally at <code>max-height: 272px</code> (~6.5 rows, half-item peek)</td>
+          <td>DESIGN-POLICIES.md: "Truncation always signals continuation … where a region must scroll internally, size it so the last visible item is visibly cut mid-item."</td>
+        </tr>
+        <tr>
+          <td>Accessible name on list</td>
+          <td><code>aria-label="N research artifacts"</code> — total count always available to AT</td>
+          <td>DESIGN-POLICIES.md: "Every scrollable region … accessible name carrying the total."</td>
+        </tr>
+        <tr>
+          <td>Card border-radius</td>
+          <td>6px — matches the established component shape token</td>
+          <td>DESIGN-POLICIES.md: "Border radius: 6px for all buttons, icon buttons, and segmented controls." Applied consistently to card shapes.</td>
+        </tr>
+        <tr>
+          <td>Transition timing</td>
+          <td><code>background 0.12s</code> — row hover only</td>
+          <td>DESIGN-POLICIES.md: "0.12s for background, border, color." Disabled under <code>prefers-reduced-motion: reduce</code>.</td>
+        </tr>
+        <tr>
+          <td>No primary button</td>
+          <td>No Open Blue primary button in this card</td>
+          <td>Product: "reads as browsable supplementary material, not a primary call to action." BRAND.md: "The interface gets out of the way."</td>
+        </tr>
+        <tr>
+          <td>Font families</td>
+          <td>Body: <code>--arxiv-font-sans</code> (IBM Plex Sans); labels: <code>--arxiv-font-condensed</code> (IBM Plex Sans Condensed)</td>
+          <td>DESIGN-POLICIES.md: "Use only IBM Plex Sans, IBM Plex Sans Condensed, IBM Plex Mono, and STIX Two Math."</td>
+        </tr>
+        <tr>
+          <td>No metrics</td>
+          <td>No download counts, view counts, or popularity signals on artifact rows</td>
+          <td>DESIGN-POLICIES.md: "arXiv does not display view counts, download counts, or citation counts on public pages."</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       7. HTML MARKUP
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">HTML markup</h2>
+    <p class="section-desc">Minimal working example for a two-artifact card. The
+    <code>&lt;section&gt;</code> landmark and <code>aria-labelledby</code> on it, paired
+    with a real <code>&lt;h2&gt;</code>, ensure screen readers surface the card as a
+    named region. The list's <code>aria-label</code> should be computed by the template
+    and updated to the actual count.</p>
+
+    <pre class="code-block">&lt;section class="ds-artifact-links"
+         aria-labelledby="artifact-heading"&gt;
+  &lt;h2 class="ds-artifact-links-heading"
+      id="artifact-heading"&gt;
+    Datasets &amp;amp; code
+    &lt;!-- optional count badge --&gt;
+    &lt;span class="ds-artifact-links-count"&gt;2 artifacts&lt;/span&gt;
+  &lt;/h2&gt;
+
+  &lt;!-- tabindex="0" → keyboard users can Tab here and scroll.
+       aria-label carries the total so AT users know the full
+       count even when the list is clipped by max-height.
+       role="list" preserves list semantics on styled lists
+       in Safari/VoiceOver. --&gt;
+  &lt;ul class="ds-artifact-links-list" role="list"
+      tabindex="0" aria-label="2 research artifacts"&gt;
+
+    &lt;li class="ds-artifact-links-row"&gt;
+      &lt;span class="ds-artifact-label"&gt;Training data&lt;/span&gt;
+      &lt;span class="ds-artifact-dest"&gt;Zenodo&lt;/span&gt;
+      &lt;a class="ds-artifact-link"
+         href="https://zenodo.org/record/123456"
+         target="_blank" rel="noopener noreferrer"&gt;
+        zenodo.org/record/123456
+        &lt;!-- sr-only text + icon = two non-color off-site cues --&gt;
+        &lt;span class="is-sr-only"&gt; (opens in new tab)&lt;/span&gt;
+        &lt;svg class="ds-artifact-ext-icon" aria-hidden="true"
+             viewBox="0 0 12 12" width="12" height="12"
+             stroke="currentColor" fill="none" stroke-width="1.75"
+             stroke-linecap="round" stroke-linejoin="round"&gt;
+          &lt;path d="M2 10L10 2M5 2h5v5"/&gt;
+        &lt;/svg&gt;
+      &lt;/a&gt;
+    &lt;/li&gt;
+
+    &lt;li class="ds-artifact-links-row"&gt;
+      &lt;span class="ds-artifact-label"&gt;Source code&lt;/span&gt;
+      &lt;span class="ds-artifact-dest"&gt;GitHub&lt;/span&gt;
+      &lt;a class="ds-artifact-link"
+         href="https://github.com/example/paper-repo"
+         target="_blank" rel="noopener noreferrer"&gt;
+        github.com/example/paper-repo
+        &lt;span class="is-sr-only"&gt; (opens in new tab)&lt;/span&gt;
+        &lt;svg class="ds-artifact-ext-icon" aria-hidden="true"
+             viewBox="0 0 12 12" width="12" height="12"
+             stroke="currentColor" fill="none" stroke-width="1.75"
+             stroke-linecap="round" stroke-linejoin="round"&gt;
+          &lt;path d="M2 10L10 2M5 2h5v5"/&gt;
+        &lt;/svg&gt;
+      &lt;/a&gt;
+    &lt;/li&gt;
+
+  &lt;/ul&gt;
+&lt;/section&gt;</pre>
+
+    <div class="callout">
+      <strong>Heading level:</strong> The example above uses <code>&lt;h2&gt;</code>.
+      The consuming template should use whatever level fits the page's heading outline —
+      <code>.ds-artifact-links-heading</code> provides the visual treatment regardless
+      of the tag.
+    </div>
+    <div class="callout">
+      <strong>Count in <code>aria-label</code>:</strong> The list's <code>aria-label</code>
+      must be computed by the server template (e.g., Jinja <code>{{ count }} research
+      artifacts</code>) — not hardcoded. It should always reflect the actual number,
+      including when new artifacts are added.
+    </div>
+    <div class="callout">
+      <strong>No JS required:</strong> The card is fully functional before any JavaScript
+      runs — links navigate, keyboard works, scrollable region is reachable via Tab.
+      Any future JS enhancement (e.g., client-side sorting) layers on top and degrades
+      gracefully if disabled.
+    </div>
+  </section>
+
+</div><!-- /.page -->
+</body>
+</html>

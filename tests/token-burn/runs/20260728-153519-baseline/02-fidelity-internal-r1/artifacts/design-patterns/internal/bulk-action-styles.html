@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>arXiv Bulk Action Bar — Component Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-system.css">
+  <style>
+    /* ── Page chrome (reference doc only — not part of the component system) ── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+      background: #f9f7f7; /* Warm Wash */
+      color: #1c1a17;      /* Repository Brown */
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Screen-reader-only utility — not yet in design-system.css */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .page { max-width: 980px; margin: 0 auto; padding: 48px 28px 80px; }
+
+    .page-header { margin-bottom: 52px; padding-bottom: 20px; border-bottom: 3px solid #c4d82e; }
+    .page-header h1 { font-size: 22px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p  { margin: 0; color: #6b6459; font-size: 13px; max-width: 680px; }
+
+    .section       { margin-bottom: 60px; }
+    .section-title { font-size: 16px; font-weight: 700; margin: 0 0 4px; }
+    .section-desc  { font-size: 13px; color: #6b6459; margin: 0 0 20px; max-width: 720px; }
+
+    .demo {
+      background: #fff;
+      border: 1px solid #e0dbd7;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .demo-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #b0aba6;
+      margin: 0 0 16px;
+    }
+
+    .callout {
+      font-size: 13px;
+      color: #1c1a17;
+      margin-top: 12px;
+      padding: 12px 16px;
+      background: #fff;
+      border: 1px solid #e0dbd7;
+      border-left: 4px solid #c4d82e;
+      border-radius: 0 4px 4px 0;
+      line-height: 1.6;
+    }
+    .callout + .callout { margin-top: 8px; }
+    .callout em { font-style: italic; }
+
+    code {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 12px;
+      background: #f0eeec;
+      padding: 2px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    /* ── Shared docs nav strip ── */
+    .docs-nav { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; background: #f0eeec; border-bottom: 1px solid #ddd8d2; padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: #1c1a17; text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: #1565c0; }
+    .docs-nav a:not(.docs-nav-brand) { color: #6b6459; text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: #1c1a17; text-decoration: underline; }
+    .docs-nav a:focus-visible { outline: 2px solid #1565c0; outline-offset: 2px; border-radius: 2px; }
+    .docs-nav-spacer { flex: 1; }
+    .docs-nav-current { font-weight: 600; color: #1c1a17; font-size: 13px; }
+
+
+    /* ════════════════════════════════════════════════════════════
+       BULK ACTION BAR — page-specific component styles
+       ════════════════════════════════════════════════════════════
+
+       The bar sits directly above .ds-table. Both live inside
+       .bulk-action-wrap, which provides the shared outer border
+       and radius so bar + table read as one connected unit.
+    ════════════════════════════════════════════════════════════ */
+
+    /* Shared outer boundary for bar + table */
+    .bulk-action-wrap {
+      border: 1px solid #ddd8d2; /* Border Light — matches .ds-table's own border colour */
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    /* Table inside wrapper: wrapper provides the boundary — strip the table's own */
+    .bulk-action-wrap .ds-table {
+      border: none;
+      border-radius: 0;
+    }
+
+    /* Status alert (success / failure) floats just above the wrapper */
+    .bulk-status { margin-bottom: var(--space-2); /* 8px */ }
+
+    /* ── Bar ── */
+    .bulk-action-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);        /* 12px */
+      padding: 10px 14px;         /* matches .ds-table td horizontal padding exactly */
+      background: var(--sec-bg);  /* #f0f9e8 — lime tint signals active selection */
+      border-bottom: 1px solid var(--sec-border); /* #9cb522 */
+    }
+
+    /* Selection count — updated via JS as checkboxes change */
+    .bulk-count {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);   /* Repository Brown — passes AA on --sec-bg ✓ */
+      white-space: nowrap;
+    }
+
+    /* Thin decorative rule separating count/clear from action buttons */
+    .bulk-sep {
+      width: 1px;
+      height: 18px;
+      background: var(--sec-border); /* #9cb522 */
+      opacity: 0.4;
+      flex-shrink: 0;
+    }
+
+    /* Action button group — pushed to the far right */
+    .bulk-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);  /* 8px */
+      margin-left: auto;
+    }
+
+    /* Compact button sizing for toolbar context.
+       Height: 6px + 13px line-height + 6px = 25px > 24px WCAG 2.5.8 minimum ✓ */
+    .bulk-action-bar .btn {
+      padding: 6px 14px;
+      font-size: 13px;
+    }
+
+    /* ── Destructive confirm state ──
+       Clicking "Remove selected" replaces the action group with this inline
+       confirmation prompt. Background shifts to danger tint. Required by
+       design-system.css: "Always pair [destructive actions] with a confirmation
+       step (dialog or inline confirm)." */
+    .bulk-action-bar.is-confirming {
+      background: var(--error-bg);              /* #fdeaea */
+      border-bottom-color: var(--error-border); /* #c62828 = --danger */
+    }
+
+    .bulk-confirm-content {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    /* Confirm message text — #8b0000 on #fdeaea = 8.6:1 ✓ AAA */
+    .bulk-confirm-msg {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--error-fg);
+    }
+
+    .bulk-confirm-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-left: auto;
+    }
+
+    /* ── Selected row highlight ──
+       Lime-tint background creates a visual link between the active bar
+       and the rows it will act on. The checked checkbox is the primary
+       signal; background tint is the secondary cue (WCAG 1.4.1 compliant). */
+    .ds-table tr.is-selected td {
+      background: var(--sec-bg);        /* #f0f9e8 */
+    }
+    .ds-table tr.is-selected:hover td {
+      background: var(--sec-bg-hover);  /* #e2f3d0 */
+    }
+
+    /* Checkbox column */
+    .col-check { width: 40px; }
+    .ds-table td.col-check { text-align: center; vertical-align: middle; }
+
+    /* ── Forced-colors accessibility ──
+       When OS replaces the palette, fall back to system keywords so bar
+       structure and selection state survive without colour. */
+    @media (forced-colors: active) {
+      .bulk-action-bar,
+      .bulk-action-bar.is-confirming {
+        background: Canvas;
+        border-bottom-color: ButtonBorder;
+      }
+      .bulk-sep { background: ButtonBorder; }
+      .ds-table tr.is-selected td {
+        background: Highlight;
+        color: HighlightText;
+        forced-color-adjust: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../../index.html">arXiv Design System</a>
+  <a href="color-tokens.html">Colors</a>
+  <a href="button-styles.html">Buttons</a>
+  <a href="card-styles.html">Cards</a>
+  <a href="table-styles.html">Tables</a>
+  <a href="form-styles.html">Forms</a>
+  <a href="alert-styles.html">Alerts</a>
+  <a href="link-styles.html">Links</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="docs-nav-current">Bulk action bar</span>
+</nav>
+
+<div class="page">
+
+  <div class="page-header">
+    <h1>Bulk Action Bar</h1>
+    <p>
+      A contextual toolbar that appears directly above the moderation queue table when
+      one or more submissions are selected. Offers Approve, Hold, and Remove actions on
+      the selection, with an inline confirmation gate on the destructive action and
+      message states for success and failure.
+    </p>
+  </div>
+
+
+  <!-- ─── State 1: Nothing selected ─────────────────────────────── -->
+  <div class="section">
+    <h2 class="section-title">Default — nothing selected</h2>
+    <p class="section-desc">
+      When no submissions are selected the bulk action bar is absent. The queue table
+      renders on its own inside <code>.bulk-action-wrap</code>, which provides the
+      shared outer border and border-radius for both the bar and the table.
+    </p>
+
+    <div class="demo">
+      <p class="demo-label">No selection — bar is absent</p>
+      <div class="bulk-action-wrap">
+        <!-- .bulk-action-bar is omitted (or hidden) when nothing is selected -->
+        <table class="ds-table" aria-label="Moderation queue">
+          <thead>
+            <tr>
+              <th class="col-check"><span class="sr-only">Select</span></th>
+              <th>Date</th>
+              <th>Submission</th>
+              <th>Submitter</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-check">
+                <input type="checkbox" aria-label="Select: Asymptotic Expansions of Schrödinger Operators">
+              </td>
+              <td>2026-07-24</td>
+              <td>Asymptotic Expansions of Schrödinger Operators</td>
+              <td>E. McGill-Henry</td>
+              <td><span class="type-badge type-new">New</span></td>
+            </tr>
+            <tr>
+              <td class="col-check">
+                <input type="checkbox" aria-label="Select: Symmetry Breaking in Non-Abelian Gauge Theories">
+              </td>
+              <td>2026-07-23</td>
+              <td>Symmetry Breaking in Non-Abelian Gauge Theories</td>
+              <td>K. Okafor</td>
+              <td><span class="type-badge type-rep">Rep</span></td>
+            </tr>
+            <tr>
+              <td class="col-check">
+                <input type="checkbox" aria-label="Select: Spectral Properties of Discrete Operators">
+              </td>
+              <td>2026-07-22</td>
+              <td>Spectral Properties of Discrete Operators</td>
+              <td>L. Vasquez</td>
+              <td><span class="type-badge type-new">New</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Implementation:</strong> Omit <code>.bulk-action-bar</code> from the DOM
+      (or set the <code>hidden</code> attribute) when no rows are checked. The
+      <code>.bulk-action-wrap</code> container remains in place whether or not the bar
+      is present — it provides the outer border for the table in both cases.
+    </div>
+  </div>
+
+
+  <!-- ─── State 2: Selection active ─────────────────────────────── -->
+  <div class="section">
+    <h2 class="section-title">Selection active</h2>
+    <p class="section-desc">
+      When one or more rows are selected, the bar appears above the table with the count,
+      a "Clear selection" affordance, and the three bulk actions. Selected rows receive a
+      lime-tint background as a secondary cue alongside the checked checkbox.
+    </p>
+
+    <div class="demo">
+      <p class="demo-label">3 submissions selected</p>
+      <div class="bulk-action-wrap">
+        <div class="bulk-action-bar"
+             role="toolbar"
+             aria-label="Bulk actions for selected submissions">
+          <span class="bulk-count"
+                aria-live="polite"
+                aria-atomic="true">3 submissions selected</span>
+          <button type="button" class="btn-link">Clear selection</button>
+          <span class="bulk-sep" aria-hidden="true"></span>
+          <div class="bulk-actions" role="group" aria-label="Actions">
+            <button type="button" class="btn btn-primary">Approve selected</button>
+            <button type="button" class="btn btn-secondary">Put on hold</button>
+            <button type="button" class="btn btn-destructive">Remove selected</button>
+          </div>
+        </div>
+        <table class="ds-table" aria-label="Moderation queue">
+          <thead>
+            <tr>
+              <th class="col-check"><span class="sr-only">Select</span></th>
+              <th>Date</th>
+              <th>Submission</th>
+              <th>Submitter</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="is-selected">
+              <td class="col-check">
+                <input type="checkbox" checked aria-label="Select: Asymptotic Expansions of Schrödinger Operators">
+              </td>
+              <td>2026-07-24</td>
+              <td>Asymptotic Expansions of Schrödinger Operators</td>
+              <td>E. McGill-Henry</td>
+              <td><span class="type-badge type-new">New</span></td>
+            </tr>
+            <tr class="is-selected">
+              <td class="col-check">
+                <input type="checkbox" checked aria-label="Select: Symmetry Breaking in Non-Abelian Gauge Theories">
+              </td>
+              <td>2026-07-23</td>
+              <td>Symmetry Breaking in Non-Abelian Gauge Theories</td>
+              <td>K. Okafor</td>
+              <td><span class="type-badge type-rep">Rep</span></td>
+            </tr>
+            <tr class="is-selected">
+              <td class="col-check">
+                <input type="checkbox" checked aria-label="Select: Spectral Properties of Discrete Operators">
+              </td>
+              <td>2026-07-22</td>
+              <td>Spectral Properties of Discrete Operators</td>
+              <td>L. Vasquez</td>
+              <td><span class="type-badge type-new">New</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="demo">
+      <p class="demo-label">1 submission selected</p>
+      <div class="bulk-action-wrap">
+        <div class="bulk-action-bar"
+             role="toolbar"
+             aria-label="Bulk actions for selected submissions">
+          <span class="bulk-count"
+                aria-live="polite"
+                aria-atomic="true">1 submission selected</span>
+          <button type="button" class="btn-link">Clear selection</button>
+          <span class="bulk-sep" aria-hidden="true"></span>
+          <div class="bulk-actions" role="group" aria-label="Actions">
+            <button type="button" class="btn btn-primary">Approve selected</button>
+            <button type="button" class="btn btn-secondary">Put on hold</button>
+            <button type="button" class="btn btn-destructive">Remove selected</button>
+          </div>
+        </div>
+        <table class="ds-table" aria-label="Moderation queue">
+          <thead>
+            <tr>
+              <th class="col-check"><span class="sr-only">Select</span></th>
+              <th>Date</th>
+              <th>Submission</th>
+              <th>Submitter</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-check">
+                <input type="checkbox" aria-label="Select: Asymptotic Expansions of Schrödinger Operators">
+              </td>
+              <td>2026-07-24</td>
+              <td>Asymptotic Expansions of Schrödinger Operators</td>
+              <td>E. McGill-Henry</td>
+              <td><span class="type-badge type-new">New</span></td>
+            </tr>
+            <tr class="is-selected">
+              <td class="col-check">
+                <input type="checkbox" checked aria-label="Select: Symmetry Breaking in Non-Abelian Gauge Theories">
+              </td>
+              <td>2026-07-23</td>
+              <td>Symmetry Breaking in Non-Abelian Gauge Theories</td>
+              <td>K. Okafor</td>
+              <td><span class="type-badge type-rep">Rep</span></td>
+            </tr>
+            <tr>
+              <td class="col-check">
+                <input type="checkbox" aria-label="Select: Spectral Properties of Discrete Operators">
+              </td>
+              <td>2026-07-22</td>
+              <td>Spectral Properties of Discrete Operators</td>
+              <td>L. Vasquez</td>
+              <td><span class="type-badge type-new">New</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Button roles — internal surface:</strong> <strong>Approve selected</strong> uses
+      <code>.btn-primary</code> (Access Lime <code>#c4d82e</code>) — the primary action
+      colour for internal tools (arXiv Check, Admin Console). <strong>Put on hold</strong>
+      uses <code>.btn-secondary</code> (lime tint). <strong>Remove selected</strong> uses
+      <code>.btn-destructive</code> (Danger Red <code>#c62828</code>). Open Blue is not
+      used here — it is locked to public pages.
+    </div>
+    <div class="callout">
+      <strong>Selection count:</strong> <code>aria-live="polite"</code> +
+      <code>aria-atomic="true"</code> on <code>.bulk-count</code> ensures screen readers
+      announce the updated count as the moderator checks and unchecks rows. The element
+      must exist in the DOM before the first count update — do not inject it dynamically.
+    </div>
+    <div class="callout">
+      <strong>Clear selection:</strong> Uses <code>.btn-link</code> — a
+      <code>&lt;button&gt;</code> styled as an inline underlined link — per design-system.css:
+      <em>"Use for low-emphasis inline actions: Reset to default, Clear all, Show more."</em>
+      It carries no visual weight relative to the action buttons but remains keyboard-reachable
+      and gets a focus ring.
+    </div>
+  </div>
+
+
+  <!-- ─── State 3: Destructive confirm ──────────────────────────── -->
+  <div class="section">
+    <h2 class="section-title">Destructive confirmation</h2>
+    <p class="section-desc">
+      Clicking <strong>Remove selected</strong> replaces the bar's action group with an
+      inline confirmation prompt. The bar background shifts to the danger tint
+      (<code>var(--error-bg)</code>). This gates the irreversible action against
+      fat-finger mistakes without blocking the viewport with a modal.
+    </p>
+
+    <div class="demo">
+      <p class="demo-label">Awaiting confirmation — 3 submissions</p>
+      <div class="bulk-action-wrap">
+        <div class="bulk-action-bar is-confirming"
+             role="group"
+             aria-label="Confirm removal of 3 submissions">
+          <div class="bulk-confirm-content">
+            <p class="bulk-confirm-msg" role="alert">
+              <strong>Remove 3 submissions?</strong> This cannot be undone.
+            </p>
+            <div class="bulk-confirm-actions">
+              <button type="button" class="btn btn-destructive">Confirm removal</button>
+              <button type="button" class="btn btn-tertiary">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <table class="ds-table" aria-label="Moderation queue">
+          <thead>
+            <tr>
+              <th class="col-check"><span class="sr-only">Select</span></th>
+              <th>Date</th>
+              <th>Submission</th>
+              <th>Submitter</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="is-selected">
+              <td class="col-check">
+                <input type="checkbox" checked aria-label="Select: Asymptotic Expansions of Schrödinger Operators">
+              </td>
+              <td>2026-07-24</td>
+              <td>Asymptotic Expansions of Schrödinger Operators</td>
+              <td>E. McGill-Henry</td>
+              <td><span class="type-badge type-new">New</span></td>
+            </tr>
+            <tr class="is-selected">
+              <td class="col-check">
+                <input type="checkbox" checked aria-label="Select: Symmetry Breaking in Non-Abelian Gauge Theories">
+              </td>
+              <td>2026-07-23</td>
+              <td>Symmetry Breaking in Non-Abelian Gauge Theories</td>
+              <td>K. Okafor</td>
+              <td><span class="type-badge type-rep">Rep</span></td>
+            </tr>
+            <tr class="is-selected">
+              <td class="col-check">
+                <input type="checkbox" checked aria-label="Select: Spectral Properties of Discrete Operators">
+              </td>
+              <td>2026-07-22</td>
+              <td>Spectral Properties of Discrete Operators</td>
+              <td>L. Vasquez</td>
+              <td><span class="type-badge type-new">New</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Why inline confirm:</strong> Per design-system.css destructive button rules:
+      <em>"Always pair with a confirmation step (dialog or inline confirm)."</em> Inline
+      confirm is preferred over a modal when the affected rows are visible in the same view
+      — the moderator can see exactly what will be removed while deciding. A modal would be
+      appropriate if the queue scrolls out of view.
+    </div>
+    <div class="callout">
+      <strong>ARIA:</strong> <code>role="alert"</code> on <code>.bulk-confirm-msg</code>
+      announces the danger message assertively when the confirm panel appears. JavaScript
+      should move focus to "Confirm removal" on reveal. "Cancel" returns focus to "Remove
+      selected" and restores the bar's default state.
+    </div>
+  </div>
+
+
+  <!-- ─── State 4: Success ──────────────────────────────────────── -->
+  <div class="section">
+    <h2 class="section-title">Success state</h2>
+    <p class="section-desc">
+      After an action completes, the bar is dismissed and a <code>.ds-alert-success</code>
+      appears above the (now-updated) table. Uses <code>role="status"</code> for a polite
+      screen reader announcement.
+    </p>
+
+    <div class="demo">
+      <p class="demo-label">After approving 3 submissions</p>
+      <div class="bulk-status">
+        <div class="ds-alert ds-alert-success" role="status">
+          <svg class="ds-alert-icon" aria-hidden="true" viewBox="0 0 24 24"
+               stroke-width="2" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <div class="ds-alert-content">
+            <p>
+              <strong>Approved.</strong>
+              3 submissions have been approved and will be included in the next announcement mailing.
+            </p>
+          </div>
+          <button type="button" class="ds-alert-dismiss" aria-label="Dismiss">
+            <svg viewBox="0 0 24 24" stroke-width="2" fill="none"
+                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="bulk-action-wrap">
+        <!-- bar absent after a successful action -->
+        <table class="ds-table" aria-label="Moderation queue">
+          <thead>
+            <tr>
+              <th class="col-check"><span class="sr-only">Select</span></th>
+              <th>Date</th>
+              <th>Submission</th>
+              <th>Submitter</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-check">
+                <input type="checkbox" aria-label="Select: Geometric Phases in Quantum Systems">
+              </td>
+              <td>2026-07-21</td>
+              <td>Geometric Phases in Quantum Systems</td>
+              <td>A. Patel</td>
+              <td><span class="type-badge type-new">New</span></td>
+            </tr>
+            <tr>
+              <td class="col-check">
+                <input type="checkbox" aria-label="Select: Topological Invariants in Condensed Matter">
+              </td>
+              <td>2026-07-20</td>
+              <td>Topological Invariants in Condensed Matter</td>
+              <td>R. Osei</td>
+              <td><span class="type-badge type-cross">Cross</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Same pattern for "Put on hold":</strong> Adjust the message text to
+      "3 submissions placed on hold." The alert component and <code>role="status"</code>
+      are identical.
+    </div>
+    <div class="callout">
+      <strong>Dismiss:</strong> <code>.ds-alert-dismiss</code> (from design-system.css)
+      lets the moderator clear the message after reading. The alert can also auto-dismiss
+      when a new row selection begins.
+    </div>
+  </div>
+
+
+  <!-- ─── State 5: Failure ──────────────────────────────────────── -->
+  <div class="section">
+    <h2 class="section-title">Failure state</h2>
+    <p class="section-desc">
+      If an action fails — network error, server rejection, partial failure — a
+      <code>.ds-alert-error</code> appears above the bar. The bar remains visible with the
+      selection intact so the moderator can retry or choose a different action.
+      Uses <code>role="alert"</code> for an assertive announcement.
+    </p>
+
+    <div class="demo">
+      <p class="demo-label">Action failed — selection preserved, bar remains</p>
+      <div class="bulk-status">
+        <div class="ds-alert ds-alert-error" role="alert">
+          <svg class="ds-alert-icon" aria-hidden="true" viewBox="0 0 24 24"
+               stroke-width="2" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <div class="ds-alert-content">
+            <p class="ds-alert-title">Action failed</p>
+            <p>The selected submissions could not be approved. Check your connection and try again.</p>
+          </div>
+          <button type="button" class="ds-alert-dismiss" aria-label="Dismiss">
+            <svg viewBox="0 0 24 24" stroke-width="2" fill="none"
+                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="bulk-action-wrap">
+        <div class="bulk-action-bar"
+             role="toolbar"
+             aria-label="Bulk actions for selected submissions">
+          <span class="bulk-count"
+                aria-live="polite"
+                aria-atomic="true">3 submissions selected</span>
+          <button type="button" class="btn-link">Clear selection</button>
+          <span class="bulk-sep" aria-hidden="true"></span>
+          <div class="bulk-actions" role="group" aria-label="Actions">
+            <button type="button" class="btn btn-primary">Approve selected</button>
+            <button type="button" class="btn btn-secondary">Put on hold</button>
+            <button type="button" class="btn btn-destructive">Remove selected</button>
+          </div>
+        </div>
+        <table class="ds-table" aria-label="Moderation queue">
+          <thead>
+            <tr>
+              <th class="col-check"><span class="sr-only">Select</span></th>
+              <th>Date</th>
+              <th>Submission</th>
+              <th>Submitter</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="is-selected">
+              <td class="col-check">
+                <input type="checkbox" checked aria-label="Select: Asymptotic Expansions of Schrödinger Operators">
+              </td>
+              <td>2026-07-24</td>
+              <td>Asymptotic Expansions of Schrödinger Operators</td>
+              <td>E. McGill-Henry</td>
+              <td><span class="type-badge type-new">New</span></td>
+            </tr>
+            <tr class="is-selected">
+              <td class="col-check">
+                <input type="checkbox" checked aria-label="Select: Symmetry Breaking in Non-Abelian Gauge Theories">
+              </td>
+              <td>2026-07-23</td>
+              <td>Symmetry Breaking in Non-Abelian Gauge Theories</td>
+              <td>K. Okafor</td>
+              <td><span class="type-badge type-rep">Rep</span></td>
+            </tr>
+            <tr class="is-selected">
+              <td class="col-check">
+                <input type="checkbox" checked aria-label="Select: Spectral Properties of Discrete Operators">
+              </td>
+              <td>2026-07-22</td>
+              <td>Spectral Properties of Discrete Operators</td>
+              <td>L. Vasquez</td>
+              <td><span class="type-badge type-new">New</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Bar persistence on failure:</strong> The selection remains intact. The
+      moderator can retry without re-selecting rows, or pivot to a different action.
+      The error alert and bar coexist above the table.
+    </div>
+    <div class="callout">
+      <strong>Assertive vs polite:</strong> Failure uses <code>role="alert"</code>
+      (assertive — interrupts immediately); success uses <code>role="status"</code>
+      (polite — waits for the current interaction to finish). This matches urgency to
+      ARIA intent: a failure needs immediate attention, a success does not.
+    </div>
+  </div>
+
+</div><!-- /.page -->
+</body>
+</html>

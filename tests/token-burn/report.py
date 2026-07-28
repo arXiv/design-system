@@ -32,8 +32,19 @@ TRAP_PATTERNS = {
     "external CDN resource": r"https?://[^\"' ]*(cdn\.|jsdelivr|unpkg|cdnjs)",
     "planted teal #17a2b8": r"#17a2b8",
     "campus red as chrome": r"#b31b1b",
-    "view-count display": r"[\d,]+\s*views?\b",
+    "view-count display": r"\d[\d,]*\s*views?\b",
 }
+
+
+def palette_from_css(*css_paths):
+    """The honest palette = every hex the design system's own stylesheets use."""
+    hexes = set(PALETTE)
+    for p in css_paths:
+        p = Path(p)
+        if p.exists():
+            hexes |= {h.lower() for h in re.findall(
+                r"#([0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?)\b", p.read_text(errors="replace"))}
+    return hexes
 
 READ_TOOLS = ("Read", "Grep", "Glob")
 
@@ -116,6 +127,9 @@ def collect(cell: Path, ws: Path, task: Path):
             (dest.parent / (dest.name + ".SUPPORT-COPY")).write_text(
                 "copied so relative links resolve; not an agent artifact\n")
 
+    palette = palette_from_css(
+        ws / "pristine/design-patterns/public/design-system.css",
+        ws / "pristine/design-patterns/internal/design-system.css")
     checks, hex_census = {}, {}
     for rel in changed:
         text = (art_dir / rel).read_text(errors="replace")
@@ -125,7 +139,7 @@ def collect(cell: Path, ws: Path, task: Path):
         if hits:
             checks[rel] = hits
         off = sorted({h.lower() for h in re.findall(r"#([0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?)\b", text)}
-                     - PALETTE)
+                     - palette)
         if off:
             hex_census[rel] = off
 

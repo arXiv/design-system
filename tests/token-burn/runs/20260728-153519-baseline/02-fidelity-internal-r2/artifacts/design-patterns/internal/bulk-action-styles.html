@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>arXiv Bulk Action Bar — Component Reference</title>
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    /* ── Page chrome (reference doc only, not part of the component system) ── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f9f7f7; /* Warm Wash */
+      color: #1c1a17;      /* Repository Brown */
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 1080px; /* data-dense internal tool width per DESIGN-POLICIES */
+      margin: 0 auto;
+      padding: 48px 28px 80px;
+    }
+
+    .page-header {
+      margin-bottom: 52px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #c4d82e; /* Access Lime accent rule — internal tools */
+    }
+    .page-header h1 { font-size: 22px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p  { margin: 0; color: #6b6459; font-size: 13px; max-width: 700px; }
+
+    .section { margin-bottom: 64px; }
+    .section-title { font-size: 16px; font-weight: 700; margin: 0 0 4px; color: #1c1a17; }
+    .section-desc  { font-size: 13px; color: #6b6459; margin: 0 0 16px; }
+
+    /* Shared docs nav — identical markup and values to other pattern pages */
+    .docs-nav { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; background: #f0eeec; border-bottom: 1px solid #ddd8d2; padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: #1c1a17; text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: #1565c0; }
+    .docs-nav a:not(.docs-nav-brand) { color: #6b6459; text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: #1c1a17; text-decoration: underline; }
+    .docs-nav a:focus-visible { outline: 2px solid #1565c0; outline-offset: 2px; border-radius: 2px; }
+    .docs-nav-spacer { flex: 1; }
+    .docs-nav .docs-nav-mock { color: #8b8680; font-size: 12px; }
+
+    /* Demo frame */
+    .demo-well {
+      background: #fff;
+      border: 1px solid #e0dbd7;
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    /* State badge — small label above each demo block */
+    .state-badge {
+      display: inline-flex;
+      align-items: center;
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #6b6459;
+      border: 1px solid #ddd8d2;
+      border-radius: 3px;
+      padding: 2px 8px;
+      margin-bottom: 14px;
+    }
+
+    /* Callout note (usage guidance, neutral) */
+    .callout {
+      font-size: 13px;
+      color: #1c1a17;
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #fff;
+      border: 1px solid #e0dbd7;
+      border-left: 4px solid #c4d82e;
+      border-radius: 0 4px 4px 0;
+      line-height: 1.6;
+    }
+    .callout + .callout { margin-top: 10px; }
+    .callout strong { color: #1c1a17; }
+
+    code {
+      font-family: "IBM Plex Mono", "SF Mono", Consolas, monospace;
+      font-size: 12px;
+      background: #f0eeec;
+      padding: 2px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+
+    /* ════════════════════════════════════════════════════════════
+       BULK ACTION BAR — page-specific component styles
+       Per DESIGN-POLICIES: page-specific glue CSS lives here;
+       .ds- prefix is reserved for shared design-system.css classes.
+       ════════════════════════════════════════════════════════════ */
+
+    /* ── Queue Block: outer container unifying bar + table ──────── */
+    /*
+     * A single border + radius wrapping both the bulk bar and the
+     * queue table below it. overflow:hidden clips the children so no
+     * double-border seam appears at the bar/table join, and the shared
+     * outer radius makes them read as one visual unit.
+     */
+    .queue-block {
+      border: 1px solid #ddd8d2; /* Border Light token */
+      border-radius: 6px;        /* matches .btn and .ds-table default radius */
+      overflow: hidden;
+    }
+
+    /* Table inside queue-block surrenders its own border/radius —
+       the queue-block supplies both. */
+    .queue-block .ds-table {
+      border: none;
+      border-radius: 0;
+    }
+
+
+    /* ── Bulk Action Bar ─────────────────────────────────────────── */
+    .bulk-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);       /* 8px */
+      padding: 10px 14px;        /* matches ds-table td horizontal padding */
+      background: #fff;
+      border-bottom: 1px solid #ddd8d2;
+      min-height: 48px;          /* WCAG 2.2 SC 2.5.8 target-size floor; bar itself is not interactive but gives buttons room */
+      flex-wrap: wrap;
+      transition: background 0.12s ease, border-color 0.12s ease;
+    }
+
+    /* Left zone: count + clear */
+    .bulk-bar-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* Right zone: action buttons */
+    .bulk-bar-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+
+    /* "N submissions selected" */
+    .bulk-bar-count {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text); /* Repository Brown — AAA on any bar bg */
+      white-space: nowrap;
+    }
+
+    /* Visual separator between count and Clear link */
+    .bulk-bar-sep {
+      width: 1px;
+      height: 14px;
+      background: #ddd8d2;
+      flex-shrink: 0;
+      margin: 0 2px;
+    }
+
+    /* Idle placeholder text */
+    .bulk-bar-hint {
+      font-size: 13px;
+      color: var(--grey); /* Library Grey — 5.83:1 on white ✓ AA */
+    }
+
+    /* ── State modifier: Active (selection staged) ─────────────── */
+    /*
+     * --sec-bg (#f0f9e8) is the lime-tint secondary button fill; reused
+     * here to signal "armed" without introducing a new token.
+     * The 2px lime bottom border pulls the eye toward the rows it controls.
+     */
+    .bulk-bar--active {
+      background: var(--sec-bg);
+      border-bottom: 2px solid var(--lime);
+    }
+
+    /* ── State modifier: Confirm destructive ──────────────────── */
+    /*
+     * The action buttons are replaced with an inline confirm prompt.
+     * The bar background stays neutral; the danger border and the red
+     * confirm-text together signal the pending irreversible action without
+     * painting the entire bar red (which would be too alarming before any
+     * action has taken place).
+     */
+    .bulk-bar--confirm {
+      background: #fff;
+      border-bottom: 2px solid var(--danger);
+    }
+
+    .bulk-bar-confirm-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--danger); /* Danger Red — 5.17:1 on white ✓ AA */
+      white-space: nowrap;
+    }
+
+    /* ── State modifier: Success ───────────────────────────────── */
+    .bulk-bar--success {
+      background: var(--success-bg);
+      border-bottom: 2px solid var(--success-border);
+    }
+
+    /* ── State modifier: Error / failure ──────────────────────── */
+    .bulk-bar--error {
+      background: var(--error-bg);
+      border-bottom: 2px solid var(--error-border);
+    }
+
+    /* Inline icon for message states (same style as .ds-alert-icon) */
+    .bulk-bar-icon {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Message text in success/error states */
+    .bulk-bar-msg {
+      font-size: 13px;
+      font-weight: 600;
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* Color from semantic token families — no per-state overrides needed */
+    .bulk-bar--success .bulk-bar-icon,
+    .bulk-bar--success .bulk-bar-msg { color: var(--success-fg); } /* 6.7:1 on --success-bg ✓ AA */
+
+    .bulk-bar--error .bulk-bar-icon,
+    .bulk-bar--error .bulk-bar-msg   { color: var(--error-fg);   } /* 8.6:1 on --error-bg ✓ AAA */
+
+    /* Dismiss button (message states) — mirrors .ds-alert-dismiss */
+    .bulk-bar-dismiss {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: inherit;
+      opacity: 0.7;
+      padding: 4px;
+      border-radius: 3px;
+      margin-left: auto;
+      flex-shrink: 0;
+      transition: opacity 0.12s ease;
+      line-height: 0;
+    }
+    .bulk-bar-dismiss:hover { opacity: 1; }
+    .bulk-bar-dismiss:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+    .bulk-bar-dismiss svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: block;
+    }
+
+
+    /* ── Table enhancements ────────────────────────────────────── */
+
+    /* Checkbox column */
+    .col-check {
+      width: 36px;
+      padding-left: 14px !important;
+      padding-right: 4px !important;
+    }
+    .col-check input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--sec-border); /* lime-green checked state — internal tool signal */
+      cursor: pointer;
+      vertical-align: middle;
+    }
+    .col-check input[type="checkbox"]:disabled {
+      cursor: not-allowed;
+    }
+
+    /* Selected row — lime tint matching active bar background */
+    .ds-table tbody tr.is-selected td {
+      background: var(--sec-bg);       /* #f0f9e8 — echoes bar active bg */
+    }
+    .ds-table tbody tr.is-selected:hover td {
+      background: var(--sec-bg-hover); /* #e2f3d0 — one step deeper on hover */
+    }
+
+    /* Submission ID — monospace, tabular figures, muted */
+    .col-id {
+      font-family: "IBM Plex Mono", "SF Mono", Consolas, monospace;
+      font-size: 12px;
+      color: var(--grey);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Date — tabular figures */
+    .col-date {
+      font-size: 12px;
+      color: var(--grey);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Title — truncate in narrow viewports */
+    .col-title { max-width: 300px; }
+    .col-title-text {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 290px;
+      display: block;
+    }
+
+    .col-author {
+      font-size: 13px;
+      color: var(--grey);
+      white-space: nowrap;
+    }
+
+    /* ── Reduced motion ────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      .bulk-bar,
+      .bulk-bar-dismiss { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../../index.html">arXiv Design System</a>
+  <a href="button-styles.html">Buttons</a>
+  <a href="card-styles.html">Cards</a>
+  <a href="table-styles.html">Tables</a>
+  <a href="form-styles.html">Forms</a>
+  <a href="alert-styles.html">Alerts</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="docs-nav-mock">Internal patterns</span>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <h1>arXiv Bulk Action Bar — Component Reference</h1>
+    <p>
+      A contextual toolbar for the arXiv Check moderation queue. Sits directly above the queue table and visually unifies with it; appears populated when one or more rows are checked. Offers three actions on the selection — Approve (primary), Put on hold (neutral), Remove (destructive with inline confirmation). This page shows all five bar states.
+    </p>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       STATE 1 — IDLE
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">Idle — Nothing Selected</h2>
+    <p class="section-desc">
+      The bar occupies its slot above the table at all times so the table does not shift when a selection is made. A muted hint tells moderators what to do; checkboxes are available but the "select all" control is disabled until a selection exists.
+    </p>
+    <div class="state-badge">State — Idle</div>
+
+    <div class="demo-well">
+      <div class="queue-block">
+
+        <div class="bulk-bar" role="region" aria-label="Bulk actions">
+          <span class="bulk-bar-hint">Select submissions to take a bulk action.</span>
+        </div>
+
+        <table class="ds-table" aria-label="Moderation queue">
+          <thead>
+            <tr>
+              <th scope="col" class="col-check">
+                <input type="checkbox" aria-label="Select all submissions" disabled>
+              </th>
+              <th scope="col">ID</th>
+              <th scope="col">Type</th>
+              <th scope="col" class="col-title">Title</th>
+              <th scope="col">Author</th>
+              <th scope="col">Submitted</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select submission 2501.00001"></td>
+              <td class="col-id">2501.00001</td>
+              <td><span class="type-badge type-new">NEW</span></td>
+              <td class="col-title"><span class="col-title-text">Advances in Neural Scaling Laws for Scientific Inference</span></td>
+              <td class="col-author">Chen, L. et al.</td>
+              <td class="col-date">2025-01-08</td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select submission 2501.00002"></td>
+              <td class="col-id">2501.00002</td>
+              <td><span class="type-badge type-rep">REP</span></td>
+              <td class="col-title"><span class="col-title-text">Revised Quantum Error Bounds with Decoherence Correction</span></td>
+              <td class="col-author">Yamamoto, K.</td>
+              <td class="col-date">2025-01-08</td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select submission 2501.00003"></td>
+              <td class="col-id">2501.00003</td>
+              <td><span class="type-badge type-new">NEW</span></td>
+              <td class="col-title"><span class="col-title-text">Topological Invariants in Condensed Matter Systems</span></td>
+              <td class="col-author">Patel, A. et al.</td>
+              <td class="col-date">2025-01-08</td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select submission 2501.00004"></td>
+              <td class="col-id">2501.00004</td>
+              <td><span class="type-badge type-rep">REP</span></td>
+              <td class="col-title"><span class="col-title-text">Climate Model Sensitivity Analysis Under CMIP7 Constraints</span></td>
+              <td class="col-author">Zhang, M.</td>
+              <td class="col-date">2025-01-07</td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select submission 2501.00005"></td>
+              <td class="col-id">2501.00005</td>
+              <td><span class="type-badge type-cross">CROSS</span></td>
+              <td class="col-title"><span class="col-title-text">Protein Folding via Iterative Diffusion Models</span></td>
+              <td class="col-author">Okonkwo, F. et al.</td>
+              <td class="col-date">2025-01-07</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="6" class="ds-table-footer">5 submissions</td></tr>
+          </tfoot>
+        </table>
+
+      </div><!-- /queue-block -->
+    </div><!-- /demo-well -->
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       STATE 2 — SELECTION ACTIVE
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">Selection Active — 3 Submissions Selected</h2>
+    <p class="section-desc">
+      The bar shifts to a lime-tinted background signalling that an action is staged. The lime bottom border anchors the bar to the table below; selected rows carry the same lime tint so the whole group reads as one unit. Actions are ordered safe → neutral → destructive left-to-right; tab order follows the same sequence.
+    </p>
+    <div class="state-badge">State — Selection Active</div>
+
+    <div class="demo-well">
+      <div class="queue-block">
+
+        <div class="bulk-bar bulk-bar--active" role="region" aria-label="Bulk actions">
+          <div class="bulk-bar-left">
+            <!-- aria-live so dynamic count updates are announced by screen readers -->
+            <span class="bulk-bar-count" aria-live="polite" aria-atomic="true">3 submissions selected</span>
+            <span class="bulk-bar-sep" aria-hidden="true"></span>
+            <button class="btn-link" type="button">Clear selection</button>
+          </div>
+          <div class="bulk-bar-actions">
+            <button class="btn btn-primary" type="button">Approve selected</button>
+            <button class="btn btn-secondary" type="button">Put on hold</button>
+            <button class="btn btn-destructive" type="button">Remove selected</button>
+          </div>
+        </div>
+
+        <!-- aria-checked="mixed" on the select-all represents partial/indeterminate state.
+             In production set checkboxEl.indeterminate = true via JavaScript — the HTML
+             attribute alone is not sufficient to render the indeterminate visual. -->
+        <table class="ds-table" aria-label="Moderation queue — 3 of 5 selected">
+          <thead>
+            <tr>
+              <th scope="col" class="col-check">
+                <input type="checkbox" aria-label="Select all submissions" aria-checked="mixed">
+              </th>
+              <th scope="col">ID</th>
+              <th scope="col">Type</th>
+              <th scope="col" class="col-title">Title</th>
+              <th scope="col">Author</th>
+              <th scope="col">Submitted</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="is-selected">
+              <td class="col-check"><input type="checkbox" checked aria-label="Deselect submission 2501.00001"></td>
+              <td class="col-id">2501.00001</td>
+              <td><span class="type-badge type-new">NEW</span></td>
+              <td class="col-title"><span class="col-title-text">Advances in Neural Scaling Laws for Scientific Inference</span></td>
+              <td class="col-author">Chen, L. et al.</td>
+              <td class="col-date">2025-01-08</td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select submission 2501.00002"></td>
+              <td class="col-id">2501.00002</td>
+              <td><span class="type-badge type-rep">REP</span></td>
+              <td class="col-title"><span class="col-title-text">Revised Quantum Error Bounds with Decoherence Correction</span></td>
+              <td class="col-author">Yamamoto, K.</td>
+              <td class="col-date">2025-01-08</td>
+            </tr>
+            <tr class="is-selected">
+              <td class="col-check"><input type="checkbox" checked aria-label="Deselect submission 2501.00003"></td>
+              <td class="col-id">2501.00003</td>
+              <td><span class="type-badge type-new">NEW</span></td>
+              <td class="col-title"><span class="col-title-text">Topological Invariants in Condensed Matter Systems</span></td>
+              <td class="col-author">Patel, A. et al.</td>
+              <td class="col-date">2025-01-08</td>
+            </tr>
+            <tr class="is-selected">
+              <td class="col-check"><input type="checkbox" checked aria-label="Deselect submission 2501.00004"></td>
+              <td class="col-id">2501.00004</td>
+              <td><span class="type-badge type-rep">REP</span></td>
+              <td class="col-title"><span class="col-title-text">Climate Model Sensitivity Analysis Under CMIP7 Constraints</span></td>
+              <td class="col-author">Zhang, M.</td>
+              <td class="col-date">2025-01-07</td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select submission 2501.00005"></td>
+              <td class="col-id">2501.00005</td>
+              <td><span class="type-badge type-cross">CROSS</span></td>
+              <td class="col-title"><span class="col-title-text">Protein Folding via Iterative Diffusion Models</span></td>
+              <td class="col-author">Okonkwo, F. et al.</td>
+              <td class="col-date">2025-01-07</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="6" class="ds-table-footer">5 submissions · 3 selected</td></tr>
+          </tfoot>
+        </table>
+
+      </div><!-- /queue-block -->
+    </div><!-- /demo-well -->
+
+    <p class="callout">
+      <strong>Button hierarchy:</strong> Approve selected → <code>btn-primary</code> (Access Lime — the common, safe action and the internal-tools primary); Put on hold → <code>btn-secondary</code> (lime-tint, neutral); Remove selected → <code>btn-destructive</code> (Danger Red — irreversible). One primary button per action group; the others provide explicit but lower-emphasis paths.
+    </p>
+    <p class="callout">
+      <strong>Bar background + border:</strong> <code>--sec-bg</code> (#f0f9e8 — the secondary button lime tint) and a 2 px <code>--lime</code> bottom border. Both tokens already exist in <code>design-system.css</code>; no new values introduced. The lime matches the primary button fill so the "armed" bar reads as a family with the action it promotes.
+    </p>
+    <p class="callout">
+      <strong>Selected row tint:</strong> <code>.is-selected td</code> uses <code>var(--sec-bg)</code> — the same lime tint as the active bar — so selected rows and the bar read as one visual group.
+    </p>
+    <p class="callout">
+      <strong>"Clear selection" affordance:</strong> Uses <code>btn-link</code> (Library Grey underline) rather than <code>btn-tertiary</code>. Per the button system: use a link-style button for low-emphasis inline actions that sit alongside text. A boxed tertiary button here would over-weight the affordance and compete with the action buttons.
+    </p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       STATE 3 — CONFIRM DESTRUCTIVE
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">Confirm Destructive Action</h2>
+    <p class="section-desc">
+      Clicking "Remove selected" does not fire immediately. The action buttons are replaced inline with a plain-language confirmation prompt. The bar retains the selection count and Clear link so the moderator knows what is about to happen. Checkboxes are disabled during this state to prevent accidental selection changes while the confirm prompt is open.
+    </p>
+    <div class="state-badge">State — Confirm Remove</div>
+
+    <div class="demo-well">
+      <div class="queue-block">
+
+        <div class="bulk-bar bulk-bar--confirm" role="region" aria-label="Bulk actions">
+          <div class="bulk-bar-left">
+            <span class="bulk-bar-count">3 submissions selected</span>
+            <span class="bulk-bar-sep" aria-hidden="true"></span>
+            <button class="btn-link" type="button">Clear selection</button>
+          </div>
+          <div class="bulk-bar-actions">
+            <!-- aria-live so the confirmation text is announced when it appears -->
+            <span class="bulk-bar-confirm-text" aria-live="assertive" aria-atomic="true">
+              Remove 3 submissions permanently?
+            </span>
+            <button class="btn btn-destructive" type="button">Confirm remove</button>
+            <button class="btn btn-tertiary" type="button">Cancel</button>
+          </div>
+        </div>
+
+        <table class="ds-table" aria-label="Moderation queue — 3 of 5 selected, pending removal">
+          <thead>
+            <tr>
+              <th scope="col" class="col-check">
+                <input type="checkbox" aria-label="Select all submissions" aria-checked="mixed" disabled>
+              </th>
+              <th scope="col">ID</th>
+              <th scope="col">Type</th>
+              <th scope="col" class="col-title">Title</th>
+              <th scope="col">Author</th>
+              <th scope="col">Submitted</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="is-selected">
+              <td class="col-check"><input type="checkbox" checked disabled aria-label="Submission 2501.00001 — pending removal"></td>
+              <td class="col-id">2501.00001</td>
+              <td><span class="type-badge type-new">NEW</span></td>
+              <td class="col-title"><span class="col-title-text">Advances in Neural Scaling Laws for Scientific Inference</span></td>
+              <td class="col-author">Chen, L. et al.</td>
+              <td class="col-date">2025-01-08</td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" disabled aria-label="Select submission 2501.00002"></td>
+              <td class="col-id">2501.00002</td>
+              <td><span class="type-badge type-rep">REP</span></td>
+              <td class="col-title"><span class="col-title-text">Revised Quantum Error Bounds with Decoherence Correction</span></td>
+              <td class="col-author">Yamamoto, K.</td>
+              <td class="col-date">2025-01-08</td>
+            </tr>
+            <tr class="is-selected">
+              <td class="col-check"><input type="checkbox" checked disabled aria-label="Submission 2501.00003 — pending removal"></td>
+              <td class="col-id">2501.00003</td>
+              <td><span class="type-badge type-new">NEW</span></td>
+              <td class="col-title"><span class="col-title-text">Topological Invariants in Condensed Matter Systems</span></td>
+              <td class="col-author">Patel, A. et al.</td>
+              <td class="col-date">2025-01-08</td>
+            </tr>
+            <tr class="is-selected">
+              <td class="col-check"><input type="checkbox" checked disabled aria-label="Submission 2501.00004 — pending removal"></td>
+              <td class="col-id">2501.00004</td>
+              <td><span class="type-badge type-rep">REP</span></td>
+              <td class="col-title"><span class="col-title-text">Climate Model Sensitivity Analysis Under CMIP7 Constraints</span></td>
+              <td class="col-author">Zhang, M.</td>
+              <td class="col-date">2025-01-07</td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" disabled aria-label="Select submission 2501.00005"></td>
+              <td class="col-id">2501.00005</td>
+              <td><span class="type-badge type-cross">CROSS</span></td>
+              <td class="col-title"><span class="col-title-text">Protein Folding via Iterative Diffusion Models</span></td>
+              <td class="col-author">Okonkwo, F. et al.</td>
+              <td class="col-date">2025-01-07</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="6" class="ds-table-footer">5 submissions · 3 selected</td></tr>
+          </tfoot>
+        </table>
+
+      </div><!-- /queue-block -->
+    </div><!-- /demo-well -->
+
+    <div class="ds-alert ds-alert-error" style="margin-top: 16px;">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>
+      </svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Destructive buttons must always be paired with a confirmation step</p>
+        <p>
+          "Remove selected" must never fire on first click. Clicking the button replaces the action area with an inline "Remove N submissions permanently? [Confirm remove] [Cancel]" prompt — the confirmation step required by <code>DESIGN-POLICIES.md</code> for all destructive actions. The 2 px <code>--danger</code> bottom border signals the pending irreversible state. Pressing <kbd>Escape</kbd> or "Cancel" returns the bar to the active selection state.
+        </p>
+      </div>
+    </div>
+
+    <p class="callout">
+      <strong>Copy:</strong> "Remove 3 submissions permanently?" — states what will happen (remove), how many (3), and the consequence (permanently). Matches the arXiv brand voice: honest, plainspoken, no softening. "Confirm remove" mirrors the original button label so moderators are never guessing what they are confirming.
+    </p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       STATE 4 — SUCCESS
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">Action Succeeded</h2>
+    <p class="section-desc">
+      After an action completes, the bar's content is replaced with a success message using <code>role="status"</code> (polite — announced by screen readers at the next natural pause). The 3 approved submissions have left the queue; the table now shows only the 2 unaffected rows. A dismiss button returns the bar to idle.
+    </p>
+    <div class="state-badge">State — Success</div>
+
+    <div class="demo-well">
+      <div class="queue-block">
+
+        <!-- role="status" → aria-live="polite": announced when screen reader is idle -->
+        <div class="bulk-bar bulk-bar--success" role="status" aria-label="Bulk action result">
+          <svg class="bulk-bar-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <span class="bulk-bar-msg">3 submissions approved.</span>
+          <button class="bulk-bar-dismiss" type="button" aria-label="Dismiss success message">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+            </svg>
+          </button>
+        </div>
+
+        <table class="ds-table" aria-label="Moderation queue">
+          <thead>
+            <tr>
+              <th scope="col" class="col-check">
+                <input type="checkbox" aria-label="Select all submissions">
+              </th>
+              <th scope="col">ID</th>
+              <th scope="col">Type</th>
+              <th scope="col" class="col-title">Title</th>
+              <th scope="col">Author</th>
+              <th scope="col">Submitted</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select submission 2501.00002"></td>
+              <td class="col-id">2501.00002</td>
+              <td><span class="type-badge type-rep">REP</span></td>
+              <td class="col-title"><span class="col-title-text">Revised Quantum Error Bounds with Decoherence Correction</span></td>
+              <td class="col-author">Yamamoto, K.</td>
+              <td class="col-date">2025-01-08</td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select submission 2501.00005"></td>
+              <td class="col-id">2501.00005</td>
+              <td><span class="type-badge type-cross">CROSS</span></td>
+              <td class="col-title"><span class="col-title-text">Protein Folding via Iterative Diffusion Models</span></td>
+              <td class="col-author">Okonkwo, F. et al.</td>
+              <td class="col-date">2025-01-07</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="6" class="ds-table-footer">2 submissions</td></tr>
+          </tfoot>
+        </table>
+
+      </div><!-- /queue-block -->
+    </div><!-- /demo-well -->
+
+    <p class="callout">
+      <strong>ARIA:</strong> <code>role="status"</code> maps to <code>aria-live="polite"</code> — the outcome is read at the next natural pause without interrupting the user. Use <code>role="alert"</code> only for error states (see below).
+    </p>
+    <p class="callout">
+      <strong>Focus management (production):</strong> On entering the success state, move focus to the bar message element (add <code>tabindex="-1"</code> and call <code>.focus()</code>). On dismiss, return focus to the bar's idle hint or the first table row so keyboard users are never stranded.
+    </p>
+    <p class="callout">
+      <strong>Copy:</strong> "3 submissions approved." — count, action, period. Plain past tense. No "Success!", no exclamation marks, no marketing tone. Honest and plainspoken per arXiv brand voice.
+    </p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       STATE 5 — FAILURE
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">Action Failed</h2>
+    <p class="section-desc">
+      When an action fails, the bar shows an error message with <code>role="alert"</code> (assertive — announced immediately). The selection is preserved so the moderator can retry without re-selecting. This is especially important for the Remove flow: a moderator should not have to re-select a group they already confirmed.
+    </p>
+    <div class="state-badge">State — Failure</div>
+
+    <div class="demo-well">
+      <div class="queue-block">
+
+        <!-- role="alert" → aria-live="assertive": announced immediately -->
+        <div class="bulk-bar bulk-bar--error" role="alert" aria-label="Bulk action result">
+          <svg class="bulk-bar-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="m15 9-6 6"/><path d="m9 9 6 6"/>
+          </svg>
+          <span class="bulk-bar-msg">Action failed. Your selection is preserved — try again or contact support.</span>
+          <button class="bulk-bar-dismiss" type="button" aria-label="Dismiss error and return to selection">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Selection preserved on failure — all 3 rows remain checked -->
+        <table class="ds-table" aria-label="Moderation queue — 3 of 5 selected">
+          <thead>
+            <tr>
+              <th scope="col" class="col-check">
+                <input type="checkbox" aria-label="Select all submissions" aria-checked="mixed">
+              </th>
+              <th scope="col">ID</th>
+              <th scope="col">Type</th>
+              <th scope="col" class="col-title">Title</th>
+              <th scope="col">Author</th>
+              <th scope="col">Submitted</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="is-selected">
+              <td class="col-check"><input type="checkbox" checked aria-label="Deselect submission 2501.00001"></td>
+              <td class="col-id">2501.00001</td>
+              <td><span class="type-badge type-new">NEW</span></td>
+              <td class="col-title"><span class="col-title-text">Advances in Neural Scaling Laws for Scientific Inference</span></td>
+              <td class="col-author">Chen, L. et al.</td>
+              <td class="col-date">2025-01-08</td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select submission 2501.00002"></td>
+              <td class="col-id">2501.00002</td>
+              <td><span class="type-badge type-rep">REP</span></td>
+              <td class="col-title"><span class="col-title-text">Revised Quantum Error Bounds with Decoherence Correction</span></td>
+              <td class="col-author">Yamamoto, K.</td>
+              <td class="col-date">2025-01-08</td>
+            </tr>
+            <tr class="is-selected">
+              <td class="col-check"><input type="checkbox" checked aria-label="Deselect submission 2501.00003"></td>
+              <td class="col-id">2501.00003</td>
+              <td><span class="type-badge type-new">NEW</span></td>
+              <td class="col-title"><span class="col-title-text">Topological Invariants in Condensed Matter Systems</span></td>
+              <td class="col-author">Patel, A. et al.</td>
+              <td class="col-date">2025-01-08</td>
+            </tr>
+            <tr class="is-selected">
+              <td class="col-check"><input type="checkbox" checked aria-label="Deselect submission 2501.00004"></td>
+              <td class="col-id">2501.00004</td>
+              <td><span class="type-badge type-rep">REP</span></td>
+              <td class="col-title"><span class="col-title-text">Climate Model Sensitivity Analysis Under CMIP7 Constraints</span></td>
+              <td class="col-author">Zhang, M.</td>
+              <td class="col-date">2025-01-07</td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select submission 2501.00005"></td>
+              <td class="col-id">2501.00005</td>
+              <td><span class="type-badge type-cross">CROSS</span></td>
+              <td class="col-title"><span class="col-title-text">Protein Folding via Iterative Diffusion Models</span></td>
+              <td class="col-author">Okonkwo, F. et al.</td>
+              <td class="col-date">2025-01-07</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="6" class="ds-table-footer">5 submissions · 3 selected</td></tr>
+          </tfoot>
+        </table>
+
+      </div><!-- /queue-block -->
+    </div><!-- /demo-well -->
+
+    <p class="callout">
+      <strong>ARIA:</strong> <code>role="alert"</code> is assertive — announced immediately, interrupting the current screen-reader utterance. Reserve it for genuine errors; do not use it for success states or informational messages.
+    </p>
+    <p class="callout">
+      <strong>Copy:</strong> "Action failed. Your selection is preserved — try again or contact support." Three pieces of information: what happened (failed), what's still good (selection preserved), what to do next (retry or contact). Plain language, no jargon.
+    </p>
+    <p class="callout">
+      <strong>Dismiss behaviour:</strong> Dismissing the error returns the bar to the active (selection) state — not idle — because the selection survived. The moderator picks up where they left off.
+    </p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       IMPLEMENTATION NOTES
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">Implementation Notes</h2>
+
+    <p class="callout">
+      <strong>Visual connection — <code>.queue-block</code>:</strong> Wrap the bar and table in a container with <code>border: 1px solid #ddd8d2; border-radius: 6px; overflow: hidden</code>. Override the table's own border and radius inside: <code>.queue-block .ds-table { border: none; border-radius: 0; }</code>. This makes bar and table one visually unified block — no gap, no double-border seam at the join.
+    </p>
+    <p class="callout">
+      <strong>Tokens — no new values introduced:</strong>
+      <code>--sec-bg</code> (active bar + row tint) ·
+      <code>--sec-bg-hover</code> (selected row hover) ·
+      <code>--sec-border</code> (checkbox accent-color) ·
+      <code>--lime</code> (active bar bottom border) ·
+      <code>--danger</code> (confirm-state border + confirm-text color) ·
+      <code>--success-bg/border/fg</code> ·
+      <code>--error-bg/border/fg</code> ·
+      <code>--focus-ring</code> ·
+      <code>--text</code> · <code>--grey</code> · <code>--space-2</code>.
+      All from <code>design-system.css :root</code>.
+    </p>
+    <p class="callout">
+      <strong>Reduced motion:</strong> The <code>transition</code> on <code>.bulk-bar</code> (background and border-color) is disabled under <code>prefers-reduced-motion: reduce</code>. State changes still happen; only the animated transition is suppressed.
+    </p>
+    <p class="callout">
+      <strong>Select-all / indeterminate:</strong> Set <code>checkboxEl.indeterminate = true</code> in JavaScript when a partial selection exists — the HTML <code>aria-checked="mixed"</code> attribute conveys the state to screen readers but does not render the visual indeterminate indicator. Both are required.
+    </p>
+    <p class="callout">
+      <strong>z-index:</strong> This component is not positioned and requires no z-index. The bar flows in document order above the table. Only toasts, sticky headers, and modals use z-index in this system — the bulk bar is neither.
+    </p>
+  </section>
+
+</div><!-- /page -->
+</body>
+</html>

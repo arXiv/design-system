@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>arXiv Type Badge Styles — Component Reference</title>
+  <!--
+    IBM Plex loaded from Google Fonts — reference pages only.
+    Production must self-host all fonts per DESIGN-POLICIES.md § Typography.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-system.css">
+  <style>
+    /* ── Page chrome (reference doc only, not part of the component system).
+       This page CONSUMES .type-badge from design-system.css — it never
+       redefines the badge styles. data-theme="light" locks the page to light
+       because the badge component has no dark-mode token overrides yet
+       (see dark-mode-decision.md). ── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+      background: #f9f7f7; /* Warm Wash */
+      color: #1c1a17;
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 48px 28px 80px;
+    }
+
+    /* ── Page header */
+    .page-header {
+      margin-bottom: 52px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #c4d82e; /* Access Lime — internal-tools accent */
+    }
+    .page-header h1 { font-size: 22px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p  { margin: 0; color: #6b6459; font-size: 13px; max-width: 680px; }
+    .page-header p + p { margin-top: 6px; }
+
+    /* ── Sections */
+    .section       { margin-bottom: 60px; }
+    .section-title { font-size: 16px; font-weight: 700; margin: 0 0 4px; color: #1c1a17; }
+    .section-desc  { font-size: 13px; color: #6b6459; margin: 0 0 20px; max-width: 720px; }
+
+    /* ── Demo wrapper */
+    .demo {
+      background: #fff;
+      border: 1px solid #e0dbd7;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .demo + .demo  { margin-top: 0; }
+    .demo-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #b0aba6;
+      margin: 0 0 16px;
+    }
+    .demo-sub {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #8b8680;
+      margin: 20px 0 12px;
+    }
+
+    /* ── Badge showcase grid */
+    .badge-showcase {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+    }
+    .badge-showcase-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 7px;
+    }
+    .badge-showcase-label {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 11px;
+      color: #8b8680;
+    }
+
+    /* ── Queue demo layout */
+    .queue-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .queue-count {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b6459;
+    }
+
+    /* ── Inline context demo */
+    .inline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .inline-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 13px;
+      color: #1c1a17;
+      line-height: 1.5;
+    }
+    .inline-list .meta {
+      color: #6b6459;
+      font-size: 12px;
+    }
+
+    /* ── Queue ID links */
+    .queue-id {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 12px;
+      color: var(--link);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .queue-id:hover { color: var(--link-hover); }
+
+    /* ── Token reference table */
+    .token-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1px solid #e0dbd7;
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+    .token-table th {
+      background: #f0eeec;
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6b6459;
+      border-bottom: 1px solid #e0dbd7;
+    }
+    .token-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #e0dbd7;
+      vertical-align: middle;
+    }
+    .token-table tr:last-child td { border-bottom: none; }
+    .token-table .col-variant { white-space: nowrap; background: #faf8f7; }
+    .swatch {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      border: 1px solid rgba(0,0,0,0.12);
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+    .ratio-pass { font-weight: 700; }
+
+    /* ── Callout and code */
+    .callout {
+      font-size: 13px;
+      color: #1c1a17;
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #fff;
+      border: 1px solid #e0dbd7;
+      border-left: 4px solid #c4d82e;
+      border-radius: 0 4px 4px 0;
+      line-height: 1.6;
+    }
+    .callout + .callout { margin-top: 10px; }
+
+    code {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 12px;
+      background: #f0eeec;
+      padding: 2px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    .code-block {
+      background: #1c1a17;
+      color: #f0eeec;
+      border-radius: 6px;
+      padding: 14px 16px;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      overflow-x: auto;
+      margin: 0;
+    }
+
+    /* ── Shared docs nav strip (same on every design-system doc page;
+       hex values because internal token names differ — page chrome only,
+       not part of the component system). ── */
+    .docs-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px 14px;
+      flex-wrap: wrap;
+      background: #f0eeec;
+      border-bottom: 1px solid #ddd8d2;
+      padding: 8px 28px;
+      font-size: 13px;
+    }
+    .docs-nav-brand { font-weight: 600; color: #1c1a17; text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: #1565c0; }
+    .docs-nav a:not(.docs-nav-brand) { color: #6b6459; text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: #1c1a17; text-decoration: underline; }
+    .docs-nav a:focus-visible { outline: 2px solid #1565c0; outline-offset: 2px; border-radius: 2px; }
+    .docs-nav-spacer { flex: 1; }
+    .docs-nav .docs-nav-mock { color: #8b8680; font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../../index.html">arXiv Design System</a>
+  <a href="../colors.html">Colors</a>
+  <a href="../typography.html">Typography</a>
+  <a href="../spacing.html">Spacing</a>
+  <a href="../buttons.html">Buttons</a>
+  <a href="../alerts.html">Alerts</a>
+  <a href="../version-display.html">Versions</a>
+  <a href="../organizing-content.html">Organizing content</a>
+  <a href="../../doc.html?src=DESIGN-POLICIES.md">Policies</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="docs-nav-mock">Mockups:</span>
+  <a href="../../mockups/abstract-redesign.html">Abstract</a>
+  <a href="../../mockups/merged-abstract-reader.html">Reader</a>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <h1>Submission Type Badges</h1>
+    <p>Color-coded labels that identify a submission's type in the moderation queue and Admin Console.
+    Four types are established: <strong>New</strong>, <strong>Rep</strong>lacement, <strong>W</strong>ith<strong>dr</strong>awal, and <strong>Cross</strong>-list.
+    All are rendered from <code>.type-badge</code> + a type modifier defined in <code>design-system.css</code>.</p>
+    <p>This page is locked to light mode — the badge component has no dark-mode token overrides yet.
+    See <code>dark-mode-decision.md</code>.</p>
+  </header>
+
+
+  <!-- ── Section 1: All variants, isolated ──────────────────── -->
+  <section class="section">
+    <h2 class="section-title">Variants</h2>
+    <p class="section-desc">Each badge uses a background fill, a 1px border, and a text color.
+    All four pass WCAG AA (4.5:1) text contrast; three of four reach AAA (7:1).</p>
+
+    <div class="demo">
+      <p class="demo-label">All four types — isolated</p>
+      <div class="badge-showcase">
+        <div class="badge-showcase-item">
+          <span class="type-badge type-new">New</span>
+          <span class="badge-showcase-label">.type-new</span>
+        </div>
+        <div class="badge-showcase-item">
+          <span class="type-badge type-rep">Rep</span>
+          <span class="badge-showcase-label">.type-rep</span>
+        </div>
+        <div class="badge-showcase-item">
+          <span class="type-badge type-wdr">Wdr</span>
+          <span class="badge-showcase-label">.type-wdr</span>
+        </div>
+        <div class="badge-showcase-item">
+          <span class="type-badge type-cross">Cross</span>
+          <span class="badge-showcase-label">.type-cross</span>
+        </div>
+      </div>
+
+      <p class="demo-sub">At scale — larger font context</p>
+      <div style="font-size: 16px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+        <span class="type-badge type-new">New</span>
+        <span class="type-badge type-rep">Rep</span>
+        <span class="type-badge type-wdr">Wdr</span>
+        <span class="type-badge type-cross">Cross</span>
+      </div>
+      <p style="font-size: 12px; color: #8b8680; margin: 10px 0 0;">
+        Badges scale with their container's font-size because padding is set in <code>em</code>-equivalent
+        fixed values — they stay compact regardless of surrounding text size.
+      </p>
+    </div>
+
+    <div class="callout">
+      <strong>Semantic meanings:</strong> <code>.type-new</code> — first submission of a paper.
+      <code>.type-rep</code> — replacement (updated version, e.g. v2, v3).
+      <code>.type-wdr</code> — withdrawal requested by the submitter.
+      <code>.type-cross</code> — cross-listing to an additional subject category.
+    </div>
+    <div class="callout">
+      <strong>Do not invent new types.</strong> These four match arXiv's submission taxonomy exactly.
+      If a new submission type is introduced in the system, add it to <code>design-system.css</code>
+      and update this page — do not create one-off badge colors locally.
+    </div>
+  </section>
+
+
+  <!-- ── Section 2: Moderation queue context ────────────────── -->
+  <section class="section">
+    <h2 class="section-title">In a moderation queue</h2>
+    <p class="section-desc">The primary context for type badges is the <code>Type</code> column of a
+    <code>.ds-table</code>. The column header provides the accessible label; the badge text reinforces
+    it. The monospace type stack aligns badges with arXiv IDs in adjacent columns.</p>
+
+    <div class="demo">
+      <div class="queue-toolbar">
+        <span class="queue-count">6 submissions</span>
+        <div class="ds-filter">
+          <label for="queue-type-filter">Type:</label>
+          <select id="queue-type-filter">
+            <option value="all" selected>All</option>
+            <option value="new">New</option>
+            <option value="rep">Rep</option>
+            <option value="wdr">Wdr</option>
+            <option value="cross">Cross</option>
+          </select>
+        </div>
+      </div>
+
+      <table class="ds-table" id="queue-table" aria-label="Moderation queue">
+        <thead>
+          <tr>
+            <th style="width: 96px;">ID</th>
+            <th style="width: 60px;">Type</th>
+            <th>Title</th>
+            <th style="width: 148px;">Submitter</th>
+            <th style="width: 96px;">Received</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-type="new">
+            <td><a class="queue-id" href="#">2507.14822</a></td>
+            <td><span class="type-badge type-new">New</span></td>
+            <td>Geometric Phases in Non-Abelian Gauge Theories</td>
+            <td>K. Osei</td>
+            <td>2026-07-28</td>
+          </tr>
+          <tr data-type="new">
+            <td><a class="queue-id" href="#">2507.11042</a></td>
+            <td><span class="type-badge type-new">New</span></td>
+            <td>Spectral Properties of Discrete Schrödinger Operators</td>
+            <td>A. Müller</td>
+            <td>2026-07-28</td>
+          </tr>
+          <tr data-type="rep">
+            <td><a class="queue-id" href="#">2507.09371</a></td>
+            <td><span class="type-badge type-rep">Rep</span></td>
+            <td>Asymptotic Expansions of Schrödinger Operators</td>
+            <td>E. McGill-Henry</td>
+            <td>2026-07-27</td>
+          </tr>
+          <tr data-type="cross">
+            <td><a class="queue-id" href="#">2506.18294</a></td>
+            <td><span class="type-badge type-cross">Cross</span></td>
+            <td>Symplectic Geometry and Hamiltonian Systems</td>
+            <td>P. Nakamura</td>
+            <td>2026-07-27</td>
+          </tr>
+          <tr data-type="rep">
+            <td><a class="queue-id" href="#">2505.22817</a></td>
+            <td><span class="type-badge type-rep">Rep</span></td>
+            <td>Symmetry Breaking in Quantum Field Theory</td>
+            <td>L. Santos</td>
+            <td>2026-07-26</td>
+          </tr>
+          <tr data-type="wdr">
+            <td><a class="queue-id" href="#">2504.07650</a></td>
+            <td><span class="type-badge type-wdr">Wdr</span></td>
+            <td>Corrections to Perturbation Theory at Two-Loop Order</td>
+            <td>R. Patel</td>
+            <td>2026-07-25</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="ds-table-footer" id="queue-footer">1–6 of 6</div>
+    </div>
+
+    <div class="callout">
+      <strong>In a table:</strong> The "Type" column header gives the badge its accessible context.
+      Screen readers announce the cell value — e.g. "New" — with the column header as label.
+      No additional <code>aria-label</code> is needed when a column header is present.
+    </div>
+    <div class="callout">
+      <strong>Sort order convention:</strong> When sorting by type, the established order is
+      New → Rep → Cross → Wdr (mirroring the arXiv Check implementation). Apply this order to
+      <code>data-type</code> attributes or server-side sort keys.
+    </div>
+  </section>
+
+
+  <!-- ── Section 3: Inline context ─────────────────────────── -->
+  <section class="section">
+    <h2 class="section-title">Inline with metadata</h2>
+    <p class="section-desc">Badges can lead a metadata line in a submission detail view or a compact
+    summary row. Use <code>align-items: baseline</code> on the flex container to keep the badge
+    optically grounded with surrounding text.</p>
+
+    <div class="demo">
+      <p class="demo-label">Inline — submission detail context</p>
+      <ul class="inline-list" aria-label="Submission examples">
+        <li>
+          <span class="type-badge type-new" aria-label="New submission">New</span>
+          <span><strong>2507.14822</strong> &mdash; received 2026-07-28, awaiting initial moderation</span>
+        </li>
+        <li>
+          <span class="type-badge type-rep" aria-label="Replacement">Rep</span>
+          <span><strong>2507.09371</strong> &mdash; v2 replacement, same primary author, minor corrections</span>
+        </li>
+        <li>
+          <span class="type-badge type-cross" aria-label="Cross-list">Cross</span>
+          <span><strong>2506.18294</strong> &mdash; cross-listing from math.AP to cs.NA</span>
+        </li>
+        <li>
+          <span class="type-badge type-wdr" aria-label="Withdrawal">Wdr</span>
+          <span><strong>2504.07650</strong> &mdash; withdrawal requested by submitter on 2026-07-25</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="callout">
+      <strong>Inline accessibility:</strong> When a badge appears without a surrounding table or
+      explicit column header, add <code>aria-label</code> with the full word to disambiguate the
+      abbreviation — e.g. <code>aria-label="Replacement"</code> on <code>.type-rep</code>,
+      <code>aria-label="Withdrawal"</code> on <code>.type-wdr</code>. In a table with a "Type"
+      column header, <code>aria-label</code> may be omitted.
+    </div>
+  </section>
+
+
+  <!-- ── Section 4: Colors and contrast (live token table) ──── -->
+  <section class="section">
+    <h2 class="section-title">Colors and contrast</h2>
+    <p class="section-desc">Colors are read from the live stylesheet at runtime via
+    <code>getComputedStyle</code>, so this table cannot drift from <code>design-system.css</code>.
+    Contrast ratios are text-on-background, WCAG formula.</p>
+
+    <table class="token-table" aria-label="Badge color and contrast reference">
+      <thead>
+        <tr>
+          <th>Variant</th>
+          <th>Meaning</th>
+          <th>Background</th>
+          <th>Border</th>
+          <th>Text</th>
+          <th>Contrast</th>
+        </tr>
+      </thead>
+      <tbody id="token-rows">
+        <!-- Populated at runtime — see script below -->
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Color is never the sole signal (WCAG 1.4.1).</strong> Each badge's text label —
+      "New", "Rep", "Wdr", "Cross" — identifies the submission type independently of its color.
+      The meaning survives grayscale rendering, forced-colors OS mode, and high-contrast themes.
+    </div>
+    <div class="callout">
+      <strong>Color palette derivation.</strong>
+      <code>.type-new</code> uses a light blue tinted from the info/navy family (connects to the
+      <code>.seg-neutral</code> active state).
+      <code>.type-rep</code> uses the existing version-warning amber tint (<code>--warning-bg</code> family).
+      <code>.type-wdr</code> uses a dark warm-grey from the Repository Brown ladder — neutral, terminal.
+      <code>.type-cross</code> uses a warm light-grey, the lowest-emphasis badge to reflect that
+      cross-listing requires the least moderation attention.
+    </div>
+    <div class="callout">
+      <strong>Dark mode is not defined yet.</strong> The badge colors are hardcoded hex values, not CSS
+      custom properties, because dark-mode execution is explicitly deferred for internal components.
+      When the dark-mode tokenization pass lands (Phase 2, see <code>DESIGN-PROGRESS.md</code>),
+      these values should be promoted to tokens and a dark override block added to the
+      <code>@media (prefers-color-scheme: dark)</code> section of <code>design-system.css</code>.
+    </div>
+  </section>
+
+
+  <!-- ── Section 5: Usage ───────────────────────────────────── -->
+  <section class="section">
+    <h2 class="section-title">Usage</h2>
+    <p class="section-desc">Apply <code>.type-badge</code> plus exactly one type modifier to a
+    <code>&lt;span&gt;</code>. The base class handles shape and typography; the modifier supplies
+    the color. Place inside a semantic container — a table cell, list item, or labelled region.</p>
+
+    <pre class="code-block">&lt;!-- In a table cell (column header provides the label) --&gt;
+&lt;td&gt;&lt;span class="type-badge type-new"&gt;New&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span class="type-badge type-rep"&gt;Rep&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span class="type-badge type-wdr"&gt;Wdr&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span class="type-badge type-cross"&gt;Cross&lt;/span&gt;&lt;/td&gt;
+
+&lt;!-- Inline, outside a table — add aria-label for the full word --&gt;
+&lt;span class="type-badge type-rep" aria-label="Replacement"&gt;Rep&lt;/span&gt;
+&lt;span class="type-badge type-wdr" aria-label="Withdrawal"&gt;Wdr&lt;/span&gt;</pre>
+
+    <div class="callout" style="margin-top: 16px;">
+      <strong>Typography.</strong> Badges render in IBM Plex Mono (with SF Mono / Fira Code /
+      system monospace fallbacks). The monospace stack is intentional — type codes appear alongside
+      arXiv IDs in most queue contexts, and the shared font signals "system metadata" rather than
+      editorial text. Do not override the font family on individual badges.
+    </div>
+    <div class="callout">
+      <strong>Size and shape.</strong> The base class sets <code>font-size: 11px</code>,
+      <code>padding: 1px 6px</code>, and <code>border-radius: 3px</code>. These values are fixed —
+      do not scale badges up for emphasis or down for compactness. If a wider target area is needed
+      (e.g. on touch-primary surfaces), wrap the badge in a larger cell rather than enlarging it.
+    </div>
+  </section>
+
+</div><!-- /.page -->
+
+<script>
+  /* ── Live token table ────────────────────────────────────────
+     Read each badge's computed colors from the DOM so this table
+     can't fall out of sync with design-system.css. ── */
+  (function () {
+    var BADGES = [
+      { cls: 'type-new',   label: 'New',   meaning: 'First submission' },
+      { cls: 'type-rep',   label: 'Rep',   meaning: 'Replacement version' },
+      { cls: 'type-wdr',   label: 'Wdr',   meaning: 'Withdrawal' },
+      { cls: 'type-cross', label: 'Cross', meaning: 'Cross-list' },
+    ];
+
+    function parseRGB(str) {
+      var m = str.match(/[\d.]+/g);
+      return m ? m.slice(0, 3).map(Number) : [0, 0, 0];
+    }
+
+    function hexFromRGB(c) {
+      return '#' + c.map(function (x) {
+        return Math.round(x).toString(16).padStart(2, '0');
+      }).join('');
+    }
+
+    function lum(c) {
+      var f = c.map(function (v) {
+        v /= 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * f[0] + 0.7152 * f[1] + 0.0722 * f[2];
+    }
+
+    function contrastRatio(a, b) {
+      var L1 = lum(a), L2 = lum(b);
+      var hi = Math.max(L1, L2), lo = Math.min(L1, L2);
+      return (hi + 0.05) / (lo + 0.05);
+    }
+
+    function wcagGrade(r) {
+      return r >= 7 ? 'AAA' : r >= 4.5 ? 'AA' : r >= 3 ? 'AA Large' : null;
+    }
+
+    function swatch(hex) {
+      return '<span class="swatch" style="background:' + hex + '" aria-hidden="true"></span>'
+           + '<code>' + hex + '</code>';
+    }
+
+    var rows = BADGES.map(function (b) {
+      var probe = document.createElement('span');
+      probe.className = 'type-badge ' + b.cls;
+      probe.setAttribute('aria-hidden', 'true');
+      probe.style.position  = 'absolute';
+      probe.style.left      = '-9999px';
+      probe.style.top       = '-9999px';
+      probe.style.visibility = 'hidden';
+      probe.textContent = b.label;
+      document.body.appendChild(probe);
+
+      var cs  = getComputedStyle(probe);
+      var bg  = parseRGB(cs.backgroundColor);
+      var fg  = parseRGB(cs.color);
+      var bd  = parseRGB(cs.borderTopColor);
+
+      probe.remove();
+
+      var r = contrastRatio(fg, bg);
+      var g = wcagGrade(r);
+      var ratioCell = g
+        ? '<span class="ratio-pass">' + r.toFixed(1) + ':1 ✓ ' + g + '</span>'
+        : '<span style="font-weight:700;color:#c62828">' + r.toFixed(1) + ':1 ✗</span>';
+
+      return '<tr>'
+        + '<td class="col-variant"><span class="type-badge ' + b.cls + '">' + b.label + '</span></td>'
+        + '<td>' + b.meaning + '</td>'
+        + '<td>' + swatch(hexFromRGB(bg)) + '</td>'
+        + '<td>' + swatch(hexFromRGB(bd)) + '</td>'
+        + '<td>' + swatch(hexFromRGB(fg)) + '</td>'
+        + '<td>' + ratioCell + '</td>'
+        + '</tr>';
+    }).join('');
+
+    document.getElementById('token-rows').innerHTML = rows;
+
+
+    /* ── Queue filter demo ───────────────────────────────────── */
+    var filterSelect = document.getElementById('queue-type-filter');
+    var queueTable   = document.getElementById('queue-table');
+    var queueFooter  = document.getElementById('queue-footer');
+
+    if (filterSelect && queueTable && queueFooter) {
+      filterSelect.addEventListener('change', function () {
+        var val  = filterSelect.value;
+        var rows = queueTable.querySelectorAll('tbody tr');
+        var shown = 0;
+
+        rows.forEach(function (row) {
+          var match = val === 'all' || row.dataset.type === val;
+          row.classList.toggle('hidden', !match);
+          if (match) shown++;
+        });
+
+        var total = rows.length;
+        queueFooter.textContent = shown < total
+          ? '1–' + shown + ' of ' + total + ' (filtered)'
+          : '1–' + total + ' of ' + total;
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

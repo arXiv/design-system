@@ -1,0 +1,75 @@
+{
+  "tool_calls": {
+    "Read": 8,
+    "Write": 1
+  },
+  "file_reads": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-j162Dp/repo/CONTEXT.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-j162Dp/repo/BRAND.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-j162Dp/repo/DESIGN-POLICIES.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-j162Dp/repo/design-patterns/internal/DESIGN-PROGRESS.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-j162Dp/repo/design-patterns/typography.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-j162Dp/repo/design-patterns/color-mapping.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-j162Dp/repo/design-patterns/internal/design-system.css",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-j162Dp/repo/design-patterns/internal/button-styles.html"
+  ],
+  "greps": [],
+  "bash": [],
+  "files_written": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-j162Dp/repo/design-patterns/internal/bulk-action-styles.html"
+  ],
+  "final_message": "Done. Here's a summary of what was built and every design-system rule applied.\n\n---\n\n## What was built\n\n**`design-patterns/internal/bulk-action-styles.html`** \u2014 a five-state demo page for the moderation queue bulk-action bar.\n\n**States rendered:**\n1. **Idle** \u2014 bar occupies its slot with a muted hint; \"select all\" checkbox is disabled; table is unaffected\n2. **Selection active (3 of 5)** \u2014 lime-tinted bar, count + Clear link + three action buttons, selected rows share the same lime tint, lime bottom border connects bar to table\n3. **Confirm destructive** \u2014 \"Remove selected\" click replaces action buttons with inline \"Remove 3 submissions permanently? [Confirm remove] [Cancel]\" prompt; checkboxes disabled during confirmation; danger bottom border\n4. **Success** \u2014 bar content replaced with success message; approved rows are gone from the table; dismiss returns to idle\n5. **Failure** \u2014 error message; selection preserved (all 3 rows remain checked) so moderator can retry without re-selecting; dismiss returns to active state\n\n**Visual connection to table:** a `.queue-block` wrapper holds both elements with a shared outer border (`1px solid #ddd8d2`, `border-radius: 6px`, `overflow: hidden`). The table surrenders its own border and radius inside the block, creating one seamless unit with no seam at the bar/table join.\n\n---\n\n## Design-system rules applied\n\n| Rule | Source | How applied |\n|---|---|---|\n| Internal tools use **Access Lime** as primary action color | `DESIGN-POLICIES.md` \u2014 Internal vs Public | `btn-primary` (lime fill) for Approve; never Open Blue |\n| **Danger Red** for destructive actions only | `DESIGN-POLICIES.md` \u2014 Colors | `btn-destructive` for Remove; `--danger` border for confirm state |\n| **No off-palette hex values** | `DESIGN-POLICIES.md` \u2014 Colors | All bar state colors draw from existing `--sec-bg`, `--lime`, `--danger`, `--success-*`, `--error-*` tokens; zero new hex values |\n| **4.5:1 text / 3:1 UI contrast** floors (WCAG AA) | `DESIGN-POLICIES.md` \u2014 Accessibility | Count text: `--text` on `--sec-bg` \u226b AAA. Success: `--success-fg` 6.7:1. Error: `--error-fg` 8.6:1. Confirm text: `--danger` 5.17:1 on white \u2713 |\n| `:focus-visible` not `:focus` | `DESIGN-POLICIES.md` \u2014 Accessibility | Dismiss button and all reused `.btn` classes use `:focus-visible` |\n| **Color is never the sole signal** (WCAG 1.4.1) | `DESIGN-POLICIES.md` \u2014 Accessibility | Message states pair icon shape + text with the color change |\n| **Destructive actions require a confirmation step** | `design-system.css` button usage rules | Inline confirm/cancel prompt replaces actions on first click of Remove; never fires on single click |\n| **Spacing scale** (4px base / 8-pt grid) | `DESIGN-POLICIES.md` \u2014 Spacing | Bar uses `--space-2` (8px) for gap; `10px 14px` padding matches `ds-table td` |\n| `prefers-reduced-motion` covers all transitions | `DESIGN-POLICIES.md` \u2014 Chrome and interaction | `@media (prefers-reduced-motion: reduce)` disables bar and dismiss transitions |\n| **IBM Plex Mono** for identifiers; **IBM Plex Sans Condensed** for table headers | `typography.md` | `col-id` uses `IBM Plex Mono`; `ds-table th` already sets Condensed |\n| **`font-variant-numeric: tabular-nums`** for aligned numeric columns | `typography.md` | Applied to `.col-id` and `.col-date` |\n| `role=\"status\"` (polite) for success, `role=\"alert\"` (assertive) for error | `design-system.css` `.ds-alert` usage comment | Applied to bar in success and failure states |\n| `aria-live=\"polite\"` on dynamic selection count | WCAG 4.1.3 + `ds-alert` pattern | `<span aria-live=\"polite\" aria-atomic=\"true\">` on count text |\n| Page-specific styles stay in the page's `<style>` block; `.ds-` prefix reserved for shared components | `DESIGN-POLICIES.md` \u2014 Components | Bulk-bar classes (`.bulk-bar`, `.queue-block`, etc.) are unprefixed page-local; all reused components (`btn`, `btn-primary`, `btn-secondary`, `btn-destructive`, `btn-link`, `btn-tertiary`, `ds-table`, `ds-table-footer`, `type-badge`, `ds-alert`) come from `design-system.css` unchanged |\n| `max-width: 1080px` for data-dense internal tools | `DESIGN-POLICIES.md` \u2014 Layout and content width | Applied to `.page` container |",
+  "usage": {
+    "input_tokens": 11,
+    "cache_creation_input_tokens": 102974,
+    "cache_read_input_tokens": 343687,
+    "output_tokens": 47116,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 102974,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 1,
+        "output_tokens": 1257,
+        "cache_read_input_tokens": 106805,
+        "cache_creation_input_tokens": 12996,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 12996
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "cost_usd": 1.4286520999999999,
+  "num_turns": 10,
+  "duration_ms": 720073,
+  "transcript_lines": 359,
+  "parse_errors": 0,
+  "model": "claude-sonnet-4-6",
+  "is_error": false,
+  "unique_files_read": 8,
+  "re_reads": 0,
+  "task": "02-fidelity-internal",
+  "artifacts": [
+    "design-patterns/internal/bulk-action-styles.html"
+  ],
+  "auto_checks": {
+    "design-patterns/internal/bulk-action-styles.html": {
+      "external CDN resource": [
+        "jsdelivr"
+      ]
+    }
+  },
+  "non_palette_hexes": {},
+  "exit": 0,
+  "wall_seconds": 721
+}

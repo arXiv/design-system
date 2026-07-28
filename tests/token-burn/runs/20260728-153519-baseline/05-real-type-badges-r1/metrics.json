@@ -1,0 +1,79 @@
+{
+  "tool_calls": {
+    "Read": 10,
+    "Bash": 2,
+    "Write": 1
+  },
+  "file_reads": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-hI2z9x/repo/CONTEXT.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-hI2z9x/repo/BRAND.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-hI2z9x/repo/DESIGN-POLICIES.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-hI2z9x/repo/design-patterns/internal/DESIGN-PROGRESS.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-hI2z9x/repo/design-patterns/color-mapping.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-hI2z9x/repo/design-patterns/typography.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-hI2z9x/repo/design-patterns/internal/design-system.css",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-hI2z9x/repo/design-patterns/internal/table-styles.html",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-hI2z9x/repo/design-patterns/internal/alert-styles.html",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-hI2z9x/repo/design-patterns/internal/alert-styles.html"
+  ],
+  "greps": [],
+  "bash": [
+    "find /private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-hI2z9x/repo -name \"*.html\" | sort",
+    "grep -n \"class=\\\"type-badge\\|class=\\\"ds-table\\|class=\\\"ds-filter\\|docs-nav-brand\\|data-theme\" /private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-hI2z9x/repo/design-patterns/internal/ty"
+  ],
+  "files_written": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-hI2z9x/repo/design-patterns/internal/type-badge-styles.html"
+  ],
+  "final_message": "All references look correct. Here is a summary of what was built and every design-system rule applied:\n\n---\n\n## What was built\n\n**`design-patterns/internal/type-badge-styles.html`** \u2014 a dedicated reference page for arXiv's submission type badges, following the exact structure and conventions of the existing internal pattern pages (`alert-styles.html`, `table-styles.html`).\n\n### Content sections\n\n1. **Variants (isolated)** \u2014 all four badges shown on a white demo surface and on the production Warm Wash (`#f9f7f7`) background, each labeled with its class name.\n2. **In context \u2014 moderation queue** \u2014 two realistic `.ds-table` demos: a 6-row queue using all four badge types with a `.ds-filter` type-filter toolbar, and a second table showing a paper that has both a New and a Cross row (the common pattern for a cross-listed submission).\n3. **Color tokens** \u2014 a table documenting every hex value (background, border, text) and verified WCAG contrast ratio for each badge, matching the values already in `design-system.css`.\n4. **Typography and shape** \u2014 shows the badge sitting next to body text and a monospace identifier; explains the Plex Mono choice.\n5. **HTML usage** \u2014 a dark code block with the markup pattern and a screen-reader expansion example.\n\n### Badge CSS reused (not invented)\n\nThe CSS was already complete in `design-system.css` lines 626\u2013674. The page only references those classes:\n- `.type-new` \u2014 `#d4e9ff` bg / `#1a3d78` text / `#93c5fd` border \u2014 **8.5:1 AAA**\n- `.type-rep` \u2014 `#fef3c7` bg / `#7a5c00` text / `#fde68a` border \u2014 **5.6:1 AA**\n- `.type-wdr` \u2014 `#474340` bg / `#ffffff` text / `#474340` border \u2014 **9.8:1 AAA**\n- `.type-cross` \u2014 `#e8e4df` bg / `#4a4540` text / `#cbc5be` border \u2014 **7.5:1 AAA**\n\n### Design-system rules applied\n\n| Rule | How applied |\n|---|---|\n| `data-theme=\"light\"` lock | Set on `<html>` \u2014 badge dark-mode tokens don't exist yet; locking prevents broken states |\n| Internal-tools surface | Page background is Warm Wash `#f9f7f7`; Access Lime `#c4d82e` used only for the page-header underline and callout accent (consistent with every other internal page) |\n| WCAG 1.4.1 \u2014 color alone | Documented explicitly: text label is the primary signal, color is redundant |\n| WCAG contrast floor 4.5:1 | All four badge text/bg pairings verified; lowest is Rep at 5.6:1 (AA) |\n| `.ds-table` + `.ds-filter` | Used exactly as documented in `table-styles.html`; filter includes mandatory \"All\" option per DESIGN-POLICIES.md |\n| Spacing scale | Demo padding uses 16px and 24px (on the 4px/8pt grid); section gaps 60px |\n| No new badge types | Enforced by callout; directed future additions to `design-system.css` with contrast verification |\n| No external fonts | No Google Fonts loaded; body uses `system-ui` stack; badge font falls through to system monospace (following `alert-styles.html` precedent) |\n| Docs-nav | Exact same markup and links as every other page in `design-patterns/internal/` |",
+  "usage": {
+    "input_tokens": 11,
+    "cache_creation_input_tokens": 80263,
+    "cache_read_input_tokens": 471392,
+    "output_tokens": 21387,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 80263,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 1,
+        "output_tokens": 885,
+        "cache_read_input_tokens": 95551,
+        "cache_creation_input_tokens": 1539,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1539
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "cost_usd": 0.9446995999999999,
+  "num_turns": 14,
+  "duration_ms": 341109,
+  "transcript_lines": 214,
+  "parse_errors": 0,
+  "model": "claude-sonnet-4-6",
+  "is_error": false,
+  "unique_files_read": 9,
+  "re_reads": 1,
+  "task": "05-real-type-badges",
+  "artifacts": [
+    "design-patterns/internal/type-badge-styles.html"
+  ],
+  "auto_checks": {},
+  "non_palette_hexes": {
+    "design-patterns/internal/type-badge-styles.html": [
+      "ccc"
+    ]
+  },
+  "exit": 0,
+  "wall_seconds": 342
+}

@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Withdrawn Paper Notice — arXiv Design Patterns</title>
+  <link rel="stylesheet" href="design-system.css">
+  <style>
+    /* ── Page chrome (reference doc only; mirrors the layout of other
+       public pattern pages such as alert-styles.html). The mockup
+       section below simulates a real abstract page — its styles are
+       scoped to .abs-* to keep them from polluting the doc chrome. ── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: var(--arxiv-font-sans);
+      color: var(--arxiv-ink);
+      background: var(--arxiv-warm-wash);
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .page { max-width: 980px; margin: 0 auto; padding: 48px 28px 80px; }
+
+    /* ── Rationale card ── */
+    .rationale {
+      background: #fff;
+      border: 1px solid var(--arxiv-border-light);
+      border-top: 4px solid var(--arxiv-open-blue);
+      border-radius: 0 0 6px 6px;
+      padding: 32px 36px 36px;
+      margin-bottom: 52px;
+    }
+    .rationale-eyebrow {
+      font-family: var(--arxiv-font-condensed);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--arxiv-grey);
+      margin: 0 0 8px;
+    }
+    .rationale h1 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+    .rationale .rationale-intro {
+      color: var(--arxiv-grey);
+      font-size: 14px;
+      margin: 0 0 32px;
+    }
+    .rationale h2 {
+      font-family: var(--arxiv-font-condensed);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--arxiv-grey);
+      margin: 28px 0 6px;
+      padding-top: 20px;
+      border-top: 1px solid var(--arxiv-border-light);
+    }
+    .rationale h2:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+    .rationale p { font-size: 14px; line-height: 1.65; margin: 0 0 10px; max-width: 680px; }
+    .rationale p:last-child { margin-bottom: 0; }
+    .rationale code {
+      font-family: var(--arxiv-font-mono);
+      font-size: 12px;
+      background: var(--arxiv-card-grey);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .policy-cite {
+      display: inline-block;
+      font-family: var(--arxiv-font-condensed);
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--arxiv-archival-blue);
+      border: 1px solid var(--arxiv-tint-border);
+      background: var(--arxiv-tint-light);
+      padding: 1px 6px;
+      border-radius: 3px;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    /* ── Mockup label and frame ── */
+    .mockup-label {
+      font-family: var(--arxiv-font-condensed);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--arxiv-grey-ui);
+      margin: 0 0 10px;
+    }
+    .mockup-frame {
+      background: #fff;
+      border: 1px solid var(--arxiv-border-light);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    /* ── Abstract page chrome (scoped to .abs-*) ── */
+    .abs-header {
+      background: #111;
+      padding: 10px 28px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .abs-header-logo {
+      color: #fff;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    /* Campus Red used only for the logo X mark per color-mapping.md */
+    .abs-header-logo-x { color: #b31b1b; }
+    .abs-header-nav { display: flex; gap: 20px; margin-left: auto; }
+    .abs-header-nav a {
+      color: rgba(255,255,255,0.82);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .abs-header-nav a:hover { color: #fff; text-decoration: underline; }
+    .abs-header-nav a:focus-visible {
+      outline: 2px solid var(--arxiv-focus-ring-dark);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    .abs-body { padding: 28px 36px 48px; }
+
+    .abs-context {
+      font-family: var(--arxiv-font-condensed);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--arxiv-grey);
+      margin: 0 0 18px;
+    }
+    .abs-context a {
+      color: var(--arxiv-link-blue);
+      text-decoration: none;
+    }
+    .abs-context a:hover { text-decoration: underline; }
+
+    .abs-title {
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.3;
+      margin: 0 0 10px;
+      max-width: 720px;
+    }
+    .abs-authors {
+      font-size: 14px;
+      color: var(--arxiv-ink);
+      margin: 0 0 20px;
+    }
+    .abs-authors a {
+      color: var(--arxiv-link-blue);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .abs-authors a:hover { color: var(--arxiv-link-hover); }
+
+    /* No new CSS needed for the withdrawn notice itself —
+       .ds-alert and .ds-alert-warning from design-system.css carry it. */
+    .abs-withdrawn-wrap { margin: 0 0 24px; max-width: 720px; }
+
+    .abs-section { margin-bottom: 28px; }
+    .abs-section-label {
+      font-family: var(--arxiv-font-condensed);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--arxiv-grey);
+      margin: 0 0 8px;
+    }
+    .abs-abstract {
+      font-size: 15px;
+      line-height: 1.65;
+      max-width: 720px;
+      margin: 0;
+      color: var(--arxiv-ink);
+    }
+
+    .abs-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .abs-divider {
+      border: none;
+      border-top: 1px solid var(--arxiv-border-light);
+      margin: 24px 0;
+    }
+
+    /* Version display — per CONTEXT.md: current version is bold
+       Repository Brown (aria-current, not a link); prior versions
+       are Link Blue and underlined. */
+    .abs-versions {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 4px 10px;
+      font-size: 13px;
+      color: var(--arxiv-grey);
+    }
+    .version-current {
+      font-weight: 600;
+      color: var(--arxiv-ink);
+    }
+    .version-link {
+      color: var(--arxiv-link-blue);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .version-link:hover { color: var(--arxiv-link-hover); }
+    /* .type-wdr badge: "dark" per DESIGN-POLICIES.md —
+       Repository Brown background signals the most serious submission state. */
+    .type-wdr {
+      display: inline-block;
+      font-family: var(--arxiv-font-condensed);
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: var(--arxiv-ink);
+      color: #fff;
+      vertical-align: middle;
+      line-height: 1.4;
+      margin-left: 4px;
+    }
+    .version-dot {
+      color: var(--arxiv-grey-dis);
+      user-select: none;
+    }
+
+    /* ── Dark mode for doc chrome only (mockup defaults to white per
+       color-mapping.md "public pages: page background white") ── */
+    @media (prefers-color-scheme: dark) {
+      body { background: #1c1a17; color: #f0eeec; }
+      .rationale { background: #252118; border-color: #3a3530; color: #f0eeec; }
+      .rationale .rationale-intro { color: #b0aba6; }
+      .rationale p { color: #e0dcd7; }
+      .rationale h2 { color: #8b8680; border-top-color: #3a3530; }
+      .rationale code { background: #302c28; color: #f0eeec; }
+      .mockup-frame { border-color: #3a3530; }
+    }
+
+    /* ── Shared docs nav strip ── */
+    .docs-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px 14px;
+      flex-wrap: wrap;
+      background: var(--arxiv-card-grey);
+      border-bottom: 1px solid var(--arxiv-border-light);
+      padding: 8px 28px;
+      font-size: 13px;
+    }
+    .docs-nav-brand {
+      font-weight: 600;
+      color: var(--arxiv-ink);
+      text-decoration: none;
+      margin-right: 8px;
+    }
+    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
+    .docs-nav a:not(.docs-nav-brand) { color: var(--arxiv-grey); text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: var(--arxiv-ink); text-decoration: underline; }
+    .docs-nav a:focus-visible {
+      outline: 2px solid var(--arxiv-link-blue);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+    .docs-nav .is-here { color: var(--arxiv-ink); font-weight: 600; }
+    .docs-nav-spacer { flex: 1; }
+    .docs-nav .docs-nav-mock { color: var(--arxiv-grey-ui); font-size: 12px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ds-alert-dismiss { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../../index.html">arXiv Design System</a>
+  <a href="../colors.html">Colors</a>
+  <a href="../typography.html">Typography</a>
+  <a href="../spacing.html">Spacing</a>
+  <a href="../buttons.html">Buttons</a>
+  <a href="../alerts.html">Alerts</a>
+  <a href="withdrawn-notice-styles.html" class="is-here">Withdrawn notice</a>
+  <a href="../organizing-content.html">Organizing content</a>
+  <a href="../../doc.html?src=DESIGN-POLICIES.md">Policies</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="docs-nav-mock">Mockups:</span>
+  <a href="../../mockups/abstract-redesign.html">Abstract</a>
+  <a href="../../mockups/merged-abstract-reader.html">Reader</a>
+</nav>
+
+<div class="page">
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       RATIONALE
+       Every major decision below names the specific source document that
+       motivated it (BRAND.md, CONTEXT.md, color-mapping.md, or
+       DESIGN-POLICIES.md), so the reasoning is auditable and not just
+       a matter of taste.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <div class="rationale">
+    <p class="rationale-eyebrow">New pattern — author-initiated withdrawal</p>
+    <h1>Withdrawn Paper Notice</h1>
+    <p class="rationale-intro">
+      Design rationale for the withdrawn-paper treatment on
+      <code>arxiv.org/abs/…</code> abstract pages. No prior pattern exists
+      for this state; each decision below is traced to the design system
+      documents that settled it.
+    </p>
+
+    <h2>1. Warning variant, not error — <span class="policy-cite">color-mapping.md › Status &amp; alert colors</span></h2>
+    <p>
+      The notice uses <code>.ds-alert-warning</code> (amber,
+      <code>--arxiv-warning-*</code>), not <code>.ds-alert-error</code> (red).
+      <code>color-mapping.md</code> defines Error/failure for "destructive
+      actions, error states" — system failures and unrecoverable problems.
+      A withdrawal is neither: most withdrawals are honest scientific
+      corrections (an arithmetic error, a flawed assumption) made by
+      responsible authors. Using the error variant would imply misconduct
+      or failure where none exists and would be a false signal to the reader.
+    </p>
+    <p>
+      Warning is the right register: "proceed with awareness." This choice
+      is grounded directly in a precedent <code>CONTEXT.md</code> already
+      sets: "An older-version notice uses the <code>.ds-alert</code> warning
+      variant." Withdrawal is a more consequential instance of the same
+      semantic — both tell the reader "the state of this paper is not what
+      you might assume."
+    </p>
+    <p>
+      The notice uses <code>role="alert"</code> (assertive) rather than
+      <code>role="status"</code> (polite), matching the rule in
+      <code>design-system.css</code>: assertive for warning and error states.
+      A screen reader user hears the notice announced immediately without
+      having to navigate to it.
+    </p>
+
+    <h2>2. Position: after authors, before the abstract — <span class="policy-cite">BRAND.md › #1 Interface gets out of the way</span></h2>
+    <p>
+      The notice appears after the author list and before the abstract. Two
+      constraints pull in opposite directions, and this is the only position
+      that satisfies both.
+    </p>
+    <p>
+      The title and authors are the paper's permanent scholarly identity.
+      They remain valid and unchanged after withdrawal — a researcher citing
+      this paper cites it by those facts. Placing the notice above them
+      would suggest the paper's very identity is suspect. That is false and
+      unfair to the authors.
+    </p>
+    <p>
+      Below the abstract, a reader could absorb the paper's claims — possibly
+      invalidated ones — before seeing the warning. A reader arriving from a
+      citation may have no idea the paper was withdrawn. The notice must
+      appear before any content that could be acted on (cited, forwarded,
+      used as evidence).
+    </p>
+    <p>
+      After authors, before abstract is the only slot. The notice is
+      contextual and in-flow — not a modal, not a sticky overlay.
+      <code>BRAND.md #1</code> ("The interface gets out of the way") and
+      the Chrome and interaction structure rules in
+      <code>DESIGN-POLICIES.md</code> ("Sticky chrome is exceptional") both
+      support an in-flow, non-sticky treatment.
+    </p>
+
+    <h2>3. Tone: factual, non-judgmental, transparent — <span class="policy-cite">BRAND.md › Voice</span></h2>
+    <p>
+      <code>BRAND.md</code> Voice: "Honest — we say what's true, including
+      the unflattering parts. Plainspoken — short words, direct sentences."
+    </p>
+    <p>
+      The notice leads with "Withdrawn" (the bare, unambiguous fact), states
+      the date, shows the author's reason verbatim in italics, and closes
+      with a reassurance about the scholarly record. No legal register, no
+      euphemism ("this paper has been deprecated"), no blame language ("this
+      paper contains errors"). The reason is the most honest thing arXiv can
+      surface — it comes from the author and trusts the reader to interpret it.
+    </p>
+    <p>
+      The reassurance that all versions remain downloadable directly addresses
+      the anxiety a researcher who has already cited this paper might have:
+      their citation is still valid and the record is still accessible.
+    </p>
+
+    <h2>4. Persistent, not dismissible — <span class="policy-cite">DESIGN-POLICIES.md › Content and interaction</span></h2>
+    <p>
+      The <code>.ds-alert</code> component supports a dismiss button; the
+      withdrawn notice does not use it. Withdrawal is permanent — there is
+      no future state in which a reader should arrive at the page without
+      knowing the paper has been withdrawn. A dismissible notice could be
+      closed on one visit and forgotten on a return visit, defeating the
+      purpose of the warning.
+    </p>
+
+    <h2>5. Downloads unchanged — <span class="policy-cite">CONTEXT.md › Versions</span></h2>
+    <p>
+      The paper content stays downloadable. arXiv's explicit policy is that
+      the scholarly record is never deleted. The download buttons appear at
+      their standard weight and styling — no modification needed and no
+      modification appropriate. Because the withdrawn notice is positioned
+      before the abstract, no reader reaches the download buttons without
+      first seeing the withdrawn status. The page's natural flow handles the
+      ordering; no button treatment change is required.
+    </p>
+
+    <h2>6. WCAG 1.4.1 — color never the sole signal — <span class="policy-cite">DESIGN-POLICIES.md › Accessibility</span></h2>
+    <p>
+      <code>DESIGN-POLICIES.md</code>: "Never use color as the sole means of
+      conveying information. Always provide a secondary cue (text, icon,
+      position change)."
+    </p>
+    <p>
+      The notice pairs the amber background with a warning-triangle SVG icon
+      (<code>aria-hidden="true"</code>, so it does not double-read) and a
+      bold leading keyword "Withdrawn" in <code>.ds-alert-title</code>. In
+      forced-colors mode, the amber hue collapses to a system color but the
+      icon shape and the word "Withdrawn" still carry the meaning. The warning
+      fg <code>#7a5c00</code> on warning bg <code>#fff8e1</code> = 5.9:1,
+      clearing AA.
+    </p>
+
+    <h2>7. Version row: current version labeled WDR — <span class="policy-cite">CONTEXT.md › Versions; DESIGN-POLICIES.md › Submission type badges</span></h2>
+    <p>
+      <code>CONTEXT.md</code> version treatment: "The current version is bold
+      Repository Brown with <code>aria-current</code>, not a link." The
+      withdrawn version inherits this treatment and adds a
+      <code>.type-wdr</code> badge alongside it.
+      <code>DESIGN-POLICIES.md</code> names <code>.type-wdr</code> as "dark"
+      in the submission-type badge palette — Repository Brown background,
+      white text, consistent with how that badge appears in internal tools
+      (arXiv Check submission type column). Prior versions remain available
+      as standard Link Blue underlined links per the established version
+      pattern. No new tokens are needed; all styling comes from
+      <code>design-system.css</code> and palette values already documented
+      in <code>color-mapping.md</code>.
+    </p>
+  </div>
+  <!-- /RATIONALE -->
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       MOCKUP — abstract page fragment for a withdrawn paper
+       ═══════════════════════════════════════════════════════════════════ -->
+  <p class="mockup-label">Abstract page fragment — withdrawn paper</p>
+
+  <div class="mockup-frame">
+
+    <!-- Minimal header, Phase 1 (black bar per color-mapping.md) -->
+    <header class="abs-header">
+      <a class="abs-header-logo" href="#" aria-label="arXiv home">
+        ar<span class="abs-header-logo-x" aria-hidden="true">X</span>iv
+      </a>
+      <nav class="abs-header-nav" aria-label="Site navigation">
+        <a href="#">Search</a>
+        <a href="#">Submit</a>
+        <a href="#">Donate</a>
+        <a href="#">Log in</a>
+      </nav>
+    </header>
+
+    <main class="abs-body">
+
+      <!-- Context / breadcrumb line -->
+      <p class="abs-context">
+        <a href="#">cs</a>
+        <span aria-hidden="true"> › </span>
+        <a href="#">cs.LG</a>
+        <span aria-hidden="true"> › </span>
+        arXiv:2603.14821
+      </p>
+
+      <!-- Paper title — unchanged by withdrawal -->
+      <h1 class="abs-title">
+        Quantum-enhanced optimization of neural network training: A logarithmic speedup
+      </h1>
+
+      <!-- Authors — unchanged by withdrawal -->
+      <p class="abs-authors">
+        <a href="#">Wei Zhang</a>,
+        <a href="#">Aigerim Bekova</a>,
+        <a href="#">Santiago Pérez</a>
+      </p>
+
+      <!-- ═══════════════════════════════════════════════════════════════
+           WITHDRAWN NOTICE
+           Uses .ds-alert + .ds-alert-warning from design-system.css with
+           no new tokens. role="alert" (assertive) per design-system.css
+           convention for warning and error states.
+           ═══════════════════════════════════════════════════════════════ -->
+      <div class="abs-withdrawn-wrap">
+        <div class="ds-alert ds-alert-warning" role="alert">
+          <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+            <path d="M12 9v4"/>
+            <path d="M12 17h.01"/>
+          </svg>
+          <div class="ds-alert-content">
+            <p class="ds-alert-title">Withdrawn</p>
+            <p>
+              The authors withdrew this paper on 14 April 2026.
+              Reason: <em>"An error in the complexity analysis in Section 3
+              invalidates the claimed logarithmic speedup. The correct scaling
+              is quadratic, which does not improve on classical methods."</em>
+            </p>
+            <p>All versions remain available for download.</p>
+          </div>
+        </div>
+      </div>
+      <!-- /WITHDRAWN NOTICE -->
+
+      <!-- Abstract — still shown; it is the scholarly record of what
+           the paper claimed, and researchers need it. -->
+      <section class="abs-section" aria-labelledby="abs-abstract-lbl">
+        <p class="abs-section-label" id="abs-abstract-lbl">Abstract</p>
+        <p class="abs-abstract">
+          We present a quantum algorithm for optimizing neural network parameters
+          that achieves a logarithmic speedup over gradient descent on certain
+          loss landscapes. The algorithm exploits quantum interference to escape
+          local minima and leverages amplitude estimation to evaluate the loss
+          function in O(log n) oracle queries. We demonstrate the approach on
+          benchmark image-classification tasks and show empirical convergence
+          rates consistent with the theoretical bound.
+        </p>
+      </section>
+
+      <hr class="abs-divider" role="none">
+
+      <!-- Download — paper content remains available per arXiv policy.
+           Buttons at standard weight; page flow ensures readers see the
+           withdrawn notice before reaching these actions. -->
+      <section class="abs-section" aria-labelledby="abs-download-lbl">
+        <p class="abs-section-label" id="abs-download-lbl">Download</p>
+        <div class="abs-actions">
+          <a href="#" class="ds-btn ds-btn-primary">PDF</a>
+          <a href="#" class="ds-btn ds-btn-secondary">HTML</a>
+          <a href="#" class="ds-btn ds-btn-secondary">TeX Source</a>
+        </div>
+      </section>
+
+      <hr class="abs-divider" role="none">
+
+      <!-- Version display — current (withdrawn) version: bold Repository Brown
+           + .type-wdr badge. Prior versions: Link Blue underlined links.
+           Per CONTEXT.md version treatment (text links, not filled pills). -->
+      <section class="abs-section" aria-labelledby="abs-versions-lbl">
+        <p class="abs-section-label" id="abs-versions-lbl">Versions</p>
+        <div class="abs-versions">
+          <span>
+            <span class="version-current" aria-current="page">v3</span><span
+              class="type-wdr" aria-label="withdrawn">WDR</span>
+          </span>
+          <span class="version-dot" aria-hidden="true">·</span>
+          <a href="#" class="version-link">v2</a>
+          <span class="version-dot" aria-hidden="true">·</span>
+          <a href="#" class="version-link">v1</a>
+          <span class="version-dot" aria-hidden="true">·</span>
+          <span>Submitted 3 March 2026</span>
+        </div>
+      </section>
+
+    </main>
+  </div>
+  <!-- /MOCKUP -->
+
+</div><!-- /page -->
+</body>
+</html>
