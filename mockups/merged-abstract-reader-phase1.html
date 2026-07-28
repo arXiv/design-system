@@ -189,14 +189,12 @@
   WORKFLOW layer (zoom / copy / permalink), not the math
   accessibility layer (which is Deyan's territory).
 
-  UPDATE 2026-06-12: the read-aloud ("Listen") feature now runs Speech
-  Rule Engine client-side to SPEAK equations (ClearSpeak, lazy-loaded,
-  self-hosted in lib/sre/). This does not change the position above —
-  the AT path (screen readers) remains browser+AT over native MathML,
-  where NVDA/JAWS already run MathCAT/SRE themselves. SRE here serves
-  only arXiv's own Listen feature, which targets listeners WITHOUT
-  screen readers. It needs no Intent annotations to work today;
-  Intent adoption will improve its semantic accuracy over time.
+  PHASE 1 UPDATE 2026-07-28: the read-aloud ("Listen") feature and its
+  Speech Rule Engine integration were removed from this phase 1 copy —
+  too much complexity for phase 1. The AT path (screen readers) remains
+  browser+AT over native MathML, where NVDA/JAWS already run
+  MathCAT/SRE themselves. See the parent mockup for the full Listen
+  treatment and its SRE rationale.
   Expert review (Deyan Ginev, 2026-06-12) set the direction: literal
   readouts as the baseline (SRE now runs MathSpeak here, not
   ClearSpeak), with MathCAT-as-WebAssembly the named successor — it
@@ -678,8 +676,8 @@ a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
   width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
   background: rgba(255,255,255, 0.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   /* Top hairline: marks the threshold where the abstract/tools zone ends and
-     the paper begins, and gives the row a shared edge so Listen / Contents /
-     PDF don't read as floating. */
+     the paper begins, and gives the row a shared edge so the Contents lozenge
+     and Abstract / PDF / TeX tools don't read as floating. */
   border-top: 1px solid var(--arxiv-border-light);
   border-bottom: 1px solid transparent;
   /* Transition padding so the compact-on-scroll state animates smoothly. */
@@ -689,7 +687,7 @@ a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
    spacer balances the right-hand tools column). */
 .mg-toc-bar-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; }
 /* .mg-toc-bar scope beats the base `.new-html-nav { justify-self: end }`. */
-.mg-toc-bar .mg-toc-listen { justify-self: start; }
+.mg-toc-bar .mg-toc-spacer { justify-self: start; }
 .mg-toc-wrap { justify-self: center; }
 .mg-toc-tools { justify-self: end; }
 .mg-toc-bar .nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
@@ -697,6 +695,12 @@ a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
    the tool text labels to icons, and shrink the lozenge. */
 .mg-toc-bar.is-stuck { padding: 4px 0; }
 .mg-toc-bar.is-stuck .nav-label { display: none; }
+/* Exception: the Abstract link keeps its text label even in the compact
+   state. It's navigation, not a format download — a bare ← reads as
+   browser-back, and no icon unambiguously means "abstract page". The
+   PDF / TeX glyphs survive compaction because they're recognizable
+   format marks; a direction arrow isn't. */
+.mg-toc-bar.is-stuck .mg-abs-link .nav-label { display: inline; }
 .mg-toc-bar.is-stuck .mg-toc-trigger { padding: 4px 13px; font-size: 0.8rem; }
 /* On narrow viewports the labels would crowd the lozenge — show icons only. */
 @media (max-width: 760px) {
@@ -2232,12 +2236,12 @@ cite.ltx_cite.cite-active-source a.ltx_ref {
    │  LaTeXML default closely. flex-wrap lets short equations get a   │
    │  two-column chip layout while tall equations get one column.     │
    │                                                                  │
-   │  The four chips (single-tier reveal, all together):              │
+   │  The three chips (single-tier reveal, all together):             │
    │    1. View TeX     toggles inline math ↔ TeX source              │
    │    2. Copy         copies whatever's currently displayed         │
    │                    (MathML in math view, TeX in TeX view)        │
    │    3. Permalink    copies #S2.E1-style URL                       │
-   │    4. Listen       disabled — forward-looking proposal           │
+   │  (Phase 1: the fourth "Listen" chip was removed with read-aloud.)│
    │  Chips 1 and 2 are visually adjacent because copy depends on     │
    │  the toggle state — proximity makes the relationship clear.      │
    │                                                                  │
@@ -2969,48 +2973,10 @@ html:not(.js) .reading-progress { display: none !important; }
 }
 
 
-/* ┌──────────────────────────────────────────────────────────────────┐
-   │  9b.  READ-ALOUD (text-to-speech)                                │
-   ├──────────────────────────────────────────────────────────────────┤
-   │  Functional whole-paper read-aloud via the browser's built-in    │
-   │  Web Speech API (speechSynthesis) — no external service, no      │
-   │  audio files, consistent with the no-third-party-tools position. │
-   │                                                                  │
-   │  Audience note: this serves SIGHTED listeners — dyslexia (Smith: │
-   │  "I can read the maths but not the text"), fatigue (Wayne Dick:  │
-   │  "text to speech combats fatigue"), and multitask reading.       │
-   │  Screen-reader users have their own, better TTS — this feature   │
-   │  must never interfere with AT (it only speaks on explicit        │
-   │  request).                                                       │
-   │                                                                  │
-   │  The currently-spoken paragraph carries a quiet active-family    │
-   │  wash (G4: light blue = arXiv layer speaking) — doubling as the  │
-   │  reading-line tracking that dyslexia research asks for.          │
-   └──────────────────────────────────────────────────────────────────┘ */
-
-/* The hidden attribute loses to our explicit display:inline-flex on
-   nav buttons (UA [hidden] rule has lower precedence than author
-   display) — without this, the skip buttons occupy invisible width
-   and blow the 320px reflow budget. */
-.tts-skip[hidden] { display: none !important; }
-
-.tts-trigger.is-speaking {
-  background: var(--arxiv-active-bg) !important;
-  color: var(--arxiv-ink) !important;
-}
-.tts-now-reading {
-  background: var(--arxiv-active-bg);
-  border-radius: 3px;
-  box-shadow: 0 0 0 6px var(--arxiv-active-bg); /* bleed past the text box */
-  transition: background 0.2s ease;
-}
-@media (prefers-reduced-motion: reduce) {
-  .tts-now-reading { transition: none; }
-}
-/* Hidden without JS (pure enhancement) and when speechSynthesis is
-   unsupported (JS removes the control). */
-html:not(.js) .tts-trigger { display: none !important; }
-@media print { .tts-trigger { display: none !important; } }
+/* (9b READ-ALOUD removed for phase 1 — the Listen / text-to-speech
+   feature was cut from the phase 1 scope as too much complexity.
+   See the parent mockup merged-abstract-reader.html for the full
+   treatment and its research rationale.) */
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  10a. SECTION-HEADING PERMALINKS                                 │
@@ -3323,9 +3289,8 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
       </button>
     </div>
     <nav class="new-html-nav" aria-label="Paper navigation">
-      <!-- (Listen / read-aloud controls moved to the sticky TOC bar when the
-           reader-view toggle was removed; this header is now vestigial,
-           kept hidden via `body:not(.mg-reader)`.) -->
+      <!-- (This header is vestigial — kept hidden via `body:not(.mg-reader)`.
+           Phase 1 removed the Listen / read-aloud controls entirely.) -->
       <!-- Back to abstract: the abstract page is the paper's "home." Arrow
            points left to suggest navigating backward in the paper's hierarchy. -->
       <a href="https://arxiv.org/abs/2604.22725v1" title="Back to abstract">
@@ -3783,8 +3748,12 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
      full category name (internal feedback 2026-06-11: one tester missed
      the category when only the [gr-qc] code was shown), DOI (many
      readers land here directly without passing the abstract page —
-     internal feedback 2026-06-11), and license. -->
-<p class="new-watermark"><img src="images/smileybones-small-grayscale.svg" alt=""><span aria-hidden="true">arXiv:2604.22725v1 [gr-qc] General Relativity and Quantum Cosmology &middot; 24 April 2026</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1, primary category General Relativity and Quantum Cosmology, submitted 24 April 2026</span> &ensp; <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a> &ensp; <a href="https://info.arxiv.org/help/license/index.html#licenses-available"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">License: CC BY 4.0</abbr></a></p><div class="ltx_page_content">
+     internal feedback 2026-06-11), and license. Phase 1 adds a
+     "Back to abstract page" link here: the abstract page remains the
+     paper's canonical home, and the route back must be visible at the
+     top of the page without adding paper-level links to the dark
+     site header. -->
+<p class="new-watermark"><img src="images/smileybones-small-grayscale.svg" alt=""><span aria-hidden="true">arXiv:2604.22725v1 [gr-qc] General Relativity and Quantum Cosmology &middot; 24 April 2026</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1, primary category General Relativity and Quantum Cosmology, submitted 24 April 2026</span> &ensp; <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a> &ensp; <a href="https://info.arxiv.org/help/license/index.html#licenses-available"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">License: CC BY 4.0</abbr></a> &ensp; <a class="wm-abs-link" href="https://arxiv.org/abs/2604.22725v1">Back to abstract page</a></p><div class="ltx_page_content">
 <article class="ltx_document ltx_authors_1line" lang="en">
 <!-- mg-top: title spans full content width; the row below puts
      authors+abstract (left) beside the document-tools rail (right). In
@@ -3795,12 +3764,15 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   Submitted <time datetime="2026-04-24">24 Apr 2026</time> (this version)
   &nbsp;
   <span class="mg-vl is-current" aria-current="true" aria-label="Version 1, the version you are viewing">v1</span>
-  <a href="#v2" class="mg-vl is-other" aria-label="View version 2">v2</a>
-  <a href="#v3" class="mg-vl is-other" aria-label="View version 3">v3</a>
+  <!-- Phase 1 rule: version links always target /abs/ pages, never /html/ —
+       an HTML rendering may not exist for a given version (no-TeX or
+       failed-conversion papers), while the abstract page always exists. -->
+  <a href="https://arxiv.org/abs/2604.22725v2" class="mg-vl is-other" aria-label="View version 2">v2</a>
+  <a href="https://arxiv.org/abs/2604.22725v3" class="mg-vl is-other" aria-label="View version 3">v3</a>
 </p>
 <div class="mg-verwarn" role="status">
   <svg class="mg-verwarn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-  <p><strong>You are viewing version 1.</strong> A newer version is available &mdash; <a href="#v3">version 3, revised 28 Jun 2026</a>.</p>
+  <p><strong>You are viewing version 1.</strong> A newer version is available &mdash; <a href="https://arxiv.org/abs/2604.22725v3">version 3, revised 28 Jun 2026</a>.</p>
 </div>
 <div class="ltx_authors">
   <ul class="ltx_authors-list">
@@ -3981,26 +3953,17 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 </div><!-- /.mg-top -->
 
 <!-- ══ Sticky paper-tools bar: TOC lozenge (centered, emphasis) flanked by
-        plain-text Listen / PDF / TeX Source tools (right). Borrows the
+        plain-text Abstract / PDF / TeX Source tools (right). Borrows the
         reader-view nav, minus the logo. Compacts on scroll (see
         .mg-toc-bar.is-stuck). The left spacer keeps the lozenge centered in
         the viewport via the 1fr | auto | 1fr grid. ══ -->
 <div class="mg-toc-bar" id="mg-toc-bar">
   <div class="mg-toc-bar-inner">
-    <!-- Listen / read-aloud on the LEFT (moved from the retired reader
-         header; same IDs so the existing TTS script keeps driving it). -->
-    <nav class="new-html-nav mg-toc-listen" aria-label="Listen">
-      <button type="button" id="tts-trigger" class="tts-trigger" aria-pressed="false" title="Read this paper aloud">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-        <span class="nav-label" id="tts-trigger-label">Listen</span>
-      </button>
-      <button type="button" id="tts-prev" class="tts-skip" aria-label="Previous paragraph" title="Previous paragraph (left arrow)" hidden>
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
-      </button>
-      <button type="button" id="tts-next" class="tts-skip" aria-label="Next paragraph" title="Next paragraph (right arrow)" hidden>
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
-      </button>
-    </nav>
+    <!-- Left spacer. (Phase 1: the Listen / read-aloud control that lived in
+         this cell was removed — too much complexity for phase 1. The empty
+         div keeps the 1fr | auto | 1fr grid so the Contents lozenge stays
+         centered in the viewport.) -->
+    <div class="mg-toc-spacer" aria-hidden="true"></div>
     <div class="mg-toc-wrap">
       <button class="mg-toc-trigger" id="mg-toc-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mg-toc-dropdown">
         <svg class="toc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
@@ -4018,6 +3981,14 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
       </nav>
     </div>
     <nav class="new-html-nav mg-toc-tools" aria-label="Paper tools">
+      <!-- Back to abstract (phase 1): the abstract page stays the paper's
+           canonical home, so the route back rides in the always-visible
+           tools bar. Arrow icon + text label — the label carries the
+           meaning; an arrow alone reads as browser-back. -->
+      <a class="mg-abs-link" href="https://arxiv.org/abs/2604.22725v1" title="Back to abstract">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        <span class="nav-label">Abstract</span>
+      </a>
       <a href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener noreferrer" title="Download PDF">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
         <span class="nav-label">PDF</span>
@@ -7651,11 +7622,11 @@ We thus see that</p>
      3. Add a <pre class="eqn-tex-view"> sibling holding the TeX source,
         hidden by default.
 
-   The four chips, in DOM order (top to bottom in the margin):
+   The three chips, in DOM order (top to bottom in the margin):
      - View TeX / View math (toggle)        — controls what's displayed
      - Copy                                  — copies current display
      - Permalink                             — copies #S2.E1 URL
-     - Listen                                — disabled placeholder
+   (Phase 1: the "Listen" placeholder chip was removed with read-aloud.)
 
    Toggle and Copy sit adjacent so their relationship reads naturally:
    the toggle controls the form, copy captures the form.
@@ -7674,7 +7645,6 @@ We thus see that</p>
   var ICON_TOGGLE_TEX = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>';
   var ICON_COPY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
   var ICON_LINK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
-  var ICON_LISTEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>';
 
   // Detect touch / no-hover device once at load. Touch-only devices use
   // tap-to-activate instead of hover-to-reveal.
@@ -7797,22 +7767,9 @@ We thus see that</p>
       chips.appendChild(linkChip);
     }
 
-    // 4. Listen — rendered as a disabled forward-looking proposal.
-    //    No click handler. Tooltip explains.
-    var listenChip = makeChip({
-      icon: ICON_LISTEN,
-      label: 'Listen',
-      ariaLabel: 'Listen (proposed feature)',
-      disabled: true,
-      disabledHint: 'Listen — proposed Intent-driven speech (not yet enabled)'
-    });
-    listenChip.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      // Intentional no-op; the chip is rendered as a forward-looking
-      // proposal, not a working feature.
-    });
-    chips.appendChild(listenChip);
+    // (Phase 1: the fourth "Listen" chip — a disabled forward-looking
+    //  proposal for per-equation speech — was removed along with the
+    //  page-level read-aloud feature.)
 
     region.insertBefore(chips, region.firstChild);
   }
@@ -8330,372 +8287,10 @@ We thus see that</p>
   });
 })();
 
-/* ─────────────────────────────────────────────────────────────────
-   BEHAVIOR 4b: Read-aloud (Web Speech API)
-   ─────────────────────────────────────────────────────────────────
-   Functional text-to-speech of the paper body. See the READ-ALOUD CSS
-   block for audience rationale. Interaction contract:
-
-     - Click "Listen": speaks from the first paragraph currently in
-       view (not the top — the reader resumes where the user is).
-       Button becomes "Pause" (aria-pressed=true); previous/next skip
-       buttons appear beside it.
-     - Click again: pauses. Click again: resumes. Esc: stops fully.
-     - KEYBOARD (active only while listening; media-player grammar —
-       the closest convention users know for spoken content; there is
-       no formal web standard for TTS widgets): Left/Right arrows skip
-       a paragraph, Space pauses/resumes, Esc stops. Never intercepted
-       while focus is in an interactive element. At rest all keys
-       behave normally.
-     - The paragraph being spoken carries .tts-now-reading (visual
-       reading-line tracking — the dyslexia research ask) and is kept
-       in view with reduced-motion-aware scrolling.
-     - One utterance per paragraph (long single utterances break in
-       Chrome); onend chains to the next block.
-
-   Content handling (quality of listening over completeness):
-     - Reads: section headings (announced as "Section. Title"),
-       paragraph prose, figure captions.
-     - Math SPEAKS FOR REAL (added 2026-06-12 after internal testing:
-       "Equation 2.3 is not what a blind user needs — they need to
-       hear the equation itself"). Display equations announce their
-       number, then the mathematics via Speech Rule Engine (MathSpeak —
-       literal rules; expert review chose verbose-but-correct over
-       interpretive-but-misleading) run on the LaTeXML MathML — the
-       same engine family behind
-       MathJax's a11y extensions and screen-reader math. Inline math
-       speaks the same way. SRE is lazy-loaded on first Listen (~1 MB,
-       self-hosted); invisible operators (U+2061/2062/200B) are
-       stripped first (the historical "zero width space" misreadings).
-       If the engine fails to load, reading degrades to the previous
-       equation-number fallback rather than blocking. This is the
-       TODAY answer; MathML Intent improves speech as author adoption
-       grows, and a production alternative is precomputing speech
-       strings at conversion time (zero client cost).
-     - Skips: inline citation brackets (Miner's "auditory disturbance"
-       — the skim-suppression research applied to ears), footnote
-       markers, the bibliography, chrome.
-
-   Lifecycle safety: speechSynthesis.cancel() on page hide (browsers
-   otherwise keep speaking after navigation); the control is removed
-   when the API is unavailable; never auto-starts. Screen-reader users
-   have their own TTS — this speaks only on explicit request.
-*/
-(function() {
-  if (!('speechSynthesis' in window)) {
-    document.addEventListener('DOMContentLoaded', function() {
-      var t = document.getElementById('tts-trigger');
-      if (t) {
-        var d = t.nextElementSibling;
-        if (d && d.classList.contains('new-html-divider')) d.remove();
-        t.remove();
-      }
-    });
-    return;
-  }
-
-  var synth = window.speechSynthesis;
-  var trigger = null, triggerLabel = null, prevBtn = null, nextBtn = null;
-  var queue = [];       // [{el, text}]
-  var idx = -1;
-  var state = 'idle';   // idle | speaking | paused
-  var currentEl = null;
-  var gen = 0;          // generation guard: skipping cancels the current
-                        // utterance, whose onend would otherwise race a
-                        // chained speakFrom against the skip's own.
-
-  /* ── Math speech: Speech Rule Engine (lazy-loaded) ──
-     SRE converts the LaTeXML-emitted MathML to spoken English
-     (MathSpeak rules — see the domain note in ensureSRE for why
-     literal beats interpretive on research math, per Deyan Ginev's
-     review). Loaded on the FIRST Listen click only (~1 MB total:
-     engine + English locale), self-hosted in lib/sre/ per the
-     no-external-services policy. If loading fails, reading proceeds
-     with the "Equation N" fallback rather than blocking. Speech per
-     equation is computed once and cached on the element.
-
-     Named successor (not yet integrated): MathCAT compiled to
-     WebAssembly. Unlike SRE it respects the intent=":literal"
-     baseline that LaTeXML already emits (666 instances in this very
-     sample paper) — the natural improvement path as Intent adoption
-     grows. No prebuilt npm/wasm distribution exists today; it would
-     need a wasm-pack build from the Rust crate. Tracked in
-     PROPOSED-GUIDELINES follow-ups. */
-  var sreState = 'none';   // none | loading | ready | failed
-  var sreCache = new WeakMap();
-
-  function loadScript(src) {
-    return new Promise(function(res, rej) {
-      var sc = document.createElement('script');
-      sc.src = src;
-      sc.onload = res;
-      sc.onerror = rej;
-      document.head.appendChild(sc);
-    });
-  }
-
-  function ensureSRE() {
-    if (sreState === 'ready' || sreState === 'failed') return Promise.resolve();
-    if (sreState === 'loading') return ensureSRE._p;
-    sreState = 'loading';
-    // Custom locale loader reads the bundled global — works over
-    // file:// where JSON fetches are blocked.
-    window.SREfeature = {
-      custom: function(loc) {
-        var maps = window.__SRE_MATHMAPS || {};
-        return maps[loc] ? Promise.resolve(maps[loc]) : Promise.reject('no locale ' + loc);
-      }
-    };
-    ensureSRE._p = loadScript('lib/sre/mathmaps-en.js')
-      .then(function() { return loadScript('lib/sre/sre.js'); })
-      .then(function() {
-        // MathSpeak, not ClearSpeak (expert review, Deyan Ginev
-        // 2026-06-12): interpretive rule sets have strong K-12
-        // defaults but "can sound pretty broken over higher math" —
-        // verified on this very paper, where ClearSpeak reads the
-        // product Ht as the function application "H of t". MathSpeak
-        // is verbose but literal: "upper H t" never claims structure
-        // it doesn't know. "Literal readouts are verbose but correct,
-        // which is a better baseline since they won't mislead. And
-        // there is a natural path to improvement from there."
-        return window.SRE.setupEngine({ locale: 'en', domain: 'mathspeak', modality: 'speech' });
-      })
-      .then(function() { return window.SRE.engineReady(); })
-      .then(function() { sreState = 'ready'; })
-      .catch(function() { sreState = 'failed'; });
-    return ensureSRE._p;
-  }
-
-  // Spoken form of one <math> element. LaTeXML emits invisible
-  // operators (function application U+2061, invisible times U+2062,
-  // zero-width space) that have historically produced "zero width
-  // space" / "application" misreadings — stripped before SRE sees
-  // the markup.
-  function mathSpeech(mathEl) {
-    if (sreState !== 'ready') return null;
-    if (sreCache.has(mathEl)) return sreCache.get(mathEl);
-    var out = null;
-    try {
-      var mml = mathEl.outerHTML.replace(/[\u2061\u2062\u2063\u200B\u2064]/g, '');
-      out = window.SRE.toSpeech(mml) || null;
-    } catch (e) { out = null; }
-    sreCache.set(mathEl, out);
-    return out;
-  }
-
-  function prm() {
-    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  }
-
-  // Spoken text for one block, applying the content rules above.
-  function blockText(el) {
-    var clone = el.cloneNode(true);
-    var strip = clone.querySelectorAll(
-      'cite.ltx_cite, .ftn-marker, .cite-popover, .eqn-chips, .fig-chips, ' +
-      '.heading-permalink, .ltx_tag_section, .ltx_tag_subsection, .ltx_note, .is-sr-only'
-    );
-    Array.prototype.forEach.call(strip, function(n) { n.remove(); });
-    // Math speaks for real via SRE. NOTE: speech is computed from the
-    // ORIGINAL elements (the clone's math nodes lack layout but share
-    // structure; we map by index). Fallback when SRE is unavailable:
-    // short alttext or "formula".
-    var origMaths = el.querySelectorAll('math');
-    var maths = clone.querySelectorAll('math');
-    Array.prototype.forEach.call(maths, function(m, i) {
-      var speech = origMaths[i] ? mathSpeech(origMaths[i]) : null;
-      if (!speech) {
-        var alt = (m.getAttribute('alttext') || '').trim();
-        speech = (alt && alt.length <= 24) ? alt : 'formula';
-      }
-      m.parentNode.replaceChild(document.createTextNode(' ' + speech + ' '), m);
-    });
-    return clone.textContent.replace(/\s+/g, ' ').trim();
-  }
-
-  function buildQueue() {
-    queue = [];
-    var article = document.querySelector('article');
-    if (!article) return;
-    var blocks = article.querySelectorAll(
-      'h1.ltx_title_document, .ltx_abstract .ltx_p, ' +
-      '.ltx_section > .ltx_title, .ltx_subsection > .ltx_title, .ltx_appendix > .ltx_title, ' +
-      '.ltx_para > .ltx_p, figure figcaption, table.ltx_equationgroup'
-    );
-    Array.prototype.forEach.call(blocks, function(el) {
-      if (el.closest('.ltx_bibliography')) return; // never read the bib
-      if (el.tagName === 'TABLE') {
-        // Display equation: announce its number for orientation, then
-        // speak the mathematics itself (SRE ClearSpeak). Multi-line
-        // alignments speak line by line with sentence pauses.
-        var tag = el.querySelector('.ltx_tag_equation');
-        var num = tag ? tag.textContent.replace(/[()]/g, '').trim() : '';
-        var label = num ? 'Equation ' + num + '. ' : 'Equation. ';
-        var parts = [];
-        var maths = el.querySelectorAll('math');
-        Array.prototype.forEach.call(maths, function(m) {
-          var sp = mathSpeech(m);
-          if (sp) parts.push(sp);
-        });
-        var spoken = parts.length ? label + parts.join('. ') : label.trim();
-        queue.push({ el: el, text: spoken });
-        return;
-      }
-      var txt = blockText(el);
-      if (!txt) return;
-      if (/ltx_title_section/.test(el.className)) txt = 'Section. ' + txt + '.';
-      else if (/ltx_title_subsection/.test(el.className)) txt = 'Subsection. ' + txt + '.';
-      queue.push({ el: el, text: txt });
-    });
-  }
-
-  function firstVisibleIndex() {
-    for (var i = 0; i < queue.length; i++) {
-      var r = queue[i].el.getBoundingClientRect();
-      if (r.bottom > 80 && r.top < window.innerHeight) return i;
-    }
-    return 0;
-  }
-
-  function setLabel(text, pressed) {
-    if (triggerLabel) triggerLabel.textContent = text;
-    trigger.setAttribute('aria-pressed', pressed ? 'true' : 'false');
-    trigger.classList.toggle('is-speaking', pressed);
-    trigger.setAttribute('title', pressed ? 'Pause reading' : 'Read this paper aloud');
-  }
-
-  function highlight(el) {
-    clearHighlight();
-    currentEl = el;
-    el.classList.add('tts-now-reading');
-    var r = el.getBoundingClientRect();
-    if (r.top < 60 || r.bottom > window.innerHeight - 40) {
-      el.scrollIntoView({ behavior: prm() ? 'auto' : 'smooth', block: 'center' });
-    }
-  }
-  function clearHighlight() {
-    if (currentEl) currentEl.classList.remove('tts-now-reading');
-    currentEl = null;
-  }
-
-  function speakFrom(i) {
-    if (i >= queue.length) { stop(); return; }
-    idx = i;
-    var myGen = ++gen;
-    var item = queue[i];
-    highlight(item.el);
-    var u = new SpeechSynthesisUtterance(item.text);
-    u.onend = function() {
-      if (gen === myGen && state === 'speaking') speakFrom(idx + 1);
-    };
-    u.onerror = function() {
-      if (gen === myGen) stop();
-    };
-    synth.speak(u);
-  }
-
-  // Skip to an adjacent block. Skipping always resumes speech (a
-  // paused listener who skips wants to hear the new position).
-  function skip(delta) {
-    if (state === 'idle' || !queue.length) return;
-    var target = Math.max(0, Math.min(queue.length - 1, idx + delta));
-    gen++;              // invalidate the cancelled utterance's onend
-    synth.cancel();
-    if (state === 'paused') synth.resume();
-    state = 'speaking';
-    setLabel('Pause', true);
-    speakFrom(target);
-  }
-
-  function showSkips(show) {
-    if (prevBtn) prevBtn.hidden = !show;
-    if (nextBtn) nextBtn.hidden = !show;
-  }
-
-  function play() {
-    if (state === 'paused') {
-      synth.resume();
-      state = 'speaking';
-      setLabel('Pause', true);
-      return;
-    }
-    // First play: fetch the math-speech engine so equations are spoken,
-    // not skipped. The label shows progress; reading starts as soon as
-    // the engine is ready (or immediately, with the fallback, if it
-    // fails to load).
-    if (sreState === 'none' || sreState === 'loading') {
-      setLabel('Loading\u2026', true);
-      state = 'speaking';            // reflects intent; Esc during load stops cleanly
-      var myGen = ++gen;
-      ensureSRE().then(function() {
-        // Only start if the user didn't stop/pause during the load.
-        if (gen === myGen && state === 'speaking') beginReading();
-      });
-      return;
-    }
-    beginReading();
-  }
-
-  function beginReading() {
-    buildQueue();
-    if (!queue.length) { stop(); return; }
-    gen++;
-    synth.cancel();
-    state = 'speaking';
-    setLabel('Pause', true);
-    showSkips(true);
-    speakFrom(firstVisibleIndex());
-  }
-  function pause() {
-    synth.pause();
-    state = 'paused';
-    setLabel('Resume', true);
-  }
-  function stop() {
-    gen++;
-    synth.cancel();
-    state = 'idle';
-    setLabel('Listen', false);
-    showSkips(false);
-    clearHighlight();
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    trigger = document.getElementById('tts-trigger');
-    triggerLabel = document.getElementById('tts-trigger-label');
-    prevBtn = document.getElementById('tts-prev');
-    nextBtn = document.getElementById('tts-next');
-    if (!trigger) return;
-    trigger.addEventListener('click', function() {
-      if (state === 'speaking') pause();
-      else play();
-    });
-    if (prevBtn) prevBtn.addEventListener('click', function() { skip(-1); });
-    if (nextBtn) nextBtn.addEventListener('click', function() { skip(1); });
-
-    // Keyboard, media-player grammar, ACTIVE ONLY WHILE LISTENING so
-    // normal page keys are untouched at rest: left/right arrows skip
-    // a paragraph (the page auto-scrolls with speech anyway, so the
-    // arrows' scroll duty is already covered), Space pauses/resumes,
-    // Esc stops. Guarded so typing in inputs/buttons is never hijacked.
-    document.addEventListener('keydown', function(e) {
-      if (state === 'idle') {
-        return;
-      }
-      var t = e.target;
-      var interactive = t && (/^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(t.tagName) || t.isContentEditable);
-      if (e.key === 'Escape') { stop(); return; }
-      if (interactive) return;
-      if (e.key === 'ArrowRight') { e.preventDefault(); skip(1); }
-      else if (e.key === 'ArrowLeft') { e.preventDefault(); skip(-1); }
-      else if (e.key === ' ') {
-        e.preventDefault();
-        if (state === 'speaking') pause(); else play();
-      }
-    });
-    // Browsers keep speaking after navigation unless cancelled.
-    window.addEventListener('pagehide', function() { synth.cancel(); });
-  });
-})();
+/* (BEHAVIOR 4b Read-aloud removed for phase 1 — the Listen /
+   text-to-speech feature was cut from the phase 1 scope. See the
+   parent mockup merged-abstract-reader.html for the full
+   implementation, including the Speech Rule Engine math speech.) */
 
 /* ─────────────────────────────────────────────────────────────────
    BEHAVIOR 5b: Section-heading permalinks

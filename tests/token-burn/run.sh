@@ -17,7 +17,9 @@ set -uo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$HERE/../.." && pwd)"
-MODEL="sonnet"; REPS=2; TASK_FILTER=""; VARIANT="baseline"; SMOKE=0
+# Pinned (not the "sonnet" alias) so runs stay comparable across the
+# pre-/post-reorg baselines even if the CLI's alias moves to a newer Sonnet.
+MODEL="claude-sonnet-4-6"; REPS=2; TASK_FILTER=""; VARIANT="baseline"; SMOKE=0
 SRC_DIR="$REPO_ROOT"
 
 while [[ $# -gt 0 ]]; do case "$1" in
@@ -57,8 +59,14 @@ for task in "${TASKS[@]}"; do
       "$SRC_DIR/" "$ws/repo/"
     cp -a "$ws/repo" "$ws/pristine"
 
+    # Scrub host-session env (base-URL overrides, OAuth flags, nested-session
+    # markers) so the child CLI authenticates exactly like a fresh terminal
+    # `claude` using the user's own stored credentials.
+    SCRUB=()
+    while IFS= read -r var; do SCRUB+=("-u" "$var"); done < <(
+      env | grep -iE '^(CLAUDE|ANTHROPIC|USE_(STAGING|LOCAL)_OAUTH|AI_AGENT|BAGGAGE)' | cut -d= -f1)
     start_ts=$(date +%s)
-    ( cd "$ws/repo" && claude -p "$(cat "$task")" \
+    ( cd "$ws/repo" && env "${SCRUB[@]}" claude -p "$(cat "$task")" \
         --model "$MODEL" \
         --permission-mode bypassPermissions \
         --output-format stream-json --verbose \
