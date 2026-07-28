@@ -8,7 +8,9 @@
   <style>
     /* ── Flagship pattern page. Renders the REAL public .ds-btn classes from
        public/design-system.css; the internal examples mirror the values in
-       internal/design-system.css (source of truth there — do not fork). ── */
+       internal/design-system.css (source of truth there — do not fork).
+       Advisory notes use the system's own .ds-alert component (no bespoke
+       callout chrome on docs pages). ── */
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: var(--arxiv-font-sans); color: var(--arxiv-ink); background: var(--arxiv-warm-wash); margin: 0; font-size: 14px; line-height: 1.5; }
     .page { max-width: 1080px; margin: 0 auto; padding: 28px 28px 80px; }
@@ -19,6 +21,7 @@
     .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
     .section-desc { font-size: 13px; color: var(--arxiv-grey); margin: 0 0 18px; max-width: 760px; line-height: 1.55; }
     .subgroup-title { font-family: var(--arxiv-font-condensed); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-grey); margin: 26px 0 10px; }
+    .note-alert { max-width: 760px; margin-top: 16px; }
 
     /* Context cards (public vs internal) */
     .context-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; max-width: 900px; }
@@ -26,22 +29,22 @@
     .context-card h3 { font-size: 15px; margin: 0 0 8px; display: flex; align-items: center; gap: 8px; }
     .context-dot { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.15); }
     .context-card p { font-size: 13px; color: var(--arxiv-grey); line-height: 1.55; margin: 0 0 12px; }
-    .never { background: var(--arxiv-error-bg); border: 1px solid var(--arxiv-error-border); border-radius: 6px; padding: 12px 16px; font-size: 13px; color: var(--arxiv-error-fg); max-width: 760px; margin-top: 16px; }
 
-    /* State-grid layout */
-    .state-grid { display: grid; grid-template-columns: repeat(auto-fit, max-content); gap: 24px 32px; align-items: start; margin-bottom: 16px; }
-    .state-cell { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+    /* States — stackable flexbox columns: sit side by side where there's
+       room, wrap to fewer columns on narrow viewports. */
+    .state-flex { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: flex-start; margin-bottom: 14px; }
+    .state-cell { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
     .btn-pair { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
     .state-label { font-family: var(--arxiv-font-condensed); font-weight: 600; font-size: 10px; color: var(--arxiv-grey); text-transform: uppercase; letter-spacing: 0.06em; }
 
-    .live-row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding: 16px 18px; background: #fff; border: 1px solid var(--arxiv-card-grey); border-radius: 6px; margin-top: 4px; max-width: 720px; }
+    .live-row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding: 16px 18px; background: #fff; border: 1px solid var(--arxiv-card-grey); border-radius: 6px; margin-top: 4px; max-width: 760px; }
     .live-row::before { content: 'Live (hover / focus / press):'; font-size: 12px; color: var(--arxiv-grey); margin-right: 8px; }
-    .tinted-row { background: #e8f4ff; border: 1px solid #d0e3f4; border-radius: 6px; padding: 16px 18px; margin-top: 4px; max-width: 720px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+    .tinted-row { background: #e8f4ff; border: 1px solid #d0e3f4; border-radius: 6px; padding: 16px 18px; margin-top: 4px; max-width: 760px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
     .tinted-row + .tinted-row { margin-top: 12px; }
     .tinted-row.warm { background: var(--arxiv-card-grey); border-color: var(--arxiv-border-light); }
     .row-note { font-size: 12px; color: var(--arxiv-grey); font-style: italic; }
 
-    /* Forced states for the public state grid — same recipe as
+    /* Forced states for the public state columns — same recipe as
        public/button-styles.html. Display-only. */
     .ds-btn-primary.is-hover { background: linear-gradient(#c2e2ff, #c2e2ff) padding-box, linear-gradient(to bottom, #8fc1e8, #4a86b8) border-box; box-shadow: inset 0 0 8px rgba(31,94,150,0.10), 0 1px 3px rgba(0,0,0,0.12); }
     .ds-btn-primary.is-focus { outline: 3px solid var(--arxiv-focus-ring); outline-offset: 2px; }
@@ -75,6 +78,14 @@
     .ibtn-tertiary:hover:not(:disabled) { background: #f0eeec; border-color: #4a433d; color: #4a433d; }
     .ibtn-destructive { background: var(--i-danger); color: #fff; border: 1px solid transparent; }
     .ibtn-destructive:hover:not(:disabled) { background: var(--i-danger-hover); }
+    /* Forced states for the internal state columns — display-only,
+       mirroring the sim-* classes on the internal reference page. */
+    .ibtn-primary.is-hover { background: var(--i-lime-hover); }
+    .ibtn-primary.is-focus { outline: 3px solid var(--arxiv-focus-ring); outline-offset: 2px; }
+    .ibtn-primary.is-pressed { background: var(--i-lime-active); transform: translateY(1px); box-shadow: none; }
+    .ibtn-secondary.is-hover { background: var(--i-sec-hover); }
+    .ibtn-secondary.is-focus { outline: 3px solid var(--arxiv-focus-ring); outline-offset: 2px; }
+    .ibtn-secondary.is-pressed { background: var(--i-sec-active); border-color: var(--i-sec-border-active); transform: translateY(1px); box-shadow: none; }
 
     /* Token tables */
     .token-table { width: 100%; max-width: 760px; border-collapse: collapse; margin-top: 8px; background: #fff; border: 1px solid var(--arxiv-card-grey); border-radius: 6px; overflow: hidden; }
@@ -83,14 +94,13 @@
     .token-table code { font-family: var(--arxiv-font-mono); font-size: 11px; color: var(--arxiv-link-blue); background: none; padding: 0; }
     .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.08); vertical-align: -2px; margin-right: 6px; }
 
-    pre.code { background: #1c1a17; color: #f0eeec; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.55; padding: 14px 18px; border-radius: 6px; overflow-x: auto; margin: 8px 0 0; max-width: 720px; }
+    pre.code { background: #1c1a17; color: #f0eeec; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.55; padding: 14px 18px; border-radius: 6px; overflow-x: auto; margin: 8px 0 0; max-width: 760px; }
     pre.code .c { color: #8b8680; }
     pre.code .k { color: #c2e2ff; }
     pre.code .s { color: #d4ecff; }
 
     .notes { margin: 0; padding-left: 22px; font-size: 13px; line-height: 1.7; color: var(--arxiv-ink); max-width: 760px; }
     .notes li { margin-bottom: 4px; }
-    .backlog { background: #fff; border: 1px solid var(--arxiv-card-grey); border-left: 4px solid var(--arxiv-open-blue); border-radius: 0 4px 4px 0; padding: 12px 16px; font-size: 13px; line-height: 1.6; max-width: 760px; margin-top: 16px; }
 
     /* ── Shared docs nav strip (same on every design-system doc page;
        mockups deliberately excluded — they simulate real arXiv pages
@@ -114,7 +124,7 @@
   <a href="spacing.html">Spacing</a>
   <span class="is-here" aria-current="page">Buttons</span>
   <a href="alerts.html">Alerts</a>
-  <a href="version-display.html">Version display</a>
+  <a href="version-display.html">Versions</a>
   <a href="organizing-content.html">Organizing content</a>
   <a href="../doc.html?src=DESIGN-POLICIES.md">Policies</a>
   <span class="docs-nav-spacer"></span>
@@ -155,21 +165,28 @@
       </div>
     </div>
 
-    <p class="never"><strong>Never cross them.</strong> A lime primary on a public page — or an Open Blue primary
-    in a staff tool — is a policy violation regardless of how well it reads. The accent is a context signal, not a
-    style choice. If a surface is genuinely ambiguous (shared component, embedded widget), determine the context
-    first and document it in a code comment.</p>
+    <div class="ds-alert ds-alert-error note-alert">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Never cross them</p>
+        <p>A lime primary on a public page — or an Open Blue primary in a staff tool — is a policy violation
+        regardless of how well it reads. The accent is a context signal, not a style choice. If a surface is
+        genuinely ambiguous (shared component, embedded widget), determine the context first and document it
+        in a code comment.</p>
+      </div>
+    </div>
   </section>
 
-  <!-- ───────── Public states ───────── -->
+  <!-- ───────── Public buttons ───────── -->
   <section class="section">
-    <h2 class="section-title">Public buttons — states</h2>
+    <h2 class="section-title">Public buttons — Open Blue</h2>
     <p class="section-desc">Rendered from the real <code>.ds-btn</code> classes in <code>public/design-system.css</code>.
     Both variants share the V3 construction: a 1.5px gradient border (lighter top → darker bottom) via dual
     <code>padding-box</code>/<code>border-box</code> backgrounds, plus an inner vignette that darkens the perimeter.
     Hover brightens, press drops 1px and deepens the vignette.</p>
 
-    <div class="state-grid">
+    <h3 class="subgroup-title">States</h3>
+    <div class="state-flex">
       <div class="state-cell">
         <div class="btn-pair">
           <button class="ds-btn ds-btn-primary" type="button">HTML</button>
@@ -199,60 +216,94 @@
         <span class="state-label">Pressed</span>
       </div>
     </div>
-
     <div class="live-row">
       <button class="ds-btn ds-btn-primary" type="button">HTML</button>
       <button class="ds-btn ds-btn-primary" type="button">PDF</button>
       <button class="ds-btn ds-btn-secondary" type="button">TeX Source</button>
     </div>
 
-    <h3 class="subgroup-title">Buttons on tinted surfaces</h3>
-    <p class="section-desc">The primary holds its own on both tint families: Open Blue is cool-on-cool on the
-    reader's light-blue bands and cool-on-warm on Card Grey sections — its gradient border and vignette keep the
-    edge legible either way. The secondary is the one that needs help, and only on <em>cool</em> tints: white pops
-    too hard there and reads as primary. <code>.on-tint</code> swaps the fill to Card Grey — same luminance, warm
-    hue — so it reads as secondary by material, not by contrast. Hover brightens to Warm Wash.</p>
+    <h3 class="subgroup-title">Hierarchy</h3>
+    <table class="token-table">
+      <thead><tr><th>Tier</th><th>Fill</th><th>Use for</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Primary</strong></td><td><span class="swatch" style="background:#a5d6fe"></span>Open Blue <code>#a5d6fe</code></td><td>The page's call-to-action (HTML, PDF on the abstract page). One cluster per view.</td></tr>
+        <tr><td><strong>Secondary</strong></td><td><span class="swatch" style="background:#ffffff"></span>White, warm-grey gradient border</td><td>Adjacent destinations of equal weight but lower priority (TeX Source).</td></tr>
+        <tr><td><strong>Tertiary</strong></td><td>—</td><td>Text-only button — still an open item on the public roadmap (see below).</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="subgroup-title">On tinted surfaces</h3>
+    <p class="section-desc">The primary holds its own on both tint families — its gradient border and vignette keep
+    the edge legible cool-on-cool and cool-on-warm alike. The secondary adapts: on <em>cool</em> tints it takes the
+    <code>.on-tint</code> modifier, which swaps the white fill to Card Grey (same luminance, warm hue) so it reads as
+    secondary by material rather than contrast; on <em>warm</em> tints the default white secondary already sits
+    comfortably.</p>
 
     <p class="section-desc" style="margin-bottom: 6px;"><strong>Cool tint</strong> (reader footer band):</p>
     <div class="tinted-row">
       <button class="ds-btn ds-btn-primary" type="button">HTML</button>
-      <button class="ds-btn ds-btn-secondary" type="button">TeX Source</button>
-      <span class="row-note">— default secondary: too high-contrast here</span>
-    </div>
-    <div class="tinted-row">
-      <button class="ds-btn ds-btn-primary" type="button">HTML</button>
+      <button class="ds-btn ds-btn-primary" type="button">PDF</button>
       <button class="ds-btn ds-btn-secondary on-tint" type="button">TeX Source</button>
-      <span class="row-note">— with <code>.on-tint</code>: reads as secondary</span>
     </div>
 
-    <p class="section-desc" style="margin: 18px 0 6px;"><strong>Warm tint</strong> (Card Grey section fill):
-    the default secondary already sits comfortably — don't use <code>.on-tint</code> here, or the fill melts
-    into the surface:</p>
+    <p class="section-desc" style="margin: 18px 0 6px;"><strong>Warm tint</strong> (Card Grey section fill):</p>
     <div class="tinted-row warm">
       <button class="ds-btn ds-btn-primary" type="button">HTML</button>
       <button class="ds-btn ds-btn-primary" type="button">PDF</button>
       <button class="ds-btn ds-btn-secondary" type="button">TeX Source</button>
-      <span class="row-note">— primary + default secondary, both read correctly</span>
-    </div>
-    <div class="tinted-row warm">
-      <button class="ds-btn ds-btn-primary" type="button">HTML</button>
-      <button class="ds-btn ds-btn-secondary on-tint" type="button">TeX Source</button>
-      <span class="row-note">— <code>.on-tint</code> on a warm tint: fill disappears into the surface ✗</span>
     </div>
 
+    <p class="section-desc" style="margin-top: 14px;"><em>What not to do:</em> a default white secondary on a cool
+    tint pops too hard and reads as primary — that's the case <code>.on-tint</code> exists for. And don't use
+    <code>.on-tint</code> on a warm tint: its Card Grey fill melts into the surface.</p>
+
+    <h3 class="subgroup-title">Usage</h3>
 <pre class="code"><span class="c">&lt;!-- Primary / secondary / secondary-on-tint --&gt;</span>
 <span class="k">&lt;a</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-primary"</span> <span class="k">href</span>=<span class="s">"/html/2604.22725v1"</span><span class="k">&gt;</span>HTML<span class="k">&lt;/a&gt;</span>
 <span class="k">&lt;a</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-secondary"</span> <span class="k">href</span>=<span class="s">"/src/2604.22725v1"</span><span class="k">&gt;</span>TeX Source<span class="k">&lt;/a&gt;</span>
 <span class="k">&lt;a</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-secondary on-tint"</span> <span class="k">href</span>=<span class="s">"/issues"</span><span class="k">&gt;</span>Submit a fix<span class="k">&lt;/a&gt;</span></pre>
   </section>
 
-  <!-- ───────── Internal variants ───────── -->
+  <!-- ───────── Internal buttons ───────── -->
   <section class="section ctx-internal">
-    <h2 class="section-title">Internal buttons — hierarchy</h2>
-    <p class="section-desc">Staff tools carry more actions per screen, so the internal set has four tiers.
-    Values mirrored from <code>internal/design-system.css</code> (source of truth). Live — hover and press these.</p>
+    <h2 class="section-title">Internal buttons — Access Lime</h2>
+    <p class="section-desc">Values mirrored from <code>internal/design-system.css</code> (source of truth).
+    Construction is currently flat-fill — the state changes ride on the fill color rather than a gradient
+    border; see the parity note below. Staff tools carry more actions per screen, so the internal set has
+    four tiers.</p>
 
-    <div class="live-row" style="max-width: none;">
+    <h3 class="subgroup-title">States</h3>
+    <div class="state-flex">
+      <div class="state-cell">
+        <div class="btn-pair">
+          <button class="ibtn ibtn-primary" type="button">Approve</button>
+          <button class="ibtn ibtn-secondary" type="button">Hold</button>
+        </div>
+        <span class="state-label">Default</span>
+      </div>
+      <div class="state-cell">
+        <div class="btn-pair">
+          <button class="ibtn ibtn-primary is-hover" type="button">Approve</button>
+          <button class="ibtn ibtn-secondary is-hover" type="button">Hold</button>
+        </div>
+        <span class="state-label">Hover</span>
+      </div>
+      <div class="state-cell">
+        <div class="btn-pair">
+          <button class="ibtn ibtn-primary is-focus" type="button">Approve</button>
+          <button class="ibtn ibtn-secondary is-focus" type="button">Hold</button>
+        </div>
+        <span class="state-label">Focus</span>
+      </div>
+      <div class="state-cell">
+        <div class="btn-pair">
+          <button class="ibtn ibtn-primary is-pressed" type="button">Approve</button>
+          <button class="ibtn ibtn-secondary is-pressed" type="button">Hold</button>
+        </div>
+        <span class="state-label">Pressed</span>
+      </div>
+    </div>
+    <div class="live-row">
       <button class="ibtn ibtn-primary" type="button">Approve</button>
       <button class="ibtn ibtn-secondary" type="button">Hold</button>
       <button class="ibtn ibtn-tertiary" type="button">View log</button>
@@ -260,21 +311,35 @@
       <button class="ibtn ibtn-primary" type="button" disabled>Approve</button>
     </div>
 
+    <h3 class="subgroup-title">Hierarchy</h3>
     <table class="token-table">
       <thead><tr><th>Tier</th><th>Fill</th><th>Use for</th></tr></thead>
       <tbody>
-        <tr><td><strong>Primary</strong></td><td><span class="swatch" style="background:#c4d82e"></span><code>--lime</code> #c4d82e</td><td>The screen's main action. One per view.</td></tr>
-        <tr><td><strong>Secondary</strong></td><td><span class="swatch" style="background:#f0f9e8"></span><code>--sec-bg</code> #f0f9e8</td><td>Adjacent actions of lower priority.</td></tr>
-        <tr><td><strong>Tertiary</strong></td><td><span class="swatch" style="background:#ffffff"></span>transparent, grey outline</td><td>Low-emphasis actions; no rest shadow.</td></tr>
-        <tr><td><strong>Destructive</strong></td><td><span class="swatch" style="background:#c62828"></span><code>--danger</code> #c62828</td><td>Hard-delete and irreversible actions only. Always pair with a confirmation step.</td></tr>
+        <tr><td><strong>Primary</strong></td><td><span class="swatch" style="background:#c4d82e"></span>Access Lime <code>--lime</code> #c4d82e</td><td>The screen's main action. One per view.</td></tr>
+        <tr><td><strong>Secondary</strong></td><td><span class="swatch" style="background:#f0f9e8"></span>Lime tint <code>--sec-bg</code> #f0f9e8, lime border</td><td>Adjacent actions of lower priority.</td></tr>
+        <tr><td><strong>Tertiary</strong></td><td><span class="swatch" style="background:#ffffff"></span>Transparent, grey outline</td><td>Low-emphasis actions; no rest shadow.</td></tr>
+        <tr><td><strong>Destructive</strong></td><td><span class="swatch" style="background:#c62828"></span>Danger <code>--danger</code> #c62828</td><td>Hard-delete and irreversible actions only. Always pair with a confirmation step.</td></tr>
       </tbody>
     </table>
 
-    <p class="backlog"><strong>Known drift (backlog).</strong> Internal buttons are still flat-fill; public buttons
-    gained the gradient-border + vignette construction and the <code>.on-tint</code> modifier. Bringing internal up
-    to construction parity is tracked in NEXT-STEPS ("Modernize the internal components — buttons first").
-    A public-side tertiary/text-only button is also still open on the public roadmap. Icon buttons and the
-    loading/pending state are documented on the <a href="internal/button-styles.html">internal reference page</a>.</p>
+    <h3 class="subgroup-title">Usage</h3>
+<pre class="code"><span class="c">&lt;!-- Internal tiers (arXiv Check / Admin Console) --&gt;</span>
+<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"btn btn-primary"</span><span class="k">&gt;</span>Approve<span class="k">&lt;/button&gt;</span>
+<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"btn btn-secondary"</span><span class="k">&gt;</span>Hold<span class="k">&lt;/button&gt;</span>
+<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"btn btn-tertiary"</span><span class="k">&gt;</span>View log<span class="k">&lt;/button&gt;</span>
+<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"btn btn-destructive"</span><span class="k">&gt;</span>Delete<span class="k">&lt;/button&gt;</span></pre>
+
+    <div class="ds-alert ds-alert-info note-alert">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Known drift (backlog)</p>
+        <p>Internal buttons are still flat-fill; public buttons gained the gradient-border + vignette construction
+        and the <code>.on-tint</code> modifier. Bringing internal up to construction parity is tracked in NEXT-STEPS
+        ("Modernize the internal components — buttons first"). A public-side tertiary/text-only button is also still
+        open. Icon buttons and the loading/pending state are documented on the
+        <a href="internal/button-styles.html">internal reference page</a>.</p>
+      </div>
+    </div>
   </section>
 
   <!-- ───────── Shared mechanics ───────── -->
