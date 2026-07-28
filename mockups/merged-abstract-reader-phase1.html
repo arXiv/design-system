@@ -559,6 +559,12 @@ body.mg-reader .mg-top-cols { display: block; }
   transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, transform 0.08s, color 0.12s;
 }
 .ds-btn:focus-visible { outline: 3px solid var(--arxiv-link-blue); outline-offset: 2px; }
+/* The ar5iv stylesheet sets `svg { z-index: -1 }` globally (to keep
+   LaTeXML-emitted SVG under text). Inside an inline-flex button the icon
+   is a flex item, so that z-index APPLIES even without positioning and
+   paints the icon BEHIND the button's own background — invisible on any
+   opaque fill. Lift every button icon above the fill. */
+.ds-btn svg { position: relative; z-index: 1; }
 .ds-btn-primary {
   background:
     linear-gradient(var(--arxiv-open-blue), var(--arxiv-open-blue)) padding-box,
@@ -582,24 +588,50 @@ body.mg-reader .mg-top-cols { display: block; }
 
 /* Tertiary button — PROPOSED variant, not yet in design-system.css.
    DESIGN-POLICIES.md already anticipates it ("No shadow on tertiary or
-   text-only buttons"). Quiet navigation-weight button: transparent fill,
-   no border, Link Blue label. Follows the button policy: 6px radius and
-   10px 20px padding (inherited from .ds-btn), translateY(1px) press,
-   and no shadow in any state. Candidate for promotion to the canonical
-   design system once validated here. */
+   text-only buttons"). Lowest-emphasis BUTTON, deliberately distinct
+   from the link grammar: a first iteration used transparent fill with a
+   Link Blue label, which read as a text link with padding — and blue
+   text WITHOUT an underline undermines the codified link treatment
+   (link-styles.html: links are underlined). So the tertiary gets a
+   persistent quiet container instead: flat Card Grey fill, ink label,
+   no border. The emphasis ladder stays legible — primary = Open Blue
+   fill + gradient border, secondary = white fill + gradient border +
+   shadow, tertiary = flat grey fill, no border, no shadow (per policy).
+   Inline destinations in prose remain underlined links, never buttons.
+   Candidate for promotion to the canonical design system once
+   validated here. */
 .ds-btn-tertiary {
-  background: transparent;
-  color: var(--arxiv-link-blue);
+  background: var(--arxiv-card-grey);
+  color: var(--arxiv-ink);
   box-shadow: none;
 }
-.ds-btn-tertiary:hover { background: var(--arxiv-card-grey); color: var(--arxiv-link-hover); }
-.ds-btn-tertiary:active { transform: translateY(1px); background: var(--arxiv-card-grey); }
+.ds-btn-tertiary:hover { background: var(--arxiv-pill-border); }
+.ds-btn-tertiary:active { transform: translateY(1px); background: var(--arxiv-border-light); }
 .ds-btn-tertiary .btn-arrow { width: 15px; height: 15px; flex: none; }
+/* Label contrast, measured 2026-07-28 (WCAG AA text needs 4.5:1):
+   ink on Card Grey 15.0:1 (rest) · Pill Border 13.2:1 (hover) ·
+   Border Light 12.3:1 (active). The FILL is deliberately quiet —
+   1.16:1 against the white page — which is fine per 1.4.11 because
+   the label + arrow identify the control, not the boundary. */
+
+/* Tertiary on tinted surface (.on-tint modifier) — same pattern as
+   .ds-btn-secondary.on-tint. The default Card Grey fill measures only
+   1.04:1 against tint-light (light blue) and 1.08:1 against warm-wash
+   (light brown), so on the warm tint the pill disappears entirely
+   (on the blue tint the warm hue still differentiates it, barely).
+   On tint, step the fill one rung down the warm-grey ladder; the label
+   stays ink and passes AA in every state (12.3:1+). Visually tested on
+   both tints 2026-07-28. */
+.ds-btn-tertiary.on-tint { background: var(--arxiv-pill-border); }
+.ds-btn-tertiary.on-tint:hover { background: var(--arxiv-border-light); }
+.ds-btn-tertiary.on-tint:active { background: var(--arxiv-border-light); }
 
 /* Row that holds the back-to-abstract tertiary button: directly below
-   the site header, above the watermark line, left-aligned (back-link
-   convention: top-left corner of the content area). */
-.mg-abs-return { margin: 0; padding: 14px 24px 0; text-align: left; }
+   the site header, above the watermark line, centered on the page —
+   matching the centered watermark / identity column below it
+   (feedback 2026-07-28; a first pass used top-left back-link
+   convention). */
+.mg-abs-return { margin: 0; padding: 14px 24px 0; text-align: center; }
 @media (max-width: 700px) { .mg-abs-return { padding: 10px 12px 0; } }
 
 /* Accordions — codified 2026-07-28 as .ds-acc in
