@@ -2759,20 +2759,19 @@ html:not(.js) .reading-progress { display: none !important; }
    ├──────────────────────────────────────────────────────────────────┤
    │  Each <figure> gets a wrapper that supports the same hover/      │
    │  reveal pattern as equations. Two margin slots:                  │
-   │    LEFT margin (arXiv layer): permalink chip; "Add an image      │
-   │      description" affordance when alt-text is missing; the       │
-   │      "no alt text provided" notice itself.                       │
+   │    LEFT margin (arXiv layer): permalink chip; at narrow          │
+   │      widths, a "How to add alt text" guidance link when          │
+   │      alt-text is missing.                                        │
    │    RIGHT margin (author layer): the alt-text content, visible    │
    │      to sighted readers. Surfacing what would otherwise be       │
    │      invisible-to-eye but available to screen readers.           │
    │                                                                  │
    │  Why alt-text on the right (author layer): the alt attribute     │
    │  is whatever the author wrote. arXiv's role here is making it    │
-   │  visible, not authoring it. (If alt is added post-hoc by an      │
-   │  agent or community contribution, that's a separate flow         │
-   │  whose result still ends up as the author-authoritative alt.)    │
-   │  The "Add a description" CTA in the left margin IS arXiv-layer   │
-   │  because it's the platform's affordance, not the author's text.  │
+   │  visible, not authoring it. Phase 1: the community/agent         │
+   │  contribution flows are removed (they need backend               │
+   │  infrastructure — deferred). Phase 1 keeps only display of       │
+   │  author alt text plus a "How to add alt text" guidance link.     │
    │                                                                  │
    │  Same wide/narrow split as formulas and footnotes. Below 1200px  │
    │  the marginalia collapse into a chip-pill below the figure;      │
@@ -2978,9 +2977,10 @@ html:not(.js) .reading-progress { display: none !important; }
 }
 
 /* Action affordances — stacked text-links within the marginalia.
-   Used for "Improve description", "Request clarification", and
-   "Add a description". Same visual treatment for all three; the
-   labels themselves communicate purpose. */
+   Phase 1: only the "How to add alt text" guidance link remains (a
+   real <a> to the submission help docs — the underlined-link
+   treatment is genuinely a link here). The community contribution
+   actions were removed with the rest of that flow. */
 .fig-alt-actions {
   display: flex;
   flex-direction: column;
@@ -4577,9 +4577,10 @@ Under a coordinate transformation <math id="S2.SS2.p3.1.m1" class="ltx_Math" alt
 
 <!-- ────── Mock figure 2: missing alt text ──────
      Demos the case where the author has NOT provided alt-text. The
-     left margin shows arXiv's "no alt text" notice and the "Add an
-     image description" affordance. The right-margin alt-text slot
-     is empty (or hidden). -->
+     right margin shows the "No alt text provided" notice with author
+     guidance and a "How to add alt text" link (phase 1: contribution
+     affordances removed); at narrow widths the same link rides in
+     the chip pill. -->
 <figure class="ltx_figure" id="fig-region-diagram">
   <svg class="fig-placeholder" viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label=""
        style="border: 1px solid #e4e0db;">
@@ -8163,7 +8164,7 @@ We thus see that</p>
      - Wrap it in <div class="fig-region">.
      - Add a LEFT-MARGIN .fig-chips strip:
          "Permalink" chip
-         "Alt text missing" notice + "Add a description" CTA (if alt empty)
+         "How to add alt text" guidance link (narrow widths, if alt empty)
      - Add a RIGHT-MARGIN .fig-alt-marginalia block with the alt-text
        content (if present), so sighted readers can see what AT users
        hear. The alt attribute on the image itself is never modified.
@@ -8174,7 +8175,6 @@ We thus see that</p>
 (function() {
   var ICON_LINK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
   var ICON_ALT  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
-  var ICON_PLUS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
 
   function getAltText(figure) {
     var img = figure.querySelector('img, svg');
@@ -8261,19 +8261,18 @@ We thus see that</p>
       });
       chips.appendChild(viewAlt);
     } else {
-      var addChipNarrow = buildChip({
-        icon: ICON_PLUS,
-        label: 'Add a description',
-        ariaLabel: 'Add an image description for screen readers',
-        cta: true
+      // Phase 1: the "Add a description" contribution CTA is replaced
+      // with author guidance — community/agent-supplied alt text needs
+      // backend infrastructure (annotation storage, moderation) that is
+      // deferred to a later phase.
+      var howToChipNarrow = buildChip({
+        icon: ICON_ALT,
+        label: 'How to add alt text',
+        ariaLabel: 'Learn how to add alternative text to your figures',
+        href: 'https://info.arxiv.org/help/submit_latex_best_practices.html#alt-text-for-images'
       });
-      addChipNarrow.classList.add('is-narrow-only');
-      addChipNarrow.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        alert('In production this would open an alt-text contribution flow — author, agent, or community-supplied.');
-      });
-      chips.appendChild(addChipNarrow);
+      howToChipNarrow.classList.add('is-narrow-only');
+      chips.appendChild(howToChipNarrow);
     }
 
     // Anchor chips to the image's bottom edge when there's an image
@@ -8281,67 +8280,43 @@ We thus see that</p>
     (imageWrap || region).appendChild(chips);
 
     // ── RIGHT marginalia (author layer): alt-text content surfaced
-    // visibly. Contribution affordances live HERE — directly next to
-    // the alt content where they logically belong. Hidden at narrow
-    // viewports; narrow-only chips above carry equivalent affordances
-    // in the pill.
+    // visibly. Hidden at narrow viewports; the narrow-only chips above
+    // carry equivalent affordances in the pill.
     //
-    // Two action surfaces for the alt-present case:
-    //   "Improve description for screen readers" — for sighted helpers
-    //   "Request descriptive clarification"      — for SR users who
-    //                                              need a better
-    //                                              description
-    // Both buttons (and "Add a description" for missing-alt) require
-    // sign-in; the login hint at the bottom of the marginalia
-    // telegraphs that expectation before click.
+    // Phase 1: the community-contribution actions that lived here
+    // ("Improve description for screen readers", "Request descriptive
+    // clarification", "Add a description") are removed — harvesting
+    // community/agent alt text needs annotation storage and moderation
+    // backends, deferred to a later phase (feasibility review,
+    // 2026-07-28). What remains needs no infrastructure: DISPLAY of
+    // author-provided alt text, and author guidance when it's missing.
     var alt = document.createElement('div');
     alt.className = 'fig-alt-marginalia' + (altText ? '' : ' is-missing');
-
-    function addAction(parent, label, ariaLabel, onClick) {
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'fig-alt-action';
-      btn.textContent = label;
-      if (ariaLabel) btn.setAttribute('aria-label', ariaLabel);
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        onClick();
-      });
-      parent.appendChild(btn);
-    }
 
     if (altText) {
       alt.innerHTML =
         '<span class="fig-alt-label">Alt text</span>' +
         '<div class="fig-alt-content">' + altText + '</div>';
-      var actions = document.createElement('div');
-      actions.className = 'fig-alt-actions';
-      addAction(actions,
-        'Improve description for screen readers',
-        'Improve the image description for screen reader users',
-        function() {
-          alert('In production this would open an editor where signed-in contributors can refine the alt-text. Submissions are reviewed for spam.');
-        });
-      addAction(actions,
-        'Request descriptive clarification',
-        'Request a clearer or more detailed image description',
-        function() {
-          alert('In production this would file a request — visible to the author, arXiv, and community contributors — to improve this image’s description. Useful when existing alt text is too brief or unclear.');
-        });
-      alt.appendChild(actions);
     } else {
+      // Deliberately NOT aria-hidden. Screen readers' own signals for
+      // a missing alt attribute are unreliable (filename readout,
+      // "unlabeled graphic", or silently skipping the image), so the
+      // explicit notice is information, not noise. And the guidance
+      // link's primary audience is authors — including blind and
+      // low-vision authors, who must not be cut off from the very
+      // documentation that fixes this. Hiding visible text from AT
+      // would also break visual/accessible parity (braille users,
+      // magnifier + screen-reader users).
       alt.innerHTML =
         '<span class="fig-alt-label">No alt text provided</span>' +
-        '<div class="fig-alt-content">You can improve accessibility for all readers by adding an image description.</div>';
+        '<div class="fig-alt-content">Learn how to add alternative text to your figures and improve accessibility for all readers.</div>';
       var addActions = document.createElement('div');
       addActions.className = 'fig-alt-actions';
-      addAction(addActions,
-        'Add a description',
-        'Add an image description for screen readers',
-        function() {
-          alert('In production this would open an alt-text contribution flow — details to be determined. Another discussion item on the table is agent-supplied alt text.');
-        });
+      var howTo = document.createElement('a');
+      howTo.className = 'fig-alt-action';
+      howTo.href = 'https://info.arxiv.org/help/submit_latex_best_practices.html#alt-text-for-images';
+      howTo.textContent = 'How to add alt text';
+      addActions.appendChild(howTo);
       alt.appendChild(addActions);
     }
     region.appendChild(alt);
