@@ -706,14 +706,6 @@ a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
 .mg-verwarn p { margin: 0; line-height: 1.5; }
 .mg-verwarn a { color: var(--arxiv-warning-fg); font-weight: 600; text-decoration: underline; }
 .mg-verwarn a:hover { color: #5a4400; }
-/* Labs/Related list stacks single-column in the narrow rail (the viewport
-   media query at max-width:700 won't fire when the rail is narrow but the
-   viewport is wide, so override directly). */
-.mg-rail .mg-labs-layout { flex-direction: column; gap: 12px; }
-.mg-rail .mg-labs-list { min-width: 0; }
-.mg-rail .mg-labs-content { width: 100%; }
-.mg-rail .mg-labs-info { justify-content: flex-start; }
-
 /* ══ CENTERED STICKY TOC BAR — full-bleed, semi-transparent ══
    z-index: 100 (sticky-headers tier per DESIGN-POLICIES.md Z-layer scale).
    The TOC bar is functionally sticky header chrome, so it sits at the
@@ -906,58 +898,10 @@ footer.ds-site-footer { grid-area: footer; }
 /* TOC bar lives INSIDE .ltx_page_main (article area), so it doesn't need
    grid placement at the body level. */
 
-/* ══ RELATED — Labs section (ported from abstract-redesign.html) ══
-   Renamed to .mg-labs-* to keep this self-contained. */
-
-/* ══ RELATED ZONE — full-bleed band below the paper, above the footer ══
-   A darker tint than the page (card-grey) signals "supporting material, not
-   paper content" (mirrors abstract-redesign's reference zone). Full-bleed
-   via the viewport-width negative-margin trick, same as the TOC bar. Lives
-   at the end of the article, so it sits above the footer in both modes. */
-.mg-related-zone {
-  box-sizing: border-box;   /* so width:100vw includes the padding (no 48px overflow) */
-  width: 100vw;
-  margin: 0;   /* butt directly against the References band above — no external gap; breathing room lives inside each band */
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  background: var(--arxiv-card-grey);
-  border-top: 1px solid var(--arxiv-border-light);
-  padding: 32px 24px 40px;
-  font-family: var(--arxiv-font-sans);
-}
-.mg-related-inner { max-width: 1080px; margin: 0 auto; }
-.mg-related-heading { font-family: var(--arxiv-font-sans); font-size: 1.1rem; font-weight: 700; color: var(--arxiv-ink); margin: 0 0 20px; }
-
-.mg-labs-layout { display: flex; gap: 24px; }
-.mg-labs-list { flex: 0 0 auto; min-width: 240px; }
-.mg-labs-content { flex: 1; min-width: 0; }
-.mg-labs-group { margin-bottom: 16px; }
-.mg-labs-group:last-child { margin-bottom: 0; }
-.mg-labs-grouplabel { font-family: var(--arxiv-font-condensed); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--arxiv-grey); margin-bottom: 6px; }
-.mg-labs-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; }
-.mg-labs-toggle { position: relative; display: inline-block; width: 28px; height: 16px; flex-shrink: 0; }
-.mg-labs-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
-.mg-labs-track { position: absolute; inset: 0; background: var(--arxiv-border-light); border: 1px solid var(--arxiv-grey-dis); border-radius: 999px; cursor: pointer; transition: background 0.18s, border-color 0.18s; }
-.mg-labs-track::after { content: ''; position: absolute; top: 1px; left: 1px; width: 12px; height: 12px; background: #fff; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.2); transition: transform 0.18s; }
-.mg-labs-toggle input:checked + .mg-labs-track { background: var(--arxiv-open-blue); border-color: #7eb8e0; }
-.mg-labs-toggle input:checked + .mg-labs-track::after { transform: translateX(12px); }
-.mg-labs-toggle input:focus-visible + .mg-labs-track { outline: 3px solid var(--arxiv-link-blue); outline-offset: 2px; }
-.mg-labs-name { font-size: 0.8125rem; color: var(--arxiv-ink); }
-.mg-labs-name .mg-labs-what { font-size: 0.6875rem; color: var(--arxiv-grey); text-decoration: none; margin-left: 4px; }
-.mg-labs-name .mg-labs-what:hover { text-decoration: underline; }
-.mg-labs-placeholder { display: none; padding: 16px 18px; background: var(--arxiv-warm-wash); border: 1px dashed var(--arxiv-border-light); border-radius: 4px; font-size: 0.75rem; color: var(--arxiv-grey); font-style: italic; margin-bottom: 10px; }
-.mg-labs-placeholder:last-child { margin-bottom: 0; }
-.mg-labs-placeholder.is-visible { display: block; }
-.mg-labs-empty { padding: 20px 18px; font-size: 0.8125rem; color: var(--arxiv-grey); font-style: italic; }
-.mg-labs-info { display: flex; justify-content: flex-end; margin-top: 12px; }
-.mg-labs-info a { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--arxiv-grey); text-decoration: none; }
-.mg-labs-info a img { width: 14px; height: 14px; }
-.mg-labs-info a:hover { color: var(--arxiv-ink); }
-.mg-ext { width: 11px; height: 11px; opacity: 0.6; margin-left: 2px; vertical-align: middle; }
-@media (max-width: 700px) {
-  .mg-labs-layout { flex-direction: column; }
-  .mg-labs-list { min-width: 0; }
-}
+/* ══ RELATED (arXiv Labs) styles REMOVED for phase 1 ══
+   The full-width Labs band below the paper was cut from the phase 1
+   scope (see the markup tombstone near </article>); its styles went
+   with it. See the parent mockup merged-abstract-reader.html. */
 
 /* ══ STICKY TOC — design note ══
    The TOC bar is sticky in BOTH abstract and reader modes. DESIGN-POLICIES.md
@@ -977,7 +921,6 @@ footer.ds-site-footer { grid-area: footer; }
 @media (prefers-reduced-motion: reduce) {
   .mg-reader-toggle, .mg-reader-toggle .tk, .mg-reader-toggle .tk::after,
   .mg-toc-bar, .mg-toc-trigger, .mg-toc-trigger .toc-chev,
-  .mg-labs-track, .mg-labs-track::after,
   .mg-cite-copy, .mg-acc,
   .ds-btn, .ds-btn-primary { transition: none !important; }
 }
@@ -4006,9 +3949,10 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
           </dl>
         </div>
       </details>
-      <!-- "Related" (arXiv Labs) moved OUT of the rail to a full-width band
-           below the paper (see <section id="mg-related"> before </article>) —
-           it was too big for the narrow card. -->
+      <!-- "Related" (arXiv Labs) is absent in phase 1: the full-width
+           band it had moved to was removed — labs integration is
+           deferred (not all labs act locally on this page; some modify
+           the /abs/ sidebar). See the parent mockup for the band. -->
 
     </div>
     </section>
@@ -7029,89 +6973,14 @@ We thus see that</p>
 <aside class="footnote" id="fn-lambda">Note that <math class="ltx_Math" alttext="\lambda" display="inline" intent=":literal"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math> corresponds to <math class="ltx_Math" alttext="\beta" display="inline" intent=":literal"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math> in Ref.&nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a href="https://arxiv.org/html/2604.22725v1#bib.bib26" title="Starobinsky inflation with a quadratic Weyl tensor" class="ltx_ref">18</a>]</cite>.</aside>
 <aside class="footnote" id="fn-omega">Note that <math class="ltx_Math" alttext="\omega" display="inline" intent=":literal"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math> corresponds to <math class="ltx_Math" alttext="2\alpha" display="inline" intent=":literal"><semantics><mrow><mn>2</mn><mo lspace="0em" rspace="0em">​</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">2\alpha</annotation></semantics></math> in Ref.&nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a href="https://arxiv.org/html/2604.22725v1#bib.bib26" title="Starobinsky inflation with a quadratic Weyl tensor" class="ltx_ref">18</a>]</cite>.</aside>
 
-<!-- ══ RELATED — full-width arXiv Labs band below the paper, above the
-        footer. Full-bleed darker-tint band (like abstract-redesign's
-        reference zone) signals it is NOT part of the paper content. An
-        <aside> complementary landmark since it is supplementary. ══ -->
-<aside class="mg-related-zone" id="mg-related" aria-labelledby="mg-related-heading">
-  <div class="mg-related-inner">
-    <h2 id="mg-related-heading" class="mg-related-heading">Related</h2>
-    <div class="mg-labs-layout">
-      <div class="mg-labs-list">
-        <div class="mg-labs-group">
-          <div class="mg-labs-grouplabel">Papers &amp; Citations</div>
-          <div class="mg-labs-row">
-            <label class="mg-labs-toggle"><input type="checkbox" data-lab="connected-papers" aria-label="Connected Papers"><span class="mg-labs-track"></span></label>
-            <span class="mg-labs-name">Connected Papers <a class="mg-labs-what" href="https://www.connectedpapers.com/about" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-          </div>
-          <div class="mg-labs-row">
-            <label class="mg-labs-toggle"><input type="checkbox" data-lab="litmaps" aria-label="Litmaps"><span class="mg-labs-track"></span></label>
-            <span class="mg-labs-name">Litmaps <a class="mg-labs-what" href="https://www.litmaps.co/" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-          </div>
-          <div class="mg-labs-row">
-            <label class="mg-labs-toggle"><input type="checkbox" data-lab="core" aria-label="CORE Recommender"><span class="mg-labs-track"></span></label>
-            <span class="mg-labs-name">CORE Recommender <a class="mg-labs-what" href="https://core.ac.uk/services/recommender" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-          </div>
-          <div class="mg-labs-row">
-            <label class="mg-labs-toggle"><input type="checkbox" data-lab="scite" aria-label="scite Smart Citations"><span class="mg-labs-track"></span></label>
-            <span class="mg-labs-name">scite Smart Citations <a class="mg-labs-what" href="https://www.scite.ai/" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-          </div>
-        </div>
-        <div class="mg-labs-group">
-          <div class="mg-labs-grouplabel">Code, Data &amp; Models</div>
-          <div class="mg-labs-row">
-            <label class="mg-labs-toggle"><input type="checkbox" data-lab="catalyzex" aria-label="CatalyzeX Code Finder"><span class="mg-labs-track"></span></label>
-            <span class="mg-labs-name">CatalyzeX Code Finder <a class="mg-labs-what" href="https://www.catalyzex.com" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-          </div>
-          <div class="mg-labs-row">
-            <label class="mg-labs-toggle"><input type="checkbox" data-lab="huggingface" aria-label="Hugging Face"><span class="mg-labs-track"></span></label>
-            <span class="mg-labs-name">Hugging Face <a class="mg-labs-what" href="https://huggingface.co/huggingface" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-          </div>
-          <div class="mg-labs-row">
-            <label class="mg-labs-toggle"><input type="checkbox" data-lab="sciencecast" aria-label="ScienceCast"><span class="mg-labs-track"></span></label>
-            <span class="mg-labs-name">ScienceCast <a class="mg-labs-what" href="https://sciencecast.org/welcome" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-          </div>
-          <div class="mg-labs-row">
-            <label class="mg-labs-toggle"><input type="checkbox" data-lab="alphaxiv" aria-label="alphaXiv"><span class="mg-labs-track"></span></label>
-            <span class="mg-labs-name">alphaXiv <a class="mg-labs-what" href="https://alphaxiv.org/" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-          </div>
-        </div>
-        <div class="mg-labs-group">
-          <div class="mg-labs-grouplabel">Demos</div>
-          <div class="mg-labs-row">
-            <label class="mg-labs-toggle"><input type="checkbox" data-lab="replicate" aria-label="Replicate"><span class="mg-labs-track"></span></label>
-            <span class="mg-labs-name">Replicate <a class="mg-labs-what" href="https://replicate.com/docs/arxiv/about" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-          </div>
-          <div class="mg-labs-row">
-            <label class="mg-labs-toggle"><input type="checkbox" data-lab="hf-spaces" aria-label="Hugging Face Spaces"><span class="mg-labs-track"></span></label>
-            <span class="mg-labs-name">Hugging Face Spaces <a class="mg-labs-what" href="https://huggingface.co/docs/hub/spaces" target="_blank" rel="noopener noreferrer">What is this?<svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
-          </div>
-        </div>
-      </div>
-      <div class="mg-labs-content" id="mg-labs-content-area">
-        <div class="mg-labs-empty" id="mg-labs-empty-msg">Toggle a tool on the left to see its content here.</div>
-        <div class="mg-labs-placeholder" data-lab-content="connected-papers">Content for Connected Papers will display here</div>
-        <div class="mg-labs-placeholder" data-lab-content="litmaps">Content for Litmaps will display here</div>
-        <div class="mg-labs-placeholder" data-lab-content="core">Content for CORE Recommender will display here</div>
-        <div class="mg-labs-placeholder" data-lab-content="scite">Content for scite Smart Citations will display here</div>
-        <div class="mg-labs-placeholder" data-lab-content="catalyzex">Content for CatalyzeX will display here</div>
-        <div class="mg-labs-placeholder" data-lab-content="huggingface">Content for Hugging Face will display here</div>
-        <div class="mg-labs-placeholder" data-lab-content="sciencecast">Content for ScienceCast will display here</div>
-        <div class="mg-labs-placeholder" data-lab-content="alphaxiv">Content for alphaXiv will display here</div>
-        <div class="mg-labs-placeholder" data-lab-content="replicate">Content for Replicate will display here</div>
-        <div class="mg-labs-placeholder" data-lab-content="hf-spaces">Content for Hugging Face Spaces will display here</div>
-      </div>
-    </div>
-    <div class="mg-labs-info">
-      <a href="https://info.arxiv.org/labs/index.html" target="_blank" rel="noopener noreferrer">
-        <img src="images/smileybones-labs-small.svg" alt="">
-        What are arXiv Labs?
-        <svg class="mg-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        <span class="is-sr-only">(opens in new tab)</span>
-      </a>
-    </div>
-  </div>
-</aside>
+<!-- ══ RELATED (arXiv Labs band) — REMOVED for phase 1 ══
+     The full-width Labs band (opt-in toggles for Connected Papers,
+     Litmaps, CORE, scite, CatalyzeX, Hugging Face, ScienceCast,
+     alphaXiv, Replicate, HF Spaces) is deferred: not all labs act
+     locally on this page — the bibliographic ones modify the /abs/
+     sidebar — so the integration belongs to a later phase
+     (feasibility review 2026-07-28). See the parent mockup
+     merged-abstract-reader.html for the full band. -->
 </article>
 <!--
 ═══════════════════════════════════════════════════════════════════════
@@ -9117,21 +8986,8 @@ We thus see that</p>
     });
   }
 
-  /* ── 6. Labs toggles (Related accordion): show/hide content placeholder ── */
-  var labsEmpty = document.getElementById('mg-labs-empty-msg');
-  function updateLabsEmpty() {
-    if (!labsEmpty) return;
-    var anyVisible = document.querySelector('.mg-labs-placeholder.is-visible');
-    labsEmpty.style.display = anyVisible ? 'none' : 'block';
-  }
-  document.querySelectorAll('.mg-labs-toggle input').forEach(function (input) {
-    input.addEventListener('change', function () {
-      var labName = this.dataset.lab;
-      var placeholder = document.querySelector('[data-lab-content="' + labName + '"]');
-      if (placeholder) placeholder.classList.toggle('is-visible', this.checked);
-      updateLabsEmpty();
-    });
-  });
+  /* ── 6. Labs toggles — REMOVED for phase 1 along with the Related
+     (arXiv Labs) band. See the parent mockup for the implementation. */
 })();
 </script>
 </body></html>
