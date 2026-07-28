@@ -1,0 +1,1 @@
+Internal staff tools use **Access Lime** (`#c4d82e`) as the primary action accent color, and public pages use **Open Blue** (`#a5d6fe`) for primary action buttons (with Repository Brown text).

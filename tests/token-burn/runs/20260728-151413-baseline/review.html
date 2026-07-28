@@ -1,0 +1,48 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>20260728-151413-baseline — token-burn review</title><style>
+body{font-family:-apple-system,'Segoe UI',sans-serif;margin:0;background:#f9f7f7;color:#1c1a17;font-size:14px;line-height:1.5}
+.page{max-width:1100px;margin:0 auto;padding:24px 24px 80px}
+h1{font-size:22px;border-bottom:3px solid #a5d6fe;padding-bottom:12px}
+.cell{background:#fff;border:1px solid #ddd8d2;border-radius:8px;margin:20px 0;padding:18px 20px}
+.cell h2{font-size:16px;margin:0 0 10px}
+table.mx{border-collapse:collapse;font-size:12.5px;margin:8px 0}
+table.mx td,table.mx th{border:1px solid #e0dbd7;padding:3px 10px;text-align:left}
+table.mx th{background:#f0eeec;font-weight:600}
+.flag{background:#fdeaea;border:1px solid #c62828;color:#8b0000;border-radius:4px;padding:6px 10px;font-size:12.5px;margin:6px 0}
+.softflag{background:#fff8e1;border:1px solid #e8b800;color:#7a5c00;border-radius:4px;padding:6px 10px;font-size:12.5px;margin:6px 0}
+details{margin:8px 0}summary{cursor:pointer;font-weight:600;font-size:13px}
+pre{background:#f0eeec;border-radius:6px;padding:10px 12px;font-size:12px;overflow-x:auto;white-space:pre-wrap}
+iframe{width:100%;height:520px;border:1px solid #ddd8d2;border-radius:6px;background:#fff}
+.grade{margin-top:10px;padding-top:10px;border-top:1px dashed #ddd8d2;font-size:13px}
+.grade textarea{width:100%;min-height:40px;font:inherit;margin-top:6px}
+.toolbar{margin:16px 0}.toolbar button{font:inherit;padding:6px 14px;border-radius:6px;border:1.5px solid #6b6459;background:#fff;cursor:pointer}
+a{color:#1565c0}
+</style></head>
+<body><div class="page"><h1>Token-burn review — 20260728-151413-baseline</h1>
+<p>Grade each cell below (saved in your browser). Rubrics live in
+<code>tests/token-burn/rubrics/</code>. When done, export your grades and
+paste them back to Claude.</p>
+<div class="toolbar"><button onclick="exportGrades()">Export grades</button>
+<textarea id="export-out" style="display:none;width:100%;min-height:120px"></textarea></div>
+<div class="cell" data-cell="smoke-r1"><h2>smoke-r1</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>4</td></tr><tr><th>output tokens</th><td>274</td></tr><tr><th>cache read</th><td>41933</td></tr><tr><th>cache write</th><td>10279</td></tr><tr><th>cost (USD)</th><td>0.0790439</td></tr><tr><th>turns</th><td>2</td></tr><tr><th>wall time</th><td>28s</td></tr><tr><th>files read</th><td>0 calls · 0 unique · 0 re-reads</td></tr><tr><th>tool calls</th><td>Bash×1</td></tr><tr><th>artifacts</th><td>0</td></tr></table><details><summary>Prompt</summary><pre>You are working in the arXiv design-system repo (the current working directory). Answer this question and make no file changes at all:
+
+According to this repo&#x27;s design policies, which accent color do internal staff tools use for primary actions, and which accent color do public pages use? Answer in one sentence naming both colors.
+</pre></details><details open><summary>Agent's final message</summary><pre>Internal staff tools use **Access Lime** (`#c4d82e`) as the primary action accent color, and public pages use **Open Blue** (`#a5d6fe`) for primary action buttons (with Repository Brown text).</pre></details><details><summary>Files read, in order</summary><pre>(none)</pre></details><div class="grade">Designer grade:
+      <label><input type="radio" name="g-smoke-r1" value="pass" onchange="save('smoke-r1')"> pass</label>
+      <label><input type="radio" name="g-smoke-r1" value="minor" onchange="save('smoke-r1')"> minor issues</label>
+      <label><input type="radio" name="g-smoke-r1" value="fail" onchange="save('smoke-r1')"> fail</label>
+      <textarea id="n-smoke-r1" placeholder="notes…" onblur="save('smoke-r1')"></textarea>
+    </div></div>
+<script>
+function key(id){return 'tokenburn:'+document.title+':'+id}
+function save(id){const v={grade:document.querySelector('input[name=g-'+id+']:checked')?.value||'',
+ notes:document.getElementById('n-'+id).value};localStorage.setItem(key(id),JSON.stringify(v))}
+function load(id){try{const v=JSON.parse(localStorage.getItem(key(id))||'{}');
+ if(v.grade){const r=document.querySelector('input[name=g-'+id+'][value='+v.grade+']');if(r)r.checked=true}
+ if(v.notes)document.getElementById('n-'+id).value=v.notes}catch(e){}}
+function exportGrades(){const out={};document.querySelectorAll('[data-cell]').forEach(c=>{
+ const id=c.dataset.cell;try{out[id]=JSON.parse(localStorage.getItem(key(id))||'{}')}catch(e){}});
+ const t=document.getElementById('export-out');t.value=JSON.stringify(out,null,2);t.style.display='block';t.select()}
+;window.addEventListener('DOMContentLoaded',()=>{load('smoke-r1')});</script>
+</div></body></html>

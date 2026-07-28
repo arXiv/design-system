@@ -1,0 +1,82 @@
+{
+  "tool_calls": {
+    "Read": 9,
+    "Write": 1
+  },
+  "file_reads": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-RdXZ1m/repo/CONTEXT.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-RdXZ1m/repo/BRAND.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-RdXZ1m/repo/DESIGN-POLICIES.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-RdXZ1m/repo/design-patterns/internal/DESIGN-PROGRESS.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-RdXZ1m/repo/design-patterns/color-mapping.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-RdXZ1m/repo/design-patterns/typography.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-RdXZ1m/repo/design-patterns/internal/design-system.css",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-RdXZ1m/repo/design-patterns/internal/button-styles.html",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-RdXZ1m/repo/design-patterns/internal/table-styles.html"
+  ],
+  "greps": [],
+  "bash": [],
+  "files_written": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-RdXZ1m/repo/design-patterns/internal/bulk-action-styles.html"
+  ],
+  "final_message": "Done. Here's a summary of what was built and every design-system rule applied.\n\n---\n\n## What was built\n\n`design-patterns/internal/bulk-action-styles.html` \u2014 a standalone demo page with five labelled static-state blocks (nothing selected, selection active, destructive confirm, success, failure) and a fully interactive live demo with a real checkbox queue table.\n\n**New component classes (page-local, flagged for promotion to `design-system.css`):**\n\n| Class | Purpose |\n|---|---|\n| `.bulk-bar-wrap` | flex column wrapper that fuses bar and table edges |\n| `.bulk-bar` | the action strip itself |\n| `.bulk-bar-lhs / -rhs` | count cluster / button cluster |\n| `.bulk-bar-count` | selection count, carries `role=\"status\"` |\n| `.bulk-bar-rule` | decorative vertical divider between clusters |\n| `.bulk-bar--confirm` | confirm sub-state (warning tint) |\n| `.bulk-bar--success / --error` | feedback states (token-driven) |\n| `.bulk-bar-feedback-icon / -msg` | icon + message anatomy for feedback |\n| `.row-selected` | lime-tint row highlight on checked rows |\n\n---\n\n## Design-system rules applied\n\n**Internal tool surface:** Access Lime (`--lime`) on the primary button (Approve) and bar's top stripe. Open Blue is absent \u2014 these are staff tools.\n\n**Button hierarchy:** Approve \u2192 `.btn-primary` (lime, safe, default). Hold \u2192 `.btn-secondary` (lime tint, neutral). Remove \u2192 `.btn-destructive` (red). The policy requires one primary per action group.\n\n**Destructive confirmation:** Remove fires a two-step confirm inline in the bar (required by the destructive-button policy; single-click removal is called out as a violation in the usage notes).\n\n**Color tokens only:** Every value comes from tokens defined in `design-system.css` (`--lime`, `--sec-bg`, `--warning-bg/border/fg`, `--success-*`, `--error-*`, `--grey-ui`, `--text`, `--link`, `--danger`). No one-off hex values except `#cbc5be` for the decorative divider (within the Border Light family, which is palette-documented) and `#c8960a` for the confirm warning icon (manually darkened from `#e8b800` to ensure 3:1 contrast on `#fff8e1` for a UI element \u2014 inline comment explains this).\n\n**Visual connection to table:** `.bulk-bar` matches `.ds-table`'s border color (`#ddd8d2`), has `border-bottom: none` and `border-radius: 6px 6px 0 0`. A page-local `.bulk-bar-wrap .ds-table` rule removes the table's top border and top radius \u2014 these are layout-seam glue styles, not modifications to the shared component.\n\n**Selected row highlight:** `#f0f9e8` (`--sec-bg`, lime tint) \u2014 ties checked rows visually to the lime action bar.\n\n**Spacing scale:** Gap and padding values use the 4px/8pt grid (`8px`, `10px`, `12px`, `14px`, `16px`) \u2014 no off-scale values.\n\n**Typography:** IBM Plex Sans for body, IBM Plex Mono for arXiv IDs, IBM Plex Sans Condensed for state labels. Loaded via Google Fonts (same as `table-styles.html`; self-hosting is a production migration, not yet completed in this repo).\n\n**WCAG AA:** `role=\"status\"` on the count (polite live region), `role=\"alert\"` on the error bar (assertive), `role=\"status\"` on success. A separate `aria-live=\"assertive\"` region announces the confirm step. `aria-label` on all icon buttons. `aria-hidden=\"true\"` on all decorative SVGs. `:focus-visible` focus rings from `design-system.css` apply unchanged. `Clear selection` and Dismiss use `.btn-link` (Library Grey, 5.8:1 on white \u2713).\n\n**No sticky chrome, no z-index abuse, no metrics, no external data** \u2014 the page is fully self-contained.",
+  "usage": {
+    "input_tokens": 15,
+    "cache_creation_input_tokens": 99665,
+    "cache_read_input_tokens": 500755,
+    "output_tokens": 79462,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 99665,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 1,
+        "output_tokens": 1006,
+        "cache_read_input_tokens": 103135,
+        "cache_creation_input_tokens": 13357,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13357
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "cost_usd": 1.9411205000000002,
+  "num_turns": 11,
+  "duration_ms": 1140713,
+  "transcript_lines": 614,
+  "parse_errors": 0,
+  "model": "claude-sonnet-4-6",
+  "is_error": false,
+  "unique_files_read": 9,
+  "re_reads": 0,
+  "task": "02-fidelity-internal",
+  "artifacts": [
+    "design-patterns/internal/bulk-action-styles.html"
+  ],
+  "auto_checks": {
+    "design-patterns/internal/bulk-action-styles.html": {
+      "external font service": [
+        "fonts.googleapis",
+        "fonts.gstatic"
+      ]
+    }
+  },
+  "non_palette_hexes": {
+    "design-patterns/internal/bulk-action-styles.html": [
+      "c8960a",
+      "f0f9e8"
+    ]
+  },
+  "exit": 0,
+  "wall_seconds": 1142
+}

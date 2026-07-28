@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>arXiv Bulk-Action Bar — Component Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-system.css">
+  <style>
+    /* ── Page chrome ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+      background: #f9f7f7; /* Warm Wash */
+      color: #1c1a17;
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .page { max-width: 980px; margin: 0 auto; padding: 48px 28px 80px; }
+
+    .page-header {
+      margin-bottom: 52px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #c4d82e; /* lime stripe — internal tool signal */
+    }
+    .page-header h1 { font-size: 22px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p  { margin: 0; color: #6b6459; font-size: 13px; max-width: 680px; }
+
+    .section { margin-bottom: 60px; }
+    .section-title { font-size: 16px; font-weight: 700; margin: 0 0 4px; color: #1c1a17; }
+    .section-desc  { font-size: 13px; color: #6b6459; margin: 0 0 20px; }
+
+    /* State demo blocks */
+    .state-block { margin-bottom: 28px; }
+    .state-label {
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #6b6459;
+      margin: 0 0 8px;
+    }
+    .state-scene {
+      background: #fff;
+      border: 1px solid #e0dbd7;
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    /* Callout note */
+    .callout {
+      font-size: 13px;
+      color: #1c1a17;
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #fff;
+      border: 1px solid #e0dbd7;
+      border-left: 4px solid #c4d82e;
+      border-radius: 0 4px 4px 0;
+      line-height: 1.6;
+    }
+    .callout + .callout { margin-top: 10px; }
+    .callout strong { color: #1c1a17; }
+    .note-alert { margin-top: 16px; }
+
+    /* Accessibility helper */
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* docs-nav (matches other internal pattern pages) */
+    .docs-nav { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; background: #f0eeec; border-bottom: 1px solid #ddd8d2; padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: #1c1a17; text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: #1565c0; }
+    .docs-nav a:not(.docs-nav-brand) { color: #6b6459; text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: #1c1a17; text-decoration: underline; }
+    .docs-nav a:focus-visible { outline: 2px solid #1565c0; outline-offset: 2px; border-radius: 2px; }
+    .docs-nav-spacer { flex: 1; }
+    .docs-nav .docs-nav-tag { color: #8b8680; font-size: 12px; }
+
+    /* Checkbox column in queue tables */
+    .col-check { width: 40px; }
+    .ds-table td.col-check,
+    .ds-table th.col-check { text-align: center; padding-left: 10px; padding-right: 6px; }
+
+    /* ── Bulk-Action Bar Component ───────────────────────────────
+       Page-local CSS — will be promoted to design-system.css once
+       the pattern stabilises. Use .ds- prefix on promotion.
+    ─────────────────────────────────────────────────────────── */
+
+    /* Wrapper: makes bar and table share edges so they read as one block */
+    .bulk-bar-wrap { display: flex; flex-direction: column; }
+
+    /* When the bar is present, the table loses its top border and top radius */
+    .bulk-bar-wrap .ds-table {
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+    }
+
+    /* The bar itself */
+    .bulk-bar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #f0eeec;        /* Grey Hover — matches .ds-table th background */
+      border: 1px solid #ddd8d2;  /* matches .ds-table outer border */
+      border-bottom: none;        /* fuses visually with the table's top edge */
+      border-top: 3px solid var(--lime); /* lime stripe = moderation action zone */
+      border-radius: 6px 6px 0 0;
+    }
+
+    /* Left side: count + clear-selection link */
+    .bulk-bar-lhs {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .bulk-bar-count {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Vertical rule between count cluster and button cluster */
+    .bulk-bar-rule {
+      width: 1px;
+      height: 22px;
+      background: #cbc5be; /* Border Light family — decorative only */
+      flex-shrink: 0;
+      align-self: center;
+    }
+
+    /* Right side: action buttons */
+    .bulk-bar-rhs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Compact button sizing within the bar */
+    .bulk-bar .btn {
+      font-size: 13px;
+      padding: 7px 14px;
+    }
+
+    /* ─── Confirm sub-state ─── */
+    .bulk-bar--confirm {
+      background: #fff8e1;       /* --warning-bg */
+      border-top-color: #e8b800; /* --warning-border */
+      border-color: #e8b800;
+    }
+
+    .bulk-bar-confirm-msg {
+      font-size: 13px;
+      font-weight: 500;
+      color: #7a5c00; /* --warning-fg: 5.9:1 on #fff8e1 ✓ AA */
+      flex: 1;
+      margin: 0;
+    }
+
+    /* ─── Feedback states (success / failure) ─── */
+    .bulk-bar--success {
+      background: var(--success-bg);
+      border-top-color: var(--success-border);
+      border-color: var(--success-border);
+      color: var(--success-fg);
+    }
+
+    .bulk-bar--error {
+      background: var(--error-bg);
+      border-top-color: var(--error-border);
+      border-color: var(--error-border);
+      color: var(--error-fg);
+    }
+
+    /* Feedback icon (stroke-based, inherits variant fg via currentColor) */
+    .bulk-bar-feedback-icon {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      align-self: center;
+    }
+
+    .bulk-bar-feedback-msg {
+      font-size: 13px;
+      font-weight: 500;
+      flex: 1;
+      margin: 0;
+    }
+
+    /* Dismiss / inline link in feedback bars — inherits bar fg color */
+    .bulk-bar--success .btn-link,
+    .bulk-bar--error .btn-link {
+      color: inherit;
+      text-decoration-color: currentColor;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+
+    /* Selected row highlight in the queue table */
+    .row-selected td { background: #f0f9e8 !important; } /* --sec-bg lime tint */
+  </style>
+</head>
+<body>
+
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../../index.html">arXiv Design System</a>
+  <a href="button-styles.html">Buttons</a>
+  <a href="card-styles.html">Cards</a>
+  <a href="table-styles.html">Tables</a>
+  <a href="form-styles.html">Forms</a>
+  <a href="alert-styles.html">Alerts</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="docs-nav-tag">Internal tools</span>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <h1>Bulk-Action Bar — Component Reference</h1>
+    <p>A contextual action strip for the arXiv Check moderation queue. Appears above the table when one or more submissions are selected; offers approve, hold, and remove actions. Visually fused to the queue table via shared border edges.</p>
+  </header>
+
+
+  <!-- ── STATES REFERENCE ─────────────────────────────────────── -->
+  <section class="section">
+    <h2 class="section-title">States</h2>
+    <p class="section-desc">
+      Four states: bar absent (nothing selected), bar active (selection made), destructive confirm (after clicking Remove), and feedback (success or failure after an action completes). Each is shown above a stub queue table to illustrate the visual connection.
+    </p>
+
+
+    <!-- ── State 1: Nothing selected ── -->
+    <div class="state-block">
+      <p class="state-label">1 — Nothing selected (bar absent)</p>
+      <div class="state-scene">
+        <!-- No .bulk-bar rendered — table has its own full border-radius -->
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th class="col-check" scope="col"><span class="sr-only">Select</span></th>
+              <th scope="col">arXiv ID</th>
+              <th scope="col">Type</th>
+              <th scope="col">Title</th>
+              <th scope="col">Submitted</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select 2506.01234"></td>
+              <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01234</td>
+              <td><span class="type-badge type-new">new</span></td>
+              <td>Attention mechanisms in large language models</td>
+              <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-28</td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select 2506.01235"></td>
+              <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01235</td>
+              <td><span class="type-badge type-rep">rep</span></td>
+              <td>Quantization of neural networks for edge deployment</td>
+              <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-27</td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select 2506.01236"></td>
+              <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01236</td>
+              <td><span class="type-badge type-new">new</span></td>
+              <td>Topological invariants in condensed matter systems</td>
+              <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-27</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <!-- ── State 2: Selection active ── -->
+    <div class="state-block">
+      <p class="state-label">2 — Selection active</p>
+      <div class="state-scene">
+        <div class="bulk-bar-wrap">
+
+          <div class="bulk-bar" role="toolbar" aria-label="Actions for selected submissions">
+            <div class="bulk-bar-lhs">
+              <span class="bulk-bar-count" role="status">3 submissions selected</span>
+              <button type="button" class="btn-link">Clear selection</button>
+            </div>
+            <div class="bulk-bar-rule" aria-hidden="true"></div>
+            <div class="bulk-bar-rhs" role="group" aria-label="Bulk actions">
+              <!-- Approve: primary (lime) — common, safe, default action -->
+              <button type="button" class="btn btn-primary">
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Approve selected
+              </button>
+              <!-- Hold: secondary (lime tint) — neutral, reversible -->
+              <button type="button" class="btn btn-secondary">
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                Put on hold
+              </button>
+              <!-- Remove: destructive — always requires confirm step -->
+              <button type="button" class="btn btn-destructive">
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                Remove selected
+              </button>
+            </div>
+          </div>
+
+          <table class="ds-table">
+            <thead>
+              <tr>
+                <th class="col-check" scope="col"><span class="sr-only">Select</span></th>
+                <th scope="col">arXiv ID</th>
+                <th scope="col">Type</th>
+                <th scope="col">Title</th>
+                <th scope="col">Submitted</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-selected">
+                <td class="col-check"><input type="checkbox" checked aria-label="Select 2506.01234"></td>
+                <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01234</td>
+                <td><span class="type-badge type-new">new</span></td>
+                <td>Attention mechanisms in large language models</td>
+                <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-28</td>
+              </tr>
+              <tr class="row-selected">
+                <td class="col-check"><input type="checkbox" checked aria-label="Select 2506.01235"></td>
+                <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01235</td>
+                <td><span class="type-badge type-rep">rep</span></td>
+                <td>Quantization of neural networks for edge deployment</td>
+                <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-27</td>
+              </tr>
+              <tr class="row-selected">
+                <td class="col-check"><input type="checkbox" checked aria-label="Select 2506.01236"></td>
+                <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01236</td>
+                <td><span class="type-badge type-new">new</span></td>
+                <td>Topological invariants in condensed matter systems</td>
+                <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-27</td>
+              </tr>
+            </tbody>
+          </table>
+        </div><!-- /.bulk-bar-wrap -->
+      </div><!-- /.state-scene -->
+    </div><!-- /.state-block -->
+
+
+    <!-- ── State 2b: Destructive confirm ── -->
+    <div class="state-block">
+      <p class="state-label">2b — Destructive confirm (shown after clicking "Remove selected")</p>
+      <div class="state-scene">
+        <div class="bulk-bar-wrap">
+
+          <div class="bulk-bar bulk-bar--confirm" aria-label="Confirm removal" aria-live="assertive">
+            <!-- Warning icon: amber, not currentColor, because the icon must be distinguishable from the text on the warning background -->
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8960a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <p class="bulk-bar-confirm-msg">
+              <strong>Remove 3 submissions?</strong> This cannot be undone.
+            </p>
+            <div class="bulk-bar-rhs">
+              <button type="button" class="btn btn-destructive">Confirm removal</button>
+              <button type="button" class="btn btn-tertiary">Cancel</button>
+            </div>
+          </div>
+
+          <table class="ds-table">
+            <thead>
+              <tr>
+                <th class="col-check" scope="col"><span class="sr-only">Select</span></th>
+                <th scope="col">arXiv ID</th>
+                <th scope="col">Type</th>
+                <th scope="col">Title</th>
+                <th scope="col">Submitted</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-selected">
+                <td class="col-check"><input type="checkbox" checked aria-label="Select 2506.01234"></td>
+                <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01234</td>
+                <td><span class="type-badge type-new">new</span></td>
+                <td>Attention mechanisms in large language models</td>
+                <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-28</td>
+              </tr>
+              <tr class="row-selected">
+                <td class="col-check"><input type="checkbox" checked aria-label="Select 2506.01235"></td>
+                <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01235</td>
+                <td><span class="type-badge type-rep">rep</span></td>
+                <td>Quantization of neural networks for edge deployment</td>
+                <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-27</td>
+              </tr>
+              <tr class="row-selected">
+                <td class="col-check"><input type="checkbox" checked aria-label="Select 2506.01236"></td>
+                <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01236</td>
+                <td><span class="type-badge type-new">new</span></td>
+                <td>Topological invariants in condensed matter systems</td>
+                <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-27</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ── State 3: Success ── -->
+    <div class="state-block">
+      <p class="state-label">3 — Success feedback</p>
+      <div class="state-scene">
+        <div class="bulk-bar-wrap">
+
+          <div class="bulk-bar bulk-bar--success" role="status">
+            <svg class="bulk-bar-feedback-icon" aria-hidden="true" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <p class="bulk-bar-feedback-msg"><strong>3 submissions approved</strong> and queued for publication.</p>
+            <button type="button" class="btn-link">Dismiss</button>
+          </div>
+
+          <table class="ds-table">
+            <thead>
+              <tr>
+                <th class="col-check" scope="col"><span class="sr-only">Select</span></th>
+                <th scope="col">arXiv ID</th>
+                <th scope="col">Type</th>
+                <th scope="col">Title</th>
+                <th scope="col">Submitted</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="col-check"><input type="checkbox" aria-label="Select 2506.01237"></td>
+                <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01237</td>
+                <td><span class="type-badge type-cross">cross</span></td>
+                <td>Stochastic gradient descent with momentum on non-convex problems</td>
+                <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-26</td>
+              </tr>
+              <tr>
+                <td class="col-check"><input type="checkbox" aria-label="Select 2506.01238"></td>
+                <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01238</td>
+                <td><span class="type-badge type-wdr">wdr</span></td>
+                <td>Withdrawn: An improved bound on the chromatic number</td>
+                <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-26</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ── State 4: Failure ── -->
+    <div class="state-block">
+      <p class="state-label">4 — Failure feedback</p>
+      <div class="state-scene">
+        <div class="bulk-bar-wrap">
+
+          <div class="bulk-bar bulk-bar--error" role="alert">
+            <svg class="bulk-bar-feedback-icon" aria-hidden="true" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="m15 9-6 6"/>
+              <path d="m9 9 6 6"/>
+            </svg>
+            <p class="bulk-bar-feedback-msg"><strong>Action failed.</strong> 3 submissions could not be approved — please try again or contact support.</p>
+            <button type="button" class="btn-link">Dismiss</button>
+          </div>
+
+          <table class="ds-table">
+            <thead>
+              <tr>
+                <th class="col-check" scope="col"><span class="sr-only">Select</span></th>
+                <th scope="col">arXiv ID</th>
+                <th scope="col">Type</th>
+                <th scope="col">Title</th>
+                <th scope="col">Submitted</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-selected">
+                <td class="col-check"><input type="checkbox" checked aria-label="Select 2506.01234"></td>
+                <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01234</td>
+                <td><span class="type-badge type-new">new</span></td>
+                <td>Attention mechanisms in large language models</td>
+                <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-28</td>
+              </tr>
+              <tr class="row-selected">
+                <td class="col-check"><input type="checkbox" checked aria-label="Select 2506.01235"></td>
+                <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01235</td>
+                <td><span class="type-badge type-rep">rep</span></td>
+                <td>Quantization of neural networks for edge deployment</td>
+                <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-27</td>
+              </tr>
+              <tr class="row-selected">
+                <td class="col-check"><input type="checkbox" checked aria-label="Select 2506.01236"></td>
+                <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01236</td>
+                <td><span class="type-badge type-new">new</span></td>
+                <td>Topological invariants in condensed matter systems</td>
+                <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-27</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </section><!-- /.section States -->
+
+
+  <!-- ── LIVE DEMO ────────────────────────────────────────────── -->
+  <section class="section">
+    <h2 class="section-title">Live Demo</h2>
+    <p class="section-desc">
+      Check rows to reveal the bar. Click Approve or Hold to see the success state. Click Remove to see the two-step confirm. Dismiss feedback to return to idle.
+    </p>
+
+    <!-- Screen-reader live region for assertive announcements (confirm, error) -->
+    <span class="sr-only" id="live-announce" aria-live="assertive" aria-atomic="true"></span>
+
+    <div id="live-wrap" class="bulk-bar-wrap">
+
+      <!-- Bar: active state -->
+      <div id="bar-active" class="bulk-bar" role="toolbar" aria-label="Actions for selected submissions" hidden>
+        <div class="bulk-bar-lhs">
+          <span id="live-count" class="bulk-bar-count" role="status" aria-live="polite"></span>
+          <button id="btn-clear" type="button" class="btn-link">Clear selection</button>
+        </div>
+        <div class="bulk-bar-rule" aria-hidden="true"></div>
+        <div class="bulk-bar-rhs" role="group" aria-label="Bulk actions">
+          <button id="btn-approve" type="button" class="btn btn-primary">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Approve selected
+          </button>
+          <button id="btn-hold" type="button" class="btn btn-secondary">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            Put on hold
+          </button>
+          <button id="btn-remove" type="button" class="btn btn-destructive">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+            Remove selected
+          </button>
+        </div>
+      </div>
+
+      <!-- Bar: confirm state -->
+      <div id="bar-confirm" class="bulk-bar bulk-bar--confirm" aria-label="Confirm removal" hidden>
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8960a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <p class="bulk-bar-confirm-msg" id="live-confirm-text"></p>
+        <div class="bulk-bar-rhs">
+          <button id="btn-confirm-yes" type="button" class="btn btn-destructive">Confirm removal</button>
+          <button id="btn-confirm-no"  type="button" class="btn btn-tertiary">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Bar: success state -->
+      <div id="bar-success" class="bulk-bar bulk-bar--success" role="status" hidden>
+        <svg class="bulk-bar-feedback-icon" aria-hidden="true" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <p id="live-success-text" class="bulk-bar-feedback-msg"></p>
+        <button id="btn-dismiss-ok" type="button" class="btn-link">Dismiss</button>
+      </div>
+
+      <!-- Bar: error state -->
+      <div id="bar-error" class="bulk-bar bulk-bar--error" role="alert" hidden>
+        <svg class="bulk-bar-feedback-icon" aria-hidden="true" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+        <p id="live-error-text" class="bulk-bar-feedback-msg"></p>
+        <button id="btn-dismiss-err" type="button" class="btn-link">Dismiss</button>
+      </div>
+
+      <!-- Queue table -->
+      <table class="ds-table" id="live-table">
+        <thead>
+          <tr>
+            <th class="col-check" scope="col">
+              <input type="checkbox" id="check-all" aria-label="Select all submissions">
+            </th>
+            <th scope="col">arXiv ID</th>
+            <th scope="col">Type</th>
+            <th scope="col">Title</th>
+            <th scope="col">Submitted</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-check"><input type="checkbox" class="row-check" aria-label="Select 2506.01234"></td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01234</td>
+            <td><span class="type-badge type-new">new</span></td>
+            <td>Attention mechanisms in large language models</td>
+            <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-28</td>
+          </tr>
+          <tr>
+            <td class="col-check"><input type="checkbox" class="row-check" aria-label="Select 2506.01235"></td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01235</td>
+            <td><span class="type-badge type-rep">rep</span></td>
+            <td>Quantization of neural networks for edge deployment</td>
+            <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-27</td>
+          </tr>
+          <tr>
+            <td class="col-check"><input type="checkbox" class="row-check" aria-label="Select 2506.01236"></td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01236</td>
+            <td><span class="type-badge type-new">new</span></td>
+            <td>Topological invariants in condensed matter systems</td>
+            <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-27</td>
+          </tr>
+          <tr>
+            <td class="col-check"><input type="checkbox" class="row-check" aria-label="Select 2506.01237"></td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01237</td>
+            <td><span class="type-badge type-cross">cross</span></td>
+            <td>Stochastic gradient descent with momentum on non-convex problems</td>
+            <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-26</td>
+          </tr>
+          <tr>
+            <td class="col-check"><input type="checkbox" class="row-check" aria-label="Select 2506.01238"></td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;">2506.01238</td>
+            <td><span class="type-badge type-wdr">wdr</span></td>
+            <td>Withdrawn: An improved bound on the chromatic number</td>
+            <td style="color:#6b6459;font-size:12px;white-space:nowrap;">2026-07-26</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div><!-- /#live-wrap -->
+
+    <!-- Demo: simulate an error for documentation purposes -->
+    <div style="margin-top:12px; font-size:13px; color:#6b6459;">
+      To preview the error state:
+      <button id="btn-demo-error" type="button" class="btn-link" style="font-size:13px;">Simulate a failed action</button>
+    </div>
+
+  </section><!-- /.section Live Demo -->
+
+
+  <!-- ── USAGE NOTES ───────────────────────────────────────────── -->
+  <section class="section">
+    <h2 class="section-title">Usage Notes</h2>
+
+    <div class="ds-alert ds-alert-error note-alert" role="alert">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Remove selected always requires a two-step confirm</p>
+        <p>Firing removal on a single click is a design-system violation. The confirm sub-state is mandatory per the destructive-button policy. The confirm message must include the count ("Remove 3 submissions? This cannot be undone.").</p>
+      </div>
+    </div>
+
+    <div class="ds-alert ds-alert-info note-alert" role="status">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Button hierarchy is fixed: Approve → Hold → Remove</p>
+        <p>Approve selected is the common, safe action: <code>.btn-primary</code> (lime). Put on hold is neutral: <code>.btn-secondary</code>. Remove selected is destructive: <code>.btn-destructive</code>. Never swap these colors — the hierarchy is semantic, not decorative.</p>
+      </div>
+    </div>
+
+    <p class="callout">
+      <strong>Visual connection to the table:</strong> <code>.bulk-bar</code> uses <code>border: 1px solid #ddd8d2; border-bottom: none; border-radius: 6px 6px 0 0</code> — the same border color as <code>.ds-table</code>. The table inside <code>.bulk-bar-wrap</code> then gets <code>border-top: none; border-radius: 0 0 6px 6px</code> via the page-local <code>.bulk-bar-wrap .ds-table</code> rule. These are glue styles scoped to this page; they do not modify the shared <code>.ds-table</code> component.
+    </p>
+
+    <p class="callout">
+      <strong>Selected row highlight:</strong> Checked rows use <code>background: #f0f9e8</code> (<code>--sec-bg</code>, the lime tint). This visually ties the affected rows to the lime action bar and makes the selection set scannable at a glance. The tint is subtle enough not to interfere with the table's hover state.
+    </p>
+
+    <p class="callout">
+      <strong>ARIA and screen readers:</strong> The count element uses <code>role="status"</code> (polite live region) so selection changes announce without interrupting. The error bar uses <code>role="alert"</code> (assertive). The success bar uses <code>role="status"</code>. A separate <code>aria-live="assertive"</code> region announces the confirm step. On confirm open, focus moves to the "Confirm removal" button. On cancel or dismiss, focus returns to the Remove button or the first unchecked row checkbox respectively.
+    </p>
+
+    <p class="callout">
+      <strong>Dismiss / clear:</strong> Dismissing a feedback bar restores the queue to idle. "Clear selection" unchecks all rows and hides the bar. Both use <code>.btn-link</code> — they are incidental affordances, not primary actions, so they do not warrant button-weight chrome.
+    </p>
+
+    <p class="callout">
+      <strong>CSS promotion:</strong> Once this pattern stabilises, <code>.bulk-bar</code>, <code>.bulk-bar-wrap</code>, <code>.bulk-bar-lhs</code>, <code>.bulk-bar-rhs</code>, <code>.bulk-bar--confirm</code>, <code>.bulk-bar--success</code>, and <code>.bulk-bar--error</code> should be extracted into <code>design-system.css</code> and prefixed with <code>.ds-</code>. The <code>.bulk-bar-wrap .ds-table</code> modifier stays in the consuming page — it is a layout seam, not a component style.
+    </p>
+
+  </section>
+
+</div><!-- /.page -->
+
+<script>
+(function () {
+  'use strict';
+
+  var rowChecks  = Array.prototype.slice.call(document.querySelectorAll('.row-check'));
+  var checkAll   = document.getElementById('check-all');
+  var liveTable  = document.getElementById('live-table');
+  var liveWrap   = document.getElementById('live-wrap');
+  var announce   = document.getElementById('live-announce');
+
+  var barActive  = document.getElementById('bar-active');
+  var barConfirm = document.getElementById('bar-confirm');
+  var barSuccess = document.getElementById('bar-success');
+  var barError   = document.getElementById('bar-error');
+
+  var liveCount     = document.getElementById('live-count');
+  var confirmText   = document.getElementById('live-confirm-text');
+  var successText   = document.getElementById('live-success-text');
+  var errorText     = document.getElementById('live-error-text');
+
+  var lastSelectedN = 0;
+
+  /* ── Helpers ── */
+
+  function countChecked() {
+    return rowChecks.filter(function (c) { return c.checked; }).length;
+  }
+
+  function label(n) {
+    return n + ' submission' + (n !== 1 ? 's' : '');
+  }
+
+  function updateRowHighlights() {
+    var rows = liveTable.querySelectorAll('tbody tr');
+    rows.forEach(function (row, i) {
+      if (rowChecks[i].checked) {
+        row.classList.add('row-selected');
+      } else {
+        row.classList.remove('row-selected');
+      }
+    });
+  }
+
+  /* ── Bar visibility ── */
+
+  var bars = [barActive, barConfirm, barSuccess, barError];
+
+  function showOnlyBar(bar) {
+    bars.forEach(function (b) { b.hidden = true; });
+    if (bar) {
+      bar.hidden = false;
+      /* Connected-table seam: remove top border + top radius on table */
+      liveTable.style.borderTop    = 'none';
+      liveTable.style.borderRadius = '0 0 6px 6px';
+    } else {
+      /* No bar: restore full table border */
+      liveTable.style.borderTop    = '';
+      liveTable.style.borderRadius = '6px';
+    }
+  }
+
+  function syncBar() {
+    var n = countChecked();
+    lastSelectedN = n;
+    updateRowHighlights();
+    updateCheckAllState();
+    if (n === 0) {
+      showOnlyBar(null);
+    } else {
+      liveCount.textContent = label(n) + ' selected';
+      showOnlyBar(barActive);
+    }
+  }
+
+  function updateCheckAllState() {
+    var n = countChecked();
+    checkAll.checked       = n === rowChecks.length;
+    checkAll.indeterminate = n > 0 && n < rowChecks.length;
+  }
+
+  /* ── Row checkboxes ── */
+
+  rowChecks.forEach(function (cb) {
+    cb.addEventListener('change', syncBar);
+  });
+
+  checkAll.addEventListener('change', function () {
+    rowChecks.forEach(function (c) { c.checked = checkAll.checked; });
+    syncBar();
+  });
+
+  /* ── Clear selection ── */
+
+  document.getElementById('btn-clear').addEventListener('click', function () {
+    rowChecks.forEach(function (c) { c.checked = false; });
+    checkAll.checked       = false;
+    checkAll.indeterminate = false;
+    showOnlyBar(null);
+    updateRowHighlights();
+  });
+
+  /* ── Approve ── */
+
+  document.getElementById('btn-approve').addEventListener('click', function () {
+    var n = countChecked();
+    successText.innerHTML = '<strong>' + label(n) + ' approved</strong> and queued for publication.';
+    showOnlyBar(barSuccess);
+    clearChecks();
+  });
+
+  /* ── Hold ── */
+
+  document.getElementById('btn-hold').addEventListener('click', function () {
+    var n = countChecked();
+    successText.innerHTML = '<strong>' + label(n) + ' put on hold.</strong> They will remain in the queue.';
+    showOnlyBar(barSuccess);
+    clearChecks();
+  });
+
+  /* ── Remove → confirm ── */
+
+  document.getElementById('btn-remove').addEventListener('click', function () {
+    var n = countChecked();
+    lastSelectedN = n;
+    confirmText.innerHTML = '<strong>Remove ' + label(n) + '?</strong> This cannot be undone.';
+    announce.textContent  = 'Confirm removal: remove ' + label(n) + '? This cannot be undone.';
+    showOnlyBar(barConfirm);
+    document.getElementById('btn-confirm-yes').focus();
+  });
+
+  document.getElementById('btn-confirm-yes').addEventListener('click', function () {
+    successText.innerHTML = '<strong>' + label(lastSelectedN) + ' removed.</strong>';
+    showOnlyBar(barSuccess);
+    clearChecks();
+  });
+
+  document.getElementById('btn-confirm-no').addEventListener('click', function () {
+    syncBar(); /* Return to active bar */
+    document.getElementById('btn-remove').focus();
+  });
+
+  /* ── Dismiss ── */
+
+  document.getElementById('btn-dismiss-ok').addEventListener('click', function () {
+    showOnlyBar(null);
+  });
+
+  document.getElementById('btn-dismiss-err').addEventListener('click', function () {
+    syncBar(); /* Restore bar if rows are still checked */
+  });
+
+  /* ── Demo error trigger ── */
+
+  document.getElementById('btn-demo-error').addEventListener('click', function () {
+    var n = countChecked();
+    var what = n > 0 ? label(n) : '3 submissions';
+    errorText.innerHTML = '<strong>Action failed.</strong> ' + what + ' could not be approved — please try again or contact support.';
+    announce.textContent = 'Action failed. ' + what + ' could not be approved.';
+    showOnlyBar(barError);
+  });
+
+  /* ── Utility ── */
+
+  function clearChecks() {
+    rowChecks.forEach(function (c) { c.checked = false; });
+    checkAll.checked       = false;
+    checkAll.indeterminate = false;
+    updateRowHighlights();
+  }
+
+  /* ── Reduced motion: disable bar transition if user prefers ──
+     The bar appears/disappears via `hidden` attribute (no animation by default),
+     so this is a no-op for the current implementation. If slide-in motion is
+     added later, gate it here. */
+
+}());
+</script>
+</body>
+</html>

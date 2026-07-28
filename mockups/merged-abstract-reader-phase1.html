@@ -580,6 +580,28 @@ body.mg-reader .mg-top-cols { display: block; }
   box-shadow: inset 0 0 10px rgba(31, 94, 150, 0.35);
 }
 
+/* Tertiary button — PROPOSED variant, not yet in design-system.css.
+   DESIGN-POLICIES.md already anticipates it ("No shadow on tertiary or
+   text-only buttons"). Quiet navigation-weight button: transparent fill,
+   no border, Link Blue label. Follows the button policy: 6px radius and
+   10px 20px padding (inherited from .ds-btn), translateY(1px) press,
+   and no shadow in any state. Candidate for promotion to the canonical
+   design system once validated here. */
+.ds-btn-tertiary {
+  background: transparent;
+  color: var(--arxiv-link-blue);
+  box-shadow: none;
+}
+.ds-btn-tertiary:hover { background: var(--arxiv-card-grey); color: var(--arxiv-link-hover); }
+.ds-btn-tertiary:active { transform: translateY(1px); background: var(--arxiv-card-grey); }
+.ds-btn-tertiary .btn-arrow { width: 15px; height: 15px; flex: none; }
+
+/* Row that holds the back-to-abstract tertiary button: directly below
+   the site header, above the watermark line, left-aligned (back-link
+   convention: top-left corner of the content area). */
+.mg-abs-return { margin: 0; padding: 14px 24px 0; text-align: left; }
+@media (max-width: 700px) { .mg-abs-return { padding: 10px 12px 0; } }
+
 /* Accordions — codified 2026-07-28 as .ds-acc in
    design-patterns/public/design-system.css (.mg-accordions → .ds-acc-stack,
    rail scoping → .ds-acc-rail). The codified version is the source of
@@ -3744,16 +3766,27 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
      footer) already uses real landmark elements. -->
 <div class="ltx_page_main" role="main" id="main">
 <div id="infobox" class="infobox"></div>
+<!-- Phase 1: "Back to abstract" as a tertiary button directly below the
+     site header, above the watermark line. A first iteration appended a
+     plain link to the watermark line itself, where it disappeared among
+     the ID / DOI / license small print (feedback 2026-07-28). The
+     abstract page remains the paper's canonical home; this button is
+     the page's primary route back. -->
+<p class="mg-abs-return">
+  <a class="ds-btn ds-btn-tertiary" href="https://arxiv.org/abs/2604.22725v1">
+    <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to abstract
+  </a>
+</p>
 <!-- Watermark line carries the full identity of the paper: arXiv ID,
      full category name (internal feedback 2026-06-11: one tester missed
      the category when only the [gr-qc] code was shown), DOI (many
      readers land here directly without passing the abstract page —
-     internal feedback 2026-06-11), and license. Phase 1 adds a
-     "Back to abstract page" link here: the abstract page remains the
-     paper's canonical home, and the route back must be visible at the
-     top of the page without adding paper-level links to the dark
-     site header. -->
-<p class="new-watermark"><img src="images/smileybones-small-grayscale.svg" alt=""><span aria-hidden="true">arXiv:2604.22725v1 [gr-qc] General Relativity and Quantum Cosmology &middot; 24 April 2026</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1, primary category General Relativity and Quantum Cosmology, submitted 24 April 2026</span> &ensp; <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a> &ensp; <a href="https://info.arxiv.org/help/license/index.html#licenses-available"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">License: CC BY 4.0</abbr></a> &ensp; <a class="wm-abs-link" href="https://arxiv.org/abs/2604.22725v1">Back to abstract page</a></p><div class="ltx_page_content">
+     internal feedback 2026-06-11), and license. (Phase 1: the
+     "Back to abstract" route lives in the tertiary button ABOVE this
+     line — see .mg-abs-return — not in the watermark itself, where a
+     first iteration showed it disappeared among the small print.) -->
+<p class="new-watermark"><img src="images/smileybones-small-grayscale.svg" alt=""><span aria-hidden="true">arXiv:2604.22725v1 [gr-qc] General Relativity and Quantum Cosmology &middot; 24 April 2026</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1, primary category General Relativity and Quantum Cosmology, submitted 24 April 2026</span> &ensp; <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a> &ensp; <a href="https://info.arxiv.org/help/license/index.html#licenses-available"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">License: CC BY 4.0</abbr></a></p><div class="ltx_page_content">
 <article class="ltx_document ltx_authors_1line" lang="en">
 <!-- mg-top: title spans full content width; the row below puts
      authors+abstract (left) beside the document-tools rail (right). In
