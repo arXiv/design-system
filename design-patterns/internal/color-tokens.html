@@ -138,6 +138,7 @@
     }
     .callout + .callout { margin-top: 10px; }
     .callout strong { color: #1c1a17; }
+    .note-alert { margin-top: 16px; }
   
     /* ── Shared docs nav strip (same on every design-system doc page;
        hex values because internal token names differ — page chrome only,
@@ -435,9 +436,15 @@
       <p class="callout">
         <strong>Disabled state contrast exemption:</strong> WCAG 1.4.3 explicitly exempts disabled UI components from contrast requirements. The washed-out colours used in disabled states are intentional — they communicate inactivity while remaining visually connected to their active counterparts.
       </p>
-      <p class="callout">
-        <strong>Underline requirement.</strong> Inline links must carry underlines in both modes. In light mode, link vs. body text contrast is 3.02:1 — technically at the WCAG 1.4.1 limit, but too marginal to rely on. In dark mode it is 1.61:1 — underlines are mandatory. Standalone links (no surrounding body text) may omit the underline.
-      </p>
+      <!-- Hard rule → real .ds-alert-error (docs convention: hard prohibitions are
+           .ds-alert-error; quiet .callout is for neutral usage notes only). -->
+      <div class="ds-alert ds-alert-error note-alert">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">Underline requirement</p>
+          <p>Inline links must carry underlines in both modes. In light mode, link vs. body text contrast is 3.02:1 — technically at the WCAG 1.4.1 limit, but too marginal to rely on. In dark mode it is 1.61:1 — underlines are mandatory. Standalone links (no surrounding body text) may omit the underline.</p>
+        </div>
+      </div>
       <p class="callout">
         <strong>Brand Link Blue <code>#1e8bc3</code> retired from body-text use.</strong> It achieves 3.6–3.8:1 on light backgrounds (fails AA normal text) and 4.1:1 on the dark card surface (also fails). The <code>--link</code> token uses <code>#1565c0</code> for light mode and <code>#64b5f6</code> as the dark mode override — a deliberate, documented divergence for accessibility compliance.
       </p>

@@ -5,6 +5,7 @@ Program-level backlog for the design system: cross-cutting work and priorities. 
 ## Done
 
 - [x] **Brand statement + voice + design implications** — [BRAND.md](BRAND.md) (2026-06-16). Wired into the reading order in CLAUDE.md and CONTEXT.md.
+- [x] **Docs-chrome callout decision** (2026-07-28) — the older reference pages' bespoke `.callout` boxes stay as quiet page-local chrome for *neutral* usage/rationale notes (docs chrome is page-specific by policy; no `.ds-callout` promoted — production has no need for one, and most of the ~80 notes aren't advisories). Only genuine hard rules use the real `.ds-alert`: converted the destructive-confirmation rule (internal `button-styles`) and the three underline mandates (public `link-styles`, internal `color-tokens` + `link-styles`) to `.ds-alert-error`, matching the flagship-page convention (advisory = `.ds-alert-info`, prohibition = `.ds-alert-error`).
 
 ## Next — gating user testing of the two mockups
 
