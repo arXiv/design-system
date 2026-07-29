@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>arXiv Design System — Document</title>
-  <link rel="stylesheet" href="docs/public/design-system.css">
+  <link rel="stylesheet" href="public/design-system.css">
   <style>
     /* ── Markdown document viewer.
        STRATEGY (decided 2026-06-13): markdown files stay the canonical,
@@ -13,7 +13,7 @@
        without drift. This single viewer gives every report a readable
        web presentation with the design system's own type and the shared
        docs nav — no per-document HTML copies to fall out of sync.
-       Usage: doc.html?src=verification/audits/audit-visual.md
+       Usage: docs/doc.html?src=verification/audits/audit-visual.md (src stays repo-root-relative)
        Relative images and .md links inside documents are resolved
        against the document's own directory; .md links stay inside the
        viewer. Requires http(s) (GitHub Pages) — file:// blocks fetch,
@@ -59,38 +59,39 @@
 </head>
 <body>
 <nav class="docs-nav" aria-label="Design system documentation">
-  <a class="docs-nav-brand" href="index.html">arXiv Design System</a>
-  <a href="docs/colors.html">Colors</a>
-  <a href="docs/typography.html">Typography</a>
+  <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
+  <a href="colors.html">Colors</a>
+  <a href="typography.html">Typography</a>
   <a href="doc.html?src=docs/DESIGN-POLICIES.md">Policies</a>
   <span class="docs-nav-spacer"></span>
   <span class="docs-nav-mock">Mockups:</span>
-  <a href="mockups/abstract-redesign.html">Abstract</a>
-  <a href="mockups/html-redesign.html">Reader</a>
+  <a href="../mockups/abstract-redesign.html">Abstract</a>
+  <a href="../mockups/html-redesign.html">Reader</a>
 </nav>
 <div class="page">
   <p class="doc-meta" id="doc-meta"></p>
   <main class="doc" id="doc">Loading…</main>
 </div>
-<script src="docs-assets/marked.js"></script>
+<script src="marked.js"></script>
 <script>
 (function() {
   var docEl = document.getElementById('doc');
   var metaEl = document.getElementById('doc-meta');
 
+  var ROOT = '../';  // viewer lives in docs/; src params are repo-root-relative
   var src = new URLSearchParams(location.search).get('src') || '';
   // Same-origin relative paths only: no schemes, no protocol-relative,
   // no parent traversal. The viewer renders THIS repo's documents.
   var valid = /^[\w./-]+\.md$/.test(src) && src.indexOf('..') === -1 && src.charAt(0) !== '/';
   if (!valid) {
-    docEl.innerHTML = '<div class="doc-error">No document specified. Start from the <a href="index.html">design-system home</a>.</div>';
+    docEl.innerHTML = '<div class="doc-error">No document specified. Start from the <a href="../index.html">design-system home</a>.</div>';
     return;
   }
 
   var dir = src.indexOf('/') >= 0 ? src.slice(0, src.lastIndexOf('/') + 1) : '';
-  metaEl.innerHTML = 'Rendered from <a href="' + src + '">' + src + '</a> (canonical source — edit the markdown, not this view)';
+  metaEl.innerHTML = 'Rendered from <a href="' + ROOT + src + '">' + src + '</a> (canonical source — edit the markdown, not this view)';
 
-  fetch(src).then(function(r) {
+  fetch(ROOT + src).then(function(r) {
     if (!r.ok) throw new Error(r.status);
     return r.text();
   }).then(function(md) {
@@ -101,18 +102,18 @@
     docEl.querySelectorAll('a[href]').forEach(function(a) {
       var h = a.getAttribute('href');
       if (/^(https?:|mailto:|#)/.test(h)) return;
-      var resolved = h.charAt(0) === '/' ? h : dir + h;
+      var resolved = h.charAt(0) === '/' ? h : dir + h;  // repo-root-relative
       if (/\.md(#.*)?$/.test(resolved)) {
         var parts = resolved.split('#');
         a.setAttribute('href', 'doc.html?src=' + parts[0] + (parts[1] ? '#' + parts[1] : ''));
       } else {
-        a.setAttribute('href', resolved);
+        a.setAttribute('href', ROOT + resolved);
       }
     });
     docEl.querySelectorAll('img[src]').forEach(function(img) {
       var h = img.getAttribute('src');
       if (/^(https?:|data:)/.test(h) || h.charAt(0) === '/') return;
-      img.setAttribute('src', dir + h);
+      img.setAttribute('src', ROOT + dir + h);
     });
     if (location.hash) {
       var t = document.getElementById(location.hash.slice(1));
@@ -121,7 +122,7 @@
   }).catch(function() {
     docEl.innerHTML = '<div class="doc-error">Couldn’t load <code>' + src +
       '</code> here. If you opened this page from your local disk (file://), browsers block the fetch — ' +
-      'read it <a href="' + src + '">as raw markdown</a> or on the hosted site.</div>';
+      'read it <a href="' + ROOT + src + '">as raw markdown</a> or on the hosted site.</div>';
   });
 })();
 </script>

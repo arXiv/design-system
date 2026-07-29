@@ -18,7 +18,7 @@ docs/           THE documentation — rules, tokens, pattern pages, stylesheets
 mockups/        work-in-progress page explorations — never a build reference
 verification/   evidence — audits, design reviews, agent test results
 planning/       backlog (NEXT-STEPS.md), proposals, decision logs
-index.html      the GitHub Pages landing page · doc.html renders .md files on the site
+index.html      the GitHub Pages landing page (docs/doc.html renders .md files on the site)
 ```
 
 ## Start here
