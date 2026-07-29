@@ -31,7 +31,7 @@ index.html      the GitHub Pages landing page · doc.html renders .md files on t
 
 - **Typography:** IBM Plex family, self-hosted. No external font services, ever.
 - **Color:** Repository Brown + warm greys as neutrals; Link Blue / Archival Blue / Open Blue; Access Lime is staff-only. Campus Red (`#b31b1b`) is heritage — logo X only.
-- **Accessibility:** WCAG 2.1 AA is the legal floor (Accessible Canada Act); 2.2 AA is the working target. It's a brand value, not a checkbox.
+- **Accessibility:** WCAG 2.1 AA is the legal floor; 2.2 AA is the working target. Ongoing accessibility gains is a key arXiv value, not a checkbox.
 - **No metrics on public pages:** no view counts, downloads, or citation counts — arXiv does not rank or promote papers.
 - **Cornell spinout:** Cornell branding is being removed; the black single-bar header (phase 1) transitions to Repository Brown (phase 2).
 - **Small team:** nothing that needs manual upkeep survives review.
