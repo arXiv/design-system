@@ -133,9 +133,13 @@ def collect(cell: Path, ws: Path, task: Path):
     checks, hex_census = {}, {}
     for rel in changed:
         text = (art_dir / rel).read_text(errors="replace")
-        hits = {label: sorted(set(re.findall(pat, text, re.I)))[:5]
-                for label, pat in TRAP_PATTERNS.items()
-                if re.search(pat, text, re.I)}
+        hits = {}
+        logo_use = re.search(r"logo[^\n]*\n?[^\n]*#b31b1b|#b31b1b[^\n]*logo", text, re.I)
+        for label, pat in TRAP_PATTERNS.items():
+            if label == "campus red as chrome" and logo_use:
+                continue  # documented heritage use: the logo X mark
+            if re.search(pat, text, re.I):
+                hits[label] = sorted(set(re.findall(pat, text, re.I)))[:5]
         if hits:
             checks[rel] = hits
         off = sorted({h.lower() for h in re.findall(r"#([0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?)\b", text)}

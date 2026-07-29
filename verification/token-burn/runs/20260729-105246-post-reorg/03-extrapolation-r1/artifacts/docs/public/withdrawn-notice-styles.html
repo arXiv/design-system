@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Withdrawn-paper notice — arXiv Design System</title>
+  <link rel="stylesheet" href="design-system.css">
+  <style>
+    /* ── Page chrome (reference doc only). Mirrors the layout pattern
+       of alert-styles.html for consistency, using public --arxiv- tokens.
+       CONSUMES design-system.css — never redefines .ds-alert or status tokens.
+       Light-only: <html data-theme="light"> per AGENTS.md. ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: var(--arxiv-font-sans);
+      color: var(--arxiv-ink);
+      background: var(--arxiv-warm-wash);
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .page { max-width: 980px; margin: 0 auto; padding: 48px 28px 80px; }
+
+    .page-header { margin-bottom: 44px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p { margin: 6px 0 0; color: var(--arxiv-grey); font-size: 13px; max-width: 760px; line-height: 1.55; }
+
+    .section { margin-bottom: 52px; }
+    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+    .section-desc { font-size: 13px; color: var(--arxiv-grey); margin: 0 0 20px; max-width: 760px; line-height: 1.55; }
+
+    /* Rationale entries stack with shared .ds-alert-info — dogfooding the
+       component to document itself, per the pattern in alerts.html. */
+    .rationale-stack { max-width: 800px; }
+    .rationale-stack > * + * { margin-top: 10px; }
+    .rationale-decision { margin: 0 0 1px; font-size: 12px; font-family: var(--arxiv-font-condensed); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--arxiv-info-fg); }
+
+    /* Demo fragment — white card simulating the abstract page content column.
+       The global site header is excluded from the fragment for brevity. */
+    .demo { background: #fff; border: 1px solid var(--arxiv-card-grey); border-radius: 8px; padding: 32px 32px 28px; margin-top: 10px; }
+    .demo-cap { font-family: var(--arxiv-font-condensed); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--arxiv-grey-ui); margin: 0 0 24px; }
+
+    /* ── Abstract page fragment ─────────────────────────────────────────
+       Derived from mockups/abstract-redesign.html. These classes are local
+       to this demo; production inherits from the page's own stylesheet. ── */
+    .abs-title {
+      font-size: 1.375rem;   /* 22px */
+      font-weight: 700;
+      line-height: 1.3;
+      margin: 0 0 10px;
+      color: var(--arxiv-ink);
+    }
+
+    /* Date row + version pills — mirrors version-display.html grammar.
+       "Revised … (this version, withdrawn)" extends the documented "(this
+       version)" grammar with the withdrawn status as a non-color secondary
+       signal (WCAG 1.4.1; version-display.html rule: "never color alone"). */
+    .abs-date {
+      font-size: 0.875rem;
+      color: var(--arxiv-grey);
+      margin: 0 0 16px;
+    }
+    .abs-ver {
+      font-family: var(--arxiv-font-mono);
+      font-size: 0.875rem;
+      margin-left: 4px;
+    }
+    .abs-ver.is-other {
+      color: var(--arxiv-link-blue);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .abs-ver.is-other:hover { color: var(--arxiv-link-hover); }
+    .abs-ver.is-current {
+      color: var(--arxiv-ink);
+      font-weight: 700;
+    }
+    /* "(withdrawn)" tag in the date row — warning foreground for the color
+       cue; the parenthetical text is the non-color signal. Not a standalone
+       component: it lives inline in the date grammar because the withdrawal
+       is a property of that version, not a separate zone. */
+    .abs-date-withdrawn {
+      color: var(--arxiv-warning-fg);
+      font-weight: 600;
+    }
+
+    /* Withdrawal notice — the main new pattern. Sits between the date row
+       and the authors, mirroring the older-version warning's placement
+       (alerts.html placement rule: "Time-critical messages live in the main
+       reading column where every reader meets them"). */
+    .abs-notice { margin: 0 0 20px; }
+
+    /* Version warning — shown BELOW the withdrawal notice when the reader
+       is viewing an older non-withdrawn version. Both notices coexist;
+       withdrawal goes first because it is the more fundamental status. */
+    .abs-notice + .abs-version-warn { margin-top: 10px; margin-bottom: 20px; }
+    .abs-version-warn {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: var(--arxiv-warning-bg);
+      border: 1px solid var(--arxiv-warning-border);
+      border-left-width: 4px;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--arxiv-warning-fg);
+      margin: 0 0 20px;
+    }
+    .abs-version-warn-icon {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      margin-top: 1px;
+      stroke: currentColor;
+      fill: none;
+    }
+    .abs-version-warn p { margin: 0; line-height: 1.5; }
+    .abs-version-warn a { color: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+
+    .abs-authors { font-size: 0.9375rem; margin: 0 0 24px; line-height: 1.6; }
+    .abs-authors a { color: var(--arxiv-link-blue); text-decoration: none; }
+    .abs-authors a:hover { text-decoration: underline; }
+
+    /* Two-column layout: abstract left, actions right.
+       Actions remain fully enabled — "Actions disable, they don't disappear"
+       (AGENTS.md). Downloads stay active on a withdrawn paper. */
+    .abs-body {
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 48px;
+    }
+    .abs-body-main { flex: 1; min-width: 0; }
+    .abs-actions {
+      flex-shrink: 0;
+      width: 130px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .abs-abstract {
+      font-size: 0.9375rem;
+      line-height: 1.7;
+      color: var(--arxiv-ink);
+      margin: 0;
+    }
+    /* Label clarifying that downloads are the withdrawn version — shown as
+       a quiet note below the action column, not a disabled treatment. */
+    .abs-actions-note {
+      font-size: 11px;
+      color: var(--arxiv-grey);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 640px) {
+      .abs-body { flex-direction: column; gap: 16px; }
+      .abs-actions { flex-direction: row; flex-wrap: wrap; width: auto; }
+    }
+
+    /* Code block — identical to alert-styles.html convention */
+    code {
+      font-family: var(--arxiv-font-mono);
+      font-size: 12px;
+      background: var(--arxiv-card-grey);
+      padding: 2px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    .code-block {
+      background: var(--arxiv-ink);
+      color: #f0eeec;
+      border-radius: 6px;
+      padding: 14px 16px;
+      font-family: var(--arxiv-font-mono);
+      font-size: 12px;
+      line-height: 1.6;
+      overflow-x: auto;
+      margin: 8px 0 0;
+      max-width: 820px;
+    }
+
+    /* ── Shared docs nav strip ── */
+    .docs-nav { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-ink); text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
+    .docs-nav a:not(.docs-nav-brand) { color: var(--arxiv-grey); text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: var(--arxiv-ink); text-decoration: underline; }
+    .docs-nav a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 2px; }
+    .docs-nav .is-here { color: var(--arxiv-ink); font-weight: 600; }
+    .docs-nav-spacer { flex: 1; }
+    .docs-nav .docs-nav-mock { color: var(--arxiv-grey-ui); font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../../index.html">arXiv Design System</a>
+  <a href="../colors.html">Colors</a>
+  <a href="../typography.html">Typography</a>
+  <a href="../spacing.html">Spacing</a>
+  <a href="../buttons.html">Buttons</a>
+  <a href="../alerts.html">Alerts</a>
+  <a href="../version-display.html">Versions</a>
+  <a href="../organizing-content.html">Organizing content</a>
+  <a href="../../doc.html?src=docs/DESIGN-POLICIES.md">Policies</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="docs-nav-mock">Mockups:</span>
+  <a href="../../mockups/abstract-redesign.html">Abstract</a>
+  <a href="../../mockups/merged-abstract-reader.html">Reader</a>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <h1>Withdrawn-paper notice</h1>
+    <p>New pattern for author-initiated withdrawal: a persistent advisory banner placed in the main reading column,
+    below the date row and above the authors, so every reader encounters it before engaging with the abstract.
+    The scholarly record (abstract, all versions) remains permanently online and downloadable.</p>
+    <p>No prior pattern covers this case. The decisions below are derived from
+    <a href="../alerts.html">alerts.html</a>, <a href="../version-display.html">version-display.html</a>,
+    <a href="../BRAND.md" style="color:var(--arxiv-link-blue)">BRAND.md</a>, and
+    <a href="../../doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES.md</a>; each entry names its source
+    per the AGENTS.md routing rule for new patterns.</p>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SECTION 1 — RATIONALE
+       ═══════════════════════════════════════════════════════════════════
+       Each decision block uses .ds-alert-info — same "dogfooding" approach
+       as alerts.html ("Advisory notes on this page use the system's own
+       .ds-alert-info — no bespoke callout chrome"). -->
+
+  <section class="section" aria-labelledby="rationale-heading">
+    <h2 class="section-title" id="rationale-heading">Design rationale</h2>
+    <p class="section-desc">Seven decisions, each traced to a specific rule in the design system.
+    This is a derived pattern (no prior spec), so the reasoning is shown in full.</p>
+
+    <div class="rationale-stack">
+
+      <!-- Decision 1: Alert variant -->
+      <div class="ds-alert ds-alert-info" role="status">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">Decision 1 — Warning variant, not error or info</p>
+          <p><strong>Source: <code>docs/alerts.html</code></strong> — "Don't escalate: an old paper version is a warning, not an error." Withdrawal is more significant than an old version, but nothing failed — the paper record is intact, downloads work, authors acted intentionally. <em>Warning</em> (amber) signals "worth knowing, nothing broke," which precisely describes withdrawal. <em>Error</em> is reserved for system failures; <em>info</em> is too calm for a status change a cited reader may have no idea about.</p>
+        </div>
+      </div>
+
+      <!-- Decision 2: Placement -->
+      <div class="ds-alert ds-alert-info" role="status">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">Decision 2 — Below the date row, above the authors</p>
+          <p><strong>Source: <code>docs/alerts.html</code></strong> placement rule — "Time-critical messages live in the main reading column where every reader meets them — don't tuck a warning into a rail the reader may never open." The older-version warning in <code>mockups/abstract-redesign.html</code> occupies this exact slot; withdrawal mirrors it. When both are present (reader on an older version of a withdrawn paper), the withdrawal notice goes first — it is the more fundamental status, rendering the "newer version" link moot.</p>
+        </div>
+      </div>
+
+      <!-- Decision 3: Persistent, no dismiss -->
+      <div class="ds-alert ds-alert-info" role="status">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">Decision 3 — No dismiss button</p>
+          <p><strong>Source: <code>docs/alerts.html</code></strong> — "If a message must persist or is about the current paper, it's an alert." Withdrawal is a permanent property of this paper, not a time-bound site announcement. The dismissable variant (<code>.ds-alert-dismiss</code>) is for transient feedback; this notice must show every visit. The site banner's dismiss policy (<em>DESIGN-POLICIES.md</em>, Banner) does not apply here.</p>
+        </div>
+      </div>
+
+      <!-- Decision 4: Verbatim reason in body -->
+      <div class="ds-alert ds-alert-info" role="status">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">Decision 4 — Author's reason is shown verbatim</p>
+          <p><strong>Source: <code>docs/BRAND.md</code></strong> (Voice: Honest) — "We say what's true, including the unflattering parts. No marketing gloss, no overclaiming." arXiv does not editorialize about an author's decision to withdraw; the reason text is shown as the author wrote it. The notice does not soften, reframe, or summarize the reason — readers and citers deserve the exact language. When no reason is given, the body says so directly ("No reason was provided.").</p>
+        </div>
+      </div>
+
+      <!-- Decision 5: Tone — plain, no blame, no alarm -->
+      <div class="ds-alert ds-alert-info" role="status">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">Decision 5 — Plain title, no alarm language</p>
+          <p><strong>Source: <code>docs/alerts.html</code></strong> writing guidance — "Match arXiv's voice: plain, direct, no exclamation marks, no blame." The title is "Withdrawn by the authors" — factual, not alarmist. No "WARNING:" prefix, no "RETRACTED" in all-caps, no implied misconduct. Most withdrawals are honest self-corrections. <strong>Source: <code>docs/BRAND.md</code></strong> (Voice: Accessible) — "Nobody should feel they need a secret handshake to use arXiv." A highly-cited withdrawn paper is still scholarly record; the notice respects that.</p>
+        </div>
+      </div>
+
+      <!-- Decision 6: Downloads remain active -->
+      <div class="ds-alert ds-alert-info" role="status">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">Decision 6 — Download actions remain fully enabled</p>
+          <p><strong>Source: <code>AGENTS.md</code></strong> — "Actions disable, they don't disappear." The paper content is still downloadable; there is no action to disable. The HTML, PDF, and TeX Source buttons render in their normal active state. A quiet label below the action column ("Downloading withdrawn version") provides context without visually demoting the buttons or implying the content is inaccessible.</p>
+        </div>
+      </div>
+
+      <!-- Decision 7: (withdrawn) in the date row -->
+      <div class="ds-alert ds-alert-info" role="status">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">Decision 7 — "(withdrawn)" extends the date-row grammar</p>
+          <p><strong>Source: <code>docs/version-display.html</code></strong> — "Current is bold and <code>aria-current</code>, never color alone." The withdrawn version is still the latest version; it keeps its bold treatment. The word "(withdrawn)" is inserted alongside "(this version)" in the date row as a second non-color signal (WCAG 1.4.1). Derived per AGENTS.md routing for new patterns: "nearest pattern above + BRAND.md — derive from documented rationale; say so in comments." The parenthetical uses the warning foreground token for a color cue that is reinforced by the word itself.</p>
+        </div>
+      </div>
+
+    </div><!-- /.rationale-stack -->
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SECTION 2 — MARKUP
+       ═══════════════════════════════════════════════════════════════════ -->
+
+  <section class="section" aria-labelledby="markup-heading">
+    <h2 class="section-title" id="markup-heading">Markup</h2>
+    <p class="section-desc">Drop the notice into the abstract page's main column, immediately after the date row.
+    Use the shared <code>.ds-alert .ds-alert-warning</code> construction — no new component classes required.</p>
+
+    <pre class="code-block">&lt;!-- Date row with withdrawn tag (extends version-display.html grammar) --&gt;
+&lt;p class="abs-date"&gt;
+  Submitted &lt;time datetime="2024-01-14"&gt;14&nbsp;Jan&nbsp;2024&lt;/time&gt;
+  &lt;span aria-hidden="true"&gt; &amp;middot; &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Revised &lt;time datetime="2024-09-03"&gt;3&nbsp;Sep&nbsp;2024&lt;/time&gt;
+  (this version, &lt;span class="abs-date-withdrawn"&gt;withdrawn&lt;/span&gt;)
+  &amp;nbsp;
+  &lt;a href="/abs/2401.99999v1" class="abs-ver is-other" aria-label="View version 1"&gt;v1&lt;/a&gt;
+  &lt;a href="/abs/2401.99999v2" class="abs-ver is-other" aria-label="View version 2"&gt;v2&lt;/a&gt;
+  &lt;span class="abs-ver is-current" aria-current="true"
+        aria-label="Version 3, current version (withdrawn)"&gt;v3&lt;/span&gt;
+&lt;/p&gt;
+
+&lt;!-- Withdrawal notice — persistent, no dismiss button --&gt;
+&lt;div class="ds-alert ds-alert-warning abs-notice" role="alert"&gt;
+  &lt;svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
+    &lt;path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/&gt;
+    &lt;path d="M12 9v4"/&gt;&lt;path d="M12 17h.01"/&gt;
+  &lt;/svg&gt;
+  &lt;div class="ds-alert-content"&gt;
+    &lt;p class="ds-alert-title"&gt;Withdrawn by the authors&lt;/p&gt;
+    &lt;p&gt;
+      &lt;!-- Author's reason shown verbatim (BRAND.md: Honest) --&gt;
+      Withdrawn 3&nbsp;Sep&nbsp;2024. Author's reason: &ldquo;An algebraic error in Section&nbsp;4
+      invalidates Theorem&nbsp;2 and the paper's central claim.&rdquo;
+    &lt;/p&gt;
+    &lt;p&gt;The abstract page and all versions remain available as part of the scholarly record.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SECTION 3 — DEMOS
+       ═══════════════════════════════════════════════════════════════════ -->
+
+  <section class="section" aria-labelledby="demo-heading">
+    <h2 class="section-title" id="demo-heading">Live examples</h2>
+    <p class="section-desc">Rendered from <code>public/design-system.css</code>.
+    Three scenarios: viewing the withdrawn (latest) version; viewing an older pre-withdrawal version;
+    and a minimal withdrawal with no substantive reason given.</p>
+
+
+    <!-- ── Demo A: Viewing the withdrawn version (latest) ── -->
+
+    <h3 style="font-size:14px; font-weight:600; margin:0 0 2px; color:var(--arxiv-grey)">
+      Scenario A — Viewing the withdrawn version
+    </h3>
+    <p class="section-desc" style="margin-bottom:0">
+      The reader arrived directly at this paper. The notice is the first thing after the date row.
+      Download buttons remain fully active; a quiet label beneath them identifies the content as
+      the withdrawn version.
+    </p>
+
+    <div class="demo" aria-label="Abstract page fragment — withdrawn paper, viewing current version">
+      <p class="demo-cap">Abstract page fragment · withdrawn paper · viewing v3 (latest, withdrawn)</p>
+
+      <h1 class="abs-title">A geometric proof of the Penrose singularity theorem in modified gravity</h1>
+
+      <p class="abs-date">
+        Submitted <time datetime="2024-01-14">14&nbsp;Jan&nbsp;2024</time>
+        <span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>
+        Revised <time datetime="2024-09-03">3&nbsp;Sep&nbsp;2024</time>
+        (this version, <span class="abs-date-withdrawn">withdrawn</span>)
+        &nbsp;
+        <a href="#" class="abs-ver is-other" aria-label="View version 1">v1</a>
+        <a href="#" class="abs-ver is-other" aria-label="View version 2">v2</a>
+        <span class="abs-ver is-current" aria-current="true" aria-label="Version 3, current version, withdrawn">v3</span>
+      </p>
+
+      <!-- Withdrawal notice — the new pattern -->
+      <div class="ds-alert ds-alert-warning abs-notice" role="alert">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+          <path d="M12 9v4"/><path d="M12 17h.01"/>
+        </svg>
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">Withdrawn by the authors</p>
+          <p>Withdrawn 3&nbsp;Sep&nbsp;2024. Author&rsquo;s reason: &ldquo;An algebraic error in Section&nbsp;4 invalidates Theorem&nbsp;2 and consequently the paper&rsquo;s central claim. The authors intend to submit a corrected version.&rdquo;</p>
+          <p>The abstract page and all versions remain available as part of the scholarly record.</p>
+        </div>
+      </div>
+
+      <p class="abs-authors">
+        <a href="#">L. García</a>,
+        <a href="#">T. Hayashi</a>,
+        <a href="#">R. Müller</a>,
+        <a href="#">S. Okonkwo</a>
+      </p>
+
+      <div class="abs-body">
+        <nav class="abs-actions" aria-label="Paper downloads">
+          <a href="#" class="ds-btn ds-btn-primary">HTML</a>
+          <a href="#" class="ds-btn ds-btn-primary">PDF <span style="font-size:11px;font-weight:400">(840&nbsp;KB)</span></a>
+          <a href="#" class="ds-btn ds-btn-secondary">TeX Source <span style="font-size:11px;font-weight:400;display:block;text-align:center">(.tar.gz · 212&nbsp;KB)</span></a>
+          <p class="abs-actions-note">Downloading the withdrawn version (v3).</p>
+        </nav>
+        <div class="abs-body-main">
+          <p class="abs-abstract">
+            We present a purely geometric derivation of the Penrose singularity theorem within the framework
+            of <em>f</em>(<em>R</em>) modified gravity. Working directly with the modified Raychaudhuri equation,
+            we construct a generalized trapped surface condition and demonstrate the existence of incomplete
+            null geodesics without recourse to the Einstein field equations. The proof recovers the classical
+            Penrose result in the general-relativistic limit and establishes the causal boundary structure for
+            a class of viable <em>f</em>(<em>R</em>) models constrained by Planck observations. We also discuss
+            implications for the focusing theorem and black-hole thermodynamics in higher-derivative gravity.
+          </p>
+        </div>
+      </div>
+    </div><!-- /.demo -->
+
+
+    <!-- ── Demo B: Viewing an older version of a withdrawn paper ── -->
+
+    <h3 style="font-size:14px; font-weight:600; margin:28px 0 2px; color:var(--arxiv-grey)">
+      Scenario B — Viewing an older, non-withdrawn version
+    </h3>
+    <p class="section-desc" style="margin-bottom:0">
+      The reader arrived via a link that pins to v1. Both the withdrawal notice (fundamental status)
+      and the older-version warning (navigational) appear — withdrawal first, because knowing the
+      paper was later withdrawn is more important than knowing a newer version exists.
+    </p>
+
+    <div class="demo" aria-label="Abstract page fragment — withdrawn paper, viewing older version">
+      <p class="demo-cap">Abstract page fragment · withdrawn paper · viewing v1, latest is v3 (withdrawn)</p>
+
+      <h1 class="abs-title">A geometric proof of the Penrose singularity theorem in modified gravity</h1>
+
+      <p class="abs-date">
+        Submitted <time datetime="2024-01-14">14&nbsp;Jan&nbsp;2024</time> (this version)
+        &nbsp;
+        <span class="abs-ver is-current" aria-current="true" aria-label="Version 1, the version you are viewing">v1</span>
+        <a href="#" class="abs-ver is-other" aria-label="View version 2">v2</a>
+        <a href="#" class="abs-ver is-other" aria-label="View version 3 (withdrawn)">v3</a>
+      </p>
+
+      <!-- Withdrawal notice first — more fundamental than version currency -->
+      <div class="ds-alert ds-alert-warning abs-notice" role="alert">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+          <path d="M12 9v4"/><path d="M12 17h.01"/>
+        </svg>
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">Withdrawn by the authors</p>
+          <p>The latest version (v3) was withdrawn on 3&nbsp;Sep&nbsp;2024. Author&rsquo;s reason: &ldquo;An algebraic error in Section&nbsp;4 invalidates Theorem&nbsp;2 and consequently the paper&rsquo;s central claim. The authors intend to submit a corrected version.&rdquo;</p>
+          <p>The abstract page and all versions remain available as part of the scholarly record.</p>
+        </div>
+      </div>
+
+      <!-- Older-version warning — shown below withdrawal notice -->
+      <div class="abs-version-warn" role="alert">
+        <svg class="abs-version-warn-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+          <path d="M12 9v4"/><path d="M12 17h.01"/>
+        </svg>
+        <p><strong>You&rsquo;re viewing version 1.</strong> A newer version exists &mdash; <a href="#">version 3, revised 3&nbsp;Sep&nbsp;2024 (withdrawn)</a>.</p>
+      </div>
+
+      <p class="abs-authors">
+        <a href="#">L. García</a>,
+        <a href="#">T. Hayashi</a>,
+        <a href="#">R. Müller</a>,
+        <a href="#">S. Okonkwo</a>
+      </p>
+
+      <div class="abs-body">
+        <nav class="abs-actions" aria-label="Paper downloads">
+          <a href="#" class="ds-btn ds-btn-primary">HTML</a>
+          <a href="#" class="ds-btn ds-btn-primary">PDF <span style="font-size:11px;font-weight:400">(820&nbsp;KB)</span></a>
+          <a href="#" class="ds-btn ds-btn-secondary">TeX Source <span style="font-size:11px;font-weight:400;display:block;text-align:center">(.tar.gz · 198&nbsp;KB)</span></a>
+          <p class="abs-actions-note">Downloading this version (v1), submitted before withdrawal.</p>
+        </nav>
+        <div class="abs-body-main">
+          <p class="abs-abstract">
+            We present a purely geometric derivation of the Penrose singularity theorem within the framework
+            of <em>f</em>(<em>R</em>) modified gravity. Working directly with the modified Raychaudhuri equation,
+            we construct a generalized trapped surface condition and demonstrate the existence of incomplete
+            null geodesics without recourse to the Einstein field equations. The proof recovers the classical
+            Penrose result in the general-relativistic limit and establishes the causal boundary structure for
+            a class of viable <em>f</em>(<em>R</em>) models constrained by Planck observations.
+          </p>
+        </div>
+      </div>
+    </div><!-- /.demo -->
+
+
+    <!-- ── Demo C: Minimal reason ── -->
+
+    <h3 style="font-size:14px; font-weight:600; margin:28px 0 2px; color:var(--arxiv-grey)">
+      Scenario C — Minimal or absent reason
+    </h3>
+    <p class="section-desc" style="margin-bottom:0">
+      Some withdrawals give a very brief reason or none at all. The notice remains structurally
+      identical; when no reason is provided, the body says so plainly.
+    </p>
+
+    <div class="demo" aria-label="Abstract page fragment — withdrawn paper, minimal reason">
+      <p class="demo-cap">Abstract page fragment · withdrawn paper · minimal reason</p>
+
+      <h1 class="abs-title" style="font-size:1.25rem">
+        Dark matter direct detection via nuclear recoil scattering at the LHC
+      </h1>
+
+      <p class="abs-date">
+        Submitted <time datetime="2025-03-06">6&nbsp;Mar&nbsp;2025</time>
+        (this version, <span class="abs-date-withdrawn">withdrawn</span>)
+        &nbsp;
+        <span class="abs-ver is-current" aria-current="true" aria-label="Version 1, current version, withdrawn">v1</span>
+      </p>
+
+      <!-- Minimal-reason notice -->
+      <div class="ds-alert ds-alert-warning abs-notice" role="alert">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+          <path d="M12 9v4"/><path d="M12 17h.01"/>
+        </svg>
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">Withdrawn by the authors</p>
+          <p>Withdrawn 14&nbsp;Mar&nbsp;2025. Author&rsquo;s reason: &ldquo;Submitted in error.&rdquo;</p>
+          <p>The abstract page and all versions remain available as part of the scholarly record.</p>
+        </div>
+      </div>
+
+      <!-- No-reason variant (shown inline as a note, not a full demo) -->
+      <div class="ds-alert ds-alert-info" role="status" style="margin-bottom:16px; max-width:640px">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <div class="ds-alert-content">
+          <p><strong>When no reason is given,</strong> the body reads: "Withdrawn 14&nbsp;Mar&nbsp;2025. No reason was provided." — direct and non-apologetic, per arXiv's voice (BRAND.md).</p>
+        </div>
+      </div>
+
+      <p class="abs-authors">
+        <a href="#">K. Svensson</a>,
+        <a href="#">A. Pradeep</a>
+      </p>
+
+      <div class="abs-body">
+        <nav class="abs-actions" aria-label="Paper downloads">
+          <a href="#" class="ds-btn ds-btn-primary">HTML</a>
+          <a href="#" class="ds-btn ds-btn-primary">PDF <span style="font-size:11px;font-weight:400">(1.1&nbsp;MB)</span></a>
+          <a href="#" class="ds-btn ds-btn-secondary">TeX Source <span style="font-size:11px;font-weight:400;display:block;text-align:center">(.tar.gz · 340&nbsp;KB)</span></a>
+          <p class="abs-actions-note">Downloading the withdrawn version (v1).</p>
+        </nav>
+        <div class="abs-body-main">
+          <p class="abs-abstract">
+            We compute cross sections for dark matter–nucleon scattering mediated by a light vector boson
+            at center-of-mass energies accessible to the High-Luminosity LHC. Using a model-independent
+            effective field theory approach, we derive sensitivity projections for spin-independent and
+            spin-dependent operators and compare against constraints from direct-detection experiments.
+            The resulting bounds complement and in some regimes surpass those from underground detectors
+            for dark matter masses above 10&nbsp;GeV.
+          </p>
+        </div>
+      </div>
+    </div><!-- /.demo -->
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SECTION 4 — RULES
+       ═══════════════════════════════════════════════════════════════════ -->
+
+  <section class="section" aria-labelledby="rules-heading">
+    <h2 class="section-title" id="rules-heading">Rules that travel with this pattern</h2>
+
+    <div class="ds-alert ds-alert-info" role="status" style="max-width:800px; margin-bottom:10px">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Always show the notice on every version's page</p>
+        <p>When a paper's latest version is withdrawn, the notice appears on every version page — not just on v_latest. A reader who arrives at v1 via a citation link must see that the paper was later withdrawn.</p>
+      </div>
+    </div>
+
+    <div class="ds-alert ds-alert-info" role="status" style="max-width:800px; margin-bottom:10px">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Downloads remain active — never disable, never remove</p>
+        <p>AGENTS.md: "Actions disable, they don't disappear." Downloads work on withdrawn papers. The download buttons are not greyed, not removed, not reordered. A quiet note below the action column identifies which version is being downloaded.</p>
+      </div>
+    </div>
+
+    <div class="ds-alert ds-alert-info" role="status" style="max-width:800px; margin-bottom:10px">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Withdrawal notice before version warning when both appear</p>
+        <p>Knowing a paper was later withdrawn is more important than knowing a newer version exists. Place withdrawal first; version warning immediately below.</p>
+      </div>
+    </div>
+
+    <div class="ds-alert ds-alert-info" role="status" style="max-width:800px; margin-bottom:10px">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Never use <code>ds-alert-error</code> for withdrawal</p>
+        <p>Error variant is reserved for system failures (docs/alerts.html). Withdrawal is an author decision, not a failure. Escalating to error would misrepresent the action as a system problem and stigmatize the authors.</p>
+      </div>
+    </div>
+
+    <div class="ds-alert ds-alert-info" role="status" style="max-width:800px">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Dark mode is inherited, not hand-coded</p>
+        <p>The <code>--arxiv-warning-*</code> tokens already have dark overrides in <code>design-system.css</code>. This page uses <code>data-theme="light"</code> (AGENTS.md: "New demo pages lock light"), but production pages inherit both light and dark behavior automatically via the tokens.</p>
+      </div>
+    </div>
+
+  </section>
+
+</div><!-- /.page -->
+</body>
+</html>

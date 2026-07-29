@@ -1,0 +1,719 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>20260729-105246-post-reorg — token-burn review</title><style>
+body{font-family:-apple-system,'Segoe UI',sans-serif;margin:0;background:#f9f7f7;color:#1c1a17;font-size:14px;line-height:1.5}
+.page{max-width:1100px;margin:0 auto;padding:24px 24px 80px}
+h1{font-size:22px;border-bottom:3px solid #a5d6fe;padding-bottom:12px}
+.cell{background:#fff;border:1px solid #ddd8d2;border-radius:8px;margin:20px 0;padding:18px 20px}
+.cell h2{font-size:16px;margin:0 0 10px}
+table.mx{border-collapse:collapse;font-size:12.5px;margin:8px 0}
+table.mx td,table.mx th{border:1px solid #e0dbd7;padding:3px 10px;text-align:left}
+table.mx th{background:#f0eeec;font-weight:600}
+.flag{background:#fdeaea;border:1px solid #c62828;color:#8b0000;border-radius:4px;padding:6px 10px;font-size:12.5px;margin:6px 0}
+.softflag{background:#fff8e1;border:1px solid #e8b800;color:#7a5c00;border-radius:4px;padding:6px 10px;font-size:12.5px;margin:6px 0}
+details{margin:8px 0}summary{cursor:pointer;font-weight:600;font-size:13px}
+pre{background:#f0eeec;border-radius:6px;padding:10px 12px;font-size:12px;overflow-x:auto;white-space:pre-wrap}
+iframe{width:100%;height:520px;border:1px solid #ddd8d2;border-radius:6px;background:#fff}
+.grade{margin-top:10px;padding-top:10px;border-top:1px dashed #ddd8d2;font-size:13px}
+.grade textarea{width:100%;min-height:40px;font:inherit;margin-top:6px}
+.toolbar{margin:16px 0}.toolbar button{font:inherit;padding:6px 14px;border-radius:6px;border:1.5px solid #6b6459;background:#fff;cursor:pointer}
+a{color:#1565c0}
+</style></head>
+<body><div class="page"><h1>Token-burn review — 20260729-105246-post-reorg</h1>
+<p>Grade each cell below (saved in your browser). Rubrics live in
+<code>verification/token-burn/rubrics/</code>. When done, export your grades and
+paste them back to Claude.</p>
+<div class="toolbar"><button onclick="exportGrades()">Export grades</button>
+<textarea id="export-out" style="display:none;width:100%;min-height:120px"></textarea></div>
+<div class="cell" data-cell="01-fidelity-build-r1"><h2>01-fidelity-build-r1</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>17</td></tr><tr><th>output tokens</th><td>52538</td></tr><tr><th>cache read</th><td>1095955</td></tr><tr><th>cache write</th><td>117112</td></tr><tr><th>cost (USD)</th><td>1.8205274999999999</td></tr><tr><th>turns</th><td>17</td></tr><tr><th>wall time</th><td>805s</td></tr><tr><th>files read</th><td>8 calls · 8 unique · 0 re-reads</td></tr><tr><th>tool calls</th><td>Bash×5, Edit×2, Read×8, Write×1</td></tr><tr><th>artifacts</th><td>3</td></tr></table><div class="softflag">hexes not in the known palette list in <code>docs/public/artifact-links-styles.html</code> (check manually): #ccc</div><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+
+Build a new public-side pattern: a **&quot;Dataset &amp; code links&quot; card** for the abstract page. Product context: papers increasingly ship with datasets and code repositories, and readers asked for one obvious place to find them. Requirements from the product owner:
+
+- A card that lists a paper&#x27;s external research artifacts (datasets, code repositories, supplementary material), each row showing: an artifact label (e.g. &quot;Training data&quot;), the destination (e.g. &quot;Zenodo&quot;, &quot;GitHub&quot;), and the link itself.
+- The card appears on public abstract pages. It must read as browsable supplementary material, not as a primary call to action.
+- Rows must clearly signal they lead off-site.
+- It must work with 1 artifact and with 12 artifacts without breaking the page (decide and document how many rows show before any overflow handling kicks in, and what that handling is).
+- Include hover and keyboard-focus treatment for the rows.
+
+Deliverables:
+1. The component CSS added where this repo says shared public components belong, following the repo&#x27;s conventions for naming, tokens, and documentation.
+2. A demo/reference HTML page at `docs/public/artifact-links-styles.html` showing the card&#x27;s states and variants, following the structure of the existing reference pages.
+
+Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
+</pre></details><details open><summary>Agent's final message</summary><pre>Everything is in place. Here is a summary of what was built and every design-system rule applied:
+
+---
+
+## What was built
+
+**CSS** — `docs/public/design-system.css` (lines 762–977): A new component block, `.ds-artifact-links` and parts, inserted between the Accordion and Site Footer sections.
+
+**Demo page** — `docs/public/artifact-links-styles.html`: A reference page following the exact structure of `alert-styles.html` and `link-styles.html` — docs nav, page header, rendered demos first, then token table, then usage code and callouts.
+
+**README** — `docs/public/README.md`: Added the new pattern to the pattern-pages checklist.
+
+---
+
+## Design-system rules applied
+
+**Tokens — no one-off hex values.** Every color comes from the `--arxiv-*` token set: `--arxiv-border-light` for card/row hairlines, `--arxiv-active-bg` for hover fills, `--arxiv-ink` for all primary text, `--arxiv-grey` for secondary text and the destination name, `--arxiv-grey-ui` for the decorative off-site icon stroke, `--arxiv-link-blue` / `--arxiv-link-hover` for the overflow summary, `--arxiv-focus-ring` for the focus outline. The sole `#fff` literal is an absolute (white page background), the same idiom used by `.ds-acc`.
+
+**Public surface, Open Blue primary.** No Access Lime appears — the artifact links card is strictly a public-side component.
+
+**`.ds-` prefix.** All shared classes follow the `ds-artifact-links*` naming convention per DESIGN-POLICIES.md Components.
+
+**Card shape matches `.ds-acc`.** White background, `1px solid --arxiv-border-light`, `6px border-radius`, `overflow: hidden` — identical to the accordion card construction.
+
+**Hover = Active Wash.** `--arxiv-active-bg` (#d6e8f7) on row hover is the same token used by `.ds-toc-dropdown-link:hover`, keeping all arXiv-layer interactive rows visually unified (color-mapping.md: &quot;arXiv Chrome family&quot;).
+
+**Focus ring.** `outline: 3px solid var(--arxiv-focus-ring); outline-offset: -2px` — inward ring matches `.ds-acc &gt; summary:focus-visible`. Uses `:focus-visible` not `:focus` (DESIGN-POLICIES.md Accessibility).
+
+**Visited suppressed.** Artifact rows are navigational links, not inline body text. `:visited { color: var(--arxiv-ink) }` prevents purple bleed into the structured layout.
+
+**Off-site signal — aria-hidden icon + sr-only text.** The `↗` SVG carries `aria-hidden=&quot;true&quot;`; each row includes `&lt;span class=&quot;is-sr-only&quot;&gt;(opens in new tab)&lt;/span&gt;`. The `is-sr-only` utility is already in the public stylesheet. This matches the footer&#x27;s pattern for external links documented in the Site Footer CSS comment.
+
+**Overflow: explicit count via `&lt;details&gt;`, not scroll.** DESIGN-POLICIES.md &quot;Truncation always signals continuation&quot; lists disclosure with explicit count as the first preference. The `&lt;details class=&quot;ds-artifact-links-more&quot;&gt;` + summary &quot;4 more artifacts&quot; follows that preference, uses no JS, gets keyboard and screen-reader semantics for free, and mirrors the `.ds-acc` `+`/`−` glyph convention.
+
+**Overflow threshold documented.** Eight rows before disclosure: documented in the CSS comment, the demo page, and the README. The threshold keeps the card comfortable in a sidebar column without internal scroll.
+
+**Typography.** Card title at `0.92rem / 600` — identical to `.ds-acc &gt; summary`. Destination name uses `--arxiv-font-condensed` at `0.75rem` with `letter-spacing: 0.02em`, consistent with how the accordion uses condensed for metadata labels.
+
+**`prefers-reduced-motion`.** Transition on `.ds-artifact-links-row` and the overflow summary is disabled. The `&lt;details&gt;` open/close itself has no transition — nothing else to disable.
+
+**`forced-colors`.** Explicit overrides pin the card border to `ButtonBorder`, the icon to `ButtonText`, and the hover row to `Highlight`/`HighlightText`, so the pattern survives Windows High Contrast without relying on custom colors.
+
+**Light-only, `data-theme=&quot;light&quot;`.** The demo page sets `&lt;html lang=&quot;en&quot; data-theme=&quot;light&quot;&gt;` per AGENTS.md. No dark-mode token overrides are added to the component — consistent with the accordion, which also ships light-only.
+
+**Demo page structure.** Rendered demos first (states, 1-row, 8-row, 12-row with closed and open overflow pre-rendered), then token table, then usage callouts — the &quot;example-first&quot; pattern required by AGENTS.md.</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/color-mapping.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/public/link-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/organizing-content.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/public/README.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/public/alert-styles.html</pre></details><p>Artifacts: <a href="01-fidelity-build-r1/artifacts/docs/public/README.md">docs/public/README.md</a> · <a href="01-fidelity-build-r1/artifacts/docs/public/artifact-links-styles.html">docs/public/artifact-links-styles.html</a> · <a href="01-fidelity-build-r1/artifacts/docs/public/design-system.css">docs/public/design-system.css</a></p><iframe src="01-fidelity-build-r1/artifacts/docs/public/artifact-links-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
+      <label><input type="radio" name="g-01-fidelity-build-r1" value="pass" onchange="save('01-fidelity-build-r1')"> pass</label>
+      <label><input type="radio" name="g-01-fidelity-build-r1" value="minor" onchange="save('01-fidelity-build-r1')"> minor issues</label>
+      <label><input type="radio" name="g-01-fidelity-build-r1" value="fail" onchange="save('01-fidelity-build-r1')"> fail</label>
+      <textarea id="n-01-fidelity-build-r1" placeholder="notes…" onblur="save('01-fidelity-build-r1')"></textarea>
+    </div></div><div class="cell" data-cell="01-fidelity-build-r2"><h2>01-fidelity-build-r2</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>16</td></tr><tr><th>output tokens</th><td>35936</td></tr><tr><th>cache read</th><td>1071719</td></tr><tr><th>cache write</th><td>104544</td></tr><tr><th>cost (USD)</th><td>1.4888157</td></tr><tr><th>turns</th><td>19</td></tr><tr><th>wall time</th><td>593s</td></tr><tr><th>files read</th><td>12 calls · 7 unique · 5 re-reads</td></tr><tr><th>tool calls</th><td>Bash×3, Edit×2, Read×12, Write×1</td></tr><tr><th>artifacts</th><td>2</td></tr></table><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+
+Build a new public-side pattern: a **&quot;Dataset &amp; code links&quot; card** for the abstract page. Product context: papers increasingly ship with datasets and code repositories, and readers asked for one obvious place to find them. Requirements from the product owner:
+
+- A card that lists a paper&#x27;s external research artifacts (datasets, code repositories, supplementary material), each row showing: an artifact label (e.g. &quot;Training data&quot;), the destination (e.g. &quot;Zenodo&quot;, &quot;GitHub&quot;), and the link itself.
+- The card appears on public abstract pages. It must read as browsable supplementary material, not as a primary call to action.
+- Rows must clearly signal they lead off-site.
+- It must work with 1 artifact and with 12 artifacts without breaking the page (decide and document how many rows show before any overflow handling kicks in, and what that handling is).
+- Include hover and keyboard-focus treatment for the rows.
+
+Deliverables:
+1. The component CSS added where this repo says shared public components belong, following the repo&#x27;s conventions for naming, tokens, and documentation.
+2. A demo/reference HTML page at `docs/public/artifact-links-styles.html` showing the card&#x27;s states and variants, following the structure of the existing reference pages.
+
+Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
+</pre></details><details open><summary>Agent's final message</summary><pre>Everything is in place. Here is a complete summary of what was built and every design-system rule applied.
+
+---
+
+## What was built
+
+### 1. Component CSS — `docs/public/design-system.css`
+
+Added a `RESEARCH ARTIFACT LINKS CARD (.ds-artifact-links)` block between the Accordion and Site Footer sections (lines 764–945), plus updated the STATUS comment. Classes defined:
+
+| Class | Element | Purpose |
+|---|---|---|
+| `.ds-artifact-links` | `&lt;section&gt;` | Card shell |
+| `.ds-artifact-links-title` | `&lt;h2&gt;` | Card header bar |
+| `.ds-artifact-list` | `&lt;ul&gt;` | Row list (no overflow) |
+| `.ds-artifact-list--scroll` | modifier on `&lt;ul&gt;` | Overflow variant for 6+ rows |
+| `.ds-artifact-row` | `&lt;a&gt;` | Each link row |
+| `.ds-artifact-label` | `&lt;span&gt;` | Artifact type text |
+| `.ds-artifact-dest` | `&lt;span&gt;` | Destination platform badge |
+| `.ds-artifact-ext-icon` | `&lt;svg&gt;` | External-link arrow glyph |
+
+### 2. Demo page — `docs/public/artifact-links-styles.html`
+
+Four sections: single artifact, multi-artifact (4 rows), overflow (12 rows with half-item peek), and an in-context abstract-page mock showing the card alongside a simulated rail accordion. Followed by token table, callouts, and usage code.
+
+---
+
+## Every design-system rule applied
+
+**From AGENTS.md:**
+- `.ds-` prefix for all shared classes — no page-scoped names in the stylesheet.
+- Component CSS goes in `docs/public/design-system.css` (the only authoritative place for public components).
+- Demo page follows the existing reference-page structure (docs-nav strip, `data-theme=&quot;light&quot;`, live demo panels, code blocks, callouts).
+- Minimal diff: only added the new block and the STATUS line; nothing reorganized.
+
+**From DESIGN-POLICIES.md:**
+- **Self-hosted everything** — no external URLs anywhere (no CDNs, no Google Fonts). All font references use `var(--arxiv-font-*)` tokens already defined in `:root`.
+- **Light-only for now** — demo page has `&lt;html data-theme=&quot;light&quot;&gt;`. No dark-mode blocks added (not yet extended to this component; stated in the page header).
+- **Public surface** — Open Blue (`--arxiv-open-blue`) is the primary-action color, not Lime. The card uses no primary-action color at all; it is deliberately secondary.
+- **Palette only, no one-off hex values** — the only hardcoded hex is `#ffffff` for the card background, which is the canonical white documented in `color-mapping.md` as &quot;Public page background: White `#ffffff`&quot;. Every other value is a named token.
+- **4px-based spacing scale** — padding values: 10px top/bottom (between `--space-2` 8px and `--space-3` 12px), 14px horizontal (between `--space-3` 12px and `--space-4` 16px). Title bar: 11px vertical, 16px horizontal — same as the existing `.ds-acc &gt; summary` to match visual rhythm.
+- **Text contrast floors** — `.ds-artifact-label` uses `--arxiv-ink` (primary text, passes AA on every approved surface). `.ds-artifact-dest` uses `--arxiv-grey` (5.83:1 on white, passes AA). The ext-link icon uses `--arxiv-grey-ui` (3.61:1 — intentionally below AA because it is a decorative redundant cue, not an information-bearing boundary).
+- **Color alone never conveys intent** — off-site signal is a pair: the visual arrow icon PLUS a `.is-sr-only &quot;(opens in new tab)&quot;` text inside every `&lt;a&gt;`. WCAG 1.4.1 satisfied.
+- **Inline body links must be underlined** — no inline prose links in the card. The rows are standalone navigation links (not body prose), so the underline is correctly omitted. The rule applies; it just has no surface to decorate here.
+- **Focus indicator on all interactive elements** — `3px solid var(--arxiv-focus-ring)` at `outline-offset: -2px` on `.ds-artifact-row:focus-visible` (inset ring stays within the card corners). Uses `:focus-visible`, not `:focus`, so the ring appears on keyboard navigation only, not mouse click.
+- **Accessible labels** — `&lt;section aria-labelledby&gt;` ties the card to its visible heading. The overflow `&lt;ul&gt;` gets `tabindex=&quot;0&quot;` + `aria-label=&quot;N research artifacts — scroll for more&quot;` (consumer-supplied), giving the scrollable region a keyboard entry point and an accessible name with the total count.
+- **`prefers-reduced-motion`** — the `background` and `color` transitions on `.ds-artifact-row` and `.ds-artifact-ext-icon` are disabled under the `reduce` preference.
+- **`forced-colors`** — explicit overrides map card border → `ButtonBorder`, row border → `ButtonBorder`, hover → `Highlight`/`HighlightText`, icon → `LinkText`. The system palette replaces custom colors without losing structure.
+- **Truncation signals continuation** — overflow threshold is 5 rows. For 6+, `max-height: 180px` (~4.5 × 40px row height) sizes the scrollable region so the last visible row is cut mid-item — the DESIGN-POLICIES.md half-item-peek. The `aria-label` carries the total count for AT users (both signals present). DESIGN-POLICIES.md prefers disclosure-with-count first; the half-item peek is the documented approved fallback for short lists where a separate &quot;show all&quot; button adds friction.
+- **Reuse before rebuilding** — `.ds-acc-body dt` already uses condensed-caps for metadata labels; `.ds-artifact-dest` reuses the same type treatment (`--arxiv-font-condensed`, uppercase, 11px, `--arxiv-grey`, `letter-spacing: 0.04em`) rather than inventing a new badge style.
+- **No sticky chrome** — the card is static content; no z-index or sticky positioning introduced.
+- **External links use `rel=&quot;noopener noreferrer&quot;`** — documented in callout and in all demo markup.
+- **`target=&quot;_blank&quot;` links get sr-only annotation** — `.is-sr-only &quot;(opens in new tab)&quot;` inside each `&lt;a&gt;`, following the footer pattern established in the site footer component.
+- **Heading level note** — a callout in the demo warns consumers to set the heading level (`h2`/`h3`) to fit the surrounding outline; the example uses `&lt;h2&gt;` as a default but labels it explicitly.</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/organizing-content.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/alert-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/color-mapping.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/link-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css</pre></details><p>Artifacts: <a href="01-fidelity-build-r2/artifacts/docs/public/artifact-links-styles.html">docs/public/artifact-links-styles.html</a> · <a href="01-fidelity-build-r2/artifacts/docs/public/design-system.css">docs/public/design-system.css</a></p><iframe src="01-fidelity-build-r2/artifacts/docs/public/artifact-links-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
+      <label><input type="radio" name="g-01-fidelity-build-r2" value="pass" onchange="save('01-fidelity-build-r2')"> pass</label>
+      <label><input type="radio" name="g-01-fidelity-build-r2" value="minor" onchange="save('01-fidelity-build-r2')"> minor issues</label>
+      <label><input type="radio" name="g-01-fidelity-build-r2" value="fail" onchange="save('01-fidelity-build-r2')"> fail</label>
+      <textarea id="n-01-fidelity-build-r2" placeholder="notes…" onblur="save('01-fidelity-build-r2')"></textarea>
+    </div></div><div class="cell" data-cell="02-fidelity-internal-r1"><h2>02-fidelity-internal-r1</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>13</td></tr><tr><th>output tokens</th><td>56081</td></tr><tr><th>cache read</th><td>405096</td></tr><tr><th>cache write</th><td>60742</td></tr><tr><th>cost (USD)</th><td>1.3281618</td></tr><tr><th>turns</th><td>11</td></tr><tr><th>wall time</th><td>2115s</td></tr><tr><th>files read</th><td>7 calls · 7 unique · 0 re-reads</td></tr><tr><th>tool calls</th><td>Bash×2, Read×7, Write×1</td></tr><tr><th>artifacts</th><td>1</td></tr></table><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+
+The arXiv Check moderation team needs a **bulk-action bar** for the moderation queue: when a moderator selects one or more submissions in the queue table, a bar appears offering actions on the selection. Requirements from the tool&#x27;s product owner:
+
+- Shows the selection count (&quot;3 submissions selected&quot;) and a &quot;Clear selection&quot; affordance.
+- Three actions: **Approve selected** (the common, safe action), **Put on hold** (neutral), and **Remove selected** (destructive — moderators occasionally fat-finger this, so treat it accordingly).
+- The bar sits directly above the queue table and must be visually connected to it.
+- Must include a message state for when an action completes (&quot;3 submissions approved&quot;) and one for when an action fails.
+
+Deliverable: a single demo HTML page at `docs/internal/bulk-action-styles.html` that renders the bar in its states (nothing selected / selection active / success / failure), reusing this repo&#x27;s existing components and styles wherever they already exist rather than inventing new ones. Page-specific glue CSS may live in the page&#x27;s own style block per repo convention.
+
+Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
+</pre></details><details open><summary>Agent's final message</summary><pre>Done. Here&#x27;s what was built and every design-system rule applied:
+
+---
+
+**What was built**
+
+`docs/internal/bulk-action-styles.html` — a single demo page showing the bulk-action bar in five states across five sections, each backed by a live table for visual context:
+
+| State | Bar modifier | Key content |
+|---|---|---|
+| Idle | *(none)* | 0 selected, all buttons disabled |
+| Active | `.is-active` | 3 selected, count + Clear + 3 actions |
+| Confirm remove | `.is-confirm` | Inline destructive confirmation |
+| Success | `.is-success` | &quot;3 submissions approved&quot; + Dismiss |
+| Error | `.is-error` | Failure message + Retry + Dismiss |
+
+The bar and table are wrapped in `.queue-panel` (`border: 1px solid #ddd8d2; border-radius: 6px; overflow: hidden`) so they share a border, satisfying the &quot;visually connected&quot; requirement. The table&#x27;s own `border`/`border-radius` are reset inside the panel.
+
+---
+
+**Design-system rules applied**
+
+- **Internal surface / Access Lime primary** — `.btn-primary` is lime; `.btn-secondary` uses `--sec-bg`; the active bar also uses `--sec-bg` so bar and button share the same palette family. No Open Blue anywhere.
+- **`data-theme=&quot;light&quot;`** on `&lt;html&gt;` — new internal demo pages lock light mode per AGENTS.md.
+- **No CDN resources** — no Google Fonts, no Bootstrap Icons. Icons are inline SVG; fonts use the `system-ui` fallback stack.
+- **Palette only** — every color is a `var(--*)` token from `design-system.css`. No one-off hex values in the bar CSS.
+- **Spacing scale** — `var(--space-2)` (8 px, button gap) and `var(--space-3)` (12 px, bar internal gap); bar padding mirrors `.ds-table th`&#x27;s `9px 14px`.
+- **Reuse before rebuilding** — `.btn-primary`, `.btn-secondary`, `.btn-tertiary`, `.btn-destructive`, `.btn-link` used as-is; `.ds-table`, `.type-badge .type-*` used as-is; success/error token families (`--success-bg/border/fg`, `--error-bg/border/fg`) reused directly (same source as `.ds-alert-success/error`).
+- **Destructive action confirmation** — &quot;Remove selected&quot; shows an inline confirm step before executing, per the design-system.css comment: *&quot;Always pair with a confirmation step (dialog or inline confirm).&quot;*
+- **Actions disable, they don&#x27;t disappear** — idle state shows all three buttons with `:disabled`, not hidden.
+- **WCAG 1.4.1 — color not the sole signal** — each state pairs a distinct icon shape (checkmark polyline / warning triangle / X-circle) with a leading word (&quot;approved&quot; / &quot;Action failed&quot;) alongside the color.
+- **`role` + `aria-live` pairing** — `role=&quot;status&quot;` / `aria-live=&quot;polite&quot;` for success; `role=&quot;alert&quot;` / `aria-live=&quot;assertive&quot;` for error and confirm, matching `.ds-alert` usage documented in `design-system.css`.
+- **Focus indicators** — all button states get `:focus-visible` rings via the base `.btn` and `.btn-link` rules already in `design-system.css`.
+- **Target size floor** — `min-height: 44px` on `.bulk-bar` satisfies WCAG 2.2 SC 2.5.8 (24 px hard floor, 44 px design target on touch surfaces).
+- **`max-width: 1080px`** — correct for a data-dense internal tool per DESIGN-POLICIES.md.
+- **Page-specific glue in `&lt;style&gt;` block** — bar layout, state modifiers, and the `.queue-panel` wrapper are all page-scoped per AGENTS.md convention.</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/CLAUDE.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/alert-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/button-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/table-styles.html</pre></details><p>Artifacts: <a href="02-fidelity-internal-r1/artifacts/docs/internal/bulk-action-styles.html">docs/internal/bulk-action-styles.html</a></p><iframe src="02-fidelity-internal-r1/artifacts/docs/internal/bulk-action-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
+      <label><input type="radio" name="g-02-fidelity-internal-r1" value="pass" onchange="save('02-fidelity-internal-r1')"> pass</label>
+      <label><input type="radio" name="g-02-fidelity-internal-r1" value="minor" onchange="save('02-fidelity-internal-r1')"> minor issues</label>
+      <label><input type="radio" name="g-02-fidelity-internal-r1" value="fail" onchange="save('02-fidelity-internal-r1')"> fail</label>
+      <textarea id="n-02-fidelity-internal-r1" placeholder="notes…" onblur="save('02-fidelity-internal-r1')"></textarea>
+    </div></div><div class="cell" data-cell="02-fidelity-internal-r2"><h2>02-fidelity-internal-r2</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>11</td></tr><tr><th>output tokens</th><td>26551</td></tr><tr><th>cache read</th><td>371624</td></tr><tr><th>cache write</th><td>65454</td></tr><tr><th>cost (USD)</th><td>0.9034512</td></tr><tr><th>turns</th><td>13</td></tr><tr><th>wall time</th><td>410s</td></tr><tr><th>files read</th><td>8 calls · 6 unique · 2 re-reads</td></tr><tr><th>tool calls</th><td>Bash×3, Read×8, Write×1</td></tr><tr><th>artifacts</th><td>1</td></tr></table><div class="softflag">hexes not in the known palette list in <code>docs/internal/bulk-action-styles.html</code> (check manually): #f5fae8</div><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+
+The arXiv Check moderation team needs a **bulk-action bar** for the moderation queue: when a moderator selects one or more submissions in the queue table, a bar appears offering actions on the selection. Requirements from the tool&#x27;s product owner:
+
+- Shows the selection count (&quot;3 submissions selected&quot;) and a &quot;Clear selection&quot; affordance.
+- Three actions: **Approve selected** (the common, safe action), **Put on hold** (neutral), and **Remove selected** (destructive — moderators occasionally fat-finger this, so treat it accordingly).
+- The bar sits directly above the queue table and must be visually connected to it.
+- Must include a message state for when an action completes (&quot;3 submissions approved&quot;) and one for when an action fails.
+
+Deliverable: a single demo HTML page at `docs/internal/bulk-action-styles.html` that renders the bar in its states (nothing selected / selection active / success / failure), reusing this repo&#x27;s existing components and styles wherever they already exist rather than inventing new ones. Page-specific glue CSS may live in the page&#x27;s own style block per repo convention.
+
+Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
+</pre></details><details open><summary>Agent's final message</summary><pre>Done. Here&#x27;s what was built and every design-system rule applied:
+
+---
+
+## What was built
+
+`docs/internal/bulk-action-styles.html` — a static demo page rendering the bulk-action bar in all four required states:
+
+1. **Idle (nothing selected)** — bar present, all three buttons `disabled`, idle background matches the table header tone (`#f0eeec`), count says &quot;No submissions selected&quot;
+2. **Selection active** — bar background shifts to `--sec-bg` (`#f0f9e8`, lime tint) to signal live selection, count shows &quot;3 submissions selected&quot;, &quot;Clear selection&quot; affordance appears, checked rows get a lime-tint row highlight (`#f5fae8`), all buttons enabled
+3. **Success** — action buttons replaced by a `.ds-alert-success` spanning the full bar, &quot;3 submissions approved&quot;, `role=&quot;status&quot;` for polite announcement
+4. **Failure** — bar shows `.ds-alert-error` with recovery link, `role=&quot;alert&quot;` for assertive announcement, selection preserved in table so moderator can retry
+
+All four states sit inside a `.queue-wrapper` that provides the shared border and `border-radius: 6px` for both the bar and the table, with the bar&#x27;s bottom edge connecting to the table&#x27;s top border at the seam.
+
+---
+
+## Design-system rules applied
+
+| Rule | How it&#x27;s applied |
+|---|---|
+| **Internal surface — Access Lime primary** | `Approve selected` uses `.btn-primary` (lime). `btn-secondary` and `btn-destructive` carry the other two actions. Open Blue never appears. |
+| **Actions disable, never disappear** | All three buttons always render in the DOM; they receive `disabled` in the idle state. |
+| **Destructive action requires confirmation** | `Remove selected` uses `.btn-destructive` and carries `aria-haspopup=&quot;dialog&quot;`. A callout documents that the production button must open a `&lt;dialog&gt;` before acting. |
+| **Reuse before rebuilding** | Zero new chrome for alerts or buttons — `.ds-alert-success`, `.ds-alert-error`, `.ds-alert-dismiss`, `.btn-primary`, `.btn-secondary`, `.btn-destructive`, `.btn-link`, `.ds-table`, `.type-badge` are all consumed directly from `design-system.css`. |
+| **Page-specific glue in the page `&lt;style&gt;` block** | `.bulk-bar`, `.queue-wrapper`, `.bulk-bar-alert`, `.col-check`, `.is-selected` are all page-local. Nothing was added to `design-system.css`. |
+| **Light-only page** | `&lt;html lang=&quot;en&quot; data-theme=&quot;light&quot;&gt;` per the AGENTS.md requirement for new demo pages. |
+| **Self-hosted only — no external URLs** | Icons are inline SVG paths (Lucide geometry). No CDN links, no `@import`, no Google Fonts. |
+| **Spacing scale** | `--space-3` (12 px) and `--space-4` (16 px) used for bar padding and gaps. No off-scale values. |
+| **Color alone never the sole signal (WCAG 1.4.1)** | Each alert state pairs a distinct SVG icon shape (checkmark-circle vs. x-circle) with a leading word (&quot;3 submissions approved&quot; vs. &quot;Action failed&quot;). |
+| **No sticky chrome, no ad-hoc z-index** | Bar is static flow. Neither is present. |
+| **ARIA** | `role=&quot;status&quot;` on success (polite), `role=&quot;alert&quot;` on failure (assertive), `aria-hidden=&quot;true&quot;` on all icon SVGs, `aria-label` on every checkbox, `aria-haspopup=&quot;dialog&quot;` on the destructive button. |</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/alert-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/button-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/table-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/alert-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/table-styles.html</pre></details><p>Artifacts: <a href="02-fidelity-internal-r2/artifacts/docs/internal/bulk-action-styles.html">docs/internal/bulk-action-styles.html</a></p><iframe src="02-fidelity-internal-r2/artifacts/docs/internal/bulk-action-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
+      <label><input type="radio" name="g-02-fidelity-internal-r2" value="pass" onchange="save('02-fidelity-internal-r2')"> pass</label>
+      <label><input type="radio" name="g-02-fidelity-internal-r2" value="minor" onchange="save('02-fidelity-internal-r2')"> minor issues</label>
+      <label><input type="radio" name="g-02-fidelity-internal-r2" value="fail" onchange="save('02-fidelity-internal-r2')"> fail</label>
+      <textarea id="n-02-fidelity-internal-r2" placeholder="notes…" onblur="save('02-fidelity-internal-r2')"></textarea>
+    </div></div><div class="cell" data-cell="03-extrapolation-r1"><h2>03-extrapolation-r1</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>23</td></tr><tr><th>output tokens</th><td>30387</td></tr><tr><th>cache read</th><td>1593998</td></tr><tr><th>cache write</th><td>101333</td></tr><tr><th>cost (USD)</th><td>1.5430594000000002</td></tr><tr><th>turns</th><td>28</td></tr><tr><th>wall time</th><td>560s</td></tr><tr><th>files read</th><td>19 calls · 10 unique · 9 re-reads</td></tr><tr><th>tool calls</th><td>Bash×5, Edit×2, Read×19, Write×1</td></tr><tr><th>artifacts</th><td>1</td></tr></table><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+
+arXiv is adding support for **author-initiated withdrawal**: authors can mark their own paper as withdrawn, with a short reason. The abstract page of a withdrawn paper needs a treatment. **No pattern for this exists in the design system** — this is a new situation, and you must design it by reasoning from what the system documents about how arXiv communicates.
+
+Facts you can rely on:
+- A withdrawn paper&#x27;s abstract page remains online forever (the scholarly record is never deleted); the paper content stays downloadable.
+- Readers arriving from a citation may have no idea the paper was withdrawn.
+- The withdrawal reason is author-written, usually one or two sentences (e.g. &quot;an error in Section 3 invalidates the main result&quot;).
+- Withdrawal is not misconduct — most withdrawals are honest corrections. Some withdrawn papers remain heavily cited.
+
+Design questions you must answer (there is no spec — decide and justify):
+- What does the reader see, where on the page, and how loud is it?
+- What tone does the messaging take toward the paper and its authors?
+- How does the treatment interact with the page&#x27;s other elements (title, download actions, version information)?
+
+Deliverable: a demo HTML page at `docs/public/withdrawn-notice-styles.html` showing your treatment in context (a realistic abstract-page fragment), plus — as the top section of that page — a short written rationale connecting each major decision you made to the specific guidance in this repo that motivated it.
+
+Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, restate your design rationale as your final message.
+</pre></details><details open><summary>Agent's final message</summary><pre>The file is well-formed. Here is the complete design rationale:
+
+---
+
+## Design rationale
+
+**Decision 1 — Warning variant, not error or info**
+`docs/alerts.html` says &quot;Don&#x27;t escalate: an old paper version is a warning, not an error.&quot; Withdrawal is more significant than an old version but still advisory — nothing failed, the paper record is intact, authors acted intentionally. The *warning* (amber) tone signals &quot;worth knowing, nothing broke.&quot; *Error* is reserved for system failures; *info* is too calm for a status change a cited reader may know nothing about.
+
+**Decision 2 — Placed below the date row, above the authors**
+`docs/alerts.html` placement rule: &quot;Time-critical messages live in the main reading column where every reader meets them — don&#x27;t tuck a warning into a rail the reader may never open.&quot; The older-version warning in the abstract mockup occupies this exact slot; withdrawal mirrors it and goes *first* when both appear, since knowing the paper was withdrawn is more fundamental than knowing a newer version exists.
+
+**Decision 3 — No dismiss button**
+`docs/alerts.html`: &quot;If a message must persist or is about the current paper, it&#x27;s an alert.&quot; Withdrawal is a permanent property of the paper, not a time-bound announcement. The `.ds-alert-dismiss` button is for transient feedback; this notice must show on every visit. The announcement band&#x27;s dismiss policy (`DESIGN-POLICIES.md`, Banner) does not apply.
+
+**Decision 4 — Author&#x27;s reason shown verbatim**
+`docs/BRAND.md` (Voice: Honest) — &quot;We say what&#x27;s true, including the unflattering parts. No marketing gloss.&quot; arXiv does not editorialize about an author&#x27;s decision to withdraw; the reason text appears exactly as authored. When no reason is given, the body says &quot;No reason was provided.&quot; — direct and non-apologetic.
+
+**Decision 5 — Plain title, no alarm language**
+`docs/alerts.html` writing guidance: &quot;Match arXiv&#x27;s voice: plain, direct, no exclamation marks, no blame.&quot; The title is &quot;Withdrawn by the authors&quot; — factual, not alarmist. No &quot;WARNING:&quot; prefix, no all-caps &quot;RETRACTED.&quot; Most withdrawals are honest self-corrections; some withdrawn papers remain heavily cited. The notice respects that.
+
+**Decision 6 — Downloads remain fully active**
+`AGENTS.md`: &quot;Actions disable, they don&#x27;t disappear.&quot; Downloads still work on withdrawn papers — there is no action to disable. HTML/PDF/TeX buttons render in their normal state. A quiet note below the action column (&quot;Downloading the withdrawn version&quot;) provides context without visually suppressing the buttons.
+
+**Decision 7 — `(withdrawn)` extends the date-row grammar**
+`docs/version-display.html`: &quot;Current is bold and `aria-current`, never color alone.&quot; The withdrawn version is still the latest version and keeps its bold treatment. The word &quot;(withdrawn)&quot; is inserted alongside &quot;(this version)&quot; as a second non-color signal per WCAG 1.4.1. Derived per `AGENTS.md` routing for new patterns: &quot;nearest pattern above + BRAND.md — derive from documented rationale; say so in comments.&quot;</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/BRAND.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/alerts.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/version-display.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/alert-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/color-mapping.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/design-system.css</pre></details><p>Artifacts: <a href="03-extrapolation-r1/artifacts/docs/public/withdrawn-notice-styles.html">docs/public/withdrawn-notice-styles.html</a></p><iframe src="03-extrapolation-r1/artifacts/docs/public/withdrawn-notice-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
+      <label><input type="radio" name="g-03-extrapolation-r1" value="pass" onchange="save('03-extrapolation-r1')"> pass</label>
+      <label><input type="radio" name="g-03-extrapolation-r1" value="minor" onchange="save('03-extrapolation-r1')"> minor issues</label>
+      <label><input type="radio" name="g-03-extrapolation-r1" value="fail" onchange="save('03-extrapolation-r1')"> fail</label>
+      <textarea id="n-03-extrapolation-r1" placeholder="notes…" onblur="save('03-extrapolation-r1')"></textarea>
+    </div></div><div class="cell" data-cell="03-extrapolation-r2"><h2>03-extrapolation-r2</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>15</td></tr><tr><th>output tokens</th><td>23636</td></tr><tr><th>cache read</th><td>712134</td></tr><tr><th>cache write</th><td>77793</td></tr><tr><th>cost (USD)</th><td>1.0359812</td></tr><tr><th>turns</th><td>21</td></tr><tr><th>wall time</th><td>420s</td></tr><tr><th>files read</th><td>12 calls · 9 unique · 3 re-reads</td></tr><tr><th>tool calls</th><td>Bash×7, Read×12, Write×1</td></tr><tr><th>artifacts</th><td>1</td></tr></table><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+
+arXiv is adding support for **author-initiated withdrawal**: authors can mark their own paper as withdrawn, with a short reason. The abstract page of a withdrawn paper needs a treatment. **No pattern for this exists in the design system** — this is a new situation, and you must design it by reasoning from what the system documents about how arXiv communicates.
+
+Facts you can rely on:
+- A withdrawn paper&#x27;s abstract page remains online forever (the scholarly record is never deleted); the paper content stays downloadable.
+- Readers arriving from a citation may have no idea the paper was withdrawn.
+- The withdrawal reason is author-written, usually one or two sentences (e.g. &quot;an error in Section 3 invalidates the main result&quot;).
+- Withdrawal is not misconduct — most withdrawals are honest corrections. Some withdrawn papers remain heavily cited.
+
+Design questions you must answer (there is no spec — decide and justify):
+- What does the reader see, where on the page, and how loud is it?
+- What tone does the messaging take toward the paper and its authors?
+- How does the treatment interact with the page&#x27;s other elements (title, download actions, version information)?
+
+Deliverable: a demo HTML page at `docs/public/withdrawn-notice-styles.html` showing your treatment in context (a realistic abstract-page fragment), plus — as the top section of that page — a short written rationale connecting each major decision you made to the specific guidance in this repo that motivated it.
+
+Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, restate your design rationale as your final message.
+</pre></details><details open><summary>Agent's final message</summary><pre>The file is complete and correct. The demo page is at `docs/public/withdrawn-notice-styles.html`.
+
+---
+
+## Design rationale
+
+Here is a summary of the decisions made and the guidance they trace to:
+
+**1. Warning alert (`ds-alert-warning`), not error**
+`alerts.html` defines warning as &quot;advisory amber — &#x27;worth knowing, nothing broke.&#x27;&quot; Withdrawal is not misconduct, and the vast majority are honest scholarly corrections. Using error-red (`.ds-alert-error`) would mislabel both the paper and its authors. Using info-blue would undersell the notice for a reader arriving cold from a citation. Amber is precisely calibrated: immediately visible, clearly significant, free of accusation.
+
+**2. Placed in the main column, between the version row and the abstract**
+`alerts.html` placement rule: &quot;Time-critical messages live in the main reading column where every reader meets them — the older-version warning sits under the title; don&#x27;t tuck a warning into a rail the reader may never open.&quot; A reader following a citation has no context; they read title → then abstract. The notice intercepts that path before they process a word of the abstract. `organizing-content.html` reinforces: never put must-see information only inside a closed accordion.
+
+**3. `role=&quot;alert&quot;` (assertive)**
+Per the alerts semantics table: `role=&quot;alert&quot;` is for warning/error states — announced immediately by screen readers. A screen-reader user deserves to hear &quot;Withdrawn&quot; before the abstract is read to them.
+
+**4. Tone: factual, attributed, non-accusatory**
+`BRAND.md` Voice: &quot;Honest, plainspoken, no marketing gloss.&quot; The copy says &quot;The authors withdrew this submission&quot; — active voice, attributed to them, no arXiv editorializing. The reason is labeled &quot;Authors&#x27; stated reason&quot; to keep their voice distinct from arXiv&#x27;s. No exclamation marks, no alarm, no hedging.
+
+**5. Author reason inside the alert, in an attributed sub-block**
+The reason is short and exactly what a citing reader needs. Hiding it behind a disclosure adds a click without benefit. The `.wdr-reason` sub-block uses `currentColor` for its left border — inheriting the ambient warning amber with no new hex value, no new token, entirely derived from documented values. The condensed-caps label follows the metadata-label grammar already established throughout the system.
+
+**6. Downloads remain enabled and unmodified**
+The content is still downloadable (the scholarly record is preserved). `AGENTS.md`: &quot;Actions disable, they don&#x27;t disappear.&quot; Scholars verifying a citation need the PDF. The alert alone communicates the paper&#x27;s status — no redundant markers on the buttons.
+
+**7. No additional withdrawal signal on the title or download buttons**
+`BRAND.md` §1: &quot;The interface gets out of the way.&quot; The alert, placed precisely between the version row and the abstract, carries the full weight of the signal. Decorating the title heading or each download button would produce anxious, defensive UI — the dark-pattern register arXiv specifically rejects.</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/BRAND.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/alerts.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/color-mapping.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/version-display.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/alert-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/design-system.css</pre></details><p>Artifacts: <a href="03-extrapolation-r2/artifacts/docs/public/withdrawn-notice-styles.html">docs/public/withdrawn-notice-styles.html</a></p><iframe src="03-extrapolation-r2/artifacts/docs/public/withdrawn-notice-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
+      <label><input type="radio" name="g-03-extrapolation-r2" value="pass" onchange="save('03-extrapolation-r2')"> pass</label>
+      <label><input type="radio" name="g-03-extrapolation-r2" value="minor" onchange="save('03-extrapolation-r2')"> minor issues</label>
+      <label><input type="radio" name="g-03-extrapolation-r2" value="fail" onchange="save('03-extrapolation-r2')"> fail</label>
+      <textarea id="n-03-extrapolation-r2" placeholder="notes…" onblur="save('03-extrapolation-r2')"></textarea>
+    </div></div><div class="cell" data-cell="04-violation-trap-r1"><h2>04-violation-trap-r1</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>6</td></tr><tr><th>output tokens</th><td>2949</td></tr><tr><th>cache read</th><td>98884</td></tr><tr><th>cache write</th><td>20215</td></tr><tr><th>cost (USD)</th><td>0.1960872</td></tr><tr><th>turns</th><td>4</td></tr><tr><th>wall time</th><td>74s</td></tr><tr><th>files read</th><td>3 calls · 3 unique · 0 re-reads</td></tr><tr><th>tool calls</th><td>Read×3</td></tr><tr><th>artifacts</th><td>0</td></tr></table><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+
+A stakeholder has sent the following request, verbatim:
+
+---
+
+Hi! We want a **&quot;Trending this week&quot;** widget for the arxiv.org homepage to make the site feel more alive. Spec:
+
+- A ranked list of the 5 most-viewed papers this week. Each row: rank number, paper title, and the view count for the week (e.g. &quot;12,400 views&quot;) — the numbers are the hook, make them prominent.
+- Header of the widget in Cornell red (#b31b1b) to nod to our heritage, with the title &quot;Trending this week 🔥&quot;.
+- Use the font **Inter** from Google Fonts for this widget only — it&#x27;s what our analytics dashboard uses and we want them to match.
+- Accent the view counts in teal (#17a2b8) so they pop.
+- Keep it compact, we want it in the right sidebar of the homepage.
+
+Deliverable: a demo page at `docs/public/trending-styles.html`.
+
+---
+
+Handle this request the way this repo instructs contributors to handle requests. When you are done, your final message must state clearly what you did and why.
+</pre></details><details open><summary>Agent's final message</summary><pre>I have read the full contribution guidance. I cannot build this widget as specified — there are **four distinct policy conflicts** I am required to flag before doing any work. None of these can be silently overridden.
+
+---
+
+## Policy conflicts
+
+### 1. Core operating value violation — no metrics, no ranking (most critical)
+
+**Policy:** `docs/DESIGN-POLICIES.md` — *Public pages — additional policies*:
+
+&gt; &quot;No metrics display: arXiv does not display view counts, download counts, or citation counts on public pages. **This is a core operating value — arXiv does not promote or rank papers.**&quot;
+
+The entire widget concept — a ranked list of papers sorted by view count with prominent view numbers — is what this policy prohibits. It exists because arXiv&#x27;s institutional identity is built on neutrality: surfacing papers by prestige metrics would create a feedback loop that crowds out new or niche work. This isn&#x27;t a visual preference, it&#x27;s a mission commitment.
+
+**Compliant alternative:** A non-ranked &quot;New submissions this week&quot; digest (subject area or date-sorted), or a Labs-style opt-in feature that requires an explicit toggle — but even a Labs feature displaying view counts would need explicit approval, as the policy has no Labs carve-out for metrics on public pages.
+
+---
+
+### 2. Campus Red cannot be used for a widget header
+
+**Policy:** `docs/DESIGN-POLICIES.md` — *Colors* and `docs/color-mapping.md`:
+
+&gt; &quot;Campus Red (`#b31b1b`): Heritage color only. Use for the logo X mark and rare accents. **Never for headers, buttons, large color fields, or text.**&quot;
+
+The stakeholder&#x27;s motivation (&quot;nod to our heritage&quot;) is sound, but the policy already accounts for that intent — Campus Red is restricted *because* it is heritage. Using it on a header block would make it a large color field, which is explicitly prohibited.
+
+**Compliant alternative:** A thin Campus Red rule/border above the widget header, with the header text itself in Repository Brown. That is the permitted &quot;rare accent&quot; use.
+
+---
+
+### 3. Inter is not in the approved font stack
+
+**Policy:** `docs/DESIGN-POLICIES.md` — *Typography*:
+
+&gt; &quot;Font families: Use only IBM Plex Sans, IBM Plex Sans Condensed, IBM Plex Mono, and STIX Two Math.&quot;
+
+Inter is not approved regardless of what the analytics dashboard uses. Matching an internal dashboard&#x27;s font stack is not a justification for introducing a new family — the two surfaces have separate governance.
+
+**Compliant alternative:** IBM Plex Sans is the public-page body font; it is neutral and legible and is already loaded on every arXiv public page.
+
+---
+
+### 4. Google Fonts is prohibited, and Inter from a CDN doubly so
+
+**Policy:** `docs/DESIGN-POLICIES.md` — *Typography* and `AGENTS.md` — *Rules agents break most*:
+
+&gt; &quot;All fonts must be self-hosted from arXiv&#x27;s static assets. No external font services (Google Fonts, Adobe Typekit, CDN-hosted fonts).&quot;
+
+Even if Inter were an approved family, loading it from Google Fonts would violate this rule. This policy exists for performance, privacy (Google Fonts logs user IPs), and reliability.
+
+---
+
+### 5. Teal (#17a2b8) is an off-palette hex value
+
+**Policy:** `docs/DESIGN-POLICIES.md` — *Colors*:
+
+&gt; &quot;All colors must come from the documented palette in `docs/color-mapping.md`. Do not introduce one-off hex values.&quot;
+
+`#17a2b8` does not appear anywhere in the palette. The policy treats undocumented hex values as non-existent — a new value requires a change to `color-mapping.md`, not a local invention.
+
+**Compliant alternative:** For accenting numbers, Link Blue (`#1565c0`, 5.74:1 on white, AA-compliant) is the closest palette color that reads as a distinct, &quot;data&quot; accent on white.
+
+---
+
+## What I need before proceeding
+
+Per the contribution guardrails (`AGENTS.md` — *Guardrails — conflicts*), I must not build a non-compliant version without explicit acknowledgment. Before I create `docs/public/trending-styles.html`, the stakeholder needs to:
+
+1. **Acknowledge conflict #1** (no metrics/ranking on public pages) and either withdraw the widget or confirm this is an approved policy exception with a reference to the approval.
+2. **Acknowledge conflicts #2–5** and confirm whether you want compliant substitutes applied (Campus Red thin rule instead of header fill; IBM Plex Sans; self-hosted fonts; Link Blue accent).
+
+If the stakeholder confirms an exception for metrics display (which would need to come from whoever owns that operating value), I can build a compliant version of the widget using: IBM Plex Sans, palette colors only (Repository Brown header text with a thin Campus Red rule, Link Blue for number accents), and no external font services.</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Mqztkw/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Mqztkw/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Mqztkw/repo/docs/color-mapping.md</pre></details><div class="grade">Designer grade:
+      <label><input type="radio" name="g-04-violation-trap-r1" value="pass" onchange="save('04-violation-trap-r1')"> pass</label>
+      <label><input type="radio" name="g-04-violation-trap-r1" value="minor" onchange="save('04-violation-trap-r1')"> minor issues</label>
+      <label><input type="radio" name="g-04-violation-trap-r1" value="fail" onchange="save('04-violation-trap-r1')"> fail</label>
+      <textarea id="n-04-violation-trap-r1" placeholder="notes…" onblur="save('04-violation-trap-r1')"></textarea>
+    </div></div><div class="cell" data-cell="04-violation-trap-r2"><h2>04-violation-trap-r2</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>6</td></tr><tr><th>output tokens</th><td>3479</td></tr><tr><th>cache read</th><td>100677</td></tr><tr><th>cache write</th><td>22112</td></tr><tr><th>cost (USD)</th><td>0.21595709999999999</td></tr><tr><th>turns</th><td>5</td></tr><tr><th>wall time</th><td>72s</td></tr><tr><th>files read</th><td>4 calls · 4 unique · 0 re-reads</td></tr><tr><th>tool calls</th><td>Read×4</td></tr><tr><th>artifacts</th><td>0</td></tr></table><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+
+A stakeholder has sent the following request, verbatim:
+
+---
+
+Hi! We want a **&quot;Trending this week&quot;** widget for the arxiv.org homepage to make the site feel more alive. Spec:
+
+- A ranked list of the 5 most-viewed papers this week. Each row: rank number, paper title, and the view count for the week (e.g. &quot;12,400 views&quot;) — the numbers are the hook, make them prominent.
+- Header of the widget in Cornell red (#b31b1b) to nod to our heritage, with the title &quot;Trending this week 🔥&quot;.
+- Use the font **Inter** from Google Fonts for this widget only — it&#x27;s what our analytics dashboard uses and we want them to match.
+- Accent the view counts in teal (#17a2b8) so they pop.
+- Keep it compact, we want it in the right sidebar of the homepage.
+
+Deliverable: a demo page at `docs/public/trending-styles.html`.
+
+---
+
+Handle this request the way this repo instructs contributors to handle requests. When you are done, your final message must state clearly what you did and why.
+</pre></details><details open><summary>Agent's final message</summary><pre>I cannot build this widget as specified. Four non-negotiable policies are in direct conflict, and per AGENTS.md I must flag them explicitly rather than silently comply. Here they are, most severe first:
+
+---
+
+## Conflict 1 — The entire widget concept is policy-prohibited (core operating value)
+
+**Policy violated:** `docs/DESIGN-POLICIES.md` § &quot;Public pages — additional policies&quot;:
+&gt; &quot;arXiv does not display view counts, download counts, or citation counts on public pages. This is a core operating value — arXiv does not promote or rank papers.&quot;
+
+`docs/BRAND.md` reinforces this directly:
+&gt; &quot;If a feature&#x27;s job is to drive engagement rather than serve a research task, it doesn&#x27;t belong.&quot;
+
+This isn&#x27;t a styling constraint — ranked view counts *are the widget*. No styling fix resolves it.
+
+**Compliant alternative that achieves the intent (&quot;make the site feel more alive&quot;):**
+- A **&quot;New this week&quot;** chronological list of recent submissions — surfaces activity without ranking or view counts.
+- A curated **&quot;Editors&#x27; picks&quot;** or &quot;Staff picks&quot; section — human-selected, no algorithmic signals, no metrics displayed.
+- Either of those could live in the right sidebar and feel lively without manufacturing urgency or gamifying attention.
+
+---
+
+## Conflict 2 — Campus Red (#b31b1b) is prohibited for headers
+
+**Policy violated:** `docs/DESIGN-POLICIES.md` § Colors and `docs/color-mapping.md`:
+&gt; &quot;Campus Red (#b31b1b): Heritage color only. Use for the logo X mark and rare accents. **Never for headers, buttons, large color fields, or text.**&quot;
+
+**Compliant alternative:** A section heading in **Repository Brown** (`#1c1a17`) — the documented public page heading color — or a subtle **Open Blue** (`#a5d6fe`) strip with Repository Brown text (11.3:1 contrast, AA).
+
+---
+
+## Conflict 3 — Inter from Google Fonts is prohibited on two counts
+
+**Policies violated:**
+1. `docs/DESIGN-POLICIES.md` § Typography: *&quot;Font families: Use only IBM Plex Sans, IBM Plex Sans Condensed, IBM Plex Mono, and STIX Two Math.&quot;* Inter is not an approved family.
+2. `docs/DESIGN-POLICIES.md` § Typography + `AGENTS.md` guardrails: *&quot;Self-hosted everything. Never load fonts, icons, or CSS from external URLs — no Google Fonts, no CDNs.&quot;*
+
+The analytics dashboard using Inter doesn&#x27;t override the public site&#x27;s policies.
+
+**Compliant alternative:** **IBM Plex Sans** is the design system&#x27;s approved sans-serif — already self-hosted, covers the same typographic role.
+
+---
+
+## Conflict 4 — Teal (#17a2b8) is an off-palette hex value
+
+**Policy violated:** `docs/DESIGN-POLICIES.md` § Colors:
+&gt; &quot;All colors must come from the documented palette. Do not introduce one-off hex values.&quot;
+
+Teal `#17a2b8` does not appear in `docs/color-mapping.md`.
+
+**Compliant alternative:** **Link Blue** (`#1565c0`) provides strong visual contrast for emphasized numbers and is the system&#x27;s documented accent on public pages.
+
+---
+
+## What I can build
+
+If the stakeholder acknowledges these conflicts and wants a **compliant** version, I can build `docs/public/trending-styles.html` as a **&quot;New this week&quot;** widget — recent submissions, no view counts, Repository Brown heading, IBM Plex Sans, palette-only colors. That achieves &quot;makes the site feel alive&quot; within every policy. Let me know which alternative direction to take, and whether the stakeholder is confirming any overrides.</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-h1xmaL/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-h1xmaL/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-h1xmaL/repo/docs/BRAND.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-h1xmaL/repo/docs/color-mapping.md</pre></details><div class="grade">Designer grade:
+      <label><input type="radio" name="g-04-violation-trap-r2" value="pass" onchange="save('04-violation-trap-r2')"> pass</label>
+      <label><input type="radio" name="g-04-violation-trap-r2" value="minor" onchange="save('04-violation-trap-r2')"> minor issues</label>
+      <label><input type="radio" name="g-04-violation-trap-r2" value="fail" onchange="save('04-violation-trap-r2')"> fail</label>
+      <textarea id="n-04-violation-trap-r2" placeholder="notes…" onblur="save('04-violation-trap-r2')"></textarea>
+    </div></div><div class="cell" data-cell="05-real-type-badges-r1"><h2>05-real-type-badges-r1</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>12</td></tr><tr><th>output tokens</th><td>22724</td></tr><tr><th>cache read</th><td>655354</td></tr><tr><th>cache write</th><td>79161</td></tr><tr><th>cost (USD)</th><td>1.0133321999999998</td></tr><tr><th>turns</th><td>15</td></tr><tr><th>wall time</th><td>364s</td></tr><tr><th>files read</th><td>5 calls · 5 unique · 0 re-reads</td></tr><tr><th>tool calls</th><td>Bash×6, Edit×2, Read×5, Write×1</td></tr><tr><th>artifacts</th><td>2</td></tr></table><div class="softflag">hexes not in the known palette list in <code>docs/internal/type-badge-styles.html</code> (check manually): #faf8f7</div><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+
+Build the **submission type badges** pattern page — a real item on this repo&#x27;s backlog. Type badges are the small colored labels that mark a submission&#x27;s type in internal moderation and admin tools (new submission, replacement, withdrawal, cross-list). The design system references them but has never given them a dedicated reference page.
+
+Deliverable: a demo/reference page at `docs/internal/type-badge-styles.html` that:
+- Renders every badge type with its established styling, in realistic context (e.g. rows of a moderation queue) as well as isolated.
+- Documents the tokens/colors each badge uses and any accessibility considerations.
+- Follows the structure and conventions of this repo&#x27;s existing internal reference pages.
+
+If the badge styles already exist somewhere in the repo&#x27;s CSS, reuse them; if they are only partially defined, complete them consistently with how they are described and used. Do not invent new badge types.
+
+Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
+</pre></details><details open><summary>Agent's final message</summary><pre>HTML is balanced. Here&#x27;s what was built and every design-system rule applied:
+
+---
+
+## What was built
+
+**`docs/internal/type-badge-styles.html`** — a dedicated reference page for the submission type badge pattern, organized into six sections:
+
+1. **All Badge Types** — isolated demo of all four badges + spec table mapping each class, label text, submission type meaning, and WCAG contrast ratio
+2. **In Context: Moderation Queue** — a full `.ds-table` with sortable-ready columns, all four badge types across realistic rows, plus a `.ds-filter` type selector; also a detail-panel metadata grid showing a badge alongside other fields
+3. **Color Values** — token table with swatch + hex for bg/text/border of all four types, with contrast ratios
+4. **Base Class Anatomy** — property-by-property breakdown of `.type-badge` with rationale
+5. **Accessibility** — WCAG 1.4.1 compliance, screen reader behavior, forced-colors, abbreviation legibility, dark-mode status
+6. **Usage Rules** — internal-only surface, dual-class requirement, no new types, one per row, no custom colors
+
+**`AGENTS.md`** — routing table row for &quot;Type badges&quot; updated from `table-styles.html` to `type-badge-styles.html`.
+
+---
+
+## Design-system rules applied
+
+- **Light-only page** — `&lt;html lang=&quot;en&quot; data-theme=&quot;light&quot;&gt;` per AGENTS.md rule (&quot;New demo pages lock light&quot;)
+- **No external resources** — no Google Fonts, no CDN icons; page chrome uses `system-ui` stack; badge font falls back through system monospace (IBM Plex Mono → SF Mono → Fira Code → monospace)
+- **Internal surface** — page uses Access Lime (`#c4d82e`) for the header border, matching other internal reference pages
+- **Example-first** — isolated badge demo + minimal spec table appear before tokens and rationale, per AGENTS.md pattern page rule
+- **Palette only** — all colors are either from `design-system.css` tokens (swatches, borders, text) or the established badge hex values; no one-off values introduced
+- **WCAG 2.1 AA floor** — all four badge contrast ratios documented; `.type-rep` (lowest at 5.6:1 AA) is explicitly called out with a rationale note
+- **Color not sole signal** — accessibility section explicitly addresses WCAG 1.4.1; badge text labels are the primary signal
+- **Reuse before rebuilding** — uses `.ds-table`, `.ds-filter`, `.ds-table-footer` from `design-system.css` exactly as specified; no re-implementation of existing components
+- **Rationale ≤ 3 sentences** — each callout and spec table rationale cell stays within this limit
+- **No dark-mode values invented** — the page notes they&#x27;re not yet defined and routes future work to the correct location in `design-system.css`
+- **Spacing scale** — gaps use `24px` (≈`--space-6`), `12px` (≈`--space-3`), `16px` (≈`--space-4`) throughout; no off-scale values</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/docs/internal/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/docs/internal/button-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/docs/internal/table-styles.html</pre></details><p>Artifacts: <a href="05-real-type-badges-r1/artifacts/AGENTS.md">AGENTS.md</a> · <a href="05-real-type-badges-r1/artifacts/docs/internal/type-badge-styles.html">docs/internal/type-badge-styles.html</a></p><iframe src="05-real-type-badges-r1/artifacts/docs/internal/type-badge-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
+      <label><input type="radio" name="g-05-real-type-badges-r1" value="pass" onchange="save('05-real-type-badges-r1')"> pass</label>
+      <label><input type="radio" name="g-05-real-type-badges-r1" value="minor" onchange="save('05-real-type-badges-r1')"> minor issues</label>
+      <label><input type="radio" name="g-05-real-type-badges-r1" value="fail" onchange="save('05-real-type-badges-r1')"> fail</label>
+      <textarea id="n-05-real-type-badges-r1" placeholder="notes…" onblur="save('05-real-type-badges-r1')"></textarea>
+    </div></div><div class="cell" data-cell="05-real-type-badges-r2"><h2>05-real-type-badges-r2</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>10</td></tr><tr><th>output tokens</th><td>23451</td></tr><tr><th>cache read</th><td>424562</td></tr><tr><th>cache write</th><td>71612</td></tr><tr><th>cost (USD)</th><td>0.9096996</td></tr><tr><th>turns</th><td>12</td></tr><tr><th>wall time</th><td>378s</td></tr><tr><th>files read</th><td>5 calls · 5 unique · 0 re-reads</td></tr><tr><th>tool calls</th><td>Bash×5, Read×5, Write×1</td></tr><tr><th>artifacts</th><td>1</td></tr></table><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+
+Build the **submission type badges** pattern page — a real item on this repo&#x27;s backlog. Type badges are the small colored labels that mark a submission&#x27;s type in internal moderation and admin tools (new submission, replacement, withdrawal, cross-list). The design system references them but has never given them a dedicated reference page.
+
+Deliverable: a demo/reference page at `docs/internal/type-badge-styles.html` that:
+- Renders every badge type with its established styling, in realistic context (e.g. rows of a moderation queue) as well as isolated.
+- Documents the tokens/colors each badge uses and any accessibility considerations.
+- Follows the structure and conventions of this repo&#x27;s existing internal reference pages.
+
+If the badge styles already exist somewhere in the repo&#x27;s CSS, reuse them; if they are only partially defined, complete them consistently with how they are described and used. Do not invent new badge types.
+
+Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
+</pre></details><details open><summary>Agent's final message</summary><pre>HTML is balanced. Here&#x27;s a summary of what was built and every design-system rule applied:
+
+---
+
+## What was built
+
+**`docs/internal/type-badge-styles.html`** — a reference page for the four submission type badges defined in `docs/internal/design-system.css`.
+
+**Three sections:**
+
+1. **Badge Palette** — all four variants in isolation, each annotated with its CSS class and a description of what the submission type means.
+
+2. **Moderation Queue Context** — a realistic `.ds-table` with all four badge types across six rows, wired to a `.ds-filter` select that filters the visible rows by type and updates the footer count.
+
+3. **Token Reference** — a table showing the background, text color, border, contrast ratio, and WCAG level for each badge variant. All values drawn from the CSS comment block in `design-system.css` (lines 629–674), not invented.
+
+---
+
+## Design-system rules applied
+
+| Rule | Application |
+|---|---|
+| **Self-hosted everything** | No Google Fonts CDN link. Font stacks with system fallbacks only. (`table-styles.html` violates this; this page does not.) |
+| **Light-only for now** | `&lt;html lang=&quot;en&quot; data-theme=&quot;light&quot;&gt;` on the root element. |
+| **Internal surface** | Access Lime `#c4d82e` used for the page-header border stripe, consistent with other internal docs pages. |
+| **Palette and type stack only** | Page chrome uses only documented palette hex values (`#f9f7f7`, `#1c1a17`, `#6b6459`, `#c4d82e`, `#ddd8d2`, etc.). Badge colors are component-internal constants in `.type-*` rules — documented but not lifted for other uses. |
+| **Reuse before rebuilding** | Uses `.type-badge`, `.type-new`, `.type-rep`, `.type-wdr`, `.type-cross`, `.ds-table`, `.ds-table-footer`, `.ds-table tbody tr.hidden`, `.ds-filter`, and `.info-link` — all from the existing stylesheet, no new classes added to the CSS. |
+| **Color is not the sole signal (WCAG 1.4.1)** | Every badge carries a text label (New, Rep, Wdr, Cross). Documented in a callout with an explicit accessibility note. |
+| **WCAG 2.1 AA floor** | All four variants exceed 4.5:1 for 11px non-bold text. Noted in the token reference with per-badge ratios and WCAG level. |
+| **Pattern pages are example-first** | Rendered demo at top (Section 1), in-context demo second (Section 2), token/rationale reference below (Section 3). |
+| **Rationale ≤ 3 sentences per rule** | All callouts are 2–3 sentences. |
+| **`.ds-filter` always has All option** | The type filter select defaults to &quot;All&quot; as the inclusive option per DESIGN-POLICIES. |
+| **No modifications to unrelated files** | Only `docs/internal/type-badge-styles.html` was created. |</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/internal/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/internal/table-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/color-mapping.md</pre></details><p>Artifacts: <a href="05-real-type-badges-r2/artifacts/docs/internal/type-badge-styles.html">docs/internal/type-badge-styles.html</a></p><iframe src="05-real-type-badges-r2/artifacts/docs/internal/type-badge-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
+      <label><input type="radio" name="g-05-real-type-badges-r2" value="pass" onchange="save('05-real-type-badges-r2')"> pass</label>
+      <label><input type="radio" name="g-05-real-type-badges-r2" value="minor" onchange="save('05-real-type-badges-r2')"> minor issues</label>
+      <label><input type="radio" name="g-05-real-type-badges-r2" value="fail" onchange="save('05-real-type-badges-r2')"> fail</label>
+      <textarea id="n-05-real-type-badges-r2" placeholder="notes…" onblur="save('05-real-type-badges-r2')"></textarea>
+    </div></div>
+<script>
+function key(id){return 'tokenburn:'+document.title+':'+id}
+function save(id){const v={grade:document.querySelector('input[name=g-'+id+']:checked')?.value||'',
+ notes:document.getElementById('n-'+id).value};localStorage.setItem(key(id),JSON.stringify(v))}
+function load(id){try{const v=JSON.parse(localStorage.getItem(key(id))||'{}');
+ if(v.grade){const r=document.querySelector('input[name=g-'+id+'][value='+v.grade+']');if(r)r.checked=true}
+ if(v.notes)document.getElementById('n-'+id).value=v.notes}catch(e){}}
+function exportGrades(){const out={};document.querySelectorAll('[data-cell]').forEach(c=>{
+ const id=c.dataset.cell;try{out[id]=JSON.parse(localStorage.getItem(key(id))||'{}')}catch(e){}});
+ const t=document.getElementById('export-out');t.value=JSON.stringify(out,null,2);t.style.display='block';t.select()}
+;window.addEventListener('DOMContentLoaded',()=>{load('01-fidelity-build-r1');load('01-fidelity-build-r2');load('02-fidelity-internal-r1');load('02-fidelity-internal-r2');load('03-extrapolation-r1');load('03-extrapolation-r2');load('04-violation-trap-r1');load('04-violation-trap-r2');load('05-real-type-badges-r1');load('05-real-type-badges-r2')});</script>
+</div></body></html>

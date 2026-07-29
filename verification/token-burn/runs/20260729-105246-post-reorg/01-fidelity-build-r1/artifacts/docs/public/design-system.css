@@ -1,0 +1,1857 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   arXiv public design-system stylesheet
+   ───────────────────────────────────────────────────────────────────────
+   Canonical CSS for arxiv.org public-facing pages (abstract page,
+   HTML paper reader, search, browse, info pages). Internal/admin pages
+   use design-patterns/internal/design-system.css instead.
+
+   Naming: shared design-system classes use the `.ds-` prefix
+   (DESIGN-POLICIES.md). Mockup-specific classes belong in the mockup's
+   own <style> block.
+
+   Tokens live in `:root` as CSS custom properties (see color-mapping.md
+   for the full palette and why each color exists).
+
+   STATUS: in-progress extraction from mockups. Currently codifies:
+     - Color tokens (palette, popover tints, active-state wash, pill border)
+     - Typography token shorthand (sans, condensed, mono, serif)
+     - Primary + secondary button (Variant 3, validated 2026-05-14)
+     - Inline active state (.ds-inline-active, validated 2026-05-27)
+     - Link (.ds-link) + link state tokens (hover, visited), light + dark
+       (validated 2026-05-28)
+     - Annotation typography (.ds-annotation, validated 2026-05-27)
+     - Popover panel (.ds-popover and parts, validated 2026-05-27)
+     - Element pill (.ds-element-pill, validated 2026-05-27)
+     - Alert / status message (.ds-alert) + status color tokens,
+       light + dark — the first dark-aware tokens here (validated 2026-05-28)
+     - Accordion (.ds-acc + .ds-acc-stack/.ds-acc-body, rail variant
+       .ds-acc-rail; no new tokens, validated 2026-07-27)
+
+   More patterns will land here as they stabilize in the mockups.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Brand and surface colors (public side) ──
+     Open Blue is the public primary-action color. Internal pages use
+     Access Lime instead (see color-mapping.md). Don't mix the two on
+     the same surface — they signal different contexts. */
+  --arxiv-open-blue:       #a5d6fe;
+  --arxiv-open-blue-bright:#c2e2ff;   /* hover fill (lighter than canonical) */
+  --arxiv-archival-blue:   #1f5e96;   /* section accents, anchor color */
+  --arxiv-link-blue:       #1565c0;   /* link text, focus ring (5.74:1 ✓ AA) */
+  --arxiv-link-hover:      #1050a0;   /* link hover, ~20% darker (7.83:1 ✓ AAA) */
+  --arxiv-link-visited:    #7b2fbe;   /* visited purple (7.02:1 on white ✓ AAA) */
+
+  /* ── Warm grey ladder ──
+     Three stops for three contrast tiers. Don't introduce intermediate
+     values without DESIGN-POLICIES.md approval. */
+  --arxiv-grey-dis:        #b0aba6;   /* disabled / exempt only (below AA) */
+  --arxiv-grey-ui:         #8b8680;   /* UI borders / tracks (3.61:1 on white) */
+  --arxiv-grey:            #6b6459;   /* body-weight muted text (5.83:1) */
+  --arxiv-ink:             #1c1a17;   /* primary text */
+
+  /* ── Surface tints ── */
+  --arxiv-warm-wash:       #f9f7f7;   /* subtle warm page-section tint */
+  --arxiv-card-grey:       #f0eeec;   /* slightly darker surface band */
+
+  /* ── Active-state / popover tints ──
+     A small light-blue family that signals "this is an arXiv-layer
+     interactive surface in its active form." Used by:
+       --arxiv-active-bg: inline state (citation chips when their
+         popover is open; footnote markers on hover/active/paired)
+       --arxiv-tint-light: popover panel background (citation refs,
+         footnote content)
+       --arxiv-tint-border: matching border for popover panels. */
+  --arxiv-active-bg:       #d6e8f7;   /* inline active wash */
+  --arxiv-tint-light:      #edf4fc;   /* popover panel surface */
+  --arxiv-tint-border:     #c4dcf0;   /* popover panel border */
+
+  /* ── Floating-pill border ──
+     Soft warm-grey for white pills that float above page content
+     (action-anchor pills for equations, figures). */
+  --arxiv-pill-border:     #e4e0db;
+
+  /* ── Component hairline border ──
+     Light warm border for inputs, toggle tracks, secondary-button
+     gradients, and card edges. One step lighter than --arxiv-grey-dis;
+     decorative only (below 3:1) — never the sole boundary of an
+     interactive control that must meet WCAG 1.4.11. Promoted from the
+     mockups 2026-06-11. */
+  --arxiv-border-light:    #ddd8d2;
+
+  /* ── Focus ring on dark surfaces ──
+     color-mapping.md functional colors: Focus Ring is #1565c0 light /
+     #64b5f6 dark. The standard ring is invisible against
+     --arxiv-ink surfaces (header bar); use this one there. */
+  --arxiv-focus-ring-dark: #64b5f6;
+
+  /* ── Focus ring ──
+     Used by all interactive elements. `outline: 3px solid` with `2px`
+     offset is the established treatment. */
+  --arxiv-focus-ring:      var(--arxiv-link-blue);
+
+  /* ── Typography stack ──
+     IBM Plex hosted by arXiv. See typography.md for the self-hosting
+     plan; do not load from Google Fonts. IBM Plex Serif is used for
+     secondary editorial commentary (.ds-annotation); the Plex family
+     keeps brand voice unified across surfaces instead of dropping into
+     Georgia or Times for our serif needs. */
+  --arxiv-font-sans:       "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --arxiv-font-condensed:  "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  --arxiv-font-mono:       "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --arxiv-font-serif:      "IBM Plex Serif", Georgia, "STIX Two Text", "Times New Roman", serif;
+
+  /* ── Status / alert colors (shared functional family) ──
+     Semantic colors for the .ds-alert component (success / info /
+     warning / error). These mirror the internal stylesheet and the
+     "Status & alert colors — shared" table in color-mapping.md, so
+     public pages get the same messaging palette. Each state is also
+     keyed by an icon + leading word, never color alone (WCAG 1.4.1).
+     Dark overrides live in the @media block at the end of this file. */
+  --arxiv-success-bg:      #e8f5d8;  /* lime-olive — not a forest green; Access Lime stays staff-only */
+  --arxiv-success-border:  #6b8e1e;  /* off-yellow so success ≠ brand accent */
+  --arxiv-success-fg:      #4a5a0a;  /* 6.7:1 on bg ✓ AA */
+  --arxiv-info-bg:         #e7f1fd;
+  --arxiv-info-border:     #5a82c8;
+  --arxiv-info-fg:         #1a3a78;  /* navy, darker than --arxiv-link-blue — 9.6:1 ✓ AAA */
+  --arxiv-warning-bg:      #fff8e1;
+  --arxiv-warning-border:  #e8b800;
+  --arxiv-warning-fg:      #7a5c00;  /* 5.9:1 on bg ✓ AA */
+  --arxiv-error-bg:        #fdeaea;
+  --arxiv-error-border:    #c62828;  /* Danger Red (functional, not Campus Red) */
+  --arxiv-error-fg:        #8b0000;  /* 8.6:1 on bg ✓ AAA */
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   BUTTONS  (.ds-btn / .ds-btn-primary / .ds-btn-secondary)
+   ───────────────────────────────────────────────────────────────────────
+   Two variants, ONE construction. Primary and secondary share:
+     - dimensions (padding 10px 20px, font-size 14px / weight 600)
+     - shape (border-radius 6px)
+     - 1.5px transparent border, with the actual color carried by a
+       linear-gradient painted on the border-box via the dual-background
+       technique. Lighter at the top, darker at the bottom — "lit from
+       above." Solid hex colors (not low-opacity tints), so the hue stays
+       unambiguous regardless of what's behind the button.
+     - an equal-on-all-sides inner vignette (inset 0 0 6px) that softly
+       darkens the perimeter so the surface doesn't read as flat. Center
+       of the button stays the canonical fill color.
+     - a soft outer drop shadow that grounds the button on the page.
+
+   Hover direction: BRIGHTEN, not darken. Primary fill lightens
+   (#a5d6fe → #c2e2ff); secondary fill stays at #ffffff (already maximum
+   brightness) but the inner vignette nearly vanishes so the surface
+   reads as cleaner / more luminous. Border deepens slightly for visual
+   feedback. Outer drop shadow does not change on hover.
+
+   Pressed: 1px drop via translateY, outer drop removed, vignette
+   deepened, border gradient flattened to a single mid-tone (no
+   "lit from above" read anymore).
+
+   Why the dual-background trick: a single `border-color` can't carry a
+   vertical gradient. We use two backgrounds — one clipped to
+   padding-box (the fill) and one to border-box (the border gradient) —
+   with `border: 1.5px solid transparent` so the gradient shows through.
+   Follows border-radius correctly; universal browser support.
+
+   Naming and usage:
+     .ds-btn                Base shell (always applied).
+     .ds-btn-primary        Open Blue fill, blue gradient border.
+     .ds-btn-secondary      White fill, warm-grey gradient border.
+
+   Example:
+     <a href="/html/..." class="ds-btn ds-btn-primary">HTML</a>
+     <a href="/src/..."  class="ds-btn ds-btn-secondary">TeX Source</a>
+
+   Reference: design-patterns/public/button-styles.html.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 20px;
+  min-width: 120px;
+  font-family: var(--arxiv-font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  border-radius: 6px;
+  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, transform 0.08s, color 0.12s;
+}
+.ds-btn:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Primary (Open Blue) ─────────────────────────────────────────── */
+.ds-btn-primary {
+  background:
+    linear-gradient(#a5d6fe, #a5d6fe) padding-box,
+    linear-gradient(to bottom, #b0d5ed, #6ba8da) border-box;
+  color: var(--arxiv-ink);
+  box-shadow:
+    inset 0 0 6px rgba(31, 94, 150, 0.20),
+    0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.ds-btn-primary:hover {
+  background:
+    linear-gradient(#c2e2ff, #c2e2ff) padding-box,
+    linear-gradient(to bottom, #8fc1e8, #4a86b8) border-box;
+  box-shadow:
+    inset 0 0 8px rgba(31, 94, 150, 0.10),
+    0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.ds-btn-primary:active {
+  transform: translateY(1px);
+  background:
+    linear-gradient(#a5d6fe, #a5d6fe) padding-box,
+    linear-gradient(#6ba8da, #6ba8da) border-box;
+  box-shadow: inset 0 0 10px rgba(31, 94, 150, 0.35);
+}
+
+/* ── Secondary (white) ───────────────────────────────────────────── */
+.ds-btn-secondary {
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(to bottom, #ddd8d2, #b3ada4) border-box;
+  color: var(--arxiv-grey);
+  box-shadow:
+    inset 0 0 6px rgba(0, 0, 0, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.ds-btn-secondary:hover {
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(to bottom, #c8c4be, var(--arxiv-grey-ui)) border-box;
+  color: var(--arxiv-ink);
+  box-shadow:
+    inset 0 0 8px rgba(0, 0, 0, 0.03),
+    0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.ds-btn-secondary:active {
+  transform: translateY(1px);
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(var(--arxiv-grey-ui), var(--arxiv-grey-ui)) border-box;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.13);
+}
+
+/* ── Secondary on tinted surface (.on-tint modifier) ─────────────────
+   Apply the `on-tint` class IN ADDITION to `.ds-btn-secondary` when
+   the button sits inside a tinted section (e.g., the HTML reader's
+   light-blue footer band). The default white fill creates too much
+   contrast on a tinted surface and reads as "primary"; this variant
+   swaps the fill to Card Grey — same luminance as the surface, warm
+   hue — so the button reads as intentionally secondary via warm-on-
+   cool material differentiation, not via low contrast.
+   Hover brightens to Warm Wash (lighter step in the same warm family),
+   echoing the primary button's brighten-on-hover behavior.
+
+   Validated 2026-05-22 in arxiv-mockups/arxiv-public/html-redesign.html
+   footer ("Help improve HTML papers" section).
+
+   Example:
+     <a class="ds-btn ds-btn-secondary on-tint" href="...">Submit a fix</a>
+*/
+.ds-btn-secondary.on-tint {
+  background:
+    linear-gradient(var(--arxiv-card-grey), var(--arxiv-card-grey)) padding-box,
+    linear-gradient(to bottom, #ddd8d2, #b3ada4) border-box;
+}
+.ds-btn-secondary.on-tint:hover {
+  background:
+    linear-gradient(var(--arxiv-warm-wash), var(--arxiv-warm-wash)) padding-box,
+    linear-gradient(to bottom, #c8c4be, var(--arxiv-grey-ui)) border-box;
+}
+.ds-btn-secondary.on-tint:active {
+  background:
+    linear-gradient(var(--arxiv-card-grey), var(--arxiv-card-grey)) padding-box,
+    linear-gradient(var(--arxiv-grey-ui), var(--arxiv-grey-ui)) border-box;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   INLINE ACTIVE STATE  (.ds-inline-active)
+   ───────────────────────────────────────────────────────────────────────
+   Apply to any inline interactive element (citation chip, footnote
+   marker, inline reference) when it is the SOURCE of a currently-open
+   popover, the target of a hover-paired highlight, or otherwise the
+   active anchor right now. Light-blue background + underline reads
+   the same across surfaces, so the user learns one visual once.
+
+   This is a modifier — not a complete component. The element should
+   carry its own base typography and color; .ds-inline-active layers
+   the "I am active" treatment on top.
+
+   The element should pre-allocate its padding at rest so that adding
+   the background on state change doesn't reflow surrounding text
+   (e.g., `padding: 0 3px` at rest for a superscript marker). Citation
+   chips and footnote markers in the HTML reader use this pattern.
+
+   Triggered by the consumer via:
+     - JS-set class (e.g., when a popover opens)
+     - attribute selector (e.g., [aria-expanded="true"])
+     - paired-hover from a related element (e.g., hovering a footnote's
+       margin note lights up its inline marker)
+
+   Example:
+     <a class="ftn-marker" aria-expanded="true">3</a>
+       ↳ separately, CSS adds .ds-inline-active styling to
+         [aria-expanded="true"] (or a copy of the rule)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-inline-active {
+  background: var(--arxiv-active-bg);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LINK  (.ds-link)
+   ───────────────────────────────────────────────────────────────────────
+   Inline text link with all four interactive states. Link Blue at rest,
+   darkens on hover (~20% darker, more saturated), Visited Purple after
+   a successful visit (the visited memory aids researchers tracking
+   what they've already read).
+
+   Underlined per DESIGN-POLICIES.md ("Inline links in body text must be
+   underlined"). Standalone navigation links may omit the underline by
+   overriding text-decoration locally.
+
+   Use as a utility class on any <a> in body text, or as the
+   declarative target the consumer's CSS can mirror onto a base `a`
+   rule scoped to its content surface (article, paragraph, etc.).
+   Both patterns are valid — utility for cherry-picking, base rule
+   for surfaces where every anchor should follow the convention.
+
+   Reference: design-patterns/color-mapping.md (link tier).
+
+   Example:
+     <a class="ds-link" href="https://arxiv.org/abs/...">2604.22725</a>
+
+     OR, scoped to an article:
+       article a { color: var(--arxiv-link-blue); ... }
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-link {
+  color: var(--arxiv-link-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.ds-link:hover {
+  color: var(--arxiv-link-hover);
+}
+.ds-link:visited {
+  color: var(--arxiv-link-visited);
+}
+.ds-link:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ANNOTATION TYPOGRAPHY  (.ds-annotation)
+   ───────────────────────────────────────────────────────────────────────
+   Secondary editorial commentary in serif italic — "the voice of the
+   editor speaking quietly next to the main text." Used wherever arXiv
+   surfaces content as an annotation alongside the author's prose:
+     - Footnote text in the margin or popover
+     - Figure alt-text surfaced as a visible margin note
+     - Editorial asides, contextual notes
+
+   Intentionally NOT a "marginalia" class. The treatment is a
+   typographic voice, not a layout role. A consumer chooses placement
+   (margin, popover, inline aside) separately and applies this class
+   to get the right voice.
+
+   Validated 2026-05-27 in arxiv-mockups/arxiv-public/html-redesign.html
+   (footnote marginalia, figure alt-text marginalia).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-annotation {
+  font-family: var(--arxiv-font-serif);
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--arxiv-grey);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   POPOVER PANEL  (.ds-popover and parts)
+   ───────────────────────────────────────────────────────────────────────
+   Light-blue tint floating panel anchored to an inline element on
+   click. Same shape and material across:
+     - Citation chip popover (reference details + jump-to-reference)
+     - Footnote popover (narrow-viewport surfacing of footnote content)
+     - Any future "click an inline chip → see more context" pattern
+
+   The popover element itself is `position: fixed` (consumer is
+   responsible for setting top/left and for portaling to <body> if
+   the inline source has a transformed ancestor). Hidden by the
+   `hidden` HTML attribute; visible when the attribute is removed.
+
+   Parts:
+     .ds-popover            The panel itself.
+     .ds-popover-title      Small uppercase condensed label at the
+                            top of the panel (e.g., "Reference 47",
+                            "Footnote 3").
+     .ds-popover-close      Small × button at top-right.
+
+   Validated 2026-05-27 in arxiv-mockups/arxiv-public/html-redesign.html
+   (citation popover, footnote popover).
+
+   Example:
+     <span class="ds-popover" role="region" aria-label="Reference 47" hidden>
+       <div class="ds-popover-title">Reference 47</div>
+       <button class="ds-popover-close" aria-label="Close">&times;</button>
+       <!-- panel content -->
+     </span>
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-popover {
+  position: fixed;
+  z-index: 50;
+  background: var(--arxiv-tint-light);
+  border: 1px solid var(--arxiv-tint-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  padding: 12px 14px;
+  font-family: var(--arxiv-font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--arxiv-ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ds-popover[hidden] { display: none; }
+
+.ds-popover-title {
+  font-family: var(--arxiv-font-condensed);
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--arxiv-grey);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 8px;
+  padding-right: 28px;  /* room for the close button */
+}
+
+.ds-popover-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--arxiv-grey);
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.ds-popover-close:hover {
+  color: var(--arxiv-ink);
+  background: var(--arxiv-active-bg);
+}
+.ds-popover-close:focus-visible {
+  outline: 2px solid var(--arxiv-link-blue);
+  outline-offset: 1px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ELEMENT PILL  (.ds-element-pill)
+   ───────────────────────────────────────────────────────────────────────
+   Small white pill that floats anchored to a piece of content
+   (an equation, a figure) to host action affordances for it. Used
+   wherever arXiv adds metadata chrome (permalink, copy TeX, alt-text
+   actions, etc.) that should live on the element rather than in a
+   margin lane.
+
+   The pill is `position: absolute`; the consumer is responsible for
+   the positioning context (typically `position: relative` on the
+   element's wrapper) and for the offset (typically `bottom: -14px;
+   left: 50%; transform: translateX(-50%);` to straddle the element's
+   bottom edge by ~50%).
+
+   Hidden at rest. Add `.is-revealed` to the pill (or whatever class
+   the consumer's hover/focus rule applies) to fade it in.
+
+   Chips inside the pill are styled by the consumer — the pill itself
+   only provides the floating-panel material.
+
+   Validated 2026-05-27 in arxiv-mockups/arxiv-public/html-redesign.html
+   (equation actions, figure actions — Distill-style anchored chrome).
+
+   Example:
+     <div class="eqn-wrap" style="position: relative;">
+       <!-- equation here -->
+       <div class="ds-element-pill" style="bottom: -14px; left: 50%; transform: translateX(-50%);">
+         <button>View TeX</button>
+         <button>Permalink</button>
+         <button>Copy</button>
+       </div>
+     </div>
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-element-pill {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 14px;
+  width: max-content;
+  max-width: calc(100% - 16px);
+  padding: 6px 14px;
+  background: #ffffff;
+  border: 1px solid var(--arxiv-pill-border);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s ease, visibility 0s linear 0.18s;
+  z-index: 2;
+}
+.ds-element-pill.is-revealed {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.18s ease, visibility 0s linear 0s;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ALERT / STATUS MESSAGE  (.ds-alert)
+   ───────────────────────────────────────────────────────────────────────
+   Inline status banner — success / info / warning / error (failure).
+   Token-driven via the --arxiv-{success,info,warning,error}-* families
+   (see color-mapping.md "Status & alert colors — shared"). Structurally
+   identical to the internal stylesheet's .ds-alert; only the token names
+   differ (--arxiv- prefix here).
+
+   Color is never the sole signal — pair each variant with a distinct icon
+   shape AND a leading word (WCAG 1.4.1). ARIA: role="status" for
+   success/info (polite), role="alert" for warning/error (assertive);
+   icons carry aria-hidden="true". Inline links inherit the variant color
+   and stay underlined, per the link policy.
+
+   Promoted from arxiv-mockups/design-patterns/alert-styles.html (2026-05-28).
+
+   Example:
+     <div class="ds-alert ds-alert-info" role="status">
+       <svg class="ds-alert-icon" aria-hidden="true">…</svg>
+       <div class="ds-alert-content">
+         <p class="ds-alert-title">Viewing an older version</p>
+         <p>A newer version of this paper exists — <a href="...">see v3</a>.</p>
+       </div>
+     </div>
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px 14px;
+  border: 1px solid;
+  border-left-width: 4px;
+  border-radius: 6px;
+  font-family: var(--arxiv-font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.ds-alert-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  stroke: currentColor;
+  fill: none;
+}
+.ds-alert-content { margin: 0; min-width: 0; }
+.ds-alert-title { font-weight: 700; margin: 0 0 2px; }
+.ds-alert-content p { margin: 0; }
+.ds-alert a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.ds-alert-dismiss {
+  flex-shrink: 0;
+  margin-left: auto;
+  margin-top: -2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+  padding: 2px;
+  border-radius: 3px;
+  line-height: 0;
+  transition: opacity 0.15s ease;
+}
+.ds-alert-dismiss:hover { opacity: 1; }
+.ds-alert-dismiss:focus-visible { outline: 3px solid var(--arxiv-focus-ring); outline-offset: 2px; }
+.ds-alert-dismiss svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+
+/* Variants — bg + border + fg (icon uses currentColor = fg) */
+.ds-alert-success { background: var(--arxiv-success-bg); border-color: var(--arxiv-success-border); color: var(--arxiv-success-fg); }
+.ds-alert-info    { background: var(--arxiv-info-bg);    border-color: var(--arxiv-info-border);    color: var(--arxiv-info-fg); }
+.ds-alert-warning { background: var(--arxiv-warning-bg); border-color: var(--arxiv-warning-border); color: var(--arxiv-warning-fg); }
+.ds-alert-error   { background: var(--arxiv-error-bg);   border-color: var(--arxiv-error-border);   color: var(--arxiv-error-fg); }
+
+/* Dark mode — overrides the status tokens only. This is the first
+   dark-aware block in the public stylesheet; broader public dark mode is
+   still pending (color-mapping.md open question). Guarded by data-theme
+   so a page can lock to light with <html data-theme="light">. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --arxiv-link-blue:       #64b5f6;  /* 7.84:1 on Repository Brown ✓ AAA */
+    --arxiv-link-hover:      #90caf9;
+    --arxiv-link-visited:    #c084e0;  /* 6.30:1 on Repository Brown ✓ AA */
+    --arxiv-success-bg:      #1e2b0d;
+    --arxiv-success-border:  #8fbd3a;
+    --arxiv-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
+    --arxiv-info-bg:         #132433;
+    --arxiv-info-border:     #64b5f6;
+    --arxiv-info-fg:         #90caf9;  /* 9.0:1 ✓ AAA */
+    --arxiv-warning-bg:      #2e2410;
+    --arxiv-warning-border:  #e8b800;
+    --arxiv-warning-fg:      #ffe082;  /* 11.8:1 ✓ AAA */
+    --arxiv-error-bg:        #2d1414;
+    --arxiv-error-border:    #e57373;
+    --arxiv-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
+  }
+}
+
+/* OS accessibility signals. forced-colors: the OS replaces our palette
+   and the hues collapse, but icon shape + leading word still carry meaning
+   and icons follow system text color; pin links to LinkText. Never set
+   forced-color-adjust:none. */
+@media (forced-colors: active) {
+  .ds-alert a { color: LinkText; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-alert-dismiss { transition: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ACCORDION  (.ds-acc / .ds-acc-stack / .ds-acc-body / .ds-acc-rail)
+   ───────────────────────────────────────────────────────────────────────
+   Native <details>/<summary> disclosure — no JS, keyboard and screen-
+   reader semantics for free, and find-in-page can auto-expand panels.
+   A +/− glyph replaces the default marker. Two dressings, one element:
+
+     - Card (default): white surface, hairline border, 6px radius —
+       stands alone on the page. Stack several in .ds-acc-stack (8px gap).
+     - Rail (.ds-acc-rail, added to .ds-acc): card chrome dropped —
+       background, border, and radius go; the surrounding rail's hairline
+       dividers do the separating. Internals go single-column for the
+       narrow rail, and the +/− marker turns Link Blue so closed
+       disclosures still read as interactive (Open Blue is too light
+       for a glyph).
+
+   Body internals: a <dl> inside .ds-acc-body gets the standard metadata
+   layout — condensed-caps <dt> labels beside regular <dd> values
+   (two-column in cards, single-column in the rail variant).
+
+   Content rule (organizing-content.html): never put must-see information
+   ONLY inside a closed accordion — required warnings also surface in
+   always-visible flow. Default state is closed; a single most-relevant
+   panel may start open. Open state is not persisted.
+
+   Adds over the mockup source: a :focus-visible ring on the summary, and
+   the rail summary grows its hit area to the 24px target-size floor via
+   the padding + negative-margin technique (DESIGN-POLICIES.md, Chrome
+   and interaction structure) with no layout change. No transitions —
+   nothing for prefers-reduced-motion to disable.
+
+   Validated 2026-06-22 → 2026-07-27 as .mg-acc in
+   mockups/merged-abstract-reader.html (paper-info card group + abstract
+   rail); treatment agreed on design-patterns/organizing-content.html.
+
+   Example:
+     <div class="ds-acc-stack">
+       <details class="ds-acc" open>
+         <summary>Paper information</summary>
+         <div class="ds-acc-body">
+           <dl>
+             <dt>arXiv ID</dt><dd><a href="…">2604.22725</a></dd>
+             <dt>License</dt><dd><a href="…">CC BY 4.0</a></dd>
+           </dl>
+         </div>
+       </details>
+     </div>
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-acc-stack { display: flex; flex-direction: column; gap: 8px; }
+.ds-acc {
+  background: #fff;
+  border: 1px solid var(--arxiv-border-light);
+  border-radius: 6px;
+  font-family: var(--arxiv-font-sans);
+}
+.ds-acc > summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--arxiv-ink);
+  padding: 11px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ds-acc > summary::-webkit-details-marker { display: none; }
+.ds-acc > summary::marker { content: ""; }
+.ds-acc > summary::after {
+  content: "+";
+  content: "+" / "";  /* alt-text form: the glyph is decorative to AT —
+                         <details> already announces expanded/collapsed */
+  margin-left: auto;
+  font-weight: 400;
+  color: var(--arxiv-grey);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+.ds-acc[open] > summary::after { content: "−"; content: "−" / ""; }
+.ds-acc[open] > summary { border-bottom: 1px solid var(--arxiv-border-light); }
+.ds-acc > summary:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring);
+  outline-offset: -2px;  /* ring sits inside the card edge */
+  border-radius: 6px;
+}
+.ds-acc-body { padding: 14px 16px 16px; font-size: 0.85rem; color: var(--arxiv-ink); }
+.ds-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; margin: 0; }
+.ds-acc-body dt { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.04em; color: var(--arxiv-grey); white-space: nowrap; padding-top: 2px; }
+.ds-acc-body dd { margin: 0; }
+.ds-acc-body a { color: var(--arxiv-link-blue); }
+
+/* Rail variant — chrome dropped; the rail's hairlines separate. */
+.ds-acc-rail { background: transparent; border: 0; border-radius: 0; }
+.ds-acc-rail > summary {
+  font-size: 0.82rem;
+  /* 4px padding + matching negative margin: the ~20px text line grows to
+     a ≥24px hit target with zero layout shift (target-size floor). */
+  padding: 4px 0;
+  margin: -4px 0;
+}
+.ds-acc-rail > summary::after { font-size: 1.1rem; color: var(--arxiv-link-blue); }
+.ds-acc-rail > summary:hover { color: var(--arxiv-link-blue); }
+.ds-acc-rail > summary:focus-visible { outline-offset: 2px; border-radius: 3px; }
+.ds-acc-rail[open] > summary { border-bottom: 0; margin-bottom: 6px; }  /* + 4px hit-area padding = 10px visual gap */
+.ds-acc-rail .ds-acc-body { padding: 0; }
+.ds-acc-rail .ds-acc-body dl { grid-template-columns: 1fr; gap: 0; }
+.ds-acc-rail .ds-acc-body dt { margin-top: 10px; }
+.ds-acc-rail .ds-acc-body dt:first-child { margin-top: 0; }
+.ds-acc-rail .ds-acc-body dd { margin: 1px 0 0; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ARTIFACT LINKS CARD  (.ds-artifact-links and parts)
+   ───────────────────────────────────────────────────────────────────────
+   Browsable card listing a paper's external research artifacts (datasets,
+   code repositories, supplementary material) on the public abstract page.
+   Reads as supplementary material, not as a primary call to action.
+
+   Parts:
+     .ds-artifact-links          Card container (<section> recommended).
+     .ds-artifact-links-title    Consumer heading (any h2–h6 level).
+     .ds-artifact-links-list     <ul> of artifact rows.
+     .ds-artifact-links-row      <a> — the full interactive row.
+       .ds-artifact-links-label  Artifact label ("Training data").
+       .ds-artifact-links-dest   Destination name ("Zenodo", "GitHub").
+       .ds-artifact-links-ext    Off-site arrow SVG (aria-hidden="true").
+     .ds-artifact-links-more     <details> overflow block — used when
+                                 there are more than 8 artifacts. Its
+                                 <summary> carries the count of hidden
+                                 items ("4 more artifacts"). The inner
+                                 <ul> reuses .ds-artifact-links-list;
+                                 no additional CSS class needed.
+
+   Overflow rule: show the first 8 artifacts in .ds-artifact-links-list
+   without any disclosure. At 9 or more, the consumer wraps the excess
+   items in .ds-artifact-links-more (a <details> element). The +/−
+   glyph on the summary follows the .ds-acc convention. No transition
+   on the disclosure itself — nothing for prefers-reduced-motion to
+   disable on a pure-CSS open/close.
+
+   External links: every .ds-artifact-links-row is a target="_blank"
+   link. Include rel="noopener noreferrer" and per-row:
+   <span class="is-sr-only">(opens in new tab)</span>.
+
+   ARIA: wrap in <section aria-labelledby="[heading-id]"> so assistive
+   technology announces the card name before traversing the list.
+
+   Hover: Active Wash (--arxiv-active-bg) — same token as
+   .ds-toc-dropdown-link hover, keeping all arXiv-layer interactive
+   rows visually unified.
+   Focus: 3px ring at 2px inset (same as .ds-acc summary treatment).
+   Visited: suppressed (color stays --arxiv-ink). These are navigational
+   links, not inline body text; per-visit history is not useful here.
+
+   Example (minimal):
+     <section class="ds-artifact-links" aria-labelledby="al-h">
+       <h2 class="ds-artifact-links-title" id="al-h">Data &amp; code</h2>
+       <ul class="ds-artifact-links-list">
+         <li>
+           <a class="ds-artifact-links-row"
+              href="https://zenodo.org/record/1234567"
+              target="_blank" rel="noopener noreferrer">
+             <span class="ds-artifact-links-label">Training data</span>
+             <span class="ds-artifact-links-dest">Zenodo</span>
+             <svg class="ds-artifact-links-ext" aria-hidden="true"
+                  viewBox="0 0 12 12" fill="none"
+                  stroke="currentColor" stroke-width="1.75"
+                  stroke-linecap="round" stroke-linejoin="round">
+               <path d="M2 10L10 2M5 2H10V7"/>
+             </svg>
+             <span class="is-sr-only">(opens in new tab)</span>
+           </a>
+         </li>
+       </ul>
+     </section>
+
+   Reference: docs/public/artifact-links-styles.html.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-artifact-links {
+  background: #fff;
+  border: 1px solid var(--arxiv-border-light);
+  border-radius: 6px;
+  font-family: var(--arxiv-font-sans);
+  overflow: hidden;
+}
+
+.ds-artifact-links-title {
+  margin: 0;
+  padding: 11px 16px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--arxiv-ink);
+  line-height: 1.3;
+  border-bottom: 1px solid var(--arxiv-border-light);
+}
+
+.ds-artifact-links-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ds-artifact-links-list > li {
+  border-bottom: 1px solid var(--arxiv-border-light);
+}
+
+.ds-artifact-links-list > li:last-child {
+  border-bottom: none;
+}
+
+.ds-artifact-links-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  color: var(--arxiv-ink);
+  text-decoration: none;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  transition: background 0.12s;
+}
+
+.ds-artifact-links-row:visited {
+  color: var(--arxiv-ink);
+}
+
+.ds-artifact-links-row:hover {
+  background: var(--arxiv-active-bg);
+}
+
+.ds-artifact-links-row:hover .ds-artifact-links-ext {
+  stroke: var(--arxiv-grey);
+}
+
+.ds-artifact-links-row:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring);
+  outline-offset: -2px;
+}
+
+.ds-artifact-links-label {
+  flex: 1;
+  min-width: 0;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ds-artifact-links-dest {
+  flex-shrink: 0;
+  font-family: var(--arxiv-font-condensed);
+  font-size: 0.75rem;
+  color: var(--arxiv-grey);
+  letter-spacing: 0.02em;
+}
+
+.ds-artifact-links-ext {
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+  stroke: var(--arxiv-grey-ui);
+  fill: none;
+}
+
+/* Overflow disclosure — mirrors .ds-acc conventions (no-JS, +/− glyph). */
+.ds-artifact-links-more {
+  border-top: 1px solid var(--arxiv-border-light);
+}
+
+.ds-artifact-links-more > summary {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  cursor: pointer;
+  padding: 9px 16px;
+  font-family: var(--arxiv-font-sans);
+  font-size: 0.8125rem;
+  color: var(--arxiv-link-blue);
+  transition: background 0.12s, color 0.12s;
+}
+
+.ds-artifact-links-more > summary::-webkit-details-marker { display: none; }
+.ds-artifact-links-more > summary::marker { content: ""; }
+
+.ds-artifact-links-more > summary::after {
+  content: "+";
+  content: "+" / "";  /* alt-text: the glyph is decorative — <details> announces state */
+  margin-left: auto;
+  font-weight: 400;
+  color: var(--arxiv-grey);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.ds-artifact-links-more[open] > summary {
+  border-bottom: 1px solid var(--arxiv-border-light);
+}
+
+.ds-artifact-links-more[open] > summary::after {
+  content: "−";
+  content: "−" / "";
+}
+
+.ds-artifact-links-more > summary:hover {
+  background: var(--arxiv-active-bg);
+  color: var(--arxiv-link-hover);
+}
+
+.ds-artifact-links-more > summary:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring);
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-artifact-links-row,
+  .ds-artifact-links-more > summary { transition: none; }
+}
+
+@media (forced-colors: active) {
+  .ds-artifact-links { border-color: ButtonBorder; }
+  .ds-artifact-links-ext { stroke: ButtonText; }
+  .ds-artifact-links-row:hover { background: Highlight; color: HighlightText; }
+  .ds-artifact-links-row:hover .ds-artifact-links-ext { stroke: HighlightText; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SITE FOOTER  (.ds-site-footer)
+   ═══════════════════════════════════════════════════════════════════════
+   The universal arXiv public-page footer. Design approved 2026-06-11,
+   validated in three places that agree almost exactly: the approved
+   spinout-header-footer Cloud Run deployment, mockups/abstract-redesign.html,
+   and mockups/html-redesign.html (see audits/2026-06-11/AUDIT-COMPONENTS.md
+   addendum — "the most validated component on this list").
+
+   Structure (three pieces):
+     1. Acknowledgment line — "We gratefully acknowledge support from our
+        **major funders**, **member institutions**, and all contributors."
+        Optional inline institutional mention (IP-matched) follows
+        "member institutions".
+     2. Footer nav — About · Help · Contact · Subscribe · Copyright ·
+        Privacy · Accessibility · Operational Status, dot-separated.
+     3. Funders column — "Major funding support from" + Simons + Schmidt
+        wordmark logos, right-aligned; drops below the main column at
+        narrow widths.
+
+   Markup contract:
+     <footer class="ds-site-footer">
+       <div class="ds-site-footer-grid">
+         <div class="ds-site-footer-main">
+           <div class="ds-site-footer-ack">We gratefully acknowledge … </div>
+           <nav class="ds-site-footer-links" aria-label="Site navigation">
+             <a href="…">About</a>
+             <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+             …
+           </nav>
+         </div>
+         <div class="ds-site-footer-funders">
+           <div class="ds-site-footer-funders-label">Major funding support from</div>
+           <div class="ds-site-footer-funders-logos">
+             <img class="ds-funder-logo" src="…" alt="Simons Foundation">
+             <img class="ds-funder-logo" src="…" alt="Schmidt Sciences">
+           </div>
+         </div>
+       </div>
+     </footer>
+
+   Accessibility notes (the behavior contract travels with the pattern):
+     - Real <footer> landmark; nav has aria-label="Site navigation".
+     - Dot separators carry aria-hidden="true" (screen readers otherwise
+       announce "middot" between every link).
+     - Funder logos carry real alt text (organization names).
+     - External links (Operational Status) need target="_blank" +
+       rel="noopener noreferrer" + sr-only "(opens in new tab)".
+     - Type sizes in rem so user font-size overrides propagate.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-site-footer {
+  clear: both;
+  border-top: 1px solid var(--arxiv-pill-border);
+  background: var(--arxiv-warm-wash);
+  padding: 24px 24px 28px;
+  margin: 0;
+  font-family: var(--arxiv-font-sans);
+}
+.ds-site-footer-grid {
+  display: flex;
+  row-gap: 24px;
+  column-gap: 32px;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.ds-site-footer-main {
+  flex: 0 1 auto;
+  min-width: 280px;
+  max-width: 720px;
+}
+.ds-site-footer-ack {
+  font-size: 0.8125rem; /* 13px */
+  color: var(--arxiv-grey);
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+.ds-site-footer-ack a {
+  font-size: 0.8125rem;
+  color: var(--arxiv-link-blue);
+}
+.ds-site-footer-ack strong { color: var(--arxiv-ink); font-weight: 600; }
+.ds-site-footer-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.8125rem; /* 13px */
+  line-height: 1.8;
+}
+.ds-site-footer-links a {
+  font-size: 0.8125rem;
+  color: var(--arxiv-grey);
+  text-decoration: none;
+}
+.ds-site-footer-links a:hover {
+  color: var(--arxiv-ink);
+  text-decoration: underline;
+}
+.ds-site-footer-links a:focus-visible {
+  outline: 2px solid var(--arxiv-link-blue);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.ds-site-footer-sep { color: var(--arxiv-border-light, #ddd8d2); }
+.ds-site-footer-funders {
+  flex-shrink: 0;
+  text-align: center;
+}
+.ds-site-footer-funders-label {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+  color: var(--arxiv-ink);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+.ds-site-footer-funders-logos {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.ds-funder-logo {
+  /* content-box so height:40px describes the IMAGE content height —
+     with the global border-box, padding + border would shrink the
+     logo to ~30px (visibly small vs the approved layout). */
+  box-sizing: content-box;
+  display: block;
+  height: 40px;
+  width: auto;
+  flex-shrink: 0;
+  padding: 4px 8px;
+  border: 1px solid var(--arxiv-pill-border);
+  border-radius: 3px;
+  background: #fff;
+}
+@media (max-width: 720px) {
+  .ds-site-footer-funders { width: 100%; margin-top: 8px; }
+}
+@media print {
+  .ds-site-footer { display: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   UTILITY: screen-reader-only  (.is-sr-only)
+   ═══════════════════════════════════════════════════════════════════════
+   Visually hidden, available to assistive technology. Both mockups
+   define this identically; promoted here because every composed pattern
+   (footer external links, dual-span "arXiv"→"archive" pronunciation,
+   sr-only headings) depends on it. */
+.is-sr-only {
+  position: absolute !important;
+  width: 1px !important; height: 1px !important;
+  padding: 0 !important; margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SITE HEADER UNIT  (.ds-announcement + .ds-site-header)
+   ═══════════════════════════════════════════════════════════════════════
+   The universal arXiv public-page header. Design approved 2026-06-11,
+   validated against the spinout-header-footer Cloud Run deployment.
+   Reference implementation: mockups/abstract-redesign.html.
+
+   This is ONE pattern with two stacked pieces — codified together
+   because the approved deployment treats them as a unit. (A third
+   piece, a breadcrumb band, was briefly part of this pattern and
+   removed 2026-06-11 — the approved deployment covers only the banner
+   and the black bar; see the note below the header rules.)
+
+     1. .ds-announcement — dismissable light-blue announcement band.
+        Render only while an announcement is active; the close button
+        persists dismissal (cookie/localStorage in production).
+     2. .ds-site-header — the black bar (Repository Brown #1c1a17,
+        phase-2 spinout brand): logo left, nav right (Search / Submit /
+        Donate | Log in). NOT sticky — scrolls away like content
+        (decided 2026-06-11; sticky chrome is reader-only).
+
+   Markup contract (abridged; see header-styles.html for the full demo):
+     <a class="ds-skip-link" href="#main">Skip to main content</a>
+     <div class="ds-announcement" role="region" aria-label="Announcement">
+       <img class="ds-announcement-glyph" src="…" alt="" aria-hidden="true">
+       <span class="ds-announcement-text">…</span>
+       <a class="ds-announcement-link" href="…">Learn more</a>
+       <button type="button" class="ds-announcement-close"
+               aria-label="Dismiss announcement">&times;</button>
+     </div>
+     <header class="ds-site-header">
+       <a href="/" class="ds-site-header-logo" aria-label="archive home">
+         <img src="…" alt="archive">
+       </a>
+       <nav class="ds-site-header-nav" aria-label="Main navigation">
+         <a href="/search" id="…">…Search</a>
+         <a href="/submit">Submit</a>
+         <a href="…">Donate</a>
+         <span class="ds-site-header-divider" aria-hidden="true"></span>
+         <a href="/login" class="ds-site-header-login">Log in</a>
+       </nav>
+     </header>
+
+   Behavior contract (travels with the pattern):
+     - The skip link (.ds-skip-link) is the FIRST focusable element on
+       the page, visible only on keyboard focus.
+     - Logo alt text and aria-labels say "archive" — the spoken form of
+       "arXiv" (dual-span pattern; see accessibility-priorities.md).
+     - The Search control is an <a href="/search"> that JS may upgrade
+       to open a search overlay (preventDefault). Never a dead button:
+       without JS it navigates to the search page.
+     - Focus rings on the dark bar use --arxiv-focus-ring-dark (#64b5f6)
+       — the standard Link Blue ring is invisible against #1c1a17.
+     - Below 520px the bar wraps to two rows (flex-wrap) rather than
+       collapsing into a hamburger: every nav item stays visible, no JS
+       required, and visible labels keep voice-control users working
+       (WCAG 1.4.10 reflow verified at 320px, 2026-06-11).
+     - The announcement close button needs a persisted dismissal in
+       production; the banner is temporal — page function must not
+       depend on it (newcomer signposting needs a permanent home;
+       open design question).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Skip link ── */
+.ds-skip-link {
+  position: absolute;
+  top: -100px; left: 8px;
+  z-index: 200;
+  background: var(--arxiv-ink);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-family: var(--arxiv-font-sans);
+  font-weight: 600;
+}
+.ds-skip-link:focus-visible {
+  top: 8px;
+  outline: 3px solid var(--arxiv-focus-ring-dark, #64b5f6);
+  outline-offset: 2px;
+}
+
+/* ── 1. Announcement band ── */
+.ds-announcement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: var(--arxiv-active-bg);
+  color: var(--arxiv-ink);
+  font-family: var(--arxiv-font-sans);
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 500;
+  position: relative;
+}
+.ds-announcement-glyph { width: 18px; height: 18px; flex-shrink: 0; }
+.ds-announcement-text { font-weight: 600; }
+.ds-announcement-link {
+  color: var(--arxiv-link-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+.ds-announcement-link:hover { color: var(--arxiv-link-hover); }
+.ds-announcement-close {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.125rem; /* 18px */
+  line-height: 1;
+  color: var(--arxiv-grey);
+  padding: 4px 8px;
+  border-radius: 3px;
+}
+.ds-announcement-close:hover { color: var(--arxiv-ink); background: rgba(0,0,0,0.05); }
+.ds-announcement-close:focus-visible {
+  outline: 2px solid var(--arxiv-link-blue);
+  outline-offset: 1px;
+}
+@media (max-width: 520px) {
+  .ds-announcement {
+    flex-wrap: wrap;
+    padding-right: 36px; /* keep clear of the close button */
+    text-align: center;
+  }
+}
+
+/* ── 2. Black header bar ── */
+.ds-site-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  height: 52px;
+  background: var(--arxiv-ink);
+  /* NO sticky positioning — decided 2026-06-11 (Shamsi): the header
+     scrolls away like any other content. Sticky chrome is exceptional
+     at arXiv (DESIGN-POLICIES.md, "Chrome and interaction structure");
+     only the HTML reader's header earns it. Static positioning also
+     returns the bar's height to the mobile viewport and removes the
+     anchor-offset hazard class from every page using this pattern. */
+  font-family: var(--arxiv-font-sans);
+}
+.ds-site-header-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-right: auto;
+}
+.ds-site-header-logo img { height: 39px; width: auto; }
+.ds-site-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.ds-site-header-nav a,
+.ds-site-header-nav button {
+  font-family: var(--arxiv-font-sans);
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 500;
+  color: var(--arxiv-grey-dis); /* on #1c1a17: 7.4:1 — passes AA on dark */
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.ds-site-header-nav a:visited { color: var(--arxiv-grey-dis); }
+.ds-site-header-nav a:hover,
+.ds-site-header-nav button:hover { background: #302c28; color: var(--arxiv-card-grey); }
+.ds-site-header-nav a:focus-visible,
+.ds-site-header-nav button:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring-dark, #64b5f6);
+  outline-offset: 1px;
+}
+.ds-site-header-nav .ds-nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
+.ds-site-header-divider {
+  width: 1px; height: 20px;
+  background: #4a433d; /* header-internal hairline on the dark bar */
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+.ds-site-header-login {
+  font-weight: 600 !important;
+  color: var(--arxiv-card-grey) !important;
+}
+
+/* Hamburger toggle — the approved mobile treatment (4383 spinout showcase;
+   QA'd as "<599px phone hamburger" in ARXIVCE-4426). Hidden by default; revealed
+   only when the header script marks the header collapsible (adds .is-collapsible)
+   at the phone breakpoint below. Because the SAME script adds that class AND
+   wires the toggle, the hamburger appears only when it actually works — no JS
+   (or a script that failed to run) leaves the WCAG-reflow wrap in place; we
+   don't gate on a global "js" class. Behavior contract: host JS adds
+   .is-collapsible to .ds-site-header, toggles .is-open on .ds-site-header-nav,
+   and keeps aria-expanded in sync on the toggle (reference impl: arxiv-header.js). */
+.ds-site-header-nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;  /* 44x44 touch target (matches the system's menu-control sizing) */
+  height: 44px;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: 4px;
+  color: var(--arxiv-grey-dis);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.12s, color 0.12s;
+}
+.ds-site-header-nav-toggle:hover { background: #302c28; color: var(--arxiv-card-grey); }
+.ds-site-header-nav-toggle:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring-dark, #64b5f6);
+  outline-offset: 1px;
+}
+.ds-site-header-nav-toggle svg { width: 22px; height: 22px; display: block; }
+
+/* Narrow viewport (≤599px). DEFAULT (incl. no-JS, any browser): wrap the full
+   nav to a second row — WCAG 1.4.10 reflow, verified at 320px (no horizontal
+   scroll). This is the baseline. JS opts INTO the hamburger by adding
+   .is-collapsible (see above); nothing is gated on a global scripting flag. */
+@media (max-width: 599px) {
+  .ds-site-header {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 52px;
+    padding: 6px 12px;
+  }
+  .ds-site-header-nav { flex-wrap: wrap; row-gap: 2px; width: 100%; }
+  .ds-site-header-nav a,
+  .ds-site-header-nav button { padding: 6px 8px; }
+
+  /* JS enhancement: collapse the nav behind the hamburger. */
+  .ds-site-header.is-collapsible {
+    flex-wrap: nowrap;
+    height: 52px;
+    position: relative;
+  }
+  .ds-site-header.is-collapsible .ds-site-header-nav-toggle { display: inline-flex; }
+  /* Dropdown drops below the 52px bar; absolute (the header is non-sticky) so
+     it tracks the bar wherever it sits. z-index 60 = header-attached dropdown. */
+  /* Clean stacked list: flush full-width rows separated by hairlines (no gaps,
+     no rounded item backgrounds). Drops below the 52px bar; absolute (the header
+     is non-sticky) so it tracks the bar. z-index 60 = header-attached dropdown. */
+  .ds-site-header.is-collapsible .ds-site-header-nav {
+    display: none;
+    position: absolute;
+    top: 52px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    width: auto;
+    gap: 0;
+    padding: 0;
+    background: var(--arxiv-ink);
+    border-top: 1px solid #4a433d;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* matches .ds-toc-dropdown / popovers */
+    z-index: 60;
+  }
+  .ds-site-header.is-collapsible .ds-site-header-nav.is-open { display: flex; }
+  .ds-site-header.is-collapsible .ds-site-header-nav a,
+  .ds-site-header.is-collapsible .ds-site-header-nav button {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 12px 16px;
+    min-height: 44px; /* WCAG touch-target floor for menu items (matches .ds-toc-dropdown-link) */
+    box-sizing: border-box;
+    border-radius: 0;
+    font-size: 0.875rem; /* 14px — matches the showcase mobile menu */
+    border-bottom: 1px solid #4a433d; /* hairline row separator */
+  }
+  .ds-site-header.is-collapsible .ds-site-header-nav > :last-child { border-bottom: none; }
+  /* The desktop vertical divider is meaningless in a stacked list — hide it
+     (each row already carries its own separator). */
+  .ds-site-header.is-collapsible .ds-site-header-divider { display: none; }
+}
+
+/* ── NO breadcrumb band ──
+   Decided 2026-06-11 (Shamsi): the approved spinout treatment covers
+   ONLY the announcement banner and the black header bar; nothing below
+   the header is approved chrome. A breadcrumb iteration was tried and
+   removed — at 2 levels deep it doesn't justify the real estate, and
+   its links are available elsewhere (header logo = home; Subjects in
+   the abstract metadata = category listing). */
+
+@media print {
+  .ds-announcement,
+  .ds-site-header,
+  .ds-skip-link { display: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   READER HEADER  (.ds-reader-header + .ds-toc-trigger/.ds-toc-dropdown
+                   + .ds-reading-progress)
+   ═══════════════════════════════════════════════════════════════════════
+   The HTML-reader variant of the site header. Design approved 2026-06-11.
+   Reference implementation: mockups/html-redesign.html (which carries
+   ar5iv-specificity !important overrides this codified version drops —
+   production should scope under a body class instead).
+
+   Why a second header variant exists: the reader is a content-first
+   surface, so the chrome recedes — light Card Grey instead of the
+   abstract page's Repository Brown, and a compact-on-scroll state that
+   releases vertical space once the reader is into the paper. The center
+   cell hosts the TOC trigger doing double duty as orientation ("you are
+   in §3.1") and navigation (Stripe-docs pattern). Replaces the permanent
+   left sidebar (10+ GitHub UX issues on sidebar friction); frees the
+   left margin for equation/figure chrome and widens the reading column.
+
+   Structure:
+     <header class="ds-reader-header">
+       <div class="ds-reader-header-inner">
+         <a class="ds-reader-header-logo" href="…" aria-label="archive home">
+           <img class="ds-logo-full" src="…" alt="archive">
+           <img class="ds-logo-mark" src="…" alt="archive">
+         </a>
+         <div class="ds-reader-header-center">
+           <button class="ds-toc-trigger" aria-haspopup="true"
+                   aria-expanded="false" aria-controls="toc-dropdown">…</button>
+         </div>
+         <nav class="ds-reader-header-nav" aria-label="Paper navigation">…</nav>
+       </div>
+       <div class="ds-reading-progress" role="progressbar"
+            aria-label="Reading progress" aria-valuemin="0"
+            aria-valuemax="100" aria-valuenow="0">
+         <div class="ds-reading-progress-fill"></div>
+       </div>
+       <div class="ds-toc-dropdown" role="region"
+            aria-label="Table of contents" hidden>…</div>
+     </header>
+
+   Behavior contract (travels with the pattern):
+     - ANY page with sticky chrome MUST set `html { scroll-padding-top }`
+       to chrome height + breathing room (reference uses 80px for a
+       52px/36px bar). This closed a 12-filing bug class (anchor targets
+       landing under the header). See PROPOSED-GUIDELINES.md G1.
+     - Compact-on-scroll: JS adds .compact after the reader scrolls past
+       the abstract; removed again at top. 52px → 36px, wordmark swaps
+       to the small mark, nav labels hide (icons remain). Never toggles
+       on scroll-direction alone (jitter).
+     - Narrow widths (≤700px) reuse the SAME condensed treatment as
+       .compact rather than introducing a third visual mode — one
+       compact grammar everywhere (PROPOSED-GUIDELINES.md G3). Only the
+       TOC trigger keeps its label: "you are here" is its purpose.
+     - TOC trigger label shows the current section (IntersectionObserver
+       on section anchors); at rest it reads "Contents". The label is a
+       passive indicator — no aria-live (it would announce on every
+       scroll; AT users get position from headings navigation instead).
+     - Dropdown: closes on outside-click, Esc (focus returns to
+       trigger), and item activation. Item for the current section gets
+       .is-current and is scrolled into view on open. At ≤700px the
+       dropdown becomes a full-screen overlay with a prominent close
+       button and ≥44px touch targets.
+     - No-JS: the trigger and progress bar are hidden (they do nothing);
+       the document's native TOC (kept sr-only in the reference) remains
+       available to AT. Enhancement never carries content.
+     - Reading progress is chrome, not a metric: it shows position in
+       the document, never engagement numbers. aria-valuenow updates on
+       scroll; the fill transition (and the header height transition)
+       are disabled under prefers-reduced-motion.
+     - Reading-time estimates, if shown, must exclude non-prose content
+       (math, figures, bibliography) from the word count — a precise-
+       looking wrong number is worse than none.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-reader-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--arxiv-card-grey);
+  border-bottom: 1px solid var(--arxiv-pill-border);
+  height: 52px;
+  transition: height 0.25s ease, background 0.25s ease;
+  font-family: var(--arxiv-font-sans);
+}
+.ds-reader-header-inner {
+  /* Three-column grid: logo | TOC trigger (true center) | nav.
+     Grid over flex+space-between so the center cell stays viewport-
+     centered regardless of the side cells' widths (1fr | auto | 1fr). */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  height: 52px;
+  width: 100%;
+  transition: height 0.2s ease;
+}
+.ds-reader-header-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  justify-self: start;
+}
+.ds-reader-header-logo img { height: 39px; width: auto; transition: height 0.2s ease; }
+.ds-reader-header-logo .ds-logo-full { display: block; }
+.ds-reader-header-logo .ds-logo-mark { display: none; height: 22px; width: auto; }
+.ds-reader-header-center {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+}
+.ds-reader-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-self: end;
+}
+.ds-reader-header-nav a,
+.ds-reader-header-nav button {
+  font-family: var(--arxiv-font-sans);
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 500;
+  color: var(--arxiv-grey);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.ds-reader-header-nav a:visited { color: var(--arxiv-grey); }
+.ds-reader-header-nav a:hover,
+.ds-reader-header-nav button:hover { background: var(--arxiv-open-blue); color: var(--arxiv-ink); }
+.ds-reader-header-nav a:focus-visible,
+.ds-reader-header-nav button:focus-visible {
+  outline: 3px solid var(--arxiv-link-blue);
+  outline-offset: 1px;
+}
+.ds-reader-header .ds-nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
+.ds-reader-header-divider {
+  width: 1px; height: 20px;
+  background: var(--arxiv-pill-border);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* ── Compact state (JS adds .compact past the abstract) ── */
+.ds-reader-header.compact { height: 36px; }
+.ds-reader-header.compact .ds-reader-header-inner { height: 36px; }
+.ds-reader-header.compact .ds-logo-full { display: none; }
+.ds-reader-header.compact .ds-logo-mark { display: block; }
+.ds-reader-header.compact .ds-nav-label { display: none; }
+.ds-reader-header.compact .ds-reader-header-nav a,
+.ds-reader-header.compact .ds-reader-header-nav button {
+  font-size: 0.75rem; /* 12px */
+  padding: 4px 6px;
+  gap: 0;
+}
+.ds-reader-header.compact .ds-nav-icon { width: 15px; height: 15px; }
+.ds-reader-header.compact .ds-reader-header-divider { height: 14px; }
+
+/* ── TOC trigger ── */
+.ds-toc-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 320px;
+  font-family: var(--arxiv-font-sans);
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 500;
+  color: var(--arxiv-ink);
+  background: #fff;
+  border: 1px solid var(--arxiv-pill-border);
+  border-radius: 6px;
+  padding: 6px 8px 6px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.ds-toc-trigger:hover {
+  background: var(--arxiv-warm-wash);
+  border-color: var(--arxiv-grey-ui);
+}
+.ds-toc-trigger:focus-visible {
+  outline: 3px solid var(--arxiv-link-blue);
+  outline-offset: 1px;
+}
+.ds-toc-trigger[aria-expanded="true"] {
+  background: var(--arxiv-active-bg);
+  border-color: var(--arxiv-tint-border);
+}
+.ds-toc-trigger-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.ds-toc-trigger-prefix {
+  color: var(--arxiv-grey);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  margin-right: 4px;
+}
+.ds-toc-trigger-chevron {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  transition: transform 0.15s ease;
+}
+.ds-toc-trigger[aria-expanded="true"] .ds-toc-trigger-chevron { transform: rotate(180deg); }
+
+/* ── TOC dropdown ──
+   Hangs from the header's bottom edge (no top border/radius) so it
+   reads as chrome, not a floating popover. Shares the tint-light /
+   tint-border family with the popover panels — all "arXiv-layer
+   surfaces" read as related. */
+.ds-toc-dropdown {
+  position: fixed;
+  top: 52px;
+  z-index: 60; /* above popovers (50), below modal dialogs (top layer) */
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 72px);
+  background: var(--arxiv-tint-light);
+  border: 1px solid var(--arxiv-tint-border);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.ds-toc-dropdown[hidden] { display: none; }
+.ds-reader-header.compact .ds-toc-dropdown { top: 36px; }
+
+.ds-toc-dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--arxiv-tint-border);
+  flex-shrink: 0;
+}
+.ds-toc-dropdown-title {
+  font-family: var(--arxiv-font-condensed);
+  font-weight: 600;
+  font-size: 0.6875rem; /* 11px */
+  color: var(--arxiv-grey);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.ds-toc-dropdown-close {
+  display: none; /* desktop: click-outside / Esc close; mobile shows it */
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  margin: -6px -8px -6px 0; /* expand touch target without enlarging layout */
+  border-radius: 4px;
+  color: var(--arxiv-grey);
+  line-height: 0;
+}
+.ds-toc-dropdown-close:hover { color: var(--arxiv-ink); background: rgba(0, 0, 0, 0.05); }
+.ds-toc-dropdown-close:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
+.ds-toc-dropdown-close svg { width: 18px; height: 18px; }
+
+.ds-toc-dropdown-list {
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ds-toc-dropdown-link {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 14px;
+  font-family: var(--arxiv-font-sans);
+  font-size: 0.8125rem; /* 13px */
+  line-height: 1.4;
+  color: var(--arxiv-ink);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: background 0.10s, border-color 0.10s, color 0.10s;
+}
+.ds-toc-dropdown-link:hover { background: var(--arxiv-active-bg); }
+.ds-toc-dropdown-link:focus-visible {
+  outline: 2px solid var(--arxiv-link-blue);
+  outline-offset: -2px;
+}
+.ds-toc-num {
+  flex-shrink: 0;
+  color: var(--arxiv-grey);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  min-width: 28px;
+}
+.ds-toc-text { flex: 1; min-width: 0; }
+.ds-toc-dropdown-item[data-depth="2"] .ds-toc-dropdown-link {
+  padding-left: 32px;
+  font-size: 0.78rem;
+  color: var(--arxiv-grey);
+}
+.ds-toc-dropdown-item[data-depth="2"] .ds-toc-dropdown-link .ds-toc-num { min-width: 36px; }
+.ds-toc-dropdown-item[data-depth="3"] .ds-toc-dropdown-link {
+  padding-left: 50px;
+  font-size: 0.78rem;
+  color: var(--arxiv-grey);
+  font-style: italic;
+}
+.ds-toc-dropdown-item[data-kind="abstract"] .ds-toc-dropdown-link,
+.ds-toc-dropdown-item[data-kind="appendix"] .ds-toc-dropdown-link,
+.ds-toc-dropdown-item[data-kind="bibliography"] .ds-toc-dropdown-link { font-weight: 500; }
+.ds-toc-dropdown-item.is-current .ds-toc-dropdown-link {
+  background: var(--arxiv-active-bg);
+  border-left-color: var(--arxiv-link-blue);
+  color: var(--arxiv-ink);
+}
+.ds-toc-dropdown-item.is-current .ds-toc-dropdown-link .ds-toc-num {
+  color: var(--arxiv-link-blue);
+  font-weight: 600;
+}
+
+/* ── Mobile: full-screen menu (≤700px) ── */
+@media (max-width: 700px) {
+  .ds-toc-dropdown {
+    top: 0 !important; /* overrides desktop top + any JS inline position */
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0;
+    width: 100vw;
+    max-width: 100vw;
+    max-height: 100vh;
+    height: 100vh;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .ds-toc-dropdown-header {
+    padding: 16px 20px;
+    background: var(--arxiv-active-bg);
+  }
+  .ds-toc-dropdown-title { font-size: 0.8125rem; }
+  .ds-toc-dropdown-close {
+    display: inline-flex;
+    padding: 10px;
+    margin: -10px -10px -10px 0;
+  }
+  .ds-toc-dropdown-close svg { width: 24px; height: 24px; }
+  .ds-toc-dropdown-link {
+    padding: 14px 20px;
+    font-size: 0.9375rem; /* 15px */
+    min-height: 44px; /* WCAG touch-target floor for full-screen menus */
+    box-sizing: border-box;
+  }
+  .ds-toc-num { min-width: 32px; }
+  .ds-toc-dropdown-item[data-depth="2"] .ds-toc-dropdown-link { padding-left: 42px; font-size: 0.875rem; }
+  .ds-toc-dropdown-item[data-depth="3"] .ds-toc-dropdown-link { padding-left: 62px; font-size: 0.875rem; }
+  .ds-toc-dropdown-list {
+    flex: 1;
+    /* fade the cut edge so it reads "scroll for more", not truncation */
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent 100%);
+  }
+
+  /* Header condenses with the SAME grammar as .compact — not a third
+     mode. Only the TOC trigger keeps its label. */
+  .ds-reader-header-inner { padding: 0 12px; gap: 8px; }
+  .ds-reader-header .ds-logo-full { display: none; }
+  .ds-reader-header .ds-logo-mark { display: block; }
+  .ds-reader-header .ds-nav-label { display: none; }
+  .ds-reader-header-nav a,
+  .ds-reader-header-nav button { font-size: 0.75rem; padding: 6px; gap: 0; }
+  .ds-toc-trigger { max-width: 200px; padding: 6px 6px 6px 8px; }
+  .ds-toc-trigger-prefix { display: none !important; }
+}
+
+/* ── Reading progress ── */
+.ds-reading-progress {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: transparent;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ds-reading-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--arxiv-link-blue);
+  transition: width 0.1s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-reading-progress-fill { transition: none; }
+  .ds-reader-header,
+  .ds-reader-header-inner,
+  .ds-reader-header-logo img,
+  .ds-toc-trigger-chevron { transition: none !important; }
+}
+@media print {
+  .ds-reader-header { display: none !important; }
+}

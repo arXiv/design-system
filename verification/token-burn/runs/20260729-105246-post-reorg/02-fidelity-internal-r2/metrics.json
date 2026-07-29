@@ -1,0 +1,78 @@
+{
+  "tool_calls": {
+    "Read": 8,
+    "Bash": 3,
+    "Write": 1
+  },
+  "file_reads": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/AGENTS.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/DESIGN-POLICIES.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/design-system.css",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/alert-styles.html",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/button-styles.html",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/table-styles.html",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/alert-styles.html",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/table-styles.html"
+  ],
+  "greps": [],
+  "bash": [
+    "ls /private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/",
+    "find /private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo -name \"*.woff2\" -o -name \"*.woff\" -o -name \"*.ttf\" | head -20",
+    "ls /private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/"
+  ],
+  "files_written": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/bulk-action-styles.html"
+  ],
+  "final_message": "Done. Here's what was built and every design-system rule applied:\n\n---\n\n## What was built\n\n`docs/internal/bulk-action-styles.html` \u2014 a static demo page rendering the bulk-action bar in all four required states:\n\n1. **Idle (nothing selected)** \u2014 bar present, all three buttons `disabled`, idle background matches the table header tone (`#f0eeec`), count says \"No submissions selected\"\n2. **Selection active** \u2014 bar background shifts to `--sec-bg` (`#f0f9e8`, lime tint) to signal live selection, count shows \"3 submissions selected\", \"Clear selection\" affordance appears, checked rows get a lime-tint row highlight (`#f5fae8`), all buttons enabled\n3. **Success** \u2014 action buttons replaced by a `.ds-alert-success` spanning the full bar, \"3 submissions approved\", `role=\"status\"` for polite announcement\n4. **Failure** \u2014 bar shows `.ds-alert-error` with recovery link, `role=\"alert\"` for assertive announcement, selection preserved in table so moderator can retry\n\nAll four states sit inside a `.queue-wrapper` that provides the shared border and `border-radius: 6px` for both the bar and the table, with the bar's bottom edge connecting to the table's top border at the seam.\n\n---\n\n## Design-system rules applied\n\n| Rule | How it's applied |\n|---|---|\n| **Internal surface \u2014 Access Lime primary** | `Approve selected` uses `.btn-primary` (lime). `btn-secondary` and `btn-destructive` carry the other two actions. Open Blue never appears. |\n| **Actions disable, never disappear** | All three buttons always render in the DOM; they receive `disabled` in the idle state. |\n| **Destructive action requires confirmation** | `Remove selected` uses `.btn-destructive` and carries `aria-haspopup=\"dialog\"`. A callout documents that the production button must open a `<dialog>` before acting. |\n| **Reuse before rebuilding** | Zero new chrome for alerts or buttons \u2014 `.ds-alert-success`, `.ds-alert-error`, `.ds-alert-dismiss`, `.btn-primary`, `.btn-secondary`, `.btn-destructive`, `.btn-link`, `.ds-table`, `.type-badge` are all consumed directly from `design-system.css`. |\n| **Page-specific glue in the page `<style>` block** | `.bulk-bar`, `.queue-wrapper`, `.bulk-bar-alert`, `.col-check`, `.is-selected` are all page-local. Nothing was added to `design-system.css`. |\n| **Light-only page** | `<html lang=\"en\" data-theme=\"light\">` per the AGENTS.md requirement for new demo pages. |\n| **Self-hosted only \u2014 no external URLs** | Icons are inline SVG paths (Lucide geometry). No CDN links, no `@import`, no Google Fonts. |\n| **Spacing scale** | `--space-3` (12 px) and `--space-4` (16 px) used for bar padding and gaps. No off-scale values. |\n| **Color alone never the sole signal (WCAG 1.4.1)** | Each alert state pairs a distinct SVG icon shape (checkmark-circle vs. x-circle) with a leading word (\"3 submissions approved\" vs. \"Action failed\"). |\n| **No sticky chrome, no ad-hoc z-index** | Bar is static flow. Neither is present. |\n| **ARIA** | `role=\"status\"` on success (polite), `role=\"alert\"` on failure (assertive), `aria-hidden=\"true\"` on all icon SVGs, `aria-label` on every checkbox, `aria-haspopup=\"dialog\"` on the destructive button. |",
+  "usage": {
+    "input_tokens": 11,
+    "cache_creation_input_tokens": 65454,
+    "cache_read_input_tokens": 371624,
+    "output_tokens": 26551,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 65454,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 1,
+        "output_tokens": 895,
+        "cache_read_input_tokens": 62957,
+        "cache_creation_input_tokens": 19324,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 19324
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "cost_usd": 0.9034512,
+  "num_turns": 13,
+  "duration_ms": 408696,
+  "transcript_lines": 290,
+  "parse_errors": 0,
+  "model": "claude-sonnet-4-6",
+  "is_error": false,
+  "unique_files_read": 6,
+  "re_reads": 2,
+  "task": "02-fidelity-internal",
+  "artifacts": [
+    "docs/internal/bulk-action-styles.html"
+  ],
+  "auto_checks": {},
+  "non_palette_hexes": {
+    "docs/internal/bulk-action-styles.html": [
+      "f5fae8"
+    ]
+  },
+  "exit": 0,
+  "wall_seconds": 410
+}

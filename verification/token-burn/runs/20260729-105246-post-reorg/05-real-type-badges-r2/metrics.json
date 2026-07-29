@@ -1,0 +1,73 @@
+{
+  "tool_calls": {
+    "Read": 5,
+    "Bash": 5,
+    "Write": 1
+  },
+  "file_reads": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/AGENTS.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/DESIGN-POLICIES.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/internal/design-system.css",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/internal/table-styles.html",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/color-mapping.md"
+  ],
+  "greps": [],
+  "bash": [
+    "find /private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo -type f | sort | head -80",
+    "find /private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs -type f | sort",
+    "grep -n \"type-badge\\|type-new\\|type-rep\\|type-wdr\\|type-cross\\|ds-table\\|ds-filter\\|info-link\\|ds-table-footer\\|hidden\" /private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/d",
+    "grep -c \"</div>\\|<div \" /private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/internal/type-badge-styles.html",
+    "python3 -c \"\nimport re\nwith open('/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/internal/type-badge-styles.html') as f:\n    html = f.read()\nopens = len(re.findall"
+  ],
+  "files_written": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/internal/type-badge-styles.html"
+  ],
+  "final_message": "HTML is balanced. Here's a summary of what was built and every design-system rule applied:\n\n---\n\n## What was built\n\n**`docs/internal/type-badge-styles.html`** \u2014 a reference page for the four submission type badges defined in `docs/internal/design-system.css`.\n\n**Three sections:**\n\n1. **Badge Palette** \u2014 all four variants in isolation, each annotated with its CSS class and a description of what the submission type means.\n\n2. **Moderation Queue Context** \u2014 a realistic `.ds-table` with all four badge types across six rows, wired to a `.ds-filter` select that filters the visible rows by type and updates the footer count.\n\n3. **Token Reference** \u2014 a table showing the background, text color, border, contrast ratio, and WCAG level for each badge variant. All values drawn from the CSS comment block in `design-system.css` (lines 629\u2013674), not invented.\n\n---\n\n## Design-system rules applied\n\n| Rule | Application |\n|---|---|\n| **Self-hosted everything** | No Google Fonts CDN link. Font stacks with system fallbacks only. (`table-styles.html` violates this; this page does not.) |\n| **Light-only for now** | `<html lang=\"en\" data-theme=\"light\">` on the root element. |\n| **Internal surface** | Access Lime `#c4d82e` used for the page-header border stripe, consistent with other internal docs pages. |\n| **Palette and type stack only** | Page chrome uses only documented palette hex values (`#f9f7f7`, `#1c1a17`, `#6b6459`, `#c4d82e`, `#ddd8d2`, etc.). Badge colors are component-internal constants in `.type-*` rules \u2014 documented but not lifted for other uses. |\n| **Reuse before rebuilding** | Uses `.type-badge`, `.type-new`, `.type-rep`, `.type-wdr`, `.type-cross`, `.ds-table`, `.ds-table-footer`, `.ds-table tbody tr.hidden`, `.ds-filter`, and `.info-link` \u2014 all from the existing stylesheet, no new classes added to the CSS. |\n| **Color is not the sole signal (WCAG 1.4.1)** | Every badge carries a text label (New, Rep, Wdr, Cross). Documented in a callout with an explicit accessibility note. |\n| **WCAG 2.1 AA floor** | All four variants exceed 4.5:1 for 11px non-bold text. Noted in the token reference with per-badge ratios and WCAG level. |\n| **Pattern pages are example-first** | Rendered demo at top (Section 1), in-context demo second (Section 2), token/rationale reference below (Section 3). |\n| **Rationale \u2264 3 sentences per rule** | All callouts are 2\u20133 sentences. |\n| **`.ds-filter` always has All option** | The type filter select defaults to \"All\" as the inclusive option per DESIGN-POLICIES. |\n| **No modifications to unrelated files** | Only `docs/internal/type-badge-styles.html` was created. |",
+  "usage": {
+    "input_tokens": 10,
+    "cache_creation_input_tokens": 71612,
+    "cache_read_input_tokens": 424562,
+    "output_tokens": 23451,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 71612,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 1,
+        "output_tokens": 755,
+        "cache_read_input_tokens": 86734,
+        "cache_creation_input_tokens": 1705,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 1705
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "cost_usd": 0.9096996,
+  "num_turns": 12,
+  "duration_ms": 377256,
+  "transcript_lines": 249,
+  "parse_errors": 0,
+  "model": "claude-sonnet-4-6",
+  "is_error": false,
+  "unique_files_read": 5,
+  "re_reads": 0,
+  "task": "05-real-type-badges",
+  "artifacts": [
+    "docs/internal/type-badge-styles.html"
+  ],
+  "auto_checks": {},
+  "non_palette_hexes": {},
+  "exit": 0,
+  "wall_seconds": 378
+}

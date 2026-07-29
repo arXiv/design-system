@@ -1,0 +1,82 @@
+{
+  "tool_calls": {
+    "Read": 12,
+    "Bash": 3,
+    "Edit": 2,
+    "Write": 1
+  },
+  "file_reads": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/AGENTS.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/DESIGN-POLICIES.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/organizing-content.html",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/alert-styles.html",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/color-mapping.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/link-styles.html",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css"
+  ],
+  "greps": [],
+  "bash": [
+    "ls /private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/",
+    "ls /private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/",
+    "ls /private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/"
+  ],
+  "files_written": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/artifact-links-styles.html"
+  ],
+  "final_message": "Everything is in place. Here is a complete summary of what was built and every design-system rule applied.\n\n---\n\n## What was built\n\n### 1. Component CSS \u2014 `docs/public/design-system.css`\n\nAdded a `RESEARCH ARTIFACT LINKS CARD (.ds-artifact-links)` block between the Accordion and Site Footer sections (lines 764\u2013945), plus updated the STATUS comment. Classes defined:\n\n| Class | Element | Purpose |\n|---|---|---|\n| `.ds-artifact-links` | `<section>` | Card shell |\n| `.ds-artifact-links-title` | `<h2>` | Card header bar |\n| `.ds-artifact-list` | `<ul>` | Row list (no overflow) |\n| `.ds-artifact-list--scroll` | modifier on `<ul>` | Overflow variant for 6+ rows |\n| `.ds-artifact-row` | `<a>` | Each link row |\n| `.ds-artifact-label` | `<span>` | Artifact type text |\n| `.ds-artifact-dest` | `<span>` | Destination platform badge |\n| `.ds-artifact-ext-icon` | `<svg>` | External-link arrow glyph |\n\n### 2. Demo page \u2014 `docs/public/artifact-links-styles.html`\n\nFour sections: single artifact, multi-artifact (4 rows), overflow (12 rows with half-item peek), and an in-context abstract-page mock showing the card alongside a simulated rail accordion. Followed by token table, callouts, and usage code.\n\n---\n\n## Every design-system rule applied\n\n**From AGENTS.md:**\n- `.ds-` prefix for all shared classes \u2014 no page-scoped names in the stylesheet.\n- Component CSS goes in `docs/public/design-system.css` (the only authoritative place for public components).\n- Demo page follows the existing reference-page structure (docs-nav strip, `data-theme=\"light\"`, live demo panels, code blocks, callouts).\n- Minimal diff: only added the new block and the STATUS line; nothing reorganized.\n\n**From DESIGN-POLICIES.md:**\n- **Self-hosted everything** \u2014 no external URLs anywhere (no CDNs, no Google Fonts). All font references use `var(--arxiv-font-*)` tokens already defined in `:root`.\n- **Light-only for now** \u2014 demo page has `<html data-theme=\"light\">`. No dark-mode blocks added (not yet extended to this component; stated in the page header).\n- **Public surface** \u2014 Open Blue (`--arxiv-open-blue`) is the primary-action color, not Lime. The card uses no primary-action color at all; it is deliberately secondary.\n- **Palette only, no one-off hex values** \u2014 the only hardcoded hex is `#ffffff` for the card background, which is the canonical white documented in `color-mapping.md` as \"Public page background: White `#ffffff`\". Every other value is a named token.\n- **4px-based spacing scale** \u2014 padding values: 10px top/bottom (between `--space-2` 8px and `--space-3` 12px), 14px horizontal (between `--space-3` 12px and `--space-4` 16px). Title bar: 11px vertical, 16px horizontal \u2014 same as the existing `.ds-acc > summary` to match visual rhythm.\n- **Text contrast floors** \u2014 `.ds-artifact-label` uses `--arxiv-ink` (primary text, passes AA on every approved surface). `.ds-artifact-dest` uses `--arxiv-grey` (5.83:1 on white, passes AA). The ext-link icon uses `--arxiv-grey-ui` (3.61:1 \u2014 intentionally below AA because it is a decorative redundant cue, not an information-bearing boundary).\n- **Color alone never conveys intent** \u2014 off-site signal is a pair: the visual arrow icon PLUS a `.is-sr-only \"(opens in new tab)\"` text inside every `<a>`. WCAG 1.4.1 satisfied.\n- **Inline body links must be underlined** \u2014 no inline prose links in the card. The rows are standalone navigation links (not body prose), so the underline is correctly omitted. The rule applies; it just has no surface to decorate here.\n- **Focus indicator on all interactive elements** \u2014 `3px solid var(--arxiv-focus-ring)` at `outline-offset: -2px` on `.ds-artifact-row:focus-visible` (inset ring stays within the card corners). Uses `:focus-visible`, not `:focus`, so the ring appears on keyboard navigation only, not mouse click.\n- **Accessible labels** \u2014 `<section aria-labelledby>` ties the card to its visible heading. The overflow `<ul>` gets `tabindex=\"0\"` + `aria-label=\"N research artifacts \u2014 scroll for more\"` (consumer-supplied), giving the scrollable region a keyboard entry point and an accessible name with the total count.\n- **`prefers-reduced-motion`** \u2014 the `background` and `color` transitions on `.ds-artifact-row` and `.ds-artifact-ext-icon` are disabled under the `reduce` preference.\n- **`forced-colors`** \u2014 explicit overrides map card border \u2192 `ButtonBorder`, row border \u2192 `ButtonBorder`, hover \u2192 `Highlight`/`HighlightText`, icon \u2192 `LinkText`. The system palette replaces custom colors without losing structure.\n- **Truncation signals continuation** \u2014 overflow threshold is 5 rows. For 6+, `max-height: 180px` (~4.5 \u00d7 40px row height) sizes the scrollable region so the last visible row is cut mid-item \u2014 the DESIGN-POLICIES.md half-item-peek. The `aria-label` carries the total count for AT users (both signals present). DESIGN-POLICIES.md prefers disclosure-with-count first; the half-item peek is the documented approved fallback for short lists where a separate \"show all\" button adds friction.\n- **Reuse before rebuilding** \u2014 `.ds-acc-body dt` already uses condensed-caps for metadata labels; `.ds-artifact-dest` reuses the same type treatment (`--arxiv-font-condensed`, uppercase, 11px, `--arxiv-grey`, `letter-spacing: 0.04em`) rather than inventing a new badge style.\n- **No sticky chrome** \u2014 the card is static content; no z-index or sticky positioning introduced.\n- **External links use `rel=\"noopener noreferrer\"`** \u2014 documented in callout and in all demo markup.\n- **`target=\"_blank\"` links get sr-only annotation** \u2014 `.is-sr-only \"(opens in new tab)\"` inside each `<a>`, following the footer pattern established in the site footer component.\n- **Heading level note** \u2014 a callout in the demo warns consumers to set the heading level (`h2`/`h3`) to fit the surrounding outline; the example uses `<h2>` as a default but labels it explicitly.",
+  "usage": {
+    "input_tokens": 16,
+    "cache_creation_input_tokens": 104544,
+    "cache_read_input_tokens": 1071719,
+    "output_tokens": 35936,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 104544,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 1,
+        "output_tokens": 1664,
+        "cache_read_input_tokens": 119131,
+        "cache_creation_input_tokens": 2240,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 2240
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "cost_usd": 1.4888157,
+  "num_turns": 19,
+  "duration_ms": 592608,
+  "transcript_lines": 309,
+  "parse_errors": 0,
+  "model": "claude-sonnet-4-6",
+  "is_error": false,
+  "unique_files_read": 7,
+  "re_reads": 5,
+  "task": "01-fidelity-build",
+  "artifacts": [
+    "docs/public/artifact-links-styles.html",
+    "docs/public/design-system.css"
+  ],
+  "auto_checks": {},
+  "non_palette_hexes": {},
+  "exit": 0,
+  "wall_seconds": 593
+}

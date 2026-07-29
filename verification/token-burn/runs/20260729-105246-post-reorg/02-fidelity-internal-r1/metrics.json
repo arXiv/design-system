@@ -1,0 +1,72 @@
+{
+  "tool_calls": {
+    "Read": 7,
+    "Bash": 2,
+    "Write": 1
+  },
+  "file_reads": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/AGENTS.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/CLAUDE.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/DESIGN-POLICIES.md",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/design-system.css",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/alert-styles.html",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/button-styles.html",
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/table-styles.html"
+  ],
+  "greps": [],
+  "bash": [
+    "ls /private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/",
+    "ls /private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/"
+  ],
+  "files_written": [
+    "/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/bulk-action-styles.html"
+  ],
+  "final_message": "Done. Here's what was built and every design-system rule applied:\n\n---\n\n**What was built**\n\n`docs/internal/bulk-action-styles.html` \u2014 a single demo page showing the bulk-action bar in five states across five sections, each backed by a live table for visual context:\n\n| State | Bar modifier | Key content |\n|---|---|---|\n| Idle | *(none)* | 0 selected, all buttons disabled |\n| Active | `.is-active` | 3 selected, count + Clear + 3 actions |\n| Confirm remove | `.is-confirm` | Inline destructive confirmation |\n| Success | `.is-success` | \"3 submissions approved\" + Dismiss |\n| Error | `.is-error` | Failure message + Retry + Dismiss |\n\nThe bar and table are wrapped in `.queue-panel` (`border: 1px solid #ddd8d2; border-radius: 6px; overflow: hidden`) so they share a border, satisfying the \"visually connected\" requirement. The table's own `border`/`border-radius` are reset inside the panel.\n\n---\n\n**Design-system rules applied**\n\n- **Internal surface / Access Lime primary** \u2014 `.btn-primary` is lime; `.btn-secondary` uses `--sec-bg`; the active bar also uses `--sec-bg` so bar and button share the same palette family. No Open Blue anywhere.\n- **`data-theme=\"light\"`** on `<html>` \u2014 new internal demo pages lock light mode per AGENTS.md.\n- **No CDN resources** \u2014 no Google Fonts, no Bootstrap Icons. Icons are inline SVG; fonts use the `system-ui` fallback stack.\n- **Palette only** \u2014 every color is a `var(--*)` token from `design-system.css`. No one-off hex values in the bar CSS.\n- **Spacing scale** \u2014 `var(--space-2)` (8 px, button gap) and `var(--space-3)` (12 px, bar internal gap); bar padding mirrors `.ds-table th`'s `9px 14px`.\n- **Reuse before rebuilding** \u2014 `.btn-primary`, `.btn-secondary`, `.btn-tertiary`, `.btn-destructive`, `.btn-link` used as-is; `.ds-table`, `.type-badge .type-*` used as-is; success/error token families (`--success-bg/border/fg`, `--error-bg/border/fg`) reused directly (same source as `.ds-alert-success/error`).\n- **Destructive action confirmation** \u2014 \"Remove selected\" shows an inline confirm step before executing, per the design-system.css comment: *\"Always pair with a confirmation step (dialog or inline confirm).\"*\n- **Actions disable, they don't disappear** \u2014 idle state shows all three buttons with `:disabled`, not hidden.\n- **WCAG 1.4.1 \u2014 color not the sole signal** \u2014 each state pairs a distinct icon shape (checkmark polyline / warning triangle / X-circle) with a leading word (\"approved\" / \"Action failed\") alongside the color.\n- **`role` + `aria-live` pairing** \u2014 `role=\"status\"` / `aria-live=\"polite\"` for success; `role=\"alert\"` / `aria-live=\"assertive\"` for error and confirm, matching `.ds-alert` usage documented in `design-system.css`.\n- **Focus indicators** \u2014 all button states get `:focus-visible` rings via the base `.btn` and `.btn-link` rules already in `design-system.css`.\n- **Target size floor** \u2014 `min-height: 44px` on `.bulk-bar` satisfies WCAG 2.2 SC 2.5.8 (24 px hard floor, 44 px design target on touch surfaces).\n- **`max-width: 1080px`** \u2014 correct for a data-dense internal tool per DESIGN-POLICIES.md.\n- **Page-specific glue in `<style>` block** \u2014 bar layout, state modifiers, and the `.queue-panel` wrapper are all page-scoped per AGENTS.md convention.",
+  "usage": {
+    "input_tokens": 13,
+    "cache_creation_input_tokens": 60742,
+    "cache_read_input_tokens": 405096,
+    "output_tokens": 56081,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 60742,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 1,
+        "output_tokens": 977,
+        "cache_read_input_tokens": 69215,
+        "cache_creation_input_tokens": 8354,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 8354
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "cost_usd": 1.3281618,
+  "num_turns": 11,
+  "duration_ms": 1051103,
+  "transcript_lines": 702,
+  "parse_errors": 0,
+  "model": "claude-sonnet-4-6",
+  "is_error": false,
+  "unique_files_read": 7,
+  "re_reads": 0,
+  "task": "02-fidelity-internal",
+  "artifacts": [
+    "docs/internal/bulk-action-styles.html"
+  ],
+  "auto_checks": {},
+  "non_palette_hexes": {},
+  "exit": 0,
+  "wall_seconds": 2115
+}

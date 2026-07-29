@@ -1,0 +1,1114 @@
+/* =============================================================
+   arXiv Design System — Shared Component Styles
+   Component reference for arXiv Check and Admin Console
+   ============================================================= */
+
+
+/* ─── Brand Tokens ──────────────────────────────────────────── */
+:root {
+
+  /* Access Lime family — primary buttons */
+  --lime:              #c4d82e;
+  --lime-hover:        #b5c626;
+  --lime-active:       #a4b520;
+  --lime-dis-bg:       #e6efb8;
+  --lime-dis-text:     #8a9a5a;
+
+  /* Lime tint family — secondary buttons */
+  --sec-bg:            #f0f9e8;
+  --sec-bg-hover:      #e2f3d0;
+  --sec-bg-active:     #d4edb8;
+  --sec-border:        #9cb522;
+  --sec-border-active: #6b7a10;
+  --sec-dis-bg:        #fafafa;
+  --sec-dis-border:    #d8d8d8;
+  --sec-dis-text:      #b0b0b0;
+
+  /* Library Grey family — tertiary buttons */
+  --grey:              #6b6459;
+  --grey-hover-bg:     #f0eeec;
+  --grey-hover-dark:   #4a433d;
+  --grey-active-bg:    #e4e0db;
+  --grey-dis:          #b0aba6;
+
+  /* Danger red family — destructive buttons */
+  /* #c62828: white text contrast 5.17:1 — AA ✓. No institutional associations. */
+  --danger:             #c62828;
+  --danger-hover:       #b71c1c;
+  --danger-active:      #9a0007;
+  --danger-dis-bg:      #f5d0d0;
+  --danger-dis-text:    #c47878;
+  --danger-ghost-hover: #fdf0f0;
+  --danger-ghost-active:#f5d0d0;
+
+  /* Link / content hyperlinks — light mode                              */
+  /* Link Blue Light Mode (#1565c0): 5.74:1 on white, 5.38:1 on Warm   */
+  /* Wash — AA ✓. Always underline inline <a> tags (WCAG 1.4.1):        */
+  /* contrast vs #1c1a17 body text is only 3.02:1, too marginal to omit */
+  /* underlines. Dark mode overrides in @media block at end of file.    */
+  --link:               #1565c0; /* Link Blue Light Mode */
+  --link-hover:         #1050a0; /* darkened ~20% — 7.83:1 on white ✓  */
+  --link-dis:           #b0aba6; /* same as --grey-dis                  */
+  --link-visited:       #7b2fbe; /* Visited Purple Light Mode — 7.02:1 on white, 6.58:1 on Warm Wash ✓ AA */
+
+  /* Shared */
+  --text:              #1c1a17; /* Repository Brown */
+  --focus-ring:        #1565c0; /* Link Blue Light Mode — 5.74:1 on white ✓; overridden to #64b5f6 in dark mode */
+  --icon-border:       #8b8680; /* Icon button rest outline — passes 3:1 on white (3.61:1) and warm wash (3.38:1) */
+  --grey-ui:           #8b8680; /* UI boundary grey — 3.61:1 on white, 3.38:1 on warm wash, 3.12:1 on table header bg. Use for interactive borders, tracks, and arrows needing WCAG 3:1. */
+
+  /* Status / alert families — semantic messaging (.ds-alert)              */
+  /* Shared functional colors (like --danger). Each state is also keyed by */
+  /* an icon + leading word, never color alone (WCAG 1.4.1). Dark mode     */
+  /* overrides in the @media block at end of file. Full rationale +        */
+  /* contrast table in color-mapping.md.                                   */
+  --success-bg:        #e8f5d8; /* lime-olive — .seg-positive DNA */
+  --success-border:    #6b8e1e; /* off-yellow vs --sec-border so success ≠ brand accent */
+  --success-fg:        #4a5a0a; /* text + icon — 6.7:1 on --success-bg ✓ AA */
+  --info-bg:           #e7f1fd;
+  --info-border:       #5a82c8;
+  --info-fg:           #1a3a78; /* navy, darker than --link — 9.6:1 ✓ AAA */
+  --warning-bg:        #fff8e1;
+  --warning-border:    #e8b800;
+  --warning-fg:        #7a5c00; /* 5.9:1 on --warning-bg ✓ AA */
+  --error-bg:          #fdeaea;
+  --error-border:      #c62828; /* = --danger */
+  --error-fg:          #8b0000; /* 8.6:1 on --error-bg ✓ AAA */
+
+  /* Spacing scale — 4px base / 8-pt grid. Content-agnostic rhythm tokens.  */
+  /* Rule of thumb: space BETWEEN sections ≈ 3× space WITHIN a section, so  */
+  /* grouping reads without borders (proximity). See DESIGN-POLICIES.md.    */
+  --space-1:           4px;   /* tightest — label→value, icon→text         */
+  --space-2:           8px;   /* closely related inline items              */
+  --space-3:           12px;  /* related stacked elements                  */
+  --space-4:           16px;  /* default gap between elements in a section  */
+  --space-6:           24px;  /* sub-section separation / card padding      */
+  --space-8:           32px;  /* larger internal padding                   */
+  --space-12:          48px;  /* breathing space BETWEEN major sections     */
+}
+
+
+/* ─── Button Base ───────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  transition:
+    background-color 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease,
+    box-shadow 0.12s ease,
+    transform 0.08s ease;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+
+/* ─── Primary ───────────────────────────────────────────────── */
+.btn-primary {
+  background: var(--lime);
+  color: var(--text);
+  border: 1px solid transparent;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--lime-hover);
+}
+
+.btn-primary:active:not(:disabled) {
+  background: var(--lime-active);
+}
+
+.btn-primary:disabled {
+  background: var(--lime-dis-bg);
+  color: var(--lime-dis-text);
+  cursor: not-allowed;
+}
+
+/* Simulated states — for documentation display only */
+.btn-primary.sim-hover  { background: var(--lime-hover); }
+.btn-primary.sim-active { background: var(--lime-active); transform: translateY(1px); box-shadow: none; }
+.btn-primary.sim-focus  { box-shadow: 0 0 0 3px var(--focus-ring); outline: none; }
+
+
+/* ─── Secondary ─────────────────────────────────────────────── */
+.btn-secondary {
+  background: var(--sec-bg);
+  color: var(--text);
+  border: 1px solid var(--sec-border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--sec-bg-hover);
+}
+
+.btn-secondary:active:not(:disabled) {
+  background: var(--sec-bg-active);
+  border-color: var(--sec-border-active);
+}
+
+.btn-secondary:disabled {
+  background: var(--sec-dis-bg);
+  border-color: var(--sec-dis-border);
+  color: var(--sec-dis-text);
+  cursor: not-allowed;
+}
+
+/* Simulated states */
+.btn-secondary.sim-hover  { background: var(--sec-bg-hover); }
+.btn-secondary.sim-active { background: var(--sec-bg-active); border-color: var(--sec-border-active); transform: translateY(1px); box-shadow: none; }
+.btn-secondary.sim-focus  { box-shadow: 0 0 0 3px var(--focus-ring); outline: none; }
+
+
+/* ─── Tertiary ──────────────────────────────────────────────── */
+.btn-tertiary {
+  background: transparent;
+  color: var(--grey);
+  border: 1px solid var(--grey);
+}
+
+.btn-tertiary:hover:not(:disabled) {
+  background: var(--grey-hover-bg);
+  border-color: var(--grey-hover-dark);
+  color: var(--grey-hover-dark);
+}
+
+.btn-tertiary:active:not(:disabled) {
+  background: var(--grey-active-bg);
+  border-color: var(--grey-hover-dark);
+  color: var(--grey-hover-dark);
+}
+
+.btn-tertiary:disabled {
+  border-color: var(--grey-dis);
+  color: var(--grey-dis);
+  cursor: not-allowed;
+}
+
+/* Simulated states */
+.btn-tertiary.sim-hover  { background: var(--grey-hover-bg); border-color: var(--grey-hover-dark); color: var(--grey-hover-dark); }
+.btn-tertiary.sim-active { background: var(--grey-active-bg); border-color: var(--grey-hover-dark); color: var(--grey-hover-dark); transform: translateY(1px); box-shadow: none; }
+.btn-tertiary.sim-focus  { box-shadow: 0 0 0 3px var(--focus-ring); outline: none; }
+
+
+/* ─── Destructive Button ────────────────────────────────────── */
+/*
+ * Uses a neutral danger red (#c62828) — white text 5.17:1, AA ✓.
+ * Not associated with any brand or institution.
+ *
+ * Usage rules:
+ *   - Reserve for hard-delete and irreversible actions only.
+ *   - Always pair with a confirmation step (dialog or inline confirm).
+ *   - Use the solid variant for named text actions (Delete, Remove, Revoke).
+ *   - Use the ghost icon variant (.btn-icon-destructive) for table-row
+ *     and toolbar delete icons to reduce visual alarm in lists.
+ */
+
+.btn-destructive {
+  background: var(--danger);
+  color: #ffffff;
+  border: 1px solid transparent;
+}
+
+.btn-destructive:hover:not(:disabled) {
+  background: var(--danger-hover);
+}
+
+.btn-destructive:active:not(:disabled) {
+  background: var(--danger-active);
+}
+
+.btn-destructive:disabled {
+  background: var(--danger-dis-bg);
+  color: var(--danger-dis-text);
+  cursor: not-allowed;
+}
+
+/* Simulated states */
+.btn-destructive.sim-hover  { background: var(--danger-hover); }
+.btn-destructive.sim-active { background: var(--danger-active); transform: translateY(1px); box-shadow: none; }
+.btn-destructive.sim-focus  { box-shadow: 0 0 0 3px var(--focus-ring); outline: none; }
+
+
+/* ─── Icon Button ───────────────────────────────────────────── */
+/*
+ * Icon-only buttons carry a subtle warm-grey outline at rest (--icon-border)
+ * to signal interactivity without the visual weight of a full tertiary border.
+ * Hover/active apply a light background fill; the outline darkens slightly as
+ * a secondary cue. Two color variants (constructive, destructive) and a
+ * pressed/toggled state for stateful on/off controls.
+ *
+ * Production requirements:
+ *   - Always provide aria-label on the <button>
+ *   - Always set aria-hidden="true" on the icon element / SVG
+ *   - Use the framework tooltip (OverlayTrigger/Tooltip in React Bootstrap;
+ *     <Tooltip> in MUI) — not the HTML title attribute — so the label is
+ *     visible on both hover and keyboard focus.
+ *   - For toggle controls, set aria-pressed="true"/"false" on the <button>
+ */
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background: transparent;
+  border: 1px solid var(--icon-border); /* subtle outline — clarifies click affordance */
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--grey);
+  line-height: 1;
+  flex-shrink: 0;
+  padding: 0;
+  transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+
+  /* Standard size — height matches the standard text button */
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+}
+
+/* Compact — for inline field actions and table-row contexts */
+.btn-icon.btn-icon-sm {
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+}
+
+.btn-icon:hover:not(:disabled) {
+  background: var(--grey-hover-bg);
+  border-color: var(--grey-dis);
+  color: var(--grey-hover-dark);
+}
+
+.btn-icon:active:not(:disabled) {
+  background: var(--grey-active-bg);
+  border-color: var(--grey-dis);
+  color: var(--grey-hover-dark);
+}
+
+.btn-icon:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.btn-icon:disabled {
+  border-color: var(--icon-border);
+  color: var(--grey-dis);
+  cursor: not-allowed;
+}
+
+/* Constructive variant — edit, add, copy actions */
+.btn-icon.btn-icon-constructive {
+  color: var(--sec-border);
+}
+
+.btn-icon.btn-icon-constructive:hover:not(:disabled) {
+  background: var(--sec-bg);
+  color: var(--sec-border-active);
+}
+
+.btn-icon.btn-icon-constructive:active:not(:disabled) {
+  background: var(--sec-bg-hover);
+  color: var(--sec-border-active);
+}
+
+/* Destructive icon variant — ghost red, for trash/remove icon buttons */
+.btn-icon.btn-icon-destructive {
+  color: var(--danger);
+}
+
+.btn-icon.btn-icon-destructive:hover:not(:disabled) {
+  background: var(--danger-ghost-hover);
+  color: var(--danger-hover);
+}
+
+.btn-icon.btn-icon-destructive:active:not(:disabled) {
+  background: var(--danger-ghost-active);
+  color: var(--danger-active);
+}
+
+.btn-icon.btn-icon-destructive:disabled {
+  color: var(--danger-dis-text);
+}
+
+/* Pressed / toggled state */
+.btn-icon[aria-pressed="true"],
+.btn-icon.sim-pressed {
+  background: var(--grey-active-bg);
+  border-color: var(--grey-dis);
+  color: var(--grey-hover-dark);
+}
+
+.btn-icon[aria-pressed="true"]:hover:not(:disabled) {
+  background: var(--grey-hover-bg);
+  border-color: var(--grey-dis);
+  color: var(--grey-hover-dark);
+}
+
+/* Simulated states — documentation only */
+.btn-icon.sim-hover               { background: var(--grey-hover-bg); border-color: var(--grey-dis); color: var(--grey-hover-dark); }
+.btn-icon.sim-active              { background: var(--grey-active-bg); border-color: var(--grey-dis); color: var(--grey-hover-dark); }
+.btn-icon.sim-focus               { box-shadow: 0 0 0 3px var(--focus-ring); outline: none; }
+.btn-icon.sim-disabled            { border-color: var(--icon-border); color: var(--grey-dis); pointer-events: none; }
+.btn-icon.sim-pressed             { background: var(--grey-active-bg); border-color: var(--grey-dis); color: var(--grey-hover-dark); }
+
+.btn-icon.btn-icon-constructive.sim-hover  { background: var(--sec-bg);       color: var(--sec-border-active); }
+.btn-icon.btn-icon-constructive.sim-active { background: var(--sec-bg-hover);  color: var(--sec-border-active); }
+
+.btn-icon.btn-icon-destructive.sim-hover  { background: var(--danger-ghost-hover);  color: var(--danger-hover); }
+.btn-icon.btn-icon-destructive.sim-active { background: var(--danger-ghost-active); color: var(--danger-active); }
+.btn-icon.btn-icon-destructive.sim-disabled { color: var(--danger-dis-text); pointer-events: none; }
+
+
+/* ─── Link-style Button ─────────────────────────────────────── */
+/*
+ * A <button> styled as an inline text link. Use for low-emphasis inline
+ * actions: "Reset to default", "Clear all", "Show more", "Add another".
+ */
+
+.btn-link {
+  display: inline;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--grey);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  border-radius: 2px;
+}
+
+.btn-link:hover:not(:disabled) {
+  text-decoration-color: var(--sec-border);
+}
+
+.btn-link:active:not(:disabled) {
+  text-decoration-color: var(--sec-border);
+  text-decoration-thickness: 2px;
+}
+
+.btn-link:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.btn-link:disabled {
+  color: var(--link-dis);
+  text-decoration: none;
+  cursor: not-allowed;
+}
+
+/* Simulated states */
+.btn-link.sim-hover  { text-decoration-color: var(--sec-border); }
+.btn-link.sim-active { text-decoration-color: var(--sec-border); text-decoration-thickness: 2px; }
+.btn-link.sim-focus  { box-shadow: 0 0 0 3px var(--focus-ring); outline: none; }
+.btn-link.sim-disabled { color: var(--link-dis); text-decoration: none; pointer-events: none; }
+
+
+/* ─── Icon Inside Text Button ───────────────────────────────── */
+.btn .bi,
+.btn svg.btn-icon-svg {
+  font-size: 1.15em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+
+/* ─── Loading / Pending State ───────────────────────────────── */
+.btn.is-loading {
+  cursor: wait;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: btn-spin 0.65s linear infinite;
+  flex-shrink: 0;
+}
+
+/* Simulated loading state — documentation only */
+.btn.sim-loading {
+  cursor: wait;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+
+/* ─── Info Card ─────────────────────────────────────────────── */
+/*
+ * A read-only metadata panel for displaying system-supplied context:
+ * user identity, submission details, IP/date stamps. A warm tinted
+ * surface creates a subtle visual boundary from editable content.
+ *
+ * Usage: place in a fixed 240px sidebar alongside the main content area.
+ * Always add role="region" and aria-label on .info-card.
+ * Never place editable fields inside this component.
+ *
+ * Dark mode restores the original high-contrast charcoal/lime treatment
+ * via overrides at the bottom of this file.
+ */
+
+.info-card {
+  display: flex;
+  flex-direction: column;
+  background: #e8e4dc;
+  border-radius: 6px;
+  overflow: hidden;
+  border-top: 4px solid #c4d82e;
+}
+
+.info-card-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+.info-card-row:last-child { border-bottom: none; }
+
+/* Label — muted warm gray, must pass 4.5:1 on card bg #e8e4dc */
+.info-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--grey); /* 4.65:1 on #e8e4dc ✓ AA */
+}
+
+/* Value — monospace to signal read-only system data */
+.info-value {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  color: #1c1a17;
+  word-break: break-all;
+}
+
+/* Linked value — monospace, uses system link color */
+.info-link {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.info-link:hover   { color: var(--link-hover); }
+.info-link:visited { color: var(--link-visited); }
+
+
+/* ─── Dark Mode Overrides ───────────────────────────────────── */
+/*
+ * Fires when: OS is set to dark  AND  the page has not locked to light mode.
+ *
+ * To lock a page to light mode, add data-theme="light" to <html>:
+ *   <html lang="en" data-theme="light">
+ * The :not([data-theme="light"]) guard prevents this block from applying.
+ */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* Secondary button backgrounds — flip to dark lime tint */
+    --sec-bg:            #1a2306;
+    --sec-bg-hover:      #212e08;
+    --sec-bg-active:     #28380a;
+    --sec-dis-bg:        #1e1e1e;
+    --sec-dis-border:    #2e2e2e;
+    --sec-dis-text:      #4e4e4e;
+
+    /* Tertiary / icon grey family — lighten for dark bg */
+    --grey:              #b0aba6; /* 7.62:1 on dark ✓ */
+    --grey-hover-bg:     #272420;
+    --grey-hover-dark:   #d4cfc9; /* 11.22:1 on dark ✓ */
+    --grey-active-bg:    #302c28;
+    --grey-dis:          #484340;
+    --grey-ui:           #8b8680; /* 5.91:1 on dark ✓ — same value, passes on both surfaces */
+    --icon-border:       #8b8680;
+
+    /* Primary disabled — dark tint so it doesn't look active */
+    --lime-dis-bg:       #252f08;
+    --lime-dis-text:     #5a6b30;
+
+    /* Destructive disabled and ghost surfaces */
+    --danger-dis-bg:     #3a0f0f;
+    --danger-dis-text:   #864040;
+    --danger-ghost-hover:  #2a0808;
+    --danger-ghost-active: #380d0d;
+
+    /* Link / content hyperlinks — dark mode */
+    --link:              #64b5f6; /* Link Blue Dark Mode — 7.84:1 on Repository Brown ✓ AAA */
+    --link-hover:        #90caf9;
+    --link-dis:          #484340;
+    --link-visited:      #c084e0; /* Visited Purple Dark Mode — 6.30:1 on Repository Brown ✓ AA */
+
+    /* Focus ring */
+    --focus-ring:        #64b5f6; /* 7.84:1 on Repository Brown ✓ AAA */
+
+    /* Status / alert families — dark surfaces */
+    --success-bg:        #1e2b0d;
+    --success-border:    #8fbd3a;
+    --success-fg:        #c5e1a5; /* 10.4:1 ✓ AAA */
+    --info-bg:           #132433;
+    --info-border:       #64b5f6;
+    --info-fg:           #90caf9; /* 9.0:1 ✓ AAA */
+    --warning-bg:        #2e2410;
+    --warning-border:    #e8b800;
+    --warning-fg:        #ffe082; /* 11.8:1 ✓ AAA */
+    --error-bg:          #2d1414;
+    --error-border:      #e57373; /* lighter red, matches dark destructive icon */
+    --error-fg:          #ef9a9a; /* 8.0:1 ✓ AAA */
+  }
+
+  /* Secondary button — dark lime-tint bg needs lime text, not near-black */
+  html:not([data-theme="light"]) .btn-secondary         { color: var(--lime); }
+  html:not([data-theme="light"]) .btn-secondary:disabled,
+  html:not([data-theme="light"]) .btn-secondary.sim-disabled { color: var(--sec-dis-text); }
+
+  /* Destructive icon — #c62828 only 3.09:1 on dark; use lighter red + matching border */
+  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive                             { color: #e57373; border-color: #e57373; }
+  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive:hover:not(:disabled),
+  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive.sim-hover                   { background: var(--danger-ghost-hover);  border-color: #ef9a9a; color: #ef9a9a; }
+  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive:active:not(:disabled),
+  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive.sim-active                  { background: var(--danger-ghost-active); border-color: #ef9a9a; color: #ef9a9a; }
+  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive:disabled,
+  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive.sim-disabled                { color: var(--danger-dis-text); border-color: var(--icon-border); }
+
+  /* Constructive icon — lime border signals variant on dark bg */
+  html:not([data-theme="light"]) .btn-icon.btn-icon-constructive                            { border-color: var(--lime); }
+  html:not([data-theme="light"]) .btn-icon.btn-icon-constructive:hover:not(:disabled),
+  html:not([data-theme="light"]) .btn-icon.btn-icon-constructive.sim-hover                  { background: #2e4a0a; border-color: var(--lime); color: var(--lime); }
+  html:not([data-theme="light"]) .btn-icon.btn-icon-constructive:active:not(:disabled),
+  html:not([data-theme="light"]) .btn-icon.btn-icon-constructive.sim-active                 { background: #253a08; border-color: var(--lime); color: var(--lime); }
+
+  /* Info card — restore original charcoal + lime treatment in dark mode */
+  html:not([data-theme="light"]) .info-card                 { background: #2e2b26; }
+  html:not([data-theme="light"]) .info-card-row             { border-bottom-color: rgba(255,255,255,0.07); }
+  html:not([data-theme="light"]) .info-label                { color: #cbcdac; }
+  html:not([data-theme="light"]) .info-value                { color: #c4d82e; }
+  html:not([data-theme="light"]) .info-link                 { color: #c4d82e; }
+  html:not([data-theme="light"]) .info-link:hover           { color: #d8ee50; }
+  html:not([data-theme="light"]) .info-link:visited         { color: #a8c020; }
+}
+
+
+/* ─── Submission Type Badges ─────────────────────────────────── */
+/*
+ * Color-coded labels matching the arXiv Check moderation tool.
+ * Base class .type-badge handles shape; type modifiers supply color.
+ *
+ * Contrast ratios (WCAG, verified):
+ *   .type-new   #1a3d78 on #d4e9ff — 8.5:1  AAA ✓
+ *   .type-rep   #7a5c00 on #fef3c7 — 5.6:1  AA  ✓
+ *   .type-wdr   #ffffff on #474340 — 9.8:1  AAA ✓
+ *   .type-cross #4a4540 on #e8e4df — 7.5:1  AAA ✓
+ */
+.type-badge {
+  display: inline-block;
+  font-family: "IBM Plex Mono", "SF Mono", "Fira Code", monospace;
+  font-size: 11px;
+  font-weight: 400;
+  border-radius: 3px;
+  padding: 1px 6px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+/* New — first submission; light blue */
+.type-new {
+  background: #d4e9ff;
+  color: #1a3d78;
+  border-color: #93c5fd;
+}
+
+/* Rep — replacement version; yellow */
+.type-rep {
+  background: #fef3c7;
+  color: #7a5c00;
+  border-color: #fde68a;
+}
+
+/* Wdr — withdrawal; dark warm-gray */
+.type-wdr {
+  background: #474340;
+  color: #ffffff;
+  border-color: #474340;
+}
+
+/* Cross — cross-listing; warm light-gray */
+.type-cross {
+  background: #e8e4df;
+  color: #4a4540;
+  border-color: #cbc5be;
+}
+
+
+/* ─── Data Table ───────────────────────────────────────────── */
+/*
+ * Base table styles for admin data tables. Warm-tinted header row,
+ * subtle row dividers, hover highlight. Use .ds-table on <table>.
+ *
+ * Column widths: set via classes on <th> / <td> or inline widths.
+ * The table defaults to auto layout; add table-layout: fixed to
+ * the <table> element when fixed columns are needed.
+ */
+
+.ds-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: #fff;
+  border: 1px solid #ddd8d2;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.ds-table th {
+  text-align: left;
+  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b6459;
+  padding: 9px 14px;
+  background: #f0eeec;
+  border-bottom: 1px solid #ddd8d2;
+  white-space: nowrap;
+}
+
+.ds-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f0eeec;
+  vertical-align: top;
+  color: #1c1a17;
+}
+
+.ds-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ds-table tbody tr:hover td {
+  background: #faf9f8;
+}
+
+/* Filtered-out / hidden rows */
+.ds-table tbody tr.hidden {
+  display: none;
+}
+
+/* Table footer — row count, pagination, etc. */
+.ds-table-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 9px 14px;
+  font-size: 12px;
+  color: #6b6459;
+  border-top: 1px solid #ddd8d2;
+}
+
+
+/* ─── Sortable Column Headers ──────────────────────────────── */
+/*
+ * Add .sortable to any <th> to make it clickable.
+ * Add .sort-asc or .sort-desc to indicate current sort direction.
+ * Place a <span class="sort-arrow"> inside the <th> for the indicator.
+ *
+ * Unsorted:  ⇅ (dimmed)
+ * Ascending: ↑ (dark)
+ * Descending:↓ (dark)
+ */
+
+.ds-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.1s;
+}
+
+.ds-table th.sortable:hover {
+  color: #1c1a17;
+}
+
+.sort-arrow {
+  display: inline-block;
+  margin-left: 3px;
+  font-size: 9px;
+  color: var(--grey-ui); /* 3.12:1 on table header bg (#f0eeec) ✓ */
+  vertical-align: middle;
+}
+
+.ds-table th.sort-asc .sort-arrow,
+.ds-table th.sort-desc .sort-arrow {
+  color: #1c1a17;
+}
+
+
+/* ─── Filter Select ────────────────────────────────────────── */
+/*
+ * Minimal underline-only <select> for toolbar filters.
+ * Used inline with a <label> in a .ds-filter wrapper.
+ *
+ * Usage:
+ *   <div class="ds-filter">
+ *     <label for="…">Show:</label>
+ *     <select id="…">…</select>
+ *   </div>
+ */
+
+.ds-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #6b6459;
+}
+
+.ds-filter label {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ds-filter select {
+  font-family: inherit;
+  font-size: 12px;
+  color: #1c1a17;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--grey-ui); /* 3.61:1 on white ✓ */
+  border-radius: 0;
+  padding: 1px 18px 1px 2px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  /* Custom chevron */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238b8680'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 2px center;
+}
+
+.ds-filter select:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+
+/* ─── Segmented Control ────────────────────────────────────── */
+/*
+ * Exclusive-choice button group (radio-like). Used for inline
+ * decisions where options are few and always visible.
+ *
+ * Three semantic variants for the active state:
+ *   .seg-btn.seg-positive.active  — green (accept / approve)
+ *   .seg-btn.seg-neutral.active   — blue  (informational choice)
+ *   .seg-btn.seg-negative.active  — red   (reject / deny)
+ *
+ * Usage:
+ *   <fieldset class="seg-control">
+ *     <legend class="sr-only">…</legend>
+ *     <button type="button" class="seg-btn seg-positive" data-value="yes">Yes</button>
+ *     <button type="button" class="seg-btn seg-neutral"  data-value="maybe">Maybe</button>
+ *     <button type="button" class="seg-btn seg-negative" data-value="no">No</button>
+ *   </fieldset>
+ */
+
+.seg-control {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  gap: 0;
+}
+
+.seg-btn {
+  padding: 5px 10px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--grey-ui); /* 3.61:1 on white ✓ */
+  background: #fff;
+  color: #6b6459;
+  margin-left: -1px;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  position: relative;
+  white-space: nowrap;
+}
+
+.seg-btn:first-child { border-radius: 6px 0 0 6px; margin-left: 0; }
+.seg-btn:last-child  { border-radius: 0 6px 6px 0; }
+.seg-btn:hover:not(:disabled) { background: #f5f3f1; color: #1c1a17; z-index: 1; }
+.seg-btn:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 1px;
+  z-index: 2;
+}
+
+/* Active states — semantic color per variant */
+.seg-btn.seg-positive.active {
+  background: #e8f5d8;
+  border-color: #9cb522;
+  color: #4a5a0a;
+  z-index: 1;
+}
+.seg-btn.seg-neutral.active {
+  background: #deeeff;
+  border-color: #5a82c8;
+  color: #1a3a78;
+  z-index: 1;
+}
+.seg-btn.seg-negative.active {
+  background: #fde8e8;
+  border-color: #c62828;
+  color: #8b0000;
+  z-index: 1;
+}
+
+
+/* ─── Form Validation ──────────────────────────────────────── */
+/*
+ * Required field indicator: add <span class="field-required">*</span>
+ * inside the <label>.
+ *
+ * Invalid state: add .is-invalid to the input/textarea/select.
+ * Error message: <p class="field-error"> below the field.
+ * The field-error should have [hidden] by default, removed on validation failure.
+ *
+ * Usage:
+ *   <label>Reason <span class="field-required">*</span></label>
+ *   <textarea class="is-invalid" required aria-required="true" aria-describedby="err-1">…</textarea>
+ *   <p class="field-error" id="err-1">Please provide a reason.</p>
+ */
+
+.field-required {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.is-invalid {
+  border-color: var(--danger) !important;
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.1) !important;
+}
+
+.is-invalid:focus-visible {
+  border-color: var(--danger) !important;
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15) !important;
+}
+
+.field-error {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--danger);
+}
+
+.field-error[hidden] {
+  display: none;
+}
+
+
+/* ─── Toggle Switch ────────────────────────────────────────── */
+/*
+ * A boolean on/off control styled as a sliding toggle.
+ * Wraps a visually-hidden <input type="checkbox"> with a
+ * custom track + thumb, plus an optional uppercase label.
+ *
+ * Off state: warm grey track (#ddd8d2).
+ * On state: lime-green track (#9cb522) matching brand secondary.
+ * Focus ring on keyboard navigation via :focus-visible.
+ *
+ * Usage:
+ *   <label class="toggle-switch">
+ *     <input type="checkbox">
+ *     <span class="toggle-track"><span class="toggle-thumb"></span></span>
+ *     <span class="toggle-label">Label</span>
+ *   </label>
+ */
+
+.toggle-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-track {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+  background: var(--grey-ui); /* off state — 3.61:1 on white ✓ */
+  border-radius: 999px;
+  transition: background 0.18s;
+  flex-shrink: 0;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 13px;
+  height: 13px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.18s;
+}
+
+/* Checked — lime track, thumb slides right */
+.toggle-switch input:checked + .toggle-track {
+  background: #9cb522;
+}
+
+.toggle-switch input:checked + .toggle-track .toggle-thumb {
+  transform: translateX(13px);
+}
+
+/* Focus ring — keyboard only (mouse clicks don't show the ring) */
+.toggle-switch input:focus-visible + .toggle-track {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Label — uppercase condensed, muted when off, darkens when on */
+.toggle-label {
+  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #7c7670; /* off state — 4.5:1 on white ✓ AA */
+  transition: color 0.18s, font-weight 0.18s;
+}
+
+.toggle-switch input:checked ~ .toggle-label {
+  color: #1c1a17;
+  font-weight: 700;
+}
+
+
+/* ─── Alert / Status Message ────────────────────────────────── */
+/*
+ * Inline status banner — success, info, warning, error/failure.
+ * Token-driven (status families in :root + the dark @media block above),
+ * so dark mode needs no per-component overrides.
+ *
+ * Anatomy: icon + optional title + message + optional inline link or
+ * dismiss button. Color is never the sole signal — pair each variant
+ * with a distinct icon shape AND a leading word (WCAG 1.4.1).
+ *
+ * ARIA: role="status" for success/info (polite); role="alert" for
+ * warning/error (assertive). Icons must carry aria-hidden="true".
+ *
+ * Promoted from arxiv-mockups/design-patterns/alert-styles.html (2026-05-28).
+ *
+ * Usage:
+ *   <div class="ds-alert ds-alert-warning" role="alert">
+ *     <svg class="ds-alert-icon" aria-hidden="true">…</svg>
+ *     <div class="ds-alert-content">
+ *       <p class="ds-alert-title">Unsaved changes</p>
+ *       <p>Leaving this page will discard them.</p>
+ *     </div>
+ *   </div>
+ */
+.ds-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px 14px;
+  border: 1px solid;
+  border-left-width: 4px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.ds-alert-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  stroke: currentColor; /* Lucide line icons inherit the variant fg */
+  fill: none;
+}
+.ds-alert-content { margin: 0; min-width: 0; }
+.ds-alert-title { font-weight: 700; margin: 0 0 2px; }
+.ds-alert-content p { margin: 0; }
+.ds-alert a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.ds-alert-dismiss {
+  flex-shrink: 0;
+  margin-left: auto;
+  margin-top: -2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+  padding: 2px;
+  border-radius: 3px;
+  line-height: 0;
+  transition: opacity 0.15s ease;
+}
+.ds-alert-dismiss:hover { opacity: 1; }
+.ds-alert-dismiss:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+.ds-alert-dismiss svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+
+/* Variants — bg + border + fg (icon uses currentColor = fg) */
+.ds-alert-success { background: var(--success-bg); border-color: var(--success-border); color: var(--success-fg); }
+.ds-alert-info    { background: var(--info-bg);    border-color: var(--info-border);    color: var(--info-fg); }
+.ds-alert-warning { background: var(--warning-bg); border-color: var(--warning-border); color: var(--warning-fg); }
+.ds-alert-error   { background: var(--error-bg);   border-color: var(--error-border);   color: var(--error-fg); }
+
+/* OS accessibility signals. forced-colors: the OS replaces our palette
+   and the hues collapse, but icon shape + leading word still carry
+   meaning and icons follow system text color; pin links to LinkText.
+   Never set forced-color-adjust:none. */
+@media (forced-colors: active) {
+  .ds-alert a { color: LinkText; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-alert-dismiss { transition: none; }
+}
