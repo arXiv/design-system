@@ -49,6 +49,31 @@ use; the Phase 3 brand-assets page closes this).
 stall time (rate-limit backoff while other sessions ran). Infrastructure, not
 structure; excluded from conclusions.
 
+## Designer axis (graded 2026-07-29)
+
+**Baseline 4/10 pass → post-reorg 6/10 pass.** The extrapolation task flipped from
+fail×2 to pass×2 — the reasoning-from-rationale task improved most, consistent with
+agents now reading the routed guidance (version-display, alerts tone) instead of
+missing it. Trap and type badges held at pass×2.
+
+The four remaining fails are all rules that exist **nowhere in the docs**:
+
+- 01 (card ×2): hairline row dividers on a card + missing background-tint rules —
+  both decided 2026-07-29 (cards: spacing not dividers; tint signals editability),
+  neither written into docs/ yet.
+- 02 (bulk bar ×2): tinted action-button bar; the preferred action-bar layout
+  (buttons + descriptive text left, filter dropdown right) exists only in the
+  **unpublished local Wombat user-page mockup**. An agent cannot match a reference
+  it cannot reach — direct evidence for the mockup migration.
+
+One decision flowed backward from an agent output: Shamsi prefers the agent's
+**green tint on selected rows** over her own mockup's untinted rows ("aids
+usability") — adopted into the Wombat promotion item. The harness is now feeding
+design decisions, not just catching errors.
+
+Recurring: 03-r2 hand-built header/sidebar and a fabricated logo (rep-inconsistent;
+the brand-assets and page-composition gaps again).
+
 ## Caveats
 
 - Same-day, n=2/task: directional, not statistical.
