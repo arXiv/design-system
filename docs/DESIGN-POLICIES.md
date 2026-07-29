@@ -27,7 +27,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 ## Typography
 
-- **Font families:** Use only IBM Plex Sans, IBM Plex Sans Condensed, IBM Plex Mono, and STIX Two Math. See `design-patterns/typography.md` for the full spec.
+- **Font families:** Use only IBM Plex Sans, IBM Plex Sans Condensed, IBM Plex Mono, and STIX Two Math. See `docs/typography.md` for the full spec.
 - **Self-hosted:** All fonts must be self-hosted from arXiv's static assets. No external font services (Google Fonts, Adobe Typekit, CDN-hosted fonts).
 - **Font display:** Use `font-display: swap` for text fonts (prioritize readability). Use `font-display: auto` for STIX Two Math (math rendering needs the correct font).
 - **System fallbacks:** Every `font-family` declaration must include system fallbacks. See `typography.md` for the standard stacks.
@@ -51,7 +51,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 ## Colors
 
-- **Use the palette.** All colors must come from the documented palette in `design-patterns/color-mapping.md`. Do not introduce one-off hex values.
+- **Use the palette.** All colors must come from the documented palette in `docs/color-mapping.md`. Do not introduce one-off hex values.
 - **Warm grey ladder:** The palette provides specific stops for specific contrast needs:
   - `--grey-dis` (`#b0aba6`) — disabled/exempt states only (2.24:1, below AA thresholds)
   - `--grey-ui` (`#8b8680`) — interactive UI boundaries: borders, tracks, arrows (3.61:1 on white, passes 3:1)
@@ -62,7 +62,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 ## Components
 
-- **New patterns:** If a UI element appears in two or more pages, extract it into a design system CSS file and create or update a pattern page in `design-patterns/`.
+- **New patterns:** If a UI element appears in two or more pages, extract it into a design system CSS file and create or update a pattern page in `docs/`.
 - **Platform independence:** Components use plain CSS custom properties — no Sass, no CSS-in-JS, no framework-specific syntax. This allows consumption from React, Jinja, PHP, or static HTML.
 - **Naming:** Use `.ds-` prefix for shared design system classes (e.g., `.ds-table`, `.ds-filter`). Page-specific styles stay in the page's own `<style>` block or stylesheet.
 
@@ -93,7 +93,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 ## Chrome and interaction structure
 
-*Added 2026-06-11 from the PROPOSED-GUIDELINES review (see `design-patterns/PROPOSED-GUIDELINES.md` for evidence and rationale).*
+*Added 2026-06-11 from the PROPOSED-GUIDELINES review (see `planning/PROPOSED-GUIDELINES.md` for evidence and rationale).*
 
 - **Sticky chrome is exceptional.** The HTML paper reader is the only surface approved to use a sticky header — it alone is a long-document reading context that earns persistent chrome. Do not add sticky chrome to other pages without explicit approval. Any page that does carry sticky chrome MUST set `html { scroll-padding-top }` to at least the chrome's tallest state plus breathing room (reader reference: 80px), covering every anchor path including JS `scrollIntoView`. (Decided 2026-06-11: the abstract-page header is static — it scrolls away like any other content. The reader is the only sticky-chrome surface in fact as well as intent.)
 - **Universal navigation stays short.** The header nav is capped at its current five items (Search, Submit, Donate, Log in + logo). Resist link-creep permanently. Narrow viewports condense (wrap or compact grammar) rather than hamburger; a hamburger is a permitted last-resort fallback at very narrow widths, never the default.

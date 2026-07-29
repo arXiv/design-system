@@ -37,13 +37,13 @@ The voice applies to *everything that has words*: UI copy, empty states, error m
 The brand is not decoration — it has already decided real constraints. Each principle below names the policy or pattern it drives, so the line from brand to pixel is traceable.
 
 ### 1. The interface gets out of the way
-Zero ego means the design never competes with the science. Chrome recedes as the reader goes deeper ([PROPOSED-GUIDELINES G2](design-patterns/PROPOSED-GUIDELINES.md)); navigation stays permanently short and resists link-creep ([DESIGN-POLICIES, nav cap](DESIGN-POLICIES.md)). The most useful website is the one you stop noticing.
+Zero ego means the design never competes with the science. Chrome recedes as the reader goes deeper ([PROPOSED-GUIDELINES G2](../planning/PROPOSED-GUIDELINES.md)); navigation stays permanently short and resists link-creep ([DESIGN-POLICIES, nav cap](DESIGN-POLICIES.md)). The most useful website is the one you stop noticing.
 
 ### 2. No metrics, no gamification, no dark patterns
 "Answering only to researchers" is literal: arXiv shows **no view counts, download counts, or citation counts** on public pages, and does not rank or promote papers ([DESIGN-POLICIES, public pages](DESIGN-POLICIES.md)). We don't manufacture urgency, we don't farm attention, and we keep toasts/notifications near zero ([z-layer values note](DESIGN-POLICIES.md)). If a feature's job is to drive engagement rather than serve a research task, it doesn't belong.
 
 ### 3. Lighter than the establishment
-The light-side metaphor is built into the palette: warm Repository Brown and light tints where commercial publishers go navy-and-corporate. Open Blue (public) and Access Lime (internal) are bright, not somber. The visual lightness *is* the positioning — see [color-mapping.md](design-patterns/color-mapping.md).
+The light-side metaphor is built into the palette: warm Repository Brown and light tints where commercial publishers go navy-and-corporate. Open Blue (public) and Access Lime (internal) are bright, not somber. The visual lightness *is* the positioning — see [color-mapping.md](color-mapping.md).
 
 ### 4. Readable by people and machines, equally
 "Best-in-class for readability" includes machines: clean semantic HTML, real headings and landmarks, content present before JavaScript runs ([progressive enhancement policy](DESIGN-POLICIES.md)). Co-equal HTML and PDF formats serve the same goal. *(Open strategic question: whether to move from co-equal to HTML-first — see G2. A brand decision waiting on leadership, not a design-system one.)*
@@ -52,7 +52,7 @@ The light-side metaphor is built into the palette: warm Repository Brown and lig
 "The light side" and "open to all" mean WCAG 2.1 AA is the legal floor (the Accessible Canada Act) and 2.2 AA is the target we build toward — spoken math, keyboard-reachable everything, forced-colors and reduced-motion support, JS-off usability. The accessibility rules in [DESIGN-POLICIES.md](DESIGN-POLICIES.md) are the brand made concrete.
 
 ### 6. Honest, plainspoken copy — with a wink
-UI text is direct and never overclaims (the [feedback changelog](mockups/FEEDBACK-CHANGELOG.md) is a good model: "this is a prototype," "open for discussion"). The mischief lives in small, optional places — the smileybones, a dry empty state — never in anything load-bearing or anything a stressed researcher has to parse.
+UI text is direct and never overclaims (the [feedback changelog](../mockups/FEEDBACK-CHANGELOG.md) is a good model: "this is a prototype," "open for discussion"). The mischief lives in small, optional places — the smileybones, a dry empty state — never in anything load-bearing or anything a stressed researcher has to parse.
 
 ### 7. Built to last by a small team
 arXiv is daily infrastructure maintained by a very small team. Designs must be **low-maintenance**: no patterns that require manual upkeep, no per-paper hand-tuning, citation formats generated from metadata ([DESIGN-POLICIES](DESIGN-POLICIES.md)). Durable and boring-where-it-counts beats clever-and-fragile. This too is "zero ego."

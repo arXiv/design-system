@@ -56,7 +56,7 @@ Retired from body-text use — fails 4.5:1 on white. Kept as a brand reference c
 
 ## Decisions made — Status / alert colors
 
-A shared four-state semantic palette (success, info, warning, error/failure) driving a token-based `.ds-alert` component, light + dark. Promoted from `arxiv-mockups/design-patterns/alert-styles.html` (2026-05-28). Full rationale + the dark-mode table live in `../color-mapping.md`.
+A shared four-state semantic palette (success, info, warning, error/failure) driving a token-based `.ds-alert` component, light + dark. Promoted from `arxiv-mockups/docs/alert-styles.html` (2026-05-28). Full rationale + the dark-mode table live in `../color-mapping.md`.
 
 The full four-state table (light + dark bg / border / text, with contrast ratios) is single-sourced in [`../color-mapping.md`](../color-mapping.md) → *Status & alert colors — shared*; not duplicated here.
 
@@ -74,7 +74,7 @@ Session mockup: `../../mockups/admin-paper-detail.html`. Codified in the files n
 
 - **Spacing scale** — `--space-1`…`--space-12` added to `design-system.css`; scale + proximity rule in `DESIGN-POLICIES.md` (Spacing).
 - **Layout & content width** — content-driven, not audience-driven (measure for text; shell width by density). In `DESIGN-POLICIES.md` (Layout and content width).
-- **Versions** — context + current text-link treatment in `../../CONTEXT.md` (Versions); stale filled "version pills" retired in `../color-mapping.md`. *Pending:* a proper `version-nav` pattern page covering the one-version → many-versions spectrum on both surfaces.
+- **Versions** — context + current text-link treatment in `../../README.md` (Versions); stale filled "version pills" retired in `../color-mapping.md`. *Pending:* a proper `version-nav` pattern page covering the one-version → many-versions spectrum on both surfaces.
 - **Read-only vs editable cards** — `card-styles.html` now documents the editable "section card" alongside the read-only `.info-card`, and the deliberate visual distinction. *Pending:* extract the section-card CSS into `design-system.css`.
 - **Form layout + category editor** — documented in `form-styles.html` (Form layout): top-aligned labels, typographic grouping, content-matched field widths, standardized action bar. *Pending:* interactive demos + extracting the category-editor / form-field classes into `design-system.css`.
 - **Nav selected state** — reuses the existing active/pressed convention (tint fill + darkened text, from the `--sec-bg` ladder), not a bespoke white pill. No new rule needed.

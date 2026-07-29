@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Versions — arXiv Design System</title>
+  <link rel="stylesheet" href="internal/design-system.css">
+  <style>
+    /* ── Component reference page. Written spec: README.md (Versions) and
+       color-mapping.md (Version link rows). Reference implementation:
+       mockups/abstract-redesign.html (the date row + version links + amber
+       warning shown here mirror it). Page chrome uses literal hex so it is
+       never mistaken for part of the system; the version affordances use
+       real tokens (--link, --text, --grey, --warning-*). ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif; color: #1c1a17; background: #f9f7f7; margin: 0; font-size: 14px; line-height: 1.5; }
+    .page { max-width: 1080px; margin: 0 auto; padding: 28px 28px 80px; }
+    .page-header { margin: 28px 0 40px; padding-bottom: 20px; border-bottom: 3px solid #c4d82e; }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p { margin: 0; color: #6b6459; font-size: 13px; max-width: 800px; line-height: 1.55; }
+    .page-header code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; color: #1f5e96; }
+
+    .section { margin-bottom: 44px; }
+    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+    .section-desc { font-size: 13px; color: #6b6459; margin: 0 0 18px; max-width: 800px; line-height: 1.55; }
+
+    .demo { background: #fff; border: 1px solid #ddd8d2; border-radius: 8px; padding: 22px 24px; margin-bottom: 14px; max-width: 860px; }
+    .demo-cap { font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif; font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: #8b8680; margin: 0 0 12px; }
+
+    /* ── Date row + inline version links (mirrors abstract-redesign) ── */
+    .vd-date { font-size: 0.9rem; color: var(--grey, #6b6459); margin: 0; }
+    .vd-date time { color: inherit; }
+    .vd-ver { font-family: var(--font-mono, "IBM Plex Mono", ui-monospace, monospace); font-size: 0.9rem; margin-left: 6px; }
+    .vd-ver.is-other { color: var(--link, #1565c0); text-decoration: underline; text-underline-offset: 3px; }
+    .vd-ver.is-other:hover { color: var(--link-hover, #1050a0); }
+    .vd-ver.is-current { color: var(--text, #1c1a17); font-weight: 700; }
+    .vd-ver:focus-visible { outline: 2px solid var(--link, #1565c0); outline-offset: 2px; border-radius: 2px; }
+    .vd-verwrap { font-variant-numeric: tabular-nums; }
+
+    /* ── Older-version warning — amber Warning tokens, compact single row.
+       In production this is the .ds-alert warning variant; styled locally
+       here so the pattern renders identically without the shared sheet. ── */
+    .vd-warn { display: flex; align-items: flex-start; gap: 10px; max-width: 640px; margin: 14px 0 0;
+      background: var(--warning-bg, #fff8e1); border: 1px solid var(--warning-border, #e8b800);
+      border-radius: 4px; padding: 10px 14px; font-size: 0.8125rem; color: var(--warning-fg, #7a5c00); }
+    .vd-warn-icon { flex-shrink: 0; width: 18px; height: 18px; color: #b88c00; margin-top: 1px; }
+    .vd-warn p { margin: 0; line-height: 1.5; }
+    .vd-warn a { color: var(--warning-fg, #7a5c00); font-weight: 600; text-decoration: underline; }
+    .vd-warn a:hover { color: #5a4400; }
+
+    .rule-card { background: #fff; border: 1px solid #ddd8d2; border-radius: 8px; padding: 16px 20px; margin-bottom: 12px; max-width: 800px; }
+    .rule-card h3 { font-size: 14px; margin: 0 0 6px; }
+    .rule-card p { font-size: 13px; color: #6b6459; margin: 0; line-height: 1.55; }
+    .rule-card code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; background: #f0eeec; padding: 1px 5px; border-radius: 3px; color: #1c1a17; }
+
+    .who { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 860px; }
+    @media (max-width: 640px) { .who { grid-template-columns: 1fr; } }
+    .who-card { background: #fff; border: 1px solid #ddd8d2; border-radius: 8px; padding: 16px 18px; }
+    .who-card h3 { font-size: 13px; margin: 0 0 4px; }
+    .who-card p { font-size: 12.5px; color: #6b6459; margin: 0; line-height: 1.5; }
+
+    .is-sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+    .docs-nav { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; background: #f0eeec; border-bottom: 1px solid #ddd8d2; padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: #1c1a17; text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: #1565c0; }
+    .docs-nav a:not(.docs-nav-brand) { color: #6b6459; text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: #1c1a17; text-decoration: underline; }
+    .docs-nav a:focus-visible { outline: 2px solid #1565c0; outline-offset: 2px; border-radius: 2px; }
+    .docs-nav .is-here { color: #1c1a17; font-weight: 600; }
+    .docs-nav-spacer { flex: 1; }
+    .docs-nav .docs-nav-mock { color: #8b8680; font-size: 12px; }
+  </style>
+</head>
+<body>
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
+  <a href="colors.html">Colors</a>
+  <a href="typography.html">Typography</a>
+  <a href="spacing.html">Spacing</a>
+  <a href="buttons.html">Buttons</a>
+  <a href="alerts.html">Alerts</a>
+  <span class="is-here" aria-current="page">Versions</span>
+  <a href="organizing-content.html">Organizing content</a>
+  <a href="../doc.html?src=docs/DESIGN-POLICIES.md">Policies</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="docs-nav-mock">Mockups:</span>
+  <a href="../mockups/abstract-redesign.html">Abstract</a>
+  <a href="../mockups/merged-abstract-reader.html">Reader</a>
+</nav>
+<div class="page">
+  <header class="page-header">
+    <h1>Versions</h1>
+    <p>
+      How a paper shows its submission date, its current revision date, and its version history —
+      below the title, on the abstract page and in staff tools. Prior versions are inline text
+      links; the version being viewed is bold, not a link. The same treatment scales from one
+      version to twenty. Reference implementation:
+      <a href="../mockups/abstract-redesign.html">abstract-redesign.html</a>. Spec:
+      <a href="../doc.html?src=README.md">README.md</a> (Versions).
+    </p>
+  </header>
+
+  <!-- ══════════ EXAMPLES FIRST ══════════ -->
+
+  <section class="section">
+    <h2 class="section-title">One version — near-silent</h2>
+    <p class="section-desc">
+      The common case: most papers have a single version. Show the submission date and nothing
+      else — no "revised", no "(this version)", no version links to disambiguate.
+    </p>
+    <div class="demo">
+      <p class="demo-cap">Abstract page · single version</p>
+      <p class="vd-date">Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">A few versions — viewing the latest</h2>
+    <p class="section-desc">
+      Once a paper has more than one version, the date row carries both dates:
+      <strong>Submitted</strong> is always the v1 date; <strong>Revised … (this version)</strong>
+      is the date of the version you're reading. Prior versions follow as Link&nbsp;Blue links; the
+      current one is bold, not a link, and carries <code>aria-current</code>.
+    </p>
+    <div class="demo">
+      <p class="demo-cap">Viewing v3 of 3 (latest)</p>
+      <p class="vd-date vd-verwrap">
+        Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>
+        <span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>
+        Revised <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time> (this version)
+        &nbsp;
+        <a href="#v1" class="vd-ver is-other" aria-label="View version 1">v1</a>
+        <a href="#v2" class="vd-ver is-other" aria-label="View version 2">v2</a>
+        <span class="vd-ver is-current" aria-current="true" aria-label="Version 3, current version">v3</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Many versions — unbroken</h2>
+    <p class="section-desc">
+      The date grammar is identical no matter how many versions exist — only the inline link list
+      grows, wrapping cleanly at 20+. No separate "many" component, no dropdown, no internal scroll.
+      Monospace with tabular figures keeps the numbers aligned as they wrap.
+    </p>
+    <div class="demo">
+      <p class="demo-cap">Viewing v24 of 24 (latest)</p>
+      <p class="vd-date vd-verwrap">
+        Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>
+        <span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>
+        Revised <time datetime="2026-06-30">30&nbsp;Jun&nbsp;2026</time> (this version)
+        &nbsp;
+        <a href="#" class="vd-ver is-other" aria-label="View version 1">v1</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 2">v2</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 3">v3</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 4">v4</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 5">v5</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 6">v6</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 7">v7</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 8">v8</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 9">v9</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 10">v10</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 11">v11</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 12">v12</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 13">v13</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 14">v14</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 15">v15</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 16">v16</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 17">v17</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 18">v18</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 19">v19</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 20">v20</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 21">v21</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 22">v22</a>
+        <a href="#" class="vd-ver is-other" aria-label="View version 23">v23</a>
+        <span class="vd-ver is-current" aria-current="true" aria-label="Version 24, current version">v24</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Viewing an older version</h2>
+    <p class="section-desc">
+      When the reader is on anything but the latest, two things change. The date row reads
+      <strong>Submitted … (this version)</strong> on v1 — v1 <em>is</em> the submission, so there's no
+      "revised" — and an amber warning appears, pointing to the current version. The warning uses the
+      shared Warning color (never white, never an error red) and stays to one compact row.
+    </p>
+    <div class="demo">
+      <p class="demo-cap">Viewing v1, latest is v3</p>
+      <p class="vd-date vd-verwrap">
+        Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time> (this version)
+        &nbsp;
+        <span class="vd-ver is-current" aria-current="true" aria-label="Version 1, the version you are viewing">v1</span>
+        <a href="#v2" class="vd-ver is-other" aria-label="View version 2">v2</a>
+        <a href="#v3" class="vd-ver is-other" aria-label="View version 3">v3</a>
+      </p>
+      <div class="vd-warn" role="status">
+        <svg class="vd-warn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+          <path d="M12 9v4"/><path d="M12 17h.01"/>
+        </svg>
+        <p><strong>You're viewing version 1.</strong> A newer version is available &mdash; <a href="#v3">version 3, revised 24&nbsp;Apr&nbsp;2026</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ RULES ══════════ -->
+
+  <section class="section">
+    <h2 class="section-title">Rules that travel with the pattern</h2>
+    <div class="rule-card">
+      <h3>Two dates, one grammar</h3>
+      <p><strong>Submitted [v1 date]</strong> is always shown. Add <strong>· Revised [this version's date] (this version)</strong> only once a paper has more than one version. "(this version)" attaches to whichever date belongs to the version being viewed — so on v1 it reads "Submitted … (this version)", on a later revision it reads "Revised … (this version)". Dates use <code>&lt;time datetime&gt;</code>.</p>
+    </div>
+    <div class="rule-card">
+      <h3>Current is bold and <code>aria-current</code>, never color alone</h3>
+      <p>The version being viewed is distinguished by weight and by <code>aria-current</code> — two non-color signals — so it survives grayscale, forced-colors, and screen readers (WCAG 1.4.1). It is deliberately not a link: you can't navigate to where you already are.</p>
+    </div>
+    <div class="rule-card">
+      <h3>Prior versions are inline links, so they're underlined</h3>
+      <p>They sit in a run of identifier text, so link-vs-text contrast can't carry them alone — underlines are mandatory (DESIGN-POLICIES, link underlines). Link Blue <code>--link</code>. Each carries an explicit <code>aria-label</code> ("View version 1").</p>
+    </div>
+    <div class="rule-card">
+      <h3>Older-version warning: amber, compact, advisory</h3>
+      <p>Render it only when the version being viewed is not the latest. Use the shared <strong>Warning</strong> tokens (<code>--warning-bg</code> / <code>--warning-border</code> / <code>--warning-fg</code>) — amber says "advisory," not error-red and not a blank white box — with the alert-triangle icon inline (never on its own line) and the text to one row. In production this is the <code>.ds-alert</code> warning variant. It links straight to the current version.</p>
+    </div>
+    <div class="rule-card">
+      <h3>One treatment across the whole spectrum</h3>
+      <p>Don't branch into a "few versions" chip row and a "many versions" dropdown. The same inline list wraps from 1 to 20+, and the date grammar never changes. Version numbers render in <code>--font-mono</code> (already tabular) or with <code>font-variant-numeric: tabular-nums</code> so they don't jitter as the list wraps.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ CONTEXT (read more, if you're interested) ══════════ -->
+
+  <section class="section">
+    <h2 class="section-title">Why it's designed this way</h2>
+    <p class="section-desc">
+      Background, if you want it. The affordance has to disappear for the common case and stay
+      unbroken for the rare one — that constraint is what shapes everything above.
+    </p>
+    <div class="who">
+      <div class="who-card">
+        <h3>Who cares about versions</h3>
+        <p>Authors, publishers, and overlay journals — provenance, and citing or linking a <em>specific</em> version. For them the version and its date must be explicit and addressable.</p>
+      </div>
+      <div class="who-card">
+        <h3>Who doesn't</h3>
+        <p>Most readers. They want the latest and go straight to reading. The version affordance must never tax them for attention they didn't ask to spend.</p>
+      </div>
+      <div class="who-card">
+        <h3>The distribution is lopsided</h3>
+        <p>The vast majority of papers have one version; some have two or three; a tiny minority have many. Design for the whole spectrum with one treatment.</p>
+      </div>
+      <div class="who-card">
+        <h3>So the rule is</h3>
+        <p>Near-silent at one version, scannable at a few, unbroken at 20+ — and always answering the two questions that matter: when was it first submitted, and when was the version I'm reading revised.</p>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>
