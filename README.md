@@ -1,39 +1,47 @@
 # arXiv Design System
 
-arXiv's DNA for product design and frontend development.
+arXiv's DNA for product design and frontend development: design tokens, component specs, typography and color decisions, accessibility requirements, and interactive pattern references. These define the visual language production code should follow — they are not production code themselves.
 
-A proto-design-system defining design tokens, component specifications, and accessibility requirements for arXiv's frontend. Covers both internal tools (arXiv Check, Admin Console) and public-facing pages (arxiv.org, abstract pages).
+Browse it rendered: **https://arxiv.github.io/design-system/**
 
-## Quick start
+## Two surfaces, shared foundations
 
-Open any `.html` file in `design-patterns/internal/` in a browser — no build step needed.
+- **Public pages** (arxiv.org, abstract pages, HTML papers) — clean, fast, brown-and-blue. Primary action color: **Open Blue**.
+- **Internal tools** (arXiv Check, Admin Console) — warm, utilitarian. Primary action color: **Access Lime**.
+- The accent signals which context you're in; the two are never mixed.
 
-For design decisions and guidelines, start with:
-- `CONTEXT.md` — project overview, key decisions, directory guide
-- `DESIGN-POLICIES.md` — hard constraints for all frontend work
-- `design-patterns/typography.md` — font families, self-hosting plan
-- `design-patterns/color-mapping.md` — full palette, internal vs public color usage
-
-## Structure
+## Directory guide
 
 ```
-design-patterns/   canonical tokens, components, and demo pages (internal/ + public/)
-mockups/           in-progress whole-page mockups (preview, NOT canonical)
-audits/            visual, labs, and component audit runs
+docs/           THE documentation — rules, tokens, pattern pages, stylesheets
+                (docs/public/ and docs/internal/ hold per-surface patterns + CSS)
+mockups/        work-in-progress page explorations — never a build reference
+verification/   evidence — audits, design reviews, agent test results
+planning/       backlog (NEXT-STEPS.md), proposals, decision logs
+index.html      the GitHub Pages landing page · doc.html renders .md files on the site
 ```
 
-See [`CONTEXT.md`](CONTEXT.md) for the full annotated directory guide.
+## Start here
 
-## Mockups vs. canonical patterns
+- **Designers / product owners** — open the pattern pages in `docs/` in a browser (no build step); read `docs/BRAND.md` for the why.
+- **Developers** — `docs/DESIGN-POLICIES.md` holds the hard constraints; `docs/public/design-system.css` and `docs/internal/design-system.css` hold the authoritative tokens and component CSS (plain CSS custom properties — consumable from Flask/Jinja, React, PHP, or static HTML).
+- **AI coding agents** — read [`AGENTS.md`](AGENTS.md). It has the reading order, a routing table, and the guardrails. CLAUDE.md / GEMINI.md / copilot-instructions are pointers to it.
 
-`design-patterns/` is the **canonical** library — tokens, components, and demo pages that have been validated and are intended for production adoption. Anything in there is fair game to reference from production code.
+## Key decisions (short version)
 
-`mockups/` is the **preview surface** — whole-page work-in-progress for stakeholder review. Patterns that stabilize in the mockups get promoted to `design-patterns/public/` and *then* are considered canonical. Mockups themselves are not promised to remain stable.
+- **Typography:** IBM Plex family, self-hosted. No external font services, ever.
+- **Color:** Repository Brown + warm greys as neutrals; Link Blue / Archival Blue / Open Blue; Access Lime is staff-only. Campus Red (`#b31b1b`) is heritage — logo X only.
+- **Accessibility:** WCAG 2.1 AA is the legal floor (Accessible Canada Act); 2.2 AA is the working target. It's a brand value, not a checkbox.
+- **No metrics on public pages:** no view counts, downloads, or citation counts — arXiv does not rank or promote papers.
+- **Cornell spinout:** Cornell branding is being removed; the black single-bar header (phase 1) transitions to Repository Brown (phase 2).
+- **Small team:** nothing that needs manual upkeep survives review.
 
-When this repo is served via GitHub Pages, both surfaces are visible at the same URL — that's deliberate (stakeholders see component demos and page mockups in one place) — but the README in each folder makes the distinction clear.
+Design decisions are grounded in user research — the 2025 annual survey (9,419 respondents), ~180 UX-labeled GitHub issues, 42 accessibility interviews, and the Labs audit. The recurring themes: HTML papers are first-class; the interface gets out of the way; core tasks stay obvious; the paper stays sovereign; accessibility is a floor. See `docs/BRAND.md` for how these became design principles.
 
-## Key links
+## Mockups vs. canonical
 
-- `CONTEXT.md` — full project overview and directory guide
-- `DESIGN-POLICIES.md` — hard constraints: accessibility, colors, typography, buttons, components
-- `CLAUDE.md` — entry point for AI coding agents
+Patterns are explored in `mockups/`, and **promoted into `docs/`** when they stabilize — only then are they canonical and fair game for production. Both are visible on the published site (deliberate — stakeholders see demos and mockups in one place); the folder READMEs mark the difference.
+
+## License
+
+MIT — see [LICENSE](LICENSE).

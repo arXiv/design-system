@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>arXiv Reader Header — Component Reference</title>
+  <link rel="stylesheet" href="design-system.css">
+  <style>
+    /* ── Page chrome (reference doc only). This page CONSUMES
+       design-system.css — the rendered components read straight from
+       the stylesheet. ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: var(--arxiv-font-sans);
+      color: var(--arxiv-ink);
+      background: var(--arxiv-warm-wash);
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .page { max-width: 980px; margin: 0 auto; padding: 48px 28px 80px; }
+    .back-link { display: inline-block; margin-bottom: 20px; font-size: 13px; color: var(--arxiv-link-blue); text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+    .page-header { margin-bottom: 44px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p { margin: 0; color: var(--arxiv-grey); font-size: 13px; max-width: 720px; }
+    .section { margin-bottom: 48px; }
+    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+    .section-desc { font-size: 13px; color: var(--arxiv-grey); margin: 0 0 20px; max-width: 720px; line-height: 1.55; }
+    .live-demo { background: #fff; border: 1px solid var(--arxiv-card-grey); border-radius: 8px; overflow: hidden; }
+    /* Sticky + fixed positioning is relaxed inside the demo cards so
+       each state renders in place. The dropdown demo positions
+       statically below its bar. */
+    .live-demo .ds-reader-header { position: relative; }
+    .live-demo .ds-toc-dropdown { position: absolute; left: 50%; transform: translateX(-50%); }
+    .demo-note { font-family: var(--arxiv-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-grey-ui); margin: 22px 0 10px; }
+    .demo-pad { padding: 0 0 24px; }
+    .dropdown-stage { position: relative; min-height: 360px; }
+    .usage-list { font-size: 13px; color: var(--arxiv-grey); line-height: 1.7; max-width: 720px; }
+    .usage-list code { font-family: var(--arxiv-font-mono); font-size: 12px; background: var(--arxiv-card-grey); padding: 1px 5px; border-radius: 3px; }
+
+    /* ── Shared docs nav strip (same on every design-system doc page;
+       mockups deliberately excluded — they simulate real arXiv pages
+       and stay free of docs chrome). ── */
+    .docs-nav { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-ink); text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
+    .docs-nav a:not(.docs-nav-brand) { color: var(--arxiv-grey); text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: var(--arxiv-ink); text-decoration: underline; }
+    .docs-nav a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 2px; }
+    .docs-nav .is-here { color: var(--arxiv-ink); font-weight: 600; }
+    .docs-nav-spacer { flex: 1; }
+    .docs-nav .docs-nav-mock { color: var(--arxiv-grey-ui); font-size: 12px; }
+  </style>
+</head>
+<body>
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../../index.html">arXiv Design System</a>
+  <a href="../colors.html">Colors</a>
+  <a href="../typography.html">Typography</a>
+  <a href="../spacing.html">Spacing</a>
+  <a href="../buttons.html">Buttons</a>
+  <a href="../alerts.html">Alerts</a>
+  <a href="../version-display.html">Versions</a>
+  <a href="../organizing-content.html">Organizing content</a>
+  <a href="../../doc.html?src=docs/DESIGN-POLICIES.md">Policies</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="docs-nav-mock">Mockups:</span>
+  <a href="../../mockups/abstract-redesign.html">Abstract</a>
+  <a href="../../mockups/merged-abstract-reader.html">Reader</a>
+</nav>
+<div class="page">
+
+  <header class="page-header">
+    <h1>Reader header</h1>
+    <p>
+      The HTML-reader variant of the site header (<code>.ds-reader-header</code>
+      + <code>.ds-toc-trigger</code> / <code>.ds-toc-dropdown</code> /
+      <code>.ds-reading-progress</code>). Light Card Grey — the reader is a
+      content-first surface, so the chrome recedes. Design approved
+      2026-06-11; reference implementation <code>mockups/html-redesign.html</code>.
+      The conventions this pattern embodies are written up for universality
+      review in <code>../PROPOSED-GUIDELINES.md</code>.
+    </p>
+  </header>
+
+  <section class="section">
+    <h2 class="section-title">States</h2>
+    <p class="section-desc">
+      Rest state (52px, full wordmark, labeled nav) and compact state
+      (36px — JS adds <code>.compact</code> once the reader scrolls past
+      the abstract; the same condensed grammar is reused at &le;700px
+      viewports rather than introducing a hamburger). The blue line at the
+      bottom edge is the reading-progress bar, shown mid-document here.
+    </p>
+    <div class="live-demo">
+      <div class="demo-note" style="padding: 14px 16px 0;">Rest</div>
+      <header class="ds-reader-header">
+        <div class="ds-reader-header-inner">
+          <a class="ds-reader-header-logo" href="#" aria-label="archive home">
+            <img class="ds-logo-full" src="../../mockups/images/arxiv-logo-primary-light.png" alt="archive" style="height:39px">
+            <img class="ds-logo-mark" src="../../mockups/images/arxiv-logomark-small-square.svg" alt="archive">
+          </a>
+          <div class="ds-reader-header-center">
+            <button type="button" class="ds-toc-trigger" aria-haspopup="true" aria-expanded="false">
+              <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+              <span class="ds-toc-trigger-label"><span class="ds-toc-trigger-prefix">3.1</span>Evolution of Ψ and Φ</span>
+              <svg class="ds-toc-trigger-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+          <nav class="ds-reader-header-nav" aria-label="Paper navigation">
+            <a href="#"><span class="ds-nav-label">Abstract</span></a>
+            <a href="#"><span class="ds-nav-label">PDF</span></a>
+            <span class="ds-reader-header-divider" aria-hidden="true"></span>
+            <a href="#"><span class="ds-nav-label">Source</span></a>
+          </nav>
+        </div>
+        <div class="ds-reading-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="42">
+          <div class="ds-reading-progress-fill" style="width: 42%"></div>
+        </div>
+      </header>
+
+      <div class="demo-note" style="padding: 14px 16px 0;">Compact (scrolled past the abstract, or &le;700px viewport)</div>
+      <div class="demo-pad">
+        <header class="ds-reader-header compact">
+          <div class="ds-reader-header-inner">
+            <a class="ds-reader-header-logo" href="#" aria-label="archive home">
+              <img class="ds-logo-full" src="../../mockups/images/arxiv-logo-primary-light.png" alt="archive">
+              <img class="ds-logo-mark" src="../../mockups/images/arxiv-logomark-small-square.svg" alt="archive">
+            </a>
+            <div class="ds-reader-header-center">
+              <button type="button" class="ds-toc-trigger" aria-haspopup="true" aria-expanded="false">
+                <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                <span class="ds-toc-trigger-label"><span class="ds-toc-trigger-prefix">3.1</span>Evolution of Ψ and Φ</span>
+                <svg class="ds-toc-trigger-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+            </div>
+            <nav class="ds-reader-header-nav" aria-label="Paper navigation">
+              <a href="#" title="Abstract"><span class="ds-nav-label">Abstract</span></a>
+              <a href="#" title="PDF"><span class="ds-nav-label">PDF</span></a>
+              <span class="ds-reader-header-divider" aria-hidden="true"></span>
+              <a href="#" title="Source"><span class="ds-nav-label">Source</span></a>
+            </nav>
+          </div>
+          <div class="ds-reading-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="42">
+            <div class="ds-reading-progress-fill" style="width: 42%"></div>
+          </div>
+        </header>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">TOC dropdown</h2>
+    <p class="section-desc">
+      Click the trigger to open. The dropdown hangs from the header's
+      bottom edge (no top border or radius) and shares the tint family
+      with the popover panels — all arXiv-layer surfaces read as related.
+      The current section carries the Link Blue left accent. At &le;700px
+      it becomes a full-screen overlay with a prominent close button and
+      44px touch targets.
+    </p>
+    <div class="live-demo">
+      <div class="dropdown-stage">
+        <header class="ds-reader-header">
+          <div class="ds-reader-header-inner">
+            <a class="ds-reader-header-logo" href="#" aria-label="archive home">
+              <img class="ds-logo-full" src="../../mockups/images/arxiv-logo-primary-light.png" alt="archive" style="height:39px">
+              <img class="ds-logo-mark" src="../../mockups/images/arxiv-logomark-small-square.svg" alt="archive">
+            </a>
+            <div class="ds-reader-header-center">
+              <button type="button" class="ds-toc-trigger" id="demo-toc-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="demo-toc-dropdown">
+                <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                <span class="ds-toc-trigger-label">Contents</span>
+                <svg class="ds-toc-trigger-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+            </div>
+            <nav class="ds-reader-header-nav" aria-label="Paper navigation">
+              <a href="#"><span class="ds-nav-label">Abstract</span></a>
+              <a href="#"><span class="ds-nav-label">PDF</span></a>
+            </nav>
+          </div>
+        </header>
+        <div class="ds-toc-dropdown" id="demo-toc-dropdown" role="region" aria-label="Table of contents" hidden style="top: 52px;">
+          <div class="ds-toc-dropdown-header">
+            <span class="ds-toc-dropdown-title">Contents</span>
+            <button type="button" class="ds-toc-dropdown-close" id="demo-toc-close" aria-label="Close menu">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
+          <ul class="ds-toc-dropdown-list">
+            <li class="ds-toc-dropdown-item" data-kind="abstract"><a class="ds-toc-dropdown-link" href="#"><span class="ds-toc-text">Abstract</span></a></li>
+            <li class="ds-toc-dropdown-item"><a class="ds-toc-dropdown-link" href="#"><span class="ds-toc-num">1</span><span class="ds-toc-text">Introduction</span></a></li>
+            <li class="ds-toc-dropdown-item"><a class="ds-toc-dropdown-link" href="#"><span class="ds-toc-num">2</span><span class="ds-toc-text">Setup</span></a></li>
+            <li class="ds-toc-dropdown-item" data-depth="2"><a class="ds-toc-dropdown-link" href="#"><span class="ds-toc-num">2.1</span><span class="ds-toc-text">Background equations</span></a></li>
+            <li class="ds-toc-dropdown-item is-current" data-depth="2"><a class="ds-toc-dropdown-link" href="#"><span class="ds-toc-num">2.2</span><span class="ds-toc-text">Perturbed equations</span></a></li>
+            <li class="ds-toc-dropdown-item"><a class="ds-toc-dropdown-link" href="#"><span class="ds-toc-num">3</span><span class="ds-toc-text">Evolution of gauge-invariant variables</span></a></li>
+            <li class="ds-toc-dropdown-item" data-kind="appendix"><a class="ds-toc-dropdown-link" href="#"><span class="ds-toc-num">A</span><span class="ds-toc-text">Evolution equations</span></a></li>
+            <li class="ds-toc-dropdown-item" data-kind="bibliography"><a class="ds-toc-dropdown-link" href="#"><span class="ds-toc-text">References</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Behavior contract</h2>
+    <ul class="usage-list">
+      <li><strong>Scroll offset:</strong> any page using this header sets <code>html { scroll-padding-top: 80px }</code> — closes the 12-filing anchor-under-header bug class (PROPOSED-GUIDELINES.md G1).</li>
+      <li><strong>Compact trigger:</strong> JS adds <code>.compact</code> after the reader scrolls past the abstract; removed at top. Never toggled on scroll direction alone.</li>
+      <li><strong>Trigger label</strong> shows the current section (IntersectionObserver) — passive orientation, <em>no</em> <code>aria-live</code> (G9). At rest: "Contents".</li>
+      <li><strong>Dropdown</strong> closes on outside-click, Esc (focus returns to trigger), and item activation. Current item scrolled into view on open.</li>
+      <li><strong>No-JS:</strong> trigger and progress bar hidden; the document's native TOC stays available to AT. Enhancement never carries content (G8).</li>
+      <li><strong>Reading progress</strong> is position chrome, never an engagement metric. <code>aria-valuenow</code> updates on scroll; transitions disabled under <code>prefers-reduced-motion</code> (G7).</li>
+      <li><strong>Reading-time estimates</strong> must exclude math, figures, and the bibliography from word counts.</li>
+    </ul>
+  </section>
+</div>
+<script>
+  // Demo-only wiring for the dropdown example.
+  (function() {
+    var t = document.getElementById('demo-toc-trigger');
+    var d = document.getElementById('demo-toc-dropdown');
+    var c = document.getElementById('demo-toc-close');
+    function setOpen(open) {
+      d.hidden = !open;
+      t.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (!open) t.focus();
+    }
+    t.addEventListener('click', function() { setOpen(d.hidden); });
+    c.addEventListener('click', function() { setOpen(false); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') setOpen(false); });
+    document.addEventListener('click', function(e) {
+      if (!d.hidden && !d.contains(e.target) && !t.contains(e.target)) setOpen(false);
+    });
+  })();
+</script>
+</body>
+</html>

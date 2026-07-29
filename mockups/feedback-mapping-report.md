@@ -87,7 +87,7 @@ The mockup of the combined abstract page and HTML papers page necessarily incorp
 | **[AUXDH](https://arxiv-org.atlassian.net/jira/software/c/projects/AUXDH/boards/80)** | UX Data Hub Jira project ~2019→present | ~2,950 observations, 14 themes |
 | **[A11Y Interviews](https://cornell.box.com/s/i388v9x90md4mqawuen1o601bm6bjxdu)** | Mediated interviews with AT users and experts | 42  interviews, Jul 2022–Jun 2023 |
 | **[Github issues](https://github.com/arXiv/html_feedback/issues)** | GitHub issues submitted by HTML paper readers | 107 relevant closed issues, 72 open |
-| **[Labs](https://github.com/arXiv/design-system/blob/master/audits/audit-labs.md)** | Functional audit of 16 arXiv Labs integrations | Single report, Apr 2026  |
+| **[Labs](https://github.com/arXiv/design-system/blob/master/verification/audits/audit-labs.md)** | Functional audit of 16 arXiv Labs integrations | Single report, Apr 2026  |
 | **[Overlay Journals](https://docs.google.com/document/d/1FOFxM6pqDFMdMTGOoX65c47rieHPGOcqKxhl3gCMo0A/edit?usp=sharing)** | Interview-based report on Overlay Journals and arXiv | Jan 2025 |
 
 > One caution: The A11y interviews **pre-date arXiv's HTML papers launch**. Many feature asks are now met and the tech landscape has changed profoundly. A new round of research is called for.

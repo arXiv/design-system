@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>arXiv Public Alert Styles — Component Reference</title>
+  <link rel="stylesheet" href="design-system.css">
+  <style>
+    /* ── Page chrome (reference doc only). Mirrors the layout of
+       internal/alert-styles.html for consistency, using the public
+       --arxiv- tokens. This page CONSUMES design-system.css — it never
+       redefines .ds-alert or the status tokens; the rendered alerts and the
+       value table read straight from the stylesheet. Light/dark follows the
+       OS, matching the canonical alert tokens (the first dark-aware tokens
+       on the public side). ── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: var(--arxiv-font-sans);
+      color: var(--arxiv-ink);
+      background: var(--arxiv-warm-wash);
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .page { max-width: 980px; margin: 0 auto; padding: 48px 28px 80px; }
+
+    .back-link { display: inline-block; margin-bottom: 20px; font-size: 13px; color: var(--arxiv-link-blue); text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+
+    .page-header { margin-bottom: 44px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p { margin: 0; color: var(--arxiv-grey); font-size: 13px; max-width: 720px; }
+    .mode-note { margin-top: 10px; font-size: 12px; color: var(--arxiv-grey-ui); }
+
+    .section { margin-bottom: 48px; }
+    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+    .section-desc { font-size: 13px; color: var(--arxiv-grey); margin: 0 0 20px; max-width: 720px; line-height: 1.55; }
+
+    .live-demo { background: #fff; border: 1px solid var(--arxiv-card-grey); border-radius: 8px; padding: 22px; }
+    .demo-stack > * + * { margin-top: 14px; }
+    .demo-sub { font-family: var(--arxiv-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-grey-ui); margin: 22px 0 10px; }
+
+    .token-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--arxiv-card-grey); border-radius: 8px; overflow: hidden; font-size: 13px; }
+    .token-table th { background: var(--arxiv-card-grey); text-align: left; padding: 10px 14px; font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-grey); border-bottom: 1px solid var(--arxiv-card-grey); }
+    .token-table td { padding: 10px 14px; border-bottom: 1px solid var(--arxiv-card-grey); vertical-align: middle; }
+    .token-table tr:last-child td { border-bottom: none; }
+    .token-table td.state-name { font-weight: 700; color: var(--arxiv-grey); background: #faf8f7; white-space: nowrap; }
+    .swatch { display: inline-block; width: 18px; height: 18px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.18); vertical-align: middle; margin-right: 6px; }
+    .ratio-pass { font-weight: 700; }
+    .ratio-fail { font-weight: 700; color: #c62828; }
+
+    code { font-family: var(--arxiv-font-mono); font-size: 12px; background: var(--arxiv-card-grey); padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
+    .code-block { background: var(--arxiv-ink); color: #f0eeec; border-radius: 6px; padding: 14px 16px; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.6; overflow-x: auto; margin: 0; }
+
+    .callout { font-size: 13px; color: var(--arxiv-ink); margin-top: 16px; padding: 12px 16px; background: #fff; border: 1px solid var(--arxiv-card-grey); border-left: 4px solid var(--arxiv-open-blue); border-radius: 0 4px 4px 0; line-height: 1.6; }
+    .callout + .callout { margin-top: 10px; }
+
+    /* Dark chrome — OS-driven, matching the canonical alert tokens. */
+    @media (prefers-color-scheme: dark) {
+      body { background: #1c1a17; color: #f0eeec; }
+      .section-title { color: #f0eeec; }
+      .section-desc, .page-header p { color: #b0aba6; }
+      .back-link { color: #64b5f6; }
+      .live-demo { background: #252118; border-color: #3a3530; }
+      .token-table { background: #252118; border-color: #3a3530; }
+      .token-table th { background: #302c28; color: #b0aba6; border-color: #3a3530; }
+      .token-table td { border-color: #3a3530; color: #f0eeec; }
+      .token-table td.state-name { background: #2a2520; color: #b0aba6; }
+      .callout { background: #252118; border-color: #3a3530; color: #f0eeec; }
+      .callout strong { color: #f0eeec; }
+      code { background: #302c28; color: #f0eeec; }
+    }
+
+    /* ── Shared docs nav strip (same on every design-system doc page;
+       mockups deliberately excluded — they simulate real arXiv pages
+       and stay free of docs chrome). ── */
+    .docs-nav { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-ink); text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
+    .docs-nav a:not(.docs-nav-brand) { color: var(--arxiv-grey); text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: var(--arxiv-ink); text-decoration: underline; }
+    .docs-nav a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 2px; }
+    .docs-nav .is-here { color: var(--arxiv-ink); font-weight: 600; }
+    .docs-nav-spacer { flex: 1; }
+    .docs-nav .docs-nav-mock { color: var(--arxiv-grey-ui); font-size: 12px; }
+  </style>
+</head>
+<body>
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../../index.html">arXiv Design System</a>
+  <a href="../colors.html">Colors</a>
+  <a href="../typography.html">Typography</a>
+  <a href="../spacing.html">Spacing</a>
+  <a href="../buttons.html">Buttons</a>
+  <a href="../alerts.html">Alerts</a>
+  <a href="../version-display.html">Versions</a>
+  <a href="../organizing-content.html">Organizing content</a>
+  <a href="../../doc.html?src=docs/DESIGN-POLICIES.md">Policies</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="docs-nav-mock">Mockups:</span>
+  <a href="../../mockups/abstract-redesign.html">Abstract</a>
+  <a href="../../mockups/merged-abstract-reader.html">Reader</a>
+</nav>
+  <div class="page">
+
+    <a class="back-link" href="button-styles.html">← Button Styles reference</a>
+
+    <header class="page-header">
+      <h1>Public Alert Styles</h1>
+      <p>The <code>.ds-alert</code> status banner — success, info, warning, error/failure — rendered live from the public
+      <code>design-system.css</code>. Every color in the table below is read from the stylesheet at runtime, so this page
+      can't fall out of sync with the tokens.</p>
+      <p class="mode-note">Light/dark follows your system setting — the alert tokens are the first dark-aware tokens on the
+      public side, so switch your OS appearance and reload to preview dark.</p>
+    </header>
+
+    <section class="section">
+      <h2 class="section-title">Live examples</h2>
+      <p class="section-desc">Rendered with the real <code>.ds-alert</code> classes. Each state pairs a distinct icon
+      shape with a leading word, so it never relies on color alone (WCAG 1.4.1).</p>
+
+      <div class="live-demo">
+        <div class="demo-stack">
+
+          <div class="ds-alert ds-alert-success" role="status">
+            <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            <div class="ds-alert-content">
+              <p class="ds-alert-title">Preferences saved</p>
+              <p>You'll get a weekly digest of new papers in your selected categories.</p>
+            </div>
+          </div>
+
+          <div class="ds-alert ds-alert-info" role="status">
+            <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <div class="ds-alert-content">
+              <p class="ds-alert-title">Viewing an older version</p>
+              <p>This is version v1. A newer version exists — <a href="#">see the latest version</a>.</p>
+            </div>
+          </div>
+
+          <div class="ds-alert ds-alert-warning" role="alert">
+            <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+            <div class="ds-alert-content">
+              <p class="ds-alert-title">Withdrawn paper</p>
+              <p>This submission was withdrawn by the authors and is shown for the historical record.</p>
+            </div>
+          </div>
+
+          <div class="ds-alert ds-alert-error" role="alert">
+            <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+            <div class="ds-alert-content">
+              <p class="ds-alert-title">Couldn't load the PDF</p>
+              <p>The file failed to render. <a href="#">Try the HTML version</a> instead.</p>
+            </div>
+          </div>
+
+          <p class="demo-sub">With dismiss / single line</p>
+
+          <div class="ds-alert ds-alert-success" role="status">
+            <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            <div class="ds-alert-content"><p>Link copied to clipboard.</p></div>
+            <button class="ds-alert-dismiss" aria-label="Dismiss"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+          </div>
+
+          <div class="ds-alert ds-alert-info" role="status">
+            <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <div class="ds-alert-content"><p>This page was last updated on 28 May 2026.</p></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Live token values</h2>
+      <p class="section-desc">Read at runtime from the public <code>design-system.css</code> via
+      <code>getComputedStyle</code> — these reflect the <em>currently active</em> mode and can't drift from the
+      stylesheet. Contrast is text-on-background, computed in the browser (target 4.5:1 AA).</p>
+
+      <table class="token-table">
+        <thead>
+          <tr><th>State</th><th>Background</th><th>Border</th><th>Text / icon</th><th>Contrast</th></tr>
+        </thead>
+        <tbody id="token-rows"><!-- populated at runtime --></tbody>
+      </table>
+
+      <p class="callout"><strong>Why this can't go stale.</strong> Nothing here hardcodes a hex value — the swatches,
+      the codes, and the contrast ratios are all derived from the live <code>--arxiv-</code> status tokens. Change a token
+      in <code>design-system.css</code> and this table updates on the next reload. If the stylesheet ever fails to load,
+      the page visibly breaks, so it doubles as a smoke test.</p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Usage</h2>
+      <p class="section-desc">Variants: <code>ds-alert-success</code>, <code>ds-alert-info</code>,
+      <code>ds-alert-warning</code>, <code>ds-alert-error</code>. Use <code>role="status"</code> for success/info
+      (polite) and <code>role="alert"</code> for warning/error (assertive); icons carry <code>aria-hidden="true"</code>.</p>
+
+      <pre class="code-block">&lt;div class="ds-alert ds-alert-info" role="status"&gt;
+  &lt;svg class="ds-alert-icon" aria-hidden="true"&gt;&lt;!-- icon --&gt;&lt;/svg&gt;
+  &lt;div class="ds-alert-content"&gt;
+    &lt;p class="ds-alert-title"&gt;Viewing an older version&lt;/p&gt;
+    &lt;p&gt;A newer version exists — &lt;a href="..."&gt;see the latest&lt;/a&gt;.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+
+      <p class="callout"><strong>Deferred.</strong> An action-button slot (Retry / Undo) and a transient toast variant
+      are not part of this component yet — see the internal <code>DESIGN-PROGRESS.md</code>.</p>
+    </section>
+
+  </div>
+
+  <script>
+    (function () {
+      var html = document.documentElement;
+
+      /* Surface token convention: public stylesheet uses the --arxiv- prefix. */
+      var PREFIX = 'arxiv-';
+      var STATES = [['Success','success'], ['Info','info'], ['Warning','warning'], ['Error / failure','error']];
+
+      function readVar(name) { return getComputedStyle(html).getPropertyValue(name).trim(); }
+      function toRGB(value) {
+        var probe = document.createElement('span');
+        probe.style.color = value;
+        document.body.appendChild(probe);
+        var rgb = getComputedStyle(probe).color;
+        probe.remove();
+        return rgb.match(/[\d.]+/g).slice(0, 3).map(Number);
+      }
+      function hex(c) { return '#' + c.map(function (x) { return Math.round(x).toString(16).padStart(2, '0'); }).join(''); }
+      function lum(c) {
+        var f = c.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+        return 0.2126 * f[0] + 0.7152 * f[1] + 0.0722 * f[2];
+      }
+      function ratio(a, b) { var L1 = lum(a), L2 = lum(b), hi = Math.max(L1, L2), lo = Math.min(L1, L2); return (hi + 0.05) / (lo + 0.05); }
+      function grade(r) { return r >= 7 ? 'AAA' : r >= 4.5 ? 'AA' : r >= 3 ? 'AA Large' : null; }
+      function cell(c) { return '<span class="swatch" style="background:' + hex(c) + '"></span><code>' + hex(c) + '</code>'; }
+
+      function render() {
+        var rows = STATES.map(function (s) {
+          var bg = toRGB(readVar('--' + PREFIX + s[1] + '-bg'));
+          var bd = toRGB(readVar('--' + PREFIX + s[1] + '-border'));
+          var fg = toRGB(readVar('--' + PREFIX + s[1] + '-fg'));
+          var r = ratio(fg, bg), g = grade(r);
+          var label = g ? '<span class="ratio-pass">' + r.toFixed(1) + ':1 ✓ ' + g + '</span>'
+                        : '<span class="ratio-fail">' + r.toFixed(1) + ':1 ✗</span>';
+          return '<tr><td class="state-name">' + s[0] + '</td><td>' + cell(bg) + '</td><td>' + cell(bd) + '</td><td>' + cell(fg) + '</td><td>' + label + '</td></tr>';
+        }).join('');
+        document.getElementById('token-rows').innerHTML = rows;
+      }
+
+      render();
+      /* Re-read if the OS flips light/dark while the page is open. */
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', render);
+    })();
+  </script>
+</body>
+</html>

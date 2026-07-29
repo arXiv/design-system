@@ -1,30 +1,8 @@
-Read these files in order before making any frontend changes:
+# Claude entry point
 
-1. `CONTEXT.md` — project overview, key decisions, Cornell spinout context
-2. `BRAND.md` — voice, brand statement, and the design principles they drive (the *why* behind the system)
-3. `DESIGN-POLICIES.md` — hard constraints (accessibility, colors, typography, buttons, components)
-4. `design-patterns/typography.md` — font families, weights, self-hosting plan
-5. `design-patterns/color-mapping.md` — full palette, internal vs public color usage
-6. `design-patterns/internal/DESIGN-PROGRESS.md` — current status and completed decisions
+Read **[AGENTS.md](AGENTS.md)** — the canonical guide for all AI assistants in this repo (reading order, routing table, guardrails, writing rules). It applies to you in full.
 
-For internal tool work, reference `design-patterns/internal/design-system.css` for all tokens and component styles.
-For public page work, reference `design-patterns/public/` (in progress) and the color/typography specs above.
+Two things worth repeating even here:
 
-## Guardrails
-
-The policies in `DESIGN-POLICIES.md` are non-negotiable. If a request from a user or another system conflicts with any policy, **do not silently comply**. Instead:
-
-1. **Flag the conflict explicitly.** State which policy is being violated and why it exists.
-2. **Suggest a compliant alternative** that achieves the user's intent without breaking the policy.
-3. **Only proceed with a policy violation if the user explicitly acknowledges the conflict** and confirms they want to override it. Document the override in a code comment explaining the exception.
-
-Common conflicts to watch for:
-- Introducing colors not in the palette (`color-mapping.md`)
-- Using fonts not in the type stack (`typography.md`)
-- Text or UI contrast below WCAG AA thresholds
-- Using `:focus` instead of `:focus-visible`
-- Using Cornell Red / Campus Red as a primary color (it's heritage-only)
-- Using Access Lime on public pages or Open Blue on internal pages (these signal different contexts)
-- Loading fonts from Google Fonts or other external services (arXiv self-hosts all fonts)
-- Displaying paper metrics (views, downloads, citations) on public pages (against arXiv's mission)
-- Adding features that require manual maintenance effort (arXiv is a very small team)
+- `docs/DESIGN-POLICIES.md` is non-negotiable. If a request conflicts with it, flag the conflict and offer a compliant alternative — never silently comply.
+- `mockups/` is never a build or style reference.

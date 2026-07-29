@@ -2,6 +2,9 @@
 
 This folder contains **in-progress page mockups** for the arXiv redesign. They're hosted here so stakeholders can review the work via a GitHub Pages URL without needing to clone the repo or unzip a bundle.
 
+> **Agent contract:** nothing in `mockups/` is a build or style reference. Patterns are promoted into `docs/` when stable — only the promoted version is canonical. See `AGENTS.md` at the repo root.
+
+
 ## What this is
 
 Two whole-page mockups:
@@ -14,7 +17,7 @@ Each is a self-contained static HTML file with inline `<style>` and `<script>`. 
 ## What this is NOT
 
 - **Not a working arXiv build.** Most navigation stays inside the demo page. Links to PDF/TeX source on the abstract page do point to live arxiv.org.
-- **Not the canonical design system.** The validated patterns (button styles, link styles, popovers, etc.) live in `../design-patterns/public/`. These mockups *use* the design language being codified there but also include exploratory and in-progress treatments that may never reach production.
+- **Not the canonical design system.** The validated patterns (button styles, link styles, popovers, etc.) live in `../docs/public/`. These mockups *use* the design language being codified there but also include exploratory and in-progress treatments that may never reach production.
 - **Not final visuals.** Colors, sizes, typography, and interactions are still iterating. Treat anything you see as a draft.
 - **Not the complete redesign.** Search, browse, info pages, the submission flow, and other surfaces are not in this set.
 
@@ -40,13 +43,13 @@ Mockups iterate quickly. Patterns that stabilize get promoted to the canonical d
 
 | Want to see... | Look at... |
 |---|---|
-| Validated component CSS + tokens | [`../design-patterns/public/design-system.css`](../design-patterns/public/design-system.css) |
-| Component demo pages | [`../design-patterns/public/`](../design-patterns/public/) (`button-styles.html`, `link-styles.html`, etc.) |
-| Color palette and rules | [`../design-patterns/color-mapping.md`](../design-patterns/color-mapping.md) |
-| Typography system | [`../design-patterns/typography.md`](../design-patterns/typography.md) |
-| Non-negotiable design rules | [`../DESIGN-POLICIES.md`](../DESIGN-POLICIES.md) |
-| Pattern roadmap (what's promoted, what's queued) | [`../design-patterns/public/README.md`](../design-patterns/public/README.md) |
+| Validated component CSS + tokens | [`../docs/public/design-system.css`](../docs/public/design-system.css) |
+| Component demo pages | [`../docs/public/`](../docs/public/) (`button-styles.html`, `link-styles.html`, etc.) |
+| Color palette and rules | [`../docs/color-mapping.md`](../docs/color-mapping.md) |
+| Typography system | [`../docs/typography.md`](../docs/typography.md) |
+| Non-negotiable design rules | [`../docs/DESIGN-POLICIES.md`](../docs/DESIGN-POLICIES.md) |
+| Pattern roadmap (what's promoted, what's queued) | [`../docs/public/README.md`](../docs/public/README.md) |
 
 ## Feedback
 
-Open an issue or message Shamsi directly. Feedback while a mockup is in this folder is treated as in-progress input; once a pattern is promoted to `design-patterns/public/`, it's been validated and changes go through a more deliberate review.
+Open an issue or message Shamsi directly. Feedback while a mockup is in this folder is treated as in-progress input; once a pattern is promoted to `docs/public/`, it's been validated and changes go through a more deliberate review.

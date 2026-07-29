@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>arXiv Link Colors — Reference</title>
+  <link rel="stylesheet" href="design-system.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f9f7f7; /* Warm Wash — matches button-styles.html */
+      margin: 0; padding: 0;
+      font-size: 15px; line-height: 1.6;
+    }
+
+    .page { max-width: 980px; margin: 0 auto; padding: 44px 28px 80px; }
+
+    .page-header { margin-bottom: 44px; padding-bottom: 16px; border-bottom: 3px solid #c4d82e; }
+    .page-header h1 { font-size: 20px; font-weight: 700; color: #1c1a17; margin: 0 0 6px; }
+    .page-header p  { font-size: 13px; color: #6b6459; margin: 0; max-width: 680px; line-height: 1.6; }
+
+    a.back-link { display: inline-block; margin-bottom: 18px; font-size: 13px; color: #1565c0; text-decoration: none; }
+    a.back-link:hover { text-decoration: underline; }
+
+    /* ── Mode heading ── */
+    .mode-head {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      color: #6b6459; margin: 0 0 10px;
+    }
+    .mode-head + .mode-head { margin-top: 32px; }
+
+    /* ── States strip ── */
+    .states-strip {
+      display: flex; gap: 28px; align-items: flex-start;
+      padding: 20px 22px; margin-bottom: 14px;
+      background: #fff; border: 1px solid #e0dbd7; border-radius: 8px;
+    }
+    .states-strip.dark { background: #252320; border-color: #3a3632; }
+
+    .state-block { min-width: 120px; }
+    .state-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .ratio {
+      display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 6px;
+      border-radius: 3px; margin-left: 6px; vertical-align: middle;
+      font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    }
+    .aaa { background: #ddf0ff; color: #0d47a1; }
+    .aa  { background: #e8f4ff; color: #1565c0; }
+    .on-dark .aaa { background: rgba(30,80,130,0.4); color: #90caf9; }
+    .on-dark .aa  { background: rgba(30,80,130,0.3); color: #64b5f6; }
+
+    /* ── Background sections ── */
+    .bg-section { border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
+    .bg-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em;
+      padding: 8px 20px;
+    }
+    .bg-body { padding: 22px 22px 24px; }
+
+    /* ── Text samples ── */
+    .para { font-size: 14px; line-height: 1.65; margin: 0 0 10px; }
+    .secondary-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+      margin: 16px 0 8px; opacity: 0.45;
+    }
+    .standalone { font-size: 13px; margin-top: 12px; }
+
+    /* ── Link styles — light mode ── */
+    .lnk {
+      color: #1565c0;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-thickness: 1px;
+      cursor: pointer;
+      transition: text-decoration-thickness 0.1s;
+    }
+    .lnk:hover, .lnk.sim-hover { color: #1050a0; text-decoration-thickness: 2px; }
+    .lnk-dis {
+      color: #b0aba6;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-thickness: 1px;
+      cursor: not-allowed;
+    }
+    .lnk-visited {
+      color: #7b2fbe;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-thickness: 1px;
+      cursor: pointer;
+    }
+    .lnk-solo {
+      color: #1565c0;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .lnk-solo:hover { text-decoration: underline; text-underline-offset: 2px; color: #1050a0; }
+
+    /* ── Link styles — dark mode ── */
+    .lnk-dk {
+      color: #64b5f6;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-thickness: 1px;
+      cursor: pointer;
+      transition: text-decoration-thickness 0.1s;
+    }
+    .lnk-dk:hover, .lnk-dk.sim-hover { color: #90caf9; text-decoration-thickness: 2px; }
+    .lnk-dk-dis {
+      color: #484340;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-thickness: 1px;
+      cursor: not-allowed;
+    }
+    .lnk-dk-visited {
+      color: #c084e0;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-thickness: 1px;
+      cursor: pointer;
+    }
+    .lnk-dk-solo {
+      color: #64b5f6;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .lnk-dk-solo:hover { text-decoration: underline; text-underline-offset: 2px; color: #90caf9; }
+
+    /* ── Callout ── */
+    .callout {
+      font-size: 13px; line-height: 1.65; margin-top: 16px; padding: 12px 16px;
+      background: #fff; border: 1px solid #e0dbd7;
+      border-left: 4px solid #c4d82e; border-radius: 0 4px 4px 0;
+    }
+    .callout + .callout { margin-top: 10px; }
+    .callout strong { color: #1c1a17; }
+    .note-alert { margin-top: 16px; }
+    code {
+      font-family: ui-monospace, "SF Mono", Consolas, monospace;
+      font-size: 12px; background: #f0eeec; padding: 2px 5px; border-radius: 3px;
+    }
+  
+    /* ── Shared docs nav strip (same on every design-system doc page;
+       hex values because internal token names differ — page chrome only,
+       not part of the component system). ── */
+    .docs-nav { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; background: #f0eeec; border-bottom: 1px solid #ddd8d2; padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: #1c1a17; text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: #1565c0; }
+    .docs-nav a:not(.docs-nav-brand) { color: #6b6459; text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: #1c1a17; text-decoration: underline; }
+    .docs-nav a:focus-visible { outline: 2px solid #1565c0; outline-offset: 2px; border-radius: 2px; }
+    .docs-nav-spacer { flex: 1; }
+    .docs-nav .docs-nav-mock { color: #8b8680; font-size: 12px; }
+  </style>
+</head>
+<body>
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../../index.html">arXiv Design System</a>
+  <a href="../colors.html">Colors</a>
+  <a href="../typography.html">Typography</a>
+  <a href="../spacing.html">Spacing</a>
+  <a href="../buttons.html">Buttons</a>
+  <a href="../alerts.html">Alerts</a>
+  <a href="../version-display.html">Versions</a>
+  <a href="../organizing-content.html">Organizing content</a>
+  <a href="../../doc.html?src=docs/DESIGN-POLICIES.md">Policies</a>
+  <span class="docs-nav-spacer"></span>
+  <span class="docs-nav-mock">Mockups:</span>
+  <a href="../../mockups/abstract-redesign.html">Abstract</a>
+  <a href="../../mockups/merged-abstract-reader.html">Reader</a>
+</nav>
+<div class="page">
+
+  <a class="back-link" href="button-styles.html">← Button Styles reference</a>
+
+  <header class="page-header">
+    <h1>Link Colors — Reference</h1>
+    <p>Final chosen link colors for light and dark mode. Hover any link to see the hover state.
+       Ratios shown are link vs. background. Inline links always carry underlines — see note below.</p>
+  </header>
+
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- LIGHT MODE — #1565c0                       -->
+  <!-- ══════════════════════════════════════════ -->
+
+  <p class="mode-head">Light Mode &nbsp;— &nbsp;<code style="color:#1565c0; background:none; padding:0;">#1565c0</code> &nbsp;Link Blue Light Mode</p>
+
+  <!-- States strip -->
+  <div class="states-strip">
+    <div class="state-block">
+      <div class="state-label" style="color:#6b6459;">Default</div>
+      <span class="lnk">Article body</span>
+    </div>
+    <div class="state-block">
+      <div class="state-label" style="color:#6b6459;">Hover</div>
+      <span class="lnk sim-hover">Article body</span>
+    </div>
+    <div class="state-block">
+      <div class="state-label" style="color:#6b6459;">Disabled</div>
+      <span class="lnk-dis">Article body</span>
+    </div>
+    <div class="state-block">
+      <div class="state-label" style="color:#6b6459;">Visited <span class="ratio aa" style="margin-left:4px;">6.58:1 ✓ AA</span></div>
+      <span class="lnk-visited">Article body</span>
+    </div>
+    <div class="state-block">
+      <div class="state-label" style="color:#6b6459;">Standalone (no underline)</div>
+      <span class="lnk-solo">View guidelines →</span>
+    </div>
+  </div>
+
+  <!-- White -->
+  <div class="bg-section" style="background:#ffffff;">
+    <div class="bg-label" style="color:#6b6459; background:rgba(0,0,0,0.04);">
+      White <code style="background:none; padding:0;">#ffffff</code>
+      <span class="ratio aa" style="margin-left:10px;">Link 5.74:1 ✓ AA</span>
+      <span class="ratio aa" style="margin-left:6px; background:#f3e5ff; color:#4a1e8a;">Visited 7.02:1 ✓ AAA</span>
+    </div>
+    <div class="bg-body">
+      <div class="secondary-label" style="color:#1c1a17;">Primary body text</div>
+      <p class="para" style="color:#1c1a17;">
+        Submissions that include figures must reference each in the
+        <span class="lnk">article body</span>.
+        Co-authors are added on the <span class="lnk">author management page</span>
+        before finalisation. Previously read
+        <span class="lnk-visited">submission guidelines</span> appear in violet.
+      </p>
+
+      <div class="secondary-label" style="color:#1c1a17;">Secondary / muted text</div>
+      <p class="para" style="color:#6b6459;">
+        Submitted 14 Jan 2024 · Updated 22 Feb 2024 ·
+        <span class="lnk">View revision history</span> ·
+        Category: <span class="lnk-visited">cs.CV</span> ·
+        <span class="lnk">cs.LG</span>
+      </p>
+
+      <div class="standalone"><span class="lnk-solo">View all submission guidelines →</span></div>
+    </div>
+  </div>
+
+  <!-- Warm Wash -->
+  <div class="bg-section" style="background:#f9f7f7;">
+    <div class="bg-label" style="color:#6b6459; background:rgba(0,0,0,0.04);">
+      Warm Wash <code style="background:none; padding:0;">#f9f7f7</code>
+      <span class="ratio aa" style="margin-left:10px;">Link 5.38:1 ✓ AA</span>
+      <span class="ratio aa" style="margin-left:6px; background:#f3e5ff; color:#4a1e8a;">Visited 6.58:1 ✓ AA</span>
+    </div>
+    <div class="bg-body">
+      <div class="secondary-label" style="color:#1c1a17;">Primary body text</div>
+      <p class="para" style="color:#1c1a17;">
+        Submissions that include figures must reference each in the
+        <span class="lnk">article body</span>.
+        Co-authors are added on the <span class="lnk">author management page</span>
+        before finalisation. Previously read
+        <span class="lnk-visited">submission guidelines</span> appear in violet.
+      </p>
+
+      <div class="secondary-label" style="color:#1c1a17;">Secondary / muted text</div>
+      <p class="para" style="color:#6b6459;">
+        Submitted 14 Jan 2024 · Updated 22 Feb 2024 ·
+        <span class="lnk">View revision history</span> ·
+        Category: <span class="lnk-visited">cs.CV</span> ·
+        <span class="lnk">cs.LG</span>
+      </p>
+
+      <div class="standalone"><span class="lnk-solo">View all submission guidelines →</span></div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- DARK MODE — #64b5f6                        -->
+  <!-- ══════════════════════════════════════════ -->
+
+  <p class="mode-head" style="margin-top:32px;">Dark Mode &nbsp;— &nbsp;<code style="color:#64b5f6; background:none; padding:0;">#64b5f6</code> &nbsp;Link Blue Dark Mode</p>
+
+  <!-- States strip — dark -->
+  <div class="states-strip dark on-dark">
+    <div class="state-block">
+      <div class="state-label" style="color:#9e9891;">Default</div>
+      <span class="lnk-dk">Article body</span>
+    </div>
+    <div class="state-block">
+      <div class="state-label" style="color:#9e9891;">Hover</div>
+      <span class="lnk-dk sim-hover">Article body</span>
+    </div>
+    <div class="state-block">
+      <div class="state-label" style="color:#9e9891;">Disabled</div>
+      <span class="lnk-dk-dis">Article body</span>
+    </div>
+    <div class="state-block">
+      <div class="state-label" style="color:#9e9891;">Visited <span class="ratio aaa" style="margin-left:4px;">6.30:1 ✓ AA</span></div>
+      <span class="lnk-dk-visited">Article body</span>
+    </div>
+    <div class="state-block">
+      <div class="state-label" style="color:#9e9891;">Standalone (no underline)</div>
+      <span class="lnk-dk-solo">View guidelines →</span>
+    </div>
+  </div>
+
+  <!-- Repository Brown -->
+  <div class="bg-section on-dark" style="background:#1c1a17;">
+    <div class="bg-label" style="color:#9e9891; background:rgba(255,255,255,0.05);">
+      Repository Brown <code style="background:none; padding:0; color:#9e9891;">#1c1a17</code>
+      <span class="ratio aaa" style="margin-left:10px;">Link 7.84:1 ✓ AAA</span>
+      <span class="ratio aaa" style="margin-left:6px; background:rgba(100,50,140,0.35); color:#d4a8f0;">Visited 6.30:1 ✓ AA</span>
+    </div>
+    <div class="bg-body">
+      <div class="secondary-label" style="color:#9e9891;">Primary body text</div>
+      <p class="para" style="color:#e0dbd7;">
+        Submissions that include figures must reference each in the
+        <span class="lnk-dk">article body</span>.
+        Co-authors are added on the <span class="lnk-dk">author management page</span>
+        before finalisation. Previously read
+        <span class="lnk-dk-visited">submission guidelines</span> appear in lavender.
+      </p>
+
+      <div class="secondary-label" style="color:#9e9891;">Secondary / muted text</div>
+      <p class="para" style="color:#9e9891;">
+        Submitted 14 Jan 2024 · Updated 22 Feb 2024 ·
+        <span class="lnk-dk">View revision history</span> ·
+        Category: <span class="lnk-dk-visited">cs.CV</span> ·
+        <span class="lnk-dk">cs.LG</span>
+      </p>
+
+      <div class="standalone"><span class="lnk-dk-solo">View all submission guidelines →</span></div>
+    </div>
+  </div>
+
+  <!-- Dark Surface -->
+  <div class="bg-section on-dark" style="background:#252320;">
+    <div class="bg-label" style="color:#9e9891; background:rgba(255,255,255,0.05);">
+      Dark Surface (cards, tables) <code style="background:none; padding:0; color:#9e9891;">#252320</code>
+      <span class="ratio aaa" style="margin-left:10px;">Link 7.08:1 ✓ AAA</span>
+      <span class="ratio aaa" style="margin-left:6px; background:rgba(100,50,140,0.35); color:#d4a8f0;">Visited 5.68:1 ✓ AA</span>
+    </div>
+    <div class="bg-body">
+      <div class="secondary-label" style="color:#9e9891;">Primary body text</div>
+      <p class="para" style="color:#e0dbd7;">
+        Submissions that include figures must reference each in the
+        <span class="lnk-dk">article body</span>.
+        Co-authors are added on the <span class="lnk-dk">author management page</span>
+        before finalisation. Previously read
+        <span class="lnk-dk-visited">submission guidelines</span> appear in lavender.
+      </p>
+
+      <div class="secondary-label" style="color:#9e9891;">Secondary / muted text</div>
+      <p class="para" style="color:#9e9891;">
+        Submitted 14 Jan 2024 · Updated 22 Feb 2024 ·
+        <span class="lnk-dk">View revision history</span> ·
+        Category: <span class="lnk-dk-visited">cs.CV</span> ·
+        <span class="lnk-dk">cs.LG</span>
+      </p>
+
+      <div class="standalone"><span class="lnk-dk-solo">View all submission guidelines →</span></div>
+    </div>
+  </div>
+
+
+  <!-- ── Notes ─────────────────────────────────── -->
+  <!-- Hard rule → real .ds-alert-error (docs convention: hard prohibitions are
+       .ds-alert-error; quiet .callout is for neutral usage notes only). -->
+  <div class="ds-alert ds-alert-error note-alert">
+    <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+    <div class="ds-alert-content">
+      <p class="ds-alert-title">Inline links always require underlines</p>
+      <p>In light mode, link vs. body text contrast is 3.02:1 — technically at the limit but too marginal to rely on.
+      In dark mode it is 1.61:1 — underlines are mandatory.
+      Standalone links (no surrounding body text) may omit the underline.</p>
+    </div>
+  </div>
+
+  <div class="callout" style="border-left-color:#cbc5be;">
+    <strong>Token summary.</strong>
+    Light: <code>--link: #1565c0</code> · <code>--link-hover: #1050a0</code> · <code>--link-dis: #b0aba6</code> · <code>--link-visited: #7b2fbe</code><br>
+    Dark: <code>--link: #64b5f6</code> · <code>--link-hover: #90caf9</code> · <code>--link-dis: #484340</code> · <code>--link-visited: #c084e0</code><br>
+    Visited: deep violet (<code>#7b2fbe</code>) in light mode, soft lavender (<code>#c084e0</code>) in dark mode.
+  </div>
+
+</div>
+</body>
+</html>

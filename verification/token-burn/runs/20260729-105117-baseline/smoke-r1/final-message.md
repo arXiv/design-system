@@ -1,0 +1,1 @@
+Internal staff tools use **Access Lime** as the primary action color, and public pages use **Open Blue**.
