@@ -1,6 +1,6 @@
 # Responsiveness Audit — 2026-06-11
 
-**Scope:** the two redesign mockups (`mockups/html-redesign.html`, `mockups/abstract-redesign.html`).
+**Scope:** the two redesign mockups (`mockups/public/html-redesign.html`, `mockups/public/abstract-redesign.html`).
 **Method:** Playwright captured viewport-only screenshots at 6 widths (320, 375, 414, 768, 1024, 1440) × 2–3 scroll positions (top, mid, bottom). Live arXiv pages were excluded from this pass — they're known to lack mobile responsiveness; auditing them would yield no actionable signal.
 **Screenshots:** `screenshots/responsiveness/<page>/<width>-<position>.png`. 30 captures total.
 

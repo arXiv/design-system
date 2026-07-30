@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>arXiv Check – Header Mockup</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f0f0e8;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 48px;
+    gap: 0;
+  }
+
+  /* ══════════════════════════════════════════
+     HEADER BAR
+  ══════════════════════════════════════════ */
+  .header {
+    width: 100%;
+    max-width: 960px;
+    background: #eef3c8;
+    border: 1px solid #d4dca0;
+    border-radius: 8px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    gap: 8px;
+    position: relative;
+  }
+
+  /* ── Left cluster ── */
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+  }
+
+  /* Mode chip — Google Docs style */
+  .mode-chip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #fff;
+    border: 1px solid #d0d0c0;
+    border-radius: 20px;
+    padding: 4px 10px 4px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.12s, border-color 0.12s;
+    position: relative;
+  }
+  .mode-chip:hover { background: #f5f5ee; border-color: #b8b8a8; }
+
+  .mode-chip .mode-icon {
+    width: 14px;
+    height: 14px;
+    color: #555;
+    flex-shrink: 0;
+  }
+  .mode-chip .chevron {
+    width: 10px;
+    height: 10px;
+    color: #999;
+    flex-shrink: 0;
+  }
+
+  /* Mode chip dropdown */
+  .mode-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.13);
+    min-width: 190px;
+    z-index: 50;
+    overflow: hidden;
+  }
+  .mode-dropdown.open { display: block; }
+
+  .mode-opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.1s;
+    border-bottom: 1px solid #f0f0e8;
+  }
+  .mode-opt:last-child { border-bottom: none; }
+  .mode-opt:hover { background: #f5f8ea; }
+  .mode-opt.active { background: #eef4d8; }
+
+  .mode-opt-icon {
+    width: 16px;
+    height: 16px;
+    color: #555;
+    flex-shrink: 0;
+  }
+  .mode-opt-text { flex: 1; }
+  .mode-opt-text strong { display: block; font-weight: 600; color: #222; }
+  .mode-opt-text span { font-size: 11px; color: #888; }
+
+  .mode-opt-check {
+    width: 14px;
+    height: 14px;
+    color: #6a9a00;
+    flex-shrink: 0;
+    opacity: 0;
+  }
+  .mode-opt.active .mode-opt-check { opacity: 1; }
+
+  /* Refresh button — icon only */
+  .refresh-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 6px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    color: #777;
+    transition: background 0.1s, color 0.1s;
+  }
+  .refresh-btn:hover { background: #e0e8b0; color: #333; }
+  .refresh-btn svg { width: 14px; height: 14px; }
+  .refresh-btn.spinning svg { animation: spin 0.6s linear; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Center info ── */
+  .center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .queue-info {
+    background: #fff;
+    border: 1px solid #d0d0c0;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 12px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+  .queue-info .q-label { font-weight: 500; color: #333; }
+  .queue-info .q-pos   { color: #888; }
+
+  /* Read-only checkmark indicator */
+  .check-indicator {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #888;
+    font-size: 12px;
+    cursor: default;
+  }
+  .check-indicator .ind-circle {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid #bbb;
+    background: #f5f5ee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .check-indicator .ind-circle svg {
+    width: 10px;
+    height: 10px;
+    opacity: 0.5;
+  }
+
+  /* ── Right cluster ── */
+  .right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Save & Next button */
+  .save-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #a8c800;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.12s;
+    letter-spacing: 0.01em;
+  }
+  .save-btn:hover { background: #96b600; }
+  .save-btn:active { background: #84a400; }
+  .save-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+  /* × close */
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    font-weight: 300;
+    color: #666;
+    cursor: pointer;
+    padding: 0 2px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    transition: color 0.12s;
+  }
+  .close-btn:hover { color: #c00; }
+
+  /* ══════════════════════════════════════════
+     SAVING PROGRESS BAR
+  ══════════════════════════════════════════ */
+  .saving-bar {
+    width: 100%;
+    max-width: 960px;
+    height: 3px;
+    background: #dde8a0;
+    border-radius: 0 0 3px 3px;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .saving-bar.visible { opacity: 1; }
+  .saving-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: #7aaa00;
+    transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .saving-bar-fill.go { width: 100%; }
+
+  /* ══════════════════════════════════════════
+     SUBMISSION LABEL (mock content)
+  ══════════════════════════════════════════ */
+  .submission-label {
+    margin-top: 48px;
+    font-size: 52px;
+    font-weight: 800;
+    color: #ccc;
+    letter-spacing: -2px;
+    transition: opacity 0.15s;
+  }
+  .submission-label.flash { opacity: 0; }
+
+  .hint {
+    margin-top: 12px;
+    font-size: 12px;
+    color: #aaa;
+    text-align: center;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header bar ── -->
+<div class="header" id="header">
+
+  <!-- Left: mode chip + refresh -->
+  <div class="left">
+
+    <div class="mode-chip" id="mode-chip" onclick="toggleModeDropdown(event)">
+      <!-- Icon swaps between pencil and eye -->
+      <svg class="mode-icon" id="mode-icon" viewBox="0 0 14 14" fill="none"
+           stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9.5 1.5l3 3L4 13H1v-3L9.5 1.5z"/>
+      </svg>
+      <span id="mode-label">Editing</span>
+      <svg class="chevron" viewBox="0 0 10 10" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 4l3 3 3-3"/>
+      </svg>
+
+      <div class="mode-dropdown" id="mode-dropdown">
+        <div class="mode-opt active" id="opt-editing" onclick="setMode('editing', event)">
+          <svg class="mode-opt-icon" viewBox="0 0 14 14" fill="none"
+               stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.5 1.5l3 3L4 13H1v-3L9.5 1.5z"/>
+          </svg>
+          <div class="mode-opt-text">
+            <strong>Editing</strong>
+            <span>Make changes to this submission</span>
+          </div>
+          <svg class="mode-opt-check" viewBox="0 0 14 14" fill="none"
+               stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="2,7 5.5,10.5 12,3.5"/>
+          </svg>
+        </div>
+        <div class="mode-opt" id="opt-viewing" onclick="setMode('viewing', event)">
+          <svg class="mode-opt-icon" viewBox="0 0 14 14" fill="none"
+               stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="7" cy="7" rx="6" ry="4"/>
+            <circle cx="7" cy="7" r="1.8" fill="currentColor" stroke="none"/>
+          </svg>
+          <div class="mode-opt-text">
+            <strong>Viewing</strong>
+            <span>Read only — no changes</span>
+          </div>
+          <svg class="mode-opt-check" viewBox="0 0 14 14" fill="none"
+               stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="2,7 5.5,10.5 12,3.5"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Refresh — icon only -->
+    <button class="refresh-btn" id="refresh-btn" onclick="doRefresh()" title="Refresh">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor"
+           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12.5 7A5.5 5.5 0 1 1 7 1.5"/>
+        <polyline points="12.5,1.5 12.5,5.5 8.5,5.5"/>
+      </svg>
+    </button>
+
+  </div>
+
+  <!-- Center: queue position + read-only checkmark -->
+  <div class="center">
+    <div class="queue-info">
+      <span class="q-label">Todo Queue</span>
+      <span class="q-pos" id="q-pos">1 / 731</span>
+    </div>
+    <div class="check-indicator" title="2 others in your category have checkmarked this">
+      <div class="ind-circle">
+        <svg viewBox="0 0 12 12" fill="none" stroke="#888"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="2,6 5,9 10,3"/>
+        </svg>
+      </div>
+      <span>2</span>
+    </div>
+  </div>
+
+  <!-- Right: save + close -->
+  <div class="right">
+    <button class="save-btn" id="save-btn" onclick="handleSave()">
+      <svg viewBox="0 0 12 12" fill="none" stroke="white"
+           stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="1.5,6 4.5,9 10.5,3"/>
+      </svg>
+      Save &amp; Next
+    </button>
+    <button class="close-btn" title="Close without saving"
+            onclick="alert('Closed without saving.')">×</button>
+  </div>
+
+</div>
+
+<!-- Saving bar sits flush below header -->
+<div class="saving-bar" id="saving-bar">
+  <div class="saving-bar-fill" id="saving-fill"></div>
+</div>
+
+<!-- Mock content -->
+<div class="submission-label" id="sub-label">Submission 1</div>
+
+<div class="hint">
+  Click <strong>Editing ▾</strong> to switch modes &nbsp;·&nbsp;
+  ↻ to refresh &nbsp;·&nbsp;
+  <strong>Save &amp; Next</strong> to checkmark, save, and advance &nbsp;·&nbsp;
+  <strong>×</strong> to close without saving
+</div>
+
+<script>
+  let subNumber = 1;
+  let busy      = false;
+  let mode      = 'editing';
+
+  const header     = document.getElementById('header');
+  const savingBar  = document.getElementById('saving-bar');
+  const savingFill = document.getElementById('saving-fill');
+  const subLabel   = document.getElementById('sub-label');
+  const qPos       = document.getElementById('q-pos');
+
+  /* ── Mode chip ─────────────────────────────────────── */
+  const MODES = {
+    editing: {
+      label: 'Editing',
+      icon: `<path d="M9.5 1.5l3 3L4 13H1v-3L9.5 1.5z"/>`
+    },
+    viewing: {
+      label: 'Viewing',
+      icon: `<ellipse cx="7" cy="7" rx="6" ry="4"/><circle cx="7" cy="7" r="1.8" fill="currentColor" stroke="none"/>`
+    }
+  };
+
+  function toggleModeDropdown(e) {
+    e.stopPropagation();
+    document.getElementById('mode-dropdown').classList.toggle('open');
+  }
+
+  function setMode(m, e) {
+    e.stopPropagation();
+    mode = m;
+    document.getElementById('mode-label').textContent = MODES[m].label;
+    document.getElementById('mode-icon').innerHTML = MODES[m].icon;
+    document.getElementById('opt-editing').classList.toggle('active', m === 'editing');
+    document.getElementById('opt-viewing').classList.toggle('active', m === 'viewing');
+    document.getElementById('mode-dropdown').classList.remove('open');
+  }
+
+  /* ── Refresh ────────────────────────────────────────── */
+  function doRefresh() {
+    const btn = document.getElementById('refresh-btn');
+    btn.classList.add('spinning');
+    setTimeout(() => btn.classList.remove('spinning'), 650);
+  }
+
+  /* ── Save & Next ────────────────────────────────────── */
+  function handleSave() {
+    if (busy) return;
+    busy = true;
+    header.style.opacity = '0.65';
+    header.style.pointerEvents = 'none';
+
+    savingBar.classList.add('visible');
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      savingFill.classList.add('go');
+    }));
+
+    setTimeout(() => {
+      subNumber++;
+      subLabel.classList.add('flash');
+      qPos.textContent = subNumber + ' / 731';
+      setTimeout(() => {
+        subLabel.textContent = 'Submission ' + subNumber;
+        subLabel.classList.remove('flash');
+      }, 150);
+
+      savingFill.classList.remove('go');
+      savingFill.style.transition = 'none';
+      savingFill.style.width = '0%';
+      savingBar.classList.remove('visible');
+
+      setTimeout(() => {
+        savingFill.style.transition = '';
+        header.style.opacity = '';
+        header.style.pointerEvents = '';
+        busy = false;
+      }, 50);
+    }, 1000);
+  }
+
+  /* ── Close dropdowns on outside click ──────────────── */
+  document.addEventListener('click', () => {
+    document.getElementById('mode-dropdown').classList.remove('open');
+  });
+</script>
+</body>
+</html>

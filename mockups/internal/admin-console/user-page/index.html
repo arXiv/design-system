@@ -1,0 +1,2938 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User History — Admin Console Mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /*
+     * data-theme="light" on <html> prevents the dark mode block in
+     * design-system.css from applying even when the OS is in dark mode.
+     * This page is a light-mode-only admin console mockup.
+     */
+
+    /* ── Reset + base ─────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #1c1a17;
+      background: #f9f7f7; /* Warm Wash — page chrome */
+      overflow-x: hidden;  /* prevent scrollbar from full-width bands */
+    }
+
+    a {
+      color: #1565c0;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    a:visited { color: #7b2fbe; }
+    a:hover   { color: #1050a0; }
+
+    /* ── Page layout ─────────────────────── */
+    .page {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 20px 24px 48px;
+    }
+
+    /* ── Accordion sections ──────────────── */
+    /*
+     * Flat horizontal-rule style. The .accordions wrapper provides a top rule;
+     * each .card provides a bottom rule. No backgrounds, borders, or radii.
+     */
+    .accordions {
+      border-top: none;
+    }
+
+    .card {
+      background: none;
+      border: none;
+      border-bottom: 1px solid #ddd8d2;
+      border-radius: 0;
+      margin-bottom: 0;
+      overflow: visible;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: none;   /* no inner rule when collapsed */
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Open accordion body — background comes from .tab-panel.active (#fff).
+       No background here; keeps the card-body neutral for non-tabbed content. */
+    .card-body {
+      background: none;
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .section-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #6b6459;
+      font-size: 10px;
+      padding: 0;
+      line-height: 1;
+      transition: transform 0.15s ease;
+    }
+    .card.collapsed .section-toggle {
+      transform: rotate(-90deg);
+    }
+    .card.collapsed .card-body {
+      display: none;
+    }
+    .card.collapsed:not(.card-stub) .card-header h2 {
+      font-weight: 500;
+      color: #6b6459;
+    }
+
+    /* ── Stub accordions (context only, not in scope) ─── */
+    .card-stub .card-header {
+      cursor: default;
+    }
+    .card-stub .card-header h2 {
+      font-weight: 500;
+      color: #6b6459;
+    }
+    .stub-count {
+      font-size: 12px;
+      font-weight: 400;
+      color: #b0aba6;
+      margin-left: 8px;
+    }
+
+    /* ── Tabs ────────────────────────────── */
+    /*
+     * Classic file-tab pattern: tabs sit on warm wash background; active tab
+     * gets a white bubble (bordered top/left/right, border-bottom matches the
+     * panel below) that visually connects to the white content panel.
+     * margin-bottom: -1px covers the nav's border-bottom when tab is active.
+     */
+    .tab-nav {
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      padding: 0;
+      border-bottom: 1px solid #ddd8d2;
+      background: none; /* transparent — warm wash shows through */
+    }
+
+    .tab-list {
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .tab-nav button {
+      background: none;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      padding: 9px 14px;
+      margin-bottom: -1px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b6459;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+      transition: color 0.1s ease;
+    }
+    .tab-nav button.active {
+      background: #fff;
+      border-color: #ddd8d2;
+      border-bottom-color: #fff; /* merges with white panel below */
+      color: #1c1a17;
+    }
+    .tab-nav button:hover:not(.active) {
+      color: #1c1a17;
+    }
+
+    .tab-count {
+      background: #e4e0db;
+      color: #6b6459;
+      border-radius: 10px;
+      padding: 1px 7px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .tab-nav button.active .tab-count {
+      background: #1565c0;
+      color: #fff;
+    }
+
+    /* Tab panel visibility */
+    .tab-panel { display: none; }
+    .tab-panel.active {
+      display: block;
+      background: #fff;
+      padding-bottom: 12px; /* breathing room before warm wash resumes */
+    }
+
+    /* ── Filter dropdown — right side of tab nav ── */
+    /*
+     * Minimal underline-only select. Sits right-aligned in the tab bar.
+     * Hidden when Account Activity tab is active (status filter doesn't apply).
+     */
+    .tab-filter {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      padding: 0 0 11px;
+      font-size: 12px;
+      color: #6b6459;
+    }
+    .tab-filter label {
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .tab-filter select {
+      font-family: inherit;
+      font-size: 12px;
+      color: #1c1a17;
+      background: none;
+      border: none;
+      border-bottom: 1px solid #8b8680;
+      padding: 1px 18px 1px 2px;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238b8680'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 2px center;
+    }
+    .tab-filter select:focus-visible {
+      outline: 2px solid #1565c0;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+    .tab-filter.hidden { visibility: hidden; }
+
+    /* ── Log table ───────────────────────── */
+    .log-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    .log-table th {
+      text-align: left;
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b6459;
+      padding: 9px 12px;
+      background: #f0eeec;
+      border-bottom: 1px solid #ddd8d2;
+      white-space: nowrap;
+    }
+    .log-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f0eeec;
+      vertical-align: top;
+    }
+    .log-table tr:last-child td {
+      border-bottom: none;
+    }
+    .log-table tbody tr:hover td {
+      background: #faf9f8;
+    }
+    /* Hide rows filtered out */
+    .log-table tr[data-status].hidden {
+      display: none;
+    }
+
+    /* ── Sortable column headers ────────────── */
+    .log-table th.sortable {
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.1s;
+    }
+    .log-table th.sortable:hover {
+      color: #1c1a17;
+    }
+    .sort-arrow {
+      display: inline-block;
+      margin-left: 3px;
+      font-size: 9px;
+      color: #8b8680;
+      vertical-align: middle;
+    }
+    .log-table th.sort-asc .sort-arrow,
+    .log-table th.sort-desc .sort-arrow {
+      color: #1c1a17;
+    }
+
+    /* ── Column widths ──────────────────────── */
+    .col-type   { width: 52px; }
+    .col-date   { width: 92px; }
+    .col-submit { width: 115px; }
+    .col-title  { /* flex — takes remaining space */ }
+    .col-submitter { width: 145px; }
+    .col-status { width: 78px; }
+    .col-notes  { width: 240px; }
+
+    /* ── Date cell ──────────────────────────── */
+    .meta-date {
+      font-size: 13px;
+      color: #5a5450;
+      white-space: nowrap;
+    }
+    .date-time {
+      display: block;
+      font-size: 11px;
+      color: #b0aba6;
+      margin-top: 1px;
+    }
+
+    /* ── Submit / arXiv IDs cell ─────────────── */
+    .sub-link {
+      font-family: "IBM Plex Mono", "SF Mono", "Fira Code", monospace;
+      font-size: 11.5px;
+      display: block;
+    }
+    .arxiv-link {
+      font-family: "IBM Plex Mono", "SF Mono", "Fira Code", monospace;
+      font-size: 11.5px;
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* ── Title column ───────────────────────── */
+    .sub-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1c1a17;
+      line-height: 1.35;
+    }
+
+    /* ── Submitter column ───────────────────── */
+    .sub-submitter {
+      font-size: 12px;
+      color: #5a5450;
+    }
+
+    /* ── Status column ──────────────────────── */
+    .col-status { vertical-align: top; }
+    .badge {
+      display: inline-block;
+      border-radius: 3px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      margin-bottom: 6px;
+    }
+    .badge-removed {
+      background: #fdf0f0;
+      color: #c62828;
+      border: 1px solid #f5d0d0;
+    }
+    .badge-onhold {
+      background: #fff8e1;
+      color: #8a6400;
+      border: 1px solid #ffe08a;
+    }
+
+    /* ── Type badge — color/border from design-system.css ── */
+    .type-badge {
+      display: inline-block;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      border-radius: 3px;
+      padding: 1px 6px;
+    }
+
+    /* ── Comments column ─────────────────── */
+    .comment-item { margin-bottom: 8px; }
+    .comment-item:last-child { margin-bottom: 0; }
+    .comment-body { font-size: 13px; color: #1c1a17; }
+    .comment-meta { font-size: 11px; color: #b0aba6; margin-top: 2px; }
+
+    .mod-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-family: "IBM Plex Mono", "SF Mono", "Fira Code", monospace;
+      font-size: 11.5px;
+      background: #f0f4ff;
+      border: 1px solid #d0daf5;
+      border-radius: 3px;
+      padding: 2px 8px;
+    }
+
+    /* ── Table footer ────────────────────── */
+    .table-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 9px 20px;
+      font-size: 12px;
+      color: #6b6459;
+      border-top: 1px solid #ddd8d2;
+    }
+
+    /* ── Account Activity tab ────────────── */
+    .account-log {
+      padding: 16px 20px;
+    }
+    .account-entry {
+      display: flex;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0eeec;
+      font-size: 13px;
+    }
+    .account-entry:last-child { border-bottom: none; }
+    .account-date {
+      width: 100px;
+      flex-shrink: 0;
+      color: #5a5450;
+      white-space: nowrap;
+    }
+    .account-text { color: #1c1a17; }
+    .account-by {
+      font-size: 11px;
+      color: #b0aba6;
+      margin-top: 3px;
+    }
+    .account-note {
+      font-size: 12px;
+      color: #6b6459;
+      font-style: italic;
+      margin-top: 4px;
+    }
+    .account-flag {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      background: #f0eeec;
+      border: 1px solid #ddd8d2;
+      border-radius: 3px;
+      padding: 1px 5px;
+    }
+    .account-paper {
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: #f9f7f7;
+      border: 1px solid #ddd8d2;
+      border-radius: 4px;
+      display: inline-block;
+      max-width: 560px;
+    }
+    .account-paper-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: #1c1a17;
+      line-height: 1.35;
+    }
+    .account-paper-meta {
+      font-size: 11px;
+      color: #6b6459;
+      margin-top: 3px;
+    }
+    .account-paper-comment {
+      font-size: 12px;
+      color: #6b6459;
+      margin-top: 5px;
+      font-style: italic;
+      line-height: 1.45;
+    }
+
+    /* ── Design notes callout ────────────── */
+    .callout {
+      margin-top: 32px;
+      padding: 18px 20px;
+      background: #fff;
+      border: 1px solid #ddd8d2;
+      border-radius: 6px;
+    }
+    .callout h3 {
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .callout ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+    .callout li {
+      font-size: 13px;
+      color: #6b6459;
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+    .callout li strong { color: #1c1a17; }
+    .callout code {
+      font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+      font-size: 12px;
+      background: #f0eeec;
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    /* ── Category management content ──────── */
+    .categories-inner {
+      padding: 0 20px 8px;
+    }
+    .moderates-section {
+      padding: 14px 0;
+      border-bottom: 1px solid #ddd8d2;
+    }
+    .moderates-section:last-child { border-bottom: none; }
+    .moderates-section > h6,
+    .section-header h6 {
+      margin: 0 0 10px;
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6b6459;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .section-header h6 { margin-bottom: 0; }
+    .section-header-end {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .edit-btn {
+      background: var(--sec-bg);
+      border: 1px solid var(--sec-border);
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--text);
+      padding: 4px 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: background 0.12s, border-color 0.12s;
+    }
+    .edit-btn:hover {
+      background: var(--sec-bg-hover);
+      border-color: var(--sec-border-active);
+    }
+    .edit-btn:focus-visible { outline: 3px solid #1565c0; outline-offset: 2px; }
+    .chip-container { 
+      display: flex; 
+      gap: 6px; 
+      flex-wrap: wrap; 
+      margin-bottom: 10px;
+      min-height: 32px;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+      cursor: default;
+    }
+    .chip-container.drag-over {
+      background-color: #f0f4ff;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #eef2ff;
+      color: #1c1a17;
+      border: 1px solid #d0daf5;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12.5px;
+      cursor: grab;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .chip:hover {
+      cursor: grab;
+    }
+    .chip:active {
+      cursor: grabbing;
+    }
+    .chip.dragging {
+      opacity: 0.5;
+      transform: rotate(5deg);
+    }
+    .remove { cursor: pointer; margin-left: 4px; }
+    .chip-source {
+      font-family: "IBM Plex Sans", sans-serif;
+      font-size: 10.5px;
+      font-weight: 500;
+      color: #6b6459;
+      background: #fff;
+      border: 1px solid #ddd8d2;
+      border-radius: 999px;
+      padding: 1px 6px;
+      white-space: nowrap;
+      line-height: 1.4;
+    }
+    .chip-source-auto { color: #b0aba6; }
+    .chip-source a { color: #1565c0; text-decoration: none; }
+    .chip-source a:hover { text-decoration: underline; }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal:not([hidden]) { display: flex; }
+    .modal-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      position: relative;
+      z-index: 1001;
+      background: #fff;
+      border-radius: 8px;
+      padding: 24px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow: visible;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .modal-header h2 {
+      margin: 0;
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: #1c1a17;
+    }
+    .modal-current-selection {
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #ddd8d2;
+    }
+    .modal-current-selection p {
+      margin: 0 0 8px;
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b6459;
+    }
+    .modal-current-selection .chip-container { gap: 4px; }
+    .modal-current-selection .chip { padding: 3px 8px; }
+    .close-btn {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: #6b6459;
+      padding: 0;
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 4px;
+      line-height: 1;
+      transition: background 0.12s;
+    }
+    .close-btn:hover { background: #f0eeec; }
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+    .save-btn, .cancel-btn {
+      padding: 7px 16px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: "IBM Plex Sans", sans-serif;
+      transition: background 0.12s;
+    }
+    .save-btn { background: #1565c0; color: #fff; }
+    .save-btn:hover { background: #1050a0; }
+    .cancel-btn { background: #f0eeec; color: #1c1a17; border: 1px solid #ddd8d2; }
+    .cancel-btn:hover { background: #ddd8d2; }
+    .combobox { display: flex; flex-direction: column; position: relative; overflow: visible; }
+    .selected-row { display: none; }
+    .search-container {
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 8px;
+      border: 1px solid #ddd8d2;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: visible;
+    }
+    .search-container:focus-within {
+      border-color: #1565c0;
+      box-shadow: 0 0 0 3px rgba(21,101,192,0.1);
+    }
+    [id^="combo-input"] {
+      width: 100%;
+      border: 0 !important;
+      padding: 7px 4px;
+      font-size: 13px;
+      font-family: "IBM Plex Sans", sans-serif;
+      outline: none !important;
+      background: transparent;
+      appearance: none;
+      box-shadow: none !important;
+      color: #1c1a17;
+    }
+    [id^="combo-input"]::placeholder { color: #b0aba6; font-style: italic; }
+    .dropdown {
+      list-style: none;
+      margin: 4px 0 0;
+      padding: 4px;
+      width: calc(100% - 16px);
+      max-height: 220px;
+      overflow: auto;
+      border-radius: 6px;
+      border: 1px solid #ddd8d2;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      background: #fff;
+      position: absolute;
+      z-index: 20;
+      top: 100%;
+      left: 8px;
+      display: none;
+    }
+    .dropdown li {
+      padding: 7px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 13px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      color: #1c1a17;
+    }
+    .dropdown li[aria-selected="true"],
+    .dropdown li:hover { background: #eef2ff; }
+
+    /* Toggle switch */
+    .toggle-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .toggle-switch input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .toggle-track {
+      position: relative;
+      display: inline-block;
+      width: 30px;
+      height: 17px;
+      background: #8b8680;
+      border-radius: 999px;
+      transition: background 0.18s;
+      flex-shrink: 0;
+    }
+    .toggle-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 13px;
+      height: 13px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+      transition: transform 0.18s;
+    }
+    .toggle-switch input:checked + .toggle-track {
+      background: #9cb522;
+    }
+    .toggle-switch input:checked + .toggle-track .toggle-thumb {
+      transform: translateX(13px);
+    }
+    .toggle-switch input:focus-visible + .toggle-track {
+      outline: 3px solid #1565c0;
+      outline-offset: 2px;
+    }
+    .toggle-label {
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #7c7670;  /* 4.5:1 on warm wash — AA compliant */
+      transition: color 0.18s, font-weight 0.18s;
+    }
+    .toggle-switch input:checked ~ .toggle-label {
+      color: #1c1a17;
+      font-weight: 700;
+    }
+
+    /* ── Negative endorsement chip ──────────── */
+    .chip-neg {
+      background: #fde8e8;
+      border-color: #f5d0d0;
+      color: #c62828;
+    }
+    .chip-neg .chip-source {
+      background: rgba(255,255,255,0.55);
+      border-color: rgba(198,40,40,0.2);
+      color: #c62828;
+    }
+    .chip-neg .chip-source-auto { color: #e57373; }
+    .chip-neg .chip-source a { color: #c62828; }
+
+    /* ── Privileges card open background ────── */
+    #categories-card .card-body { background: #fff; }
+    #papers-card #papers-table,
+    #papers-card .table-footer { background: #fff; }
+
+    /* ── Endorsement history accordion ──────── */
+    .endorsement-history {
+      margin-top: 4px;
+    }
+    .endorsement-history > summary {
+      padding: 7px 0;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #b0aba6;
+    }
+    .endorsement-history > summary::-webkit-details-marker { display: none; }
+    .endorsement-history > summary::before {
+      content: "▶";
+      font-size: 7px;
+      color: #b0aba6;
+      transition: transform 0.15s;
+      flex-shrink: 0;
+    }
+    .endorsement-history[open] > summary::before { transform: rotate(90deg); }
+    .history-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; }
+    .history-table td {
+      padding: 5px 8px 5px 0;
+      font-size: 12px;
+      color: #5a5450;
+      border-bottom: 1px solid #f0eeec;
+      vertical-align: top;
+    }
+    .history-table tr:last-child td { border-bottom: none; }
+    .history-table .h-date {
+      width: 88px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: #b0aba6;
+      white-space: nowrap;
+    }
+    .history-table .h-by { width: 72px; color: #6b6459; text-align: right; font-size: 11px; }
+    .h-add         { color: #4a5a0a; font-weight: 500; }
+    .h-block       { color: #c62828; font-weight: 500; } /* kept for JS compat */
+    .h-invalidated { color: #c62828; font-weight: 500; }
+    .h-remove      { color: #6b6459; }
+
+    /* ── History table edit link ─────────────── */
+    /* Text-only link with an external-page arrow — signals navigation, not popup */
+    .history-edit-link {
+      font-size: 11px;
+      color: #1565c0;
+      text-decoration: none;
+      white-space: nowrap;
+      opacity: 0.7;
+      transition: opacity 0.1s;
+    }
+    .history-edit-link:hover { opacity: 1; text-decoration: underline; }
+    .history-table .h-edit { width: 40px; text-align: right; }
+
+    /* ── Endorsement Requests table ──────────── */
+    .endr-requests-section { padding-top: 14px; }
+    .endr-table-wrap {
+      margin-top: 4px;
+      border: 1px solid #ddd8d2;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .endr-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .endr-table th {
+      text-align: left;
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b6459;
+      padding: 7px 14px;
+      background: #f0eeec;
+      border-bottom: 1px solid #ddd8d2;
+    }
+    .endr-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #f0eeec;
+      vertical-align: top;
+      font-size: 13px;
+    }
+    .endr-table tr:last-child td { border-bottom: none; }
+    .endr-table tbody tr:hover td { background: #faf9f8; }
+
+    /* Left meta col in endorsement table */
+    .endr-table .col-meta { width: 110px; }
+    .endr-id {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: #b0aba6;
+    }
+
+    /* Category badge — monospace, neutral, like type-badge shape */
+    .cat-badge {
+      display: inline-block;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      background: #eef2ff;
+      color: #1a3d78;
+      border: 1px solid #d0daf5;
+      border-radius: 3px;
+      padding: 1px 7px;
+      white-space: nowrap;
+      margin-bottom: 4px;
+    }
+    .btn-icon .icon-arrow {
+      font-size: 14px;
+      margin-left: 0px;
+      opacity: 0.95;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .endr-endorsee {
+      font-size: 12px;
+      color: #1c1a17;
+      line-height: 1.4;
+    }
+    .endr-username {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: #6b6459;
+    }
+    .endr-secret-row {
+      font-size: 11px;
+      color: #6b6459;
+      margin-top: 3px;
+    }
+    .endr-secret-code {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      background: #f0eeec;
+      border: 1px solid #ddd8d2;
+      border-radius: 3px;
+      padding: 1px 5px;
+      letter-spacing: 0.05em;
+    }
+    .endr-ip {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: #6b6459;
+      margin-top: 3px;
+    }
+    /* Valid / Closed badges */
+    .badge-valid {
+      background: #f0f9e8;
+      color: #4a5a0a;
+      border: 1px solid #c8e098;
+      display: inline-block;
+      border-radius: 3px;
+      padding: 1px 7px;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .badge-closed {
+      background: #f0eeec;
+      color: #6b6459;
+      border: 1px solid #ddd8d2;
+      display: inline-block;
+      border-radius: 3px;
+      padding: 1px 7px;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .endr-badges { display: flex; gap: 5px; flex-wrap: wrap; }
+    .endr-more-link {
+      font-size: 11px;
+      color: #1565c0;
+      margin-top: 6px;
+      display: block;
+    }
+
+    /* ── Modal comment box ───────────────────── */
+    .modal-comment-section {
+      border-top: 1px solid #ddd8d2;
+      margin-top: 16px;
+      padding-top: 14px;
+    }
+    .modal-comment-label {
+      display: block;
+      margin: 0 0 6px;
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b6459;
+    }
+    .modal-comment-box {
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 68px;
+      resize: vertical;
+      font-family: "IBM Plex Sans", sans-serif;
+      font-size: 13px;
+      color: #1c1a17;
+      background: #fff;
+      border: 1px solid #ddd8d2;
+      border-radius: 4px;
+      padding: 8px 10px;
+      line-height: 1.45;
+    }
+    .modal-comment-box:focus {
+      outline: none;
+      border-color: #1565c0;
+      box-shadow: 0 0 0 3px rgba(21,101,192,0.1);
+    }
+    .modal-comment-box::placeholder { color: #b0aba6; font-style: italic; }
+
+    /* ── Flip-capable chip in endorsement modal ── */
+    /* Clickable chip body — hover signals it's interactive */
+    .chip-flippable {
+      cursor: pointer;
+      user-select: none;
+      transition: filter 0.1s;
+    }
+    .chip-flippable:hover { filter: brightness(0.95); }
+
+    /* ── Endorsement modal ───────────────────── */
+    .modal-endorse-section { margin-bottom: 14px; }
+    .modal-endorse-label {
+      margin: 0 0 8px;
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .modal-endorse-label.pos { color: #4a5a0a; }
+    .modal-endorse-label.neg { color: #c62828; }
+    .modal-endorse-empty { font-size: 12px; color: #b0aba6; font-style: italic; }
+    .modal-add-section {
+      border-top: 1px solid #ddd8d2;
+      padding-top: 14px;
+      margin-top: 4px;
+    }
+    .modal-add-label {
+      margin: 0 0 8px;
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b6459;
+    }
+    .add-seg {
+      display: inline-flex;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #ddd8d2;
+    }
+    .add-seg-btn {
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: "IBM Plex Sans", sans-serif;
+      border: none;
+      background: #fff;
+      color: #6b6459;
+      cursor: pointer;
+      transition: background 0.1s, color 0.1s;
+      border-right: 1px solid #ddd8d2;
+    }
+    .add-seg-btn:last-child { border-right: none; }
+    .add-seg-btn.active-pos { background: #f0f9e8; color: #4a5a0a; font-weight: 600; }
+    .add-seg-btn.active-neg { background: #fde8e8; color: #c62828; font-weight: 600; }
+    #endorsement-search {
+      width: 100%;
+      border: 0 !important;
+      padding: 7px 4px;
+      font-size: 13px;
+      font-family: "IBM Plex Sans", sans-serif;
+      outline: none !important;
+      background: transparent;
+      appearance: none;
+      box-shadow: none !important;
+      color: #1c1a17;
+    }
+    #endorsement-search::placeholder { color: #b0aba6; font-style: italic; }
+
+    /* ── Field validation ─────────────────────── */
+    .field-error {
+      margin: 6px 0 0;
+      font-size: 12px;
+      color: #c62828;
+    }
+    .modal-comment-box.invalid {
+      border-color: #c62828;
+      box-shadow: 0 0 0 3px rgba(198,40,40,0.1);
+    }
+    .modal-comment-box.invalid:focus {
+      border-color: #c62828;
+      box-shadow: 0 0 0 3px rgba(198,40,40,0.15);
+    }
+
+    /* ── Page heading + action buttons ───────── */
+    .page-heading {
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: #1c1a17;
+    }
+    .page-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .btn-sm {
+      padding: 5px 12px;
+      font-size: 12px;
+    }
+
+    /* ── User Metadata — full-width white band ── */
+    .user-meta-zone {
+      position: relative;
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+    }
+    .user-meta-zone::before {
+      content: "";
+      position: absolute;
+      top: -20px; bottom: 0;   /* extend up to cover page padding */
+      left: calc(-50vw + 50%);
+      width: 100vw;
+      background: #fff;
+      z-index: -1;
+    }
+    .user-meta-fields {
+      padding: 4px 0 0;
+    }
+
+    /* Info card — responsive horizontal bar */
+    .info-card-wide {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      margin-top: 14px;
+    }
+    .info-card-wide .info-card-row {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+      border-right: 1px solid rgba(0, 0, 0, 0.07);
+      padding: 14px 20px;
+    }
+    .info-card-wide .info-card-row:last-child { border-bottom: none; }
+
+    /* Field groups */
+    .field-group {
+      padding: 14px 0;
+    }
+    /* Only the toggles section gets a top border */
+    .field-group-ruled {
+      border-top: 1px solid #e4e0db;
+      margin-top: 6px;
+      padding-top: 18px;
+    }
+
+    .field-label {
+      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6b6459;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .field-value {
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1c1a17;
+      margin-top: 3px;
+    }
+    .field-value-mono {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 13px;
+    }
+    .field-value-empty {
+      color: #b0aba6;
+    }
+    /* Name suffix — shown inline after the name, labeled so admins can spot bogus data */
+    .name-suffix-flag {
+      font-size: 14px;
+      font-weight: 500;
+      color: #c62828;
+      background: #fdf0f0;
+      border: 1px solid #f5d0d0;
+      border-radius: 3px;
+      padding: 2px 8px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    .name-suffix-flag::before {
+      content: "suffix: ";
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #c62828;
+      opacity: 0.7;
+    }
+    /* Clean suffix (e.g. "Jr", "III") — neutral style */
+    .name-suffix-ok {
+      font-size: 14px;
+      font-weight: 500;
+      color: #6b6459;
+      background: #f0eeec;
+      border: 1px solid #ddd8d2;
+      border-radius: 3px;
+      padding: 2px 8px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    .name-suffix-ok::before {
+      content: "suffix: ";
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #b0aba6;
+    }
+
+    .field-value-suspect {
+      color: #c62828;
+      background: #fdf0f0;
+      padding: 2px 8px;
+      border-radius: 3px;
+      border: 1px solid #f5d0d0;
+    }
+
+    .field-row {
+      margin-bottom: 10px;
+    }
+    .field-row:last-child { margin-bottom: 0; }
+
+    /* Identity row — primary user data, light tint background */
+    .identity-row {
+      display: grid;
+      grid-template-columns: auto repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 16px 32px;
+      background: #f4fbee;
+      border: 1px solid #d4edb8;
+      border-radius: 6px;
+      padding: 14px 20px;
+    }
+    .identity-row .email-cell {
+      grid-row: 1 / 3;
+      border-right: 1px solid #d4edb8;
+      padding-right: 24px;
+    }
+    .identity-row .field-label {
+      display: block;
+      margin-bottom: 2px;
+    }
+    .identity-row .field-value {
+      display: inline-block;
+    }
+    @media (max-width: 700px) {
+      .identity-row {
+        grid-template-columns: 1fr 1fr;
+      }
+      .identity-row .email-cell {
+        grid-row: auto;
+        grid-column: 1 / -1;
+        border-right: none;
+        border-bottom: 1px solid #d4edb8;
+        padding-right: 0;
+        padding-bottom: 10px;
+      }
+    }
+
+    /* Status badges — read-only inline indicators */
+    .status-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 8px;
+      border-radius: 3px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .status-badge-ok {
+      background: #f0f9e8;
+      color: #4a5a0a;
+      border: 1px solid #c8e098;
+    }
+    .status-badge-warn {
+      background: #fff8e1;
+      color: #8a6400;
+      border: 1px solid #ffe08a;
+    }
+
+    /* Inline edit icon — sits next to field labels */
+    .edit-btn-inline {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #6b6459;
+      padding: 0 0 0 4px;
+      vertical-align: middle;
+      line-height: 1;
+      transition: color 0.12s;
+    }
+    .edit-btn-inline:hover { color: #1c1a17; }
+    .edit-btn-inline:focus-visible {
+      outline: 2px solid #1565c0;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* Inline checkboxes for email settings */
+    .email-checks {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .inline-check {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: #6b6459;
+      cursor: pointer;
+    }
+    .inline-check input {
+      margin: 0;
+      accent-color: #9cb522;
+    }
+
+    .field-row-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 32px;
+      justify-content: flex-start;
+    }
+    .field-row-flex > div {
+      min-width: 140px;
+      flex: 0 1 auto;
+    }
+
+    .field-links {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-top: 4px;
+      font-size: 12px;
+    }
+    .field-links a {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11.5px;
+    }
+
+    .field-toggles {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .field-deprecation-note {
+      font-size: 11px;
+      color: #b0aba6;
+      font-style: italic;
+      margin-left: 8px;
+    }
+
+    .field-note-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #f0eeec;
+      color: #6b6459;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: help;
+      flex-shrink: 0;
+    }
+
+    .toggles-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0;
+    }
+    .toggles-row > * {
+      padding: 0 32px;
+      border-left: 1px solid #e4e0db;
+    }
+    .toggles-row > *:first-child {
+      padding-left: 0;
+      border-left: none;
+    }
+    .toggles-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Protected toggle (Admin/Dev Permissions) — danger border when on */
+    .toggle-protected input:checked + .toggle-track {
+      background: #c62828;
+    }
+
+    /* ── Owned Papers ────────────────────────── */
+    .papers-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 12px;
+      border-bottom: 1px solid #ddd8d2;
+    }
+    .papers-toolbar-left {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .papers-selected-count {
+      font-size: 12px;
+      color: #6b6459;
+    }
+
+    #papers-table input[type="checkbox"] {
+      accent-color: #9cb522;
+    }
+    #papers-table th:first-child,
+    #papers-table td:first-child {
+      width: 32px;
+      text-align: center;
+      padding-left: 12px;
+      padding-right: 4px;
+    }
+    .col-indicator {
+      width: 36px;
+      text-align: center;
+      color: #4a5a0a;
+      font-size: 14px;
+    }
+    .col-indicator-no {
+      color: #b0aba6;
+    }
+    .admin-link {
+      font-size: 10px;
+      color: #b0aba6;
+      display: block;
+      margin-top: 1px;
+      text-decoration: none;
+    }
+    .admin-link:hover { color: #1565c0; text-decoration: underline; }
+
+    /* ── Confirm modal specifics ─────────────── */
+    .confirm-modal-text {
+      font-size: 14px;
+      color: #1c1a17;
+      line-height: 1.5;
+      margin: 0 0 16px;
+    }
+    .confirm-modal-warning {
+      font-size: 13px;
+      color: #6b6459;
+      font-style: italic;
+      margin: 0 0 16px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="user-meta-zone">
+
+  <h1 class="page-heading">Esther McGill-Henry <span class="name-suffix-flag">PhD, Professor</span>
+    <button class="edit-btn-inline" title="Edit name" aria-label="Edit name" style="vertical-align:middle;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
+    <span style="font-size:14px;font-weight:400;color:#6b6459;margin-left:16px;">ORCID</span>
+    <span style="font-size:14px;font-weight:400;font-family:'IBM Plex Mono',monospace;color:#1c1a17;">0000-0001-2345-6789</span>
+    <button class="edit-btn-inline" title="Edit ORCID" aria-label="Edit ORCID" style="vertical-align:middle;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
+  </h1>
+  <div class="page-actions">
+    <button class="btn btn-tertiary">Become This User</button>
+    <button class="btn btn-tertiary">Add Comment</button>
+    <button class="btn btn-tertiary">Change Password</button>
+  </div>
+
+  <!-- User Metadata and Status — always open, no collapse toggle -->
+  <div id="user-meta-card">
+    <div class="card-body">
+        <div class="user-meta-fields">
+
+          <!-- User data -->
+          <div class="field-group">
+            <div class="identity-row">
+              <div class="email-cell">
+                <span class="field-label">Email <button class="edit-btn-inline" title="Edit email" aria-label="Edit email"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button></span>
+                <span class="field-value">esther.mcgillhenry@university.edu</span>
+                <div class="email-checks">
+                  <label class="inline-check"><input type="checkbox" checked> <span>Verified</span></label>
+                  <label class="inline-check"><input type="checkbox"> <span>Bouncing</span></label>
+                  <span class="field-note-icon" title="Flag set by mail delivery system when emails to this address bounce. Purpose in admin workflow is unclear.">?</span>
+                </div>
+              </div>
+              <div>
+                <span class="field-label">Affiliation <button class="edit-btn-inline" title="Edit affiliation" aria-label="Edit affiliation"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button></span>
+                <span class="field-value">University of Khartoum</span>
+              </div>
+              <div>
+                <span class="field-label">Webpage <button class="edit-btn-inline" title="Edit webpage" aria-label="Edit webpage"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button></span>
+                <span class="field-value"><a href="#">https://uofk.edu/~emcgill</a></span>
+              </div>
+              <div>
+                <span class="field-label">Country <button class="edit-btn-inline" title="Edit country" aria-label="Edit country"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button></span>
+                <span class="field-value">Sudan</span>
+              </div>
+              <div>
+                <span class="field-label">Default Category <button class="edit-btn-inline" title="Edit default category" aria-label="Edit default category"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button></span>
+                <span class="field-value field-value-mono">math-ph</span>
+              </div>
+              <div>
+                <span class="field-label">Career Status <button class="edit-btn-inline" title="Edit career status" aria-label="Edit career status"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button></span>
+                <span class="field-value">Faculty</span>
+              </div>
+              <div>
+                <span class="field-label">Username <span class="field-deprecation-note">being phased out</span> <button class="edit-btn-inline" title="Edit username" aria-label="Edit username"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button></span>
+                <span class="field-value field-value-mono">emcgillhenry</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Toggles: Submission Permissions | Roles | Status -->
+          <div class="field-group">
+            <div class="toggles-row">
+
+              <div class="toggles-col">
+                <span class="field-label">Submission Permissions</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label">Can Submit New</span>
+                </label>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label">Can Submit Replacements &amp; Withdrawals</span>
+                </label>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label">Can Endorse Others</span>
+                </label>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label">Allow PDF from TeX</span>
+                </label>
+              </div>
+
+              <div>
+                <span class="field-label" style="margin-bottom:8px;">Roles</span>
+                <div style="display:flex;gap:32px;">
+                  <div class="toggles-col">
+                    <label class="toggle-switch toggle-protected" data-confirm="Admin Permissions">
+                      <input type="checkbox">
+                      <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                      <span class="toggle-label">Admin Permissions</span>
+                    </label>
+                    <label class="toggle-switch toggle-protected" data-confirm="Developer Permissions">
+                      <input type="checkbox">
+                      <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                      <span class="toggle-label">Developer Permissions</span>
+                    </label>
+                    <label class="toggle-switch">
+                      <input type="checkbox">
+                      <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                      <span class="toggle-label">API Submitter</span>
+                    </label>
+                    <label class="toggle-switch">
+                      <input type="checkbox">
+                      <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                      <span class="toggle-label">Internal</span>
+                    </label>
+                  </div>
+                  <div class="toggles-col">
+                    <label class="toggle-switch">
+                      <input type="checkbox">
+                      <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                      <span class="toggle-label">Can Lock</span>
+                    </label>
+                    <label class="toggle-switch">
+                      <input type="checkbox">
+                      <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                      <span class="toggle-label">Test</span>
+                    </label>
+                    <label class="toggle-switch" data-comment-required="Proxy">
+                      <input type="checkbox">
+                      <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                      <span class="toggle-label">Proxy</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="toggles-col">
+                <span class="field-label">Status</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label">Approved</span>
+                </label>
+                <label class="toggle-switch" data-comment-required="Suspended">
+                  <input type="checkbox">
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label">Suspended</span>
+                </label>
+                <label class="toggle-switch" data-comment-required="Flagged">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label">Flagged</span>
+                </label>
+                <label class="toggle-switch">
+                  <input type="checkbox">
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label">Deleted</span>
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+        </div><!-- /.user-meta-fields -->
+
+    </div><!-- /.card-body -->
+  </div>
+
+  </div><!-- /.user-meta-zone -->
+
+  <div class="accordions">
+
+  <div class="card collapsed" id="categories-card">
+    <div class="card-header" id="categories-toggle">
+      <button class="section-toggle" aria-label="Expand section" aria-expanded="false" aria-controls="categories-body">▼</button>
+      <h2>Privileges</h2>
+    </div>
+    <div class="card-body" id="categories-body">
+      <div class="categories-inner">
+
+        <!-- Moderates — editable -->
+        <div class="moderates-section">
+          <div class="section-header">
+            <h6>Moderates</h6>
+            <div class="section-header-end">
+              <button id="editBtn-1" class="edit-btn" title="Edit moderation categories" aria-label="Edit moderation categories">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+              </button>
+            </div>
+          </div>
+          <div id="chip-container-1" class="chip-container"></div>
+        </div>
+
+        <!-- Can Submit To — lookup only, with New/Replacements toggles -->
+        <div class="moderates-section">
+          <div class="section-header">
+            <h6>Can Submit To</h6>
+            <!-- <div class="section-header-end">
+              <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                <span class="toggle-label">New</span>
+              </label>
+              <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                <span class="toggle-label">Replacements</span>
+              </label>
+            </div> -->
+          </div>
+          <div id="chip-container-2" class="chip-container"></div>
+        </div>
+
+        <!-- Endorsements Received — editable -->
+        <div class="moderates-section">
+          <div class="section-header">
+            <h6>Endorsements Received</h6>
+            <div class="section-header-end">
+              <button id="editBtn-3" class="edit-btn" title="Edit endorsements received" aria-label="Edit endorsements received">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+              </button>
+            </div>
+          </div>
+          <div id="chip-container-3" class="chip-container"></div>
+          <details class="endorsement-history">
+            <summary>Endorsement History</summary>
+            <table class="history-table">
+              <tbody>
+                <tr>
+                  <td class="h-date">2024-03-10</td>
+                  <td><span class="h-add">Added:</span> cs.CV</td>
+                  <td class="h-by">system</td>
+                  <td class="h-edit"><a href="#" class="history-edit-link">Edit ↗</a></td>
+                </tr>
+                <tr>
+                  <td class="h-date">2023-06-14</td>
+                  <td><span class="h-add">Added:</span> physics.bio-ph</td>
+                  <td class="h-by">bsmith</td>
+                  <td class="h-edit"><a href="#" class="history-edit-link">Edit ↗</a></td>
+                </tr>
+                <tr>
+                  <td class="h-date">2013-02-08</td>
+                  <td><span class="h-invalidated">Invalidated:</span> physics.gen-ph</td>
+                  <td class="h-by">ginsparg</td>
+                  <td class="h-edit"><a href="#" class="history-edit-link">Edit ↗</a></td>
+                </tr>
+                <tr>
+                  <td class="h-date">2010-09-01</td>
+                  <td><span class="h-add">Added:</span> physics.gen-ph</td>
+                  <td class="h-by">system</td>
+                  <td class="h-edit"><a href="#" class="history-edit-link">Edit ↗</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </details>
+        </div>
+
+        <!-- Can Endorse Others — lookup only, no negative endorsements -->
+        <div class="moderates-section">
+          <h6>Can Endorse Others</h6>
+          <div id="chip-container-4" class="chip-container"></div>
+        </div>
+
+        <!-- Endorsement Requests — read-only table -->
+        <div class="moderates-section endr-requests-section">
+          <div class="section-header">
+            <h6>Endorsement Requests</h6>
+            <span class="stub-count">140,455 total</span>
+          </div>
+          <div class="endr-table-wrap">
+            <table class="endr-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Endorsee</th>
+                  <th>Category</th>
+                  <th>Created</th>
+                  <th>Secret</th>
+                  <th>IP</th>
+                  <th>Valid</th>
+                  <th>Open</th>
+                  <th>Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>298,248</td>
+                  <td>Jim Entwood-Test &lt;testing123@cornell.edu&gt;</td>
+                  <td><span class="cat-badge">math.CA</span></td>
+                  <td>2025-12-09</td>
+                  <td>MLN4QV</td>
+                  <td>203.0.113.17</td>
+                  <td>✓</td>
+                  <td>✓</td>
+                  <td><button class="btn-icon btn-icon-sm btn-icon-constructive" aria-label="Edit endorsement request"><span aria-hidden="true" class="icon-arrow">↗</span></button></td>
+                </tr>
+                <tr>
+                  <td>298,247</td>
+                  <td>Jim Entwood-Test &lt;testing123@cornell.edu&gt;</td>
+                  <td><span class="cat-badge">math.AC</span></td>
+                  <td>2025-12-08</td>
+                  <td>OAWWB6</td>
+                  <td>203.0.113.17</td>
+                  <td>✓</td>
+                  <td>✓</td>
+                  <td><button class="btn-icon btn-icon-sm btn-icon-constructive" aria-label="Edit endorsement request"><span aria-hidden="true" class="icon-arrow">↗</span></button></td>
+                </tr>
+                <tr>
+                  <td>298,243</td>
+                  <td>Tobias Åkerlund &lt;t.akerlund@example.net&gt;</td>
+                  <td><span class="cat-badge">q-bio.SC</span></td>
+                  <td>2025-10-23</td>
+                  <td>UJL8IN</td>
+                  <td>203.0.113.42</td>
+                  <td>✓</td>
+                  <td>✓</td>
+                  <td><button class="btn-icon btn-icon-sm btn-icon-constructive" aria-label="Edit endorsement request"><span aria-hidden="true" class="icon-arrow">↗</span></button></td>
+                </tr>
+                <tr>
+                  <td>298,240</td>
+                  <td>Nikos Vlachos &lt;nikos.vlachos@example.com&gt;</td>
+                  <td><span class="cat-badge">math.AP</span></td>
+                  <td>2025-03-19</td>
+                  <td>9QCH7V</td>
+                  <td>203.0.113.88</td>
+                  <td>✓</td>
+                  <td></td>
+                  <td><button class="btn-icon btn-icon-sm btn-icon-constructive" aria-label="Edit endorsement request"><span aria-hidden="true" class="icon-arrow">↗</span></button></td>
+                </tr>
+                <tr>
+                  <td>298,239</td>
+                  <td>Wei Zhang &lt;wei.zhang@student.example.edu&gt;</td>
+                  <td><span class="cat-badge">cs.AI</span></td>
+                  <td>2025-01-01</td>
+                  <td>V8QUSR</td>
+                  <td>203.0.113.120</td>
+                  <td>✓</td>
+                  <td>✓</td>
+                  <td><button class="btn-icon btn-icon-sm btn-icon-constructive" aria-label="Edit endorsement request"><span aria-hidden="true" class="icon-arrow">↗</span></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <a href="#" class="endr-more-link">View all 140,455 endorsement requests ↗</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="card collapsed" id="papers-card">
+    <div class="card-header" id="papers-toggle">
+      <button class="section-toggle" aria-label="Expand section" aria-expanded="false" aria-controls="papers-body">▼</button>
+      <h2>Owned Papers <span class="stub-count">6 total, 5 authored</span></h2>
+    </div>
+    <div class="card-body" id="papers-body">
+
+      <!-- Toolbar -->
+      <div class="papers-toolbar">
+        <div class="papers-toolbar-left">
+          <button class="btn btn-tertiary btn-sm" id="btn-bulk-owner" disabled>Bulk Paper Owner</button>
+          <button class="btn btn-tertiary btn-sm" id="btn-revoke" disabled>Revoke Authorship</button>
+          <span class="papers-selected-count" id="papers-selected-count"></span>
+        </div>
+        <div class="tab-filter">
+          <label for="papers-show-filter">Show:</label>
+          <select id="papers-show-filter" aria-label="Filter owned papers">
+            <option value="all" selected>All</option>
+            <option value="authored">Authored</option>
+            <option value="not-authored">Owner only</option>
+          </select>
+        </div>
+      </div>
+
+      <table class="log-table" id="papers-table">
+        <thead>
+          <tr>
+            <th style="width:32px;"><input type="checkbox" id="papers-select-all" aria-label="Select all papers"></th>
+            <th class="col-indicator" title="Submitter">Sub</th>
+            <th class="col-indicator" title="Author">Auth</th>
+            <th class="sortable" data-sort="arxiv-id" style="width:120px;">arXiv ID <span class="sort-arrow">⇅</span></th>
+            <th>Title</th>
+            <th class="sortable" data-sort="submitted" style="width:100px;">Submitted <span class="sort-arrow">⇅</span></th>
+            <th class="sortable" data-sort="announced" style="width:100px;">Announced <span class="sort-arrow">⇅</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-authored="true" data-submitter="true">
+            <td><input type="checkbox" aria-label="Select paper cs/0312018"></td>
+            <td class="col-indicator">✓</td>
+            <td class="col-indicator">✓</td>
+            <td>
+              <a class="arxiv-link" href="#">cs/0312018</a>
+              <a class="admin-link" href="#">admin ↗</a>
+            </td>
+            <td><span class="sub-title">Mapping Subsets of Scholarly Information</span></td>
+            <td><div class="meta-date">2003-12-08</div></td>
+            <td><div class="meta-date">2003-12-12</div></td>
+          </tr>
+          <tr data-authored="true" data-submitter="true">
+            <td><input type="checkbox" aria-label="Select paper cond-mat/9704118"></td>
+            <td class="col-indicator">✓</td>
+            <td class="col-indicator">✓</td>
+            <td>
+              <a class="arxiv-link" href="#">cond-mat/9704118</a>
+              <a class="admin-link" href="#">admin ↗</a>
+            </td>
+            <td><span class="sub-title">The phase plane of moving discrete breathers</span></td>
+            <td><div class="meta-date">1997-04-10</div></td>
+            <td><div class="meta-date">1997-04-14</div></td>
+          </tr>
+          <tr data-authored="true" data-submitter="true">
+            <td><input type="checkbox" aria-label="Select paper cond-mat/9512055"></td>
+            <td class="col-indicator">✓</td>
+            <td class="col-indicator">✓</td>
+            <td>
+              <a class="arxiv-link" href="#">cond-mat/9512055</a>
+              <a class="admin-link" href="#">admin ↗</a>
+            </td>
+            <td><span class="sub-title">Acoustic Emission from crumpling paper</span></td>
+            <td><div class="meta-date">1995-12-05</div></td>
+            <td><div class="meta-date">1995-12-08</div></td>
+          </tr>
+          <tr data-authored="false" data-submitter="true">
+            <td><input type="checkbox" aria-label="Select paper cond-mat/0101001"></td>
+            <td class="col-indicator">✓</td>
+            <td class="col-indicator col-indicator-no">✕</td>
+            <td>
+              <a class="arxiv-link" href="#">cond-mat/0101001</a>
+              <a class="admin-link" href="#">admin ↗</a>
+            </td>
+            <td><span class="sub-title">A simple model of price formation</span></td>
+            <td><div class="meta-date">2001-11-03</div></td>
+            <td><div class="meta-date">2001-11-07</div></td>
+          </tr>
+          <tr data-authored="true" data-submitter="true">
+            <td><input type="checkbox" aria-label="Select paper cond-mat/9908055"></td>
+            <td class="col-indicator">✓</td>
+            <td class="col-indicator">✓</td>
+            <td>
+              <a class="arxiv-link" href="#">cond-mat/9908055</a>
+              <a class="admin-link" href="#">admin ↗</a>
+            </td>
+            <td><span class="sub-title">Semiclassical mechanics of a non-integrable spin cluster</span></td>
+            <td><div class="meta-date">1999-08-01</div></td>
+            <td><div class="meta-date">1999-08-04</div></td>
+          </tr>
+          <tr data-authored="true" data-submitter="false">
+            <td><input type="checkbox" aria-label="Select paper 2507.04892"></td>
+            <td class="col-indicator col-indicator-no">&mdash;</td>
+            <td class="col-indicator">✓</td>
+            <td>
+              <a class="arxiv-link" href="#">2507.04892</a>
+              <a class="admin-link" href="#">admin ↗</a>
+            </td>
+            <td><span class="sub-title">Symmetry Breaking in Non-Abelian Gauge Theories at Finite Temperature</span></td>
+            <td><div class="meta-date">2025-07-09</div></td>
+            <td><div class="meta-date">2025-07-14</div></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="table-footer">
+        <span id="papers-row-count">1–6 of 6</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- User Activity card — redesign scope starts here -->
+  <div class="card collapsed" id="activity-card">
+
+    <div class="card-header" id="activity-toggle">
+      <button class="section-toggle" aria-label="Expand section" aria-expanded="false" aria-controls="activity-body">▼</button>
+      <h2>User Activity</h2>
+    </div>
+
+    <div class="card-body" id="activity-body">
+
+      <!-- Tabs + filter dropdown (right-aligned in same bar) -->
+      <div class="tab-nav" id="tab-nav">
+        <div class="tab-list" role="tablist">
+          <button class="active" role="tab" id="tab-submissions" aria-selected="true" aria-controls="panel-submissions">
+            Submission History
+            <span class="tab-count" id="submissions-count">7</span>
+          </button>
+          <button role="tab" id="tab-account" aria-selected="false" aria-controls="panel-account">
+            Account Activity
+            <span class="tab-count">3</span>
+          </button>
+        </div>
+        <div class="tab-filter" id="tab-filter">
+          <label for="status-filter">Show:</label>
+          <select id="status-filter" aria-label="Filter by status">
+            <option value="removed" selected>Removed</option>
+            <option value="onhold">On Hold</option>
+            <option value="all">All</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ── Submission History panel ── -->
+      <div class="tab-panel active" id="panel-submissions" role="tabpanel" aria-labelledby="tab-submissions">
+
+        <table class="log-table" id="submissions-table">
+          <thead>
+            <tr>
+              <th class="col-date sortable sort-desc" data-sort="date">Date <span class="sort-arrow">↓</span></th>
+              <th class="col-submit">URL</th>
+              <th class="col-title">Title</th>
+              <th class="col-submitter">Submitter</th>
+              <th class="col-type sortable" data-sort="type">Type <span class="sort-arrow">⇅</span></th>
+              <th class="col-status sortable" data-sort="status">Status <span class="sort-arrow">⇅</span></th>
+              <th class="col-notes">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <!-- Row 1 — On Hold, no arXiv ID (not yet published) -->
+            <tr data-status="onhold" data-type="new" data-date="2026-03-24T09:14:02">
+              <td class="col-date">
+                <div class="meta-date">2026-03-24<span class="date-time">09:14:02</span></div>
+              </td>
+              <td class="col-submit">
+                <a class="sub-link" href="#">submit/8651204</a>
+              </td>
+              <td class="col-title"><div class="sub-title">Asymptotic Expansions of Schrödinger Operators with Singular Potentials</div></td>
+              <td class="col-submitter"><span class="sub-submitter">Esther McGill-Henry</span></td>
+              <td class="col-type"><span class="type-badge type-new">New</span></td>
+              <td class="col-status"><span class="badge badge-onhold">On Hold</span></td>
+              <td class="col-notes">
+                <div class="comment-item">
+                  <span class="comment-body">OK for cs.ET if cs.ST does not want it.</span>
+                  <div class="comment-meta">MadMod</div>
+                </div>
+                <div class="comment-item">
+                  <span class="comment-body">Flagged for secondary review — classifier confidence low.</span>
+                  <div class="comment-meta">rebamrich</div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 2 — Removed 2025 -->
+            <tr data-status="removed" data-type="new" data-date="2025-07-09T10:42:44">
+              <td class="col-date">
+                <div class="meta-date">2025-07-09<span class="date-time">10:42:44</span></div>
+              </td>
+              <td class="col-submit">
+                <a class="sub-link" href="#">submit/6567898</a>
+                <a class="arxiv-link" href="#">2507.04892</a>
+              </td>
+              <td class="col-title"><div class="sub-title">Symmetry Breaking in Non-Abelian Gauge Theories at Finite Temperature</div></td>
+              <td class="col-submitter"><span class="sub-submitter">Esther McGill-Henry</span></td>
+              <td class="col-type"><span class="type-badge type-new">New</span></td>
+              <td class="col-status"><span class="badge badge-removed">Removed</span></td>
+              <td class="col-notes">
+                <div class="comment-item">
+                  <span class="comment-body">Admin remove</span>
+                </div>
+                <div class="comment-item">
+                  <a class="mod-link" href="#">MOD-62727</a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 3 — Removed 2024 -->
+            <tr data-status="removed" data-type="rep" data-date="2024-07-08">
+              <td class="col-date"><div class="meta-date">2024-07-08</div></td>
+              <td class="col-submit">
+                <a class="sub-link" href="#">submit/5713858</a>
+                <a class="arxiv-link" href="#">2407.03156</a>
+              </td>
+              <td class="col-title"><div class="sub-title">Spectral Properties of Discrete Schrödinger Operators on Graphs</div></td>
+              <td class="col-submitter"><span class="sub-submitter">Esther McGill-Henry</span></td>
+              <td class="col-type"><span class="type-badge type-rep">Rep</span></td>
+              <td class="col-status"><span class="badge badge-removed">Removed</span></td>
+              <td class="col-notes">
+                <div class="comment-item">
+                  <span class="comment-body">Admin remove</span>
+                </div>
+                <div class="comment-item">
+                  <a class="mod-link" href="#">MOD-41962</a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 4 — Removed 2023 -->
+            <tr data-status="removed" data-type="new" data-date="2023-11-29">
+              <td class="col-date"><div class="meta-date">2023-11-29</div></td>
+              <td class="col-submit">
+                <a class="sub-link" href="#">submit/5241336</a>
+                <a class="arxiv-link" href="#">2311.12847</a>
+              </td>
+              <td class="col-title"><div class="sub-title">Resonances in Quantum Scattering Theory: A New Approach</div></td>
+              <td class="col-submitter"><span class="sub-submitter">Esther McGill-Henry</span></td>
+              <td class="col-type"><span class="type-badge type-new">New</span></td>
+              <td class="col-status"><span class="badge badge-removed">Removed</span></td>
+              <td class="col-notes">
+                <div class="comment-item">
+                  <span class="comment-body">Admin remove</span>
+                </div>
+                <div class="comment-item">
+                  <a class="mod-link" href="#">MOD-31936</a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 5 — Removed 2023, name transition: Esther McGill; type Wdr -->
+            <tr data-status="removed" data-type="wdr" data-date="2023-04-18">
+              <td class="col-date"><div class="meta-date">2023-04-18</div></td>
+              <td class="col-submit">
+                <a class="sub-link" href="#">submit/4847721</a>
+                <a class="arxiv-link" href="#">2304.08531</a>
+              </td>
+              <td class="col-title"><div class="sub-title">Geometric Phases in Adiabatic Quantum Evolution</div></td>
+              <td class="col-submitter"><span class="sub-submitter">Esther McGill</span></td>
+              <td class="col-type"><span class="type-badge type-wdr">Wdr</span></td>
+              <td class="col-status"><span class="badge badge-removed">Removed</span></td>
+              <td class="col-notes">
+                <div class="comment-item">
+                  <span class="comment-body">Hold: Moderation flag on user for past quality concerns: does this look ok?</span>
+                  <div class="comment-meta">mrahman8</div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 6 — Removed 2019 -->
+            <tr data-status="removed" data-type="new" data-date="2019-02-19">
+              <td class="col-date"><div class="meta-date">2019-02-19</div></td>
+              <td class="col-submit">
+                <a class="sub-link" href="#">submit/2564681</a>
+                <a class="arxiv-link" href="#">1902.06234</a>
+              </td>
+              <td class="col-title"><div class="sub-title">Generalized Relativistic Wave Equations for Spin-1/2 Particles</div></td>
+              <td class="col-submitter"><span class="sub-submitter">Esther McGill</span></td>
+              <td class="col-type"><span class="type-badge type-new">New</span></td>
+              <td class="col-status"><span class="badge badge-removed">Removed</span></td>
+              <td class="col-notes">
+                <div class="comment-item">
+                  <span class="comment-body">Hold: lots of junk rejections. Does this look okay as quant-ph or is this gen-ph bound (per the classifier anyway)?</span>
+                  <div class="comment-meta">JakeW</div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 7 — Removed 2018; type Cross -->
+            <tr data-status="removed" data-type="cross" data-date="2018-04-02">
+              <td class="col-date"><div class="meta-date">2018-04-02</div></td>
+              <td class="col-submit">
+                <a class="sub-link" href="#">submit/2199401</a>
+                <a class="arxiv-link" href="#">1804.01893</a>
+              </td>
+              <td class="col-title"><div class="sub-title">Quaternionic Formulations in Classical and Quantum Electrodynamics</div></td>
+              <td class="col-submitter"><span class="sub-submitter">Esther McGill</span></td>
+              <td class="col-type"><span class="type-badge type-cross">Cross</span></td>
+              <td class="col-status"><span class="badge badge-removed">Removed</span></td>
+              <td class="col-notes">
+                <div class="comment-item">
+                  <span class="comment-body">Hold: Is this ok for gen-ph?</span>
+                  <div class="comment-meta">ab829</div>
+                </div>
+                <div class="comment-item">
+                  <span class="comment-body">Borderline — physics is sound but framing is unusual.</span>
+                  <div class="comment-meta">JakeW</div>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <div class="table-footer">
+          <span id="row-count">1–6 of 6</span>
+        </div>
+
+      </div><!-- /#panel-submissions -->
+
+      <!-- ── Account Activity panel ── -->
+      <div class="tab-panel" id="panel-account" role="tabpanel" aria-labelledby="tab-account">
+        <div class="account-log">
+          <div class="account-entry">
+            <div class="account-date">
+              2017-09-29
+            </div>
+            <div>
+              <div class="account-text">
+                User message: "Thank you for your effort to allow my manuscript to be archived. I attached my CV for your kind perusal."
+              </div>
+              <div class="account-by">rebamrich</div>
+            </div>
+          </div>
+          <div class="account-entry">
+            <div class="account-date">
+              2013-02-08
+              <span class="date-time">16:52:09</span>
+            </div>
+            <div>
+              <div class="account-text">
+                ginsparg moved arbab from status <code class="account-flag">ok</code> to <code class="account-flag">no-endorse</code>
+              </div>
+
+              <div class="account-by">ginsparg</div>
+            </div>
+          </div>
+          <div class="account-entry">
+            <div class="account-date">
+              2010-03-02
+              <span class="date-time">10:04:10</span>
+            </div>
+            <div>
+              <div class="account-text">
+                ginsparg flipped flag <code class="account-flag">arXiv_demographics.flag_suspect</code> to <strong>true</strong> for arbab
+              </div>
+              <div class="account-note">new quaternionic forumulations of quantum mechanics and electrodynamics worrisome</div>
+              <div class="account-by">ginsparg</div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /#panel-account -->
+
+    </div><!-- /.card-body -->
+  </div><!-- /.card -->
+
+  </div><!-- /.accordions -->
+
+  <!-- System data — below all accordions -->
+  <div class="info-card info-card-wide" role="region" aria-label="System data" style="margin-top:24px;">
+    <div class="info-card-row">
+      <span class="info-label">User ID</span>
+      <span class="info-value">461578</span>
+    </div>
+    <div class="info-card-row">
+      <span class="info-label">Policy Class</span>
+      <span class="info-value">Admin</span>
+    </div>
+    <div class="info-card-row">
+      <span class="info-label">Last Login</span>
+      <span class="info-value">2026-04-22 14:22:08</span>
+    </div>
+    <div class="info-card-row">
+      <span class="info-label">Penultimate Login</span>
+      <span class="info-value">2026-04-15 09:11:33</span>
+    </div>
+    <div class="info-card-row">
+      <span class="info-label">Total Submissions</span>
+      <span class="info-value">48</span>
+    </div>
+    <div class="info-card-row">
+      <span class="info-label">Joined Date</span>
+      <span class="info-value">2010-02-14</span>
+    </div>
+    <div class="info-card-row">
+      <span class="info-label">Joined From</span>
+      <span class="info-value">University of Khartoum</span>
+    </div>
+    <div class="info-card-row">
+      <span class="info-label">arXiv Author ID</span>
+      <span class="info-value">mcgill_e_1</span>
+    </div>
+    <div class="info-card-row">
+      <span class="info-label">ORCID (arXiv)</span>
+      <a class="info-link" href="#">arxiv.org/a/0000-0001-2345-6789</a>
+    </div>
+    <div class="info-card-row">
+      <span class="info-label">ORCID (external)</span>
+      <a class="info-link" href="#">orcid.org/0000-0001-2345-6789</a>
+    </div>
+    <div class="info-card-row">
+      <span class="info-label">Last Login IP</span>
+      <span class="info-value">203.0.113.201</span>
+    </div>
+    <div class="info-card-row">
+      <span class="info-label">Registration IP</span>
+      <span class="info-value">203.0.113.202</span>
+    </div>
+  </div>
+
+</div><!-- /.page -->
+
+<!-- Modal: Moderation Categories -->
+<div id="modal-1" class="modal" hidden>
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Moderation Categories</h2>
+      <button id="closeModal-1" class="close-btn" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-current-selection">
+      <p>Currently selected</p>
+      <div id="modal-chip-display-1" class="chip-container"></div>
+    </div>
+    <div class="combobox" id="combobox-1">
+      <div class="selected-row" id="selected-1"></div>
+      <div class="search-container">
+        <input id="combo-input-1" type="text" placeholder="Search to find and add new categories" aria-expanded="false" aria-haspopup="listbox" aria-controls="combo-list-1" autocomplete="off">
+        <ul class="dropdown" id="combo-list-1" role="listbox"></ul>
+      </div>
+    </div>
+    <div class="modal-comment-section">
+      <label class="modal-comment-label" for="comment-mod">Reason / Notes</label>
+      <textarea id="comment-mod" class="modal-comment-box" placeholder="Describe the reason for this change…"></textarea>
+    </div>
+
+    <div class="modal-actions">
+      <button id="cancelBtn-1" class="cancel-btn">Cancel</button>
+      <button id="saveBtn-1" class="save-btn">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Endorsed Categories -->
+<div id="modal-3" class="modal" hidden>
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Endorsed Categories</h2>
+      <button id="closeModal-3" class="close-btn" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-current-selection">
+      <p>Currently selected</p>
+      <div id="modal-chip-display-3" class="chip-container"></div>
+    </div>
+    <div class="combobox" id="combobox-3">
+      <div class="selected-row" id="selected-3"></div>
+      <div class="search-container">
+        <input id="combo-input-3" type="text" placeholder="Search to find and add new categories" aria-expanded="false" aria-haspopup="listbox" aria-controls="combo-list-3" autocomplete="off">
+        <ul class="dropdown" id="combo-list-3" role="listbox"></ul>
+      </div>
+    </div>
+    <div class="modal-comment-section">
+      <label class="modal-comment-label" for="comment-endorse">Reason / Notes</label>
+      <textarea id="comment-endorse" class="modal-comment-box" placeholder="Describe the reason for this change…"></textarea>
+    </div>
+
+    <div class="modal-actions">
+      <button id="cancelBtn-3" class="cancel-btn">Cancel</button>
+      <button id="saveBtn-3" class="save-btn">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Endorsement Categories -->
+<div id="modal-endorsement" class="modal" hidden>
+  <div class="modal-overlay" id="overlay-endorsement"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Edit Endorsements</h2>
+      <button id="closeModal-endorsement" class="close-btn" aria-label="Close">✕</button>
+    </div>
+
+    <div class="modal-endorse-section">
+      <p class="modal-endorse-label pos">Positive Endorsements</p>
+      <div id="modal-endorsed-chips" class="chip-container">
+        <div class="chip" draggable="true" data-category="cs.CV">cs.CV <span class="remove">✕</span></div>
+        <div class="chip" draggable="true" data-category="physics.bio-ph">physics.bio-ph <span class="remove">✕</span></div>
+      </div>
+    </div>
+
+    <div class="modal-endorse-section">
+      <p class="modal-endorse-label neg">Negative Endorsements</p>
+      <div id="modal-blocked-chips" class="chip-container">
+        <div class="chip" draggable="true" data-category="physics.gen-ph">physics.gen-ph <span class="remove">✕</span></div>
+      </div>
+    </div>
+
+    <p style="font-size:11px;color:#b0aba6;margin:0 0 12px;font-style:italic;">Drag categories between Positive and Negative endorsement. Click ✕ to invalidate it. See the endorsement history table to edit past invalidations.</p>
+
+    <div class="modal-add-section">
+      <p class="modal-add-label">Add Category</p>
+      <div class="add-seg" id="add-seg-endorsement">
+        <button class="add-seg-btn active-pos" data-type="endorsed">+ Positive</button>
+        <button class="add-seg-btn" data-type="blocked">− Negative</button>
+      </div>
+      <div class="search-container">
+        <input id="endorsement-search" type="text" placeholder="Search to add new categories" autocomplete="off">
+        <ul class="dropdown" id="endorsement-dropdown" role="listbox"></ul>
+      </div>
+    </div>
+
+    <div class="modal-comment-section">
+      <label class="modal-comment-label" for="comment-endorsement">Reason / Notes <span style="color:#c62828;">*</span></label>
+      <textarea id="comment-endorsement" class="modal-comment-box" placeholder="Describe the reason for this change…" required aria-required="true"></textarea>
+      <p id="comment-endorsement-error" class="field-error" hidden>Please provide a reason for this change.</p>
+    </div>
+
+    <div class="modal-actions">
+      <button id="cancelBtn-endorsement" class="cancel-btn">Cancel</button>
+      <button id="saveBtn-endorsement" class="save-btn">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Mandatory Comment (for Suspended / Flagged / Proxy) -->
+<div id="modal-comment-required" class="modal" hidden>
+  <div class="modal-overlay" id="overlay-comment-required"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="comment-required-title">Change Status</h2>
+      <button id="closeModal-comment-required" class="close-btn" aria-label="Close">✕</button>
+    </div>
+    <p class="confirm-modal-text" id="comment-required-text"></p>
+    <div class="modal-comment-section" style="border-top:none;margin-top:0;padding-top:0;">
+      <label class="modal-comment-label" for="comment-required-input">Reason / Notes <span style="color:#c62828;">*</span></label>
+      <textarea id="comment-required-input" class="modal-comment-box" placeholder="Describe the reason for this change…" required aria-required="true"></textarea>
+      <p id="comment-required-error" class="field-error" hidden>A reason is required for this change.</p>
+    </div>
+    <div class="modal-actions">
+      <button id="cancelBtn-comment-required" class="cancel-btn">Cancel</button>
+      <button id="saveBtn-comment-required" class="save-btn">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Confirm Permission Change (for Admin / Developer Permissions) -->
+<div id="modal-confirm-perm" class="modal" hidden>
+  <div class="modal-overlay" id="overlay-confirm-perm"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="confirm-perm-title">Confirm Permission Change</h2>
+      <button id="closeModal-confirm-perm" class="close-btn" aria-label="Close">✕</button>
+    </div>
+    <p class="confirm-modal-text" id="confirm-perm-text"></p>
+    <p class="confirm-modal-warning">This grants elevated access to the admin console. Please confirm this is intentional.</p>
+    <div class="modal-actions">
+      <button id="cancelBtn-confirm-perm" class="cancel-btn">Cancel</button>
+      <button id="saveBtn-confirm-perm" class="save-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Intercept editBtn-3 before script-multi.js registers its handler.
+  // Listeners fire in registration order; stopImmediatePropagation here
+  // prevents script-multi.js's handler (registered later) from running.
+  let _openEndorsementModal = () => {};
+  document.getElementById('editBtn-3').addEventListener('click', function(e) {
+    e.stopImmediatePropagation();
+    _openEndorsementModal();
+  });
+</script>
+<script src="script-multi.js"></script>
+<script>
+  let draggedCategory = null;
+
+  function setupEndorsementDragDrop() {
+    const endorsedContainer = document.getElementById('modal-endorsed-chips');
+    const blockedContainer = document.getElementById('modal-blocked-chips');
+
+    [endorsedContainer, blockedContainer].forEach(container => {
+      container.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        container.classList.add('drag-over');
+      });
+
+      container.addEventListener('dragleave', (e) => {
+        if (!container.contains(e.relatedTarget)) {
+          container.classList.remove('drag-over');
+        }
+      });
+
+      container.addEventListener('drop', (e) => {
+        e.preventDefault();
+        container.classList.remove('drag-over');
+        const category = e.dataTransfer.getData('text/plain');
+        if (!category) return;
+
+        const isEndorsedTarget = container.id === 'modal-endorsed-chips';
+        const sourceList = isEndorsedTarget ? modalBlocked : modalEndorsed;
+        const targetList = isEndorsedTarget ? modalEndorsed : modalBlocked;
+        const index = sourceList.findIndex(item => item.id === category);
+
+        if (index >= 0) {
+          targetList.push(sourceList.splice(index, 1)[0]);
+          renderModalChips();
+        }
+      });
+    });
+  }
+
+  function setupModalChipDrag(chip, item, type) {
+    chip.setAttribute('draggable', 'true');
+    chip.dataset.category = item.id;
+    chip.dataset.type = type;
+
+    chip.addEventListener('dragstart', (e) => {
+      draggedCategory = item.id;
+      e.dataTransfer.setData('text/plain', item.id);
+      e.dataTransfer.effectAllowed = 'move';
+      chip.classList.add('dragging');
+    });
+
+    chip.addEventListener('dragend', () => {
+      draggedCategory = null;
+      chip.classList.remove('dragging');
+    });
+  }
+
+  setupEndorsementDragDrop();
+
+  /* ── Shared refs ───────────────────────────────── */
+  const rows      = document.querySelectorAll('#submissions-table tbody tr[data-status]');
+  const rowCountEl = document.getElementById('row-count');
+  const tabFilter  = document.getElementById('tab-filter');
+
+  /* ── Tab switching ─────────────────────────────── */
+  const tabList = document.querySelector('.tab-list');
+  tabList.addEventListener('click', e => {
+    const btn = e.target.closest('button[role="tab"]');
+    if (!btn) return;
+
+    // Deactivate all tabs and panels
+    tabList.querySelectorAll('button').forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+    // Activate clicked tab and its panel
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(btn.getAttribute('aria-controls')).classList.add('active');
+
+    // Hide filter dropdown when Account Activity is active (doesn't apply there)
+    tabFilter.classList.toggle('hidden', btn.id === 'tab-account');
+  });
+
+  /* ── Status filter dropdown ────────────────────── */
+  const statusFilter = document.getElementById('status-filter');
+
+  function applyFilter() {
+    const filter = statusFilter.value;
+    let visible = 0;
+    rows.forEach(row => {
+      const show = filter === 'all' || row.dataset.status === filter;
+      row.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+    rowCountEl.textContent = visible === rows.length
+      ? `1–${visible} of ${visible}`
+      : `${visible} of ${rows.length}`;
+  }
+
+  statusFilter.addEventListener('change', applyFilter);
+  applyFilter(); // apply default "removed" filter on load
+
+  /* ── Column sorting ───────────────────────────── */
+  const table  = document.getElementById('submissions-table');
+  const tbody  = table.querySelector('tbody');
+  const headers = table.querySelectorAll('th.sortable');
+
+  const typeOrder = { new: 0, rep: 1, cross: 2, wdr: 3 };
+
+  function sortTable(key, dir) {
+    const rowArr = Array.from(tbody.querySelectorAll('tr[data-status]'));
+    rowArr.sort((a, b) => {
+      let va, vb;
+      if (key === 'date') {
+        va = a.dataset.date || '';
+        vb = b.dataset.date || '';
+      } else if (key === 'type') {
+        va = typeOrder[a.dataset.type] ?? 99;
+        vb = typeOrder[b.dataset.type] ?? 99;
+      } else if (key === 'status') {
+        va = a.dataset.status;
+        vb = b.dataset.status;
+      }
+      if (va < vb) return dir === 'asc' ? -1 : 1;
+      if (va > vb) return dir === 'asc' ? 1 : -1;
+      return 0;
+    });
+    rowArr.forEach(r => tbody.appendChild(r));
+  }
+
+  headers.forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.sort;
+      const wasDesc = th.classList.contains('sort-desc');
+      const wasAsc  = th.classList.contains('sort-asc');
+      // Clear all headers
+      headers.forEach(h => {
+        h.classList.remove('sort-asc', 'sort-desc');
+        h.querySelector('.sort-arrow').textContent = '⇅';
+      });
+      // Toggle direction
+      const dir = wasDesc || !wasAsc ? 'asc' : 'desc';
+      th.classList.add('sort-' + dir);
+      th.querySelector('.sort-arrow').textContent = dir === 'asc' ? '↑' : '↓';
+      sortTable(key, dir);
+      applyFilter();
+    });
+  });
+
+  /* ── Section collapse ──────────────────────────── */
+  document.getElementById('categories-toggle').addEventListener('click', () => {
+    const card = document.getElementById('categories-card');
+    const toggle = card.querySelector('.section-toggle');
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    card.classList.toggle('collapsed', expanded);
+    toggle.setAttribute('aria-expanded', String(!expanded));
+  });
+
+  document.getElementById('activity-toggle').addEventListener('click', () => {
+    const card = document.getElementById('activity-card');
+    const toggle = card.querySelector('.section-toggle');
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    card.classList.toggle('collapsed', expanded);
+    toggle.setAttribute('aria-expanded', String(!expanded));
+  });
+
+  /* ── Endorsement data ───────────────────────────── */
+  const endorsedData = [
+    { id: 'cs.CV',          src: { type: 'auto' } },
+    { id: 'physics.bio-ph', src: { type: 'user', username: 'bsmith' } },
+  ];
+  const blockedData = [
+    { id: 'physics.gen-ph', src: { type: 'user', username: 'ginsparg' } },
+  ];
+  const blockedEndorseData = [
+    { id: 'math.GR', src: { type: 'auto' } },
+  ];
+
+  function makeCardChip(id, src, isNeg) {
+    const chip = document.createElement('div');
+    chip.className = isNeg ? 'chip chip-neg' : 'chip';
+    chip.textContent = (isNeg ? '− ' : '') + id;
+    const badge = document.createElement('span');
+    if (!src || src.type === 'auto') {
+      badge.className = 'chip-source chip-source-auto';
+      badge.textContent = 'auto';
+    } else {
+      badge.className = 'chip-source';
+      const a = document.createElement('a'); a.href = '#'; a.textContent = src.username;
+      badge.appendChild(a);
+    }
+    chip.appendChild(badge);
+    return chip;
+  }
+
+  // Append invalidated chips to chip-container-3 (endorsements received)
+  // chip-container-4 (can endorse others) shows positive endorsements only
+  blockedData.forEach(item =>
+    document.getElementById('chip-container-3').appendChild(makeCardChip(item.id, item.src, true))
+  );
+
+  /* ── Endorsement modal ──────────────────────────── */
+  let modalEndorsed = [], modalBlocked = [], addMode = 'endorsed';
+
+  function makeModalChip(item, type) {
+    const isInvalidated = type === 'blocked';
+    const chip = document.createElement('div');
+    chip.className = isInvalidated ? 'chip chip-neg' : 'chip';
+
+    const label = document.createElement('span');
+    label.textContent = item.id;
+    chip.appendChild(label);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button'; removeBtn.textContent = '✕';
+    removeBtn.style.cssText = 'margin-left:6px;background:transparent;border:0;cursor:pointer;color:inherit;padding:0;line-height:1;';
+    removeBtn.onclick = (e) => {
+      e.stopPropagation();
+      if (!isInvalidated) modalEndorsed = modalEndorsed.filter(d => d.id !== item.id);
+      else                modalBlocked  = modalBlocked.filter(d => d.id !== item.id);
+      renderModalChips();
+    };
+    chip.appendChild(removeBtn);
+
+    setupModalChipDrag(chip, item, type);
+
+    return chip;
+  }
+
+  function renderModalChips() {
+    const ec = document.getElementById('modal-endorsed-chips');
+    const bc = document.getElementById('modal-blocked-chips');
+    ec.innerHTML = '';
+    bc.innerHTML = '';
+    if (!modalEndorsed.length) ec.innerHTML = '<span class="modal-endorse-empty">None</span>';
+    else modalEndorsed.forEach(item => ec.appendChild(makeModalChip(item, 'endorsed')));
+    if (!modalBlocked.length)  bc.innerHTML = '<span class="modal-endorse-empty">None</span>';
+    else modalBlocked.forEach(item => bc.appendChild(makeModalChip(item, 'blocked')));
+  }
+
+  function syncCardChips() {
+    const c3 = document.getElementById('chip-container-3');
+    c3.innerHTML = '';
+    modalEndorsed.forEach(item => c3.appendChild(makeCardChip(item.id, item.src, false)));
+    modalBlocked.forEach(item  => c3.appendChild(makeCardChip(item.id, item.src, true)));
+  }
+
+  function updateAddSeg() {
+    document.querySelectorAll('#add-seg-endorsement .add-seg-btn').forEach(btn => {
+      btn.className = 'add-seg-btn' + (btn.dataset.type === addMode
+        ? (addMode === 'endorsed' ? ' active-pos' : ' active-neg') : '');
+    });
+  }
+
+  _openEndorsementModal = function() {
+    modalEndorsed = endorsedData.map(d => ({...d}));
+    modalBlocked  = blockedData.map(d  => ({...d}));
+    addMode = 'endorsed';
+    renderModalChips();
+    updateAddSeg();
+    clearESearch();
+    commentEndorsement.value = '';
+    commentEndorsement.classList.remove('invalid');
+    commentEndorsementError.hidden = true;
+    document.getElementById('modal-endorsement').removeAttribute('hidden');
+  };
+
+  function closeEndorsementModal() {
+    document.getElementById('modal-endorsement').setAttribute('hidden', '');
+  }
+
+  const commentEndorsement = document.getElementById('comment-endorsement');
+  const commentEndorsementError = document.getElementById('comment-endorsement-error');
+
+  function validateEndorsementForm() {
+    const valid = commentEndorsement.value.trim().length > 0;
+    commentEndorsement.classList.toggle('invalid', !valid);
+    commentEndorsementError.hidden = valid;
+    return valid;
+  }
+
+  commentEndorsement.addEventListener('input', () => {
+    if (commentEndorsement.classList.contains('invalid')) {
+      validateEndorsementForm();
+    }
+  });
+
+  document.getElementById('saveBtn-endorsement').addEventListener('click', () => {
+    if (!validateEndorsementForm()) {
+      commentEndorsement.focus();
+      return;
+    }
+    endorsedData.length = 0; modalEndorsed.forEach(d => endorsedData.push(d));
+    blockedData.length  = 0; modalBlocked.forEach(d  => blockedData.push(d));
+    syncCardChips();
+    closeEndorsementModal();
+  });
+  document.getElementById('cancelBtn-endorsement').addEventListener('click', closeEndorsementModal);
+  document.getElementById('closeModal-endorsement').addEventListener('click', closeEndorsementModal);
+  document.getElementById('overlay-endorsement').addEventListener('click', closeEndorsementModal);
+
+  document.querySelectorAll('#add-seg-endorsement .add-seg-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      addMode = btn.dataset.type;
+      updateAddSeg();
+      document.getElementById('endorsement-search').focus();
+    });
+  });
+
+  /* ── Endorsement category search ────────────────── */
+  let eFilt = [], eHi = -1;
+
+  function filterE(q) {
+    const s = q.trim().toLowerCase();
+    eFilt = s ? categories.filter(c => (c.id + ' ' + c.name).toLowerCase().includes(s))
+              : categories.slice(0, 40);
+  }
+
+  function renderEDropdown() {
+    const ul = document.getElementById('endorsement-dropdown');
+    ul.innerHTML = '';
+    eFilt.forEach((item, idx) => {
+      const li = document.createElement('li');
+      li.textContent = `${item.id} — ${item.name}`;
+      li.setAttribute('role', 'option');
+      li.setAttribute('aria-selected', idx === eHi ? 'true' : 'false');
+      li.addEventListener('mousemove', () => { eHi = idx; renderEDropdown(); });
+      li.onclick = () => selectE(idx);
+      ul.appendChild(li);
+    });
+    ul.style.display = eFilt.length ? 'block' : 'none';
+  }
+
+  function selectE(idx) {
+    const item = eFilt[idx];
+    if (!item) return;
+    modalEndorsed = modalEndorsed.filter(d => d.id !== item.id);
+    modalBlocked  = modalBlocked.filter(d  => d.id !== item.id);
+    (addMode === 'endorsed' ? modalEndorsed : modalBlocked).push({ id: item.id, src: { type: 'auto' } });
+    renderModalChips();
+    clearESearch();
+    document.getElementById('endorsement-search').focus();
+  }
+
+  function clearESearch() {
+    const inp = document.getElementById('endorsement-search');
+    if (inp) inp.value = '';
+    eFilt = []; eHi = -1;
+    const ul = document.getElementById('endorsement-dropdown');
+    if (ul) { ul.innerHTML = ''; ul.style.display = 'none'; }
+  }
+
+  const eSearch = document.getElementById('endorsement-search');
+  eSearch.addEventListener('focus', () => { filterE(''); renderEDropdown(); });
+  eSearch.addEventListener('input', e => { filterE(e.target.value); eHi = -1; renderEDropdown(); });
+  eSearch.addEventListener('keydown', e => {
+    if      (e.key === 'ArrowDown' && eHi < eFilt.length - 1) { e.preventDefault(); eHi++; renderEDropdown(); }
+    else if (e.key === 'ArrowUp'   && eHi > 0)                { e.preventDefault(); eHi--; renderEDropdown(); }
+    else if (e.key === 'Enter'     && eHi >= 0)               { e.preventDefault(); selectE(eHi); }
+  });
+  document.addEventListener('click', ev => {
+    if (!eSearch.closest('.search-container').contains(ev.target))
+      document.getElementById('endorsement-dropdown').style.display = 'none';
+  });
+
+  /* ── Owned Papers: accordion toggle ──────────────── */
+  document.getElementById('papers-toggle').addEventListener('click', () => {
+    const card = document.getElementById('papers-card');
+    const toggle = card.querySelector('.section-toggle');
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    card.classList.toggle('collapsed', expanded);
+    toggle.setAttribute('aria-expanded', String(!expanded));
+  });
+
+  /* ── Owned Papers: select-all + revoke button ────── */
+  const papersSelectAll = document.getElementById('papers-select-all');
+  const papersTable = document.getElementById('papers-table');
+  const btnRevoke = document.getElementById('btn-revoke');
+  const btnBulkOwner = document.getElementById('btn-bulk-owner');
+  const papersSelectedCount = document.getElementById('papers-selected-count');
+
+  function updatePapersSelection() {
+    const boxes = papersTable.querySelectorAll('tbody input[type="checkbox"]');
+    const checked = papersTable.querySelectorAll('tbody input[type="checkbox"]:checked');
+    btnRevoke.disabled = checked.length === 0;
+    btnBulkOwner.disabled = checked.length === 0;
+    papersSelectedCount.textContent = checked.length ? checked.length + ' selected' : '';
+    papersSelectAll.checked = checked.length === boxes.length && boxes.length > 0;
+    papersSelectAll.indeterminate = checked.length > 0 && checked.length < boxes.length;
+  }
+
+  papersSelectAll.addEventListener('change', () => {
+    const boxes = papersTable.querySelectorAll('tbody input[type="checkbox"]');
+    boxes.forEach(cb => { cb.checked = papersSelectAll.checked; });
+    updatePapersSelection();
+  });
+
+  papersTable.querySelector('tbody').addEventListener('change', updatePapersSelection);
+
+  /* ── Mandatory comment modal (Suspended / Flagged / Proxy) ── */
+  let commentRequiredToggle = null;
+
+  function openCommentModal(toggleLabel, toggleName, newState) {
+    const action = newState ? 'enable' : 'disable';
+    document.getElementById('comment-required-title').textContent = `${action.charAt(0).toUpperCase() + action.slice(1)} ${toggleName}`;
+    document.getElementById('comment-required-text').textContent =
+      `You are about to ${action} "${toggleName}" for Esther McGill-Henry. A reason must be recorded.`;
+    document.getElementById('comment-required-input').value = '';
+    document.getElementById('comment-required-input').classList.remove('invalid');
+    document.getElementById('comment-required-error').hidden = true;
+    document.getElementById('modal-comment-required').removeAttribute('hidden');
+  }
+
+  function closeCommentModal(apply) {
+    const modal = document.getElementById('modal-comment-required');
+    if (apply && commentRequiredToggle) {
+      const textarea = document.getElementById('comment-required-input');
+      if (!textarea.value.trim()) {
+        textarea.classList.add('invalid');
+        document.getElementById('comment-required-error').hidden = false;
+        textarea.focus();
+        return;
+      }
+      commentRequiredToggle.checked = !commentRequiredToggle.checked;
+    }
+    commentRequiredToggle = null;
+    modal.setAttribute('hidden', '');
+  }
+
+  document.getElementById('saveBtn-comment-required').addEventListener('click', () => closeCommentModal(true));
+  document.getElementById('cancelBtn-comment-required').addEventListener('click', () => closeCommentModal(false));
+  document.getElementById('closeModal-comment-required').addEventListener('click', () => closeCommentModal(false));
+  document.getElementById('overlay-comment-required').addEventListener('click', () => closeCommentModal(false));
+
+  document.getElementById('comment-required-input').addEventListener('input', function() {
+    if (this.classList.contains('invalid') && this.value.trim()) {
+      this.classList.remove('invalid');
+      document.getElementById('comment-required-error').hidden = true;
+    }
+  });
+
+  // Intercept toggles that require a comment
+  document.querySelectorAll('[data-comment-required]').forEach(label => {
+    const input = label.querySelector('input');
+    input.addEventListener('click', e => {
+      e.preventDefault();
+      commentRequiredToggle = input;
+      openCommentModal(label, label.dataset.commentRequired, input.checked);
+    });
+  });
+
+  /* ── Confirmation modal (Admin / Developer Permissions) ── */
+  let confirmPermToggle = null;
+
+  function openConfirmPermModal(permName, newState) {
+    const action = newState ? 'grant' : 'revoke';
+    document.getElementById('confirm-perm-title').textContent = `${action.charAt(0).toUpperCase() + action.slice(1)} ${permName}`;
+    document.getElementById('confirm-perm-text').textContent =
+      `You are about to ${action} ${permName} for Esther McGill-Henry.`;
+    document.getElementById('modal-confirm-perm').removeAttribute('hidden');
+  }
+
+  function closeConfirmPermModal(apply) {
+    if (apply && confirmPermToggle) {
+      confirmPermToggle.checked = !confirmPermToggle.checked;
+    }
+    confirmPermToggle = null;
+    document.getElementById('modal-confirm-perm').setAttribute('hidden', '');
+  }
+
+  document.getElementById('saveBtn-confirm-perm').addEventListener('click', () => closeConfirmPermModal(true));
+  document.getElementById('cancelBtn-confirm-perm').addEventListener('click', () => closeConfirmPermModal(false));
+  document.getElementById('closeModal-confirm-perm').addEventListener('click', () => closeConfirmPermModal(false));
+  document.getElementById('overlay-confirm-perm').addEventListener('click', () => closeConfirmPermModal(false));
+
+  // Intercept protected permission toggles
+  document.querySelectorAll('.toggle-protected').forEach(label => {
+    const input = label.querySelector('input');
+    input.addEventListener('click', e => {
+      e.preventDefault();
+      confirmPermToggle = input;
+      openConfirmPermModal(label.dataset.confirm, input.checked);
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+/* IBM Plex Sans loaded via Google Fonts in index.html */
+
+:root {
+  --bg:             #f9f7f7;   /* Warm Wash */
+  --surface:        #ffffff;
+  --border:         #ddd8d2;
+  --border-light:   #f0eeec;
+  --text-primary:   #1c1a17;
+  --text-secondary: #6b6459;
+  --text-muted:     #b0aba6;
+  --chip-bg:        #eef2ff;
+  --chip-border:    #d0daf5;
+  --link:           #1565c0;
+  --focus-ring:     #1565c0;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-primary);
+  background: var(--bg);
+  margin: 0;
+}
+
+a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
+a:hover { color: #1050a0; }
+
+/* ── Page layout ── */
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 28px 48px;
+}
+
+/* ── Section rows ── */
+.moderates-section {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.moderates-section:first-child {
+  border-top: 1px solid var(--border);
+}
+
+/* Shared heading style — used directly on h6 (lookup) or inside .section-header (editable) */
+.moderates-section > h6,
+.section-header h6 {
+  margin: 0 0 10px;
+  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+
+/* Header row: heading + pencil button on same line */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.section-header h6 {
+  margin-bottom: 0; /* spacing handled by .section-header margin-bottom */
+}
+
+/* ── Icon-only pencil edit button ── secondary button palette from shared tokens */
+.edit-btn {
+  background: var(--sec-bg);
+  border: 1px solid var(--sec-border);
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text);
+  padding: 4px 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: background 0.12s, border-color 0.12s;
+}
+.edit-btn:hover {
+  background: var(--sec-bg-hover);
+  border-color: var(--sec-border-active);
+}
+.edit-btn:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Chips ── */
+.chip-container { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--chip-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--chip-border);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12.5px;
+}
+
+/* Endorsement source badge — shown inside "Is Endorsed For" chips */
+.chip-source {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 1px 6px;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+.chip-source-auto { color: var(--text-muted); }
+.chip-source a { color: var(--link); text-decoration: none; }
+.chip-source a:hover { text-decoration: underline; }
+
+/* ── Modal ── */
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal:not([hidden]) { display: flex; }
+.modal-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+.modal-content {
+  position: relative;
+  z-index: 1001;
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: visible;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.modal-header h2 {
+  margin: 0;
+  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.modal-current-selection {
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-current-selection p {
+  margin: 0 0 8px;
+  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+.modal-current-selection .chip-container { gap: 4px; }
+.modal-current-selection .chip { padding: 3px 8px; }
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: 0;
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 4px;
+  line-height: 1;
+  transition: background 0.12s;
+}
+.close-btn:hover { background: var(--border-light); }
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+.save-btn, .cancel-btn {
+  padding: 7px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "IBM Plex Sans", sans-serif;
+  transition: background 0.12s;
+}
+.save-btn { background: #1565c0; color: #fff; }
+.save-btn:hover { background: #1050a0; }
+.cancel-btn {
+  background: var(--border-light);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+.cancel-btn:hover { background: var(--border); }
+
+/* ── Combobox / search input ── */
+.combobox { display: flex; flex-direction: column; position: relative; overflow: visible; }
+.selected-row { display: none; }
+
+.search-container {
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: visible;
+}
+.search-container:focus-within {
+  border-color: var(--focus-ring);
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
+}
+
+[id^="combo-input"] {
+  width: 100%;
+  border: 0 !important;
+  padding: 7px 4px;
+  font-size: 13px;
+  font-family: "IBM Plex Sans", sans-serif;
+  outline: none !important;
+  background: transparent;
+  appearance: none;
+  box-shadow: none !important;
+  color: var(--text-primary);
+}
+[id^="combo-input"]::placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.dropdown {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 4px;
+  width: calc(100% - 16px);
+  max-height: 220px;
+  overflow: auto;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  background: var(--surface);
+  position: absolute;
+  z-index: 20;
+  top: 100%;
+  left: 8px;
+  display: none;
+}
+.dropdown li {
+  padding: 7px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: var(--text-primary);
+}
+.dropdown li[aria-selected="true"],
+.dropdown li:hover { background: var(--chip-bg); }

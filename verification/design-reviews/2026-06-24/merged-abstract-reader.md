@@ -1,6 +1,6 @@
 # Design system review: merged abstract + HTML reader mockup
 
-**Context:** public · source review (`design-system/mockups/merged-abstract-reader.html`)
+**Context:** public · source review (`design-system/mockups/public/merged-abstract-reader.html`)
 **Reviewed against:** `design-system/` @ master
 - [`DESIGN-POLICIES.md`](../../../docs/DESIGN-POLICIES.md)
 - [`docs/public/design-system.css`](../../../docs/public/design-system.css)
@@ -21,7 +21,7 @@ The user-flagged button drift (Download PDF not matching `button-styles.html`) i
 ## Blocking — accessibility & policy violations
 
 ### A. Touch target below WCAG 2.5.8 hard floor — citation Copy button
-- **Where:** `mockups/merged-abstract-reader.html` — `.mg-cite-copy`
+- **Where:** `mockups/public/merged-abstract-reader.html` — `.mg-cite-copy`
   - styles: `padding: 3px 8px;` + `font-size: 0.72rem` (~11.5px) → visible button is ~17×40px.
 - **Policy:** `DESIGN-POLICIES.md` → Chrome and interaction structure:
   > "Hard floor 24×24 CSS px (WCAG 2.2 SC 2.5.8 AA), with WCAG's own exceptions (inline targets within a sentence — citation chips, version links — spacing-equivalent, user-agent defaults). … Use the padding + negative-margin technique to grow hit areas without changing layout."
@@ -85,7 +85,7 @@ The user-flagged button drift (Download PDF not matching `button-styles.html`) i
 ### E. Primary button reimplemented instead of using `.ds-btn-primary`
 *This is the user-flagged drift.*
 
-- **Where:** `mockups/merged-abstract-reader.html` — `.mg-files-pdf` (the Download PDF button in the Files column).
+- **Where:** `mockups/public/merged-abstract-reader.html` — `.mg-files-pdf` (the Download PDF button in the Files column).
 - **What's missing vs `docs/public/button-styles.html` + `design-system.css` `.ds-btn-primary` (line ~191):**
 
 | Spec | Canonical `.ds-btn-primary` | This page's `.mg-files-pdf` |
@@ -125,7 +125,7 @@ The user-flagged button drift (Download PDF not matching `button-styles.html`) i
   - Optionally keep `.mg-skip-to-paper` as a **secondary** skip link before the band (a context-specific skip), but ALSO have the canonical first-focus skip link.
 
 ### G. Custom site header diverges from `.ds-site-header`
-- **Where:** `mockups/merged-abstract-reader.html` overrides `.ds-site-header` to `display: grid; grid-template-columns: 1fr auto 1fr;` to add a center cell for the Reader-view toggle.
+- **Where:** `mockups/public/merged-abstract-reader.html` overrides `.ds-site-header` to `display: grid; grid-template-columns: 1fr auto 1fr;` to add a center cell for the Reader-view toggle.
 - **What's wrong:**
   1. Page-local CSS shadows a canonical design-system class — future updates to `.ds-site-header` won't propagate cleanly.
   2. The Reader-view toggle in the header center adds visual prominence to a mode-switcher inside the universal header. Policy:
@@ -144,10 +144,10 @@ The user-flagged button drift (Download PDF not matching `button-styles.html`) i
   - If my centered/sticky placement is genuinely a different pattern, **extract a new `.ds-toc-bar`** to `docs/public/design-system.css` and document it.
 
 ### I. Labs section duplicated as `.mg-labs-*` instead of canonical `.ds-labs-*`
-- **Where:** `mockups/merged-abstract-reader.html` `.mg-labs-*` styles + markup, copy of `abstract-redesign.html` `.abs-labs-*`.
+- **Where:** `mockups/public/merged-abstract-reader.html` `.mg-labs-*` styles + markup, copy of `abstract-redesign.html` `.abs-labs-*`.
 - **Current state:** The same Labs pattern (grouped toggle list + content area + "What are arXiv Labs?" footer) now exists in:
-  - `mockups/abstract-redesign.html` as `.abs-labs-*`
-  - `mockups/merged-abstract-reader.html` as `.mg-labs-*`
+  - `mockups/public/abstract-redesign.html` as `.abs-labs-*`
+  - `mockups/public/merged-abstract-reader.html` as `.mg-labs-*`
   - NOT in `design-system.css` (no `.ds-labs-*`)
 - **Policy:** `DESIGN-POLICIES.md` → Components:
   > "New patterns: If a UI element appears in two or more pages, extract it into a design system CSS file and create or update a pattern page in `docs/`."
@@ -176,9 +176,9 @@ The user-flagged button drift (Download PDF not matching `button-styles.html`) i
 
 ### L. Reader file is missing a `display: none` default for `.eqn-tex-view`
 - **Where:** Not drift in MY merged page — drift in the reader file itself.
-- **What this is:** `design-system/mockups/html-redesign.html` (line ~2032) defines `.eqn-tex-view` typography but lacks a default `display: none`. The toggled-on rule (`.eqn-region.show-tex .eqn-tex-view { display: block }`) is incomplete. Without the default-hide, `<pre class="eqn-tex-view">` falls back to the browser's default `display: block` and the TeX source rendered under every one of the 99 equations.
-- **Where I worked around it:** `mockups/merged-abstract-reader.html` adds `.eqn-tex-view { display: none; }` as a defensive rule.
-- **Recommendation:** Push the default-hide into `mockups/html-redesign.html` itself so all reader-derived work inherits it. Then remove the defensive rule from the merged page.
+- **What this is:** `design-system/mockups/public/html-redesign.html` (line ~2032) defines `.eqn-tex-view` typography but lacks a default `display: none`. The toggled-on rule (`.eqn-region.show-tex .eqn-tex-view { display: block }`) is incomplete. Without the default-hide, `<pre class="eqn-tex-view">` falls back to the browser's default `display: block` and the TeX source rendered under every one of the 99 equations.
+- **Where I worked around it:** `mockups/public/merged-abstract-reader.html` adds `.eqn-tex-view { display: none; }` as a defensive rule.
+- **Recommendation:** Push the default-hide into `mockups/public/html-redesign.html` itself so all reader-derived work inherits it. Then remove the defensive rule from the merged page.
 
 ---
 

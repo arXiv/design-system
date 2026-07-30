@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ownership Request — Admin Console Mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- removed at migration: dead reference (stylesheet did not exist in the source folder either) -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ── Sticky action bar ─────────────────────────────────────── -->
+  <div class="action-bar" role="toolbar" aria-label="Request navigation and actions">
+    <div class="action-bar-nav">
+      <button class="btn btn-tertiary" type="button">← Previous</button>
+      <button class="btn btn-tertiary" type="button">Next →</button>
+    </div>
+    <div class="action-bar-counter" aria-label="Queue position">
+      Request 3 of 15
+    </div>
+    <div class="action-bar-actions">
+      <button class="btn btn-destructive" type="button" id="btn-reject-all">Reject All</button>
+      <button class="btn btn-primary" type="button" id="btn-save-next">Save and next →</button>
+    </div>
+  </div>
+
+  <!-- ── Page content ──────────────────────────────────────────── -->
+  <div class="page">
+
+    <h1 class="page-title">
+      Ownership Request: Daniel Kovac
+      <span class="title-count">4</span>
+    </h1>
+
+    <section class="papers-section" aria-labelledby="papers-heading">
+      <div class="papers-toolbar">
+        <div class="papers-filter">
+          <label for="match-filter">Show:</label>
+          <select id="match-filter" aria-label="Filter by name match">
+            <option value="all" selected>All</option>
+            <option value="yes">Name match</option>
+            <option value="no">No match</option>
+          </select>
+        </div>
+      </div>
+      <table class="papers-table" aria-label="Requested papers and ownership decisions">
+        <thead>
+          <tr>
+            <!--
+              3-column layout mirrors the paradigm used in the existing
+              admin submission queue:
+                LEFT  — compact paper metadata (ID, submitter, proxy status)
+                CENTER — the content to evaluate (title + author list)
+                RIGHT — the decision action
+            -->
+            <th class="col-meta" scope="col"></th>
+            <th scope="col">Title &amp; Authors</th>
+            <th class="col-decision" scope="col">Decision</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- ── Row 1: name match → auto-decided as Author ──────── -->
+          <tr data-decision="author" data-name-match="yes">
+            <td class="col-meta"></td>
+            <td>
+              <div class="paper-title"><a href="#" class="arxiv-id">2701.02194</a> Ranking Aggregation with Incomplete Preference Data</div>
+              <div class="paper-submitter">
+                <span class="meta-label">Submitter</span>
+                <a href="#" class="submitter-name">Marta Lindqvist</a>
+              </div>
+              <div class="paper-authors">
+                Marta Lindqvist,
+                <mark class="requestor">Daniel Kovac</mark>
+              </div>
+            </td>
+            <td class="col-decision">
+              <fieldset class="decision-group" data-name="paper-1">
+                <legend class="sr-only">Decision for "Ranking Aggregation with Incomplete Preference Data"</legend>
+                <button type="button" class="seg-btn seg-author active" data-value="author">Author</button>
+                <button type="button" class="seg-btn seg-proxy" data-value="proxy">Proxy</button>
+                <button type="button" class="seg-btn seg-no" data-value="no">No</button>
+              </fieldset>
+            </td>
+          </tr>
+
+          <!-- ── Row 2: name match → auto-decided as Author ──────── -->
+          <tr data-decision="author" data-name-match="yes">
+            <td class="col-meta"></td>
+            <td>
+              <div class="paper-title"><a href="#" class="arxiv-id">2701.05867</a> Contextual Bandits with Strategic Arm Behavior</div>
+              <div class="paper-submitter">
+                <span class="meta-label">Submitter</span>
+                <a href="#" class="submitter-name">Priya Raghunathan</a>
+              </div>
+              <div class="paper-authors">
+                Priya Raghunathan, Omar El-Sayed,
+                <mark class="requestor">Daniel Kovac</mark>,
+                Yuki Tanaka
+              </div>
+            </td>
+            <td class="col-decision">
+              <fieldset class="decision-group" data-name="paper-2">
+                <legend class="sr-only">Decision for "Contextual Bandits with Strategic Arm Behavior"</legend>
+                <button type="button" class="seg-btn seg-author active" data-value="author">Author</button>
+                <button type="button" class="seg-btn seg-proxy" data-value="proxy">Proxy</button>
+                <button type="button" class="seg-btn seg-no" data-value="no">No</button>
+              </fieldset>
+            </td>
+          </tr>
+
+          <!-- ── Row 3: Large collaboration (CERN/CMS, 847 authors) ─
+               Name match found mid-list → auto-decided as Author.  -->
+          <tr data-decision="author" data-name-match="yes">
+            <td class="col-meta"></td>
+            <td>
+              <div class="paper-title"><a href="#" class="arxiv-id">2701.00012</a> Search for exotic scalar resonances in diphoton final states at high luminosity</div>
+              <div class="paper-submitter">
+                <span class="meta-label">Submitter</span>
+                <a href="#" class="submitter-name">CMS Collaboration</a>
+                <span class="proxy-via">Proxy: CERN</span>
+              </div>
+              <div class="paper-authors authors-long">
+                …&thinsp;F. Aubert, L. Moretti, K. Van Damme,&nbsp;<mark class="requestor">Daniel Kovac</mark>,&nbsp;P. Silva, T. Novak&thinsp;…
+                <a href="#" class="authors-show-all">847 authors total</a>
+              </div>
+            </td>
+            <td class="col-decision">
+              <fieldset class="decision-group" data-name="paper-3">
+                <legend class="sr-only">Decision for "Search for exotic scalar resonances in diphoton final states"</legend>
+                <button type="button" class="seg-btn seg-author active" data-value="author">Author</button>
+                <button type="button" class="seg-btn seg-proxy" data-value="proxy">Proxy</button>
+                <button type="button" class="seg-btn seg-no" data-value="no">No</button>
+              </fieldset>
+            </td>
+          </tr>
+
+          <!-- ── Row 4: Name NOT in author list (middle-initial mismatch)
+               "Daniel R. Kovac" appears in the paper but the
+               exact string "Daniel Kovac" does not.
+               Two visual signals:
+                 1. Amber inset border on the left rail (row-level scan target)
+                 2. "Name not found" badge above the author list          -->
+          <tr class="no-name-match" data-name-match="no">
+            <td class="col-meta"></td>
+            <td>
+              <div class="paper-title"><a href="#" class="arxiv-id">2701.08351</a> Adaptive Learning Rates under Delayed Adversarial Feedback</div>
+              <div class="paper-submitter">
+                <span class="meta-label">Submitter</span>
+                <a href="#" class="submitter-name">V. Subramanian</a>
+              </div>
+              <div class="paper-authors">
+                <span class="no-match-warning" aria-label="Requestor name not found in author list">⚠ Name not found</span>
+                V. Subramanian, H. Böttcher, L. Okafor,
+                Daniel R. Kovac,
+                M. Feldman
+              </div>
+            </td>
+            <td class="col-decision">
+              <fieldset class="decision-group" data-name="paper-4">
+                <legend class="sr-only">Decision for "Adaptive Learning Rates under Delayed Adversarial Feedback"</legend>
+                <button type="button" class="seg-btn seg-author" data-value="author">Author</button>
+                <button type="button" class="seg-btn seg-proxy" data-value="proxy">Proxy</button>
+                <button type="button" class="seg-btn seg-no" data-value="no">No</button>
+              </fieldset>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Other papers owned by this user — collapsed by default -->
+    <details class="other-papers">
+      <summary>
+        Other papers owned by the user
+        <span class="other-papers-count">33 documents</span>
+      </summary>
+      <table class="other-papers-table">
+        <thead>
+          <tr>
+            <th class="col-id" scope="col">arXiv ID</th>
+            <th scope="col">Title</th>
+            <th class="col-date" scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="#" class="arxiv-id-link">1806.09914</a></td>
+            <td>Exploration thresholds for sequential decision problems</td>
+            <td class="date-cell">2018-06-04</td>
+          </tr>
+          <tr>
+            <td><a href="#" class="arxiv-id-link">0711.9812</a></td>
+            <td>Label-efficient annotation strategies with optimal stopping</td>
+            <td class="date-cell">2007-11-10</td>
+          </tr>
+          <tr>
+            <td><a href="#" class="arxiv-id-link">2602.09989</a></td>
+            <td>Robustness bounds for averaged policy gradient methods</td>
+            <td class="date-cell">2026-02-11</td>
+          </tr>
+          <tr>
+            <td><a href="#" class="arxiv-id-link">2311.09921</a></td>
+            <td>Simulation-based inference for hierarchical models</td>
+            <td class="date-cell">2023-11-07</td>
+          </tr>
+          <tr>
+            <td colspan="3" style="color:#b0aba6; font-size:12px; padding:10px 12px; font-style:italic;">
+              + 29 more documents
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </details>
+
+    <!-- ── User info block — full width below papers ── -->
+    <div class="info-card info-card-wide" role="region" aria-label="User information">
+      <div class="info-card-row">
+        <span class="info-label">User</span>
+        <a href="#" class="info-value info-link">Daniel Kovac</a>
+      </div>
+      <div class="info-card-row">
+        <span class="info-label">Email</span>
+        <a href="#" class="info-value info-link">daniel.kovac@example.com</a>
+      </div>
+      <div class="info-card-row">
+        <span class="info-label">Remote host</span>
+        <span class="info-value">203.0.113.55</span>
+      </div>
+      <div class="info-card-row">
+        <span class="info-label">Date</span>
+        <span class="info-value">2024-12-31</span>
+      </div>
+    </div>
+
+  </div><!-- /.page -->
+
+  <script src="script.js"></script>
+</body>
+</html>

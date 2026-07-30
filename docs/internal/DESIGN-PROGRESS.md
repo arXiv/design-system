@@ -70,7 +70,7 @@ Deferred: a **toast** pattern (transient/positioned/animated) and an **action-bu
 
 ## Decisions made — Admin console session (paper detail + edit metadata)
 
-Session mockup: `../../mockups/admin-paper-detail.html`. Codified in the files noted; items marked *pending* still want a fuller pattern page.
+Session mockup: `../../mockups/internal/admin-console/paper-details/index.html`. Codified in the files noted; items marked *pending* still want a fuller pattern page.
 
 - **Spacing scale** — `--space-1`…`--space-12` added to `design-system.css`; scale + proximity rule in `DESIGN-POLICIES.md` (Spacing).
 - **Layout & content width** — content-driven, not audience-driven (measure for text; shell width by density). In `DESIGN-POLICIES.md` (Layout and content width).

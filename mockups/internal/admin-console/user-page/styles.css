@@ -1,0 +1,431 @@
+/* =============================================================
+   arXiv Design System — Shared Component Styles
+   Component reference for arXiv Check and Admin Console
+   ============================================================= */
+
+
+/* ─── Brand Tokens ──────────────────────────────────────────── */
+:root {
+
+  /* Access Lime family — primary buttons */
+  --lime:              #c4d82e;
+  --lime-hover:        #b5c626;
+  --lime-active:       #a4b520;
+  --lime-dis-bg:       #e6efb8;
+  --lime-dis-text:     #8a9a5a;
+
+  /* Lime tint family — secondary buttons */
+  --sec-bg:            #f0f9e8;
+  --sec-bg-hover:      #e2f3d0;
+  --sec-bg-active:     #d4edb8;
+  --sec-border:        #9cb522;
+  --sec-border-active: #6b7a10;
+  --sec-dis-bg:        #fafafa;
+  --sec-dis-border:    #d8d8d8;
+  --sec-dis-text:      #b0b0b0;
+
+  /* Library Grey family — tertiary buttons */
+  --grey:              #6b6459;
+  --grey-hover-bg:     #f0eeec;
+  --grey-hover-dark:   #4a433d;
+  --grey-active-bg:    #e4e0db;
+  --grey-dis:          #b0aba6;
+
+  /* Danger red family — destructive buttons */
+  --danger:             #c62828;
+  --danger-hover:       #b71c1c;
+  --danger-active:      #9a0007;
+  --danger-dis-bg:      #f5d0d0;
+  --danger-dis-text:    #c47878;
+  --danger-ghost-hover: #fdf0f0;
+  --danger-ghost-active:#f5d0d0;
+
+  /* Link / content hyperlinks — light mode */
+  --link:               #1565c0;
+  --link-hover:         #1050a0;
+  --link-dis:           #b0aba6;
+  --link-visited:       #7b2fbe;
+
+  /* Shared */
+  --text:              #1c1a17;
+  --focus-ring:        #1565c0;
+  --icon-border:       #cbc5be;
+}
+
+
+/* ─── Button Base ───────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  transition:
+    background-color 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease,
+    box-shadow 0.12s ease,
+    transform 0.08s ease;
+}
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+
+/* ─── Primary ───────────────────────────────────────────────── */
+.btn-primary {
+  background: var(--lime);
+  color: var(--text);
+  border: 1px solid transparent;
+}
+
+.btn-primary:hover:not(:disabled) { background: var(--lime-hover); }
+.btn-primary:active:not(:disabled) { background: var(--lime-active); }
+.btn-primary:disabled {
+  background: var(--lime-dis-bg);
+  color: var(--lime-dis-text);
+  cursor: not-allowed;
+}
+
+
+/* ─── Secondary ─────────────────────────────────────────────── */
+.btn-secondary {
+  background: var(--sec-bg);
+  color: var(--text);
+  border: 1px solid var(--sec-border);
+}
+
+.btn-secondary:hover:not(:disabled) { background: var(--sec-bg-hover); }
+.btn-secondary:active:not(:disabled) {
+  background: var(--sec-bg-active);
+  border-color: var(--sec-border-active);
+}
+.btn-secondary:disabled {
+  background: var(--sec-dis-bg);
+  border-color: var(--sec-dis-border);
+  color: var(--sec-dis-text);
+  cursor: not-allowed;
+}
+
+
+/* ─── Tertiary ──────────────────────────────────────────────── */
+.btn-tertiary {
+  background: transparent;
+  color: var(--grey);
+  border: 1px solid var(--grey);
+  box-shadow: none;
+}
+
+.btn-tertiary:hover:not(:disabled) {
+  background: var(--grey-hover-bg);
+  border-color: var(--grey-hover-dark);
+  color: var(--grey-hover-dark);
+}
+.btn-tertiary:active:not(:disabled) {
+  background: var(--grey-active-bg);
+  border-color: var(--grey-hover-dark);
+  color: var(--grey-hover-dark);
+}
+.btn-tertiary:disabled {
+  border-color: var(--grey-dis);
+  color: var(--grey-dis);
+  cursor: not-allowed;
+}
+
+
+/* ─── Destructive Button ────────────────────────────────────── */
+.btn-destructive {
+  background: var(--danger);
+  color: #ffffff;
+  border: 1px solid transparent;
+}
+
+.btn-destructive:hover:not(:disabled) { background: var(--danger-hover); }
+.btn-destructive:active:not(:disabled) { background: var(--danger-active); }
+.btn-destructive:disabled {
+  background: var(--danger-dis-bg);
+  color: var(--danger-dis-text);
+  cursor: not-allowed;
+}
+
+
+/* ─── Icon Button ───────────────────────────────────────────── */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background: transparent;
+  border: 1px solid var(--icon-border);
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--grey);
+  line-height: 1;
+  flex-shrink: 0;
+  padding: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+}
+
+.btn-icon.btn-icon-sm { width: 28px; height: 28px; font-size: 14px; }
+
+.btn-icon:hover:not(:disabled) {
+  background: var(--grey-hover-bg);
+  border-color: var(--grey-dis);
+  color: var(--grey-hover-dark);
+}
+.btn-icon:active:not(:disabled) {
+  background: var(--grey-active-bg);
+  border-color: var(--grey-dis);
+  color: var(--grey-hover-dark);
+}
+.btn-icon:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.btn-icon:disabled {
+  border-color: var(--icon-border);
+  color: var(--grey-dis);
+  cursor: not-allowed;
+}
+
+.btn-icon.btn-icon-constructive { color: var(--sec-border); }
+.btn-icon.btn-icon-constructive:hover:not(:disabled) {
+  background: var(--sec-bg);
+  color: var(--sec-border-active);
+}
+.btn-icon.btn-icon-constructive:active:not(:disabled) {
+  background: var(--sec-bg-hover);
+  color: var(--sec-border-active);
+}
+
+.btn-icon.btn-icon-destructive { color: var(--danger); }
+.btn-icon.btn-icon-destructive:hover:not(:disabled) {
+  background: var(--danger-ghost-hover);
+  color: var(--danger-hover);
+}
+.btn-icon.btn-icon-destructive:active:not(:disabled) {
+  background: var(--danger-ghost-active);
+  color: var(--danger-active);
+}
+.btn-icon.btn-icon-destructive:disabled { color: var(--danger-dis-text); }
+
+.btn-icon[aria-pressed="true"] {
+  background: var(--grey-active-bg);
+  border-color: var(--grey-dis);
+  color: var(--grey-hover-dark);
+}
+.btn-icon[aria-pressed="true"]:hover:not(:disabled) {
+  background: var(--grey-hover-bg);
+  border-color: var(--grey-dis);
+  color: var(--grey-hover-dark);
+}
+
+
+/* ─── Link-style Button ─────────────────────────────────────── */
+.btn-link {
+  display: inline;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--grey);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  border-radius: 2px;
+}
+
+.btn-link:hover:not(:disabled) { text-decoration-color: var(--sec-border); }
+.btn-link:active:not(:disabled) {
+  text-decoration-color: var(--sec-border);
+  text-decoration-thickness: 2px;
+}
+.btn-link:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.btn-link:disabled {
+  color: var(--link-dis);
+  text-decoration: none;
+  cursor: not-allowed;
+}
+
+
+/* ─── Icon Inside Text Button ───────────────────────────────── */
+.btn .bi,
+.btn svg.btn-icon-svg {
+  font-size: 1.15em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+
+/* ─── Loading / Pending State ───────────────────────────────── */
+.btn.is-loading {
+  cursor: wait;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: btn-spin 0.65s linear infinite;
+  flex-shrink: 0;
+}
+
+
+/* ─── Info Card ─────────────────────────────────────────────── */
+.info-card {
+  display: flex;
+  flex-direction: column;
+  background: #e8e4dc;
+  border-radius: 5px;
+  overflow: hidden;
+  border-top: 4px solid #c4d82e;
+}
+
+.info-card-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+.info-card-row:last-child { border-bottom: none; }
+
+.info-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #8a8078;
+}
+
+.info-value {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  color: #1c1a17;
+  word-break: break-all;
+}
+
+.info-link {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.info-link:hover   { color: var(--link-hover); }
+.info-link:visited { color: var(--link-visited); }
+
+
+/* ─── Dark Mode Overrides ───────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --sec-bg:            #1a2306;
+    --sec-bg-hover:      #212e08;
+    --sec-bg-active:     #28380a;
+    --sec-dis-bg:        #1e1e1e;
+    --sec-dis-border:    #2e2e2e;
+    --sec-dis-text:      #4e4e4e;
+
+    --grey:              #b0aba6;
+    --grey-hover-bg:     #272420;
+    --grey-hover-dark:   #d4cfc9;
+    --grey-active-bg:    #302c28;
+    --grey-dis:          #484340;
+
+    --lime-dis-bg:       #252f08;
+    --lime-dis-text:     #5a6b30;
+
+    --danger-dis-bg:     #3a0f0f;
+    --danger-dis-text:   #864040;
+    --danger-ghost-hover:  #2a0808;
+    --danger-ghost-active: #380d0d;
+
+    --link:              #64b5f6;
+    --link-hover:        #90caf9;
+    --link-dis:          #484340;
+    --link-visited:      #c084e0;
+
+    --focus-ring:        #64b5f6;
+  }
+
+  html:not([data-theme="light"]) .btn-secondary         { color: var(--lime); }
+  html:not([data-theme="light"]) .btn-secondary:disabled { color: var(--sec-dis-text); }
+
+  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive { color: #e57373; border-color: #e57373; }
+  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive:hover:not(:disabled)  { background: var(--danger-ghost-hover);  border-color: #ef9a9a; color: #ef9a9a; }
+  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive:active:not(:disabled) { background: var(--danger-ghost-active); border-color: #ef9a9a; color: #ef9a9a; }
+  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive:disabled              { color: var(--danger-dis-text); border-color: var(--icon-border); }
+
+  html:not([data-theme="light"]) .btn-icon.btn-icon-constructive                            { border-color: var(--lime); }
+  html:not([data-theme="light"]) .btn-icon.btn-icon-constructive:hover:not(:disabled)       { background: #2e4a0a; border-color: var(--lime); color: var(--lime); }
+  html:not([data-theme="light"]) .btn-icon.btn-icon-constructive:active:not(:disabled)      { background: #253a08; border-color: var(--lime); color: var(--lime); }
+
+  html:not([data-theme="light"]) .info-card       { background: #2e2b26; }
+  html:not([data-theme="light"]) .info-card-row   { border-bottom-color: rgba(255,255,255,0.07); }
+  html:not([data-theme="light"]) .info-label      { color: #cbcdac; }
+  html:not([data-theme="light"]) .info-value      { color: #c4d82e; }
+  html:not([data-theme="light"]) .info-link       { color: #c4d82e; }
+  html:not([data-theme="light"]) .info-link:hover { color: #d8ee50; }
+  html:not([data-theme="light"]) .info-link:visited { color: #a8c020; }
+}
+
+
+/* ─── Submission Type Badges ─────────────────────────────────── */
+/*
+ * Color-coded labels matching the arXiv Check moderation tool.
+ * Base class .type-badge handles shape; type modifiers supply color.
+ *
+ * Contrast ratios (WCAG, verified):
+ *   .type-new   #1a3d78 on #d4e9ff — 8.5:1  AAA ✓
+ *   .type-rep   #7a5c00 on #fef3c7 — 5.6:1  AA  ✓
+ *   .type-wdr   #ffffff on #474340 — 9.8:1  AAA ✓
+ *   .type-cross #4a4540 on #e8e4df — 7.5:1  AAA ✓
+ */
+.type-badge {
+  display: inline-block;
+  font-family: "IBM Plex Mono", "SF Mono", "Fira Code", monospace;
+  font-size: 11px;
+  font-weight: 400;
+  border-radius: 3px;
+  padding: 1px 6px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.type-new   { background: #d4e9ff; color: #1a3d78; border-color: #93c5fd; }
+.type-rep   { background: #fef3c7; color: #7a5c00; border-color: #fde68a; }
+.type-wdr   { background: #474340; color: #ffffff; border-color: #474340; }
+.type-cross { background: #e8e4df; color: #4a4540; border-color: #cbc5be; }

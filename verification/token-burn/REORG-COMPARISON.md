@@ -31,7 +31,7 @@ pages whose absence caused its baseline failure**:
 
 ## New finding: the page-composition gap
 
-03-r1 read `mockups/abstract-redesign.html` **seven times** — despite the
+03-r1 read `mockups/public/abstract-redesign.html` **seven times** — despite the
 mockup contract — because the task needs "a realistic abstract-page fragment"
 and `docs/` documents components, not page assembly. The only place an
 abstract page *exists* is a mockup. Routing can't point at what doesn't exist:

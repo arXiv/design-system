@@ -7,12 +7,22 @@ This folder contains **in-progress page mockups** for the arXiv redesign. They'r
 
 ## What this is
 
-Two whole-page mockups:
+Mockups are organized by surface, mirroring `docs/` (migrated 2026-07-30 from Shamsi's local working folder; all sets data-scrubbed before publishing — every person, email, IP, and paper in them is fictional):
+
+**`public/` — arxiv.org surfaces**
 
 - **`abstract-redesign.html`** — the abstract page (paper landing page with title, authors, abstract, format/download actions, and citation section).
 - **`html-redesign.html`** — the HTML paper reader (in-browser view of a full paper).
+- **`merged-abstract-reader.html`** — the merged HTML-first abstract + reader exploration; **`merged-abstract-reader-phase1.html`** is its reduced Phase 1 implementation proposal.
+- **`optin-modal/`** — the Labs opt-in modal, layered on a saved arxiv.org page.
+- (`images/` and `lib/` are shared assets for these pages.)
 
-Each is a self-contained static HTML file with inline `<style>` and `<script>`. Open either in a browser to view; no build step, no server required.
+**`internal/` — staff tools**
+
+- **`admin-console/`** — Admin Console mockups: `user-page/`, `ownership-requests/`, `category-management/`, `paper-details/`. Home of the metadata-panel, action-bar, and category-editor patterns queued for promotion.
+- **`arxiv-check/`** — arXiv Check checkmark/save affordances: `checkmark-buttons.html` plus three annotated design images.
+
+Each page is static HTML (some with a sibling `styles.css`/`script.js`). Open in a browser; no build step, no server required.
 
 ## What this is NOT
 
