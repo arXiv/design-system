@@ -1,33 +1,43 @@
-# We test the design system with AI agents — tear this apart
-
-**Audience:** arXiv developers · **Ask:** ~10 minutes and your skepticism · **Contact:** Shamsi
+# Test protocol description - I want your feedback!
+Shamsi Brinn
+07/30/26
 
 ## What this is
 
-We test whether an AI coding agent, given only this repo, does frontend work correctly and cheaply. Five realistic tasks — build a component from a spec, reuse existing components, one deliberately under-specified design problem, one request that violates arXiv policy on purpose, one real backlog item — each run twice, headless. Deliberately a mid-tier model: developers here use Claude, Gemini, and Copilot, so the docs must carry the load; a frontier model bridging doc gaps by inference would hide exactly what we want to find.
+I want to test whether an AI coding agent, given only this repo, does frontend work correctly and cheaply. Ive used Claude to set up five testing tasks: 
+1. build a new component from the design system guidelines (a component that doesnt exist in the design system yet)
+2. reuse existing components in the design system
+3. complete a deliberately under-specified design problem
+4. test if it completes one request that violates arXiv policy on purpose (it should not do it, but flag it to the user instead)
+5. complete one real backlog item from the design system /planning/ directory
 
-Each run executes in a clean copy of the repo with the test definitions removed, so the agent can't find the answer key. We record tokens burned, files read and in what order, auto-scanned violations (external font/CDN loads, off-palette colors, planted traps), and Shamsi visually grades every output against the pattern pages.
+I used Fable to build the tests but I'm conducting them with Sonnet so that frontier models don't become a crutch for poor documentation. (if the design system doesnt answer a question I don't want the model to hack into Hugging Face looking for an answer :-D :-D )
+
+Each test gets run twice, headless. Each run executes in a clean copy of the repo with the test definitions removed, so the agent can't find the answer key. Per Claude's advice I'm recording: 
+- tokens burned
+- files read and in what order
+- auto-scanned violations (external font/CDN loads, off-palette colors, planted traps)
+- I also visually scan the output and compare with official pattern pages (ie: https://arxiv.github.io/design-system/docs/buttons.html)
 
 ## What it found so far
 
-We ran it before and after restructuring the repo (same tasks, same model):
+I've just restructured the repo and ran the tests before and after to see if it made a difference. There is a long ways to go but the testing did help:
 
 | | Before | After |
 |---|---|---|
-| Designer grade | 4/10 pass | 6/10 pass |
+| Visual review | 4/10 pass | 6/10 pass |
 | Policy violations | 3 | 0 |
 | Files read per battery | 106 | 83 |
 
-The sharpest finding: failures tracked **documentation coverage, not model capability** — every remaining fail is a rule that was never written down or couldn't be found. One agent copied a policy violation verbatim from our own reference page: example code is training data. Details in [REORG-COMPARISON.md](REORG-COMPARISON.md) and [BASELINE-RESULTS.md](BASELINE-RESULTS.md).
+The biggest finding: Sonnet mostly worked exactly as expected and a frontier model does not appear to be necessary. The problem that the tests uncovered was significant **documentation coverage gaps**. There were many questions the agent needed to answer that I had never written down. Details are in [REORG-COMPARISON.md](REORG-COMPARISON.md) and [BASELINE-RESULTS.md](BASELINE-RESULTS.md).
 
-## Where your perspective would genuinely help
-
+## Your help
+I'd love your technical perspective on these aspects of the tests so I can improve them.
 1. **Task coverage** — are these the right kinds of work? What do you actually hand to an agent that we should be testing?
-2. **Rigor** — two runs per task. Enough? How would you handle run-to-run variance without tripling cost?
+2. **Rigor** — two runs per task. Is that sufficient? How would you handle run-to-run variance without tripling our costs?
 3. **Metrics** — anything you'd add or drop? (e.g., diff-against-reference, time-to-first-correct)
-4. **Cadence** — when should this run (on docs changes? scheduled?) so it stays useful without becoming maintenance for a very small team?
-5. **Contamination** — does the clean-copy approach look airtight to you?
-6. **Trust** — what would you need to see before treating `AGENTS.md` + `docs/` as the source of truth for agent-assisted frontend work?
-7. **Your agents** — the runner drives Claude only. You also use Gemini and Copilot. Is cross-agent testing worth building, or is a mid-tier single-agent proxy good enough?
+4. **Cadence** — when should we run these tests so it stays useful without becoming too much maintenance? Manually by devs? On merging?
+5. **Trust** — what would you need to see in test results to trust `AGENTS.md` and `docs/` as your source of truth for frontend work?
+7. **Agent agnostic** — Im testing with Claude (sonnet). Some people use Gemini and Copilot. Is cross-agent testing worth building?
 
-The harness lives in `verification/token-burn/` (one script, no dependencies). Answers, objections, and "you're measuring the wrong thing entirely" all welcome — that's the point of asking.
+The harness lives in `verification/token-burn/` (just the one script). All thoughts are welcome! I'll feed them to Fable for improvement.
