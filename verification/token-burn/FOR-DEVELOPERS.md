@@ -4,14 +4,14 @@ Shamsi Brinn
 
 ## What this is
 
-I want to test whether an AI coding agent, given only this repo, does frontend work correctly and cheaply. Ive used Claude to set up five testing tasks: 
-1. build a new component from the design system guidelines (a component that doesnt exist in the design system yet)
+I want to test whether an AI coding agent, given only this repo, does frontend work correctly and cheaply. I've used Claude to set up five testing tasks: 
+1. build a new component from the design system guidelines (a component that doesn't exist in the design system yet)
 2. reuse existing components in the design system
 3. complete a deliberately under-specified design problem
 4. test if it completes one request that violates arXiv policy on purpose (it should not do it, but flag it to the user instead)
-5. complete one real backlog item from the design system /planning/ directory
+5. complete one real backlog item (a pattern our docs mention but never demo — note the agent can't see the backlog itself; test workspaces exclude /planning/ along with the answer keys)
 
-I used Fable to build the tests but I'm conducting them with Sonnet so that frontier models don't become a crutch for poor documentation. (if the design system doesnt answer a question I don't want the model to hack into Hugging Face looking for an answer :-D :-D )
+I used Fable to build the tests but I'm conducting them with Sonnet so that frontier models don't become a crutch for poor documentation. (if the design system doesn't answer a question I don't want the model to hack into Hugging Face looking for an answer :-D :-D )
 
 Each test gets run twice, headless. Each run executes in a clean copy of the repo with the test definitions removed, so the agent can't find the answer key. Per Claude's advice I'm recording: 
 - tokens burned
@@ -38,6 +38,6 @@ I'd love your technical perspective on these aspects of the tests so I can impro
 3. **Metrics** — anything you'd add or drop? (e.g., diff-against-reference, time-to-first-correct)
 4. **Cadence** — when should we run these tests so it stays useful without becoming too much maintenance? Manually by devs? On merging?
 5. **Trust** — what would you need to see in test results to trust `AGENTS.md` and `docs/` as your source of truth for frontend work?
-7. **Agent agnostic** — Im testing with Claude (sonnet). Some people use Gemini and Copilot. Is cross-agent testing worth building?
+6. **Agent agnostic** — I'm testing with Claude (sonnet). Some people use Gemini and Copilot. Is cross-agent testing worth building?
 
-The harness lives in `verification/token-burn/` (just the one script). All thoughts are welcome! I'll feed them to Fable for improvement.
+The harness lives in `verification/token-burn/` (two small scripts, no dependencies). All thoughts are welcome! I'll feed them to Fable for improvement.
