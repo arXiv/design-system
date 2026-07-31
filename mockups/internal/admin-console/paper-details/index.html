@@ -641,15 +641,13 @@ select.control{appearance:none; -webkit-appearance:none;
           </button>
           <div class="panel-body">
             <!-- Toolbar — counterpart of user-page "Owned Papers": actions left, filter right.
-                 Contextual actions render disabled until a row is selected; they never disappear.
-                 Flag columns (Sub/Auth/Proxy) mirror the user-page indicator-column grammar and
-                 replace the old single "Flags" column. -->
+                 Revoke renders disabled until a row is selected; it never disappears.
+                 Auth/Proxy flags are edited directly in the table as checkboxes; Sub is
+                 read-only, shown as a static glyph — the affordance contrast carries that. -->
             <div class="owners-toolbar">
               <div class="owners-toolbar-left">
                 <button class="btn btn-primary btn-sm" type="button" onclick="openAddOwner()">Add Owner</button>
                 <button class="btn btn-tertiary btn-sm" type="button" id="owners-btn-revoke" disabled onclick="openRevoke()">Revoke</button>
-                <button class="btn btn-tertiary btn-sm" type="button" id="owners-btn-author" disabled onclick="flagSelected('author')">Author</button>
-                <button class="btn btn-tertiary btn-sm" type="button" id="owners-btn-proxy" disabled onclick="flagSelected('proxy')">Proxy</button>
                 <span class="owners-selected-count" id="owners-selected-count"></span>
               </div>
               <div class="ds-filter">
@@ -673,12 +671,16 @@ select.control{appearance:none; -webkit-appearance:none;
               <tbody>
                 <tr data-submitter="true" data-author="true" data-proxy="false">
                   <td class="col-check"><input type="checkbox" aria-label="Select Elena M. Vasquez"></td>
-                  <td class="col-ind">✓</td><td class="col-ind">✓</td><td class="col-ind no">—</td>
+                  <td class="col-ind">✓</td>
+                  <td class="col-ind col-flag"><input type="checkbox" checked data-flag="author" aria-label="Author flag for Elena M. Vasquez"></td>
+                  <td class="col-ind col-flag"><input type="checkbox" data-flag="proxy" aria-label="Proxy flag for Elena M. Vasquez"></td>
                   <td><a href="#">Elena M. Vasquez</a></td><td>Institute for Advanced Study</td><td class="mono">2025-02-05</td>
                 </tr>
                 <tr data-submitter="false" data-author="true" data-proxy="false">
                   <td class="col-check"><input type="checkbox" aria-label="Select Rahul Menon"></td>
-                  <td class="col-ind no">—</td><td class="col-ind">✓</td><td class="col-ind no">—</td>
+                  <td class="col-ind no">—</td>
+                  <td class="col-ind col-flag"><input type="checkbox" checked data-flag="author" aria-label="Author flag for Rahul Menon"></td>
+                  <td class="col-ind col-flag"><input type="checkbox" data-flag="proxy" aria-label="Proxy flag for Rahul Menon"></td>
                   <td><a href="#">Rahul Menon</a></td><td>MIT</td><td class="mono">2025-02-08</td>
                 </tr>
                 <tr id="owners-empty" hidden><td colspan="7" class="empty-cell">No paper owners.</td></tr>
@@ -1090,12 +1092,12 @@ function setVersion(v){
 var ownersTable = document.getElementById('owners-table');
 var ownersSelectAll = document.getElementById('owners-select-all');
 
+/* Selection checkboxes live in .col-check; Auth/Proxy flag checkboxes live in .col-flag.
+   Selectors are scoped so the two never mix. */
 function ownersUpdateSelection(){
-  var visible = ownersTable.querySelectorAll('tbody tr:not([hidden]) input[type="checkbox"]');
-  var checked = ownersTable.querySelectorAll('tbody tr:not([hidden]) input[type="checkbox"]:checked');
-  ['owners-btn-revoke','owners-btn-author','owners-btn-proxy'].forEach(function(id){
-    document.getElementById(id).disabled = checked.length === 0;
-  });
+  var visible = ownersTable.querySelectorAll('tbody tr:not([hidden]) .col-check input');
+  var checked = ownersTable.querySelectorAll('tbody tr:not([hidden]) .col-check input:checked');
+  document.getElementById('owners-btn-revoke').disabled = checked.length === 0;
   document.getElementById('owners-selected-count').textContent =
     checked.length ? checked.length + ' selected' : '';
   ownersSelectAll.checked = checked.length === visible.length && visible.length > 0;
@@ -1103,19 +1105,29 @@ function ownersUpdateSelection(){
 }
 
 ownersSelectAll.addEventListener('change', function(){
-  ownersTable.querySelectorAll('tbody tr:not([hidden]) input[type="checkbox"]').forEach(function(cb){
+  ownersTable.querySelectorAll('tbody tr:not([hidden]) .col-check input').forEach(function(cb){
     cb.checked = ownersSelectAll.checked;
   });
   ownersUpdateSelection();
 });
-ownersTable.querySelector('tbody').addEventListener('change', ownersUpdateSelection);
+
+/* One delegated handler: flag checkboxes update their row's data attribute (and re-run
+   the filter so an active flag filter stays honest); selection changes update the toolbar. */
+ownersTable.querySelector('tbody').addEventListener('change', function(e){
+  if(e.target.dataset.flag){
+    e.target.closest('tr').dataset[e.target.dataset.flag] = String(e.target.checked);
+    filterOwners();
+  } else {
+    ownersUpdateSelection();
+  }
+});
 
 function filterOwners(){
   var flag = document.getElementById('owners-filter').value;
   ownersTable.querySelectorAll('tbody tr[data-submitter]').forEach(function(tr){
     var show = (flag === 'all') || (tr.dataset[flag] === 'true');
     tr.hidden = !show;
-    if(!show){ tr.querySelector('input[type="checkbox"]').checked = false; }
+    if(!show){ tr.querySelector('.col-check input').checked = false; }
   });
   ownersUpdateSelection();
 }
@@ -1130,7 +1142,7 @@ function ownersCountUpdate(){
 function selectedOwnerRows(){
   var out = [];
   ownersTable.querySelectorAll('tbody tr[data-submitter]:not([hidden])').forEach(function(tr){
-    if(tr.querySelector('input[type="checkbox"]').checked) out.push(tr);
+    if(tr.querySelector('.col-check input').checked) out.push(tr);
   });
   return out;
 }
@@ -1140,17 +1152,6 @@ function listNames(rows){
   if(names.length === 1) return names[0];
   if(names.length === 2) return names[0] + ' and ' + names[1];
   return names.slice(0, -1).join(', ') + ', and ' + names[names.length - 1];
-}
-
-/* Author / Proxy: set that flag's checkmark on every selected row */
-function flagSelected(flag){
-  var rows = selectedOwnerRows(); if(!rows.length) return;
-  rows.forEach(function(tr){
-    tr.dataset[flag] = 'true';
-    var td = tr.cells[flag === 'author' ? 2 : 3];
-    td.textContent = '✓'; td.classList.remove('no');
-  });
-  toast((flag === 'author' ? 'Author' : 'Proxy') + ' flag added: ' + listNames(rows));
 }
 
 /* Revoke: confirm first (destructive), then remove the selected rows */
@@ -1215,7 +1216,9 @@ function confirmAddOwner(){
   tr.dataset.submitter = 'false'; tr.dataset.author = 'false'; tr.dataset.proxy = 'false';
   tr.innerHTML =
     '<td class="col-check"><input type="checkbox" aria-label="Select ' + name + '"></td>' +
-    '<td class="col-ind no">—</td><td class="col-ind no">—</td><td class="col-ind no">—</td>' +
+    '<td class="col-ind no">—</td>' +
+    '<td class="col-ind col-flag"><input type="checkbox" data-flag="author" aria-label="Author flag for ' + name + '"></td>' +
+    '<td class="col-ind col-flag"><input type="checkbox" data-flag="proxy" aria-label="Proxy flag for ' + name + '"></td>' +
     '<td><a href="#">' + name + '</a></td><td>' + sel.dataset.affil + '</td><td class="mono">2026-07-31</td>';
   ownersTable.querySelector('tbody').insertBefore(tr, document.getElementById('owners-empty'));
   ownersCountUpdate();
