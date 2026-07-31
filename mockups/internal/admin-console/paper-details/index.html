@@ -77,6 +77,9 @@ h1,h2,h3{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif;}
 .btn-tertiary{background:transparent; color:var(--grey); border:1px solid var(--grey); box-shadow:none;}
 .btn-tertiary:visited{color:var(--grey);}
 .btn-tertiary:hover:not(:disabled){background:var(--grey-hover-bg); border-color:var(--grey-hover-dark); color:var(--grey-hover-dark);}
+.btn-destructive{background:var(--danger); color:#fff; border:1px solid transparent;}
+.btn-destructive:hover:not(:disabled){background:var(--danger-hover);}
+.btn-destructive:active:not(:disabled){background:var(--danger-active);}
 .btn .bi{font-size:1.05em; line-height:0;}
 .btn svg{width:16px; height:16px; fill:currentColor;}
 
@@ -361,6 +364,8 @@ dialog.dlg::backdrop{background:rgba(28,26,23,.45);}
 .owner-results tbody tr.selected td{background:var(--sec-bg);}
 .owner-results th.col-ind, .owner-results td.col-ind{padding-left:6px; padding-right:6px;}
 .results-note{font-size:12px; color:var(--grey); margin:var(--space-2) 0 0;}
+.dlg-sm{width:min(480px, calc(100vw - 32px));}
+#owners-table .empty-cell{color:var(--grey);}
 
 /* =================================================================
    Edit form
@@ -642,9 +647,9 @@ select.control{appearance:none; -webkit-appearance:none;
             <div class="owners-toolbar">
               <div class="owners-toolbar-left">
                 <button class="btn btn-primary btn-sm" type="button" onclick="openAddOwner()">Add Owner</button>
-                <button class="btn btn-tertiary btn-sm" type="button" id="owners-btn-revoke" disabled>Revoke</button>
-                <button class="btn btn-tertiary btn-sm" type="button" id="owners-btn-author" disabled>Author</button>
-                <button class="btn btn-tertiary btn-sm" type="button" id="owners-btn-proxy" disabled>Proxy</button>
+                <button class="btn btn-tertiary btn-sm" type="button" id="owners-btn-revoke" disabled onclick="openRevoke()">Revoke</button>
+                <button class="btn btn-tertiary btn-sm" type="button" id="owners-btn-author" disabled onclick="flagSelected('author')">Author</button>
+                <button class="btn btn-tertiary btn-sm" type="button" id="owners-btn-proxy" disabled onclick="flagSelected('proxy')">Proxy</button>
                 <span class="owners-selected-count" id="owners-selected-count"></span>
               </div>
               <div class="ds-filter">
@@ -676,6 +681,7 @@ select.control{appearance:none; -webkit-appearance:none;
                   <td class="col-ind no">—</td><td class="col-ind">✓</td><td class="col-ind no">—</td>
                   <td><a href="#">Rahul Menon</a></td><td>MIT</td><td class="mono">2025-02-08</td>
                 </tr>
+                <tr id="owners-empty" hidden><td colspan="7" class="empty-cell">No paper owners.</td></tr>
               </tbody>
             </table>
           </div>
@@ -973,6 +979,20 @@ select.control{appearance:none; -webkit-appearance:none;
   </div>
 </dialog>
 
+<!-- ===== Revoke ownership confirm — destructive action, so it always confirms first
+     (per the .btn-destructive usage rules in the design system) ===== -->
+<dialog class="dlg dlg-sm" id="revoke-dlg" aria-labelledby="revoke-title">
+  <div class="dlg-head">
+    <h2 id="revoke-title">Revoke ownership</h2>
+    <button class="icon-btn" type="button" aria-label="Close dialog" onclick="closeRevoke()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+  </div>
+  <div class="dlg-body"><p id="revoke-text"></p></div>
+  <div class="dlg-actions">
+    <button class="btn btn-tertiary" type="button" onclick="closeRevoke()">Cancel</button>
+    <button class="btn btn-destructive" type="button" onclick="confirmRevoke()">Revoke</button>
+  </div>
+</dialog>
+
 <div class="toast" id="toast" hidden><span class="ok">&#10003;</span> <span id="toast-msg">Saved</span></div>
 
 <script>
@@ -1092,12 +1112,66 @@ ownersTable.querySelector('tbody').addEventListener('change', ownersUpdateSelect
 
 function filterOwners(){
   var flag = document.getElementById('owners-filter').value;
-  ownersTable.querySelectorAll('tbody tr').forEach(function(tr){
+  ownersTable.querySelectorAll('tbody tr[data-submitter]').forEach(function(tr){
     var show = (flag === 'all') || (tr.dataset[flag] === 'true');
     tr.hidden = !show;
     if(!show){ tr.querySelector('input[type="checkbox"]').checked = false; }
   });
   ownersUpdateSelection();
+}
+
+/* Owner-row count in the panel head; reveals the empty-state row when none remain */
+function ownersCountUpdate(){
+  var n = ownersTable.querySelectorAll('tbody tr[data-submitter]').length;
+  document.getElementById('owners-count').textContent = '(' + n + ')';
+  document.getElementById('owners-empty').hidden = n > 0;
+}
+
+function selectedOwnerRows(){
+  var out = [];
+  ownersTable.querySelectorAll('tbody tr[data-submitter]:not([hidden])').forEach(function(tr){
+    if(tr.querySelector('input[type="checkbox"]').checked) out.push(tr);
+  });
+  return out;
+}
+
+function listNames(rows){
+  var names = rows.map(function(r){ return r.querySelector('td a').textContent; });
+  if(names.length === 1) return names[0];
+  if(names.length === 2) return names[0] + ' and ' + names[1];
+  return names.slice(0, -1).join(', ') + ', and ' + names[names.length - 1];
+}
+
+/* Author / Proxy: set that flag's checkmark on every selected row */
+function flagSelected(flag){
+  var rows = selectedOwnerRows(); if(!rows.length) return;
+  rows.forEach(function(tr){
+    tr.dataset[flag] = 'true';
+    var td = tr.cells[flag === 'author' ? 2 : 3];
+    td.textContent = '✓'; td.classList.remove('no');
+  });
+  toast((flag === 'author' ? 'Author' : 'Proxy') + ' flag added: ' + listNames(rows));
+}
+
+/* Revoke: confirm first (destructive), then remove the selected rows */
+var revokeDlg = document.getElementById('revoke-dlg');
+function openRevoke(){
+  var rows = selectedOwnerRows(); if(!rows.length) return;
+  document.getElementById('revoke-text').textContent =
+    'Are you sure you want to revoke ownership for ' + listNames(rows) + '?';
+  revokeDlg.showModal();
+}
+function closeRevoke(){ revokeDlg.close(); }
+revokeDlg.addEventListener('click', function(e){ if(e.target === revokeDlg) revokeDlg.close(); });
+
+function confirmRevoke(){
+  var rows = selectedOwnerRows();
+  var names = listNames(rows);
+  rows.forEach(function(tr){ tr.remove(); });
+  ownersCountUpdate();
+  ownersUpdateSelection();
+  revokeDlg.close();
+  toast('Ownership revoked: ' + names);
 }
 
 /* ---- Add Owner modal: type-ahead → pick a result → Add appends to the table ---- */
@@ -1143,9 +1217,8 @@ function confirmAddOwner(){
     '<td class="col-check"><input type="checkbox" aria-label="Select ' + name + '"></td>' +
     '<td class="col-ind no">—</td><td class="col-ind no">—</td><td class="col-ind no">—</td>' +
     '<td><a href="#">' + name + '</a></td><td>' + sel.dataset.affil + '</td><td class="mono">2026-07-31</td>';
-  ownersTable.querySelector('tbody').appendChild(tr);
-  var n = ownersTable.querySelectorAll('tbody tr').length;
-  document.getElementById('owners-count').textContent = '(' + n + ')';
+  ownersTable.querySelector('tbody').insertBefore(tr, document.getElementById('owners-empty'));
+  ownersCountUpdate();
   /* Reset the filter so the newly added owner (no flags yet) is visible */
   document.getElementById('owners-filter').value = 'all';
   filterOwners();
