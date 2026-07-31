@@ -89,7 +89,7 @@ h1,h2,h3{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif;}
 .icon-btn.edit-inline{width:24px; height:24px; border-color:transparent;}
 .icon-btn.edit-inline svg{width:14px; height:14px;}
 
-/* ── Segmented control (Raw / Browse) ────────────────────── */
+/* ── Segmented control (Raw / Preview) ───────────────────── */
 .seg-control{display:inline-flex;}
 .seg-btn{padding:5px 12px; font-family:inherit; font-size:12px; font-weight:500; cursor:pointer;
   border:1px solid var(--grey-ui); background:#fff; color:var(--grey); margin-left:-1px;
@@ -373,7 +373,7 @@ dialog.dlg::backdrop{background:rgba(28,26,23,.45);}
 .form-actions{display:flex; justify-content:flex-end; gap:var(--space-3); align-items:center;}
 .form-actions.form-actions-split{justify-content:space-between;}
 .form-actions-btns{display:flex; gap:var(--space-3); align-items:center;}
-/* Raw/Browse: rendered preview shown under TeX fields only in Browse mode */
+/* Raw/Preview: rendered preview shown under TeX fields only in Preview mode */
 .preview-box{margin-top:var(--space-2); background:#fff; border:1px dashed var(--grey-ui);
   border-radius:6px; padding:9px 11px; font-size:13.5px; line-height:1.55;}
 .preview-box .pv-cap{display:block; font-family:"IBM Plex Sans Condensed",sans-serif; font-size:10px;
@@ -786,13 +786,13 @@ select.control{appearance:none; -webkit-appearance:none;
         </div>
 
         <!-- Actions below the headers, just above the form; anchored by the top rule.
-             FB: Raw / Browse metadata display toggle lives here on the left. -->
+             FB: Raw / Preview TeX display toggle lives here on the left. -->
         <div class="form-actions form-actions-split">
           <div class="mode-switch" id="edit-mode-switch">
-            <span class="mode-cap">Display</span>
-            <div class="seg-control" role="group" aria-label="Metadata display mode">
-              <button class="seg-btn active" type="button" onclick="setEditMode('raw')">Raw</button>
-              <button class="seg-btn" type="button" onclick="setEditMode('browse')">Browse</button>
+            <span class="mode-cap">Display TeX</span>
+            <div class="seg-control" role="group" aria-label="TeX display mode">
+              <button class="seg-btn active" type="button" data-mode="raw" onclick="setEditMode('raw')">Raw</button>
+              <button class="seg-btn" type="button" data-mode="browse" onclick="setEditMode('browse')">Preview</button>
             </div>
           </div>
           <div class="form-actions-btns">
@@ -817,12 +817,12 @@ select.control{appearance:none; -webkit-appearance:none;
           </div>
           <div class="field"><label class="flabel field-required" for="f-title">Title</label>
             <textarea class="control" id="f-title">Bootstrapping the $\mathcal{N}=4$ Super-Yang-Mills spectrum on $AdS_5\times S^5$</textarea>
-            <div class="preview-box"><span class="pv-cap">Browse preview</span>Bootstrapping the <span class="tex">&#119974;</span>=4 Super-Yang-Mills spectrum on <span class="tex">AdS</span><sub>5</sub>&#8202;&times;&#8202;<span class="tex">S</span><sup>5</sup></div></div>
+            <div class="preview-box"><span class="pv-cap">Preview</span>Bootstrapping the <span class="tex">&#119974;</span>=4 Super-Yang-Mills spectrum on <span class="tex">AdS</span><sub>5</sub>&#8202;&times;&#8202;<span class="tex">S</span><sup>5</sup></div></div>
           <div class="field"><label class="flabel" for="f-authors">Authors</label>
             <textarea class="control" id="f-authors">Elena M. Vasquez (IAS), Rahul Menon (MIT), Sofia Andersson (CERN, Uppsala)</textarea></div>
           <div class="field"><label class="flabel" for="f-abstract">Abstract</label>
             <textarea class="control" id="f-abstract" style="min-height:130px">We study the spectrum of planar $\mathcal{N}=4$ super-Yang-Mills theory on $AdS_5\times S^5$ using the numerical conformal bootstrap. Working to order $O(N^{-2})$, we derive rigorous bounds on the leading twist operators and compare against integrability predictions.</textarea>
-            <div class="preview-box"><span class="pv-cap">Browse preview</span>We study the spectrum of planar <span class="tex">&#119974;</span>=4 super-Yang-Mills theory on <span class="tex">AdS</span><sub>5</sub>&#8202;&times;&#8202;<span class="tex">S</span><sup>5</sup> using the numerical conformal bootstrap. Working to order <span class="tex">O</span>(<span class="tex">N</span><sup>&#8722;2</sup>), we derive rigorous bounds on the leading twist operators and compare against integrability predictions.</div></div>
+            <div class="preview-box"><span class="pv-cap">Preview</span>We study the spectrum of planar <span class="tex">&#119974;</span>=4 super-Yang-Mills theory on <span class="tex">AdS</span><sub>5</sub>&#8202;&times;&#8202;<span class="tex">S</span><sup>5</sup> using the numerical conformal bootstrap. Working to order <span class="tex">O</span>(<span class="tex">N</span><sup>&#8722;2</sup>), we derive rigorous bounds on the leading twist operators and compare against integrability predictions.</div></div>
 
           <!-- Classification — bordered section -->
           <div class="form-card">
@@ -854,7 +854,7 @@ select.control{appearance:none; -webkit-appearance:none;
             <div class="field w-lg"><label class="flabel" for="f-doi">DOI</label><input class="control" id="f-doi" type="text" value=""></div>
             <div class="field"><label class="flabel" for="f-comments">Comments</label>
               <textarea class="control" id="f-comments">38 pages, 5 figures. v2: references added, sign convention fixed. Supersedes arXiv:2411.34120. Data: https://data.example.org/n4-spectrum</textarea>
-              <div class="preview-box"><span class="pv-cap">Browse preview</span>38 pages, 5 figures. v2: references added, sign convention fixed. Supersedes <a href="#">arXiv:2411.34120</a>. Data: <a href="https://data.example.org/n4-spectrum" target="_blank" rel="noopener">https://data.example.org/n4-spectrum</a></div></div>
+              <div class="preview-box"><span class="pv-cap">Preview</span>38 pages, 5 figures. v2: references added, sign convention fixed. Supersedes <a href="#">arXiv:2411.34120</a>. Data: <a href="https://data.example.org/n4-spectrum" target="_blank" rel="noopener">https://data.example.org/n4-spectrum</a></div></div>
           </div>
 
           <!-- Source -->
@@ -986,11 +986,12 @@ function swap(showId, hideId){
 }
 function reduceMotion(){ return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
 
-/* ---- Raw / Browse metadata display (edit page): reveals rendered previews ---- */
+/* ---- Raw / Preview metadata display (edit page): reveals rendered previews.
+   Buttons carry data-mode so the label can differ from the internal mode key. ---- */
 function setEditMode(mode){
   var f=document.getElementById('edit-form'); if(f) f.dataset.mode=mode;
   document.querySelectorAll('#edit-mode-switch .seg-btn').forEach(function(b){
-    b.classList.toggle('active', b.textContent.trim().toLowerCase()===mode);
+    b.classList.toggle('active', b.dataset.mode===mode);
   });
 }
 
