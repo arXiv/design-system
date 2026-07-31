@@ -321,6 +321,55 @@ body.nav-collapsed .app-sidebar{display:none;}
   text-transform:uppercase; letter-spacing:.05em; color:var(--sec-border-active);
   background:var(--sec-bg); border:1px solid var(--sec-border); border-radius:3px; padding:1px 5px;}
 
+/* ── Paper owners — selectable rows + toolbar (counterpart of user-page "Owned Papers") ── */
+.owners-toolbar{display:flex; justify-content:space-between; align-items:center; gap:var(--space-3);
+  flex-wrap:wrap; margin-bottom:var(--space-3);}
+.owners-toolbar-left{display:flex; gap:var(--space-2); align-items:center; flex-wrap:wrap;}
+.owners-selected-count{font-size:12px; color:var(--grey);}
+.btn:disabled{cursor:not-allowed;}
+.btn-primary:disabled{background:var(--lime-dis-bg); color:var(--lime-dis-text);}
+.btn-tertiary:disabled{color:var(--grey-dis); border-color:var(--grey-dis);}
+.col-check{width:32px; text-align:center;}
+.col-ind{width:44px; text-align:center; color:var(--success-fg); font-size:14px;}
+td.col-ind.no{color:var(--grey-dis);}
+#owners-table input[type="checkbox"], .owner-results input[type="radio"]{accent-color:var(--sec-border); width:15px; height:15px;}
+.sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0 0 0 0); white-space:nowrap; border:0;}
+/* Filter select — .ds-filter construction from design-system.css */
+.ds-filter{display:inline-flex; align-items:center; gap:5px; font-size:12px; color:var(--grey);}
+.ds-filter label{font-weight:500; white-space:nowrap;}
+.ds-filter select{font-family:inherit; font-size:12px; color:var(--text); background:none; border:none;
+  border-bottom:1px solid var(--grey-ui); border-radius:0; padding:1px 18px 1px 2px; cursor:pointer;
+  -webkit-appearance:none; appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238b8680'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 2px center;}
+.ds-filter select:focus-visible{outline:2px solid var(--focus-ring); outline-offset:2px; border-radius:2px;}
+
+/* ── Add Owner dialog — native <dialog>: modals live in the top layer, no z-index (policy) ── */
+dialog.dlg{border:1px solid var(--border-light); border-radius:8px; padding:0;
+  width:min(900px, calc(100vw - 32px)); background:#fff; color:var(--text);
+  box-shadow:0 8px 30px rgba(0,0,0,.18);}
+dialog.dlg::backdrop{background:rgba(28,26,23,.45);}
+.dlg-head{display:flex; align-items:center; justify-content:space-between; gap:var(--space-3);
+  padding:var(--space-4) var(--space-6); border-bottom:1px solid var(--border-light);}
+.dlg-head h2{font-size:17px; font-weight:600; margin:0;}
+.dlg-body{padding:var(--space-4) var(--space-6);}
+.dlg-actions{display:flex; justify-content:flex-end; gap:var(--space-3);
+  padding:var(--space-4) var(--space-6); border-top:1px solid var(--border-light);}
+.owner-results{margin-top:var(--space-4); overflow-x:auto;}
+.owner-results tbody td{cursor:pointer;}
+.owner-results tbody tr.selected td{background:var(--sec-bg);}
+.results-note{font-size:12px; color:var(--grey); margin:var(--space-2) 0 0;}
+/* Privilege lozenges — replace arXiv Check's privilege icons; shape follows .type-badge.
+   Owner = .type-new blues, Moderator = .type-rep badge yellow (both from design-system.css),
+   Editor = light Access Lime tint per established convention in other internal tools. */
+.priv{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:11px; border-radius:3px;
+  padding:1px 6px; white-space:nowrap; border:1px solid transparent;}
+.priv + .priv{margin-left:var(--space-1);}
+.priv-owner{background:#d4e9ff; color:#1a3d78; border-color:#93c5fd;}
+.priv-mod{background:#fef3c7; color:#7a5c00; border-color:#fde68a;}
+.priv-editor{background:var(--sec-bg); color:var(--success-fg); border-color:var(--sec-border);}
+
 /* =================================================================
    Edit form
    ================================================================= */
@@ -591,14 +640,50 @@ select.control{appearance:none; -webkit-appearance:none;
         <section class="panel collapsed">
           <button class="panel-head" aria-expanded="false" onclick="togglePanel(this)">
             <span class="panel-caret"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></span>
-            <h3>Paper owners <span class="count">(2)</span></h3>
+            <h3>Paper owners <span class="count" id="owners-count">(2)</span></h3>
           </button>
           <div class="panel-body">
-            <table class="ds-table">
-              <thead><tr><th>Owner</th><th>Affiliation</th><th>Since</th><th>Flags</th></tr></thead>
+            <!-- Toolbar — counterpart of user-page "Owned Papers": actions left, filter right.
+                 Contextual actions render disabled until a row is selected; they never disappear.
+                 Flag columns (Sub/Auth/Proxy) mirror the user-page indicator-column grammar and
+                 replace the old single "Flags" column. -->
+            <div class="owners-toolbar">
+              <div class="owners-toolbar-left">
+                <button class="btn btn-primary btn-sm" type="button" onclick="openAddOwner()">Add Owner</button>
+                <button class="btn btn-tertiary btn-sm" type="button" id="owners-btn-revoke" disabled>Revoke</button>
+                <button class="btn btn-tertiary btn-sm" type="button" id="owners-btn-author" disabled>Author</button>
+                <button class="btn btn-tertiary btn-sm" type="button" id="owners-btn-proxy" disabled>Proxy</button>
+                <span class="owners-selected-count" id="owners-selected-count"></span>
+              </div>
+              <div class="ds-filter">
+                <label for="owners-filter">Show:</label>
+                <select id="owners-filter" onchange="filterOwners()">
+                  <option value="all" selected>All</option>
+                  <option value="submitter">Submitter</option>
+                  <option value="author">Author</option>
+                  <option value="proxy">Proxy</option>
+                </select>
+              </div>
+            </div>
+            <table class="ds-table" id="owners-table">
+              <thead><tr>
+                <th class="col-check"><input type="checkbox" id="owners-select-all" aria-label="Select all owners"></th>
+                <th class="col-ind" title="Submitter">Sub</th>
+                <th class="col-ind" title="Author">Auth</th>
+                <th class="col-ind" title="Proxy">Proxy</th>
+                <th>Owner</th><th>Affiliation</th><th>Since</th>
+              </tr></thead>
               <tbody>
-                <tr><td><a href="#">Elena M. Vasquez</a></td><td>Institute for Advanced Study</td><td class="mono">2025-02-05</td><td><span class="check-badge">Submitter</span></td></tr>
-                <tr><td><a href="#">Rahul Menon</a></td><td>MIT</td><td class="mono">2025-02-08</td><td>—</td></tr>
+                <tr data-submitter="true" data-author="true" data-proxy="false">
+                  <td class="col-check"><input type="checkbox" aria-label="Select Elena M. Vasquez"></td>
+                  <td class="col-ind">✓</td><td class="col-ind">✓</td><td class="col-ind no">—</td>
+                  <td><a href="#">Elena M. Vasquez</a></td><td>Institute for Advanced Study</td><td class="mono">2025-02-05</td>
+                </tr>
+                <tr data-submitter="false" data-author="true" data-proxy="false">
+                  <td class="col-check"><input type="checkbox" aria-label="Select Rahul Menon"></td>
+                  <td class="col-ind no">—</td><td class="col-ind">✓</td><td class="col-ind no">—</td>
+                  <td><a href="#">Rahul Menon</a></td><td>MIT</td><td class="mono">2025-02-08</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -830,6 +915,71 @@ select.control{appearance:none; -webkit-appearance:none;
   </aside>
 </div>
 
+<!-- ===== Add Owner modal — native <dialog> (top layer, no z-index per policy).
+     Step 1: type-ahead user search. Step 2: pick from results (mockup always returns the
+     same fabricated sample set — real search spans hundreds of thousands of accounts).
+     Step 3: Add appends the owner to the Paper owners table and closes the dialog. -->
+<dialog class="dlg" id="add-owner-dlg" aria-labelledby="add-owner-title">
+  <div class="dlg-head">
+    <h2 id="add-owner-title">Add paper owner</h2>
+    <button class="icon-btn" type="button" aria-label="Close dialog" onclick="closeAddOwner()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+  </div>
+  <div class="dlg-body">
+    <div class="field">
+      <label class="flabel" for="owner-search">Find user</label>
+      <div class="search-container">
+        <input class="combo-input" id="owner-search" type="search" placeholder="Type a name, username, or email…" autocomplete="off" oninput="ownerSearch(this.value)">
+      </div>
+      <p class="fhelp">Type-ahead across all arXiv accounts. This mockup always shows the same sample results.</p>
+    </div>
+    <div class="owner-results" id="owner-results" hidden>
+      <table class="ds-table">
+        <thead><tr>
+          <th class="col-check"><span class="sr-only">Select</span></th>
+          <th>ID</th><th>First name</th><th>Last name</th><th>Username</th><th>Email</th><th>Privileges</th>
+        </tr></thead>
+        <tbody>
+          <tr data-name="Priya Raghunathan" data-affil="University of Toronto">
+            <td class="col-check"><input type="radio" name="owner-pick" aria-label="Select Priya Raghunathan"></td>
+            <td class="mono">411208</td><td>Priya</td><td>Raghunathan</td><td class="mono">praghu</td>
+            <td class="mono">p.raghunathan@example.edu</td>
+            <td><span class="priv priv-owner">Owner</span></td>
+          </tr>
+          <tr data-name="Marcus Oyelaran" data-affil="Stellenbosch University">
+            <td class="col-check"><input type="radio" name="owner-pick" aria-label="Select Marcus Oyelaran"></td>
+            <td class="mono">285114</td><td>Marcus</td><td>Oyelaran</td><td class="mono">moyelaran</td>
+            <td class="mono">m.oyelaran@example.org</td>
+            <td><span class="priv priv-owner">Owner</span><span class="priv priv-mod">Moderator</span></td>
+          </tr>
+          <tr data-name="Ingrid Sørensen" data-affil="NORDITA">
+            <td class="col-check"><input type="radio" name="owner-pick" aria-label="Select Ingrid Sørensen"></td>
+            <td class="mono">530771</td><td>Ingrid</td><td>Sørensen</td><td class="mono">isorensen</td>
+            <td class="mono">ingrid.s@example.edu</td>
+            <td><span class="priv priv-editor">Editor</span></td>
+          </tr>
+          <tr data-name="Tomás Herrera" data-affil="Universidad de Chile">
+            <td class="col-check"><input type="radio" name="owner-pick" aria-label="Select Tomás Herrera"></td>
+            <td class="mono">198476</td><td>Tomás</td><td>Herrera</td><td class="mono">therrera</td>
+            <td class="mono">t.herrera@example.org</td>
+            <td><span class="priv priv-mod">Moderator</span></td>
+          </tr>
+          <tr data-name="Aiko Tanabe" data-affil="RIKEN">
+            <td class="col-check"><input type="radio" name="owner-pick" aria-label="Select Aiko Tanabe"></td>
+            <td class="mono">662390</td><td>Aiko</td><td>Tanabe</td><td class="mono">atanabe</td>
+            <td class="mono">a.tanabe@example.edu</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="results-note">Showing 5 of 214,306 matches — keep typing to narrow.</p>
+    </div>
+  </div>
+  <div class="dlg-actions">
+    <button class="btn btn-tertiary" type="button" onclick="closeAddOwner()">Cancel</button>
+    <button class="btn btn-primary" type="button" id="owner-add-btn" disabled onclick="confirmAddOwner()">Add</button>
+  </div>
+</dialog>
+
 <div class="toast" id="toast" hidden><span class="ok">&#10003;</span> <span id="toast-msg">Saved</span></div>
 
 <script>
@@ -920,6 +1070,93 @@ function setVersion(v){
   alert.hidden = (v===latest);
   if(v!==latest){ alert.querySelectorAll('.old-v-num').forEach(function(n){n.textContent=v;}); }
   return false;
+}
+
+/* ---- Paper owners: row selection + filter (counterpart of user-page Owned Papers) ---- */
+var ownersTable = document.getElementById('owners-table');
+var ownersSelectAll = document.getElementById('owners-select-all');
+
+function ownersUpdateSelection(){
+  var visible = ownersTable.querySelectorAll('tbody tr:not([hidden]) input[type="checkbox"]');
+  var checked = ownersTable.querySelectorAll('tbody tr:not([hidden]) input[type="checkbox"]:checked');
+  ['owners-btn-revoke','owners-btn-author','owners-btn-proxy'].forEach(function(id){
+    document.getElementById(id).disabled = checked.length === 0;
+  });
+  document.getElementById('owners-selected-count').textContent =
+    checked.length ? checked.length + ' selected' : '';
+  ownersSelectAll.checked = checked.length === visible.length && visible.length > 0;
+  ownersSelectAll.indeterminate = checked.length > 0 && checked.length < visible.length;
+}
+
+ownersSelectAll.addEventListener('change', function(){
+  ownersTable.querySelectorAll('tbody tr:not([hidden]) input[type="checkbox"]').forEach(function(cb){
+    cb.checked = ownersSelectAll.checked;
+  });
+  ownersUpdateSelection();
+});
+ownersTable.querySelector('tbody').addEventListener('change', ownersUpdateSelection);
+
+function filterOwners(){
+  var flag = document.getElementById('owners-filter').value;
+  ownersTable.querySelectorAll('tbody tr').forEach(function(tr){
+    var show = (flag === 'all') || (tr.dataset[flag] === 'true');
+    tr.hidden = !show;
+    if(!show){ tr.querySelector('input[type="checkbox"]').checked = false; }
+  });
+  ownersUpdateSelection();
+}
+
+/* ---- Add Owner modal: type-ahead → pick a result → Add appends to the table ---- */
+var addOwnerDlg = document.getElementById('add-owner-dlg');
+
+function openAddOwner(){
+  document.getElementById('owner-search').value = '';
+  document.getElementById('owner-results').hidden = true;
+  addOwnerDlg.querySelectorAll('.owner-results tbody tr').forEach(function(tr){
+    tr.classList.remove('selected');
+    tr.querySelector('input[type="radio"]').checked = false;
+  });
+  document.getElementById('owner-add-btn').disabled = true;
+  addOwnerDlg.showModal();
+  document.getElementById('owner-search').focus();
+}
+function closeAddOwner(){ addOwnerDlg.close(); }
+addOwnerDlg.addEventListener('click', function(e){ if(e.target === addOwnerDlg) addOwnerDlg.close(); });
+
+/* Mockup type-ahead: any query reveals the same fixed sample result set */
+function ownerSearch(q){
+  document.getElementById('owner-results').hidden = (q.trim() === '');
+}
+
+addOwnerDlg.querySelectorAll('.owner-results tbody tr').forEach(function(tr){
+  function pick(){
+    addOwnerDlg.querySelectorAll('.owner-results tbody tr').forEach(function(r){ r.classList.remove('selected'); });
+    tr.classList.add('selected');
+    tr.querySelector('input[type="radio"]').checked = true;
+    document.getElementById('owner-add-btn').disabled = false;
+  }
+  tr.addEventListener('click', pick);
+  tr.querySelector('input[type="radio"]').addEventListener('change', pick);
+});
+
+function confirmAddOwner(){
+  var sel = addOwnerDlg.querySelector('.owner-results tbody tr.selected');
+  if(!sel) return;
+  var name = sel.dataset.name;
+  var tr = document.createElement('tr');
+  tr.dataset.submitter = 'false'; tr.dataset.author = 'false'; tr.dataset.proxy = 'false';
+  tr.innerHTML =
+    '<td class="col-check"><input type="checkbox" aria-label="Select ' + name + '"></td>' +
+    '<td class="col-ind no">—</td><td class="col-ind no">—</td><td class="col-ind no">—</td>' +
+    '<td><a href="#">' + name + '</a></td><td>' + sel.dataset.affil + '</td><td class="mono">2026-07-31</td>';
+  ownersTable.querySelector('tbody').appendChild(tr);
+  var n = ownersTable.querySelectorAll('tbody tr').length;
+  document.getElementById('owners-count').textContent = '(' + n + ')';
+  /* Reset the filter so the newly added owner (no flags yet) is visible */
+  document.getElementById('owners-filter').value = 'all';
+  filterOwners();
+  addOwnerDlg.close();
+  toast('Owner added: ' + name);
 }
 
 /* ---- Save / toast ---- */
