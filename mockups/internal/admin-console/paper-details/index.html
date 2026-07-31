@@ -359,16 +359,8 @@ dialog.dlg::backdrop{background:rgba(28,26,23,.45);}
 .owner-results{margin-top:var(--space-4); overflow-x:auto;}
 .owner-results tbody td{cursor:pointer;}
 .owner-results tbody tr.selected td{background:var(--sec-bg);}
+.owner-results th.col-ind, .owner-results td.col-ind{padding-left:6px; padding-right:6px;}
 .results-note{font-size:12px; color:var(--grey); margin:var(--space-2) 0 0;}
-/* Privilege lozenges — replace arXiv Check's privilege icons; shape follows .type-badge.
-   Owner = .type-new blues, Moderator = .type-rep badge yellow (both from design-system.css),
-   Editor = light Access Lime tint per established convention in other internal tools. */
-.priv{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:11px; border-radius:3px;
-  padding:1px 6px; white-space:nowrap; border:1px solid transparent;}
-.priv + .priv{margin-left:var(--space-1);}
-.priv-owner{background:#d4e9ff; color:#1a3d78; border-color:#93c5fd;}
-.priv-mod{background:#fef3c7; color:#7a5c00; border-color:#fde68a;}
-.priv-editor{background:var(--sec-bg); color:var(--success-fg); border-color:var(--sec-border);}
 
 /* =================================================================
    Edit form
@@ -936,38 +928,39 @@ select.control{appearance:none; -webkit-appearance:none;
       <table class="ds-table">
         <thead><tr>
           <th class="col-check"><span class="sr-only">Select</span></th>
-          <th>ID</th><th>First name</th><th>Last name</th><th>Username</th><th>Email</th><th>Privileges</th>
+          <th>ID</th><th>First name</th><th>Last name</th><th>Username</th><th>Email</th>
+          <th class="col-ind">Editor</th><th class="col-ind">Owner</th><th class="col-ind" title="Moderator">Mod</th>
         </tr></thead>
         <tbody>
           <tr data-name="Priya Raghunathan" data-affil="University of Toronto">
             <td class="col-check"><input type="radio" name="owner-pick" aria-label="Select Priya Raghunathan"></td>
             <td class="mono">411208</td><td>Priya</td><td>Raghunathan</td><td class="mono">praghu</td>
             <td class="mono">p.raghunathan@example.edu</td>
-            <td><span class="priv priv-owner">Owner</span></td>
+            <td class="col-ind no">—</td><td class="col-ind">✓</td><td class="col-ind no">—</td>
           </tr>
           <tr data-name="Marcus Oyelaran" data-affil="Stellenbosch University">
             <td class="col-check"><input type="radio" name="owner-pick" aria-label="Select Marcus Oyelaran"></td>
             <td class="mono">285114</td><td>Marcus</td><td>Oyelaran</td><td class="mono">moyelaran</td>
             <td class="mono">m.oyelaran@example.org</td>
-            <td><span class="priv priv-owner">Owner</span><span class="priv priv-mod">Moderator</span></td>
+            <td class="col-ind no">—</td><td class="col-ind">✓</td><td class="col-ind">✓</td>
           </tr>
           <tr data-name="Ingrid Sørensen" data-affil="NORDITA">
             <td class="col-check"><input type="radio" name="owner-pick" aria-label="Select Ingrid Sørensen"></td>
             <td class="mono">530771</td><td>Ingrid</td><td>Sørensen</td><td class="mono">isorensen</td>
             <td class="mono">ingrid.s@example.edu</td>
-            <td><span class="priv priv-editor">Editor</span></td>
+            <td class="col-ind">✓</td><td class="col-ind no">—</td><td class="col-ind no">—</td>
           </tr>
           <tr data-name="Tomás Herrera" data-affil="Universidad de Chile">
             <td class="col-check"><input type="radio" name="owner-pick" aria-label="Select Tomás Herrera"></td>
             <td class="mono">198476</td><td>Tomás</td><td>Herrera</td><td class="mono">therrera</td>
             <td class="mono">t.herrera@example.org</td>
-            <td><span class="priv priv-mod">Moderator</span></td>
+            <td class="col-ind no">—</td><td class="col-ind no">—</td><td class="col-ind">✓</td>
           </tr>
           <tr data-name="Aiko Tanabe" data-affil="RIKEN">
             <td class="col-check"><input type="radio" name="owner-pick" aria-label="Select Aiko Tanabe"></td>
             <td class="mono">662390</td><td>Aiko</td><td>Tanabe</td><td class="mono">atanabe</td>
             <td class="mono">a.tanabe@example.edu</td>
-            <td>—</td>
+            <td class="col-ind no">—</td><td class="col-ind no">—</td><td class="col-ind no">—</td>
           </tr>
         </tbody>
       </table>
