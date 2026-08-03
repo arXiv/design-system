@@ -267,7 +267,7 @@
     <header class="page-header">
       <div class="page-header-text">
         <h1>arXiv Card Styles — Component Reference</h1>
-        <p>The dark info card is a read-only metadata panel for displaying system-supplied context (user identity, submission details, IP/date stamps). Its dark charcoal surface creates a deliberate visual boundary from editable content areas.</p>
+        <p>The info card is a read-only metadata panel for displaying system-supplied context (user identity, submission details, IP/date stamps). In light mode it renders as a warm tinted panel with a lime top border; in dark mode it takes the charcoal treatment shown below. Either way its filled surface creates a deliberate visual boundary from editable content areas.</p>
       </div>
       <div class="theme-toggle" role="group" aria-label="Color scheme">
         <button class="theme-toggle-btn" id="toggle-light" type="button">☀ Light</button>
@@ -317,7 +317,7 @@
               </div>
               <div class="info-card-row">
                 <span class="info-label">arXiv ID</span>
-                <span class="info-value" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px;">2311.04082</span>
+                <span class="info-value">2311.04082</span>
               </div>
               <div class="info-card-row">
                 <span class="info-label">Submitted</span>
@@ -387,7 +387,10 @@
     <!-- ── Color Values ───────────────────────────────────────── -->
     <section class="section">
       <h2 class="section-title">Color Values</h2>
-      <p class="section-desc">The dark card uses hardcoded values rather than global tokens — the palette is intentionally self-contained and only valid on the dark surface.</p>
+      <p class="section-desc"><strong>These are the dark-mode values</strong> (applied under <code>html:not([data-theme="light"])</code>).
+      In light mode <code>.info-card</code> uses the tokens in <code>design-system.css</code>: <code>#e8e4dc</code> background with a
+      4px <code>#c4d82e</code> top border, labels <code>var(--grey)</code>, values <code>#1c1a17</code>, links <code>var(--link)</code>.
+      The dark palette below is hardcoded rather than tokenized — intentionally self-contained and only valid on the dark surface.</p>
 
       <table class="token-table">
         <thead>
@@ -411,7 +414,7 @@
           <tr>
             <td>Label</td>
             <td><span class="swatch-row"><span class="swatch" style="background:#cbcdac; border-color:rgba(0,0,0,0.15);"></span><code>#cbcdac</code></span></td>
-            <td>Field name — sage-green tint, ~6.4:1 on card bg ✓</td>
+            <td>Field name — sage-green tint, ~8.6:1 on card bg ✓</td>
           </tr>
           <tr>
             <td>Value</td>
@@ -446,7 +449,7 @@
         <li><strong>Editable content uses a different container.</strong> When a group of <em>editable</em> fields needs a boundary, use a neutral <em>section card</em> — a white panel with a 1px <code>#ddd8d2</code> hairline and an 8px radius (warm border grey — the internal stylesheet defines no border token; the public system names this value <code>--arxiv-border-light</code>) — not the <code>.info-card</code>. Keeping the two visually distinct is deliberate: a filled/tinted surface reads as read-only system context; a plain bordered panel reads as "you can edit this."</li>
         <li><strong>Sidebar placement.</strong> Use at a fixed 240px width in a flex sidebar alongside the main content area. The contrast between the dark card and the warm-wash page background creates the visual hierarchy.</li>
         <li><strong>Links in the card.</strong> Use <code>.info-link</code> on values that navigate to a related record (user profile, submission detail). Limit links to navigational items — do not use them for inline actions.</li>
-        <li><strong>Monospace IDs.</strong> For arXiv IDs or other identifiers, apply <code>font-family: "IBM Plex Mono"</code> and <code>font-size: 12px</code> directly on the <code>.info-value</code> element inline. There is no separate class for this since it is an occasional override.</li>
+        <li><strong>Monospace IDs.</strong> <code>.info-value</code> already renders in IBM Plex Mono at 12px for every value ("monospace signals read-only system data") — arXiv IDs need no override.</li>
         <li><strong>Row count.</strong> 2–6 rows is the intended range. If more fields are needed, consider grouping into two separate cards or a different layout rather than a very tall single card.</li>
         <li><strong>Accessibility.</strong> Always add <code>role="region"</code> and <code>aria-label</code> on the <code>.info-card</code> container so screen readers can navigate directly to it.</li>
       </ul>

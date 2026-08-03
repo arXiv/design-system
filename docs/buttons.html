@@ -352,11 +352,11 @@
       <tbody>
         <tr><td>Border radius</td><td>6px — buttons, icon buttons, segmented controls</td></tr>
         <tr><td>Padding</td><td>10px 20px (standard buttons)</td></tr>
-        <tr><td>Rest shadow</td><td><code>0 1px 2px rgba(0,0,0,0.08)</code>; none on tertiary/text-only</td></tr>
+        <tr><td>Rest shadow</td><td>internal <code>0 1px 2px rgba(0,0,0,0.08)</code>; public <code>0 1px 3px</code> (0.12 primary, 0.08 secondary); none on tertiary/text-only</td></tr>
         <tr><td>Press effect</td><td><code>transform: translateY(1px)</code> + shadow removed on <code>:active</code></td></tr>
         <tr><td>Transitions</td><td>0.12s background/border/color/shadow · 0.08s transform</td></tr>
         <tr><td>Focus ring</td><td><code>outline: 3px solid var(--focus-ring)</code> (internal) / <code>var(--arxiv-focus-ring)</code> (public — the token name differs per surface), 2px offset, <code>:focus-visible</code> only</td></tr>
-        <tr><td>Disabled</td><td><code>cursor: not-allowed</code>, reduced-contrast fills (WCAG-exempt)</td></tr>
+        <tr><td>Disabled</td><td><code>cursor: not-allowed</code>, reduced-contrast fills (WCAG-exempt) — implemented for internal <code>.btn*</code>; public <code>.ds-btn</code> disabled styles are not yet defined in the stylesheet</td></tr>
       </tbody>
     </table>
   </section>
@@ -365,7 +365,7 @@
   <section class="section">
     <h2 class="section-title">Accessibility notes</h2>
     <ul class="notes">
-      <li><strong>Contrast.</strong> Ink on Open Blue <code>#a5d6fe</code> and ink on Access Lime <code>#c4d82e</code> both pass AA for normal text. White on danger <code>#c62828</code> is 5.17:1 ✓. Bottom border-gradient stops pass the 3:1 UI-component minimum against their surfaces.</li>
+      <li><strong>Contrast.</strong> Ink on Open Blue <code>#a5d6fe</code> and ink on Access Lime <code>#c4d82e</code> both pass AA for normal text. White on danger <code>#c62828</code> is 5.17:1 ✓. Bottom border-gradient <em>hover</em> stops pass the 3:1 UI-component minimum (3.89 / 3.61); the rest-state stops sit below it and are decorative — the button's fill and border carry the boundary at rest.</li>
       <li><strong>Focus.</strong> <code>:focus-visible</code>, never <code>:focus</code> — the ring shows on keyboard nav only.</li>
       <li><strong>Not color alone.</strong> Hover changes fill AND border AND vignette; press changes position AND shadow (WCAG 1.4.1).</li>
       <li><strong>Target size.</strong> Standard padding yields ~37px-tall buttons — above the 24×24 hard floor (WCAG 2.2 SC 2.5.8); aim for 44×44 on touch-primary surfaces.</li>
