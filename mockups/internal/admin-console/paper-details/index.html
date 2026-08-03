@@ -138,6 +138,9 @@ h1,h2,h3{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif;}
 .ds-alert a{color:inherit; font-weight:600;}
 .ds-alert-info{background:var(--info-bg); border-color:var(--info-border); color:var(--info-fg);}
 .ds-alert-warning{background:var(--warning-bg); border-color:var(--warning-border); color:var(--warning-fg);}
+/* Header alert slot — breathing room from the action row above; stacked alerts share
+   one collapsed 16px gap, and the section label's larger top margin wins below. */
+#replacement-alert, #old-version-alert{margin:var(--space-4) 0;}
 
 /* =================================================================
    Shell — top app bar + right sidebar
@@ -581,14 +584,14 @@ select.control{appearance:none; -webkit-appearance:none;
       <!-- Active replacement notice — in production this shows only while the author has an
            unannounced replacement submission open; static here to demo the state. Warning
            yellow, not danger red: attention-getting, but nothing is wrong. -->
-      <div id="replacement-alert" class="ds-alert ds-alert-warning" style="margin-bottom:16px">
+      <div id="replacement-alert" class="ds-alert ds-alert-warning">
         <svg viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
         <div><p class="ds-alert-title">Replacement in progress</p>
         <p><a href="#">Click here to view the replacement in progress</a>.</p></div>
       </div>
 
       <!-- Older-version warning (shown only when not viewing current) -->
-      <div id="old-version-alert" class="ds-alert ds-alert-warning" style="margin-bottom:16px" hidden>
+      <div id="old-version-alert" class="ds-alert ds-alert-warning" hidden>
         <svg viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
         <div><p class="ds-alert-title">Viewing an older version</p>
         <p>You are viewing <strong>v<span class="old-v-num">1</span></strong>. The current version is v2.</p></div>
