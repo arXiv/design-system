@@ -127,6 +127,8 @@ All font files are self-hosted as woff2 from arXiv's static assets directory. No
   STIXTwoMath-Regular.woff2       ← already self-hosted
 ```
 
+**This repo's docs pages** serve the same files (minus STIX — no math on pattern pages) from `docs/fonts/`, declared in [`docs/fonts.css`](fonts.css), which every pattern page links ahead of its design-system.css. The @font-face rules live in that separate stylesheet — not in the two design-system.css files — because consumers bundle those with their own font paths. Files copied from [IBM/plex](https://github.com/IBM/plex) (OFL).
+
 ### @font-face declarations
 
 ```css
