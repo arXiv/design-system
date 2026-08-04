@@ -30,7 +30,8 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Alerts, status & feedback messages | `docs/alerts.html`, then `docs/public/alert-styles.html` or `docs/internal/alert-styles.html` | `.ds-alert*` — never rebuild its chrome |
 | Cards, rails, accordions, page organization | `docs/organizing-content.html` | `.ds-acc*`, card conventions, dl row grammar |
 | Links | `docs/public/link-styles.html` or `docs/internal/link-styles.html` | link tokens; inline links underlined |
-| Tables (internal tools) | `docs/internal/table-styles.html` | `.ds-table`, sortable headers, `.ds-filter` |
+| Tables (internal tools), row selection, bulk actions | `docs/internal/table-styles.html` | `.ds-table`, sortable headers, `.ds-filter`; bulk-bar + selection rules documented there |
+| One record's details (label + value panel) | `docs/organizing-content.html` §"Card, table, or metadata panel?" | metadata-panel rules: `<dl>`, spacing-first, tint variants |
 | Forms, validation | `docs/internal/form-styles.html` + DESIGN-POLICIES a11y rules | `.is-invalid`, `.field-*`, segmented controls |
 | Version display | `docs/version-display.html` | inline version links + `.ds-alert` warning |
 | Site header / footer | `docs/public/header-styles.html`, `docs/public/footer-styles.html`, `docs/public/reader-header-styles.html` | `.ds-site-header`, `.ds-site-footer`, `.ds-reader-header` — never hand-build chrome or draw logos from text |
