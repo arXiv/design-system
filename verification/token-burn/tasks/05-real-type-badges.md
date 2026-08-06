@@ -10,3 +10,8 @@ Deliverable: a demo/reference page at `docs/internal/type-badge-styles.html` tha
 If the badge styles already exist somewhere in the repo's CSS, reuse them; if they are only partially defined, complete them consistently with how they are described and used. Do not invent new badge types.
 
 Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
+
+---
+Scope and output rules (battery v2):
+- Render ONLY what this task asks for. Stage it inside a plain neutral shell (a simple grey placeholder frame is fine); do NOT build site chrome — headers, footers, sidebars, logos — unless the task explicitly asks for them.
+- Your final message: at most 10 short bullet lines.

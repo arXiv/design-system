@@ -38,6 +38,17 @@ The `--variant/--repo-dir` form tests an alternate repo structure (e.g. a
 specs-only digest) with the same battery — that comparison is the controlled
 experiment for whether the rationale prose earns its token cost.
 
+## Battery v2 (2026-08-06)
+
+Task specs now carry scope framing (component-only, neutral shell, no site
+chrome) and final-message caps; the review page is plain monospace (harness
+chrome can never be mistaken for design-system styling), shows each artifact
+beside its canonical pattern page, and an agent text pass (`report.py
+textpass <run>`) reads final messages against rubrics so the designer only
+judges visuals. Comparisons across the v1/v2 boundary (runs before
+2026-08-06) are confounded by these prompt changes — compare within a
+battery version.
+
 ## Reviewing
 
 Open `runs/<stamp>-<variant>/review.html` (or `runs/index.html`). Each cell

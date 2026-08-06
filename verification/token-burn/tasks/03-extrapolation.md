@@ -16,3 +16,8 @@ Design questions you must answer (there is no spec — decide and justify):
 Deliverable: a demo HTML page at `docs/public/withdrawn-notice-styles.html` showing your treatment in context (a realistic abstract-page fragment), plus — as the top section of that page — a short written rationale connecting each major decision you made to the specific guidance in this repo that motivated it.
 
 Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, restate your design rationale as your final message.
+
+---
+Scope and output rules (battery v2):
+- Render ONLY what this task asks for. Stage it inside a plain neutral shell (a simple grey placeholder frame is fine); do NOT build site chrome — headers, footers, sidebars, logos — unless the task explicitly asks for them.
+- Your final message: at most 10 short bullet lines.

@@ -13,3 +13,8 @@ Deliverables:
 2. A demo/reference HTML page at `docs/public/artifact-links-styles.html` showing the card's states and variants, following the structure of the existing reference pages.
 
 Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
+
+---
+Scope and output rules (battery v2):
+- Render ONLY what this task asks for. Stage it inside a plain neutral shell (a simple grey placeholder frame is fine); do NOT build site chrome — headers, footers, sidebars, logos — unless the task explicitly asks for them.
+- Your final message: at most 10 short bullet lines.

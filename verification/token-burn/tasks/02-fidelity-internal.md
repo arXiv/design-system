@@ -10,3 +10,8 @@ The arXiv Check moderation team needs a **bulk-action bar** for the moderation q
 Deliverable: a single demo HTML page at `docs/internal/bulk-action-styles.html` that renders the bar in its states (nothing selected / selection active / success / failure), reusing this repo's existing components and styles wherever they already exist rather than inventing new ones. Page-specific glue CSS may live in the page's own style block per repo convention.
 
 Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
+
+---
+Scope and output rules (battery v2):
+- Render ONLY what this task asks for. Stage it inside a plain neutral shell (a simple grey placeholder frame is fine); do NOT build site chrome — headers, footers, sidebars, logos — unless the task explicitly asks for them.
+- Your final message: at most 10 short bullet lines.

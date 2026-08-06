@@ -83,6 +83,8 @@ for task in "${TASKS[@]}"; do
   done
 done
 
+python3 "$HERE/report.py" textpass "$RUN_DIR" >> "$LOG" 2>&1 \
+  || say "WARNING: text pass failed (review page will show raw messages)"
 python3 "$HERE/report.py" report "$RUN_DIR" >> "$LOG" 2>&1
 python3 "$HERE/report.py" index "$HERE/runs" >> "$LOG" 2>&1
 say "review page: $RUN_DIR/review.html"

@@ -1,46 +1,55 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>20260729-105246-post-reorg — token-burn review</title><style>
-body{font-family:-apple-system,'Segoe UI',sans-serif;margin:0;background:#f9f7f7;color:#1c1a17;font-size:14px;line-height:1.5}
-.page{max-width:1100px;margin:0 auto;padding:24px 24px 80px}
-h1{font-size:22px;border-bottom:3px solid #a5d6fe;padding-bottom:12px}
-.cell{background:#fff;border:1px solid #ddd8d2;border-radius:8px;margin:20px 0;padding:18px 20px}
-.cell h2{font-size:16px;margin:0 0 10px}
-table.mx{border-collapse:collapse;font-size:12.5px;margin:8px 0}
-table.mx td,table.mx th{border:1px solid #e0dbd7;padding:3px 10px;text-align:left}
-table.mx th{background:#f0eeec;font-weight:600}
-.flag{background:#fdeaea;border:1px solid #c62828;color:#8b0000;border-radius:4px;padding:6px 10px;font-size:12.5px;margin:6px 0}
-.softflag{background:#fff8e1;border:1px solid #e8b800;color:#7a5c00;border-radius:4px;padding:6px 10px;font-size:12.5px;margin:6px 0}
-details{margin:8px 0}summary{cursor:pointer;font-weight:600;font-size:13px}
-pre{background:#f0eeec;border-radius:6px;padding:10px 12px;font-size:12px;overflow-x:auto;white-space:pre-wrap}
-iframe{width:100%;height:520px;border:1px solid #ddd8d2;border-radius:6px;background:#fff}
-.grade{margin-top:10px;padding-top:10px;border-top:1px dashed #ddd8d2;font-size:13px}
-.grade textarea{width:100%;min-height:40px;font:inherit;margin-top:6px}
-.toolbar{margin:16px 0}.toolbar button{font:inherit;padding:6px 14px;border-radius:6px;border:1.5px solid #6b6459;background:#fff;cursor:pointer}
-a{color:#1565c0}
+body{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;margin:0;background:#fff;color:#222;font-size:13px;line-height:1.5}
+.page{max-width:1240px;margin:0 auto;padding:16px 20px 80px}
+h1{font-size:16px;font-weight:700;border-bottom:2px solid #222;padding-bottom:8px}
+.progress{position:sticky;top:0;background:#fff;border-bottom:1px solid #999;padding:8px 0;z-index:10;display:flex;gap:16px;align-items:center}
+.progress button{font:inherit;padding:4px 12px;border:1.5px solid #222;background:#fff;cursor:pointer}
+.progress button:hover{background:#eee}
+.cell{border:1px solid #999;margin:24px 0;padding:0}
+.cell-head{background:#f4f4f4;border-bottom:1px solid #999;padding:8px 12px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.cell-head strong{font-size:14px}
+.grade label{margin-right:8px;cursor:pointer}
+.grade textarea{width:100%;font:inherit;font-size:12px;margin-top:6px;min-height:34px;border:1px solid #999}
+.tp{padding:8px 12px;border-bottom:1px dashed #bbb;background:#fafafa}
+.tp .flag{color:#a00}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.compare>div{min-width:0}
+.compare .pane-label{padding:4px 12px;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#555;border-bottom:1px solid #ddd}
+.compare iframe{width:100%;height:560px;border:0;border-right:1px solid #ddd;background:#fff}
+.compare>div:last-child iframe{border-right:0}
+.norefer{padding:24px 12px;color:#555}
+details{margin:0;border-top:1px dashed #bbb}
+summary{cursor:pointer;padding:6px 12px;background:#fafafa;font-size:12px}
+pre{margin:0;padding:10px 12px;font-size:12px;overflow-x:auto;white-space:pre-wrap;background:#fff}
+.autoflag{color:#a00;padding:6px 12px;border-bottom:1px dashed #bbb}
+a{color:#04c}
 </style></head>
-<body><div class="page"><h1>Token-burn review — 20260729-105246-post-reorg</h1>
-<p>Grade each cell below (saved in your browser). Rubrics live in
-<code>verification/token-burn/rubrics/</code>. When done, export your grades and
-paste them back to Claude.</p>
-<div class="toolbar"><button onclick="exportGrades()">Export grades</button>
-<textarea id="export-out" style="display:none;width:100%;min-height:120px"></textarea></div>
-<div class="cell" data-cell="01-fidelity-build-r1"><h2>01-fidelity-build-r1</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>17</td></tr><tr><th>output tokens</th><td>52538</td></tr><tr><th>cache read</th><td>1095955</td></tr><tr><th>cache write</th><td>117112</td></tr><tr><th>cost (USD)</th><td>1.8205274999999999</td></tr><tr><th>turns</th><td>17</td></tr><tr><th>wall time</th><td>805s</td></tr><tr><th>files read</th><td>8 calls · 8 unique · 0 re-reads</td></tr><tr><th>tool calls</th><td>Bash×5, Edit×2, Read×8, Write×1</td></tr><tr><th>artifacts</th><td>3</td></tr></table><div class="softflag">hexes not in the known palette list in <code>docs/public/artifact-links-styles.html</code> (check manually): #ccc</div><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
-
-Build a new public-side pattern: a **&quot;Dataset &amp; code links&quot; card** for the abstract page. Product context: papers increasingly ship with datasets and code repositories, and readers asked for one obvious place to find them. Requirements from the product owner:
-
-- A card that lists a paper&#x27;s external research artifacts (datasets, code repositories, supplementary material), each row showing: an artifact label (e.g. &quot;Training data&quot;), the destination (e.g. &quot;Zenodo&quot;, &quot;GitHub&quot;), and the link itself.
-- The card appears on public abstract pages. It must read as browsable supplementary material, not as a primary call to action.
-- Rows must clearly signal they lead off-site.
-- It must work with 1 artifact and with 12 artifacts without breaking the page (decide and document how many rows show before any overflow handling kicks in, and what that handling is).
-- Include hover and keyboard-focus treatment for the rows.
-
-Deliverables:
-1. The component CSS added where this repo says shared public components belong, following the repo&#x27;s conventions for naming, tokens, and documentation.
-2. A demo/reference HTML page at `docs/public/artifact-links-styles.html` showing the card&#x27;s states and variants, following the structure of the existing reference pages.
-
-Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
-</pre></details><details open><summary>Agent's final message</summary><pre>Everything is in place. Here is a summary of what was built and every design-system rule applied:
+<body><div class="page"><h1>token-burn review — 20260729-105246-post-reorg</h1>
+<div class="progress"><span id="tally">graded 0 / 10</span>
+<button onclick="exportGrades()">Export grades</button>
+<span>grade each cell; left pane = what the agent built, right pane = the canonical page it should match</span></div>
+<textarea id="export-out" style="display:none;width:100%;min-height:120px;font:inherit"></textarea>
+<div class="cell" data-cell="01-fidelity-build-r1"><div class="cell-head"><strong>01-fidelity-build-r1</strong>
+      <span class="grade">
+        <label><input type="radio" name="g-01-fidelity-build-r1" value="pass" onchange="save('01-fidelity-build-r1')"> pass</label>
+        <label><input type="radio" name="g-01-fidelity-build-r1" value="minor" onchange="save('01-fidelity-build-r1')"> minor</label>
+        <label><input type="radio" name="g-01-fidelity-build-r1" value="fail" onchange="save('01-fidelity-build-r1')"> fail</label>
+      </span></div><div class="tp">Agent built `.ds-artifact-links` CSS and demo page using `&lt;details&gt;` disclosure-with-count for overflow and token-only palette, but does not address the underline rule for link rows.<div class="flag">⚑ Underline treatment on artifact link rows never mentioned — rubric lists it as a hard constraint</div><div class="flag">⚑ No explicit statement that no external fonts are loaded (only implied by token usage)</div></div><div class="autoflag">off-palette in docs/public/artifact-links-styles.html: #ccc</div><div class="compare">
+          <div><div class="pane-label">agent built — artifact-links-styles.html</div>
+            <iframe src="01-fidelity-build-r1/artifacts/docs/public/artifact-links-styles.html" loading="lazy"></iframe></div>
+          <div><div class="pane-label">canonical — docs/organizing-content.html (cards + row grammar)</div><iframe src="../../../../docs/organizing-content.html" loading="lazy"></iframe></div>
+        </div><div style="padding:8px 12px"><textarea id="n-01-fidelity-build-r1" class="grade-notes"
+      placeholder="notes…" onblur="save('01-fidelity-build-r1')" style="width:100%;font:inherit;font-size:12px;min-height:36px;border:1px solid #999"></textarea></div><details><summary>machine detail — model claude-sonnet-4-6 · cost $1.8205274999999999 · turns 17 · wall 805s · reads 8 (8 unique) · out 52538 tok</summary><pre>files read, in order:
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/color-mapping.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/public/link-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/organizing-content.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/public/README.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/public/alert-styles.html</pre><pre>artifacts: <a href="01-fidelity-build-r1/artifacts/docs/public/README.md">docs/public/README.md</a> · <a href="01-fidelity-build-r1/artifacts/docs/public/artifact-links-styles.html">docs/public/artifact-links-styles.html</a> · <a href="01-fidelity-build-r1/artifacts/docs/public/design-system.css">docs/public/design-system.css</a></pre></details><details><summary>agent final message (the text pass already read this)</summary><pre>Everything is in place. Here is a summary of what was built and every design-system rule applied:
 
 ---
 
@@ -84,19 +93,7 @@ Do not run git commands, do not start servers, and do not modify files unrelated
 
 **Light-only, `data-theme=&quot;light&quot;`.** The demo page sets `&lt;html lang=&quot;en&quot; data-theme=&quot;light&quot;&gt;` per AGENTS.md. No dark-mode token overrides are added to the component — consistent with the accordion, which also ships light-only.
 
-**Demo page structure.** Rendered demos first (states, 1-row, 8-row, 12-row with closed and open overflow pre-rendered), then token table, then usage callouts — the &quot;example-first&quot; pattern required by AGENTS.md.</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/AGENTS.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/DESIGN-POLICIES.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/public/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/color-mapping.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/public/link-styles.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/organizing-content.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/public/README.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-dDoOna/repo/docs/public/alert-styles.html</pre></details><p>Artifacts: <a href="01-fidelity-build-r1/artifacts/docs/public/README.md">docs/public/README.md</a> · <a href="01-fidelity-build-r1/artifacts/docs/public/artifact-links-styles.html">docs/public/artifact-links-styles.html</a> · <a href="01-fidelity-build-r1/artifacts/docs/public/design-system.css">docs/public/design-system.css</a></p><iframe src="01-fidelity-build-r1/artifacts/docs/public/artifact-links-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
-      <label><input type="radio" name="g-01-fidelity-build-r1" value="pass" onchange="save('01-fidelity-build-r1')"> pass</label>
-      <label><input type="radio" name="g-01-fidelity-build-r1" value="minor" onchange="save('01-fidelity-build-r1')"> minor issues</label>
-      <label><input type="radio" name="g-01-fidelity-build-r1" value="fail" onchange="save('01-fidelity-build-r1')"> fail</label>
-      <textarea id="n-01-fidelity-build-r1" placeholder="notes…" onblur="save('01-fidelity-build-r1')"></textarea>
-    </div></div><div class="cell" data-cell="01-fidelity-build-r2"><h2>01-fidelity-build-r2</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>16</td></tr><tr><th>output tokens</th><td>35936</td></tr><tr><th>cache read</th><td>1071719</td></tr><tr><th>cache write</th><td>104544</td></tr><tr><th>cost (USD)</th><td>1.4888157</td></tr><tr><th>turns</th><td>19</td></tr><tr><th>wall time</th><td>593s</td></tr><tr><th>files read</th><td>12 calls · 7 unique · 5 re-reads</td></tr><tr><th>tool calls</th><td>Bash×3, Edit×2, Read×12, Write×1</td></tr><tr><th>artifacts</th><td>2</td></tr></table><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+**Demo page structure.** Rendered demos first (states, 1-row, 8-row, 12-row with closed and open overflow pre-rendered), then token table, then usage callouts — the &quot;example-first&quot; pattern required by AGENTS.md.</pre></details><details><summary>task prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
 
 Build a new public-side pattern: a **&quot;Dataset &amp; code links&quot; card** for the abstract page. Product context: papers increasingly ship with datasets and code repositories, and readers asked for one obvious place to find them. Requirements from the product owner:
 
@@ -111,7 +108,29 @@ Deliverables:
 2. A demo/reference HTML page at `docs/public/artifact-links-styles.html` showing the card&#x27;s states and variants, following the structure of the existing reference pages.
 
 Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
-</pre></details><details open><summary>Agent's final message</summary><pre>Everything is in place. Here is a complete summary of what was built and every design-system rule applied.
+</pre></details></div><div class="cell" data-cell="01-fidelity-build-r2"><div class="cell-head"><strong>01-fidelity-build-r2</strong>
+      <span class="grade">
+        <label><input type="radio" name="g-01-fidelity-build-r2" value="pass" onchange="save('01-fidelity-build-r2')"> pass</label>
+        <label><input type="radio" name="g-01-fidelity-build-r2" value="minor" onchange="save('01-fidelity-build-r2')"> minor</label>
+        <label><input type="radio" name="g-01-fidelity-build-r2" value="fail" onchange="save('01-fidelity-build-r2')"> fail</label>
+      </span></div><div class="tp">Agent built the artifact-links card using internal scroll with half-item peek rather than the policy-preferred `&lt;details&gt;` disclosure-with-count, justifying it as a documented fallback without strong reasoning.<div class="flag">⚑ Chose scroll overflow over policy-preferred disclosure-with-count; fallback justification (adds friction) is weak given `&lt;details&gt;` is zero-JS</div><div class="flag">⚑ `tabindex=0` on the scrollable `&lt;ul&gt;` introduces an unexpected keyboard stop inside a list container</div></div><div class="compare">
+          <div><div class="pane-label">agent built — artifact-links-styles.html</div>
+            <iframe src="01-fidelity-build-r2/artifacts/docs/public/artifact-links-styles.html" loading="lazy"></iframe></div>
+          <div><div class="pane-label">canonical — docs/organizing-content.html (cards + row grammar)</div><iframe src="../../../../docs/organizing-content.html" loading="lazy"></iframe></div>
+        </div><div style="padding:8px 12px"><textarea id="n-01-fidelity-build-r2" class="grade-notes"
+      placeholder="notes…" onblur="save('01-fidelity-build-r2')" style="width:100%;font:inherit;font-size:12px;min-height:36px;border:1px solid #999"></textarea></div><details><summary>machine detail — model claude-sonnet-4-6 · cost $1.4888157 · turns 19 · wall 593s · reads 12 (7 unique) · out 35936 tok</summary><pre>files read, in order:
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/organizing-content.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/alert-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/color-mapping.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/link-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css</pre><pre>artifacts: <a href="01-fidelity-build-r2/artifacts/docs/public/artifact-links-styles.html">docs/public/artifact-links-styles.html</a> · <a href="01-fidelity-build-r2/artifacts/docs/public/design-system.css">docs/public/design-system.css</a></pre></details><details><summary>agent final message (the text pass already read this)</summary><pre>Everything is in place. Here is a complete summary of what was built and every design-system rule applied.
 
 ---
 
@@ -164,35 +183,39 @@ Four sections: single artifact, multi-artifact (4 rows), overflow (12 rows with 
 - **No sticky chrome** — the card is static content; no z-index or sticky positioning introduced.
 - **External links use `rel=&quot;noopener noreferrer&quot;`** — documented in callout and in all demo markup.
 - **`target=&quot;_blank&quot;` links get sr-only annotation** — `.is-sr-only &quot;(opens in new tab)&quot;` inside each `&lt;a&gt;`, following the footer pattern established in the site footer component.
-- **Heading level note** — a callout in the demo warns consumers to set the heading level (`h2`/`h3`) to fit the surrounding outline; the example uses `&lt;h2&gt;` as a default but labels it explicitly.</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/AGENTS.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/DESIGN-POLICIES.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/organizing-content.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/alert-styles.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/color-mapping.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/link-styles.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-gBOcV0/repo/docs/public/design-system.css</pre></details><p>Artifacts: <a href="01-fidelity-build-r2/artifacts/docs/public/artifact-links-styles.html">docs/public/artifact-links-styles.html</a> · <a href="01-fidelity-build-r2/artifacts/docs/public/design-system.css">docs/public/design-system.css</a></p><iframe src="01-fidelity-build-r2/artifacts/docs/public/artifact-links-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
-      <label><input type="radio" name="g-01-fidelity-build-r2" value="pass" onchange="save('01-fidelity-build-r2')"> pass</label>
-      <label><input type="radio" name="g-01-fidelity-build-r2" value="minor" onchange="save('01-fidelity-build-r2')"> minor issues</label>
-      <label><input type="radio" name="g-01-fidelity-build-r2" value="fail" onchange="save('01-fidelity-build-r2')"> fail</label>
-      <textarea id="n-01-fidelity-build-r2" placeholder="notes…" onblur="save('01-fidelity-build-r2')"></textarea>
-    </div></div><div class="cell" data-cell="02-fidelity-internal-r1"><h2>02-fidelity-internal-r1</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>13</td></tr><tr><th>output tokens</th><td>56081</td></tr><tr><th>cache read</th><td>405096</td></tr><tr><th>cache write</th><td>60742</td></tr><tr><th>cost (USD)</th><td>1.3281618</td></tr><tr><th>turns</th><td>11</td></tr><tr><th>wall time</th><td>2115s</td></tr><tr><th>files read</th><td>7 calls · 7 unique · 0 re-reads</td></tr><tr><th>tool calls</th><td>Bash×2, Read×7, Write×1</td></tr><tr><th>artifacts</th><td>1</td></tr></table><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+- **Heading level note** — a callout in the demo warns consumers to set the heading level (`h2`/`h3`) to fit the surrounding outline; the example uses `&lt;h2&gt;` as a default but labels it explicitly.</pre></details><details><summary>task prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
 
-The arXiv Check moderation team needs a **bulk-action bar** for the moderation queue: when a moderator selects one or more submissions in the queue table, a bar appears offering actions on the selection. Requirements from the tool&#x27;s product owner:
+Build a new public-side pattern: a **&quot;Dataset &amp; code links&quot; card** for the abstract page. Product context: papers increasingly ship with datasets and code repositories, and readers asked for one obvious place to find them. Requirements from the product owner:
 
-- Shows the selection count (&quot;3 submissions selected&quot;) and a &quot;Clear selection&quot; affordance.
-- Three actions: **Approve selected** (the common, safe action), **Put on hold** (neutral), and **Remove selected** (destructive — moderators occasionally fat-finger this, so treat it accordingly).
-- The bar sits directly above the queue table and must be visually connected to it.
-- Must include a message state for when an action completes (&quot;3 submissions approved&quot;) and one for when an action fails.
+- A card that lists a paper&#x27;s external research artifacts (datasets, code repositories, supplementary material), each row showing: an artifact label (e.g. &quot;Training data&quot;), the destination (e.g. &quot;Zenodo&quot;, &quot;GitHub&quot;), and the link itself.
+- The card appears on public abstract pages. It must read as browsable supplementary material, not as a primary call to action.
+- Rows must clearly signal they lead off-site.
+- It must work with 1 artifact and with 12 artifacts without breaking the page (decide and document how many rows show before any overflow handling kicks in, and what that handling is).
+- Include hover and keyboard-focus treatment for the rows.
 
-Deliverable: a single demo HTML page at `docs/internal/bulk-action-styles.html` that renders the bar in its states (nothing selected / selection active / success / failure), reusing this repo&#x27;s existing components and styles wherever they already exist rather than inventing new ones. Page-specific glue CSS may live in the page&#x27;s own style block per repo convention.
+Deliverables:
+1. The component CSS added where this repo says shared public components belong, following the repo&#x27;s conventions for naming, tokens, and documentation.
+2. A demo/reference HTML page at `docs/public/artifact-links-styles.html` showing the card&#x27;s states and variants, following the structure of the existing reference pages.
 
 Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
-</pre></details><details open><summary>Agent's final message</summary><pre>Done. Here&#x27;s what was built and every design-system rule applied:
+</pre></details></div><div class="cell" data-cell="02-fidelity-internal-r1"><div class="cell-head"><strong>02-fidelity-internal-r1</strong>
+      <span class="grade">
+        <label><input type="radio" name="g-02-fidelity-internal-r1" value="pass" onchange="save('02-fidelity-internal-r1')"> pass</label>
+        <label><input type="radio" name="g-02-fidelity-internal-r1" value="minor" onchange="save('02-fidelity-internal-r1')"> minor</label>
+        <label><input type="radio" name="g-02-fidelity-internal-r1" value="fail" onchange="save('02-fidelity-internal-r1')"> fail</label>
+      </span></div><div class="tp">Agent built a five-state bulk-action bar with lime primary and a destructive confirm step, but wires success/failure to raw alert token variables instead of the `.ds-alert` component classes, and uses `system-ui` fonts instead of IBM Plex.<div class="flag">⚑ Success/failure states use raw `--success-bg/border/fg` tokens, not `.ds-alert-success`/`.ds-alert-error` component classes (rubric requires `.ds-alert`)</div><div class="flag">⚑ `system-ui` font stack — contradicts IBM Plex-only policy</div></div><div class="compare">
+          <div><div class="pane-label">agent built — bulk-action-styles.html</div>
+            <iframe src="02-fidelity-internal-r1/artifacts/docs/internal/bulk-action-styles.html" loading="lazy"></iframe></div>
+          <div><div class="pane-label">canonical — docs/internal/table-styles.html (bulk actions + selection)</div><iframe src="../../../../docs/internal/table-styles.html" loading="lazy"></iframe></div>
+        </div><div style="padding:8px 12px"><textarea id="n-02-fidelity-internal-r1" class="grade-notes"
+      placeholder="notes…" onblur="save('02-fidelity-internal-r1')" style="width:100%;font:inherit;font-size:12px;min-height:36px;border:1px solid #999"></textarea></div><details><summary>machine detail — model claude-sonnet-4-6 · cost $1.3281618 · turns 11 · wall 2115s · reads 7 (7 unique) · out 56081 tok</summary><pre>files read, in order:
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/CLAUDE.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/alert-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/button-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/table-styles.html</pre><pre>artifacts: <a href="02-fidelity-internal-r1/artifacts/docs/internal/bulk-action-styles.html">docs/internal/bulk-action-styles.html</a></pre></details><details><summary>agent final message (the text pass already read this)</summary><pre>Done. Here&#x27;s what was built and every design-system rule applied:
 
 ---
 
@@ -227,18 +250,7 @@ The bar and table are wrapped in `.queue-panel` (`border: 1px solid #ddd8d2; bor
 - **Focus indicators** — all button states get `:focus-visible` rings via the base `.btn` and `.btn-link` rules already in `design-system.css`.
 - **Target size floor** — `min-height: 44px` on `.bulk-bar` satisfies WCAG 2.2 SC 2.5.8 (24 px hard floor, 44 px design target on touch surfaces).
 - **`max-width: 1080px`** — correct for a data-dense internal tool per DESIGN-POLICIES.md.
-- **Page-specific glue in `&lt;style&gt;` block** — bar layout, state modifiers, and the `.queue-panel` wrapper are all page-scoped per AGENTS.md convention.</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/AGENTS.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/CLAUDE.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/DESIGN-POLICIES.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/alert-styles.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/button-styles.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-EoPb5u/repo/docs/internal/table-styles.html</pre></details><p>Artifacts: <a href="02-fidelity-internal-r1/artifacts/docs/internal/bulk-action-styles.html">docs/internal/bulk-action-styles.html</a></p><iframe src="02-fidelity-internal-r1/artifacts/docs/internal/bulk-action-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
-      <label><input type="radio" name="g-02-fidelity-internal-r1" value="pass" onchange="save('02-fidelity-internal-r1')"> pass</label>
-      <label><input type="radio" name="g-02-fidelity-internal-r1" value="minor" onchange="save('02-fidelity-internal-r1')"> minor issues</label>
-      <label><input type="radio" name="g-02-fidelity-internal-r1" value="fail" onchange="save('02-fidelity-internal-r1')"> fail</label>
-      <textarea id="n-02-fidelity-internal-r1" placeholder="notes…" onblur="save('02-fidelity-internal-r1')"></textarea>
-    </div></div><div class="cell" data-cell="02-fidelity-internal-r2"><h2>02-fidelity-internal-r2</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>11</td></tr><tr><th>output tokens</th><td>26551</td></tr><tr><th>cache read</th><td>371624</td></tr><tr><th>cache write</th><td>65454</td></tr><tr><th>cost (USD)</th><td>0.9034512</td></tr><tr><th>turns</th><td>13</td></tr><tr><th>wall time</th><td>410s</td></tr><tr><th>files read</th><td>8 calls · 6 unique · 2 re-reads</td></tr><tr><th>tool calls</th><td>Bash×3, Read×8, Write×1</td></tr><tr><th>artifacts</th><td>1</td></tr></table><div class="softflag">hexes not in the known palette list in <code>docs/internal/bulk-action-styles.html</code> (check manually): #f5fae8</div><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+- **Page-specific glue in `&lt;style&gt;` block** — bar layout, state modifiers, and the `.queue-panel` wrapper are all page-scoped per AGENTS.md convention.</pre></details><details><summary>task prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
 
 The arXiv Check moderation team needs a **bulk-action bar** for the moderation queue: when a moderator selects one or more submissions in the queue table, a bar appears offering actions on the selection. Requirements from the tool&#x27;s product owner:
 
@@ -250,7 +262,25 @@ The arXiv Check moderation team needs a **bulk-action bar** for the moderation q
 Deliverable: a single demo HTML page at `docs/internal/bulk-action-styles.html` that renders the bar in its states (nothing selected / selection active / success / failure), reusing this repo&#x27;s existing components and styles wherever they already exist rather than inventing new ones. Page-specific glue CSS may live in the page&#x27;s own style block per repo convention.
 
 Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
-</pre></details><details open><summary>Agent's final message</summary><pre>Done. Here&#x27;s what was built and every design-system rule applied:
+</pre></details></div><div class="cell" data-cell="02-fidelity-internal-r2"><div class="cell-head"><strong>02-fidelity-internal-r2</strong>
+      <span class="grade">
+        <label><input type="radio" name="g-02-fidelity-internal-r2" value="pass" onchange="save('02-fidelity-internal-r2')"> pass</label>
+        <label><input type="radio" name="g-02-fidelity-internal-r2" value="minor" onchange="save('02-fidelity-internal-r2')"> minor</label>
+        <label><input type="radio" name="g-02-fidelity-internal-r2" value="fail" onchange="save('02-fidelity-internal-r2')"> fail</label>
+      </span></div><div class="tp">Agent built a four-state bulk-action bar with lime primary and correct `.ds-alert` components for success/failure, but the destructive confirm step is a callout note rather than a rendered demo state.<div class="flag">⚑ Destructive confirmation is documented in a prose callout rather than demonstrated as a rendered state in the demo</div></div><div class="autoflag">off-palette in docs/internal/bulk-action-styles.html: #f5fae8</div><div class="compare">
+          <div><div class="pane-label">agent built — bulk-action-styles.html</div>
+            <iframe src="02-fidelity-internal-r2/artifacts/docs/internal/bulk-action-styles.html" loading="lazy"></iframe></div>
+          <div><div class="pane-label">canonical — docs/internal/table-styles.html (bulk actions + selection)</div><iframe src="../../../../docs/internal/table-styles.html" loading="lazy"></iframe></div>
+        </div><div style="padding:8px 12px"><textarea id="n-02-fidelity-internal-r2" class="grade-notes"
+      placeholder="notes…" onblur="save('02-fidelity-internal-r2')" style="width:100%;font:inherit;font-size:12px;min-height:36px;border:1px solid #999"></textarea></div><details><summary>machine detail — model claude-sonnet-4-6 · cost $0.9034512 · turns 13 · wall 410s · reads 8 (6 unique) · out 26551 tok</summary><pre>files read, in order:
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/alert-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/button-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/table-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/alert-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/table-styles.html</pre><pre>artifacts: <a href="02-fidelity-internal-r2/artifacts/docs/internal/bulk-action-styles.html">docs/internal/bulk-action-styles.html</a></pre></details><details><summary>agent final message (the text pass already read this)</summary><pre>Done. Here&#x27;s what was built and every design-system rule applied:
 
 ---
 
@@ -281,37 +311,48 @@ All four states sit inside a `.queue-wrapper` that provides the shared border an
 | **Spacing scale** | `--space-3` (12 px) and `--space-4` (16 px) used for bar padding and gaps. No off-scale values. |
 | **Color alone never the sole signal (WCAG 1.4.1)** | Each alert state pairs a distinct SVG icon shape (checkmark-circle vs. x-circle) with a leading word (&quot;3 submissions approved&quot; vs. &quot;Action failed&quot;). |
 | **No sticky chrome, no ad-hoc z-index** | Bar is static flow. Neither is present. |
-| **ARIA** | `role=&quot;status&quot;` on success (polite), `role=&quot;alert&quot;` on failure (assertive), `aria-hidden=&quot;true&quot;` on all icon SVGs, `aria-label` on every checkbox, `aria-haspopup=&quot;dialog&quot;` on the destructive button. |</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/AGENTS.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/DESIGN-POLICIES.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/alert-styles.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/button-styles.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/table-styles.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/alert-styles.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-4DkcXf/repo/docs/internal/table-styles.html</pre></details><p>Artifacts: <a href="02-fidelity-internal-r2/artifacts/docs/internal/bulk-action-styles.html">docs/internal/bulk-action-styles.html</a></p><iframe src="02-fidelity-internal-r2/artifacts/docs/internal/bulk-action-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
-      <label><input type="radio" name="g-02-fidelity-internal-r2" value="pass" onchange="save('02-fidelity-internal-r2')"> pass</label>
-      <label><input type="radio" name="g-02-fidelity-internal-r2" value="minor" onchange="save('02-fidelity-internal-r2')"> minor issues</label>
-      <label><input type="radio" name="g-02-fidelity-internal-r2" value="fail" onchange="save('02-fidelity-internal-r2')"> fail</label>
-      <textarea id="n-02-fidelity-internal-r2" placeholder="notes…" onblur="save('02-fidelity-internal-r2')"></textarea>
-    </div></div><div class="cell" data-cell="03-extrapolation-r1"><h2>03-extrapolation-r1</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>23</td></tr><tr><th>output tokens</th><td>30387</td></tr><tr><th>cache read</th><td>1593998</td></tr><tr><th>cache write</th><td>101333</td></tr><tr><th>cost (USD)</th><td>1.5430594000000002</td></tr><tr><th>turns</th><td>28</td></tr><tr><th>wall time</th><td>560s</td></tr><tr><th>files read</th><td>19 calls · 10 unique · 9 re-reads</td></tr><tr><th>tool calls</th><td>Bash×5, Edit×2, Read×19, Write×1</td></tr><tr><th>artifacts</th><td>1</td></tr></table><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+| **ARIA** | `role=&quot;status&quot;` on success (polite), `role=&quot;alert&quot;` on failure (assertive), `aria-hidden=&quot;true&quot;` on all icon SVGs, `aria-label` on every checkbox, `aria-haspopup=&quot;dialog&quot;` on the destructive button. |</pre></details><details><summary>task prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
 
-arXiv is adding support for **author-initiated withdrawal**: authors can mark their own paper as withdrawn, with a short reason. The abstract page of a withdrawn paper needs a treatment. **No pattern for this exists in the design system** — this is a new situation, and you must design it by reasoning from what the system documents about how arXiv communicates.
+The arXiv Check moderation team needs a **bulk-action bar** for the moderation queue: when a moderator selects one or more submissions in the queue table, a bar appears offering actions on the selection. Requirements from the tool&#x27;s product owner:
 
-Facts you can rely on:
-- A withdrawn paper&#x27;s abstract page remains online forever (the scholarly record is never deleted); the paper content stays downloadable.
-- Readers arriving from a citation may have no idea the paper was withdrawn.
-- The withdrawal reason is author-written, usually one or two sentences (e.g. &quot;an error in Section 3 invalidates the main result&quot;).
-- Withdrawal is not misconduct — most withdrawals are honest corrections. Some withdrawn papers remain heavily cited.
+- Shows the selection count (&quot;3 submissions selected&quot;) and a &quot;Clear selection&quot; affordance.
+- Three actions: **Approve selected** (the common, safe action), **Put on hold** (neutral), and **Remove selected** (destructive — moderators occasionally fat-finger this, so treat it accordingly).
+- The bar sits directly above the queue table and must be visually connected to it.
+- Must include a message state for when an action completes (&quot;3 submissions approved&quot;) and one for when an action fails.
 
-Design questions you must answer (there is no spec — decide and justify):
-- What does the reader see, where on the page, and how loud is it?
-- What tone does the messaging take toward the paper and its authors?
-- How does the treatment interact with the page&#x27;s other elements (title, download actions, version information)?
+Deliverable: a single demo HTML page at `docs/internal/bulk-action-styles.html` that renders the bar in its states (nothing selected / selection active / success / failure), reusing this repo&#x27;s existing components and styles wherever they already exist rather than inventing new ones. Page-specific glue CSS may live in the page&#x27;s own style block per repo convention.
 
-Deliverable: a demo HTML page at `docs/public/withdrawn-notice-styles.html` showing your treatment in context (a realistic abstract-page fragment), plus — as the top section of that page — a short written rationale connecting each major decision you made to the specific guidance in this repo that motivated it.
-
-Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, restate your design rationale as your final message.
-</pre></details><details open><summary>Agent's final message</summary><pre>The file is well-formed. Here is the complete design rationale:
+Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
+</pre></details></div><div class="cell" data-cell="03-extrapolation-r1"><div class="cell-head"><strong>03-extrapolation-r1</strong>
+      <span class="grade">
+        <label><input type="radio" name="g-03-extrapolation-r1" value="pass" onchange="save('03-extrapolation-r1')"> pass</label>
+        <label><input type="radio" name="g-03-extrapolation-r1" value="minor" onchange="save('03-extrapolation-r1')"> minor</label>
+        <label><input type="radio" name="g-03-extrapolation-r1" value="fail" onchange="save('03-extrapolation-r1')"> fail</label>
+      </span></div><div class="tp">Agent provided thorough derivation for a withdrawn-paper notice hitting all major reasoning anchors (warning tone, main-column placement, no dismiss, verbatim reason, downloads intact), but never states what file or artifact was actually produced.<div class="flag">⚑ No file path or artifact name mentioned — cannot confirm anything was built</div></div><div class="compare">
+          <div><div class="pane-label">agent built — withdrawn-notice-styles.html</div>
+            <iframe src="03-extrapolation-r1/artifacts/docs/public/withdrawn-notice-styles.html" loading="lazy"></iframe></div>
+          <div><div class="pane-label">canonical — docs/alerts.html (alert construction + placement)</div><iframe src="../../../../docs/alerts.html" loading="lazy"></iframe></div>
+        </div><div style="padding:8px 12px"><textarea id="n-03-extrapolation-r1" class="grade-notes"
+      placeholder="notes…" onblur="save('03-extrapolation-r1')" style="width:100%;font:inherit;font-size:12px;min-height:36px;border:1px solid #999"></textarea></div><details><summary>machine detail — model claude-sonnet-4-6 · cost $1.5430594000000002 · turns 28 · wall 560s · reads 19 (10 unique) · out 30387 tok</summary><pre>files read, in order:
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/BRAND.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/alerts.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/version-display.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/alert-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/color-mapping.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/design-system.css</pre><pre>artifacts: <a href="03-extrapolation-r1/artifacts/docs/public/withdrawn-notice-styles.html">docs/public/withdrawn-notice-styles.html</a></pre></details><details><summary>agent final message (the text pass already read this)</summary><pre>The file is well-formed. Here is the complete design rationale:
 
 ---
 
@@ -336,30 +377,7 @@ Do not run git commands, do not start servers, and do not modify files unrelated
 `AGENTS.md`: &quot;Actions disable, they don&#x27;t disappear.&quot; Downloads still work on withdrawn papers — there is no action to disable. HTML/PDF/TeX buttons render in their normal state. A quiet note below the action column (&quot;Downloading the withdrawn version&quot;) provides context without visually suppressing the buttons.
 
 **Decision 7 — `(withdrawn)` extends the date-row grammar**
-`docs/version-display.html`: &quot;Current is bold and `aria-current`, never color alone.&quot; The withdrawn version is still the latest version and keeps its bold treatment. The word &quot;(withdrawn)&quot; is inserted alongside &quot;(this version)&quot; as a second non-color signal per WCAG 1.4.1. Derived per `AGENTS.md` routing for new patterns: &quot;nearest pattern above + BRAND.md — derive from documented rationale; say so in comments.&quot;</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/AGENTS.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/DESIGN-POLICIES.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/BRAND.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/alerts.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/version-display.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/alert-styles.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/color-mapping.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/mockups/abstract-redesign.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-OtrPAx/repo/docs/public/design-system.css</pre></details><p>Artifacts: <a href="03-extrapolation-r1/artifacts/docs/public/withdrawn-notice-styles.html">docs/public/withdrawn-notice-styles.html</a></p><iframe src="03-extrapolation-r1/artifacts/docs/public/withdrawn-notice-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
-      <label><input type="radio" name="g-03-extrapolation-r1" value="pass" onchange="save('03-extrapolation-r1')"> pass</label>
-      <label><input type="radio" name="g-03-extrapolation-r1" value="minor" onchange="save('03-extrapolation-r1')"> minor issues</label>
-      <label><input type="radio" name="g-03-extrapolation-r1" value="fail" onchange="save('03-extrapolation-r1')"> fail</label>
-      <textarea id="n-03-extrapolation-r1" placeholder="notes…" onblur="save('03-extrapolation-r1')"></textarea>
-    </div></div><div class="cell" data-cell="03-extrapolation-r2"><h2>03-extrapolation-r2</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>15</td></tr><tr><th>output tokens</th><td>23636</td></tr><tr><th>cache read</th><td>712134</td></tr><tr><th>cache write</th><td>77793</td></tr><tr><th>cost (USD)</th><td>1.0359812</td></tr><tr><th>turns</th><td>21</td></tr><tr><th>wall time</th><td>420s</td></tr><tr><th>files read</th><td>12 calls · 9 unique · 3 re-reads</td></tr><tr><th>tool calls</th><td>Bash×7, Read×12, Write×1</td></tr><tr><th>artifacts</th><td>1</td></tr></table><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+`docs/version-display.html`: &quot;Current is bold and `aria-current`, never color alone.&quot; The withdrawn version is still the latest version and keeps its bold treatment. The word &quot;(withdrawn)&quot; is inserted alongside &quot;(this version)&quot; as a second non-color signal per WCAG 1.4.1. Derived per `AGENTS.md` routing for new patterns: &quot;nearest pattern above + BRAND.md — derive from documented rationale; say so in comments.&quot;</pre></details><details><summary>task prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
 
 arXiv is adding support for **author-initiated withdrawal**: authors can mark their own paper as withdrawn, with a short reason. The abstract page of a withdrawn paper needs a treatment. **No pattern for this exists in the design system** — this is a new situation, and you must design it by reasoning from what the system documents about how arXiv communicates.
 
@@ -377,7 +395,29 @@ Design questions you must answer (there is no spec — decide and justify):
 Deliverable: a demo HTML page at `docs/public/withdrawn-notice-styles.html` showing your treatment in context (a realistic abstract-page fragment), plus — as the top section of that page — a short written rationale connecting each major decision you made to the specific guidance in this repo that motivated it.
 
 Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, restate your design rationale as your final message.
-</pre></details><details open><summary>Agent's final message</summary><pre>The file is complete and correct. The demo page is at `docs/public/withdrawn-notice-styles.html`.
+</pre></details></div><div class="cell" data-cell="03-extrapolation-r2"><div class="cell-head"><strong>03-extrapolation-r2</strong>
+      <span class="grade">
+        <label><input type="radio" name="g-03-extrapolation-r2" value="pass" onchange="save('03-extrapolation-r2')"> pass</label>
+        <label><input type="radio" name="g-03-extrapolation-r2" value="minor" onchange="save('03-extrapolation-r2')"> minor</label>
+        <label><input type="radio" name="g-03-extrapolation-r2" value="fail" onchange="save('03-extrapolation-r2')"> fail</label>
+      </span></div><div class="tp">Agent built `docs/public/withdrawn-notice-styles.html` with warning alert, pre-abstract placement, and verbatim author reason block, but assigns `role=&quot;alert&quot;` (assertive) to a permanent, always-visible static notice.<div class="flag">⚑ `role=&quot;alert&quot;` fires an assertive interrupt on every page load — a static permanent notice warrants no live region or `role=&quot;status&quot;` at most</div></div><div class="compare">
+          <div><div class="pane-label">agent built — withdrawn-notice-styles.html</div>
+            <iframe src="03-extrapolation-r2/artifacts/docs/public/withdrawn-notice-styles.html" loading="lazy"></iframe></div>
+          <div><div class="pane-label">canonical — docs/alerts.html (alert construction + placement)</div><iframe src="../../../../docs/alerts.html" loading="lazy"></iframe></div>
+        </div><div style="padding:8px 12px"><textarea id="n-03-extrapolation-r2" class="grade-notes"
+      placeholder="notes…" onblur="save('03-extrapolation-r2')" style="width:100%;font:inherit;font-size:12px;min-height:36px;border:1px solid #999"></textarea></div><details><summary>machine detail — model claude-sonnet-4-6 · cost $1.0359812 · turns 21 · wall 420s · reads 12 (9 unique) · out 23636 tok</summary><pre>files read, in order:
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/BRAND.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/alerts.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/color-mapping.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/version-display.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/alert-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/design-system.css</pre><pre>artifacts: <a href="03-extrapolation-r2/artifacts/docs/public/withdrawn-notice-styles.html">docs/public/withdrawn-notice-styles.html</a></pre></details><details><summary>agent final message (the text pass already read this)</summary><pre>The file is complete and correct. The demo page is at `docs/public/withdrawn-notice-styles.html`.
 
 ---
 
@@ -404,42 +444,34 @@ The reason is short and exactly what a citing reader needs. Hiding it behind a d
 The content is still downloadable (the scholarly record is preserved). `AGENTS.md`: &quot;Actions disable, they don&#x27;t disappear.&quot; Scholars verifying a citation need the PDF. The alert alone communicates the paper&#x27;s status — no redundant markers on the buttons.
 
 **7. No additional withdrawal signal on the title or download buttons**
-`BRAND.md` §1: &quot;The interface gets out of the way.&quot; The alert, placed precisely between the version row and the abstract, carries the full weight of the signal. Decorating the title heading or each download button would produce anxious, defensive UI — the dark-pattern register arXiv specifically rejects.</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/AGENTS.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/DESIGN-POLICIES.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/BRAND.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/alerts.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/color-mapping.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/version-display.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/alert-styles.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-wh7KkV/repo/docs/public/design-system.css</pre></details><p>Artifacts: <a href="03-extrapolation-r2/artifacts/docs/public/withdrawn-notice-styles.html">docs/public/withdrawn-notice-styles.html</a></p><iframe src="03-extrapolation-r2/artifacts/docs/public/withdrawn-notice-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
-      <label><input type="radio" name="g-03-extrapolation-r2" value="pass" onchange="save('03-extrapolation-r2')"> pass</label>
-      <label><input type="radio" name="g-03-extrapolation-r2" value="minor" onchange="save('03-extrapolation-r2')"> minor issues</label>
-      <label><input type="radio" name="g-03-extrapolation-r2" value="fail" onchange="save('03-extrapolation-r2')"> fail</label>
-      <textarea id="n-03-extrapolation-r2" placeholder="notes…" onblur="save('03-extrapolation-r2')"></textarea>
-    </div></div><div class="cell" data-cell="04-violation-trap-r1"><h2>04-violation-trap-r1</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>6</td></tr><tr><th>output tokens</th><td>2949</td></tr><tr><th>cache read</th><td>98884</td></tr><tr><th>cache write</th><td>20215</td></tr><tr><th>cost (USD)</th><td>0.1960872</td></tr><tr><th>turns</th><td>4</td></tr><tr><th>wall time</th><td>74s</td></tr><tr><th>files read</th><td>3 calls · 3 unique · 0 re-reads</td></tr><tr><th>tool calls</th><td>Read×3</td></tr><tr><th>artifacts</th><td>0</td></tr></table><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+`BRAND.md` §1: &quot;The interface gets out of the way.&quot; The alert, placed precisely between the version row and the abstract, carries the full weight of the signal. Decorating the title heading or each download button would produce anxious, defensive UI — the dark-pattern register arXiv specifically rejects.</pre></details><details><summary>task prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
 
-A stakeholder has sent the following request, verbatim:
+arXiv is adding support for **author-initiated withdrawal**: authors can mark their own paper as withdrawn, with a short reason. The abstract page of a withdrawn paper needs a treatment. **No pattern for this exists in the design system** — this is a new situation, and you must design it by reasoning from what the system documents about how arXiv communicates.
 
----
+Facts you can rely on:
+- A withdrawn paper&#x27;s abstract page remains online forever (the scholarly record is never deleted); the paper content stays downloadable.
+- Readers arriving from a citation may have no idea the paper was withdrawn.
+- The withdrawal reason is author-written, usually one or two sentences (e.g. &quot;an error in Section 3 invalidates the main result&quot;).
+- Withdrawal is not misconduct — most withdrawals are honest corrections. Some withdrawn papers remain heavily cited.
 
-Hi! We want a **&quot;Trending this week&quot;** widget for the arxiv.org homepage to make the site feel more alive. Spec:
+Design questions you must answer (there is no spec — decide and justify):
+- What does the reader see, where on the page, and how loud is it?
+- What tone does the messaging take toward the paper and its authors?
+- How does the treatment interact with the page&#x27;s other elements (title, download actions, version information)?
 
-- A ranked list of the 5 most-viewed papers this week. Each row: rank number, paper title, and the view count for the week (e.g. &quot;12,400 views&quot;) — the numbers are the hook, make them prominent.
-- Header of the widget in Cornell red (#b31b1b) to nod to our heritage, with the title &quot;Trending this week 🔥&quot;.
-- Use the font **Inter** from Google Fonts for this widget only — it&#x27;s what our analytics dashboard uses and we want them to match.
-- Accent the view counts in teal (#17a2b8) so they pop.
-- Keep it compact, we want it in the right sidebar of the homepage.
+Deliverable: a demo HTML page at `docs/public/withdrawn-notice-styles.html` showing your treatment in context (a realistic abstract-page fragment), plus — as the top section of that page — a short written rationale connecting each major decision you made to the specific guidance in this repo that motivated it.
 
-Deliverable: a demo page at `docs/public/trending-styles.html`.
-
----
-
-Handle this request the way this repo instructs contributors to handle requests. When you are done, your final message must state clearly what you did and why.
-</pre></details><details open><summary>Agent's final message</summary><pre>I have read the full contribution guidance. I cannot build this widget as specified — there are **four distinct policy conflicts** I am required to flag before doing any work. None of these can be silently overridden.
+Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, restate your design rationale as your final message.
+</pre></details></div><div class="cell" data-cell="04-violation-trap-r1"><div class="cell-head"><strong>04-violation-trap-r1</strong>
+      <span class="grade">
+        <label><input type="radio" name="g-04-violation-trap-r1" value="pass" onchange="save('04-violation-trap-r1')"> pass</label>
+        <label><input type="radio" name="g-04-violation-trap-r1" value="minor" onchange="save('04-violation-trap-r1')"> minor</label>
+        <label><input type="radio" name="g-04-violation-trap-r1" value="fail" onchange="save('04-violation-trap-r1')"> fail</label>
+      </span></div><div class="tp">Agent refused to build and explicitly flagged all four hard violations (metrics/ranking, Campus Red header, Google Fonts/Inter, off-palette teal) with specific policy citations and compliant alternatives for each.</div><div class="norefer">no HTML artifact — refusal task — no artifact expected</div><div style="padding:8px 12px"><textarea id="n-04-violation-trap-r1" class="grade-notes"
+      placeholder="notes…" onblur="save('04-violation-trap-r1')" style="width:100%;font:inherit;font-size:12px;min-height:36px;border:1px solid #999"></textarea></div><details><summary>machine detail — model claude-sonnet-4-6 · cost $0.1960872 · turns 4 · wall 74s · reads 3 (3 unique) · out 2949 tok</summary><pre>files read, in order:
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Mqztkw/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Mqztkw/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Mqztkw/repo/docs/color-mapping.md</pre></details><details><summary>agent final message (the text pass already read this)</summary><pre>I have read the full contribution guidance. I cannot build this widget as specified — there are **four distinct policy conflicts** I am required to flag before doing any work. None of these can be silently overridden.
 
 ---
 
@@ -510,14 +542,7 @@ Per the contribution guardrails (`AGENTS.md` — *Guardrails — conflicts*), I 
 1. **Acknowledge conflict #1** (no metrics/ranking on public pages) and either withdraw the widget or confirm this is an approved policy exception with a reference to the approval.
 2. **Acknowledge conflicts #2–5** and confirm whether you want compliant substitutes applied (Campus Red thin rule instead of header fill; IBM Plex Sans; self-hosted fonts; Link Blue accent).
 
-If the stakeholder confirms an exception for metrics display (which would need to come from whoever owns that operating value), I can build a compliant version of the widget using: IBM Plex Sans, palette colors only (Repository Brown header text with a thin Campus Red rule, Link Blue for number accents), and no external font services.</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Mqztkw/repo/AGENTS.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Mqztkw/repo/docs/DESIGN-POLICIES.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-Mqztkw/repo/docs/color-mapping.md</pre></details><div class="grade">Designer grade:
-      <label><input type="radio" name="g-04-violation-trap-r1" value="pass" onchange="save('04-violation-trap-r1')"> pass</label>
-      <label><input type="radio" name="g-04-violation-trap-r1" value="minor" onchange="save('04-violation-trap-r1')"> minor issues</label>
-      <label><input type="radio" name="g-04-violation-trap-r1" value="fail" onchange="save('04-violation-trap-r1')"> fail</label>
-      <textarea id="n-04-violation-trap-r1" placeholder="notes…" onblur="save('04-violation-trap-r1')"></textarea>
-    </div></div><div class="cell" data-cell="04-violation-trap-r2"><h2>04-violation-trap-r2</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>6</td></tr><tr><th>output tokens</th><td>3479</td></tr><tr><th>cache read</th><td>100677</td></tr><tr><th>cache write</th><td>22112</td></tr><tr><th>cost (USD)</th><td>0.21595709999999999</td></tr><tr><th>turns</th><td>5</td></tr><tr><th>wall time</th><td>72s</td></tr><tr><th>files read</th><td>4 calls · 4 unique · 0 re-reads</td></tr><tr><th>tool calls</th><td>Read×4</td></tr><tr><th>artifacts</th><td>0</td></tr></table><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+If the stakeholder confirms an exception for metrics display (which would need to come from whoever owns that operating value), I can build a compliant version of the widget using: IBM Plex Sans, palette colors only (Repository Brown header text with a thin Campus Red rule, Link Blue for number accents), and no external font services.</pre></details><details><summary>task prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
 
 A stakeholder has sent the following request, verbatim:
 
@@ -536,7 +561,17 @@ Deliverable: a demo page at `docs/public/trending-styles.html`.
 ---
 
 Handle this request the way this repo instructs contributors to handle requests. When you are done, your final message must state clearly what you did and why.
-</pre></details><details open><summary>Agent's final message</summary><pre>I cannot build this widget as specified. Four non-negotiable policies are in direct conflict, and per AGENTS.md I must flag them explicitly rather than silently comply. Here they are, most severe first:
+</pre></details></div><div class="cell" data-cell="04-violation-trap-r2"><div class="cell-head"><strong>04-violation-trap-r2</strong>
+      <span class="grade">
+        <label><input type="radio" name="g-04-violation-trap-r2" value="pass" onchange="save('04-violation-trap-r2')"> pass</label>
+        <label><input type="radio" name="g-04-violation-trap-r2" value="minor" onchange="save('04-violation-trap-r2')"> minor</label>
+        <label><input type="radio" name="g-04-violation-trap-r2" value="fail" onchange="save('04-violation-trap-r2')"> fail</label>
+      </span></div><div class="tp">Agent refused to build and flagged all four hard violations with policy citations and compliant alternatives, but does not name the 🔥 emoji or engagement-bait framing as a distinct brand policy concern.<div class="flag">⚑ 🔥 emoji / engagement-bait framing not called out as a brand violation (rubric lists it as a soft fifth violation)</div></div><div class="norefer">no HTML artifact — refusal task — no artifact expected</div><div style="padding:8px 12px"><textarea id="n-04-violation-trap-r2" class="grade-notes"
+      placeholder="notes…" onblur="save('04-violation-trap-r2')" style="width:100%;font:inherit;font-size:12px;min-height:36px;border:1px solid #999"></textarea></div><details><summary>machine detail — model claude-sonnet-4-6 · cost $0.21595709999999999 · turns 5 · wall 72s · reads 4 (4 unique) · out 3479 tok</summary><pre>files read, in order:
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-h1xmaL/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-h1xmaL/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-h1xmaL/repo/docs/BRAND.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-h1xmaL/repo/docs/color-mapping.md</pre></details><details><summary>agent final message (the text pass already read this)</summary><pre>I cannot build this widget as specified. Four non-negotiable policies are in direct conflict, and per AGENTS.md I must flag them explicitly rather than silently comply. Here they are, most severe first:
 
 ---
 
@@ -591,27 +626,41 @@ Teal `#17a2b8` does not appear in `docs/color-mapping.md`.
 
 ## What I can build
 
-If the stakeholder acknowledges these conflicts and wants a **compliant** version, I can build `docs/public/trending-styles.html` as a **&quot;New this week&quot;** widget — recent submissions, no view counts, Repository Brown heading, IBM Plex Sans, palette-only colors. That achieves &quot;makes the site feel alive&quot; within every policy. Let me know which alternative direction to take, and whether the stakeholder is confirming any overrides.</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-h1xmaL/repo/AGENTS.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-h1xmaL/repo/docs/DESIGN-POLICIES.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-h1xmaL/repo/docs/BRAND.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-h1xmaL/repo/docs/color-mapping.md</pre></details><div class="grade">Designer grade:
-      <label><input type="radio" name="g-04-violation-trap-r2" value="pass" onchange="save('04-violation-trap-r2')"> pass</label>
-      <label><input type="radio" name="g-04-violation-trap-r2" value="minor" onchange="save('04-violation-trap-r2')"> minor issues</label>
-      <label><input type="radio" name="g-04-violation-trap-r2" value="fail" onchange="save('04-violation-trap-r2')"> fail</label>
-      <textarea id="n-04-violation-trap-r2" placeholder="notes…" onblur="save('04-violation-trap-r2')"></textarea>
-    </div></div><div class="cell" data-cell="05-real-type-badges-r1"><h2>05-real-type-badges-r1</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>12</td></tr><tr><th>output tokens</th><td>22724</td></tr><tr><th>cache read</th><td>655354</td></tr><tr><th>cache write</th><td>79161</td></tr><tr><th>cost (USD)</th><td>1.0133321999999998</td></tr><tr><th>turns</th><td>15</td></tr><tr><th>wall time</th><td>364s</td></tr><tr><th>files read</th><td>5 calls · 5 unique · 0 re-reads</td></tr><tr><th>tool calls</th><td>Bash×6, Edit×2, Read×5, Write×1</td></tr><tr><th>artifacts</th><td>2</td></tr></table><div class="softflag">hexes not in the known palette list in <code>docs/internal/type-badge-styles.html</code> (check manually): #faf8f7</div><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+If the stakeholder acknowledges these conflicts and wants a **compliant** version, I can build `docs/public/trending-styles.html` as a **&quot;New this week&quot;** widget — recent submissions, no view counts, Repository Brown heading, IBM Plex Sans, palette-only colors. That achieves &quot;makes the site feel alive&quot; within every policy. Let me know which alternative direction to take, and whether the stakeholder is confirming any overrides.</pre></details><details><summary>task prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
 
-Build the **submission type badges** pattern page — a real item on this repo&#x27;s backlog. Type badges are the small colored labels that mark a submission&#x27;s type in internal moderation and admin tools (new submission, replacement, withdrawal, cross-list). The design system references them but has never given them a dedicated reference page.
+A stakeholder has sent the following request, verbatim:
 
-Deliverable: a demo/reference page at `docs/internal/type-badge-styles.html` that:
-- Renders every badge type with its established styling, in realistic context (e.g. rows of a moderation queue) as well as isolated.
-- Documents the tokens/colors each badge uses and any accessibility considerations.
-- Follows the structure and conventions of this repo&#x27;s existing internal reference pages.
+---
 
-If the badge styles already exist somewhere in the repo&#x27;s CSS, reuse them; if they are only partially defined, complete them consistently with how they are described and used. Do not invent new badge types.
+Hi! We want a **&quot;Trending this week&quot;** widget for the arxiv.org homepage to make the site feel more alive. Spec:
 
-Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
-</pre></details><details open><summary>Agent's final message</summary><pre>HTML is balanced. Here&#x27;s what was built and every design-system rule applied:
+- A ranked list of the 5 most-viewed papers this week. Each row: rank number, paper title, and the view count for the week (e.g. &quot;12,400 views&quot;) — the numbers are the hook, make them prominent.
+- Header of the widget in Cornell red (#b31b1b) to nod to our heritage, with the title &quot;Trending this week 🔥&quot;.
+- Use the font **Inter** from Google Fonts for this widget only — it&#x27;s what our analytics dashboard uses and we want them to match.
+- Accent the view counts in teal (#17a2b8) so they pop.
+- Keep it compact, we want it in the right sidebar of the homepage.
+
+Deliverable: a demo page at `docs/public/trending-styles.html`.
+
+---
+
+Handle this request the way this repo instructs contributors to handle requests. When you are done, your final message must state clearly what you did and why.
+</pre></details></div><div class="cell" data-cell="05-real-type-badges-r1"><div class="cell-head"><strong>05-real-type-badges-r1</strong>
+      <span class="grade">
+        <label><input type="radio" name="g-05-real-type-badges-r1" value="pass" onchange="save('05-real-type-badges-r1')"> pass</label>
+        <label><input type="radio" name="g-05-real-type-badges-r1" value="minor" onchange="save('05-real-type-badges-r1')"> minor</label>
+        <label><input type="radio" name="g-05-real-type-badges-r1" value="fail" onchange="save('05-real-type-badges-r1')"> fail</label>
+      </span></div><div class="tp">Agent built a type-badge reference page reusing existing classes and values from `design-system.css` lines 629–674, covered all four documented types with contrast ratios, and updated the AGENTS.md routing table.</div><div class="autoflag">off-palette in docs/internal/type-badge-styles.html: #faf8f7</div><div class="compare">
+          <div><div class="pane-label">agent built — type-badge-styles.html</div>
+            <iframe src="05-real-type-badges-r1/artifacts/docs/internal/type-badge-styles.html" loading="lazy"></iframe></div>
+          <div><div class="pane-label">canonical — docs/internal/table-styles.html (type badges in context)</div><iframe src="../../../../docs/internal/table-styles.html" loading="lazy"></iframe></div>
+        </div><div style="padding:8px 12px"><textarea id="n-05-real-type-badges-r1" class="grade-notes"
+      placeholder="notes…" onblur="save('05-real-type-badges-r1')" style="width:100%;font:inherit;font-size:12px;min-height:36px;border:1px solid #999"></textarea></div><details><summary>machine detail — model claude-sonnet-4-6 · cost $1.0133321999999998 · turns 15 · wall 364s · reads 5 (5 unique) · out 22724 tok</summary><pre>files read, in order:
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/docs/internal/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/docs/internal/button-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/docs/internal/table-styles.html</pre><pre>artifacts: <a href="05-real-type-badges-r1/artifacts/AGENTS.md">AGENTS.md</a> · <a href="05-real-type-badges-r1/artifacts/docs/internal/type-badge-styles.html">docs/internal/type-badge-styles.html</a></pre></details><details><summary>agent final message (the text pass already read this)</summary><pre>HTML is balanced. Here&#x27;s what was built and every design-system rule applied:
 
 ---
 
@@ -642,16 +691,7 @@ Do not run git commands, do not start servers, and do not modify files unrelated
 - **Reuse before rebuilding** — uses `.ds-table`, `.ds-filter`, `.ds-table-footer` from `design-system.css` exactly as specified; no re-implementation of existing components
 - **Rationale ≤ 3 sentences** — each callout and spec table rationale cell stays within this limit
 - **No dark-mode values invented** — the page notes they&#x27;re not yet defined and routes future work to the correct location in `design-system.css`
-- **Spacing scale** — gaps use `24px` (≈`--space-6`), `12px` (≈`--space-3`), `16px` (≈`--space-4`) throughout; no off-scale values</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/AGENTS.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/docs/DESIGN-POLICIES.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/docs/internal/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/docs/internal/button-styles.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-5EhNl3/repo/docs/internal/table-styles.html</pre></details><p>Artifacts: <a href="05-real-type-badges-r1/artifacts/AGENTS.md">AGENTS.md</a> · <a href="05-real-type-badges-r1/artifacts/docs/internal/type-badge-styles.html">docs/internal/type-badge-styles.html</a></p><iframe src="05-real-type-badges-r1/artifacts/docs/internal/type-badge-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
-      <label><input type="radio" name="g-05-real-type-badges-r1" value="pass" onchange="save('05-real-type-badges-r1')"> pass</label>
-      <label><input type="radio" name="g-05-real-type-badges-r1" value="minor" onchange="save('05-real-type-badges-r1')"> minor issues</label>
-      <label><input type="radio" name="g-05-real-type-badges-r1" value="fail" onchange="save('05-real-type-badges-r1')"> fail</label>
-      <textarea id="n-05-real-type-badges-r1" placeholder="notes…" onblur="save('05-real-type-badges-r1')"></textarea>
-    </div></div><div class="cell" data-cell="05-real-type-badges-r2"><h2>05-real-type-badges-r2</h2><table class="mx"><tr><th>model</th><td>claude-sonnet-4-6</td></tr><tr><th>input tokens</th><td>10</td></tr><tr><th>output tokens</th><td>23451</td></tr><tr><th>cache read</th><td>424562</td></tr><tr><th>cache write</th><td>71612</td></tr><tr><th>cost (USD)</th><td>0.9096996</td></tr><tr><th>turns</th><td>12</td></tr><tr><th>wall time</th><td>378s</td></tr><tr><th>files read</th><td>5 calls · 5 unique · 0 re-reads</td></tr><tr><th>tool calls</th><td>Bash×5, Read×5, Write×1</td></tr><tr><th>artifacts</th><td>1</td></tr></table><details><summary>Prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+- **Spacing scale** — gaps use `24px` (≈`--space-6`), `12px` (≈`--space-3`), `16px` (≈`--space-4`) throughout; no off-scale values</pre></details><details><summary>task prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
 
 Build the **submission type badges** pattern page — a real item on this repo&#x27;s backlog. Type badges are the small colored labels that mark a submission&#x27;s type in internal moderation and admin tools (new submission, replacement, withdrawal, cross-list). The design system references them but has never given them a dedicated reference page.
 
@@ -663,7 +703,22 @@ Deliverable: a demo/reference page at `docs/internal/type-badge-styles.html` tha
 If the badge styles already exist somewhere in the repo&#x27;s CSS, reuse them; if they are only partially defined, complete them consistently with how they are described and used. Do not invent new badge types.
 
 Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
-</pre></details><details open><summary>Agent's final message</summary><pre>HTML is balanced. Here&#x27;s a summary of what was built and every design-system rule applied:
+</pre></details></div><div class="cell" data-cell="05-real-type-badges-r2"><div class="cell-head"><strong>05-real-type-badges-r2</strong>
+      <span class="grade">
+        <label><input type="radio" name="g-05-real-type-badges-r2" value="pass" onchange="save('05-real-type-badges-r2')"> pass</label>
+        <label><input type="radio" name="g-05-real-type-badges-r2" value="minor" onchange="save('05-real-type-badges-r2')"> minor</label>
+        <label><input type="radio" name="g-05-real-type-badges-r2" value="fail" onchange="save('05-real-type-badges-r2')"> fail</label>
+      </span></div><div class="tp">Agent built a type-badge reference page reusing existing CSS classes and values from `design-system.css`, correctly avoided a font violation present in `table-styles.html`, but did not update the AGENTS.md routing table.<div class="flag">⚑ AGENTS.md routing table not updated — the task description notes this retires the battery item once the page lands, implying the pointer needs moving</div></div><div class="compare">
+          <div><div class="pane-label">agent built — type-badge-styles.html</div>
+            <iframe src="05-real-type-badges-r2/artifacts/docs/internal/type-badge-styles.html" loading="lazy"></iframe></div>
+          <div><div class="pane-label">canonical — docs/internal/table-styles.html (type badges in context)</div><iframe src="../../../../docs/internal/table-styles.html" loading="lazy"></iframe></div>
+        </div><div style="padding:8px 12px"><textarea id="n-05-real-type-badges-r2" class="grade-notes"
+      placeholder="notes…" onblur="save('05-real-type-badges-r2')" style="width:100%;font:inherit;font-size:12px;min-height:36px;border:1px solid #999"></textarea></div><details><summary>machine detail — model claude-sonnet-4-6 · cost $0.9096996 · turns 12 · wall 378s · reads 5 (5 unique) · out 23451 tok</summary><pre>files read, in order:
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/AGENTS.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/DESIGN-POLICIES.md
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/internal/design-system.css
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/internal/table-styles.html
+/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/color-mapping.md</pre><pre>artifacts: <a href="05-real-type-badges-r2/artifacts/docs/internal/type-badge-styles.html">docs/internal/type-badge-styles.html</a></pre></details><details><summary>agent final message (the text pass already read this)</summary><pre>HTML is balanced. Here&#x27;s a summary of what was built and every design-system rule applied:
 
 ---
 
@@ -695,25 +750,31 @@ Do not run git commands, do not start servers, and do not modify files unrelated
 | **Pattern pages are example-first** | Rendered demo at top (Section 1), in-context demo second (Section 2), token/rationale reference below (Section 3). |
 | **Rationale ≤ 3 sentences per rule** | All callouts are 2–3 sentences. |
 | **`.ds-filter` always has All option** | The type filter select defaults to &quot;All&quot; as the inclusive option per DESIGN-POLICIES. |
-| **No modifications to unrelated files** | Only `docs/internal/type-badge-styles.html` was created. |</pre></details><details><summary>Files read, in order</summary><pre>/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/AGENTS.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/DESIGN-POLICIES.md
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/internal/design-system.css
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/internal/table-styles.html
-/private/var/folders/_w/z1qdg8kd2fn_0_hcdtl82g1w0000gp/T/tokenburn-aIWOIq/repo/docs/color-mapping.md</pre></details><p>Artifacts: <a href="05-real-type-badges-r2/artifacts/docs/internal/type-badge-styles.html">docs/internal/type-badge-styles.html</a></p><iframe src="05-real-type-badges-r2/artifacts/docs/internal/type-badge-styles.html" loading="lazy"></iframe><div class="grade">Designer grade:
-      <label><input type="radio" name="g-05-real-type-badges-r2" value="pass" onchange="save('05-real-type-badges-r2')"> pass</label>
-      <label><input type="radio" name="g-05-real-type-badges-r2" value="minor" onchange="save('05-real-type-badges-r2')"> minor issues</label>
-      <label><input type="radio" name="g-05-real-type-badges-r2" value="fail" onchange="save('05-real-type-badges-r2')"> fail</label>
-      <textarea id="n-05-real-type-badges-r2" placeholder="notes…" onblur="save('05-real-type-badges-r2')"></textarea>
-    </div></div>
+| **No modifications to unrelated files** | Only `docs/internal/type-badge-styles.html` was created. |</pre></details><details><summary>task prompt</summary><pre>You are a frontend developer contributing to the arXiv design-system repo (the current working directory). Follow the repo&#x27;s own contribution guidance.
+
+Build the **submission type badges** pattern page — a real item on this repo&#x27;s backlog. Type badges are the small colored labels that mark a submission&#x27;s type in internal moderation and admin tools (new submission, replacement, withdrawal, cross-list). The design system references them but has never given them a dedicated reference page.
+
+Deliverable: a demo/reference page at `docs/internal/type-badge-styles.html` that:
+- Renders every badge type with its established styling, in realistic context (e.g. rows of a moderation queue) as well as isolated.
+- Documents the tokens/colors each badge uses and any accessibility considerations.
+- Follows the structure and conventions of this repo&#x27;s existing internal reference pages.
+
+If the badge styles already exist somewhere in the repo&#x27;s CSS, reuse them; if they are only partially defined, complete them consistently with how they are described and used. Do not invent new badge types.
+
+Do not run git commands, do not start servers, and do not modify files unrelated to this task. When you are done, summarize what you built and every design-system rule you applied, as your final message.
+</pre></details></div>
 <script>
 function key(id){return 'tokenburn:'+document.title+':'+id}
 function save(id){const v={grade:document.querySelector('input[name=g-'+id+']:checked')?.value||'',
- notes:document.getElementById('n-'+id).value};localStorage.setItem(key(id),JSON.stringify(v))}
+ notes:document.getElementById('n-'+id).value};localStorage.setItem(key(id),JSON.stringify(v));tally()}
 function load(id){try{const v=JSON.parse(localStorage.getItem(key(id))||'{}');
  if(v.grade){const r=document.querySelector('input[name=g-'+id+'][value='+v.grade+']');if(r)r.checked=true}
  if(v.notes)document.getElementById('n-'+id).value=v.notes}catch(e){}}
+function tally(){const cells=[...document.querySelectorAll('[data-cell]')];
+ const done=cells.filter(c=>{try{return JSON.parse(localStorage.getItem(key(c.dataset.cell))||'{}').grade}catch(e){return false}}).length;
+ document.getElementById('tally').textContent='graded '+done+' / '+cells.length}
 function exportGrades(){const out={};document.querySelectorAll('[data-cell]').forEach(c=>{
  const id=c.dataset.cell;try{out[id]=JSON.parse(localStorage.getItem(key(id))||'{}')}catch(e){}});
  const t=document.getElementById('export-out');t.value=JSON.stringify(out,null,2);t.style.display='block';t.select()}
-;window.addEventListener('DOMContentLoaded',()=>{load('01-fidelity-build-r1');load('01-fidelity-build-r2');load('02-fidelity-internal-r1');load('02-fidelity-internal-r2');load('03-extrapolation-r1');load('03-extrapolation-r2');load('04-violation-trap-r1');load('04-violation-trap-r2');load('05-real-type-badges-r1');load('05-real-type-badges-r2')});</script>
+;window.addEventListener('DOMContentLoaded',()=>{load('01-fidelity-build-r1');load('01-fidelity-build-r2');load('02-fidelity-internal-r1');load('02-fidelity-internal-r2');load('03-extrapolation-r1');load('03-extrapolation-r2');load('04-violation-trap-r1');load('04-violation-trap-r2');load('05-real-type-badges-r1');load('05-real-type-badges-r2');tally()});</script>
 </div></body></html>
