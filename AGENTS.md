@@ -64,6 +64,7 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
 - **Pattern pages are example-first**: rendered demo + minimal spec table at the top; tokens, usage code, and rationale below. Rationale ≤ 3 sentences per rule.
 - **Add prose only against evidence** — a failed agent test or a real misunderstanding, not speculation.
 - After changing a pattern, update its page; verify tokens/classes exist in the stylesheet, links resolve, HTML balances.
+- Adding a mockup? Add it to the hand-maintained list in `mockups/index.html` (the docs nav's single Mockups link points there).
 
 ## Repo conventions
 
