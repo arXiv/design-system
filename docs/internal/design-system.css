@@ -530,6 +530,81 @@
 .info-link:visited { color: var(--link-visited); }
 
 
+/* ─── Metadata Panel ─────────────────────────────────────────
+ * A grid of label + value pairs describing ONE record (one paper, one
+ * user) — neither a card (peers in a set) nor a table (many records,
+ * compared down columns). Decided 2026-07-29; validated in the
+ * admin-console user-page and paper-details mockups. Build as a <dl>
+ * (divs wrapping dt/dd pairs are valid HTML inside a dl).
+ *
+ * Tint is a signal, not decoration:
+ *   --editable   lime wash — the workbench; edit affordances live here
+ *   --reference  grey wash + lime top bar — read-only system facts
+ *
+ * Cells separate with SPACING by default. The --ruled modifier adds
+ * faint cell rules for high-density panels only (5+ columns of
+ * mixed-width values) — always fainter than table dividers, so the
+ * panel never reads as a table.
+ *
+ * Example:
+ *   <dl class="ds-meta-panel ds-meta-panel--editable">
+ *     <div class="ds-meta-cell"><dt>Email</dt><dd>…</dd></div>
+ *     <div class="ds-meta-cell ds-meta-cell--span"><dt>Authors</dt><dd>…</dd></div>
+ *   </dl>
+ */
+.ds-meta-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  margin: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.ds-meta-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+}
+.ds-meta-cell dt {
+  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--grey);
+  margin: 0;
+}
+.ds-meta-cell dd {
+  font-size: 14px;
+  color: var(--text);
+  margin: 0;
+  word-break: break-word;
+}
+.ds-meta-cell--span { grid-column: 1 / -1; }
+
+.ds-meta-panel--editable {
+  background: var(--sec-bg);
+  border: 1px solid #d6e8bd; /* lime-family hairline — component-internal */
+}
+.ds-meta-panel--reference {
+  background: var(--grey-active-bg);
+  border-top: 4px solid var(--lime);
+}
+
+/* High-density only; rule colors are component-internal constants. */
+.ds-meta-panel--ruled .ds-meta-cell { border-right: 1px solid; border-bottom: 1px solid; }
+.ds-meta-panel--editable.ds-meta-panel--ruled .ds-meta-cell { border-color: rgba(107, 120, 34, 0.14); }
+.ds-meta-panel--reference.ds-meta-panel--ruled .ds-meta-cell { border-color: rgba(0, 0, 0, 0.07); }
+
+
+/* ─── Table Row Selection ────────────────────────────────────
+ * Selected rows carry the lime selection tint (adopted 2026-07-29 —
+ * the tint aids scanability of the selection set). The row's checkbox
+ * carries the state; the tint is never the only signal (WCAG 1.4.1).
+ */
+.ds-table tr.is-selected td { background: var(--sec-bg); }
+
+
 /* ─── Dark Mode Overrides ───────────────────────────────────── */
 /*
  * Fires when: OS is set to dark  AND  the page has not locked to light mode.

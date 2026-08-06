@@ -353,6 +353,46 @@
     selected and acted on together (moderation queues, ownership lists). Decided 2026-07-29 from the
     admin-console work; these written rules are the reference.</p>
 
+    <div class="demo">
+      <p class="demo-label">Selection active — actions left, filter right, selected rows tinted</p>
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+        <button class="btn btn-primary">Approve</button>
+        <button class="btn btn-secondary">Hold</button>
+        <span style="width:10px"></span>
+        <button class="btn btn-destructive">Remove…</button>
+        <span style="font-size:13px; color:#6b6459;">2 selected · <a href="#" style="color:#1565c0;">Clear selection</a></span>
+        <span style="flex:1"></span>
+        <div class="ds-filter">
+          <label for="bulk-filter-demo">Show</label>
+          <select id="bulk-filter-demo"><option selected>All</option><option>Authored</option><option>Owned</option></select>
+        </div>
+      </div>
+      <table class="ds-table">
+        <thead><tr><th style="width:36px"></th><th>Date</th><th>Title</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr class="is-selected"><td><input type="checkbox" checked aria-label="Select row: Asymptotic Expansions"></td><td>2026-03-24</td><td>Asymptotic Expansions of Schr&ouml;dinger Operators</td><td><span class="type-badge type-new">New</span></td></tr>
+          <tr><td><input type="checkbox" aria-label="Select row: Symmetry Breaking"></td><td>2025-07-09</td><td>Symmetry Breaking in Non-Abelian Gauge Theories</td><td><span class="type-badge type-rep">Rep</span></td></tr>
+          <tr class="is-selected"><td><input type="checkbox" checked aria-label="Select row: Spectral Properties"></td><td>2024-07-08</td><td>Spectral Properties of Discrete Schr&ouml;dinger Operators</td><td><span class="type-badge type-wdr">Wdr</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="demo">
+      <p class="demo-label">Nothing selected — actions disable, they never disappear</p>
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <button class="btn btn-primary" disabled>Approve</button>
+        <button class="btn btn-secondary" disabled>Hold</button>
+        <span style="width:10px"></span>
+        <button class="btn btn-destructive" disabled>Remove…</button>
+        <span style="font-size:13px; color:#b0aba6;">0 selected</span>
+        <span style="flex:1"></span>
+        <div class="ds-filter">
+          <label for="bulk-filter-demo2">Show</label>
+          <select id="bulk-filter-demo2"><option selected>All</option><option>Authored</option><option>Owned</option></select>
+        </div>
+      </div>
+    </div>
+
     <div class="callout">
       <strong>Bulk-action bar layout:</strong> action buttons and their descriptive text (selection
       count, "Clear selection") sit on the <strong>left</strong>; filter dropdowns sit on the
@@ -362,8 +402,7 @@
       toolbar).
     </div>
     <div class="callout">
-      <strong>Selected rows:</strong> mark selection with the lime tint <code>var(--sec-bg)</code>
-      on the row background — the tint aids scanability of the selection set (adopted 2026-07-29).
+      <strong>Selected rows:</strong> add <code>.is-selected</code> to the <code>&lt;tr&gt;</code> (the lime tint <code>var(--sec-bg)</code>, from the stylesheet) — the tint aids scanability of the selection set (adopted 2026-07-29).
       Selection state must not rely on the tint alone: the row's checkbox carries the state
       (WCAG 1.4.1).
     </div>
