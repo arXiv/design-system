@@ -46,7 +46,6 @@
     .docs-nav a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 2px; }
     .docs-nav .is-here { color: var(--arxiv-ink); font-weight: 600; }
     .docs-nav-spacer { flex: 1; }
-    .docs-nav .docs-nav-mock { color: var(--arxiv-grey-ui); font-size: 12px; }
   </style>
 </head>
 <body>
@@ -61,9 +60,7 @@
   <a href="../docs/organizing-content.html">Organizing content</a>
   <a href="doc.html?src=docs/DESIGN-POLICIES.md">Policies</a>
   <span class="docs-nav-spacer"></span>
-  <span class="docs-nav-mock">Mockups:</span>
-  <a href="../mockups/public/abstract-redesign.html">Abstract</a>
-  <a href="../mockups/public/merged-abstract-reader.html">Reader</a>
+  <a href="../mockups/">Mockups</a>
 </nav>
 <div class="page">
   <header class="page-header">
@@ -78,8 +75,7 @@
   <div class="note" style="margin-bottom:36px">
     <strong>Specimen honesty:</strong> the Plex woff2 files are self-hosted in
     <code>docs/fonts/</code> (loaded via <code>fonts.css</code>), so these samples render in
-    the real faces. STIX Two Math is the exception — not yet self-hosted here, it falls
-    back to Cambria Math / the CSS <code>math</code> family.
+    the real faces. STIX Two Math falls back to Cambria Math / the CSS <code>math</code> family on this page.
   </div>
 
   <section class="section">
@@ -141,6 +137,24 @@
   </section>
 
   <section class="section">
+    <h2 class="section-title">Text links</h2>
+    <p class="section-desc">Links are typography with a job, so they live here. Color carries the state;
+    the underline carries the meaning — and inline links in body text are <strong>always</strong> underlined
+    (color alone fails WCAG 1.4.1 at our contrast levels). Standalone navigation links (headers, footers,
+    button-like rows) may drop the underline.</p>
+
+    <div style="background:#fff; border:1px solid var(--arxiv-border-light); border-radius:8px; padding:20px 22px; max-width:720px; font-size:15px; line-height:1.7">
+      Reading text with <a class="ds-link" href="#ignore">an inline link</a> in its resting state —
+      Link Blue, underlined, offset so the descenders stay readable. Hover darkens it; a
+      <a class="ds-link" href="#ignore" style="color:var(--arxiv-link-visited)">visited link</a> turns
+      Visited Purple; keyboard focus draws the standard 3px ring.
+    </div>
+
+    <ul class="notes" style="margin-top:14px; padding-left:22px; font-size:13px; line-height:1.7; max-width:720px">
+      <li>Public pages use <code>.ds-link</code> and the <code>--arxiv-link-*</code> tokens; internal tools use the <code>--link</code> family. Same grammar, per-surface values.</li>
+      <li>Full state-by-state references (rest / hover / visited / focus / disabled, light and dark): <a class="ds-link" href="public/link-styles.html">public link styles</a> · <a class="ds-link" href="internal/link-styles.html">internal link styles</a>. Link color tokens with ratios: <a class="ds-link" href="colors.html">Colors</a>.</li>
+    </ul>
+
     <h2 class="section-title">Rules that travel with the type</h2>
 
     <div class="rule-card">
