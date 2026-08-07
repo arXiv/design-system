@@ -10,6 +10,8 @@
 
 arXiv uses the IBM Plex type family for all text, and STIX Two Math for mathematical notation. All fonts are self-hosted — no external font services (Google Fonts, Adobe Typekit, etc.).
 
+Three surfaces share the family with different allowances — the matrix on `typography.html` is the reference. In short: internal tools and the public site share Sans / Condensed / Mono; the public site alone adds Serif 400 italic (the annotation voice) and STIX Two Math; the blog alone adds upright Serif 400/600 for headlines and pull quotes.
+
 ### Why IBM Plex
 
 - **Open source** — SIL Open Font License. No licensing cost, no vendor dependency.
@@ -88,6 +90,7 @@ Recommendation grounded in a verified deep-research pass (25/25 claims confirmed
 | **Code & identifiers** | IBM Plex Mono | 400 (regular), 500 (medium) | arXiv IDs, DOIs, BibTeX, code blocks, monospace content |
 | **Annotation** | IBM Plex Serif | 400 italic | Secondary editorial commentary — footnote text in margin, figure alt-text in margin (see `.ds-annotation`) |
 | **Math notation** | STIX Two Math | 400 (regular) | Inline and display math in HTML paper pages |
+| **Blog headlines & quotes** | IBM Plex Serif | 400, 600 (upright) | Blog only — no other surface uses upright serif |
 
 ### CSS custom properties
 

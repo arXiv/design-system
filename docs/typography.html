@@ -18,6 +18,10 @@
     .page-header p { margin: 0; color: var(--arxiv-library-grey); font-size: 13px; max-width: 760px; }
     .section { margin-bottom: 44px; }
     .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+    .surface-matrix { border-collapse: collapse; background: #fff; border: 1px solid var(--arxiv-border-light); font-size: 13px; max-width: 820px; }
+    .surface-matrix th { background: var(--arxiv-card-grey); text-align: left; padding: 8px 13px; font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-library-grey); }
+    .surface-matrix td { padding: 8px 13px; border-top: 1px solid var(--arxiv-card-grey); vertical-align: top; }
+    .surface-matrix td:first-child { white-space: nowrap; }
     .section-desc { font-size: 13px; color: var(--arxiv-library-grey); margin: 0 0 18px; max-width: 760px; line-height: 1.55; }
 
     .specimen { background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 20px 24px; margin-bottom: 14px; display: grid; grid-template-columns: 200px 1fr; gap: 18px; align-items: start; }
@@ -121,6 +125,17 @@
 
     <div class="specimen">
       <div class="specimen-meta">
+        <div class="name">IBM Plex Serif <span style="font-weight:400; color:var(--arxiv-library-grey)">(blog only)</span></div>
+        <div class="detail">Headlines and pull quotes on the arXiv blog. The upright serif weights appear on no other surface.<br>Weights: 400, 600<br>stack: <code>--arxiv-font-serif</code></div>
+      </div>
+      <div class="specimen-sample" style="font-family:var(--arxiv-font-serif)">
+        <div class="big" style="font-size:21px; font-weight:600">Updates on all things arXiv</div>
+        <div class="body" style="font-size:15px; margin-top:6px">I am excited and honored to join arXiv at such a significant time for the organization.</div>
+      </div>
+    </div>
+
+    <div class="specimen">
+      <div class="specimen-meta">
         <div class="name">STIX Two Math</div>
         <div class="detail">Mathematical notation in HTML papers, rendered from MathML.<br>stack: <code>'STIX Two Math', 'Cambria Math', math</code> — no font token exists for math; use the stack directly (<code>font-display: auto</code> per DESIGN-POLICIES)</div>
       </div>
@@ -131,7 +146,20 @@
   </section>
 
   <section class="section">
-    <h2 class="section-title">Text links</h2>
+    <h2 class="section-title">Which faces where — the three surfaces</h2>
+    <p class="section-desc">One family, three surfaces. Internal tools and the public site share the working
+    set; the blog alone adds the upright serif. A face without a mark does not appear on that surface.</p>
+    <table class="surface-matrix">
+      <tr><th>Face · weights</th><th>Internal tools</th><th>Public site</th><th>Blog</th></tr>
+      <tr><td>IBM Plex Sans · 400 / 500 / 600</td><td>✓ all text</td><td>✓ all text</td><td>✓ all text</td></tr>
+      <tr><td>IBM Plex Sans Condensed · 500 / 600</td><td>✓ labels, table headers</td><td>✓ labels</td><td>✓ labels</td></tr>
+      <tr><td>IBM Plex Mono · 400 / 500</td><td>✓ IDs, code</td><td>✓ arXiv IDs, code</td><td>✓ code</td></tr>
+      <tr><td>IBM Plex Serif · 400 <em>italic</em></td><td>—</td><td>annotation voice only (<code>.ds-annotation</code>)</td><td>✓ emphasis in serif contexts</td></tr>
+      <tr><td>IBM Plex Serif · 400 / 600 upright</td><td>—</td><td>—</td><td>✓ headlines, pull quotes</td></tr>
+      <tr><td>STIX Two Math · 400</td><td>—</td><td>✓ math in HTML papers</td><td>—</td></tr>
+    </table>
+
+    <h2 class="section-title" style="margin-top:52px">Text links</h2>
     <p class="section-desc">Links are typography with a job, so they live here. Color carries the state;
     the underline carries the meaning — and inline links in body text are <strong>always</strong> underlined
     (color alone fails WCAG 1.4.1 at our contrast levels). Standalone navigation links (headers, footers,
