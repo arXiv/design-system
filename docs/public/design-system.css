@@ -48,7 +48,7 @@
   --arxiv-grey-dis:        #b0aba6;   /* disabled / exempt only (below AA) */
   --arxiv-grey-ui:         #8b8680;   /* UI borders / tracks (3.61:1 on white) */
   --arxiv-grey:            #6b6459;   /* body-weight muted text (5.83:1) */
-  --arxiv-ink:             #1c1a17;   /* primary text */
+  --arxiv-brown:             #1c1a17;   /* primary text */
 
   /* ── Surface tints ── */
   --arxiv-warm-wash:       #f9f7f7;   /* subtle warm page-section tint */
@@ -82,8 +82,19 @@
   /* ── Focus ring on dark surfaces ──
      color-mapping.md functional colors: Focus Ring is #1565c0 light /
      #64b5f6 dark. The standard ring is invisible against
-     --arxiv-ink surfaces (header bar); use this one there. */
+     --arxiv-brown surfaces (header bar); use this one there. */
   --arxiv-focus-ring-dark: #64b5f6;
+
+  /* ── Fixed-role colors (same value in BOTH modes) ──
+     --arxiv-header-bar: the dark chrome bars (site header, skip link,
+       narrow-nav menu). Dark mode lifts it slightly for separation.
+     --arxiv-brown-on-blue: text sitting ON an Open Blue fill — Open Blue
+       holds its light value in dark mode, so its label must too.
+     --arxiv-surface: white component fills (cards, pills, triggers) that
+       become raised dark surfaces in dark mode. */
+  --arxiv-header-bar:      #1c1a17;
+  --arxiv-brown-on-blue:   #1c1a17;
+  --arxiv-surface:         #ffffff;
 
   /* ── Focus ring ──
      Used by all interactive elements. `outline: 3px solid` with `2px`
@@ -194,7 +205,7 @@
   background:
     linear-gradient(#a5d6fe, #a5d6fe) padding-box,
     linear-gradient(to bottom, #b0d5ed, #6ba8da) border-box;
-  color: var(--arxiv-ink);
+  color: var(--arxiv-brown-on-blue);
   box-shadow:
     inset 0 0 6px rgba(31, 94, 150, 0.20),
     0 1px 3px rgba(0, 0, 0, 0.12);
@@ -229,7 +240,7 @@
   background:
     linear-gradient(#ffffff, #ffffff) padding-box,
     linear-gradient(to bottom, #c8c4be, var(--arxiv-grey-ui)) border-box;
-  color: var(--arxiv-ink);
+  color: var(--arxiv-brown);
   box-shadow:
     inset 0 0 8px rgba(0, 0, 0, 0.03),
     0 1px 3px rgba(0, 0, 0, 0.08);
@@ -429,7 +440,7 @@
   font-family: var(--arxiv-font-sans);
   font-size: 13px;
   line-height: 1.5;
-  color: var(--arxiv-ink);
+  color: var(--arxiv-brown);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -460,7 +471,7 @@
   border-radius: 4px;
 }
 .ds-popover-close:hover {
-  color: var(--arxiv-ink);
+  color: var(--arxiv-brown);
   background: var(--arxiv-active-bg);
 }
 .ds-popover-close:focus-visible {
@@ -515,7 +526,7 @@
   width: max-content;
   max-width: calc(100% - 16px);
   padding: 6px 14px;
-  background: #ffffff;
+  background: var(--arxiv-surface);
   border: 1px solid var(--arxiv-pill-border);
   border-radius: 999px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
@@ -625,6 +636,22 @@
    Broader public dark palette: proposal in planning/proposals/. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    /* Brand + surface dark values (accepted 2026-08-07 —
+       planning/proposals/public-dark-palette.html). Repository Brown is
+       the dark canvas; accents hold their light values. */
+    --arxiv-brown:           #f0eeec;  /* canvas text flips; on-blue text keeps --arxiv-brown-on-blue */
+    --arxiv-warm-wash:       #1c1a17;  /* the canvas */
+    --arxiv-card-grey:       #2b2723;  /* raised band; text 12.8:1 */
+    --arxiv-surface:         #2b2723;  /* white fills become raised surfaces */
+    --arxiv-border-light:    #3a3530;  /* decorative tier, as in light */
+    --arxiv-grey:            #b0aba6;  /* 7.6:1 on canvas */
+    --arxiv-grey-dis:        #5a554f;  /* disabled tier */
+    --arxiv-archival-blue:   #6ba8da;  /* headings 6.8:1 */
+    --arxiv-active-bg:       #1e3a5f;
+    --arxiv-tint-light:      #132433;  /* = info dark surface */
+    --arxiv-tint-border:     #2a4a7a;
+    --arxiv-pill-border:     #403b35;
+    --arxiv-header-bar:      #262119;  /* lifted so the bar reads against the canvas */
     --arxiv-link-blue:       #64b5f6;  /* 7.84:1 on Repository Brown ✓ AAA */
     --arxiv-link-hover:      #90caf9;
     --arxiv-link-visited:    #c084e0;  /* 6.30:1 on Repository Brown ✓ AA */
@@ -640,6 +667,47 @@
     --arxiv-error-bg:        #2d1414;
     --arxiv-error-border:    #e57373;
     --arxiv-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
+  }
+
+  /* Buttons — dark constructions (first pass for visual review, 2026-08-07).
+     Same fills and geometry as light; the border gradients deepen and the
+     drop shadows strengthen so the buttons keep definition on the dark
+     canvas. Gradient stops are component-internal constants (tier 2). */
+  html:not([data-theme="light"]) .ds-btn-primary {
+    background:
+      linear-gradient(var(--arxiv-open-blue), var(--arxiv-open-blue)) padding-box,
+      linear-gradient(to bottom, #6ba8da, #2a4a6a) border-box;
+    box-shadow: inset 0 0 6px rgba(31, 94, 150, 0.20), 0 1px 3px rgba(0, 0, 0, 0.6);
+  }
+  html:not([data-theme="light"]) .ds-btn-primary:hover {
+    background:
+      linear-gradient(var(--arxiv-open-blue-bright), var(--arxiv-open-blue-bright)) padding-box,
+      linear-gradient(to bottom, #8fc1e8, #3a6a94) border-box;
+    box-shadow: inset 0 0 8px rgba(31, 94, 150, 0.10), 0 1px 3px rgba(0, 0, 0, 0.6);
+  }
+  html:not([data-theme="light"]) .ds-btn-primary:active {
+    background:
+      linear-gradient(var(--arxiv-open-blue), var(--arxiv-open-blue)) padding-box,
+      linear-gradient(#6ba8da, #6ba8da) border-box;
+    box-shadow: inset 0 0 10px rgba(31, 94, 150, 0.45);
+  }
+  html:not([data-theme="light"]) .ds-btn-secondary {
+    background:
+      linear-gradient(var(--arxiv-card-grey), var(--arxiv-card-grey)) padding-box,
+      linear-gradient(to bottom, #4a443d, #6b655c) border-box;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+  html:not([data-theme="light"]) .ds-btn-secondary:hover {
+    background:
+      linear-gradient(#322d28, #322d28) padding-box,
+      linear-gradient(to bottom, #6b655c, var(--arxiv-grey-ui)) border-box;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+  html:not([data-theme="light"]) .ds-btn-secondary:active {
+    background:
+      linear-gradient(var(--arxiv-card-grey), var(--arxiv-card-grey)) padding-box,
+      linear-gradient(var(--arxiv-grey-ui), var(--arxiv-grey-ui)) border-box;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.35);
   }
 }
 
@@ -705,7 +773,7 @@
 
 .ds-acc-stack { display: flex; flex-direction: column; gap: 8px; }
 .ds-acc {
-  background: #fff;
+  background: var(--arxiv-surface);
   border: 1px solid var(--arxiv-border-light);
   border-radius: 6px;
   font-family: var(--arxiv-font-sans);
@@ -715,7 +783,7 @@
   list-style: none;
   font-size: 0.92rem;
   font-weight: 600;
-  color: var(--arxiv-ink);
+  color: var(--arxiv-brown);
   padding: 11px 16px;
   display: flex;
   align-items: center;
@@ -740,7 +808,7 @@
   outline-offset: -2px;  /* ring sits inside the card edge */
   border-radius: 6px;
 }
-.ds-acc-body { padding: 14px 16px 16px; font-size: 0.85rem; color: var(--arxiv-ink); }
+.ds-acc-body { padding: 14px 16px 16px; font-size: 0.85rem; color: var(--arxiv-brown); }
 .ds-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; margin: 0; }
 .ds-acc-body dt { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.04em; color: var(--arxiv-grey); white-space: nowrap; padding-top: 2px; }
 .ds-acc-body dd { margin: 0; }
@@ -847,7 +915,7 @@
   font-size: 0.8125rem;
   color: var(--arxiv-link-blue);
 }
-.ds-site-footer-ack strong { color: var(--arxiv-ink); font-weight: 600; }
+.ds-site-footer-ack strong { color: var(--arxiv-brown); font-weight: 600; }
 .ds-site-footer-links {
   display: flex;
   gap: 8px;
@@ -861,7 +929,7 @@
   text-decoration: none;
 }
 .ds-site-footer-links a:hover {
-  color: var(--arxiv-ink);
+  color: var(--arxiv-brown);
   text-decoration: underline;
 }
 .ds-site-footer-links a:focus-visible {
@@ -877,7 +945,7 @@
 .ds-site-footer-funders-label {
   font-size: 0.875rem; /* 14px */
   font-weight: 600;
-  color: var(--arxiv-ink);
+  color: var(--arxiv-brown);
   margin-bottom: 12px;
   line-height: 1.4;
 }
@@ -899,7 +967,7 @@
   padding: 4px 8px;
   border: 1px solid var(--arxiv-pill-border);
   border-radius: 3px;
-  background: #fff;
+  background: #fff; /* stays white in dark mode: funder wordmarks need a light chip */
 }
 @media (max-width: 720px) {
   .ds-site-footer-funders { width: 100%; margin-top: 8px; }
@@ -993,7 +1061,7 @@
   position: absolute;
   top: -100px; left: 8px;
   z-index: 200;
-  background: var(--arxiv-ink);
+  background: var(--arxiv-brown);
   color: #fff;
   padding: 10px 16px;
   border-radius: 4px;
@@ -1015,7 +1083,7 @@
   gap: 8px;
   padding: 6px 16px;
   background: var(--arxiv-active-bg);
-  color: var(--arxiv-ink);
+  color: var(--arxiv-brown);
   font-family: var(--arxiv-font-sans);
   font-size: 0.8125rem; /* 13px */
   font-weight: 500;
@@ -1044,7 +1112,7 @@
   padding: 4px 8px;
   border-radius: 3px;
 }
-.ds-announcement-close:hover { color: var(--arxiv-ink); background: rgba(0,0,0,0.05); }
+.ds-announcement-close:hover { color: var(--arxiv-brown); background: rgba(0,0,0,0.05); }
 .ds-announcement-close:focus-visible {
   outline: 2px solid var(--arxiv-link-blue);
   outline-offset: 1px;
@@ -1064,7 +1132,7 @@
   gap: 12px;
   padding: 0 24px;
   height: 52px;
-  background: var(--arxiv-ink);
+  background: var(--arxiv-brown);
   /* NO sticky positioning — decided 2026-06-11 (Shamsi): the header
      scrolls away like any other content. Sticky chrome is exceptional
      at arXiv (DESIGN-POLICIES.md, "Chrome and interaction structure");
@@ -1194,7 +1262,7 @@
     width: auto;
     gap: 0;
     padding: 0;
-    background: var(--arxiv-ink);
+    background: var(--arxiv-header-bar);
     border-top: 1px solid #4a433d;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* matches .ds-toc-dropdown / popovers */
     z-index: 60;
@@ -1368,7 +1436,7 @@
 }
 .ds-reader-header-nav a:visited { color: var(--arxiv-grey); }
 .ds-reader-header-nav a:hover,
-.ds-reader-header-nav button:hover { background: var(--arxiv-open-blue); color: var(--arxiv-ink); }
+.ds-reader-header-nav button:hover { background: var(--arxiv-open-blue); color: var(--arxiv-brown-on-blue); }
 .ds-reader-header-nav a:focus-visible,
 .ds-reader-header-nav button:focus-visible {
   outline: 3px solid var(--arxiv-link-blue);
@@ -1406,8 +1474,8 @@
   font-family: var(--arxiv-font-sans);
   font-size: 0.8125rem; /* 13px */
   font-weight: 500;
-  color: var(--arxiv-ink);
-  background: #fff;
+  color: var(--arxiv-brown);
+  background: var(--arxiv-surface);
   border: 1px solid var(--arxiv-pill-border);
   border-radius: 6px;
   padding: 6px 8px 6px 10px;
@@ -1502,7 +1570,7 @@
   color: var(--arxiv-grey);
   line-height: 0;
 }
-.ds-toc-dropdown-close:hover { color: var(--arxiv-ink); background: rgba(0, 0, 0, 0.05); }
+.ds-toc-dropdown-close:hover { color: var(--arxiv-brown); background: rgba(0, 0, 0, 0.05); }
 .ds-toc-dropdown-close:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
 .ds-toc-dropdown-close svg { width: 18px; height: 18px; }
 
@@ -1521,7 +1589,7 @@
   font-family: var(--arxiv-font-sans);
   font-size: 0.8125rem; /* 13px */
   line-height: 1.4;
-  color: var(--arxiv-ink);
+  color: var(--arxiv-brown);
   text-decoration: none;
   border-left: 3px solid transparent;
   transition: background 0.10s, border-color 0.10s, color 0.10s;
@@ -1557,7 +1625,7 @@
 .ds-toc-dropdown-item.is-current .ds-toc-dropdown-link {
   background: var(--arxiv-active-bg);
   border-left-color: var(--arxiv-link-blue);
-  color: var(--arxiv-ink);
+  color: var(--arxiv-brown);
 }
 .ds-toc-dropdown-item.is-current .ds-toc-dropdown-link .ds-toc-num {
   color: var(--arxiv-link-blue);
