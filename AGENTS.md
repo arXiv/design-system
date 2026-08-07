@@ -36,6 +36,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Version display | `docs/version-display.html` | inline version links + `.ds-alert` warning |
 | Site header / footer | `docs/public/header-styles.html`, `docs/public/footer-styles.html`, `docs/public/reader-header-styles.html` | `.ds-site-header`, `.ds-site-footer`, `.ds-reader-header` — never hand-build chrome or draw logos from text |
 | Type badges | `docs/internal/table-styles.html` + DESIGN-POLICIES *Content and interaction* | `.type-new/.type-rep/.type-wdr/.type-cross` |
+| Dark mode (status, mechanism, what flips) | `docs/dark-mode.html` | tokens flip automatically; never hand-pick dark values; lock demo pages light |
 | Something with no pattern | nearest pattern above + `docs/BRAND.md` | derive from documented rationale; say so in comments |
 
 Stylesheets: `docs/public/design-system.css` (public pages) · `docs/internal/design-system.css` (staff tools). Values there are authoritative.
