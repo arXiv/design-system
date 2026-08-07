@@ -60,6 +60,8 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
 
 ## Writing rules — for edits to docs/
 
+- **Write to be understood and believed, not admired.** Sincere directness; no quotable aphorisms, no edgy framing. Trust is the goal: calibrate claims honestly, attribute work honestly (including AI), and state limitations plainly — in planning/, not in the docs.
+
 - **Minimal diffs.** Never rewrite a file wholesale; never reorganize while editing.
 - **One fact, one home.** State each rule in exactly one file; link from everywhere else.
 - **Pattern pages are example-first**: rendered demo + minimal spec table at the top; tokens, usage code, and rationale below. Rationale ≤ 3 sentences per rule.
