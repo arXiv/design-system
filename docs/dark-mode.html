@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dark mode — arXiv Design System</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="public/design-system.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: var(--arxiv-font-sans); color: var(--arxiv-ink); background: var(--arxiv-warm-wash); margin: 0; font-size: 14px; line-height: 1.5; }
+    .page { max-width: 1080px; margin: 0 auto; padding: 28px 28px 80px; }
+    .page-header { margin: 28px 0 40px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p { margin: 0; color: var(--arxiv-grey); font-size: 13px; max-width: 760px; }
+    .section { margin-bottom: 52px; }
+    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+    .section-desc { font-size: 13px; color: var(--arxiv-grey); margin: 0 0 18px; max-width: 760px; line-height: 1.55; }
+    code { font-family: var(--arxiv-font-mono); font-size: 12px; background: var(--arxiv-card-grey); padding: 2px 6px; border-radius: 3px; }
+    .code-block { background: #1c1a17; color: #f0eeec; border-radius: 6px; padding: 14px 16px; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.6; overflow-x: auto; margin: 8px 0 0; max-width: 760px; }
+    .code-block code { background: none; padding: 0; color: inherit; }
+    .note-alert { max-width: 760px; margin-top: 16px; }
+    .notes { margin: 0; padding-left: 22px; font-size: 13px; line-height: 1.7; max-width: 760px; }
+
+    /* ── Swatch pairs ── */
+    .pair-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; max-width: 820px; }
+    .pair { background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 6px; padding: 10px 12px; font-size: 12px; }
+    .pair .chips { display: flex; gap: 6px; margin: 6px 0 4px; }
+    .chip { flex: 1; border-radius: 4px; padding: 7px 8px; font-family: var(--arxiv-font-mono); font-size: 10.5px; border: 1px solid rgba(0,0,0,0.08); }
+    .pair .tok { font-family: var(--arxiv-font-mono); font-size: 11px; color: var(--arxiv-ink); }
+
+    /* ── Live dark preview panel ──
+       Mirrors the INTERNAL stylesheet's dark block locally so the dark
+       rendering is visible without switching the OS theme. The stylesheet's
+       dark block is the source of truth — never fork values elsewhere. */
+    .dark-scope {
+      --surface: #252118; --surface-header: #302c28; --surface-hover: #2a2520;
+      --border: #3a3530; --text: #f0eeec; --grey: #b0aba6; --grey-ui: #8b8680;
+      --sec-bg: #1e2b0d; --success-bg: #1e2b0d; --success-border: #8fbd3a; --success-fg: #c5e1a5;
+      background: #1c1a17; border-radius: 8px; padding: 22px; max-width: 820px;
+      font-family: "IBM Plex Sans", sans-serif; color: var(--text);
+    }
+    .dark-scope .ds-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .dark-scope .ds-table th { text-align: left; font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--grey); padding: 9px 14px; background: var(--surface-header); border-bottom: 1px solid var(--border); }
+    .dark-scope .ds-table td { padding: 10px 14px; border-bottom: 1px solid var(--surface-header); color: var(--text); }
+    .dark-scope .ds-table tr.is-selected td { background: var(--sec-bg); }
+    .dark-scope .badge { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: 11px; border-radius: 3px; padding: 1px 6px; border: 1px solid transparent; }
+    .dark-scope .b-new { background: #13294a; color: #93c5fd; border-color: #2a4a7a; }
+    .dark-scope .b-rep { background: #3a2f0e; color: #fde68a; border-color: #7a5c00; }
+    .dark-scope .b-wdr { background: #474340; color: #e8e4df; border-color: #8b8680; }
+    .dark-scope .alert { display: flex; gap: 11px; padding: 12px 14px; border: 1px solid var(--success-border); border-left-width: 4px; border-radius: 6px; background: var(--success-bg); color: var(--success-fg); font-size: 13px; margin-top: 14px; max-width: 560px; }
+
+    /* ── Shared docs nav strip ── */
+    .docs-nav { display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-ink); text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
+    .docs-nav a:not(.docs-nav-brand) { color: var(--arxiv-grey); text-decoration: none; }
+    .docs-nav a:not(.docs-nav-brand):hover { color: var(--arxiv-ink); text-decoration: underline; }
+    .docs-nav a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 2px; }
+    .docs-nav-spacer { flex: 1; }
+  </style>
+</head>
+<body>
+<nav class="docs-nav" aria-label="Design system documentation">
+  <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
+  <a href="colors.html">Colors</a>
+  <a href="typography.html">Typography</a>
+  <a href="spacing.html">Spacing</a>
+  <a href="buttons.html">Buttons</a>
+  <a href="alerts.html">Alerts</a>
+  <a href="version-display.html">Versions</a>
+  <a href="organizing-content.html">Organizing content</a>
+  <a href="doc.html?src=docs/DESIGN-POLICIES.md">Policies</a>
+  <span class="docs-nav-spacer"></span>
+  <a href="../mockups/">Mockups</a>
+</nav>
+<div class="page">
+
+  <header class="page-header">
+    <h1>Dark mode</h1>
+    <p>How dark mode works in this system, and what is dark-aware today. The rule that governs
+    everything else: <strong>new pages and components are light-only</strong> — dark values exist in the
+    stylesheets as foundation, and they flip automatically; nobody hand-picks them.</p>
+  </header>
+
+  <!-- ── Mechanism ── -->
+  <section class="section">
+    <h2 class="section-title">The mechanism</h2>
+    <p class="section-desc">Dark values live in one <code>@media (prefers-color-scheme: dark)</code> block
+    at the end of each stylesheet, keyed to the OS setting. Any page can opt out and lock to light —
+    every documentation page does:</p>
+    <pre class="code-block"><code>&lt;html lang="en" data-theme="light"&gt;   &lt;!-- locks this page to light --&gt;</code></pre>
+    <ul class="notes" style="margin-top:14px">
+      <li>Tokens flip; components consuming tokens flip for free. Never write a dark hex into a page.</li>
+      <li>Accent colors hold in both modes: Access Lime and Open Blue stay themselves; text on lime uses <code>--text-on-lime</code> (ink in both modes).</li>
+      <li>Anything with color <em>meaning</em> keeps its second cue (icon, word, position) in dark too — WCAG 1.4.1 doesn't pause at night.</li>
+    </ul>
+  </section>
+
+  <!-- ── What flips today ── -->
+  <section class="section">
+    <h2 class="section-title">Dark-aware today — internal stylesheet</h2>
+    <p class="section-desc">Tokens: surfaces (<code>--surface</code>, <code>--surface-header</code>,
+    <code>--surface-hover</code>, <code>--border</code>), canvas text (<code>--text</code>), grey ladder,
+    link family, lime + secondary families, status families, focus ring. Components riding those tokens:
+    buttons, icon buttons, info card, alerts, forms, data table, sortable headers, filter select,
+    segmented control, toggle, type badges, metadata panel.</p>
+    <div class="dark-scope">
+      <table class="ds-table">
+        <thead><tr><th>Date</th><th>Title</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr class="is-selected"><td>2026-03-24</td><td>Asymptotic Expansions of Schrödinger Operators</td><td><span class="badge b-new">New</span></td></tr>
+          <tr><td>2025-07-09</td><td>Symmetry Breaking in Non-Abelian Gauge Theories</td><td><span class="badge b-rep">Rep</span></td></tr>
+          <tr><td>2024-07-08</td><td>Spectral Properties of Discrete Operators</td><td><span class="badge b-wdr">Wdr</span></td></tr>
+        </tbody>
+      </table>
+      <div class="alert">✓&nbsp; Preferences saved — table, selection tint, badges, and this alert are all token-driven dark.</div>
+    </div>
+    <p class="section-desc" style="margin-top:12px">This panel mirrors the stylesheet's dark block locally
+    for display; the stylesheet is the source of truth. To see the real thing, open any <em>unlocked</em>
+    internal reference page with the OS in dark mode.</p>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Dark-aware today — public stylesheet</h2>
+    <p class="section-desc">The status/alert families and the link family (below, live tokens). The broader
+    public palette and the public button's lit-from-above construction are not dark-aware.</p>
+    <div class="pair-grid">
+      <div class="pair"><span class="tok">--arxiv-link-blue</span><div class="chips"><span class="chip" style="background:#fff;color:#1565c0">#1565c0 light</span><span class="chip" style="background:#1c1a17;color:#64b5f6">#64b5f6 dark</span></div></div>
+      <div class="pair"><span class="tok">--arxiv-link-visited</span><div class="chips"><span class="chip" style="background:#fff;color:#7b2fbe">#7b2fbe light</span><span class="chip" style="background:#1c1a17;color:#c084e0">#c084e0 dark</span></div></div>
+      <div class="pair"><span class="tok">--arxiv-info-bg / -fg</span><div class="chips"><span class="chip" style="background:#e7f1fd;color:#1a3a78">light</span><span class="chip" style="background:#132433;color:#90caf9">dark</span></div></div>
+      <div class="pair"><span class="tok">--arxiv-warning-bg / -fg</span><div class="chips"><span class="chip" style="background:#fff8e1;color:#7a5c00">light</span><span class="chip" style="background:#2e2410;color:#ffe082">dark</span></div></div>
+      <div class="pair"><span class="tok">--arxiv-success-bg / -fg</span><div class="chips"><span class="chip" style="background:#e8f5d8;color:#4a5a0a">light</span><span class="chip" style="background:#1e2b0d;color:#c5e1a5">dark</span></div></div>
+      <div class="pair"><span class="tok">--arxiv-error-bg / -fg</span><div class="chips"><span class="chip" style="background:#fdeaea;color:#8b0000">light</span><span class="chip" style="background:#2d1414;color:#ef9a9a">dark</span></div></div>
+    </div>
+  </section>
+
+  <!-- ── Rules ── -->
+  <section class="section">
+    <h2 class="section-title">Rules</h2>
+    <div class="ds-alert ds-alert-error note-alert">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Never hand-pick dark values into a light page</p>
+        <p>Dark tokens are not an alternate palette to choose from. They flip automatically with the OS,
+        or not at all. A new demo page locks light with <code>data-theme="light"</code>; production
+        surfaces ship light-only until the dark program resumes.</p>
+      </div>
+    </div>
+    <ul class="notes" style="margin-top:14px">
+      <li>Component CSS consumes tokens — never a literal dark hex.</li>
+      <li>A page that deliberately previews dark (like this one's panel, or the alert references) scopes its overrides locally and says so in a comment.</li>
+    </ul>
+  </section>
+
+</div>
+</body>
+</html>

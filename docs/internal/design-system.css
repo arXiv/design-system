@@ -52,7 +52,8 @@
   --link-visited:       #7b2fbe; /* Visited Purple Light Mode — 7.02:1 on white, 6.58:1 on Warm Wash ✓ AA */
 
   /* Shared */
-  --text:              #1c1a17; /* Repository Brown */
+  --text:              #1c1a17; /* Repository Brown — flips light in dark mode */
+  --text-on-lime:      #1c1a17; /* label on lime fills — ink in BOTH modes (lime stays light) */
   --focus-ring:        #1565c0; /* Link Blue Light Mode — 5.74:1 on white ✓; overridden to #64b5f6 in dark mode */
   --icon-border:       #8b8680; /* Icon button rest outline — passes 3:1 on white (3.61:1) and warm wash (3.38:1) */
   --grey-ui:           #8b8680; /* UI boundary grey — 3.61:1 on white, 3.38:1 on warm wash, 3.12:1 on table header bg. Use for interactive borders, tracks, and arrows needing WCAG 3:1. */
@@ -85,6 +86,15 @@
   --space-6:           24px;  /* sub-section separation / card padding      */
   --space-8:           32px;  /* larger internal padding                   */
   --space-12:          48px;  /* breathing space BETWEEN major sections     */
+
+  /* Semantic surfaces — the dark-mode substrate (DARK-MODE-AUDIT §3).     */
+  /* Components consume these instead of hardcoding #fff / #f0eeec /       */
+  /* #ddd8d2 so dark mode can flip them. Light values match what the       */
+  /* components previously hardcoded — zero visual change in light mode.   */
+  --surface:           #ffffff; /* table/panel/control fills               */
+  --surface-header:    #f0eeec; /* table headers, subtle row dividers      */
+  --surface-hover:     #faf9f8; /* row + control hover washes              */
+  --border:            #ddd8d2; /* hairline borders on surfaces            */
 }
 
 
@@ -126,7 +136,7 @@
 /* ─── Primary ───────────────────────────────────────────────── */
 .btn-primary {
   background: var(--lime);
-  color: var(--text);
+  color: var(--text-on-lime);
   border: 1px solid transparent;
 }
 
@@ -617,8 +627,20 @@
  * The :not([data-theme="light"]) guard prevents this block from applying.
  */
 
+/* STATUS (planning/dark-mode-decision.md): these dark values are FOUNDATION.
+ * New pages and components are LIGHT-ONLY until the dark program resumes:
+ * never hand-pick dark token values into light pages, and lock demo pages
+ * with <html data-theme="light">. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    --text:              #f0eeec; /* canvas text flips; on-lime text keeps --text-on-lime */
+
+    /* Semantic surfaces — dark (DARK-MODE-AUDIT §3 values) */
+    --surface:           #252118;
+    --surface-header:    #302c28;
+    --surface-hover:     #2a2520;
+    --border:            #3a3530;
+
     /* Secondary button backgrounds — flip to dark lime tint */
     --sec-bg:            #1a2306;
     --sec-bg-hover:      #212e08;
@@ -699,6 +721,25 @@
   html:not([data-theme="light"]) .info-link                 { color: #c4d82e; }
   html:not([data-theme="light"]) .info-link:hover           { color: #d8ee50; }
   html:not([data-theme="light"]) .info-link:visited         { color: #a8c020; }
+
+  /* Toggle off-label + metadata panel edges — dark equivalents */
+  html:not([data-theme="light"]) .toggle-label { color: var(--grey); }
+  html:not([data-theme="light"]) .ds-meta-panel--editable { border-color: #3a4a1a; }
+  html:not([data-theme="light"]) .ds-meta-panel--editable.ds-meta-panel--ruled .ds-meta-cell { border-color: rgba(200, 220, 120, 0.14); }
+  html:not([data-theme="light"]) .ds-meta-panel--reference.ds-meta-panel--ruled .ds-meta-cell { border-color: rgba(255, 255, 255, 0.08); }
+
+  /* Type badges — dark fills (contrast verified in commit) */
+  html:not([data-theme="light"]) .type-new   { background: #13294a; color: #93c5fd; border-color: #2a4a7a; }
+  html:not([data-theme="light"]) .type-rep   { background: #3a2f0e; color: #fde68a; border-color: #7a5c00; }
+  html:not([data-theme="light"]) .type-wdr   { background: #474340; color: #e8e4df; border-color: #8b8680; }
+  html:not([data-theme="light"]) .type-cross { background: #36322e; color: #cbc5be; border-color: #5a554f; }
+
+  /* Segmented control — active states repoint at the (dark) status tokens;
+     light mode keeps its original hardcoded values untouched. */
+  html:not([data-theme="light"]) .seg-btn:hover:not(:disabled) { background: var(--surface-hover); }
+  html:not([data-theme="light"]) .seg-btn.seg-positive.active { background: var(--success-bg); border-color: var(--success-border); color: var(--success-fg); }
+  html:not([data-theme="light"]) .seg-btn.seg-neutral.active  { background: var(--info-bg);    border-color: var(--info-border);    color: var(--info-fg); }
+  html:not([data-theme="light"]) .seg-btn.seg-negative.active { background: var(--error-bg);   border-color: var(--error-border);   color: var(--error-fg); }
 }
 
 
@@ -767,8 +808,8 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
-  background: #fff;
-  border: 1px solid #ddd8d2;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 6px;
   overflow: hidden;
 }
@@ -780,18 +821,18 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #6b6459;
+  color: var(--grey);
   padding: 9px 14px;
-  background: #f0eeec;
-  border-bottom: 1px solid #ddd8d2;
+  background: var(--surface-header);
+  border-bottom: 1px solid var(--border);
   white-space: nowrap;
 }
 
 .ds-table td {
   padding: 10px 14px;
-  border-bottom: 1px solid #f0eeec;
+  border-bottom: 1px solid var(--surface-header);
   vertical-align: top;
-  color: #1c1a17;
+  color: var(--text);
 }
 
 .ds-table tbody tr:last-child td {
@@ -799,7 +840,7 @@
 }
 
 .ds-table tbody tr:hover td {
-  background: #faf9f8;
+  background: var(--surface-hover);
 }
 
 /* Filtered-out / hidden rows */
@@ -814,8 +855,8 @@
   align-items: center;
   padding: 9px 14px;
   font-size: 12px;
-  color: #6b6459;
-  border-top: 1px solid #ddd8d2;
+  color: var(--grey);
+  border-top: 1px solid var(--border);
 }
 
 
@@ -837,7 +878,7 @@
 }
 
 .ds-table th.sortable:hover {
-  color: #1c1a17;
+  color: var(--text);
 }
 
 .sort-arrow {
@@ -850,7 +891,7 @@
 
 .ds-table th.sort-asc .sort-arrow,
 .ds-table th.sort-desc .sort-arrow {
-  color: #1c1a17;
+  color: var(--text);
 }
 
 
@@ -871,7 +912,7 @@
   align-items: center;
   gap: 5px;
   font-size: 12px;
-  color: #6b6459;
+  color: var(--grey);
 }
 
 .ds-filter label {
@@ -882,7 +923,7 @@
 .ds-filter select {
   font-family: inherit;
   font-size: 12px;
-  color: #1c1a17;
+  color: var(--text);
   background: none;
   border: none;
   border-bottom: 1px solid var(--grey-ui); /* 3.61:1 on white ✓ */
@@ -938,8 +979,8 @@
   font-weight: 500;
   cursor: pointer;
   border: 1px solid var(--grey-ui); /* 3.61:1 on white ✓ */
-  background: #fff;
-  color: #6b6459;
+  background: var(--surface);
+  color: var(--grey);
   margin-left: -1px;
   transition: background 0.12s, color 0.12s, border-color 0.12s;
   position: relative;
@@ -948,7 +989,7 @@
 
 .seg-btn:first-child { border-radius: 6px 0 0 6px; margin-left: 0; }
 .seg-btn:last-child  { border-radius: 0 6px 6px 0; }
-.seg-btn:hover:not(:disabled) { background: #f5f3f1; color: #1c1a17; z-index: 1; }
+.seg-btn:hover:not(:disabled) { background: #f5f3f1; color: var(--text); z-index: 1; }
 .seg-btn:focus-visible {
   outline: 3px solid var(--focus-ring);
   outline-offset: 1px;
@@ -1100,7 +1141,7 @@
 }
 
 .toggle-switch input:checked ~ .toggle-label {
-  color: #1c1a17;
+  color: var(--text);
   font-weight: 700;
 }
 
