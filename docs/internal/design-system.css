@@ -591,8 +591,11 @@
   border-top: 4px solid var(--lime);
 }
 
-/* High-density only; rule colors are component-internal constants. */
+/* High-density only; rule colors are component-internal constants.
+ * The last cell stretches to the row's end so a ruled panel never shows
+ * an orphaned cell alone on its final row (Shamsi, 2026-08-07). */
 .ds-meta-panel--ruled .ds-meta-cell { border-right: 1px solid; border-bottom: 1px solid; }
+.ds-meta-panel--ruled .ds-meta-cell:last-child { grid-column-end: -1; }
 .ds-meta-panel--editable.ds-meta-panel--ruled .ds-meta-cell { border-color: rgba(107, 120, 34, 0.14); }
 .ds-meta-panel--reference.ds-meta-panel--ruled .ds-meta-cell { border-color: rgba(0, 0, 0, 0.07); }
 
