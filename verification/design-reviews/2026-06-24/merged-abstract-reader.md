@@ -105,7 +105,7 @@ The user-flagged button drift (Download PDF not matching `button-styles.html`) i
 - **Fix:** Replace the markup with the canonical class:
   ```html
   <a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1">
-    Download PDF <small style="font-weight: 400; color: var(--arxiv-grey);">· 1.2&nbsp;MB</small>
+    Download PDF <small style="font-weight: 400; color: var(--arxiv-library-grey);">· 1.2&nbsp;MB</small>
   </a>
   ```
   Drop the `.mg-files-pdf` CSS block. Let `.ds-btn-primary` carry construction, hover, press, focus.
