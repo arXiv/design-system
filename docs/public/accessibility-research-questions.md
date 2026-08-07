@@ -17,6 +17,10 @@ Once the time-bound announcement banner is dismissed/retired, first-time visitor
 
 ### 4. Justification & hyphenation (issues #6533, #5028)
 Reconsider justified text / hyphenation settings in the HTML reader for low-vision and dyslexia-track readers. **Question:** do current defaults (and respecting user stylesheets) serve these readers, or is justified text actively harmful at zoom? Test against real user stylesheets and browser overrides.
+**Dev corroboration (2026-08-07):** full justification + `hyphens: auto` flagged independently in dev review — browser hyphenation of specialized scientific vocabulary is weak (LaTeX-quality typesetting is exactly what browsers still lack), and submitters won't supply soft hyphens. Raises this question's priority.
+
+### 4b. Permalink permanence (dev review, 2026-08-07)
+The reader's anchor links to figures, equations, and sections are labeled "permalink" — a strong word for an archive. **Question:** what do they actually promise? Do they pin to a specific paper version, and do anchors survive re-renders of the same version? Decide the versioning semantics before the label ships; "permalink" must not overclaim.
 
 ## Pointers
 
