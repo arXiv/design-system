@@ -287,6 +287,13 @@
   .ds-announcement { flex-wrap: wrap; padding-right: 36px; text-align: center; }
   .ds-site-header { grid-template-columns: auto auto; height: auto; min-height: 52px; padding: 6px 12px; row-gap: 4px; }
   .ds-site-header-center { grid-column: 1 / -1; order: 3; justify-content: center; padding-bottom: 4px; }
+  /* The nav items each carry white-space: nowrap, so without this the row
+     can't break and the page scrolls sideways below ~400px (WCAG 1.4.10
+     reflow). Matches design-system.css, which this local copy had drifted
+     from — the canonical component has always wrapped its nav here. */
+  .ds-site-header-nav { flex-wrap: wrap; row-gap: 2px; justify-content: flex-end; }
+  .ds-site-header-nav a,
+  .ds-site-header-nav button { padding: 6px 8px; }
 }
 
 /* ══ READER-VIEW TOGGLE (lives in each header's center) ══
