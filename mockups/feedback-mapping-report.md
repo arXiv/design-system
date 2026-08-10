@@ -1,5 +1,5 @@
 # Linking the Abstract/HTML Paper mockup to user feedback
-[Github-hosted Mockup](https://arxiv.github.io/design-system/mockups/public/merged-abstract-reader.html)
+[Github-hosted Mockup](https://arxiv.github.io/design-system/mockups/public/html-phase1.html)
 
 Working draft. 06/26/26. Shamsi Brinn.
 

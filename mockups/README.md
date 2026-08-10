@@ -10,9 +10,8 @@ Mockups are organized by surface, mirroring `docs/` (migrated 2026-07-30 from Sh
 
 **`public/` — arxiv.org surfaces**
 
-- **`abstract-redesign.html`** — the abstract page (paper landing page with title, authors, abstract, format/download actions, and citation section).
-- **`html-redesign.html`** — the HTML paper reader (in-browser view of a full paper).
-- **`merged-abstract-reader.html`** — the merged HTML-first abstract + reader exploration; **`merged-abstract-reader-phase1.html`** is its reduced Phase 1 implementation proposal.
+- **`abstract-phase2.html`** — the abstract page (paper landing page with title, authors, abstract, format/download actions, and citation section).
+- **`html-phase1.html`** — the HTML paper: the abstract page and the full-paper reader on one continuous surface, at Phase 1 scope. This is the current HTML-paper mockup. Two earlier explorations it descends from — the standalone reader (`html-redesign.html`) and the unreduced merge (`merged-abstract-reader.html`) — were removed 2026-08-10; both are in git history if you need them.
 - **`optin-modal/`** — the Labs opt-in modal, layered on a saved arxiv.org page.
 - (`images/` and `lib/` are shared assets for these pages.)
 

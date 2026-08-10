@@ -1,6 +1,6 @@
 # You said, we changed it
 
-Changes to the redesign mockups made in direct response to internal feedback, June 2026. Thank you — every item below started as one of your comments. View the results: [abstract page](abstract-redesign.html) · [HTML paper reader](html-redesign.html) · [design-system home](../index.html).
+Changes to the redesign mockups made in direct response to internal feedback, June 2026. Thank you — every item below started as one of your comments. View the results: [abstract page](public/abstract-phase2.html) · [HTML paper](public/html-phase1.html) · [design-system home](../index.html).
 
 ## On the HTML paper page
 

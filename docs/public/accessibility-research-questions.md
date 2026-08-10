@@ -2,7 +2,7 @@
 
 **Status:** Open — seeded 2026-07-24. Companion to `accessibility-priorities.md` (which is *decisions*); this file holds the open questions waiting on a user-testing round.
 
-These are parked questions to put in front of assistive-technology users and researchers when the moderated-test round for `abstract-redesign.html` and `html-redesign.html` runs (see `../../planning/NEXT-STEPS.md`). Each notes where it came from. Add findings inline as rounds complete, and promote resolved ones into `accessibility-priorities.md`.
+These are parked questions to put in front of assistive-technology users and researchers when the moderated-test round for `abstract-phase2.html` and `html-phase1.html` runs (see `../../planning/NEXT-STEPS.md`). Each notes where it came from. Add findings inline as rounds complete, and promote resolved ones into `accessibility-priorities.md`.
 
 ## Questions
 

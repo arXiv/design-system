@@ -5,8 +5,20 @@
 
 <!--
 ╔════════════════════════════════════════════════════════════════════╗
-║  HTML PAPER READER REDESIGN — arXiv HTML view of a paper           ║
+║  HTML PAPER READER REDESIGN — PHASE 1 PROPOSAL                     ║
 ╚════════════════════════════════════════════════════════════════════╝
+
+  PHASE 1 PROPOSAL VARIANT
+    Copied from merged-abstract-reader.html on 2026-07-28. This copy is
+    the Phase 1 implementation proposal: a reduced/adjusted feature set
+    based on phase 1 feedback. Divergences from the parent are deliberate
+    scope decisions, not design reversals.
+
+    The parent mockup was removed 2026-08-10, along with the standalone
+    reader (html-redesign.html), leaving this file as the current
+    HTML-paper mockup. Both parents are recoverable from git history if
+    you need the full design vision or the features cut below; comments
+    throughout point back to them.
 
   WHAT THIS IS
     A design mockup. The purpose is to communicate visual, behavioral,
@@ -58,7 +70,7 @@
       docs/color-mapping.md                    palette + tokens
       docs/public/accessibility-priorities.md  decisions + rationale
     ~/Desktop/arxiv-mockups/arxiv-public/
-      abstract-redesign.html                              companion page
+      abstract-phase2.html                              companion page
       references/ux-observations-themes.md                CSV synthesis
       references/accessibility-interviews-synthesis.md    42-interview synthesis
 
@@ -182,14 +194,12 @@
   WORKFLOW layer (zoom / copy / permalink), not the math
   accessibility layer (which is Deyan's territory).
 
-  UPDATE 2026-06-12: the read-aloud ("Listen") feature now runs Speech
-  Rule Engine client-side to SPEAK equations (ClearSpeak, lazy-loaded,
-  self-hosted in lib/sre/). This does not change the position above —
-  the AT path (screen readers) remains browser+AT over native MathML,
-  where NVDA/JAWS already run MathCAT/SRE themselves. SRE here serves
-  only arXiv's own Listen feature, which targets listeners WITHOUT
-  screen readers. It needs no Intent annotations to work today;
-  Intent adoption will improve its semantic accuracy over time.
+  PHASE 1 UPDATE 2026-07-28: the read-aloud ("Listen") feature and its
+  Speech Rule Engine integration were removed from this phase 1 copy —
+  too much complexity for phase 1. The AT path (screen readers) remains
+  browser+AT over native MathML, where NVDA/JAWS already run
+  MathCAT/SRE themselves. See the parent mockup for the full Listen
+  treatment and its SRE rationale.
   Expert review (Deyan Ginev, 2026-06-12) set the direction: literal
   readouts as the baseline (SRE now runs MathSpeak here, not
   ClearSpeak), with MathCAT-as-WebAssembly the named successor — it
@@ -210,8 +220,759 @@
       from us. The browser+AT path handles inline math via native
       MathML and Intent annotations.
 -->
+<style id="mg-merge-styles">
+/* ════════════════════════════════════════════════════════════════════
+   MERGED ABSTRACT + HTML READER — added layer (2026-06-23, 3rd pass)
+   Layout (per Shamsi's spec):
+     ABSTRACT MODE
+       1. Black ds-site-header with Reader-view toggle in the center
+       2. Reader's native .new-watermark (ID line) + .ltx_title + authors + .ltx_abstract
+       3. Tinted band (Warm Wash) full-bleed:
+          row1: Cite (BibTeX/APA/Chicago/MLA select) | A11y | Files
+          row2: <details> Paper Information | <details> Related (closed)
+       4. Centered TOC button (becomes sticky on scroll)
+       5. White background — the rest of the LaTeXML article
+       6. Ported ds-site-footer
+     READER MODE
+       1. Reader's own arxiv-html-header (with Reader-view toggle in its center
+          instead of the TOC); compacts on scroll
+       2. Centered TOC button (same as abstract mode, sticky immediately)
+       3. White background — full paper
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Plex font tokens (reader's :root doesn't define these). */
+:root {
+  --arxiv-font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --arxiv-font-condensed: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  --arxiv-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  /* Status tokens (color-mapping.md "Status & alert colors — shared").
+     Mirrors design-system.css; only the success family is consumed here
+     (by .mg-a11y-line.present items). */
+  --arxiv-success-bg:     #e8f5d8;
+  --arxiv-success-border: #6b8e1e;
+  --arxiv-success-fg:     #4a5a0a;
+}
+
+/* Scope a transparent-bg override to images in the injected layer (the reader
+   has a global `img { background-color: var(--image-background-color) }` for
+   dark-mode figure legibility — leave that for paper figures). */
+.mg-shell img, .ds-site-header-logo img, .ds-announcement-glyph,
+.mg-band img, .mg-toc-bar img, footer.ds-site-footer img { background-color: transparent !important; }
+
+/* ══ ABSTRACT-MODE HEADER (black ds-site-header) ══ */
+.ds-announcement { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 6px 16px; background: var(--arxiv-active-bg); color: var(--arxiv-repository-brown); font-family: var(--arxiv-font-sans); font-size: 0.8125rem; font-weight: 500; position: relative; }
+.ds-announcement-glyph { width: 18px; height: 18px; flex-shrink: 0; }
+.ds-announcement-text { font-weight: 600; }
+.ds-announcement-link { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; font-weight: 600; }
+.ds-announcement-link:hover { color: var(--arxiv-link-hover); }
+.ds-announcement-close { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.125rem; line-height: 1; color: var(--arxiv-library-grey); padding: 4px 8px; border-radius: 3px; }
+.ds-announcement-close:hover { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
+/* 3-column header: logo (left) | toggle (true center) | nav (right).
+   Grid is 1fr | auto | 1fr so the center cell sits at the viewport center
+   regardless of the relative widths of the side cells. Matches the reader
+   header's same approach. */
+.ds-site-header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; height: 52px; background: var(--arxiv-repository-brown); }
+.ds-site-header-logo { display: flex; align-items: center; text-decoration: none; justify-self: start; }
+.ds-site-header-logo img { height: 39px; width: auto; }
+.ds-site-header-center { display: flex; justify-content: center; }
+.ds-site-header-nav { display: flex; align-items: center; gap: 4px; justify-self: end; }
+.ds-site-header-nav a, .ds-site-header-nav button { font-family: var(--arxiv-font-sans); font-size: 0.8125rem; font-weight: 500; color: var(--arxiv-grey-dis); text-decoration: none; padding: 6px 10px; border-radius: 4px; border: none; background: none; cursor: pointer; white-space: nowrap; transition: background 0.12s, color 0.12s; display: inline-flex; align-items: center; gap: 5px; }
+.ds-site-header-nav a:visited { color: var(--arxiv-grey-dis); }
+.ds-site-header-nav a:hover, .ds-site-header-nav button:hover { background: #302c28; color: var(--arxiv-card-grey); }
+.ds-site-header-nav a:focus-visible { outline: 3px solid var(--arxiv-focus-ring-dark); outline-offset: 1px; }
+.ds-site-header-nav .ds-nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
+.ds-site-header-divider { width: 1px; height: 20px; background: #4a433d; margin: 0 4px; flex-shrink: 0; }
+.ds-site-header-login { font-weight: 600 !important; color: var(--arxiv-card-grey) !important; }
+@media (max-width: 680px) {
+  .ds-announcement { flex-wrap: wrap; padding-right: 36px; text-align: center; }
+  .ds-site-header { grid-template-columns: auto auto; height: auto; min-height: 52px; padding: 6px 12px; row-gap: 4px; }
+  .ds-site-header-center { grid-column: 1 / -1; order: 3; justify-content: center; padding-bottom: 4px; }
+}
+
+/* ══ READER-VIEW TOGGLE (lives in each header's center) ══
+   Variant A (default — on the BLACK ds-site-header in abstract mode):
+     dark fill (#2a2723), light card-grey text, neutral grey-ui track.
+   Variant B (on the LIGHT reader header in reader mode):
+     transparent fill, Repository Brown text, ui-grey track.
+   Active state uses Open Blue for the track — matches the established
+   Labs-toggle pattern (abstract-phase2.html / .abs-labs-toggle) and
+   the user's brand preference.
+
+   Override note (2026-06-24 design review, finding C): DESIGN-POLICIES.md
+   "Toggle switches" specifies Link Blue (#1565c0) for public toggles. Open
+   Blue is used here for brand consistency across the page, matching the
+   pre-existing Labs toggles. The white knob on a pale Open Blue track may
+   read as low-contrast under WCAG 1.4.11 (the active state is also signaled
+   by position + aria-pressed, so it isn't color-alone — but track-vs-knob
+   adjacency should be revisited system-wide along with the Labs toggles). */
+.mg-reader-toggle { display: inline-flex; align-items: center; gap: 8px; font-family: var(--arxiv-font-sans); font-size: 0.8125rem; font-weight: 500; border: 1px solid #4a433d; background: #2a2723; color: var(--arxiv-card-grey); border-radius: 20px; padding: 5px 14px 5px 10px; cursor: pointer; }
+.mg-reader-toggle:hover { background: #3a3631; }
+.mg-reader-toggle .tk { width: 28px; height: 16px; border-radius: 10px; background: var(--arxiv-grey-ui); position: relative; flex: none; transition: background .15s; }
+.mg-reader-toggle .tk::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.3); transition: left .15s; }
+.mg-reader-toggle[aria-pressed="true"] .tk { background: var(--arxiv-open-blue); }
+.mg-reader-toggle[aria-pressed="true"] .tk::after { left: 14px; }
+.mg-reader-toggle:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
+/* Variant B (reader header — light background): transparent + Repository Brown text. */
+.arxiv-html-header .mg-reader-toggle { background: transparent; color: var(--arxiv-repository-brown); border-color: var(--arxiv-grey-ui); }
+.arxiv-html-header .mg-reader-toggle:hover { background: rgba(0,0,0,0.04); }
+.arxiv-html-header .new-html-center { display: flex; justify-content: center; align-items: center; }
+
+/* The ar5iv stylesheet applies a 16px right margin to .ltx_page_content,
+   making the page_content's center 8px LEFT of the viewport center. With
+   symmetric negative-margin full-bleed, that 8px asymmetry leaves a gap
+   on the right of the tinted band. Remove the margin so the band's center
+   aligns with the viewport's center. */
+.ltx_page_content { margin-right: 0 !important; }
+
+/* The LaTeXML <article> has `overflow-x: clip` (from ar5iv.css — meant to
+   contain wide equations). That clips my band's full-bleed negative-margin
+   extension to the article's visual width (~832px), even though the band's
+   box-model rect says it's at x=0..100vw. Reported in browser review at
+   1025-1199px where the band visibly stopped short of the viewport edges.
+   Override to allow the band to render at its true width; wide equations
+   inside the article are still contained by .ltx_page_main being a grid
+   cell of fixed body-grid width, so no new page-overflow risk. */
+article.ltx_document { overflow-x: visible !important; }
+
+/* ══ DOCUMENT-TOOLS RAIL ══
+   Replaces the old full-bleed tinted band. A LIGHT vertical stack of
+   document tools. In ABSTRACT mode it sits in the right column of a two-up
+   top layout (authors+abstract on the left, rail on the right) INSIDE the
+   normal content width — so it never competes with the figure marginalia
+   in the outer margin. In READER mode the rail is hidden and the column
+   collapses to a single centered reading column (matching the standalone reader mockup,
+   removed 2026-08-10).
+   Never sticky — it scrolls away (the reader header carries persistent
+   PDF / Abstract access once you scroll). (2026-06-25 researcher feedback:
+   metadata felt like a scroll interruption; raw BibTeX needn't be open by
+   default; rail should live within the content width, content left-aligned,
+   title full width.) */
+/* Default the whole rail to IBM Plex Sans (typography.md body face).
+   Without this, text without its own font-family (files links, a11y lines,
+   accordion <dd>, labs items) inherits the ar5iv article's serif and renders
+   in Times. Explicit condensed (labels) and mono (cite code) children keep
+   their own faces — inheritance only fills in the un-set ones. */
+/* The rail is a tinted CARD (warm-wash) so it reads as a distinct "document
+   tools" surface; Open Blue accents (PDF button, cite chip, a11y shields)
+   pop against the neutral tint. font-family defaults the card to IBM Plex
+   Sans (typography.md body face) so un-set text doesn't inherit the ar5iv
+   article's serif. */
+.mg-band {
+  margin: 0; box-sizing: border-box;
+  font-family: var(--arxiv-font-sans);
+  background: var(--arxiv-warm-wash);
+  border: 1px solid var(--arxiv-pill-border);
+  border-radius: 10px;
+  padding: 16px;
+  /* Cap the card height and scroll internally so expanding a disclosure
+     never pushes the paper down / leaves whitespace beside the abstract.
+     Unset when the card stacks full-width on narrow screens. */
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.mg-rail { display: flex; flex-direction: column; gap: 18px; }
+/* Hairline separators between sections within the card. */
+.mg-rail > * + * { border-top: 1px solid var(--arxiv-border-light); padding-top: 16px; }
+
+/* ══ ABSTRACT-MODE TOP LAYOUT ══
+   Title spans the full content width (titles can be very long). Below it, a
+   two-column row: authors+abstract (left, fluid) and the rail (right, fixed
+   width), both within the centered article column. */
+.mg-top-cols { display: flex; gap: 36px; align-items: flex-start; }
+.mg-top-main { flex: 1 1 auto; min-width: 0; }
+.mg-band { flex: 0 0 275px; }   /* card outer width (border-box; ~243px content after padding) */
+
+/* Left-justify the title / authors / abstract in abstract mode (overriding
+   the centered reader defaults below) so they read cleanly beside the rail. */
+body:not(.mg-reader) .ltx_title.ltx_title_document { text-align: left !important; }
+body:not(.mg-reader) .ltx_authors {
+  text-align: left !important;
+  margin-left: 0 !important; margin-right: 0 !important;
+  justify-content: flex-start !important;
+}
+/* The author NAMES live in an inner list that carries its own
+   text-align:center — override it too so they left-align in abstract mode.
+   The "show all authors" toggle is display:block with margin:auto — pin it
+   left as well. */
+body:not(.mg-reader) .ltx_authors-list { text-align: left !important; }
+/* Abstract: drop the centered 12% indent AND the narrow-width box border
+   (the box was a phone treatment for the centered layout; in the left
+   column it isn't needed and looked flush with padding:0). */
+body:not(.mg-reader) .mg-top-main .ltx_abstract { padding: 0 !important; margin: 1rem 0 0 !important; border: 0 !important; }
+
+/* Reader mode: collapse to one centered column; rail hides via the existing
+   `body.mg-reader .mg-band { display:none }` rule. Title/authors/abstract
+   keep their centered reader styling. */
+body.mg-reader .mg-top-cols { display: block; }
+
+/* Narrow: stack the card beneath the abstract (full width, capped). */
+@media (max-width: 767px) {
+  .mg-top-cols { flex-direction: column; gap: 0; }
+  .mg-band { flex-basis: auto; width: 100%; max-width: 560px; margin-top: 24px; max-height: none; overflow-y: visible; }
+}
+.mg-band h3 { font-family: var(--arxiv-font-condensed); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-library-grey); margin: 0 0 10px; }
+
+/* ══ CANONICAL SKIP LINK (.ds-skip-link, ported from design-system.css) ══
+   The FIRST focusable element on the page — keyboard users hit it on the
+   first Tab. Hidden off-screen until focused. */
+.ds-skip-link {
+  position: absolute; top: -100px; left: 8px;
+  z-index: 200;
+  background: var(--arxiv-repository-brown);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-family: var(--arxiv-font-sans); font-weight: 600;
+}
+.ds-skip-link:focus-visible {
+  top: 8px;
+  outline: 3px solid var(--arxiv-focus-ring-dark);
+  outline-offset: 2px;
+}
+
+/* Secondary in-context skip — visible on focus, sits right before the
+   tinted band. Complements the page-level .ds-skip-link above with a
+   more specific "skip past document tools to paper content" jump. */
+.mg-skip-to-paper {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.mg-skip-to-paper:focus, .mg-skip-to-paper:focus-visible {
+  position: static; width: auto; height: auto; margin: 14px auto;
+  clip: auto; white-space: normal;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; border: 2px solid var(--arxiv-link-blue);
+  color: var(--arxiv-link-blue);
+  padding: 8px 16px; border-radius: 6px;
+  font-family: var(--arxiv-font-sans); font-size: 0.85rem; font-weight: 600;
+  text-decoration: underline;
+}
+.mg-skip-wrap { text-align: center; }
+
+/* Cite — heading + a minimal format dropdown on one row; below it a tinted
+   "codeblock" that is one row tall until expanded. The bar carries a
+   "Display <format>" toggle (left) and a codeblock-style copy button
+   (right). Copy works whether or not the code is shown. (Researcher
+   feedback 2026-06-25: raw BibTeX needn't be open by default; one-click
+   copy; codeblock affordances; minimal dropdown.) */
+.mg-cite-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 10px; }
+.mg-cite-head h3 { margin: 0; }
+/* Minimal native <select>: no border/fill, link-blue, tight padding. Keeps
+   the OS dropdown affordance (semantic <select>) while reading as light
+   inline chrome. */
+/* Open Blue chip: Repository Brown text on the light Open-Blue fill (same contrast-safe
+   pairing as the PDF button) so the format selector reads as "good stuff".
+   Still a semantic native <select>. */
+.mg-cite-select { font-family: var(--arxiv-font-sans); font-size: 0.78rem; font-weight: 600; padding: 3px 6px; border: none; border-radius: 5px; background: var(--arxiv-open-blue); color: var(--arxiv-repository-brown); cursor: pointer; }
+.mg-cite-select:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 3px; }
+
+/* Codeblock styled as an "empty field" when collapsed: a tinted, dashed-
+   border drop-zone whose muted IBM-Plex-Mono prompt invites a click to
+   reveal the citation (the file-upload-dropzone idiom, adapted to a
+   click-to-expand disclosure). When open it firms up to a solid-border code
+   block. overflow:hidden keeps the rounded corners clean as it grows. */
+.mg-cite-block {
+  background: var(--arxiv-card-grey);
+  border: 1px dashed var(--arxiv-grey-ui); border-radius: 6px; overflow: hidden;
+  transition: border-color .12s, background .12s;
+}
+.mg-cite-block.is-open { border-style: solid; border-color: var(--arxiv-border-light); }
+.mg-cite-block-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 5px 6px 5px 10px; }
+/* "Display <format>" prompt — muted mono placeholder text (NOT a link),
+   leading caret. flex:1 so the whole field width is the click target. */
+.mg-cite-show {
+  display: inline-flex; align-items: center; gap: 8px; flex: 1 1 auto; min-height: 26px;
+  font-family: var(--arxiv-font-mono); font-size: 0.73rem; font-weight: 400;
+  color: var(--arxiv-library-grey); background: none; border: none; padding: 2px 4px;
+  cursor: pointer; text-align: left;
+}
+.mg-cite-show::before { content: "▸"; font-size: 0.85em; color: var(--arxiv-grey-ui); }
+.mg-cite-show[aria-expanded="true"]::before { content: "▾"; }
+.mg-cite-show:hover { color: var(--arxiv-repository-brown); }
+.mg-cite-show:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 3px; }
+/* Hover the collapsed field → dropzone-style highlight (whole field cue). */
+.mg-cite-block:not(.is-open):has(.mg-cite-show:hover) { border-color: var(--arxiv-library-grey); background: var(--arxiv-warm-wash); }
+/* Codeblock-style copy button (icon + small label), top-right of the bar.
+   The svg needs an explicit z-index because ar5iv sets `svg { z-index:-1 }`
+   globally, which otherwise paints the icon behind the tinted block. */
+.mg-cite-copy {
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  min-height: 26px; padding: 4px 7px;
+  font-family: var(--arxiv-font-sans); font-size: 0.72rem; font-weight: 600;
+  color: var(--arxiv-library-grey); background: none; border: none; border-radius: 4px;
+  cursor: pointer;
+}
+.mg-cite-copy svg { width: 14px; height: 14px; flex: none; position: relative; z-index: 1; }
+.mg-cite-copy:hover { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
+.mg-cite-copy:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
+.mg-cite-copy.is-copied { color: var(--arxiv-success-fg); }
+/* Code region: IBM Plex Mono, sits inside the block, no own background. */
+.mg-cite-code { background: none; margin: 0; padding: 2px 10px 12px; font-family: var(--arxiv-font-mono); font-size: 0.72rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--arxiv-repository-brown); max-height: 260px; overflow-y: auto; }
+.mg-cite-code[hidden] { display: none; }
+
+/* Accessibility — condensed to two status lines (present / missing) instead
+   of a full checklist, to keep the rail light. */
+.mg-a11y-line { display: flex; align-items: flex-start; gap: 8px; line-height: 1.45; font-size: 0.82rem; margin: 0; }
+.mg-a11y-line + .mg-a11y-line { margin-top: 7px; }
+/* The ar5iv stylesheet sets `svg { z-index: -1 }` globally (to keep
+   LaTeXML-emitted SVG content under text). Lift these shield icons with
+   explicit positioning so they paint above their background. */
+.mg-a11y-line .ic { width: 14px; height: 14px; flex: none; margin-top: 2px; position: relative; z-index: 1; }
+/* Greens map to the canonical --arxiv-success-* tokens
+   (color-mapping.md "Status & alert colors — shared"). */
+/* "Present" rows use an Open Blue shield badge as the positive signal:
+   light Open-Blue fill with a link-blue outline/check (the fill alone is
+   too light to meet 3:1, so the darker stroke carries the contrast). Text
+   stays Repository Brown for readability. */
+.mg-a11y-line.present { color: var(--arxiv-repository-brown); }
+.mg-a11y-line.present .ic { color: var(--arxiv-link-blue); fill: var(--arxiv-open-blue); }
+/* "Partial" (e.g. some figures lack alt text) stays muted grey. */
+.mg-a11y-line.partial { color: var(--arxiv-library-grey); }
+.mg-a11y-line.partial .ic { color: var(--arxiv-grey-ui); }
+.mg-a11y-fix { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; margin-left: 4px; }
+
+/* Files column. Primary action uses the canonical `.ds-btn-primary`
+   (defined below) — DESIGN-POLICIES.md → Buttons + button-styles.html
+   are the source of truth. */
+.mg-files { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+/* PDF is the primary action — full rail width so it reads as the anchor. */
+.mg-files .ds-btn-primary { min-width: 0; width: 100%; }
+.mg-files .ds-btn-primary small { font-weight: 400; color: var(--arxiv-repository-brown); margin-left: 4px; }
+.mg-files-links { display: flex; flex-direction: column; gap: 8px; }
+.mg-files-link { font-size: 0.82rem; }
+.mg-files-link a { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; }
+.mg-files-link small { color: var(--arxiv-library-grey); font-size: 0.74rem; margin-left: 6px; }
+
+/* Ancillary files (>2): one compact line — label + total beside it, with a
+   right-aligned "Download all" link. (≤2 files would list each by name+size.) */
+.mg-anc { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 0.82rem; }
+.mg-anc-label { color: var(--arxiv-repository-brown); }
+.mg-anc-total { color: var(--arxiv-library-grey); font-size: 0.74rem; }
+.mg-anc-all { flex: none; font-size: 0.78rem; color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+
+/* ══ CANONICAL BUTTONS (ported from docs/public/design-system.css) ══
+   Source of truth: button-styles.html. Construction = 1.5px transparent border
+   + dual-background gradient + inset vignette + outer drop. Hover BRIGHTENS;
+   press translateY(1px) with deeper vignette and flat-mid-tone border. */
+.ds-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  box-sizing: border-box;   /* so width:100% (full-rail PDF button) includes padding+border */
+  padding: 10px 20px; min-width: 120px;
+  font-family: var(--arxiv-font-sans); font-size: 14px; font-weight: 600; line-height: 1;
+  text-decoration: none; cursor: pointer;
+  border: 1.5px solid transparent; border-radius: 6px;
+  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, transform 0.08s, color 0.12s;
+}
+.ds-btn:focus-visible { outline: 3px solid var(--arxiv-link-blue); outline-offset: 2px; }
+/* The ar5iv stylesheet sets `svg { z-index: -1 }` globally (to keep
+   LaTeXML-emitted SVG under text). Inside an inline-flex button the icon
+   is a flex item, so that z-index APPLIES even without positioning and
+   paints the icon BEHIND the button's own background — invisible on any
+   opaque fill. Lift every button icon above the fill. */
+.ds-btn svg { position: relative; z-index: 1; }
+.ds-btn-primary {
+  background:
+    linear-gradient(var(--arxiv-open-blue), var(--arxiv-open-blue)) padding-box,
+    linear-gradient(to bottom, #b0d5ed, #6ba8da) border-box;
+  color: var(--arxiv-repository-brown);
+  box-shadow: inset 0 0 6px rgba(31, 94, 150, 0.20), 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.ds-btn-primary:hover {
+  background:
+    linear-gradient(var(--arxiv-open-blue-bright), var(--arxiv-open-blue-bright)) padding-box,
+    linear-gradient(to bottom, #8fc1e8, #4a86b8) border-box;
+  box-shadow: inset 0 0 8px rgba(31, 94, 150, 0.10), 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.ds-btn-primary:active {
+  transform: translateY(1px);
+  background:
+    linear-gradient(var(--arxiv-open-blue), var(--arxiv-open-blue)) padding-box,
+    linear-gradient(#6ba8da, #6ba8da) border-box;
+  box-shadow: inset 0 0 10px rgba(31, 94, 150, 0.35);
+}
+
+/* Tertiary button — PROPOSED variant, not yet in design-system.css.
+   DESIGN-POLICIES.md already anticipates it ("No shadow on tertiary or
+   text-only buttons"). Lowest-emphasis BUTTON, deliberately distinct
+   from the link grammar: a first iteration used transparent fill with a
+   Link Blue label, which read as a text link with padding — and blue
+   text WITHOUT an underline undermines the codified link treatment
+   (link-styles.html: links are underlined). So the tertiary gets a
+   persistent quiet container instead: flat Card Grey fill, Repository Brown label,
+   no border. The emphasis ladder stays legible — primary = Open Blue
+   fill + gradient border, secondary = white fill + gradient border +
+   shadow, tertiary = flat grey fill, no border, no shadow (per policy).
+   Inline destinations in prose remain underlined links, never buttons.
+   Candidate for promotion to the canonical design system once
+   validated here. */
+.ds-btn-tertiary {
+  background: var(--arxiv-card-grey);
+  color: var(--arxiv-repository-brown);
+  box-shadow: none;
+}
+.ds-btn-tertiary:hover { background: var(--arxiv-pill-border); }
+.ds-btn-tertiary:active { transform: translateY(1px); background: var(--arxiv-border-light); }
+.ds-btn-tertiary .btn-arrow { width: 15px; height: 15px; flex: none; }
+/* Label contrast, measured 2026-07-28 (WCAG AA text needs 4.5:1):
+   Repository Brown on Card Grey 15.0:1 (rest) · Pill Border 13.2:1 (hover) ·
+   Border Light 12.3:1 (active). The FILL is deliberately quiet —
+   1.16:1 against the white page — which is fine per 1.4.11 because
+   the label + arrow identify the control, not the boundary. */
+
+/* Tertiary on tinted surface (.on-tint modifier) — same pattern as
+   .ds-btn-secondary.on-tint. The default Card Grey fill measures only
+   1.04:1 against tint-light (light blue) and 1.08:1 against warm-wash
+   (light brown), so on the warm tint the pill disappears entirely
+   (on the blue tint the warm hue still differentiates it, barely).
+   On tint, step the fill one rung down the warm-grey ladder; the label
+   stays Repository Brown and passes AA in every state (12.3:1+). Visually tested on
+   both tints 2026-07-28. */
+.ds-btn-tertiary.on-tint { background: var(--arxiv-pill-border); }
+.ds-btn-tertiary.on-tint:hover { background: var(--arxiv-border-light); }
+.ds-btn-tertiary.on-tint:active { background: var(--arxiv-border-light); }
+
+/* Row that holds the back-to-abstract tertiary button: directly below
+   the site header, above the watermark line, centered on the page —
+   matching the centered watermark / identity column below it
+   (feedback 2026-07-28; a first pass used top-left back-link
+   convention). */
+.mg-abs-return { margin: 0; padding: 14px 24px 0; text-align: center; }
+@media (max-width: 700px) { .mg-abs-return { padding: 10px 12px 0; } }
+
+/* Accordions — codified 2026-07-28 as .ds-acc in
+   docs/public/design-system.css (.mg-accordions → .ds-acc-stack,
+   rail scoping → .ds-acc-rail). The codified version is the source of
+   truth — never fork values; this local copy exists only because the
+   mockup predates the promotion. */
+.mg-accordions { display: flex; flex-direction: column; gap: 8px; }
+.mg-acc { background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 6px; }
+.mg-acc > summary { cursor: pointer; list-style: none; font-family: var(--arxiv-font-sans); font-size: 0.92rem; font-weight: 600; color: var(--arxiv-repository-brown); padding: 11px 16px; display: flex; align-items: center; gap: 10px; }
+.mg-acc > summary::-webkit-details-marker { display: none; }
+.mg-acc > summary::marker { content: ""; }
+.mg-acc > summary::after { content: "+"; margin-left: auto; font-weight: 400; color: var(--arxiv-library-grey); font-size: 1.25rem; line-height: 1; }
+.mg-acc[open] > summary::after { content: "−"; }
+.mg-acc[open] > summary { border-bottom: 1px solid var(--arxiv-border-light); }
+.mg-acc-body { padding: 14px 16px 16px; font-size: 0.85rem; color: var(--arxiv-repository-brown); }
+.mg-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; margin: 0; }
+.mg-acc-body dt { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.04em; color: var(--arxiv-library-grey); white-space: nowrap; padding-top: 2px; }
+.mg-acc-body dd { margin: 0; }
+.mg-acc-body a { color: var(--arxiv-link-blue); }
+.mg-acc-body .mg-who-row { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+
+/* ── Accordions INSIDE the rail: drop the card chrome so they read as part
+   of the light hairline-separated stack (the rail provides the dividers).
+   Their internals go single-column to fit the narrow rail. ── */
+.mg-rail .mg-acc { background: transparent; border: 0; border-radius: 0; }
+.mg-rail .mg-acc > summary { padding: 0; font-size: 0.82rem; }
+/* Blue +/- marker so the disclosures read as interactive "good stuff"
+   (Open Blue itself is too light for a glyph; link-blue is its readable
+   sibling). Hovering tints the label to match. */
+.mg-rail .mg-acc > summary::after { font-size: 1.1rem; color: var(--arxiv-link-blue); }
+.mg-rail .mg-acc > summary:hover { color: var(--arxiv-link-blue); }
+.mg-rail .mg-acc[open] > summary { border-bottom: 0; margin-bottom: 10px; }
+.mg-rail .mg-acc-body { padding: 0; }
+.mg-rail .mg-acc-body dl { grid-template-columns: 1fr; gap: 0; }
+.mg-rail .mg-acc-body dt { margin-top: 10px; }
+.mg-rail .mg-acc-body dt:first-child { margin-top: 0; }
+.mg-rail .mg-acc-body dd { margin: 1px 0 0; }
+
+/* ── Versions accordion (rail) — inline version links per the version-display
+   pattern (docs/version-display.html): the current version is bold
+   ink + aria-current and is NOT a link; prior versions are Link Blue links. A
+   quiet left rule gives the list a timeline feel; the current row's rule is
+   Link Blue. ── */
+.mg-ver-count { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.66rem; letter-spacing: 0.04em; color: var(--arxiv-library-grey); font-weight: 600; }
+.mg-ver-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.mg-ver { padding-left: 12px; border-left: 2px solid var(--arxiv-border-light); }
+.mg-ver-current { border-left-color: var(--arxiv-link-blue); }
+.mg-ver-top { display: flex; align-items: baseline; flex-wrap: wrap; gap: 3px 8px; }
+.mg-ver-id { font-family: var(--arxiv-font-mono); font-size: 0.82rem; font-weight: 700; color: var(--arxiv-repository-brown); text-decoration: none; }
+a.mg-ver-id { color: var(--arxiv-link-blue); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
+.mg-ver-tag { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.6rem; letter-spacing: 0.05em; font-weight: 700; color: var(--arxiv-link-blue); }
+.mg-ver-date { font-size: 0.72rem; color: var(--arxiv-library-grey); font-variant-numeric: tabular-nums; }
+.mg-ver-note { margin: 3px 0 0; font-size: 0.78rem; color: var(--arxiv-repository-brown); line-height: 1.45; }
+.mg-ver-foot { margin: 13px 0 0; font-size: 0.78rem; }
+
+/* ── In-flow version line + older-version warning (main reading column).
+   The rich version history lives in the sidebar "Versions" accordion; the
+   two time-critical pieces — the dates and the newer-version warning —
+   surface here in the reading column so every reader (AT, mobile,
+   citation-arrival) meets them near the title. ── */
+.mg-verline { font-size: 0.9rem; color: var(--arxiv-library-grey); margin: 10px 0 0; font-variant-numeric: tabular-nums; }
+.mg-verline time { color: inherit; }
+.mg-vl { font-family: var(--arxiv-font-mono); font-size: 0.9rem; margin-left: 6px; }
+.mg-vl.is-other { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 3px; }
+.mg-vl.is-other:hover { color: var(--arxiv-link-hover); }
+.mg-vl.is-current { color: var(--arxiv-repository-brown); font-weight: 700; }
+.mg-vl:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 2px; }
+.mg-verwarn { display: flex; align-items: flex-start; gap: 10px; max-width: 680px; margin: 12px 0 0; background: var(--arxiv-warning-bg); border: 1px solid var(--arxiv-warning-border); border-radius: 4px; padding: 10px 14px; font-size: 0.8125rem; color: var(--arxiv-warning-fg); }
+.mg-verwarn-icon { flex-shrink: 0; width: 18px; height: 18px; color: #b88c00; margin-top: 1px; }
+.mg-verwarn p { margin: 0; line-height: 1.5; }
+.mg-verwarn a { color: var(--arxiv-warning-fg); font-weight: 600; text-decoration: underline; }
+.mg-verwarn a:hover { color: #5a4400; }
+/* ══ CENTERED STICKY TOC BAR — full-bleed, semi-transparent ══
+   z-index: 100 (sticky-headers tier per DESIGN-POLICIES.md Z-layer scale).
+   The TOC bar is functionally sticky header chrome, so it sits at the
+   sticky-header tier (100), and its dropdown sits just above (110).
+
+   box-sizing: border-box so the 24px horizontal padding is INCLUDED in
+   width: 100vw. Without this the bar was 100vw + 48px wide, overflowing
+   the viewport by 48px at every width — which expanded the body's scroll
+   width, shifted the article's center, and made the band's symmetric
+   negative-margin trick (calc(50% - 50vw)) come out asymmetric. Caught
+   in browser review at 1025-1199px (2026-06-24). */
+.mg-toc-bar { box-sizing: border-box; position: sticky; top: 0; z-index: 100; padding: 10px 0;
+  /* full-bleed: break out of any constrained parent so the bar spans the viewport */
+  width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
+  background: rgba(255,255,255, 0.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  /* Top hairline: marks the threshold where the abstract/tools zone ends and
+     the paper begins, and gives the row a shared edge so the Contents lozenge
+     and Abstract / PDF / TeX tools don't read as floating. */
+  border-top: 1px solid var(--arxiv-border-light);
+  border-bottom: 1px solid transparent;
+  /* Transition padding so the compact-on-scroll state animates smoothly. */
+  transition: padding .2s ease, background .25s ease, backdrop-filter .25s ease, border-color .15s; }
+.mg-toc-bar.is-stuck { background: rgba(255,255,255, 0.85); border-bottom-color: var(--arxiv-border-light); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+/* 1fr | auto | 1fr keeps the TOC lozenge centered in the viewport (the left
+   spacer balances the right-hand tools column). */
+.mg-toc-bar-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; }
+/* .mg-toc-bar scope beats the base `.new-html-nav { justify-self: end }`. */
+.mg-toc-bar .mg-toc-spacer { justify-self: start; }
+.mg-toc-wrap { justify-self: center; }
+.mg-toc-tools { justify-self: end; }
+.mg-toc-bar .nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
+/* Compact on scroll (mirrors the retired reader header): tighter row, drop
+   the tool text labels to icons, and shrink the lozenge. */
+.mg-toc-bar.is-stuck { padding: 4px 0; }
+.mg-toc-bar.is-stuck .nav-label { display: none; }
+/* Exception: the Abstract link keeps its text label even in the compact
+   state. It's navigation, not a format download — a bare ← reads as
+   browser-back, and no icon unambiguously means "abstract page". The
+   PDF / TeX glyphs survive compaction because they're recognizable
+   format marks; a direction arrow isn't. */
+.mg-toc-bar.is-stuck .mg-abs-link .nav-label { display: inline; }
+.mg-toc-bar.is-stuck .mg-toc-trigger { padding: 4px 13px; font-size: 0.8rem; }
+/* On narrow viewports the labels would crowd the lozenge — show icons only. */
+@media (max-width: 760px) {
+  .mg-toc-bar .nav-label { display: none; }
+  .mg-toc-bar-inner { gap: 6px; padding: 0 12px; }
+}
+/* In reader mode the sticky reader header is at top:0; push the sticky TOC
+   below it. Use 36px to match the COMPACT header height (the reader's
+   compact-on-scroll script shrinks the 52px header to 36px when the page is
+   scrolled — which is when the TOC is sticking). At top of page the TOC is
+   in its natural position (below the abstract), so the larger header height
+   doesn't matter there. */
+body.mg-reader .mg-toc-bar { top: 36px; }
+
+/* ══ TOC SCROLL-SWAP (reader mode only) ══
+   When the user scrolls past the abstract in reader view, animate the TOC
+   bar UP from `top: 36px` to `top: 0` so its trigger visually slides into
+   the header's center cell — and simultaneously fade+translate the
+   Reader-view toggle out. Pure CSS transitions; no DOM mutation. The bar's
+   padding also tightens to 2px so the trigger sits centered in the 36px
+   header area instead of protruding below it, and the bar's background
+   fades to transparent so the header chrome (logo, nav) shows through.
+   JS just toggles `body.mg-toc-stuck` past the threshold. */
+body.mg-reader.mg-toc-stuck .mg-toc-bar {
+  top: 0;
+  padding: 2px 24px;
+  background: transparent;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+/* .ltx_page_main has `contain: layout` (ar5iv default), which creates a
+   stacking context — trapping the bar's z-index: 100 INSIDE the page-main,
+   below the header's z-index: 2 at body level. When stuck, the bar needs
+   to paint OVER the header chrome, so drop containment so the bar's
+   z-index works at body level. (At rest, the bar is at top: 36px and
+   never overlaps the header, so containment doesn't matter there.) */
+body.mg-reader.mg-toc-stuck .ltx_page_main { contain: none; }
+/* When riding in the header chrome, the trigger drops its shadow and
+   tightens — reads as chrome, not a card-on-page button. The transition
+   matches the bar's so they animate together. */
+.mg-toc-trigger {
+  transition: padding .25s ease, font-size .25s ease, box-shadow .25s ease;
+}
+body.mg-reader.mg-toc-stuck .mg-toc-trigger {
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  box-shadow: none;
+}
+/* Reader-view toggle fades + slides up out of view, with pointer-events
+   disabled so it can't be clicked through during/after the fade. */
+body.mg-reader .arxiv-html-header .mg-reader-toggle {
+  transition: opacity .2s ease, transform .2s ease;
+}
+body.mg-reader.mg-toc-stuck .arxiv-html-header .mg-reader-toggle {
+  opacity: 0;
+  transform: translateY(-30px);
+  pointer-events: none;
+}
+.mg-toc-wrap { position: relative; }
+.mg-toc-trigger { display: inline-flex; align-items: center; gap: 9px; font-family: var(--arxiv-font-sans); font-size: 0.85rem; font-weight: 600; background: #fff; color: var(--arxiv-repository-brown); border: 1px solid var(--arxiv-pill-border); border-radius: 22px; padding: 7px 14px 7px 14px; cursor: pointer; max-width: min(480px, calc(100vw - 48px)); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.mg-toc-trigger:hover { background: var(--arxiv-warm-wash); }
+.mg-toc-trigger:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
+/* position:relative + z-index lift both icons above the pill background;
+   ar5iv's global `svg { z-index:-1 }` otherwise hides them. */
+.mg-toc-trigger .toc-ic { width: 16px; height: 16px; flex: none; color: var(--arxiv-library-grey); position: relative; z-index: 1; }
+.mg-toc-trigger .toc-prefix { font-weight: 400; color: var(--arxiv-library-grey); }
+.mg-toc-trigger .toc-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mg-toc-trigger .toc-chev { width: 14px; height: 14px; flex: none; color: var(--arxiv-library-grey); transition: transform .15s; position: relative; z-index: 1; }
+.mg-toc-trigger[aria-expanded="true"] .toc-chev { transform: rotate(180deg); }
+.mg-toc-dropdown { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 8px; box-shadow: 0 8px 28px rgba(0,0,0,0.14); padding: 8px 0; min-width: 280px; max-height: 60vh; overflow-y: auto; z-index: 110; }
+.mg-toc-dropdown[hidden] { display: none; }
+.mg-toc-dropdown ol { list-style: none; margin: 0; padding: 0; counter-reset: tocsec; }
+.mg-toc-dropdown li { counter-increment: tocsec; }
+.mg-toc-dropdown a { display: flex; gap: 10px; padding: 6px 18px; text-decoration: none; color: var(--arxiv-repository-brown); font-size: 0.85rem; line-height: 1.4; }
+.mg-toc-dropdown a:hover { background: var(--arxiv-warm-wash); }
+.mg-toc-dropdown a.is-current { background: var(--arxiv-active-bg); color: var(--arxiv-link-blue); font-weight: 600; }
+.mg-toc-dropdown a .toc-num { color: var(--arxiv-library-grey); font-variant-numeric: tabular-nums; min-width: 22px; }
+.mg-toc-dropdown a.is-current .toc-num { color: var(--arxiv-link-blue); }
+
+/* ══ FOOTER (ported from abstract-phase2.html) ══ */
+.arxiv-html-footer { display: none !important; }
+footer.ds-site-footer { clear: both; border-top: 1px solid var(--arxiv-pill-border); background: var(--arxiv-warm-wash); padding: 24px 24px 28px; margin: 0; font-family: "IBM Plex Sans", -apple-system, sans-serif; }
+footer.ds-site-footer .ds-site-footer-ack { font-size: 0.8125rem; color: var(--arxiv-library-grey); margin-bottom: 14px; line-height: 1.6; max-width: 900px; }
+footer.ds-site-footer .ds-site-footer-ack a { font-size: 0.8125rem; color: var(--arxiv-link-blue); }
+footer.ds-site-footer .ds-site-footer-links { display: flex; gap: 8px; flex-wrap: wrap; font-size: 0.8125rem; line-height: 1.8; max-width: 900px; }
+footer.ds-site-footer .ds-site-footer-links a { font-size: 0.8125rem; color: var(--arxiv-library-grey); text-decoration: none; }
+footer.ds-site-footer .ds-site-footer-links a:hover { color: var(--arxiv-repository-brown); text-decoration: underline; }
+footer.ds-site-footer .ds-site-footer-sep { color: var(--arxiv-border-light); }
+.ds-site-footer-grid { display: flex; row-gap: 24px; column-gap: 32px; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; }
+.ds-site-footer-main { flex: 0 1 auto; min-width: 280px; max-width: 720px; }
+.ds-site-footer-funders { flex-shrink: 0; text-align: center; }
+.ds-site-ds-site-footer-funders-label { font-family: "IBM Plex Sans", -apple-system, sans-serif; font-size: 0.875rem; font-weight: 600; color: var(--arxiv-repository-brown); margin-bottom: 12px; line-height: 1.4; }
+.ds-site-ds-site-footer-funders-logos { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.ds-funder-logo { box-sizing: content-box; display: block; height: 40px; width: auto; flex-shrink: 0; padding: 4px 8px; border: 1px solid var(--arxiv-pill-border); border-radius: 3px; }
+@media (max-width: 720px) { .ds-site-footer-funders { width: 100%; margin-top: 8px; } }
+.ack-member-inline strong { color: var(--arxiv-repository-brown); font-weight: 600; }
+.member-footer-callout { display: none; }
+@media print { footer.ds-site-footer { display: none !important; } }
+
+/* ══ MODE SWITCHING ══ */
+/* Abstract mode (default): hide reader header. */
+body:not(.mg-reader) .arxiv-html-header { display: none !important; }
+/* Reader mode: hide ds-* abstract chrome and the tinted band; white reading canvas. */
+body.mg-reader .mg-abs-only { display: none; }
+body.mg-reader .mg-band { display: none; }
+body.mg-reader { background: #fff; }
+/* (Old reader-mode top padding removed — once grid-template-areas put the
+   reader header in its own grid row above .ltx_page_main, the padding-top
+   became redundant and visible as a 52px gap at narrow widths.) */
+/* In both modes, the reader's own toc-trigger (which lived in the reader-header
+   center) is hidden — we put the Reader-view toggle in that cell instead, and
+   the TOC moves to its own centered sticky button below. */
+.arxiv-html-header .toc-trigger { display: none; }
+
+/* Defensive: never show MathML TeX annotations visually. Browsers should
+   hide these by default, but pin display:none so the rendered equation is
+   the only visible representation. */
+math annotation, math annotation-xml { display: none !important; }
+
+/* The reader's CSS has `.eqn-region.show-tex .eqn-tex-view { display: block }`
+   for the "View TeX" toggled state, but is missing the default-hide rule.
+   Without it the <pre class="eqn-tex-view"> defaults to `display: block` (the
+   browser's default for <pre>) and the TeX source leaks under every equation.
+   Hide by default; the toggle's rule restores it. */
+.eqn-tex-view { display: none; }
+
+/* ══ GRID INSERTION ══
+   The reader's <body> is a 5-column grid with named areas:
+     "header header header header header"   <- reader header lives here
+     ".      nav    article .      .     "   <- ltx_page_main is `article`
+     "footer footer footer footer footer"
+   Putting my chrome on row 1 or 2 would stack with those (caused a visual
+   overlap where the watermark intercepted clicks on my toggle). Instead,
+   insert two new rows at the very top for announcement + mg-shell; the
+   reader's three existing rows shift down unchanged. */
+body {
+  grid-template-rows: auto auto auto auto auto !important;
+  grid-template-areas:
+    "mgann mgann mgann mgann mgann"
+    "mgsh  mgsh  mgsh  mgsh  mgsh"
+    "header header header header header"
+    ".      nav    article .      ."
+    "footer footer footer footer footer" !important;
+}
+.ds-announcement { grid-area: mgann; }
+.mg-shell        { grid-area: mgsh; }
+footer.ds-site-footer { grid-area: footer; }
+/* TOC bar lives INSIDE .ltx_page_main (article area), so it doesn't need
+   grid placement at the body level. */
+
+/* ══ RELATED (arXiv Labs) styles REMOVED for phase 1 ══
+   The full-width Labs band below the paper was cut from the phase 1
+   scope (see the markup tombstone near </article>); its styles went
+   with it. See the parent mockup
+   merged-abstract-reader.html (removed 2026-08-10; in git history). */
+
+/* ══ STICKY TOC — design note ══
+   The TOC bar is sticky in BOTH abstract and reader modes. DESIGN-POLICIES.md
+   currently says "sticky chrome is exceptional" with the HTML reader as the
+   sole approved surface — but the merged page IS reader-first (it embeds the
+   full paper inline), so sticky TOC is the right call here. Logging as a
+   deliberate override of the current policy text; if this surface ships, the
+   policy should be updated to add the merged page as a second approved
+   sticky-chrome surface (2026-06-24 design review, finding D). */
+
+/* ══ PREFERS-REDUCED-MOTION ══
+   Honor the OS / browser preference: kill ALL the motion in my injected
+   layer (toggle slide, sticky-bar background fade, chevron rotate, etc.).
+   The page's own existing rules cover the reader/paper transitions
+   separately — this only covers .mg-* / .ds-btn elements I authored.
+   DESIGN-POLICIES.md → Chrome and interaction structure. */
+@media (prefers-reduced-motion: reduce) {
+  .mg-reader-toggle, .mg-reader-toggle .tk, .mg-reader-toggle .tk::after,
+  .mg-toc-bar, .mg-toc-trigger, .mg-toc-trigger .toc-chev,
+  .mg-cite-copy, .mg-acc,
+  .ds-btn, .ds-btn-primary { transition: none !important; }
+}
+</style>
 </head>
 <body>
+
+<!-- Canonical skip link — FIRST focusable element on the page (DESIGN-POLICIES.md
+     accessibility + design-system.css behavior contract). Jumps to the LaTeXML
+     main landmark so AT users can bypass all chrome in one keystroke. -->
+<a class="ds-skip-link" href="#main">Skip to main content</a>
+
+<!-- ══ Announcement banner — OUTSIDE .mg-abs-only so it persists in BOTH
+     modes (closeable by the reader). ══ -->
+<div class="ds-announcement" id="mg-announcement" role="region" aria-label="Announcement">
+  <img class="ds-announcement-glyph" src="images/smileybones-small.svg" alt="" aria-hidden="true">
+  <span class="ds-announcement-text">arXiv is now an independent nonprofit!</span>
+  <a class="ds-announcement-link" href="https://info.arxiv.org/about/index.html">Learn more</a>
+  <button type="button" class="ds-announcement-close" id="mg-announcement-close" aria-label="Dismiss announcement">&times;</button>
+</div>
+
+<div class="mg-shell">
+<!-- ══ ABSTRACT-MODE CHROME (mg-abs-only): ds-site-header with the
+        Reader-view toggle in the center cell ══ -->
+<div class="mg-abs-only">
+  <header class="ds-site-header">
+    <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
+      <img src="images/arxiv-logo.png" alt="archive">
+    </a>
+    <!-- (Reader-view toggle removed 2026-06-26: the single default page is
+         the reading surface; paper tools now live in the sticky TOC bar.) -->
+    <div class="ds-site-header-center"></div>
+    <nav class="ds-site-header-nav" aria-label="Main navigation">
+      <a href="https://arxiv.org/search" aria-label="Search archive">
+        <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Search
+      </a>
+      <a href="https://arxiv.org/submit">Submit</a>
+      <a href="https://info.arxiv.org/about/donate.html">Donate</a>
+      <span class="ds-site-header-divider" aria-hidden="true"></span>
+      <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
+    </nav>
+  </header>
+</div>
+</div><!-- /.mg-shell -->
 
 <!--
 ═══════════════════════════════════════════════════════════════════════
@@ -250,7 +1011,7 @@
 <style>
 /* ── Color tokens ──
    Same names and values as docs/public/design-system.css
-   (and the abstract-redesign mockup) so both mockups speak the design
+   (and the abstract-phase2 mockup) so both mockups speak the design
    system's vocabulary. Self-contained by design; production imports
    the shared design-system.css instead. */
 :root {
@@ -338,7 +1099,7 @@ html { scroll-padding-top: 80px; }
    │  Repository Brown — the reader is a content-first context, so    │
    │  the chrome recedes more here.                                   │
    │                                                                  │
-   │  Companion: abstract-redesign.html uses the same nav patterns    │
+   │  Companion: abstract-phase2.html uses the same nav patterns    │
    │  in a dark header. The reader context warrants the lighter take. │
    │                                                                  │
    │  Compact-on-scroll: after scrolling past the abstract, the       │
@@ -841,7 +1602,7 @@ html { scroll-padding-top: 80px; }
    ├──────────────────────────────────────────────────────────────────┤
    │  Replaces ar5iv's default font stack (Source Sans / Source Code) │
    │  with IBM Plex, matching the rest of the redesign. Heading sizes │
-   │  match abstract-redesign.html's hierarchy: H1 32px, H2 20px,     │
+   │  match abstract-phase2.html's hierarchy: H1 32px, H2 20px,     │
    │  H3 16px. Body 15px / 1.7 line-height. Justified prose with      │
    │  hyphens to match the PDF reading rhythm researchers expect.     │
    │                                                                  │
@@ -1062,8 +1823,8 @@ h1.ltx_title.ltx_title_document {
 .ltx_page_content { margin-bottom: 0 !important; }
 .ltx_section, .ltx_bibliography { margin-bottom: 0 !important; }
 section.ltx_bibliography {
-  margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;       /* no external gap to the Related band below */
+  padding-bottom: 36px !important;   /* separation lives inside the tint, not as a gap */
 }
 .ltx_bibliography > ul { margin-bottom: 0 !important; }
 
@@ -1087,10 +1848,10 @@ section.ltx_bibliography {
    └──────────────────────────────────────────────────────────────────┘ */
 
 .ltx_authors-list {
-  display: block !important;
+  display: inline !important;   /* flow inline so the "show all" toggle can sit at the end of the list */
   list-style: none !important;
   padding: 0 !important;
-  margin: 0 0 0.5rem 0 !important;
+  margin: 0 !important;
   text-align: center;
   line-height: 1.6;
 }
@@ -1117,8 +1878,9 @@ section.ltx_bibliography {
   padding: 0;
   cursor: pointer;
   font-style: italic;
-  display: block;
-  margin: 0.25rem auto 1.5rem;
+  display: inline;            /* sit inline at the end of the author list */
+  white-space: nowrap;
+  margin: 0 0 0 6px;
 }
 .ltx_authors-toggle:hover { color: var(--arxiv-repository-brown); text-decoration: underline; }
 .ltx_authors-toggle:focus-visible {
@@ -1478,12 +2240,12 @@ cite.ltx_cite.cite-active-source a.ltx_ref {
    │  LaTeXML default closely. flex-wrap lets short equations get a   │
    │  two-column chip layout while tall equations get one column.     │
    │                                                                  │
-   │  The four chips (single-tier reveal, all together):              │
+   │  The three chips (single-tier reveal, all together):             │
    │    1. View TeX     toggles inline math ↔ TeX source              │
    │    2. Copy         copies whatever's currently displayed         │
    │                    (MathML in math view, TeX in TeX view)        │
    │    3. Permalink    copies #S2.E1-style URL                       │
-   │    4. Listen       disabled — forward-looking proposal           │
+   │  (Phase 1: the fourth "Listen" chip was removed with read-aloud.)│
    │  Chips 1 and 2 are visually adjacent because copy depends on     │
    │  the toggle state — proximity makes the relationship clear.      │
    │                                                                  │
@@ -1709,11 +2471,6 @@ table.ltx_equationgroup math.ltx_math_unparsed {
    and the toggle context already say "source". Same max-width/scroll
    behavior as the rendered equation it replaces. */
 .eqn-tex-view {
-  /* Hidden by default — the "View TeX" toggle below adds .show-tex on the
-     region to reveal this pane. Without this default, <pre>'s browser
-     default `display: block` would leak the TeX source under every
-     equation (caught 2026-06-24 in design review of merged page). */
-  display: none;
   font-family: var(--arxiv-font-mono);
   font-size: 0.8125rem;
   line-height: 1.6;
@@ -1938,7 +2695,12 @@ html:not(.js) .reading-progress { display: none !important; }
 .ftn-popover-close:hover { color: var(--arxiv-repository-brown); background: var(--arxiv-active-bg); }
 
 /* Hide the right-margin marginalia on narrow viewports (no room). */
-@media (max-width: 1199px) {
+/* Switch to popover below 1300px. The right-margin marginalia sits at a
+   fixed offset from the 832px article, so its right edge lands at ~50vw+636
+   and only clears the viewport once vw ≳ 1300 (the 1200 boundary used to
+   leave it clipped from ~1200–1271px). Keep CSS in sync with the footnote
+   JS WIDE_BP and the figure chip/marginalia breakpoints below. */
+@media (max-width: 1299px) {
   .ftn-marginalia { display: none; }
 }
 
@@ -1947,20 +2709,19 @@ html:not(.js) .reading-progress { display: none !important; }
    ├──────────────────────────────────────────────────────────────────┤
    │  Each <figure> gets a wrapper that supports the same hover/      │
    │  reveal pattern as equations. Two margin slots:                  │
-   │    LEFT margin (arXiv layer): permalink chip; "Add an image      │
-   │      description" affordance when alt-text is missing; the       │
-   │      "no alt text provided" notice itself.                       │
+   │    LEFT margin (arXiv layer): permalink chip; at narrow          │
+   │      widths, a "How to add alt text" guidance link when          │
+   │      alt-text is missing.                                        │
    │    RIGHT margin (author layer): the alt-text content, visible    │
    │      to sighted readers. Surfacing what would otherwise be       │
    │      invisible-to-eye but available to screen readers.           │
    │                                                                  │
    │  Why alt-text on the right (author layer): the alt attribute     │
    │  is whatever the author wrote. arXiv's role here is making it    │
-   │  visible, not authoring it. (If alt is added post-hoc by an      │
-   │  agent or community contribution, that's a separate flow         │
-   │  whose result still ends up as the author-authoritative alt.)    │
-   │  The "Add a description" CTA in the left margin IS arXiv-layer   │
-   │  because it's the platform's affordance, not the author's text.  │
+   │  visible, not authoring it. Phase 1: the community/agent         │
+   │  contribution flows are removed (they need backend               │
+   │  infrastructure — deferred). Phase 1 keeps only display of       │
+   │  author alt text plus a "How to add alt text" guidance link.     │
    │                                                                  │
    │  Same wide/narrow split as formulas and footnotes. Below 1200px  │
    │  the marginalia collapse into a chip-pill below the figure;      │
@@ -2117,7 +2878,7 @@ html:not(.js) .reading-progress { display: none !important; }
   line-height: 1.3;
 }
 /* Narrow-only chips: visible only when the right marginalia is hidden. */
-@media (min-width: 1200px) {
+@media (min-width: 1300px) {
   .fig-chip.is-narrow-only { display: none; }
 }
 
@@ -2166,9 +2927,10 @@ html:not(.js) .reading-progress { display: none !important; }
 }
 
 /* Action affordances — stacked text-links within the marginalia.
-   Used for "Improve description", "Request clarification", and
-   "Add a description". Same visual treatment for all three; the
-   labels themselves communicate purpose. */
+   Phase 1: only the "How to add alt text" guidance link remains (a
+   real <a> to the submission help docs — the underlined-link
+   treatment is genuinely a link here). The community contribution
+   actions were removed with the rest of that flow. */
 .fig-alt-actions {
   display: flex;
   flex-direction: column;
@@ -2202,7 +2964,7 @@ html:not(.js) .reading-progress { display: none !important; }
 /* Below 1199px: collapse the wide layout — right-margin marginalia
    moves into a chip that opens a popover. The chip pill itself uses
    the same treatment at every breakpoint (see base .fig-chips rule). */
-@media (max-width: 1199px) {
+@media (max-width: 1299px) {
   .fig-alt-marginalia { display: none; }
 }
 
@@ -2215,48 +2977,11 @@ html:not(.js) .reading-progress { display: none !important; }
 }
 
 
-/* ┌──────────────────────────────────────────────────────────────────┐
-   │  9b.  READ-ALOUD (text-to-speech)                                │
-   ├──────────────────────────────────────────────────────────────────┤
-   │  Functional whole-paper read-aloud via the browser's built-in    │
-   │  Web Speech API (speechSynthesis) — no external service, no      │
-   │  audio files, consistent with the no-third-party-tools position. │
-   │                                                                  │
-   │  Audience note: this serves SIGHTED listeners — dyslexia (Smith: │
-   │  "I can read the maths but not the text"), fatigue (Wayne Dick:  │
-   │  "text to speech combats fatigue"), and multitask reading.       │
-   │  Screen-reader users have their own, better TTS — this feature   │
-   │  must never interfere with AT (it only speaks on explicit        │
-   │  request).                                                       │
-   │                                                                  │
-   │  The currently-spoken paragraph carries a quiet active-family    │
-   │  wash (G4: light blue = arXiv layer speaking) — doubling as the  │
-   │  reading-line tracking that dyslexia research asks for.          │
-   └──────────────────────────────────────────────────────────────────┘ */
-
-/* The hidden attribute loses to our explicit display:inline-flex on
-   nav buttons (UA [hidden] rule has lower precedence than author
-   display) — without this, the skip buttons occupy invisible width
-   and blow the 320px reflow budget. */
-.tts-skip[hidden] { display: none !important; }
-
-.tts-trigger.is-speaking {
-  background: var(--arxiv-active-bg) !important;
-  color: var(--arxiv-repository-brown) !important;
-}
-.tts-now-reading {
-  background: var(--arxiv-active-bg);
-  border-radius: 3px;
-  box-shadow: 0 0 0 6px var(--arxiv-active-bg); /* bleed past the text box */
-  transition: background 0.2s ease;
-}
-@media (prefers-reduced-motion: reduce) {
-  .tts-now-reading { transition: none; }
-}
-/* Hidden without JS (pure enhancement) and when speechSynthesis is
-   unsupported (JS removes the control). */
-html:not(.js) .tts-trigger { display: none !important; }
-@media print { .tts-trigger { display: none !important; } }
+/* (9b READ-ALOUD removed for phase 1 — the Listen / text-to-speech
+   feature was cut from the phase 1 scope as too much complexity.
+   See the parent mockup merged-abstract-reader.html
+   (removed 2026-08-10; in git history) for the full
+   treatment and its research rationale.) */
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  10a. SECTION-HEADING PERMALINKS                                 │
@@ -2560,35 +3285,17 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
          logo (left) and the format/abstract nav (right). Source order
          (logo → center → nav) matches the grid columns. -->
     <div class="new-html-center">
-      <button type="button" class="toc-trigger" id="toc-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="toc-dropdown" title="Jump to a section">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-        <span class="toc-trigger-label" id="toc-trigger-label">
-          <span class="toc-trigger-prefix" id="toc-trigger-prefix" hidden></span><span id="toc-trigger-text">Contents</span>
-        </span>
-        <svg class="toc-trigger-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>
+      <!-- Reader-view toggle for the reader header (matches the one in the
+           black ds-site-header center). The original toc-trigger has been
+           replaced; the TOC now lives as a centered sticky button below the
+           header in both modes. -->
+      <button class="mg-reader-toggle" id="mg-reader-toggle-reader" type="button" aria-pressed="true">
+        <span class="tk" aria-hidden="true"></span> Reader view
       </button>
     </div>
     <nav class="new-html-nav" aria-label="Paper navigation">
-      <!-- Read aloud (decided 2026-06-11): functional text-to-speech of
-           the paper body via the browser's speechSynthesis API. Targets
-           sighted listeners (dyslexia, fatigue, multitasking); screen-
-           reader users have their own TTS. aria-pressed reflects
-           playing state. JS removes this button entirely when the
-           browser lacks speechSynthesis. -->
-      <button type="button" id="tts-trigger" class="tts-trigger" aria-pressed="false" title="Read this paper aloud">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-        <span class="nav-label" id="tts-trigger-label">Listen</span>
-      </button>
-      <!-- Skip controls: visible only while listening. Media-player
-           grammar (the closest thing to a convention users know for
-           spoken content): previous/next block, plus arrow keys. -->
-      <button type="button" id="tts-prev" class="tts-skip" aria-label="Previous paragraph" title="Previous paragraph (left arrow)" hidden>
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
-      </button>
-      <button type="button" id="tts-next" class="tts-skip" aria-label="Next paragraph" title="Next paragraph (right arrow)" hidden>
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
-      </button>
-      <span class="new-html-divider" aria-hidden="true"></span>
+      <!-- (This header is vestigial — kept hidden via `body:not(.mg-reader)`.
+           Phase 1 removed the Listen / read-aloud controls entirely.) -->
       <!-- Back to abstract: the abstract page is the paper's "home." Arrow
            points left to suggest navigating backward in the paper's hierarchy. -->
       <a href="https://arxiv.org/abs/2604.22725v1" title="Back to abstract">
@@ -3040,16 +3747,51 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
      users had no "jump to main content" target and axe flagged all
      page content as outside landmarks. The page chrome (header,
      footer) already uses real landmark elements. -->
-<div class="ltx_page_main" role="main">
+<div class="ltx_page_main" role="main" id="main">
 <div id="infobox" class="infobox"></div>
+<!-- Phase 1: "Back to abstract" as a tertiary button directly below the
+     site header, above the watermark line. A first iteration appended a
+     plain link to the watermark line itself, where it disappeared among
+     the ID / DOI / license small print (feedback 2026-07-28). The
+     abstract page remains the paper's canonical home; this button is
+     the page's primary route back. -->
+<p class="mg-abs-return">
+  <a class="ds-btn ds-btn-tertiary" href="https://arxiv.org/abs/2604.22725v1">
+    <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to abstract
+  </a>
+</p>
 <!-- Watermark line carries the full identity of the paper: arXiv ID,
      full category name (internal feedback 2026-06-11: one tester missed
      the category when only the [gr-qc] code was shown), DOI (many
      readers land here directly without passing the abstract page —
-     internal feedback 2026-06-11), and license. -->
+     internal feedback 2026-06-11), and license. (Phase 1: the
+     "Back to abstract" route lives in the tertiary button ABOVE this
+     line — see .mg-abs-return — not in the watermark itself, where a
+     first iteration showed it disappeared among the small print.) -->
 <p class="new-watermark"><img src="images/smileybones-small-grayscale.svg" alt=""><span aria-hidden="true">arXiv:2604.22725v1 [gr-qc] General Relativity and Quantum Cosmology</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1, primary category General Relativity and Quantum Cosmology</span> &ensp; <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a> &ensp; <a href="https://info.arxiv.org/help/license/index.html#licenses-available"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">License: CC BY 4.0</abbr></a></p><div class="ltx_page_content">
 <article class="ltx_document ltx_authors_1line" lang="en">
+<!-- mg-top: title spans full content width; the row below puts
+     authors+abstract (left) beside the document-tools rail (right). In
+     reader mode .mg-top-cols collapses to a single centered column. -->
+<div class="mg-top">
 <h1 class="ltx_title ltx_title_document" lang="en">Gauge-independent approach to inflation in quadratic gravity</h1>
+<p class="mg-verline">
+  Submitted <time datetime="2026-04-24">24 Apr 2026</time>&nbsp;UTC (this version)
+  <span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>
+  Announced <time datetime="2026-04-25T02:07Z">25 Apr 2026,&nbsp;02:07</time>&nbsp;UTC
+  &nbsp;
+  <span class="mg-vl is-current" aria-current="true" aria-label="Version 1, the version you are viewing">v1</span>
+  <!-- Phase 1 rule: version links always target /abs/ pages, never /html/ —
+       an HTML rendering may not exist for a given version (no-TeX or
+       failed-conversion papers), while the abstract page always exists. -->
+  <a href="https://arxiv.org/abs/2604.22725v2" class="mg-vl is-other" aria-label="View version 2">v2</a>
+  <a href="https://arxiv.org/abs/2604.22725v3" class="mg-vl is-other" aria-label="View version 3">v3</a>
+</p>
+<div class="mg-verwarn" role="status">
+  <svg class="mg-verwarn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+  <p><strong>You are viewing version 1.</strong> A newer version is available &mdash; <a href="https://arxiv.org/abs/2604.22725v3">version 3, revised 28 Jun 2026</a>.</p>
+</div>
 <div class="ltx_authors">
   <ul class="ltx_authors-list">
     <li class="ltx_authors-shown"><a href="#">Adrian Palomares</a></li><li class="ltx_authors-shown"><a href="#">Ilya L. Shapiro</a></li><li class="ltx_authors-shown"><a href="#">Maria C. Gonzalez-Garcia</a></li><li class="ltx_authors-shown"><a href="#">Tomohiro Harada</a></li><li class="ltx_authors-shown"><a href="#">Elena Castellani</a></li><li class="ltx_authors-shown"><a href="#">Kei-ichi Maeda</a></li><li class="ltx_authors-shown"><a href="#">Francesca Vidotto</a></li><li class="ltx_authors-shown"><a href="#">Abhay Ashtekar</a></li><li class="ltx_authors-overflow" id="html-authors-overflow"><a href="#">Roberto Emparan</a></li><li class="ltx_authors-overflow"><a href="#">Alejandra Castro</a></li><li class="ltx_authors-overflow"><a href="#">Jan de Boer</a></li><li class="ltx_authors-overflow"><a href="#">Shin'ichi Nojiri</a></li><li class="ltx_authors-overflow"><a href="#">Sergei D. Odintsov</a></li><li class="ltx_authors-overflow"><a href="#">Viatcheslav Mukhanov</a></li><li class="ltx_authors-overflow"><a href="#">Misao Sasaki</a></li><li class="ltx_authors-overflow"><a href="#">Jiro Soda</a></li><li class="ltx_authors-overflow"><a href="#">Shinji Tsujikawa</a></li><li class="ltx_authors-overflow"><a href="#">Antonio Padilla</a></li><li class="ltx_authors-overflow"><a href="#">Ruth Gregory</a></li><li class="ltx_authors-overflow"><a href="#">Karim A. Malik</a></li><li class="ltx_authors-overflow"><a href="#">David Wands</a></li><li class="ltx_authors-overflow"><a href="#">Takahiro Tanaka</a></li>
@@ -3057,10 +3799,229 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   <button type="button" class="ltx_authors-toggle" id="html-authors-toggle" aria-expanded="false" aria-controls="html-authors-overflow">&hellip; show all 22 authors</button>
 </div>
 
+<!-- Two-column row (abstract mode): abstract on the left, the document-tools
+     rail on the right, sitting below the full-width authors list. -->
+<div class="mg-top-cols">
+<div class="mg-top-main">
 <div id="abstract1" class="ltx_abstract" lang="en">
-<h2 class="ltx_title ltx_title_abstract">Abstract</h2>
+<!-- "Abstract" heading is visually redundant (readers recognize the lead
+     paragraph), but kept for screen-reader navigation via is-sr-only so the
+     abstract still has a heading in the document outline. -->
+<h2 class="ltx_title ltx_title_abstract is-sr-only">Abstract</h2>
 <p class="ltx_p">We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
 </div>
+
+<!-- Skip-to-paper link: positioned right before the tinted-band aside so
+     keyboard / screen-reader users can jump past the metadata directly
+     into the paper. Visually hidden by default; visible on focus. -->
+<p class="mg-abs-only mg-skip-wrap">
+  <a class="mg-skip-to-paper" href="#S1">Skip past document tools to paper content</a>
+</p>
+</div><!-- /.mg-top-main -->
+
+<!-- ══ MERGED LAYER: the document-tools rail (an <aside> "complementary"
+        landmark so screen readers announce it as supplementary content).
+        Right column of the abstract-mode top row; hidden in reader mode
+        (the .mg-band rule). DOM order is Files → Cite → Accessibility →
+        disclosures (Files first for screen readers). ══ -->
+<aside class="mg-band mg-abs-only" aria-label="Document tools and metadata">
+  <div class="mg-rail">
+
+    <!-- Files / actions — DOM-first so screen readers reach the PDF first. -->
+    <section class="mg-files-col" aria-labelledby="mg-files-heading">
+      <h3 id="mg-files-heading">Files</h3>
+      <div class="mg-files">
+        <a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+          Download PDF <small>&middot; 1.2&nbsp;MB</small>
+        </a>
+        <div class="mg-files-links">
+          <div class="mg-files-link">
+            <a href="https://arxiv.org/src/2604.22725v1">TeX Source</a>
+            <small>.tar.gz &middot; 286&nbsp;KB</small>
+          </div>
+        </div>
+        <!-- Ancillary files — with >2 files we keep it to one line: the
+             label + total (count · size) and a "Download all" link, rather
+             than listing every file (keeps the card short). With ≤2 files
+             we'd list them individually by name.ext + size. -->
+        <div class="mg-anc">
+          <span class="mg-anc-label">Ancillary files <span class="mg-anc-total">&middot; 3.6&nbsp;MB</span></span>
+          <a class="mg-anc-all" href="https://arxiv.org/src/2604.22725v1/anc">Download all</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cite — COLLAPSED by default. Copy works without expanding (copies
+         the selected format); Show toggles the raw code (JS in section 6). -->
+    <section class="mg-cite" aria-labelledby="mg-cite-heading">
+      <div class="mg-cite-head">
+        <h3 id="mg-cite-heading">Cite</h3>
+        <label class="is-sr-only" for="mg-cite-style">Citation style</label>
+        <select class="mg-cite-select" id="mg-cite-style" aria-controls="mg-cite-code">
+          <option value="bibtex" selected>BibTeX</option>
+          <option value="apa">APA</option>
+          <option value="chicago">Chicago</option>
+          <option value="mla">MLA</option>
+        </select>
+      </div>
+      <div class="mg-cite-block">
+        <div class="mg-cite-block-bar">
+          <button class="mg-cite-show" id="mg-cite-show" type="button" aria-expanded="false" aria-controls="mg-cite-code">Display BibTeX</button>
+          <button class="mg-cite-copy" id="mg-cite-copy" type="button" aria-label="Copy citation to clipboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="mg-cite-copy-label">Copy</span>
+          </button>
+        </div>
+        <pre class="mg-cite-code" id="mg-cite-code" hidden><code>@article{palomares2026gauge,
+  title = {Gauge-independent approach to inflation in quadratic gravity},
+  author = {Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and others},
+  journal = {arXiv preprint arXiv:2604.22725},
+  year = {2026},
+  doi = {10.48550/arXiv.2604.22725}
+}</code></pre>
+      </div>
+    </section>
+
+    <!-- Paper Information — a collapsible group (Accessibility, Metadata,
+         Related). Deferring the detail to disclosures keeps the card short. -->
+    <section class="mg-paper-info" aria-labelledby="mg-pi-heading">
+      <h3 id="mg-pi-heading">Paper Information</h3>
+      <div class="mg-accordions">
+        <details class="mg-acc" id="mg-versions">
+          <summary>Version History</summary>
+          <div class="mg-acc-body">
+            <ol class="mg-ver-list">
+              <li class="mg-ver">
+                <div class="mg-ver-top">
+                  <a class="mg-ver-id" href="https://arxiv.org/abs/2604.22725v3">[v3]</a>
+                  <span class="mg-ver-tag">latest</span>
+                  <span class="mg-ver-date">28 Jun 2026&nbsp;UTC</span>
+                </div>
+                <p class="mg-ver-note">Latest &mdash; matches the published version (JCAP). Added the Planck 2018 comparison in Sec.&nbsp;4.</p>
+              </li>
+              <li class="mg-ver">
+                <div class="mg-ver-top">
+                  <a class="mg-ver-id" href="https://arxiv.org/abs/2604.22725v2">[v2]</a>
+                  <span class="mg-ver-date">19 May 2026&nbsp;UTC</span>
+                </div>
+                <p class="mg-ver-note">Revised the scalar spectral-index discussion; corrected Eq.&nbsp;(4.7).</p>
+              </li>
+              <li class="mg-ver mg-ver-current" aria-current="true">
+                <div class="mg-ver-top">
+                  <span class="mg-ver-id">[v1]</span>
+                  <span class="mg-ver-tag">viewing</span>
+                  <span class="mg-ver-date">24 Apr 2026&nbsp;UTC</span>
+                </div>
+                <p class="mg-ver-note">Original submission &mdash; the version you're viewing.</p>
+              </li>
+            </ol>
+            <p class="mg-ver-foot"><a href="https://arxiv.org/abs/2604.22725">Full version history</a></p>
+          </div>
+        </details>
+        <details class="mg-acc">
+          <summary>Accessibility</summary>
+          <div class="mg-acc-body mg-acc-a11y">
+            <p class="mg-a11y-line present">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+              <span>HTML, PDF &amp; LaTeX</span>
+            </p>
+            <p class="mg-a11y-line present">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+              <span>Structured math</span>
+            </p>
+            <p class="mg-a11y-line partial">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg>
+              <span>Alt text (partial)</span>
+            </p>
+          </div>
+        </details>
+        <details class="mg-acc">
+          <summary>Metadata</summary>
+        <div class="mg-acc-body">
+          <dl>
+            <dt>Subjects</dt>
+            <dd>General Relativity and Quantum Cosmology (<a href="#">gr-qc</a>); Cosmology and Nongalactic Astrophysics (<a href="#">astro-ph.CO</a>); High Energy Physics &mdash; Theory (<a href="#">hep-th</a>)</dd>
+            <dt>arXiv DOI</dt>
+            <dd><a href="https://doi.org/10.48550/arXiv.2604.22725">10.48550/arXiv.2604.22725</a></dd>
+            <dt>License</dt>
+            <dd><a href="https://creativecommons.org/licenses/by/4.0/"><abbr title="Creative Commons Attribution 4.0">CC BY 4.0</abbr></a></dd>
+            <dt>Journal</dt>
+            <dd><a href="https://doi.org/10.1088/1475-7516/2026/05/012">Journal of Cosmology and Astroparticle Physics, 2026(05), 012</a></dd>
+            <dt>Comments</dt>
+            <dd>v3: 18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.</dd>
+            <dt>Who cites this</dt>
+            <dd class="mg-who-row">
+              <a href="#">Google Scholar</a>
+              <a href="#">NASA ADS</a>
+              <a href="#">Semantic Scholar</a>
+            </dd>
+          </dl>
+        </div>
+      </details>
+      <!-- "Related" (arXiv Labs) is absent in phase 1: the full-width
+           band it had moved to was removed — labs integration is
+           deferred (not all labs act locally on this page; some modify
+           the /abs/ sidebar). See the parent mockup for the band. -->
+
+    </div>
+    </section>
+  </div>
+</aside>
+</div><!-- /.mg-top-cols -->
+</div><!-- /.mg-top -->
+
+<!-- ══ Sticky paper-tools bar: TOC lozenge (centered, emphasis) flanked by
+        plain-text Abstract / PDF / TeX Source tools (right). Borrows the
+        reader-view nav, minus the logo. Compacts on scroll (see
+        .mg-toc-bar.is-stuck). The left spacer keeps the lozenge centered in
+        the viewport via the 1fr | auto | 1fr grid. ══ -->
+<div class="mg-toc-bar" id="mg-toc-bar">
+  <div class="mg-toc-bar-inner">
+    <!-- Left spacer. (Phase 1: the Listen / read-aloud control that lived in
+         this cell was removed — too much complexity for phase 1. The empty
+         div keeps the 1fr | auto | 1fr grid so the Contents lozenge stays
+         centered in the viewport.) -->
+    <div class="mg-toc-spacer" aria-hidden="true"></div>
+    <div class="mg-toc-wrap">
+      <button class="mg-toc-trigger" id="mg-toc-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mg-toc-dropdown">
+        <svg class="toc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+        <span class="toc-text" id="mg-toc-text"><span class="toc-prefix">Contents</span></span>
+        <svg class="toc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <nav class="mg-toc-dropdown" id="mg-toc-dropdown" aria-label="Table of contents" hidden>
+        <ol>
+          <li><a href="#S1"><span class="toc-num">1.</span>Introduction</a></li>
+          <li><a href="#S2"><span class="toc-num">2.</span>Background</a></li>
+          <li><a href="#S3"><span class="toc-num">3.</span>Gauge-invariant perturbations in quadratic gravity</a></li>
+          <li><a href="#S4"><span class="toc-num">4.</span>Constrained optimization</a></li>
+          <li><a href="#S5"><span class="toc-num">5.</span>Conclusions and future research</a></li>
+        </ol>
+      </nav>
+    </div>
+    <nav class="new-html-nav mg-toc-tools" aria-label="Paper tools">
+      <!-- Back to abstract (phase 1): the abstract page stays the paper's
+           canonical home, so the route back rides in the always-visible
+           tools bar. Arrow icon + text label — the label carries the
+           meaning; an arrow alone reads as browser-back. -->
+      <a class="mg-abs-link" href="https://arxiv.org/abs/2604.22725v1" title="Back to abstract">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        <span class="nav-label">Abstract</span>
+      </a>
+      <a href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener noreferrer" title="Download PDF">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+        <span class="nav-label">PDF</span>
+        <span class="is-sr-only">(opens in new tab)</span>
+      </a>
+      <a href="https://arxiv.org/src/2604.22725v1" title="Download TeX source">
+        <span class="tex-logo" aria-hidden="true">T<span class="tex-logo-e">E</span>X</span>
+        <span class="nav-label">Source</span>
+        <span class="is-sr-only">TeX source</span>
+      </a>
+    </nav>
+  </div>
+</div>
+
 <section id="S1" class="ltx_section">
 <h2 class="ltx_title ltx_title_section">
 <span class="ltx_tag ltx_tag_section">1 </span>Introduction</h2>
@@ -3570,9 +4531,10 @@ Under a coordinate transformation <math id="S2.SS2.p3.1.m1" class="ltx_Math" alt
 
 <!-- ────── Mock figure 2: missing alt text ──────
      Demos the case where the author has NOT provided alt-text. The
-     left margin shows arXiv's "no alt text" notice and the "Add an
-     image description" affordance. The right-margin alt-text slot
-     is empty (or hidden). -->
+     right margin shows the "No alt text provided" notice with author
+     guidance and a "How to add alt text" link (phase 1: contribution
+     affordances removed); at narrow widths the same link rides in
+     the chip pill. -->
 <figure class="ltx_figure" id="fig-region-diagram">
   <svg class="fig-placeholder" viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label=""
        style="border: 1px solid #e4e0db;">
@@ -6021,6 +6983,15 @@ We thus see that</p>
 <aside class="footnote" id="fn-lambda">Note that <math class="ltx_Math" alttext="\lambda" display="inline" intent=":literal"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math> corresponds to <math class="ltx_Math" alttext="\beta" display="inline" intent=":literal"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math> in Ref.&nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a href="https://arxiv.org/html/2604.22725v1#bib.bib26" title="Starobinsky inflation with a quadratic Weyl tensor" class="ltx_ref">18</a>]</cite>.</aside>
 <aside class="footnote" id="fn-omega">Note that <math class="ltx_Math" alttext="\omega" display="inline" intent=":literal"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math> corresponds to <math class="ltx_Math" alttext="2\alpha" display="inline" intent=":literal"><semantics><mrow><mn>2</mn><mo lspace="0em" rspace="0em">​</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">2\alpha</annotation></semantics></math> in Ref.&nbsp;<cite class="ltx_cite ltx_citemacro_cite">[<a href="https://arxiv.org/html/2604.22725v1#bib.bib26" title="Starobinsky inflation with a quadratic Weyl tensor" class="ltx_ref">18</a>]</cite>.</aside>
 
+<!-- ══ RELATED (arXiv Labs band) — REMOVED for phase 1 ══
+     The full-width Labs band (opt-in toggles for Connected Papers,
+     Litmaps, CORE, scite, CatalyzeX, Hugging Face, ScienceCast,
+     alphaXiv, Replicate, HF Spaces) is deferred: not all labs act
+     locally on this page — the bibliographic ones modify the /abs/
+     sidebar — so the integration belongs to a later phase
+     (feasibility review 2026-07-28). See the parent mockup
+     merged-abstract-reader.html (removed 2026-08-10; in git
+     history) for the full band. -->
 </article>
 <!--
 ═══════════════════════════════════════════════════════════════════════
@@ -6597,11 +7568,11 @@ We thus see that</p>
      3. Add a <pre class="eqn-tex-view"> sibling holding the TeX source,
         hidden by default.
 
-   The four chips, in DOM order (top to bottom in the margin):
+   The three chips, in DOM order (top to bottom in the margin):
      - View TeX / View math (toggle)        — controls what's displayed
      - Copy                                  — copies current display
      - Permalink                             — copies #S2.E1 URL
-     - Listen                                — disabled placeholder
+   (Phase 1: the "Listen" placeholder chip was removed with read-aloud.)
 
    Toggle and Copy sit adjacent so their relationship reads naturally:
    the toggle controls the form, copy captures the form.
@@ -6620,7 +7591,6 @@ We thus see that</p>
   var ICON_TOGGLE_TEX = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>';
   var ICON_COPY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
   var ICON_LINK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
-  var ICON_LISTEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>';
 
   // Detect touch / no-hover device once at load. Touch-only devices use
   // tap-to-activate instead of hover-to-reveal.
@@ -6743,22 +7713,9 @@ We thus see that</p>
       chips.appendChild(linkChip);
     }
 
-    // 4. Listen — rendered as a disabled forward-looking proposal.
-    //    No click handler. Tooltip explains.
-    var listenChip = makeChip({
-      icon: ICON_LISTEN,
-      label: 'Listen',
-      ariaLabel: 'Listen (proposed feature)',
-      disabled: true,
-      disabledHint: 'Listen — proposed Intent-driven speech (not yet enabled)'
-    });
-    listenChip.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      // Intentional no-op; the chip is rendered as a forward-looking
-      // proposal, not a working feature.
-    });
-    chips.appendChild(listenChip);
+    // (Phase 1: the fourth "Listen" chip — a disabled forward-looking
+    //  proposal for per-equation speech — was removed along with the
+    //  page-level read-aloud feature.)
 
     region.insertBefore(chips, region.firstChild);
   }
@@ -6839,7 +7796,7 @@ We thus see that</p>
    edited — only cloned/rendered into additional surfaces.
 */
 (function() {
-  var WIDE_BP = 1200;
+  var WIDE_BP = 1300;  // margin marginalia needs ~1300px to clear the viewport (see CSS note)
   var openPop = null;
   var activeSource = null; // { marker, marginalia } when a marker is "clicked" at wide
 
@@ -7087,7 +8044,7 @@ We thus see that</p>
      - Wrap it in <div class="fig-region">.
      - Add a LEFT-MARGIN .fig-chips strip:
          "Permalink" chip
-         "Alt text missing" notice + "Add a description" CTA (if alt empty)
+         "How to add alt text" guidance link (narrow widths, if alt empty)
      - Add a RIGHT-MARGIN .fig-alt-marginalia block with the alt-text
        content (if present), so sighted readers can see what AT users
        hear. The alt attribute on the image itself is never modified.
@@ -7098,7 +8055,6 @@ We thus see that</p>
 (function() {
   var ICON_LINK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
   var ICON_ALT  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
-  var ICON_PLUS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
 
   function getAltText(figure) {
     var img = figure.querySelector('img, svg');
@@ -7185,19 +8141,18 @@ We thus see that</p>
       });
       chips.appendChild(viewAlt);
     } else {
-      var addChipNarrow = buildChip({
-        icon: ICON_PLUS,
-        label: 'Add a description',
-        ariaLabel: 'Add an image description for screen readers',
-        cta: true
+      // Phase 1: the "Add a description" contribution CTA is replaced
+      // with author guidance — community/agent-supplied alt text needs
+      // backend infrastructure (annotation storage, moderation) that is
+      // deferred to a later phase.
+      var howToChipNarrow = buildChip({
+        icon: ICON_ALT,
+        label: 'How to add alt text',
+        ariaLabel: 'Learn how to add alternative text to your figures',
+        href: 'https://info.arxiv.org/help/submit_latex_best_practices.html#alt-text-for-images'
       });
-      addChipNarrow.classList.add('is-narrow-only');
-      addChipNarrow.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        alert('In production this would open an alt-text contribution flow — author, agent, or community-supplied.');
-      });
-      chips.appendChild(addChipNarrow);
+      howToChipNarrow.classList.add('is-narrow-only');
+      chips.appendChild(howToChipNarrow);
     }
 
     // Anchor chips to the image's bottom edge when there's an image
@@ -7205,67 +8160,43 @@ We thus see that</p>
     (imageWrap || region).appendChild(chips);
 
     // ── RIGHT marginalia (author layer): alt-text content surfaced
-    // visibly. Contribution affordances live HERE — directly next to
-    // the alt content where they logically belong. Hidden at narrow
-    // viewports; narrow-only chips above carry equivalent affordances
-    // in the pill.
+    // visibly. Hidden at narrow viewports; the narrow-only chips above
+    // carry equivalent affordances in the pill.
     //
-    // Two action surfaces for the alt-present case:
-    //   "Improve description for screen readers" — for sighted helpers
-    //   "Request descriptive clarification"      — for SR users who
-    //                                              need a better
-    //                                              description
-    // Both buttons (and "Add a description" for missing-alt) require
-    // sign-in; the login hint at the bottom of the marginalia
-    // telegraphs that expectation before click.
+    // Phase 1: the community-contribution actions that lived here
+    // ("Improve description for screen readers", "Request descriptive
+    // clarification", "Add a description") are removed — harvesting
+    // community/agent alt text needs annotation storage and moderation
+    // backends, deferred to a later phase (feasibility review,
+    // 2026-07-28). What remains needs no infrastructure: DISPLAY of
+    // author-provided alt text, and author guidance when it's missing.
     var alt = document.createElement('div');
     alt.className = 'fig-alt-marginalia' + (altText ? '' : ' is-missing');
-
-    function addAction(parent, label, ariaLabel, onClick) {
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'fig-alt-action';
-      btn.textContent = label;
-      if (ariaLabel) btn.setAttribute('aria-label', ariaLabel);
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        onClick();
-      });
-      parent.appendChild(btn);
-    }
 
     if (altText) {
       alt.innerHTML =
         '<span class="fig-alt-label">Alt text</span>' +
         '<div class="fig-alt-content">' + altText + '</div>';
-      var actions = document.createElement('div');
-      actions.className = 'fig-alt-actions';
-      addAction(actions,
-        'Improve description for screen readers',
-        'Improve the image description for screen reader users',
-        function() {
-          alert('In production this would open an editor where signed-in contributors can refine the alt-text. Submissions are reviewed for spam.');
-        });
-      addAction(actions,
-        'Request descriptive clarification',
-        'Request a clearer or more detailed image description',
-        function() {
-          alert('In production this would file a request — visible to the author, arXiv, and community contributors — to improve this image’s description. Useful when existing alt text is too brief or unclear.');
-        });
-      alt.appendChild(actions);
     } else {
+      // Deliberately NOT aria-hidden. Screen readers' own signals for
+      // a missing alt attribute are unreliable (filename readout,
+      // "unlabeled graphic", or silently skipping the image), so the
+      // explicit notice is information, not noise. And the guidance
+      // link's primary audience is authors — including blind and
+      // low-vision authors, who must not be cut off from the very
+      // documentation that fixes this. Hiding visible text from AT
+      // would also break visual/accessible parity (braille users,
+      // magnifier + screen-reader users).
       alt.innerHTML =
         '<span class="fig-alt-label">No alt text provided</span>' +
-        '<div class="fig-alt-content">You can improve accessibility for all readers by adding an image description.</div>';
+        '<div class="fig-alt-content">Learn how to add alternative text to your figures and improve accessibility for all readers.</div>';
       var addActions = document.createElement('div');
       addActions.className = 'fig-alt-actions';
-      addAction(addActions,
-        'Add a description',
-        'Add an image description for screen readers',
-        function() {
-          alert('In production this would open an alt-text contribution flow — details to be determined. Another discussion item on the table is agent-supplied alt text.');
-        });
+      var howTo = document.createElement('a');
+      howTo.className = 'fig-alt-action';
+      howTo.href = 'https://info.arxiv.org/help/submit_latex_best_practices.html#alt-text-for-images';
+      howTo.textContent = 'How to add alt text';
+      addActions.appendChild(howTo);
       alt.appendChild(addActions);
     }
     region.appendChild(alt);
@@ -7276,372 +8207,10 @@ We thus see that</p>
   });
 })();
 
-/* ─────────────────────────────────────────────────────────────────
-   BEHAVIOR 4b: Read-aloud (Web Speech API)
-   ─────────────────────────────────────────────────────────────────
-   Functional text-to-speech of the paper body. See the READ-ALOUD CSS
-   block for audience rationale. Interaction contract:
-
-     - Click "Listen": speaks from the first paragraph currently in
-       view (not the top — the reader resumes where the user is).
-       Button becomes "Pause" (aria-pressed=true); previous/next skip
-       buttons appear beside it.
-     - Click again: pauses. Click again: resumes. Esc: stops fully.
-     - KEYBOARD (active only while listening; media-player grammar —
-       the closest convention users know for spoken content; there is
-       no formal web standard for TTS widgets): Left/Right arrows skip
-       a paragraph, Space pauses/resumes, Esc stops. Never intercepted
-       while focus is in an interactive element. At rest all keys
-       behave normally.
-     - The paragraph being spoken carries .tts-now-reading (visual
-       reading-line tracking — the dyslexia research ask) and is kept
-       in view with reduced-motion-aware scrolling.
-     - One utterance per paragraph (long single utterances break in
-       Chrome); onend chains to the next block.
-
-   Content handling (quality of listening over completeness):
-     - Reads: section headings (announced as "Section. Title"),
-       paragraph prose, figure captions.
-     - Math SPEAKS FOR REAL (added 2026-06-12 after internal testing:
-       "Equation 2.3 is not what a blind user needs — they need to
-       hear the equation itself"). Display equations announce their
-       number, then the mathematics via Speech Rule Engine (MathSpeak —
-       literal rules; expert review chose verbose-but-correct over
-       interpretive-but-misleading) run on the LaTeXML MathML — the
-       same engine family behind
-       MathJax's a11y extensions and screen-reader math. Inline math
-       speaks the same way. SRE is lazy-loaded on first Listen (~1 MB,
-       self-hosted); invisible operators (U+2061/2062/200B) are
-       stripped first (the historical "zero width space" misreadings).
-       If the engine fails to load, reading degrades to the previous
-       equation-number fallback rather than blocking. This is the
-       TODAY answer; MathML Intent improves speech as author adoption
-       grows, and a production alternative is precomputing speech
-       strings at conversion time (zero client cost).
-     - Skips: inline citation brackets (Miner's "auditory disturbance"
-       — the skim-suppression research applied to ears), footnote
-       markers, the bibliography, chrome.
-
-   Lifecycle safety: speechSynthesis.cancel() on page hide (browsers
-   otherwise keep speaking after navigation); the control is removed
-   when the API is unavailable; never auto-starts. Screen-reader users
-   have their own TTS — this speaks only on explicit request.
-*/
-(function() {
-  if (!('speechSynthesis' in window)) {
-    document.addEventListener('DOMContentLoaded', function() {
-      var t = document.getElementById('tts-trigger');
-      if (t) {
-        var d = t.nextElementSibling;
-        if (d && d.classList.contains('new-html-divider')) d.remove();
-        t.remove();
-      }
-    });
-    return;
-  }
-
-  var synth = window.speechSynthesis;
-  var trigger = null, triggerLabel = null, prevBtn = null, nextBtn = null;
-  var queue = [];       // [{el, text}]
-  var idx = -1;
-  var state = 'idle';   // idle | speaking | paused
-  var currentEl = null;
-  var gen = 0;          // generation guard: skipping cancels the current
-                        // utterance, whose onend would otherwise race a
-                        // chained speakFrom against the skip's own.
-
-  /* ── Math speech: Speech Rule Engine (lazy-loaded) ──
-     SRE converts the LaTeXML-emitted MathML to spoken English
-     (MathSpeak rules — see the domain note in ensureSRE for why
-     literal beats interpretive on research math, per Deyan Ginev's
-     review). Loaded on the FIRST Listen click only (~1 MB total:
-     engine + English locale), self-hosted in lib/sre/ per the
-     no-external-services policy. If loading fails, reading proceeds
-     with the "Equation N" fallback rather than blocking. Speech per
-     equation is computed once and cached on the element.
-
-     Named successor (not yet integrated): MathCAT compiled to
-     WebAssembly. Unlike SRE it respects the intent=":literal"
-     baseline that LaTeXML already emits (666 instances in this very
-     sample paper) — the natural improvement path as Intent adoption
-     grows. No prebuilt npm/wasm distribution exists today; it would
-     need a wasm-pack build from the Rust crate. Tracked in
-     PROPOSED-GUIDELINES follow-ups. */
-  var sreState = 'none';   // none | loading | ready | failed
-  var sreCache = new WeakMap();
-
-  function loadScript(src) {
-    return new Promise(function(res, rej) {
-      var sc = document.createElement('script');
-      sc.src = src;
-      sc.onload = res;
-      sc.onerror = rej;
-      document.head.appendChild(sc);
-    });
-  }
-
-  function ensureSRE() {
-    if (sreState === 'ready' || sreState === 'failed') return Promise.resolve();
-    if (sreState === 'loading') return ensureSRE._p;
-    sreState = 'loading';
-    // Custom locale loader reads the bundled global — works over
-    // file:// where JSON fetches are blocked.
-    window.SREfeature = {
-      custom: function(loc) {
-        var maps = window.__SRE_MATHMAPS || {};
-        return maps[loc] ? Promise.resolve(maps[loc]) : Promise.reject('no locale ' + loc);
-      }
-    };
-    ensureSRE._p = loadScript('lib/sre/mathmaps-en.js')
-      .then(function() { return loadScript('lib/sre/sre.js'); })
-      .then(function() {
-        // MathSpeak, not ClearSpeak (expert review, Deyan Ginev
-        // 2026-06-12): interpretive rule sets have strong K-12
-        // defaults but "can sound pretty broken over higher math" —
-        // verified on this very paper, where ClearSpeak reads the
-        // product Ht as the function application "H of t". MathSpeak
-        // is verbose but literal: "upper H t" never claims structure
-        // it doesn't know. "Literal readouts are verbose but correct,
-        // which is a better baseline since they won't mislead. And
-        // there is a natural path to improvement from there."
-        return window.SRE.setupEngine({ locale: 'en', domain: 'mathspeak', modality: 'speech' });
-      })
-      .then(function() { return window.SRE.engineReady(); })
-      .then(function() { sreState = 'ready'; })
-      .catch(function() { sreState = 'failed'; });
-    return ensureSRE._p;
-  }
-
-  // Spoken form of one <math> element. LaTeXML emits invisible
-  // operators (function application U+2061, invisible times U+2062,
-  // zero-width space) that have historically produced "zero width
-  // space" / "application" misreadings — stripped before SRE sees
-  // the markup.
-  function mathSpeech(mathEl) {
-    if (sreState !== 'ready') return null;
-    if (sreCache.has(mathEl)) return sreCache.get(mathEl);
-    var out = null;
-    try {
-      var mml = mathEl.outerHTML.replace(/[\u2061\u2062\u2063\u200B\u2064]/g, '');
-      out = window.SRE.toSpeech(mml) || null;
-    } catch (e) { out = null; }
-    sreCache.set(mathEl, out);
-    return out;
-  }
-
-  function prm() {
-    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  }
-
-  // Spoken text for one block, applying the content rules above.
-  function blockText(el) {
-    var clone = el.cloneNode(true);
-    var strip = clone.querySelectorAll(
-      'cite.ltx_cite, .ftn-marker, .cite-popover, .eqn-chips, .fig-chips, ' +
-      '.heading-permalink, .ltx_tag_section, .ltx_tag_subsection, .ltx_note, .is-sr-only'
-    );
-    Array.prototype.forEach.call(strip, function(n) { n.remove(); });
-    // Math speaks for real via SRE. NOTE: speech is computed from the
-    // ORIGINAL elements (the clone's math nodes lack layout but share
-    // structure; we map by index). Fallback when SRE is unavailable:
-    // short alttext or "formula".
-    var origMaths = el.querySelectorAll('math');
-    var maths = clone.querySelectorAll('math');
-    Array.prototype.forEach.call(maths, function(m, i) {
-      var speech = origMaths[i] ? mathSpeech(origMaths[i]) : null;
-      if (!speech) {
-        var alt = (m.getAttribute('alttext') || '').trim();
-        speech = (alt && alt.length <= 24) ? alt : 'formula';
-      }
-      m.parentNode.replaceChild(document.createTextNode(' ' + speech + ' '), m);
-    });
-    return clone.textContent.replace(/\s+/g, ' ').trim();
-  }
-
-  function buildQueue() {
-    queue = [];
-    var article = document.querySelector('article');
-    if (!article) return;
-    var blocks = article.querySelectorAll(
-      'h1.ltx_title_document, .ltx_abstract .ltx_p, ' +
-      '.ltx_section > .ltx_title, .ltx_subsection > .ltx_title, .ltx_appendix > .ltx_title, ' +
-      '.ltx_para > .ltx_p, figure figcaption, table.ltx_equationgroup'
-    );
-    Array.prototype.forEach.call(blocks, function(el) {
-      if (el.closest('.ltx_bibliography')) return; // never read the bib
-      if (el.tagName === 'TABLE') {
-        // Display equation: announce its number for orientation, then
-        // speak the mathematics itself (SRE ClearSpeak). Multi-line
-        // alignments speak line by line with sentence pauses.
-        var tag = el.querySelector('.ltx_tag_equation');
-        var num = tag ? tag.textContent.replace(/[()]/g, '').trim() : '';
-        var label = num ? 'Equation ' + num + '. ' : 'Equation. ';
-        var parts = [];
-        var maths = el.querySelectorAll('math');
-        Array.prototype.forEach.call(maths, function(m) {
-          var sp = mathSpeech(m);
-          if (sp) parts.push(sp);
-        });
-        var spoken = parts.length ? label + parts.join('. ') : label.trim();
-        queue.push({ el: el, text: spoken });
-        return;
-      }
-      var txt = blockText(el);
-      if (!txt) return;
-      if (/ltx_title_section/.test(el.className)) txt = 'Section. ' + txt + '.';
-      else if (/ltx_title_subsection/.test(el.className)) txt = 'Subsection. ' + txt + '.';
-      queue.push({ el: el, text: txt });
-    });
-  }
-
-  function firstVisibleIndex() {
-    for (var i = 0; i < queue.length; i++) {
-      var r = queue[i].el.getBoundingClientRect();
-      if (r.bottom > 80 && r.top < window.innerHeight) return i;
-    }
-    return 0;
-  }
-
-  function setLabel(text, pressed) {
-    if (triggerLabel) triggerLabel.textContent = text;
-    trigger.setAttribute('aria-pressed', pressed ? 'true' : 'false');
-    trigger.classList.toggle('is-speaking', pressed);
-    trigger.setAttribute('title', pressed ? 'Pause reading' : 'Read this paper aloud');
-  }
-
-  function highlight(el) {
-    clearHighlight();
-    currentEl = el;
-    el.classList.add('tts-now-reading');
-    var r = el.getBoundingClientRect();
-    if (r.top < 60 || r.bottom > window.innerHeight - 40) {
-      el.scrollIntoView({ behavior: prm() ? 'auto' : 'smooth', block: 'center' });
-    }
-  }
-  function clearHighlight() {
-    if (currentEl) currentEl.classList.remove('tts-now-reading');
-    currentEl = null;
-  }
-
-  function speakFrom(i) {
-    if (i >= queue.length) { stop(); return; }
-    idx = i;
-    var myGen = ++gen;
-    var item = queue[i];
-    highlight(item.el);
-    var u = new SpeechSynthesisUtterance(item.text);
-    u.onend = function() {
-      if (gen === myGen && state === 'speaking') speakFrom(idx + 1);
-    };
-    u.onerror = function() {
-      if (gen === myGen) stop();
-    };
-    synth.speak(u);
-  }
-
-  // Skip to an adjacent block. Skipping always resumes speech (a
-  // paused listener who skips wants to hear the new position).
-  function skip(delta) {
-    if (state === 'idle' || !queue.length) return;
-    var target = Math.max(0, Math.min(queue.length - 1, idx + delta));
-    gen++;              // invalidate the cancelled utterance's onend
-    synth.cancel();
-    if (state === 'paused') synth.resume();
-    state = 'speaking';
-    setLabel('Pause', true);
-    speakFrom(target);
-  }
-
-  function showSkips(show) {
-    if (prevBtn) prevBtn.hidden = !show;
-    if (nextBtn) nextBtn.hidden = !show;
-  }
-
-  function play() {
-    if (state === 'paused') {
-      synth.resume();
-      state = 'speaking';
-      setLabel('Pause', true);
-      return;
-    }
-    // First play: fetch the math-speech engine so equations are spoken,
-    // not skipped. The label shows progress; reading starts as soon as
-    // the engine is ready (or immediately, with the fallback, if it
-    // fails to load).
-    if (sreState === 'none' || sreState === 'loading') {
-      setLabel('Loading\u2026', true);
-      state = 'speaking';            // reflects intent; Esc during load stops cleanly
-      var myGen = ++gen;
-      ensureSRE().then(function() {
-        // Only start if the user didn't stop/pause during the load.
-        if (gen === myGen && state === 'speaking') beginReading();
-      });
-      return;
-    }
-    beginReading();
-  }
-
-  function beginReading() {
-    buildQueue();
-    if (!queue.length) { stop(); return; }
-    gen++;
-    synth.cancel();
-    state = 'speaking';
-    setLabel('Pause', true);
-    showSkips(true);
-    speakFrom(firstVisibleIndex());
-  }
-  function pause() {
-    synth.pause();
-    state = 'paused';
-    setLabel('Resume', true);
-  }
-  function stop() {
-    gen++;
-    synth.cancel();
-    state = 'idle';
-    setLabel('Listen', false);
-    showSkips(false);
-    clearHighlight();
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    trigger = document.getElementById('tts-trigger');
-    triggerLabel = document.getElementById('tts-trigger-label');
-    prevBtn = document.getElementById('tts-prev');
-    nextBtn = document.getElementById('tts-next');
-    if (!trigger) return;
-    trigger.addEventListener('click', function() {
-      if (state === 'speaking') pause();
-      else play();
-    });
-    if (prevBtn) prevBtn.addEventListener('click', function() { skip(-1); });
-    if (nextBtn) nextBtn.addEventListener('click', function() { skip(1); });
-
-    // Keyboard, media-player grammar, ACTIVE ONLY WHILE LISTENING so
-    // normal page keys are untouched at rest: left/right arrows skip
-    // a paragraph (the page auto-scrolls with speech anyway, so the
-    // arrows' scroll duty is already covered), Space pauses/resumes,
-    // Esc stops. Guarded so typing in inputs/buttons is never hijacked.
-    document.addEventListener('keydown', function(e) {
-      if (state === 'idle') {
-        return;
-      }
-      var t = e.target;
-      var interactive = t && (/^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(t.tagName) || t.isContentEditable);
-      if (e.key === 'Escape') { stop(); return; }
-      if (interactive) return;
-      if (e.key === 'ArrowRight') { e.preventDefault(); skip(1); }
-      else if (e.key === 'ArrowLeft') { e.preventDefault(); skip(-1); }
-      else if (e.key === ' ') {
-        e.preventDefault();
-        if (state === 'speaking') pause(); else play();
-      }
-    });
-    // Browsers keep speaking after navigation unless cancelled.
-    window.addEventListener('pagehide', function() { synth.cancel(); });
-  });
-})();
+/* (BEHAVIOR 4b Read-aloud removed for phase 1 — the Listen /
+   text-to-speech feature was cut from the phase 1 scope. See the
+   parent mockup merged-abstract-reader.html (removed 2026-08-10;
+   in git history) for the full implementation, including the Speech Rule Engine math speech.) */
 
 /* ─────────────────────────────────────────────────────────────────
    BEHAVIOR 5b: Section-heading permalinks
@@ -8032,7 +8601,7 @@ We thus see that</p>
       margin-bottom: 0;
     }
     /* Footer action buttons — canonical V3 primary button treatment
-       (matches abstract-redesign.html .abs-btn + .abs-btn-html/pdf and
+       (matches abstract-phase2.html .abs-btn + .abs-btn-html/pdf and
        the design system's .ds-btn + .ds-btn-primary). Same chrome
        (10px 20px padding, 14px font, 1.5px gradient border, inner
        vignette) so the buttons are consistent across both mockups. */
@@ -8081,7 +8650,7 @@ We thus see that</p>
     }
 
     /* Secondary variant — adapted for the tinted footer context.
-       Mirrors abstract-redesign.html .abs-btn-tex and the design
+       Mirrors abstract-phase2.html .abs-btn-tex and the design
        system's .ds-btn-secondary, but with a Card Grey (#f0eeec) fill
        instead of pure white. Pure white reads as too high-contrast
        against the blue footer band ("primary-ish"); a same-luminance
@@ -8214,4 +8783,222 @@ We thus see that</p>
   </a>
 </footer>
 
+<!-- ══ Exact footer ported from abstract-phase2.html ══ -->
+<footer class="ds-site-footer">
+  <div class="member-footer-callout">
+    <span>Your access to arXiv is supported by <strong>Rheinisch-Westfälische Technische Hochschule Aachen</strong>, an arXiv member institution. Thank you.</span>
+  </div>
+  <div class="ds-site-footer-grid">
+    <div class="ds-site-footer-main">
+      <div class="ds-site-footer-ack">
+        We gratefully acknowledge support from our <strong>major funders</strong>, <a href="#"><strong>member institutions</strong></a><span class="ack-member-inline">, <strong>Rheinisch-Westfälische Technische Hochschule Aachen</strong></span>, and all contributors.
+      </div>
+      <nav class="ds-site-footer-links" aria-label="Site navigation">
+        <a href="https://info.arxiv.org/about">About</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help">Help</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/contact.html">Contact</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/subscribe">Subscribe</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/license/index.html">Copyright</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/policies/privacy_policy.html">Privacy</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/web_accessibility.html">Accessibility</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://status.arxiv.org/" target="_blank" rel="noopener noreferrer">Operational Status</a>
+      </nav>
+    </div>
+    <div class="ds-site-footer-funders">
+      <div class="ds-site-ds-site-footer-funders-label">Major funding support from</div>
+      <div class="ds-site-ds-site-footer-funders-logos">
+        <img class="ds-funder-logo" src="images/Simons-wordmark.png" alt="Simons Foundation">
+        <img class="ds-funder-logo" src="images/Schmidt-wordmark.png" alt="Schmidt Sciences">
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════════════════════
+   MERGED PAGE — added behaviors (2026-06-23)
+   1) Reader-view toggle (two buttons, one per header; they stay in sync)
+   2) Cite dropdown (native <select> swaps the displayed citation)
+   3) Centered sticky TOC button (open/close dropdown; sticky-state class;
+      highlight the current section as user scrolls)
+   ════════════════════════════════════════════════════════════════════ */
+(function () {
+
+  /* ── 1. (Reader-view toggle removed — single default page. The sticky TOC
+        bar below carries the paper tools and compacts on scroll.) ── */
+
+  /* ── 2. Cite dropdown: swap the displayed code AND the "Display <format>"
+        toggle label by selected style ── */
+  var citeSel = document.getElementById('mg-cite-style');
+  var citeCode = document.getElementById('mg-cite-code');
+  var citeShow = document.getElementById('mg-cite-show');
+  var CITES = {
+    bibtex: "@article{palomares2026gauge,\n  title = {Gauge-independent approach to inflation in quadratic gravity},\n  author = {Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and others},\n  journal = {arXiv preprint arXiv:2604.22725},\n  year = {2026},\n  doi = {10.48550/arXiv.2604.22725}\n}",
+    apa: "Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., … & Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. arXiv preprint arXiv:2604.22725. https://doi.org/10.48550/arXiv.2604.22725",
+    chicago: "Palomares, Adrian, Ilya L. Shapiro, Maria C. Gonzalez-Garcia, Tomohiro Harada, et al. “Gauge-Independent Approach to Inflation in Quadratic Gravity.” arXiv preprint arXiv:2604.22725, 2026. https://doi.org/10.48550/arXiv.2604.22725.",
+    mla: "Palomares, Adrian, et al. “Gauge-Independent Approach to Inflation in Quadratic Gravity.” arXiv, 2026, arXiv:2604.22725, https://doi.org/10.48550/arXiv.2604.22725."
+  };
+  var CITE_NAMES = { bibtex: "BibTeX", apa: "APA", chicago: "Chicago", mla: "MLA" };
+  /* Label tracks both the selected format and the open/closed state. The
+     leading caret is a CSS ::before pseudo-element, so setting textContent
+     here leaves it intact. */
+  function updateCiteShowLabel() {
+    if (!citeShow || !citeSel) return;
+    var name = CITE_NAMES[citeSel.value] || "citation";
+    var shown = citeShow.getAttribute('aria-expanded') === 'true';
+    citeShow.textContent = (shown ? "Hide " : "Display ") + name;
+  }
+  if (citeSel && citeCode) {
+    citeSel.addEventListener('change', function () {
+      var code = citeCode.querySelector('code') || citeCode;
+      code.textContent = CITES[citeSel.value] || CITES.bibtex;
+      updateCiteShowLabel();
+    });
+  }
+  updateCiteShowLabel();
+
+  /* ── 3. Centered TOC: open/close + sticky-state + current-section sync ── */
+  var tocBar = document.getElementById('mg-toc-bar');
+  var tocTrig = document.getElementById('mg-toc-trigger');
+  var tocDrop = document.getElementById('mg-toc-dropdown');
+  var tocText = document.getElementById('mg-toc-text');
+  function closeToc() {
+    if (!tocDrop) return;
+    tocDrop.hidden = true;
+    tocTrig.setAttribute('aria-expanded', 'false');
+  }
+  function openToc() {
+    if (!tocDrop) return;
+    tocDrop.hidden = false;
+    tocTrig.setAttribute('aria-expanded', 'true');
+  }
+  if (tocTrig && tocDrop) {
+    tocTrig.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (tocDrop.hidden) openToc(); else closeToc();
+    });
+    document.addEventListener('click', function (e) {
+      if (!tocDrop.hidden && !tocDrop.contains(e.target) && e.target !== tocTrig) closeToc();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !tocDrop.hidden) { closeToc(); tocTrig.focus(); }
+    });
+    // Close on link click (and let the anchor navigate)
+    tocDrop.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { closeToc(); });
+    });
+  }
+
+  // Sticky/compact state: add .is-stuck once the bar reaches the viewport top
+  var tocBarTop = 0;
+  function measureTocBar() {
+    if (!tocBar) return;
+    var prev = tocBar.style.position; tocBar.style.position = 'static';
+    tocBarTop = tocBar.getBoundingClientRect().top + window.pageYOffset;
+    tocBar.style.position = prev;
+  }
+
+  function onScroll() {
+    if (!tocBar) return;
+    // .is-stuck drives both the stuck styling and the compact-on-scroll row.
+    tocBar.classList.toggle('is-stuck', window.pageYOffset >= tocBarTop - 1);
+    syncCurrentSection();
+  }
+
+  // Highlight current section in the TOC + update the button label
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.ltx_section'));
+  var tocLinks = tocDrop ? Array.prototype.slice.call(tocDrop.querySelectorAll('a')) : [];
+  var linksById = {};
+  tocLinks.forEach(function (a) {
+    var id = (a.getAttribute('href') || '').slice(1);
+    if (id) linksById[id] = a;
+  });
+  function syncCurrentSection() {
+    if (!sections.length || !tocText) return;
+    var current = null;
+    var threshold = window.pageYOffset + 120;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].offsetTop <= threshold) current = sections[i];
+      else break;
+    }
+    tocLinks.forEach(function (a) { a.classList.remove('is-current'); });
+    if (current) {
+      var link = linksById[current.id];
+      if (link) link.classList.add('is-current');
+      var title = current.querySelector('.ltx_title_section');
+      var text = title ? title.textContent.replace(/\s+/g, ' ').trim() : 'Contents';
+      // Trim long titles to fit the trigger button
+      if (text.length > 64) text = text.slice(0, 61) + '…';
+      tocText.innerHTML = '<span class="toc-prefix">Contents ·</span> ' + text;
+    } else {
+      tocText.innerHTML = '<span class="toc-prefix">Contents</span>';
+    }
+  }
+
+  // Recompute on resize (layout shifts move the bar's home position)
+  window.addEventListener('resize', function () { measureTocBar(); onScroll(); });
+  window.addEventListener('scroll', onScroll, { passive: true });
+  // Initial pass after layout settles
+  setTimeout(function () { measureTocBar(); onScroll(); }, 50);
+
+  /* ── 4. Announcement close button: hide the banner on click ── */
+  var annClose = document.getElementById('mg-announcement-close');
+  var annEl = document.getElementById('mg-announcement');
+  if (annClose && annEl) {
+    annClose.addEventListener('click', function () { annEl.style.display = 'none'; });
+  }
+
+  /* ── 5. Citation Copy button: copy the visible code to the clipboard,
+        with a short "Copied!" success state. ── */
+  var copyBtn = document.getElementById('mg-cite-copy');
+  var copyCode = document.getElementById('mg-cite-code');
+  if (copyBtn && copyCode) {
+    var copyLabel = copyBtn.querySelector('.mg-cite-copy-label');
+    copyBtn.addEventListener('click', function () {
+      var text = copyCode.textContent;
+      var done = function () {
+        copyBtn.classList.add('is-copied');
+        if (copyLabel) copyLabel.textContent = 'Copied!';
+        setTimeout(function () {
+          copyBtn.classList.remove('is-copied');
+          if (copyLabel) copyLabel.textContent = 'Copy';
+        }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () {
+          // fallback: select the text so the user can Ctrl/Cmd-C
+          var range = document.createRange();
+          range.selectNodeContents(copyCode);
+          var sel = window.getSelection();
+          sel.removeAllRanges(); sel.addRange(range);
+        });
+      } else {
+        var range = document.createRange();
+        range.selectNodeContents(copyCode);
+        var sel = window.getSelection();
+        sel.removeAllRanges(); sel.addRange(range);
+        done();
+      }
+    });
+  }
+
+  /* ── 5b. Citation Show/Hide: reveal the raw code on demand. Copy (above)
+        works whether or not the code is shown, so the common path is a
+        single click with the code kept out of the way by default. ── */
+  var showBtn = document.getElementById('mg-cite-show');
+  var citeBlock = document.querySelector('.mg-cite-block');
+  if (showBtn && copyCode) {
+    showBtn.addEventListener('click', function () {
+      var nowHidden = copyCode.hasAttribute('hidden');
+      if (nowHidden) { copyCode.removeAttribute('hidden'); } else { copyCode.setAttribute('hidden', ''); }
+      showBtn.setAttribute('aria-expanded', nowHidden ? 'true' : 'false');
+      if (citeBlock) citeBlock.classList.toggle('is-open', nowHidden);
+      updateCiteShowLabel();
+    });
+  }
+
+  /* ── 6. Labs toggles — REMOVED for phase 1 along with the Related
+     (arXiv Labs) band. See the parent mockup for the implementation. */
+})();
+</script>
 </body></html>

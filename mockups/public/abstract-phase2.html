@@ -474,11 +474,14 @@ img { max-width: 100%; height: auto; }
     - <h1 lang="en"> — title is the page's primary heading. lang="en" is a
       placeholder for the paper's language (in production, set from the
       paper metadata; many arXiv papers are in English but not all).
-    - Dates use <time datetime="YYYY-MM-DD"> for machine-readable parsing
-      by search engines, citation crawlers, and screen-reader pronunciation
-      logic that may differ from the visible "10 Jan 2026" format.
-    - The UTC zone label is plain text after each <time>, not inside it —
-      datetime stays a date-only value. Same size and color as the rest of
+    - Dates use <time datetime> for machine-readable parsing by search
+      engines, citation crawlers, and screen-reader pronunciation logic that
+      may differ from the visible "10 Jan 2026" format. Announced carries a
+      full instant (YYYY-MM-DDThh:mmZ) because release time varies with queue
+      length and a batch can cross midnight; Submitted and Revised stay
+      date-only (YYYY-MM-DD).
+    - The UTC zone label is plain text after each <time>, not inside it, in
+      the same position on every date. Same size and color as the rest of
       the date row, bound with &nbsp; (spec: docs/version-display.html).
     - Middot separator in the date row has aria-hidden="true". Without it,
       screen readers say "middot" or "bullet" inline. A comma alternative
@@ -1943,7 +1946,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
       Submitted <time datetime="2026-01-10">10 Jan 2026</time>&nbsp;UTC
       <span aria-hidden="true"> &middot; </span>
       <span class="is-sr-only">, </span>
-      Announced <time datetime="2026-01-11">11 Jan 2026</time>&nbsp;UTC
+      Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026,&nbsp;01:32</time>&nbsp;UTC
       <span aria-hidden="true"> &middot; </span>
       <span class="is-sr-only">, </span>
       Revised <time datetime="2026-04-24">24 Apr 2026</time>&nbsp;UTC (this version)

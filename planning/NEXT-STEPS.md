@@ -47,7 +47,7 @@ Sequencing rationale: (1) measure token burn *before* reorganizing files, so the
 
 ## User testing — gates the mockups and dark-mode completion
 
-- [ ] **User-testing plan** for `abstract-redesign.html` and `html-redesign.html` — moderated-test script, tasks, recruitment criteria (working researchers first), what to measure. (This round is also resume-criterion #1 for finishing dark mode.)
+- [ ] **User-testing plan** for `abstract-phase2.html` and `html-phase1.html` — moderated-test script, tasks, recruitment criteria (working researchers first), what to measure. (This round is also resume-criterion #1 for finishing dark mode.)
 - [x] **Created `accessibility-research-questions.md`** (2026-07-24) at `docs/public/accessibility-research-questions.md`, seeded with the parked questions (G9 silent ambient indicators, the "Journal article vs Related DOI" label tension, newcomer signposting after the announcement banner retires, justify/hyphenation reconsideration — issues #6533, #5028). Add findings as testing rounds complete.
 - [ ] **Lightweight decision log** for open product questions so test findings have a home: co-equal vs HTML-first (G2), DOI-replaces-arXiv-ID in citations, the citation label question, newcomer signposting.
 

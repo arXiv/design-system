@@ -21,8 +21,8 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-ABS = (REPO / "mockups" / "abstract-redesign.html").as_uri()
-READER = (REPO / "mockups" / "html-redesign.html").as_uri()
+ABS = (REPO / "mockups" / "public" / "abstract-phase2.html").as_uri()
+READER = (REPO / "mockups" / "public" / "html-phase1.html").as_uri()
 
 PASSES = []
 FAILS = []
@@ -113,10 +113,12 @@ async def run():
         await pg.wait_for_timeout(1500)
 
         # TOC titles contain no raw TeX (annotation leakage)
-        await pg.click("#toc-trigger")
+        # Phase 1 replaced the reader-header trigger (#toc-trigger, still in the
+        # stylesheet but display:none) with the merged TOC bar's #mg-toc-trigger.
+        await pg.click("#mg-toc-trigger")
         await pg.wait_for_timeout(400)
         leaked = await pg.evaluate(
-            "Array.from(document.querySelectorAll('#toc-dropdown-list li')).some(li => li.textContent.includes('\\\\'))"
+            "Array.from(document.querySelectorAll('#mg-toc-dropdown li')).some(li => li.textContent.includes('\\\\'))"
         )
         check("TOC titles free of raw TeX", not leaked, "MathML annotation leakage")
         await pg.keyboard.press("Escape")
