@@ -34,9 +34,9 @@
       display: inline-flex; align-items: center; gap: 5px;
       min-height: 24px; padding: 2px 12px;
       border-radius: 999px;
-      font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
-      font-size: 11px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.04em;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 11px; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.02em;
       text-decoration: none; white-space: nowrap;
       background: #f0eeec; border: 1px solid #ddd8d2; color: #6b6459;
     }
@@ -44,7 +44,7 @@
     .ds-tag--success { background: #e8f5d8; border-color: #6b8e1e; color: #4a5a0a; }
     .ds-tag--warning { background: #fff8e1; border-color: #e8b800; color: #7a5c00; }
     .ds-tag--error   { background: #fdeaea; border-color: #c62828; color: #8b0000; }
-    .ds-tag--code { font-family: "IBM Plex Mono", monospace; text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 12px; }
+    .ds-tag--keep-case { text-transform: none; letter-spacing: 0; }
     a.ds-tag:hover { background: #d6e8f7; color: #1050a0; }
     .ds-tag .x { font-size: 13px; line-height: 1; opacity: 0.6; }
 
@@ -101,8 +101,10 @@
     <p style="margin:0"><strong>The blog's <code>.arxiv-lozenge</code> is the one built correctly</strong>,
     and it should be the basis for the component. It is the only one that: draws every value from
     tokens (so dark mode works for free), sets <code>min-height: 24px</code> for the WCAG 2.5.8
-    target floor, uses the condensed-uppercase register our type scale already reserves for metadata,
-    and has its color rationale written down ("light blue = arXiv speaking").</p>
+    target floor, and has its color rationale written down ("light blue = arXiv speaking"). Its
+    colors, geometry, and states carry over unchanged. <strong>One change from it:</strong> the type
+    register moves from condensed to <strong>mono</strong> (Shamsi 2026-08-11) — mono is arXiv's
+    identifier voice, and most of what a tag holds is an identifier.</p>
   </div>
 
   <h2>Two things found along the way — both now settled</h2>
@@ -141,7 +143,7 @@
     <div class="row"><span class="lbl">on warm wash</span>
       <span class="ds-tag">Preprint</span>
       <span class="ds-tag">12 requests</span>
-      <span class="ds-tag ds-tag--code">cs.AI</span>
+      <span class="ds-tag ds-tag--keep-case">cs.AI</span>
     </div>
   </div>
 
@@ -153,7 +155,7 @@
     <div class="row"><span class="lbl">static</span>
       <span class="ds-tag ds-tag--chrome">Policy</span>
       <span class="ds-tag ds-tag--chrome">Accessibility</span>
-      <span class="ds-tag ds-tag--code ds-tag--chrome">math.CO</span>
+      <span class="ds-tag ds-tag--keep-case ds-tag--chrome">math.CO</span>
     </div>
     <div class="row"><span class="lbl">as links</span>
       <a href="#p" class="ds-tag ds-tag--chrome">Announcements</a>
@@ -161,8 +163,8 @@
       <span style="font-size:11px;color:#888">← hover these</span>
     </div>
     <div class="row"><span class="lbl">removable</span>
-      <span class="ds-tag ds-tag--code ds-tag--chrome">physics.optics <span class="x">✕</span></span>
-      <span class="ds-tag ds-tag--code ds-tag--chrome">math-ph <span class="x">✕</span></span>
+      <span class="ds-tag ds-tag--keep-case ds-tag--chrome">physics.optics <span class="x">✕</span></span>
+      <span class="ds-tag ds-tag--keep-case ds-tag--chrome">math-ph <span class="x">✕</span></span>
     </div>
   </div>
 
@@ -196,7 +198,7 @@
     <div class="row"><span class="lbl" style="color:#8b8680">&nbsp;</span>
       <span class="ds-tag">Preprint</span>
       <span class="ds-tag ds-tag--chrome">Policy</span>
-      <span class="ds-tag ds-tag--code ds-tag--chrome">math.CO</span>
+      <span class="ds-tag ds-tag--keep-case ds-tag--chrome">math.CO</span>
     </div>
   </div>
 
@@ -222,9 +224,9 @@
   min-height: 24px;              /* WCAG 2.2 SC 2.5.8 target floor */
   padding: 2px 12px;
   border-radius: 999px;
-  font-family: var(--arxiv-font-condensed);
-  font-size: 0.6875rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.04em;
+  font-family: var(--arxiv-font-mono);   /* the identifier register */
+  font-size: 0.6875rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.02em;
   white-space: nowrap; text-decoration: none;
   background: var(--arxiv-card-grey);
   border: 1px solid var(--arxiv-border-light);
@@ -235,10 +237,58 @@
 .ds-tag--warning { background: var(--arxiv-warning-bg); border-color: var(--arxiv-warning-border); color: var(--arxiv-warning-fg); }
 .ds-tag--error   { background: var(--arxiv-error-bg);   border-color: var(--arxiv-error-border);   color: var(--arxiv-error-fg); }
 
-/* Identifiers keep their own register — arXiv IDs and category codes are
-   code, and mono is what the type scale already says code looks like. */
-.ds-tag--code { font-family: var(--arxiv-font-mono); font-size: 0.75rem;
-                    font-weight: 400; text-transform: none; letter-spacing: 0; }</div>
+/* Opt out of the uppercase default. For identifiers, whose case is part of
+   the data, and for labels long enough that caps slow reading down. */
+.ds-tag--keep-case { text-transform: none; letter-spacing: 0; }</div>
+
+  <h2>Case — when a tag is uppercase</h2>
+  <p><strong>Default: uppercase.</strong> Short metadata labels read well in caps and it keeps a tag
+  visually distinct from body text. Two exceptions, both using <code>.ds-tag--keep-case</code>:</p>
+  <ul>
+    <li><strong>Identifiers keep their own case</strong> — category codes, arXiv IDs, anything where
+      the case is part of the data rather than a styling choice.</li>
+    <li><strong>Long or awkward labels keep their own case.</strong> Past roughly three words, or with
+      mixed-case names inside, caps slow reading down. Judgment call, deliberately — a hard character
+      limit would be wrong more often than it was right.</li>
+  </ul>
+  <p><strong>Always apply caps with CSS <code>text-transform</code>, never by typing them.</strong>
+  The underlying text then stays correct for copy-and-paste, in-page search, and screen readers, and
+  the same markup can be re-styled later without touching content.</p>
+
+  <div class="box alarm">
+    <p style="margin-top:0"><strong class="bad">Flagging a conflict before writing the category rule
+    down.</strong> The rule as given — <em>"categories are always all caps after the last period,
+    lowercase in front of it"</em> — does not match arXiv's own category identifiers. Counting the
+    canonical list in the saved production page in this repo:</p>
+    <table style="margin:8px 0">
+      <tr><th>Canonical form</th><th>Count</th><th>Examples</th></tr>
+      <tr><td>UPPERCASE after the last period</td><td>115</td><td><code>cs.AI</code>, <code>math.CO</code>, <code>astro-ph.HE</code>, <code>stat.ML</code></td></tr>
+      <tr><td class="bad">lowercase after the last period</td><td class="bad">31</td><td><code>physics.optics</code>, <code>cond-mat.str-el</code>, <code>physics.bio-ph</code></td></tr>
+    </table>
+    <p>Every <code>physics.*</code> (22) and every <code>cond-mat.*</code> (9) subcategory is
+    lowercase. Applying caps-after-the-last-period to those produces strings that do not exist:</p>
+    <div class="stage on-white" style="margin:8px 0">
+      <div class="row"><span class="lbl">as arXiv publishes</span>
+        <span class="ds-tag ds-tag--keep-case ds-tag--chrome">physics.optics</span>
+        <span class="ds-tag ds-tag--keep-case ds-tag--chrome">cond-mat.str-el</span>
+        <span class="ds-tag ds-tag--keep-case ds-tag--chrome">cs.AI</span>
+      </div>
+      <div class="row"><span class="lbl">rule applied</span>
+        <span class="ds-tag ds-tag--chrome">physics.optics</span>
+        <span class="ds-tag ds-tag--chrome">cond-mat.str-el</span>
+        <span class="ds-tag ds-tag--chrome">cs.AI</span>
+        <span style="font-size:11px;color:#b3261e;font-family:ui-monospace,monospace">← first two are not real categories</span>
+      </div>
+    </div>
+    <p style="margin-bottom:0"><strong>Suggested instead:</strong> <em>a category is an identifier —
+    render it exactly as arXiv publishes it, and never transform its case.</em> That gets the caps
+    right on all 146 without a rule to remember, keeps display matching URLs, the API, and what
+    researchers type, and stays correct if the taxonomy changes. The caps-after-the-last-period
+    pattern is a property of most category <em>names</em>, not a transform to apply to them.
+    <strong>Not written into the docs pending Shamsi's call</strong> — if arXiv does intend to
+    normalize display away from the canonical identifiers, that is a real decision and this proposal
+    should record it as one.</p>
+  </div>
 
   <h2>Rules that would ship with it</h2>
   <ul>
@@ -271,13 +321,16 @@
     <tr><td><strong>Lime tier</strong></td><td>None. See above.</td></tr>
     <tr><td><strong>Info tier</strong></td><td>Dropped — it collided with chrome. Three status colors, not four.</td></tr>
     <tr><td><strong>Dark contrast</strong></td><td>Verified. Every level clears AA; lowest is chrome at 6.20:1.</td></tr>
+    <tr><td><strong>Type register</strong></td><td>Mono (Shamsi 2026-08-11), replacing the blog's condensed. Mono is arXiv's identifier voice and most of what a tag holds is an identifier.</td></tr>
+    <tr><td><strong>Case</strong></td><td>Uppercase by default, applied with CSS rather than typed, with <code>.ds-tag--keep-case</code> for identifiers and for labels long enough that caps hurt. Shamsi 2026-08-11: an always-caps rule was too strict.</td></tr>
     <tr><td><strong>The rule</strong></td><td>"A tag labels or categorizes; it never stands in for a link." Now in DESIGN-POLICIES under <em>Content and interaction</em>, alongside the status-color-means-a-real-condition rule.</td></tr>
   </table>
 
   <h2>Still open</h2>
   <table>
-    <tr><td style="width:24px">1</td><td>Condensed uppercase for words, mono for identifiers like <code>cs.AI</code> — right split? The admin mockups currently use mono for everything, the blog uses condensed caps for everything.</td></tr>
+    <tr><td style="width:24px">1</td><td><strong>The category-case conflict above.</strong> Render categories exactly as arXiv publishes them (suggested), or normalize display to caps-after-the-last-period and accept that 31 of them will differ from their canonical identifiers?</td></tr>
     <tr><td>2</td><td>Ship it now, or wait and build it alongside the category-editor pattern page so the four duplicate admin chips collapse in one pass?</td></tr>
+    <tr><td>3</td><td>Are there categories with <em>two</em> periods? None appear in the production list in this repo — worth confirming, since it changes how the "last period" is found.</td></tr>
   </table>
 
 </div></body>
