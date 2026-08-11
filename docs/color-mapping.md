@@ -56,7 +56,7 @@ These serve specific UI functions and are not part of the brand identity.
 
 ### Status & alert colors — shared
 
-Semantic colors for the `.ds-alert` component and any success / informational / warning / error messaging. One system on both public (white) and internal (Warm Wash) surfaces, light and dark. Each state is also distinguished by an icon and a leading word — never color alone (WCAG 1.4.1). All text/background pairings clear AA; most clear AAA.
+Semantic colors for the `.ds-alert` component and any success / informational / warning / error messaging. One system in both the public (white) and internal (Warm Wash) surfaces, light and dark. Each state is also distinguished by an icon and a leading word — never color alone (WCAG 1.4.1). All text/background pairings clear AA; most clear AAA.
 
 | State | Light bg | Light border | Light text/icon | Dark bg | Dark border | Dark text/icon | Text contrast (light / dark) |
 |---|---|---|---|---|---|---|---|

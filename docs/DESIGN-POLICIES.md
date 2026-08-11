@@ -3,15 +3,15 @@
 Hard constraints for all arXiv frontend work — internal tools and public-facing pages. These are non-negotiable rules, not suggestions. Verify compliance before submitting changes.
 
 ---
-## Surfaces: internal, public, outreach
+## Contexts: internal, public, outreach
 
-Every arXiv frontend belongs to one of three surfaces. The first two set the primary-action color; the third inherits from public.
+Every arXiv frontend belongs to one of three contexts. The first two set the primary-action color; the third builds on public.
 - **Internal tools:** Staff-facing workspaces such as the moderation queue and the Admin Console (arXiv Check) use Access Lime as the primary action color and lighter green tints for backgrounds.
 - **Public pages:** Everything a reader or author sees on arxiv.org, including listing, abstract, and HTML paper pages, use Open Blue as the primary action and tints of Repository Brown for backgrounds.
-- **Outreach properties:** arXiv's less formal digital properties — the news blog, event and celebration mini-sites, campaign pages. They inherit the public system whole and take a short list of documented liberties, enumerated on [the outreach surface page](outreach/). Liberties cover tone only: the accessibility floor, the palette, self-hosting, and every other constraint in this document apply unchanged.
-- The internal/public split is not a stylistic choice: the accent tells the person which context they are working in, so the two must never be crossed. A lime primary button on a public page, or an Open Blue primary button on a staff tool, is a violation regardless of how well it reads. When a surface is genuinely ambiguous (a shared component or an embedded widget), ask and determine which context the user is in first and document it in a code comment.
-- Inheritance runs one way. An outreach property may adopt anything from the public system; the public system adopts from outreach only through deliberate promotion, once a second property needs the same thing. Nothing invented for a mini-site reaches arxiv.org by drift.
-- Token naming is a separate concern, governed under Design tokens below — the prefix follows the consuming codebase's rules, not the surface, so never infer the surface from a token name or use a token prefix to signal context.
+- **Outreach sites:** arXiv's less formal sites — the news blog, event and celebration mini-sites, campaign pages. They use the public design as-is, plus a short list of agreed differences, all listed on [the outreach page](outreach/). Those differences are about tone only. Accessibility, the color palette, self-hosted fonts, and every other rule in this document apply to them unchanged.
+- The internal/public split is not a stylistic choice: the accent tells the person which context they are working in, so the two must never be crossed. A lime primary button on a public page, or an Open Blue primary button on a staff tool, is a violation regardless of how well it reads. When the context is genuinely ambiguous (a shared component or an embedded widget), ask and settle which one the user is in before building, then record the answer in a code comment.
+- Borrowing goes one way. An outreach site may use anything from the public design. The reverse only happens on purpose: a style invented for a mini-site moves into the shared design only after a second site needs it, as a deliberate decision. Nothing reaches arxiv.org by drift.
+- Token naming is a separate concern, governed under Design tokens below — the prefix follows the rules of the codebase using it, not the context, so never infer the context from a token name or use a token prefix to signal one.
 
 ## Accessibility (WCAG 2.1 AA floor, 2.2 AA target)
 
@@ -47,8 +47,8 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 ## Layout and content width
 
-- **Content-driven, not audience-driven.** The same usability principle applies to every surface; only the content differs, so there is no separate rule for "public" vs "internal."
-- **Text respects the measure.** Any block of continuous prose targets a ~65-character line length (~640–720px), on public and internal surfaces alike.
+- **Content-driven, not audience-driven.** The same usability principle applies in every context; only the content differs, so there is no separate rule for "public" vs "internal."
+- **Text respects the measure.** Any block of continuous prose targets a ~65-character line length (~640–720px), on public and internal pages alike.
 - **Shell width follows density.** The page container's max-width is set by content type: data-dense layouts (tables, multi-column metadata) get more room (internal tools land around 1080px, centered); reading-first pages hug the measure (abstract pages around 920px). These px values are a consequence of content, not a rule about the audience.
 
 ## Colors
@@ -78,7 +78,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 - **Press effect:** All buttons use `transform: translateY(1px)` with shadow removal on `:active`
 - **Transition timing:** 0.12s for background, border, color, and shadow. 0.08s for transform.
 - **Disabled state:** `cursor: not-allowed`, reduced opacity. WCAG exempts disabled controls from contrast requirements.
-- **Three tiers, constructed per surface:** primary, secondary, and a quiet third tier. The third tier is reached by removing whatever the surface's secondary uses to hold the page — public secondary leans on its border, so `.ds-btn-text` drops the border and keeps no fill; internal secondary leans on a lime fill, so `.btn-tertiary` drops the fill and keeps a border. Never add a tier whose only difference from its neighbor is a shadow.
+- **Three tiers, built differently in each context:** primary, secondary, and a quiet third tier. The third tier is reached by removing whatever the surface's secondary uses to hold the page — public secondary leans on its border, so `.ds-btn-text` drops the border and keeps no fill; internal secondary leans on a lime fill, so `.btn-tertiary` drops the fill and keeps a border. Never add a tier whose only difference from its neighbor is a shadow.
 - **Text buttons are not links:** a text button carries Link Blue but is never underlined, and its hover feedback is a background wash. Underlines belong to links (inline always, standalone on hover). If a control navigates, make it a link.
 - **Icons in buttons** are sized in `em` so they track the button's own font-size, and never shrink when the label is long.
 
@@ -94,7 +94,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 - **No metrics display:** arXiv does not display view counts, download counts, or citation counts on public pages. This is a core operating value — arXiv does not promote or rank papers.
 - **Citation export:** On abstract pages, we provide BibTeX (default), APA, Chicago, and MLA formats. Generate from metadata to save manual work for the user.
 - **arXiv Labs:** Labs tools that collect user data must be behind an opt-in toggle, not on by default (this policy is still in the early implementation phase as 6/24/26 and not enforced for Labs yet). Labs that require login to a third party platform should be deprioritized in placement.
-- **Header:** Single bar. Black (phase 1, spinout) transitioning to Repository Brown (phase 2). Logo, Search, Submit, Donate, Log in. No Cornell branding post-spinout. Outreach properties may run an Open Blue header instead — a documented liberty of that surface, never valid here.
+- **Header:** Single bar. Black (phase 1, spinout) transitioning to Repository Brown (phase 2). Logo, Search, Submit, Donate, Log in. No Cornell branding post-spinout. Outreach sites may run an Open Blue header instead — an agreed exception for them, never valid here.
 - **Footer:** Acknowledgment text (Simons Foundation, member institutions, IP matched institution name). Links: About, Help, Contact, Subscribe, Copyright, Privacy, Accessibility, Status. Special section for major funders on the right side. All acknowledgements are presented in the footer, never in the header.
 - **Banner:** A minimal and time-bound banner can be displayed with short announcements. It includes a small icon, a short sentence and link, and a dismiss button. After dismissing, the banner should not display for that user again.
 
@@ -102,7 +102,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 *Added 2026-06-11 from the PROPOSED-GUIDELINES review (see `planning/PROPOSED-GUIDELINES.md` for evidence and rationale).*
 
-- **Sticky chrome is exceptional.** The HTML paper reader is the only surface approved to use a sticky header — it alone is a long-document reading context that earns persistent chrome. Do not add sticky chrome to other pages without explicit approval. Any page that does carry sticky chrome MUST set `html { scroll-padding-top }` to at least the chrome's tallest state plus breathing room (reader reference: 80px), covering every anchor path including JS `scrollIntoView`. (Decided 2026-06-11: the abstract-page header is static — it scrolls away like any other content. The reader is the only sticky-chrome surface in fact as well as intent.)
+- **Sticky chrome is exceptional.** The HTML paper reader is the only page approved to use a sticky header — it alone is a long-document reading context that earns persistent chrome. Do not add sticky chrome to other pages without explicit approval. Any page that does carry sticky chrome MUST set `html { scroll-padding-top }` to at least the chrome's tallest state plus breathing room (reader reference: 80px), covering every anchor path including JS `scrollIntoView`. (Decided 2026-06-11: the abstract-page header is static — it scrolls away like any other content. The reader is the only sticky-chrome surface in fact as well as intent.)
 - **Universal navigation stays short.** The header nav is capped at its current five items (Search, Submit, Donate, Log in + logo). Resist link-creep permanently. Narrow viewports condense (wrap or compact grammar) rather than hamburger; a hamburger is a permitted last-resort fallback at very narrow widths, never the default.
 - **Z-layer scale.** Content chrome (pills, marginalia) < 50 · popovers 50 · header-attached dropdowns 60 · sticky headers 100 · ~150 reserved for toasts/notifications · skip link/overlays 200 · modal dialogs use the native `<dialog>` top layer (no z-index). Do not introduce ad-hoc z-index values. *Values note: arXiv wants very few toasts/notifications at all — anti-corporate, anti-advertising is part of the brand.*
 - **Target size.** Hard floor 24×24 CSS px (WCAG 2.2 SC 2.5.8 AA), with WCAG's own exceptions (inline targets within a sentence — citation chips, version links — spacing-equivalent, user-agent defaults). Design target 44×44 on touch-primary surfaces (full-screen menus, mobile pill bars, toggles) — where Apple HIG, BBC GEL, and Android guidance converge. Use the padding + negative-margin technique to grow hit areas without changing layout.
