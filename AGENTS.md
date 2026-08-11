@@ -12,6 +12,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | `mockups/` | work-in-progress page explorations | **Never.** Not for building, not for style reference — patterns get promoted *into* docs/ when stable |
 | `verification/` | audits, design reviews, agent test results | No |
 | `planning/` | backlog, proposals, decision logs | Only for program/planning work |
+| `blog-theme/` | release artifact (zip) of the blog.arxiv.org WordPress theme — a design-system *consumer* whose source lives off-repo | **Never.** Its CSS carries documented blog-only overrides; do not read it as canon |
 
 ## Before any frontend change
 
