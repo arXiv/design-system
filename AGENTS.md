@@ -12,7 +12,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | `mockups/` | work-in-progress page explorations | **Never.** Not for building, not for style reference — patterns get promoted *into* docs/ when stable |
 | `verification/` | audits, design reviews, agent test results | No |
 | `planning/` | backlog, proposals, decision logs | Only for program/planning work |
-| `blog-theme/` | release artifact (zip) of the blog.arxiv.org WordPress theme — a design-system *consumer* whose source lives off-repo | **Never.** Its CSS carries documented blog-only overrides; do not read it as canon |
+| `blog-theme/` | packaged copy (zip) of the blog.arxiv.org WordPress theme — a site that *uses* the design system; its source lives in another repo | **Never.** Its CSS carries agreed blog-only exceptions; do not read it as the rule |
 
 ## Before any frontend change
 
@@ -24,10 +24,10 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 
 | Building / touching | Read | Reuse |
 |---|---|---|
-| Anything with color | `docs/color-mapping.md`, `docs/colors.html` | tokens in the surface stylesheet |
+| Anything with color | `docs/color-mapping.md`, `docs/colors.html` | tokens in that context's stylesheet |
 | Typography, text sizes | `docs/typography.md`, `docs/typography.html` | `--arxiv-font-*` / `--font-*` |
 | Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--space-*` |
-| Buttons | `docs/buttons.html`, then your surface's deep page (`docs/public/button-styles.html` / `docs/internal/button-styles.html`) | `.ds-btn*` (public, incl. `.ds-btn-text` and `.on-tint` / `.on-dark`), `.btn-*` (internal) |
+| Buttons | `docs/buttons.html`, then your context's deep page (`docs/public/button-styles.html` / `docs/internal/button-styles.html`) | `.ds-btn*` (public, incl. `.ds-btn-text` and `.on-tint` / `.on-dark`), `.btn-*` (internal) |
 | Alerts, status & feedback messages | `docs/alerts.html`, then `docs/public/alert-styles.html` or `docs/internal/alert-styles.html` | `.ds-alert*` — never rebuild its chrome |
 | Cards, rails, accordions, page organization | `docs/organizing-content.html` | `.ds-acc*`, card conventions, dl row grammar |
 | Links | `docs/public/link-styles.html` or `docs/internal/link-styles.html` | link tokens; inline links underlined |
@@ -38,7 +38,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Site header / footer | `docs/public/header-styles.html`, `docs/public/footer-styles.html`, `docs/public/reader-header-styles.html` | `.ds-site-header`, `.ds-site-footer`, `.ds-reader-header` — never hand-build chrome or draw logos from text |
 | Type badges | `docs/internal/table-styles.html` + DESIGN-POLICIES *Content and interaction* | `.type-new/.type-rep/.type-wdr/.type-cross` |
 | Dark mode (status, mechanism, what flips) | `docs/dark-mode.html` | tokens flip automatically; never hand-pick dark values; lock demo pages light |
-| The blog, an event or campaign mini-site | `docs/outreach/` + DESIGN-POLICIES *Surfaces* | the public stylesheet, plus only the liberties enumerated there |
+| The blog, an event or campaign mini-site | `docs/outreach/` + DESIGN-POLICIES *Contexts* | the public stylesheet, plus only the differences listed there |
 | Something with no pattern | nearest pattern above + `docs/BRAND.md` | derive from documented rationale; say so in comments |
 
 Stylesheets: `docs/public/design-system.css` (public pages) · `docs/internal/design-system.css` (staff tools). Values there are authoritative.
@@ -47,7 +47,7 @@ Stylesheets: `docs/public/design-system.css` (public pages) · `docs/internal/de
 
 - **Self-hosted everything.** Never load fonts, icons, or CSS from external URLs — no Google Fonts, no CDNs. If an existing page does it, that page is wrong, not the rule.
 - **Light-only for now.** Dark-mode token values exist as foundation; do not hand-use them. New demo pages lock light: `<html data-theme="light">`. (Status: `planning/dark-mode-decision.md`.)
-- **Two accent surfaces, never crossed.** Internal tools: Access Lime primary. Public pages: Open Blue primary. The accent tells people where they are. Outreach properties (blog, mini-sites) inherit the public system and may take only the liberties listed in `docs/outreach/`.
+- **Two accent colors, never crossed.** Internal tools: Access Lime primary. Public pages: Open Blue primary. The accent tells people where they are. Outreach sites (blog, mini-sites) use the public design and may differ from it only in the ways listed in `docs/outreach/`.
 - **Palette and type stack only.** No one-off hex values, no new font families.
 - **Reuse before rebuilding.** If a `.ds-` component exists for your need, use its documented construction — don't re-style its tokens onto new markup.
 - **Actions disable, they don't disappear.** Contextual actions render disabled when unavailable, not removed.

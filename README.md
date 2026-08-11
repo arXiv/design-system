@@ -4,17 +4,18 @@ arXiv's DNA for product design and frontend development: design tokens, componen
 
 Browse it rendered: **https://arxiv.github.io/design-system/**
 
-## Two surfaces, shared foundations
+## Three contexts, shared foundations
 
 - **Public pages** (arxiv.org, abstract pages, HTML papers) — clean, fast, brown-and-blue. Primary action color: **Open Blue**.
 - **Internal tools** (arXiv Check, Admin Console) — warm, utilitarian. Primary action color: **Access Lime**.
-- The accent signals which context you're in; the two are never mixed.
+- **Outreach sites** (the news blog, event and campaign mini-sites) — the public design as-is, plus a short list of agreed differences.
+- The accent signals which context you're in; public and internal are never mixed.
 
 ## Directory guide
 
 ```
 docs/           THE documentation — rules, tokens, pattern pages, stylesheets
-                (docs/public/ and docs/internal/ hold per-surface patterns + CSS)
+                (docs/public/, docs/internal/, docs/outreach/ hold per-context patterns + CSS)
 mockups/        work-in-progress page explorations — never a build reference
 verification/   evidence — audits, design reviews, agent test results
 planning/       backlog (NEXT-STEPS.md), proposals, decision logs

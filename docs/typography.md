@@ -10,7 +10,7 @@
 
 arXiv uses the IBM Plex type family for all text, and STIX Two Math for mathematical notation. All fonts are self-hosted — no external font services (Google Fonts, Adobe Typekit, etc.).
 
-Three surfaces share the family with different allowances — the matrix on `typography.html` is the reference. In short: internal tools and the public site share Sans / Condensed / Mono; the public site alone adds Serif 400 italic (the annotation voice) and STIX Two Math; [outreach properties](outreach/) add upright Serif 400/600 for headlines and pull quotes, Sans 700 for the one heading that must not read as an article, and Mono as a display register.
+Three contexts share the family with different allowances — the matrix on `typography.html` is the reference. In short: internal tools and the public site share Sans / Condensed / Mono; the public site alone adds Serif 400 italic (the annotation voice) and STIX Two Math; [outreach properties](outreach/) add upright Serif 400/600 for headlines and pull quotes, Sans 700 for the one heading that must not read as an article, and Mono as a display register.
 
 ### Why IBM Plex
 
@@ -90,7 +90,7 @@ Recommendation grounded in a verified deep-research pass (25/25 claims confirmed
 | **Code & identifiers** | IBM Plex Mono | 400 (regular), 500 (medium) | arXiv IDs, DOIs, BibTeX, code blocks, monospace content |
 | **Annotation** | IBM Plex Serif | 400 italic | Secondary editorial commentary — footnote text in margin, figure alt-text in margin (see `.ds-annotation`) |
 | **Math notation** | STIX Two Math | 400 (regular) | Inline and display math in HTML paper pages |
-| **Editorial headlines & quotes** | IBM Plex Serif | 400, 600 (upright) | Outreach only — no other surface uses upright serif |
+| **Editorial headlines & quotes** | IBM Plex Serif | 400, 600 (upright) | Outreach only — no other context uses upright serif |
 | **Editorial heading, non-article** | IBM Plex Sans | 700 (+ 700 italic) | Outreach only — the heaviest weight Plex ships; deliberately sans so the block does not read as another article |
 
 ### CSS custom properties

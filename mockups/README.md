@@ -6,9 +6,9 @@ This folder contains **in-progress page mockups** for the arXiv redesign. They'r
 
 ## What this is
 
-Mockups are organized by surface, mirroring `docs/` (migrated 2026-07-30 from Shamsi's local working folder; all sets data-scrubbed before publishing — every person, email, IP, and paper in them is fictional):
+Mockups are organized by context, mirroring `docs/` (migrated 2026-07-30 from Shamsi's local working folder; all sets data-scrubbed before publishing — every person, email, IP, and paper in them is fictional):
 
-**`public/` — arxiv.org surfaces**
+**`public/` — arxiv.org pages**
 
 - **`abstract-phase2.html`** — the abstract page (paper landing page with title, authors, abstract, format/download actions, and citation section).
 - **`html-phase1.html`** — the HTML paper: the abstract page and the full-paper reader on one continuous surface, at Phase 1 scope. This is the current HTML-paper mockup. Two earlier explorations it descends from — the standalone reader (`html-redesign.html`) and the unreduced merge (`merged-abstract-reader.html`) — were removed 2026-08-10; both are in git history if you need them.
@@ -27,7 +27,7 @@ Each page is static HTML (some with a sibling `styles.css`/`script.js`). Open in
 - **Not a working arXiv build.** Most navigation stays inside the demo page. Links to PDF/TeX source on the abstract page do point to live arxiv.org.
 - **Not the canonical design system.** The validated patterns (button styles, link styles, popovers, etc.) live in `../docs/public/`. These mockups *use* the design language being codified there but also include exploratory and in-progress treatments that may never reach production.
 - **Not final visuals.** Colors, sizes, typography, and interactions are still iterating. Treat anything you see as a draft.
-- **Not the complete redesign.** Search, browse, info pages, the submission flow, and other surfaces are not in this set.
+- **Not the complete redesign.** Search, browse, info pages, the submission flow, and other pages are not in this set.
 
 ## Where the source of truth lives
 
