@@ -128,9 +128,9 @@ Barely perceptible tints for creating section depth without hard borders.
 ### When to use accent colors on public pages
 
 **Access Lime** `#c4d82e`:
-- Small highlights: accent stripe, category marker, "new" badge
-- The lime-accented header border on the internal design system pattern pages could appear on public pages as a design-system-aware accent
-- Never for buttons or large interactive elements on public pages
+- **Not used on public pages.** Access Lime is the staff-tools signal, and putting it on a public page crosses the one line the two accent colors exist to draw. The public stylesheet has no lime token, deliberately.
+- The design system's own documentation pages carry a lime header rule; those are internal reference material, not public arXiv pages.
+- *Removed 2026-08-11:* this entry used to offer lime for a public "category marker" or "new" badge. It contradicted both the stylesheet and the never-cross rule (Shamsi: "that is crossing the internal/public line").
 
 **Smileybones Yellow** `#ffe000` — token `--arxiv-smileybones-yellow`:
 - The smileybones icon itself (Labs branding, mascot appearances)

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PROPOSAL — lozenge component</title>
+  <title>PROPOSAL — tag component</title>
   <link rel="stylesheet" href="../../docs/fonts.css">
   <style>
     /* Planning artifact, not documentation — plain chrome on purpose. */
@@ -30,7 +30,7 @@
     .row:last-child { margin-bottom: 0; }
     .lbl { font-size: 11px; color: #888; width: 96px; flex: none; }
 
-    .ds-lozenge {
+    .ds-tag {
       display: inline-flex; align-items: center; gap: 5px;
       min-height: 24px; padding: 2px 12px;
       border-radius: 999px;
@@ -40,18 +40,17 @@
       text-decoration: none; white-space: nowrap;
       background: #f0eeec; border: 1px solid #ddd8d2; color: #6b6459;
     }
-    .ds-lozenge--chrome  { background: #edf4fc; border-color: #c4dcf0; color: #1f5e96; }
-    .ds-lozenge--success { background: #e8f5d8; border-color: #6b8e1e; color: #4a5a0a; }
-    .ds-lozenge--info    { background: #e7f1fd; border-color: #5a82c8; color: #1a3a78; }
-    .ds-lozenge--warning { background: #fff8e1; border-color: #e8b800; color: #7a5c00; }
-    .ds-lozenge--error   { background: #fdeaea; border-color: #c62828; color: #8b0000; }
-    .ds-lozenge--code { font-family: "IBM Plex Mono", monospace; text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 12px; }
-    a.ds-lozenge:hover { background: #d6e8f7; color: #1050a0; }
-    .ds-lozenge .x { font-size: 13px; line-height: 1; opacity: 0.6; }
+    .ds-tag--chrome  { background: #edf4fc; border-color: #c4dcf0; color: #1f5e96; }
+    .ds-tag--success { background: #e8f5d8; border-color: #6b8e1e; color: #4a5a0a; }
+    .ds-tag--warning { background: #fff8e1; border-color: #e8b800; color: #7a5c00; }
+    .ds-tag--error   { background: #fdeaea; border-color: #c62828; color: #8b0000; }
+    .ds-tag--code { font-family: "IBM Plex Mono", monospace; text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 12px; }
+    a.ds-tag:hover { background: #d6e8f7; color: #1050a0; }
+    .ds-tag .x { font-size: 13px; line-height: 1; opacity: 0.6; }
 
     .dark-stage { background: #1c1a17; border-radius: 6px; padding: 18px; margin: 10px 0; }
-    .dark-stage .ds-lozenge { background: #2b2723; border-color: #3a3530; color: #b0aba6; }
-    .dark-stage .ds-lozenge--chrome { background: #132433; border-color: #2a4a7a; color: #6ba8da; }
+    .dark-stage .ds-tag { background: #2b2723; border-color: #3a3530; color: #b0aba6; }
+    .dark-stage .ds-tag--chrome { background: #132433; border-color: #2a4a7a; color: #6ba8da; }
 
     .today { display: inline-flex; align-items: center; font-family: "IBM Plex Mono", monospace; }
     .t1 { background:#eef2ff; color:#1c1a17; border:1px solid #d0daf5; padding:3px 10px; border-radius:999px; font-size:12.5px; }
@@ -63,14 +62,14 @@
 </head>
 <body><div class="page">
 
-  <h1>PROPOSAL — a lozenge component (<span class="warn">not built; recommendation only</span>)</h1>
-  <p><strong>Asked by Shamsi 2026-08-11:</strong> do we have a lozenge/pill component, and should it be
+  <h1>PROPOSAL — a tag component (<span class="warn">not built; recommendation only</span>)</h1>
+  <p><strong>Asked by Shamsi 2026-08-11:</strong> do we have a tag/pill component, and should it be
   refined with color variants by prominence? Researched across both stylesheets, every pattern page,
   every mockup, and the blog theme.</p>
 
   <h2>Short answer</h2>
   <div class="box">
-    <p style="margin-top:0"><strong>No — we have no lozenge component.</strong> We have two promoted
+    <p style="margin-top:0"><strong>No — we have no tag component.</strong> We have two promoted
     things that are neither: <code>.ds-element-pill</code> (public) is a floating <em>container</em>
     that hosts buttons on equations and figures, documented as "the pill itself only provides the
     floating-panel material"; and <code>.type-badge</code> (internal) is a 3px-radius rectangle
@@ -106,30 +105,33 @@
     and has its color rationale written down ("light blue = arXiv speaking").</p>
   </div>
 
-  <h2>Two things found along the way that need your decision</h2>
+  <h2>Two things found along the way — both now settled</h2>
 
-  <div class="box alarm">
-    <p style="margin-top:0"><strong class="bad">1. Our color docs contradict our stylesheet about lime.</strong>
-    <code>color-mapping.md</code> lists Access Lime for public-page use as "small highlights: accent
-    stripe, category marker, <em>'new' badge</em>" — which sounds like exactly the accent tier a
-    lozenge would want. But the public stylesheet has <strong>no lime token at all</strong>, and says
-    so deliberately: "Access Lime stays staff-only." Most readers would call a lime badge on a public
-    page a violation of the never-cross rule.</p>
-    <p style="margin-bottom:0">I have <strong>not</strong> proposed a lime tier below. Either the
-    stylesheet is right and that line should come out of color-mapping.md, or lime genuinely has a
-    tiny public accent role and the rule needs to say so explicitly. It cannot stay ambiguous.</p>
+  <div class="box">
+    <p style="margin-top:0"><strong class="ok">1. Lime does not go on public pages. Resolved 2026-08-11.</strong>
+    <code>color-mapping.md</code> used to offer Access Lime for a public "category marker" or "new"
+    badge, which sounded like the loud accent tier a tag would want. But the public stylesheet has
+    no lime token and says so deliberately: "Access Lime stays staff-only." Shamsi's call: <em>"that
+    is crossing the internal/public line."</em> The line is out of the color docs, and there is no
+    lime tag tier.</p>
   </div>
 
-  <div class="box alarm">
-    <p style="margin-top:0"><strong class="bad">2. Pill-shaped buttons conflict with the button policy.</strong>
-    DESIGN-POLICIES sets <strong>6px radius for all buttons</strong>. The reader mockups use 20–22px
-    radius on real <code>&lt;button&gt;</code> elements (the "Contents" trigger, the reader toggle,
-    arXiv Check's mode chip). That is a button decision, not a lozenge decision, and it is separate
-    from this proposal — but somebody should make it rather than letting each mockup pick.</p>
+  <div class="box">
+    <p style="margin-top:0"><strong class="ok">2. The 6px button radius is not a vestige. Checked 2026-08-11.</strong>
+    Every button we have actually documented is 6px — <code>.ds-btn</code> in the public stylesheet,
+    <code>.btn</code> in the internal one, and every button rendered on <code>buttons.html</code>.
+    Nothing documented has overridden the rule, so it is accurate and worth keeping.</p>
+    <p style="margin-bottom:0">The 20–22px radii I flagged are all in <strong>mockups</strong> — the
+    reader's "Contents" trigger, the reader toggle, arXiv Check's mode chip — and mockups are never a
+    reference. What is genuinely interesting is that three separate explorations independently
+    reached for a pill-shaped button for <em>content-anchored controls</em>. That is a signal worth a
+    decision of its own: either the system gains a documented pill variant for controls that float
+    against content, or those mockups conform to 6px when they are promoted. Not part of this
+    proposal.</p>
   </div>
 
   <h2>Recommendation</h2>
-  <p>Add <code>.ds-lozenge</code> to the public stylesheet, based on the blog's construction, with
+  <p>Add <code>.ds-tag</code> to the public stylesheet, based on the blog's construction, with
   <strong>three prominence levels</strong> built entirely from tokens we already own. No new colors.</p>
 
   <h3>Level 1 — quiet (the default)</h3>
@@ -137,42 +139,43 @@
   that is simply true rather than notable.</p>
   <div class="stage">
     <div class="row"><span class="lbl">on warm wash</span>
-      <span class="ds-lozenge">Preprint</span>
-      <span class="ds-lozenge">12 requests</span>
-      <span class="ds-lozenge ds-lozenge--code">cs.AI</span>
+      <span class="ds-tag">Preprint</span>
+      <span class="ds-tag">12 requests</span>
+      <span class="ds-tag ds-tag--code">cs.AI</span>
     </div>
   </div>
 
   <h3>Level 2 — chrome blue (the workhorse)</h3>
   <p>The "arXiv is speaking" tint family. For categorizing labels: subject categories, topics, the
-  blog's post categories. This is the blog's current lozenge, unchanged. Interactive ones get hover
+  blog's post categories. This is the blog's current tag, unchanged. Interactive ones get hover
   and focus states and keep the 24px minimum height.</p>
   <div class="stage">
     <div class="row"><span class="lbl">static</span>
-      <span class="ds-lozenge ds-lozenge--chrome">Policy</span>
-      <span class="ds-lozenge ds-lozenge--chrome">Accessibility</span>
-      <span class="ds-lozenge ds-lozenge--code ds-lozenge--chrome">math.CO</span>
+      <span class="ds-tag ds-tag--chrome">Policy</span>
+      <span class="ds-tag ds-tag--chrome">Accessibility</span>
+      <span class="ds-tag ds-tag--code ds-tag--chrome">math.CO</span>
     </div>
     <div class="row"><span class="lbl">as links</span>
-      <a href="#p" class="ds-lozenge ds-lozenge--chrome">Announcements</a>
-      <a href="#p" class="ds-lozenge ds-lozenge--chrome">Community</a>
+      <a href="#p" class="ds-tag ds-tag--chrome">Announcements</a>
+      <a href="#p" class="ds-tag ds-tag--chrome">Community</a>
       <span style="font-size:11px;color:#888">← hover these</span>
     </div>
     <div class="row"><span class="lbl">removable</span>
-      <span class="ds-lozenge ds-lozenge--code ds-lozenge--chrome">physics.optics <span class="x">✕</span></span>
-      <span class="ds-lozenge ds-lozenge--code ds-lozenge--chrome">math-ph <span class="x">✕</span></span>
+      <span class="ds-tag ds-tag--code ds-tag--chrome">physics.optics <span class="x">✕</span></span>
+      <span class="ds-tag ds-tag--code ds-tag--chrome">math-ph <span class="x">✕</span></span>
     </div>
   </div>
 
   <h3>Level 3 — status (only when the label carries state)</h3>
-  <p>The four families we already use for alerts. A lozenge earns a status color only when it reports
+  <p>The four families we already use for alerts. A tag earns a status color only when it reports
   a <em>condition</em> — on hold, withdrawn, valid — never for decoration or emphasis.</p>
   <div class="stage on-white">
     <div class="row"><span class="lbl">&nbsp;</span>
-      <span class="ds-lozenge ds-lozenge--success">Valid</span>
-      <span class="ds-lozenge ds-lozenge--info">Under review</span>
-      <span class="ds-lozenge ds-lozenge--warning">On hold</span>
-      <span class="ds-lozenge ds-lozenge--error">Removed</span>
+      <span class="ds-tag ds-tag--success">Valid</span>
+      <span class="ds-tag ds-tag--warning">On hold</span>
+      <span class="ds-tag ds-tag--error">Removed</span>
+      <span class="ds-tag ds-tag--chrome">Under review</span>
+      <span style="font-size:11px;color:#888;font-family:ui-monospace,monospace">← neutral states stay chrome</span>
     </div>
   </div>
 
@@ -181,27 +184,30 @@
   basing it on the blog's version rather than any of the mockups':</p>
   <div class="dark-stage">
     <div class="row"><span class="lbl" style="color:#8b8680">&nbsp;</span>
-      <span class="ds-lozenge">Preprint</span>
-      <span class="ds-lozenge ds-lozenge--chrome">Policy</span>
-      <span class="ds-lozenge ds-lozenge--code ds-lozenge--chrome">math.CO</span>
+      <span class="ds-tag">Preprint</span>
+      <span class="ds-tag ds-tag--chrome">Policy</span>
+      <span class="ds-tag ds-tag--code ds-tag--chrome">math.CO</span>
     </div>
   </div>
 
   <h3>Contrast — all verified, both modes</h3>
   <table>
-    <tr><th>Level</th><th>Text on fill</th><th>Dark mode</th><th>Border</th></tr>
-    <tr><td>Quiet</td><td class="ok">5.05:1 ✓ AA</td><td class="ok">6.51:1 ✓ AA</td><td>decorative</td></tr>
-    <tr><td>Chrome</td><td class="ok">6.11:1 ✓ AA</td><td class="ok">6.20:1 ✓ AA</td><td>decorative</td></tr>
-    <tr><td>Success</td><td class="ok">6.70:1 ✓ AA</td><td colspan="2">inherits the alert families' dark values</td></tr>
-    <tr><td>Info</td><td class="ok">9.58:1 ✓ AAA</td><td colspan="2">″</td></tr>
-    <tr><td>Warning</td><td class="ok">5.89:1 ✓ AA</td><td colspan="2">″</td></tr>
-    <tr><td>Error</td><td class="ok">8.64:1 ✓ AAA</td><td colspan="2">″</td></tr>
+    <tr><th>Level</th><th>Light — text on fill</th><th>Dark — text on fill</th><th>Dark — text vs canvas</th></tr>
+    <tr><td>Quiet</td><td class="ok">5.05:1 ✓ AA</td><td class="ok">6.51:1 ✓ AA</td><td class="ok">7.62:1</td></tr>
+    <tr><td>Chrome</td><td class="ok">6.11:1 ✓ AA</td><td class="ok">6.20:1 ✓ AA</td><td class="ok">6.81:1</td></tr>
+    <tr><td>Success</td><td class="ok">6.70:1 ✓ AA</td><td class="ok">10.44:1 ✓ AAA</td><td class="ok">12.14:1</td></tr>
+    <tr><td>Warning</td><td class="ok">5.89:1 ✓ AA</td><td class="ok">11.80:1 ✓ AAA</td><td class="ok">13.42:1</td></tr>
+    <tr><td>Error</td><td class="ok">8.64:1 ✓ AAA</td><td class="ok">7.99:1 ✓ AAA</td><td class="ok">8.07:1</td></tr>
   </table>
+  <p><strong>Answering the dark-mode question directly:</strong> yes, every level clears AA in dark,
+  and three of the five clear AAA. The lowest is chrome at <strong>6.20:1</strong> — comfortably past
+  the 4.5:1 requirement and just under the 7:1 AAA mark. Nothing here is marginal. The blue that
+  looked uncertain was not a contrast problem; it was the info/chrome collision above.</p>
   <p>Borders sit in the decorative tier and are never the sole signal — the label's own words carry
   the meaning, which is the existing rule that color is never the only carrier.</p>
 
   <h3>The construction</h3>
-  <div class="spec">.ds-lozenge {
+  <div class="spec">.ds-tag {
   display: inline-flex; align-items: center; gap: 5px;
   min-height: 24px;              /* WCAG 2.2 SC 2.5.8 target floor */
   padding: 2px 12px;
@@ -214,28 +220,27 @@
   border: 1px solid var(--arxiv-border-light);
   color: var(--arxiv-library-grey);
 }
-.ds-lozenge--chrome  { background: var(--arxiv-tint-light); border-color: var(--arxiv-tint-border); color: var(--arxiv-archival-blue); }
-.ds-lozenge--success { background: var(--arxiv-success-bg); border-color: var(--arxiv-success-border); color: var(--arxiv-success-fg); }
-.ds-lozenge--info    { background: var(--arxiv-info-bg);    border-color: var(--arxiv-info-border);    color: var(--arxiv-info-fg); }
-.ds-lozenge--warning { background: var(--arxiv-warning-bg); border-color: var(--arxiv-warning-border); color: var(--arxiv-warning-fg); }
-.ds-lozenge--error   { background: var(--arxiv-error-bg);   border-color: var(--arxiv-error-border);   color: var(--arxiv-error-fg); }
+.ds-tag--chrome  { background: var(--arxiv-tint-light); border-color: var(--arxiv-tint-border); color: var(--arxiv-archival-blue); }
+.ds-tag--success { background: var(--arxiv-success-bg); border-color: var(--arxiv-success-border); color: var(--arxiv-success-fg); }
+.ds-tag--warning { background: var(--arxiv-warning-bg); border-color: var(--arxiv-warning-border); color: var(--arxiv-warning-fg); }
+.ds-tag--error   { background: var(--arxiv-error-bg);   border-color: var(--arxiv-error-border);   color: var(--arxiv-error-fg); }
 
 /* Identifiers keep their own register — arXiv IDs and category codes are
    code, and mono is what the type scale already says code looks like. */
-.ds-lozenge--code { font-family: var(--arxiv-font-mono); font-size: 0.75rem;
+.ds-tag--code { font-family: var(--arxiv-font-mono); font-size: 0.75rem;
                     font-weight: 400; text-transform: none; letter-spacing: 0; }</div>
 
   <h2>Rules that would ship with it</h2>
   <ul>
-    <li><strong>A lozenge labels or categorizes. It never navigates as its main job.</strong> We
+    <li><strong>A tag labels or categorizes. It never navigates as its main job.</strong> We
       already decided this once: <code>color-mapping.md</code> retired the filled version pills in
-      favor of inline text links, and the nav pill was rejected the same way. A category lozenge that
-      happens to link to a listing is fine; a lozenge used <em>instead of</em> a link is not.</li>
+      favor of inline text links, and the nav pill was rejected the same way. A category tag that
+      happens to link to a listing is fine; a tag used <em>instead of</em> a link is not.</li>
     <li><strong>Status colors report a condition, never emphasis.</strong> If the label is not about
       state, it is quiet or chrome.</li>
     <li><strong>Color is never the only signal</strong> — the words say what it means. Existing rule,
       restated at point of use because this is exactly where it gets broken.</li>
-    <li><strong>Interactive lozenges keep the 24px minimum height</strong> and get real hover and
+    <li><strong>Interactive tags keep the 24px minimum height</strong> and get real hover and
       focus-visible states. Static ones may be shorter but should not be.</li>
     <li><strong>The 3px rectangle stays a different thing.</strong> <code>.type-badge</code> is
       shipped, contrast-verified, and lives in dense table cells where a pill wastes width. I would
@@ -247,15 +252,22 @@
   <p>The component itself is about 25 lines of CSS and a section on an existing pattern page — small.
   The real work is deciding <em>not</em> to hand-build the sixth version next time. Nothing has to
   migrate at once: the four mockup copies collapse to one class whenever the category-editor pattern
-  page gets built, and the blog swaps <code>.arxiv-lozenge</code> for <code>.ds-lozenge</code> on its
+  page gets built, and the blog swaps <code>.arxiv-lozenge</code> for <code>.ds-tag</code> on its
   next release. Both are follow-ons, not prerequisites.</p>
 
-  <h2>Open questions</h2>
+  <h2>Decided</h2>
   <table>
-    <tr><td style="width:24px">1</td><td>The lime contradiction above — remove the line from color-mapping.md, or carve out an explicit public accent role for lime?</td></tr>
-    <tr><td>2</td><td>Condensed uppercase for words (the blog's register) and mono for identifiers (<code>cs.AI</code>) — right split? The admin mockups currently use mono for everything.</td></tr>
-    <tr><td>3</td><td>Is "lozenge" the name we want, given the audience? "Tag" and "label" are plainer; "chip" is what the admin mockups already call it. The class name should be whatever people will say out loud.</td></tr>
-    <tr><td>4</td><td>Pill-shaped buttons in the reader — separate decision, but worth settling while this is in your head.</td></tr>
+    <tr><td style="width:130px"><strong>Name</strong></td><td><strong>Tags</strong>, everywhere — class <code>.ds-tag</code>. Shamsi 2026-08-11: "label" is too generic, and "tag" is what people will actually say. Supersedes "lozenge" and the admin mockups' "chip".</td></tr>
+    <tr><td><strong>Lime tier</strong></td><td>None. See above.</td></tr>
+    <tr><td><strong>Info tier</strong></td><td>Dropped — it collided with chrome. Three status colors, not four.</td></tr>
+    <tr><td><strong>Dark contrast</strong></td><td>Verified. Every level clears AA; lowest is chrome at 6.20:1.</td></tr>
+    <tr><td><strong>The rule</strong></td><td>"A tag labels or categorizes; it never stands in for a link." Now in DESIGN-POLICIES under <em>Content and interaction</em>, alongside the status-color-means-a-real-condition rule.</td></tr>
+  </table>
+
+  <h2>Still open</h2>
+  <table>
+    <tr><td style="width:24px">1</td><td>Condensed uppercase for words, mono for identifiers like <code>cs.AI</code> — right split? The admin mockups currently use mono for everything, the blog uses condensed caps for everything.</td></tr>
+    <tr><td>2</td><td>Ship it now, or wait and build it alongside the category-editor pattern page so the four duplicate admin chips collapse in one pass?</td></tr>
   </table>
 
 </div></body>
