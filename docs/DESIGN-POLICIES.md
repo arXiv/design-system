@@ -84,6 +84,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 ## Content and interaction
 
+- **Tags label or categorize; they never stand in for a link.** A tag is the small rounded label used for subject categories, topics, and states. It may link to a listing, but it must never replace a text link as the way to get somewhere — which is why version links are inline text and not filled pills. When a tag carries a status color, that color reports a real condition; never use one for emphasis.
 - **Submission type badges:** Use the established palette: `.type-new` (blue), `.type-rep` (yellow), `.type-wdr` (dark), `.type-cross` (light grey)
 - **Segmented controls:** Use semantic variants — `.seg-positive` (green/accept), `.seg-neutral` (blue/informational), `.seg-negative` (red/reject)
 - **Filter dropdowns:** Use `.ds-filter` with a visible `<label>`. Always include an "All" option as the inclusive default.
