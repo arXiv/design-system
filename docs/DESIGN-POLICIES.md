@@ -3,12 +3,14 @@
 Hard constraints for all arXiv frontend work — internal tools and public-facing pages. These are non-negotiable rules, not suggestions. Verify compliance before submitting changes.
 
 ---
-## Internal vs. Public pages
+## Surfaces: internal, public, outreach
 
-Every arXiv frontend belongs to one of two surfaces, and the surface sets the primary-action color. 
+Every arXiv frontend belongs to one of three surfaces. The first two set the primary-action color; the third inherits from public.
 - **Internal tools:** Staff-facing workspaces such as the moderation queue and the Admin Console (arXiv Check) use Access Lime as the primary action color and lighter green tints for backgrounds.
 - **Public pages:** Everything a reader or author sees on arxiv.org, including listing, abstract, and HTML paper pages, use Open Blue as the primary action and tints of Repository Brown for backgrounds.
-- This is not a stylistic choice: the accent tells the person which context they are working in, so the two must never be crossed. A lime primary button on a public page, or an Open Blue primary button on a staff tool, is a violation regardless of how well it reads. When a surface is genuinely ambiguous (a shared component or an embedded widget), ask and determine which context the user is in first and document it in a code comment.
+- **Outreach properties:** arXiv's less formal digital properties — the news blog, event and celebration mini-sites, campaign pages. They inherit the public system whole and take a short list of documented liberties, enumerated on [the outreach surface page](outreach/). Liberties cover tone only: the accessibility floor, the palette, self-hosting, and every other constraint in this document apply unchanged.
+- The internal/public split is not a stylistic choice: the accent tells the person which context they are working in, so the two must never be crossed. A lime primary button on a public page, or an Open Blue primary button on a staff tool, is a violation regardless of how well it reads. When a surface is genuinely ambiguous (a shared component or an embedded widget), ask and determine which context the user is in first and document it in a code comment.
+- Inheritance runs one way. An outreach property may adopt anything from the public system; the public system adopts from outreach only through deliberate promotion, once a second property needs the same thing. Nothing invented for a mini-site reaches arxiv.org by drift.
 - Token naming is a separate concern, governed under Design tokens below — the prefix follows the consuming codebase's rules, not the surface, so never infer the surface from a token name or use a token prefix to signal context.
 
 ## Accessibility (WCAG 2.1 AA floor, 2.2 AA target)
@@ -76,6 +78,9 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 - **Press effect:** All buttons use `transform: translateY(1px)` with shadow removal on `:active`
 - **Transition timing:** 0.12s for background, border, color, and shadow. 0.08s for transform.
 - **Disabled state:** `cursor: not-allowed`, reduced opacity. WCAG exempts disabled controls from contrast requirements.
+- **Three tiers, constructed per surface:** primary, secondary, and a quiet third tier. The third tier is reached by removing whatever the surface's secondary uses to hold the page — public secondary leans on its border, so `.ds-btn-text` drops the border and keeps no fill; internal secondary leans on a lime fill, so `.btn-tertiary` drops the fill and keeps a border. Never add a tier whose only difference from its neighbor is a shadow.
+- **Text buttons are not links:** a text button carries Link Blue but is never underlined, and its hover feedback is a background wash. Underlines belong to links (inline always, standalone on hover). If a control navigates, make it a link.
+- **Icons in buttons** are sized in `em` so they track the button's own font-size, and never shrink when the label is long.
 
 ## Content and interaction
 
@@ -89,7 +94,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 - **No metrics display:** arXiv does not display view counts, download counts, or citation counts on public pages. This is a core operating value — arXiv does not promote or rank papers.
 - **Citation export:** On abstract pages, we provide BibTeX (default), APA, Chicago, and MLA formats. Generate from metadata to save manual work for the user.
 - **arXiv Labs:** Labs tools that collect user data must be behind an opt-in toggle, not on by default (this policy is still in the early implementation phase as 6/24/26 and not enforced for Labs yet). Labs that require login to a third party platform should be deprioritized in placement.
-- **Header:** Single bar. Black (phase 1, spinout) transitioning to Repository Brown (phase 2). Logo, Search, Submit, Donate, Log in. No Cornell branding post-spinout.
+- **Header:** Single bar. Black (phase 1, spinout) transitioning to Repository Brown (phase 2). Logo, Search, Submit, Donate, Log in. No Cornell branding post-spinout. Outreach properties may run an Open Blue header instead — a documented liberty of that surface, never valid here.
 - **Footer:** Acknowledgment text (Simons Foundation, member institutions, IP matched institution name). Links: About, Help, Contact, Subscribe, Copyright, Privacy, Accessibility, Status. Special section for major funders on the right side. All acknowledgements are presented in the footer, never in the header.
 - **Banner:** A minimal and time-bound banner can be displayed with short announcements. It includes a small icon, a short sentence and link, and a dismiss button. After dismissing, the banner should not display for that user again.
 

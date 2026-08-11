@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Outreach surface — arXiv Design System</title>
+  <link rel="stylesheet" href="../fonts.css">
+  <link rel="stylesheet" href="../public/design-system.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: var(--arxiv-font-sans); color: var(--arxiv-repository-brown); background: var(--arxiv-warm-wash); margin: 0; font-size: 14px; line-height: 1.5; }
+    .page { max-width: 1000px; margin: 0 auto; padding: 28px 28px 80px; }
+    .page-header { margin: 28px 0 40px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p { margin: 0; color: var(--arxiv-library-grey); font-size: 13px; max-width: 760px; }
+    .section { margin-bottom: 52px; }
+    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+    .section-desc { font-size: 13px; color: var(--arxiv-library-grey); margin: 0 0 18px; max-width: 760px; line-height: 1.55; }
+    code { font-family: var(--arxiv-font-mono); font-size: 12px; background: var(--arxiv-card-grey); padding: 2px 6px; border-radius: 3px; }
+    .note-alert { max-width: 760px; margin-top: 16px; }
+
+    .spec-table { border-collapse: collapse; background: #fff; border: 1px solid var(--arxiv-border-light); font-size: 13px; width: 100%; }
+    .spec-table th { background: var(--arxiv-card-grey); text-align: left; padding: 8px 13px; font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-library-grey); }
+    .spec-table td { padding: 9px 13px; border-top: 1px solid var(--arxiv-card-grey); vertical-align: top; }
+    .spec-table td:first-child { font-weight: 600; }
+    .status { font-family: var(--arxiv-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; border-radius: 3px; padding: 2px 7px; white-space: nowrap; }
+    .status-adopted { background: var(--arxiv-success-bg); color: var(--arxiv-success-fg); border: 1px solid var(--arxiv-success-border); }
+    .status-trial { background: var(--arxiv-warning-bg); color: var(--arxiv-warning-fg); border: 1px solid var(--arxiv-warning-border); }
+
+    .demo { background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 0; margin-bottom: 16px; overflow: hidden; }
+    .demo-label { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin: 0; padding: 10px 16px; border-bottom: 1px solid var(--arxiv-border-light); background: var(--arxiv-card-grey); }
+    .demo-body { padding: 20px; }
+    .demo-note { font-size: 12.5px; color: var(--arxiv-library-grey); margin: 8px 0 0; max-width: 700px; line-height: 1.6; }
+
+    /* ── Demo-only chrome. These constructions are documented here and
+       implemented in the consuming theme; nothing on this page is a
+       component you can import. Copy the construction, not the page. ── */
+    .demo-header {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--arxiv-open-blue);
+      padding: 10px 18px;
+      font-size: 13px;
+    }
+    .demo-header .brand { font-family: var(--arxiv-font-mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--arxiv-repository-brown-on-blue); }
+    .demo-header nav { margin-left: auto; display: flex; gap: 4px; }
+    .demo-header nav a { color: var(--arxiv-repository-brown-on-blue); text-decoration: none; font-weight: 500; padding: 6px 10px; border-radius: 4px; }
+    .demo-header nav a:hover { background: var(--arxiv-open-blue-bright); }
+
+    .demo-field {
+      background: #1f5e96;
+      background-image: radial-gradient(rgba(255,255,255,0.13) 1px, transparent 1.6px);
+      background-size: 24px 24px;
+      box-shadow: inset 0 0 80px rgba(0,0,0,0.20), inset 0 0 220px rgba(0,0,0,0.30);
+      padding: 32px 24px;
+    }
+    .demo-field h3 { font-family: var(--arxiv-font-serif); font-size: 30px; line-height: 1.05; font-weight: 600; color: #fff; margin: 0 0 10px; }
+    .demo-field p { color: rgba(255,255,255,0.92); font-family: var(--arxiv-font-mono); font-size: 13px; margin: 0 0 18px; max-width: 42em; }
+    .demo-btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .demo-plate { border-top: 4px solid var(--arxiv-smileybones-yellow); border-bottom: 4px solid var(--arxiv-smileybones-yellow); padding: 16px 0; margin: 0; }
+    .demo-plate .stand-in { height: 130px; border: 1px solid var(--arxiv-border-light); border-radius: 4px; background: var(--arxiv-card-grey); display: flex; align-items: center; justify-content: center; color: var(--arxiv-library-grey); font-size: 12px; }
+    .demo-plate figcaption { font-size: 12.5px; color: var(--arxiv-library-grey); text-align: center; margin-top: 8px; }
+
+    .btn-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+    /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
+       <details>-based: works without JS; the small script at the end of the
+       page only adds close-on-outside-click and Esc. ── */
+    .docs-nav { display: flex; align-items: center; gap: 4px 18px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
+    .nav-dd { position: relative; }
+    .nav-dd > summary { list-style: none; cursor: pointer; color: var(--arxiv-library-grey); padding: 3px 6px; border-radius: 4px; user-select: none; }
+    .nav-dd > summary::-webkit-details-marker { display: none; }
+    .nav-dd > summary::after { content: " \25BE"; font-size: 10px; }
+    .nav-dd > summary:hover, .nav-dd[open] > summary { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
+    .nav-dd > summary:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
+    .nav-dd-menu { position: absolute; left: 0; top: calc(100% + 6px); display: flex; flex-direction: column; min-width: 235px; background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); padding: 6px; z-index: 60; }
+    .nav-dd-menu a { color: var(--arxiv-repository-brown); text-decoration: none; padding: 6px 10px; border-radius: 4px; white-space: nowrap; }
+    .nav-dd-menu a:hover { background: var(--arxiv-card-grey); }
+    .nav-dd-menu a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: -2px; }
+    .nav-dd-menu a[aria-current="page"] { font-weight: 600; }
+    .nav-dd-group { font-family: var(--arxiv-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-grey-ui); padding: 8px 10px 2px; }
+  </style>
+</head>
+<body>
+<nav class="docs-nav" aria-label="Design system">
+  <a class="docs-nav-brand" href="../../index.html">arXiv Design System</a>
+  <details class="nav-dd">
+    <summary>Design Patterns</summary>
+    <div class="nav-dd-menu">
+      <a href="../colors.html">Colors</a>
+      <a href="../typography.html">Typography</a>
+      <a href="../spacing.html">Spacing</a>
+      <a href="../buttons.html">Buttons</a>
+      <a href="../alerts.html">Alerts</a>
+      <a href="../version-display.html">Versions</a>
+      <a href="../organizing-content.html">Organizing content</a>
+      <a href="../dark-mode.html">Dark mode</a>
+      <a href="../internal/metadata-panel-styles.html">Metadata panel</a>
+      <a href="../outreach/" aria-current="page">Outreach surface</a>
+    </div>
+  </details>
+  <details class="nav-dd">
+    <summary>Mockups</summary>
+    <div class="nav-dd-menu">
+      <a href="../../mockups/">All mockups</a>
+      <span class="nav-dd-group">Public</span>
+      <a href="../../mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+      <a href="../../mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+      <a href="../../mockups/public/optin-modal/">Labs opt-in modal</a>
+      <span class="nav-dd-group">Internal</span>
+      <a href="../../mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+      <a href="../../mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+      <a href="../../mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+      <a href="../../mockups/internal/admin-console/category-management/">Admin Console — category management</a>
+      <a href="../../mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+    </div>
+  </details>
+  <details class="nav-dd">
+    <summary>Docs</summary>
+    <div class="nav-dd-menu">
+      <a href="../doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+      <a href="../doc.html?src=docs/BRAND.md">Brand &amp; voice</a>
+      <a href="../doc.html?src=docs/typography.md">Typography spec</a>
+      <a href="../doc.html?src=docs/color-mapping.md">Color spec</a>
+      <a href="../doc.html?src=README.md">About this repo</a>
+    </div>
+  </details>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <h1>Outreach surface</h1>
+    <p>arXiv's less formal properties: the news blog, event and celebration mini-sites, campaign
+    pages. They inherit the public design system whole, then take a short list of documented
+    liberties that arxiv.org itself never takes. This page is that list.</p>
+  </header>
+
+  <!-- ── The liberties table: the load-bearing artifact ── -->
+  <div class="section">
+    <h2 class="section-title">Documented liberties</h2>
+    <p class="section-desc">Every way an outreach property is allowed to differ from arxiv.org.
+    A deviation that is not in this table is not a liberty — it is a bug. Trials are live and
+    may be withdrawn; adopted entries are settled.</p>
+
+    <table class="spec-table">
+      <tr>
+        <th>Liberty</th><th>What it departs from</th><th>Where it runs</th><th>Status</th>
+      </tr>
+      <tr>
+        <td>Open Blue header bar</td>
+        <td>Public header is black, moving to Repository Brown; Open Blue is reserved as the primary-action color</td>
+        <td>blog.arxiv.org</td>
+        <td><span class="status status-trial">Trial · 2026-07-31</span></td>
+      </tr>
+      <tr>
+        <td>Serif editorial register</td>
+        <td>Public site uses Plex Serif italic for annotation only</td>
+        <td>Post titles, bylines, display headings</td>
+        <td><span class="status status-adopted">Adopted · 2026-07-31</span></td>
+      </tr>
+      <tr>
+        <td>Smileybones Yellow image bookends</td>
+        <td>Public site has no decorative rules; the yellow appears only as the mark itself</td>
+        <td>Featured post, in-article figures</td>
+        <td><span class="status status-trial">Trial · 2026-08-03</span></td>
+      </tr>
+      <tr>
+        <td>Pinned identity field</td>
+        <td>Surfaces are built from tokens so they flip in dark mode</td>
+        <td>Masthead band (Archival Blue, both modes)</td>
+        <td><span class="status status-trial">Trial · 2026-08-05</span></td>
+      </tr>
+      <tr>
+        <td>Mono display register</td>
+        <td>Public site uses Plex Mono for identifiers, not prose</td>
+        <td>Masthead description, wordmark</td>
+        <td><span class="status status-trial">Trial · 2026-08-11</span></td>
+      </tr>
+      <tr>
+        <td>Editorial list styling</td>
+        <td>Public lists use browser markers at the default indent</td>
+        <td>Em-dash bullets and condensed tabular numerals, both Archival Blue</td>
+        <td><span class="status status-adopted">Adopted · 2026-08-03</span></td>
+      </tr>
+      <tr>
+        <td>Decorative illustration and photography</td>
+        <td>Public pages carry no decorative imagery</td>
+        <td>Post thumbnails, homepage cards, bands</td>
+        <td><span class="status status-adopted">Adopted · 2026-07-31</span></td>
+      </tr>
+    </table>
+
+    <div class="ds-alert ds-alert-error note-alert">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">These liberties stop at the edge of arxiv.org</p>
+        <p>Nothing in the table above may appear on the core site — not the Open Blue header, not
+        the yellow rules, not decorative photography. The core site is a working tool for people
+        who are trying to read a paper, and its restraint is the point.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Rendered demos ── -->
+  <div class="section">
+    <h2 class="section-title">What the liberties look like</h2>
+    <p class="section-desc">Rendered with the real public stylesheet. The page-level constructions
+    (header bar, color field) are demo-only markup — they are documented here and implemented in
+    the consuming theme, not shipped as importable components.</p>
+
+    <div class="demo">
+      <p class="demo-label">Open Blue header bar</p>
+      <div class="demo-header">
+        <span class="brand">arXiv News</span>
+        <nav><a href="#outreach-demo">Blog home</a><a href="#outreach-demo">About arXiv</a></nav>
+      </div>
+      <div class="demo-body">
+        <p class="demo-note">Every pairing follows the Open Blue surface rules already in
+        <a href="../doc.html?src=docs/color-mapping.md">color-mapping.md</a>: Repository Brown is the
+        only text color on Open Blue, boundaries use Library Grey, and hover steps to Open Blue
+        Bright. The liberty is the header's <em>fill</em> — nothing else is bent to accommodate it.</p>
+      </div>
+    </div>
+
+    <div class="demo">
+      <p class="demo-label">Committed color field, with the on-dark secondary button</p>
+      <div class="demo-field" id="outreach-demo">
+        <h3>Updates on all things arXiv</h3>
+        <p>Policy changes, projects, hires, tech improvements and outages, accessibility work.</p>
+        <div class="demo-btn-row">
+          <a class="ds-btn ds-btn-primary" href="#outreach-demo">Donate</a>
+          <a class="ds-btn ds-btn-secondary on-dark" href="#outreach-demo">Subscribe</a>
+        </div>
+      </div>
+      <div class="demo-body">
+        <p class="demo-note"><code>.on-dark</code> is the real design-system variant promoted from
+        this pattern — the sibling of <code>.on-tint</code>, for buttons on a field dark enough to
+        host white text. It drops the fill so the field shows through, and it holds its construction
+        in dark mode because the field itself is pinned. The <em>field</em> is the liberty; the
+        button on it is now a normal part of the system. See
+        <a href="../buttons.html">Buttons</a>.</p>
+      </div>
+    </div>
+
+    <div class="demo">
+      <p class="demo-label">Smileybones Yellow bookends</p>
+      <div class="demo-body">
+        <figure class="demo-plate">
+          <div class="stand-in">image</div>
+          <figcaption>Rules bracket the whole plate — caption included.</figcaption>
+        </figure>
+        <p class="demo-note">The yellow runs <strong>horizontal, framing an image</strong>. It is
+        never a vertical column divider, never text, never a boundary that has to meet contrast
+        requirements — at roughly 1.3:1 on white it cannot carry meaning on its own. The token is
+        <code>--arxiv-smileybones-yellow</code>, and this framing rule is its only documented use
+        outside the mark itself.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── The contract ── -->
+  <div class="section">
+    <h2 class="section-title">What stays shared, and how it stays shared</h2>
+    <p class="section-desc">The liberties are deliberately a short list because everything else is
+    common ground. Three rules keep the surfaces from quietly growing apart.</p>
+
+    <table class="spec-table">
+      <tr><th>Rule</th><th>What it means in practice</th></tr>
+      <tr>
+        <td>Inheritance runs one way</td>
+        <td>Outreach inherits the public system. The public system never inherits back. A construction
+        invented for an outreach property stays there until a second property needs it — then it is
+        promoted into the public stylesheet through the normal path, and the outreach page keeps only
+        a pointer. <code>.on-dark</code> made that trip today.</td>
+      </tr>
+      <tr>
+        <td>Surface pages hold deltas, never restatements</td>
+        <td>A rule that applies everywhere is written once — in
+        <a href="../doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES.md</a> if it is a
+        constraint, on a flagship pattern page if it is a construction. Surface directories say only
+        what is <em>different</em> here. Restating a shared rule in two places is how the two copies
+        start disagreeing.</td>
+      </tr>
+      <tr>
+        <td>Copies are checked by machine</td>
+        <td>Some duplication is unavoidable — the WordPress theme cannot link a stylesheet across
+        origins, so it bundles a verbatim copy, and the dark palette is stated twice so a theme
+        toggle can force it. Both are guarded by
+        <code>python3 verification/check-drift.py</code>, which fails when the copies disagree.
+        Run it after any change to a stylesheet.</td>
+      </tr>
+    </table>
+
+    <div class="ds-alert ds-alert-info note-alert">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">The accessibility floor does not move</p>
+        <p>Outreach properties take liberties with tone, not with contrast, focus behavior,
+        self-hosting, target sizes, or the palette. Those are constraints for every arXiv surface,
+        stated once in the design policies.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Adding a liberty</h2>
+    <p class="section-desc">Take the deviation to Shamsi before building it, then add a row to the
+    table above with an honest status. A trial that survives contact with a real audience becomes
+    adopted; a trial nobody defends gets removed along with its code. The point of writing them
+    down is that a year from now someone can tell the difference between a decision and an accident.</p>
+  </div>
+
+</div>
+
+<script>
+  // Nav dropdowns: close on outside click and Esc (enhancement only —
+  // the <details> menus work without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.nav-dd[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') document.querySelectorAll('.nav-dd[open]').forEach(function (d) { d.removeAttribute('open'); });
+  });
+</script>
+</body>
+</html>
