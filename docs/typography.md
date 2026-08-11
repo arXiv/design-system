@@ -10,7 +10,7 @@
 
 arXiv uses the IBM Plex type family for all text, and STIX Two Math for mathematical notation. All fonts are self-hosted — no external font services (Google Fonts, Adobe Typekit, etc.).
 
-Three surfaces share the family with different allowances — the matrix on `typography.html` is the reference. In short: internal tools and the public site share Sans / Condensed / Mono; the public site alone adds Serif 400 italic (the annotation voice) and STIX Two Math; the blog alone adds upright Serif 400/600 for headlines and pull quotes.
+Three surfaces share the family with different allowances — the matrix on `typography.html` is the reference. In short: internal tools and the public site share Sans / Condensed / Mono; the public site alone adds Serif 400 italic (the annotation voice) and STIX Two Math; [outreach properties](outreach/) add upright Serif 400/600 for headlines and pull quotes, Sans 700 for the one heading that must not read as an article, and Mono as a display register.
 
 ### Why IBM Plex
 
@@ -90,7 +90,8 @@ Recommendation grounded in a verified deep-research pass (25/25 claims confirmed
 | **Code & identifiers** | IBM Plex Mono | 400 (regular), 500 (medium) | arXiv IDs, DOIs, BibTeX, code blocks, monospace content |
 | **Annotation** | IBM Plex Serif | 400 italic | Secondary editorial commentary — footnote text in margin, figure alt-text in margin (see `.ds-annotation`) |
 | **Math notation** | STIX Two Math | 400 (regular) | Inline and display math in HTML paper pages |
-| **Blog headlines & quotes** | IBM Plex Serif | 400, 600 (upright) | Blog only — no other surface uses upright serif |
+| **Editorial headlines & quotes** | IBM Plex Serif | 400, 600 (upright) | Outreach only — no other surface uses upright serif |
+| **Editorial heading, non-article** | IBM Plex Sans | 700 (+ 700 italic) | Outreach only — the heaviest weight Plex ships; deliberately sans so the block does not read as another article |
 
 ### CSS custom properties
 
@@ -255,7 +256,7 @@ Not yet formalized. The following sizes are used consistently across mockups and
 
 ## Open questions
 
-- [ ] **Plex Serif weights** — currently loading Italic only (for `.ds-annotation`). Roman/regular weight could be added later if a non-italic serif use case appears, but italic is the only validated use today.
+- [x] **Plex Serif weights** — settled 2026-08-11. Roman 400 and SemiBold 600 are now real: the blog uses them for headlines, pull quotes, and drop caps, which is the non-italic serif use case this item was waiting for. Both are self-hosted. The public site and internal tools still load Italic only — upright serif is an outreach liberty, not a general allowance.
 - [ ] **Italic weights** — do we need italic variants of Plex Sans? Currently not loaded. Abstracts sometimes contain italic terms. MathJax handles math italics separately.
 - [ ] **Bold weight (700)** — currently using 600 (semibold) as the heaviest weight. Do any contexts need true bold?
 - [x] **CJK support** — *Decided (2026-06-17): fall back to system fonts for CJK.* IBM Plex's CJK siblings (Plex Sans JP/KR/TC/SC) are separate multi-megabyte families; loading them for author names and abstracts is against the speed pillar and small-team maintenance (BRAND #7, #8). CJK text falls back to the OS system CJK font via the sans stack. Revisit only if CJK rendering proves a real problem in testing.

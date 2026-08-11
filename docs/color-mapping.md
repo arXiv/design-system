@@ -132,11 +132,13 @@ Barely perceptible tints for creating section depth without hard borders.
 - The lime-accented header border on the internal design system pattern pages could appear on public pages as a design-system-aware accent
 - Never for buttons or large interactive elements on public pages
 
-**Smileybones Yellow** `#ffe000`:
+**Smileybones Yellow** `#ffe000` — token `--arxiv-smileybones-yellow`:
 - The smileybones icon itself (Labs branding, mascot appearances)
 - Celebratory or playful contexts (anniversaries, milestones)
 - Background fills for callout banners or badges
+- **Framing images, and only horizontally.** On [outreach properties](outreach/) it appears as thick rules above and below a figure, bracketing the whole plate including the caption. It is never a vertical rule or a column divider — that job belongs to Open Blue (decided 2026-08-11).
 - Never for text, small UI elements, or anything requiring contrast on white
+- Holds its value in dark mode, like the other accents
 
 **Campus Red** `#b31b1b`:
 - The X in the arXiv logo mark
