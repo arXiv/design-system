@@ -141,49 +141,68 @@ PDF.
 
 ## Results — measured 2026-08-12
 
-Run in Shamsi's own Chrome (no institutional access, one Google account signed in), which
+Run in Shamsi's own Chrome (no institutional access; one Google account signed in), which
 is what made the blocked publishers reachable. Every control below was **clicked**, not
-inferred, except where noted. Google Scholar's `gs-casa` overlay is excluded everywhere —
+inferred, except where marked. Google Scholar's `gs-casa` overlay is excluded everywhere —
 it is injected on top of publisher pages and is not their design.
+
+### Papers used
+
+| Platform | URL |
+|---|---|
+| arXiv live | `arxiv.org/abs/2301.08727` |
+| arXiv Phase 1 mockup | `arxiv.github.io/design-system/mockups/public/html-phase1.html` |
+| APS — Phys Rev Lett | `journals.aps.org/prl/abstract/10.1103/PhysRevLett.116.061102` |
+| ScienceDirect | `sciencedirect.com/science/article/pii/S037026931200857X` |
+| IOP Science | `iopscience.iop.org/article/10.3847/1538-4357/ae8190` |
+| Nature | `nature.com/articles/s41586-021-03819-2` |
+| PubMed Central | `pmc.ncbi.nlm.nih.gov/articles/PMC8371605/` |
+| PLOS ONE | `journals.plos.org/plosone/article?id=10.1371/journal.pone.0173664` |
+| Wiley | `advanced.onlinelibrary.wiley.com/doi/10.1002/advs.202004433` |
+| ACM Digital Library | `dl.acm.org/doi/10.1145/3292500.3330701` |
+| Springer Link | `link.springer.com/article/10.1007/s00453-021-00817-8` |
+| IEEE Xplore | `ieeexplore.ieee.org/document/9156697` |
+| Taylor & Francis | `tandfonline.com/doi/full/10.1080/00223980.2019.1590298` |
+
+### Results
 
 | Platform | Access | HTML full text | PDF | Citation |
 |---|---|---|---|---|
-| **arXiv live** | open | **1 click — separate page** | 1 click | 1 click → modal, **no copy button** |
-| **arXiv Phase 1 mockup** | open | **0 clicks — on the page** | 1 click, + sticky bar while reading | 1 click → **Copy button** |
-| APS (Phys Rev Lett) | open | 0 clicks — on the page | 1 click | 1 click → modal, no copy button |
-| ScienceDirect | open | 0 clicks — on the page | 1 click | 2 clicks → export menu, file only |
-| IOP Science | open | 0 clicks — on the page | 1 click | 1 click → BibTeX/RIS file |
-| Nature | open | 0 clicks — on the page | 1 click | 1 click (not exercised) |
-| PubMed Central | open | 0 clicks — on the page | not exercised | not exercised |
-| **Springer Link** | **paywalled** | **not available** | **Buy PDF, USD 39.95** | 1 click |
-| **IEEE Xplore** | **paywalled** | **not available** — section titles listed, body gated | gated (`javascript:void()`) | 1 click |
+| **arXiv live** | open | **1 click — separate page** | 1 click | modal, **no copy button** |
+| **arXiv Phase 1 mockup** | open | **0 clicks — on the page** | 1 click, + sticky bar while reading | 1 click → **Copy** |
+| APS | open | 0 clicks | 1 click | modal, no copy button |
+| ScienceDirect | open | 0 clicks | 1 click | 2 clicks → file export only |
+| IOP Science | open | 0 clicks | 1 click | BibTeX/RIS file only |
+| Nature | open | 0 clicks | 1 click | 1 click *(not exercised)* |
+| PubMed Central | open | 0 clicks | *not exercised* | *not exercised* |
+| PLOS ONE | open | *not exercised* | *not exercised* | *not exercised* |
+| Wiley | open | 0 clicks | 1 click | 1 click → **COPY TEXT** |
+| ACM DL | free access | **not available — PDF only** | 1 click | 1 click → **Copy citation** |
+| Springer Link | **paywalled** | not available | Buy PDF, USD 39.95 | 1 click |
+| IEEE Xplore | **paywalled** | not available — section titles listed, body gated | gated | 1 click |
+| Taylor & Francis | **paywalled** | not available | USD 56 / USD 136 | 1 click |
 
-Citation exports not clicked through on ScienceDirect and IOP: those controls download
-files, and downloading was out of scope for this pass. What is recorded is what is visible
-on screen — neither offers a copy-to-clipboard control.
+## Findings
 
-## The finding, and it is not the one we expected
+**1. arXiv is one click behind on the most common task.** Of the open-access articles
+measured, every publisher except ACM serves the full text on the landing page — APS,
+ScienceDirect, IOP, Nature, PMC, Wiley. arXiv alone sends the reader to a separate `/html/`
+page. This inverts the claim BRAND.md used to make. The Phase 1 mockup closes it, and is
+the only page measured where the full text costs nothing *and* the PDF stays reachable
+while reading.
 
-**On open-access articles, every publisher measured puts the full text on the landing page.
-arXiv is the only one that makes you click through to a separate page.** APS, ScienceDirect,
-IOP, Nature and PMC all serve abstract and body together; arXiv serves an abstract page and
-links to `/html/`.
+**2. Copy-to-clipboard for citations is uncommon but not unique** *(corrected — an earlier
+version of this file said no platform had one).* ACM (`Copy citation`) and Wiley
+(`COPY TEXT`) both do. arXiv live and APS show text to select by hand; ScienceDirect and
+IOP hand over a file. The Phase 1 mockup has one, which puts it with the better half of the
+field rather than ahead of all of it. **Live arXiv adding a copy button to its existing
+BibTeX modal is a small, obvious win, independent of Phase 1.**
 
-That inverts the claim BRAND.md currently makes. On the most common task a reader has —
-read the paper — arXiv today is *behind* the field by one click, not ahead of it.
-
-**The Phase 1 mockup fixes exactly this**, and is the only page measured where the full
-text costs nothing and the PDF stays reachable while reading.
-
-**Nobody has a copy button for citations.** Every platform measured, arXiv live included,
-either shows text to select by hand or hands you a file. The only exception in the whole
-sample is the arXiv Phase 1 mockup. That is a real and cheap advantage, and it is available
-to the live site today independently of any other Phase 1 work.
-
-**What the paywall costs.** Springer and IEEE gate both the HTML and the PDF. IEEE lists
-the section titles — Introduction, Related Work, Proposed Method, Experiments, Conclusion —
-above a body you cannot read without paying. Worth noting when arXiv describes itself
-against the field: the gap is not click counts, it is that arXiv's content is there at all.
+**3. The real gap is access, not clicks.** Three of thirteen — Springer, IEEE, Taylor &
+Francis — give a reader with no subscription neither the HTML nor the PDF, at USD 39.95,
+gated, and USD 56 respectively. IEEE lists the section titles above a body it will not
+show. Against that, click counts are a rounding error. When arXiv describes itself against
+the field, this is the difference that matters.
 
 ## Earlier automated pass — superseded
 
