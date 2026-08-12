@@ -98,7 +98,7 @@ support, and the two differ in an interesting way rather than a simple one.
 | Page weight | 42 KB | 143 KB |
 | **View full HTML** | 1 click, 112px | **0 clicks — the paper is already on the page** |
 | **Download PDF** | 1 click, 93px | 1 click, 496px — *and* permanently in the sticky bar while reading |
-| **Copy a citation** | 1 click, 420px | 1 click, 661px |
+| **Copy a citation** | 1 click, 420px — *navigates to a separate citation page* | **1 click, 661px — a `Copy` button in the rail, no navigation** |
 
 **What the mockup wins.** It removes a whole navigation step: the full text is the page, so
 the most common task costs nothing. And its sticky reader bar carries the PDF control at the
@@ -117,9 +117,18 @@ single reading column and a bad one for a control placed in a side region. Recor
 because the metric, taken at face value, would have argued for pushing a download button
 above the paper's own title — making the design worse to make the number better.
 
-**The gap worth closing.** The citation control does not ride the sticky bar. Someone
-who reaches the end of a forty-page paper and wants to cite it has to scroll back. PDF
-solved this; citation did not, and it is the same problem.
+**Citation is a second win, not a gap (corrected 2026-08-12).** The rail pairs
+`Display BibTeX` with a `Copy` button at the same height, so copying a citation is one
+click and no navigation. On the live site, `export BibTeX citation` takes you to a separate
+page, where you then select and copy by hand. The mockup is ahead here, and an earlier
+version of this file undersold it.
+
+**The narrow gap that remains.** The rail is `position: static`, so it scrolls away, and
+the sticky bar carries Contents, the section list, Abstract, PDF and TeX Source — but no
+citation. At 4,000px into the paper, neither citation control is on screen. This only
+affects someone deep in a long paper who wants to cite it, and the fix is one more item in
+a bar that already exists. Small, but it is the same problem the bar was built to solve for
+PDF.
 
 ## Results so far — other platforms
 
