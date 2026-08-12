@@ -555,46 +555,64 @@
     .chip-container.drag-over {
       background-color: #f0f4ff;
     }
-    .chip {
+    /* ── Tags (.ds-tag) ──────────────────────────
+       Local copy of the canonical component in docs/internal/design-system.css.
+       Mockups are never a build reference — the canonical file is authoritative.
+       Values are literal here because this page does not load the stylesheet;
+       each one names the token it stands for. Copied 2026-08-11. */
+    .ds-tag {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      background: #eef2ff;
-      color: #1c1a17;
-      border: 1px solid #d0daf5;
-      padding: 3px 10px;
+      min-height: 24px;              /* WCAG 2.2 SC 2.5.8 target floor */
+      padding: 2px 12px;
       border-radius: 999px;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 12.5px;
-      cursor: grab;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .chip:hover {
-      cursor: grab;
-    }
-    .chip:active {
-      cursor: grabbing;
-    }
-    .chip.dragging {
-      opacity: 0.5;
-      transform: rotate(5deg);
-    }
-    .remove { cursor: pointer; margin-left: 4px; }
-    .chip-source {
-      font-family: "IBM Plex Sans", sans-serif;
-      font-size: 10.5px;
+      font-family: "IBM Plex Mono", "SF Mono", "Fira Code", monospace;
+      font-size: 11px;
       font-weight: 500;
-      color: #6b6459;
-      background: #fff;
-      border: 1px solid #ddd8d2;
-      border-radius: 999px;
-      padding: 1px 6px;
-      white-space: nowrap;
       line-height: 1.4;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      text-decoration: none;
+      background: #f0eeec;           /* --grey-hover-bg */
+      border: 1px solid #ddd8d2;     /* --border */
+      color: #6b6459;                /* --grey */
     }
-    .chip-source-auto { color: #b0aba6; }
-    .chip-source a { color: #1565c0; text-decoration: none; }
-    .chip-source a:hover { text-decoration: underline; }
+    /* Identifiers keep their own case. Category names are copied, never
+       restyled — cs.AI, physics.optics and cond-mat.str-el are all correct
+       as arXiv publishes them (DESIGN-POLICIES, Content and interaction). */
+    .ds-tag--keep-case { text-transform: none; letter-spacing: 0; }
+    .ds-tag--chrome { background: #e7f1fd; border-color: #5a82c8; color: #1a3a78; }   /* --info-* */
+    .ds-tag--error  { background: #fdeaea; border-color: #c62828; color: #8b0000; }   /* --error-* */
+    .ds-tag-remove {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 16px; height: 16px; margin-right: -4px; padding: 0;
+      background: none; border: 0; border-radius: 999px;
+      color: inherit; opacity: 0.65; font-size: 13px; line-height: 1; cursor: pointer;
+    }
+    .ds-tag-remove:hover { opacity: 1; background: rgba(0,0,0,0.08); }
+    .ds-tag-note {
+      display: inline-flex; align-items: center;
+      padding: 1px 6px; border-radius: 999px;
+      background: #fff;              /* --surface */
+      border: 1px solid #ddd8d2;     /* --border */
+      color: #6b6459;                /* --grey */
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      font-size: 10px; font-weight: 500;
+      text-transform: none; letter-spacing: 0; white-space: nowrap;
+    }
+    .ds-tag-note--auto { color: #b0aba6; }
+    .ds-tag-note a { color: #1565c0; text-decoration: none; }
+    .ds-tag-note a:hover { text-decoration: underline; }
+    .ds-tag--error .ds-tag-note { background: rgba(255,255,255,0.55); border-color: rgba(198,40,40,0.2); color: #c62828; }
+    .ds-tag--error .ds-tag-note--auto { color: #e57373; }
+
+    /* Mockup-local: the editing affordances. These belong on the
+       category-editor pattern page when it is built, not in .ds-tag. */
+    .ds-tag[draggable="true"] { cursor: grab; transition: opacity 0.2s, transform 0.2s; }
+    .ds-tag[draggable="true"]:active { cursor: grabbing; }
+    .ds-tag.dragging { opacity: 0.5; transform: rotate(5deg); }
 
     /* Modal */
     .modal {
@@ -804,20 +822,6 @@
       font-weight: 700;
     }
 
-    /* ── Negative endorsement chip ──────────── */
-    .chip-neg {
-      background: #fde8e8;
-      border-color: #f5d0d0;
-      color: #c62828;
-    }
-    .chip-neg .chip-source {
-      background: rgba(255,255,255,0.55);
-      border-color: rgba(198,40,40,0.2);
-      color: #c62828;
-    }
-    .chip-neg .chip-source-auto { color: #e57373; }
-    .chip-neg .chip-source a { color: #c62828; }
-
     /* ── Privileges card open background ────── */
     #categories-card .card-body { background: #fff; }
     #papers-card #papers-table,
@@ -927,19 +931,6 @@
       color: #b0aba6;
     }
 
-    /* Category badge — monospace, neutral, like type-badge shape */
-    .cat-badge {
-      display: inline-block;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 11px;
-      background: #eef2ff;
-      color: #1a3d78;
-      border: 1px solid #d0daf5;
-      border-radius: 3px;
-      padding: 1px 7px;
-      white-space: nowrap;
-      margin-bottom: 4px;
-    }
     .btn-icon .icon-arrow {
       font-size: 14px;
       margin-left: 0px;
@@ -1047,12 +1038,12 @@
 
     /* ── Flip-capable chip in endorsement modal ── */
     /* Clickable chip body — hover signals it's interactive */
-    .chip-flippable {
+    .ds-tag.is-flippable {
       cursor: pointer;
       user-select: none;
       transition: filter 0.1s;
     }
-    .chip-flippable:hover { filter: brightness(0.95); }
+    .ds-tag.is-flippable:hover { filter: brightness(0.95); }
 
     /* ── Endorsement modal ───────────────────── */
     .modal-endorse-section { margin-bottom: 14px; }
@@ -1793,7 +1784,7 @@
                 <tr>
                   <td>298,248</td>
                   <td>Jim Entwood-Test &lt;testing123@example.edu&gt;</td>
-                  <td><span class="cat-badge">math.CA</span></td>
+                  <td><span class="ds-tag ds-tag--chrome ds-tag--keep-case">math.CA</span></td>
                   <td>2025-12-09</td>
                   <td>MLN4QV</td>
                   <td>203.0.113.17</td>
@@ -1804,7 +1795,7 @@
                 <tr>
                   <td>298,247</td>
                   <td>Jim Entwood-Test &lt;testing123@example.edu&gt;</td>
-                  <td><span class="cat-badge">math.AC</span></td>
+                  <td><span class="ds-tag ds-tag--chrome ds-tag--keep-case">math.AC</span></td>
                   <td>2025-12-08</td>
                   <td>OAWWB6</td>
                   <td>203.0.113.17</td>
@@ -1815,7 +1806,7 @@
                 <tr>
                   <td>298,243</td>
                   <td>Tobias Åkerlund &lt;t.akerlund@example.net&gt;</td>
-                  <td><span class="cat-badge">q-bio.SC</span></td>
+                  <td><span class="ds-tag ds-tag--chrome ds-tag--keep-case">q-bio.SC</span></td>
                   <td>2025-10-23</td>
                   <td>UJL8IN</td>
                   <td>203.0.113.42</td>
@@ -1826,7 +1817,7 @@
                 <tr>
                   <td>298,240</td>
                   <td>Nikos Vlachos &lt;nikos.vlachos@example.com&gt;</td>
-                  <td><span class="cat-badge">math.AP</span></td>
+                  <td><span class="ds-tag ds-tag--chrome ds-tag--keep-case">math.AP</span></td>
                   <td>2025-03-19</td>
                   <td>9QCH7V</td>
                   <td>203.0.113.88</td>
@@ -1837,7 +1828,7 @@
                 <tr>
                   <td>298,239</td>
                   <td>Wei Zhang &lt;wei.zhang@student.example.edu&gt;</td>
-                  <td><span class="cat-badge">cs.AI</span></td>
+                  <td><span class="ds-tag ds-tag--chrome ds-tag--keep-case">cs.AI</span></td>
                   <td>2025-01-01</td>
                   <td>V8QUSR</td>
                   <td>203.0.113.120</td>
@@ -2358,15 +2349,15 @@
     <div class="modal-endorse-section">
       <p class="modal-endorse-label pos">Positive Endorsements</p>
       <div id="modal-endorsed-chips" class="chip-container">
-        <div class="chip" draggable="true" data-category="cs.CV">cs.CV <span class="remove">✕</span></div>
-        <div class="chip" draggable="true" data-category="physics.bio-ph">physics.bio-ph <span class="remove">✕</span></div>
+        <div class="ds-tag ds-tag--chrome ds-tag--keep-case" draggable="true" data-category="cs.CV">cs.CV <span class="ds-tag-remove" role="button" aria-label="Remove category">✕</span></div>
+        <div class="ds-tag ds-tag--chrome ds-tag--keep-case" draggable="true" data-category="physics.bio-ph">physics.bio-ph <span class="ds-tag-remove" role="button" aria-label="Remove category">✕</span></div>
       </div>
     </div>
 
     <div class="modal-endorse-section">
       <p class="modal-endorse-label neg">Negative Endorsements</p>
       <div id="modal-blocked-chips" class="chip-container">
-        <div class="chip" draggable="true" data-category="physics.gen-ph">physics.gen-ph <span class="remove">✕</span></div>
+        <div class="ds-tag ds-tag--chrome ds-tag--keep-case" draggable="true" data-category="physics.gen-ph">physics.gen-ph <span class="ds-tag-remove" role="button" aria-label="Remove category">✕</span></div>
       </div>
     </div>
 
@@ -2629,14 +2620,14 @@
 
   function makeCardChip(id, src, isNeg) {
     const chip = document.createElement('div');
-    chip.className = isNeg ? 'chip chip-neg' : 'chip';
+    chip.className = 'ds-tag ds-tag--keep-case ' + (isNeg ? 'ds-tag--error' : 'ds-tag--chrome');
     chip.textContent = (isNeg ? '− ' : '') + id;
     const badge = document.createElement('span');
     if (!src || src.type === 'auto') {
-      badge.className = 'chip-source chip-source-auto';
+      badge.className = 'ds-tag-note ds-tag-note--auto';
       badge.textContent = 'auto';
     } else {
-      badge.className = 'chip-source';
+      badge.className = 'ds-tag-note';
       const a = document.createElement('a'); a.href = '#'; a.textContent = src.username;
       badge.appendChild(a);
     }
@@ -2656,7 +2647,7 @@
   function makeModalChip(item, type) {
     const isInvalidated = type === 'blocked';
     const chip = document.createElement('div');
-    chip.className = isInvalidated ? 'chip chip-neg' : 'chip';
+    chip.className = 'ds-tag ds-tag--keep-case ' + (isInvalidated ? 'ds-tag--error' : 'ds-tag--chrome');
 
     const label = document.createElement('span');
     label.textContent = item.id;

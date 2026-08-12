@@ -26,6 +26,11 @@
        light + dark — the first dark-aware tokens here (validated 2026-05-28)
      - Accordion (.ds-acc + .ds-acc-stack/.ds-acc-body, rail variant
        .ds-acc-rail; no new tokens, validated 2026-07-27)
+     - Text button (.ds-btn-text) + on-dark secondary (.on-dark) + the
+       in-button icon rule (no new tokens, validated 2026-08-11)
+     - Tag (.ds-tag + --chrome/--success/--warning/--error, --keep-case,
+       .ds-tag-remove, .ds-tag-note; no new tokens, validated 2026-08-11
+       against the admin-console category editors)
 
    More patterns will land here as they stabilize in the mockups.
    ═══════════════════════════════════════════════════════════════════════ */
@@ -391,6 +396,118 @@
   height: 1em;
   display: block;
   flex: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TAGS  (.ds-tag)
+   ───────────────────────────────────────────────────────────────────────
+   The small rounded label used for subject categories, topics, and states.
+   A tag labels or categorizes the thing it sits on — it may link to a
+   listing, but it never replaces a text link as the way to navigate
+   (DESIGN-POLICIES, Content and interaction). That rule is why version
+   links are inline text and not filled pills.
+
+   Anatomy:
+     .ds-tag                base — quiet warm grey, the default
+     .ds-tag--chrome        the "arXiv is speaking" blue; categories, topics
+     .ds-tag--success/
+       --warning/--error    only when the label reports a real CONDITION
+     .ds-tag--keep-case     opt out of the uppercase default
+     .ds-tag-remove         the ✕ control, for editable tags
+     .ds-tag-note           a small nested badge inside a tag (provenance)
+
+   Case: uppercase by default, applied with text-transform and never typed,
+   so the underlying text stays correct for copy-paste, in-page search and
+   screen readers. Two things keep their own case via .ds-tag--keep-case —
+   identifiers, whose case is part of the data, and labels long enough that
+   caps slow reading down.
+
+   CATEGORY NAMES ALWAYS USE .ds-tag--keep-case. A category is copied,
+   never restyled: `cs.AI`, `physics.optics`, `cond-mat.str-el` are all
+   correct as arXiv publishes them, and uppercasing the lowercase ones
+   produces strings that are not real categories.
+
+   Color never carries meaning alone — the label's own words do. min-height
+   holds the WCAG 2.2 SC 2.5.8 target floor for tags that are interactive.
+
+   Construction validated 2026-08-11 against the admin-console category
+   editors in mockups/internal/admin-console/{user-page,paper-details}/;
+   spec and contrast table in planning/proposals/tag-component.html.
+
+   Example:
+     <span class="ds-tag ds-tag--chrome ds-tag--keep-case">cs.AI</span>
+     <a class="ds-tag ds-tag--chrome" href="/list/policy">Policy</a>
+   ═══════════════════════════════════════════════════════════════════════ */
+.ds-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 24px;
+  padding: 2px 12px;
+  border-radius: 999px;
+  font-family: var(--arxiv-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-decoration: none;
+  background: var(--arxiv-card-grey);
+  border: 1px solid var(--arxiv-border-light);
+  color: var(--arxiv-library-grey);
+}
+.ds-tag--keep-case { text-transform: none; letter-spacing: 0; }
+
+.ds-tag--chrome  { background: var(--arxiv-tint-light);  border-color: var(--arxiv-tint-border);    color: var(--arxiv-archival-blue); }
+.ds-tag--success { background: var(--arxiv-success-bg);  border-color: var(--arxiv-success-border); color: var(--arxiv-success-fg); }
+.ds-tag--warning { background: var(--arxiv-warning-bg);  border-color: var(--arxiv-warning-border); color: var(--arxiv-warning-fg); }
+.ds-tag--error   { background: var(--arxiv-error-bg);    border-color: var(--arxiv-error-border);   color: var(--arxiv-error-fg); }
+
+/* Interactive tags only. A static tag takes no hover and needs no ring. */
+a.ds-tag:hover, button.ds-tag:hover { background: var(--arxiv-active-bg); color: var(--arxiv-link-hover); }
+a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--arxiv-focus-ring); outline-offset: 2px; }
+
+/* Remove control, for tags the user can take off. Inherits the tag's color
+   so it never becomes a second signal; the accessible name comes from the
+   consumer (aria-label="Remove cs.AI"), never from the glyph. */
+.ds-tag-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-right: -4px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  color: inherit;
+  opacity: 0.65;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+.ds-tag-remove:hover { opacity: 1; background: rgba(0, 0, 0, 0.08); }
+.ds-tag-remove:focus-visible { outline: 2px solid var(--arxiv-focus-ring); outline-offset: 1px; opacity: 1; }
+
+/* A badge nested inside a tag — says where the tag came from, without
+   competing with it. The only pill-inside-a-pill in the system. */
+.ds-tag-note {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--arxiv-surface);
+  border: 1px solid var(--arxiv-border-light);
+  color: var(--arxiv-library-grey);
+  font-family: var(--arxiv-font-sans);
+  font-size: 0.625rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 

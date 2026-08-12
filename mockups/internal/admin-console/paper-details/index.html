@@ -118,15 +118,34 @@ h1,h2,h3{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif;}
   transition:color .18s,font-weight .18s;}
 .toggle-switch input:checked ~ .toggle-label{color:var(--text); font-weight:700;}
 
-/* ── Chips / category pills ──────────────────────────────── */
-.chip{display:inline-flex; align-items:center; gap:6px; font-family:"IBM Plex Mono",monospace;
-  font-size:12px; background:var(--grey-hover-bg); border:1px solid var(--border-light);
-  color:var(--text); border-radius:4px; padding:2px 8px;}
-.chip.primary{background:#deeeff; border-color:#5a82c8; color:#1a3a78;}
-.chip .chip-x{border:none; background:none; cursor:pointer; color:var(--grey); font-size:14px;
-  line-height:1; padding:0 0 0 2px;}
-.chip .chip-x:hover{color:var(--danger);}
-.chip .chip-tag{font-family:"IBM Plex Sans Condensed",sans-serif; font-size:9px; font-weight:700;
+/* ── Tags (.ds-tag) ───────────────────────────────────────
+   Local copy of the canonical component in docs/internal/design-system.css.
+   Mockups are never a build reference — the canonical file is authoritative.
+   Values are literal because this page does not load the stylesheet; each
+   names the token it stands for. Copied 2026-08-11, replacing three separate
+   chip/token treatments that had drifted apart. */
+.ds-tag{display:inline-flex; align-items:center; gap:5px; min-height:24px; /* WCAG 2.2 SC 2.5.8 */
+  padding:2px 12px; border-radius:999px;
+  font-family:"IBM Plex Mono","SF Mono","Fira Code",monospace;
+  font-size:11px; font-weight:500; line-height:1.4;
+  text-transform:uppercase; letter-spacing:.02em; white-space:nowrap; text-decoration:none;
+  background:#f0eeec;          /* --grey-hover-bg */
+  border:1px solid #ddd8d2;    /* --border */
+  color:#6b6459;}              /* --grey */
+/* Category names are copied, never restyled — cs.AI, physics.optics and
+   cond-mat.str-el are all correct as arXiv publishes them
+   (DESIGN-POLICIES, Content and interaction). */
+.ds-tag--keep-case{text-transform:none; letter-spacing:0;}
+.ds-tag--chrome{background:#e7f1fd; border-color:#5a82c8; color:#1a3a78;}   /* --info-* */
+.ds-tag-remove{display:inline-flex; align-items:center; justify-content:center;
+  width:16px; height:16px; margin-right:-4px; padding:0;
+  background:none; border:0; border-radius:999px;
+  color:inherit; opacity:.65; font-size:13px; line-height:1; cursor:pointer;}
+.ds-tag-remove:hover{opacity:1; background:rgba(0,0,0,.08);}
+.ds-tag-remove:focus-visible{outline:2px solid var(--focus-ring); outline-offset:1px; opacity:1;}
+/* Mockup-local: the "Primary" marker inside a tag. Belongs on the
+   category-editor pattern page when it is built, not in .ds-tag. */
+.ds-tag .ds-tag-marker{font-family:"IBM Plex Sans Condensed",sans-serif; font-size:9px; font-weight:700;
   text-transform:uppercase; letter-spacing:.05em; opacity:.8;}
 
 /* ── Alerts ──────────────────────────────────────────────── */
@@ -431,13 +450,8 @@ select.control{appearance:none; -webkit-appearance:none;
 .cat-drag:hover{color:var(--grey);}
 .cat-drag:focus-visible{outline:3px solid var(--focus-ring); outline-offset:1px;}
 .cat-drag svg{width:16px; height:16px; fill:currentColor;}
-.cat-token{display:inline-flex; align-items:center; gap:6px; font-family:"IBM Plex Mono",monospace; font-size:12.5px;
-  background:#eef2ff; color:#1a3d78; border:1px solid #d0daf5; border-radius:999px; padding:3px 8px 3px 12px;}
 .cat-name{white-space:nowrap;}
 .cat-row.is-primary .cat-name{font-weight:700;}
-.cat-x{border:none; background:none; cursor:pointer; color:#5f6f9c; font-size:16px; line-height:1; padding:0; display:inline-flex; align-items:center;}
-.cat-x:hover{color:var(--danger);}
-.cat-x:focus-visible{outline:3px solid var(--focus-ring); outline-offset:1px; border-radius:3px;}
 .cat-primary-tag{font-family:"IBM Plex Sans Condensed",sans-serif; font-size:9px; font-weight:700;
   text-transform:uppercase; letter-spacing:.05em; color:var(--sec-border-active); background:var(--sec-bg);
   border:1px solid var(--sec-border); border-radius:3px; padding:1px 6px;}
@@ -621,9 +635,9 @@ select.control{appearance:none; -webkit-appearance:none;
           <button class="icon-btn edit-inline" type="button" aria-label="Edit paper password"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"/></svg></button></span></div>
         <div class="mc-cell mc-span"><span class="mc-label">Authors</span><span class="mc-value">Elena M. Vasquez (IAS), Rahul Menon (MIT), Sofia Andersson (CERN, Uppsala)</span></div>
         <div class="mc-cell mc-span"><span class="mc-label">Categories</span><span class="mc-value cat-chips">
-          <span class="chip primary"><span class="chip-tag">Primary</span> hep-th</span>
-          <span class="chip">math-ph</span>
-          <span class="chip">gr-qc</span>
+          <span class="ds-tag ds-tag--chrome ds-tag--keep-case"><span class="ds-tag-marker">Primary</span> hep-th</span>
+          <span class="ds-tag ds-tag--chrome ds-tag--keep-case">math-ph</span>
+          <span class="ds-tag ds-tag--chrome ds-tag--keep-case">gr-qc</span>
         </span></div>
       </div>
 
@@ -1045,7 +1059,7 @@ function renderCats(){
     var li=document.createElement('li');
     li.className='cat-row'+(i===0?' is-primary':''); li.draggable=true; li.dataset.idx=i;
     li.innerHTML='<button class="cat-drag" type="button" aria-label="Reorder '+id+', use up and down arrow keys">'+I_DRAG+'</button>'+
-      '<span class="cat-token"><span class="cat-name">'+id+'</span><button class="cat-x" type="button" aria-label="Remove '+id+'">&times;</button></span>'+
+      '<span class="ds-tag ds-tag--chrome ds-tag--keep-case"><span class="cat-name">'+id+'</span><button class="ds-tag-remove" type="button" aria-label="Remove '+id+'">&times;</button></span>'+
       (i===0?'<span class="cat-primary-tag">Primary</span>':'');
     ul.appendChild(li);
   });
@@ -1069,7 +1083,7 @@ function comboFilter(){
 function comboBlur(){ setTimeout(function(){ var dd=document.getElementById('cat-dropdown'); if(dd) dd.classList.remove('open'); var inp=document.getElementById('cat-search'); if(inp) inp.setAttribute('aria-expanded','false'); }, 140); }
 function setupCatEditor(){
   var ul=document.getElementById('cat-list'); if(!ul) return;
-  ul.addEventListener('click', function(e){ var x=e.target.closest('.cat-x'); if(!x) return; var li=e.target.closest('.cat-row'); catRemove(+li.dataset.idx); });
+  ul.addEventListener('click', function(e){ var x=e.target.closest('.ds-tag-remove'); if(!x) return; var li=e.target.closest('.cat-row'); catRemove(+li.dataset.idx); });
   ul.addEventListener('keydown', function(e){
     var h=e.target.closest('.cat-drag'); if(!h) return;
     if(e.key==='ArrowUp'||e.key==='ArrowDown'){ e.preventDefault(); var li=h.closest('.cat-row'); var nj=catMove(+li.dataset.idx, e.key==='ArrowUp'?'up':'down'); if(nj!=null){ var hs=ul.querySelectorAll('.cat-drag'); if(hs[nj]) hs[nj].focus(); } }

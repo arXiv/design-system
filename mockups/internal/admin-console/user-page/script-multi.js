@@ -311,7 +311,7 @@ function renderChips(sectionNum) {
   }
   selected.forEach(it => {
     const chip = document.createElement('div');
-    chip.className = 'chip';
+    chip.className = 'ds-tag ds-tag--chrome ds-tag--keep-case';
     chip.textContent = it.id;
 
     // Section 3 only: annotate each chip with its endorsement source
@@ -319,10 +319,10 @@ function renderChips(sectionNum) {
       const src = endorsementSources[it.id];
       const badge = document.createElement('span');
       if (!src || src.type === 'auto') {
-        badge.className = 'chip-source chip-source-auto';
+        badge.className = 'ds-tag-note ds-tag-note--auto';
         badge.textContent = 'auto';
       } else {
-        badge.className = 'chip-source';
+        badge.className = 'ds-tag-note';
         const link = document.createElement('a');
         link.href = '#'; // would be: /admin/user/${src.username}
         link.textContent = src.username;
@@ -346,7 +346,7 @@ function updateModalDisplay(sectionNum) {
   } else {
     selected.forEach((it) => {
       const chip = document.createElement('div');
-      chip.className = 'chip';
+      chip.className = 'ds-tag ds-tag--chrome ds-tag--keep-case';
       chip.textContent = it.id;
       const btn = document.createElement('button');
       btn.type = 'button';

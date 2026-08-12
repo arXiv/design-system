@@ -743,6 +743,105 @@
 }
 
 
+/* ─── Tags (.ds-tag) ─────────────────────────────────────────── */
+/*
+ * The small rounded label used for subject categories, topics, and states.
+ * Same component as the public `.ds-tag`, wearing internal tokens — see
+ * docs/public/design-system.css for the full rationale.
+ *
+ * A tag labels or categorizes; it never stands in for a link
+ * (DESIGN-POLICIES, Content and interaction).
+ *
+ * Uppercase by default, applied with text-transform and never typed, so
+ * the real text survives copy-paste, search and screen readers.
+ * `.ds-tag--keep-case` opts out — required for identifiers.
+ *
+ * CATEGORY NAMES ALWAYS USE .ds-tag--keep-case. A category is copied,
+ * never restyled: cs.AI, physics.optics and cond-mat.str-el are all
+ * correct as arXiv publishes them.
+ *
+ * Distinct from .type-badge below: a tag is a discrete labeled object in
+ * a wrapping list; a type badge is a compact code in a dense data grid,
+ * which is why it stays a 3px rectangle.
+ *
+ * Contrast (WCAG, verified 2026-08-11):
+ *   quiet    #6b6459 on #f0eeec — 5.1:1  AA  ✓
+ *   chrome   #1a3a78 on #e7f1fd — 9.6:1  AAA ✓
+ *   success  #4a5a0a on #e8f5d8 — 6.7:1  AA  ✓
+ *   warning  #7a5c00 on #fff8e1 — 5.9:1  AA  ✓
+ *   error    #8b0000 on #fdeaea — 8.6:1  AAA ✓
+ *
+ * Validated against the category editors in
+ * mockups/internal/admin-console/{user-page,paper-details}/.
+ */
+.ds-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 24px;
+  padding: 2px 12px;
+  border-radius: 999px;
+  font-family: "IBM Plex Mono", "SF Mono", "Fira Code", monospace;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-decoration: none;
+  background: var(--grey-hover-bg);
+  border: 1px solid var(--border);
+  color: var(--grey);
+}
+.ds-tag--keep-case { text-transform: none; letter-spacing: 0; }
+
+.ds-tag--chrome  { background: var(--info-bg);    border-color: var(--info-border);    color: var(--info-fg); }
+.ds-tag--success { background: var(--success-bg); border-color: var(--success-border); color: var(--success-fg); }
+.ds-tag--warning { background: var(--warning-bg); border-color: var(--warning-border); color: var(--warning-fg); }
+.ds-tag--error   { background: var(--error-bg);   border-color: var(--error-border);   color: var(--error-fg); }
+
+a.ds-tag:hover, button.ds-tag:hover { background: var(--grey-active-bg); color: var(--link-hover); }
+a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+
+/* Remove control. Inherits the tag's color so it is never a second
+   signal; the accessible name comes from the consumer's aria-label. */
+.ds-tag-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-right: -4px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  color: inherit;
+  opacity: 0.65;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+.ds-tag-remove:hover { opacity: 1; background: rgba(0, 0, 0, 0.08); }
+.ds-tag-remove:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; opacity: 1; }
+
+/* A badge nested inside a tag — says where the tag came from. */
+.ds-tag-note {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--grey);
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
 /* ─── Submission Type Badges ─────────────────────────────────── */
 /*
  * Color-coded labels matching the arXiv Check moderation tool.
