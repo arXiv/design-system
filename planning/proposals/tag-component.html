@@ -300,6 +300,38 @@
       labeled object in a wrapping list; rectangle = a compact code in a data grid.</li>
   </ul>
 
+  <h2>Measured against the real design (2026-08-11)</h2>
+  <p>Shamsi pointed out that category management is already designed, in the
+  <a href="../../mockups/internal/admin-console/user-page/">user page</a> (privileges accordion) and
+  the <a href="../../mockups/internal/admin-console/paper-details/">paper details</a> edit-metadata
+  modal. Both were measured in the browser against the rules above. Mockups are never a build
+  reference, so nothing here is a defect — the question was whether the design conflicts with the
+  rules. <strong>It does not.</strong> What it has is three parallel implementations of one thing.</p>
+
+  <table>
+    <tr><th style="width:210px">Rule</th><th>Result</th></tr>
+    <tr><td class="ok">Categories copied, not restyled</td><td><strong>Passes.</strong> No <code>text-transform</code> on any chip, and every category string is canonically correct — <code>physics.bio-ph</code>, <code>physics.gen-ph</code>, <code>cond-mat.stat-mech</code> lowercase; <code>cs.AI</code>, <code>math.CO</code>, <code>astro-ph.HE</code>, <code>q-bio.SC</code>, <code>stat.ML</code> uppercase. The rule was already being followed by hand.</td></tr>
+    <tr><td class="ok">Mono type register</td><td><strong>Passes.</strong> IBM Plex Mono throughout — which is what made mono the obvious choice.</td></tr>
+    <tr><td class="ok">Contrast</td><td><strong>Passes.</strong> Every variant clears AA; most clear AAA. Lowest is the negative-endorsement chip at 4.79:1.</td></tr>
+    <tr><td class="ok">Color is never the only signal</td><td><strong>Passes, and neatly.</strong> The negative chip prefixes a minus — <code>− physics.gen-ph</code> — rather than relying on red, and the primary category carries a literal "Primary" marker plus bold weight.</td></tr>
+    <tr><td class="ok">Tags never stand in for links</td><td><strong>Passes.</strong> These are editing controls, not navigation.</td></tr>
+    <tr><td class="warn">24px target floor</td><td><strong>Mostly.</strong> User-page chips 25.5px and modal tokens 26.1px clear it; paper-details page chips are <strong>23.4px</strong> — 0.6px under. A padding step fixes it.</td></tr>
+    <tr><td class="bad">One shape</td><td><strong>No.</strong> User-page chips and the modal's tokens are 999px pills; paper-details page chips are <strong>4px rectangles</strong>. Same content, two shapes, in one console.</td></tr>
+    <tr><td class="bad">Palette only</td><td><strong>No — the real finding.</strong> <code>#eef2ff</code> and <code>#d0daf5</code> appear in <em>no</em> stylesheet: not public, not internal, not color-mapping.md. <code>#deeeff</code> is a third blue. Our documented tint is <code>#edf4fc</code>&nbsp;/&nbsp;<code>#c4dcf0</code>, and all three fills are within <strong>1.06:1</strong> of each other — visually identical, separately maintained.</td></tr>
+    <tr><td class="bad">Dark mode</td><td><strong>No.</strong> All values hardcoded, so none of it flips. This is what the token-driven component fixes for free.</td></tr>
+  </table>
+
+  <h3>What the mockups teach the spec</h3>
+  <p>These two designs cover states the proposal above does not, and they should shape
+  <code>.ds-tag</code> rather than the other way round:</p>
+  <ul>
+    <li>A <strong>remove control</strong> (<code>✕</code>) inside the tag, with the asymmetric padding it needs.</li>
+    <li>A <strong>nested source badge</strong> — a small pill inside the tag naming where an endorsement came from. The only pill-in-a-pill anywhere in the system.</li>
+    <li><strong>Drag to reorder</strong>: grab cursor, and a lifted, slightly rotated dragging state.</li>
+    <li>A <strong>primary marker</strong> inside the tag, as text rather than color alone.</li>
+    <li>A <strong>negative variant</strong> carrying a minus prefix.</li>
+  </ul>
+
   <h2>What it would cost</h2>
   <p>The component itself is about 25 lines of CSS and a section on an existing pattern page — small.
   The real work is deciding <em>not</em> to hand-build the sixth version next time. Nothing has to
@@ -320,9 +352,10 @@
   </table>
 
   <h2>Still open</h2>
-  <table>
-    <tr><td style="width:24px">1</td><td>Ship it now, or wait and build it alongside the category-editor pattern page so the four duplicate admin chips collapse in one pass?</td></tr>
-  </table>
+  <p>Nothing blocking. The earlier open question — ship now, or wait for a real consumer — is
+  answered: the consumer already exists in the two mockups above, with its states designed. The
+  recommendation is to build <code>.ds-tag</code> against them, repoint all three implementations at
+  it, and let the category-editor pattern page document the editing affordances on top.</p>
 
 </div></body>
 </html>
