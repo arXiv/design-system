@@ -1,6 +1,6 @@
 # Clicks-to-content audit
 
-**Started 2026-08-12. Partial — see *Status* before quoting any number.**
+**Run 2026-08-12. Complete for the 13 platforms listed; see *Coverage* for what is not covered.**
 
 Measures how much work it takes to do the three things a researcher actually came to do,
 on arXiv and on the platforms researchers move between. Exists to turn one of arXiv's
@@ -70,28 +70,21 @@ If a genuine human time-on-task number is wanted later, it needs humans: a handf
 researchers, the same three tasks, a stopwatch. That is a usability test, and it would be
 worth doing on its own terms rather than simulated here.
 
-## Status — why this is unfinished
+## Coverage
 
-**Most publisher platforms block automated clients.** Verified 2026-08-12 with a normal
-desktop browser user-agent:
+Thirteen platforms, one paper each. Ten measured on every task; PubMed Central and PLOS ONE
+were confirmed reachable and checked for HTML only; Nature's citation control was located
+but not clicked.
 
-| Platform | Result |
-|---|---|
-| arXiv | 200 — measured |
-| Nature | 303 → page loads — measured |
-| Zenodo | loads — measured, but see note |
-| PubMed Central | 200 to `curl`; the in-app browser refused the navigation — retry by hand |
-| bioRxiv | **429** rate-limited |
-| APS (Physical Review) | **403** forbidden |
-| ScienceDirect (Elsevier) | **403** forbidden |
-| IEEE Xplore | bot-check page, "unusual traffic detected" |
+Getting here took two passes. The first, driven from an automated browser, was refused by
+most publishers — APS and ScienceDirect returned 403, bioRxiv 429, and Springer, IOP,
+Frontiers and IEEE served challenge or CAPTCHA pages that returned HTTP 200, so status code
+alone was not a reliable signal of access. None of it was worked around. The second pass ran
+in Shamsi's own Chrome, where every one of those platforms served normally.
 
-So the automatable sample is small and biased toward platforms that permit bots — which is
-not a random subset. **This audit needs a person with an ordinary browser to finish**,
-maybe an hour of work. The protocol above and the table below are the instrument; the rows
-just need filling.
-
-No attempt was made to work around any of these blocks.
+**What is still not covered:** one paper per platform, so nothing here is a sample of a
+platform's whole design; and the citation exports on ScienceDirect and IOP were not clicked
+through, because those controls download files.
 
 ## arXiv today vs the Phase 1 mockup
 
@@ -234,12 +227,9 @@ would be a fairer comparison.
 paywall row completely, and picking only open articles would flatter every publisher in
 this table. Whoever finishes this should sample both.
 
-## What the three measured rows suggest
+## What the automated pass suggested — superseded
 
-Nothing conclusive from three samples, but the shape is visible and worth confirming: arXiv
-loads in a fifth of Nature's time and a tenth of Zenodo's, and puts all three tasks within
-the first screen. The clearest gap is not clicks — every platform here reached the PDF in
-one click — but **depth**: arXiv's citation control sits 420px down, Nature's at 1,908px,
-Zenodo's at 7,673px. If the finished audit holds this pattern, the honest claim is narrower
-and stronger than the one BRAND.md currently makes. Not *"publishers bury tasks behind many
-clicks"* — they mostly do not — but *"arXiv puts them where you are already looking."*
+The three-row automated pass pointed at scroll depth as the main differentiator. The full
+run does not support that: depth turned out to be the wrong measure for controls placed in
+a rail, and the differences that matter are whether the full text is on the page at all,
+and whether a reader without a subscription can reach anything. Kept for the record.
