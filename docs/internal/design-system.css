@@ -1131,6 +1131,109 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--f
  *   <p class="field-error" id="err-1">Please provide a reason.</p>
  */
 
+/* ─── Form fields (.ds-field / .ds-label / .ds-input / .ds-hint) ───── */
+/*
+ * Same component as the public `.ds-field` family, wearing internal
+ * tokens — see docs/public/design-system.css for the full rationale and
+ * docs/forms.html for the pattern page.
+ *
+ * One field is a label, a control, optional help text, and an error slot,
+ * in that order. Labels sit ABOVE the control, never beside it. Field
+ * width follows the content: size a control to what it expects rather
+ * than stretching everything edge-to-edge.
+ *
+ * Accessibility contract (DESIGN-POLICIES, not optional): a real
+ * <label for> on every control; required fields carry the asterisk AND
+ * required + aria-required; the error is linked with aria-describedby;
+ * the message says what to do and never relies on red alone.
+ *
+ * The <select> keeps its native arrow — correct in both themes on every
+ * platform, with nothing to re-draw for dark mode.
+ *
+ * Usage:
+ *   <div class="ds-field ds-field--md">
+ *     <label class="ds-label field-required" for="reason">Reason</label>
+ *     <textarea class="ds-input is-invalid" id="reason"
+ *               required aria-required="true" aria-describedby="reason-err"></textarea>
+ *     <p class="field-error" id="reason-err">Say why this is being withdrawn.</p>
+ *   </div>
+ */
+.ds-field { margin-bottom: var(--space-4); }
+.ds-field--sm .ds-input { max-width: 240px; }
+.ds-field--md .ds-input { max-width: 360px; }
+.ds-field--lg .ds-input { max-width: 480px; }
+
+.ds-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: var(--space-2);
+}
+.ds-label.field-required::after {
+  content: " *";
+  color: var(--danger);
+  font-weight: 700;
+}
+
+.ds-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--grey-ui);   /* 3.61:1 — a real boundary */
+  border-radius: 6px;
+  padding: 9px 11px;
+}
+.ds-input:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+  border-color: var(--focus-ring);
+}
+.ds-input:disabled {
+  background: var(--grey-hover-bg);
+  color: var(--grey-dis);
+  cursor: not-allowed;
+}
+.ds-input::placeholder { color: var(--grey); opacity: 1; }
+textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; }
+
+.ds-hint {
+  margin: var(--space-2) 0 0;
+  font-size: 12px;
+  color: var(--grey);
+}
+
+.ds-input.is-invalid {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.10);
+}
+.ds-input.is-invalid:focus-visible {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15);
+}
+
+/* Checkbox / radio row. Native controls, tinted with accent-color: they
+   stay correct in dark mode, at any zoom, with the platform's own focus
+   behavior — none of which a hand-drawn box gives you. The accent follows
+   the context rule (DESIGN-POLICIES): Link Blue public, Access Lime internal. */
+.ds-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.ds-check input { accent-color: var(--sec-border); width: 16px; height: 16px; margin: 2px 0 0; flex: none; }
+.ds-check input:disabled { cursor: not-allowed; }
+.ds-check input:disabled + span { color: var(--grey-dis); }
+
+
+/* The bare `.field-required` span form predates `.ds-label.field-required`
+   and still works; new markup should use the label modifier instead. */
 .field-required {
   color: var(--danger);
   font-weight: 600;
