@@ -139,7 +139,58 @@ affects someone deep in a long paper who wants to cite it, and the fix is one mo
 a bar that already exists. Small, but it is the same problem the bar was built to solve for
 PDF.
 
-## Results so far — other platforms
+## Results — measured 2026-08-12
+
+Run in Shamsi's own Chrome (no institutional access, one Google account signed in), which
+is what made the blocked publishers reachable. Every control below was **clicked**, not
+inferred, except where noted. Google Scholar's `gs-casa` overlay is excluded everywhere —
+it is injected on top of publisher pages and is not their design.
+
+| Platform | Access | HTML full text | PDF | Citation |
+|---|---|---|---|---|
+| **arXiv live** | open | **1 click — separate page** | 1 click | 1 click → modal, **no copy button** |
+| **arXiv Phase 1 mockup** | open | **0 clicks — on the page** | 1 click, + sticky bar while reading | 1 click → **Copy button** |
+| APS (Phys Rev Lett) | open | 0 clicks — on the page | 1 click | 1 click → modal, no copy button |
+| ScienceDirect | open | 0 clicks — on the page | 1 click | 2 clicks → export menu, file only |
+| IOP Science | open | 0 clicks — on the page | 1 click | 1 click → BibTeX/RIS file |
+| Nature | open | 0 clicks — on the page | 1 click | 1 click (not exercised) |
+| PubMed Central | open | 0 clicks — on the page | not exercised | not exercised |
+| **Springer Link** | **paywalled** | **not available** | **Buy PDF, USD 39.95** | 1 click |
+| **IEEE Xplore** | **paywalled** | **not available** — section titles listed, body gated | gated (`javascript:void()`) | 1 click |
+
+Citation exports not clicked through on ScienceDirect and IOP: those controls download
+files, and downloading was out of scope for this pass. What is recorded is what is visible
+on screen — neither offers a copy-to-clipboard control.
+
+## The finding, and it is not the one we expected
+
+**On open-access articles, every publisher measured puts the full text on the landing page.
+arXiv is the only one that makes you click through to a separate page.** APS, ScienceDirect,
+IOP, Nature and PMC all serve abstract and body together; arXiv serves an abstract page and
+links to `/html/`.
+
+That inverts the claim BRAND.md currently makes. On the most common task a reader has —
+read the paper — arXiv today is *behind* the field by one click, not ahead of it.
+
+**The Phase 1 mockup fixes exactly this**, and is the only page measured where the full
+text costs nothing and the PDF stays reachable while reading.
+
+**Nobody has a copy button for citations.** Every platform measured, arXiv live included,
+either shows text to select by hand or hands you a file. The only exception in the whole
+sample is the arXiv Phase 1 mockup. That is a real and cheap advantage, and it is available
+to the live site today independently of any other Phase 1 work.
+
+**What the paywall costs.** Springer and IEEE gate both the HTML and the PDF. IEEE lists
+the section titles — Introduction, Related Work, Proposed Method, Experiments, Conclusion —
+above a body you cannot read without paying. Worth noting when arXiv describes itself
+against the field: the gap is not click counts, it is that arXiv's content is there at all.
+
+## Earlier automated pass — superseded
+
+The rows below were taken before Shamsi's browser was available; the click counts hold but
+the pixel figures were measured at a different window size.
+
+### Automated pass
 
 Reference viewport 1280×720. One paper per platform, so treat every number as indicative
 rather than settled.
