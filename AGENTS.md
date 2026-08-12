@@ -33,7 +33,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Links | `docs/public/link-styles.html` or `docs/internal/link-styles.html` | link tokens; inline links underlined |
 | Tables (internal tools), row selection, bulk actions | `docs/internal/table-styles.html` | `.ds-table`, sortable headers, `.ds-filter`; bulk-bar + selection rules documented there |
 | One record's details (label + value panel) | `docs/internal/metadata-panel-styles.html` (concept: `docs/organizing-content.html`) | `.ds-meta-panel` + `--editable` / `--reference` / `--ruled` |
-| Forms, validation | `docs/internal/form-styles.html` + DESIGN-POLICIES a11y rules | `.is-invalid`, `.field-*`, segmented controls |
+| Forms, validation | `docs/forms.html`, then `docs/internal/form-styles.html` for staff-only controls | `.ds-field`/`.ds-label`/`.ds-input`/`.ds-hint`, `.is-invalid`, `.field-error`, `.ds-check`; segmented controls + toggles are internal |
 | Version display | `docs/version-display.html` | inline version links + `.ds-alert` warning |
 | Site header / footer | `docs/public/header-styles.html`, `docs/public/footer-styles.html`, `docs/public/reader-header-styles.html` | `.ds-site-header`, `.ds-site-footer`, `.ds-reader-header` — never hand-build chrome or draw logos from text |
 | Category / topic / state labels | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-tag` (+ `--chrome` / status / `--keep-case`); category names are copied, never restyled |

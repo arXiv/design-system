@@ -31,6 +31,9 @@
      - Tag (.ds-tag + --chrome/--success/--warning/--error, --keep-case,
        .ds-tag-remove, .ds-tag-note; no new tokens, validated 2026-08-11
        against the admin-console category editors)
+     - Form fields (.ds-field/.ds-label/.ds-input/.ds-hint + .is-invalid,
+       .field-error, .field-required, .ds-check; no new tokens — the first
+       form styling the public stylesheet has ever had, 2026-08-11)
 
    More patterns will land here as they stabilize in the mockups.
    ═══════════════════════════════════════════════════════════════════════ */
@@ -509,6 +512,135 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--a
   letter-spacing: 0;
   white-space: nowrap;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FORM FIELDS  (.ds-field / .ds-label / .ds-input / .ds-hint)
+   ───────────────────────────────────────────────────────────────────────
+   One field is a label, a control, optional help text, and an error slot,
+   stacked in that order. The wrapper supplies the spacing so a form reads
+   as evenly whether or not a given field has help text or an error.
+
+   Anatomy:
+     .ds-field              wrapper — one label + control + hint + error
+     .ds-label              the label, always present, always above
+     .ds-input              the control: input, select, or textarea
+     .ds-hint               help text, shown before there is any error
+     .field-error           the error message, [hidden] until it applies
+     .is-invalid            on the control, while its value is rejected
+     .field-required        on the label — adds the asterisk
+     .ds-field--sm/md/lg    cap the control at 240 / 360 / 480px
+
+   Labels sit ABOVE the control, never beside it. A label-left layout
+   gives a ragged edge, reads worse on a phone, and makes it easy to ship
+   a control with no label at all.
+
+   Field width follows the content: a postcode field the width of a
+   postcode tells the reader what is expected before they type. Stretching
+   every control edge-to-edge throws that away.
+
+   Accessibility contract, and it is not optional (DESIGN-POLICIES):
+     - every control has a real <label for>, or an aria-label if a visible
+       label is genuinely impossible
+     - required fields carry BOTH the asterisk and required aria-required
+     - the error is linked to its control with aria-describedby, so a
+       screen reader reads the problem when focus lands on the field
+     - the error says what to do, and never relies on the red alone
+
+   The <select> keeps its native arrow. A drawn chevron has to be
+   re-drawn for dark mode and re-checked at every zoom level; the native
+   one is correct in both themes, on every platform, for free.
+
+   Example:
+     <div class="ds-field ds-field--md">
+       <label class="ds-label field-required" for="email">Email address</label>
+       <input class="ds-input is-invalid" id="email" type="email"
+              required aria-required="true" aria-describedby="email-err">
+       <p class="ds-hint">We only use this to confirm your submission.</p>
+       <p class="field-error" id="email-err">Enter an email address, like name@university.edu.</p>
+     </div>
+   ═══════════════════════════════════════════════════════════════════════ */
+.ds-field { margin-bottom: 16px; }
+.ds-field--sm .ds-input { max-width: 240px; }
+.ds-field--md .ds-input { max-width: 360px; }
+.ds-field--lg .ds-input { max-width: 480px; }
+
+.ds-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--arxiv-repository-brown);
+  margin-bottom: 8px;
+}
+/* The asterisk is decoration; `required` + aria-required carry the fact. */
+.ds-label.field-required::after {
+  content: " *";
+  color: var(--arxiv-error-border);
+  font-weight: 700;
+}
+
+.ds-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--arxiv-repository-brown);
+  background: var(--arxiv-surface);
+  border: 1px solid var(--arxiv-grey-ui);   /* 3.61:1 — a real boundary, not decoration */
+  border-radius: 6px;
+  padding: 9px 11px;
+}
+.ds-input:focus-visible {
+  outline: 2px solid var(--arxiv-focus-ring);
+  outline-offset: 1px;
+  border-color: var(--arxiv-focus-ring);
+}
+.ds-input:disabled {
+  background: var(--arxiv-card-grey);
+  color: var(--arxiv-grey-dis);
+  cursor: not-allowed;
+}
+.ds-input::placeholder { color: var(--arxiv-library-grey); opacity: 1; }
+textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; }
+
+.ds-hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--arxiv-library-grey);
+}
+
+/* Rejected state. Specificity, not !important — .ds-input.is-invalid
+   already outweighs .ds-input. */
+.ds-input.is-invalid {
+  border-color: var(--arxiv-error-border);
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.10);
+}
+.ds-input.is-invalid:focus-visible {
+  border-color: var(--arxiv-error-border);
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15);
+}
+.field-error {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--arxiv-error-border);
+}
+.field-error[hidden] { display: none; }
+
+/* Checkbox / radio row. Native controls, tinted with accent-color: they
+   stay correct in dark mode, at any zoom, with the platform's own focus
+   behavior — none of which a hand-drawn box gives you. The accent follows
+   the context rule (DESIGN-POLICIES): Link Blue public, Access Lime internal. */
+.ds-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.ds-check input { accent-color: var(--arxiv-link-blue); width: 16px; height: 16px; margin: 2px 0 0; flex: none; }
+.ds-check input:disabled { cursor: not-allowed; }
+.ds-check input:disabled + span { color: var(--arxiv-grey-dis); }
 
 
 /* ═══════════════════════════════════════════════════════════════════════
