@@ -17,7 +17,7 @@ Mockups are organized by context, mirroring `docs/` (migrated 2026-07-30 from Sh
 
 **`internal/` — staff tools**
 
-- **`admin-console/`** — Admin Console mockups: `user-page/`, `ownership-requests/`, `category-management/`, `paper-details/`. Home of the metadata-panel, action-bar, and category-editor patterns queued for promotion.
+- **`admin-console/`** — Admin Console mockups: `user-page/`, `ownership-requests/`, `paper-details/`. Home of the metadata-panel, action-bar, and category-editor patterns queued for promotion. (A standalone `category-management/` page was removed 2026-08-11 — the category editor now lives inside the user page's privileges accordion and the paper page's edit-metadata modal.)
 - **`arxiv-check/`** — arXiv Check checkmark/save affordances: `checkmark-buttons.html` plus three annotated design images.
 
 Each page is static HTML (some with a sibling `styles.css`/`script.js`). Open in a browser; no build step, no server required.
