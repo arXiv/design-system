@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tags — arXiv Design System</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="public/design-system.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: var(--arxiv-font-sans); color: var(--arxiv-repository-brown); background: var(--arxiv-warm-wash); margin: 0; font-size: 14px; line-height: 1.5; }
+    .page { max-width: 1000px; margin: 0 auto; padding: 28px 28px 80px; }
+    .page-header { margin: 28px 0 40px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p { margin: 0; color: var(--arxiv-library-grey); font-size: 13px; max-width: 780px; }
+    .section { margin-bottom: 52px; }
+    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+    .section-desc { font-size: 13px; color: var(--arxiv-library-grey); margin: 0 0 18px; max-width: 780px; line-height: 1.55; }
+    .subgroup-title { font-size: 14px; font-weight: 600; margin: 26px 0 6px; }
+    code { font-family: var(--arxiv-font-mono); font-size: 12px; background: var(--arxiv-card-grey); padding: 2px 6px; border-radius: 3px; }
+    .demo { background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 18px 20px; margin-top: 4px; max-width: 820px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .demo.tinted { background: var(--arxiv-card-grey); }
+    .lbl { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-library-grey); width: 104px; flex: none; }
+    .spec-table { border-collapse: collapse; background: #fff; border: 1px solid var(--arxiv-border-light); font-size: 13px; width: 100%; max-width: 820px; margin-top: 10px; }
+    .spec-table th { background: var(--arxiv-card-grey); text-align: left; padding: 8px 13px; font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-library-grey); }
+    .spec-table td { padding: 9px 13px; border-top: 1px solid var(--arxiv-card-grey); vertical-align: top; }
+    .spec-table td:first-child { white-space: nowrap; }
+    .code-block { background: #1c1a17; color: #f0eeec; border-radius: 6px; padding: 14px 16px; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.6; overflow-x: auto; max-width: 820px; margin-top: 10px; }
+    .code-block code { background: none; padding: 0; color: inherit; }
+    .note-alert { max-width: 820px; margin-top: 16px; }
+    .ok { color: #056608; }
+    /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
+       <details>-based: works without JS; the small script at the end of the
+       page only adds close-on-outside-click and Esc. ── */
+    .docs-nav { display: flex; align-items: center; gap: 4px 18px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
+    .nav-dd { position: relative; }
+    .nav-dd > summary { list-style: none; cursor: pointer; color: var(--arxiv-library-grey); padding: 3px 6px; border-radius: 4px; user-select: none; }
+    .nav-dd > summary::-webkit-details-marker { display: none; }
+    .nav-dd > summary::after { content: " \25BE"; font-size: 10px; }
+    .nav-dd > summary:hover, .nav-dd[open] > summary { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
+    .nav-dd > summary:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
+    .nav-dd-menu { position: absolute; left: 0; top: calc(100% + 6px); display: flex; flex-direction: column; min-width: 235px; background: #fff; border: 1px solid var(--arxiv-border-light); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); padding: 6px; z-index: 60; }
+    .nav-dd-menu a { color: var(--arxiv-repository-brown); text-decoration: none; padding: 6px 10px; border-radius: 4px; white-space: nowrap; }
+    .nav-dd-menu a:hover { background: var(--arxiv-card-grey); }
+    .nav-dd-menu a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: -2px; }
+    .nav-dd-menu a[aria-current="page"] { font-weight: 600; }
+    .nav-dd-group { font-family: var(--arxiv-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-grey-ui); padding: 8px 10px 2px; }
+  </style>
+</head>
+<body>
+<nav class="docs-nav" aria-label="Design system">
+  <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
+  <details class="nav-dd">
+    <summary>Design Patterns</summary>
+    <div class="nav-dd-menu">
+      <a href="colors.html">Colors</a>
+      <a href="typography.html">Typography</a>
+      <a href="spacing.html">Spacing</a>
+      <a href="buttons.html">Buttons</a>
+      <a href="alerts.html">Alerts</a>
+      <a href="version-display.html">Versions</a>
+      <a href="organizing-content.html">Organizing content</a>
+      <a href="dark-mode.html">Dark mode</a>
+      <a href="internal/metadata-panel-styles.html">Metadata panel</a>
+      <a href="tags.html" aria-current="page">Tags</a>
+      <a href="outreach/">Outreach sites</a>
+    </div>
+  </details>
+  <details class="nav-dd">
+    <summary>Mockups</summary>
+    <div class="nav-dd-menu">
+      <a href="../mockups/">All mockups</a>
+      <span class="nav-dd-group">Public</span>
+      <a href="../mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+      <a href="../mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+      <a href="../mockups/public/optin-modal/">Labs opt-in modal</a>
+      <span class="nav-dd-group">Internal</span>
+      <a href="../mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+      <a href="../mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+      <a href="../mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+      <a href="../mockups/internal/admin-console/category-management/">Admin Console — category management</a>
+      <a href="../mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+    </div>
+  </details>
+  <details class="nav-dd">
+    <summary>Docs</summary>
+    <div class="nav-dd-menu">
+      <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+      <a href="doc.html?src=docs/BRAND.md">Brand &amp; voice</a>
+      <a href="doc.html?src=docs/typography.md">Typography spec</a>
+      <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
+      <a href="doc.html?src=README.md">About this repo</a>
+    </div>
+  </details>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <h1>Tags</h1>
+    <p>The small rounded label for subject categories, topics, and states. One component across all
+    three contexts: <code>.ds-tag</code> in both stylesheets, wearing each one&rsquo;s tokens.</p>
+  </header>
+
+  <!-- ── The rendered thing ── -->
+  <div class="section">
+    <h2 class="section-title">The three levels</h2>
+    <p class="section-desc">Prominence comes from color, and only three levels exist. Reach for the
+    quietest one that still does the job.</p>
+
+    <h3 class="subgroup-title">Quiet &mdash; the default</h3>
+    <p class="section-desc">Warm grey. For labels that organize without claiming attention: counts,
+    ancillary labels, anything that is simply true rather than notable.</p>
+    <div class="demo">
+      <span class="lbl">.ds-tag</span>
+      <span class="ds-tag">Preprint</span>
+      <span class="ds-tag">12 requests</span>
+      <span class="ds-tag ds-tag--keep-case">cs.AI</span>
+    </div>
+
+    <h3 class="subgroup-title">Chrome &mdash; the workhorse</h3>
+    <p class="section-desc">The &ldquo;arXiv is speaking&rdquo; blue. For categorizing labels: subject
+    categories, topics, blog post categories. Interactive ones get hover and focus states.</p>
+    <div class="demo">
+      <span class="lbl">--chrome</span>
+      <span class="ds-tag ds-tag--chrome">Policy</span>
+      <span class="ds-tag ds-tag--chrome ds-tag--keep-case">math.CO</span>
+      <a href="#tags-links" class="ds-tag ds-tag--chrome">Announcements</a>
+      <span style="font-size:12px;color:var(--arxiv-library-grey)">&larr; that one is a link</span>
+    </div>
+
+    <h3 class="subgroup-title">Status &mdash; only for a real condition</h3>
+    <p class="section-desc">Three of the four alert families. A tag earns a status color only when it
+    reports a <em>condition</em>. A state that is merely neutral, like &ldquo;under review&rdquo;,
+    stays chrome: it is information, not an alert. There is deliberately no info variant &mdash; it
+    was indistinguishable from chrome, identical in dark mode.</p>
+    <div class="demo">
+      <span class="lbl">status</span>
+      <span class="ds-tag ds-tag--success">Valid</span>
+      <span class="ds-tag ds-tag--warning">On hold</span>
+      <span class="ds-tag ds-tag--error">Removed</span>
+      <span class="ds-tag ds-tag--chrome">Under review</span>
+    </div>
+  </div>
+
+  <!-- ── Spec ── -->
+  <div class="section">
+    <h2 class="section-title">Spec</h2>
+    <table class="spec-table">
+      <tr><th>Class</th><th>What it does</th></tr>
+      <tr><td><code>.ds-tag</code></td><td>Base. Mono, uppercase, 999px, <code>min-height: 24px</code> for the WCAG 2.2 target floor.</td></tr>
+      <tr><td><code>.ds-tag--chrome</code></td><td>The arXiv-blue tint. Categories and topics.</td></tr>
+      <tr><td><code>.ds-tag--success</code><br><code>.ds-tag--warning</code><br><code>.ds-tag--error</code></td><td>Only when the label reports a condition.</td></tr>
+      <tr><td><code>.ds-tag--keep-case</code></td><td>Opt out of uppercase. Required for identifiers.</td></tr>
+      <tr><td><code>.ds-tag-remove</code></td><td>The &#10005; control inside an editable tag. Needs an <code>aria-label</code> from you.</td></tr>
+      <tr><td><code>.ds-tag-note</code></td><td>A small badge nested inside a tag, saying where it came from.</td></tr>
+    </table>
+
+    <h3 class="subgroup-title" id="tags-links">Contrast</h3>
+    <table class="spec-table">
+      <tr><th>Level</th><th>Light</th><th>Dark</th></tr>
+      <tr><td>Quiet</td><td class="ok">5.05:1 AA</td><td class="ok">6.51:1 AA</td></tr>
+      <tr><td>Chrome</td><td class="ok">6.11:1 AA</td><td class="ok">6.20:1 AA</td></tr>
+      <tr><td>Success</td><td class="ok">6.70:1 AA</td><td class="ok">10.44:1 AAA</td></tr>
+      <tr><td>Warning</td><td class="ok">5.89:1 AA</td><td class="ok">11.80:1 AAA</td></tr>
+      <tr><td>Error</td><td class="ok">8.64:1 AAA</td><td class="ok">7.99:1 AAA</td></tr>
+    </table>
+  </div>
+
+  <!-- ── Rules ── -->
+  <div class="section">
+    <h2 class="section-title">Rules</h2>
+
+    <div class="ds-alert ds-alert-error note-alert">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Category names are copied, never restyled</p>
+        <p>Show a category exactly as arXiv publishes it &mdash; capitalization included &mdash; and
+        always with <code>.ds-tag--keep-case</code>. <code>cs.AI</code>, <code>physics.optics</code>
+        and <code>cond-mat.str-el</code> are all correct as written. Uppercasing the lowercase ones
+        produces strings that are not real categories: every <code>physics.*</code> and
+        <code>cond-mat.*</code> subcategory is lowercase.</p>
+      </div>
+    </div>
+
+    <div class="ds-alert ds-alert-error note-alert">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">A tag never stands in for a link</p>
+        <p>A tag labels or categorizes the thing it sits on. It may link to a listing, but it must
+        never replace a text link as the way to get somewhere. This is why version links are inline
+        text rather than filled pills.</p>
+      </div>
+    </div>
+
+    <ul class="section-desc" style="line-height:1.9; padding-left:20px">
+      <li><strong>Uppercase is applied with CSS, never typed.</strong> The underlying text then stays
+      correct for copy-and-paste, in-page search, and screen readers.</li>
+      <li><strong>Long labels keep their own case.</strong> Past roughly three words, or with
+      mixed-case names inside, caps slow reading down &mdash; use <code>.ds-tag--keep-case</code>.</li>
+      <li><strong>Color is never the only signal.</strong> The label&rsquo;s own words carry the
+      meaning. A negative or removed state says so in text, not only in red.</li>
+      <li><strong>Not the same as a type badge.</strong> <code>.type-badge</code> stays a 3px
+      rectangle: a compact code in a dense data grid. A tag is a discrete labeled object in a
+      wrapping list.</li>
+    </ul>
+  </div>
+
+  <!-- ── Usage ── -->
+  <div class="section">
+    <h2 class="section-title">Usage</h2>
+    <div class="code-block"><code>&lt;!-- A category. Always --keep-case. --&gt;
+&lt;span class="ds-tag ds-tag--chrome ds-tag--keep-case"&gt;cs.AI&lt;/span&gt;
+
+&lt;!-- A topic that links to its listing --&gt;
+&lt;a class="ds-tag ds-tag--chrome" href="/list/policy"&gt;Policy&lt;/a&gt;
+
+&lt;!-- Editable, with a remove control --&gt;
+&lt;span class="ds-tag ds-tag--chrome ds-tag--keep-case"&gt;physics.optics
+  &lt;button class="ds-tag-remove" type="button" aria-label="Remove physics.optics"&gt;&amp;times;&lt;/button&gt;
+&lt;/span&gt;
+
+&lt;!-- With a nested provenance badge --&gt;
+&lt;span class="ds-tag ds-tag--chrome ds-tag--keep-case"&gt;cs.CV
+  &lt;span class="ds-tag-note"&gt;auto&lt;/span&gt;
+&lt;/span&gt;</code></div>
+
+    <div class="ds-alert ds-alert-info note-alert">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Editing affordances are not part of the tag</p>
+        <p>Drag-to-reorder, the primary marker, and combo-search belong to the category editor, not to
+        <code>.ds-tag</code>. They are designed in the admin-console mockups and get their own pattern
+        page when that work lands.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Nav dropdowns: close on outside click and Esc (enhancement only —
+  // the <details> menus work without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.nav-dd[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') document.querySelectorAll('.nav-dd[open]').forEach(function (d) { d.removeAttribute('open'); });
+  });
+</script>
+</body>
+</html>

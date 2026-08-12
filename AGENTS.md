@@ -36,6 +36,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Forms, validation | `docs/internal/form-styles.html` + DESIGN-POLICIES a11y rules | `.is-invalid`, `.field-*`, segmented controls |
 | Version display | `docs/version-display.html` | inline version links + `.ds-alert` warning |
 | Site header / footer | `docs/public/header-styles.html`, `docs/public/footer-styles.html`, `docs/public/reader-header-styles.html` | `.ds-site-header`, `.ds-site-footer`, `.ds-reader-header` — never hand-build chrome or draw logos from text |
+| Category / topic / state labels | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-tag` (+ `--chrome` / status / `--keep-case`); category names are copied, never restyled |
 | Type badges | `docs/internal/table-styles.html` + DESIGN-POLICIES *Content and interaction* | `.type-new/.type-rep/.type-wdr/.type-cross` |
 | Dark mode (status, mechanism, what flips) | `docs/dark-mode.html` | tokens flip automatically; never hand-pick dark values; lock demo pages light |
 | The blog, an event or campaign mini-site | `docs/outreach/` + DESIGN-POLICIES *Contexts* | the public stylesheet, plus only the differences listed there |
