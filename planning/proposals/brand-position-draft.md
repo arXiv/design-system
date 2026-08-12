@@ -47,118 +47,39 @@ light where others are heavy. Our brand identity in two colors.
 - Distinctiveness protects the arXiv brand from unauthorized or confusing usage by third parties. We get support tickets sometimes for projects that we did not build but incorporate our name. Having a distinctive look and feel can instantly signal to users what is in the arXiv family and what is outside of it.
 - A distinctive identity is enforceable by one person. When the look is tight and specific, off-brand work is obvious on sight — a navy header, a lime button on a public page. A generic identity can only be policed by committee, because nobody can tell at a glance whether something is wrong. This is what makes a design system maintainable by a team of arXiv's size.
 - Attribution survives redistribution. arXiv content travels constantly — screenshotted into slide decks, embedded in other tools, summarized by AI assistants. A recognizable look means the origin travels with it, in contexts where no logo or URL is visible.
-- Distinctiveness is the cheap way to be noticed. Looking like everyone else means buying attention with marketing spend arXiv does not have. The palette does that work once, for free, and keeps doing it.
+- Distinctiveness is the "cheap" way to be noticed. Looking like everyone else means that attention must be purchased (with marketing dollars that arXiv does not have). The brand does that work for free, forever.
+- Our position is only strong if we back up our distinctive look with real operational benefits: Fast load times, ungated content, no dark patterns, no bias or rankings, five nines uptime, welcoming and easy to use, and more. The brand is not a cosmetic exercise, it is a commitment.
 
-Our position is strong if we back up our distinctive look with real operational benefits: Fast load times, ungated content, no dark patterns, no bias or rankings. It is not just a cosmetic exercise.
+## How can we measure brand success?
 
+This brings up an interesting historical fact: arXiv has not defined internal benchmark metrics for success. The absence of metrics is not a sign of failure, it is a side effect of not needing the numbers that most organizations build around.
 
----
+These are things we deliberately do **NOT** measure: users acquired, users retained, engagement, and time on site are all standard metrics that arXiv deliberately does not chase. Traffic grown organically and our biggest challenge is keeping up, not generating more use. We are also building on a strong, 35-year old foundation that has built strong awareness and trust among researchers in Math, Physics, and CS through years of service, not hype. 
 
-## Honesty note — what is measured and what is asserted
+How should arXiv measure brand success? It is a good early question for our incoming CEO and this is the perfect time to ask it (writing this in August 2026). Most organizations are forced to embrace dark patterns or upselling to compete; we have the freedom to build with only user needs in mind. 
 
-Keeping these apart matters, because the measured parts will survive a skeptical reading
-and the asserted parts will not.
+## Metrics that fit
 
-**Measured.** Everything about color. The eighteen platforms, their hex values, the hue and
-lightness figures, and the position of arXiv's colors within that field all come from
-Shamsi's audit of 2026-07-01 plus arithmetic on those values. Anyone can check it.
+Setting the wrong metrics will degrade our commitments over time. The right metrics should represent how well arXiv kept our brand promises to users, not how successfully we manipulated user behavior (not a goal!). 
 
-**Asserted, and currently unevidenced.** Three claims that BRAND.md already makes and that
-this draft leans on:
-
-1. *"Publisher sites bury core tasks behind many clicks; arXiv surfaces them."* Plausible
-   and probably true, but nobody has counted. Scoped as a **clicks-to-content audit**
-   (agreed 2026-08-12) — see the plan below.
-2. *"Best-in-class for speed"* is a **goal, not a claim** (Shamsi 2026-08-12). It states
-   where arXiv intends to get, so it needs no competitor proof to stand. Worth noting it
-   is also the most measurable of the brand promises: BRAND.md defines speed as
-   submission-to-announcement throughput, which arXiv can measure on its own systems
-   without reference to anyone else. A goal with a number attached is one the organization
-   can actually be held to.
-3. *What the dark blue signals.* That dark blue reads as conservative authority is a
-   widely-held design view and consistent with who uses it, but it is interpretation, not
-   measurement. It is stated here as a reading rather than a finding.
-
-**Not claimed at all**, because there is no evidence for it here: anything about market
-share, traffic, cost, or how these platforms compare as products beyond their color. That
-gap is real and is discussed below rather than papered over.
-
-## On metrics — the thing that makes this position credible
-
-arXiv has no internal benchmark metrics for success (Shamsi 2026-08-12). That is a genuine
-gap and a good early question for the incoming CEO. But it is worth being precise about
-*why* the gap exists, because the usual reading is wrong.
-
-arXiv is not missing metrics through disorganization. The standard ones — users acquired,
-users retained, engagement, time on site — measure things arXiv has deliberately decided
-not to chase. Traffic grows organically; the work has been keeping up with it rather than
-generating it. So the absence is mostly a side effect of not needing the numbers that most
-organizations are built around.
-
-**That freedom is the structural fact underneath the whole brand position.** Most
-organizations cannot refuse dark patterns, because their funding depends on the numbers
-those patterns produce; refusing would mean choosing to lose. arXiv can refuse at no cost,
-because nothing in how it is funded or judged rewards captured attention. This is worth
-stating plainly, because it converts "we don't use dark patterns" from a virtue claim —
-which reads as marketing, and which every organization makes — into a structural one, which
-is checkable and therefore believable.
-
-It also means the choice of metrics is a **brand decision, not only an operational one.**
-Installing engagement metrics would create pressure to move them, and the no-dark-patterns
-commitment would erode gradually, through small reasonable tradeoffs rather than any single
-decision. Whoever sets arXiv's metrics is setting how much the design principles are worth
-under pressure.
-
-**What fits.** arXiv's promises are already written down, and they suggest measures of
-promise-keeping rather than performance — did we do what we said, not did users behave as
-we hoped:
-
-| Promise (BRAND.md) | What it would measure |
+| Promise | Proxy |
 |---|---|
-| Speed | Submission to announcement, in hours |
-| Efficiency | Clicks to each core task (the audit above) |
-| Accessibility | Conformance rate against WCAG 2.2 AA |
-| Always available | Uptime, and page weight on a slow connection |
+| Speed | Global page load times |
+| Efficiency | Minimize clicks to core tasks |
+| Accessibility | Conformance rate against WCAG 2.2 AA; Traffic shift from PDF to HTML |
+| Stability | Uptime |
+| Access | More categories, more moderators |
+| Privacy | Third-party requests and cookies set on a paper page — target zero |
 
-None of these reward attention-farming, and every one can be measured on arXiv's own
-systems without competitor data. They will not answer "are we winning" — that needs the
-CEO to define winning first — but they answer "are we keeping our word," which is the
-question this brand actually stakes itself on.
+Did we do what we said? And do users still care about those promises? None of these reward attention-farming, and every one can be measured on arXiv's own systems without competitor data. 
 
-**One honest caution.** "They just come" is true right now, and the strategic freedom it
-buys is real. It is also the kind of thing that stays true until it abruptly is not, and
-with nothing being watched, arXiv would learn late. If AI-mediated discovery starts
-answering researchers' questions without sending them to the paper, the first sign would be
-in traffic patterns nobody is currently reading. That is an argument for a small number of
-health signals watched for early warning — measuring in order to *notice*, which is a
-different activity from measuring in order to grow.
+*A note about traffic:* We should continue to measure traffic levels, but not as a measure of success. That is simply a metric that helps us serve our users better.
 
 ## The clicks-to-content audit
 
-The cheapest thing that would strengthen this argument most. It converts the strongest
-functional claim from an assertion into a table, and a table of click counts survives a
-room full of skeptics better than any adjective.
+Measures the three things a researcher came to do — download the PDF, view the full HTML
+paper, copy a citation — on arXiv and on the platforms researchers move between. Protocol,
+caveats and results: [verification/audits/audit-clicks-to-content.md](../../verification/audits/audit-clicks-to-content.md).
 
-**The three tasks** (Shamsi 2026-08-12), chosen because each is something a researcher
-actually came to do:
-
-1. Download the PDF
-2. View the full paper as HTML
-3. Copy a citation
-
-**Where to start counting.** The open question was whether to begin at a Google Scholar
-result or at each platform's homepage. The recommendation is **neither — start at the
-paper's own landing page**, for three reasons. It is how researchers actually arrive: from
-a search result, a citation link, or a colleague, almost never from a publisher's front
-door. It is the only starting point every platform shares, so the numbers compare. And it
-isolates the part arXiv controls, which is the part this audit is meant to inform.
-
-**Record more than clicks.** Some platforms cannot complete a task at all — the PDF is
-paywalled, there is no HTML version. That is a different and more damning result than a
-long click path, and collapsing it into a number hides it. Suggested columns: clicks,
-completable yes/no, and whether login is required. Measure logged out, since that is the
-state a researcher meeting a paper for the first time is in.
-
-**A fourth task arXiv should measure but cannot compare:** reaching a specific earlier
-version. Most publishers have no concept of versions, so there is nothing to compare
-against — but it is a core arXiv task and worth a number of its own.
+**Status: partial.** Three platforms measured, four blocked automated access. Needs an hour
+of a person's time in an ordinary browser to finish.
