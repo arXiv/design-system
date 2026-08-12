@@ -47,7 +47,7 @@ Stylesheets: `docs/public/design-system.css` (public pages) · `docs/internal/de
 ## Rules agents break most (verified by our agent tests)
 
 - **Self-hosted everything.** Never load fonts, icons, or CSS from external URLs — no Google Fonts, no CDNs. If an existing page does it, that page is wrong, not the rule.
-- **Light-only for now.** Dark-mode token values exist as foundation; do not hand-use them. New demo pages lock light: `<html data-theme="light">`. (Status: `planning/dark-mode-decision.md`.)
+- **Dark mode is live — build for it.** Take colors from tokens and pages flip on their own; never hand-pick a dark value. Text on an accent fill and specimen colors are the exceptions that stay fixed. Only lock a page light when it exists to show light-mode rendering. (`docs/dark-mode.html`.)
 - **Two accent colors, never crossed.** Internal tools: Access Lime primary. Public pages: Open Blue primary. The accent tells people where they are. Outreach sites (blog, mini-sites) use the public design and may differ from it only in the ways listed in `docs/outreach/`.
 - **Palette and type stack only.** No one-off hex values, no new font families.
 - **Reuse before rebuilding.** If a `.ds-` component exists for your need, use its documented construction — don't re-style its tokens onto new markup.

@@ -61,7 +61,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 - **Semantic colors:** Use danger tokens (`--danger`) only for destructive actions and error states. Not for brand accents.
 - **Campus Red (`#b31b1b`):** Heritage color only. Use for the logo X mark and rare accents. Never for headers, buttons, large color fields, or text.
 - **Internal vs public:** Internal tools use Access Lime as the primary button color. Public pages use Open Blue. Do not cross these — the color difference signals which context the user is in.
-- **Dark mode:** dark token values exist as foundation only. New pages and components are light-only until the dark program resumes (`planning/dark-mode-decision.md`); never hand-pick dark values into light pages; demo pages lock with `<html data-theme="light">`. See `docs/dark-mode.html` for what is dark-aware today.
+- **Dark mode is live.** Build every page dark-aware from the start: take colors from tokens and they flip on their own. Never hand-pick a dark value into a page. Two things legitimately hold a fixed value in both modes — an accent that must not shift (text on a lime or Open Blue fill uses `--text-on-lime` / `--arxiv-repository-brown-on-blue`), and a specimen whose color *is* the documentation (a swatch, a simulated state). Lock a page to light with `<html data-theme="light">` only when it demonstrates light-mode rendering specifically. See `docs/dark-mode.html` for the mechanism and the traps.
 
 ## Components
 
