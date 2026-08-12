@@ -23,8 +23,15 @@ the first time is in, and it is the state that reveals gates.
 2. View the full paper as HTML
 3. Copy a citation
 
-**Record per task:** clicks, whether the control is visible without scrolling, how far down
-the page it sits, whether the task can be completed at all, and whether login is required.
+**Record per task:** clicks; **whether the control is visible on arrival without
+scrolling**, and the smallest window height at which that stays true; whether it remains
+reachable while reading a long paper (a sticky bar counts); whether the task can be
+completed at all; and whether login is required. Note the control's position as *column* or
+*rail* — a rail control is found by scanning sideways, so its vertical depth means little.
+
+Raw pixel depth is worth recording but is a supporting number, not the headline. The two
+questions that matter are binary: **can I see it when I land, and can I still get it while
+I read.**
 A paywalled PDF is a different and more damning result than a long click path, and
 collapsing it into a click count hides the worst finding.
 
@@ -98,10 +105,17 @@ the most common task costs nothing. And its sticky reader bar carries the PDF co
 top of the viewport for the entire length of the paper — on the live site, once you have
 clicked through to `/html/`, getting the PDF means going back.
 
-**What it costs.** Every other control moves down: PDF 93px → 496px, citation 420px →
-661px. Both still land within the first screen at this viewport, so nothing is buried — but
-the abstract page's greatest strength today is that all three actions sit in the first
-inch, and that is spent here.
+**What "moves down" actually means — a correction.** The raw depth numbers (PDF 93px →
+496px, citation 420px → 661px) read as a loss, and they are not. Both controls sit in a
+right-hand actions rail at x=798, *beside* the abstract rather than below it — the abstract
+column runs x=224–745. The eye reaches them by scanning right, not by scrolling. They are
+visible without scrolling at every common window height tested, down to a 600px-tall
+window.
+
+**Vertical depth is the wrong measure for a rail.** It is a good proxy for a control in a
+single reading column and a bad one for a control placed in a side region. Recorded here
+because the metric, taken at face value, would have argued for pushing a download button
+above the paper's own title — making the design worse to make the number better.
 
 **The gap worth closing.** The citation control does not ride the sticky bar. Someone
 who reaches the end of a forty-page paper and wants to cite it has to scroll back. PDF
