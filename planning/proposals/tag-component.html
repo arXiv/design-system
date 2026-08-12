@@ -255,39 +255,31 @@
   The underlying text then stays correct for copy-and-paste, in-page search, and screen readers, and
   the same markup can be re-styled later without touching content.</p>
 
-  <div class="box alarm">
-    <p style="margin-top:0"><strong class="bad">Flagging a conflict before writing the category rule
-    down.</strong> The rule as given — <em>"categories are always all caps after the last period,
-    lowercase in front of it"</em> — does not match arXiv's own category identifiers. Counting the
-    canonical list in the saved production page in this repo:</p>
-    <table style="margin:8px 0">
-      <tr><th>Canonical form</th><th>Count</th><th>Examples</th></tr>
-      <tr><td>UPPERCASE after the last period</td><td>115</td><td><code>cs.AI</code>, <code>math.CO</code>, <code>astro-ph.HE</code>, <code>stat.ML</code></td></tr>
-      <tr><td class="bad">lowercase after the last period</td><td class="bad">31</td><td><code>physics.optics</code>, <code>cond-mat.str-el</code>, <code>physics.bio-ph</code></td></tr>
-    </table>
-    <p>Every <code>physics.*</code> (22) and every <code>cond-mat.*</code> (9) subcategory is
-    lowercase. Applying caps-after-the-last-period to those produces strings that do not exist:</p>
+  <div class="box">
+    <p style="margin-top:0"><strong class="ok">Category names are copied, never restyled. Settled
+    2026-08-11.</strong> An earlier draft of this rule said categories are always uppercase after the
+    last period. Checked against the canonical list in the saved production page in this repo, that
+    holds for 115 categories — and breaks for 31, every <code>physics.*</code> (22) and every
+    <code>cond-mat.*</code> (9) subcategory:</p>
     <div class="stage on-white" style="margin:8px 0">
       <div class="row"><span class="lbl">as arXiv publishes</span>
         <span class="ds-tag ds-tag--keep-case ds-tag--chrome">physics.optics</span>
         <span class="ds-tag ds-tag--keep-case ds-tag--chrome">cond-mat.str-el</span>
         <span class="ds-tag ds-tag--keep-case ds-tag--chrome">cs.AI</span>
       </div>
-      <div class="row"><span class="lbl">rule applied</span>
+      <div class="row"><span class="lbl">uppercased</span>
         <span class="ds-tag ds-tag--chrome">physics.optics</span>
         <span class="ds-tag ds-tag--chrome">cond-mat.str-el</span>
         <span class="ds-tag ds-tag--chrome">cs.AI</span>
         <span style="font-size:11px;color:#b3261e;font-family:ui-monospace,monospace">← first two are not real categories</span>
       </div>
     </div>
-    <p style="margin-bottom:0"><strong>Suggested instead:</strong> <em>a category is an identifier —
-    render it exactly as arXiv publishes it, and never transform its case.</em> That gets the caps
-    right on all 146 without a rule to remember, keeps display matching URLs, the API, and what
-    researchers type, and stays correct if the taxonomy changes. The caps-after-the-last-period
-    pattern is a property of most category <em>names</em>, not a transform to apply to them.
-    <strong>Not written into the docs pending Shamsi's call</strong> — if arXiv does intend to
-    normalize display away from the canonical identifiers, that is a real decision and this proposal
-    should record it as one.</p>
+    <p style="margin-bottom:0">So the rule is a <em>copy</em> rule, not a capitalization rule: show a
+    category exactly as arXiv publishes it, capitalization included, and never transform it. That is
+    right for all 146 without anything to remember, keeps display matching the URL and the API, and
+    stays correct if the taxonomy changes. It also dissolves a question the earlier version raised —
+    whether any category has two periods — because nothing ever has to find the last one. Category
+    tags always carry <code>.ds-tag--keep-case</code>.</p>
   </div>
 
   <h2>Rules that would ship with it</h2>
@@ -323,14 +315,13 @@
     <tr><td><strong>Dark contrast</strong></td><td>Verified. Every level clears AA; lowest is chrome at 6.20:1.</td></tr>
     <tr><td><strong>Type register</strong></td><td>Mono (Shamsi 2026-08-11), replacing the blog's condensed. Mono is arXiv's identifier voice and most of what a tag holds is an identifier.</td></tr>
     <tr><td><strong>Case</strong></td><td>Uppercase by default, applied with CSS rather than typed, with <code>.ds-tag--keep-case</code> for identifiers and for labels long enough that caps hurt. Shamsi 2026-08-11: an always-caps rule was too strict.</td></tr>
+    <tr><td><strong>Category case</strong></td><td><strong>Category names are copied, never restyled</strong> — shown exactly as arXiv publishes them, capitalization included. Agreed 2026-08-11 and now in DESIGN-POLICIES under <em>Content and interaction</em>. Category tags therefore always carry <code>.ds-tag--keep-case</code>.</td></tr>
     <tr><td><strong>The rule</strong></td><td>"A tag labels or categorizes; it never stands in for a link." Now in DESIGN-POLICIES under <em>Content and interaction</em>, alongside the status-color-means-a-real-condition rule.</td></tr>
   </table>
 
   <h2>Still open</h2>
   <table>
-    <tr><td style="width:24px">1</td><td><strong>The category-case conflict above.</strong> Render categories exactly as arXiv publishes them (suggested), or normalize display to caps-after-the-last-period and accept that 31 of them will differ from their canonical identifiers?</td></tr>
-    <tr><td>2</td><td>Ship it now, or wait and build it alongside the category-editor pattern page so the four duplicate admin chips collapse in one pass?</td></tr>
-    <tr><td>3</td><td>Are there categories with <em>two</em> periods? None appear in the production list in this repo — worth confirming, since it changes how the "last period" is found.</td></tr>
+    <tr><td style="width:24px">1</td><td>Ship it now, or wait and build it alongside the category-editor pattern page so the four duplicate admin chips collapse in one pass?</td></tr>
   </table>
 
 </div></body>
