@@ -28,6 +28,11 @@ the page it sits, whether the task can be completed at all, and whether login is
 A paywalled PDF is a different and more damning result than a long click path, and
 collapsing it into a click count hides the worst finding.
 
+**Fix the viewport at 1280×800 and check it before every reading.** This is not a detail.
+Measured in a collapsed browser pane, the arXiv mockup put its PDF control 6,104px down the
+page; at 1280×800 the same control sits at 496px. A twelve-fold difference, purely from
+reflow. Any number taken at an unrecorded window size is worthless.
+
 **Record per page:** load time, page weight, and whether a cookie or consent dialog
 appears before the task can start. Those dialogs are real friction and belong in the count.
 
@@ -74,7 +79,35 @@ just need filling.
 
 No attempt was made to work around any of these blocks.
 
-## Results so far
+## arXiv today vs the Phase 1 mockup
+
+Both measured at 1280×800 on 2026-08-12. This is the comparison the audit exists to
+support, and the two differ in an interesting way rather than a simple one.
+
+| | arXiv live | HTML Phase 1 mockup |
+|---|---|---|
+| Sample | `arxiv.org/abs/2301.08727` | [html-phase1.html](https://arxiv.github.io/design-system/mockups/public/html-phase1.html) |
+| Load time | 650 ms | 743 ms |
+| Page weight | 42 KB | 143 KB |
+| **View full HTML** | 1 click, 112px | **0 clicks — the paper is already on the page** |
+| **Download PDF** | 1 click, 93px | 1 click, 496px — *and* permanently in the sticky bar while reading |
+| **Copy a citation** | 1 click, 420px | 1 click, 661px |
+
+**What the mockup wins.** It removes a whole navigation step: the full text is the page, so
+the most common task costs nothing. And its sticky reader bar carries the PDF control at the
+top of the viewport for the entire length of the paper — on the live site, once you have
+clicked through to `/html/`, getting the PDF means going back.
+
+**What it costs.** Every other control moves down: PDF 93px → 496px, citation 420px →
+661px. Both still land within the first screen at this viewport, so nothing is buried — but
+the abstract page's greatest strength today is that all three actions sit in the first
+inch, and that is spent here.
+
+**The gap worth closing.** The citation control does not ride the sticky bar. Someone
+who reaches the end of a forty-page paper and wants to cite it has to scroll back. PDF
+solved this; citation did not, and it is the same problem.
+
+## Results so far — other platforms
 
 Reference viewport 1280×720. One paper per platform, so treat every number as indicative
 rather than settled.
