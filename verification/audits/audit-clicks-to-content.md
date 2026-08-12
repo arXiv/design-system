@@ -35,6 +35,13 @@ I read.**
 A paywalled PDF is a different and more damning result than a long click path, and
 collapsing it into a click count hides the worst finding.
 
+**Exercise every control; never infer behaviour from the markup.** Both mistakes this
+audit has made so far came from reading elements instead of clicking them — a `Copy` button
+sitting beside the one the probe happened to find first, and a modal misread as a page
+navigation because the trigger looked like a link. Click it, watch what happens, and record
+what the reader ends up holding. "One click to see it" and "one click to have it" are
+different results.
+
 **Fix the viewport at 1280×800 and check it before every reading.** This is not a detail.
 Measured in a collapsed browser pane, the arXiv mockup put its PDF control 6,104px down the
 page; at 1280×800 the same control sits at 496px. A twelve-fold difference, purely from
@@ -98,7 +105,7 @@ support, and the two differ in an interesting way rather than a simple one.
 | Page weight | 42 KB | 143 KB |
 | **View full HTML** | 1 click, 112px | **0 clicks — the paper is already on the page** |
 | **Download PDF** | 1 click, 93px | 1 click, 496px — *and* permanently in the sticky bar while reading |
-| **Copy a citation** | 1 click, 420px — *navigates to a separate citation page* | **1 click, 661px — a `Copy` button in the rail, no navigation** |
+| **Copy a citation** | 1 click, 420px → modal, then **select and copy by hand — there is no copy button** | **1 click, 661px — a `Copy` button does it** |
 
 **What the mockup wins.** It removes a whole navigation step: the full text is the page, so
 the most common task costs nothing. And its sticky reader bar carries the PDF control at the
@@ -118,10 +125,12 @@ because the metric, taken at face value, would have argued for pushing a downloa
 above the paper's own title — making the design worse to make the number better.
 
 **Citation is a second win, not a gap (corrected 2026-08-12).** The rail pairs
-`Display BibTeX` with a `Copy` button at the same height, so copying a citation is one
-click and no navigation. On the live site, `export BibTeX citation` takes you to a separate
-page, where you then select and copy by hand. The mockup is ahead here, and an earlier
-version of this file undersold it.
+`Display BibTeX` with a `Copy` button at the same height, so one click puts the citation on
+the clipboard. On the live site, `export BibTeX citation` is a button that opens a modal —
+it does not navigate — and the modal has **no copy control**, so the reader selects the text
+and copies it by hand. Both are one click to *see* the citation; only the mockup is one
+click to *have* it. Verified by exercising both controls, after two earlier readings of this
+row were wrong.
 
 **The narrow gap that remains.** The rail is `position: static`, so it scrolls away, and
 the sticky bar carries Contents, the section list, Abstract, PDF and TeX Source — but no
