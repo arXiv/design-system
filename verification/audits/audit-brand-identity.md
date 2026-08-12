@@ -1,8 +1,8 @@
-# Competitor brand-color analysis
+# Competitor brand identity analysis
 
 **07/01/26. Shamsi Brinn.**
 
-An audit of the primary brand colors used across the research-publishing ecosystem — publishers, preprint servers, repositories, discovery tools, and identity services — and what it means for arXiv's own palette.
+An audit of the brand identities used across the research-publishing ecosystem — primary color foremost, alongside the other identity elements each platform leans on — publishers, preprint servers, repositories, discovery tools, and identity services — and what it means for arXiv's own palette.
 
 ## Findings
 
