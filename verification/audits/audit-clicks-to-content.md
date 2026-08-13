@@ -8,24 +8,26 @@ This test measured how much work it takes to do common tasks on article pages, a
 
 Across platforms, measure how easy it is to do three common tasks: Download the PDF, access the full text, and grab a citation. We are also necessarily checking for gated vs open content.
 
-| Platform | Type | Access | Full text | PDF | Citation |
-|---|---|---|---|---|---|
-| arXiv live | Preprint server | open | **1 click — separate page** | 1 click | modal, then manually select |
-| arXiv Phase 1 mockup | Preprint server | open | 0 clicks | 1 click, + sticky bar while reading | 1 click|
-| APS | Publisher | open | 0 clicks | 1 click | modal, then manually select |
-| ScienceDirect | Publisher | open | 0 clicks | 1 click | 2 clicks → file export only |
-| IOP Science | Publisher | open | 0 clicks | 1 click | BibTeX/RIS file *(not exercised)* |
-| Nature | Publisher | open | 0 clicks | 1 click | 1 click |
-| PubMed Central | Repository | open | 0 clicks | *not exercised* | *not exercised* |
-| PLOS ONE | Publisher | open | 0 clicks | *not exercised* | *not exercised* |
-| Wiley | Publisher | open | 0 clicks | 1 click | 1 click |
-| ACM DL | Publisher | open | not available | 1 click | 1 click |
-| Springer Link | Publisher | **paywalled** | gated | gated | 1 click |
-| IEEE Xplore | Publisher | **paywalled** | section titles listed, body gated | **paywalled** | 1 click |
-| Taylor & Francis | Publisher | **paywalled** | gated | gated | 1 click |
-| ResearchGate | Network | open | 1 click — *PDF images only* | 1 click | 1 click, generates file |
-| Quantum | Overlay journal | open | 1 click — *PDF, hosted by the journal* | 1 click | 1 click, then manually select |
-| Open Journal of Astrophysics | Overlay journal | open | 1 click — *offsite, to arXiv* | via arXiv | 2 clicks, generated file |
+| Platform | Access | Full text | PDF | Citation |
+|---|---|---|---|---|
+| arXiv live | open | **1 click — separate page** | 1 click | 1 click → manually select |
+| arXiv Phase 1 mockup | open | 0 clicks | 1 click, + sticky bar while reading | **1 click** |
+| APS, Physical Review Letters | open | 0 clicks | 1 click | 1 click → manually select or file export |
+| Elsevier, Physics Letters B | open | 0 clicks | 1 click | 1 click → file export |
+| IOP Science | open | 0 clicks | 1 click | 1 click → file export  |
+| Springer Nature, Algorithmica | paywalled | gated | 1 click | 2 clicks → file export |
+| Springer Nature, Nature Communications | open | not available | 1 click | 2 clicks → file export |
+| NIH, PubMed Central | open | 0 clicks | 1 click | 2 clicks |
+| PLOS ONE | open | 0 clicks | *not exercised* | 1 click → file export (hard to find) |
+| Wiley, Advanced Materials | paywalled | gated | gated | 2+ clicks |
+| Wiley, Advanced Science | open | 0 clicks | 1 click | 2+ clicks |
+| ACM DL | open | not available | 1 click | 2 clicks |
+| IEEE Xplore | paywalled | section titles listed, body gated | gated | 2+ clicks |
+| Taylor & Francis, Journal of Psychology | paywalled | gated | gated | 2+ clicks |
+| Taylor & Francis, Research in Mathematics | open | 0 clicks | 1 click | 2+ clicks |
+| ResearchGate | open | 0 clicks, *PDF reader only* | 1 click | 2 clicks → file export |
+| Quantum (Overlay) | open | 1 click (via ar5iv) | 1 click | 1 click → manually select |
+| Open Journal of Astrophysics (Overlay) | open | 2 clicks (via arXiv)  | 2 clicks (via arXiv) | 2 clicks → file export |
 
 ### Distraction vs Focus
 
@@ -56,7 +58,7 @@ We measured how well each platform supports reading focus by eliminating distrac
 except ACM and ResearchGate, serves the full paper on the landing page. arXiv sends the
 reader to a separate `/html/` page. The arXiv Phase 1 mockup serves the full text and metadata on the same page, with additional improvements to usability and accessibility.
 
-**2. Copy-to-clipboard for citations is uncommon but not unique.** ACM, Wiley, and the arXiv phase 1 mockup have a 1-click citation copy feature; arXiv live and APS show text to select by hand; ScienceDirect and IOP generate a file. *Adding a copy button to arXiv's existing BibTeX modal is a small win we can do on the abs page, independent of the Phase 1 HTML papers work.*
+**2. Copy-to-clipboard for citations is uncommon but not unique.** ACM, Wiley, and more have a 2-click process (open a modal, copy contents). Only the arXiv phase 1 mockup reduces it to 1-click by displaying the citation area on the main page instead of in a modal; Some have copy buttons in their modal, others generate a file for download or require manually selecting, including arXiv's abstract page. *Adding a copy button to arXiv's existing BibTeX modal is a small win, independent of the Phase 1 HTML papers work.*
 
 **3. Distraction levels are split between commercial versus non-commercial platforms.** Only arXiv and the two overlay journals have zero advertising or tracking networks. The five non-commercial platforms load 3–4 third-party domains. Every commercial platform loads 15–46. Some are egregious: IEEE loads 17 ad slots and sets 41 cookies on an article body it will not show without a subscription. Springer runs 15 tracking networks on a page that costs USD 39.95 to read.
 
@@ -89,26 +91,25 @@ End of report. Testing methodology follows.
 
 ---
 
-### URLs checked
-
-| Platform | URL |
-|---|---|
-| arXiv live | `arxiv.org/abs/2301.08727` |
-| arXiv Phase 1 mockup | `arxiv.github.io/design-system/mockups/public/html-phase1.html` |
-| APS — Phys Rev Lett | `journals.aps.org/prl/abstract/10.1103/PhysRevLett.116.061102` |
-| ScienceDirect | `sciencedirect.com/science/article/pii/S037026931200857X` |
-| IOP Science | `iopscience.iop.org/article/10.3847/1538-4357/ae8190` |
-| Nature | `nature.com/articles/s41586-021-03819-2` |
-| PubMed Central | `pmc.ncbi.nlm.nih.gov/articles/PMC8371605/` |
-| PLOS ONE | `journals.plos.org/plosone/article?id=10.1371/journal.pone.0173664` |
-| Wiley | `advanced.onlinelibrary.wiley.com/doi/10.1002/advs.202004433` |
-| ACM Digital Library | `dl.acm.org/doi/10.1145/3292500.3330701` |
-| Springer Link | `link.springer.com/article/10.1007/s00453-021-00817-8` |
-| IEEE Xplore | `ieeexplore.ieee.org/document/9156697` |
-| Taylor & Francis | `tandfonline.com/doi/full/10.1080/00223980.2019.1590298` |
-| ResearchGate | `researchgate.net/publication/411823724_Implicit_Computation_of_Filtered_Prime_Implicants` |
-| Quantum | `quantum-journal.org/papers/q-2026-07-29-2178/` |
-| Open Journal of Astrophysics | `astro.theoj.org/article/166984-dust-and-grain-size-evolution-in-galaxy-simulations-what-matters-and-what-does-not` |
+## URLs checked
+1. `https://www.tandfonline.com/doi/full/10.1080/00223980.2019.1590298` (Taylor and Francis, The Journal of Psychology, paywalled)
+2. `https://www.tandfonline.com/doi/full/10.1080/27684830.2026.2711512` (Taylor and Francis, Research in Mathematics, open access)
+3. `https://advanced.onlinelibrary.wiley.com/doi/10.1002/advs.202004433` (Wiley, Advanced Science, open access)
+4. `https://advanced.onlinelibrary.wiley.com/doi/epdf/10.1002/adma.74176` (Wiley, Advanced Materials, paywalled)
+5. `https://dl.acm.org/doi/10.1145/3292500.3330701` (ACM)
+6. `https://ieeexplore.ieee.org/document/9156697` (IEEE)
+7. `https://link.springer.com/article/10.1007/s00453-021-00817-8` (Nature, Algorithmica, paywalled)
+8. `https://www.nature.com/articles/s41467-026-76467-7` (Nature, Nature Communications, open access)
+9. `https://www.nature.com/articles/s41586-021-03819-2` (Nature, open access)
+10. `https://iopscience.iop.org/article/10.3847/1538-4357/ae8190` (IOP, The Astrophysical Journal)
+11. `https://www.sciencedirect.com/science/article/pii/S037026931200857X?via%3Dihub` (Elsevier, Physics Letters B, open access)
+12. `https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.116.061102` (APS, Physical Review Letters, open access)
+13. `https://pmc.ncbi.nlm.nih.gov/articles/PMC8371605/` (NIH, PMC, also linked to Nature article)
+14. `https://www.researchgate.net/publication/411823724_Implicit_Computation_of_Filtered_Prime_Implicants` (ResearchGate)
+15. `https://arxiv.org/abs/2604.22725` (arXiv live)
+16. `https://arxiv.github.io/design-system/mockups/public/html-phase1.html` (arXiv mockup)
+17. `journals.plos.org/plosone/article?id=10.1371/journal.pone.0173664` (PLOS One, open access)
+18. astro.theoj.org/article/166984-dust-and-grain-size-evolution-in-galaxy-simulations-what-matters-and-what-does-not` (Open Journal of Astrophysics, open access overlay)
 
 ## Methodology
 
