@@ -39,7 +39,7 @@ We measured how many distractions each platform displays to readers (ads, popups
 | arXiv live | 0 |  **4** | **0** | 4 | **0** | **56px** | **0px** |
 | arXiv Phase 1 mockup | 0 |  **3** | **0** | **0** | **0** | 244px | **0px** |
 | APS, Physical Review Letters | 2 | 26 | 10 | 10 | 0 | **89px** | 0px |
-| ScienceDirect, Annals of Physics | 3 | | | | | | |
+| ScienceDirect, Annals of Physics | 3 | 15 | 3 | 9 | 0 | 168px | 0px |
 | ScienceDirect, Physics Letters B | 3 | 15 | 3 | 9 | 0 | 112px | 0px |
 | IOP Science | 1 | 23 | 8 | 25 | 0 | 174px | 0px |
 | Springer Nature, Algorithmica | 3 | 31 | 15 | 17 | 3 | 209px | 0px |
@@ -48,7 +48,7 @@ We measured how many distractions each platform displays to readers (ads, popups
 | PLOS ONE | 2 | 25 | 7 | 8 | 4 | 385px | 180px |
 | Wiley, Advanced Materials | 6 | **49** | 16 | 28 | 4 | **492px** | 120px |
 | Wiley, Advanced Science | 6 | 42 | 15 | 23 | 4 | 441px | 120px |
-| ACM DL | 4 | 6 | 16 | 5 | 7 | 8 | 437px | **544px** |
+| ACM DL | 4 | 16 | 5 | 7 | 8 | 437px | **544px** |
 | IEEE Xplore | 4 | 19 | 4 | **41** | **17** | 272px | 0px |
 | Taylor & Francis, Journal of Psychology | 3 | 46 | 16 | **30** | 1 | 352px | 80px |
 | Taylor & Francis, Research in Mathematics | 2 | 30 | 11 | **30** | 1 | 368px | 80px |
@@ -110,6 +110,7 @@ End of report. Testing methodology follows.
 9. `https://www.nature.com/articles/s41586-021-03819-2` (Nature, open access)
 10. `https://iopscience.iop.org/article/10.3847/1538-4357/ae8190` (IOP, The Astrophysical Journal)
 11. `https://www.sciencedirect.com/science/article/pii/S037026931200857X?via%3Dihub` (Elsevier, Physics Letters B, open access)
+11. `https://www.sciencedirect.com/science/article/abs/pii/S0003491626003180` (Elsevier, Annals of Physics, paywalled)
 12. `https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.116.061102` (APS, Physical Review Letters, open access)
 13. `https://pmc.ncbi.nlm.nih.gov/articles/PMC8371605/` (NIH, PMC, also linked to Nature article)
 14. `https://www.researchgate.net/publication/411823724_Implicit_Computation_of_Filtered_Prime_Implicants` (ResearchGate)
