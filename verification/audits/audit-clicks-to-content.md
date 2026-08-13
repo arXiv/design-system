@@ -39,8 +39,8 @@ We measured how many distractions each platform displays to readers (ads, popups
 | arXiv live | 0 |  **4** | **0** | 4 | **0** | **56px** | **0px** |
 | arXiv Phase 1 mockup | 0 |  **3** | **0** | **0** | **0** | 244px | **0px** |
 | APS, Physical Review Letters | 2 | 26 | 10 | 10 | 0 | **89px** | 0px |
-| Elsevier, Annals of Physics | 3 | | | | | | |
-| Elsevier, Physics Letters B | 3 | 15 | 3 | 9 | 0 | 112px | 0px |
+| ScienceDirect, Annals of Physics | 3 | | | | | | |
+| ScienceDirect, Physics Letters B | 3 | 15 | 3 | 9 | 0 | 112px | 0px |
 | IOP Science | 1 | 23 | 8 | 25 | 0 | 174px | 0px |
 | Springer Nature, Algorithmica | 3 | 31 | 15 | 17 | 3 | 209px | 0px |
 | Springer Nature, Nature Communications | 4 | 36 | 19 | 25 | **11** | 351px | **528px** |
