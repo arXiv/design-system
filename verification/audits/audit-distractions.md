@@ -8,76 +8,87 @@ room for them.
 
 ## Results
 
-Measured on arrival, logged out, at 1280×800. One article per platform.
+Sorted by third-party domains contacted. Measured on arrival, logged out, at 1280×800,
+three seconds after load.
 
 | Platform | Type | Third-party domains | Ad / tracking networks | Cookies | Ad slots | Title at | Pushed down by |
 |---|---|---|---|---|---|---|---|
-| **arXiv Phase 1 mockup** | Preprint server | **3** | **0** | **0** | **0** | 223px | **0px** |
-| **arXiv live** | Preprint server | **4** | **0** | 4 | **0** | — | **0px** |
-| **Quantum** | Overlay journal | **4** | **0** | **0** | **0** | — | **0px** |
-| ScienceDirect | Publisher | 15 | 3 | 9 | 0 | — | 0px |
-| ResearchGate | Network | 15 | 6 | 20 | 0 | — | 0px |
-| APS | Publisher | 26 | 10 | 10 | 0 | **89px** | 0px |
-| Springer Link | Publisher | 31 | 15 | 17 | 0 | — | 0px |
-| IEEE Xplore | Publisher | 34 | 7 | **41** | 0 | 272px | 0px |
-| **Nature** | Publisher | 41 | **22** | 22 | 5 | 351px | **528px** |
-| **Wiley** | Publisher | **51** | 16 | 24 | 4 | **441px** | 120px |
+| **arXiv Phase 1 mockup** | Preprint server | **3** | **0** | **0** | **0** | 244px | **0px** |
+| PubMed Central | Repository | **3** | 2 | 8 | 1 | 614px | 75px |
+| **arXiv live** | Preprint server | **4** | **0** | 4 | **0** | **56px** | **0px** |
+| **Quantum** | Overlay journal | **4** | **0** | **0** | **0** | 0px | **0px** |
+| **Open Journal of Astrophysics** | Overlay journal | **4** | **0** | 4 | 1 | 436px | 55px |
+| ScienceDirect | Publisher | 15 | 3 | 9 | 0 | 112px | 0px |
+| ACM Digital Library | Publisher | 16 | 5 | 7 | 8 | 437px | **544px** |
+| ResearchGate | Network | 17 | 7 | 20 | 4 | 264px | 213px |
+| IEEE Xplore | Publisher | 19 | 4 | **41** | **17** | 272px | 0px |
+| IOP Science | Publisher | 23 | 8 | 25 | 0 | 174px | 0px |
+| PLOS ONE | Publisher | 25 | 7 | 8 | 4 | 385px | 180px |
+| APS | Publisher | 26 | 10 | 10 | 0 | 89px | 0px |
+| Springer Link | Publisher | 31 | 15 | 17 | 3 | 209px | 0px |
+| Nature | Publisher | 36 | 19 | 22 | 8 | 351px | **528px** |
+| Wiley | Publisher | 42 | 15 | 23 | 4 | **441px** | 120px |
+| Taylor & Francis | Publisher | **46** | 16 | **30** | 1 | 352px | 80px |
 
-Ad and tracking networks, named so the classification can be checked:
+Ad and tracking networks named, so the classification can be checked rather than trusted:
 
 | Platform | Networks |
 |---|---|
-| arXiv (live and mockup), Quantum | — |
+| arXiv (live and mockup), Quantum, Open Journal of Astrophysics | **none** |
+| PubMed Central | Google Analytics, Google Tag Manager |
 | ScienceDirect | DoubleClick, New Relic, OneTrust |
 | ResearchGate | **DoubleClick, Criteo, AppNexus**, Google Analytics, Google Tag Manager |
 | Springer Link | **DoubleClick ×2, Facebook, Twitter Ads, Bing Ads**, Segment, Google Tag Manager |
-| Nature, Wiley, IEEE, APS | Google Publisher Tag / DoubleClick plus analytics and consent platforms |
+| Nature, Wiley, Taylor & Francis, ACM, IEEE, IOP, APS, PLOS | Google Publisher Tag / DoubleClick plus analytics and consent platforms |
 
 ## Findings
 
-**1. Zero is achievable, and two platforms achieve it.** arXiv and Quantum load no
-advertising or tracking networks at all, and Quantum sets no cookies. Every commercial
-platform loads between fifteen and fifty-one third-party domains.
+**1. The split is commercial versus non-commercial, and it is absolute.** The five
+non-commercial platforms — arXiv live, the Phase 1 mockup, Quantum, the Open Journal of
+Astrophysics and PubMed Central — load three or four third-party domains. Every commercial
+platform loads between fifteen and forty-six. Nothing sits in between.
 
-**2. Nature pushes its paper's title 528px down the page to fit two advertisements.** Both
-sit above the title, at the very top of the document. On a 800px-tall window that is
-two-thirds of the first screen spent before the paper is named. The arXiv Phase 1 mockup
-pushes it 0px.
+**2. Four platforms carry zero advertising or tracking networks: arXiv twice, Quantum, and
+the Open Journal of Astrophysics.** All four are non-commercial. Quantum sets no cookies at
+all.
 
-**3. Wiley loads fifty-one third-party domains and four Google ad slots**, and its title
-lands at 441px — five times deeper than APS's 89px on the same class of content.
+**3. ACM pushes its paper's title 544px down the page, Nature 528px.** On an 800px-tall
+window that is roughly two-thirds of the first screen spent before the paper is named. The
+arXiv Phase 1 mockup pushes it 0px, and arXiv live puts its title at 56px — the highest of
+any platform measured.
 
-**4. Ads and tracking are separable, and society publishers show it.** APS carries no ad
-slots and puts its title at 89px, the highest of any platform measured — but still loads
-ten tracking networks. Not selling ad space does not mean not measuring readers. IEEE sets
-41 cookies with no ad slots at all.
+**4. IEEE loads seventeen ad slots and sets forty-one cookies** on an article whose body it
+will not show without a subscription.
 
-**5. Springer sets fifteen tracking networks on a page the reader cannot read.** The article
-is paywalled at USD 39.95; the advertising and analytics load is fully present before any
-content is.
+**5. Ads and tracking are separable, and society publishers prove it.** APS and IOP carry
+no ad slots at all and place their titles high — 89px and 174px — but still load ten and
+eight tracking networks. Not selling ad space is not the same as not measuring readers.
+arXiv does neither.
 
-**6. arXiv's advantage here is structural, not disciplinary.** It costs no ongoing restraint
-and no design review, because no commercial incentive pushes the other way. Quantum, also
-non-commercial, lands in the same place independently. This is the clearest measured
-support for the brand claim that arXiv has no attention to farm.
+**6. arXiv's advantage here is structural, not disciplinary.** It costs no ongoing
+restraint and no design review, because no commercial incentive pushes the other way. Three
+other non-commercial platforms land in the same place independently. This is the clearest
+measured support for the brand claim that arXiv has no attention to farm.
 
 **7. Not everything fixed to the viewport is a distraction.** ScienceDirect's sticky panel
 is the article outline — navigation for the paper being read — and is counted as content.
 
 ## Methodology
 
-**Measure on arrival**, logged out, at 1280×800, before interacting with anything.
+**Measure on arrival**, logged out, at 1280×800, three seconds after load and before
+interacting with anything. The delay matters: probed immediately, APS reports 3 third-party
+domains; after three seconds it reports 26. Any reading taken without a settling delay is
+wrong.
 
 **Third-party domains:** every distinct host contacted whose registrable domain differs from
 the page's own, from the browser's resource timing.
 
 **Ad / tracking networks:** the subset matching known advertising, analytics,
-session-recording and consent-management services. Named individually in the results so the
-classification can be checked rather than trusted.
+session-recording and consent-management services, named individually in the results.
 
 **Ad slots:** elements that are an advertising iframe, carry an advertising class or id, or
-are literally labelled "Advertisement". A deliberately strict test — promotional panels that
-are merely commercial in tone are not counted.
+are literally labelled "Advertisement". A deliberately strict test — panels that are merely
+commercial in tone are not counted.
 
 **Pushed down by:** the summed height of ad slots positioned above the paper's title. This
 is the cost in pixels of putting advertising ahead of the article.
@@ -96,12 +107,9 @@ Google Scholar's `gs-casa` overlay is injected on top of publisher pages by the 
 Google session. It is not the platform's design and is excluded everywhere.
 
 Classifying page furniture by class name and text is approximate. The strict ad-slot test
-above is reliable; a looser earlier pass produced false positives (author lists inside a
-container whose text mentioned "Purchase"), and was discarded.
+above is reliable; a looser earlier pass produced false positives — author lists inside a
+container whose text mentioned "Purchase" — and was discarded.
 
 ### Pages used
 
 Same articles as the [clicks-to-content audit](audit-clicks-to-content.md).
-
-Not yet measured for distractions: PLOS ONE, PubMed Central, ACM Digital Library,
-Taylor & Francis, IOP Science, Open Journal of Astrophysics.
