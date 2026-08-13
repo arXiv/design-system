@@ -18,7 +18,7 @@ Across platforms, measure how easy it is to do three common tasks: Download the 
 | Springer Nature, Algorithmica | paywalled | gated | 1 click | 2 clicks → file export |
 | Springer Nature, Nature Communications | open | not available | 1 click | 2 clicks → file export |
 | NIH, PubMed Central | open | 0 clicks | 1 click | 2 clicks |
-| PLOS ONE | open | 0 clicks | *not exercised* | 1 click → file export (hard to find) |
+| PLOS ONE | open | 0 clicks | 1 click | 1 click → file export (hard to find buried in a dropdown) |
 | Wiley, Advanced Materials | paywalled | gated | gated | 2+ clicks |
 | Wiley, Advanced Science | open | 0 clicks | 1 click | 2+ clicks |
 | ACM DL | open | not available | 1 click | 2 clicks |
