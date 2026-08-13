@@ -36,21 +36,27 @@ We measured how well each platform supports reading focus by eliminating distrac
 | Platform | Third-party domains | Ad or tracking networks | Cookies | Ad slots | Title placement | Pixel displacement |
 |---|---|---|---|---|---|---|
 | arXiv Phase 1 mockup | **3** | **0** | **0** | **0** | 244px | **0px** |
-| PubMed Central | **3** | 2 | 8 | 1 | 614px | 75px |
+| NIH, PubMed Central | **3** | 2 | 8 | 1 | 614px | 75px |
 | arXiv live | **4** | **0** | 4 | **0** | **56px** | **0px** |
-| Quantum | **4** | **0** | **0** | **0** | 0px | **0px** |
-| Open Journal of Astrophysics | **4** | **0** | 4 | 1 | 436px | 55px |
-| ScienceDirect | 15 | 3 | 9 | 0 | 112px | 0px |
+| Quantum (Overlay) | **4** | **0** | **0** | **0** | 0px | **0px** |
+| Open Journal of Astrophysics (Overlay) | **4** | **0** | 4 | 1 | 436px | 55px |
+| Elsevier, Physics Letters B | 15 | 3 | 9 | 0 | 112px | 0px |
 | ACM DL | 16 | 5 | 7 | 8 | 437px | **544px** |
 | ResearchGate | 17 | 7 | 20 | 4 | 264px | 213px |
 | IEEE Xplore | 19 | 4 | **41** | **17** | 272px | 0px |
 | IOP Science | 23 | 8 | 25 | 0 | 174px | 0px |
 | PLOS ONE | 25 | 7 | 8 | 4 | 385px | 180px |
-| APS | 26 | 10 | 10 | 0 | **89px** | 0px |
-| Springer Link | 31 | 15 | 17 | 3 | 209px | 0px |
-| Nature | 36 | 19 | 22 | 8 | 351px | **528px** |
-| Wiley | 42 | 15 | 23 | 4 | **441px** | 120px |
-| Taylor & Francis | **46** | 16 | **30** | 1 | 352px | 80px |
+| APS, Physical Review Letters | 26 | 10 | 10 | 0 | **89px** | 0px |
+| Taylor & Francis, Research in Mathematics | 30 | 11 | **30** | 1 | 368px | 80px |
+| Springer Nature, Algorithmica | 31 | 15 | 17 | 3 | 209px | 0px |
+| Springer Nature, Nature Communications | 36 | 19 | 25 | **11** | 351px | **528px** |
+| Wiley, Advanced Science | 42 | 15 | 23 | 4 | 441px | 120px |
+| Taylor & Francis, Journal of Psychology | 46 | 16 | **30** | 1 | 352px | 80px |
+| Wiley, Advanced Materials | **49** | 16 | 28 | 4 | **492px** | 120px |
+
+Three publishers appear twice, with a different paper each. The numbers barely move within a
+publisher — Wiley 42 and 49, Taylor & Francis 30 and 46, Springer Nature 31 and 36, Quantum 4
+and 4. Distraction load is a property of the platform, not of the paper.
 
 ## Findings
 
@@ -110,6 +116,7 @@ End of report. Testing methodology follows.
 16. `https://arxiv.github.io/design-system/mockups/public/html-phase1.html` (arXiv mockup)
 17. `journals.plos.org/plosone/article?id=10.1371/journal.pone.0173664` (PLOS One, open access)
 18. astro.theoj.org/article/166984-dust-and-grain-size-evolution-in-galaxy-simulations-what-matters-and-what-does-not` (Open Journal of Astrophysics, open access overlay)
+19. `https://quantum-journal.org/papers/q-2026-08-13-2189/` (Quantum, overlay journal, open access)
 
 ## Methodology
 
@@ -158,6 +165,12 @@ disorienting a jump feels.
 controls on PubMed Central and PLOS ONE. Marked in the table rather than guessed at.
 
 ### Additional methodology for automated agentic testing
+
+**A redirect can hide a paywall.** Wiley's `/doi/full/` URL silently lands on `/doi/abs/`,
+which looks like a successful load and prints no paywall wording — the wall only appears on
+clicking through to the PDF or EPUB. Compare the final URL against the requested one, and
+check whether the article body is actually present, rather than searching the page for words
+like "purchase".
 
 **Exercise every control; never infer behaviour from the markup.** Every mistake this audit
 made came from reading elements instead of clicking them: a `Copy` button beside the one a
