@@ -13,7 +13,8 @@ Across platforms, measure how easy it is to do three common tasks: Download the 
 | arXiv live | open | **1 click — separate page** | 1 click | 1 click → manually select |
 | arXiv Phase 1 mockup | open | 0 clicks | 1 click, + sticky bar while reading | **1 click** |
 | APS, Physical Review Letters | open | 0 clicks | 1 click | 1 click → manually select or file export |
-| Elsevier, Physics Letters B | open | 0 clicks | 1 click | 1 click → file export |
+| ScienceDirect, Annals of Physics | paywalled | intro and snippets shown, rest gated | gated | 2 click → file export |
+| ScienceDirect, Physics Letters B | open | 0 clicks | 1 click | 2 click → file export |
 | IOP Science | open | 0 clicks | 1 click | 1 click → file export  |
 | Springer Nature, Algorithmica | paywalled | gated | 1 click | 2 clicks → file export |
 | Springer Nature, Nature Communications | open | not available | 1 click | 2 clicks → file export |
@@ -35,26 +36,27 @@ We measured how many distractions each platform displays to readers (ads, popups
 
 | Platform | Visual count | Third-party | Ads/tracking networks | Cookies | Ad slots | Title placement | Pixel displacement |
 |---|---|---|---|---|---|---|---|
-| arXiv Phase 1 mockup | 0 |  **3** | **0** | **0** | **0** | 244px | **0px** |
-| NIH, PubMed Central | 1 | **3** | 2 | 8 | 1 | 614px | 75px |
 | arXiv live | 0 |  **4** | **0** | 4 | **0** | **56px** | **0px** |
-| Quantum (Overlay) | 0 (not counting the sponsor links because they land far below all content) | **4** | **0** | **0** | **0** | 0px | **0px** |
-| Open Journal of Astrophysics (Overlay) | 1 |  **4** | **0** | 4 | 1 | 436px | 55px |
-| Elsevier, Physics Letters B | 3 | 15 | 3 | 9 | 0 | 112px | 0px |
-| ACM DL | 4 | 6 | 16 | 5 | 7 | 8 | 437px | **544px** |
-| ResearchGate | 5 (including a sticky, prominent banner ad) | 17 | 7 | 20 | 4 | 264px | 213px |
-| IEEE Xplore | 4 | 19 | 4 | **41** | **17** | 272px | 0px |
-| IOP Science | 1 | 23 | 8 | 25 | 0 | 174px | 0px |
-| PLOS ONE | 2 | 25 | 7 | 8 | 4 | 385px | 180px |
+| arXiv Phase 1 mockup | 0 |  **3** | **0** | **0** | **0** | 244px | **0px** |
 | APS, Physical Review Letters | 2 | 26 | 10 | 10 | 0 | **89px** | 0px |
+| Elsevier, Annals of Physics | 3 | | | | | | |
+| Elsevier, Physics Letters B | 3 | 15 | 3 | 9 | 0 | 112px | 0px |
+| IOP Science | 1 | 23 | 8 | 25 | 0 | 174px | 0px |
 | Springer Nature, Algorithmica | 3 | 31 | 15 | 17 | 3 | 209px | 0px |
 | Springer Nature, Nature Communications | 4 | 36 | 19 | 25 | **11** | 351px | **528px** |
-| Taylor & Francis, Journal of Psychology | 3 | 46 | 16 | **30** | 1 | 352px | 80px |
-| Taylor & Francis, Research in Mathematics | 2 | 30 | 11 | **30** | 1 | 368px | 80px |
+| NIH, PubMed Central | 1 | **3** | 2 | 8 | 1 | 614px | 75px |
+| PLOS ONE | 2 | 25 | 7 | 8 | 4 | 385px | 180px |
 | Wiley, Advanced Materials | 6 | **49** | 16 | 28 | 4 | **492px** | 120px |
 | Wiley, Advanced Science | 6 | 42 | 15 | 23 | 4 | 441px | 120px |
+| ACM DL | 4 | 6 | 16 | 5 | 7 | 8 | 437px | **544px** |
+| IEEE Xplore | 4 | 19 | 4 | **41** | **17** | 272px | 0px |
+| Taylor & Francis, Journal of Psychology | 3 | 46 | 16 | **30** | 1 | 352px | 80px |
+| Taylor & Francis, Research in Mathematics | 2 | 30 | 11 | **30** | 1 | 368px | 80px |
+| ResearchGate | 5 (including a sticky, prominent banner ad) | 17 | 7 | 20 | 4 | 264px | 213px |
+| Quantum (Overlay) | 0 (not counting the sponsor links because they land far below all content) | **4** | **0** | **0** | **0** | 0px | **0px** |
+| Open Journal of Astrophysics (Overlay) | 1 |  **4** | **0** | 4 | 1 | 436px | 55px |
 
-Three publishers appear twice to test their open access vs subscription journals. Interestingly, the numbers barely move within a
+Four publishers appear twice to test their open access vs subscription journals. Interestingly, the numbers barely move within a
 publisher. Distraction load appears to be a property of the platform, not of the journal.
 
 ## Findings
