@@ -13,21 +13,21 @@ Measured logged out at 1280×800.
 | Platform | Lang | `<h1>` | Heading skips | Images no alt | Links no name (visible) | `<main>` | Tabs to content | Skip link | Citation round trip |
 |---|---|---|---|---|---|---|---|---|---|
 | **arXiv Phase 1 mockup** | en | **1** | 1 | 0/8 | 1 | yes | 8 | yes | **popover — reader is not moved** |
-| arXiv live | en | **7** | 1 | 0/7 | 1 | yes | 7 | yes | *not yet click-tested* |
-| APS | en | **5** | 0 | 0/20 |  *recount pending* | yes | 20 | yes | *not yet click-tested* |
-| ScienceDirect | en-US | 1 | 0 | 0/27 |  *recount pending* | yes | **6** | **no** | *not yet click-tested* |
-| IOP Science | en | 1 | 0 | 0/61 |  *recount pending* | yes | 9 | **no** | *not yet click-tested* |
-| Nature | en | 1 | 0 | **6/24** |  *recount pending* | yes | 14 | yes | *not yet click-tested* |
-| PubMed Central | en | 1 | 1 | 4/40 |  *recount pending* | yes | 12 | yes | *not yet click-tested* |
-| PLOS ONE | en | 2 | 0 | 0/35 |  *recount pending* | yes | 11 | yes | *not yet click-tested* |
+| arXiv live | en | **7** | 1 | 0/7 | 1 | yes | 7 | yes | *needs human test* |
+| APS | en | **5** | 0 | 0/20 |  *recount pending* | yes | 20 | yes | *needs human test* |
+| ScienceDirect | en-US | 1 | 0 | 0/27 |  *recount pending* | yes | **6** | **no** | *needs human test* |
+| IOP Science | en | 1 | 0 | 0/61 |  *recount pending* | yes | 9 | **no** | *needs human test* |
+| Nature | en | 1 | 0 | **6/24** |  *recount pending* | yes | 14 | yes | *needs human test* |
+| PubMed Central | en | 1 | 1 | 4/40 |  *recount pending* | yes | 12 | yes | *needs human test* |
+| PLOS ONE | en | 2 | 0 | 0/35 |  *recount pending* | yes | 11 | yes | *needs human test* |
 | Wiley | en | 1 | 1 | 0/35 | **12** | yes | 9 | yes | **popover — reader is not moved** |
-| ACM Digital Library | en | 1 | 1 | **13/25** | 0 | yes | 24 | yes | *not yet click-tested* |
-| Springer Link | en | 1 | 0 | 2/18 |  *recount pending* | yes | 16 | yes | *not yet click-tested* |
-| IEEE Xplore | en-US | 3 | 0 | 1/4 |  *recount pending* | yes | 21 | yes | *not yet click-tested* |
-| Taylor & Francis | en | 1 | 1 | 0/8 |  *recount pending* | yes | 15 | yes | *not yet click-tested* |
-| ResearchGate | en | 1 | 0 | 0/33 | **0** | yes | **1** | **no** | *not yet click-tested* |
-| Quantum | en-GB | 2 | 1 | 0/16 |  *recount pending* | yes | 19 | yes | *not yet click-tested* |
-| Open Journal of Astrophysics | en | 1 | 1 | 0/1 |  *recount pending* | yes | 26 | **no** | *not yet click-tested* |
+| ACM Digital Library | en | 1 | 1 | **13/25** | 0 | yes | 24 | yes | *needs human test* |
+| Springer Link | en | 1 | 0 | 2/18 |  *recount pending* | yes | 16 | yes | *needs human test* |
+| IEEE Xplore | en-US | 3 | 0 | 1/4 |  *recount pending* | yes | 21 | yes | *needs human test* |
+| Taylor & Francis | en | 1 | 1 | 0/8 |  *recount pending* | yes | 15 | yes | *needs human test* |
+| ResearchGate | en | 1 | 0 | 0/33 | **0** | yes | **1** | **no** | *needs human test* |
+| Quantum | en-GB | 2 | 1 | 0/16 |  *recount pending* | yes | 19 | yes | *needs human test* |
+| Open Journal of Astrophysics | en | 1 | 1 | 0/1 |  *recount pending* | yes | 26 | **no** | *needs human test* |
 
 Dashes mean the page has no article body to link into — an abstract-only landing page, a
 gated page, or an overlay journal that sends the reader to arXiv.
@@ -96,11 +96,14 @@ is not announced either, and including hidden links inflates the number several-
 before it, which is how many Tab presses a keyboard user spends to reach the paper; whether
 the first focusable element is a skip link.
 
-**Reference and footnote round trip:** *click an inline citation and observe what happens.*
-Record whether a popover appears, whether the scroll position moves, and — only if the
-reader is actually displaced — whether a return affordance exists. Counting return links
-without clicking produces false failures: a popover needs no return link, because it never
-takes the reader anywhere.
+**Reference and footnote round trip: this one needs a human.** Two automated approaches
+were tried and both failed. Counting return links by text produced false failures, because a
+popover needs no return link. Clicking citations programmatically is also unreliable:
+synthetic mouse events do not always trigger the real handlers, hover-triggered panels do not
+fire at all, and "nothing visibly happened" cannot be distinguished from "the handler did not
+run". Two platforms gave a clear enough answer to record — the arXiv mockup and Wiley both
+show a popover and do not move the reader. The rest need a person clicking a citation and
+saying what they see.
 
 ### What this test cannot tell you
 
