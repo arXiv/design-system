@@ -19,10 +19,10 @@ Across platforms, measure how easy it is to do three common tasks: Download the 
 | PubMed Central | Repository | open | 0 clicks | *not exercised* | *not exercised* |
 | PLOS ONE | Publisher | open | 0 clicks | *not exercised* | *not exercised* |
 | Wiley | Publisher | open | 0 clicks | 1 click | 1 click |
-| ACM DL | Publisher | open | PDF only | 1 click | 1 click |
-| Springer Link | Publisher | **paywalled** | not available | **paywalled** | 1 click |
+| ACM DL | Publisher | open | not available | 1 click | 1 click |
+| Springer Link | Publisher | **paywalled** | gated | gated | 1 click |
 | IEEE Xplore | Publisher | **paywalled** | section titles listed, body gated | **paywalled** | 1 click |
-| Taylor & Francis | Publisher | **paywalled** | not available | **paywalled** | 1 click |
+| Taylor & Francis | Publisher | **paywalled** | gated | gated | 1 click |
 | ResearchGate | Network | open | 1 click — *PDF images only* | 1 click | 1 click, generates file |
 | Quantum | Overlay journal | open | 1 click — *PDF, hosted by the journal* | 1 click | 1 click, then manually select |
 | Open Journal of Astrophysics | Overlay journal | open | 1 click — *offsite, to arXiv* | via arXiv | 2 clicks, generated file |
