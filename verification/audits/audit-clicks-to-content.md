@@ -36,25 +36,25 @@ We measured how many distractions each platform displays to readers (ads, popups
 
 | Platform | Visual count | Third-party | Ads/tracking networks | Cookies | Ad slots | Title placement | Pixel displacement |
 |---|---|---|---|---|---|---|---|
-| arXiv live | 0 |  **4** | **0** | 4 | **0** | **56px** | **0px** |
-| arXiv Phase 1 mockup | 0 |  **3** | **0** | **0** | **0** | 244px | **0px** |
-| APS, Physical Review Letters | 2 | 26 | 10 | 10 | 0 | **89px** | 0px |
-| ScienceDirect, Annals of Physics | 3 | 15 | 3 | 9 | 0 | 168px | 0px |
-| ScienceDirect, Physics Letters B | 3 | 15 | 3 | 9 | 0 | 112px | 0px |
+| arXiv live | 0 |  **4** | **0** | 4 | **0** | **108px** | **0px** |
+| arXiv Phase 1 mockup | 0 |  **3** | **0** | **0** | **0** | 223px | **0px** |
+| APS, Physical Review Letters | 2 | 26 | 10 | 10 | 0 | 298px | 0px |
+| ScienceDirect, Annals of Physics | 3 | 15 | 3 | 9 | 0 | 268px | 0px |
+| ScienceDirect, Physics Letters B | 3 | 15 | 3 | 9 | 0 | 212px | 0px |
 | IOP Science | 1 | 23 | 8 | 25 | 0 | 174px | 0px |
 | Springer Nature, Algorithmica | 3 | 31 | 15 | 17 | 3 | 209px | 0px |
 | Springer Nature, Nature Communications | 4 | 36 | 19 | 25 | **11** | 351px | **528px** |
-| NIH, PubMed Central | 1 | **3** | 2 | 8 | 1 | 614px | 75px |
+| NIH, PubMed Central | 1 | **3** | 2 | 8 | 1 | **614px** | 75px |
 | PLOS ONE | 2 | 25 | 7 | 8 | 4 | 385px | 180px |
-| Wiley, Advanced Materials | 6 | **49** | 16 | 28 | 4 | **492px** | 120px |
-| Wiley, Advanced Science | 6 | 42 | 15 | 23 | 4 | 441px | 120px |
+| Wiley, Advanced Materials | 6 | **49** | 16 | 28 | 4 | 492px | 120px |
+| Wiley, Advanced Science | 6 | 42 | 15 | 23 | 4 | 494px | 120px |
 | ACM DL | 4 | 16 | 5 | 7 | 8 | 437px | **544px** |
 | IEEE Xplore | 4 | 19 | 4 | **41** | **17** | 272px | 0px |
-| Taylor & Francis, Journal of Psychology | 3 | 46 | 16 | **30** | 1 | 352px | 80px |
+| Taylor & Francis, Journal of Psychology | 3 | 46 | 16 | **30** | 1 | 351px | 80px |
 | Taylor & Francis, Research in Mathematics | 2 | 30 | 11 | **30** | 1 | 368px | 80px |
 | ResearchGate | 5 (including a sticky, prominent banner ad) | 17 | 7 | 20 | 4 | 264px | 213px |
-| Quantum (Overlay) | 0 (not counting the sponsor links because they land far below all content) | **4** | **0** | **0** | **0** | 0px | **0px** |
-| Open Journal of Astrophysics (Overlay) | 1 |  **4** | **0** | 4 | 1 | 436px | 55px |
+| Quantum (Overlay) | 0 (not counting the sponsor links because they land far below all content) | **4** | **0** | **0** | **0** | **129px** | **0px** |
+| Open Journal of Astrophysics (Overlay) | 1 |  **4** | **0** | 4 | 1 | 448px | 55px |
 
 Four publishers appear twice to test their open access vs subscription journals. Interestingly, the numbers barely move within a
 publisher. Distraction load appears to be a property of the platform, not of the journal.
@@ -69,7 +69,7 @@ reader to a separate `/html/` page. The arXiv Phase 1 mockup serves the full tex
 
 **3. Distraction levels are split between commercial versus non-commercial platforms.** Only arXiv and the two overlay journals have zero advertising or tracking networks. The five non-commercial platforms load 3–4 third-party domains. Every commercial platform loads 15–46. Some are egregious: IEEE loads 17 ad slots and sets 41 cookies on an article body it will not show without a subscription. Springer runs 15 tracking networks on a page that costs USD 39.95 to read.
 
-The presence of ads and unrelated content displaces useful content. ACM pushes its paper's title 544px down the page, and Nature 528px. That is roughly two-thirds of the load screen on an 800px window. arXiv's live site puts its title at 56px, the highest of any platform measured. *The mockup puts it lower because of the prominent "back to abstract" button, which can be retired if the merged abstract and full paper page becomes the default.* That button exists to ease user confusion caused by the existence of two pages.
+The presence of ads and unrelated content displaces useful content. ACM pushes its paper's title 544px down the page, and Nature 528px. That is roughly two-thirds of the load screen on an 800px window. arXiv's live site puts its title at 108px, the highest of any platform measured. *The mockup puts it lower because of the prominent "back to abstract" button, which can be retired if the merged abstract and full paper page becomes the default.* That button exists to ease user confusion caused by the existence of two pages.
 
 Ads and tracking are not the same. APS and IOP carry no ad slots and place their titles
 high, but still load up to ten tracking networks. Not selling ad space is not the same as
@@ -125,7 +125,8 @@ End of report. Testing methodology follows.
 Process:
 - Start at the paper's own landing page, not a homepage or a Google Scholar result.
 - Measure logged out, without institutional access to paywalled content.
-- Measure at 1280×800 screen dimentions, and wait several seconds for all content to load.
+- Measure at one fixed screen size, and wait several seconds for all content to load. The
+current readings were taken at 1198×828, at 100% browser zoom.
 
 The three tasks:
 1. download the PDF
@@ -151,6 +152,22 @@ test.
 - Pushed down by: the summed height of ad slots positioned above the paper's title.
 
 "Cited by" and "Related articles" are related-content links, not distractions.
+
+The script that produces these numbers is [verification/probe-distraction.js](../probe-distraction.js).
+Use it rather than writing a new one: the column only means anything when every row is
+measured the same way, and four rules make the difference between a real reading and a
+plausible one.
+
+- **Measure the paper's title, not the first heading.** arXiv puts the subject category in a
+heading above the title, and APS puts the journal name there. Taking the topmost heading
+scores arXiv at 108px instead of 56px and APS at 298px instead of 89px.
+- **Check the browser zoom.** Chrome stores zoom per site, so one platform can be measured at
+80% and the next at 100% without anything looking wrong. Zoom reflows the page rather than
+scaling it, so the numbers cannot be converted afterwards — they have to be re-measured.
+- **Measure every platform in one sitting.** Ad slots are filled differently on every load, so
+ad slots and pixel displacement move between visits. Title placement is stable.
+- **Compare cookie counts within a sitting.** The count climbs with repeat visits to a
+publisher, so readings taken days apart are not comparable.
 
 ### Possible future usability tests
 
