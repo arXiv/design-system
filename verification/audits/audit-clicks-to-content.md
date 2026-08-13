@@ -10,22 +10,22 @@ Across platforms, measure how easy it is to do three common tasks: Download the 
 
 | Platform | Type | Access | Full text | PDF | Citation |
 |---|---|---|---|---|---|
-| arXiv live | Preprint server | open | **1 click — separate page** | 1 click | modal, **no copy button** |
-| arXiv Phase 1 mockup | Preprint server | open | **0 clicks — on the page** | 1 click, + sticky bar while reading | 1 click → **Copy** |
-| APS | Publisher | open | 0 clicks | 1 click | modal, no copy button |
+| arXiv live | Preprint server | open | **1 click — separate page** | 1 click | modal, then manually select |
+| arXiv Phase 1 mockup | Preprint server | open | 0 clicks | 1 click, + sticky bar while reading | 1 click|
+| APS | Publisher | open | 0 clicks | 1 click | modal, then manually select |
 | ScienceDirect | Publisher | open | 0 clicks | 1 click | 2 clicks → file export only |
 | IOP Science | Publisher | open | 0 clicks | 1 click | BibTeX/RIS file *(not exercised)* |
-| Nature | Publisher | open | 0 clicks | 1 click | 1 click *(not exercised)* |
+| Nature | Publisher | open | 0 clicks | 1 click | 1 click |
 | PubMed Central | Repository | open | 0 clicks | *not exercised* | *not exercised* |
 | PLOS ONE | Publisher | open | 0 clicks | *not exercised* | *not exercised* |
-| Wiley | Publisher | open | 0 clicks | 1 click | 1 click → **COPY TEXT** |
-| ACM DL | Publisher | open | PDF only *(reader view not exercised)* | 1 click | 1 click → **Copy citation** |
-| Springer Link | Publisher | **paywalled** | not available | Buy PDF, USD 39.95 | 1 click |
-| IEEE Xplore | Publisher | **paywalled** | not available — section titles listed, body gated | gated | 1 click |
-| Taylor & Francis | Publisher | **paywalled** | not available | USD 56 / USD 136 | 1 click |
-| ResearchGate | Network | open | 1 click — *page images, not text* | 1 click | 1 click → file only; *Copy link* copies the URL |
-| Quantum | Overlay journal | open | 1 click — *PDF, hosted by the journal* | 1 click | 1 click → BibTeX shown inline, select by hand |
-| Open Journal of Astrophysics | Overlay journal | open | 1 click — *offsite, to arXiv* | via arXiv | 2 clicks → BibTeX file |
+| Wiley | Publisher | open | 0 clicks | 1 click | 1 click |
+| ACM DL | Publisher | open | PDF only | 1 click | 1 click |
+| Springer Link | Publisher | **paywalled** | not available | **paywalled** | 1 click |
+| IEEE Xplore | Publisher | **paywalled** | section titles listed, body gated | **paywalled** | 1 click |
+| Taylor & Francis | Publisher | **paywalled** | not available | **paywalled** | 1 click |
+| ResearchGate | Network | open | 1 click — *PDF images only* | 1 click | 1 click, generates file |
+| Quantum | Overlay journal | open | 1 click — *PDF, hosted by the journal* | 1 click | 1 click, then manually select |
+| Open Journal of Astrophysics | Overlay journal | open | 1 click — *offsite, to arXiv* | via arXiv | 2 clicks, generated file |
 
 ### Distraction vs Focus
 
