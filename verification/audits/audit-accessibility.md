@@ -10,24 +10,24 @@ screen reader and keyboard users the most.
 
 Measured logged out at 1280×800.
 
-| Platform | Lang | `<h1>` | Heading skips | Images no alt | Links no name | `<main>` | Tabs to content | Skip link | Citation round trip |
+| Platform | Lang | `<h1>` | Heading skips | Images no alt | Links no name (visible) | `<main>` | Tabs to content | Skip link | Citation round trip |
 |---|---|---|---|---|---|---|---|---|---|
 | **arXiv Phase 1 mockup** | en | **1** | 1 | 0/8 | 1 | yes | 8 | yes | **popover — reader is not moved** |
 | arXiv live | en | **7** | 1 | 0/7 | 1 | yes | 7 | yes | *not yet click-tested* |
-| APS | en | **5** | 0 | 0/20 | 0 | yes | 20 | yes | *not yet click-tested* |
-| ScienceDirect | en-US | 1 | 0 | 0/27 | 0 | yes | **6** | **no** | *not yet click-tested* |
-| IOP Science | en | 1 | 0 | 0/61 | 0 | yes | 9 | **no** | *not yet click-tested* |
-| Nature | en | 1 | 0 | **6/24** | 0 | yes | 14 | yes | *not yet click-tested* |
-| PubMed Central | en | 1 | 1 | 4/40 | 0 | yes | 12 | yes | *not yet click-tested* |
-| PLOS ONE | en | 2 | 0 | 0/35 | 3 | yes | 11 | yes | *not yet click-tested* |
-| Wiley | en | 1 | 1 | 0/35 | **18** | yes | 9 | yes | **popover — reader is not moved** |
-| ACM Digital Library | en | 1 | 1 | **13/25** | 11 | yes | 24 | yes | *not yet click-tested* |
-| Springer Link | en | 1 | 0 | 2/18 | 0 | yes | 16 | yes | *not yet click-tested* |
-| IEEE Xplore | en-US | 3 | 0 | 1/4 | 2 | yes | 21 | yes | *not yet click-tested* |
-| Taylor & Francis | en | 1 | 1 | 0/8 | 1 | yes | 15 | yes | *not yet click-tested* |
-| ResearchGate | en | 1 | 0 | 0/33 | **144** | yes | **1** | **no** | *not yet click-tested* |
-| Quantum | en-GB | 2 | 1 | 0/16 | 0 | yes | 19 | yes | *not yet click-tested* |
-| Open Journal of Astrophysics | en | 1 | 1 | 0/1 | 0 | yes | 26 | **no** | *not yet click-tested* |
+| APS | en | **5** | 0 | 0/20 |  *recount pending* | yes | 20 | yes | *not yet click-tested* |
+| ScienceDirect | en-US | 1 | 0 | 0/27 |  *recount pending* | yes | **6** | **no** | *not yet click-tested* |
+| IOP Science | en | 1 | 0 | 0/61 |  *recount pending* | yes | 9 | **no** | *not yet click-tested* |
+| Nature | en | 1 | 0 | **6/24** |  *recount pending* | yes | 14 | yes | *not yet click-tested* |
+| PubMed Central | en | 1 | 1 | 4/40 |  *recount pending* | yes | 12 | yes | *not yet click-tested* |
+| PLOS ONE | en | 2 | 0 | 0/35 |  *recount pending* | yes | 11 | yes | *not yet click-tested* |
+| Wiley | en | 1 | 1 | 0/35 | **12** | yes | 9 | yes | **popover — reader is not moved** |
+| ACM Digital Library | en | 1 | 1 | **13/25** | 0 | yes | 24 | yes | *not yet click-tested* |
+| Springer Link | en | 1 | 0 | 2/18 |  *recount pending* | yes | 16 | yes | *not yet click-tested* |
+| IEEE Xplore | en-US | 3 | 0 | 1/4 |  *recount pending* | yes | 21 | yes | *not yet click-tested* |
+| Taylor & Francis | en | 1 | 1 | 0/8 |  *recount pending* | yes | 15 | yes | *not yet click-tested* |
+| ResearchGate | en | 1 | 0 | 0/33 | **0** | yes | **1** | **no** | *not yet click-tested* |
+| Quantum | en-GB | 2 | 1 | 0/16 |  *recount pending* | yes | 19 | yes | *not yet click-tested* |
+| Open Journal of Astrophysics | en | 1 | 1 | 0/1 |  *recount pending* | yes | 26 | **no** | *not yet click-tested* |
 
 Dashes mean the page has no article body to link into — an abstract-only landing page, a
 gated page, or an overlay journal that sends the reader to arXiv.
@@ -54,9 +54,17 @@ by heading — the normal way through a long document — seven top-level headin
 competing titles and an outline that says nothing. APS has five, IEEE three. The Phase 1
 mockup has exactly one, so this is already fixed in the redesign.
 
-**3. ResearchGate has 144 links with no accessible name.** A screen reader announces these
-as "link" with nothing else. It also has no skip link and only one focusable element before
-its main content, so the page offers almost no structural navigation at all.
+**3. RETRACTED — the unnamed-links count was inflated.** An earlier version reported
+ResearchGate with 144 links lacking an accessible name. Recounted correctly, ResearchGate
+has **zero visible links** without a name, and ACM has zero rather than eleven. The original
+check counted links hidden from view, and ignored `aria-labelledby` and `title`, both of
+which are valid ways to name a link.
+
+Wiley does have **12** visible unnamed links and arXiv live has 1 — those hold. The
+remaining platforms are marked *recount pending*.
+
+What still stands about ResearchGate: it has no skip link, and only one focusable element
+before its main content.
 
 **4. ACM leaves 13 of 25 images without an alt attribute** — over half. Nature leaves 6 of
 24. On a research paper, unlabelled images are usually figures, which is where the evidence
@@ -79,8 +87,10 @@ a `<main>` landmark. Nobody fails at that level.
 **Measure logged out** at 1280×800, on arrival, before interacting.
 
 **Structure:** language attribute present; count of `<h1>` elements, which should be one;
-heading levels skipped (h2 → h4); images lacking an `alt` attribute; links with no
-accessible name from text, `aria-label`, or an image alt.
+heading levels skipped (h2 → h4); images lacking an `alt` attribute; **visible** links with
+no accessible name, where a name may come from text, `aria-label`, `aria-labelledby`,
+`title`, an image alt, or an SVG title. Count visible links only — a link hidden from view
+is not announced either, and including hidden links inflates the number several-fold.
 
 **Navigation cost:** presence of a `<main>` landmark; the number of focusable elements
 before it, which is how many Tab presses a keyboard user spends to reach the paper; whether
