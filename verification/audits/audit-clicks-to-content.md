@@ -29,34 +29,33 @@ Across platforms, measure how easy it is to do three common tasks: Download the 
 | Quantum (Overlay) | open | 1 click (via ar5iv) | 1 click | 1 click → manually select |
 | Open Journal of Astrophysics (Overlay) | open | 2 clicks (via arXiv)  | 2 clicks (via arXiv) | 2 clicks → file export |
 
-### Distraction vs Focus
+### Distraction load
 
-We measured how well each platform supports reading focus by eliminating distractions (ads, popups or other unrelated content).
+We measured how many distractions each platform displays to readers (ads, popups or other unrelated content). The first number is the result of a human visual scan. All following numbers are machine counts and may include tracking content that is loading but not visible on screen.
 
-| Platform | Third-party domains | Ad or tracking networks | Cookies | Ad slots | Title placement | Pixel displacement |
-|---|---|---|---|---|---|---|
-| arXiv Phase 1 mockup | **3** | **0** | **0** | **0** | 244px | **0px** |
-| NIH, PubMed Central | **3** | 2 | 8 | 1 | 614px | 75px |
-| arXiv live | **4** | **0** | 4 | **0** | **56px** | **0px** |
-| Quantum (Overlay) | **4** | **0** | **0** | **0** | 0px | **0px** |
-| Open Journal of Astrophysics (Overlay) | **4** | **0** | 4 | 1 | 436px | 55px |
-| Elsevier, Physics Letters B | 15 | 3 | 9 | 0 | 112px | 0px |
-| ACM DL | 16 | 5 | 7 | 8 | 437px | **544px** |
-| ResearchGate | 17 | 7 | 20 | 4 | 264px | 213px |
-| IEEE Xplore | 19 | 4 | **41** | **17** | 272px | 0px |
-| IOP Science | 23 | 8 | 25 | 0 | 174px | 0px |
-| PLOS ONE | 25 | 7 | 8 | 4 | 385px | 180px |
-| APS, Physical Review Letters | 26 | 10 | 10 | 0 | **89px** | 0px |
-| Taylor & Francis, Research in Mathematics | 30 | 11 | **30** | 1 | 368px | 80px |
-| Springer Nature, Algorithmica | 31 | 15 | 17 | 3 | 209px | 0px |
-| Springer Nature, Nature Communications | 36 | 19 | 25 | **11** | 351px | **528px** |
-| Wiley, Advanced Science | 42 | 15 | 23 | 4 | 441px | 120px |
-| Taylor & Francis, Journal of Psychology | 46 | 16 | **30** | 1 | 352px | 80px |
-| Wiley, Advanced Materials | **49** | 16 | 28 | 4 | **492px** | 120px |
+| Platform | Visual count | Third-party | Ads/tracking networks | Cookies | Ad slots | Title placement | Pixel displacement |
+|---|---|---|---|---|---|---|---|
+| arXiv Phase 1 mockup | 0 |  **3** | **0** | **0** | **0** | 244px | **0px** |
+| NIH, PubMed Central | 1 | **3** | 2 | 8 | 1 | 614px | 75px |
+| arXiv live | 0 |  **4** | **0** | 4 | **0** | **56px** | **0px** |
+| Quantum (Overlay) | 0 (not counting the sponsor links because they land far below all content) | **4** | **0** | **0** | **0** | 0px | **0px** |
+| Open Journal of Astrophysics (Overlay) | 1 |  **4** | **0** | 4 | 1 | 436px | 55px |
+| Elsevier, Physics Letters B | 3 | 15 | 3 | 9 | 0 | 112px | 0px |
+| ACM DL | 4 | 6 | 16 | 5 | 7 | 8 | 437px | **544px** |
+| ResearchGate | 5 (including a sticky, prominent banner ad) | 17 | 7 | 20 | 4 | 264px | 213px |
+| IEEE Xplore | 4 | 19 | 4 | **41** | **17** | 272px | 0px |
+| IOP Science | 1 | 23 | 8 | 25 | 0 | 174px | 0px |
+| PLOS ONE | 2 | 25 | 7 | 8 | 4 | 385px | 180px |
+| APS, Physical Review Letters | 2 | 26 | 10 | 10 | 0 | **89px** | 0px |
+| Springer Nature, Algorithmica | 3 | 31 | 15 | 17 | 3 | 209px | 0px |
+| Springer Nature, Nature Communications | 4 | 36 | 19 | 25 | **11** | 351px | **528px** |
+| Taylor & Francis, Journal of Psychology | 3 | 46 | 16 | **30** | 1 | 352px | 80px |
+| Taylor & Francis, Research in Mathematics | 2 | 30 | 11 | **30** | 1 | 368px | 80px |
+| Wiley, Advanced Materials | 6 | **49** | 16 | 28 | 4 | **492px** | 120px |
+| Wiley, Advanced Science | 6 | 42 | 15 | 23 | 4 | 441px | 120px |
 
-Three publishers appear twice, with a different paper each. The numbers barely move within a
-publisher — Wiley 42 and 49, Taylor & Francis 30 and 46, Springer Nature 31 and 36, Quantum 4
-and 4. Distraction load is a property of the platform, not of the paper.
+Three publishers appear twice to test their open access vs subscription journals. Interestingly, the numbers barely move within a
+publisher. Distraction load appears to be a property of the platform, not of the journal.
 
 ## Findings
 
