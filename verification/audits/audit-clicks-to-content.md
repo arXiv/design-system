@@ -1,12 +1,18 @@
 # Clicks-to-content audit
 
-Date: 08/12/2026
+**08/12/2026. By Shamsi Brinn**
 
 This test measured how much work it takes to do common tasks on article pages, and how arXiv stacks against others in the publishing ecosystem. We measured seventeen competitors against the arXiv live abstract page and phase 1 HTML papers mockup.
 
-We looked at how easy it is to do three common tasks: Download the PDF, access the full text, and grab a citation. In addition we measured the level of "distraction load," how much unrelated content each platform puts on their pages, and separately what each platform does behind the page: who it contacts and what it stores on the reader's machine. We are also necessarily checking for gated vs open content.
+The primary goal was to measure how easy it is to do three common tasks: Download the PDF, access the full text, and grab a citation. We also note whether the content is open or gated.
+
+In addition, we measured the level of "distraction load" (how much unrelated content each platform puts on their pages), and how many invisible calls are taking place that store cookies or other content on the reader's machine. This invisible part of the user experience is critical for privacy and safety and is important to arXiv and our users.
+
+Note that four publishers appear twice to test their open access vs subscription journals. arXiv also appears twice, for our live abstract page and our new HTML papers mockup page.
 
 ## Click-to-content results
+
+How many clicks does it take a user to do these three key tasks? Access the full text, download the PDF, or copy a citation. All counts were done manually.
 
 | Platform | Access | Full text | PDF | Citation |
 |---|---|---|---|---|
@@ -32,36 +38,33 @@ We looked at how easy it is to do three common tasks: Download the PDF, access t
 
 ### Distraction load results
 
-We measured how much distracting content each platform displays to readers (ads, popups or other unrelated content). The first number is the result of a human visual scan. The rest are machine counts.
+We measured how much distracting and unrelated content each platform displays to readers (ads, popups, etc). Visible distractions is from a manual scan while title position and displacement are automated counts.
 
-| Platform | Visual count | Ad slots | Title placement | Pixel displacement |
-|---|---|---|---|---|
-| arXiv live | 0 | 0 | 108px | 0px |
-| arXiv Phase 1 mockup | 0 | 0 | 223px | 0px |
-| APS, Physical Review Letters | 2 | 0 | 298px | 0px |
-| ScienceDirect, Annals of Physics | 3 | 0 | 268px | 0px |
-| ScienceDirect, Physics Letters B | 3 | 0 | 112px | 0px |
-| IOP Science | 1 | 0 | 174px | 0px |
-| Springer Nature, Algorithmica | 3 | 1 | 209px | 0px |
-| Springer Nature, Nature Communications | 4 | 2 | 351px | 137px |
-| NIH, PubMed Central | 1 | 0 | 614px | 0px |
-| PLOS ONE | 2 | 2 | 385px | 90px |
-| Wiley, Advanced Materials | 6 | 3 | 431px | 90px |
-| Wiley, Advanced Science | 6 | 3 | 441px | 90px |
-| ACM DL | 4 | 0 | 287px | 0px |
-| IEEE Xplore | 4 | 1 | 272px | 0px |
-| Taylor & Francis, Journal of Psychology | 3 | 0 | 351px | 0px |
-| Taylor & Francis, Research in Mathematics | 2 | 0 | 368px | 0px |
-| ResearchGate | 5 (including a sticky, prominent banner ad) | 2 | 264px | 122px |
-| Quantum (Overlay) | 0 (not counting the sponsor links because they land far below all content) | 0 | 129px | 0px |
-| Open Journal of Astrophysics (Overlay) | 1 | 0 | 422px | 0px |
-
-Four publishers appear twice to test their open access vs subscription journals. Interestingly, the numbers barely move within a
-publisher. Distraction load appears to be a property of the platform, not of the journal.
+| Platform | Visible distractions | Title position | Title displacement |
+|---|---|---|---|
+| arXiv live | 0 | 108px | 0px |
+| arXiv Phase 1 mockup | 0 | 223px | 0px |
+| APS, Physical Review Letters | 2 | 298px | 0px |
+| ScienceDirect, Annals of Physics | 3 | 268px | 0px |
+| ScienceDirect, Physics Letters B | 3 | 112px | 0px |
+| IOP Science | 1 | 174px | 0px |
+| Springer Nature, Algorithmica | 3 | 209px | 0px |
+| Springer Nature, Nature Communications | 4 | 351px | 137px |
+| NIH, PubMed Central | 1 | 614px | 0px |
+| PLOS ONE | 2 | 385px | 90px |
+| Wiley, Advanced Materials | 6 | 431px | 90px |
+| Wiley, Advanced Science | 6 | 441px | 90px |
+| ACM DL | 4 | 287px | 0px |
+| IEEE Xplore | 4 | 272px | 0px |
+| Taylor & Francis, Journal of Psychology | 3 | 351px | 0px |
+| Taylor & Francis, Research in Mathematics | 2 | 368px | 0px |
+| ResearchGate | 5 (including a sticky, very prominent banner ad) | 264px | 122px |
+| Quantum (Overlay) | 0 (not counting the sponsor links because they are below all reading content) | 129px | 0px |
+| Open Journal of Astrophysics (Overlay) | 1 | 422px | 0px |
 
 ### Privacy results
 
-These numbers are not about what the reader sees. They are what the page does out of sight: who else it contacts while the paper loads, and what it stores on the reader's machine. Content counted here can load without ever appearing on screen.
+We counted the invisible calls that happen in the background while the page loads, and what it stores on the reader's machine. Zero connections is not the goal but an excessive number is a red flag. All counts are automated, not manual.
 
 | Platform | Third-party | Ads/tracking networks | Cookies |
 |---|---|---|---|
@@ -85,16 +88,10 @@ These numbers are not about what the reader sees. They are what the page does ou
 | Quantum (Overlay) | 4 | 0 | 0 |
 | Open Journal of Astrophysics (Overlay) | 5 | 0 | 4 |
 
-A third-party domain is not automatically a tracker. Both of arXiv's are code libraries served
-from a CDN, and neither follows the reader anywhere. The middle column is the one that counts
-services built to do that.
+A note about all sites: These are the numbers for a reader arriving with no history on the site, who then *accepts* the
+cookie banner, if one appears. 
 
-These are the numbers for a reader arriving with no history on the site, who then accepts the
-cookie banner if one appears. Two things follow from that. Connected Papers does not appear in
-arXiv's count, because it is only contacted once a reader turns on arXiv Labs. And the
-publisher numbers would be far lower for someone who never accepts: Springer loads 6
-third-party domains and 2 tracking networks before consent against the 24 and 10 recorded
-here.
+A note about arXiv Live: Both third party domains are code libraries served from a CDN and they do not track the reader. I ran this test with no labs services turned on, but some Labs services will fire off additional connections.
 
 ## Findings
 
@@ -114,16 +111,16 @@ Being free from commercial incentive really shows. arXiv does best on this metri
 
 **4. Access is the biggest separator.** Springer, IEEE and Taylor & Francis give a reader
 with no subscription neither the HTML nor the PDF, at USD 39.95, gated, and USD 56. IEEE lists
-the section titles above a body it will not show. Against no access at all, click counts don't matter.
+the section titles above a body it will not show. Against no access at all, click counts do not matter.
 
 **5. Overlay journals delegate the reading experience to arXiv.** Both overlay journals measured, Quantum and the Open
-Journal of Astrophysics, link to us with "Read article at ArXiv". For these journals arXiv's article page *is* the reading experience they give their readers, so Phase 1 improves their product too.
+Journal of Astrophysics, link to us with "Read article at ArXiv". For these journals, arXiv's article page *is* the reading experience they give their readers, so our Phase 1 improves their user experience too.
 
 **6. Accessibility is uneven.** The basics are covered on all sites (page language, basic landmarks), but there are many fails on other common features such as skip links, lack of structure, and missing alt text. arXiv's live abstract page has the sample's worst heading structure, with seven H1 elements where there should be one.
 
 We will continue to struggle with challenges related to the uneven markup quality in the original TeX source, but we can improve in other ways as represented in the HTML phase 1 mockup. Round-trip citation navigation is a particular strong point compared to the other platforms tested. 
 
-Consider how we can make the phase 1 mockup our default abstract and full text page.
+We should consider how we can make the phase 1 mockup our default abstract and full text page in order to offer a best-in-class reading experience for all users. Redirects may help. There are many third parties who link to or scrape arXiv's abstract pages. 
 
 End of report. Testing methodology follows.
 
@@ -176,10 +173,15 @@ whether it remains reachable while reading a long paper (a sticky bar counts); w
 can be completed at all; and whether login is required. 
 
 Distraction measurements:
-- Ad slots: elements that are an advertising iframe, carry
+- Visible distractions: a human scan of what a reader actually sees on arrival — ads, popups,
+banners and other unrelated content. Counted by eye because the strict machine test below
+misses anything that does not announce itself as advertising in the markup.
+- Ad slots (machine): elements that are an advertising iframe, carry
 an advertising class or id, or are literally labelled "Advertisement" — a deliberately strict
-test. 
-- Pushed down by: the summed height of ad slots positioned above the paper's title.
+test. This is what the title displacement figure is built from, and it runs lower than the
+human count: APS and IOP register zero ad slots on a page where a reader sees two items and
+one.
+- Title displacement: the summed height of ad slots positioned above the paper's title.
 
 Privacy measurements:
 - Third-party domains: every distinct host contacted whose registrable
@@ -212,20 +214,6 @@ page loads 6 third-party domains and 2 tracking networks; after accepting, 24 an
 goes from 7 and 2 to 27 and 13. A cookie banner also displaces content while it is on screen:
 ACM's title sits at 437px with the banner up and 287px once it is dismissed.
 
-### Possible future usability tests
-
-These tests would complement the existing audit but require manual human asessment, preferably by non-staff.
-
-**Citation round-trip journey.** Whether following a citation strands the reader. Two automated approaches were tried and
-both failed.
-
-**Screen reader experience.** Automated measures can detect what a machine checks reliably.
-But other measurements would need a person running VoiceOver, NVDA, or JAWS (and ideally some testing on all three). They include wether announcements make sense in sequence, whether reading order is confusing, and how
-disorienting a jump feels.
-
-**Also unexercised:** ACM's reader view, IOP's citation control, and the PDF and citation
-controls on PubMed Central and PLOS ONE. Marked in the table rather than guessed at.
-
 ### Additional methodology for automated agentic testing
 
 **A redirect can hide a paywall.** Wiley's `/doi/full/` URL silently lands on `/doi/abs/`,
@@ -256,3 +244,17 @@ click path, and collapsing it into a click count hides the worst finding.
 
 Google Scholar's `gs-casa` overlay is injected on top of publisher pages by the reader's own
 Google session. It is not the platform's design and is excluded everywhere.
+
+## Possible future usability tests
+
+These tests would complement the existing audit but require manual human assessment, preferably by non-staff.
+
+**Citation round-trip journey.** Whether following a citation strands the reader. Two automated approaches were tried and
+both failed.
+
+**Screen reader experience.** Automated measures can detect what a machine checks reliably.
+But other measurements would need a person running VoiceOver, NVDA, or JAWS (and ideally some testing on all three). They include whether announcements make sense in sequence, whether reading order is confusing, and how
+disorienting a jump feels.
+
+**Also unexercised:** ACM's reader view, IOP's citation control, and the PDF and citation
+controls on PubMed Central and PLOS ONE. Marked in the table rather than guessed at.
