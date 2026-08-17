@@ -62,6 +62,8 @@ We measured how much distracting and unrelated content each platform displays to
 | Quantum (Overlay) | 1 | 129px | 0px |
 | Open Journal of Astrophysics (Overlay) | 1 | 422px | 0px |
 
+`*`Lower due to the prominent "Back to Abstract" link, which can be removed if the combined HTML/metdata page becomes our default page.
+
 ### Privacy results
 
 We counted the invisible calls that happen in the background while the page loads, and what it stores on the reader's machine. Zero connections is not the goal but an excessive number is a red flag. All counts are automated, not manual.
