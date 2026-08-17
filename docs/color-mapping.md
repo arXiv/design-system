@@ -67,7 +67,7 @@ Semantic colors for the `.ds-alert` component and any success / informational / 
 
 Why these values:
 
-- **Success is lime-olive, not forest green.** arXiv has no success-green, and Access Lime `#c4d82e` is reserved as the "staff tools" signal *and* fails text contrast — so it can't double as success. Rather than introduce a new green family, success reuses the existing `.seg-positive` lime-olive (bg `#e8f5d8`, text `#4a5a0a`) with the border pulled off-yellow (`#6b8e1e` — lower red channel than `--sec-border` `#9cb522`) so it reads as "success," not "brand accent." A forest-green alternative was considered and rejected to keep the palette tight.
+- **Success is lime-olive, not forest green.** arXiv has no success-green, and Access Lime `#c4d82e` is reserved as the "staff tools" signal *and* fails text contrast — so it cannot double as success. Rather than introduce a new green family, success reuses the existing `.seg-positive` lime-olive (bg `#e8f5d8`, text `#4a5a0a`) with the border pulled off-yellow (`#6b8e1e` — lower red channel than `--sec-border` `#9cb522`) so it reads as "success," not "brand accent." A forest-green alternative was considered and rejected to keep the palette tight.
 - **Info is navy, deliberately darker than Link Blue** `#1565c0`, so an info banner is never mistaken for a link. Reuses the `.seg-neutral` / `.type-new` family.
 - **Warning is the existing version-warning amber** (`#fff8e1` / `#e8b800` / `#7a5c00`), promoted from the one-off abstract-page banner.
 - **Error reuses Danger Red** `#c62828` for the border, with a light tint background and the `.seg-negative` deep-red text `#8b0000`.
@@ -156,7 +156,7 @@ Barely perceptible tints for creating section depth without hard borders.
 
 *(Added 2026-06-17. Rendered on the colors page: `colors.html#uses`.)*
 
-The tints sorted by the job they do. Reach for the named token; if a job isn't listed, it's a change to this document, not a new local value.
+The tints sorted by the job they do. Reach for the named token; if a job is not listed, it is a change to this document, not a new local value.
 
 | The job | Reach for | Where it shows up |
 |---|---|---|
@@ -175,14 +175,14 @@ The tints sorted by the job they do. Reach for the named token; if a job isn't l
 
 **Ready-to-use pairings** (the contrast matrix read as instructions):
 
-| On this surface | Body text & links (AA) | Large text / borders only (3:1) | Don't use |
+| On this surface | Body text & links (AA) | Large text / borders only (3:1) | Do not use |
 |---|---|---|---|
 | White · Warm Wash · Card Grey · Tint Light | Repository Brown, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | UI Boundary Grey (borders) | — |
 | Active Wash `#d6e8f7` | Repository Brown, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | — | UI Boundary Grey |
 | Grey Active `#e4e0db` | Repository Brown, Link Hover, Archival Blue, Visited Purple | Library Grey, Link Blue (≥18px) | UI Boundary Grey |
 | Open Blue `#a5d6fe` | Repository Brown only | Library Grey, Link Blue, Archival Blue (≥18px) | UI Boundary Grey; body-size grey & links |
 
-> **Drift reconciled (2026-06-17):** the mockups' off-palette one-offs were snapped to tokens — near-white grounds `#fafaf8` / `#fafaf9` → Warm Wash; light-blue footer band `#e8f4ff` → Tint Light; hover blue `#0d4a96` → Link Hover `#1050a0`. Don't reintroduce near-whites lighter than Warm Wash; if a lighter step is ever needed, add it here first.
+> **Drift reconciled (2026-06-17):** the mockups' off-palette one-offs were snapped to tokens — near-white grounds `#fafaf8` / `#fafaf9` → Warm Wash; light-blue footer band `#e8f4ff` → Tint Light; hover blue `#0d4a96` → Link Hover `#1050a0`. Do not reintroduce near-whites lighter than Warm Wash; if a lighter step is ever needed, add it here first.
 
 ---
 
@@ -195,8 +195,8 @@ Every tint in the system belongs to one of two families: the **warm tints** (Rep
 **"No one-off hex values" has three tiers:**
 
 1. **Palette tokens** — everything in this document. Free to use in their documented roles.
-2. **Component-internal constants** — values that exist only inside a component's own CSS: the button-border gradient stops (`#b0d5ed`, `#6ba8da`, `#8fc1e8`, `#4a86b8`, `#c8c4be`, `#b3ada4`, `#7eb8e0`), the dark header's hover fill `#302c28` and divider `#4a433d`. They are part of those components, not the palette — don't lift them for new uses.
-3. **Everything else** — doesn't exist. A new value is a change to this document, not a local invention.
+2. **Component-internal constants** — values that exist only inside a component's own CSS: the button-border gradient stops (`#b0d5ed`, `#6ba8da`, `#8fc1e8`, `#4a86b8`, `#c8c4be`, `#b3ada4`, `#7eb8e0`), the dark header's hover fill `#302c28` and divider `#4a433d`. They are part of those components, not the palette — do not lift them for new uses.
+3. **Everything else** — does not exist. A new value is a change to this document, not a local invention.
 
 **Accessible combinations on tints** (computed, WCAG; full matrix on the colors page):
 
@@ -212,7 +212,7 @@ Every tint in the system belongs to one of two families: the **warm tints** (Rep
 
 - **Browns and blues are the primary palette.** Post-spinout, arXiv's visual identity is built on Repository Brown, Library Grey, and the blue family. These carry the brand.
 
-- **Access Lime and Smileybones Yellow are accent colors.** Both are high-energy "pop" colors used sparingly. Both fail text contrast on white, so they're restricted to fills, borders, and graphic elements.
+- **Access Lime and Smileybones Yellow are accent colors.** Both are high-energy "pop" colors used sparingly. Both fail text contrast on white, so they are restricted to fills, borders, and graphic elements.
 
 - **Campus Red and Publishing Pink are heritage colors.** They stay in the palette as nods to arXiv's roots but are no longer primary. Campus Red lives in the logo X; Publishing Pink is for rare celebratory use.
 

@@ -32,7 +32,7 @@ Key differences from internal:
 ## Pattern pages
 
 - [x] **Button styles** — primary (Open Blue) and secondary (white + warm-grey border) with V3 construction validated 2026-05-14. The `.on-tint` modifier for secondary buttons on tinted surfaces (Card Grey fill, hover-brightens to Warm Wash) was added 2026-05-22 — see `button-styles.html` and `design-system.css`.
-- [x] **Inline active state** (`.ds-inline-active`) — light-blue background + underline applied to inline interactive elements (citation chips, footnote markers) when they're the active anchor. Validated 2026-05-27 in `arxiv-mockups/arxiv-public/html-redesign.html`. See `design-system.css`.
+- [x] **Inline active state** (`.ds-inline-active`) — light-blue background + underline applied to inline interactive elements (citation chips, footnote markers) when they are the active anchor. Validated 2026-05-27 in `arxiv-mockups/arxiv-public/html-redesign.html`. See `design-system.css`.
 - [x] **Link** (`.ds-link`) — inline text link with rest / hover / visited / focus states. Tokens `--arxiv-link-blue`, `--arxiv-link-hover`, `--arxiv-link-visited` (with dark-mode overrides) match the `color-mapping.md` spec. Validated 2026-05-28 — see `link-styles.html` and `design-system.css`.
 - [x] **Annotation typography** (`.ds-annotation`) — serif italic in warm-grey for secondary editorial commentary (footnote text, figure alt-text in margin). Uses `--arxiv-font-serif` (IBM Plex Serif). Validated 2026-05-27. See `design-system.css`.
 - [x] **Popover panel** (`.ds-popover` + parts) — light-blue tint floating panel anchored to inline elements. Used by citation chips and footnote markers. Validated 2026-05-27. See `design-system.css`.

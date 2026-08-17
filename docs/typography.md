@@ -48,7 +48,7 @@ Three contexts share the family with different allowances — the matrix on `typ
 
 ### What the readability evidence actually says
 
-The marketing around "accessibility" typefaces does not survive scrutiny — and arXiv's honest voice (BRAND, Voice) shouldn't repeat claims it can't support:
+The marketing around "accessibility" typefaces does not survive scrutiny — and arXiv's honest voice (BRAND, Voice) should not repeat claims it cannot support:
 
 - **Specialized dyslexia fonts give no measurable benefit.** Controlled studies — Wery & Diliberto (2017); Kuster et al. (2018, n≈170) — found OpenDyslexic and Dyslexie neither speed up nor improve reading accuracy versus standard fonts.
 - **Atkinson Hyperlegible's low-vision readability is unproven.** Its reputation rests on design philosophy and a 2019 design award, not vision studies. Its *letter-disambiguation* design is real and useful — but "disambiguated" is a different, narrower claim than "more readable."
@@ -63,7 +63,7 @@ The marketing around "accessibility" typefaces does not survive scrutiny — and
 
 ### Numerals — use tabular figures in tables *(plain English)*
 
-"Tabular figures" means every digit is the same width, so numbers stack into tidy columns and don't shift sideways when a value changes. "Proportional figures" (the default) look better mid-sentence but misalign in a column. IBM Plex Sans ships both — turn tabular on for any aligned numeric context (version numbers, file sizes, dates, counts):
+"Tabular figures" means every digit is the same width, so numbers stack into tidy columns and do not shift sideways when a value changes. "Proportional figures" (the default) look better mid-sentence but misalign in a column. IBM Plex Sans ships both — turn tabular on for any aligned numeric context (version numbers, file sizes, dates, counts):
 
 ```css
 .ds-table td.numeric, .metadata-value { font-variant-numeric: tabular-nums; }
@@ -209,7 +209,7 @@ All font files are self-hosted as woff2 from arXiv's static assets directory. No
 ### Performance notes
 
 - **`font-display: swap`** for text fonts — shows fallback immediately, swaps when loaded. Prioritizes readability over visual stability.
-- **`font-display: auto`** for STIX Two Math — math rendering can look wrong in fallback fonts, so it's better to wait briefly for the correct font.
+- **`font-display: auto`** for STIX Two Math — math rendering can look wrong in fallback fonts, so it is better to wait briefly for the correct font.
 - **Total download:** ~135KB for all 8 Plex woff2 files (Serif Italic adds ~15KB) + ~300KB for STIX Two Math. STIX is large but only needed on HTML paper pages, not abstract pages.
 - **`local()` check** for STIX Two Math — skips download if the user already has it installed.
 
