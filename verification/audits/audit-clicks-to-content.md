@@ -16,8 +16,8 @@ How many clicks does it take a user to do these three key tasks? Access the full
 
 | Platform | Access | Full text | PDF | Citation |
 |---|---|---|---|---|
-| arXiv live | open | **1 click — separate page** | 1 click | 1 click → manually select |
-| arXiv Phase 1 mockup | open | 0 clicks | 1 click, + sticky bar while reading | **1 click** |
+| arXiv live | open | 1 click — separate page | 1 click | 1 click → manually select |
+| arXiv Phase 1 mockup | open | 0 clicks | 1 click, + sticky bar while reading | 1 click |
 | APS, Physical Review Letters | open | 0 clicks | 1 click | 1 click → manually select or file export |
 | ScienceDirect, Annals of Physics | paywalled | intro and snippets shown, rest gated | gated | 2 click → file export |
 | ScienceDirect, Physics Letters B | open | 0 clicks | 1 click | 2 click → file export |
@@ -59,7 +59,7 @@ We measured how much distracting and unrelated content each platform displays to
 | Taylor & Francis, Journal of Psychology | 3 | 351px | 0px |
 | Taylor & Francis, Research in Mathematics | 2 | 368px | 0px |
 | ResearchGate | 5 (including a sticky, very prominent banner ad) | 264px | 122px |
-| Quantum (Overlay) | 0 (not counting the sponsor links because they are below all reading content) | 129px | 0px |
+| Quantum (Overlay) | 1 | 129px | 0px |
 | Open Journal of Astrophysics (Overlay) | 1 | 422px | 0px |
 
 ### Privacy results
