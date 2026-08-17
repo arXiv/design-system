@@ -178,7 +178,7 @@
     <p class="section-desc">
       Once a paper has more than one version, the date row carries all three dates:
       <strong>Submitted</strong> and <strong>Announced</strong> are always the v1 dates;
-      <strong>Revised … (this version)</strong> is the date of the version you're reading. Prior
+      <strong>Revised … (this version)</strong> is the date of the version you are reading. Prior
       versions follow as Link&nbsp;Blue links; the current one is bold, not a link, and carries
       <code>aria-current</code>.
     </p>
@@ -250,7 +250,7 @@
           <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
           <path d="M12 9v4"/><path d="M12 17h.01"/>
         </svg>
-        <p><strong>You're viewing version 57.</strong> A newer version is available &mdash; <a href="#v127">version 127, revised 30&nbsp;Jun&nbsp;2026</a>.</p>
+        <p><strong>You are viewing version 57.</strong> A newer version is available &mdash; <a href="#v127">version 127, revised 30&nbsp;Jun&nbsp;2026</a>.</p>
       </div>
     </div>
     <div class="demo">
@@ -294,7 +294,7 @@
     <h2 class="section-title">Viewing an older version</h2>
     <p class="section-desc">
       When the reader is on anything but the latest, two things change. The date row reads
-      <strong>Submitted … (this version)</strong> on v1 — v1 <em>is</em> the submission, so there's no
+      <strong>Submitted … (this version)</strong> on v1 — v1 <em>is</em> the submission, so there is no
       "revised", and "(this version)" stays on the submitted date, with Announced following — and an
       amber warning appears, pointing to the current version. The warning uses the shared Warning
       color (never white, never an error red) and stays to one compact row.
@@ -315,7 +315,7 @@
           <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
           <path d="M12 9v4"/><path d="M12 17h.01"/>
         </svg>
-        <p><strong>You're viewing version 1.</strong> A newer version is available &mdash; <a href="#v3">version 3, revised 24&nbsp;Apr&nbsp;2026</a>.</p>
+        <p><strong>You are viewing version 1.</strong> A newer version is available &mdash; <a href="#v3">version 3, revised 24&nbsp;Apr&nbsp;2026</a>.</p>
       </div>
     </div>
   </section>
@@ -329,20 +329,20 @@
       <p><strong>Submitted [v1 date] UTC · Announced [announcement date and time] UTC</strong> are always shown, in that order — announced is when the paper entered the public listing. Add <strong>· Revised [this version's date] UTC (this version)</strong> only once a paper has more than one version. "(this version)" attaches to the version-defining date, never to Announced — on v1 it reads "Submitted … UTC (this version) · Announced … UTC", on a later revision "Revised … UTC (this version)". Dates use <code>&lt;time datetime&gt;</code>.</p>
     </div>
     <div class="rule-card">
-      <h3>Announced carries a clock time; Submitted and Revised don't</h3>
-      <p>Announcement is the moment a paper became public, and it's the one date a reader may need to the minute — so it renders as <strong>11&nbsp;Jan&nbsp;2026, 01:32 UTC</strong>. Three reasons it isn't a bare date. It's the <em>actual</em> per-paper release moment, not the batch's nominal time: release drifts with processing and queue length, so two papers announced in one batch can differ. A batch can cross midnight, so papers released minutes apart carry different UTC dates — and in any other timezone the split falls somewhere else again. And priority claims are settled on this value. Minutes, never seconds: the queue can't honor a guarantee finer than that. Submitted and Revised stay date-only — they mark when an author handed something over, not a public event, and a clock time there would imply a precision that doesn't matter to anyone.</p>
+      <h3>Announced carries a clock time; Submitted and Revised do not</h3>
+      <p>Announcement is the moment a paper became public, and it is the one date a reader may need to the minute — so it renders as <strong>11&nbsp;Jan&nbsp;2026, 01:32 UTC</strong>. Three reasons it is not a bare date. It is the <em>actual</em> per-paper release moment, not the batch's nominal time: release drifts with processing and queue length, so two papers announced in one batch can differ. A batch can cross midnight, so papers released minutes apart carry different UTC dates — and in any other timezone the split falls somewhere else again. And priority claims are settled on this value. Minutes, never seconds: the queue cannot honor a guarantee finer than that. Submitted and Revised stay date-only — they mark when an author handed something over, not a public event, and a clock time there would imply a precision that does not matter to anyone.</p>
     </div>
     <div class="rule-card">
       <h3>Every date carries UTC, in the row's own grey</h3>
-      <p>The same timestamp falls on different calendar days in different timezones, so each date states its reckoning: a plain-text <strong>UTC</strong> bound to its date with <code>&amp;nbsp;</code> so a wrap never strands it — and kept outside the <code>&lt;time&gt;</code> element, in the same position on every date in the row. Inside <code>datetime</code> the precision differs with the date: Announced is a full instant (<code>2026-01-11T01:32Z</code>), Submitted and Revised stay date-only (<code>2026-01-10</code>). Bind the clock time to its date with <code>&amp;nbsp;</code> too, so a wrap can't leave <code>01:32</code> orphaned on the next line. The label renders in the date row's own size and color: the row is already Library Grey <code>--grey</code>, and the next stop down the ladder (<code>--grey-ui</code>, 3.61:1) fails the 4.5:1 AA floor at this size, so never dim the label below the dates it belongs to (DESIGN-POLICIES, warm grey ladder). Where a date sits in near-black <code>--text</code> — an admin metadata panel — the label may drop one step to <code>--grey</code>: quieter than its date, still AA.</p>
+      <p>The same timestamp falls on different calendar days in different timezones, so each date states its reckoning: a plain-text <strong>UTC</strong> bound to its date with <code>&amp;nbsp;</code> so a wrap never strands it — and kept outside the <code>&lt;time&gt;</code> element, in the same position on every date in the row. Inside <code>datetime</code> the precision differs with the date: Announced is a full instant (<code>2026-01-11T01:32Z</code>), Submitted and Revised stay date-only (<code>2026-01-10</code>). Bind the clock time to its date with <code>&amp;nbsp;</code> too, so a wrap cannot leave <code>01:32</code> orphaned on the next line. The label renders in the date row's own size and color: the row is already Library Grey <code>--grey</code>, and the next stop down the ladder (<code>--grey-ui</code>, 3.61:1) fails the 4.5:1 AA floor at this size, so never dim the label below the dates it belongs to (DESIGN-POLICIES, warm grey ladder). Where a date sits in near-black <code>--text</code> — an admin metadata panel — the label may drop one step to <code>--grey</code>: quieter than its date, still AA.</p>
     </div>
     <div class="rule-card">
       <h3>Current is bold and <code>aria-current</code>, never color alone</h3>
-      <p>The version being viewed is distinguished by weight and by <code>aria-current</code> — two non-color signals — so it survives grayscale, forced-colors, and screen readers (WCAG 1.4.1). It is deliberately not a link: you can't navigate to where you already are.</p>
+      <p>The version being viewed is distinguished by weight and by <code>aria-current</code> — two non-color signals — so it survives grayscale, forced-colors, and screen readers (WCAG 1.4.1). It is deliberately not a link: you cannot navigate to where you already are.</p>
     </div>
     <div class="rule-card">
-      <h3>Prior versions are inline links, so they're underlined</h3>
-      <p>They sit in a run of identifier text, so link-vs-text contrast can't carry them alone — underlines are mandatory (DESIGN-POLICIES, link underlines). Link Blue <code>--link</code>. Each carries an explicit <code>aria-label</code> ("View version 1").</p>
+      <h3>Prior versions are inline links, so they are underlined</h3>
+      <p>They sit in a run of identifier text, so link-vs-text contrast cannot carry them alone — underlines are mandatory (DESIGN-POLICIES, link underlines). Link Blue <code>--link</code>. Each carries an explicit <code>aria-label</code> ("View version 1").</p>
     </div>
     <div class="rule-card">
       <h3>Older-version warning: amber, compact, advisory</h3>
@@ -350,18 +350,18 @@
     </div>
     <div class="rule-card">
       <h3>One grammar; elide past ten</h3>
-      <p>The date grammar never changes. Ten versions or fewer: the full inline list, wrapping as needed. More than ten: first three + last three with the middle elided, and the viewed version always visible even mid-elision — never a dropdown, never an internal scroll region. Version numbers render in the mono stack (public token <code>--arxiv-font-mono</code>; IBM Plex Mono is already tabular) or with <code>font-variant-numeric: tabular-nums</code> so they don't jitter as the list wraps.</p>
+      <p>The date grammar never changes. Ten versions or fewer: the full inline list, wrapping as needed. More than ten: first three + last three with the middle elided, and the viewed version always visible even mid-elision — never a dropdown, never an internal scroll region. Version numbers render in the mono stack (public token <code>--arxiv-font-mono</code>; IBM Plex Mono is already tabular) or with <code>font-variant-numeric: tabular-nums</code> so they do not jitter as the list wraps.</p>
     </div>
     <div class="rule-card">
       <h3>Elision signals continuation; JS never hides content for good</h3>
-      <p>The ellipsis is decoration (<code>aria-hidden</code>) with an sr-only count of what's hidden; the working affordance is a text button carrying the explicit total ("show all 127 versions"), toggling <code>aria-expanded</code> — the same disclosure grammar as the authors "show all 22 authors" toggle (DESIGN-POLICIES, truncation). The full list is server-rendered and collapsed by script under <code>html.js</code>, so without JavaScript readers simply get every version (DESIGN-POLICIES, progressive enhancement).</p>
+      <p>The ellipsis is decoration (<code>aria-hidden</code>) with an sr-only count of what is hidden; the working affordance is a text button carrying the explicit total ("show all 127 versions"), toggling <code>aria-expanded</code> — the same disclosure grammar as the authors "show all 22 authors" toggle (DESIGN-POLICIES, truncation). The full list is server-rendered and collapsed by script under <code>html.js</code>, so without JavaScript readers simply get every version (DESIGN-POLICIES, progressive enhancement).</p>
     </div>
   </section>
 
-  <!-- ══════════ CONTEXT (read more, if you're interested) ══════════ -->
+  <!-- ══════════ CONTEXT (read more, if you are interested) ══════════ -->
 
   <section class="section">
-    <h2 class="section-title">Why it's designed this way</h2>
+    <h2 class="section-title">Why it is designed this way</h2>
     <p class="section-desc">
       Background, if you want it. The affordance has to disappear for the common case and stay
       unbroken for the rare one — that constraint is what shapes everything above.
@@ -372,8 +372,8 @@
         <p>Authors, publishers, and overlay journals — provenance, and citing or linking a <em>specific</em> version. For them the version and its date must be explicit and addressable.</p>
       </div>
       <div class="who-card">
-        <h3>Who doesn't</h3>
-        <p>Most readers. They want the latest and go straight to reading. The version affordance must never tax them for attention they didn't ask to spend.</p>
+        <h3>Who does not</h3>
+        <p>Most readers. They want the latest and go straight to reading. The version affordance must never tax them for attention they did not ask to spend.</p>
       </div>
       <div class="who-card">
         <h3>The distribution is lopsided</h3>
@@ -381,7 +381,7 @@
       </div>
       <div class="who-card">
         <h3>So the rule is</h3>
-        <p>Near-silent at one version, scannable at a few, unbroken at 20+ — and always answering the questions that matter: when was it first submitted, when did it go public, and when was the version I'm reading revised.</p>
+        <p>Near-silent at one version, scannable at a few, unbroken at 20+ — and always answering the questions that matter: when was it first submitted, when did it go public, and when was the version I am reading revised.</p>
       </div>
     </div>
   </section>

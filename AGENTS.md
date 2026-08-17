@@ -40,6 +40,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Type badges | `docs/internal/table-styles.html` + DESIGN-POLICIES *Content and interaction* | `.type-new/.type-rep/.type-wdr/.type-cross` |
 | Dark mode (status, mechanism, what flips) | `docs/dark-mode.html` | tokens flip automatically; never hand-pick dark values; lock demo pages light |
 | The blog, an event or campaign mini-site | `docs/outreach/` + DESIGN-POLICIES *Contexts* | the public stylesheet, plus only the differences listed there |
+| Error messages, form help, instructions | `docs/STYLE.md`, then `docs/BRAND.md` for voice | existing wording — one name per thing, never a synonym |
 | Something with no pattern | nearest pattern above + `docs/BRAND.md` | derive from documented rationale; say so in comments |
 
 Stylesheets: `docs/public/design-system.css` (public pages) · `docs/internal/design-system.css` (staff tools). Values there are authoritative.

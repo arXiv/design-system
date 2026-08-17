@@ -31,7 +31,7 @@
 ## Decisions made — Link colors
 
 ### Why two tokens are required
-No single blue satisfies 4.5:1 on both light (white/Warm Wash) and dark (Repository Brown/dark card) simultaneously — the luminance ranges don't overlap. Two tokens with a dark mode override are mandatory.
+No single blue satisfies 4.5:1 on both light (white/Warm Wash) and dark (Repository Brown/dark card) simultaneously — the luminance ranges do not overlap. Two tokens with a dark mode override are mandatory.
 
 ### Chosen colors
 
@@ -62,7 +62,7 @@ The full four-state table (light + dark bg / border / text, with contrast ratios
 
 Key decisions:
 - **Success is lime-olive, not a new forest green.** Access Lime `#c4d82e` stays the "staff tools" signal and fails text contrast, so success reuses the `.seg-positive` lime-olive with the border tuned off-yellow (`#6b8e1e`) to read as success, not brand accent.
-- **Reuse over invention** — info = `.seg-neutral` navy (darker than `--link` so it isn't read as a link); warning = the abstract version-warning amber; error = `--danger` red.
+- **Reuse over invention** — info = `.seg-neutral` navy (darker than `--link` so it is not read as a link); warning = the abstract version-warning amber; error = `--danger` red.
 - **Color is never the sole signal** — each variant pairs with a distinct icon shape + leading word (WCAG 1.4.1), so the states survive grayscale and `forced-colors` mode.
 - **OS signals honored** — `prefers-color-scheme` (dark tokens), `forced-colors` (links → `LinkText`, never `forced-color-adjust:none`), `prefers-reduced-motion`. `prefers-contrast` needs nothing (all pairings clear AA).
 

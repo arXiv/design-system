@@ -35,7 +35,7 @@ Where to apply:
 
 Where NOT to apply:
 - **Copy-out content** (BibTeX, formatted citation text). The sr-only pattern is included in some browsers' selection copy; readers selecting the BibTeX would copy "archivearXiv2604.22725" — broken. Leave citation text strings alone.
-- **Plain identifiers in metadata that are already inside `aria-label` wrappers** — don't double-wrap.
+- **Plain identifiers in metadata that are already inside `aria-label` wrappers** — do not double-wrap.
 
 Operationalize as a template helper (Jinja/PHP/Smarty macro) emitting the dual-span on every "arXiv" instance in site-controlled chrome. For user-uploaded content that mentions arXiv (paper titles, comments), a small once-on-DOMContentLoaded script can walk text nodes and apply the same wrapping.
 
@@ -88,7 +88,7 @@ Operationalize as a template helper (Jinja/PHP/Smarty macro) emitting the dual-s
 
 ### Cognitive and dyslexia
 
-**Respect user-applied stylesheets and browser overrides.** Use `rem` units. Avoid fixed line-heights and letter-spacings. Don't pin font-family with `!important`. The user's own browser/extension/OS choices should propagate to arXiv content.
+**Respect user-applied stylesheets and browser overrides.** Use `rem` units. Avoid fixed line-heights and letter-spacings. Do not pin font-family with `!important`. The user's own browser/extension/OS choices should propagate to arXiv content.
 *Status: needs verification on the mockups. Why: Joseph Smith (2022-08-22) — "HTML gives you a lot more freedom — you can use software to change colors or typefaces."*
 
 **HTML reader is reading-mode by default.** Minimal chrome, content-first, no decorative density. We pick the right defaults rather than offering a "focus mode" toggle.
@@ -113,7 +113,7 @@ Operationalize as a template helper (Jinja/PHP/Smarty macro) emitting the dual-s
 **Newcomer signposting.** A subtle "What is arXiv?" affordance for first-time visitors. arXiv-specific vocabulary ("cross-listed", "v2", "endorsement", "comments") is glossed or `<abbr>`-wrapped.
 *Status: design-side.*
 
-**Capability advertisement on the abstract page.** A small, honest, visible block per paper showing what's accessible: HTML version available / MathML / alt text on N of M figures / data download present / etc. Not a single compliance score. Visible to all readers; informs AT users about what to expect; gives authors social-proof feedback. **Next design move on the abstract-page mockup.**
+**Capability advertisement on the abstract page.** A small, honest, visible block per paper showing what is accessible: HTML version available / MathML / alt text on N of M figures / data download present / etc. Not a single compliance score. Visible to all readers; informs AT users about what to expect; gives authors social-proof feedback. **Next design move on the abstract-page mockup.**
 *Status: to design. Why: tension resolution between Charles+Arvind's "grade visible publicly" and Avneesh Singh's "score will mislead users" — per-capability is the synthesis.*
 
 **HTML reader is the primary destination from the abstract page**, not an experimental toggle. PDF remains a first-class download but stops being demoted.
@@ -163,7 +163,7 @@ Six independent voices in the research described distinct problems with the same
 - **MathML 4** (with `intent`) for math. arXiv contributes to the W3C Math Working Group via Deyan Ginev.
 - **Speech Rule Engine / MathCAT** for math read-aloud where the AT toolchain supports it.
 - **EPUB Accessibility 1.1** principles applied to HTML reader where they translate (structured navigation, alt text, language tagging).
-- **W3C Personalization / Adapt:** track but don't build to until stable.
+- **W3C Personalization / Adapt:** track but do not build to until stable.
 
 ## Brand-level positions
 

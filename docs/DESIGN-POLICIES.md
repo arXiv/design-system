@@ -42,7 +42,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 ## Spacing
 
-- **Scale.** Use the 4px-based / 8-point spacing scale (`--space-1`…`--space-12` in `design-system.css`): 4, 8, 12, 16, 24, 32, 48. Don't introduce off-scale values (14, 26, …).
+- **Scale.** Use the 4px-based / 8-point spacing scale (`--space-1`…`--space-12` in `design-system.css`): 4, 8, 12, 16, 24, 32, 48. Do not introduce off-scale values (14, 26, …).
 - **Proximity.** The gap *between* sections should be clearly larger than the gap *within* a section — aim for ~3× (e.g., 16px within, 48px between). This is what makes grouping read without borders or boxes.
 
 ## Layout and content width
@@ -90,6 +90,12 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 - **Segmented controls:** Use semantic variants — `.seg-positive` (green/accept), `.seg-neutral` (blue/informational), `.seg-negative` (red/reject)
 - **Filter dropdowns:** Use `.ds-filter` with a visible `<label>`. Always include an "All" option as the inclusive default.
 - **Toggle switches:** Off state uses `--grey-ui`. On state uses lime green (internal) or Link Blue (public). Label text uses `--grey` (off) shifting to a darker shade (on).
+
+## Writing
+
+- **No contractions.** Write "do not," not "don't." arXiv's audience is international and many readers have limited English, so the compressed form costs them a parsing step. Applies to everything with words — interface copy, error messages, documentation, alt text, commit messages. Possessives are unaffected ("arXiv's palette" is correct).
+- **One name per thing.** A component is called what the stylesheet calls it, in every document and every string. Never substitute a synonym.
+- **Load-bearing text is stricter.** Error messages, form help, and instructions follow the additional rules in [STYLE.md](STYLE.md), which carries the full set and the reasoning behind it.
 
 ## Public pages — additional policies
 
