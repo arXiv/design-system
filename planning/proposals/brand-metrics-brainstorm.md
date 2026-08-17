@@ -9,7 +9,7 @@ This document is a brainstorm aid to help us identify useful metrics and goals f
 
 ## How do we measure brand success today?
 
-An interesting historical fact: besides uptime and "keeping the lights on", arXiv has not defined internal benchmark metrics for success, brand or otherwise. It's not a sign of failure, just a side effect of not needing the numbers that most organizations build around.
+An interesting historical fact: besides uptime and "keeping the lights on", arXiv has not defined internal benchmark metrics for success, brand or otherwise. It is not a sign of failure, just a side effect of not needing the numbers that most organizations build around.
 
 These are things we deliberately do **NOT** measure: users acquired, users retained, engagement, and time on site are all standard metrics that arXiv deliberately does not chase. Traffic grown organically and our biggest challenge is keeping up, not generating more use. We are also building on a strong, 35-year old foundation that has built strong awareness and trust among researchers in Math, Physics, and CS through years of service, not hype. 
 
