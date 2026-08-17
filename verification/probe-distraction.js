@@ -40,22 +40,39 @@ const networks = domains.filter(d => NET.test(d));
 // A deliberately strict test: an advertising iframe, an advertising class or
 // id, or an element literally labelled "Advertisement". Visible elements
 // only, and nested matches collapse to their outermost ancestor.
+//
+// The "Advertisement" text test also matches the caption sitting BESIDE an ad,
+// not just the ad itself, and the nesting filter only collapses ancestors, so
+// a labelled ad was counted twice and its caption height added to the
+// displacement sum. PLOS read 4 slots and 178px where the truth is 2 and 90px.
+// A text-only match is therefore dropped when it sits against an element that
+// matched on its class, id or iframe source — the ad is the thing with the
+// markup, the caption is the thing with only the word. Captions abut their ad
+// rather than overlapping it (PLOS puts one rotated down the left edge and one
+// directly above), so the test allows a small margin instead of requiring
+// intersection.
 const visible = el => {
   const r = el.getBoundingClientRect(), s = getComputedStyle(el);
   return r.width > 0 && r.height > 0 && s.display !== 'none' && s.visibility !== 'hidden' && s.opacity !== '0';
 };
 const AD_CLASS = /(^|[-_ ])(ad|ads|advert|advertisement|advertising|adslot|ad-slot|ad-unit|adunit|ad-container|adcontainer|banner-ad|dfp|gpt|googlead|doubleclick)([-_ ]|$)/i;
 const AD_SRC = /doubleclick|googlesyndication|adnxs|adform|criteo|amazon-adsystem|3lift|pubmatic|openx|rubicon|smartadserver|teads/i;
-let slots = [];
+let slots = [], textOnly = new Set();
 for (const el of document.querySelectorAll('div,section,aside,iframe,ins')) {
   if (!visible(el)) continue;
   const name = (typeof el.className === 'string' ? el.className : '') + ' ' + (el.id || '');
-  const hit = (el.tagName === 'IFRAME' && AD_SRC.test(el.src || ''))
-    || AD_CLASS.test(name)
-    || /^advertisement$/i.test((el.textContent || '').trim());
-  if (hit) slots.push(el);
+  const marked = (el.tagName === 'IFRAME' && AD_SRC.test(el.src || '')) || AD_CLASS.test(name);
+  const labelled = /^advertisement$/i.test((el.textContent || '').trim());
+  if (marked || labelled) { slots.push(el); if (labelled && !marked) textOnly.add(el); }
 }
 slots = slots.filter(el => !slots.some(o => o !== el && o.contains(el)));
+const NEAR = 24; // px of slack; a caption abuts its ad, it does not overlap it
+const adjacent = (a, b) => {
+  const x = a.getBoundingClientRect(), y = b.getBoundingClientRect();
+  return x.left - NEAR < y.right && x.right + NEAR > y.left
+      && x.top - NEAR < y.bottom && x.bottom + NEAR > y.top;
+};
+slots = slots.filter(el => !textOnly.has(el) || !slots.some(o => o !== el && !textOnly.has(o) && adjacent(el, o)));
 
 // --- title placement and pixel displacement ----------------------------
 // Title placement is the paper title's distance from the top of the
@@ -83,6 +100,7 @@ const jar = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie').get.ca
 ({
   url: location.href,
   viewport: innerWidth + 'x' + innerHeight, // record it; a wrong viewport invalidates title placement
+  dpr: devicePixelRatio, // 2 is 100% zoom on this machine; anything else must be re-measured, not converted
   thirdParty: domains.length,
   domains,
   networks: networks.length,
