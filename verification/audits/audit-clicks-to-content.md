@@ -17,7 +17,7 @@ How many clicks does it take a user to do these three key tasks? Access the full
 | Platform | Access | Full text | PDF | Citation |
 |---|---|---|---|---|
 | arXiv live | open | 1 click — separate page | 1 click | 1 click → manually select |
-| arXiv Phase 1 mockup | open | 0 clicks | 1 click, + sticky bar while reading | 1 click |
+| arXiv Phase 1 mockup | open | 0 clicks | 1 click even after scrolling | 1 click |
 | APS, Physical Review Letters | open | 0 clicks | 1 click | 1 click → manually select or file export |
 | ScienceDirect, Annals of Physics | paywalled | intro and snippets shown, rest gated | gated | 2 click → file export |
 | ScienceDirect, Physics Letters B | open | 0 clicks | 1 click | 2 click → file export |
@@ -43,7 +43,7 @@ We measured how much distracting and unrelated content each platform displays to
 | Platform | Visible distractions | Title position | Title displacement |
 |---|---|---|---|
 | arXiv live | 0 | 108px | 0px |
-| arXiv Phase 1 mockup | 0 | 223px | 0px |
+| arXiv Phase 1 mockup | 0 | `*`223px | 0px |
 | APS, Physical Review Letters | 2 | 298px | 0px |
 | ScienceDirect, Annals of Physics | 3 | 268px | 0px |
 | ScienceDirect, Physics Letters B | 3 | 112px | 0px |
