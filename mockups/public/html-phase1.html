@@ -644,7 +644,24 @@ body.mg-reader .mg-top-cols { display: block; }
    matching the centered watermark / identity column below it
    (feedback 2026-07-28; a first pass used top-left back-link
    convention). */
+/* "Back to abstract" moved into the document-tools rail, above the tinted
+   band (2026-08-17). It used to sit full-width between the site header and
+   the watermark, where it cost 52px above the paper title for a route that
+   the always-visible tools bar (.mg-abs-link) already carries. In the rail
+   it sits below the title instead of pushing it down, and it is the quiet
+   text tier rather than a tertiary button — the loudest control in this
+   column should be Download PDF, not a way back out. */
 .mg-abs-return { margin: 0; padding: 14px 24px 0; text-align: center; }
+.mg-abs-return .ds-btn { white-space: nowrap; }
+/* .btn-arrow is sized under .ds-btn-tertiary only. Kept tier-independent
+   here because a text-tier trial showed the SVG fall back to its intrinsic
+   size and wrap the label — a real gap to close in the stylesheet. */
+.mg-abs-return .btn-arrow { width: 15px; height: 15px; flex: none; }
+
+/* The announcement is an occasional banner, not page furniture. Showing it
+   on every load of the mockup implies it is permanent and costs 30px above
+   the title. Markup kept so the pattern stays visible in source. */
+.ds-announcement { display: none; }
 @media (max-width: 700px) { .mg-abs-return { padding: 10px 12px 0; } }
 
 /* Accordions — codified 2026-07-28 as .ds-acc in
@@ -1624,7 +1641,17 @@ h1.ltx_title.ltx_title_document {
   font-weight: 700 !important;
   line-height: 1.2 !important;
   color: var(--arxiv-repository-brown) !important;
+  margin-top: 12px !important;
 }
+/* The gap between the watermark and the title was 32px, and none of it
+   came from the title. ar5iv gives .ltx_document a 32px top margin and
+   .ltx_page_content 16px; those collapse together with the title's own
+   margin and the largest one wins, so shrinking the title margin alone
+   changed nothing. Zeroing the two containers lets the title's 12px be
+   the value that decides the gap. Only the top margins are touched —
+   section spacing inside the paper is untouched. */
+.ltx_page_content { margin-top: 0 !important; }
+article.ltx_document { margin-top: 0 !important; }
 .ltx_title_section,
 .ltx_title_acknowledgements,
 .ltx_title_appendix,
@@ -1719,7 +1746,12 @@ h1.ltx_title.ltx_title_document {
 
 .new-watermark {
   text-align: center;
-  padding: 10px 24px;
+  /* Tightened from 10px padding and the browser default 15px paragraph
+     margin (2026-08-17). This row is small print between the site header
+     and the paper title; the old spacing gave it the breathing room of a
+     section break and pushed the title 26px further down. */
+  margin: 6px 0;
+  padding: 6px 24px;
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 15px;
   font-weight: 600;
@@ -3756,12 +3788,25 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
      footer) already uses real landmark elements. -->
 <div class="ltx_page_main" role="main" id="main">
 <div id="infobox" class="infobox"></div>
-<!-- Phase 1: "Back to abstract" as a tertiary button directly below the
-     site header, above the watermark line. A first iteration appended a
-     plain link to the watermark line itself, where it disappeared among
-     the ID / DOI / license small print (feedback 2026-07-28). The
-     abstract page remains the paper's canonical home; this button is
-     the page's primary route back. -->
+<!-- Route back to the abstract, above the watermark. This is the correct
+     place for it: the abstract page is still the paper's canonical home,
+     and a reader who lands here needs the way back before they need the
+     paper's identity line.
+
+     It is also the entire remaining cost of this page's title placement.
+     Measured at 1225x744: the title sits at 156px with this control and
+     104px without it, so the control costs 52px on its own. 104px would
+     beat the live abstract page's 108px and lead every platform in the
+     clicks-to-content audit.
+
+     That is the argument for making the merged abstract-and-paper page
+     the default. If it is the default there is no second page to go back
+     to, this control retires, and the page is best-in-class on every
+     measure in the audit.
+
+     A quiet text-tier version was trialled (2026-08-17) and cost 30px
+     rather than 52px, but the button form was kept deliberately: the
+     route back is load-bearing while two pages exist. -->
 <p class="mg-abs-return">
   <a class="ds-btn ds-btn-tertiary" href="https://arxiv.org/abs/2604.22725v1">
     <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -3772,10 +3817,10 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
      full category name (internal feedback 2026-06-11: one tester missed
      the category when only the [gr-qc] code was shown), DOI (many
      readers land here directly without passing the abstract page —
-     internal feedback 2026-06-11), and license. (Phase 1: the
-     "Back to abstract" route lives in the tertiary button ABOVE this
-     line — see .mg-abs-return — not in the watermark itself, where a
-     first iteration showed it disappeared among the small print.) -->
+     internal feedback 2026-06-11), and license. (The "Back to abstract"
+     route is not in this line: a first iteration put it here and it
+     disappeared among the small print. It sits in the tertiary button
+     directly above — see .mg-abs-return.) -->
 <p class="new-watermark"><img src="images/smileybones-small-grayscale.svg" alt=""><span aria-hidden="true">arXiv:2604.22725v1 [gr-qc] General Relativity and Quantum Cosmology</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1, primary category General Relativity and Quantum Cosmology</span> &ensp; <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a> &ensp; <a href="https://info.arxiv.org/help/license/index.html#licenses-available"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">License: CC BY 4.0</abbr></a></p><div class="ltx_page_content">
 <article class="ltx_document ltx_authors_1line" lang="en">
 <!-- mg-top: title spans full content width; the row below puts

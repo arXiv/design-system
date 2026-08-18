@@ -43,7 +43,7 @@ We measured how much distracting and unrelated content each platform displays to
 | Platform | Visible distractions | Title position | Title displacement |
 |---|---|---|---|
 | arXiv live | 0 | 108px | 0px |
-| arXiv Phase 1 mockup | 0 | `*`223px | 0px |
+| arXiv Phase 1 mockup | 0 | `*`156px | 0px |
 | APS, Physical Review Letters | 2 | 298px | 0px |
 | ScienceDirect, Annals of Physics | 3 | 268px | 0px |
 | ScienceDirect, Physics Letters B | 3 | 112px | 0px |
@@ -62,7 +62,7 @@ We measured how much distracting and unrelated content each platform displays to
 | Quantum (Overlay) | 1 | 129px | 0px |
 | Open Journal of Astrophysics (Overlay) | 1 | 422px | 0px |
 
-`*`Lower due to the prominent "Back to Abstract" link, which can be removed if the combined HTML/metdata page becomes our default page.
+`*`Lower due to the prominent "Back to Abstract" link, which can be removed if the combined HTML/metadata page becomes our default page. Without it the title sits at 104px, ahead of every platform measured.
 
 ### Privacy results
 
@@ -103,7 +103,7 @@ A note about arXiv Live: Both third party domains are code libraries served from
 
 **3. Distraction levels are split between commercial versus non-commercial platforms.** Only arXiv and the two overlay journals have zero advertising or tracking networks. The five non-commercial platforms load 2–5 third-party domains. Every commercial platform loads 11–38. Some are egregious: IEEE sets 28 cookies on an article body it will not show without a subscription. Springer runs 10 tracking networks on a page that costs USD 39.95 to read.
 
-The presence of ads and unrelated content displaces useful content. Nature pushes its paper's title down 137px with a leaderboard ad, ResearchGate 122px, and Wiley and PLOS 90px each. Ads are not the only thing that displaces: PubMed Central carries no ad above its title and still starts the paper 614px down, and a cookie banner moves ACM's title 150px while it is on screen. arXiv's live site puts its title at 108px, the highest of any platform measured. *The mockup puts it lower because of the prominent "back to abstract" button, which can be retired if the merged abstract and full paper page becomes the default.* That button exists to ease user confusion caused by the existence of two pages.
+The presence of ads and unrelated content displaces useful content. Nature pushes its paper's title down 137px with a leaderboard ad, ResearchGate 122px, and Wiley and PLOS 90px each. Ads are not the only thing that displaces: PubMed Central carries no ad above its title and still starts the paper 614px down, and a cookie banner moves ACM's title 150px while it is on screen. arXiv's live site puts its title at 108px, the highest of any platform measured. *The mockup puts it lower because of the prominent "back to abstract" button, which can be retired if the merged abstract and full paper page becomes the default.* That button exists to ease user confusion caused by the existence of two pages. It accounts for all 52px of the mockup's remaining gap: with the button removed the title sits at 104px, ahead of the live abstract page and of every other platform measured.
 
 Ads and tracking are not the same. APS and IOP carry no ad slots and place their titles
 high, but still load seven and four tracking networks. Not selling ad space is not the same as
