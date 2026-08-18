@@ -62,7 +62,7 @@ We measured how much distracting and unrelated content each platform displays to
 | Quantum (Overlay) | 1 | 129px | 0px |
 | Open Journal of Astrophysics (Overlay) | 1 | 422px | 0px |
 
-`*`Lower due to the prominent "Back to Abstract" link, which can be removed if the combined HTML/metadata page becomes our default page. Without it the title sits at 104px, ahead of every platform measured.
+`*`Lower on the page due to the prominent "Back to Abstract" link, which can be removed if the combined HTML/metadata page becomes our default. Without it the title sits at 104px, ahead of every platform measured, even legacy arXiv.
 
 ### Privacy results
 
