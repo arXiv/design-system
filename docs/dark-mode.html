@@ -263,9 +263,10 @@
       <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
       <div class="ds-alert-content">
         <p class="ds-alert-title">Never hand-pick dark values into a light page</p>
-        <p>Dark tokens flip automatically with the OS, or not at all. Lock new demo pages with
-        <code>data-theme="light"</code> — but check that nothing rewrites it. A static attribute in the
-        markup is not a lock if a script on the page sets the attribute at load.</p>
+        <p>Dark tokens flip automatically with the OS, or not at all. If a demo needs a fixed mode, put
+        <code>data-theme</code> on the demo's own container rather than locking the whole page — and if you do
+        lock a page, check that nothing rewrites it. A static attribute in the markup is not a lock if a
+        script on the page sets the attribute at load.</p>
       </div>
     </div>
     <ul class="notes" style="margin-top:14px">
@@ -275,10 +276,18 @@
       <code>prefers-color-scheme</code> rules. A page that tried to force light this way still had a third-party
       stylesheet paint a dark canvas underneath its light tokens. Use <code>data-theme="light"</code> to opt out.</li>
       <li>A page that deliberately previews dark (like this one's panel, or the alert references) scopes its overrides locally and says so in a comment.</li>
-      <li><strong>Known gap (2026-08-17):</strong> none of the documentation pages in <code>docs/</code> actually carry
-      <code>data-theme="light"</code> on their <code>&lt;html&gt;</code> tag, so on a dark-OS machine they all flip —
-      including the colour specimens and the light halves of the comparisons on this page. Adding the attribute across
-      <code>docs/</code> is an open decision, not a settled one.</li>
+      <li><strong>Scope the demo, not the page (2026-08-17).</strong> Documentation pages follow the reader's OS
+      preference — a design system that documents dark mode while refusing to render in it is not much of an argument.
+      A demo that must show a particular mode declares it on its own container instead:
+      <code>&lt;div data-theme="light"&gt;</code>. Tokens are declared on any element carrying the attribute, not only
+      on the root, and custom properties inherit, so the <em>nearest</em> ancestor with <code>data-theme</code> wins.
+      Nesting works in both directions: a dark sample inside a light panel inside a page following the OS renders
+      correctly, and the order of the blocks in the stylesheet does not matter.</li>
+      <li><strong>What still does not scope:</strong> the six dark button constructions key on the attribute as an
+      ancestor, so they follow an island correctly, but any future component rule must do the same deliberately. And a
+      colour <em>specimen</em> — a chip whose subject is the value itself — is pinned to a literal and never scoped,
+      because it documents one specific value. Four chips on the colour page were painted with tokens and flipped;
+      fixed 2026-08-17.</li>
     </ul>
   </section>
 

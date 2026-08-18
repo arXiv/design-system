@@ -99,8 +99,10 @@ def check_dark_mirror():
     css = PUBLIC_CSS.read_text()
     media = matching_block(css, css.index("@media (prefers-color-scheme: dark)"))
     expected = rules(
-        media.replace(':root:not([data-theme="light"])', ':root[data-theme="dark"]').replace(
-            'html:not([data-theme="light"])', 'html[data-theme="dark"]'
+        # The mirror is scopable: it drops the :root / html prefix so a
+        # data-theme island anywhere in the DOM picks up the same values.
+        media.replace(':root:not([data-theme="light"])', '[data-theme="dark"]').replace(
+            'html:not([data-theme="light"])', '[data-theme="dark"]'
         )
     )
     # The mirror is everything after the @media block that keys on
