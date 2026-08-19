@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brand &amp; vision — arXiv Design System</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="public/design-system.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: var(--arxiv-font-sans); color: var(--arxiv-repository-brown); background: var(--arxiv-warm-wash); margin: 0; font-size: 14px; line-height: 1.5; }
+    .page { max-width: 1080px; margin: 0 auto; padding: 28px 28px 80px; }
+    .page-header { margin: 28px 0 40px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p { margin: 0; color: var(--arxiv-library-grey); font-size: 13px; max-width: 760px; }
+    .section { margin-bottom: 52px; }
+    .section-title { font-size: 18px; font-weight: 700; margin: 0 0 10px; }
+    .section-desc { color: var(--arxiv-library-grey); max-width: 760px; margin: 0 0 18px; }
+    .lead { font-size: 16px; line-height: 1.6; max-width: 760px; }
+
+    /* The brand statement is quoted verbatim and marked as a quotation, so
+       nobody edits it here by accident — BRAND.md is the source. */
+    .statement { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light);
+      border-left: 4px solid var(--arxiv-open-blue); border-radius: 8px; padding: 22px 26px; max-width: 820px; }
+    .statement p { font-size: 16px; line-height: 1.65; margin: 0; }
+    .statement .source { display: block; margin-top: 14px; font-size: 12px; color: var(--arxiv-library-grey); }
+
+    .findings { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+    .finding { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 18px 20px; }
+    .finding h3 { font-size: 15px; margin: 0 0 8px; }
+    .finding p { margin: 0 0 10px; }
+    .finding .num { font-family: var(--arxiv-font-condensed); font-size: 26px; font-weight: 700; color: var(--arxiv-link-blue); display: block; line-height: 1.1; margin-bottom: 4px; }
+
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+    @media (max-width: 820px) { .compare { grid-template-columns: 1fr; } }
+    .compare figure { margin: 0; }
+    .compare figcaption { font-size: 12px; color: var(--arxiv-library-grey); margin-top: 8px; }
+    .shot { border: 1px solid var(--arxiv-border-light); border-radius: 6px; overflow: hidden; background: var(--arxiv-surface); height: 320px; }
+    .shot img { width: 100%; display: block; }
+    /* The "after" is the live mockup rather than a screenshot, so it cannot
+       go stale. pointer-events is off: this is an illustration, not a
+       control. The full mockup is one link away below. */
+    .shot iframe { width: 1225px; height: 1000px; border: 0; transform: scale(0.34); transform-origin: 0 0; pointer-events: none; }
+
+    .changes { width: 100%; border-collapse: collapse; background: var(--arxiv-surface);
+      border: 1px solid var(--arxiv-border-light); border-radius: 8px; overflow: hidden; font-size: 13px; }
+    .changes th { background: var(--arxiv-card-grey); text-align: left; padding: 10px 14px; font-family: var(--arxiv-font-condensed);
+      font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); }
+    .changes td { padding: 12px 14px; border-top: 1px solid var(--arxiv-card-grey); vertical-align: top; }
+    .changes td:first-child { font-weight: 600; white-space: nowrap; }
+    .principle { font-size: 12px; color: var(--arxiv-library-grey); display: block; margin-top: 4px; }
+
+    .placeholder { background: var(--arxiv-card-grey); border: 1px dashed var(--arxiv-library-grey); border-radius: 8px; padding: 20px 24px; max-width: 820px; }
+    /* Shared docs navigation, matching the other pages. */
+    .docs-nav { display: flex; align-items: center; gap: 4px 18px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
+    .nav-dd { position: relative; }
+    .nav-dd > summary { list-style: none; cursor: pointer; color: var(--arxiv-library-grey); padding: 3px 6px; border-radius: 4px; user-select: none; }
+    .nav-dd > summary::-webkit-details-marker { display: none; }
+    .nav-dd > summary::after { content: " \25BE"; font-size: 10px; }
+    .nav-dd > summary:hover, .nav-dd[open] > summary { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
+    .nav-dd > summary:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
+    .nav-dd-menu { position: absolute; left: 0; top: calc(100% + 6px); display: flex; flex-direction: column; min-width: 235px; background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); padding: 6px; z-index: 60; }
+    .nav-dd-menu a { color: var(--arxiv-repository-brown); text-decoration: none; padding: 6px 10px; border-radius: 4px; white-space: nowrap; }
+    .nav-dd-menu a:hover { background: var(--arxiv-card-grey); }
+    .nav-dd-menu a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: -2px; }
+    .nav-dd-menu a[aria-current="page"] { font-weight: 600; }
+    .nav-dd-group { font-family: var(--arxiv-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-grey-ui); padding: 8px 10px 2px; }
+
+    a { color: var(--arxiv-link-blue); }
+    a:visited { color: var(--arxiv-link-visited); }
+  </style>
+</head>
+<body>
+<nav class="docs-nav" aria-label="Design system">
+  <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
+  <details class="nav-dd">
+    <summary>Design Patterns</summary>
+    <div class="nav-dd-menu">
+      <a href="colors.html">Colors</a>
+      <a href="typography.html">Typography</a>
+      <a href="spacing.html">Spacing</a>
+      <a href="buttons.html">Buttons</a>
+      <a href="alerts.html">Alerts</a>
+      <a href="version-display.html">Versions</a>
+      <a href="organizing-content.html">Organizing content</a>
+      <a href="dark-mode.html" aria-current="page">Dark mode</a>
+      <a href="internal/metadata-panel-styles.html">Metadata panel</a>
+      <a href="forms.html">Forms &amp; validation</a>
+      <a href="tags.html">Tags</a>
+      <a href="outreach/">Outreach sites</a>
+    </div>
+  </details>
+  <details class="nav-dd">
+    <summary>Mockups</summary>
+    <div class="nav-dd-menu">
+      <a href="../mockups/">All mockups</a>
+      <span class="nav-dd-group">Public</span>
+      <a href="../mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+      <a href="../mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+      <a href="../mockups/public/optin-modal/">Labs opt-in modal</a>
+      <span class="nav-dd-group">Internal</span>
+      <a href="../mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+      <a href="../mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+      <a href="../mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+      <a href="../mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+    </div>
+  </details>
+  <details class="nav-dd">
+    <summary>Docs</summary>
+    <div class="nav-dd-menu">
+      <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+      <a href="brand.html">Brand &amp; vision</a>
+        <a href="doc.html?src=docs/BRAND.md">Brand &amp; voice</a>
+      <a href="doc.html?src=docs/typography.md">Typography spec</a>
+      <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
+      <a href="doc.html?src=README.md">About this repo</a>
+    </div>
+  </details>
+</nav>
+<div class="page">
+  <header class="page-header">
+    <h1>Brand &amp; vision</h1>
+    <p>What arXiv stands for, how that differs from the rest of the research-publishing field, and what it looks like
+    when it reaches the page. Written for the board and leadership; the underlying research is linked throughout.</p>
+  </header>
+
+  <!-- ── Origin ── -->
+  <section class="section">
+    <h2 class="section-title">Origin</h2>
+    <p class="lead">arXiv was built in 1991 to break the hold commercial publishing had on science, and thirty-five
+    years later it is still free, still run for researchers, and still the place physics, mathematics and computer
+    science go first.</p>
+  </section>
+
+  <!-- ── Brand statement ── -->
+  <section class="section">
+    <h2 class="section-title">Brand statement</h2>
+    <p class="section-desc">Quoted in full. This is the text under discussion, not a summary of it.</p>
+    <blockquote class="statement">
+      <p><strong>arXiv is the light side of the internet.</strong> We were built in 1991 to break the hold commercial
+      publishing had on science. It was too slow, too expensive, too much gatekeeping. We aim to be the opposite and
+      offer the most useful website on the internet, best-in-class for speed, readability, accessibility, and
+      efficiency. The rebellion succeeded, but we still play by its rules: always free, answerable only to
+      researchers, zero ego, and no dark patterns. The light side, indeed.</p>
+      <span class="source">Source: <a href="doc.html?src=docs/BRAND.md">BRAND.md</a>, which also carries the voice
+      guidance and the eight principles that turn this statement into design decisions.</span>
+    </blockquote>
+  </section>
+
+  <!-- ── Competitive position ── -->
+  <section class="section">
+    <h2 class="section-title">Where arXiv sits in the field</h2>
+    <p class="section-desc">Two audits measured arXiv against the research-publishing ecosystem — eighteen platforms
+    for brand colour, nineteen article pages for what those pages actually do to a reader. The conclusions, in brief.</p>
+
+    <div class="findings">
+      <div class="finding">
+        <h3>The field is one colour</h3>
+        <span class="num">12 of 18</span>
+        <p>platforms use a dark blue as their primary brand colour, and eight of those twelve sit in a band so narrow
+        that Springer Nature, IEEE and Taylor &amp; Francis are separated more by lightness than by hue.</p>
+        <p>arXiv takes the same hue and goes light: Open Blue is thirty points lighter than the lightest platform in
+        the field, and paired with a warm near-black where everyone else pairs with black.</p>
+      </div>
+      <div class="finding">
+        <h3>Nobody else leaves readers alone</h3>
+        <span class="num">0</span>
+        <p>advertising or tracking networks on an arXiv paper page. Only arXiv and the two overlay journals can say
+        that. Every commercial platform measured loads between eleven and thirty-eight third-party domains.</p>
+        <p>IEEE sets twenty-eight cookies on an article body it will not show without a subscription. Springer runs ten
+        tracking networks on a page that costs USD 39.95 to read.</p>
+      </div>
+      <div class="finding">
+        <h3>The paper comes first</h3>
+        <span class="num">108px</span>
+        <p>from the top of the page to the paper title on arXiv — the highest of any platform measured. The field
+        average is more than three times that, and two platforms push the title beyond 600px.</p>
+        <p>A first-time visitor to arXiv is contacted by two outside domains, both code libraries, and given one
+        cookie.</p>
+      </div>
+    </div>
+
+    <p class="section-desc" style="margin-top:18px">Full research:
+      <a href="doc.html?src=verification/audits/audit-brand-color.md">competitor brand colour audit</a> ·
+      <a href="doc.html?src=verification/audits/audit-clicks-to-content.md">clicks-to-content audit</a></p>
+  </section>
+
+  <!-- ── Then and now ── -->
+  <section class="section">
+    <h2 class="section-title">What this looks like on the page</h2>
+    <p class="section-desc">The abstract page on the left is what arXiv serves today. On the right is the Phase 1
+    proposal, which merges the abstract and the full paper into one page. The right-hand panel is the live mockup, not
+    a screenshot, so it stays current as the work does.</p>
+
+    <div class="compare">
+      <figure>
+        <div class="shot"><img src="../verification/audits/images/thumb-browse.png" alt="The arXiv abstract page as it looks today: a dense two-column layout with the paper title near the top and links to the PDF and HTML versions in a side panel."></div>
+        <figcaption>Today — the abstract page. The reader reaches the paper itself in one more click.</figcaption>
+      </figure>
+      <figure>
+        <div class="shot"><iframe src="../mockups/public/html-phase1.html" title="Live preview of the Phase 1 HTML paper mockup" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe></div>
+        <figcaption>Proposed — abstract and full paper on one page.
+        <a href="../mockups/public/html-phase1.html">Open the full mockup</a></figcaption>
+      </figure>
+    </div>
+
+    <p class="section-desc" style="margin-top:24px">Each change below is there because a brand principle asked for it,
+    not because it looked better.</p>
+
+    <table class="changes">
+      <thead><tr><th>Change</th><th>What it does for the reader</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>The paper is on the page</td>
+          <td>Today the abstract page sends the reader to a separate address for the full text. Nearly every
+          open-access platform measured already serves the paper on arrival; arXiv is the exception. The merged page
+          removes that step.
+          <span class="principle">Principle: the interface gets out of the way.</span></td>
+        </tr>
+        <tr>
+          <td>One click to cite</td>
+          <td>Copying a citation today means opening a panel and selecting the text by hand. The proposal puts a copy
+          button next to the citation. No platform measured does better.
+          <span class="principle">Principle: speed and efficiency are different promises.</span></td>
+        </tr>
+        <tr>
+          <td>Still no advertising, still no tracking</td>
+          <td>The redesign adds no advertising surface, no engagement metrics, no view counts, and no third-party
+          tracking. This is the part of the brand that is easiest to lose by accident and hardest to win back.
+          <span class="principle">Principle: no metrics, no gamification, no dark patterns.</span></td>
+        </tr>
+        <tr>
+          <td>Structure a machine can read</td>
+          <td>The current abstract page has seven top-level headings where there should be one, which is the worst
+          heading structure in the sample. The proposal has one, with real landmarks underneath it — better for screen
+          readers, and better for every tool that reads arXiv rather than browses it.
+          <span class="principle">Principle: readable by people and machines, equally.</span></td>
+        </tr>
+        <tr>
+          <td>Light where the field is dark</td>
+          <td>Open Blue and a warm near-black, against a field of corporate navy. The visual lightness is the
+          positioning, not a decoration on top of it.
+          <span class="principle">Principle: lighter than the establishment.</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="section-desc" style="margin-top:16px">One honest note: the proposal currently places the paper title
+    lower on the page than the abstract page does, because it carries a prominent link back to the abstract while both
+    pages exist. If the merged page becomes the default, that link retires and the title sits higher than on any
+    platform measured, arXiv included.</p>
+  </section>
+
+  <!-- ── Measurement ── -->
+  <section class="section">
+    <h2 class="section-title">Measuring brand success</h2>
+    <div class="placeholder">
+      <p style="margin-top:0"><strong>Open question, deliberately.</strong> Beyond uptime, arXiv has never defined
+      internal benchmarks for success. That is a side effect of not needing the numbers most organisations are built
+      around, and it is a good early question for new leadership rather than one to answer in advance.</p>
+      <p style="margin-bottom:0">The thinking so far — including why the usual metrics of acquisition, retention and
+      engagement are the wrong ones here, and a first set of proxies tied to promises rather than behaviour — is in the
+      <a href="doc.html?src=planning/proposals/brand-metrics-brainstorm.md">brand metrics brainstorm</a>.</p>
+    </div>
+  </section>
+</div>
+</body>
+</html>
