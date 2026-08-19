@@ -131,9 +131,53 @@
     stylesheets as foundation, and they flip automatically; nobody hand-picks them.</p>
   </header>
 
+
+  <!-- ── Checklist: the first thing anyone reads ── -->
+  <section class="section">
+    <h2 class="section-title" id="checklist">Checklist: adding or changing a component</h2>
+    <p class="section-desc">In order. Each step links to the reasoning below. If you follow only this list and read
+    nothing else, dark mode will work.</p>
+    <ol class="notes" style="margin-top:14px">
+      <li><strong>Take every colour from a token.</strong> Never write a dark hex into a page or a component.
+      Components that consume tokens flip for free. <a href="#mechanism">How it works</a></li>
+
+      <li><strong>Decide whether the colour is content or identity.</strong> Content flips. Identity is pinned to a
+      literal with a comment saying why — a masthead, a brand fill, a colour specimen whose subject is the value
+      itself. <a href="#traps">Trap 1</a></li>
+
+      <li><strong>Fill raised things with <code>--arxiv-surface</code>.</strong> Not
+      <code>--arxiv-warm-wash</code>: the wash is a pale tint in light and <em>is</em> the canvas in dark, so anything
+      filled with it disappears. <a href="#traps">Trap 2</a></li>
+
+      <li><strong>Check any text sitting on an accent fill.</strong> Accents hold their light values in dark, so the
+      text on them must not flip either — <code>--text-on-lime</code> on lime,
+      <code>--arxiv-repository-brown-on-blue</code> on Open Blue. Reaching for the plain token puts near-white text on
+      a light fill, about 1.3:1.</li>
+
+      <li><strong>Set the page's own background and text from tokens.</strong> An inherited colour from a platform
+      preset or a third-party stylesheet cannot flip, and it will not announce itself. <a href="#traps">Trap 3</a></li>
+
+      <li><strong>Do not use <code>color-scheme</code> to force a mode.</strong> It governs browser-rendered widgets
+      only — scrollbars, form controls — and does nothing to any stylesheet's <code>prefers-color-scheme</code> rules.
+      Use <code>data-theme</code>. <a href="#rules">Rules</a></li>
+
+      <li><strong>Scope a demo that must show one mode.</strong> Put <code>data-theme</code> on the demo's own
+      container, not on the page. Pages should follow the reader.
+      <a href="#attribute">Scoping</a></li>
+
+      <li><strong>If anything can set <code>data-theme</code>, mirror the dark block under the attribute</strong> as
+      well as the media query — including inherited code you did not write.
+      <a href="#attribute">Why the attribute, not the toggle</a></li>
+
+      <li><strong>Verify computed styles in both modes, and measure contrast.</strong> Do not trust the cascade and do
+      not judge by eye. Check the states a reader can actually reach: OS dark, OS light, and the attribute forced
+      either way.</li>
+    </ol>
+  </section>
+
   <!-- ── Mechanism ── -->
   <section class="section">
-    <h2 class="section-title">The mechanism</h2>
+    <h2 class="section-title" id="mechanism">The mechanism</h2>
     <p class="section-desc">Dark values live in one <code>@media (prefers-color-scheme: dark)</code> block
     at the end of each stylesheet, keyed to the OS setting. Any page can opt out and lock to light, which is what a
     page whose job is to show light-mode rendering needs — colour specimens, side-by-side comparisons, this page's own
@@ -145,7 +189,7 @@
       <li>Anything that uses color to carry meaning keeps its second cue (icon, word, position) in dark mode too — the WCAG 1.4.1 requirement applies in both modes.</li>
     </ul>
 
-    <h3 class="section-title" style="font-size:15px; margin-top:26px">Keying dark to the attribute as well as the OS</h3>
+    <h3 class="section-title" id="attribute" style="font-size:15px; margin-top:26px">Keying dark to the attribute as well as the OS</h3>
     <p class="section-desc">The OS preference is the default and covers most readers, but dark also has to win on a
     light-OS machine whenever something sets <code>data-theme="dark"</code>, so the public stylesheet mirrors the same
     declarations under an explicit attribute. The trigger is the attribute, not a toggle: inherited code sets it too.
@@ -217,7 +261,7 @@
 
   <!-- ── Traps ── -->
   <section class="section">
-    <h2 class="section-title">Traps that only show up on a real page</h2>
+    <h2 class="section-title" id="traps">Traps that only show up on a real page</h2>
     <p class="section-desc">Three ways a token-driven page still comes out wrong in dark mode. All three were
     found building the blog, which is the first arXiv site to run dark end to end.</p>
 
@@ -258,7 +302,7 @@
 
   <!-- ── Rules ── -->
   <section class="section">
-    <h2 class="section-title">Rules</h2>
+    <h2 class="section-title" id="rules">Rules</h2>
     <div class="ds-alert ds-alert-error note-alert">
       <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
       <div class="ds-alert-content">
