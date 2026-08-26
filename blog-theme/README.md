@@ -4,7 +4,7 @@
 ("arXiv News"). It is stored here so theme releases live somewhere besides
 Shamsi's machine — this directory is an artifact shelf, nothing more.
 
-**Current version: 0.8.5** (see `Version:` in the zip's `style.css`).
+**Current version: 0.8.6** (see `Version:` in the zip's `style.css`).
 Each release replaces the zip in place; older versions live in git history.
 
 ## This is not design-system source
