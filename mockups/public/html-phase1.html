@@ -3423,7 +3423,18 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
    its number (caught by Shamsi on the live page, 2026-08-25). Same
    countermeasure as .ds-btn svg and .mg-cite-copy svg. */
 .mg-mark svg { width: 11px; height: 11px; flex: none; position: relative; z-index: 1; }
-.ltx_para:hover > .mg-mark, .mg-mark:focus-visible, .ltx_para.is-linking > .mg-mark, .ltx_para.is-active > .mg-mark { opacity: 1; }
+/* Long-paragraph fix (2026-08-26): the pill rides a zero-width rail that
+   spans the paragraph's full height and sticks just below the reader
+   header — so it stays in reach when a long paragraph is entered
+   mid-scroll or scrolled past its top. Sticky-within-bounds is the
+   GitHub-diff-header / sticky-copy-button pattern: CSS-only, and it
+   stops following exactly where the paragraph ends, which keeps the
+   scope story true. */
+.mg-rail-anchor { position: absolute; top: 0; bottom: 0; right: calc(100% + 8px); width: 0; pointer-events: none; }
+.mg-stick { position: sticky; top: 64px; display: flex; flex-direction: column; align-items: flex-end; pointer-events: none; }
+.mg-stick .mg-mark { position: static; margin: 0; pointer-events: auto; }
+.mg-stick .mg-para-pop { position: absolute; top: calc(100% + 6px); left: 0; pointer-events: auto; max-width: calc(100vw - 24px); }
+.ltx_para:hover .mg-mark, .mg-mark:focus-visible, .ltx_para.is-linking .mg-mark, .ltx_para.is-active .mg-mark { opacity: 1; }
 .mg-mark:hover { background: var(--arxiv-card-grey); color: var(--arxiv-link-blue); }
 .mg-mark:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; opacity: 1; }
 body.mg-paranum .ltx_para > .mg-mark { opacity: 1; }
@@ -3444,7 +3455,7 @@ body.mg-paranum .ltx_para > .mg-mark { opacity: 1; }
    plain surface-white before the family was noticed — the same drift the
    pattern rules exist to prevent. */
 .mg-para-pop {
-  position: absolute; right: calc(100% + 8px); top: 24px; z-index: 50;
+  position: absolute; z-index: 50;
   display: flex; flex-direction: column; min-width: 210px;
   background: var(--arxiv-tint-light); border: 1px solid var(--arxiv-tint-border);
   border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); padding: 10px 8px 6px;
@@ -3456,6 +3467,8 @@ body.mg-paranum .ltx_para > .mg-mark { opacity: 1; }
 }
 .mg-para-pop button:hover { background: var(--arxiv-card-grey); }
 .mg-para-pop .ftn-popover-title { font-family: var(--arxiv-font-mono); text-transform: none; letter-spacing: 0; padding-left: 9px; }
+/* Persistent-marker mode places pills inline, so its popover flows inline too. */
+.mg-para-pop.is-inline { position: static; margin: 6px 0; }
 .nav-icon-glyph { font-size: 14px; font-weight: 600; line-height: 1; opacity: 0.65; }
 #mg-paranum-toggle[aria-pressed="true"] { background: var(--arxiv-active-bg); color: var(--arxiv-repository-brown); }
 /* Headings join the same language: their permalink button moves from
@@ -3474,18 +3487,19 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
    (hover: none) reveals by tap, the grammar figures and formulas
    already taught. Conflating the two was the original bug. */
 @media (max-width: 1200px) {
-  .ltx_para > .mg-mark { display: none; }
+  .ltx_para .mg-mark { display: none; }
   .ltx_para.is-active, .ltx_para.is-linking {
     outline: 1px solid var(--arxiv-pill-border); outline-offset: 8px; border-radius: 2px;
   }
-  .ltx_para.is-active > .mg-mark,
-  .ltx_para.is-linking > .mg-mark {
-    display: inline-flex; opacity: 1;
-    right: 4px; top: -20px; left: auto; transform: none;
-  }
+  /* No left margin: the rail hugs the paragraph's right edge, and the
+     sticky pill rides it while a long paragraph scrolls. */
+  .mg-rail-anchor { right: 2px; }
+  .mg-stick { top: 56px; }
+  .ltx_para.is-active .mg-mark,
+  .ltx_para.is-linking .mg-mark { display: inline-flex; opacity: 1; }
+  .mg-stick .mg-para-pop { left: auto; right: 0; }
   body.mg-paranum .ltx_para > .mg-mark { display: inline-flex; position: static; margin: 0 7px 2px 0; transform: none; opacity: 1; }
   .ltx_para::before { display: none; }
-  .mg-para-pop { right: 4px; left: auto; top: 12px; }
   /* Heading pill placement on narrow: inline after the heading text
      (headings are one-liners and self-delimiting, so they skip the
      outline). Reveal is governed by the input rules, not forced on. */
@@ -3495,7 +3509,7 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
   /* Narrow window, mouse present: hover works, so hover reveals —
      same visuals as the tap path. */
   .ltx_para:hover { outline: 1px solid var(--arxiv-pill-border); outline-offset: 8px; border-radius: 2px; }
-  .ltx_para:hover > .mg-mark { display: inline-flex; opacity: 1; right: 4px; top: -20px; left: auto; transform: none; }
+  .ltx_para:hover .mg-mark { display: inline-flex; opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .mg-mark, .ltx_para::before { transition: none; } }
 
@@ -9423,10 +9437,19 @@ We thus see that</p>
   function closePop() {
     var pop = document.querySelector(".mg-para-pop");
     if (pop) {
-      var para = pop.parentElement;
+      var para = pop.closest(".ltx_para");
       pop.remove();
       if (para) para.classList.remove("is-linking");
     }
+  }
+  function makeRail(para) {
+    var rail = document.createElement("div");
+    rail.className = "mg-rail-anchor";
+    var stick = document.createElement("div");
+    stick.className = "mg-stick";
+    stick.appendChild(makePill(para));
+    rail.appendChild(stick);
+    return rail;
   }
   function makePill(para) {
     var b = document.createElement("button");
@@ -9457,22 +9480,24 @@ We thus see that</p>
         setTimeout(closePop, 900);
       });
     });
-    para.appendChild(pop);
+    var stick = para.querySelector(".mg-stick");
+    if (stick) { stick.appendChild(pop); }
+    else { pop.classList.add("is-inline"); var pill = para.querySelector(".mg-mark"); para.insertBefore(pop, pill ? pill.nextSibling : para.firstChild); }
     para.classList.add("is-linking");
     pop.querySelector("button[data-copy]").focus();
   }
 
-  /* Hover affordance: one shared pill, moved to the hovered paragraph. */
-  var hoverPill = null;
+  /* Hover affordance: one shared rail, moved to the hovered paragraph. */
+  var hoverRail = null;
   document.addEventListener("mouseover", function (e) {
     if (document.body.classList.contains("mg-paranum")) return;
     var para = e.target.closest ? e.target.closest(".ltx_document .ltx_para[id]") : null;
     if (!para || para.querySelector(".mg-para-pop")) return;
-    if (!hoverPill || hoverPill.parentElement !== para) {
+    if (!hoverRail || hoverRail.parentElement !== para) {
       closePop();
-      if (hoverPill) hoverPill.remove();
-      hoverPill = makePill(para);
-      para.appendChild(hoverPill);
+      if (hoverRail) hoverRail.remove();
+      hoverRail = makeRail(para);
+      para.appendChild(hoverRail);
     }
   });
   document.addEventListener("click", function (e) {
@@ -9485,7 +9510,7 @@ We thus see that</p>
   var injected = false;
   function injectAll() {
     if (injected) return; injected = true;
-    if (hoverPill) { hoverPill.remove(); hoverPill = null; }
+    if (hoverRail) { hoverRail.remove(); hoverRail = null; }
     paras.forEach(function (para) {
       if (!para.querySelector(".mg-mark")) para.insertBefore(makePill(para), para.firstChild);
     });
@@ -9514,7 +9539,12 @@ We thus see that</p>
      width. */
   var activeEl = null;
   function clearActive() {
-    if (activeEl) { activeEl.classList.remove("is-active"); activeEl = null; }
+    if (activeEl) {
+      activeEl.classList.remove("is-active");
+      var rail = activeEl.querySelector(".mg-rail-anchor");
+      if (rail && rail !== hoverRail) rail.remove();
+      activeEl = null;
+    }
   }
   document.addEventListener("click", function (e) {
     if (!window.matchMedia("(hover: none)").matches) return;
@@ -9527,7 +9557,7 @@ We thus see that</p>
     clearActive(); closePop();
     activeEl = el;
     el.classList.add("is-active");
-    if (el.classList.contains("ltx_para") && !el.querySelector(".mg-mark")) el.appendChild(makePill(el));
+    if (el.classList.contains("ltx_para") && !el.querySelector(".mg-mark")) el.appendChild(makeRail(el));
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") clearActive(); });
 })();
