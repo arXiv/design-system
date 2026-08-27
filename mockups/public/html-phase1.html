@@ -8648,7 +8648,7 @@ We thus see that</p>
       btn.className = 'heading-permalink mg-mark';
       btn.setAttribute('aria-label', 'Copy link to section ' + titleText);
       btn.setAttribute('title', 'Copy link to this section');
-      btn.innerHTML = ICON_LINK + '<span>Permalink</span>';
+      btn.innerHTML = ICON_LINK + '<span>Section permalink</span>';
       btn.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -8657,7 +8657,7 @@ We thus see that</p>
         btn.innerHTML = ICON_CHECK + '<span>Copied</span>';
         btn.setAttribute('title', 'Copied!');
         setTimeout(function() {
-          btn.innerHTML = ICON_LINK + '<span>Permalink</span>';
+          btn.innerHTML = ICON_LINK + '<span>Section permalink</span>';
           btn.setAttribute('title', 'Copy link to this section');
         }, 1500);
       });
@@ -9451,11 +9451,17 @@ We thus see that</p>
     rail.appendChild(stick);
     return rail;
   }
-  function makePill(para) {
+  function makePill(para, compact) {
+    /* Two voices (Shamsi, 2026-08-26): the transient hover/tap pill says
+       what it is — "Paragraph permalink" — because it can appear near a
+       heading's "Section permalink" and the two must be tellable apart.
+       Persistent-marker mode keeps the compact number: a reviewer
+       scanning the margin needs "2.3", not a hundred repeated labels.
+       The full locator is always in the popover title and aria-label. */
     var b = document.createElement("button");
     b.className = "mg-mark"; b.type = "button";
-    b.innerHTML = ICON + '<span>' + num(para.id) + "</span>";
-    b.setAttribute("aria-label", "Permalink \u2014 " + locator(para.id));
+    b.innerHTML = ICON + '<span>' + (compact ? num(para.id) : "Paragraph permalink") + "</span>";
+    b.setAttribute("aria-label", "Paragraph permalink \u2014 " + locator(para.id));
     b.addEventListener("click", function () { openPop(para); });
     return b;
   }
@@ -9512,7 +9518,7 @@ We thus see that</p>
     if (injected) return; injected = true;
     if (hoverRail) { hoverRail.remove(); hoverRail = null; }
     paras.forEach(function (para) {
-      if (!para.querySelector(".mg-mark")) para.insertBefore(makePill(para), para.firstChild);
+      if (!para.querySelector(".mg-mark")) para.insertBefore(makePill(para, true), para.firstChild);
     });
   }
   function setMode(on) {
