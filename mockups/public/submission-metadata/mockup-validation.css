@@ -1,0 +1,974 @@
+/* ============================================================================
+   arXiv submission — form validation patterns
+   Mockup stylesheet. Not production code: this is the guide for what to build.
+
+   Loads AFTER arxivstyle.css / submit.css / base_edit.css and overrides them.
+   Every pattern here is named to match docs/public/design-system.css so that
+   adopting the design system later is a stylesheet swap, not a rewrite.
+
+   Sections:
+     1. Status tokens             7. Highlight within a field
+     2. Required indicator        8. Buttons (design-system port)
+     3. Hints, examples, code     9. Process step and Continue gating
+     4. Field states             10. In-progress
+     5. Field messages           11. Mockup-only scaffolding (DELETE when porting)
+     6. Page-level summary
+   ========================================================================= */
+
+/* --- 1. Status tokens -------------------------------------------------------
+   Copied verbatim from docs/public/design-system.css. Contrast ratios are
+   verified there; do not adjust these values locally. When the submission app
+   adopts the design system, delete this block and inherit the tokens.
+   Dark-mode values are deliberately omitted: the submission system is
+   light-only today, and hand-picking dark values is against policy. */
+:root {
+  --arxiv-error-bg:       #fdeaea;
+  --arxiv-error-border:   #c62828;  /* Danger Red — functional, not Campus Red */
+  --arxiv-error-fg:       #8b0000;
+  --arxiv-warning-bg:     #fff8e1;
+  --arxiv-warning-border: #e8b800;
+  --arxiv-warning-fg:     #7a5c00;
+  --arxiv-info-bg:        #e7f1fd;
+  --arxiv-info-border:    #5a82c8;
+  --arxiv-info-fg:        #1a3a78;
+  --arxiv-success-bg:     #e8f5d8;
+  --arxiv-success-border: #6b8e1e;
+  --arxiv-success-fg:     #4a5a0a;
+}
+
+/* --- 2. Required and optional indicators -------------------------------------
+   An asterisk on its own is not enough. It is small, it carries no meaning
+   without a legend, and the legend sits at the top of a form the reader has
+   already scrolled past by the time they reach the ninth field. The accepted
+   practice is to say the word.
+
+   Note what the current page does: five labels carry .optional, and submit.css
+   styles `.label.optional span` in italic — so the template was written to emit
+   `DOI <span>(optional)</span>`. That span is not in the markup. The word never
+   renders. All that survives is the label turning grey, which is color alone
+   and fails WCAG 1.4.1. Comments is optional too and is not marked at all.
+
+   So: mark both, in words.
+
+     required  asterisk + the legend above the form + required/aria-required
+     optional  the word "(optional)" in the label text
+
+   Marking both is usually over-marking, and the standard advice — mark only the
+   optional ones — assumes most fields are required. Here it is inverted: six of
+   nine are optional. Neither group is small enough to be the obvious exception,
+   so neither is left to inference.
+
+   The word goes in the visible label text, never in aria-label or title. Inside
+   the label it becomes part of the accessible name for free, and needs no ARIA
+   of its own. */
+.label.field-required::after {
+  content: " *";
+  color: var(--arxiv-error-border);
+  font-weight: 700;
+}
+.required-legend {
+  margin: 0 0 1.25rem;
+  font-size: 0.8125rem;
+  color: #555;
+}
+.required-legend .req-star {
+  color: var(--arxiv-error-border);
+  font-weight: 700;
+}
+
+/* Only the qualifier is de-emphasized. The legacy rule greys the whole label to
+   #767676 (4.54:1 — AA by a hair), which makes optional fields harder to read
+   than required ones and pays for it in legibility. The label keeps its full
+   strength; the parenthetical steps back. */
+.label.optional { color: inherit; }
+.label-optional {
+  margin-left: 0.3rem;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 0.875em;
+  color: #595959;          /* 7.0:1 on white */
+}
+
+/* --- 3. Hints, examples, and inline code ------------------------------------
+   Two fixes, both about red.
+
+   The legacy stylesheet paints every <code> element #cd0200 (arxivstyle.css
+   line 329) — a Bulma default, not a decision anyone made about this form. It
+   measures 5.8:1 on white; our error red measures 5.6:1. They are the same red
+   to a reader. So the author-format example "GivenName(s) FamilyName(s)"
+   currently reads as a validation failure, on a page whose entire job is to
+   tell failures apart from everything else.
+
+   Red means one thing in this form: error. Nothing else may use it.
+
+   The replacement is the design system's inline-code treatment, used on every
+   page in docs/: monospace on a neutral grey chip, inheriting the surrounding
+   text color, with no color of its own. The font stack is the design system's
+   and falls through to the platform monospace until IBM Plex Mono is loaded,
+   so this upgrades on its own when the submission app adopts the DS fonts.
+
+   Bare element selector on purpose: it has to beat arxivstyle.css, and this
+   file loads after it. */
+code {
+  background: #f0eeec;
+  color: inherit;
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85em;
+  font-weight: 400;
+  padding: 0.1em 0.4em;
+  border-radius: 3px;
+}
+
+/* Hint text. Already grey and already in the right place — above the input,
+   where it can prevent the error rather than explain it afterwards. Only the
+   size changes, to match the validation messages below the input so the two
+   read as one system.
+
+   Contrast on the record: #757575 on white is 4.60:1. That passes AA for
+   normal text with almost no margin. Do not lighten it. */
+.help.has-text-grey {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+/* An example is a kind of hint, not a kind of warning. Label it in words, so
+   that being illustrative does not rest on the chip styling alone.
+
+   Put the whole example inside one <code>, separators included — the separator
+   is part of what the user has to type, and splitting "F.2.2; I.2.7" into two
+   chips hides the semicolon that does the work. */
+.hint-example-label {
+  font-weight: 600;
+}
+
+/* --- 4. Field states --------------------------------------------------------
+   Two tiers, matching QA's dispositions:
+     .is-invalid  = rejection. Cannot proceed.
+     .is-warning  = warning. Can proceed; submission may be held for review.
+
+   Border color is never the only signal — every state here is paired with a
+   message in section 4. The 3px ring is what makes the state legible at a
+   glance without the border weight jumping and reflowing the layout. */
+.input.is-invalid,
+.textarea.is-invalid {
+  border-color: var(--arxiv-error-border);
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.10);
+}
+.input.is-invalid:focus,
+.textarea.is-invalid:focus {
+  border-color: var(--arxiv-error-border);
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15);
+}
+.input.is-warning,
+.textarea.is-warning {
+  border-color: var(--arxiv-warning-border);
+  box-shadow: 0 0 0 3px rgba(232, 184, 0, 0.14);
+}
+.input.is-warning:focus,
+.textarea.is-warning:focus {
+  border-color: var(--arxiv-warning-border);
+  box-shadow: 0 0 0 3px rgba(232, 184, 0, 0.22);
+}
+/* A field arXiv corrected for itself. Nothing is wrong, so this is not a
+   problem state — but it completes the pattern: every alert tier has a matching
+   field state, and blue is the only way to find the changed field from the
+   summary without reading. Deliberately the quietest of the three: no ring, so
+   it never competes with a real problem elsewhere on the page.
+
+   It gets the same 3px ring as the other two. A first pass left the ring off,
+   reasoning that a non-problem should stay quiet and not compete with a real
+   error elsewhere on the page. That was wrong: a bare border among ringed
+   fields disappears, and a signal nobody notices fails at the only job it has.
+   If blue does turn out to compete with red, the answer is to look again at
+   whether every automatic change is worth flagging — not to render the flag
+   too faintly to read.
+
+   Distinct from focus, which is a 3px outline at 2px offset, not a border. */
+.input.is-note,
+.textarea.is-note {
+  border-color: var(--arxiv-info-border);
+  box-shadow: 0 0 0 3px rgba(90, 130, 200, 0.14);
+}
+.input.is-note:focus,
+.textarea.is-note:focus {
+  border-color: var(--arxiv-info-border);
+  box-shadow: 0 0 0 3px rgba(90, 130, 200, 0.22);
+}
+
+/* A required field left blank. Same tier as .is-invalid; separate class only so
+   the server can tell them apart in logs. Visually identical on purpose. */
+.input.is-empty-required,
+.textarea.is-empty-required {
+  border-color: var(--arxiv-error-border);
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.10);
+}
+
+/* --- 5. Field messages ------------------------------------------------------
+   Placed AFTER the input, not before it. The current page renders the error
+   above the label's help text and above the input itself, which puts it
+   furthest from the thing it describes and moves the input down the page when
+   it appears. After the input, the message is adjacent to the problem and the
+   input does not move.
+
+   Each message needs id + aria-describedby on its input. Screen readers
+   otherwise announce the field with no indication anything is wrong. */
+.field-error,
+.field-warning,
+.field-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin: 0.4rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+.field-error   { color: var(--arxiv-error-fg); }
+.field-warning { color: var(--arxiv-warning-fg); }
+.field-note    { color: var(--arxiv-info-fg); }
+
+.field-error[hidden],
+.field-warning[hidden],
+.field-note[hidden] { display: none; }
+
+/* Leading glyph. Text, not an icon font — it survives with images off and
+   needs no asset. aria-hidden in the markup so it is not read aloud; the
+   message text carries the meaning. */
+.field-error::before,
+.field-warning::before,
+.field-note::before {
+  flex: none;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.field-error::before   { content: "\2715"; }  /* ✕ */
+.field-warning::before { content: "\26A0"; }  /* ⚠ */
+.field-note::before    { content: "\21BB"; }  /* ↻ — value was changed for you */
+
+/* --- 6. Page-level summary --------------------------------------------------
+   Same construction as .ds-alert in the design system, renamed only where the
+   legacy stylesheet already owns a class. Sits directly above the form.
+
+   ONE ALERT PER SEVERITY. Errors and warnings never share a box. Red has to
+   mean "you cannot proceed", and the moment a non-blocking item appears inside
+   a red alert, red stops meaning that — the user then has to read every line to
+   work out which kind each one is. Split, each alert gets a heading that says
+   what it is rather than one heading hedging across both.
+
+   Order is severity: blocking errors, warnings, then the record of automatic
+   changes. Any combination can appear, including none.
+
+   The list items are anchors. A summary that names problems without jumping to
+   them makes the user hunt, and on a nine-field form that is the whole cost of
+   the error. */
+#form-summary[hidden] { display: none; }
+
+.form-summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.75rem 0.875rem;
+  margin: 0 0 1.5rem;
+  border: 1px solid;
+  border-left-width: 4px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.form-summary-error {
+  background: var(--arxiv-error-bg);
+  border-color: var(--arxiv-error-border);
+  color: var(--arxiv-error-fg);
+}
+.form-summary-warning {
+  background: var(--arxiv-warning-bg);
+  border-color: var(--arxiv-warning-border);
+  color: var(--arxiv-warning-fg);
+}
+.form-summary-success {
+  background: var(--arxiv-success-bg);
+  border-color: var(--arxiv-success-border);
+  color: var(--arxiv-success-fg);
+}
+/* Automatic corrections. Informational, not a problem — but reported, because
+   presenting a change back to the author is what makes changing their content
+   legitimate in the first place. */
+.form-summary-note {
+  background: var(--arxiv-info-bg);
+  border-color: var(--arxiv-info-border);
+  color: var(--arxiv-info-fg);
+}
+.form-summary-icon {
+  flex: none;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.form-summary-content { flex: 1 1 auto; min-width: 0; }
+.form-summary-title {
+  margin: 0 0 0.25rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+.form-summary-content p  { margin: 0 0 0.4rem; }
+.form-summary-content ul { margin: 0.25rem 0 0; padding-left: 1.1rem; }
+.form-summary-content li { margin: 0.15rem 0; }
+.form-summary-content a  { color: inherit; text-decoration: underline; }
+.form-summary-content a:hover { text-decoration: none; }
+
+/* --- 7. Highlight within a field --------------------------------------------
+   Mark the problem where it is. Do not echo the field's contents back below it:
+   an abstract runs to 1920 characters and reprinting it to point at five of
+   them is absurd, and it pushes everything else off the screen.
+
+   Three channels, because no one of them reaches everybody:
+
+     1. The message NAMES the offending string. This is the channel that always
+        works — screen readers, images off, high-contrast modes, printouts. The
+        match is short even when the field is long, so quoting the match is
+        safe where quoting the value is not.
+     2. The field HIGHLIGHTS it, for someone scanning visually.
+     3. A "Show me" button SELECTS it, which scrolls a long value to the right
+        place and puts the caret there. This is what makes it work at 1920
+        characters, and it serves keyboard users, not just mouse users.
+
+   Highlight alone would fail WCAG 1.4.1 — it is a purely visual cue. Channel 1
+   is what makes channels 2 and 3 enhancements rather than requirements.
+
+   Mechanism: a backdrop div sits behind a transparent-background control and
+   paints marks at the same coordinates as the real glyphs. The two elements
+   must share font, padding, border width, line height, and wrapping, or the
+   marks drift — which is why all of it is set explicitly here rather than
+   inherited from the legacy stylesheet.
+
+   The control stays in normal flow inside the wrapper and the backdrop is
+   absolute, so the wrapper's height follows the control. A user dragging a
+   textarea's resize handle keeps the marks aligned for free. */
+.field-highlight {
+  position: relative;
+  display: block;
+}
+.field-highlight .input,
+.field-highlight .textarea,
+.field-highlight-backdrop {
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: normal;
+  padding: calc(0.5em - 1px) calc(0.75em - 1px);
+  border-width: 1px;
+  border-style: solid;
+  box-sizing: border-box;
+  width: 100%;
+}
+.field-highlight .input,
+.field-highlight .textarea {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  margin: 0;
+}
+.field-highlight-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-color: transparent;
+  color: transparent;
+  background: #fff;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  /* pre-wrap + break-word reproduces how a textarea wraps. A single-line input
+     never wraps, and is overridden below. */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.field-highlight-backdrop.is-single-line { white-space: pre; }
+
+/* The mark is drawn behind real glyphs, so it carries no text of its own.
+   Fill plus an underline: the fill locates it, and the underline survives
+   Windows High Contrast Mode, which discards background colors.
+
+   One field can hold an error and a warning at once, so the marks are tiered
+   too — a single highlight color would say "something is wrong here" without
+   saying which of these stops you continuing. */
+.field-highlight-backdrop mark {
+  color: transparent;
+  border-radius: 2px;
+  border-bottom: 2px solid;
+}
+.field-highlight-backdrop mark.mark-error {
+  background: var(--arxiv-error-bg);
+  border-bottom-color: var(--arxiv-error-border);
+}
+.field-highlight-backdrop mark.mark-warning {
+  background: var(--arxiv-warning-bg);
+  border-bottom-color: var(--arxiv-warning-border);
+}
+.field-highlight-backdrop mark.mark-note {
+  background: var(--arxiv-info-bg);
+  border-bottom-color: var(--arxiv-info-border);
+}
+
+/* Several problems in one field. Numbered, because "the second one" has to be
+   sayable when someone is working through them, and because a run of loose
+   paragraphs under one field stops looking like a set of separate problems.
+   The number is also the only thing that tells you at a glance how many there
+   are without counting. */
+.field-messages {
+  margin: 0.4rem 0 0;
+  padding-left: 1.5rem;
+}
+.field-messages li {
+  margin: 0.25rem 0;
+  padding-left: 0.15rem;
+}
+/* The glyph is dropped inside a list: the marker already separates the rows,
+   and a number plus an icon plus a color is one signal too many. Color and the
+   visually-hidden "Error:" / "Warning:" prefix still carry the tier. */
+.field-messages li::before { content: none; }
+.field-messages li.field-error   { color: var(--arxiv-error-fg); }
+.field-messages li.field-warning { color: var(--arxiv-warning-fg); }
+.field-messages li.field-note    { color: var(--arxiv-info-fg); }
+.field-messages li::marker { font-weight: 700; }
+
+/* Inside a summary row the chip sits on a tinted alert background, so it needs
+   its own surface rather than the neutral grey used on white. */
+.form-summary-content .field-match {
+  background: rgba(255, 255, 255, 0.65);
+}
+
+/* The offending string, quoted inside the message. */
+.field-match {
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85em;
+  background: #f0eeec;
+  color: inherit;
+  padding: 0.1em 0.4em;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+/* "Show me" — selects the match in the field. A real button, not a link: it
+   performs an action on this page rather than navigating. */
+.field-locate {
+  display: inline;
+  margin-left: 0.35rem;
+  padding: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.field-locate:hover { text-decoration: none; }
+.field-locate:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+/* --- 8. Buttons (design-system port) ------------------------------------------
+   Lifted from docs/public/design-system.css: .ds-btn, .ds-btn-primary,
+   .ds-btn-secondary, and the tokens they need. Copied, not adapted — if these
+   ever diverge from the design system, the design system is right.
+
+   Construction, so nobody "simplifies" it by mistake: a single border-color
+   cannot carry a vertical gradient, so the button paints TWO backgrounds — one
+   clipped to padding-box (the fill), one to border-box (the border gradient) —
+   behind a 1.5px transparent border. Lighter at the top, darker at the bottom:
+   lit from above. Hover BRIGHTENS rather than darkens.
+
+   The font stack falls back to the system sans until IBM Plex Sans is served,
+   so this degrades rather than breaking.
+
+   Adopting this one component is worth it on its own: it brings a real focus
+   ring (3px, offset 2px) and a genuine disabled construction to a page that
+   currently has neither. */
+
+/* Tokens the buttons need. Same values as the design system. */
+:root {
+  --arxiv-open-blue:              #a5d6fe;
+  --arxiv-link-blue:              #1565c0;
+  --arxiv-grey-ui:                #8b8680;
+  --arxiv-library-grey:           #6b6459;
+  --arxiv-repository-brown:       #1c1a17;
+  --arxiv-repository-brown-on-blue: #1c1a17;
+  --arxiv-border-light:           #ddd8d2;
+  --arxiv-card-grey:              #f0eeec;
+  --arxiv-tint-light:             #edf4fc;
+  --arxiv-tint-border:            #c4dcf0;
+  --arxiv-focus-ring:             var(--arxiv-link-blue);
+  --arxiv-font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 20px;
+  min-width: 120px;
+  font-family: var(--arxiv-font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  border-radius: 6px;
+  /* The design system does not set this — its own pages are border-box
+     already. Stated here because the component is being dropped into a page
+     whose box model it does not control, and min-width has to mean the whole
+     button or two of them stop fitting the sidebar. */
+  box-sizing: border-box;
+  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, transform 0.08s, color 0.12s;
+}
+.ds-btn:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring);
+  outline-offset: 2px;
+}
+.ds-btn-primary {
+  background:
+    linear-gradient(#a5d6fe, #a5d6fe) padding-box,
+    linear-gradient(to bottom, #b0d5ed, #6ba8da) border-box;
+  color: var(--arxiv-repository-brown-on-blue);
+  box-shadow: inset 0 0 6px rgba(31, 94, 150, 0.20), 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.ds-btn-primary:hover {
+  background:
+    linear-gradient(#c2e2ff, #c2e2ff) padding-box,
+    linear-gradient(to bottom, #8fc1e8, #4a86b8) border-box;
+  box-shadow: inset 0 0 8px rgba(31, 94, 150, 0.10), 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.ds-btn-primary:active {
+  transform: translateY(1px);
+  background:
+    linear-gradient(#a5d6fe, #a5d6fe) padding-box,
+    linear-gradient(#6ba8da, #6ba8da) border-box;
+  box-shadow: inset 0 0 10px rgba(31, 94, 150, 0.35);
+}
+.ds-btn-secondary {
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(to bottom, #ddd8d2, #b3ada4) border-box;
+  color: var(--arxiv-library-grey);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.ds-btn-secondary:hover {
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(to bottom, #c8c4be, var(--arxiv-grey-ui)) border-box;
+  color: var(--arxiv-repository-brown);
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.ds-btn-secondary:active {
+  transform: translateY(1px);
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(var(--arxiv-grey-ui), var(--arxiv-grey-ui)) border-box;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.13);
+}
+
+/* ── Disabled ─────────────────────────────────────────────────────────────
+   Built from scratch, not extrapolated. What the design system actually has is
+   a disabled state for INTERNAL buttons (.btn-primary:disabled and friends,
+   flat-filled, Access Lime family) and one policy line — DESIGN-POLICIES:80,
+   "cursor: not-allowed, reduced opacity" — which the internal implementation
+   does not itself follow, since it uses explicit -dis- tokens rather than
+   opacity. The public stylesheet has nothing for filled buttons, and
+   public/button-styles.html does not mention disabled at all. So there was no
+   rule to inherit and this is a proposal.
+
+   Plain and dead: one flat grey fill, muted grey label, no border, no shadow,
+   no gradient, nothing that moves.
+
+     fill   --arxiv-card-grey      #f0eeec   the palette's neutral surface band
+     label  --arxiv-library-grey   #6b6459   the muted-text token
+
+   The label clears AA on that fill at 5.05:1. WCAG exempts disabled controls
+   from contrast, but a label nobody can read is worse than one they can, and
+   this is the only pairing in the warm grey ladder that is both genuinely muted
+   and genuinely legible: --arxiv-grey-ui manages only 3.12:1 on the same fill,
+   and --arxiv-repository-brown passes at 15:1 but looks entirely live.
+
+   Both tokens flip in dark mode (#2b2723 fill, #b0aba6 label, 6.51:1), so this
+   holds in both without a hand-picked dark value.
+
+   The fill is faint against a white page — 1.16:1 — so the shape is carried by
+   the label rather than by an edge. That is the trade for having no border, and
+   it is the right way round: a control you cannot use should not assert itself.
+   The palette has nothing between Card Grey and Border Light, and Border Light
+   as a fill would drop the label to 4.13:1 and fail.
+
+   The 1.5px transparent border stays. It draws nothing, but removing it would
+   shrink the button by 3px in each axis and the disabled state would no longer
+   match the shape of the live one.
+
+   One rule for both variants. The treatment is neutral, so it does not depend
+   on which button it replaces.
+
+   Both selectors, because the two mean different things:
+     :disabled          genuinely inert
+     [aria-disabled]    unavailable but still reachable and still able to
+                        explain itself (Continue) — see §9. */
+.ds-btn:disabled,
+.ds-btn[aria-disabled="true"],
+.ds-btn:disabled:hover,
+.ds-btn[aria-disabled="true"]:hover,
+.ds-btn:disabled:active,
+.ds-btn[aria-disabled="true"]:active {
+  background: var(--arxiv-card-grey);
+  border-color: transparent;
+  color: var(--arxiv-library-grey);
+  box-shadow: none;
+  transform: none;
+  cursor: not-allowed;
+}
+
+/* --- 9. Process step and Continue gating ------------------------------------
+   Process sits in the form column, right-aligned, above the first field and
+   below the last. Not in the sidebar: the sidebar is where you go when you are
+   done with the form, and Process is something you do TO the form.
+
+   Both ends, because someone who fills in only the required fields never
+   reaches the foot of the form, and someone who works straight down it should
+   not have to travel back up.
+
+   Right-aligned so it lands where the eye leaves the last field, and so the two
+   copies sit on the same vertical line as each other.
+
+   No explanatory paragraph. A button that says "Process metadata" above a form,
+   with Continue greyed out until it is used, states the sequence by its own
+   arrangement. Prose is what you add when the arrangement has failed. If it
+   turns out people do not find it, the fix to reach for first is a clearer
+   arrangement, not a sentence. */
+/* The button was floating: right-aligned in open space, attached to nothing.
+   A rule directly beneath it anchors the row to the form and makes the two read
+   as one block — the actions belong to the fields under them.
+
+   Structure follows the admin-console paper-details mockup: a flex row, with
+   the split variant when something sits on the left. The legend goes there,
+   since "fields marked * are required" is about the form the button acts on.
+
+   The rule is an <hr>, not a border on the row. It is a separator between two
+   parts of the page, which is what the element is for, and it keeps the
+   spacing above and below it independent of the row's own box.
+
+   Margins are deliberately asymmetric: tight to the buttons, open to the form.
+   That is what makes the rule read as belonging to the row rather than as a
+   free-standing divider halfway between two things.
+
+   Only the top row gets a rule. At the top it separates the actions from the
+   fields below them, which is work worth doing. At the bottom there is nothing
+   underneath to separate from — the last field already ends the form — so the
+   line would be drawing a boundary that is not there. Plain space does it. */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+}
+.form-actions-split { justify-content: space-between; }
+
+.form-rule {
+  border: 0;
+  border-top: 1px solid var(--arxiv-border-light);
+}
+.form-rule.top { margin: 0.75rem 0 1.75rem; }
+
+.form-actions-end { margin-top: 1.75rem; }
+
+/* Sits in the action row now, so it carries no margin of its own. */
+.form-actions .required-legend { margin: 0; }
+
+/* ── Tooltip on the unavailable Continue ──────────────────────────────────
+   A note under the button row read as belonging to Go Back and Continue
+   equally, when it only ever describes Continue. Attaching it to the control
+   it explains removes the ambiguity, and it only appears when it applies.
+
+   This works ONLY because Continue uses aria-disabled rather than the disabled
+   attribute. A truly disabled button is out of the tab order and does not fire
+   pointer events in every browser, so a tooltip on one is unreachable by
+   keyboard and unreliable by mouse. This is the concrete payoff of that choice.
+
+   No tooltip exists in the design system — .ds-popover is a heavier
+   click-triggered panel with a title and a close button, for citation and
+   footnote context. This is a new component that borrows the popover's
+   material (tint fill, tint border, 6px radius, 13px text) so the two read as
+   the same family. Promotion candidate.
+
+   WCAG 1.4.13, which the page's existing help bubbles already fail, requires
+   content shown on hover to be:
+     hoverable    the host wraps the button, and the visual gap is the
+                  tooltip's own padding, so the pointer never crosses dead
+                  space on its way in
+     dismissible  Escape closes it without moving focus
+     persistent   it stays while hovered or focused, and closes on neither
+                  a timer nor a pointer twitch */
+.ds-tooltip-host {
+  position: relative;
+  display: inline-flex;
+}
+/* Opens DOWNWARD. Opening upward put it behind the sticky bar at the top of
+   this page, and raising z-index alone would only paper over that: the real
+   arXiv header is sticky too, so a tooltip that opens upward near the top of a
+   page will collide there for the same reason. Downward has clear space under
+   both Continue buttons.
+
+   z-index is still raised above the sticky bar, so an overlap anywhere else
+   resolves in the tooltip's favour rather than hiding the only explanation the
+   user has. */
+.ds-tooltip {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 200;
+  padding-top: 6px;   /* the gap, as hoverable padding rather than margin */
+  pointer-events: auto;
+}
+.ds-tooltip[hidden] { display: none; }
+.ds-tooltip-body {
+  display: block;
+  width: max-content;
+  max-width: 15rem;
+  padding: 8px 11px;
+  background: var(--arxiv-tint-light);
+  border: 1px solid var(--arxiv-tint-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  font-family: var(--arxiv-font-sans);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--arxiv-repository-brown);
+}
+
+/* Continue uses aria-disabled, NOT the disabled attribute. A disabled button is
+   removed from the tab order and skipped by screen readers, so a user who
+   cannot proceed finds nothing there and no explanation of why. aria-disabled
+   keeps it reachable, announced, and able to carry the tooltip above.
+
+   The visual treatment is the same for both — see §8. */
+
+/* ── Page measure ─────────────────────────────────────────────────────────
+   Two separate jobs.
+
+   The padding stands in for the page chrome this mockup drops — header,
+   breadcrumb, footer — which carried the horizontal inset on the real page.
+
+   The max-width does not stand in for anything; it is a proposal. A form field
+   is a line of text you have to read back, and on a wide display an uncapped
+   column runs a title input past 1200px, unreadable in exactly the way long
+   body text is. Capping the layout also stops the sidebar drifting further from
+   the form the wider the window gets. 1180px holds a comfortable form column
+   beside the 22em rail and centres the pair.
+
+   The scenario switcher stays full-bleed on purpose: it is scaffolding, and
+   looking unlike the page is the point. */
+.layout-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2.75rem 2rem 3rem;
+  /* Equal-height columns. This is the flexbox default — align-items: stretch —
+     so the sidebar already wanted to match the form. It could not, for the
+     reason below. Stated explicitly so nobody "fixes" it with a height. */
+  align-items: stretch;
+  height: auto;
+}
+
+/* ── Why the sidebar was shorter than the form ────────────────────────────
+   arxivstyle.css line 9489:  body { display: flex; flex-direction: column;
+                                     height: 100vh; }
+   base_edit.css  line 572:   .layout-container { height: calc(100% - 130px); }
+
+   Because the body has a FIXED height of one viewport, that 100% resolves
+   against the viewport rather than against the content. So the layout container
+   is about a screenful tall no matter how long the form is, the form overflows
+   it, and the sidebar — which stretches correctly, to its parent — stops where
+   the parent stops. On a nine-field form that leaves the rail and its left
+   border ending part way down the page.
+
+   Nothing needs to be measured or scripted. Let the body grow with its content
+   and drop the height off the container, and stretch does the rest.
+
+   `height: 100vh` on the body is worth fixing on the live page independently of
+   this: it makes every percentage height inside the document relative to the
+   window instead of the page, and this is only the first place it shows. The
+   standard form is min-height, which still fills a short viewport. */
+body {
+  height: auto;
+  min-height: 100vh;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────────────────
+   base_edit.css line 595 sets .info-container-top and -bottom to display:flex
+   with the default row direction. In the current page each block holds exactly
+   one child — the Go Back / Continue nav — so the direction never mattered.
+   Add anything else, such as the hint line under Continue, and it lands beside
+   the buttons instead of below them.
+
+   Column direction, and justify-content reset from flex-end, which in a column
+   would push the whole block to the bottom. */
+.info-container-top,
+.info-container-bottom {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+/* .info-container sets align-items: center, so its block children shrink to
+   fit their content. Full width keeps the three blocks the same size. */
+.info-container-top,
+.info-container-middle,
+.info-container-bottom { width: 100%; }
+
+/* The legacy rule pins all three sidebar blocks to the top
+   (justify-content: flex-start), which stacks both control blocks near the top
+   and defeats the point of repeating them. */
+.info-container { justify-content: space-between; }
+
+/* ── Sidebar borders ──────────────────────────────────────────────────────
+   Three stylesheets are currently arguing about this rail, and the argument
+   has ended up exactly backwards.
+
+     submit.css:          border: 0, transparent background,
+                          border-left: 2px solid #a5d6fe, plus a soft shadow
+     base_edit.css:       border: 1px solid #ddd, background #f9f9f9
+     submit_overrides.css: background transparent !important,
+                          border-left: none !important, box-shadow none !important
+
+   Read in order: the original design was a single 2px Open Blue edge — one
+   line, in the brand accent, doing one job. base_edit then boxed the rail on
+   all four sides and filled it grey. submit_overrides then removed the
+   background and the shadow, and removed the LEFT border — the only one anybody
+   had designed — leaving the three nobody had.
+
+   So the rail today carries a top, right and bottom border it was never meant
+   to have, and is missing the one it was. That is the whole problem, and it is
+   not a taste question: nothing decided this, it is just what three passes of
+   patching happened to leave behind.
+
+   Restored to the original intent: one left edge, no box, no fill, no shadow.
+   Grey rather than the original Open Blue: the accent is reserved for things
+   you can act on, and a rail edge is structure. Same warm grey as the two
+   dividers inside it, at 2px instead of 1px, so the rail edge outranks them
+   without introducing a second color.
+   The border-left needs !important only to beat submit_overrides — delete both
+   when that override goes. */
+.info-container {
+  border: 0;
+  border-left: 2px solid var(--arxiv-border-light) !important;
+  background: transparent;
+  box-shadow: none;
+  padding: 0 0 0 1.5rem;
+}
+
+/* Dividers between the controls and the copy between them. Two, not three:
+   submit_overrides puts a border-bottom on .info-container-top and submit.css
+   puts a border-top on the .message-body directly beneath it, so today two
+   lines are drawn a few pixels apart. The message body keeps none. */
+.info-container-top {
+  border-bottom: 1px solid var(--arxiv-border-light) !important;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+.info-container-bottom {
+  border-top: 1px solid var(--arxiv-border-light);
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+/* submit_overrides indents this block by 1.25rem with !important, which sets
+   the copy in from the buttons above and below it for no reason. Everything in
+   the rail aligns to the same left edge. */
+.info-container-middle {
+  padding: 0 !important;
+}
+.info-container-middle .message-body {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+/* One warm grey for both dividers. The page currently uses #ddd, #d7d7d7 and
+   #d0d7de in the same rail — and #d0d7de is a cool grey, which reads slightly
+   blue against a warm palette. */
+
+/* The sidebar keeps Go Back and Continue, and nothing else. Back at the left
+   edge, forward at the right: the row reads in the direction of travel, and
+   Continue lands under the reader's thumb on the side it will always be on. */
+.submit-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+/* Bulma's .buttons puts a right margin on every .button but the last. It does
+   not bite here only because these carry .ds-btn and not .button — kept as a
+   guard in case someone restores the legacy class alongside. */
+.submit-nav .ds-btn:not(:last-child) { margin-right: 0; }
+
+/* --- 10. In-progress ---------------------------------------------------------
+   Next to the button that started the work, not an overlay. The work is scoped
+   to one action, so the feedback belongs at that action; an overlay would imply
+   the whole page is unusable.
+
+   The text is what carries the state. The spinner is decoration and disappears
+   under reduced motion, per DESIGN-POLICIES: reduced motion covers everything,
+   and a spinner is exactly the kind of unnecessary movement it is aimed at. */
+.button.is-processing {
+  cursor: progress;
+  opacity: 0.75;
+}
+.spinner {
+  display: inline-block;
+  width: 0.875em;
+  height: 0.875em;
+  vertical-align: -0.1em;
+  margin-right: 0.4em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation: none; border-right-color: currentColor; opacity: 0.5; }
+}
+
+/* --- 11. Mockup-only scaffolding ---------------------------------------------
+   The scenario switcher. It is a demonstration harness, not a proposal.
+   DELETE this section and the .mockup-bar markup when porting. */
+.mockup-bar {
+  position: sticky;
+  top: 0;
+  flex: none;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: #1f2933;
+  color: #fff;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 0.8125rem;
+}
+.mockup-bar strong { font-weight: 700; margin-right: 0.25rem; }
+.mockup-bar .mockup-note { opacity: 0.7; margin-left: auto; }
+.mockup-bar button {
+  padding: 0.3rem 0.7rem;
+  background: #3a4753;
+  border: 1px solid #55606c;
+  border-radius: 4px;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+.mockup-bar button:hover { background: #4a5967; }
+.mockup-bar button[aria-pressed="true"] {
+  background: #fff;
+  border-color: #fff;
+  color: #1f2933;
+  font-weight: 700;
+}
+.mockup-bar button:focus-visible { outline: 2px solid #ffd54f; outline-offset: 2px; }

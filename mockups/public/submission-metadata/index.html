@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add or Edit Metadata — validation mockup</title>
+
+<!-- Current submission-system stylesheets, unchanged. -->
+<link rel="stylesheet" href="./arxivstyle.css">
+<link rel="stylesheet" href="./submit.css">
+<link rel="stylesheet" href="./base_edit.css">
+<link rel="stylesheet" href="./submit_overrides.css">
+
+<!-- The proposal. Everything new is in this one file. -->
+<link rel="stylesheet" href="./mockup-validation.css">
+</head>
+<body>
+
+<!-- ==========================================================================
+     MOCKUP SCAFFOLDING — not part of the proposal. Delete when porting.
+     ========================================================================== -->
+<div class="mockup-bar" role="region" aria-label="Mockup scenario switcher">
+  <strong>Scenario:</strong>
+  <button type="button" data-scenario="unprocessed" aria-pressed="true">Not yet processed</button>
+  <button type="button" data-scenario="errors"      aria-pressed="false">Blocking errors</button>
+  <button type="button" data-scenario="mixed"       aria-pressed="false">Errors + warnings</button>
+  <button type="button" data-scenario="warnings"    aria-pressed="false">Warnings only</button>
+  <button type="button" data-scenario="clean"       aria-pressed="false">All clear</button>
+  <span class="mockup-note">Select a scenario, or use the Process button below.</span>
+</div>
+
+
+<div class="layout-container">
+
+  <!-- ==========================================================================
+       SIDEBAR. Same three blocks as the current page: controls, explanatory
+       copy, controls again.
+
+       The Process button appears in BOTH control blocks. Someone who fills in
+       only the required fields never reaches the foot of the form, so a single
+       Process button at the bottom would go unseen. The sidebar is also where
+       Go Back and Continue already live, which keeps every action in one place
+       instead of scattering them between the form and the rail.
+       ========================================================================== -->
+  <div class="info-container">
+
+    <div class="info-container-top">
+      <div class="buttons submit-nav" role="navigation" aria-label="Submission form controls">
+          <button name="action" class="ds-btn ds-btn-secondary" form="form" value="previous" type="button">Go Back</button>
+          <!-- The host wraps the button so the pointer can travel from button to
+               tooltip without leaving the hover target (WCAG 1.4.13, hoverable).
+               The gap between them is padding on the tooltip, not margin, for
+               the same reason.
+
+               The sr-only span is always in the accessibility tree, so
+               aria-describedby resolves whether or not the visual tooltip
+               happens to be showing. Both are written from one string in JS, so
+               they cannot drift. -->
+          <span class="ds-tooltip-host">
+            <button name="action" class="ds-btn ds-btn-primary" form="form" value="next" type="button"
+                    data-continue aria-disabled="true"
+                    aria-describedby="continue-why-top">Continue</button>
+            <span class="ds-tooltip" data-continue-tip aria-hidden="true" hidden>
+              <span class="ds-tooltip-body"></span>
+            </span>
+            <span class="is-sr-only" id="continue-why-top" data-continue-reason></span>
+          </span>
+        </div>
+    </div>
+
+    <div class="info-container-middle">
+      <div class="message-body">
+        <h2>Editing metadata after submitting:</h2>
+        <p>Once your submission has been announced, amendments to the
+          <em>core metadata</em> may only be made through
+          <a href="https://arxiv.org/help/replace">replacement</a> or
+          <a href="https://arxiv.org/help/withdraw">withdrawal</a>.</p>
+        <p>Non-core metadata <a href="https://arxiv.org/help/jref">can be edited at
+          any time</a> after announcement and without a new revision:</p>
+        <ul>
+          <li>Journal reference</li>
+          <li>DOI</li>
+          <li>MSC or ACM classification</li>
+          <li>Report number</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-container-bottom">
+      <div class="buttons submit-nav" role="navigation" aria-label="Submission form controls">
+          <button name="action" class="ds-btn ds-btn-secondary" form="form" value="previous" type="button">Go Back</button>
+          <span class="ds-tooltip-host">
+            <button name="action" class="ds-btn ds-btn-primary" form="form" value="next" type="button"
+                    data-continue aria-disabled="true"
+                    aria-describedby="continue-why-bottom">Continue</button>
+            <span class="ds-tooltip" data-continue-tip aria-hidden="true" hidden>
+              <span class="ds-tooltip-body"></span>
+            </span>
+            <span class="is-sr-only" id="continue-why-bottom" data-continue-reason></span>
+          </span>
+        </div>
+    </div>
+
+  </div>
+
+  <!-- ==========================================================================
+       MAIN COLUMN. Summary, then the form.
+       ========================================================================== -->
+  <div class="main-content">
+    <h1 class="title is-4">Add or edit metadata</h1>
+
+    <!-- PAGE-LEVEL SUMMARY. Above the first field. Server-rendered.
+         tabindex="-1" so focus can move here after processing.
+         aria-live="polite" so the result is announced when it changes. -->
+    <div id="form-summary"
+         role="status"
+         aria-live="polite"
+         tabindex="-1"
+         hidden></div>
+
+    <!-- Action row: something on the left, actions on the right, anchored to
+         the form by the rule beneath it. Same structure as the admin-console
+         paper-details mockup. -->
+    <div class="form-actions form-actions-split">
+      <p class="required-legend">
+        Fields marked <span class="req-star">*</span> are required.
+      </p>
+      <button type="button" class="ds-btn ds-btn-primary" data-process>Process metadata</button>
+    </div>
+    <hr class="form-rule top">
+
+    <form id="form" method="POST" action="#">
+        <div class="field">
+          <div class="control">
+            <label class="label field-required" for="title">Title</label>
+            <p class="help has-text-grey is-marginless">Unicode, TeX accent characters, and MathJax are supported. <a href="https://arxiv.org/help/prep">See title formatting help.</a></p>
+            <input class="input" id="title" name="title" type="text"
+                   required aria-required="true"
+                   value="Fake  title  with   extra spaces">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <label class="label field-required" for="authors_display">Authors</label>
+            <p class="help has-text-grey is-marginless">Use <code>GivenName(s) FamilyName(s)</code> or <code>I. FamilyName</code>. Separate individual authors with a comma or the word &ldquo;and&rdquo;. <a href="https://arxiv.org/help/prep">See author name formatting help.</a></p>
+            <textarea class="textarea" id="authors_display" name="authors_display"
+                      required aria-required="true">fake author</textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <label class="label field-required" for="abstract">Abstract</label>
+            <p class="help has-text-grey is-marginless">Limit of 1920 characters. Unicode, TeX accent characters, and MathJax are supported. <a href="https://arxiv.org/help/prep">See abstract formatting help.</a></p>
+            <textarea class="textarea" id="abstract" name="abstract" rows="6"
+                      required aria-required="true">Abstract: We study the convergence behaviour of stochastic gradient methods on non-convex objectives arising in deep network training. Existing analyses typically assume bounded gradient noise, an assumption that is violated in practice by the heavy-tailed gradient distributions observed in transformer architectures. We relax this assumption and prove convergence under a weaker moment condition, obtaining rates that degrade gracefully as the tail index decreases.&lt;br&gt;Our analysis introduces a coupling argument that relates the discrete iterates to a continuous-time surrogate, avoiding the uniform boundedness requirements of prior work. We further show that gradient clipping, widely used as a \em heuristic, admits a principled interpretation in this framework as a bias-variance trade-off controlled by the clipping threshold. Data and code are available at https://example.org/heavy-tail-sgd. Empirically, we validate the predicted rates on language modelling and image classification benchmarks, and find that the measured tail indices fall within the regime our theory covers.</textarea>
+          </div>
+        </div>
+
+        <!-- Optional from here down. Note there is no "optional" tag: the
+             required legend above the form carries that information once,
+             instead of six times. -->
+
+        <div class="field">
+          <div class="control">
+            <label class="label optional" for="comments">Comments<span class="label-optional">(optional)</span></label>
+            <p class="help has-text-grey is-marginless">Supplemental information such as number of pages or figures, conference information.</p>
+            <input class="input" id="comments" name="comments" type="text" value="">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <label class="label optional" for="doi">DOI<span class="label-optional">(optional)</span></label>
+            <p class="help has-text-grey is-marginless">Full DOI of the version of record.</p>
+            <input class="input" id="doi" name="doi" type="text" value="">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <label class="label optional" for="journal_ref">Journal reference<span class="label-optional">(optional)</span></label>
+            <p class="help has-text-grey is-marginless">See <a href="https://arxiv.org/help/jref">the arXiv help pages</a> for details.</p>
+            <input class="input" id="journal_ref" name="journal_ref" type="text" value="">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <label class="label optional" for="report_num">Report number<span class="label-optional">(optional)</span></label>
+            <p class="help has-text-grey is-marginless">See <a href="https://arxiv.org/help/jref">the arXiv help pages</a> for details.</p>
+            <input class="input" id="report_num" name="report_num" type="text" value="">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <label class="label optional" for="acm_class">ACM classification<span class="label-optional">(optional)</span></label>
+            <p class="help has-text-grey is-marginless"><span class="hint-example-label">Example:</span> <code>F.2.2; I.2.7</code></p>
+            <input class="input" id="acm_class" name="acm_class" type="text" value="s 25">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <label class="label optional" for="msc_class">MSC classification<span class="label-optional">(optional)</span></label>
+            <p class="help has-text-grey is-marginless"><span class="hint-example-label">Example:</span> <code>14J60 (Primary), 14F05, 14J26 (Secondary)</code></p>
+            <input class="input" id="msc_class" name="msc_class" type="text" value="">
+          </div>
+        </div>
+
+    </form>
+
+    <div class="form-actions form-actions-end">
+      <button type="button" class="ds-btn ds-btn-primary" data-process>Process metadata</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="./mockup-validation.js"></script>
+</body>
+</html>
