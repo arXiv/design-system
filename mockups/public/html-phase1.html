@@ -3450,8 +3450,9 @@ body.mg-paranum .ltx_para > .mg-mark { opacity: 1; }
 .mg-a11y-toggle label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .mg-a11y-toggle input { accent-color: var(--arxiv-link-blue); }
 /* Headings join the same language: their permalink button moves from
-   inline-after-text into the margin pill position. Icon-only — the
-   heading already shows its own number. */
+   inline-after-text into the margin pill position. Icon plus the word
+   "Permalink", matching the formula and figure chips — icon-only proved
+   too small to notice (Shamsi, 2026-08-25). */
 h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { position: relative; }
 .heading-permalink.mg-mark { top: 50%; transform: translateY(-50%); margin: 0; padding: 7px 8px; opacity: 0; }
 h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hover .heading-permalink.mg-mark { opacity: 1; }
@@ -8565,16 +8566,16 @@ We thus see that</p>
       btn.className = 'heading-permalink mg-mark';
       btn.setAttribute('aria-label', 'Copy link to section ' + titleText);
       btn.setAttribute('title', 'Copy link to this section');
-      btn.innerHTML = ICON_LINK;
+      btn.innerHTML = ICON_LINK + '<span>Permalink</span>';
       btn.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         var url = window.location.href.split('#')[0] + '#' + id;
         if (navigator.clipboard) navigator.clipboard.writeText(url);
-        btn.innerHTML = ICON_CHECK;
+        btn.innerHTML = ICON_CHECK + '<span>Copied</span>';
         btn.setAttribute('title', 'Copied!');
         setTimeout(function() {
-          btn.innerHTML = ICON_LINK;
+          btn.innerHTML = ICON_LINK + '<span>Permalink</span>';
           btn.setAttribute('title', 'Copy link to this section');
         }, 1500);
       });
