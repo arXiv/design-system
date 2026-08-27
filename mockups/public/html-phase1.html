@@ -3387,10 +3387,12 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
    │  24px floor via padding + negative margin (DESIGN-POLICIES).     │
    │                                                                  │
    │  Visibility and WCAG: reveal-on-hover is conformant because the  │
-   │  same controls are focus-revealed and keyboard-operable, and the │
-   │  "Show paragraph markers" toggle renders persistent pills for    │
-   │  keyboard, touch, and reviewer use. Hover popover is dismissible │
-   │  (Esc) and persistent while hovered (SC 1.4.13).                 │
+   │  same controls are focus-revealed and keyboard-operable, tap     │
+   │  serves touch, and the popover is dismissible (Esc) and          │
+   │  persistent while hovered (SC 1.4.13). A persistent-markers      │
+   │  toggle existed briefly and was removed 2026-08-26: on-demand    │
+   │  reveal shows readers what they need when they want it, and a    │
+   │  bare ¶ icon in the nav read as noise, not meaning.              │
    │                                                                  │
    │  Open question for LaTeXML review, ON PURPOSE: these are         │
    │  S2.p3-style converter IDs; segmentation can renumber across     │
@@ -3437,7 +3439,6 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 .ltx_para:hover .mg-mark, .mg-mark:focus-visible, .ltx_para.is-linking .mg-mark, .ltx_para.is-active .mg-mark { opacity: 1; }
 .mg-mark:hover { background: var(--arxiv-card-grey); color: var(--arxiv-link-blue); }
 .mg-mark:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; opacity: 1; }
-body.mg-paranum .ltx_para > .mg-mark { opacity: 1; }
 /* Scope rule: spans the whole (possibly math-interrupted) paragraph. */
 .ltx_para::before {
   content: ""; position: absolute; left: -14px; top: 20px; bottom: 2px;
@@ -3467,10 +3468,6 @@ body.mg-paranum .ltx_para > .mg-mark { opacity: 1; }
 }
 .mg-para-pop button:hover { background: var(--arxiv-card-grey); }
 .mg-para-pop .ftn-popover-title { font-family: var(--arxiv-font-mono); text-transform: none; letter-spacing: 0; padding-left: 9px; }
-/* Persistent-marker mode places pills inline, so its popover flows inline too. */
-.mg-para-pop.is-inline { position: static; margin: 6px 0; }
-.nav-icon-glyph { font-size: 14px; font-weight: 600; line-height: 1; opacity: 0.65; }
-#mg-paranum-toggle[aria-pressed="true"] { background: var(--arxiv-active-bg); color: var(--arxiv-repository-brown); }
 /* Headings join the same language: their permalink button moves from
    inline-after-text into the margin pill position. Icon plus the word
    "Permalink", matching the formula and figure chips — icon-only proved
@@ -3498,7 +3495,6 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
   .ltx_para.is-active .mg-mark,
   .ltx_para.is-linking .mg-mark { display: inline-flex; opacity: 1; }
   .mg-stick .mg-para-pop { left: auto; right: 0; }
-  body.mg-paranum .ltx_para > .mg-mark { display: inline-flex; position: static; margin: 0 7px 2px 0; transform: none; opacity: 1; }
   .ltx_para::before { display: none; }
   /* Heading pill placement on narrow: inline after the heading text
      (headings are one-liners and self-delimiting, so they skip the
@@ -4371,15 +4367,6 @@ html[data-theme="dark"] .ds-funder-logo {
            canonical home, so the route back rides in the always-visible
            tools bar. Arrow icon + text label — the label carries the
            meaning; an arrow alone reads as browser-back. -->
-      <!-- Paragraph-marker toggle. Moved here from the Accessibility
-           disclosure (2026-08-26): permalinks are a reading feature, not
-           an accessibility feature, and a toggle buried in a panel most
-           readers never open is not discoverable. The tools bar is
-           always visible and is where reading tools live. -->
-      <button type="button" id="mg-paranum-toggle" aria-pressed="false" title="Show paragraph markers">
-        <span class="nav-icon nav-icon-glyph" aria-hidden="true">¶</span>
-        <span class="nav-label">Markers</span>
-      </button>
       <a class="mg-abs-link" href="https://arxiv.org/abs/2604.22725v1" title="Back to abstract">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
         <span class="nav-label">Abstract</span>
@@ -8648,7 +8635,7 @@ We thus see that</p>
       btn.className = 'heading-permalink mg-mark';
       btn.setAttribute('aria-label', 'Copy link to section ' + titleText);
       btn.setAttribute('title', 'Copy link to this section');
-      btn.innerHTML = ICON_LINK + '<span>Section permalink</span>';
+      btn.innerHTML = ICON_LINK + '<span>Permalink</span>';
       btn.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -8657,7 +8644,7 @@ We thus see that</p>
         btn.innerHTML = ICON_CHECK + '<span>Copied</span>';
         btn.setAttribute('title', 'Copied!');
         setTimeout(function() {
-          btn.innerHTML = ICON_LINK + '<span>Section permalink</span>';
+          btn.innerHTML = ICON_LINK + '<span>Permalink</span>';
           btn.setAttribute('title', 'Copy link to this section');
         }, 1500);
       });
@@ -9451,17 +9438,17 @@ We thus see that</p>
     rail.appendChild(stick);
     return rail;
   }
-  function makePill(para, compact) {
-    /* Two voices (Shamsi, 2026-08-26): the transient hover/tap pill says
-       what it is — "Paragraph permalink" — because it can appear near a
-       heading's "Section permalink" and the two must be tellable apart.
-       Persistent-marker mode keeps the compact number: a reviewer
-       scanning the margin needs "2.3", not a hundred repeated labels.
-       The full locator is always in the popover title and aria-label. */
+  function makePill(para) {
+    /* One voice (settled 2026-08-26): objects whose numbers appear in the
+       text — headings, figures, equations — say "Permalink"; the
+       paragraph, whose number appears nowhere else in the page, shows
+       its number. The pilcrow makes a lone pill self-explanatory; the
+       words live in the tooltip, the aria-label, and the popover title. */
     var b = document.createElement("button");
     b.className = "mg-mark"; b.type = "button";
-    b.innerHTML = ICON + '<span>' + (compact ? num(para.id) : "Paragraph permalink") + "</span>";
+    b.innerHTML = ICON + '<span>\u00b6 ' + num(para.id) + "</span>";
     b.setAttribute("aria-label", "Paragraph permalink \u2014 " + locator(para.id));
+    b.setAttribute("title", "Paragraph permalink");
     b.addEventListener("click", function () { openPop(para); });
     return b;
   }
@@ -9487,8 +9474,7 @@ We thus see that</p>
       });
     });
     var stick = para.querySelector(".mg-stick");
-    if (stick) { stick.appendChild(pop); }
-    else { pop.classList.add("is-inline"); var pill = para.querySelector(".mg-mark"); para.insertBefore(pop, pill ? pill.nextSibling : para.firstChild); }
+    if (stick) stick.appendChild(pop);
     para.classList.add("is-linking");
     pop.querySelector("button[data-copy]").focus();
   }
@@ -9496,7 +9482,6 @@ We thus see that</p>
   /* Hover affordance: one shared rail, moved to the hovered paragraph. */
   var hoverRail = null;
   document.addEventListener("mouseover", function (e) {
-    if (document.body.classList.contains("mg-paranum")) return;
     var para = e.target.closest ? e.target.closest(".ltx_document .ltx_para[id]") : null;
     if (!para || para.querySelector(".mg-para-pop")) return;
     if (!hoverRail || hoverRail.parentElement !== para) {
@@ -9510,32 +9495,6 @@ We thus see that</p>
     if (!e.target.closest(".mg-para-pop") && !e.target.closest(".mg-mark")) closePop();
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closePop(); });
-
-  /* Review mode: persistent pills on every paragraph, keyboard-operable. */
-  var toggle = document.getElementById("mg-paranum-toggle");
-  var injected = false;
-  function injectAll() {
-    if (injected) return; injected = true;
-    if (hoverRail) { hoverRail.remove(); hoverRail = null; }
-    paras.forEach(function (para) {
-      if (!para.querySelector(".mg-mark")) para.insertBefore(makePill(para, true), para.firstChild);
-    });
-  }
-  function setMode(on) {
-    if (on) injectAll();
-    document.body.classList.toggle("mg-paranum", on);
-    try { localStorage.setItem("arxiv_html_paper_paranum", on ? "on" : "off"); } catch (e) {}
-  }
-  if (toggle) {
-    toggle.addEventListener("click", function () {
-      var on = toggle.getAttribute("aria-pressed") !== "true";
-      toggle.setAttribute("aria-pressed", on ? "true" : "false");
-      setMode(on);
-    });
-    var saved = null;
-    try { saved = localStorage.getItem("arxiv_html_paper_paranum"); } catch (e) {}
-    if (saved === "on") { toggle.setAttribute("aria-pressed", "true"); setMode(true); }
-  }
 
   /* Tap-to-activate, gated on INPUT capability rather than width: it
      runs wherever hover does not exist, at any viewport size. On wide
@@ -9554,7 +9513,6 @@ We thus see that</p>
   }
   document.addEventListener("click", function (e) {
     if (!window.matchMedia("(hover: none)").matches) return;
-    if (document.body.classList.contains("mg-paranum")) return;
     if (e.target.closest("a, button, .mg-para-pop")) return;
     var el = e.target.closest(".ltx_document .ltx_para[id], h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection");
     if (el && el.tagName !== "DIV" && !el.querySelector(".heading-permalink")) el = null;
