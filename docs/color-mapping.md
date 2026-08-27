@@ -226,6 +226,10 @@ Every tint in the system belongs to one of two families: the **warm tints** (Rep
   - **Phase 1 (spinout):** Black header. Clean break from the red era.
   - **Phase 2 (later):** Transition to Repository Brown `#1c1a17`. Introduced after users have adjusted to the new minimal header.
 
+## Which text is safe on which surface
+
+The full pairing table — every text-role token against every surface, measured in both modes — lives on [colors.html](colors.html), in the "Which text is safe on which surface" section. It is generated from the stylesheets by `verification/check-contrast.py`, which fails when the table and the tokens disagree; regenerate rather than hand-edit. The short rule the table encodes: text colors come from the text tiers (primary, secondary, links, status foregrounds); the border, disabled, and UI tiers are never for reading text, however close their ratios look.
+
 ## Open questions
 
 - [ ] **Archival Blue shift** — optionally shift `#1f5e96` for more differentiation from Link Blue `#1565c0` in its secondary-accent role. (The public *primary* button is settled: Open Blue — see Decisions made.)
