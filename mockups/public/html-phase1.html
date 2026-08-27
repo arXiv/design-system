@@ -3126,10 +3126,11 @@ html:not(.js) .reading-progress { display: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .heading-permalink { transition: none; }
 }
-/* Touch devices have no hover: keep the affordance faintly visible so
-   it's discoverable at all. */
+/* Touch devices have no hover: the pill is fully visible there. (An
+   earlier faint 0.45 treatment is superseded — half-visible controls
+   read as disabled, and the pill is quiet enough at full strength.) */
 @media (hover: none) {
-  .heading-permalink { opacity: 0.45; }
+  .heading-permalink { opacity: 1; }
 }
 @media print {
   .heading-permalink { display: none !important; }
@@ -3455,6 +3456,8 @@ body.mg-paranum .ltx_para > .mg-mark { opacity: 1; }
 .mg-a11y-toggle { margin: 8px 0 0; padding-top: 9px; border-top: 1px solid var(--arxiv-border-light); font-size: 0.82rem; }
 .mg-a11y-toggle label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .mg-a11y-toggle input { accent-color: var(--arxiv-link-blue); }
+.nav-icon-glyph { font-size: 14px; font-weight: 600; line-height: 1; opacity: 0.65; }
+#mg-paranum-toggle[aria-pressed="true"] { background: var(--arxiv-active-bg); color: var(--arxiv-repository-brown); }
 /* Headings join the same language: their permalink button moves from
    inline-after-text into the margin pill position. Icon plus the word
    "Permalink", matching the formula and figure chips — icon-only proved
@@ -3463,11 +3466,26 @@ h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { posi
 .heading-permalink.mg-mark { top: 50%; transform: translateY(-50%); margin: 0; padding: 7px 8px; opacity: 0; }
 h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hover .heading-permalink.mg-mark { opacity: 1; }
 @media (max-width: 1200px) {
+  /* No margin space, and touch has no hover — so paragraphs adopt the
+     tap-to-activate grammar figures and formulas already taught: tap a
+     paragraph, it outlines (the outline does the scope rule's job here,
+     with zero layout shift), and its pill appears as a tab straddling
+     the top edge. Tap the pill for the popover. Shamsi's design,
+     2026-08-26. */
   .ltx_para > .mg-mark { display: none; }
-  body.mg-paranum .ltx_para > .mg-mark { display: inline-flex; position: static; margin: 0 7px 2px 0; transform: none; }
+  .ltx_para.is-active { outline: 1px solid var(--arxiv-pill-border); outline-offset: 8px; border-radius: 2px; }
+  .ltx_para.is-active > .mg-mark,
+  .ltx_para.is-linking > .mg-mark {
+    display: inline-flex; opacity: 1;
+    right: 4px; top: -20px; left: auto; transform: none;
+  }
+  body.mg-paranum .ltx_para > .mg-mark { display: inline-flex; position: static; margin: 0 7px 2px 0; transform: none; opacity: 1; }
   .ltx_para::before { display: none; }
-  .mg-para-pop { right: auto; left: 0; }
-  .heading-permalink.mg-mark { position: static; transform: none; margin-left: 8px; }
+  .mg-para-pop { right: 4px; left: auto; top: 12px; }
+  /* Headings: always show the pill inline on narrow — hover-revealed
+     controls do not exist on touch, and headings are few enough that a
+     small labelled pill is discoverability, not clutter. */
+  .heading-permalink.mg-mark { position: static; transform: none; margin-left: 8px; opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .mg-mark, .ltx_para::before { transition: none; } }
 
@@ -4259,12 +4277,6 @@ html[data-theme="dark"] .ds-funder-logo {
               <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg>
               <span>Alt text (partial)</span>
             </p>
-            <!-- Review mode: persistent, keyboard-reachable ¶ anchors in the
-                 left margin (inline under 1200px). Pairs with the hover
-                 affordance — see the PARAGRAPH PERMALINKS CSS block. -->
-            <p class="mg-a11y-toggle">
-              <label><input type="checkbox" id="mg-paranum-toggle"> Show paragraph markers</label>
-            </p>
           </div>
         </details>
         <details class="mg-acc">
@@ -4335,6 +4347,15 @@ html[data-theme="dark"] .ds-funder-logo {
            canonical home, so the route back rides in the always-visible
            tools bar. Arrow icon + text label — the label carries the
            meaning; an arrow alone reads as browser-back. -->
+      <!-- Paragraph-marker toggle. Moved here from the Accessibility
+           disclosure (2026-08-26): permalinks are a reading feature, not
+           an accessibility feature, and a toggle buried in a panel most
+           readers never open is not discoverable. The tools bar is
+           always visible and is where reading tools live. -->
+      <button type="button" id="mg-paranum-toggle" aria-pressed="false" title="Show paragraph markers">
+        <span class="nav-icon nav-icon-glyph" aria-hidden="true">¶</span>
+        <span class="nav-label">Markers</span>
+      </button>
       <a class="mg-abs-link" href="https://arxiv.org/abs/2604.22725v1" title="Back to abstract">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
         <span class="nav-label">Abstract</span>
@@ -9465,11 +9486,37 @@ We thus see that</p>
     try { localStorage.setItem("arxiv_html_paper_paranum", on ? "on" : "off"); } catch (e) {}
   }
   if (toggle) {
-    toggle.addEventListener("change", function () { setMode(toggle.checked); });
+    toggle.addEventListener("click", function () {
+      var on = toggle.getAttribute("aria-pressed") !== "true";
+      toggle.setAttribute("aria-pressed", on ? "true" : "false");
+      setMode(on);
+    });
     var saved = null;
     try { saved = localStorage.getItem("arxiv_html_paper_paranum"); } catch (e) {}
-    if (saved === "on") { toggle.checked = true; setMode(true); }
+    if (saved === "on") { toggle.setAttribute("aria-pressed", "true"); setMode(true); }
   }
+
+  /* Narrow screens: tap-to-activate, the grammar figures and formulas
+     already use. A tap on paragraph text (not on a link or button)
+     outlines the paragraph and reveals its pill; tapping elsewhere or
+     Escape clears it. */
+  var activePara = null;
+  function clearActive() {
+    if (activePara) { activePara.classList.remove("is-active"); activePara = null; }
+  }
+  document.addEventListener("click", function (e) {
+    if (window.innerWidth > 1200) return;
+    if (document.body.classList.contains("mg-paranum")) return;
+    if (e.target.closest("a, button, .mg-para-pop")) return;
+    var para = e.target.closest(".ltx_document .ltx_para[id]");
+    if (!para) { clearActive(); return; }
+    if (para === activePara) { clearActive(); closePop(); return; }
+    clearActive(); closePop();
+    activePara = para;
+    para.classList.add("is-active");
+    if (!para.querySelector(".mg-mark")) para.appendChild(makePill(para));
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") clearActive(); });
 })();
 </script>
 </body></html>
