@@ -3414,7 +3414,11 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   margin: -3px 0; padding-top: 7px; padding-bottom: 7px;
   opacity: 0; transition: opacity 0.12s;
 }
-.mg-mark svg { width: 11px; height: 11px; flex: none; }
+/* ar5iv sets svg { z-index:-1 } globally; without the explicit lift the
+   chain icon renders BEHIND the pill's surface and the pill shows only
+   its number (caught by Shamsi on the live page, 2026-08-25). Same
+   countermeasure as .ds-btn svg and .mg-cite-copy svg. */
+.mg-mark svg { width: 11px; height: 11px; flex: none; position: relative; z-index: 1; }
 .ltx_para:hover > .mg-mark, .mg-mark:focus-visible, .ltx_para.is-linking > .mg-mark { opacity: 1; }
 .mg-mark:hover { background: var(--arxiv-card-grey); color: var(--arxiv-link-blue); }
 .mg-mark:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; opacity: 1; }
@@ -3422,7 +3426,10 @@ body.mg-paranum .ltx_para > .mg-mark { opacity: 1; }
 /* Scope rule: spans the whole (possibly math-interrupted) paragraph. */
 .ltx_para::before {
   content: ""; position: absolute; left: -14px; top: 20px; bottom: 2px;
-  width: 2px; border-radius: 1px; background: var(--arxiv-tint-border);
+  /* Pill-border grey, not tint-border: the blue read as a primary-action
+     signal and drew too much attention (Shamsi, 2026-08-25). Matching the
+     pill's own border makes rule and pill read as one quiet object. */
+  width: 2px; border-radius: 1px; background: var(--arxiv-pill-border);
   opacity: 0; transition: opacity 0.12s; pointer-events: none;
 }
 .ltx_para:hover::before, .ltx_para.is-linking::before { opacity: 1; }
