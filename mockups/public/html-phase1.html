@@ -3434,11 +3434,16 @@ body.mg-paranum .ltx_para > .mg-mark { opacity: 1; }
   opacity: 0; transition: opacity 0.12s; pointer-events: none;
 }
 .ltx_para:hover::before, .ltx_para.is-linking::before { opacity: 1; }
+/* Joined to the footnote/citation popover family (2026-08-25): tint-light
+   surface, family title and close-button classes reused verbatim, so all
+   arXiv-layer transient panels read as one system. It had been built on
+   plain surface-white before the family was noticed — the same drift the
+   pattern rules exist to prevent. */
 .mg-para-pop {
-  position: absolute; right: calc(100% + 8px); top: 24px; z-index: 40;
-  display: flex; flex-direction: column; min-width: 200px;
-  background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light);
-  border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); padding: 5px;
+  position: absolute; right: calc(100% + 8px); top: 24px; z-index: 50;
+  display: flex; flex-direction: column; min-width: 210px;
+  background: var(--arxiv-tint-light); border: 1px solid var(--arxiv-tint-border);
+  border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); padding: 10px 8px 6px;
 }
 .mg-para-pop button {
   text-align: left; border: 0; background: none;
@@ -3446,7 +3451,7 @@ body.mg-paranum .ltx_para > .mg-mark { opacity: 1; }
   color: var(--arxiv-repository-brown); padding: 6px 9px; border-radius: 4px; cursor: pointer;
 }
 .mg-para-pop button:hover { background: var(--arxiv-card-grey); }
-.mg-para-pop .loc { font-family: var(--arxiv-font-mono); font-size: 11px; color: var(--arxiv-library-grey); padding: 3px 9px 6px; }
+.mg-para-pop .ftn-popover-title { font-family: var(--arxiv-font-mono); text-transform: none; letter-spacing: 0; padding-left: 9px; }
 .mg-a11y-toggle { margin: 8px 0 0; padding-top: 9px; border-top: 1px solid var(--arxiv-border-light); font-size: 0.82rem; }
 .mg-a11y-toggle label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .mg-a11y-toggle input { accent-color: var(--arxiv-link-blue); }
@@ -8450,9 +8455,11 @@ We thus see that</p>
       chips.appendChild(linkChip);
     }
 
-    // Narrow-only: at <1200px the right marginalia is hidden, so the
-    // alt-text affordances need a path here. View triggers an alert
-    // for the demo; in production this'd open a popover.
+    // Narrow-only: below the marginalia breakpoint the right margin is
+    // hidden, so the alt-text affordances need a path here. Opens the
+    // same popover family the footnotes use — glanceable content never
+    // gets a browser modal (that alert() was the one outlier in the
+    // popover family; retired 2026-08-25).
     if (altText) {
       var viewAlt = buildChip({
         icon: ICON_ALT,
@@ -8463,7 +8470,36 @@ We thus see that</p>
       viewAlt.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        alert('Alt text:\n\n' + altText);
+        var prev = document.querySelector('.alt-popover');
+        if (prev) { prev.remove(); return; }
+        var pop = document.createElement('div');
+        pop.className = 'ftn-popover alt-popover';
+        pop.setAttribute('role', 'region');
+        pop.setAttribute('aria-label', 'Alt text for this figure');
+        pop.innerHTML =
+          '<div class="ftn-popover-title">Alt text</div>' +
+          '<button type="button" class="ftn-popover-close" aria-label="Close alt text">&times;</button>' +
+          '<div></div>';
+        pop.lastElementChild.textContent = altText;
+        document.body.appendChild(pop);
+        var r = viewAlt.getBoundingClientRect();
+        var left = Math.min(Math.max(8, r.left), window.innerWidth - pop.offsetWidth - 8);
+        var top = r.bottom + 8;
+        if (top + pop.offsetHeight > window.innerHeight - 8) top = Math.max(8, r.top - pop.offsetHeight - 8);
+        pop.style.left = left + 'px';
+        pop.style.top = top + 'px';
+        function close() {
+          pop.remove();
+          document.removeEventListener('click', onDoc, true);
+          document.removeEventListener('keydown', onKey);
+          viewAlt.focus();
+        }
+        function onDoc(ev) { if (!pop.contains(ev.target) && ev.target !== viewAlt) close(); }
+        function onKey(ev) { if (ev.key === 'Escape') close(); }
+        pop.querySelector('.ftn-popover-close').addEventListener('click', function(ev) { ev.stopPropagation(); close(); });
+        setTimeout(function() { document.addEventListener('click', onDoc, true); }, 0);
+        document.addEventListener('keydown', onKey);
+        pop.querySelector('.ftn-popover-close').focus();
       });
       chips.appendChild(viewAlt);
     } else {
@@ -9377,12 +9413,14 @@ We thus see that</p>
     var loc = PAPER + " " + locator(para.id);
     var pop = document.createElement("div");
     pop.className = "mg-para-pop";
-    pop.innerHTML = '<button type="button" data-copy="url">Copy link</button>' +
-                    '<button type="button" data-copy="loc">Copy locator</button>' +
-                    '<span class="loc"></span>';
-    pop.querySelector(".loc").textContent = loc;
+    pop.innerHTML = '<div class="ftn-popover-title"></div>' +
+                    '<button type="button" class="ftn-popover-close" aria-label="Close">&times;</button>' +
+                    '<button type="button" data-copy="url">Copy link</button>' +
+                    '<button type="button" data-copy="loc">Copy locator</button>';
+    pop.querySelector(".ftn-popover-title").textContent = loc;
+    pop.querySelector(".ftn-popover-close").addEventListener("click", function (e) { e.stopPropagation(); closePop(); });
     pop.addEventListener("click", function (e) {
-      var b = e.target.closest("button"); if (!b) return;
+      var b = e.target.closest("button[data-copy]"); if (!b) return;
       copyText(b.getAttribute("data-copy") === "url" ? url : loc, function () {
         b.textContent = "Copied \u2713";
         setTimeout(closePop, 900);
@@ -9390,7 +9428,7 @@ We thus see that</p>
     });
     para.appendChild(pop);
     para.classList.add("is-linking");
-    pop.querySelector("button").focus();
+    pop.querySelector("button[data-copy]").focus();
   }
 
   /* Hover affordance: one shared pill, moved to the hovered paragraph. */
