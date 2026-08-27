@@ -3372,6 +3372,79 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   }
   a[href^="#"]::after { content: none; }
 }
+
+/* ┌──────────────────────────────────────────────────────────────────┐
+   │  PARAGRAPH PERMALINKS — left marginalia                          │
+   ├──────────────────────────────────────────────────────────────────┤
+   │  Decisions from the 2026-08 locator work, made visible for       │
+   │  review. Every paragraph already carries a converter-assigned ID │
+   │  (S2.p3). A quiet ¶ affordance in the LEFT margin exposes it:    │
+   │  hovering a paragraph reveals it; clicking offers the permalink  │
+   │  and a written locator ("arXiv:2604.22725v1 §2 ¶3"). The margins │
+   │  are the arXiv layer — equation chips already live beside the    │
+   │  math, so paragraph links take the left edge, small and subtle.  │
+   │                                                                  │
+   │  The "Show paragraph markers" toggle (Accessibility panel) turns │
+   │  on persistent, keyboard-reachable ¶ anchors for reviewers and   │
+   │  reading groups — the review-mode use case. Hover is a mouse     │
+   │  convenience; the toggle is the accessible, mobile-capable path. │
+   │                                                                  │
+   │  Open question for LaTeXML review, ON PURPOSE: these are         │
+   │  S2.p3-style converter IDs, and paragraph segmentation can       │
+   │  renumber across LaTeXML upgrades. If this ships, either the     │
+   │  tool commits to stable segmentation or the anchors move to      │
+   │  content-derived keys. See "Pinpoint citation" on               │
+   │  docs/outreach/html-papers.html.                                 │
+   │                                                                  │
+   │  JS-generated convenience layer: without JS the IDs still exist  │
+   │  and resolve; nothing here carries content. The hover affordance │
+   │  hides under 1200px (no margin space); toggle markers render     │
+   │  inline there instead.                                           │
+   └──────────────────────────────────────────────────────────────────┘ */
+.ltx_document .ltx_para { position: relative; }
+.mg-para-btn {
+  position: absolute; left: -30px; top: 1px;
+  width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  border: 0; border-radius: 4px; background: none;
+  color: var(--arxiv-library-grey);
+  font-family: var(--arxiv-font-sans); font-size: 13px; font-weight: 600;
+  cursor: pointer; opacity: 0; transition: opacity 0.12s;
+}
+.ltx_para:hover > .mg-para-btn, .mg-para-btn:focus-visible { opacity: 1; }
+.mg-para-btn:hover { color: var(--arxiv-link-blue); background: var(--arxiv-card-grey); }
+.mg-para-btn:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
+.mg-para-pop {
+  position: absolute; left: -8px; top: 25px; z-index: 40;
+  display: flex; flex-direction: column; min-width: 200px;
+  background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light);
+  border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); padding: 5px;
+}
+.mg-para-pop button {
+  text-align: left; border: 0; background: none;
+  font-family: var(--arxiv-font-sans); font-size: 12.5px; font-weight: 500;
+  color: var(--arxiv-repository-brown); padding: 6px 9px; border-radius: 4px; cursor: pointer;
+}
+.mg-para-pop button:hover { background: var(--arxiv-card-grey); }
+.mg-para-pop .loc { font-family: var(--arxiv-font-mono); font-size: 11px; color: var(--arxiv-library-grey); padding: 3px 9px 6px; }
+.mg-para-num {
+  position: absolute; left: -38px; top: 3px;
+  font-family: var(--arxiv-font-condensed); font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.03em; color: var(--arxiv-library-grey); text-decoration: none;
+  display: none;
+}
+body.mg-paranum .mg-para-num { display: inline-block; }
+.mg-para-num:hover, .mg-para-num:focus-visible { color: var(--arxiv-link-blue); }
+.mg-para-num:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
+.mg-a11y-toggle { margin: 8px 0 0; padding-top: 9px; border-top: 1px solid var(--arxiv-border-light); font-size: 0.82rem; }
+.mg-a11y-toggle label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.mg-a11y-toggle input { accent-color: var(--arxiv-link-blue); }
+@media (max-width: 1200px) {
+  .mg-para-btn { display: none; }
+  .mg-para-num { position: static; margin-right: 7px; }
+}
+@media (prefers-reduced-motion: reduce) { .mg-para-btn { transition: none; } }
+
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  DARK MODE                                                       │
    ├──────────────────────────────────────────────────────────────────┤
@@ -4159,6 +4232,12 @@ html[data-theme="dark"] .ds-funder-logo {
             <p class="mg-a11y-line partial">
               <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg>
               <span>Alt text (partial)</span>
+            </p>
+            <!-- Review mode: persistent, keyboard-reachable ¶ anchors in the
+                 left margin (inline under 1200px). Pairs with the hover
+                 affordance — see the PARAGRAPH PERMALINKS CSS block. -->
+            <p class="mg-a11y-toggle">
+              <label><input type="checkbox" id="mg-paranum-toggle"> Show paragraph markers</label>
             </p>
           </div>
         </details>
@@ -9225,6 +9304,92 @@ We thus see that</p>
 
   /* ── 6. Labs toggles — REMOVED for phase 1 along with the Related
      (arXiv Labs) band. See the parent mockup for the implementation. */
+})();
+</script>
+<script>
+(function () {
+  /* Paragraph permalinks — see the PARAGRAPH PERMALINKS CSS block for the
+     design decisions and the open LaTeXML stability question. */
+  var PAPER = "arXiv:2604.22725v1";
+  var paras = Array.prototype.slice.call(document.querySelectorAll(".ltx_document .ltx_para[id]"));
+
+  function locator(id) {
+    var m = id.match(/^([SA])(\d+)(?:\.SS(\d+))?(?:\.SSS(\d+))?\.p(\d+)$/);
+    if (!m) return id;
+    var sec = (m[1] === "A" ? "A" : "") + m[2] + (m[3] ? "." + m[3] : "") + (m[4] ? "." + m[4] : "");
+    return "\u00a7" + sec + " \u00b6" + m[5];
+  }
+  function paraNum(id) { var m = id.match(/\.p(\d+)$/); return m ? m[1] : ""; }
+  function copyText(t, done) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(done, done);
+    } else {
+      var ta = document.createElement("textarea");
+      ta.value = t; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta); done();
+    }
+  }
+  function closePop() { var p = document.querySelector(".mg-para-pop"); if (p) p.remove(); }
+
+  /* Hover affordance: one shared button, moved to the hovered paragraph. */
+  var btn = document.createElement("button");
+  btn.className = "mg-para-btn"; btn.type = "button"; btn.textContent = "\u00b6";
+  document.addEventListener("mouseover", function (e) {
+    var para = e.target.closest ? e.target.closest(".ltx_document .ltx_para[id]") : null;
+    if (!para || para.contains(document.querySelector(".mg-para-pop"))) return;
+    if (btn.parentElement !== para) { closePop(); para.appendChild(btn); }
+    btn.setAttribute("aria-label", "Permalink \u2014 " + locator(para.id));
+  });
+  btn.addEventListener("click", function () {
+    var para = btn.parentElement; if (!para) return;
+    closePop();
+    var url = location.origin + location.pathname + "#" + para.id;
+    var loc = PAPER + " " + locator(para.id);
+    var pop = document.createElement("div");
+    pop.className = "mg-para-pop";
+    pop.innerHTML = '<button type="button" data-copy="url">Copy link</button>' +
+                    '<button type="button" data-copy="loc">Copy locator</button>' +
+                    '<span class="loc"></span>';
+    pop.querySelector(".loc").textContent = loc;
+    pop.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      copyText(b.getAttribute("data-copy") === "url" ? url : loc, function () {
+        b.textContent = "Copied \u2713";
+        setTimeout(closePop, 900);
+      });
+    });
+    para.appendChild(pop);
+  });
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".mg-para-pop") && !e.target.closest(".mg-para-btn")) closePop();
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closePop(); });
+
+  /* Review mode: persistent keyboard-reachable markers, injected on first use. */
+  var toggle = document.getElementById("mg-paranum-toggle");
+  var injected = false;
+  function injectNums() {
+    if (injected) return; injected = true;
+    paras.forEach(function (para) {
+      var a = document.createElement("a");
+      a.className = "mg-para-num"; a.href = "#" + para.id;
+      a.textContent = "\u00b6" + paraNum(para.id);
+      a.setAttribute("aria-label", "Permalink \u2014 " + locator(para.id));
+      para.insertBefore(a, para.firstChild);
+    });
+  }
+  function setMode(on) {
+    if (on) injectNums();
+    document.body.classList.toggle("mg-paranum", on);
+    try { localStorage.setItem("arxiv_html_paper_paranum", on ? "on" : "off"); } catch (e) {}
+  }
+  if (toggle) {
+    toggle.addEventListener("change", function () { setMode(toggle.checked); });
+    var saved = null;
+    try { saved = localStorage.getItem("arxiv_html_paper_paranum"); } catch (e) {}
+    if (saved === "on") { toggle.checked = true; setMode(true); }
+  }
 })();
 </script>
 </body></html>
