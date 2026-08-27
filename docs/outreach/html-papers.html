@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HTML papers: accessibility &amp; usability — arXiv Design System</title>
+  <link rel="stylesheet" href="../fonts.css">
+  <link rel="stylesheet" href="../public/design-system.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: var(--arxiv-font-sans); color: var(--arxiv-repository-brown); background: var(--arxiv-warm-wash); margin: 0; font-size: 14px; line-height: 1.5; }
+    .page { max-width: 1000px; margin: 0 auto; padding: 28px 28px 80px; }
+    .page-header { margin: 28px 0 40px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
+    .page-header p { margin: 0; color: var(--arxiv-library-grey); font-size: 13px; max-width: 760px; }
+    .byline { font-size: 12px; color: var(--arxiv-library-grey); margin-top: 10px; }
+    .section { margin-bottom: 52px; }
+    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+    .section-desc { font-size: 13px; color: var(--arxiv-library-grey); margin: 0 0 18px; max-width: 760px; line-height: 1.55; }
+    a { color: var(--arxiv-link-blue); }
+    a:visited { color: var(--arxiv-link-visited); }
+
+    /* Two feature columns that stack on narrow screens. A grid of lists,
+       not a table: the two columns are parallel, not rows of pairs. */
+    .feature-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; align-items: start; }
+    .feature-col { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 20px 22px; }
+    .feature-col h2 { font-size: 16px; margin: 0 0 14px; padding-bottom: 10px; border-bottom: 2px solid var(--arxiv-open-blue); }
+    .feature-col ul { list-style: none; margin: 0; padding: 0; }
+    .feature-col li { margin: 0 0 14px; line-height: 1.55; }
+    .feature-col li:last-child { margin-bottom: 0; }
+    .feature-col strong { display: block; margin-bottom: 1px; }
+
+    .future { background: var(--arxiv-tint-light); border: 1px solid var(--arxiv-tint-border); border-radius: 8px; padding: 20px 22px; max-width: 820px; }
+    .future ul { margin: 10px 0 0; padding-left: 20px; }
+    .future li { margin-bottom: 10px; line-height: 1.55; }
+    .future li:last-child { margin-bottom: 0; }
+    .docs-nav { display: flex; align-items: center; gap: 4px 18px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
+    .nav-dd { position: relative; }
+    .nav-dd > summary { list-style: none; cursor: pointer; color: var(--arxiv-library-grey); padding: 3px 6px; border-radius: 4px; user-select: none; }
+    .nav-dd > summary::-webkit-details-marker { display: none; }
+    .nav-dd > summary::after { content: " \25BE"; font-size: 10px; }
+    .nav-dd > summary:hover, .nav-dd[open] > summary { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
+    .nav-dd > summary:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
+    .nav-dd-menu { position: absolute; left: 0; top: calc(100% + 6px); display: flex; flex-direction: column; min-width: 235px; background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); padding: 6px; z-index: 60; }
+    .nav-dd-menu a { color: var(--arxiv-repository-brown); text-decoration: none; padding: 6px 10px; border-radius: 4px; white-space: nowrap; }
+    .nav-dd-menu a:hover { background: var(--arxiv-card-grey); }
+    .nav-dd-menu a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: -2px; }
+    .nav-dd-menu a[aria-current="page"] { font-weight: 600; }
+    .nav-dd-group { font-family: var(--arxiv-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-grey-ui); padding: 8px 10px 2px; }
+  </style>
+</head>
+<body>
+<nav class="docs-nav" aria-label="Design system">
+  <a class="docs-nav-brand" href="../../index.html">arXiv Design System</a>
+  <details class="nav-dd">
+    <summary>Design Patterns</summary>
+    <div class="nav-dd-menu">
+      <a href="../colors.html">Colors</a>
+      <a href="../typography.html">Typography</a>
+      <a href="../spacing.html">Spacing</a>
+      <a href="../buttons.html">Buttons</a>
+      <a href="../alerts.html">Alerts</a>
+      <a href="../version-display.html">Versions</a>
+      <a href="../organizing-content.html">Organizing content</a>
+      <a href="../dark-mode.html">Dark mode</a>
+      <a href="../internal/metadata-panel-styles.html">Metadata panel</a>
+      <a href="../forms.html">Forms &amp; validation</a>
+      <a href="../tags.html">Tags</a>
+      <a href="../outreach/" aria-current="page">Outreach sites</a>
+    </div>
+  </details>
+  <details class="nav-dd">
+    <summary>Mockups</summary>
+    <div class="nav-dd-menu">
+      <a href="../../mockups/">All mockups</a>
+      <span class="nav-dd-group">Public</span>
+      <a href="../../mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+      <a href="../../mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+      <a href="../../mockups/public/optin-modal/">Labs opt-in modal</a>
+      <span class="nav-dd-group">Internal</span>
+      <a href="../../mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+      <a href="../../mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+      <a href="../../mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+      <a href="../../mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+    </div>
+  </details>
+  <details class="nav-dd">
+    <summary>Docs</summary>
+    <div class="nav-dd-menu">
+      <a href="../doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+      <a href="../brand.html">Brand &amp; vision</a>
+        <a href="../doc.html?src=docs/BRAND.md">Brand &amp; voice</a>
+      <a href="../doc.html?src=docs/typography.md">Typography spec</a>
+      <a href="../doc.html?src=docs/color-mapping.md">Color spec</a>
+      <a href="../doc.html?src=README.md">About this repo</a>
+    </div>
+  </details>
+</nav>
+<div class="page">
+  <header class="page-header">
+    <h1>Accessibility and usability on HTML papers</h1>
+    <p>How far can we push accessibility and usability on our HTML paper pages? This page is the
+    running answer: what the <a href="../../mockups/public/html-phase1.html">Phase&nbsp;1 mockup</a>
+    already demonstrates, and what we are reaching for next.</p>
+    <p class="byline">Shamsi Brinn and Deyan Ginev &middot; drafted 2026-07-30 &middot; published 2026-08-24</p>
+  </header>
+
+  <section class="section">
+    <div class="feature-cols">
+
+      <div class="feature-col">
+        <h2>Accessibility</h2>
+        <ul>
+          <li><strong>LaTeXML keeps improving, and everyone benefits at once.</strong>
+          The converter is the single biggest lever for accessible science: every release upgrades
+          the rendering of the whole corpus, not one paper at a time.</li>
+
+          <li><strong>Math in every format, within easy reach.</strong>
+          Rendered math, the TeX source, and a copy button sit together. Native MathML with Intent
+          annotations is preserved, so assistive technology reads the mathematics itself, not a
+          picture of it.</li>
+
+          <li><strong>Alt text made visible.</strong>
+          Figure descriptions are available to everyone, with more than one way for screen readers
+          to reach them. Where a description is missing, the page points to our best-practice
+          guides instead of staying silent.</li>
+
+          <li><strong>Permalinks for the parts of a paper.</strong>
+          Sections, headings, formulas, and figures each carry a durable link, so a colleague or a
+          citation can point at the exact spot rather than the whole paper.</li>
+
+          <li><strong>The abstract travels with the paper.</strong>
+          Screen reader users do not need a second trip to the abstract page: the metadata is
+          present where the paper is.</li>
+
+          <li><strong>Announced correctly.</strong>
+          The arXiv identifier is spelled out accurately by screen readers, and arXiv&rsquo;s own
+          name is announced as it should sound.</li>
+
+          <li><strong>Gentle nudges.</strong>
+          An accessibility panel and alt-text prompts. Subtle, but a start.</li>
+
+          <li><strong>WCAG 2.1 AA is our basement, not our ceiling.</strong>
+          Legal compliance is the floor; we build toward WCAG 2.2 AA.</li>
+
+          <li><strong>Focus stays where it belongs.</strong>
+          Keyboard and screen reader focus is managed inside formula blocks and citation popovers,
+          so exploring one does not mean losing your place.</li>
+        </ul>
+      </div>
+
+      <div class="feature-col">
+        <h2>Usability</h2>
+        <ul>
+          <li><strong>Versions, clearly.</strong>
+          A clean, reusable pattern for displaying a paper&rsquo;s versions and moving between
+          them.</li>
+
+          <li><strong>Print conventions, HTML powers.</strong>
+          The typographic conventions readers trust from print, plus the features only HTML can
+          offer. The watermark echoes the printed page.</li>
+
+          <li><strong>Minimal chrome.</strong>
+          The &ldquo;test&rdquo; and &ldquo;experimental&rdquo; messages are gone. As the reader
+          reaches the paper itself, the header shrinks to almost nothing &mdash; and stays within
+          reach.</li>
+
+          <li><strong>Easy paper navigation.</strong>
+          A contents toggle for moving through the document, and an obvious route back to the
+          abstract page.</li>
+
+          <li><strong>Citations, in-house and one action away.</strong>
+          The former Bib Explorer is now part of the page, with more functionality and an easy
+          copy.</li>
+
+          <li><strong>One link that has it all.</strong>
+          Paper, metadata, and tools share a single shareable address.</li>
+
+          <li><strong>Built for phones, math included.</strong>
+          Tap-to-activate replaces hover on figures and formulas, and everything wraps &mdash;
+          even the equations.</li>
+
+          <li><strong>References without the jumping around.</strong>
+          Popovers show a citation in place; clear navigation is there for when you do want to
+          follow it.</li>
+
+          <li><strong>Private by construction.</strong>
+          Self-hosted fonts and scripts mean fewer dependencies and no trackers &mdash; a
+          difference we have <a href="../doc.html?src=verification/audits/audit-clicks-to-content.md">measured</a>
+          against the rest of the publishing ecosystem.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">What might the future hold?</h2>
+    <p class="section-desc">Directions under discussion &mdash; an invitation, not a roadmap.</p>
+    <div class="future">
+      <ul>
+        <li><strong>Pinpoint citation.</strong> A permanent link and a short written locator
+        &mdash; <code>arXiv:2604.22725v1, &sect;2 &para;3</code> &mdash; for every paragraph of a
+        paper, giving citations something more precise than a page number and more durable than a
+        format.</li>
+        <li><strong>Active education around math intent</strong> and the other ways authors can
+        make paper content more future-proof, machine readable, and accessible.</li>
+        <li><strong>Community-contributed alt descriptions</strong> for images.</li>
+        <li><strong>LaTeXML continues to push the envelope</strong>, raising the share of papers
+        that convert fully and faithfully.</li>
+        <li><strong>More papers convertible to HTML</strong>: encouraging TeX best practices,
+        discouraging PDF-only submission, and exploring what other source formats could join
+        them.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+</body>
+</html>
