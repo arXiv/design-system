@@ -3418,7 +3418,11 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 .mg-stick { position: sticky; top: 64px; display: flex; flex-direction: column; align-items: flex-end; pointer-events: none; }
 .mg-stick .mg-mark { position: static; margin: 0; pointer-events: auto; }
 .ltx_para:hover .mg-mark, .mg-mark:focus-visible, .ltx_para.is-active .mg-mark { opacity: 1; }
-.mg-mark:hover { background: var(--arxiv-card-grey); color: var(--arxiv-link-blue); }
+/* Hover matches the figure/equation chips — text turns link-blue and
+   underlines; the pill surface never changes (Shamsi, 2026-08-31: a
+   fill highlights the whole pill, which stops making sense once a
+   pill holds several links; the text change works for both). */
+.mg-mark:hover { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; }
 .mg-mark:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; opacity: 1; }
 /* Scope rule: spans the whole (possibly math-interrupted) paragraph. */
 .ltx_para::before {
