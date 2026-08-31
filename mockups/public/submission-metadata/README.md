@@ -32,7 +32,7 @@ A **note** example: Whitespace normalisation and sanitisation are edits to autho
 
 | Component | Class | Where it goes | Appears |
 |---|---|---|---|
-| Optional marker | `<span class="label-optional">` | Inside the label | Always, on optional fields. Required fields get **no** marker |
+| Required / optional marker | `<span class="label-required">` · `<span class="label-optional">` | Inside the label | Always, on every field |
 | Hint | `.help.has-text-grey` | Between label and input | Always |
 | Example | `.hint-example-label` + one `<code>` | Inside the hint | As needed |
 | Field message | `.field-error` / `.field-warning` / `.field-note` | **After** the input | One per problem |
@@ -68,9 +68,10 @@ A **note** example: Whitespace normalisation and sanitisation are edits to autho
 
 ### HTML
 1. Move the message block to **after** the input.
-2. Add `<span class="label-optional">(optional)</span>` to the six optional
-   labels, Comments included. Leave the required fields unmarked, but keep
-   `required` and `aria-required="true"` on their controls.
+2. Add `<span class="label-required">(required)</span>` to Title, Authors and
+   Abstract, and `<span class="label-optional">(optional)</span>` to the other
+   six, Comments included. Keep `required` and `aria-required="true"` on the
+   three required controls.
 3. Add the `#form-summary` container above the form.
 4. Add the `.form-actions` row with the Process button, above the first field
    and below the last, with `<hr class="form-rule top">` under the first.

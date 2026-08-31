@@ -36,51 +36,54 @@
   --arxiv-success-fg:     #4a5a0a;
 }
 
-/* --- 2. Optional indicator ----------------------------------------------------
-   Required fields carry NO visual marker. Only optional ones are labelled.
+/* --- 2. Required and optional indicators -------------------------------------
+   Both groups are labelled, in words: "(required)" and "(optional)". No
+   asterisk, no legend, no colour carrying meaning.
 
-   GOV.UK and Shopify Polaris both do this. The US Web Design System does not —
-   it requires a red asterisk plus a legend explaining it, and labels optional
-   fields as well, so this is a deliberate divergence from the US federal
-   convention. Two reasons for diverging, both specific to arXiv:
+   This is a deliberate third position. GOV.UK and Shopify Polaris mark only
+   optional fields; the US Web Design System requires a red asterisk plus a
+   legend explaining it, and labels optional fields as well. Marking both in
+   words satisfies USWDS's actual principle — "show whether a field is required
+   or optional" — without the asterisk, and it does so in a form that survives
+   translation.
 
-     1. A word translates; a symbol does not. arXiv's readers are international
-        and many have limited English — the same reason arXiv bans contractions
-        in interface copy. "(optional)" reads plainly in any language. A bare
-        asterisk is a convention you must already know, and it means nothing
-        without a legend that sits at the top of a form the reader has scrolled
-        past by the ninth field.
-     2. Red carries exactly one meaning in this form: error (see section 4).
-        An empty required field is not an error, and spending red on a second
-        meaning weakens the first.
+   That is the argument that decided it. arXiv's readers are international and
+   many have limited English, which is why arXiv bans contractions in interface
+   copy. A word reads plainly in any language and machine-translates; a bare
+   asterisk is a Western web convention you must already know, and it means
+   nothing without a legend that sits at the top of a form the reader has
+   scrolled past by the ninth field.
 
-   The general principle underneath both: "required" is the default assumption
-   a reader brings to a form, so the exception is what deserves the label. And
-   the information is asymmetric — knowing a field is optional changes what you
-   do, while knowing it is required rarely does.
+   It also keeps red doing one job. Red carries exactly one meaning in this
+   form — error, see section 4 — and an empty required field is not an error.
 
-   POLICY OVERRIDE, acknowledged by Shamsi 2026-08-31. DESIGN-POLICIES.md:24
-   says: "Required fields: Mark with a visible indicator (red asterisk via
-   .field-required) AND required + aria-required=true attributes." The attribute
-   half is kept — that is the part assistive technology actually announces. The
-   red asterisk is deliberately dropped, for the reasons above and one more:
-   red carries exactly one meaning in this form, and a required field is not an
-   error. If this pattern is adopted, DESIGN-POLICIES.md:24 should change with
-   it rather than being quietly diverged from.
+   The cost, accepted knowingly: every field now carries a parenthetical, so
+   presence no longer discriminates and the reader has to read the word. That
+   is the trade for never leaving either state to inference.
 
-   What remains:
-     required + aria-required="true"   on the control. The programmatic signal.
-     (optional) in the label text      on the six optional fields. Visible text,
-                                       so it joins the accessible name for free
-                                       and needs no ARIA of its own.
+   POLICY NOTE. DESIGN-POLICIES.md:24 says: "Required fields: Mark with a
+   visible indicator (red asterisk via .field-required) AND required +
+   aria-required=true attributes." The attribute half is kept unchanged — that
+   is what assistive technology actually announces. The red asterisk is
+   replaced by the word. If this pattern is adopted, DESIGN-POLICIES.md:24
+   should be updated rather than quietly diverged from.
 
-   Never aria-label or title for the word — it has to be in the visible label. */
+   Never aria-label or title for either word — both must be in the visible
+   label text, where they join the accessible name for free. */
 
-/* Only the qualifier is de-emphasized. The legacy rule greys the whole label to
-   #767676 (4.54:1 — AA by a hair), which makes optional fields harder to read
-   than required ones and pays for it in legibility. The label keeps its full
-   strength; the parenthetical steps back to #595959 (7.0:1). */
+/* Both qualifiers are styled identically. Only the word differs, which is the
+   whole point of using words: if the two markers also looked different, the
+   difference itself would become a second signal to decode. With every field
+   carrying a parenthetical, presence no longer discriminates — the reader has
+   to read it either way — so matching treatment is the honest rendering.
+
+   Only the qualifier is de-emphasized, never the label. The legacy rule greys
+   the whole label to #767676 (4.54:1 — AA by a hair), which makes optional
+   fields harder to read than required ones and pays for it in legibility. The
+   label keeps its full strength; the parenthetical steps back to #595959
+   (7.0:1 on white). */
 .label.optional { color: inherit; }
+.label-required,
 .label-optional {
   margin-left: 0.3rem;
   font-weight: 400;
