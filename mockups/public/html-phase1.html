@@ -2218,20 +2218,14 @@ cite.cite-chip {
    │  retired because it conflicted with the .ds-alert-warning tint.  │
    └──────────────────────────────────────────────────────────────────┘ */
 
-/* Highlight box extends 50px to the LEFT so it covers the .ltx_tag
-   element (the [N] number) which ar5iv positions at left: -2.5rem
-   relative to the bibitem's natural left edge. Without this, the
-   number floats outside the blue tint and the highlight looks like
-   it's missing its label. The negative left margin equals the extra
-   left padding so the bibitem's content stays in the same horizontal
-   position as its unhighlighted siblings. */
+/* The wash itself is painted by the entry's shared overlay layer
+   (see the .bib-chips block), so every state — hover, tap, jump
+   destination — colors the exact same box. The earlier version gave
+   this state its own padded box, which never quite matched the
+   hover border (Shamsi, 2026-08-31) and shifted layout on jump.
+   Only scroll anchoring remains state-specific. */
 li.ltx_bibitem.cite-active-target {
-  background: var(--arxiv-active-bg) !important;
-  padding: 12px 12px 12px 50px !important;
-  margin: -12px -12px 8px -50px !important;
-  border-radius: 4px;
   scroll-margin-top: 80px;
-  transition: background 0.4s ease;
 }
 
 /* Disable ar5iv's per-bibblock hover highlight. The original
@@ -2950,39 +2944,43 @@ html:not(.js) .reading-progress { display: none !important; }
    .cite-active-target keeps the menu pinned open on the entry the
    reader just jumped to, so the return affordance is visible at
    landing without hovering. */
-/* The hover border is a pseudo-element overlay, not an outline: the
-   [N] tag sits 2.5rem OUTSIDE the entry's box (ar5iv positioning),
-   so a box outline excluded the number (caught by Shamsi,
-   2026-08-31). The overlay extends 58px left to enclose the tag
-   without touching layout — growing the box with padding would make
-   the number shift on hover. Same review: the border steps up from
-   --arxiv-pill-border to --arxiv-grey-dis, which was too faint
-   against the warm page background. Paragraph outlines keep the
-   fainter pill-border by her earlier direction ("or maybe even
-   lighter") — a paragraph border is ambience, an entry border is
-   the menu's anchor. */
-li.ltx_bibitem:hover:not(.cite-active-target)::after,
-li.ltx_bibitem.is-active:not(.cite-active-target)::after {
+/* ONE overlay layer per entry defines its visual bounds; every
+   state only recolors it, so hover, tap, and jump-destination
+   borders are pixel-identical by construction (Shamsi, 2026-08-31:
+   earlier per-state boxes never quite matched). The overlay exists
+   because no box can enclose the reference number: ar5iv lays the
+   entry out as a table whose tag cell PAINTS 2.5rem left of its
+   slot (position:relative in ar5iv.0.8.5.css — upstream's own
+   comment there calls the layout unsettled). The -48px left inset
+   reaches 8px past that painted tag; the other sides breathe 8px
+   like the paragraph outlines. z-index -1 keeps the wash behind the
+   entry's text. Border is --arxiv-grey-dis: pill-border was too
+   faint against the warm page background (same review). Paragraph
+   outlines keep the fainter tone by her earlier direction — a
+   paragraph border is ambience, an entry border anchors a menu. */
+li.ltx_bibitem::after {
   content: "";
   position: absolute;
-  inset: -8px -8px -8px -58px;
-  border: 1px solid var(--arxiv-grey-dis);
-  border-radius: 2px;
-  pointer-events: none;
-}
-/* On the jump destination the blue wash already pads the entry (its
-   50px left extension encloses the tag), so a plain outline sits
-   directly on the wash edge, and the menu re-centers on that edge. */
-li.ltx_bibitem.cite-active-target {
-  outline: 1px solid var(--arxiv-grey-dis);
-  outline-offset: 0;
+  inset: -8px -8px -8px -48px;
+  border: 1px solid transparent;
   border-radius: 4px;
+  pointer-events: none;
+  z-index: -1;
+  transition: background 0.4s ease;
 }
-li.ltx_bibitem.cite-active-target .bib-chips { bottom: -14px; }
+li.ltx_bibitem:hover::after,
+li.ltx_bibitem.is-active::after,
+li.ltx_bibitem.cite-active-target::after {
+  border-color: var(--arxiv-grey-dis);
+}
+li.ltx_bibitem.cite-active-target::after {
+  background: var(--arxiv-active-bg);
+}
+
 /* Centered like the figure and equation menus (Shamsi review,
    2026-08-31 — an earlier left-aligned try broke the family
-   resemblance). bottom −22px centers the pill on the outline line,
-   which sits 8px below the entry box. */
+   resemblance). bottom −22px centers the pill on the overlay's
+   border line, which sits 8px below the entry box in every state. */
 .bib-chips {
   bottom: -22px;
 }
@@ -7407,7 +7405,7 @@ We thus see that</p>
      1. User clicks "Jump to reference N" inside the popover.
      2. We close the popover.
      3. We tag the destination <li.ltx_bibitem> with class .cite-active-target
-        (amber wash via CSS).
+        (blue wash via CSS).
      4. We record the source citation id; the entry's chip menu (pinned
         open by .cite-active-target) offers "Back to your place".
      5. We pushState to the destination's id (so the URL reflects state and
@@ -7871,7 +7869,7 @@ We thus see that</p>
       var sourceCite = sourceCiteId ? document.getElementById(sourceCiteId) : null;
       var targetItem = targetBibId ? document.getElementById(targetBibId) : null;
       closeOpenPopover();
-      // One jump in flight at a time — clear any prior amber/return.
+      // One jump in flight at a time — clear any prior wash/jump source.
       var priorTargets = document.querySelectorAll('.cite-active-target');
       Array.prototype.forEach.call(priorTargets, function(el) {
         el.classList.remove('cite-active-target');
