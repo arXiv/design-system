@@ -27,6 +27,10 @@
        highlight optional. The offending substring. The message quotes it,
                the field marks it, and a "Show me" control selects it.
                NEVER echo the whole field value — see section 7 of the CSS.
+       normalize optional, notes only. Applies the transformation the note is
+               reporting, so the field actually shows the corrected value.
+               A note that says "extra spaces were removed" beside a field
+               still full of extra spaces is worse than no note at all.
      ---------------------------------------------------------------------- */
   /* Real violations of the abstract rules on info.arxiv.org/help/prep, several
      at a time in one field. That is the case that stresses the design: the
@@ -57,7 +61,16 @@
             text: 'The abstract contains HTML markup, which is not permitted. Remove',
             highlight: '<br>'
           }
-        ]
+        ],
+        /* The title is tidied on every run. Automatic corrections are
+           applied during processing regardless of what else failed, so
+           this note belongs in every processed state, not only the
+           clean ones. */
+        title: {
+          tier: 'note',
+          normalize: true,
+          text: 'Extra spaces were removed from your title. Please confirm it reads correctly.'
+        }
       }
     },
 
@@ -96,6 +109,7 @@
         },
         title: {
           tier: 'note',
+          normalize: true,
           text: 'Extra spaces were removed from your title. Please confirm it reads correctly.'
         }
       }
@@ -126,6 +140,7 @@
         },
         title: {
           tier: 'note',
+          normalize: true,
           text: 'Extra spaces were removed from your title. Please confirm it reads correctly.'
         }
       }
@@ -136,6 +151,7 @@
       fields: {
         title: {
           tier: 'note',
+          normalize: true,
           text: 'Extra spaces were removed from your title. Please confirm it reads correctly.'
         }
       }
@@ -177,6 +193,16 @@
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+  /* The values as submitted. Processing rewrites fields that carry a note, so
+     these are kept in order to restore the "not yet processed" state. Captured
+     once at load: this is scaffolding for the scenario switcher, not something
+     the real page needs. */
+  var ORIGINAL = {};
+  Object.keys(FIELD_LABELS).forEach(function (name) {
+    var el = document.getElementById(name);
+    if (el) ORIGINAL[name] = el.value;
+  });
+
   /* ---------------------------------------------------------------------
      Clearing. Every render starts from a clean slate so that states cannot
      accumulate — the commonest bug in hand-rolled validation display.
@@ -188,6 +214,8 @@
       input.classList.remove('is-invalid', 'is-warning', 'is-note', 'is-empty-required');
       input.removeAttribute('aria-invalid');
       input.removeAttribute('aria-describedby');
+
+      if (ORIGINAL[name] !== undefined) input.value = ORIGINAL[name];
 
       var msg = document.getElementById(name + '-msg');
       if (msg) msg.parentNode.removeChild(msg);
@@ -229,6 +257,13 @@
     var input = document.getElementById(name);
     if (!input) return;
     var results = listOf(value);
+
+    /* Apply whatever the notes are reporting, before anything reads the value.
+       The author sees the corrected text and a message saying what changed —
+       which is the whole point of the tier. */
+    results.forEach(function (rr) {
+      if (rr.normalize) input.value = input.value.replace(/\s+/g, ' ').trim();
+    });
 
     /* The control shows the worst tier present. A field with an error and a
        warning is a field you cannot proceed past, so it reads as an error. */
@@ -438,7 +473,13 @@
     content.appendChild(p);
 
     if (problems && problems.length) {
-      var ul = document.createElement('ul');
+      /* Ordered, not unordered. The heading states a count — "3 blocking
+         errors" — so numbering lets the reader check the list against it and
+         keep track of which ones are done. It also disambiguates rows that
+         name the same field, which happens whenever one field has several
+         problems. The rows are in form order, top to bottom, so an ordered
+         list is honest about the sequence too. */
+      var ul = document.createElement('ol');
       problems.forEach(function (pr) {
         var name = pr.name;
         var li = document.createElement('li');
@@ -545,6 +586,20 @@
      Continue gating.
      --------------------------------------------------------------------- */
   function setContinue(enabled) {
+    /* Exactly one primary on screen, and it is always the next step. Once
+       Continue is available, Process steps back to secondary — it is still
+       there, still usable, just no longer the thing to do.
+
+       Process is never disabled. The clean result only describes the values
+       that were submitted, and every field is still editable, so someone who
+       fixes a typo afterwards has to be able to re-run the check. Disabling it
+       would answer "does editing invalidate the result?" by assuming the form
+       cannot change, which is not true. */
+    processBtns.forEach(function (b) {
+      b.classList.toggle('ds-btn-primary', !enabled);
+      b.classList.toggle('ds-btn-secondary', enabled);
+    });
+
     continueBtns.forEach(function (btn) {
       btn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
       var host = btn.closest('.ds-tooltip-host');

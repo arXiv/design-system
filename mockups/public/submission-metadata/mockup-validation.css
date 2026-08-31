@@ -36,50 +36,50 @@
   --arxiv-success-fg:     #4a5a0a;
 }
 
-/* --- 2. Required and optional indicators -------------------------------------
-   An asterisk on its own is not enough. It is small, it carries no meaning
-   without a legend, and the legend sits at the top of a form the reader has
-   already scrolled past by the time they reach the ninth field. The accepted
-   practice is to say the word.
+/* --- 2. Optional indicator ----------------------------------------------------
+   Required fields carry NO visual marker. Only optional ones are labelled.
 
-   Note what the current page does: five labels carry .optional, and submit.css
-   styles `.label.optional span` in italic — so the template was written to emit
-   `DOI <span>(optional)</span>`. That span is not in the markup. The word never
-   renders. All that survives is the label turning grey, which is color alone
-   and fails WCAG 1.4.1. Comments is optional too and is not marked at all.
+   GOV.UK and Shopify Polaris both do this. The US Web Design System does not —
+   it requires a red asterisk plus a legend explaining it, and labels optional
+   fields as well, so this is a deliberate divergence from the US federal
+   convention. Two reasons for diverging, both specific to arXiv:
 
-   So: mark both, in words.
+     1. A word translates; a symbol does not. arXiv's readers are international
+        and many have limited English — the same reason arXiv bans contractions
+        in interface copy. "(optional)" reads plainly in any language. A bare
+        asterisk is a convention you must already know, and it means nothing
+        without a legend that sits at the top of a form the reader has scrolled
+        past by the ninth field.
+     2. Red carries exactly one meaning in this form: error (see section 4).
+        An empty required field is not an error, and spending red on a second
+        meaning weakens the first.
 
-     required  asterisk + the legend above the form + required/aria-required
-     optional  the word "(optional)" in the label text
+   The general principle underneath both: "required" is the default assumption
+   a reader brings to a form, so the exception is what deserves the label. And
+   the information is asymmetric — knowing a field is optional changes what you
+   do, while knowing it is required rarely does.
 
-   Marking both is usually over-marking, and the standard advice — mark only the
-   optional ones — assumes most fields are required. Here it is inverted: six of
-   nine are optional. Neither group is small enough to be the obvious exception,
-   so neither is left to inference.
+   POLICY OVERRIDE, acknowledged by Shamsi 2026-08-31. DESIGN-POLICIES.md:24
+   says: "Required fields: Mark with a visible indicator (red asterisk via
+   .field-required) AND required + aria-required=true attributes." The attribute
+   half is kept — that is the part assistive technology actually announces. The
+   red asterisk is deliberately dropped, for the reasons above and one more:
+   red carries exactly one meaning in this form, and a required field is not an
+   error. If this pattern is adopted, DESIGN-POLICIES.md:24 should change with
+   it rather than being quietly diverged from.
 
-   The word goes in the visible label text, never in aria-label or title. Inside
-   the label it becomes part of the accessible name for free, and needs no ARIA
-   of its own. */
-.label.field-required::after {
-  content: " *";
-  color: var(--arxiv-error-border);
-  font-weight: 700;
-}
-.required-legend {
-  margin: 0 0 1.25rem;
-  font-size: 0.8125rem;
-  color: #555;
-}
-.required-legend .req-star {
-  color: var(--arxiv-error-border);
-  font-weight: 700;
-}
+   What remains:
+     required + aria-required="true"   on the control. The programmatic signal.
+     (optional) in the label text      on the six optional fields. Visible text,
+                                       so it joins the accessible name for free
+                                       and needs no ARIA of its own.
+
+   Never aria-label or title for the word — it has to be in the visible label. */
 
 /* Only the qualifier is de-emphasized. The legacy rule greys the whole label to
    #767676 (4.54:1 — AA by a hair), which makes optional fields harder to read
    than required ones and pays for it in legibility. The label keeps its full
-   strength; the parenthetical steps back. */
+   strength; the parenthetical steps back to #595959 (7.0:1). */
 .label.optional { color: inherit; }
 .label-optional {
   margin-left: 0.3rem;
@@ -310,8 +310,17 @@ code {
   font-weight: 700;
 }
 .form-summary-content p  { margin: 0 0 0.4rem; }
-.form-summary-content ul { margin: 0.25rem 0 0; padding-left: 1.1rem; }
-.form-summary-content li { margin: 0.15rem 0; }
+/* arxivstyle.css:232 sets `ul { list-style: none }`, and a list whose items
+   have no marker can lose its list semantics in some screen readers — so the
+   count never gets announced. Set explicitly here rather than relying on the
+   browser default, so a future reset cannot silently strip it again. */
+.form-summary-content ol {
+  margin: 0.35rem 0 0;
+  padding-left: 1.6rem;
+  list-style: decimal;
+}
+.form-summary-content ol li::marker { font-weight: 700; }
+.form-summary-content li { margin: 0.25rem 0; padding-left: 0.15rem; }
 .form-summary-content a  { color: inherit; text-decoration: underline; }
 .form-summary-content a:hover { text-decoration: none; }
 
@@ -417,11 +426,20 @@ code {
 .field-messages {
   margin: 0.4rem 0 0;
   padding-left: 1.5rem;
+  list-style: decimal;
 }
 .field-messages li {
   margin: 0.25rem 0;
   padding-left: 0.15rem;
 }
+/* .field-error / -warning / -note set display:flex for the glyph row. On a list
+   item that replaces display:list-item and the marker disappears — which is why
+   the numbers were missing. Restored here; the message content flows inline,
+   which also lets a long message wrap under itself properly. */
+.field-messages li {
+  display: list-item;
+}
+
 /* The glyph is dropped inside a list: the marker already separates the rows,
    and a number plus an icon plus a color is one signal too many. Color and the
    visually-hidden "Error:" / "Warning:" prefix still carry the tier. */
@@ -676,8 +694,6 @@ code {
 
 .form-actions-end { margin-top: 1.75rem; }
 
-/* Sits in the action row now, so it carries no margin of its own. */
-.form-actions .required-legend { margin: 0; }
 
 /* ── Tooltip on the unavailable Continue ──────────────────────────────────
    A note under the button row read as belonging to Go Back and Continue
