@@ -2972,6 +2972,14 @@ li.ltx_bibitem { z-index: 0; }
 li.ltx_bibitem:hover,
 li.ltx_bibitem.is-active,
 li.ltx_bibitem.cite-active-target { z-index: 1; }
+/* When two ADJACENT entries are raised at once — the jump
+   destination with its pinned menu plus a hovered neighbor — equal
+   z-indexes let the later one's border paint across the earlier
+   one's menu (Shamsi, 2026-08-31). Menus only straddle DOWNWARD, so
+   the upper of the two must always win: */
+li.ltx_bibitem:is(:hover, .is-active, .cite-active-target):has(+ li.ltx_bibitem:is(:hover, .is-active, .cite-active-target)) {
+  z-index: 2;
+}
 li.ltx_bibitem::after {
   content: "";
   position: absolute;
