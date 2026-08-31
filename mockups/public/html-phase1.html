@@ -807,6 +807,7 @@ a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
    negative margin, per DESIGN-POLICIES.md target-size technique). */
 .mg-toc-logo { display: inline-flex; align-items: center; padding: 4px 6px; margin: -4px -6px; border-radius: 4px; }
 .mg-toc-logo img { height: 18px; width: auto; display: block; }
+.mg-toc-logo .mg-toc-logo-dark { display: none; }
 .mg-toc-logo:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
 .mg-toc-wrap { justify-self: center; }
 .mg-toc-tools { justify-self: end; }
@@ -3579,6 +3580,10 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
     background: #f0eeec;
     border-color: #d5d0c9;
   }
+  /* TOC-bar mark: Library Grey ink is too dim on the dark canvas, so
+     the light variant takes over (see the markup note at the bar). */
+  html:not([data-theme="light"]) .mg-toc-logo .mg-toc-logo-light { display: none; }
+  html:not([data-theme="light"]) .mg-toc-logo .mg-toc-logo-dark { display: block; }
 }
 
 /* Mirror of the block above, keyed to the attribute instead of the OS.
@@ -3624,6 +3629,8 @@ html[data-theme="dark"] .ds-funder-logo {
   background: #f0eeec;
   border-color: #d5d0c9;
 }
+html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-light { display: none; }
+html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
 
 </style>
 
@@ -4365,7 +4372,12 @@ html[data-theme="dark"] .ds-funder-logo {
          held the Listen control before phase 1 trimmed it.) -->
     <div class="mg-toc-spacer">
       <a href="https://arxiv.org/" class="mg-toc-logo" aria-label="archive home">
-        <img src="images/logo_arxiv-library-grey.svg" alt="archive">
+        <!-- Two imgs because CSS cannot rewrite a src: Library Grey is
+             too dim on the dark canvas, so dark mode shows the light
+             variant instead (Shamsi, 2026-08-31). display:none keeps
+             the hidden one out of the accessibility tree. -->
+        <img src="images/logo_arxiv-library-grey.svg" alt="archive" class="mg-toc-logo-light">
+        <img src="images/logo_arxiv-light.svg" alt="archive" class="mg-toc-logo-dark">
       </a>
     </div>
     <div class="mg-toc-wrap">
