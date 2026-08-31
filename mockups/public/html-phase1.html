@@ -2027,15 +2027,18 @@ section.ltx_bibliography {
    │      the visual treatment. Amber is reserved for destination.    │
    └──────────────────────────────────────────────────────────────────┘ */
 
-/* Source-chip styling — muted by default so citation noise doesn't crowd
-   the prose. Hover/focus reveals a subtle visual lift. */
+/* Source-chip styling. Originally muted to library-grey so citation
+   noise wouldn't crowd the prose — overruled on review (Shamsi,
+   2026-08-27): references looked like regular text, hiding that they
+   are links at all. Discoverability beats quiet for functional links;
+   the smaller size keeps them from shouting. */
 cite.ltx_cite,
 cite.cite-chip {
   font-style: normal !important;
   position: relative;
 }
 .cite-chip a.ltx_ref {
-  color: var(--arxiv-library-grey) !important;
+  color: var(--arxiv-link-blue) !important;
   text-decoration: none !important;
   font-size: 0.9em;
   padding: 0 2px;
@@ -2051,7 +2054,7 @@ cite.cite-chip {
    currently-open popover. */
 .cite-chip a.ltx_ref:hover,
 .cite-chip a.ltx_ref:focus-visible {
-  color: var(--arxiv-link-blue) !important;
+  color: var(--arxiv-link-hover) !important;
   text-decoration: underline !important;
   text-underline-offset: 2px;
 }
@@ -3365,48 +3368,43 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  MARGINALIA PERMALINKS — one link language, left margin          │
    ├──────────────────────────────────────────────────────────────────┤
-   │  Revised 2026-08-25 after Shamsi's review. One shared pill       │
-   │  (.mg-mark) carries the SAME chain icon used by the figure and   │
-   │  equation chips, so every permalink affordance on the page       │
-   │  speaks one language. Paragraph pills add a number derived from  │
-   │  the converter ID (S2.p3 → "2.3"); heading pills are icon-only   │
-   │  because the heading already displays its number. Both live in   │
-   │  the LEFT margin — the margins are the arXiv layer.              │
+   │  Settled grammar (Shamsi's reviews, 2026-08-25..27):             │
    │                                                                  │
-   │  Long paragraphs: a paragraph interrupted by display math looks  │
-   │  like several paragraphs to a sighted reader, so the affordance  │
-   │  appearing "way at the top" read as belonging to something else. │
-   │  On hover a 2px vertical rule now spans the paragraph's full     │
-   │  extent, connecting the pill to everything it links to — scope   │
-   │  made visible.                                                   │
+   │  Every addressable object — heading, paragraph, bibliography     │
+   │  entry — offers its address the same way: hover (or tap, where   │
+   │  hover does not exist) reveals a pill reading "Permalink" with   │
+   │  the shared chain icon; clicking immediately copies the link.    │
+   │  Identity never crowds the button: it lives in the text for      │
+   │  numbered objects, and in the copy feedback for the rest —       │
+   │  "Copied ¶ 2.3" for paragraphs, "Copied [30]" for references.    │
+   │  The written locator (arXiv:...v1 §2 ¶3) retired from this path  │
+   │  and belongs to future Cite-panel work.                          │
    │                                                                  │
-   │  Colors: default is --arxiv-library-grey (the quiet TEXT tier —  │
-   │  the heading icon previously used --arxiv-grey-ui, the border    │
-   │  tier, which is the same misassignment the nav labels had);      │
-   │  hover and focus go --arxiv-link-blue. Hit area extends to the   │
-   │  24px floor via padding + negative margin (DESIGN-POLICIES).     │
+   │  Style selection rule: objects with ONE always-valid action get  │
+   │  the margin pill (headings, paragraphs, bibliography entries);   │
+   │  objects with several get the outlined chip row (figures,        │
+   │  equations). "Back to your place" is not in the bibliography     │
+   │  pill because it is only valid after a jump — the jump           │
+   │  mechanism already provides it contextually. If an entry ever    │
+   │  gains a second always-valid action, it graduates to the chip    │
+   │  row.                                                            │
    │                                                                  │
-   │  Visibility and WCAG: reveal-on-hover is conformant because the  │
-   │  same controls are focus-revealed and keyboard-operable, tap     │
-   │  serves touch, and the popover is dismissible (Esc) and          │
-   │  persistent while hovered (SC 1.4.13). A persistent-markers      │
-   │  toggle existed briefly and was removed 2026-08-26: on-demand    │
-   │  reveal shows readers what they need when they want it, and a    │
-   │  bare ¶ icon in the nav read as noise, not meaning.              │
+   │  Width picks the pill's home (left margin above 1200px, right    │
+   │  edge below, sticky within the object's extent); input picks     │
+   │  the reveal (hover where hover exists, tap where it does not).   │
+   │  A hovered paragraph shows a scope rule on wide screens and an   │
+   │  outline on narrow ones, because a math-interrupted paragraph    │
+   │  reads as several.                                               │
    │                                                                  │
-   │  Open question for LaTeXML review, ON PURPOSE: these are         │
-   │  S2.p3-style converter IDs; segmentation can renumber across     │
-   │  LaTeXML upgrades. Either the tool commits to stable             │
+   │  Open question for LaTeXML review, ON PURPOSE: paragraph IDs     │
+   │  are S2.p3-style converter IDs; segmentation can renumber        │
+   │  across LaTeXML upgrades. Either the tool commits to stable      │
    │  segmentation or anchors move to content-derived keys before     │
-   │  any of this becomes a promise. See "Pinpoint citation" on       │
-   │  docs/outreach/html-papers.html.                                 │
+   │  any of this becomes a promise.                                  │
    │                                                                  │
-   │  JS convenience layer over IDs that exist without JS. Width      │
-   │  picks the pill's home (margin above 1200px, tab-on-outline      │
-   │  below); input picks the reveal (hover where hover exists, tap   │
-   │  where it does not). Persistent pills render inline on narrow.   │
+   │  JS convenience layer over IDs that exist without JS.            │
    └──────────────────────────────────────────────────────────────────┘ */
-.ltx_document .ltx_para { position: relative; }
+.ltx_document .ltx_para, .ltx_document li.ltx_bibitem { position: relative; }
 .mg-mark {
   position: absolute; right: calc(100% + 8px); top: -1px;
   display: inline-flex; align-items: center; gap: 4px;
@@ -3435,8 +3433,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 .mg-rail-anchor { position: absolute; top: 0; bottom: 0; right: calc(100% + 8px); width: 0; pointer-events: none; }
 .mg-stick { position: sticky; top: 64px; display: flex; flex-direction: column; align-items: flex-end; pointer-events: none; }
 .mg-stick .mg-mark { position: static; margin: 0; pointer-events: auto; }
-.mg-stick .mg-para-pop { position: absolute; top: calc(100% + 6px); left: 0; pointer-events: auto; max-width: calc(100vw - 24px); }
-.ltx_para:hover .mg-mark, .mg-mark:focus-visible, .ltx_para.is-linking .mg-mark, .ltx_para.is-active .mg-mark { opacity: 1; }
+.ltx_para:hover .mg-mark, li.ltx_bibitem:hover .mg-mark, .mg-mark:focus-visible, .ltx_para.is-active .mg-mark, li.ltx_bibitem.is-active .mg-mark { opacity: 1; }
 .mg-mark:hover { background: var(--arxiv-card-grey); color: var(--arxiv-link-blue); }
 .mg-mark:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; opacity: 1; }
 /* Scope rule: spans the whole (possibly math-interrupted) paragraph. */
@@ -3449,25 +3446,12 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   width: 2px; border-radius: 1px; background: var(--arxiv-card-grey);
   opacity: 0; transition: opacity 0.12s; pointer-events: none;
 }
-.ltx_para:hover::before, .ltx_para.is-linking::before, .ltx_para.is-active::before { opacity: 1; }
+.ltx_para:hover::before, .ltx_para.is-active::before { opacity: 1; }
 /* Joined to the footnote/citation popover family (2026-08-25): tint-light
    surface, family title and close-button classes reused verbatim, so all
    arXiv-layer transient panels read as one system. It had been built on
    plain surface-white before the family was noticed — the same drift the
    pattern rules exist to prevent. */
-.mg-para-pop {
-  position: absolute; z-index: 50;
-  display: flex; flex-direction: column; min-width: 210px;
-  background: var(--arxiv-tint-light); border: 1px solid var(--arxiv-tint-border);
-  border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); padding: 10px 8px 6px;
-}
-.mg-para-pop button {
-  text-align: left; border: 0; background: none;
-  font-family: var(--arxiv-font-sans); font-size: 12.5px; font-weight: 500;
-  color: var(--arxiv-repository-brown); padding: 6px 9px; border-radius: 4px; cursor: pointer;
-}
-.mg-para-pop button:hover { background: var(--arxiv-card-grey); }
-.mg-para-pop .ftn-popover-title { font-family: var(--arxiv-font-mono); text-transform: none; letter-spacing: 0; padding-left: 9px; }
 /* Headings join the same language: their permalink button moves from
    inline-after-text into the margin pill position. Icon plus the word
    "Permalink", matching the formula and figure chips — icon-only proved
@@ -3484,8 +3468,8 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
    (hover: none) reveals by tap, the grammar figures and formulas
    already taught. Conflating the two was the original bug. */
 @media (max-width: 1200px) {
-  .ltx_para .mg-mark { display: none; }
-  .ltx_para.is-active, .ltx_para.is-linking {
+  .ltx_para .mg-mark, li.ltx_bibitem .mg-mark { display: none; }
+  .ltx_para.is-active, li.ltx_bibitem.is-active {
     outline: 1px solid var(--arxiv-pill-border); outline-offset: 8px; border-radius: 2px;
   }
   /* No left margin: the rail hugs the paragraph's right edge, and the
@@ -3493,8 +3477,7 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
   .mg-rail-anchor { right: 2px; }
   .mg-stick { top: 56px; }
   .ltx_para.is-active .mg-mark,
-  .ltx_para.is-linking .mg-mark { display: inline-flex; opacity: 1; }
-  .mg-stick .mg-para-pop { left: auto; right: 0; }
+  li.ltx_bibitem.is-active .mg-mark { display: inline-flex; opacity: 1; }
   .ltx_para::before { display: none; }
   /* Heading pill placement on narrow: inline after the heading text
      (headings are one-liners and self-delimiting, so they skip the
@@ -3504,8 +3487,8 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
 @media (max-width: 1200px) and (hover: hover) {
   /* Narrow window, mouse present: hover works, so hover reveals —
      same visuals as the tap path. */
-  .ltx_para:hover { outline: 1px solid var(--arxiv-pill-border); outline-offset: 8px; border-radius: 2px; }
-  .ltx_para:hover .mg-mark { display: inline-flex; opacity: 1; }
+  .ltx_para:hover, li.ltx_bibitem:hover { outline: 1px solid var(--arxiv-pill-border); outline-offset: 8px; border-radius: 2px; }
+  .ltx_para:hover .mg-mark, li.ltx_bibitem:hover .mg-mark { display: inline-flex; opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .mg-mark, .ltx_para::before { transition: none; } }
 
@@ -9421,14 +9404,6 @@ We thus see that</p>
       document.body.removeChild(ta); done();
     }
   }
-  function closePop() {
-    var pop = document.querySelector(".mg-para-pop");
-    if (pop) {
-      var para = pop.closest(".ltx_para");
-      pop.remove();
-      if (para) para.classList.remove("is-linking");
-    }
-  }
   function makeRail(para) {
     var rail = document.createElement("div");
     rail.className = "mg-rail-anchor";
@@ -9438,63 +9413,50 @@ We thus see that</p>
     rail.appendChild(stick);
     return rail;
   }
-  function makePill(para) {
-    /* One voice (settled 2026-08-26): objects whose numbers appear in the
-       text — headings, figures, equations — say "Permalink"; the
-       paragraph, whose number appears nowhere else in the page, shows
-       its number. The pilcrow makes a lone pill self-explanatory; the
-       words live in the tooltip, the aria-label, and the popover title. */
+  function makePill(el) {
+    /* One word, one behavior (Option 1, Shamsi 2026-08-27): every
+       permalink pill reads "Permalink" and immediately copies the link,
+       like the heading, figure, and equation chips. Identity lives in
+       the copy feedback — "Copied \u00b6 2.3" for paragraphs, "Copied
+       [30]" for references — never crowding the button. The written
+       locator retires from this path; it belongs to future Cite-panel
+       work. */
+    var isPara = el.classList.contains("ltx_para");
+    var tag = el.querySelector(".ltx_tag");
+    var identity = isPara ? "\u00b6 " + num(el.id) : (tag ? tag.textContent.trim() : "");
     var b = document.createElement("button");
     b.className = "mg-mark"; b.type = "button";
-    b.innerHTML = ICON + '<span>\u00b6 ' + num(para.id) + "</span>";
-    b.setAttribute("aria-label", "Paragraph permalink \u2014 " + locator(para.id));
-    b.setAttribute("title", "Paragraph permalink");
-    b.addEventListener("click", function () { openPop(para); });
-    return b;
-  }
-  function openPop(para) {
-    var had = para.querySelector(".mg-para-pop");
-    closePop();
-    if (had) return;
-    var url = location.origin + location.pathname + "#" + para.id;
-    var loc = PAPER + " " + locator(para.id);
-    var pop = document.createElement("div");
-    pop.className = "mg-para-pop";
-    pop.innerHTML = '<div class="ftn-popover-title"></div>' +
-                    '<button type="button" class="ftn-popover-close" aria-label="Close">&times;</button>' +
-                    '<button type="button" data-copy="url">Copy link</button>' +
-                    '<button type="button" data-copy="loc">Copy locator</button>';
-    pop.querySelector(".ftn-popover-title").textContent = loc;
-    pop.querySelector(".ftn-popover-close").addEventListener("click", function (e) { e.stopPropagation(); closePop(); });
-    pop.addEventListener("click", function (e) {
-      var b = e.target.closest("button[data-copy]"); if (!b) return;
-      copyText(b.getAttribute("data-copy") === "url" ? url : loc, function () {
-        b.textContent = "Copied \u2713";
-        setTimeout(closePop, 900);
+    b.innerHTML = ICON + "<span>Permalink</span>";
+    b.setAttribute("aria-label", isPara
+      ? "Paragraph permalink \u2014 " + locator(el.id)
+      : "Permalink \u2014 reference " + identity);
+    b.setAttribute("title", isPara ? "Copy link to this paragraph" : "Copy link to this reference");
+    b.addEventListener("click", function () {
+      var url = location.origin + location.pathname + "#" + el.id;
+      copyText(url, function () {
+        var span = b.querySelector("span");
+        span.textContent = "Copied" + (identity ? " " + identity : "") + " \u2713";
+        setTimeout(function () { span.textContent = "Permalink"; }, 1500);
       });
     });
-    var stick = para.querySelector(".mg-stick");
-    if (stick) stick.appendChild(pop);
-    para.classList.add("is-linking");
-    pop.querySelector("button[data-copy]").focus();
+    return b;
   }
 
-  /* Hover affordance: one shared rail, moved to the hovered paragraph. */
+
+  /* Hover affordance: one shared rail, moved to the hovered paragraph or
+     bibliography entry — every addressable object offers its address the
+     same way. */
+  var HOVER_TARGETS = ".ltx_document .ltx_para[id], .ltx_document li.ltx_bibitem[id]";
   var hoverRail = null;
   document.addEventListener("mouseover", function (e) {
-    var para = e.target.closest ? e.target.closest(".ltx_document .ltx_para[id]") : null;
-    if (!para || para.querySelector(".mg-para-pop")) return;
-    if (!hoverRail || hoverRail.parentElement !== para) {
-      closePop();
+    var el = e.target.closest ? e.target.closest(HOVER_TARGETS) : null;
+    if (!el) return;
+    if (!hoverRail || hoverRail.parentElement !== el) {
       if (hoverRail) hoverRail.remove();
-      hoverRail = makeRail(para);
-      para.appendChild(hoverRail);
+      hoverRail = makeRail(el);
+      el.appendChild(hoverRail);
     }
   });
-  document.addEventListener("click", function (e) {
-    if (!e.target.closest(".mg-para-pop") && !e.target.closest(".mg-mark")) closePop();
-  });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closePop(); });
 
   /* Tap-to-activate, gated on INPUT capability rather than width: it
      runs wherever hover does not exist, at any viewport size. On wide
@@ -9513,15 +9475,15 @@ We thus see that</p>
   }
   document.addEventListener("click", function (e) {
     if (!window.matchMedia("(hover: none)").matches) return;
-    if (e.target.closest("a, button, .mg-para-pop")) return;
-    var el = e.target.closest(".ltx_document .ltx_para[id], h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection");
-    if (el && el.tagName !== "DIV" && !el.querySelector(".heading-permalink")) el = null;
+    if (e.target.closest("a, button")) return;
+    var el = e.target.closest(HOVER_TARGETS + ", h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection");
+    if (el && /^H[234]$/.test(el.tagName) && !el.querySelector(".heading-permalink")) el = null;
     if (!el) { clearActive(); return; }
-    if (el === activeEl) { clearActive(); closePop(); return; }
-    clearActive(); closePop();
+    if (el === activeEl) { clearActive(); return; }
+    clearActive();
     activeEl = el;
     el.classList.add("is-active");
-    if (el.classList.contains("ltx_para") && !el.querySelector(".mg-mark")) el.appendChild(makeRail(el));
+    if (!/^H[234]$/.test(el.tagName) && !el.querySelector(".mg-mark")) el.appendChild(makeRail(el));
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") clearActive(); });
 })();
