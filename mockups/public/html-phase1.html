@@ -2950,17 +2950,31 @@ html:not(.js) .reading-progress { display: none !important; }
    .cite-active-target keeps the menu pinned open on the entry the
    reader just jumped to, so the return affordance is visible at
    landing without hovering. */
-li.ltx_bibitem:hover,
-li.ltx_bibitem.is-active,
-li.ltx_bibitem.cite-active-target {
-  outline: 1px solid var(--arxiv-pill-border);
-  outline-offset: 8px;
+/* The hover border is a pseudo-element overlay, not an outline: the
+   [N] tag sits 2.5rem OUTSIDE the entry's box (ar5iv positioning),
+   so a box outline excluded the number (caught by Shamsi,
+   2026-08-31). The overlay extends 58px left to enclose the tag
+   without touching layout — growing the box with padding would make
+   the number shift on hover. Same review: the border steps up from
+   --arxiv-pill-border to --arxiv-grey-dis, which was too faint
+   against the warm page background. Paragraph outlines keep the
+   fainter pill-border by her earlier direction ("or maybe even
+   lighter") — a paragraph border is ambience, an entry border is
+   the menu's anchor. */
+li.ltx_bibitem:hover:not(.cite-active-target)::after,
+li.ltx_bibitem.is-active:not(.cite-active-target)::after {
+  content: "";
+  position: absolute;
+  inset: -8px -8px -8px -58px;
+  border: 1px solid var(--arxiv-grey-dis);
   border-radius: 2px;
+  pointer-events: none;
 }
-/* On the jump destination the blue wash already pads the entry, so
-   the border sits directly on the wash edge instead of floating 8px
-   outside it, and the menu re-centers on that edge. */
+/* On the jump destination the blue wash already pads the entry (its
+   50px left extension encloses the tag), so a plain outline sits
+   directly on the wash edge, and the menu re-centers on that edge. */
 li.ltx_bibitem.cite-active-target {
+  outline: 1px solid var(--arxiv-grey-dis);
   outline-offset: 0;
   border-radius: 4px;
 }
