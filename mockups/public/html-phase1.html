@@ -2938,8 +2938,8 @@ html:not(.js) .reading-progress { display: none !important; }
    without that rule it read as floating. Two chips:
      Permalink — copies the entry's link, reports "Copied [30] ✓".
      Back to your place — returns to the citation the reader jumped
-       from when a jump is in flight, else the entry's first in-text
-       citation. Hidden on entries the prose never cites.
+       from. Rendered only while a jump is in flight: reaching the
+       entry by scrolling means there is no place to go back to.
    .cite-active-target keeps the menu pinned open on the entry the
    reader just jumped to, so the return affordance is visible at
    landing without hovering. */
@@ -2950,6 +2950,14 @@ li.ltx_bibitem.cite-active-target {
   outline-offset: 8px;
   border-radius: 2px;
 }
+/* On the jump destination the blue wash already pads the entry, so
+   the border sits directly on the wash edge instead of floating 8px
+   outside it, and the menu re-centers on that edge. */
+li.ltx_bibitem.cite-active-target {
+  outline-offset: 0;
+  border-radius: 4px;
+}
+li.ltx_bibitem.cite-active-target .bib-chips { bottom: -14px; }
 /* Centered like the figure and equation menus (Shamsi review,
    2026-08-31 — an earlier left-aligned try broke the family
    resemblance). bottom −22px centers the pill on the outline line,
@@ -2966,7 +2974,8 @@ li.ltx_bibitem.cite-active-target .fig-chips {
   pointer-events: auto;
   transition: opacity 0.18s ease, visibility 0s linear 0s;
 }
-.bib-chip-return.is-hidden { display: none; }
+.bib-chip-return { display: none; }
+li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
 
 /* Right-margin author layer for figures — alt-text display + the
    edit/add affordance, surfaced next to the alt content where it
@@ -7405,7 +7414,6 @@ We thus see that</p>
   var idCounter = 0;
   var openPopover = null;
   var jumpSource = {};   // bib id -> id of the citation the reader jumped from
-  var firstCite = {};    // bib id -> first cite element referencing it
   var openCite = null;
   var openScrollY = 0;
 
@@ -7716,9 +7724,6 @@ We thus see that</p>
       if (!cite.id) cite.id = 'cite-src-' + (++citeIdCounter);
       var refs = getRefsData(cite);
       if (refs.length === 0) return;
-      refs.forEach(function(ref) {
-        if (ref.bibId && !firstCite[ref.bibId]) firstCite[ref.bibId] = cite;
-      });
       buildPopover(cite, refs, cite.id);
 
       // Click toggles. No hover-open, no focus-open. Click is the only entry.
@@ -7768,11 +7773,8 @@ We thus see that</p>
       back.className = 'fig-chip bib-chip-return';
       back.innerHTML = BACK_ARROW_SVG + '<span class="fig-chip-label">Back to your place</span>';
       back.setAttribute('aria-label', 'Back to your place \u2014 return to the citation in the text');
-      // Entries the prose never cites have no place to go back to.
-      if (!firstCite[bib.id]) back.classList.add('is-hidden');
       back.addEventListener('click', function() {
         var src = jumpSource[bib.id] ? document.getElementById(jumpSource[bib.id]) : null;
-        if (!src) src = firstCite[bib.id] || null;
         if (!src) return;
         delete jumpSource[bib.id];
         bib.classList.remove('cite-active-target');
