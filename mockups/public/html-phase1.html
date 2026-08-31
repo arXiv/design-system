@@ -1139,7 +1139,7 @@ footer.ds-site-footer { grid-area: footer; }
 ║    6.  FOOTER ALIGNMENT                                              ║
 ║    7.  AUTHORS-LIST INTERACTION                                      ║
 ║    8.  CITATION POPOVER                                              ║
-║    9.  DESTINATION HIGHLIGHT + RETURN LINK                           ║
+║    9.  DESTINATION HIGHLIGHT + RETURN CHIP                           ║
 ║   10.  EQUATION MARGINALIA (the "arXiv layer")                       ║
 ║   11.  UTILITIES (sr-only, external icon)                            ║
 ║   12.  PRINT STYLES                                                  ║
@@ -2190,11 +2190,12 @@ cite.cite-chip {
 }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
-   │  9.  DESTINATION HIGHLIGHT + RETURN LINK                         │
+   │  9.  DESTINATION HIGHLIGHT + RETURN CHIP                         │
    ├──────────────────────────────────────────────────────────────────┤
    │  When the user clicks "Jump to reference" inside a popover, we:  │
-   │    1. Class-tag the destination <li> so it gets a warm-tan wash. │
-   │    2. Inject a "Back to your place" link inside that <li>.       │
+   │    1. Class-tag the destination <li> so it gets the active wash. │
+   │    2. Record the source citation; the entry's chip menu pins     │
+   │       open (via .cite-active-target) with "Back to your place".  │
    │    3. Move focus to the <li> (so AT users hear the destination). │
    │    4. Smooth-scroll into view.                                   │
    │                                                                  │
@@ -2260,80 +2261,11 @@ cite.ltx_cite.cite-active-source {
 cite.ltx_cite.cite-active-source a.ltx_ref {
   color: var(--arxiv-repository-brown) !important;
 }
-/* V3 secondary button (see design-system.css `.ds-btn-secondary`):
-   white fill, warm-grey dual-gradient border, soft inset vignette
-   and outer drop shadow. The link sits inside a .cite-active-target
-   bibitem (which now has a var(--arxiv-active-bg) light-blue background), so the
-   white fill creates clear figure/ground separation without
-   conflicting with the blue active-state language. Icon stroke is
-   set explicitly to var(--arxiv-library-grey, var(--arxiv-library-grey)) so the up-arrow is
-   visible regardless of ar5iv's inherited SVG defaults. */
-.cite-return-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  margin-top: 10px;
-  padding: 10px 20px;
-  font-family: "IBM Plex Sans", -apple-system, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--arxiv-library-grey);
-  background:
-    linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(to bottom, var(--arxiv-border-light), #b3ada4) border-box;
-  border: 1.5px solid transparent;
-  border-radius: 6px;
-  box-shadow:
-    inset 0 0 6px rgba(0, 0, 0, 0.06),
-    0 1px 3px rgba(0, 0, 0, 0.08);
-  text-decoration: none !important;
-  cursor: pointer;
-  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, transform 0.08s, color 0.12s;
-}
-.cite-return-link:hover {
-  background:
-    linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(to bottom, #c8c4be, var(--arxiv-grey-ui)) border-box;
-  color: var(--arxiv-repository-brown);
-  box-shadow:
-    inset 0 0 8px rgba(0, 0, 0, 0.03),
-    0 1px 3px rgba(0, 0, 0, 0.08);
-  text-decoration: none !important;
-}
-.cite-return-link:active {
-  transform: translateY(1px);
-  background:
-    linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(var(--arxiv-grey-ui), var(--arxiv-grey-ui)) border-box;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.13);
-}
-.cite-return-link:focus-visible {
-  outline: 3px solid var(--arxiv-link-blue);
-  outline-offset: 2px;
-}
-/* Explicit stroke colors (no currentColor) so the icon stays visible
-   regardless of ar5iv's `svg { z-index: -1 }` and any other SVG
-   defaults from upstream stylesheets. Stroke is the same warm-grey
-   as the button's resting text, and darkens to Repository Brown on hover so the
-   icon tracks the label's emphasis change. position+z-index on the
-   SVG escapes the ar5iv z-index trap on stacking-context states. */
-.cite-return-link svg {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
-  fill: none;
-  stroke: var(--arxiv-library-grey);
-  position: relative;
-  z-index: 1;
-}
-.cite-return-link:hover svg { stroke: var(--arxiv-repository-brown); }
-.cite-return-link svg line,
-.cite-return-link svg polyline {
-  stroke: inherit;
-  fill: none;
-}
+/* The injected "Back to your place" V3 button was retired 2026-08-31:
+   the return action moved into the entry's chip menu (.bib-chips,
+   below the figure chip styles), which pins itself open on the jump
+   destination. Git history holds the button's styling if it is ever
+   wanted back. */
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  10.  EQUATION MARGINALIA — the "arXiv layer"                    │
@@ -2996,6 +2928,48 @@ html:not(.js) .reading-progress { display: none !important; }
   .fig-chip.is-narrow-only { display: none; }
 }
 
+/* Bibliography entry chip menu — the figure/equation grammar. Hover
+   (or tap where hover does not exist) outlines the entry and reveals
+   a small pill menu straddling its bottom edge. The menu reuses the
+   .fig-chips / .fig-chip components so the two treatments stay
+   identical; .bib-chips only repositions the pill. Chosen over the
+   paragraph margin pill on review (Shamsi, 2026-08-31): the margin
+   pill is anchored by the paragraph's vertical scope rule, and
+   without that rule it read as floating. Two chips:
+     Permalink — copies the entry's link, reports "Copied [30] ✓".
+     Back to your place — returns to the citation the reader jumped
+       from when a jump is in flight, else the entry's first in-text
+       citation. Hidden on entries the prose never cites.
+   .cite-active-target keeps the menu pinned open on the entry the
+   reader just jumped to, so the return affordance is visible at
+   landing without hovering. */
+li.ltx_bibitem:hover,
+li.ltx_bibitem.is-active,
+li.ltx_bibitem.cite-active-target {
+  outline: 1px solid var(--arxiv-pill-border);
+  outline-offset: 8px;
+  border-radius: 2px;
+}
+/* Left-aligned rather than figure-centered: entries are left-set
+   text, and a centered pill would float over the gap between
+   entries. bottom −22px centers the pill on the outline line, which
+   sits 8px below the entry box. */
+.bib-chips {
+  bottom: -22px;
+  left: 0;
+  transform: none;
+}
+li.ltx_bibitem:hover .fig-chips,
+li.ltx_bibitem.is-active .fig-chips,
+li.ltx_bibitem:focus-within .fig-chips,
+li.ltx_bibitem.cite-active-target .fig-chips {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.18s ease, visibility 0s linear 0s;
+}
+.bib-chip-return.is-hidden { display: none; }
+
 /* Right-margin author layer for figures — alt-text display + the
    edit/add affordance, surfaced next to the alt content where it
    logically belongs. Same Tufte-style serif italic treatment as
@@ -3381,13 +3355,14 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
    │  and belongs to future Cite-panel work.                          │
    │                                                                  │
    │  Style selection rule: objects with ONE always-valid action get  │
-   │  the margin pill (headings, paragraphs, bibliography entries);   │
-   │  objects with several get the outlined chip row (figures,        │
-   │  equations). "Back to your place" is not in the bibliography     │
-   │  pill because it is only valid after a jump — the jump           │
-   │  mechanism already provides it contextually. If an entry ever    │
-   │  gains a second always-valid action, it graduates to the chip    │
-   │  row.                                                            │
+   │  the margin pill (headings, paragraphs); objects with several    │
+   │  get the outlined chip row (figures, equations, bibliography     │
+   │  entries). Bibliography entries first tried the margin pill and  │
+   │  moved to the chip row on review (Shamsi, 2026-08-31): the       │
+   │  margin pill is anchored by the paragraph's vertical scope       │
+   │  rule, and without that rule it read as floating. The move also  │
+   │  gave the entry its second action — "Back to your place" lives   │
+   │  in its menu (see the citation script).                          │
    │                                                                  │
    │  Width picks the pill's home (left margin above 1200px, right    │
    │  edge below, sticky within the object's extent); input picks     │
@@ -3433,7 +3408,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 .mg-rail-anchor { position: absolute; top: 0; bottom: 0; right: calc(100% + 8px); width: 0; pointer-events: none; }
 .mg-stick { position: sticky; top: 64px; display: flex; flex-direction: column; align-items: flex-end; pointer-events: none; }
 .mg-stick .mg-mark { position: static; margin: 0; pointer-events: auto; }
-.ltx_para:hover .mg-mark, li.ltx_bibitem:hover .mg-mark, .mg-mark:focus-visible, .ltx_para.is-active .mg-mark, li.ltx_bibitem.is-active .mg-mark { opacity: 1; }
+.ltx_para:hover .mg-mark, .mg-mark:focus-visible, .ltx_para.is-active .mg-mark { opacity: 1; }
 .mg-mark:hover { background: var(--arxiv-card-grey); color: var(--arxiv-link-blue); }
 .mg-mark:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; opacity: 1; }
 /* Scope rule: spans the whole (possibly math-interrupted) paragraph. */
@@ -3468,16 +3443,15 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
    (hover: none) reveals by tap, the grammar figures and formulas
    already taught. Conflating the two was the original bug. */
 @media (max-width: 1200px) {
-  .ltx_para .mg-mark, li.ltx_bibitem .mg-mark { display: none; }
-  .ltx_para.is-active, li.ltx_bibitem.is-active {
+  .ltx_para .mg-mark { display: none; }
+  .ltx_para.is-active {
     outline: 1px solid var(--arxiv-pill-border); outline-offset: 8px; border-radius: 2px;
   }
   /* No left margin: the rail hugs the paragraph's right edge, and the
      sticky pill rides it while a long paragraph scrolls. */
   .mg-rail-anchor { right: 2px; }
   .mg-stick { top: 56px; }
-  .ltx_para.is-active .mg-mark,
-  li.ltx_bibitem.is-active .mg-mark { display: inline-flex; opacity: 1; }
+  .ltx_para.is-active .mg-mark { display: inline-flex; opacity: 1; }
   .ltx_para::before { display: none; }
   /* Heading pill placement on narrow: inline after the heading text
      (headings are one-liners and self-delimiting, so they skip the
@@ -3487,8 +3461,8 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
 @media (max-width: 1200px) and (hover: hover) {
   /* Narrow window, mouse present: hover works, so hover reveals —
      same visuals as the tap path. */
-  .ltx_para:hover, li.ltx_bibitem:hover { outline: 1px solid var(--arxiv-pill-border); outline-offset: 8px; border-radius: 2px; }
-  .ltx_para:hover .mg-mark, li.ltx_bibitem:hover .mg-mark { display: inline-flex; opacity: 1; }
+  .ltx_para:hover { outline: 1px solid var(--arxiv-pill-border); outline-offset: 8px; border-radius: 2px; }
+  .ltx_para:hover .mg-mark { display: inline-flex; opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .mg-mark, .ltx_para::before { transition: none; } }
 
@@ -7395,20 +7369,20 @@ We thus see that</p>
        stay anchored to viewport while the page scrolls away).
      - Resize: reposition the open popover.
      - Browser back/forward (popstate): clear any orphaned destination
-       highlight + return link.
+       highlight + recorded jump source.
 
    Jump-to-reference flow:
      1. User clicks "Jump to reference N" inside the popover.
      2. We close the popover.
      3. We tag the destination <li.ltx_bibitem> with class .cite-active-target
         (amber wash via CSS).
-     4. We inject a "Back to your place" link inside that <li>, anchored at
-        the source citation's id.
+     4. We record the source citation id; the entry's chip menu (pinned
+        open by .cite-active-target) offers "Back to your place".
      5. We pushState to the destination's id (so the URL reflects state and
         the browser back button works).
      6. We move focus to the <li> (tabindex=-1) and smooth-scroll it.
-     7. User clicks "Back to your place": we remove the amber, remove the
-        return link, replaceState the URL, focus the source chip, and
+     7. User clicks "Back to your place": we remove the wash, forget the
+        jump source, replaceState the URL, focus the source chip, and
         smooth-scroll back.
 
    ARIA wiring (push-list commitments, accessibility-priorities.md
@@ -7432,6 +7406,8 @@ We thus see that</p>
 (function() {
   var idCounter = 0;
   var openPopover = null;
+  var jumpSource = {};   // bib id -> id of the citation the reader jumped from
+  var firstCite = {};    // bib id -> first cite element referencing it
   var openCite = null;
   var openScrollY = 0;
 
@@ -7448,6 +7424,13 @@ We thus see that</p>
   // Back goes UP (citation is above). Following the natural reading flow.
   var ARROW_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>';
   var BACK_ARROW_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
+  var LINK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
+
+  function copyText(text, done) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, done);
+    } else { done(); }
+  }
 
   function getBibIdFromHref(href) {
     if (!href) return null;
@@ -7723,40 +7706,6 @@ We thus see that</p>
     openCite = null;
   }
 
-  function injectReturnLink(destBibItem, sourceCiteId, sourceCite) {
-    var existing = destBibItem.querySelector('.cite-return-link');
-    if (existing) existing.remove();
-    var returnLink = document.createElement('a');
-    returnLink.className = 'cite-return-link';
-    returnLink.href = '#' + sourceCiteId;
-    returnLink.innerHTML = BACK_ARROW_SVG + '<span>Back to your place</span>';
-    returnLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      // Clear any prior source highlights (only one in flight at a time)
-      var priorSources = document.querySelectorAll('.cite-active-source');
-      Array.prototype.forEach.call(priorSources, function(el) {
-        el.classList.remove('cite-active-source');
-      });
-      // Clear the destination amber — we're leaving it
-      var actives = document.querySelectorAll('.cite-active-target');
-      Array.prototype.forEach.call(actives, function(el) {
-        el.classList.remove('cite-active-target');
-      });
-      if (sourceCite) {
-        // Highlight the source citation so the user can see where they
-        // returned to in the prose. Cleared on next click outside or Esc.
-        sourceCite.classList.add('cite-active-source');
-        var firstAnchor = sourceCite.querySelector('a.ltx_ref');
-        if (firstAnchor) firstAnchor.focus({ preventScroll: true });
-        sourceCite.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
-      }
-      if (window.history && window.history.replaceState) {
-        window.history.replaceState(null, '', window.location.pathname + window.location.search);
-      }
-      returnLink.remove();
-    });
-    destBibItem.appendChild(returnLink);
-  }
 
   document.addEventListener('DOMContentLoaded', function() {
     normalizeInternalLinks();
@@ -7769,6 +7718,9 @@ We thus see that</p>
       if (!cite.id) cite.id = 'cite-src-' + (++citeIdCounter);
       var refs = getRefsData(cite);
       if (refs.length === 0) return;
+      refs.forEach(function(ref) {
+        if (ref.bibId && !firstCite[ref.bibId]) firstCite[ref.bibId] = cite;
+      });
       buildPopover(cite, refs, cite.id);
 
       // Click toggles. No hover-open, no focus-open. Click is the only entry.
@@ -7785,6 +7737,60 @@ We thus see that</p>
           }
         });
       });
+    });
+
+    // Chip menu on each bibliography entry — Permalink + Back to your
+    // place. Reuses the figure chip components; see the .bib-chips CSS
+    // note for the reveal rules and the style-selection reasoning.
+    Array.prototype.forEach.call(document.querySelectorAll('li.ltx_bibitem[id]'), function(bib) {
+      if (bib.querySelector('.bib-chips')) return; // idempotent
+      var tagEl = bib.querySelector('.ltx_tag');
+      var tag = tagEl ? tagEl.textContent.trim() : '';
+      var chips = document.createElement('div');
+      chips.className = 'fig-chips bib-chips';
+
+      var perma = document.createElement('button');
+      perma.type = 'button';
+      perma.className = 'fig-chip';
+      perma.innerHTML = LINK_SVG + '<span class="fig-chip-label">Permalink</span>';
+      perma.setAttribute('aria-label', 'Permalink \u2014 reference ' + tag);
+      perma.setAttribute('title', 'Copy link to this reference');
+      perma.addEventListener('click', function() {
+        var url = location.origin + location.pathname + '#' + bib.id;
+        copyText(url, function() {
+          var span = perma.querySelector('.fig-chip-label');
+          span.textContent = 'Copied ' + tag + ' \u2713';
+          setTimeout(function() { span.textContent = 'Permalink'; }, 1500);
+        });
+      });
+      chips.appendChild(perma);
+
+      var back = document.createElement('button');
+      back.type = 'button';
+      back.className = 'fig-chip bib-chip-return';
+      back.innerHTML = BACK_ARROW_SVG + '<span class="fig-chip-label">Back to your place</span>';
+      back.setAttribute('aria-label', 'Back to your place \u2014 return to the citation in the text');
+      // Entries the prose never cites have no place to go back to.
+      if (!firstCite[bib.id]) back.classList.add('is-hidden');
+      back.addEventListener('click', function() {
+        var src = jumpSource[bib.id] ? document.getElementById(jumpSource[bib.id]) : null;
+        if (!src) src = firstCite[bib.id] || null;
+        if (!src) return;
+        delete jumpSource[bib.id];
+        bib.classList.remove('cite-active-target');
+        Array.prototype.forEach.call(document.querySelectorAll('.cite-active-source'), function(el) {
+          el.classList.remove('cite-active-source');
+        });
+        src.classList.add('cite-active-source');
+        var firstAnchor = src.querySelector('a.ltx_ref');
+        if (firstAnchor) firstAnchor.focus({ preventScroll: true });
+        src.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+      });
+      chips.appendChild(back);
+      bib.appendChild(chips);
     });
 
     // Esc → close + return focus to source
@@ -7845,15 +7851,14 @@ We thus see that</p>
       Array.prototype.forEach.call(priorTargets, function(el) {
         el.classList.remove('cite-active-target');
       });
-      var priorReturn = document.querySelectorAll('.cite-return-link');
-      Array.prototype.forEach.call(priorReturn, function(el) { el.remove(); });
       var priorSources = document.querySelectorAll('.cite-active-source');
       Array.prototype.forEach.call(priorSources, function(el) {
         el.classList.remove('cite-active-source');
       });
       if (targetItem) {
         targetItem.classList.add('cite-active-target');
-        if (sourceCite) injectReturnLink(targetItem, sourceCiteId, sourceCite);
+        jumpSource = {};   // one jump in flight at a time
+        if (sourceCite) jumpSource[targetBibId] = sourceCiteId;
         if (window.history && window.history.pushState) {
           window.history.pushState(null, '', '#' + targetBibId);
         }
@@ -7874,8 +7879,7 @@ We thus see that</p>
       Array.prototype.forEach.call(actives, function(el) { el.classList.remove('cite-active-target'); });
       var sources = document.querySelectorAll('.cite-active-source');
       Array.prototype.forEach.call(sources, function(el) { el.classList.remove('cite-active-source'); });
-      var returns = document.querySelectorAll('.cite-return-link');
-      Array.prototype.forEach.call(returns, function(el) { el.remove(); });
+      jumpSource = {};
     });
 
     // Clear source highlight when the user clicks somewhere unrelated.
@@ -7883,7 +7887,7 @@ We thus see that</p>
     // have their own handlers — we skip those so the highlight survives
     // through the navigation flow. Esc also clears.
     document.addEventListener('click', function(e) {
-      if (e.target.closest('cite.ltx_cite, .cite-popover, .cite-return-link, [data-cite-jump]')) return;
+      if (e.target.closest('cite.ltx_cite, .cite-popover, .bib-chips, [data-cite-jump]')) return;
       var sources = document.querySelectorAll('.cite-active-source');
       if (sources.length === 0) return;
       Array.prototype.forEach.call(sources, function(el) {
@@ -9417,20 +9421,15 @@ We thus see that</p>
     /* One word, one behavior (Option 1, Shamsi 2026-08-27): every
        permalink pill reads "Permalink" and immediately copies the link,
        like the heading, figure, and equation chips. Identity lives in
-       the copy feedback — "Copied \u00b6 2.3" for paragraphs, "Copied
-       [30]" for references — never crowding the button. The written
-       locator retires from this path; it belongs to future Cite-panel
-       work. */
-    var isPara = el.classList.contains("ltx_para");
-    var tag = el.querySelector(".ltx_tag");
-    var identity = isPara ? "\u00b6 " + num(el.id) : (tag ? tag.textContent.trim() : "");
+       the copy feedback — "Copied \u00b6 2.3" — never crowding the
+       button. The written locator retires from this path; it belongs
+       to future Cite-panel work. */
+    var identity = "\u00b6 " + num(el.id);
     var b = document.createElement("button");
     b.className = "mg-mark"; b.type = "button";
     b.innerHTML = ICON + "<span>Permalink</span>";
-    b.setAttribute("aria-label", isPara
-      ? "Paragraph permalink \u2014 " + locator(el.id)
-      : "Permalink \u2014 reference " + identity);
-    b.setAttribute("title", isPara ? "Copy link to this paragraph" : "Copy link to this reference");
+    b.setAttribute("aria-label", "Paragraph permalink \u2014 " + locator(el.id));
+    b.setAttribute("title", "Copy link to this paragraph");
     b.addEventListener("click", function () {
       var url = location.origin + location.pathname + "#" + el.id;
       copyText(url, function () {
@@ -9443,10 +9442,10 @@ We thus see that</p>
   }
 
 
-  /* Hover affordance: one shared rail, moved to the hovered paragraph or
-     bibliography entry — every addressable object offers its address the
-     same way. */
-  var HOVER_TARGETS = ".ltx_document .ltx_para[id], .ltx_document li.ltx_bibitem[id]";
+  /* Hover affordance: one shared rail, moved to the hovered paragraph.
+     Bibliography entries use the figure-style chip menu instead — see
+     the citation script. */
+  var HOVER_TARGETS = ".ltx_document .ltx_para[id]";
   var hoverRail = null;
   document.addEventListener("mouseover", function (e) {
     var el = e.target.closest ? e.target.closest(HOVER_TARGETS) : null;
@@ -9476,14 +9475,14 @@ We thus see that</p>
   document.addEventListener("click", function (e) {
     if (!window.matchMedia("(hover: none)").matches) return;
     if (e.target.closest("a, button")) return;
-    var el = e.target.closest(HOVER_TARGETS + ", h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection");
+    var el = e.target.closest(HOVER_TARGETS + ", li.ltx_bibitem[id], h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection");
     if (el && /^H[234]$/.test(el.tagName) && !el.querySelector(".heading-permalink")) el = null;
     if (!el) { clearActive(); return; }
     if (el === activeEl) { clearActive(); return; }
     clearActive();
     activeEl = el;
     el.classList.add("is-active");
-    if (!/^H[234]$/.test(el.tagName) && !el.querySelector(".mg-mark")) el.appendChild(makeRail(el));
+    if (el.classList.contains("ltx_para") && !el.querySelector(".mg-mark")) el.appendChild(makeRail(el));
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") clearActive(); });
 })();
