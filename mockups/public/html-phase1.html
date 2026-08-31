@@ -1369,7 +1369,12 @@ html { scroll-padding-top: 80px; }
 .toc-dropdown {
   position: fixed;
   top: 52px;             /* matches header height, no gap */
-  z-index: 60;           /* above popovers (z:50), below modals */
+  z-index: 110;          /* summoned-surfaces tier: transient surfaces
+                            the reader just opened (popovers, dropdowns)
+                            paint above sticky chrome (z:100). Caught by
+                            Shamsi 2026-08-31: the citation popover at
+                            the old popover tier (z:50) rendered BEHIND
+                            the sticky Contents bar. */
   width: 380px;
   max-width: calc(100vw - 32px);
   max-height: calc(100vh - 72px);
@@ -2066,7 +2071,7 @@ cite.cite-chip {
 
 .cite-popover {
   position: fixed;
-  z-index: 50;
+  z-index: 110;          /* summoned-surfaces tier — see .toc-dropdown note */
   width: 360px;
   max-width: calc(100vw - 32px);
   max-height: 60vh;
@@ -2701,7 +2706,7 @@ html:not(.js) .reading-progress { display: none !important; }
    visual language is consistent. */
 .ftn-popover {
   position: fixed;
-  z-index: 50;
+  z-index: 110;          /* summoned-surfaces tier — see .toc-dropdown note */
   width: 320px;
   max-width: calc(100vw - 32px);
   max-height: 50vh;
