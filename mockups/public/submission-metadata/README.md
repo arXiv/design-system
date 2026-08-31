@@ -32,7 +32,7 @@ A **note** example: Whitespace normalisation and sanitisation are edits to autho
 
 | Component | Class | Where it goes | Appears |
 |---|---|---|---|
-| Required / optional marker | `<span class="label-required">` · `<span class="label-optional">` | Inside the label | Always, on every field |
+| Optional marker | `<span class="label-optional">` | Inside the label | On optional fields only. Required fields carry no marker |
 | Hint | `.help.has-text-grey` | Between label and input | Always |
 | Example | `.hint-example-label` + one `<code>` | Inside the hint | As needed |
 | Field message | `.field-error` / `.field-warning` / `.field-note` | **After** the input | One per problem |
@@ -55,7 +55,7 @@ A **note** example: Whitespace normalisation and sanitisation are edits to autho
 4. **The alert heading includes a count.** This is a 'very nice to have' if it is technically feasible. A heading label like "2 blocking errors" or "3 warnings" conveys the amount of work and the urgency very efficiently. If it is not possible to include the count just let me know, we'll figure out something else.
 5. **Continue uses `aria-disabled`, not `disabled`.** A disabled button leaves the tab order and screen readers skip it, so a user who cannot proceed finds nothing there and no explanation. `aria-disabled` keeps it reachable and lets it carry the tooltip.
 6. **Red always means error.** Nothing else should use red, including the `<code>` elements used in examples above the fields. The mockup has changed their color.
-7. **Label both optional and required fields in text.** Though it adds a bit more visual busy-ness, the cost is justified by the added usability, accessibility, and internationalization. Nothing is as universally understood as a text label. 
+7. **Label optional fields in text; leave required fields unmarked.** Nothing is as universally understood as a text label, so wherever we do mark a field we should use a word rather than a symbol. But we should only mark the exceptions. Five of our six submission pages are entirely required, and four of those have just one or two fields, so labeling required fields would mean marking every field on most pages, which tells the reader nothing at all. Marking only the optional ones keeps those pages clean and lets this page flag the five fields that genuinely are optional. Required fields still carry `required` and `aria-required="true"`, which is the part a screen reader announces. 
 8. **Disable continue until processing reveals no blocking errors**. Per our discussion the review step is what currently provides the user with the opportunity to review and confirm changes. In later iterations of Submission we may be able to replace the review step with more instant JS-powered user messaging, but for now this step is needed.
 9. **Sidebar CSS cleanup**. The sidebar CSS had gotten quite messy and harder for users to quickly grok what is going on. Applying these styles cleanly to this page can provide a good template for other pages too.
 
@@ -68,10 +68,9 @@ A **note** example: Whitespace normalisation and sanitisation are edits to autho
 
 ### HTML
 1. Move the message block to **after** the input.
-2. Add `<span class="label-required">(required)</span>` to Title, Authors and
-   Abstract, and `<span class="label-optional">(optional)</span>` to the other
-   six, Comments included. Keep `required` and `aria-required="true"` on the
-   three required controls.
+2. Add `<span class="label-optional">(optional)</span>` to the six optional
+   labels, Comments included. Leave the three required fields unmarked, and
+   keep `required` and `aria-required="true"` on their controls.
 3. Add the `#form-summary` container above the form.
 4. Add the `.form-actions` row with the Process button, above the first field
    and below the last, with `<hr class="form-rule top">` under the first.
