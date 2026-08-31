@@ -43,20 +43,20 @@ A **note** example: Whitespace normalisation and sanitisation are two types of e
 | Match chip · Show me | `.field-match` · `.field-locate` | Inside the field message | Same |
 | Process action row | `.form-actions` + `<hr class="form-rule top">` | Above the first field, and below the last | Always |
 | Continue gating | `aria-disabled="true"` | Sidebar nav | Until processed with no errors |
-| Disabled reason tooltip | `.ds-tooltip-host` › `.ds-tooltip` | Wraps Continue | On hover, focus or tap, while unavailable |
+| Disabled reason tooltip | `.ds-tooltip-host` › `.ds-tooltip` + `.is-sr-only` description | Wraps Continue | On hover, focus or tap, while unavailable |
 | In-progress | `.spinner` inside the button | Process button | During the request |
-| Buttons | `.ds-btn` + `-primary` / `-secondary` | All three buttons | Always |
+| Buttons | `.ds-btn` + `-primary` / `-secondary` | Process, Go Back, Continue. Note that 'Disabled' is a state, not a class | Always |
 
 **A few other rules in the mockup:**
 
 1. **Messages go after the input.** The current page renders them above the hint and above the input. It is too far away from what they describe, and causes the input to jump down the page.
 2. **Every message needs `id` + `aria-describedby`** on its input, and for errors they need `aria-invalid="true"`. Without it a screen reader announces the field and nothing else.
-3. **One alert per severity; don't mix them.** Red always means "you cannot proceed". Mixing together a non-blocking item inside a red alert confuses the message. Multiple alert boxes for each color are OK. See an example in the mockup tab for "Errors + warnings"
+3. **One alert per severity; don't mix them.** Red alerts always mean "you cannot proceed". Mixing together a non-blocking item inside a red alert confuses the message. Multiple alert boxes for each color are OK. See an example in the mockup tab for "Errors + warnings"
 4. **The alert heading includes a count.** This is a 'very nice to have' if it is technically feasible. A heading label like "2 blocking errors" or "3 warnings" conveys the amount of work and the urgency very efficiently. If it is not possible to include the count just let me know, we'll figure out something else.
-5. **Continue uses `aria-disabled`, not `disabled`.** A disabled button leaves the tab order and screen readers skip it, so a user who cannot proceed finds nothing there and no explanation. `aria-disabled` keeps it reachable and lets it carry the tooltip.
+5. **Continue uses `aria-disabled`, not `disabled`.** A disabled button leaves the tab order and screen readers skip it, so a user who cannot proceed finds nothing there and no explanation. `aria-disabled` keeps it reachable and lets it carry the tooltip. A screen reader then announces all three parts: the name, the state, and the reason ("Process and resolve any errors before continuing"). The reason lives in a visually hidden `<span>` that `aria-describedby` points at, not in the tooltip itself. That detail is important because the tooltip is toggled with `hidden`, which takes it out of the accessibility tree while it is closed, so pointing `aria-describedby` straight at the tooltip would leave the button undescribed most of the time. Both the span and the tooltip get their text from one variable in the JS, so the two cannot drift apart.
 6. **Red always means error.** Nothing else should use red, including the `<code>` elements used in examples above the fields. The mockup has changed their color.
 7. **Label optional fields in text; leave required fields unmarked.** We only indicate optional fields because, on five of six submission pages, we only have required fields to display. Required fields still carry `required` and `aria-required="true"`, which is the part a screen reader announces. For optional field labeling, nothing is as universally understood as a text label, so we use a word rather than a symbol.
-8. **Disable continue until processing reveals no blocking errors**. Per our discussion the review step is what currently provides the user with the opportunity to review and confirm changes. In later iterations of Submission we may be able to replace the review step with more instant JS-powered user messaging, but for now this step is needed.
+8. **Disable "Continue" button until processing reveals no blocking errors**. Per our discussion, the review step is what currently provides the user with the opportunity to review and confirm changes. In later iterations of Submission we may be able to replace the review step with more instant JS-powered user messaging, but for now this step is needed, so Continue stays unavailable until processing comes back clean (using `aria-disabled`, per rule 5).
 9. **Sidebar CSS cleanup**. The sidebar CSS had gotten quite messy and harder for users to quickly grok what is going on. Applying these styles cleanly to this page can provide a good template for other pages too.
 
 ---
