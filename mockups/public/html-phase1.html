@@ -803,6 +803,11 @@ a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
 .mg-toc-bar-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; }
 /* .mg-toc-bar scope beats the base `.new-html-nav { justify-self: end }`. */
 .mg-toc-bar .mg-toc-spacer { justify-self: start; }
+/* 18px mark + padding clears the 24px hit-area floor (padding +
+   negative margin, per DESIGN-POLICIES.md target-size technique). */
+.mg-toc-logo { display: inline-flex; align-items: center; padding: 4px 6px; margin: -4px -6px; border-radius: 4px; }
+.mg-toc-logo img { height: 18px; width: auto; display: block; }
+.mg-toc-logo:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
 .mg-toc-wrap { justify-self: center; }
 .mg-toc-tools { justify-self: end; }
 .mg-toc-bar .nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
@@ -1034,7 +1039,7 @@ footer.ds-site-footer { grid-area: footer; }
 <div class="mg-abs-only">
   <header class="ds-site-header">
     <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
-      <img src="images/arxiv-logo.png" alt="archive">
+      <img src="images/logo_arxiv-primary.svg" alt="archive">
     </a>
     <!-- (Reader-view toggle removed 2026-06-26: the single default page is
          the reading surface; paper tools now live in the sticky TOC bar.) -->
@@ -3636,7 +3641,7 @@ html[data-theme="dark"] .ds-funder-logo {
 <header class="arxiv-html-header">
   <div class="new-html-inner">
     <a href="https://arxiv.org/" class="new-html-logo" aria-label="archive home">
-      <img src="images/arxiv-logo.png" alt="archive" class="logo-full">
+      <img src="images/logo_arxiv-primary.svg" alt="archive" class="logo-full">
       <img src="images/arxiv-logomark-small-square.svg" alt="archive" class="logo-mark">
     </a>
     <!-- Center cell: the TOC trigger is the only header element in
@@ -4350,11 +4355,19 @@ html[data-theme="dark"] .ds-funder-logo {
         the viewport via the 1fr | auto | 1fr grid. ══ -->
 <div class="mg-toc-bar" id="mg-toc-bar">
   <div class="mg-toc-bar-inner">
-    <!-- Left spacer. (Phase 1: the Listen / read-aloud control that lived in
-         this cell was removed — too much complexity for phase 1. The empty
-         div keeps the 1fr | auto | 1fr grid so the Contents lozenge stays
-         centered in the viewport.) -->
-    <div class="mg-toc-spacer" aria-hidden="true"></div>
+    <!-- Left cell: the arXiv mark (single-color Library Grey, per team
+         feedback 2026-08-31). Once the reader scrolls, this bar is the
+         only chrome on screen — most readers arrive at papers from
+         search and links, and nothing else says where they are. The
+         quiet one-color variant orients without competing with the
+         paper; the full-color mark stays reserved for the top-of-page
+         header. Links home, per universal logo convention. (This cell
+         held the Listen control before phase 1 trimmed it.) -->
+    <div class="mg-toc-spacer">
+      <a href="https://arxiv.org/" class="mg-toc-logo" aria-label="archive home">
+        <img src="images/logo_arxiv-library-grey.svg" alt="archive">
+      </a>
+    </div>
     <div class="mg-toc-wrap">
       <button class="mg-toc-trigger" id="mg-toc-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mg-toc-dropdown">
         <svg class="toc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
