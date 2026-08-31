@@ -2238,11 +2238,13 @@ li.ltx_bibitem.cite-active-target {
    destination after a jump. The line-by-line treatment is now
    visual noise on top of those signals. Worth keeping as a future
    user-preference toggle once a settings UI exists; not on by
-   default. */
-.ltx_tag_bibitem ~ *:active,
-.ltx_tag_bibitem ~ *:hover,
-.ltx_tag_bibitem:active ~ *,
-.ltx_tag_bibitem:hover ~ * {
+   default. The chip menu (.bib-chips) is excluded: it is a sibling
+   of the tag inside the entry, so without the exclusion this rule
+   stripped the menu's own white fill the moment it was hovered. */
+.ltx_tag_bibitem ~ *:active:not(.bib-chips),
+.ltx_tag_bibitem ~ *:hover:not(.bib-chips),
+.ltx_tag_bibitem:active ~ *:not(.bib-chips),
+.ltx_tag_bibitem:hover ~ *:not(.bib-chips) {
   background-color: transparent !important;
 }
 
