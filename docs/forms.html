@@ -30,58 +30,56 @@
     .code-block { background: #1c1a17; color: #f0eeec; border-radius: 6px; padding: 14px 16px; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.6; overflow-x: auto; max-width: 860px; margin-top: 10px; }
     .code-block code { background: none; padding: 0; color: inherit; }
     .note-alert { max-width: 860px; margin-top: 16px; }
-    /* ── Per-demo class list ──
-       Reference sits beside the example it describes, not collected at the foot
-       of the page: linking a demo to a row in a distant table is work the reader
-       should not have to do. <details> and not a JS tab — collapsed content is
-       still in the DOM and still in the file, so an agent reading the source
-       sees everything a human can expand. Never use tabs that load on click. */
-    .cls { max-width: 860px; margin-top: 12px; }
-    .cls > summary { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); cursor: pointer; padding: 6px 0; }
-    .cls > summary:hover { color: var(--arxiv-repository-brown); }
-    .cls .spec-table { margin-top: 0; }
+    /* ── Guidance blocks: .a11y and .tone ──
+       Two per-pattern blocks sharing one construction, so they read as a pair:
+       same light-blue tint, same monospace heading, differing only in the left
+       edge and the heading colour. Accessibility essentials takes Link Blue
+       because it states requirements; Tone takes warm Library Grey because it
+       is guidance. Blue against warm grey is a real distinction — two blues a
+       few values apart would not be.
 
-    /* ── Tone ──
-       A per-pattern block, sibling to Accessibility essentials: how the words
-       in this component should sound. Light where that one is dark, so the two
-       read as a pair without competing.
+       Monospace on the heading keeps the implementation-note register without
+       setting prose in it: typography.md assigns mono to code and identifiers,
+       and a paragraph of it reads slower, which is a poor trade on blocks about
+       legibility. 14px sentence case rather than 11px uppercase, because at
+       that size it read as a label rather than a heading.
 
-       Deliberately thin. The general writing rules live in STYLE.md and are
-       linked, never restated — two copies of a writing rule drift, and the copy
-       on a component page is the one nobody updates. Only rules specific to
-       this component belong here. */
-    .tone { background: var(--arxiv-warm-wash); border: 1px solid var(--arxiv-border-light); border-left: 4px solid var(--arxiv-archival-blue); border-radius: 8px; padding: 20px 22px; max-width: 860px; margin-top: 18px; }
-    .tone h3 { font-family: var(--arxiv-font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.09em; color: var(--arxiv-archival-blue); margin: 0 0 12px; }
-    .tone p { font-size: 13px; line-height: 1.65; margin: 0 0 12px; }
-    .tone dl { margin: 0; font-size: 13px; line-height: 1.6; }
+       Contrast on the tint: body 15.66:1, Link Blue 5.18:1, Library Grey
+       5.27:1 — all AA. */
+    .a11y, .tone {
+      background: var(--arxiv-tint-light);
+      border: 1px solid var(--arxiv-tint-border);
+      border-radius: 8px;
+      padding: 20px 22px;
+      max-width: 860px;
+      margin-top: 18px;
+    }
+    .a11y { border-left: 4px solid var(--arxiv-link-blue); }
+    .tone { border-left: 4px solid var(--arxiv-library-grey); }
+    .a11y h3, .tone h3 {
+      font-family: var(--arxiv-font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: none;
+      margin: 0 0 12px;
+    }
+    .a11y h3 { color: var(--arxiv-link-blue); }
+    .tone h3 { color: var(--arxiv-library-grey); }
+    .a11y ul, .tone p, .tone dl { font-size: 13px; line-height: 1.65; }
+    .a11y ul { margin: 0; padding-left: 18px; }
+    .a11y li { margin: 7px 0; }
+    .a11y li::marker { color: var(--arxiv-link-blue); }
+    .a11y code, .tone code { background: rgba(255,255,255,0.75); }
+    .a11y .gotcha { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--arxiv-tint-border); font-size: 13px; line-height: 1.65; }
+    .a11y .gotcha strong { font-family: var(--arxiv-font-mono); font-weight: 600; font-size: 13px; color: var(--arxiv-error-fg); display: block; margin-bottom: 7px; text-transform: none; letter-spacing: 0; }
+    .tone p { margin: 0 0 12px; }
+    .tone dl { margin: 0; }
     .tone dt { font-family: var(--arxiv-font-condensed); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; color: var(--arxiv-library-grey); margin-top: 10px; }
     .tone dd { margin: 2px 0 0; }
     .tone .spec-table { margin-top: 14px; }
 
-    /* ── Accessibility essentials ──
-       A per-pattern block: the ARIA a component requires, the states that must
-       be conveyed non-visually, and the mistakes that break it silently. Not a
-       callout for emphasis — only genuine requirements go here.
 
-       Dark field, because that is what reads as "implementation detail" — the
-       surface does that work, not the typeface. Prose stays in sans:
-       typography.md assigns mono to code and identifiers, and six sentences of
-       monospace would be slower to read, which is a poor trade on the one block
-       whose subject is legibility. Mono carries the heading and the inline code
-       spans, which is where it belongs and where it does the most work.
-
-       --arxiv-header-bar, not --arxiv-repository-brown: it is a fixed-role
-       token that holds its value in both themes, so the panel stays dark
-       instead of inverting to near-white. */
-    .a11y { background: var(--arxiv-header-bar); color: var(--arxiv-card-grey); border-radius: 8px; padding: 20px 22px; max-width: 860px; margin-top: 18px; }
-    .a11y h3 { font-family: var(--arxiv-font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.09em; color: var(--arxiv-open-blue); margin: 0 0 14px; }
-    .a11y ul { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.65; }
-    .a11y li { margin: 7px 0; }
-    .a11y li::marker { color: var(--arxiv-open-blue); }
-    .a11y code { background: rgba(255,255,255,0.10); color: var(--arxiv-open-blue); padding: 1px 5px; }
-    .a11y strong, .a11y em { color: #fff; }
-    .a11y .gotcha { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.14); font-size: 13px; line-height: 1.65; }
-    .a11y .gotcha strong { font-family: var(--arxiv-font-mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.09em; font-size: 11px; color: var(--arxiv-warning-border); display: block; margin-bottom: 7px; }
     .states { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; max-width: 860px; }
     .state-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 16px 18px; }
     .state-card h4 { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin: 0 0 12px; }
@@ -226,9 +224,9 @@
         </div>
       </form>
     </div>
-    <details class="cls">
-      <summary>Classes</summary>
-      <table class="spec-table">
+    <details class="ds-acc">
+      <summary>Relevant classes</summary>
+      <div class="ds-acc-body"><table class="spec-table">
         <tr><td><code>.ds-field</code></td><td>Wraps one label + control + hint + message, and supplies the spacing between fields.</td></tr>
         <tr><td><code>.ds-label</code></td><td>The label. Always present, always above the control.</td></tr>
         <tr><td><code>.ds-input</code></td><td>The control &mdash; goes on <code>input</code>, <code>select</code> and <code>textarea</code> alike.</td></tr>
@@ -237,6 +235,7 @@
         <tr><td><code>.ds-select</code></td><td>Optional wrapper that swaps the native arrow for the drawn chevron.</td></tr>
         <tr><td><code>.ds-check</code></td><td>A checkbox or radio row. Native control, tinted with <code>accent-color</code>.</td></tr>
       </table>
+    </div>
     </details>
 
   </div>
@@ -314,9 +313,9 @@
     automatic correction legitimate. Normalising whitespace or stripping markup is an edit to
     author-submitted content; what makes that acceptable is that the author sees the change before it
     is committed. The review step is not a nicety to drop later for &ldquo;obvious&rdquo; fixes.</p>
-    <details class="cls">
-      <summary>Classes</summary>
-      <table class="spec-table">
+    <details class="ds-acc">
+      <summary>Relevant classes</summary>
+      <div class="ds-acc-body"><table class="spec-table">
         <tr><td><code>.is-invalid</code></td><td>On the control, for the error disposition. Pair with <code>aria-invalid="true"</code>.</td></tr>
         <tr><td><code>.is-warning</code></td><td>On the control, for the warning disposition.</td></tr>
         <tr><td><code>.is-info</code></td><td>On the control, for the info disposition.</td></tr>
@@ -324,6 +323,7 @@
         <tr><td><code>.field-warning</code></td><td>As above, for a warning.</td></tr>
         <tr><td><code>.field-info</code></td><td>As above, for an automatic change.</td></tr>
       </table>
+    </div>
     </details>
 
 
@@ -347,11 +347,12 @@
         </ol>
       </div>
     </div>
-    <details class="cls">
-      <summary>Classes</summary>
-      <table class="spec-table">
+    <details class="ds-acc">
+      <summary>Relevant classes</summary>
+      <div class="ds-acc-body"><table class="spec-table">
         <tr><td><code>.field-messages</code></td><td>An <code>&lt;ol&gt;</code> when one field carries several problems. Each <code>&lt;li&gt;</code> takes its own tier class.</td></tr>
       </table>
+    </div>
     </details>
 
 
