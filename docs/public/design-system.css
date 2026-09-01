@@ -1305,99 +1305,66 @@ select.ds-input { padding-right: 34px; }
    With no attribute set, the OS preference above still applies. */
 [data-theme="dark"] {
   color-scheme: dark;
-  /* Brand + surface dark values (accepted 2026-08-07 —
-     planning/proposals/public-dark-palette.html). Repository Brown is
-     the dark canvas; accents hold their light values. */
-  --arxiv-repository-brown:           #f0eeec;  /* canvas text flips; on-blue text keeps --arxiv-repository-brown-on-blue */
-  --arxiv-warm-wash:       #1c1a17;  /* the canvas */
-  --arxiv-card-grey:       #2b2723;  /* raised band; text 12.8:1 */
-  --arxiv-surface:         #2b2723;  /* white fills become raised surfaces */
-  --arxiv-border-light:    #3a3530;  /* decorative tier, as in light */
-  --arxiv-library-grey:            #b0aba6;  /* 7.6:1 on canvas */
-  --arxiv-grey-dis:        #5a554f;  /* disabled tier */
-  --arxiv-archival-blue:   #6ba8da;  /* headings 6.8:1 */
-  --arxiv-active-bg:       #1e3a5f;
-  --arxiv-tint-light:      #132433;  /* = info dark surface */
-  --arxiv-tint-border:     #2a4a7a;
-  --arxiv-pill-border:     #403b35;
-  --arxiv-header-bar:      #262119;  /* lifted so the bar reads against the canvas */
-  --arxiv-link-blue:       #64b5f6;  /* 7.84:1 on Repository Brown ✓ AAA */
-  --arxiv-link-hover:      #90caf9;
-  --arxiv-link-visited:    #c690e3;  /* 7.03:1 on Repository Brown ✓ AAA; 4.66:1 on active-bg ✓ AA (was #c084e0, 4.17:1 there — caught by check-contrast.py 2026-08-24) */
-  --arxiv-success-bg:      #1e2b0d;
-  --arxiv-success-border:  #8fbd3a;
-  --arxiv-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
-  --arxiv-info-bg:         #132433;
-  --arxiv-info-border:     #64b5f6;
-  --arxiv-info-fg:         #90caf9;  /* 9.0:1 ✓ AAA */
-  --arxiv-warning-bg:      #2e2410;
-  --arxiv-warning-border:  #e8b800;
-  --arxiv-warning-fg:      #ffe082;  /* 11.8:1 ✓ AAA */
-  --arxiv-error-bg:        #2d1414;
-  --arxiv-error-border:    #e57373;
-  --arxiv-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
+  --arxiv-repository-brown:  #f0eeec;  /* canvas text flips; on-blue text keeps --arxiv-repository-brown-on-blue */
+  --arxiv-warm-wash:         #1c1a17;  /* the canvas */
+  --arxiv-card-grey:         #2b2723;  /* raised band; text 12.8:1 */
+  --arxiv-surface:           #2b2723;  /* white fills become raised surfaces */
+  --arxiv-border-light:      #3a3530;  /* decorative tier, as in light */
+  --arxiv-library-grey:      #b0aba6;  /* 7.6:1 on canvas */
+  --arxiv-grey-dis:          #5a554f;  /* disabled tier */
+  --arxiv-archival-blue:     #6ba8da;  /* headings 6.8:1 */
+  --arxiv-active-bg:         #1e3a5f;
+  --arxiv-tint-light:        #132433;  /* = info dark surface */
+  --arxiv-tint-border:       #2a4a7a;
+  --arxiv-pill-border:       #403b35;
+  --arxiv-header-bar:        #262119;  /* lifted so the bar reads against the canvas */
+  --arxiv-link-blue:         #64b5f6;  /* 7.84:1 on Repository Brown ✓ AAA */
+  --arxiv-link-hover:        #90caf9;
+  --arxiv-link-visited:      #c690e3;  /* 7.03:1 on Repository Brown ✓ AAA; 4.66:1 on active-bg ✓ AA (was #c084e0, 4.17:1 there — caught by check-contrast.py 2026-08-24) */
+  --arxiv-success-bg:        #1e2b0d;
+  --arxiv-success-border:    #8fbd3a;
+  --arxiv-success-fg:        #c5e1a5;  /* 10.4:1 ✓ AAA */
+  --arxiv-info-bg:           #132433;
+  --arxiv-info-border:       #64b5f6;
+  --arxiv-info-fg:           #90caf9;  /* 9.0:1 ✓ AAA */
+  --arxiv-warning-bg:        #2e2410;
+  --arxiv-warning-border:    #e8b800;
+  --arxiv-warning-fg:        #ffe082;  /* 11.8:1 ✓ AAA */
+  --arxiv-error-bg:          #2d1414;
+  --arxiv-error-border:      #e57373;
+  --arxiv-error-fg:          #ef9a9a;  /* 8.0:1 ✓ AAA */
 }
 
-/* ── Scoped light island ────────────────────────────────────────────────
-   Re-declares the light values for any subtree marked data-theme="light",
-   so a demo can pin its mode inside a page that is following the reader's
-   OS preference. Custom properties inherit, so the NEAREST ancestor
-   carrying data-theme wins — nesting works in both directions without
-   depending on the order of these blocks. Generated from the :root values
-   above; keep in step with them. */
 [data-theme="light"] {
   color-scheme: light;
-  --arxiv-repository-brown: #1c1a17;
-  --arxiv-warm-wash: #f9f7f7;
-  --arxiv-card-grey: #f0eeec;
-  --arxiv-surface: white component fills (cards, pills, triggers) that
-       become raised dark surfaces in dark mode.
-     --arxiv-smileybones-yellow: the mascot yellow. ~1.3:1 on white —
-       never text, never a fine detail, never a boundary that must meet
-       1.4.11. It exists to be a big flat gesture: thick horizontal rules
-       that frame an image, a fill behind the mark itself. Holds its value
-       in dark mode like the other accents (color-mapping.md). */
-  --arxiv-header-bar:      #1c1a17;
-  --arxiv-border-light: #ddd8d2;
-  --arxiv-library-grey: #6b6459;
-  --arxiv-grey-dis: #b0aba6;
-  --arxiv-archival-blue: #1f5e96;
-  --arxiv-active-bg: inline state (citation chips when their
-         popover is open;
-  --arxiv-tint-light: popover panel background (citation refs,
-         footnote content)
-       --arxiv-tint-border: matching border for popover panels. */
-  --arxiv-active-bg:       #d6e8f7;
-  --arxiv-tint-border: matching border for popover panels. */
-  --arxiv-active-bg:       #d6e8f7;
-  --arxiv-pill-border: #e4e0db;
-  --arxiv-header-bar: the dark chrome bars (site header, skip link,
-       narrow-nav menu). Dark mode lifts it slightly for separation.
-     --arxiv-repository-brown-on-blue: text sitting ON an Open Blue fill — Open Blue
-       holds its light value in dark mode, so its label must too.
-     --arxiv-surface: white component fills (cards, pills, triggers) that
-       become raised dark surfaces in dark mode.
-     --arxiv-smileybones-yellow: the mascot yellow. ~1.3:1 on white —
-       never text, never a fine detail, never a boundary that must meet
-       1.4.11. It exists to be a big flat gesture: thick horizontal rules
-       that frame an image, a fill behind the mark itself. Holds its value
-       in dark mode like the other accents (color-mapping.md). */
-  --arxiv-header-bar:      #1c1a17;
-  --arxiv-link-blue: #1565c0;
-  --arxiv-link-hover: #1050a0;
-  --arxiv-link-visited: #7b2fbe;
-  --arxiv-success-bg: #e8f5d8;
-  --arxiv-success-border: #6b8e1e;
-  --arxiv-success-fg: #4a5a0a;
-  --arxiv-info-bg: #e7f1fd;
-  --arxiv-info-border: #5a82c8;
-  --arxiv-info-fg: #1a3a78;
-  --arxiv-warning-bg: #fff8e1;
-  --arxiv-warning-border: #e8b800;
-  --arxiv-warning-fg: #7a5c00;
-  --arxiv-error-bg: #fdeaea;
-  --arxiv-error-border: #c62828;
-  --arxiv-error-fg: #8b0000;
+  --arxiv-repository-brown:  #1c1a17;
+  --arxiv-warm-wash:         #f9f7f7;
+  --arxiv-card-grey:         #f0eeec;
+  --arxiv-surface:           #ffffff;
+  --arxiv-border-light:      #ddd8d2;
+  --arxiv-library-grey:      #6b6459;
+  --arxiv-grey-dis:          #b0aba6;
+  --arxiv-archival-blue:     #1f5e96;
+  --arxiv-active-bg:         #d6e8f7;
+  --arxiv-tint-light:        #edf4fc;
+  --arxiv-tint-border:       #c4dcf0;
+  --arxiv-pill-border:       #e4e0db;
+  --arxiv-header-bar:        #1c1a17;
+  --arxiv-link-blue:         #1565c0;
+  --arxiv-link-hover:        #1050a0;
+  --arxiv-link-visited:      #7b2fbe;
+  --arxiv-success-bg:        #e8f5d8;
+  --arxiv-success-border:    #6b8e1e;
+  --arxiv-success-fg:        #4a5a0a;
+  --arxiv-info-bg:           #e7f1fd;
+  --arxiv-info-border:       #5a82c8;
+  --arxiv-info-fg:           #1a3a78;
+  --arxiv-warning-bg:        #fff8e1;
+  --arxiv-warning-border:    #e8b800;
+  --arxiv-warning-fg:        #7a5c00;
+  --arxiv-error-bg:          #fdeaea;
+  --arxiv-error-border:      #c62828;
+  --arxiv-error-fg:          #8b0000;
 }
 
 
