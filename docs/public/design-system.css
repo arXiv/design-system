@@ -1546,6 +1546,40 @@ select.ds-input { padding-right: 34px; }
 .ds-acc-body dd { margin: 0; }
 .ds-acc-body a { color: var(--arxiv-link-blue); }
 
+/* ── Panel variant (.ds-acc-panel) ────────────────────────────────
+   A heavier accordion, for pages where the disclosure has to be findable
+   rather than unobtrusive — a reference panel under each demo, say, rather
+   than an aside inside a rail.
+
+   The base border is --arxiv-border-light, which measures 1.42:1 against
+   white. That is a hairline: correct for an aside sitting inside a rail that
+   already frames it, but on an open page it reads as no border at all, and it
+   is below the 3:1 that DESIGN-POLICIES requires of an interactive boundary.
+   The token's own note says as much — decorative only, never the sole boundary
+   of an interactive control.
+
+   So this variant does two things: takes --arxiv-grey-ui for the border, which
+   is the token documented for interactive boundaries and clears 3:1 at 3.61:1;
+   and fills the summary so the header reads as a bar rather than as a line of
+   text that happens to be clickable. Summary text on that fill is 15:1.
+
+     <details class="ds-acc ds-acc-panel">
+       <summary>Relevant classes</summary>
+       <div class="ds-acc-body">…</div>
+     </details>
+*/
+.ds-acc-panel {
+  border-color: var(--arxiv-grey-ui);
+}
+.ds-acc-panel > summary {
+  background: var(--arxiv-card-grey);
+  border-radius: 5px;
+}
+.ds-acc-panel[open] > summary {
+  border-radius: 5px 5px 0 0;
+  border-bottom-color: var(--arxiv-grey-ui);
+}
+
 /* Rail variant — chrome dropped; the rail's hairlines separate. */
 .ds-acc-rail { background: transparent; border: 0; border-radius: 0; }
 .ds-acc-rail > summary {
