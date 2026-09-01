@@ -32,8 +32,11 @@
        .ds-tag-remove, .ds-tag-note; no new tokens, validated 2026-08-11
        against the admin-console category editors)
      - Form fields (.ds-field/.ds-label/.ds-input/.ds-hint + .is-invalid,
-       .field-error, .field-required, .ds-check; no new tokens — the first
-       form styling the public stylesheet has ever had, 2026-08-11)
+       .field-error, .ds-check; no new tokens — the first form styling the
+       public stylesheet has ever had, 2026-08-11)
+     - Form validation tiers (.is-warning/.field-warning, .is-note/.field-note,
+       .field-messages, .label-optional; no new tokens — promoted from the
+       submission metadata mockup, 2026-09-01)
 
    More patterns will land here as they stabilize in the mockups.
    ═══════════════════════════════════════════════════════════════════════ */
@@ -528,7 +531,12 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--a
      .ds-hint               help text, shown before there is any error
      .field-error           the error message, [hidden] until it applies
      .is-invalid            on the control, while its value is rejected
-     .field-required        on the label — adds the asterisk
+     .field-warning         a non-blocking problem: accepted, may be reviewed
+     .field-note            the value was changed automatically; nothing wrong
+     .is-warning/.is-note   on the control, matching the message tier
+     .field-messages        an <ol> when one field carries several problems
+     .label-optional        on the label of an OPTIONAL field. Required fields
+                            carry no marker — see DESIGN-POLICIES
      .ds-field--sm/md/lg    cap the control at 240 / 360 / 480px
 
    Labels sit ABOVE the control, never beside it. A label-left layout
@@ -553,7 +561,7 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--a
 
    Example:
      <div class="ds-field ds-field--md">
-       <label class="ds-label field-required" for="email">Email address</label>
+       <label class="ds-label" for="email">Email address</label>
        <input class="ds-input is-invalid" id="email" type="email"
               required aria-required="true" aria-describedby="email-err">
        <p class="ds-hint">We only use this to confirm your submission.</p>
@@ -572,11 +580,18 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--a
   color: var(--arxiv-repository-brown);
   margin-bottom: 8px;
 }
-/* The asterisk is decoration; `required` + aria-required carry the fact. */
-.ds-label.field-required::after {
-  content: " *";
-  color: var(--arxiv-error-border);
-  font-weight: 700;
+/* Mark the OPTIONAL fields, in words. Required fields carry no visual marker;
+   `required` + aria-required on the control carry the fact, which is what
+   assistive technology announces. See DESIGN-POLICIES, Accessibility.
+
+   The word goes inside the visible <label>, never in aria-label or title, so
+   it joins the accessible name for free. */
+.label-optional {
+  margin-left: 0.3rem;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 0.875em;
+  color: var(--arxiv-library-grey);
 }
 
 .ds-input {
@@ -619,12 +634,63 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; }
   border-color: var(--arxiv-error-border);
   box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15);
 }
-.field-error {
+/* Warning: accepted, but the submission may be held for review. The tier that
+   was missing — everything used to be valid or rejected, with nothing in
+   between for a problem that does not block. */
+.ds-input.is-warning {
+  border-color: var(--arxiv-warning-border);
+  box-shadow: 0 0 0 3px rgba(232, 184, 0, 0.14);
+}
+.ds-input.is-warning:focus-visible {
+  border-color: var(--arxiv-warning-border);
+  box-shadow: 0 0 0 3px rgba(232, 184, 0, 0.22);
+}
+
+/* Note: the value was changed automatically and the author is being told.
+   Nothing is wrong. It gets the same ring as the other two — a bare border
+   among ringed fields disappears, and a signal nobody notices fails at the
+   only job it has. */
+.ds-input.is-note {
+  border-color: var(--arxiv-info-border);
+  box-shadow: 0 0 0 3px rgba(90, 130, 200, 0.14);
+}
+.ds-input.is-note:focus-visible {
+  border-color: var(--arxiv-info-border);
+  box-shadow: 0 0 0 3px rgba(90, 130, 200, 0.22);
+}
+
+/* Messages sit AFTER the control, not before it. Above the input they are
+   furthest from what they describe, and the control jumps down the page when
+   one appears. Each needs an id, with aria-describedby on the control. */
+.field-error,
+.field-warning,
+.field-note {
   margin: 6px 0 0;
   font-size: 12px;
-  color: var(--arxiv-error-border);
 }
-.field-error[hidden] { display: none; }
+.field-error   { color: var(--arxiv-error-border); }
+.field-warning { color: var(--arxiv-warning-fg); }
+.field-note    { color: var(--arxiv-info-fg); }
+.field-error[hidden],
+.field-warning[hidden],
+.field-note[hidden] { display: none; }
+
+/* Several problems on one field. Ordered and numbered: the count is checkable
+   against the summary, and "the second one" has to be sayable while someone
+   works through them.
+
+   display: list-item is stated because it is easy to lose — setting
+   display:flex on an li replaces it and the marker silently disappears. */
+.field-messages {
+  margin: 6px 0 0;
+  padding-left: 1.5rem;
+  list-style: decimal;
+}
+.field-messages li {
+  display: list-item;
+  margin: 4px 0;
+}
+.field-messages li::marker { font-weight: 700; }
 
 /* Checkbox / radio row. Native controls, tinted with accent-color: they
    stay correct in dark mode, at any zoom, with the platform's own focus
