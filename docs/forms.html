@@ -30,6 +30,34 @@
     .code-block { background: #1c1a17; color: #f0eeec; border-radius: 6px; padding: 14px 16px; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.6; overflow-x: auto; max-width: 860px; margin-top: 10px; }
     .code-block code { background: none; padding: 0; color: inherit; }
     .note-alert { max-width: 860px; margin-top: 16px; }
+    /* ── Per-demo class list ──
+       Reference sits beside the example it describes, not collected at the foot
+       of the page: linking a demo to a row in a distant table is work the reader
+       should not have to do. <details> and not a JS tab — collapsed content is
+       still in the DOM and still in the file, so an agent reading the source
+       sees everything a human can expand. Never use tabs that load on click. */
+    .cls { max-width: 860px; margin-top: 12px; }
+    .cls > summary { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); cursor: pointer; padding: 6px 0; }
+    .cls > summary:hover { color: var(--arxiv-repository-brown); }
+    .cls .spec-table { margin-top: 0; }
+
+    /* ── Tone ──
+       A per-pattern block, sibling to Accessibility essentials: how the words
+       in this component should sound. Light where that one is dark, so the two
+       read as a pair without competing.
+
+       Deliberately thin. The general writing rules live in STYLE.md and are
+       linked, never restated — two copies of a writing rule drift, and the copy
+       on a component page is the one nobody updates. Only rules specific to
+       this component belong here. */
+    .tone { background: var(--arxiv-warm-wash); border: 1px solid var(--arxiv-border-light); border-left: 4px solid var(--arxiv-archival-blue); border-radius: 8px; padding: 20px 22px; max-width: 860px; margin-top: 18px; }
+    .tone h3 { font-family: var(--arxiv-font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.09em; color: var(--arxiv-archival-blue); margin: 0 0 12px; }
+    .tone p { font-size: 13px; line-height: 1.65; margin: 0 0 12px; }
+    .tone dl { margin: 0; font-size: 13px; line-height: 1.6; }
+    .tone dt { font-family: var(--arxiv-font-condensed); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; color: var(--arxiv-library-grey); margin-top: 10px; }
+    .tone dd { margin: 2px 0 0; }
+    .tone .spec-table { margin-top: 14px; }
+
     /* ── Accessibility essentials ──
        A per-pattern block: the ARIA a component requires, the states that must
        be conveyed non-visually, and the mistakes that break it silently. Not a
@@ -198,9 +226,21 @@
         </div>
       </form>
     </div>
+    <details class="cls">
+      <summary>Classes</summary>
+      <table class="spec-table">
+        <tr><td><code>.ds-field</code></td><td>Wraps one label + control + hint + message, and supplies the spacing between fields.</td></tr>
+        <tr><td><code>.ds-label</code></td><td>The label. Always present, always above the control.</td></tr>
+        <tr><td><code>.ds-input</code></td><td>The control &mdash; goes on <code>input</code>, <code>select</code> and <code>textarea</code> alike.</td></tr>
+        <tr><td><code>.ds-hint</code></td><td>Help text. Say what good input looks like <em>before</em> someone gets it wrong.</td></tr>
+        <tr><td><code>.label-optional</code></td><td>On the label of an <em>optional</em> field. Required fields carry no marker.</td></tr>
+        <tr><td><code>.ds-select</code></td><td>Optional wrapper that swaps the native arrow for the drawn chevron.</td></tr>
+        <tr><td><code>.ds-check</code></td><td>A checkbox or radio row. Native control, tinted with <code>accent-color</code>.</td></tr>
+      </table>
+    </details>
+
   </div>
 
-  <!-- ── Spec ── -->
   
 
   <!-- ── Validation ── -->
@@ -274,6 +314,18 @@
     automatic correction legitimate. Normalising whitespace or stripping markup is an edit to
     author-submitted content; what makes that acceptable is that the author sees the change before it
     is committed. The review step is not a nicety to drop later for &ldquo;obvious&rdquo; fixes.</p>
+    <details class="cls">
+      <summary>Classes</summary>
+      <table class="spec-table">
+        <tr><td><code>.is-invalid</code></td><td>On the control, for the error disposition. Pair with <code>aria-invalid="true"</code>.</td></tr>
+        <tr><td><code>.is-warning</code></td><td>On the control, for the warning disposition.</td></tr>
+        <tr><td><code>.is-info</code></td><td>On the control, for the info disposition.</td></tr>
+        <tr><td><code>.field-error</code></td><td>The message, <strong>after</strong> the control. Keep <code>hidden</code> until it applies.</td></tr>
+        <tr><td><code>.field-warning</code></td><td>As above, for a warning.</td></tr>
+        <tr><td><code>.field-info</code></td><td>As above, for an automatic change.</td></tr>
+      </table>
+    </details>
+
 
     <h3 class="subgroup-title">Several problems on one field</h3>
     <p class="section-desc">One problem renders as a paragraph. Two or more render as a numbered list
@@ -295,6 +347,13 @@
         </ol>
       </div>
     </div>
+    <details class="cls">
+      <summary>Classes</summary>
+      <table class="spec-table">
+        <tr><td><code>.field-messages</code></td><td>An <code>&lt;ol&gt;</code> when one field carries several problems. Each <code>&lt;li&gt;</code> takes its own tier class.</td></tr>
+      </table>
+    </details>
+
 
     <h3 class="subgroup-title">Validation summary</h3>
     <p class="section-desc">On a form of any length, repeat the problems above the first field. This is
@@ -332,20 +391,36 @@
     Rows repeat the field name even when several name the same field &mdash; without it the reader
     cannot tell whether three problems mean one field to visit or three.</p>
 
-    <h3 class="subgroup-title">Error message tone</h3>
-    <p class="section-desc">Same rule as the <a href="alerts.html">alerts</a> guidance: say what to do,
-    not what went wrong. &ldquo;Enter an email address, like name@university.edu&rdquo; beats
-    &ldquo;Invalid input&rdquo; &mdash; it names the fix, and it shows the shape of a correct answer.
-    Never blame the reader, never use the word <em>invalid</em> on its own, and never make someone
-    guess which of eight rules they broke.</p>
+    <div class="tone">
+      <h3>Tone</h3>
+      <p>The general rules — no contractions, one instruction per sentence, the same word for the
+      same thing every time, no idiom in text someone reads while something is going wrong — live in
+      <a href="STYLE.md">STYLE.md</a> and are not repeated here. What follows is specific to
+      validation messages.</p>
 
-    <table class="spec-table">
-      <tr><th>Instead of</th><th>Write</th></tr>
-      <tr><td>Invalid email.</td><td>Enter an email address, like name@university.edu.</td></tr>
-      <tr><td>This field is required.</td><td>Give a reason before saving.</td></tr>
-      <tr><td>Password does not meet requirements.</td><td>Use at least 12 characters.</td></tr>
-      <tr><td>Error: bad category.</td><td>Pick a category from the list.</td></tr>
-    </table>
+      <dl>
+        <dt>Error</dt>
+        <dd>Say what to do, not what went wrong. Never blame the reader, never use
+        <em>invalid</em> on its own, and never make someone guess which of eight rules they broke.</dd>
+
+        <dt>Warning</dt>
+        <dd>Say what happens if they continue, because they can. &ldquo;Your submission may be held
+        for moderator review&rdquo; is the message; &ldquo;check this field&rdquo; is not.</dd>
+
+        <dt>Info</dt>
+        <dd>Say what changed and ask them to confirm it. This message exists because arXiv edited
+        the author&rsquo;s content, so it reports rather than instructs, and it never implies fault.</dd>
+      </dl>
+
+      <table class="spec-table">
+        <tr><th>Instead of</th><th>Write</th></tr>
+        <tr><td>Invalid email.</td><td>Enter an email address, like name@university.edu.</td></tr>
+        <tr><td>This field is required.</td><td>Give a reason before saving.</td></tr>
+        <tr><td>Password does not meet requirements.</td><td>Use at least 12 characters.</td></tr>
+        <tr><td>Check this field.</td><td>You may continue, but your submission may be delayed.</td></tr>
+        <tr><td>Title was invalid.</td><td>Extra spaces were removed. Please confirm it reads correctly.</td></tr>
+      </table>
+    </div>
 
     <div class="a11y">
       <h3>Accessibility essentials</h3>
@@ -404,25 +479,7 @@
   </div>
 
   <!-- ── Usage ── -->
-  <div class="section">
-    <h2 class="section-title">Classes</h2>
-      <p class="section-desc">The full set, collected. Each demo above stands on its own, so this is the reference for when you want everything at once rather than the answer to one question.</p>
-    <table class="spec-table">
-      <tr><th>Class</th><th>What it does</th></tr>
-      <tr><td><code>.ds-field</code></td><td>Wraps one label + control + hint + error, and supplies the spacing between fields.</td></tr>
-      <tr><td><code>.ds-label</code></td><td>The label. Always present, always above the control.</td></tr>
-      <tr><td><code>.ds-input</code></td><td>The control &mdash; goes on <code>input</code>, <code>select</code>, and <code>textarea</code> alike.</td></tr>
-      <tr><td><code>.ds-hint</code></td><td>Help text. Say what good input looks like <em>before</em> someone gets it wrong.</td></tr>
-      <tr><td><code>.label-optional</code></td><td>On the label of an <em>optional</em> field. Required fields carry no marker &mdash; <code>required</code> + <code>aria-required</code> carry the fact.</td></tr>
-      <tr><td><code>.is-invalid</code><br><code>.is-warning</code><br><code>.is-info</code></td><td>On the control, matching the tier of its message.</td></tr>
-      <tr><td><code>.field-error</code><br><code>.field-warning</code><br><code>.field-info</code></td><td>The message, <strong>after</strong> the control. Keep <code>hidden</code> until it applies.</td></tr>
-      <tr><td><code>.field-messages</code></td><td>An <code>&lt;ol&gt;</code>, when one field carries several problems at once.</td></tr>
-      <tr><td><code>.ds-check</code></td><td>A checkbox or radio row. Native control, tinted with <code>accent-color</code>.</td></tr>
-      <tr><td><code>.ds-field--sm</code><br><code>.ds-field--md</code><br><code>.ds-field--lg</code></td><td>Cap the control at 240 / 360 / 480px.</td></tr>
-    </table>
-  </div>
-
-  <div class="section">
+    <div class="section">
     <h2 class="section-title">Usage</h2>
     <div class="code-block"><code>&lt;div class="ds-field ds-field--md"&gt;
   &lt;label class="ds-label" for="email"&gt;Email address&lt;/label&gt;

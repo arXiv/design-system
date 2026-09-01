@@ -428,10 +428,15 @@
       <tbody>
         <tr><td>Not proceeding — Cancel, Not now</td><td><strong>Text</strong></td><td>There is no second destination, so nothing is being ranked. A border would make the absence compete with the action.</td></tr>
         <tr><td>A real alternative path — Go back, Save draft</td><td><strong>Secondary</strong></td><td>Both buttons lead somewhere. The row is ranking two destinations, not offering a way out of one.</td></tr>
-        <tr><td>Not proceeding, and it discards work</td><td><strong>Secondary</strong></td><td>A text button beside a primary is easy to hit by accident, and the work does not come back. The weight buys a moment of pause.</td></tr>
+        <tr><td>A misclick is expensive — backing out discards work, or proceeding is destructive</td><td><strong>Secondary</strong></td><td>Raise the quiet action's weight when a misclick is expensive. A text button beside a primary is easy to hit by accident, and neither discarded work nor a deleted file comes back. The weight buys a moment of pause.</td></tr>
         <tr><td>Three or more actions</td><td><strong>A secondary must appear</strong></td><td>Text plus primary carries two ranks and no more. A third action needs a middle, or the row has no readable order.</td></tr>
       </tbody>
     </table>
+    <p class="section-desc" style="margin-top: 14px;">Button weight is the tool for <em>cheap</em> mistakes.
+    When the mistake is expensive or cannot be undone, the answer is a confirmation step, not a heavier
+    button — arXiv already does this during submission, where deleting files raises a confirmation dialog
+    naming how many files will be deleted. Weighting a button is not a substitute for confirming a
+    destructive action.</p>
 
     <h3 class="subgroup-title">Save or cancel</h3>
     <p class="section-desc">Cancel is the null action: the person either saves the change or does not make it.
@@ -517,19 +522,24 @@
         <button class="ds-btn ds-btn-primary" type="submit" aria-disabled="true" aria-describedby="fx-gate">Continue</button>
       </div>
     </div>
-    <p class="section-desc" style="margin-top: 14px;"><strong>Open gap:</strong>
-    <code>public/design-system.css</code> defines a disabled rendering for <code>.ds-btn-text</code> only.
-    The flat Card Grey fill above comes from this page&rsquo;s own stylesheet, following the recipe in
-    <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> (Buttons), until the rule lands in the
-    shared file.</p>
+    <p class="section-desc" style="margin-top: 14px;">The flat Card Grey fill is
+    <code>.ds-btn:disabled, .ds-btn[aria-disabled="true"]</code> in the shared stylesheet &mdash; one rule for
+    every variant, because the message is &ldquo;you cannot use this&rdquo;, which does not also need to encode
+    which button it was. The two selectors render identically on purpose: the difference between them is
+    behavioural, and the reader has no use for it.</p>
 
     <h3 class="subgroup-title">A destructive action</h3>
     <p class="section-desc">Deleting is not the page&rsquo;s call to action, so it does not get the primary
-    tier, and it does not sit next to the button people press without reading. Position carries what the
-    public set cannot yet say in color: the delete goes to the far end of the row, away from Save.</p>
+    tier, and it does not sit next to the button people press without reading. Color and position each carry
+    part of the warning: <code>.ds-btn-destructive</code> says what the button costs, and the delete still
+    goes to the far end of the row, away from Save.</p>
+    <p class="section-desc">It is built like the rest of the public set — the same dual-background
+    construction, lit from above — with one departure. Hover holds the fill and lightens the inner vignette
+    instead of brightening the color, because a lighter red drops white text below AA. White on Danger Red
+    <code>#c62828</code> stays at 5.62:1 through every state.</p>
     <div class="form-demo">
       <div class="form-actions split">
-        <button class="ds-btn ds-btn-secondary" type="button">Delete draft</button>
+        <button class="ds-btn ds-btn-destructive" type="button">Delete draft</button>
         <span class="action-group">
           <button class="ds-btn ds-btn-text" type="button">Cancel</button>
           <button class="ds-btn ds-btn-primary" type="submit">Save</button>
@@ -539,11 +549,10 @@
     <div class="ds-alert ds-alert-warning note-alert">
       <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
       <div class="ds-alert-content">
-        <p class="ds-alert-title">There is no public destructive variant yet</p>
-        <p>The public set is <code>.ds-btn</code> plus <code>-primary</code>, <code>-secondary</code>, and
-        <code>-text</code>. That is all of it, so the example above renders Delete as a secondary. Do not
-        invent a red variant, and do not borrow the internal <code>.btn-destructive</code> — it is Access
-        Lime&rsquo;s context, and crossing the two accent sets is a policy violation. This is an open gap.</p>
+        <p class="ds-alert-title">The red is a warning, not a safeguard</p>
+        <p>Reserve <code>.ds-btn-destructive</code> for hard-delete and irreversible actions, and always pair
+        it with a confirmation step. The color tells a person what the button costs; it does not stop them
+        pressing it, and it is never the only thing making the action safe.</p>
       </div>
     </div>
 
@@ -707,7 +716,7 @@
   <section class="section">
     <h2 class="section-title">Accessibility notes</h2>
     <ul class="notes">
-      <li><strong>Contrast.</strong> Repository Brown on Open Blue <code>#a5d6fe</code> and Repository Brown on Access Lime <code>#c4d82e</code> both pass AA for normal text. White on danger <code>#c62828</code> is 5.17:1 ✓. Bottom border-gradient <em>hover</em> stops pass the 3:1 UI-component minimum (3.89 / 3.61); the rest-state stops sit below it and are decorative — the button's fill and border carry the boundary at rest.</li>
+      <li><strong>Contrast.</strong> Repository Brown on Open Blue <code>#a5d6fe</code> and Repository Brown on Access Lime <code>#c4d82e</code> both pass AA for normal text. White on danger <code>#c62828</code> is 5.62:1 ✓. Bottom border-gradient <em>hover</em> stops pass the 3:1 UI-component minimum (3.89 / 3.61); the rest-state stops sit below it and are decorative — the button's fill and border carry the boundary at rest.</li>
       <li><strong>Focus.</strong> <code>:focus-visible</code>, never <code>:focus</code> — the ring shows on keyboard nav only.</li>
       <li><strong>Not color alone.</strong> Hover changes fill AND border AND vignette; press changes position AND shadow (WCAG 1.4.1).</li>
       <li><strong>Target size.</strong> Standard padding yields ~37px-tall buttons — above the 24×24 hard floor (WCAG 2.2 SC 2.5.8); aim for 44×44 on touch-primary surfaces.</li>
