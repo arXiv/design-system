@@ -58,6 +58,31 @@
     .ds-btn-text.is-pressed { transform: translateY(1px); background: var(--arxiv-active-bg); color: var(--arxiv-link-hover); }
     .dark-row { background: #1f5e96; border-radius: 6px; padding: 18px; margin-top: 4px; max-width: 760px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
 
+    /* ── Form action demos ("Buttons in forms") — layout helpers only. Every
+       button in that section is a real .ds-btn class from
+       public/design-system.css; nothing here restyles one. Panel chrome
+       matches .live-row, minus its "Live" label. ── */
+    .form-demo { background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 6px; padding: 16px 18px; margin-top: 4px; max-width: 620px; }
+    .form-actions { display: flex; justify-content: flex-end; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+    .form-actions.split { justify-content: space-between; }
+    .action-group { display: flex; align-items: center; gap: 10px; }
+    /* Optical alignment: a text button has 10px of padding and no border, so it
+       hangs to the right of the field edge above it until the padding is pulled back. */
+    .btn-flush { margin-left: -10px; }
+    .repeat-row { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 10px; }
+    .repeat-row .ds-field { flex: 1 1 auto; margin-bottom: 0; }
+
+
+    /* Work in flight. Drawn from currentColor, sized in em like a button icon —
+       no new value of any kind. The gap in the ring and the rotation appear only
+       where motion is welcome; under reduced motion it is a still ring and the
+       label carries the state. */
+    .btn-spin { width: 1em; height: 1em; flex: none; border: 2px solid currentColor; border-radius: 50%; }
+    @media (prefers-reduced-motion: no-preference) {
+      .btn-spin { border-top-color: transparent; animation: btn-spin 0.8s linear infinite; }
+    }
+    @keyframes btn-spin { to { transform: rotate(360deg); } }
+
     /* ── Internal button mirrors (.ibtn-*) — values copied 1:1 from
        internal/design-system.css so this page can show both contexts
        side by side without loading two stylesheets that both define
@@ -161,6 +186,7 @@
       <a href="../mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
       <a href="../mockups/public/html-phase1.html">HTML paper — Phase 1</a>
       <a href="../mockups/public/optin-modal/">Labs opt-in modal</a>
+      <a href="../mockups/public/submission-metadata/">Submission — Metadata Form</a>
       <span class="nav-dd-group">Internal</span>
       <a href="../mockups/internal/admin-console/user-page/">Admin Console — user page</a>
       <a href="../mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
@@ -382,6 +408,215 @@
 <span class="c">&lt;!-- Text button (acts, never navigates) and on a color field --&gt;</span>
 <span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-text"</span> <span class="k">type</span>=<span class="s">"button"</span><span class="k">&gt;</span>Copy link<span class="k">&lt;/button&gt;</span>
 <span class="k">&lt;a</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-secondary on-dark"</span> <span class="k">href</span>=<span class="s">"/subscribe"</span><span class="k">&gt;</span>Subscribe<span class="k">&lt;/a&gt;</span></pre>
+  </section>
+
+  <!-- ───────── Buttons in forms ───────── -->
+  <section class="section">
+    <h2 class="section-title">Buttons in forms</h2>
+    <p class="section-desc">A form ends in a row of buttons, and the only question that row asks is what tier
+    the <em>second</em> button takes. Secondary is for a real alternative path — somewhere the person might
+    genuinely be going; &ldquo;Go back&rdquo; is a destination, not an absence. Text is for the null action,
+    which is simply not proceeding: there is no second destination there, only the thing and the absence of
+    it, and a border would set the absence competing with the action for attention.</p>
+    <p class="section-desc">Every example below is rendered with the public classes, and the same reasoning
+    picks the internal tiers. Field construction, validation, and the accessibility contract for the fields
+    themselves live in <a href="forms.html">Forms &amp; validation</a>.</p>
+
+    <h3 class="subgroup-title">Which tier the second action takes</h3>
+    <table class="token-table">
+      <thead><tr><th>The other action</th><th>Tier</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Not proceeding — Cancel, Not now</td><td><strong>Text</strong></td><td>There is no second destination, so nothing is being ranked. A border would make the absence compete with the action.</td></tr>
+        <tr><td>A real alternative path — Go back, Save draft</td><td><strong>Secondary</strong></td><td>Both buttons lead somewhere. The row is ranking two destinations, not offering a way out of one.</td></tr>
+        <tr><td>Not proceeding, and it discards work</td><td><strong>Secondary</strong></td><td>A text button beside a primary is easy to hit by accident, and the work does not come back. The weight buys a moment of pause.</td></tr>
+        <tr><td>Three or more actions</td><td><strong>A secondary must appear</strong></td><td>Text plus primary carries two ranks and no more. A third action needs a middle, or the row has no readable order.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="subgroup-title">Save or cancel</h3>
+    <p class="section-desc">Cancel is the null action: the person either saves the change or does not make it.
+    It takes the text tier, which leaves exactly one thing in the row that looks like a button to press.</p>
+    <div class="form-demo">
+      <div class="ds-field ds-field--md">
+        <label class="ds-label" for="fx-title">Title</label>
+        <input class="ds-input" id="fx-title" type="text" value="Spectral gaps in random regular graphs">
+      </div>
+      <div class="form-actions">
+        <button class="ds-btn ds-btn-text" type="button">Cancel</button>
+        <button class="ds-btn ds-btn-primary" type="submit">Save</button>
+      </div>
+    </div>
+
+    <h3 class="subgroup-title">Continue or go back</h3>
+    <p class="section-desc">Both buttons lead somewhere. Go back is the previous step of the submission, with
+    the person&rsquo;s work still in it — a destination, not an absence — so it takes the secondary tier.</p>
+    <div class="form-demo">
+      <div class="form-actions">
+        <button class="ds-btn ds-btn-secondary" type="button">Go back</button>
+        <button class="ds-btn ds-btn-primary" type="submit">Continue</button>
+      </div>
+    </div>
+
+    <h3 class="subgroup-title">When backing out discards work</h3>
+    <p class="section-desc">Discarding is still the null action, but here it throws away everything typed into
+    the form. A text button sits beside the primary with no border to stop a stray cursor, and the mistake
+    cannot be undone, so the null action earns secondary weight anyway.</p>
+    <div class="form-demo">
+      <div class="ds-field ds-field--lg">
+        <label class="ds-label" for="fx-reason">Reason for withdrawal</label>
+        <textarea class="ds-input" id="fx-reason">The result in Section 4 does not hold for non-regular graphs.</textarea>
+      </div>
+      <div class="form-actions">
+        <button class="ds-btn ds-btn-secondary" type="button">Discard draft</button>
+        <button class="ds-btn ds-btn-primary" type="submit">Submit withdrawal</button>
+      </div>
+    </div>
+
+    <h3 class="subgroup-title">Three actions — the boundary</h3>
+    <p class="section-desc">None of these three is a null action: going back, saving a draft, and continuing
+    are three places the person can end up. Text plus primary carries two ranks and there are three to show,
+    and a borderless control between two bordered ones reads as a gap rather than a rank — so the row runs
+    secondary, secondary, primary, and separates the backwards step by position instead of by weight.</p>
+    <div class="form-demo">
+      <div class="form-actions split">
+        <button class="ds-btn ds-btn-secondary" type="button">Go back</button>
+        <span class="action-group">
+          <button class="ds-btn ds-btn-secondary" type="button">Save draft</button>
+          <button class="ds-btn ds-btn-primary" type="submit">Continue</button>
+        </span>
+      </div>
+    </div>
+
+    <h3 class="subgroup-title">One action</h3>
+    <p class="section-desc">Some forms have no alternative path and no null action worth a control: the person
+    submits, or leaves the page, which the browser already handles. Adding a Cancel here is a reflex and it is
+    wrong — it invents a second choice and asks every reader to rule it out.</p>
+    <div class="form-demo">
+      <div class="ds-field ds-field--md">
+        <label class="ds-label" for="fx-email">Email address</label>
+        <input class="ds-input" id="fx-email" type="email" value="a.novak@university.edu">
+      </div>
+      <div class="form-actions">
+        <button class="ds-btn ds-btn-primary" type="submit">Submit</button>
+      </div>
+    </div>
+
+    <h3 class="subgroup-title">An action that is not available yet</h3>
+    <p class="section-desc">Use <code>aria-disabled</code>, never the <code>disabled</code> attribute: a
+    disabled button leaves the tab order, so a person who cannot proceed finds nothing there and no
+    explanation of why. The requirement goes in a visually hidden element that <code>aria-describedby</code>
+    points at, so it is read out when focus lands on the button. Not a hover tooltip: a tooltip is absent from
+    the accessibility tree at exactly the moment nobody is pointing at it.</p>
+    <div class="form-demo">
+      <label class="ds-check">
+        <input type="checkbox">
+        <span>I grant arXiv a perpetual, non-exclusive license to distribute this article</span>
+      </label>
+      <div class="form-actions">
+        <span class="is-sr-only" id="fx-gate">Grant the license before continuing.</span>
+        <button class="ds-btn ds-btn-primary" type="submit" aria-disabled="true" aria-describedby="fx-gate">Continue</button>
+      </div>
+    </div>
+    <p class="section-desc" style="margin-top: 14px;"><strong>Open gap:</strong>
+    <code>public/design-system.css</code> defines a disabled rendering for <code>.ds-btn-text</code> only.
+    The flat Card Grey fill above comes from this page&rsquo;s own stylesheet, following the recipe in
+    <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> (Buttons), until the rule lands in the
+    shared file.</p>
+
+    <h3 class="subgroup-title">A destructive action</h3>
+    <p class="section-desc">Deleting is not the page&rsquo;s call to action, so it does not get the primary
+    tier, and it does not sit next to the button people press without reading. Position carries what the
+    public set cannot yet say in color: the delete goes to the far end of the row, away from Save.</p>
+    <div class="form-demo">
+      <div class="form-actions split">
+        <button class="ds-btn ds-btn-secondary" type="button">Delete draft</button>
+        <span class="action-group">
+          <button class="ds-btn ds-btn-text" type="button">Cancel</button>
+          <button class="ds-btn ds-btn-primary" type="submit">Save</button>
+        </span>
+      </div>
+    </div>
+    <div class="ds-alert ds-alert-warning note-alert">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">There is no public destructive variant yet</p>
+        <p>The public set is <code>.ds-btn</code> plus <code>-primary</code>, <code>-secondary</code>, and
+        <code>-text</code>. That is all of it, so the example above renders Delete as a secondary. Do not
+        invent a red variant, and do not borrow the internal <code>.btn-destructive</code> — it is Access
+        Lime&rsquo;s context, and crossing the two accent sets is a policy violation. This is an open gap.</p>
+      </div>
+    </div>
+
+    <h3 class="subgroup-title">Add another row</h3>
+    <p class="section-desc">A repeatable group grows on demand — arXiv&rsquo;s own is
+    &ldquo;Add top-level file&rdquo; on the upload page. It is a real action, but a minor one beside whatever
+    the form is for, so it takes the text tier and sits directly under the group it extends.</p>
+    <div class="form-demo">
+      <div class="ds-field ds-field--md">
+        <label class="ds-label" for="fx-file1">Top-level file</label>
+        <input class="ds-input" id="fx-file1" type="text" value="main.tex">
+      </div>
+      <button class="ds-btn ds-btn-text btn-flush" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        Add top-level file
+      </button>
+    </div>
+
+    <h3 class="subgroup-title">Remove one row</h3>
+    <p class="section-desc">The inverse control belongs inside the row it removes, not in the form&rsquo;s
+    action row: it acts on one item, not on the form. Text tier again, and the accessible name says which row
+    it removes — a column of buttons all reading &ldquo;Remove&rdquo; is a list of identical choices to
+    anyone reading them one at a time.</p>
+    <div class="form-demo">
+      <div class="repeat-row">
+        <div class="ds-field ds-field--md">
+          <label class="ds-label" for="fx-file2">Top-level file</label>
+          <input class="ds-input" id="fx-file2" type="text" value="main.tex">
+        </div>
+        <button class="ds-btn ds-btn-text" type="button">Remove<span class="is-sr-only"> main.tex</span></button>
+      </div>
+      <div class="repeat-row">
+        <div class="ds-field ds-field--md">
+          <label class="ds-label is-sr-only" for="fx-file3">Top-level file</label>
+          <input class="ds-input" id="fx-file3" type="text" value="figures.zip">
+        </div>
+        <button class="ds-btn ds-btn-text" type="button">Remove<span class="is-sr-only"> figures.zip</span></button>
+      </div>
+    </div>
+
+    <h3 class="subgroup-title">While the submit is in flight</h3>
+    <p class="section-desc">The button reports its own work: the label changes to say what is happening, and a
+    spinner marks the wait. Keep the same button in the same place — replacing it with a message throws away
+    the keyboard focus that is sitting on it. The button is working, not unavailable, so it carries
+    <code>aria-busy</code> rather than <code>aria-disabled</code> and keeps its live rendering; the handler is
+    what ignores a second press.</p>
+    <div class="form-demo">
+      <div class="form-actions">
+        <button class="ds-btn ds-btn-text" type="button">Cancel</button>
+        <button class="ds-btn ds-btn-primary" type="submit" aria-busy="true">
+          <span class="btn-spin" aria-hidden="true"></span>
+          Submitting
+        </button>
+      </div>
+    </div>
+    <p class="section-desc" style="margin-top: 14px;">The label is the state, so it changes in the markup and
+    not only in CSS — a spinner alone announces nothing. Under
+    <code>prefers-reduced-motion: reduce</code> the ring stops turning and the label carries the state on its
+    own (DESIGN-POLICIES, Motion).</p>
+
+    <h3 class="subgroup-title">Usage</h3>
+<pre class="code"><span class="c">&lt;!-- Null action: text + primary --&gt;</span>
+<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-text"</span> <span class="k">type</span>=<span class="s">"button"</span><span class="k">&gt;</span>Cancel<span class="k">&lt;/button&gt;</span>
+<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-primary"</span> <span class="k">type</span>=<span class="s">"submit"</span><span class="k">&gt;</span>Save<span class="k">&lt;/button&gt;</span>
+
+<span class="c">&lt;!-- Real alternative path: secondary + primary --&gt;</span>
+<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-secondary"</span> <span class="k">type</span>=<span class="s">"button"</span><span class="k">&gt;</span>Go back<span class="k">&lt;/button&gt;</span>
+<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-primary"</span> <span class="k">type</span>=<span class="s">"submit"</span><span class="k">&gt;</span>Continue<span class="k">&lt;/button&gt;</span>
+
+<span class="c">&lt;!-- Not available yet: aria-disabled, with the reason described --&gt;</span>
+<span class="k">&lt;span</span> <span class="k">class</span>=<span class="s">"is-sr-only"</span> <span class="k">id</span>=<span class="s">"gate"</span><span class="k">&gt;</span>Grant the license before continuing.<span class="k">&lt;/span&gt;</span>
+<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-primary"</span> <span class="k">type</span>=<span class="s">"submit"</span>
+        <span class="k">aria-disabled</span>=<span class="s">"true"</span> <span class="k">aria-describedby</span>=<span class="s">"gate"</span><span class="k">&gt;</span>Continue<span class="k">&lt;/button&gt;</span></pre>
   </section>
 
   <!-- ───────── Internal buttons ───────── -->

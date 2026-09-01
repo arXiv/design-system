@@ -34,7 +34,7 @@
      - Form fields (.ds-field/.ds-label/.ds-input/.ds-hint + .is-invalid,
        .field-error, .ds-check; no new tokens — the first form styling the
        public stylesheet has ever had, 2026-08-11)
-     - Form validation tiers (.is-warning/.field-warning, .is-note/.field-note,
+     - Form validation tiers (.is-warning/.field-warning, .is-info/.field-info,
        .field-messages, .label-optional; no new tokens — promoted from the
        submission metadata mockup, 2026-09-01)
 
@@ -117,6 +117,12 @@
      Used by all interactive elements. `outline: 3px solid` with `2px`
      offset is the established treatment. */
   --arxiv-focus-ring:      var(--arxiv-link-blue);
+
+  /* ── Chevron ──
+     One shape, used as a mask so its colour comes from a token and flips with
+     the theme. Stroke-width 2 on a 12x8 box: deliberately heavier than the
+     browser defaults, which read as too faint to signal a dropdown. */
+  --ds-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 
   /* ── Typography stack ──
      IBM Plex hosted by arXiv. See typography.md for the self-hosting
@@ -343,6 +349,39 @@
   outline: 3px solid var(--arxiv-focus-ring-dark);
 }
 
+/* ── Disabled ─────────────────────────────────────────────────────
+   Flat neutral grey. No gradient, no inset vignette, no drop shadow: removing
+   the "lit from above" construction is what separates a disabled button from a
+   live one, and every hover and press response is cancelled too, or a dead
+   control still feels live under the pointer.
+
+   The label clears AA at 5.05:1 even though WCAG exempts disabled controls. A
+   label nobody can read is worse than one they can, and the flat fill already
+   carries the "unavailable" message. Card Grey is the darkest fill that leaves
+   Library Grey passing — the palette has nothing between them.
+
+   Both tokens flip in dark mode (6.51:1 there), so this needs no dark override.
+
+   Neutral in every variant: the message is "you cannot use this", which does
+   not also need to encode which button it was.
+
+   :disabled and [aria-disabled] render identically. The difference between them
+   is behavioural — aria-disabled stays focusable and can explain itself — and
+   the user has no use for that distinction. See DESIGN-POLICIES. */
+.ds-btn:disabled,
+.ds-btn[aria-disabled="true"],
+.ds-btn:disabled:hover,
+.ds-btn[aria-disabled="true"]:hover,
+.ds-btn:disabled:active,
+.ds-btn[aria-disabled="true"]:active {
+  background: var(--arxiv-card-grey);
+  border-color: transparent;
+  color: var(--arxiv-library-grey);
+  box-shadow: none;
+  transform: none;
+  cursor: not-allowed;
+}
+
 /* ── Text button (.ds-btn-text) — the quiet third tier ──────────────
    A control that does something, dressed as quietly as a link: no fill,
    no border, no shadow. Use for actions that are real but minor next to
@@ -532,8 +571,8 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--a
      .field-error           the error message, [hidden] until it applies
      .is-invalid            on the control, while its value is rejected
      .field-warning         a non-blocking problem: accepted, may be reviewed
-     .field-note            the value was changed automatically; nothing wrong
-     .is-warning/.is-note   on the control, matching the message tier
+     .field-info            the value was changed automatically; nothing wrong
+     .is-warning/.is-info   on the control, matching the message tier
      .field-messages        an <ol> when one field carries several problems
      .label-optional        on the label of an OPTIONAL field. Required fields
                             carry no marker — see DESIGN-POLICIES
@@ -616,7 +655,71 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--a
   cursor: not-allowed;
 }
 .ds-input::placeholder { color: var(--arxiv-library-grey); opacity: 1; }
-textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; }
+/* display:block, not the inline-block a textarea gets by default: on a text
+   baseline it leaves a descender gap underneath, which pushes the hint or
+   error below it further from the control than the same message under an
+   <input>. */
+textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; display: block; }
+/* Room on the right for the arrow, which renders inside the control's own
+   padding box — without it a long option label runs into it. */
+select.ds-input { padding-right: 34px; }
+
+/* ── Drawn chevron (.ds-select wrapper) ──────────────────────────────
+   Revises the earlier decision to keep the browser's native arrow. That
+   decision was right about the technique it was weighing: a chevron baked into
+   a background-image data URI does need a second, hand-picked asset for dark
+   mode, which DESIGN-POLICIES forbids. It is not true of a mask tinted with a
+   token — the colour comes from --arxiv-library-grey and flips on its own, so
+   there is one asset and no dark override. .ds-input has no dark rules at all
+   and this keeps it that way.
+
+   Why revise it: every other control here is specified to the pixel, and the
+   native arrow was the one place the system accepted whatever each platform
+   drew. On macOS Chrome it is faint enough that a select does not read as a
+   dropdown.
+
+   Why a wrapper rather than styling the <select> directly: a mask applies to
+   the whole element, so masking the select would mask its fill too. The
+   chevron therefore lives on the wrapper's ::after.
+
+   The wrapper is OPTIONAL by design. appearance:none is scoped to
+   `.ds-select select`, so a bare <select class="ds-input"> keeps its native
+   arrow and still works. Forgetting the wrapper degrades to today's behaviour,
+   never to a select with no arrow at all.
+
+     <span class="ds-select">
+       <select class="ds-input">…</select>
+     </span>
+*/
+.ds-select {
+  position: relative;
+  display: block;
+}
+.ds-select select.ds-input {
+  appearance: none;
+  -webkit-appearance: none;
+}
+.ds-select::after {
+  content: "";
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  width: 0.72em;
+  height: 0.48em;              /* em, so it tracks the control's font at any zoom */
+  transform: translateY(-50%);
+  pointer-events: none;        /* clicks fall through to the select */
+  background-color: var(--arxiv-library-grey);
+  -webkit-mask: var(--ds-chevron) center / contain no-repeat;
+  mask: var(--ds-chevron) center / contain no-repeat;
+}
+
+/* Windows High Contrast overrides background-color, which would erase a masked
+   chevron and leave a select with no arrow at all. Hand the control back to the
+   system, which draws its own. */
+@media (forced-colors: active) {
+  .ds-select select.ds-input { appearance: auto; -webkit-appearance: auto; padding-right: 11px; }
+  .ds-select::after { display: none; }
+}
 
 .ds-hint {
   margin: 8px 0 0;
@@ -646,15 +749,15 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; }
   box-shadow: 0 0 0 3px rgba(232, 184, 0, 0.22);
 }
 
-/* Note: the value was changed automatically and the author is being told.
+/* Info: the value was changed automatically and the author is being told.
    Nothing is wrong. It gets the same ring as the other two — a bare border
    among ringed fields disappears, and a signal nobody notices fails at the
    only job it has. */
-.ds-input.is-note {
+.ds-input.is-info {
   border-color: var(--arxiv-info-border);
   box-shadow: 0 0 0 3px rgba(90, 130, 200, 0.14);
 }
-.ds-input.is-note:focus-visible {
+.ds-input.is-info:focus-visible {
   border-color: var(--arxiv-info-border);
   box-shadow: 0 0 0 3px rgba(90, 130, 200, 0.22);
 }
@@ -664,16 +767,16 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; }
    one appears. Each needs an id, with aria-describedby on the control. */
 .field-error,
 .field-warning,
-.field-note {
+.field-info {
   margin: 6px 0 0;
   font-size: 12px;
 }
 .field-error   { color: var(--arxiv-error-border); }
 .field-warning { color: var(--arxiv-warning-fg); }
-.field-note    { color: var(--arxiv-info-fg); }
+.field-info    { color: var(--arxiv-info-fg); }
 .field-error[hidden],
 .field-warning[hidden],
-.field-note[hidden] { display: none; }
+.field-info[hidden] { display: none; }
 
 /* Several problems on one field. Ordered and numbered: the count is checkable
    against the summary, and "the second one" has to be sayable while someone

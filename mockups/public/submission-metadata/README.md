@@ -22,9 +22,9 @@ Two dispositions matching QA's vocabulary, plus a third signal for neutral 'info
 |---|---|---|---|
 | **Error** | Rejection. The value is not acceptable | No | Red `#c62828` |
 | **Warning** | Accepted, but the submission may be held for moderator review | Yes | Amber `#e8b800` |
-| **Note** | arXiv changed a value automatically. Not an error, just info for the user | Yes | Blue `#5a82c8` |
+| **Info** | arXiv changed a value automatically. Not an error, just information for the user | Yes | Blue `#5a82c8` |
 
-A **note** example: Whitespace normalisation and sanitisation are two types of edits to author-submitted content that you mentioned, Carly. Per your philosophy of transparency and user confirmation we point out the changes, but they are distinguishable from error reporting. 
+An **info** example: Whitespace normalisation and sanitisation are two types of edits to author-submitted content that you mentioned, Carly. Per your philosophy of transparency and user confirmation we point out the changes, but they are distinguishable from error reporting. 
 
 ---
 
@@ -35,9 +35,9 @@ A **note** example: Whitespace normalisation and sanitisation are two types of e
 | Optional marker | `<span class="label-optional">` | Inside the label | On optional fields only. Required fields carry no marker, they are the default |
 | Hint | `.help.has-text-grey` | Between label and input | Always |
 | Hint example | `.hint-example-label` + one `<code>` | Inside the hint | As needed |
-| Field message | `.field-error` / `.field-warning` / `.field-note` | **After** the input | One per problem |
+| Field message | `.field-error` / `.field-warning` / `.field-info` | **After** the input | One per problem |
 | Multiple field messages | `<ol class="field-messages">` | After the input | When a field has 2+ problems |
-| Field state | `.is-invalid` / `.is-warning` / `.is-note` | On the control | Worst tier present |
+| Field state | `.is-invalid` / `.is-warning` / `.is-info` | On the control | Worst tier present |
 | Validation summary | `#form-summary` › `.form-summary.form-summary-{tier}` | Above the first field | After processing, one alert per severity |
 | In-field highlight | `.field-highlight` wrapper, `mark.mark-{tier}` | Wraps the control | When a problem names a substring |
 | Match chip · Show me | `.field-match` · `.field-locate` | Inside the field message | Same |

@@ -111,6 +111,7 @@
       <a href="../mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
       <a href="../mockups/public/html-phase1.html">HTML paper — Phase 1</a>
       <a href="../mockups/public/optin-modal/">Labs opt-in modal</a>
+      <a href="../mockups/public/submission-metadata/">Submission — Metadata Form</a>
       <span class="nav-dd-group">Internal</span>
       <a href="../mockups/internal/admin-console/user-page/">Admin Console — user page</a>
       <a href="../mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
@@ -200,22 +201,7 @@
   </div>
 
   <!-- ── Spec ── -->
-  <div class="section">
-    <h2 class="section-title">Spec</h2>
-    <table class="spec-table">
-      <tr><th>Class</th><th>What it does</th></tr>
-      <tr><td><code>.ds-field</code></td><td>Wraps one label + control + hint + error, and supplies the spacing between fields.</td></tr>
-      <tr><td><code>.ds-label</code></td><td>The label. Always present, always above the control.</td></tr>
-      <tr><td><code>.ds-input</code></td><td>The control &mdash; goes on <code>input</code>, <code>select</code>, and <code>textarea</code> alike.</td></tr>
-      <tr><td><code>.ds-hint</code></td><td>Help text. Say what good input looks like <em>before</em> someone gets it wrong.</td></tr>
-      <tr><td><code>.label-optional</code></td><td>On the label of an <em>optional</em> field. Required fields carry no marker &mdash; <code>required</code> + <code>aria-required</code> carry the fact.</td></tr>
-      <tr><td><code>.is-invalid</code><br><code>.is-warning</code><br><code>.is-note</code></td><td>On the control, matching the tier of its message.</td></tr>
-      <tr><td><code>.field-error</code><br><code>.field-warning</code><br><code>.field-note</code></td><td>The message, <strong>after</strong> the control. Keep <code>hidden</code> until it applies.</td></tr>
-      <tr><td><code>.field-messages</code></td><td>An <code>&lt;ol&gt;</code>, when one field carries several problems at once.</td></tr>
-      <tr><td><code>.ds-check</code></td><td>A checkbox or radio row. Native control, tinted with <code>accent-color</code>.</td></tr>
-      <tr><td><code>.ds-field--sm</code><br><code>.ds-field--md</code><br><code>.ds-field--lg</code></td><td>Cap the control at 240 / 360 / 480px.</td></tr>
-    </table>
-  </div>
+  
 
   <!-- ── Validation ── -->
   <div class="section">
@@ -250,34 +236,7 @@
       </div>
     </div>
 
-    <div class="a11y">
-      <h3>Accessibility essentials</h3>
-      <ul>
-        <li>A real <code>&lt;label for&gt;</code> on every control, visible or <code>sr-only</code>.</li>
-        <li><code>required</code> and <code>aria-required="true"</code> on anything mandatory. Required
-        fields carry no visual marker, so this pair is the <em>only</em> signal &mdash; it is not optional.</li>
-        <li>Every message needs an <code>id</code>, and its control needs
-        <code>aria-describedby</code> pointing at it. Without that a screen reader announces the field
-        and nothing else.</li>
-        <li><code>aria-invalid="true"</code> on the control for the <strong>error</strong> tier only.
-        A warning is not invalid, and a note is not a problem at all.</li>
-        <li>Every tier states itself in text as well as colour &mdash; a visually hidden
-        &ldquo;Error:&rdquo; or &ldquo;Warning:&rdquo; prefix, or the word in the message. Colour and a
-        border are never the only signal (WCAG 1.4.1).</li>
-        <li>Prefer <code>aria-disabled</code> over <code>disabled</code> for a control that could
-        explain itself. <code>disabled</code> leaves the tab order entirely, so a user who cannot
-        proceed finds nothing there and no reason why. The two must look identical.</li>
-      </ul>
-      <p class="gotcha"><strong>Easy to get wrong</strong>
-      Setting <code>display: flex</code> on an <code>&lt;li&gt;</code> replaces
-      <code>display: list-item</code> and the marker silently disappears &mdash; taking the list
-      semantics with it in some screen readers, so the count is never announced. And
-      <code>aria-describedby</code> must point at something present in the accessibility tree: a
-      tooltip toggled with <code>hidden</code> leaves the control undescribed exactly when it is not
-      being hovered. Keep the description in a visually hidden element, written from the same string.</p>
-    </div>
-
-    <h3 class="subgroup-title">Three tiers, not two</h3>
+        <h3 class="subgroup-title">Dispositions</h3>
     <p class="section-desc">A form used to have only valid and rejected. Most real validation lands
     between them: a value that is accepted but may be reviewed, or one arXiv corrected on the
     author&rsquo;s behalf. Both need saying, and neither is an error.</p>
@@ -301,12 +260,12 @@
         </div>
       </div>
       <div class="state-card">
-        <h4>Note &middot; already fixed</h4>
+        <h4>Info &middot; already fixed</h4>
         <div class="ds-field">
           <label class="ds-label" for="t3">Title</label>
-          <input class="ds-input is-note" id="t3" type="text" aria-describedby="t3-m"
+          <input class="ds-input is-info" id="t3" type="text" aria-describedby="t3-m"
                  value="Heavy-tailed gradients in deep networks">
-          <p class="field-note" id="t3-m">Extra spaces were removed. Please confirm it reads correctly.</p>
+          <p class="field-info" id="t3-m">Extra spaces were removed. Please confirm it reads correctly.</p>
         </div>
       </div>
     </div>
@@ -373,7 +332,7 @@
     Rows repeat the field name even when several name the same field &mdash; without it the reader
     cannot tell whether three problems mean one field to visit or three.</p>
 
-    <h3 class="subgroup-title">Writing the message</h3>
+    <h3 class="subgroup-title">Error message tone</h3>
     <p class="section-desc">Same rule as the <a href="alerts.html">alerts</a> guidance: say what to do,
     not what went wrong. &ldquo;Enter an email address, like name@university.edu&rdquo; beats
     &ldquo;Invalid input&rdquo; &mdash; it names the fix, and it shows the shape of a correct answer.
@@ -387,6 +346,33 @@
       <tr><td>Password does not meet requirements.</td><td>Use at least 12 characters.</td></tr>
       <tr><td>Error: bad category.</td><td>Pick a category from the list.</td></tr>
     </table>
+
+    <div class="a11y">
+      <h3>Accessibility essentials</h3>
+      <ul>
+        <li>A real <code>&lt;label for&gt;</code> on every control, visible or <code>sr-only</code>.</li>
+        <li><code>required</code> and <code>aria-required="true"</code> on anything mandatory. Required
+        fields carry no visual marker, so this pair is the <em>only</em> signal &mdash; it is not optional.</li>
+        <li>Every message needs an <code>id</code>, and its control needs
+        <code>aria-describedby</code> pointing at it. Without that a screen reader announces the field
+        and nothing else.</li>
+        <li><code>aria-invalid="true"</code> on the control for the <strong>error</strong> tier only.
+        A warning is not invalid, and a note is not a problem at all.</li>
+        <li>Every tier states itself in text as well as colour &mdash; a visually hidden
+        &ldquo;Error:&rdquo; or &ldquo;Warning:&rdquo; prefix, or the word in the message. Colour and a
+        border are never the only signal (WCAG 1.4.1).</li>
+        <li>Prefer <code>aria-disabled</code> over <code>disabled</code> for a control that could
+        explain itself. <code>disabled</code> leaves the tab order entirely, so a user who cannot
+        proceed finds nothing there and no reason why. The two must look identical.</li>
+      </ul>
+      <p class="gotcha"><strong>Easy to get wrong</strong>
+      Setting <code>display: flex</code> on an <code>&lt;li&gt;</code> replaces
+      <code>display: list-item</code> and the marker silently disappears &mdash; taking the list
+      semantics with it in some screen readers, so the count is never announced. And
+      <code>aria-describedby</code> must point at something present in the accessibility tree: a
+      tooltip toggled with <code>hidden</code> leaves the control undescribed exactly when it is not
+      being hovered. Keep the description in a visually hidden element, written from the same string.</p>
+    </div>
   </div>
 
   <!-- ── Layout ── -->
@@ -418,6 +404,24 @@
   </div>
 
   <!-- ── Usage ── -->
+  <div class="section">
+    <h2 class="section-title">Classes</h2>
+      <p class="section-desc">The full set, collected. Each demo above stands on its own, so this is the reference for when you want everything at once rather than the answer to one question.</p>
+    <table class="spec-table">
+      <tr><th>Class</th><th>What it does</th></tr>
+      <tr><td><code>.ds-field</code></td><td>Wraps one label + control + hint + error, and supplies the spacing between fields.</td></tr>
+      <tr><td><code>.ds-label</code></td><td>The label. Always present, always above the control.</td></tr>
+      <tr><td><code>.ds-input</code></td><td>The control &mdash; goes on <code>input</code>, <code>select</code>, and <code>textarea</code> alike.</td></tr>
+      <tr><td><code>.ds-hint</code></td><td>Help text. Say what good input looks like <em>before</em> someone gets it wrong.</td></tr>
+      <tr><td><code>.label-optional</code></td><td>On the label of an <em>optional</em> field. Required fields carry no marker &mdash; <code>required</code> + <code>aria-required</code> carry the fact.</td></tr>
+      <tr><td><code>.is-invalid</code><br><code>.is-warning</code><br><code>.is-info</code></td><td>On the control, matching the tier of its message.</td></tr>
+      <tr><td><code>.field-error</code><br><code>.field-warning</code><br><code>.field-info</code></td><td>The message, <strong>after</strong> the control. Keep <code>hidden</code> until it applies.</td></tr>
+      <tr><td><code>.field-messages</code></td><td>An <code>&lt;ol&gt;</code>, when one field carries several problems at once.</td></tr>
+      <tr><td><code>.ds-check</code></td><td>A checkbox or radio row. Native control, tinted with <code>accent-color</code>.</td></tr>
+      <tr><td><code>.ds-field--sm</code><br><code>.ds-field--md</code><br><code>.ds-field--lg</code></td><td>Cap the control at 240 / 360 / 480px.</td></tr>
+    </table>
+  </div>
+
   <div class="section">
     <h2 class="section-title">Usage</h2>
     <div class="code-block"><code>&lt;div class="ds-field ds-field--md"&gt;

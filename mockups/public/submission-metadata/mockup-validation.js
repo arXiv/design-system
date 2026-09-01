@@ -21,16 +21,16 @@
      Each entry is a validation result for one field:
        tier    'error'   cannot proceed
                'warning' can proceed, submission may be held for review
-               'note'    value was changed automatically; review it
+               'info'    value was changed automatically; review it
        text    the message. Written per docs/STYLE.md: no contractions,
                says what is wrong and what to do about it.
        highlight optional. The offending substring. The message quotes it,
                the field marks it, and a "Show me" control selects it.
                NEVER echo the whole field value — see section 7 of the CSS.
-       normalize optional, notes only. Applies the transformation the note is
-               reporting, so the field actually shows the corrected value.
-               A note that says "extra spaces were removed" beside a field
-               still full of extra spaces is worse than no note at all.
+       normalize optional, info only. Applies the transformation the info
+               message is reporting, so the field actually shows the corrected
+               value. An info message saying "extra spaces were removed" beside
+               a field still full of extra spaces is worse than none at all.
      ---------------------------------------------------------------------- */
   /* Real violations of the abstract rules on info.arxiv.org/help/prep, several
      at a time in one field. That is the case that stresses the design: the
@@ -64,10 +64,10 @@
         ],
         /* The title is tidied on every run. Automatic corrections are
            applied during processing regardless of what else failed, so
-           this note belongs in every processed state, not only the
-           clean ones. */
+           this info message belongs in every processed state, not only
+           the clean ones. */
         title: {
-          tier: 'note',
+          tier: 'info',
           normalize: true,
           text: 'Extra spaces were removed from your title. Please confirm it reads correctly.'
         }
@@ -108,7 +108,7 @@
           highlight: 's 25'
         },
         title: {
-          tier: 'note',
+          tier: 'info',
           normalize: true,
           text: 'Extra spaces were removed from your title. Please confirm it reads correctly.'
         }
@@ -139,7 +139,7 @@
           highlight: 's 25'
         },
         title: {
-          tier: 'note',
+          tier: 'info',
           normalize: true,
           text: 'Extra spaces were removed from your title. Please confirm it reads correctly.'
         }
@@ -150,7 +150,7 @@
       label: 'All clear',
       fields: {
         title: {
-          tier: 'note',
+          tier: 'info',
           normalize: true,
           text: 'Extra spaces were removed from your title. Please confirm it reads correctly.'
         }
@@ -171,7 +171,7 @@
     msc_class:       'MSC classification'
   };
 
-  var SUMMARY_ICON = { error: '✕', warning: '⚠', note: '↻', success: '✓' };
+  var SUMMARY_ICON = { error: '✕', warning: '⚠', info: '↻', success: '✓' };
 
   function all(sel) {
     return Array.prototype.slice.call(document.querySelectorAll(sel));
@@ -193,7 +193,7 @@
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  /* The values as submitted. Processing rewrites fields that carry a note, so
+  /* The values as submitted. Processing rewrites info-tier fields, so
      these are kept in order to restore the "not yet processed" state. Captured
      once at load: this is scaffolding for the scenario switcher, not something
      the real page needs. */
@@ -211,7 +211,7 @@
     Object.keys(FIELD_LABELS).forEach(function (name) {
       var input = document.getElementById(name);
       if (!input) return;
-      input.classList.remove('is-invalid', 'is-warning', 'is-note', 'is-empty-required');
+      input.classList.remove('is-invalid', 'is-warning', 'is-info', 'is-empty-required');
       input.removeAttribute('aria-invalid');
       input.removeAttribute('aria-describedby');
 
@@ -240,17 +240,17 @@
      array. */
   function listOf(v) { return Array.isArray(v) ? v : [v]; }
 
-  var TIER_RANK = { note: 0, warning: 1, error: 2 };
+  var TIER_RANK = { info: 0, warning: 1, error: 2 };
   function worstTier(results) {
     return results.reduce(function (acc, r) {
       return TIER_RANK[r.tier] > TIER_RANK[acc] ? r.tier : acc;
-    }, 'note');
+    }, 'info');
   }
 
   var TIER_PREFIX = {
     error:   'Error: ',
     warning: 'Warning: ',
-    note:    'Changed automatically: '
+    info:    'Changed automatically: '
   };
 
   function renderField(name, value) {
@@ -258,7 +258,7 @@
     if (!input) return;
     var results = listOf(value);
 
-    /* Apply whatever the notes are reporting, before anything reads the value.
+    /* Apply whatever the info messages report, before anything reads the value.
        The author sees the corrected text and a message saying what changed —
        which is the whole point of the tier. */
     results.forEach(function (rr) {
@@ -270,7 +270,7 @@
     var worst = worstTier(results);
     if (worst === 'error')        input.classList.add('is-invalid');
     else if (worst === 'warning') input.classList.add('is-warning');
-    else if (worst === 'note')    input.classList.add('is-note');
+    else if (worst === 'info')    input.classList.add('is-info');
     if (worst === 'error') input.setAttribute('aria-invalid', 'true');
 
     /* One problem renders as a paragraph. Several render as a list — numbered,
@@ -533,7 +533,7 @@
     var by = function (t) {
       return problems.filter(function (pr) { return pr.tier === t; });
     };
-    var errors = by('error'), warnings = by('warning'), notes = by('note');
+    var errors = by('error'), warnings = by('warning'), infos = by('info');
 
     if (!processed) return;
     summaryEl.hidden = false;
@@ -573,12 +573,12 @@
     /* "Automatic changes", not "Informational": the other two headings name
        what the items ARE, not which tier they belong to. Naming the tier would
        make this the odd one out and would tell the reader less. */
-    if (notes.length) {
-      summaryEl.appendChild(buildAlert('note',
-        notes.length + plural(notes.length, ' automatic change', ' automatic changes'),
+    if (infos.length) {
+      summaryEl.appendChild(buildAlert('info',
+        infos.length + plural(infos.length, ' automatic change', ' automatic changes'),
         'arXiv corrected these for you. Please check that they read correctly. ' +
         'Click on an item to jump to that field.',
-        notes));
+        infos));
     }
   }
 
