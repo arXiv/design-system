@@ -349,6 +349,57 @@
   outline: 3px solid var(--arxiv-focus-ring-dark);
 }
 
+/* ── Destructive (.ds-btn-destructive) ─────────────────────────────
+   For irreversible actions: Delete, Remove, Withdraw, Revoke.
+
+   Danger Red is a SHARED functional colour, not an accent, so a red button on
+   a public page does not cross the Access Lime / Open Blue rule — the fill is
+   --arxiv-error-border (#c62828), byte-identical to internal's --danger.
+   DESIGN-POLICIES already sanctions it: danger tokens are for destructive
+   actions and error states.
+
+   Built like a public button, NOT like internal's. Internal buttons are flat
+   fills; ours are the dual-background construction, lit from above. Copying
+   .btn-destructive verbatim would drop a flat button into a page of
+   dimensional ones.
+
+   HOVER KEEPS THE FILL. Everywhere else here hover brightens the fill, but a
+   lighter red drops white text below AA — #e53935 is 4.23:1 and fails. So this
+   follows the secondary button's move instead: hold the fill, nearly erase the
+   inner vignette, and the surface reads more luminous without the colour
+   moving. White on #c62828 is 5.62:1 and stays there through every state.
+
+   Usage rules, carried over from internal:
+     - Reserve for hard-delete and irreversible actions only.
+     - Always pair with a confirmation step. The button being red is a warning,
+       not a safeguard.
+     - It is never the only styling that makes an action safe. */
+.ds-btn-destructive {
+  background:
+    linear-gradient(#c62828, #c62828) padding-box,
+    linear-gradient(to bottom, #d4453f, #8e1c1c) border-box;
+  color: #ffffff;
+  box-shadow:
+    inset 0 0 6px rgba(90, 10, 10, 0.28),
+    0 1px 3px rgba(0, 0, 0, 0.14);
+}
+.ds-btn-destructive:hover {
+  background:
+    linear-gradient(#c62828, #c62828) padding-box,
+    linear-gradient(to bottom, #e0605a, #a52626) border-box;
+  color: #ffffff;
+  box-shadow:
+    inset 0 0 8px rgba(90, 10, 10, 0.10),
+    0 1px 3px rgba(0, 0, 0, 0.14);
+}
+.ds-btn-destructive:active {
+  transform: translateY(1px);
+  background:
+    linear-gradient(#c62828, #c62828) padding-box,
+    linear-gradient(#8e1c1c, #8e1c1c) border-box;
+  box-shadow: inset 0 0 10px rgba(90, 10, 10, 0.42);
+}
+
 /* ── Disabled ─────────────────────────────────────────────────────
    Flat neutral grey. No gradient, no inset vignette, no drop shadow: removing
    the "lit from above" construction is what separates a disabled button from a
