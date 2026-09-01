@@ -1547,21 +1547,30 @@ select.ds-input { padding-right: 34px; }
 .ds-acc-body a { color: var(--arxiv-link-blue); }
 
 /* ── Panel variant (.ds-acc-panel) ────────────────────────────────
-   A heavier accordion, for pages where the disclosure has to be findable
-   rather than unobtrusive — a reference panel under each demo, say, rather
-   than an aside inside a rail.
+   A heavier accordion, for a disclosure that has to be FOUND rather than
+   tucked away — a reference panel under each demo on a documentation page,
+   rather than an aside inside a rail.
 
-   The base border is --arxiv-border-light, which measures 1.42:1 against
-   white. That is a hairline: correct for an aside sitting inside a rail that
-   already frames it, but on an open page it reads as no border at all, and it
-   is below the 3:1 that DESIGN-POLICIES requires of an interactive boundary.
-   The token's own note says as much — decorative only, never the sole boundary
-   of an interactive control.
+   Three departures from the base component, each deliberate:
 
-   So this variant does two things: takes --arxiv-grey-ui for the border, which
-   is the token documented for interactive boundaries and clears 3:1 at 3.61:1;
-   and fills the summary so the header reads as a bar rather than as a line of
-   text that happens to be clickable. Summary text on that fill is 15:1.
+   1. Border. The base uses --arxiv-border-light, which is 1.42:1 against
+      white — a hairline. Correct inside a rail that already frames it; on an
+      open page it reads as no border at all, and it is under the 3:1
+      DESIGN-POLICIES requires of an interactive boundary. That token's own
+      note says exactly this: decorative only, never the sole boundary of an
+      interactive control. This variant takes --arxiv-grey-ui (3.61:1), which
+      is the token documented for the job.
+
+   2. Filled summary. The header reads as a bar you press, not as a line of
+      text that happens to be clickable. Summary text on it is 15:1.
+
+   3. Its own margin. The base component sets none, because it expects to sit
+      in a .ds-acc-stack, which supplies gap: 8px. Standing alone under a demo
+      it has nothing to space it, and it collides with whatever is above. A
+      panel is used standalone by definition, so it carries its own room.
+
+   The summary is also a step larger and a shade heavier than the base, because
+   at 0.92rem in a page of running text it disappears.
 
      <details class="ds-acc ds-acc-panel">
        <summary>Relevant classes</summary>
@@ -1570,14 +1579,23 @@ select.ds-input { padding-right: 34px; }
 */
 .ds-acc-panel {
   border-color: var(--arxiv-grey-ui);
+  margin: 20px 0 28px;
 }
 .ds-acc-panel > summary {
   background: var(--arxiv-card-grey);
   border-radius: 5px;
+  font-size: 0.95rem;
+  padding: 13px 16px;
+}
+.ds-acc-panel > summary:hover {
+  background: var(--arxiv-warm-wash);
 }
 .ds-acc-panel[open] > summary {
   border-radius: 5px 5px 0 0;
   border-bottom-color: var(--arxiv-grey-ui);
+}
+.ds-acc-panel .ds-acc-body {
+  padding: 16px;
 }
 
 /* Rail variant — chrome dropped; the rail's hairlines separate. */
