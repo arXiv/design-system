@@ -30,6 +30,16 @@
     .code-block { background: #1c1a17; color: #f0eeec; border-radius: 6px; padding: 14px 16px; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.6; overflow-x: auto; max-width: 860px; margin-top: 10px; }
     .code-block code { background: none; padding: 0; color: inherit; }
     .note-alert { max-width: 860px; margin-top: 16px; }
+    /* ── Accessibility essentials ──
+       A per-pattern block: the ARIA a component requires, the states that
+       must be conveyed non-visually, and the mistakes that break it silently.
+       Not a callout for emphasis — only genuine requirements go here. */
+    .a11y { background: var(--arxiv-surface); border: 1px solid var(--arxiv-info-border); border-left-width: 4px; border-radius: 8px; padding: 18px 20px; max-width: 860px; margin-top: 18px; }
+    .a11y h3 { font-family: var(--arxiv-font-condensed); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-info-fg); margin: 0 0 12px; }
+    .a11y ul { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.6; }
+    .a11y li { margin: 6px 0; }
+    .a11y .gotcha { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--arxiv-card-grey); font-size: 13px; line-height: 1.6; }
+    .a11y .gotcha strong { font-family: var(--arxiv-font-condensed); text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; color: var(--arxiv-library-grey); display: block; margin-bottom: 6px; }
     .states { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; max-width: 860px; }
     .state-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 16px 18px; }
     .state-card h4 { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin: 0 0 12px; }
@@ -129,21 +139,21 @@
         <p class="group-title">Contact</p>
 
         <div class="ds-field ds-field--md">
-          <label class="ds-label field-required" for="f-email">Email address</label>
+          <label class="ds-label" for="f-email">Email address</label>
           <input class="ds-input" id="f-email" type="email" required aria-required="true"
                  aria-describedby="f-email-hint" value="e.vasquez@example.edu">
           <p class="ds-hint" id="f-email-hint">Used only to confirm your submission.</p>
         </div>
 
         <div class="ds-field ds-field--sm">
-          <label class="ds-label" for="f-orcid">ORCID iD</label>
+          <label class="ds-label" for="f-orcid">ORCID iD<span class="label-optional">(optional)</span></label>
           <input class="ds-input" id="f-orcid" type="text" placeholder="0000-0000-0000-0000">
         </div>
 
         <p class="group-title">Submission</p>
 
         <div class="ds-field ds-field--md">
-          <label class="ds-label field-required" for="f-cat">Primary category</label>
+          <label class="ds-label" for="f-cat">Primary category</label>
           <select class="ds-input" id="f-cat" required aria-required="true">
             <option>hep-th &mdash; High Energy Physics &ndash; Theory</option>
             <option>math.CO &mdash; Combinatorics</option>
@@ -152,7 +162,7 @@
         </div>
 
         <div class="ds-field ds-field--lg">
-          <label class="ds-label field-required" for="f-reason">Reason for withdrawal</label>
+          <label class="ds-label" for="f-reason">Reason for withdrawal</label>
           <textarea class="ds-input is-invalid" id="f-reason" required aria-required="true"
                     aria-describedby="f-reason-err"></textarea>
           <p class="field-error" id="f-reason-err">Give a reason. It appears publicly on the abstract page.</p>
@@ -184,9 +194,10 @@
       <tr><td><code>.ds-label</code></td><td>The label. Always present, always above the control.</td></tr>
       <tr><td><code>.ds-input</code></td><td>The control &mdash; goes on <code>input</code>, <code>select</code>, and <code>textarea</code> alike.</td></tr>
       <tr><td><code>.ds-hint</code></td><td>Help text. Say what good input looks like <em>before</em> someone gets it wrong.</td></tr>
-      <tr><td><code>.field-required</code></td><td>On the label. Adds the asterisk &mdash; decoration only; <code>required</code> carries the fact.</td></tr>
-      <tr><td><code>.is-invalid</code></td><td>On the control, while its value is rejected.</td></tr>
-      <tr><td><code>.field-error</code></td><td>The message. Keep <code>hidden</code> until it applies.</td></tr>
+      <tr><td><code>.label-optional</code></td><td>On the label of an <em>optional</em> field. Required fields carry no marker &mdash; <code>required</code> + <code>aria-required</code> carry the fact.</td></tr>
+      <tr><td><code>.is-invalid</code><br><code>.is-warning</code><br><code>.is-note</code></td><td>On the control, matching the tier of its message.</td></tr>
+      <tr><td><code>.field-error</code><br><code>.field-warning</code><br><code>.field-note</code></td><td>The message, <strong>after</strong> the control. Keep <code>hidden</code> until it applies.</td></tr>
+      <tr><td><code>.field-messages</code></td><td>An <code>&lt;ol&gt;</code>, when one field carries several problems at once.</td></tr>
       <tr><td><code>.ds-check</code></td><td>A checkbox or radio row. Native control, tinted with <code>accent-color</code>.</td></tr>
       <tr><td><code>.ds-field--sm</code><br><code>.ds-field--md</code><br><code>.ds-field--lg</code></td><td>Cap the control at 240 / 360 / 480px.</td></tr>
     </table>
@@ -202,7 +213,7 @@
       <div class="state-card">
         <h4>1 &middot; Before</h4>
         <div class="ds-field">
-          <label class="ds-label field-required" for="s1">Reason</label>
+          <label class="ds-label" for="s1">Reason</label>
           <input class="ds-input" id="s1" type="text" aria-describedby="s1-h">
           <p class="ds-hint" id="s1-h">One sentence is enough.</p>
         </div>
@@ -210,7 +221,7 @@
       <div class="state-card">
         <h4>2 &middot; Rejected</h4>
         <div class="ds-field">
-          <label class="ds-label field-required" for="s2">Reason</label>
+          <label class="ds-label" for="s2">Reason</label>
           <input class="ds-input is-invalid" id="s2" type="text" aria-describedby="s2-e">
           <p class="field-error" id="s2-e">Give a reason before saving.</p>
         </div>
@@ -225,17 +236,128 @@
       </div>
     </div>
 
+    <div class="a11y">
+      <h3>Accessibility essentials</h3>
+      <ul>
+        <li>A real <code>&lt;label for&gt;</code> on every control, visible or <code>sr-only</code>.</li>
+        <li><code>required</code> and <code>aria-required="true"</code> on anything mandatory. Required
+        fields carry no visual marker, so this pair is the <em>only</em> signal &mdash; it is not optional.</li>
+        <li>Every message needs an <code>id</code>, and its control needs
+        <code>aria-describedby</code> pointing at it. Without that a screen reader announces the field
+        and nothing else.</li>
+        <li><code>aria-invalid="true"</code> on the control for the <strong>error</strong> tier only.
+        A warning is not invalid, and a note is not a problem at all.</li>
+        <li>Every tier states itself in text as well as colour &mdash; a visually hidden
+        &ldquo;Error:&rdquo; or &ldquo;Warning:&rdquo; prefix, or the word in the message. Colour and a
+        border are never the only signal (WCAG 1.4.1).</li>
+        <li>Prefer <code>aria-disabled</code> over <code>disabled</code> for a control that could
+        explain itself. <code>disabled</code> leaves the tab order entirely, so a user who cannot
+        proceed finds nothing there and no reason why. The two must look identical.</li>
+      </ul>
+      <p class="gotcha"><strong>Easy to get wrong</strong>
+      Setting <code>display: flex</code> on an <code>&lt;li&gt;</code> replaces
+      <code>display: list-item</code> and the marker silently disappears &mdash; taking the list
+      semantics with it in some screen readers, so the count is never announced. And
+      <code>aria-describedby</code> must point at something present in the accessibility tree: a
+      tooltip toggled with <code>hidden</code> leaves the control undescribed exactly when it is not
+      being hovered. Keep the description in a visually hidden element, written from the same string.</p>
+    </div>
+
+    <h3 class="subgroup-title">Three tiers, not two</h3>
+    <p class="section-desc">A form used to have only valid and rejected. Most real validation lands
+    between them: a value that is accepted but may be reviewed, or one arXiv corrected on the
+    author&rsquo;s behalf. Both need saying, and neither is an error.</p>
+
+    <div class="states">
+      <div class="state-card">
+        <h4>Error &middot; blocks</h4>
+        <div class="ds-field">
+          <label class="ds-label" for="t1">Abstract</label>
+          <input class="ds-input is-invalid" id="t1" type="text" aria-invalid="true"
+                 aria-describedby="t1-m" value="&lt;br&gt;Our analysis introduces">
+          <p class="field-error" id="t1-m">Remove the HTML markup <code>&lt;br&gt;</code>.</p>
+        </div>
+      </div>
+      <div class="state-card">
+        <h4>Warning &middot; proceeds</h4>
+        <div class="ds-field">
+          <label class="ds-label" for="t2">ACM classification<span class="label-optional">(optional)</span></label>
+          <input class="ds-input is-warning" id="t2" type="text" aria-describedby="t2-m" value="s 25">
+          <p class="field-warning" id="t2-m">This does not look like an ACM code. Expected form: <code>F.2.2</code>.</p>
+        </div>
+      </div>
+      <div class="state-card">
+        <h4>Note &middot; already fixed</h4>
+        <div class="ds-field">
+          <label class="ds-label" for="t3">Title</label>
+          <input class="ds-input is-note" id="t3" type="text" aria-describedby="t3-m"
+                 value="Heavy-tailed gradients in deep networks">
+          <p class="field-note" id="t3-m">Extra spaces were removed. Please confirm it reads correctly.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-desc" style="margin-top:18px">The <strong>note</strong> tier is what makes
+    automatic correction legitimate. Normalising whitespace or stripping markup is an edit to
+    author-submitted content; what makes that acceptable is that the author sees the change before it
+    is committed. The review step is not a nicety to drop later for &ldquo;obvious&rdquo; fixes.</p>
+
+    <h3 class="subgroup-title">Several problems on one field</h3>
+    <p class="section-desc">One problem renders as a paragraph. Two or more render as a numbered list
+    &mdash; the count is checkable against the summary, and &ldquo;the second one&rdquo; has to be
+    sayable while someone works through them. The control shows the <em>worst</em> tier present: a
+    field holding an error and a warning is a field you cannot proceed past.</p>
+
+    <div class="demo">
+      <p class="demo-label">One control, four problems, two tiers</p>
+      <div class="ds-field">
+        <label class="ds-label" for="m1">Abstract</label>
+        <textarea class="ds-input" id="m1" rows="3" aria-invalid="true"
+                  aria-describedby="m1-m">Abstract: We study the convergence of stochastic gradient methods.&lt;br&gt;Data at https://example.org/sgd.</textarea>
+        <ol class="field-messages" id="m1-m">
+          <li class="field-error">Do not begin the abstract with the word &ldquo;Abstract&rdquo;.</li>
+          <li class="field-error">Remove the HTML markup <code>&lt;br&gt;</code>.</li>
+          <li class="field-warning">Font commands are not processed and appear literally.</li>
+          <li class="field-warning">Add a space between a URL and the punctuation after it.</li>
+        </ol>
+      </div>
+    </div>
+
+    <h3 class="subgroup-title">Validation summary</h3>
+    <p class="section-desc">On a form of any length, repeat the problems above the first field. This is
+    not a new component &mdash; it is <a href="alerts.html"><code>.ds-alert</code></a> with an ordered
+    list of links inside. <strong>One alert per severity, never a mixed one:</strong> red has to mean
+    &ldquo;you cannot proceed,&rdquo; and a non-blocking item inside a red alert destroys that. The
+    heading carries the count, the body says what the tier means, and every row names its field.</p>
+
     <div class="ds-alert ds-alert-error note-alert">
       <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
       <div class="ds-alert-content">
-        <p class="ds-alert-title">Four things every field owes the reader</p>
-        <p>A real <code>&lt;label for&gt;</code>. <code>required</code> and
-        <code>aria-required="true"</code> on anything mandatory, not just the asterisk. The error tied
-        to its control with <code>aria-describedby</code>, so a screen reader reads the problem when
-        focus lands there. And a message that survives the color being removed &mdash; red is the
-        second signal, never the only one.</p>
+        <p class="ds-alert-title">2 blocking errors</p>
+        <p>Blocking errors must be corrected before you can continue. Select an item to jump to that field.</p>
+        <ol>
+          <li><a href="#m1">Abstract &mdash; do not begin with the word &ldquo;Abstract&rdquo;</a></li>
+          <li><a href="#m1">Abstract &mdash; remove the HTML markup <code>&lt;br&gt;</code></a></li>
+        </ol>
       </div>
     </div>
+
+    <div class="ds-alert ds-alert-warning note-alert">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><path d="M12 9v5"/><path d="M12 17h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">2 warnings</p>
+        <p>You may continue with warnings, but the submission may be delayed. Select an item to jump to that field.</p>
+        <ol>
+          <li><a href="#m1">Abstract &mdash; font commands appear literally</a></li>
+          <li><a href="#t2">ACM classification &mdash; not a recognised code</a></li>
+        </ol>
+      </div>
+    </div>
+
+    <p class="section-desc" style="margin-top:16px">Derive every count and every row from the field
+    results. A summary written by hand can disagree with the fields it describes, and eventually will.
+    Rows repeat the field name even when several name the same field &mdash; without it the reader
+    cannot tell whether three problems mean one field to visit or three.</p>
 
     <h3 class="subgroup-title">Writing the message</h3>
     <p class="section-desc">Same rule as the <a href="alerts.html">alerts</a> guidance: say what to do,
@@ -285,7 +407,7 @@
   <div class="section">
     <h2 class="section-title">Usage</h2>
     <div class="code-block"><code>&lt;div class="ds-field ds-field--md"&gt;
-  &lt;label class="ds-label field-required" for="email"&gt;Email address&lt;/label&gt;
+  &lt;label class="ds-label" for="email"&gt;Email address&lt;/label&gt;
   &lt;input class="ds-input" id="email" type="email"
          required aria-required="true" aria-describedby="email-hint email-err"&gt;
   &lt;p class="ds-hint" id="email-hint"&gt;Used only to confirm your submission.&lt;/p&gt;
