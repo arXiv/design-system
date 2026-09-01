@@ -13,10 +13,13 @@ Usage:
 No dependencies, no network. Exit 0 = clean. FAIL means the copies
 disagree and one of them is now wrong. NOTE is for review, not a failure.
 
-Consumers outside this repo (the WordPress blog theme bundles its own copy
-of the public stylesheet) are checked when they are present on this
-machine; when they are not, the check reports SKIP rather than passing
-silently. Point at a different checkout with:
+The WordPress blog theme is a SEPARATE PROJECT, not a copy kept in lockstep.
+It extends the design system rather than mirroring it, and it is brought up to
+date by a deliberate translation pass, not opportunistically. So divergence
+there is reported as a NOTE, never a FAIL — the list of differences IS the
+worklist for that pass, not a defect to fix in passing. Consumers are checked
+when present on this machine; when they are not, the check reports SKIP rather
+than passing silently. Point at a different checkout with:
 
     python3 verification/check-drift.py --consumer /path/to/arxiv-blog-theme
 """
@@ -128,12 +131,14 @@ def check_dark_mirror():
 
 
 # ── 2. Consumers that bundle a copy of the stylesheet ───────────────
-# The WordPress theme cannot link a stylesheet from another origin (and
-# our policy forbids it anyway), so it ships a verbatim copy. A copy that
-# gets edited in place, or a canonical file that moves on without it, is
-# invisible drift — the blog quietly stops being the design system.
+# The WordPress theme cannot link a stylesheet from another origin (and our
+# policy forbids it anyway), so it ships its own copy. That copy is allowed to
+# diverge: the blog is a separate project that extends the design system, more
+# playful and more colorful than arxiv.org would ever be. What this check
+# produces is the diff to consider at the next translation pass — deliberately
+# a NOTE, so nobody "fixes" it by overwriting the theme's own decisions.
 def check_bundled_copy(consumer):
-    name = "blog theme's bundled stylesheet matches canonical"
+    name = "blog theme's stylesheet vs canonical (separate project — informational)"
     bundled = consumer / "assets" / "css" / "design-system.css"
     if not bundled.exists():
         return skip(name, f"no consumer checkout at {consumer}")
@@ -155,11 +160,12 @@ def check_bundled_copy(consumer):
         for p, v in canon_map.items()
         if p.startswith("--") and bundled_map.get(p, v) != v
     ]
-    fail(
+    note(
         name,
-        (f"{len(diffs)} token value(s) differ: " + "; ".join(diffs[:5]))
-        if diffs
-        else f"{abs(len(canon_decls) - len(bundled_decls))} declaration(s) differ — re-copy the canonical file",
+        ((f"{len(diffs)} token value(s) differ: " + "; ".join(diffs[:5]))
+         if diffs
+         else f"{abs(len(canon_decls) - len(bundled_decls))} declaration(s) differ")
+        + " — expected. Blog is a separate project; translate deliberately, do not overwrite.",
     )
 
 
