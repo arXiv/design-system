@@ -31,15 +31,29 @@
     .code-block code { background: none; padding: 0; color: inherit; }
     .note-alert { max-width: 860px; margin-top: 16px; }
     /* ── Accessibility essentials ──
-       A per-pattern block: the ARIA a component requires, the states that
-       must be conveyed non-visually, and the mistakes that break it silently.
-       Not a callout for emphasis — only genuine requirements go here. */
-    .a11y { background: var(--arxiv-surface); border: 1px solid var(--arxiv-info-border); border-left-width: 4px; border-radius: 8px; padding: 18px 20px; max-width: 860px; margin-top: 18px; }
-    .a11y h3 { font-family: var(--arxiv-font-condensed); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-info-fg); margin: 0 0 12px; }
-    .a11y ul { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.6; }
-    .a11y li { margin: 6px 0; }
-    .a11y .gotcha { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--arxiv-card-grey); font-size: 13px; line-height: 1.6; }
-    .a11y .gotcha strong { font-family: var(--arxiv-font-condensed); text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; color: var(--arxiv-library-grey); display: block; margin-bottom: 6px; }
+       A per-pattern block: the ARIA a component requires, the states that must
+       be conveyed non-visually, and the mistakes that break it silently. Not a
+       callout for emphasis — only genuine requirements go here.
+
+       Dark field, because that is what reads as "implementation detail" — the
+       surface does that work, not the typeface. Prose stays in sans:
+       typography.md assigns mono to code and identifiers, and six sentences of
+       monospace would be slower to read, which is a poor trade on the one block
+       whose subject is legibility. Mono carries the heading and the inline code
+       spans, which is where it belongs and where it does the most work.
+
+       --arxiv-header-bar, not --arxiv-repository-brown: it is a fixed-role
+       token that holds its value in both themes, so the panel stays dark
+       instead of inverting to near-white. */
+    .a11y { background: var(--arxiv-header-bar); color: var(--arxiv-card-grey); border-radius: 8px; padding: 20px 22px; max-width: 860px; margin-top: 18px; }
+    .a11y h3 { font-family: var(--arxiv-font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.09em; color: var(--arxiv-open-blue); margin: 0 0 14px; }
+    .a11y ul { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.65; }
+    .a11y li { margin: 7px 0; }
+    .a11y li::marker { color: var(--arxiv-open-blue); }
+    .a11y code { background: rgba(255,255,255,0.10); color: var(--arxiv-open-blue); padding: 1px 5px; }
+    .a11y strong, .a11y em { color: #fff; }
+    .a11y .gotcha { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.14); font-size: 13px; line-height: 1.65; }
+    .a11y .gotcha strong { font-family: var(--arxiv-font-mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.09em; font-size: 11px; color: var(--arxiv-warning-border); display: block; margin-bottom: 7px; }
     .states { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; max-width: 860px; }
     .state-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 16px 18px; }
     .state-card h4 { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin: 0 0 12px; }
