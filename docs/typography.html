@@ -9,41 +9,48 @@
   <style>
     /* ── Foundation reference page. The written spec is typography.md
        (source of truth — fonts, weights, self-hosting plan); this page
-       renders the specimens. ── */
-    *, *::before, *::after { box-sizing: border-box; }
-    body { font-family: var(--arxiv-font-sans); color: var(--arxiv-repository-brown); background: var(--arxiv-warm-wash); margin: 0; font-size: 14px; line-height: 1.5; }
-    .page { max-width: 1080px; margin: 0 auto; padding: 28px 28px 80px; }
-    .page-header { margin: 28px 0 40px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
-    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
-    .page-header p { margin: 0; color: var(--arxiv-library-grey); font-size: 13px; max-width: 760px; }
-    .section { margin-bottom: 44px; }
-    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
-    .context-matrix { border-collapse: collapse; background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); font-size: 13px; max-width: 820px; }
-    .context-matrix th { background: var(--arxiv-card-grey); text-align: left; padding: 8px 13px; font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-library-grey); }
-    .context-matrix td { padding: 8px 13px; border-top: 1px solid var(--arxiv-card-grey); vertical-align: top; }
-    .context-matrix td:first-child { white-space: nowrap; }
-    .section-desc { font-size: 13px; color: var(--arxiv-library-grey); margin: 0 0 18px; max-width: 760px; line-height: 1.55; }
+       renders the specimens.
 
-    .specimen { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 20px 24px; margin-bottom: 14px; display: grid; grid-template-columns: 200px 1fr; gap: 18px; align-items: start; }
+       CONVERTED to the design-system foundation 2026-09-02. Base type, the
+       heading scale, the prose measure, links, code and tables all come from
+       .ds-page in design-system.css. What remains below is only what is
+       genuinely particular to this page — plus the docs nav, which is still
+       hand-copied onto all twelve pages because the DS has no equivalent. ── */
+
+    /* Docs page chrome */
+    .page-header { margin: var(--space-8) 0 var(--space-12); padding-bottom: var(--space-6); border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { margin-bottom: var(--space-2); }
+    .page-header p { color: var(--arxiv-library-grey); }
+    .section { margin-bottom: var(--space-12); }
+    .section-desc { color: var(--arxiv-library-grey); }
+
+    /* Specimen cards — the point of this page */
+    .specimen { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: var(--space-6); margin-bottom: var(--space-4); display: grid; grid-template-columns: 200px 1fr; gap: var(--space-6); align-items: start; }
     @media (max-width: 640px) { .specimen { grid-template-columns: 1fr; } }
-    .specimen-meta .name { font-weight: 600; font-size: 13px; }
-    .specimen-meta .detail { font-size: 12px; color: var(--arxiv-library-grey); line-height: 1.5; margin-top: 4px; }
-    .specimen-meta code { font-family: var(--arxiv-font-mono); font-size: 11px; color: var(--arxiv-archival-blue); }
-    .specimen-sample .big { font-size: 28px; line-height: 1.25; margin-bottom: 8px; }
-    .specimen-sample .body { font-size: 15px; line-height: 1.6; color: var(--arxiv-repository-brown); max-width: 620px; }
-    .weights { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; font-size: 15px; }
+    .specimen-meta .name { font-weight: 600; }
+    .specimen-meta .detail { font-size: 0.875rem; color: var(--arxiv-library-grey); margin-top: var(--space-1); }
+    .specimen-meta code { color: var(--arxiv-archival-blue); background: none; padding: 0; }
+    .specimen-sample .big { font-size: 1.75rem; line-height: 1.25; margin-bottom: var(--space-2); }
+    .specimen-sample .body { line-height: 1.6; }
+    .weights { display: flex; gap: var(--space-6); flex-wrap: wrap; margin-top: var(--space-3); }
 
-    .note { background: var(--arxiv-info-bg); border: 1px solid var(--arxiv-info-border); color: var(--arxiv-info-fg); border-radius: 6px; padding: 12px 16px; font-size: 13px; max-width: 760px; line-height: 1.55; }
-    .rule-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 16px 20px; margin-bottom: 12px; max-width: 760px; }
-    .rule-card h3 { font-size: 14px; margin: 0 0 6px; }
-    .rule-card p { font-size: 13px; color: var(--arxiv-library-grey); margin: 0; line-height: 1.55; }
-    .rule-card code { font-family: var(--arxiv-font-mono); font-size: 12px; background: var(--arxiv-card-grey); padding: 1px 5px; border-radius: 3px; }
-  
+    /* A bordered card-table, deliberately different from the foundation's
+       horizontal-rules-only default. */
+    .context-matrix { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); }
+    .context-matrix th { background: var(--arxiv-card-grey); font-family: var(--arxiv-font-condensed); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-library-grey); border-bottom: 0; }
+    .context-matrix td { border-top: 1px solid var(--arxiv-card-grey); border-bottom: 0; }
+    .context-matrix td:first-child { white-space: nowrap; }
+
+    .note { background: var(--arxiv-info-bg); border: 1px solid var(--arxiv-info-border); color: var(--arxiv-info-fg); border-radius: 6px; padding: var(--space-3) var(--space-4); }
+    .rule-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: var(--space-4) var(--space-6); margin-bottom: var(--space-3); }
+    .rule-card h3 { font-size: 1rem; margin: 0 0 var(--space-2); }
+    .rule-card p { color: var(--arxiv-library-grey); margin: 0; }
+
     /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
        <details>-based: works without JS; the small script at the end of the
        page only adds close-on-outside-click and Esc. ── */
-    .docs-nav { display: flex; align-items: center; gap: 4px 18px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
-    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right: 8px; }
+    .docs-nav { display: flex; align-items: center; gap: var(--space-1) var(--space-6); flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: var(--space-2) var(--space-6); font-size: 0.875rem; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right: var(--space-2); }
     .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
     .nav-dd { position: relative; }
     .nav-dd > summary { list-style: none; cursor: pointer; color: var(--arxiv-library-grey); padding: 3px 6px; border-radius: 4px; user-select: none; }
@@ -56,16 +63,10 @@
     .nav-dd-menu a:hover { background: var(--arxiv-card-grey); }
     .nav-dd-menu a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: -2px; }
     .nav-dd-menu a[aria-current="page"] { font-weight: 600; }
-    .nav-dd-group { font-family: var(--arxiv-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); padding: 8px 10px 2px; }
-  
-    /* Inline links in page copy. Bare <a> previously fell back to the
-       browser default, which is unreadable on the dark canvas. Nav links
-       carry their own, more specific rules. */
-    a { color: var(--arxiv-link-blue); }
-    a:hover { color: var(--arxiv-link-hover); }
-</style>
+    .nav-dd-group { font-family: var(--arxiv-font-condensed); font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); padding: var(--space-2) 10px 2px; }
+  </style>
 </head>
-<body>
+<body class="ds-page">
 <nav class="docs-nav" aria-label="Design system">
   <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
   <details class="nav-dd">
@@ -113,7 +114,7 @@
     </div>
   </details>
 </nav>
-<div class="page">
+<div class="ds-container">
   <header class="page-header">
     <h1>Typography</h1>
     <p>
@@ -207,7 +208,7 @@
       <tr><td>IBM Plex Serif · 400 / 600 upright</td><td>—</td><td>—</td><td>✓ headlines to display size, pull quotes, drop caps</td></tr>
       <tr><td>STIX Two Math · 400</td><td>—</td><td>✓ math in HTML papers</td><td>—</td></tr>
     </table>
-    <ul class="notes" style="margin-top:14px; padding-left:22px; font-size:13px; line-height:1.7; max-width:820px">
+    <ul class="notes" style="margin-top:14px; padding-left:22px; font-size:13px; line-height:1.7">
       <li><strong>700 is the ceiling.</strong> IBM Plex ships no heavier weight, so a CSS <code>800</code> either
       falls back or gets faux-bolded, differently per browser. Ask for the weight that exists.</li>
       <li><strong>Two serif jobs, kept apart.</strong> Upright serif is the editorial voice — headlines, quotes,
@@ -276,7 +277,7 @@
       <tr><td>h4</td><td>1rem — 16px</td><td>600</td><td>1.25</td><td>20px / 8px</td></tr>
     </table>
 
-    <ul class="notes" style="margin-top:14px; padding-left:22px; font-size:13px; line-height:1.7; max-width:820px">
+    <ul class="notes" style="margin-top:14px; padding-left:22px; font-size:13px; line-height:1.7">
       <li><strong>The ratio is 1.25</strong> — a major third — rounded to quarter-rem steps: 1, 1.25, 1.5, 2rem.
       A strict geometric run would put h2 at 1.5625rem; a quarter of a rem is the number a person can hold in
       their head and type without checking. The rounding is what makes h1 land on exactly double the body size.</li>
@@ -303,14 +304,14 @@
     (color alone fails WCAG 1.4.1 at our contrast levels). Standalone navigation links (headers, footers,
     button-like rows) may drop the underline.</p>
 
-    <div style="background: var(--arxiv-surface); border:1px solid var(--arxiv-border-light); border-radius:8px; padding:20px 22px; max-width:720px; font-size:15px; line-height:1.7">
+    <div style="background: var(--arxiv-surface); border:1px solid var(--arxiv-border-light); border-radius:8px; padding:20px 22px; font-size:15px; line-height:1.7">
       Reading text with <a class="ds-link" href="#ignore">an inline link</a> in its resting state —
       Link Blue, underlined, offset so the descenders stay readable. Hover darkens it; a
       <a class="ds-link" href="#ignore" style="color:var(--arxiv-link-visited)">visited link</a> turns
       Visited Purple; keyboard focus draws the standard 3px ring.
     </div>
 
-    <ul class="notes" style="margin-top:14px; padding-left:22px; font-size:13px; line-height:1.7; max-width:720px">
+    <ul class="notes" style="margin-top:14px; padding-left:22px; font-size:13px; line-height:1.7">
       <li>Public pages use <code>.ds-link</code> and the <code>--arxiv-link-*</code> tokens; internal tools use the <code>--link</code> family. Same grammar, per-surface values.</li>
       <li>Full state-by-state references (rest / hover / visited / focus / disabled, light and dark): <a class="ds-link" href="public/link-styles.html">public link styles</a> · <a class="ds-link" href="internal/link-styles.html">internal link styles</a>. Link color tokens with ratios: <a class="ds-link" href="colors.html">Colors</a>.</li>
     </ul>

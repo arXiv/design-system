@@ -12,68 +12,64 @@
        internal/design-system.css (source of truth there — do not fork).
        Advisory notes use the system's own .ds-alert component (no bespoke
        callout chrome on docs pages). ── */
-    *, *::before, *::after { box-sizing: border-box; }
-    body { font-family: var(--arxiv-font-sans); color: var(--arxiv-repository-brown); background: var(--arxiv-warm-wash); margin: 0; font-size: 14px; line-height: 1.5; }
-    .page { max-width: 1080px; margin: 0 auto; padding: 28px 28px 80px; }
-    .page-header { margin: 28px 0 40px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
-    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
-    .page-header p { margin: 0; color: var(--arxiv-library-grey); font-size: 13px; max-width: 760px; }
-    .section { margin-bottom: 52px; }
-    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
-    .section-desc { font-size: 13px; color: var(--arxiv-library-grey); margin: 0 0 18px; max-width: 760px; line-height: 1.55; }
-    .subgroup-title { font-family: var(--arxiv-font-condensed); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin: 26px 0 10px; }
-    .note-alert { max-width: 760px; margin-top: 16px; }
+    .page-header { margin:var(--space-6) 0 var(--space-8); padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { margin-bottom: var(--space-2); }
+    .page-header p { color: var(--arxiv-library-grey); }
+    .section { margin-bottom:var(--space-12); }
+    .section-desc { color: var(--arxiv-library-grey); }
+    .subgroup-title { font-family: var(--arxiv-font-condensed); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin:var(--space-6) 0 10px; }
+    .note-alert { margin-top:var(--space-4); }
 
     /* Context cards (public vs internal) */
-    .context-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; max-width: 900px; }
+    .context-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:var(--space-4); }
     .context-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 18px 20px; }
-    .context-card h3 { font-size: 15px; margin: 0 0 8px; display: flex; align-items: center; gap: 8px; }
+    .context-card h3 { font-size: 15px; margin:0 0 var(--space-2); display: flex; align-items: center; gap:var(--space-2); }
     .context-dot { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.15); }
-    .context-card p { font-size: 13px; color: var(--arxiv-library-grey); line-height: 1.55; margin: 0 0 12px; }
+    .context-card p { font-size: 13px; color: var(--arxiv-library-grey); line-height: 1.55; margin:0 0 var(--space-3); }
 
     /* States — stackable flexbox columns: sit side by side where there is
        room, wrap to fewer columns on narrow viewports. */
-    .state-flex { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: flex-start; margin-bottom: 14px; }
-    .state-cell { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
-    .btn-pair { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .state-flex { display: flex; flex-wrap: wrap; gap:var(--space-3) var(--space-6); align-items: flex-start; margin-bottom:var(--space-3); }
+    .state-cell { display: flex; flex-direction: column; gap:var(--space-2); align-items: flex-start; }
+    .btn-pair { display: flex; flex-direction: column; gap:var(--space-2); align-items: flex-start; }
     .state-label { font-family: var(--arxiv-font-condensed); font-weight: 600; font-size: 10px; color: var(--arxiv-library-grey); text-transform: uppercase; letter-spacing: 0.06em; }
 
-    .live-row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding: 16px 18px; background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 6px; margin-top: 4px; max-width: 760px; }
-    .live-row::before { content: 'Live (hover / focus / press):'; font-size: 12px; color: var(--arxiv-library-grey); margin-right: 8px; }
-    .tinted-row { background: #e8f4ff; border: 1px solid #d0e3f4; border-radius: 6px; padding: 16px 18px; margin-top: 4px; max-width: 760px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
-    .tinted-row + .tinted-row { margin-top: 12px; }
+    .live-row { display: flex; gap:var(--space-3); align-items: center; flex-wrap: wrap; padding: 16px 18px; background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 6px; margin-top:var(--space-1); }
+    .live-row::before { content: 'Live (hover / focus / press):'; font-size: 12px; color: var(--arxiv-library-grey); margin-right:var(--space-2); }
+    .tinted-row { background: #e8f4ff; border: 1px solid #d0e3f4; border-radius: 6px; padding: 16px 18px; margin-top:var(--space-1); display: flex; gap:var(--space-3); align-items: center; flex-wrap: wrap; }
+    .tinted-row + .tinted-row { margin-top:var(--space-3); }
     .tinted-row.warm { background: var(--arxiv-card-grey); border-color: var(--arxiv-border-light); }
     .row-note { font-size: 12px; color: var(--arxiv-library-grey); font-style: italic; }
 
     /* Forced states for the public state columns — same recipe as
        public/button-styles.html. Display-only. */
-    .ds-btn-primary.is-hover { background: linear-gradient(#c2e2ff, #c2e2ff) padding-box, linear-gradient(to bottom, #8fc1e8, #4a86b8) border-box; box-shadow: inset 0 0 8px rgba(31,94,150,0.10), 0 1px 3px rgba(0,0,0,0.12); }
+    .ds-btn-primary.is-hover { background: linear-gradient(var(--arxiv-open-blue-bright), var(--arxiv-open-blue-bright)) padding-box, linear-gradient(to bottom, #8fc1e8, #4a86b8) border-box; box-shadow: inset 0 0 8px rgba(31,94,150,0.10), 0 1px 3px rgba(0,0,0,0.12); }
     .ds-btn-primary.is-focus { outline: 3px solid var(--arxiv-focus-ring); outline-offset: 2px; }
-    .ds-btn-primary.is-pressed { transform: translateY(1px); background: linear-gradient(#a5d6fe, #a5d6fe) padding-box, linear-gradient(#6ba8da, #6ba8da) border-box; box-shadow: inset 0 0 10px rgba(31,94,150,0.35); }
-    .ds-btn-secondary.is-hover { background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(to bottom, #c8c4be, var(--arxiv-grey-ui)) border-box; color: var(--arxiv-repository-brown); box-shadow: inset 0 0 8px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.08); }
+    .ds-btn-primary.is-pressed { transform: translateY(1px); background: linear-gradient(var(--arxiv-open-blue), var(--arxiv-open-blue)) padding-box, linear-gradient(#6ba8da, #6ba8da) border-box; box-shadow: inset 0 0 10px rgba(31,94,150,0.35); }
+    .ds-btn-secondary.is-hover { background: linear-gradient(var(--arxiv-surface), var(--arxiv-surface)) padding-box, linear-gradient(to bottom, #c8c4be, var(--arxiv-grey-ui)) border-box; color: var(--arxiv-repository-brown); box-shadow: inset 0 0 8px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.08); }
     .ds-btn-secondary.is-focus { outline: 3px solid var(--arxiv-focus-ring); outline-offset: 2px; }
-    .ds-btn-secondary.is-pressed { transform: translateY(1px); background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(var(--arxiv-grey-ui), var(--arxiv-grey-ui)) border-box; box-shadow: inset 0 0 10px rgba(0,0,0,0.13); }
+    .ds-btn-secondary.is-pressed { transform: translateY(1px); background: linear-gradient(var(--arxiv-surface), var(--arxiv-surface)) padding-box, linear-gradient(var(--arxiv-grey-ui), var(--arxiv-grey-ui)) border-box; box-shadow: inset 0 0 10px rgba(0,0,0,0.13); }
     .ds-btn-text.is-hover { background: var(--arxiv-card-grey); color: var(--arxiv-link-hover); }
     .ds-btn-text.is-focus { outline: 3px solid var(--arxiv-focus-ring); outline-offset: 2px; }
     .ds-btn-text.is-pressed { transform: translateY(1px); background: var(--arxiv-active-bg); color: var(--arxiv-link-hover); }
-    .dark-row { background: #1f5e96; border-radius: 6px; padding: 18px; margin-top: 4px; max-width: 760px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+    .dark-row { background: var(--arxiv-archival-blue); border-radius: 6px; padding: 18px; margin-top:var(--space-1); display: flex; gap:var(--space-3); align-items: center; flex-wrap: wrap; }
 
     /* ── Form action demos ("Buttons in forms") — layout helpers only. Every
        button in that section is a real .ds-btn class from
        public/design-system.css; nothing here restyles one. Panel chrome
        matches .live-row, minus its "Live" label. ── */
-    .form-demo { background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 6px; padding: 16px 18px; margin-top: 4px; max-width: 620px; }
-    .form-actions { display: flex; justify-content: flex-end; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+    .form-demo { background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 6px; padding: 16px 18px; margin-top:var(--space-1); }
+    .form-actions { display: flex; justify-content: flex-end; align-items: center; gap:10px; flex-wrap: wrap; margin-top:var(--space-2); }
     .form-actions.split { justify-content: space-between; }
-    .action-group { display: flex; align-items: center; gap: 10px; }
+    .action-group { display: flex; align-items: center; gap:10px; }
     /* Optical alignment: a text button has 10px of padding and no border, so it
        hangs to the right of the field edge above it until the padding is pulled back. */
-    .btn-flush { margin-left: -10px; }
+    .btn-flush { margin-left:-10px; }
     /* The reason a blocked action cannot be taken: .ds-hint sits under the
        button it explains, so it tracks the right-aligned action row. */
     .form-actions + .ds-hint { text-align: right; }
-    .repeat-row { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 10px; }
-    .repeat-row .ds-field { flex: 1 1 auto; margin-bottom: 0; }
+    .repeat-row { display: flex; align-items: flex-end; gap:var(--space-2); margin-bottom:10px; }
+    .repeat-row .ds-field { flex: 1 1 auto; margin-bottom:0; }
 
 
     /* Work in flight. Drawn from currentColor, sized in em like a button icon —
@@ -91,25 +87,31 @@
        side by side without loading two stylesheets that both define
        .ds- classes. If internal values change, update THERE first. ── */
     .ctx-internal {
-      --i-lime: #c4d82e; --i-lime-hover: #b5c626; --i-lime-active: #a4b520;
+      --i-lime: #c4d82e;
+    /* FIXED in both modes. The lime accent holds its light value in
+       dark mode, so its label must hold too — the same rule as
+       --arxiv-repository-brown-on-blue, and the same job as --text-on-lime
+       in the internal stylesheet. Using --arxiv-repository-brown here flips
+       the label to near-white and leaves it at 1.4:1 on lime. */
+    --i-text-on-lime: #1c1a17; --i-lime-hover: #b5c626; --i-lime-active: #a4b520;
       --i-lime-dis-bg: #e6efb8; --i-lime-dis-text: #8a9a5a;
       --i-sec-bg: #f0f9e8; --i-sec-hover: #e2f3d0; --i-sec-active: #d4edb8;
       --i-sec-border: #9cb522; --i-sec-border-active: #6b7a10;
-      --i-danger: #c62828; --i-danger-hover: #b71c1c;
+      --i-danger: var(--arxiv-error-border); --i-danger-hover: #b71c1c;
     }
-    .ibtn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 20px; font-family: inherit; font-size: 14px; font-weight: 500; line-height: 1; border-radius: 6px; cursor: pointer; text-decoration: none; white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.08); transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease, transform 0.08s ease; }
+    .ibtn { display: inline-flex; align-items: center; justify-content: center; gap:6px; padding: 10px 20px; font-family: inherit; font-size: 14px; font-weight: 500; line-height: 1; border-radius: 6px; cursor: pointer; text-decoration: none; white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.08); transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease, transform 0.08s ease; }
     .ibtn:active:not(:disabled) { transform: translateY(1px); box-shadow: none; }
     .ibtn:focus-visible { outline: 3px solid var(--arxiv-focus-ring); outline-offset: 2px; }
-    .ibtn-primary { background: var(--i-lime); color: #1c1a17 /* on-lime: Repository Brown in BOTH modes */; border: 1px solid transparent; }
+    .ibtn-primary { background: var(--i-lime); color: var(--i-text-on-lime) /* on-lime: Repository Brown in BOTH modes */; border: 1px solid transparent; }
     .ibtn-primary:hover:not(:disabled) { background: var(--i-lime-hover); }
     .ibtn-primary:active:not(:disabled) { background: var(--i-lime-active); }
     .ibtn-primary:disabled { background: var(--i-lime-dis-bg); color: var(--i-lime-dis-text); cursor: not-allowed; }
-    .ibtn-secondary { background: var(--i-sec-bg); color: #1c1a17 /* on-lime: Repository Brown in BOTH modes */; border: 1px solid var(--i-sec-border); }
+    .ibtn-secondary { background: var(--i-sec-bg); color: var(--i-text-on-lime) /* on-lime: Repository Brown in BOTH modes */; border: 1px solid var(--i-sec-border); }
     .ibtn-secondary:hover:not(:disabled) { background: var(--i-sec-hover); }
     .ibtn-secondary:active:not(:disabled) { background: var(--i-sec-active); border-color: var(--i-sec-border-active); }
     .ibtn-tertiary { background: transparent; color: var(--arxiv-library-grey); border: 1px solid var(--arxiv-library-grey); box-shadow: none; }
     .ibtn-tertiary:hover:not(:disabled) { background: var(--arxiv-card-grey); border-color: #4a433d; color: #4a433d; }
-    .ibtn-destructive { background: var(--i-danger); color: #fff; border: 1px solid transparent; }
+    .ibtn-destructive { background: var(--i-danger); color: var(--arxiv-surface); border: 1px solid transparent; }
     .ibtn-destructive:hover:not(:disabled) { background: var(--i-danger-hover); }
     /* Forced states for the internal state columns — display-only,
        mirroring the sim-* classes on the internal reference page. */
@@ -121,19 +123,19 @@
     .ibtn-secondary.is-pressed { background: var(--i-sec-active); border-color: var(--i-sec-border-active); transform: translateY(1px); box-shadow: none; }
 
     /* Token tables */
-    .token-table { width: 100%; max-width: 760px; border-collapse: collapse; margin-top: 8px; background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 6px; overflow: hidden; }
+    .token-table { width: 100%; border-collapse: collapse; margin-top:var(--space-2); background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 6px; overflow: hidden; }
     .token-table th, .token-table td { text-align: left; padding: 8px 12px; font-size: 12px; border-top: 1px solid var(--arxiv-card-grey); }
     .token-table thead th { background: var(--arxiv-card-grey); color: var(--arxiv-library-grey); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em; border-top: none; }
     .token-table code { font-family: var(--arxiv-font-mono); font-size: 11px; color: var(--arxiv-link-blue); background: none; padding: 0; }
-    .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.08); vertical-align: -2px; margin-right: 6px; }
+    .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.08); vertical-align: -2px; margin-right:6px; }
 
-    pre.code { background: #1c1a17; color: #f0eeec; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.55; padding: 14px 18px; border-radius: 6px; overflow-x: auto; margin: 8px 0 0; max-width: 760px; }
+    pre.code { background: var(--arxiv-repository-brown); color: var(--arxiv-card-grey); font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.55; padding: 14px 18px; border-radius: 6px; overflow-x: auto; margin:var(--space-2) 0 0; }
     pre.code .c { color: var(--arxiv-grey-ui); }
-    pre.code .k { color: #c2e2ff; }
+    pre.code .k { color: var(--arxiv-open-blue-bright); }
     pre.code .s { color: #d4ecff; }
 
-    .notes { margin: 0; padding-left: 22px; font-size: 13px; line-height: 1.7; color: var(--arxiv-repository-brown); max-width: 760px; }
-    .notes li { margin-bottom: 4px; }
+    .notes { margin:0; padding-left: 22px; font-size: 13px; line-height: 1.7; color: var(--arxiv-repository-brown); }
+    .notes li { margin-bottom:var(--space-1); }
   
     /* ── Reference beside the demo it describes ──
        .ds-acc is the design system's own accordion, from
@@ -142,20 +144,20 @@
        page measure. Native <details>, never JS tabs: collapsed content stays
        in the DOM and in the source, so a reader of the file sees everything
        a reader of the page can expand. */
-    .ref { max-width: 760px; margin-top: 14px; }
+    .ref { margin-top:var(--space-3); }
     .ref .token-table, .ref pre.code { max-width: 100%; }
-    .ref .token-table + dl, .ref dl + pre.code, .ref .token-table + pre.code { margin-top: 12px; }
+    .ref .token-table + dl, .ref dl + pre.code, .ref .token-table + pre.code { margin-top:var(--space-3); }
 
     /* Scenario grid — related action rows sit side by side instead of each
        taking a full-width block with its own heading. */
-    .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; max-width: 900px; align-items: start; }
-    .demo-grid .form-demo { max-width: none; margin-top: 0; }
-    .demo-grid .subgroup-title { margin: 0 0 6px; }
+    .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:var(--space-4); align-items: start; }
+    .demo-grid .form-demo { max-width: none; margin-top:0; }
+    .demo-grid .subgroup-title { margin:0 0 6px; }
     /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
        <details>-based: works without JS; the small script at the end of the
        page only adds close-on-outside-click and Esc. ── */
-    .docs-nav { display: flex; align-items: center; gap: 4px 18px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
-    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right: 8px; }
+    .docs-nav { display: flex; align-items: center; gap:var(--space-1) var(--space-4); flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right:var(--space-2); }
     .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
     .nav-dd { position: relative; }
     .nav-dd > summary { list-style: none; cursor: pointer; color: var(--arxiv-library-grey); padding: 3px 6px; border-radius: 4px; user-select: none; }
@@ -173,11 +175,9 @@
     /* Inline links in page copy. Bare <a> previously fell back to the
        browser default, which is unreadable on the dark canvas. Nav links
        carry their own, more specific rules. */
-    a { color: var(--arxiv-link-blue); }
-    a:hover { color: var(--arxiv-link-hover); }
 </style>
 </head>
-<body>
+<body class="ds-page">
 <nav class="docs-nav" aria-label="Design system">
   <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
   <details class="nav-dd">
@@ -225,7 +225,7 @@
     </div>
   </details>
 </nav>
-<div class="page">
+<div class="ds-container">
 
   <header class="page-header">
     <h1>Buttons</h1>
@@ -421,7 +421,7 @@
     <div class="demo-grid">
       <div><p class="subgroup-title">Save or cancel</p>
         <div class="form-demo">
-          <div class="ds-field ds-field--md">
+          <div class="ds-field">
             <label class="ds-label" for="fx-title">Title</label>
             <input class="ds-input" id="fx-title" type="text" value="Spectral gaps in random regular graphs">
           </div>
@@ -439,7 +439,7 @@
         </div></div>
       <div><p class="subgroup-title">Backing out discards work</p>
         <div class="form-demo">
-          <div class="ds-field ds-field--lg">
+          <div class="ds-field">
             <label class="ds-label" for="fx-reason">Reason for withdrawal</label>
             <textarea class="ds-input" id="fx-reason">The result in Section 4 does not hold for non-regular graphs.</textarea>
           </div>
@@ -460,7 +460,7 @@
         </div></div>
       <div><p class="subgroup-title">One action</p>
         <div class="form-demo">
-          <div class="ds-field ds-field--md">
+          <div class="ds-field">
             <label class="ds-label" for="fx-email">Email address</label>
             <input class="ds-input" id="fx-email" type="email" value="a.novak@university.edu">
           </div>
@@ -555,14 +555,14 @@
     <h3 class="subgroup-title">Rows in a repeatable group</h3>
     <div class="form-demo">
       <div class="repeat-row">
-        <div class="ds-field ds-field--md">
+        <div class="ds-field">
           <label class="ds-label" for="fx-file2">Top-level file</label>
           <input class="ds-input" id="fx-file2" type="text" value="main.tex">
         </div>
         <button class="ds-btn ds-btn-text" type="button">Remove<span class="is-sr-only"> main.tex</span></button>
       </div>
       <div class="repeat-row">
-        <div class="ds-field ds-field--md">
+        <div class="ds-field">
           <label class="ds-label is-sr-only" for="fx-file3">Top-level file</label>
           <input class="ds-input" id="fx-file3" type="text" value="figures.zip">
         </div>

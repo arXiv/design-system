@@ -11,53 +11,48 @@
        redefines .ds-alert or the status tokens. The token table reads the
        live stylesheet at runtime, so it cannot drift. Per-context detail:
        public/alert-styles.html · internal/alert-styles.html. ── */
-    *, *::before, *::after { box-sizing: border-box; }
-    body { font-family: var(--arxiv-font-sans); color: var(--arxiv-repository-brown); background: var(--arxiv-warm-wash); margin: 0; font-size: 14px; line-height: 1.5; }
-    .page { max-width: 1080px; margin: 0 auto; padding: 28px 28px 80px; }
-    .page-header { margin: 28px 0 40px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
-    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
-    .page-header p { margin: 0; color: var(--arxiv-library-grey); font-size: 13px; max-width: 760px; }
-    .mode-note { margin-top: 10px; font-size: 12px; color: var(--arxiv-grey-ui); }
-    .section { margin-bottom: 52px; }
-    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
-    .section-desc { font-size: 13px; color: var(--arxiv-library-grey); margin: 0 0 18px; max-width: 760px; line-height: 1.55; }
-    .subgroup-title { font-family: var(--arxiv-font-condensed); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin: 26px 0 10px; }
+    .page-header { margin:var(--space-6) 0 var(--space-8); padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { margin-bottom: var(--space-2); }
+    .page-header p { color: var(--arxiv-library-grey); }
+    .mode-note { margin-top:10px; font-size: 12px; color: var(--arxiv-grey-ui); }
+    .section { margin-bottom:var(--space-12); }
+    .section-desc { color: var(--arxiv-library-grey); }
+    .subgroup-title { font-family: var(--arxiv-font-condensed); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin:var(--space-6) 0 10px; }
 
-    .live-demo { background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 8px; padding: 22px; max-width: 800px; }
-    .demo-stack > * + * { margin-top: 14px; }
+    .live-demo { background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 8px; padding: 22px; }
+    .demo-stack > * + * { margin-top:var(--space-3); }
 
-    .token-table { width: 100%; max-width: 800px; border-collapse: collapse; background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 8px; overflow: hidden; font-size: 13px; }
+    .token-table { width: 100%; border-collapse: collapse; background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 8px; overflow: hidden; font-size: 13px; }
     .token-table th { background: var(--arxiv-card-grey); text-align: left; padding: 10px 14px; font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); }
     .token-table td { padding: 10px 14px; border-top: 1px solid var(--arxiv-card-grey); vertical-align: middle; }
-    .token-table td.state-name { font-weight: 700; color: var(--arxiv-library-grey); background: #faf8f7; white-space: nowrap; }
-    .swatch { display: inline-block; width: 18px; height: 18px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.18); vertical-align: middle; margin-right: 6px; }
+    .token-table td.state-name { font-weight: 700; color: var(--arxiv-library-grey); background: var(--arxiv-warm-wash); white-space: nowrap; }
+    .swatch { display: inline-block; width: 18px; height: 18px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.18); vertical-align: middle; margin-right:6px; }
     .ratio-pass { font-weight: 700; }
-    .ratio-fail { font-weight: 700; color: #c62828; }
+    .ratio-fail { font-weight: 700; color: var(--arxiv-error-border); }
 
-    code { font-family: var(--arxiv-font-mono); font-size: 12px; background: var(--arxiv-card-grey); padding: 2px 6px; border-radius: 3px; }
-    .code-block { background: #1c1a17; color: #f0eeec; border-radius: 6px; padding: 14px 16px; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.6; overflow-x: auto; margin: 8px 0 0; max-width: 760px; }
+    .code-block { background: var(--arxiv-repository-brown); color: var(--arxiv-card-grey); border-radius: 6px; padding: 14px 16px; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.6; overflow-x: auto; margin:var(--space-2) 0 0; }
     /* Advisory notes on this page use the system's own .ds-alert-info —
        no bespoke callout chrome. Dogfooding: the component documents itself. */
-    .note-alert { max-width: 760px; margin-top: 16px; }
-    .notes { margin: 0; padding-left: 22px; font-size: 13px; line-height: 1.7; color: var(--arxiv-repository-brown); max-width: 760px; }
-    .notes li { margin-bottom: 4px; }
+    .note-alert { margin-top:var(--space-4); }
+    .notes { margin:0; padding-left: 22px; font-size: 13px; line-height: 1.7; color: var(--arxiv-repository-brown); }
+    .notes li { margin-bottom:var(--space-1); }
 
     /* Form-error mini demo — page-local; the shared classes are
        .is-invalid / .field-error / .field-required per DESIGN-POLICIES. */
     .demo-field { max-width: 380px; }
-    .demo-field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
-    .field-required { color: #c62828; }
-    .demo-field input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid var(--arxiv-grey-ui); border-radius: 6px; background: #fff; color: var(--arxiv-repository-brown); }
+    .demo-field label { display: block; font-size: 13px; font-weight: 600; margin-bottom:6px; }
+    .field-required { color: var(--arxiv-error-border); }
+    .demo-field input { width: 100%; font: inherit; padding: 8px 10px; border: 1px solid var(--arxiv-grey-ui); border-radius: 6px; background: var(--arxiv-surface); color: var(--arxiv-repository-brown); }
     .demo-field input:focus-visible { outline: 3px solid var(--arxiv-focus-ring); outline-offset: 1px; }
-    .demo-field input.is-invalid { border-color: #c62828; }
-    .field-error { display: flex; gap: 6px; align-items: flex-start; font-size: 12px; color: var(--arxiv-error-fg); margin-top: 6px; line-height: 1.45; }
-    .field-error svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; }
+    .demo-field input.is-invalid { border-color: var(--arxiv-error-border); }
+    .field-error { display: flex; gap:6px; align-items: flex-start; font-size: 12px; color: var(--arxiv-error-fg); margin-top:6px; line-height: 1.45; }
+    .field-error svg { width: 14px; height: 14px; flex-shrink: 0; margin-top:1px; }
   
     /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
        <details>-based: works without JS; the small script at the end of the
        page only adds close-on-outside-click and Esc. ── */
-    .docs-nav { display: flex; align-items: center; gap: 4px 18px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
-    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right: 8px; }
+    .docs-nav { display: flex; align-items: center; gap:var(--space-1) var(--space-4); flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right:var(--space-2); }
     .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
     .nav-dd { position: relative; }
     .nav-dd > summary { list-style: none; cursor: pointer; color: var(--arxiv-library-grey); padding: 3px 6px; border-radius: 4px; user-select: none; }
@@ -75,11 +70,9 @@
     /* Inline links in page copy. Bare <a> previously fell back to the
        browser default, which is unreadable on the dark canvas. Nav links
        carry their own, more specific rules. */
-    a { color: var(--arxiv-link-blue); }
-    a:hover { color: var(--arxiv-link-hover); }
 </style>
 </head>
-<body>
+<body class="ds-page">
 <nav class="docs-nav" aria-label="Design system">
   <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
   <details class="nav-dd">
@@ -127,7 +120,7 @@
     </div>
   </details>
 </nav>
-<div class="page">
+<div class="ds-container">
 
   <header class="page-header">
     <h1>Alerts &amp; messaging</h1>

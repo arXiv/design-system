@@ -7,29 +7,28 @@
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="public/design-system.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    body { font-family: var(--arxiv-font-sans); color: var(--arxiv-repository-brown); background: var(--arxiv-warm-wash); margin: 0; font-size: 14px; line-height: 1.5; }
-    .page { max-width: 1000px; margin: 0 auto; padding: 28px 28px 80px; }
-    .page-header { margin: 28px 0 40px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
-    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
-    .page-header p { margin: 0; color: var(--arxiv-library-grey); font-size: 13px; max-width: 800px; }
-    .section { margin-bottom: 52px; }
-    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
-    .section-desc { font-size: 13px; color: var(--arxiv-library-grey); margin: 0 0 18px; max-width: 800px; line-height: 1.55; }
-    .subgroup-title { font-size: 14px; font-weight: 600; margin: 26px 0 8px; }
-    code { font-family: var(--arxiv-font-mono); font-size: 12px; background: var(--arxiv-card-grey); padding: 2px 6px; border-radius: 3px; }
-    .demo { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 24px; max-width: 640px; }
-    .demo-label { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin: 0 0 14px; }
-    .group-title { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin: 28px 0 12px; }
-    .group-title:first-of-type { margin-top: 0; }
-    .action-bar { display: flex; justify-content: flex-end; gap: 10px; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--arxiv-border-light); }
-    .spec-table { border-collapse: collapse; background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); font-size: 13px; width: 100%; max-width: 860px; margin-top: 10px; }
+    /* One content width for everything structural — demos, tables, accordions,
+       the guidance blocks. Cohesion comes from a shared measure, not from four
+       different ones. Prose keeps its own, narrower value: see --doc-prose. */
+    :root { --doc-measure: 860px; }
+    .page-header { margin:var(--space-6) 0 var(--space-8); padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header h1 { margin-bottom: var(--space-2); }
+    .page-header p { color: var(--arxiv-library-grey); }
+    .section { margin-bottom:var(--space-12); }
+    .section-desc { color: var(--arxiv-library-grey); }
+    .subgroup-title { font-size: 0.75rem; font-weight: 600; margin:var(--space-6) 0 var(--space-2); }
+    .demo { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 24px; }
+    .demo-label { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin:0 0 var(--space-3); }
+    .group-title { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin:var(--space-6) 0 var(--space-3); }
+    .group-title:first-of-type { margin-top:0; }
+    .action-bar { display: flex; justify-content: flex-end; gap:10px; margin-top:var(--space-6); padding-top: 18px; border-top: 1px solid var(--arxiv-border-light); }
+    .spec-table { border-collapse: collapse; background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); font-size: 13px; width: 100%; margin-top:10px; }
     .spec-table th { background: var(--arxiv-card-grey); text-align: left; padding: 8px 13px; font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-library-grey); }
     .spec-table td { padding: 9px 13px; border-top: 1px solid var(--arxiv-card-grey); vertical-align: top; }
     .spec-table td:first-child { white-space: nowrap; }
-    .code-block { background: #1c1a17; color: #f0eeec; border-radius: 6px; padding: 14px 16px; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.6; overflow-x: auto; max-width: 860px; margin-top: 10px; }
+    .code-block { background: var(--arxiv-repository-brown); color: var(--arxiv-card-grey); border-radius: 6px; padding: 14px 16px; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.6; overflow-x: auto; margin-top:10px; }
     .code-block code { background: none; padding: 0; color: inherit; }
-    .note-alert { max-width: 860px; margin-top: 16px; }
+    .note-alert { margin-top:var(--space-4); }
     /* ── Guidance blocks: .a11y and .tone ──
        Two per-pattern blocks sharing one construction, so they read as a pair:
        same light-blue tint, same monospace heading, differing only in the left
@@ -46,13 +45,17 @@
 
        Contrast on the tint: body 15.66:1, Link Blue 5.18:1, Library Grey
        5.27:1 — all AA. */
+    /* The accordion ships without a max-width: the base component expects a
+       container to bound it. On this page nothing does, so it ran to the full
+       page width while everything beside it stopped at the content measure. */
+    .ds-acc { }
+
     .a11y, .tone {
       background: var(--arxiv-tint-light);
       border: 1px solid var(--arxiv-tint-border);
       border-radius: 8px;
       padding: 20px 22px;
-      max-width: 860px;
-      margin-top: 18px;
+      margin-top:var(--space-4);
     }
     .a11y { border-left: 4px solid var(--arxiv-link-blue); }
     .tone { border-left: 4px solid var(--arxiv-library-grey); }
@@ -62,32 +65,37 @@
       font-weight: 600;
       letter-spacing: 0;
       text-transform: none;
-      margin: 0 0 12px;
+      margin:0 0 var(--space-3);
     }
     .a11y h3 { color: var(--arxiv-link-blue); }
     .tone h3 { color: var(--arxiv-library-grey); }
     .a11y ul, .tone p, .tone dl { font-size: 13px; line-height: 1.65; }
-    .a11y ul { margin: 0; padding-left: 18px; }
-    .a11y li { margin: 7px 0; }
+    .a11y ul { margin:0; padding-left: 18px; }
+    .a11y li { margin:7px 0; }
     .a11y li::marker { color: var(--arxiv-link-blue); }
     .a11y code, .tone code { background: rgba(255,255,255,0.75); }
-    .a11y .gotcha { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--arxiv-tint-border); font-size: 13px; line-height: 1.65; }
-    .a11y .gotcha strong { font-family: var(--arxiv-font-mono); font-weight: 600; font-size: 13px; color: var(--arxiv-error-fg); display: block; margin-bottom: 7px; text-transform: none; letter-spacing: 0; }
-    .tone p { margin: 0 0 12px; }
-    .tone dl { margin: 0; }
-    .tone dt { font-family: var(--arxiv-font-condensed); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; color: var(--arxiv-library-grey); margin-top: 10px; }
-    .tone dd { margin: 2px 0 0; }
-    .tone .spec-table { margin-top: 14px; }
+    .a11y .gotcha { margin:var(--space-4) 0 0; padding-top: 14px; border-top: 1px solid var(--arxiv-tint-border); font-size: 13px; line-height: 1.65; }
+    .a11y .gotcha strong { font-family: var(--arxiv-font-mono); font-weight: 600; font-size: 13px; color: var(--arxiv-error-fg); display: block; margin-bottom:7px; text-transform: none; letter-spacing: 0; }
+    .tone p { margin:0 0 var(--space-3); }
+    .tone dl { margin:0; }
+    .tone dt { font-family: var(--arxiv-font-condensed); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; color: var(--arxiv-library-grey); margin-top:10px; }
+    .tone dd { margin:2px 0 0; }
+    .tone .spec-table { margin-top:var(--space-3); }
 
 
-    .states { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; max-width: 860px; }
+    .states { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:var(--space-4); }
     .state-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 16px 18px; }
-    .state-card h4 { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin: 0 0 12px; }
+    /* The state cards are display containers, not forms. The 50% default
+       assumes a full content column; inside a ~260px card it leaves a field
+       about 130px wide, which demonstrates nothing about the state it is there
+       to show. Width behaviour is demonstrated in the form demo above. */
+    .state-card .ds-field { max-width: 100%; }
+    .state-card h4 { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin:0 0 var(--space-3); }
     /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
        <details>-based: works without JS; the small script at the end of the
        page only adds close-on-outside-click and Esc. ── */
-    .docs-nav { display: flex; align-items: center; gap: 4px 18px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
-    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right: 8px; }
+    .docs-nav { display: flex; align-items: center; gap:var(--space-1) var(--space-4); flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right:var(--space-2); }
     .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
     .nav-dd { position: relative; }
     .nav-dd > summary { list-style: none; cursor: pointer; color: var(--arxiv-library-grey); padding: 3px 6px; border-radius: 4px; user-select: none; }
@@ -105,11 +113,9 @@
     /* Inline links in page copy. Bare <a> previously fell back to the
        browser default, which is unreadable on the dark canvas. Nav links
        carry their own, more specific rules. */
-    a { color: var(--arxiv-link-blue); }
-    a:hover { color: var(--arxiv-link-hover); }
 </style>
 </head>
-<body>
+<body class="ds-page">
 <nav class="docs-nav" aria-label="Design system">
   <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
   <details class="nav-dd">
@@ -158,44 +164,41 @@
   </details>
 </nav>
 
-<div class="page">
+<div class="ds-container">
 
   <header class="page-header">
     <h1>Forms &amp; validation</h1>
     <p>How arXiv builds a form, and how it tells someone what is wrong with one. Below:
       field construction, the three dispositions a validation result can take, how a problem is
       surfaced beside its field and again above the form, what every field owes a screen reader, and
-      how the messages should sound. <code>.ds-field</code> lives in both stylesheets, so the same
-      markup works in staff tools and on the public site &mdash; only the accent color differs.</p>
+      how the messages should sound. Field widths are set by the type of control, on the
+      assumption that the element already tells you how much someone will type &mdash; a textarea
+      holds paragraphs, a date input holds eight characters &mdash; and two classes override that
+      where the content is unusually short or unusually long. <code>.ds-field</code> lives in both
+      stylesheets, so the same markup works in staff tools and on the public site &mdash; only the
+      accent color differs.</p>
   </header>
 
   <!-- ── The rendered thing ── -->
   <div class="section">
-    <h2 class="section-title">A form</h2>
+    <h2 class="section-title">Form demo</h2>
     <p class="section-desc">A field is a label, a control, optional help text, and a slot for a
     message. That order never changes. Labels sit above their controls, and related fields group by
     spacing rather than boxes.</p>
 
     <div class="demo">
-      <p class="demo-label">Rendered with .ds-field</p>
-      <form onsubmit="return false">
-        <p class="group-title">Contact</p>
+      <form class="ds-form" onsubmit="return false">
 
-        <div class="ds-field ds-field--md">
+        <div class="ds-field">
           <label class="ds-label" for="f-email">Email address</label>
           <input class="ds-input" id="f-email" type="email" required aria-required="true"
                  aria-describedby="f-email-hint" value="e.vasquez@example.edu">
           <p class="ds-hint" id="f-email-hint">Used only to confirm your submission.</p>
         </div>
 
-        <div class="ds-field ds-field--sm">
-          <label class="ds-label" for="f-orcid">ORCID iD<span class="label-optional">(optional)</span></label>
-          <input class="ds-input" id="f-orcid" type="text" placeholder="0000-0000-0000-0000">
-        </div>
 
-        <p class="group-title">Submission</p>
 
-        <div class="ds-field ds-field--md">
+        <div class="ds-field">
           <label class="ds-label" for="f-cat">Primary category</label>
           <select class="ds-input" id="f-cat" required aria-required="true">
             <option>hep-th &mdash; High Energy Physics &ndash; Theory</option>
@@ -203,8 +206,12 @@
             <option>physics.optics &mdash; Optics</option>
           </select>
         </div>
+        <div class="ds-field ds-field--short">
+          <label class="ds-label" for="f-orcid">ORCID iD<span class="label-optional">(optional)</span></label>
+          <input class="ds-input" id="f-orcid" type="text" placeholder="0000-0000-0000-0000">
+        </div>
 
-        <div class="ds-field ds-field--lg">
+        <div class="ds-field">
           <label class="ds-label" for="f-reason">Reason for withdrawal</label>
           <textarea class="ds-input is-invalid" id="f-reason" required aria-required="true"
                     aria-describedby="f-reason-err"></textarea>
@@ -226,7 +233,7 @@
         </div>
       </form>
     </div>
-    <details class="ds-acc ds-acc-panel">
+    <details class="ds-acc ds-acc-flush">
       <summary>Relevant classes</summary>
       <div class="ds-acc-body"><table class="spec-table">
         <tr><td><code>.ds-field</code></td><td>Wraps one label + control + hint + message, and supplies the spacing between fields.</td></tr>
@@ -247,75 +254,81 @@
   <!-- ── Validation ── -->
   <div class="section">
     <h2 class="section-title">Validation</h2>
-    <p class="section-desc">A field passes through three moments. Design all three, not just the
-    middle one &mdash; most of a form&rsquo;s life is spent in the first.</p>
+    <p class="section-desc">Fields can be in three possible states: normal, validated, or disabled.
+    Validation styles change based on the error disposition &mdash; that is, its severity.</p>
 
     <div class="states">
       <div class="state-card">
-        <h4>1 &middot; Before</h4>
+        <h4>Normal</h4>
         <div class="ds-field">
-          <label class="ds-label" for="s1">Reason</label>
-          <input class="ds-input" id="s1" type="text" aria-describedby="s1-h">
-          <p class="ds-hint" id="s1-h">One sentence is enough.</p>
+          <label class="ds-label" for="v1">Reason</label>
+          <input class="ds-input" id="v1" type="text" aria-describedby="v1-h">
+          <p class="ds-hint" id="v1-h">One sentence is enough.</p>
         </div>
       </div>
       <div class="state-card">
-        <h4>2 &middot; Rejected</h4>
+        <h4>Disabled</h4>
         <div class="ds-field">
-          <label class="ds-label" for="s2">Reason</label>
-          <input class="ds-input is-invalid" id="s2" type="text" aria-describedby="s2-e">
-          <p class="field-error" id="s2-e">Give a reason before saving.</p>
-        </div>
-      </div>
-      <div class="state-card">
-        <h4>3 &middot; Disabled</h4>
-        <div class="ds-field">
-          <label class="ds-label" for="s3">Reason</label>
-          <input class="ds-input" id="s3" type="text" value="Superseded by v3" disabled>
+          <label class="ds-label" for="v2">Reason</label>
+          <input class="ds-input" id="v2" type="text" value="Superseded by v3" disabled>
           <p class="ds-hint">Locked once a paper is announced.</p>
         </div>
       </div>
-    </div>
-
-        <h3 class="subgroup-title">Dispositions</h3>
-    <p class="section-desc">A form used to have only valid and rejected. Most real validation lands
-    between them: a value that is accepted but may be reviewed, or one arXiv corrected on the
-    author&rsquo;s behalf. Both need saying, and neither is an error.</p>
-
-    <div class="states">
       <div class="state-card">
-        <h4>Error &middot; blocks</h4>
+        <h4>Validated &middot; error</h4>
         <div class="ds-field">
-          <label class="ds-label" for="t1">Abstract</label>
-          <input class="ds-input is-invalid" id="t1" type="text" aria-invalid="true"
-                 aria-describedby="t1-m" value="&lt;br&gt;Our analysis introduces">
-          <p class="field-error" id="t1-m">Remove the HTML markup <code>&lt;br&gt;</code>.</p>
+          <label class="ds-label" for="v3">Abstract</label>
+          <input class="ds-input is-invalid" id="v3" type="text" aria-invalid="true"
+                 aria-describedby="v3-m" value="&lt;br&gt;Our analysis introduces">
+          <p class="field-error" id="v3-m">Remove the HTML markup <code>&lt;br&gt;</code>.</p>
         </div>
       </div>
       <div class="state-card">
-        <h4>Warning &middot; proceeds</h4>
+        <h4>Validated &middot; warning</h4>
         <div class="ds-field">
-          <label class="ds-label" for="t2">ACM classification<span class="label-optional">(optional)</span></label>
-          <input class="ds-input is-warning" id="t2" type="text" aria-describedby="t2-m" value="s 25">
-          <p class="field-warning" id="t2-m">This does not look like an ACM code. Expected form: <code>F.2.2</code>.</p>
+          <label class="ds-label" for="v4">ACM classification<span class="label-optional">(optional)</span></label>
+          <input class="ds-input is-warning" id="v4" type="text" aria-describedby="v4-m" value="s 25">
+          <p class="field-warning" id="v4-m">This does not look like an ACM code. Expected form: <code>F.2.2</code>.</p>
         </div>
       </div>
       <div class="state-card">
-        <h4>Info &middot; already fixed</h4>
+        <h4>Validated &middot; info</h4>
         <div class="ds-field">
-          <label class="ds-label" for="t3">Title</label>
-          <input class="ds-input is-info" id="t3" type="text" aria-describedby="t3-m"
+          <label class="ds-label" for="v5">Title</label>
+          <input class="ds-input is-info" id="v5" type="text" aria-describedby="v5-m"
                  value="Heavy-tailed gradients in deep networks">
-          <p class="field-info" id="t3-m">Extra spaces were removed. Please confirm it reads correctly.</p>
+          <p class="field-info" id="v5-m">Extra spaces were removed. Please confirm it reads correctly.</p>
+        </div>
+      </div>
+      <div class="state-card">
+        <h4>Validated &middot; multiple errors</h4>
+        <div class="ds-field">
+          <label class="ds-label" for="m1">Abstract</label>
+          <textarea class="ds-input" id="m1" rows="3" aria-invalid="true"
+                    aria-describedby="m1-m">Abstract: We study the convergence of stochastic gradient methods.&lt;br&gt;Data at https://example.org/sgd.</textarea>
+          <ol class="field-messages" id="m1-m">
+            <li class="field-error">Do not begin the abstract with the word &ldquo;Abstract&rdquo;.</li>
+            <li class="field-error">Remove the HTML markup <code>&lt;br&gt;</code>.</li>
+            <li class="field-warning">Font commands are not processed and appear literally.</li>
+            <li class="field-warning">Add a space between a URL and the punctuation after it.</li>
+          </ol>
         </div>
       </div>
     </div>
 
-    <p class="section-desc" style="margin-top:18px">The <strong>note</strong> tier is what makes
-    automatic correction legitimate. Normalising whitespace or stripping markup is an edit to
-    author-submitted content; what makes that acceptable is that the author sees the change before it
-    is committed. The review step is not a nicety to drop later for &ldquo;obvious&rdquo; fixes.</p>
-    <details class="ds-acc ds-acc-panel">
+    <table class="spec-table">
+      <tr><th>Disposition</th><th>Can they continue?</th><th>What it means</th></tr>
+      <tr><td><strong>Error</strong></td><td>No</td><td>The value is not acceptable and must be corrected.</td></tr>
+      <tr><td><strong>Warning</strong></td><td>Yes</td><td>Accepted, but the submission may be held for moderator review.</td></tr>
+      <tr><td><strong>Info</strong></td><td>Yes</td><td>arXiv changed the value automatically. Nothing is wrong; the author is being told.</td></tr>
+    </table>
+
+    <p class="section-desc" style="margin-top:14px">The <strong>info</strong> disposition is what makes
+    automatic correction legitimate: normalising whitespace or stripping markup is an edit to
+    author-submitted content, and what makes that acceptable is that the author sees the change before
+    it is committed. The review step is not a nicety to drop later for &ldquo;obvious&rdquo; fixes.</p>
+
+    <details class="ds-acc ds-acc-flush">
       <summary>Relevant classes</summary>
       <div class="ds-acc-body"><table class="spec-table">
         <tr><td><code>.is-invalid</code></td><td>On the control, for the error disposition. Pair with <code>aria-invalid="true"</code>.</td></tr>
@@ -324,46 +337,28 @@
         <tr><td><code>.field-error</code></td><td>The message, <strong>after</strong> the control. Keep <code>hidden</code> until it applies.</td></tr>
         <tr><td><code>.field-warning</code></td><td>As above, for a warning.</td></tr>
         <tr><td><code>.field-info</code></td><td>As above, for an automatic change.</td></tr>
-      </table>
-    </div>
-    </details>
-
-
-    <h3 class="subgroup-title">Several problems on one field</h3>
-    <p class="section-desc">One problem renders as a paragraph. Two or more render as a numbered list
-    &mdash; the count is checkable against the summary, and &ldquo;the second one&rdquo; has to be
-    sayable while someone works through them. The control shows the <em>worst</em> tier present: a
-    field holding an error and a warning is a field you cannot proceed past.</p>
-
-    <div class="demo">
-      <p class="demo-label">One control, four problems, two tiers</p>
-      <div class="ds-field">
-        <label class="ds-label" for="m1">Abstract</label>
-        <textarea class="ds-input" id="m1" rows="3" aria-invalid="true"
-                  aria-describedby="m1-m">Abstract: We study the convergence of stochastic gradient methods.&lt;br&gt;Data at https://example.org/sgd.</textarea>
-        <ol class="field-messages" id="m1-m">
-          <li class="field-error">Do not begin the abstract with the word &ldquo;Abstract&rdquo;.</li>
-          <li class="field-error">Remove the HTML markup <code>&lt;br&gt;</code>.</li>
-          <li class="field-warning">Font commands are not processed and appear literally.</li>
-          <li class="field-warning">Add a space between a URL and the punctuation after it.</li>
-        </ol>
-      </div>
-    </div>
-    <details class="ds-acc ds-acc-panel">
-      <summary>Relevant classes</summary>
-      <div class="ds-acc-body"><table class="spec-table">
         <tr><td><code>.field-messages</code></td><td>An <code>&lt;ol&gt;</code> when one field carries several problems. Each <code>&lt;li&gt;</code> takes its own tier class.</td></tr>
-      </table>
-    </div>
+      </table></div>
     </details>
 
+    <h3 class="subgroup-title">Alerts above the form</h3>
+    <p class="section-desc">On a form of any length, repeat the problems above the first field. This
+    is not a new component &mdash; it is <a href="alerts.html"><code>.ds-alert</code></a>, specified
+    on its own page, holding an ordered list of links. What follows is only what is particular to
+    using one for validation.</p>
 
-    <h3 class="subgroup-title">Validation summary</h3>
-    <p class="section-desc">On a form of any length, repeat the problems above the first field. This is
-    not a new component &mdash; it is <a href="alerts.html"><code>.ds-alert</code></a> with an ordered
-    list of links inside. <strong>One alert per severity, never a mixed one:</strong> red has to mean
-    &ldquo;you cannot proceed,&rdquo; and a non-blocking item inside a red alert destroys that. The
-    heading carries the count, the body says what the tier means, and every row names its field.</p>
+    <ul class="section-desc">
+      <li><strong>One alert per severity, never a mixed one.</strong> Red has to mean &ldquo;you
+      cannot proceed,&rdquo; and a non-blocking item inside a red alert destroys that. Two problems
+      of two severities means two alerts, in severity order.</li>
+      <li><strong>The heading carries the count</strong>, and the body says what that severity means
+      for the reader &mdash; whether they may continue.</li>
+      <li><strong>Every row names its field and links to it.</strong> Rows repeat the field name even
+      when several name the same field: without it the reader cannot tell whether three problems mean
+      one field to visit or three.</li>
+      <li><strong>Derive every count and every row from the field results.</strong> A summary written
+      by hand can disagree with the fields it describes, and eventually will.</li>
+    </ul>
 
     <div class="ds-alert ds-alert-error note-alert">
       <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
@@ -377,22 +372,9 @@
       </div>
     </div>
 
-    <div class="ds-alert ds-alert-warning note-alert">
-      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><path d="M12 9v5"/><path d="M12 17h.01"/></svg>
-      <div class="ds-alert-content">
-        <p class="ds-alert-title">2 warnings</p>
-        <p>You may continue with warnings, but the submission may be delayed. Select an item to jump to that field.</p>
-        <ol>
-          <li><a href="#m1">Abstract &mdash; font commands appear literally</a></li>
-          <li><a href="#t2">ACM classification &mdash; not a recognised code</a></li>
-        </ol>
-      </div>
-    </div>
-
-    <p class="section-desc" style="margin-top:16px">Derive every count and every row from the field
-    results. A summary written by hand can disagree with the fields it describes, and eventually will.
-    Rows repeat the field name even when several name the same field &mdash; without it the reader
-    cannot tell whether three problems mean one field to visit or three.</p>
+    <p class="section-desc" style="margin-top:16px">A warning summary is the same construction in
+    <code>.ds-alert-warning</code>, and an automatic change is <code>.ds-alert-info</code>. See
+    <a href="alerts.html">Alerts</a> for the four severities and their markup.</p>
 
     <div class="tone">
       <h3>Tone</h3>
@@ -484,7 +466,7 @@
   <!-- ── Usage ── -->
     <div class="section">
     <h2 class="section-title">Usage</h2>
-    <div class="code-block"><code>&lt;div class="ds-field ds-field--md"&gt;
+    <div class="code-block"><code>&lt;div class="ds-field"&gt;
   &lt;label class="ds-label" for="email"&gt;Email address&lt;/label&gt;
   &lt;input class="ds-input" id="email" type="email"
          required aria-required="true" aria-describedby="email-hint email-err"&gt;
