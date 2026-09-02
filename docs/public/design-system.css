@@ -37,6 +37,9 @@
      - Form validation tiers (.is-warning/.field-warning, .is-info/.field-info,
        .field-messages, .label-optional; no new tokens — promoted from the
        submission metadata mockup, 2026-09-01)
+     - Foundation (.ds-page/.ds-container: base type, the published rem
+       heading scale, prose measure, code, tables) + --space-* and width
+       tokens; the first element-level styling here (2026-09-02)
 
    More patterns will land here as they stabilize in the mockups.
    ═══════════════════════════════════════════════════════════════════════ */
@@ -154,6 +157,202 @@
   --arxiv-error-bg:        #fdeaea;
   --arxiv-error-border:    #c62828;  /* Danger Red (functional, not Campus Red) */
   --arxiv-error-fg:        #8b0000;  /* 8.6:1 on bg ✓ AAA */
+
+  /* ── Spacing scale ──
+     The 4px-based scale named in DESIGN-POLICIES.md. The number IS the
+     multiplier: --space-6 is 6x4px. Only the seven approved stops exist,
+     so an off-scale value (14, 26) cannot be written as a token at all —
+     the gaps are the enforcement.
+
+     Expressed in rem, not px, so spacing scales with the reader's text size.
+     A fixed 48px gap between sections stays 48px when someone doubles their
+     text, which compresses the rhythm exactly for the reader who asked for
+     more room. Values are identical to the px scale at a 16px root.
+     Borders, radii and shadows stay in px: they are physical details, not
+     text-relative, and look wrong when scaled. */
+  --space-1:   0.25rem;
+  --space-2:   0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+
+  /* ── Content width ──
+     ONE width for everything. Prose, tables, demo blocks and code all share
+     the same left and right edge; nothing else declares a width.
+
+     920px is the reading-first value in DESIGN-POLICIES.md "Layout and
+     content width" — documentation follows the same rule as public pages,
+     not a third set. 1080px is the internal value and exists only because
+     the admin team works with very dense tables and forms.
+
+     KNOWN TRADE-OFF, decided on screen 2026-09-02. At a 16px root this puts
+     a line of IBM Plex Sans at roughly 115 characters, well past the 65 the
+     policy targets. A separate narrower measure for prose was built, tried
+     and removed: it left paragraphs visibly ragged against every block
+     beside them, and the alignment was judged worth more than the line
+     length. If a future page carries long-form reading rather than short
+     reference paragraphs, that page is the place to revisit this — not the
+     shared default.
+
+     Responsive by construction: max-width plus a gutter shrinks on narrow
+     screens with no breakpoint needed. */
+  --ds-width-page:  920px;
+  --ds-gutter:  var(--space-6);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FOUNDATION  (.ds-page / .ds-container)
+   ───────────────────────────────────────────────────────────────────────
+   Base typography, layout and document elements — everything a page needs
+   before a single component is added to it.
+
+   OPT-IN, BY DESIGN. Everything here is scoped under `.ds-page` rather than
+   written as bare `body` / `h1` selectors. A legacy arxiv.org page can link
+   this stylesheet and be touched by nothing it did not ask for; a page opts
+   in with one class on <body>. That matters while three styling contexts sit
+   side by side (legacy, design system, submit-ce) and adoption has to happen
+   page by page rather than on a flag day.
+
+   BASE SIZE IS DELIBERATELY NOT SET. There is no `font-size` on .ds-page:
+   the page inherits the reader's own browser setting, and every size below
+   is rem, so the whole scale moves with it. Setting 14px here — which every
+   docs page used to do — silently overrides a reader who enlarged their
+   default.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Border-box everywhere inside the scope. Every docs page set this by hand;
+   it is foundational, not page-specific. */
+.ds-page,
+.ds-page *,
+.ds-page *::before,
+.ds-page *::after { box-sizing: border-box; }
+
+.ds-page {
+  font-family: var(--arxiv-font-sans);
+  line-height: 1.5;
+  color: var(--arxiv-repository-brown);
+  background: var(--arxiv-warm-wash);
+  margin: 0;
+  -webkit-text-size-adjust: 100%;   /* stop iOS inflating text in landscape */
+}
+
+/* The shell. Centred, guttered, capped at the dense width. */
+.ds-container {
+  max-width: var(--ds-width-page);
+  margin-inline: auto;
+  padding-inline: var(--ds-gutter);
+}
+
+/* ── Headings ────────────────────────────────────────────────────────
+   The scale published in typography.html: 2 / 1.5 / 1.25 / 1rem, at 700 for
+   h1 and 600 below it, on a 1.25 line-height except h4. Sizes are rem so
+   they track the reader's base size.
+
+   Space above each heading is one scale stop tighter than the published
+   table (32 / 24 / 16 rather than 40 / 28), reviewed on screen 2026-09-02:
+   the table's values are not on the spacing scale, and at 48/32 the sections
+   read too far apart. typography.html's table needs updating to match. */
+:where(.ds-page) :is(h1, h2, h3, h4) {
+  font-family: var(--arxiv-font-sans);
+  color: var(--arxiv-repository-brown);
+  text-wrap: balance;               /* no orphaned last word in a heading */
+}
+:where(.ds-page) h1 { font-size: 2rem;    font-weight: 700; line-height: 1.25; margin: 0 0 var(--space-4); }
+:where(.ds-page) h2 { font-size: 1.5rem;  font-weight: 600; line-height: 1.25; margin: var(--space-8) 0 var(--space-3); }
+:where(.ds-page) h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.25; margin: var(--space-6) 0 var(--space-2); }
+:where(.ds-page) h4 { font-size: 1rem;    font-weight: 600; line-height: 1.5;  margin: var(--space-4) 0 var(--space-2); }
+
+/* ── Prose ───────────────────────────────────────────────────────────
+   Prose takes no width of its own: the container is the width. Zero-specificity
+   :where() means any component overrides these margins by existing. */
+:where(.ds-page p, .ds-page ul, .ds-page ol, .ds-page dl) {
+  margin: 0 0 var(--space-4);
+}
+:where(.ds-page ul, .ds-page ol) { padding-left: var(--space-6); }
+:where(.ds-page li)              { margin-bottom: var(--space-2); }
+:where(.ds-page li:last-child)   { margin-bottom: 0; }
+
+:where(.ds-page) small { font-size: 0.875rem; color: var(--arxiv-library-grey); }
+
+:where(.ds-page) hr {
+  border: 0;
+  border-top: 1px solid var(--arxiv-border-light);
+  margin: var(--space-8) 0;
+}
+
+/* ── Links ───────────────────────────────────────────────────────────
+   The same tokens .ds-link uses, applied to bare anchors inside a .ds-page
+   so body copy does not need a class on every link. .ds-link stays for
+   anchors outside this scope. */
+:where(.ds-page) a               { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; }
+:where(.ds-page) a:hover         { color: var(--arxiv-link-hover); }
+:where(.ds-page) a:visited       { color: var(--arxiv-link-visited); }
+:where(.ds-page) a:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── Code ────────────────────────────────────────────────────────────
+   Inline code is tinted rather than boxed: a border around a two-character
+   token inside a sentence adds more noise than it resolves. Sized in em, not
+   rem, so it tracks whatever it sits inside — including a heading. Blocks
+   keep the dark surface the docs pages already used. */
+:where(.ds-page) code {
+  font-family: var(--arxiv-font-mono);
+  font-size: 0.9em;
+  background: var(--arxiv-card-grey);
+  padding: 0.15em 0.35em;
+  border-radius: 3px;
+}
+:where(.ds-page) pre {
+  font-family: var(--arxiv-font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  background: var(--arxiv-header-bar);
+  color: var(--arxiv-card-grey);
+  padding: var(--space-4);
+  border-radius: 6px;
+  overflow-x: auto;                 /* long lines scroll; the page never does */
+  margin: 0 0 var(--space-4);
+}
+:where(.ds-page) pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* ── Tables ──────────────────────────────────────────────────────────
+   Horizontal rules only. Vertical lines add a boundary the eye does not need
+   when the columns already align, and they make a wide table read as a grid
+   of cells rather than as rows of records. */
+:where(.ds-page) table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  margin: 0 0 var(--space-4);
+}
+:where(.ds-page) th {
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--arxiv-grey-ui);
+  padding: var(--space-2) var(--space-3);
+}
+:where(.ds-page) td {
+  border-bottom: 1px solid var(--arxiv-border-light);
+  padding: var(--space-2) var(--space-3);
+  vertical-align: top;
+}
+:where(.ds-page) caption {
+  text-align: left;
+  color: var(--arxiv-library-grey);
+  font-size: 0.875rem;
+  padding-bottom: var(--space-2);
 }
 
 
@@ -627,7 +826,9 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--a
      .field-messages        an <ol> when one field carries several problems
      .label-optional        on the label of an OPTIONAL field. Required fields
                             carry no marker — see DESIGN-POLICIES
-     .ds-field--sm/md/lg    cap the control at 240 / 360 / 480px
+     width                  set by control type; see "Field width" below
+     .ds-field--short       ~12 characters, for a value of known short length
+     .ds-field--full        force full width on a control that defaults to half
 
    Labels sit ABOVE the control, never beside it. A label-left layout
    gives a ragged edge, reads worse on a phone, and makes it easy to ship
@@ -650,7 +851,7 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--a
    one is correct in both themes, on every platform, for free.
 
    Example:
-     <div class="ds-field ds-field--md">
+     <div class="ds-field">
        <label class="ds-label" for="email">Email address</label>
        <input class="ds-input is-invalid" id="email" type="email"
               required aria-required="true" aria-describedby="email-err">
@@ -659,9 +860,105 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--a
      </div>
    ═══════════════════════════════════════════════════════════════════════ */
 .ds-field { margin-bottom: 16px; }
-.ds-field--sm .ds-input { max-width: 240px; }
-.ds-field--md .ds-input { max-width: 360px; }
-.ds-field--lg .ds-input { max-width: 480px; }
+/* ── Field width and flow ─────────────────────────────────────────
+   Width is set by the TYPE of control, not by a class someone has to remember.
+   The element already carries the information: a textarea holds paragraphs, a
+   date input holds eight characters. Nobody chooses, and nobody can forget.
+
+   This is what the research is about. Baymard's testing found that when a field
+   was too long or too short "the test subjects started to wonder if they had
+   misunderstood the label". GOV.UK: "postcode inputs should be postcode-sized".
+   USWDS: "the length of the text input provides a hint to users as to how much
+   text to write". All three size by content; the pixel caps this replaces
+   (240/360/480) encoded nothing about content.
+
+   The width sits on .ds-field, not on .ds-input, so the field can be a flex
+   item that carries its own share of the row. The control then fills its field.
+
+   SPECIFICITY IS DELIBERATE. Every default sits inside :where(), so it is
+   specificity ZERO — a default, not a rule. Overrides are ordinary class
+   selectors and win by construction, not by source order. Reorder this file and
+   nothing changes. */
+
+.ds-input { width: 100%; }
+
+/* Half is roughly 55 characters at the content measure: comfortable for a name,
+   an email, a code. */
+:where(.ds-field:has(.ds-input)) { max-width: 50%; }
+
+/* Full: multi-line by definition; multi-select needs room to show more than one
+   selection; a URL is long and has to be checkable at a glance. */
+:where(.ds-field:has(textarea.ds-input),
+       .ds-field:has(select[multiple].ds-input),
+       .ds-field:has(.ds-input[type="url"])) { max-width: 100%; }
+
+/* Narrow: fixed format, and the browser's own picker has an intrinsic size. */
+:where(.ds-field:has(.ds-input[type="date"]),
+       .ds-field:has(.ds-input[type="time"])) { max-width: max-content; }
+
+/* The two overrides. type="text" covers a four-digit year and a paper title
+   alike, which is the one case the element cannot tell apart. */
+.ds-field--short { max-width: 11rem; }
+.ds-field--full  { max-width: 100%; }
+
+/* ── .ds-form: fields flow, they do not merely stack ──
+   A wrapping flex row, so two half-width fields share a line and a full-width
+   one takes its own. Order in the DOM is order on the screen, so tab order and
+   screen-reader order still match what a sighted reader sees — the usual
+   objection to multi-column forms does not apply.
+
+   Opt in with .ds-form. A plain <form> still stacks, so nothing that exists
+   today changes shape. */
+.ds-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  column-gap: 24px;
+  /* A query container, so the collapse below responds to the space this form
+     actually has rather than to the size of the window. A form in a sidebar,
+     a modal or one column of a two-column page is narrow on a wide screen —
+     a media query cannot see that, and would leave half-width fields at
+     roughly 130px with no way to notice. */
+  container-type: inline-size;
+}
+
+/* EVERY default here is inside :where(), including the base — so they are all
+   specificity zero and the last matching one wins. A base rule at ordinary
+   specificity would beat the :where() ones that follow it, which is exactly
+   the bug this replaces: fields sized to their content instead of to their
+   type, because `.ds-form > .ds-field` outranked every default below it. */
+:where(.ds-form > *) { flex: 0 1 auto; }
+
+/* Anything that is not a field takes the whole row: a checkbox, an action bar,
+   a heading. None of them share a line with a text input. */
+:where(.ds-form > :not(.ds-field)) { flex-basis: 100%; }
+
+:where(.ds-form > .ds-field) { flex-basis: calc(50% - 12px); max-width: none; }
+:where(.ds-form > .ds-field:has(textarea.ds-input),
+       .ds-form > .ds-field:has(select[multiple].ds-input),
+       .ds-form > .ds-field:has(.ds-input[type="url"])) { flex-basis: 100%; }
+:where(.ds-form > .ds-field:has(.ds-input[type="date"]),
+       .ds-form > .ds-field:has(.ds-input[type="time"])) { flex-basis: auto; }
+
+/* Overrides at ordinary specificity, so they beat every default above. */
+.ds-form > .ds-field--short { flex-basis: 11rem; max-width: 11rem; }
+.ds-form > .ds-field--full  { flex-basis: 100%; max-width: none; }
+
+/* Below this, half is around 170px — too narrow to type in — so every field
+   takes the whole row. .ds-field--short deliberately does not collapse: 11rem
+   is still comfortable on a phone, and a year field stretched across a small
+   screen is the same mismatch the research warns about. */
+/* Container query first: this is the one that matters, because it measures the
+   form rather than the viewport. */
+@container (max-width: 40rem) {
+  :where(.ds-form > .ds-field) { flex-basis: 100%; }
+}
+
+/* And a viewport fallback for fields NOT inside a .ds-form, which have no query
+   container to measure. */
+@media (max-width: 40rem) {
+  :where(.ds-field) { max-width: 100%; }
+}
 
 .ds-label {
   display: block;
@@ -685,7 +982,6 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--a
 }
 
 .ds-input {
-  width: 100%;
   font-family: inherit;
   font-size: 14px;
   line-height: 1.4;
@@ -1512,6 +1808,50 @@ select.ds-input { padding-right: 34px; }
 .ds-acc-body dt { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.04em; color: var(--arxiv-library-grey); white-space: nowrap; padding-top: 2px; }
 .ds-acc-body dd { margin: 0; }
 .ds-acc-body a { color: var(--arxiv-link-blue); }
+
+/* ── Flush variant (.ds-acc-flush) ────────────────────────────────
+   A disclosure that stays part of the running page rather than becoming an
+   object on it. No box, no fill, no horizontal padding — the summary sits on
+   the same left edge as the prose around it, with a single rule beneath.
+
+   Sits between the other two. The base .ds-acc is too quiet to find on an open
+   page (its border is 1.42:1). The panel is too loud for a reference note under
+   a demo: a filled bar inside a full border reads as a separate object and
+   takes more emphasis than the demo it belongs to. This keeps the visible line
+   from the panel and drops everything that made it a box.
+
+   The rule sits under the summary, not around the whole component, so it reads
+   as an underlined label when closed and as a divider between label and content
+   when open. --arxiv-grey-ui because it is the only thing left carrying the
+   component, and at 3.61:1 it clears the 3:1 DESIGN-POLICIES asks of an
+   interactive boundary.
+
+     <details class="ds-acc ds-acc-flush">
+       <summary>Relevant classes</summary>
+       <div class="ds-acc-body">…</div>
+     </details>
+*/
+.ds-acc-flush {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  /* The rule belongs to the COMPONENT, not to the summary, so it marks the
+     bottom of the disclosure in both states — directly under the label when
+     closed, and under the revealed content when open. On the summary it would
+     become a divider that strands the open body below the line. */
+  border-bottom: 1px solid var(--arxiv-grey-ui);
+  margin: 20px 0 44px;   /* room before whatever follows; an open panel
+                            otherwise runs straight into the next heading */
+}
+.ds-acc-flush > summary {
+  background: none;
+  padding: 10px 0;
+  font-size: 0.95rem;
+  border-bottom: 0;
+}
+.ds-acc-flush[open] > summary { border-bottom: 0; }
+.ds-acc-flush > summary:hover { color: var(--arxiv-link-blue); }
+.ds-acc-flush .ds-acc-body { padding: 4px 0 16px; }
 
 /* ── Panel variant (.ds-acc-panel) ────────────────────────────────
    A heavier accordion, for a disclosure that has to be FOUND rather than

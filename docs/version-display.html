@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Versions — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
-  <link rel="stylesheet" href="internal/design-system.css">
+  <link rel="stylesheet" href="public/design-system.css">
   <style>
     /* ── Component reference page. Written spec: this page plus
        color-mapping.md (Version link rows). Reference implementation:
@@ -13,70 +13,66 @@
        warning shown here mirror it). Page chrome uses literal hex so it is
        never mistaken for part of the system; the version affordances use
        real tokens (--link, --text, --grey, --warning-*). ── */
-    *, *::before, *::after { box-sizing: border-box; }
-    body { font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--arxiv-repository-brown); background: var(--arxiv-warm-wash); margin: 0; font-size: 14px; line-height: 1.5; }
-    .page { max-width: 1080px; margin: 0 auto; padding: 28px 28px 80px; }
-    .page-header { margin: 28px 0 40px; padding-bottom: 20px; border-bottom: 3px solid #c4d82e; }
-    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
-    .page-header p { margin: 0; color: var(--arxiv-library-grey); font-size: 13px; max-width: 800px; line-height: 1.55; }
+    .page-header { margin:var(--space-6) 0 var(--space-8); padding-bottom: 20px; border-bottom: 3px solid #c4d82e; }
+    .page-header h1 { margin-bottom: var(--space-2); }
+    .page-header p { color: var(--arxiv-library-grey); }
     .page-header code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; color: var(--arxiv-archival-blue); }
 
-    .section { margin-bottom: 44px; }
-    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
-    .section-desc { font-size: 13px; color: var(--arxiv-library-grey); margin: 0 0 18px; max-width: 800px; line-height: 1.55; }
+    .section { margin-bottom:var(--space-12); }
+    .section-desc { color: var(--arxiv-library-grey); }
 
-    .demo { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 22px 24px; margin-bottom: 14px; max-width: 860px; }
-    .demo-cap { font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif; font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--arxiv-grey-ui); margin: 0 0 12px; }
+    .demo { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 22px 24px; margin-bottom:var(--space-3); }
+    .demo-cap { font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif; font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--arxiv-grey-ui); margin:0 0 var(--space-3); }
 
     /* ── Date row + inline version links (mirrors abstract-phase2) ── */
-    .vd-date { font-size: 0.9rem; color: var(--grey, var(--arxiv-library-grey)); margin: 0; }
+    .vd-date { font-size: 0.9rem; color: var(--grey, var(--arxiv-library-grey)); margin:0; }
     .vd-date time { color: inherit; }
-    .vd-ver { font-family: var(--font-mono, "IBM Plex Mono", ui-monospace, monospace); font-size: 0.9rem; margin-left: 6px; }
+    .vd-ver { font-family: var(--font-mono, "IBM Plex Mono", ui-monospace, monospace); font-size: 0.9rem; margin-left:6px; }
     .vd-ver.is-other { color: var(--link, var(--arxiv-link-blue)); text-decoration: underline; text-underline-offset: 3px; }
     .vd-ver.is-other:hover { color: var(--link-hover, var(--arxiv-link-hover)); }
     .vd-ver.is-current { color: var(--text, var(--arxiv-repository-brown)); font-weight: 700; }
-    .vd-ver:focus-visible { outline: 2px solid var(--link, #1565c0); outline-offset: 2px; border-radius: 2px; }
+    .vd-ver:focus-visible { outline: 2px solid var(--link, var(--arxiv-link-blue)); outline-offset: 2px; border-radius: 2px; }
     .vd-verwrap { font-variant-numeric: tabular-nums; }
-    .vd-elide { color: var(--grey, var(--arxiv-library-grey)); margin-left: 6px; }
+    .vd-elide { color: var(--grey, var(--arxiv-library-grey)); margin-left:6px; }
     /* Text-button disclosure, same affordance family as the authors
        "show all N authors" toggle. Padding + negative margin grows the
        hit area to the 24px floor without moving the row (DESIGN-POLICIES,
        target size). */
     .vd-more { font-family: inherit; font-size: 0.85rem; font-style: italic;
       color: var(--link, var(--arxiv-link-blue)); background: none; border: 0; cursor: pointer;
-      padding: 7px 6px; margin: -7px 0 -7px 4px; border-radius: 2px; }
+      padding: 7px 6px; margin:-7px 0 -7px var(--space-1); border-radius: 2px; }
     .vd-more:hover { color: var(--link-hover, var(--arxiv-link-hover)); text-decoration: underline; }
-    .vd-more:focus-visible { outline: 2px solid var(--link, #1565c0); outline-offset: 2px; }
+    .vd-more:focus-visible { outline: 2px solid var(--link, var(--arxiv-link-blue)); outline-offset: 2px; }
 
     /* ── Older-version warning — amber Warning tokens, compact single row.
        In production this is the .ds-alert warning variant; styled locally
        here so the pattern renders identically without the shared sheet. ── */
-    .vd-warn { display: flex; align-items: flex-start; gap: 10px; max-width: 640px; margin: 14px 0 0;
-      background: var(--warning-bg, #fff8e1); border: 1px solid var(--warning-border, #e8b800);
+    .vd-warn { display: flex; align-items: flex-start; gap:10px; margin:var(--space-3) 0 0;
+      background: var(--warning-bg, var(--arxiv-warning-bg)); border: 1px solid var(--warning-border, var(--arxiv-warning-border));
       border-radius: 4px; padding: 10px 14px; font-size: 0.8125rem; color: var(--warning-fg, var(--arxiv-warning-fg)); }
-    .vd-warn-icon { flex-shrink: 0; width: 18px; height: 18px; color: #b88c00; margin-top: 1px; }
-    .vd-warn p { margin: 0; line-height: 1.5; }
+    .vd-warn-icon { flex-shrink: 0; width: 18px; height: 18px; color: #b88c00; margin-top:1px; }
+    .vd-warn p { margin:0; line-height: 1.5; }
     .vd-warn a { color: var(--warning-fg, var(--arxiv-warning-fg)); font-weight: 600; text-decoration: underline; }
     .vd-warn a:hover { color: #5a4400; }
 
-    .rule-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 16px 20px; margin-bottom: 12px; max-width: 800px; }
-    .rule-card h3 { font-size: 14px; margin: 0 0 6px; }
-    .rule-card p { font-size: 13px; color: var(--arxiv-library-grey); margin: 0; line-height: 1.55; }
+    .rule-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 16px 20px; margin-bottom:var(--space-3); }
+    .rule-card h3 { font-size: 14px; margin:0 0 6px; }
+    .rule-card p { font-size: 13px; color: var(--arxiv-library-grey); margin:0; line-height: 1.55; }
     .rule-card code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; background: var(--arxiv-card-grey); padding: 1px 5px; border-radius: 3px; color: var(--arxiv-repository-brown); }
 
-    .who { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 860px; }
+    .who { display: grid; grid-template-columns: 1fr 1fr; gap:var(--space-3); }
     @media (max-width: 640px) { .who { grid-template-columns: 1fr; } }
     .who-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 16px 18px; }
-    .who-card h3 { font-size: 13px; margin: 0 0 4px; }
-    .who-card p { font-size: 12.5px; color: var(--arxiv-library-grey); margin: 0; line-height: 1.5; }
+    .who-card h3 { font-size: 13px; margin:0 0 var(--space-1); }
+    .who-card p { font-size: 12.5px; color: var(--arxiv-library-grey); margin:0; line-height: 1.5; }
 
-    .is-sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    .is-sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin:-1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
   
     /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
        <details>-based: works without JS; the small script at the end of the
        page only adds close-on-outside-click and Esc. ── */
-    .docs-nav { display: flex; align-items: center; gap: 4px 18px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
-    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right: 8px; }
+    .docs-nav { display: flex; align-items: center; gap:var(--space-1) var(--space-4); flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right:var(--space-2); }
     .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
     .nav-dd { position: relative; }
     .nav-dd > summary { list-style: none; cursor: pointer; color: var(--arxiv-library-grey); padding: 3px 6px; border-radius: 4px; user-select: none; }
@@ -94,11 +90,9 @@
     /* Inline links in page copy. Bare <a> previously fell back to the
        browser default, which is unreadable on the dark canvas. Nav links
        carry their own, more specific rules. */
-    a { color: var(--arxiv-link-blue); }
-    a:hover { color: var(--arxiv-link-hover); }
 </style>
 </head>
-<body>
+<body class="ds-page">
 <nav class="docs-nav" aria-label="Design system">
   <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
   <details class="nav-dd">
@@ -146,7 +140,7 @@
     </div>
   </details>
 </nav>
-<div class="page">
+<div class="ds-container">
   <header class="page-header">
     <h1>Versions</h1>
     <p>
