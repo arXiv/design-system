@@ -179,26 +179,27 @@
   --space-12: 3rem;
 
   /* ── Content width ──
-     ONE width for everything. Prose, tables, demo blocks and code all share
-     the same left and right edge; nothing else declares a width.
+     THE default content width. See DESIGN-POLICIES.md "Layout and content
+     width", which this token implements.
 
-     920px is the reading-first value in DESIGN-POLICIES.md "Layout and
-     content width" — documentation follows the same rule as public pages,
-     not a third set. 1080px is the internal value and exists only because
-     the admin team works with very dense tables and forms.
+     One width for everything on a page: prose, tables, demo blocks, code and
+     callouts share the same left and right edge, and no individual element
+     declares a width of its own. A page needing a different width changes
+     this token; it does not add a second width beside it. Getting here
+     removed 61 hand-picked widths across twelve pages, at fourteen distinct
+     values.
 
-     KNOWN TRADE-OFF, decided on screen 2026-09-02. At a 16px root this puts
-     a line of IBM Plex Sans at roughly 115 characters, well past the 65 the
-     policy targets. A separate narrower measure for prose was built, tried
-     and removed: it left paragraphs visibly ragged against every block
-     beside them, and the alignment was judged worth more than the line
-     length. If a future page carries long-form reading rather than short
-     reference paragraphs, that page is the place to revisit this — not the
-     shared default.
+     850px is about 109 characters in IBM Plex Sans at a 16px root — past the
+     ~65-character line the readability research supports, and accepted
+     knowingly for reference pages built from short paragraphs. A separate
+     narrower measure for prose was built and tried on screen; it left
+     paragraphs visibly ragged against every block beside them, and was
+     removed. Long-form reading is the exception the policy carves out: set a
+     narrower width on that page, never a second width on the paragraph.
 
      Responsive by construction: max-width plus a gutter shrinks on narrow
      screens with no breakpoint needed. */
-  --ds-width-page:  920px;
+  --ds-width-page:  850px;
   --ds-gutter:  var(--space-6);
 }
 
