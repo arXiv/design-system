@@ -156,7 +156,12 @@ img { max-width: 100%; height: auto; }
 /* Screen-reader-only. Visually hidden but available to AT.
    Used for: skip links (visible on focus), alternate spoken pronunciations
    (e.g., the dual-span "arXiv" → "archive" pattern), "(opens in new tab)"
-   notices, sr-only headings that label a region for landmark nav. */
+   notices, sr-only headings that label a region for landmark nav.
+   The !important flags are part of the canonical utility in
+   docs/public/design-system.css and stay verbatim. The class lands on spans
+   nested inside components (nav links, citation values, Labs rows) whose
+   descendant selectors outrank a single class, so the utility has to win
+   from wherever it is applied. */
 .is-sr-only {
   position: absolute !important;
   width: 1px !important; height: 1px !important;
@@ -341,9 +346,15 @@ img { max-width: 100%; height: auto; }
   margin: 0 4px;
   flex-shrink: 0;
 }
-.ds-site-header-login {
-  font-weight: 600 !important;
-  color: var(--arxiv-card-grey) !important;
+/* Log in is the one nav item that carries extra weight and full-strength
+   colour. It has to outrank `.ds-site-header-nav a` and
+   `.ds-site-header-nav a:visited`, which set the quieter default for every
+   item, so the selector repeats the nav ancestor and states the :visited
+   pair. Specificity does the work, not !important. */
+.ds-site-header-nav a.ds-site-header-login,
+.ds-site-header-nav a.ds-site-header-login:visited {
+  font-weight: 600;
+  color: var(--arxiv-card-grey);
 }
 
 
@@ -451,11 +462,33 @@ img { max-width: 100%; height: auto; }
 */
 
 .abs-page {
-  max-width: 920px;
-  margin: 0 auto;
-  padding: 32px 24px 0;
+  /* Three tracks, not a max-width. The side tracks ARE the margins, so a band
+     that must run edge to edge spans `full` and needs no negative margins and
+     no viewport units. The calc(-50vw + 50%) trick this replaces is subtly
+     broken: 100vw includes the scrollbar while the document width excludes
+     it, so a full-width band overhangs by the scrollbar and the page scrolls
+     sideways — invisible on overlay scrollbars, visible on Windows and Linux. */
+  display: grid;
+  align-content: start;
+  grid-template-columns:
+    [full-start] minmax(24px, 1fr)
+    [content-start] min(920px, 100% - 48px) [content-end]
+    minmax(24px, 1fr) [full-end];
+  column-gap: 0;
+  padding: 32px 0 0;
   font-family: var(--arxiv-font-sans);
   color: var(--arxiv-repository-brown);
+}
+
+/* Everything sits in the content track unless it asks not to. */
+.abs-page > * { grid-column: content; }
+
+/* A band that runs to the viewport edges. Its own inline padding brings its
+   contents back onto the content track, derived from the same width. */
+.abs-page > .abs-reference-zone,
+.abs-page > .abs-related-section {
+  grid-column: full;
+  padding-inline: max(24px, (100% - 920px) / 2);
 }
 
 /*
@@ -825,7 +858,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   background:
     linear-gradient(var(--arxiv-open-blue), var(--arxiv-open-blue)) padding-box,
     linear-gradient(to bottom, #b0d5ed, #6ba8da) border-box;
-  color: var(--arxiv-repository-brown) !important;
+  color: var(--arxiv-repository-brown);
   box-shadow:
     inset 0 0 6px rgba(31, 94, 150, 0.20),
     0 1px 3px rgba(0, 0, 0, 0.12);
@@ -852,7 +885,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   background:
     linear-gradient(#ffffff, #ffffff) padding-box,
     linear-gradient(to bottom, var(--arxiv-border-light), #b3ada4) border-box;
-  color: var(--arxiv-library-grey) !important;
+  color: var(--arxiv-library-grey);
   box-shadow:
     inset 0 0 6px rgba(0, 0, 0, 0.06),
     0 1px 3px rgba(0, 0, 0, 0.08);
@@ -861,7 +894,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   background:
     linear-gradient(#ffffff, #ffffff) padding-box,
     linear-gradient(to bottom, #c8c4be, var(--arxiv-grey-ui)) border-box;
-  color: var(--arxiv-repository-brown) !important;
+  color: var(--arxiv-repository-brown);
   box-shadow:
     inset 0 0 8px rgba(0, 0, 0, 0.03),
     0 1px 3px rgba(0, 0, 0, 0.08);
@@ -928,9 +961,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-reference-zone {
   background: var(--arxiv-warm-wash);
   border-top: 1px solid var(--arxiv-pill-border);
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  padding: 32px calc(50vw - 50%) 40px;
+  padding: 32px 0 40px;
   /* Secondary reference band. Sub-sections within are separated by a single
      hairline rule (see .abs-ref-card) — space-efficient, no boxes. The whole
      zone stays subordinate to the title+abstract via smaller (15px) headings. */
@@ -1213,8 +1244,12 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   min-width: 240px;
 }
 .abs-cite-col-ids {
-  flex: 0 0 auto;
-  min-width: 160px;
+  /* An identifier is copied as one string, so it must not be broken across
+     lines. That makes the column unreflowable content: it is allowed to
+     shrink past its 160px comfort width rather than push the page wider than
+     the viewport, and the value inside takes the horizontal scroll. */
+  flex: 0 1 auto;
+  min-width: min(160px, 100%);
 }
 /* Consistent header row across all three citation columns so the headings —
    and the content blocks below them — line up. The style toggle lives in the
@@ -1306,6 +1341,15 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
      (DESIGN-POLICIES.md, truncation). */
   max-height: calc(7.5 * 1.5em);
   overflow-y: auto;
+  /* Content that cannot reflow scrolls inside its own region; the page never
+     scrolls sideways. Wrapping handles almost all of a citation, but a
+     single unbreakable run — a long DOI, a URL, a BibTeX key — has no break
+     opportunity for any wrapping rule to use, so the block takes the
+     horizontal scroll itself. Stated rather than inherited: setting
+     overflow-y alone already computes overflow-x to auto, and a reader of
+     this rule should not have to know that. The region is keyboard
+     reachable and named already (tabindex="0", role="region", aria-label). */
+  overflow-x: auto;
   overscroll-behavior: contain;
   padding-right: 50px;
 }
@@ -1343,6 +1387,11 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   font-size: 0.8125rem; /* 13px */
   color: var(--arxiv-repository-brown);
   margin-bottom: 10px;
+  /* The scroll region for the identifier itself, which is the one string on
+     this page that must never be broken across lines. The two DOI values are
+     links, so where a scrollbar can actually appear the region is already
+     reachable by keyboard through its own content. */
+  overflow-x: auto;
 }
 .abs-cite-id-value a { font-size: 0.8125rem; /* 13px */ }
 .abs-cite-id-value:last-child { margin-bottom: 0; }
@@ -1490,9 +1539,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 
 .abs-related-section {
   background: var(--arxiv-card-grey);
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  padding: 32px calc(50vw - 50%) 36px;
+  padding: 32px 0 36px;
 }
 
 .abs-labs-layout {
@@ -1706,7 +1753,11 @@ footer.ds-site-footer .ds-site-footer-sep { color: var(--arxiv-border-light); }
 }
 .ds-site-footer-main {
   flex: 0 1 auto;
-  min-width: 280px;
+  /* min() caps the wrap trigger at the width actually available. A flat
+     280px is wider than a 320px viewport once the footer's 24px side padding
+     is taken out, and a min-width the container cannot satisfy is what makes
+     the whole page scroll sideways. */
+  min-width: min(280px, 100%);
   max-width: 720px;
 }
 .ds-site-footer-funders {
@@ -1793,22 +1844,35 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
   reader's print block). Validates against the open feedback queue (print
   obscured by chrome). */
 @media print {
+  /* The print block is the last thing in the stylesheet, so a plain
+     declaration already beats the screen rule it repeats: a media query adds
+     no specificity, and source order settles the tie. The one screen rule
+     that outranks a bare class here is
+     `.arxiv-search-overlay.is-open { display: flex }`, which is why the
+     overlay is named with its open class as well — someone can print while
+     the overlay is up. */
   .ds-site-header,
   .arxiv-search-overlay,
+  .arxiv-search-overlay.is-open,
   .abs-version-warning,
   .abs-actions,
   .abs-related-section,
   .abs-cite-copy,
   .abs-cite-styles,
   .abs-cite-source,
-  footer.ds-site-footer { display: none !important; }
-  body { background: #fff !important; color: #000 !important; }
+  footer.ds-site-footer { display: none; }
+  body { background: #fff; color: #000; }
   .abs-body::after { display: none; }
   .abs-reference-zone {
     background: #fff;
     border-top: 1px solid #999;
     margin: 0; padding: 24px 0 0;
   }
+  /* Every link colour on the page is set through a class-level selector —
+     .abs-date a, .abs-authors a, .abs-version-warning a, .abs-meta-value a,
+     .abs-anc-list a, .abs-labs-info a, .ds-site-footer-links a — each of
+     which outranks a bare `a`. Flattening all of them to black for print
+     from one element selector is what !important is for, so it stays. */
   a { color: #000 !important; }
   .abs-meta-value a[href^="http"]::after,
   .abs-cite-id-value a[href^="http"]::after {
@@ -2151,8 +2215,9 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
                    author list is silently lost. Citation text is the
                    highest-trust copy surface on the page: the display
                    must match what Copy yields and what production emits.
-                   Single-line author field per real export; the panel's
-                   white-space:pre + overflow-x handles the width. -->
+                   Single-line author field per real export; the panel wraps
+                   it (white-space: pre-wrap) and scrolls horizontally for
+                   anything wrapping cannot break. -->
               <code class="abs-cite-text is-bibtex" id="cite-bibtex" tabindex="0" role="region" aria-label="BibTeX citation">@article{palomares2026gauge,
   title={Gauge-independent approach to inflation in quadratic gravity},
   author={Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and Castellani, Elena and Maeda, Kei-ichi and Vidotto, Francesca and Ashtekar, Abhay and Emparan, Roberto and Castro, Alejandra and de Boer, Jan and Nojiri, Shin'ichi and Odintsov, Sergei D. and Mukhanov, Viatcheslav and Sasaki, Misao and Soda, Jiro and Tsujikawa, Shinji and Padilla, Antonio and Gregory, Ruth and Malik, Karim A. and Wands, David and Tanaka, Takahiro},

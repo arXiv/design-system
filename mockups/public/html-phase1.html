@@ -105,6 +105,17 @@
      nothing loading it and fell through to -apple-system, so every type
      judgement was really being made in San Francisco. Production serves these
      from /static/fonts/ (typography.md, Hosting). -->
+<!-- Layer order, declared BEFORE the vendored stylesheets so it takes effect.
+     For NORMAL declarations, unlayered author CSS already beats layered author
+     CSS, which is why almost no !important is needed against ar5iv. But for
+     !important the order inverts: a layered !important beats an unlayered one,
+     whatever its specificity. ar5iv marks 29 declarations !important, and those
+     are unreachable from unlayered CSS.
+
+     `arxiv-override` is named first, so it is the earliest layer and its
+     !important declarations outrank ar5iv's. Put a rule here ONLY when ar5iv
+     forces the same property !important; everything else belongs unlayered. -->
+<style>@layer arxiv-override, ar5iv, arxiv-theme;</style>
 <link rel="stylesheet" href="../../docs/fonts.css" type="text/css">
 <link rel="stylesheet" href="./references/Gauge-independent approach to inflation in quadratic gravity_files/arxiv-html-papers-20260131.css" type="text/css">
 
@@ -264,7 +275,7 @@
    transparent — the arXiv logo is white ink and needs nothing behind it. */
 .mg-shell img, .ds-site-header-logo img, .ds-announcement-glyph,
 .mg-band img, .mg-toc-bar img,
-footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent !important; }
+footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent; }
 
 /* ══ ABSTRACT-MODE HEADER (black ds-site-header) ══ */
 .ds-announcement { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 6px 16px; background: var(--arxiv-active-bg); color: var(--arxiv-repository-brown); font-family: var(--arxiv-font-sans); font-size: 0.8125rem; font-weight: 500; position: relative; }
@@ -316,7 +327,7 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent !
 .ds-site-header-nav a:focus-visible { outline: 3px solid var(--arxiv-focus-ring-dark); outline-offset: 1px; }
 .ds-site-header-nav .ds-nav-icon { width: 1.23em; height: 1.23em; opacity: 0.65; flex-shrink: 0; }
 .ds-site-header-divider { width: 1px; height: 20px; background: #4a433d; margin: 0 4px; flex-shrink: 0; }
-.ds-site-header-login { font-weight: 600 !important; color: #f0eeec !important; /* pinned */ }
+.ds-site-header-login { font-weight: 600; color: #f0eeec; /* pinned */ }
 @media (max-width: 680px) {
   .ds-announcement { flex-wrap: wrap; padding-right: 36px; text-align: center; }
   .ds-site-header { grid-template-columns: auto auto; height: auto; min-height: 52px; padding: 6px 12px; row-gap: 4px; }
@@ -363,16 +374,7 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent !
    symmetric negative-margin full-bleed, that 8px asymmetry leaves a gap
    on the right of the tinted band. Remove the margin so the band's center
    aligns with the viewport's center. */
-.ltx_page_content { margin-right: 0 !important; }
-
-/* The LaTeXML <article> has `overflow-x: clip` (from ar5iv.css — meant to
-   contain wide equations). That clips my band's full-bleed negative-margin
-   extension to the article's visual width (~832px), even though the band's
-   box-model rect says it's at x=0..100vw. Seen in 1025-1199px where the band visibly stopped short of the viewport edges.
-   Override to allow the band to render at its true width; wide equations
-   inside the article are still contained by .ltx_page_main being a grid
-   cell of fixed body-grid width, so no new page-overflow risk. */
-article.ltx_document { overflow-x: visible !important; }
+.ltx_page_content { margin-right: 0; }
 
 /* A LIGHT vertical stack of
    document tools. In ABSTRACT mode it sits in the right column of a two-up
@@ -423,21 +425,21 @@ article.ltx_document { overflow-x: visible !important; }
 
 /* Left-justify the title / authors / abstract in abstract mode (overriding
    the centered reader defaults below) so they read cleanly beside the rail. */
-body:not(.mg-reader) .ltx_title.ltx_title_document { text-align: left !important; }
+body:not(.mg-reader) .ltx_title.ltx_title_document { text-align: left; }
 body:not(.mg-reader) .ltx_authors {
-  text-align: left !important;
-  margin-left: 0 !important; margin-right: 0 !important;
-  justify-content: flex-start !important;
+  text-align: left;
+  margin-left: 0; margin-right: 0;
+  justify-content: flex-start;
 }
 /* The author NAMES live in an inner list that carries its own
    text-align:center — override it too so they left-align in abstract mode.
    The "show all authors" toggle is display:block with margin:auto — pin it
    left as well. */
-body:not(.mg-reader) .ltx_authors-list { text-align: left !important; }
+body:not(.mg-reader) .ltx_authors-list { text-align: left; }
 /* Abstract: drop the centered 12% indent AND the narrow-width box border
    (the box was a phone treatment for the centered layout; in the left
    column it isn't needed and looked flush with padding:0). */
-body:not(.mg-reader) .mg-top-main .ltx_abstract { padding: 0 !important; margin: 1rem 0 0 !important; border: 0 !important; }
+body:not(.mg-reader) .mg-top-main .ltx_abstract { padding: 0; margin: 1rem 0 0; border: 0; }
 
 /* Reader mode: collapse to one centered column; rail hides via the existing
    `body.mg-reader .mg-band { display:none }` rule. Title/authors/abstract
@@ -911,7 +913,7 @@ body.mg-reader.mg-toc-stuck .arxiv-html-header .mg-reader-toggle {
 .mg-toc-dropdown a.is-current .toc-num { color: var(--arxiv-link-blue); }
 
 /* ══ FOOTER (ported from abstract-phase2.html) ══ */
-.arxiv-html-footer { display: none !important; }
+.arxiv-html-footer { display: none; }
 footer.ds-site-footer { clear: both; border-top: 1px solid var(--arxiv-pill-border); background: var(--arxiv-warm-wash); padding: 24px 24px 28px; margin: 0; font-family: "IBM Plex Sans", -apple-system, sans-serif; }
 footer.ds-site-footer .ds-site-footer-ack { font-size: 0.8125rem; color: var(--arxiv-library-grey); margin-bottom: 14px; line-height: 1.6; max-width: 900px; }
 footer.ds-site-footer .ds-site-footer-ack a { font-size: 0.8125rem; color: var(--arxiv-link-blue); }
@@ -944,11 +946,11 @@ footer.ds-site-footer .ds-site-footer-sep {
 @media (max-width: 720px) { .ds-site-footer-funders { width: 100%; margin-top: 8px; } }
 .ack-member-inline strong { color: var(--arxiv-repository-brown); font-weight: 600; }
 .member-footer-callout { display: none; }
-@media print { footer.ds-site-footer { display: none !important; } }
+@media print { footer.ds-site-footer { display: none; } }
 
 /* ══ MODE SWITCHING ══ */
 /* Abstract mode (default): hide reader header. */
-body:not(.mg-reader) .arxiv-html-header { display: none !important; }
+body:not(.mg-reader) .arxiv-html-header { display: none; }
 /* Reader mode: hide ds-* abstract chrome and the tinted band; white reading canvas. */
 body.mg-reader .mg-abs-only { display: none; }
 body.mg-reader .mg-band { display: none; }
@@ -964,7 +966,7 @@ body.mg-reader { background: var(--arxiv-warm-wash); }
 /* Defensive: never show MathML TeX annotations visually. Browsers should
    hide these by default, but pin display:none so the rendered equation is
    the only visible representation. */
-math annotation, math annotation-xml { display: none !important; }
+math annotation, math annotation-xml { display: none; }
 
 /* The reader's CSS has `.eqn-region.show-tex .eqn-tex-view { display: block }`
    for the "View TeX" toggled state, but is missing the default-hide rule.
@@ -983,13 +985,13 @@ math annotation, math annotation-xml { display: none !important; }
    insert two new rows at the very top for announcement + mg-shell; the
    reader's three existing rows shift down unchanged. */
 body {
-  grid-template-rows: auto auto auto auto auto !important;
+  grid-template-rows: auto auto auto auto auto;
   grid-template-areas:
     "mgann mgann mgann mgann mgann"
     "mgsh  mgsh  mgsh  mgsh  mgsh"
     "header header header header header"
     ".      nav    article .      ."
-    "footer footer footer footer footer" !important;
+    "footer footer footer footer footer";
 }
 .ds-announcement { grid-area: mgann; }
 .mg-shell        { grid-area: mgsh; }
@@ -1023,6 +1025,17 @@ footer.ds-site-footer { grid-area: footer; }
   .mg-toc-bar, .mg-toc-trigger, .mg-toc-trigger .toc-chev,
   .mg-cite-copy, .mg-acc,
   .ds-btn, .ds-btn-primary { transition: none !important; }
+}
+
+/* ar5iv forces .ltx_title.ltx_title_document to 1.7rem !important, which no
+   unlayered rule can beat. This is the one property that needs the override
+   layer. typography.md: "Paper titles use clamp() between rem bounds
+   (22px-32px equivalent) so a seven-word title does not wrap to five lines
+   at 320px." */
+@layer arxiv-override {
+  h1.ltx_title.ltx_title_document {
+    font-size: clamp(1.375rem, 0.875rem + 2.4vw, 2rem) !important;
+  }
 }
 </style>
 </head>
@@ -1192,8 +1205,8 @@ html { scroll-padding-top: 80px; }
      .ltx_page_logo — LaTeXML "build logs" watermark in the footer
      #beta-badge    — the "experimental support" banner above the paper
    Our redesigned footer carries the same affordances in a cleaner form. */
-.ltx_page_logo { display: none !important; }
-#beta-badge { display: none !important; }
+.ltx_page_logo { display: none; }
+#beta-badge { display: none; }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  2.  HEADER CHROME                                               │
@@ -1212,19 +1225,19 @@ html { scroll-padding-top: 80px; }
    │  space without removing affordances entirely.                    │
    └──────────────────────────────────────────────────────────────────┘ */
 
-/* The override below uses !important throughout because ar5iv's CSS
-   ships specificity that wins by default. In a production refactor we
-   would scope this with a body-class flag and drop most !important. */
+/* No !important below. ar5iv arrives through @import ... layer(ar5iv),
+   and an unlayered normal declaration outranks a layered one whatever its
+   specificity, so these plain overrides already win. */
 .arxiv-html-header {
-  background: var(--arxiv-card-grey) !important;
-  border-bottom: 1px solid var(--arxiv-pill-border) !important;
-  min-height: 52px !important;
-  min-height: 52px !important;
-  padding: 0 !important;
+  background: var(--arxiv-card-grey);
+  border-bottom: 1px solid var(--arxiv-pill-border);
+  min-height: 52px;
+  min-height: 52px;
+  padding: 0;
   transition: height 0.25s ease, min-height 0.25s ease, max-height 0.25s ease, background 0.25s ease;
 }
 .arxiv-html-header .html-header-logo,
-.arxiv-html-header .html-header-nav { display: none !important; }
+.arxiv-html-header .html-header-nav { display: none; }
 
 .new-html-inner {
   /* Three-column grid: logo (left), TOC trigger (true center), other
@@ -1255,10 +1268,10 @@ html { scroll-padding-top: 80px; }
 }
 .new-html-logo img {
   height: 39px; width: auto;
-  background: none !important;
-  border: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
   transition: height 0.2s ease;
 }
 .new-html-logo .logo-full { display: block; }
@@ -1321,6 +1334,8 @@ html { scroll-padding-top: 80px; }
    │  widens the reading column on narrow viewports.                  │
    └──────────────────────────────────────────────────────────────────┘ */
 .toc-trigger {
+  /* !important: .arxiv-html-header .toc-trigger { display: none } above is
+     more specific and would otherwise keep the trigger hidden. */
   display: inline-flex !important;
   align-items: center;
   gap: 6px;
@@ -1509,9 +1524,11 @@ html { scroll-padding-top: 80px; }
    styles at this width so the CSS positioning wins. */
 @media (max-width: 700px) {
   .toc-dropdown {
-    top: 0 !important;       /* overrides the desktop top:52px and JS inline */
-    left: 0 !important;
-    right: 0 !important;
+    /* !important: the more specific .arxiv-html-header.compact
+       .toc-dropdown { top: 36px } would otherwise win here. */
+    top: 0 !important;
+    left: 0;
+    right: 0;
     bottom: 0;
     width: 100vw;
     max-width: 100vw;
@@ -1581,10 +1598,10 @@ html { scroll-padding-top: 80px; }
     display: block;
     height: 22px;
     width: auto;
-    background: none !important;
-    border: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
   }
   .new-html-nav .nav-label { display: none; }
   /* Dividers separate LABELED groups; between icon-only buttons they
@@ -1604,7 +1621,7 @@ html { scroll-padding-top: 80px; }
     max-width: 150px;
     padding: 6px 6px 6px 8px;
   }
-  .toc-trigger-prefix { display: none !important; }
+  .toc-trigger-prefix { display: none; }
 }
 .toc-dropdown-item.is-current .toc-dropdown-link .toc-num {
   color: var(--arxiv-link-blue);
@@ -1617,21 +1634,21 @@ html { scroll-padding-top: 80px; }
    The sr-only treatment keeps it announceable while removing the
    visual sidebar. */
 .ltx_page_navbar {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* The article was offset from the left margin to make room for the
    sidebar. With the sidebar gone, the article centers naturally inside
    .ltx_page_main. */
-.ltx_page_content { margin-left: 0 !important; }
+.ltx_page_content { margin-left: 0; }
 
 /* "TᴇX" wordmark — Knuth's classic logo treatment, using serif + raised E
    instead of an image. Keeps the nav text-only. */
@@ -1651,17 +1668,17 @@ html { scroll-padding-top: 80px; }
 /* Compact header: triggered by JS adding `.compact` to the header.
    Smaller height, condensed nav (icons only), small logo mark. */
 .arxiv-html-header.compact {
-  min-height: 36px !important;
-  border-bottom-width: 1px !important;
+  min-height: 36px;
+  border-bottom-width: 1px;
 }
 .arxiv-html-header.compact .new-html-inner { min-height: 36px; }
 .arxiv-html-header.compact .logo-full { display: none; }
 .arxiv-html-header.compact .logo-mark {
   display: block;
-  background: none !important;
-  border: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
 }
 .arxiv-html-header.compact .nav-label { display: none; }
 .arxiv-html-header.compact .new-html-nav a,
@@ -1713,9 +1730,10 @@ html { scroll-padding-top: 80px; }
    │  H3 16px. Body 15px / 1.7 line-height. Justified prose with      │
    │  hyphens to match the PDF reading rhythm researchers expect.     │
    │                                                                  │
-   │  Specificity: ar5iv ships its heading sizes as !important rules, │
-   │  so our overrides have to use !important too. Future cleanup:    │
-   │  scope these under a body-class and drop the !important war.     │
+   │  Specificity: ar5iv is imported into a cascade layer, so         │
+   │  unlayered declarations here outrank it without !important.      │
+   │  The one exception is the document title font-size, which        │
+   │  ar5iv itself marks !important.                                  │
    └──────────────────────────────────────────────────────────────────┘ */
 
 /* ── Paper type follows the design-system scale ─────────────────────────
@@ -1730,16 +1748,15 @@ html { scroll-padding-top: 80px; }
    Body line-height stays 1.7 rather than the foundation's 1.5: this is
    long-form sustained reading, not reference copy. */
 h1.ltx_title.ltx_title_document {
-  font-family: "IBM Plex Sans", -apple-system, sans-serif !important;
+  font-family: "IBM Plex Sans", -apple-system, sans-serif;
   /* Fluid between 22px and 32px, matching abstract-phase2.html — typography.md
      and typography.html: "Paper titles use clamp() between rem bounds
      (22px-32px equivalent) so a seven-word title does not wrap to five lines
      at 320px." Body text never scales fluidly; only the title does. */
-  font-size: clamp(1.375rem, 0.875rem + 2.4vw, 2rem) !important;
-  font-weight: 700 !important;
-  line-height: 1.2 !important;
-  color: var(--arxiv-repository-brown) !important;
-  margin-top: 12px !important;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--arxiv-repository-brown);
+  margin-top: 12px;
 }
 /* The gap between the watermark and the title was 32px, and none of it
    came from the title. ar5iv gives .ltx_document a 32px top margin and
@@ -1748,32 +1765,32 @@ h1.ltx_title.ltx_title_document {
    changed nothing. Zeroing the two containers lets the title's 12px be
    the value that decides the gap. Only the top margins are touched —
    section spacing inside the paper is untouched. */
-.ltx_page_content { margin-top: 0 !important; }
-article.ltx_document { margin-top: 0 !important; }
+.ltx_page_content { margin-top: 0; }
+article.ltx_document { margin-top: 0; }
 .ltx_title_section,
 .ltx_title_acknowledgements,
 .ltx_title_appendix,
 .ltx_title_bibliography {
-  font-family: "IBM Plex Sans", -apple-system, sans-serif !important;
-  font-size: 1.5rem !important;
-  font-weight: 600 !important;
-    line-height: 1.25 !important;
-  color: var(--arxiv-repository-brown) !important;
+  font-family: "IBM Plex Sans", -apple-system, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+    line-height: 1.25;
+  color: var(--arxiv-repository-brown);
 }
 .ltx_title_subsection {
-  font-family: "IBM Plex Sans", -apple-system, sans-serif !important;
-  font-size: 1.25rem !important;
-  font-weight: 600 !important;
-    line-height: 1.25 !important;
-  color: var(--arxiv-repository-brown) !important;
+  font-family: "IBM Plex Sans", -apple-system, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+    line-height: 1.25;
+  color: var(--arxiv-repository-brown);
 }
 .ltx_title_abstract {                 /* .ds-panel-label treatment */
-  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif !important;
-  font-size: 0.75rem !important;
-  font-weight: 600 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.04em !important;
-  color: var(--arxiv-library-grey) !important;
+  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--arxiv-library-grey);
 }
 /* Weight 400, set explicitly. ar5iv sets .ltx_page_content { font-weight: 300 }
    and the whole paper body inherited it — a vendored default, not a decision.
@@ -1785,15 +1802,15 @@ article.ltx_document { margin-top: 0 !important; }
    rejected — the high contrast reads better, so no new stop is needed on the
    warm grey ladder. */
 .ltx_page_content {
-  font-weight: 400 !important;
+  font-weight: 400;
 }
 
 .ltx_p {
-  font-family: "IBM Plex Sans", -apple-system, sans-serif !important;
-  font-size: 1rem !important;
-  font-weight: 400 !important;
-  line-height: 1.7 !important;
-  color: var(--arxiv-repository-brown) !important;
+  font-family: "IBM Plex Sans", -apple-system, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--arxiv-repository-brown);
   /* Left-aligned, not justified.
 
      CSS justification is not TeX justification: browsers break lines greedily
@@ -1816,13 +1833,13 @@ article.ltx_document { margin-top: 0 !important; }
      hyphens stays on: with a ragged right it does different work, softening
      the rag on long technical words rather than rescuing bad justification.
      text-wrap: pretty shapes the rag — no short last lines. */
-  text-align: left !important;
-  hyphens: auto !important;
+  text-align: left;
+  hyphens: auto;
   text-wrap: pretty;
 }
 /* Section numerals get an extra weight bump so the visual hierarchy
    stays legible even when the heading text is long. */
-.ltx_tag_section { font-weight: 700 !important; }
+.ltx_tag_section { font-weight: 700; }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  4.  TITLE BLOCK + AUTHORS + ABSTRACT LAYOUT                     │
@@ -1833,25 +1850,25 @@ article.ltx_document { margin-top: 0 !important; }
    │  alternating between HTML and PDF versions.                      │
    └──────────────────────────────────────────────────────────────────┘ */
 
-.ltx_title.ltx_title_document { text-align: center !important; }
+.ltx_title.ltx_title_document { text-align: center; }
 .ltx_authors {
-  font-family: "IBM Plex Sans", -apple-system, sans-serif !important;
-  display: block !important;
-  text-align: center !important;
-  font-size: 1rem !important;
-  color: var(--arxiv-repository-brown) !important;
-  line-height: 1.6 !important;
-  margin-bottom: 1.5rem !important;
-  max-width: 100% !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  justify-content: center !important;
+  font-family: "IBM Plex Sans", -apple-system, sans-serif;
+  display: block;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--arxiv-repository-brown);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
 }
 .ltx_abstract {
-  background: none !important;
-  border: none !important;
-  padding: 0 12% !important;
-  margin: 1rem auto 2.5rem !important;
+  background: none;
+  border: none;
+  padding: 0 12%;
+  margin: 1rem auto 2.5rem;
 }
 /* At phone widths the 12% indent would eat too much of an already-
    narrow column; differentiation moves from horizontal indent to a
@@ -1860,10 +1877,10 @@ article.ltx_document { margin-top: 0 !important; }
    — the border closes the rest. */
 @media (max-width: 700px) {
   .ltx_abstract {
-    padding: 12px 14px !important;
-    margin: 1rem 0 2rem !important;
-    border: 1px solid var(--arxiv-pill-border) !important;
-    border-radius: 4px !important;
+    padding: 12px 14px;
+    margin: 1rem 0 2rem;
+    border: 1px solid var(--arxiv-pill-border);
+    border-radius: 4px;
   }
 }
 
@@ -1879,7 +1896,7 @@ article.ltx_document { margin-top: 0 !important; }
    │  "reference zone" pattern.                                       │
    └──────────────────────────────────────────────────────────────────┘ */
 
-#infobox { display: none !important; }
+#infobox { display: none; }
 
 .new-watermark {
   text-align: center;
@@ -1949,13 +1966,13 @@ article.ltx_document { margin-top: 0 !important; }
 /* Reference band: full-bleed using negative-margin viewport-width trick.
    Production should achieve this with proper full-bleed grid layout. */
 .ltx_bibliography {
-  background: var(--arxiv-card-grey) !important;
-  margin-left: calc(-50vw + 50%) !important;
-  margin-right: calc(-50vw + 50%) !important;
-  padding-left: calc(50vw - 50%) !important;
-  padding-right: calc(50vw - 50%) !important;
-  padding-top: 32px !important;
-  padding-bottom: 36px !important;
+  background: var(--arxiv-card-grey);
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
+  padding-top: 32px;
+  padding-bottom: 36px;
 }
 
 /* Everything AFTER the references keeps the references tint (internal: in many papers an appendix or acknowledgments
@@ -1979,12 +1996,12 @@ article.ltx_document { margin-top: 0 !important; }
 .ltx_bibliography ~ .ltx_appendix,
 .ltx_bibliography ~ .ltx_acknowledgements,
 .ltx_bibliography ~ .ltx_para {
-  background: var(--arxiv-card-grey) !important;
-  margin-left: calc(-50vw + 50%) !important;
-  margin-right: calc(-50vw + 50%) !important;
-  padding-left: calc(50vw - 50%) !important;
-  padding-right: calc(50vw - 50%) !important;
-  padding-bottom: 24px !important;
+  background: var(--arxiv-card-grey);
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
+  padding-bottom: 24px;
 }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
@@ -1995,22 +2012,22 @@ article.ltx_document { margin-top: 0 !important; }
    │  page reads as a continuous bottom-of-document treatment.        │
    └──────────────────────────────────────────────────────────────────┘ */
 
-.ltx_page_content { margin-bottom: 0 !important; }
-.ltx_section, .ltx_bibliography { margin-bottom: 0 !important; }
+.ltx_page_content { margin-bottom: 0; }
+.ltx_section, .ltx_bibliography { margin-bottom: 0; }
 section.ltx_bibliography {
-  margin-bottom: 0 !important;       /* no external gap to the Related band below */
-  padding-bottom: 36px !important;   /* separation lives inside the tint, not as a gap */
+  margin-bottom: 0;       /* no external gap to the Related band below */
+  padding-bottom: 36px;   /* separation lives inside the tint, not as a gap */
 }
-.ltx_bibliography > ul { margin-bottom: 0 !important; }
+.ltx_bibliography > ul { margin-bottom: 0; }
 
 /* Footer band (light blue tint, full-bleed). Inner styling lives in the
    footer's own <style> block at the bottom of the file. */
 .arxiv-html-footer {
-  background: var(--arxiv-tint-light) !important;
-  max-width: none !important;
-  padding: 28px 24px 32px !important;
-  margin: 0 !important;
-  border-top: 2px solid var(--arxiv-open-blue) !important;
+  background: var(--arxiv-tint-light);
+  max-width: none;
+  padding: 28px 24px 32px;
+  margin: 0;
+  border-top: 2px solid var(--arxiv-open-blue);
 }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
@@ -2023,10 +2040,10 @@ section.ltx_bibliography {
    └──────────────────────────────────────────────────────────────────┘ */
 
 .ltx_authors-list {
-  display: inline !important;   /* flow inline so the "show all" toggle can sit at the end of the list */
-  list-style: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  display: inline;   /* flow inline so the "show all" toggle can sit at the end of the list */
+  list-style: none;
+  padding: 0;
+  margin: 0;
   text-align: center;
   line-height: 1.6;
 }
@@ -2042,8 +2059,8 @@ section.ltx_bibliography {
   font-size: 1rem;
 }
 .ltx_authors-list li a:hover { text-decoration: underline; }
-.ltx_authors-overflow { display: none !important; }
-.ltx_authors-overflow.is-expanded { display: inline !important; }
+.ltx_authors-overflow { display: none; }
+.ltx_authors-overflow.is-expanded { display: inline; }
 .ltx_authors-toggle {
   font-family: inherit;
   font-size: 1rem;
@@ -2097,12 +2114,12 @@ section.ltx_bibliography {
    the smaller size keeps them from shouting. */
 cite.ltx_cite,
 cite.cite-chip {
-  font-style: normal !important;
+  font-style: normal;
   position: relative;
 }
 .cite-chip a.ltx_ref {
-  color: var(--arxiv-link-blue) !important;
-  text-decoration: none !important;
+  color: var(--arxiv-link-blue);
+  text-decoration: none;
   font-size: 0.9em;
   padding: 0 2px;
   border-radius: 3px;
@@ -2117,14 +2134,14 @@ cite.cite-chip {
    currently-open popover. */
 .cite-chip a.ltx_ref:hover,
 .cite-chip a.ltx_ref:focus-visible {
-  color: var(--arxiv-link-hover) !important;
-  text-decoration: underline !important;
+  color: var(--arxiv-link-hover);
+  text-decoration: underline;
   text-underline-offset: 2px;
 }
 .cite-chip a.ltx_ref[aria-expanded="true"] {
-  color: var(--arxiv-link-blue) !important;
+  color: var(--arxiv-link-blue);
   background: var(--arxiv-active-bg);
-  text-decoration: underline !important;
+  text-decoration: underline;
 }
 
 .cite-popover {
@@ -2235,16 +2252,17 @@ cite.cite-chip {
   outline-offset: 1px;
 }
 
-/* Bottom-sheet popover on narrow viewports. !important overrides the
-   inline top/left set by the desktop positioning JS. */
+/* Bottom-sheet popover on narrow viewports. No !important needed: the
+   positioning JS clears its own inline top/left below 700px, so these
+   rules are unopposed. */
 @media (max-width: 700px) {
   .cite-popover {
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    top: auto !important;
-    width: 100% !important;
-    max-width: none !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    width: 100%;
+    max-width: none;
     border-radius: 12px 12px 0 0;
     border-bottom: none;
     padding: 16px 16px 20px;
@@ -2301,7 +2319,7 @@ li.ltx_bibitem.cite-active-target {
 .ltx_tag_bibitem ~ *:hover:not(.bib-chips),
 .ltx_tag_bibitem:active ~ *:not(.bib-chips),
 .ltx_tag_bibitem:hover ~ *:not(.bib-chips) {
-  background-color: transparent !important;
+  background-color: transparent;
 }
 
 /* Source citation highlight — applied when the user clicks "Back to
@@ -2317,10 +2335,59 @@ cite.ltx_cite.cite-active-source {
   transition: background 0.4s ease;
 }
 cite.ltx_cite.cite-active-source a.ltx_ref {
-  color: var(--arxiv-repository-brown) !important;
+  color: var(--arxiv-repository-brown);
 }
 /* Git history holds the button's styling if it is ever
    wanted back. */
+
+/* ── Unreflowable content owns its own scroll region ───────────────────
+   The contract for this page: anything with a minimum width it cannot go
+   below gets a horizontal scroll region of its own, and the page itself
+   never scrolls sideways (DESIGN-POLICIES, Accessibility: "No horizontal
+   scrolling on any device"). Prose, headings and captions reflow. A table,
+   a preformatted block and a display equation do not.
+
+   The scroll always goes on the piece that is too wide, never on the
+   article and never on the page. Overflow on an ancestor clips the
+   marginalia and the full-bleed bibliography band, and it turns one wide
+   table into a whole page the reader has to drag sideways to read at all.
+
+   Display equations are the third case; their rules live in the equation
+   section below, because that region also has to keep the equation number
+   pinned while the maths scrolls under it.
+
+   Images are deliberately absent from this list. An image reflows by
+   scaling, so max-width: 100% is the entire answer for it, and a scroll
+   region would be the wrong answer twice over: it would also clip the
+   figure marginalia that is appended to .fig-region. */
+
+/* Preformatted text: the line breaks are content, so the block cannot
+   rewrap. LaTeXML emits .ltx_verbatim and .ltx_listing for these. */
+pre,
+.ltx_verbatim,
+.ltx_listing {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Tables: the scroll region is LaTeXML's .ltx_table wrapper, never the
+   <table> inside it. Overflow does not apply to a table box at all, and
+   changing the table to display: block to make it apply would strip the
+   table semantics assistive technology reads — costing a screen-reader
+   user the row and column announcements that the scroll region exists to
+   make legible in the first place. A tabular with no wrapper therefore
+   stays as it is; the fix for that belongs in the HTML, not here.
+
+   ar5iv ships this same region, with this same exclusion for subfigure
+   tables, whose columns are laid out by the flex wrapper and break when
+   the outer box scrolls. It is restated here so the contract reads in one
+   place and does not depend on the vendored file keeping it. */
+.ltx_table:not(:has(> .ltx_flex_table)) {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  10.  EQUATION MARGINALIA — the "arXiv layer"                    │
@@ -2419,18 +2486,16 @@ table.ltx_equationgroup math.ltx_math_unparsed {
 /* Zero out the equation table's own margins — the wrapper's padding
    replaces them. */
 .eqn-region > table.ltx_equationgroup {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
-/* Wide display equations overflow horizontally at narrow viewports —
-   the equation table's columns are sized by content and don't wrap.
-   The equation table itself becomes its own horizontal-scroll region;
-   the wrapping .eqn-region stays inside the content column so the
-   chip pill (which sits at the region's bottom edge) is not clipped.
-   Article-level overflow:clip is the safety net that stops any other
-   stragglers (wide pre, oversized SVG, etc.) from making the whole
-   page wider than the viewport. */
+/* Wide display equations do not reflow at narrow viewports — the equation
+   table's columns are sized by content and never wrap. The equation table
+   itself becomes the scroll region; the wrapping .eqn-region stays inside
+   the content column so the chip pill, which sits at the region's bottom
+   edge, is not clipped. This is the equation case of the contract stated
+   under "Unreflowable content owns its own scroll region" above. */
 @media (max-width: 1199px) {
   /* Keep ar5iv's natural article max-width (52rem) so the article
      forms a centered reading column even when marginalia is hidden.
@@ -2440,7 +2505,6 @@ table.ltx_equationgroup math.ltx_math_unparsed {
      viewport width, which left the title visually adrift and the
      body copy flush against the screen edge. */
   article.ltx_document {
-    overflow-x: clip;
     padding-left: 32px;
     padding-right: 32px;
   }
@@ -2709,17 +2773,40 @@ html:not(.js) .footnote {
 html:not(.js) .toc-trigger { display: none !important; }
 html:not(.js) .reading-progress { display: none !important; }
 
-/* Right-margin marginalia — positioned absolutely so JS can vertically
-   center each note on its source marker. Tufte-style serif italic with
-   no chrome (no background, no border) so it reads as literary
-   annotation rather than UI. Visible only on wide viewports. */
-.ftn-marginalia {
+/* ── Marginalia: one pattern ───────────────────────────────────────────
+   A note beside the text, and a fallback for when there is no margin to
+   put it in. Two notes use it: footnote text (.ftn-marginalia) and figure
+   alt text (.fig-alt-marginalia). Everything they share is set once here
+   — the note is a fixed --marginalia-width column of annotation type with
+   no chrome of its own, so it reads as an editor speaking quietly beside
+   the body text rather than as a piece of interface.
+
+   What they do NOT share is where the note is measured from. The footnote
+   note is appended to article.ltx_document and the figure note to
+   .fig-region, so `right: 0` lands in two different places on the screen.
+   Those offsets stay separate, in the width section at the end of the
+   file, each with the arithmetic its own containing block needs. One
+   shared offset rule would put one of the two notes in the wrong place.
+
+   Below the breakpoint there is no margin to write in, so both notes are
+   hidden and their content is reached another way: a popover on the
+   footnote marker, a chip on the figure. It is one breakpoint because the
+   margin either exists for both notes or for neither. Keep it in sync
+   with the footnote script's WIDE_BP.
+
+   The paragraph and heading permalinks (.mg-mark) are deliberately not
+   folded in. They also sit beside the text and also fall back, but they
+   are arXiv chrome rather than author content, they take a content-sized
+   pill instead of a fixed column, they live on the opposite side, and
+   their margin runs out at a different width. Sharing a contract with
+   them would mean sharing none of these four things. */
+.ftn-marginalia,
+.fig-alt-marginalia {
   position: absolute;
-  width: 190px;
+  width: var(--marginalia-width);
   padding: 0;
   /* Annotation typography (.ds-annotation in design-system.css):
-     IBM Plex Serif Italic in warm-grey, the "voice of the editor
-     speaking quietly next to the body text." */
+     IBM Plex Serif Italic in warm grey. */
   font-family: "IBM Plex Serif", Georgia, "STIX Two Text", "Times New Roman", serif;
   font-style: italic;
   font-size: 13px;
@@ -2727,6 +2814,16 @@ html:not(.js) .reading-progress { display: none !important; }
   color: var(--arxiv-library-grey);
   transition: color 0.15s ease;
 }
+
+/* The breakpoint: below 1200px the note has nowhere to go. The paper body
+   narrowed from ar5iv's 832px article to a 720px section, which moved the
+   note's right edge from about 50vw+636 to about 50vw+580, so it clears
+   the viewport at roughly 1160px; 1200px is that plus a 20px gutter. */
+@media (max-width: 1199px) {
+  .ftn-marginalia,
+  .fig-alt-marginalia { display: none; }
+}
+
 .ftn-marginalia .ftn-num {
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-style: normal;
@@ -2804,17 +2901,6 @@ html:not(.js) .reading-progress { display: none !important; }
   border-radius: 4px;
 }
 .ftn-popover-close:hover { color: var(--arxiv-repository-brown); background: var(--arxiv-active-bg); }
-
-/* Hide the right-margin marginalia on narrow viewports (no room). */
-/* Switch to popover below 1200px. Set when the paper body
-   narrowed from ar5iv's 832px article to a 720px section. The marginalia is
-   positioned against .ltx_para, so its right edge moved from ~50vw+636 to
-   ~50vw+580 and now clears the viewport at vw ≳ 1160; 1200 is that plus a
-   20px gutter. Keep CSS in sync with the footnote JS WIDE_BP and the figure
-   chip/marginalia breakpoints below. */
-@media (max-width: 1199px) {
-  .ftn-marginalia { display: none; }
-}
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  10c. FIGURE MARGINALIA — image accessibility surface            │
@@ -3084,27 +3170,11 @@ li.ltx_bibitem.cite-active-target .fig-chips {
 .bib-chip-return { display: none; }
 li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
 
-/* Right-margin author layer for figures — alt-text display + the
-   edit/add affordance, surfaced next to the alt content where it
-   logically belongs. Same Tufte-style serif italic treatment as
-   footnote marginalia (the right margin's visual language). */
-/* Alt-text marginalia lives in the RIGHT margin, beyond the content
-   column, matching the footnote marginalia's anchoring. Width matches .ftn-marginalia for visual consistency. */
-.fig-alt-marginalia {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 190px;
-  padding: 0;
-  /* Annotation typography (.ds-annotation in design-system.css):
-     IBM Plex Serif Italic in warm-grey, matching the footnote
-     marginalia voice. */
-  font-family: "IBM Plex Serif", Georgia, "STIX Two Text", "Times New Roman", serif;
-  font-style: italic;
-  font-size: 13px;
-  line-height: 1.45;
-  color: var(--arxiv-library-grey);
-}
+/* The right-margin author layer for figures: the alt text itself, shown
+   next to the image it describes. Width, voice and breakpoint come from
+   the shared note contract above; its vertical placement and its offset
+   live with the other offset in the width section at the end of the file,
+   because both depend on the containing block. */
 .fig-alt-marginalia .fig-alt-label {  /* .ds-panel-label treatment */
   font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
   font-weight: 600;
@@ -3158,13 +3228,6 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
 }
 
 
-/* Below 1199px: collapse the wide layout — right-margin marginalia
-   moves into a chip that opens a popover. The chip pill itself uses
-   the same treatment at every breakpoint (see base .fig-chips rule). */
-@media (max-width: 1199px) {
-  .fig-alt-marginalia { display: none; }
-}
-
 @media (hover: none) {
   .fig-region:hover .fig-chips {
     opacity: 0;
@@ -3195,27 +3258,19 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
    │  title; "Copied!" feedback swaps the icon for a brief check.     │
    └──────────────────────────────────────────────────────────────────┘ */
 
-.heading-permalink {
-  /* Kept here: the icon sizing and the copied-state color. Color moved
-     from --arxiv-grey-ui (border tier — too subtle, and a text-role
-     misassignment) to the shared pill's --arxiv-library-grey. */
-  cursor: pointer;
-}
-.heading-permalink svg { width: 1.05em; height: 1.05em; }
-.heading-permalink:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
-  outline-offset: 1px;
-}
-@media (prefers-reduced-motion: reduce) {
-  .heading-permalink { transition: none; }
-}
+/* The script gives every heading permalink both classes, so the button IS
+   an .mg-mark: cursor, icon size, focus ring and motion kill all come from
+   the pill rules and are not repeated here. What is left is the part that
+   is specific to sitting beside a heading. */
+
 /* Touch devices have no hover: headings reveal their pill by tap
    (is-active), the same grammar as figures, formulas, and paragraphs. */
 @media (hover: none) {
-  h2.is-active .heading-permalink, h3.is-active .heading-permalink,
-  h4.is-active .heading-permalink { opacity: 1; }
+  :is(h2, h3, h4).is-active .mg-mark { opacity: 1; }
 }
 @media print {
+  /* !important: the permalink also carries .mg-mark, whose later
+     display: inline-flex would otherwise print it. */
   .heading-permalink { display: none !important; }
 }
 
@@ -3367,6 +3422,8 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 .fig-region .fig-image-wrap { cursor: zoom-in; }
 
 @media print {
+  /* !important: dialog.fig-lightbox[open] is more specific, so an open
+     lightbox would otherwise print. */
   dialog.fig-lightbox { display: none !important; }
 }
 
@@ -3408,14 +3465,18 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   .arxiv-html-header,
   .ltx_page_navbar,
   .arxiv-html-footer,
-  #disable-reading-mode-btn { display: none !important; }
-  body { background: white !important; color: black !important; }
-  .ltx_page_main { margin: 0 !important; }
+  #disable-reading-mode-btn { display: none; }
+  /* !important on color: the dark-scheme rule html:not([data-theme="light"])
+     body is more specific and would otherwise carry its text colour into
+     print. Background is left plain because that same rule outranks it
+     either way. */
+  body { background: white; color: black !important; }
+  .ltx_page_main { margin: 0; }
   .new-watermark {
-    position: static !important;
+    position: static;
     page-break-after: avoid;
-    font-size: 10pt !important;
-    color: #555 !important;
+    font-size: 10pt;
+    color: #555;
   }
   .ltx_section, .ltx_subsection, .ltx_appendix {
     page-break-before: auto;
@@ -3429,10 +3490,13 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
     page-break-inside: avoid;
   }
   .ltx_bibliography {
-    background: white !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    background: white;
+    margin: 0;
+    padding: 0;
   }
+  /* !important: every link colour and underline in this file is set by a
+     selector more specific than a bare `a`. Print has to outrank all of
+     them at once. */
   a { color: black !important; text-decoration: none !important; }
   a[href^="http"]::after {
     content: " (" attr(href) ")";
@@ -3485,7 +3549,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
    └──────────────────────────────────────────────────────────────────┘ */
 .ltx_document .ltx_para, .ltx_document li.ltx_bibitem { position: relative; }
 .mg-mark {
-  position: absolute; right: calc(100% + 8px); top: -1px;
+  position: absolute; top: -1px;
   display: inline-flex; align-items: center; gap: 4px;
   border: 1px solid var(--arxiv-pill-border); border-radius: 999px;
   background: var(--arxiv-surface);
@@ -3510,10 +3574,14 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
    GitHub-diff-header / sticky-copy-button pattern: CSS-only, and it
    stops following exactly where the paragraph ends, which keeps the
    scope story true. */
-.mg-rail-anchor { position: absolute; top: 0; bottom: 0; right: calc(100% + 8px); width: 0; pointer-events: none; }
+/* One gap for both: the rail carries the pill, so a pill offset that
+   disagreed with the rail's would show as the pill jumping sideways the
+   moment the rail took over. */
+.mg-mark, .mg-rail-anchor { right: calc(100% + 8px); }
+.mg-rail-anchor { position: absolute; top: 0; bottom: 0; width: 0; pointer-events: none; }
 .mg-stick { position: sticky; top: 64px; display: flex; flex-direction: column; align-items: flex-end; pointer-events: none; }
 .mg-stick .mg-mark { position: static; margin: 0; pointer-events: auto; }
-.ltx_para:hover .mg-mark, .mg-mark:focus-visible, .ltx_para.is-active .mg-mark { opacity: 1; }
+.ltx_para:hover .mg-mark, .ltx_para.is-active .mg-mark { opacity: 1; }
 /* Hover matches the figure/equation chips — text turns link-blue and
    underlines; the pill surface never changes (a
    fill highlights the whole pill, which stops making sense once a
@@ -3540,7 +3608,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
    too small to notice. */
 h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { position: relative; }
 .heading-permalink.mg-mark { top: 50%; transform: translateY(-50%); margin: 0; padding: 7px 8px; opacity: 0; }
-h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hover .heading-permalink.mg-mark { opacity: 1; }
+:is(h2, h3, h4):hover .mg-mark { opacity: 1; }
 /* Two independent variables, kept independent: viewport WIDTH decides where an affordance
    can live — margin pills above 1200px, tab-on-outline below. Input
    capability decides how it reveals — (hover: hover) reveals on hover
@@ -3591,7 +3659,7 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
      lighter than our surface, which inverted the depth of every card
      (docs/dark-mode.html, trap 3). */
   html:not([data-theme="light"]) body {
-    background: var(--arxiv-warm-wash) !important;
+    background: var(--arxiv-warm-wash);
     color: var(--arxiv-repository-brown);
   }
   :root:not([data-theme="light"]) {
@@ -3638,7 +3706,7 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
    control that writes ar5iv_theme to localStorage, and the bootstrap
    script at the top of this file turns that into data-theme="dark". The two blocks must stay identical. */
 html[data-theme="dark"] body {
-    background: var(--arxiv-warm-wash) !important;
+    background: var(--arxiv-warm-wash);
     color: var(--arxiv-repository-brown);
 }
 :root[data-theme="dark"] {
@@ -9210,29 +9278,42 @@ section.ltx_bibliography,
 .ltx_bibliography ~ .ltx_appendix,
 .ltx_bibliography ~ .ltx_acknowledgements,
 .ltx_bibliography ~ .ltx_para {
-  padding-left:  calc(50vw - var(--paper-body) / 2) !important;
-  padding-right: calc(50vw - var(--paper-body) / 2) !important;
+  padding-left:  calc(50vw - var(--paper-body) / 2);
+  padding-right: calc(50vw - var(--paper-body) / 2);
 }
 
-/* Right-margin marginalia is appended to article.ltx_document by the footnote
-   JS (so a note can be positioned vertically without being trapped inside its
-   paragraph), which means `right` resolves against the 850px article — not the
-   720px section the reader is actually reading. Without correcting for that,
-   a 16px offset renders as 16 + (850-720)/2 = 81px and the note floats away
-   from the text. This subtracts the article's own side margin so the gap is
-   measured from the section edge. */
+/* ── Marginalia offsets: the one thing the two notes cannot share ──────
+   Both notes want the same visual result — a --marginalia-width column
+   sitting --marginalia-gap outside the section the reader is reading. They
+   need different arithmetic to get there, because the scripts append them
+   to different elements, and `right` is measured from whichever ancestor
+   establishes the containing block.
+
+   The footnote note is appended to article.ltx_document, so a note can be
+   positioned vertically without being trapped inside its own paragraph.
+   That makes `right` resolve against the 850px article rather than the
+   720px section, and an uncorrected 16px gap would render as
+   16 + (850 - 720) / 2 = 81px, floating the note away from the text. The
+   article's own side margin is subtracted so the gap is measured from the
+   section edge, which is what the reader sees.
+
+   The figure note is appended to .fig-region, which already sits inside
+   the 720px section, so there is no side margin to correct for and the
+   note is simply pushed out of its own box. Same gap on screen, different
+   sum, and folding the two into one rule puts one of them in the wrong
+   place. */
 .ftn-marginalia {
-  width: var(--marginalia-width);
   right: calc((var(--main-width) - var(--paper-body)) / 2
               - var(--marginalia-width) - var(--marginalia-gap));
 }
 
-/* The figure alt note is appended to .fig-region by the figure JS, and
-   .fig-region already sits inside the 720px section — so unlike the footnote
-   note it needs no correction for the article's side margin. Same visual gap,
-   different containing block. */
 .fig-alt-marginalia {
-  width: var(--marginalia-width);
+  /* Vertically centred on the figure rather than on a marker: the note
+     describes the whole image, and .fig-region gives it a box to centre
+     in. The footnote note has no such box, so the footnote script sets
+     its `top` per note instead. */
+  top: 50%;
+  transform: translateY(-50%);
   right: calc(-1 * (var(--marginalia-width) + var(--marginalia-gap)));
 }
 </style>

@@ -270,17 +270,39 @@
    on its own size, which the container cannot know. Two mechanisms, but at
    two clearly separated levels, never competing at the same one. */
 .ds-container {
-  max-width: var(--ds-width-page);
-  margin-inline: auto;
-  padding-inline: var(--ds-gutter);
-  /* Block padding, not a margin on the first region. The container owns the
-     space above its first child for the same reason it owns the space between
-     children: the page header does not know what is above it. Generous at the
-     foot so the last section is not flush with the viewport bottom. */
-  padding-block: var(--space-8) calc(var(--space-section) * 1.5);
   display: grid;
   align-content: start;
-  gap: var(--space-section);
+
+  /* Three tracks, not a max-width. The centre track holds the content and the
+     two side tracks are the margins — so a band that must run edge to edge
+     spans `full` and needs no negative margins and no viewport units.
+
+     This replaces the calc(-50vw + 50%) full-bleed trick, which is subtly
+     broken: 100vw INCLUDES the scrollbar while the document width excludes
+     it, so a "full width" band overhangs by the scrollbar and the page
+     scrolls sideways. Invisible on overlay scrollbars, visible on Windows
+     and Linux. Tracks have no such problem because they measure the element,
+     not the viewport. */
+  grid-template-columns:
+    [full-start] minmax(var(--ds-gutter), 1fr)
+    [content-start] min(var(--ds-width-page), 100% - 2 * var(--ds-gutter)) [content-end]
+    minmax(var(--ds-gutter), 1fr) [full-end];
+
+  row-gap: var(--space-section);
+  column-gap: 0;
+  padding-block: var(--space-8) calc(var(--space-section) * 1.5);
+}
+
+/* Everything sits in the content track unless it asks not to. */
+.ds-container > * { grid-column: content; }
+
+/* A band that runs to the viewport edges — a reference zone, a coloured
+   section, a full-width figure. The inline padding brings its contents back
+   onto the content track, derived from the same width rather than restated,
+   so the band and the column cannot drift apart. */
+.ds-container > .ds-full {
+  grid-column: full;
+  padding-inline: max(var(--ds-gutter), (100% - var(--ds-width-page)) / 2);
 }
 .ds-container > * > :first-child { margin-block-start: 0; }
 .ds-container > * > :last-child  { margin-block-end: 0; }
@@ -502,7 +524,7 @@
   max-width: calc(100vw - 32px);
   display: flex;
   flex-direction: column;
-  min-width: 235px;
+  min-width: min(235px, 100%)   /* a dropdown panel must never be wider than the viewport it opens in */;
   background: var(--arxiv-surface);
   border: 1px solid var(--arxiv-border-light);
   border-radius: 8px;
@@ -2185,7 +2207,8 @@ select.ds-input { padding-right: 34px; }
 }
 .ds-site-footer-main {
   flex: 0 1 auto;
-  min-width: 280px;
+  min-width: min(280px, 100%)   /* the footer is 24px-padded, so a hard 280px floor forces the page to scroll
+     sideways below 328px — WCAG 1.4.10 requires reflow at 320px */;
   max-width: 720px;
 }
 .ds-site-footer-ack {
@@ -2862,7 +2885,7 @@ select.ds-input { padding-right: 34px; }
   position: fixed;
   top: 52px;
   z-index: 60; /* above popovers (50), below modal dialogs (top layer) */
-  width: 380px;
+  width: min(380px, 100%)   /* same: the panel yields to the viewport rather than forcing a page scroll */;
   max-width: calc(100vw - 32px);
   max-height: calc(100vh - 72px);
   background: var(--arxiv-tint-light);
