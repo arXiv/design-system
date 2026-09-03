@@ -178,6 +178,35 @@
   --space-8:  2rem;
   --space-12: 3rem;
 
+  /* ── Rhythm ──
+     What a gap MEANS, mapped onto the raw scale above. Pages name the kind of
+     break; they never write a pixel value or a raw --space-N. That is what
+     makes rhythm retunable: change these three lines and every page moves
+     together, coherently.
+
+     The RATIOS are the point, not the values. Proximity is how a page shows
+     structure without drawing anything, and below about 1.5x the eye cannot
+     tell "between" from "within", so the grouping silently fails. Here block
+     is 2x tight and section is 3x block — matching DESIGN-POLICIES, "the gap
+     between sections should be clearly larger than the gap within a section,
+     aim for ~3x". */
+  --space-tight:   var(--space-2);    /*  8px — the smallest separation that
+                                            still reads as separate: sibling
+                                            things that belong together, in a
+                                            row or a stack. Same value on both
+                                            axes.
+
+                                            NOT the space inside a single
+                                            control — an icon and its label, a
+                                            checkbox and its label, an alert's
+                                            icon and its content. Those are
+                                            sized against the control's own
+                                            type and are component-internal,
+                                            the same exemption DESIGN-POLICIES
+                                            already gives button padding. */
+  --space-block:   var(--space-4);    /* 16px — between blocks in a section */
+  --space-section: var(--space-12);   /* 48px — between sections */
+
   /* ── Content width ──
      THE default content width. See DESIGN-POLICIES.md "Layout and content
      width", which this token implements.
@@ -241,11 +270,55 @@
 }
 
 /* The shell. Centred, guttered, capped at the dense width. */
+/* The shell, and the owner of section rhythm. Space between regions belongs
+   to the container, not to the regions: a section does not know what follows
+   it, so it cannot know how far away that should be. One gap value here
+   replaces a margin repeated on every section of every page.
+
+   grid rather than margins because gap never collapses and cannot be undone
+   by a child. The first/last reset is the companion to that, not a patch:
+   when the parent owns the space between children, the first child needs
+   none above it and the last needs none below.
+
+   Prose flow INSIDE a section stays element-owned — a heading's space depends
+   on its own size, which the container cannot know. Two mechanisms, but at
+   two clearly separated levels, never competing at the same one. */
 .ds-container {
   max-width: var(--ds-width-page);
   margin-inline: auto;
   padding-inline: var(--ds-gutter);
+  /* Block padding, not a margin on the first region. The container owns the
+     space above its first child for the same reason it owns the space between
+     children: the page header does not know what is above it. Generous at the
+     foot so the last section is not flush with the viewport bottom. */
+  padding-block: var(--space-8) calc(var(--space-section) * 1.5);
+  display: grid;
+  align-content: start;
+  gap: var(--space-section);
 }
+.ds-container > * > :first-child { margin-block-start: 0; }
+.ds-container > * > :last-child  { margin-block-end: 0; }
+
+/* ── Page header (.ds-page-header) ────────────────────────────────────────
+   Title, lede, and an accent rule beneath. Carries no outer margin: the
+   container provides the space to whatever follows.
+
+   PROVISIONAL. This originated in the documentation and has not appeared in
+   any mockup, so unlike the rest of the components here it has not been
+   validated against a real arXiv page. It is codified because it is on eleven
+   pages and DESIGN-POLICIES says two is the threshold — not because its
+   authority is settled. */
+.ds-page-header {
+  padding-bottom: var(--space-6);
+  border-bottom: 3px solid var(--arxiv-open-blue);
+}
+.ds-page-header h1 { margin-bottom: var(--space-tight); }
+.ds-page-header p  { color: var(--arxiv-library-grey); }
+
+/* The lede under a section heading. Quieter than body copy, same size —
+   it introduces rather than competes. Takes no margin of its own; paragraph
+   rhythm comes from the foundation. */
+.ds-section-desc { color: var(--arxiv-library-grey); }
 
 /* ── Headings ────────────────────────────────────────────────────────
    The scale published in typography.html: 2 / 1.5 / 1.25 / 1rem, at 700 for
@@ -372,9 +445,17 @@
    the same figure is 69%, smaller than the spec intended. 0.75rem restores
    the proportion (reviewed 2026-09-03).
 
-   Type only: no margin. Spacing belongs to the context, so an <h3> carrying
-   this class still takes its heading rhythm from the foundation, and a label
-   inside a component takes that component's padding. */
+   It carries heading-like asymmetric margin — more above than below — so it
+   bonds DOWNWARD to the content it introduces. That is intrinsic to what the
+   thing is, not contextual: this was first written as type-only, taking
+   spacing from whatever element carried it, and a <p class="ds-panel-label">
+   then inherited paragraph rhythm (0 above, 16px below) and bonded upward to
+   the wrong content. Half the instances in the docs are paragraphs, because
+   typography.html is explicit that this is "not a heading level" and must
+   stay out of the document outline.
+
+   A component that owns its internal spacing zeroes this, the same way
+   .ds-container zeroes its regions' edge margins. */
 .ds-panel-label,
 .ds-acc-body dt {          /* a <dt> in an accordion body IS this label */
   font-family: var(--arxiv-font-condensed);
@@ -383,7 +464,13 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--arxiv-library-grey);
+  margin: var(--space-6) 0 var(--space-tight);   /* 24 above, 8 below — bonds down */
 }
+
+/* Components that own their internal spacing take the margin back. */
+.ds-site-header-menu .ds-panel-label,
+.ds-toc-dropdown .ds-panel-label,
+.ds-acc-body dt { margin: 0; }
 
 /* ── Dropdown groups (optional part of .ds-site-header) ──────────────────
    A <details>/<summary> menu in the bar, for a property whose sections need
@@ -1553,6 +1640,7 @@ select.ds-input { padding-right: 34px; }
    ═══════════════════════════════════════════════════════════════════════ */
 
 .ds-alert {
+  margin-block: var(--space-block);
   display: flex;
   align-items: flex-start;
   gap: 11px;

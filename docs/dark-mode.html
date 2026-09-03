@@ -6,14 +6,7 @@
   <title>Dark mode — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="public/design-system.css">
-  <style>
-    .page-header { margin:var(--space-6) 0 var(--space-8); padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
-    .page-header h1 { margin-bottom: var(--space-2); }
-    .page-header p { color: var(--arxiv-library-grey); }
-    .section { margin-bottom:var(--space-12); }
-    .section-desc { color: var(--arxiv-library-grey); }
-.note-alert { margin-top:var(--space-4); }
-    .notes { margin:0; padding-left: 22px; font-size: 13px; line-height: 1.7; }
+  <style>.notes { margin:0; padding-left: 22px; font-size: 13px; line-height: 1.7; }
 
     /* ── Swatch pairs ── */
     .pair-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:10px; }
@@ -99,7 +92,7 @@
 </nav>
 <div class="ds-container">
 
-  <header class="page-header">
+  <header class="ds-page-header">
     <h1>Dark mode</h1>
     <p>How dark mode works in this system, and what is dark-aware today. The rule that governs
     everything else: <strong>new pages and components are light-only</strong> — dark values exist in the
@@ -110,7 +103,7 @@
   <!-- ── Checklist: the first thing anyone reads ── -->
   <section class="section">
     <h2 class="section-title" id="checklist">Checklist: adding or changing a component</h2>
-    <p class="section-desc">In order. Each step links to the reasoning below. If you follow only this list and read
+    <p class="ds-section-desc">In order. Each step links to the reasoning below. If you follow only this list and read
     nothing else, dark mode will work.</p>
     <ol class="notes" style="margin-top:14px">
       <li><strong>Take every colour from a token.</strong> Never write a dark hex into a page or a component.
@@ -153,7 +146,7 @@
   <!-- ── Mechanism ── -->
   <section class="section">
     <h2 class="section-title" id="mechanism">The mechanism</h2>
-    <p class="section-desc">Dark values live in one <code>@media (prefers-color-scheme: dark)</code> block
+    <p class="ds-section-desc">Dark values live in one <code>@media (prefers-color-scheme: dark)</code> block
     at the end of each stylesheet, keyed to the OS setting. Any page can opt out and lock to light, which is what a
     page whose job is to show light-mode rendering needs — colour specimens, side-by-side comparisons, this page's own
     panels:</p>
@@ -165,7 +158,7 @@
     </ul>
 
     <h3 class="section-title" id="attribute" style="font-size:15px; margin-top:26px">Keying dark to the attribute as well as the OS</h3>
-    <p class="section-desc">The OS preference is the default and covers most readers, but dark also has to win on a
+    <p class="ds-section-desc">The OS preference is the default and covers most readers, but dark also has to win on a
     light-OS machine whenever something sets <code>data-theme="dark"</code>, so the public stylesheet mirrors the same
     declarations under an explicit attribute. The trigger is the attribute, not a toggle: inherited code sets it too.
     The HTML paper mockup has no toggle of its own, yet the ar5iv reader it builds on ships a theme control that writes
@@ -175,7 +168,7 @@
     <pre><code>&lt;html data-theme="dark"&gt;    &lt;!-- forces dark regardless of the OS --&gt;
 &lt;html data-theme="light"&gt;   &lt;!-- forces light, and opts out of the @media block --&gt;
 &lt;html&gt;                      &lt;!-- no attribute: follow the OS --&gt;</code></pre>
-    <p class="section-desc" style="margin-top:12px">The mirror is generated from the <code>@media</code> block and
+    <p class="ds-section-desc" style="margin-top:12px">The mirror is generated from the <code>@media</code> block and
     must stay identical to it — <code>python3 verification/check-drift.py</code> fails if the two disagree. Setting
     the attribute is the consumer's job and takes JavaScript, which is why the system still ships no toggle UI.</p>
   </section>
@@ -183,7 +176,7 @@
   <!-- ── What flips today ── -->
   <section class="section">
     <h2 class="section-title">Dark-aware today — internal stylesheet</h2>
-    <p class="section-desc">Tokens: surfaces (<code>--surface</code>, <code>--surface-header</code>,
+    <p class="ds-section-desc">Tokens: surfaces (<code>--surface</code>, <code>--surface-header</code>,
     <code>--surface-hover</code>, <code>--border</code>), canvas text (<code>--text</code>), grey ladder,
     link family, lime + secondary families, status families, focus ring. Components riding those tokens:
     buttons, icon buttons, info card, alerts, forms, data table, sortable headers, filter select,
@@ -199,14 +192,14 @@
       </table>
       <div class="alert">✓&nbsp; Preferences saved — table, selection tint, badges, and this alert are all token-driven dark.</div>
     </div>
-    <p class="section-desc" style="margin-top:12px">This panel mirrors the stylesheet's dark block locally
+    <p class="ds-section-desc" style="margin-top:12px">This panel mirrors the stylesheet's dark block locally
     for display; the stylesheet is the source of truth. To see the real thing, open any <em>unlocked</em>
     internal reference page with the OS in dark mode.</p>
   </section>
 
   <section class="section">
     <h2 class="section-title">Dark-aware today — public stylesheet</h2>
-    <p class="section-desc">The full public palette (accepted 2026-08-07): Repository Brown becomes the dark
+    <p class="ds-section-desc">The full public palette (accepted 2026-08-07): Repository Brown becomes the dark
     canvas, accents hold their light values, and the button constructions deepen their borders and shadows
     for definition. The panel below mirrors the stylesheet's dark values locally so you can judge the canvas
     against real content:</p>
@@ -223,7 +216,7 @@
       <span style="display:inline-block; background:linear-gradient(#a5d6fe,#a5d6fe) padding-box, linear-gradient(to bottom,#6ba8da,#2a4a6a) border-box; border:1.5px solid transparent; color: var(--arxiv-repository-brown); font-weight:600; font-size:14px; padding:10px 20px; border-radius:6px; box-shadow: inset 0 0 6px rgba(31,94,150,0.2), 0 1px 3px rgba(0,0,0,0.6); margin-right:8px;">View PDF</span>
       <span style="display:inline-block; background:linear-gradient(#2b2723,#2b2723) padding-box, linear-gradient(to bottom,#4a443d,#6b655c) border-box; border:1.5px solid transparent; color: var(--arxiv-grey-dis); font-weight:600; font-size:14px; padding:10px 20px; border-radius:6px; box-shadow: inset 0 0 6px rgba(0,0,0,0.25), 0 1px 3px rgba(0,0,0,0.5);">TeX Source</span>
     </div>
-    <p class="section-desc" style="margin-top:12px">Also dark-aware, as before — the link and status families:</p>
+    <p class="ds-section-desc" style="margin-top:12px">Also dark-aware, as before — the link and status families:</p>
     <div class="pair-grid">
       <div class="pair"><span class="tok">--arxiv-link-blue</span><div class="chips"><span class="chip" style="background: var(--arxiv-surface);color: var(--arxiv-link-blue)">#1565c0 light</span><span class="chip" style="background:#1c1a17;color:#64b5f6">#64b5f6 dark</span></div></div>
       <div class="pair"><span class="tok">--arxiv-link-visited</span><div class="chips"><span class="chip" style="background: var(--arxiv-surface);color: var(--arxiv-link-visited)">#7b2fbe light</span><span class="chip" style="background:#1c1a17;color:#c690e3">#c690e3 dark</span></div></div>
@@ -237,7 +230,7 @@
   <!-- ── Traps ── -->
   <section class="section">
     <h2 class="section-title" id="traps">Traps that only show up on a real page</h2>
-    <p class="section-desc">Three ways a token-driven page still comes out wrong in dark mode. All three were
+    <p class="ds-section-desc">Three ways a token-driven page still comes out wrong in dark mode. All three were
     found building the blog, which is the first arXiv site to run dark end to end.</p>
 
     <table class="spec-table" style="border-collapse:collapse; background: var(--arxiv-surface); border:1px solid var(--arxiv-border-light); font-size:13px; width:100%">
@@ -267,7 +260,7 @@
   <!-- ── Toggle UI ── -->
   <section class="section">
     <h2 class="section-title">The toggle control, when a site adds one</h2>
-    <p class="section-desc">The system ships no toggle UI, and most sites should not add one — the OS
+    <p class="ds-section-desc">The system ships no toggle UI, and most sites should not add one — the OS
     preference is already the reader's answer. When a site does need one, follow the shape the blog uses, which
     matches info.arxiv.org: a single bare icon in the header showing the <em>current</em> state, cycling
     light&nbsp;&rarr;&nbsp;dark&nbsp;&rarr;&nbsp;auto on click. Three states, not two, so a reader can always get

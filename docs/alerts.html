@@ -11,12 +11,7 @@
        redefines .ds-alert or the status tokens. The token table reads the
        live stylesheet at runtime, so it cannot drift. Per-context detail:
        public/alert-styles.html · internal/alert-styles.html. ── */
-    .page-header { margin:var(--space-6) 0 var(--space-8); padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
-    .page-header h1 { margin-bottom: var(--space-2); }
-    .page-header p { color: var(--arxiv-library-grey); }
-    .mode-note { margin-top:10px; font-size: 12px; color: var(--arxiv-grey-ui); }
-    .section { margin-bottom:var(--space-12); }
-    .section-desc { color: var(--arxiv-library-grey); }
+.mode-note { margin-top:10px; font-size: 12px; color: var(--arxiv-grey-ui); }
 .live-demo { background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 8px; padding: 22px; }
     .demo-stack > * + * { margin-top:var(--space-3); }
 
@@ -29,8 +24,7 @@
     .ratio-fail { font-weight: 700; color: var(--arxiv-error-border); }
 /* Advisory notes on this page use the system's own .ds-alert-info —
        no bespoke callout chrome. Dogfooding: the component documents itself. */
-    .note-alert { margin-top:var(--space-4); }
-    .notes { margin:0; padding-left: 22px; font-size: 13px; line-height: 1.7; color: var(--arxiv-repository-brown); }
+.notes { margin:0; padding-left: 22px; font-size: 13px; line-height: 1.7; color: var(--arxiv-repository-brown); }
     .notes li { margin-bottom:var(--space-1); }
 
     /* Form-error mini demo — page-local; the shared classes are
@@ -100,7 +94,7 @@
 </nav>
 <div class="ds-container">
 
-  <header class="page-header">
+  <header class="ds-page-header">
     <h1>Alerts &amp; messaging</h1>
     <p>How arXiv talks to people when something needs saying: the <code>.ds-alert</code> status banner
     (success / info / warning / error), the site-wide announcement band, and inline form errors.
@@ -113,7 +107,7 @@
   <!-- ───────── The four states ───────── -->
   <section class="section">
     <h2 class="section-title">The four states</h2>
-    <p class="section-desc">Rendered live from <code>public/design-system.css</code>. Choosing a state is
+    <p class="ds-section-desc">Rendered live from <code>public/design-system.css</code>. Choosing a state is
     choosing a tone: <strong>info</strong> is neutral and calm, <strong>warning</strong> is advisory amber —
     "worth knowing, nothing broke" — and <strong>error</strong> is reserved for something actually failing.
     Do not escalate: an old paper version is a warning, not an error.</p>
@@ -169,12 +163,12 @@
   <!-- ───────── Placement ───────── -->
   <section class="section">
     <h2 class="section-title">Placement</h2>
-    <p class="section-desc">Time-critical messages live in the main reading column where every reader meets
+    <p class="ds-section-desc">Time-critical messages live in the main reading column where every reader meets
     them. As an example, on the HTML papers page the warning when viewing an older version sits under the
     title in the main content area, while the full version history lives in the sidebar accordion.</p>
-    <p class="section-desc">Never put a timely message into a sidebar where users might miss it, only in the
+    <p class="ds-section-desc">Never put a timely message into a sidebar where users might miss it, only in the
     main content area.</p>
-    <p class="section-desc">We also cannot expect a user to scroll up or down to catch a timely message. It
+    <p class="ds-section-desc">We also cannot expect a user to scroll up or down to catch a timely message. It
     either needs to appear in the area where they are working, or the page needs to scroll them to the area
     where the message appears.</p>
   </section>
@@ -182,7 +176,7 @@
   <!-- ───────── Semantics ───────── -->
   <section class="section">
     <h2 class="section-title">Semantics &amp; markup</h2>
-    <p class="section-desc"><code>role="status"</code> for success/info (polite — announced when the screen reader
+    <p class="ds-section-desc"><code>role="status"</code> for success/info (polite — announced when the screen reader
     is idle); <code>role="alert"</code> for warning/error (assertive — announced immediately). Icons always carry
     <code>aria-hidden="true"</code>; the leading title word carries the meaning.</p>
 
@@ -195,7 +189,7 @@
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
 
-    <p class="section-desc">The stroke attributes on the <code>&lt;svg&gt;</code> are load-bearing, not boilerplate:
+    <p class="ds-section-desc">The stroke attributes on the <code>&lt;svg&gt;</code> are load-bearing, not boilerplate:
     Lucide draws each "!" or "i" dot as a 0.01-unit path that only renders with <code>stroke-linecap="round"</code>.
     Copy the icon element whole — without these attributes it renders as an empty hairline outline (a mockup
     shipped exactly that, 2026-07).</p>
@@ -205,7 +199,7 @@
   <!-- ───────── Live token values ───────── -->
   <section class="section">
     <h2 class="section-title">Live token values</h2>
-    <p class="section-desc">Read at runtime from the public <code>design-system.css</code> via
+    <p class="ds-section-desc">Read at runtime from the public <code>design-system.css</code> via
     <code>getComputedStyle</code> — swatches, hex codes, and contrast ratios reflect the currently active mode and
     cannot drift from the stylesheet. Contrast is text-on-background (target 4.5:1 AA).</p>
     <table class="token-table">
@@ -217,7 +211,7 @@
   <!-- ───────── Announcement band ───────── -->
   <section class="section">
     <h2 class="section-title">Announcement band</h2>
-    <p class="section-desc">Site-wide, minimal, and time-bound (DESIGN-POLICIES, Banner): a small glyph, one short
+    <p class="ds-section-desc">Site-wide, minimal, and time-bound (DESIGN-POLICIES, Banner): a small glyph, one short
     sentence, one link, a dismiss button. Dismissal persists — the banner never returns for that user, so page
     function must not depend on it. It sits above the site header as part of the approved header unit; full demo on
     <a href="public/header-styles.html">the header reference page</a>.</p>
@@ -243,7 +237,7 @@
   <!-- ───────── Form errors ───────── -->
   <section class="section">
     <h2 class="section-title">Errors in forms</h2>
-    <p class="section-desc">Validation messages are the smallest messaging pattern, shared across public and
+    <p class="ds-section-desc">Validation messages are the smallest messaging pattern, shared across public and
     internal (<code>.is-invalid</code> / <code>.field-error</code> / <code>.field-required</code>). The error text is
     linked to its field with <code>aria-describedby</code>; the border color change is never the only signal.</p>
 

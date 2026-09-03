@@ -12,14 +12,8 @@
        anchored chrome (popover / element pill). Accordion, popover, and
        element-pill demos render the real .ds- classes from
        public/design-system.css; only demo staging is page-local. ── */
-    .page-header { margin:var(--space-6) 0 var(--space-8); padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
-    .page-header h1 { margin-bottom: var(--space-2); }
-    .page-header p { color: var(--arxiv-library-grey); }
-    .section { margin-bottom:var(--space-12); }
-    .section-desc { color: var(--arxiv-library-grey); }
 /* Advisory notes use the system's own .ds-alert-info — no bespoke chrome. */
-    .note-alert { margin-top:var(--space-4); }
-    .notes { margin:0; padding-left: 22px; font-size: 13px; line-height: 1.7; color: var(--arxiv-repository-brown); }
+.notes { margin:0; padding-left: 22px; font-size: 13px; line-height: 1.7; color: var(--arxiv-repository-brown); }
     .notes li { margin-bottom:var(--space-1); }
 /* ── Layout model diagram — pure CSS boxes ── */
     .layout-demo { display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(180px, 1fr); gap:var(--space-4); background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 8px; padding: 20px; }
@@ -114,7 +108,7 @@
 </nav>
 <div class="ds-container">
 
-  <header class="page-header">
+  <header class="ds-page-header">
     <h1>Organizing content</h1>
     <p>The containers that group arXiv's content: the reading-column + sidebar model, accordions,
     cards, and chrome that anchors to content (popovers, element pills). The organizing principle
@@ -125,7 +119,7 @@
   <!-- ───────── The column model ───────── -->
   <section class="section">
     <h2 class="section-title">Main column vs. sidebar — what goes where</h2>
-    <p class="section-desc">The placement rule decided in the version-display work generalizes:
+    <p class="ds-section-desc">The placement rule decided in the version-display work generalizes:
     <strong>the main column is what every reader must meet; the rail is what some readers want to browse.</strong>
     Screen-reader flow, mobile stacking, and citation-arrival readers all traverse the main column —
     a rail may never be opened.</p>
@@ -159,7 +153,7 @@
   <!-- ───────── Accordions ───────── -->
   <section class="section">
     <h2 class="section-title">Accordions</h2>
-    <p class="section-desc">Native <code>&lt;details&gt;/&lt;summary&gt;</code> — no JS, keyboard and screen-reader
+    <p class="ds-section-desc">Native <code>&lt;details&gt;/&lt;summary&gt;</code> — no JS, keyboard and screen-reader
     behavior for free, and the browser's find-in-page can auto-expand them. A +/− glyph replaces the default
     marker. Two dressings, one element:</p>
 
@@ -243,7 +237,7 @@
   <!-- ───────── Cards & tinted sections ───────── -->
   <section class="section">
     <h2 class="section-title">Cards and grouped sections</h2>
-    <p class="section-desc">A card is a white surface with a hairline border and 8px radius on the Warm Wash page
+    <p class="ds-section-desc">A card is a white surface with a hairline border and 8px radius on the Warm Wash page
     background — used when content is a <em>peer in a set</em> (context cards, swatch cards, editable form
     sections). It is not a decoration for single blocks of prose.</p>
 
@@ -268,7 +262,7 @@
     </div>
 
     <p class="ds-panel-label">Card backgrounds: tint is a signal, not decoration</p>
-    <p class="section-desc">Cards default to <strong>white</strong> on the Warm Wash page background. A tinted fill is a
+    <p class="ds-section-desc">Cards default to <strong>white</strong> on the Warm Wash page background. A tinted fill is a
     deliberate signal that the container <em>does something</em>, and the tint family names the surface:</p>
     <ul class="notes">
       <li><strong>Public — Card Grey tint:</strong> a functional tool block (validated: the citation-export block in the merged mockup — copy actions live there; browsable cards around it stay white).</li>
@@ -278,7 +272,7 @@
     </ul>
 
     <p class="ds-panel-label">Card, table, or metadata panel?</p>
-    <p class="section-desc">Three containers, three jobs. A <strong>card</strong> holds one of several peers in a browsable
+    <p class="ds-section-desc">Three containers, three jobs. A <strong>card</strong> holds one of several peers in a browsable
     set. A <strong>table</strong> holds many similar records, one per row, scanned down columns to compare. A
     <strong>metadata panel</strong> — a distinct pattern, decided 2026-07-29 — is a grid of label + value pairs describing
     <em>one</em> record (one paper, one user): build it as a definition list (<code>&lt;dl&gt;</code>), separate cells with
@@ -308,18 +302,18 @@
         <div class="bar" style="margin-top:20px; width:70%"></div>
       </div>
     </div>
-    <p class="section-desc" style="margin-top: 12px;">Space between sections ≈ 3× the space within a section
+    <p class="ds-section-desc" style="margin-top: 12px;">Space between sections ≈ 3× the space within a section
     (16px within, 48px between). When that holds, most boxes become unnecessary.</p>
   </section>
 
   <!-- ───────── Anchored chrome ───────── -->
   <section class="section">
     <h2 class="section-title">Chrome anchored to content</h2>
-    <p class="section-desc">Two shared components attach lightweight UI to a specific piece of content rather than
+    <p class="ds-section-desc">Two shared components attach lightweight UI to a specific piece of content rather than
     to the page. Both are real classes in <code>public/design-system.css</code>.</p>
 
     <p class="ds-panel-label">Popover panel — .ds-popover</p>
-    <p class="section-desc">A light-blue tint floating panel anchored to inline elements (citation chips, footnote
+    <p class="ds-section-desc">A light-blue tint floating panel anchored to inline elements (citation chips, footnote
     markers). z-index 50, per the z-layer scale. Shown here statically:</p>
     <div class="popover-demo">
       <span class="ds-popover" role="region" aria-label="Reference 47" style="position: relative; display: inline-block;">
@@ -331,7 +325,7 @@
     </div>
 
     <p class="ds-panel-label" style="margin-top: 28px;">Element pill — .ds-element-pill</p>
-    <p class="section-desc">A small white pill straddling an element's bottom edge (equations, figures) to host its
+    <p class="ds-section-desc">A small white pill straddling an element's bottom edge (equations, figures) to host its
     actions — Distill-style anchored chrome. Hidden at rest; revealed on hover/focus of the wrapped element.</p>
     <div class="pill-stage">
       R<sub>μν</sub> − ½R g<sub>μν</sub> + Λg<sub>μν</sub> = 8πG T<sub>μν</sub>
