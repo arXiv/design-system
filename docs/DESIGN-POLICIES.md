@@ -49,8 +49,10 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 ## Layout and content width
 
 - **Content-driven, not audience-driven.** The same usability principle applies in every context; only the content differs, so there is no separate rule for "public" vs "internal."
-- **Text respects the measure.** Any block of continuous prose targets a ~65-character line length (~640–720px), on public and internal pages alike.
-- **Shell width follows density.** The page container's max-width is set by content type: data-dense layouts (tables, multi-column metadata) get more room (internal tools land around 1080px, centered); reading-first pages hug the measure (abstract pages around 920px). These px values are a consequence of content, not a rule about the audience.
+- **One width per page.** The default content width is **850px** (`--ds-width-page` in `design-system.css`). Prose, tables, demo blocks, code and callouts all share it, so everything on a page has the same left and right edge. Individual elements do not declare their own width. A page that needs a different width changes the one token; it does not add a second width beside it.
+- **Long-form reading narrows toward the measure.** Sustained reading — abstract text, a paper body, an extended explanation someone reads start to finish — targets a ~65-character line (~510px in IBM Plex Sans at a 16px root, ~590px at the 75-character upper bound). This is where the readability research applies most strongly, and where the return sweep between lines is most costly. Set it on the page, not on the paragraph.
+- **Reference pages accept a longer line, knowingly.** At 850px a line runs about 109 characters, past the researched comfortable range. This is a deliberate trade for pages built from short reference paragraphs of two to five lines, where the return-sweep cost is smallest, and where a container narrow enough for 65 characters cannot hold a two-column layout at all. It is a cost, not a target: do not cite 850px as evidence that long lines are fine.
+- **Dense internal tools may go wider.** Around 1080px, centered. The reason is tables and multi-column metadata that cannot compress further, not that staff deserve more room. Do not widen a page that has no such content.
 
 ## Colors
 
