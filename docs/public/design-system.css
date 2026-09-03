@@ -264,7 +264,7 @@
 :where(.ds-page) h1 { font-size: 2rem;    font-weight: 700; line-height: 1.25; margin: 0 0 var(--space-4); }
 :where(.ds-page) h2 { font-size: 1.5rem;  font-weight: 600; line-height: 1.25; margin: var(--space-8) 0 var(--space-3); }
 :where(.ds-page) h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.25; margin: var(--space-6) 0 var(--space-2); }
-:where(.ds-page) h4 { font-size: 1rem;    font-weight: 600; line-height: 1.5;  margin: var(--space-4) 0 var(--space-2); }
+:where(.ds-page) h4 { font-size: 1rem;    font-weight: 600; line-height: 1.25; margin: var(--space-4) 0 var(--space-2); }
 
 /* ── Prose ───────────────────────────────────────────────────────────
    Prose takes no width of its own: the container is the width. Zero-specificity
@@ -355,6 +355,109 @@
   font-size: 0.875rem;
   padding-bottom: var(--space-2);
 }
+
+
+/* ── Panel label (.ds-panel-label) ────────────────────────────────────────
+   The small uppercase Condensed label that names a panel, a column or a
+   group. typography.html: "not a heading level … it marks a panel or a column
+   and stays out of the document outline. If a reader needs to navigate to it,
+   it is an h3 or an h4 at the size above, not a label."
+
+   ONE treatment, everywhere. Before this it existed eight times at six sizes
+   (0.625, 0.6875, 0.7, 0.75, 0.8125rem and a raw 10px) and two letter-
+   spacings, across the docs, both mockups and three DS components.
+
+   0.75rem — 12px against a 16px root. The 11px in typography.html was written
+   when the docs' base was 14px, where it read as 79% of body; at a 16px base
+   the same figure is 69%, smaller than the spec intended. 0.75rem restores
+   the proportion (reviewed 2026-09-03).
+
+   Type only: no margin. Spacing belongs to the context, so an <h3> carrying
+   this class still takes its heading rhythm from the foundation, and a label
+   inside a component takes that component's padding. */
+.ds-panel-label,
+.ds-acc-body dt {          /* a <dt> in an accordion body IS this label */
+  font-family: var(--arxiv-font-condensed);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--arxiv-library-grey);
+}
+
+/* ── Dropdown groups (optional part of .ds-site-header) ──────────────────
+   A <details>/<summary> menu in the bar, for a property whose sections need
+   grouping. Opens and closes with no JavaScript; a page may add
+   close-on-outside-click and Esc as enhancement.
+
+   The summary sits IN the bar and takes the surface tokens, so it is correct
+   on either variant. The menu panel does not: a floating panel is a light
+   surface whichever bar summoned it, the same way a popover is. */
+.ds-site-header-dropdown { position: relative; }
+
+.ds-site-header-dropdown > summary {
+  list-style: none;
+  cursor: pointer;
+  color: var(--hdr-fg);
+  padding: 6px 10px;
+  border-radius: 4px;
+  user-select: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+}
+.ds-site-header-dropdown > summary::-webkit-details-marker { display: none; }
+.ds-site-header-dropdown > summary::after { content: " \25BE"; font-size: 10px; }
+.ds-site-header-dropdown > summary:hover,
+.ds-site-header-dropdown[open] > summary {
+  color: var(--hdr-fg-strong);
+  background: var(--hdr-hover);
+}
+.ds-site-header-dropdown > summary:focus-visible {
+  outline: 3px solid var(--hdr-ring);
+  outline-offset: 1px;
+}
+
+.ds-site-header-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  /* Anchored to the trigger's RIGHT edge, not its left. The logo takes
+     margin-right: auto, so the nav always sits at the right of the bar and a
+     left-anchored menu runs off the viewport on the last item — which is every
+     bar's last item, not an edge case. Growing inward is correct for all of
+     them. The max-width is a floor-level guard for narrow viewports, where the
+     bar has already wrapped. */
+  right: 0;
+  left: auto;
+  max-width: calc(100vw - 32px);
+  display: flex;
+  flex-direction: column;
+  min-width: 235px;
+  background: var(--arxiv-surface);
+  border: 1px solid var(--arxiv-border-light);
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);   /* matches .ds-toc-dropdown */
+  padding: 6px;
+  z-index: 60;
+}
+.ds-site-header-menu a {
+  color: var(--arxiv-repository-brown);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  min-height: 24px;              /* WCAG 2.5.8 target floor */
+  display: flex;
+  align-items: center;
+}
+.ds-site-header-menu a:hover { background: var(--arxiv-card-grey); }
+.ds-site-header-menu a:focus-visible {
+  outline: 2px solid var(--arxiv-link-blue);
+  outline-offset: -2px;
+}
+.ds-site-header-menu a[aria-current="page"] { font-weight: 600; }
+.ds-site-header-menu .ds-panel-label { padding: 8px 10px 2px; }
 
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -1806,7 +1909,7 @@ select.ds-input { padding-right: 34px; }
 }
 .ds-acc-body { padding: 14px 16px 16px; font-size: 0.85rem; color: var(--arxiv-repository-brown); }
 .ds-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; margin: 0; }
-.ds-acc-body dt { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.04em; color: var(--arxiv-library-grey); white-space: nowrap; padding-top: 2px; }
+.ds-acc-body dt { white-space: nowrap; padding-top: 2px; }   /* type: .ds-panel-label */
 .ds-acc-body dd { margin: 0; }
 .ds-acc-body a { color: var(--arxiv-link-blue); }
 
@@ -2183,7 +2286,7 @@ select.ds-input { padding-right: 34px; }
 }
 .ds-skip-link:focus-visible {
   top: 8px;
-  outline: 3px solid var(--arxiv-focus-ring-dark, #64b5f6);
+  outline: 3px solid var(--hdr-ring);
   outline-offset: 2px;
 }
 
@@ -2244,7 +2347,23 @@ select.ds-input { padding-right: 34px; }
   gap: 12px;
   padding: 0 24px;
   height: 52px;
-  background: var(--arxiv-repository-brown);
+
+  /* Surface, as tokens. The bare component IS the arXiv header — no modifier
+     needed to get it right, which is the point: arxiv.org cannot forget a
+     class it never has to write. A property that is not arxiv.org adds
+     .ds-site-header--light, which re-points these seven values and overrides
+     no property at all. One set of rules, two surfaces, no specificity to
+     reason about. */
+  --hdr-bg:        var(--arxiv-repository-brown);
+  --hdr-fg:        var(--arxiv-grey-dis);    /* 7.4:1 on #1c1a17 — AA on dark */
+  --hdr-fg-strong: var(--arxiv-card-grey);   /* hover, active, Log in */
+  --hdr-hover:     #302c28;
+  --hdr-ring:      var(--arxiv-focus-ring-dark, #64b5f6);
+  --hdr-border:    transparent;              /* the dark bar needs no edge */
+  --hdr-divider:   #4a433d;
+
+  background: var(--hdr-bg);
+  border-bottom: 1px solid var(--hdr-border);
   /* NO sticky positioning — decided 2026-06-11 (Shamsi): the header
      scrolls away like any other content. Sticky chrome is exceptional
      at arXiv (DESIGN-POLICIES.md, "Chrome and interaction structure");
@@ -2259,6 +2378,8 @@ select.ds-input { padding-right: 34px; }
   text-decoration: none;
   flex-shrink: 0;
   margin-right: auto;
+  font-weight: 600;                /* only shows when the brand is text, not an image */
+  color: var(--hdr-fg-strong);
 }
 .ds-site-header-logo img { height: 39px; width: auto; }
 .ds-site-header-nav {
@@ -2271,7 +2392,7 @@ select.ds-input { padding-right: 34px; }
   font-family: var(--arxiv-font-sans);
   font-size: 0.8125rem; /* 13px */
   font-weight: 500;
-  color: var(--arxiv-grey-dis); /* on #1c1a17: 7.4:1 — passes AA on dark */
+  color: var(--hdr-fg);
   text-decoration: none;
   padding: 6px 10px;
   border-radius: 4px;
@@ -2284,24 +2405,44 @@ select.ds-input { padding-right: 34px; }
   align-items: center;
   gap: 5px;
 }
-.ds-site-header-nav a:visited { color: var(--arxiv-grey-dis); }
+.ds-site-header-nav a:visited { color: var(--hdr-fg); }
 .ds-site-header-nav a:hover,
-.ds-site-header-nav button:hover { background: #302c28; color: var(--arxiv-card-grey); }
+.ds-site-header-nav button:hover { background: var(--hdr-hover); color: var(--hdr-fg-strong); }
 .ds-site-header-nav a:focus-visible,
 .ds-site-header-nav button:focus-visible {
-  outline: 3px solid var(--arxiv-focus-ring-dark, #64b5f6);
+  outline: 3px solid var(--hdr-ring);
   outline-offset: 1px;
 }
 .ds-site-header-nav .ds-nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
 .ds-site-header-divider {
   width: 1px; height: 20px;
-  background: #4a433d; /* header-internal hairline on the dark bar */
+  background: var(--hdr-divider);
   margin: 0 4px;
   flex-shrink: 0;
 }
 .ds-site-header-login {
   font-weight: 600 !important;
-  color: var(--arxiv-card-grey) !important;
+  color: var(--hdr-fg-strong) !important;
+}
+
+/* ── .ds-site-header--light ───────────────────────────────────────────────
+   The same bar on a property that is not arxiv.org: the design system docs
+   today, and the kind of thing an info or outreach site would use. It changes
+   nothing about how the component works — it re-points the seven surface
+   tokens and declares no property of its own, so there is no rule here that
+   can lose a specificity argument with the rules above.
+
+   DESIGN-POLICIES caps arXiv's universal navigation at five flat items. That
+   is a constraint on arxiv.org's content, not on this component: a property
+   with more sections uses .ds-site-header-dropdown below. */
+.ds-site-header--light {
+  --hdr-bg:        var(--arxiv-card-grey);
+  --hdr-fg:        var(--arxiv-library-grey);
+  --hdr-fg-strong: var(--arxiv-repository-brown);
+  --hdr-hover:     rgba(0, 0, 0, 0.05);
+  --hdr-ring:      var(--arxiv-focus-ring);
+  --hdr-border:    var(--arxiv-border-light);
+  --hdr-divider:   var(--arxiv-border-light);
 }
 
 /* Hamburger toggle — the approved mobile treatment (4383 spinout showcase;
@@ -2328,9 +2469,9 @@ select.ds-input { padding-right: 34px; }
   flex-shrink: 0;
   transition: background 0.12s, color 0.12s;
 }
-.ds-site-header-nav-toggle:hover { background: #302c28; color: var(--arxiv-card-grey); }
+.ds-site-header-nav-toggle:hover { background: var(--hdr-hover); color: var(--hdr-fg-strong); }
 .ds-site-header-nav-toggle:focus-visible {
-  outline: 3px solid var(--arxiv-focus-ring-dark, #64b5f6);
+  outline: 3px solid var(--hdr-ring);
   outline-offset: 1px;
 }
 .ds-site-header-nav-toggle svg { width: 22px; height: 22px; display: block; }
@@ -2660,14 +2801,6 @@ select.ds-input { padding-right: 34px; }
   border-bottom: 1px solid var(--arxiv-tint-border);
   flex-shrink: 0;
 }
-.ds-toc-dropdown-title {
-  font-family: var(--arxiv-font-condensed);
-  font-weight: 600;
-  font-size: 0.6875rem; /* 11px */
-  color: var(--arxiv-library-grey);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
 .ds-toc-dropdown-close {
   display: none; /* desktop: click-outside / Esc close; mobile shows it */
   align-items: center;
@@ -2763,7 +2896,7 @@ select.ds-input { padding-right: 34px; }
     padding: 16px 20px;
     background: var(--arxiv-active-bg);
   }
-  .ds-toc-dropdown-title { font-size: 0.8125rem; }
+  .ds-toc-dropdown .ds-panel-label { font-size: 0.8125rem; }
   .ds-toc-dropdown-close {
     display: inline-flex;
     padding: 10px;

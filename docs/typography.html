@@ -45,33 +45,14 @@
     .rule-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: var(--space-4) var(--space-6); margin-bottom: var(--space-3); }
     .rule-card h3 { font-size: 1rem; margin: 0 0 var(--space-2); }
     .rule-card p { color: var(--arxiv-library-grey); margin: 0; }
-
-    /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
-       <details>-based: works without JS; the small script at the end of the
-       page only adds close-on-outside-click and Esc. ── */
-    .docs-nav { display: flex; align-items: center; gap: var(--space-1) var(--space-6); flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: var(--space-2) var(--space-6); font-size: 0.875rem; }
-    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right: var(--space-2); }
-    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
-    .nav-dd { position: relative; }
-    .nav-dd > summary { list-style: none; cursor: pointer; color: var(--arxiv-library-grey); padding: 3px 6px; border-radius: 4px; user-select: none; }
-    .nav-dd > summary::-webkit-details-marker { display: none; }
-    .nav-dd > summary::after { content: " \25BE"; font-size: 10px; }
-    .nav-dd > summary:hover, .nav-dd[open] > summary { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
-    .nav-dd > summary:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
-    .nav-dd-menu { position: absolute; left: 0; top: calc(100% + 6px); display: flex; flex-direction: column; min-width: 235px; background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); padding: 6px; z-index: 60; }
-    .nav-dd-menu a { color: var(--arxiv-repository-brown); text-decoration: none; padding: 6px 10px; border-radius: 4px; white-space: nowrap; }
-    .nav-dd-menu a:hover { background: var(--arxiv-card-grey); }
-    .nav-dd-menu a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: -2px; }
-    .nav-dd-menu a[aria-current="page"] { font-weight: 600; }
-    .nav-dd-group { font-family: var(--arxiv-font-condensed); font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); padding: var(--space-2) 10px 2px; }
-  </style>
+</style>
 </head>
 <body class="ds-page">
-<nav class="docs-nav" aria-label="Design system">
-  <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
-  <details class="nav-dd">
+<nav class="ds-site-header ds-site-header--light" aria-label="Design system">
+  <a class="ds-site-header-logo" href="../index.html">arXiv Design System</a>
+  <details class="ds-site-header-dropdown">
     <summary>Design Patterns</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="colors.html">Colors</a>
       <a href="typography.html" aria-current="page">Typography</a>
       <a href="spacing.html">Spacing</a>
@@ -86,25 +67,25 @@
       <a href="outreach/">Outreach sites</a>
     </div>
   </details>
-  <details class="nav-dd">
+  <details class="ds-site-header-dropdown">
     <summary>Mockups</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="../mockups/">All mockups</a>
-      <span class="nav-dd-group">Public</span>
+      <span class="ds-panel-label">Public</span>
       <a href="../mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
       <a href="../mockups/public/html-phase1.html">HTML paper — Phase 1</a>
       <a href="../mockups/public/optin-modal/">Labs opt-in modal</a>
       <a href="../mockups/public/submission-metadata/">Submission — Metadata Form</a>
-      <span class="nav-dd-group">Internal</span>
+      <span class="ds-panel-label">Internal</span>
       <a href="../mockups/internal/admin-console/user-page/">Admin Console — user page</a>
       <a href="../mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
       <a href="../mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
       <a href="../mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
     </div>
   </details>
-  <details class="nav-dd">
+  <details class="ds-site-header-dropdown">
     <summary>Docs</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
       <a href="brand.html">Brand &amp; vision</a>
         <a href="doc.html?src=docs/BRAND.md">Brand &amp; voice</a>
@@ -269,12 +250,18 @@
       </div>
     </div>
 
+    <p class="section-desc">Space is given as spacing tokens, not pixels, because that is
+    what <code>design-system.css</code> implements — <code>--space-8</code> is 2rem, <code>--space-6</code>
+    is 1.5rem, and so on down the scale. The earlier version of this table specified 40px above an h2
+    and 28px above an h3; neither value is on the spacing scale, and the rhythm read as too loose on
+    screen, so both moved one stop tighter (reviewed 2026-09-03).</p>
+
     <table class="context-matrix" style="margin-top:18px">
       <tr><th>Level</th><th>Size</th><th>Weight</th><th>Line-height</th><th>Space above / below</th></tr>
-      <tr><td>h1</td><td>2rem — 32px</td><td>700</td><td>1.25</td><td>0 / 16px</td></tr>
-      <tr><td>h2</td><td>1.5rem — 24px</td><td>600</td><td>1.25</td><td>40px / 12px</td></tr>
-      <tr><td>h3</td><td>1.25rem — 20px</td><td>600</td><td>1.25</td><td>28px / 8px</td></tr>
-      <tr><td>h4</td><td>1rem — 16px</td><td>600</td><td>1.25</td><td>20px / 8px</td></tr>
+      <tr><td>h1</td><td>2rem — 32px</td><td>700</td><td>1.25</td><td>0 / <code>--space-4</code></td></tr>
+      <tr><td>h2</td><td>1.5rem — 24px</td><td>600</td><td>1.25</td><td><code>--space-8</code> / <code>--space-3</code></td></tr>
+      <tr><td>h3</td><td>1.25rem — 20px</td><td>600</td><td>1.25</td><td><code>--space-6</code> / <code>--space-2</code></td></tr>
+      <tr><td>h4</td><td>1rem — 16px</td><td>600</td><td>1.25</td><td><code>--space-4</code> / <code>--space-2</code></td></tr>
     </table>
 
     <ul class="notes" style="margin-top:14px; padding-left:22px; font-size:13px; line-height:1.7">
@@ -341,12 +328,12 @@
   // Nav dropdowns: close on outside click and Esc (enhancement only —
   // the <details> menus work without this).
   document.addEventListener('click', function (e) {
-    document.querySelectorAll('.nav-dd[open]').forEach(function (d) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
       if (!d.contains(e.target)) d.removeAttribute('open');
     });
   });
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') document.querySelectorAll('.nav-dd[open]').forEach(function (d) { d.removeAttribute('open'); });
+    if (e.key === 'Escape') document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) { d.removeAttribute('open'); });
   });
 </script>
 </body>
