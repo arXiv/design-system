@@ -114,11 +114,10 @@
       The universal arXiv public-page header: announcement band +
       black bar (<code>.ds-announcement</code> /
       <code>.ds-site-header</code>), plus the
-      <code>.ds-skip-link</code> utility. Design approved 2026-06-11 against
+      <code>.ds-skip-link</code> utility. Validated against
       the spinout-header-footer Cloud Run deployment — which covers
       ONLY these two pieces; nothing below the black bar is approved
-      chrome. (A breadcrumb band was briefly part of this pattern and
-      removed 2026-06-11: too shallow to justify the real estate, and
+      chrome. (A breadcrumb band was briefly part of this pattern and removed: too shallow to justify the real estate, and
       its links exist elsewhere on the page.)
     </p>
   </header>
@@ -131,7 +130,7 @@
       mobile treatment); <strong>without JS it wraps to a second row instead</strong> —
       every item stays visible, passing WCAG 1.4.10 reflow at 320px and keeping
       voice-control working. The header is static — it scrolls away with the
-      page (sticky chrome is reader-only; DESIGN-POLICIES.md, decided 2026-06-11).
+      page (sticky chrome is reader-only — DESIGN-POLICIES.md).
     </p>
     <div class="live-demo">
       <div class="ds-announcement" role="region" aria-label="Announcement">
@@ -168,15 +167,81 @@
   </section>
 
   <section class="section">
+      <h2 class="section-title">One component, two surfaces</h2>
+      <p class="ds-section-desc">The bare class <strong>is</strong> the arXiv header. A property that
+      is not arxiv.org adds <code>.ds-site-header--light</code>, which re-points seven surface tokens
+      and declares no property of its own &mdash; so there is no rule in the variant that can lose a
+      specificity argument with the rules above it.</p>
+
+      <p class="ds-panel-label">The surface tokens</p>
+      <table class="token-table">
+        <thead><tr><th>Token</th><th>Default (arXiv)</th><th><code>--light</code></th></tr></thead>
+        <tbody>
+          <tr><td><code>--hdr-bg</code></td><td>Repository Brown</td><td>Card Grey</td></tr>
+          <tr><td><code>--hdr-fg</code></td><td>Grey (7.4:1 on the dark bar)</td><td>Library Grey</td></tr>
+          <tr><td><code>--hdr-fg-strong</code></td><td>Card Grey</td><td>Repository Brown</td></tr>
+          <tr><td><code>--hdr-hover</code></td><td>#302c28</td><td>a 5% black wash</td></tr>
+          <tr><td><code>--hdr-ring</code></td><td>Focus Ring on dark</td><td>Focus Ring</td></tr>
+          <tr><td><code>--hdr-border</code></td><td>transparent</td><td>Border Light</td></tr>
+          <tr><td><code>--hdr-divider</code></td><td>#4a433d</td><td>Border Light</td></tr>
+        </tbody>
+      </table>
+      <p>The focus ring is the one to notice: the standard Link Blue ring is invisible against
+      Repository Brown, so the dark surface needs its own. Because it is a token rather than a rule,
+      a property that switches surface gets the correct ring without knowing that it needed to.</p>
+
+      <p class="ds-panel-label">Dropdown groups &mdash; an optional part</p>
+      <p>A property whose sections need grouping adds <code>.ds-site-header-dropdown</code>, built on
+      <code>&lt;details&gt;</code> so it opens and closes with no JavaScript. A page may add
+      close-on-outside-click and Esc as enhancement.</p>
+      <p>The summary sits in the bar and takes the surface tokens, so it is correct on either
+      variant. The menu panel does not: a floating panel is a light surface whichever bar summoned
+      it, the same way a popover is.</p>
+      <p>The menu anchors to its trigger&rsquo;s <strong>right</strong> edge. The logo takes
+      <code>margin-right: auto</code>, so the nav always sits at the right of the bar and a
+      left-anchored menu runs off the viewport on the last item &mdash; which is every bar&rsquo;s
+      last item, not an edge case.</p>
+
+      <div class="ds-alert ds-alert-info">
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">The five-item cap is about arxiv.org, not this component</p>
+          <p>DESIGN-POLICIES caps arXiv&rsquo;s own top-level navigation at five items. That is a
+          constraint on the content of one site, not on the header. Other properties carry the
+          navigation their content needs, including grouped menus.</p>
+        </div>
+      </div>
+
+      <details class="ds-acc"><summary>Relevant classes</summary><div class="ds-acc-body">
+        <dl>
+          <dt>.ds-site-header</dt>
+          <dd>The bar. Bare, it is the arXiv header &mdash; arxiv.org cannot forget a class it never
+          has to write.</dd>
+          <dt>.ds-site-header--light</dt>
+          <dd>Seven token values. No property overrides.</dd>
+          <dt>.ds-site-header-logo</dt>
+          <dd>The brand slot, image or wordmark. Takes <code>margin-right: auto</code>.</dd>
+          <dt>.ds-site-header-dropdown</dt>
+          <dd>A <code>&lt;details&gt;</code> group in the bar. Optional.</dd>
+          <dt>.ds-site-header-menu</dt>
+          <dd>The floating panel. Right-anchored, capped to the viewport.</dd>
+          <dt>.ds-panel-label</dt>
+          <dd>Group headings inside a menu use the system-wide label, not a bespoke class.</dd>
+          <dt>.is-collapsible</dt>
+          <dd>The hamburger treatment, for bars that cannot wrap.</dd>
+        </dl>
+      </div></details>
+    </section>
+
+    <section class="section">
     <h2 class="section-title">Behavior contract</h2>
     <ul class="usage-list">
       <li>The skip link (<code>.ds-skip-link</code>) is the <strong>first focusable element</strong> on the page, visible only on keyboard focus.</li>
-      <li>Logo alt text and aria-labels say <strong>"archive"</strong> — the spoken form of "arXiv" (Dan Miner: screen readers otherwise produce "ar-zhiv" / Roman-numeral gibberish).</li>
+      <li>Logo alt text and aria-labels say <strong>"archive"</strong> — the spoken form of "arXiv" (screen readers otherwise produce "ar-zhiv" / Roman-numeral gibberish).</li>
       <li>The Search control is an <code>&lt;a href="/search"&gt;</code> that JS may upgrade to open a search overlay. <strong>Never a dead button</strong> — without JS it navigates to the search page.</li>
       <li>At &le;599px the nav collapses behind a hamburger <strong>only after JS enables it</strong>: the header script adds <code>.is-collapsible</code> to <code>.ds-site-header</code> and wires the toggle (<code>.is-open</code> on the nav, <code>aria-expanded</code> in sync) in the same call, so the hamburger appears only when it actually works. <strong>The default — including no JS — is the wrap</strong> (all items visible, WCAG 1.4.10 reflow).</li>
       <li>Focus rings on the dark bar use <code>--arxiv-focus-ring-dark</code> (#64b5f6); the standard Link Blue ring is invisible against #1c1a17.</li>
       <li>The announcement is temporal: render only while active, persist dismissal in production, and never attach page-critical function to it.</li>
-      <li>Nothing in this unit is sticky — the whole header scrolls away with the page (decided 2026-06-11; sticky chrome is exceptional at arXiv and reader-only). No <code>scroll-padding</code> duty applies.</li>
+      <li>Nothing in this unit is sticky — the whole header scrolls away with the page (; sticky chrome is exceptional at arXiv and reader-only). No <code>scroll-padding</code> duty applies.</li>
       <li>Type sizes are rem so browser font-size overrides propagate; both bands are hidden in print.</li>
     </ul>
   </section>
