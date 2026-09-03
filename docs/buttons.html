@@ -120,6 +120,10 @@
     .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.08); vertical-align: -2px; margin-right:6px; }
 pre .c { color: var(--arxiv-grey-ui); }
     pre .k { color: var(--arxiv-open-blue-bright); }
+    /* Syntax colours are component-internal constants, the category
+       color-mapping.md exempts from the palette (like the button-border
+       gradient stops). All three clear AA on the code ground: comment
+       4.81:1, keyword 12.91:1, string 14.26:1. */
     pre .s { color: #d4ecff; }
 
     .notes { margin:0; padding-left: 22px; font-size: 13px; line-height: 1.7; color: var(--arxiv-repository-brown); }
@@ -617,6 +621,47 @@ pre .c { color: var(--arxiv-grey-ui); }
 
   <!-- ───────── Accessibility ───────── -->
   <section class="section">
+      <h2 class="section-title">Button groups</h2>
+      <p class="ds-section-desc">A set of related buttons needs a container. Buttons placed as bare
+      siblings are spaced by the HTML whitespace between the tags &mdash; narrower than any
+      deliberate value, and it looks like a bug because it is one.</p>
+
+      <p class="ds-panel-label">Side by side</p>
+      <div class="ds-btn-group">
+        <button class="ds-btn ds-btn-primary" type="button">Save changes</button>
+        <button class="ds-btn ds-btn-secondary" type="button">Preview</button>
+        <button class="ds-btn ds-btn-text" type="button">Cancel</button>
+      </div>
+
+      <p class="ds-panel-label">Stacked &mdash; <code>.ds-btn-group--stack</code></p>
+      <div class="ds-btn-group ds-btn-group--stack">
+        <button class="ds-btn ds-btn-secondary" type="button">Download PDF</button>
+        <button class="ds-btn ds-btn-secondary" type="button">Download source</button>
+      </div>
+
+      <p class="ds-panel-label">A form&rsquo;s action area &mdash; <code>.ds-btn-group--end</code></p>
+      <div class="ds-btn-group ds-btn-group--end" style="border-top:1px solid var(--arxiv-border-light); padding-top:var(--space-4)">
+        <button class="ds-btn ds-btn-text" type="button">Cancel</button>
+        <button class="ds-btn ds-btn-primary" type="submit">Submit</button>
+      </div>
+
+      <details class="ds-acc"><summary>Relevant classes</summary><div class="ds-acc-body">
+        <dl>
+          <dt>.ds-btn-group</dt>
+          <dd>The container. Flex, wrapping, vertically centred, gap <code>--space-tight</code>.
+          Nothing about buttons makes their spacing special: two side by side are siblings that
+          belong together, so they take the same gap as any other such pair.</dd>
+          <dt>.ds-btn-group--stack</dt>
+          <dd>The same relationship on the other axis. Items align to the start rather than
+          stretching.</dd>
+          <dt>.ds-btn-group--end</dt>
+          <dd>Pushes the group to the trailing edge. This is the action area at the end of a form,
+          where the primary action comes last.</dd>
+        </dl>
+      </div></details>
+    </section>
+
+    <section class="section">
     <h2 class="section-title">Accessibility notes</h2>
     <ul class="notes">
       <li><strong>Contrast.</strong> Repository Brown on Open Blue <code>#a5d6fe</code> and Repository Brown on Access Lime <code>#c4d82e</code> both pass AA for normal text. White on danger <code>#c62828</code> is 5.62:1 ✓. Bottom border-gradient <em>hover</em> stops pass the 3:1 UI-component minimum (3.89 / 3.61); the rest-state stops sit below it and are decorative — the button's fill and border carry the boundary at rest.</li>
