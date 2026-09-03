@@ -266,7 +266,13 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent !
 
 /* ══ ABSTRACT-MODE HEADER (black ds-site-header) ══ */
 .ds-announcement { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 6px 16px; background: var(--arxiv-active-bg); color: var(--arxiv-repository-brown); font-family: var(--arxiv-font-sans); font-size: 0.8125rem; font-weight: 500; position: relative; }
-.ds-announcement-glyph { width: 18px; height: 18px; flex-shrink: 0; }
+/* Inline icons are sized in em, not px, so they track the label beside them
+   when a reader enlarges text — DESIGN-POLICIES.md, Buttons: "Icons in buttons
+   are sized in em so they track the button's own font-size." Each value is the
+   old px divided by its container's font-size, so nothing moves at default
+   settings. Icon-only buttons (.toc-dropdown-close) deliberately keep px: there
+   the 24x24 target-size floor matters more than tracking the text. */
+.ds-announcement-glyph { width: 1.38em; height: 1.38em; flex-shrink: 0; }
 .ds-announcement-text { font-weight: 600; }
 .ds-announcement-link { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; font-weight: 600; }
 .ds-announcement-link:hover { color: var(--arxiv-link-hover); }
@@ -282,7 +288,27 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent !
    for exactly this: dark in both modes, lifted in dark so it separates
    from the canvas. Everything sitting on it is pinned below, because the
    bar never becomes light and its contents must never flip. */
-.ds-site-header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; height: 52px; background: var(--arxiv-header-bar); }
+/* ── TEXT-SPACING TOLERANCE — verified 2026-09-03 ─────────────────────────
+   Header heights are min-height, never a fixed or maximum height. WCAG 1.4.12
+   (Text Spacing, AA) requires the page to keep working when a reader forces
+   larger line-height, letter-spacing and word-spacing; a locked height clips
+   the nav labels instead of growing with them. Same reason there is no
+   max-height here: a cap is a clip waiting to happen. Panels that genuinely
+   need a ceiling (popovers, the TOC list) pair it with overflow: auto so the
+   content scrolls rather than disappears.
+
+   TESTED: line-height 1.5, letter-spacing 0.12em, word-spacing 0.16em and
+   paragraph spacing 2em applied to every element at once, then every element
+   checked for clipping (an overflow of hidden/clip whose scroll size exceeds
+   its client size). RESULT: 7 hits, all of them the visually-hidden pattern
+   (.is-sr-only, the sr-only abstract heading, and .mg-skip-to-paper before
+   focus) — which clip by design and lose nothing, since the text stays in the
+   accessibility tree. No real failures.
+
+   Before this pass .arxiv-html-header.compact carried height, min-height AND
+   max-height, all 36px with !important, and would have clipped. If you are
+   about to change a height here to a fixed value, this is what it costs. */
+.ds-site-header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; min-height: 52px; background: var(--arxiv-header-bar); }
 .ds-site-header-logo { display: flex; align-items: center; text-decoration: none; justify-self: start; }
 .ds-site-header-logo img { height: 39px; width: auto; }
 .ds-site-header-center { display: flex; justify-content: center; }
@@ -291,7 +317,7 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent !
 .ds-site-header-nav a:visited { color: #b0aba6; /* pinned */ }
 .ds-site-header-nav a:hover, .ds-site-header-nav button:hover { background: #302c28; color: #f0eeec; /* pinned */ }
 .ds-site-header-nav a:focus-visible { outline: 3px solid var(--arxiv-focus-ring-dark); outline-offset: 1px; }
-.ds-site-header-nav .ds-nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
+.ds-site-header-nav .ds-nav-icon { width: 1.23em; height: 1.23em; opacity: 0.65; flex-shrink: 0; }
 .ds-site-header-divider { width: 1px; height: 20px; background: #4a433d; margin: 0 4px; flex-shrink: 0; }
 .ds-site-header-login { font-weight: 600 !important; color: #f0eeec !important; /* pinned */ }
 @media (max-width: 680px) {
@@ -531,7 +557,7 @@ body.mg-reader .mg-top-cols { display: block; }
   color: var(--arxiv-library-grey); background: none; border: none; border-radius: 4px;
   cursor: pointer;
 }
-.mg-cite-copy svg { width: 14px; height: 14px; flex: none; position: relative; z-index: 1; }
+.mg-cite-copy svg { width: 1.22em; height: 1.22em; flex: none; position: relative; z-index: 1; }
 .mg-cite-copy:hover { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
 .mg-cite-copy:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
 .mg-cite-copy.is-copied { color: var(--arxiv-success-fg); }
@@ -546,7 +572,7 @@ body.mg-reader .mg-top-cols { display: block; }
 /* The ar5iv stylesheet sets `svg { z-index: -1 }` globally (to keep
    LaTeXML-emitted SVG content under text). Lift these shield icons with
    explicit positioning so they paint above their background. */
-.mg-a11y-line .ic { width: 14px; height: 14px; flex: none; margin-top: 2px; position: relative; z-index: 1; }
+.mg-a11y-line .ic { width: 1.07em; height: 1.07em; flex: none; margin-top: 2px; position: relative; z-index: 1; }
 /* Greens map to the canonical --arxiv-success-* tokens
    (color-mapping.md "Status & alert colors — shared"). */
 /* "Present" rows use an Open Blue shield badge as the positive signal:
@@ -641,7 +667,7 @@ body.mg-reader .mg-top-cols { display: block; }
 }
 .ds-btn-tertiary:hover { background: var(--arxiv-pill-border); }
 .ds-btn-tertiary:active { transform: translateY(1px); background: var(--arxiv-border-light); }
-.ds-btn-tertiary .btn-arrow { width: 15px; height: 15px; flex: none; }
+.ds-btn-tertiary .btn-arrow { width: 1.07em; height: 1.07em; flex: none; }
 /* Label contrast, measured 2026-07-28 (WCAG AA text needs 4.5:1):
    Repository Brown on Card Grey 15.0:1 (rest) · Pill Border 13.2:1 (hover) ·
    Border Light 12.3:1 (active). The FILL is deliberately quiet —
@@ -756,7 +782,7 @@ a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
 .mg-vl.is-current { color: var(--arxiv-repository-brown); font-weight: 700; }
 .mg-vl:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 2px; }
 .mg-verwarn { display: flex; align-items: flex-start; gap: 10px; max-width: 680px; margin: 12px 0 0; background: var(--arxiv-warning-bg); border: 1px solid var(--arxiv-warning-border); border-radius: 4px; padding: 10px 14px; font-size: 0.8125rem; color: var(--arxiv-warning-fg); }
-.mg-verwarn-icon { flex-shrink: 0; width: 18px; height: 18px; color: #b88c00; margin-top: 1px; }
+.mg-verwarn-icon { flex-shrink: 0; width: 1.38em; height: 1.38em; color: #b88c00; margin-top: 1px; }
 .mg-verwarn p { margin: 0; line-height: 1.5; }
 .mg-verwarn a { color: var(--arxiv-warning-fg); font-weight: 600; text-decoration: underline; }
 .mg-verwarn a:hover { color: #5a4400; }
@@ -811,7 +837,7 @@ a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
 .mg-toc-logo:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
 .mg-toc-wrap { justify-self: center; }
 .mg-toc-tools { justify-self: end; }
-.mg-toc-bar .nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
+.mg-toc-bar .nav-icon { width: 1.25em; height: 1.25em; opacity: 0.65; flex-shrink: 0; }
 /* Compact on scroll (mirrors the retired reader header): tighter row, drop
    the tool text labels to icons, and shrink the lozenge. */
 .mg-toc-bar.is-stuck { padding: 4px 0; }
@@ -865,6 +891,7 @@ body.mg-reader.mg-toc-stuck .ltx_page_main { contain: none; }
    matches the bar's so they animate together. */
 .mg-toc-trigger {
   transition: padding .25s ease, font-size .25s ease, box-shadow .25s ease;
+  min-height: 24px;      /* WCAG 2.5.8 target floor, stated not implied */
 }
 body.mg-reader.mg-toc-stuck .mg-toc-trigger {
   padding: 4px 12px;
@@ -887,10 +914,10 @@ body.mg-reader.mg-toc-stuck .arxiv-html-header .mg-reader-toggle {
 .mg-toc-trigger:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
 /* position:relative + z-index lift both icons above the pill background;
    ar5iv's global `svg { z-index:-1 }` otherwise hides them. */
-.mg-toc-trigger .toc-ic { width: 16px; height: 16px; flex: none; color: var(--arxiv-library-grey); position: relative; z-index: 1; }
+.mg-toc-trigger .toc-ic { width: 1.25em; height: 1.25em; flex: none; color: var(--arxiv-library-grey); position: relative; z-index: 1; }
 .mg-toc-trigger .toc-prefix { font-weight: 400; color: var(--arxiv-library-grey); }
 .mg-toc-trigger .toc-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mg-toc-trigger .toc-chev { width: 14px; height: 14px; flex: none; color: var(--arxiv-library-grey); transition: transform .15s; position: relative; z-index: 1; }
+.mg-toc-trigger .toc-chev { width: 1.09em; height: 1.09em; flex: none; color: var(--arxiv-library-grey); transition: transform .15s; position: relative; z-index: 1; }
 .mg-toc-trigger[aria-expanded="true"] .toc-chev { transform: rotate(180deg); }
 .mg-toc-dropdown { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; box-shadow: 0 8px 28px rgba(0,0,0,0.14); padding: 8px 0; min-width: 280px; max-height: 60vh; overflow-y: auto; z-index: 110; }
 .mg-toc-dropdown[hidden] { display: none; }
@@ -1212,9 +1239,8 @@ html { scroll-padding-top: 80px; }
 .arxiv-html-header {
   background: var(--arxiv-card-grey) !important;
   border-bottom: 1px solid var(--arxiv-pill-border) !important;
-  height: 52px !important;
   min-height: 52px !important;
-  max-height: 52px !important;
+  min-height: 52px !important;
   padding: 0 !important;
   transition: height 0.25s ease, min-height 0.25s ease, max-height 0.25s ease, background 0.25s ease;
 }
@@ -1233,7 +1259,7 @@ html { scroll-padding-top: 80px; }
   align-items: center;
   gap: 12px;
   padding: 0 24px;
-  height: 52px;
+  min-height: 52px;
   width: 100%;
   transition: height 0.2s ease;
 }
@@ -1284,6 +1310,7 @@ html { scroll-padding-top: 80px; }
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  min-height: 24px;      /* WCAG 2.5.8 target floor, stated not implied */
 }
 .new-html-nav a:visited { color: var(--arxiv-library-grey); }
 .new-html-nav a:hover,
@@ -1293,7 +1320,7 @@ html { scroll-padding-top: 80px; }
 /* Nav icons are sized at the header level (not scoped to .new-html-nav)
    so they work for any nav-icon in the header — including the TOC
    trigger in the center cell, which lives outside .new-html-nav. */
-.arxiv-html-header .nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
+.arxiv-html-header .nav-icon { width: 1.23em; height: 1.23em; opacity: 0.65; flex-shrink: 0; }
 .new-html-divider { width: 1px; height: 20px; background: var(--arxiv-pill-border); margin: 0 4px; flex-shrink: 0; }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
@@ -1330,6 +1357,7 @@ html { scroll-padding-top: 80px; }
   cursor: pointer;
   white-space: nowrap;
   transition: background 0.12s, border-color 0.12s, color 0.12s;
+  min-height: 24px;      /* WCAG 2.5.8 target floor, stated not implied */
 }
 .toc-trigger:hover {
   background: var(--arxiv-warm-wash);
@@ -1357,8 +1385,8 @@ html { scroll-padding-top: 80px; }
 }
 .toc-trigger .toc-trigger-chevron {
   flex-shrink: 0;
-  width: 12px;
-  height: 12px;
+  width: 0.92em;
+  height: 0.92em;
   transition: transform 0.15s ease;
 }
 .toc-trigger[aria-expanded="true"] .toc-trigger-chevron {
@@ -1428,6 +1456,7 @@ html { scroll-padding-top: 80px; }
   border-radius: 4px;
   color: var(--arxiv-library-grey);
   line-height: 0;
+  min-height: 24px;      /* WCAG 2.5.8 target floor, stated not implied */
 }
 .toc-dropdown-close:hover { color: var(--arxiv-repository-brown); background: rgba(0, 0, 0, 0.05); }
 .toc-dropdown-close:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
@@ -1646,12 +1675,10 @@ html { scroll-padding-top: 80px; }
 /* Compact header: triggered by JS adding `.compact` to the header.
    Smaller height, condensed nav (icons only), small logo mark. */
 .arxiv-html-header.compact {
-  height: 36px !important;
   min-height: 36px !important;
-  max-height: 36px !important;
   border-bottom-width: 1px !important;
 }
-.arxiv-html-header.compact .new-html-inner { height: 36px; }
+.arxiv-html-header.compact .new-html-inner { min-height: 36px; }
 .arxiv-html-header.compact .logo-full { display: none; }
 .arxiv-html-header.compact .logo-mark {
   display: block;
@@ -1666,8 +1693,9 @@ html { scroll-padding-top: 80px; }
   font-size: 12px;
   padding: 4px 6px;
   gap: 0;
+  min-height: 24px;      /* WCAG 2.5.8 target floor */
 }
-.arxiv-html-header.compact .nav-icon { width: 15px; height: 15px; }
+.arxiv-html-header.compact .nav-icon { width: 1.25em; height: 1.25em; }
 .arxiv-html-header.compact .new-html-divider { height: 14px; }
 
 /* Reading-progress bar at the bottom edge of the header. Updated on
@@ -1714,9 +1742,20 @@ html { scroll-padding-top: 80px; }
    │  scope these under a body-class and drop the !important war.     │
    └──────────────────────────────────────────────────────────────────┘ */
 
+/* ── Paper type follows the design-system scale ─────────────────────────
+   Sizes are rem, not px, so the paper tracks the reader's own browser
+   setting — the rule the DS foundation applies (no fixed base size; every
+   size relative). Mapping: paper title -> h1 (2rem/700), numbered section
+   -> h2 (1.5rem/600), subsection -> h3 (1.25rem/600), body -> 1rem.
+
+   Body was 15px. At 1rem the 720px column moves from ~98 to ~92 characters
+   per line, the direction the readability research wants.
+
+   Body line-height stays 1.7 rather than the foundation's 1.5: this is
+   long-form sustained reading, not reference copy. */
 h1.ltx_title.ltx_title_document {
   font-family: "IBM Plex Sans", -apple-system, sans-serif !important;
-  font-size: 32px !important;
+  font-size: 2rem !important;
   font-weight: 700 !important;
   line-height: 1.2 !important;
   color: var(--arxiv-repository-brown) !important;
@@ -1736,31 +1775,72 @@ article.ltx_document { margin-top: 0 !important; }
 .ltx_title_appendix,
 .ltx_title_bibliography {
   font-family: "IBM Plex Sans", -apple-system, sans-serif !important;
-  font-size: 20px !important;
+  font-size: 1.5rem !important;
   font-weight: 600 !important;
+    line-height: 1.25 !important;
   color: var(--arxiv-repository-brown) !important;
 }
 .ltx_title_subsection {
   font-family: "IBM Plex Sans", -apple-system, sans-serif !important;
-  font-size: 16px !important;
+  font-size: 1.25rem !important;
   font-weight: 600 !important;
+    line-height: 1.25 !important;
   color: var(--arxiv-repository-brown) !important;
 }
 .ltx_title_abstract {
   font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif !important;
-  font-size: 13px !important;
+  font-size: 0.8125rem !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
   color: var(--arxiv-library-grey) !important;
 }
+/* Weight 400, set explicitly. ar5iv sets .ltx_page_content { font-weight: 300 }
+   and the whole paper body inherited it — a vendored default, not a decision.
+   typography.md sanctions 400/500/600 for body text and lists no role for Light
+   at all. Beyond the spec: WCAG measures colour contrast, not stroke width, so a
+   Light weight can pass 1.4.3 numerically while being materially harder to read.
+   IBM's own Carbon system reserves Plex Light for large display sizes.
+
+   DECIDED 2026-09-03, on screen: 400 weight with Repository Brown (#1c1a17,
+   16.3:1). A softer body colour (#4a433d, 9.1:1) was tried against 400 and
+   rejected — the high contrast reads better, so no new stop is needed on the
+   warm grey ladder. */
+.ltx_page_content {
+  font-weight: 400 !important;
+}
+
 .ltx_p {
   font-family: "IBM Plex Sans", -apple-system, sans-serif !important;
-  font-size: 15px !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
   line-height: 1.7 !important;
   color: var(--arxiv-repository-brown) !important;
-  text-align: justify !important;
+  /* Left-aligned, not justified. Reviewed 2026-09-03.
+
+     CSS justification is not TeX justification: browsers break lines greedily
+     and then stretch word spaces on whatever line results, with no
+     paragraph-level optimisation. The author's PDF looks well set because TeX
+     did that work; `text-align: justify` here inherits the appearance without
+     the machinery, and the difference shows as rivers of whitespace.
+
+     This document is the bad case for it. 70% of body paragraphs carry inline
+     math, and across paragraphs over 20 words there are 357 unbreakable atoms
+     (inline <math>, bracketed citation groups) in ~7,000 words — roughly one
+     per 20 words, or about 0.76 per line in a 720px column. Justification
+     needs break opportunities to distribute slack, and hyphenation cannot
+     help a <math> element, so the lines that need it most get none. Narrowing
+     the body to 720px made this worse, not better.
+
+     WCAG 2.1 SC 1.4.8 also lists "text is not justified", though at AAA
+     rather than our AA floor.
+
+     hyphens stays on: with a ragged right it does different work, softening
+     the rag on long technical words rather than rescuing bad justification.
+     text-wrap: pretty shapes the rag — no short last lines. */
+  text-align: left !important;
   hyphens: auto !important;
+  text-wrap: pretty;
 }
 /* Section numerals get an extra weight bump so the visual hierarchy
    stays legible even when the heading text is long. */
@@ -1780,7 +1860,7 @@ article.ltx_document { margin-top: 0 !important; }
   font-family: "IBM Plex Sans", -apple-system, sans-serif !important;
   display: block !important;
   text-align: center !important;
-  font-size: 15px !important;
+  font-size: 1rem !important;
   color: var(--arxiv-repository-brown) !important;
   line-height: 1.6 !important;
   margin-bottom: 1.5rem !important;
@@ -1986,14 +2066,14 @@ section.ltx_bibliography {
 .ltx_authors-list li a {
   color: var(--arxiv-link-blue);
   text-decoration: none;
-  font-size: 15px;
+  font-size: 1rem;
 }
 .ltx_authors-list li a:hover { text-decoration: underline; }
 .ltx_authors-overflow { display: none !important; }
 .ltx_authors-overflow.is-expanded { display: inline !important; }
 .ltx_authors-toggle {
   font-family: inherit;
-  font-size: 15px;
+  font-size: 1rem;
   color: var(--arxiv-library-grey);
   background: none;
   border: none;
@@ -2151,6 +2231,8 @@ cite.cite-chip {
   text-decoration: none;
   border-radius: 3px;
   white-space: nowrap;
+  min-height: 24px;      /* WCAG 2.5.8 target floor */
+  margin-block: -4px;    /* keeps the list line-height unchanged */
 }
 .cite-popover-item-jump:hover {
   color: var(--arxiv-link-hover);
@@ -2161,7 +2243,7 @@ cite.cite-chip {
   outline: 2px solid var(--arxiv-link-blue);
   outline-offset: 1px;
 }
-.cite-popover-item-jump svg { width: 11px; height: 11px; }
+.cite-popover-item-jump svg { width: 0.92em; height: 0.92em; }
 
 .cite-popover-close {
   position: absolute;
@@ -2475,6 +2557,17 @@ table.ltx_equationgroup math.ltx_math_unparsed {
    background, no border. Compact (small font, tight line-height,
    minimal padding) so two chips fit comfortably in a single-line
    equation's band height. */
+/* ── Target size: stated, not implied ─────────────────────────────────────
+   DESIGN-POLICIES: "Hard floor 24x24 CSS px (WCAG 2.2 SC 2.5.8 AA)". Every
+   interactive control below carries an explicit min-height rather than
+   arriving at 24px through padding arithmetic, so the floor survives any
+   later change to the type scale. Glyphs are sized in em to track their
+   label; the floor is px because it is an absolute ergonomic minimum, not a
+   typographic proportion. Two mechanisms, two jobs.
+
+   Where a control is smaller than 24px by design, the negative margin-block
+   cancels the layout growth so the hit area expands without the drawn box
+   changing — the technique .mg-mark already used. */
 .eqn-chip {
   display: inline-flex;
   align-items: center;
@@ -2491,6 +2584,8 @@ table.ltx_equationgroup math.ltx_math_unparsed {
   text-decoration: none;
   text-align: left;
   line-height: 1.2;
+  min-height: 24px;      /* WCAG 2.5.8 target floor */
+  margin-block: -5px;    /* ...without changing the pill's drawn height */
 }
 .eqn-chip:hover {
   color: var(--arxiv-link-blue);
@@ -2503,8 +2598,8 @@ table.ltx_equationgroup math.ltx_math_unparsed {
   border-radius: 2px;
 }
 .eqn-chip svg {
-  width: 11px;
-  height: 11px;
+  width: 1em;
+  height: 1em;
   flex-shrink: 0;
 }
 .eqn-chip[disabled],
@@ -2656,7 +2751,6 @@ html:not(.js) .reading-progress { display: none !important; }
    annotation rather than UI. Visible only on wide viewports. */
 .ftn-marginalia {
   position: absolute;
-  right: -220px;          /* +10px gap from the article's right edge */
   width: 190px;
   padding: 0;
   /* Annotation typography (.ds-annotation in design-system.css):
@@ -2748,12 +2842,13 @@ html:not(.js) .reading-progress { display: none !important; }
 .ftn-popover-close:hover { color: var(--arxiv-repository-brown); background: var(--arxiv-active-bg); }
 
 /* Hide the right-margin marginalia on narrow viewports (no room). */
-/* Switch to popover below 1300px. The right-margin marginalia sits at a
-   fixed offset from the 832px article, so its right edge lands at ~50vw+636
-   and only clears the viewport once vw ≳ 1300 (the 1200 boundary used to
-   leave it clipped from ~1200–1271px). Keep CSS in sync with the footnote
-   JS WIDE_BP and the figure chip/marginalia breakpoints below. */
-@media (max-width: 1299px) {
+/* Switch to popover below 1200px. Recomputed 2026-09-03, when the paper body
+   narrowed from ar5iv's 832px article to a 720px section. The marginalia is
+   positioned against .ltx_para, so its right edge moved from ~50vw+636 to
+   ~50vw+580 and now clears the viewport at vw ≳ 1160; 1200 is that plus a
+   20px gutter. Keep CSS in sync with the footnote JS WIDE_BP and the figure
+   chip/marginalia breakpoints below. */
+@media (max-width: 1199px) {
   .ftn-marginalia { display: none; }
 }
 
@@ -2844,13 +2939,15 @@ html:not(.js) .reading-progress { display: none !important; }
 }
 .fig-region figcaption {
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
-  font-size: 13px;
+  font-size: 0.875rem;
   color: var(--arxiv-repository-brown);
   margin-top: 22px;  /* leaves room for the chip pill straddling the image's bottom edge */
   line-height: 1.5;
-  max-width: 640px;
-  margin-left: auto;
-  margin-right: auto;
+  /* Left-aligned and the full width of the figure. Centring a caption over a
+     narrower measure than the figure forces extra wrapping and leaves the
+     block ragged on both edges; a caption is prose about the figure, so it
+     reads like prose. */
+  text-align: left;
 }
 
 /* Same pill treatment as equations: centered, straddling the image's
@@ -2905,6 +3002,8 @@ html:not(.js) .reading-progress { display: none !important; }
   text-decoration: none;
   line-height: 1.3;
   text-align: left;
+  min-height: 24px;      /* WCAG 2.5.8 target floor */
+  margin-block: -5px;    /* ...without changing the pill's drawn height */
 }
 .fig-chip:hover {
   color: var(--arxiv-link-blue);
@@ -2916,7 +3015,7 @@ html:not(.js) .reading-progress { display: none !important; }
   outline-offset: 1px;
   border-radius: 2px;
 }
-.fig-chip svg { width: 11px; height: 11px; flex-shrink: 0; }
+.fig-chip svg { width: 1em; height: 1em; flex-shrink: 0; }
 /* CTA variant — calls attention to the missing-alt prompt. */
 .fig-chip.is-cta {
   color: var(--arxiv-link-blue);
@@ -2931,7 +3030,7 @@ html:not(.js) .reading-progress { display: none !important; }
   line-height: 1.3;
 }
 /* Narrow-only chips: visible only when the right marginalia is hidden. */
-@media (min-width: 1300px) {
+@media (min-width: 1200px) {
   .fig-chip.is-narrow-only { display: none; }
 }
 
@@ -3038,7 +3137,6 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: -220px;          /* +10px gap, matching .ftn-marginalia */
   width: 190px;
   padding: 0;
   /* Annotation typography (.ds-annotation in design-system.css):
@@ -3106,7 +3204,7 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
 /* Below 1199px: collapse the wide layout — right-margin marginalia
    moves into a chip that opens a popover. The chip pill itself uses
    the same treatment at every breakpoint (see base .fig-chips rule). */
-@media (max-width: 1299px) {
+@media (max-width: 1199px) {
   .fig-alt-marginalia { display: none; }
 }
 
@@ -3149,7 +3247,7 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
      misassignment) to the shared pill's --arxiv-library-grey. */
   cursor: pointer;
 }
-.heading-permalink svg { width: 11px; height: 11px; }
+.heading-permalink svg { width: 1.05em; height: 1.05em; }
 .heading-permalink:focus-visible {
   outline: 2px solid var(--arxiv-link-blue);
   outline-offset: 1px;
@@ -3337,8 +3435,8 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 
 /* External-link icon — paired with sr-only "(opens in new tab)". */
 .external-icon {
-  width: 11px;
-  height: 11px;
+  width: 0.69em;
+  height: 0.69em;
   vertical-align: -1px;
   margin-left: 4px;
   opacity: 0.7;
@@ -3446,12 +3544,13 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   /* 24px hit-area floor without growing the visual box */
   margin: -3px 0; padding-top: 7px; padding-bottom: 7px;
   opacity: 0; transition: opacity 0.12s;
+  min-height: 24px;      /* WCAG 2.5.8 target floor, stated not implied */
 }
 /* ar5iv sets svg { z-index:-1 } globally; without the explicit lift the
    chain icon renders BEHIND the pill's surface and the pill shows only
    its number (caught by Shamsi on the live page, 2026-08-25). Same
    countermeasure as .ds-btn svg and .mg-cite-copy svg. */
-.mg-mark svg { width: 11px; height: 11px; flex: none; position: relative; z-index: 1; }
+.mg-mark svg { width: 1.05em; height: 1.05em; flex: none; position: relative; z-index: 1; }
 /* Long-paragraph fix (2026-08-26): the pill rides a zero-width rail that
    spans the paragraph's full height and sticks just below the reader
    header — so it stays in reach when a long paragraph is entered
@@ -3500,7 +3599,7 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
    and nobody should have to guess that clicking is required;
    (hover: none) reveals by tap, the grammar figures and formulas
    already taught. Conflating the two was the original bug. */
-@media (max-width: 1200px) {
+@media (max-width: 999px) {
   .ltx_para .mg-mark { display: none; }
   .ltx_para.is-active {
     outline: 1px solid var(--arxiv-pill-border); outline-offset: 8px; border-radius: 2px;
@@ -3516,7 +3615,7 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
      outline). Reveal is governed by the input rules, not forced on. */
   .heading-permalink.mg-mark { position: static; transform: none; margin-left: 8px; }
 }
-@media (max-width: 1200px) and (hover: hover) {
+@media (max-width: 999px) and (hover: hover) {
   /* Narrow window, mouse present: hover works, so hover reveals —
      same visuals as the tap path. */
   .ltx_para:hover { outline: 1px solid var(--arxiv-pill-border); outline-offset: 8px; border-radius: 2px; }
@@ -8216,7 +8315,7 @@ We thus see that</p>
    edited — only cloned/rendered into additional surfaces.
 */
 (function() {
-  var WIDE_BP = 1300;  // margin marginalia needs ~1300px to clear the viewport (see CSS note)
+  var WIDE_BP = 1200;  // margin marginalia needs ~1200px to clear the viewport (see CSS note)
   var openPop = null;
   var activeSource = null; // { marker, marginalia } when a marker is "clicked" at wide
 
@@ -9160,7 +9259,75 @@ We thus see that</p>
     }
     .html-footer-links a:hover { color: #1c1a17; text-decoration: underline; }
     .html-footer-sep { color: #c4dcf0; }
-  </style>
+  
+/* ── Content width: two tiers, divided by the TOC bar ──────────────────
+   ar5iv sets the article width from --main-width (52rem = 832px) and every
+   element that should track it — page footer, author names, epigraph —
+   reads the same token. So this overrides the token rather than the rule:
+   one value, and everything that follows the article width follows it.
+
+   Above the TOC bar (.mg-top: title, authors, abstract, files sidebar) the
+   page runs at the platform default of 850px, so a reader arriving from the
+   abstract page sees the same measure, and the two-column abstract layout
+   keeps the room it needs.
+
+   Below the bar the paper body narrows to 720px — about 92 characters,
+   against 109 at 850px. This is the long-form reading exception in
+   DESIGN-POLICIES.md "Layout and content width": set the width on the page,
+   never on the paragraph. The TOC bar is a full-width band, so the measure
+   changes across a hard visual division rather than mid-flow.
+
+   720px is not the researched 65-character line (~510px). It is a
+   negotiated point: at 510px roughly 30 of this paper's 100 display
+   equations exceed the column, against 6 at 720px, and display math does
+   not reflow. Reviewed on screen 2026-09-03. */
+:root {
+  --main-width:        850px;   /* the article: title, authors, abstract, sidebar */
+  --paper-body:        720px;   /* sections below the TOC bar */
+  --marginalia-width:  190px;
+  --marginalia-gap:     16px;   /* measured from the SECTION edge, not the article */
+}
+
+article.ltx_document > section:not(.ltx_bibliography) {
+  max-width: var(--paper-body);
+  margin-inline: auto;
+}
+
+/* The reference band is full-bleed by design (negative-margin trick), so it
+   must NOT take the section max-width — capping it at 720px leaves the grey
+   band short of the viewport and its content stranded left. Instead the band
+   stays full width and its padding centres a --paper-body column inside it,
+   so the references line up with the body text above them. */
+section.ltx_bibliography,
+.ltx_bibliography ~ .ltx_appendix,
+.ltx_bibliography ~ .ltx_acknowledgements,
+.ltx_bibliography ~ .ltx_para {
+  padding-left:  calc(50vw - var(--paper-body) / 2) !important;
+  padding-right: calc(50vw - var(--paper-body) / 2) !important;
+}
+
+/* Right-margin marginalia is appended to article.ltx_document by the footnote
+   JS (so a note can be positioned vertically without being trapped inside its
+   paragraph), which means `right` resolves against the 850px article — not the
+   720px section the reader is actually reading. Without correcting for that,
+   a 16px offset renders as 16 + (850-720)/2 = 81px and the note floats away
+   from the text. This subtracts the article's own side margin so the gap is
+   measured from the section edge. */
+.ftn-marginalia {
+  width: var(--marginalia-width);
+  right: calc((var(--main-width) - var(--paper-body)) / 2
+              - var(--marginalia-width) - var(--marginalia-gap));
+}
+
+/* The figure alt note is appended to .fig-region by the figure JS, and
+   .fig-region already sits inside the 720px section — so unlike the footnote
+   note it needs no correction for the article's side margin. Same visual gap,
+   different containing block. */
+.fig-alt-marginalia {
+  width: var(--marginalia-width);
+  right: calc(-1 * (var(--marginalia-width) + var(--marginalia-gap)));
+}
+</style>
 
   <!-- Legacy LaTeXML "build logs" / logo line. Hidden via display:none here
        because our redesigned footer offers the same access in a more
