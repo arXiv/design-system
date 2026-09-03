@@ -102,6 +102,14 @@
      loads. We reference it exactly so the paper body looks identical to
      what readers see on live arXiv. All our visual differences come from
      the override <style> block further down. -->
+<!-- Self-hosted IBM Plex + STIX Two Math. Linked from docs/fonts.css rather
+     than redeclaring @font-face here: url() resolves against the stylesheet,
+     not the document, so the paths inside it stay correct and there is one
+     place to change. Without this the mockup asked for "IBM Plex Sans" with
+     nothing loading it and fell through to -apple-system, so every type
+     judgement was really being made in San Francisco. Production serves these
+     from /static/fonts/ (typography.md, Hosting). -->
+<link rel="stylesheet" href="../../docs/fonts.css" type="text/css">
 <link rel="stylesheet" href="./references/Gauge-independent approach to inflation in quadratic gravity_files/arxiv-html-papers-20260131.css" type="text/css">
 
 <!-- ar5iv reader JS — provides toggleNavTOC(), toggleReadingMode(),
@@ -1755,7 +1763,11 @@ html { scroll-padding-top: 80px; }
    long-form sustained reading, not reference copy. */
 h1.ltx_title.ltx_title_document {
   font-family: "IBM Plex Sans", -apple-system, sans-serif !important;
-  font-size: 2rem !important;
+  /* Fluid between 22px and 32px, matching abstract-phase2.html — typography.md
+     and typography.html: "Paper titles use clamp() between rem bounds
+     (22px-32px equivalent) so a seven-word title does not wrap to five lines
+     at 320px." Body text never scales fluidly; only the title does. */
+  font-size: clamp(1.375rem, 0.875rem + 2.4vw, 2rem) !important;
   font-weight: 700 !important;
   line-height: 1.2 !important;
   color: var(--arxiv-repository-brown) !important;
@@ -1787,9 +1799,9 @@ article.ltx_document { margin-top: 0 !important; }
     line-height: 1.25 !important;
   color: var(--arxiv-repository-brown) !important;
 }
-.ltx_title_abstract {
+.ltx_title_abstract {                 /* .ds-panel-label treatment */
   font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif !important;
-  font-size: 0.8125rem !important;
+  font-size: 0.75rem !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
@@ -3148,10 +3160,10 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
   line-height: 1.45;
   color: var(--arxiv-library-grey);
 }
-.fig-alt-marginalia .fig-alt-label {
+.fig-alt-marginalia .fig-alt-label {  /* .ds-panel-label treatment */
   font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
   font-weight: 600;
-  font-size: 10px;
+  font-size: 0.75rem;
   color: var(--arxiv-library-grey);
   text-transform: uppercase;
   letter-spacing: 0.04em;

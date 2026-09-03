@@ -1069,16 +1069,6 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 }
 .abs-meta-grid dt,
 .abs-meta-grid dd { margin: 0; }
-.abs-meta-label {
-  font-family: var(--arxiv-font-condensed);
-  font-weight: 600;
-  color: var(--arxiv-library-grey);
-  text-transform: uppercase;
-  font-size: 0.6875rem; /* 11px */
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  padding-top: 1px;
-}
 .abs-meta-value {
   color: var(--arxiv-repository-brown);
   font-size: 0.8125rem; /* 13px */
@@ -1245,7 +1235,19 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   min-height: 28px;
   margin-bottom: 8px;
 }
-.abs-cite-col-head .abs-panel-label { margin: 0; color: var(--arxiv-repository-brown); }
+/* Local copy of .ds-panel-label from design-system.css. The mockups vendor
+   their CSS rather than linking the stylesheet, so the NAME is shared but the
+   rule is duplicated until they adopt it. Keep the values identical. */
+.ds-panel-label {
+  font-family: var(--arxiv-font-condensed);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--arxiv-library-grey);
+}
+
+.abs-cite-col-head .ds-panel-label { margin: 0; color: var(--arxiv-repository-brown); }
 .abs-cite-col-head .abs-cite-styles { margin: 0; }
 
 /* Style switcher (APA / Chicago / MLA) — segmented control inside the
@@ -1353,16 +1355,6 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-cite-id-value:last-child { margin-bottom: 0; }
 
 /* Generic panel label used inside Cite columns */
-.abs-panel-label {
-  font-family: var(--arxiv-font-condensed);
-  font-weight: 600;
-  font-size: 0.6875rem; /* 11px */
-  color: var(--arxiv-library-grey);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 6px;
-}
-
 /* "Who cites this paper" — styles moved to the reference-zone cards block
    below (B2, 2026-06-17): it's now a wrapping row beneath the citation box,
    not a sub-nav in the IDs column. */
@@ -1414,7 +1406,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   align-items: baseline;
   gap: 6px 16px;
 }
-.abs-cite-citations h3.abs-panel-label { margin: 0; }
+.abs-cite-citations h3.ds-panel-label { margin: 0; }
 .abs-cite-citations-list {
   list-style: none; padding: 0; margin: 0;
   display: flex; flex-wrap: wrap; gap: 6px 16px;
@@ -1489,7 +1481,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
       the visual switch is purely cosmetic CSS. AT users get standard
       checkbox semantics ("Connected Papers, checkbox, not checked").
     - The toggle group has its own subheading ("Papers & Citations" etc.)
-      as a .abs-panel-label — these should ideally be real headings, but
+      as a .ds-panel-label — these should ideally be real headings, but
       the visual treatment in this mockup uses divs. Worth a follow-up.
     - "What is this?" links open in new tabs with explicit external-icon
       + sr-only "(opens in new tab)" notice.
@@ -2077,15 +2069,15 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
           <h2 class="abs-ref-card-title" id="meta-heading">Paper information</h2>
         </div>
         <dl class="abs-meta-grid">
-          <dt class="abs-meta-label">Subjects</dt>
+          <dt class="ds-panel-label">Subjects</dt>
           <dd class="abs-meta-value">
             General Relativity and Quantum Cosmology (<a href="https://arxiv.org/list/gr-qc/recent">gr-qc</a>);
             Cosmology and Nongalactic Astrophysics (<a href="https://arxiv.org/list/astro-ph.CO/recent">astro-ph.CO</a>);
             High Energy Physics - Theory (<a href="https://arxiv.org/list/hep-th/recent">hep-th</a>)
           </dd>
-          <dt class="abs-meta-label">DOI</dt>
+          <dt class="ds-panel-label">DOI</dt>
           <dd class="abs-meta-value"><a href="https://doi.org/10.48550/arXiv.2604.22725">10.48550/arXiv.2604.22725</a></dd>
-          <dt class="abs-meta-label">License</dt>
+          <dt class="ds-panel-label">License</dt>
           <dd class="abs-meta-value"><a href="https://creativecommons.org/licenses/by/4.0/"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">CC BY 4.0</abbr></a></dd>
           <!-- Ancillary files: validated priority (priorities.md "Ancillary
                files surfaced on the abstract page, not hidden under other
@@ -2095,7 +2087,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
                Then you don't need to read the paper." (Smith). In production
                this row renders only when the source bundle contains an /anc
                directory; filenames link to direct downloads. -->
-          <dt class="abs-meta-label">Ancillary files</dt>
+          <dt class="ds-panel-label">Ancillary files</dt>
           <dd class="abs-meta-value">
             <details class="abs-anc">
               <summary class="abs-anc-summary">
@@ -2112,9 +2104,9 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
               </ul>
             </details>
           </dd>
-          <dt class="abs-meta-label">Journal</dt>
+          <dt class="ds-panel-label">Journal</dt>
           <dd class="abs-meta-value"><a href="https://doi.org/10.1088/1475-7516/2026/05/012">Journal of Cosmology and Astroparticle Physics, 2026(05), 012</a></dd>
-          <dt class="abs-meta-label">Comments</dt>
+          <dt class="ds-panel-label">Comments</dt>
           <dd class="abs-meta-value">v3: 18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.</dd>
         </dl>
       </section>
@@ -2138,27 +2130,27 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
         <div class="abs-cite-columns">
           <!-- Identifiers column — arXiv identifier first (reorganized 2026-06-17) -->
           <div class="abs-cite-col abs-cite-col-ids">
-            <div class="abs-cite-col-head"><span class="abs-panel-label">Identifiers</span></div>
+            <div class="abs-cite-col-head"><span class="ds-panel-label">Identifiers</span></div>
             <dl class="abs-cite-id-list">
-              <dt class="abs-panel-label">
+              <dt class="ds-panel-label">
                 <span class="arxiv-word"><span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span></span> identifier
               </dt>
               <dd class="abs-cite-id-value">
                 <span aria-hidden="true">arXiv:2604.22725 [gr-qc]</span>
                 <span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, primary category gr-qc</span>
               </dd>
-              <dt class="abs-panel-label">
+              <dt class="ds-panel-label">
                 <span class="arxiv-word"><span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span></span> DOI
               </dt>
               <dd class="abs-cite-id-value"><a href="https://doi.org/10.48550/arXiv.2604.22725">10.48550/arXiv.2604.22725</a></dd>
-              <dt class="abs-panel-label">Journal DOI</dt>
+              <dt class="ds-panel-label">Journal DOI</dt>
               <dd class="abs-cite-id-value"><a href="https://doi.org/10.1088/1475-7516/2026/05/012">10.1088/1475-7516/2026/05/012</a></dd>
             </dl>
           </div>
 
           <!-- BibTeX column -->
           <div class="abs-cite-col abs-cite-col-bibtex">
-            <div class="abs-cite-col-head"><span class="abs-panel-label">BibTeX</span></div>
+            <div class="abs-cite-col-head"><span class="ds-panel-label">BibTeX</span></div>
             <div class="abs-cite-display">
               <button class="abs-cite-copy" id="cite-copy-bibtex" aria-label="Copy BibTeX">Copy</button>
               <!-- BibTeX shows the FULL author list, exactly as arXiv's
@@ -2183,7 +2175,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
           <!-- Formatted citation column (style switcher in the header) -->
           <div class="abs-cite-col abs-cite-col-formatted">
             <div class="abs-cite-col-head">
-              <span class="abs-panel-label">Formatted</span>
+              <span class="ds-panel-label">Formatted</span>
               <div class="abs-cite-styles" role="group" aria-label="Citation style">
                 <button class="abs-cite-style-btn is-active" data-style="apa" aria-pressed="true">APA</button>
                 <button class="abs-cite-style-btn" data-style="chicago" aria-pressed="false">Chicago</button>
@@ -2201,7 +2193,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
              column to its own line below the citation box — label + the three
              services on one row that wraps on small screens. -->
         <nav class="abs-cite-citations" aria-labelledby="cites-heading">
-          <h3 id="cites-heading" class="abs-panel-label">Who cites this paper</h3>
+          <h3 id="cites-heading" class="ds-panel-label">Who cites this paper</h3>
           <ul class="abs-cite-citations-list">
             <li><a href="https://scholar.google.com/scholar?cites=arXiv:2604.22725" target="_blank" rel="noopener noreferrer">Google Scholar<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></li>
             <li><a href="https://ui.adsabs.harvard.edu/abs/arXiv:2604.22725/citations" target="_blank" rel="noopener noreferrer">NASA ADS<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></li>
@@ -2227,7 +2219,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
                login should be deprioritized in placement." Group
                membership is unchanged — only order within groups. -->
           <div class="abs-labs-group">
-            <div class="abs-panel-label">Papers &amp; Citations</div>
+            <div class="ds-panel-label">Papers &amp; Citations</div>
             <div class="abs-labs-row">
               <label class="abs-labs-toggle"><input type="checkbox" data-lab="connected-papers" aria-label="Connected Papers"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">Connected Papers <a href="https://www.connectedpapers.com/about" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
@@ -2249,7 +2241,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
           </div>
 
           <div class="abs-labs-group">
-            <div class="abs-panel-label">Code, Data &amp; Models</div>
+            <div class="ds-panel-label">Code, Data &amp; Models</div>
             <div class="abs-labs-row">
               <label class="abs-labs-toggle"><input type="checkbox" data-lab="catalyzex" aria-label="CatalyzeX Code Finder"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">CatalyzeX Code Finder <a href="https://www.catalyzex.com" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
@@ -2272,7 +2264,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
           </div>
 
           <div class="abs-labs-group">
-            <div class="abs-panel-label">Demos</div>
+            <div class="ds-panel-label">Demos</div>
             <div class="abs-labs-row">
               <label class="abs-labs-toggle"><input type="checkbox" data-lab="replicate" aria-label="Replicate"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">Replicate <a href="https://replicate.com/docs/arxiv/about" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>

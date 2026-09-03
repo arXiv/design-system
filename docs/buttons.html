@@ -17,8 +17,7 @@
     .page-header p { color: var(--arxiv-library-grey); }
     .section { margin-bottom:var(--space-12); }
     .section-desc { color: var(--arxiv-library-grey); }
-    .subgroup-title { font-family: var(--arxiv-font-condensed); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin:var(--space-6) 0 10px; }
-    .note-alert { margin-top:var(--space-4); }
+.note-alert { margin-top:var(--space-4); }
 
     /* Context cards (public vs internal) */
     .context-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:var(--space-4); }
@@ -128,11 +127,9 @@
     .token-table thead th { background: var(--arxiv-card-grey); color: var(--arxiv-library-grey); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em; border-top: none; }
     .token-table code { font-family: var(--arxiv-font-mono); font-size: 11px; color: var(--arxiv-link-blue); background: none; padding: 0; }
     .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.08); vertical-align: -2px; margin-right:6px; }
-
-    pre.code { background: var(--arxiv-repository-brown); color: var(--arxiv-card-grey); font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.55; padding: 14px 18px; border-radius: 6px; overflow-x: auto; margin:var(--space-2) 0 0; }
-    pre.code .c { color: var(--arxiv-grey-ui); }
-    pre.code .k { color: var(--arxiv-open-blue-bright); }
-    pre.code .s { color: #d4ecff; }
+pre .c { color: var(--arxiv-grey-ui); }
+    pre .k { color: var(--arxiv-open-blue-bright); }
+    pre .s { color: #d4ecff; }
 
     .notes { margin:0; padding-left: 22px; font-size: 13px; line-height: 1.7; color: var(--arxiv-repository-brown); }
     .notes li { margin-bottom:var(--space-1); }
@@ -152,25 +149,8 @@
        taking a full-width block with its own heading. */
     .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:var(--space-4); align-items: start; }
     .demo-grid .form-demo { max-width: none; margin-top:0; }
-    .demo-grid .subgroup-title { margin:0 0 6px; }
-    /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
-       <details>-based: works without JS; the small script at the end of the
-       page only adds close-on-outside-click and Esc. ── */
-    .docs-nav { display: flex; align-items: center; gap:var(--space-1) var(--space-4); flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
-    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right:var(--space-2); }
-    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
-    .nav-dd { position: relative; }
-    .nav-dd > summary { list-style: none; cursor: pointer; color: var(--arxiv-library-grey); padding: 3px 6px; border-radius: 4px; user-select: none; }
-    .nav-dd > summary::-webkit-details-marker { display: none; }
-    .nav-dd > summary::after { content: " \25BE"; font-size: 10px; }
-    .nav-dd > summary:hover, .nav-dd[open] > summary { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
-    .nav-dd > summary:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
-    .nav-dd-menu { position: absolute; left: 0; top: calc(100% + 6px); display: flex; flex-direction: column; min-width: 235px; background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); padding: 6px; z-index: 60; }
-    .nav-dd-menu a { color: var(--arxiv-repository-brown); text-decoration: none; padding: 6px 10px; border-radius: 4px; white-space: nowrap; }
-    .nav-dd-menu a:hover { background: var(--arxiv-card-grey); }
-    .nav-dd-menu a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: -2px; }
-    .nav-dd-menu a[aria-current="page"] { font-weight: 600; }
-    .nav-dd-group { font-family: var(--arxiv-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); padding: 8px 10px 2px; }
+    .demo-grid .ds-panel-label { margin:0 0 6px; }
+
   
     /* Inline links in page copy. Bare <a> previously fell back to the
        browser default, which is unreadable on the dark canvas. Nav links
@@ -178,11 +158,11 @@
 </style>
 </head>
 <body class="ds-page">
-<nav class="docs-nav" aria-label="Design system">
-  <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
-  <details class="nav-dd">
+<nav class="ds-site-header ds-site-header--light" aria-label="Design system">
+  <a class="ds-site-header-logo" href="../index.html">arXiv Design System</a>
+  <details class="ds-site-header-dropdown">
     <summary>Design Patterns</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="colors.html">Colors</a>
       <a href="typography.html">Typography</a>
       <a href="spacing.html">Spacing</a>
@@ -197,25 +177,25 @@
       <a href="outreach/">Outreach sites</a>
     </div>
   </details>
-  <details class="nav-dd">
+  <details class="ds-site-header-dropdown">
     <summary>Mockups</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="../mockups/">All mockups</a>
-      <span class="nav-dd-group">Public</span>
+      <span class="ds-panel-label">Public</span>
       <a href="../mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
       <a href="../mockups/public/html-phase1.html">HTML paper — Phase 1</a>
       <a href="../mockups/public/optin-modal/">Labs opt-in modal</a>
       <a href="../mockups/public/submission-metadata/">Submission — Metadata Form</a>
-      <span class="nav-dd-group">Internal</span>
+      <span class="ds-panel-label">Internal</span>
       <a href="../mockups/internal/admin-console/user-page/">Admin Console — user page</a>
       <a href="../mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
       <a href="../mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
       <a href="../mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
     </div>
   </details>
-  <details class="nav-dd">
+  <details class="ds-site-header-dropdown">
     <summary>Docs</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
       <a href="brand.html">Brand &amp; vision</a>
         <a href="doc.html?src=docs/BRAND.md">Brand &amp; voice</a>
@@ -291,7 +271,7 @@
     <code>public/design-system.css</code>. Three tiers — primary, secondary, and the quiet text tier — and
     two modifiers for buttons that sit on something other than the page canvas.</p>
 
-    <h3 class="subgroup-title">Tiers and states</h3>
+    <h3 class="ds-panel-label">Tiers and states</h3>
     <div class="state-flex">
       <div class="state-cell">
         <div class="btn-pair">
@@ -365,32 +345,32 @@
             <dt>Icons</dt><dd>Any <code>.ds-btn</code> accepts an inline SVG. The stylesheet sizes it in <code>em</code>, blocks the baseline gap, and stops it shrinking beside a long label. Set <code>stroke="currentColor"</code> and nothing else.</dd>
             <dt>Disabled</dt><dd>One flat Card Grey fill for every variant. An action that is merely not available yet takes <code>aria-disabled</code> instead &mdash; see Buttons in forms.</dd>
           </dl>
-<pre class="code"><span class="c">&lt;!-- Primary / secondary / text --&gt;</span>
+<pre><code><span class="c">&lt;!-- Primary / secondary / text --&gt;</span>
 <span class="k">&lt;a</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-primary"</span> <span class="k">href</span>=<span class="s">"/html/2604.22725v1"</span><span class="k">&gt;</span>HTML<span class="k">&lt;/a&gt;</span>
 <span class="k">&lt;a</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-secondary"</span> <span class="k">href</span>=<span class="s">"/src/2604.22725v1"</span><span class="k">&gt;</span>TeX Source<span class="k">&lt;/a&gt;</span>
-<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-text"</span> <span class="k">type</span>=<span class="s">"button"</span><span class="k">&gt;</span>Copy link<span class="k">&lt;/button&gt;</span></pre>
+<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-text"</span> <span class="k">type</span>=<span class="s">"button"</span><span class="k">&gt;</span>Copy link<span class="k">&lt;/button&gt;</span></code></pre>
     </div></details></div>
 
-    <h3 class="subgroup-title">On tinted and dark surfaces</h3>
+    <h3 class="ds-panel-label">On tinted and dark surfaces</h3>
     <p class="section-desc">The primary holds its own on every field — its gradient border and vignette keep the
     edge legible cool-on-cool, cool-on-warm and on a committed color field alike. The secondary is the one that
     adapts.</p>
 
-    <p class="subgroup-title">Cool tint — reader footer band (<code>.on-tint</code>)</p>
+    <p class="ds-panel-label">Cool tint — reader footer band (<code>.on-tint</code>)</p>
     <div class="tinted-row">
       <button class="ds-btn ds-btn-primary" type="button">HTML</button>
       <button class="ds-btn ds-btn-primary" type="button">PDF</button>
       <button class="ds-btn ds-btn-secondary on-tint" type="button">TeX Source</button>
     </div>
 
-    <p class="subgroup-title">Warm tint — Card Grey section fill (secondary unchanged)</p>
+    <p class="ds-panel-label">Warm tint — Card Grey section fill (secondary unchanged)</p>
     <div class="tinted-row warm">
       <button class="ds-btn ds-btn-primary" type="button">HTML</button>
       <button class="ds-btn ds-btn-primary" type="button">PDF</button>
       <button class="ds-btn ds-btn-secondary" type="button">TeX Source</button>
     </div>
 
-    <p class="subgroup-title">Committed color field — outreach masthead (<code>.on-dark</code>)</p>
+    <p class="ds-panel-label">Committed color field — outreach masthead (<code>.on-dark</code>)</p>
     <div class="dark-row">
       <button class="ds-btn ds-btn-primary" type="button">Donate</button>
       <button class="ds-btn ds-btn-secondary on-dark" type="button">Subscribe</button>
@@ -402,9 +382,9 @@
             <dt>.on-dark</dt><dd>For a field dark enough to host white text: an outreach masthead, a photo band. A white fill would read as a paper rectangle stuck to the surface, louder than the primary beside it; <code>.on-dark</code> drops the fill so the field shows through and carries the boundary on a white border. See <a href="outreach/">outreach sites</a> for where such fields are allowed.</dd>
             <dt>Not this</dt><dd>A default white secondary on a cool tint pops too hard and reads as primary &mdash; that is the case <code>.on-tint</code> exists for. Do not put <code>.on-tint</code> on a warm tint: its Card Grey fill melts into the surface. And <code>.on-dark</code> is only correct on a dark field; on a light tint use <code>.on-tint</code>.</dd>
           </dl>
-<pre class="code"><span class="c">&lt;!-- Secondary on a cool tint, and on a committed color field --&gt;</span>
+<pre><code><span class="c">&lt;!-- Secondary on a cool tint, and on a committed color field --&gt;</span>
 <span class="k">&lt;a</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-secondary on-tint"</span> <span class="k">href</span>=<span class="s">"/issues"</span><span class="k">&gt;</span>Submit a fix<span class="k">&lt;/a&gt;</span>
-<span class="k">&lt;a</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-secondary on-dark"</span> <span class="k">href</span>=<span class="s">"/subscribe"</span><span class="k">&gt;</span>Subscribe<span class="k">&lt;/a&gt;</span></pre>
+<span class="k">&lt;a</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-secondary on-dark"</span> <span class="k">href</span>=<span class="s">"/subscribe"</span><span class="k">&gt;</span>Subscribe<span class="k">&lt;/a&gt;</span></code></pre>
     </div></details></div>
   </section>
 
@@ -417,9 +397,9 @@
     with the public classes, and the same reasoning picks the internal tiers; field construction and validation
     live in <a href="forms.html">Forms &amp; validation</a>.</p>
 
-    <h3 class="subgroup-title">Which tier the second action takes</h3>
+    <h3 class="ds-panel-label">Which tier the second action takes</h3>
     <div class="demo-grid">
-      <div><p class="subgroup-title">Save or cancel</p>
+      <div><p class="ds-panel-label">Save or cancel</p>
         <div class="form-demo">
           <div class="ds-field">
             <label class="ds-label" for="fx-title">Title</label>
@@ -430,14 +410,14 @@
             <button class="ds-btn ds-btn-primary" type="submit">Save</button>
           </div>
         </div></div>
-      <div><p class="subgroup-title">Continue or go back</p>
+      <div><p class="ds-panel-label">Continue or go back</p>
         <div class="form-demo">
           <div class="form-actions">
             <button class="ds-btn ds-btn-secondary" type="button">Go back</button>
             <button class="ds-btn ds-btn-primary" type="submit">Continue</button>
           </div>
         </div></div>
-      <div><p class="subgroup-title">Backing out discards work</p>
+      <div><p class="ds-panel-label">Backing out discards work</p>
         <div class="form-demo">
           <div class="ds-field">
             <label class="ds-label" for="fx-reason">Reason for withdrawal</label>
@@ -448,7 +428,7 @@
             <button class="ds-btn ds-btn-primary" type="submit">Submit withdrawal</button>
           </div>
         </div></div>
-      <div><p class="subgroup-title">Three actions — the boundary</p>
+      <div><p class="ds-panel-label">Three actions — the boundary</p>
         <div class="form-demo">
           <div class="form-actions split">
             <button class="ds-btn ds-btn-secondary" type="button">Go back</button>
@@ -458,7 +438,7 @@
             </span>
           </div>
         </div></div>
-      <div><p class="subgroup-title">One action</p>
+      <div><p class="ds-panel-label">One action</p>
         <div class="form-demo">
           <div class="ds-field">
             <label class="ds-label" for="fx-email">Email address</label>
@@ -484,18 +464,18 @@
           <dl>
             <dt>Cheap vs. costly</dt><dd>Weight is the tool for <em>cheap</em> mistakes. When the mistake is expensive or cannot be undone, the answer is a confirmation step, not a heavier button &mdash; arXiv already does this during submission, where deleting files raises a dialog naming how many files will be deleted. Weighting a button is not a substitute for confirming a destructive action.</dd>
           </dl>
-<pre class="code"><span class="c">&lt;!-- Null action: text + primary --&gt;</span>
+<pre><code><span class="c">&lt;!-- Null action: text + primary --&gt;</span>
 <span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-text"</span> <span class="k">type</span>=<span class="s">"button"</span><span class="k">&gt;</span>Cancel<span class="k">&lt;/button&gt;</span>
 <span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-primary"</span> <span class="k">type</span>=<span class="s">"submit"</span><span class="k">&gt;</span>Save<span class="k">&lt;/button&gt;</span>
 
 <span class="c">&lt;!-- Real alternative path: secondary + primary --&gt;</span>
 <span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-secondary"</span> <span class="k">type</span>=<span class="s">"button"</span><span class="k">&gt;</span>Go back<span class="k">&lt;/button&gt;</span>
-<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-primary"</span> <span class="k">type</span>=<span class="s">"submit"</span><span class="k">&gt;</span>Continue<span class="k">&lt;/button&gt;</span></pre>
+<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-primary"</span> <span class="k">type</span>=<span class="s">"submit"</span><span class="k">&gt;</span>Continue<span class="k">&lt;/button&gt;</span></code></pre>
     </div></details></div>
 
-    <h3 class="subgroup-title">Blocked, busy, destructive</h3>
+    <h3 class="ds-panel-label">Blocked, busy, destructive</h3>
     <div class="demo-grid">
-      <div><p class="subgroup-title">Not available yet</p>
+      <div><p class="ds-panel-label">Not available yet</p>
         <div class="form-demo">
           <label class="ds-check">
             <input type="checkbox">
@@ -506,7 +486,7 @@
           </div>
           <p class="ds-hint" id="fx-gate">Grant the license before continuing.</p>
         </div></div>
-      <div><p class="subgroup-title">Submit in flight</p>
+      <div><p class="ds-panel-label">Submit in flight</p>
         <div class="form-demo">
           <div class="form-actions">
             <button class="ds-btn ds-btn-text" type="button">Cancel</button>
@@ -516,7 +496,7 @@
             </button>
           </div>
         </div></div>
-      <div><p class="subgroup-title">A destructive action</p>
+      <div><p class="ds-panel-label">A destructive action</p>
         <div class="form-demo">
           <div class="form-actions split">
             <button class="ds-btn ds-btn-destructive" type="button">Delete draft</button>
@@ -546,13 +526,13 @@
             <dt>In flight</dt><dd>Keep the same button in the same place &mdash; replacing it with a message throws away the keyboard focus sitting on it. The button is working, not unavailable, so it carries <code>aria-busy</code> rather than <code>aria-disabled</code> and keeps its live rendering; the handler is what ignores a second press. The label is the state, so it changes in the markup and not only in CSS &mdash; a spinner alone announces nothing. Under <code>prefers-reduced-motion: reduce</code> the ring stops turning and the label carries the state on its own (DESIGN-POLICIES, Motion).</dd>
             <dt>Destructive</dt><dd>Deleting is not the page&rsquo;s call to action, so it does not take the primary tier and it does not sit next to the button people press without reading: color and position each carry part of the warning, and the delete goes to the far end of the row, away from Save. Built like the rest of the public set with one departure &mdash; hover holds the fill and lightens the inner vignette instead of brightening the color, because a lighter red drops white text below AA. White on Danger Red <code>#c62828</code> stays at 5.62:1 through every state.</dd>
           </dl>
-<pre class="code"><span class="c">&lt;!-- Not available yet: aria-disabled, with the reason visible and described --&gt;</span>
+<pre><code><span class="c">&lt;!-- Not available yet: aria-disabled, with the reason visible and described --&gt;</span>
 <span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-primary"</span> <span class="k">type</span>=<span class="s">"submit"</span>
         <span class="k">aria-disabled</span>=<span class="s">"true"</span> <span class="k">aria-describedby</span>=<span class="s">"gate"</span><span class="k">&gt;</span>Continue<span class="k">&lt;/button&gt;</span>
-<span class="k">&lt;p</span> <span class="k">class</span>=<span class="s">"ds-hint"</span> <span class="k">id</span>=<span class="s">"gate"</span><span class="k">&gt;</span>Grant the license before continuing.<span class="k">&lt;/p&gt;</span></pre>
+<span class="k">&lt;p</span> <span class="k">class</span>=<span class="s">"ds-hint"</span> <span class="k">id</span>=<span class="s">"gate"</span><span class="k">&gt;</span>Grant the license before continuing.<span class="k">&lt;/p&gt;</span></code></pre>
     </div></details></div>
 
-    <h3 class="subgroup-title">Rows in a repeatable group</h3>
+    <h3 class="ds-panel-label">Rows in a repeatable group</h3>
     <div class="form-demo">
       <div class="repeat-row">
         <div class="ds-field">
@@ -637,11 +617,11 @@
               <tr><td><strong>Destructive</strong></td><td><span class="swatch" style="background:#c62828"></span>Danger <code>--danger</code> #c62828</td><td>Hard-delete and irreversible actions only. Always pair with a confirmation step.</td></tr>
             </tbody>
           </table>
-<pre class="code"><span class="c">&lt;!-- Internal tiers (arXiv Check / Admin Console) --&gt;</span>
+<pre><code><span class="c">&lt;!-- Internal tiers (arXiv Check / Admin Console) --&gt;</span>
 <span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"btn btn-primary"</span><span class="k">&gt;</span>Approve<span class="k">&lt;/button&gt;</span>
 <span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"btn btn-secondary"</span><span class="k">&gt;</span>Hold<span class="k">&lt;/button&gt;</span>
 <span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"btn btn-tertiary"</span><span class="k">&gt;</span>View log<span class="k">&lt;/button&gt;</span>
-<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"btn btn-destructive"</span><span class="k">&gt;</span>Delete<span class="k">&lt;/button&gt;</span></pre>
+<span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"btn btn-destructive"</span><span class="k">&gt;</span>Delete<span class="k">&lt;/button&gt;</span></code></pre>
     </div></details></div>
   </section>
 
@@ -664,12 +644,12 @@
   // Nav dropdowns: close on outside click and Esc (enhancement only —
   // the <details> menus work without this).
   document.addEventListener('click', function (e) {
-    document.querySelectorAll('.nav-dd[open]').forEach(function (d) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
       if (!d.contains(e.target)) d.removeAttribute('open');
     });
   });
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') document.querySelectorAll('.nav-dd[open]').forEach(function (d) { d.removeAttribute('open'); });
+    if (e.key === 'Escape') document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) { d.removeAttribute('open'); });
   });
 </script>
 </body>

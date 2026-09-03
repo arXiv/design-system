@@ -12,9 +12,7 @@
     .page-header p { color: var(--arxiv-library-grey); }
     .section { margin-bottom:var(--space-12); }
     .section-desc { color: var(--arxiv-library-grey); }
-    .code-block { background: #1c1a17; color: #f0eeec; border-radius: 6px; padding: 14px 16px; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.6; overflow-x: auto; margin:var(--space-2) 0 0; }
-    .code-block code { background: none; padding: 0; color: inherit; }
-    .note-alert { margin-top:var(--space-4); }
+.note-alert { margin-top:var(--space-4); }
     .notes { margin:0; padding-left: 22px; font-size: 13px; line-height: 1.7; }
 
     /* ── Swatch pairs ── */
@@ -44,25 +42,7 @@
     .dark-scope .b-rep { background: #3a2f0e; color: #fde68a; border-color: #7a5c00; }
     .dark-scope .b-wdr { background: #474340; color: #e8e4df; border-color: #8b8680; }
     .dark-scope .alert { display: flex; gap:11px; padding: 12px 14px; border: 1px solid var(--success-border); border-left-width: 4px; border-radius: 6px; background: var(--success-bg); color: var(--success-fg); font-size: 13px; margin-top:var(--space-3); max-width: 560px; }
-  
-    /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
-       <details>-based: works without JS; the small script at the end of the
-       page only adds close-on-outside-click and Esc. ── */
-    .docs-nav { display: flex; align-items: center; gap:var(--space-1) var(--space-4); flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
-    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right:var(--space-2); }
-    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
-    .nav-dd { position: relative; }
-    .nav-dd > summary { list-style: none; cursor: pointer; color: var(--arxiv-library-grey); padding: 3px 6px; border-radius: 4px; user-select: none; }
-    .nav-dd > summary::-webkit-details-marker { display: none; }
-    .nav-dd > summary::after { content: " \25BE"; font-size: 10px; }
-    .nav-dd > summary:hover, .nav-dd[open] > summary { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
-    .nav-dd > summary:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
-    .nav-dd-menu { position: absolute; left: 0; top: calc(100% + 6px); display: flex; flex-direction: column; min-width: 235px; background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); padding: 6px; z-index: 60; }
-    .nav-dd-menu a { color: var(--arxiv-repository-brown); text-decoration: none; padding: 6px 10px; border-radius: 4px; white-space: nowrap; }
-    .nav-dd-menu a:hover { background: var(--arxiv-card-grey); }
-    .nav-dd-menu a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: -2px; }
-    .nav-dd-menu a[aria-current="page"] { font-weight: 600; }
-    .nav-dd-group { font-family: var(--arxiv-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); padding: 8px 10px 2px; }
+
   
     /* Inline links in page copy. Bare <a> previously fell back to the
        browser default, which is unreadable on the dark canvas. Nav links
@@ -70,11 +50,11 @@
 </style>
 </head>
 <body class="ds-page">
-<nav class="docs-nav" aria-label="Design system">
-  <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
-  <details class="nav-dd">
+<nav class="ds-site-header ds-site-header--light" aria-label="Design system">
+  <a class="ds-site-header-logo" href="../index.html">arXiv Design System</a>
+  <details class="ds-site-header-dropdown">
     <summary>Design Patterns</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="colors.html">Colors</a>
       <a href="typography.html">Typography</a>
       <a href="spacing.html">Spacing</a>
@@ -89,25 +69,25 @@
       <a href="outreach/">Outreach sites</a>
     </div>
   </details>
-  <details class="nav-dd">
+  <details class="ds-site-header-dropdown">
     <summary>Mockups</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="../mockups/">All mockups</a>
-      <span class="nav-dd-group">Public</span>
+      <span class="ds-panel-label">Public</span>
       <a href="../mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
       <a href="../mockups/public/html-phase1.html">HTML paper — Phase 1</a>
       <a href="../mockups/public/optin-modal/">Labs opt-in modal</a>
       <a href="../mockups/public/submission-metadata/">Submission — Metadata Form</a>
-      <span class="nav-dd-group">Internal</span>
+      <span class="ds-panel-label">Internal</span>
       <a href="../mockups/internal/admin-console/user-page/">Admin Console — user page</a>
       <a href="../mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
       <a href="../mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
       <a href="../mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
     </div>
   </details>
-  <details class="nav-dd">
+  <details class="ds-site-header-dropdown">
     <summary>Docs</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
       <a href="brand.html">Brand &amp; vision</a>
         <a href="doc.html?src=docs/BRAND.md">Brand &amp; voice</a>
@@ -177,7 +157,7 @@
     at the end of each stylesheet, keyed to the OS setting. Any page can opt out and lock to light, which is what a
     page whose job is to show light-mode rendering needs — colour specimens, side-by-side comparisons, this page's own
     panels:</p>
-    <pre class="code-block"><code>&lt;html lang="en" data-theme="light"&gt;   &lt;!-- locks this page to light --&gt;</code></pre>
+    <pre><code>&lt;html lang="en" data-theme="light"&gt;   &lt;!-- locks this page to light --&gt;</code></pre>
     <ul class="notes" style="margin-top:14px">
       <li>Tokens flip; components consuming tokens flip for free. Never write a dark hex into a page.</li>
       <li>Accent colors hold in both modes: Access Lime and Open Blue stay themselves. Text sitting <em>on</em> an accent fill therefore must not flip either — use <code>--text-on-lime</code> on lime, and <code>--arxiv-repository-brown-on-blue</code> on Open Blue. Reaching for plain <code>--arxiv-repository-brown</code> puts near-white text on a light blue fill in dark mode, about 1.3:1.</li>
@@ -192,7 +172,7 @@
     <code>ar5iv_theme</code> to <code>localStorage</code>, and a bootstrap script turns that into the attribute. Keying
     only to the media query left a reader who picked dark there on a light-OS machine with a dark canvas and light
     tokens. If a page can ever carry the attribute, mirror the block:</p>
-    <pre class="code-block"><code>&lt;html data-theme="dark"&gt;    &lt;!-- forces dark regardless of the OS --&gt;
+    <pre><code>&lt;html data-theme="dark"&gt;    &lt;!-- forces dark regardless of the OS --&gt;
 &lt;html data-theme="light"&gt;   &lt;!-- forces light, and opts out of the @media block --&gt;
 &lt;html&gt;                      &lt;!-- no attribute: follow the OS --&gt;</code></pre>
     <p class="section-desc" style="margin-top:12px">The mirror is generated from the <code>@media</code> block and
@@ -336,12 +316,12 @@
   // Nav dropdowns: close on outside click and Esc (enhancement only —
   // the <details> menus work without this).
   document.addEventListener('click', function (e) {
-    document.querySelectorAll('.nav-dd[open]').forEach(function (d) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
       if (!d.contains(e.target)) d.removeAttribute('open');
     });
   });
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') document.querySelectorAll('.nav-dd[open]').forEach(function (d) { d.removeAttribute('open'); });
+    if (e.key === 'Escape') document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) { d.removeAttribute('open'); });
   });
 </script>
 </body>

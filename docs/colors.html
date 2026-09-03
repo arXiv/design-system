@@ -15,8 +15,7 @@
     .page-header p { color: var(--arxiv-library-grey); }
     .section { margin-bottom:var(--space-12); }
     .section-desc { color: var(--arxiv-library-grey); }
-    .subgroup-title { font-family: var(--arxiv-font-condensed); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin:var(--space-6) 0 10px; }
-    .minor-title { font-size: 15px; font-weight: 600; margin:var(--space-6) 0 6px; }
+.minor-title { font-size: 15px; font-weight: 600; margin:var(--space-6) 0 6px; }
 
     .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)); gap:var(--space-3); }
     .swatch-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; overflow: hidden; }
@@ -46,25 +45,7 @@
     .toc-nav { display: flex; flex-wrap: wrap; gap:6px var(--space-4); margin:0 0 var(--space-8); font-size: 13px; }
     .toc-nav a { color: var(--arxiv-link-blue); text-decoration: none; }
     .toc-nav a:hover { text-decoration: underline; }
-  
-    /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
-       <details>-based: works without JS; the small script at the end of the
-       page only adds close-on-outside-click and Esc. ── */
-    .docs-nav { display: flex; align-items: center; gap:var(--space-1) var(--space-4); flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
-    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right:var(--space-2); }
-    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
-    .nav-dd { position: relative; }
-    .nav-dd > summary { list-style: none; cursor: pointer; color: var(--arxiv-library-grey); padding: 3px 6px; border-radius: 4px; user-select: none; }
-    .nav-dd > summary::-webkit-details-marker { display: none; }
-    .nav-dd > summary::after { content: " \25BE"; font-size: 10px; }
-    .nav-dd > summary:hover, .nav-dd[open] > summary { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
-    .nav-dd > summary:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
-    .nav-dd-menu { position: absolute; left: 0; top: calc(100% + 6px); display: flex; flex-direction: column; min-width: 235px; background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); padding: 6px; z-index: 60; }
-    .nav-dd-menu a { color: var(--arxiv-repository-brown); text-decoration: none; padding: 6px 10px; border-radius: 4px; white-space: nowrap; }
-    .nav-dd-menu a:hover { background: var(--arxiv-card-grey); }
-    .nav-dd-menu a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: -2px; }
-    .nav-dd-menu a[aria-current="page"] { font-weight: 600; }
-    .nav-dd-group { font-family: var(--arxiv-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); padding: 8px 10px 2px; }
+
   
     /* Inline links in page copy. Bare <a> previously fell back to the
        browser default, which is unreadable on the dark canvas. Nav links
@@ -83,11 +64,11 @@
 </style>
 </head>
 <body class="ds-page">
-<nav class="docs-nav" aria-label="Design system">
-  <a class="docs-nav-brand" href="../index.html">arXiv Design System</a>
-  <details class="nav-dd">
+<nav class="ds-site-header ds-site-header--light" aria-label="Design system">
+  <a class="ds-site-header-logo" href="../index.html">arXiv Design System</a>
+  <details class="ds-site-header-dropdown">
     <summary>Design Patterns</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="colors.html" aria-current="page">Colors</a>
       <a href="typography.html">Typography</a>
       <a href="spacing.html">Spacing</a>
@@ -102,25 +83,25 @@
       <a href="outreach/">Outreach sites</a>
     </div>
   </details>
-  <details class="nav-dd">
+  <details class="ds-site-header-dropdown">
     <summary>Mockups</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="../mockups/">All mockups</a>
-      <span class="nav-dd-group">Public</span>
+      <span class="ds-panel-label">Public</span>
       <a href="../mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
       <a href="../mockups/public/html-phase1.html">HTML paper — Phase 1</a>
       <a href="../mockups/public/optin-modal/">Labs opt-in modal</a>
       <a href="../mockups/public/submission-metadata/">Submission — Metadata Form</a>
-      <span class="nav-dd-group">Internal</span>
+      <span class="ds-panel-label">Internal</span>
       <a href="../mockups/internal/admin-console/user-page/">Admin Console — user page</a>
       <a href="../mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
       <a href="../mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
       <a href="../mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
     </div>
   </details>
-  <details class="nav-dd">
+  <details class="ds-site-header-dropdown">
     <summary>Docs</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
       <a href="brand.html">Brand &amp; vision</a>
         <a href="doc.html?src=docs/BRAND.md">Brand &amp; voice</a>
@@ -156,19 +137,19 @@
     <h2 class="section-title">Brand colors</h2>
     <p class="section-desc">arXiv's core post-spinout identity, grouped by the role each color plays. Primary and secondary carry the brand; support colors do the quieter structural and accent work.</p>
 
-    <h3 class="subgroup-title">Primary</h3>
+    <h3 class="ds-panel-label">Primary</h3>
     <div class="swatches">
       <div class="swatch-card"><div class="swatch-chip" style="background:#a5d6fe"></div><div class="swatch-body"><div class="swatch-name">Open Blue</div><div class="swatch-hex">#a5d6fe</div><div class="swatch-token">--arxiv-open-blue</div><div class="swatch-role"><strong>arXiv’s primary brand color.</strong> Public primary actions (HTML/PDF buttons), highlights, section accents.</div></div></div>
       <div class="swatch-card"><div class="swatch-chip" style="background:#1c1a17"></div><div class="swatch-body"><div class="swatch-name">Repository Brown</div><div class="swatch-hex">#1c1a17</div><div class="swatch-token">--arxiv-repository-brown</div><div class="swatch-role">Body text, dark backgrounds, primary headers. The text workhorse — clears AA on every approved surface.</div></div></div>
     </div>
 
-    <h3 class="subgroup-title">Secondary</h3>
+    <h3 class="ds-panel-label">Secondary</h3>
     <div class="swatches">
       <div class="swatch-card"><div class="swatch-chip" style="background:#1f5e96"></div><div class="swatch-body"><div class="swatch-name">Archival Blue</div><div class="swatch-hex">#1f5e96</div><div class="swatch-token">--arxiv-archival-blue</div><div class="swatch-role">Brand accent blue; public section headings.</div><span class="ratio">6.8:1 on white ✓ AA</span></div></div>
       <div class="swatch-card"><div class="swatch-chip" style="background:#6b6459"></div><div class="swatch-body"><div class="swatch-name">Library Grey</div><div class="swatch-hex">#6b6459</div><div class="swatch-token">--arxiv-library-grey</div><div class="swatch-role">Secondary text, labels, muted interactive elements.</div><span class="ratio">5.83:1 on white ✓ AA</span></div></div>
     </div>
 
-    <h3 class="subgroup-title">Support</h3>
+    <h3 class="ds-panel-label">Support</h3>
     <div class="swatches">
       <div class="swatch-card"><div class="swatch-chip" style="background:#8b8680"></div><div class="swatch-body"><div class="swatch-name">UI Boundary Grey</div><div class="swatch-hex">#8b8680</div><div class="swatch-token">--arxiv-grey-ui</div><div class="swatch-role">Interactive borders, tracks, arrows.</div><span class="ratio">3.61:1 on white ✓ 3:1 UI</span></div></div>
       <div class="swatch-card"><div class="swatch-chip" style="background:#b0aba6"></div><div class="swatch-body"><div class="swatch-name">Disabled Grey</div><div class="swatch-hex">#b0aba6</div><div class="swatch-token">--arxiv-grey-dis</div><div class="swatch-role">Disabled states only — exempt from contrast requirements.</div><span class="ratio">2.24:1 — below AA, by design</span></div></div>
@@ -176,18 +157,18 @@
     </div>
     <p class="footnote" style="margin-top:14px">The three warm greys form a deliberate ladder — one stop per contrast tier (Disabled / UI Boundary / Library, the last living in Secondary above). Do not introduce intermediate values without a DESIGN-POLICIES.md change.</p>
 
-    <h3 class="subgroup-title">Internal accent</h3>
+    <h3 class="ds-panel-label">Internal accent</h3>
     <div class="swatches">
       <div class="swatch-card"><div class="swatch-chip" style="background:#c4d82e"></div><div class="swatch-body"><div class="swatch-name">Access Lime</div><div class="swatch-hex">#c4d82e</div><div class="swatch-token">--lime <span style="color:var(--arxiv-grey-ui)">(internal)</span></div><div class="swatch-role">Internal primary-action identity — signals "you are in a staff tool." On public pages: small highlights only (accent stripe, badge fill), never buttons. Fails text contrast — fills only.</div><span class="ratio">~1.5:1 — fills only</span></div></div>
     </div>
 
-    <h3 class="subgroup-title">Heritage — used sparingly</h3>
+    <h3 class="ds-panel-label">Heritage — used sparingly</h3>
     <div class="swatches">
       <div class="swatch-card"><div class="swatch-chip" style="background:#b31b1b"></div><div class="swatch-body"><div class="swatch-name">Campus Red</div><div class="swatch-hex">#b31b1b</div><div class="swatch-role">The X in the logo mark; very occasional accent. Never headers, buttons, large fields, or text.</div></div></div>
       <div class="swatch-card"><div class="swatch-chip" style="background:#fb595a"></div><div class="swatch-body"><div class="swatch-name">Publishing Pink</div><div class="swatch-hex">#fb595a</div><div class="swatch-role">Rare: time-limited announcements, celebratory accents. Never errors or body text.</div></div></div>
     </div>
 
-    <h3 class="subgroup-title">Two contexts — never crossed</h3>
+    <h3 class="ds-panel-label">Two contexts — never crossed</h3>
     <div class="context-cards">
       <div class="context-card">
         <h3><span class="context-dot" style="background:#a5d6fe"></span>Public pages — clean, fast, brown-and-blue</h3>
@@ -216,14 +197,14 @@
     <h2 class="section-title">Links &amp; interactive</h2>
     <p class="section-desc">Colors that signal "you can act on this." Link-vs-body contrast fails 3:1, so inline links are also underlined — color is never the only signal (WCAG 1.4.1).</p>
 
-    <h3 class="subgroup-title">Text links</h3>
+    <h3 class="ds-panel-label">Text links</h3>
     <div class="swatches">
       <div class="swatch-card"><div class="swatch-chip" style="background:#1565c0"></div><div class="swatch-body"><div class="swatch-name">Link Blue</div><div class="swatch-hex">#1565c0</div><div class="swatch-token">--arxiv-link-blue</div><div class="swatch-role">All interactive links, light mode. Author names, category links, DOIs.</div><span class="ratio">5.74:1 on white ✓ AA</span></div></div>
       <div class="swatch-card"><div class="swatch-chip" style="background:#1050a0"></div><div class="swatch-body"><div class="swatch-name">Link Hover</div><div class="swatch-hex">#1050a0</div><div class="swatch-token">--arxiv-link-hover</div><div class="swatch-role">Link hover state.</div><span class="ratio">7.83:1 on white ✓ AAA</span></div></div>
       <div class="swatch-card"><div class="swatch-chip" style="background:#7b2fbe"></div><div class="swatch-body"><div class="swatch-name">Visited Purple</div><div class="swatch-hex">#7b2fbe</div><div class="swatch-token">--arxiv-link-visited</div><div class="swatch-role">Visited link state.</div><span class="ratio">7.02:1 on white ✓ AAA</span></div></div>
     </div>
 
-    <h3 class="subgroup-title">Focus indicators</h3>
+    <h3 class="ds-panel-label">Focus indicators</h3>
     <div class="swatches">
       <div class="swatch-card"><div class="swatch-chip" style="background:linear-gradient(90deg,#1565c0 50%,#64b5f6 50%)"></div><div class="swatch-body"><div class="swatch-name">Focus Ring</div><div class="swatch-hex">#1565c0 light &middot; #64b5f6 dark</div><div class="swatch-token">--arxiv-focus-ring / --arxiv-focus-ring-dark</div><div class="swatch-role">Keyboard focus indicator; the dark variant is required on Repository Brown surfaces, where the standard ring is invisible.</div></div></div>
     </div>
@@ -248,7 +229,7 @@
     <h2 class="section-title">Backgrounds</h2>
     <p class="section-desc">Tints for section depth without hard borders, plus the light-blue surfaces arXiv lays over paper content. Picking one and staying accessible on it are covered in the two subsections that follow.</p>
 
-    <h3 class="subgroup-title">Background tints</h3>
+    <h3 class="ds-panel-label">Background tints</h3>
     <p class="section-desc">Barely-perceptible tints for section depth without hard borders. Mostly warm (Repository Brown stepped toward white), with a cool wash and a code-block blue tint for jobs that read better cool.</p>
     <div class="swatches">
       <div class="swatch-card"><div class="swatch-chip" style="background:#f9f7f7"></div><div class="swatch-body"><div class="swatch-name">Warm Wash</div><div class="swatch-hex">#f9f7f7</div><div class="swatch-token">--arxiv-warm-wash</div><div class="swatch-role">Footer, metadata bands, internal page background</div></div></div>
@@ -259,7 +240,7 @@
       <div class="swatch-card"><div class="swatch-chip" style="background:#f0f5ff"></div><div class="swatch-body"><div class="swatch-name">Blue Tint</div><div class="swatch-hex">#f0f5ff</div><div class="swatch-role">Code and identifier backgrounds</div></div></div>
     </div>
 
-    <h3 class="subgroup-title">The arXiv Chrome family — Open Blue's tints</h3>
+    <h3 class="ds-panel-label">The arXiv Chrome family — Open Blue's tints</h3>
     <p class="section-desc">Open Blue stepped toward white (plus its hover step <span class="swatch-hex" style="display:inline">#c2e2ff</span>): light blues reserved for arXiv-added chrome layered over content — popovers, the TOC dropdown, active inline states, the read-aloud highlight, the reader footer band. The recognizable rule: <em>light blue = arXiv chrome speaking, not the paper</em>. (PROPOSED-GUIDELINES.md G4.)</p>
     <div class="swatches">
       <div class="swatch-card"><div class="swatch-chip" style="background:#edf4fc"></div><div class="swatch-body"><div class="swatch-name">Tint Light</div><div class="swatch-hex">#edf4fc</div><div class="swatch-token">--arxiv-tint-light</div><div class="swatch-role">Popover, dropdown, and footer-band surface</div></div></div>
@@ -365,12 +346,12 @@
   // Nav dropdowns: close on outside click and Esc (enhancement only —
   // the <details> menus work without this).
   document.addEventListener('click', function (e) {
-    document.querySelectorAll('.nav-dd[open]').forEach(function (d) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
       if (!d.contains(e.target)) d.removeAttribute('open');
     });
   });
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') document.querySelectorAll('.nav-dd[open]').forEach(function (d) { d.removeAttribute('open'); });
+    if (e.key === 'Escape') document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) { d.removeAttribute('open'); });
   });
 </script>
 </body>
