@@ -11,11 +11,6 @@
        the guidance blocks. Cohesion comes from a shared measure, not from four
        different ones. Prose keeps its own, narrower value: see --doc-prose. */
     :root { --doc-measure: 860px; }
-    .page-header { margin:var(--space-6) 0 var(--space-8); padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
-    .page-header h1 { margin-bottom: var(--space-2); }
-    .page-header p { color: var(--arxiv-library-grey); }
-    .section { margin-bottom:var(--space-12); }
-    .section-desc { color: var(--arxiv-library-grey); }
 .demo { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 24px; }
     .demo-label { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin:0 0 var(--space-3); }
     .group-title { font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); margin:var(--space-6) 0 var(--space-3); }
@@ -25,8 +20,7 @@
     .spec-table th { background: var(--arxiv-card-grey); text-align: left; padding: 8px 13px; font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-library-grey); }
     .spec-table td { padding: 9px 13px; border-top: 1px solid var(--arxiv-card-grey); vertical-align: top; }
     .spec-table td:first-child { white-space: nowrap; }
-.note-alert { margin-top:var(--space-4); }
-    /* ── Guidance blocks: .a11y and .tone ──
+/* ── Guidance blocks: .a11y and .tone ──
        Two per-pattern blocks sharing one construction, so they read as a pair:
        same light-blue tint, same monospace heading, differing only in the left
        edge and the heading colour. Accessibility essentials takes Link Blue
@@ -146,7 +140,7 @@
 
 <div class="ds-container">
 
-  <header class="page-header">
+  <header class="ds-page-header">
     <h1>Forms &amp; validation</h1>
     <p>How arXiv builds a form, and how it tells someone what is wrong with one. Below:
       field construction, the three dispositions a validation result can take, how a problem is
@@ -162,7 +156,7 @@
   <!-- ── The rendered thing ── -->
   <div class="section">
     <h2 class="section-title">Form demo</h2>
-    <p class="section-desc">A field is a label, a control, optional help text, and a slot for a
+    <p class="ds-section-desc">A field is a label, a control, optional help text, and a slot for a
     message. That order never changes. Labels sit above their controls, and related fields group by
     spacing rather than boxes.</p>
 
@@ -234,7 +228,7 @@
   <!-- ── Validation ── -->
   <div class="section">
     <h2 class="section-title">Validation</h2>
-    <p class="section-desc">Fields can be in three possible states: normal, validated, or disabled.
+    <p class="ds-section-desc">Fields can be in three possible states: normal, validated, or disabled.
     Validation styles change based on the error disposition &mdash; that is, its severity.</p>
 
     <div class="states">
@@ -303,7 +297,7 @@
       <tr><td><strong>Info</strong></td><td>Yes</td><td>arXiv changed the value automatically. Nothing is wrong; the author is being told.</td></tr>
     </table>
 
-    <p class="section-desc" style="margin-top:14px">The <strong>info</strong> disposition is what makes
+    <p class="ds-section-desc" style="margin-top:14px">The <strong>info</strong> disposition is what makes
     automatic correction legitimate: normalising whitespace or stripping markup is an edit to
     author-submitted content, and what makes that acceptable is that the author sees the change before
     it is committed. The review step is not a nicety to drop later for &ldquo;obvious&rdquo; fixes.</p>
@@ -322,12 +316,12 @@
     </details>
 
     <h3 class="ds-panel-label">Alerts above the form</h3>
-    <p class="section-desc">On a form of any length, repeat the problems above the first field. This
+    <p class="ds-section-desc">On a form of any length, repeat the problems above the first field. This
     is not a new component &mdash; it is <a href="alerts.html"><code>.ds-alert</code></a>, specified
     on its own page, holding an ordered list of links. What follows is only what is particular to
     using one for validation.</p>
 
-    <ul class="section-desc">
+    <ul class="ds-section-desc">
       <li><strong>One alert per severity, never a mixed one.</strong> Red has to mean &ldquo;you
       cannot proceed,&rdquo; and a non-blocking item inside a red alert destroys that. Two problems
       of two severities means two alerts, in severity order.</li>
@@ -352,7 +346,7 @@
       </div>
     </div>
 
-    <p class="section-desc" style="margin-top:16px">A warning summary is the same construction in
+    <p class="ds-section-desc" style="margin-top:16px">A warning summary is the same construction in
     <code>.ds-alert-warning</code>, and an automatic change is <code>.ds-alert-info</code>. See
     <a href="alerts.html">Alerts</a> for the four severities and their markup.</p>
 
@@ -418,7 +412,7 @@
   <!-- ── Layout ── -->
   <div class="section">
     <h2 class="section-title">Layout</h2>
-    <ul class="section-desc" style="line-height:1.9; padding-left:20px">
+    <ul class="ds-section-desc" style="line-height:1.9; padding-left:20px">
       <li><strong>Labels go above the control.</strong> A label-left, field-right layout gives a
       ragged edge, reads badly on a phone, and makes it easy to ship a control with no label at all.</li>
       <li><strong>Width follows the content.</strong> A field the width of a postcode says what is
