@@ -8,13 +8,9 @@
 ║  HTML PAPER READER REDESIGN — PHASE 1 PROPOSAL                     ║
 ╚════════════════════════════════════════════════════════════════════╝
 
-  PHASE 1 PROPOSAL VARIANT
-    Copied from merged-abstract-reader.html on 2026-07-28. This copy is
-    the Phase 1 implementation proposal: a reduced/adjusted feature set
-    based on phase 1 feedback. Divergences from the parent are deliberate
-    scope decisions, not design reversals.
-
-    The parent mockup was removed 2026-08-10, along with the standalone
+  PHASE 1 PROPOSAL VARIANT This copy is
+    the Phase 1 implementation proposal: a reduced/adjusted feature set. Divergences from the parent are deliberate
+    scope decisions, not design reversals. The parent mockup was removed, along with the standalone
     reader (html-redesign.html), leaving this file as the current
     HTML-paper mockup. Both parents are recoverable from git history if
     you need the full design vision or the features cut below; comments
@@ -131,7 +127,7 @@
      to fully readable static HTML. The reader must be completely
      readable with no JavaScript at all: enhancement scripts add
      conveniences (popovers, TOC dropdown, marginalia), never carry
-     content. Michel Coornaert (2022-11-14) browses with JS off by
+     content. Some readers browse with JS off by
      choice; low-bandwidth readers get it off by circumstance. */
   document.documentElement.classList.add('js');
 
@@ -182,7 +178,7 @@
   speech, structural navigation) is being addressed at the source by
   the LaTeXML / MathML team led by Deyan Ginev — see Ginev et al.,
   "Scaling Accessible Mathematics on arXiv: HTML Conversion and
-  MathML 4" (arXiv:2605.16562v1, 2026-05-15).
+  MathML 4" (arXiv:2605.16562v1).
 
   Their strategy is browser-native MathML Core rendering plus MathML 4
   Intent annotations carrying semantic structure directly in the
@@ -200,15 +196,13 @@
   SRE downstream. So we strip MathJax from this mockup to avoid
   muddying the conversation: this file demonstrates the READER
   WORKFLOW layer (zoom / copy / permalink), not the math
-  accessibility layer (which is Deyan's territory).
-
-  PHASE 1 UPDATE 2026-07-28: the read-aloud ("Listen") feature and its
+  accessibility layer (which is Deyan's territory). PHASE 1: the read-aloud ("Listen") feature and its
   Speech Rule Engine integration were removed from this phase 1 copy —
   too much complexity for phase 1. The AT path (screen readers) remains
   browser+AT over native MathML, where NVDA/JAWS already run
   MathCAT/SRE themselves. See the parent mockup for the full Listen
   treatment and its SRE rationale.
-  Expert review (Deyan Ginev, 2026-06-12) set the direction: literal
+  The direction set the direction: literal
   readouts as the baseline (SRE now runs MathSpeak here, not
   ClearSpeak), with MathCAT-as-WebAssembly the named successor — it
   respects the intent=":literal" baseline LaTeXML already emits.
@@ -230,8 +224,8 @@
 -->
 <style id="mg-merge-styles">
 /* ════════════════════════════════════════════════════════════════════
-   MERGED ABSTRACT + HTML READER — added layer (2026-06-23, 3rd pass)
-   Layout (per Shamsi's spec):
+   MERGED ABSTRACT + HTML READER — added layer
+   Layout ():
      ABSTRACT MODE
        1. Black ds-site-header with Reader-view toggle in the center
        2. Reader's native .new-watermark (ID line) + .ltx_title + authors + .ltx_abstract
@@ -296,25 +290,20 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent !
    for exactly this: dark in both modes, lifted in dark so it separates
    from the canvas. Everything sitting on it is pinned below, because the
    bar never becomes light and its contents must never flip. */
-/* ── TEXT-SPACING TOLERANCE — verified 2026-09-03 ─────────────────────────
+/* ── TEXT-SPACING TOLERANCE ─────────────────────────
    Header heights are min-height, never a fixed or maximum height. WCAG 1.4.12
    (Text Spacing, AA) requires the page to keep working when a reader forces
    larger line-height, letter-spacing and word-spacing; a locked height clips
    the nav labels instead of growing with them. Same reason there is no
    max-height here: a cap is a clip waiting to happen. Panels that genuinely
    need a ceiling (popovers, the TOC list) pair it with overflow: auto so the
-   content scrolls rather than disappears.
-
-   TESTED: line-height 1.5, letter-spacing 0.12em, word-spacing 0.16em and
+   content scrolls rather than disappears. TESTED: line-height 1.5, letter-spacing 0.12em, word-spacing 0.16em and
    paragraph spacing 2em applied to every element at once, then every element
    checked for clipping (an overflow of hidden/clip whose scroll size exceeds
    its client size). RESULT: 7 hits, all of them the visually-hidden pattern
    (.is-sr-only, the sr-only abstract heading, and .mg-skip-to-paper before
    focus) — which clip by design and lose nothing, since the text stays in the
-   accessibility tree. No real failures.
-
-   Before this pass .arxiv-html-header.compact carried height, min-height AND
-   max-height, all 36px with !important, and would have clipped. If you are
+   accessibility tree. No real failures. If you are
    about to change a height here to a fixed value, this is what it costs. */
 .ds-site-header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; min-height: 52px; background: var(--arxiv-header-bar); }
 .ds-site-header-logo { display: flex; align-items: center; text-decoration: none; justify-self: start; }
@@ -350,7 +339,7 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent !
    Labs-toggle pattern (abstract-phase2.html / .abs-labs-toggle) and
    the user's brand preference.
 
-   Override note (2026-06-24 design review, finding C): DESIGN-POLICIES.md
+   Override note: DESIGN-POLICIES.md
    "Toggle switches" specifies Link Blue (#1565c0) for public toggles. Open
    Blue is used here for brand consistency across the page, matching the
    pre-existing Labs toggles. The white knob on a pale Open Blue track may
@@ -379,24 +368,18 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent !
 /* The LaTeXML <article> has `overflow-x: clip` (from ar5iv.css — meant to
    contain wide equations). That clips my band's full-bleed negative-margin
    extension to the article's visual width (~832px), even though the band's
-   box-model rect says it's at x=0..100vw. Reported in browser review at
-   1025-1199px where the band visibly stopped short of the viewport edges.
+   box-model rect says it's at x=0..100vw. Seen in 1025-1199px where the band visibly stopped short of the viewport edges.
    Override to allow the band to render at its true width; wide equations
    inside the article are still contained by .ltx_page_main being a grid
    cell of fixed body-grid width, so no new page-overflow risk. */
 article.ltx_document { overflow-x: visible !important; }
 
-/* ══ DOCUMENT-TOOLS RAIL ══
-   Replaces the old full-bleed tinted band. A LIGHT vertical stack of
+/* A LIGHT vertical stack of
    document tools. In ABSTRACT mode it sits in the right column of a two-up
    top layout (authors+abstract on the left, rail on the right) INSIDE the
    normal content width — so it never competes with the figure marginalia
-   in the outer margin. In READER mode the rail is hidden and the column
-   collapses to a single centered reading column (matching the standalone reader mockup,
-   removed 2026-08-10).
-   Never sticky — it scrolls away (the reader header carries persistent
-   PDF / Abstract access once you scroll). (2026-06-25 researcher feedback:
-   metadata felt like a scroll interruption; raw BibTeX needn't be open by
+   in the outer margin. Never sticky — it scrolls away (the reader header carries persistent
+   PDF / Abstract access once you scroll). (metadata felt like a scroll interruption; raw BibTeX needn't be open by
    default; rail should live within the content width, content left-aligned,
    title full width.) */
 /* Default the whole rail to IBM Plex Sans (typography.md body face).
@@ -479,7 +462,7 @@ body.mg-reader .mg-top-cols { display: block; }
      mode, light-on-dark in light mode. The canonical rule in
      docs/public/design-system.css still pairs the flipping background
      with a literal #fff, which renders white on near-white in dark mode
-     (1.16:1) — reported 2026-08-17, fix it there too. */
+     (1.16:1) fix it there too. */
   background: var(--arxiv-repository-brown);
   color: var(--arxiv-warm-wash);
   padding: 10px 16px;
@@ -515,8 +498,7 @@ body.mg-reader .mg-top-cols { display: block; }
 /* Cite — heading + a minimal format dropdown on one row; below it a tinted
    "codeblock" that is one row tall until expanded. The bar carries a
    "Display <format>" toggle (left) and a codeblock-style copy button
-   (right). Copy works whether or not the code is shown. (Researcher
-   feedback 2026-06-25: raw BibTeX needn't be open by default; one-click
+   (right). Copy works whether or not the code is shown. (raw BibTeX needn't be open by default; one-click
    copy; codeblock affordances; minimal dropdown.) */
 .mg-cite-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 10px; }
 .mg-cite-head h3 { margin: 0; }
@@ -676,7 +658,7 @@ body.mg-reader .mg-top-cols { display: block; }
 .ds-btn-tertiary:hover { background: var(--arxiv-pill-border); }
 .ds-btn-tertiary:active { transform: translateY(1px); background: var(--arxiv-border-light); }
 .ds-btn-tertiary .btn-arrow { width: 1.07em; height: 1.07em; flex: none; }
-/* Label contrast, measured 2026-07-28 (WCAG AA text needs 4.5:1):
+/* Label contrast (WCAG AA text needs 4.5:1):
    Repository Brown on Card Grey 15.0:1 (rest) · Pill Border 13.2:1 (hover) ·
    Border Light 12.3:1 (active). The FILL is deliberately quiet —
    1.16:1 against the white page — which is fine per 1.4.11 because
@@ -688,8 +670,7 @@ body.mg-reader .mg-top-cols { display: block; }
    (light brown), so on the warm tint the pill disappears entirely
    (on the blue tint the warm hue still differentiates it, barely).
    On tint, step the fill one rung down the warm-grey ladder; the label
-   stays Repository Brown and passes AA in every state (12.3:1+). Visually tested on
-   both tints 2026-07-28. */
+   stays Repository Brown and passes AA in every state (12.3:1+). Visually tested on both tints. */
 .ds-btn-tertiary.on-tint { background: var(--arxiv-pill-border); }
 .ds-btn-tertiary.on-tint:hover { background: var(--arxiv-border-light); }
 .ds-btn-tertiary.on-tint:active { background: var(--arxiv-border-light); }
@@ -697,12 +678,10 @@ body.mg-reader .mg-top-cols { display: block; }
 /* Row that holds the back-to-abstract tertiary button: directly below
    the site header, above the watermark line, centered on the page —
    matching the centered watermark / identity column below it
-   (feedback 2026-07-28; a first pass used top-left back-link
+   (a first pass used top-left back-link
    convention). */
 /* "Back to abstract" moved into the document-tools rail, above the tinted
-   band (2026-08-17). It used to sit full-width between the site header and
-   the watermark, where it cost 52px above the paper title for a route that
-   the always-visible tools bar (.mg-abs-link) already carries. In the rail
+   band. In the rail
    it sits below the title instead of pushing it down, and it is the quiet
    text tier rather than a tertiary button — the loudest control in this
    column should be Download PDF, not a way back out. */
@@ -722,7 +701,7 @@ body.mg-reader .mg-top-cols { display: block; }
 .ds-announcement { display: none; }
 @media (max-width: 700px) { .mg-abs-return { padding: 10px 12px 0; } }
 
-/* Accordions — codified 2026-07-28 as .ds-acc in
+/* Accordions — codified as .ds-acc in
    docs/public/design-system.css (.mg-accordions → .ds-acc-stack,
    rail scoping → .ds-acc-rail). The codified version is the source of
    truth — never fork values; this local copy exists only because the
@@ -804,18 +783,13 @@ a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
    the viewport by 48px at every width — which expanded the body's scroll
    width, shifted the article's center, and made the band's symmetric
    negative-margin trick (calc(50% - 50vw)) come out asymmetric. Caught
-   in browser review at 1025-1199px (2026-06-24). */
+   in browser review at 1025-1199px. */
 .mg-toc-bar { box-sizing: border-box; position: sticky; top: 0; z-index: 100; padding: 10px 0;
   /* full-bleed: break out of any constrained parent so the bar spans the viewport */
   width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
-  /* Frosted glass, driven from the token so it flips. It was previously
-     rgba(255,255,255,0.55), a literal white that cannot flip, so in dark
-     mode the bar became a pale band and its labels went illegible.
-     color-mix keeps the single source of truth — the alpha rides on
+  /* Frosted glass, driven from the token so it flips. color-mix keeps the single source of truth — the alpha rides on
      whatever --arxiv-card-grey currently is — instead of hand-picking a
-     dark rgba, which docs/dark-mode.html forbids.
-
-     Opacity is 92%, not the old 55%. Text sits on this bar, and figures
+     dark rgba, which docs/dark-mode.html forbids. Text sits on this bar, and figures
      in the paper carry white backgrounds for legibility, so a white
      figure scrolling underneath lightens the bar. Measured over white:
      55% is nowhere near passing, 82% gives 3.5:1, 92% holds 5.05:1. The
@@ -846,8 +820,7 @@ a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
 .mg-toc-wrap { justify-self: center; }
 .mg-toc-tools { justify-self: end; }
 .mg-toc-bar .nav-icon { width: 1.25em; height: 1.25em; opacity: 0.65; flex-shrink: 0; }
-/* Compact on scroll (mirrors the retired reader header): tighter row, drop
-   the tool text labels to icons, and shrink the lozenge. */
+/* */
 .mg-toc-bar.is-stuck { padding: 4px 0; }
 .mg-toc-bar.is-stuck .nav-label { display: none; }
 /* Exception: the Abstract link keeps its text label even in the compact
@@ -1028,7 +1001,7 @@ footer.ds-site-footer { grid-area: footer; }
    The full-width Labs band below the paper was cut from the phase 1
    scope (see the markup tombstone near </article>); its styles went
    with it. See the parent mockup
-   merged-abstract-reader.html (removed 2026-08-10; in git history). */
+   merged-abstract-reader.html. */
 
 /* ══ STICKY TOC — design note ══
    The TOC bar is sticky in BOTH abstract and reader modes. DESIGN-POLICIES.md
@@ -1037,7 +1010,7 @@ footer.ds-site-footer { grid-area: footer; }
    full paper inline), so sticky TOC is the right call here. Logging as a
    deliberate override of the current policy text; if this surface ships, the
    policy should be updated to add the merged page as a second approved
-   sticky-chrome surface (2026-06-24 design review, finding D). */
+   sticky-chrome surface. */
 
 /* ══ PREFERS-REDUCED-MOTION ══
    Honor the OS / browser preference: kill ALL the motion in my injected
@@ -1077,8 +1050,7 @@ footer.ds-site-footer { grid-area: footer; }
     <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
       <img src="images/logo_arxiv-primary.svg" alt="archive">
     </a>
-    <!-- (Reader-view toggle removed 2026-06-26: the single default page is
-         the reading surface; paper tools now live in the sticky TOC bar.) -->
+    <!-- -->
     <div class="ds-site-header-center"></div>
     <nav class="ds-site-header-nav" aria-label="Main navigation">
       <a href="https://arxiv.org/search" aria-label="Search archive">
@@ -1194,12 +1166,11 @@ footer.ds-site-footer { grid-area: footer; }
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  1.  COLOR SCHEME                                                │
    ├──────────────────────────────────────────────────────────────────┤
-   │  Dark mode is live on this page (2026-08-17). It previously      │
-   │  forced light with color-scheme, which does not work:            │
-   │  color-scheme only governs UA-rendered widgets, so the ar5iv     │
-   │  stylesheet's own dark rules still painted a dark canvas while   │
-   │  this page's tokens stayed light. The result was dark text on a  │
-   │  dark background — trap 3 in docs/dark-mode.html.                │
+   │  Dark mode is live on this page. Do not force light with         │
+   │  color-scheme: it only governs UA-rendered widgets, so the       │
+   │  ar5iv stylesheet's own dark rules still paint a dark canvas     │
+   │  while this page's tokens stay light. The result is dark text    │
+   │  on a dark background — trap 3 in docs/dark-mode.html.           │
    │  The dark token values are at the end of this style block.       │
    └──────────────────────────────────────────────────────────────────┘ */
 :root { color-scheme: light dark; }
@@ -1413,10 +1384,7 @@ html { scroll-padding-top: 80px; }
   top: 52px;             /* matches header height, no gap */
   z-index: 110;          /* summoned-surfaces tier: transient surfaces
                             the reader just opened (popovers, dropdowns)
-                            paint above sticky chrome (z:100). Caught by
-                            Shamsi 2026-08-31: the citation popover at
-                            the old popover tier (z:50) rendered BEHIND
-                            the sticky Contents bar. */
+                            paint above sticky chrome (z:100). */
   width: 380px;
   max-width: calc(100vw - 32px);
   max-height: calc(100vh - 72px);
@@ -1547,7 +1515,7 @@ html { scroll-padding-top: 80px; }
     bottom: 0;
     width: 100vw;
     max-width: 100vw;
-    /* dvh, not vh (internal mobile testing 2026-06-11: a tester could
+    /* dvh, not vh (a tester could
        not scroll to the END of the ToC on their phone). 100vh on iOS
        Safari includes the area behind the collapsing URL bar, so the
        list's tail was clipped offscreen. Dynamic viewport units track
@@ -1812,9 +1780,7 @@ article.ltx_document { margin-top: 0 !important; }
    typography.md sanctions 400/500/600 for body text and lists no role for Light
    at all. Beyond the spec: WCAG measures colour contrast, not stroke width, so a
    Light weight can pass 1.4.3 numerically while being materially harder to read.
-   IBM's own Carbon system reserves Plex Light for large display sizes.
-
-   DECIDED 2026-09-03, on screen: 400 weight with Repository Brown (#1c1a17,
+   IBM's own Carbon system reserves Plex Light for large display sizes., on screen: 400 weight with Repository Brown (#1c1a17,
    16.3:1). A softer body colour (#4a433d, 9.1:1) was tried against 400 and
    rejected — the high contrast reads better, so no new stop is needed on the
    warm grey ladder. */
@@ -1828,7 +1794,7 @@ article.ltx_document { margin-top: 0 !important; }
   font-weight: 400 !important;
   line-height: 1.7 !important;
   color: var(--arxiv-repository-brown) !important;
-  /* Left-aligned, not justified. Reviewed 2026-09-03.
+  /* Left-aligned, not justified.
 
      CSS justification is not TeX justification: browsers break lines greedily
      and then stretch word spaces on whatever line results, with no
@@ -1918,9 +1884,7 @@ article.ltx_document { margin-top: 0 !important; }
 .new-watermark {
   text-align: center;
   /* Tightened from 10px padding and the browser default 15px paragraph
-     margin (2026-08-17). This row is small print between the site header
-     and the paper title; the old spacing gave it the breathing room of a
-     section break and pushed the title 26px further down. */
+     margin. */
   margin: 6px 0;
   padding: 6px 24px;
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
@@ -1957,8 +1921,7 @@ article.ltx_document { margin-top: 0 !important; }
   margin-right: 6px;
 }
 /* Watermark links (DOI, License) use the canonical design-system link
-   treatment (.ds-link: Link Blue, underlined, hover/visited states) —
-   decided 2026-06-11. An earlier iteration styled them as quiet grey
+   treatment (.ds-link: Link Blue, underlined, hover/visited states) — An earlier iteration styled them as quiet grey
    chrome links, which left the DOI and License visibly inconsistent
    with each other and with the same DOI link on the abstract page.
    These are genuine destinations (doi.org, the license page), not
@@ -1979,7 +1942,7 @@ article.ltx_document { margin-top: 0 !important; }
 }
 /* Kill the abbr's browser-default dotted underline so it doesn't stack
    with the link underline (it rendered like a strikethrough at this
-   size — responsiveness audit 2026-06-11). The parent link's underline
+   size). The parent link's underline
    still draws through the abbr; the title tooltip is unaffected. */
 .new-watermark a abbr[title] { text-decoration: none; }
 
@@ -1995,8 +1958,7 @@ article.ltx_document { margin-top: 0 !important; }
   padding-bottom: 36px !important;
 }
 
-/* Everything AFTER the references keeps the references tint (internal
-   feedback 2026-06-11): in many papers an appendix or acknowledgments
+/* Everything AFTER the references keeps the references tint (internal: in many papers an appendix or acknowledgments
    section follows the bibliography in the DOM, and snapping back to
    white after the grey band is jarring. The general-sibling combinator
    (~) selects every later sibling of the bibliography at the same DOM
@@ -2008,8 +1970,7 @@ article.ltx_document { margin-top: 0 !important; }
    dormant here — verify against a paper with post-references content
    (e.g. appendix-after-bib) before promoting.
 
-   SCOPED to LaTeXML structural elements, NOT `~ *` (bug found in
-   internal testing 2026-06-12): our own JS appends footnote marginalia
+   SCOPED to LaTeXML structural elements, NOT `~ *` (bug found in: our own JS appends footnote marginalia
    to the article element, making them DOM-siblings of the bibliography
    even though they render in the right margin beside earlier prose —
    the universal selector painted them with full-bleed grey slabs. */
@@ -2109,7 +2070,7 @@ section.ltx_bibliography {
    │  Click on any citation cluster [1, 12, 47] to get a popover that │
    │  shows each reference's text + a "Jump to reference" link.       │
    │                                                                  │
-   │  Key decisions (from research + user-testing iteration):         │
+   │  Key decisions:         │
    │    - Click-to-open only. NO hover-open. Hover trails caused      │
    │      sticky popovers when the cursor crossed citations on the    │
    │      way to another target.                                      │
@@ -2125,14 +2086,13 @@ section.ltx_bibliography {
    │    - Bottom-sheet (full-width fixed bottom) on narrow viewports. │
    │    - max-height with internal scroll — never overflow viewport.  │
    │    - Source citation does NOT get an amber tint when clicked.    │
-   │      Per Shamsi's feedback: the focus / aria-expanded styling    │
+   │ feedback: the focus / aria-expanded styling    │
    │      already signals "this is the source"; amber there crowds    │
    │      the visual treatment. Amber is reserved for destination.    │
    └──────────────────────────────────────────────────────────────────┘ */
 
 /* Source-chip styling. Originally muted to library-grey so citation
-   noise wouldn't crowd the prose — overruled on review (Shamsi,
-   2026-08-27): references looked like regular text, hiding that they
+   noise wouldn't crowd the prose — overruled on review: references looked like regular text, hiding that they
    are links at all. Discoverability beats quiet for functional links;
    the smaller size keeps them from shouting. */
 cite.ltx_cite,
@@ -2314,16 +2274,13 @@ cite.cite-chip {
    │  popover is open, footnote markers on hover / aria-expanded /    │
    │  paired). Reusing it for "you just jumped here" / "you just      │
    │  came from here" keeps citations in the blue active-state family │
-   │  the rest of the page uses. The earlier amber (#fff4d6) was      │
-   │  retired because it conflicted with the .ds-alert-warning tint.  │
+   │  the rest of the page uses. Amber (#fff4d6) is unavailable       │
+   │  here: it collides with the .ds-alert-warning tint.              │
    └──────────────────────────────────────────────────────────────────┘ */
 
 /* The wash itself is painted by the entry's shared overlay layer
    (see the .bib-chips block), so every state — hover, tap, jump
-   destination — colors the exact same box. The earlier version gave
-   this state its own padded box, which never quite matched the
-   hover border (Shamsi, 2026-08-31) and shifted layout on jump.
-   Only scroll anchoring remains state-specific. */
+   destination — colors the exact same box. Only scroll anchoring remains state-specific. */
 li.ltx_bibitem.cite-active-target {
   scroll-margin-top: 80px;
 }
@@ -2362,10 +2319,7 @@ cite.ltx_cite.cite-active-source {
 cite.ltx_cite.cite-active-source a.ltx_ref {
   color: var(--arxiv-repository-brown) !important;
 }
-/* The injected "Back to your place" V3 button was retired 2026-08-31:
-   the return action moved into the entry's chip menu (.bib-chips,
-   below the figure chip styles), which pins itself open on the jump
-   destination. Git history holds the button's styling if it is ever
+/* Git history holds the button's styling if it is ever
    wanted back. */
 
 /* ┌──────────────────────────────────────────────────────────────────┐
@@ -2497,7 +2451,7 @@ table.ltx_equationgroup math.ltx_math_unparsed {
     -webkit-overflow-scrolling: touch;
   }
   /* Equation numbers stay visible while the equation scrolls
-     (responsiveness audit 2026-06-11, issue: tags like "(4.7)" sat
+     () issue: tags like "(4.7)" sat
      beyond the initial viewport on 119 of 145 equations at 320px —
      the reader had no way to know which equation they were looking
      at without scrolling away from it). position:sticky pins the tag
@@ -2626,8 +2580,7 @@ table.ltx_equationgroup math.ltx_math_unparsed {
 }
 
 /* TeX-source view — replaces the rendered equation when toggled.
-   Plain mono text, NO code-block box (internal feedback 2026-06-12:
-   the bordered block read as unnecessary chrome) — the monospace face
+   Plain mono text, NO code-block box (the bordered block read as unnecessary chrome) — the monospace face
    and the toggle context already say "source". Same max-width/scroll
    behavior as the rendered equation it replaces. */
 .eqn-tex-view {
@@ -2735,8 +2688,7 @@ article.ltx_document {
    fallback below shows the footnote inline, styled as a quiet aside —
    no content is ever lost to a missing script. This also fixes the
    production bug class where hover-only footnotes make their links
-   unclickable (html_feedback #805, #1616, #2570, #2968, #3040, #4444,
-   #4572 — eight independent filings). */
+   unclickable. */
 html.js .footnote {
   display: none;
 }
@@ -2854,7 +2806,7 @@ html:not(.js) .reading-progress { display: none !important; }
 .ftn-popover-close:hover { color: var(--arxiv-repository-brown); background: var(--arxiv-active-bg); }
 
 /* Hide the right-margin marginalia on narrow viewports (no room). */
-/* Switch to popover below 1200px. Recomputed 2026-09-03, when the paper body
+/* Switch to popover below 1200px. Set when the paper body
    narrowed from ar5iv's 832px article to a 720px section. The marginalia is
    positioned against .ltx_para, so its right edge moved from ~50vw+636 to
    ~50vw+580 and now clears the viewport at vw ≳ 1160; 1200 is that plus a
@@ -2889,8 +2841,7 @@ html:not(.js) .reading-progress { display: none !important; }
    └──────────────────────────────────────────────────────────────────┘ */
 
 /* Mock figure styling (in real arXiv these come from LaTeXML). */
-/* Region constrained to the content column. See .eqn-region comment
-   for why the viewport-extending band + hover tint was retired. */
+/* Region constrained to the content column. */
 .fig-region {
   position: relative;
   margin: 1.5em 0;
@@ -3051,7 +3002,7 @@ html:not(.js) .reading-progress { display: none !important; }
    a small pill menu straddling its bottom edge. The menu reuses the
    .fig-chips / .fig-chip components so the two treatments stay
    identical; .bib-chips only repositions the pill. Chosen over the
-   paragraph margin pill on review (Shamsi, 2026-08-31): the margin
+   paragraph margin pill on review: the margin
    pill is anchored by the paragraph's vertical scope rule, and
    without that rule it read as floating. Two chips:
      Permalink — copies the entry's link, reports "Copied [30] ✓".
@@ -3063,8 +3014,7 @@ html:not(.js) .reading-progress { display: none !important; }
    landing without hovering. */
 /* ONE overlay layer per entry defines its visual bounds; every
    state only recolors it, so hover, tap, and jump-destination
-   borders are pixel-identical by construction (Shamsi, 2026-08-31:
-   earlier per-state boxes never quite matched). The overlay exists
+   borders are pixel-identical by construction. The overlay exists
    because no box can enclose the reference number: ar5iv lays the
    entry out as a table whose tag cell PAINTS 2.5rem left of its
    slot (position:relative in ar5iv.0.8.5.css — upstream's own
@@ -3073,7 +3023,7 @@ html:not(.js) .reading-progress { display: none !important; }
    the paragraph outlines. The bottom edge sits 4px INSIDE the box:
    ar5iv gives each entry 0.75em of built-in bottom padding, so a
    symmetric -8px put the border 20px below the text and almost
-   touching the next entry's number (Shamsi, 2026-08-31) — +4px
+   touching the next entry's number — +4px
    leaves 8px of breathing inside and returns the rest of the
    padding to the gap between entries. z-index -1 keeps the wash
    behind the entry's text. Border is --arxiv-grey-dis: pill-border was too
@@ -3082,7 +3032,7 @@ html:not(.js) .reading-progress { display: none !important; }
    paragraph border is ambience, an entry border anchors a menu. */
 /* z-index: 0 makes each entry its own stacking context — without it
    the overlay's z:-1 escapes the entry and paints behind ancestor
-   backgrounds, i.e. invisibly (caught by Shamsi, 2026-08-31). The
+   backgrounds, i.e. invisibly. The
    active states then lift the entry above its siblings so the chip
    menu, which straddles into the next entry, paints over it. */
 li.ltx_bibitem { z-index: 0; }
@@ -3092,7 +3042,7 @@ li.ltx_bibitem.cite-active-target { z-index: 1; }
 /* When two ADJACENT entries are raised at once — the jump
    destination with its pinned menu plus a hovered neighbor — equal
    z-indexes let the later one's border paint across the earlier
-   one's menu (Shamsi, 2026-08-31). Menus only straddle DOWNWARD, so
+   one's menu. Menus only straddle DOWNWARD, so
    the upper of the two must always win: */
 li.ltx_bibitem:is(:hover, .is-active, .cite-active-target):has(+ li.ltx_bibitem:is(:hover, .is-active, .cite-active-target)) {
   z-index: 2;
@@ -3116,8 +3066,7 @@ li.ltx_bibitem.cite-active-target::after {
   background: var(--arxiv-active-bg);
 }
 
-/* Centered like the figure and equation menus (Shamsi review,
-   2026-08-31 — an earlier left-aligned try broke the family
+/* Centered like the figure and equation menus (an earlier left-aligned try broke the family
    resemblance). bottom −10px centers the pill on the overlay's
    border line, which sits 4px inside the entry box in every state. */
 .bib-chips {
@@ -3140,11 +3089,7 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
    logically belongs. Same Tufte-style serif italic treatment as
    footnote marginalia (the right margin's visual language). */
 /* Alt-text marginalia lives in the RIGHT margin, beyond the content
-   column, matching the footnote marginalia's anchoring. The figure
-   region itself no longer extends into the margin (Distill direction
-   for the chrome), so we use a negative right offset to push the
-   marginalia past the region's right edge into the unused margin
-   space. Width matches .ftn-marginalia for visual consistency. */
+   column, matching the footnote marginalia's anchoring. Width matches .ftn-marginalia for visual consistency. */
 .fig-alt-marginalia {
   position: absolute;
   top: 50%;
@@ -3231,15 +3176,14 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
 
 /* (9b READ-ALOUD removed for phase 1 — the Listen / text-to-speech
    feature was cut from the phase 1 scope as too much complexity.
-   See the parent mockup merged-abstract-reader.html
-   (removed 2026-08-10; in git history) for the full
+   See the parent mockup merged-abstract-reader.html for the full
    treatment and its research rationale.) */
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  10a. SECTION-HEADING PERMALINKS                                 │
    ├──────────────────────────────────────────────────────────────────┤
    │  Copy-link affordance on every section/subsection heading.       │
-   │  Research: html_feedback #4776 — "Add a clickable link icon next │
+   │the open feedback queue — "Add a clickable link icon next │
    │  to each section heading (possibly only visible when hovering)   │
    │  that copies a link to that section. One major advantage of HTML │
    │  over PDFs is the ability to easily target specific objects."    │
@@ -3252,9 +3196,7 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
    └──────────────────────────────────────────────────────────────────┘ */
 
 .heading-permalink {
-  /* Base construction superseded 2026-08-25: the button now also carries
-     .mg-mark and lives in the left margin — see MARGINALIA PERMALINKS.
-     Kept here: the icon sizing and the copied-state color. Color moved
+  /* Kept here: the icon sizing and the copied-state color. Color moved
      from --arxiv-grey-ui (border tier — too subtle, and a text-role
      misassignment) to the shared pill's --arxiv-library-grey. */
   cursor: pointer;
@@ -3268,9 +3210,7 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
   .heading-permalink { transition: none; }
 }
 /* Touch devices have no hover: headings reveal their pill by tap
-   (is-active), the same grammar as figures, formulas, and paragraphs.
-   (Two earlier treatments superseded: faint 0.45 read as disabled, and
-   always-on was a width/input conflation.) */
+   (is-active), the same grammar as figures, formulas, and paragraphs. */
 @media (hover: none) {
   h2.is-active .heading-permalink, h3.is-active .heading-permalink,
   h4.is-active .heading-permalink { opacity: 1; }
@@ -3284,7 +3224,7 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
    ├──────────────────────────────────────────────────────────────────┤
    │  Persistent full-viewport figure viewer.                         │
    │                                                                  │
-   │  Research basis: figure viewing is the DOMINANT theme in the     │
+   │figure viewing is the DOMINANT theme in the     │
    │  open html_feedback queue — ~15 independent filings              │
    │  (github-open-ux-issues-synthesis.md A1): zoom that releases on  │
    │  mouse-up (#1661 #3998 #4653 #4669 #5804 #5995), z-index stacking│
@@ -3506,7 +3446,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  MARGINALIA PERMALINKS — one link language, left margin          │
    ├──────────────────────────────────────────────────────────────────┤
-   │  Settled grammar (Shamsi's reviews, 2026-08-25..27):             │
+   │  Settled grammar:             │
    │                                                                  │
    │  Every addressable object — heading, paragraph, bibliography     │
    │  entry — offers its address the same way: hover (or tap, where   │
@@ -3522,7 +3462,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
    │  the margin pill (headings, paragraphs); objects with several    │
    │  get the outlined chip row (figures, equations, bibliography     │
    │  entries). Bibliography entries first tried the margin pill and  │
-   │  moved to the chip row on review (Shamsi, 2026-08-31): the       │
+   │  moved to the chip row on review: the       │
    │  margin pill is anchored by the paragraph's vertical scope       │
    │  rule, and without that rule it read as floating. The move also  │
    │  gave the entry its second action — "Back to your place" lives   │
@@ -3560,10 +3500,10 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 }
 /* ar5iv sets svg { z-index:-1 } globally; without the explicit lift the
    chain icon renders BEHIND the pill's surface and the pill shows only
-   its number (caught by Shamsi on the live page, 2026-08-25). Same
+   its number. Same
    countermeasure as .ds-btn svg and .mg-cite-copy svg. */
 .mg-mark svg { width: 1.05em; height: 1.05em; flex: none; position: relative; z-index: 1; }
-/* Long-paragraph fix (2026-08-26): the pill rides a zero-width rail that
+/* Long-paragraph fix: the pill rides a zero-width rail that
    spans the paragraph's full height and sticks just below the reader
    header — so it stays in reach when a long paragraph is entered
    mid-scroll or scrolled past its top. Sticky-within-bounds is the
@@ -3575,7 +3515,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 .mg-stick .mg-mark { position: static; margin: 0; pointer-events: auto; }
 .ltx_para:hover .mg-mark, .mg-mark:focus-visible, .ltx_para.is-active .mg-mark { opacity: 1; }
 /* Hover matches the figure/equation chips — text turns link-blue and
-   underlines; the pill surface never changes (Shamsi, 2026-08-31: a
+   underlines; the pill surface never changes (a
    fill highlights the whole pill, which stops making sense once a
    pill holds several links; the text change works for both). */
 .mg-mark:hover { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; }
@@ -3585,26 +3525,23 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   content: ""; position: absolute; left: -14px; top: 20px; bottom: 2px;
   /* Card-grey, two steps quieter than the original tint-border blue: the
      blue read as a primary-action signal, and pill-border still felt too
-     dark (Shamsi, 2026-08-25, twice). The rule is a whisper of scope, not
+     dark. The rule is a whisper of scope, not
      a divider — the lightest grey in the ladder is the right voice. */
   width: 2px; border-radius: 1px; background: var(--arxiv-card-grey);
   opacity: 0; transition: opacity 0.12s; pointer-events: none;
 }
 .ltx_para:hover::before, .ltx_para.is-active::before { opacity: 1; }
-/* Joined to the footnote/citation popover family (2026-08-25): tint-light
+/* Joined to the footnote/citation popover family: tint-light
    surface, family title and close-button classes reused verbatim, so all
-   arXiv-layer transient panels read as one system. It had been built on
-   plain surface-white before the family was noticed — the same drift the
-   pattern rules exist to prevent. */
+   arXiv-layer transient panels read as one system. */
 /* Headings join the same language: their permalink button moves from
    inline-after-text into the margin pill position. Icon plus the word
    "Permalink", matching the formula and figure chips — icon-only proved
-   too small to notice (Shamsi, 2026-08-25). */
+   too small to notice. */
 h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { position: relative; }
 .heading-permalink.mg-mark { top: 50%; transform: translateY(-50%); margin: 0; padding: 7px 8px; opacity: 0; }
 h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hover .heading-permalink.mg-mark { opacity: 1; }
-/* Two independent variables, kept independent (Shamsi's narrowed-laptop
-   observation, 2026-08-26): viewport WIDTH decides where an affordance
+/* Two independent variables, kept independent: viewport WIDTH decides where an affordance
    can live — margin pills above 1200px, tab-on-outline below. Input
    capability decides how it reveals — (hover: hover) reveals on hover
    at every width, because a narrowed laptop window still has a mouse
@@ -3640,7 +3577,7 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
    ├──────────────────────────────────────────────────────────────────┤
    │  Values mirrored verbatim from the dark block in                 │
    │  docs/public/design-system.css (public palette accepted          │
-   │  2026-08-07). Nothing here is hand-picked. This mockup inlines   │
+   │)  Nothing here is hand-picked. This mockup inlines   │
    │  its palette instead of linking the stylesheet, so the values    │
    │  are duplicated; if the stylesheet changes, this must follow.    │
    │                                                                  │
@@ -3697,14 +3634,9 @@ h2:hover .heading-permalink.mg-mark, h3:hover .heading-permalink.mg-mark, h4:hov
   html:not([data-theme="light"]) .mg-toc-logo .mg-toc-logo-dark { display: block; }
 }
 
-/* Mirror of the block above, keyed to the attribute instead of the OS.
-   Required here, not optional: the ar5iv reader ships its own theme
+/* Mirror of the block above, keyed to the attribute instead of the OS. Required here, not optional: the ar5iv reader ships its own theme
    control that writes ar5iv_theme to localStorage, and the bootstrap
-   script at the top of this file turns that into data-theme="dark". A
-   reader on a light-OS machine who picks dark in that control would
-   otherwise get the ar5iv dark canvas with this page's light tokens —
-   dark text on a dark background, the very bug this pass fixed.
-   The two blocks must stay identical. */
+   script at the top of this file turns that into data-theme="dark". The two blocks must stay identical. */
 html[data-theme="dark"] body {
     background: var(--arxiv-warm-wash) !important;
     color: var(--arxiv-repository-brown);
@@ -4247,7 +4179,7 @@ html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
      to, this control retires, and the page is best-in-class on every
      measure in the audit.
 
-     A quiet text-tier version was trialled (2026-08-17) and cost 30px
+     A quiet text-tier version was trialled and cost 30px
      rather than 52px, but the button form was kept deliberately: the
      route back is load-bearing while two pages exist. -->
 <p class="mg-abs-return">
@@ -4257,10 +4189,9 @@ html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
   </a>
 </p>
 <!-- Watermark line carries the full identity of the paper: arXiv ID,
-     full category name (internal feedback 2026-06-11: one tester missed
+     full category name (one tester missed
      the category when only the [gr-qc] code was shown), DOI (many
-     readers land here directly without passing the abstract page —
-     internal feedback 2026-06-11), and license. (The "Back to abstract"
+     readers land here directly without passing the abstract page —: and license. (The "Back to abstract"
      route is not in this line: a first iteration put it here and it
      disappeared among the small print. It sits in the tertiary button
      directly above — see .mg-abs-return.) -->
@@ -4473,8 +4404,7 @@ html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
         the viewport via the 1fr | auto | 1fr grid. ══ -->
 <div class="mg-toc-bar" id="mg-toc-bar">
   <div class="mg-toc-bar-inner">
-    <!-- Left cell: the arXiv mark (single-color Library Grey, per team
-         feedback 2026-08-31). Once the reader scrolls, this bar is the
+    <!-- Left cell: the arXiv mark (single-color Library Grey). Once the reader scrolls, this bar is the
          only chrome on screen — most readers arrive at papers from
          search and links, and nothing else says where they are. The
          quiet one-color variant orients without competing with the
@@ -4485,7 +4415,7 @@ html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
       <a href="https://arxiv.org/" class="mg-toc-logo" aria-label="archive home">
         <!-- Two imgs because CSS cannot rewrite a src: Library Grey is
              too dim on the dark canvas, so dark mode shows the light
-             variant instead (Shamsi, 2026-08-31). display:none keeps
+             variant instead. display:none keeps
              the hidden one out of the accessibility tree. -->
         <img src="images/logo_arxiv-library-grey.svg" alt="archive" class="mg-toc-logo-light">
         <img src="images/logo_arxiv-light.svg" alt="archive" class="mg-toc-logo-dark">
@@ -7496,10 +7426,8 @@ We thus see that</p>
      Litmaps, CORE, scite, CatalyzeX, Hugging Face, ScienceCast,
      alphaXiv, Replicate, HF Spaces) is deferred: not all labs act
      locally on this page — the bibliographic ones modify the /abs/
-     sidebar — so the integration belongs to a later phase
-     (feasibility review 2026-07-28). See the parent mockup
-     merged-abstract-reader.html (removed 2026-08-10; in git
-     history) for the full band. -->
+     sidebar — so the integration belongs to a later phase. See the parent mockup
+     merged-abstract-reader.html for the full band. -->
 </article>
 <!--
 ═══════════════════════════════════════════════════════════════════════
@@ -7544,53 +7472,29 @@ We thus see that</p>
    ─────────────────────────────────────────────────────────────────
    Enhances LaTeXML <cite class="ltx_cite">...</cite> clusters into
    click-to-open popovers. Each cluster is a span containing 1+ anchors
-   (one per reference number); the popover lists each referenced work.
-
-   Lifecycle:
+   (one per reference number); the popover lists each referenced work. Lifecycle:
      - DOMContentLoaded: find all cite clusters, build popovers, bind
-       click handlers on the anchors.
-     - Click on any chip in a cluster: open that cluster's popover
-       (closing any previously-open popover first).
-     - Click outside the open popover or its source cluster: close.
-     - Esc: close, return focus to the source chip.
-     - Scroll > 50px: close (popover is position:fixed, would otherwise
-       stay anchored to viewport while the page scrolls away).
-     - Resize: reposition the open popover.
-     - Browser back/forward (popstate): clear any orphaned destination
-       highlight + recorded jump source.
-
-   Jump-to-reference flow:
-     1. User clicks "Jump to reference N" inside the popover.
-     2. We close the popover.
-     3. We tag the destination <li.ltx_bibitem> with class .cite-active-target
-        (blue wash via CSS).
-     4. We record the source citation id; the entry's chip menu (pinned
-        open by .cite-active-target) offers "Back to your place".
-     5. We pushState to the destination's id (so the URL reflects state and
-        the browser back button works).
-     6. We move focus to the <li> (tabindex=-1) and smooth-scroll it.
-     7. User clicks "Back to your place": we remove the wash, forget the
+       click handlers on the anchors. - Click outside the open popover or its source cluster: close. - Esc: close, return focus to the source chip. - Scroll > 50px: close (popover is position:fixed, would otherwise
+       stay anchored to viewport while the page scrolls away). - Resize: reposition the open popover. - Browser back/forward (popstate): clear any orphaned destination
+       highlight + recorded jump source. Jump-to-reference flow:
+     1. User clicks "Jump to reference N" inside the popover. 2. We close the popover. 3. We tag the destination <li.ltx_bibitem> with class .cite-active-target
+        (blue wash via CSS). 4. We record the source citation id; the entry's chip menu (pinned
+        open by .cite-active-target) offers "Back to your place". 5. We pushState to the destination's id (so the URL reflects state and
+        the browser back button works). 6. We move focus to the <li> (tabindex=-1) and smooth-scroll it. 7. User clicks "Back to your place": we remove the wash, forget the
         jump source, replaceState the URL, focus the source chip, and
-        smooth-scroll back.
-
-   ARIA wiring (push-list commitments, accessibility-priorities.md
+        smooth-scroll back. ARIA wiring (push-list commitments, accessibility-priorities.md
    "Citation experience for screen readers and beyond"):
      - Every inline citation carries FULL CONTEXT in its accessible
        name: aria-label="Reference 46: Stelle (1977) · Renormalization
        of Higher Derivative Quantum Gravity". Sighted readers see the
        compact "[46]"; AT users get the same context an author-year
-       style gives sighted readers. (Tigwell: "what is reference 10?
-       Is that the paper I have in mind?")
-     - Aurally compact at rest: anchors keep native LINK semantics.
-       An earlier iteration set role="button" + persistent
+       style gives sighted readers. (Tigwell: "what is reference 10? Is that the paper I have in mind?")
+     - Aurally compact at rest: anchors keep native LINK semantics. An earlier iteration set role="button" + persistent
        aria-expanded="false" on every chip — which made a cluster like
        [15, 44, 45, 26, 31, 3] announce as six "collapsed buttons,"
-       MORE noise than the plain links it replaced (Dan Miner's
-       "auditory disturbance you cannot skip"). aria-expanded +
+       MORE noise than the plain links it replaced ( "auditory disturbance you cannot skip"). aria-expanded +
        aria-controls now exist only WHILE a popover is open, on the
-       cluster that owns it, and are removed entirely on close.
-     - Popover itself is role="region" with aria-label naming the count.
-*/
+       cluster that owns it, and are removed entirely on close. - Popover itself is role="region" with aria-label naming the count. */
 (function() {
   var idCounter = 0;
   var openPopover = null;
@@ -7757,22 +7661,15 @@ We thus see that</p>
     return pop;
   }
 
-  /* Positioning — radically simplified.
-     Use the click point directly (event.clientX / clientY). Try below,
+  /* Positioning — radically simplified. Use the click point directly (event.clientX / clientY). Try below,
      fall back to above, pin to top if neither fits. Always set a
      max-height that keeps the popup inside the viewport; popup's own
-     overflow:auto handles longer content.
-
-     Why click-coords instead of cite.getClientRects():
+     overflow:auto handles longer content. Why click-coords instead of cite.getClientRects():
        - getClientRects() on a wrapping inline cite returns one rect
          per line; rects[0] was sometimes a narrow rect at a confusing
          position. The popup ended up far from where the user actually
-         clicked.
-       - Click coordinates are exactly what the user expects the popup
-         to appear near. No rect interpretation needed.
-     Resize handler passes no event; in that case we fall back to the
-     cite's bounding rect (the popup repositions to the cite's general
-     location, since we no longer know the original click point). */
+         clicked. - Click coordinates are exactly what the user expects the popup
+         to appear near. No rect interpretation needed. */
   function positionPopover(pop, e) {
     if (window.innerWidth <= 700) {
       pop.style.top = '';
@@ -8771,13 +8668,12 @@ We thus see that</p>
 
 /* (BEHAVIOR 4b Read-aloud removed for phase 1 — the Listen /
    text-to-speech feature was cut from the phase 1 scope. See the
-   parent mockup merged-abstract-reader.html (removed 2026-08-10;
-   in git history) for the full implementation, including the Speech Rule Engine math speech.) */
+   parent mockup merged-abstract-reader.html for the full implementation, including the Speech Rule Engine math speech.) */
 
 /* ─────────────────────────────────────────────────────────────────
    BEHAVIOR 5b: Section-heading permalinks
    ─────────────────────────────────────────────────────────────────
-   See the SECTION-HEADING PERMALINKS CSS block (research: #4776).
+   See the SECTION-HEADING PERMALINKS CSS block.
    For each section/subsection/appendix heading whose enclosing
    <section> carries a LaTeXML id (S1, S2.SS1, A1 …), append an
    icon-only button that copies the heading's deep link. The accessible
@@ -9292,7 +9188,7 @@ We thus see that</p>
    720px is not the researched 65-character line (~510px). It is a
    negotiated point: at 510px roughly 30 of this paper's 100 display
    equations exceed the column, against 6 at 720px, and display math does
-   not reflow. Reviewed on screen 2026-09-03. */
+   not reflow. */
 :root {
   --main-width:        850px;   /* the article: title, authors, abstract, sidebar */
   --paper-body:        720px;   /* sections below the TOC bar */
@@ -9446,7 +9342,7 @@ section.ltx_bibliography,
 
 <script>
 /* ════════════════════════════════════════════════════════════════════
-   MERGED PAGE — added behaviors (2026-06-23)
+   MERGED PAGE — added behaviors
    1) Reader-view toggle (two buttons, one per header; they stay in sync)
    2) Cite dropdown (native <select> swaps the displayed citation)
    3) Centered sticky TOC button (open/close dropdown; sticky-state class;
@@ -9667,7 +9563,7 @@ section.ltx_bibliography,
     return rail;
   }
   function makePill(el) {
-    /* One word, one behavior (Option 1, Shamsi 2026-08-27): every
+    /* One word, one behavior : every
        permalink pill reads "Permalink" and immediately copies the link,
        like the heading, figure, and equation chips. Identity lives in
        the copy feedback — "Copied \u00b6 2.3" — never crowding the

@@ -203,15 +203,13 @@ img { max-width: 100%; height: auto; }
 ╚════════════════════════════════════════════════════════════════════╝
   Intent
     The black bar at the top of every arXiv public page (post-Cornell
-    spinout). NOT sticky — it scrolls away like any other content
-    (decided 2026-06-11; sticky chrome is exceptional at arXiv and
-    reader-only). Contains the logo and primary nav.
+    spinout). NOT sticky — it scrolls away like any other content. Contains the logo and primary nav.
 
   Accessibility decisions (priorities.md: information architecture,
                            arxiv→archive pronunciation)
     - <header><nav aria-label="Main navigation"> is the landmark.
     - Logo aria-label and image alt say "archive" (the spoken pronunciation
-      Ginsparg intended via Greek χ in "arXiv"). Dan Miner's research
+      Ginsparg intended via Greek χ in "arXiv"). research
       finding: screen readers without this hint say "ar-zhiv" / Roman
       numeral "XIV" — gibberish.
     - The search button opens a modal dialog (see search-overlay block);
@@ -219,7 +217,7 @@ img { max-width: 100%; height: auto; }
     - Decorative SVGs use aria-hidden + focusable="false" so SR doesn't
       announce them; the visible text labels are the accessible names.
     - Visible "About" link added so newcomers can self-orient (the
-      "What is arXiv?" priority — research voice: Dan Miner "I have no
+      "What is arXiv?" priority — "I have no
       clue what I am walking into").
 
   Tradeoff
@@ -293,7 +291,7 @@ img { max-width: 100%; height: auto; }
   padding: 0 24px;
   height: 52px;
   background: var(--arxiv-repository-brown);
-  /* NO sticky positioning — decided 2026-06-11 (Shamsi): the header
+  /* NO sticky positioning —: the header
      scrolls away like any other content. Sticky chrome is exceptional
      at arXiv; only the HTML reader earns it (DESIGN-POLICIES.md). */
 }
@@ -349,11 +347,9 @@ img { max-width: 100%; height: auto; }
 }
 
 
-/* Narrow-viewport reflow (WCAG 1.4.10).
-   Below ~520px the five nav items no longer fit on one row beside the
-   logo. Without this block the nav overflows and forces horizontal
+/* Narrow-viewport reflow (WCAG 1.4.10). Without this block the nav overflows and forces horizontal
    scrolling on the whole page at 320px (the 1.4.10 test width / 400%
-   zoom equivalent) — verified by rendering 2026-06-11. The fix is the
+   zoom equivalent). The fix is the
    simplest robust one: let the header wrap to a second row. No JS, no
    hamburger, nothing hidden — every nav item stays visible and
    reachable, which also keeps voice-control users (visible label =
@@ -492,7 +488,7 @@ img { max-width: 100%; height: auto; }
     - Each version pill has aria-label spelling out "View version N" or
       "Version N, current version" — the bare "v3" is uninformative.
 
-  Visual decision (from user feedback)
+  Visual decision
     Version pills are plain text links, not chips. Earlier iteration used
     a pill/button visual; user feedback was that it made them feel like
     interactive UI elements rather than navigation links. Plain text +
@@ -502,7 +498,7 @@ img { max-width: 100%; height: auto; }
 */
 
 .abs-title {
-  /* Fluid title size (responsiveness audit 2026-06-11, issue 1): a
+  /* Fluid title size: a
      fixed 2rem title wrapped a 7-word title onto five lines at 320px,
      splitting on the hyphen ("Gauge-" / "independent"). clamp() scales
      between 1.375rem at narrow phone widths and 2rem from ~750px up.
@@ -621,7 +617,7 @@ img { max-width: 100%; height: auto; }
     1–8 authors:    show all, no toggle
     9–30 authors:   show first 8 + "… show all N authors" toggle (inline)
     31–100 authors: same toggle pattern; volume warns but inline is okay
-    100+ authors:   SCROLLABLE INLINE REGION (decision 2026-06-11).
+    100+ authors:   SCROLLABLE INLINE REGION.
                     "Show all" opens a max-height scrollable block in
                     place with collapse controls at both ends. Rationale:
                     inline expansion of 1000+ names dumps the reader into
@@ -734,12 +730,11 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   Visual / hierarchy decisions
     - HTML button is FIRST. This implements the validated priority that
       "HTML reader is the primary destination from the abstract page,
-      not an experimental toggle." Research: the strongest emotional
+      not an experimental toggle."the strongest emotional
       reaction in the entire UX dataset is to the 2024 HTML reader launch
       ("I literally cheered!" / "HTML is truly an order of magnitude
       better").
-    - "Other Formats" button has been removed. Per Shamsi's product
-      decision: the legacy /format page is only relevant for ancient
+    - "Other Formats" button has been removed. decision: the legacy /format page is only relevant for ancient
       submissions with PostScript or unusual artifacts; clutters the UI
       otherwise.
     - PDF and HTML are visually equivalent (Open Blue background, same
@@ -952,22 +947,22 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
     proof feedback.
 
   Decisions baked in
-    - EXPLORATION (2026-06-22, draft for team discussion): show present
+    - EXPLORATION: show present
       vs MISSING capabilities, so colleagues have something concrete to
       react to. This revisits the earlier PRESENT-ONLY stance and its
-      rationale (Shamsi: "arXiv is not here to punish hard-working
+      rationale ("arXiv is not here to punish hard-working
       researchers who managed to finish their paper, only to help") —
       which is exactly the choice under discussion: can we flag a fixable
       gap, with a fix path, WITHOUT shaming authors in front of readers?
       Not color-alone — present/missing also differ by icon shape and
       wording (WCAG 1.4.1).
-    - Tension this resolves (research): Charles + Arvind wanted a public
+    - Tension this resolves (research):Readers wanted a public
       grade visible to readers; Avneesh Singh warned that a single score
       misleads. Our compromise: per-capability indicators only, no
       composite grade.
     - First-pass label is "Accessibility Notes." Source/code/data
       availability is treated as part of accessibility because they
-      enable alternative-format reading (Joseph Smith: "tables, source
+      enable alternative-format reading ("tables, source
       data, or code is much easier to understand than reading the paper").
 
   Visual choice
@@ -1016,7 +1011,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   flex-shrink: 0;
   width: 14px; height: 14px;
 }
-/* Present vs missing capability states (2026-06-22 exploration). Triple-
+/* Present vs missing capability states. Triple-
    encoded — color + icon shape + wording — so it never relies on color
    alone (WCAG 1.4.1). */
 .abs-a11y-list li.is-present { color: #4a5a0a; }                  /* success-green text, 6.7:1 AA */
@@ -1096,8 +1091,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
       Style  (BibTeX, APA, Chicago, MLA)
     Three columns: BibTeX, Formatted-with-style-switcher, IDs.
 
-  Why citation isn't focused on HTML version
-    Per Shamsi (2026): "We have had HTML papers for 2 years but have not
+  Why citation isn't focused on HTML version (2026): "We have had HTML papers for 2 years but have not
     considered them canonical. They are not guaranteed to be 100% accurate
     because we need to convert from LaTeX (using LaTeXML) and user-uploaded
     TeX varies so much. Researchers writing papers think about PDF, not
@@ -1119,8 +1113,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
     - arXiv identifier "arXiv:2604.22725 [gr-qc]" wraps the visible string
       in aria-hidden and provides a sr-only spelled-out announcement
       ("archive paper, I D 2 6 0 4 dot 2 2 7 2 5, primary category gr-qc").
-      Without this, screen readers say "arks-fourteen" or similar gibberish
-      (Dan Miner's golden quote).
+      Without this, screen readers say "arks-fourteen" or similar gibberish.
     - "Who cites this paper" is a <nav aria-labelledby> with a <ul> of
       external link items. Each link has the external-icon + sr-only
       "(opens in new tab)" notice.
@@ -1139,7 +1132,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   display: flex;
   align-items: center;
   /* Toggle sits directly AFTER the heading, not right-aligned: internal
-     testing (2026-06-11) found the right-aligned source switcher went
+     testing found the right-aligned source switcher went
      unnoticed. Proximity to the heading puts it in the reading path. */
   justify-content: flex-start;
   margin-bottom: 14px;
@@ -1305,8 +1298,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   display: block; /* <code> is inline by default */
   white-space: pre-wrap;
   word-break: break-word;
-  /* Wrap + vertical scroll for BOTH columns (internal feedback
-     2026-06-11): unwrapped BibTeX confused testers, and long author
+  /* Wrap + vertical scroll for BOTH columns: unwrapped BibTeX confused testers, and long author
      lists make formatted styles long too. pre-wrap preserves the real
      newlines and spaces (copy fidelity is unaffected — the Copy button
      reads from data, and selection copies logical text), while the
@@ -1357,7 +1349,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 
 /* Generic panel label used inside Cite columns */
 /* "Who cites this paper" — styles moved to the reference-zone cards block
-   below (B2, 2026-06-17): it's now a wrapping row beneath the citation box,
+   below (B2): it's now a wrapping row beneath the citation box,
    not a sub-nav in the IDs column. */
 
 /*
@@ -1390,8 +1382,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   letter-spacing: 0;
   margin: 0;
 }
-/* De-border the sections that used to separate via rules/padding — the card
-   chrome now does the separating. */
+/* */
 .abs-a11y { padding: 0; margin-bottom: 0; border-bottom: none; }
 .abs-meta { padding: 0; }
 .abs-cite-section { padding: 0; }
@@ -1471,7 +1462,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 
   Why this exists despite our "no third-party tool recommendations" rule
     These are the existing arXiv Labs integrations, already in production.
-    Each one was reviewed (see references/labs-audit.md) and judged on
+    Each one was reviewed and judged on
     function and value. We're not adding new recommendations; we're
     presenting the established Labs surface. The Labs-info link explains
     the program for new readers.
@@ -1599,7 +1590,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   padding: 24px 18px;
   font-size: 0.8125rem; /* 13px */
   /* --grey, not --grey-dis: this is real instructional text and must
-     meet 4.5:1 (axe finding). The disabled-grey ladder stop is for
+     meet 4.5:1. The disabled-grey ladder stop is for
      disabled controls only, per color-mapping.md. */
   color: var(--arxiv-library-grey);
   font-style: italic;
@@ -1773,7 +1764,7 @@ footer.ds-site-footer .ds-site-footer-sep { color: var(--arxiv-border-light); }
 ╚════════════════════════════════════════════════════════════════════╝
   Requirement: the page must be fully readable and every piece of
   content reachable with JavaScript disabled or failed. Scripts add
-  conveniences; they never carry content. (Michel Coornaert browses
+  conveniences; they never carry content. (Some readers browse
   with JS off by choice; low-bandwidth readers get it off by
   circumstance; a blocked CDN should never blank a control.)
 
@@ -1799,7 +1790,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
   accessibility notes, metadata, and the default citations stay IN.
   External link URLs are expanded inline so a printout retains the
   information a click would have reached (same convention as the HTML
-  reader's print block). Validates against html_feedback #4218 (print
+  reader's print block). Validates against the open feedback queue (print
   obscured by chrome). */
 @media print {
   .ds-site-header,
@@ -1844,8 +1835,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
 <!--
 ═══════════════════════════════════════════════════════════════════════
   UNIVERSAL HEADER
-═══════════════════════════════════════════════════════════════════════
-  CODIFIED 2026-06-11: the chrome below uses the design system's own
+═══════════════════════════════════════════════════════════════════════ Codified: the chrome below uses the design system's own
   class names (.ds-announcement / .ds-site-header /
   .ds-site-footer / .ds-skip-link). The canonical CSS lives in
   docs/public/design-system.css; this mockup carries a
@@ -1892,7 +1882,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
   </nav>
 </header>
 
-<!-- NO breadcrumb bar (decided 2026-06-11, Shamsi): the approved spinout
+<!-- NO breadcrumb bar: the approved spinout
      treatment covers ONLY the announcement banner and the black header —
      nothing below it. A breadcrumb iteration was tried and removed: at
      2 levels deep it doesn't justify the real estate, and its links
@@ -1999,22 +1989,22 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
     <div class="abs-body">
       <nav class="abs-actions" aria-label="Paper downloads">
         <a href="https://arxiv.org/html/2604.22725v1" class="abs-btn abs-btn-html">HTML</a>
-        <!-- File sizes (internal feedback 2026-06-11): tell users what
+        <!-- File sizes: tell users what
              they're committing to before the download — especially
              valuable on slow connections. Mock values here; production
              renders the real size from file metadata. HTML carries no
              size (it's a streamed page, not a download). -->
         <a href="https://arxiv.org/pdf/2604.22725v1" class="abs-btn abs-btn-pdf">PDF&nbsp;<span class="abs-btn-ext">(1.2&hairsp;MB)</span></a>
-        <!-- Format hint: Robin Williams (2022-09-14) — "When you download
+        <!-- Format hint: Robin Williams — "When you download
              source there isn't a file extension. It's not obvious if it is
              a zip or a tar, don't know quite what you've got or how to open
              it." The visible .tar.gz hint tells users what they're getting
              before they commit to the download. -->
         <a href="https://arxiv.org/src/2604.22725v1" class="abs-btn abs-btn-tex">TeX Source&nbsp;<span class="abs-btn-ext">(.tar.gz &middot; 486&hairsp;KB)</span></a>
-        <!-- Ancillary download (decided 2026-06-11): data/code from the
+        <!-- Ancillary download: data/code from the
              source bundle's /anc directory gets its own secondary
              download action — the strongest scent for a validated
-             priority (Joseph Smith, Ben Firshman, DOE OSTI: ancillary
+             priority (ancillary
              surfaced, not hidden under formats). Renders only when
              ancillary files exist. Mock count + size; production reads
              real values. The Paper Information row below lists the
@@ -2052,7 +2042,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
             </svg>
             <span>Structured math</span>
           </li>
-          <!-- Missing state (exploration): greyed, dashed circle, explicit
+          <!-- Missing state: greyed, dashed circle, explicit
                "missing" wording + a quiet fix nudge (start of the C2
                contribution journey). -->
           <li class="is-missing">
@@ -2082,7 +2072,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
           <dd class="abs-meta-value"><a href="https://creativecommons.org/licenses/by/4.0/"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">CC BY 4.0</abbr></a></dd>
           <!-- Ancillary files: validated priority (priorities.md "Ancillary
                files surfaced on the abstract page, not hidden under other
-               formats" — Joseph Smith 2022-08-22, Ben Firshman 2022-08-23,
+               formats"
                DOE OSTI). Data/code are accessibility surfaces in their own
                right: "Source data, or code, is much easier to understand.
                Then you don't need to read the paper." (Smith). In production
@@ -2129,7 +2119,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
           <button class="abs-cite-source-btn" data-source="journal" aria-pressed="false">Journal article</button>
         </div>
         <div class="abs-cite-columns">
-          <!-- Identifiers column — arXiv identifier first (reorganized 2026-06-17) -->
+          <!-- Identifiers column — arXiv identifier first -->
           <div class="abs-cite-col abs-cite-col-ids">
             <div class="abs-cite-col-head"><span class="ds-panel-label">Identifiers</span></div>
             <dl class="abs-cite-id-list">
@@ -2190,7 +2180,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
           </div>
         </div>
 
-        <!-- B2 (2026-06-17): "Who cites this paper" moved out of the IDs
+        <!-- B2: "Who cites this paper" moved out of the IDs
              column to its own line below the citation box — label + the three
              services on one row that wraps on small screens. -->
         <nav class="abs-cite-citations" aria-labelledby="cites-heading">
@@ -2213,8 +2203,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
 
         <!-- Toggle list -->
         <div class="abs-labs-list">
-          <!-- Order within each group encodes the labs audit
-               (references/labs-audit.md, 2026-04-28): frictionless,
+          <!-- Order within each group encodes the labs audit: frictionless,
                working integrations first; degraded or login-walled
                integrations last. DESIGN-POLICIES.md: "Labs that require
                login should be deprioritized in placement." Group
@@ -2255,9 +2244,7 @@ html:not(.js) .abs-labs-empty { display: none; }       /* "toggle a tool" prompt
               <label class="abs-labs-toggle"><input type="checkbox" data-lab="sciencecast" aria-label="ScienceCast"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">ScienceCast <a href="https://sciencecast.org/welcome" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>
             </div>
-            <!-- alphaXiv last in group: requires login to interact
-                 (audit item 5; policy: login-walled Labs deprioritized
-                 in placement). -->
+            <!-- alphaXiv last in group: requires login to interact. -->
             <div class="abs-labs-row">
               <label class="abs-labs-toggle"><input type="checkbox" data-lab="alphaxiv" aria-label="alphaXiv"><span class="abs-labs-track"></span></label>
               <span class="abs-labs-name">alphaXiv <a href="https://alphaxiv.org/" target="_blank" rel="noopener noreferrer">What is this?<svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="is-sr-only">(opens in new tab)</span></a></span>

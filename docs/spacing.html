@@ -15,7 +15,7 @@
 .ds-page-header code { color: var(--arxiv-archival-blue); background: none; }
 /* ── Scale specimens ── */
     .scale { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; overflow: hidden; }
-    .scale-row { display: grid; grid-template-columns: 132px 1fr 150px; gap:var(--space-4); align-items: center; padding: 14px 20px; border-bottom: 1px solid #efeae4; }
+    .scale-row { display: grid; grid-template-columns: 132px 1fr 150px; gap:var(--space-block); align-items: center; padding: 14px 20px; border-bottom: 1px solid #efeae4; }
     .scale-row:last-child { border-bottom: 0; }
     .scale-meta code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12.5px; color: var(--arxiv-repository-brown); font-weight: 500; }
     .scale-meta .px { display: block; font-size: 11px; color: var(--arxiv-grey-ui); margin-top:2px; letter-spacing: .02em; }
@@ -24,7 +24,7 @@
     @media (max-width: 640px) { .scale-row { grid-template-columns: 110px 1fr; } .scale-use { display: none; } }
 
     /* ── Proximity demo ── */
-    .prox-grid { display: grid; grid-template-columns: 1fr 1fr; gap:var(--space-4); }
+    .prox-grid { display: grid; grid-template-columns: 1fr 1fr; gap:var(--space-block); }
     @media (max-width: 720px) { .prox-grid { grid-template-columns: 1fr; } }
     .prox-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 22px 24px; }
     .prox-card h3 { font-size: 13px; margin:0 0 2px; }
@@ -49,8 +49,7 @@
     .rule-card code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; background: var(--arxiv-card-grey); padding: 1px 5px; border-radius: 3px; color: var(--arxiv-repository-brown); }
 
   
-    /* Inline links in page copy. Bare <a> previously fell back to the
-       browser default, which is unreadable on the dark canvas. Nav links
+    /* Inline links in page copy. These sit on the page canvas. Nav links
        carry their own, more specific rules. */
 </style>
 </head>
@@ -211,11 +210,59 @@
     </div>
     <div class="rule-card">
       <h3>Between ≈ 3× within</h3>
-      <p>Grouping is carried by contrast in spacing, not by lines. <code>--space-4</code> within, <code>--space-12</code> between is the workhorse pair. When a border feels necessary to separate two blocks, first try widening the gap.</p>
+      <p>Grouping is carried by contrast in spacing, not by lines. Reach for the named
+      break — <code>--space-block</code> within, <code>--space-section</code> between — rather than
+      the raw steps they map to. Block is 2&times; tight and section is 3&times; block; below about
+      1.5&times; the eye cannot tell the two apart and the grouping silently fails. When a border
+      feels necessary to separate two blocks, first try widening the gap.</p>
     </div>
     <div class="rule-card">
-      <h3>Layout is px; type is rem</h3>
-      <p>These spacing tokens set layout distances in px so structure stays stable. Font sizes stay in <code>rem</code> so a reader's browser zoom still governs text (see <a href="doc.html?src=docs/typography.md">typography.md</a>). Do not scale gaps with the user's font preference.</p>
+      <h3>Everything in rem, spacing included</h3>
+      <p>The scale is expressed in <code>rem</code>, so spacing scales with the reader's text size.
+      A fixed gap beside growing text compresses the rhythm exactly for the person who asked for
+      more room, and the <em>ratio</em> between within and between is what carries meaning, so it
+      has to survive.</p>
+    </div>
+
+    <div class="rule-card">
+      <h3>Name the break, not the value</h3>
+      <p>Pages use <code>--space-tight</code> (inside a group), <code>--space-block</code> (between
+      blocks in a section) or <code>--space-section</code> (between sections) &mdash; never a pixel
+      value, and never a raw <code>--space-N</code>. The raw scale is the palette; these are the
+      roles, the same way colours are named for what they do rather than what hue they are.
+      Changing what a break <em>means</em> then moves every page together.</p>
+    </div>
+
+    <div class="rule-card">
+      <h3>Containers own the space between regions</h3>
+      <p>A section does not know what follows it, so it cannot know how far away that should be.
+      Put the space on the container as <code>gap</code>, not on each child as a margin: gap never
+      collapses, cannot be undone by a child, and needs no last-child resets. If a system needs
+      <code>:last-child { margin-bottom: 0 }</code>, that is not a fix, it is a symptom that the
+      space is owned by the wrong thing.</p>
+      <p>Prose flow <em>inside</em> a section stays element-owned, because a heading's space depends
+      on its own size, which a container cannot know. Two mechanisms, at two clearly separated
+      levels, never competing at the same one.</p>
+    </div>
+
+    <div class="rule-card">
+      <h3>Gap takes no scale of its own</h3>
+      <p>&ldquo;How far apart do these sit&rdquo; means the same thing whether the space comes from
+      a margin or a gap, and whether it runs down the page or across it. So gap between siblings
+      uses the rhythm above, on either axis.</p>
+      <p>One exception: the space between a glyph and its label <em>inside</em> a single control is
+      part of the control rather than layout. Use <code>--gap-glyph</code> (<code>0.5em</code>),
+      which scales with that control's own type &mdash; the same exemption already given to button
+      padding. Before this rule the same job was being done at 5, 6, 8, 10 and 11px, which is 0.38
+      to 0.85em once each component's own size is accounted for.</p>
+    </div>
+
+    <div class="rule-card">
+      <h3>A set of related controls needs a container</h3>
+      <p>Buttons placed as bare siblings are spaced by the HTML whitespace between the tags &mdash;
+      narrower than any deliberate value, and it looks like a bug because it is one. Use
+      <code>.ds-btn-group</code>, or <code>--stack</code> for the vertical axis and
+      <code>--end</code> for a form's action area.</p>
     </div>
     <div class="rule-card">
       <h3>Namespaced in production</h3>

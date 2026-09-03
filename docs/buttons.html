@@ -13,20 +13,19 @@
        Advisory notes use the system's own .ds-alert component (no bespoke
        callout chrome on docs pages). ── */
 /* Context cards (public vs internal) */
-    .context-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:var(--space-4); }
+    .context-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:var(--space-block); }
     .context-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 18px 20px; }
-    .context-card h3 { font-size: 15px; margin:0 0 var(--space-2); display: flex; align-items: center; gap:var(--space-2); }
+    .context-card h3 { font-size: 15px; margin:0 0 var(--space-2); display: flex; align-items: center; gap:var(--gap-glyph); }
     .context-dot { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.15); }
     .context-card p { font-size: 13px; color: var(--arxiv-library-grey); line-height: 1.55; margin:0 0 var(--space-3); }
 
     /* States — stackable flexbox columns: sit side by side where there is
        room, wrap to fewer columns on narrow viewports. */
-    .state-flex { display: flex; flex-wrap: wrap; gap:var(--space-3) var(--space-6); align-items: flex-start; margin-bottom:var(--space-3); }
-    .state-cell { display: flex; flex-direction: column; gap: var(--space-tight); align-items: flex-start; }
-    .btn-pair { display: flex; flex-direction: column; gap: var(--space-tight); align-items: flex-start; }
+    .state-flex { display: flex; flex-wrap: wrap; gap:var(--space-tight) var(--space-block); align-items: flex-start; margin-bottom:var(--space-3); }
+.btn-pair { }
     .state-label { font-family: var(--arxiv-font-condensed); font-weight: 600; font-size: 10px; color: var(--arxiv-library-grey); text-transform: uppercase; letter-spacing: 0.06em; }
 
-    .live-row { display: flex; gap: var(--space-tight); align-items: center; flex-wrap: wrap; padding: 16px 18px; background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 6px; margin-top:var(--space-1); }
+    .live-row { padding: 16px 18px; background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 6px; margin-top:var(--space-1); }
     .live-row::before { content: 'Live (hover / focus / press):'; font-size: 12px; color: var(--arxiv-library-grey); margin-right:var(--space-2); }
     .tinted-row { background: #e8f4ff; border: 1px solid #d0e3f4; border-radius: 6px; padding: 16px 18px; margin-top:var(--space-1); display: flex; gap: var(--space-tight); align-items: center; flex-wrap: wrap; }
     .tinted-row + .tinted-row { margin-top:var(--space-3); }
@@ -51,16 +50,15 @@
        public/design-system.css; nothing here restyles one. Panel chrome
        matches .live-row, minus its "Live" label. ── */
     .form-demo { background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 6px; padding: 16px 18px; margin-top:var(--space-1); }
-    .form-actions { display: flex; justify-content: flex-end; align-items: center; gap: var(--space-tight); flex-wrap: wrap; margin-top:var(--space-2); }
+    .form-actions { margin-top:var(--space-2); }
     .form-actions.split { justify-content: space-between; }
-    .action-group { display: flex; align-items: center; gap: var(--space-tight); }
-    /* Optical alignment: a text button has 10px of padding and no border, so it
+/* Optical alignment: a text button has 10px of padding and no border, so it
        hangs to the right of the field edge above it until the padding is pulled back. */
     .btn-flush { margin-left:-10px; }
     /* The reason a blocked action cannot be taken: .ds-hint sits under the
        button it explains, so it tracks the right-aligned action row. */
     .form-actions + .ds-hint { text-align: right; }
-    .repeat-row { display: flex; align-items: flex-end; gap: var(--space-tight); margin-bottom:10px; }
+    .repeat-row { align-items: flex-end; margin-bottom:10px; }
     .repeat-row .ds-field { flex: 1 1 auto; margin-bottom:0; }
 
 
@@ -91,7 +89,7 @@
       --i-sec-border: #9cb522; --i-sec-border-active: #6b7a10;
       --i-danger: var(--arxiv-error-border); --i-danger-hover: #b71c1c;
     }
-    .ibtn { display: inline-flex; align-items: center; justify-content: center; gap:6px; padding: 10px 20px; font-family: inherit; font-size: 14px; font-weight: 500; line-height: 1; border-radius: 6px; cursor: pointer; text-decoration: none; white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.08); transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease, transform 0.08s ease; }
+    .ibtn { display: inline-flex; align-items: center; justify-content: center; gap:var(--gap-glyph); padding: 10px 20px; font-family: inherit; font-size: 14px; font-weight: 500; line-height: 1; border-radius: 6px; cursor: pointer; text-decoration: none; white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.08); transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease, transform 0.08s ease; }
     .ibtn:active:not(:disabled) { transform: translateY(1px); box-shadow: none; }
     .ibtn:focus-visible { outline: 3px solid var(--arxiv-focus-ring); outline-offset: 2px; }
     .ibtn-primary { background: var(--i-lime); color: var(--i-text-on-lime) /* on-lime: Repository Brown in BOTH modes */; border: 1px solid transparent; }
@@ -140,13 +138,12 @@ pre .c { color: var(--arxiv-grey-ui); }
 
     /* Scenario grid — related action rows sit side by side instead of each
        taking a full-width block with its own heading. */
-    .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:var(--space-4); align-items: start; }
+    .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:var(--space-block); align-items: start; }
     .demo-grid .form-demo { max-width: none; margin-top:0; }
     .demo-grid .ds-panel-label { margin:0 0 6px; }
 
   
-    /* Inline links in page copy. Bare <a> previously fell back to the
-       browser default, which is unreadable on the dark canvas. Nav links
+    /* Inline links in page copy. These sit on the page canvas. Nav links
        carry their own, more specific rules. */
 </style>
 </head>
@@ -219,15 +216,15 @@ pre .c { color: var(--arxiv-grey-ui); }
         <h3><span class="context-dot" style="background:#a5d6fe"></span>Public — Open Blue</h3>
         <p>Everything a reader or author sees on arxiv.org: listing, abstract, HTML paper pages.
         Primary is Open Blue <code>#a5d6fe</code> with Repository Brown text; secondary is white with a warm-grey gradient border.</p>
-        <button class="ds-btn ds-btn-primary" type="button">HTML</button>
-        <button class="ds-btn ds-btn-secondary" type="button">TeX Source</button>
+        <div class="ds-btn-group"><button class="ds-btn ds-btn-primary" type="button">HTML</button>
+        <button class="ds-btn ds-btn-secondary" type="button">TeX Source</button></div>
       </div>
       <div class="context-card ctx-internal">
         <h3><span class="context-dot" style="background:#c4d82e"></span>Internal — Access Lime</h3>
         <p>Staff-facing tools: the moderation queue, arXiv Check, the Admin Console.
         Primary is Access Lime <code>#c4d82e</code>; secondary is a lime tint with a lime border.</p>
-        <button class="ibtn ibtn-primary" type="button">Approve</button>
-        <button class="ibtn ibtn-secondary" type="button">Hold</button>
+        <div class="ds-btn-group"><button class="ibtn ibtn-primary" type="button">Approve</button>
+        <button class="ibtn ibtn-secondary" type="button">Hold</button></div>
       </div>
     </div>
 
@@ -266,40 +263,40 @@ pre .c { color: var(--arxiv-grey-ui); }
 
     <h3 class="ds-panel-label">Tiers and states</h3>
     <div class="state-flex">
-      <div class="state-cell">
-        <div class="btn-pair">
-          <button class="ds-btn ds-btn-primary" type="button">HTML</button>
-          <button class="ds-btn ds-btn-secondary" type="button">TeX Source</button>
+      <div class="ds-btn-group ds-btn-group--stack state-cell">
+        <div class="ds-btn-group ds-btn-group--stack btn-pair">
+          <div class="ds-btn-group"><button class="ds-btn ds-btn-primary" type="button">HTML</button>
+          <button class="ds-btn ds-btn-secondary" type="button">TeX Source</button></div>
           <button class="ds-btn ds-btn-text" type="button">Copy link</button>
         </div>
         <span class="state-label">Default</span>
       </div>
-      <div class="state-cell">
-        <div class="btn-pair">
+      <div class="ds-btn-group ds-btn-group--stack state-cell">
+        <div class="ds-btn-group ds-btn-group--stack btn-pair">
           <button class="ds-btn ds-btn-primary is-hover" type="button">HTML</button>
           <button class="ds-btn ds-btn-secondary is-hover" type="button">TeX Source</button>
           <button class="ds-btn ds-btn-text is-hover" type="button">Copy link</button>
         </div>
         <span class="state-label">Hover</span>
       </div>
-      <div class="state-cell">
-        <div class="btn-pair">
+      <div class="ds-btn-group ds-btn-group--stack state-cell">
+        <div class="ds-btn-group ds-btn-group--stack btn-pair">
           <button class="ds-btn ds-btn-primary is-focus" type="button">HTML</button>
           <button class="ds-btn ds-btn-secondary is-focus" type="button">TeX Source</button>
           <button class="ds-btn ds-btn-text is-focus" type="button">Copy link</button>
         </div>
         <span class="state-label">Focus</span>
       </div>
-      <div class="state-cell">
-        <div class="btn-pair">
+      <div class="ds-btn-group ds-btn-group--stack state-cell">
+        <div class="ds-btn-group ds-btn-group--stack btn-pair">
           <button class="ds-btn ds-btn-primary is-pressed" type="button">HTML</button>
           <button class="ds-btn ds-btn-secondary is-pressed" type="button">TeX Source</button>
           <button class="ds-btn ds-btn-text is-pressed" type="button">Copy link</button>
         </div>
         <span class="state-label">Pressed</span>
       </div>
-      <div class="state-cell">
-        <div class="btn-pair">
+      <div class="ds-btn-group ds-btn-group--stack state-cell">
+        <div class="ds-btn-group ds-btn-group--stack btn-pair">
           <button class="ds-btn ds-btn-primary" type="button" disabled>HTML</button>
           <button class="ds-btn ds-btn-secondary" type="button" disabled>TeX Source</button>
           <button class="ds-btn ds-btn-text" type="button" disabled>Copy link</button>
@@ -307,7 +304,7 @@ pre .c { color: var(--arxiv-grey-ui); }
         <span class="state-label">Disabled</span>
       </div>
     </div>
-    <div class="live-row">
+    <div class="ds-btn-group live-row">
       <button class="ds-btn ds-btn-primary" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
         Download PDF
@@ -398,14 +395,14 @@ pre .c { color: var(--arxiv-grey-ui); }
             <label class="ds-label" for="fx-title">Title</label>
             <input class="ds-input" id="fx-title" type="text" value="Spectral gaps in random regular graphs">
           </div>
-          <div class="form-actions">
+          <div class="ds-btn-group ds-btn-group--end form-actions">
             <button class="ds-btn ds-btn-text" type="button">Cancel</button>
             <button class="ds-btn ds-btn-primary" type="submit">Save</button>
           </div>
         </div></div>
       <div><p class="ds-panel-label">Continue or go back</p>
         <div class="form-demo">
-          <div class="form-actions">
+          <div class="ds-btn-group ds-btn-group--end form-actions">
             <button class="ds-btn ds-btn-secondary" type="button">Go back</button>
             <button class="ds-btn ds-btn-primary" type="submit">Continue</button>
           </div>
@@ -416,16 +413,16 @@ pre .c { color: var(--arxiv-grey-ui); }
             <label class="ds-label" for="fx-reason">Reason for withdrawal</label>
             <textarea class="ds-input" id="fx-reason">The result in Section 4 does not hold for non-regular graphs.</textarea>
           </div>
-          <div class="form-actions">
+          <div class="ds-btn-group ds-btn-group--end form-actions">
             <button class="ds-btn ds-btn-secondary" type="button">Discard draft</button>
             <button class="ds-btn ds-btn-primary" type="submit">Submit withdrawal</button>
           </div>
         </div></div>
       <div><p class="ds-panel-label">Three actions — the boundary</p>
         <div class="form-demo">
-          <div class="form-actions split">
+          <div class="ds-btn-group ds-btn-group--end form-actions split">
             <button class="ds-btn ds-btn-secondary" type="button">Go back</button>
-            <span class="action-group">
+            <span class="ds-btn-group action-group">
               <button class="ds-btn ds-btn-secondary" type="button">Save draft</button>
               <button class="ds-btn ds-btn-primary" type="submit">Continue</button>
             </span>
@@ -437,7 +434,7 @@ pre .c { color: var(--arxiv-grey-ui); }
             <label class="ds-label" for="fx-email">Email address</label>
             <input class="ds-input" id="fx-email" type="email" value="a.novak@university.edu">
           </div>
-          <div class="form-actions">
+          <div class="ds-btn-group ds-btn-group--end form-actions">
             <button class="ds-btn ds-btn-primary" type="submit">Submit</button>
           </div>
         </div></div>
@@ -474,14 +471,14 @@ pre .c { color: var(--arxiv-grey-ui); }
             <input type="checkbox">
             <span>I grant arXiv a perpetual, non-exclusive license to distribute this article</span>
           </label>
-          <div class="form-actions">
+          <div class="ds-btn-group ds-btn-group--end form-actions">
             <button class="ds-btn ds-btn-primary" type="submit" aria-disabled="true" aria-describedby="fx-gate">Continue</button>
           </div>
           <p class="ds-hint" id="fx-gate">Grant the license before continuing.</p>
         </div></div>
       <div><p class="ds-panel-label">Submit in flight</p>
         <div class="form-demo">
-          <div class="form-actions">
+          <div class="ds-btn-group ds-btn-group--end form-actions">
             <button class="ds-btn ds-btn-text" type="button">Cancel</button>
             <button class="ds-btn ds-btn-primary" type="submit" aria-busy="true">
               <span class="btn-spin" aria-hidden="true"></span>
@@ -491,9 +488,9 @@ pre .c { color: var(--arxiv-grey-ui); }
         </div></div>
       <div><p class="ds-panel-label">A destructive action</p>
         <div class="form-demo">
-          <div class="form-actions split">
+          <div class="ds-btn-group ds-btn-group--end form-actions split">
             <button class="ds-btn ds-btn-destructive" type="button">Delete draft</button>
-            <span class="action-group">
+            <span class="ds-btn-group action-group">
               <button class="ds-btn ds-btn-text" type="button">Cancel</button>
               <button class="ds-btn ds-btn-primary" type="submit">Save</button>
             </span>
@@ -527,14 +524,14 @@ pre .c { color: var(--arxiv-grey-ui); }
 
     <h3 class="ds-panel-label">Rows in a repeatable group</h3>
     <div class="form-demo">
-      <div class="repeat-row">
+      <div class="ds-btn-group repeat-row">
         <div class="ds-field">
           <label class="ds-label" for="fx-file2">Top-level file</label>
           <input class="ds-input" id="fx-file2" type="text" value="main.tex">
         </div>
         <button class="ds-btn ds-btn-text" type="button">Remove<span class="is-sr-only"> main.tex</span></button>
       </div>
-      <div class="repeat-row">
+      <div class="ds-btn-group repeat-row">
         <div class="ds-field">
           <label class="ds-label is-sr-only" for="fx-file3">Top-level file</label>
           <input class="ds-input" id="fx-file3" type="text" value="figures.zip">
@@ -563,38 +560,38 @@ pre .c { color: var(--arxiv-grey-ui); }
     Staff tools carry more actions per screen, so the internal set has four tiers.</p>
 
     <div class="state-flex">
-      <div class="state-cell">
-        <div class="btn-pair">
-          <button class="ibtn ibtn-primary" type="button">Approve</button>
-          <button class="ibtn ibtn-secondary" type="button">Hold</button>
+      <div class="ds-btn-group ds-btn-group--stack state-cell">
+        <div class="ds-btn-group ds-btn-group--stack btn-pair">
+          <div class="ds-btn-group"><button class="ibtn ibtn-primary" type="button">Approve</button>
+          <button class="ibtn ibtn-secondary" type="button">Hold</button></div>
         </div>
         <span class="state-label">Default</span>
       </div>
-      <div class="state-cell">
-        <div class="btn-pair">
+      <div class="ds-btn-group ds-btn-group--stack state-cell">
+        <div class="ds-btn-group ds-btn-group--stack btn-pair">
           <button class="ibtn ibtn-primary is-hover" type="button">Approve</button>
           <button class="ibtn ibtn-secondary is-hover" type="button">Hold</button>
         </div>
         <span class="state-label">Hover</span>
       </div>
-      <div class="state-cell">
-        <div class="btn-pair">
+      <div class="ds-btn-group ds-btn-group--stack state-cell">
+        <div class="ds-btn-group ds-btn-group--stack btn-pair">
           <button class="ibtn ibtn-primary is-focus" type="button">Approve</button>
           <button class="ibtn ibtn-secondary is-focus" type="button">Hold</button>
         </div>
         <span class="state-label">Focus</span>
       </div>
-      <div class="state-cell">
-        <div class="btn-pair">
+      <div class="ds-btn-group ds-btn-group--stack state-cell">
+        <div class="ds-btn-group ds-btn-group--stack btn-pair">
           <button class="ibtn ibtn-primary is-pressed" type="button">Approve</button>
           <button class="ibtn ibtn-secondary is-pressed" type="button">Hold</button>
         </div>
         <span class="state-label">Pressed</span>
       </div>
     </div>
-    <div class="live-row">
-      <button class="ibtn ibtn-primary" type="button">Approve</button>
-      <button class="ibtn ibtn-secondary" type="button">Hold</button>
+    <div class="ds-btn-group live-row">
+      <div class="ds-btn-group"><button class="ibtn ibtn-primary" type="button">Approve</button>
+      <button class="ibtn ibtn-secondary" type="button">Hold</button></div>
       <button class="ibtn ibtn-tertiary" type="button">View log</button>
       <button class="ibtn ibtn-destructive" type="button">Delete</button>
       <button class="ibtn ibtn-primary" type="button" disabled>Approve</button>
