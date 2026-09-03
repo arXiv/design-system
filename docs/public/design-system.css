@@ -12,36 +12,6 @@
    Tokens live in `:root` as CSS custom properties (see color-mapping.md
    for the full palette and why each color exists).
 
-   STATUS: in-progress extraction from mockups. Currently codifies:
-     - Color tokens (palette, popover tints, active-state wash, pill border)
-     - Typography token shorthand (sans, condensed, mono, serif)
-     - Primary + secondary button (Variant 3, validated 2026-05-14)
-     - Inline active state (.ds-inline-active, validated 2026-05-27)
-     - Link (.ds-link) + link state tokens (hover, visited), light + dark
-       (validated 2026-05-28)
-     - Annotation typography (.ds-annotation, validated 2026-05-27)
-     - Popover panel (.ds-popover and parts, validated 2026-05-27)
-     - Element pill (.ds-element-pill, validated 2026-05-27)
-     - Alert / status message (.ds-alert) + status color tokens,
-       light + dark — the first dark-aware tokens here (validated 2026-05-28)
-     - Accordion (.ds-acc + .ds-acc-stack/.ds-acc-body, rail variant
-       .ds-acc-rail; no new tokens, validated 2026-07-27)
-     - Text button (.ds-btn-text) + on-dark secondary (.on-dark) + the
-       in-button icon rule (no new tokens, validated 2026-08-11)
-     - Tag (.ds-tag + --chrome/--success/--warning/--error, --keep-case,
-       .ds-tag-remove, .ds-tag-note; no new tokens, validated 2026-08-11
-       against the admin-console category editors)
-     - Form fields (.ds-field/.ds-label/.ds-input/.ds-hint + .is-invalid,
-       .field-error, .ds-check; no new tokens — the first form styling the
-       public stylesheet has ever had, 2026-08-11)
-     - Form validation tiers (.is-warning/.field-warning, .is-info/.field-info,
-       .field-messages, .label-optional; no new tokens — promoted from the
-       submission metadata mockup, 2026-09-01)
-     - Foundation (.ds-page/.ds-container: base type, the published rem
-       heading scale, prose measure, code, tables) + --space-* and width
-       tokens; the first element-level styling here (2026-09-02)
-
-   More patterns will land here as they stabilize in the mockups.
    ═══════════════════════════════════════════════════════════════════════ */
 
 :root {
@@ -89,8 +59,7 @@
      Light warm border for inputs, toggle tracks, secondary-button
      gradients, and card edges. One step lighter than --arxiv-grey-dis;
      decorative only (below 3:1) — never the sole boundary of an
-     interactive control that must meet WCAG 1.4.11. Promoted from the
-     mockups 2026-06-11. */
+     interactive control that must meet WCAG 1.4.11. */
   --arxiv-border-light:    #ddd8d2;
 
   /* ── Focus ring on dark surfaces ──
@@ -207,6 +176,24 @@
   --space-block:   var(--space-4);    /* 16px — between blocks in a section */
   --space-section: var(--space-12);   /* 48px — between sections */
 
+  /* ── Gap ──
+     Gap gets no scale of its own. "How far apart do these sit" means the same
+     thing whether the space comes from a margin or a gap, and whether it runs
+     down the page or across it — so gap between siblings uses the rhythm
+     above, on either axis.
+
+     What gap does need is one value the rhythm cannot supply: the space
+     between a glyph and its label INSIDE a single control. That is not
+     layout, it is part of the control, and it should scale with the control's
+     own type rather than with the page — the same reason the icons are sized
+     in em. Custom properties resolve em at the point of use, so this is 0.5em
+     of whatever component reads it.
+
+     Half the type size is the classic relationship: comfortably more than a
+     word space (~0.25em), comfortably less than a separation. 38 to 0.85em once you
+     account for each component's size. */
+  --gap-glyph: 0.5em;
+
   /* ── Content width ──
      THE default content width. See DESIGN-POLICIES.md "Layout and content
      width", which this token implements.
@@ -248,8 +235,7 @@
 
    BASE SIZE IS DELIBERATELY NOT SET. There is no `font-size` on .ds-page:
    the page inherits the reader's own browser setting, and every size below
-   is rem, so the whole scale moves with it. Setting 14px here — which every
-   docs page used to do — silently overrides a reader who enlarged their
+   is rem, so the whole scale moves with it. Setting 14px here — which silently overrides a reader who enlarged their
    default.
    ═══════════════════════════════════════════════════════════════════════ */
 
@@ -326,7 +312,7 @@
    they track the reader's base size.
 
    Space above each heading is one scale stop tighter than the published
-   table (32 / 24 / 16 rather than 40 / 28), reviewed on screen 2026-09-02:
+   table (32 / 24 / 16 rather than 40 / 28):
    the table's values are not on the spacing scale, and at 48/32 the sections
    read too far apart. typography.html's table needs updating to match. */
 :where(.ds-page) :is(h1, h2, h3, h4) {
@@ -436,14 +422,10 @@
    and stays out of the document outline. If a reader needs to navigate to it,
    it is an h3 or an h4 at the size above, not a label."
 
-   ONE treatment, everywhere. Before this it existed eight times at six sizes
-   (0.625, 0.6875, 0.7, 0.75, 0.8125rem and a raw 10px) and two letter-
-   spacings, across the docs, both mockups and three DS components.
-
    0.75rem — 12px against a 16px root. The 11px in typography.html was written
    when the docs' base was 14px, where it read as 79% of body; at a 16px base
    the same figure is 69%, smaller than the spec intended. 0.75rem restores
-   the proportion (reviewed 2026-09-03).
+   the proportion.
 
    It carries heading-like asymmetric margin — more above than below — so it
    bonds DOWNWARD to the content it introduces. That is intrinsic to what the
@@ -595,7 +577,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: var(--gap-glyph);
   padding: 10px 20px;
   min-width: 120px;
   font-family: var(--arxiv-font-sans);
@@ -675,9 +657,7 @@
    hue — so the button reads as intentionally secondary via warm-on-
    cool material differentiation, not via low contrast.
    Hover brightens to Warm Wash (lighter step in the same warm family),
-   echoing the primary button's brighten-on-hover behavior.
-
-   Validated 2026-05-22 in arxiv-mockups/arxiv-public/html-redesign.html
+   echoing the primary button's brighten-on-hover behavior. in arxiv-mockups/arxiv-public/html-redesign.html
    footer ("Help improve HTML papers" section).
 
    Example:
@@ -873,6 +853,34 @@
   cursor: not-allowed;
 }
 
+/* ── Button group (.ds-btn-group) ─────────────────────────────────────
+   A set of related buttons. The system had no such component, so every page
+   invented one — nine of them across the docs alone (.live-row, .form-actions,
+   .action-group, .repeat-row, .btn-pair, .action-bar, .state-cell and more),
+   at three different gaps. And a set with no container at all gets whatever
+   the HTML whitespace between the tags happens to be, which is narrower than
+   any of them and looks like a bug because it is one.
+
+   Two buttons side by side are siblings that belong together, so the gap is
+   --space-tight, the same as any other such pair. Nothing about buttons makes
+   their spacing special; what was missing was somewhere to put it. */
+.ds-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-tight);
+}
+
+/* Stacked rather than side by side — same relationship, other axis. */
+.ds-btn-group--stack {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* The action area at the end of a form: primary last, hard right. */
+.ds-btn-group--end { justify-content: flex-end; }
+
+
 /* ── Icons inside any button ────────────────────────────────────────
    Sized in em so an icon tracks its button's font-size; display:block
    kills the inline baseline gap; flex:none stops a long label from
@@ -917,7 +925,7 @@
    Color never carries meaning alone — the label's own words do. min-height
    holds the WCAG 2.2 SC 2.5.8 target floor for tags that are interactive.
 
-   Construction validated 2026-08-11 against the admin-console category
+   Construction against the admin-console category
    editors in mockups/internal/admin-console/{user-page,paper-details}/;
    spec and contrast table in planning/proposals/tag-component.html.
 
@@ -928,7 +936,7 @@
 .ds-tag {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: var(--gap-glyph);
   min-height: 24px;
   padding: 2px 12px;
   border-radius: 999px;
@@ -1340,7 +1348,7 @@ select.ds-input { padding-right: 34px; }
 .ds-check {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: var(--gap-glyph);
   font-size: 14px;
   margin-bottom: 8px;
   cursor: pointer;
@@ -1445,9 +1453,7 @@ select.ds-input { padding-right: 34px; }
    Intentionally NOT a "marginalia" class. The treatment is a
    typographic voice, not a layout role. A consumer chooses placement
    (margin, popover, inline aside) separately and applies this class
-   to get the right voice.
-
-   Validated 2026-05-27 in arxiv-mockups/arxiv-public/html-redesign.html
+   to get the right voice. in arxiv-mockups/arxiv-public/html-redesign.html
    (footnote marginalia, figure alt-text marginalia).
    ═══════════════════════════════════════════════════════════════════════ */
 
@@ -1479,9 +1485,7 @@ select.ds-input { padding-right: 34px; }
      .ds-popover-title      Small uppercase condensed label at the
                             top of the panel (e.g., "Reference 47",
                             "Footnote 3").
-     .ds-popover-close      Small × button at top-right.
-
-   Validated 2026-05-27 in arxiv-mockups/arxiv-public/html-redesign.html
+     .ds-popover-close      Small × button at top-right. in arxiv-mockups/arxiv-public/html-redesign.html
    (citation popover, footnote popover).
 
    Example:
@@ -1562,9 +1566,7 @@ select.ds-input { padding-right: 34px; }
    the consumer's hover/focus rule applies) to fade it in.
 
    Chips inside the pill are styled by the consumer — the pill itself
-   only provides the floating-panel material.
-
-   Validated 2026-05-27 in arxiv-mockups/arxiv-public/html-redesign.html
+   only provides the floating-panel material. in arxiv-mockups/arxiv-public/html-redesign.html
    (equation actions, figure actions — Distill-style anchored chrome).
 
    Example:
@@ -1585,7 +1587,10 @@ select.ds-input { padding-right: 34px; }
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 4px 14px;
+  /* The one gap not on the named rhythm: this pill is absolutely positioned
+     chrome whose parts wrap, and its row/column relationship is part of the
+     component rather than page layout. Raw scale steps, deliberately. */
+  gap: var(--space-1) var(--space-3);
   width: max-content;
   max-width: calc(100% - 16px);
   padding: 6px 14px;
@@ -1627,8 +1632,6 @@ select.ds-input { padding-right: 34px; }
    icons carry aria-hidden="true". Inline links inherit the variant color
    and stay underlined, per the link policy.
 
-   Promoted from arxiv-mockups/design-patterns/alert-styles.html (2026-05-28).
-
    Example:
      <div class="ds-alert ds-alert-info" role="status">
        <svg class="ds-alert-icon" aria-hidden="true">…</svg>
@@ -1643,7 +1646,7 @@ select.ds-input { padding-right: 34px; }
   margin-block: var(--space-block);
   display: flex;
   align-items: flex-start;
-  gap: 11px;
+  gap: var(--space-tight);
   padding: 12px 14px;
   border: 1px solid;
   border-left-width: 4px;
@@ -1701,8 +1704,7 @@ select.ds-input { padding-right: 34px; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    /* Brand + surface dark values (accepted 2026-08-07 —
-       planning/proposals/public-dark-palette.html). Repository Brown is
+    /* Brand + surface dark values. Repository Brown is
        the dark canvas; accents hold their light values. */
     --arxiv-repository-brown:           #f0eeec;  /* canvas text flips; on-blue text keeps --arxiv-repository-brown-on-blue */
     --arxiv-warm-wash:       #1c1a17;  /* the canvas */
@@ -1719,7 +1721,7 @@ select.ds-input { padding-right: 34px; }
     --arxiv-header-bar:      #262119;  /* lifted so the bar reads against the canvas */
     --arxiv-link-blue:       #64b5f6;  /* 7.84:1 on Repository Brown ✓ AAA */
     --arxiv-link-hover:      #90caf9;
-    --arxiv-link-visited:    #c690e3;  /* 7.03:1 on Repository Brown ✓ AAA; 4.66:1 on active-bg ✓ AA (was #c084e0, 4.17:1 there — caught by check-contrast.py 2026-08-24) */
+    --arxiv-link-visited:    #c690e3;  /* 7.03:1 on Repository Brown ✓ AAA; 4.66:1 on active-bg ✓ AA */
     --arxiv-success-bg:      #1e2b0d;
     --arxiv-success-border:  #8fbd3a;
     --arxiv-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
@@ -1734,7 +1736,7 @@ select.ds-input { padding-right: 34px; }
     --arxiv-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
   }
 
-  /* Buttons — dark constructions (first pass for visual review, 2026-08-07).
+  /* Buttons — dark constructions.
      Same fills and geometry as light; the border gradients deepen and the
      drop shadows strengthen so the buttons keep definition on the dark
      canvas. Gradient stops are component-internal constants (tier 2). */
@@ -1808,7 +1810,7 @@ select.ds-input { padding-right: 34px; }
   --arxiv-header-bar:        #262119;  /* lifted so the bar reads against the canvas */
   --arxiv-link-blue:         #64b5f6;  /* 7.84:1 on Repository Brown ✓ AAA */
   --arxiv-link-hover:        #90caf9;
-  --arxiv-link-visited:      #c690e3;  /* 7.03:1 on Repository Brown ✓ AAA; 4.66:1 on active-bg ✓ AA (was #c084e0, 4.17:1 there — caught by check-contrast.py 2026-08-24) */
+  --arxiv-link-visited:      #c690e3;  /* 7.03:1 on Repository Brown ✓ AAA; 4.66:1 on active-bg ✓ AA */
   --arxiv-success-bg:        #1e2b0d;
   --arxiv-success-border:    #8fbd3a;
   --arxiv-success-fg:        #c5e1a5;  /* 10.4:1 ✓ AAA */
@@ -1856,7 +1858,7 @@ select.ds-input { padding-right: 34px; }
 }
 
 
-/* Buttons — dark constructions (first pass for visual review, 2026-08-07).
+/* Buttons — dark constructions.
    Same fills and geometry as light; the border gradients deepen and the
    drop shadows strengthen so the buttons keep definition on the dark
    canvas. Gradient stops are component-internal constants (tier 2). */
@@ -1938,9 +1940,7 @@ select.ds-input { padding-right: 34px; }
    the rail summary grows its hit area to the 24px target-size floor via
    the padding + negative-margin technique (DESIGN-POLICIES.md, Chrome
    and interaction structure) with no layout change. No transitions —
-   nothing for prefers-reduced-motion to disable.
-
-   Validated 2026-06-22 → 2026-07-27 as .mg-acc in
+   nothing for prefers-reduced-motion to disable. as .mg-acc in
    mockups/public/html-phase1.html (paper-info card group + abstract
    rail); treatment agreed on design-patterns/organizing-content.html.
 
@@ -1958,7 +1958,7 @@ select.ds-input { padding-right: 34px; }
      </div>
    ═══════════════════════════════════════════════════════════════════════ */
 
-.ds-acc-stack { display: flex; flex-direction: column; gap: 8px; }
+.ds-acc-stack { display: flex; flex-direction: column; gap: var(--space-tight); }
 .ds-acc {
   background: var(--arxiv-surface);
   border: 1px solid var(--arxiv-border-light);
@@ -1974,7 +1974,7 @@ select.ds-input { padding-right: 34px; }
   padding: 11px 16px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--gap-glyph);
 }
 .ds-acc > summary::-webkit-details-marker { display: none; }
 .ds-acc > summary::marker { content: ""; }
@@ -1996,7 +1996,7 @@ select.ds-input { padding-right: 34px; }
   border-radius: 6px;
 }
 .ds-acc-body { padding: 14px 16px 16px; font-size: 0.85rem; color: var(--arxiv-repository-brown); }
-.ds-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; margin: 0; }
+.ds-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-tight) var(--space-block); margin: 0; }
 .ds-acc-body dt { white-space: nowrap; padding-top: 2px; }   /* type: .ds-panel-label */
 .ds-acc-body dd { margin: 0; }
 .ds-acc-body a { color: var(--arxiv-link-blue); }
@@ -2064,7 +2064,7 @@ select.ds-input { padding-right: 34px; }
       text that happens to be clickable. Summary text on it is 15:1.
 
    3. Its own margin. The base component sets none, because it expects to sit
-      in a .ds-acc-stack, which supplies gap: 8px. Standing alone under a demo
+      in a .ds-acc-stack, which supplies the gap. Standing alone under a demo
       it has nothing to space it, and it collides with whatever is above. A
       panel is used standalone by definition, so it carries its own room.
 
@@ -2119,10 +2119,10 @@ select.ds-input { padding-right: 34px; }
 /* ═══════════════════════════════════════════════════════════════════════
    SITE FOOTER  (.ds-site-footer)
    ═══════════════════════════════════════════════════════════════════════
-   The universal arXiv public-page footer. Design approved 2026-06-11,
+   The universal arXiv public-page footer. Design approved,
    validated in three places that agree almost exactly: the approved
    spinout-header-footer Cloud Run deployment, mockups/public/abstract-phase2.html,
-   and mockups/public/html-phase1.html (see audits/2026-06-11/AUDIT-COMPONENTS.md
+   and mockups/public/html-phase1.html (see the component audit
    addendum — "the most validated component on this list").
 
    Structure (three pieces):
@@ -2201,7 +2201,7 @@ select.ds-input { padding-right: 34px; }
 .ds-site-footer-ack strong { color: var(--arxiv-repository-brown); font-weight: 600; }
 .ds-site-footer-links {
   display: flex;
-  gap: 8px;
+  gap: var(--space-tight);
   flex-wrap: wrap;
   font-size: 0.8125rem; /* 13px */
   line-height: 1.8;
@@ -2248,7 +2248,7 @@ select.ds-input { padding-right: 34px; }
 }
 .ds-site-footer-funders-logos {
   display: flex;
-  gap: 8px;
+  gap: var(--space-tight);
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -2293,14 +2293,13 @@ select.ds-input { padding-right: 34px; }
 /* ═══════════════════════════════════════════════════════════════════════
    SITE HEADER UNIT  (.ds-announcement + .ds-site-header)
    ═══════════════════════════════════════════════════════════════════════
-   The universal arXiv public-page header. Design approved 2026-06-11,
+   The universal arXiv public-page header. Design approved,
    validated against the spinout-header-footer Cloud Run deployment.
    Reference implementation: mockups/public/abstract-phase2.html.
 
    This is ONE pattern with two stacked pieces — codified together
    because the approved deployment treats them as a unit. (A third
-   piece, a breadcrumb band, was briefly part of this pattern and
-   removed 2026-06-11 — the approved deployment covers only the banner
+   piece, a breadcrumb band, was briefly part of this pattern and removed — the approved deployment covers only the banner
    and the black bar; see the note below the header rules.)
 
      1. .ds-announcement — dismissable light-blue announcement band.
@@ -2308,8 +2307,7 @@ select.ds-input { padding-right: 34px; }
         persists dismissal (cookie/localStorage in production).
      2. .ds-site-header — the black bar (Repository Brown #1c1a17,
         phase-2 spinout brand): logo left, nav right (Search / Submit /
-        Donate | Log in). NOT sticky — scrolls away like content
-        (decided 2026-06-11; sticky chrome is reader-only).
+        Donate | Log in). NOT sticky — scrolls away like content.
 
    Markup contract (abridged; see header-styles.html for the full demo):
      <a class="ds-skip-link" href="#main">Skip to main content</a>
@@ -2346,7 +2344,7 @@ select.ds-input { padding-right: 34px; }
      - Below 520px the bar wraps to two rows (flex-wrap) rather than
        collapsing into a hamburger: every nav item stays visible, no JS
        required, and visible labels keep voice-control users working
-       (WCAG 1.4.10 reflow verified at 320px, 2026-06-11).
+       (WCAG 1.4.10 reflow verified at 320px).
      - The announcement close button needs a persisted dismissal in
        production; the banner is temporal — page function must not
        depend on it (newcomer signposting needs a permanent home;
@@ -2363,7 +2361,7 @@ select.ds-input { padding-right: 34px; }
      mode, dark-on-light in dark. It was previously paired with a literal
      #fff, which in dark mode put white text on the near-white dark value
      of Repository Brown — 1.16:1, on the first control a keyboard user
-     ever reaches (found 2026-08-17). */
+     ever reaches. */
   background: var(--arxiv-repository-brown);
   color: var(--arxiv-warm-wash);
   padding: 10px 16px;
@@ -2383,7 +2381,7 @@ select.ds-input { padding-right: 34px; }
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--gap-glyph);
   padding: 6px 16px;
   background: var(--arxiv-active-bg);
   color: var(--arxiv-repository-brown);
@@ -2432,7 +2430,7 @@ select.ds-input { padding-right: 34px; }
 .ds-site-header {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-tight);
   padding: 0 24px;
   height: 52px;
 
@@ -2452,7 +2450,7 @@ select.ds-input { padding-right: 34px; }
 
   background: var(--hdr-bg);
   border-bottom: 1px solid var(--hdr-border);
-  /* NO sticky positioning — decided 2026-06-11 (Shamsi): the header
+  /* NO sticky positioning —: the header
      scrolls away like any other content. Sticky chrome is exceptional
      at arXiv (DESIGN-POLICIES.md, "Chrome and interaction structure");
      only the HTML reader's header earns it. Static positioning also
@@ -2473,7 +2471,7 @@ select.ds-input { padding-right: 34px; }
 .ds-site-header-nav {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-tight);
 }
 .ds-site-header-nav a,
 .ds-site-header-nav button {
@@ -2491,7 +2489,7 @@ select.ds-input { padding-right: 34px; }
   transition: background 0.12s, color 0.12s;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: var(--gap-glyph);
 }
 .ds-site-header-nav a:visited { color: var(--hdr-fg); }
 .ds-site-header-nav a:hover,
@@ -2626,8 +2624,7 @@ select.ds-input { padding-right: 34px; }
   .ds-site-header.is-collapsible .ds-site-header-divider { display: none; }
 }
 
-/* ── NO breadcrumb band ──
-   Decided 2026-06-11 (Shamsi): the approved spinout treatment covers
+/* ── NO breadcrumb band ──: the approved spinout treatment covers
    ONLY the announcement banner and the black header bar; nothing below
    the header is approved chrome. A breadcrumb iteration was tried and
    removed — at 2 levels deep it does not justify the real estate, and
@@ -2644,7 +2641,7 @@ select.ds-input { padding-right: 34px; }
    READER HEADER  (.ds-reader-header + .ds-toc-trigger/.ds-toc-dropdown
                    + .ds-reading-progress)
    ═══════════════════════════════════════════════════════════════════════
-   The HTML-reader variant of the site header. Design approved 2026-06-11.
+   The HTML-reader variant of the site header. Design approved,.
    Reference implementation: mockups/public/html-phase1.html (which carries
    ar5iv-specificity !important overrides this codified version drops —
    production should scope under a body class instead).
@@ -2731,7 +2728,7 @@ select.ds-input { padding-right: 34px; }
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-tight);
   padding: 0 24px;
   height: 52px;
   width: 100%;
@@ -2754,7 +2751,7 @@ select.ds-input { padding-right: 34px; }
 .ds-reader-header-nav {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-tight);
   justify-self: end;
 }
 .ds-reader-header-nav a,
@@ -2773,7 +2770,7 @@ select.ds-input { padding-right: 34px; }
   transition: background 0.12s, color 0.12s;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: var(--gap-glyph);
 }
 .ds-reader-header-nav a:visited { color: var(--arxiv-library-grey); }
 .ds-reader-header-nav a:hover,
@@ -2810,7 +2807,7 @@ select.ds-input { padding-right: 34px; }
 .ds-toc-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--gap-glyph);
   max-width: 320px;
   font-family: var(--arxiv-font-sans);
   font-size: 0.8125rem; /* 13px */
@@ -2884,7 +2881,7 @@ select.ds-input { padding-right: 34px; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-tight);
   padding: 10px 14px;
   border-bottom: 1px solid var(--arxiv-tint-border);
   flex-shrink: 0;
@@ -2917,7 +2914,7 @@ select.ds-input { padding-right: 34px; }
 .ds-toc-dropdown-link {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: var(--gap-glyph);
   padding: 6px 14px;
   font-family: var(--arxiv-font-sans);
   font-size: 0.8125rem; /* 13px */
@@ -3009,7 +3006,7 @@ select.ds-input { padding-right: 34px; }
 
   /* Header condenses with the SAME grammar as .compact — not a third
      mode. Only the TOC trigger keeps its label. */
-  .ds-reader-header-inner { padding: 0 12px; gap: 8px; }
+  .ds-reader-header-inner { padding: 0 12px; gap: var(--space-tight); }
   .ds-reader-header .ds-logo-full { display: none; }
   .ds-reader-header .ds-logo-mark { display: block; }
   .ds-reader-header .ds-nav-label { display: none; }
