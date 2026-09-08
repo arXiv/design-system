@@ -267,7 +267,7 @@
    plate behind them on the dark canvas (see the dark block at the end of
    this stylesheet). Everything else in the injected chrome stays
    transparent — the arXiv logo is white ink and needs nothing behind it. */
-.mg-shell img, .ds-site-header-logo img, .ds-announcement-glyph,
+.mg-shell img, .ds-site-header-logo img,
 .mg-band img, .mg-toc-bar img,
 /* ar5iv paints white behind EVERY <img> (--image-background-color) so a
    transparent figure PNG stays readable on a dark canvas. That is right for
@@ -282,14 +282,12 @@
 footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent; }
 
 /* ══ ABSTRACT-MODE HEADER (black ds-site-header) ══ */
-.ds-announcement { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 6px 16px; background: var(--arxiv-active-bg); color: var(--arxiv-repository-brown); font-family: var(--arxiv-font-sans); font-size: 0.8125rem; font-weight: 500; position: relative; }
 /* Inline icons are sized in em, not px, so they track the label beside them
    when a reader enlarges text — DESIGN-POLICIES.md, Buttons: "Icons in buttons
    are sized in em so they track the button's own font-size." Each value is the
    old px divided by its container's font-size, so nothing moves at default
    settings. Icon-only buttons (.toc-dropdown-close) deliberately keep px: there
    the 24x24 target-size floor matters more than tracking the text. */
-.ds-announcement-glyph { width: 1.38em; height: 1.38em; flex-shrink: 0; }
 /* 3-column header: logo (left) | toggle (true center) | nav (right).
    Grid is 1fr | auto | 1fr so the center cell sits at the viewport center
    regardless of the relative widths of the side cells. Matches the reader
@@ -695,7 +693,6 @@ body.mg-reader .mg-top-cols { display: block; }
 /* The announcement is an occasional banner, not page furniture. Showing it
    on every load of the mockup implies it is permanent and costs 30px above
    the title. Markup kept so the pattern stays visible in source. */
-.ds-announcement { display: none; }
 @media (max-width: 48rem) { .mg-abs-return { padding: 10px 12px 0; } }
 
 /* Accordions — codified as .ds-acc in
@@ -985,7 +982,6 @@ body {
     ".      nav    article .      ."
     "footer footer footer footer footer";
 }
-.ds-announcement { grid-area: mgann; }
 .mg-shell        { grid-area: mgsh; }
 footer.ds-site-footer { grid-area: footer; }
 /* TOC bar lives INSIDE .ltx_page_main (article area), so it doesn't need
@@ -1040,13 +1036,6 @@ footer.ds-site-footer { grid-area: footer; }
 
 <!-- ══ Announcement banner — OUTSIDE .mg-abs-only so it persists in BOTH
      modes (closeable by the reader). ══ -->
-<div class="ds-announcement" id="mg-announcement" role="region" aria-label="Announcement">
-  <img class="ds-announcement-glyph" src="images/smileybones-small.svg" alt="" aria-hidden="true">
-  <span class="ds-announcement-text">arXiv is now an independent nonprofit!</span>
-  <a class="ds-announcement-link" href="https://info.arxiv.org/about/index.html">Learn more</a>
-  <button type="button" class="ds-announcement-close" id="mg-announcement-close" aria-label="Dismiss announcement">&times;</button>
-</div>
-
 <div class="mg-shell">
 <!-- ══ ABSTRACT-MODE CHROME (mg-abs-only): ds-site-header with the
         Reader-view toggle in the center cell ══ -->
@@ -1707,6 +1696,14 @@ html { scroll-padding-top: 80px; }
    Body line-height stays 1.7 rather than the foundation's 1.5: this is
    long-form sustained reading, not reference copy. */
 h1.ltx_title.ltx_title_document {
+  /* ar5iv sets .ltx_title { text-wrap: balance; max-inline-size: 52rem }.
+     Balance splits a two-line title into even halves rather than filling the
+     measure, and 52rem caps it below the article's own width — so the title
+     stops short of the column every other element uses. Fill the measure;
+     `pretty` still prevents a lone word on the last line. */
+  text-wrap: pretty;
+  max-inline-size: none;
+
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   /* Fluid between 22px and 32px, matching abstract-phase2.html — typography.md
      and typography.html: "Paper titles use clamp() between rem bounds
