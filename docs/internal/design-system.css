@@ -1,120 +1,83 @@
 /* =============================================================
-   arXiv Design System — Shared Component Styles
-   Component reference for arXiv Check and Admin Console
+   arXiv Design System — staff tools (tier 2)
+   Admin Console, arXiv Check, the moderation queue.
+
+   This file is NOT self-contained. Load the tier 1 stylesheet first:
+
+     <link rel="stylesheet" href="../public/design-system.css">
+     <link rel="stylesheet" href="design-system.css">
+
+   Tier 1 owns everything a second surface could use — the foundation,
+   the alert, the tag, the field family, the close control. What lives
+   here is what only staff tools have (the .btn-* family, tables,
+   metadata panels, segmented controls, toggles, type badges, info
+   cards), plus the tokens whose VALUES differ on this surface.
+
+   The rule for this file: it may re-point a tier 1 token, which is how
+   this surface gets its accent. It must never introduce a token that
+   reuses a tier 1 name for a different meaning.
    ============================================================= */
 
 
-/* ─── Brand Tokens ──────────────────────────────────────────── */
+/* ─── Tokens that differ on this surface ────────────────────── */
+/*
+ * Only what disagrees with tier 1 is declared here. Everything else —
+ * text, canvas, borders, links, focus ring, the four status families,
+ * the spacing scale, the type stack — is inherited, because it is
+ * identical on both surfaces and a second copy is only somewhere for
+ * the two to drift apart.
+ */
 :root {
 
-  /* Access Lime family — primary buttons */
-  --ds-accent:              #c4d82e;
-  --ds-accent-hover:        #b5c626;
-  --ds-accent-active:       #a4b520;
-  --ds-accent-disabled-bg:       #e6efb8;
-  --ds-accent-disabled-fg:     #8a9a5a;
+  /* Access Lime — the accent that says "you are in a staff tool".
+     Re-pointing these is the whole mechanism: every tier 1 component
+     that reaches for the accent follows without knowing it moved. */
+  --ds-accent:                #c4d82e;
+  --ds-accent-hover:          #b5c626;
+  --ds-accent-active:         #a4b520;
+  --ds-accent-border:         #9cb522;
+  --ds-accent-border-active:  #6b7a10;
+  --ds-accent-disabled-bg:    #e6efb8;
+  --ds-accent-disabled-fg:    #8a9a5a;
 
-  /* Lime tint family — secondary buttons */
-  --ds-accent-wash:            #f0f9e8;
-  --ds-accent-wash-hover:      #e2f3d0;
-  --ds-accent-wash-active:     #d4edb8;
-  --ds-accent-border:        #9cb522;
-  --ds-accent-border-active: #6b7a10;
-  --ds-disabled-bg:        #fafafa;
-  --ds-disabled-border:    #d8d8d8;
-  --ds-disabled-fg:      #b0b0b0;
+  /* The lime tint, for secondary buttons and quiet accent fills. */
+  --ds-accent-wash:           #f0f9e8;
+  --ds-accent-wash-hover:     #e2f3d0;
+  --ds-accent-wash-active:    #d4edb8;
 
-  /* Library Grey family — tertiary buttons */
-  --ds-text-muted:              #6b6459;
-  --ds-surface-hover-strong:     #f0eeec;
-  --ds-text-strong:   #4a433d;
-  --ds-surface-active:    #e4e0db;
-  --ds-text-disabled:          #b0aba6;
+  /* Surfaces. Light matches tier 1; the dark values are a shade
+     different because staff screens are dense with tables and want a
+     little more separation between a row and its ground. */
+  --ds-surface:               #ffffff;
+  --ds-surface-muted:         #f0eeec;
 
-  /* Danger red family — destructive buttons */
-  /* #c62828: white text contrast 5.62:1 — AA ✓. No institutional associations. */
-  --ds-danger:             #c62828;
-  --ds-danger-hover:       #b71c1c;
-  --ds-danger-active:      #9a0007;
-  --ds-danger-disabled-bg:      #f5d0d0;
+  /* Staff-only surfaces: two hover washes, because a table row wants a
+     wash you barely notice and a control wants one you do, and a
+     pressed state below both. */
+  --ds-surface-hover:         #faf9f8;
+  --ds-surface-hover-strong:  #f0eeec;
+  --ds-surface-active:        #e4e0db;
+
+  /* Text one step above muted — column headers, a row's leading cell. */
+  --ds-text-strong:           #4a433d;
+
+  /* Destructive. Public pages have no destructive tier: nothing a
+     reader can do on arxiv.org destroys anything. Staff tools delete,
+     withdraw and revoke, so the tier exists here and only here. */
+  --ds-danger:                #c62828;
+  --ds-danger-hover:          #b71c1c;
+  --ds-danger-active:         #9a0007;
+  --ds-danger-wash-hover:     #fdf0f0;
+  --ds-danger-wash-active:    #f5d0d0;
+  --ds-danger-disabled-bg:    #f5d0d0;
   --ds-danger-disabled-fg:    #c47878;
-  --ds-danger-wash-hover: #fdf0f0;
-  --ds-danger-wash-active:#f5d0d0;
 
-  /* Link / content hyperlinks — light mode                              */
-  /* Link Blue Light Mode (#1565c0): 5.74:1 on white, 5.38:1 on Warm   */
-  /* Wash — AA ✓. Always underline inline <a> tags (WCAG 1.4.1):        */
-  /* contrast vs #1c1a17 body text is only 3.02:1, too marginal to omit */
-  /* underlines. Dark mode overrides in @media block at end of file.    */
-  --ds-link:               #1565c0; /* Link Blue Light Mode */
-  --ds-link-hover:         #1050a0; /* darkened ~20% — 7.83:1 on white ✓  */
-  --ds-link-disabled:           #b0aba6; /* same as --ds-text-disabled                  */
-  --ds-link-visited:       #7b2fbe; /* Visited Purple Light Mode — 7.02:1 on white, 6.58:1 on Warm Wash ✓ AA */
-
-  /* Shared */
-  --ds-text:              #1c1a17; /* Repository Brown — flips light in dark mode */
-  --ds-text-on-accent:      #1c1a17; /* label on lime fills — Repository Brown in BOTH modes (lime stays light) */
-  --ds-focus-ring:        #1565c0; /* Link Blue Light Mode — 5.74:1 on white ✓; overridden to #64b5f6 in dark mode */
-  --ds-border-strong:       #8b8680; /* Icon button rest outline — passes 3:1 on white (3.61:1) and warm wash (3.38:1) */
-  --ds-border-strong:           #8b8680; /* UI boundary grey — 3.61:1 on white, 3.38:1 on warm wash, 3.12:1 on table header bg. Use for interactive borders, tracks, and arrows needing WCAG 3:1. */
-
-  /* Status / alert families — semantic messaging (.ds-alert)              */
-  /* Shared functional colors (like --ds-danger). Each state is also keyed by */
-  /* an icon + leading word, never color alone (WCAG 1.4.1). Dark mode     */
-  /* overrides in the @media block at end of file. Full rationale +        */
-  /* contrast table in color-mapping.md.                                   */
-  --ds-success-bg:        #e8f5d8; /* lime-olive — .seg-positive DNA */
-  --ds-success-border:    #6b8e1e; /* off-yellow vs --ds-accent-border so success ≠ brand accent */
-  --ds-success-fg:        #4a5a0a; /* text + icon — 6.7:1 on --ds-success-bg ✓ AA */
-  --ds-info-bg:           #e7f1fd;
-  --ds-info-border:       #5a82c8;
-  --ds-info-fg:           #1a3a78; /* navy, darker than --ds-link — 9.6:1 ✓ AAA */
-  --ds-warning-bg:        #fff8e1;
-  --ds-warning-border:    #e8b800;
-  --ds-warning-fg:        #7a5c00; /* 5.9:1 on --ds-warning-bg ✓ AA */
-  --ds-error-bg:          #fdeaea;
-  --ds-error-border:      #c62828; /* = --ds-danger */
-  --ds-error-fg:          #8b0000; /* 8.6:1 on --ds-error-bg ✓ AAA */
-
-  /* Spacing scale — 4px base / 8-pt grid. Content-agnostic rhythm tokens.  */
-  /* Rule of thumb: space BETWEEN sections ≈ 3× space WITHIN a section, so  */
-  /* grouping reads without borders (proximity). See DESIGN-POLICIES.md.    */
-  --ds-space-1:           0.25rem;   /* tightest — label→value, icon→text         */
-  --ds-space-2:           0.5rem;   /* closely related inline items              */
-  --ds-space-3:           0.75rem;  /* related stacked elements                  */
-  --ds-space-4:           1rem;  /* default gap between elements in a section  */
-  --ds-space-6:           1.5rem;  /* sub-section separation / card padding      */
-  --ds-space-8:           2rem;  /* larger internal padding                   */
-  --ds-space-12:          3rem;  /* breathing space BETWEEN major sections     */
-
-  /* Named rhythm — pages name the KIND of break, never a raw stop and never
-     a pixel. Same three names and same values as the public stylesheet: one
-     name per thing, across both surfaces. */
-  --ds-space-tight:       var(--ds-space-2);    /*  8px — inside a group        */
-  --ds-space-block:       var(--ds-space-4);    /* 16px — between blocks        */
-  --ds-space-section:     var(--ds-space-12);   /* 48px — between sections      */
-
-  /* The one gap the rhythm cannot supply: between a glyph and its label
-     inside a control. In em, so it tracks the control's own font size. */
-  --ds-gap-glyph:         0.5em;
-
-  /* Type stack. These were written out as literal font stacks in a handful
-     of rules here; the stacks are identical to the public ones, so they
-     become the same tokens. */
-  --ds-font-sans:      "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --ds-font-condensed: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
-  --ds-font-mono:      "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --ds-font-serif:     "IBM Plex Serif", Georgia, "STIX Two Text", "Times New Roman", serif;
-
-  /* Semantic surfaces — the dark-mode substrate (DARK-MODE-AUDIT §3).     */
-  /* Components consume these instead of hardcoding #fff / #f0eeec /       */
-  /* #ddd8d2 so dark mode can flip them. Light values match what the       */
-  /* components previously hardcoded — zero visual change in light mode.   */
-  --ds-canvas:            #f9f7f7; /* the page behind the surfaces            */
-  --ds-surface:           #ffffff; /* table/panel/control fills               */
-  --ds-surface-muted:    #f0eeec; /* table headers, subtle row dividers      */
-  --ds-surface-hover:     #faf9f8; /* row + control hover washes              */
-  --ds-border:            #ddd8d2; /* hairline borders on surfaces            */
+  /* Disabled chrome for the secondary tier, which on this surface is a
+     lime fill rather than a border and so cannot simply lose its fill. */
+  --ds-disabled-bg:           #fafafa;
+  --ds-disabled-border:       #d8d8d8;
+  --ds-disabled-fg:           #b0b0b0;
+  --ds-link-disabled:         #b0aba6;
 }
 
 
@@ -653,64 +616,37 @@
  * with <html data-theme="light">. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --ds-text:              #f0eeec; /* canvas text flips; on-lime text keeps --ds-text-on-accent */
+    /* Only the tokens whose dark value differs from tier 1's. Everything
+       else — text, canvas, borders, links, focus ring, all four status
+       families — flips identically on both surfaces and is inherited. */
 
-    /* Semantic surfaces — dark (DARK-MODE-AUDIT §3 values) */
-    --ds-canvas:            #1c1a17;
-    --ds-surface:           #252118;
-    --ds-surface-muted:    #302c28;
-    --ds-surface-hover:     #2a2520;
-    --ds-border:            #3a3530;
+    /* Surfaces sit a shade apart from tier 1's: staff screens are dense
+       with tables and want more separation between a row and its ground. */
+    --ds-surface:               #252118;
+    --ds-surface-muted:         #302c28;
+    --ds-surface-hover:         #2a2520;
+    --ds-surface-hover-strong:  #272420;
+    --ds-surface-active:        #302c28;
 
-    /* Secondary button backgrounds — flip to dark lime tint */
-    --ds-accent-wash:            #1a2306;
-    --ds-accent-wash-hover:      #212e08;
-    --ds-accent-wash-active:     #28380a;
-    --ds-disabled-bg:        #1e1e1e;
-    --ds-disabled-border:    #2e2e2e;
-    --ds-disabled-fg:      #4e4e4e;
+    --ds-text-strong:           #d4cfc9;  /* 11.22:1 on dark ✓ */
 
-    /* Tertiary / icon grey family — lighten for dark bg */
-    --ds-text-muted:              #b0aba6; /* 7.62:1 on dark ✓ */
-    --ds-surface-hover-strong:     #272420;
-    --ds-text-strong:   #d4cfc9; /* 11.22:1 on dark ✓ */
-    --ds-surface-active:    #302c28;
-    --ds-text-disabled:          #484340;
-    --ds-border-strong:           #8b8680; /* 4.8:1 on dark ✓ — same value, passes on both surfaces */
-    --ds-border-strong:       #8b8680;
+    /* The lime tint goes to a dark olive rather than lightening. */
+    --ds-accent-wash:           #1a2306;
+    --ds-accent-wash-hover:     #212e08;
+    --ds-accent-wash-active:    #28380a;
+    --ds-accent-disabled-bg:    #252f08;
+    --ds-accent-disabled-fg:    #5a6b30;
 
-    /* Primary disabled — dark tint so it does not look active */
-    --ds-accent-disabled-bg:       #252f08;
-    --ds-accent-disabled-fg:     #5a6b30;
+    /* Destructive, which exists only on this surface. */
+    --ds-danger-wash-hover:     #2a0808;
+    --ds-danger-wash-active:    #380d0d;
+    --ds-danger-disabled-bg:    #3a0f0f;
+    --ds-danger-disabled-fg:    #864040;
 
-    /* Destructive disabled and ghost surfaces */
-    --ds-danger-disabled-bg:     #3a0f0f;
-    --ds-danger-disabled-fg:   #864040;
-    --ds-danger-wash-hover:  #2a0808;
-    --ds-danger-wash-active: #380d0d;
-
-    /* Link / content hyperlinks — dark mode */
-    --ds-link:              #64b5f6; /* Link Blue Dark Mode — 7.84:1 on Repository Brown ✓ AAA */
-    --ds-link-hover:        #90caf9;
-    --ds-link-disabled:          #484340;
-    --ds-link-visited:      #c690e3; /* Visited Purple Dark Mode — 6.30:1 on Repository Brown ✓ AA */
-
-    /* Focus ring */
-    --ds-focus-ring:        #64b5f6; /* 7.84:1 on Repository Brown ✓ AAA */
-
-    /* Status / alert families — dark surfaces */
-    --ds-success-bg:        #1e2b0d;
-    --ds-success-border:    #8fbd3a;
-    --ds-success-fg:        #c5e1a5; /* 10.4:1 ✓ AAA */
-    --ds-info-bg:           #132433;
-    --ds-info-border:       #64b5f6;
-    --ds-info-fg:           #90caf9; /* 9.0:1 ✓ AAA */
-    --ds-warning-bg:        #2e2410;
-    --ds-warning-border:    #e8b800;
-    --ds-warning-fg:        #ffe082; /* 11.8:1 ✓ AAA */
-    --ds-error-bg:          #2d1414;
-    --ds-error-border:      #e57373; /* lighter red, matches dark destructive icon */
-    --ds-error-fg:          #ef9a9a; /* 8.0:1 ✓ AAA */
+    --ds-disabled-bg:           #1e1e1e;
+    --ds-disabled-border:       #2e2e2e;
+    --ds-disabled-fg:           #4e4e4e;
+    --ds-link-disabled:         #484340;
   }
 
   /* Secondary button — dark lime-tint bg needs lime text, not near-black */
@@ -766,103 +702,25 @@
 
 /* ─── Tags (.ds-tag) ─────────────────────────────────────────── */
 /*
- * The small rounded label used for subject categories, topics, and states.
- * Same component as the public `.ds-tag`, wearing internal tokens — see
- * docs/public/design-system.css for the full rationale.
+ * The component lives in the tier 1 stylesheet, which this surface loads
+ * first. Only the two rules that must differ live here, and they differ
+ * for the one reason the two surfaces are allowed to disagree about: the
+ * accent. A public tag reaches for Open Blue; a staff tag must not.
  *
- * A tag labels or categorizes; it never stands in for a link
- * (DESIGN-POLICIES, Content and interaction).
- *
- * Uppercase by default, applied with text-transform and never typed, so
- * the real text survives copy-paste, search and screen readers.
- * `.ds-tag--keep-case` opts out — required for identifiers.
- *
- * CATEGORY NAMES ALWAYS USE .ds-tag--keep-case. A category is copied,
- * never restyled: cs.AI, physics.optics and cond-mat.str-el are all
- * correct as arXiv publishes them.
- *
- * Distinct from .type-badge below: a tag is a discrete labeled object in
- * a wrapping list; a type badge is a compact code in a dense data grid,
- * which is why it stays a 3px rectangle.
- *
- * Contrast (WCAG,):
- *   quiet    #6b6459 on #f0eeec — 5.1:1  AA  ✓
- *   chrome   #1a3a78 on #e7f1fd — 9.6:1  AAA ✓
- *   success  #4a5a0a on #e8f5d8 — 6.7:1  AA  ✓
- *   warning  #7a5c00 on #fff8e1 — 5.9:1  AA  ✓
- *   error    #8b0000 on #fdeaea — 8.6:1  AAA ✓
- *
- * Validated against the category editors in
- * mockups/internal/admin-console/{user-page,paper-details}/.
+ * .ds-tag--chrome takes the info palette rather than the accent tints,
+ * because on this surface the accent tints are lime and a lime chrome tag
+ * would read as a status, not as chrome.
  */
-.ds-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ds-gap-glyph);
-  min-height: 24px;
-  padding: 2px 12px;
-  border-radius: 999px;
-  font-family: var(--ds-font-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  line-height: 1.4;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-  text-decoration: none;
-  background: var(--ds-surface-muted);
-  border: 1px solid var(--ds-border);
-  color: var(--ds-text-muted);
+.ds-tag--chrome {
+  background: var(--ds-info-bg);
+  border-color: var(--ds-info-border);
+  color: var(--ds-info-fg);
 }
-.ds-tag--keep-case { text-transform: none; letter-spacing: 0; }
-
-.ds-tag--chrome  { background: var(--ds-info-bg);    border-color: var(--ds-info-border);    color: var(--ds-info-fg); }
-.ds-tag--success { background: var(--ds-success-bg); border-color: var(--ds-success-border); color: var(--ds-success-fg); }
-.ds-tag--warning { background: var(--ds-warning-bg); border-color: var(--ds-warning-border); color: var(--ds-warning-fg); }
-.ds-tag--error   { background: var(--ds-error-bg);   border-color: var(--ds-error-border);   color: var(--ds-error-fg); }
-
-a.ds-tag:hover, button.ds-tag:hover { background: var(--ds-surface-active); color: var(--ds-link-hover); }
-a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
-
-/* Remove control. Inherits the tag's color so it is never a second
-   signal; the accessible name comes from the consumer's aria-label. */
-.ds-tag-remove {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  margin-right: -4px;
-  padding: 0;
-  background: none;
-  border: 0;
-  border-radius: 999px;
-  color: inherit;
-  opacity: 0.65;
-  font-size: 13px;
-  line-height: 1;
-  cursor: pointer;
+a.ds-tag:hover,
+button.ds-tag:hover {
+  background: var(--ds-surface-active);
+  color: var(--ds-link-hover);
 }
-.ds-tag-remove:hover { opacity: 1; background: rgba(0, 0, 0, 0.08); }
-.ds-tag-remove:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 1px; opacity: 1; }
-
-/* A badge nested inside a tag — says where the tag came from. */
-.ds-tag-note {
-  display: inline-flex;
-  align-items: center;
-  padding: 1px 6px;
-  border-radius: 999px;
-  background: var(--ds-surface);
-  border: 1px solid var(--ds-border);
-  color: var(--ds-text-muted);
-  font-family: var(--ds-font-sans);
-  font-size: 0.625rem;
-  font-weight: 500;
-  text-transform: none;
-  letter-spacing: 0;
-  white-space: nowrap;
-}
-
 /* ─── Submission Type Badges ─────────────────────────────────── */
 /*
  * Color-coded labels matching the arXiv Check moderation tool.
@@ -1152,26 +1010,18 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
  *   <p class="field-error" id="err-1">Please provide a reason.</p>
  */
 
-/* ─── Form fields (.ds-field / .ds-label / .ds-input / .ds-hint) ───── */
+/* ─── Form fields — staff-only additions ────────────────────── */
 /*
- * Same component as the public `.ds-field` family, wearing internal
- * tokens — see docs/public/design-system.css for the full rationale and
- * docs/forms.html for the pattern page.
+ * The field family itself — .ds-field, .ds-label, .ds-input, .ds-hint,
+ * .ds-check, the invalid state and the error message — lives in the tier 1
+ * stylesheet, which this surface loads first. What is here is what only
+ * staff tools need.
  *
- * One field is a label, a control, optional help text, and an error slot,
- * in that order. Labels sit ABOVE the control, never beside it. Field
- * width follows the content: size a control to what it expects rather
- * than stretching everything edge-to-edge.
+ * The checkbox accent is the one genuine difference: a public checkbox
+ * ticks Link Blue, a staff one ticks the accent, which is the same rule
+ * every other control on this surface follows.
  *
- * Accessibility contract (DESIGN-POLICIES, not optional): a real
- * <label for> on every control; required fields carry the asterisk AND
- * required + aria-required; the error is linked with aria-describedby;
- * the message says what to do and never relies on red alone.
- *
- * The <select> keeps its native arrow — correct in both themes on every
- * platform, with nothing to re-draw for dark mode.
- *
- * Usage:
+ * Usage is unchanged:
  *   <div class="ds-field ds-field--md">
  *     <label class="ds-label field-required" for="reason">Reason</label>
  *     <textarea class="ds-input is-invalid" id="reason"
@@ -1179,108 +1029,41 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
  *     <p class="field-error" id="reason-err">Say why this is being withdrawn.</p>
  *   </div>
  */
-.ds-field { margin-bottom: var(--ds-space-4); }
+
+/* Field width follows the content: size a control to what it expects
+   rather than stretching everything edge-to-edge. Staff screens are dense
+   enough that this matters; public forms have not needed it yet. */
 .ds-field--sm .ds-input { max-width: 240px; }
 .ds-field--md .ds-input { max-width: 360px; }
 .ds-field--lg .ds-input { max-width: 480px; }
 
-.ds-label {
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ds-text);
-  margin-bottom: var(--ds-space-2);
-}
+/* The required marker. Public pages mark the OPTIONAL fields in words
+   instead (DESIGN-POLICIES, Accessibility) — staff tools keep the
+   asterisk because their forms are long and mostly optional, which is the
+   case the word-marking rule was not written for. */
 .ds-label.field-required::after {
   content: " *";
   color: var(--ds-danger);
   font-weight: 700;
 }
+.field-required { color: var(--ds-danger); font-weight: 700; }
 
-.ds-input {
-  width: 100%;
-  font-family: inherit;
-  font-size: 14px;
-  line-height: 1.4;
-  color: var(--ds-text);
-  background: var(--ds-surface);
-  border: 1px solid var(--ds-border-strong);   /* 3.61:1 — a real boundary */
-  border-radius: 6px;
-  padding: 9px 11px;
-}
-.ds-input:focus-visible {
-  outline: 2px solid var(--ds-focus-ring);
-  outline-offset: 1px;
-  border-color: var(--ds-focus-ring);
-}
-.ds-input:disabled {
-  background: var(--ds-surface-muted);
-  color: var(--ds-text-disabled);
-  cursor: not-allowed;
-}
-.ds-input::placeholder { color: var(--ds-text-muted); opacity: 1; }
-textarea.ds-input {
-  display: block; resize: vertical; min-height: 76px; line-height: 1.5; }
+/* The checkbox ticks this surface's accent, not Link Blue. */
+.ds-check input { accent-color: var(--ds-accent-border); }
 
-.ds-hint {
-  margin: var(--ds-space-2) 0 0;
-  font-size: 12px;
-  color: var(--ds-text-muted);
-}
-
-.ds-input.is-invalid {
+/* .is-invalid without .ds-input, for the staff controls that are not
+   inputs — the segmented control and the category editor. */
+.is-invalid {
   border-color: var(--ds-error-border);
   box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.10);
 }
-.ds-input.is-invalid:focus-visible {
+.is-invalid:focus-visible {
   border-color: var(--ds-error-border);
   box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15);
 }
 
-/* Checkbox / radio row. Native controls, tinted with accent-color: they
-   stay correct in dark mode, at any zoom, with the platform's own focus
-   behavior — none of which a hand-drawn box gives you. The accent follows
-   the context rule (DESIGN-POLICIES): Link Blue public, Access Lime internal. */
-.ds-check {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--ds-gap-glyph);
-  font-size: 14px;
-  margin-bottom: 8px;
-  cursor: pointer;
-}
-.ds-check input { accent-color: var(--ds-accent-border); width: 16px; height: 16px; margin: 2px 0 0; flex: none; }
-.ds-check input:disabled { cursor: not-allowed; }
-.ds-check input:disabled + span { color: var(--ds-text-disabled); }
-
-
-/* The bare `.field-required` span form predates `.ds-label.field-required`
-   and still works; new markup should use the label modifier instead. */
-.field-required {
-  color: var(--ds-danger);
-  font-weight: 600;
-}
-
-.is-invalid {
-  border-color: var(--ds-danger) !important;
-  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.1) !important;
-}
-
-.is-invalid:focus-visible {
-  border-color: var(--ds-danger) !important;
-  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15) !important;
-}
-
-.field-error {
-  margin: 6px 0 0;
-  font-size: 12px;
-  color: var(--ds-error-border);
-}
-
-.field-error[hidden] {
-  display: none;
-}
-
+/* Error slots render empty until validation fails. */
+.field-error[hidden] { display: none; }
 
 /* ─── Toggle Switch ────────────────────────────────────────── */
 /*
@@ -1372,148 +1155,9 @@ textarea.ds-input {
 
 /* ─── Alert / Status Message ────────────────────────────────── */
 /*
- * Inline status banner — success, info, warning, error/failure.
- * Token-driven (status families in :root + the dark @media block above),
- * so dark mode needs no per-component overrides.
- *
- * Anatomy: icon + optional title + message + optional inline link or
- * dismiss button. Color is never the sole signal — pair each variant
- * with a distinct icon shape AND a leading word (WCAG 1.4.1).
- *
- * ARIA: role="status" for success/info (polite); role="alert" for
- * warning/error (assertive). Icons must carry aria-hidden="true".
- *
- *
- *
- * Usage:
- *   <div class="ds-alert ds-alert-warning" role="alert">
- *     <svg class="ds-alert-icon" aria-hidden="true">…</svg>
- *     <div class="ds-alert-content">
- *       <p class="ds-alert-title">Unsaved changes</p>
- *       <p>Leaving this page will discard them.</p>
- *     </div>
- *   </div>
+ * Nothing here. The whole component — .ds-alert and its four variants,
+ * the icon, the title, the close control, and the forced-colors and
+ * reduced-motion handling — lives in the tier 1 stylesheet, which this
+ * surface loads first. The status palettes were already identical
+ * between the two surfaces, so there was nothing left to override.
  */
-.ds-alert {
-  font-family: var(--ds-font-sans);
-  margin-block: var(--ds-space-block);
-  display: flex;
-  align-items: flex-start;
-  gap: var(--ds-space-tight);
-  padding: 12px 14px;
-  border: 1px solid;
-  border-left-width: 4px;
-  border-radius: 6px;
-  font-size: 13px;
-  line-height: 1.5;
-}
-.ds-alert-icon {
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  margin-top: 1px;
-  stroke: currentColor; /* Lucide line icons inherit the variant fg; stroke-width="2" and
-                           round caps/joins live on the <svg> markup — see alerts.html */
-  fill: none;
-}
-.ds-alert-content { margin: 0; min-width: 0; }
-.ds-alert-title { font-weight: 700; margin: 0 0 2px; }
-.ds-alert-content p { margin: 0; }
-.ds-alert a {
-  color: inherit;
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-/* Screen-reader-only (.is-sr-only) — same name and same rule as the
-   public stylesheet. Anything whose accessible name is text the design
-   does not show depends on it: the close control's label, a segmented
-   control's <legend>, an icon-only action. */
-.is-sr-only {
-  position: absolute !important;
-  width: 1px !important; height: 1px !important;
-  padding: 0 !important; margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-}
-
-/* The close control (.ds-close) — the same control as the public
-   stylesheet, declaration for declaration, with the focus ring reading
-   this surface's token name. See the public stylesheet for the full
-   rationale: quiet tier, color from the host so one rule serves four
-   status palettes, 32x32 against the 24x24 target-size floor, Lucide x
-   rather than the multiplication sign, and a REQUIRED .is-sr-only name
-   because the icon is aria-hidden.
-
-   Standalone rather than a .btn-* variant, so that one class means one
-   control on both surfaces.
-
-     <button type="button" class="ds-close">
-       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-       <span class="is-sr-only">Dismiss this message</span>
-     </button> */
-.ds-close {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: none;
-  border-radius: 6px;
-  background: none;
-  color: inherit;
-  cursor: pointer;
-  transition: background 0.12s;
-}
-.ds-close svg {
-  width: 16px;
-  height: 16px;
-  stroke: currentColor;
-  fill: none;
-  pointer-events: none;
-}
-.ds-close:hover {
-  /* One flat wash for every host — see the public stylesheet for why this is
-     not color-mix. Mid-grey at low alpha darkens a light ground and lightens a
-     dark one, so one value serves all four alert palettes. */
-  background: rgba(128, 128, 128, 0.18);
-}
-.ds-close:active {
-  background: rgba(128, 128, 128, 0.30);
-}
-.ds-close:focus-visible {
-  outline: 3px solid var(--ds-focus-ring);
-  outline-offset: 2px;
-}
-
-/* Position only — the control itself is .ds-close. The negative margins
-   pull the 32px target back onto the first text line without adding
-   height to a single-line alert. */
-.ds-alert > .ds-close {
-  margin-left: auto;
-  margin-top: -6px;
-  margin-right: -6px;
-}
-
-/* Variants — bg + border + fg (icon uses currentColor = fg) */
-.ds-alert-success { background: var(--ds-success-bg); border-color: var(--ds-success-border); color: var(--ds-success-fg); }
-.ds-alert-info    { background: var(--ds-info-bg);    border-color: var(--ds-info-border);    color: var(--ds-info-fg); }
-.ds-alert-warning { background: var(--ds-warning-bg); border-color: var(--ds-warning-border); color: var(--ds-warning-fg); }
-.ds-alert-error   { background: var(--ds-error-bg);   border-color: var(--ds-error-border);   color: var(--ds-error-fg); }
-
-/* OS accessibility signals. forced-colors: the OS replaces our palette
-   and the hues collapse, but icon shape + leading word still carry
-   meaning and icons follow system text color; pin links to LinkText.
-   Never set forced-color-adjust:none. */
-@media (forced-colors: active) {
-  .ds-alert a { color: LinkText; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ds-close { transition: none; }
-}
