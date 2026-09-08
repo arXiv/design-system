@@ -1028,15 +1028,18 @@
   /* A wash mixed from the host's own foreground, so one rule works on
      white, on the announcement's pale blue, and on all four alert
      palettes without the control knowing which it is on. */
-  /* Mid-grey rather than black, so the fallback is visible on dark chrome
-     as well as on white. color-mix is Baseline widely available (May 2023);
-     the ~6% without it get this. */
+  /* One flat wash for every host. Mid-grey at low alpha darkens a light
+     ground and lightens a dark one, so the same value reads on white, on the
+     announcement band, on all four alert palettes and on dark chrome.
+     color-mix(in srgb, currentColor 10%, transparent) would tint the wash
+     toward each host's own foreground, which is marginally prettier and was
+     tested side by side against this on all seven surfaces: the difference is
+     barely visible, and it costs a second CSS feature plus a fallback
+     declaration for the browsers without it. Not worth it. */
   background: rgba(128, 128, 128, 0.18);
-  background: color-mix(in srgb, currentColor 10%, transparent);
 }
 .ds-close:active {
   background: rgba(128, 128, 128, 0.30);
-  background: color-mix(in srgb, currentColor 18%, transparent);
 }
 .ds-close:focus-visible {
   outline: 3px solid var(--arxiv-focus-ring);

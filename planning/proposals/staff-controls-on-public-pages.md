@@ -1,7 +1,8 @@
 # A staff-only control on a public page — needs a decision
 
-Status: **open question for Shamsi.** Raised 2026-09-08 by a developer building
-arXiv's user dashboards:
+Status: **settled 2026-09-08.** Shamsi agreed with the recommendation below; the
+rule is now recorded in `DESIGN-POLICIES.md` *Contexts*. Raised by a developer
+building arXiv's user dashboards:
 
 > "I have a button that only shows up for logged in users with admin status. The
 > page uses the public style for most elements but I need to be able to apply an
@@ -12,7 +13,7 @@ Two separate questions are tangled here. The mechanical one has a clean answer.
 The design one is explicitly reserved to a person by `DESIGN-POLICIES.md`, so it
 is not being built until Shamsi settles it.
 
-## The design question — policy says ask, so this is the ask
+## The design question — policy said ask, so this was the ask
 
 `DESIGN-POLICIES.md` *Contexts*:
 
