@@ -67,12 +67,12 @@ Semantic colors for the `.ds-alert` component and any success / informational / 
 
 Why these values:
 
-- **Success is lime-olive, not forest green.** arXiv has no success-green, and Access Lime `#c4d82e` is reserved as the "staff tools" signal *and* fails text contrast — so it cannot double as success. Rather than introduce a new green family, success reuses the existing `.seg-positive` lime-olive (bg `#e8f5d8`, text `#4a5a0a`) with the border pulled off-yellow (`#6b8e1e` — lower red channel than `--sec-border` `#9cb522`) so it reads as "success," not "brand accent." A forest-green alternative was considered and rejected to keep the palette tight.
+- **Success is lime-olive, not forest green.** arXiv has no success-green, and Access Lime `#c4d82e` is reserved as the "staff tools" signal *and* fails text contrast — so it cannot double as success. Rather than introduce a new green family, success reuses the existing `.seg-positive` lime-olive (bg `#e8f5d8`, text `#4a5a0a`) with the border pulled off-yellow (`#6b8e1e` — lower red channel than `--ds-accent-border` `#9cb522`) so it reads as "success," not "brand accent." A forest-green alternative was considered and rejected to keep the palette tight.
 - **Info is navy, deliberately darker than Link Blue** `#1565c0`, so an info banner is never mistaken for a link. Reuses the `.seg-neutral` / `.type-new` family.
 - **Warning is the existing version-warning amber** (`#fff8e1` / `#e8b800` / `#7a5c00`), promoted from the one-off abstract-page banner.
 - **Error reuses Danger Red** `#c62828` for the border, with a light tint background and the `.seg-negative` deep-red text `#8b0000`.
 
-Tokens: internal `design-system.css` exposes `--success-*` / `--info-*` / `--warning-*` / `--error-*` (matching the unprefixed `--danger`); public `design-system.css` exposes the `--arxiv-`-prefixed equivalents. Both drive an identical `.ds-alert` component (icon + leading word, `role="status"` vs `role="alert"`, light + dark, plus `forced-colors` / `prefers-reduced-motion` handling).
+Tokens: both stylesheets expose `--ds-success-*` / `--ds-info-*` / `--ds-warning-*` / `--ds-error-*` under the same names, with per-surface values. Both drive an identical `.ds-alert` component (icon + leading word, `role="status"` vs `role="alert"`, light + dark, plus `forced-colors` / `prefers-reduced-motion` handling).
 
 ### Background tints
 
@@ -95,12 +95,12 @@ Barely perceptible tints for creating section depth without hard borders.
 
 | Element | Color | Token |
 |---|---|---|
-| Primary button | Access Lime `#c4d82e` | `--lime` |
-| Secondary button | Lime tint `#f0f9e8` border `#9cb522` | `--sec-bg`, `--sec-border` |
+| Primary button | Access Lime `#c4d82e` | `--ds-accent` |
+| Secondary button | Lime tint `#f0f9e8` border `#9cb522` | `--ds-accent-wash`, `--ds-accent-border` |
 | Page background | Warm Wash `#f9f7f7` | — |
 | Header | (varies by tool) | — |
-| Text | Repository Brown `#1c1a17` | `--text` |
-| Secondary text | Library Grey `#6b6459` | `--grey` |
+| Text | Repository Brown `#1c1a17` | `--ds-text` |
+| Secondary text | Library Grey `#6b6459` | `--ds-text-muted` |
 
 ---
 
@@ -132,7 +132,7 @@ Barely perceptible tints for creating section depth without hard borders.
 - The design system's own documentation pages carry a lime header rule; those are internal reference material, not public arXiv pages.
 - *Removed 2026-08-11:* this entry used to offer lime for a public "category marker" or "new" badge. It contradicted both the stylesheet and the never-cross rule (Shamsi: "that is crossing the internal/public line").
 
-**Smileybones Yellow** `#ffe000` — token `--arxiv-smileybones-yellow`:
+**Smileybones Yellow** `#ffe000` — token `--ds-brand-smileybones-yellow`:
 - The smileybones icon itself (Labs branding, mascot appearances)
 - Celebratory or playful contexts (anniversaries, milestones)
 - Background fills for callout banners or badges
@@ -160,17 +160,17 @@ The tints sorted by the job they do. Reach for the named token; if a job is not 
 
 | The job | Reach for | Where it shows up |
 |---|---|---|
-| Page / section background, warm | **Warm Wash** `--arxiv-warm-wash` | Default subtle ground — footer, metadata bands, internal page background |
+| Page / section background, warm | **Warm Wash** `--ds-canvas` | Default subtle ground — footer, metadata bands, internal page background |
 | Section background, cooler | **Cool Wash** `#f7fafc` | When a band should read cooler than Warm Wash to differentiate adjacent sections |
-| Secondary content band | **Card Grey** `--arxiv-card-grey` | Related band, reader header — one step down from the page, no hard border |
-| Card surface / hover fill | **Card Grey** `--arxiv-card-grey` | Card fills and hover fills |
-| Active / pressed fill, deepest warm band | **Grey Active** `--arxiv-pill-border` `#e4e0db` | Footer edge, pressed states, pill borders. Body-size grey/links miss AA here — use Repository Brown or Link Hover |
-| Decorative hairline | **Border Light** `--arxiv-border-light` | Input / card / track edges. Below 3:1 — never the sole boundary of a control |
+| Secondary content band | **Card Grey** `--ds-surface-muted` | Related band, reader header — one step down from the page, no hard border |
+| Card surface / hover fill | **Card Grey** `--ds-surface-muted` | Card fills and hover fills |
+| Active / pressed fill, deepest warm band | **Grey Active** `--ds-border-muted` `#e4e0db` | Footer edge, pressed states, pill borders. Body-size grey/links miss AA here — use Repository Brown or Link Hover |
+| Decorative hairline | **Border Light** `--ds-border` | Input / card / track edges. Below 3:1 — never the sole boundary of a control |
 | arXiv chrome floating over paper | **Tint Light** + **Tint Border** | Popovers, TOC dropdown — the "light blue = arXiv speaking, not the paper" rule (G4) |
-| Inline active anchor · read-aloud highlight · panel hover | **Active Wash** `--arxiv-active-bg` | Deepest arXiv-chrome blue that still holds AA for normal-size text |
-| Open Blue hover step | **Open Blue Bright** `--arxiv-open-blue-bright` `#c2e2ff` | Hover state for Open Blue primary fills |
+| Inline active anchor · read-aloud highlight · panel hover | **Active Wash** `--ds-accent-wash` | Deepest arXiv-chrome blue that still holds AA for normal-size text |
+| Open Blue hover step | **Open Blue Bright** `--ds-accent-hover` `#c2e2ff` | Hover state for Open Blue primary fills |
 | Code / identifier background | **Blue Tint** `#f0f5ff` | Code blocks, citation/identifier display boxes |
-| Public primary action fill | **Open Blue** `--arxiv-open-blue` | The one brand fill that carries Repository Brown text at AA |
+| Public primary action fill | **Open Blue** `--ds-accent` | The one brand fill that carries Repository Brown text at AA |
 | Status surface | the four status tints | See "Status & alert colors" above — each pairs with an icon + leading word |
 
 **Ready-to-use pairings** (the contrast matrix read as instructions):

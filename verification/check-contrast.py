@@ -52,22 +52,23 @@ def ratio(fg, bg):
     return round((hi + 0.05) / (lo + 0.05), 2)
 
 # ── Curated pairing spec.  prefix, text rows, surface columns ──────────
-PUBLIC_TEXT = ["repository-brown", "library-grey", "link-blue", "link-hover", "link-visited"]
-PUBLIC_SURF = ["warm-wash", "surface", "card-grey", "tint-light", "active-bg"]
-PUBLIC_SPECIAL = [("repository-brown-on-blue", "open-blue"), ("repository-brown-on-blue", "open-blue-bright")]
+# Both surfaces now share one token vocabulary, so the row and column names are
+# the same for each; only the values behind them differ.
+PUBLIC_TEXT = ["text", "text-muted", "link", "link-hover", "link-visited"]
+PUBLIC_SURF = ["canvas", "surface", "surface-muted", "accent-surface", "accent-wash"]
+PUBLIC_SPECIAL = [("text-on-accent", "accent"), ("text-on-accent", "accent-hover")]
 PUBLIC_STATUS = [("info-fg", "info-bg"), ("success-fg", "success-bg"), ("warning-fg", "warning-bg"), ("error-fg", "error-bg")]
-PUBLIC_NEVER = [("grey-ui", "interactive borders, tracks, and arrows (3:1 non-text minimum)"),
-                ("grey-dis", "disabled text only — exempt from AA, never for content"),
-                ("border-light", "decorative hairlines"), ("pill-border", "component borders")]
+PUBLIC_NEVER = [("border-strong", "interactive borders, tracks, and arrows (3:1 non-text minimum)"),
+                ("text-disabled", "disabled text only — exempt from AA, never for content"),
+                ("border", "decorative hairlines"), ("border-muted", "component borders")]
 
-INT_TEXT = ["text", "grey", "link", "link-hover", "link-visited"]
-INT_SURF = ["canvas", "surface", "surface-header", "surface-hover", "grey-hover-bg"]
-INT_SPECIAL = [("text-on-lime", "lime"), ("text-on-lime", "lime-hover"), ("text-on-lime", "lime-active")]
+INT_TEXT = ["text", "text-muted", "link", "link-hover", "link-visited"]
+INT_SURF = ["canvas", "surface", "surface-muted", "surface-hover", "surface-hover-strong"]
+INT_SPECIAL = [("text-on-accent", "accent"), ("text-on-accent", "accent-hover"), ("text-on-accent", "accent-active")]
 INT_STATUS = [("info-fg", "info-bg"), ("success-fg", "success-bg"), ("warning-fg", "warning-bg"), ("error-fg", "error-bg")]
-INT_NEVER = [("grey-ui", "borders and arrows (3:1 non-text minimum)"),
-             ("icon-border", "icon outlines"),
-             ("grey-dis", "disabled text only"), ("lime-dis-text", "disabled lime buttons only"),
-             ("sec-dis-text", "disabled secondary buttons only"), ("danger-dis-text", "disabled danger buttons only")]
+INT_NEVER = [("border-strong", "borders and arrows (3:1 non-text minimum)"),
+             ("text-disabled", "disabled text only"), ("accent-disabled-fg", "disabled accent buttons only"),
+             ("disabled-fg", "disabled secondary buttons only"), ("danger-disabled-fg", "disabled danger buttons only")]
 
 def cell(fg_l, bg_l, fg_d, bg_d, var_fg, var_bg):
     rl, rd = ratio(fg_l, bg_l), ratio(fg_d, bg_d)
@@ -113,15 +114,15 @@ def emit():
                 'Large text (24px, or 18.66px bold) only needs 3:1, so a ✗ cell may still be usable for headings '
                 '— check the number.</p>')
     frag.append("<h3>Public palette</h3>")
-    frag.append(matrix("--arxiv-", pub_l, pub_d, PUBLIC_TEXT, PUBLIC_SURF, PUBLIC_SPECIAL, PUBLIC_STATUS))
-    frag.append('<p class="ct-note">The dark chrome bars (<code>--arxiv-header-bar</code>) are dark in both modes: text on '
+    frag.append(matrix("--ds-", pub_l, pub_d, PUBLIC_TEXT, PUBLIC_SURF, PUBLIC_SPECIAL, PUBLIC_STATUS))
+    frag.append('<p class="ct-note">The dark chrome bars (<code>--ds-chrome</code>) are dark in both modes: text on '
                 'them must be pinned to light values, never taken from flipping tokens — see the site header construction.</p>')
     frag.append("<h4>Looks tempting, is not for reading text</h4>")
-    frag.append(never_list("--arxiv-", PUBLIC_NEVER))
+    frag.append(never_list("--ds-", PUBLIC_NEVER))
     frag.append("<h3>Internal palette</h3>")
-    frag.append(matrix("--", int_l, int_d, INT_TEXT, INT_SURF, INT_SPECIAL, INT_STATUS))
+    frag.append(matrix("--ds-", int_l, int_d, INT_TEXT, INT_SURF, INT_SPECIAL, INT_STATUS))
     frag.append("<h4>Looks tempting, is not for reading text</h4>")
-    frag.append(never_list("--", INT_NEVER))
+    frag.append(never_list("--ds-", INT_NEVER))
     frag.append(END)
     return "\n".join(frag)
 

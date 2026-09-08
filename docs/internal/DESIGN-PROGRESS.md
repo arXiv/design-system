@@ -22,9 +22,9 @@
 ## Decisions made — Button styles
 
 ### Dark mode icon buttons
-- **Constructive icon button** — lime border (`var(--lime)` = `#c4d82e`), lighter lime-tint hover bg `#2e4a0a` (lime icon 6.28:1 ✓), active bg `#253a08` (7.84:1 ✓)
+- **Constructive icon button** — lime border (`var(--ds-accent)` = `#c4d82e`), lighter lime-tint hover bg `#2e4a0a` (lime icon 6.28:1 ✓), active bg `#253a08` (7.84:1 ✓)
 - **Destructive icon button** — red border matching icon: `#e57373` default, `#ef9a9a` hover/active
-- All other icon button states use `--icon-border` (warm grey) for disabled
+- All other icon button states use `--ds-border-strong` (warm grey) for disabled
 
 ---
 
@@ -37,14 +37,14 @@ No single blue satisfies 4.5:1 on both light (white/Warm Wash) and dark (Reposit
 
 | Token | Hex | Name | Contrast | Mode |
 |---|---|---|---|---|
-| `--link` | `#1565c0` | Link Blue Light Mode | 5.74:1 on white, 5.38:1 on Warm Wash ✓ AA | Light |
-| `--link-hover` | `#1050a0` | — | 7.83:1 on white ✓ | Light |
-| `--link-dis` | `#b0aba6` | — | same as `--grey-dis` | Light |
-| `--link-visited` | `#7b2fbe` | Visited Purple Light Mode | 7.02:1 on white, 6.58:1 on Warm Wash ✓ AA | Light |
-| `--link` | `#64b5f6` | Link Blue Dark Mode | 7.84:1 on Repo Brown, 7.08:1 on dark card ✓ AAA | Dark override |
-| `--link-hover` | `#90caf9` | — | lighter tint | Dark override |
-| `--link-dis` | `#484340` | — | warm dark grey | Dark override |
-| `--link-visited` | `#c084e0` | Visited Purple Dark Mode | 6.30:1 on Repo Brown, 5.68:1 on dark card ✓ AA | Dark override |
+| `--ds-link` | `#1565c0` | Link Blue Light Mode | 5.74:1 on white, 5.38:1 on Warm Wash ✓ AA | Light |
+| `--ds-link-hover` | `#1050a0` | — | 7.83:1 on white ✓ | Light |
+| `--ds-link-disabled` | `#b0aba6` | — | same as `--ds-text-disabled` | Light |
+| `--ds-link-visited` | `#7b2fbe` | Visited Purple Light Mode | 7.02:1 on white, 6.58:1 on Warm Wash ✓ AA | Light |
+| `--ds-link` | `#64b5f6` | Link Blue Dark Mode | 7.84:1 on Repo Brown, 7.08:1 on dark card ✓ AAA | Dark override |
+| `--ds-link-hover` | `#90caf9` | — | lighter tint | Dark override |
+| `--ds-link-disabled` | `#484340` | — | warm dark grey | Dark override |
+| `--ds-link-visited` | `#c084e0` | Visited Purple Dark Mode | 6.30:1 on Repo Brown, 5.68:1 on dark card ✓ AA | Dark override |
 
 ### Underline requirement
 Link-vs-body-text contrast fails 3:1 in both modes → **underlines are mandatory for all inline links.** Standalone nav links (no surrounding body text) may omit underlines.
@@ -62,7 +62,7 @@ The full four-state table (light + dark bg / border / text, with contrast ratios
 
 Key decisions:
 - **Success is lime-olive, not a new forest green.** Access Lime `#c4d82e` stays the "staff tools" signal and fails text contrast, so success reuses the `.seg-positive` lime-olive with the border tuned off-yellow (`#6b8e1e`) to read as success, not brand accent.
-- **Reuse over invention** — info = `.seg-neutral` navy (darker than `--link` so it is not read as a link); warning = the abstract version-warning amber; error = `--danger` red.
+- **Reuse over invention** — info = `.seg-neutral` navy (darker than `--ds-link` so it is not read as a link); warning = the abstract version-warning amber; error = `--ds-danger` red.
 - **Color is never the sole signal** — each variant pairs with a distinct icon shape + leading word (WCAG 1.4.1), so the states survive grayscale and `forced-colors` mode.
 - **OS signals honored** — `prefers-color-scheme` (dark tokens), `forced-colors` (links → `LinkText`, never `forced-color-adjust:none`), `prefers-reduced-motion`. `prefers-contrast` needs nothing (all pairings clear AA).
 
@@ -72,12 +72,12 @@ Deferred: a **toast** pattern (transient/positioned/animated) and an **action-bu
 
 Session mockup: `../../mockups/internal/admin-console/paper-details/index.html`. Codified in the files noted; items marked *pending* still want a fuller pattern page.
 
-- **Spacing scale** — `--space-1`…`--space-12` added to `design-system.css`; scale + proximity rule in `DESIGN-POLICIES.md` (Spacing).
+- **Spacing scale** — `--ds-space-1`…`--ds-space-12` added to `design-system.css`; scale + proximity rule in `DESIGN-POLICIES.md` (Spacing).
 - **Layout & content width** — content-driven, not audience-driven (measure for text; shell width by density). In `DESIGN-POLICIES.md` (Layout and content width).
 - **Versions** — context + current text-link treatment in `../../README.md` (Versions); stale filled "version pills" retired in `../color-mapping.md`. *Pending:* a proper `version-nav` pattern page covering the one-version → many-versions spectrum on both surfaces.
 - **Read-only vs editable cards** — `card-styles.html` now documents the editable "section card" alongside the read-only `.info-card`, and the deliberate visual distinction. *Pending:* extract the section-card CSS into `design-system.css`.
 - **Form layout + category editor** — documented in `form-styles.html` (Form layout): top-aligned labels, typographic grouping, content-matched field widths, standardized action bar. *Pending:* interactive demos + extracting the category-editor / form-field classes into `design-system.css`.
-- **Nav selected state** — reuses the existing active/pressed convention (tint fill + darkened text, from the `--sec-bg` ladder), not a bespoke white pill. No new rule needed.
+- **Nav selected state** — reuses the existing active/pressed convention (tint fill + darkened text, from the `--ds-accent-wash` ladder), not a bespoke white pill. No new rule needed.
 - **Raw / Browse display** — two variants of one toggle: a *display swap* on read-only pages, a *preview reveal* on editable forms.
 - **To reconcile:** the Edit-Endorsements modal uses a blue Save — internal primary is Access Lime (existing rule); update the modal.
 
@@ -95,7 +95,7 @@ Session mockup: `../../mockups/internal/admin-console/paper-details/index.html`.
 ## Completed
 - [x] All button tokens finalized and committed
 - [x] `@media (prefers-color-scheme: dark)` block added (fully replaces `.on-dark` preview approach)
-- [x] Secondary button dark mode: `color: var(--lime)` in dark mode block — no new token needed
+- [x] Secondary button dark mode: `color: var(--ds-accent)` in dark mode block — no new token needed
 - [x] Focus ring: `#1565c0` light / `#64b5f6` dark — documented and committed
 - [x] Visited link colors confirmed: `#7b2fbe` light / `#c084e0` dark
 - [x] Dark mode icon button variants (constructive lime border, destructive red border)
@@ -105,7 +105,7 @@ Session mockup: `../../mockups/internal/admin-console/paper-details/index.html`.
 - [x] **Segmented control** (`.seg-control`, `.seg-btn`) — exclusive-choice button group with positive/neutral/negative active variants
 - [x] **Toggle switch** (`.toggle-switch`, `.toggle-track`, `.toggle-thumb`, `.toggle-label`) — boolean on/off with lime-green checked state
 - [x] **Form validation** (`.field-required`, `.is-invalid`, `.field-error`) — required indicators, invalid border/ring, inline error messages
-- [x] **WCAG AA audit** — added `--grey-ui` (`#8b8680`, 3.61:1 on white) to fill palette gap between `--grey-dis` (2.24:1) and `--grey` (5.83:1). Updated toggle track, toggle off-label, sort arrow, filter underline, seg control border, icon button border, and info card label to pass 3:1 UI / 4.5:1 text thresholds
+- [x] **WCAG AA audit** — added `--ds-border-strong` (`#8b8680`, 3.61:1 on white) to fill palette gap between `--ds-text-disabled` (2.24:1) and `--ds-text-muted` (5.83:1). Updated toggle track, toggle off-label, sort arrow, filter underline, seg control border, icon button border, and info card label to pass 3:1 UI / 4.5:1 text thresholds
 - [x] **Status / alert colors + `.ds-alert`** — four-state semantic palette (success/info/warning/error) and a token-driven alert banner, light + dark, with `forced-colors` / `prefers-reduced-motion` handling. Mirrored into the public stylesheet. See "Decisions made — Status / alert colors" above
 
 ---

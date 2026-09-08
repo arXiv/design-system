@@ -24,8 +24,8 @@ Key differences from internal:
 - Typography: IBM Plex Sans, Condensed, Mono (see `../typography.md`)
 - Accessibility: all WCAG 2.1 AA rules — the ACA floor; 2.2 AA is the working target (see `../../DESIGN-POLICIES.md`)
 - Button mechanics: 6px radius, 10px 20px padding, subtle shadow, press effect, 0.12s transitions
-- Focus ring: `var(--focus-ring)` with dark mode override
-- Warm grey ladder: same tokens (`--grey`, `--grey-ui`, `--grey-dis`)
+- Focus ring: `var(--ds-focus-ring)` with dark mode override
+- Warm grey ladder: same tokens (`--ds-text-muted`, `--ds-border-strong`, `--ds-text-disabled`)
 - Segmented controls: same semantic variants (positive/neutral/negative)
 - Form validation: same patterns (`.is-invalid`, `.field-error`, `.field-required`)
 
@@ -33,8 +33,8 @@ Key differences from internal:
 
 - [x] **Button styles** — primary (Open Blue) and secondary (white + warm-grey border) with V3 construction validated 2026-05-14. The `.on-tint` modifier for secondary buttons on tinted surfaces (Card Grey fill, hover-brightens to Warm Wash) was added 2026-05-22 — see `button-styles.html` and `design-system.css`.
 - [x] **Inline active state** (`.ds-inline-active`) — light-blue background + underline applied to inline interactive elements (citation chips, footnote markers) when they are the active anchor. Validated 2026-05-27 in `arxiv-mockups/arxiv-public/html-redesign.html`. See `design-system.css`.
-- [x] **Link** (`.ds-link`) — inline text link with rest / hover / visited / focus states. Tokens `--arxiv-link-blue`, `--arxiv-link-hover`, `--arxiv-link-visited` (with dark-mode overrides) match the `color-mapping.md` spec. Validated 2026-05-28 — see `link-styles.html` and `design-system.css`.
-- [x] **Annotation typography** (`.ds-annotation`) — serif italic in warm-grey for secondary editorial commentary (footnote text, figure alt-text in margin). Uses `--arxiv-font-serif` (IBM Plex Serif). Validated 2026-05-27. See `design-system.css`.
+- [x] **Link** (`.ds-link`) — inline text link with rest / hover / visited / focus states. Tokens `--ds-link`, `--ds-link-hover`, `--ds-link-visited` (with dark-mode overrides) match the `color-mapping.md` spec. Validated 2026-05-28 — see `link-styles.html` and `design-system.css`.
+- [x] **Annotation typography** (`.ds-annotation`) — serif italic in warm-grey for secondary editorial commentary (footnote text, figure alt-text in margin). Uses `--ds-font-serif` (IBM Plex Serif). Validated 2026-05-27. See `design-system.css`.
 - [x] **Popover panel** (`.ds-popover` + parts) — light-blue tint floating panel anchored to inline elements. Used by citation chips and footnote markers. Validated 2026-05-27. See `design-system.css`.
 - [x] **Element pill** (`.ds-element-pill`) — small white pill that floats anchored to a piece of content (equation, figure) to host action affordances. Distill-style chrome. Validated 2026-05-27. See `design-system.css`.
 - [x] **Accordion** (`.ds-acc` + `.ds-acc-stack` / `.ds-acc-body`, rail variant `.ds-acc-rail`) — native `<details>/<summary>` disclosure with a +/− marker; card dressing by default, chrome-dropped rail dressing inside `<aside>` rails. No new tokens. Validated as `.mg-acc` in `mockups/public/merged-abstract-reader.html` (removed 2026-08-10; the pattern lives on in `mockups/public/html-phase1.html`), promoted 2026-07-28 — see `../organizing-content.html` and `design-system.css`.

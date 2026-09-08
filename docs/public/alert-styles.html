@@ -9,7 +9,7 @@
   <style>
     /* ── Page chrome (reference doc only). Mirrors the layout of
        internal/alert-styles.html for consistency, using the public
-       --arxiv- tokens. This page CONSUMES design-system.css — it never
+       --ds- tokens. This page CONSUMES design-system.css — it never
        redefines .ds-alert or the status tokens; the rendered alerts and the
        value table read straight from the stylesheet. Light/dark follows the
        OS, matching the canonical alert tokens (the first dark-aware tokens
@@ -17,57 +17,57 @@
     *, *::before, *::after { box-sizing: border-box; }
 
     body {
-      font-family: var(--arxiv-font-sans);
-      color: var(--arxiv-repository-brown);
-      background: var(--arxiv-warm-wash);
+      font-family: var(--ds-font-sans);
+      color: var(--ds-text);
+      background: var(--ds-canvas);
       margin: 0;
       font-size: 14px;
       line-height: 1.5;
     }
     .page { max-width: 980px; margin: 0 auto; padding: 48px 28px 80px; }
 
-    .back-link { display: inline-block; margin-bottom: 20px; font-size: 13px; color: var(--arxiv-link-blue); text-decoration: none; }
+    .back-link { display: inline-block; margin-bottom: 20px; font-size: 13px; color: var(--ds-link); text-decoration: none; }
     .back-link:hover { text-decoration: underline; }
 
-    .page-header { margin-bottom: 44px; padding-bottom: 20px; border-bottom: 3px solid var(--arxiv-open-blue); }
+    .page-header { margin-bottom: 44px; padding-bottom: 20px; border-bottom: 3px solid var(--ds-accent); }
     .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
-    .page-header p { margin: 0; color: var(--arxiv-library-grey); font-size: 13px; max-width: 720px; }
-    .mode-note { margin-top: 10px; font-size: 12px; color: var(--arxiv-grey-ui); }
+    .page-header p { margin: 0; color: var(--ds-text-muted); font-size: 13px; max-width: 720px; }
+    .mode-note { margin-top: 10px; font-size: 12px; color: var(--ds-border-strong); }
 
     .section { margin-bottom: 48px; }
     .section-title { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
-    .section-desc { font-size: 13px; color: var(--arxiv-library-grey); margin: 0 0 20px; max-width: 720px; line-height: 1.55; }
+    .section-desc { font-size: 13px; color: var(--ds-text-muted); margin: 0 0 20px; max-width: 720px; line-height: 1.55; }
 
-    .live-demo { background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 8px; padding: 22px; }
+    .live-demo { background: var(--ds-surface); border: 1px solid var(--ds-surface-muted); border-radius: 8px; padding: 22px; }
     .demo-stack > * + * { margin-top: 14px; }
-    .demo-sub { font-family: var(--arxiv-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-grey-ui); margin: 22px 0 10px; }
+    .demo-sub { font-family: var(--ds-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ds-border-strong); margin: 22px 0 10px; }
 
-    .token-table { width: 100%; border-collapse: collapse; background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 8px; overflow: hidden; font-size: 13px; }
-    .token-table th { background: var(--arxiv-card-grey); text-align: left; padding: 10px 14px; font-family: var(--arxiv-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); border-bottom: 1px solid var(--arxiv-card-grey); }
-    .token-table td { padding: 10px 14px; border-bottom: 1px solid var(--arxiv-card-grey); vertical-align: middle; }
+    .token-table { width: 100%; border-collapse: collapse; background: var(--ds-surface); border: 1px solid var(--ds-surface-muted); border-radius: 8px; overflow: hidden; font-size: 13px; }
+    .token-table th { background: var(--ds-surface-muted); text-align: left; padding: 10px 14px; font-family: var(--ds-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ds-text-muted); border-bottom: 1px solid var(--ds-surface-muted); }
+    .token-table td { padding: 10px 14px; border-bottom: 1px solid var(--ds-surface-muted); vertical-align: middle; }
     .token-table tr:last-child td { border-bottom: none; }
-    .token-table td.state-name { font-weight: 700; color: var(--arxiv-library-grey); background: #faf8f7; white-space: nowrap; }
+    .token-table td.state-name { font-weight: 700; color: var(--ds-text-muted); background: #faf8f7; white-space: nowrap; }
     .swatch { display: inline-block; width: 18px; height: 18px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.18); vertical-align: middle; margin-right: 6px; }
     .ratio-pass { font-weight: 700; }
     .ratio-fail { font-weight: 700; color: #c62828; }
 
-    code { font-family: var(--arxiv-font-mono); font-size: 12px; background: var(--arxiv-card-grey); padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
-    .code-block { background: var(--arxiv-repository-brown); color: #f0eeec; border-radius: 6px; padding: 14px 16px; font-family: var(--arxiv-font-mono); font-size: 12px; line-height: 1.6; overflow-x: auto; margin: 0; }
+    code { font-family: var(--ds-font-mono); font-size: 12px; background: var(--ds-surface-muted); padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
+    .code-block { background: var(--ds-text); color: #f0eeec; border-radius: 6px; padding: 14px 16px; font-family: var(--ds-font-mono); font-size: 12px; line-height: 1.6; overflow-x: auto; margin: 0; }
 
-    .callout { font-size: 13px; color: var(--arxiv-repository-brown); margin-top: 16px; padding: 12px 16px; background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-left: 4px solid var(--arxiv-open-blue); border-radius: 0 4px 4px 0; line-height: 1.6; }
+    .callout { font-size: 13px; color: var(--ds-text); margin-top: 16px; padding: 12px 16px; background: var(--ds-surface); border: 1px solid var(--ds-surface-muted); border-left: 4px solid var(--ds-accent); border-radius: 0 4px 4px 0; line-height: 1.6; }
     .callout + .callout { margin-top: 10px; }
 
     /* Dark chrome — OS-driven, matching the canonical alert tokens. */
     @media (prefers-color-scheme: dark) {
       body { background: #1c1a17; color: #f0eeec; }
       .section-title { color: #f0eeec; }
-      .section-desc, .page-header p { color: var(--arxiv-library-grey); }
+      .section-desc, .page-header p { color: var(--ds-text-muted); }
       .back-link { color: #64b5f6; }
       .live-demo { background: #252118; border-color: #3a3530; }
       .token-table { background: #252118; border-color: #3a3530; }
-      .token-table th { background: #302c28; color: var(--arxiv-library-grey); border-color: #3a3530; }
+      .token-table th { background: #302c28; color: var(--ds-text-muted); border-color: #3a3530; }
       .token-table td { border-color: #3a3530; color: #f0eeec; }
-      .token-table td.state-name { background: #2a2520; color: var(--arxiv-library-grey); }
+      .token-table td.state-name { background: #2a2520; color: var(--ds-text-muted); }
       .callout { background: #252118; border-color: #3a3530; color: #f0eeec; }
       .callout strong { color: #f0eeec; }
       code { background: #302c28; color: #f0eeec; }
@@ -76,27 +76,27 @@
     /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
        <details>-based: works without JS; the small script at the end of the
        page only adds close-on-outside-click and Esc. ── */
-    .docs-nav { display: flex; align-items: center; gap: 4px 18px; flex-wrap: wrap; background: var(--arxiv-card-grey); border-bottom: 1px solid var(--arxiv-border-light); padding: 8px 28px; font-size: 13px; }
-    .docs-nav-brand { font-weight: 600; color: var(--arxiv-repository-brown); text-decoration: none; margin-right: 8px; }
-    .docs-nav-brand:hover { color: var(--arxiv-link-blue); }
+    .docs-nav { display: flex; align-items: center; gap: 4px 18px; flex-wrap: wrap; background: var(--ds-surface-muted); border-bottom: 1px solid var(--ds-border); padding: 8px 28px; font-size: 13px; }
+    .docs-nav-brand { font-weight: 600; color: var(--ds-text); text-decoration: none; margin-right: 8px; }
+    .docs-nav-brand:hover { color: var(--ds-link); }
     .nav-dd { position: relative; }
-    .nav-dd > summary { list-style: none; cursor: pointer; color: var(--arxiv-library-grey); padding: 3px 6px; border-radius: 4px; user-select: none; }
+    .nav-dd > summary { list-style: none; cursor: pointer; color: var(--ds-text-muted); padding: 3px 6px; border-radius: 4px; user-select: none; }
     .nav-dd > summary::-webkit-details-marker { display: none; }
     .nav-dd > summary::after { content: " \25BE"; font-size: 10px; }
-    .nav-dd > summary:hover, .nav-dd[open] > summary { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
-    .nav-dd > summary:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
-    .nav-dd-menu { position: absolute; left: 0; top: calc(100% + 6px); display: flex; flex-direction: column; min-width: 235px; background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); padding: 6px; z-index: 60; }
-    .nav-dd-menu a { color: var(--arxiv-repository-brown); text-decoration: none; padding: 6px 10px; border-radius: 4px; white-space: nowrap; }
-    .nav-dd-menu a:hover { background: var(--arxiv-card-grey); }
-    .nav-dd-menu a:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: -2px; }
+    .nav-dd > summary:hover, .nav-dd[open] > summary { color: var(--ds-text); background: rgba(0,0,0,0.05); }
+    .nav-dd > summary:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 2px; }
+    .nav-dd-menu { position: absolute; left: 0; top: calc(100% + 6px); display: flex; flex-direction: column; min-width: 235px; background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); padding: 6px; z-index: 60; }
+    .nav-dd-menu a { color: var(--ds-text); text-decoration: none; padding: 6px 10px; border-radius: 4px; white-space: nowrap; }
+    .nav-dd-menu a:hover { background: var(--ds-surface-muted); }
+    .nav-dd-menu a:focus-visible { outline: 2px solid var(--ds-link); outline-offset: -2px; }
     .nav-dd-menu a[aria-current="page"] { font-weight: 600; }
-    .nav-dd-group { font-family: var(--arxiv-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--arxiv-library-grey); padding: 8px 10px 2px; }
+    .nav-dd-group { font-family: var(--ds-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ds-text-muted); padding: 8px 10px 2px; }
   
     /* Inline links in page copy. Bare <a> previously fell back to the
        browser default, which is unreadable on the dark canvas. Nav links
        carry their own, more specific rules. */
-    a { color: var(--arxiv-link-blue); }
-    a:hover { color: var(--arxiv-link-hover); }
+    a { color: var(--ds-link); }
+    a:hover { color: var(--ds-link-hover); }
 </style>
 </head>
 <body>
@@ -232,7 +232,7 @@
       </table>
 
       <p class="callout"><strong>Why this cannot go stale.</strong> Nothing here hardcodes a hex value — the swatches,
-      the codes, and the contrast ratios are all derived from the live <code>--arxiv-</code> status tokens. Change a token
+      the codes, and the contrast ratios are all derived from the live <code>--ds-</code> status tokens. Change a token
       in <code>design-system.css</code> and this table updates on the next reload. If the stylesheet ever fails to load,
       the page visibly breaks, so it doubles as a smoke test.</p>
     </section>
@@ -259,7 +259,7 @@
     (function () {
       var html = document.documentElement;
 
-      /* Surface token convention: public stylesheet uses the --arxiv- prefix. */
+      /* Token convention: every design-system token carries the --ds- prefix. */
       var PREFIX = 'arxiv-';
       var STATES = [['Success','success'], ['Info','info'], ['Warning','warning'], ['Error / failure','error']];
 
