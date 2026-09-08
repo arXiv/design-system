@@ -880,6 +880,61 @@
   cursor: not-allowed;
 }
 
+/* ── Icon-only control (.ds-btn-icon) ───────────────────────────────
+   A button whose whole label is an icon: zoom in, zoom out, reset to fit.
+   A SHAPE modifier, not a fourth tier — it composes with whichever tier the
+   surface calls for, the way Carbon's hasIconOnly and shadcn's size="icon"
+   do. We rejected adding a tier once already, for the outline button, and
+   for the same reason: a tier is a rank in the hierarchy, and "happens to
+   have no words" is not a rank.
+
+     <button class="ds-btn ds-btn-text ds-btn-icon" type="button">
+       <svg … aria-hidden="true">…</svg>
+       <span class="is-sr-only">Zoom in</span>
+     </button>
+
+   Square by aspect-ratio rather than a fixed size, so it stays exactly as
+   tall as a labelled button and sits on the same baseline beside one in a
+   .ds-btn-group. Hard-coding a height would drift the moment .ds-btn's
+   padding or font-size changed.
+
+   Colour comes from the tier, not from here: a text-tier icon button is
+   Link Blue like any other text-tier control, and on a dark or tinted field
+   it takes .on-dark / .on-tint the same way. .ds-close below is the one
+   that breaks this and inherits instead — see there for why.
+
+   The accessible name is REQUIRED and is real text in the DOM. The icon is
+   aria-hidden per the icon policy, so with no name the control announces as
+   "button" and nothing more. .is-sr-only rather than aria-label: it is what
+   the icon policy prescribes, and it survives page translation. Carbon and
+   Primer both make this name a required prop; the systems that leave it
+   optional are the ones with the known gap here.
+
+   The staff stylesheet's .btn-icon is this same shape with a rest-state
+   border and its own colour variants baked in. That border is not part of
+   being icon-only — it is what the staff surface's quiet tier looks like
+   (.btn-tertiary drops the fill and keeps a border, where public
+   .ds-btn-text drops the border). Once the button system lives in one
+   place, that control is tertiary + this shape, and the two stop being
+   separate components. Until then, do not cross them.
+
+   No size scale. Primer and shadcn offer three or four; we have one shape
+   and no case yet for a second size. Add one when something asks. */
+.ds-btn-icon {
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 10px;
+  gap: 0;
+  flex-shrink: 0;
+}
+.ds-btn-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  pointer-events: none;  /* clicks land on the button, never on a path */
+}
+
 /* ── The close control (.ds-close) ──────────────────────────────────
    Dismissing a thing is one job, so it is one control — for the alert,
    the popover, the announcement band, the figure viewer, and anything
@@ -973,11 +1028,14 @@
   /* A wash mixed from the host's own foreground, so one rule works on
      white, on the announcement's pale blue, and on all four alert
      palettes without the control knowing which it is on. */
-  background: rgba(0, 0, 0, 0.06);  /* where color-mix is unsupported */
+  /* Mid-grey rather than black, so the fallback is visible on dark chrome
+     as well as on white. color-mix is Baseline widely available (May 2023);
+     the ~6% without it get this. */
+  background: rgba(128, 128, 128, 0.18);
   background: color-mix(in srgb, currentColor 10%, transparent);
 }
 .ds-close:active {
-  background: rgba(0, 0, 0, 0.12);
+  background: rgba(128, 128, 128, 0.30);
   background: color-mix(in srgb, currentColor 18%, transparent);
 }
 .ds-close:focus-visible {
