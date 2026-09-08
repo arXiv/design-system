@@ -1,103 +1,128 @@
-# One name per thing, at the token layer — proposal
+# Tier 1 as the trunk — stylesheet consolidation proposal
 
-Status: **proposed**. Answers Shamsi's question of 2026-09-08 — *what are the
-two stylesheets, and what exactly would be unified?*
+Status: **proposed**, and this version supersedes the earlier "extract a shared
+`tokens.css`" framing. Shamsi's reading of the three-tier model (2026-09-08) is
+the better one and the measurements below support it. Recorded because the two
+framings lead to different work.
 
-## The two stylesheets
+## The model
 
-| File | Serves | Names its tokens | Names its buttons |
-|---|---|---|---|
-| `docs/public/design-system.css` | arxiv.org and every public page; outreach sites inherit it | `--arxiv-*` prefix | `.ds-btn*` |
-| `docs/internal/design-system.css` | staff tools — the admin console, arXiv Check, moderation screens | no prefix | `.btn-*` |
+- **Tier 1 — `design-system.css`.** Nearly all of the CSS: tokens, foundation,
+  and every component more than one surface could use. Loaded by everything.
+- **Tier 2 — one per surface.** A thin file holding that surface's accent tokens,
+  the handful of genuine overrides, and the components that exist only there.
+  - staff tools: the `.btn-*` family, tables, metadata panels, segmented
+    controls, toggles, type badges, info cards
+  - the HTML papers reader: marginalia, the equation and figure regions, the
+    contents bar
+- **Tier 3 —** the mockup, for anything still moving.
 
-Both are authoritative for their surface. Neither imports the other. There is
-no third file and no shared base.
+A repo loads tier 1 plus at most one tier 2. The search pages load tier 1 alone.
+The admin console loads tier 1 + the staff tier 2. The HTML papers repo loads
+tier 1 + the reader tier 2. **No naming differences anywhere** — one class name
+and one token name per thing, across all of it.
 
-They exist as two files for a real reason: the accent differs, and the accent is
-how a person can tell at a glance which system they are in. Internal is Access
-Lime, public is Open Blue, and the two are never crossed. That decision is not in
-question here.
+This is what the three-tier model in HANDOFF.md meant; the earlier proposal in
+this file treated the two stylesheets as peers and only tried to share their
+tokens, which is a smaller and less useful change.
 
-## What is actually duplicated
+## Does the code support it? Measured 2026-09-08
 
-They share **7 token names out of about 60 each** — the `--space-*` scale, and
-nothing else.
+**Class inventory.** Public declares 96 classes, staff 84, and **25 names appear
+in both** — `.ds-alert*`, `.ds-tag*`, `.ds-field`, `.ds-input`, `.ds-label`,
+`.ds-hint`, `.ds-check`, `.is-invalid`, `.field-error`, `.is-sr-only`,
+`.ds-close`. Those 25 are today maintained as two copies.
 
-That understates the overlap badly. Twenty-five more tokens are **the same value
-under a different name**:
+The 59 staff-only classes are the ones the model predicts: `.btn-*`, `.ds-table*`,
+`.ds-meta-panel*`, `.seg-*`, `.toggle-*`, `.type-*`, `.info-card*`, `.ds-filter`,
+`.sim-*`. Genuinely staff-surface components. Nothing there argues for a second
+copy of anything shared.
 
-| The thing | Public | Internal | Same value? |
-|---|---|---|---|
-| Page canvas | `--arxiv-warm-wash` | `--canvas` | `#f9f7f7` both |
-| Primary text | `--arxiv-repository-brown` | `--text` | `#1c1a17` both |
-| Component fill | `--arxiv-surface` | `--surface` | `#ffffff` both |
-| Hairline border | `--arxiv-border-light` | `--border` | `#ddd8d2` both |
-| UI boundary grey | `--arxiv-grey-ui` | `--grey-ui` | `#8b8680` both |
-| Muted body text | `--arxiv-library-grey` | `--grey` | `#6b6459` both |
-| Raised band | `--arxiv-card-grey` | `--surface-header` | `#f0eeec` both |
-| Link / hover / visited | `--arxiv-link-blue` etc. | `--link` etc. | identical, all three |
-| Focus ring | `--arxiv-focus-ring` | `--focus-ring` | `#1565c0` both |
-| Status families | `--arxiv-success-*`, `-info-*`, `-warning-*`, `-error-*` | `--success-*`, `--info-*`, `--warning-*`, `--error-*` | identical, all twelve |
+**How different are the 25 duplicated components, really?** Comparing every
+shared selector's declarations, then normalising the token *names* against the
+synonym map (`--arxiv-surface` ↔ `--surface`, `--arxiv-error-bg` ↔ `--error-bg`,
+and so on — pairs already verified to hold identical values):
 
-So the picture is not "two palettes." It is **one palette, written down twice,
-plus each surface's own accent**.
+> **Of 44 shared selectors, 36 are identical once the token names are
+> normalised. 8 differ.**
 
-## What is genuinely different, and must stay so
+And of those 8:
 
-- **Public only:** `--arxiv-open-blue`, `--arxiv-archival-blue`, `--arxiv-tint-*`
-  (popover surfaces), `--arxiv-pill-border`, `--arxiv-header-bar`,
-  `--arxiv-smileybones-yellow`.
-- **Internal only:** the whole `--lime*` and `--sec-*` families, `--danger*`,
-  `--text-on-lime`, `--icon-border`, `--grey-hover-*`, `--surface-hover`.
+| Selector | Difference | Verdict |
+|---|---|---|
+| `a.ds-tag:hover` | public washes blue (`--arxiv-active-bg`), staff washes grey (`--grey-active-bg`) | **real** — per-surface accent |
+| `.ds-tag--chrome` | public uses the popover tint tokens, staff uses the info tokens | **probably real**, worth a look |
+| `.ds-alert` | `gap: 8px` vs `11px` | drift |
+| `.ds-tag` | `gap: 8px` vs `5px` | drift |
+| `.field-error` | staff sets `font-size` and `margin`, public does not | drift |
+| `textarea.ds-input` | public sets `display: block`, staff does not | drift |
+| `.ds-close` reduced-motion | equivalent rules written in different places | not a difference |
 
-Roughly a third of each file. This is the part that earns two files.
+So the answer to "is this realistic" is: **yes, and by a wider margin than
+expected.** One genuine per-surface difference, one likely second, six accidents.
+The two files are not two designs. They are one design typed twice, and the
+second copy has been quietly rotting.
 
-## The drift this is already causing
+**Evidence it is already rotting.** `--arxiv-grey-dis` is `#5a554f` in dark mode;
+`--grey-dis` is `#484340`. Same concept, different value, nobody decided it. No
+check could catch this: `check-drift.py` compares token *names*, and these are
+two different names, so it sees two unrelated tokens rather than one that
+disagrees with itself.
 
-Two same-concept tokens have **different dark-mode values**:
-`--arxiv-grey-dis` is `#5a554f` dark; `--grey-dis` is `#484340` dark. Nobody
-decided that. One of them was adjusted and the other was not, and no check could
-have caught it, because a checker comparing token *names* sees two unrelated
-tokens.
+## The one decision left, and it is smaller than the last version of this file said
 
-That is the argument for doing this. Not tidiness — the duplication is invisible
-to every tool we have, so it can only be found by a person reading both files
-side by side, which is exactly what nobody does.
+Class names need no decision — both stylesheets already say `.ds-*` for
+everything shared.
 
-## What "unify" would mean, concretely
+Token names do. Under this model the staff sheet stops declaring
+`--surface` / `--text` / `--canvas` at all and uses tier 1's names. The question
+is only which prefix convention tier 1 keeps:
 
-Not merging the stylesheets. Three steps, each independently landable:
+- **Keep `--arxiv-*`** (recommended). These names are already quoted in
+  `color-mapping.md`, in both mockups, and in the blog theme, which lives in
+  another repo. Renaming them has a blast radius outside this repo that we cannot
+  see. Cost: the staff-only tokens either get the prefix too — `--arxiv-lime`,
+  `--arxiv-danger` — or the file ends up mixing conventions. Recommend prefixing
+  everything, for one rule with no exceptions.
+- **Drop the prefix.** Shorter and reads better, and there is only one system, so
+  a prefix earns less than it used to. But it breaks external references.
 
-1. **Agree one name per concept** for the 25 shared tokens. The internal names
-   are shorter and read better (`--canvas`, `--text`, `--surface`); the public
-   names carry the brand and are the ones quoted in `color-mapping.md` and in
-   every mockup. Recommend keeping the **public** names, because they are the
-   ones already written into content outside this repo, and renaming those has a
-   blast radius we cannot see. Cost: internal gets more verbose.
-2. **Extract the agreed set into one file** both stylesheets `@import` or that
-   is concatenated at publish time — a single `tokens.css`. Each stylesheet then
-   holds only its own accent and its own component rules.
-3. **Re-point the 22 internal-only classes** that are the same component in a
-   different palette — `.ds-alert*`, `.ds-tag*`, `.ds-field`, `.ds-input`,
-   `.ds-label`, `.ds-check`. These do not need to be re-declared at all once the
-   tokens are shared; they need the accent tokens to resolve differently, which
-   is what `.ds-site-header--light` already does for the header. **Access Lime as
-   primary becomes a token decision, not a stylesheet one** — which is the real
-   prize here, because it is what would let a staff tool and a public page share
-   a component instead of each owning a copy.
+## Two things to know before starting
 
-Step 3 is where the payoff is; steps 1 and 2 are what make it possible.
+**Tier 1 gets loaded whole.** A staff tool would pull in the public site header,
+footer, announcement band and skip link. At roughly 120KB uncompressed that is not
+a performance problem, but it does mean a staff tool *could* render the public
+black bar by accident. That is a governance question — a note in tier 2 and in
+AGENTS.md, not a technical obstacle.
 
-## Recommended sequence
+**The button system is where the payoff shows.** The staff `.btn-icon` is the same
+shape as the new `.ds-btn-icon` with a rest-state border and colour variants baked
+in. That border is not part of being icon-only; it is what the staff quiet tier
+looks like, since `.btn-tertiary` drops the fill and keeps a border where public
+`.ds-btn-text` drops the border. Under this model that control is *tertiary + the
+icon shape*, and stops being a separate component. The same collapse is available
+for `.ds-alert`, `.ds-tag`, `.ds-field` and the rest of the 25.
 
-Do **step 1 only** first, as a decision, and write it down here. It costs nothing
-to reverse and it is the only step that needs Shamsi. Steps 2 and 3 are mechanical
-once the names are agreed, and step 3 should wait until the modal and the toggle
-exist, because those are the first two components that will have to work on both
-surfaces and will test whether the token layer actually carries the load.
+## Suggested order
+
+1. **Agree the token-name convention.** The only step needing Shamsi. Reversible,
+   costs nothing, and blocks everything else.
+2. **Fix the six drifts** listed above, in place, before moving anything. Moving
+   code and changing it in the same step makes the diff unreviewable.
+3. **Move the 25 shared components** into tier 1; delete the staff copies; leave
+   the two real differences behind as tier 2 overrides.
+4. **Re-point the accent.** Staff tier 2 redeclares the accent tokens at `:root`
+   and wins by source order — the mechanism `.ds-site-header--light` already
+   proves. Access Lime as primary becomes a token decision, not a stylesheet one.
+5. **Then the button system**, which is the largest single block and the one with
+   the most to gain.
+
+Steps 3–5 want the modal and the toggle to exist first: they are the next two
+components that must work on both surfaces, and they are the real test of whether
+the token layer carries the load.
 
 ## Not in scope
 
-The blog theme's bundled copy. It is a separate project that translates
-deliberately; `check-drift.py` already reports its differences as a NOTE and that
-list is an agenda, not a defect.
+The blog theme's bundled copy. Separate project, translated deliberately;
+`check-drift.py` reports its differences as a NOTE and that list is an agenda, not
+a defect.
