@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Progressive disclosure — arXiv Design System</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="public/design-system.css">
+  <style>
+    /* ── Flagship pattern page: every way arXiv shows less than it has, and
+       how a reader gets the rest. The accordion, show-more and popover demos
+       render the real .ds- classes from public/design-system.css; only demo
+       staging is page-local. ── */
+    .notes li { margin-bottom: var(--space-1); }
+
+    /* Stage the accordions at a realistic reading width, and give the rail
+       variant the hairline-ruled container it is designed to sit in. */
+    .acc-demo  { max-width: 480px; }
+    .rail-demo { max-width: 300px; background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 8px; padding: 18px 20px; }
+    .rail-demo > * + * { border-top: 1px solid var(--arxiv-border-light); margin-top: var(--space-3); padding-top: 14px; }
+
+    /* The author-list demo: a real list that reads as a sentence, which is
+       the shape .ds-show-more exists to serve. */
+    .authors-demo { max-width: 560px; font-size: 0.95rem; line-height: 1.7; }
+    .authors-demo ul { display: inline; list-style: none; padding: 0; margin: 0; }
+    .authors-demo li { display: inline; }
+    .authors-demo li:not(:last-child)::after { content: ', '; }
+    .authors-demo a { color: var(--arxiv-link-blue); text-decoration: none; }
+    .authors-demo a:hover { text-decoration: underline; }
+
+    /* Popover demo: the real component, positioned statically so it can sit
+       in the page flow instead of floating over it. */
+    .popover-demo .ds-popover { position: static; max-width: 320px; }
+
+    /* The chooser table wants to be read across, so it gets the framed
+       treatment rather than the bare in-prose rules. */
+    .chooser td:first-child { white-space: nowrap; font-weight: 600; }
+  </style>
+</head>
+<body class="ds-page">
+<nav class="ds-site-header ds-site-header--light" aria-label="Design system">
+  <a class="ds-site-header-logo" href="../index.html">arXiv Design System</a>
+  <details class="ds-site-header-dropdown">
+    <summary>Design Patterns</summary>
+    <div class="ds-site-header-menu">
+      <a href="colors.html">Colors</a>
+      <a href="typography.html">Typography</a>
+      <a href="spacing.html">Spacing</a>
+      <a href="buttons.html">Buttons</a>
+      <a href="alerts.html">Alerts</a>
+      <a href="version-display.html">Versions</a>
+      <a href="organizing-content.html">Organizing content</a>
+      <a href="progressive-disclosure.html" aria-current="page">Progressive disclosure</a>
+      <a href="dark-mode.html">Dark mode</a>
+      <a href="internal/metadata-panel-styles.html">Metadata panel</a>
+      <a href="forms.html">Forms &amp; validation</a>
+      <a href="tags.html">Tags</a>
+      <a href="outreach/">Outreach sites</a>
+    </div>
+  </details>
+  <details class="ds-site-header-dropdown">
+    <summary>Mockups</summary>
+    <div class="ds-site-header-menu">
+      <a href="../mockups/">All mockups</a>
+      <span class="ds-panel-label">Public</span>
+      <a href="../mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+      <a href="../mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+      <a href="../mockups/public/optin-modal/">Labs opt-in modal</a>
+      <a href="../mockups/public/submission-metadata/">Submission — Metadata Form</a>
+      <span class="ds-panel-label">Internal</span>
+      <a href="../mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+      <a href="../mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+      <a href="../mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+      <a href="../mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+    </div>
+  </details>
+  <details class="ds-site-header-dropdown">
+    <summary>Docs</summary>
+    <div class="ds-site-header-menu">
+      <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+      <a href="brand.html">Brand &amp; vision</a>
+        <a href="doc.html?src=docs/BRAND.md">Brand &amp; voice</a>
+      <a href="doc.html?src=docs/typography.md">Typography spec</a>
+      <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
+      <a href="doc.html?src=README.md">About this repo</a>
+    </div>
+  </details>
+</nav><div class="ds-container">
+
+  <header class="ds-page-header">
+    <h1>Progressive disclosure</h1>
+    <p>Every way arXiv shows less than it has, and how a reader gets the rest. A paper page holds
+    far more than any one reader wants at once &mdash; twenty-two authors, eleven versions, four
+    hundred references, the full licence text &mdash; and the choice is never whether to hide
+    something but which affordance does the hiding, because each one makes a different promise
+    about what is behind it.</p>
+  </header>
+
+  <!-- ───────── The chooser ───────── -->
+  <section class="section">
+    <h2 class="section-title">Which affordance</h2>
+    <p class="ds-section-desc">The question that separates them is not how much is hidden. It is what
+    relationship the hidden thing has to what the reader is looking at.</p>
+
+    <table class="ds-table-framed chooser">
+      <thead>
+        <tr><th>Use</th><th>When the hidden content is</th><th>Costs the reader</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Accordion<br><code>.ds-acc</code></td>
+          <td>A <strong>labelled section</strong> the reader can decide about from its label alone
+          &mdash; Versions, Paper information, Related.</td>
+          <td>One click, stays on the page, keeps their place.</td>
+        </tr>
+        <tr>
+          <td>Show more<br><code>.ds-show-more</code></td>
+          <td>The <strong>tail of something already begun</strong> &mdash; authors nine through
+          twenty-two, the rest of a category list. There is no label to give it, because it is not a
+          different thing.</td>
+          <td>One click, expands in place, no new surface.</td>
+        </tr>
+        <tr>
+          <td>Popover<br><code>.ds-popover</code></td>
+          <td>A <strong>lookup</strong> the reader wants without leaving their sentence &mdash; what
+          reference 47 is, what footnote 3 says.</td>
+          <td>Nothing permanent. It closes on Escape and does not move the page.</td>
+        </tr>
+        <tr>
+          <td>A link to a full page</td>
+          <td>Something with <strong>its own identity</strong> &mdash; a different paper, an author's
+          other work, the full licence.</td>
+          <td>Leaves the page. Pay this only when the destination deserves a URL.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ul class="notes">
+      <li><strong>Never put must-see information only behind a disclosure.</strong> The older-version
+      warning appears in the main column even though the full history lives in the Versions accordion.
+      A reader who never opens anything must still meet everything that matters.</li>
+      <li><strong>Disclosure is not a fix for too much content.</strong> If a page needs six accordions
+      to be tolerable, the page has a structure problem and hiding things postpones it. Ask what can be
+      cut or moved before asking what can be collapsed.</li>
+      <li><strong>Default state is closed</strong>, except that a single most-relevant panel may start
+      open. Open state is not persisted &mdash; predictability beats memory here.</li>
+    </ul>
+  </section>
+
+  <!-- ───────── Accordions ───────── -->
+  <section class="section">
+    <h2 class="section-title">Accordion</h2>
+    <p class="ds-section-desc">Native <code>&lt;details&gt;/&lt;summary&gt;</code>. No JavaScript, keyboard and
+    screen-reader behaviour for free, and the browser's find-in-page can open a closed panel to show a
+    match inside it &mdash; which no hand-built accordion does. A +/&minus; glyph replaces the default
+    marker. Four dressings, one element, differing only in how much of the page they are willing to
+    take.</p>
+
+    <p class="ds-panel-label">Ruled &mdash; <code>.ds-acc-flush</code></p>
+    <p>The default choice for a list of disclosures in running content. No box, no fill, no horizontal
+    padding: the label sits on the same left edge as the prose around it, with a rule above and below.
+    One rule would read as a heading with an underline. Two give the disclosure a top and a bottom, so
+    a reader can see that what appears below the first rule belongs to the label above it.</p>
+    <div class="acc-demo">
+      <div class="ds-acc-stack">
+        <details class="ds-acc ds-acc-flush" open>
+          <summary>Versions</summary>
+          <div class="ds-acc-body">
+            <dl>
+              <dt>v3 &middot; current</dt><dd>24 Apr 2026</dd>
+              <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
+              <dt>v1</dt><dd><a href="#">10 Jan 2026</a></dd>
+            </dl>
+          </div>
+        </details>
+        <details class="ds-acc ds-acc-flush">
+          <summary>Paper information</summary>
+          <div class="ds-acc-body">
+            <dl>
+              <dt>arXiv ID</dt><dd><a href="#">2604.22725</a></dd>
+              <dt>Subjects</dt><dd>gr-qc &middot; hep-th</dd>
+              <dt>Licence</dt><dd><a href="#">CC BY 4.0</a></dd>
+            </dl>
+          </div>
+        </details>
+        <details class="ds-acc ds-acc-flush">
+          <summary>Related</summary>
+          <div class="ds-acc-body">Connected papers, datasets, and code links.</div>
+        </details>
+      </div>
+    </div>
+    <p>Stacked in a <code>.ds-acc-stack</code> they butt together and read as one ruled list: each shared
+    edge is a single line, because the preceding item's lower rule is the next item's upper one.</p>
+
+    <p class="ds-panel-label">Card &mdash; <code>.ds-acc</code></p>
+    <p>The base component. A white surface with a hairline edge, for a disclosure that is an object on
+    the page rather than part of it. Use it when the accordion sits on a canvas with nothing else to
+    frame it.</p>
+    <div class="acc-demo">
+      <div class="ds-acc-stack">
+        <details class="ds-acc" open>
+          <summary>Paper information</summary>
+          <div class="ds-acc-body">
+            <dl>
+              <dt>arXiv ID</dt><dd><a href="#">2604.22725</a></dd>
+              <dt>Licence</dt><dd><a href="#">CC BY 4.0</a></dd>
+            </dl>
+          </div>
+        </details>
+        <details class="ds-acc">
+          <summary>Related</summary>
+          <div class="ds-acc-body">Connected papers, datasets, and code links.</div>
+        </details>
+      </div>
+    </div>
+
+    <p class="ds-panel-label">Rail &mdash; <code>.ds-acc-rail</code></p>
+    <p>Card chrome dropped: no background, no border, no radius. For a disclosure inside a container
+    that already frames it &mdash; the paper page's sidebar, where the rail's own hairline dividers do
+    the separating. Internals go single-column for the narrow measure, and the +/&minus; marker turns
+    Link Blue so a closed disclosure still reads as interactive.</p>
+    <div class="rail-demo">
+      <details class="ds-acc ds-acc-rail" open>
+        <summary>Versions</summary>
+        <div class="ds-acc-body">
+          <dl>
+            <dt>v3 &middot; current</dt><dd>24 Apr 2026</dd>
+            <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
+          </dl>
+        </div>
+      </details>
+      <details class="ds-acc ds-acc-rail">
+        <summary>Paper information</summary>
+        <div class="ds-acc-body">Single-column inside the narrow rail.</div>
+      </details>
+    </div>
+
+    <p class="ds-panel-label">Panel &mdash; <code>.ds-acc-panel</code></p>
+    <p>The loudest variant, and the only one whose summary is a filled bar you press. For a disclosure
+    that has to be <em>found</em> rather than tucked away &mdash; the reference panel under each demo on
+    these documentation pages. Its border is <code>--arxiv-grey-ui</code> rather than the decorative
+    hairline, because on an open page it is the only thing carrying the component and has to clear the
+    3:1 an interactive boundary needs.</p>
+    <div class="acc-demo">
+      <details class="ds-acc ds-acc-panel">
+        <summary>Relevant classes</summary>
+        <div class="ds-acc-body">
+          <dl>
+            <dt>.ds-acc</dt><dd>The base component &mdash; the card dressing.</dd>
+            <dt>.ds-acc-body</dt><dd>The revealed region. A <code>&lt;dl&gt;</code> inside it gets the
+            standard metadata layout: condensed-caps <code>&lt;dt&gt;</code> labels beside regular
+            <code>&lt;dd&gt;</code> values.</dd>
+            <dt>.ds-acc-stack</dt><dd>The container for several. Supplies the gap, or removes it
+            entirely when the items are <code>.ds-acc-flush</code> and should read as one ruled list.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <p class="ds-panel-label">Usage</p>
+    <pre><code>&lt;!-- Ruled: the default for a list of disclosures in running content --&gt;
+&lt;div class="ds-acc-stack"&gt;
+  &lt;details class="ds-acc ds-acc-flush"&gt;
+    &lt;summary&gt;Versions&lt;/summary&gt;
+    &lt;div class="ds-acc-body"&gt;
+      &lt;dl&gt;&lt;dt&gt;v3 &middot; current&lt;/dt&gt;&lt;dd&gt;24 Apr 2026&lt;/dd&gt;&lt;/dl&gt;
+    &lt;/div&gt;
+  &lt;/details&gt;
+&lt;/div&gt;
+
+&lt;!-- Rail: inside an &lt;aside&gt; whose hairlines already separate --&gt;
+&lt;details class="ds-acc ds-acc-rail"&gt;
+  &lt;summary&gt;Versions&lt;/summary&gt;
+  &lt;div class="ds-acc-body"&gt;…&lt;/div&gt;
+&lt;/details&gt;</code></pre>
+
+    <ul class="notes">
+      <li><strong>The summary is the whole label.</strong> Never put a second interactive control inside
+      it &mdash; a link or button in a <code>&lt;summary&gt;</code> is reachable but its activation
+      fights the disclosure's own.</li>
+      <li><strong>One panel, one label.</strong> If a summary needs a sentence to explain what is inside,
+      the content is not a section and probably wants show-more or a page of its own.</li>
+    </ul>
+  </section>
+
+  <!-- ───────── Show more ───────── -->
+  <section class="section">
+    <h2 class="section-title">Show more</h2>
+    <p class="ds-section-desc">The other disclosure. An accordion hides a labelled section; this reveals
+    the <em>tail</em> of something already begun. The reader is already reading the thing &mdash; the
+    control only says how much of it is left.</p>
+
+    <div class="authors-demo">
+      <ul>
+        <li><a href="#">R. Almeida</a></li>
+        <li><a href="#">K. Nakamura</a></li>
+        <li><a href="#">P. Oyelaran</a></li>
+        <li><a href="#">S. Weiss</a></li>
+        <li><a href="#">J. Petrov</a></li>
+        <li><a href="#">M. Dupont</a></li>
+        <li><a href="#">A. Haddad</a></li>
+        <li><a href="#">L. Cheng</a></li></ul><span id="authors-tail" hidden>, <a href="#">T. Okonkwo</a>, <a href="#">E. Lindqvist</a>,
+      <a href="#">N. Ravindran</a>, <a href="#">C. M&uuml;ller</a>, <a href="#">D. Ferreira</a>,
+      <a href="#">B. Sz&aacute;sz</a>, <a href="#">G. Yilmaz</a>, <a href="#">H. Iwata</a>,
+      <a href="#">V. Novotn&aacute;</a>, <a href="#">O. Adeyemi</a>, <a href="#">F. Rossi</a>,
+      <a href="#">W. Nguy&#7877;n</a>, <a href="#">Z. Kowalczyk</a>,
+      <a href="#">Y. Þ&oacute;rsson</a></span><button type="button" class="ds-show-more"
+        id="authors-toggle" aria-expanded="false" aria-controls="authors-tail">&hellip; show all 22 authors</button>
+    </div>
+
+    <p class="ds-panel-label">Three required attributes</p>
+    <p>An accordion is <code>&lt;details&gt;</code>, so the browser supplies the semantics. A tail cannot
+    be, because a <code>&lt;summary&gt;</code> would put a heading in the middle of a sentence. So this is
+    a real <code>&lt;button&gt;</code> that has to declare for itself what the browser would otherwise
+    have said.</p>
+    <pre><code>&lt;ul&gt;…first eight names…&lt;/ul&gt;&lt;span id="authors-tail" hidden&gt;, …the rest…&lt;/span&gt;
+&lt;button type="button" class="ds-show-more"
+        id="authors-toggle" aria-expanded="false" aria-controls="authors-tail"&gt;
+  … show all 22 authors
+&lt;/button&gt;</code></pre>
+    <ul class="notes">
+      <li><code>aria-expanded</code> &mdash; <code>"false"</code> / <code>"true"</code>, flipped on every
+      toggle. Without it the control announces as a button that does something unspecified.</li>
+      <li><code>aria-controls</code> &mdash; the id of the region it reveals.</li>
+      <li><code>hidden</code> on the region, the <strong>attribute</strong> and not a class. The hidden
+      names are then out of the tab order and out of find-in-page while they are off screen, and the
+      collapse still works with no CSS loaded at all.</li>
+    </ul>
+
+    <p class="ds-panel-label">The label counts</p>
+    <p>&ldquo;show all 22 authors&rdquo;, not &ldquo;show more&rdquo;. A reader deciding whether to expand
+    is asking how much is behind it, and someone using a screen reader hears the control with no view of
+    the list at all. Return the label to &ldquo;show fewer&rdquo; when open.</p>
+
+    <p class="ds-panel-label">Why it is grey and italic rather than Link Blue</p>
+    <p>Everywhere this control is used it sits at the end of a run of links &mdash; author names, category
+    links &mdash; and a Link Blue &ldquo;show all 22 authors&rdquo; is one more link in that run,
+    indistinguishable from a name. It is not a link: it goes nowhere, it changes this page. Reading as a
+    different <em>kind</em> of thing than its neighbours is the whole job. Where the control does not sit
+    among links, that reasoning does not apply and the text button
+    (<code>.ds-btn .ds-btn-text</code>) is the right control instead.</p>
+
+    <div class="ds-alert ds-alert-info">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Very long author lists are a third tier, not yet promoted</p>
+        <p>Above roughly a hundred names, expanding in place dumps the reader into pages of links with
+        the collapse control scrolled out of reach. The mockups answer this with a scrollable region
+        capped in height, with a collapse control at both ends. That pattern is validated in
+        <a href="../mockups/public/abstract-phase2.html">the abstract mockup</a> (open it with
+        <code>?authors=many</code>) but is specific to the paper surface, so it belongs in the reader
+        stylesheet rather than here. Until that stylesheet exists, treat the mockup as the reference.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── Popover ───────── -->
+  <section class="section">
+    <h2 class="section-title">Popover</h2>
+    <p class="ds-section-desc">A lookup the reader wants without leaving their sentence: what reference 47
+    is, what footnote 3 says. It is the only disclosure here that does not move the page &mdash; which is
+    exactly why it suits a reader mid-paragraph, and why it is wrong for anything they might want to keep
+    open while they read on.</p>
+
+    <div class="popover-demo">
+      <span class="ds-popover" role="region" aria-label="Reference 47">
+        <div class="ds-popover-title">Reference 47</div>
+        <button type="button" class="ds-close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          <span class="is-sr-only">Close reference 47</span>
+        </button>
+        Ashtekar, A. and Bojowald, M. <em>Quantum geometry and the Schwarzschild singularity.</em>
+        Class. Quantum Grav. 23 (2006).
+        <a href="#">Jump to reference</a>
+      </span>
+    </div>
+
+    <ul class="notes">
+      <li><strong>Escape closes it and returns focus</strong> to the chip that opened it. A reader who
+      opened it from the keyboard must not be stranded at the end of the document.</li>
+      <li>It closes on outside click and on scroll. The panel is <code>position: fixed</code>, so left
+      open it would follow the viewport while the sentence it belongs to scrolls away.</li>
+      <li>The close control is <a href="buttons.html"><code>.ds-close</code></a>, the same one the alert
+      and the announcement band use. The popover supplies its corner position and nothing else.</li>
+      <li><strong>Never put content here that exists nowhere else.</strong> A popover is a shortcut to
+      something already on the page or already at a URL &mdash; the reference list, the footnote. It is
+      not a place to store text.</li>
+    </ul>
+  </section>
+
+  <!-- ───────── Accessibility ───────── -->
+  <section class="section">
+    <h2 class="section-title">Accessibility notes</h2>
+    <ul class="notes">
+      <li><strong>Prefer <code>&lt;details&gt;</code> wherever it fits.</strong> It carries the expanded
+      state, the keyboard behaviour and the announcement without any script, and find-in-page can open a
+      closed panel to reveal a match. A hand-built accordion loses all four, and losing find-in-page on a
+      research site is the expensive one.</li>
+      <li><strong>Hide with the <code>hidden</code> attribute, not with a class.</strong> Content hidden
+      by a class that fails to load is invisible but still tabbable, which puts a keyboard user in a place
+      they cannot see.</li>
+      <li><strong>Every custom toggle owns <code>aria-expanded</code>.</strong> Its absence is the single
+      most common defect in this pattern: the control announces as a button, does something visible to
+      everyone else, and says nothing.</li>
+      <li><strong>Target size.</strong> Summaries clear the 24&times;24 hard floor (WCAG 2.2 SC 2.5.8);
+      the rail variant reaches it with padding plus a matching negative margin, so the hit area grows with
+      no layout shift. <code>.ds-show-more</code> takes WCAG's inline exception, being a target inside a
+      sentence.</li>
+      <li><strong>Nothing animates.</strong> These components have no transitions, so there is nothing for
+      <code>prefers-reduced-motion</code> to switch off. An accordion that animates its height also
+      animates the position of everything below it, which is motion a reader did not ask for.</li>
+      <li><strong>The +/&minus; marker is decorative to assistive technology</strong> &mdash;
+      <code>&lt;details&gt;</code> already announces collapsed and expanded, so the glyph carries an empty
+      alt text form and is not read twice.</li>
+    </ul>
+  </section>
+
+</div>
+<script>
+  // Nav dropdowns: close on outside click and Esc (enhancement only —
+  // the <details> menus work without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) { d.removeAttribute('open'); });
+  });
+
+  // The show-more demo, which is also the reference implementation.
+  // Three things it must do, all of them required by the pattern:
+  // flip aria-expanded, unhide the region by removing the `hidden`
+  // ATTRIBUTE (not a class), and re-label with the count.
+  (function () {
+    var toggle = document.getElementById('authors-toggle');
+    if (!toggle) return;
+    var tail = document.getElementById('authors-tail');
+    var collapsedLabel = toggle.textContent;
+    toggle.addEventListener('click', function () {
+      var expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      tail.hidden = expanded;
+      toggle.textContent = expanded ? collapsedLabel : 'show fewer';
+    });
+  })();
+</script>
+</body>
+</html>

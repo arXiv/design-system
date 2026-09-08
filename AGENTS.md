@@ -29,7 +29,9 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--space-*` |
 | Buttons | `docs/buttons.html`, then your context's deep page (`docs/public/button-styles.html` / `docs/internal/button-styles.html`) | `.ds-btn*` (public, incl. `.ds-btn-text` and `.on-tint` / `.on-dark`), `.btn-*` (internal) |
 | Alerts, status & feedback messages | `docs/alerts.html`, then `docs/public/alert-styles.html` or `docs/internal/alert-styles.html` | `.ds-alert*` — never rebuild its chrome |
-| Cards, rails, accordions, page organization | `docs/organizing-content.html` | `.ds-acc*`, card conventions, dl row grammar |
+| Cards, rails, page organization | `docs/organizing-content.html` | card conventions, dl row grammar, `.ds-acc-rail` in a sidebar |
+| Accordions, show more, popovers — anything hiding content behind a control | `docs/progressive-disclosure.html` | `.ds-acc*`, `.ds-show-more`, `.ds-popover` |
+| A close or dismiss control | `docs/buttons.html` | `.ds-close` — one control on both surfaces; the host supplies position only |
 | Links | `docs/public/link-styles.html` or `docs/internal/link-styles.html` | link tokens; inline links underlined |
 | Tables (internal tools), row selection, bulk actions | `docs/internal/table-styles.html` | `.ds-table`, sortable headers, `.ds-filter`; bulk-bar + selection rules documented there |
 | One record's details (label + value panel) | `docs/internal/metadata-panel-styles.html` (concept: `docs/organizing-content.html`) | `.ds-meta-panel` + `--editable` / `--reference` / `--ruled` |

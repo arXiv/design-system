@@ -69,6 +69,7 @@
       <a href="alerts.html">Alerts</a>
       <a href="version-display.html">Versions</a>
       <a href="organizing-content.html" aria-current="page">Organizing content</a>
+      <a href="progressive-disclosure.html">Progressive disclosure</a>
       <a href="dark-mode.html">Dark mode</a>
       <a href="internal/metadata-panel-styles.html">Metadata panel</a>
       <a href="forms.html">Forms &amp; validation</a>
@@ -148,88 +149,41 @@
     </ul>
   </section>
 
-  <!-- ───────── Accordions ───────── -->
+  <!-- ───────── Accordions: documented on their own page ───────── -->
   <section class="section">
-    <h2 class="section-title">Accordions</h2>
-    <p class="ds-section-desc">Native <code>&lt;details&gt;/&lt;summary&gt;</code> — no JS, keyboard and screen-reader
-    behavior for free, and the browser's find-in-page can auto-expand them. A +/− glyph replaces the default
-    marker. Two dressings, one element:</p>
+    <h2 class="section-title">Accordions and other disclosures</h2>
+    <p class="ds-section-desc">An accordion is one of the containers this page is about, but it is
+    also one of several ways a page can show less than it has &mdash; and choosing between them is
+    the harder question. Accordions, show-more, and popovers are documented together on
+    <a href="progressive-disclosure.html">Progressive disclosure</a>, with the rule for picking one.</p>
 
-    <div style="display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-start;">
-      <div>
-        <p class="ds-panel-label">Card variant — stands alone on the page</p>
-        <div class="ds-acc-stack acc-ds-card demo">
-          <details class="ds-acc" open>
-            <summary>Paper information</summary>
-            <div class="ds-acc-body">
-              <dl>
-                <dt>arXiv ID</dt><dd><a href="#">2604.22725</a></dd>
-                <dt>Subjects</dt><dd>gr-qc · hep-th</dd>
-                <dt>License</dt><dd><a href="#">CC BY 4.0</a></dd>
-              </dl>
-            </div>
-          </details>
-          <details class="ds-acc">
-            <summary>Related</summary>
-            <div class="ds-acc-body">Connected papers, datasets, and code links.</div>
-          </details>
+    <p>What belongs here is only where they sit: <strong>the rail variant</strong>
+    (<code>.ds-acc-rail</code>) is the one built for the sidebar in the column model above. Its card
+    chrome is dropped &mdash; no background, border or radius &mdash; because the rail's own hairline
+    dividers already separate its contents, and a box inside a box is a boundary drawn twice.</p>
+
+    <div class="rail-ds-card demo">
+      <details class="ds-acc ds-acc-rail" open>
+        <summary>Versions</summary>
+        <div class="ds-acc-body">
+          <dl>
+            <dt>v3 &middot; current</dt><dd>24 Apr 2026</dd>
+            <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
+            <dt>v1</dt><dd><a href="#">10 Jan 2026</a></dd>
+          </dl>
         </div>
-      </div>
-      <div>
-        <p class="ds-panel-label">Rail variant — chrome dropped</p>
-        <div class="rail-ds-card demo">
-          <details class="ds-acc ds-acc-rail" open>
-            <summary>Versions</summary>
-            <div class="ds-acc-body">
-              <dl>
-                <dt>v3 · current</dt><dd>24 Apr 2026</dd>
-                <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
-                <dt>v1</dt><dd><a href="#">10 Jan 2026</a></dd>
-              </dl>
-            </div>
-          </details>
-          <details class="ds-acc ds-acc-rail">
-            <summary>Paper information</summary>
-            <div class="ds-acc-body">Single-column inside the narrow rail.</div>
-          </details>
-        </div>
-      </div>
+      </details>
+      <details class="ds-acc ds-acc-rail">
+        <summary>Paper information</summary>
+        <div class="ds-acc-body">Single-column inside the narrow rail.</div>
+      </details>
     </div>
 
     <ul class="notes" style="margin-top: 18px;">
-      <li><strong>In the rail, the card chrome is dropped</strong> — background, border, and radius go; the rail's hairline dividers do the separating. Same element, quieter dress.</li>
-      <li>The +/− marker in the rail uses Link Blue so closed disclosures still read as interactive (Open Blue is too light for a glyph).</li>
-      <li><strong>Never put must-see information only inside a closed accordion.</strong> The older-version warning surfaces in the main column even though the full history lives in the Versions accordion.</li>
-      <li>Default state: closed, except a single most-relevant panel may start open. Open state is not persisted — predictability beats memory here.</li>
+      <li><strong>Never put must-see information only inside a closed accordion.</strong> The
+      older-version warning surfaces in the main column even though the full history lives in the
+      Versions accordion &mdash; which is the column rule above, applied.</li>
     </ul>
-
-    <p class="ds-panel-label">Usage</p>
-    <pre><code>&lt;!-- Card variant — standalone on the page --&gt;
-&lt;div class="ds-acc-stack"&gt;
-  &lt;details class="ds-acc" open&gt;
-    &lt;summary&gt;Paper information&lt;/summary&gt;
-    &lt;div class="ds-acc-body"&gt;
-      &lt;dl&gt;&lt;dt&gt;arXiv ID&lt;/dt&gt;&lt;dd&gt;…&lt;/dd&gt;&lt;/dl&gt;
-    &lt;/div&gt;
-  &lt;/details&gt;
-&lt;/div&gt;
-
-&lt;!-- Rail variant — inside an &lt;aside&gt; rail; the rail's hairlines separate --&gt;
-&lt;details class="ds-acc ds-acc-rail"&gt;
-  &lt;summary&gt;Versions&lt;/summary&gt;
-  &lt;div class="ds-acc-body"&gt;…&lt;/div&gt;
-&lt;/details&gt;</code></pre>
-
-    <div class="ds-alert ds-alert-info note-alert">
-      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-      <div class="ds-alert-content">
-        <p class="ds-alert-title">Status</p>
-        <p>Promoted 2026-07-28: <code>.ds-acc</code> is a real class in <code>public/design-system.css</code>
-        (the demos above render it directly). Validated as <code>.mg-acc</code> in
-        <a href="../mockups/public/html-phase1.html">the HTML paper mockup</a>, which remains
-        the reference in context — the codified version is now the source of truth.</p>
-      </div>
-    </div>
   </section>
 
   <!-- ───────── Cards & tinted sections ───────── -->
