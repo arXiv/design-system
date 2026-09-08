@@ -73,8 +73,9 @@ Sequencing rationale: (1) measure token burn *before* reorganizing files, so the
 
 ## Components — promotion order (from the 2026-06-11 component audit)
 
-Footer and both header variants are already promoted. Next, by frequency × drift:
+The footer and the site header are promoted. Next, by frequency × drift:
 
+- [ ] **Reader chrome** (paper header, sticky contents bar, reading indicator). The earlier `.ds-reader-header` was a single sticky bar carrying both header and TOC; the design has since split into a non-sticky header plus a separate sticky contents bar, and the mockup uses none of the promoted classes. Those 52 rules were removed rather than left to mislead — a stylesheet that describes a superseded design is worse than one with a hole. Being worked out in `mockups/public/html-phase1.html`; promote when it settles.
 - [ ] **Search input** — multiple variants in use today; standardize a shared base.
 - [ ] **Form atoms** (label + input + fieldset + validation) — bridges legacy and modern; used on login, advanced search, submission.
 - [ ] **Citation export panel** (BibTeX / APA / Chicago / MLA with source toggle)
