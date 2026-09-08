@@ -103,6 +103,13 @@ looks like, since `.btn-tertiary` drops the fill and keeps a border where public
 icon shape*, and stops being a separate component. The same collapse is available
 for `.ds-alert`, `.ds-tag`, `.ds-field` and the rest of the 25.
 
+## Agreed sequence (Shamsi, 2026-09-08)
+
+**Do this after the token rename, not before.** The two stylesheets use different
+names for the same colours, so merging them means picking one set anyway; doing
+both in one pass produces a diff nobody can review, in a repo with several
+concurrent editors. Rename first, then this.
+
 ## Suggested order
 
 1. **Agree the token-name convention.** The only step needing Shamsi. Reversible,

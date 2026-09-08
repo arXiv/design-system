@@ -103,6 +103,15 @@ Duplicated selectors across the docs: **29 → 0**.
    And `color-mix()` is now used for its hover wash, with an `rgba` fallback
    declared first — the first use of `color-mix` in the repo, and there is no
    written browser-support floor to check it against. Worth setting one.
+4b. **Settled 2026-09-08 — token naming direction.** ar5iv's styles become a
+   tier 2 stylesheet inside the design system, loaded only on HTML papers pages
+   and rewritten not to fight tier 1. In that world `--ds-` is the right prefix:
+   `--arxiv-` would be true of every token on an all-arXiv page and so say
+   nothing, while `--ds-` keeps separating the system from what is built on it.
+   ar5iv defines zero `--ds-` properties, so the naming decision does not depend
+   on the ar5iv conversation. Tier-1 consolidation happens **after** the rename.
+   See `planning/proposals/token-naming.md`.
+
 5. **Naming the icon-only control family** — proposal written against Primer,
    shadcn and Carbon: `planning/proposals/icon-only-controls.md`. Recommends
    `.ds-btn-icon` as a shape modifier, not a fourth tier, and recommends *not*

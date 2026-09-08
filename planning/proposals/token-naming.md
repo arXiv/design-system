@@ -319,3 +319,84 @@ rather than the naming:
 One thing to say to them explicitly: **this is a rename, not a re-theming.** No
 colour values change. That is the fear the word "token rename" usually triggers,
 and saying so up front tends to remove most of the objection.
+
+## Does `--ds-` survive the tier-2 model? (Shamsi's question, 2026-09-08)
+
+The end state she describes: ar5iv's styles become a **tier 2 stylesheet inside
+the design system**, loaded only on HTML papers pages, rewritten so it does not
+fight tier 1. Tier 1 owns all basic styling and layout; tier 2 owns only what is
+specific to the LaTeX translation and appears on no other arXiv page.
+
+**Yes, and `--ds-` works better in that world than `--arxiv-` would.**
+
+**1. `--arxiv-` becomes uninformative there; `--ds-` does not.** Once tier 1,
+both tier 2s, and the consuming repos are all arXiv's, a prefix meaning "this is
+arXiv's" is true of every token on the page and therefore tells nobody anything.
+`--ds-` keeps saying something that stays useful: *this belongs to the design
+system*, as distinct from a page's own local variable or a consuming
+application's. That distinction gets sharper as more arXiv CSS moves onto the
+system, which is the direction of travel.
+
+**2. Both tiers using `--ds-` is correct, not a conflict.** The prefix is not
+trying to separate tier 1 from tier 2 — both *are* the design system. It
+separates the system from everything built on top of it.
+
+**3. It makes the ar5iv collision question moot.** ar5iv defines **zero**
+properties beginning `--ds-`, and its naming shape is nothing like ours —
+`--text-color`, `--main-width`, `--ltx-fo-width`. A collision would require the
+ar5iv toolchain to spontaneously adopt our prefix. So the naming decision does
+not depend on the conversation with Deyan; that conversation is about the tier-2
+rewrite, which is worth having on its own terms.
+
+### The one rule the tier-2 model needs
+
+Without it, tier 2 becomes a place where tier 1's vocabulary quietly means
+something else:
+
+> - A tier 2 stylesheet **may re-point a tier 1 semantic token** for its surface.
+>   This is theming and it is the intended mechanism — it is how a staff surface
+>   sets its accent.
+> - A tier 2 stylesheet **must never introduce a token that reuses a tier 1 name
+>   for a different meaning.** One name, one meaning, across every tier.
+> - Tier 2's own tokens take the same `--ds-` prefix and are named for things
+>   that exist only on that surface — `--ds-marginalia-width`, not
+>   `--ds-main-width`, which would shadow a layout concept tier 1 already owns.
+
+## Deleting ar5iv's stylesheet from the mockup — what it would take
+
+Shamsi's instinct is right that the current mockup is a confusing example of how
+the system is meant to work: it loads ar5iv's CSS, the papers theme, *and* the
+design system, and then re-styles many of the same classes locally. Three sources
+arguing over the same selectors.
+
+Measured 2026-09-08:
+
+- `ar5iv.0.8.5.css` is **2,591 lines, 427 rules**; the papers theme is 828 lines.
+- The mockup's markup uses **100 distinct `ltx_` classes**.
+- Of those: **73 are styled by ar5iv**, 16 by the papers theme, and **47 by the
+  mockup itself** — which is the overlap causing the confusion.
+- **28 are styled by ar5iv and by nothing else.** Deleting ar5iv without
+  replacing these loses real rendering.
+
+Those 28 are a good preview of what tier 2 has to contain, and they are exactly
+the shape Shamsi described — nothing about them belongs on any other arXiv page:
+
+> equation table layout (`ltx_eqn_table`, `ltx_eqn_row`, `ltx_eqn_cell`,
+> `ltx_eqn_align`, the centring pads) · bibliography structure (`ltx_biblist`,
+> `ltx_bib_article`, `ltx_bib_volume`) · LaTeX font commands (`ltx_font_italic`,
+> `ltx_font_smallcaps`, `ltx_font_mathcaligraphic`) · numbering tags
+> (`ltx_tag_equation`, `ltx_tag_appendix`, `ltx_tag_subsection`) · alignment
+> helpers (`ltx_align_*`) · lists (`ltx_enumerate`, `ltx_item`) · TOC entries ·
+> `ltx_figure`, `ltx_td`, `ltx_title_paragraph`
+
+**Cheapest useful next step, and it is a document rather than a build:** an audit
+assigning each of the 100 `ltx_` classes to exactly one owner — tier 1, tier 2
+papers, or delete. That audit *is* the tier 2 specification, it can be written
+before any code moves, and it is what would let the ar5iv conversation with Deyan
+be about a concrete list.
+
+**Sequence.** Deleting ar5iv from the mockup requires tier 2 to exist, and tier 2
+should consume tier 1's tokens, so it wants the naming settled first. Order:
+token rename → tier-1 consolidation → write tier-2 papers → drop ar5iv from the
+mockup. The audit above can start immediately and in parallel, because it depends
+on none of them.
