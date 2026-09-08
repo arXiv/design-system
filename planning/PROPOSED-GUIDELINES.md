@@ -34,7 +34,7 @@
 
 ## G4. The arXiv Chrome surface family shares one tint vocabulary
 
-**Rule:** Every "arXiv-added interactive surface" over paper content — citation popovers, footnote popovers, TOC dropdown, inline active states — draws from the same three-token family: `--arxiv-tint-light` (panel surface), `--arxiv-tint-border` (panel edge), `--arxiv-active-bg` (active/hover wash). Reader-recognizable rule: "light blue = arXiv chrome speaking, not the paper."
+**Rule:** Every "arXiv-added interactive surface" over paper content — citation popovers, footnote popovers, TOC dropdown, inline active states — draws from the same three-token family: `--ds-accent-surface` (panel surface), `--ds-accent-border` (panel edge), `--ds-accent-wash` (active/hover wash). Reader-recognizable rule: "light blue = arXiv chrome speaking, not the paper."
 
 **Evidence:** already consistent across four components in the reader; this is what makes the added layer feel like one system rather than accumulated widgets.
 

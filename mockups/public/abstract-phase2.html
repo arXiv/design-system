@@ -64,7 +64,7 @@
   Naming: token-name : canonical-purpose
 
   In production these become CSS custom properties scoped to the arXiv
-  design system (`--arxiv-*` per DESIGN-POLICIES.md). Here we inline
+  design system (`--ds-*` per DESIGN-POLICIES.md). Here we inline
   literal hex values to keep the mockup self-contained.
 */
 
@@ -82,34 +82,34 @@
      self-contained (tokens defined here, not imported) — production
      should import the shared design-system.css instead.
      Mockup-local tokens not yet codified in design-system.css:
-       --arxiv-border-light (light component border — candidate for
+       --ds-border (light component border — candidate for
          color-mapping.md; used by inputs, toggle tracks, button borders)
-       --arxiv-warning-* (version-warning amber — color-mapping.md status
+       --ds-warning-* (version-warning amber — color-mapping.md status
          table has these as the canonical Warning row)
-       --arxiv-focus-ring-dark (focus ring on dark surfaces) */
-  --arxiv-repository-brown: #1c1a17;
-  --arxiv-library-grey: #6b6459;
-  --arxiv-grey-ui: #8b8680;
-  --arxiv-grey-dis: #b0aba6;
-  --arxiv-link-blue: #1565c0;
-  --arxiv-link-hover: #1050a0;
-  --arxiv-open-blue: #a5d6fe;
-  --arxiv-open-blue-bright: #c2e2ff;
-  --arxiv-warm-wash: #f9f7f7;
-  --arxiv-card-grey: #f0eeec;
-  --arxiv-active-bg: #d6e8f7;
-  --arxiv-tint-light: #edf4fc;
-  --arxiv-tint-border: #c4dcf0;
-  --arxiv-pill-border: #e4e0db;
-  --arxiv-border-light: #ddd8d2;
-  --arxiv-warning-bg: #fff8e1;
-  --arxiv-warning-border: #e8b800;
-  --arxiv-warning-fg: #7a5c00;
-  --arxiv-focus-ring-dark: #64b5f6;
+       --ds-focus-ring-on-dark (focus ring on dark surfaces) */
+  --ds-text: #1c1a17;
+  --ds-text-muted: #6b6459;
+  --ds-border-strong: #8b8680;
+  --ds-text-disabled: #b0aba6;
+  --ds-link: #1565c0;
+  --ds-link-hover: #1050a0;
+  --ds-accent: #a5d6fe;
+  --ds-accent-hover: #c2e2ff;
+  --ds-canvas: #f9f7f7;
+  --ds-surface-muted: #f0eeec;
+  --ds-accent-wash: #d6e8f7;
+  --ds-accent-surface: #edf4fc;
+  --ds-accent-border: #c4dcf0;
+  --ds-border-muted: #e4e0db;
+  --ds-border: #ddd8d2;
+  --ds-warning-bg: #fff8e1;
+  --ds-warning-border: #e8b800;
+  --ds-warning-fg: #7a5c00;
+  --ds-focus-ring-on-dark: #64b5f6;
 
-  --arxiv-font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --arxiv-font-condensed: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
-  --arxiv-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ds-font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ds-font-condensed: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  --ds-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 /*
@@ -132,10 +132,10 @@ html, body { margin: 0; padding: 0; }
    silently ignore that choice. Layout dimensions (padding, borders,
    breakpoints) stay px — only type scales with user preference. */
 body {
-  font-family: var(--arxiv-font-sans);
+  font-family: var(--ds-font-sans);
   font-size: 0.9375rem; /* 15px */
   line-height: 1.5;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   background: #fff;
 }
 img { max-width: 100%; height: auto; }
@@ -143,7 +143,7 @@ img { max-width: 100%; height: auto; }
 /* Focus-visible default. Specific components may override with their own
    focus treatment (e.g., a button with a different outline color). */
 :focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: 2px;
 }
 
@@ -189,7 +189,7 @@ img { max-width: 100%; height: auto; }
   position: absolute;
   top: -100px; left: 8px;
   z-index: 200;
-  background: var(--arxiv-repository-brown);
+  background: var(--ds-text);
   color: #fff;
   padding: 10px 16px;
   border-radius: 4px;
@@ -198,7 +198,7 @@ img { max-width: 100%; height: auto; }
 }
 .ds-skip-link:focus-visible {
   top: 8px;
-  outline: 3px solid var(--arxiv-focus-ring-dark);
+  outline: 3px solid var(--ds-focus-ring-on-dark);
   outline-offset: 2px;
 }
 
@@ -226,7 +226,7 @@ img { max-width: 100%; height: auto; }
       clue what I am walking into").
 
   Tradeoff
-    Header is Repository Brown (var(--arxiv-repository-brown)) — same as the design system's
+    Header is Repository Brown (var(--ds-text)) — same as the design system's
     background-dark token. Phase-2 spinout brand (post-June 2026). Black
     in phase 1 was visually identical so no transition work needed.
 */
@@ -240,9 +240,9 @@ img { max-width: 100%; height: auto; }
   justify-content: center;
   gap: 8px;
   padding: 6px 16px;
-  background: var(--arxiv-active-bg);
-  color: var(--arxiv-repository-brown);
-  font-family: var(--arxiv-font-sans);
+  background: var(--ds-accent-wash);
+  color: var(--ds-text);
+  font-family: var(--ds-font-sans);
   font-size: 0.8125rem;
   font-weight: 500;
   position: relative;
@@ -256,12 +256,12 @@ img { max-width: 100%; height: auto; }
   font-weight: 600;
 }
 .ds-announcement-link {
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   text-decoration: underline;
   text-underline-offset: 2px;
   font-weight: 600;
 }
-.ds-announcement-link:hover { color: var(--arxiv-link-hover); }
+.ds-announcement-link:hover { color: var(--ds-link-hover); }
 .ds-announcement-close {
   position: absolute;
   right: 12px;
@@ -272,13 +272,13 @@ img { max-width: 100%; height: auto; }
   cursor: pointer;
   font-size: 1.125rem;
   line-height: 1;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   padding: 4px 8px;
   border-radius: 3px;
 }
-.ds-announcement-close:hover { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
+.ds-announcement-close:hover { color: var(--ds-text); background: rgba(0,0,0,0.05); }
 .ds-announcement-close:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: 1px;
 }
 @media (max-width: 520px) {
@@ -295,7 +295,7 @@ img { max-width: 100%; height: auto; }
   gap: 12px;
   padding: 0 24px;
   height: 52px;
-  background: var(--arxiv-repository-brown);
+  background: var(--ds-text);
   /* NO sticky positioning —: the header
      scrolls away like any other content. Sticky chrome is exceptional
      at arXiv; only the HTML reader earns it (DESIGN-POLICIES.md). */
@@ -315,10 +315,10 @@ img { max-width: 100%; height: auto; }
 }
 .ds-site-header-nav a,
 .ds-site-header-nav button {
-  font-family: var(--arxiv-font-sans);
+  font-family: var(--ds-font-sans);
   font-size: 0.8125rem; /* 13px */
   font-weight: 500;
-  color: var(--arxiv-grey-dis);
+  color: var(--ds-text-disabled);
   text-decoration: none;
   padding: 6px 10px;
   border-radius: 4px;
@@ -331,12 +331,12 @@ img { max-width: 100%; height: auto; }
   align-items: center;
   gap: 5px;
 }
-.ds-site-header-nav a:visited { color: var(--arxiv-grey-dis); }
+.ds-site-header-nav a:visited { color: var(--ds-text-disabled); }
 .ds-site-header-nav a:hover,
-.ds-site-header-nav button:hover { background: #302c28; color: var(--arxiv-card-grey); }
+.ds-site-header-nav button:hover { background: #302c28; color: var(--ds-surface-muted); }
 .ds-site-header-nav a:focus-visible,
 .ds-site-header-nav button:focus-visible {
-  outline: 3px solid var(--arxiv-focus-ring-dark);
+  outline: 3px solid var(--ds-focus-ring-on-dark);
   outline-offset: 1px;
 }
 .ds-site-header-nav .ds-nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
@@ -354,7 +354,7 @@ img { max-width: 100%; height: auto; }
 .ds-site-header-nav a.ds-site-header-login,
 .ds-site-header-nav a.ds-site-header-login:visited {
   font-weight: 600;
-  color: var(--arxiv-card-grey);
+  color: var(--ds-surface-muted);
 }
 
 
@@ -429,24 +429,24 @@ img { max-width: 100%; height: auto; }
 }
 .arxiv-search-panel input[type="text"] {
   width: 100%;
-  font-family: var(--arxiv-font-sans);
+  font-family: var(--ds-font-sans);
   font-size: 1rem; /* 16px */
   padding: 10px 14px;
-  border: 2px solid var(--arxiv-border-light);
+  border: 2px solid var(--ds-border);
   border-radius: 6px;
   outline: none;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   box-sizing: border-box;
 }
 .arxiv-search-panel input[type="text"]:focus {
-  border-color: var(--arxiv-link-blue);
+  border-color: var(--ds-link);
   box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
 }
-.arxiv-search-panel input[type="text"]::placeholder { color: var(--arxiv-grey-dis); }
+.arxiv-search-panel input[type="text"]::placeholder { color: var(--ds-text-disabled); }
 .arxiv-search-hint {
-  font-family: var(--arxiv-font-sans);
+  font-family: var(--ds-font-sans);
   font-size: 0.75rem; /* 12px */
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   margin-top: 8px;
 }
 .arxiv-search-hint a { font-size: 0.75rem; /* 12px */ }
@@ -476,8 +476,8 @@ img { max-width: 100%; height: auto; }
     minmax(24px, 1fr) [full-end];
   column-gap: 0;
   padding: 32px 0 0;
-  font-family: var(--arxiv-font-sans);
-  color: var(--arxiv-repository-brown);
+  font-family: var(--ds-font-sans);
+  color: var(--ds-text);
 }
 
 /* Everything sits in the content track unless it asks not to. */
@@ -540,19 +540,19 @@ img { max-width: 100%; height: auto; }
   font-weight: 700;
   line-height: 1.2;
   margin: 0 0 10px;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
 }
 
 .abs-date {
   font-size: 0.875rem; /* 14px */
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   margin-bottom: 14px;
 }
-.abs-date a { font-size: 0.875rem; /* 14px */ color: var(--arxiv-link-blue); text-decoration: none; }
+.abs-date a { font-size: 0.875rem; /* 14px */ color: var(--ds-link); text-decoration: none; }
 .abs-date a:hover { text-decoration: underline; }
 
 .abs-version-pill {
-  font-family: var(--arxiv-font-mono);
+  font-family: var(--ds-font-mono);
   font-size: 0.875rem; /* 14px */
   margin-left: 6px;
   padding: 0;
@@ -561,17 +561,17 @@ img { max-width: 100%; height: auto; }
   line-height: inherit;
 }
 .abs-version-pill.is-other {
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.abs-version-pill.is-other:hover { color: var(--arxiv-link-hover); }
+.abs-version-pill.is-other:hover { color: var(--ds-link-hover); }
 .abs-version-pill.is-current {
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   font-weight: 600;
 }
 .abs-version-pill:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -599,7 +599,7 @@ img { max-width: 100%; height: auto; }
     be coherent.
 
   Visual choice
-    Amber (var(--arxiv-warning-bg) / var(--arxiv-warning-border) / var(--arxiv-warning-fg)) signals "advisory, not error."
+    Amber (var(--ds-warning-bg) / var(--ds-warning-border) / var(--ds-warning-fg)) signals "advisory, not error."
     Uses alert-triangle icon (Lucide) at 18px to draw the eye without
     feeling alarming.
 */
@@ -608,17 +608,17 @@ img { max-width: 100%; height: auto; }
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  background: var(--arxiv-warning-bg);
-  border: 1px solid var(--arxiv-warning-border);
+  background: var(--ds-warning-bg);
+  border: 1px solid var(--ds-warning-border);
   border-radius: 4px;
   padding: 10px 14px;
   font-size: 0.8125rem; /* 13px */
-  color: var(--arxiv-warning-fg);
+  color: var(--ds-warning-fg);
   margin: 4px 0 20px;
 }
 .abs-version-warning a {
   font-size: 0.8125rem; /* 13px */
-  color: var(--arxiv-warning-fg);
+  color: var(--ds-warning-fg);
   font-weight: 600;
   text-decoration: underline;
 }
@@ -680,7 +680,7 @@ img { max-width: 100%; height: auto; }
 }
 .abs-authors a {
   font-size: 1rem; /* 16px */
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   text-decoration: none;
 }
 .abs-authors a:hover { text-decoration: underline; }
@@ -706,9 +706,9 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   overscroll-behavior: contain;
   margin: 10px 0 4px;
   padding: 10px 14px;
-  border: 1px solid var(--arxiv-border-light);
+  border: 1px solid var(--ds-border);
   border-radius: 4px;
-  background: var(--arxiv-warm-wash);
+  background: var(--ds-canvas);
 }
 .abs-authors-collapse {
   display: block;
@@ -717,15 +717,15 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   font-family: inherit;
   font-size: 0.8125rem; /* 13px */
   font-style: italic;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   background: none;
   border: none;
   padding: 4px 0;
   cursor: pointer;
 }
-.abs-authors-collapse:hover { color: var(--arxiv-repository-brown); text-decoration: underline; }
+.abs-authors-collapse:hover { color: var(--ds-text); text-decoration: underline; }
 .abs-authors-collapse:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: 1px;
   border-radius: 2px;
 }
@@ -733,7 +733,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-authors-toggle {
   font-family: inherit;
   font-size: 0.9375rem; /* 15px */
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   background: none;
   border: none;
   padding: 0;
@@ -742,7 +742,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   font-style: italic;
 }
 .abs-authors-toggle:hover {
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   text-decoration: underline;
 }
 
@@ -794,7 +794,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   right: 160px;
   top: 0; bottom: 80px;
   width: 1px;
-  background: var(--arxiv-pill-border);
+  background: var(--ds-border-muted);
 }
 .abs-body-main { flex: 1; min-width: 0; }
 
@@ -839,7 +839,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   gap: 6px;
   padding: 10px 20px;
   border-radius: 6px;
-  font-family: var(--arxiv-font-sans);
+  font-family: var(--ds-font-sans);
   font-size: 0.875rem; /* 14px */
   font-weight: 600;
   line-height: 1;
@@ -849,16 +849,16 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   border: 1.5px solid transparent;
 }
 .abs-btn:focus-visible {
-  outline: 3px solid var(--arxiv-link-blue);
+  outline: 3px solid var(--ds-link);
   outline-offset: 2px;
 }
 
 .abs-btn-pdf,
 .abs-btn-html {
   background:
-    linear-gradient(var(--arxiv-open-blue), var(--arxiv-open-blue)) padding-box,
+    linear-gradient(var(--ds-accent), var(--ds-accent)) padding-box,
     linear-gradient(to bottom, #b0d5ed, #6ba8da) border-box;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   box-shadow:
     inset 0 0 6px rgba(31, 94, 150, 0.20),
     0 1px 3px rgba(0, 0, 0, 0.12);
@@ -866,7 +866,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-btn-pdf:hover,
 .abs-btn-html:hover {
   background:
-    linear-gradient(var(--arxiv-open-blue-bright), var(--arxiv-open-blue-bright)) padding-box,
+    linear-gradient(var(--ds-accent-hover), var(--ds-accent-hover)) padding-box,
     linear-gradient(to bottom, #8fc1e8, #4a86b8) border-box;
   box-shadow:
     inset 0 0 8px rgba(31, 94, 150, 0.10),
@@ -876,7 +876,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-btn-html:active {
   transform: translateY(1px);
   background:
-    linear-gradient(var(--arxiv-open-blue), var(--arxiv-open-blue)) padding-box,
+    linear-gradient(var(--ds-accent), var(--ds-accent)) padding-box,
     linear-gradient(#6ba8da, #6ba8da) border-box;
   box-shadow: inset 0 0 10px rgba(31, 94, 150, 0.35);
 }
@@ -884,8 +884,8 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-btn-tex {
   background:
     linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(to bottom, var(--arxiv-border-light), #b3ada4) border-box;
-  color: var(--arxiv-library-grey);
+    linear-gradient(to bottom, var(--ds-border), #b3ada4) border-box;
+  color: var(--ds-text-muted);
   box-shadow:
     inset 0 0 6px rgba(0, 0, 0, 0.06),
     0 1px 3px rgba(0, 0, 0, 0.08);
@@ -893,8 +893,8 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-btn-tex:hover {
   background:
     linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(to bottom, #c8c4be, var(--arxiv-grey-ui)) border-box;
-  color: var(--arxiv-repository-brown);
+    linear-gradient(to bottom, #c8c4be, var(--ds-border-strong)) border-box;
+  color: var(--ds-text);
   box-shadow:
     inset 0 0 8px rgba(0, 0, 0, 0.03),
     0 1px 3px rgba(0, 0, 0, 0.08);
@@ -903,7 +903,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   transform: translateY(1px);
   background:
     linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(var(--arxiv-grey-ui), var(--arxiv-grey-ui)) border-box;
+    linear-gradient(var(--ds-border-strong), var(--ds-border-strong)) border-box;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.13);
 }
 
@@ -923,7 +923,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   text-align: center;
   font-size: 0.6875rem; /* 11px */
   font-weight: 400;
-  /* No opacity dimming: the button label is var(--arxiv-library-grey) (5.83:1 on white)
+  /* No opacity dimming: the button label is var(--ds-text-muted) (5.83:1 on white)
      and an opacity fade pushed the hint below the 4.5:1 AA threshold
      (caught by axe). Size + weight already de-emphasize it. */
   line-height: 1.2;
@@ -932,7 +932,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-abstract {
   font-size: 0.9375rem; /* 15px */
   line-height: 1.7;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   margin: 8px 0 0;
   max-width: 780px;
 }
@@ -947,7 +947,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
     Paper Information, and Cite This Paper sections.
 
   Visual choice
-    Warm Wash (var(--arxiv-warm-wash)) is the design system's subtle background tone.
+    Warm Wash (var(--ds-canvas)) is the design system's subtle background tone.
     Full-bleed (escaping the 920px container) signals "supporting
     material, not body text." Border-top draws the threshold.
 
@@ -959,8 +959,8 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 */
 
 .abs-reference-zone {
-  background: var(--arxiv-warm-wash);
-  border-top: 1px solid var(--arxiv-pill-border);
+  background: var(--ds-canvas);
+  border-top: 1px solid var(--ds-border-muted);
   padding: 32px 0 40px;
   /* Secondary reference band. Sub-sections within are separated by a single
      hairline rule (see .abs-ref-card) — space-efficient, no boxes. The whole
@@ -1011,13 +1011,13 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-a11y {
   padding: 8px 0 28px;
   margin-bottom: 28px;
-  border-bottom: 1px solid var(--arxiv-pill-border);
+  border-bottom: 1px solid var(--ds-border-muted);
 }
 .abs-a11y-heading {
-  font-family: var(--arxiv-font-sans);
+  font-family: var(--ds-font-sans);
   font-size: 1.25rem; /* 20px */
   font-weight: 600;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   margin: 0 0 14px 0;
   letter-spacing: 0;
 }
@@ -1035,7 +1035,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   align-items: center;
   gap: 8px;
   font-size: 0.8125rem; /* 13px */
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   line-height: 1.5;
 }
 .abs-a11y-icon {
@@ -1047,10 +1047,10 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
    alone (WCAG 1.4.1). */
 .abs-a11y-list li.is-present { color: #4a5a0a; }                  /* success-green text, 6.7:1 AA */
 .abs-a11y-list li.is-present .abs-a11y-icon { color: #6b8e1e; }   /* success-green check */
-.abs-a11y-list li.is-missing { color: var(--arxiv-library-grey); }       /* greyed, still AA-legible */
-.abs-a11y-list li.is-missing .abs-a11y-icon { color: var(--arxiv-grey-ui); }
+.abs-a11y-list li.is-missing { color: var(--ds-text-muted); }       /* greyed, still AA-legible */
+.abs-a11y-list li.is-missing .abs-a11y-icon { color: var(--ds-border-strong); }
 .abs-a11y-fix {
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   text-decoration: underline;
   text-underline-offset: 2px;
   white-space: nowrap;
@@ -1096,7 +1096,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-meta-grid dt,
 .abs-meta-grid dd { margin: 0; }
 .abs-meta-value {
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   font-size: 0.8125rem; /* 13px */
   line-height: 1.5;
   /* min-width: 0 lets the 1fr grid column actually shrink below its
@@ -1109,7 +1109,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 }
 .abs-meta-value a {
   font-size: 0.8125rem; /* 13px */
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
 }
 
 /*
@@ -1171,10 +1171,10 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   gap: 4px 18px;
 }
 .abs-section-heading {
-  font-family: var(--arxiv-font-sans);
+  font-family: var(--ds-font-sans);
   font-size: 1.25rem; /* 20px */
   font-weight: 600;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   letter-spacing: 0;
   margin: 0;
 }
@@ -1191,34 +1191,34 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   display: flex;
   gap: 4px;
   margin: 0;
-  border-bottom: 1px solid var(--arxiv-grey-ui);
+  border-bottom: 1px solid var(--ds-border-strong);
 }
 .abs-cite-source-btn {
   position: relative;
-  background: var(--arxiv-card-grey);
-  border: 1px solid var(--arxiv-grey-ui);
+  background: var(--ds-surface-muted);
+  border: 1px solid var(--ds-border-strong);
   border-radius: 5px 5px 0 0;
   margin-bottom: -1px;             /* overlap the rail */
-  font-family: var(--arxiv-font-sans);
+  font-family: var(--ds-font-sans);
   font-size: 0.8125rem; /* 13px */
   font-weight: 400;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   padding: 6px 14px;
   cursor: pointer;
 }
 .abs-cite-source-btn:hover:not(.is-active) {
-  background: var(--arxiv-pill-border);
-  color: var(--arxiv-repository-brown);
+  background: var(--ds-border-muted);
+  color: var(--ds-text);
 }
 .abs-cite-source-btn.is-active {
-  background: var(--arxiv-warm-wash);            /* match the band/content below */
-  border-bottom-color: var(--arxiv-warm-wash);   /* erase the rail → connect */
-  color: var(--arxiv-repository-brown);
+  background: var(--ds-canvas);            /* match the band/content below */
+  border-bottom-color: var(--ds-canvas);   /* erase the rail → connect */
+  color: var(--ds-text);
   font-weight: 600;
   z-index: 1;
 }
 .abs-cite-source-btn:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: 2px;
 }
 .abs-cite-source-sep { display: none; }
@@ -1267,16 +1267,16 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
    their CSS rather than linking the stylesheet, so the NAME is shared but the
    rule is duplicated until they adopt it. Keep the values identical. */
 .ds-panel-label {
-  font-family: var(--arxiv-font-condensed);
+  font-family: var(--ds-font-condensed);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--arxiv-library-grey);
-  margin: var(--space-6) 0 var(--space-2);   /* bonds down, matching the DS */
+  color: var(--ds-text-muted);
+  margin: var(--ds-space-6) 0 var(--ds-space-2);   /* bonds down, matching the DS */
 }
 
-.abs-cite-col-head .ds-panel-label { margin: 0; color: var(--arxiv-repository-brown); }
+.abs-cite-col-head .ds-panel-label { margin: 0; color: var(--ds-text); }
 .abs-cite-col-head .abs-cite-styles { margin: 0; }
 
 /* Style switcher (APA / Chicago / MLA) — segmented control inside the
@@ -1288,12 +1288,12 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   overflow: hidden;
 }
 .abs-cite-style-btn {
-  background: var(--arxiv-card-grey);
-  border: 1px solid var(--arxiv-border-light);
+  background: var(--ds-surface-muted);
+  border: 1px solid var(--ds-border);
   border-left-width: 0;
-  font-family: var(--arxiv-font-sans);
+  font-family: var(--ds-font-sans);
   font-size: 0.6875rem; /* 11px */
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   padding: 4px 10px;
   cursor: pointer;
 }
@@ -1303,16 +1303,16 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 }
 .abs-cite-style-btn:last-child { border-radius: 0 3px 3px 0; }
 .abs-cite-style-btn.is-active {
-  background: var(--arxiv-link-blue);
+  background: var(--ds-link);
   color: #fff;
-  border-color: var(--arxiv-link-blue);
+  border-color: var(--ds-link);
 }
 .abs-cite-style-btn:hover:not(.is-active) {
-  background: var(--arxiv-pill-border);
-  color: var(--arxiv-repository-brown);
+  background: var(--ds-border-muted);
+  color: var(--ds-text);
 }
 .abs-cite-style-btn:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: 2px;
 }
 
@@ -1321,13 +1321,13 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   position: relative;
   /* Recessed code block: Card Grey (#f0eeec) — one warm step darker than the
      Warm Wash band, so it reads as inset without a border or any blue. */
-  background: var(--arxiv-card-grey);
+  background: var(--ds-surface-muted);
   border-radius: 4px;
   padding: 10px 12px;
-  font-family: var(--arxiv-font-mono);
+  font-family: var(--ds-font-mono);
   font-size: 0.75rem; /* 12px */
   line-height: 1.5;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
 }
 .abs-cite-text {
   display: block; /* <code> is inline by default */
@@ -1358,17 +1358,17 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   position: absolute;
   top: 6px; right: 8px;
   background: #fff;
-  border: 1px solid var(--arxiv-tint-border);
-  font-family: var(--arxiv-font-sans);
+  border: 1px solid var(--ds-accent-border);
+  font-family: var(--ds-font-sans);
   font-size: 0.6875rem; /* 11px */
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   padding: 2px 8px;
   border-radius: 3px;
   cursor: pointer;
 }
-.abs-cite-copy:hover { background: var(--arxiv-tint-light); }
+.abs-cite-copy:hover { background: var(--ds-accent-surface); }
 .abs-cite-copy:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: 1px;
 }
 
@@ -1376,7 +1376,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
    (links, not copyable code, so an outline rather than the code-block fill). */
 .abs-cite-id-list {
   margin: 0;
-  border: 1px solid var(--arxiv-border-light);
+  border: 1px solid var(--ds-border);
   border-radius: 4px;
   padding: 10px 12px;
 }
@@ -1385,7 +1385,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-cite-id-list dd + dt { margin-top: 4px; }
 .abs-cite-id-value {
   font-size: 0.8125rem; /* 13px */
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   margin-bottom: 10px;
   /* The scroll region for the identifier itself, which is the one string on
      this page that must never be broken across lines. The two DOI values are
@@ -1418,16 +1418,16 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-ref-card + .abs-ref-card {
   margin-top: 26px;
   padding-top: 26px;
-  border-top: 1px solid var(--arxiv-border-light);
+  border-top: 1px solid var(--ds-border);
 }
 .abs-ref-card-head {
   margin: 0 0 12px;
 }
 .abs-ref-card-title {
-  font-family: var(--arxiv-font-sans);
+  font-family: var(--ds-font-sans);
   font-size: 0.9375rem; /* 15px — subordinate to the 24px title */
   font-weight: 600;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   letter-spacing: 0;
   margin: 0;
 }
@@ -1468,17 +1468,17 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-anc { font-size: 0.8125rem; }
 .abs-anc-summary {
   display: inline-flex; align-items: center; gap: 7px;
-  cursor: pointer; color: var(--arxiv-repository-brown);
+  cursor: pointer; color: var(--ds-text);
   list-style: none;
 }
 .abs-anc-summary::-webkit-details-marker { display: none; }
 .abs-anc-summary::marker { content: ""; }
 .abs-anc-summary:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: 2px; border-radius: 3px;
 }
-.abs-anc-clip { width: 14px; height: 14px; color: var(--arxiv-library-grey); flex-shrink: 0; }
-.abs-anc-toggle { color: var(--arxiv-link-blue); margin-left: 4px; }
+.abs-anc-clip { width: 14px; height: 14px; color: var(--ds-text-muted); flex-shrink: 0; }
+.abs-anc-toggle { color: var(--ds-link); margin-left: 4px; }
 .abs-anc-toggle::after { content: "show"; }
 .abs-anc[open] .abs-anc-toggle::after { content: "hide"; }
 .abs-anc-list {
@@ -1488,16 +1488,16 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 }
 .abs-anc-list li { display: flex; align-items: center; gap: 10px; }
 .abs-anc-ext {
-  font-family: var(--arxiv-font-condensed);
+  font-family: var(--ds-font-condensed);
   font-size: 0.5625rem; /* 9px */ font-weight: 600; letter-spacing: 0.04em;
-  color: var(--arxiv-library-grey); background: var(--arxiv-card-grey);
+  color: var(--ds-text-muted); background: var(--ds-surface-muted);
   border-radius: 3px; padding: 2px 5px; min-width: 36px; text-align: center;
   flex-shrink: 0;
 }
-.abs-anc-list a { color: var(--arxiv-link-blue); overflow-wrap: anywhere; }
+.abs-anc-list a { color: var(--ds-link); overflow-wrap: anywhere; }
 .abs-anc-size {
-  margin-left: auto; color: var(--arxiv-library-grey);
-  font-family: var(--arxiv-font-mono); font-size: 0.6875rem; /* 11px */ white-space: nowrap;
+  margin-left: auto; color: var(--ds-text-muted);
+  font-family: var(--ds-font-mono); font-size: 0.6875rem; /* 11px */ white-space: nowrap;
 }
 
 /*
@@ -1530,7 +1530,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
       here") is announced when no placeholder is visible.
 
   Visual choice
-    Slightly darker band (var(--arxiv-card-grey)) than the reference zone above it to
+    Slightly darker band (var(--ds-surface-muted)) than the reference zone above it to
     suggest a separate functional area. Two-column layout matches the
     user's mental model: "switches on the left, things turn on / off
     on the right." Many users will discover Labs by hitting a switch
@@ -1538,7 +1538,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 */
 
 .abs-related-section {
-  background: var(--arxiv-card-grey);
+  background: var(--ds-surface-muted);
   padding: 32px 0 36px;
 }
 
@@ -1579,8 +1579,8 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-labs-track {
   position: absolute;
   inset: 0;
-  background: var(--arxiv-border-light);
-  border: 1px solid var(--arxiv-grey-dis);
+  background: var(--ds-border);
+  border: 1px solid var(--ds-text-disabled);
   border-radius: 999px;
   cursor: pointer;
   transition: background 0.18s, border-color 0.18s;
@@ -1596,24 +1596,24 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   transition: transform 0.18s;
 }
 .abs-labs-toggle input:checked + .abs-labs-track {
-  background: var(--arxiv-open-blue);
+  background: var(--ds-accent);
   border-color: #7eb8e0;
 }
 .abs-labs-toggle input:checked + .abs-labs-track::after {
   transform: translateX(12px);
 }
 .abs-labs-toggle input:focus-visible + .abs-labs-track {
-  outline: 3px solid var(--arxiv-link-blue);
+  outline: 3px solid var(--ds-link);
   outline-offset: 2px;
 }
 
 .abs-labs-name {
   font-size: 0.8125rem; /* 13px */
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
 }
 .abs-labs-name a {
   font-size: 0.6875rem; /* 11px */
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   text-decoration: none;
   margin-left: 4px;
 }
@@ -1622,11 +1622,11 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-labs-placeholder {
   display: none;
   padding: 16px 18px;
-  background: var(--arxiv-warm-wash);
-  border: 1px dashed var(--arxiv-border-light);
+  background: var(--ds-canvas);
+  border: 1px dashed var(--ds-border);
   border-radius: 4px;
   font-size: 0.75rem; /* 12px */
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   font-style: italic;
   margin-bottom: 10px;
 }
@@ -1636,10 +1636,10 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-labs-empty {
   padding: 24px 18px;
   font-size: 0.8125rem; /* 13px */
-  /* --grey, not --grey-dis: this is real instructional text and must
+  /* --ds-text-muted, not --ds-text-disabled: this is real instructional text and must
      meet 4.5:1. The disabled-grey ladder stop is for
      disabled controls only, per color-mapping.md. */
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   font-style: italic;
 }
 
@@ -1653,11 +1653,11 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   align-items: center;
   gap: 6px;
   font-size: 0.75rem; /* 12px */
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   text-decoration: none;
 }
 .abs-labs-info a img { width: 14px; height: 14px; }
-.abs-labs-info a:hover { color: var(--arxiv-repository-brown); }
+.abs-labs-info a:hover { color: var(--ds-text); }
 
 @media (max-width: 700px) {
   .abs-labs-layout { flex-direction: column; }
@@ -1704,22 +1704,22 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 
 footer.ds-site-footer {
   clear: both;
-  border-top: 1px solid var(--arxiv-pill-border);
-  background: var(--arxiv-warm-wash);
+  border-top: 1px solid var(--ds-border-muted);
+  background: var(--ds-canvas);
   padding: 24px 24px 28px;
   margin: 0;
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
 }
 footer.ds-site-footer .ds-site-footer-ack {
   font-size: 0.8125rem; /* 13px */
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   margin-bottom: 14px;
   line-height: 1.6;
   max-width: 900px;
 }
 footer.ds-site-footer .ds-site-footer-ack a {
   font-size: 0.8125rem; /* 13px */
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
 }
 footer.ds-site-footer .ds-site-footer-links {
   display: flex;
@@ -1731,14 +1731,14 @@ footer.ds-site-footer .ds-site-footer-links {
 }
 footer.ds-site-footer .ds-site-footer-links a {
   font-size: 0.8125rem; /* 13px */
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   text-decoration: none;
 }
 footer.ds-site-footer .ds-site-footer-links a:hover {
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   text-decoration: underline;
 }
-footer.ds-site-footer .ds-site-footer-sep { color: var(--arxiv-border-light); }
+footer.ds-site-footer .ds-site-footer-sep { color: var(--ds-border); }
 
 /* Two-region grid layout — main column (ack + links) on the left,
    funders column on the right. Flex with wrap, so on narrow viewports
@@ -1768,7 +1768,7 @@ footer.ds-site-footer .ds-site-footer-sep { color: var(--arxiv-border-light); }
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 0.875rem; /* 14px */
   font-weight: 600;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   margin-bottom: 12px;
   line-height: 1.4;
 }
@@ -1790,7 +1790,7 @@ footer.ds-site-footer .ds-site-footer-sep { color: var(--arxiv-border-light); }
   width: auto;
   flex-shrink: 0;
   padding: 4px 8px;
-  border: 1px solid var(--arxiv-pill-border);
+  border: 1px solid var(--ds-border-muted);
   border-radius: 3px;
 }
 @media (max-width: 720px) {
@@ -1801,7 +1801,7 @@ footer.ds-site-footer .ds-site-footer-sep { color: var(--arxiv-border-light); }
    part of the approved footer design. In production this would be
    populated via IP-matched member-institution lookup; here it's a
    static placeholder showing the visual treatment. */
-.ack-member-inline strong { color: var(--arxiv-repository-brown); font-weight: 600; }
+.ack-member-inline strong { color: var(--ds-text); font-weight: 600; }
 
 /* Legacy V1 hook: a top-of-footer institutional callout was explored
    in spinout's variant 1 mockup but did NOT make it into the approved

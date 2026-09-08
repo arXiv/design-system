@@ -40,7 +40,7 @@ copy of anything shared.
 
 **How different are the 25 duplicated components, really?** Comparing every
 shared selector's declarations, then normalising the token *names* against the
-synonym map (`--arxiv-surface` ↔ `--surface`, `--arxiv-error-bg` ↔ `--error-bg`,
+synonym map (`--ds-surface` ↔ `--ds-surface`, `--ds-error-bg` ↔ `--ds-error-bg`,
 and so on — pairs already verified to hold identical values):
 
 > **Of 44 shared selectors, 36 are identical once the token names are
@@ -50,7 +50,7 @@ And of those 8:
 
 | Selector | Difference | Verdict |
 |---|---|---|
-| `a.ds-tag:hover` | public washes blue (`--arxiv-active-bg`), staff washes grey (`--grey-active-bg`) | **real** — per-surface accent |
+| `a.ds-tag:hover` | public washes blue (`--ds-accent-wash`), staff washes grey (`--ds-surface-active`) | **real** — per-surface accent |
 | `.ds-tag--chrome` | public uses the popover tint tokens, staff uses the info tokens | **probably real**, worth a look |
 | `.ds-alert` | `gap: 8px` vs `11px` | drift |
 | `.ds-tag` | `gap: 8px` vs `5px` | drift |
@@ -63,8 +63,8 @@ expected.** One genuine per-surface difference, one likely second, six accidents
 The two files are not two designs. They are one design typed twice, and the
 second copy has been quietly rotting.
 
-**Evidence it is already rotting.** `--arxiv-grey-dis` is `#5a554f` in dark mode;
-`--grey-dis` is `#484340`. Same concept, different value, nobody decided it. No
+**Evidence it is already rotting.** `--ds-text-disabled` is `#5a554f` in dark mode;
+`--ds-text-disabled` is `#484340`. Same concept, different value, nobody decided it. No
 check could catch this: `check-drift.py` compares token *names*, and these are
 two different names, so it sees two unrelated tokens rather than one that
 disagrees with itself.
@@ -75,7 +75,7 @@ Class names need no decision — both stylesheets already say `.ds-*` for
 everything shared.
 
 Token names do. Under this model the staff sheet stops declaring
-`--surface` / `--text` / `--canvas` at all and uses tier 1's names. The question
+`--ds-surface` / `--ds-text` / `--ds-canvas` at all and uses tier 1's names. The question
 is only which prefix convention tier 1 keeps:
 
 - **Keep `--arxiv-*`** (recommended). These names are already quoted in

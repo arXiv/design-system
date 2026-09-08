@@ -16,13 +16,13 @@ container, code or table styling, so every docs page invented its own.
 `.ds-page` / `.ds-container` now provide it, scoped so a legacy page can link
 the stylesheet safely.
 
-**Spacing as a system.** Named rhythm — `--space-tight` / `--space-block` /
-`--space-section` — where a page names the *kind of break*, never a pixel.
+**Spacing as a system.** Named rhythm — `--ds-space-tight` / `--ds-space-block` /
+`--ds-space-section` — where a page names the *kind of break*, never a pixel.
 Containers own the space between regions; elements own prose flow. Scale in
 rem so it moves with the reader's text size.
 
 **Gap.** No separate scale: gap uses the rhythm on either axis. One addition,
-`--gap-glyph` (0.5em), for the space between a glyph and its label inside a
+`--ds-gap-glyph` (0.5em), for the space between a glyph and its label inside a
 control — the one thing the rhythm cannot supply.
 
 **Content width.** One width, 850px, and the policy rewritten to state what it
@@ -91,7 +91,7 @@ Duplicated selectors across the docs: **29 → 0**.
    AGENTS.md routing updated.
 3. **The 4px header navs — nothing to fix.** `.ds-reader-header-nav` was deleted
    in `d2d2c43` with the rest of the retired reader chrome, and
-   `.ds-site-header-nav` already uses `--space-tight` (8px), the default. The
+   `.ds-site-header-nav` already uses `--ds-space-tight` (8px), the default. The
    only remaining 4px in that area is `.ds-site-header-divider`'s margin, which
    is a divider's breathing room and not a between-siblings gap. The item was
    stale, not a decision.
@@ -120,9 +120,9 @@ Duplicated selectors across the docs: **29 → 0**.
    answered in `planning/proposals/token-unification.md`. Headline: they share 7
    token names, but **25 more are the same value under a different name**, and
    that duplication is invisible to every check we have. It has already drifted
-   once — `--arxiv-grey-dis` and `--grey-dis` have different dark values and
+   once — `--ds-text-disabled` and `--ds-text-disabled` have different dark values and
    nobody decided that. The only step needing Shamsi is step 1, agreeing one
-   name per concept; the recommendation is to keep the public `--arxiv-*` names.
+   name per concept. **Settled: `--ds-`, role-based** — see 4b below.
 
 ## Open decisions
 
@@ -142,8 +142,8 @@ Duplicated selectors across the docs: **29 → 0**.
    want token re-pointing, like `.ds-site-header--light`. Access Lime as
    primary is a **token** decision, not a stylesheet one.
    Deeper: the two stylesheets share **7 of ~60 token names** — internal says
-   `--canvas`, `--grey`, `--danger`; public says `--arxiv-warm-wash`,
-   `--arxiv-library-grey`, `--arxiv-error-border`. One name per thing, broken
+   `--ds-canvas`, `--ds-text-muted`, `--ds-danger`; public says `--ds-canvas`,
+   `--ds-text-muted`, `--ds-error-border`. One name per thing, broken
    at the token layer. Its own project.
 
 ## Immediate queue on `html-phase1.html`

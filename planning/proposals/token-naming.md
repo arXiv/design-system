@@ -9,7 +9,7 @@ tables. Prefix them all `--ds-`, matching the `.ds-` class convention already in
 force, and replacing the five different prefix conventions currently in use.
 Spend the
 readability on the part after the prefix: name the role (`--arxiv-text`), not the
-colour (`--arxiv-repository-brown`), because the colour names go false in dark
+colour (`--ds-text`), because the colour names go false in dark
 mode. Keep brand colour names, but one layer down, where components never touch
 them.
 
@@ -24,7 +24,7 @@ tier-1 model, and the code already ignores it.
 `DESIGN-POLICIES.md` *Design tokens* currently says:
 
 > "**Canonical names.** The design system defines tokens by their semantic name
-> (e.g., `--lime`, `--grey`, `--link`)."
+> (e.g., `--ds-accent`, `--ds-text-muted`, `--ds-link`)."
 >
 > "**Namespace in production.** Each codebase should add a prefix appropriate to
 > its context to avoid collisions with framework variables (e.g., `--arxiv-lime`
@@ -167,13 +167,13 @@ In dark mode those names become false:
 
 | Token | Light | Dark |
 |---|---|---|
-| `--arxiv-repository-brown` | `#1c1a17` | **`#f0eeec`** — not brown |
-| `--arxiv-library-grey` | `#6b6459` | `#b0aba6` |
-| `--arxiv-card-grey` | `#f0eeec` | **`#2b2723`** — a dark fill called grey |
-| `--arxiv-warm-wash` | `#f9f7f7` | **`#1c1a17`** — nothing warm or washed about it |
-| `--arxiv-link-blue` | `#1565c0` | `#64b5f6` |
+| `--ds-text` | `#1c1a17` | **`#f0eeec`** — not brown |
+| `--ds-text-muted` | `#6b6459` | `#b0aba6` |
+| `--ds-surface-muted` | `#f0eeec` | **`#2b2723`** — a dark fill called grey |
+| `--ds-canvas` | `#f9f7f7` | **`#1c1a17`** — nothing warm or washed about it |
+| `--ds-link` | `#1565c0` | `#64b5f6` |
 
-`--arxiv-repository-brown` holding `#f0eeec` is a token whose name is wrong half
+`--ds-text` holding `#f0eeec` is a token whose name is wrong half
 the time the site is running. That is not a tidiness complaint: it is why an
 agent writing dark-mode CSS reaches for the wrong token, which the token-burn
 baseline already observed happening.
@@ -182,9 +182,9 @@ Recommended shape — role, then modifier:
 
 ```
 --arxiv-text            --arxiv-text-muted        --arxiv-text-disabled
---arxiv-surface         --arxiv-surface-raised    --arxiv-canvas
+--ds-surface         --arxiv-surface-raised    --arxiv-canvas
 --arxiv-border          --arxiv-border-strong
---arxiv-link            --arxiv-link-hover        --arxiv-link-visited
+--arxiv-link            --ds-link-hover        --ds-link-visited
 --arxiv-accent          --arxiv-accent-bright
 ```
 
@@ -205,7 +205,7 @@ this repo already has.
 of this file oversold it.** It does *not* shrink the dark block: a theme still
 re-points every semantic token, so the line count is the same. What it buys is
 that the palette is stated once, so two tokens that should hold the same colour
-provably do. Today `--arxiv-card-grey` in light and `--arxiv-repository-brown` in
+provably do. Today `--ds-surface-muted` in light and `--ds-text` in
 dark are both `#f0eeec`, and nothing shows that they are meant to be the same
 value rather than a coincidence. It also means retuning a brand colour is one
 edit instead of a search, and it gives the brand names a legitimate home instead
@@ -251,7 +251,7 @@ accepted:
 >   stylesheet's unprefixed variables, which arrive with the LaTeXML version
 >   rather than being authored here.
 > - **Name the role, not the colour.** `--arxiv-text`, not
->   `--arxiv-repository-brown`. Colour names stop being true the moment the theme
+>   `--ds-text`. Colour names stop being true the moment the theme
 >   flips, and a token whose name is wrong half the time the site is running is a
 >   trap for whoever reads it next.
 > - **Two layers.** Primitives name the colour (`--arxiv-brown-90`) and never

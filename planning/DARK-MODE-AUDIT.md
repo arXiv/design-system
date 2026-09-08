@@ -20,7 +20,7 @@ A real, switchable light/dark theme: **OS-driven by default**, but **user-overri
 | Internal | Icon buttons (constructive/destructive) | ✅ | Explicit dark overrides |
 | Internal | Info card | ✅ | Explicit dark override |
 | Internal | **Alerts** (`.ds-alert`) | ✅ | Dark tokens (this session) |
-| Internal | Form validation | ✅ | Token-driven (`--danger`) |
+| Internal | Form validation | ✅ | Token-driven (`--ds-danger`) |
 | Internal | Type badges | ❌ | Hardcoded light fills (`#d4e9ff`, `#fef3c7`…) — glaring on dark |
 | Internal | **Data table** | ❌ | Hardcoded `#fff` / `#f0eeec` / `#ddd8d2` — white table on a dark page |
 | Internal | **Segmented control** | ❌ | Hardcoded `#fff` surface; active variants duplicate the alert palette |
@@ -45,12 +45,12 @@ The dark *values* mostly exist. What's missing is that the ❌/⚠️ components
 
 | Token | Light | Dark | Replaces hardcoded |
 |---|---|---|---|
-| `--surface` | `#ffffff` | `#252118` | table/seg/pill `#fff` |
-| `--surface-header` | `#f0eeec` | `#302c28` | table `th`, hover fills |
-| `--surface-hover` | `#faf9f8` | `#2a2520` | row/seg hover |
-| `--border` | `#ddd8d2` | `#3a3530` | table/footer borders |
-| `--text` (exists) | `#1c1a17` | `#f0eeec` | body/cell text |
-| `--text-muted` (≈`--grey`) | `#6b6459` | `#b0aba6` | labels, footer |
+| `--ds-surface` | `#ffffff` | `#252118` | table/seg/pill `#fff` |
+| `--ds-surface-muted` | `#f0eeec` | `#302c28` | table `th`, hover fills |
+| `--ds-surface-hover` | `#faf9f8` | `#2a2520` | row/seg hover |
+| `--ds-border` | `#ddd8d2` | `#3a3530` | table/footer borders |
+| `--ds-text` (exists) | `#1c1a17` | `#f0eeec` | body/cell text |
+| `--text-muted` (≈`--ds-text-muted`) | `#6b6459` | `#b0aba6` | labels, footer |
 
 Once components consume these, ~all of the ❌/⚠️ internal components and the var-driven public components convert almost mechanically. (Bonus: the segmented control's active variants duplicate the alert palette — they can be re-pointed at the `--success/info/error` status tokens.)
 

@@ -292,9 +292,9 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent; 
    Grid is 1fr | auto | 1fr so the center cell sits at the viewport center
    regardless of the relative widths of the side cells. Matches the reader
    header's same approach. */
-/* The bar was var(--arxiv-repository-brown), whose dark value is the canvas
+/* The bar was var(--ds-text), whose dark value is the canvas
    TEXT colour — painted across a masthead it washed the whole bar white
-   (docs/dark-mode.html, trap 1). --arxiv-header-bar is the system's token
+   (docs/dark-mode.html, trap 1). --ds-chrome is the system's token
    for exactly this: dark in both modes, lifted in dark so it separates
    from the canvas. Everything sitting on it is pinned below, because the
    bar never becomes light and its contents must never flip. */
@@ -313,14 +313,14 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent; 
    focus) — which clip by design and lose nothing, since the text stays in the
    accessibility tree. No real failures. If you are
    about to change a height here to a fixed value, this is what it costs. */
-.ds-site-header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; min-height: 52px; background: var(--arxiv-header-bar); }
+.ds-site-header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; min-height: 52px; background: var(--ds-chrome); }
 .ds-site-header-logo { display: flex; align-items: center; text-decoration: none; justify-self: start; }
 .mg-header-center { display: flex; justify-content: center; }
 .ds-site-header-nav { display: flex; align-items: center; gap: 4px; justify-self: end; }
-.ds-site-header-nav a, .ds-site-header-nav button { font-family: var(--arxiv-font-sans); font-size: 0.8125rem; font-weight: 500; color: #b0aba6; /* pinned: on the always-dark bar */ text-decoration: none; padding: 6px 10px; border-radius: 4px; border: none; background: none; cursor: pointer; white-space: nowrap; transition: background 0.12s, color 0.12s; display: inline-flex; align-items: center; gap: 5px; }
+.ds-site-header-nav a, .ds-site-header-nav button { font-family: var(--ds-font-sans); font-size: 0.8125rem; font-weight: 500; color: #b0aba6; /* pinned: on the always-dark bar */ text-decoration: none; padding: 6px 10px; border-radius: 4px; border: none; background: none; cursor: pointer; white-space: nowrap; transition: background 0.12s, color 0.12s; display: inline-flex; align-items: center; gap: 5px; }
 .ds-site-header-nav a:visited { color: #b0aba6; /* pinned */ }
 .ds-site-header-nav a:hover, .ds-site-header-nav button:hover { background: #302c28; color: #f0eeec; /* pinned */ }
-.ds-site-header-nav a:focus-visible { outline: 3px solid var(--arxiv-focus-ring-dark); outline-offset: 1px; }
+.ds-site-header-nav a:focus-visible { outline: 3px solid var(--ds-focus-ring-on-dark); outline-offset: 1px; }
 .ds-site-header-nav .ds-nav-icon { width: 1.23em; height: 1.23em; opacity: 0.65; flex-shrink: 0; }
 .ds-site-header-divider { width: 1px; height: 20px; background: #4a433d; margin: 0 4px; flex-shrink: 0; }
 .ds-site-header-login { font-weight: 600; color: #f0eeec; /* pinned */ }
@@ -351,15 +351,15 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent; 
    read as low-contrast under WCAG 1.4.11 (the active state is also signaled
    by position + aria-pressed, so it isn't color-alone — but track-vs-knob
    adjacency should be revisited system-wide along with the Labs toggles). */
-.mg-reader-toggle { display: inline-flex; align-items: center; gap: 8px; font-family: var(--arxiv-font-sans); font-size: 0.8125rem; font-weight: 500; border: 1px solid #4a433d; background: #2a2723; color: var(--arxiv-card-grey); border-radius: 20px; padding: 5px 14px 5px 10px; cursor: pointer; }
+.mg-reader-toggle { display: inline-flex; align-items: center; gap: 8px; font-family: var(--ds-font-sans); font-size: 0.8125rem; font-weight: 500; border: 1px solid #4a433d; background: #2a2723; color: var(--ds-surface-muted); border-radius: 20px; padding: 5px 14px 5px 10px; cursor: pointer; }
 .mg-reader-toggle:hover { background: #3a3631; }
-.mg-reader-toggle .tk { width: 28px; height: 16px; border-radius: 10px; background: var(--arxiv-grey-ui); position: relative; flex: none; transition: background .15s; }
+.mg-reader-toggle .tk { width: 28px; height: 16px; border-radius: 10px; background: var(--ds-border-strong); position: relative; flex: none; transition: background .15s; }
 .mg-reader-toggle .tk::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.3); transition: left .15s; }
-.mg-reader-toggle[aria-pressed="true"] .tk { background: var(--arxiv-open-blue); }
+.mg-reader-toggle[aria-pressed="true"] .tk { background: var(--ds-accent); }
 .mg-reader-toggle[aria-pressed="true"] .tk::after { left: 14px; }
-.mg-reader-toggle:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
+.mg-reader-toggle:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 2px; }
 /* Variant B (reader header — light background): transparent + Repository Brown text. */
-.arxiv-html-header .mg-reader-toggle { background: transparent; color: var(--arxiv-repository-brown); border-color: var(--arxiv-grey-ui); }
+.arxiv-html-header .mg-reader-toggle { background: transparent; color: var(--ds-text); border-color: var(--ds-border-strong); }
 .arxiv-html-header .mg-reader-toggle:hover { background: rgba(0,0,0,0.04); }
 .arxiv-html-header .new-html-center { display: flex; justify-content: center; align-items: center; }
 
@@ -390,13 +390,13 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent; 
    article's serif. */
 .mg-band {
   margin: 0; box-sizing: border-box;
-  font-family: var(--arxiv-font-sans);
-  /* --arxiv-surface, not --arxiv-warm-wash: the wash is a pale tint in
+  font-family: var(--ds-font-sans);
+  /* --ds-surface, not --ds-canvas: the wash is a pale tint in
      light but IS the canvas in dark, so a card filled with it disappears
      (docs/dark-mode.html, trap 2). Surface is white in light and a
      lifted surface in dark. */
-  background: var(--arxiv-surface);
-  border: 1px solid var(--arxiv-pill-border);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-muted);
   border-radius: 10px;
   padding: 16px;
   /* Cap the card height and scroll internally so expanding a disclosure
@@ -407,7 +407,7 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent; 
 }
 .mg-rail { display: flex; flex-direction: column; gap: 18px; }
 /* Hairline separators between sections within the card. */
-.mg-rail > * + * { border-top: 1px solid var(--arxiv-border-light); padding-top: 16px; }
+.mg-rail > * + * { border-top: 1px solid var(--ds-border); padding-top: 16px; }
 
 /* ══ ABSTRACT-MODE TOP LAYOUT ══
    Title spans the full content width (titles can be very long). Below it, a
@@ -445,7 +445,7 @@ body.mg-reader .mg-top-cols { display: block; }
   .mg-top-cols { flex-direction: column; gap: 0; }
   .mg-band { flex-basis: auto; width: 100%; max-width: 560px; margin-top: 24px; max-height: none; overflow-y: visible; }
 }
-.mg-band h3 { font-family: var(--arxiv-font-condensed); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--arxiv-library-grey); margin: 0 0 10px; }
+.mg-band h3 { font-family: var(--ds-font-condensed); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ds-text-muted); margin: 0 0 10px; }
 
 /* ══ CANONICAL SKIP LINK (.ds-skip-link, ported from design-system.css) ══
    The FIRST focusable element on the page — keyboard users hit it on the
@@ -459,16 +459,16 @@ body.mg-reader .mg-top-cols { display: block; }
      docs/public/design-system.css still pairs the flipping background
      with a literal #fff, which renders white on near-white in dark mode
      (1.16:1) fix it there too. */
-  background: var(--arxiv-repository-brown);
-  color: var(--arxiv-warm-wash);
+  background: var(--ds-text);
+  color: var(--ds-canvas);
   padding: 10px 16px;
   border-radius: 4px;
   text-decoration: none;
-  font-family: var(--arxiv-font-sans); font-weight: 600;
+  font-family: var(--ds-font-sans); font-weight: 600;
 }
 .ds-skip-link:focus-visible {
   top: 8px;
-  outline: 3px solid var(--arxiv-focus-ring-dark);
+  outline: 3px solid var(--ds-focus-ring-on-dark);
   outline-offset: 2px;
 }
 
@@ -483,10 +483,10 @@ body.mg-reader .mg-top-cols { display: block; }
   position: static; width: auto; height: auto; margin: 14px auto;
   clip: auto; white-space: normal;
   display: inline-flex; align-items: center; gap: 8px;
-  background: var(--arxiv-surface); border: 2px solid var(--arxiv-link-blue);
-  color: var(--arxiv-link-blue);
+  background: var(--ds-surface); border: 2px solid var(--ds-link);
+  color: var(--ds-link);
   padding: 8px 16px; border-radius: 6px;
-  font-family: var(--arxiv-font-sans); font-size: 0.85rem; font-weight: 600;
+  font-family: var(--ds-font-sans); font-size: 0.85rem; font-weight: 600;
   text-decoration: underline;
 }
 .mg-skip-wrap { text-align: center; }
@@ -504,8 +504,8 @@ body.mg-reader .mg-top-cols { display: block; }
 /* Open Blue chip: Repository Brown text on the light Open-Blue fill (same contrast-safe
    pairing as the PDF button) so the format selector reads as "good stuff".
    Still a semantic native <select>. */
-.mg-cite-select { font-family: var(--arxiv-font-sans); font-size: 0.78rem; font-weight: 600; padding: 3px 6px; border: none; border-radius: 5px; background: var(--arxiv-open-blue); color: var(--arxiv-repository-brown-on-blue); cursor: pointer; }
-.mg-cite-select:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 3px; }
+.mg-cite-select { font-family: var(--ds-font-sans); font-size: 0.78rem; font-weight: 600; padding: 3px 6px; border: none; border-radius: 5px; background: var(--ds-accent); color: var(--ds-text-on-accent); cursor: pointer; }
+.mg-cite-select:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 2px; border-radius: 3px; }
 
 /* Codeblock styled as an "empty field" when collapsed: a tinted, dashed-
    border drop-zone whose muted IBM-Plex-Mono prompt invites a click to
@@ -513,42 +513,42 @@ body.mg-reader .mg-top-cols { display: block; }
    click-to-expand disclosure). When open it firms up to a solid-border code
    block. overflow:hidden keeps the rounded corners clean as it grows. */
 .mg-cite-block {
-  background: var(--arxiv-card-grey);
-  border: 1px dashed var(--arxiv-grey-ui); border-radius: 6px; overflow: hidden;
+  background: var(--ds-surface-muted);
+  border: 1px dashed var(--ds-border-strong); border-radius: 6px; overflow: hidden;
   transition: border-color .12s, background .12s;
 }
-.mg-cite-block.is-open { border-style: solid; border-color: var(--arxiv-border-light); }
+.mg-cite-block.is-open { border-style: solid; border-color: var(--ds-border); }
 .mg-cite-block-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 5px 6px 5px 10px; }
 /* "Display <format>" prompt — muted mono placeholder text (NOT a link),
    leading caret. flex:1 so the whole field width is the click target. */
 .mg-cite-show {
   display: inline-flex; align-items: center; gap: 8px; flex: 1 1 auto; min-height: 26px;
-  font-family: var(--arxiv-font-mono); font-size: 0.73rem; font-weight: 400;
-  color: var(--arxiv-library-grey); background: none; border: none; padding: 2px 4px;
+  font-family: var(--ds-font-mono); font-size: 0.73rem; font-weight: 400;
+  color: var(--ds-text-muted); background: none; border: none; padding: 2px 4px;
   cursor: pointer; text-align: left;
 }
-.mg-cite-show::before { content: "▸"; font-size: 0.85em; color: var(--arxiv-grey-ui); }
+.mg-cite-show::before { content: "▸"; font-size: 0.85em; color: var(--ds-border-strong); }
 .mg-cite-show[aria-expanded="true"]::before { content: "▾"; }
-.mg-cite-show:hover { color: var(--arxiv-repository-brown); }
-.mg-cite-show:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 3px; }
+.mg-cite-show:hover { color: var(--ds-text); }
+.mg-cite-show:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 2px; border-radius: 3px; }
 /* Hover the collapsed field → dropzone-style highlight (whole field cue). */
-.mg-cite-block:not(.is-open):has(.mg-cite-show:hover) { border-color: var(--arxiv-library-grey); background: var(--arxiv-warm-wash); }
+.mg-cite-block:not(.is-open):has(.mg-cite-show:hover) { border-color: var(--ds-text-muted); background: var(--ds-canvas); }
 /* Codeblock-style copy button (icon + small label), top-right of the bar.
    The svg needs an explicit z-index because ar5iv sets `svg { z-index:-1 }`
    globally, which otherwise paints the icon behind the tinted block. */
 .mg-cite-copy {
   display: inline-flex; align-items: center; justify-content: center; gap: 5px;
   min-height: 26px; padding: 4px 7px;
-  font-family: var(--arxiv-font-sans); font-size: 0.72rem; font-weight: 600;
-  color: var(--arxiv-library-grey); background: none; border: none; border-radius: 4px;
+  font-family: var(--ds-font-sans); font-size: 0.72rem; font-weight: 600;
+  color: var(--ds-text-muted); background: none; border: none; border-radius: 4px;
   cursor: pointer;
 }
 .mg-cite-copy svg { width: 1.22em; height: 1.22em; flex: none; position: relative; z-index: 1; }
-.mg-cite-copy:hover { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
-.mg-cite-copy:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
-.mg-cite-copy.is-copied { color: var(--arxiv-success-fg); }
+.mg-cite-copy:hover { color: var(--ds-text); background: rgba(0,0,0,0.05); }
+.mg-cite-copy:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 1px; }
+.mg-cite-copy.is-copied { color: var(--ds-success-fg); }
 /* Code region: IBM Plex Mono, sits inside the block, no own background. */
-.mg-cite-code { background: none; margin: 0; padding: 2px 10px 12px; font-family: var(--arxiv-font-mono); font-size: 0.72rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--arxiv-repository-brown); max-height: 260px; overflow-y: auto; }
+.mg-cite-code { background: none; margin: 0; padding: 2px 10px 12px; font-family: var(--ds-font-mono); font-size: 0.72rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ds-text); max-height: 260px; overflow-y: auto; }
 .mg-cite-code[hidden] { display: none; }
 
 /* Accessibility — condensed to two status lines (present / missing) instead
@@ -559,18 +559,18 @@ body.mg-reader .mg-top-cols { display: block; }
    LaTeXML-emitted SVG content under text). Lift these shield icons with
    explicit positioning so they paint above their background. */
 .mg-a11y-line .ic { width: 1.07em; height: 1.07em; flex: none; margin-top: 2px; position: relative; z-index: 1; }
-/* Greens map to the canonical --arxiv-success-* tokens
+/* Greens map to the canonical --ds-success-* tokens
    (color-mapping.md "Status & alert colors — shared"). */
 /* "Present" rows use an Open Blue shield badge as the positive signal:
    light Open-Blue fill with a link-blue outline/check (the fill alone is
    too light to meet 3:1, so the darker stroke carries the contrast). Text
    stays Repository Brown for readability. */
-.mg-a11y-line.present { color: var(--arxiv-repository-brown); }
-.mg-a11y-line.present .ic { color: var(--arxiv-link-blue); fill: var(--arxiv-open-blue); }
+.mg-a11y-line.present { color: var(--ds-text); }
+.mg-a11y-line.present .ic { color: var(--ds-link); fill: var(--ds-accent); }
 /* "Partial" (e.g. some figures lack alt text) stays muted grey. */
-.mg-a11y-line.partial { color: var(--arxiv-library-grey); }
-.mg-a11y-line.partial .ic { color: var(--arxiv-grey-ui); }
-.mg-a11y-fix { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; margin-left: 4px; }
+.mg-a11y-line.partial { color: var(--ds-text-muted); }
+.mg-a11y-line.partial .ic { color: var(--ds-border-strong); }
+.mg-a11y-fix { color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; margin-left: 4px; }
 
 /* Files column. Primary action uses the canonical `.ds-btn-primary`
    (defined below) — DESIGN-POLICIES.md → Buttons + button-styles.html
@@ -578,18 +578,18 @@ body.mg-reader .mg-top-cols { display: block; }
 .mg-files { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
 /* PDF is the primary action — full rail width so it reads as the anchor. */
 .mg-files .ds-btn-primary { min-width: 0; width: 100%; }
-.mg-files .ds-btn-primary small { font-weight: 400; color: var(--arxiv-repository-brown-on-blue); margin-left: 4px; }
+.mg-files .ds-btn-primary small { font-weight: 400; color: var(--ds-text-on-accent); margin-left: 4px; }
 .mg-files-links { display: flex; flex-direction: column; gap: 8px; }
 .mg-files-link { font-size: 0.82rem; }
-.mg-files-link a { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; }
-.mg-files-link small { color: var(--arxiv-library-grey); font-size: 0.74rem; margin-left: 6px; }
+.mg-files-link a { color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; }
+.mg-files-link small { color: var(--ds-text-muted); font-size: 0.74rem; margin-left: 6px; }
 
 /* Ancillary files (>2): one compact line — label + total beside it, with a
    right-aligned "Download all" link. (≤2 files would list each by name+size.) */
 .mg-anc { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 0.82rem; }
-.mg-anc-label { color: var(--arxiv-repository-brown); }
-.mg-anc-total { color: var(--arxiv-library-grey); font-size: 0.74rem; }
-.mg-anc-all { flex: none; font-size: 0.78rem; color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+.mg-anc-label { color: var(--ds-text); }
+.mg-anc-total { color: var(--ds-text-muted); font-size: 0.74rem; }
+.mg-anc-all { flex: none; font-size: 0.78rem; color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
 
 /* ══ CANONICAL BUTTONS (ported from docs/public/design-system.css) ══
    Source of truth: button-styles.html. Construction = 1.5px transparent border
@@ -599,12 +599,12 @@ body.mg-reader .mg-top-cols { display: block; }
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   box-sizing: border-box;   /* so width:100% (full-rail PDF button) includes padding+border */
   padding: 10px 20px; min-width: 120px;
-  font-family: var(--arxiv-font-sans); font-size: 14px; font-weight: 600; line-height: 1;
+  font-family: var(--ds-font-sans); font-size: 14px; font-weight: 600; line-height: 1;
   text-decoration: none; cursor: pointer;
   border: 1.5px solid transparent; border-radius: 6px;
   transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, transform 0.08s, color 0.12s;
 }
-.ds-btn:focus-visible { outline: 3px solid var(--arxiv-link-blue); outline-offset: 2px; }
+.ds-btn:focus-visible { outline: 3px solid var(--ds-link); outline-offset: 2px; }
 /* The ar5iv stylesheet sets `svg { z-index: -1 }` globally (to keep
    LaTeXML-emitted SVG under text). Inside an inline-flex button the icon
    is a flex item, so that z-index APPLIES even without positioning and
@@ -613,21 +613,21 @@ body.mg-reader .mg-top-cols { display: block; }
 .ds-btn svg { position: relative; z-index: 1; }
 .ds-btn-primary {
   background:
-    linear-gradient(var(--arxiv-open-blue), var(--arxiv-open-blue)) padding-box,
+    linear-gradient(var(--ds-accent), var(--ds-accent)) padding-box,
     linear-gradient(to bottom, #b0d5ed, #6ba8da) border-box;
-  color: var(--arxiv-repository-brown-on-blue);
+  color: var(--ds-text-on-accent);
   box-shadow: inset 0 0 6px rgba(31, 94, 150, 0.20), 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 .ds-btn-primary:hover {
   background:
-    linear-gradient(var(--arxiv-open-blue-bright), var(--arxiv-open-blue-bright)) padding-box,
+    linear-gradient(var(--ds-accent-hover), var(--ds-accent-hover)) padding-box,
     linear-gradient(to bottom, #8fc1e8, #4a86b8) border-box;
   box-shadow: inset 0 0 8px rgba(31, 94, 150, 0.10), 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 .ds-btn-primary:active {
   transform: translateY(1px);
   background:
-    linear-gradient(var(--arxiv-open-blue), var(--arxiv-open-blue)) padding-box,
+    linear-gradient(var(--ds-accent), var(--ds-accent)) padding-box,
     linear-gradient(#6ba8da, #6ba8da) border-box;
   box-shadow: inset 0 0 10px rgba(31, 94, 150, 0.35);
 }
@@ -647,12 +647,12 @@ body.mg-reader .mg-top-cols { display: block; }
    Candidate for promotion to the canonical design system once
    validated here. */
 .mg-btn-quiet {
-  background: var(--arxiv-card-grey);
-  color: var(--arxiv-repository-brown);
+  background: var(--ds-surface-muted);
+  color: var(--ds-text);
   box-shadow: none;
 }
-.mg-btn-quiet:hover { background: var(--arxiv-pill-border); }
-.mg-btn-quiet:active { transform: translateY(1px); background: var(--arxiv-border-light); }
+.mg-btn-quiet:hover { background: var(--ds-border-muted); }
+.mg-btn-quiet:active { transform: translateY(1px); background: var(--ds-border); }
 .mg-btn-quiet .btn-arrow { width: 1.07em; height: 1.07em; flex: none; }
 /* Label contrast (WCAG AA text needs 4.5:1):
    Repository Brown on Card Grey 15.0:1 (rest) · Pill Border 13.2:1 (hover) ·
@@ -667,9 +667,9 @@ body.mg-reader .mg-top-cols { display: block; }
    (on the blue tint the warm hue still differentiates it, barely).
    On tint, step the fill one rung down the warm-grey ladder; the label
    stays Repository Brown and passes AA in every state (12.3:1+). Visually tested on both tints. */
-.mg-btn-quiet.on-tint { background: var(--arxiv-pill-border); }
-.mg-btn-quiet.on-tint:hover { background: var(--arxiv-border-light); }
-.mg-btn-quiet.on-tint:active { background: var(--arxiv-border-light); }
+.mg-btn-quiet.on-tint { background: var(--ds-border-muted); }
+.mg-btn-quiet.on-tint:hover { background: var(--ds-border); }
+.mg-btn-quiet.on-tint:active { background: var(--ds-border); }
 
 /* Row that holds the back-to-abstract tertiary button: directly below
    the site header, above the watermark line, centered on the page —
@@ -701,18 +701,18 @@ body.mg-reader .mg-top-cols { display: block; }
    truth — never fork values; this local copy exists only because the
    mockup predates the promotion. */
 .mg-accordions { display: flex; flex-direction: column; gap: 8px; }
-.mg-acc { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 6px; }
-.mg-acc > summary { cursor: pointer; list-style: none; font-family: var(--arxiv-font-sans); font-size: 0.92rem; font-weight: 600; color: var(--arxiv-repository-brown); padding: 11px 16px; display: flex; align-items: center; gap: 10px; }
+.mg-acc { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 6px; }
+.mg-acc > summary { cursor: pointer; list-style: none; font-family: var(--ds-font-sans); font-size: 0.92rem; font-weight: 600; color: var(--ds-text); padding: 11px 16px; display: flex; align-items: center; gap: 10px; }
 .mg-acc > summary::-webkit-details-marker { display: none; }
 .mg-acc > summary::marker { content: ""; }
-.mg-acc > summary::after { content: "+"; margin-left: auto; font-weight: 400; color: var(--arxiv-library-grey); font-size: 1.25rem; line-height: 1; }
+.mg-acc > summary::after { content: "+"; margin-left: auto; font-weight: 400; color: var(--ds-text-muted); font-size: 1.25rem; line-height: 1; }
 .mg-acc[open] > summary::after { content: "−"; }
-.mg-acc[open] > summary { border-bottom: 1px solid var(--arxiv-border-light); }
-.mg-acc-body { padding: 14px 16px 16px; font-size: 0.85rem; color: var(--arxiv-repository-brown); }
+.mg-acc[open] > summary { border-bottom: 1px solid var(--ds-border); }
+.mg-acc-body { padding: 14px 16px 16px; font-size: 0.85rem; color: var(--ds-text); }
 .mg-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; margin: 0; }
-.mg-acc-body dt { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.04em; color: var(--arxiv-library-grey); white-space: nowrap; padding-top: 2px; }
+.mg-acc-body dt { font-family: var(--ds-font-condensed); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.04em; color: var(--ds-text-muted); white-space: nowrap; padding-top: 2px; }
 .mg-acc-body dd { margin: 0; }
-.mg-acc-body a { color: var(--arxiv-link-blue); }
+.mg-acc-body a { color: var(--ds-link); }
 .mg-acc-body .mg-who-row { display: flex; flex-wrap: wrap; gap: 6px 16px; }
 
 /* ── Accordions INSIDE the rail: drop the card chrome so they read as part
@@ -723,8 +723,8 @@ body.mg-reader .mg-top-cols { display: block; }
 /* Blue +/- marker so the disclosures read as interactive "good stuff"
    (Open Blue itself is too light for a glyph; link-blue is its readable
    sibling). Hovering tints the label to match. */
-.mg-rail .mg-acc > summary::after { font-size: 1.1rem; color: var(--arxiv-link-blue); }
-.mg-rail .mg-acc > summary:hover { color: var(--arxiv-link-blue); }
+.mg-rail .mg-acc > summary::after { font-size: 1.1rem; color: var(--ds-link); }
+.mg-rail .mg-acc > summary:hover { color: var(--ds-link); }
 .mg-rail .mg-acc[open] > summary { border-bottom: 0; margin-bottom: 10px; }
 .mg-rail .mg-acc-body { padding: 0; }
 .mg-rail .mg-acc-body dl { grid-template-columns: 1fr; gap: 0; }
@@ -737,17 +737,17 @@ body.mg-reader .mg-top-cols { display: block; }
    ink + aria-current and is NOT a link; prior versions are Link Blue links. A
    quiet left rule gives the list a timeline feel; the current row's rule is
    Link Blue. ── */
-.mg-ver-count { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.66rem; letter-spacing: 0.04em; color: var(--arxiv-library-grey); font-weight: 600; }
+.mg-ver-count { font-family: var(--ds-font-condensed); text-transform: uppercase; font-size: 0.66rem; letter-spacing: 0.04em; color: var(--ds-text-muted); font-weight: 600; }
 .mg-ver-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-.mg-ver { padding-left: 12px; border-left: 2px solid var(--arxiv-border-light); }
-.mg-ver-current { border-left-color: var(--arxiv-link-blue); }
+.mg-ver { padding-left: 12px; border-left: 2px solid var(--ds-border); }
+.mg-ver-current { border-left-color: var(--ds-link); }
 .mg-ver-top { display: flex; align-items: baseline; flex-wrap: wrap; gap: 3px 8px; }
-.mg-ver-id { font-family: var(--arxiv-font-mono); font-size: 0.82rem; font-weight: 700; color: var(--arxiv-repository-brown); text-decoration: none; }
-a.mg-ver-id { color: var(--arxiv-link-blue); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
-a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
-.mg-ver-tag { font-family: var(--arxiv-font-condensed); text-transform: uppercase; font-size: 0.6rem; letter-spacing: 0.05em; font-weight: 700; color: var(--arxiv-link-blue); }
-.mg-ver-date { font-size: 0.72rem; color: var(--arxiv-library-grey); font-variant-numeric: tabular-nums; }
-.mg-ver-note { margin: 3px 0 0; font-size: 0.78rem; color: var(--arxiv-repository-brown); line-height: 1.45; }
+.mg-ver-id { font-family: var(--ds-font-mono); font-size: 0.82rem; font-weight: 700; color: var(--ds-text); text-decoration: none; }
+a.mg-ver-id { color: var(--ds-link); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+a.mg-ver-id:hover { color: var(--ds-link-hover); }
+.mg-ver-tag { font-family: var(--ds-font-condensed); text-transform: uppercase; font-size: 0.6rem; letter-spacing: 0.05em; font-weight: 700; color: var(--ds-link); }
+.mg-ver-date { font-size: 0.72rem; color: var(--ds-text-muted); font-variant-numeric: tabular-nums; }
+.mg-ver-note { margin: 3px 0 0; font-size: 0.78rem; color: var(--ds-text); line-height: 1.45; }
 .mg-ver-foot { margin: 13px 0 0; font-size: 0.78rem; }
 
 /* ── In-flow version line + older-version warning (main reading column).
@@ -755,17 +755,17 @@ a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
    two time-critical pieces — the dates and the newer-version warning —
    surface here in the reading column so every reader (AT, mobile,
    citation-arrival) meets them near the title. ── */
-.mg-verline { font-size: 0.9rem; color: var(--arxiv-library-grey); margin: 10px 0 0; font-variant-numeric: tabular-nums; }
+.mg-verline { font-size: 0.9rem; color: var(--ds-text-muted); margin: 10px 0 0; font-variant-numeric: tabular-nums; }
 .mg-verline time { color: inherit; }
-.mg-vl { font-family: var(--arxiv-font-mono); font-size: 0.9rem; margin-left: 6px; }
-.mg-vl.is-other { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 3px; }
-.mg-vl.is-other:hover { color: var(--arxiv-link-hover); }
-.mg-vl.is-current { color: var(--arxiv-repository-brown); font-weight: 700; }
-.mg-vl:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; border-radius: 2px; }
-.mg-verwarn { display: flex; align-items: flex-start; gap: 10px; max-width: 48rem; margin: 12px 0 0; background: var(--arxiv-warning-bg); border: 1px solid var(--arxiv-warning-border); border-radius: 4px; padding: 10px 14px; font-size: 0.8125rem; color: var(--arxiv-warning-fg); }
+.mg-vl { font-family: var(--ds-font-mono); font-size: 0.9rem; margin-left: 6px; }
+.mg-vl.is-other { color: var(--ds-link); text-decoration: underline; text-underline-offset: 3px; }
+.mg-vl.is-other:hover { color: var(--ds-link-hover); }
+.mg-vl.is-current { color: var(--ds-text); font-weight: 700; }
+.mg-vl:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 2px; border-radius: 2px; }
+.mg-verwarn { display: flex; align-items: flex-start; gap: 10px; max-width: 48rem; margin: 12px 0 0; background: var(--ds-warning-bg); border: 1px solid var(--ds-warning-border); border-radius: 4px; padding: 10px 14px; font-size: 0.8125rem; color: var(--ds-warning-fg); }
 .mg-verwarn-icon { flex-shrink: 0; width: 1.38em; height: 1.38em; color: #b88c00; margin-top: 1px; }
 .mg-verwarn p { margin: 0; line-height: 1.5; }
-.mg-verwarn a { color: var(--arxiv-warning-fg); font-weight: 600; text-decoration: underline; }
+.mg-verwarn a { color: var(--ds-warning-fg); font-weight: 600; text-decoration: underline; }
 .mg-verwarn a:hover { color: #5a4400; }
 /* ══ CENTERED STICKY TOC BAR — full-bleed, semi-transparent ══
    z-index: 100 (sticky-headers tier per DESIGN-POLICIES.md Z-layer scale).
@@ -782,24 +782,24 @@ a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
   /* full-bleed: break out of any constrained parent so the bar spans the viewport */
   width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
   /* Frosted glass, driven from the token so it flips. color-mix keeps the single source of truth — the alpha rides on
-     whatever --arxiv-card-grey currently is — instead of hand-picking a
+     whatever --ds-surface-muted currently is — instead of hand-picking a
      dark rgba, which docs/dark-mode.html forbids. Text sits on this bar, and figures
      in the paper carry white backgrounds for legibility, so a white
      figure scrolling underneath lightens the bar. Measured over white:
      55% is nowhere near passing, 82% gives 3.5:1, 92% holds 5.05:1. The
      blur still reads as glass; the transparency is just subtler than
      before. */
-  background: color-mix(in srgb, var(--arxiv-card-grey) 92%, transparent);
+  background: color-mix(in srgb, var(--ds-surface-muted) 92%, transparent);
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   /* Top hairline: marks the threshold where the abstract/tools zone ends and
      the paper begins, and gives the row a shared edge so the Contents lozenge
      and Abstract / PDF / TeX tools don't read as floating. */
-  border-top: 1px solid var(--arxiv-border-light);
+  border-top: 1px solid var(--ds-border);
   border-bottom: 1px solid transparent;
   /* Transition padding so the compact-on-scroll state animates smoothly. */
   transition: padding .2s ease, background .25s ease, backdrop-filter .25s ease, border-color .15s; }
 /* Stuck state sits over dense body text, so it goes nearly opaque. */
-.mg-toc-bar.is-stuck { background: color-mix(in srgb, var(--arxiv-card-grey) 96%, transparent); border-bottom-color: var(--arxiv-border-light); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.mg-toc-bar.is-stuck { background: color-mix(in srgb, var(--ds-surface-muted) 96%, transparent); border-bottom-color: var(--ds-border); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
 /* 1fr | auto | 1fr keeps the TOC lozenge centered in the viewport (the left
    spacer balances the right-hand tools column). */
 .mg-toc-bar-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; }
@@ -810,7 +810,7 @@ a.mg-ver-id:hover { color: var(--arxiv-link-hover); }
 .mg-toc-logo { display: inline-flex; align-items: center; padding: 4px 6px; margin: -4px -6px; border-radius: 4px; }
 .mg-toc-logo img { height: 18px; width: auto; display: block; }
 .mg-toc-logo .mg-toc-logo-dark { display: none; }
-.mg-toc-logo:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
+.mg-toc-logo:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 1px; }
 .mg-toc-wrap { justify-self: center; }
 .mg-toc-tools { justify-self: end; }
 .mg-toc-bar .nav-icon { width: 1.25em; height: 1.25em; opacity: 0.65; flex-shrink: 0; }
@@ -884,34 +884,34 @@ body.mg-reader.mg-toc-stuck .arxiv-html-header .mg-reader-toggle {
   pointer-events: none;
 }
 .mg-toc-wrap { position: relative; }
-.mg-toc-trigger { display: inline-flex; align-items: center; gap: 9px; font-family: var(--arxiv-font-sans); font-size: 0.85rem; font-weight: 600; background: var(--arxiv-surface); color: var(--arxiv-repository-brown); border: 1px solid var(--arxiv-pill-border); border-radius: 22px; padding: 7px 14px 7px 14px; cursor: pointer; max-width: min(480px, calc(100vw - 48px)); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-.mg-toc-trigger:hover { background: var(--arxiv-warm-wash); }
-.mg-toc-trigger:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 2px; }
+.mg-toc-trigger { display: inline-flex; align-items: center; gap: 9px; font-family: var(--ds-font-sans); font-size: 0.85rem; font-weight: 600; background: var(--ds-surface); color: var(--ds-text); border: 1px solid var(--ds-border-muted); border-radius: 22px; padding: 7px 14px 7px 14px; cursor: pointer; max-width: min(480px, calc(100vw - 48px)); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.mg-toc-trigger:hover { background: var(--ds-canvas); }
+.mg-toc-trigger:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 2px; }
 /* position:relative + z-index lift both icons above the pill background;
    ar5iv's global `svg { z-index:-1 }` otherwise hides them. */
-.mg-toc-trigger .toc-ic { width: 1.25em; height: 1.25em; flex: none; color: var(--arxiv-library-grey); position: relative; z-index: 1; }
-.mg-toc-trigger .toc-prefix { font-weight: 400; color: var(--arxiv-library-grey); }
+.mg-toc-trigger .toc-ic { width: 1.25em; height: 1.25em; flex: none; color: var(--ds-text-muted); position: relative; z-index: 1; }
+.mg-toc-trigger .toc-prefix { font-weight: 400; color: var(--ds-text-muted); }
 .mg-toc-trigger .toc-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mg-toc-trigger .toc-chev { width: 1.09em; height: 1.09em; flex: none; color: var(--arxiv-library-grey); transition: transform .15s; position: relative; z-index: 1; }
+.mg-toc-trigger .toc-chev { width: 1.09em; height: 1.09em; flex: none; color: var(--ds-text-muted); transition: transform .15s; position: relative; z-index: 1; }
 .mg-toc-trigger[aria-expanded="true"] .toc-chev { transform: rotate(180deg); }
-.mg-toc-dropdown { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; box-shadow: 0 8px 28px rgba(0,0,0,0.14); padding: 8px 0; min-width: 280px; max-height: 60vh; overflow-y: auto; z-index: 110; }
+.mg-toc-dropdown { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; box-shadow: 0 8px 28px rgba(0,0,0,0.14); padding: 8px 0; min-width: 280px; max-height: 60vh; overflow-y: auto; z-index: 110; }
 .mg-toc-dropdown[hidden] { display: none; }
 .mg-toc-dropdown ol { list-style: none; margin: 0; padding: 0; counter-reset: tocsec; }
 .mg-toc-dropdown li { counter-increment: tocsec; }
-.mg-toc-dropdown a { display: flex; gap: 10px; padding: 6px 18px; text-decoration: none; color: var(--arxiv-repository-brown); font-size: 0.85rem; line-height: 1.4; }
-.mg-toc-dropdown a:hover { background: var(--arxiv-warm-wash); }
-.mg-toc-dropdown a.is-current { background: var(--arxiv-active-bg); color: var(--arxiv-link-blue); font-weight: 600; }
-.mg-toc-dropdown a .toc-num { color: var(--arxiv-library-grey); font-variant-numeric: tabular-nums; min-width: 22px; }
-.mg-toc-dropdown a.is-current .toc-num { color: var(--arxiv-link-blue); }
+.mg-toc-dropdown a { display: flex; gap: 10px; padding: 6px 18px; text-decoration: none; color: var(--ds-text); font-size: 0.85rem; line-height: 1.4; }
+.mg-toc-dropdown a:hover { background: var(--ds-canvas); }
+.mg-toc-dropdown a.is-current { background: var(--ds-accent-wash); color: var(--ds-link); font-weight: 600; }
+.mg-toc-dropdown a .toc-num { color: var(--ds-text-muted); font-variant-numeric: tabular-nums; min-width: 22px; }
+.mg-toc-dropdown a.is-current .toc-num { color: var(--ds-link); }
 
 /* ══ FOOTER (ported from abstract-phase2.html) ══ */
 .arxiv-html-footer { display: none; }
-footer.ds-site-footer { clear: both; border-top: 1px solid var(--arxiv-pill-border); background: var(--arxiv-warm-wash); padding: 24px 24px 28px; margin: 0; font-family: "IBM Plex Sans", -apple-system, sans-serif; }
-footer.ds-site-footer .ds-site-footer-ack { font-size: 0.8125rem; color: var(--arxiv-library-grey); margin-bottom: 14px; line-height: 1.6; max-width: 900px; }
-footer.ds-site-footer .ds-site-footer-ack a { font-size: 0.8125rem; color: var(--arxiv-link-blue); }
+footer.ds-site-footer { clear: both; border-top: 1px solid var(--ds-border-muted); background: var(--ds-canvas); padding: 24px 24px 28px; margin: 0; font-family: "IBM Plex Sans", -apple-system, sans-serif; }
+footer.ds-site-footer .ds-site-footer-ack { font-size: 0.8125rem; color: var(--ds-text-muted); margin-bottom: 14px; line-height: 1.6; max-width: 900px; }
+footer.ds-site-footer .ds-site-footer-ack a { font-size: 0.8125rem; color: var(--ds-link); }
 footer.ds-site-footer .ds-site-footer-links { display: flex; gap: 8px; flex-wrap: wrap; font-size: 0.8125rem; line-height: 1.8; max-width: 900px; }
-footer.ds-site-footer .ds-site-footer-links a { font-size: 0.8125rem; color: var(--arxiv-library-grey); text-decoration: none; }
-footer.ds-site-footer .ds-site-footer-links a:hover { color: var(--arxiv-repository-brown); text-decoration: underline; }
+footer.ds-site-footer .ds-site-footer-links a { font-size: 0.8125rem; color: var(--ds-text-muted); text-decoration: none; }
+footer.ds-site-footer .ds-site-footer-links a:hover { color: var(--ds-text); text-decoration: underline; }
 /* Drawn as a dot rather than rendered as a "·" glyph. The separators are
    aria-hidden decoration, so WCAG 1.4.3 exempts them from contrast — but
    an automated checker cannot infer that and reports 1.43:1 in dark and
@@ -919,21 +919,21 @@ footer.ds-site-footer .ds-site-footer-links a:hover { color: var(--arxiv-reposit
    genuinely non-text, so the look is unchanged and there is nothing left
    to flag. font-size:0 suppresses the character itself.
    The canonical rule in docs/public/design-system.css:1387 still colours
-   the glyph with --arxiv-border-light — same finding applies there. */
+   the glyph with --ds-border — same finding applies there. */
 footer.ds-site-footer .ds-site-footer-sep {
   display: inline-block;
   width: 3px; height: 3px;
   border-radius: 50%;
-  background: var(--arxiv-border-light);
+  background: var(--ds-border);
   vertical-align: middle;
   font-size: 0;
   margin: 0 3px;
 }
 .ds-site-footer-main { flex: 0 1 auto; min-width: 280px; max-width: 48rem; }
-.ds-site-footer-funders-label { font-family: "IBM Plex Sans", -apple-system, sans-serif; font-size: 0.875rem; font-weight: 600; color: var(--arxiv-repository-brown); margin-bottom: 12px; line-height: 1.4; }
+.ds-site-footer-funders-label { font-family: "IBM Plex Sans", -apple-system, sans-serif; font-size: 0.875rem; font-weight: 600; color: var(--ds-text); margin-bottom: 12px; line-height: 1.4; }
 .ds-site-footer-funders-logos { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 @media (max-width: 48rem) { .ds-site-footer-funders { width: 100%; margin-top: 8px; } }
-.ack-member-inline strong { color: var(--arxiv-repository-brown); font-weight: 600; }
+.ack-member-inline strong { color: var(--ds-text); font-weight: 600; }
 .member-footer-callout { display: none; }
 @media print { footer.ds-site-footer { display: none; } }
 
@@ -943,7 +943,7 @@ body:not(.mg-reader) .arxiv-html-header { display: none; }
 /* Reader mode: hide ds-* abstract chrome and the tinted band; white reading canvas. */
 body.mg-reader .mg-abs-only { display: none; }
 body.mg-reader .mg-band { display: none; }
-body.mg-reader { background: var(--arxiv-warm-wash); }
+body.mg-reader { background: var(--ds-canvas); }
 /* (Old reader-mode top padding removed — once grid-template-areas put the
    reader header in its own grid row above .ltx_page_main, the padding-top
    became redundant and visible as a 52px gap at narrow widths.) */
@@ -1160,7 +1160,7 @@ html { scroll-padding-top: 80px; }
    │  2.  HEADER CHROME                                               │
    ├──────────────────────────────────────────────────────────────────┤
    │  The redesigned header for the HTML reader. Uses warm Card Grey  │
-   │  (var(--arxiv-card-grey)) for the bar, lighter than the abstract-page's         │
+   │  (var(--ds-surface-muted)) for the bar, lighter than the abstract-page's         │
    │  Repository Brown — the reader is a content-first context, so    │
    │  the chrome recedes more here.                                   │
    │                                                                  │
@@ -1177,8 +1177,8 @@ html { scroll-padding-top: 80px; }
    and an unlayered normal declaration outranks a layered one whatever its
    specificity, so these plain overrides already win. */
 .arxiv-html-header {
-  background: var(--arxiv-card-grey);
-  border-bottom: 1px solid var(--arxiv-pill-border);
+  background: var(--ds-surface-muted);
+  border-bottom: 1px solid var(--ds-border-muted);
   min-height: 52px;
   min-height: 52px;
   padding: 0;
@@ -1238,7 +1238,7 @@ html { scroll-padding-top: 80px; }
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 13px;
   font-weight: 500;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   text-decoration: none;
   padding: 6px 10px;
   border-radius: 6px;
@@ -1252,16 +1252,16 @@ html { scroll-padding-top: 80px; }
   gap: 5px;
   min-height: 24px;      /* WCAG 2.5.8 target floor, stated not implied */
 }
-.new-html-nav a:visited { color: var(--arxiv-library-grey); }
+.new-html-nav a:visited { color: var(--ds-text-muted); }
 .new-html-nav a:hover,
-.new-html-nav button:hover { background: var(--arxiv-open-blue); color: var(--arxiv-repository-brown-on-blue); }
+.new-html-nav button:hover { background: var(--ds-accent); color: var(--ds-text-on-accent); }
 .new-html-nav a:focus-visible,
-.new-html-nav button:focus-visible { outline: 3px solid var(--arxiv-link-blue); outline-offset: 1px; }
+.new-html-nav button:focus-visible { outline: 3px solid var(--ds-link); outline-offset: 1px; }
 /* Nav icons are sized at the header level (not scoped to .new-html-nav)
    so they work for any nav-icon in the header — including the TOC
    trigger in the center cell, which lives outside .new-html-nav. */
 .arxiv-html-header .nav-icon { width: 1.23em; height: 1.23em; opacity: 0.65; flex-shrink: 0; }
-.new-html-divider { width: 1px; height: 20px; background: var(--arxiv-pill-border); margin: 0 4px; flex-shrink: 0; }
+.new-html-divider { width: 1px; height: 20px; background: var(--ds-border-muted); margin: 0 4px; flex-shrink: 0; }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  TOC TRIGGER + DROPDOWN                                          │
@@ -1291,9 +1291,9 @@ html { scroll-padding-top: 80px; }
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 13px;
   font-weight: 500;
-  color: var(--arxiv-repository-brown);
-  background: var(--arxiv-surface);
-  border: 1px solid var(--arxiv-pill-border);
+  color: var(--ds-text);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-muted);
   border-radius: 6px;
   padding: 6px 8px 6px 10px;
   cursor: pointer;
@@ -1302,16 +1302,16 @@ html { scroll-padding-top: 80px; }
   min-height: 24px;      /* WCAG 2.5.8 target floor, stated not implied */
 }
 .toc-trigger:hover {
-  background: var(--arxiv-warm-wash);
+  background: var(--ds-canvas);
   border-color: #b3ada4;
 }
 .toc-trigger:focus-visible {
-  outline: 3px solid var(--arxiv-link-blue);
+  outline: 3px solid var(--ds-link);
   outline-offset: 1px;
 }
 .toc-trigger[aria-expanded="true"] {
-  background: var(--arxiv-active-bg);
-  border-color: var(--arxiv-tint-border);
+  background: var(--ds-accent-wash);
+  border-color: var(--ds-accent-border);
 }
 .toc-trigger .toc-trigger-label {
   overflow: hidden;
@@ -1320,7 +1320,7 @@ html { scroll-padding-top: 80px; }
   min-width: 0;
 }
 .toc-trigger .toc-trigger-prefix {
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   font-weight: 400;
   font-variant-numeric: tabular-nums;
   margin-right: 4px;
@@ -1341,7 +1341,7 @@ html { scroll-padding-top: 80px; }
    radius; only bottom corners are rounded so the seam with the
    header's bottom border is flush. Light-blue tint matches the
    citation/footnote popover family so all "arXiv-layer surfaces"
-   read as related (popover panels share var(--arxiv-tint-light) background). */
+   read as related (popover panels share var(--ds-accent-surface) background). */
 .toc-dropdown {
   position: fixed;
   top: 52px;             /* matches header height, no gap */
@@ -1351,8 +1351,8 @@ html { scroll-padding-top: 80px; }
   width: 380px;
   max-width: calc(100vw - 32px);
   max-height: calc(100vh - 72px);
-  background: var(--arxiv-tint-light);
-  border: 1px solid var(--arxiv-tint-border);
+  background: var(--ds-accent-surface);
+  border: 1px solid var(--ds-accent-border);
   border-top: none;
   border-radius: 0 0 6px 6px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
@@ -1371,14 +1371,14 @@ html { scroll-padding-top: 80px; }
   justify-content: space-between;
   gap: 12px;
   padding: 10px 14px;
-  border-bottom: 1px solid var(--arxiv-tint-border);
+  border-bottom: 1px solid var(--ds-accent-border);
   flex-shrink: 0;
 }
 .toc-dropdown-title {
   font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
   font-weight: 600;
   font-size: 11px;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -1393,12 +1393,12 @@ html { scroll-padding-top: 80px; }
   padding: 6px;
   margin: -6px -8px -6px 0;  /* negative margin expands the touch target without enlarging the layout */
   border-radius: 4px;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   line-height: 0;
   min-height: 24px;      /* WCAG 2.5.8 target floor, stated not implied */
 }
-.toc-dropdown-close:hover { color: var(--arxiv-repository-brown); background: rgba(0, 0, 0, 0.05); }
-.toc-dropdown-close:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; }
+.toc-dropdown-close:hover { color: var(--ds-text); background: rgba(0, 0, 0, 0.05); }
+.toc-dropdown-close:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 1px; }
 .toc-dropdown-close svg { width: 18px; height: 18px; }
 
 .toc-dropdown-list {
@@ -1419,21 +1419,21 @@ html { scroll-padding-top: 80px; }
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 13px;
   line-height: 1.4;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   text-decoration: none;
   border-left: 3px solid transparent;
   transition: background 0.10s, border-color 0.10s, color 0.10s;
 }
 .toc-dropdown-link:hover {
-  background: var(--arxiv-active-bg);  /* one step more saturated than the panel bg */
+  background: var(--ds-accent-wash);  /* one step more saturated than the panel bg */
 }
 .toc-dropdown-link:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: -2px;
 }
 .toc-dropdown-link .toc-num {
   flex-shrink: 0;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   font-variant-numeric: tabular-nums;
   font-weight: 500;
   min-width: 28px;
@@ -1443,9 +1443,9 @@ html { scroll-padding-top: 80px; }
   min-width: 0;
 }
 /* Indent levels: section (depth 1, default), subsection (depth 2), paragraph (depth 3). */
-.toc-dropdown-item[data-depth="2"] .toc-dropdown-link { padding-left: 32px; font-size: 12.5px; color: var(--arxiv-library-grey); }
+.toc-dropdown-item[data-depth="2"] .toc-dropdown-link { padding-left: 32px; font-size: 12.5px; color: var(--ds-text-muted); }
 .toc-dropdown-item[data-depth="2"] .toc-dropdown-link .toc-num { min-width: 36px; }
-.toc-dropdown-item[data-depth="3"] .toc-dropdown-link { padding-left: 50px; font-size: 12.5px; color: var(--arxiv-library-grey); font-style: italic; }
+.toc-dropdown-item[data-depth="3"] .toc-dropdown-link { padding-left: 50px; font-size: 12.5px; color: var(--ds-text-muted); font-style: italic; }
 /* Abstract/appendix/bibliography are treated as top-level for orientation. */
 .toc-dropdown-item[data-kind="abstract"] .toc-dropdown-link,
 .toc-dropdown-item[data-kind="appendix"] .toc-dropdown-link,
@@ -1454,13 +1454,13 @@ html { scroll-padding-top: 80px; }
 }
 
 /* Current-section highlight — left accent in Link Blue + slightly
-   more saturated blue wash than the dropdown's var(--arxiv-tint-light) body. Same
+   more saturated blue wash than the dropdown's var(--ds-accent-surface) body. Same
    visual family as the inline active state we use for citations and
    footnote markers, so the system reads as related. */
 .toc-dropdown-item.is-current .toc-dropdown-link {
-  background: var(--arxiv-active-bg);
-  border-left-color: var(--arxiv-link-blue);
-  color: var(--arxiv-repository-brown);
+  background: var(--ds-accent-wash);
+  border-left-color: var(--ds-link);
+  color: var(--ds-text);
 }
 
 /* ── Mobile: full-screen menu ────────────────────────────────────────
@@ -1499,7 +1499,7 @@ html { scroll-padding-top: 80px; }
      interactive against it. */
   .toc-dropdown-header {
     padding: 16px 20px;
-    background: var(--arxiv-active-bg);
+    background: var(--ds-accent-wash);
   }
   .toc-dropdown-title { font-size: 13px; }
   /* Close button: visible, big, comfortable touch target. */
@@ -1572,7 +1572,7 @@ html { scroll-padding-top: 80px; }
   .toc-trigger-prefix { display: none; }
 }
 .toc-dropdown-item.is-current .toc-dropdown-link .toc-num {
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   font-weight: 600;
 }
 
@@ -1655,7 +1655,7 @@ html { scroll-padding-top: 80px; }
 .reading-progress-fill {
   height: 100%;
   width: 0%;
-  background: var(--arxiv-link-blue);
+  background: var(--ds-link);
   transition: width 0.1s linear;
 }
 
@@ -1711,7 +1711,7 @@ h1.ltx_title.ltx_title_document {
      at 320px." Body text never scales fluidly; only the title does. */
   font-weight: 700;
   line-height: 1.2;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   margin-top: 12px;
 }
 /* The gap between the watermark and the title was 32px, and none of it
@@ -1731,14 +1731,14 @@ article.ltx_document { margin-top: 0; }
   font-size: 1.5rem;
   font-weight: 600;
     line-height: 1.25;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
 }
 .ltx_title_subsection {
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
     line-height: 1.25;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
 }
 .ltx_title_abstract {                 /* .ds-panel-label treatment */
   font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
@@ -1746,7 +1746,7 @@ article.ltx_document { margin-top: 0; }
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
 }
 /* Weight 400, set explicitly. ar5iv sets .ltx_page_content { font-weight: 300 }
    and the whole paper body inherited it — a vendored default, not a decision.
@@ -1766,7 +1766,7 @@ article.ltx_document { margin-top: 0; }
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.7;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   /* Left-aligned, not justified.
 
      CSS justification is not TeX justification: browsers break lines greedily
@@ -1812,7 +1812,7 @@ article.ltx_document { margin-top: 0; }
   display: block;
   text-align: center;
   font-size: 1rem;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   line-height: 1.6;
   margin-bottom: 1.5rem;
   max-width: 100%;
@@ -1835,7 +1835,7 @@ article.ltx_document { margin-top: 0; }
   .ltx_abstract {
     padding: 12px 14px;
     margin: 1rem 0 2rem;
-    border: 1px solid var(--arxiv-pill-border);
+    border: 1px solid var(--ds-border-muted);
     border-radius: 4px;
   }
 }
@@ -1864,11 +1864,11 @@ article.ltx_document { margin-top: 0; }
   font-size: 15px;
   font-weight: 600;
   line-height: 1.45;
-  /* Was --arxiv-grey-dis, the disabled tier: 2.1:1 in light and 2.05:1 in
+  /* Was --ds-text-disabled, the disabled tier: 2.1:1 in light and 2.05:1 in
      dark, failing in both. This line carries the paper's identity and is
      not disabled text. Library Grey is the quiet-but-readable tier —
      5.7:1 light, 7.6:1 dark. */
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   /* Wraps naturally at narrow widths — the &ensp; between the
      identifier and the license link breaks across lines so the two
      parts stack vertically when there isn't room for one row. */
@@ -1900,16 +1900,16 @@ article.ltx_document { margin-top: 0; }
    These are genuine destinations (doi.org, the license page), not
    chrome navigation — they get the real link grammar. */
 .new-watermark a {
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   text-decoration: underline;
   text-underline-offset: 2px;
   font-size: 15px;
   font-weight: 500;
 }
-.new-watermark a:hover { color: var(--arxiv-link-hover); }
-.new-watermark a:visited { color: var(--arxiv-link-visited); }
+.new-watermark a:hover { color: var(--ds-link-hover); }
+.new-watermark a:visited { color: var(--ds-link-visited); }
 .new-watermark a:focus-visible {
-  outline: 3px solid var(--arxiv-link-blue);
+  outline: 3px solid var(--ds-link);
   outline-offset: 1px;
   border-radius: 2px;
 }
@@ -1922,7 +1922,7 @@ article.ltx_document { margin-top: 0; }
 /* Reference band: full-bleed using negative-margin viewport-width trick.
    Production should achieve this with proper full-bleed grid layout. */
 .ltx_bibliography {
-  background: var(--arxiv-card-grey);
+  background: var(--ds-surface-muted);
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
   padding-left: calc(50vw - 50%);
@@ -1952,7 +1952,7 @@ article.ltx_document { margin-top: 0; }
 .ltx_bibliography ~ .ltx_appendix,
 .ltx_bibliography ~ .ltx_acknowledgements,
 .ltx_bibliography ~ .ltx_para {
-  background: var(--arxiv-card-grey);
+  background: var(--ds-surface-muted);
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
   padding-left: calc(50vw - 50%);
@@ -1979,11 +1979,11 @@ section.ltx_bibliography {
 /* Footer band (light blue tint, full-bleed). Inner styling lives in the
    footer's own <style> block at the bottom of the file. */
 .arxiv-html-footer {
-  background: var(--arxiv-tint-light);
+  background: var(--ds-accent-surface);
   max-width: none;
   padding: 28px 24px 32px;
   margin: 0;
-  border-top: 2px solid var(--arxiv-open-blue);
+  border-top: 2px solid var(--ds-accent);
 }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
@@ -2010,7 +2010,7 @@ section.ltx_bibliography {
 }
 .ltx_authors-list li:not(:last-child)::after { content: ', '; }
 .ltx_authors-list li a {
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   text-decoration: none;
   font-size: 1rem;
 }
@@ -2020,7 +2020,7 @@ section.ltx_bibliography {
 .ltx_authors-toggle {
   font-family: inherit;
   font-size: 1rem;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   background: none;
   border: none;
   padding: 0;
@@ -2030,9 +2030,9 @@ section.ltx_bibliography {
   white-space: nowrap;
   margin: 0 0 0 6px;
 }
-.ltx_authors-toggle:hover { color: var(--arxiv-repository-brown); text-decoration: underline; }
+.ltx_authors-toggle:hover { color: var(--ds-text); text-decoration: underline; }
 .ltx_authors-toggle:focus-visible {
-  outline: 3px solid var(--arxiv-link-blue);
+  outline: 3px solid var(--ds-link);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -2074,7 +2074,7 @@ cite.cite-chip {
   position: relative;
 }
 .cite-chip a.ltx_ref {
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   text-decoration: none;
   font-size: 0.9em;
   padding: 0 2px;
@@ -2090,13 +2090,13 @@ cite.cite-chip {
    currently-open popover. */
 .cite-chip a.ltx_ref:hover,
 .cite-chip a.ltx_ref:focus-visible {
-  color: var(--arxiv-link-hover);
+  color: var(--ds-link-hover);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 .cite-chip a.ltx_ref[aria-expanded="true"] {
-  color: var(--arxiv-link-blue);
-  background: var(--arxiv-active-bg);
+  color: var(--ds-link);
+  background: var(--ds-accent-wash);
   text-decoration: underline;
 }
 
@@ -2112,15 +2112,15 @@ cite.cite-chip {
      across the two "arXiv layer" surfaces (formula chrome + citation
      popover). Solid (not semitransparent) since the popover is a
      floating panel on top of other content. */
-  background: var(--arxiv-tint-light);
-  border: 1px solid var(--arxiv-tint-border);
+  background: var(--ds-accent-surface);
+  border: 1px solid var(--ds-accent-border);
   border-radius: 6px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   padding: 12px 14px 8px;
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 13px;
   line-height: 1.5;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   text-align: left;
   font-style: normal;
 }
@@ -2140,7 +2140,7 @@ cite.cite-chip {
   font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
   font-weight: 600;
   font-size: 11px;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin: 0 0 8px;
@@ -2152,18 +2152,18 @@ cite.cite-chip {
   line-height: 1.5;
   margin: 0 0 8px;
   padding: 6px 0;
-  border-top: 1px solid var(--arxiv-card-grey);
+  border-top: 1px solid var(--ds-surface-muted);
   break-inside: avoid;
 }
 .cite-popover-item:first-child { border-top: none; padding-top: 0; }
 .cite-popover-item:last-child { margin-bottom: 0; }
 .cite-popover-item-num {
   font-family: "IBM Plex Mono", monospace;
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   font-weight: 600;
   margin-right: 4px;
 }
-.cite-popover-item-text { color: var(--arxiv-repository-brown); }
+.cite-popover-item-text { color: var(--ds-text); }
 
 .cite-popover-item-jump {
   display: inline-flex;
@@ -2172,7 +2172,7 @@ cite.cite-chip {
   margin-left: 6px;
   padding: 1px 6px;
   font-size: 12px;
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   text-decoration: none;
   border-radius: 3px;
   white-space: nowrap;
@@ -2180,12 +2180,12 @@ cite.cite-chip {
   margin-block: -4px;    /* keeps the list line-height unchanged */
 }
 .cite-popover-item-jump:hover {
-  color: var(--arxiv-link-hover);
+  color: var(--ds-link-hover);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 .cite-popover-item-jump:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: 1px;
 }
 .cite-popover-item-jump svg { width: 0.92em; height: 0.92em; }
@@ -2197,14 +2197,14 @@ cite.cite-chip {
   border: none;
   font-size: 22px;
   line-height: 1;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   cursor: pointer;
   padding: 2px 8px;
   border-radius: 4px;
 }
-.cite-popover-close:hover { color: var(--arxiv-repository-brown); background: var(--arxiv-active-bg); }
+.cite-popover-close:hover { color: var(--ds-text); background: var(--ds-accent-wash); }
 .cite-popover-close:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: 1px;
 }
 
@@ -2243,7 +2243,7 @@ cite.cite-chip {
    │  clears the class via the popstate handler so we don't leave    │
    │  orphan highlights after history navigation.                     │
    │                                                                  │
-   │  Color choice: light-blue var(--arxiv-active-bg), the same active-state wash    │
+   │  Color choice: light-blue var(--ds-accent-wash), the same active-state wash    │
    │  used by inline interactive elements (citation chips when their  │
    │  popover is open, footnote markers on hover / aria-expanded /    │
    │  paired). Reusing it for "you just jumped here" / "you just      │
@@ -2284,14 +2284,14 @@ li.ltx_bibitem.cite-active-target {
    sized for inline text. Persists until the user clicks elsewhere or
    presses Esc. */
 cite.ltx_cite.cite-active-source {
-  background: var(--arxiv-active-bg);
+  background: var(--ds-accent-wash);
   border-radius: 3px;
   padding: 1px 4px;
   margin: 0 -4px;
   transition: background 0.4s ease;
 }
 cite.ltx_cite.cite-active-source a.ltx_ref {
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
 }
 /* Git history holds the button's styling if it is ever
    wanted back. */
@@ -2436,7 +2436,7 @@ table.ltx_equationgroup math.ltx_math_unparsed {
 .eqn-region:hover,
 .eqn-region.is-active,
 .eqn-region:focus-within {
-  border-color: var(--arxiv-pill-border, var(--arxiv-pill-border));
+  border-color: var(--ds-border-muted, var(--ds-border-muted));
 }
 
 /* Zero out the equation table's own margins — the wrapper's padding
@@ -2480,7 +2480,7 @@ table.ltx_equationgroup math.ltx_math_unparsed {
   .eqn-region > table.ltx_equationgroup td.ltx_eqn_eqno {
     position: sticky;
     right: 0;
-    background: var(--arxiv-warm-wash);
+    background: var(--ds-canvas);
     padding-left: 6px;
   }
 }
@@ -2519,8 +2519,8 @@ table.ltx_equationgroup math.ltx_math_unparsed {
   justify-content: center;
   align-items: center;
   gap: 4px 14px;
-  background: var(--arxiv-surface);
-  border: 1px solid var(--arxiv-pill-border);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-muted);
   border-radius: 999px;
   padding: 6px 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
@@ -2562,7 +2562,7 @@ table.ltx_equationgroup math.ltx_math_unparsed {
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 11px;
   font-weight: 500;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   background: none;
   border: none;
   border-radius: 0;
@@ -2574,12 +2574,12 @@ table.ltx_equationgroup math.ltx_math_unparsed {
   margin-block: -5px;    /* ...without changing the pill's drawn height */
 }
 .eqn-chip:hover {
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 .eqn-chip:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: 1px;
   border-radius: 2px;
 }
@@ -2595,7 +2595,7 @@ table.ltx_equationgroup math.ltx_math_unparsed {
 }
 .eqn-chip[disabled]:hover,
 .eqn-chip[aria-disabled="true"]:hover {
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   text-decoration: none;
 }
 
@@ -2604,12 +2604,12 @@ table.ltx_equationgroup math.ltx_math_unparsed {
    and the toggle context already say "source". Same max-width/scroll
    behavior as the rendered equation it replaces. */
 .eqn-tex-view {
-  font-family: var(--arxiv-font-mono);
+  font-family: var(--ds-font-mono);
   font-size: 0.8125rem;
   line-height: 1.6;
   white-space: pre-wrap;
   word-break: break-word;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   margin: 0.5em 0;
   max-width: 100%;
 }
@@ -2670,7 +2670,7 @@ article.ltx_document {
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 0.75em;
   font-weight: 600;
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   text-decoration: none;
   vertical-align: super;
   line-height: 0;
@@ -2690,12 +2690,12 @@ article.ltx_document {
 .ftn-marker.is-paired-hover,
 .ftn-marker[aria-expanded="true"],
 .ftn-marker.is-active-source {
-  background: var(--arxiv-active-bg);
+  background: var(--ds-accent-wash);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 .ftn-marker:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: 1px;
 }
 
@@ -2716,7 +2716,7 @@ html:not(.js) .footnote {
   display: block;
   margin: 8px 0 8px 24px;
   padding: 6px 12px;
-  border-left: 2px solid var(--arxiv-border-light);
+  border-left: 2px solid var(--ds-border);
   font-size: 0.85em;
   color: #555;
 }
@@ -2767,7 +2767,7 @@ html:not(.js) .reading-progress { display: none !important; }
   font-style: italic;
   font-size: 13px;
   line-height: 1.45;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   transition: color 0.15s ease;
 }
 
@@ -2784,16 +2784,16 @@ html:not(.js) .reading-progress { display: none !important; }
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-style: normal;
   font-weight: 600;
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   margin-right: 4px;
   font-size: 12px;
 }
 .ftn-marginalia a {
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   font-style: normal;
 }
 .ftn-marginalia.is-paired-hover {
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
 }
 /* Active source (wide viewports) — applied when the user clicks a
    marker. The highlight extends beyond the marginalia bounds via a
@@ -2801,14 +2801,14 @@ html:not(.js) .reading-progress { display: none !important; }
    (the marginalia layout algorithm depends on stable heights to keep
    notes from re-overlapping when one is toggled active). */
 .ftn-marginalia.is-active-source {
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   z-index: 1;  /* creates a stacking context for ::before below text */
 }
 .ftn-marginalia.is-active-source::before {
   content: '';
   position: absolute;
   inset: -6px -10px;
-  background: var(--arxiv-active-bg);
+  background: var(--ds-accent-wash);
   border-radius: 4px;
   z-index: -1;
 }
@@ -2823,22 +2823,22 @@ html:not(.js) .reading-progress { display: none !important; }
   max-height: 50vh;
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: var(--arxiv-tint-light);
-  border: 1px solid var(--arxiv-tint-border);
+  background: var(--ds-accent-surface);
+  border: 1px solid var(--ds-accent-border);
   border-radius: 6px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   padding: 12px 14px;
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 13px;
   line-height: 1.5;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
 }
 .ftn-popover[hidden] { display: none; }
 .ftn-popover-title {
   font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
   font-weight: 600;
   font-size: 11px;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin: 0 0 8px;
@@ -2851,12 +2851,12 @@ html:not(.js) .reading-progress { display: none !important; }
   border: none;
   font-size: 22px;
   line-height: 1;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   cursor: pointer;
   padding: 0 6px;
   border-radius: 4px;
 }
-.ftn-popover-close:hover { color: var(--arxiv-repository-brown); background: var(--arxiv-active-bg); }
+.ftn-popover-close:hover { color: var(--ds-text); background: var(--ds-accent-wash); }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  10c. FIGURE MARGINALIA — image accessibility surface            │
@@ -2911,7 +2911,7 @@ html:not(.js) .reading-progress { display: none !important; }
      color in case the inline <rect> inside the SVG isn't recognized as
      blocking the wrapper's hover tint. Both layers together guarantee
      the image area is opaque regardless of browser quirks. */
-  background-color: var(--arxiv-warm-wash);
+  background-color: var(--ds-canvas);
 }
 /* Positioning context for the chip pill so it anchors to the IMAGE's
    bottom edge instead of the figure region (below the caption). The
@@ -2934,7 +2934,7 @@ html:not(.js) .reading-progress { display: none !important; }
 .fig-region:hover .fig-image-wrap,
 .fig-region.is-active .fig-image-wrap,
 .fig-region:focus-within .fig-image-wrap {
-  border-color: var(--arxiv-pill-border, var(--arxiv-pill-border));
+  border-color: var(--ds-border-muted, var(--ds-border-muted));
 }
 /* Force the SVG to honor its viewBox aspect ratio even when wrapped.
    Without this, some browsers compute height: auto as 0 when the SVG
@@ -2945,7 +2945,7 @@ html:not(.js) .reading-progress { display: none !important; }
 .fig-region figcaption {
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 0.875rem;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   margin-top: 22px;  /* leaves room for the chip pill straddling the image's bottom edge */
   line-height: 1.5;
   /* Left-aligned and the full width of the figure. Centring a caption over a
@@ -2973,8 +2973,8 @@ html:not(.js) .reading-progress { display: none !important; }
   justify-content: center;
   align-items: center;
   gap: 4px 14px;
-  background: var(--arxiv-surface);
-  border: 1px solid var(--arxiv-pill-border);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-muted);
   border-radius: 999px;
   padding: 6px 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
@@ -3000,7 +3000,7 @@ html:not(.js) .reading-progress { display: none !important; }
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 11px;
   font-weight: 500;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   background: none;
   border: none;
   cursor: pointer;
@@ -3011,19 +3011,19 @@ html:not(.js) .reading-progress { display: none !important; }
   margin-block: -5px;    /* ...without changing the pill's drawn height */
 }
 .fig-chip:hover {
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 .fig-chip:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: 1px;
   border-radius: 2px;
 }
 .fig-chip svg { width: 1em; height: 1em; flex-shrink: 0; }
 /* CTA variant — calls attention to the missing-alt prompt. */
 .fig-chip.is-cta {
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   font-weight: 600;
 }
 /* Inline notice — not interactive, just informational text. */
@@ -3068,7 +3068,7 @@ html:not(.js) .reading-progress { display: none !important; }
    touching the next entry's number — +4px
    leaves 8px of breathing inside and returns the rest of the
    padding to the gap between entries. z-index -1 keeps the wash
-   behind the entry's text. Border is --arxiv-grey-dis: pill-border was too
+   behind the entry's text. Border is --ds-text-disabled: pill-border was too
    faint against the warm page background (same review). Paragraph
    outlines keep the fainter tone by her earlier direction — a
    paragraph border is ambience, an entry border anchors a menu. */
@@ -3102,10 +3102,10 @@ li.ltx_bibitem::after {
 li.ltx_bibitem:hover::after,
 li.ltx_bibitem.is-active::after,
 li.ltx_bibitem.cite-active-target::after {
-  border-color: var(--arxiv-grey-dis);
+  border-color: var(--ds-text-disabled);
 }
 li.ltx_bibitem.cite-active-target::after {
-  background: var(--arxiv-active-bg);
+  background: var(--ds-accent-wash);
 }
 
 /* Centered like the figure and equation menus (an earlier left-aligned try broke the family
@@ -3135,7 +3135,7 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
   font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
   font-weight: 600;
   font-size: 0.75rem;
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-style: normal;
@@ -3166,7 +3166,7 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
   font-style: normal;
   font-size: 11px;
   font-weight: 500;
-  color: var(--arxiv-link-blue);
+  color: var(--ds-link);
   background: none;
   border: none;
   padding: 0;
@@ -3176,9 +3176,9 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
   text-align: left;
   line-height: 1.3;
 }
-.fig-alt-action:hover { color: var(--arxiv-link-hover); }
+.fig-alt-action:hover { color: var(--ds-link-hover); }
 .fig-alt-action:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
+  outline: 2px solid var(--ds-link);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -3263,7 +3263,7 @@ dialog.fig-lightbox {
   padding: 0;
   width: min(94vw, 1400px);
   height: min(92vh, 1000px);
-  background: var(--arxiv-surface);
+  background: var(--ds-surface);
   box-shadow: 0 12px 48px rgba(0,0,0,0.3);
   overflow: hidden;
   display: none;
@@ -3277,8 +3277,8 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   align-items: center;
   gap: 8px;
   padding: 10px 14px;
-  border-bottom: 1px solid var(--arxiv-pill-border);
-  background: var(--arxiv-warm-wash);
+  border-bottom: 1px solid var(--ds-border-muted);
+  background: var(--ds-canvas);
   flex-shrink: 0;
 }
 .fig-lightbox-title {
@@ -3287,7 +3287,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 0.875rem; /* 14px */
   font-weight: 600;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3300,19 +3300,19 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   min-width: 32px;
   height: 32px;
   padding: 0 8px;
-  border: 1px solid var(--arxiv-border-light);
+  border: 1px solid var(--ds-border);
   border-radius: 6px;
-  background: var(--arxiv-surface);
-  color: var(--arxiv-repository-brown);
+  background: var(--ds-surface);
+  color: var(--ds-text);
   font-family: "IBM Plex Sans", -apple-system, sans-serif;
   font-size: 0.875rem;
   cursor: pointer;
 }
 .fig-lightbox-zoombtn:hover,
-.fig-lightbox-close:hover { background: var(--arxiv-card-grey); }
+.fig-lightbox-close:hover { background: var(--ds-surface-muted); }
 .fig-lightbox-zoombtn:focus-visible,
 .fig-lightbox-close:focus-visible {
-  outline: 3px solid var(--arxiv-link-blue);
+  outline: 3px solid var(--ds-link);
   outline-offset: 1px;
 }
 .fig-lightbox-zoomlevel {
@@ -3320,7 +3320,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   text-align: center;
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: 0.75rem; /* 12px */
-  color: var(--arxiv-library-grey);
+  color: var(--ds-text-muted);
 }
 .fig-lightbox-close { margin-left: 8px; font-size: 1.25rem; line-height: 1; }
 
@@ -3330,7 +3330,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   min-height: 0;
   overflow: hidden;
   position: relative;
-  background: var(--arxiv-warm-wash);
+  background: var(--ds-canvas);
   touch-action: none; /* we handle pan/pinch with pointer events */
 }
 .fig-lightbox-stage.is-pannable { cursor: grab; }
@@ -3346,7 +3346,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   transform-origin: center center;
   transition: transform 0.15s ease-out;
   max-width: none;
-  background: var(--arxiv-surface);
+  background: var(--ds-surface);
 }
 .fig-lightbox-stage > .fig-lightbox-content > img,
 .fig-lightbox-stage > .fig-lightbox-content > svg {
@@ -3364,11 +3364,11 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
   max-height: 20%;
   overflow-y: auto;
   padding: 10px 16px;
-  border-top: 1px solid var(--arxiv-pill-border);
+  border-top: 1px solid var(--ds-border-muted);
   font-family: "IBM Plex Sans", -apple-system, sans-serif;   /* match the page caption; a <dialog> does not inherit it */
   font-size: 0.875rem; /* 13px */
   line-height: 1.5;
-  color: var(--arxiv-repository-brown);
+  color: var(--ds-text);
   text-align: left;
 }
 
@@ -3427,7 +3427,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
      body is more specific and would otherwise carry its text colour into
      print. Background is left plain because that same rule outranks it
      either way. */
-  body { background: var(--arxiv-warm-wash); color: black !important; }
+  body { background: var(--ds-canvas); color: black !important; }
   .ltx_page_main { margin: 0; }
   .new-watermark {
     position: static;
@@ -3508,10 +3508,10 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 .mg-mark {
   position: absolute; top: -1px;
   display: inline-flex; align-items: center; gap: 4px;
-  border: 1px solid var(--arxiv-pill-border); border-radius: 999px;
-  background: var(--arxiv-surface);
-  color: var(--arxiv-library-grey);
-  font-family: var(--arxiv-font-condensed); font-size: 10.5px; font-weight: 600;
+  border: 1px solid var(--ds-border-muted); border-radius: 999px;
+  background: var(--ds-surface);
+  color: var(--ds-text-muted);
+  font-family: var(--ds-font-condensed); font-size: 10.5px; font-weight: 600;
   letter-spacing: 0.03em; line-height: 1;
   padding: 4px 8px; cursor: pointer; white-space: nowrap;
   /* 24px hit-area floor without growing the visual box */
@@ -3543,8 +3543,8 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
    underlines; the pill surface never changes (a
    fill highlights the whole pill, which stops making sense once a
    pill holds several links; the text change works for both). */
-.mg-mark:hover { color: var(--arxiv-link-blue); text-decoration: underline; text-underline-offset: 2px; }
-.mg-mark:focus-visible { outline: 2px solid var(--arxiv-link-blue); outline-offset: 1px; opacity: 1; }
+.mg-mark:hover { color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; }
+.mg-mark:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 1px; opacity: 1; }
 /* Scope rule: spans the whole (possibly math-interrupted) paragraph. */
 .ltx_para::before {
   content: ""; position: absolute; left: -14px; top: 20px; bottom: 2px;
@@ -3552,7 +3552,7 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
      blue read as a primary-action signal, and pill-border still felt too
      dark. The rule is a whisper of scope, not
      a divider — the lightest grey in the ladder is the right voice. */
-  width: 2px; border-radius: 1px; background: var(--arxiv-card-grey);
+  width: 2px; border-radius: 1px; background: var(--ds-surface-muted);
   opacity: 0; transition: opacity 0.12s; pointer-events: none;
 }
 .ltx_para:hover::before, .ltx_para.is-active::before { opacity: 1; }
@@ -3576,7 +3576,7 @@ h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { posi
 @media (max-width: 999px) {
   .ltx_para .mg-mark { display: none; }
   .ltx_para.is-active {
-    outline: 1px solid var(--arxiv-pill-border); outline-offset: 8px; border-radius: 2px;
+    outline: 1px solid var(--ds-border-muted); outline-offset: 8px; border-radius: 2px;
   }
   /* No left margin: the rail hugs the paragraph's right edge, and the
      sticky pill rides it while a long paragraph scrolls. */
@@ -3592,7 +3592,7 @@ h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { posi
 @media (max-width: 999px) and (hover: hover) {
   /* Narrow window, mouse present: hover works, so hover reveals —
      same visuals as the tap path. */
-  .ltx_para:hover { outline: 1px solid var(--arxiv-pill-border); outline-offset: 8px; border-radius: 2px; }
+  .ltx_para:hover { outline: 1px solid var(--ds-border-muted); outline-offset: 8px; border-radius: 2px; }
   .ltx_para:hover .mg-mark { display: inline-flex; opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .mg-mark, .ltx_para::before { transition: none; } }
@@ -3607,7 +3607,7 @@ h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { posi
    │                                                                  │
    │  Repository Brown is the canvas in dark and the text in light,   │
    │  so the token roles invert and every rule that already reads     │
-   │  var(--arxiv-repository-brown) flips for free.                   │
+   │  var(--ds-text) flips for free.                   │
    └──────────────────────────────────────────────────────────────────┘ */
 @media (prefers-color-scheme: dark) {
   /* Take the canvas and the inherited text colour from tokens rather than
@@ -3615,8 +3615,8 @@ h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { posi
      lighter than our surface, which inverted the depth of every card
      (docs/dark-mode.html, trap 3). */
   html:not([data-theme="light"]) body {
-    background: var(--arxiv-warm-wash);
-    color: var(--arxiv-repository-brown);
+    background: var(--ds-canvas);
+    color: var(--ds-text);
   }
 
   /* Funder logos ship as dark-ink marks only, and a funder's mark may not
@@ -3639,8 +3639,8 @@ h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { posi
    control that writes ar5iv_theme to localStorage, and the bootstrap
    script at the top of this file turns that into data-theme="dark". The two blocks must stay identical. */
 html[data-theme="dark"] body {
-    background: var(--arxiv-warm-wash);
-    color: var(--arxiv-repository-brown);
+    background: var(--ds-canvas);
+    color: var(--ds-text);
 }
 
 /* Funder logos ship as dark-ink marks only, and a funder's mark may not

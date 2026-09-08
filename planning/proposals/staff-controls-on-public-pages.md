@@ -59,8 +59,8 @@ A **scope class that re-points tokens and declares no properties of its own**:
 
 ```css
 .ds-staff {
-  --arxiv-open-blue: …;
-  --arxiv-link-blue: …;
+  --ds-accent: …;
+  --ds-link: …;
 }
 ```
 
@@ -80,7 +80,7 @@ Tested against the live stylesheet, 2026-09-08:
 
 | Tier | Re-pointing its accent token | Why |
 |---|---|---|
-| `.ds-btn-text` | **works** | reads `var(--arxiv-link-blue)` |
+| `.ds-btn-text` | **works** | reads `var(--ds-link)` |
 | `.ds-btn-secondary` | **no effect** | fill and border are literal values |
 | `.ds-btn-primary` | **no effect** | both gradients are literal hexes — `#a5d6fe`, `#b0d5ed`, `#6ba8da` |
 

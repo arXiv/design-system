@@ -25,8 +25,8 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Building / touching | Read | Reuse |
 |---|---|---|
 | Anything with color | `docs/color-mapping.md`, `docs/colors.html` | tokens in that context's stylesheet |
-| Typography, text sizes | `docs/typography.md`, `docs/typography.html` | `--arxiv-font-*` / `--font-*` |
-| Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--space-*` |
+| Typography, text sizes | `docs/typography.md`, `docs/typography.html` | `--ds-font-*` |
+| Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--ds-space-*` |
 | Buttons | `docs/buttons.html`, then your context's deep page (`docs/public/button-styles.html` / `docs/internal/button-styles.html`) | `.ds-btn*` (public, incl. `.ds-btn-text` and `.on-tint` / `.on-dark`), `.btn-*` (internal) |
 | Alerts, status & feedback messages | `docs/alerts.html`, then `docs/public/alert-styles.html` or `docs/internal/alert-styles.html` | `.ds-alert*` — never rebuild its chrome |
 | Cards, rails, page organization | `docs/organizing-content.html` | card conventions, dl row grammar, `.ds-acc-rail` in a sidebar |

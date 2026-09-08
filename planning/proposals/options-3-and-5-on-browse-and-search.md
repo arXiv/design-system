@@ -18,7 +18,7 @@ The premise "design is shared via `arxiv-base`" is **already only half true**. `
 | base dependency | — | git **`branch=master`**, 1-min freshness (rolling) | git **`rev=1.0.1`** (but `Pipfile` pins commit `ed3feece`, `poetry.lock` resolved `1.0.0a5`) |
 | Uses base's layout? | n/a | **No** — own `base.html`, imports macros only | **Yes** — `extends "base/base.html"` |
 | CSS approach | SASS + **Bulma 0.7.2**, manual `sass` compile | ~20 **hand-written CSS** files, **no build, no framework** | tiny `search.sass` (144 ln) + base's Bulma |
-| Design tokens | SASS vars (`$red-dark`, `$primary`) | hardcoded hex + **one** `:root` var (`--arxiv-font-sans`) | hardcoded hex |
+| Design tokens | SASS vars (`$red-dark`, `$primary`) | hardcoded hex + **one** `:root` var (`--ds-font-sans`) | hardcoded hex |
 | Fonts | **Open Sans via Google Fonts** ⚠ | self-hosted **IBM Plex** woff2 ✓ | inherits Open Sans ⚠ |
 | Palette vs policy | **`$primary = #b31b1b` (Campus Red)** ⚠ | new palette, hand-coded ✓ (values match this repo) | inherits old palette ⚠ |
 | Asset delivery | versioned static path `/static/base/{VERSION}/` + Flask-S3/CDN | `?v=YYYYMMDD` query params, Flask-S3 | `url_for('static')`, Flask-S3 |

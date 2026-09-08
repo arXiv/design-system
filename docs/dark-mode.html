@@ -7,32 +7,32 @@
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="public/design-system.css">
   <style>/* ── Swatch pairs ── */
-    .pair-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:var(--space-block); }
-    .pair { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 6px; padding: 10px 12px; font-size: 12px; }
-    .pair .chips { display: flex; gap:var(--gap-glyph); margin:6px 0 var(--space-1); }
-    .chip { flex: 1; border-radius: 4px; padding: 7px 8px; font-family: var(--arxiv-font-mono); font-size: 10.5px; border: 1px solid rgba(0,0,0,0.08); }
-    .pair .tok { font-family: var(--arxiv-font-mono); font-size: 11px; color: var(--arxiv-repository-brown); }
+    .pair-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:var(--ds-space-block); }
+    .pair { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 6px; padding: 10px 12px; font-size: 12px; }
+    .pair .chips { display: flex; gap:var(--ds-gap-glyph); margin:6px 0 var(--ds-space-1); }
+    .chip { flex: 1; border-radius: 4px; padding: 7px 8px; font-family: var(--ds-font-mono); font-size: 10.5px; border: 1px solid rgba(0,0,0,0.08); }
+    .pair .tok { font-family: var(--ds-font-mono); font-size: 11px; color: var(--ds-text); }
 
     /* ── Live dark preview panel ──
        Mirrors the INTERNAL stylesheet's dark block locally so the dark
        rendering is visible without switching the OS theme. The stylesheet's
        dark block is the source of truth — never fork values elsewhere. */
     .dark-scope {
-      --surface: #252118; --surface-header: #302c28; --surface-hover: #2a2520;
-      --border: #3a3530; --text: #f0eeec; --grey: #b0aba6; --grey-ui: #8b8680;
-      --sec-bg: #1e2b0d; --success-bg: #1e2b0d; --success-border: #8fbd3a; --success-fg: #c5e1a5;
+      --ds-surface: #252118; --ds-surface-muted: #302c28; --ds-surface-hover: #2a2520;
+      --ds-border: #3a3530; --ds-text: #f0eeec; --ds-text-muted: #b0aba6; --ds-border-strong: #8b8680;
+      --ds-accent-wash: #1e2b0d; --ds-success-bg: #1e2b0d; --ds-success-border: #8fbd3a; --ds-success-fg: #c5e1a5;
       background: #1c1a17; border-radius: 8px; padding: 22px;
-      font-family: "IBM Plex Sans", sans-serif; color: var(--text);
+      font-family: "IBM Plex Sans", sans-serif; color: var(--ds-text);
     }
-    .dark-scope .ds-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
-    .dark-scope .ds-table th { text-align: left; font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--grey); padding: 9px 14px; background: var(--surface-header); border-bottom: 1px solid var(--border); }
-    .dark-scope .ds-table td { padding: 10px 14px; border-bottom: 1px solid var(--surface-header); color: var(--text); }
-    .dark-scope .ds-table tr.is-selected td { background: var(--sec-bg); }
+    .dark-scope .ds-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 6px; overflow: hidden; }
+    .dark-scope .ds-table th { text-align: left; font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ds-text-muted); padding: 9px 14px; background: var(--ds-surface-muted); border-bottom: 1px solid var(--ds-border); }
+    .dark-scope .ds-table td { padding: 10px 14px; border-bottom: 1px solid var(--ds-surface-muted); color: var(--ds-text); }
+    .dark-scope .ds-table tr.is-selected td { background: var(--ds-accent-wash); }
     .dark-scope .badge { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: 11px; border-radius: 3px; padding: 1px 6px; border: 1px solid transparent; }
     .dark-scope .b-new { background: #13294a; color: #93c5fd; border-color: #2a4a7a; }
     .dark-scope .b-rep { background: #3a2f0e; color: #fde68a; border-color: #7a5c00; }
     .dark-scope .b-wdr { background: #474340; color: #e8e4df; border-color: #8b8680; }
-    .dark-scope .alert { display: flex; gap:var(--gap-glyph); padding: 12px 14px; border: 1px solid var(--success-border); border-left-width: 4px; border-radius: 6px; background: var(--success-bg); color: var(--success-fg); font-size: 13px; margin-top:var(--space-3); max-width: 560px; }
+    .dark-scope .alert { display: flex; gap:var(--ds-gap-glyph); padding: 12px 14px; border: 1px solid var(--ds-success-border); border-left-width: 4px; border-radius: 6px; background: var(--ds-success-bg); color: var(--ds-success-fg); font-size: 13px; margin-top:var(--ds-space-3); max-width: 560px; }
 
   
     /* Inline links in page copy. These sit on the page canvas. Nav links
@@ -111,13 +111,13 @@
       literal with a comment saying why — a masthead, a brand fill, a colour specimen whose subject is the value
       itself. <a href="#traps">Trap 1</a></li>
 
-      <li><strong>Fill raised things with <code>--arxiv-surface</code>.</strong> Not
-      <code>--arxiv-warm-wash</code>: the wash is a pale tint in light and <em>is</em> the canvas in dark, so anything
+      <li><strong>Fill raised things with <code>--ds-surface</code>.</strong> Not
+      <code>--ds-canvas</code>: the wash is a pale tint in light and <em>is</em> the canvas in dark, so anything
       filled with it disappears. <a href="#traps">Trap 2</a></li>
 
       <li><strong>Check any text sitting on an accent fill.</strong> Accents hold their light values in dark, so the
-      text on them must not flip either — <code>--text-on-lime</code> on lime,
-      <code>--arxiv-repository-brown-on-blue</code> on Open Blue. Reaching for the plain token puts near-white text on
+      text on them must not flip either — <code>--ds-text-on-accent</code> on lime,
+      <code>--ds-text-on-accent</code> on Open Blue. Reaching for the plain token puts near-white text on
       a light fill, about 1.3:1.</li>
 
       <li><strong>Set the page's own background and text from tokens.</strong> An inherited colour from a platform
@@ -151,7 +151,7 @@
     <pre><code>&lt;html lang="en" data-theme="light"&gt;   &lt;!-- locks this page to light --&gt;</code></pre>
     <ul class="notes" style="margin-top:14px">
       <li>Tokens flip; components consuming tokens flip for free. Never write a dark hex into a page.</li>
-      <li>Accent colors hold in both modes: Access Lime and Open Blue stay themselves. Text sitting <em>on</em> an accent fill therefore must not flip either — use <code>--text-on-lime</code> on lime, and <code>--arxiv-repository-brown-on-blue</code> on Open Blue. Reaching for plain <code>--arxiv-repository-brown</code> puts near-white text on a light blue fill in dark mode, about 1.3:1.</li>
+      <li>Accent colors hold in both modes: Access Lime and Open Blue stay themselves. Text sitting <em>on</em> an accent fill therefore must not flip either — use <code>--ds-text-on-accent</code> on lime, and <code>--ds-text-on-accent</code> on Open Blue. Reaching for plain <code>--ds-text</code> puts near-white text on a light blue fill in dark mode, about 1.3:1.</li>
       <li>Anything that uses color to carry meaning keeps its second cue (icon, word, position) in dark mode too — the WCAG 1.4.1 requirement applies in both modes.</li>
     </ul>
 
@@ -174,8 +174,8 @@
   <!-- ── What flips today ── -->
   <section class="section">
     <h2 class="section-title">Dark-aware today — internal stylesheet</h2>
-    <p class="ds-section-desc">Tokens: surfaces (<code>--surface</code>, <code>--surface-header</code>,
-    <code>--surface-hover</code>, <code>--border</code>), canvas text (<code>--text</code>), grey ladder,
+    <p class="ds-section-desc">Tokens: surfaces (<code>--ds-surface</code>, <code>--ds-surface-muted</code>,
+    <code>--ds-surface-hover</code>, <code>--ds-border</code>), canvas text (<code>--ds-text</code>), grey ladder,
     link family, lime + secondary families, status families, focus ring. Components riding those tokens:
     buttons, icon buttons, info card, alerts, forms, data table, sortable headers, filter select,
     segmented control, toggle, type badges, metadata panel.</p>
@@ -203,25 +203,25 @@
     against real content:</p>
     <div style="background:#1c1a17; border-radius:8px; padding:26px; font-family:'IBM Plex Sans',sans-serif">
       <div style="color:#6ba8da; font-weight:600; font-size:18px; margin-bottom:4px;">Gauge-independent approach to inflation in quadratic gravity</div>
-      <div style="color: var(--arxiv-grey-dis); font-size:13px; margin-bottom:12px;">Elena M. Vasquez, Rahul Menon, Sofia Andersson · 24 Apr 2026</div>
+      <div style="color: var(--ds-text-disabled); font-size:13px; margin-bottom:12px;">Elena M. Vasquez, Rahul Menon, Sofia Andersson · 24 Apr 2026</div>
       <p style="color:#f0eeec; font-size:15px; max-width:60ch; margin:0 0 14px; line-height:1.6">We study the spectrum of
       planar super-Yang-Mills theory using the numerical conformal bootstrap, deriving
       <a href="#ignore" style="color:#64b5f6;">rigorous bounds</a> on the leading twist operators.</p>
       <div style="background:#2b2723; border:1px solid #3a3530; border-radius:8px; padding:12px 16px; max-width:480px; margin-bottom:16px">
-        <span style="color: var(--arxiv-grey-dis); font-size:12px; font-family:'IBM Plex Sans Condensed',sans-serif; text-transform:uppercase; letter-spacing:.05em;">Card surface</span>
+        <span style="color: var(--ds-text-disabled); font-size:12px; font-family:'IBM Plex Sans Condensed',sans-serif; text-transform:uppercase; letter-spacing:.05em;">Card surface</span>
         <div style="color:#f0eeec; font-size:13px;">Raised card on the Repository Brown canvas.</div>
       </div>
-      <span style="display:inline-block; background:linear-gradient(#a5d6fe,#a5d6fe) padding-box, linear-gradient(to bottom,#6ba8da,#2a4a6a) border-box; border:1.5px solid transparent; color: var(--arxiv-repository-brown); font-weight:600; font-size:14px; padding:10px 20px; border-radius:6px; box-shadow: inset 0 0 6px rgba(31,94,150,0.2), 0 1px 3px rgba(0,0,0,0.6); margin-right:8px;">View PDF</span>
-      <span style="display:inline-block; background:linear-gradient(#2b2723,#2b2723) padding-box, linear-gradient(to bottom,#4a443d,#6b655c) border-box; border:1.5px solid transparent; color: var(--arxiv-grey-dis); font-weight:600; font-size:14px; padding:10px 20px; border-radius:6px; box-shadow: inset 0 0 6px rgba(0,0,0,0.25), 0 1px 3px rgba(0,0,0,0.5);">TeX Source</span>
+      <span style="display:inline-block; background:linear-gradient(#a5d6fe,#a5d6fe) padding-box, linear-gradient(to bottom,#6ba8da,#2a4a6a) border-box; border:1.5px solid transparent; color: var(--ds-text); font-weight:600; font-size:14px; padding:10px 20px; border-radius:6px; box-shadow: inset 0 0 6px rgba(31,94,150,0.2), 0 1px 3px rgba(0,0,0,0.6); margin-right:8px;">View PDF</span>
+      <span style="display:inline-block; background:linear-gradient(#2b2723,#2b2723) padding-box, linear-gradient(to bottom,#4a443d,#6b655c) border-box; border:1.5px solid transparent; color: var(--ds-text-disabled); font-weight:600; font-size:14px; padding:10px 20px; border-radius:6px; box-shadow: inset 0 0 6px rgba(0,0,0,0.25), 0 1px 3px rgba(0,0,0,0.5);">TeX Source</span>
     </div>
     <p class="ds-section-desc" style="margin-top:12px">Also dark-aware, as before — the link and status families:</p>
     <div class="pair-grid">
-      <div class="pair"><span class="tok">--arxiv-link-blue</span><div class="chips"><span class="chip" style="background: var(--arxiv-surface);color: var(--arxiv-link-blue)">#1565c0 light</span><span class="chip" style="background:#1c1a17;color:#64b5f6">#64b5f6 dark</span></div></div>
-      <div class="pair"><span class="tok">--arxiv-link-visited</span><div class="chips"><span class="chip" style="background: var(--arxiv-surface);color: var(--arxiv-link-visited)">#7b2fbe light</span><span class="chip" style="background:#1c1a17;color:#c690e3">#c690e3 dark</span></div></div>
-      <div class="pair"><span class="tok">--arxiv-info-bg / -fg</span><div class="chips"><span class="chip" style="background:#e7f1fd;color:#1a3a78">light</span><span class="chip" style="background:#132433;color:#90caf9">dark</span></div></div>
-      <div class="pair"><span class="tok">--arxiv-warning-bg / -fg</span><div class="chips"><span class="chip" style="background:#fff8e1;color: var(--arxiv-warning-fg)">light</span><span class="chip" style="background:#2e2410;color:#ffe082">dark</span></div></div>
-      <div class="pair"><span class="tok">--arxiv-success-bg / -fg</span><div class="chips"><span class="chip" style="background:#e8f5d8;color: var(--arxiv-success-fg)">light</span><span class="chip" style="background:#1e2b0d;color:#c5e1a5">dark</span></div></div>
-      <div class="pair"><span class="tok">--arxiv-error-bg / -fg</span><div class="chips"><span class="chip" style="background:#fdeaea;color: var(--arxiv-error-fg)">light</span><span class="chip" style="background:#2d1414;color:#ef9a9a">dark</span></div></div>
+      <div class="pair"><span class="tok">--ds-link</span><div class="chips"><span class="chip" style="background: var(--ds-surface);color: var(--ds-link)">#1565c0 light</span><span class="chip" style="background:#1c1a17;color:#64b5f6">#64b5f6 dark</span></div></div>
+      <div class="pair"><span class="tok">--ds-link-visited</span><div class="chips"><span class="chip" style="background: var(--ds-surface);color: var(--ds-link-visited)">#7b2fbe light</span><span class="chip" style="background:#1c1a17;color:#c690e3">#c690e3 dark</span></div></div>
+      <div class="pair"><span class="tok">--ds-info-bg / -fg</span><div class="chips"><span class="chip" style="background:#e7f1fd;color:#1a3a78">light</span><span class="chip" style="background:#132433;color:#90caf9">dark</span></div></div>
+      <div class="pair"><span class="tok">--ds-warning-bg / -fg</span><div class="chips"><span class="chip" style="background:#fff8e1;color: var(--ds-warning-fg)">light</span><span class="chip" style="background:#2e2410;color:#ffe082">dark</span></div></div>
+      <div class="pair"><span class="tok">--ds-success-bg / -fg</span><div class="chips"><span class="chip" style="background:#e8f5d8;color: var(--ds-success-fg)">light</span><span class="chip" style="background:#1e2b0d;color:#c5e1a5">dark</span></div></div>
+      <div class="pair"><span class="tok">--ds-error-bg / -fg</span><div class="chips"><span class="chip" style="background:#fdeaea;color: var(--ds-error-fg)">light</span><span class="chip" style="background:#2d1414;color:#ef9a9a">dark</span></div></div>
     </div>
   </section>
 
@@ -231,26 +231,26 @@
     <p class="ds-section-desc">Three ways a token-driven page still comes out wrong in dark mode. All three were
     found building the blog, which is the first arXiv site to run dark end to end.</p>
 
-    <table class="ds-table-framed spec-table" style="border-collapse:collapse; background: var(--arxiv-surface); border:1px solid var(--arxiv-border-light); font-size:13px; width:100%">
-      <tr style="background:var(--arxiv-card-grey)">
-        <th style="text-align:left; padding:8px 13px; font-family:var(--arxiv-font-condensed); font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--arxiv-library-grey)">Trap</th>
-        <th style="text-align:left; padding:8px 13px; font-family:var(--arxiv-font-condensed); font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--arxiv-library-grey)">What goes wrong</th>
-        <th style="text-align:left; padding:8px 13px; font-family:var(--arxiv-font-condensed); font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--arxiv-library-grey)">What to do</th>
+    <table class="ds-table-framed spec-table" style="border-collapse:collapse; background: var(--ds-surface); border:1px solid var(--ds-border); font-size:13px; width:100%">
+      <tr style="background:var(--ds-surface-muted)">
+        <th style="text-align:left; padding:8px 13px; font-family:var(--ds-font-condensed); font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ds-text-muted)">Trap</th>
+        <th style="text-align:left; padding:8px 13px; font-family:var(--ds-font-condensed); font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ds-text-muted)">What goes wrong</th>
+        <th style="text-align:left; padding:8px 13px; font-family:var(--ds-font-condensed); font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ds-text-muted)">What to do</th>
       </tr>
       <tr>
-        <td style="padding:9px 13px; border-top:1px solid var(--arxiv-card-grey); font-weight:600">A token that fills a large field</td>
-        <td style="padding:9px 13px; border-top:1px solid var(--arxiv-card-grey)">Tokens whose dark value is a <em>text</em> accent go pale — Archival Blue flips to a light blue meant for headings. Painted across a masthead, the field washes out.</td>
-        <td style="padding:9px 13px; border-top:1px solid var(--arxiv-card-grey)">Pin the literal value and say why in a comment, the way the accent colors are pinned. An identity field is a fixed-role color, not a flipping one.</td>
+        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted); font-weight:600">A token that fills a large field</td>
+        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted)">Tokens whose dark value is a <em>text</em> accent go pale — Archival Blue flips to a light blue meant for headings. Painted across a masthead, the field washes out.</td>
+        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted)">Pin the literal value and say why in a comment, the way the accent colors are pinned. An identity field is a fixed-role color, not a flipping one.</td>
       </tr>
       <tr>
-        <td style="padding:9px 13px; border-top:1px solid var(--arxiv-card-grey); font-weight:600">A fill that equals the canvas</td>
-        <td style="padding:9px 13px; border-top:1px solid var(--arxiv-card-grey)">Warm Wash is a pale tint in light and <em>is</em> the canvas in dark. Anything filled with it — placeholder blocks, quiet panels — disappears in dark mode.</td>
-        <td style="padding:9px 13px; border-top:1px solid var(--arxiv-card-grey)">Fill raised things with <code>--arxiv-surface</code>, which is white in light and a lifted surface in dark. Reserve the wash for the page itself.</td>
+        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted); font-weight:600">A fill that equals the canvas</td>
+        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted)">Warm Wash is a pale tint in light and <em>is</em> the canvas in dark. Anything filled with it — placeholder blocks, quiet panels — disappears in dark mode.</td>
+        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted)">Fill raised things with <code>--ds-surface</code>, which is white in light and a lifted surface in dark. Reserve the wash for the page itself.</td>
       </tr>
       <tr>
-        <td style="padding:9px 13px; border-top:1px solid var(--arxiv-card-grey); font-weight:600">Text color set outside the tokens</td>
-        <td style="padding:9px 13px; border-top:1px solid var(--arxiv-card-grey)">A platform preset or inherited color (a theme's global text setting, an inline style) cannot flip, so body text stays dark on a dark canvas.</td>
-        <td style="padding:9px 13px; border-top:1px solid var(--arxiv-card-grey)">Set <code>body</code> color and background from tokens, and let everything inherit. Check computed styles rather than trusting the cascade.</td>
+        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted); font-weight:600">Text color set outside the tokens</td>
+        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted)">A platform preset or inherited color (a theme's global text setting, an inline style) cannot flip, so body text stays dark on a dark canvas.</td>
+        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted)">Set <code>body</code> color and background from tokens, and let everything inherit. Check computed styles rather than trusting the cascade.</td>
       </tr>
     </table>
   </section>

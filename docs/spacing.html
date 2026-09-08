@@ -12,37 +12,37 @@
        the tokens live in internal/design-system.css. This page renders
        them. Page chrome uses literal hex (not component tokens) so it is
        never mistaken for part of the system. ── */
-.ds-page-header code { color: var(--arxiv-archival-blue); background: none; }
+.ds-page-header code { color: var(--ds-accent-strong); background: none; }
 /* ── Scale specimens ── */
-    .scale { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; overflow: hidden; }
-    .scale-row { display: grid; grid-template-columns: 132px 1fr 150px; gap:var(--space-block); align-items: center; padding: 14px 20px; border-bottom: 1px solid #efeae4; }
+    .scale { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; overflow: hidden; }
+    .scale-row { display: grid; grid-template-columns: 132px 1fr 150px; gap:var(--ds-space-block); align-items: center; padding: 14px 20px; border-bottom: 1px solid #efeae4; }
     .scale-row:last-child { border-bottom: 0; }
-    .scale-meta code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12.5px; color: var(--arxiv-repository-brown); font-weight: 500; }
-    .scale-meta .px { display: block; font-size: 11px; color: var(--arxiv-grey-ui); margin-top:2px; letter-spacing: .02em; }
-    .scale-bar { height: 20px; background: var(--arxiv-open-blue); border-radius: 3px; }
-    .scale-use { font-size: 12px; color: var(--arxiv-library-grey); line-height: 1.45; }
+    .scale-meta code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12.5px; color: var(--ds-text); font-weight: 500; }
+    .scale-meta .px { display: block; font-size: 11px; color: var(--ds-border-strong); margin-top:2px; letter-spacing: .02em; }
+    .scale-bar { height: 20px; background: var(--ds-accent); border-radius: 3px; }
+    .scale-use { font-size: 12px; color: var(--ds-text-muted); line-height: 1.45; }
     @media (max-width: 640px) { .scale-row { grid-template-columns: 110px 1fr; } .scale-use { display: none; } }
 
     /* ── Proximity demo ── */
-    .prox-grid { display: grid; grid-template-columns: 1fr 1fr; gap:var(--space-block); }
+    .prox-grid { display: grid; grid-template-columns: 1fr 1fr; gap:var(--ds-space-block); }
     @media (max-width: 720px) { .prox-grid { grid-template-columns: 1fr; } }
-    .prox-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 22px 24px; }
+    .prox-card { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; padding: 22px 24px; }
     .prox-card h3 { font-size: 13px; margin:0 0 2px; }
-    .prox-card .verdict { font-size: 12px; margin:0 0 var(--space-4); font-weight: 600; }
-    .prox-card.good .verdict { color: var(--arxiv-success-fg); }
-    .prox-card.bad .verdict { color: var(--arxiv-error-fg); }
-.demo-value { font-size: 14px; color: var(--arxiv-repository-brown); }
+    .prox-card .verdict { font-size: 12px; margin:0 0 var(--ds-space-4); font-weight: 600; }
+    .prox-card.good .verdict { color: var(--ds-success-fg); }
+    .prox-card.bad .verdict { color: var(--ds-error-fg); }
+.demo-value { font-size: 14px; color: var(--ds-text); }
     /* GOOD: 4px label->value, 48px between groups */
     .grp { }
-    .good .grp + .grp { margin-top:var(--space-12); }
-    .good .demo-label + .demo-value { margin-top:var(--space-1); }
-    .good .demo-value + .demo-label { margin-top:var(--space-3); }
+    .good .grp + .grp { margin-top:var(--ds-space-12); }
+    .good .demo-label + .demo-value { margin-top:var(--ds-space-1); }
+    .good .demo-value + .demo-label { margin-top:var(--ds-space-3); }
     /* BAD: one flat gap everywhere */
     .bad .grp + .grp,
     .bad .demo-label + .demo-value,
-    .bad .demo-value + .demo-label { margin-top:var(--space-3); }
+    .bad .demo-value + .demo-label { margin-top:var(--ds-space-3); }
 
-    .rule-card { margin-bottom:var(--space-3); }
+    .rule-card { margin-bottom:var(--ds-space-3); }
 .rule-card p { }
 /* Inline links in page copy. These sit on the page canvas. Nav links
        carry their own, more specific rules. */
@@ -104,7 +104,7 @@
       One 4px-based / 8-point scale, and one rule about how to use it. Every gap on
       every arXiv page comes from these seven steps — no off-scale values (14, 26, …).
       Written spec: <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES.md</a> (Spacing);
-      tokens: <code>--space-1</code>…<code>--space-12</code> in <code>internal/design-system.css</code>.
+      tokens: <code>--ds-space-1</code>…<code>--ds-space-12</code> in <code>internal/design-system.css</code>.
     </p>
   </header>
 
@@ -112,43 +112,43 @@
     <h2 class="section-title">The scale</h2>
     <p class="ds-section-desc">
       Seven steps, each roughly 1.5× the last. The gaps in the bars below <em>are</em> the
-      token values — the page pulls them live from <code>--space-*</code>. Production code
-      namespaces them (<code>--arxiv-space-4</code> in a React/MUI app); the values map 1:1.
+      token values — the page pulls them live from <code>--ds-space-*</code>. Production code
+      uses them exactly as written &mdash; <code>--ds-space-4</code> everywhere, with no per-codebase renaming.
     </p>
     <div class="scale">
       <div class="scale-row">
-        <div class="scale-meta"><code>--space-1</code><span class="px">4px</span></div>
-        <div class="scale-bar" style="width: var(--space-1)"></div>
+        <div class="scale-meta"><code>--ds-space-1</code><span class="px">4px</span></div>
+        <div class="scale-bar" style="width: var(--ds-space-1)"></div>
         <div class="scale-use">Tightest — label→value, icon→text.</div>
       </div>
       <div class="scale-row">
-        <div class="scale-meta"><code>--space-2</code><span class="px">8px</span></div>
-        <div class="scale-bar" style="width: var(--space-2)"></div>
+        <div class="scale-meta"><code>--ds-space-2</code><span class="px">8px</span></div>
+        <div class="scale-bar" style="width: var(--ds-space-2)"></div>
         <div class="scale-use">Closely related inline items.</div>
       </div>
       <div class="scale-row">
-        <div class="scale-meta"><code>--space-3</code><span class="px">12px</span></div>
-        <div class="scale-bar" style="width: var(--space-3)"></div>
+        <div class="scale-meta"><code>--ds-space-3</code><span class="px">12px</span></div>
+        <div class="scale-bar" style="width: var(--ds-space-3)"></div>
         <div class="scale-use">Related stacked elements.</div>
       </div>
       <div class="scale-row">
-        <div class="scale-meta"><code>--space-4</code><span class="px">16px</span></div>
-        <div class="scale-bar" style="width: var(--space-4)"></div>
+        <div class="scale-meta"><code>--ds-space-4</code><span class="px">16px</span></div>
+        <div class="scale-bar" style="width: var(--ds-space-4)"></div>
         <div class="scale-use">Default gap between elements in a section.</div>
       </div>
       <div class="scale-row">
-        <div class="scale-meta"><code>--space-6</code><span class="px">24px</span></div>
-        <div class="scale-bar" style="width: var(--space-6)"></div>
+        <div class="scale-meta"><code>--ds-space-6</code><span class="px">24px</span></div>
+        <div class="scale-bar" style="width: var(--ds-space-6)"></div>
         <div class="scale-use">Sub-section separation / card padding.</div>
       </div>
       <div class="scale-row">
-        <div class="scale-meta"><code>--space-8</code><span class="px">32px</span></div>
-        <div class="scale-bar" style="width: var(--space-8)"></div>
+        <div class="scale-meta"><code>--ds-space-8</code><span class="px">32px</span></div>
+        <div class="scale-bar" style="width: var(--ds-space-8)"></div>
         <div class="scale-use">Larger internal padding.</div>
       </div>
       <div class="scale-row">
-        <div class="scale-meta"><code>--space-12</code><span class="px">48px</span></div>
-        <div class="scale-bar" style="width: var(--space-12)"></div>
+        <div class="scale-meta"><code>--ds-space-12</code><span class="px">48px</span></div>
+        <div class="scale-bar" style="width: var(--ds-space-12)"></div>
         <div class="scale-use">Breathing space <em>between</em> major sections.</div>
       </div>
     </div>
@@ -207,7 +207,7 @@
     <div class="ds-card rule-card">
       <h3>Between ≈ 3× within</h3>
       <p>Grouping is carried by contrast in spacing, not by lines. Reach for the named
-      break — <code>--space-block</code> within, <code>--space-section</code> between — rather than
+      break — <code>--ds-space-block</code> within, <code>--ds-space-section</code> between — rather than
       the raw steps they map to. Block is 2&times; tight and section is 3&times; block; below about
       1.5&times; the eye cannot tell the two apart and the grouping silently fails. When a border
       feels necessary to separate two blocks, first try widening the gap.</p>
@@ -222,9 +222,9 @@
 
     <div class="ds-card rule-card">
       <h3>Name the break, not the value</h3>
-      <p>Pages use <code>--space-tight</code> (inside a group), <code>--space-block</code> (between
-      blocks in a section) or <code>--space-section</code> (between sections) &mdash; never a pixel
-      value, and never a raw <code>--space-N</code>. The raw scale is the palette; these are the
+      <p>Pages use <code>--ds-space-tight</code> (inside a group), <code>--ds-space-block</code> (between
+      blocks in a section) or <code>--ds-space-section</code> (between sections) &mdash; never a pixel
+      value, and never a raw <code>--ds-space-N</code>. The raw scale is the palette; these are the
       roles, the same way colours are named for what they do rather than what hue they are.
       Changing what a break <em>means</em> then moves every page together.</p>
     </div>
@@ -247,7 +247,7 @@
       a margin or a gap, and whether it runs down the page or across it. So gap between siblings
       uses the rhythm above, on either axis.</p>
       <p>One exception: the space between a glyph and its label <em>inside</em> a single control is
-      part of the control rather than layout. Use <code>--gap-glyph</code> (<code>0.5em</code>),
+      part of the control rather than layout. Use <code>--ds-gap-glyph</code> (<code>0.5em</code>),
       which scales with that control's own type &mdash; the same exemption already given to button
       padding. Before this rule the same job was being done at 5, 6, 8, 10 and 11px, which is 0.38
       to 0.85em once each component's own size is accounted for.</p>
@@ -262,7 +262,7 @@
     </div>
     <div class="ds-card rule-card">
       <h3>Namespaced in production</h3>
-      <p>The canonical names are unprefixed (<code>--space-6</code>). Each codebase adds its own prefix to avoid collisions (<code>--arxiv-space-6</code> in React/MUI, <code>$arxiv-space-6</code> in Sass), mapping 1:1 to the values here.</p>
+      <p>There is one name per stop, <code>--ds-space-6</code>, and every codebase uses it exactly as written. No per-repository prefixes and no mapping tables: a mapping kept in another repo is invisible to everything here.</p>
     </div>
   </section>
 </div>
