@@ -106,7 +106,12 @@ def never_list(prefix, items):
 
 def emit():
     pub_l, pub_d = tokens(PUB, '[data-theme="dark"] {')
-    int_l, int_d = tokens(INT, "@media (prefers-color-scheme: dark)")
+    # The staff sheet is tier 2: it declares only what differs, and a staff page
+    # loads tier 1 first. So the palette a staff page actually sees is tier 1
+    # with tier 2 layered over it — which is what has to be measured.
+    ovr_l, ovr_d = tokens(INT, "@media (prefers-color-scheme: dark)")
+    int_l, int_d = dict(pub_l), dict(pub_d)
+    int_l.update(ovr_l); int_d.update(ovr_d)
     frag = []
     frag.append(BEGIN)
     frag.append('<p class="ct-note">Each passing cell renders its own pairing in your current mode; the numbers are the '
