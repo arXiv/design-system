@@ -87,6 +87,25 @@
   --ds-space-8:           2rem;  /* larger internal padding                   */
   --ds-space-12:          3rem;  /* breathing space BETWEEN major sections     */
 
+  /* Named rhythm — pages name the KIND of break, never a raw stop and never
+     a pixel. Same three names and same values as the public stylesheet: one
+     name per thing, across both surfaces. */
+  --ds-space-tight:       var(--ds-space-2);    /*  8px — inside a group        */
+  --ds-space-block:       var(--ds-space-4);    /* 16px — between blocks        */
+  --ds-space-section:     var(--ds-space-12);   /* 48px — between sections      */
+
+  /* The one gap the rhythm cannot supply: between a glyph and its label
+     inside a control. In em, so it tracks the control's own font size. */
+  --ds-gap-glyph:         0.5em;
+
+  /* Type stack. These were written out as literal font stacks in a handful
+     of rules here; the stacks are identical to the public ones, so they
+     become the same tokens. */
+  --ds-font-sans:      "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ds-font-condensed: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  --ds-font-mono:      "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ds-font-serif:     "IBM Plex Serif", Georgia, "STIX Two Text", "Times New Roman", serif;
+
   /* Semantic surfaces — the dark-mode substrate (DARK-MODE-AUDIT §3).     */
   /* Components consume these instead of hardcoding #fff / #f0eeec /       */
   /* #ddd8d2 so dark mode can flip them. Light values match what the       */
@@ -514,7 +533,7 @@
 
 /* Label — muted warm gray, must pass 4.5:1 on card bg #e8e4dc */
 .info-label {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.07em;
@@ -779,19 +798,19 @@
 .ds-tag {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: var(--ds-gap-glyph);
   min-height: 24px;
   padding: 2px 12px;
   border-radius: 999px;
-  font-family: "IBM Plex Mono", "SF Mono", "Fira Code", monospace;
-  font-size: 11px;
+  font-family: var(--ds-font-mono);
+  font-size: 0.6875rem;
   font-weight: 500;
   line-height: 1.4;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   white-space: nowrap;
   text-decoration: none;
-  background: var(--ds-surface-hover-strong);
+  background: var(--ds-surface-muted);
   border: 1px solid var(--ds-border);
   color: var(--ds-text-muted);
 }
@@ -836,8 +855,8 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
   color: var(--ds-text-muted);
-  font-family: "IBM Plex Sans", system-ui, sans-serif;
-  font-size: 10px;
+  font-family: var(--ds-font-sans);
+  font-size: 0.625rem;
   font-weight: 500;
   text-transform: none;
   letter-spacing: 0;
@@ -857,7 +876,7 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
  */
 .type-badge {
   display: inline-block;
-  font-family: "IBM Plex Mono", "SF Mono", "Fira Code", monospace;
+  font-family: var(--ds-font-mono);
   font-size: 11px;
   font-weight: 400;
   border-radius: 3px;
@@ -1195,12 +1214,13 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
   border-color: var(--ds-focus-ring);
 }
 .ds-input:disabled {
-  background: var(--ds-surface-hover-strong);
+  background: var(--ds-surface-muted);
   color: var(--ds-text-disabled);
   cursor: not-allowed;
 }
 .ds-input::placeholder { color: var(--ds-text-muted); opacity: 1; }
-textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; }
+textarea.ds-input {
+  display: block; resize: vertical; min-height: 76px; line-height: 1.5; }
 
 .ds-hint {
   margin: var(--ds-space-2) 0 0;
@@ -1209,11 +1229,11 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; }
 }
 
 .ds-input.is-invalid {
-  border-color: var(--ds-danger);
+  border-color: var(--ds-error-border);
   box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.10);
 }
 .ds-input.is-invalid:focus-visible {
-  border-color: var(--ds-danger);
+  border-color: var(--ds-error-border);
   box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15);
 }
 
@@ -1224,7 +1244,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; }
 .ds-check {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: var(--ds-gap-glyph);
   font-size: 14px;
   margin-bottom: 8px;
   cursor: pointer;
@@ -1254,7 +1274,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; }
 .field-error {
   margin: 6px 0 0;
   font-size: 12px;
-  color: var(--ds-danger);
+  color: var(--ds-error-border);
 }
 
 .field-error[hidden] {
@@ -1375,9 +1395,11 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; }
  *   </div>
  */
 .ds-alert {
+  font-family: var(--ds-font-sans);
+  margin-block: var(--ds-space-block);
   display: flex;
   align-items: flex-start;
-  gap: 11px;
+  gap: var(--ds-space-tight);
   padding: 12px 14px;
   border: 1px solid;
   border-left-width: 4px;
