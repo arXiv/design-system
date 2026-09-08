@@ -2192,14 +2192,28 @@ select.ds-input { padding-right: 34px; }
   background: transparent;
   border: 0;
   border-radius: 0;
-  /* The rule belongs to the COMPONENT, not to the summary, so it marks the
-     bottom of the disclosure in both states — directly under the label when
-     closed, and under the revealed content when open. On the summary it would
-     become a divider that strands the open body below the line. */
+  /* Rules belong to the COMPONENT, not to the summary, so they mark the
+     extent of the disclosure in both states — closing tight under the label
+     when collapsed, and under the revealed content when open. On the summary
+     the lower rule would become a divider that strands the open body below
+     the line.
+
+     A rule above as well as below, so the disclosure has a top and a bottom
+     whether it stands alone or sits in a list. One line is a heading with an
+     underline; two lines are a container you can see the edges of, which is
+     what tells a reader that the content below the first rule belongs to the
+     label above it. */
+  border-top: 1px solid var(--arxiv-grey-ui);
   border-bottom: 1px solid var(--arxiv-grey-ui);
   margin: 20px 0 44px;   /* room before whatever follows; an open panel
                             otherwise runs straight into the next heading */
 }
+/* Stacked, they read as one ruled list: the items butt together and each
+   shared edge is one line, not two. The preceding item's bottom rule is the
+   next item's top rule. */
+.ds-acc-stack:has(> .ds-acc-flush) { gap: 0; }
+.ds-acc-stack > .ds-acc-flush { margin: 0; }
+.ds-acc-flush + .ds-acc-flush { border-top: 0; }
 .ds-acc-flush > summary {
   background: none;
   padding: 10px 0;
@@ -2280,6 +2294,80 @@ select.ds-input { padding-right: 34px; }
 .ds-acc-rail .ds-acc-body dt { margin-top: 10px; }
 .ds-acc-rail .ds-acc-body dt:first-child { margin-top: 0; }
 .ds-acc-rail .ds-acc-body dd { margin: 1px 0 0; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SHOW MORE  (.ds-show-more)
+   ───────────────────────────────────────────────────────────────────────
+   The other disclosure. An accordion hides a labelled SECTION; this
+   reveals the TAIL of something already begun — the rest of a long author
+   list, the rest of a long list of categories. The reader is already
+   reading the thing; the control only says how much of it is left.
+
+   That difference decides the markup. An accordion is <details>, so the
+   browser supplies the semantics. A tail cannot be, because <summary>
+   would put a heading in the middle of a sentence. So this is a real
+   <button> that owns three attributes, all required:
+
+     aria-expanded   "false" / "true", updated on every toggle.
+     aria-controls   the id of the region it reveals.
+     hidden          on that region while collapsed — NOT a class, so the
+                     names in it are out of the tab order and out of
+                     find-in-page when they are not on screen, with no
+                     CSS loaded at all.
+
+   The label counts: "show all 22 authors", not "show more". A reader
+   deciding whether to expand is asking how much is behind it, and a
+   screen-reader user hears the control with no view of the list. Return
+   it to "show fewer" when open.
+
+   Why grey and italic rather than Link Blue. Everywhere this control is
+   used, it sits at the end of a run of links — author names, category
+   links — and a Link Blue "show all 22 authors" is one more link in that
+   run, indistinguishable from a name. It is not a link: it goes nowhere,
+   it changes this page. Reading as a different KIND of thing than its
+   neighbours is the whole job, so it takes the muted text colour and
+   italic, and earns its underline on hover the way standalone links do.
+   Where it does not sit among links, that reasoning does not apply and
+   the text button (.ds-btn .ds-btn-text) is the right control instead.
+
+   Target size: the inline exception applies (DESIGN-POLICIES.md, Chrome
+   and interaction structure) — this is a target within a sentence, like a
+   citation chip, and growing it to 24px would break the line it sits in.
+
+     <ul class="…" id="authors">
+       <li><a href="…">A. Author</a></li>
+       …
+       <span id="authors-tail" hidden>…</span>
+     </ul>
+     <button type="button" class="ds-show-more"
+             aria-expanded="false" aria-controls="authors-tail">
+       … show all 22 authors
+     </button>
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-show-more {
+  display: inline;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: italic;
+  color: var(--arxiv-library-grey);
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: var(--gap-glyph);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ds-show-more:hover {
+  color: var(--arxiv-repository-brown);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.ds-show-more:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
 
 /* ═══════════════════════════════════════════════════════════════════════
    SITE FOOTER  (.ds-site-footer)
