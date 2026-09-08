@@ -204,7 +204,7 @@ Every tint in the system belongs to one of two families: the **warm tints** (Rep
 - **Library Grey and Link Blue hold AA through Active Wash** (`#d6e8f7`) but miss it on **Grey Active** (`#e4e0db`: 4.45 / 4.37) — on Grey Active use Repository Brown, Link Hover `#1050a0` (6.0:1), or large text.
 - **UI Boundary Grey holds its 3:1 only through Tint Light** — on Grey Active, Active Wash, or Open Blue, draw boundaries with Library Grey instead.
 - **On Open Blue itself, Repository Brown is the only text color.**
-- **Secondary buttons on tinted bands take the `.on-tint` modifier** (fill swaps to Card Grey — secondary via warm-on-cool material difference, not low contrast). See `public/design-system.css`.
+- **Secondary buttons on tinted bands take the `.on-tint` modifier** (fill swaps to Card Grey — secondary via warm-on-cool material difference, not low contrast). See `design-system.css`.
 
 ---
 
