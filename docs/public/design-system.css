@@ -875,6 +875,59 @@
   cursor: not-allowed;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════
+   CARD  (.ds-card)  and  FRAMED TABLE  (.ds-table-framed)
+   ───────────────────────────────────────────────────────────────────────
+   A raised surface with a hairline edge. The system had no card, so the
+   documentation invented one three times — .context-card, .demo and
+   .rule-card — with identical borders and five different paddings between
+   them. Anything that groups related content on the page canvas is this.
+
+   Padding is the scale, not a hand-picked pair. A card that needs different
+   room sets its own padding; it does not need a different card.
+
+   The framed table is the same surface applied to tabular data. It differs
+   from the foundation's bare table, which uses horizontal rules only and no
+   ground — use that inside prose, and this where the table is an object on
+   the page.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-card {
+  background: var(--arxiv-surface);
+  border: 1px solid var(--arxiv-border-light);
+  border-radius: 8px;
+  padding: var(--space-4) var(--space-6);
+}
+
+/* A card owns its internal rhythm, the same way .ds-container owns the space
+   between regions: the padding is the space at the edges, so the first and
+   last children need none of their own. Written with :where() so a page that
+   genuinely needs different type inside a card overrides it without a
+   specificity fight. */
+.ds-card > :first-child { margin-block-start: 0; }
+.ds-card > :last-child  { margin-block-end: 0; }
+:where(.ds-card) h3 { font-size: 1rem; margin: 0 0 var(--space-tight); }
+:where(.ds-card) p  { color: var(--arxiv-library-grey); }
+
+/* Cards side by side. auto-fit means the count follows the room rather than a
+   breakpoint: the grid drops to one column when a card can no longer hold its
+   minimum, and nothing has to be told. */
+.ds-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: var(--space-block);
+}
+
+.ds-table-framed {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--arxiv-surface);
+  border: 1px solid var(--arxiv-border-light);
+  border-radius: 8px;
+  overflow: hidden;      /* so the corners actually clip the header row */
+}
+
+
 /* ── Button group (.ds-btn-group) ─────────────────────────────────────
    A set of related buttons. The system had no such component, so every page
    invented one — nine of them across the docs alone (.live-row, .form-actions,

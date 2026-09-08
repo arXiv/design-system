@@ -13,13 +13,9 @@
        Advisory notes use the system's own .ds-alert component (no bespoke
        callout chrome on docs pages). ── */
 /* Context cards (public vs internal) */
-    .context-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:var(--space-block); }
-    .context-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 18px 20px; }
-    .context-card h3 { font-size: 15px; margin:0 0 var(--space-2); display: flex; align-items: center; gap:var(--gap-glyph); }
+.context-card h3 { display: flex; align-items: center; gap:var(--gap-glyph); }
     .context-dot { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.15); }
-    .context-card p { font-size: 13px; color: var(--arxiv-library-grey); line-height: 1.55; margin:0 0 var(--space-3); }
-
-    /* States — stackable flexbox columns: sit side by side where there is
+/* States — stackable flexbox columns: sit side by side where there is
        room, wrap to fewer columns on narrow viewports. */
     .state-flex { display: flex; flex-wrap: wrap; gap:var(--space-tight) var(--space-block); align-items: flex-start; margin-bottom:var(--space-3); }
 .btn-pair { }
@@ -113,7 +109,7 @@
     .ibtn-secondary.is-pressed { background: var(--i-sec-active); border-color: var(--i-sec-border-active); transform: translateY(1px); box-shadow: none; }
 
     /* Token tables */
-    .token-table { width: 100%; border-collapse: collapse; margin-top:var(--space-2); background: var(--arxiv-surface); border: 1px solid var(--arxiv-card-grey); border-radius: 6px; overflow: hidden; }
+    .token-table { margin-top:var(--space-2); }
     .token-table th, .token-table td { text-align: left; padding: 8px 12px; font-size: 12px; border-top: 1px solid var(--arxiv-card-grey); }
     .token-table thead th { background: var(--arxiv-card-grey); color: var(--arxiv-library-grey); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em; border-top: none; }
     .token-table code { font-family: var(--arxiv-font-mono); font-size: 11px; color: var(--arxiv-link-blue); background: none; padding: 0; }
@@ -125,9 +121,7 @@ pre .c { color: var(--arxiv-grey-ui); }
        gradient stops). All three clear AA on the code ground: comment
        4.81:1, keyword 12.91:1, string 14.26:1. */
     pre .s { color: #d4ecff; }
-
-    .notes { margin:0; padding-left: 22px; font-size: 13px; line-height: 1.7; color: var(--arxiv-repository-brown); }
-    .notes li { margin-bottom:var(--space-1); }
+.notes li { margin-bottom:var(--space-1); }
   
     /* ── Reference beside the demo it describes ──
        .ds-acc is the design system's own accordion, from
@@ -215,15 +209,15 @@ pre .c { color: var(--arxiv-grey-ui); }
     <p class="ds-section-desc">The primary-action color is set by the context, not by preference
     (<a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>, Internal vs. Public pages).</p>
 
-    <div class="context-cards">
-      <div class="context-card">
+    <div class="ds-card-grid context-cards">
+      <div class="ds-card context-card">
         <h3><span class="context-dot" style="background:#a5d6fe"></span>Public — Open Blue</h3>
         <p>Everything a reader or author sees on arxiv.org: listing, abstract, HTML paper pages.
         Primary is Open Blue <code>#a5d6fe</code> with Repository Brown text; secondary is white with a warm-grey gradient border.</p>
         <div class="ds-btn-group"><button class="ds-btn ds-btn-primary" type="button">HTML</button>
         <button class="ds-btn ds-btn-secondary" type="button">TeX Source</button></div>
       </div>
-      <div class="context-card ctx-internal">
+      <div class="ds-card context-card ctx-internal">
         <h3><span class="context-dot" style="background:#c4d82e"></span>Internal — Access Lime</h3>
         <p>Staff-facing tools: the moderation queue, arXiv Check, the Admin Console.
         Primary is Access Lime <code>#c4d82e</code>; secondary is a lime tint with a lime border.</p>
@@ -243,7 +237,7 @@ pre .c { color: var(--arxiv-grey-ui); }
 
     <div class="ref"><details class="ds-acc"><summary>Shared mechanics — every button, both contexts</summary><div class="ds-acc-body">
           <p style="margin:0">Identical across every button in every context (DESIGN-POLICIES, Buttons).</p>
-          <table class="token-table">
+          <table class="ds-table-framed token-table">
             <thead><tr><th>Property</th><th>Value</th></tr></thead>
             <tbody>
               <tr><td>Border radius</td><td>6px — buttons, icon buttons, segmented controls</td></tr>
@@ -324,7 +318,7 @@ pre .c { color: var(--arxiv-grey-ui); }
     </div>
 
     <div class="ref"><details class="ds-acc"><summary>Relevant classes</summary><div class="ds-acc-body">
-          <table class="token-table">
+          <table class="ds-table-framed token-table">
             <thead><tr><th>Class</th><th>Fill</th><th>Use for</th></tr></thead>
             <tbody>
               <tr><td><code>.ds-btn-primary</code></td><td><span class="swatch" style="background:#a5d6fe"></span>Open Blue <code>#a5d6fe</code></td><td>The page's call to action (HTML, PDF on the abstract page). One cluster per view.</td></tr>
@@ -392,9 +386,9 @@ pre .c { color: var(--arxiv-grey-ui); }
     live in <a href="forms.html">Forms &amp; validation</a>.</p>
 
     <h3 class="ds-panel-label">Which tier the second action takes</h3>
-    <div class="demo-grid">
+    <div class="ds-card demo-grid">
       <div><p class="ds-panel-label">Save or cancel</p>
-        <div class="form-demo">
+        <div class="form-ds-card demo">
           <div class="ds-field">
             <label class="ds-label" for="fx-title">Title</label>
             <input class="ds-input" id="fx-title" type="text" value="Spectral gaps in random regular graphs">
@@ -405,14 +399,14 @@ pre .c { color: var(--arxiv-grey-ui); }
           </div>
         </div></div>
       <div><p class="ds-panel-label">Continue or go back</p>
-        <div class="form-demo">
+        <div class="form-ds-card demo">
           <div class="ds-btn-group ds-btn-group--end form-actions">
             <button class="ds-btn ds-btn-secondary" type="button">Go back</button>
             <button class="ds-btn ds-btn-primary" type="submit">Continue</button>
           </div>
         </div></div>
       <div><p class="ds-panel-label">Backing out discards work</p>
-        <div class="form-demo">
+        <div class="form-ds-card demo">
           <div class="ds-field">
             <label class="ds-label" for="fx-reason">Reason for withdrawal</label>
             <textarea class="ds-input" id="fx-reason">The result in Section 4 does not hold for non-regular graphs.</textarea>
@@ -423,7 +417,7 @@ pre .c { color: var(--arxiv-grey-ui); }
           </div>
         </div></div>
       <div><p class="ds-panel-label">Three actions — the boundary</p>
-        <div class="form-demo">
+        <div class="form-ds-card demo">
           <div class="ds-btn-group ds-btn-group--end form-actions split">
             <button class="ds-btn ds-btn-secondary" type="button">Go back</button>
             <span class="ds-btn-group action-group">
@@ -433,7 +427,7 @@ pre .c { color: var(--arxiv-grey-ui); }
           </div>
         </div></div>
       <div><p class="ds-panel-label">One action</p>
-        <div class="form-demo">
+        <div class="form-ds-card demo">
           <div class="ds-field">
             <label class="ds-label" for="fx-email">Email address</label>
             <input class="ds-input" id="fx-email" type="email" value="a.novak@university.edu">
@@ -445,7 +439,7 @@ pre .c { color: var(--arxiv-grey-ui); }
     </div>
 
     <div class="ref"><details class="ds-acc"><summary>Relevant classes</summary><div class="ds-acc-body">
-          <table class="token-table">
+          <table class="ds-table-framed token-table">
             <thead><tr><th>The other action</th><th>Tier</th><th>Why</th></tr></thead>
             <tbody>
               <tr><td>Not proceeding — Cancel, Not now</td><td><strong>Text</strong></td><td>There is no second destination, so nothing is being ranked. A border would make the absence compete with the action.</td></tr>
@@ -468,9 +462,9 @@ pre .c { color: var(--arxiv-grey-ui); }
     </div></details></div>
 
     <h3 class="ds-panel-label">Blocked, busy, destructive</h3>
-    <div class="demo-grid">
+    <div class="ds-card demo-grid">
       <div><p class="ds-panel-label">Not available yet</p>
-        <div class="form-demo">
+        <div class="form-ds-card demo">
           <label class="ds-check">
             <input type="checkbox">
             <span>I grant arXiv a perpetual, non-exclusive license to distribute this article</span>
@@ -481,7 +475,7 @@ pre .c { color: var(--arxiv-grey-ui); }
           <p class="ds-hint" id="fx-gate">Grant the license before continuing.</p>
         </div></div>
       <div><p class="ds-panel-label">Submit in flight</p>
-        <div class="form-demo">
+        <div class="form-ds-card demo">
           <div class="ds-btn-group ds-btn-group--end form-actions">
             <button class="ds-btn ds-btn-text" type="button">Cancel</button>
             <button class="ds-btn ds-btn-primary" type="submit" aria-busy="true">
@@ -491,7 +485,7 @@ pre .c { color: var(--arxiv-grey-ui); }
           </div>
         </div></div>
       <div><p class="ds-panel-label">A destructive action</p>
-        <div class="form-demo">
+        <div class="form-ds-card demo">
           <div class="ds-btn-group ds-btn-group--end form-actions split">
             <button class="ds-btn ds-btn-destructive" type="button">Delete draft</button>
             <span class="ds-btn-group action-group">
@@ -527,7 +521,7 @@ pre .c { color: var(--arxiv-grey-ui); }
     </div></details></div>
 
     <h3 class="ds-panel-label">Rows in a repeatable group</h3>
-    <div class="form-demo">
+    <div class="form-ds-card demo">
       <div class="ds-btn-group repeat-row">
         <div class="ds-field">
           <label class="ds-label" for="fx-file2">Top-level file</label>
@@ -602,7 +596,7 @@ pre .c { color: var(--arxiv-grey-ui); }
     </div>
 
     <div class="ref"><details class="ds-acc"><summary>Relevant classes</summary><div class="ds-acc-body">
-          <table class="token-table">
+          <table class="ds-table-framed token-table">
             <thead><tr><th>Tier</th><th>Fill</th><th>Use for</th></tr></thead>
             <tbody>
               <tr><td><strong>Primary</strong></td><td><span class="swatch" style="background:#c4d82e"></span>Access Lime <code>--lime</code> #c4d82e</td><td>The screen's main action. One per view.</td></tr>

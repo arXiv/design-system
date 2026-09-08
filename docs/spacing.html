@@ -31,8 +31,7 @@
     .prox-card .verdict { font-size: 12px; margin:0 0 var(--space-4); font-weight: 600; }
     .prox-card.good .verdict { color: var(--arxiv-success-fg); }
     .prox-card.bad .verdict { color: var(--arxiv-error-fg); }
-    .demo-label { font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif; font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--arxiv-grey-ui); }
-    .demo-value { font-size: 14px; color: var(--arxiv-repository-brown); }
+.demo-value { font-size: 14px; color: var(--arxiv-repository-brown); }
     /* GOOD: 4px label->value, 48px between groups */
     .grp { }
     .good .grp + .grp { margin-top:var(--space-12); }
@@ -43,13 +42,9 @@
     .bad .demo-label + .demo-value,
     .bad .demo-value + .demo-label { margin-top:var(--space-3); }
 
-    .rule-card { background: var(--arxiv-surface); border: 1px solid var(--arxiv-border-light); border-radius: 8px; padding: 16px 20px; margin-bottom:var(--space-3); }
-    .rule-card h3 { font-size: 14px; margin:0 0 6px; }
-    .rule-card p { font-size: 13px; color: var(--arxiv-library-grey); margin:0; line-height: 1.55; }
-    .rule-card code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; background: var(--arxiv-card-grey); padding: 1px 5px; border-radius: 3px; color: var(--arxiv-repository-brown); }
-
-  
-    /* Inline links in page copy. These sit on the page canvas. Nav links
+    .rule-card { margin-bottom:var(--space-3); }
+.rule-card p { }
+/* Inline links in page copy. These sit on the page canvas. Nav links
        carry their own, more specific rules. */
 </style>
 </head>
@@ -171,32 +166,32 @@
         <h3>Proximity applied</h3>
         <p class="verdict">✓ Two groups, read instantly</p>
         <div class="grp">
-          <div class="demo-label">Submitter</div>
-          <div class="demo-value">A. Palomares</div>
-          <div class="demo-label">Submitted</div>
-          <div class="demo-value">14 Jul 2026</div>
+          <div class="ds-card ds-panel-label">Submitter</div>
+          <div class="ds-card demo-value">A. Palomares</div>
+          <div class="ds-card ds-panel-label">Submitted</div>
+          <div class="ds-card demo-value">14 Jul 2026</div>
         </div>
         <div class="grp">
-          <div class="demo-label">Primary category</div>
-          <div class="demo-value">gr-qc</div>
-          <div class="demo-label">License</div>
-          <div class="demo-value">CC BY 4.0</div>
+          <div class="ds-card ds-panel-label">Primary category</div>
+          <div class="ds-card demo-value">gr-qc</div>
+          <div class="ds-card ds-panel-label">License</div>
+          <div class="ds-card demo-value">CC BY 4.0</div>
         </div>
       </div>
       <div class="prox-card bad">
         <h3>One flat gap (14px everywhere)</h3>
         <p class="verdict">✗ One undifferentiated list</p>
         <div class="grp">
-          <div class="demo-label">Submitter</div>
-          <div class="demo-value">A. Palomares</div>
-          <div class="demo-label">Submitted</div>
-          <div class="demo-value">14 Jul 2026</div>
+          <div class="ds-card ds-panel-label">Submitter</div>
+          <div class="ds-card demo-value">A. Palomares</div>
+          <div class="ds-card ds-panel-label">Submitted</div>
+          <div class="ds-card demo-value">14 Jul 2026</div>
         </div>
         <div class="grp">
-          <div class="demo-label">Primary category</div>
-          <div class="demo-value">gr-qc</div>
-          <div class="demo-label">License</div>
-          <div class="demo-value">CC BY 4.0</div>
+          <div class="ds-card ds-panel-label">Primary category</div>
+          <div class="ds-card demo-value">gr-qc</div>
+          <div class="ds-card ds-panel-label">License</div>
+          <div class="ds-card demo-value">CC BY 4.0</div>
         </div>
       </div>
     </div>
@@ -204,11 +199,11 @@
 
   <section class="section">
     <h2 class="section-title">Rules that travel with the scale</h2>
-    <div class="rule-card">
+    <div class="ds-card rule-card">
       <h3>Stay on the scale</h3>
       <p>Reach for a token, never a hand-picked pixel. If a layout seems to want 14px or 26px, it wants an existing step (12 or 24) — or the design is fighting the grid. New values are a change to DESIGN-POLICIES, not a local override.</p>
     </div>
-    <div class="rule-card">
+    <div class="ds-card rule-card">
       <h3>Between ≈ 3× within</h3>
       <p>Grouping is carried by contrast in spacing, not by lines. Reach for the named
       break — <code>--space-block</code> within, <code>--space-section</code> between — rather than
@@ -216,7 +211,7 @@
       1.5&times; the eye cannot tell the two apart and the grouping silently fails. When a border
       feels necessary to separate two blocks, first try widening the gap.</p>
     </div>
-    <div class="rule-card">
+    <div class="ds-card rule-card">
       <h3>Everything in rem, spacing included</h3>
       <p>The scale is expressed in <code>rem</code>, so spacing scales with the reader's text size.
       A fixed gap beside growing text compresses the rhythm exactly for the person who asked for
@@ -224,7 +219,7 @@
       has to survive.</p>
     </div>
 
-    <div class="rule-card">
+    <div class="ds-card rule-card">
       <h3>Name the break, not the value</h3>
       <p>Pages use <code>--space-tight</code> (inside a group), <code>--space-block</code> (between
       blocks in a section) or <code>--space-section</code> (between sections) &mdash; never a pixel
@@ -233,7 +228,7 @@
       Changing what a break <em>means</em> then moves every page together.</p>
     </div>
 
-    <div class="rule-card">
+    <div class="ds-card rule-card">
       <h3>Containers own the space between regions</h3>
       <p>A section does not know what follows it, so it cannot know how far away that should be.
       Put the space on the container as <code>gap</code>, not on each child as a margin: gap never
@@ -245,7 +240,7 @@
       levels, never competing at the same one.</p>
     </div>
 
-    <div class="rule-card">
+    <div class="ds-card rule-card">
       <h3>Gap takes no scale of its own</h3>
       <p>&ldquo;How far apart do these sit&rdquo; means the same thing whether the space comes from
       a margin or a gap, and whether it runs down the page or across it. So gap between siblings
@@ -257,14 +252,14 @@
       to 0.85em once each component's own size is accounted for.</p>
     </div>
 
-    <div class="rule-card">
+    <div class="ds-card rule-card">
       <h3>A set of related controls needs a container</h3>
       <p>Buttons placed as bare siblings are spaced by the HTML whitespace between the tags &mdash;
       narrower than any deliberate value, and it looks like a bug because it is one. Use
       <code>.ds-btn-group</code>, or <code>--stack</code> for the vertical axis and
       <code>--end</code> for a form's action area.</p>
     </div>
-    <div class="rule-card">
+    <div class="ds-card rule-card">
       <h3>Namespaced in production</h3>
       <p>The canonical names are unprefixed (<code>--space-6</code>). Each codebase adds its own prefix to avoid collisions (<code>--arxiv-space-6</code> in React/MUI, <code>$arxiv-space-6</code> in Sass), mapping 1:1 to the values here.</p>
     </div>
