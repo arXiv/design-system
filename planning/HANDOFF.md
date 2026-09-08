@@ -2,9 +2,12 @@
 
 ## State
 
-16 commits on `master`, **none pushed**. Working tree clean. A local server
+18 commits on `master`, **none pushed**. Working tree clean. A local server
 serves the repo at `http://localhost:8080` (restart with
 `python3 -m http.server 8080` from the repo root).
+
+The two most recent commits close what were open decisions 1 and 2, and settle
+3 by finding it stale. What still needs Shamsi is under **Still open**.
 
 ## What was built
 
@@ -68,19 +71,53 @@ Duplicated selectors across the docs: **29 → 0**.
 - Mockups are not a style reference. Patterns are promoted into `docs/` when
   they stabilise.
 
+## Settled since
+
+1. **The close button — done.** One `.ds-close`, on both stylesheets. Text tier
+   (Shamsi's call), Lucide `x` rather than `×`, `color: inherit` so one rule
+   serves four alert palettes and dark chrome, 32×32 where two of the four
+   predecessors were under the target-size floor, and a required `.is-sr-only`
+   name. Hosts supply position only. `.is-sr-only` had to be added to the staff
+   stylesheet, which documented it in an example and never defined it.
+   Documented on `buttons.html`.
+2. **Progressive disclosure — done.** New flagship page
+   `docs/progressive-disclosure.html`: the chooser (accordion / show more /
+   popover / a link, by what relationship the hidden thing has to what the
+   reader is looking at), then all four accordion dressings side by side, show
+   more, and the popover. `.ds-acc-flush` now takes a rule above as well as
+   below, and stacks butt together into one ruled list. `.ds-show-more` promoted
+   from the author-list toggle in both mockups. `organizing-content.html` keeps
+   only the rail-placement rule and links out. Nav swept across 29 pages;
+   AGENTS.md routing updated.
+3. **The 4px header navs — nothing to fix.** `.ds-reader-header-nav` was deleted
+   in `d2d2c43` with the rest of the retired reader chrome, and
+   `.ds-site-header-nav` already uses `--space-tight` (8px), the default. The
+   only remaining 4px in that area is `.ds-site-header-divider`'s margin, which
+   is a divider's breathing room and not a between-siblings gap. The item was
+   stale, not a decision.
+
+## Still open
+
+4. **Two questions inside the close work.** `.ds-close` repeats about eight
+   declarations that `.ds-btn` already has, to stay usable on the staff surface.
+   And `color-mix()` is now used for its hover wash, with an `rgba` fallback
+   declared first — the first use of `color-mix` in the repo, and there is no
+   written browser-support floor to check it against. Worth setting one.
+5. **Naming the icon-only control family** — proposal written against Primer,
+   shadcn and Carbon: `planning/proposals/icon-only-controls.md`. Recommends
+   `.ds-btn-icon` as a shape modifier, not a fourth tier, and recommends *not*
+   renaming `.ds-btn-text` to ghost/invisible. Needs Shamsi's yes.
+6. **Token unification** — the question "what are the two stylesheets" is
+   answered in `planning/proposals/token-unification.md`. Headline: they share 7
+   token names, but **25 more are the same value under a different name**, and
+   that duplication is invisible to every check we have. It has already drifted
+   once — `--arxiv-grey-dis` and `--grey-dis` have different dark values and
+   nobody decided that. The only step needing Shamsi is step 1, agreeing one
+   name per concept; the recommendation is to keep the public `--arxiv-*` names.
+
 ## Open decisions
 
-1. **The four close buttons.** `.ds-announcement-close`, `.ds-popover-close`,
-   `.ds-alert-dismiss`, and the lightbox's own — same job, four names. Agreed
-   direction: one close control, hosts supply only position. Two sub-questions:
-   should it be the text tier (no fill, no border), and is `×` the right glyph
-   when the system mandates Lucide icons everywhere else? **Next step: survey
-   the four and report what they actually differ on.**
-2. **Icon-only controls on chrome.** Zoom in / out / reset / close are one
-   family. Agreed they belong on `buttons.html`, framed as *icon-only controls
-   on a chrome surface* — not "lightbox controls", which would name a component
-   after the first place it appeared.
-3. **The three-tier model**, agreed but only partly built:
+7. **The three-tier model**, agreed but only partly built:
    - Tier 1 `design-system.css` — anything a second surface could use. **A
      modal and a toggle belong here and do not exist.** Build the modal from
      requirements (focus trap, restore focus, scroll lock, Escape) using native
@@ -90,7 +127,7 @@ Duplicated selectors across the docs: **29 → 0**.
    - Tier 2 `docs/public/reader.css` — **not yet created.** Marginalia, the
      equation and figure regions, the contents bar.
    - Tier 3 — the mockup, for anything still moving.
-4. **Internal is two axes, not one.** 57 internal-only classes are genuinely
+8. **Internal is two axes, not one.** 57 internal-only classes are genuinely
    tier 2. But 22 (`.ds-alert*`, `.ds-tag*`, `.ds-field`, `.ds-input`,
    `.ds-label`, `.ds-check`) are the same component in a different palette and
    want token re-pointing, like `.ds-site-header--light`. Access Lime as
