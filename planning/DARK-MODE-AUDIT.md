@@ -1,7 +1,7 @@
 # Dark / Light Theme — Audit & Decision Doc
 
 **Status:** Draft for review — 2026-05-28. No code yet; this is the plan to agree on first.
-**Scope:** Both stylesheets (`internal/design-system.css`, `public/design-system.css`).
+**Scope:** Both stylesheets (`docs/design-system.css`, `docs/internal/design-system-staff.css`).
 
 ---
 

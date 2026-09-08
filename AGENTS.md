@@ -45,13 +45,13 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Error messages, form help, instructions | `docs/STYLE.md`, then `docs/BRAND.md` for voice | existing wording — one name per thing, never a synonym |
 | Something with no pattern | nearest pattern above + `docs/BRAND.md` | derive from documented rationale; say so in comments |
 
-**Stylesheets are tiered.** `docs/public/design-system.css` is **tier 1** — the foundation and every component more than one surface could use. Everything loads it.
+**Stylesheets are tiered.** `docs/design-system.css` is **tier 1** — the foundation and every component more than one surface could use. Everything loads it.
 
-`docs/internal/design-system.css` is **tier 2 for staff tools**, and is *not* self-contained: a staff page loads tier 1 first, then this. It holds only what is staff-only (the `.btn-*` family, tables, metadata panels, segmented controls, toggles, type badges, info cards) plus the tokens whose values differ on that surface — chiefly Access Lime as `--ds-accent`.
+`docs/internal/design-system-staff.css` is **tier 2 for staff tools**, and is *not* self-contained: a staff page loads tier 1 first, then this. It holds only what is staff-only (the `.btn-*` family, tables, metadata panels, segmented controls, toggles, type badges, info cards) plus the tokens whose values differ on that surface — chiefly Access Lime as `--ds-accent`.
 
 ```html
-<link rel="stylesheet" href="../public/design-system.css">
-<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="../design-system.css">
+<link rel="stylesheet" href="design-system-staff.css">
 ```
 
 A tier 2 file may re-point a tier 1 token, which is how a surface gets its accent. It must never introduce a token that reuses a tier 1 name for a different meaning. **Never copy a component into tier 2 to restyle it** — if it needs to look different, that is a token, not a second copy.

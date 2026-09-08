@@ -9,7 +9,7 @@ Hard-constraint checks (fail = miss):
 - [ ] `:focus-visible` (not `:focus`) with the standard ring
 - [ ] Fonts: IBM Plex stack only, no external font loads
 - [ ] Overflow handling follows the truncation policy: disclosure-with-count preferred; if internal scroll, half-item peek; fade never the sole signal
-- [ ] CSS added to `docs/public/design-system.css` with `.ds-` naming and a comment block matching the file's style
+- [ ] CSS added to `docs/design-system.css` with `.ds-` naming and a comment block matching the file's style
 - [ ] Demo page follows reference-page structure (states, tokens, usage, a11y notes) and valid HTML
 
 Judgment (designer pass):

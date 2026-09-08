@@ -25,7 +25,7 @@ index.html      the GitHub Pages landing page (docs/doc.html renders .md files o
 ## Start here
 
 - **Designers / product owners** — open the pattern pages in `docs/` in a browser (no build step); read `docs/BRAND.md` for the why.
-- **Developers** — `docs/DESIGN-POLICIES.md` holds the hard constraints; `docs/public/design-system.css` and `docs/internal/design-system.css` hold the authoritative tokens and component CSS (plain CSS custom properties — consumable from Flask/Jinja, React, PHP, or static HTML).
+- **Developers** — `docs/DESIGN-POLICIES.md` holds the hard constraints. Stylesheets are tiered: `docs/design-system.css` is tier 1 and everything loads it; `docs/internal/design-system-staff.css` is tier 2 for staff tools and is loaded *after* it, never alone. Plain CSS custom properties, consumable from Flask/Jinja, React, PHP, or static HTML.
 - **AI coding agents** — read [`AGENTS.md`](AGENTS.md). It has the reading order, a routing table, and the guardrails. CLAUDE.md / GEMINI.md / copilot-instructions are pointers to it.
 
 ## Key decisions (short version)

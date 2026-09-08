@@ -30,8 +30,8 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-PUBLIC_CSS = REPO / "docs" / "public" / "design-system.css"
-INTERNAL_CSS = REPO / "docs" / "internal" / "design-system.css"
+PUBLIC_CSS = REPO / "docs" / "design-system.css"
+INTERNAL_CSS = REPO / "docs" / "internal" / "design-system-staff.css"
 DEFAULT_CONSUMER = REPO.parent / "arxiv-blog-theme"
 
 FAILS = []
@@ -92,7 +92,7 @@ def rules(css):
 
 
 # ── 1. The dark mirror ──────────────────────────────────────────────
-# public/design-system.css states the dark palette twice: once under
+# docs/design-system.css states the dark palette twice: once under
 # @media (prefers-color-scheme: dark) for the OS preference, once under
 # [data-theme="dark"] so a surface with its own toggle can force it.
 # The second is a mirror of the first. If they disagree, one of the two

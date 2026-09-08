@@ -1,7 +1,7 @@
 # Dark / Light Theme — Decision: Deferral
 
 **Status:** Active decision — 2026-06-11.
-**Scope:** Both stylesheets (`internal/design-system.css`, `public/design-system.css`) and the public-facing mockups (`mockups/public/html-phase1.html`, `mockups/public/abstract-phase2.html`).
+**Scope:** Both stylesheets (`docs/design-system.css`, `docs/internal/design-system-staff.css`) and the public-facing mockups (`mockups/public/html-phase1.html`, `mockups/public/abstract-phase2.html`).
 **Companion document:** [`DARK-MODE-AUDIT.md`](./DARK-MODE-AUDIT.md) — the substrate plan this decision sits against.
 
 ---
@@ -27,7 +27,7 @@ The companion audit (`DARK-MODE-AUDIT.md`) demonstrates that the work is feasibl
 ## What stays in place
 
 - **The audit document** (`DARK-MODE-AUDIT.md`) — keeps the plan ready to execute, with the surface-token layer proposal, toggle-mechanism recommendation (`@media` + `[data-theme]`), and the public-button design-decision flag.
-- **Dark-mode tokens already added to `docs/public/design-system.css`** for the alert family (`--ds-success-bg/border/fg`, `--arxiv-info-*`, `--arxiv-warning-*`, `--arxiv-error-*`) and the link family (`--ds-link/-hover/-visited`). These are foundation work; they don't get rolled back.
+- **Dark-mode tokens already added to `docs/design-system.css`** for the alert family (`--ds-success-bg/border/fg`, `--arxiv-info-*`, `--arxiv-warning-*`, `--arxiv-error-*`) and the link family (`--ds-link/-hover/-visited`). These are foundation work; they don't get rolled back.
 - **`color-scheme: light !important`** stays in the mockup HTML files (`mockups/public/html-phase1.html`, `mockups/public/abstract-phase2.html`). This is the explicit signal that light-only is *intentional* during this phase — not an oversight. A user with `prefers-color-scheme: dark` still sees light when reviewing the mockups.
 - **Internal stylesheet dark-mode coverage** is unaffected by this decision; internal tools work in dark mode where they already do.
 - **Docs pages locked to light** (added 2026-07-28): the 13 documentation pages with light-only chrome carry `<html data-theme="light">` — the stylesheets' documented lock — so the dark-aware alert/link tokens no longer flip against their light backgrounds under OS dark mode. This is the docs-page parallel of the mockups' `color-scheme: light !important`. The seven pages with *deliberate* dark previews stay unlocked: `alerts.html` (invites OS-switching to preview dark tokens), `public/alert-styles.html`, `public/link-styles.html`, `internal/alert-styles.html`, `internal/color-tokens.html` (dark-aware chrome / document dark values), and `internal/button-styles.html` + `internal/card-styles.html` (own theme toggles). When dark-mode work resumes, unlocking is one attribute per page.
