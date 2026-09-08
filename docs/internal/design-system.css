@@ -1058,7 +1058,7 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--f
  *
  * Usage:
  *   <fieldset class="seg-control">
- *     <legend class="sr-only">…</legend>
+ *     <legend class="is-sr-only">…</legend>
  *     <button type="button" class="seg-btn seg-positive" data-value="yes">Yes</button>
  *     <button type="button" class="seg-btn seg-neutral"  data-value="maybe">Maybe</button>
  *     <button type="button" class="seg-btn seg-negative" data-value="no">No</button>
@@ -1403,23 +1403,80 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; }
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.ds-alert-dismiss {
-  flex-shrink: 0;
-  margin-left: auto;
-  margin-top: -2px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: inherit;
-  opacity: 0.7;
-  padding: 2px;
-  border-radius: 3px;
-  line-height: 0;
-  transition: opacity 0.15s ease;
+/* Screen-reader-only (.is-sr-only) — same name and same rule as the
+   public stylesheet. Anything whose accessible name is text the design
+   does not show depends on it: the close control's label, a segmented
+   control's <legend>, an icon-only action. */
+.is-sr-only {
+  position: absolute !important;
+  width: 1px !important; height: 1px !important;
+  padding: 0 !important; margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
-.ds-alert-dismiss:hover { opacity: 1; }
-.ds-alert-dismiss:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
-.ds-alert-dismiss svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+
+/* The close control (.ds-close) — the same control as the public
+   stylesheet, declaration for declaration, with the focus ring reading
+   this surface's token name. See the public stylesheet for the full
+   rationale: quiet tier, color from the host so one rule serves four
+   status palettes, 32x32 against the 24x24 target-size floor, Lucide x
+   rather than the multiplication sign, and a REQUIRED .is-sr-only name
+   because the icon is aria-hidden.
+
+   Standalone rather than a .btn-* variant, so that one class means one
+   control on both surfaces.
+
+     <button type="button" class="ds-close">
+       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+       <span class="is-sr-only">Dismiss this message</span>
+     </button> */
+.ds-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.ds-close svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  pointer-events: none;
+}
+.ds-close:hover {
+  background: rgba(0, 0, 0, 0.06);  /* where color-mix is unsupported */
+  background: color-mix(in srgb, currentColor 10%, transparent);
+}
+.ds-close:active {
+  background: rgba(0, 0, 0, 0.12);
+  background: color-mix(in srgb, currentColor 18%, transparent);
+}
+.ds-close:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Position only — the control itself is .ds-close. The negative margins
+   pull the 32px target back onto the first text line without adding
+   height to a single-line alert. */
+.ds-alert > .ds-close {
+  margin-left: auto;
+  margin-top: -6px;
+  margin-right: -6px;
+}
 
 /* Variants — bg + border + fg (icon uses currentColor = fg) */
 .ds-alert-success { background: var(--success-bg); border-color: var(--success-border); color: var(--success-fg); }
@@ -1435,5 +1492,5 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; }
   .ds-alert a { color: LinkText; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ds-alert-dismiss { transition: none; }
+  .ds-close { transition: none; }
 }

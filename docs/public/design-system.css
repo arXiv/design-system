@@ -880,6 +880,111 @@
   cursor: not-allowed;
 }
 
+/* ── The close control (.ds-close) ──────────────────────────────────
+   Dismissing a thing is one job, so it is one control — for the alert,
+   the popover, the announcement band, the figure viewer, and anything
+   later that needs to be closed. Several hosts do not make several
+   controls: they differ only in where the close sits, which is the one
+   thing a host is better placed to decide than the component. It sets
+   no position of its own.
+
+     <button type="button" class="ds-close">
+       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+       <span class="is-sr-only">Close</span>
+     </button>
+
+   Quiet tier, by construction: no fill, no border, no shadow. A close is
+   never the thing on the surface worth looking at.
+
+   It is a standalone class rather than a .ds-btn variant, and pays about
+   eight repeated declarations for it. The reason is that the staff
+   stylesheet names its buttons .btn-*, not .ds-btn-*, so a close built on
+   the public button base could not be the same control there — and one
+   close control across both surfaces was the point. The declarations it
+   repeats are the ones any pressable square needs; nothing about the
+   button tiers is duplicated.
+
+   Three things it does NOT take from a labelled button:
+
+   1. Color comes from the host, not from the actionable palette. A text
+      button uses Link Blue because its words must read as pressable. An
+      icon has no words to color, and every host here establishes its own
+      foreground — an alert in four status palettes, a popover, the
+      announcement band, a viewer toolbar. Link Blue on an error alert
+      would be the only blue thing in a red box. Shape, hover wash and
+      position carry the affordance instead.
+
+   2. It is square and sized, not padded to fit text. 32x32 against the
+      24x24 hard floor (DESIGN-POLICIES.md, Chrome and interaction
+      structure) — what a 16px icon needs before the target is smaller
+      than the thing it points at.
+
+   3. The accessible name is REQUIRED, and is real text in the DOM. The
+      icon is aria-hidden per the icon policy, so with no name the control
+      announces as "button" and nothing more. Use .is-sr-only text rather
+      than aria-label: it is what the icon policy prescribes, it survives
+      page translation, and find-in-page can reach it.
+
+   Why the Lucide x and not the multiplication sign. Three reasons, in
+   order of weight. The icon policy allows one icon language and a text
+   glyph standing in for an icon is the exception that makes the rule
+   unenforceable. On arXiv specifically, that character IS the
+   multiplication sign, and reader chrome sits inches from real
+   mathematics; a screen reader set to announce symbols says
+   "multiplication sign", and a reader who has met the character as an
+   operator all page has no reason to read it differently here. And it is
+   a font glyph: weight, size and optical center change with the typeface,
+   which is why hand-built closes end up with a different font-size each
+   time, trying to make it look centered. The Lucide path is 16px and
+   centered everywhere.
+
+   Naming the thing being closed. "Close" alone is correct when only one
+   dismissible thing is on screen and the surface is obvious. Name the
+   object when it is not — "Close reference 47", "Dismiss announcement" —
+   because a screen-reader user reaching the control through a list of
+   buttons gets the name with no surrounding context. "Close" for
+   something the reader opened, "Dismiss" for something the site put in
+   front of them; one verb per meaning (STYLE.md). */
+.ds-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.ds-close svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  pointer-events: none;  /* clicks land on the button, never on a path */
+}
+.ds-close:hover {
+  /* A wash mixed from the host's own foreground, so one rule works on
+     white, on the announcement's pale blue, and on all four alert
+     palettes without the control knowing which it is on. */
+  background: rgba(0, 0, 0, 0.06);  /* where color-mix is unsupported */
+  background: color-mix(in srgb, currentColor 10%, transparent);
+}
+.ds-close:active {
+  background: rgba(0, 0, 0, 0.12);
+  background: color-mix(in srgb, currentColor 18%, transparent);
+}
+.ds-close:focus-visible {
+  outline: 3px solid var(--arxiv-focus-ring);
+  outline-offset: 2px;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════
    CARD  (.ds-card)  and  FRAMED TABLE  (.ds-table-framed)
    ───────────────────────────────────────────────────────────────────────
@@ -1565,13 +1670,17 @@ select.ds-input { padding-right: 34px; }
      .ds-popover-title      Small uppercase condensed label at the
                             top of the panel (e.g., "Reference 47",
                             "Footnote 3").
-     .ds-popover-close      Small × button at top-right. in arxiv-mockups/arxiv-public/html-redesign.html
-   (citation popover, footnote popover).
+   The close control is .ds-close, positioned by this component at the
+   panel's top-right corner (citation popover, footnote popover).
 
    Example:
      <span class="ds-popover" role="region" aria-label="Reference 47" hidden>
        <div class="ds-popover-title">Reference 47</div>
-       <button class="ds-popover-close" aria-label="Close">&times;</button>
+       <button class="ds-close" type="button">
+         <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+         <span class="is-sr-only">Close reference 47</span>
+       </button>
        <!-- panel content -->
      </span>
    ═══════════════════════════════════════════════════════════════════════ */
@@ -1604,26 +1713,11 @@ select.ds-input { padding-right: 34px; }
   padding-right: 28px;  /* room for the close button */
 }
 
-.ds-popover-close {
+/* Position only — the control itself is .ds-close. */
+.ds-popover > .ds-close {
   position: absolute;
-  top: 6px;
-  right: 8px;
-  background: none;
-  border: none;
-  font-size: 22px;
-  line-height: 1;
-  color: var(--arxiv-library-grey);
-  cursor: pointer;
-  padding: 2px 8px;
-  border-radius: 4px;
-}
-.ds-popover-close:hover {
-  color: var(--arxiv-repository-brown);
-  background: var(--arxiv-active-bg);
-}
-.ds-popover-close:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
-  outline-offset: 1px;
+  top: 4px;
+  right: 4px;
 }
 
 
@@ -1752,23 +1846,14 @@ select.ds-input { padding-right: 34px; }
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.ds-alert-dismiss {
-  flex-shrink: 0;
+/* Position only — the control itself is .ds-close. The negative top margin
+   pulls the 32px target back onto the first text line without adding height
+   to a single-line alert. */
+.ds-alert > .ds-close {
   margin-left: auto;
-  margin-top: -2px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: inherit;
-  opacity: 0.7;
-  padding: 2px;
-  border-radius: 3px;
-  line-height: 0;
-  transition: opacity 0.15s ease;
+  margin-top: -6px;
+  margin-right: -6px;
 }
-.ds-alert-dismiss:hover { opacity: 1; }
-.ds-alert-dismiss:focus-visible { outline: 3px solid var(--arxiv-focus-ring); outline-offset: 2px; }
-.ds-alert-dismiss svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
 
 /* Variants — bg + border + fg (icon uses currentColor = fg) */
 .ds-alert-success { background: var(--arxiv-success-bg); border-color: var(--arxiv-success-border); color: var(--arxiv-success-fg); }
@@ -1988,7 +2073,7 @@ select.ds-input { padding-right: 34px; }
   .ds-alert a { color: LinkText; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ds-alert-dismiss { transition: none; }
+  .ds-alert > .ds-close { transition: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -2396,8 +2481,11 @@ select.ds-input { padding-right: 34px; }
        <img class="ds-announcement-glyph" src="…" alt="" aria-hidden="true">
        <span class="ds-announcement-text">…</span>
        <a class="ds-announcement-link" href="…">Learn more</a>
-       <button type="button" class="ds-announcement-close"
-               aria-label="Dismiss announcement">&times;</button>
+       <button type="button" class="ds-close">
+         <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+         <span class="is-sr-only">Dismiss announcement</span>
+       </button>
      </div>
      <header class="ds-site-header">
        <a href="/" class="ds-site-header-logo" aria-label="archive home">
@@ -2480,24 +2568,13 @@ select.ds-input { padding-right: 34px; }
   font-weight: 600;
 }
 .ds-announcement-link:hover { color: var(--arxiv-link-hover); }
-.ds-announcement-close {
+/* Position only — the control itself is .ds-close. */
+.ds-announcement > .ds-close {
   position: absolute;
-  right: 12px;
+  right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.125rem; /* 18px */
-  line-height: 1;
   color: var(--arxiv-library-grey);
-  padding: 4px 8px;
-  border-radius: 3px;
-}
-.ds-announcement-close:hover { color: var(--arxiv-repository-brown); background: rgba(0,0,0,0.05); }
-.ds-announcement-close:focus-visible {
-  outline: 2px solid var(--arxiv-link-blue);
-  outline-offset: 1px;
 }
 @media (max-width: 520px) {
   .ds-announcement {

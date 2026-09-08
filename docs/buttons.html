@@ -655,6 +655,62 @@ pre .c { color: var(--arxiv-grey-ui); }
       </div></details>
     </section>
 
+  <section class="section">
+      <h2 class="section-title">The close control</h2>
+      <p class="ds-section-desc">Dismissing a thing is one job, so it is one control &mdash; the same
+      <code>.ds-close</code> in an alert, a popover, the announcement band and a figure viewer, on
+      both the public and the staff surface. Hosts supply position and nothing else.</p>
+
+      <div class="ds-card" style="display:flex; align-items:center; gap:var(--space-6); flex-wrap:wrap">
+        <button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close</span></button>
+        <span style="background:var(--arxiv-error-bg); color:var(--arxiv-error-fg); padding:6px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:var(--space-2)">
+          On an error palette
+          <button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close the error example</span></button>
+        </span>
+        <span style="background:var(--arxiv-repository-brown); color:var(--arxiv-card-grey); padding:6px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:var(--space-2)">
+          On dark chrome
+          <button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close the dark example</span></button>
+        </span>
+      </div>
+
+      <p class="ds-panel-label">Markup</p>
+      <pre><code>&lt;button type="button" class="ds-close"&gt;
+  &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
+    &lt;path d="M18 6 6 18"/&gt;&lt;path d="m6 6 12 12"/&gt;
+  &lt;/svg&gt;
+  &lt;span class="is-sr-only"&gt;Dismiss announcement&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+
+      <details class="ds-acc"><summary>Relevant classes</summary><div class="ds-acc-body">
+        <dl>
+          <dt>.ds-close</dt>
+          <dd>The whole control. 32&times;32, quiet tier &mdash; no fill, no border, no shadow. It
+          takes <code>color: inherit</code>, so one rule serves all four alert palettes, the pale
+          announcement band and dark chrome without knowing which it is on. It sets no position.</dd>
+          <dt>.is-sr-only</dt>
+          <dd>Required. The icon is <code>aria-hidden</code> under the icon policy, so without this
+          span the control announces as &ldquo;button&rdquo; and nothing more.</dd>
+        </dl>
+      </div></details>
+
+      <p class="ds-panel-label">Naming what closes</p>
+      <p>Use <strong>Close</strong> for something the reader opened, and <strong>Dismiss</strong> for
+      something the site put in front of them. &ldquo;Close&rdquo; alone is enough when one dismissible
+      thing is on screen; name the object when it is not &mdash; &ldquo;Close reference 47&rdquo;,
+      &ldquo;Dismiss announcement&rdquo; &mdash; because someone reaching the control through a list of
+      buttons gets the name with no surrounding context.</p>
+
+      <p class="ds-panel-label">Why a Lucide icon and not &times;</p>
+      <p>The icon policy allows one icon language, and a text glyph standing in for an icon is the
+      exception that makes that rule unenforceable. On arXiv it matters more than usual: &times; is the
+      multiplication sign, reader chrome sits inches from real mathematics, and a screen reader set to
+      announce symbols says &ldquo;multiplication sign&rdquo;. It is also a font glyph, so its weight and
+      optical centre shift with the typeface &mdash; which is why hand-built closes each end up with a
+      different <code>font-size</code>, trying to look centred. The Lucide path is 16px and centred
+      everywhere.</p>
+    </section>
+
     <section class="section">
     <h2 class="section-title">Accessibility notes</h2>
     <ul class="notes">
