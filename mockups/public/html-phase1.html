@@ -595,42 +595,14 @@ body.mg-reader .mg-top-cols { display: block; }
    Source of truth: button-styles.html. Construction = 1.5px transparent border
    + dual-background gradient + inset vignette + outer drop. Hover BRIGHTENS;
    press translateY(1px) with deeper vignette and flat-mid-tone border. */
-.ds-btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  box-sizing: border-box;   /* so width:100% (full-rail PDF button) includes padding+border */
-  padding: 10px 20px; min-width: 120px;
-  font-family: var(--ds-font-sans); font-size: 14px; font-weight: 600; line-height: 1;
-  text-decoration: none; cursor: pointer;
-  border: 1.5px solid transparent; border-radius: 6px;
-  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, transform 0.08s, color 0.12s;
-}
-.ds-btn:focus-visible { outline: 3px solid var(--ds-link); outline-offset: 2px; }
-/* The ar5iv stylesheet sets `svg { z-index: -1 }` globally (to keep
-   LaTeXML-emitted SVG under text). Inside an inline-flex button the icon
-   is a flex item, so that z-index APPLIES even without positioning and
-   paints the icon BEHIND the button's own background — invisible on any
-   opaque fill. Lift every button icon above the fill. */
+/* The button family comes from the design system. The one rule that has to
+   live here is a workaround for the vendored ar5iv stylesheet, which sets
+   `svg { z-index: -1 }` globally to keep LaTeXML-emitted SVG under text.
+   Inside an inline-flex button the icon is a flex item, so that z-index
+   APPLIES even without positioning, and paints the icon BEHIND the button's
+   own fill — invisible on anything opaque. Lift it back. Delete this the day
+   the ar5iv stylesheet is replaced by a tier 2 file that does not do it. */
 .ds-btn svg { position: relative; z-index: 1; }
-.ds-btn-primary {
-  background:
-    linear-gradient(var(--ds-accent), var(--ds-accent)) padding-box,
-    linear-gradient(to bottom, #b0d5ed, #6ba8da) border-box;
-  color: var(--ds-text-on-accent);
-  box-shadow: inset 0 0 6px rgba(31, 94, 150, 0.20), 0 1px 3px rgba(0, 0, 0, 0.12);
-}
-.ds-btn-primary:hover {
-  background:
-    linear-gradient(var(--ds-accent-hover), var(--ds-accent-hover)) padding-box,
-    linear-gradient(to bottom, #8fc1e8, #4a86b8) border-box;
-  box-shadow: inset 0 0 8px rgba(31, 94, 150, 0.10), 0 1px 3px rgba(0, 0, 0, 0.12);
-}
-.ds-btn-primary:active {
-  transform: translateY(1px);
-  background:
-    linear-gradient(var(--ds-accent), var(--ds-accent)) padding-box,
-    linear-gradient(#6ba8da, #6ba8da) border-box;
-  box-shadow: inset 0 0 10px rgba(31, 94, 150, 0.35);
-}
 
 /* Tertiary button — PROPOSED variant, not yet in design-system.css.
    DESIGN-POLICIES.md already anticipates it ("No shadow on tertiary or
@@ -3257,74 +3229,26 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
    │  - prefers-reduced-motion: transform transitions are disabled.   │
    └──────────────────────────────────────────────────────────────────┘ */
 
-dialog.fig-lightbox {
-  border: none;
-  border-radius: 8px;
-  padding: 0;
-  width: min(94vw, 1400px);
-  height: min(92vh, 1000px);
-  background: var(--ds-surface);
-  box-shadow: 0 12px 48px rgba(0,0,0,0.3);
-  overflow: hidden;
-  display: none;
-  flex-direction: column;
-}
-dialog.fig-lightbox[open] { display: flex; }
-dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
-
+/* The dialog shell, its backdrop, the header, the scroll lock and the
+   control styling are .ds-modal + .ds-btn-icon + .ds-close from the design
+   system. What is left here is the part that is genuinely a figure viewer:
+   the pannable stage and the caption. */
 .fig-lightbox-toolbar {
-  display: flex;
+  /* .ds-modal-header supplies the frame; the viewer only needs its controls
+     on one line with the title taking the slack. */
   align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--ds-border-muted);
+  gap: var(--ds-space-tight);
+  padding-block: var(--ds-space-2);
   background: var(--ds-canvas);
-  flex-shrink: 0;
-}
-.fig-lightbox-title {
-  flex: 1;
-  min-width: 0;
-  font-family: "IBM Plex Sans", -apple-system, sans-serif;
-  font-size: 0.875rem; /* 14px */
-  font-weight: 600;
-  color: var(--ds-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.fig-lightbox-zoombtn,
-.fig-lightbox-close {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 32px;
-  height: 32px;
-  padding: 0 8px;
-  border: 1px solid var(--ds-border);
-  border-radius: 6px;
-  background: var(--ds-surface);
-  color: var(--ds-text);
-  font-family: "IBM Plex Sans", -apple-system, sans-serif;
-  font-size: 0.875rem;
-  cursor: pointer;
-}
-.fig-lightbox-zoombtn:hover,
-.fig-lightbox-close:hover { background: var(--ds-surface-muted); }
-.fig-lightbox-zoombtn:focus-visible,
-.fig-lightbox-close:focus-visible {
-  outline: 3px solid var(--ds-link);
-  outline-offset: 1px;
 }
 .fig-lightbox-zoomlevel {
   min-width: 48px;
   text-align: center;
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-family: var(--ds-font-mono);
   font-size: 0.75rem; /* 12px */
   color: var(--ds-text-muted);
 }
-.fig-lightbox-close { margin-left: 8px; font-size: 1.25rem; line-height: 1; }
 
-/* The stage: clips the panned/zoomed image. Cursor signals pannability. */
 .fig-lightbox-stage {
   flex: 1;
   min-height: 0;
@@ -3379,8 +3303,8 @@ dialog.fig-lightbox::backdrop { background: rgba(28, 26, 23, 0.55); }
 .fig-region .fig-image-wrap { cursor: zoom-in; }
 
 @media print {
-  /* !important: dialog.fig-lightbox[open] is more specific, so an open
-     lightbox would otherwise print. */
+  /* !important: .ds-modal[open] is more specific, so an open viewer would
+     otherwise print. */
   dialog.fig-lightbox { display: none !important; }
 }
 
@@ -8766,19 +8690,40 @@ We thus see that</p>
   function buildDialog() {
     if (dialog) return;
     dialog = document.createElement('dialog');
-    dialog.className = 'fig-lightbox';
+    // .ds-modal--wide from the design system supplies the shell: the
+    // backdrop, the top layer, the focus trap, focus restore, Escape and
+    // the page scroll lock. closedby="any" adds backdrop-click dismissal,
+    // which is right for a viewer the reader is looking THROUGH — it would
+    // be wrong on a dialog that asks a question. The zoom controls are
+    // .ds-btn-icon on the text tier; the close is .ds-close.
+    dialog.className = 'ds-modal ds-modal--wide fig-lightbox';
     dialog.setAttribute('closedby', 'any');
     dialog.setAttribute('aria-labelledby', 'fig-lightbox-title');
+    var ICON = function (paths, label) {
+      return '<button type="button" class="ds-btn ds-btn-text ds-btn-icon fig-lightbox-zoombtn" ' +
+             'data-zoom="' + label.z + '">' +
+             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+             'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + paths + '</svg>' +
+             '<span class="is-sr-only">' + label.t + '</span></button>';
+    };
     dialog.innerHTML =
-      '<div class="fig-lightbox-toolbar">' +
-        '<span class="fig-lightbox-title" id="fig-lightbox-title"></span>' +
-        '<button type="button" class="fig-lightbox-zoombtn" data-zoom="out" aria-label="Zoom out">&minus;</button>' +
+      '<div class="ds-modal-header fig-lightbox-toolbar">' +
+        '<h2 class="ds-modal-title fig-lightbox-title" id="fig-lightbox-title"></h2>' +
+        ICON('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/>',
+             {z:'out', t:'Zoom out'}) +
         '<span class="fig-lightbox-zoomlevel" aria-live="polite" aria-label="Zoom level">100%</span>' +
-        '<button type="button" class="fig-lightbox-zoombtn" data-zoom="in" aria-label="Zoom in">+</button>' +
-        '<button type="button" class="fig-lightbox-zoombtn" data-zoom="fit">Fit</button>' +
-        '<button type="button" class="fig-lightbox-close" aria-label="Close figure viewer" autofocus>&times;</button>' +
+        ICON('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/>',
+             {z:'in', t:'Zoom in'}) +
+        ICON('<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>' +
+             '<path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>',
+             {z:'fit', t:'Reset zoom to fit'}) +
+        '<button type="button" class="ds-close fig-lightbox-close" autofocus>' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+          'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+          '<path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>' +
+          '<span class="is-sr-only">Close figure viewer</span></button>' +
       '</div>' +
-      '<div class="fig-lightbox-stage"></div>' +
+      '<div class="ds-modal-body fig-lightbox-stage"></div>' +
       '<div class="fig-lightbox-caption"></div>';
     document.body.appendChild(dialog);
 

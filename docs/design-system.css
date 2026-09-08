@@ -94,6 +94,13 @@
        that frame an image, a fill behind the mark itself. Holds its value
        in dark mode like the other accents (color-mapping.md). */
   --ds-chrome:      #1c1a17;
+
+  /* The wash behind a modal. Repository Brown at 55%, not black: a neutral
+     black scrim reads cold against the warm canvas, and this is the same
+     colour the page's own text is, so the dimmed page stays recognisably
+     itself. Stays warm and slightly denser in dark mode, where the
+     underlying page is already dark and needs more separation. */
+  --ds-scrim:       rgba(28, 26, 23, 0.55);
   --ds-text-on-accent:   #1c1a17;
   --ds-surface:         #ffffff;
   --ds-brand-smileybones-yellow: #ffe000;
@@ -264,6 +271,14 @@
    and given a width without this, each overflows its container by exactly its
    padding. */
 [class^="ds-"], [class*=" ds-"] { box-sizing: border-box; }
+
+/* Reserve the scrollbar's width whether or not the page scrolls. Without
+   this, anything that locks scrolling — a modal — removes the scrollbar and
+   the page jumps sideways underneath it. Scoped to pages that opt into the
+   foundation, so a legacy page linking this stylesheet is untouched. Where
+   the platform draws overlay scrollbars (macOS by default) it costs nothing,
+   because there was no gutter to reserve. */
+html:has(> body.ds-page) { scrollbar-gutter: stable; }
 
 .ds-page {
   font-family: var(--ds-font-sans);
@@ -638,7 +653,7 @@
 /* ── Primary (Open Blue) ─────────────────────────────────────────── */
 .ds-btn-primary {
   background:
-    linear-gradient(#a5d6fe, #a5d6fe) padding-box,
+    linear-gradient(var(--ds-accent), var(--ds-accent)) padding-box,
     linear-gradient(to bottom, #b0d5ed, #6ba8da) border-box;
   color: var(--ds-text-on-accent);
   box-shadow:
@@ -647,7 +662,7 @@
 }
 .ds-btn-primary:hover {
   background:
-    linear-gradient(#c2e2ff, #c2e2ff) padding-box,
+    linear-gradient(var(--ds-accent-hover), var(--ds-accent-hover)) padding-box,
     linear-gradient(to bottom, #8fc1e8, #4a86b8) border-box;
   box-shadow:
     inset 0 0 8px rgba(31, 94, 150, 0.10),
@@ -656,7 +671,7 @@
 .ds-btn-primary:active {
   transform: translateY(1px);
   background:
-    linear-gradient(#a5d6fe, #a5d6fe) padding-box,
+    linear-gradient(var(--ds-accent), var(--ds-accent)) padding-box,
     linear-gradient(#6ba8da, #6ba8da) border-box;
   box-shadow: inset 0 0 10px rgba(31, 94, 150, 0.35);
 }
@@ -1796,6 +1811,184 @@ select.ds-input { padding-right: 34px; }
 
 
 /* ═══════════════════════════════════════════════════════════════════════
+   MODAL DIALOG  (.ds-modal)
+   ───────────────────────────────────────────────────────────────────────
+   A native <dialog> opened with showModal(). Built on the element rather
+   than on a <div role="dialog"> because four of the five things a modal
+   has to get right come free that way, and hand-built modals get them
+   wrong in the same order every time:
+
+     Focus trap        The browser makes the rest of the page inert.
+                       Nothing can be tabbed, clicked or read by a screen
+                       reader while the dialog is open. A JavaScript trap
+                       has to enumerate focusable elements, and the list
+                       of what is focusable is longer than anyone's
+                       implementation.
+     Focus restore     close() returns focus to whatever opened it, so a
+                       keyboard user is not dropped at the top of the
+                       document.
+     Escape            Closes it, with a cancel event first if you need
+                       to intervene.
+     Stacking          It renders in the top layer, above every stacking
+                       context on the page, with no z-index. This is what
+                       DESIGN-POLICIES means by "modal dialogs use the
+                       native <dialog> top layer".
+
+   The fifth is scroll lock, and CSS handles it below — the page behind a
+   modal must not scroll when the reader spins the wheel, or they lose
+   their place in a document they cannot see.
+
+   So the whole JavaScript contract is two calls:
+
+     document.getElementById('m').showModal();   // open
+     document.getElementById('m').close();       // close
+
+   Markup:
+
+     <dialog class="ds-modal" id="m" aria-labelledby="m-title">
+       <div class="ds-modal-header">
+         <h2 class="ds-modal-title" id="m-title">Withdraw this submission?</h2>
+         <button type="button" class="ds-close" data-close>…</button>
+       </div>
+       <div class="ds-modal-body">…</div>
+       <div class="ds-modal-footer">
+         <button class="ds-btn ds-btn-text" data-close>Cancel</button>
+         <button class="ds-btn ds-btn-primary">Withdraw</button>
+       </div>
+     </dialog>
+
+   aria-labelledby is REQUIRED and points at the title. Without it the
+   dialog announces with no name, which is the one thing the native
+   element cannot infer.
+
+   Light dismiss — closing by clicking the backdrop — is DELIBERATELY not
+   the default. Add closedby="any" to a dialog the reader is looking
+   THROUGH (a figure viewer, an image); leave it off a dialog that asks a
+   question, because an accidental click outside must not answer it.
+   Where closedby is unsupported the dialog simply keeps its close button
+   and Escape, which is the correct degradation.
+
+   No entrance animation. An animated modal also animates the moment the
+   page under it goes inert, and there is nothing here for
+   prefers-reduced-motion to switch off if nothing moves.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ds-modal {
+  /* Reset the UA's dialog chrome; auto margins keep it centred. */
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: var(--ds-surface);
+  color: var(--ds-text);
+  font-family: var(--ds-font-sans);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.30);
+
+  /* Sized against the viewport, not the content: a modal that grows past
+     the window puts its own actions out of reach. The body scrolls
+     instead — see .ds-modal-body. */
+  width: min(92vw, 34rem);
+  max-height: min(88vh, 44rem);
+  overflow: hidden;
+
+  /* display:flex only while open, so the closed dialog stays display:none
+     and its contents stay out of the accessibility tree. */
+  flex-direction: column;
+}
+.ds-modal[open] { display: flex; }
+
+.ds-modal::backdrop {
+  background: var(--ds-scrim);
+}
+
+/* Scroll lock, with no JavaScript. The page behind a modal must not
+   scroll: the reader cannot see what they are moving, and they lose
+   their place in it. The foundation sets scrollbar-gutter: stable on the
+   scrolling element, so taking the scrollbar away here does not shift the
+   page sideways underneath the dialog. */
+html:has(.ds-modal[open]) {
+  overflow: hidden;
+}
+
+/* ── Wide variant (.ds-modal--wide) ─────────────────────────────────
+   For a dialog whose content is the point and wants the room — a figure
+   viewer, a full-size image. Not for more text: a wider measure makes a
+   paragraph harder to read, not easier, and the default width is already
+   at the comfortable line length. */
+.ds-modal--wide {
+  width: min(94vw, 1400px);
+  height: min(92vh, 1000px);
+  max-height: none;
+}
+
+/* ── Parts ──────────────────────────────────────────────────────────
+   Header and footer hold their size; the body takes what is left and
+   scrolls. That is what keeps the title and the actions on screen when
+   the content is long, which is the whole reason to cap the height. */
+.ds-modal-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-block);
+  padding: var(--ds-space-4) var(--ds-space-6);
+  border-bottom: 1px solid var(--ds-border);
+  flex-shrink: 0;
+}
+.ds-modal-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ds-text);
+}
+/* The close sits on the header's first line, and its 32px target is
+   pulled back over the padding so it does not add height. */
+.ds-modal-header > .ds-close {
+  margin-top: -4px;
+  margin-right: -8px;
+}
+
+.ds-modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;  /* a scroll that reaches the end here
+                                    does not continue on the page behind */
+  padding: var(--ds-space-6);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.ds-modal-body > :first-child { margin-top: 0; }
+.ds-modal-body > :last-child  { margin-bottom: 0; }
+
+.ds-modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--ds-space-tight);
+  padding: var(--ds-space-4) var(--ds-space-6);
+  border-top: 1px solid var(--ds-border);
+  background: var(--ds-canvas);
+  flex-shrink: 0;
+}
+/* A destructive or secondary choice that belongs at the other end —
+   "Cancel" reads better away from the action it undoes. */
+.ds-modal-footer > .ds-modal-footer-start { margin-right: auto; }
+
+@media (max-width: 480px) {
+  /* On a narrow screen the buttons stack and go full width rather than
+     shrinking below a comfortable target. */
+  .ds-modal { width: 94vw; }
+  .ds-modal-header, .ds-modal-body, .ds-modal-footer {
+    padding-inline: var(--ds-space-4);
+  }
+  .ds-modal-footer { flex-direction: column-reverse; align-items: stretch; }
+  .ds-modal-footer > .ds-btn { width: 100%; }
+  .ds-modal-footer > .ds-modal-footer-start { margin-right: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
    ELEMENT PILL  (.ds-element-pill)
    ───────────────────────────────────────────────────────────────────────
    Small white pill that floats anchored to a piece of content
@@ -1958,6 +2151,7 @@ select.ds-input { padding-right: 34px; }
     --ds-accent-border:     #2a4a7a;
     --ds-border-muted:     #403b35;
     --ds-chrome:      #262119;  /* lifted so the bar reads against the canvas */
+    --ds-scrim:       rgba(10, 9, 8, 0.72);
     --ds-link:       #64b5f6;  /* 7.84:1 on Repository Brown ✓ AAA */
     --ds-link-hover:      #90caf9;
     --ds-link-visited:    #c690e3;  /* 7.03:1 on Repository Brown ✓ AAA; 4.66:1 on active-bg ✓ AA */
@@ -2047,6 +2241,7 @@ select.ds-input { padding-right: 34px; }
   --ds-accent-border:       #2a4a7a;
   --ds-border-muted:       #403b35;
   --ds-chrome:        #262119;  /* lifted so the bar reads against the canvas */
+  --ds-scrim:         rgba(10, 9, 8, 0.72);
   --ds-link:         #64b5f6;  /* 7.84:1 on Repository Brown ✓ AAA */
   --ds-link-hover:        #90caf9;
   --ds-link-visited:      #c690e3;  /* 7.03:1 on Repository Brown ✓ AAA; 4.66:1 on active-bg ✓ AA */

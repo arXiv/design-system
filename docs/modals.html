@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modal dialogs — arXiv Design System</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="design-system.css">
+  <style>
+    /* ── Flagship pattern page: the modal dialog. Every demo opens the real
+       .ds-modal from design-system.css; only the trigger rows and the
+       comparison table are page-local. ── */
+    .notes li { margin-bottom: var(--ds-space-1); }
+    .trigger-row { display: flex; gap: var(--ds-space-tight); flex-wrap: wrap; align-items: center; }
+    .chooser td:first-child { white-space: nowrap; font-weight: 600; }
+
+    /* The free-behaviour table earns a tick column. */
+    .free td:first-child { white-space: nowrap; font-weight: 600; }
+    .free .yes { color: var(--ds-success-fg); font-weight: 700; }
+    .free .no  { color: var(--ds-error-fg); font-weight: 700; }
+  </style>
+</head>
+<body class="ds-page">
+<nav class="ds-site-header ds-site-header--light" aria-label="Design system">
+  <a class="ds-site-header-logo" href="../index.html">arXiv Design System</a>
+  <details class="ds-site-header-dropdown">
+    <summary>Design Patterns</summary>
+    <div class="ds-site-header-menu">
+      <a href="colors.html">Colors</a>
+      <a href="typography.html">Typography</a>
+      <a href="spacing.html">Spacing</a>
+      <a href="buttons.html">Buttons</a>
+      <a href="alerts.html">Alerts</a>
+      <a href="version-display.html">Versions</a>
+      <a href="organizing-content.html">Organizing content</a>
+      <a href="progressive-disclosure.html">Progressive disclosure</a>
+      <a href="modals.html">Modal dialogs</a>
+      <a href="dark-mode.html">Dark mode</a>
+      <a href="internal/metadata-panel-styles.html">Metadata panel</a>
+      <a href="forms.html">Forms &amp; validation</a>
+      <a href="tags.html">Tags</a>
+      <a href="outreach/">Outreach sites</a>
+    </div>
+  </details>
+  <details class="ds-site-header-dropdown">
+    <summary>Mockups</summary>
+    <div class="ds-site-header-menu">
+      <a href="../mockups/">All mockups</a>
+      <span class="ds-panel-label">Public</span>
+      <a href="../mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+      <a href="../mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+      <a href="../mockups/public/optin-modal/">Labs opt-in modal</a>
+      <a href="../mockups/public/submission-metadata/">Submission — Metadata Form</a>
+      <span class="ds-panel-label">Internal</span>
+      <a href="../mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+      <a href="../mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+      <a href="../mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+      <a href="../mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+    </div>
+  </details>
+  <details class="ds-site-header-dropdown">
+    <summary>Docs</summary>
+    <div class="ds-site-header-menu">
+      <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+      <a href="brand.html">Brand &amp; vision</a>
+        <a href="doc.html?src=docs/BRAND.md">Brand &amp; voice</a>
+      <a href="doc.html?src=docs/typography.md">Typography spec</a>
+      <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
+      <a href="doc.html?src=README.md">About this repo</a>
+    </div>
+  </details>
+</nav><div class="ds-container">
+
+  <header class="ds-page-header">
+    <h1>Modal dialogs</h1>
+    <p>A window that takes the page away until it is answered or dismissed. The most expensive
+    thing this system can put in front of a reader, and the one with the most ways to build it
+    wrong &mdash; so it is a native <code>&lt;dialog&gt;</code>, which gets four of the five hard
+    parts right without being asked.</p>
+  </header>
+
+  <!-- ───────── When ───────── -->
+  <section class="section">
+    <h2 class="section-title">When a modal is the right answer</h2>
+    <p class="ds-section-desc">Rarely. A modal interrupts: it takes focus, makes the rest of the
+    page inert, and cannot be ignored. That is the whole value and the whole cost.</p>
+
+    <table class="ds-table-framed chooser">
+      <thead><tr><th>Reach for a modal when</th><th>Not when</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>The reader must decide before anything else can happen &mdash; confirming a
+          withdrawal, agreeing to a data policy.</td>
+          <td>The information is useful but not blocking. That is an
+          <a href="alerts.html">alert</a> in the page.</td>
+        </tr>
+        <tr>
+          <td>The content <em>is</em> the reader's current task and wants the whole screen &mdash;
+          a figure at full size.</td>
+          <td>The content is a lookup they want mid-sentence. That is a
+          <a href="progressive-disclosure.html">popover</a>.</td>
+        </tr>
+        <tr>
+          <td>A short form belongs to something on the page and would lose its context on a page
+          of its own.</td>
+          <td>The form is long enough to scroll, or the reader may need to consult the page
+          behind it. Give it a page.</td>
+        </tr>
+        <tr>
+          <td>&mdash;</td>
+          <td>Announcing something. arXiv does not interrupt readers to tell them things
+          (<a href="doc.html?src=docs/BRAND.md">BRAND.md</a>); the announcement band exists for
+          that and can be ignored.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ───────── The live component ───────── -->
+  <section class="section">
+    <h2 class="section-title">The component</h2>
+    <p class="ds-section-desc">Both buttons open the real <code>.ds-modal</code>. Try Escape, try
+    tabbing past the last control, and try scrolling the page behind them.</p>
+
+    <div class="trigger-row">
+      <button class="ds-btn ds-btn-primary" type="button" data-open="demo-confirm">A decision</button>
+      <button class="ds-btn ds-btn-secondary" type="button" data-open="demo-long">Long content</button>
+      <button class="ds-btn ds-btn-secondary" type="button" data-open="demo-wide">Wide &mdash; a viewer</button>
+    </div>
+
+    <dialog class="ds-modal" id="demo-confirm" aria-labelledby="demo-confirm-title">
+      <div class="ds-modal-header">
+        <h2 class="ds-modal-title" id="demo-confirm-title">Withdraw this submission?</h2>
+        <button type="button" class="ds-close" data-close>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          <span class="is-sr-only">Close</span>
+        </button>
+      </div>
+      <div class="ds-modal-body">
+        <p>Withdrawing replaces the paper with a withdrawal notice. The submission stays in the
+        record and keeps its identifier &mdash; arXiv is a permanent archive, so nothing is
+        removed.</p>
+        <p>This cannot be undone from here.</p>
+      </div>
+      <div class="ds-modal-footer">
+        <button class="ds-btn ds-btn-text ds-modal-footer-start" type="button" data-close>Cancel</button>
+        <button class="ds-btn ds-btn-primary" type="button" data-close>Withdraw</button>
+      </div>
+    </dialog>
+
+    <dialog class="ds-modal" id="demo-long" aria-labelledby="demo-long-title">
+      <div class="ds-modal-header">
+        <h2 class="ds-modal-title" id="demo-long-title">What reading data is collected</h2>
+        <button type="button" class="ds-close" data-close>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          <span class="is-sr-only">Close</span>
+        </button>
+      </div>
+      <div class="ds-modal-body">
+        <p>The header and the actions stay put; only this region scrolls. That is the reason the
+        dialog caps its own height &mdash; a modal that grows with its content eventually puts its
+        own buttons below the bottom of the window, where the reader cannot reach the thing they
+        opened it to do.</p>
+        <p>Which papers you open, in what order, and for how long. Nothing you type. Nothing from
+        outside arXiv.</p>
+        <p>Reading data is never shared publicly or incorporated into any public system in a
+        personally identifiable form.</p>
+        <p>You can withdraw consent at any time, and withdrawing removes the data already
+        collected.</p>
+        <p>Research use includes building recommendation systems that work without profiling
+        individual readers.</p>
+        <p>Keep scrolling: the header above and the footer below have not moved.</p>
+        <p>Consent is recorded against your account, not against a browser, so it follows you
+        between devices and is not lost when you clear cookies.</p>
+        <p>Data is retained for as long as the research programme runs, and deleted within thirty
+        days of it ending.</p>
+        <p>Researchers receive the data under an agreement that forbids re-identification and
+        forbids passing it on.</p>
+        <p>arXiv staff can see aggregate figures. Nobody, inside arXiv or outside it, browses one
+        person's reading history.</p>
+        <p>If you have questions that this does not answer, the privacy policy is the longer
+        version, and it is written to be read rather than agreed to.</p>
+        <p>This is the last paragraph. The header above and the footer below have still not
+        moved.</p>
+      </div>
+      <div class="ds-modal-footer">
+        <button class="ds-btn ds-btn-text" type="button" data-close>No thanks</button>
+        <button class="ds-btn ds-btn-primary" type="button" data-close>I agree</button>
+      </div>
+    </dialog>
+
+    <dialog class="ds-modal ds-modal--wide" id="demo-wide" closedby="any" aria-labelledby="demo-wide-title">
+      <div class="ds-modal-header">
+        <h2 class="ds-modal-title" id="demo-wide-title">Figure 3 &mdash; scalar perturbation growth</h2>
+        <button type="button" class="ds-close" data-close>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          <span class="is-sr-only">Close figure viewer</span>
+        </button>
+      </div>
+      <div class="ds-modal-body" style="display:grid; place-items:center; background:var(--ds-canvas)">
+        <p style="color:var(--ds-text-muted); font-family:var(--ds-font-mono); font-size:0.8rem">
+          the figure would fill this stage</p>
+      </div>
+    </dialog>
+  </section>
+
+  <!-- ───────── What comes free ───────── -->
+  <section class="section">
+    <h2 class="section-title">What the native element gets right for you</h2>
+    <p class="ds-section-desc">These are the five things a modal must do. The reason this component
+    is a <code>&lt;dialog&gt;</code> rather than a <code>&lt;div role="dialog"&gt;</code> is the
+    right-hand column &mdash; and hand-built modals fail them in roughly this order.</p>
+
+    <table class="ds-table-framed free">
+      <thead><tr><th>Requirement</th><th>Native?</th><th>Why it is hard by hand</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Focus trap</td><td class="yes">yes</td>
+          <td>The browser makes the rest of the page inert &mdash; not just untabbable, but
+          unreachable by a screen reader's own navigation, which a JavaScript trap cannot do.
+          A hand-rolled trap has to enumerate every focusable element, and that list is longer
+          than anyone's implementation.</td>
+        </tr>
+        <tr>
+          <td>Focus restore</td><td class="yes">yes</td>
+          <td><code>close()</code> returns focus to whatever opened it. Forget this and a keyboard
+          user is dropped at the top of the document with no idea where they were.</td>
+        </tr>
+        <tr>
+          <td>Escape closes it</td><td class="yes">yes</td>
+          <td>Free, and it fires a <code>cancel</code> event first if you need to intervene &mdash;
+          to warn about unsaved changes, say.</td>
+        </tr>
+        <tr>
+          <td>Above everything</td><td class="yes">yes</td>
+          <td>It renders in the top layer with no <code>z-index</code>, so it cannot lose to a
+          stacking context somewhere up the tree. This is what
+          <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> means by
+          &ldquo;modal dialogs use the native <code>&lt;dialog&gt;</code> top layer&rdquo;.</td>
+        </tr>
+        <tr>
+          <td>Scroll lock</td><td class="no">no</td>
+          <td>The one gap. The page behind still scrolls, so a reader spinning the wheel loses
+          their place in a document they cannot see. The stylesheet closes it in CSS &mdash;
+          <code>html:has(.ds-modal[open]) { overflow: hidden }</code> &mdash; so it still needs no
+          JavaScript.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="ds-panel-label">Which leaves this much JavaScript</p>
+    <pre><code>document.getElementById('m').showModal();   // open
+document.getElementById('m').close();       // close</code></pre>
+    <p>Use <code>showModal()</code>, never <code>show()</code>. <code>show()</code> opens a
+    <em>non</em>-modal dialog: no backdrop, no inert page, no focus trap &mdash; every guarantee in
+    the table above quietly absent, on markup that looks correct.</p>
+  </section>
+
+  <!-- ───────── Markup ───────── -->
+  <section class="section">
+    <h2 class="section-title">Markup</h2>
+    <pre><code>&lt;dialog class="ds-modal" id="m" aria-labelledby="m-title"&gt;
+  &lt;div class="ds-modal-header"&gt;
+    &lt;h2 class="ds-modal-title" id="m-title"&gt;Withdraw this submission?&lt;/h2&gt;
+    &lt;button type="button" class="ds-close" data-close&gt;
+      &lt;svg …&gt;&lt;/svg&gt;&lt;span class="is-sr-only"&gt;Close&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="ds-modal-body"&gt;…&lt;/div&gt;
+  &lt;div class="ds-modal-footer"&gt;
+    &lt;button class="ds-btn ds-btn-text ds-modal-footer-start" data-close&gt;Cancel&lt;/button&gt;
+    &lt;button class="ds-btn ds-btn-primary"&gt;Withdraw&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+
+    <details class="ds-acc ds-acc-flush"><summary>Relevant classes</summary><div class="ds-acc-body">
+      <dl>
+        <dt>.ds-modal</dt>
+        <dd>The dialog. Sized against the viewport rather than its content, because a modal that
+        outgrows the window puts its own actions out of reach.</dd>
+        <dt>.ds-modal--wide</dt>
+        <dd>For a dialog whose content is the point and wants the room &mdash; a figure viewer.
+        Not for more text: a wider measure makes a paragraph harder to read, and the default width
+        is already at a comfortable line length.</dd>
+        <dt>.ds-modal-header / -title / -body / -footer</dt>
+        <dd>Header and footer hold their size; the body takes what is left and scrolls. That is
+        what keeps the title and the actions on screen when the content is long.</dd>
+        <dt>.ds-modal-footer-start</dt>
+        <dd>Pushes one control to the opposite end &mdash; Cancel reads better away from the
+        action it undoes.</dd>
+        <dt>.ds-close</dt>
+        <dd>The same close control as everywhere else. See <a href="buttons.html">Buttons</a>.</dd>
+      </dl>
+    </div></details>
+  </section>
+
+  <!-- ───────── Rules ───────── -->
+  <section class="section">
+    <h2 class="section-title">Rules</h2>
+    <ul class="notes">
+      <li><strong><code>aria-labelledby</code> is required</strong>, pointing at the title. It is
+      the one thing the native element cannot infer, and without it the dialog announces with no
+      name at all.</li>
+      <li><strong>Light dismiss is off by default, on purpose.</strong> Add
+      <code>closedby="any"</code> to a dialog the reader is looking <em>through</em> &mdash; a
+      figure viewer, an image. Leave it off anything that asks a question, because a stray click
+      outside must not answer it. Where the attribute is unsupported the dialog keeps its close
+      button and Escape, which is the correct thing to fall back to.</li>
+      <li><strong>Every modal needs a visible close.</strong> Escape is not enough: it is invisible,
+      and it is not available to someone using a pointer alone or a touch screen.</li>
+      <li><strong>Never open one unprompted.</strong> A modal is a response to something the reader
+      did. One that appears on load is an interruption they did not ask for, and arXiv does not
+      interrupt readers to tell them things.</li>
+      <li><strong>Never nest them.</strong> A second modal over the first leaves no way back except
+      forward. If a modal needs a modal, it needed a page.</li>
+      <li><strong>Nothing animates.</strong> An entrance animation also animates the moment the page
+      goes inert, and there is nothing here for <code>prefers-reduced-motion</code> to switch off
+      when nothing moves.</li>
+      <li><strong>Confirm the action, do not just ask.</strong> The primary button says what it
+      does &mdash; &ldquo;Withdraw&rdquo;, not &ldquo;OK&rdquo; &mdash; so a reader who has stopped
+      reading the sentence still knows what they are about to press.</li>
+    </ul>
+  </section>
+
+</div>
+<script>
+  // Nav dropdowns: close on outside click and Esc (enhancement only —
+  // the <details> menus work without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) { d.removeAttribute('open'); });
+  });
+
+  // The demos, which are also the reference implementation. This is the
+  // whole of it: showModal() to open, close() to close. Focus trap, focus
+  // restore, Escape and stacking are the element's own doing, and the
+  // scroll lock is in the stylesheet.
+  document.querySelectorAll('[data-open]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.getElementById(btn.dataset.open).showModal();
+    });
+  });
+  document.querySelectorAll('.ds-modal [data-close]').forEach(function (btn) {
+    btn.addEventListener('click', function () { btn.closest('.ds-modal').close(); });
+  });
+</script>
+</body>
+</html>

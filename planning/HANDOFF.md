@@ -96,6 +96,15 @@ Duplicated selectors across the docs: **29 → 0**.
    is a divider's breathing room and not a between-siblings gap. The item was
    stale, not a decision.
 
+## Found, not fixed
+
+- **The figure viewer does not return focus to the chip that opened it.**
+  Pre-existing — verified against the pre-change file, identical behaviour
+  before and after the modal work. The chip is `visibility: hidden` at rest and
+  a hidden element cannot take focus; the mockup's `close` handler tries to
+  reveal the region first and does not appear to succeed. Worth a session of
+  its own, in the mockup rather than the system.
+
 ## Still open
 
 4. **Two questions inside the close work.** `.ds-close` repeats about eight
