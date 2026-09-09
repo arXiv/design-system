@@ -245,19 +245,12 @@
 
 /* ─── Icon Button ───────────────────────────────────────────── */
 /*
- * Icon-only buttons carry a subtle warm-grey outline at rest (--ds-border-strong)
- * to signal interactivity without the visual weight of a full tertiary border.
- * Hover/active apply a light background fill; the outline darkens slightly as
- * a secondary cue. Two color variants (constructive, destructive) and a
- * pressed/toggled state for stateful on/off controls.
- *
- * Production requirements:
- *   - Always provide aria-label on the <button>
- *   - Always set aria-hidden="true" on the icon element / SVG
- *   - Use the framework tooltip (OverlayTrigger/Tooltip in React Bootstrap;
- *     <Tooltip> in MUI) — not the HTML title attribute — so the label is
- *     visible on both hover and keyboard focus.
- *   - For toggle controls, set aria-pressed="true"/"false" on the <button>
+ * Icon-only buttons keep a rest-state outline (--ds-border-strong) so
+ * they read as pressable without a full tertiary border.
+ * REQUIRED: aria-label on the <button>, aria-hidden on the icon, and
+ * aria-pressed on anything that toggles. Use the framework tooltip, not
+ * the title attribute — title is invisible to keyboard focus.
+ * See internal/button-styles.html.
  */
 
 .btn-icon {
@@ -523,27 +516,11 @@
 .info-link:visited { color: var(--ds-link-visited); }
 
 
-/* ─── Metadata Panel ─────────────────────────────────────────
- * A grid of label + value pairs describing ONE record (one paper, one
- * user) — neither a card (peers in a set) nor a table (many records,
- * compared down columns).; validated in the
- * admin-console user-page and paper-details mockups. Build as a <dl>
- * (divs wrapping dt/dd pairs are valid HTML inside a dl).
- *
- * Tint is a signal, not decoration:
- *   --editable   lime wash — the workbench; edit affordances live here
- *   --reference  grey wash + lime top bar — read-only system facts
- *
- * Cells separate with SPACING by default. The --ruled modifier adds
- * faint cell rules for high-density panels only (5+ columns of
- * mixed-width values) — always fainter than table dividers, so the
- * panel never reads as a table.
- *
- * Example:
- *   <dl class="ds-meta-panel ds-meta-panel--editable">
- *     <div class="ds-meta-cell"><dt>Email</dt><dd>…</dd></div>
- *     <div class="ds-meta-cell ds-meta-cell--span"><dt>Authors</dt><dd>…</dd></div>
- *   </dl>
+/* ─── Metadata Panel (.ds-meta-panel) ─────────────────────────
+ * One record's details as label/value rows. Variants: --editable,
+ * --reference, --ruled. Never put editable fields inside the reference
+ * variant — it is styled to read as fixed. See
+ * internal/metadata-panel-styles.html.
  */
 .ds-meta-panel {
   display: grid;
@@ -925,21 +902,11 @@ button.ds-tag:hover {
 
 /* ─── Segmented Control ────────────────────────────────────── */
 /*
- * Exclusive-choice button group (radio-like). Used for inline
- * decisions where options are few and always visible.
- *
- * Three semantic variants for the active state:
- *   .seg-btn.seg-positive.active  — green (accept / approve)
- *   .seg-btn.seg-neutral.active   — blue  (informational choice)
- *   .seg-btn.seg-negative.active  — red   (reject / deny)
- *
- * Usage:
- *   <fieldset class="seg-control">
- *     <legend class="is-sr-only">…</legend>
- *     <button type="button" class="seg-btn seg-positive" data-value="yes">Yes</button>
- *     <button type="button" class="seg-btn seg-neutral"  data-value="maybe">Maybe</button>
- *     <button type="button" class="seg-btn seg-negative" data-value="no">No</button>
- *   </fieldset>
+ * Segmented control — an exclusive choice rendered as adjacent buttons,
+ * for inline decisions where every option should be visible at once.
+ * Three semantic active states: positive, neutral, negative.
+ * It is a <fieldset> with an .is-sr-only <legend>; without the legend the
+ * group has no accessible name. See internal/form-styles.html.
  */
 
 .seg-control {
@@ -1067,20 +1034,11 @@ button.ds-tag:hover {
 
 /* ─── Toggle Switch ────────────────────────────────────────── */
 /*
- * A boolean on/off control styled as a sliding toggle.
- * Wraps a visually-hidden <input type="checkbox"> with a
- * custom track + thumb, plus an optional uppercase label.
- *
- * Off state: boundary grey track (--ds-border-strong #8b8680, 3.61:1 on white).
- * On state: lime-green track (#9cb522) matching brand secondary.
- * Focus ring on keyboard navigation via :focus-visible.
- *
- * Usage:
- *   <label class="toggle-switch">
- *     <input type="checkbox">
- *     <span class="toggle-track"><span class="toggle-thumb"></span></span>
- *     <span class="toggle-label">Label</span>
- *   </label>
+ * Toggle switch — a boolean, applied immediately, with no Save step.
+ * If the change needs confirming it is a checkbox in a form, not this.
+ * Wraps a visually-hidden checkbox: the input carries the state and the
+ * keyboard behaviour, the track and thumb are decoration.
+ * See internal/form-styles.html.
  */
 
 .toggle-switch {

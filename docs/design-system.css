@@ -28,137 +28,85 @@
    ═══════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ── Brand and surface colors (public side) ──
-     Open Blue is the public primary-action color. Internal pages use
-     Access Lime instead (see color-mapping.md). Do not mix the two on
-     the same surface — they signal different contexts. */
-  --ds-accent:       #a5d6fe;
-  --ds-accent-hover:#c2e2ff;   /* hover fill (lighter than canonical) */
-  --ds-accent-strong:   #1f5e96;   /* section accents, anchor color */
-  --ds-link:       #1565c0;   /* link text, focus ring (5.74:1 ✓ AA) */
-  --ds-link-hover:      #1050a0;   /* link hover, ~20% darker (7.83:1 ✓ AAA) */
-  --ds-link-visited:    #7b2fbe;   /* visited purple (7.02:1 on white ✓ AAA) */
+  /* ── Primitives: the named brand palette ───────────────────────────
+     These name a COLOUR. They never change between themes, and no
+     component rule uses them — components use the semantic tokens below,
+     which name a JOB. Retuning a brand colour is one edit here.
+     Full palette with contrast figures: color-mapping.md. */
+  --ds-repository-brown:  #1c1a17;
+  --ds-library-grey:      #6b6459;
+  --ds-ui-boundary-grey:  #8b8680;
+  --ds-disabled-grey:     #b0aba6;
+  --ds-warm-wash:         #f9f7f7;
+  --ds-card-grey:         #f0eeec;
+  --ds-open-blue:         #a5d6fe;
+  --ds-open-blue-bright:  #c2e2ff;
+  --ds-archival-blue:     #1f5e96;
+  --ds-link-blue:         #1565c0;
+  --ds-link-blue-hover:   #1050a0;
+  --ds-link-blue-dark:    #64b5f6;
+  --ds-visited-purple:    #7b2fbe;
+  --ds-smileybones-yellow:#ffe000;
 
-  /* ── Warm grey ladder ──
-     Three stops for three contrast tiers. Do not introduce intermediate
-     values without DESIGN-POLICIES.md approval. */
-  --ds-text-disabled:        #b0aba6;   /* disabled / exempt only (below AA) */
-  --ds-border-strong:         #8b8680;   /* UI borders / tracks (3.61:1 on white) */
-  --ds-text-muted:            #6b6459;   /* body-weight muted text (5.83:1) */
-  --ds-text:             #1c1a17;   /* primary text */
+  /* ── Semantic: what each colour is FOR ─────────────────────────────
+     Components use only these. A surface that wants its own accent
+     re-points them; it never redefines a component. */
+  --ds-text:              var(--ds-repository-brown);
+  --ds-text-muted:        var(--ds-library-grey);      /* 5.83:1 on white */
+  --ds-text-disabled:     var(--ds-disabled-grey);     /* below AA — disabled only */
+  --ds-text-on-accent:    var(--ds-repository-brown);  /* on an Open Blue fill; Open Blue
+                                                          does not flip, so this must not */
+  --ds-canvas:            var(--ds-warm-wash);
+  --ds-surface:           #ffffff;
+  --ds-surface-muted:     var(--ds-card-grey);
+  --ds-chrome:            var(--ds-repository-brown);  /* header bar, skip link */
+  --ds-scrim:             rgba(28, 26, 23, 0.55);      /* modal backdrop; Repository Brown
+                                                          at 55%, warm rather than black */
 
-  /* ── Surface tints ── */
-  --ds-canvas:       #f9f7f7;   /* subtle warm page-section tint */
-  --ds-surface-muted:       #f0eeec;   /* slightly darker surface band */
+  --ds-border:            #ddd8d2;                     /* decorative hairline, 1.42:1 —
+                                                          never the sole edge of a control */
+  --ds-border-muted:      #e4e0db;
+  --ds-border-strong:     var(--ds-ui-boundary-grey);  /* 3.61:1 — interactive boundaries */
 
-  /* ── Active-state / popover tints ──
-     A small light-blue family that signals "this is an arXiv-layer
-     interactive surface in its active form." Used by:
-       --ds-accent-wash: inline state (citation chips when their
-         popover is open; footnote markers on hover/active/paired)
-       --ds-accent-surface: popover panel background (citation refs,
-         footnote content)
-       --ds-accent-border: matching border for popover panels. */
-  --ds-accent-wash:       #d6e8f7;   /* inline active wash */
-  --ds-accent-surface:      #edf4fc;   /* popover panel surface */
-  --ds-accent-border:     #c4dcf0;   /* popover panel border */
+  --ds-link:              var(--ds-link-blue);
+  --ds-link-hover:        var(--ds-link-blue-hover);
+  --ds-link-visited:      var(--ds-visited-purple);
+  --ds-focus-ring:        var(--ds-link);
+  --ds-focus-ring-on-dark:var(--ds-link-blue-dark);    /* on the dark chrome bars */
 
-  /* ── Floating-pill border ──
-     Soft warm-grey for white pills that float above page content
-     (action-anchor pills for equations, figures). */
-  --ds-border-muted:     #e4e0db;
+  --ds-accent:            var(--ds-open-blue);
+  --ds-accent-hover:      var(--ds-open-blue-bright);
+  --ds-accent-strong:     var(--ds-archival-blue);     /* section accents, anchor colour */
+  --ds-accent-wash:       #d6e8f7;                     /* inline active state */
+  --ds-accent-surface:    #edf4fc;                     /* popover panel */
+  --ds-accent-border:     #c4dcf0;
 
-  /* ── Component hairline border ──
-     Light warm border for inputs, toggle tracks, secondary-button
-     gradients, and card edges. One step lighter than --ds-text-disabled;
-     decorative only (below 3:1) — never the sole boundary of an
-     interactive control that must meet WCAG 1.4.11. */
-  --ds-border:    #ddd8d2;
+  --ds-brand-smileybones-yellow: var(--ds-smileybones-yellow);
 
-  /* ── Focus ring on dark surfaces ──
-     color-mapping.md functional colors: Focus Ring is #1565c0 light /
-     #64b5f6 dark. The standard ring is invisible against
-     --ds-text surfaces (header bar); use this one there. */
-  --ds-focus-ring-on-dark: #64b5f6;
-
-  /* ── Fixed-role colors (same value in BOTH modes) ──
-     --ds-chrome: the dark chrome bars (site header, skip link,
-       narrow-nav menu). Dark mode lifts it slightly for separation.
-     --ds-text-on-accent: text sitting ON an Open Blue fill — Open Blue
-       holds its light value in dark mode, so its label must too.
-     --ds-surface: white component fills (cards, pills, triggers) that
-       become raised dark surfaces in dark mode.
-     --ds-brand-smileybones-yellow: the mascot yellow. ~1.3:1 on white —
-       never text, never a fine detail, never a boundary that must meet
-       1.4.11. It exists to be a big flat gesture: thick horizontal rules
-       that frame an image, a fill behind the mark itself. Holds its value
-       in dark mode like the other accents (color-mapping.md). */
-  --ds-chrome:      #1c1a17;
-
-  /* The wash behind a modal. Repository Brown at 55%, not black: a neutral
-     black scrim reads cold against the warm canvas, and this is the same
-     colour the page's own text is, so the dimmed page stays recognisably
-     itself. Stays warm and slightly denser in dark mode, where the
-     underlying page is already dark and needs more separation. */
-  --ds-scrim:       rgba(28, 26, 23, 0.55);
-  --ds-text-on-accent:   #1c1a17;
-  --ds-surface:         #ffffff;
-  --ds-brand-smileybones-yellow: #ffe000;
-
-  /* ── Focus ring ──
-     Used by all interactive elements. `outline: 3px solid` with `2px`
-     offset is the established treatment. */
-  --ds-focus-ring:      var(--ds-link);
-
-  /* ── Chevron ──
-     One shape, used as a mask so its colour comes from a token and flips with
-     the theme. Stroke-width 2 on a 12x8 box: deliberately heavier than the
-     browser defaults, which read as too faint to signal a dropdown. */
   --ds-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 
-  /* ── Typography stack ──
-     IBM Plex hosted by arXiv. See typography.html for the self-hosting
-     plan; do not load from Google Fonts. IBM Plex Serif is used for
-     secondary editorial commentary (.ds-annotation); the Plex family
-     keeps brand voice unified across surfaces instead of dropping into
-     Georgia or Times for our serif needs. */
   --ds-font-sans:       "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --ds-font-condensed:  "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
   --ds-font-mono:       "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --ds-font-serif:      "IBM Plex Serif", Georgia, "STIX Two Text", "Times New Roman", serif;
 
-  /* ── Status / alert colors (shared functional family) ──
-     Semantic colors for the .ds-alert component (success / info /
-     warning / error). These mirror the internal stylesheet and the
-     "Status & alert colors — shared" table in color-mapping.md, so
-     public pages get the same messaging palette. Each state is also
-     keyed by an icon + leading word, never color alone (WCAG 1.4.1).
-     Dark overrides live in the @media block at the end of this file. */
-  --ds-success-bg:      #e8f5d8;  /* lime-olive — not a forest green; Access Lime stays staff-only */
-  --ds-success-border:  #6b8e1e;  /* off-yellow so success ≠ brand accent */
-  --ds-success-fg:      #4a5a0a;  /* 6.7:1 on bg ✓ AA */
+  /* Status. Success is lime-olive, not forest green, and its border is
+     off-yellow so success never reads as the staff accent. */
+  --ds-success-bg:      #e8f5d8;
+  --ds-success-border:  #6b8e1e;
+  --ds-success-fg:      #4a5a0a;  /* 6.7:1 on bg */
   --ds-info-bg:         #e7f1fd;
   --ds-info-border:     #5a82c8;
-  --ds-info-fg:         #1a3a78;  /* navy, darker than --ds-link — 9.6:1 ✓ AAA */
+  --ds-info-fg:         #1a3a78;  /* 9.6:1 on bg */
   --ds-warning-bg:      #fff8e1;
   --ds-warning-border:  #e8b800;
-  --ds-warning-fg:      #7a5c00;  /* 5.9:1 on bg ✓ AA */
+  --ds-warning-fg:      #7a5c00;  /* 5.9:1 on bg */
   --ds-error-bg:        #fdeaea;
-  --ds-error-border:    #c62828;  /* Danger Red (functional, not Campus Red) */
-  --ds-error-fg:        #8b0000;  /* 8.6:1 on bg ✓ AAA */
+  --ds-error-border:    #c62828;  /* Danger Red — functional, not Campus Red */
+  --ds-error-fg:        #8b0000;  /* 8.6:1 on bg */
 
-  /* ── Spacing scale ──
-     The 4px-based scale named in DESIGN-POLICIES.md. The number IS the
-     multiplier: --ds-space-6 is 6x4px. Only the seven approved stops exist,
-     so an off-scale value (14, 26) cannot be written as a token at all —
-     the gaps are the enforcement.
-
-     Expressed in rem, not px, so spacing scales with the reader's text size.
-     A fixed 48px gap between sections stays 48px when someone doubles their
-     text, which compresses the rhythm exactly for the reader who asked for
-     more room. Values are identical to the px scale at a 16px root.
-     Borders, radii and shadows stay in px: they are physical details, not
-     text-relative, and look wrong when scaled. */
+  /* Spacing. The number is the multiplier: --ds-space-6 is 6x4px. In rem
+     so it scales with the reader's text size. */
   --ds-space-1:   0.25rem;
   --ds-space-2:   0.5rem;
   --ds-space-3:  0.75rem;
@@ -167,97 +115,26 @@
   --ds-space-8:  2rem;
   --ds-space-12: 3rem;
 
-  /* ── Rhythm ──
-     What a gap MEANS, mapped onto the raw scale above. Pages name the kind of
-     break; they never write a pixel value or a raw --ds-space-N. That is what
-     makes rhythm retunable: change these three lines and every page moves
-     together, coherently.
-
-     The RATIOS are the point, not the values. Proximity is how a page shows
-     structure without drawing anything, and below about 1.5x the eye cannot
-     tell "between" from "within", so the grouping silently fails. Here block
-     is 2x tight and section is 3x block — matching DESIGN-POLICIES, "the gap
-     between sections should be clearly larger than the gap within a section,
-     aim for ~3x". */
-  --ds-space-tight:   var(--ds-space-2);    /*  8px — the smallest separation that
-                                            still reads as separate: sibling
-                                            things that belong together, in a
-                                            row or a stack. Same value on both
-                                            axes.
-
-                                            NOT the space inside a single
-                                            control — an icon and its label, a
-                                            checkbox and its label, an alert's
-                                            icon and its content. Those are
-                                            sized against the control's own
-                                            type and are component-internal,
-                                            the same exemption DESIGN-POLICIES
-                                            already gives button padding. */
-  --ds-space-block:   var(--ds-space-4);    /* 16px — between blocks in a section */
+  /* Named rhythm. Pages name the KIND of break, never a raw stop and
+     never a pixel — that is what makes the rhythm retunable. */
+  --ds-space-tight:   var(--ds-space-2);    /*  8px — inside a group */
+  --ds-space-block:   var(--ds-space-4);    /* 16px — between blocks */
   --ds-space-section: var(--ds-space-12);   /* 48px — between sections */
 
-  /* ── Gap ──
-     Gap gets no scale of its own. "How far apart do these sit" means the same
-     thing whether the space comes from a margin or a gap, and whether it runs
-     down the page or across it — so gap between siblings uses the rhythm
-     above, on either axis.
-
-     What gap does need is one value the rhythm cannot supply: the space
-     between a glyph and its label INSIDE a single control. That is not
-     layout, it is part of the control, and it should scale with the control's
-     own type rather than with the page — the same reason the icons are sized
-     in em. Custom properties resolve em at the point of use, so this is 0.5em
-     of whatever component reads it.
-
-     Half the type size is the classic relationship: comfortably more than a
-     word space (~0.25em), comfortably less than a separation. 38 to 0.85em once you
-     account for each component's size. */
+  /* The one gap the rhythm cannot supply: glyph to label inside a
+     control. In em, so it tracks the control's own font size. */
   --ds-gap-glyph: 0.5em;
 
-  /* ── Content width ──
-     THE default content width. See DESIGN-POLICIES.md "Layout and content
-     width", which this token implements.
-
-     One width for everything on a page: prose, tables, demo blocks, code and
-     callouts share the same left and right edge, and no individual element
-     declares a width of its own. A page needing a different width changes
-     this token; it does not add a second width beside it. Getting here
-     removed 61 hand-picked widths across twelve pages, at fourteen distinct
-     values.
-
-     850px is about 109 characters in IBM Plex Sans at a 16px root — past the
-     ~65-character line the readability research supports, and accepted
-     knowingly for reference pages built from short paragraphs. A separate
-     narrower measure for prose was built and tried on screen; it left
-     paragraphs visibly ragged against every block beside them, and was
-     removed. Long-form reading is the exception the policy carves out: set a
-     narrower width on that page, never a second width on the paragraph.
-
-     Responsive by construction: max-width plus a gutter shrinks on narrow
-     screens with no breakpoint needed. */
   --ds-width-page:  850px;
   --ds-gutter:  var(--ds-space-6);
 }
 
 
-/* ═══════════════════════════════════════════════════════════════════════
-   FOUNDATION  (.ds-page / .ds-container)
-   ───────────────────────────────────────────────────────────────────────
-   Base typography, layout and document elements — everything a page needs
-   before a single component is added to it.
-
-   OPT-IN, BY DESIGN. Everything here is scoped under `.ds-page` rather than
-   written as bare `body` / `h1` selectors. A legacy arxiv.org page can link
-   this stylesheet and be touched by nothing it did not ask for; a page opts
-   in with one class on <body>. That matters while three styling contexts sit
-   side by side (legacy, design system, submit-ce) and adoption has to happen
-   page by page rather than on a flag day.
-
-   BASE SIZE IS DELIBERATELY NOT SET. There is no `font-size` on .ds-page:
-   the page inherits the reader's own browser setting, and every size below
-   is rem, so the whole scale moves with it. Setting 14px here — which silently overrides a reader who enlarged their
-   default.
-   ═══════════════════════════════════════════════════════════════════════ */
+/* FOUNDATION  (.ds-page / .ds-container) — organizing-content.html
+   Scoped to .ds-page so a legacy page can link this stylesheet without
+   its own body rules being overwritten. .ds-container is a two-track
+   grid: content at the reading width, full to the viewport edges.
+   Only a DIRECT child can escape with .ds-full. */
 
 /* Border-box everywhere inside the scope. Every docs page set this by hand;
    it is foundational, not page-specific. */
@@ -477,28 +354,10 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 
 
-/* ── Panel label (.ds-panel-label) ────────────────────────────────────────
-   The small uppercase Condensed label that names a panel, a column or a
-   group. typography.html: "not a heading level … it marks a panel or a column
-   and stays out of the document outline. If a reader needs to navigate to it,
-   it is an h3 or an h4 at the size above, not a label."
-
-   0.75rem — 12px against a 16px root. The 11px in typography.html was written
-   when the docs' base was 14px, where it read as 79% of body; at a 16px base
-   the same figure is 69%, smaller than the spec intended. 0.75rem restores
-   the proportion.
-
-   It carries heading-like asymmetric margin — more above than below — so it
-   bonds DOWNWARD to the content it introduces. That is intrinsic to what the
-   thing is, not contextual: this was first written as type-only, taking
-   spacing from whatever element carried it, and a <p class="ds-panel-label">
-   then inherited paragraph rhythm (0 above, 16px below) and bonded upward to
-   the wrong content. Half the instances in the docs are paragraphs, because
-   typography.html is explicit that this is "not a heading level" and must
-   stay out of the document outline.
-
-   A component that owns its internal spacing zeroes this, the same way
-   .ds-container zeroes its regions' edge margins. */
+/* ── Panel label (.ds-panel-label) — typography.html
+   Condensed caps. A <dt> inside .ds-acc-body IS this label and needs no
+   class. Never set it on something interactive: at this size and letter
+   spacing it reads as a heading, not a control. */
 .ds-panel-label,
 .ds-acc-body dt {          /* a <dt> in an accordion body IS this label */
   font-family: var(--ds-font-condensed);
@@ -589,49 +448,11 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-site-header-menu .ds-panel-label { padding: 8px 10px 2px; }
 
 
-/* ═══════════════════════════════════════════════════════════════════════
-   BUTTONS  (.ds-btn / .ds-btn-primary / .ds-btn-secondary)
-   ───────────────────────────────────────────────────────────────────────
-   Two variants, ONE construction. Primary and secondary share:
-     - dimensions (padding 10px 20px, font-size 14px / weight 600)
-     - shape (border-radius 6px)
-     - 1.5px transparent border, with the actual color carried by a
-       linear-gradient painted on the border-box via the dual-background
-       technique. Lighter at the top, darker at the bottom — "lit from
-       above." Solid hex colors (not low-opacity tints), so the hue stays
-       unambiguous regardless of what is behind the button.
-     - an equal-on-all-sides inner vignette (inset 0 0 6px) that softly
-       darkens the perimeter so the surface does not read as flat. Center
-       of the button stays the canonical fill color.
-     - a soft outer drop shadow that grounds the button on the page.
-
-   Hover direction: BRIGHTEN, not darken. Primary fill lightens
-   (#a5d6fe → #c2e2ff); secondary fill stays at #ffffff (already maximum
-   brightness) but the inner vignette nearly vanishes so the surface
-   reads as cleaner / more luminous. Border deepens slightly for visual
-   feedback. Outer drop shadow does not change on hover.
-
-   Pressed: 1px drop via translateY, outer drop removed, vignette
-   deepened, border gradient flattened to a single mid-tone (no
-   "lit from above" read anymore).
-
-   Why the dual-background trick: a single `border-color` cannot carry a
-   vertical gradient. We use two backgrounds — one clipped to
-   padding-box (the fill) and one to border-box (the border gradient) —
-   with `border: 1.5px solid transparent` so the gradient shows through.
-   Follows border-radius correctly; universal browser support.
-
-   Naming and usage:
-     .ds-btn                Base shell (always applied).
-     .ds-btn-primary        Open Blue fill, blue gradient border.
-     .ds-btn-secondary      White fill, warm-grey gradient border.
-
-   Example:
-     <a href="/html/..." class="ds-btn ds-btn-primary">HTML</a>
-     <a href="/src/..."  class="ds-btn ds-btn-secondary">TeX Source</a>
-
-   Reference: design-patterns/public/button-styles.html.
-   ═══════════════════════════════════════════════════════════════════════ */
+/* BUTTONS  (.ds-btn / .ds-btn-primary / .ds-btn-secondary) — buttons.html
+   Three tiers, plus .on-tint / .on-dark for buttons that sit on
+   something other than the page canvas. Primary's border is a two-stop
+   gradient, which is why its fill is a gradient too: a flat background
+   cannot paint into a border-box gradient. */
 
 .ds-btn {
   display: inline-flex;
@@ -708,21 +529,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.13);
 }
 
-/* ── Secondary on tinted surface (.on-tint modifier) ─────────────────
-   Apply the `on-tint` class IN ADDITION to `.ds-btn-secondary` when
-   the button sits inside a tinted section (e.g., the HTML reader's
-   light-blue footer band). The default white fill creates too much
-   contrast on a tinted surface and reads as "primary"; this variant
-   swaps the fill to Card Grey — same luminance as the surface, warm
-   hue — so the button reads as intentionally secondary via warm-on-
-   cool material differentiation, not via low contrast.
-   Hover brightens to Warm Wash (lighter step in the same warm family),
-   echoing the primary button's brighten-on-hover behavior. in arxiv-mockups/arxiv-public/html-redesign.html
-   footer ("Help improve HTML papers" section).
-
-   Example:
-     <a class="ds-btn ds-btn-secondary on-tint" href="...">Submit a fix</a>
-*/
+/* ── Secondary on tinted surface (.on-tint) — buttons.html
+   Add to .ds-btn-secondary when the ground is not white. Its white fill
+   would otherwise read as a hole in the tint. */
 .ds-btn-secondary.on-tint {
   background:
     linear-gradient(var(--ds-surface-muted), var(--ds-surface-muted)) padding-box,
@@ -739,24 +548,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
     linear-gradient(var(--ds-border-strong), var(--ds-border-strong)) border-box;
 }
 
-/* ── On a dark or saturated field (.on-tint's sibling) ──────────────
-   Apply IN ADDITION to .ds-btn-secondary when the button sits on a
-   committed color field — an outreach masthead, a photo band — where a
-   white fill would read as a paper rectangle stuck to the surface, and
-   as louder than the primary beside it. The fill drops out entirely and
-   the field shows through; a white border at 65% carries the boundary
-   (above 3:1 against any field dark enough to host white text).
-
-   Only correct on fields dark enough for white text. On a light tint,
-   use .on-tint. Reference implementation: the blog masthead's Subscribe
-   button beside a filled Donate.
-
-     <a class="ds-btn ds-btn-secondary on-dark" href="...">Subscribe</a>
-
-   The selectors below repeat .ds-btn only to out-weigh the dark-mode
-   button rules, which are more specific than a plain two-class selector.
-   A committed color field looks the same in both modes, so this variant
-   has to survive the dark pass unchanged. */
+/* ── On a dark or saturated field (.on-dark) — buttons.html
+   For a committed colour field, not a tint. Focus ring switches to
+   --ds-focus-ring-on-dark: the light-mode ring disappears here. */
 .ds-btn.ds-btn-secondary.on-dark {
   background: none;
   border-color: rgba(255, 255, 255, 0.65);
@@ -779,31 +573,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   outline: 3px solid var(--ds-focus-ring-on-dark);
 }
 
-/* ── Destructive (.ds-btn-destructive) ─────────────────────────────
-   For irreversible actions: Delete, Remove, Withdraw, Revoke.
-
-   Danger Red is a SHARED functional colour, not an accent, so a red button on
-   a public page does not cross the Access Lime / Open Blue rule — the fill is
-   --ds-error-border (#c62828), byte-identical to internal's --ds-danger.
-   DESIGN-POLICIES already sanctions it: danger tokens are for destructive
-   actions and error states.
-
-   Built like a public button, NOT like internal's. Internal buttons are flat
-   fills; ours are the dual-background construction, lit from above. Copying
-   .btn-destructive verbatim would drop a flat button into a page of
-   dimensional ones.
-
-   HOVER KEEPS THE FILL. Everywhere else here hover brightens the fill, but a
-   lighter red drops white text below AA — #e53935 is 4.23:1 and fails. So this
-   follows the secondary button's move instead: hold the fill, nearly erase the
-   inner vignette, and the surface reads more luminous without the colour
-   moving. White on #c62828 is 5.62:1 and stays there through every state.
-
-   Usage rules, carried over from internal:
-     - Reserve for hard-delete and irreversible actions only.
-     - Always pair with a confirmation step. The button being red is a warning,
-       not a safeguard.
-     - It is never the only styling that makes an action safe. */
+/* ── Destructive (.ds-btn-destructive) — internal/button-styles.html
+   Staff surfaces only: nothing a reader can do on arxiv.org destroys
+   anything. Always pair with a confirmation step. */
 .ds-btn-destructive {
   background:
     linear-gradient(#c62828, #c62828) padding-box,
@@ -830,25 +602,11 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   box-shadow: inset 0 0 10px rgba(90, 10, 10, 0.42);
 }
 
-/* ── Disabled ─────────────────────────────────────────────────────
-   Flat neutral grey. No gradient, no inset vignette, no drop shadow: removing
-   the "lit from above" construction is what separates a disabled button from a
-   live one, and every hover and press response is cancelled too, or a dead
-   control still feels live under the pointer.
-
-   The label clears AA at 5.05:1 even though WCAG exempts disabled controls. A
-   label nobody can read is worse than one they can, and the flat fill already
-   carries the "unavailable" message. Card Grey is the darkest fill that leaves
-   Library Grey passing — the palette has nothing between them.
-
-   Both tokens flip in dark mode (6.51:1 there), so this needs no dark override.
-
-   Neutral in every variant: the message is "you cannot use this", which does
-   not also need to encode which button it was.
-
-   :disabled and [aria-disabled] render identically. The difference between them
-   is behavioural — aria-disabled stays focusable and can explain itself — and
-   the user has no use for that distinction. See DESIGN-POLICIES. */
+/* ── Disabled — buttons.html
+   Flat neutral fill, not reduced opacity: opacity dims border and label
+   by the same amount and can render a light fill invisible. Both
+   :disabled and .is-disabled, because <a> cannot take the attribute —
+   an <a> also needs its href removed and aria-disabled set. */
 .ds-btn:disabled,
 .ds-btn[aria-disabled="true"],
 .ds-btn:disabled:hover,
@@ -863,32 +621,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   cursor: not-allowed;
 }
 
-/* ── Text button (.ds-btn-text) — the quiet third tier ──────────────
-   A control that does something, dressed as quietly as a link: no fill,
-   no border, no shadow. Use for actions that are real but minor next to
-   the page's main choice — Copy link, Show all authors, Dismiss.
-
-   Why no outline variant fills this slot: .ds-btn-secondary is already
-   white-fill-plus-border, and on a white page canvas a transparent fill
-   is the same pixels as a white one. An outline-only tier would differ
-   from secondary by its drop shadow alone, which no one can read as
-   hierarchy. Each surface reaches its quiet tier by removing whatever
-   its secondary uses to hold the page: public secondary leans on the
-   border, so the text button drops the border; internal secondary leans
-   on a lime fill, so internal .btn-tertiary drops the fill and keeps a
-   border. Same rank, different construction, on purpose.
-
-   It is not a link, and must not be mistaken for one: Link Blue for the
-   actionable color, but never underlined (inline links always are,
-   standalone links underline on hover) and hover is a background wash —
-   the same feedback the other buttons give. Geometry comes from .ds-btn
-   so it sits on the same baseline in a button row; horizontal padding
-   tightens because there is no fill to give it presence.
-
-     <button class="ds-btn ds-btn-text" type="button">
-       <svg …></svg> Copy link
-     </button>
-*/
+/* ── Text button (.ds-btn-text) — the quiet third tier — buttons.html
+   Link Blue but NEVER underlined: it is a control, not a link. Hover is
+   a background wash, the same feedback the other tiers give. */
 .ds-btn-text {
   background: none;
   border-color: transparent;
@@ -913,46 +648,12 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   cursor: not-allowed;
 }
 
-/* ── Icon-only control (.ds-btn-icon) ───────────────────────────────
-   A button whose whole label is an icon: zoom in, zoom out, reset to fit.
-   A SHAPE modifier, not a fourth tier — it composes with whichever tier the
-   surface calls for, the way Carbon's hasIconOnly and shadcn's size="icon"
-   do. We rejected adding a tier once already, for the outline button, and
-   for the same reason: a tier is a rank in the hierarchy, and "happens to
-   have no words" is not a rank.
-
-     <button class="ds-btn ds-btn-text ds-btn-icon" type="button">
-       <svg … aria-hidden="true">…</svg>
-       <span class="is-sr-only">Zoom in</span>
-     </button>
-
-   Square by aspect-ratio rather than a fixed size, so it stays exactly as
-   tall as a labelled button and sits on the same baseline beside one in a
-   .ds-btn-group. Hard-coding a height would drift the moment .ds-btn's
-   padding or font-size changed.
-
-   Colour comes from the tier, not from here: a text-tier icon button is
-   Link Blue like any other text-tier control, and on a dark or tinted field
-   it takes .on-dark / .on-tint the same way. .ds-close below is the one
-   that breaks this and inherits instead — see there for why.
-
-   The accessible name is REQUIRED and is real text in the DOM. The icon is
-   aria-hidden per the icon policy, so with no name the control announces as
-   "button" and nothing more. .is-sr-only rather than aria-label: it is what
-   the icon policy prescribes, and it survives page translation. Carbon and
-   Primer both make this name a required prop; the systems that leave it
-   optional are the ones with the known gap here.
-
-   The staff stylesheet's .btn-icon is this same shape with a rest-state
-   border and its own colour variants baked in. That border is not part of
-   being icon-only — it is what the staff surface's quiet tier looks like
-   (.btn-tertiary drops the fill and keeps a border, where public
-   .ds-btn-text drops the border). Once the button system lives in one
-   place, that control is tertiary + this shape, and the two stop being
-   separate components. Until then, do not cross them.
-
-   No size scale. Primer and shadcn offer three or four; we have one shape
-   and no case yet for a second size. Add one when something asks. */
+/* ── Icon-only control (.ds-btn-icon) — buttons.html
+   A shape modifier, not a tier: compose it with one. Square by
+   aspect-ratio so it stays exactly as tall as a labelled button beside
+   it. The accessible name is REQUIRED — .is-sr-only text, because the
+   icon is aria-hidden and the control would otherwise announce as
+   "button" and nothing more. */
 .ds-btn-icon {
   aspect-ratio: 1;
   min-width: 0;
@@ -968,73 +669,16 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   pointer-events: none;  /* clicks land on the button, never on a path */
 }
 
-/* ── The close control (.ds-close) ──────────────────────────────────
-   Dismissing a thing is one job, so it is one control — for the alert,
-   the popover, the announcement band, the figure viewer, and anything
-   later that needs to be closed. Several hosts do not make several
-   controls: they differ only in where the close sits, which is the one
-   thing a host is better placed to decide than the component. It sets
-   no position of its own.
-
-     <button type="button" class="ds-close">
-       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-       <span class="is-sr-only">Close</span>
-     </button>
-
-   Quiet tier, by construction: no fill, no border, no shadow. A close is
-   never the thing on the surface worth looking at.
-
-   It is a standalone class rather than a .ds-btn variant, and pays about
-   eight repeated declarations for it. The reason is that the staff
-   stylesheet names its buttons .btn-*, not .ds-btn-*, so a close built on
-   the public button base could not be the same control there — and one
-   close control across both surfaces was the point. The declarations it
-   repeats are the ones any pressable square needs; nothing about the
-   button tiers is duplicated.
-
-   Three things it does NOT take from a labelled button:
-
-   1. Color comes from the host, not from the actionable palette. A text
-      button uses Link Blue because its words must read as pressable. An
-      icon has no words to color, and every host here establishes its own
-      foreground — an alert in four status palettes, a popover, the
-      announcement band, a viewer toolbar. Link Blue on an error alert
-      would be the only blue thing in a red box. Shape, hover wash and
-      position carry the affordance instead.
-
-   2. It is square and sized, not padded to fit text. 32x32 against the
-      24x24 hard floor (DESIGN-POLICIES.md, Chrome and interaction
-      structure) — what a 16px icon needs before the target is smaller
-      than the thing it points at.
-
-   3. The accessible name is REQUIRED, and is real text in the DOM. The
-      icon is aria-hidden per the icon policy, so with no name the control
-      announces as "button" and nothing more. Use .is-sr-only text rather
-      than aria-label: it is what the icon policy prescribes, it survives
-      page translation, and find-in-page can reach it.
-
-   Why the Lucide x and not the multiplication sign. Three reasons, in
-   order of weight. The icon policy allows one icon language and a text
-   glyph standing in for an icon is the exception that makes the rule
-   unenforceable. On arXiv specifically, that character IS the
-   multiplication sign, and reader chrome sits inches from real
-   mathematics; a screen reader set to announce symbols says
-   "multiplication sign", and a reader who has met the character as an
-   operator all page has no reason to read it differently here. And it is
-   a font glyph: weight, size and optical center change with the typeface,
-   which is why hand-built closes end up with a different font-size each
-   time, trying to make it look centered. The Lucide path is 16px and
-   centered everywhere.
-
-   Naming the thing being closed. "Close" alone is correct when only one
-   dismissible thing is on screen and the surface is obvious. Name the
-   object when it is not — "Close reference 47", "Dismiss announcement" —
-   because a screen-reader user reaching the control through a list of
-   buttons gets the name with no surrounding context. "Close" for
-   something the reader opened, "Dismiss" for something the site put in
-   front of them; one verb per meaning (STYLE.md). */
+/* ── The close control (.ds-close) — buttons.html
+   One control for every host: alert, popover, announcement band, figure
+   viewer, both surfaces. Hosts supply POSITION only.
+   Standalone rather than a .ds-btn variant because the staff stylesheet
+   names its buttons .btn-*, so a close built on .ds-btn could not be the
+   same control there.
+   color: inherit — one rule serves four alert palettes and dark chrome.
+   The accessible name is REQUIRED (.is-sr-only); the Lucide x is
+   aria-hidden. Never the × character: the icon policy allows one icon
+   language, and on arXiv × is the multiplication sign. */
 .ds-close {
   display: inline-flex;
   align-items: center;
@@ -1079,22 +723,10 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   outline-offset: 2px;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   CARD  (.ds-card)  and  FRAMED TABLE  (.ds-table-framed)
-   ───────────────────────────────────────────────────────────────────────
-   A raised surface with a hairline edge. The system had no card, so the
-   documentation invented one three times — .context-card, .demo and
-   .rule-card — with identical borders and five different paddings between
-   them. Anything that groups related content on the page canvas is this.
-
-   Padding is the scale, not a hand-picked pair. A card that needs different
-   room sets its own padding; it does not need a different card.
-
-   The framed table is the same surface applied to tabular data. It differs
-   from the foundation's bare table, which uses horizontal rules only and no
-   ground — use that inside prose, and this where the table is an object on
-   the page.
-   ═══════════════════════════════════════════════════════════════════════ */
+/* CARD  (.ds-card) and FRAMED TABLE (.ds-table-framed) — organizing-content.html
+   Anything that groups related content on the page canvas. Padding comes
+   from the scale; a card needing different room sets its own padding
+   rather than becoming a different card. */
 
 .ds-card {
   background: var(--ds-surface);
@@ -1172,46 +804,11 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 
 
-/* ═══════════════════════════════════════════════════════════════════════
-   TAGS  (.ds-tag)
-   ───────────────────────────────────────────────────────────────────────
-   The small rounded label used for subject categories, topics, and states.
-   A tag labels or categorizes the thing it sits on — it may link to a
-   listing, but it never replaces a text link as the way to navigate
-   (DESIGN-POLICIES, Content and interaction). That rule is why version
-   links are inline text and not filled pills.
-
-   Anatomy:
-     .ds-tag                base — quiet warm grey, the default
-     .ds-tag--chrome        the "arXiv is speaking" blue; categories, topics
-     .ds-tag--success/
-       --warning/--error    only when the label reports a real CONDITION
-     .ds-tag--keep-case     opt out of the uppercase default
-     .ds-tag-remove         the ✕ control, for editable tags
-     .ds-tag-note           a small nested badge inside a tag (provenance)
-
-   Case: uppercase by default, applied with text-transform and never typed,
-   so the underlying text stays correct for copy-paste, in-page search and
-   screen readers. Two things keep their own case via .ds-tag--keep-case —
-   identifiers, whose case is part of the data, and labels long enough that
-   caps slow reading down.
-
-   CATEGORY NAMES ALWAYS USE .ds-tag--keep-case. A category is copied,
-   never restyled: `cs.AI`, `physics.optics`, `cond-mat.str-el` are all
-   correct as arXiv publishes them, and uppercasing the lowercase ones
-   produces strings that are not real categories.
-
-   Color never carries meaning alone — the label's own words do. min-height
-   holds the WCAG 2.2 SC 2.5.8 target floor for tags that are interactive.
-
-   Construction against the admin-console category
-   editors in mockups/internal/admin-console/{user-page,paper-details}/;
-   spec and contrast table in planning/proposals/tag-component.html.
-
-   Example:
-     <span class="ds-tag ds-tag--chrome ds-tag--keep-case">cs.AI</span>
-     <a class="ds-tag ds-tag--chrome" href="/list/policy">Policy</a>
-   ═══════════════════════════════════════════════════════════════════════ */
+/* TAGS  (.ds-tag) — tags.html
+   Uppercase comes from text-transform, never from typed capitals.
+   CATEGORY NAMES ALWAYS USE .ds-tag--keep-case: a category is copied,
+   not restyled. A tag is a label, not a link — if it navigates, it is a
+   link that happens to look like this. */
 .ds-tag {
   display: inline-flex;
   align-items: center;
@@ -1284,79 +881,18 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
 }
 
 
-/* ═══════════════════════════════════════════════════════════════════════
-   FORM FIELDS  (.ds-field / .ds-label / .ds-input / .ds-hint)
-   ───────────────────────────────────────────────────────────────────────
-   One field is a label, a control, optional help text, and an error slot,
-   stacked in that order. The wrapper supplies the spacing so a form reads
-   as evenly whether or not a given field has help text or an error.
-
-   Anatomy:
-     .ds-field              wrapper — one label + control + hint + error
-     .ds-label              the label, always present, always above
-     .ds-input              the control: input, select, or textarea
-     .ds-hint               help text, shown before there is any error
-     .field-error           the error message, [hidden] until it applies
-     .is-invalid            on the control, while its value is rejected
-     .field-warning         a non-blocking problem: accepted, may be reviewed
-     .field-info            the value was changed automatically; nothing wrong
-     .is-warning/.is-info   on the control, matching the message tier
-     .field-messages        an <ol> when one field carries several problems
-     .label-optional        on the label of an OPTIONAL field. Required fields
-                            carry no marker — see DESIGN-POLICIES
-     width                  set by control type; see "Field width" below
-     .ds-field--short       ~12 characters, for a value of known short length
-     .ds-field--full        force full width on a control that defaults to half
-
-   Labels sit ABOVE the control, never beside it. A label-left layout
-   gives a ragged edge, reads worse on a phone, and makes it easy to ship
-   a control with no label at all.
-
-   Field width follows the content: a postcode field the width of a
-   postcode tells the reader what is expected before they type. Stretching
-   every control edge-to-edge throws that away.
-
-   Accessibility contract, and it is not optional (DESIGN-POLICIES):
-     - every control has a real <label for>, or an aria-label if a visible
-       label is genuinely impossible
-     - required fields carry BOTH the asterisk and required aria-required
-     - the error is linked to its control with aria-describedby, so a
-       screen reader reads the problem when focus lands on the field
-     - the error says what to do, and never relies on the red alone
-
-   The <select> keeps its native arrow. A drawn chevron has to be
-   re-drawn for dark mode and re-checked at every zoom level; the native
-   one is correct in both themes, on every platform, for free.
-
-   Example:
-     <div class="ds-field">
-       <label class="ds-label" for="email">Email address</label>
-       <input class="ds-input is-invalid" id="email" type="email"
-              required aria-required="true" aria-describedby="email-err">
-       <p class="ds-hint">We only use this to confirm your submission.</p>
-       <p class="field-error" id="email-err">Enter an email address, like name@university.edu.</p>
-     </div>
-   ═══════════════════════════════════════════════════════════════════════ */
+/* FORM FIELDS  (.ds-field / .ds-label / .ds-input / .ds-hint) — forms.html
+   Label above the control, always. Accessibility contract, not optional:
+   a real <label for> on every control; the error linked with
+   aria-describedby; required marked on the control with required +
+   aria-required. The <select> keeps its native arrow on every platform
+   except where .ds-select draws one — see below. */
 .ds-field { margin-bottom: var(--ds-space-4); }
-/* ── Field width and flow ─────────────────────────────────────────
-   Width is set by the TYPE of control, not by a class someone has to remember.
-   The element already carries the information: a textarea holds paragraphs, a
-   date input holds eight characters. Nobody chooses, and nobody can forget.
-
-   This is what the research is about. Baymard's testing found that when a field
-   was too long or too short "the test subjects started to wonder if they had
-   misunderstood the label". GOV.UK: "postcode inputs should be postcode-sized".
-   USWDS: "the length of the text input provides a hint to users as to how much
-   text to write". All three size by content; the pixel caps this replaces
-   (240/360/480) encoded nothing about content.
-
-   The width sits on .ds-field, not on .ds-input, so the field can be a flex
-   item that carries its own share of the row. The control then fills its field.
-
-   SPECIFICITY IS DELIBERATE. Every default sits inside :where(), so it is
-   specificity ZERO — a default, not a rule. Overrides are ordinary class
-   selectors and win by construction, not by source order. Reorder this file and
-   nothing changes. */
+/* ── Field width and flow — forms.html
+   Width comes from the input type, so a date or a number is already
+   narrow. .ds-field--short and --full are the two overrides, for the
+   case type="text" cannot infer: a four-digit year and a paper title
+   are the same type. */
 
 .ds-input { width: 100%; }
 
@@ -1489,33 +1025,11 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
    padding box — without it a long option label runs into it. */
 select.ds-input { padding-right: 34px; }
 
-/* ── Drawn chevron (.ds-select wrapper) ──────────────────────────────
-   Revises the earlier decision to keep the browser's native arrow. That
-   decision was right about the technique it was weighing: a chevron baked into
-   a background-image data URI does need a second, hand-picked asset for dark
-   mode, which DESIGN-POLICIES forbids. It is not true of a mask tinted with a
-   token — the colour comes from --ds-text-muted and flips on its own, so
-   there is one asset and no dark override. .ds-input has no dark rules at all
-   and this keeps it that way.
-
-   Why revise it: every other control here is specified to the pixel, and the
-   native arrow was the one place the system accepted whatever each platform
-   drew. On macOS Chrome it is faint enough that a select does not read as a
-   dropdown.
-
-   Why a wrapper rather than styling the <select> directly: a mask applies to
-   the whole element, so masking the select would mask its fill too. The
-   chevron therefore lives on the wrapper's ::after.
-
-   The wrapper is OPTIONAL by design. appearance:none is scoped to
-   `.ds-select select`, so a bare <select class="ds-input"> keeps its native
-   arrow and still works. Forgetting the wrapper degrades to today's behaviour,
-   never to a select with no arrow at all.
-
-     <span class="ds-select">
-       <select class="ds-input">…</select>
-     </span>
-*/
+/* ── Drawn chevron (.ds-select wrapper) — forms.html
+   Opt-in, and rarely worth it. The native arrow is correct in dark mode,
+   at every zoom, in forced-colors, and on every platform; a drawn one
+   has to be re-checked in all four. Uses appearance:none, so the
+   wrapper MUST supply its own focus ring. */
 .ds-select {
   position: relative;
   display: block;
@@ -1637,35 +1151,10 @@ select.ds-input { padding-right: 34px; }
 .ds-check input:disabled + span { color: var(--ds-text-disabled); }
 
 
-/* ═══════════════════════════════════════════════════════════════════════
-   INLINE ACTIVE STATE  (.ds-inline-active)
-   ───────────────────────────────────────────────────────────────────────
-   Apply to any inline interactive element (citation chip, footnote
-   marker, inline reference) when it is the SOURCE of a currently-open
-   popover, the target of a hover-paired highlight, or otherwise the
-   active anchor right now. Light-blue background + underline reads
-   the same across surfaces, so the user learns one visual once.
-
-   This is a modifier — not a complete component. The element should
-   carry its own base typography and color; .ds-inline-active layers
-   the "I am active" treatment on top.
-
-   The element should pre-allocate its padding at rest so that adding
-   the background on state change does not reflow surrounding text
-   (e.g., `padding: 0 3px` at rest for a superscript marker). Citation
-   chips and footnote markers in the HTML reader use this pattern.
-
-   Triggered by the consumer via:
-     - JS-set class (e.g., when a popover opens)
-     - attribute selector (e.g., [aria-expanded="true"])
-     - paired-hover from a related element (e.g., hovering a footnote's
-       margin note lights up its inline marker)
-
-   Example:
-     <a class="ftn-marker" aria-expanded="true">3</a>
-       ↳ separately, CSS adds .ds-inline-active styling to
-         [aria-expanded="true"] (or a copy of the rule)
-   ═══════════════════════════════════════════════════════════════════════ */
+/* INLINE ACTIVE STATE  (.ds-inline-active) — progressive-disclosure.html
+   The wash on a citation chip while its popover is open. Pair it with
+   aria-expanded on the trigger: this is the visible half of one state,
+   and the attribute is the half a screen reader gets. */
 
 .ds-inline-active {
   background: var(--ds-accent-wash);
@@ -1674,32 +1163,10 @@ select.ds-input { padding-right: 34px; }
 }
 
 
-/* ═══════════════════════════════════════════════════════════════════════
-   LINK  (.ds-link)
-   ───────────────────────────────────────────────────────────────────────
-   Inline text link with all four interactive states. Link Blue at rest,
-   darkens on hover (~20% darker, more saturated), Visited Purple after
-   a successful visit (the visited memory aids researchers tracking
-   what they have already read).
-
-   Underlined per DESIGN-POLICIES.md ("Inline links in body text must be
-   underlined"). Standalone navigation links may omit the underline by
-   overriding text-decoration locally.
-
-   Use as a utility class on any <a> in body text, or as the
-   declarative target the consumer's CSS can mirror onto a base `a`
-   rule scoped to its content surface (article, paragraph, etc.).
-   Both patterns are valid — utility for cherry-picking, base rule
-   for surfaces where every anchor should follow the convention.
-
-   Reference: design-patterns/color-mapping.md (link tier).
-
-   Example:
-     <a class="ds-link" href="https://arxiv.org/abs/...">2604.22725</a>
-
-     OR, scoped to an article:
-       article a { color: var(--ds-link); ... }
-   ═══════════════════════════════════════════════════════════════════════ */
+/* LINK  (.ds-link) — public/link-styles.html
+   Inline links are ALWAYS underlined — colour alone fails WCAG 1.4.1
+   and the underline is the only cue that survives forced-colors.
+   Standalone links (nav, cards) may drop it and underline on hover. */
 
 .ds-link {
   color: var(--ds-link);
@@ -1719,22 +1186,10 @@ select.ds-input { padding-right: 34px; }
 }
 
 
-/* ═══════════════════════════════════════════════════════════════════════
-   ANNOTATION TYPOGRAPHY  (.ds-annotation)
-   ───────────────────────────────────────────────────────────────────────
-   Secondary editorial commentary in serif italic — "the voice of the
-   editor speaking quietly next to the main text." Used wherever arXiv
-   surfaces content as an annotation alongside the author's prose:
-     - Footnote text in the margin or popover
-     - Figure alt-text surfaced as a visible margin note
-     - Editorial asides, contextual notes
-
-   Intentionally NOT a "marginalia" class. The treatment is a
-   typographic voice, not a layout role. A consumer chooses placement
-   (margin, popover, inline aside) separately and applies this class
-   to get the right voice. in arxiv-mockups/arxiv-public/html-redesign.html
-   (footnote marginalia, figure alt-text marginalia).
-   ═══════════════════════════════════════════════════════════════════════ */
+/* ANNOTATION TYPOGRAPHY  (.ds-annotation) — typography.html
+   Serif italic: arXiv speaking quietly beside the author's text —
+   margin footnotes, figure alt text surfaced as a note. It is a VOICE,
+   not a layout role; placement is the consumer's decision. */
 
 .ds-annotation {
   font-family: var(--ds-font-serif);
@@ -1745,39 +1200,11 @@ select.ds-input { padding-right: 34px; }
 }
 
 
-/* ═══════════════════════════════════════════════════════════════════════
-   POPOVER PANEL  (.ds-popover and parts)
-   ───────────────────────────────────────────────────────────────────────
-   Light-blue tint floating panel anchored to an inline element on
-   click. Same shape and material across:
-     - Citation chip popover (reference details + jump-to-reference)
-     - Footnote popover (narrow-viewport surfacing of footnote content)
-     - Any future "click an inline chip → see more context" pattern
-
-   The popover element itself is `position: fixed` (consumer is
-   responsible for setting top/left and for portaling to <body> if
-   the inline source has a transformed ancestor). Hidden by the
-   `hidden` HTML attribute; visible when the attribute is removed.
-
-   Parts:
-     .ds-popover            The panel itself.
-     .ds-popover-title      Small uppercase condensed label at the
-                            top of the panel (e.g., "Reference 47",
-                            "Footnote 3").
-   The close control is .ds-close, positioned by this component at the
-   panel's top-right corner (citation popover, footnote popover).
-
-   Example:
-     <span class="ds-popover" role="region" aria-label="Reference 47" hidden>
-       <div class="ds-popover-title">Reference 47</div>
-       <button class="ds-close" type="button">
-         <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-         <span class="is-sr-only">Close reference 47</span>
-       </button>
-       <!-- panel content -->
-     </span>
-   ═══════════════════════════════════════════════════════════════════════ */
+/* POPOVER PANEL  (.ds-popover and parts) — progressive-disclosure.html
+   position: fixed — the consumer sets top/left and must portal it to
+   <body> if the inline source has a transformed ancestor. Hidden by the
+   `hidden` attribute. Escape closes it AND returns focus to the trigger.
+   Never put content here that exists nowhere else. */
 
 .ds-popover {
   position: fixed;
@@ -1815,68 +1242,14 @@ select.ds-input { padding-right: 34px; }
 }
 
 
-/* ═══════════════════════════════════════════════════════════════════════
-   MODAL DIALOG  (.ds-modal)
-   ───────────────────────────────────────────────────────────────────────
-   A native <dialog> opened with showModal(). Built on the element rather
-   than on a <div role="dialog"> because four of the five things a modal
-   has to get right come free that way, and hand-built modals get them
-   wrong in the same order every time:
-
-     Focus trap        The browser makes the rest of the page inert.
-                       Nothing can be tabbed, clicked or read by a screen
-                       reader while the dialog is open. A JavaScript trap
-                       has to enumerate focusable elements, and the list
-                       of what is focusable is longer than anyone's
-                       implementation.
-     Focus restore     close() returns focus to whatever opened it, so a
-                       keyboard user is not dropped at the top of the
-                       document.
-     Escape            Closes it, with a cancel event first if you need
-                       to intervene.
-     Stacking          It renders in the top layer, above every stacking
-                       context on the page, with no z-index. This is what
-                       DESIGN-POLICIES means by "modal dialogs use the
-                       native <dialog> top layer".
-
-   The fifth is scroll lock, and CSS handles it below — the page behind a
-   modal must not scroll when the reader spins the wheel, or they lose
-   their place in a document they cannot see.
-
-   So the whole JavaScript contract is two calls:
-
-     document.getElementById('m').showModal();   // open
-     document.getElementById('m').close();       // close
-
-   Markup:
-
-     <dialog class="ds-modal" id="m" aria-labelledby="m-title">
-       <div class="ds-modal-header">
-         <h2 class="ds-modal-title" id="m-title">Withdraw this submission?</h2>
-         <button type="button" class="ds-close" data-close>…</button>
-       </div>
-       <div class="ds-modal-body">…</div>
-       <div class="ds-modal-footer">
-         <button class="ds-btn ds-btn-text" data-close>Cancel</button>
-         <button class="ds-btn ds-btn-primary">Withdraw</button>
-       </div>
-     </dialog>
-
-   aria-labelledby is REQUIRED and points at the title. Without it the
-   dialog announces with no name, which is the one thing the native
-   element cannot infer.
-
-   Light dismiss — closing by clicking the backdrop — is DELIBERATELY not
-   the default. Add closedby="any" to a dialog the reader is looking
-   THROUGH (a figure viewer, an image); leave it off a dialog that asks a
-   question, because an accidental click outside must not answer it.
-   Where closedby is unsupported the dialog simply keeps its close button
-   and Escape, which is the correct degradation.
-
-   No entrance animation. An animated modal also animates the moment the
-   page under it goes inert, and there is nothing here for
-   prefers-reduced-motion to switch off if nothing moves.
-   ═══════════════════════════════════════════════════════════════════════ */
+/* MODAL DIALOG  (.ds-modal) — modals.html
+   Native <dialog> + showModal(), never show(): show() gives a
+   non-modal dialog with no backdrop, no inert page and no focus trap,
+   on markup that looks identical.
+   aria-labelledby is REQUIRED — the one thing the element cannot infer.
+   closedby="any" only where the reader is looking THROUGH the dialog; on
+   one that asks a question, a stray click outside must not answer it.
+   Scroll lock is the html:has() rule below, not JavaScript. */
 
 .ds-modal {
   /* Reset the UA's dialog chrome; auto margins keep it centred. */
@@ -1993,38 +1366,10 @@ html:has(.ds-modal[open]) {
   .ds-modal-footer > .ds-modal-footer-start { margin-right: 0; }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   ELEMENT PILL  (.ds-element-pill)
-   ───────────────────────────────────────────────────────────────────────
-   Small white pill that floats anchored to a piece of content
-   (an equation, a figure) to host action affordances for it. Used
-   wherever arXiv adds metadata chrome (permalink, copy TeX, alt-text
-   actions, etc.) that should live on the element rather than in a
-   margin lane.
-
-   The pill is `position: absolute`; the consumer is responsible for
-   the positioning context (typically `position: relative` on the
-   element's wrapper) and for the offset (typically `bottom: -14px;
-   left: 50%; transform: translateX(-50%);` to straddle the element's
-   bottom edge by ~50%).
-
-   Hidden at rest. Add `.is-revealed` to the pill (or whatever class
-   the consumer's hover/focus rule applies) to fade it in.
-
-   Chips inside the pill are styled by the consumer — the pill itself
-   only provides the floating-panel material. in arxiv-mockups/arxiv-public/html-redesign.html
-   (equation actions, figure actions — Distill-style anchored chrome).
-
-   Example:
-     <div class="eqn-wrap" style="position: relative;">
-       <!-- equation here -->
-       <div class="ds-element-pill" style="bottom: -14px; left: 50%; transform: translateX(-50%);">
-         <button>View TeX</button>
-         <button>Permalink</button>
-         <button>Copy</button>
-       </div>
-     </div>
-   ═══════════════════════════════════════════════════════════════════════ */
+/* ELEMENT PILL  (.ds-element-pill) — organizing-content.html
+   Floats anchored to a piece of content to carry actions for it. The
+   consumer owns the positioning context (position: relative on the
+   wrapper) — the pill only positions itself within one. */
 
 .ds-element-pill {
   position: absolute;
@@ -2063,30 +1408,11 @@ html:has(.ds-modal[open]) {
 }
 
 
-/* ═══════════════════════════════════════════════════════════════════════
-   ALERT / STATUS MESSAGE  (.ds-alert)
-   ───────────────────────────────────────────────────────────────────────
-   Inline status banner — success / info / warning / error (failure).
-   Token-driven via the --ds-{success,info,warning,error}-* families
-   (see color-mapping.md "Status & alert colors — shared"). Structurally
-   identical to the staff stylesheet's .ds-alert, and now token-for-token
-   identical too: both surfaces name these the same and hold the same values.
-
-   Color is never the sole signal — pair each variant with a distinct icon
-   shape AND a leading word (WCAG 1.4.1). ARIA: role="status" for
-   success/info (polite), role="alert" for warning/error (assertive);
-   icons carry aria-hidden="true". Inline links inherit the variant color
-   and stay underlined, per the link policy.
-
-   Example:
-     <div class="ds-alert ds-alert-info" role="status">
-       <svg class="ds-alert-icon" aria-hidden="true">…</svg>
-       <div class="ds-alert-content">
-         <p class="ds-alert-title">Viewing an older version</p>
-         <p>A newer version of this paper exists — <a href="...">see v3</a>.</p>
-       </div>
-     </div>
-   ═══════════════════════════════════════════════════════════════════════ */
+/* ALERT / STATUS MESSAGE  (.ds-alert) — alerts.html
+   Colour is never the only signal: each variant pairs a distinct icon
+   SHAPE with a leading word (WCAG 1.4.1). role="status" for
+   success/info, role="alert" for warning/error. Identical on both
+   surfaces, token for token. */
 
 .ds-alert {
   margin-block: var(--ds-space-block);
@@ -2141,25 +1467,30 @@ html:has(.ds-modal[open]) {
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    /* Brand + surface dark values. Repository Brown is
-       the dark canvas; accents hold their light values. */
-    --ds-text:           #f0eeec;  /* canvas text flips; on-blue text keeps --ds-text-on-accent */
-    --ds-canvas:       #1c1a17;  /* the canvas */
-    --ds-surface-muted:       #2b2723;  /* raised band; text 12.8:1 */
-    --ds-surface:         #2b2723;  /* white fills become raised surfaces */
-    --ds-border:    #3a3530;  /* decorative tier, as in light */
-    --ds-text-muted:            #b0aba6;  /* 7.6:1 on canvas */
-    --ds-text-disabled:        #5a554f;  /* disabled tier */
-    --ds-accent-strong:   #6ba8da;  /* headings 6.8:1 */
+    /* Only SEMANTIC tokens flip. The primitives above name colours and
+       never change — Repository Brown is Repository Brown in both modes;
+       what changes is that it becomes the canvas rather than the text.
+       Where a flipped value is one of the named brand colours, it points
+       at the primitive so the relationship stays visible. */
+    --ds-text:              var(--ds-card-grey);
+    --ds-canvas:            var(--ds-repository-brown);
+    --ds-surface-muted:     #2b2723;                     /* raised band, text 12.8:1 */
+    --ds-surface:           #2b2723;                     /* white fills become raised */
+    --ds-border:            #3a3530;
+    --ds-border-muted:      #403b35;
+    --ds-text-muted:        var(--ds-disabled-grey);     /* 7.6:1 on the dark canvas */
+    --ds-text-disabled:     #5a554f;
+    --ds-chrome:            #262119;                     /* lifted off the canvas so the
+                                                            bar still reads as a bar */
+    --ds-scrim:             rgba(10, 9, 8, 0.72);        /* denser: the page beneath is
+                                                            already dark */
+    --ds-accent-strong:     #6ba8da;                     /* headings, 6.8:1 */
     --ds-accent-wash:       #1e3a5f;
-    --ds-accent-surface:      #132433;  /* = info dark surface */
+    --ds-accent-surface:    #132433;                     /* = the info dark surface */
     --ds-accent-border:     #2a4a7a;
-    --ds-border-muted:     #403b35;
-    --ds-chrome:      #262119;  /* lifted so the bar reads against the canvas */
-    --ds-scrim:       rgba(10, 9, 8, 0.72);
-    --ds-link:       #64b5f6;  /* 7.84:1 on Repository Brown ✓ AAA */
-    --ds-link-hover:      #90caf9;
-    --ds-link-visited:    #c690e3;  /* 7.03:1 on Repository Brown ✓ AAA; 4.66:1 on active-bg ✓ AA */
+    --ds-link:              var(--ds-link-blue-dark);    /* 7.84:1 on the canvas */
+    --ds-link-hover:        #90caf9;
+    --ds-link-visited:      #c690e3;                     /* 7.03:1 on the canvas */
     --ds-success-bg:      #1e2b0d;
     --ds-success-border:  #8fbd3a;
     --ds-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
@@ -2216,52 +1547,48 @@ html:has(.ds-modal[open]) {
   }
 }
 
-/* ── Explicit dark override (the toggle guard) ──────────────────────
-   Everything above flips only when the OS asks for dark. A surface that
-   offers its own light/dark control needs dark to win on a light-OS
-   machine too, so the same declarations are mirrored here under
-   [data-theme="dark"].
-
-   This block is a MIRROR, not a second opinion: it is generated from the
-   @media block above and must stay character-identical to it. Never edit
-   one side alone — change the values above, then regenerate. The check
-   is mechanical: `python3 verification/check-drift.py` fails if the two
-   blocks disagree.
-
-   Consumers set the attribute themselves (the toggle is JavaScript, and
-   the system deliberately ships no toggle UI yet — docs/dark-mode.html).
-   With no attribute set, the OS preference above still applies. */
+/* ── Explicit dark override (the toggle guard)
+   Mirrors the @media block above so a consumer's own toggle can set
+   [data-theme="dark"]. NEVER edit one side alone —
+   `python3 verification/check-drift.py` fails if they disagree. */
 [data-theme="dark"] {
   color-scheme: dark;
-  --ds-text:  #f0eeec;  /* canvas text flips; on-blue text keeps --ds-text-on-accent */
-  --ds-canvas:         #1c1a17;  /* the canvas */
-  --ds-surface-muted:         #2b2723;  /* raised band; text 12.8:1 */
-  --ds-surface:           #2b2723;  /* white fills become raised surfaces */
-  --ds-border:      #3a3530;  /* decorative tier, as in light */
-  --ds-text-muted:      #b0aba6;  /* 7.6:1 on canvas */
-  --ds-text-disabled:          #5a554f;  /* disabled tier */
-  --ds-accent-strong:     #6ba8da;  /* headings 6.8:1 */
-  --ds-accent-wash:         #1e3a5f;
-  --ds-accent-surface:        #132433;  /* = info dark surface */
-  --ds-accent-border:       #2a4a7a;
-  --ds-border-muted:       #403b35;
-  --ds-chrome:        #262119;  /* lifted so the bar reads against the canvas */
-  --ds-scrim:         rgba(10, 9, 8, 0.72);
-  --ds-link:         #64b5f6;  /* 7.84:1 on Repository Brown ✓ AAA */
+  /* Only SEMANTIC tokens flip. The primitives above name colours and
+     never change — Repository Brown is Repository Brown in both modes;
+     what changes is that it becomes the canvas rather than the text.
+     Where a flipped value is one of the named brand colours, it points
+     at the primitive so the relationship stays visible. */
+  --ds-text:              var(--ds-card-grey);
+  --ds-canvas:            var(--ds-repository-brown);
+  --ds-surface-muted:     #2b2723;                     /* raised band, text 12.8:1 */
+  --ds-surface:           #2b2723;                     /* white fills become raised */
+  --ds-border:            #3a3530;
+  --ds-border-muted:      #403b35;
+  --ds-text-muted:        var(--ds-disabled-grey);     /* 7.6:1 on the dark canvas */
+  --ds-text-disabled:     #5a554f;
+  --ds-chrome:            #262119;                     /* lifted off the canvas so the
+                                                          bar still reads as a bar */
+  --ds-scrim:             rgba(10, 9, 8, 0.72);        /* denser: the page beneath is
+                                                          already dark */
+  --ds-accent-strong:     #6ba8da;                     /* headings, 6.8:1 */
+  --ds-accent-wash:       #1e3a5f;
+  --ds-accent-surface:    #132433;                     /* = the info dark surface */
+  --ds-accent-border:     #2a4a7a;
+  --ds-link:              var(--ds-link-blue-dark);    /* 7.84:1 on the canvas */
   --ds-link-hover:        #90caf9;
-  --ds-link-visited:      #c690e3;  /* 7.03:1 on Repository Brown ✓ AAA; 4.66:1 on active-bg ✓ AA */
-  --ds-success-bg:        #1e2b0d;
-  --ds-success-border:    #8fbd3a;
-  --ds-success-fg:        #c5e1a5;  /* 10.4:1 ✓ AAA */
-  --ds-info-bg:           #132433;
-  --ds-info-border:       #64b5f6;
-  --ds-info-fg:           #90caf9;  /* 9.0:1 ✓ AAA */
-  --ds-warning-bg:        #2e2410;
-  --ds-warning-border:    #e8b800;
-  --ds-warning-fg:        #ffe082;  /* 11.8:1 ✓ AAA */
-  --ds-error-bg:          #2d1414;
-  --ds-error-border:      #e57373;
-  --ds-error-fg:          #ef9a9a;  /* 8.0:1 ✓ AAA */
+  --ds-link-visited:      #c690e3;                     /* 7.03:1 on the canvas */
+  --ds-success-bg:      #1e2b0d;
+  --ds-success-border:  #8fbd3a;
+  --ds-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
+  --ds-info-bg:         #132433;
+  --ds-info-border:     #64b5f6;
+  --ds-info-fg:         #90caf9;  /* 9.0:1 ✓ AAA */
+  --ds-warning-bg:      #2e2410;
+  --ds-warning-border:  #e8b800;
+  --ds-warning-fg:      #ffe082;  /* 11.8:1 ✓ AAA */
+  --ds-error-bg:        #2d1414;
+  --ds-error-border:    #e57373;
+  --ds-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
 }
 
 [data-theme="light"] {
@@ -2445,55 +1772,16 @@ html:has(.ds-modal[open]) {
 .ds-acc-rail .ds-acc-body dt:first-child { margin-top: 0; }
 .ds-acc-rail .ds-acc-body dd { margin: 1px 0 0; }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   SHOW MORE  (.ds-show-more)
-   ───────────────────────────────────────────────────────────────────────
-   The other disclosure. An accordion hides a labelled SECTION; this
-   reveals the TAIL of something already begun — the rest of a long author
-   list, the rest of a long list of categories. The reader is already
-   reading the thing; the control only says how much of it is left.
-
-   That difference decides the markup. An accordion is <details>, so the
-   browser supplies the semantics. A tail cannot be, because <summary>
-   would put a heading in the middle of a sentence. So this is a real
-   <button> that owns three attributes, all required:
-
-     aria-expanded   "false" / "true", updated on every toggle.
-     aria-controls   the id of the region it reveals.
-     hidden          on that region while collapsed — NOT a class, so the
-                     names in it are out of the tab order and out of
-                     find-in-page when they are not on screen, with no
-                     CSS loaded at all.
-
-   The label counts: "show all 22 authors", not "show more". A reader
-   deciding whether to expand is asking how much is behind it, and a
-   screen-reader user hears the control with no view of the list. Return
-   it to "show fewer" when open.
-
-   Why grey and italic rather than Link Blue. Everywhere this control is
-   used, it sits at the end of a run of links — author names, category
-   links — and a Link Blue "show all 22 authors" is one more link in that
-   run, indistinguishable from a name. It is not a link: it goes nowhere,
-   it changes this page. Reading as a different KIND of thing than its
-   neighbours is the whole job, so it takes the muted text colour and
-   italic, and earns its underline on hover the way standalone links do.
-   Where it does not sit among links, that reasoning does not apply and
-   the text button (.ds-btn .ds-btn-text) is the right control instead.
-
-   Target size: the inline exception applies (DESIGN-POLICIES.md, Chrome
-   and interaction structure) — this is a target within a sentence, like a
-   citation chip, and growing it to 24px would break the line it sits in.
-
-     <ul class="…" id="authors">
-       <li><a href="…">A. Author</a></li>
-       …
-       <span id="authors-tail" hidden>…</span>
-     </ul>
-     <button type="button" class="ds-show-more"
-             aria-expanded="false" aria-controls="authors-tail">
-       … show all 22 authors
-     </button>
-   ═══════════════════════════════════════════════════════════════════════ */
+/* SHOW MORE  (.ds-show-more) — progressive-disclosure.html
+   Reveals the TAIL of something already begun, where an accordion would
+   put a heading in the middle of a sentence. The button REQUIRES
+   aria-expanded and aria-controls, and the region uses the `hidden`
+   ATTRIBUTE, not a class — a class leaves the hidden names tabbable and
+   findable while off screen.
+   Grey italic rather than Link Blue: it sits at the end of a run of
+   author links and must not read as one more of them.
+   Target size takes WCAG's inline exception — growing it to 24px would
+   break the line it sits in. */
 
 .ds-show-more {
   display: inline;
@@ -2519,56 +1807,8 @@ html:has(.ds-modal[open]) {
   border-radius: 2px;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   SITE FOOTER  (.ds-site-footer)
-   ═══════════════════════════════════════════════════════════════════════
-   The universal arXiv public-page footer. Design approved,
-   validated in three places that agree almost exactly: the approved
-   spinout-header-footer Cloud Run deployment, mockups/public/abstract-phase2.html,
-   and mockups/public/html-phase1.html (see the component audit
-   addendum — "the most validated component on this list").
-
-   Structure (three pieces):
-     1. Acknowledgment line — "We gratefully acknowledge support from our
-        **major funders**, **member institutions**, and all contributors."
-        Optional inline institutional mention (IP-matched) follows
-        "member institutions".
-     2. Footer nav — About · Help · Contact · Subscribe · Copyright ·
-        Privacy · Accessibility · Operational Status, dot-separated.
-     3. Funders column — "Major funding support from" + Simons + Schmidt
-        wordmark logos, right-aligned; drops below the main column at
-        narrow widths.
-
-   Markup contract:
-     <footer class="ds-site-footer">
-       <div class="ds-site-footer-grid">
-         <div class="ds-site-footer-main">
-           <div class="ds-site-footer-ack">We gratefully acknowledge … </div>
-           <nav class="ds-site-footer-links" aria-label="Site navigation">
-             <a href="…">About</a>
-             <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
-             …
-           </nav>
-         </div>
-         <div class="ds-site-footer-funders">
-           <div class="ds-site-footer-funders-label">Major funding support from</div>
-           <div class="ds-site-footer-funders-logos">
-             <img class="ds-funder-logo" src="…" alt="Simons Foundation">
-             <img class="ds-funder-logo" src="…" alt="Schmidt Sciences">
-           </div>
-         </div>
-       </div>
-     </footer>
-
-   Accessibility notes (the behavior contract travels with the pattern):
-     - Real <footer> landmark; nav has aria-label="Site navigation".
-     - Dot separators carry aria-hidden="true" (screen readers otherwise
-       announce "middot" between every link).
-     - Funder logos carry real alt text (organization names).
-     - External links (Operational Status) need target="_blank" +
-       rel="noopener noreferrer" + sr-only "(opens in new tab)".
-     - Type sizes in rem so user font-size overrides propagate.
-   ═══════════════════════════════════════════════════════════════════════ */
+/* SITE FOOTER  (.ds-site-footer) — public/footer-styles.html
+   Never hand-build this chrome and never draw the logos from text. */
 
 .ds-site-footer {
   clear: both;
@@ -2694,69 +1934,15 @@ html:has(.ds-modal[open]) {
   border: 0 !important;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   SITE HEADER UNIT  (.ds-announcement + .ds-site-header)
-   ═══════════════════════════════════════════════════════════════════════
-   The universal arXiv public-page header. Design approved,
-   validated against the spinout-header-footer Cloud Run deployment.
-   Reference implementation: mockups/public/abstract-phase2.html.
-
-   This is ONE pattern with two stacked pieces — codified together
-   because the approved deployment treats them as a unit. (A third
-   piece, a breadcrumb band, was briefly part of this pattern and removed — the approved deployment covers only the banner
-   and the black bar; see the note below the header rules.)
-
-     1. .ds-announcement — dismissable light-blue announcement band.
-        Render only while an announcement is active; the close button
-        persists dismissal (cookie/localStorage in production).
-     2. .ds-site-header — the black bar (Repository Brown #1c1a17,
-        phase-2 spinout brand): logo left, nav right (Search / Submit /
-        Donate | Log in). NOT sticky — scrolls away like content.
-
-   Markup contract (abridged; see header-styles.html for the full demo):
-     <a class="ds-skip-link" href="#main">Skip to main content</a>
-     <div class="ds-announcement" role="region" aria-label="Announcement">
-       <img class="ds-announcement-glyph" src="…" alt="" aria-hidden="true">
-       <span class="ds-announcement-text">…</span>
-       <a class="ds-announcement-link" href="…">Learn more</a>
-       <button type="button" class="ds-close">
-         <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-         <span class="is-sr-only">Dismiss announcement</span>
-       </button>
-     </div>
-     <header class="ds-site-header">
-       <a href="/" class="ds-site-header-logo" aria-label="archive home">
-         <img src="…" alt="archive">
-       </a>
-       <nav class="ds-site-header-nav" aria-label="Main navigation">
-         <a href="/search" id="…">…Search</a>
-         <a href="/submit">Submit</a>
-         <a href="…">Donate</a>
-         <span class="ds-site-header-divider" aria-hidden="true"></span>
-         <a href="/login" class="ds-site-header-login">Log in</a>
-       </nav>
-     </header>
-
-   Behavior contract (travels with the pattern):
-     - The skip link (.ds-skip-link) is the FIRST focusable element on
-       the page, visible only on keyboard focus.
-     - Logo alt text and aria-labels say "archive" — the spoken form of
-       "arXiv" (dual-span pattern; see accessibility-priorities.md).
-     - The Search control is an <a href="/search"> that JS may upgrade
-       to open a search overlay (preventDefault). Never a dead button:
-       without JS it navigates to the search page.
-     - Focus rings on the dark bar use --ds-focus-ring-on-dark (#64b5f6)
-       — the standard Link Blue ring is invisible against #1c1a17.
-     - Below 520px the bar wraps to two rows (flex-wrap) rather than
-       collapsing into a hamburger: every nav item stays visible, no JS
-       required, and visible labels keep voice-control users working
-       (WCAG 1.4.10 reflow verified at 320px).
-     - The announcement close button needs a persisted dismissal in
-       production; the banner is temporal — page function must not
-       depend on it (newcomer signposting needs a permanent home;
-       open design question).
-   ═══════════════════════════════════════════════════════════════════════ */
+/* SITE HEADER UNIT  (.ds-announcement + .ds-site-header) — public/header-styles.html
+   Announcement band + black bar + skip link. Nothing below the black bar
+   is approved chrome.
+   NOT sticky: sticky chrome is exceptional at arXiv and only the reader
+   earns it (DESIGN-POLICIES). Static also returns the bar's height to
+   the mobile viewport and removes the anchor-offset hazard.
+   --light re-points seven surface tokens and declares no property of its
+   own, so no rule in the variant can lose a specificity argument.
+   Focus rings on the dark bar use --ds-focus-ring-on-dark. */
 
 /* ── Skip link ── */
 .ds-skip-link {
