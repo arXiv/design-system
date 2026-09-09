@@ -23,9 +23,11 @@ any parallelism possible.
 
 ### Phase 0 — Decisions (Shamsi; each unblocks work downstream)
 
-- [ ] **18. A written browser-support floor.** Nothing states which browsers we
-      target. It made the `color-mix` question unanswerable and will recur with
-      every modern CSS feature. One paragraph in DESIGN-POLICIES.
+- [x] **18. A written browser-support floor.** DONE 2026-09-09 — Baseline
+      "Widely available", in DESIGN-POLICIES *Browser support*, with a labelled
+      exception for progressive enhancement. Audit found two features below the
+      floor (`scrollbar-gutter`, `text-wrap`), both cosmetic, both now labelled
+      at the point of use.
 - [ ] **32. The rule for serif.** Shamsi: "the rules around use of serif fonts
       are not yet clear." A decision, distinct from the check — #20 can only
       verify the paper mockup matches the docs once there is a rule to match.
