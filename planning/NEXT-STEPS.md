@@ -28,9 +28,14 @@ any parallelism possible.
       exception for progressive enhancement. Audit found two features below the
       floor (`scrollbar-gutter`, `text-wrap`), both cosmetic, both now labelled
       at the point of use.
-- [ ] **32. The rule for serif.** Shamsi: "the rules around use of serif fonts
-      are not yet clear." A decision, distinct from the check — #20 can only
-      verify the paper mockup matches the docs once there is a rule to match.
+- [x] **32. The rule for serif.** DONE 2026-09-09 — it turned out to be a
+      writing task, not a decision: `typography.md` and `typography.html`
+      already agreed, and the code implements it. Serif italic is the annotation
+      voice (arXiv speaking beside the author); upright serif is outreach only.
+      DESIGN-POLICIES *Typography* now states what every face is for, as a
+      positive rule rather than a prohibition, which also fixed a real
+      contradiction — the policy had listed only four families and left serif
+      out entirely. **Carried into #20:** test serif for figure captions.
 - [ ] **16. Keep or drop `typography.md` and `BRAND.md`.** The only two `.md` /
       `.html` pairs. Blocks #13: no point cleaning prose in a file we delete.
 - [ ] **28. Ruled or card as the accordion base class.** `.ds-acc-flush` is now
@@ -81,10 +86,20 @@ unable to fail. Left out so the test can tell us whether the system covers it.
 
 ### Phase 4 — The mockups
 
-- [ ] **20.** The paper mockup still rebuilds six DS components under other
-      names (card, popover, accordion, tag, alert, panel label), plus 54 raw
-      pixel gaps and 41 pixel font sizes across nine sizes. Includes checking
-      the serif use against whatever #32 decides.
+- [ ] **20.** The paper mockup still rebuilds **seven** DS components under
+      other names — card, popover, accordion, tag, alert, panel label, and
+      `.ds-annotation` (the footnote and figure-alt marginalia re-declare it by
+      hand, right treatment, wrong route) — plus 54 raw pixel gaps and 41 pixel
+      font sizes across nine sizes.
+
+      **Read this audit both ways** (Shamsi, 2026-09-09): where the page does
+      not use the design system as intended, and equally where the design system
+      does not support what the page needs. The second half is the more valuable
+      finding and is easy to miss when the task is framed as compliance.
+
+      **Experiment to run while here:** serif for figure captions. Serif for
+      marginalia is settled and liked; captions are the plausible extension and
+      want testing rather than deciding in the abstract.
 - [ ] **22.** Two print bugs: a dark OS preference gives print a dark
       background; the bibliography's viewport padding survives into print.
 - [ ] **23.** The figure viewer does not return focus to the chip that opened

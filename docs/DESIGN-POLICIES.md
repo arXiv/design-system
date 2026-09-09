@@ -38,8 +38,16 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 ## Typography
 
-- **Font families:** Use only IBM Plex Sans, IBM Plex Sans Condensed, IBM Plex Mono, and STIX Two Math. See `docs/typography.md` for the full spec.
-- **Self-hosted:** All fonts must be self-hosted from arXiv's static assets. No external font services (Google Fonts, Adobe Typekit, CDN-hosted fonts).
+- **What each family is for.** The type family is IBM Plex, plus STIX Two Math for notation. Each face has a job:
+  - **IBM Plex Sans** — body copy, headings, and interface text. The default: where nothing below applies, this is the answer.
+  - **IBM Plex Sans Condensed** — labels, captions, table headers, and metadata, usually small and uppercase.
+  - **IBM Plex Mono** — identifiers and code: arXiv IDs, DOIs, BibTeX, code blocks.
+  - **IBM Plex Serif, italic** — the annotation voice: arXiv speaking quietly beside the author's text, as in footnote and figure alt-text marginalia (`.ds-annotation`). It is a voice, not a layout role; placement is a separate decision.
+  - **IBM Plex Serif, upright (400 / 600)** — editorial headlines and pull quotes on outreach properties.
+  - **STIX Two Math** — mathematical notation.
+
+  Adding a face or a family is a decision, recorded here. `docs/typography.md` holds the full spec, including sizes and weights.
+- **Fonts are served from arXiv's own static assets**, self-hosted. This one is a hard constraint rather than a default: an external font service (Google Fonts, Adobe Typekit, a CDN) makes every reader's visit observable by a third party and makes the archive's rendering depend on someone else staying up. Neither is acceptable for a permanent record.
 - **Font display:** Use `font-display: swap` for text fonts (prioritize readability). Use `font-display: auto` for STIX Two Math (math rendering needs the correct font).
 - **System fallbacks:** Every `font-family` declaration must include system fallbacks. See `typography.md` for the standard stacks.
 
