@@ -144,10 +144,21 @@ Simplest first, so the pattern-page rhythm is set before the harder ones.
 
       **Raised by Shamsi and answered on the page:** the paper's permalink and
       figure "chips" are not tags — a tag says what something *is*, those do
-      something, and anything with a verb on it is a button. They also have no
-      background and no border, so they are not pills either; they are the quiet
-      text tier at 11px, which makes them a **promotion candidate for the button
-      family** (carry into #20).
+      something, and anything with a verb on it is a button. They now have their
+      own section on `buttons.html`, *Small actions attached to content*, with
+      `tags.html` linking to it.
+
+      **Decision waiting on Shamsi:** promote that treatment to a real class?
+      It is shown on the buttons page but reproduced from the mockup, not linked
+      from the stylesheet — the repo's rule is to promote when a *second* surface
+      needs a pattern, and today only the HTML paper does. Suggested name
+      `.ds-btn-quiet`, because "chip" means a filter or a selection in most
+      systems and importing that confusion is how this started.
+
+      **Latent bug found in the mockup:** `.fig-chip` and `.eqn-chip` have no
+      `white-space: nowrap`, so a two-word label wraps and makes the pill
+      lopsided. Visible with "Alt text". Fixed in the docs demo; the mockup
+      still has it — carry into #20.
 
       **Found, not fixed — a real asymmetry:** the staff stylesheet has **no
       `[data-theme="dark"]` mirror**. Tier 1 supports both the OS preference and
