@@ -78,6 +78,23 @@
   --ds-disabled-border:       #d8d8d8;
   --ds-disabled-fg:           #b0b0b0;
   --ds-link-disabled:         #b0aba6;
+
+  /* Submission type badges. A submission type is a CATEGORY, not a
+     status — "New" is not success and "Wdr" is not an error — so these
+     are their own palette rather than the status tokens. Contrast
+     verified: new 8.5:1, rep 5.6:1, wdr 9.8:1, cross 7.5:1. */
+  --ds-badge-new-bg:      #d4e9ff;
+  --ds-badge-new-fg:      #1a3d78;
+  --ds-badge-new-border:  #93c5fd;
+  --ds-badge-rep-bg:      #fef3c7;
+  --ds-badge-rep-fg:      #7a5c00;
+  --ds-badge-rep-border:  #fde68a;
+  --ds-badge-wdr-bg:      #474340;
+  --ds-badge-wdr-fg:      #ffffff;
+  --ds-badge-wdr-border:  #474340;
+  --ds-badge-cross-bg:    #e8e4df;
+  --ds-badge-cross-fg:    #4a4540;
+  --ds-badge-cross-border:#cbc5be;
 }
 
 
@@ -536,7 +553,7 @@
   padding: var(--ds-space-3) var(--ds-space-4);
 }
 .ds-meta-cell dt {
-  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  font-family: var(--ds-font-condensed);
   font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
@@ -624,6 +641,20 @@
     --ds-disabled-border:       #2e2e2e;
     --ds-disabled-fg:           #4e4e4e;
     --ds-link-disabled:         #484340;
+
+    /* Submission type badges — dark */
+    --ds-badge-new-bg:      #13294a;
+    --ds-badge-new-fg:      #93c5fd;
+    --ds-badge-new-border:  #2a4a7a;
+    --ds-badge-rep-bg:      #3a2f0e;
+    --ds-badge-rep-fg:      #fde68a;
+    --ds-badge-rep-border:  #7a5c00;
+    --ds-badge-wdr-bg:      #474340;
+    --ds-badge-wdr-fg:      #e8e4df;
+    --ds-badge-wdr-border:  #8b8680;
+    --ds-badge-cross-bg:    #36322e;
+    --ds-badge-cross-fg:    #cbc5be;
+    --ds-badge-cross-border:#5a554f;
   }
 
   /* Secondary button — dark lime-tint bg needs lime text, not near-black */
@@ -662,11 +693,7 @@
   html:not([data-theme="light"]) .ds-meta-panel--editable.ds-meta-panel--ruled .ds-meta-cell { border-color: rgba(200, 220, 120, 0.14); }
   html:not([data-theme="light"]) .ds-meta-panel--reference.ds-meta-panel--ruled .ds-meta-cell { border-color: rgba(255, 255, 255, 0.08); }
 
-  /* Type badges — dark fills (contrast verified in commit) */
-  html:not([data-theme="light"]) .type-new   { background: #13294a; color: #93c5fd; border-color: #2a4a7a; }
-  html:not([data-theme="light"]) .type-rep   { background: #3a2f0e; color: #fde68a; border-color: #7a5c00; }
-  html:not([data-theme="light"]) .type-wdr   { background: #474340; color: #e8e4df; border-color: #8b8680; }
-  html:not([data-theme="light"]) .type-cross { background: #36322e; color: #cbc5be; border-color: #5a554f; }
+  /* Type badge dark fills are token re-points in :root above. */
 
   /* Segmented control — active states repoint at the (dark) status tokens;
      light mode keeps its original hardcoded values untouched. */
@@ -722,30 +749,30 @@ button.ds-tag:hover {
 
 /* New — first submission; light blue */
 .type-new {
-  background: #d4e9ff;
-  color: #1a3d78;
-  border-color: #93c5fd;
+  background: var(--ds-badge-new-bg);
+  color: var(--ds-badge-new-fg);
+  border-color: var(--ds-badge-new-border);
 }
 
 /* Rep — replacement version; yellow */
 .type-rep {
-  background: #fef3c7;
-  color: #7a5c00;
-  border-color: #fde68a;
+  background: var(--ds-badge-rep-bg);
+  color: var(--ds-badge-rep-fg);
+  border-color: var(--ds-badge-rep-border);
 }
 
 /* Wdr — withdrawal; dark warm-gray */
 .type-wdr {
-  background: #474340;
-  color: #ffffff;
-  border-color: #474340;
+  background: var(--ds-badge-wdr-bg);
+  color: var(--ds-badge-wdr-fg);
+  border-color: var(--ds-badge-wdr-border);
 }
 
 /* Cross — cross-listing; warm light-gray */
 .type-cross {
-  background: #e8e4df;
-  color: #4a4540;
-  border-color: #cbc5be;
+  background: var(--ds-badge-cross-bg);
+  color: var(--ds-badge-cross-fg);
+  border-color: var(--ds-badge-cross-border);
 }
 
 
@@ -771,7 +798,7 @@ button.ds-tag:hover {
 
 .ds-table th {
   text-align: left;
-  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  font-family: var(--ds-font-condensed);
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -1096,7 +1123,7 @@ button.ds-tag:hover {
 
 /* Label — uppercase condensed, muted when off, darkens when on */
 .toggle-label {
-  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  font-family: var(--ds-font-condensed);
   font-size: 11px;
   font-weight: 500;
   text-transform: uppercase;

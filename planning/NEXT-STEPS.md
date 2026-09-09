@@ -128,7 +128,25 @@ Simplest first, so the pattern-page rhythm is set before the harder ones.
       `.ds-site-header-divider` is the same component on the header's own colour
       token; consolidating it is part of #20, because two mockups declare it
       locally.
-- [ ] **8d.** Tags, labels, flags — reconcile with the internal styles
+- [x] **8d.** Tags, labels, flags — DONE 2026-09-09. The reconciliation is a
+      table on `tags.html`: four components that are all "a bit of text in a
+      small box", and what distinguishes them is what the text *is*.
+      `.ds-tag` (what a thing IS), `.type-badge` (a submission's TYPE, staff
+      only), `.ds-panel-label` (the label half of a pair, not a box at all),
+      and the paper's inline chips (a reference marker inside a sentence, still
+      page-local). Both shape questions now have written answers rather than
+      being accidents.
+      **The defect found:** `.type-badge` carried **24 one-off hex values**
+      across four variants and two modes, none of them in `color-mapping.md`.
+      Now `--ds-badge-*` tokens, with the dark mode handled by re-pointing the
+      tokens rather than by a second set of class overrides — which deleted the
+      four `html:not([data-theme="light"]) .type-*` rules entirely.
+
+      **Found, not fixed — a real asymmetry:** the staff stylesheet has **no
+      `[data-theme="dark"]` mirror**. Tier 1 supports both the OS preference and
+      an explicit toggle; tier 2 supports only the OS preference, so a staff tool
+      cannot offer its own dark toggle. Worth deciding deliberately rather than
+      inheriting.
 - [ ] **25.** The toggle — same visual, two legitimate behaviours: a checkbox
       when it is a form setting, `aria-pressed` when it is an immediate action
 - [ ] **8g.** Menu and dropdown — examined for usability and accessibility
