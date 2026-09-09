@@ -496,6 +496,46 @@
     </ul>
   </div>
 
+  <!-- ── Pagination ── -->
+  <div class="section">
+    <h2 class="section-title">Stepping through a set</h2>
+    <p class="ds-section-desc">Moving through items one at a time &mdash; a moderation queue, a run of
+    submissions &mdash; where each item has its own screen and someone works through them in order.</p>
+
+    <div style="padding:var(--ds-space-6); background:var(--ds-surface);
+                border:1px solid var(--ds-border); border-radius:8px">
+      <nav class="ds-pagination" aria-label="Queue navigation">
+        <button class="ds-btn ds-btn-secondary" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</button>
+        <span class="ds-pagination-position" aria-live="polite">Request 1 of 15</span>
+        <button class="ds-btn ds-btn-secondary" type="button">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+      </nav>
+    </div>
+
+    <p class="ds-panel-label">Markup</p>
+    <pre><code>&lt;nav class="ds-pagination" aria-label="Queue navigation"&gt;
+  &lt;button class="ds-btn ds-btn-secondary" disabled&gt;&lt;svg …&gt;&lt;/svg&gt; Previous&lt;/button&gt;
+  &lt;span class="ds-pagination-position" aria-live="polite"&gt;Request 1 of 15&lt;/span&gt;
+  &lt;button class="ds-btn ds-btn-secondary"&gt;Next &lt;svg …&gt;&lt;/svg&gt;&lt;/button&gt;
+&lt;/nav&gt;</code></pre>
+
+    <ul class="notes">
+      <li><strong>The position is a live region.</strong> Without <code>aria-live="polite"</code> a
+      reader who cannot see the counter has no way to know that the Next they just pressed did
+      anything &mdash; the page changed and nothing said so.</li>
+      <li><strong>The ends disable, they do not disappear.</strong> A control that vanishes at the
+      first item changes the shape of the toolbar under the reader; a disabled one says
+      &ldquo;there is nothing before this&rdquo;, which is the actual information.</li>
+      <li><strong>The buttons do not move as you step.</strong> The counter takes the slack and
+      centres in it, so going from 9 to 10 grows the text inward rather than shoving the controls
+      either side &mdash; the same rule as the switch label: never let a state change alter layout.
+      A <code>min-width</code> cannot do this, because the caller chooses the wording and the
+      component cannot know how wide it gets.</li>
+      <li><strong>Not numbered pages.</strong> Nothing at arXiv needs those yet. A stepper answers
+      &ldquo;what is next&rdquo;; a row of page numbers answers &ldquo;take me to item 40&rdquo;. If a
+      surface ever needs the second, it is a different component and not a variant of this one.</li>
+    </ul>
+  </div>
+
   <!-- ── Usage ── -->
     <div class="section">
     <h2 class="section-title">Usage</h2>
