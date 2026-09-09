@@ -251,7 +251,23 @@ Simplest first, so the pattern-page rhythm is set before the harder ones.
       trigger inside a `<label>`, which forwards clicks to the control it names,
       so the button's clicks would have landed on the input. That rule is now
       written on the page.
-- [ ] **11.** Rationalise the special-content styles
+- [x] **11.** DONE 2026-09-09 — the mechanical half. Two real inconsistencies
+      fixed across the docs:
+      **`.callout` had five different definitions on ten pages** — same intent,
+      drifting values (line-height 1.6 / 1.65 / unset, margin 16 / 18, colour
+      set or not). Now one definition, copied verbatim, with a marker comment
+      saying so. Still page-local by policy: DESIGN-POLICIES keeps docs
+      furniture out of the design system.
+      **Two names for one thing** — `.section-desc` on 14 pages and
+      `.ds-section-desc` on 27, where the second is real and in the stylesheet.
+      Unified on the system's name and the local copies deleted.
+
+      **Left for Shamsi, deliberately.** The `.a11y` and `.tone` guidance blocks
+      exist only on `forms.html`, where their construction was carefully
+      reasoned (shared tint, mono heading, Link Blue edge for requirements
+      against warm grey for guidance). Extending that pair to other pages is a
+      content decision about which pages *have* those two things to say — not a
+      styling one, and not mine. It belongs with #13 and #14.
 
 **Deliberately not built: 8a, member cards.** The #17 test page is the
 membership dashboard, and building its component first would make the exit test
