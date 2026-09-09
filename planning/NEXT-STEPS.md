@@ -235,7 +235,22 @@ Simplest first, so the pattern-page rhythm is set before the harder ones.
       Also removed the two `!important` declarations on the login link, by
       scoping through `.ds-site-header-nav` so it out-specifies the nav's own
       colour rather than shouting at it.
-- [ ] **12.** Finish the form styles
+- [x] **12.** DONE 2026-09-09. Of the five promotion candidates recorded from
+      the submission-form work, three had already landed (disabled filled
+      buttons, the warning tier for fields, inline code). The two remaining are
+      now in:
+      **`.ds-tooltip`**, promoted from the submission mockup where it was
+      already `.ds-`-named. WCAG 1.4.13 is its whole design — hoverable (the gap
+      is the tooltip's own padding, not a margin), persistent (no timer),
+      dismissible (Escape, without moving focus).
+      **`.ds-btn-group--split`**, which is what the mockup's `.form-actions-split`
+      was; `.form-rule` turned out to be `.ds-divider`, built earlier today.
+      **Two bugs found while building the demo.** The tooltip showed at rest and
+      Escape lost to `:hover` — both specificity, since `:hover` and
+      `:focus-within` each count as a class. And my first demo nested the
+      trigger inside a `<label>`, which forwards clicks to the control it names,
+      so the button's clicks would have landed on the input. That rule is now
+      written on the page.
 - [ ] **11.** Rationalise the special-content styles
 
 **Deliberately not built: 8a, member cards.** The #17 test page is the
