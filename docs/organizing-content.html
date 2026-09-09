@@ -149,6 +149,32 @@
     </ul>
   </section>
 
+  <!-- ───────── The container, and escaping it ───────── -->
+  <section class="section">
+    <h2 class="section-title">The container, and escaping it</h2>
+    <p class="ds-section-desc">Every page sits in <code>.ds-container</code>, a grid with two tracks: a
+    <em>content</em> track at the reading width, and a <em>full</em> track running to the viewport edges.
+    Everything lands in the content track unless it asks not to.</p>
+
+    <p>Asking not to is <code>.ds-full</code> &mdash; a band that runs edge to edge for a coloured
+    section, a reference zone, or a figure wider than the column. It brings its own contents back onto
+    the content track with padding derived from the same width the container uses, so the band and the
+    column cannot drift apart.</p>
+
+    <pre><code>&lt;div class="ds-container"&gt;
+  &lt;p&gt;Normal content, in the reading column.&lt;/p&gt;
+  &lt;div class="ds-full"&gt;A band running to both viewport edges.&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+    <ul class="notes">
+      <li><strong>It is a grid track, not a negative margin.</strong> The
+      <code>calc(-50vw + 50%)</code> trick overhangs by exactly the scrollbar's width, because
+      <code>100vw</code> includes the scrollbar and the document width does not.</li>
+      <li><strong>Only a direct child can escape.</strong> <code>.ds-full</code> works on children of
+      <code>.ds-container</code>; nested deeper it does nothing, because it has no grid to address.</li>
+    </ul>
+  </section>
+
   <!-- ───────── Accordions: documented on their own page ───────── -->
   <section class="section">
     <h2 class="section-title">Accordions and other disclosures</h2>

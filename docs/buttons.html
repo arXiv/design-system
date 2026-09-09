@@ -785,6 +785,11 @@ pre .c { color: var(--ds-border-strong); }
       <li><strong>Target size.</strong> Standard padding yields ~37px-tall buttons — above the 24×24 hard floor (WCAG 2.2 SC 2.5.8); aim for 44×44 on touch-primary surfaces.</li>
       <li><strong>Reduced motion.</strong> The only motion is the 1px press drop; wrap transitions in <code>@media (prefers-reduced-motion: no-preference)</code> where a stronger guarantee is needed.</li>
       <li><strong>Semantics.</strong> Real <code>&lt;button&gt;</code> for actions, <code>&lt;a class="ds-btn …"&gt;</code> for navigation. Disabled controls keep <code>cursor: not-allowed</code>.</li>
+      <li><strong>Disabling a link.</strong> An <code>&lt;a&gt;</code> cannot take the
+      <code>disabled</code> attribute, so it takes <code>.is-disabled</code> instead, which matches
+      <code>:disabled</code> exactly. The class only handles appearance &mdash; also remove the
+      <code>href</code> and add <code>aria-disabled="true"</code>, or the link stays clickable and
+      focusable while looking inert, which is worse than not dimming it at all.</li>
     </ul>
   </section>
 
