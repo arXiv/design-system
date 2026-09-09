@@ -118,7 +118,16 @@ any parallelism possible.
 
 Simplest first, so the pattern-page rhythm is set before the harder ones.
 
-- [ ] **8f.** Rules / dividers
+- [x] **8f.** Rules / dividers — DONE 2026-09-09. `.ds-divider` with `--tight`,
+      `--flush` and `--vertical`, documented on `organizing-content.html` beside
+      the card, since both answer the same question. **The finding:** `<hr>` was
+      already styled by the foundation and used nowhere, while nine docs pages
+      hand-rolled table row separators out of `--ds-surface-muted` — a *surface*
+      token used as a border, at 1.08:1 against the canvas. Those nine are table
+      styling rather than dividers, so they belong to #15.
+      `.ds-site-header-divider` is the same component on the header's own colour
+      token; consolidating it is part of #20, because two mockups declare it
+      locally.
 - [ ] **8d.** Tags, labels, flags — reconcile with the internal styles
 - [ ] **25.** The toggle — same visual, two legitimate behaviours: a checkbox
       when it is a form setting, `aria-pressed` when it is an immediate action
