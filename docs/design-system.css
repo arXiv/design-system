@@ -278,6 +278,9 @@
    foundation, so a legacy page linking this stylesheet is untouched. Where
    the platform draws overlay scrollbars (macOS by default) it costs nothing,
    because there was no gutter to reserve. */
+/* Below the browser-support floor (Baseline newly available, Dec 2024) —
+   progressive enhancement. Without it, a platform with classic scrollbars
+   shifts the page sideways when a modal opens. Cosmetic, transient. */
 html:has(> body.ds-page) { scrollbar-gutter: stable; }
 
 .ds-page {
@@ -374,7 +377,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 :where(.ds-page) :is(h1, h2, h3, h4) {
   font-family: var(--ds-font-sans);
   color: var(--ds-text);
-  text-wrap: balance;               /* no orphaned last word in a heading */
+  /* Below the support floor (Baseline newly available, Oct 2024) —
+     progressive enhancement. Without it, headings wrap normally. */
+  text-wrap: balance;
 }
 :where(.ds-page) h1 { font-size: 2rem;    font-weight: 700; line-height: 1.25; margin: 0 0 var(--ds-space-4); }
 :where(.ds-page) h2 { font-size: 1.5rem;  font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-3); }
