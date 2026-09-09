@@ -18,6 +18,29 @@
   
     /* Inline links in page copy. These sit on the page canvas. Nav links
        carry their own, more specific rules. */
+
+    /* ── Staging only: .type-badge lives in the STAFF stylesheet, which this
+       page does not load — loading it would re-point --ds-accent to lime and
+       repaint the whole page. These mirror the tokens in
+       internal/design-system-staff.css; if the badge palette changes, update
+       it THERE first. Values flip with the OS theme, as they do on staff
+       pages. ── */
+    .badge-demo { display: inline-flex; gap: 4px; }
+    .badge-demo .type-badge {
+      display: inline-block; font-family: var(--ds-font-mono); font-size: 11px;
+      font-weight: 400; border-radius: 3px; padding: 1px 6px; white-space: nowrap;
+      border: 1px solid transparent;
+    }
+    .badge-demo .type-new   { background: #d4e9ff; color: #1a3d78; border-color: #93c5fd; }
+    .badge-demo .type-rep   { background: #fef3c7; color: #7a5c00; border-color: #fde68a; }
+    .badge-demo .type-wdr   { background: #474340; color: #ffffff; border-color: #474340; }
+    .badge-demo .type-cross { background: #e8e4df; color: #4a4540; border-color: #cbc5be; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .badge-demo .type-new   { background: #13294a; color: #93c5fd; border-color: #2a4a7a; }
+      html:not([data-theme="light"]) .badge-demo .type-rep   { background: #3a2f0e; color: #fde68a; border-color: #7a5c00; }
+      html:not([data-theme="light"]) .badge-demo .type-wdr   { background: #474340; color: #e8e4df; border-color: #8b8680; }
+      html:not([data-theme="light"]) .badge-demo .type-cross { background: #36322e; color: #cbc5be; border-color: #5a554f; }
+    }
 </style>
 </head>
 <body class="ds-page">
@@ -77,6 +100,64 @@
     <p>The small rounded label for subject categories, topics, and states. One component across all
     three contexts: <code>.ds-tag</code> in both stylesheets, wearing each one&rsquo;s tokens.</p>
   </header>
+
+  <!-- ── Which small labelled thing ── -->
+  <div class="section">
+    <h2 class="section-title">Four small labelled things, and which is which</h2>
+    <p class="ds-section-desc">The system has four components that are all &ldquo;a bit of text in a
+    small box&rdquo;. They are not interchangeable, and the difference is what the text <em>is</em>,
+    not how it looks.</p>
+
+    <table class="ds-table-framed">
+      <thead><tr><th>Component</th><th>Shows</th><th>Where</th><th>Looks like</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>.ds-tag</code></td>
+          <td>What a thing <strong>is</strong> — a subject category, a topic, a state.</td>
+          <td>Both surfaces.</td>
+          <td><span class="ds-tag ds-tag--keep-case">math.CO</span>
+              <span class="ds-tag">Withdrawn</span></td>
+        </tr>
+        <tr>
+          <td><code>.type-badge</code></td>
+          <td>A submission's <strong>type</strong> in a queue: new, replacement, cross-list, withdrawal.</td>
+          <td>Staff tools only &mdash; <a href="internal/table-styles.html">table styles</a>.</td>
+          <td><span class="badge-demo">
+              <span class="type-badge type-new">New</span>
+              <span class="type-badge type-rep">Rep</span>
+              <span class="type-badge type-wdr">Wdr</span>
+              <span class="type-badge type-cross">Cross</span></span></td>
+        </tr>
+        <tr>
+          <td><code>.ds-panel-label</code></td>
+          <td>The <strong>label half</strong> of a label/value pair, or a small section heading. Not a
+          box at all.</td>
+          <td>Both surfaces &mdash; <a href="typography.html">typography</a>.</td>
+          <td><span class="ds-panel-label">Submitted</span></td>
+        </tr>
+        <tr>
+          <td>Inline chips</td>
+          <td>A <strong>reference marker inside a sentence</strong> — a citation, an equation number,
+          a figure number. Part of the prose, not a label on it.</td>
+          <td>The HTML paper only; not promoted, still page-local.</td>
+          <td><em>[12]</em>, <em>(3.4)</em></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="ds-panel-label">Why the tag is a pill and the badge is a rectangle</p>
+    <p>Not decoration. A tag is a standalone object &mdash; it may be a link, it may carry a remove
+    control, and it sits in open space where its rounded ends read as one unit. A badge sits inside a
+    dense table row where a pill&rsquo;s horizontal padding costs column width that the title needs
+    more. Same idea, different pressure.</p>
+
+    <p class="ds-panel-label">Why the badge has its own colours rather than the status palette</p>
+    <p>Because a submission type is a <strong>category</strong>, not a status. &ldquo;New&rdquo; is not
+    success and &ldquo;Wdr&rdquo; is not an error &mdash; painting them with the status colours would
+    say something untrue about the queue. They now carry their own tokens
+    (<code>--ds-badge-*</code>), which is the part that was wrong until today: the four badges held
+    twenty-four one-off hex values that appear nowhere in the palette.</p>
+  </div>
 
   <!-- ── The rendered thing ── -->
   <div class="section">
