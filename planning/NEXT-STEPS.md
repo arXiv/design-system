@@ -191,7 +191,23 @@ Simplest first, so the pattern-page rhythm is set before the harder ones.
       the stylesheet and on both pages: never signal state with anything that
       changes text metrics** — weight, size, family, letter-spacing. Colour is
       free, position is free.
-- [ ] **8g.** Menu and dropdown — examined for usability and accessibility
+- [x] **8g.** Menu and dropdown — DONE 2026-09-09. Examined, and the
+      examination found more than expected.
+      **Two implementations of one nav.** 15 pages carried a page-local
+      `.nav-dd` / `.docs-nav` duplicate — about 15 rules each, with hardcoded
+      `#1565c0`, a literal font stack and its own anchoring. All 30 pages now
+      use `.ds-site-header` + `.ds-site-header-dropdown`.
+      **A keyboard bug on every page:** Escape closed the menu but left focus on
+      a link that was no longer visible. Fixed, and the fix returns focus only
+      when it was inside the menu being closed, so Escape elsewhere does not
+      steal it. Two pages (`brand.html`, `outreach/html-papers.html`) had no
+      Escape handler at all.
+      **Checked and correct already:** targets clear the 24px floor (32px
+      trigger, 33px item), the menu does not overflow the viewport, the nav
+      landmark is named, and a second trigger closes the first.
+      **Documented** on `public/header-styles.html`: why it is a disclosure and
+      not `role="menu"` — an ARIA menu promises roving arrow-key focus that a
+      list of links does not have.
 - [ ] **8b.** Form pagination — reconcile with the internal styles
 - [ ] **10.** Account info in the header for logged-in users
 - [ ] **12.** Finish the form styles

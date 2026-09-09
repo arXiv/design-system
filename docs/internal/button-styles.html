@@ -355,21 +355,6 @@
     /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
        <details>-based: works without JS; the small script at the end of the
        page only adds close-on-outside-click and Esc. ── */
-    .docs-nav { display: flex; align-items: center; gap: 4px 18px; flex-wrap: wrap; background: var(--ds-surface-muted); border-bottom: 1px solid var(--ds-border); padding: 8px 28px; font-size: 13px; }
-    .docs-nav-brand { font-weight: 600; color: var(--ds-text); text-decoration: none; margin-right: 8px; }
-    .docs-nav-brand:hover { color: var(--ds-link); }
-    .nav-dd { position: relative; }
-    .nav-dd > summary { list-style: none; cursor: pointer; color: var(--ds-text-muted); padding: 3px 6px; border-radius: 4px; user-select: none; }
-    .nav-dd > summary::-webkit-details-marker { display: none; }
-    .nav-dd > summary::after { content: " \25BE"; font-size: 10px; }
-    .nav-dd > summary:hover, .nav-dd[open] > summary { color: var(--ds-text); background: rgba(0,0,0,0.05); }
-    .nav-dd > summary:focus-visible { outline: 2px solid #1565c0; outline-offset: 2px; }
-    .nav-dd-menu { position: absolute; left: 0; top: calc(100% + 6px); display: flex; flex-direction: column; min-width: 235px; background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); padding: 6px; z-index: 60; }
-    .nav-dd-menu a { color: var(--ds-text); text-decoration: none; padding: 6px 10px; border-radius: 4px; white-space: nowrap; }
-    .nav-dd-menu a:hover { background: var(--ds-surface-muted); }
-    .nav-dd-menu a:focus-visible { outline: 2px solid #1565c0; outline-offset: -2px; }
-    .nav-dd-menu a[aria-current="page"] { font-weight: 600; }
-    .nav-dd-group { font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ds-text-muted); padding: 8px 10px 2px; }
   
     /* Inline links in page copy. Bare <a> previously fell back to the
        browser default, which is unreadable on the dark canvas. Nav links
@@ -379,11 +364,11 @@
 </style>
 </head>
 <body>
-<nav class="docs-nav" aria-label="Design system">
-  <a class="docs-nav-brand" href="../../index.html">arXiv Design System</a>
-  <details class="nav-dd">
+<nav class="ds-site-header ds-site-header--light" aria-label="Design system">
+  <a class="ds-site-header-logo" href="../../index.html">arXiv Design System</a>
+  <details class="ds-site-header-dropdown">
     <summary>Design Patterns</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="../colors.html">Colors</a>
       <a href="../typography.html">Typography</a>
       <a href="../spacing.html">Spacing</a>
@@ -400,25 +385,25 @@
       <a href="../outreach/">Outreach sites</a>
     </div>
   </details>
-  <details class="nav-dd">
+  <details class="ds-site-header-dropdown">
     <summary>Mockups</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="../../mockups/">All mockups</a>
-      <span class="nav-dd-group">Public</span>
+      <span class="ds-panel-label">Public</span>
       <a href="../../mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
       <a href="../../mockups/public/html-phase1.html">HTML paper — Phase 1</a>
       <a href="../../mockups/public/optin-modal/">Labs opt-in modal</a>
       <a href="../../mockups/public/submission-metadata/">Submission — Metadata Form</a>
-      <span class="nav-dd-group">Internal</span>
+      <span class="ds-panel-label">Internal</span>
       <a href="../../mockups/internal/admin-console/user-page/">Admin Console — user page</a>
       <a href="../../mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
       <a href="../../mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
       <a href="../../mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
     </div>
   </details>
-  <details class="nav-dd">
+  <details class="ds-site-header-dropdown">
     <summary>Docs</summary>
-    <div class="nav-dd-menu">
+    <div class="ds-site-header-menu">
       <a href="../doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
       <a href="../brand.html">Brand &amp; vision</a>
       <a href="../typography.html">Typography</a>
@@ -1020,12 +1005,19 @@
   // Nav dropdowns: close on outside click and Esc (enhancement only —
   // the <details> menus work without this).
   document.addEventListener('click', function (e) {
-    document.querySelectorAll('.nav-dd[open]').forEach(function (d) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
       if (!d.contains(e.target)) d.removeAttribute('open');
     });
   });
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') document.querySelectorAll('.nav-dd[open]').forEach(function (d) { d.removeAttribute('open'); });
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      // Return focus to the trigger, but only if it was inside the menu we are
+      // closing — otherwise Escape anywhere on the page would steal focus.
+      var wasInside = d.contains(document.activeElement);
+      d.removeAttribute('open');
+      if (wasInside) d.querySelector('summary').focus();
+    });
   });
 </script>
 </body>
