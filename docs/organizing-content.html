@@ -213,6 +213,63 @@
   </section>
 
   <!-- ───────── Cards & tinted sections ───────── -->
+  <!-- ───────── Dividers ───────── -->
+  <section class="section">
+    <h2 class="section-title">Dividers</h2>
+    <p class="ds-section-desc">A rule between things. It belongs in the same conversation as the card,
+    because both answer the same question and the answer is usually neither: this system groups with
+    space first, and a line drawn where space would have done adds noise without adding meaning.</p>
+
+    <p class="ds-panel-label">Which to reach for</p>
+    <table class="ds-table-framed">
+      <thead><tr><th>Reach for</th><th>When</th></tr></thead>
+      <tbody>
+        <tr><td>Nothing</td><td>The default. If a larger gap between the groups than within them makes
+        the grouping read, you are done &mdash; see the proximity rule on
+        <a href="spacing.html">Spacing</a>.</td></tr>
+        <tr><td>A divider</td><td>Space alone is not enough, usually because the groups are the same
+        shape and sit close together &mdash; rows in a list, a run of controls.</td></tr>
+        <tr><td>A card</td><td>The group is an <em>object</em> on the page rather than a region of it,
+        and needs an edge on all four sides to say so.</td></tr>
+      </tbody>
+    </table>
+
+    <p class="ds-panel-label">The component</p>
+    <p>Prefer a plain <code>&lt;hr&gt;</code>: it needs no class, and it carries
+    <code>role="separator"</code> for free. <code>.ds-divider</code> is for the cases where an
+    <code>&lt;hr&gt;</code> cannot go &mdash; inside a flex row, or on an element that is already
+    there.</p>
+
+    <div style="max-width:520px">
+      <p style="margin:0">A section of content.</p>
+      <hr>
+      <p style="margin:0">The next section, separated by a plain <code>&lt;hr&gt;</code>.</p>
+      <div class="ds-divider ds-divider--tight" aria-hidden="true"></div>
+      <p style="margin:0">And by <code>.ds-divider--tight</code>, which uses the between-blocks gap
+      rather than the between-sections one.</p>
+      <div style="display:flex; align-items:center; gap:var(--ds-space-tight); margin-top:var(--ds-space-6)">
+        <span>Search</span>
+        <span class="ds-divider ds-divider--vertical" aria-hidden="true"></span>
+        <span>Submit</span>
+        <span class="ds-divider ds-divider--vertical" aria-hidden="true"></span>
+        <span>Donate</span>
+      </div>
+    </div>
+
+    <details class="ds-acc"><summary>Relevant classes</summary><div class="ds-acc-body">
+      <dl>
+        <dt>&lt;hr&gt;</dt><dd>The preferred form. Styled by the foundation, no class needed.</dd>
+        <dt>.ds-divider</dt><dd>The class form, for where an <code>&lt;hr&gt;</code> will not fit. It is
+        decorative, so mark it <code>aria-hidden</code> &mdash; a real separator should be an
+        <code>&lt;hr&gt;</code>.</dd>
+        <dt>.ds-divider--tight</dt><dd>Between items in a group rather than between sections.</dd>
+        <dt>.ds-divider--flush</dt><dd>No margin at all; the caller owns the spacing.</dd>
+        <dt>.ds-divider--vertical</dt><dd>For a row of controls. Height is in <code>em</code>, so it
+        tracks the row's own text instead of needing a value per context.</dd>
+      </dl>
+    </div></details>
+  </section>
+
   <section class="section">
     <h2 class="section-title">Cards and grouped sections</h2>
     <p class="ds-section-desc">A card is a white surface with a hairline border and 8px radius on the Warm Wash page

@@ -723,6 +723,38 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   outline-offset: 2px;
 }
 
+/* DIVIDER  (.ds-divider) — organizing-content.html
+   A rule between things. Reach for it only when whitespace has already
+   failed: the system groups with space first, and a line drawn where
+   space would have done adds noise without adding meaning.
+   <hr> is the preferred form and needs no class — it carries
+   role="separator" for free. .ds-divider is for the cases where an <hr>
+   cannot go: inside a flex row, or on an element that already exists.
+   It is decorative, so it is aria-hidden. */
+.ds-divider {
+  border: 0;
+  border-top: 1px solid var(--ds-border);
+  margin-block: var(--ds-space-8);
+  margin-inline: 0;
+}
+/* Between items in a group rather than between sections. */
+.ds-divider--tight { margin-block: var(--ds-space-block); }
+/* Flush: the caller owns the spacing, for a divider inside a component
+   that already has its own rhythm. */
+.ds-divider--flush { margin-block: 0; }
+
+/* Vertical, for a row of controls — the separator between nav groups in
+   the site header is this. Sized in em so it tracks the row's own text
+   rather than needing a height per context. */
+.ds-divider--vertical {
+  border-top: 0;
+  border-left: 1px solid var(--ds-border);
+  align-self: stretch;
+  min-height: 1.25em;
+  margin-block: 0;
+  margin-inline: var(--ds-space-1);
+}
+
 /* CARD  (.ds-card) and FRAMED TABLE (.ds-table-framed) — organizing-content.html
    Anything that groups related content on the page canvas. Padding comes
    from the scale; a card needing different room sets its own padding
@@ -2082,6 +2114,10 @@ html:has(.ds-modal[open]) {
   outline-offset: 1px;
 }
 .ds-site-header-nav .ds-nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
+/* The same thing as .ds-divider--vertical, on the header's own colour
+   token rather than --ds-border. Left separate rather than merged: the
+   two mockups declare this class locally, so consolidating it is part of
+   the mockup cleanup (backlog #20), not a change to make here. */
 .ds-site-header-divider {
   width: 1px; height: 20px;
   background: var(--ds-hdr-divider);
