@@ -50,9 +50,15 @@ any parallelism possible.
       `--font-body` / `--font-serif` — the pre-rename names, and `--font-math`,
       which never existed in either stylesheet. It had already drifted, which is
       the argument for the merge in one line.
-- [ ] **28. Ruled or card as the accordion base class.** `.ds-acc-flush` is now
-      the recommended default but costs two class names; the card is free.
-      Swapping silently changes 15 existing uses — cheaper now than later.
+- [x] **28. Ruled is the default; card and panel are gone.** DONE 2026-09-09.
+      Shamsi went further than swapping: the white card is not needed at all,
+      and neither is the filled panel. The evidence was that **all four
+      dressings were doing one job** — of 15 card uses, 11 were "Relevant
+      classes" reference blocks, as were both panel uses and two flush uses.
+      Three styles, one purpose, across the docs. Now two: `.ds-acc` (ruled)
+      and `.ds-acc-rail` (rules dropped, for a container that already frames
+      it). 124 lines lighter, 19 markup sites migrated. New variants get added
+      when a use case actually breaks the default, not before.
 
 ### Phase 1 — Parallel cleanup (subagents; disjoint files, no decisions)
 
