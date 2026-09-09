@@ -29,14 +29,31 @@ def parse_block(text, start_marker):
         depth += text[k] == "{"
         depth -= text[k] == "}"
         k += 1
-    return dict(re.findall(r"(--[a-z-]+)\s*:\s*(#[0-9a-fA-F]{3,6})", text[j:k]))
+    # Capture hex values AND var() references — since the primitive layer
+    # landed, a semantic token usually points at a primitive rather than
+    # carrying a hex of its own. resolve() flattens the chain.
+    return dict(re.findall(r"(--[a-z0-9-]+)\s*:\s*(#[0-9a-fA-F]{3,6}|var\(--[a-z0-9-]+\))", text[j:k]))
+
+def resolve(d):
+    """Flatten var(--x) chains to the hex they end at."""
+    out = dict(d)
+    for _ in range(8):
+        changed = False
+        for key, val in list(out.items()):
+            m = re.fullmatch(r"var\((--[a-z0-9-]+)\)", val.strip())
+            if m and m.group(1) in out and out[m.group(1)] != val:
+                out[key] = out[m.group(1)]; changed = True
+        if not changed: break
+    return {k: v for k, v in out.items() if v.startswith("#")}
 
 def tokens(css_path, dark_marker):
     s = css_path.read_text()
-    light = parse_block(s, ":root {")
-    dark = dict(light)
-    dark.update(parse_block(s, dark_marker))
-    return light, dark
+    raw_light = parse_block(s, ":root {")
+    raw_dark = dict(raw_light)
+    raw_dark.update(parse_block(s, dark_marker))
+    # Resolve within each mode: a dark semantic token may point at a
+    # primitive declared in :root, so the light map seeds the dark one.
+    return resolve(raw_light), resolve(raw_dark)
 
 def lum(hexv):
     h = hexv.lstrip("#")

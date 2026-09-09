@@ -98,13 +98,21 @@ any parallelism possible.
 
 ### Phase 2 — The stylesheet pass (one churn, not two)
 
-- [ ] **33.** Cut the CSS comments to load-bearing lines. Tier 1 is **49%
-      comments, 1,567 of 3,154 lines**. Rationale moves to the pattern page or
-      AGENTS.md; usage examples are deleted (the live demo is better).
-- [ ] **27.** The primitive/semantic token layer. **Optional — the item to cut
-      if v1 needs to be sooner.** It changes no values and blocks nothing; it is
-      here because it rewrites the same file as #33 and doing both at once is
-      one churn.
+- [x] **33.** DONE 2026-09-09. Tier 1 went from **3,154 lines (49% comments) to
+      2,221 (29%)**; the staff sheet from 28% to 25%. 26 rationale essays became
+      short headers naming the component, pointing at its pattern page, and
+      keeping only what stops someone breaking the rule. Usage examples deleted
+      — the live demo is better. **278 selectors before, 278 after**: nothing
+      was lost.
+- [x] **27.** DONE 2026-09-09 — 14 primitives naming the brand palette
+      (Repository Brown, Library Grey, Open Blue, Link Blue, Visited Purple and
+      the rest), with every semantic token pointing at one. Deliberately scoped
+      to the *named* palette rather than inventing numeric names for all ~60
+      incidental shades: those are not colours anyone would retune.
+      **Proved a pure refactor** — 39 tokens checked in a browser across both
+      themes, zero mismatches, and all 67 root tokens resolve.
+      `check-contrast.py` needed teaching to follow `var()` chains, which is a
+      real consequence of the layer and now handled.
 
 ### Phase 3 — Components (serial; each wants Shamsi's eye)
 
