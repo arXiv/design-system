@@ -182,6 +182,15 @@ Simplest first, so the pattern-page rhythm is set before the harder ones.
       light fills built to carry dark text.
       Also removed: three one-off hexes (`#9cb522`, `#7c7670`, `#fff`), and
       79 lines of tier 2 CSS.
+
+      **Shamsi caught a layout bug in review:** the label went 500 → 700 on
+      toggle, and a bolder face is a wider face — measured at **1.71px**, which
+      shifted every control after it along the row. The label is now 600 in both
+      states, matching `.ds-panel-label`, with colour carrying the state change.
+      Verified at zero width delta and zero sibling shift. **General rule now in
+      the stylesheet and on both pages: never signal state with anything that
+      changes text metrics** — weight, size, family, letter-spacing. Colour is
+      free, position is free.
 - [ ] **8g.** Menu and dropdown — examined for usability and accessibility
 - [ ] **8b.** Form pagination — reconcile with the internal styles
 - [ ] **10.** Account info in the header for logged-in users

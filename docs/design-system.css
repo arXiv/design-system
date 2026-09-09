@@ -784,16 +784,24 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-switch input:disabled + .ds-switch-track { background: var(--ds-text-disabled); cursor: not-allowed; }
 .ds-switch:has(input:disabled) { cursor: not-allowed; color: var(--ds-text-disabled); }
 
+/* Weight 600 in BOTH states, matching .ds-panel-label — the switch's label
+   is a label like any other. It must not change weight with the state: a
+   bolder face is a wider face, so the label grows about 1.7px on toggle and
+   shoves every control after it along the row. State is carried by the
+   thumb's position, the track colour and this colour; the weight was a
+   fourth cue that cost layout stability, which is a bad trade.
+   The general rule: never signal state with anything that changes text
+   metrics — weight, size, family, letter-spacing. Colour is free. */
 .ds-switch-label {
   font-family: var(--ds-font-condensed);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--ds-text-muted);
   transition: color 0.18s;
 }
-.ds-switch input:checked ~ .ds-switch-label { color: var(--ds-text); font-weight: 700; }
+.ds-switch input:checked ~ .ds-switch-label { color: var(--ds-text); }
 
 /* The thumb's travel is the only thing here that carries meaning by
    moving — state is also in the colour and in the label weight, so
