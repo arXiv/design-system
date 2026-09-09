@@ -46,7 +46,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
   - **IBM Plex Serif, upright (400 / 600)** — editorial headlines and pull quotes on outreach properties.
   - **STIX Two Math** — mathematical notation.
 
-  Adding a face or a family is a decision, recorded here. `docs/typography.md` holds the full spec, including sizes and weights.
+  Adding a face or a family is a decision, recorded here. `docs/typography.html` holds the full spec, including sizes and weights.
 - **Fonts are served from arXiv's own static assets**, self-hosted. This one is a hard constraint rather than a default: an external font service (Google Fonts, Adobe Typekit, a CDN) makes every reader's visit observable by a third party and makes the archive's rendering depend on someone else staying up. Neither is acceptable for a permanent record.
 - **Font display:** Use `font-display: swap` for text fonts (prioritize readability). Use `font-display: auto` for STIX Two Math (math rendering needs the correct font).
 - **System fallbacks:** Every `font-family` declaration must include system fallbacks. See `typography.md` for the standard stacks.

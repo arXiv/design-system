@@ -36,8 +36,20 @@ any parallelism possible.
       positive rule rather than a prohibition, which also fixed a real
       contradiction — the policy had listed only four families and left serif
       out entirely. **Carried into #20:** test serif for figure captions.
-- [ ] **16. Keep or drop `typography.md` and `BRAND.md`.** The only two `.md` /
-      `.html` pairs. Blocks #13: no point cleaning prose in a file we delete.
+- [x] **16. One file each, the HTML.** DONE 2026-09-09. They were not
+      duplicates: `BRAND.md` held Voice and the eight design principles that
+      `brand.html` lacked, and `typography.md` held the tokens, `@font-face`
+      rules, hosting and fallbacks. Voice and the principles went into
+      `brand.html`'s body (they are the "why" the repo routes to, not an
+      appendix); the typography spec went to the bottom of `typography.html`
+      under *Implementation spec*. The June 2026 typeface comparison moved to
+      `planning/proposals/typeface-re-evaluation-2026-06.md` as a decision
+      record. Both `.md` files deleted.
+
+      **Found while merging:** `typography.md` documented the token names as
+      `--font-body` / `--font-serif` — the pre-rename names, and `--font-math`,
+      which never existed in either stylesheet. It had already drifted, which is
+      the argument for the merge in one line.
 - [ ] **28. Ruled or card as the accordion base class.** `.ds-acc-flush` is now
       the recommended default but costs two class names; the card is free.
       Swapping silently changes 15 existing uses — cheaper now than later.
@@ -150,7 +162,7 @@ unable to fail. Left out so the test can tell us whether the system covers it.
 
 ## Done
 
-- [x] **Brand statement + voice + design implications** — [BRAND.md](../docs/BRAND.md) (2026-06-16). Wired into the reading order in CLAUDE.md and README.md.
+- [x] **Brand statement + voice + design implications** — [BRAND.md](../docs/brand.html) (2026-06-16). Wired into the reading order in CLAUDE.md and README.md.
 - [x] **Docs-chrome callout decision** (2026-07-28) — the older reference pages' bespoke `.callout` boxes stay as quiet page-local chrome for *neutral* usage/rationale notes (docs chrome is page-specific by policy; no `.ds-callout` promoted — production has no need for one, and most of the ~80 notes aren't advisories). Only genuine hard rules use the real `.ds-alert`: converted the destructive-confirmation rule (internal `button-styles`) and the three underline mandates (public `link-styles`, internal `color-tokens` + `link-styles`) to `.ds-alert-error`, matching the flagship-page convention (advisory = `.ds-alert-info`, prohibition = `.ds-alert-error`).
 - [x] **Outreach — the third context** (2026-08-11). The blog, event and celebration mini-sites, and campaign pages became a named surface that inherits the public system and takes an enumerated list of liberties: [docs/outreach/](../docs/outreach/). Defined in DESIGN-POLICIES *Surfaces*; routed in AGENTS.md. Anti-drift rests on three rules — borrowing goes one way, never repeat a rule that applies everywhere, and a script checks the copies we cannot avoid (`verification/check-drift.py`). Shamsi's correction 2026-08-11, now written into the wording: moving a style into the shared stylesheet is about where the CSS lives, not about where the style is allowed; extending anything to arxiv.org stays a separate, explicit decision. First style through the shared-code path: `.on-dark`, the secondary-button variant for committed color panels, lifted from the blog masthead's ghost button — shared CSS, still outreach-only in practice.
 - [x] **Text button — the quiet tier** (2026-08-11). `.ds-btn-text`: Link Blue, no fill, no border, no shadow, never underlined, hover is a background wash. An outline-only tertiary was considered and **rejected** — the public secondary is already white-fill-plus-border, so on a white canvas the two would differ by a drop shadow alone. Written down as a general rule: each surface reaches its quiet tier by removing whatever its secondary uses to hold the page, which is why internal `.btn-tertiary` (drops the fill, keeps a border) and public `.ds-btn-text` (drops the border, keeps no fill) look nothing alike and both are correct.
@@ -188,7 +200,7 @@ Sequencing rationale: (1) measure token burn *before* reorganizing files, so the
 - [x] **Documentation pages made dark-aware** (2026-08-12). Shamsi reported BRAND.md rendering wrong in dark. Root cause: there is no brand.html — it renders through `docs/doc.html`, one of seven pages that never locked to light, whose code blocks and tables held a hardcoded `#fff` under flipped text. Fixed repo-wide across four passes, each driven by a mechanical contrast scan of every page in dark: 266 chrome declarations tokenized, then link colors and inline `style=` chrome, then a bare-`<a>` rule (no page had one — prose links were browser-default blue all along), then text moved off `--ds-text-disabled`, which fails AA at 2.24:1 in light and flips darker in dark. New `--ds-canvas` token on the internal side. 19 pages unlocked. Light mode provably unchanged except two deliberate accessibility fixes, both noted in the commits. The scan also caught a regression it introduced: on-lime button labels flipped light on a light fill — the `--ds-text-on-accent` trap, now pinned.
 - [ ] **Dark-mode presentation page** — flagship-style HTML page with the implementation instructions and light↔dark color-transition swatches; ships alongside Phase 0/1.
 - [x] **Clicks-to-content audit — DONE 2026-08-17.** [../verification/audits/audit-clicks-to-content.md](../verification/audits/audit-clicks-to-content.md). All nineteen rows measured, twice, in one sitting through a real browser: once before accepting any cookie banner and once after. The bot-blocking that limited the first attempt was solved by driving Shamsi's own Chrome rather than an automated client. Findings that replaced the early guesses: repeat loads of the same page return identical numbers, so the volatility that prompted a median re-measure was browser state, not ad auctions; consent is what moves the privacy columns, and it moves them a long way; and three recorded ad figures did not reproduce in any state, ACM's among them. arXiv's own row improved on re-measurement — 2 third-party domains and 1 cookie for a first-time visitor. Remaining human-only work is tracked in the audit itself under "Possible future usability tests" (citation round-trip, screen-reader experience, and four unexercised controls), not here.
-- [ ] **Brand & vision page** — HTML page combining [BRAND.md](../docs/BRAND.md) and [verification/audits/audit-brand-color.md](../verification/audits/audit-brand-color.md): origin story, brand statement + voice, the competitor color landscape and where arXiv sits in it. The page Shamsi points team members at to pick up the historical background and evaluate the brand statement on the merits.
+- [ ] **Brand & vision page** — HTML page combining [BRAND.md](../docs/brand.html) and [verification/audits/audit-brand-color.md](../verification/audits/audit-brand-color.md): origin story, brand statement + voice, the competitor color landscape and where arXiv sits in it. The page Shamsi points team members at to pick up the historical background and evaluate the brand statement on the merits.
 
 ### Phase 3 — Expansion under real demand
 
@@ -212,7 +224,13 @@ Sequencing rationale: (1) measure token burn *before* reorganizing files, so the
 
 ## Foundations
 
-- [ ] **Refine font choices** — *Family settled (2026-06-17): re-evaluated against Atkinson Hyperlegible Next / Source Sans 3 / Inter / Public Sans → stay with IBM Plex; CJK falls back to system; tabular figures + a subsetted variable build are the agreed direction. See the "Typeface re-evaluation" section in [typography.md](../docs/typography.md).* Still open: finalize the weight set; settle whether headings use a distinct display treatment or just Plex Sans; lock italic / 700-bold decisions; build and measure the subsetted variable woff2. Ties into the Rival Sans / Freight → self-hosted IBM Plex migration tracked in DESIGN-PROGRESS.md.
+- [ ] **Type open questions** (moved out of `typography.md`, 2026-09-09): do we
+  need italic variants of Plex Sans — abstracts sometimes carry italic terms,
+  and they are not currently loaded? And does any context need true bold (700),
+  given 600 semibold is the heaviest weight in use? *(Settled and not carried
+  over: Plex Serif upright 400/600 are real and outreach-only, 2026-08-11; CJK
+  falls back to system fonts, 2026-06-17.)*
+- [ ] **Refine font choices** — *Family settled (2026-06-17): re-evaluated against Atkinson Hyperlegible Next / Source Sans 3 / Inter / Public Sans → stay with IBM Plex; CJK falls back to system; tabular figures + a subsetted variable build are the agreed direction. See the "Typeface re-evaluation" section in [typography.html](../docs/typography.html).* Still open: finalize the weight set; settle whether headings use a distinct display treatment or just Plex Sans; lock italic / 700-bold decisions; build and measure the subsetted variable woff2. Ties into the Rival Sans / Freight → self-hosted IBM Plex migration tracked in DESIGN-PROGRESS.md.
 - [ ] **Common tints in the color guidelines** — building on the recent tint-families / three-tier-rule / contrast-matrix work, document: (a) the named common tints and what each is for (section backgrounds, card fills, active/hover washes, alert surfaces); (b) usage scenarios for each; (c) accessible color combinations — which text/icon colors clear WCAG AA on each tint, as a ready-to-use pairing table. Update [color-mapping.md](../docs/color-mapping.md) and `colors.html`.
 - [ ] **Build out the internal-tools color reference** — `colors.html` documents the internal palette only lightly (Access Lime + the secondary lime tint). Document the full internal palette (primary/secondary lime, lime tints, internal surfaces, internal status usage) the way the public palette is documented, on `colors.html` and in [color-mapping.md](../docs/color-mapping.md).
 - [ ] **Modernize the internal components** — the internal styles were built first and predate the public refinements; e.g. internal buttons are still plain/flat while public buttons gained gradient/press construction and the `.on-tint` modifier. Audit `internal/design-system-staff.css` against the public patterns and bring the internal components up to parity (buttons first). *Pairs naturally with the dark-mode tokenization pass (Phase 2 above) — both touch the same hardcoded surfaces.*

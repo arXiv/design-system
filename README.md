@@ -24,7 +24,7 @@ index.html      the GitHub Pages landing page (docs/doc.html renders .md files o
 
 ## Start here
 
-- **Designers / product owners** — open the pattern pages in `docs/` in a browser (no build step); read `docs/BRAND.md` for the why.
+- **Designers / product owners** — open the pattern pages in `docs/` in a browser (no build step); read `docs/brand.html` for the why.
 - **Developers** — `docs/DESIGN-POLICIES.md` holds the hard constraints. Stylesheets are tiered: `docs/design-system.css` is tier 1 and everything loads it; `docs/internal/design-system-staff.css` is tier 2 for staff tools and is loaded *after* it, never alone. Plain CSS custom properties, consumable from Flask/Jinja, React, PHP, or static HTML.
 - **AI coding agents** — read [`AGENTS.md`](AGENTS.md). It has the reading order, a routing table, and the guardrails. CLAUDE.md / GEMINI.md / copilot-instructions are pointers to it.
 
@@ -37,7 +37,7 @@ index.html      the GitHub Pages landing page (docs/doc.html renders .md files o
 - **Cornell spinout:** Cornell branding is being removed; the black single-bar header (phase 1) transitions to Repository Brown (phase 2).
 - **Small team:** nothing that needs manual upkeep survives review.
 
-Design decisions are grounded in user research — the 2025 annual survey (9,419 respondents), ~180 UX-labeled GitHub issues, 42 accessibility interviews, and the Labs audit. The recurring themes: HTML papers are first-class; the interface gets out of the way; core tasks stay obvious; the paper stays sovereign; accessibility is a floor. See `docs/BRAND.md` for how these became design principles.
+Design decisions are grounded in user research — the 2025 annual survey (9,419 respondents), ~180 UX-labeled GitHub issues, 42 accessibility interviews, and the Labs audit. The recurring themes: HTML papers are first-class; the interface gets out of the way; core tasks stay obvious; the paper stays sovereign; accessibility is a floor. See `docs/brand.html` for how these became design principles.
 
 ## Mockups vs. canonical
 

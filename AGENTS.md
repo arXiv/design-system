@@ -17,7 +17,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 ## Before any frontend change
 
 1. Read `docs/DESIGN-POLICIES.md` — hard constraints. Non-negotiable.
-2. Read `docs/BRAND.md` — the *why*; use it when no explicit rule covers your case.
+2. Read `docs/brand.html` — the *why*; use it when no explicit rule covers your case.
 3. Use the routing table to read **only** what your task touches. Do not read the whole repo.
 
 ## Routing — building X? read Y, reuse Z
@@ -25,7 +25,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Building / touching | Read | Reuse |
 |---|---|---|
 | Anything with color | `docs/color-mapping.md`, `docs/colors.html` | tokens in that context's stylesheet |
-| Typography, text sizes | `docs/typography.md`, `docs/typography.html` | `--ds-font-*` |
+| Typography, text sizes | `docs/typography.html`, `docs/typography.html` | `--ds-font-*` |
 | Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--ds-space-*` |
 | Buttons | `docs/buttons.html`, then your context's deep page (`docs/public/button-styles.html` / `docs/internal/button-styles.html`) | `.ds-btn*` (public, incl. `.ds-btn-text` and `.on-tint` / `.on-dark`), `.btn-*` (internal) |
 | Alerts, status & feedback messages | `docs/alerts.html`, then `docs/public/alert-styles.html` or `docs/internal/alert-styles.html` | `.ds-alert*` — never rebuild its chrome |
@@ -43,8 +43,8 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Type badges | `docs/internal/table-styles.html` + DESIGN-POLICIES *Content and interaction* | `.type-new/.type-rep/.type-wdr/.type-cross` |
 | Dark mode (status, mechanism, what flips) | `docs/dark-mode.html` | tokens flip automatically; never hand-pick dark values; lock demo pages light |
 | The blog, an event or campaign mini-site | `docs/outreach/` + DESIGN-POLICIES *Contexts* | the public stylesheet, plus only the differences listed there |
-| Error messages, form help, instructions | `docs/STYLE.md`, then `docs/BRAND.md` for voice | existing wording — one name per thing, never a synonym |
-| Something with no pattern | nearest pattern above + `docs/BRAND.md` | derive from documented rationale; say so in comments |
+| Error messages, form help, instructions | `docs/STYLE.md`, then `docs/brand.html` for voice | existing wording — one name per thing, never a synonym |
+| Something with no pattern | nearest pattern above + `docs/brand.html` | derive from documented rationale; say so in comments |
 
 **Stylesheets are tiered.** `docs/design-system.css` is **tier 1** — the foundation and every component more than one surface could use. Everything loads it.
 

@@ -77,8 +77,7 @@
     <div class="ds-site-header-menu">
       <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
       <a href="brand.html">Brand &amp; vision</a>
-        <a href="doc.html?src=docs/BRAND.md">Brand &amp; voice</a>
-      <a href="doc.html?src=docs/typography.md">Typography spec</a>
+      <a href="typography.html">Typography</a>
       <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
       <a href="doc.html?src=README.md">About this repo</a>
     </div>
@@ -90,7 +89,7 @@
     <p>
       arXiv sets all text in the IBM Plex family with STIX Two Math for notation,
       self-hosted — no external font services. Written spec, weights, and the
-      self-hosting plan: <a href="doc.html?src=docs/typography.md">typography.md</a> (source of truth).
+      self-hosting plan: <a href="typography.html">typography.md</a> (source of truth).
     </p>
   </header>
 
@@ -344,6 +343,102 @@
         <p style="margin:var(--ds-space-block) 0 0">Do not reach for it as a heading substitute. A
         label that a reader needs to navigate to is a heading, and belongs in the outline.</p>
       </div></details>
+    </section>
+
+    <!-- ───────── Implementation spec — dense, deliberately last ───────── -->
+    <section class="section">
+      <h2 class="section-title">Implementation spec</h2>
+      <p class="ds-section-desc">Everything above is the design. This is what an implementer needs: the tokens, the
+      files, the <code>@font-face</code> rules and the fallbacks. Placed last because it is reference, not reading.</p>
+
+      <h3 class="ds-panel-label">Why IBM Plex</h3>
+      <p>Open source under the SIL Open Font License, so there is no licensing cost and no vendor dependency;
+      self-hostable as woff2 from arXiv's own assets; one designer's family covering Sans, Condensed, Mono and Serif
+      so nothing is mixed; broad language coverage including Latin Extended, Cyrillic, Greek, Arabic, Hebrew,
+      Devanagari and Thai; and it pairs with STIX Two Math, which is built for the same technical context. The family
+      was re-evaluated in June 2026 against Atkinson Hyperlegible Next, Source Sans 3, Inter and Public Sans, and
+      kept &mdash; that comparison lives in
+      <a href="../planning/proposals/typeface-re-evaluation-2026-06.md">planning/proposals</a>, not here.</p>
+
+      <h3 class="ds-panel-label">Tokens</h3>
+      <pre><code>--ds-font-sans:      "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+--ds-font-condensed: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+--ds-font-mono:      "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+--ds-font-serif:     "IBM Plex Serif", Georgia, "STIX Two Text", "Times New Roman", serif;</code></pre>
+      <p>Every stack carries system fallbacks so text stays readable if the web fonts fail: sans falls to the OS
+      system font, mono to the platform monospace. <strong>There is no math token</strong> &mdash; STIX Two Math is
+      applied by the paper renderer on HTML paper pages, not by the design system, so the stylesheet does not declare
+      one.</p>
+
+      <h3 class="ds-panel-label">The files</h3>
+      <p>Self-hosted woff2, from arXiv's static assets. No external font service &mdash; see
+      <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> for why that one is a hard constraint.</p>
+      <pre><code>/static/fonts/
+  IBMPlexSans-Regular.woff2          IBMPlexSans-Medium.woff2
+  IBMPlexSans-SemiBold.woff2         IBMPlexSansCondensed-Medium.woff2
+  IBMPlexSansCondensed-SemiBold.woff2
+  IBMPlexMono-Regular.woff2          IBMPlexMono-Medium.woff2
+  IBMPlexSerif-Italic.woff2          <em>&larr; upright Serif 400/600 is outreach only</em>
+  STIXTwoMath-Regular.woff2          <em>&larr; HTML paper pages only</em></code></pre>
+      <p>This repo's pattern pages serve the same files from <code>docs/fonts/</code>, declared in
+      <a href="fonts.css">fonts.css</a>, which every page links ahead of the stylesheet. The
+      <code>@font-face</code> rules live in that separate file rather than in the design system itself, because
+      consumers bundle the design system with their own font paths. Files come from
+      <a href="https://github.com/IBM/plex">IBM/plex</a> (OFL).</p>
+
+      <h3 class="ds-panel-label">@font-face</h3>
+      <pre><code>@font-face {
+  font-family: "IBM Plex Sans";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("/static/fonts/IBMPlexSans-Regular.woff2") format("woff2");
+}
+/* …one per weight and style… */
+
+@font-face {
+  font-family: "STIX Two Math";
+  font-weight: 400;
+  font-display: auto;
+  src: local("STIX Two Math"),
+       url("/static/fonts/STIXTwoMath-Regular.woff2") format("woff2");
+}</code></pre>
+      <ul class="notes">
+        <li><code>font-display: swap</code> for text: the fallback shows immediately and swaps when the real font
+        arrives. Readability beats visual stability.</li>
+        <li><code>font-display: auto</code> for STIX Two Math: maths in a fallback font can be actively wrong, so it
+        is better to wait briefly.</li>
+        <li><code>local()</code> for STIX Two Math skips the ~300KB download if the reader already has it.</li>
+        <li>Total: about 135KB for the Plex woff2 files, plus STIX only on paper pages.</li>
+      </ul>
+
+      <h3 class="ds-panel-label">Which faces each surface uses</h3>
+      <table class="ds-table-framed">
+        <thead><tr><th>Surface</th><th>Body</th><th>Labels</th><th>Code</th><th>Math</th></tr></thead>
+        <tbody>
+          <tr><td>Abstract pages</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>&mdash;</td></tr>
+          <tr><td>HTML paper pages</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>STIX Two Math</td></tr>
+          <tr><td>Staff tools</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>&mdash;</td></tr>
+          <tr><td>Homepage, listings, search</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="ds-panel-label">Sizes in use</h3>
+      <p>Not yet a formal scale &mdash; these are the sizes used consistently across the mockups, recorded so the
+      scale can be settled from what exists rather than invented.</p>
+      <table class="ds-table-framed">
+        <thead><tr><th>Use</th><th>Size</th><th>Weight</th><th>Face</th></tr></thead>
+        <tbody>
+          <tr><td>Paper title (abstract page)</td><td>24px</td><td>600</td><td>Plex Sans</td></tr>
+          <tr><td>Section heading</td><td>15&ndash;16px</td><td>600</td><td>Plex Sans</td></tr>
+          <tr><td>Body text</td><td>15px</td><td>400</td><td>Plex Sans</td></tr>
+          <tr><td>Metadata labels, table headers</td><td>11px uppercase</td><td>600</td><td>Plex Sans Condensed</td></tr>
+          <tr><td>Secondary text, captions</td><td>13px</td><td>400&ndash;500</td><td>Plex Sans</td></tr>
+          <tr><td>Annotation (margin footnote, alt text)</td><td>13px italic</td><td>400</td><td>Plex Serif</td></tr>
+          <tr><td>Code, identifiers</td><td>12&ndash;13px</td><td>400</td><td>Plex Mono</td></tr>
+          <tr><td>Nav links</td><td>13px</td><td>500</td><td>Plex Sans</td></tr>
+        </tbody>
+      </table>
     </section>
 
     </div>
