@@ -370,16 +370,48 @@
       applied by the paper renderer on HTML paper pages, not by the design system, so the stylesheet does not declare
       one.</p>
 
+      <h3 class="ds-panel-label">Available weights, and sanctioned ones</h3>
+      <p>Every weight and style IBM Plex ships is self-hosted &mdash; Thin 100, ExtraLight 200,
+      Light 300, Regular 400, Text 450, Medium 500, SemiBold 600 and Bold 700, each with an italic,
+      across Sans, Sans Condensed, Mono and Serif. That is 64 files and about 4 MB in the repository,
+      and it costs a reader nothing: a <code>@font-face</code> rule downloads only when a page uses
+      that face.</p>
+      <p><strong>Available is not the same as approved.</strong> Only the faces the design system uses
+      are declared in <a href="fonts.css">fonts.css</a>; the rest are present but commented out, so you
+      can see what exists without going to look for it. Uncommenting one is how you turn it on &mdash;
+      and it is a decision, not a formality.</p>
+      <table class="ds-table-framed">
+        <thead><tr><th>Weight</th><th>Use it for</th></tr></thead>
+        <tbody>
+          <tr><td>400 Regular</td><td>Body copy, and anything that is read rather than scanned.</td></tr>
+          <tr><td>500 Medium</td><td>Navigation, table headers, the quieter emphasis.</td></tr>
+          <tr><td>600 SemiBold</td><td>Headings, button labels, and the label half of a label/value pair.</td></tr>
+          <tr><td>700 Bold</td><td>Available and in use in the staff mockups. Whether the scale sanctions
+          it above 600 is an open question &mdash; see the backlog before reaching for it.</td></tr>
+          <tr><td>100, 200, 300, 450</td><td>Present, unused, and commented out.</td></tr>
+        </tbody>
+      </table>
+      <div class="ds-alert ds-alert-warning">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">Light weights are an accessibility problem that contrast ratios do not catch</p>
+          <p>Thin, ExtraLight and Light are now reachable. At interface sizes their strokes are too fine
+          for many readers to resolve even when the colour passes AA &mdash; the ratio measures the
+          hue, not whether the letterform survives. <strong>Body and interface text use 400 or
+          heavier.</strong> Anything lighter belongs at display sizes, if anywhere, and is worth
+          testing before it ships.</p>
+        </div>
+      </div>
+
       <h3 class="ds-panel-label">The files</h3>
       <p>Self-hosted woff2, from arXiv's static assets. No external font service &mdash; see
       <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> for why that one is a hard constraint.</p>
       <pre><code>/static/fonts/
-  IBMPlexSans-Regular.woff2          IBMPlexSans-Medium.woff2
-  IBMPlexSans-SemiBold.woff2         IBMPlexSansCondensed-Medium.woff2
-  IBMPlexSansCondensed-SemiBold.woff2
-  IBMPlexMono-Regular.woff2          IBMPlexMono-Medium.woff2
-  IBMPlexSerif-Italic.woff2          <em>&larr; upright Serif 400/600 is outreach only</em>
-  STIXTwoMath-Regular.woff2          <em>&larr; HTML paper pages only</em></code></pre>
+  IBMPlexSans-*.woff2            8 weights x roman/italic  = 16 files
+  IBMPlexSansCondensed-*.woff2   8 weights x roman/italic  = 16 files
+  IBMPlexMono-*.woff2            8 weights x roman/italic  = 16 files
+  IBMPlexSerif-*.woff2           8 weights x roman/italic  = 16 files
+  STIXTwoMath-Regular.woff2      <em>&larr; HTML paper pages only</em></code></pre>
       <p>This repo's pattern pages serve the same files from <code>docs/fonts/</code>, declared in
       <a href="fonts.css">fonts.css</a>, which every page links ahead of the stylesheet. The
       <code>@font-face</code> rules live in that separate file rather than in the design system itself, because

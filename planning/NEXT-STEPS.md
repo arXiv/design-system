@@ -265,7 +265,12 @@ Sequencing rationale: (1) measure token burn *before* reorganizing files, so the
   narrower and still Shamsi's: **does the type scale sanction 700, or should the
   staff mockups come back to 600?** Both faces are live either way; this decides
   what the scale says. Weight 300 was requested by those mockups and is used
-  nowhere. *(Settled and not carried
+  nowhere.
+
+  **Deferred deliberately (Shamsi, 2026-09-09):** decide weights *in context*,
+  while working on real pages like the HTML paper page — not in the abstract.
+  Do not put this as a standalone question again; bring it up when a page makes
+  it concrete. *(Settled and not carried
   over: Plex Serif upright 400/600 are real and outreach-only, 2026-08-11; CJK
   falls back to system fonts, 2026-06-17.)*
 - [ ] **Refine font choices** — *Family settled (2026-06-17): re-evaluated against Atkinson Hyperlegible Next / Source Sans 3 / Inter / Public Sans → stay with IBM Plex; CJK falls back to system; tabular figures + a subsetted variable build are the agreed direction. See the "Typeface re-evaluation" section in [typography.html](../docs/typography.html).* Still open: finalize the weight set; settle whether headings use a distinct display treatment or just Plex Sans; lock italic / 700-bold decisions; build and measure the subsetted variable woff2. Ties into the Rival Sans / Freight → self-hosted IBM Plex migration tracked in DESIGN-PROGRESS.md.
