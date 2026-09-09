@@ -2245,9 +2245,41 @@ html:has(.ds-modal[open]) {
   margin: 0 4px;
   flex-shrink: 0;
 }
-.ds-site-header-login {
-  font-weight: 600 !important;
-  color: var(--ds-hdr-fg-strong) !important;
+/* The emphasis slot: the last item in the bar, and the only one that gets
+   weight. It carries "Log in" when signed out and "Account" when signed in —
+   the slot is about rank in the bar, not about which of those words is in it.
+   Scoped through .ds-site-header-nav so it out-specifies the nav's own link
+   colour rather than shouting !important at it. */
+.ds-site-header-nav a.ds-site-header-login {
+  font-weight: 600;
+  color: var(--ds-hdr-fg-strong);
+}
+
+/* Signed-in greeting. Not a link and not focusable — it is a statement, and
+   the account link beside it is the thing you can act on.
+   It truncates. A name is user data of unbounded length, in any script, and
+   a header that reflows or overflows on a long one is a header that breaks
+   for exactly the people whose names are least often tested. */
+.ds-site-header-greeting {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-gap-glyph);
+  min-width: 0;
+  font-size: 0.8125rem;
+  color: var(--ds-hdr-fg);
+  white-space: nowrap;
+}
+.ds-site-header-greeting > b {
+  font-weight: 600;
+  color: var(--ds-hdr-fg-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 18ch;
+}
+@media (max-width: 599px) {
+  /* On a narrow bar the greeting is the first thing to go: the account link
+     is the useful half and the name is already known to the person reading. */
+  .ds-site-header-greeting { display: none; }
 }
 
 /* ── .ds-site-header--light ───────────────────────────────────────────────
