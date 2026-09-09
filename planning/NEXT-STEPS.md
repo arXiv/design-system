@@ -142,6 +142,13 @@ Simplest first, so the pattern-page rhythm is set before the harder ones.
       tokens rather than by a second set of class overrides — which deleted the
       four `html:not([data-theme="light"]) .type-*` rules entirely.
 
+      **Raised by Shamsi and answered on the page:** the paper's permalink and
+      figure "chips" are not tags — a tag says what something *is*, those do
+      something, and anything with a verb on it is a button. They also have no
+      background and no border, so they are not pills either; they are the quiet
+      text tier at 11px, which makes them a **promotion candidate for the button
+      family** (carry into #20).
+
       **Found, not fixed — a real asymmetry:** the staff stylesheet has **no
       `[data-theme="dark"]` mirror**. Tier 1 supports both the OS preference and
       an explicit toggle; tier 2 supports only the OS preference, so a staff tool
