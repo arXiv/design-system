@@ -219,7 +219,22 @@ Simplest first, so the pattern-page rhythm is set before the harder ones.
       stepping 9 → 10 grows the text inward instead of shoving the buttons;
       verified stable even with a much longer label, where a `min-width` could
       not have been (the caller chooses the wording).
-- [ ] **10.** Account info in the header for logged-in users
+- [x] **10.** DONE 2026-09-09. The bar's last item is an **emphasis slot**, not
+      a login link: "Log in" signed out, "Account" signed in, with
+      `.ds-site-header-greeting` beside it.
+      **The name truncates at 18 characters.** A name is user data of unbounded
+      length in any script, and a bar that reflows on a long one breaks for
+      exactly the people whose names get tested least. Both a short and a long
+      name are demonstrated on the page.
+      The greeting is deliberately not a link — making the name the link would
+      give it the accessible name "Ada Lovelace", which says nothing about where
+      it goes. Below 600px the greeting hides and Account stays.
+      **Log out is deliberately not in the bar** — it belongs on the account
+      page, not one mis-tap from Search. Flagging in case you disagree; it is
+      the one piece I decided rather than inherited.
+      Also removed the two `!important` declarations on the login link, by
+      scoping through `.ds-site-header-nav` so it out-specifies the nav's own
+      colour rather than shouting at it.
 - [ ] **12.** Finish the form styles
 - [ ] **11.** Rationalise the special-content styles
 

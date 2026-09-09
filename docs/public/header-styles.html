@@ -188,6 +188,49 @@
       left-anchored menu runs off the viewport on the last item &mdash; which is every bar&rsquo;s
       last item, not an edge case.</p>
 
+      <p class="ds-panel-label">Signed out, and signed in</p>
+      <p>The bar's last item is the emphasis slot &mdash; the only nav item that takes weight. Signed
+      out it says <strong>Log in</strong>. Signed in it says <strong>Account</strong>, with the
+      greeting beside it.</p>
+      <div style="margin:var(--ds-space-4) 0">
+        <nav class="ds-site-header" aria-label="Signed-in example">
+          <a href="#" class="ds-site-header-logo">arXiv</a>
+          <nav class="ds-site-header-nav" aria-label="Example">
+            <a href="#">Search</a>
+            <a href="#">Submit</a>
+            <span class="ds-site-header-divider" aria-hidden="true"></span>
+            <span class="ds-site-header-greeting">Welcome, <b>Ada Lovelace</b></span>
+            <a href="#" class="ds-site-header-login">Account</a>
+          </nav>
+        </nav>
+      </div>
+      <div style="margin:var(--ds-space-4) 0">
+        <nav class="ds-site-header" aria-label="Long-name example">
+          <a href="#" class="ds-site-header-logo">arXiv</a>
+          <nav class="ds-site-header-nav" aria-label="Example">
+            <a href="#">Search</a>
+            <a href="#">Submit</a>
+            <span class="ds-site-header-divider" aria-hidden="true"></span>
+            <span class="ds-site-header-greeting">Welcome, <b>Ludmilla Vasilievna Konstantinova-Petrova</b></span>
+            <a href="#" class="ds-site-header-login">Account</a>
+          </nav>
+        </nav>
+      </div>
+      <ul class="notes">
+        <li><strong>The name truncates.</strong> A name is user data of unbounded length in any
+        script, and a bar that reflows or overflows on a long one breaks for exactly the people whose
+        names get tested least. Capped at 18 characters with an ellipsis, as the second example
+        shows.</li>
+        <li><strong>The greeting is not a link.</strong> It is a statement; the thing you can act on
+        is the Account link beside it. Making the name itself the link would give that link the
+        accessible name &ldquo;Ada Lovelace&rdquo;, which says nothing about where it goes.</li>
+        <li><strong>It is the first thing dropped on a narrow bar.</strong> Below 600px the greeting
+        hides and Account stays &mdash; the link is the useful half, and the reader already knows
+        their own name.</li>
+        <li><strong>Log out is not in the bar.</strong> It belongs on the account page. A destructive-
+        adjacent action one mis-tap from Search is a bad trade for the two seconds it saves.</li>
+      </ul>
+
       <p class="ds-panel-label">Keyboard and assistive technology</p>
       <ul class="notes">
         <li><strong>It is a disclosure, not an ARIA menu.</strong> <code>role="menu"</code> is for
