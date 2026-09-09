@@ -1,6 +1,135 @@
 # Next Steps — Program Backlog
 
-Program-level backlog for the design system: cross-cutting work and priorities. The phased plan below (agreed 2026-07-28) is the organizing layer; the detailed queues that follow it are the backlog the phases draw from. Component-level roadmaps live in [public/README.md](../docs/public/README.md) (public patterns) and [internal/DESIGN-PROGRESS.md](../docs/internal/DESIGN-PROGRESS.md) (internal). When an item here is really about one of those, this file points at it rather than duplicating it.
+Program-level backlog for the design system. **The active list is the v1 plan immediately below (agreed 2026-09-09).** Everything after the horizontal rule is the older backlog, last groomed 2026-07-28 — read it as history until it is groomed again. The 2026-07-28 phased plan was the organizing layer for that era; the detailed queues that follow it are the backlog the phases draw from. Component-level roadmaps live in [public/README.md](../docs/public/README.md) (public patterns) and [internal/DESIGN-PROGRESS.md](../docs/internal/DESIGN-PROGRESS.md) (internal). When an item here is really about one of those, this file points at it rather than duplicating it.
+
+## The v1 plan (agreed 2026-09-09) — ACTIVE
+
+This is the working list. Everything below the horizontal rule further down is
+the older backlog, which has not been groomed since July and should be read as
+history until it is.
+
+**The exit test defines v1.** Shamsi prompts an agent to build pages from a
+written spec, using the design system and **no custom CSS**. When the pages are
+acceptable to both of us, the system is reviewable and v1 is done. Everything
+here is either something that test will need, or something we already know it
+would fail without.
+
+**Why the order is what it is.** The sequence is forced by which files each item
+touches, not by importance. Nearly every component touches
+`docs/design-system.css`, so component work is serial. Every docs sweep touches
+all the pattern pages, so those are serial too. The two tracks barely overlap,
+and a third pile of one-off cleanups collides with nothing — which is what makes
+any parallelism possible.
+
+### Phase 0 — Decisions (Shamsi; each unblocks work downstream)
+
+- [ ] **18. A written browser-support floor.** Nothing states which browsers we
+      target. It made the `color-mix` question unanswerable and will recur with
+      every modern CSS feature. One paragraph in DESIGN-POLICIES.
+- [ ] **32. The rule for serif.** Shamsi: "the rules around use of serif fonts
+      are not yet clear." A decision, distinct from the check — #20 can only
+      verify the paper mockup matches the docs once there is a rule to match.
+- [ ] **16. Keep or drop `typography.md` and `BRAND.md`.** The only two `.md` /
+      `.html` pairs. Blocks #13: no point cleaning prose in a file we delete.
+- [ ] **28. Ruled or card as the accordion base class.** `.ds-acc-flush` is now
+      the recommended default but costs two class names; the card is free.
+      Swapping silently changes 15 existing uses — cheaper now than later.
+
+### Phase 1 — Parallel cleanup (subagents; disjoint files, no decisions)
+
+- [ ] **5.** Delete the stale `/mockups` root files — `abstract-redesign.html`,
+      `merged-abstract-reader-phase1.html`, `FEEDBACK-CHANGELOG.md`,
+      `feedback-mapping-report.md`; move `design-review-2026-06-11.md` to
+      `verification/design-reviews/`.
+- [ ] **19.** CI running `check-drift.py` and `check-contrast.py` on every push.
+- [ ] **24.** Self-host the fonts in the internal admin mockups (they load
+      Google Fonts, against the self-hosting rule).
+- [ ] **26.** Document or delete the 8 orphan classes: `.ds-field--full`,
+      `--sm`, `--md`, `--lg`, `.ds-full`, `.ds-inline-active`, `.is-disabled`,
+      `.type-cross`. *(8 of 150 — the system is in better shape here than
+      feared.)*
+
+### Phase 2 — The stylesheet pass (one churn, not two)
+
+- [ ] **33.** Cut the CSS comments to load-bearing lines. Tier 1 is **49%
+      comments, 1,567 of 3,154 lines**. Rationale moves to the pattern page or
+      AGENTS.md; usage examples are deleted (the live demo is better).
+- [ ] **27.** The primitive/semantic token layer. **Optional — the item to cut
+      if v1 needs to be sooner.** It changes no values and blocks nothing; it is
+      here because it rewrites the same file as #33 and doing both at once is
+      one churn.
+
+### Phase 3 — Components (serial; each wants Shamsi's eye)
+
+Simplest first, so the pattern-page rhythm is set before the harder ones.
+
+- [ ] **8f.** Rules / dividers
+- [ ] **8d.** Tags, labels, flags — reconcile with the internal styles
+- [ ] **25.** The toggle — same visual, two legitimate behaviours: a checkbox
+      when it is a form setting, `aria-pressed` when it is an immediate action
+- [ ] **8g.** Menu and dropdown — examined for usability and accessibility
+- [ ] **8b.** Form pagination — reconcile with the internal styles
+- [ ] **10.** Account info in the header for logged-in users
+- [ ] **12.** Finish the form styles
+- [ ] **11.** Rationalise the special-content styles
+
+**Deliberately not built: 8a, member cards.** The #17 test page is the
+membership dashboard, and building its component first would make the exit test
+unable to fail. Left out so the test can tell us whether the system covers it.
+
+### Phase 4 — The mockups
+
+- [ ] **20.** The paper mockup still rebuilds six DS components under other
+      names (card, popover, accordion, tag, alert, panel label), plus 54 raw
+      pixel gaps and 41 pixel font sizes across nine sizes. Includes checking
+      the serif use against whatever #32 decides.
+- [ ] **22.** Two print bugs: a dark OS preference gives print a dark
+      background; the bibliography's viewport padding survives into print.
+- [ ] **23.** The figure viewer does not return focus to the chip that opened
+      it. Pre-existing, verified against the pre-change file.
+- [ ] **21.** `abstract-phase2.html` still vendors its own copy of the
+      stylesheet. *(Different file — runs alongside 20/22/23.)*
+- [ ] **7.** Browser magnification and fluid scaling, written into the docs —
+      after components exist to test it against.
+
+### Phase 5 — The docs sweep (serial)
+
+- [ ] **14.** Apply the forms.html page organisation to every docs page; rename
+      "Form demo" to "Demo" as the generic pattern.
+- [ ] **15.** Consistent use of the design system across all docs pages.
+- [ ] **34.** Write the page that tells a developer how to consume the system —
+      which file to link, in what order, what the tiers mean, what not to do.
+      Early enough that the exit test exercises it.
+- [ ] **13.** The prose cleanup pass. After 14 and after 33, so the same
+      reasoning is not edited twice in two files.
+- [ ] **3.** Section anchor links on every pattern page, generated rather than
+      hand-maintained. Last, because anchors come from headings and 14 changes
+      headings.
+
+### Phase 6 — Exit
+
+- [ ] **9.** The build and audit skills. Thin routers into the docs, **not** a
+      second copy of the system — if the skill explains how buttons work, the
+      exit test measures the skill instead of the documentation. Tool-agnostic.
+- [ ] **17.** The exit test. Build the membership-dashboard pages from written
+      specs, with no custom CSS. Includes re-running the token-burn battery
+      (**31**), which has not run since July: the harness measures regression
+      against a known baseline, the new pages measure coverage of things never
+      tried. **Run one page before the skills exist**, so we see what the docs
+      alone produce.
+
+### Outside the sequence
+
+- **1.** The paper title's `max-inline-size: none` and `text-wrap: pretty`
+  override ar5iv's 52rem cap and `balance`. Delete once the papers tier 2
+  stylesheet exists — so blocked on #30.
+- **30.** Papers tier 2 and the `ltx_` class audit. **Parked** — Deyan's
+  territory; do not start without asking.
+- **Dropped:** a style-ignore file for directories needing no styles (#6, no
+  clear problem); the blog-theme translation pass (#29, the theme is in a state
+  people are happy with and will be translated deliberately later).
+
+---
 
 ## Done
 
