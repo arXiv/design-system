@@ -1,0 +1,24 @@
+# Runs the repo's verification scripts on every push and pull request, so a
+# drift or contrast regression can't sit unnoticed the way a token value
+# once did for weeks. Both scripts are stdlib-only Python — no deps to install.
+# check-contrast.py exits 1 on a mismatch and fails the build; check-drift.py's
+# FAIL findings also exit 1, while its NOTE lines (e.g. blog-theme divergence,
+# which is expected — see AGENTS.md) are informational and exit 0.
+name: Verification checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - run: python3 verification/check-drift.py
+      - run: python3 verification/check-contrast.py
+
+      
