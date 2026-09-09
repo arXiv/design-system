@@ -732,6 +732,59 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   outline-offset: 2px;
 }
 
+/* TOOLTIP  (.ds-tooltip) — forms.html
+   A short explanation attached to a control, shown on hover and on focus.
+   Borrows the popover's material so the two read as one family; it is the
+   lighter of the pair — no title, no close button, and it never holds
+   content that exists nowhere else.
+   WCAG 1.4.13 is the whole design, and it is what most hover bubbles fail:
+     hoverable    the gap between control and bubble is the tooltip's own
+                  padding, not a margin, so the pointer never crosses dead
+                  space and lose it on the way in
+     dismissible  Escape closes it WITHOUT moving focus
+     persistent   it stays while hovered or focused; no timer, and a pointer
+                  twitch does not dismiss it
+   Opens downward. Upward collides with sticky chrome near the top of a page,
+   and raising z-index only hides that rather than fixing it.
+   The host supplies aria-describedby pointing at .ds-tooltip; the tooltip is
+   never the accessible NAME, because a name that only appears on hover is a
+   name most people never get. */
+.ds-tooltip-host {
+  position: relative;
+  display: inline-flex;
+}
+.ds-tooltip {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 200;
+  padding-top: 6px;   /* the gap, as hoverable padding rather than margin */
+}
+.ds-tooltip-body {
+  display: block;
+  width: max-content;
+  max-width: 15rem;
+  padding: var(--ds-space-2) 11px;
+  background: var(--ds-accent-surface);
+  border: 1px solid var(--ds-accent-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  font-family: var(--ds-font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--ds-text);
+}
+/* Shown on hover or focus of the host, with no JavaScript. Escape still
+   needs a listener — that is the one part CSS cannot do. */
+.ds-tooltip-host:hover > .ds-tooltip,
+.ds-tooltip-host:focus-within > .ds-tooltip { display: block; }
+/* Escape sets [hidden], and this has to beat "still hovering" — so it needs
+   to MATCH the specificity of the rules above (:hover and :focus-within each
+   count as a class, making those 0-3-0) and come after them. Ordering and an
+   equal-weight selector, rather than !important. */
+.ds-tooltip-host > .ds-tooltip[hidden] { display: none; }
+
 /* PAGINATION  (.ds-pagination) — forms.html
    Moving through a set one item at a time: a moderation queue, a run of
    submissions, anything where each item has its own screen and the reader
@@ -943,6 +996,10 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 
 /* The action area at the end of a form: primary last, hard right. */
 .ds-btn-group--end { justify-content: flex-end; }
+/* One choice at each end — "Back" against "Continue" in a stepped form.
+   Only for a genuine pair going opposite ways; three buttons split like this
+   leaves the middle one belonging to neither side. */
+.ds-btn-group--split { justify-content: space-between; }
 
 
 /* ── Icons inside any button ────────────────────────────────────────
