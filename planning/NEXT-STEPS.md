@@ -165,8 +165,23 @@ Simplest first, so the pattern-page rhythm is set before the harder ones.
       an explicit toggle; tier 2 supports only the OS preference, so a staff tool
       cannot offer its own dark toggle. Worth deciding deliberately rather than
       inheriting.
-- [ ] **25.** The toggle — same visual, two legitimate behaviours: a checkbox
-      when it is a form setting, `aria-pressed` when it is an immediate action
+- [x] **25.** The switch — DONE 2026-09-09, in tier 1 as `.ds-switch`, and
+      **tier 2 spends exactly one line on it** (`--ds-switch-on`), which is what
+      Shamsi predicted and what the accent-as-token work was for.
+      Renamed from "toggle": that word already means the show/hide control here,
+      and `role="switch"` is what makes a screen reader say on/off rather than
+      checked. The handoff's "two behaviours" turned out to be one — the
+      checkbox-versus-immediate distinction is about whether there is a Save
+      step, not about markup, so it is `<input type="checkbox" role="switch">`
+      either way and works with no JavaScript.
+      **Two real accessibility defects found and fixed:** the staff on-track was
+      `#9cb522`, giving 2.3:1 against the white thumb and 2.2:1 against the page
+      — both under the 3:1 a UI component needs. It is now the darker end of the
+      same accent, 4.8:1 and 4.5:1. The public default is `--ds-accent-strong`
+      at 6.8:1 and 6.4:1; neither accent could be used directly, since both are
+      light fills built to carry dark text.
+      Also removed: three one-off hexes (`#9cb522`, `#7c7670`, `#fff`), and
+      79 lines of tier 2 CSS.
 - [ ] **8g.** Menu and dropdown — examined for usability and accessibility
 - [ ] **8b.** Form pagination — reconcile with the internal styles
 - [ ] **10.** Account info in the header for logged-in users

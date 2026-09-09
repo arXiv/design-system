@@ -688,7 +688,6 @@
   html:not([data-theme="light"]) .info-link:visited         { color: #a8c020; }
 
   /* Toggle off-label + metadata panel edges — dark equivalents */
-  html:not([data-theme="light"]) .toggle-label { color: var(--ds-text-muted); }
   html:not([data-theme="light"]) .ds-meta-panel--editable { border-color: #3a4a1a; }
   html:not([data-theme="light"]) .ds-meta-panel--editable.ds-meta-panel--ruled .ds-meta-cell { border-color: rgba(200, 220, 120, 0.14); }
   html:not([data-theme="light"]) .ds-meta-panel--reference.ds-meta-panel--ruled .ds-meta-cell { border-color: rgba(255, 255, 255, 0.08); }
@@ -1059,84 +1058,17 @@ button.ds-tag:hover {
 /* Error slots render empty until validation fails. */
 .field-error[hidden] { display: none; }
 
-/* ─── Toggle Switch ────────────────────────────────────────── */
+/* ─── Switch — staff colour only ────────────────────────────── */
 /*
- * Toggle switch — a boolean, applied immediately, with no Save step.
- * If the change needs confirming it is a checkbox in a form, not this.
- * Wraps a visually-hidden checkbox: the input carries the state and the
- * keyboard behaviour, the track and thumb are decoration.
- * See internal/form-styles.html.
+ * The component is .ds-switch in the tier 1 stylesheet. All this surface
+ * changes is the on-track colour, and it changes it by re-pointing one
+ * token — which is the whole point of the tier split.
+ *
+ * Not --ds-accent: Access Lime is a light fill built to carry dark text,
+ * and a white thumb on it is 1.6:1. This is the darker end of the same
+ * accent, which holds the knob at 4.8:1 and clears 3:1 against the page.
  */
-
-.toggle-switch {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.toggle-switch input {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.toggle-track {
-  position: relative;
-  display: inline-block;
-  width: 30px;
-  height: 17px;
-  background: var(--ds-border-strong); /* off state — 3.61:1 on white ✓ */
-  border-radius: 999px;
-  transition: background 0.18s;
-  flex-shrink: 0;
-}
-
-.toggle-thumb {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 13px;
-  height: 13px;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-  transition: transform 0.18s;
-}
-
-/* Checked — lime track, thumb slides right */
-.toggle-switch input:checked + .toggle-track {
-  background: #9cb522;
-}
-
-.toggle-switch input:checked + .toggle-track .toggle-thumb {
-  transform: translateX(13px);
-}
-
-/* Focus ring — keyboard only (mouse clicks do not show the ring) */
-.toggle-switch input:focus-visible + .toggle-track {
-  outline: 3px solid var(--ds-focus-ring);
-  outline-offset: 2px;
-}
-
-/* Label — uppercase condensed, muted when off, darkens when on */
-.toggle-label {
-  font-family: var(--ds-font-condensed);
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: #7c7670; /* off state — 4.5:1 on white ✓ AA */
-  transition: color 0.18s, font-weight 0.18s;
-}
-
-.toggle-switch input:checked ~ .toggle-label {
-  color: var(--ds-text);
-  font-weight: 700;
-}
-
+:root { --ds-switch-on: var(--ds-accent-border-active); }
 
 /* ─── Alert / Status Message ────────────────────────────────── */
 /*
