@@ -2353,64 +2353,46 @@ html:has(.ds-modal[open]) {
 /* ═══════════════════════════════════════════════════════════════════════
    ACCORDION  (.ds-acc / .ds-acc-stack / .ds-acc-body / .ds-acc-rail)
    ───────────────────────────────────────────────────────────────────────
-   Native <details>/<summary> disclosure — no JS, keyboard and screen-
-   reader semantics for free, and find-in-page can auto-expand panels.
-   A +/− glyph replaces the default marker. Two dressings, one element:
+   Native <details>/<summary>. No JavaScript, keyboard and screen-reader
+   behaviour for free, and find-in-page can open a closed panel to show a
+   match inside it — which no hand-built accordion does.
 
-     - Card (default): white surface, hairline border, 6px radius —
-       stands alone on the page. Stack several in .ds-acc-stack (8px gap).
-     - Rail (.ds-acc-rail, added to .ds-acc): card chrome dropped —
-       background, border, and radius go; the surrounding rail's hairline
-       dividers do the separating. Internals go single-column for the
-       narrow rail, and the +/− marker turns Link Blue so closed
-       disclosures still read as interactive (Open Blue is too light
-       for a glyph).
+   Two dressings. The default is ruled: a line above and below, no box.
+   .ds-acc-rail drops the rules for a container that already frames it.
 
-   Body internals: a <dl> inside .ds-acc-body gets the standard metadata
-   layout — condensed-caps <dt> labels beside regular <dd> values
-   (two-column in cards, single-column in the rail variant).
-
-   Content rule (organizing-content.html): never put must-see information
-   ONLY inside a closed accordion — required warnings also surface in
-   always-visible flow. Default state is closed; a single most-relevant
-   panel may start open. Open state is not persisted.
-
-   Adds over the mockup source: a :focus-visible ring on the summary, and
-   the rail summary grows its hit area to the 24px target-size floor via
-   the padding + negative-margin technique (DESIGN-POLICIES.md, Chrome
-   and interaction structure) with no layout change. No transitions —
-   nothing for prefers-reduced-motion to disable. as .mg-acc in
-   mockups/public/html-phase1.html (paper-info card group + abstract
-   rail); treatment agreed on design-patterns/organizing-content.html.
-
-   Example:
-     <div class="ds-acc-stack">
-       <details class="ds-acc" open>
-         <summary>Paper information</summary>
-         <div class="ds-acc-body">
-           <dl>
-             <dt>arXiv ID</dt><dd><a href="…">2604.22725</a></dd>
-             <dt>License</dt><dd><a href="…">CC BY 4.0</a></dd>
-           </dl>
-         </div>
-       </details>
-     </div>
+   Content rule (progressive-disclosure.html): never put must-see
+   information ONLY inside a closed accordion. Default state is closed; a
+   single most-relevant panel may start open. Open state is not persisted.
    ═══════════════════════════════════════════════════════════════════════ */
 
-.ds-acc-stack { display: flex; flex-direction: column; gap: var(--ds-space-tight); }
+/* Stacked, they read as one ruled list: items butt together and each
+   shared edge is one line, because the preceding item's lower rule is the
+   next item's upper one. */
+.ds-acc-stack { display: flex; flex-direction: column; }
+.ds-acc-stack > .ds-acc { margin: 0; }
+.ds-acc + .ds-acc { border-top: 0; }
+
 .ds-acc {
-  background: var(--ds-surface);
-  border: 1px solid var(--ds-border);
-  border-radius: 6px;
   font-family: var(--ds-font-sans);
+  background: transparent;
+  /* Two rules, not one. One line reads as a heading with an underline; two
+     give the disclosure a top and a bottom, which is what tells a reader
+     that what appears below the first line belongs to the label above it.
+     --ds-border-strong because the rules are the only thing carrying the
+     component, and an interactive boundary needs 3:1. */
+  border-top: 1px solid var(--ds-border-strong);
+  border-bottom: 1px solid var(--ds-border-strong);
+  margin: 20px 0 44px;   /* standing alone it needs its own room; in a
+                            .ds-acc-stack the stack sets this to 0 */
 }
 .ds-acc > summary {
   cursor: pointer;
   list-style: none;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--ds-text);
-  padding: 11px 16px;
+  padding: 10px 0;   /* no horizontal padding: the label sits on the same
+                        left edge as the prose around it */
   display: flex;
   align-items: center;
   gap: var(--ds-gap-glyph);
@@ -2419,8 +2401,8 @@ html:has(.ds-modal[open]) {
 .ds-acc > summary::marker { content: ""; }
 .ds-acc > summary::after {
   content: "+";
-  content: "+" / "";  /* alt-text form: the glyph is decorative to AT —
-                         <details> already announces expanded/collapsed */
+  content: "+" / "";  /* alt-text form: decorative to AT — <details>
+                         already announces expanded/collapsed */
   margin-left: auto;
   font-weight: 400;
   color: var(--ds-text-muted);
@@ -2428,130 +2410,26 @@ html:has(.ds-modal[open]) {
   line-height: 1;
 }
 .ds-acc[open] > summary::after { content: "−"; content: "−" / ""; }
-.ds-acc[open] > summary { border-bottom: 1px solid var(--ds-border); }
+.ds-acc > summary:hover { color: var(--ds-link); }
 .ds-acc > summary:focus-visible {
   outline: 3px solid var(--ds-focus-ring);
-  outline-offset: -2px;  /* ring sits inside the card edge */
-  border-radius: 6px;
+  outline-offset: 2px;
+  border-radius: 3px;
 }
-.ds-acc-body { padding: 14px 16px 16px; font-size: 0.85rem; color: var(--ds-text); }
+.ds-acc-body { padding: 4px 0 16px; font-size: 0.85rem; color: var(--ds-text); }
 .ds-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--ds-space-tight) var(--ds-space-block); margin: 0; }
 .ds-acc-body dt { white-space: nowrap; padding-top: 2px; }   /* type: .ds-panel-label */
 .ds-acc-body dd { margin: 0; }
 .ds-acc-body a { color: var(--ds-link); }
 
-/* ── Flush variant (.ds-acc-flush) ────────────────────────────────
-   A disclosure that stays part of the running page rather than becoming an
-   object on it. No box, no fill, no horizontal padding — the summary sits on
-   the same left edge as the prose around it, with a single rule beneath.
-
-   Sits between the other two. The base .ds-acc is too quiet to find on an open
-   page (its border is 1.42:1). The panel is too loud for a reference note under
-   a demo: a filled bar inside a full border reads as a separate object and
-   takes more emphasis than the demo it belongs to. This keeps the visible line
-   from the panel and drops everything that made it a box.
-
-   The rule sits under the summary, not around the whole component, so it reads
-   as an underlined label when closed and as a divider between label and content
-   when open. --ds-border-strong because it is the only thing left carrying the
-   component, and at 3.61:1 it clears the 3:1 DESIGN-POLICIES asks of an
-   interactive boundary.
-
-     <details class="ds-acc ds-acc-flush">
-       <summary>Relevant classes</summary>
-       <div class="ds-acc-body">…</div>
-     </details>
-*/
-.ds-acc-flush {
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  /* Rules belong to the COMPONENT, not to the summary, so they mark the
-     extent of the disclosure in both states — closing tight under the label
-     when collapsed, and under the revealed content when open. On the summary
-     the lower rule would become a divider that strands the open body below
-     the line.
-
-     A rule above as well as below, so the disclosure has a top and a bottom
-     whether it stands alone or sits in a list. One line is a heading with an
-     underline; two lines are a container you can see the edges of, which is
-     what tells a reader that the content below the first rule belongs to the
-     label above it. */
-  border-top: 1px solid var(--ds-border-strong);
-  border-bottom: 1px solid var(--ds-border-strong);
-  margin: 20px 0 44px;   /* room before whatever follows; an open panel
-                            otherwise runs straight into the next heading */
-}
-/* Stacked, they read as one ruled list: the items butt together and each
-   shared edge is one line, not two. The preceding item's bottom rule is the
-   next item's top rule. */
-.ds-acc-stack:has(> .ds-acc-flush) { gap: 0; }
-.ds-acc-stack > .ds-acc-flush { margin: 0; }
-.ds-acc-flush + .ds-acc-flush { border-top: 0; }
-.ds-acc-flush > summary {
-  background: none;
-  padding: 10px 0;
-  font-size: 0.95rem;
-  border-bottom: 0;
-}
-.ds-acc-flush[open] > summary { border-bottom: 0; }
-.ds-acc-flush > summary:hover { color: var(--ds-link); }
-.ds-acc-flush .ds-acc-body { padding: 4px 0 16px; }
-
-/* ── Panel variant (.ds-acc-panel) ────────────────────────────────
-   A heavier accordion, for a disclosure that has to be FOUND rather than
-   tucked away — a reference panel under each demo on a documentation page,
-   rather than an aside inside a rail.
-
-   Three departures from the base component, each deliberate:
-
-   1. Border. The base uses --ds-border, which is 1.42:1 against
-      white — a hairline. Correct inside a rail that already frames it; on an
-      open page it reads as no border at all, and it is under the 3:1
-      DESIGN-POLICIES requires of an interactive boundary. That token's own
-      note says exactly this: decorative only, never the sole boundary of an
-      interactive control. This variant takes --ds-border-strong (3.61:1), which
-      is the token documented for the job.
-
-   2. Filled summary. The header reads as a bar you press, not as a line of
-      text that happens to be clickable. Summary text on it is 15:1.
-
-   3. Its own margin. The base component sets none, because it expects to sit
-      in a .ds-acc-stack, which supplies the gap. Standing alone under a demo
-      it has nothing to space it, and it collides with whatever is above. A
-      panel is used standalone by definition, so it carries its own room.
-
-   The summary is also a step larger and a shade heavier than the base, because
-   at 0.92rem in a page of running text it disappears.
-
-     <details class="ds-acc ds-acc-panel">
-       <summary>Relevant classes</summary>
-       <div class="ds-acc-body">…</div>
-     </details>
-*/
-.ds-acc-panel {
-  border-color: var(--ds-border-strong);
-  margin: 20px 0 28px;
-}
-.ds-acc-panel > summary {
-  background: var(--ds-surface-muted);
-  border-radius: 5px;
-  font-size: 0.95rem;
-  padding: 13px 16px;
-}
-.ds-acc-panel > summary:hover {
-  background: var(--ds-canvas);
-}
-.ds-acc-panel[open] > summary {
-  border-radius: 5px 5px 0 0;
-  border-bottom-color: var(--ds-border-strong);
-}
-.ds-acc-panel .ds-acc-body {
-  padding: 16px;
-}
-
-/* Rail variant — chrome dropped; the rail's hairlines separate. */
-.ds-acc-rail { background: transparent; border: 0; border-radius: 0; }
+/* ── Rail variant (.ds-acc-rail) ────────────────────────────────────
+   For a disclosure inside a container that already frames it — the paper
+   page's sidebar, where the rail's own hairline dividers separate its
+   contents. The rules go, because a boundary drawn twice is a boundary
+   drawn wrong. Internals go single-column for the narrow measure, and the
+   +/− marker turns Link Blue so a closed disclosure still reads as
+   interactive (Open Blue is too light for a glyph). */
+.ds-acc-rail { border-top: 0; border-bottom: 0; margin: 0; }
 .ds-acc-rail > summary {
   font-size: 0.82rem;
   /* 4px padding + matching negative margin: the ~20px text line grows to
@@ -2560,9 +2438,7 @@ html:has(.ds-modal[open]) {
   margin: -4px 0;
 }
 .ds-acc-rail > summary::after { font-size: 1.1rem; color: var(--ds-link); }
-.ds-acc-rail > summary:hover { color: var(--ds-link); }
-.ds-acc-rail > summary:focus-visible { outline-offset: 2px; border-radius: 3px; }
-.ds-acc-rail[open] > summary { border-bottom: 0; margin-bottom: 6px; }  /* + 4px hit-area padding = 10px visual gap */
+.ds-acc-rail[open] > summary { margin-bottom: 6px; }  /* + 4px hit-area padding = 10px visual gap */
 .ds-acc-rail .ds-acc-body { padding: 0; }
 .ds-acc-rail .ds-acc-body dl { grid-template-columns: 1fr; gap: 0; }
 .ds-acc-rail .ds-acc-body dt { margin-top: 10px; }
