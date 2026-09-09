@@ -62,17 +62,39 @@ any parallelism possible.
 
 ### Phase 1 — Parallel cleanup (subagents; disjoint files, no decisions)
 
-- [ ] **5.** Delete the stale `/mockups` root files — `abstract-redesign.html`,
-      `merged-abstract-reader-phase1.html`, `FEEDBACK-CHANGELOG.md`,
-      `feedback-mapping-report.md`; move `design-review-2026-06-11.md` to
-      `verification/design-reviews/`.
-- [ ] **19.** CI running `check-drift.py` and `check-contrast.py` on every push.
-- [ ] **24.** Self-host the fonts in the internal admin mockups (they load
-      Google Fonts, against the self-hosting rule).
-- [ ] **26.** Document or delete the 8 orphan classes: `.ds-field--full`,
-      `--sm`, `--md`, `--lg`, `.ds-full`, `.ds-inline-active`, `.is-disabled`,
-      `.type-cross`. *(8 of 150 — the system is in better shape here than
-      feared.)*
+- [x] **5.** DONE 2026-09-09. Four files deleted, `design-review-2026-06-11.md`
+      moved to `verification/design-reviews/`. No page linked the deleted
+      mockups — a prior rename had already orphaned them — so no nav sweep was
+      needed. One stale comment fixed in `verification/verify-mockups.py`.
+- [x] **19.** DONE 2026-09-09 — `.github/workflows/checks.yml`, on push and
+      pull request. Both scripts are stdlib-only. Confirmed by reading and by
+      running that `check-drift.py` exits 0 on NOTE lines and only fails on a
+      real FAIL, so the expected blog-theme divergence will not redden the
+      build.
+- [x] **24.** DONE 2026-09-09 — three admin-console mockups now link the
+      repo's own `docs/fonts.css`; verified in a browser that every `@font-face`
+      resolves to `docs/fonts/*.woff2` and no request reaches Google. A stale
+      comment claiming the opposite was corrected. **Left alone:**
+      `mockups/public/submission-metadata/arxivstyle.css` imports Open Sans from
+      Google — that file is a vendored snapshot of the legacy Submission 2.0
+      CSS, not ours, and Open Sans is a family we do not host at all, so it is a
+      separate decision rather than a path fix.
+- [x] **26.** DONE 2026-09-09 — **all eight were legitimate; nothing was
+      deleted.** The names had suggested otherwise, which is why they were
+      looked at rather than judged. Now documented: field widths on
+      `forms.html` and `internal/form-styles.html`, `.ds-full` with
+      `.ds-container` on `organizing-content.html`, `.ds-inline-active` on
+      `progressive-disclosure.html`, `.is-disabled` on `buttons.html`, and
+      `.type-cross` via a four-badge legend on `internal/table-styles.html` —
+      the whole badge family had only ever been demonstrated, never explained.
+      **Undocumented classes: 8 → 0.**
+
+      **Found, not fixed:** public and staff have two different field-width
+      systems — `.ds-field--short` / `--full` against `--sm` / `--md` / `--lg`.
+      One concept, two vocabularies; belongs with the tier-1 reconciliation.
+
+      **Also found:** `.ds-container` itself is undocumented, which is a bigger
+      gap than any of the eight. It belongs to #34, the consume page.
 
 ### Phase 2 — The stylesheet pass (one churn, not two)
 
@@ -233,7 +255,17 @@ Sequencing rationale: (1) measure token burn *before* reorganizing files, so the
 - [ ] **Type open questions** (moved out of `typography.md`, 2026-09-09): do we
   need italic variants of Plex Sans — abstracts sometimes carry italic terms,
   and they are not currently loaded? And does any context need true bold (700),
-  given 600 semibold is the heaviest weight in use? *(Settled and not carried
+  given 600 semibold is the heaviest weight in use? **Evidence arrived
+  2026-09-09:** yes, apparently — two staff mockups set `font-weight: 700` in
+  16 places (12 in paper-details, 4 in user-page), and the repo does not
+  self-host Plex Sans 700, so those now render synthetic bold. **Resolved
+  2026-09-09 by hosting everything:** all 64 Plex faces are now self-hosted, and
+  Sans 700 plus Condensed 700 are activated because the staff mockups
+  demonstrably use them (4 and 10 elements respectively). What remains open is
+  narrower and still Shamsi's: **does the type scale sanction 700, or should the
+  staff mockups come back to 600?** Both faces are live either way; this decides
+  what the scale says. Weight 300 was requested by those mockups and is used
+  nowhere. *(Settled and not carried
   over: Plex Serif upright 400/600 are real and outreach-only, 2026-08-11; CJK
   falls back to system fonts, 2026-06-17.)*
 - [ ] **Refine font choices** — *Family settled (2026-06-17): re-evaluated against Atkinson Hyperlegible Next / Source Sans 3 / Inter / Public Sans → stay with IBM Plex; CJK falls back to system; tabular figures + a subsetted variable build are the agreed direction. See the "Typeface re-evaluation" section in [typography.html](../docs/typography.html).* Still open: finalize the weight set; settle whether headings use a distinct display treatment or just Plex Sans; lock italic / 700-bold decisions; build and measure the subsetted variable woff2. Ties into the Rival Sans / Freight → self-hosted IBM Plex migration tracked in DESIGN-PROGRESS.md.

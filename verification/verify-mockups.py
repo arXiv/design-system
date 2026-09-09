@@ -5,7 +5,8 @@ Mockup verification harness — arXiv design system
 Automated regression checks for the abstract-page and HTML-reader
 mockups. Run after any mockup change; every check here corresponds to
 a defect class found in user research, the html_feedback issue queues,
-or direct rendering audits (see mockups/design-review-2026-06-11.md
+or direct rendering audits (see
+verification/design-reviews/design-review-2026-06-11.md
 and references/github-open-ux-issues-synthesis.md).
 
 Usage:
