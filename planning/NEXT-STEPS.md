@@ -208,7 +208,17 @@ Simplest first, so the pattern-page rhythm is set before the harder ones.
       **Documented** on `public/header-styles.html`: why it is a disclosure and
       not `role="menu"` — an ARIA menu promises roving arrow-key focus that a
       list of links does not have.
-- [ ] **8b.** Form pagination — reconcile with the internal styles
+- [x] **8b.** DONE 2026-09-09 as `.ds-pagination` — a **record stepper**, which
+      is what the internal styles actually had: the ownership-requests mockup's
+      Previous / Next with "Request 3 of 15". Not numbered pages; nothing at
+      arXiv needs those, and a stepper answers "what is next" while page numbers
+      answer "take me to item 40".
+      The position is an `aria-live` region — without it a reader who cannot see
+      the counter has no way to know that Next did anything. Ends disable rather
+      than disappear. And the counter takes the flex slack and centres, so
+      stepping 9 → 10 grows the text inward instead of shoving the buttons;
+      verified stable even with a much longer label, where a `min-width` could
+      not have been (the caller chooses the wording).
 - [ ] **10.** Account info in the header for logged-in users
 - [ ] **12.** Finish the form styles
 - [ ] **11.** Rationalise the special-content styles

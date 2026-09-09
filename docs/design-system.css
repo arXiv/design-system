@@ -732,6 +732,40 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   outline-offset: 2px;
 }
 
+/* PAGINATION  (.ds-pagination) — forms.html
+   Moving through a set one item at a time: a moderation queue, a run of
+   submissions, anything where each item has its own screen and the reader
+   works through them in order.
+   NOT numbered pages. Nothing in arXiv needs those yet, and a stepper and
+   a page-number row answer different questions — "what is next" against
+   "take me to item 40".
+   The position must be a live region: a reader who cannot see the counter
+   otherwise has no way to know the Next they just pressed did anything.
+   Ends disable rather than disappear (DESIGN-POLICIES, Content and
+   interaction), so the shape of the control does not change under them. */
+.ds-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-block);
+  flex-wrap: wrap;
+}
+.ds-pagination-position {
+  font-family: var(--ds-font-condensed);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ds-text-muted);
+  white-space: nowrap;
+  /* The counter takes the slack and centres in it, so the buttons stay
+     pinned to the ends and stepping 9 → 10 grows the text inward instead of
+     shoving them. min-width alone cannot do this: the caller's label is
+     theirs to choose and the component cannot know how wide it gets.
+     tabular-nums keeps the digits themselves from jittering. */
+  flex: 1;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.ds-pagination .ds-btn { min-width: 0; }
+
 /* SWITCH  (.ds-switch) — forms.html
    A boolean that applies the moment it is flipped. If the change needs a
    Save step it is a checkbox in a form, not this.
