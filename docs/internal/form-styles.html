@@ -373,29 +373,30 @@
 
   <!-- ── Section: Toggle Switch ──────────────────────────────── -->
   <div class="section">
-    <h2 class="section-title">Toggle Switch</h2>
+    <h2 class="section-title">Switch</h2>
     <p class="section-desc">
-      A boolean on/off control for settings and feature flags. Wraps a
-      visually-hidden checkbox with a custom track and sliding thumb.
-      Off state is boundary grey (<code>--ds-border-strong</code>); on state uses the brand lime-green.
+      A boolean that applies the moment it is flipped &mdash; a setting or a feature flag. If the
+      change needs a Save step it is a checkbox in a form, not this. The component is
+      <code>.ds-switch</code> in the tier 1 stylesheet and is shared with public pages; all this
+      surface changes is the on-track colour.
     </p>
 
     <div class="demo">
       <p class="demo-label">States</p>
       <div class="states-grid">
         <div class="state-card">
-          <label class="toggle-switch">
-            <input type="checkbox">
-            <span class="toggle-track"><span class="toggle-thumb"></span></span>
-            <span class="toggle-label">Feature</span>
+          <label class="ds-switch">
+            <input type="checkbox" role="switch">
+            <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+            <span class="ds-switch-label">Feature</span>
           </label>
           <div class="state-card-label">Off</div>
         </div>
         <div class="state-card">
-          <label class="toggle-switch">
-            <input type="checkbox" checked>
-            <span class="toggle-track"><span class="toggle-thumb"></span></span>
-            <span class="toggle-label">Feature</span>
+          <label class="ds-switch">
+            <input type="checkbox" role="switch" checked>
+            <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+            <span class="ds-switch-label">Feature</span>
           </label>
           <div class="state-card-label">On</div>
         </div>
@@ -405,36 +406,46 @@
     <div class="demo">
       <p class="demo-label">Interactive &mdash; with labels</p>
       <div style="display:flex;gap:32px;align-items:center;">
-        <label class="toggle-switch">
-          <input type="checkbox" checked>
-          <span class="toggle-track"><span class="toggle-thumb"></span></span>
-          <span class="toggle-label">New</span>
+        <label class="ds-switch">
+          <input type="checkbox" role="switch" checked>
+          <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+          <span class="ds-switch-label">New</span>
         </label>
-        <label class="toggle-switch">
-          <input type="checkbox" checked>
-          <span class="toggle-track"><span class="toggle-thumb"></span></span>
-          <span class="toggle-label">Replacements</span>
+        <label class="ds-switch">
+          <input type="checkbox" role="switch" checked>
+          <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+          <span class="ds-switch-label">Replacements</span>
         </label>
-        <label class="toggle-switch">
-          <input type="checkbox">
-          <span class="toggle-track"><span class="toggle-thumb"></span></span>
-          <span class="toggle-label">Cross-lists</span>
+        <label class="ds-switch">
+          <input type="checkbox" role="switch">
+          <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+          <span class="ds-switch-label">Cross-lists</span>
         </label>
       </div>
     </div>
 
     <div class="callout">
-      <strong>Markup:</strong> Wrap everything in a <code>&lt;label class="toggle-switch"&gt;</code>.
-      The hidden <code>&lt;input type="checkbox"&gt;</code> provides native form semantics
-      and keyboard support. The <code>.toggle-track</code> and <code>.toggle-thumb</code>
-      handle the visual rendering. The optional <code>.toggle-label</code> provides an
-      uppercase condensed text label.
+      <strong>Markup:</strong> Wrap everything in a <code>&lt;label class="ds-switch"&gt;</code>.
+      The hidden <code>&lt;input type="checkbox" role="switch"&gt;</code> carries the state and
+      the keyboard behaviour; <code>role="switch"</code> is what makes a screen reader say
+      &ldquo;on&rdquo; and &ldquo;off&rdquo; rather than &ldquo;checked&rdquo;.
+      <code>.ds-switch-track</code> and <code>.ds-switch-thumb</code> are decoration, and
+      <code>.ds-switch-label</code> is the visible label, which belongs inside the
+      <code>&lt;label&gt;</code>.
     </div>
     <div class="callout">
-      <strong>Colors:</strong>
+      <strong>Colours:</strong> the component now lives in the tier 1 stylesheet as
+      <code>.ds-switch</code>; this surface changes one token and nothing else.
       <ul class="usage-list">
-        <li><strong>Off</strong> &mdash; track <code>--ds-border-strong</code> <code>#8b8680</code> (3.61:1 on white — passes the 3:1 UI-component minimum), label <code>#7c7670</code> weight 500 (muted)</li>
-        <li><strong>On</strong> &mdash; track <code>#9cb522</code> (brand secondary border), label <code>#1c1a17</code> weight 700 (dark, bold)</li>
+        <li><strong>Off</strong> &mdash; track <code>--ds-border-strong</code>, 3.4:1 against the page,
+        which clears the 3:1 a UI component needs. Label <code>--ds-text-muted</code> at weight 500.</li>
+        <li><strong>On</strong> &mdash; track <code>--ds-switch-on</code>, which this stylesheet points
+        at <code>--ds-accent-border-active</code>. Label darkens to <code>--ds-text</code> and goes
+        weight 700, so the state is carried by colour, position <em>and</em> weight.</li>
+        <li><strong>Why not Access Lime itself</strong> &mdash; the accent is a light fill built to
+        carry dark text, and a white thumb on it is 1.6:1. The darker end of the same accent holds the
+        thumb at 4.8:1 and the track at 4.5:1 against the page. The previous value,
+        <code>#9cb522</code>, failed both at 2.3:1 and 2.2:1.</li>
       </ul>
     </div>
     <div class="callout">

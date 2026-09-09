@@ -441,6 +441,57 @@
     </div>
   </div>
 
+  <!-- ── Switch ── -->
+  <div class="section">
+    <h2 class="section-title">Switch</h2>
+    <p class="ds-section-desc">A boolean that applies the moment it is flipped. If the change needs a
+    Save step, it is a checkbox in a form and not this &mdash; that is the whole distinction, and it is
+    about when the change lands rather than how the control is built.</p>
+
+    <div style="display:flex; gap:var(--ds-space-8); flex-wrap:wrap; align-items:center;
+                padding:var(--ds-space-6); background:var(--ds-surface);
+                border:1px solid var(--ds-border); border-radius:8px">
+      <label class="ds-switch">
+        <input type="checkbox" role="switch">
+        <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+        <span class="ds-switch-label">Email digest</span>
+      </label>
+      <label class="ds-switch">
+        <input type="checkbox" role="switch" checked>
+        <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+        <span class="ds-switch-label">Email digest</span>
+      </label>
+      <label class="ds-switch">
+        <input type="checkbox" role="switch" disabled>
+        <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+        <span class="ds-switch-label">Unavailable</span>
+      </label>
+    </div>
+
+    <p class="ds-panel-label">Markup</p>
+    <pre><code>&lt;label class="ds-switch"&gt;
+  &lt;input type="checkbox" role="switch"&gt;
+  &lt;span class="ds-switch-track"&gt;&lt;span class="ds-switch-thumb"&gt;&lt;/span&gt;&lt;/span&gt;
+  &lt;span class="ds-switch-label"&gt;Email digest&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+
+    <ul class="notes">
+      <li><strong>Why <code>role="switch"</code>.</strong> Without it a screen reader announces
+      &ldquo;checkbox, checked&rdquo;. With it, &ldquo;on&rdquo; and &ldquo;off&rdquo; &mdash; which is
+      what the control actually means. It goes on a real checkbox input, so the keyboard behaviour,
+      the state and the form value all stay native and it works with no JavaScript.</li>
+      <li><strong>Why the on-track is not the accent.</strong> Open Blue is a light fill built to carry
+      dark text, and a white thumb on it is 1.5:1. <code>--ds-switch-on</code> is the darker end of the
+      accent instead: 6.8:1 against the thumb and 6.4:1 against the page, which is what a UI component
+      boundary needs. The staff stylesheet re-points that one token and changes nothing else.</li>
+      <li><strong>State is not carried by colour alone.</strong> The thumb moves and the label goes
+      bold, so the switch still reads in forced-colors and for a reader who cannot separate the two
+      track colours (WCAG 1.4.1).</li>
+      <li><strong>The visible label goes inside the <code>&lt;label&gt;</code></strong>, which is what
+      names the control. A switch with only an adjacent heading has no accessible name.</li>
+    </ul>
+  </div>
+
   <!-- ── Usage ── -->
     <div class="section">
     <h2 class="section-title">Usage</h2>
