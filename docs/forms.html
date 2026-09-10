@@ -361,6 +361,23 @@
     </div>
   </div>
 
+    <div class="ds-note ds-note--internal">
+      <h3 class="ds-note-label">Internal variant</h3>
+      <p>Staff forms mark a required field with an asterisk:
+      <code>&lt;span class="field-required"&gt;*&lt;/span&gt;</code> inside the
+      <code>&lt;label&gt;</code>, rendered in <code>--ds-danger</code>. Public forms do not, which is
+      why <code>required</code> and <code>aria-required</code> are the only signal there.</p>
+      <p>The difference is who is filling the form in. A staff moderator works through the same six
+      screens all day and reads the asterisk as a glance-level scan of what is left; an author meets
+      the submission form a handful of times a year, and a form scattered with asterisks reads as a
+      list of hurdles. The pair of attributes is still required in both places &mdash; the asterisk
+      is an addition, never a replacement.</p>
+      <p class="ds-note-gotcha"><strong>The flow is the same on both surfaces</strong>
+      Validate on submit, not on the first keystroke, so nobody is told they are wrong while still
+      typing. Once a field is invalid, re-check it on every <code>input</code> event so the error
+      clears the moment it is fixed. On failure, move focus to the first invalid field.</p>
+    </div>
+
   <!-- ── Layout ── -->
   <div class="section">
     <h2 class="section-title">Layout</h2>
@@ -383,15 +400,17 @@
       the reader can see it exists and reason about why.</li>
     </ul>
 
-    <div class="ds-alert ds-alert-info note-alert">
-      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-      <div class="ds-alert-content">
-        <p class="ds-alert-title">Controls that belong to staff tools</p>
-        <p>Segmented controls, toggle switches, and filter dropdowns are documented on
-        <a href="internal/form-styles.html">internal form styles</a>. They are internal-only today
-        because nothing on the public site has needed them yet &mdash; not because they are forbidden
-        there.</p>
-      </div>
+    <div class="ds-note ds-note--internal">
+      <h3 class="ds-note-label">Internal variant</h3>
+      <p>Staff screens are dense enough to need field widths chosen rather than inferred, so the
+      staff stylesheet adds three: <code>.ds-field--sm</code> caps a control at 240px,
+      <code>.ds-field--md</code> at 360px, <code>.ds-field--lg</code> at 480px. The public rule above
+      still holds &mdash; the width follows the content &mdash; but on a staff form a person picks
+      the size instead of the input <code>type</code> picking it.</p>
+      <p class="ds-note-gotcha"><strong>Not yet reconciled</strong>
+      Two width systems for one idea is one too many. They should become one family the next time
+      the field component is opened; until then, use the pair on public pages and the trio on staff
+      pages, and do not mix them on one form.</p>
     </div>
   </div>
 
@@ -472,6 +491,77 @@
       staff accent, exactly as the public one takes the darker end of Open Blue. The rule is the
       contrast, not the hue &mdash; which is why the token is named for its job.</p>
     </div>
+  </div>
+
+  <!-- ── Segmented control ── -->
+  <div class="section">
+    <h2 class="section-title">Segmented control</h2>
+    <p class="ds-section-desc">An exclusive choice rendered as adjacent buttons, for a decision where
+    every option should stay visible. Two to four options; past that it is a <code>&lt;select&gt;</code>
+    or a radio group, because a row of six buttons stops being scannable and starts being a wall.</p>
+
+    <div style="padding:var(--ds-space-6); background:var(--ds-surface);
+                border:1px solid var(--ds-border); border-radius:8px">
+      <p class="ds-panel-label">The three active states</p>
+      <div style="display:flex; gap:var(--ds-space-6); flex-wrap:wrap; margin-bottom:var(--ds-space-6)">
+        <fieldset class="ds-seg">
+          <legend class="is-sr-only">Positive example</legend>
+          <button type="button" class="ds-seg-btn ds-seg-btn--positive is-active">Author</button>
+          <button type="button" class="ds-seg-btn ds-seg-btn--neutral">Proxy</button>
+          <button type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
+        </fieldset>
+        <fieldset class="ds-seg">
+          <legend class="is-sr-only">Neutral example</legend>
+          <button type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
+          <button type="button" class="ds-seg-btn ds-seg-btn--neutral is-active">Proxy</button>
+          <button type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
+        </fieldset>
+        <fieldset class="ds-seg">
+          <legend class="is-sr-only">Negative example</legend>
+          <button type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
+          <button type="button" class="ds-seg-btn ds-seg-btn--neutral">Proxy</button>
+          <button type="button" class="ds-seg-btn ds-seg-btn--negative is-active">No</button>
+        </fieldset>
+        <fieldset class="ds-seg">
+          <legend class="is-sr-only">Undecided example</legend>
+          <button type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
+          <button type="button" class="ds-seg-btn ds-seg-btn--neutral">Proxy</button>
+          <button type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
+        </fieldset>
+      </div>
+      <p class="ds-panel-label">Interactive</p>
+      <fieldset class="ds-seg" id="demo-seg">
+        <legend class="is-sr-only">Demo decision</legend>
+        <button type="button" class="ds-seg-btn ds-seg-btn--positive">Approve</button>
+        <button type="button" class="ds-seg-btn ds-seg-btn--neutral">Defer</button>
+        <button type="button" class="ds-seg-btn ds-seg-btn--negative">Reject</button>
+      </fieldset>
+    </div>
+
+    <p class="ds-panel-label">Markup</p>
+    <pre><code>&lt;fieldset class="ds-seg"&gt;
+  &lt;legend class="is-sr-only"&gt;Endorsement decision&lt;/legend&gt;
+  &lt;button type="button" class="ds-seg-btn ds-seg-btn--positive is-active"&gt;Approve&lt;/button&gt;
+  &lt;button type="button" class="ds-seg-btn ds-seg-btn--neutral"&gt;Defer&lt;/button&gt;
+  &lt;button type="button" class="ds-seg-btn ds-seg-btn--negative"&gt;Reject&lt;/button&gt;
+&lt;/fieldset&gt;</code></pre>
+
+    <ul class="notes">
+      <li><strong>The legend is not optional.</strong> A <code>&lt;fieldset&gt;</code> without a
+      <code>&lt;legend&gt;</code> is a group with no accessible name, so a screen reader announces
+      three buttons and never says what they decide. Hide it with <code>.is-sr-only</code> when the
+      surrounding text already says it &mdash; hide it, do not omit it.</li>
+      <li><strong>The three colours mean the same thing they mean everywhere else.</strong>
+      <code>--positive</code> takes the success tokens, <code>--neutral</code> the info tokens,
+      <code>--negative</code> the error tokens. Accept, informational, reject. They are not free
+      colours to pick from, and they flip for dark mode with the rest of the status palette.</li>
+      <li><strong>Nothing is selected until something is selected.</strong> The fourth example above
+      is the resting state of a decision nobody has made yet, and it is a real state &mdash; not a
+      bug to hide by pre-selecting the middle option.</li>
+      <li><strong>Buttons, not a radio group, on purpose.</strong> A radio group is right when the
+      choice is part of a form that gets submitted. This is for a decision that acts when clicked,
+      which is why <code>.is-active</code> is set by script rather than by <code>:checked</code>.</li>
+    </ul>
   </div>
 
   <!-- ── Tooltip ── -->
@@ -627,6 +717,14 @@
         host.querySelector('.ds-tooltip').hidden = true;   // focus does NOT move
       }
     });
+  });
+
+  // Segmented control demo.
+  document.getElementById('demo-seg').addEventListener('click', function (e) {
+    var btn = e.target.closest('.ds-seg-btn');
+    if (!btn) return;
+    this.querySelectorAll('.ds-seg-btn').forEach(function (b) { b.classList.remove('is-active'); });
+    btn.classList.add('is-active');
   });
 
   // Nav dropdowns: close on outside click and Esc (enhancement only —
