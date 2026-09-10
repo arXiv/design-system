@@ -95,9 +95,41 @@ def check_self_hosted():
         ok(rule, f"{n} pages")
 
 
+# ── Every token a rule uses is a token that exists ──
+# A var() naming a property nothing defines makes the whole declaration
+# invalid and it is silently dropped — .ds-note shipped with no padding
+# that way. Fallbacks (var(--x, 1rem)) are legitimate and skipped.
+CSS_FILES = [REPO / "docs" / "design-system.css",
+             REPO / "docs" / "internal" / "design-system-staff.css"]
+DEFINED = re.compile(r"^\s*(--[\w-]+)\s*:", re.M)
+USED = re.compile(r"var\(\s*(--[\w-]+)\s*\)")
+
+
+def check_tokens_defined():
+    rule = "every var() names a token that exists"
+    defined = set()
+    for f in CSS_FILES:
+        defined |= set(DEFINED.findall(f.read_text()))
+    # a page may define its own; collect those too rather than false-alarm
+    for path, text in pages():
+        defined |= set(DEFINED.findall(text))
+    n = 0
+    for f in CSS_FILES:
+        text = f.read_text()
+        for m in USED.finditer(text):
+            n += 1
+            if m.group(1) not in defined:
+                line = text[: m.start()].count("\n") + 1
+                fail(rule, f"{f.relative_to(REPO)}:{line}",
+                     f"var({m.group(1)}) is never defined — the whole declaration is dropped")
+    if rule not in FAILS:
+        ok(rule, f"{n} references")
+
+
 def main():
     check_wordmark_not_typed()
     check_self_hosted()
+    check_tokens_defined()
     print()
     if FAILS:
         print(f"{len(FAILS)} FAIL")

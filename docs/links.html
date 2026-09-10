@@ -104,12 +104,9 @@
     /* Docs chrome, deliberately page-local: DESIGN-POLICIES keeps docs
        furniture out of the design system. One definition, copied verbatim —
        if you change it, change it everywhere (this text is the marker). */
-    .callout { font-size: 13px; line-height: 1.65; color: var(--ds-text);
       margin-top: var(--ds-space-4); padding: 12px 16px;
       background: var(--ds-surface); border: 1px solid var(--ds-border);
       border-left: 3px solid var(--ds-accent-strong); border-radius: 0 6px 6px 0; }
-  .callout + .callout { margin-top: 10px; }
-  .callout strong { color: var(--ds-text); }
   .note-alert { margin-top: 18px; }
 
   code {
@@ -370,7 +367,7 @@
     </table>
 
     <!-- Hard rule → real .ds-alert-error (docs convention: hard prohibitions are
-         .ds-alert-error; quiet .callout is for neutral usage notes only). -->
+         .ds-alert-error; a quiet .ds-note is for neutral usage notes only). -->
     <div class="ds-alert ds-alert-error note-alert">
       <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
       <div class="ds-alert-content">
@@ -381,16 +378,22 @@
       </div>
     </div>
 
-    <p class="callout"><strong>Disabled state.</strong> Use <code>--ds-text-disabled</code> (<code>#b0aba6</code>)
+    <div class="ds-note">
+        <h3 class="ds-note-label">Disabled state</h3>
+        <p>Use <code>--ds-text-disabled</code> (<code>#b0aba6</code>)
     for the disabled color and set <code>pointer-events: none</code>. The underline stays so it is still
     recognisable as a (currently-unavailable) link. The disabled state falls below AA on contrast — WCAG
     exempts disabled controls from contrast requirements.</p>
+      </div>
 
-    <p class="callout"><strong>Visited memory.</strong> The Visited Purple is intentionally strong, not
+    <div class="ds-note">
+        <h3 class="ds-note-label">Visited memory</h3>
+        <p>The Visited Purple is intentionally strong, not
     a faint after-state. Researchers reading long bibliographies and listings benefit from seeing what
     they have already followed up on; a too-subtle visited treatment defeats the purpose. If a specific
     surface (e.g., a navigation breadcrumb) needs to suppress visited styling, override
     <code>:visited { color: inherit }</code> locally.</p>
+      </div>
   </section>
 
   <!-- ══════════════════════════════════════════════════════════════
@@ -400,13 +403,19 @@
     <h2 class="section-title">Usage</h2>
     <p class="ds-section-desc">Two patterns for applying the styles.</p>
 
-    <p class="callout"><strong>Utility class.</strong> Add <code>.ds-link</code> to specific anchors
+    <div class="ds-note">
+        <h3 class="ds-note-label">Utility class</h3>
+        <p>Add <code>.ds-link</code> to specific anchors
     you want to style. Use this when you are cherry-picking — for example, in a page where some links
     should follow the public-side treatment and others (button-styled, nav-styled) should not.</p>
+      </div>
     <pre style="background: var(--ds-surface); border: 1px solid var(--ds-border); padding: 12px 14px; border-radius: 4px; font-family: var(--ds-font-mono); font-size: 12px; overflow-x: auto;"><code style="background: none; padding: 0;">&lt;a class="ds-link" href="..."&gt;link text&lt;/a&gt;</code></pre>
 
-    <p class="callout"><strong>Scoped base rule.</strong> Apply the same styling to every <code>&lt;a&gt;</code>
+    <div class="ds-note">
+        <h3 class="ds-note-label">Scoped base rule</h3>
+        <p>Apply the same styling to every <code>&lt;a&gt;</code>
     inside a content surface (article, paragraph block) without per-anchor classes.</p>
+      </div>
     <pre style="background: var(--ds-surface); border: 1px solid var(--ds-border); padding: 12px 14px; border-radius: 4px; font-family: var(--ds-font-mono); font-size: 12px; overflow-x: auto;"><code style="background: none; padding: 0;">.article-body a {
   color: var(--ds-link);
   text-decoration: underline;

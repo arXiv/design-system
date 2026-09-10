@@ -272,6 +272,59 @@
   </section>
 
   <section class="section">
+    <h2 class="section-title">Notes &mdash; a labelled aside</h2>
+    <p class="ds-section-desc">A box in the flow of a page that names its own register before the
+    reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on
+    the staff surface. The tab is the whole design. It is also what keeps a note from reading as an
+    <a href="alerts.html">alert</a> &mdash; an alert reports a state as of right now and can be
+    dismissed, a note is always true and stays.</p>
+
+    <div class="ds-note">
+      <h3 class="ds-note-label">Tone</h3>
+      <p>Grey, the default. Guidance: how to write something, when to reach for one option over
+      another. Nothing here is a rule you can fail.</p>
+    </div>
+
+    <div class="ds-note ds-note--essential">
+      <h3 class="ds-note-label">Accessibility essentials</h3>
+      <p>Blue. A requirement &mdash; something that has to be true for the pattern to be correct,
+      usually with a WCAG success criterion behind it.</p>
+      <p class="ds-note-gotcha"><strong>Easy to get wrong</strong>
+      A note can carry a ruled-off warning at its foot with <code>.ds-note-gotcha</code>. Use it for
+      the mistake the rule keeps being broken by, not as a second paragraph.</p>
+    </div>
+
+    <div class="ds-note ds-note--internal">
+      <h3 class="ds-note-label">Internal variant</h3>
+      <p>Lime. How this component or rule differs in staff tools, shown in the section it belongs
+      to rather than on a separate page. This is the one place a public page may show Access Lime,
+      because here the staff surface is the subject rather than the accent.</p>
+    </div>
+
+    <p class="ds-panel-label">Markup</p>
+    <pre><code>&lt;div class="ds-note ds-note--essential"&gt;
+  &lt;h3 class="ds-note-label"&gt;Accessibility essentials&lt;/h3&gt;
+  &lt;p&gt;&hellip;&lt;/p&gt;
+  &lt;p class="ds-note-gotcha"&gt;&lt;strong&gt;Easy to get wrong&lt;/strong&gt; &hellip;&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+    <ul class="notes">
+      <li><strong>The label is a heading, at whatever level the page is up to.</strong>
+      <code>.ds-note-label</code> resets the type completely, so <code>h2</code> through
+      <code>h4</code> all render the same tab. Keeping it a heading keeps the note in the document
+      outline, which is how a screen-reader user finds it.</li>
+      <li><strong>Three registers, and the set is closed on purpose.</strong> Adding one is three
+      custom properties &mdash; <code>--ds-note-tint</code>, <code>--ds-note-line</code>,
+      <code>--ds-note-mark</code> &mdash; but a colour only earns a register when it has a job.
+      There is no background-colour utility class, because a tint that a page picks freely teaches
+      the reader nothing.</li>
+      <li><strong>No left edge and no icon.</strong> Both belong to the alert, and the tab already
+      does the work of saying what kind of box this is &mdash; in words, so nothing has to be read
+      out of a colour.</li>
+    </ul>
+  </section>
+
+  <section class="section">
     <h2 class="section-title">Cards and grouped sections</h2>
     <p class="ds-section-desc">A card is a white surface with a hairline border and 8px radius on the Warm Wash page
     background — used when content is a <em>peer in a set</em> (context cards, swatch cards, editable form
