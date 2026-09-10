@@ -2,8 +2,8 @@
 
 Answers the open question from the reorg planning: what documentation shape serves
 agent-assisted frontend work AND stays pleasant for humans. Status: **proposed** —
-first pages built to this template: `docs/internal/metadata-panel-styles.html` and the
-bulk-actions section of `docs/internal/table-styles.html`. React to those, not to this file.
+first pages built to this template: `docs/internal/metadata-panel.html` and the
+bulk-actions section of `docs/internal/tables.html`. React to those, not to this file.
 
 ## The three consumers
 

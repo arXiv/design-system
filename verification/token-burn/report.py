@@ -27,10 +27,10 @@ MODEL = "claude-sonnet-4-6"  # keep in sync with run.sh
 # Canonical comparison page per task (repo-relative). None = refusal task.
 TASK_REFS = {
     "01-fidelity-build": ("docs/organizing-content.html", "cards + row grammar"),
-    "02-fidelity-internal": ("docs/internal/table-styles.html", "bulk actions + selection"),
+    "02-fidelity-internal": ("docs/internal/tables.html", "bulk actions + selection"),
     "03-extrapolation": ("docs/alerts.html", "alert construction + placement"),
     "04-violation-trap": (None, "refusal task — no artifact expected"),
-    "05-real-type-badges": ("docs/internal/table-styles.html", "type badges in context"),
+    "05-real-type-badges": ("docs/internal/tables.html", "type badges in context"),
 }
 
 # Known palette hexes (both stylesheets + shared status family) — static

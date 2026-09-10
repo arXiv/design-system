@@ -22,7 +22,7 @@ pages whose absence caused its baseline failure**:
 
 - 01 (card): read `docs/organizing-content.html` — the card definition neither
   baseline rep ever found.
-- 02 (bulk bar): read `docs/internal/alert-styles.html` — the alert
+- 02 (bulk bar): read `docs/alerts.html` — the alert
   construction both baseline reps missed (that miss was the core of the fail).
 - 03 (withdrawn notice): read `docs/version-display.html` + `docs/alerts.html`
   — the versions treatment it ignored in baseline.

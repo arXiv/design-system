@@ -4,7 +4,7 @@
 **Reviewed against:** `design-system/` @ master
 - [`DESIGN-POLICIES.md`](../../../docs/DESIGN-POLICIES.md)
 - [`docs/public/design-system.css`](../../../docs/public/design-system.css)
-- [`docs/public/button-styles.html`](../../../docs/public/button-styles.html)
+- [`docs/buttons.html`](../../../docs/buttons.html)
 - [`docs/color-mapping.md`](../../../docs/color-mapping.md)
 - [`docs/typography.md`](../../../docs/typography.md)
 - [`BRAND.md`](../../../docs/BRAND.md)
@@ -14,7 +14,7 @@
 
 The merged page is **largely compliant on brand foundations** (IBM Plex throughout, palette tokens for most colors, proper landmarks, `:focus-visible`, semantic markup, BibTeX/APA/Chicago/MLA per policy, no metrics, real `.ds-site-footer`). **Drift is concentrated in components**, not tokens or a11y primitives: the page reimplements primary button, skip link, TOC trigger, site header (3-col override), and the Labs section as custom `.mg-*` classes instead of reusing the canonical `.ds-*` patterns. Four specific policy violations need fixing — touch-target floor on the citation Copy button, a missing reduced-motion guard, the toggle on-state color override needing documentation, and sticky chrome on a non-reader surface (abstract mode).
 
-The user-flagged button drift (Download PDF not matching `button-styles.html`) is real and is one of several places where the merged page diverged from the canonical patterns during iteration. The fix path is to reconcile those components back to the design system, and where the merged page genuinely needs new patterns (the Reader-view toggle, the mid-page sticky TOC bar), to codify them into `docs/public/` rather than continuing to live as page-local `.mg-*` styles.
+The user-flagged button drift (Download PDF not matching `buttons.html`) is real and is one of several places where the merged page diverged from the canonical patterns during iteration. The fix path is to reconcile those components back to the design system, and where the merged page genuinely needs new patterns (the Reader-view toggle, the mid-page sticky TOC bar), to codify them into `docs/public/` rather than continuing to live as page-local `.mg-*` styles.
 
 ---
 
@@ -86,7 +86,7 @@ The user-flagged button drift (Download PDF not matching `button-styles.html`) i
 *This is the user-flagged drift.*
 
 - **Where:** `mockups/public/merged-abstract-reader.html` — `.mg-files-pdf` (the Download PDF button in the Files column).
-- **What's missing vs `docs/public/button-styles.html` + `design-system.css` `.ds-btn-primary` (line ~191):**
+- **What's missing vs `docs/buttons.html` + `design-system.css` `.ds-btn-primary` (line ~191):**
 
 | Spec | Canonical `.ds-btn-primary` | This page's `.mg-files-pdf` |
 |---|---|---|
@@ -101,7 +101,7 @@ The user-flagged button drift (Download PDF not matching `button-styles.html`) i
 | Press | `translateY(1px)` + flatten border + deeper vignette | none |
 | Focus | `:focus-visible` → `outline: 3px solid var(--arxiv-focus-ring)` + 2px offset | inherits from `.mg-btn:focus-visible` (2px solid, offset 2) |
 
-- **Why it matters:** `button-styles.html` is the source of truth for primary actions on public pages. A user moving from `/abs` to the merged page sees a different "feel" for the same primary action. This is precisely the drift the user noticed.
+- **Why it matters:** `buttons.html` is the source of truth for primary actions on public pages. A user moving from `/abs` to the merged page sees a different "feel" for the same primary action. This is precisely the drift the user noticed.
 - **Fix:** Replace the markup with the canonical class:
   ```html
   <a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1">

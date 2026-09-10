@@ -25,21 +25,21 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Building / touching | Read | Reuse |
 |---|---|---|
 | Anything with color | `docs/color-mapping.md`, `docs/colors.html` | tokens in that context's stylesheet |
-| Typography, text sizes | `docs/typography.html`, `docs/typography.html` | `--ds-font-*` |
+| Typography, text sizes | `docs/typography.html` | `--ds-font-*` |
 | Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--ds-space-*` |
-| Buttons | `docs/buttons.html`, then your context's deep page (`docs/public/button-styles.html` / `docs/internal/button-styles.html`) | `.ds-btn*` (public, incl. `.ds-btn-text` and `.on-tint` / `.on-dark`), `.btn-*` (internal) |
-| Alerts, status & feedback messages | `docs/alerts.html`, then `docs/public/alert-styles.html` or `docs/internal/alert-styles.html` | `.ds-alert*` — never rebuild its chrome |
+| Buttons | `docs/buttons.html` — both surfaces; `docs/internal/buttons.html` for the staff-only tiers | `.ds-btn*` (public, incl. `.ds-btn-text` and `.on-tint` / `.on-dark`), `.btn-*` (internal) |
+| Alerts, status & feedback messages | `docs/alerts.html` — one page, both surfaces | `.ds-alert*` — never rebuild its chrome |
 | Cards, rails, page organization | `docs/organizing-content.html` | card conventions, dl row grammar, `.ds-acc-rail` in a sidebar |
 | Accordions, show more, popovers — anything hiding content behind a control | `docs/progressive-disclosure.html` | `.ds-acc*`, `.ds-show-more`, `.ds-popover` |
 | A modal, dialog, confirmation, or anything that takes over the page | `docs/modals.html` | `.ds-modal*` on a native `<dialog>` + `showModal()` — never a `<div role="dialog">`, never `show()` |
 | A close or dismiss control | `docs/buttons.html` | `.ds-close` — one control on both surfaces; the host supplies position only |
-| Links | `docs/public/link-styles.html` or `docs/internal/link-styles.html` | link tokens; inline links underlined |
-| Tables (internal tools), row selection, bulk actions | `docs/internal/table-styles.html` | `.ds-table`, sortable headers, `.ds-filter`; bulk-bar + selection rules documented there |
-| One record's details (label + value panel) | `docs/internal/metadata-panel-styles.html` (concept: `docs/organizing-content.html`) | `.ds-meta-panel` + `--editable` / `--reference` / `--ruled` |
+| Links | `docs/links.html` — identical on every surface | `.ds-link`; inline links underlined |
+| Tables (internal tools), row selection, bulk actions | `docs/internal/tables.html` | `.ds-table`, sortable headers, `.ds-filter`; bulk-bar + selection rules documented there |
+| One record's details (label + value panel) | `docs/internal/metadata-panel.html` (concept: `docs/organizing-content.html`) | `.ds-meta-panel` + `--editable` / `--reference` / `--ruled` |
 | Forms, validation | `docs/forms.html` — one page, both surfaces | `.ds-field`/`.ds-label`/`.ds-input`/`.ds-hint`, `.is-invalid`, `.field-error`, `.ds-check`, `.ds-switch`, `.ds-seg` |
 | Version display | `docs/version-display.html` | inline version links + `.ds-alert` warning |
-| Site header / footer | `docs/public/header-styles.html`, `docs/public/footer-styles.html` | `.ds-site-header` (+ `--light`), `.ds-site-footer` — never hand-build chrome or draw logos from text |
-| Category / topic / state labels | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-tag` (+ `--chrome` / status / `--keep-case`); category names are copied, never restyled |
+| Site header / footer | `docs/public/header.html`, `docs/public/footer.html` | `.ds-site-header` (+ `--light`), `.ds-site-footer` — never hand-build chrome or draw logos from text |
+| Category / topic / state labels | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-tag` (+ `--chrome` / status / `--keep-case`), `.ds-badge`; category names are copied, never restyled |
 | Type badges | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-badge` + `--new/--rep/--wdr/--cross` |
 | Dark mode (status, mechanism, what flips) | `docs/dark-mode.html` | tokens flip automatically; never hand-pick dark values; lock demo pages light |
 | The blog, an event or campaign mini-site | `docs/outreach/` + DESIGN-POLICIES *Contexts* | the public stylesheet, plus only the differences listed there |

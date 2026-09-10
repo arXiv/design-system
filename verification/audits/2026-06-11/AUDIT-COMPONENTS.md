@@ -130,7 +130,7 @@ Two findings worth surfacing:
 
 2. **The body of the abs page in this deployment is still the legacy page** (Cornell-era sidebar layout, dense link blocks, "Access Paper" panel, Bibliographic Tools tabs at the bottom). The spinout deployment updates the chrome (header + footer) but leaves the body of the abs page largely unchanged. This is a useful signal: arXiv's approach in arxiv-browse is **chrome-first**, with deeper-page redesigns deferred. The redesign mockups in this repo go further than the spinout deployment by also redesigning the body of the abs page.
 
-**Implication for the design system:** the footer is **the most validated component on this list.** Three implementations (approved Cloud Run, `abstract-redesign.html`, `html-redesign.html`) all agree. Promotion is low-risk, high-leverage. Suggested next action: extract the footer CSS from one of the three and codify as `.ds-footer` (or similar) in `docs/public/design-system.css`, with a `footer-styles.html` demo page.
+**Implication for the design system:** the footer is **the most validated component on this list.** Three implementations (approved Cloud Run, `abstract-redesign.html`, `html-redesign.html`) all agree. Promotion is low-risk, high-leverage. Suggested next action: extract the footer CSS from one of the three and codify as `.ds-footer` (or similar) in `docs/public/design-system.css`, with a `footer.html` demo page.
 
 ---
 

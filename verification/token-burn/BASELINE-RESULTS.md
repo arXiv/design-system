@@ -28,7 +28,7 @@ clean:
 
 - **Passed:** the violation trap (the guardrail instructions live in CLAUDE.md, directly in
   the reading path) and type badges (colors named in DESIGN-POLICIES, working examples in
-  `internal/table-styles.html` — found and reused by both reps).
+  `internal/tables.html` — found and reused by both reps).
 - **Failed:** every task whose correct answer lives in places the reading path never
   routes to, or that isn't written down at all.
 
@@ -46,10 +46,10 @@ path.** Consequences observed in the reading logs:
   card and the dl row grammar. Both invented a table-flavored row structure; both failed
   on exactly that.
 - The 02 reps used `.ds-alert` tokens but not the component construction — neither opened
-  `internal/alert-styles.html`. Nothing maps "I need a status message" to the alert
+  `alerts.html`. Nothing maps "I need a status message" to the alert
   reference.
 - 03-r1 hand-built a site header with a fabricated text logo instead of using
-  `.ds-site-header` (`header-styles.html`, never read) and ignored the documented
+  `.ds-site-header` (`header.html`, never read) and ignored the documented
   versions treatment (`version-display.html`, never read).
 
 **Reorg implication:** the entry point needs a routing layer — "building X? read Y" —
@@ -59,7 +59,7 @@ today only Claude reads `CLAUDE.md`.)
 ## Finding 2 — reference pages are training data
 
 02-r2 copied the bootstrap-icons CDN link **verbatim** from the repo's own
-`internal/button-styles.html`. The one policy violation shipped inside a reference page
+`internal/buttons.html`. The one policy violation shipped inside a reference page
 propagated straight into new work. Corollary: example quality outranks rule wording.
 (Cleanup of that CDN link is already queued as a task chip.)
 
