@@ -61,7 +61,7 @@ A shared four-state semantic palette (success, info, warning, error/failure) dri
 The full four-state table (light + dark bg / border / text, with contrast ratios) is single-sourced in [`../color-mapping.md`](../color-mapping.md) → *Status & alert colors — shared*; not duplicated here.
 
 Key decisions:
-- **Success is lime-olive, not a new forest green.** Access Lime `#c4d82e` stays the "staff tools" signal and fails text contrast, so success reuses the `.ds-ds-seg-btn--positive` lime-olive with the border tuned off-yellow (`#6b8e1e`) to read as success, not brand accent.
+- **Success is lime-olive, not a new forest green.** Access Lime `#c4d82e` stays the "internal tools" signal and fails text contrast, so success reuses the `.ds-ds-seg-btn--positive` lime-olive with the border tuned off-yellow (`#6b8e1e`) to read as success, not brand accent.
 - **Reuse over invention** — info = `.ds-ds-seg-btn--neutral` navy (darker than `--ds-link` so it is not read as a link); warning = the abstract version-warning amber; error = `--ds-danger` red.
 - **Color is never the sole signal** — each variant pairs with a distinct icon shape + leading word (WCAG 1.4.1), so the states survive grayscale and `forced-colors` mode.
 - **OS signals honored** — `prefers-color-scheme` (dark tokens), `forced-colors` (links → `LinkText`, never `forced-color-adjust:none`), `prefers-reduced-motion`. `prefers-contrast` needs nothing (all pairings clear AA).
