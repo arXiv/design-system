@@ -292,6 +292,42 @@
       <li>Full state-by-state references (rest / hover / visited / focus / disabled, light and dark): <a class="ds-link" href="links.html">public link styles</a> · <a class="ds-link" href="links.html">internal link styles</a>. Link color tokens with ratios: <a class="ds-link" href="colors.html">Colors</a>.</li>
     </ul>
 
+    <h2 class="section-title">Code blocks, and the copy button</h2>
+    <p class="ds-section-desc">A code block is Plex Mono on the dark chrome ground, and it always
+    carries a copy button. Someone reading a pattern page is there to take the markup away with
+    them, and asking them to select four lines of it by hand without missing the last character is
+    asking them to make a mistake.</p>
+
+    <p class="ds-panel-label">Write the block the way you already do</p>
+<pre><code>&lt;pre&gt;&lt;code&gt;&amp;lt;button class="ds-btn"&amp;gt;Save&amp;lt;/button&amp;gt;&lt;/code&gt;&lt;/pre&gt;</code></pre>
+
+    <p class="ds-panel-label">And include the script once, at the foot of the page</p>
+<pre><code>&lt;script src="copy-code.js" defer&gt;&lt;/script&gt;</code></pre>
+
+    <ul class="notes">
+      <li><strong>There is no markup for the button</strong>, and that is the design.
+      <code>copy-code.js</code> walks every <code>&lt;pre&gt;</code> on the page, wraps it in
+      <code>.ds-code</code> and inserts the control. A block added next year is covered without
+      anyone remembering, which a per-block wrapper would not be. Every page under
+      <code>docs/</code> already loads the script.</li>
+      <li><strong>The button reserves a strip at the top, not the side.</strong> A
+      <code>&lt;pre&gt;</code> scrolls horizontally, so padding at its inline end does not hold the
+      visible right edge clear &mdash; a long line runs straight under a right-hand button. A lane
+      across the top works at every line length.</li>
+      <li><strong>Success is announced, not just shown.</strong> The label changes to
+      &ldquo;Copied&rdquo; and a visually hidden <code>role="status"</code> region says
+      &ldquo;Copied to clipboard&rdquo;, because a button relabelling itself is not reliably read
+      out. Both reset after two seconds.</li>
+      <li><strong>It works from disk.</strong> The asynchronous Clipboard API needs a secure
+      context, which <code>file://</code> is not, and it rejects when the window is not focused.
+      Both cases fall back to <code>execCommand</code>, and if that fails too the status region says
+      so rather than the button quietly doing nothing.</li>
+      <li><strong>Without JavaScript there is no button</strong> and the code is still selectable.
+      The button is a convenience; it is never the only way to get the text.</li>
+      <li><strong>Opt a block out with <code>&lt;pre data-no-copy&gt;</code></strong> &mdash; for a
+      block that is an illustration of output rather than something to take away.</li>
+    </ul>
+
     <h2 class="section-title">Rules that travel with the type</h2>
 
     <div class="ds-card rule-card">
@@ -387,7 +423,7 @@
           <tr><td>400 Regular</td><td>Body copy, and anything that is read rather than scanned.</td></tr>
           <tr><td>500 Medium</td><td>Navigation, table headers, the quieter emphasis.</td></tr>
           <tr><td>600 SemiBold</td><td>Headings, button labels, and the label half of a label/value pair.</td></tr>
-          <tr><td>700 Bold</td><td>Available and in use in the staff mockups. Whether the scale sanctions
+          <tr><td>700 Bold</td><td>Available and in use in the internal mockups. Whether the scale sanctions
           it above 600 is an open question &mdash; see the backlog before reaching for it.</td></tr>
           <tr><td>100, 200, 300, 450</td><td>Present, unused, and commented out.</td></tr>
         </tbody>
@@ -451,7 +487,7 @@
         <tbody>
           <tr><td>Abstract pages</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>&mdash;</td></tr>
           <tr><td>HTML paper pages</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>STIX Two Math</td></tr>
-          <tr><td>Staff tools</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>&mdash;</td></tr>
+          <tr><td>Internal tools</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>&mdash;</td></tr>
           <tr><td>Homepage, listings, search</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>&mdash;</td></tr>
         </tbody>
       </table>
@@ -496,5 +532,6 @@
     });
   });
 </script>
+<script src="copy-code.js" defer></script>
 </body>
 </html>

@@ -2,10 +2,10 @@
    arXiv Design System — tier 1
 
    The foundation, and every component more than one surface could use.
-   Everything loads this: public pages, staff tools, the reader.
+   Everything loads this: public pages, internal tools, the reader.
 
    A surface that needs more loads a tier 2 file AFTER this one —
-   docs/internal/design-system-staff.css for staff tools. A tier 2 file may
+   docs/internal/design-system-staff.css for internal tools. A tier 2 file may
    re-point a token here, which is how a surface gets its own accent; it
    must never redefine a component or reuse a token name for a different
    meaning.
@@ -124,7 +124,7 @@
   --ds-font-serif:      "IBM Plex Serif", Georgia, "STIX Two Text", "Times New Roman", serif;
 
   /* Status. Success is lime-olive, not forest green, and its border is
-     off-yellow so success never reads as the staff accent. */
+     off-yellow so success never reads as the internal accent. */
   --ds-success-bg:      #e8f5d8;
   --ds-success-border:  #6b8e1e;
   --ds-success-fg:      #4a5a0a;  /* 6.7:1 on bg */
@@ -350,6 +350,41 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   overflow-x: auto;                 /* long lines scroll; the page never does */
   margin: 0 0 var(--ds-space-4);
 }
+/* CODE BLOCK COPY  (.ds-code / .ds-code-copy) — typography.html
+   Every code block gets a copy button, and no page has to remember to add
+   one: copy-code.js wraps each <pre> and inserts the control. A <pre> cannot
+   host the button itself, because it scrolls — an absolutely positioned child
+   would scroll out of view with the code. */
+.ds-code { position: relative; }
+/* The lane is vertical, not horizontal. A <pre> scrolls, so padding at its
+   inline end does not hold the visible right edge clear — a long line runs
+   straight under the button. Reserving a strip at the top always works,
+   whatever the line length. */
+.ds-code > pre { padding-block-start: 2.5rem; }
+.ds-code-copy {
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-end: 8px;
+  min-width: 4.5rem;
+  min-height: 24px;                              /* WCAG 2.2 target size */
+  padding: 3px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);   /* 3.4:1 on the code ground */
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ds-surface-muted);
+  font-family: var(--ds-font-condensed);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.ds-code-copy:hover { background: rgba(255, 255, 255, 0.16); }
+.ds-code-copy:focus-visible {
+  outline: 3px solid var(--ds-focus-ring-on-dark);
+  outline-offset: 2px;
+}
+
 :where(.ds-page) pre code {
   background: none;
   padding: 0;
@@ -607,7 +642,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 
 /* ── Destructive (.ds-btn-destructive) — internal/buttons.html
-   Staff surfaces only: nothing a reader can do on arxiv.org destroys
+   Internal surface only: nothing a reader can do on arxiv.org destroys
    anything. Always pair with a confirmation step. */
 .ds-btn-destructive {
   background:
@@ -705,7 +740,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 /* ── The close control (.ds-close) — buttons.html
    One control for every host: alert, popover, announcement band, figure
    viewer, both surfaces. Hosts supply POSITION only.
-   Standalone rather than a .ds-btn variant because the staff stylesheet
+   Standalone rather than a .ds-btn variant because the internal stylesheet
    names its buttons .btn-*, so a close built on .ds-btn could not be the
    same control there.
    color: inherit — one rule serves four alert palettes and dark chrome.
@@ -1710,7 +1745,7 @@ html:has(.ds-modal[open]) {
 .ds-alert-error   { background: var(--ds-error-bg);   border-color: var(--ds-error-border);   color: var(--ds-error-fg); }
 
 /* NOTE  (.ds-note) — a labelled aside inside a page's flow: a rule that has
-   to be met, guidance on tone, the way a component differs on the staff
+   to be met, guidance on tone, the way a component differs on the internal
    surface. Not an alert. An alert reports a state as of right now and can be
    dismissed; a note is always true and stays.
    The tab is what carries that difference, and it is why there is no left
@@ -1770,7 +1805,7 @@ html:has(.ds-modal[open]) {
 .ds-note code { background: rgba(255, 255, 255, 0.7); }
 
 /* Registers. Blue states a requirement, grey gives guidance, lime marks
-   material belonging to the staff surface — the one place a public page may
+   material belonging to the internal surface — the one place a public page may
    show Access Lime, because there it is the subject rather than the accent. */
 .ds-note--essential {
   --ds-note-tint: var(--ds-accent-surface);

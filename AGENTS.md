@@ -27,10 +27,10 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Anything with color | `docs/color-mapping.md`, `docs/colors.html` | tokens in that context's stylesheet |
 | Typography, text sizes | `docs/typography.html` | `--ds-font-*` |
 | Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--ds-space-*` |
-| Buttons | `docs/buttons.html` — both surfaces; `docs/internal/buttons.html` for the staff-only tiers | `.ds-btn*` (public, incl. `.ds-btn-text` and `.on-tint` / `.on-dark`), `.btn-*` (internal) |
+| Buttons | `docs/buttons.html` — both surfaces; `docs/internal/buttons.html` for the internal-only tiers | `.ds-btn*` (public, incl. `.ds-btn-text` and `.on-tint` / `.on-dark`), `.btn-*` (internal) |
 | Alerts, status & feedback messages | `docs/alerts.html` — one page, both surfaces | `.ds-alert*` — never rebuild its chrome |
 | Cards, rails, page organization | `docs/organizing-content.html` | card conventions, dl row grammar, `.ds-acc-rail` in a sidebar |
-| A labelled aside — a requirement, guidance, or how a component differs in staff tools | `docs/organizing-content.html` *Notes* | `.ds-note` (+ `--essential` / `--internal`), `.ds-note-label`, `.ds-note-gotcha` — never a bespoke tinted box, and never an alert |
+| A labelled aside — a requirement, guidance, or how a component differs in internal tools | `docs/organizing-content.html` *Notes* | `.ds-note` (+ `--essential` / `--internal`), `.ds-note-label`, `.ds-note-gotcha` — never a bespoke tinted box, and never an alert |
 | Accordions, show more, popovers — anything hiding content behind a control | `docs/progressive-disclosure.html` | `.ds-acc*`, `.ds-show-more`, `.ds-popover` |
 | A modal, dialog, confirmation, or anything that takes over the page | `docs/modals.html` | `.ds-modal*` on a native `<dialog>` + `showModal()` — never a `<div role="dialog">`, never `show()` |
 | A close or dismiss control | `docs/buttons.html` | `.ds-close` — one control on both surfaces; the host supplies position only |
@@ -38,6 +38,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Tables (internal tools), row selection, bulk actions | `docs/internal/tables.html` | `.ds-table`, sortable headers, `.ds-filter`; bulk-bar + selection rules documented there |
 | One record's details (label + value panel) | `docs/internal/metadata-panel.html` (concept: `docs/organizing-content.html`) | `.ds-meta-panel` + `--editable` / `--reference` / `--ruled` |
 | Forms, validation | `docs/forms.html` — one page, both surfaces | `.ds-field`/`.ds-label`/`.ds-input`/`.ds-hint`, `.is-invalid`, `.field-error`, `.ds-check`, `.ds-switch`, `.ds-seg` |
+| A code block on a docs page | `docs/typography.html` *Code blocks* | plain `<pre><code>` plus `<script src="copy-code.js" defer>` once per page — the copy button is added for you; never hand-build one |
 | Version display | `docs/version-display.html` | inline version links + `.ds-alert` warning |
 | Site header / footer | `docs/public/header.html`, `docs/public/footer.html` | `.ds-site-header` (+ `--light`), `.ds-site-footer` — never hand-build chrome or draw logos from text |
 | Category / topic / state labels | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-tag` (+ `--chrome` / status / `--keep-case`), `.ds-badge`; category names are copied, never restyled |
@@ -49,7 +50,9 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 
 **Stylesheets are tiered.** `docs/design-system.css` is **tier 1** — the foundation and every component more than one surface could use. Everything loads it.
 
-`docs/internal/design-system-staff.css` is **tier 2 for staff tools**, and is *not* self-contained: a staff page loads tier 1 first, then this. It holds only what is staff-only (the `.btn-*` family, tables, metadata panels, segmented controls, toggles, type badges, info cards) plus the tokens whose values differ on that surface — chiefly Access Lime as `--ds-accent`.
+`docs/internal/design-system-staff.css` is **tier 2 for internal tools**, and is *not* self-contained: an internal page loads tier 1 first, then this. It holds only what is internal-only (the `.btn-*` family, tables, metadata panels, info cards) plus the tokens whose values differ on that surface — chiefly Access Lime as `--ds-accent`.
+
+**Two surfaces, and one name each.** They are the **public site** and **internal tools** — the wording DESIGN-POLICIES uses. Not `staff tools`, not `the staff surface`, not `the staff stylesheet`: one name per thing, and a second name for the same thing is how a reader ends up wondering whether it is a third thing. "Staff" stays for the people ("arXiv staff can see aggregate figures"). The file is named `-staff.css` for historical reasons and is the one exception; the prose never follows it.
 
 ```html
 <link rel="stylesheet" href="../design-system.css">

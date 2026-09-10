@@ -126,10 +126,46 @@ def check_tokens_defined():
         ok(rule, f"{n} references")
 
 
+# ── One name per surface ──
+# The two surfaces are "the public site" and "internal tools" (DESIGN-POLICIES).
+# "Staff" is for people, not for the surface, its stylesheet or its pages —
+# a second name for one thing reads as a third thing.
+SURFACE_SYNONYM = re.compile(
+    r"staff[- ](tool|tools|surface|surfaces|stylesheet|page|pages|screen|screens|accent|form|forms|only)\b",
+    re.I,
+)
+PROSE = ["docs", "AGENTS.md", "README.md"]
+
+
+def check_one_name_per_surface():
+    rule = 'the surface is called "internal tools", never "staff"'
+    n = 0
+    for base in PROSE:
+        b = REPO / base
+        paths = [b] if b.is_file() else [
+            q for q in b.rglob("*") if q.suffix in {".html", ".md", ".css"}
+        ]
+        for q in paths:
+            text = q.read_text(encoding="utf-8", errors="replace")
+            n += 1
+            # Naming a term AS a term is fine — `staff tools` in backticks or a
+            # <code> span is the rule quoting what not to write. Blank those
+            # out (same length, so line numbers survive) before scanning.
+            text = re.sub(r"`[^`\n]*`", lambda m: " " * len(m.group(0)), text)
+            text = re.sub(r"<code>.*?</code>", lambda m: " " * len(m.group(0)), text, flags=re.S)
+            for m in SURFACE_SYNONYM.finditer(text):
+                line = text[: m.start()].count("\n") + 1
+                fail(rule, f"{q.relative_to(REPO)}:{line}",
+                     f'"{m.group(0)}" — say "internal tools" / "the internal stylesheet"')
+    if rule not in FAILS:
+        ok(rule, f"{n} files")
+
+
 def main():
     check_wordmark_not_typed()
     check_self_hosted()
     check_tokens_defined()
+    check_one_name_per_surface()
     print()
     if FAILS:
         print(f"{len(FAILS)} FAIL")
