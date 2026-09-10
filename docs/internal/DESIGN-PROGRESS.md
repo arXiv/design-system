@@ -14,7 +14,7 @@
 | `color-tokens.html` | Full color token reference (light + dark) |
 | `link-styles.html` | Text link color reference — states, contexts, visited |
 | `table-styles.html` | Data table, sortable headers, filter toolbar |
-| `form-styles.html` | Segmented control, toggle switch, form validation |
+| *(merged)* | Segmented control, toggle switch and form validation moved to `docs/forms.html` |
 | `alert-styles.html` | Alert / status banner — live examples + self-syncing token table |
 
 ---
@@ -76,7 +76,7 @@ Session mockup: `../../mockups/internal/admin-console/paper-details/index.html`.
 - **Layout & content width** — content-driven, not audience-driven (measure for text; shell width by density). In `DESIGN-POLICIES.md` (Layout and content width).
 - **Versions** — context + current text-link treatment in `../../README.md` (Versions); stale filled "version pills" retired in `../color-mapping.md`. *Pending:* a proper `version-nav` pattern page covering the one-version → many-versions spectrum on both surfaces.
 - **Read-only vs editable cards** — `card-styles.html` now documents the editable "section card" alongside the read-only `.info-card`, and the deliberate visual distinction. *Pending:* extract the section-card CSS into `design-system-staff.css`.
-- **Form layout + category editor** — documented in `form-styles.html` (Form layout): top-aligned labels, typographic grouping, content-matched field widths, standardized action bar. *Pending:* interactive demos + extracting the category-editor / form-field classes into `design-system-staff.css`.
+- **Form layout + category editor** — documented in `docs/forms.html` (Layout): top-aligned labels, typographic grouping, content-matched field widths, standardized action bar. *Pending:* interactive demos + extracting the category-editor / form-field classes into `design-system-staff.css`.
 - **Nav selected state** — reuses the existing active/pressed convention (tint fill + darkened text, from the `--ds-accent-wash` ladder), not a bespoke white pill. No new rule needed.
 - **Raw / Browse display** — two variants of one toggle: a *display swap* on read-only pages, a *preview reveal* on editable forms.
 - **To reconcile:** the Edit-Endorsements modal uses a blue Save — internal primary is Access Lime (existing rule); update the modal.
