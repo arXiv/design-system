@@ -120,8 +120,10 @@
         </tr>
         <tr>
           <td><code>.type-badge</code></td>
-          <td>A submission's <strong>type</strong> in a queue: new, replacement, cross-list, withdrawal.</td>
-          <td>Staff tools only &mdash; <a href="internal/table-styles.html">table styles</a>.</td>
+          <td>A <strong>type</strong>. Today that means a submission's type in arXiv Check &mdash;
+          new, replacement, cross-list, withdrawal &mdash; but the component is not limited to
+          submissions; any other kind of type could use it.</td>
+          <td>Staff tools &mdash; <a href="internal/table-styles.html">table styles</a>.</td>
           <td><span class="badge-demo">
               <span class="type-badge type-new">New</span>
               <span class="type-badge type-rep">Rep</span>
@@ -135,32 +137,23 @@
           <td>Both surfaces &mdash; <a href="typography.html">typography</a>.</td>
           <td><span class="ds-panel-label">Submitted</span></td>
         </tr>
-        <tr>
-          <td>Inline chips</td>
-          <td>A <strong>reference marker inside a sentence</strong> — a citation, an equation number,
-          a figure number. Part of the prose, not a label on it.</td>
-          <td>The HTML paper only; not promoted, still page-local.</td>
-          <td><em>[12]</em>, <em>(3.4)</em></td>
-        </tr>
+        
       </tbody>
     </table>
 
-    <p class="ds-panel-label">What is <em>not</em> a tag, however round it looks</p>
-    <p>The HTML paper carries a row of small controls beside every figure and equation &mdash; copy
-    permalink, open the figure large, view the alt text. They are called &ldquo;chips&rdquo; in that
-    mockup and they sit inside a floating <code>.ds-element-pill</code>, so the question comes up
-    fairly. They are not tags.</p>
-    <p><strong>A tag says what something is. Those controls do something.</strong> That is the whole
-    test, and it survives the fact that some tags are links: a category tag that navigates still
-    <em>names</em> the category, while &ldquo;Copy permalink&rdquo; names nothing &mdash; it is a verb.
-    Anything with a verb on it belongs to <a href="buttons.html">Buttons</a>.</p>
-    <p>Their appearance agrees, once you look: the chips have
-    <code>background: none</code> and <code>border: none</code>, so they are not pills at all despite
-    the name. They are the quiet text tier at a small size, so they are shown on
-    <a href="buttons.html">Buttons</a>, under <em>Small actions attached to content</em>, rather than
-    here. The pill in that picture is the container they float in,
-    documented as <code>.ds-element-pill</code> on
-    <a href="organizing-content.html">Organizing content</a>.</p>
+    <p class="ds-panel-label">The &ldquo;pill menus&rdquo; on HTML papers are not tags. Why?</p>
+    <p>They are not tags, they are <strong>actions</strong> &mdash; copy a permalink, open the figure
+    large, read the alt text. You can see it without knowing the markup: a tag is a filled pill with a
+    coloured background, and those are white with icon labels. They are documented on
+    <a href="buttons.html">Buttons</a>, under <em>Small actions attached to content</em>.</p>
+
+    <p class="ds-panel-label">Nor are the inline chips in a paper</p>
+    <p>A citation marker like <em>[12]</em> or an equation number like <em>(3.4)</em> is not a tag
+    either, and for a different reason: <strong>the author wrote it.</strong> It comes out of the
+    LaTeX source, and arXiv only makes it navigable &mdash; the citation becomes a link, the equation
+    number becomes an anchor. A tag is something arXiv <em>adds</em> to describe content. An inline
+    chip is content, which we layer on top of and never edit
+    (<a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>).</p>
 
     <p class="ds-panel-label">Why the tag is a pill and the badge is a rectangle</p>
     <p>Not decoration. A tag is a standalone object &mdash; it may be a link, it may carry a remove
@@ -215,6 +208,22 @@
       <span class="ds-tag ds-tag--error">Removed</span>
       <span class="ds-tag ds-tag--chrome">Under review</span>
     </div>
+
+    <h3 class="ds-panel-label">In use &mdash; the endorsement rows in the admin console</h3>
+    <p class="ds-section-desc">The parts compose. A chrome tag carries a category; a nested
+    <code>.ds-tag-note</code> says where it came from &mdash; a username to ask, or
+    <code>--auto</code> for something the system decided; and the error variant carries the whole
+    thing when the endorsement was revoked. Every piece below is a real class.</p>
+    <div class="ds-card demo" style="display:flex; gap:var(--ds-space-tight); flex-wrap:wrap; align-items:center">
+      <span class="ds-tag ds-tag--chrome ds-tag--keep-case">cs.CV
+        <span class="ds-tag-note ds-tag-note--auto">auto</span></span>
+      <span class="ds-tag ds-tag--chrome ds-tag--keep-case">physics.bio-ph
+        <span class="ds-tag-note">bsmith</span></span>
+      <span class="ds-tag ds-tag--error ds-tag--keep-case">&minus; physics.gen-ph
+        <span class="ds-tag-note">ginsparg</span></span>
+      <span class="ds-tag ds-tag--chrome ds-tag--keep-case">math.AP
+        <button type="button" class="ds-tag-remove" aria-label="Remove math.AP">&#10005;</button></span>
+    </div>
   </div>
 
   <!-- ── Spec ── -->
@@ -227,7 +236,8 @@
       <tr><td><code>.ds-tag--success</code><br><code>.ds-tag--warning</code><br><code>.ds-tag--error</code></td><td>Only when the label reports a condition.</td></tr>
       <tr><td><code>.ds-tag--keep-case</code></td><td>Opt out of uppercase. Required for identifiers.</td></tr>
       <tr><td><code>.ds-tag-remove</code></td><td>The &#10005; control inside an editable tag. Needs an <code>aria-label</code> from you.</td></tr>
-      <tr><td><code>.ds-tag-note</code></td><td>A small badge nested inside a tag, saying where it came from.</td></tr>
+      <tr><td><code>.ds-tag-note</code></td><td>A small badge nested inside a tag, saying where it came from &mdash; usually a username.</td></tr>
+      <tr><td><code>.ds-tag-note--auto</code></td><td>The same badge, quieter, for provenance the system set rather than a person. &ldquo;auto&rdquo; is a fact about the row; a username is someone to ask.</td></tr>
     </table>
 
     <h3 class="ds-panel-label" id="tags-links">Contrast</h3>
