@@ -18,59 +18,13 @@
     .spec-table th { background: var(--ds-surface-muted); text-align: left; padding: 8px 13px; font-family: var(--ds-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ds-text-muted); }
     .spec-table td { padding: 9px 13px; border-top: 1px solid var(--ds-surface-muted); vertical-align: top; }
     .spec-table td:first-child { white-space: nowrap; }
-/* ── Guidance blocks: .a11y and .tone ──
-       Two per-pattern blocks sharing one construction, so they read as a pair:
-       same light-blue tint, same monospace heading, differing only in the left
-       edge and the heading colour. Accessibility essentials takes Link Blue
-       because it states requirements; Tone takes warm Library Grey because it
-       is guidance. Blue against warm grey is a real distinction — two blues a
-       few values apart would not be.
-
-       Monospace on the heading keeps the implementation-note register without
-       setting prose in it: typography.html assigns mono to code and identifiers,
-       and a paragraph of it reads slower, which is a poor trade on blocks about
-       legibility. 14px sentence case rather than 11px uppercase, because at
-       that size it read as a label rather than a heading.
-
-       Contrast on the tint: body 15.66:1, Link Blue 5.18:1, Library Grey
-       5.27:1 — all AA. */
-    /* The accordion ships without a max-width: the base component expects a
-       container to bound it. On this page nothing does, so it ran to the full
-       page width while everything beside it stopped at the content measure. */
-    .ds-acc { }
-
-    .a11y, .tone {
-      background: var(--ds-accent-surface);
-      border: 1px solid var(--ds-accent-border);
-      border-radius: 8px;
-      padding: 20px 22px;
-      margin-top:var(--ds-space-4);
-    }
-    .a11y { border-left: 4px solid var(--ds-link); }
-    .tone { border-left: 4px solid var(--ds-text-muted); }
-    .a11y h3, .tone h3 {
-      font-family: var(--ds-font-mono);
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0;
-      text-transform: none;
-      margin:0 0 var(--ds-space-3);
-    }
-    .a11y h3 { color: var(--ds-link); }
-    .tone h3 { color: var(--ds-text-muted); }
-    .a11y ul, .tone p, .tone dl { font-size: 13px; line-height: 1.65; }
-    .a11y ul { margin:0; padding-left: 18px; }
-    .a11y li { margin:7px 0; }
-    .a11y li::marker { color: var(--ds-link); }
-    .a11y code, .tone code { background: rgba(255,255,255,0.75); }
-    .a11y .gotcha { margin:var(--ds-space-4) 0 0; padding-top: 14px; border-top: 1px solid var(--ds-accent-border); font-size: 13px; line-height: 1.65; }
-    .a11y .gotcha strong { font-family: var(--ds-font-mono); font-weight: 600; font-size: 13px; color: var(--ds-error-fg); display: block; margin-bottom:7px; text-transform: none; letter-spacing: 0; }
-    .tone p { margin:0 0 var(--ds-space-3); }
-    .tone dl { margin:0; }
-    .tone dt { font-family: var(--ds-font-condensed); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; color: var(--ds-text-muted); margin-top:10px; }
-    .tone dd { margin:2px 0 0; }
-    .tone .spec-table { margin-top:var(--ds-space-3); }
-
+    /* Local to this page: the Tone block's definition list and its
+       instead/write table. The box itself is .ds-note. */
+    .ds-note dl { margin: 0; font-size: 13px; }
+    .ds-note dt { font-family: var(--ds-font-condensed); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; color: var(--ds-text-muted); margin-top: 10px; }
+    .ds-note dd { margin: 2px 0 0; }
+    .ds-note .spec-table { margin-top: var(--ds-space-3); }
+    .ds-note li { margin: 7px 0; }
 
     .states { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:var(--ds-space-block); }
     .state-card { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; padding: 16px 18px; }
@@ -348,8 +302,8 @@
     <code>.ds-alert-warning</code>, and an automatic change is <code>.ds-alert-info</code>. See
     <a href="alerts.html">Alerts</a> for the four severities and their markup.</p>
 
-    <div class="tone">
-      <h3>Tone</h3>
+    <div class="ds-note">
+      <h3 class="ds-note-label">Tone</h3>
       <p>The general rules — no contractions, one instruction per sentence, the same word for the
       same thing every time, no idiom in text someone reads while something is going wrong — live in
       <a href="STYLE.md">STYLE.md</a> and are not repeated here. What follows is specific to
@@ -379,8 +333,8 @@
       </table>
     </div>
 
-    <div class="a11y">
-      <h3>Accessibility essentials</h3>
+    <div class="ds-note ds-note--essential">
+      <h3 class="ds-note-label">Accessibility essentials</h3>
       <ul>
         <li>A real <code>&lt;label for&gt;</code> on every control, visible or <code>sr-only</code>.</li>
         <li><code>required</code> and <code>aria-required="true"</code> on anything mandatory. Required
@@ -397,7 +351,7 @@
         explain itself. <code>disabled</code> leaves the tab order entirely, so a user who cannot
         proceed finds nothing there and no reason why. The two must look identical.</li>
       </ul>
-      <p class="gotcha"><strong>Easy to get wrong</strong>
+      <p class="ds-note-gotcha"><strong>Easy to get wrong</strong>
       Setting <code>display: flex</code> on an <code>&lt;li&gt;</code> replaces
       <code>display: list-item</code> and the marker silently disappears &mdash; taking the list
       semantics with it in some screen readers, so the count is never announced. And
@@ -494,6 +448,30 @@
       <li><strong>The visible label goes inside the <code>&lt;label&gt;</code></strong>, which is what
       names the control. A switch with only an adjacent heading has no accessible name.</li>
     </ul>
+
+    <div class="ds-note ds-note--internal">
+      <h3 class="ds-note-label">Internal variant</h3>
+      <p>On the staff surface the switch is the same component with a different on-track. The staff
+      stylesheet re-points one token &mdash; <code>--ds-switch-on</code> &mdash; and nothing else
+      changes: no second copy of the switch, no override of its parts.</p>
+      <div style="display:flex; gap:var(--ds-space-6); flex-wrap:wrap; margin-top:var(--ds-space-4);
+                  --ds-switch-on: var(--ds-access-lime-deep)">
+        <label class="ds-switch">
+          <input type="checkbox" role="switch" checked>
+          <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+          <span class="ds-switch-label">Show withdrawn</span>
+        </label>
+        <label class="ds-switch">
+          <input type="checkbox" role="switch">
+          <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+          <span class="ds-switch-label">Show withdrawn</span>
+        </label>
+      </div>
+      <p class="ds-note-gotcha"><strong>Why this is not just &ldquo;the green one&rdquo;</strong>
+      Access Lime itself is 1.5:1 against a white thumb, so the on-track takes the darker end of the
+      staff accent, exactly as the public one takes the darker end of Open Blue. The rule is the
+      contrast, not the hue &mdash; which is why the token is named for its job.</p>
+    </div>
   </div>
 
   <!-- ── Tooltip ── -->
@@ -519,11 +497,29 @@
         </div>
         <input class="ds-input" id="f-doi" type="text" placeholder="10.1000/example">
       </div>
+      <div style="display:flex; justify-content:flex-end; align-items:center; gap:var(--ds-space-1);
+                  margin-top:var(--ds-space-8); padding-top:var(--ds-space-6);
+                  border-top:1px solid var(--ds-border)">
+        <span class="ds-label" style="margin:0">Anchored at the trailing edge</span>
+        <span class="ds-tooltip-host">
+          <button type="button" class="ds-btn ds-btn-text ds-btn-icon" aria-describedby="tip-end"
+                  style="min-height:24px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span class="is-sr-only">What does end anchoring do?</span></button>
+          <span class="ds-tooltip ds-tooltip--end" id="tip-end" role="tooltip">
+            <span class="ds-tooltip-body">With <code>.ds-tooltip--end</code> the bubble runs back
+            toward the start, so a control near the trailing edge does not push it off screen.</span>
+          </span>
+        </span>
+      </div>
       <p style="margin-top:var(--ds-space-6); font-size:0.875rem; color:var(--ds-text-muted)">
-        Hover or tab to the question mark.</p>
+        Hover or tab to either question mark.</p>
     </div>
 
     <ul class="notes">
+      <li><strong>It opens downward, and toward the inline end.</strong> Down, because upward
+      collides with sticky chrome near the top of a page. Toward the end, because that is where a
+      form label sits &mdash; at the start of the line, with room to its right. A host near the
+      trailing edge of its container adds <code>.ds-tooltip--end</code> and the bubble runs back the
+      other way. Both use logical properties, so both are correct in a right-to-left script.</li>
       <li><strong>WCAG 1.4.13 is the whole design</strong>, and it is what most hover bubbles fail.
       <em>Hoverable</em>: the gap between control and bubble is the tooltip's own padding, not a
       margin, so a pointer moving into it never crosses dead space and loses it. <em>Persistent</em>:
