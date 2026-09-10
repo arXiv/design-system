@@ -7,7 +7,7 @@ document.querySelectorAll('.papers-table tbody tr').forEach(row => {
 
   // Auto-set to Author if name match and no decision yet
   if (hasMatch && !row.dataset.decision) {
-    const authorBtn = row.querySelector('.seg-btn.seg-author');
+    const authorBtn = row.querySelector('.ds-seg-btn.seg-author');
     if (authorBtn) {
       authorBtn.classList.add('active');
       row.dataset.decision = 'author';
@@ -18,13 +18,13 @@ document.querySelectorAll('.papers-table tbody tr').forEach(row => {
 // ── Segmented decision control ────────────────────────────────
 // Clicking a segment button marks it active, clears siblings,
 // and updates data-decision on the parent <tr> for row highlighting.
-document.querySelectorAll('.decision-group .seg-btn').forEach(btn => {
+document.querySelectorAll('.decision-group .ds-seg-btn').forEach(btn => {
   btn.addEventListener('click', function () {
     const group = this.closest('.decision-group');
     const row   = this.closest('tr');
 
     // Clear active from all buttons in this group
-    group.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+    group.querySelectorAll('.ds-seg-btn').forEach(b => b.classList.remove('active'));
 
     // Mark this button active
     this.classList.add('active');
@@ -39,9 +39,9 @@ document.querySelectorAll('.decision-group .seg-btn').forEach(btn => {
 document.getElementById('btn-reject-all').addEventListener('click', function () {
   document.querySelectorAll('.papers-table tbody tr').forEach(row => {
     if (!row.dataset.decision) {
-      const noBtn = row.querySelector('.seg-btn.seg-no');
+      const noBtn = row.querySelector('.ds-seg-btn.seg-no');
       if (noBtn) {
-        row.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+        row.querySelectorAll('.ds-seg-btn').forEach(b => b.classList.remove('active'));
         noBtn.classList.add('active');
         row.dataset.decision = 'no';
       }

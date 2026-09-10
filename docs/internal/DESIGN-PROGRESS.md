@@ -61,8 +61,8 @@ A shared four-state semantic palette (success, info, warning, error/failure) dri
 The full four-state table (light + dark bg / border / text, with contrast ratios) is single-sourced in [`../color-mapping.md`](../color-mapping.md) → *Status & alert colors — shared*; not duplicated here.
 
 Key decisions:
-- **Success is lime-olive, not a new forest green.** Access Lime `#c4d82e` stays the "staff tools" signal and fails text contrast, so success reuses the `.seg-positive` lime-olive with the border tuned off-yellow (`#6b8e1e`) to read as success, not brand accent.
-- **Reuse over invention** — info = `.seg-neutral` navy (darker than `--ds-link` so it is not read as a link); warning = the abstract version-warning amber; error = `--ds-danger` red.
+- **Success is lime-olive, not a new forest green.** Access Lime `#c4d82e` stays the "staff tools" signal and fails text contrast, so success reuses the `.ds-ds-seg-btn--positive` lime-olive with the border tuned off-yellow (`#6b8e1e`) to read as success, not brand accent.
+- **Reuse over invention** — info = `.ds-ds-seg-btn--neutral` navy (darker than `--ds-link` so it is not read as a link); warning = the abstract version-warning amber; error = `--ds-danger` red.
 - **Color is never the sole signal** — each variant pairs with a distinct icon shape + leading word (WCAG 1.4.1), so the states survive grayscale and `forced-colors` mode.
 - **OS signals honored** — `prefers-color-scheme` (dark tokens), `forced-colors` (links → `LinkText`, never `forced-color-adjust:none`), `prefers-reduced-motion`. `prefers-contrast` needs nothing (all pairings clear AA).
 
@@ -102,7 +102,7 @@ Session mockup: `../../mockups/internal/admin-console/paper-details/index.html`.
 - [x] **Data table** (`.ds-table`) — base styles, header row, hover, footer
 - [x] **Sortable headers** (`.sortable`, `.sort-asc`, `.sort-desc`, `.sort-arrow`) — clickable columns with direction indicators
 - [x] **Filter select** (`.ds-filter`) — underline-only select with custom chevron for toolbar filters
-- [x] **Segmented control** (`.seg-control`, `.seg-btn`) — exclusive-choice button group with positive/neutral/negative active variants
+- [x] **Segmented control** (`.ds-seg`, `.ds-seg-btn`) — exclusive-choice button group with positive/neutral/negative active variants
 - [x] **Toggle switch** (`.toggle-switch`, `.toggle-track`, `.toggle-thumb`, `.toggle-label`) — boolean on/off with lime-green checked state
 - [x] **Form validation** (`.field-required`, `.is-invalid`, `.field-error`) — required indicators, invalid border/ring, inline error messages
 - [x] **WCAG AA audit** — added `--ds-border-strong` (`#8b8680`, 3.61:1 on white) to fill palette gap between `--ds-text-disabled` (2.24:1) and `--ds-text-muted` (5.83:1). Updated toggle track, toggle off-label, sort arrow, filter underline, seg control border, icon button border, and info card label to pass 3:1 UI / 4.5:1 text thresholds

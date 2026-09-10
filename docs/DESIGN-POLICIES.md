@@ -118,8 +118,8 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 - **Category names are copied, never restyled.** Show a category exactly as arXiv publishes it — `cs.AI`, `physics.optics`, `cond-mat.str-el` — capitalization included. Never uppercase, lowercase, or otherwise transform it for display. The same string appears in the URL, in the API, and in what researchers type, so changing its case makes it a different string. Most categories are uppercase after the final period, but every `physics.*` and `cond-mat.*` subcategory is lowercase — which is why this is a copy rule and not a capitalization rule. The same holds for any arXiv identifier, a paper ID included.
 - **Tags label or categorize; they never stand in for a link.** A tag is the small rounded label used for subject categories, topics, and states. It may link to a listing, but it must never replace a text link as the way to get somewhere — which is why version links are inline text and not filled pills. When a tag carries a status color, that color reports a real condition; never use one for emphasis.
-- **Submission type badges:** Use the established palette: `.type-new` (blue), `.type-rep` (yellow), `.type-wdr` (dark), `.type-cross` (light grey)
-- **Segmented controls:** Use semantic variants — `.seg-positive` (green/accept), `.seg-neutral` (blue/informational), `.seg-negative` (red/reject)
+- **Submission type badges:** Use the established palette: `.ds-badge--new` (blue), `.ds-badge--rep` (yellow), `.ds-badge--wdr` (dark), `.ds-badge--cross` (light grey)
+- **Segmented controls:** Use semantic variants — `.ds-seg-btn--positive` (green/accept), `.ds-seg-btn--neutral` (blue/informational), `.ds-seg-btn--negative` (red/reject)
 - **Filter dropdowns:** Use `.ds-filter` with a visible `<label>`. Always include an "All" option as the inclusive default.
 - **Toggle switches:** Off state uses `--ds-border-strong`. On state uses lime green (internal) or Link Blue (public). Label text uses `--ds-text-muted` (off) shifting to a darker shade (on).
 

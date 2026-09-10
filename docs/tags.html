@@ -19,28 +19,7 @@
     /* Inline links in page copy. These sit on the page canvas. Nav links
        carry their own, more specific rules. */
 
-    /* ── Staging only: .type-badge lives in the STAFF stylesheet, which this
-       page does not load — loading it would re-point --ds-accent to lime and
-       repaint the whole page. These mirror the tokens in
-       internal/design-system-staff.css; if the badge palette changes, update
-       it THERE first. Values flip with the OS theme, as they do on staff
-       pages. ── */
     .badge-demo { display: inline-flex; gap: 4px; }
-    .badge-demo .type-badge {
-      display: inline-block; font-family: var(--ds-font-mono); font-size: 11px;
-      font-weight: 400; border-radius: 3px; padding: 1px 6px; white-space: nowrap;
-      border: 1px solid transparent;
-    }
-    .badge-demo .type-new   { background: #d4e9ff; color: #1a3d78; border-color: #93c5fd; }
-    .badge-demo .type-rep   { background: #fef3c7; color: #7a5c00; border-color: #fde68a; }
-    .badge-demo .type-wdr   { background: #474340; color: #ffffff; border-color: #474340; }
-    .badge-demo .type-cross { background: #e8e4df; color: #4a4540; border-color: #cbc5be; }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .badge-demo .type-new   { background: #13294a; color: #93c5fd; border-color: #2a4a7a; }
-      html:not([data-theme="light"]) .badge-demo .type-rep   { background: #3a2f0e; color: #fde68a; border-color: #7a5c00; }
-      html:not([data-theme="light"]) .badge-demo .type-wdr   { background: #474340; color: #e8e4df; border-color: #8b8680; }
-      html:not([data-theme="light"]) .badge-demo .type-cross { background: #36322e; color: #cbc5be; border-color: #5a554f; }
-    }
 </style>
 </head>
 <body class="ds-page">
@@ -119,16 +98,16 @@
               <span class="ds-tag">Withdrawn</span></td>
         </tr>
         <tr>
-          <td><code>.type-badge</code></td>
+          <td><code>.ds-badge</code></td>
           <td>A <strong>type</strong>. Today that means a submission's type in arXiv Check &mdash;
           new, replacement, cross-list, withdrawal &mdash; but the component is not limited to
           submissions; any other kind of type could use it.</td>
           <td>Staff tools &mdash; <a href="internal/table-styles.html">table styles</a>.</td>
           <td><span class="badge-demo">
-              <span class="type-badge type-new">New</span>
-              <span class="type-badge type-rep">Rep</span>
-              <span class="type-badge type-wdr">Wdr</span>
-              <span class="type-badge type-cross">Cross</span></span></td>
+              <span class="ds-badge ds-badge--new">New</span>
+              <span class="ds-badge ds-badge--rep">Rep</span>
+              <span class="ds-badge ds-badge--wdr">Wdr</span>
+              <span class="ds-badge ds-badge--cross">Cross</span></span></td>
         </tr>
         <tr>
           <td><code>.ds-panel-label</code></td>
@@ -226,6 +205,39 @@
     </div>
   </div>
 
+  <!-- ── The type badge ── -->
+  <div class="section">
+    <h2 class="section-title" id="the-type-badge">The type badge</h2>
+    <p class="ds-section-desc">The rectangular one. It marks what kind of thing a row is, inside a
+    table dense enough that a pill&rsquo;s rounded ends would cost the title column width it needs
+    more. Four, and only four &mdash; the palette is fixed in
+    <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> (<em>Content and
+    interaction</em>) so a badge means the same thing in every tool that shows one.</p>
+
+    <table class="ds-table-framed">
+      <thead><tr><th>Badge</th><th>Class</th><th>Means</th></tr></thead>
+      <tbody>
+        <tr><td><span class="ds-badge ds-badge--new">New</span></td><td><code>.ds-badge--new</code></td><td>A new submission.</td></tr>
+        <tr><td><span class="ds-badge ds-badge--rep">Rep</span></td><td><code>.ds-badge--rep</code></td><td>A replacement &mdash; a new version of a paper already in the archive.</td></tr>
+        <tr><td><span class="ds-badge ds-badge--cross">Cross</span></td><td><code>.ds-badge--cross</code></td><td>A cross-listing &mdash; the paper&rsquo;s primary category is elsewhere.</td></tr>
+        <tr><td><span class="ds-badge ds-badge--wdr">Wdr</span></td><td><code>.ds-badge--wdr</code></td><td>A withdrawal. Darkest of the four, because it is the one that changes what a reader gets.</td></tr>
+      </tbody>
+    </table>
+
+    <ul class="notes">
+      <li><strong>The abbreviation is the label.</strong> It is what the moderation queue has always
+      shown, and expanding it would widen the column for no gain.</li>
+      <li><strong>The palette is its own, not the status palette.</strong> A submission type is a
+      category. &ldquo;New&rdquo; is not success and &ldquo;Wdr&rdquo; is not an error, and painting
+      them with the status colours would say something untrue about the queue. The four carry
+      <code>--ds-badge-*</code> tokens.</li>
+      <li><strong>Today only staff tools show one</strong> &mdash; see
+      <a href="internal/table-styles.html">table styles</a> for badges in a live queue. The
+      component is not limited to submissions, and it is in the shared stylesheet, so any surface
+      that needs a type marker in a dense row can use it.</li>
+    </ul>
+  </div>
+
   <!-- ── Spec ── -->
   <div class="section">
     <h2 class="section-title">Spec</h2>
@@ -237,6 +249,8 @@
       <tr><td><code>.ds-tag--keep-case</code></td><td>Opt out of uppercase. Required for identifiers.</td></tr>
       <tr><td><code>.ds-tag-remove</code></td><td>The &#10005; control inside an editable tag. Needs an <code>aria-label</code> from you.</td></tr>
       <tr><td><code>.ds-tag-note</code></td><td>A small badge nested inside a tag, saying where it came from &mdash; usually a username.</td></tr>
+      <tr><td><code>.ds-badge</code></td><td>The rectangular type marker for a dense table row. Its own palette, not the status one.</td></tr>
+      <tr><td><code>.ds-badge--new</code><br><code>.ds-badge--rep</code><br><code>.ds-badge--cross</code><br><code>.ds-badge--wdr</code></td><td>The four submission types. Four, and only four.</td></tr>
       <tr><td><code>.ds-tag-note--auto</code></td><td>The same badge, quieter, for provenance the system set rather than a person. &ldquo;auto&rdquo; is a fact about the row; a username is someone to ask.</td></tr>
     </table>
 
@@ -284,7 +298,7 @@
       mixed-case names inside, caps slow reading down &mdash; use <code>.ds-tag--keep-case</code>.</li>
       <li><strong>Color is never the only signal.</strong> The label&rsquo;s own words carry the
       meaning. A negative or removed state says so in text, not only in red.</li>
-      <li><strong>Not the same as a type badge.</strong> <code>.type-badge</code> stays a 3px
+      <li><strong>Not the same as a type badge.</strong> <code>.ds-badge</code> stays a 3px
       rectangle: a compact code in a dense data grid. A tag is a discrete labeled object in a
       wrapping list.</li>
     </ul>

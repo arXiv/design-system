@@ -91,15 +91,15 @@ h1,h2,h3{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif;}
 .icon-btn.edit-inline svg{width:14px; height:14px;}
 
 /* ── Segmented control (Raw / Preview) ───────────────────── */
-.seg-control{display:inline-flex;}
-.seg-btn{padding:5px 12px; font-family:inherit; font-size:12px; font-weight:500; cursor:pointer;
+.ds-seg{display:inline-flex;}
+.ds-seg-btn{padding:5px 12px; font-family:inherit; font-size:12px; font-weight:500; cursor:pointer;
   border:1px solid var(--ds-border-strong); background:#fff; color:var(--ds-text-muted); margin-left:-1px;
   transition:background .12s,color .12s,border-color .12s;}
-.seg-btn:first-child{border-radius:6px 0 0 6px; margin-left:0;}
-.seg-btn:last-child{border-radius:0 6px 6px 0;}
-.seg-btn:hover:not(.active){background:#f5f3f1; color:var(--ds-text);}
-.seg-btn:focus-visible{outline:3px solid var(--ds-focus-ring); outline-offset:1px; z-index:2;}
-.seg-btn.active{background:#deeeff; border-color:#5a82c8; color:#1a3a78; z-index:1;}
+.ds-seg-btn:first-child{border-radius:6px 0 0 6px; margin-left:0;}
+.ds-seg-btn:last-child{border-radius:0 6px 6px 0;}
+.ds-seg-btn:hover:not(.active){background:#f5f3f1; color:var(--ds-text);}
+.ds-seg-btn:focus-visible{outline:3px solid var(--ds-focus-ring); outline-offset:1px; z-index:2;}
+.ds-seg-btn.active{background:#deeeff; border-color:#5a82c8; color:#1a3a78; z-index:1;}
 
 /* ── Toggle switch ───────────────────────────────────────── */
 .toggle-switch{display:inline-flex; align-items:center; gap:8px; cursor:pointer; position:relative;}
@@ -828,9 +828,9 @@ select.control{appearance:none; -webkit-appearance:none;
         <div class="form-actions form-actions-split">
           <div class="mode-switch" id="edit-mode-switch">
             <span class="mode-cap">Display TeX</span>
-            <div class="seg-control" role="group" aria-label="TeX display mode">
-              <button class="seg-btn active" type="button" data-mode="raw" onclick="setEditMode('raw')">Raw</button>
-              <button class="seg-btn" type="button" data-mode="browse" onclick="setEditMode('browse')">Preview</button>
+            <div class="ds-seg" role="group" aria-label="TeX display mode">
+              <button class="ds-seg-btn active" type="button" data-mode="raw" onclick="setEditMode('raw')">Raw</button>
+              <button class="ds-seg-btn" type="button" data-mode="browse" onclick="setEditMode('browse')">Preview</button>
             </div>
           </div>
           <div class="form-actions-btns">
@@ -1042,7 +1042,7 @@ function reduceMotion(){ return window.matchMedia('(prefers-reduced-motion: redu
    Buttons carry data-mode so the label can differ from the internal mode key. ---- */
 function setEditMode(mode){
   var f=document.getElementById('edit-form'); if(f) f.dataset.mode=mode;
-  document.querySelectorAll('#edit-mode-switch .seg-btn').forEach(function(b){
+  document.querySelectorAll('#edit-mode-switch .ds-seg-btn').forEach(function(b){
     b.classList.toggle('active', b.dataset.mode===mode);
   });
 }

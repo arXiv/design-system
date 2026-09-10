@@ -2,7 +2,7 @@ You are a frontend developer contributing to the arXiv design-system repo (the c
 
 Build the **submission type badges** pattern page — a real item on this repo's backlog. Type badges are the small colored labels that mark a submission's type in internal moderation and admin tools (new submission, replacement, withdrawal, cross-list). The design system references them but has never given them a dedicated reference page.
 
-Deliverable: a demo/reference page at `docs/internal/type-badge-styles.html` that:
+Deliverable: a demo/reference page at `docs/internal/ds-badge-styles.html` that:
 - Renders every badge type with its established styling, in realistic context (e.g. rows of a moderation queue) as well as isolated.
 - Documents the tokens/colors each badge uses and any accessibility considerations.
 - Follows the structure and conventions of this repo's existing internal reference pages.

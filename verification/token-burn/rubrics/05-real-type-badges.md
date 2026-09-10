@@ -1,6 +1,6 @@
 # Rubric — 05 real backlog item (type badges page)
 
-**What this task measures:** completing a partially-documented real pattern. The badges are named in DESIGN-POLICIES (`.type-new` blue, `.type-rep` yellow, `.type-wdr` dark, `.type-cross` light grey) and used in internal table demos; there is no dedicated page. NOTE: this task retires from the battery once the real type-badges page lands in the repo.
+**What this task measures:** completing a partially-documented real pattern. The badges are named in DESIGN-POLICIES (`.ds-badge--new` blue, `.ds-badge--rep` yellow, `.ds-badge--wdr` dark, `.ds-badge--cross` light grey) and used in internal table demos; there is no dedicated page. NOTE: this task retires from the battery once the real type-badges page lands in the repo.
 
 Hard-constraint checks:
 - [ ] Exactly the four documented types; no invented types
