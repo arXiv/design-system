@@ -79,22 +79,6 @@
   --ds-disabled-fg:           #b0b0b0;
   --ds-link-disabled:         #b0aba6;
 
-  /* Submission type badges. A submission type is a CATEGORY, not a
-     status — "New" is not success and "Wdr" is not an error — so these
-     are their own palette rather than the status tokens. Contrast
-     verified: new 8.5:1, rep 5.6:1, wdr 9.8:1, cross 7.5:1. */
-  --ds-badge-new-bg:      #d4e9ff;
-  --ds-badge-new-fg:      #1a3d78;
-  --ds-badge-new-border:  #93c5fd;
-  --ds-badge-rep-bg:      #fef3c7;
-  --ds-badge-rep-fg:      #7a5c00;
-  --ds-badge-rep-border:  #fde68a;
-  --ds-badge-wdr-bg:      #474340;
-  --ds-badge-wdr-fg:      #ffffff;
-  --ds-badge-wdr-border:  #474340;
-  --ds-badge-cross-bg:    #e8e4df;
-  --ds-badge-cross-fg:    #4a4540;
-  --ds-badge-cross-border:#cbc5be;
 }
 
 
@@ -642,19 +626,6 @@
     --ds-disabled-fg:           #4e4e4e;
     --ds-link-disabled:         #484340;
 
-    /* Submission type badges — dark */
-    --ds-badge-new-bg:      #13294a;
-    --ds-badge-new-fg:      #93c5fd;
-    --ds-badge-new-border:  #2a4a7a;
-    --ds-badge-rep-bg:      #3a2f0e;
-    --ds-badge-rep-fg:      #fde68a;
-    --ds-badge-rep-border:  #7a5c00;
-    --ds-badge-wdr-bg:      #474340;
-    --ds-badge-wdr-fg:      #e8e4df;
-    --ds-badge-wdr-border:  #8b8680;
-    --ds-badge-cross-bg:    #36322e;
-    --ds-badge-cross-fg:    #cbc5be;
-    --ds-badge-cross-border:#5a554f;
   }
 
   /* Secondary button — dark lime-tint bg needs lime text, not near-black */
@@ -692,14 +663,6 @@
   html:not([data-theme="light"]) .ds-meta-panel--editable.ds-meta-panel--ruled .ds-meta-cell { border-color: rgba(200, 220, 120, 0.14); }
   html:not([data-theme="light"]) .ds-meta-panel--reference.ds-meta-panel--ruled .ds-meta-cell { border-color: rgba(255, 255, 255, 0.08); }
 
-  /* Type badge dark fills are token re-points in :root above. */
-
-  /* Segmented control — active states repoint at the (dark) status tokens;
-     light mode keeps its original hardcoded values untouched. */
-  html:not([data-theme="light"]) .seg-btn:hover:not(:disabled) { background: var(--ds-surface-hover); }
-  html:not([data-theme="light"]) .seg-btn.seg-positive.active { background: var(--ds-success-bg); border-color: var(--ds-success-border); color: var(--ds-success-fg); }
-  html:not([data-theme="light"]) .seg-btn.seg-neutral.active  { background: var(--ds-info-bg);    border-color: var(--ds-info-border);    color: var(--ds-info-fg); }
-  html:not([data-theme="light"]) .seg-btn.seg-negative.active { background: var(--ds-error-bg);   border-color: var(--ds-error-border);   color: var(--ds-error-fg); }
 }
 
 
@@ -724,57 +687,6 @@ button.ds-tag:hover {
   background: var(--ds-surface-active);
   color: var(--ds-link-hover);
 }
-/* ─── Submission Type Badges ─────────────────────────────────── */
-/*
- * Color-coded labels matching the arXiv Check moderation tool.
- * Base class .type-badge handles shape; type modifiers supply color.
- *
- * Contrast ratios (WCAG, verified):
- *   .type-new   #1a3d78 on #d4e9ff — 8.5:1  AAA ✓
- *   .type-rep   #7a5c00 on #fef3c7 — 5.6:1  AA  ✓
- *   .type-wdr   #ffffff on #474340 — 9.8:1  AAA ✓
- *   .type-cross #4a4540 on #e8e4df — 7.5:1  AAA ✓
- */
-.type-badge {
-  display: inline-block;
-  font-family: var(--ds-font-mono);
-  font-size: 11px;
-  font-weight: 400;
-  border-radius: 3px;
-  padding: 1px 6px;
-  white-space: nowrap;
-  border: 1px solid transparent;
-}
-
-/* New — first submission; light blue */
-.type-new {
-  background: var(--ds-badge-new-bg);
-  color: var(--ds-badge-new-fg);
-  border-color: var(--ds-badge-new-border);
-}
-
-/* Rep — replacement version; yellow */
-.type-rep {
-  background: var(--ds-badge-rep-bg);
-  color: var(--ds-badge-rep-fg);
-  border-color: var(--ds-badge-rep-border);
-}
-
-/* Wdr — withdrawal; dark warm-gray */
-.type-wdr {
-  background: var(--ds-badge-wdr-bg);
-  color: var(--ds-badge-wdr-fg);
-  border-color: var(--ds-badge-wdr-border);
-}
-
-/* Cross — cross-listing; warm light-gray */
-.type-cross {
-  background: var(--ds-badge-cross-bg);
-  color: var(--ds-badge-cross-fg);
-  border-color: var(--ds-badge-cross-border);
-}
-
-
 /* ─── Data Table ───────────────────────────────────────────── */
 /*
  * Base table styles for admin data tables. Warm-tinted header row,
@@ -923,68 +835,6 @@ button.ds-tag:hover {
   outline: 2px solid var(--ds-focus-ring);
   outline-offset: 2px;
   border-radius: 2px;
-}
-
-
-/* ─── Segmented Control ────────────────────────────────────── */
-/*
- * Segmented control — an exclusive choice rendered as adjacent buttons,
- * for inline decisions where every option should be visible at once.
- * Three semantic active states: positive, neutral, negative.
- * It is a <fieldset> with an .is-sr-only <legend>; without the legend the
- * group has no accessible name. See internal/form-styles.html.
- */
-
-.seg-control {
-  border: none;
-  margin: 0;
-  padding: 0;
-  display: inline-flex;
-  gap: 0;
-}
-
-.seg-btn {
-  padding: 5px 10px;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid var(--ds-border-strong); /* 3.61:1 on white ✓ */
-  background: var(--ds-surface);
-  color: var(--ds-text-muted);
-  margin-left: -1px;
-  transition: background 0.12s, color 0.12s, border-color 0.12s;
-  position: relative;
-  white-space: nowrap;
-}
-
-.seg-btn:first-child { border-radius: 6px 0 0 6px; margin-left: 0; }
-.seg-btn:last-child  { border-radius: 0 6px 6px 0; }
-.seg-btn:hover:not(:disabled) { background: #f5f3f1; color: var(--ds-text); z-index: 1; }
-.seg-btn:focus-visible {
-  outline: 3px solid var(--ds-focus-ring);
-  outline-offset: 1px;
-  z-index: 2;
-}
-
-/* Active states — semantic color per variant */
-.seg-btn.seg-positive.active {
-  background: #e8f5d8;
-  border-color: #9cb522;
-  color: #4a5a0a;
-  z-index: 1;
-}
-.seg-btn.seg-neutral.active {
-  background: #deeeff;
-  border-color: #5a82c8;
-  color: #1a3a78;
-  z-index: 1;
-}
-.seg-btn.seg-negative.active {
-  background: #fde8e8;
-  border-color: #c62828;
-  color: #8b0000;
-  z-index: 1;
 }
 
 
