@@ -46,6 +46,8 @@
   --ds-link-blue-hover:   #1050a0;
   --ds-link-blue-dark:    #64b5f6;
   --ds-visited-purple:    #7b2fbe;
+  --ds-access-lime:       #c4d82e;
+  --ds-access-lime-deep:  #6b7a10;
   --ds-smileybones-yellow:#ffe000;
 
   /* ── Semantic: what each colour is FOR ─────────────────────────────
@@ -82,6 +84,11 @@
   --ds-accent-border:     #c4dcf0;
 
   --ds-brand-smileybones-yellow: var(--ds-smileybones-yellow);
+
+  /* The note tab is a filled label; these are the two pieces of it that
+     cannot follow an existing semantic pair through the dark flip. */
+  --ds-note-mark-fg:       #ffffff;
+  --ds-note-mark-internal: var(--ds-access-lime-deep);
 
   /* The switch's on-track. Not --ds-accent: both accents are light fills
      chosen to carry dark text, and a white thumb on either is under 1.6:1.
@@ -744,8 +751,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
      dismissible  Escape closes it WITHOUT moving focus
      persistent   it stays while hovered or focused; no timer, and a pointer
                   twitch does not dismiss it
-   Opens downward. Upward collides with sticky chrome near the top of a page,
-   and raising z-index only hides that rather than fixing it.
+   Opens downward and toward the inline end. Upward collides with sticky chrome
+   near the top of a page; a host sitting near the trailing edge instead adds
+   .ds-tooltip--end so the bubble runs back the other way.
    The host supplies aria-describedby pointing at .ds-tooltip; the tooltip is
    never the accessible NAME, because a name that only appears on hover is a
    name most people never get. */
@@ -757,7 +765,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   display: none;
   position: absolute;
   top: 100%;
-  right: 0;
+  inset-inline-start: 0;
   z-index: 200;
   padding-top: 6px;   /* the gap, as hoverable padding rather than margin */
 }
@@ -777,6 +785,10 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 /* Shown on hover or focus of the host, with no JavaScript. Escape still
    needs a listener — that is the one part CSS cannot do. */
+.ds-tooltip--end {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
 .ds-tooltip-host:hover > .ds-tooltip,
 .ds-tooltip-host:focus-within > .ds-tooltip { display: block; }
 /* Escape sets [hidden], and this has to beat "still hovering" — so it needs
@@ -1680,6 +1692,80 @@ html:has(.ds-modal[open]) {
 .ds-alert-warning { background: var(--ds-warning-bg); border-color: var(--ds-warning-border); color: var(--ds-warning-fg); }
 .ds-alert-error   { background: var(--ds-error-bg);   border-color: var(--ds-error-border);   color: var(--ds-error-fg); }
 
+/* NOTE  (.ds-note) — a labelled aside inside a page's flow: a rule that has
+   to be met, guidance on tone, the way a component differs on the staff
+   surface. Not an alert. An alert reports a state as of right now and can be
+   dismissed; a note is always true and stays.
+   The tab is what carries that difference, and it is why there is no left
+   edge and no icon: the register is named in words before the paragraph
+   starts, so nothing has to be read out of a colour.
+   Each register sets three custom properties and inherits the rest. */
+.ds-note {
+  --ds-note-tint: var(--ds-surface-muted);
+  --ds-note-line: var(--ds-border);
+  --ds-note-mark: var(--ds-text-muted);
+  position: relative;
+  margin: 2.5rem 0 var(--ds-space-4);
+  padding: var(--ds-space-4) var(--ds-space-5);
+  background: var(--ds-note-tint);
+  border: 1px solid var(--ds-note-line);
+  border-radius: 0 8px 8px 8px;   /* square where the tab lands */
+  font-family: var(--ds-font-sans);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--ds-text);
+}
+.ds-note-label {
+  position: absolute;
+  bottom: 100%;
+  inset-inline-start: -1px;
+  margin: 0;
+  padding: 5px 12px;
+  background: var(--ds-note-mark);
+  color: var(--ds-note-mark-fg);
+  border-radius: 6px 6px 0 0;
+  font-family: var(--ds-font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+}
+/* The label is out of flow, so the first block after it starts the box. */
+.ds-note > .ds-note-label + * { margin-top: 0; }
+.ds-note > :last-child { margin-bottom: 0; }
+.ds-note ul { padding-inline-start: 1.15rem; }
+/* A ruled-off warning at the foot of a note: the mistake this rule keeps
+   being broken by. Set off, because it is the thing to read twice. */
+.ds-note-gotcha {
+  margin-top: var(--ds-space-4);
+  padding-top: var(--ds-space-3);
+  border-top: 1px solid var(--ds-note-line);
+}
+.ds-note-gotcha > strong {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--ds-font-mono);
+  font-size: 13px;
+  color: var(--ds-text);
+}
+/* Code sits on the tint, not on white, so it needs its own ground. */
+.ds-note code { background: rgba(255, 255, 255, 0.7); }
+
+/* Registers. Blue states a requirement, grey gives guidance, lime marks
+   material belonging to the staff surface — the one place a public page may
+   show Access Lime, because there it is the subject rather than the accent. */
+.ds-note--essential {
+  --ds-note-tint: var(--ds-accent-surface);
+  --ds-note-line: var(--ds-accent-border);
+  --ds-note-mark: var(--ds-link);
+}
+.ds-note--internal {
+  --ds-note-tint: color-mix(in srgb, var(--ds-access-lime) 18%, var(--ds-surface));
+  --ds-note-line: color-mix(in srgb, var(--ds-access-lime) 55%, var(--ds-surface));
+  --ds-note-mark: var(--ds-note-mark-internal);
+}
+
 /* Dark mode — status + link tokens only (foundation).
    STATUS (planning/dark-mode-decision.md): new pages and components are
    LIGHT-ONLY until the dark program resumes — never hand-pick dark token
@@ -1724,6 +1810,8 @@ html:has(.ds-modal[open]) {
     --ds-error-bg:        #2d1414;
     --ds-error-border:    #e57373;
     --ds-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
+    --ds-note-mark-fg:       var(--ds-repository-brown);
+    --ds-note-mark-internal: var(--ds-access-lime);
   }
 
   /* Buttons — dark constructions.
@@ -1810,6 +1898,8 @@ html:has(.ds-modal[open]) {
   --ds-error-bg:        #2d1414;
   --ds-error-border:    #e57373;
   --ds-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
+  --ds-note-mark-fg:       var(--ds-repository-brown);
+  --ds-note-mark-internal: var(--ds-access-lime);
 }
 
 [data-theme="light"] {
@@ -2342,7 +2432,7 @@ html:has(.ds-modal[open]) {
   color: var(--ds-hdr-fg-strong);
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 18ch;
+  max-width: 14ch;
 }
 @media (max-width: 599px) {
   /* On a narrow bar the greeting is the first thing to go: the account link
