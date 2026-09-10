@@ -15,8 +15,17 @@
  * Opt a block out with <pre data-no-copy>.
  */
 (function () {
-  var LABEL = 'Copy';
-  var DONE = 'Copied';
+  // Two overlapping sheets, then a tick. aria-hidden on both: the button's
+  // name comes from aria-label and never changes, because its action never
+  // changes — what changed is the result, and that goes to the live region.
+  var ICONS =
+    '<svg class="ds-code-copy-idle" viewBox="0 0 24 24" aria-hidden="true">' +
+      '<rect x="9" y="9" width="12" height="12" rx="2"/>' +
+      '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>' +
+    '</svg>' +
+    '<svg class="ds-code-copy-done" viewBox="0 0 24 24" aria-hidden="true">' +
+      '<path d="m20 6-11 11-5-5"/>' +
+    '</svg>';
 
   // The async clipboard is the right API and the wrong one to rely on alone:
   // it needs a secure context, which file:// is not, and it rejects when the
@@ -55,7 +64,10 @@
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'ds-code-copy';
-    btn.textContent = LABEL;
+    btn.innerHTML = ICONS;
+    btn.setAttribute('aria-label', 'Copy code');
+    btn.title = 'Copy';       // the pointer affordance; assistive technology
+                              // takes aria-label and ignores this
 
     // The button's own label changing is not reliably announced, so the
     // result goes to a live region that exists only for that.
@@ -70,11 +82,11 @@
     btn.addEventListener('click', function () {
       write(pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText)
         .then(function () {
-          btn.textContent = DONE;
+          btn.classList.add('is-done');
           status.textContent = 'Copied to clipboard';
           clearTimeout(timer);
           timer = setTimeout(function () {
-            btn.textContent = LABEL;
+            btn.classList.remove('is-done');
             status.textContent = '';
           }, 2000);
         })

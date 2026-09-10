@@ -134,7 +134,7 @@ def collect(cell: Path, ws: Path, task: Path):
         dest = art_dir / rel
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(repo[rel], dest)
-    for css in ("docs/design-system.css", "docs/internal/design-system-staff.css"):
+    for css in ("docs/design-system.css", "docs/internal/internal-tools.css"):
         if css in repo and css not in changed:
             dest = art_dir / css
             dest.parent.mkdir(parents=True, exist_ok=True)
@@ -144,7 +144,7 @@ def collect(cell: Path, ws: Path, task: Path):
 
     palette = palette_from_css(
         ws / "pristine/docs/design-system.css",
-        ws / "pristine/docs/internal/design-system-staff.css")
+        ws / "pristine/docs/internal/internal-tools.css")
     checks, hex_census = {}, {}
     for rel in changed:
         text = (art_dir / rel).read_text(errors="replace")

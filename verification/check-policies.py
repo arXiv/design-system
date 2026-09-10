@@ -100,7 +100,7 @@ def check_self_hosted():
 # invalid and it is silently dropped — .ds-note shipped with no padding
 # that way. Fallbacks (var(--x, 1rem)) are legitimate and skipped.
 CSS_FILES = [REPO / "docs" / "design-system.css",
-             REPO / "docs" / "internal" / "design-system-staff.css"]
+             REPO / "docs" / "internal" / "internal-tools.css"]
 DEFINED = re.compile(r"^\s*(--[\w-]+)\s*:", re.M)
 USED = re.compile(r"var\(\s*(--[\w-]+)\s*\)")
 

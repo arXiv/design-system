@@ -50,13 +50,13 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 
 **Stylesheets are tiered.** `docs/design-system.css` is **tier 1** — the foundation and every component more than one surface could use. Everything loads it.
 
-`docs/internal/design-system-staff.css` is **tier 2 for internal tools**, and is *not* self-contained: an internal page loads tier 1 first, then this. It holds only what is internal-only (the `.btn-*` family, tables, metadata panels, info cards) plus the tokens whose values differ on that surface — chiefly Access Lime as `--ds-accent`.
+`docs/internal/internal-tools.css` is **tier 2 for internal tools**, and is *not* self-contained: an internal page loads tier 1 first, then this. It holds only what is internal-only (the `.btn-*` family, tables, metadata panels, info cards) plus the tokens whose values differ on that surface — chiefly Access Lime as `--ds-accent`.
 
-**Two surfaces, and one name each.** They are the **public site** and **internal tools** — the wording DESIGN-POLICIES uses. Not `staff tools`, not `the staff surface`, not `the staff stylesheet`: one name per thing, and a second name for the same thing is how a reader ends up wondering whether it is a third thing. "Staff" stays for the people ("arXiv staff can see aggregate figures"). The file is named `-staff.css` for historical reasons and is the one exception; the prose never follows it.
+**Two surfaces, and one name each.** They are the **public site** and **internal tools** — the wording DESIGN-POLICIES uses. Not `staff tools`, not `the staff surface`, not `the staff stylesheet`: one name per thing, and a second name for the same thing is how a reader ends up wondering whether it is a third thing. "Staff" stays for the people ("arXiv staff can see aggregate figures"). The stylesheet is named for it too: `docs/internal/internal-tools.css`.
 
 ```html
 <link rel="stylesheet" href="../design-system.css">
-<link rel="stylesheet" href="design-system-staff.css">
+<link rel="stylesheet" href="internal-tools.css">
 ```
 
 A tier 2 file may re-point a tier 1 token, which is how a surface gets its accent. It must never introduce a token that reuses a tier 1 name for a different meaning. **Never copy a component into tier 2 to restyle it** — if it needs to look different, that is a token, not a second copy.

@@ -5,7 +5,7 @@
    Everything loads this: public pages, internal tools, the reader.
 
    A surface that needs more loads a tier 2 file AFTER this one —
-   docs/internal/design-system-staff.css for internal tools. A tier 2 file may
+   docs/internal/internal-tools.css for internal tools. A tier 2 file may
    re-point a token here, which is how a surface gets its own accent; it
    must never redefine a component or reuse a token name for a different
    meaning.
@@ -16,7 +16,7 @@
    ───────────────────────────────────────────────────────────────────────
    Canonical CSS for arxiv.org public-facing pages (abstract page,
    HTML paper reader, search, browse, info pages). Internal/admin pages
-   use design-patterns/internal/design-system-staff.css instead.
+   use design-patterns/internal/internal-tools.css instead.
 
    Naming: shared design-system classes use the `.ds-` prefix
    (DESIGN-POLICIES.md). Mockup-specific classes belong in the mockup's
@@ -365,20 +365,35 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   position: absolute;
   inset-block-start: 8px;
   inset-inline-end: 8px;
-  min-width: 4.5rem;
-  min-height: 24px;                              /* WCAG 2.2 target size */
-  padding: 3px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;                                   /* WCAG 2.2 target size floor
+                                                    is 24; 28 leaves the icon
+                                                    room without crowding it */
+  height: 28px;
+  padding: 0;
   border: 1px solid rgba(255, 255, 255, 0.35);   /* 3.4:1 on the code ground */
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.08);
   color: var(--ds-surface-muted);
-  font-family: var(--ds-font-condensed);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
   cursor: pointer;
 }
+.ds-code-copy svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* The tick replaces the sheets for two seconds. Both glyphs are always in
+   the DOM, so nothing is fetched or measured at the moment of the click. */
+.ds-code-copy .ds-code-copy-done,
+.ds-code-copy.is-done .ds-code-copy-idle { display: none; }
+.ds-code-copy.is-done .ds-code-copy-done { display: block; }
+.ds-code-copy.is-done { color: var(--ds-success-border); }
 .ds-code-copy:hover { background: rgba(255, 255, 255, 0.16); }
 .ds-code-copy:focus-visible {
   outline: 3px solid var(--ds-focus-ring-on-dark);

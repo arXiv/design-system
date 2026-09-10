@@ -1,7 +1,7 @@
 # Dark / Light Theme — Decision: Deferral
 
 **Status:** Active decision — 2026-06-11.
-**Scope:** Both stylesheets (`docs/design-system.css`, `docs/internal/design-system-staff.css`) and the public-facing mockups (`mockups/public/html-phase1.html`, `mockups/public/abstract-phase2.html`).
+**Scope:** Both stylesheets (`docs/design-system.css`, `docs/internal/internal-tools.css`) and the public-facing mockups (`mockups/public/html-phase1.html`, `mockups/public/abstract-phase2.html`).
 **Companion document:** [`DARK-MODE-AUDIT.md`](./DARK-MODE-AUDIT.md) — the substrate plan this decision sits against.
 
 ---

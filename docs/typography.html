@@ -294,9 +294,9 @@
 
     <h2 class="section-title">Code blocks, and the copy button</h2>
     <p class="ds-section-desc">A code block is Plex Mono on the dark chrome ground, and it always
-    carries a copy button. Someone reading a pattern page is there to take the markup away with
-    them, and asking them to select four lines of it by hand without missing the last character is
-    asking them to make a mistake.</p>
+    carries a copy button &mdash; the familiar two-sheets icon, top right. Someone reading a pattern
+    page is there to take the markup away with them, and asking them to select four lines of it by
+    hand without missing the last character is asking them to make a mistake.</p>
 
     <p class="ds-panel-label">Write the block the way you already do</p>
 <pre><code>&lt;pre&gt;&lt;code&gt;&amp;lt;button class="ds-btn"&amp;gt;Save&amp;lt;/button&amp;gt;&lt;/code&gt;&lt;/pre&gt;</code></pre>
@@ -314,10 +314,20 @@
       <code>&lt;pre&gt;</code> scrolls horizontally, so padding at its inline end does not hold the
       visible right edge clear &mdash; a long line runs straight under a right-hand button. A lane
       across the top works at every line length.</li>
-      <li><strong>Success is announced, not just shown.</strong> The label changes to
-      &ldquo;Copied&rdquo; and a visually hidden <code>role="status"</code> region says
-      &ldquo;Copied to clipboard&rdquo;, because a button relabelling itself is not reliably read
-      out. Both reset after two seconds.</li>
+      <li><strong>It is an icon, and it still says &ldquo;Copy&rdquo;.</strong> The two overlapping
+      sheets are the glyph people already know, so the control needs no label taking up room over
+      the code. Both SVGs are <code>aria-hidden</code> and the button carries
+      <code>aria-label="Copy code"</code>, which is what a screen reader announces. The
+      <code>title</code> is the pointer affordance only &mdash; assistive technology takes the
+      <code>aria-label</code> and ignores it.</li>
+      <li><strong>Success is announced, not just shown.</strong> The icon becomes a green tick, and
+      a visually hidden <code>role="status"</code> region says &ldquo;Copied to clipboard&rdquo;.
+      Both are needed: a tick is invisible to a screen reader, and the button&rsquo;s own name does
+      not change because its action did not change &mdash; it is still the copy button. Both reset
+      after two seconds.</li>
+      <li><strong>The name stays put while the icon moves.</strong> Relabelling a control to report
+      a result is the same mistake as bolding a switch label on toggle: the name of a control is
+      what it does, not what just happened. The result belongs in the live region.</li>
       <li><strong>It works from disk.</strong> The asynchronous Clipboard API needs a secure
       context, which <code>file://</code> is not, and it rejects when the window is not focused.
       Both cases fall back to <code>execCommand</code>, and if that fails too the status region says
