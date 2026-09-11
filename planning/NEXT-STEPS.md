@@ -336,8 +336,16 @@ unable to fail. Left out so the test can tell us whether the system covers it.
       focus. Tested end to end: Expand &rarr; dialog opens on Close &rarr;
       Escape &rarr; focus lands back on the Expand chip. **Now a harness
       check**, so the next refactor cannot quietly lose it.
-- [ ] **21.** `abstract-phase2.html` still vendors its own copy of the
-      stylesheet. *(Different file — runs alongside 20/22/23.)*
+- [x] **21.** DONE 2026-09-11. It was worse than "vendors a copy": the page
+      linked **no stylesheet at all** and carried an 1,828-line inlined fork,
+      including a `:root` block declaring 22 tokens that were every one a copy
+      of the canonical value. That fork is also why the type-size check
+      reported green for six weeks (see 20a) — it ran on this page and read
+      the stylesheets this page loads, which were none.
+      Now links `fonts.css` and `design-system.css`, with the token copy, six
+      exactly-duplicated component rules and the vendored `.ds-panel-label`
+      deleted, and four hardcoded values pointed back at the tokens that
+      already held them. Verified pixel-identical before and after.
 - [ ] **7.** Browser magnification and fluid scaling, written into the docs —
       after components exist to test it against.
 

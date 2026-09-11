@@ -55,10 +55,13 @@
     pattern and the multi-line cite-info layout.
 -->
 
+<link rel="stylesheet" href="../../docs/fonts.css">
+<link rel="stylesheet" href="../../docs/design-system.css">
+
 <style>
 /*
 ╔════════════════════════════════════════════════════════════════════╗
-║  DESIGN TOKENS                                                     ║
+║  PAGE STYLES                                                       ║
 ╚════════════════════════════════════════════════════════════════════╝
   Source of truth: docs/color-mapping.md
   Naming: token-name : canonical-purpose
@@ -69,47 +72,11 @@
 */
 
 :root {
+  /* Light-only while the dark pass is undesigned. Everything else — the
+     palette, the type stack, the spacing scale — comes from
+     design-system.css, linked above. This page used to declare 22 tokens of
+     its own, every one a copy of the canonical value. */
   color-scheme: light;
-  /* In production: `color-scheme: light dark;` and the page respects
-     prefers-color-scheme. This mockup is light-only because the dark-mode
-     pass has not yet been designed. */
-
-
-  /* ── Color tokens ──
-     Names match docs/design-system.css so this mockup
-     reads as a working example of the design system's vocabulary. Values
-     are the canonical hex from color-mapping.md. The mockup stays
-     self-contained (tokens defined here, not imported) — production
-     should import the shared design-system.css instead.
-     Mockup-local tokens not yet codified in design-system.css:
-       --ds-border (light component border — candidate for
-         color-mapping.md; used by inputs, toggle tracks, button borders)
-       --ds-warning-* (version-warning amber — color-mapping.md status
-         table has these as the canonical Warning row)
-       --ds-focus-ring-on-dark (focus ring on dark surfaces) */
-  --ds-text: #1c1a17;
-  --ds-text-muted: #6b6459;
-  --ds-border-strong: #8b8680;
-  --ds-text-disabled: #b0aba6;
-  --ds-link: #1565c0;
-  --ds-link-hover: #1050a0;
-  --ds-accent: #a5d6fe;
-  --ds-accent-hover: #c2e2ff;
-  --ds-canvas: #f9f7f7;
-  --ds-surface-muted: #f0eeec;
-  --ds-accent-wash: #d6e8f7;
-  --ds-accent-surface: #edf4fc;
-  --ds-accent-border: #c4dcf0;
-  --ds-border-muted: #e4e0db;
-  --ds-border: #ddd8d2;
-  --ds-warning-bg: #fff8e1;
-  --ds-warning-border: #e8b800;
-  --ds-warning-fg: #7a5c00;
-  --ds-focus-ring-on-dark: #64b5f6;
-
-  --ds-font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --ds-font-condensed: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
-  --ds-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 /*
@@ -190,7 +157,7 @@ img { max-width: 100%; height: auto; }
   top: -100px; left: 8px;
   z-index: 200;
   background: var(--ds-text);
-  color: #fff;
+  color: var(--ds-canvas);
   padding: 10px 16px;
   border-radius: 4px;
   text-decoration: none;
@@ -247,21 +214,6 @@ img { max-width: 100%; height: auto; }
   font-weight: 500;
   position: relative;
 }
-.ds-announcement-glyph {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-.ds-announcement-text {
-  font-weight: 600;
-}
-.ds-announcement-link {
-  color: var(--ds-link);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  font-weight: 600;
-}
-.ds-announcement-link:hover { color: var(--ds-link-hover); }
 .ds-announcement-close {
   position: absolute;
   right: 12px;
@@ -307,7 +259,6 @@ img { max-width: 100%; height: auto; }
   flex-shrink: 0;
   margin-right: auto;
 }
-.ds-site-header-logo img { height: 39px; width: auto; }
 .ds-site-header-nav {
   display: flex;
   align-items: center;
@@ -339,10 +290,9 @@ img { max-width: 100%; height: auto; }
   outline: 3px solid var(--ds-focus-ring-on-dark);
   outline-offset: 1px;
 }
-.ds-site-header-nav .ds-nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
 .ds-site-header-divider {
   width: 1px; height: 20px;
-  background: #4a433d;
+  background: var(--ds-hdr-divider);
   margin: 0 4px;
   flex-shrink: 0;
 }
@@ -1263,18 +1213,6 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
   min-height: 28px;
   margin-bottom: 8px;
 }
-/* Local copy of .ds-panel-label from design-system.css. The mockups vendor
-   their CSS rather than linking the stylesheet, so the NAME is shared but the
-   rule is duplicated until they adopt it. Keep the values identical. */
-.ds-panel-label {
-  font-family: var(--ds-font-condensed);
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--ds-text-muted);
-  margin: var(--ds-space-6) 0 var(--ds-space-2);   /* bonds down, matching the DS */
-}
 
 .abs-cite-col-head .ds-panel-label { margin: 0; color: var(--ds-text); }
 .abs-cite-col-head .abs-cite-styles { margin: 0; }
@@ -1304,7 +1242,7 @@ html.js .abs-authors-overflow.is-expanded.is-scrollable {
 .abs-cite-style-btn:last-child { border-radius: 0 3px 3px 0; }
 .abs-cite-style-btn.is-active {
   background: var(--ds-link);
-  color: #fff;
+  color: var(--ds-canvas);
   border-color: var(--ds-link);
 }
 .abs-cite-style-btn:hover:not(.is-active) {
