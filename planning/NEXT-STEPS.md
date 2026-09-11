@@ -275,7 +275,10 @@ unable to fail. Left out so the test can tell us whether the system covers it.
 
 ### Phase 4 — The mockups
 
-- [ ] **20.** The paper mockup still rebuilds **seven** DS components under
+- [x] **20.** DONE 2026-09-11 — audit in
+      `verification/audits/2026-09-10/AUDIT-PAPER-MOCKUP.md`, six findings, all
+      six acted on. Five of them changed tier 1 rather than the mockup, which
+      is what "read it both ways" was for. The paper mockup still rebuilds **seven** DS components under
       other names — card, popover, accordion, tag, alert, panel label, and
       `.ds-annotation` (the footnote and figure-alt marginalia re-declare it by
       hand, right treatment, wrong route) — plus 54 raw pixel gaps and 41 pixel
@@ -289,7 +292,7 @@ unable to fail. Left out so the test can tell us whether the system covers it.
       **Experiment to run while here:** serif for figure captions. Serif for
       marginalia is settled and liked; captions are the plausible extension and
       want testing rather than deciding in the abstract.
-- [ ] **20a. Point the type-size check at the stylesheets.** Found while
+- [x] **20a. DONE 2026-09-11.** Point the type-size check at the stylesheets. Found while
       auditing 20. The rule *"sizes are rem, never px"* has existed since
       2026-07-29 and has never been checked anywhere it matters. The one
       automated guard runs on `abstract-phase2.html` and reads the stylesheets
