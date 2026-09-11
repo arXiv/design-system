@@ -46,10 +46,19 @@ def resolve(d):
         if not changed: break
     return {k: v for k, v in out.items() if v.startswith("#")}
 
-def tokens(css_path, dark_marker):
+def tokens(css_path, dark_marker, seed_light=None, seed_dark=None):
+    """Parse one stylesheet's tokens, resolved.
+
+    `seed_*` carries the tier below. Tier 2 declares only what differs and a
+    page loads tier 1 first, so a tier 2 token may point at a primitive that
+    only tier 1 declares — the Access Lime ramp does exactly that. Without the
+    seed those chains cannot resolve and the parse raises on the first one.
+    """
     s = css_path.read_text()
-    raw_light = parse_block(s, ":root {")
-    raw_dark = dict(raw_light)
+    raw_light = dict(seed_light or {})
+    raw_light.update(parse_block(s, ":root {"))
+    raw_dark = dict(seed_dark or seed_light or {})
+    raw_dark.update(raw_light)
     raw_dark.update(parse_block(s, dark_marker))
     # Resolve within each mode: a dark semantic token may point at a
     # primitive declared in :root, so the light map seeds the dark one.
@@ -126,7 +135,8 @@ def emit():
     # The staff sheet is tier 2: it declares only what differs, and a staff page
     # loads tier 1 first. So the palette a staff page actually sees is tier 1
     # with tier 2 layered over it — which is what has to be measured.
-    ovr_l, ovr_d = tokens(INT, "@media (prefers-color-scheme: dark)")
+    raw_pub_l = parse_block(PUB.read_text(), ":root {")
+    ovr_l, ovr_d = tokens(INT, "@media (prefers-color-scheme: dark)", seed_light=raw_pub_l)
     int_l, int_d = dict(pub_l), dict(pub_d)
     int_l.update(ovr_l); int_d.update(ovr_d)
     frag = []

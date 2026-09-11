@@ -68,22 +68,32 @@
     }
     @keyframes btn-spin { to { transform: rotate(360deg); } }
 
-    /* ── Internal button mirrors (.ibtn-*) — values copied 1:1 from
-       internal/internal-tools.css so this page can show both contexts
-       side by side without loading two stylesheets that both define
-       .ds- classes. If internal values change, update THERE first. ── */
+    /* ── Internal button mirrors (.ibtn-*) ──
+       This page shows both accents side by side, which means rendering
+       internal buttons without loading the internal stylesheet — two
+       stylesheets both defining .ds- classes would fight.
+       It no longer copies any values: the Access Lime ramp is named in
+       design-system.css as primitives, so these point at the same
+       declarations internal-tools.css points at. There is one hex left and
+       it is explained where it sits. ── */
     .ctx-internal {
-      --i-accent: #c4d82e;
-    /* FIXED in both modes. The lime accent holds its light value in
-       dark mode, so its label must hold too — the same rule as
-       --ds-text-on-accent, and the same job as --ds-text-on-accent
-       in the internal stylesheet. Using --ds-text here flips
-       the label to near-white and leaves it at 1.4:1 on lime. */
-    --i-text-on-accent: #1c1a17; --i-accent-hover: #b5c626; --i-accent-active: #a4b520;
-      --i-accent-disabled-bg: #e6efb8; --i-accent-disabled-fg: #8a9a5a;
-      --i-sec-bg: #f0f9e8; --i-sec-hover: #e2f3d0; --i-sec-active: #d4edb8;
-      --i-sec-border: #9cb522; --i-sec-border-active: #6b7a10;
-      --i-danger: var(--ds-error-border); --i-danger-hover: #b71c1c;
+      --i-accent:               var(--ds-access-lime);
+      --i-accent-hover:         var(--ds-access-lime-hover);
+      --i-accent-active:        var(--ds-access-lime-active);
+      --i-accent-disabled-bg:   var(--ds-access-lime-faded);
+      --i-accent-disabled-fg:   var(--ds-access-lime-faded-fg);
+      --i-sec-bg:               var(--ds-access-lime-wash);
+      --i-sec-hover:            var(--ds-access-lime-wash-2);
+      --i-sec-active:           var(--ds-access-lime-wash-3);
+      --i-sec-border:           var(--ds-access-lime-border);
+      --i-sec-border-active:    var(--ds-access-lime-deep);
+      --i-danger:               var(--ds-error-border);
+      --i-danger-hover:         #b71c1c;   /* the danger ramp has no darker step yet */
+
+      /* Fixed in both modes. Lime holds its light value in dark mode, so its
+         label must hold too — the same rule as --ds-text-on-accent. Taking
+         --ds-text here would flip the label to near-white at 1.4:1 on lime. */
+      --i-text-on-accent:       var(--ds-repository-brown);
     }
     .ibtn { display: inline-flex; align-items: center; justify-content: center; gap:var(--ds-gap-glyph); padding: 10px 20px; font-family: inherit; font-size: 14px; font-weight: 500; line-height: 1; border-radius: 6px; cursor: pointer; text-decoration: none; white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.08); transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease, transform 0.08s ease; }
     .ibtn:active:not(:disabled) { transform: translateY(1px); box-shadow: none; }
@@ -584,9 +594,11 @@ pre .c { color: var(--ds-border-strong); }
   <!-- ───────── Internal buttons ───────── -->
   <section class="section ctx-internal">
     <h2 class="section-title">Internal buttons — Access Lime</h2>
-    <p class="ds-section-desc">Values mirrored from <code>internal/internal-tools.css</code> (source of truth).
-    Construction is currently flat-fill: the state changes ride on the fill color rather than a gradient border.
-    Internal tools carry more actions per screen, so the internal set has four tiers.</p>
+    <p class="ds-section-desc">The same Access Lime, from the same declarations: the ramp is named in
+    <code>design-system.css</code> as primitives, and both this page and
+    <code>internal/internal-tools.css</code> point at it rather than at each other. Construction is
+    flat-fill &mdash; the state changes ride on the fill rather than a gradient border. Internal tools
+    carry more actions per screen, so the internal set has four tiers where the public set has three.</p>
 
     <div class="state-flex">
       <div class="ds-btn-group ds-btn-group--stack state-cell">
