@@ -212,12 +212,47 @@ def check_relative_type_sizes():
         ok(rule, f"{total} files")
 
 
+# ── One page shape ──
+# <title> is "<Name> — arXiv Design System" and no page name carries "Styles"
+# or "Component Reference". Seven pages still did after their files were
+# renamed, which is how a reader ends up with two names for one component.
+TITLE_RE = re.compile(r"<title>(.*?)</title>", re.S)
+H1_RE = re.compile(r"<h1[^>]*>(.*?)</h1>", re.S)
+BANNED_IN_NAME = re.compile(r"\b(Component Reference|Styles)\b")
+
+
+def check_page_shape():
+    rule = "every docs page is named the same way"
+    n = 0
+    for path in sorted((REPO / "docs").rglob("*.html")):
+        if path.name == "doc.html":
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        m = TITLE_RE.search(text)
+        rel = path.relative_to(REPO)
+        n += 1
+        if not m:
+            fail(rule, str(rel), "no <title>")
+            continue
+        title = re.sub(r"\s+", " ", m.group(1)).strip()
+        if not title.endswith("— arXiv Design System"):
+            fail(rule, str(rel), f'title "{title}" should end "— arXiv Design System"')
+        if BANNED_IN_NAME.search(title):
+            fail(rule, str(rel), f'title "{title}" still says Styles / Component Reference')
+        h = H1_RE.search(text)
+        if h and BANNED_IN_NAME.search(re.sub(r"<[^>]+>", "", h.group(1))):
+            fail(rule, str(rel), "the <h1> still says Styles / Component Reference")
+    if rule not in FAILS:
+        ok(rule, f"{n} pages")
+
+
 def main():
     check_wordmark_not_typed()
     check_self_hosted()
     check_tokens_defined()
     check_one_name_per_surface()
     check_relative_type_sizes()
+    check_page_shape()
     print()
     if FAILS:
         print(f"{len(FAILS)} FAIL")

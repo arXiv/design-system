@@ -85,6 +85,7 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
 - **Minimal diffs.** Never rewrite a file wholesale; never reorganize while editing.
 - **One fact, one home.** State each rule in exactly one file; link from everywhere else.
 - **Pattern pages are example-first**: rendered demo + minimal spec table at the top; tokens, usage code, and rationale below. Rationale ≤ 3 sentences per rule.
+- **One page shape, and one way of writing its headings.** `<title>` is `<Name> — arXiv Design System` and `<h1>` is `<Name>`, where the name matches the nav label; an internal-tools page adds `(internal tools)` to the title only, so headings stay clean and browser tabs stay unambiguous. Section headings are **sentence case** — they are read as prose, not as labels. No page carries `Styles` or `Component Reference` in its name: the directory says which surface, and the filename says which component.
 - **Add prose only against evidence** — a failed agent test or a real misunderstanding, not speculation.
 - After changing a pattern, update its page; verify tokens/classes exist in the stylesheet, links resolve, HTML balances.
 - The shared nav is three dropdowns (Design Patterns / Mockups / Docs), hand-copied on every doc page. Adding a flagship pattern page means adding it to the Design Patterns menu on every page; adding a mockup means adding it to the Mockups menu on every page AND to `mockups/index.html`. Script the sweep; never update just one page.
