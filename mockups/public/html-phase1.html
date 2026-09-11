@@ -313,20 +313,20 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent; 
    focus) — which clip by design and lose nothing, since the text stays in the
    accessibility tree. No real failures. If you are
    about to change a height here to a fixed value, this is what it costs. */
-.ds-site-header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; min-height: 52px; background: var(--ds-chrome); }
-.ds-site-header-logo { display: flex; align-items: center; text-decoration: none; justify-self: start; }
-.mg-header-center { display: flex; justify-content: center; }
-.ds-site-header-nav { display: flex; align-items: center; gap: 4px; justify-self: end; }
-.ds-site-header-nav a, .ds-site-header-nav button { font-family: var(--ds-font-sans); font-size: 0.8125rem; font-weight: 500; color: #b0aba6; /* pinned: on the always-dark bar */ text-decoration: none; padding: 6px 10px; border-radius: 4px; border: none; background: none; cursor: pointer; white-space: nowrap; transition: background 0.12s, color 0.12s; display: inline-flex; align-items: center; gap: 5px; }
+/* Layout, the centre slot and the fold all come from
+   .ds-site-header--wrap in design-system.css. What stays here is only the
+   gap, which this bar sets tighter than the default. */
+.ds-site-header { gap: 12px; }
+
+.ds-site-header-nav { gap: 4px; }
+.ds-site-header-nav a, .ds-site-header-nav button { font-family: var(--ds-font-sans); font-size: 0.8125rem; font-weight: 500; color: var(--ds-hdr-fg); text-decoration: none; padding: 6px 10px; border-radius: 4px; border: none; background: none; cursor: pointer; white-space: nowrap; transition: background 0.12s, color 0.12s; display: inline-flex; align-items: center; gap: 5px; }
 .ds-site-header-nav a:visited { color: #b0aba6; /* pinned */ }
 .ds-site-header-nav a:hover, .ds-site-header-nav button:hover { background: #302c28; color: #f0eeec; /* pinned */ }
 .ds-site-header-nav a:focus-visible { outline: 3px solid var(--ds-focus-ring-on-dark); outline-offset: 1px; }
 .ds-site-header-nav .ds-nav-icon { width: 1.23em; height: 1.23em; opacity: 0.65; flex-shrink: 0; }
-.ds-site-header-divider { width: 1px; height: 20px; background: #4a433d; margin: 0 4px; flex-shrink: 0; }
-.ds-site-header-login { font-weight: 600; color: #f0eeec; /* pinned */ }
+.ds-site-header-divider { margin: 0 4px; }
+.ds-site-header-login { font-weight: 600; color: var(--ds-hdr-fg-strong); }
 @media (max-width: 48rem) {
-  .ds-site-header { grid-template-columns: auto auto; height: auto; min-height: 52px; padding: 6px 12px; row-gap: 4px; }
-  .mg-header-center { grid-column: 1 / -1; order: 3; justify-content: center; padding-bottom: 4px; }
   /* The nav items each carry white-space: nowrap, so without this the row
      can't break and the page scrolls sideways below ~400px (WCAG 1.4.10
      reflow). Matches design-system.css, which this local copy had drifted
@@ -595,14 +595,11 @@ body.mg-reader .mg-top-cols { display: block; }
    Source of truth: buttons.html. Construction = 1.5px transparent border
    + dual-background gradient + inset vignette + outer drop. Hover BRIGHTENS;
    press translateY(1px) with deeper vignette and flat-mid-tone border. */
-/* The button family comes from the design system. The one rule that has to
-   live here is a workaround for the vendored ar5iv stylesheet, which sets
-   `svg { z-index: -1 }` globally to keep LaTeXML-emitted SVG under text.
-   Inside an inline-flex button the icon is a flex item, so that z-index
-   APPLIES even without positioning, and paints the icon BEHIND the button's
-   own fill — invisible on anything opaque. Lift it back. Delete this the day
-   the ar5iv stylesheet is replaced by a tier 2 file that does not do it. */
-.ds-btn svg { position: relative; z-index: 1; }
+/* The button family comes from the design system, and so does the lift that
+   keeps its icon visible against ar5iv's `svg { z-index: -1 }` — see HOST
+   DEFENCE in design-system.css. The rule that used to live here is gone.
+   The .mg-* and .toc-* icons below still carry their own: they are this
+   page's components, not the design system's. */
 
 /* Tertiary button — PROPOSED variant, not yet in design-system.css.
    DESIGN-POLICIES.md already anticipates it ("No shadow on tertiary or
@@ -1012,12 +1009,12 @@ footer.ds-site-footer { grid-area: footer; }
 <!-- ══ ABSTRACT-MODE CHROME (mg-abs-only): ds-site-header with the
         Reader-view toggle in the center cell ══ -->
 <div class="mg-abs-only">
-  <header class="ds-site-header">
+  <header class="ds-site-header ds-site-header--wrap">
     <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
       <img src="images/logo_arxiv-primary.svg" alt="archive">
     </a>
     <!-- -->
-    <div class="mg-header-center"></div>
+    <div class="ds-site-header-center"></div>
     <nav class="ds-site-header-nav" aria-label="Main navigation">
       <a href="https://arxiv.org/search" aria-label="Search archive">
         <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>

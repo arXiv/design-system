@@ -40,7 +40,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Forms, validation | `docs/forms.html` — one page, both surfaces | `.ds-field`/`.ds-label`/`.ds-input`/`.ds-hint`, `.is-invalid`, `.field-error`, `.ds-check`, `.ds-switch`, `.ds-seg` |
 | A code block on a docs page | `docs/typography.html` *Code blocks* | plain `<pre><code>` plus `<script src="copy-code.js" defer>` once per page — the copy button is added for you; never hand-build one |
 | Version display | `docs/version-display.html` | inline version links + `.ds-alert` warning |
-| Site header / footer | `docs/public/header.html`, `docs/public/footer.html` | `.ds-site-header` (+ `--light`), `.ds-site-footer` — never hand-build chrome or draw logos from text |
+| Site header / footer | `docs/public/header.html`, `docs/public/footer.html` | `.ds-site-header` (+ `--light`, `--wrap` for a centre slot that folds), `.ds-site-footer` — never hand-build chrome or draw logos from text |
 | Category / topic / state labels | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-tag` (+ `--chrome` / status / `--keep-case`), `.ds-badge`; category names are copied, never restyled |
 | Type badges | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-badge` + `--new/--rep/--wdr/--cross` |
 | Dark mode (status, mechanism, what flips) | `docs/dark-mode.html` | tokens flip automatically; never hand-pick dark values; lock demo pages light |

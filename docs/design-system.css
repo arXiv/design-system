@@ -1511,8 +1511,18 @@ select.ds-input { padding-right: 34px; }
    Never put content here that exists nowhere else. */
 
 .ds-popover {
+  /* Width and height are the caller's, because a popover holds content nobody
+     has measured — a bibliography entry, a footnote, a contents list. Three
+     were hand-built on the paper mockup for want of these three lines. */
+  --ds-popover-width: 22rem;
+  --ds-popover-max-height: 60vh;
   position: fixed;
-  z-index: 50;
+  width: var(--ds-popover-width);
+  max-width: calc(100vw - 2rem);
+  max-height: var(--ds-popover-max-height);
+  overflow-y: auto;
+  overscroll-behavior: contain;   /* scrolling it never scrolls the page beneath */
+  z-index: 110;
   background: var(--ds-accent-surface);
   border: 1px solid var(--ds-accent-border);
   border-radius: 6px;
@@ -1762,6 +1772,22 @@ html:has(.ds-modal[open]) {
 .ds-alert-info    { background: var(--ds-info-bg);    border-color: var(--ds-info-border);    color: var(--ds-info-fg); }
 .ds-alert-warning { background: var(--ds-warning-bg); border-color: var(--ds-warning-border); color: var(--ds-warning-fg); }
 .ds-alert-error   { background: var(--ds-error-bg);   border-color: var(--ds-error-border);   color: var(--ds-error-fg); }
+
+/* HOST DEFENCE — one rule, and the reason it exists
+   The HTML paper page is arXiv's own page and a first-class consumer of this
+   stylesheet, but it is served inside ar5iv's, which sets `svg { z-index: -1 }`
+   globally to keep LaTeXML's generated figures under the text. Inside an
+   inline-flex control an icon is a flex item, so that z-index applies with no
+   positioning of its own and paints the icon BEHIND the control's fill —
+   invisible on anything opaque. Every component here that carries an icon is
+   affected, and the paper mockup carried eight separate workarounds.
+   This lifts them back, once, for all of them. It costs nothing where no host
+   stylesheet is doing anything, and it stays correct when ar5iv is replaced. */
+:where(.ds-btn, .ds-close, .ds-btn-icon, .ds-alert, .ds-tag, .ds-seg-btn,
+       .ds-code-copy, .ds-note, .ds-popover, .ds-site-header) svg {
+  position: relative;
+  z-index: 1;
+}
 
 /* NOTE  (.ds-note) — a labelled aside inside a page's flow: a rule that has
    to be met, guidance on tone, the way a component differs on the internal
@@ -2511,6 +2537,39 @@ html:has(.ds-modal[open]) {
      anchor-offset hazard class from every page using this pattern. */
   font-family: var(--ds-font-sans);
 }
+/* --wrap — three slots, and it folds rather than collapsing behind a
+   hamburger. For a page whose own chrome already owns the menu gesture, which
+   is why the HTML paper needs it: the reader's contents bar has the menu
+   button there. Grid rather than flex, because flex gives no centre slot that
+   stays centred regardless of what sits either side of it.
+   Height becomes a floor rather than a fix, because a second row needs
+   somewhere to go. */
+.ds-site-header--wrap {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: auto;
+  min-height: 52px;
+}
+.ds-site-header--wrap .ds-site-header-logo { justify-self: start; }
+.ds-site-header--wrap .ds-site-header-nav  { justify-self: end; }
+.ds-site-header-center { display: flex; justify-content: center; }
+
+@media (max-width: 48rem) {
+  /* The fold. The centre slot takes the full width as a third row, because at
+     this size there is no room beside anything. */
+  .ds-site-header--wrap {
+    grid-template-columns: auto auto;
+    row-gap: var(--ds-space-1);
+    padding-inline: var(--ds-space-3);
+  }
+  .ds-site-header--wrap .ds-site-header-center {
+    grid-column: 1 / -1;
+    order: 3;
+    padding-bottom: var(--ds-space-1);
+  }
+}
+
 .ds-site-header-logo {
   display: flex;
   align-items: center;

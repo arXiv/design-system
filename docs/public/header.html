@@ -188,6 +188,24 @@
       left-anchored menu runs off the viewport on the last item &mdash; which is every bar&rsquo;s
       last item, not an edge case.</p>
 
+      <p class="ds-panel-label">Folding instead of collapsing &mdash; <code>--wrap</code></p>
+      <p>The default bar collapses behind a hamburger below 600px. A page whose own chrome already
+      owns that gesture cannot use it twice, and the HTML paper is exactly that case: the reader&rsquo;s
+      contents bar has the menu button there. <code>.ds-site-header--wrap</code> folds instead.</p>
+      <p>It also gives the bar a <strong>centre slot</strong>. Three grid columns rather than flex,
+      because flex has no way to keep a centre item centred regardless of what sits either side of
+      it. Put anything in <code>.ds-site-header-center</code> and it stays in the middle of the bar;
+      leave it empty and it costs nothing. Below 48rem the centre takes the full width as a third
+      row, and the bar&rsquo;s height becomes a floor rather than a fixed value, because a second row
+      needs somewhere to go.</p>
+      <pre><code>&lt;header class="ds-site-header ds-site-header--wrap"&gt;
+  &lt;a class="ds-site-header-logo" href="/"&gt;&hellip;&lt;/a&gt;
+  &lt;div class="ds-site-header-center"&gt;&hellip;&lt;/div&gt;
+  &lt;nav class="ds-site-header-nav"&gt;&hellip;&lt;/nav&gt;
+&lt;/header&gt;</code></pre>
+      <p>Measured on the paper mockup: 52px tall at 1280px, 56px at 700px, 89px at 390px and 320px,
+      with the centre slot spanning both columns from 48rem down.</p>
+
       <p class="ds-panel-label">Signed out, and signed in</p>
       <p>The bar's last item is the emphasis slot &mdash; the only nav item that takes weight. Signed
       out it says <strong>Log in</strong>. Signed in it says <strong>Account</strong>, with the

@@ -30,7 +30,13 @@
 
     /* Popover demo: the real component, positioned statically so it can sit
        in the page flow instead of floating over it. */
-    .popover-demo .ds-popover { position: static; max-width: 320px; }
+    /* The real component, dropped into the page flow so it can be read here
+       rather than floating over it. .ds-popover is a <span>: position: fixed
+       blocks it automatically, and taking that away puts it back to inline,
+       where width does not apply. Hence display: block — and relative rather
+       than static, so the close control still has something to position
+       against. */
+    .popover-demo .ds-popover { position: relative; display: block; --ds-popover-width: 20rem; max-height: none; }
 
     /* The chooser table wants to be read across, so it gets the framed
        treatment rather than the bare in-prose rules. */
@@ -342,6 +348,18 @@
       reader glancing back at the paragraph can see which citation the panel belongs to. Pair it with
       <code>aria-expanded</code> on the trigger, which is what carries the same fact to a screen
       reader; the wash is the visible half of one state, not a decoration.</li>
+      <li><strong>Size it for content nobody has measured.</strong> A bibliography entry, a
+      footnote and a contents list are all different lengths, and none of them is known when the
+      component is written. Set <code>--ds-popover-width</code> and
+      <code>--ds-popover-max-height</code> per use; past that height it scrolls, and
+      <code>overscroll-behavior: contain</code> stops that scroll running on into the page beneath
+      once it reaches the end. <em>The paper mockup hand-built three popovers for want of these
+      three lines &mdash; identical material, different lengths.</em></li>
+      <li><strong>It sits above sticky chrome</strong> (<code>z-index: 110</code>, per the
+      <a href="doc.html?src=docs/DESIGN-POLICIES.md">Z-layer scale</a>). It was 50, below sticky
+      headers at 100, which meant a citation popover opened from a paragraph rendered behind the
+      contents bar. A popover is always the thing the reader just asked for, so it is never the
+      thing that gets hidden.</li>
       <li><strong>Never put content here that exists nowhere else.</strong> A popover is a shortcut to
       something already on the page or already at a URL &mdash; the reference list, the footnote. It is
       not a place to store text.</li>
