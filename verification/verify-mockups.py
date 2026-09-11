@@ -167,7 +167,45 @@ async def run():
         await pg.wait_for_timeout(300)
         closed = await pg.evaluate("!document.querySelector('dialog.fig-lightbox').open")
         check("lightbox closes on Esc", closed, "dialog semantics")
+        # A reader who opened the viewer from the keyboard must come back to the
+        # control they opened it from, not to the top of the document.
+        await pg.wait_for_timeout(200)
+        returned = await pg.evaluate(
+            "document.activeElement.classList.contains('fig-chip')"
+        )
+        check(
+            "lightbox returns focus to the chip that opened it",
+            returned,
+            "WCAG 2.4.3 focus order; a dialog that drops focus strands a keyboard user",
+        )
         await pg.close()
+
+        # ── Print is paper, whatever the reader's screen prefers ──
+        for scheme in ("light", "dark"):
+            pg = await b.new_page(viewport={"width": 1024, "height": 900}, color_scheme=scheme)
+            await pg.goto(READER)
+            await pg.wait_for_timeout(900)
+            await pg.emulate_media(media="print")
+            await pg.wait_for_timeout(250)
+            r = await pg.evaluate(
+                """() => {
+                    const b = getComputedStyle(document.body);
+                    const bib = document.querySelector('.ltx_bibliography');
+                    return {bg: b.backgroundColor, fg: b.color,
+                            pad: parseFloat(getComputedStyle(bib).paddingLeft)};
+                }"""
+            )
+            check(
+                f"print is light with a {scheme} OS preference",
+                r["bg"] == "rgb(255, 255, 255)" and r["fg"] == "rgb(0, 0, 0)",
+                "dark mode answers what suits a screen; paper is not a screen",
+            )
+            check(
+                f"print drops the reference band's viewport padding ({scheme})",
+                r["pad"] == 0,
+                "calc(50vw - 50%) measures the sheet in print",
+            )
+            await pg.close()
 
         # ── 5. Anchor offset under the sticky header ──
         # The #2 closed-issue theme (12 filings) and still-live open theme:

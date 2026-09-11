@@ -317,10 +317,25 @@ unable to fail. Left out so the test can tell us whether the system covers it.
       prose with no check has a half-life of about a month here, and we are
       writing rules faster than checks.
 
-- [ ] **22.** Two print bugs: a dark OS preference gives print a dark
-      background; the bibliography's viewport padding survives into print.
-- [ ] **23.** The figure viewer does not return focus to the chip that opened
-      it. Pre-existing, verified against the pre-change file.
+- [x] **22.** DONE 2026-09-11. Both fixed, and both had the same shape: a
+      rule that was right for a screen following the reader onto paper.
+      `@media print` in tier 1 now re-points the colour tokens rather than
+      overriding components, so every component prints correctly without
+      knowing that it is printing — and its selector list matches the dark
+      block's `:root:not([data-theme="light"])`, because otherwise it lost on
+      specificity rather than on order. The paper mockup's own dark block is
+      now `@media screen and (prefers-color-scheme: dark)`: that query answers
+      what suits a display, and paper is not one.
+      The reference band's `calc(50vw - 50%)` padding measures the sheet in
+      print, so it became a wide empty margin with the tint running off both
+      edges. Zeroed, in the block that had to be beaten rather than an earlier
+      one. **Four harness checks added**, light and dark.
+- [x] **23.** DONE 2026-09-11 — already fixed in the page, never verified.
+      The `close` handler restores focus for every exit path and reveals the
+      chip region first, since a `visibility: hidden` element cannot take
+      focus. Tested end to end: Expand &rarr; dialog opens on Close &rarr;
+      Escape &rarr; focus lands back on the Expand chip. **Now a harness
+      check**, so the next refactor cannot quietly lose it.
 - [ ] **21.** `abstract-phase2.html` still vendors its own copy of the
       stylesheet. *(Different file — runs alongside 20/22/23.)*
 - [ ] **7.** Browser magnification and fluid scaling, written into the docs —

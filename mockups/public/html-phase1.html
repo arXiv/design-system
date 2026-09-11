@@ -3402,12 +3402,25 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
   .ltx_page_navbar,
   .arxiv-html-footer,
   #disable-reading-mode-btn { display: none; }
-  /* !important on color: the dark-scheme rule html:not([data-theme="light"])
-     body is more specific and would otherwise carry its text colour into
-     print. Background is left plain because that same rule outranks it
-     either way. */
-  body { background: var(--ds-canvas); color: black !important; }
+  /* Colour is handled in design-system.css, which re-points the tokens for
+     print so a dark OS preference does not follow the reader onto paper. This
+     page used to set only the text colour and leave the background to
+     --ds-canvas, which flips — so dark-mode readers printed a dark page. */
   .ltx_page_main { margin: 0; }
+
+  /* The reference band bleeds by measuring the viewport, and in print the
+     viewport is the sheet — so the padding survived as a wide empty margin
+     with the tint running off both edges. On paper it is just a section. */
+  .ltx_bibliography,
+  .ltx_bibliography ~ section,
+  .ltx_bibliography ~ .ltx_section,
+  .ltx_bibliography ~ .ltx_appendix,
+  .ltx_bibliography ~ .ltx_acknowledgements,
+  .ltx_bibliography ~ .ltx_para {
+    margin-inline: 0;
+    padding-inline: 0;
+    background: none;
+  }
   .new-watermark {
     position: static;
     page-break-after: avoid;
@@ -3588,7 +3601,13 @@ h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { posi
    │  so the token roles invert and every rule that already reads     │
    │  var(--ds-text) flips for free.                   │
    └──────────────────────────────────────────────────────────────────┘ */
-@media (prefers-color-scheme: dark) {
+/* `screen and` is load-bearing: prefers-color-scheme answers "what is
+   comfortable on this display", and paper is not a display. Without it
+   this block follows the reader onto the page and prints dark ink, or
+   light grey text on white where the printer drops backgrounds. It also
+   loads after design-system.css, so it would outrank the print rules
+   there on order alone. */
+@media screen and (prefers-color-scheme: dark) {
   /* Take the canvas and the inherited text colour from tokens rather than
      leaving them to the ar5iv stylesheet, which paints its own #282623 —
      lighter than our surface, which inverted the depth of every card
@@ -9207,6 +9226,21 @@ section.ltx_bibliography,
 .ltx_bibliography ~ .ltx_para {
   padding-left:  calc(50vw - var(--paper-body) / 2);
   padding-right: calc(50vw - var(--paper-body) / 2);
+}
+
+/* In print the viewport is the sheet, so that padding becomes a wide empty
+   margin with the tint running off both edges. On paper the band is just a
+   section. Stated here rather than in the print block above because this is
+   the rule it has to beat — same specificity, and last. */
+@media print {
+  section.ltx_bibliography,
+  .ltx_bibliography ~ .ltx_appendix,
+  .ltx_bibliography ~ .ltx_acknowledgements,
+  .ltx_bibliography ~ .ltx_para {
+    margin-inline: 0;
+    padding-inline: 0;
+    background: none;
+  }
 }
 
 /* ── Marginalia offsets: the one thing the two notes cannot share ──────

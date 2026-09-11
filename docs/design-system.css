@@ -2784,3 +2784,31 @@ html:has(.ds-modal[open]) {
   .ds-site-header,
   .ds-skip-link { display: none !important; }
 }
+
+/* PRINT IS ALWAYS LIGHT
+   Dark mode answers "what is comfortable on this screen", and paper is not a
+   screen. Without this, a reader whose OS is set to dark gets a page of dark
+   ink — or, on the printers that drop backgrounds, light grey text on white.
+   The tokens are re-pointed rather than the components overridden, so every
+   component prints correctly without knowing that it is printing. */
+@media print {
+  /* The selector list has to match the dark rules it is undoing, or it loses
+     on specificity rather than on order: the @media dark block keys on
+     :root:not([data-theme="light"]), which is 0-2-0. */
+  :root,
+  :root:not([data-theme="light"]),
+  html:not([data-theme="light"]),
+  [data-theme="dark"] {
+    color-scheme: light;
+    --ds-text:          #000000;
+    --ds-text-muted:    #333333;
+    --ds-canvas:        #ffffff;
+    --ds-surface:       #ffffff;
+    --ds-surface-muted: #ffffff;
+    --ds-border:        #cccccc;
+    --ds-border-muted:  #dddddd;
+    --ds-link:          #000000;
+    --ds-link-visited:  #000000;
+  }
+  body { background: #ffffff; color: #000000; }
+}
