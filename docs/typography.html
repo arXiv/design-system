@@ -341,8 +341,18 @@
     <h2 class="section-title">Rules that travel with the type</h2>
 
     <div class="ds-card rule-card">
-      <h3>Sizes are rem, never px</h3>
-      <p>Browser font-size overrides must propagate to arXiv content (accessibility-priorities.md, cognitive/dyslexia track). The verification harness enforces this on the mockups. Layout dimensions stay px — only type scales with the user's preference.</p>
+      <h3>Sizes are rem, and a box that holds text scales with its text</h3>
+      <p>A browser font-size setting has to reach arXiv content (accessibility-priorities.md,
+      cognitive/dyslexia track), so every type size is <code>rem</code>. But a label that grows
+      inside a box that does not is no better than a label that never grew: set a control's padding
+      and minimum width in <code>em</code>, against its own label, and the whole control follows the
+      reader. Absolute floors stay absolute &mdash; <code>min-height: 24px</code> is a WCAG target
+      size, not a type size.</p>
+      <p><strong>This rule went unchecked for six weeks and tier 1 drifted from 6 pixel sizes to
+      17.</strong> <code>check-policies.py</code> now fails on any of them, in the stylesheets and
+      the public mockups both. The earlier guard ran in a browser against one mockup and read the
+      stylesheets that page loads &mdash; and that page loads none, so it never saw the design
+      system and reported green throughout.</p>
     </div>
     <div class="ds-card rule-card">
       <h3>Self-hosted, with honest fallbacks</h3>

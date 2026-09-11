@@ -161,11 +161,63 @@ def check_one_name_per_surface():
         ok(rule, f"{n} files")
 
 
+# ── Type sizes are relative, so a reader's font-size setting reaches them ──
+# typography.html, "Sizes are rem, never px". The rule existed for six weeks
+# before anything checked it, and tier 1 went from 6 px font sizes to 17 in
+# that time. The one guard that existed ran in a browser against the abstract
+# mockup and read the stylesheets THAT page loads — and it loads none, so it
+# never saw design-system.css and reported green throughout.
+#
+# Deferred by name, not by silence: the two admin console mockups are 100% px
+# (92 and 55) and belong to the internal tools work, not to this. They report
+# as a NOTE, the way check-drift.py defers the blog theme.
+PX_FONT = re.compile(r"font-size:\s*([0-9.]+)px")
+TYPE_REQUIRED = [
+    REPO / "docs" / "design-system.css",
+    REPO / "docs" / "internal" / "internal-tools.css",
+    REPO / "mockups" / "public" / "html-phase1.html",
+    REPO / "mockups" / "public" / "abstract-phase2.html",
+]
+TYPE_DEFERRED = [
+    REPO / "mockups" / "internal" / "admin-console" / "user-page" / "index.html",
+    REPO / "mockups" / "internal" / "admin-console" / "paper-details" / "index.html",
+]
+
+
+def check_relative_type_sizes():
+    rule = "type sizes are rem, never px"
+    total = 0
+    for f in TYPE_REQUIRED:
+        if not f.exists():
+            continue
+        text = re.sub(r"/\*.*?\*/", "", f.read_text(), flags=re.S)
+        hits = list(PX_FONT.finditer(text))
+        total += 1
+        for m in hits[:6]:
+            line = text[: m.start()].count("\n") + 1
+            px = float(m.group(1))
+            fail(rule, f"{f.relative_to(REPO)}:{line}",
+                 f"font-size: {m.group(1)}px — write {px / 16:g}rem so a reader's "
+                 "font-size setting reaches it")
+        if len(hits) > 6:
+            print(f"      ...and {len(hits) - 6} more in {f.relative_to(REPO)}")
+    deferred = 0
+    for f in TYPE_DEFERRED:
+        if f.exists():
+            deferred += len(PX_FONT.findall(f.read_text()))
+    if deferred:
+        print(f"NOTE  {rule} — {deferred} px font sizes in the two admin console "
+              "mockups,\n      deferred with the internal tools work (planning/NEXT-STEPS.md 20a)")
+    if rule not in FAILS:
+        ok(rule, f"{total} files")
+
+
 def main():
     check_wordmark_not_typed()
     check_self_hosted()
     check_tokens_defined()
     check_one_name_per_surface()
+    check_relative_type_sizes()
     print()
     if FAILS:
         print(f"{len(FAILS)} FAIL")

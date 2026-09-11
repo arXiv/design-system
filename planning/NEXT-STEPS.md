@@ -289,6 +289,34 @@ unable to fail. Left out so the test can tell us whether the system covers it.
       **Experiment to run while here:** serif for figure captions. Serif for
       marginalia is settled and liked; captions are the plausible extension and
       want testing rather than deciding in the abstract.
+- [ ] **20a. Point the type-size check at the stylesheets.** Found while
+      auditing 20. The rule *"sizes are rem, never px"* has existed since
+      2026-07-29 and has never been checked anywhere it matters. The one
+      automated guard runs on `abstract-phase2.html` and reads the stylesheets
+      that page loads — and that page loads none, because it carries an
+      1,828-line inlined fork (item 21). So the check has never seen
+      `design-system.css`, and reports green while **217 pixel font sizes** sit
+      across the files that matter: 17 in tier 1, 13 in internal tools, 40 in
+      the paper mockup, 92 and 55 in the two admin console mockups.
+
+      The count in tier 1 has gone 6 → 12 → 13 → 15 → 17 since July, about two
+      a day while we have been working fast. The other three typography rules on
+      the same page hold perfectly — zero violations each — because they forbid
+      things that feel wrong to write. Writing `font-size: 13px` is simply how
+      everyone writes CSS, and a rule that asks someone to resist an ordinary
+      habit does not survive on good intentions.
+
+      Do the check **before** converting: it produces the violation list, so it
+      replaces the audit rather than adding one, and it keeps the conversion
+      converted. Static, in `check-policies.py`, so CI runs it without a browser.
+      The two admin mockups are deferred deliberately and by name, the way
+      `check-drift.py` defers the blog theme.
+
+      **Fourth instance of one pattern** — the typed wordmark, the undefined
+      token, the two names for the internal surface, and now this. A rule in
+      prose with no check has a half-life of about a month here, and we are
+      writing rules faster than checks.
+
 - [ ] **22.** Two print bugs: a dark OS preference gives print a dark
       background; the bibliography's viewport padding survives into print.
 - [ ] **23.** The figure viewer does not return focus to the chip that opened
