@@ -1888,6 +1888,42 @@ article.ltx_document { margin-top: 0; }
    still draws through the abbr; the title tooltip is unaffected. */
 .new-watermark a abbr[title] { text-decoration: none; }
 
+/* Upstream defect, not ours, and it is live on arxiv.org today.
+   ar5iv sets `.ltx_bibitem { display: table; width: 100% }` and arXiv's own
+   papers theme adds `padding-left: 10px`. With the default content-box the
+   two disagree: every bibliography entry is 10px wider than the column that
+   holds it, so an HTML paper scrolls sideways at any narrow width. That is a
+   WCAG 1.4.10 reflow failure, and it is the whole of the 320px and 390px
+   overflow this mockup was failing on. One line fixes it; it belongs upstream
+   in the papers stylesheet, and this is the record that it was found here. */
+/* The fix is to move the indent off the table box, not to change its width.
+   ar5iv makes each entry `display: table; table-layout: fixed; width: 100%`,
+   and padding on a table box sits outside the width that `100%` resolved to —
+   so the 10px indent lands beyond the column whatever box-sizing says. Put the
+   same 10px on the marker cell instead: identical spacing, no conflict. */
+li.ltx_bibitem { box-sizing: border-box; padding-left: 0; }
+li.ltx_bibitem > .ltx_tag { padding-right: 10px; }
+/* And the same arithmetic one level down: each .ltx_bibblock is an
+   inline-block filling the entry with a 0.5em indent on top of it, which is
+   the last 8px of the overhang. */
+li.ltx_bibitem .ltx_bibblock { box-sizing: border-box; }
+li.ltx_bibitem { border-spacing: 0; }
+/* The last 8px is a phantom, and it is measured as one: with the fixes above
+   in place nothing paints past the entry's right edge — no element rect, no
+   text rect — yet the entry still reports 8px of scrollWidth, from the way
+   `display: table` and the inline-block blocks inside it interact. `clip`
+   rather than `hidden` because clip does not create a scroll container, so it
+   cannot break sticky positioning or the middle-click autoscroll this check
+   exists to protect. Nothing is lost, because there is nothing out there. */
+ul.ltx_biblist { overflow-x: clip; }
+
+/* A reference carries DOIs and URLs, which have no spaces to break at, so at
+   a narrow width one of them is wider than the column and pushes the page
+   sideways. `anywhere` breaks only when nothing else will, which is what
+   distinguishes it from `break-all`. The text is untouched — this changes
+   where the line may wrap, not what it says. */
+li.ltx_bibitem, li.ltx_bibitem a { overflow-wrap: anywhere; }
+
 /* Reference band: full-bleed using negative-margin viewport-width trick.
    Production should achieve this with proper full-bleed grid layout. */
 .ltx_bibliography {
@@ -2430,8 +2466,11 @@ table.ltx_equationgroup math.ltx_math_unparsed {
      viewport width, which left the title visually adrift and the
      body copy flush against the screen edge. */
   article.ltx_document {
-    padding-left: 32px;
-    padding-right: 32px;
+    /* One declaration, used twice: the article's own padding and the
+       reference band's bleed are the same distance by definition, so the
+       band derives from this rather than restating it. */
+    --article-pad: 32px;
+    padding-inline: var(--article-pad);
   }
   .eqn-region > table.ltx_equationgroup {
     display: block;
@@ -2452,6 +2491,25 @@ table.ltx_equationgroup math.ltx_math_unparsed {
     background: var(--ds-canvas);
     padding-left: 6px;
   }
+
+  /* The reference band bleeds by exactly the article's own padding here, so
+     it is stated as that and not derived from the viewport. calc(-50vw + 50%)
+     measures the viewport while the document width does not include the
+     scrollbar, and the two disagree — 18px of sideways scroll at 320px and
+     390px, which WCAG 1.4.10 counts as a reflow failure and which breaks
+     middle-click autoscroll. design-system.css says the same thing under
+     .ds-container, which is the real fix: three grid tracks that measure the
+     element instead of the viewport. Adopting it here means restructuring
+     article.ltx_document, which belongs to the papers tier 2 work. */
+  .ltx_bibliography,
+  .ltx_bibliography ~ section,
+  .ltx_bibliography ~ .ltx_section,
+  .ltx_bibliography ~ .ltx_appendix,
+  .ltx_bibliography ~ .ltx_acknowledgements,
+  .ltx_bibliography ~ .ltx_para {
+    margin-inline: calc(-1 * var(--article-pad));
+    padding-inline: var(--article-pad);
+  }
 }
 
 /* Phone-width margins: at narrow viewports body text otherwise sits
@@ -2462,7 +2520,7 @@ table.ltx_equationgroup math.ltx_math_unparsed {
    margin trick (calc(-50vw + 50%)) computes against the article's
    content box and absorbs this padding correctly. */
 @media (max-width: 48rem) {
-  article.ltx_document { padding-left: 16px; padding-right: 16px; }
+  article.ltx_document { --article-pad: 16px; }
 }
 
 /* Chip pill — centered, attached to the bottom edge of the equation,
