@@ -346,8 +346,30 @@ unable to fail. Left out so the test can tell us whether the system covers it.
       exactly-duplicated component rules and the vendored `.ds-panel-label`
       deleted, and four hardcoded values pointed back at the tokens that
       already held them. Verified pixel-identical before and after.
-- [ ] **7.** Browser magnification and fluid scaling, written into the docs —
-      after components exist to test it against.
+- [x] **7.** DONE 2026-09-11, and it turned into a measurement rather than a
+      piece of writing. Two criteria, and they fail differently: **text-only
+      zoom** (1.4.4) breaks controls with fixed boxes, **page zoom** (1.4.10)
+      breaks full-bleed bands measured in `vw`. Passing one says nothing about
+      the other, which is why the rule now says to test both. Both are in
+      DESIGN-POLICIES, together with the rule never to size a full-bleed band
+      in viewport units.
+
+      Measured, at 1280px:
+
+      | | 200% text | 400% page zoom |
+      |---|---|---|
+      | abstract | 0px overflow | 0px overflow |
+      | reader   | **466px overflow** | 0px overflow |
+
+      The abstract is asserted in the harness. **The reader fails text-only
+      zoom and the cause is structural**: ar5iv makes `<body>` a five-column
+      grid whose columns are sized by content, so at double text the grid is
+      1746px wide inside a 1280px viewport and every full-width row goes with
+      it. The same grid gives an 18px overhang at ordinary text size, because
+      `100vw` includes the scrollbar. Neither is fixable without restructuring
+      `article.ltx_document` onto `.ds-container` — **item 30, parked, Deyan's
+      to start**. Not asserted in the harness, because a check that is red by
+      design stops being read.
 
 ### Phase 5 — The docs sweep (serial)
 

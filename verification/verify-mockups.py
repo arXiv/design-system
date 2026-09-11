@@ -180,6 +180,29 @@ async def run():
         )
         await pg.close()
 
+        # ── Magnification: the two criteria fail differently ──
+        # 1.4.4 is text-only zoom — the reader raises the font size and nothing
+        # else moves. 1.4.10 is page zoom, and 400% on a 1280px screen is a
+        # 320px viewport. The reader mockup fails the first at 1280px because
+        # ar5iv's body grid is sized by its content; recorded in NEXT-STEPS 7,
+        # and it needs the papers tier 2 restructure, so only the abstract is
+        # asserted here rather than reddening the build over a known defect.
+        pg = await b.new_page(viewport={"width": 1280, "height": 1024})
+        await pg.goto(ABS)
+        await pg.wait_for_timeout(900)
+        await pg.evaluate("document.documentElement.style.fontSize='32px'")
+        await pg.wait_for_timeout(400)
+        r = await pg.evaluate(
+            """() => ({over: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+                       body: parseFloat(getComputedStyle(document.body).fontSize)})"""
+        )
+        check(
+            "abstract survives 200% text-only zoom",
+            r["over"] <= 0 and r["body"] >= 28,
+            "WCAG 1.4.4; the type must actually double AND not overflow",
+        )
+        await pg.close()
+
         # ── Print is paper, whatever the reader's screen prefers ──
         for scheme in ("light", "dark"):
             pg = await b.new_page(viewport={"width": 1024, "height": 900}, color_scheme=scheme)
