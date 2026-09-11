@@ -400,6 +400,40 @@ unable to fail. Left out so the test can tell us whether the system covers it.
       tried. **Run one page before the skills exist**, so we see what the docs
       alone produce.
 
+### Phase 7 — Rebuild the reader's structure (added 2026-09-11, Shamsi)
+
+- [ ] **35. Restructure the paper mockup so the layout is ours.** Not a
+      cleanup — a rebuild of `mockups/public/html-phase1.html`'s page
+      structure, for the most usable and accessible reading page we can make,
+      rather than the most we can retrofit onto what ar5iv emits.
+
+      **The evidence.** ar5iv makes `<body>` a five-column grid whose columns
+      are sized by their content. Every full-width row inherits that width, so
+      at 200% text the grid is 1746px inside a 1280px viewport — 466px of
+      horizontal scroll, a WCAG 1.4.4 failure — and even at ordinary text size
+      it overhangs by 18px wherever `100vw` meets a scrollbar. The paper mockup
+      also carries 62 `.mg-*` classes inventing the shape of a reading page,
+      because the design system has no primitive for a main column with a rail
+      beside it, which is the defining shape of what arXiv publishes.
+
+      **What it should become.** `.ds-container`'s three tracks, which measure
+      the element rather than the viewport, so a full-bleed band cannot
+      overhang and the grid cannot be widened by its contents. The marginalia
+      rail becomes a real track rather than absolute positioning against a
+      containing block that has to be reasoned about. What survives the rebuild
+      is the candidate for the **reader chrome** primitive the system is
+      missing.
+
+      **This does NOT wait on #30.** A mockup demonstrates what is possible,
+      not what is currently practical — that is what mockups are for here. The
+      mockup leads and production follows: restructuring it is how we find out
+      what a papers tier 2 stylesheet should say, and it makes #30 a
+      conversation about a worked example rather than about an intention.
+
+      **Not v1-blocking.** The exit test builds the membership-dashboard pages,
+      which never touch paper layout. Sequenced after v1 deliberately, so it is
+      done against a finished system rather than a moving one.
+
 ### Outside the sequence
 
 - **1.** The paper title's `max-inline-size: none` and `text-wrap: pretty`
