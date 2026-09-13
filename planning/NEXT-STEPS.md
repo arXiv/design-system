@@ -393,12 +393,40 @@ unable to fail. Left out so the test can tell us whether the system covers it.
 - [ ] **9.** The build and audit skills. Thin routers into the docs, **not** a
       second copy of the system — if the skill explains how buttons work, the
       exit test measures the skill instead of the documentation. Tool-agnostic.
-- [ ] **17.** The exit test. Build the membership-dashboard pages from written
-      specs, with no custom CSS. Includes re-running the token-burn battery
+- [ ] **17.** The exit test. Build the membership-dashboard pages from
+      [the written spec](specs/membership-dashboard.md) (drafted 2026-09-13
+      from the two screenshots, **awaiting Shamsi's corrections**), with no
+      custom CSS. Includes re-running the token-burn battery
       (**31**), which has not run since July: the harness measures regression
       against a known baseline, the new pages measure coverage of things never
       tried. **Run one page before the skills exist**, so we see what the docs
       alone produce.
+
+### Phase 6b — Dark mode everywhere, with one toggle (added 2026-09-13, Shamsi)
+
+- [ ] **36. Dark mode on every page, public and internal, with the same
+      affordance for switching.** Shamsi's decision. Three pieces, none large:
+
+      1. **Tier 2 gets the `[data-theme="dark"]` mirror.** Tier 1 keys dark to
+         both the OS query and the attribute; `internal-tools.css` has **zero**
+         attribute rules, so an internal tool follows the OS and cannot be
+         switched at all. That asymmetry was inherited, not decided.
+      2. **A toggle component**, one affordance used identically on both
+         surfaces. It belongs in tier 1 beside the switch.
+      3. **The plumbing**: read the stored choice before first paint, fall back
+         to the OS, write the attribute. `dark-mode.html` currently ends with
+         "the system still ships no toggle UI" — that sentence is what changes.
+
+      **One tension, recorded rather than argued.** The standing preference is
+      courageous defaults and OS-level signals rather than in-product
+      preference controls. A dark toggle is a preference control. It is
+      defensible as the exception because the OS setting is one choice for a
+      whole machine while reading is per-context — the same laptop at night in
+      a bright room — and because arXiv does not control the OS of a reader on
+      a shared library machine. It stays **one** control, not the first item of
+      a settings page.
+
+      **Before the exit test**, because the spec requires dark on both pages.
 
 ### Phase 7 — Rebuild the reader's structure (added 2026-09-11, Shamsi)
 
