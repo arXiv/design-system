@@ -246,6 +246,39 @@ def check_page_shape():
         ok(rule, f"{n} pages")
 
 
+# ── The theme control is on every page, and lands before first paint ──
+# theme.js writes the attribute synchronously in the head. Deferring it, or
+# leaving it off a page, brings back the flash of the wrong theme — worst for
+# exactly the reader who chose dark because light hurts.
+THEME_SCRIPT = re.compile(r"<script[^>]*src=\"[^\"]*theme\.js\"([^>]*)>")
+
+
+def check_theme_control():
+    rule = "every page carries the theme control, unblocked"
+    n = 0
+    for path in sorted((REPO / "docs").rglob("*.html")):
+        if path.name == "doc.html":
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        rel = str(path.relative_to(REPO))
+        n += 1
+        # A page documenting the control shows its markup in a code block.
+        # Same rule as the naming check: a term quoted as a term is not a use.
+        text = re.sub(r"<pre\b.*?</pre>", "", text, flags=re.S)
+        m = THEME_SCRIPT.search(text)
+        if not m:
+            fail(rule, rel, "does not load theme.js")
+            continue
+        if "defer" in m.group(1) or "async" in m.group(1):
+            fail(rule, rel, "loads theme.js deferred — the attribute must land before first paint")
+        if text.count('class="ds-theme-toggle"') != 1:
+            fail(rule, rel, f'{text.count(chr(34)+"ds-theme-toggle"+chr(34))} theme toggles; expected exactly 1')
+        if 'id="ds-theme-status"' not in text:
+            fail(rule, rel, "no #ds-theme-status live region for the toggle to announce into")
+    if rule not in FAILS:
+        ok(rule, f"{n} pages")
+
+
 def main():
     check_wordmark_not_typed()
     check_self_hosted()
@@ -253,6 +286,7 @@ def main():
     check_one_name_per_surface()
     check_relative_type_sizes()
     check_page_shape()
+    check_theme_control()
     print()
     if FAILS:
         print(f"{len(FAILS)} FAIL")

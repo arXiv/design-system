@@ -2799,6 +2799,70 @@ html:has(.ds-modal[open]) {
   .ds-skip-link { display: none !important; }
 }
 
+/* THEME TOGGLE  (.ds-theme-toggle) — dark-mode.html
+   One control, identical on both surfaces, because a reader who learns it on
+   arxiv.org should not have to learn it again in a moderation queue.
+
+   It is a three-state control, not a switch, and that is the whole design.
+   The states are follow the system / always light / always dark, and "follow
+   the system" is the default a reader must be able to get back to — a two-way
+   switch cannot express it, so once it was touched the OS setting would be
+   lost for good. That is also why it is a <button> cycling a value rather than
+   .ds-switch: a switch means on or off.
+
+   It carries an icon AND its state in text. An icon alone makes the reader
+   guess whether the moon means "it is dark" or "make it dark", which is the
+   commonest failure of this control on the web.
+
+   The button lives in the header bar, so it takes the bar's own tokens and
+   works on either variant without being told which. */
+.ds-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-gap-glyph);
+  min-height: 24px;               /* WCAG 2.2 target size */
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: none;
+  color: var(--ds-hdr-fg);
+  font-family: var(--ds-font-sans);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.ds-theme-toggle:hover {
+  background: var(--ds-hdr-hover);
+  color: var(--ds-hdr-fg-strong);
+}
+.ds-theme-toggle:focus-visible {
+  outline: 3px solid var(--ds-hdr-ring);
+  outline-offset: 2px;
+}
+.ds-theme-toggle svg {
+  width: 1.15em;
+  height: 1.15em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* One icon per state, all three in the DOM, so nothing is fetched or measured
+   at the moment of the click. The host sets data-theme-choice; the script that
+   sets it is the same one that sets the attribute on <html>. */
+.ds-theme-toggle > svg { display: none; }
+.ds-theme-toggle[data-theme-choice="system"] > .ds-theme-icon-system,
+.ds-theme-toggle[data-theme-choice="light"]  > .ds-theme-icon-light,
+.ds-theme-toggle[data-theme-choice="dark"]   > .ds-theme-icon-dark { display: block; }
+
+/* Outside a header bar — a settings page, a docs page with no chrome — the
+   bar tokens are undefined, so it falls back to the page's own. */
+.ds-theme-toggle:not(.ds-site-header-nav *) {
+  color: var(--ds-hdr-fg, var(--ds-text-muted));
+}
+
 /* PRINT IS ALWAYS LIGHT
    Dark mode answers "what is comfortable on this screen", and paper is not a
    screen. Without this, a reader whose OS is set to dark gets a page of dark

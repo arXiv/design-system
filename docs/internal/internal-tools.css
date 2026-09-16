@@ -665,6 +665,85 @@
 
 }
 
+/* ── The same values, keyed to the attribute ──────────────────────────────
+   Generated from the @media block above; check-drift.py fails if the two
+   disagree. The block above answers the OS; this one answers the reader,
+   who can now say so on either surface. Until 2026-09-16 this file had no
+   attribute rules at all, so an internal tool followed the machine and could
+   not be switched — an asymmetry with tier 1 that was inherited, not chosen.
+   Dropping the :root / html prefix also makes it scopable: a data-theme
+   island anywhere in the DOM picks up the same values. */
+[data-theme="dark"] {
+  /* Only the tokens whose dark value differs from tier 1's. Everything
+     else — text, canvas, borders, links, focus ring, all four status
+     families — flips identically on both surfaces and is inherited. */
+
+  /* Surfaces sit a shade apart from tier 1's: internal screens are dense
+     with tables and want more separation between a row and its ground. */
+  --ds-surface:               #252118;
+  --ds-surface-muted:         #302c28;
+  --ds-surface-hover:         #2a2520;
+  --ds-surface-hover-strong:  #272420;
+  --ds-surface-active:        #302c28;
+
+  --ds-text-strong:           #d4cfc9;  /* 11.22:1 on dark ✓ */
+
+  /* The lime tint goes to a dark olive rather than lightening. */
+  --ds-accent-wash:           #1a2306;
+  --ds-accent-wash-hover:     #212e08;
+  --ds-accent-wash-active:    #28380a;
+  --ds-accent-disabled-bg:    #252f08;
+  --ds-accent-disabled-fg:    #5a6b30;
+
+  /* Destructive, which exists only on this surface. */
+  --ds-danger-wash-hover:     #2a0808;
+  --ds-danger-wash-active:    #380d0d;
+  --ds-danger-disabled-bg:    #3a0f0f;
+  --ds-danger-disabled-fg:    #864040;
+
+  --ds-disabled-bg:           #1e1e1e;
+  --ds-disabled-border:       #2e2e2e;
+  --ds-disabled-fg:           #4e4e4e;
+  --ds-link-disabled:         #484340;
+
+}
+
+/* Secondary button — dark lime-tint bg needs lime text, not near-black */
+[data-theme="dark"] .btn-secondary         { color: var(--ds-accent); }
+[data-theme="dark"] .btn-secondary:disabled,
+[data-theme="dark"] .btn-secondary.sim-disabled { color: var(--ds-disabled-fg); }
+
+/* Destructive icon — #c62828 only 3.09:1 on dark; use lighter red + matching border */
+[data-theme="dark"] .btn-icon.btn-icon-destructive                             { color: #e57373; border-color: #e57373; }
+[data-theme="dark"] .btn-icon.btn-icon-destructive:hover:not(:disabled),
+[data-theme="dark"] .btn-icon.btn-icon-destructive.sim-hover                   { background: var(--ds-danger-wash-hover);  border-color: #ef9a9a; color: #ef9a9a; }
+[data-theme="dark"] .btn-icon.btn-icon-destructive:active:not(:disabled),
+[data-theme="dark"] .btn-icon.btn-icon-destructive.sim-active                  { background: var(--ds-danger-wash-active); border-color: #ef9a9a; color: #ef9a9a; }
+[data-theme="dark"] .btn-icon.btn-icon-destructive:disabled,
+[data-theme="dark"] .btn-icon.btn-icon-destructive.sim-disabled                { color: var(--ds-danger-disabled-fg); border-color: var(--ds-border-strong); }
+
+/* Constructive icon — lime border signals variant on dark bg */
+[data-theme="dark"] .btn-icon.btn-icon-constructive                            { border-color: var(--ds-accent); }
+[data-theme="dark"] .btn-icon.btn-icon-constructive:hover:not(:disabled),
+[data-theme="dark"] .btn-icon.btn-icon-constructive.sim-hover                  { background: #2e4a0a; border-color: var(--ds-accent); color: var(--ds-accent); }
+[data-theme="dark"] .btn-icon.btn-icon-constructive:active:not(:disabled),
+[data-theme="dark"] .btn-icon.btn-icon-constructive.sim-active                 { background: #253a08; border-color: var(--ds-accent); color: var(--ds-accent); }
+
+/* Info card — restore original charcoal + lime treatment in dark mode */
+[data-theme="dark"] .info-card                 { background: #2e2b26; }
+[data-theme="dark"] .info-card-row             { border-bottom-color: rgba(255,255,255,0.07); }
+[data-theme="dark"] .info-label                { color: #cbcdac; }
+[data-theme="dark"] .info-value                { color: #c4d82e; }
+[data-theme="dark"] .info-link                 { color: #c4d82e; }
+[data-theme="dark"] .info-link:hover           { color: #d8ee50; }
+[data-theme="dark"] .info-link:visited         { color: #a8c020; }
+
+/* Toggle off-label + metadata panel edges — dark equivalents */
+[data-theme="dark"] .ds-meta-panel--editable { border-color: #3a4a1a; }
+[data-theme="dark"] .ds-meta-panel--editable.ds-meta-panel--ruled .ds-meta-cell { border-color: rgba(200, 220, 120, 0.14); }
+[data-theme="dark"] .ds-meta-panel--reference.ds-meta-panel--ruled .ds-meta-cell { border-color: rgba(255, 255, 255, 0.08); }
+
+
 
 /* ─── Tags (.ds-tag) ─────────────────────────────────────────── */
 /*
