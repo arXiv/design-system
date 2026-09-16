@@ -180,6 +180,53 @@ async def run():
         )
         await pg.close()
 
+        # ── The theme control: three states, both surfaces ──
+        # "System" is a state, not the absence of one. A two-way switch would
+        # lose the OS setting the first time a reader touched it.
+        DOCS = (REPO / "docs" / "tags.html").as_uri()
+        INT_DOCS = (REPO / "docs" / "internal" / "tables.html").as_uri()
+        for label, url in (("public", DOCS), ("internal tools", INT_DOCS)):
+            ctx = await b.new_context(color_scheme="light")
+            pg = await ctx.new_page()
+            await pg.goto(url)
+            await pg.wait_for_timeout(400)
+            seen, canvases = [], []
+            for _ in range(4):
+                seen.append(await pg.evaluate(
+                    "document.querySelector('.ds-theme-toggle').getAttribute('data-theme-choice')"))
+                canvases.append(await pg.evaluate("getComputedStyle(document.body).backgroundColor"))
+                await pg.click(".ds-theme-toggle")
+                await pg.wait_for_timeout(120)
+            check(
+                f"theme control cycles system / light / dark ({label})",
+                seen == ["system", "light", "dark", "system"],
+                "system is a state a reader must be able to return to",
+            )
+            check(
+                f"choosing dark actually darkens the page ({label})",
+                canvases[2] != canvases[1],
+                "tier 2 had no [data-theme] rules at all until 2026-09-16",
+            )
+            # and it survives a reload. Click until the choice is dark rather
+            # than counting clicks — the loop above leaves it wherever it left it.
+            for _ in range(3):
+                choice = await pg.evaluate(
+                    "document.querySelector('.ds-theme-toggle').getAttribute('data-theme-choice')")
+                if choice == "dark":
+                    break
+                await pg.click(".ds-theme-toggle")
+                await pg.wait_for_timeout(120)
+            before = await pg.evaluate("document.documentElement.getAttribute('data-theme')")
+            await pg.reload()
+            await pg.wait_for_timeout(400)
+            after = await pg.evaluate("document.documentElement.getAttribute('data-theme')")
+            check(
+                f"the reader's theme choice survives a reload ({label})",
+                before == after and before is not None,
+                "stored choice, re-applied before first paint",
+            )
+            await ctx.close()
+
         # ── Magnification: the two criteria fail differently ──
         # 1.4.4 is text-only zoom — the reader raises the font size and nothing
         # else moves. 1.4.10 is page zoom, and 400% on a 1280px screen is a

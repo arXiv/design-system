@@ -404,8 +404,8 @@ unable to fail. Left out so the test can tell us whether the system covers it.
 
 ### Phase 6b — Dark mode everywhere, with one toggle (added 2026-09-13, Shamsi)
 
-- [ ] **36. Dark mode on every page, public and internal, with the same
-      affordance for switching.** Shamsi's decision. Three pieces, none large:
+- [x] **36. DONE 2026-09-16.** Dark mode on every page, public and internal,
+      with the same affordance for switching. Shamsi's decision. Three pieces:
 
       1. **Tier 2 gets the `[data-theme="dark"]` mirror.** Tier 1 keys dark to
          both the OS query and the attribute; `internal-tools.css` has **zero**

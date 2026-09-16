@@ -6,6 +6,7 @@
   <title>Dark mode — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
+<script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
   <style>/* ── Swatch pairs ── */
     .pair-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:var(--ds-space-block); }
     .pair { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 6px; padding: 10px 12px; font-size: 12px; }
@@ -88,6 +89,8 @@
       <a href="doc.html?src=README.md">About this repo</a>
     </div>
   </details>
+  <button type="button" class="ds-theme-toggle"></button>
+  <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
 <div class="ds-container">
 
@@ -168,8 +171,45 @@
 &lt;html data-theme="light"&gt;   &lt;!-- forces light, and opts out of the @media block --&gt;
 &lt;html&gt;                      &lt;!-- no attribute: follow the OS --&gt;</code></pre>
     <p class="ds-section-desc" style="margin-top:12px">The mirror is generated from the <code>@media</code> block and
-    must stay identical to it — <code>python3 verification/check-drift.py</code> fails if the two disagree. Setting
-    the attribute is the consumer's job and takes JavaScript, which is why the system still ships no toggle UI.</p>
+    must stay identical to it &mdash; <code>python3 verification/check-drift.py</code> fails if the two disagree, on
+    <strong>both</strong> stylesheets. Until 2026-09-16 only tier 1 had a mirror at all, so an internal tool followed
+    the machine and could not be switched: an asymmetry that was inherited rather than chosen.</p>
+
+    <h3 class="section-title" id="toggle" style="font-size:15px; margin-top:26px">The control</h3>
+    <p class="ds-section-desc">One control, identical on both surfaces, because a reader who learns it on arxiv.org
+    should not have to learn it again in a moderation queue. It ships as <code>.ds-theme-toggle</code> plus
+    <code>theme.js</code>, and every page under <code>docs/</code> carries it.</p>
+
+    <pre><code>&lt;!-- in the head, NOT deferred --&gt;
+&lt;script src="theme.js"&gt;&lt;/script&gt;
+
+&lt;!-- in the header bar --&gt;
+&lt;button type="button" class="ds-theme-toggle"&gt;&lt;/button&gt;
+&lt;span id="ds-theme-status" class="is-sr-only" role="status"&gt;&lt;/span&gt;</code></pre>
+
+    <ul class="notes">
+      <li><strong>Three states, not two.</strong> Follow the system, always light, always dark &mdash; and
+      <em>follow the system</em> is the default a reader has to be able to get back to. A two-way switch cannot
+      express it, so the first touch would lose the machine's setting for good. That is also why it is a
+      <code>&lt;button&gt;</code> cycling a value rather than <a href="forms.html">the switch</a>, which means on
+      or off.</li>
+      <li><strong>It says its state in words as well as an icon.</strong> An icon alone leaves the reader guessing
+      whether the moon means &ldquo;it is dark&rdquo; or &ldquo;make it dark&rdquo;, which is the commonest failure
+      of this control on the web.</li>
+      <li><strong>The script is not deferred, and that is load-bearing.</strong> The attribute has to be on
+      <code>&lt;html&gt;</code> before the first paint or the page renders light and then flips &mdash; worst for
+      exactly the reader who chose dark because light hurts. <code>check-policies.py</code> fails on a page that
+      defers it.</li>
+      <li><strong>The button's name does not change when the theme does.</strong> The name of a control is what it
+      does, and it is still the theme control; the result goes to the live region, which says &ldquo;Theme is now
+      dark&rdquo;. Same rule as the copy button and the switch.</li>
+      <li><strong>Without JavaScript there is no button and the page follows the OS</strong>, which is what every
+      page did before this existed. The control is an addition, never the only route to a readable page.</li>
+      <li><strong>Why a control at all</strong>, when the standing preference is to honour OS-level signals rather
+      than offer in-product settings: an OS setting is one choice for a whole machine, and reading is per-context
+      &mdash; the same laptop at night in a bright room, a shared library machine whose OS the reader does not
+      control. It stays <em>one</em> control, not the first item of a settings page.</li>
+    </ul>
   </section>
 
   <!-- ── What flips today ── -->

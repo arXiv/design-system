@@ -97,9 +97,13 @@ def rules(css):
 # [data-theme="dark"] so a surface with its own toggle can force it.
 # The second is a mirror of the first. If they disagree, one of the two
 # ways a reader can arrive at dark mode is now painting the wrong colors.
-def check_dark_mirror():
-    name = "dark mirror matches the @media block (public stylesheet)"
-    css = PUBLIC_CSS.read_text()
+def check_dark_mirror(css_path=None, label="public stylesheet"):
+    """Both stylesheets carry the dark values twice — once keyed to the OS
+    query, once to the attribute the reader's own choice sets. Nothing but
+    this check keeps the two copies equal, and tier 2 had no attribute copy
+    at all until 2026-09-16."""
+    name = f"dark mirror matches the @media block ({label})"
+    css = (css_path or PUBLIC_CSS).read_text()
     media = matching_block(css, css.index("@media (prefers-color-scheme: dark)"))
     expected = rules(
         # The mirror is scopable: it drops the :root / html prefix so a
@@ -112,7 +116,15 @@ def check_dark_mirror():
     # [data-theme="dark"] without a :not() guard.
     after = css[css.index("@media (prefers-color-scheme: dark)") :]
     after = after[len(matching_block(after, 0)) :]
-    actual = {s: d for s, d in rules(after).items() if '[data-theme="dark"]' in s and ":not(" not in s}
+    # Exclude the OS-guarded rules specifically, not every rule containing a
+    # :not(). A legitimate mirror rule has its own — .btn-icon:hover:not(:disabled)
+    # — and the blunt filter silently dropped four of tier 2's, which then read
+    # as missing from the mirror rather than as a fault in the check.
+    actual = {
+        s: d
+        for s, d in rules(after).items()
+        if '[data-theme="dark"]' in s and ':not([data-theme=' not in s
+    }
 
     missing = sorted(set(expected) - set(actual))
     extra = sorted(set(actual) - set(expected))
@@ -212,7 +224,8 @@ def main():
     ap.add_argument("--consumer", type=Path, default=DEFAULT_CONSUMER)
     args = ap.parse_args()
 
-    check_dark_mirror()
+    check_dark_mirror(PUBLIC_CSS, "tier 1")
+    check_dark_mirror(INTERNAL_CSS, "internal tools")
     check_bundled_copy(args.consumer)
     check_shared_names()
 
