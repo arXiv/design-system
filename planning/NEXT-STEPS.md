@@ -445,7 +445,14 @@ unable to fail. Left out so the test can tell us whether the system covers it.
 ### A decision for Shamsi, found in Phase 5
 
 - [ ] **37. Is the spacing scale too sparse in the middle, or are the docs
-      careless?** Measured 2026-09-16 across all 23 docs pages. Of the pixel
+      careless? DEFERRED 2026-09-16 by Shamsi — keep the scale as it is and
+      judge it in a real page.** Her reason is the right one and worth keeping:
+      a spacing scale cannot be evaluated from a frequency table, only from
+      seeing it in use. Revisit during the exit test and item 35, where there
+      will be real pages to look at. The measurement below stands as the input
+      to that conversation, not as an argument for changing anything now.
+
+      Measured 2026-09-16 across all 23 docs pages. Of the pixel
       values on spacing properties, **115 are on the scale and 265 are not**.
       The 41 on-scale *layout* values have been converted; the rest is this
       question.
@@ -483,9 +490,13 @@ unable to fail. Left out so the test can tell us whether the system covers it.
       second copy of the system — if the skill explains how buttons work, the
       exit test measures the skill instead of the documentation. Tool-agnostic.
 - [ ] **17.** The exit test. Build the membership-dashboard pages from
-      [the written spec](specs/membership-dashboard.md) (drafted 2026-09-13
-      from the two screenshots, **awaiting Shamsi's corrections**), with no
-      custom CSS. Includes re-running the token-burn battery
+      [the written spec](specs/membership-dashboard.md) (corrected by
+      Shamsi 2026-09-16), with no custom CSS and **without looking at the
+      screenshots**. Scoring material — the eight known defects in the current
+      design, the pre-registered gap predictions, and the requirements the spec
+      deliberately omits — is in
+      [specs/membership-dashboard-scoring.md](specs/membership-dashboard-scoring.md),
+      which the builder never sees. Includes re-running the token-burn battery
       (**31**), which has not run since July: the harness measures regression
       against a known baseline, the new pages measure coverage of things never
       tried. **Run one page before the skills exist**, so we see what the docs
