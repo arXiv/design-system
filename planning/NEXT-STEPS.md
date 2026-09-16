@@ -408,9 +408,23 @@ unable to fail. Left out so the test can tell us whether the system covers it.
       rejected", "retired from body-text use", "the earlier version of this
       table". `check-policies.py` now fails on the phrasing, so it cannot come
       back.
-- [ ] **3.** Section anchor links on every pattern page, generated rather than
-      hand-maintained. Last, because anchors come from headings and 14 changes
-      headings.
+- [x] **3.** DONE 2026-09-16. 130 anchors across 24 pages, written into the
+      HTML by `verification/gen-anchors.py` rather than added at runtime — a
+      real id works with JavaScript off, works for a link arriving from another
+      page, and exists when the browser resolves the fragment on first load,
+      none of which a `DOMContentLoaded` script can promise. Verified with JS
+      disabled: `tags.html#usage` lands on the heading.
+      `.ds-anchor` is the control beside each heading, and it is a **button,
+      not a link**: an `<a href="#here">` inside a heading is a tab stop that
+      goes nowhere the reader wanted to go, since they are already looking at
+      the section. What they want is the address, so it copies it and says so.
+      Its accessible name carries the section, because twelve buttons all
+      called "Copy link to section" are useless in a list of controls.
+      Hand-written ids are kept rather than regenerated — something already
+      links to those. An id follows its heading, so `--check` (wired into
+      `check-policies.py`) is what says to re-run the generator after a
+      rewording. **Shamsi's wordsmithing pass will change headings; re-run it
+      afterwards.**
 
 ### A decision for Shamsi, found in Phase 5
 
