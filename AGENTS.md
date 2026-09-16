@@ -16,6 +16,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 
 ## Before any frontend change
 
+0. If you have not built a page in this repo before, read `docs/using.html` — which files to link, in what order, what the tiers mean.
 1. Read `docs/DESIGN-POLICIES.md` — hard constraints. Non-negotiable.
 2. Read `docs/brand.html` — the *why*; use it when no explicit rule covers your case.
 3. Use the routing table to read **only** what your task touches. Do not read the whole repo.
