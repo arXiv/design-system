@@ -388,6 +388,41 @@ unable to fail. Left out so the test can tell us whether the system covers it.
       hand-maintained. Last, because anchors come from headings and 14 changes
       headings.
 
+### A decision for Shamsi, found in Phase 5
+
+- [ ] **37. Is the spacing scale too sparse in the middle, or are the docs
+      careless?** Measured 2026-09-16 across all 23 docs pages. Of the pixel
+      values on spacing properties, **115 are on the scale and 265 are not**.
+      The 41 on-scale *layout* values have been converted; the rest is this
+      question.
+
+      The off-scale values are not scattered — they cluster:
+
+      | value | uses | sits between |
+      |---|---|---|
+      | 10px | 39 | `--ds-space-2` (8) and `--ds-space-3` (12) |
+      | 6px  | 38 | `--ds-space-1` (4) and `--ds-space-2` (8) |
+      | 20px | 31 | `--ds-space-4` (16) and `--ds-space-6` (24) |
+      | 14px | 24 | `--ds-space-3` (12) and `--ds-space-4` (16) |
+      | 28px | 18 | `--ds-space-6` (24) and `--ds-space-8` (32) |
+      | 18px | 17 | `--ds-space-4` (16) and `--ds-space-6` (24) |
+      | 80, 60, 52, 44, 40 | 28 | above `--ds-space-12` (48) |
+
+      **Two readings, and they need different answers.** The small values —
+      6, 10, 14 — are almost all *component-internal padding*, which
+      `spacing.html` does not claim the scale is for; the scale's stated job is
+      the rhythm between elements. The mid values — 18, 20, 28 — are layout
+      gaps in the range the scale is meant to cover, and there are 66 of them.
+
+      **The options.** Add the half-steps the docs keep reaching for, which
+      makes the scale describe what people actually build but doubles its size
+      and weakens the proximity rule that depends on steps being visibly
+      different. Or keep seven steps and say plainly that component-internal
+      padding is not on the scale, which is honest and leaves 66 layout values
+      to round. **My reading: the second, plus one step at 20px** — it is the
+      single most-used off-scale layout value and the 16→24 jump is the
+      scale's widest proportional gap below 48.
+
 ### Phase 6 — Exit
 
 - [ ] **9.** The build and audit skills. Thin routers into the docs, **not** a
