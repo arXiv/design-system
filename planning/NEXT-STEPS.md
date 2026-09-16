@@ -388,8 +388,26 @@ unable to fail. Left out so the test can tell us whether the system covers it.
       caught by `check-policies.py`. Linked first in the Docs menu on all 25
       pages, and a new **Start here** group at the top of `index.html` pairs it
       with DESIGN-POLICIES. `AGENTS.md` routes to it as step 0.
-- [ ] **13.** The prose cleanup pass. After 14 and after 33, so the same
-      reasoning is not edited twice in two files.
+- [~] **13. IN PROGRESS.** Shamsi's framing, 2026-09-16: she will wordsmith
+      every page herself later, so this item is **structure and deletion, not
+      writing**. Two jobs.
+
+      **Consistent sections.** Every component page takes the same spine —
+      page header, Demo, Spec, Usage, Rules, Accessibility — and no page may
+      use a different name for one of them. 14 headings renamed
+      ("Behavior contract" → Rules, "Color tokens" → Spec, "Accessibility
+      notes" → Accessibility, "Semantics & markup" → Usage). The spine is now
+      in AGENTS.md. **Still to do:** reorder the spine sections to that order
+      where a page has them out of sequence, and fill the gaps — 9 of 15
+      component pages have no Spec section, and `internal/tables.html` has
+      none of the four.
+
+      **Delete the changelog prose.** The system is new and in use nowhere, so
+      a reader needs to know what a thing *is*, not what it was. Eleven
+      passages removed or rewritten across ten pages — dated decisions, "we
+      rejected", "retired from body-text use", "the earlier version of this
+      table". `check-policies.py` now fails on the phrasing, so it cannot come
+      back.
 - [ ] **3.** Section anchor links on every pattern page, generated rather than
       hand-maintained. Last, because anchors come from headings and 14 changes
       headings.

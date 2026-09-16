@@ -85,7 +85,19 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
 
 - **Minimal diffs.** Never rewrite a file wholesale; never reorganize while editing.
 - **One fact, one home.** State each rule in exactly one file; link from everywhere else.
-- **Pattern pages are example-first**: rendered demo + minimal spec table at the top; tokens, usage code, and rationale below. Rationale ≤ 3 sentences per rule.
+- **Pattern pages are example-first**, and every component page has the same spine, in this order:
+
+  | Section | Holds |
+  |---|---|
+  | *(page header)* | `<h1>` and one or two sentences saying what the component is for |
+  | **Demo** | The rendered thing, first. A multi-part component may use several named topic sections here instead. |
+  | **Spec** | The class table — every class a builder can write, and what each does. |
+  | **Usage** | The markup, as a code block. |
+  | **Rules** | The constraints, and why each exists. |
+  | **Accessibility** | What has to be true, with the success criterion where there is one. |
+
+  Not every page needs every section, but a page must not use a *different name* for one of these — no "Behavior contract" for Rules, no "Color tokens" for Spec, no "Accessibility notes" for Accessibility. Rationale ≤ 3 sentences per rule.
+- **The design system is new and is not in use anywhere.** So the docs never describe their own history: no "previously", no "we dropped", no "this was renamed", no decision dates in the prose. A reader needs to know what the thing *is*. Decisions and their dates belong in `planning/`, and the git history is the changelog.
 - **One page shape, and one way of writing its headings.** `<title>` is `<Name> — arXiv Design System` and `<h1>` is `<Name>`, where the name matches the nav label; an internal-tools page adds `(internal tools)` to the title only, so headings stay clean and browser tabs stay unambiguous. Section headings are **sentence case** — they are read as prose, not as labels. No page carries `Styles` or `Component Reference` in its name: the directory says which surface, and the filename says which component.
 - **Add prose only against evidence** — a failed agent test or a real misunderstanding, not speculation.
 - After changing a pattern, update its page; verify tokens/classes exist in the stylesheet, links resolve, HTML balances.

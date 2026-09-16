@@ -279,6 +279,37 @@ def check_theme_control():
         ok(rule, f"{n} pages")
 
 
+# ── The docs do not narrate their own history ──
+# The system is new and in use nowhere, so a reader needs to know what a thing
+# IS. "Previously", "we dropped", a decision date in the prose — all of it is
+# a changelog in the wrong place. Decisions live in planning/; git is the log.
+HISTORY = re.compile(
+    r"\b(decided 20\d\d|settled 20\d\d|reviewed 20\d\d|renamed 20\d\d"
+    r"|we (?:rejected|dropped|removed|replaced)|the earlier version"
+    r"|until today|before this existed|retired from|has been renamed)\b",
+    re.I,
+)
+
+
+def check_no_changelog_prose():
+    rule = "the docs describe what things are, not how they changed"
+    n = 0
+    for path in sorted((REPO / "docs").rglob("*.html")):
+        if path.name == "doc.html":
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if "<body" not in text:
+            continue
+        body = text[text.index("<body") :]
+        body = re.sub(r"<style.*?</style>|<script.*?</script>", "", body, flags=re.S)
+        n += 1
+        for m in HISTORY.finditer(re.sub(r"<[^>]+>", " ", body)):
+            fail(rule, str(path.relative_to(REPO)),
+                 f'"{m.group(0)}" — the system is new; say what it is, not what it was')
+    if rule not in FAILS:
+        ok(rule, f"{n} pages")
+
+
 def main():
     check_wordmark_not_typed()
     check_self_hosted()
@@ -287,6 +318,7 @@ def main():
     check_relative_type_sizes()
     check_page_shape()
     check_theme_control()
+    check_no_changelog_prose()
     print()
     if FAILS:
         print(f"{len(FAILS)} FAIL")
