@@ -340,6 +340,25 @@ def check_classes_documented():
         ok(rule, f"{len(classes)} classes, {len(SCRIPT_OWNED)} script-owned")
 
 
+# ── Section anchors are generated and current ──
+# Delegates to gen-anchors.py so the rule lives in one place: the script that
+# writes the ids is the script that knows what they should be.
+def check_section_anchors():
+    rule = "every section heading has a generated anchor"
+    import subprocess
+    r = subprocess.run(
+        [sys.executable, str(REPO / "verification" / "gen-anchors.py"), "--check"],
+        capture_output=True, text=True,
+    )
+    if r.returncode != 0:
+        for line in r.stdout.splitlines():
+            if line.startswith("FAIL"):
+                fail(rule, line.split("—")[0].replace("FAIL", "").strip(),
+                     "run: python3 verification/gen-anchors.py")
+        return
+    ok(rule, "checked by gen-anchors.py")
+
+
 def main():
     check_wordmark_not_typed()
     check_self_hosted()
@@ -350,6 +369,7 @@ def main():
     check_theme_control()
     check_no_changelog_prose()
     check_classes_documented()
+    check_section_anchors()
     print()
     if FAILS:
         print(f"{len(FAILS)} FAIL")

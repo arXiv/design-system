@@ -2799,6 +2799,59 @@ html:has(.ds-modal[open]) {
   .ds-skip-link { display: none !important; }
 }
 
+/* SECTION ANCHOR  (.ds-anchor) — organizing-content.html
+   A control beside a heading that copies the link to that section. It is a
+   button rather than an <a href="#here">: a link to the section a reader is
+   already looking at is a tab stop that goes nowhere they wanted to go. What
+   they want is the address.
+   Quiet until wanted — it appears on hover of the heading, and on focus of
+   itself, so a keyboard user reaches it in order rather than never. Opacity
+   rather than display, so it holds its space and the heading does not reflow
+   when it appears. */
+.ds-anchor {
+  /* The glyph is under 10px, so the hit area is grown with padding and pulled
+     back with a negative margin — the technique DESIGN-POLICIES names, because
+     it clears the 24px target floor without moving the heading a pixel. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
+  margin-inline-start: 0.1em;
+  margin-block: -12px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ds-text-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s;
+  vertical-align: middle;
+}
+.ds-anchor svg {
+  width: 0.72em;
+  height: 0.72em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
+}
+.section-title:hover > .ds-anchor,
+.ds-anchor:focus-visible { opacity: 1; }
+.ds-anchor:hover { color: var(--ds-link); }
+.ds-anchor:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+/* A reader who cannot hover gets it permanently: on a touch screen the quiet
+   state has no way back. */
+@media (hover: none) {
+  .ds-anchor { opacity: 1; }
+}
+
 /* THEME TOGGLE  (.ds-theme-toggle) — dark-mode.html
    One control, identical on both surfaces, because a reader who learns it on
    arxiv.org should not have to learn it again in a moderation queue.

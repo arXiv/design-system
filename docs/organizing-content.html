@@ -122,7 +122,7 @@
 
   <!-- ───────── The column model ───────── -->
   <section class="section">
-    <h2 class="section-title">Main column vs. sidebar — what goes where</h2>
+    <h2 class="section-title" id="main-column-vs-sidebar-what-goes-where">Main column vs. sidebar — what goes where</h2>
     <p class="ds-section-desc">The placement rule decided in the version-display work generalizes:
     <strong>the main column is what every reader must meet; the rail is what some readers want to browse.</strong>
     Screen-reader flow, mobile stacking, and citation-arrival readers all traverse the main column —
@@ -156,7 +156,7 @@
 
   <!-- ───────── The container, and escaping it ───────── -->
   <section class="section">
-    <h2 class="section-title">The container, and escaping it</h2>
+    <h2 class="section-title" id="the-container-and-escaping-it">The container, and escaping it</h2>
     <p class="ds-section-desc">Every page sits in <code>.ds-container</code>, a grid with two tracks: a
     <em>content</em> track at the reading width, and a <em>full</em> track running to the viewport edges.
     Everything lands in the content track unless it asks not to.</p>
@@ -182,7 +182,7 @@
 
   <!-- ───────── Accordions: documented on their own page ───────── -->
   <section class="section">
-    <h2 class="section-title">Accordions and other disclosures</h2>
+    <h2 class="section-title" id="accordions-and-other-disclosures">Accordions and other disclosures</h2>
     <p class="ds-section-desc">An accordion is one of the containers this page is about, but it is
     also one of several ways a page can show less than it has &mdash; and choosing between them is
     the harder question. Accordions, show-more, and popovers are documented together on
@@ -220,7 +220,7 @@
   <!-- ───────── Cards & tinted sections ───────── -->
   <!-- ───────── Dividers ───────── -->
   <section class="section">
-    <h2 class="section-title">Dividers</h2>
+    <h2 class="section-title" id="dividers">Dividers</h2>
     <p class="ds-section-desc">A rule between things. It belongs in the same conversation as the card,
     because both answer the same question and the answer is usually neither: this system groups with
     space first, and a line drawn where space would have done adds noise without adding meaning.</p>
@@ -275,8 +275,32 @@
     </div></details>
   </section>
 
-  <section class="section">
-    <h2 class="section-title">Documentation notes: special blocks used to organize and identify Design System info</h2>
+    <section class="section">
+    <h2 class="section-title" id="linking-to-a-section">Linking to a section</h2>
+    <p class="ds-section-desc">Every section heading carries an <code>id</code> derived from its own
+    text, and <code>.ds-anchor</code> is the control beside it that copies the link. Hover the
+    heading above, or tab to it, and the control appears.</p>
+    <ul class="notes">
+      <li><strong>The ids are written into the HTML, not added by a script.</strong>
+      <code>verification/gen-anchors.py</code> writes them;
+      <code>--check</code> fails when a heading has none. A real id works with JavaScript off, works
+      for a link arriving from another page, and exists when the browser resolves the fragment on
+      first load &mdash; none of which a script running at <code>DOMContentLoaded</code> can
+      promise.</li>
+      <li><strong>The control is a button, not a link.</strong> An <code>&lt;a href="#here"&gt;</code>
+      inside a heading is a tab stop that goes nowhere the reader wanted to go &mdash; they are
+      already looking at the section. What they want is the address, so it copies it.</li>
+      <li><strong>An id follows its heading</strong>, so rewording a heading changes its anchor.
+      That is the right trade while nothing links in from outside; re-run the generator after
+      editing a heading and the check will tell you if you forget.</li>
+      <li><strong>Its accessible name carries the section.</strong> Twelve buttons all called
+      &ldquo;Copy link to section&rdquo; are useless in a list of controls, so each says which
+      section it belongs to.</li>
+    </ul>
+  </section>
+
+<section class="section">
+    <h2 class="section-title" id="documentation-notes-special-blocks-used-to-organize-and-iden">Documentation notes: special blocks used to organize and identify Design System info</h2>
     <p class="ds-section-desc">A box in the flow of a page that names its own register before the
     reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on
     the internal surface. The tab is the whole design. It is also what keeps a note from reading as an
@@ -329,7 +353,7 @@
   </section>
 
   <section class="section">
-    <h2 class="section-title">Cards and grouped sections</h2>
+    <h2 class="section-title" id="cards-and-grouped-sections">Cards and grouped sections</h2>
     <p class="ds-section-desc">A card is a white surface with a hairline border and 8px radius on the Warm Wash page
     background — used when content is a <em>peer in a set</em> (context cards, swatch cards, editable form
     sections). It is not a decoration for single blocks of prose.</p>
@@ -401,7 +425,7 @@
 
   <!-- ───────── Anchored chrome ───────── -->
   <section class="section">
-    <h2 class="section-title">Chrome anchored to content</h2>
+    <h2 class="section-title" id="chrome-anchored-to-content">Chrome anchored to content</h2>
     <p class="ds-section-desc">Two shared components attach lightweight UI to a specific piece of content rather than
     to the page. Both are real classes in <code>design-system.css</code>.</p>
 
@@ -439,7 +463,7 @@
 
   <!-- ───────── Accessibility ───────── -->
   <section class="section">
-    <h2 class="section-title">Accessibility</h2>
+    <h2 class="section-title" id="accessibility">Accessibility</h2>
     <ul class="notes">
       <li><strong>Landmarks.</strong> One <code>&lt;main&gt;</code>; rails are <code>&lt;aside aria-label="…"&gt;</code>; headings inside containers continue the page's heading outline (no skipped levels because "it is in a card").</li>
       <li><strong>Native disclosure semantics.</strong> <code>&lt;summary&gt;</code> is focusable and toggles with Enter/Space for free; do not rebuild accordions from divs and click handlers.</li>
@@ -473,5 +497,6 @@
   });
 </script>
 <script src="copy-code.js" defer></script>
+<script src="anchors.js" defer></script>
 </body>
 </html>
