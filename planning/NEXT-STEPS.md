@@ -379,9 +379,15 @@ unable to fail. Left out so the test can tell us whether the system covers it.
 - [ ] **14.** Apply the forms.html page organisation to every docs page; rename
       "Form demo" to "Demo" as the generic pattern.
 - [ ] **15.** Consistent use of the design system across all docs pages.
-- [ ] **34.** Write the page that tells a developer how to consume the system —
-      which file to link, in what order, what the tiers mean, what not to do.
-      Early enough that the exit test exercises it.
+- [x] **34.** DONE 2026-09-16 — `docs/using.html`. Whole-page template first,
+      then the internal-tools variant, then the two foundations nothing had
+      explained: `.ds-page` (the body class the type stack and canvas are
+      scoped to) and `.ds-container` (three grid tracks, and why that is not a
+      max-width). Then the optional files, then five things that go wrong —
+      each one drawn from something that actually happened here, and each now
+      caught by `check-policies.py`. Linked first in the Docs menu on all 25
+      pages, and a new **Start here** group at the top of `index.html` pairs it
+      with DESIGN-POLICIES. `AGENTS.md` routes to it as step 0.
 - [ ] **13.** The prose cleanup pass. After 14 and after 33, so the same
       reasoning is not edited twice in two files.
 - [ ] **3.** Section anchor links on every pattern page, generated rather than
