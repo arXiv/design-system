@@ -376,9 +376,25 @@ unable to fail. Left out so the test can tell us whether the system covers it.
 
 ### Phase 5 — The docs sweep (serial)
 
-- [ ] **14.** Apply the forms.html page organisation to every docs page; rename
-      "Form demo" to "Demo" as the generic pattern.
-- [ ] **15.** Consistent use of the design system across all docs pages.
+- [x] **14.** DONE 2026-09-16 — but the item as written turned out to be half
+      wrong. Seven pages still carried pre-rename names ("arXiv Table Styles —
+      Component Reference"), so every `<title>` is now `<Name> — arXiv Design
+      System`, internal pages adding "(internal tools)" to the title only.
+      Eighteen Title Case headings, all on internal pages, became sentence case.
+      "Form demo" became "Demo". **What the item got wrong:** every other page
+      already led with the rendered thing under a *descriptive* name, so making
+      "Demo" the generic pattern everywhere would have been a loss — the
+      generic word is right only where the specific one repeated the page
+      title. Both rules are in AGENTS.md and checked.
+- [x] **15.** DONE 2026-09-16. `brand.html` carried seven lines of its own
+      site-header CSS, every rule either identical to tier 1 or a stale version
+      of it; one made that page the only one whose nav sits left rather than
+      right. `buttons.html` carried the Access Lime ramp as ten one-off hexes
+      under a comment reading "if internal values change, update THERE first" —
+      a maintenance instruction standing in for a mechanism. Tier 1 now names
+      the ramp as primitives and both files point at it. 41 on-scale layout
+      values moved onto `--ds-space-*`, proved a pure refactor by comparing
+      400 elements per page before and after. The rest is item 37.
 - [x] **34.** DONE 2026-09-16 — `docs/using.html`. Whole-page template first,
       then the internal-tools variant, then the two foundations nothing had
       explained: `.ds-page` (the body class the type stack and canvas are
@@ -388,7 +404,7 @@ unable to fail. Left out so the test can tell us whether the system covers it.
       caught by `check-policies.py`. Linked first in the Docs menu on all 25
       pages, and a new **Start here** group at the top of `index.html` pairs it
       with DESIGN-POLICIES. `AGENTS.md` routes to it as step 0.
-- [~] **13. IN PROGRESS.** Shamsi's framing, 2026-09-16: she will wordsmith
+- [x] **13. DONE 2026-09-16.** Shamsi's framing, 2026-09-16: she will wordsmith
       every page herself later, so this item is **structure and deletion, not
       writing**. Two jobs.
 
