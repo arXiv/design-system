@@ -375,7 +375,14 @@
  */
 
 .btn-link {
-  display: inline;
+  /* inline-flex, not inline: a browser blockifies a <button> whatever display
+     is asked for, so `display: inline` here was inert and had been since it
+     was written. Saying inline-flex is honest, keeps it inline-LEVEL so it
+     still flows inside a sentence, and lets min-height apply — which is what
+     gives a control that looks like a link the 24px target a control needs. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   background: transparent;
   border: none;
   padding: 0;
@@ -893,6 +900,9 @@ button.ds-tag:hover {
 }
 
 .ds-filter select {
+  /* A filter is a control, so it carries the 24px floor even though its type
+     is small — the padding grows the hit area without growing the text. */
+  min-height: 24px;
   font-family: inherit;
   font-size: 0.75rem;
   color: var(--ds-text);
@@ -972,6 +982,20 @@ button.ds-tag:hover {
 
 /* The checkbox ticks this surface's accent, not Link Blue. */
 .ds-check input { accent-color: var(--ds-accent-border); }
+
+/* A row-selection checkbox has no label to borrow a target from, so it grows
+   its own: 24px of cell, with the box left at its natural size. A dense table
+   is exactly where this gets skipped, and exactly where mis-clicks cost most
+   — the control beside it removes someone's access. */
+.ds-table td:has(> input[type="checkbox"]),
+.ds-table th:has(> input[type="checkbox"]) { min-width: 24px; }
+.ds-table input[type="checkbox"] {
+  accent-color: var(--ds-accent-border);
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  cursor: pointer;
+}
 
 /* .is-invalid without .ds-input, for the staff controls that are not
    inputs — the segmented control and the category editor. */

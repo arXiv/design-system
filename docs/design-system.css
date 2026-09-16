@@ -1153,9 +1153,14 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.34em;
-  height: 1.34em;
-  margin-right: -4px;
+  /* The glyph is the size of the tag's own type; the target is not. It is
+     grown to 24px and pulled back with a negative block margin, so the tag
+     keeps its shape. Same technique as .ds-anchor — a small control is still
+     a control. */
+  width: 24px;
+  height: 24px;
+  margin-block: -12px;
+  margin-right: -6px;
   padding: 0;
   background: none;
   border: 0;
@@ -1464,7 +1469,11 @@ select.ds-input { padding-right: 34px; }
   margin-bottom: 8px;
   cursor: pointer;
 }
-.ds-check input { accent-color: var(--ds-link); width: 16px; height: 16px; margin: 2px 0 0; flex: none; }
+/* The box stays 16px — a 24px checkbox looks like a mistake — but the target
+   is the whole <label>, because clicking anywhere in it toggles the input. So
+   the floor goes on the label, where WCAG 2.5.8 actually measures it. */
+.ds-check { min-height: 24px; }
+.ds-check input { accent-color: var(--ds-link); width: 1em; height: 1em; margin: 2px 0 0; flex: none; }
 .ds-check input:disabled { cursor: not-allowed; }
 .ds-check input:disabled + span { color: var(--ds-text-disabled); }
 
@@ -1722,6 +1731,16 @@ html:has(.ds-modal[open]) {
   pointer-events: none;
   transition: opacity 0.18s ease, visibility 0s linear 0.18s;
   z-index: 2;
+}
+/* The pill's own actions. It carries no class of its own on purpose — the pill
+   is the component and its children are whatever the consumer puts in — so the
+   target floor goes on the element rather than on a class somebody has to
+   remember to add. */
+.ds-element-pill > button,
+.ds-element-pill > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
 }
 .ds-element-pill.is-revealed {
   opacity: 1;
@@ -2295,7 +2314,11 @@ html:has(.ds-modal[open]) {
    break the line it sits in. */
 
 .ds-show-more {
-  display: inline;
+  /* No display declaration: a browser blockifies a <button> whatever is asked
+     for, so stating `inline` here only looked like it was doing something.
+     What matters is that it sits at the end of a run of links and is sized by
+     their line-height — which is WCAG 2.5.8's inline exception, and why this
+     one control does not take the 24px floor the others do. */
   font-family: inherit;
   font-size: inherit;
   font-style: italic;

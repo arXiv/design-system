@@ -180,6 +180,55 @@ async def run():
         )
         await pg.close()
 
+        # ── Target size, swept across every docs page ──
+        # WCAG 2.5.8 AA, 24x24 floor. The exceptions are the standard's own:
+        # an inline target in a run of text, and a control whose target is the
+        # <label> around it. Everything else is a control somebody has to hit.
+        TARGETS = """() => {
+          const sel = 'button, input:not([type=hidden]), select, textarea, summary';
+          const bad = [];
+          document.querySelectorAll(sel).forEach(el => {
+            if (el.closest('pre')) return;                 // a code example
+            const r = el.getBoundingClientRect();
+            if (!r.width || !r.height) return;             // not rendered
+            let box = r;
+            const lab = el.closest('label');
+            if (lab) { const lr = lab.getBoundingClientRect();
+                       if (lr.height > box.height) box = lr; }
+            if (Math.min(box.width, box.height) >= 24) return;
+            // WCAG 2.5.8's inline exception, applied by how the control
+            // actually lays out rather than by who its parent is: a control
+            // that participates in a line of text is inline whatever wraps it.
+            if (getComputedStyle(el).display === 'inline') return;
+            if (el.closest('p, li, dd, .notes')) return;
+            // Named exemption, with the standard's own reason. .ds-show-more
+            // sits at the end of a run of author links and is sized by their
+            // line-height — WCAG 2.5.8's inline exception. Giving it 24px
+            // would make it taller than the links it belongs to, which is the
+            // opposite of what the control is for.
+            if (el.classList.contains('ds-show-more')) return;
+            bad.push((el.className || el.tagName).toString().slice(0, 34)
+                     + ' ' + Math.round(box.width) + 'x' + Math.round(box.height));
+          });
+          return bad;
+        }"""
+        offenders = {}
+        for doc in sorted((REPO / "docs").rglob("*.html")):
+            if doc.name == "doc.html":
+                continue
+            pg = await b.new_page(viewport={"width": 1200, "height": 900})
+            await pg.goto(doc.as_uri())
+            await pg.wait_for_timeout(350)
+            for o in await pg.evaluate(TARGETS):
+                offenders.setdefault(o, []).append(str(doc.relative_to(REPO / "docs")))
+            await pg.close()
+        check(
+            "every control on a docs page clears the 24px target floor",
+            not offenders,
+            "WCAG 2.5.8; "
+            + ("; ".join(f"{k} on {v[0]}" for k, v in list(offenders.items())[:3]) if offenders else "none"),
+        )
+
         # ── The theme control: three states, both surfaces ──
         # "System" is a state, not the absence of one. A two-way switch would
         # lose the OS setting the first time a reader touched it.
