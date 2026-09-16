@@ -310,6 +310,36 @@ def check_no_changelog_prose():
         ok(rule, f"{n} pages")
 
 
+# ── Every class a builder can write is findable in the docs ──
+# A class that exists and is documented nowhere is a class nobody uses, or
+# worse, one somebody re-invents. The exemptions are classes the SCRIPTS own:
+# a page author never writes them, so there is nothing for the docs to say.
+CLASS_RE = re.compile(r"\.((?:ds-|btn-|type-|info-|seg-)[\w-]+)")
+SCRIPT_OWNED = {
+    "ds-code-copy-idle", "ds-code-copy-done",      # copy-code.js swaps these
+    "ds-theme-icon-system", "ds-theme-icon-light", "ds-theme-icon-dark",  # theme.js
+}
+
+
+def check_classes_documented():
+    rule = "every class a builder can write appears in the docs"
+    classes = set()
+    for f in CSS_FILES:
+        classes |= set(CLASS_RE.findall(re.sub(r"/\*.*?\*/", "", f.read_text(), flags=re.S)))
+    prose = []
+    for path in (REPO / "docs").rglob("*.html"):
+        if path.name == "doc.html":
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        prose.append(text[text.index("<body") :] if "<body" in text else text)
+    prose = "\n".join(prose)
+    missing = sorted(c for c in classes - SCRIPT_OWNED if c not in prose)
+    for c in missing:
+        fail(rule, "docs/", f".{c} is in a stylesheet and on no page")
+    if rule not in FAILS:
+        ok(rule, f"{len(classes)} classes, {len(SCRIPT_OWNED)} script-owned")
+
+
 def main():
     check_wordmark_not_typed()
     check_self_hosted()
@@ -319,6 +349,7 @@ def main():
     check_page_shape()
     check_theme_control()
     check_no_changelog_prose()
+    check_classes_documented()
     print()
     if FAILS:
         print(f"{len(FAILS)} FAIL")
