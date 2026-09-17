@@ -139,6 +139,12 @@ def emit():
     ovr_l, ovr_d = tokens(INT, "@media (prefers-color-scheme: dark)", seed_light=raw_pub_l)
     int_l, int_d = dict(pub_l), dict(pub_d)
     int_l.update(ovr_l); int_d.update(ovr_d)
+    # The accent does not come from tier 2: .ds-internal in tier 1 re-points it,
+    # and an internal page carries that class on <html>. Layer it on last.
+    ctx_l = parse_block(PUB.read_text(), "\n.ds-internal {")
+    ctx_d = parse_block(PUB.read_text(), '[data-theme="dark"] .ds-internal {')
+    int_l = resolve({**raw_pub_l, **int_l, **ctx_l})
+    int_d = resolve({**raw_pub_l, **int_d, **ctx_l, **ctx_d})
     frag = []
     frag.append(BEGIN)
     frag.append('<p class="ct-note">Each passing cell renders its own pairing in your current mode; the numbers are the '
