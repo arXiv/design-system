@@ -17,6 +17,10 @@ the right trade while the system is new and nothing links in from outside;
 
 A heading that already carries a hand-written id keeps it. Those are anchors
 something already links to, and silently renaming them would break the link.
+
+A page with a contents bar (.ds-toc-menu) gets its list from the same
+headings, for the same reason: written into the HTML, so it works with
+JavaScript off, and regenerated, so nobody keeps it in step by hand.
 """
 
 import re
@@ -62,13 +66,41 @@ def process(path, write):
     return problems
 
 
+TOC_LIST = re.compile(r'(<nav class="ds-toc-menu"[^>]*>\s*<ol>)(.*?)(</ol>)', re.S)
+
+
+def contents(path, write):
+    """Rewrite the contents list from the page's section headings. True if it was stale."""
+    text = path.read_text(encoding="utf-8")
+    m = TOC_LIST.search(text)
+    if not m:
+        return False
+    indent = "            "
+    items = []
+    for h in re.finditer(r'<h2([^>]*\sclass="section-title"[^>]*)>(.*?)</h2>', text, re.S):
+        hid = re.search(r'\bid="([^"]+)"', h.group(1))
+        if hid:
+            label = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", h.group(2))).strip()
+            items.append(f'{indent}<li><a href="#{hid.group(1)}">{label}</a></li>')
+    want = "\n" + "\n".join(items) + "\n" + indent[:-2]
+    if m.group(2) == want:
+        return False
+    if write:
+        path.write_text(text[:m.start(2)] + want + text[m.end(2):], encoding="utf-8")
+    return True
+
+
 def main():
     check = "--check" in sys.argv
-    total, files = 0, 0
+    total, files, stale_toc = 0, 0, []
     for path in sorted(DOCS.rglob("*.html")):
         if path.name == "doc.html":
             continue
         added = process(path, write=not check)
+        if contents(path, write=not check):
+            stale_toc.append(path)
+            if check:
+                print(f"FAIL  {path.relative_to(REPO)} — contents list does not match its section headings")
         if added:
             total += len(added)
             files += 1
@@ -76,11 +108,14 @@ def main():
                 print(f"FAIL  {path.relative_to(REPO)} — {len(added)} section(s) with no anchor: "
                       + ", ".join(added[:4]))
     if check:
-        if total:
-            print(f"\n{total} missing anchors in {files} files — run: python3 verification/gen-anchors.py")
+        if total or stale_toc:
+            print(f"\n{total} missing anchors in {files} files, {len(stale_toc)} stale contents lists"
+                  " — run: python3 verification/gen-anchors.py")
             return 1
         print("PASS  every section heading has a generated anchor")
         return 0
+    if stale_toc:
+        print(f"{len(stale_toc)} contents list(s) rewritten")
     print(f"{total} anchors written across {files} files" if total else "nothing to do — all anchors present")
     return 0
 

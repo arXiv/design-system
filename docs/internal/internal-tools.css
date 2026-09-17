@@ -2,8 +2,10 @@
    arXiv Design System — internal tools (tier 2)
    Admin Console, arXiv Check, the moderation queue.
 
-   This file is NOT self-contained. Load the tier 1 stylesheet first:
+   This file is NOT self-contained. Load the tier 1 stylesheet first, and
+   put .ds-internal on <html> — that class is what makes the accent lime:
 
+     <html lang="en" class="ds-internal">
      <link rel="stylesheet" href="../design-system.css">
      <link rel="stylesheet" href="internal-tools.css">
 
@@ -13,8 +15,8 @@
    metadata panels, segmented controls, toggles, type badges, info
    cards), plus the tokens whose VALUES differ on this surface.
 
-   The rule for this file: it may re-point a tier 1 token, which is how
-   this surface gets its accent. It must never introduce a token that
+   The rule for this file: it may re-point a tier 1 token where this
+   surface needs a different value. It must never introduce a token that
    reuses a tier 1 name for a different meaning.
    ============================================================= */
 
@@ -29,21 +31,11 @@
  */
 :root {
 
-  /* Access Lime — the accent that says "you are in an internal tool".
-     Re-pointing these is the whole mechanism: every tier 1 component
-     that reaches for the accent follows without knowing it moved. */
-  --ds-accent:                var(--ds-access-lime);
-  --ds-accent-hover:          var(--ds-access-lime-hover);
-  --ds-accent-active:         var(--ds-access-lime-active);
-  --ds-accent-border:         var(--ds-access-lime-border);
-  --ds-accent-border-active:  var(--ds-access-lime-deep);
+  /* The accent is not set here. Access Lime arrives with the .ds-internal
+     class in tier 1, which an internal page puts on <html>. These two are
+     the accent's disabled pair, which only this file uses. */
   --ds-accent-disabled-bg:    var(--ds-access-lime-faded);
   --ds-accent-disabled-fg:    var(--ds-access-lime-faded-fg);
-
-  /* The lime tint, for secondary buttons and quiet accent fills. */
-  --ds-accent-wash:           var(--ds-access-lime-wash);
-  --ds-accent-wash-hover:     var(--ds-access-lime-wash-2);
-  --ds-accent-wash-active:    var(--ds-access-lime-wash-3);
 
   /* Surfaces. Light matches tier 1; the dark values are a shade
      different because internal screens are dense with tables and want a
@@ -615,10 +607,7 @@
 
     --ds-text-strong:           #d4cfc9;  /* 11.22:1 on dark ✓ */
 
-    /* The lime tint goes to a dark olive rather than lightening. */
-    --ds-accent-wash:           #1a2306;
-    --ds-accent-wash-hover:     #212e08;
-    --ds-accent-wash-active:    #28380a;
+    /* The accent's disabled pair. The dark washes live with .ds-internal in tier 1. */
     --ds-accent-disabled-bg:    #252f08;
     --ds-accent-disabled-fg:    #5a6b30;
 
@@ -695,10 +684,7 @@
 
   --ds-text-strong:           #d4cfc9;  /* 11.22:1 on dark ✓ */
 
-  /* The lime tint goes to a dark olive rather than lightening. */
-  --ds-accent-wash:           #1a2306;
-  --ds-accent-wash-hover:     #212e08;
-  --ds-accent-wash-active:    #28380a;
+  /* The accent's disabled pair. The dark washes live with .ds-internal in tier 1. */
   --ds-accent-disabled-bg:    #252f08;
   --ds-accent-disabled-fg:    #5a6b30;
 

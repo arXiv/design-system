@@ -177,6 +177,31 @@
       <li><strong>Only a direct child can escape.</strong> <code>.ds-full</code> works on children of
       <code>.ds-container</code>; nested deeper it does nothing, because it has no grid to address.</li>
     </ul>
+
+    <h3>Page zones</h3>
+    <p>A long page can tell a reader what kind of content they are in by its ground. The
+    <strong>primary</strong> zone holds the thing the page is about. The <strong>secondary</strong>
+    zone holds what introduces or supports it: the opening of the page, and any closing material.
+    The zones are named for their role, because both grounds change in dark mode.</p>
+
+    <pre><code>&lt;div class="ds-container ds-zone-secondary"&gt;
+  &lt;header class="ds-page-header"&gt;…&lt;/header&gt;            &lt;!-- secondary: introduces --&gt;
+  &lt;div class="ds-full ds-zone-primary"&gt;
+    &lt;section&gt;…&lt;/section&gt;                                &lt;!-- primary: the thing itself --&gt;
+  &lt;/div&gt;
+  &lt;section&gt;…&lt;/section&gt;                                  &lt;!-- secondary: supports --&gt;
+&lt;/div&gt;</code></pre>
+
+    <details class="ds-acc"><summary>Relevant CSS</summary><div class="ds-acc-body">
+      <dl>
+        <dt>.ds-zone-secondary</dt>
+        <dd>Goes on <code>.ds-container</code> and becomes the page ground,
+        <code>--ds-zone-secondary-bg</code>. Everything outside the primary band sits on it.</dd>
+        <dt>.ds-zone-primary</dt>
+        <dd>Goes on one <code>.ds-full</code> band. It sets the <code>--ds-surface</code> ground and
+        the band&rsquo;s own top and bottom padding. A page has one primary zone.</dd>
+      </dl>
+    </div></details>
   </section>
 
   <!-- ───────── Accordions: documented on their own page ───────── -->
@@ -295,6 +320,97 @@
       <li><strong>Its accessible name carries the section.</strong> Twelve buttons all called
       &ldquo;Copy link to section&rdquo; are useless in a list of controls, so each says which
       section it belongs to.</li>
+    </ul>
+  </section>
+
+  <!-- ───────── Contents bar ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="contents-bar">Contents bar</h2>
+    <p class="ds-section-desc">A long page&rsquo;s own table of contents: one control that names the
+    section the reader is in and opens the list of the others. This one lists the sections of the page
+    you are reading.</p>
+
+    <div class="ds-card">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#main-column-vs-sidebar-what-goes-where">Main column vs. sidebar — what goes where</a></li>
+            <li><a href="#the-container-and-escaping-it">The container, and escaping it</a></li>
+            <li><a href="#accordions-and-other-disclosures">Accordions and other disclosures</a></li>
+            <li><a href="#dividers">Dividers</a></li>
+            <li><a href="#linking-to-a-section">Linking to a section</a></li>
+            <li><a href="#contents-bar">Contents bar</a></li>
+            <li><a href="#documentation-notes-special-blocks-used-to-organize-and-iden">Documentation notes: special blocks used to organize and identify Design System info</a></li>
+            <li><a href="#cards-and-grouped-sections">Cards and grouped sections</a></li>
+            <li><a href="#chrome-anchored-to-content">Chrome anchored to content</a></li>
+            <li><a href="#accessibility">Accessibility</a></li>
+          </ol>
+        </nav>
+      </details>
+
+      <details class="ds-acc"><summary>Relevant CSS</summary><div class="ds-acc-body">
+        <dl>
+          <dt>.ds-toc</dt>
+          <dd>The control, a <code>&lt;details&gt;</code>. It works on its own anywhere, and it opens
+          with JavaScript off.</dd>
+          <dt>.ds-toc-trigger</dt>
+          <dd>The <code>&lt;summary&gt;</code>. Holds the list icon, <code>.ds-toc-text</code> with
+          its <code>.ds-toc-prefix</code>, and <code>.ds-toc-chevron</code>.</dd>
+          <dt>.ds-toc-menu</dt>
+          <dd>The list, a <code>&lt;nav&gt;</code> holding an <code>&lt;ol&gt;</code>. The link to the
+          current section gets <code>.is-current</code>. A page whose sections are numbered puts each
+          number in <code>.ds-toc-num</code>.</dd>
+          <dt>.ds-toc-bar</dt>
+          <dd>The edge-to-edge row that carries the control. A direct child of
+          <code>.ds-container</code>, with <code>.ds-full</code>. Placed directly before
+          <code>.ds-zone-primary</code>, it sits on that zone&rsquo;s top edge.
+          <code>.ds-toc-bar-inner</code> is its three-slot grid, which keeps the control centred
+          whatever sits beside it.</dd>
+          <dt>.ds-toc-bar--sticky</dt>
+          <dd>Keeps the bar at the top of the viewport, where it becomes <code>.is-stuck</code> and
+          tightens. It also sets <code>scroll-padding-top</code> so an anchor lands below the bar.
+          Sticky chrome is governed by
+          <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>; check there before
+          adding it to a page.</dd>
+        </dl>
+<pre><code>&lt;div class="ds-container ds-zone-secondary"&gt;
+  &lt;header class="ds-page-header"&gt;…&lt;/header&gt;
+
+  &lt;div class="ds-full ds-toc-bar"&gt;
+    &lt;div class="ds-toc-bar-inner"&gt;
+      &lt;details class="ds-toc"&gt;
+        &lt;summary class="ds-toc-trigger"&gt;
+          &lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;
+          &lt;span class="ds-toc-text"&gt;&lt;span class="ds-toc-prefix"&gt;Contents&lt;/span&gt;&lt;/span&gt;
+          &lt;svg class="ds-toc-chevron" aria-hidden="true"&gt;…&lt;/svg&gt;
+        &lt;/summary&gt;
+        &lt;nav class="ds-toc-menu" aria-label="Contents"&gt;
+          &lt;ol&gt;&lt;/ol&gt;      &lt;!-- filled by verification/gen-anchors.py --&gt;
+        &lt;/nav&gt;
+      &lt;/details&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="ds-full ds-zone-primary"&gt;…&lt;/div&gt;
+&lt;/div&gt;
+&lt;script src="toc.js" defer&gt;&lt;/script&gt;</code></pre>
+      </div></details>
+    </div>
+
+    <ul class="notes">
+      <li><strong>The list is generated, not written.</strong>
+      <code>verification/gen-anchors.py</code> fills the <code>&lt;ol&gt;</code> from the page&rsquo;s
+      section headings, and <code>--check</code> fails when the two disagree. Leave the list empty
+      and run the generator.</li>
+      <li><strong>It opens without JavaScript.</strong> <code>toc.js</code> adds closing on Escape,
+      closing on a click outside, and the name of the current section on the control.</li>
+      <li><strong>One per page.</strong> <code>toc.js</code> drives the first
+      <code>.ds-toc</code> it finds.</li>
     </ul>
   </section>
 
@@ -497,5 +613,6 @@
 </script>
 <script src="copy-code.js" defer></script>
 <script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
 </body>
 </html>

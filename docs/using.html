@@ -113,9 +113,11 @@
   <!-- ── Internal tools ── -->
   <div class="section">
     <h2 class="section-title" id="if-you-are-building-an-internal-tool">If you are building an internal tool</h2>
-    <p class="ds-section-desc">Two files, in this order, and never only the second one.</p>
+    <p class="ds-section-desc">One class on <code>&lt;html&gt;</code>, and two files, in this order, and never only the second one.</p>
 
-<pre><code>&lt;link rel="stylesheet" href="../fonts.css"&gt;
+<pre><code>&lt;html lang="en" class="ds-internal"&gt;
+…
+&lt;link rel="stylesheet" href="../fonts.css"&gt;
 &lt;link rel="stylesheet" href="../design-system.css"&gt;    &lt;!-- tier 1 --&gt;
 &lt;link rel="stylesheet" href="internal-tools.css"&gt;      &lt;!-- tier 2 --&gt;
 &lt;script src="../theme.js"&gt;&lt;/script&gt;</code></pre>
@@ -123,15 +125,16 @@
     <div class="ds-note ds-note--essential">
       <h3 class="ds-note-label">The one mistake to avoid</h3>
       <p><code>internal-tools.css</code> is <strong>not</strong> a standalone stylesheet. It holds
-      only what differs on that surface &mdash; the <code>.btn-*</code> family, tables, metadata
-      panels, info cards, and the roughly thirty tokens whose values change. Load it on its own and
+      only what that surface alone has &mdash; tables, metadata panels, info cards, the internal
+      icon and link-style buttons, and the tokens whose values change. Load it on its own and
       you get those components on no foundation at all.</p>
     </div>
 
     <ul class="notes">
-      <li><strong>The accent is the whole mechanism.</strong> Tier 2 re-points
-      <code>--ds-accent</code> and its family to Access Lime, and every tier 1 component that
-      reaches for the accent follows without being told. That is why there is no second copy of
+      <li><strong>The accent is the whole mechanism.</strong> <code>.ds-internal</code> re-points
+      <code>--ds-accent</code> and its family to Access Lime, and every component inside it that
+      reaches for the accent follows without being told. It works on any parent, so a page that
+      shows both surfaces puts it on a wrapper instead of on <code>&lt;html&gt;</code>. That is why there is no second copy of
       the button, the tag or the switch.</li>
       <li><strong>Never copy a component into tier 2 to restyle it.</strong> If it needs to look
       different on your surface, that is a token, not a second copy. A component that exists twice

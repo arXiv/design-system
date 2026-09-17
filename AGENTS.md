@@ -28,10 +28,11 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Anything with color | `docs/color-mapping.md`, `docs/colors.html` | tokens in that context's stylesheet |
 | Typography, text sizes | `docs/typography.html` | `--ds-font-*` |
 | Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--ds-space-*` |
-| Buttons | `docs/buttons.html` — both surfaces; `docs/internal/buttons.html` for the internal-only tiers | `.ds-btn*` (public, incl. `.ds-btn-text` and `.on-tint` / `.on-dark`), `.btn-*` (internal) |
+| Buttons | `docs/buttons.html` — both surfaces; `docs/internal/buttons.html` for the internal-only controls | `.ds-btn*` on both surfaces (incl. `.ds-btn-text`, `.ds-btn-destructive`, `.on-tint` / `.on-dark`); internal tools get their colour from `.ds-internal` on a parent, never from a second class family. `.btn-icon*` and `.btn-link` are internal-only |
 | Alerts, status & feedback messages | `docs/alerts.html` — one page, both surfaces | `.ds-alert*` — never rebuild its chrome |
-| Cards, rails, page organization | `docs/organizing-content.html` | card conventions, dl row grammar, `.ds-acc-rail` in a sidebar |
+| Cards, rails, page organization | `docs/organizing-content.html` | card conventions, dl row grammar, `.ds-acc-rail` in a sidebar; `.ds-full` for an edge-to-edge band; `.ds-zone-secondary` on the container + one `.ds-full.ds-zone-primary` band for a zoned page |
 | A labelled aside — a requirement, guidance, or how a component differs in internal tools | `docs/organizing-content.html` *Notes* | `.ds-note` (+ `--essential` / `--internal`), `.ds-note-label`, `.ds-note-gotcha` — never a bespoke tinted box, and never an alert |
+| A table of contents for a long page | `docs/organizing-content.html` *Contents bar* | `.ds-toc` in a `.ds-toc-bar`, plus `toc.js`; leave the `<ol>` empty and run `verification/gen-anchors.py`. Sticky only where DESIGN-POLICIES allows it |
 | Accordions, show more, popovers — anything hiding content behind a control | `docs/progressive-disclosure.html` | `.ds-acc*`, `.ds-show-more`, `.ds-popover` |
 | A modal, dialog, confirmation, or anything that takes over the page | `docs/modals.html` | `.ds-modal*` on a native `<dialog>` + `showModal()` — never a `<div role="dialog">`, never `show()` |
 | A close or dismiss control | `docs/buttons.html` | `.ds-close` — one control on both surfaces; the host supplies position only |
@@ -51,16 +52,19 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 
 **Stylesheets are tiered.** `docs/design-system.css` is **tier 1** — the foundation and every component more than one surface could use. Everything loads it.
 
-`docs/internal/internal-tools.css` is **tier 2 for internal tools**, and is *not* self-contained: an internal page loads tier 1 first, then this. It holds only what is internal-only (the `.btn-*` family, tables, metadata panels, info cards) plus the tokens whose values differ on that surface — chiefly Access Lime as `--ds-accent`.
+`docs/internal/internal-tools.css` is **tier 2 for internal tools**, and is *not* self-contained: an internal page loads tier 1 first, then this. It holds only what is internal-only (tables, metadata panels, info cards, the internal icon and link-style buttons) plus the tokens whose values differ on that surface.
+
+**The accent comes from a class, not from a file.** `.ds-internal` lives in tier 1 and re-points `--ds-accent` and the button colours to Access Lime for everything inside it. An internal page puts it on `<html>`; a page that shows both surfaces puts it on a wrapper.
 
 **Two surfaces, and one name each.** They are the **public site** and **internal tools** — the wording DESIGN-POLICIES uses. Not `staff tools`, not `the staff surface`, not `the staff stylesheet`: one name per thing, and a second name for the same thing is how a reader ends up wondering whether it is a third thing. "Staff" stays for the people ("arXiv staff can see aggregate figures"). The stylesheet is named for it too: `docs/internal/internal-tools.css`.
 
 ```html
+<html lang="en" class="ds-internal">
 <link rel="stylesheet" href="../design-system.css">
 <link rel="stylesheet" href="internal-tools.css">
 ```
 
-A tier 2 file may re-point a tier 1 token, which is how a surface gets its accent. It must never introduce a token that reuses a tier 1 name for a different meaning. **Never copy a component into tier 2 to restyle it** — if it needs to look different, that is a token, not a second copy.
+A tier 2 file may re-point a tier 1 token where its surface needs a different value. It must never introduce a token that reuses a tier 1 name for a different meaning. **Never copy a component into tier 2 to restyle it** — if it needs to look different, that is a token, not a second copy.
 
 ## Rules agents break most (verified by our agent tests)
 
