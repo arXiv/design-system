@@ -37,67 +37,38 @@ Everything is committed and pushed to `master`. Verification state:
 
 ## The immediate queue: 24 items of feedback on buttons.html
 
-### State at the end of the 2026-09-17 afternoon session — NOTHING COMMITTED
+### State at the end of 2026-09-18 — everything committed and pushed
 
-Shamsi answered the three questions. Decisions and what is built:
+Shamsi's decisions, and what is built (see git log from fdcdc95 onward):
 
-- **(8) One button family.** `.ds-internal` is a context class in tier 1; it
-  goes on a parent (`<html>` for an internal page, a wrapper on a mixed page)
-  and re-points the accent plus new `--ds-btn-*` construction tokens to lime.
-  Tier 2 no longer sets the accent. All five `docs/internal/*.html` pages carry
-  the class. `buttons.html` internal demo and `internal/tables.html` are on
-  `.ds-btn*`; `.ibtn-*` and `.ctx-internal` are deleted. Internal secondary
-  keeps its lime wash. `.btn-tertiary` is replaced by `.ds-btn-text`.
-- **Done:** (4) (7) (9) (10) (12) (14) (19) (20) (23), and `.ds-btn-destructive`
-  is documented again, so `check-policies.py` passes.
-- **(3)** `outreach/html-papers.html` moved to `docs/sharing/`. The "Outreach
-  sites" link is out of the nav on every page, by her decision; the rules page
-  stays, reachable from DESIGN-POLICIES and AGENTS.md.
-- **Still to do for (8):** `docs/internal/buttons.html` still writes `.btn-*`
-  (135 uses) and tier 2 still defines the family for it. That page needs a
-  rebuild, not a rename: most of it repeats `buttons.html` in lime. Waiting on
-  two decisions from her — `.btn-link` and the internal icon-button variants.
-- **Open, hers:** the olive text button (`--ds-access-lime-deep` #6b7a10) is
-  4.75:1 on white but 4.46 on the canvas and 4.11 on its own hover wash, under
-  the 4.5:1 floor. Proposed a darker olive (#5e6b0e is 5.06 worst case).
-- **Page zones adopted (Shamsi, 2026-09-17).** `.ds-zone-secondary` on the
-  container + one `.ds-full.ds-zone-primary` band; named for role, not colour.
-  Secondary ground is the token `--ds-zone-secondary-bg` (Card Grey in light,
-  canvas in dark, because Card Grey equals the surface in dark). Documented on
-  `organizing-content.html`. Only `buttons.html` is zoned so far. Its shape:
-  intro on the secondary ground; in the primary band one H2 per thing you can
-  build, each example a `.ds-card` with its "Relevant CSS" accordion inside;
-  the internal variant is a `.ds-note--internal`; accessibility essentials sit
-  beside the core component.
-- **The documentation header (`.ds-site-header--light`) is white now.** The
-  arXiv header (the bare class) is unchanged, by her instruction.
-- **Her principle for docs pages:** they use the DS and override or invent
-  nothing; a style must become a documented DS piece first. Agreed next steps,
-  in order: promote the TOC bar from `mockups/public/html-phase1.html` into
-  tier 1 (it has JS, and an open question on how it sits under the site
-  header); move the paper mockup onto the promoted zones and TOC; clear the
-  ~70 page-local rules in `buttons.html` (state grid, forced states, token
-  tables) by promoting or deleting each. The AGENTS.md page spine must be
-  rewritten when the new page shape is settled — not done yet, because 22
-  pages still have the old shape.
-- **Contents bar promoted to tier 1** from `mockups/public/html-phase1.html`:
-  `.ds-toc` (a `<details>`, works with JS off), `.ds-toc-bar`, optional
-  `.ds-toc-bar--sticky`, plus `docs/toc.js`. `verification/gen-anchors.py`
-  now fills the bar's `<ol>` from the page's h2 headings and `--check` fails
-  when it is stale. Documented on `organizing-content.html` with a live demo.
-  On `buttons.html` the bar is STATIC: DESIGN-POLICIES allows sticky chrome on
-  the HTML paper reader only, and the policy change (Shamsi proposed "one
-  sticky header at a time") is waiting on her approval of the wording. The
-  paper mockup still uses its own `.mg-toc-*` copy; moving it over is next.
-- `~/.claude/skills/promote-pattern/SKILL.md` is stale: old stylesheet path,
-  `--arxiv-*` token names, `-styles.html` demo pages, a STATUS list and README
-  index that no longer exist.
-- **The admin-console mockups do not load the design-system stylesheets.** They
-  carry local `.btn-*` copies, so nothing in tier 2 reaches them. They were
-  left untouched.
-
-Shamsi reviewed `docs/buttons.html` and left 24 numbered items. They are the
-next work. Grouped by what they need.
+- **One button family.** `.ds-internal` on a parent re-points the accent and
+  the `--ds-btn-*` construction tokens; internal pages write `.ds-btn*`. The
+  `.btn-*` family and `.btn-link` are GONE from tier 2; tier 2 keeps only the
+  icon-button variants as modifiers on `.ds-btn-icon` (`--constructive`,
+  `--destructive`, `--sm`, `[aria-pressed]`). The internal text-only button
+  is Link Blue (no existing olive passes 4.5:1; she agreed no new colour).
+- **Page zones** (`.ds-zone-secondary` on the container, one
+  `.ds-full.ds-zone-primary` band) and the **contents bar** (`.ds-toc*`,
+  `toc.js`, list generated by `gen-anchors.py`) are in tier 1 and documented
+  on `organizing-content.html`. `buttons.html` uses both; its bar is sticky.
+- **Sticky policy** rewritten in DESIGN-POLICIES: one sticky bar per page,
+  contents bar only, on the paper reader and the docs; approval = being
+  named in the rule, by arXiv's design team.
+- **Documentation header** (`.ds-site-header--light`) is white.
+- **She is now working on `buttons.html` herself**: one page for both
+  surfaces, folding in what `docs/internal/buttons.html` still has (that
+  page is mechanically migrated and renders, but its prose and code
+  samples still describe the old family). Do not restructure `buttons.html`
+  while she has it. Delete row wrap in the internal variant: accepted for now.
+- **Her principle:** docs pages use the DS and invent nothing; promote
+  first. `~/.claude/skills/promote-pattern` was rewritten for this.
+- **Still open:** the ~70 page-local rules in `buttons.html` (state grid,
+  forced `.is-hover/.is-focus/.is-pressed` states, token tables) — promote
+  or delete each, which needs a DS answer for "how a demo shows a state";
+  item 21 (in-progress button state, port from the submission mockup);
+  moving the paper mockup onto the promoted zones and contents bar; the
+  AGENTS.md page spine rewrite once the page shape is settled; items 13,
+  17, 22, 24; renaming the `--light` header variant for role (low).
 
 ### She asked a question — answer before building
 
