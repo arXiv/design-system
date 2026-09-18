@@ -93,8 +93,7 @@ INT_SURF = ["canvas", "surface", "surface-muted", "surface-hover", "surface-hove
 INT_SPECIAL = [("text-on-accent", "accent"), ("text-on-accent", "accent-hover"), ("text-on-accent", "accent-active")]
 INT_STATUS = [("info-fg", "info-bg"), ("success-fg", "success-bg"), ("warning-fg", "warning-bg"), ("error-fg", "error-bg")]
 INT_NEVER = [("border-strong", "borders and arrows (3:1 non-text minimum)"),
-             ("text-disabled", "disabled text only"), ("accent-disabled-fg", "disabled accent buttons only"),
-             ("disabled-fg", "disabled secondary buttons only"), ("danger-disabled-fg", "disabled danger buttons only")]
+             ("text-disabled", "disabled text only"), ("danger-disabled-fg", "disabled destructive icon buttons only")]
 
 def cell(fg_l, bg_l, fg_d, bg_d, var_fg, var_bg):
     rl, rd = ratio(fg_l, bg_l), ratio(fg_d, bg_d)

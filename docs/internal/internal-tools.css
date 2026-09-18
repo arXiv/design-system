@@ -11,9 +11,10 @@
 
    Tier 1 owns everything a second surface could use — the foundation,
    the alert, the tag, the field family, the close control. What lives
-   here is what only internal tools have (the .btn-* family, tables,
-   metadata panels, segmented controls, toggles, type badges, info
-   cards), plus the tokens whose VALUES differ on this surface.
+   here is what only internal tools have (tables, metadata panels,
+   segmented controls, toggles, type badges, info cards, the internal
+   icon-button variants), plus the tokens whose VALUES differ on this
+   surface.
 
    The rule for this file: it may re-point a tier 1 token where this
    surface needs a different value. It must never introduce a token that
@@ -30,12 +31,6 @@
  * the two to drift apart.
  */
 :root {
-
-  /* The accent is not set here. Access Lime arrives with the .ds-internal
-     class in tier 1, which an internal page puts on <html>. These two are
-     the accent's disabled pair, which only this file uses. */
-  --ds-accent-disabled-bg:    var(--ds-access-lime-faded);
-  --ds-accent-disabled-fg:    var(--ds-access-lime-faded-fg);
 
   /* Surfaces. Light matches tier 1; the dark values are a shade
      different because internal screens are dense with tables and want a
@@ -61,397 +56,55 @@
   --ds-danger-active:         #9a0007;
   --ds-danger-wash-hover:     #fdf0f0;
   --ds-danger-wash-active:    #f5d0d0;
-  --ds-danger-disabled-bg:    #f5d0d0;
   --ds-danger-disabled-fg:    #c47878;
 
-  /* Disabled chrome for the secondary tier, which on this surface is a
-     lime fill rather than a border and so cannot simply lose its fill. */
-  --ds-disabled-bg:           #fafafa;
-  --ds-disabled-border:       #d8d8d8;
-  --ds-disabled-fg:           #b0b0b0;
-  --ds-link-disabled:         #b0aba6;
-
 }
 
 
-/* ─── Button Base ───────────────────────────────────────────── */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 10px 20px;
-  font-family: inherit;
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1;
-  border-radius: 6px;
-  cursor: pointer;
-  text-decoration: none;
-  white-space: nowrap;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-  transition:
-    background-color 0.12s ease,
-    border-color 0.12s ease,
-    color 0.12s ease,
-    box-shadow 0.12s ease,
-    transform 0.08s ease;
-}
+/* ─── Icon button, internal variants ─────────────────────────
+   Modifiers on tier 1's .ds-btn-icon, which is a shape composed with a
+   tier: <button class="ds-btn ds-btn-text ds-btn-icon ds-btn-icon--destructive">.
+   Only what internal tools alone have is here: two colour variants for
+   row and toolbar actions, the pressed state of a toggle, and a compact
+   size for dense tables. The button itself is tier 1's. */
 
-.btn:active:not(:disabled) {
-  transform: translateY(1px);
-  box-shadow: none;
-}
+/* Compact — inline field actions and table rows. 29px tall, above the 24px floor. */
+.ds-btn-icon--sm { font-size: 0.625rem; }
 
-.btn:focus-visible {
-  outline: 3px solid var(--ds-focus-ring);
-  outline-offset: 2px;
-}
-
-
-/* ─── Primary ───────────────────────────────────────────────── */
-.btn-primary {
-  background: var(--ds-accent);
-  color: var(--ds-text-on-accent);
-  border: 1px solid transparent;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: var(--ds-accent-hover);
-}
-
-.btn-primary:active:not(:disabled) {
-  background: var(--ds-accent-active);
-}
-
-.btn-primary:disabled {
-  background: var(--ds-accent-disabled-bg);
-  color: var(--ds-accent-disabled-fg);
-  cursor: not-allowed;
-}
-
-/* Simulated states — for documentation display only */
-.btn-primary.sim-hover  { background: var(--ds-accent-hover); }
-.btn-primary.sim-active { background: var(--ds-accent-active); transform: translateY(1px); box-shadow: none; }
-.btn-primary.sim-focus  { box-shadow: 0 0 0 3px var(--ds-focus-ring); outline: none; }
-
-
-/* ─── Secondary ─────────────────────────────────────────────── */
-.btn-secondary {
-  background: var(--ds-accent-wash);
-  color: var(--ds-text);
-  border: 1px solid var(--ds-accent-border);
-}
-
-.btn-secondary:hover:not(:disabled) {
-  background: var(--ds-accent-wash-hover);
-}
-
-.btn-secondary:active:not(:disabled) {
-  background: var(--ds-accent-wash-active);
-  border-color: var(--ds-accent-border-active);
-}
-
-.btn-secondary:disabled {
-  background: var(--ds-disabled-bg);
-  border-color: var(--ds-disabled-border);
-  color: var(--ds-disabled-fg);
-  cursor: not-allowed;
-}
-
-/* Simulated states */
-.btn-secondary.sim-hover  { background: var(--ds-accent-wash-hover); }
-.btn-secondary.sim-active { background: var(--ds-accent-wash-active); border-color: var(--ds-accent-border-active); transform: translateY(1px); box-shadow: none; }
-.btn-secondary.sim-focus  { box-shadow: 0 0 0 3px var(--ds-focus-ring); outline: none; }
-
-
-/* ─── Tertiary ──────────────────────────────────────────────── */
-.btn-tertiary {
-  background: transparent;
-  color: var(--ds-text-muted);
-  border: 1px solid var(--ds-text-muted);
-  box-shadow: none; /* DESIGN-POLICIES, Buttons: no shadow on tertiary/text-only */
-}
-
-.btn-tertiary:hover:not(:disabled) {
-  background: var(--ds-surface-hover-strong);
-  border-color: var(--ds-text-strong);
-  color: var(--ds-text-strong);
-}
-
-.btn-tertiary:active:not(:disabled) {
-  background: var(--ds-surface-active);
-  border-color: var(--ds-text-strong);
-  color: var(--ds-text-strong);
-}
-
-.btn-tertiary:disabled {
-  border-color: var(--ds-text-disabled);
-  color: var(--ds-text-disabled);
-  cursor: not-allowed;
-}
-
-/* Simulated states */
-.btn-tertiary.sim-hover  { background: var(--ds-surface-hover-strong); border-color: var(--ds-text-strong); color: var(--ds-text-strong); }
-.btn-tertiary.sim-active { background: var(--ds-surface-active); border-color: var(--ds-text-strong); color: var(--ds-text-strong); transform: translateY(1px); box-shadow: none; }
-.btn-tertiary.sim-focus  { box-shadow: 0 0 0 3px var(--ds-focus-ring); outline: none; }
-
-
-/* ─── Destructive Button ────────────────────────────────────── */
-/*
- * Uses a neutral danger red (#c62828) — white text 5.62:1, AA ✓.
- * Not associated with any brand or institution.
- *
- * Usage rules:
- *   - Reserve for hard-delete and irreversible actions only.
- *   - Always pair with a confirmation step (dialog or inline confirm).
- *   - Use the solid variant for named text actions (Delete, Remove, Revoke).
- *   - Use the ghost icon variant (.btn-icon-destructive) for table-row
- *     and toolbar delete icons to reduce visual alarm in lists.
- */
-
-.btn-destructive {
-  background: var(--ds-danger);
-  color: #ffffff;
-  border: 1px solid transparent;
-}
-
-.btn-destructive:hover:not(:disabled) {
-  background: var(--ds-danger-hover);
-}
-
-.btn-destructive:active:not(:disabled) {
-  background: var(--ds-danger-active);
-}
-
-.btn-destructive:disabled {
-  background: var(--ds-danger-disabled-bg);
-  color: var(--ds-danger-disabled-fg);
-  cursor: not-allowed;
-}
-
-/* Simulated states */
-.btn-destructive.sim-hover  { background: var(--ds-danger-hover); }
-.btn-destructive.sim-active { background: var(--ds-danger-active); transform: translateY(1px); box-shadow: none; }
-.btn-destructive.sim-focus  { box-shadow: 0 0 0 3px var(--ds-focus-ring); outline: none; }
-
-
-/* ─── Icon Button ───────────────────────────────────────────── */
-/*
- * Icon-only buttons keep a rest-state outline (--ds-border-strong) so
- * they read as pressable without a full tertiary border.
- * REQUIRED: aria-label on the <button>, aria-hidden on the icon, and
- * aria-pressed on anything that toggles. Use the framework tooltip, not
- * the title attribute — title is invisible to keyboard focus.
- * See internal/buttons.html.
- */
-
-.btn-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  background: transparent;
-  border: 1px solid var(--ds-border-strong); /* subtle outline — clarifies click affordance */
-  border-radius: 6px;
-  cursor: pointer;
-  color: var(--ds-text-muted);
-  line-height: 1;
-  flex-shrink: 0;
-  padding: 0;
-  transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
-
-  /* Standard size — height matches the standard text button */
-  width: 36px;
-  height: 36px;
-  font-size: 1.125rem;
-}
-
-/* Compact — for inline field actions and table-row contexts */
-.btn-icon.btn-icon-sm {
-  width: 28px;
-  height: 28px;
-  font-size: 0.875rem;
-}
-
-.btn-icon:hover:not(:disabled) {
-  background: var(--ds-surface-hover-strong);
-  border-color: var(--ds-text-disabled);
-  color: var(--ds-text-strong);
-}
-
-.btn-icon:active:not(:disabled) {
-  background: var(--ds-surface-active);
-  border-color: var(--ds-text-disabled);
-  color: var(--ds-text-strong);
-}
-
-.btn-icon:focus-visible {
-  outline: 3px solid var(--ds-focus-ring);
-  outline-offset: 2px;
-}
-
-.btn-icon:disabled {
-  border-color: var(--ds-border-strong);
-  color: var(--ds-text-disabled);
-  cursor: not-allowed;
-}
-
-/* Constructive variant — edit, add, copy actions */
-.btn-icon.btn-icon-constructive {
-  color: var(--ds-accent-border);
-}
-
-.btn-icon.btn-icon-constructive:hover:not(:disabled) {
+/* Constructive — edit, add, copy */
+.ds-btn-icon--constructive { color: var(--ds-accent-border); }
+.ds-btn-icon--constructive:hover:not(:disabled) {
   background: var(--ds-accent-wash);
   color: var(--ds-accent-border-active);
 }
-
-.btn-icon.btn-icon-constructive:active:not(:disabled) {
+.ds-btn-icon--constructive:active:not(:disabled) {
   background: var(--ds-accent-wash-hover);
   color: var(--ds-accent-border-active);
 }
 
-/* Destructive icon variant — ghost red, for trash/remove icon buttons */
-.btn-icon.btn-icon-destructive {
-  color: var(--ds-danger);
-}
-
-.btn-icon.btn-icon-destructive:hover:not(:disabled) {
+/* Destructive — remove, revoke, delete. Ghost red: a filled red on every
+   table row is alarm, not information. Always pair with a confirmation step. */
+.ds-btn-icon--destructive { color: var(--ds-danger); }
+.ds-btn-icon--destructive:hover:not(:disabled) {
   background: var(--ds-danger-wash-hover);
   color: var(--ds-danger-hover);
 }
-
-.btn-icon.btn-icon-destructive:active:not(:disabled) {
+.ds-btn-icon--destructive:active:not(:disabled) {
   background: var(--ds-danger-wash-active);
   color: var(--ds-danger-active);
 }
+.ds-btn-icon--destructive:disabled { color: var(--ds-danger-disabled-fg); }
 
-.btn-icon.btn-icon-destructive:disabled {
-  color: var(--ds-danger-disabled-fg);
-}
-
-/* Pressed / toggled state */
-.btn-icon[aria-pressed="true"],
-.btn-icon.sim-pressed {
+/* Pressed — a toggle that is on. aria-pressed carries the state; this only shows it. */
+.ds-btn-icon[aria-pressed="true"] {
   background: var(--ds-surface-active);
   border-color: var(--ds-text-disabled);
   color: var(--ds-text-strong);
 }
-
-.btn-icon[aria-pressed="true"]:hover:not(:disabled) {
+.ds-btn-icon[aria-pressed="true"]:hover:not(:disabled) {
   background: var(--ds-surface-hover-strong);
   border-color: var(--ds-text-disabled);
   color: var(--ds-text-strong);
-}
-
-/* Simulated states — documentation only */
-.btn-icon.sim-hover               { background: var(--ds-surface-hover-strong); border-color: var(--ds-text-disabled); color: var(--ds-text-strong); }
-.btn-icon.sim-active              { background: var(--ds-surface-active); border-color: var(--ds-text-disabled); color: var(--ds-text-strong); }
-.btn-icon.sim-focus               { box-shadow: 0 0 0 3px var(--ds-focus-ring); outline: none; }
-.btn-icon.sim-disabled            { border-color: var(--ds-border-strong); color: var(--ds-text-disabled); pointer-events: none; }
-.btn-icon.sim-pressed             { background: var(--ds-surface-active); border-color: var(--ds-text-disabled); color: var(--ds-text-strong); }
-
-.btn-icon.btn-icon-constructive.sim-hover  { background: var(--ds-accent-wash);       color: var(--ds-accent-border-active); }
-.btn-icon.btn-icon-constructive.sim-active { background: var(--ds-accent-wash-hover);  color: var(--ds-accent-border-active); }
-
-.btn-icon.btn-icon-destructive.sim-hover  { background: var(--ds-danger-wash-hover);  color: var(--ds-danger-hover); }
-.btn-icon.btn-icon-destructive.sim-active { background: var(--ds-danger-wash-active); color: var(--ds-danger-active); }
-.btn-icon.btn-icon-destructive.sim-disabled { color: var(--ds-danger-disabled-fg); pointer-events: none; }
-
-
-/* ─── Link-style Button ─────────────────────────────────────── */
-/*
- * A <button> styled as an inline text link. Use for low-emphasis inline
- * actions: "Reset to default", "Clear all", "Show more", "Add another".
- */
-
-.btn-link {
-  /* inline-flex, not inline: a browser blockifies a <button> whatever display
-     is asked for, so `display: inline` here was inert and had been since it
-     was written. Saying inline-flex is honest, keeps it inline-LEVEL so it
-     still flows inside a sentence, and lets min-height apply — which is what
-     gives a control that looks like a link the 24px target a control needs. */
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  background: transparent;
-  border: none;
-  padding: 0;
-  color: var(--ds-text-muted);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  line-height: inherit;
-  border-radius: 2px;
-}
-
-.btn-link:hover:not(:disabled) {
-  text-decoration-color: var(--ds-accent-border);
-}
-
-.btn-link:active:not(:disabled) {
-  text-decoration-color: var(--ds-accent-border);
-  text-decoration-thickness: 2px;
-}
-
-.btn-link:focus-visible {
-  outline: 3px solid var(--ds-focus-ring);
-  outline-offset: 2px;
-}
-
-.btn-link:disabled {
-  color: var(--ds-link-disabled);
-  text-decoration: none;
-  cursor: not-allowed;
-}
-
-/* Simulated states */
-.btn-link.sim-hover  { text-decoration-color: var(--ds-accent-border); }
-.btn-link.sim-active { text-decoration-color: var(--ds-accent-border); text-decoration-thickness: 2px; }
-.btn-link.sim-focus  { box-shadow: 0 0 0 3px var(--ds-focus-ring); outline: none; }
-.btn-link.sim-disabled { color: var(--ds-link-disabled); text-decoration: none; pointer-events: none; }
-
-
-/* ─── Icon Inside Text Button ───────────────────────────────── */
-.btn .bi,
-.btn svg.btn-icon-svg {
-  font-size: 1.15em;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
-
-/* ─── Loading / Pending State ───────────────────────────────── */
-.btn.is-loading {
-  cursor: wait;
-  pointer-events: none;
-  opacity: 0.85;
-}
-
-@keyframes btn-spin {
-  to { transform: rotate(360deg); }
-}
-
-.btn-spinner {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border: 2px solid currentColor;
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: btn-spin 0.65s linear infinite;
-  flex-shrink: 0;
-}
-
-/* Simulated loading state — documentation only */
-.btn.sim-loading {
-  cursor: wait;
-  pointer-events: none;
-  opacity: 0.85;
 }
 
 
@@ -607,43 +260,23 @@
 
     --ds-text-strong:           #d4cfc9;  /* 11.22:1 on dark ✓ */
 
-    /* The accent's disabled pair. The dark washes live with .ds-internal in tier 1. */
-    --ds-accent-disabled-bg:    #252f08;
-    --ds-accent-disabled-fg:    #5a6b30;
 
     /* Destructive, which exists only on this surface. */
     --ds-danger-wash-hover:     #2a0808;
     --ds-danger-wash-active:    #380d0d;
-    --ds-danger-disabled-bg:    #3a0f0f;
     --ds-danger-disabled-fg:    #864040;
-
-    --ds-disabled-bg:           #1e1e1e;
-    --ds-disabled-border:       #2e2e2e;
-    --ds-disabled-fg:           #4e4e4e;
-    --ds-link-disabled:         #484340;
 
   }
 
-  /* Secondary button — dark lime-tint bg needs lime text, not near-black */
-  html:not([data-theme="light"]) .btn-secondary         { color: var(--ds-accent); }
-  html:not([data-theme="light"]) .btn-secondary:disabled,
-  html:not([data-theme="light"]) .btn-secondary.sim-disabled { color: var(--ds-disabled-fg); }
+  /* Destructive icon — #c62828 is only 3.09:1 on dark; a lighter red carries it */
+  html:not([data-theme="light"]) .ds-btn-icon--destructive { color: #e57373; }
+  html:not([data-theme="light"]) .ds-btn-icon--destructive:hover:not(:disabled) { background: var(--ds-danger-wash-hover);  color: #ef9a9a; }
+  html:not([data-theme="light"]) .ds-btn-icon--destructive:active:not(:disabled) { background: var(--ds-danger-wash-active); color: #ef9a9a; }
+  html:not([data-theme="light"]) .ds-btn-icon--destructive:disabled { color: var(--ds-danger-disabled-fg); }
 
-  /* Destructive icon — #c62828 only 3.09:1 on dark; use lighter red + matching border */
-  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive                             { color: #e57373; border-color: #e57373; }
-  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive:hover:not(:disabled),
-  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive.sim-hover                   { background: var(--ds-danger-wash-hover);  border-color: #ef9a9a; color: #ef9a9a; }
-  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive:active:not(:disabled),
-  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive.sim-active                  { background: var(--ds-danger-wash-active); border-color: #ef9a9a; color: #ef9a9a; }
-  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive:disabled,
-  html:not([data-theme="light"]) .btn-icon.btn-icon-destructive.sim-disabled                { color: var(--ds-danger-disabled-fg); border-color: var(--ds-border-strong); }
-
-  /* Constructive icon — lime border signals variant on dark bg */
-  html:not([data-theme="light"]) .btn-icon.btn-icon-constructive                            { border-color: var(--ds-accent); }
-  html:not([data-theme="light"]) .btn-icon.btn-icon-constructive:hover:not(:disabled),
-  html:not([data-theme="light"]) .btn-icon.btn-icon-constructive.sim-hover                  { background: #2e4a0a; border-color: var(--ds-accent); color: var(--ds-accent); }
-  html:not([data-theme="light"]) .btn-icon.btn-icon-constructive:active:not(:disabled),
-  html:not([data-theme="light"]) .btn-icon.btn-icon-constructive.sim-active                 { background: #253a08; border-color: var(--ds-accent); color: var(--ds-accent); }
+  /* Constructive icon — lime holds its light value, so the label is lime on dark */
+  html:not([data-theme="light"]) .ds-btn-icon--constructive:hover:not(:disabled) { background: #2e4a0a; color: var(--ds-accent); }
+  html:not([data-theme="light"]) .ds-btn-icon--constructive:active:not(:disabled) { background: #253a08; color: var(--ds-accent); }
 
   /* Info card — restore original charcoal + lime treatment in dark mode */
   html:not([data-theme="light"]) .info-card                 { background: #2e2b26; }
@@ -684,43 +317,23 @@
 
   --ds-text-strong:           #d4cfc9;  /* 11.22:1 on dark ✓ */
 
-  /* The accent's disabled pair. The dark washes live with .ds-internal in tier 1. */
-  --ds-accent-disabled-bg:    #252f08;
-  --ds-accent-disabled-fg:    #5a6b30;
 
   /* Destructive, which exists only on this surface. */
   --ds-danger-wash-hover:     #2a0808;
   --ds-danger-wash-active:    #380d0d;
-  --ds-danger-disabled-bg:    #3a0f0f;
   --ds-danger-disabled-fg:    #864040;
-
-  --ds-disabled-bg:           #1e1e1e;
-  --ds-disabled-border:       #2e2e2e;
-  --ds-disabled-fg:           #4e4e4e;
-  --ds-link-disabled:         #484340;
 
 }
 
-/* Secondary button — dark lime-tint bg needs lime text, not near-black */
-[data-theme="dark"] .btn-secondary         { color: var(--ds-accent); }
-[data-theme="dark"] .btn-secondary:disabled,
-[data-theme="dark"] .btn-secondary.sim-disabled { color: var(--ds-disabled-fg); }
+/* Destructive icon — #c62828 is only 3.09:1 on dark; a lighter red carries it */
+[data-theme="dark"] .ds-btn-icon--destructive { color: #e57373; }
+[data-theme="dark"] .ds-btn-icon--destructive:hover:not(:disabled) { background: var(--ds-danger-wash-hover);  color: #ef9a9a; }
+[data-theme="dark"] .ds-btn-icon--destructive:active:not(:disabled) { background: var(--ds-danger-wash-active); color: #ef9a9a; }
+[data-theme="dark"] .ds-btn-icon--destructive:disabled { color: var(--ds-danger-disabled-fg); }
 
-/* Destructive icon — #c62828 only 3.09:1 on dark; use lighter red + matching border */
-[data-theme="dark"] .btn-icon.btn-icon-destructive                             { color: #e57373; border-color: #e57373; }
-[data-theme="dark"] .btn-icon.btn-icon-destructive:hover:not(:disabled),
-[data-theme="dark"] .btn-icon.btn-icon-destructive.sim-hover                   { background: var(--ds-danger-wash-hover);  border-color: #ef9a9a; color: #ef9a9a; }
-[data-theme="dark"] .btn-icon.btn-icon-destructive:active:not(:disabled),
-[data-theme="dark"] .btn-icon.btn-icon-destructive.sim-active                  { background: var(--ds-danger-wash-active); border-color: #ef9a9a; color: #ef9a9a; }
-[data-theme="dark"] .btn-icon.btn-icon-destructive:disabled,
-[data-theme="dark"] .btn-icon.btn-icon-destructive.sim-disabled                { color: var(--ds-danger-disabled-fg); border-color: var(--ds-border-strong); }
-
-/* Constructive icon — lime border signals variant on dark bg */
-[data-theme="dark"] .btn-icon.btn-icon-constructive                            { border-color: var(--ds-accent); }
-[data-theme="dark"] .btn-icon.btn-icon-constructive:hover:not(:disabled),
-[data-theme="dark"] .btn-icon.btn-icon-constructive.sim-hover                  { background: #2e4a0a; border-color: var(--ds-accent); color: var(--ds-accent); }
-[data-theme="dark"] .btn-icon.btn-icon-constructive:active:not(:disabled),
-[data-theme="dark"] .btn-icon.btn-icon-constructive.sim-active                 { background: #253a08; border-color: var(--ds-accent); color: var(--ds-accent); }
+/* Constructive icon — lime holds its light value, so the label is lime on dark */
+[data-theme="dark"] .ds-btn-icon--constructive:hover:not(:disabled) { background: #2e4a0a; color: var(--ds-accent); }
+[data-theme="dark"] .ds-btn-icon--constructive:active:not(:disabled) { background: #253a08; color: var(--ds-accent); }
 
 /* Info card — restore original charcoal + lime treatment in dark mode */
 [data-theme="dark"] .info-card                 { background: #2e2b26; }

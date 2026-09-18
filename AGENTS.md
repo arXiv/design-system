@@ -28,7 +28,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Anything with color | `docs/color-mapping.md`, `docs/colors.html` | tokens in that context's stylesheet |
 | Typography, text sizes | `docs/typography.html` | `--ds-font-*` |
 | Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--ds-space-*` |
-| Buttons | `docs/buttons.html` — both surfaces; `docs/internal/buttons.html` for the internal-only controls | `.ds-btn*` on both surfaces (incl. `.ds-btn-text`, `.ds-btn-destructive`, `.on-tint` / `.on-dark`); internal tools get their colour from `.ds-internal` on a parent, never from a second class family. `.btn-icon*` and `.btn-link` are internal-only |
+| Buttons | `docs/buttons.html` — both surfaces; `docs/internal/buttons.html` for the internal-only icon-button variants | `.ds-btn*` on both surfaces (incl. `.ds-btn-text`, `.ds-btn-destructive`, `.ds-btn-icon`, `.on-tint` / `.on-dark`); internal tools get their colour from `.ds-internal` on a parent, never from a second class family. Internal-only: `.ds-btn-icon--constructive` / `--destructive` / `--sm` and `[aria-pressed]`, in tier 2 |
 | Alerts, status & feedback messages | `docs/alerts.html` — one page, both surfaces | `.ds-alert*` — never rebuild its chrome |
 | Cards, rails, page organization | `docs/organizing-content.html` | card conventions, dl row grammar, `.ds-acc-rail` in a sidebar; `.ds-full` for an edge-to-edge band; `.ds-zone-secondary` on the container + one `.ds-full.ds-zone-primary` band for a zoned page |
 | A labelled aside — a requirement, guidance, or how a component differs in internal tools | `docs/organizing-content.html` *Notes* | `.ds-note` (+ `--essential` / `--internal`), `.ds-note-label`, `.ds-note-gotcha` — never a bespoke tinted box, and never an alert |
@@ -52,7 +52,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 
 **Stylesheets are tiered.** `docs/design-system.css` is **tier 1** — the foundation and every component more than one surface could use. Everything loads it.
 
-`docs/internal/internal-tools.css` is **tier 2 for internal tools**, and is *not* self-contained: an internal page loads tier 1 first, then this. It holds only what is internal-only (tables, metadata panels, info cards, the internal icon and link-style buttons) plus the tokens whose values differ on that surface.
+`docs/internal/internal-tools.css` is **tier 2 for internal tools**, and is *not* self-contained: an internal page loads tier 1 first, then this. It holds only what is internal-only (tables, metadata panels, info cards, the internal icon-button variants) plus the tokens whose values differ on that surface.
 
 **The accent comes from a class, not from a file.** `.ds-internal` lives in tier 1 and re-points `--ds-accent` and the button colours to Access Lime for everything inside it. An internal page puts it on `<html>`; a page that shows both surfaces puts it on a wrapper.
 
