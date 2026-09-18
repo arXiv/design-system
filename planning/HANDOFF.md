@@ -62,6 +62,10 @@ Shamsi's decisions, and what is built (see git log from fdcdc95 onward):
   while she has it. Delete row wrap in the internal variant: accepted for now.
 - **Her principle:** docs pages use the DS and invent nothing; promote
   first. `~/.claude/skills/promote-pattern` was rewritten for this.
+- **Order of work, hers (2026-09-18):** finish cleaning up the documentation
+  first; then testing; then circle back and move the mockups onto the DS
+  (the paper mockup's own `.mg-toc-*` bar and zone grounds are the first
+  case). Leave the mockups alone until then.
 - **Still open:** the ~70 page-local rules in `buttons.html` (state grid,
   forced `.is-hover/.is-focus/.is-pressed` states, token tables) — promote
   or delete each, which needs a DS answer for "how a demo shows a state";
