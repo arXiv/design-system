@@ -1849,6 +1849,10 @@ html:has(.ds-modal[open]) {
   right: var(--ds-space-3);
   margin: 0;
 }
+/* Folded, the mark needs the card's corner to itself: content that fills the
+   card, such as a band, would otherwise sit under it. */
+.ds-card:has(> .ds-marginalia) { padding-right: calc(var(--ds-space-6) + 28px); }
+.ds-card:has(> .ds-marginalia) > .ds-acc:last-child { margin-right: calc(-1 * (var(--ds-space-6) + 28px)); }
 .ds-marginalia > summary {
   display: inline-flex;
   align-items: center;
@@ -1887,6 +1891,8 @@ html:has(.ds-modal[open]) {
       width: var(--ds-marginalia-width);
     }
     .ds-marginalia > summary { display: none; }
+    .ds-card:has(> .ds-marginalia) { padding-right: var(--ds-space-6); }
+    .ds-card:has(> .ds-marginalia) > .ds-acc:last-child { margin-right: calc(-1 * var(--ds-space-6)); }
     .ds-marginalia::details-content { content-visibility: visible; display: block; }
     .ds-marginalia-body {
       position: static;
