@@ -404,7 +404,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   font-size: 0.875rem;
   line-height: 1.6;
   background: var(--ds-chrome);
-  color: var(--ds-surface-muted);
+  color: var(--ds-card-grey);   /* a fixed light value: the chrome ground is dark in both themes */
   padding: var(--ds-space-4);
   border-radius: 6px;
   overflow-x: auto;                 /* long lines scroll; the page never does */
@@ -1224,7 +1224,8 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
 
 /* Remove control, for tags the user can take off. Inherits the tag's color
    so it never becomes a second signal; the accessible name comes from the
-   consumer (aria-label="Remove cs.AI"), never from the glyph. */
+   consumer — an .is-sr-only span ("Remove cs.AI") beside the aria-hidden
+   glyph, never the glyph itself. */
 .ds-tag-remove {
   display: inline-flex;
   align-items: center;
@@ -2411,6 +2412,18 @@ html:has(.ds-modal[open]) {
   --ds-btn-secondary-fg-hover:     var(--ds-text);
   --ds-btn-text-bg-hover:          var(--ds-accent-wash);
   --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
+}
+/* The chrome tag takes the info palette here: the accent tints are lime,
+   and a lime chrome tag would read as a status, not as chrome. */
+.ds-internal .ds-tag--chrome {
+  background: var(--ds-info-bg);
+  border-color: var(--ds-info-border);
+  color: var(--ds-info-fg);
+}
+.ds-internal a.ds-tag:hover,
+.ds-internal button.ds-tag:hover {
+  background: var(--ds-surface-active);
+  color: var(--ds-link-hover);
 }
 
 /* Internal tools, dark. Lime holds its light value; the wash goes to a
