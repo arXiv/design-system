@@ -6,129 +6,8 @@
   <title>Buttons — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
 <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
-  <style>
-/* Context cards (public vs internal) */
-.context-card h3 { display: flex; align-items: center; gap:var(--ds-gap-glyph); }
-    .context-dot { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.15); }
-/* States — stackable flexbox columns. */
-    .state-flex { display: flex; flex-wrap: wrap; gap:var(--ds-space-tight) var(--ds-space-3); align-items: flex-start; margin-bottom:var(--ds-space-3); }
-.btn-pair { }
-    .state-label { font-family: var(--ds-font-condensed); font-weight: 600; font-size: 10px; color: var(--ds-text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
-
-    .live-row { padding: 16px 18px; background: var(--ds-surface); border: 1px solid var(--ds-surface-muted); border-radius: 6px; margin-top:var(--ds-space-1); }
-    .live-row::before { content: ''; font-size: 12px; color: var(--ds-text-muted); margin-right:var(--ds-space-2); }
-    .tinted-row { background: #e8f4ff; border: 1px solid #d0e3f4; border-radius: 6px; padding: 16px 18px; margin-top:var(--ds-space-1); display: flex; gap: var(--ds-space-tight); align-items: center; flex-wrap: wrap; }
-    .tinted-row + .tinted-row { margin-top:var(--ds-space-3); }
-    .tinted-row.warm { background: var(--ds-surface-muted); border-color: var(--ds-border); }
-
-    /* Forced states for the public state columns — same recipe as
-       buttons.html. Display-only. */
-    .ds-btn-primary.is-hover { background: linear-gradient(var(--ds-accent-hover), var(--ds-accent-hover)) padding-box, linear-gradient(to bottom, var(--ds-btn-primary-rim-hover-a), var(--ds-btn-primary-rim-hover-b)) border-box; box-shadow: inset 0 0 8px color-mix(in srgb, var(--ds-btn-primary-glow) 10%, transparent), 0 1px 3px rgba(0,0,0,0.12); }
-    .ds-btn-primary.is-focus { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
-    .ds-btn-primary.is-pressed { transform: translateY(1px); background: linear-gradient(var(--ds-accent), var(--ds-accent)) padding-box, linear-gradient(var(--ds-btn-primary-rim-active), var(--ds-btn-primary-rim-active)) border-box; box-shadow: inset 0 0 10px color-mix(in srgb, var(--ds-btn-primary-glow) 35%, transparent); }
-    .ds-btn-secondary.is-hover { background: linear-gradient(var(--ds-btn-secondary-bg-hover), var(--ds-btn-secondary-bg-hover)) padding-box, linear-gradient(to bottom, var(--ds-btn-secondary-rim-hover-a), var(--ds-btn-secondary-rim-hover-b)) border-box; color: var(--ds-btn-secondary-fg-hover); box-shadow: inset 0 0 8px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.08); }
-    .ds-btn-secondary.is-focus { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
-    .ds-btn-secondary.is-pressed { transform: translateY(1px); background: linear-gradient(var(--ds-btn-secondary-bg-active), var(--ds-btn-secondary-bg-active)) padding-box, linear-gradient(var(--ds-btn-secondary-rim-active), var(--ds-btn-secondary-rim-active)) border-box; box-shadow: inset 0 0 10px rgba(0,0,0,0.13); }
-    .ds-btn-text.is-hover { background: var(--ds-btn-text-bg-hover); color: var(--ds-btn-text-fg-hover); }
-    .ds-btn-text.is-focus { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
-    .ds-btn-text.is-pressed { transform: translateY(1px); background: var(--ds-btn-text-bg-active); color: var(--ds-btn-text-fg-hover); }
-    /* The ground a close control is shown on. Colour comes from the inline style; the control inherits it. */
-    .close-ground { display: inline-flex; padding: 6px 8px; border-radius: 6px; }
-    .dark-row { background: var(--ds-accent-strong); border-radius: 6px; padding: 18px; margin-top:var(--ds-space-1); display: flex; gap: var(--ds-space-tight); align-items: center; flex-wrap: wrap; }
-
-    /* ── Form action demos ("Buttons in forms") — layout helpers only. Every
-       button in that section is a real .ds-btn class from
-       design-system.css; nothing here restyles one. Panel chrome
-       matches .live-row, minus its "Live" label. ── */
-    .form-demo { background: var(--ds-surface); border: 1px solid var(--ds-surface-muted); border-radius: 6px; padding: 16px 18px; margin-top:var(--ds-space-1); }
-    .form-actions { margin-top:var(--ds-space-2); }
-    .form-actions.split { justify-content: space-between; }
-/* Optical alignment: a text button has 10px of padding and no border, so it
-       hangs to the right of the field edge above it until the padding is pulled back. */
-    .btn-flush { margin-left:-10px; }
-    /* The reason a blocked action cannot be taken: .ds-hint sits under the
-       button it explains, so it tracks the right-aligned action row. */
-    .form-actions + .ds-hint { text-align: right; }
-    .repeat-row { align-items: flex-end; margin-bottom:10px; }
-    .repeat-row .ds-field { flex: 1 1 auto; margin-bottom:0; }
-
-
-    /* Work in flight. Drawn from currentColor, sized in em like a button icon —
-       no new value of any kind. The gap in the ring and the rotation appear only
-       where motion is welcome; under reduced motion it is a still ring and the
-       label carries the state. */
-    .btn-spin { width: 1em; height: 1em; flex: none; border: 2px solid currentColor; border-radius: 50%; }
-    @media (prefers-reduced-motion: no-preference) {
-      .btn-spin { border-top-color: transparent; animation: btn-spin 0.8s linear infinite; }
-    }
-    @keyframes btn-spin { to { transform: rotate(360deg); } }
-
-    /* Token tables */
-    .token-table { margin-top:var(--ds-space-2); }
-    .token-table th, .token-table td { text-align: left; padding: 8px 12px; font-size: 12px; border-top: 1px solid var(--ds-surface-muted); }
-    .token-table thead th { background: var(--ds-surface-muted); color: var(--ds-text-muted); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em; border-top: none; }
-    .token-table code { font-family: var(--ds-font-mono); font-size: 11px; color: var(--ds-link); background: none; padding: 0; }
-    .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.08); vertical-align: -2px; margin-right:6px; }
-pre .c { color: var(--ds-border-strong); }
-    pre .k { color: var(--ds-accent-hover); }
-    /* Syntax colours are component-internal constants, the category
-       color-mapping.md exempts from the palette (like the button-border
-       gradient stops). All three clear AA on the code ground: comment
-       4.81:1, keyword 12.91:1, string 14.26:1. */
-    pre .s { color: #d4ecff; }
-.notes li { margin-bottom:var(--ds-space-1); }
-  
-    /* ── Reference beside the demo it describes ──
-       .ds-acc is the design system's own accordion, from
-       design-system.css — it brings its own +/− marker, border and
-       focus ring, so nothing here restyles it. The wrapper only holds the
-       page measure. Native <details>, never JS tabs: collapsed content stays
-       in the DOM and in the source, so a reader of the file sees everything
-       a reader of the page can expand. */
-    .ref { margin-top:var(--ds-space-3); }
-    .ref .token-table, .ref pre.code { max-width: 100%; }
-    .ref .token-table + dl, .ref dl + pre.code, .ref .token-table + pre.code { margin-top:var(--ds-space-3); }
-
-    /* Scenario grid — related action rows sit side by side instead of each
-       taking a full-width block with its own heading. */
-    .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:var(--ds-space-block); align-items: start; }
-    .demo-grid .form-demo { max-width: none; margin-top:0; }
-    .demo-grid .ds-panel-label { margin:0 0 6px; }
-
-  
-    /* Inline links in page copy. These sit on the page canvas. Nav links
-       carry their own, more specific rules. */
-
-    /* ── Staging: the paper's small content actions, reproduced from
-       mockups/public/html-phase1.html (.fig-chip / .eqn-chip). Not a
-       promoted class yet — see the section for what would make it one.
-       If the mockup changes, update it THERE first. ── */
-    .chip-demo-stage {
-      position: relative; max-width: 460px; padding: 22px 24px 30px;
-      background: var(--ds-surface); border: 1px solid var(--ds-border);
-      border-radius: 8px; text-align: center;
-      font-family: var(--ds-font-mono); font-size: 15px; color: var(--ds-text-muted);
-    }
-    .chip-demo-pill {
-      position: absolute; bottom: -13px; left: 50%; transform: translateX(-50%);
-      display: flex; align-items: center; gap: var(--ds-space-3);
-      padding: 3px 12px; background: var(--ds-surface);
-      border: 1px solid var(--ds-border); border-radius: 999px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    }
-    .chip-demo {
-      display: inline-flex; align-items: center; gap: 5px; padding: 0 3px;
-      font-family: var(--ds-font-sans); font-size: 11px; font-weight: 500;
-      color: var(--ds-text-muted); background: none; border: none;
-      cursor: pointer; text-decoration: none; line-height: 1.3;
-      white-space: nowrap; min-height: 24px; margin-block: -5px;
-    }
-    .chip-demo:hover { color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; }
-    .chip-demo:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; border-radius: 3px; }
-    .chip-demo.is-cta { color: var(--ds-link); font-weight: 600; }
-    .chip-demo svg { width: 1em; height: 1em; flex-shrink: 0; }
-</style>
 </head>
 <body class="ds-page">
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
@@ -184,27 +63,14 @@ pre .c { color: var(--ds-border-strong); }
   <button type="button" class="ds-theme-toggle"></button>
   <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
+
 <div class="ds-container ds-zone-secondary">
 
   <header class="ds-page-header">
     <h1>Buttons</h1>
-    <p>Every arXiv button shares the same mechanical spec. Color is used to differentiate by context (<a href="#button-tiers">public</a> vs <a href="#internal-variant">internal</a> pages) type (primary, secondary, etc), and state (default, hover, pressed, and more).</p>
-
+    <p>Each arXiv button family shares the same mechanical spec, with color used to differentiate by context: Open Blue for public pages and Access Lime for internal tools. Public pages are everywhere a reader or author can access. Internal pages include arXiv Check and the Admin Console.</p>
   </header>
 
-  <!-- ═════════ Intro zone — on the page canvas ═════════ -->
-  <section class="section">
-    <h2 class="section-title" id="one-system-two-contexts">One arXiv, two contexts</h2>
-    <p class="ds-section-desc">The primary color is determined by the context where the interface is being built: Open Blue for public pages and Access Lime for internal tools. Keep scrolling for details or review the <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> documentation.</p>
-
-    <div class="ds-alert ds-alert-error note-alert">
-      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
-      <div class="ds-alert-content">
-        <p class="ds-alert-title">Never mix the two accent colors</p>
-        <p>A lime primary on a public page, or an Open Blue primary in an internal tool, is a policy violation. If the context is ambiguous, settle it first and record the answer in a code comment.</p>
-      </div>
-    </div>
-  </section>
 
   <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
   <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
@@ -217,13 +83,13 @@ pre .c { color: var(--ds-border-strong); }
         </summary>
         <nav class="ds-toc-menu" aria-label="Contents">
           <ol>
-            <li><a href="#one-system-two-contexts">One arXiv, two contexts</a></li>
             <li><a href="#button-tiers">Button tiers</a></li>
-            <li><a href="#on-dark-surfaces">On dark surfaces</a></li>
-            <li><a href="#button-groups">Button groups</a></li>
-            <li><a href="#icon-only-buttons">Icon-only buttons</a></li>
+            <li><a href="#links-styled-as-buttons">Links styled as buttons</a></li>
             <li><a href="#small-actions-attached-to-content">Small actions attached to content</a></li>
             <li><a href="#the-close-control">The close control</a></li>
+            <li><a href="#icon-only-buttons">Icon-only buttons</a></li>
+            <li><a href="#on-dark-surfaces">On dark surfaces</a></li>
+            <li><a href="#button-groups">Button groups</a></li>
           </ol>
         </nav>
       </details>
@@ -236,51 +102,45 @@ pre .c { color: var(--ds-border-strong); }
   <!-- ───────── Button tiers ───────── -->
   <section class="section">
     <h2 class="section-title" id="button-tiers">Button tiers</h2>
-    <p class="ds-section-desc">Public pages are distinguished by the use of Open Blue as the primary color. Pages include everything a reader or author sees on arxiv.org: abstracts, HTML papers, search, and more. Three button tiers: primary, secondary, and a quiet text-only button.</p>
+    <p class="ds-section-desc">arXiv has three button tiers: primary, secondary, and a quiet text-only button (text links can be found on the <a href="typography.html">typography</a> page).</p>
     <div class="ds-card ref">
-    <div class="state-flex">
-      <div class="ds-btn-group ds-btn-group--stack state-cell">
-        <div class="ds-btn-group ds-btn-group--stack btn-pair">
-          <button class="ds-btn ds-btn-primary" type="button">HTML</button>
-          <button class="ds-btn ds-btn-secondary" type="button">TeX Source</button>
-          <button class="ds-btn ds-btn-text" type="button">Copy link</button>
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">When to use a text button vs a text link: Use a text button for actions that do not navigate to a new page. Use a text link when navigating to a new page or to an anchor link on the same page.</p>
+      </details>
+      <div class="state-flex">
+        <div class="ds-btn-group ds-btn-group--stack state-cell">
+          <span class="state-label">Public</span>
+          <div class="ds-btn-group ds-btn-group--stack btn-pair">
+            <button class="ds-btn ds-btn-primary" type="button">Primary</button>
+            <button class="ds-btn ds-btn-secondary" type="button">Secondary</button>
+            <button class="ds-btn ds-btn-text" type="button">Text-only</button>
+          </div>
         </div>
-        <span class="state-label">Default</span>
-      </div>
-      <div class="ds-btn-group ds-btn-group--stack state-cell">
-        <div class="ds-btn-group ds-btn-group--stack btn-pair">
-          <button class="ds-btn ds-btn-primary is-hover" type="button">HTML</button>
-          <button class="ds-btn ds-btn-secondary is-hover" type="button">TeX Source</button>
-          <button class="ds-btn ds-btn-text is-hover" type="button">Copy link</button>
+        <div class="ds-btn-group ds-btn-group--stack state-cell ds-internal">
+          <span class="state-label">Internal</span>
+          <div class="ds-btn-group ds-btn-group--stack btn-pair">
+            <button class="ds-btn ds-btn-primary" type="button">Primary</button>
+            <button class="ds-btn ds-btn-secondary" type="button">Secondary</button>
+            <button class="ds-btn ds-btn-text" type="button">Text-only</button>
+          </div>
         </div>
-        <span class="state-label">Hover</span>
-      </div>
-      <div class="ds-btn-group ds-btn-group--stack state-cell">
-        <div class="ds-btn-group ds-btn-group--stack btn-pair">
-          <button class="ds-btn ds-btn-primary is-focus" type="button">HTML</button>
-          <button class="ds-btn ds-btn-secondary is-focus" type="button">TeX Source</button>
-          <button class="ds-btn ds-btn-text is-focus" type="button">Copy link</button>
+        <div class="ds-btn-group ds-btn-group--stack state-cell">
+          <span class="state-label">Disabled</span>
+          <div class="ds-btn-group ds-btn-group--stack btn-pair">
+            <button class="ds-btn ds-btn-primary" type="button" disabled>Primary</button>
+            <button class="ds-btn ds-btn-secondary" type="button" disabled>Secondary</button>
+            <button class="ds-btn ds-btn-text" type="button" disabled>Text-only</button>
+          </div>
         </div>
-        <span class="state-label">Focus</span>
-      </div>
-      <div class="ds-btn-group ds-btn-group--stack state-cell">
-        <div class="ds-btn-group ds-btn-group--stack btn-pair">
-          <button class="ds-btn ds-btn-primary is-pressed" type="button">HTML</button>
-          <button class="ds-btn ds-btn-secondary is-pressed" type="button">TeX Source</button>
-          <button class="ds-btn ds-btn-text is-pressed" type="button">Copy link</button>
+        <div class="ds-btn-group ds-btn-group--stack state-cell">
+          <span class="state-label">Destructive</span>
+          <div class="ds-btn-group ds-btn-group--stack btn-pair">
+            <button class="ds-btn ds-btn-destructive" type="button">Destructive</button>
+          </div>
         </div>
-        <span class="state-label">Pressed</span>
       </div>
-      <div class="ds-btn-group ds-btn-group--stack state-cell">
-        <div class="ds-btn-group ds-btn-group--stack btn-pair">
-          <button class="ds-btn ds-btn-primary" type="button" disabled>HTML</button>
-          <button class="ds-btn ds-btn-secondary" type="button" disabled>TeX Source</button>
-          <button class="ds-btn ds-btn-text" type="button" disabled>Copy link</button>
-        </div>
-        <span class="state-label">Disabled</span>
-      </div>
-    </div>
-      <details class="ds-acc"><summary>Relevant CSS</summary>
+      <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
           <table class="ds-table-framed token-table">
             <thead><tr><th>Class</th><th>Fill</th><th>Use for</th></tr></thead>
@@ -291,153 +151,299 @@ pre .c { color: var(--ds-border-strong); }
             </tbody>
           </table>
           <dl>
-            <dt>Construction</dt><dd>Both filled variants share the V3 build: a 1.5px gradient border (lighter top &rarr; darker bottom) from dual <code>padding-box</code>/<code>border-box</code> backgrounds, plus an inner vignette. Hover brightens; press drops 1px and deepens the vignette.</dd>
-            <dt>Quiet tier</dt><dd>The text button borrows the link&rsquo;s quietness, not its identity: Link Blue, never underlined, and hover is a background wash &mdash; the same feedback the other buttons give. Underlines stay with links, so a reader can still tell &ldquo;this navigates&rdquo; from &ldquo;this acts here.&rdquo;</dd>
+            <dt>Construction</dt><dd>Both filled variants share the V3 build: a 1.5px gradient border (lighter top → darker bottom) from dual <code>padding-box</code>/<code>border-box</code> backgrounds, plus an inner vignette. Hover brightens; press drops 1px and deepens the vignette.</dd>
+            <dt>Quiet tier</dt><dd>The text button borrows the link’s quietness, not its identity: Link Blue, never underlined, and hover is a background wash — the same feedback the other buttons give. Underlines stay with links, so a reader can still tell “this navigates” from “this acts here.”</dd>
             <dt>No outline tier</dt><dd>The secondary is already white fill plus border, and on a white canvas a transparent fill is the same pixels as a white one.</dd>
             <dt>Icons</dt><dd>Any <code>.ds-btn</code> accepts an inline SVG. The stylesheet sizes it in <code>em</code>, blocks the baseline gap, and stops it shrinking beside a long label. Set <code>stroke="currentColor"</code> and nothing else.</dd>
-            <dt>Disabled</dt><dd>One flat <code>--ds-surface-muted</code> fill for every variant. An action that is merely not available yet takes <code>aria-disabled</code> instead &mdash; see <a href="forms.html#validation">Forms</a>.</dd>
-          </dl><pre><code><span class="c">&lt;!-- Primary / secondary / text --&gt;</span><span class="k">&lt;a</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-primary"</span> <span class="k">href</span>=<span class="s">"/html/2604.22725v1"</span><span class="k">&gt;</span>HTML<span class="k">&lt;/a&gt;</span><span class="k">&lt;a</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-secondary"</span> <span class="k">href</span>=<span class="s">"/src/2604.22725v1"</span><span class="k">&gt;</span>TeX Source<span class="k">&lt;/a&gt;</span><span class="k">&lt;button</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-text"</span> <span class="k">type</span>=<span class="s">"button"</span><span class="k">&gt;</span>Copy link<span class="k">&lt;/button&gt;</span></code></pre>
+            <dt>Disabled</dt><dd>One flat <code>--ds-surface-muted</code> fill for every variant. An action that is merely not available yet takes <code>aria-disabled</code> instead — see <a href="forms.html#validation">Forms</a>.</dd>
+          </dl>
+<pre><code>&lt;!-- Primary / secondary / text --&gt;
+&lt;a class="ds-btn ds-btn-primary" href="/html/2604.22725v1"&gt;HTML&lt;/a&gt;
+&lt;a class="ds-btn ds-btn-secondary" href="/src/2604.22725v1"&gt;TeX Source&lt;/a&gt;
+&lt;button class="ds-btn ds-btn-text" type="button"&gt;Copy link&lt;/button&gt;</code></pre>
         </div>
       </details>
     </div>
 
-    <div class="ds-note ds-note--internal" id="internal-variant">
-      <h3 class="ds-note-label">Internal variant</h3>
-      <p class="ds-section-desc">Internal interfaces include the arXiv Check and the Admin Console. Button specs remain the same except the primary color becomes Access Lime. We also add an unmissible 'Delete' button tier for enhanced usability.</p>
-    <div class="ds-card ds-internal ref">
-    <div class="state-flex">
-      <div class="ds-btn-group ds-btn-group--stack state-cell">
-        <div class="ds-btn-group ds-btn-group--stack btn-pair">
-          <button class="ds-btn ds-btn-primary" type="button">Approve</button>
-          <button class="ds-btn ds-btn-secondary" type="button">Hold</button>
-          <button class="ds-btn ds-btn-text" type="button">View log</button>
-        </div>
-        <span class="state-label">Default</span>
-      </div>
-      <div class="ds-btn-group ds-btn-group--stack state-cell">
-        <div class="ds-btn-group ds-btn-group--stack btn-pair">
-          <button class="ds-btn ds-btn-primary is-hover" type="button">Approve</button>
-          <button class="ds-btn ds-btn-secondary is-hover" type="button">Hold</button>
-          <button class="ds-btn ds-btn-text is-hover" type="button">View log</button>
-        </div>
-        <span class="state-label">Hover</span>
-      </div>
-      <div class="ds-btn-group ds-btn-group--stack state-cell">
-        <div class="ds-btn-group ds-btn-group--stack btn-pair">
-          <button class="ds-btn ds-btn-primary is-focus" type="button">Approve</button>
-          <button class="ds-btn ds-btn-secondary is-focus" type="button">Hold</button>
-          <button class="ds-btn ds-btn-text is-focus" type="button">View log</button>
-        </div>
-        <span class="state-label">Focus</span>
-      </div>
-      <div class="ds-btn-group ds-btn-group--stack state-cell">
-        <div class="ds-btn-group ds-btn-group--stack btn-pair">
-          <button class="ds-btn ds-btn-primary is-pressed" type="button">Approve</button>
-          <button class="ds-btn ds-btn-secondary is-pressed" type="button">Hold</button>
-          <button class="ds-btn ds-btn-text is-pressed" type="button">View log</button>
-        </div>
-        <span class="state-label">Pressed</span>
-      </div>
-      <div class="ds-btn-group ds-btn-group--stack state-cell">
-        <div class="ds-btn-group ds-btn-group--stack btn-pair">
-          <button class="ds-btn ds-btn-primary" type="button" disabled>Approve</button>
-          <button class="ds-btn ds-btn-secondary" type="button" disabled>Hold</button>
-          <button class="ds-btn ds-btn-text" type="button" disabled>View log</button>
-        </div>
-        <span class="state-label">Disabled</span>
-      </div>
-      <div class="ds-btn-group ds-btn-group--stack state-cell">
-        <div class="ds-btn-group ds-btn-group--stack btn-pair">
-          <button class="ds-btn ds-btn-destructive" type="button">Delete</button>
-        </div>
-        <span class="state-label">Destructive</span>
-      </div>
-    </div>
-      <details class="ds-acc"><summary>Relevant CSS</summary>
-        <div class="ds-acc-body">
-          <table class="ds-table-framed token-table">
-            <thead><tr><th>Tier</th><th>Fill</th><th>Use for</th></tr></thead>
-            <tbody>
-              <tr><td><strong>Primary</strong></td><td><span class="swatch" style="background:#c4d82e"></span>Access Lime <code>--ds-accent</code> #c4d82e</td><td>The screen's main action. One per view.</td></tr>
-              <tr><td><strong>Secondary</strong></td><td><span class="swatch" style="background:#f0f9e8"></span>Lime tint <code>--ds-accent-wash</code> #f0f9e8, lime border</td><td>Adjacent actions of lower priority.</td></tr>
-              <tr><td><strong>Text-only</strong></td><td>No fill; label in Link Blue, the same as on public pages. Hover and pressed grounds are the lime wash.</td><td>Low-emphasis actions. No border and no shadow.</td></tr>
-              <tr><td><strong>Destructive</strong></td><td><span class="swatch" style="background:#c62828"></span>Danger #c62828, <code>.ds-btn-destructive</code></td><td>Hard-delete and irreversible actions only. Always pair with a confirmation step.</td></tr>
-            </tbody>
-          </table>
-<pre><code>&lt;!-- .ds-internal on a parent sets the context: &lt;html&gt; for an internal
-     page, a wrapper for an internal region. The button classes are the
-     same ones public pages write. --&gt;
-&lt;html lang="en" class="ds-internal"&gt;
-  …
-  &lt;button class="ds-btn ds-btn-primary" type="button"&gt;Approve&lt;/button&gt;
-  &lt;button class="ds-btn ds-btn-secondary" type="button"&gt;Hold&lt;/button&gt;
-  &lt;button class="ds-btn ds-btn-text" type="button"&gt;View log&lt;/button&gt;
-  &lt;button class="ds-btn ds-btn-destructive" type="button"&gt;Delete&lt;/button&gt;</code></pre>
-        </div>
-      </details>
-    </div>
-    </div>
-
-      <div class="ds-note ds-note--essential">
-      <h3 class="ds-note-label">Accessibility essentials</h3>
-      <ul class="notes">
-        <li><strong>Contrast.</strong> Repository Brown on Open Blue <code>#a5d6fe</code> and Repository Brown on Access Lime <code>#c4d82e</code> both pass AA for normal text. White on danger <code>#c62828</code> is 5.62:1 ✓. Bottom border-gradient <em>hover</em> stops pass the 3:1 UI-component minimum (3.89 / 3.61); the rest-state stops sit below it and are decorative — the button's fill and border carry the boundary at rest.</li>
-        <li><strong>Focus.</strong> <code>:focus-visible</code>, never <code>:focus</code> — the ring shows on keyboard nav only.</li>
-        <li><strong>Not color alone.</strong> Hover changes fill AND border AND vignette; press changes position AND shadow (WCAG 1.4.1).</li>
-        <li><strong>Target size.</strong> Standard padding yields ~37px-tall buttons — above the 24×24 hard floor (WCAG 2.2 SC 2.5.8); aim for 44×44 on touch-primary surfaces.</li>
-        <li><strong>Reduced motion.</strong> The only motion is the 1px press drop; wrap transitions in <code>@media (prefers-reduced-motion: no-preference)</code> where a stronger guarantee is needed.</li>
-        <li><strong>Semantics.</strong> Real <code>&lt;button&gt;</code> for actions, <code>&lt;a class="ds-btn …"&gt;</code> for navigation. Disabled controls keep <code>cursor: not-allowed</code>.</li>
-        <li><strong>Disabling a link.</strong> An <code>&lt;a&gt;</code> cannot take the
-        <code>disabled</code> attribute, so it takes <code>.is-disabled</code> instead, which matches
-        <code>:disabled</code> exactly. The class only handles appearance &mdash; also remove the
-        <code>href</code> and add <code>aria-disabled="true"</code>, or the link stays clickable and
-        focusable while looking inert, which is worse than not dimming it at all.</li>
-      </ul>
-
-      <p>Blue. A requirement — something that has to be true for the pattern to be correct,
-      usually with a WCAG success criterion behind it.</p>
-      <p class="ds-note-gotcha"><strong>Easy to get wrong</strong>
-      A note can carry a ruled-off warning at its foot with <code>.ds-note-gotcha</code>. Use it for
-      the mistake the rule keeps being broken by, not as a second paragraph.</p>
-    </div>
-
-    <div class="ds-alert ds-alert-info note-alert">
+    <div class="ds-alert ds-alert-error note-alert">
       <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
       <div class="ds-alert-content">
-        <p class="ds-alert-title">When to use a text button vs a text link</p>
-        <p>Use a text button for actions that don't navigate to a new page. User and screenreader expectations are that buttons, including text-only buttons, trigge an action or state but retain you on the same page. Use a text link when navigating to a new page or to an anchor link on the same page.</p>
+        <p class="ds-alert-title">Never mix the two primary accent colors</p>
+        <p>An Access Lime primary button on a public page, or an Open Blue button in an internal tool, is a policy violation. If the context is ambiguous, settle it first and record the answer in a code comment.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- ───────── Links styled as buttons ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="links-styled-as-buttons">Links styled as buttons</h2>
+    <p class="ds-section-desc">A control that goes to another page is a link, even when it looks like a button. The formats on the abstract page are the common case: each one is an <code>&lt;a&gt;</code> with the button classes, so it announces as a link, opens in a new tab, and works with JavaScript off.</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">A link cannot take the disabled attribute. To disable one, add .is-disabled, remove the href, and add aria-disabled. With the href still there the link still works while looking switched off.</p>
+      </details>
+      <div class="state-flex">
+        <div class="ds-btn-group ds-btn-group--stack state-cell">
+          <span class="state-label">Public</span>
+          <div class="ds-btn-group ds-btn-group--stack btn-pair">
+            <a class="ds-btn ds-btn-primary" href="#">Primary</a>
+            <a class="ds-btn ds-btn-secondary" href="#">Secondary</a>
+          </div>
+        </div>
+        <div class="ds-btn-group ds-btn-group--stack state-cell ds-internal">
+          <span class="state-label">Internal</span>
+          <div class="ds-btn-group ds-btn-group--stack btn-pair">
+            <a class="ds-btn ds-btn-primary" href="#">Primary</a>
+            <a class="ds-btn ds-btn-secondary" href="#">Secondary</a>
+          </div>
+        </div>
+        <div class="ds-btn-group ds-btn-group--stack state-cell">
+          <span class="state-label">Disabled</span>
+          <div class="ds-btn-group ds-btn-group--stack btn-pair">
+            <a class="ds-btn ds-btn-secondary is-disabled" aria-disabled="true">Primary</a>
+            <a class="ds-btn ds-btn-secondary is-disabled" aria-disabled="true">Secondary</a>
+          </div>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;a class="ds-btn ds-btn-primary" href="/html/2604.22725v1"&gt;HTML&lt;/a&gt;
+&lt;a class="ds-btn ds-btn-secondary" href="/pdf/2604.22725v1"&gt;PDF&lt;/a&gt;
+
+&lt;!-- disabled: no href, and both the class and the attribute --&gt;
+&lt;a class="ds-btn ds-btn-secondary is-disabled" aria-disabled="true"&gt;Other formats&lt;/a&gt;</code></pre>
+          <dl>
+            <dt>.ds-btn, .ds-btn-primary, .ds-btn-secondary, .ds-btn-text</dt>
+            <dd>The same classes as a button. Nothing about the link changes how they look.</dd>
+            <dt>.is-disabled</dt>
+            <dd>Gives a link the disabled look, the same as <code>disabled</code> gives a button. It
+            only changes the look: remove the <code>href</code> so the link stops working, and add
+            <code>aria-disabled="true"</code> so a screen reader says so.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Small actions ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="small-actions-attached-to-content">Small actions attached to content</h2>
+    <p class="ds-section-desc">This component is a variant of text-only buttons and attach a row of tiny controls to a content element. It is used on the HTML papers page for figures, formula, and more. They differ from default text-only buttons via their font size, color, and surrounding container. They appear when hovering over the parent element.</p>
+
+    <div class="ds-card">
+      <div class="chip-demo-stage ds-card">
+        (This content might be a figure, a formula, or other content with additional options to surface for users)
+        <div class="ds-element-pill is-revealed" style="bottom: -14px; left: 50%; transform: translateX(-50%);">
+          <button type="button" class="chip-demo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg> Permalink</button>
+          <button type="button" class="chip-demo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7"/><circle cx="12" cy="12" r="3"/></svg> Alt text</button>
+          <button type="button" class="chip-demo is-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg> Expand</button>
+        </div>
+      </div>
+      <details class="ds-acc">
+        <summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;figure class="fig-wrap" style="position: relative;"&gt;
+  &lt;!-- the figure, formula, or other content --&gt;
+  &lt;div class="ds-element-pill" style="bottom: -14px; left: 50%; transform: translateX(-50%);"&gt;
+    &lt;button type="button"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt; Permalink&lt;/button&gt;
+    &lt;button type="button"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt; Alt text&lt;/button&gt;
+    &lt;button type="button"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt; Expand&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/figure&gt;</code></pre>
+          <dl>
+            <dt>.ds-element-pill</dt>
+            <dd>The container: a white pill straddling the bottom edge of the content it belongs to.
+            The wrapper supplies <code>position: relative</code>; the pill positions itself inside it.
+            Documented with the other containers on
+            <a href="organizing-content.html#chrome-anchored-to-content">Organizing content</a>.</dd>
+            <dt>.is-revealed</dt>
+            <dd>The pill is hidden at rest and shown while the wrapped content is hovered or holds
+            focus. The consumer adds and removes this class; the demo above keeps it on.</dd>
+            <dt>The actions</dt>
+            <dd>Plain <code>&lt;button&gt;</code> or <code>&lt;a&gt;</code> elements. The pill gives
+            each a 24px target floor. Their type and colour have no class of their own yet; this page
+            stages them locally.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Close ───────── -->
+  <section class="section">
+      <h2 class="section-title" id="the-close-control">The close control</h2>
+      <p class="ds-section-desc">Dismissing something is a simple job, but it needs a clear and consistent control everywhere it appears. Wether in an alert, a popover, an announcement banner, or an expanded figure, <code>.ds-close</code> supplies the right style.</p>
+      <div class="ds-card">
+        <details class="ds-marginalia">
+          <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+          <p class="ds-marginalia-body ds-annotation">Close vs Dismiss: Use Close for something the reader opened, or when there is not space for a dismiss button. Use Dismiss for something the site put in front of the user.</p>
+        </details>
+        <div class="state-flex">
+          <div class="ds-btn-group ds-btn-group--stack state-cell">
+            <span class="close-ground"><button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close</span></button></span>
+            <span class="state-label">On the page</span>
+          </div>
+          <div class="ds-btn-group ds-btn-group--stack state-cell">
+            <span class="close-ground" style="background:var(--ds-error-bg); color:var(--ds-error-fg)"><button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close the alert example</span></button></span>
+            <span class="state-label">On an alert</span>
+          </div>
+          <div class="ds-btn-group ds-btn-group--stack state-cell">
+            <span class="close-ground" style="background:var(--ds-text); color:var(--ds-surface-muted)"><button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close the dark example</span></button></span>
+            <span class="state-label">On dark chrome</span>
+          </div>
+        </div>
+        <details class="ds-acc"><summary>Relevant code</summary>
+          <div class="ds-acc-body">
+            <dl>
+              <dt>.ds-close</dt>
+              <dd>The whole control. 32×32, quiet tier — no fill, no border, no shadow. It
+              takes <code>color: inherit</code>, so one rule serves all four alert palettes, the pale
+              announcement band and dark chrome without knowing which it is on. It sets no position.</dd>
+              <dt>.is-sr-only</dt>
+              <dd>Required. The icon is <code>aria-hidden</code> under the icon policy, so without this
+              span the control announces as “button” and nothing more.</dd>
+              <dd><pre><code>&lt;button type="button" class="ds-close"&gt;
+  &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
+    &lt;path d="M18 6 6 18"/&gt;
+    &lt;path d="m6 6 12 12"/&gt;
+  &lt;/svg&gt;
+  &lt;span class="is-sr-only"&gt;Dismiss announcement&lt;/span&gt;
+&lt;/button&gt;</code></pre></dd>
+            </dl>
+          </div>
+        </details>
+      </div>
+  </section>
+
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Use the right element.</strong> Use a <code>&lt;button&gt;</code> for an action that
+      happens on this page, and an <code>&lt;a&gt;</code> for anything that goes to another page or
+      another place on this one. Both take the same classes. Do not put a click handler on a link
+      or an <code>href</code> on a button.</li>
+      <li><strong>Every button needs a text label.</strong> An icon-only button gets its name from a
+      <code>&lt;span class="is-sr-only"&gt;</code> inside it that says what the button does, such as
+      “Copy link”. Without it, a screen reader says only “button”. Do not use
+      <code>title</code> for this, and prefer the span to <code>aria-label</code>, because page
+      translation tools skip attributes.</li>
+      <li><strong>Say what will happen.</strong> Label a button with the action it performs:
+      “Save changes”, “Download PDF”, “Delete file”. Avoid
+      “OK”, “Yes” and “Submit” on their own, because they only
+      make sense to someone who can see the whole screen.</li>
+      <li><strong>Disable, do not hide.</strong> When an action is not available, keep the button in
+      place and add the <code>disabled</code> attribute. A button that disappears leaves the user
+      wondering where it went. When the user can do something to make the action available, use
+      <code>aria-disabled="true"</code> instead and say what they need to do; see
+      <a href="forms.html#validation">Forms</a>.</li>
+      <li><strong>When a button acts like a toggle.</strong> If a button switches something on and
+      off and stays pressed, set <code>aria-pressed="true"</code> or <code>"false"</code> on it and
+      update it when it changes. A colour change on its own tells a screen reader user nothing. For a
+      setting that is saved, use the <a href="forms.html#switch">switch</a> instead.</li>
+    </ul>
+  </div>
+
+  </div> <!-- /core zone -->
+
+  <h2>Modifiers</h2>
+  <!-- ───────── Icon only ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="icon-only-buttons">Icon-only buttons</h3>
+    <p class="ds-section-desc">A button whose whole label is an icon. <code>.ds-btn-icon</code> modifies the shape of a primary, secondary, or text-only button.</p>
+    <div class="ds-card">
+      <div class="state-flex">
+        <div class="ds-btn-group ds-btn-group--stack state-cell">
+          <span class="state-label">Public</span>
+          <div class="ds-btn-group ds-btn-group--stack btn-pair">
+            <button class="ds-btn ds-btn-primary ds-btn-icon" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg><span class="is-sr-only">Zoom in (primary)</span></button>
+            <button class="ds-btn ds-btn-secondary ds-btn-icon" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg><span class="is-sr-only">Zoom in (secondary)</span></button>
+            <button class="ds-btn ds-btn-text ds-btn-icon" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg><span class="is-sr-only">Zoom in</span></button>
+          </div>
+        </div>
+        <div class="ds-btn-group ds-btn-group--stack state-cell ds-internal">
+          <span class="state-label">Internal</span>
+          <div class="ds-btn-group ds-btn-group--stack btn-pair">
+            <button class="ds-btn ds-btn-primary ds-btn-icon" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg><span class="is-sr-only">Zoom in (primary)</span></button>
+            <button class="ds-btn ds-btn-secondary ds-btn-icon" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg><span class="is-sr-only">Zoom in (secondary)</span></button>
+            <button class="ds-btn ds-btn-text ds-btn-icon" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg><span class="is-sr-only">Zoom in</span></button>
+          </div>
+        </div>
+        <div class="ds-btn-group ds-btn-group--stack state-cell">
+          <span class="state-label">Disabled</span>
+          <div class="ds-btn-group ds-btn-group--stack btn-pair">
+            <button class="ds-btn ds-btn-primary ds-btn-icon" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg><span class="is-sr-only">Zoom in (disabled)</span></button>
+            <button class="ds-btn ds-btn-secondary ds-btn-icon" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg><span class="is-sr-only">Zoom in (disabled)</span></button>
+            <button class="ds-btn ds-btn-text ds-btn-icon" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg><span class="is-sr-only">Zoom in (disabled)</span></button>
+          </div>
+        </div>
+        <div class="ds-btn-group ds-btn-group--stack state-cell">
+          <span class="state-label">Destructive</span>
+          <div class="ds-btn-group ds-btn-group--stack btn-pair">
+            <button class="ds-btn ds-btn-destructive ds-btn-icon" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg><span class="is-sr-only">Delete permanently</span></button>
+            <span class="ds-btn ds-btn-icon state-gap" aria-hidden="true"><svg viewBox="0 0 24 24"></svg></span>
+            <button class="ds-btn ds-btn-text ds-btn-destructive ds-btn-icon" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg><span class="is-sr-only">Delete permanently</span></button>
+          </div>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+          <dl>
+            <dt>.ds-btn-text.ds-btn-destructive</dt>
+            <dd>The quiet destructive: the text tier in the danger colour, for a remove action in a
+            table row or a toolbar where a filled red on every row would be alarm rather than
+            information. Works with a label as well as with an icon.</dd>
+            <dt>.ds-btn-icon</dt>
+            <dd>The shape. Square by <code>aspect-ratio</code>, <code>min-width: 0</code>, equal padding,
+            no label gap. Always used <em>with</em> a tier — <code>.ds-btn .ds-btn-text
+            .ds-btn-icon</code>, never <code>.ds-btn-icon</code> alone.</dd>
+            <dt>.is-sr-only</dt>
+            <dd><strong>Required.</strong> The icon is <code>aria-hidden</code> under the icon policy, so
+            without this span the control announces as “button” and nothing more. Carbon and
+            Primer both make this name a required prop; the systems that leave it optional are the ones
+            with the known gap here. Prefer it to <code>aria-label</code>, which does not survive page
+            translation.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
   </section>
 
   <!-- ───────── On dark surfaces ───────── -->
   <section class="section">
-    <h2 class="section-title" id="on-dark-surfaces">On dark surfaces</h2>
+    <h3 class="section-title" id="on-dark-surfaces">On dark surfaces</h3>
     <p class="ds-section-desc">The primary button works everywhere. The gradient border and vignette keep the edge legible on cool, warm, and dark backgrounds. The secondary button can be adapted with a modifier class when using it on a tinted background.</p>
     <div class="ds-card ref">
     <p class="ds-panel-label">Cool tint (modify with <code>.on-tint</code>)</p>
     <div class="tinted-row">
       <button class="ds-btn ds-btn-primary" type="button">Primary</button>
       <button class="ds-btn ds-btn-secondary on-tint" type="button">Secondary</button>
+      <button class="ds-btn ds-btn-destructive" type="button">Destructive</button>
     </div>
 
     <p class="ds-panel-label">Warm tint (no modifier needed)</p>
     <div class="tinted-row warm">
       <button class="ds-btn ds-btn-primary" type="button">Primary</button>
       <button class="ds-btn ds-btn-secondary" type="button">Secondary</button>
+      <button class="ds-btn ds-btn-destructive" type="button">Destructive</button>
     </div>
 
     <p class="ds-panel-label">Dark tint (modify with <code>.on-dark</code>)</p>
     <div class="dark-row">
       <button class="ds-btn ds-btn-primary" type="button">Primary</button>
       <button class="ds-btn ds-btn-secondary on-dark" type="button">Secondary</button>
+      <button class="ds-btn ds-btn-destructive" type="button">Destructive</button>
     </div>
-      <details class="ds-acc"><summary>Relevant CSS</summary><div class="ds-acc-body">
+      <details class="ds-acc"><summary>Relevant code</summary><div class="ds-acc-body">
           <dl>
             <dt>.on-tint</dt><dd>On a <em>cool</em> tint, swaps the secondary's white fill for Card Grey (same luminance, warm hue) so it reads as secondary by material rather than by contrast. On a <em>warm</em> tint the default white secondary already sits comfortably.</dd>
             <dt>.on-dark</dt><dd>For a field dark enough to host white text: an outreach masthead, a photo band. A white fill would read as a paper rectangle stuck to the surface, louder than the primary beside it; <code>.on-dark</code> drops the fill so the field shows through and carries the boundary on a white border. See <a href="outreach/">outreach sites</a> for where such fields are allowed.</dd>
-            <dt>Not this</dt><dd>A default white secondary on a cool tint pops too hard and reads as primary &mdash; that is the case <code>.on-tint</code> exists for. Do not put <code>.on-tint</code> on a warm tint: its Card Grey fill melts into the surface. And <code>.on-dark</code> is only correct on a dark field; on a light tint use <code>.on-tint</code>.</dd>
-          </dl><pre><code><span class="c">&lt;!-- Secondary on a cool tint, and on a committed color field --&gt;</span><span class="k">&lt;a</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-secondary on-tint"</span> <span class="k">href</span>=<span class="s">"/issues"</span><span class="k">&gt;</span>Submit a fix<span class="k">&lt;/a&gt;</span><span class="k">&lt;a</span> <span class="k">class</span>=<span class="s">"ds-btn ds-btn-secondary on-dark"</span> <span class="k">href</span>=<span class="s">"/subscribe"</span><span class="k">&gt;</span>Subscribe<span class="k">&lt;/a&gt;</span></code></pre>
+            <dt>Not this</dt><dd>A default white secondary on a cool tint pops too hard and reads as primary — that is the case <code>.on-tint</code> exists for. Do not put <code>.on-tint</code> on a warm tint: its Card Grey fill melts into the surface. And <code>.on-dark</code> is only correct on a dark field; on a light tint use <code>.on-tint</code>.</dd>
+          </dl>
+<pre><code>&lt;!-- Secondary on a cool tint, and on a committed color field --&gt;
+&lt;a class="ds-btn ds-btn-secondary on-tint" href="/issues"&gt;Submit a fix&lt;/a&gt;
+&lt;a class="ds-btn ds-btn-secondary on-dark" href="/subscribe"&gt;Subscribe&lt;/a&gt;</code></pre>
         </div>
       </details>
     </div>
@@ -445,7 +451,7 @@ pre .c { color: var(--ds-border-strong); }
 
   <!-- ───────── Button groups ───────── -->
   <section class="section">
-      <h2 class="section-title" id="button-groups">Button groups</h2>
+      <h3 class="section-title" id="button-groups">Button groups</h3>
       <p class="ds-section-desc">A set of related buttons with a parent container class that spaces them appropriately.</p>
 
       <p class="ds-panel-label">Side by side</p>
@@ -455,7 +461,7 @@ pre .c { color: var(--ds-border-strong); }
           <button class="ds-btn ds-btn-secondary" type="button">Preview</button>
           <button class="ds-btn ds-btn-text" type="button">Cancel</button>
   </div>
-        <details class="ds-acc"><summary>Relevant CSS</summary><div class="ds-acc-body">
+        <details class="ds-acc"><summary>Relevant code</summary><div class="ds-acc-body">
           <dl>
             <dt>.ds-btn-group</dt>
             <dd>The container. Flex, wrapping, vertically centred, gap <code>--ds-space-tight</code>. Nothing about buttons makes their spacing special: two side by side are siblings that belong together, so they take the same gap as any other such pair.</dd>
@@ -463,13 +469,13 @@ pre .c { color: var(--ds-border-strong); }
         </div></details>
       </div>
 
-      <p class="ds-panel-label">Stacked &mdash; <code>.ds-btn-group--stack</code></p>
+      <p class="ds-panel-label">Stacked — <code>.ds-btn-group--stack</code></p>
       <div class="ds-card">
         <div class="ds-btn-group ds-btn-group--stack">
           <button class="ds-btn ds-btn-secondary" type="button">Download PDF</button>
           <button class="ds-btn ds-btn-secondary" type="button">Download source</button>
   </div>
-        <details class="ds-acc"><summary>Relevant CSS</summary><div class="ds-acc-body">
+        <details class="ds-acc"><summary>Relevant code</summary><div class="ds-acc-body">
           <dl>
             <dt>.ds-btn-group--stack</dt>
             <dd>The same relationship on the other axis. Items align to the start rather than stretching.</dd>
@@ -477,13 +483,13 @@ pre .c { color: var(--ds-border-strong); }
         </div></details>
       </div>
 
-      <p class="ds-panel-label">A form&rsquo;s action area &mdash; <code>.ds-btn-group--end</code></p>
+      <p class="ds-panel-label">A form’s action area — <code>.ds-btn-group--end</code></p>
       <div class="ds-card">
         <div class="ds-btn-group ds-btn-group--end" style="border-top:1px solid var(--ds-border); padding-top:var(--ds-space-4)">
           <button class="ds-btn ds-btn-text" type="button">Cancel</button>
           <button class="ds-btn ds-btn-primary" type="submit">Submit</button>
   </div>
-        <details class="ds-acc"><summary>Relevant CSS</summary><div class="ds-acc-body">
+        <details class="ds-acc"><summary>Relevant code</summary><div class="ds-acc-body">
           <dl>
             <dt>.ds-btn-group--end</dt>
             <dd>Pushes the group to the trailing edge. This is the action area at the end of a form, where the primary action comes last.</dd>
@@ -491,116 +497,21 @@ pre .c { color: var(--ds-border-strong); }
         </div></details>
       </div>
 
-      <p class="ds-panel-label">One choice at each end &mdash; <code>.ds-btn-group--split</code></p>
+      <p class="ds-panel-label">One choice at each end — <code>.ds-btn-group--split</code></p>
       <div class="ds-card">
         <div class="ds-btn-group ds-btn-group--split" style="border-top:1px solid var(--ds-border); padding-top:var(--ds-space-4)">
           <button class="ds-btn ds-btn-secondary" type="button">Back</button>
           <button class="ds-btn ds-btn-primary" type="button">Continue</button>
   </div>
-        <details class="ds-acc"><summary>Relevant CSS</summary><div class="ds-acc-body">
+        <details class="ds-acc"><summary>Relevant code</summary><div class="ds-acc-body">
           <dl>
             <dt>.ds-btn-group--split</dt>
-            <dd>One choice at each end, for a pair that goes opposite ways &mdash; Back against Continue in a stepped form.</dd>
+            <dd>One choice at each end, for a pair that goes opposite ways — Back against Continue in a stepped form.</dd>
           </dl>
         </div></details>
       </div>
       <p class="ds-annotation">Only use for pairs. Three buttons split like this leaves the middle one belonging to neither side.</p>
   </section>
-
-  <!-- ───────── Icon only ───────── -->
-  <section class="section">
-      <h2 class="section-title" id="icon-only-buttons">Icon-only buttons</h2>
-      <p class="ds-section-desc">A button whose whole label is an icon. <code>.ds-btn-icon</code> modifies the shape of a primary, secondary, or text-only button.</p>
-      <div class="ds-card">
-      <p class="ds-panel-label">Primary, secondary, and disabled</p>
-      <div class="ds-btn-group">
-        <button class="ds-btn ds-btn-primary ds-btn-icon" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg><span class="is-sr-only">Zoom in (primary)</span></button>
-        <button class="ds-btn ds-btn-secondary ds-btn-icon" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg><span class="is-sr-only">Zoom in (secondary)</span></button>
-        <button class="ds-btn ds-btn-text ds-btn-icon" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg><span class="is-sr-only">Zoom in (disabled)</span></button>
-      </div>
-
-      <p class="ds-panel-label">Text-only — When you need a quiet control</p>
-      <div class="ds-btn-group">
-        <button class="ds-btn ds-btn-text ds-btn-icon" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/></svg><span class="is-sr-only">Zoom out</span></button>
-        <button class="ds-btn ds-btn-text ds-btn-icon" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg><span class="is-sr-only">Zoom in</span></button>
-        <button class="ds-btn ds-btn-text ds-btn-icon" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg><span class="is-sr-only">Reset zoom to fit</span></button>
-      </div>
-      <details class="ds-acc"><summary>Relevant CSS</summary><div class="ds-acc-body">
-        <dl>
-          <dt>.ds-btn-icon</dt>
-          <dd>The shape. Square by <code>aspect-ratio</code>, <code>min-width: 0</code>, equal padding,
-          no label gap. Always used <em>with</em> a tier &mdash; <code>.ds-btn .ds-btn-text
-          .ds-btn-icon</code>, never <code>.ds-btn-icon</code> alone.</dd>
-          <dt>.is-sr-only</dt>
-          <dd><strong>Required.</strong> The icon is <code>aria-hidden</code> under the icon policy, so
-          without this span the control announces as &ldquo;button&rdquo; and nothing more. Carbon and
-          Primer both make this name a required prop; the systems that leave it optional are the ones
-          with the known gap here. Prefer it to <code>aria-label</code>, which does not survive page
-          translation.</dd>
-        </dl>
-      </div></details>
-      </div>
-  </section>
-
-  <!-- ───────── Small actions ───────── -->
-  <section class="section">
-      <h2 class="section-title" id="small-actions-attached-to-content">Small actions attached to content</h2>
-      <p class="ds-section-desc">This component is a variant of text-only buttons and attach a row of tiny controls to a content element. It is used on the HTML papers page for figures, formula, and more. They differ from default text-only buttons via their font size, color, and surrounding container. They appear when hovering over the parent element.</p>
-
-      <div class="chip-demo-stage ds-card">
-        E = mc&sup2;
-        <span class="chip-demo-pill">
-          <button type="button" class="chip-demo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg> Permalink</button>
-          <button type="button" class="chip-demo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7"/><circle cx="12" cy="12" r="3"/></svg> Alt text</button>
-          <button type="button" class="chip-demo is-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg> Expand</button>
-        </span>
-      </div>
-      <!-- MISSING RELEVANT CLASSES ACCORDION HERE -->
-  </section>
-
-  <!-- ───────── Close ───────── -->
-  <section class="section">
-      <h2 class="section-title" id="the-close-control">The close control</h2>
-      <p class="ds-section-desc">Dismissing something is a simple job, but it needs a clear and consistent control everywhere it appears. Wether in an alert, a popover, an announcement banner, or an expanded figure, <code>.ds-close</code> supplies the right style.</p>
-      <div class="ds-card">
-      <div class="state-flex">
-        <div class="ds-btn-group ds-btn-group--stack state-cell">
-          <span class="close-ground"><button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close</span></button></span>
-          <span class="state-label">On the page</span>
-        </div>
-        <div class="ds-btn-group ds-btn-group--stack state-cell">
-          <span class="close-ground" style="background:var(--ds-error-bg); color:var(--ds-error-fg)"><button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close the alert example</span></button></span>
-          <span class="state-label">On an alert</span>
-        </div>
-        <div class="ds-btn-group ds-btn-group--stack state-cell">
-          <span class="close-ground" style="background:var(--ds-text); color:var(--ds-surface-muted)"><button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close the dark example</span></button></span>
-          <span class="state-label">On dark chrome</span>
-        </div>
-      </div>
-      <details class="ds-acc"><summary>Relevant CSS</summary><div class="ds-acc-body">
-        <dl>
-          <dt>.ds-close</dt>
-          <dd>The whole control. 32&times;32, quiet tier &mdash; no fill, no border, no shadow. It
-          takes <code>color: inherit</code>, so one rule serves all four alert palettes, the pale
-          announcement band and dark chrome without knowing which it is on. It sets no position.</dd>
-          <dt>.is-sr-only</dt>
-          <dd>Required. The icon is <code>aria-hidden</code> under the icon policy, so without this
-          span the control announces as &ldquo;button&rdquo; and nothing more.</dd>
-          <dd><pre><code>&lt;button type="button" class="ds-close"&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="M18 6 6 18"/&gt;&lt;path d="m6 6 12 12"/&gt;&lt;/svg&gt;&lt;span class="is-sr-only"&gt;Dismiss announcement&lt;/span&gt;&lt;/button&gt;</code></pre></dd>
-        </dl>
-      </div></details>
-      </div>
-
-      <div class="ds-alert ds-alert-info note-alert">
-        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
-        <div class="ds-alert-content">
-          <p class="ds-alert-title">Close vs Dismiss</p>
-          <p>Use <strong>Close</strong> for something the reader opened OR when there isnt space for a dismiss button. Use <strong>Dismiss</strong> for something the site put in front of the user.</p>
-        </div>
-      </div>
-  </section>
-
-  </div> <!-- /core zone -->
 
 </div>
 

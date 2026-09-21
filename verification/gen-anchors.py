@@ -30,7 +30,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 DOCS = REPO / "docs"
-HEADING = re.compile(r"<h2([^>]*)\sclass=\"section-title\"([^>]*)>(.*?)</h2>", re.S)
+HEADING = re.compile(r"<(h[23])([^>]*)\sclass=\"section-title\"([^>]*)>(.*?)</\1>", re.S)
 
 
 def slug(text):
@@ -45,7 +45,7 @@ def process(path, write):
     text = path.read_text(encoding="utf-8")
     seen, problems, out, last = {}, [], [], 0
     for m in HEADING.finditer(text):
-        before, after, inner = m.group(1), m.group(2), m.group(3)
+        tag, before, after, inner = m.group(1), m.group(2), m.group(3), m.group(4)
         existing = re.search(r'\bid="([^"]+)"', before + after)
         want = slug(inner)
         if not want:
@@ -57,7 +57,7 @@ def process(path, write):
             # Hand-written ids are kept: something links to them already.
             continue
         out.append(text[last:m.start()])
-        out.append(f'<h2{before} class="section-title"{after} id="{want}">{inner}</h2>')
+        out.append(f'<{tag}{before} class="section-title"{after} id="{want}">{inner}</{tag}>')
         last = m.end()
         problems.append(want)
     out.append(text[last:])
@@ -77,7 +77,7 @@ def contents(path, write):
         return False
     indent = "            "
     items = []
-    for h in re.finditer(r'<h2([^>]*\sclass="section-title"[^>]*)>(.*?)</h2>', text, re.S):
+    for h in re.finditer(r'<h[23]([^>]*\sclass="section-title"[^>]*)>(.*?)</h[23]>', text, re.S):
         hid = re.search(r'\bid="([^"]+)"', h.group(1))
         if hid:
             label = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", h.group(2))).strip()

@@ -76,6 +76,16 @@
   --ds-surface:           #ffffff;
   --ds-surface-muted:     var(--ds-card-grey);
   --ds-zone-secondary-bg: var(--ds-surface-muted);     /* ground behind supporting content — PAGE ZONES */
+
+  /* Destructive: delete, withdraw, revoke. One tier on every surface. */
+  --ds-danger:                #c62828;   /* white on it 5.62:1 */
+  --ds-danger-hover:          #b71c1c;
+  --ds-danger-active:         #9a0007;
+  --ds-danger-wash-hover:     #fdf0f0;
+  --ds-danger-wash-active:    #f5d0d0;
+  --ds-danger-disabled-fg:    #c47878;
+  --ds-danger-fg:             var(--ds-danger);   /* red as text or a glyph, not a fill */
+  --ds-danger-fg-hover:       var(--ds-danger-hover);
   --ds-chrome:            var(--ds-repository-brown);  /* header bar, skip link */
   --ds-scrim:             rgba(28, 26, 23, 0.55);      /* modal backdrop; Repository Brown
                                                           at 55%, warm rather than black */
@@ -316,7 +326,6 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    authority is settled. */
 .ds-page-header {
   padding-bottom: var(--ds-space-6);
-  border-bottom: 3px solid var(--ds-accent);
 }
 .ds-page-header h1 { margin-bottom: var(--ds-space-tight); }
 .ds-page-header p  { color: var(--ds-text-muted); }
@@ -707,12 +716,12 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   outline: 3px solid var(--ds-focus-ring-on-dark);
 }
 
-/* ── Destructive (.ds-btn-destructive) — internal/buttons.html
-   Internal surface only: nothing a reader can do on arxiv.org destroys
-   anything. Always pair with a confirmation step. */
+/* ── Destructive (.ds-btn-destructive) — buttons.html
+   Delete, withdraw, revoke, on any surface. Always pair with a
+   confirmation step. */
 .ds-btn-destructive {
   background:
-    linear-gradient(#c62828, #c62828) padding-box,
+    linear-gradient(var(--ds-danger), var(--ds-danger)) padding-box,
     linear-gradient(to bottom, #d4453f, #8e1c1c) border-box;
   color: #ffffff;
   box-shadow:
@@ -721,7 +730,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 .ds-btn-destructive:hover {
   background:
-    linear-gradient(#c62828, #c62828) padding-box,
+    linear-gradient(var(--ds-danger), var(--ds-danger)) padding-box,
     linear-gradient(to bottom, #e0605a, #a52626) border-box;
   color: #ffffff;
   box-shadow:
@@ -731,7 +740,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-btn-destructive:active {
   transform: translateY(1px);
   background:
-    linear-gradient(#c62828, #c62828) padding-box,
+    linear-gradient(var(--ds-danger), var(--ds-danger)) padding-box,
     linear-gradient(#8e1c1c, #8e1c1c) border-box;
   box-shadow: inset 0 0 10px rgba(90, 10, 10, 0.42);
 }
@@ -743,10 +752,13 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    an <a> also needs its href removed and aria-disabled set. */
 .ds-btn:disabled,
 .ds-btn[aria-disabled="true"],
+.ds-btn.is-disabled,
 .ds-btn:disabled:hover,
 .ds-btn[aria-disabled="true"]:hover,
+.ds-btn.is-disabled:hover,
 .ds-btn:disabled:active,
-.ds-btn[aria-disabled="true"]:active {
+.ds-btn[aria-disabled="true"]:active,
+.ds-btn.is-disabled:active {
   background: var(--ds-surface-muted);
   border-color: transparent;
   color: var(--ds-text-muted);
@@ -782,6 +794,31 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   cursor: not-allowed;
 }
 
+/* ── Quiet destructive (.ds-btn-text.ds-btn-destructive) — buttons.html
+   The text tier in the danger colour: a remove action in a table row or a
+   toolbar, where a filled red on every row would be alarm rather than
+   information. Same confirmation rule as the filled tier. */
+.ds-btn-text.ds-btn-destructive {
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+  color: var(--ds-danger-fg);
+}
+.ds-btn-text.ds-btn-destructive:hover {
+  background: var(--ds-danger-wash-hover);
+  color: var(--ds-danger-fg-hover);
+}
+.ds-btn-text.ds-btn-destructive:active {
+  background: var(--ds-danger-wash-active);
+  color: var(--ds-danger-fg-hover);
+  box-shadow: none;
+}
+.ds-btn-text.ds-btn-destructive:disabled,
+.ds-btn-text.ds-btn-destructive.is-disabled {
+  background: none;
+  color: var(--ds-danger-disabled-fg);
+}
+
 /* ── Icon-only control (.ds-btn-icon) — buttons.html
    A shape modifier, not a tier: compose it with one. Square by
    aspect-ratio so it stays exactly as tall as a labelled button beside
@@ -801,13 +838,6 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   stroke: currentColor;
   fill: none;
   pointer-events: none;  /* clicks land on the button, never on a path */
-}
-/* A disabled text-tier icon keeps the grey fill: with no label, a dimmed
-   glyph alone does not read as disabled. */
-.ds-btn-icon:disabled,
-.ds-btn-icon[aria-disabled="true"],
-.ds-btn-icon.is-disabled {
-  background: var(--ds-surface-muted);
 }
 
 /* ── The close control (.ds-close) — buttons.html
@@ -840,9 +870,10 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   transition: background 0.12s;
 }
 .ds-close svg {
-  width: 1em;
-  height: 1em;
+  width: 1.15em;
+  height: 1.15em;
   stroke: currentColor;
+  stroke-width: 2.5;   /* the attribute says 2; at this size that is 1.3px and reads as thin */
   fill: none;
   pointer-events: none;  /* clicks land on the button, never on a path */
 }
@@ -1076,6 +1107,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    rather than becoming a different card. */
 
 .ds-card {
+  position: relative;   /* a margin note measures from the card */
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
   border-radius: 8px;
@@ -1801,6 +1833,72 @@ html:has(.ds-modal[open]) {
 }
 
 
+/* MARGINALIA  (.ds-marginalia) — organizing-content.html
+   A short note beside the block it belongs to, in the annotation voice.
+   Where the viewport has a margin it sits there, open, with no control.
+   Narrower, it folds to an info mark in the block's top-right corner that
+   opens it in place. Built on <details>, so the fold works with JavaScript
+   off. The block supplies position: relative; .ds-card already does.
+   The wide breakpoint is the page width plus a note and its gaps each
+   side: 850 + 2 × (24 + 16 + 192) = 1314px. */
+.ds-marginalia {
+  --ds-marginalia-width: 12rem;
+  position: absolute;
+  top: var(--ds-space-3);
+  right: var(--ds-space-3);
+  margin: 0;
+}
+.ds-marginalia > summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: var(--ds-text-muted);
+  cursor: pointer;
+  list-style: none;
+}
+.ds-marginalia > summary::-webkit-details-marker { display: none; }
+.ds-marginalia > summary svg { width: 1.1rem; height: 1.1rem; stroke: currentColor; fill: none; }
+.ds-marginalia > summary:hover,
+.ds-marginalia[open] > summary { color: var(--ds-link); background: var(--ds-surface-muted); }
+.ds-marginalia > summary:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
+.ds-marginalia-body {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 110;   /* popovers tier: it is the thing the reader just asked for */
+  width: min(var(--ds-marginalia-width), 100vw - 3rem);
+  margin: 0;
+  padding: var(--ds-space-3) var(--ds-space-4);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+}
+@media (min-width: 82.125rem) {
+  @supports selector(::details-content) {
+    .ds-marginalia {
+      top: 0;
+      right: auto;
+      left: calc(100% + var(--ds-space-4));
+      width: var(--ds-marginalia-width);
+    }
+    .ds-marginalia > summary { display: none; }
+    .ds-marginalia::details-content { content-visibility: visible; display: block; }
+    .ds-marginalia-body {
+      position: static;
+      width: auto;
+      padding: 0;
+      background: none;
+      border: 0;
+      box-shadow: none;
+    }
+  }
+}
+
+
 /* ALERT / STATUS MESSAGE  (.ds-alert) — alerts.html
    Colour is never the only signal: each variant pairs a distinct icon
    SHAPE with a leading word (WCAG 1.4.1). role="status" for
@@ -2024,6 +2122,11 @@ html:has(.ds-modal[open]) {
     --ds-canvas:            var(--ds-repository-brown);
     --ds-surface-muted:     #2b2723;                     /* raised band, text 12.8:1 */
     --ds-zone-secondary-bg: var(--ds-canvas);         /* Card Grey equals the surface in dark, so the zones would not show */
+    --ds-danger-wash-hover:     #2a0808;
+    --ds-danger-wash-active:    #380d0d;
+    --ds-danger-disabled-fg:    #864040;
+    --ds-danger-fg:             #e57373;   /* #c62828 is 2.64:1 on the dark card */
+    --ds-danger-fg-hover:       #ef9a9a;
     --ds-surface:           #2b2723;                     /* white fills become raised */
     --ds-border:            #3a3530;
     --ds-border-muted:      #403b35;
@@ -2150,6 +2253,11 @@ html:has(.ds-modal[open]) {
   --ds-canvas:            var(--ds-repository-brown);
   --ds-surface-muted:     #2b2723;                     /* raised band, text 12.8:1 */
   --ds-zone-secondary-bg: var(--ds-canvas);         /* Card Grey equals the surface in dark, so the zones would not show */
+  --ds-danger-wash-hover:     #2a0808;
+  --ds-danger-wash-active:    #380d0d;
+  --ds-danger-disabled-fg:    #864040;
+  --ds-danger-fg:             #e57373;   /* #c62828 is 2.64:1 on the dark card */
+  --ds-danger-fg-hover:       #ef9a9a;
   --ds-surface:           #2b2723;                     /* white fills become raised */
   --ds-border:            #3a3530;
   --ds-border-muted:      #403b35;
@@ -2218,6 +2326,11 @@ html:has(.ds-modal[open]) {
   --ds-canvas:         #f9f7f7;
   --ds-surface-muted:         #f0eeec;
   --ds-zone-secondary-bg: var(--ds-surface-muted);
+  --ds-danger-wash-hover:     #fdf0f0;
+  --ds-danger-wash-active:    #f5d0d0;
+  --ds-danger-disabled-fg:    #c47878;
+  --ds-danger-fg:             var(--ds-danger);   /* red as text or a glyph, not a fill */
+  --ds-danger-fg-hover:       var(--ds-danger-hover);
   --ds-surface:           #ffffff;
   --ds-border:      #ddd8d2;
   --ds-text-muted:      #6b6459;
@@ -2428,6 +2541,14 @@ html:has(.ds-modal[open]) {
   border-radius: 3px;
 }
 .ds-acc-body { padding: 4px 0 16px; font-size: 0.85rem; color: var(--ds-text); }
+/* Ending a card, the accordion is the card's foot: it runs to the card's
+   edges and the card's own border closes it. */
+.ds-card > .ds-acc:last-child {
+  margin: var(--ds-space-4) calc(-1 * var(--ds-space-6)) calc(-1 * var(--ds-space-4));
+  border-bottom: 0;
+}
+.ds-card > .ds-acc:last-child > summary,
+.ds-card > .ds-acc:last-child > .ds-acc-body { padding-inline: var(--ds-space-6); }
 .ds-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--ds-space-tight) var(--ds-space-block); margin: 0; }
 .ds-acc-body dt { white-space: nowrap; padding-top: 2px; }   /* type: .ds-panel-label */
 .ds-acc-body dd { margin: 0; grid-column: 2; min-width: 0; }   /* keeps a second dd out of the term column */
@@ -2470,7 +2591,7 @@ html:has(.ds-modal[open]) {
 
 .ds-toc-bar {
   position: relative;
-  z-index: 60;   /* the blur makes the bar a stacking context, so the bar — not its list — must clear the page */
+  z-index: 50;   /* above content chrome, below the site header's open menu (60); the blur makes the bar a stacking context, so the bar itself must clear the page */
   padding-block: 10px;
   background: color-mix(in srgb, var(--ds-surface-muted) 92%, transparent);  /* 92% holds 5.05:1 for text over a white figure scrolling beneath */
   -webkit-backdrop-filter: blur(8px);
@@ -2490,8 +2611,9 @@ html:has(.ds-modal[open]) {
 /* A bar directly before the primary zone sits on that zone's top edge. */
 .ds-container > .ds-toc-bar + .ds-zone-primary { margin-top: calc(-1 * var(--ds-space-section)); }
 
-.ds-toc-bar--sticky { position: sticky; top: 0; z-index: 100; }
+.ds-toc-bar--sticky { position: sticky; top: 0; }
 .ds-toc-bar--sticky.is-stuck {
+  z-index: 100;
   padding-block: 4px;
   background: color-mix(in srgb, var(--ds-surface-muted) 96%, transparent);
   border-bottom-color: var(--ds-border);

@@ -346,6 +346,7 @@
             <li><a href="#linking-to-a-section">Linking to a section</a></li>
             <li><a href="#contents-bar">Contents bar</a></li>
             <li><a href="#documentation-notes-special-blocks-used-to-organize-and-iden">Documentation notes: special blocks used to organize and identify Design System info</a></li>
+            <li><a href="#marginalia">Marginalia</a></li>
             <li><a href="#cards-and-grouped-sections">Cards and grouped sections</a></li>
             <li><a href="#chrome-anchored-to-content">Chrome anchored to content</a></li>
             <li><a href="#accessibility">Accessibility</a></li>
@@ -464,6 +465,52 @@
       <li><strong>No left edge and no icon.</strong> Both belong to the alert, and the tab already
       does the work of saying what kind of box this is &mdash; in words, so nothing has to be read
       out of a colour.</li>
+    </ul>
+  </section>
+
+  <!-- ───────── Marginalia ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="marginalia">Marginalia</h2>
+    <p class="ds-section-desc">A short note beside the block it belongs to, in the annotation voice.
+    Where the viewport has a margin the note sits in it, always open. Narrower, it folds to an info
+    mark in the block&rsquo;s top-right corner that opens it in place. Try it by narrowing this
+    window.</p>
+
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">A margin note is one or two sentences. Anything longer is a paragraph, and belongs in the flow.</p>
+      </details>
+      <p>The block the note belongs to. A demo, a figure, a table: anything in a card.</p>
+      <details class="ds-acc"><summary>Relevant code</summary><div class="ds-acc-body">
+<pre><code>&lt;div class="ds-card"&gt;
+  &lt;details class="ds-marginalia"&gt;
+    &lt;summary&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;&lt;span class="is-sr-only"&gt;Note&lt;/span&gt;&lt;/summary&gt;
+    &lt;p class="ds-marginalia-body ds-annotation"&gt;The note.&lt;/p&gt;
+  &lt;/details&gt;
+  …
+&lt;/div&gt;</code></pre>
+        <dl>
+          <dt>.ds-marginalia</dt>
+          <dd>The note, a <code>&lt;details&gt;</code>. Its first child in the block, so it is read
+          before the thing it annotates. The block supplies <code>position: relative</code>;
+          <code>.ds-card</code> already does.</dd>
+          <dt>.ds-marginalia-body</dt>
+          <dd>The text, with <code>.ds-annotation</code> for the voice. In the margin it has no
+          chrome; folded, it opens as a small panel under the mark.</dd>
+          <dt>.is-sr-only</dt>
+          <dd>Required on the mark. The icon is <code>aria-hidden</code>, so without it the control
+          announces as nothing.</dd>
+        </dl>
+      </div></details>
+    </div>
+
+    <ul class="notes">
+      <li><strong>It opens without JavaScript.</strong> The fold is the native disclosure.</li>
+      <li><strong>The margin appears at 1314px.</strong> The page width plus a note and its gaps on
+      each side. Below that, every note is folded.</li>
+      <li><strong>A note is not a rule.</strong> A reader on a narrow screen may never open it, so
+      anything a builder must not get wrong goes in a <a href="#documentation-notes-special-blocks-used-to-organize-and-iden">note block</a> or in the prose.</li>
     </ul>
   </section>
 
