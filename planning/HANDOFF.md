@@ -23,6 +23,7 @@ Everything is committed and pushed to `master`. Verification state:
     python3 verification/verify-mockups.py    42 passed, 0 failed   (needs playwright)
     python3 verification/gen-anchors.py       run after editing any heading
     python3 verification/gen-icons.py        run after adding an icon to docs/icons/
+    python3 verification/gen-digest.py       run after editing a reviewed page (verification/reviewed-pages.txt)
 
 ## Read this before touching anything
 
@@ -79,6 +80,11 @@ Shamsi's decisions, and what is built (see git log from fdcdc95 onward):
   were page-local leak across pages when merged (a `code` colour rule, a
   grid rule) and 9 pages changed visibly. Reverted. Each page's styles move
   when that page gets its review pass, like buttons.html did.
+- **Digests for agents (2026-09-22):** `verification/gen-digest.py` writes
+  `docs/spec/<page>.md` + `index.md` for pages on `reviewed-pages.txt` only
+  (buttons.html so far). `--diagnose <page>` lists what a page lacks in the
+  reviewed shape. Plan: `planning/DIGEST-PLAN.md`. Discuss with Shamsi before
+  the benchmark or the renderer.
 - **Still open:** the ~70 page-local rules in `buttons.html` (state grid,
   forced `.is-hover/.is-focus/.is-pressed` states, token tables) — promote
   or delete each, which needs a DS answer for "how a demo shows a state";
