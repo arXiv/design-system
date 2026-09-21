@@ -199,8 +199,8 @@ def extract(path):
             group = prev or group
         else:
             group = None
-        if group and group.lower() in ("rules", "spec", "specification"):
-            if group.lower() == "rules":
+        if group and re.search(r"rule|spec", group, re.I):
+            if re.search(r"rule", group, re.I) and not re.search(r"token|spec", h.text(), re.I):
                 for li in section.find_all(lambda n: n.tag == "li"):
                     page["rules"].append(md_inline(li))
                 for pp in section.find_all(lambda n: n.tag == "p" and not n.has("ds-section-desc")):
