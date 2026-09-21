@@ -22,6 +22,7 @@ Everything is committed and pushed to `master`. Verification state:
     python3 verification/check-contrast.py    PASS
     python3 verification/verify-mockups.py    42 passed, 0 failed   (needs playwright)
     python3 verification/gen-anchors.py       run after editing any heading
+    python3 verification/gen-icons.py        run after adding an icon to docs/icons/
 
 ## Read this before touching anything
 
@@ -66,6 +67,18 @@ Shamsi's decisions, and what is built (see git log from fdcdc95 onward):
   first; then testing; then circle back and move the mockups onto the DS
   (the paper mockup's own `.mg-toc-*` bar and zone grounds are the first
   case). Leave the mockups alone until then.
+- **Icons (2026-09-21):** `docs/icons/` is the single source — 37 Lucide 1.47.0
+  files (LICENSE + VERSION beside them), one clean SVG each; `gen-icons.py`
+  writes `docs/icons.html`. Deyan will ship them as static assets at deploy;
+  the docs keep using them inline. The inline copies in the repo are OLDER
+  Lucide/Feather drawings (and a few Material glyphs in the admin mockups):
+  swapping them for the folder's versions is one scripted pass, not done.
+  Icon set choice: Lucide vs Tabler is open; check coverage when the reader's
+  glyph list exists. Smileybones are illustrations, kept as images, not icons.
+- **The docs.css sweep cannot be automated.** Tried on 12 pages: rules that
+  were page-local leak across pages when merged (a `code` colour rule, a
+  grid rule) and 9 pages changed visibly. Reverted. Each page's styles move
+  when that page gets its review pass, like buttons.html did.
 - **Still open:** the ~70 page-local rules in `buttons.html` (state grid,
   forced `.is-hover/.is-focus/.is-pressed` states, token tables) — promote
   or delete each, which needs a DS answer for "how a demo shows a state";

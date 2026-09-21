@@ -37,6 +37,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Accordions, show more, popovers — anything hiding content behind a control | `docs/progressive-disclosure.html` | `.ds-acc*`, `.ds-show-more`, `.ds-popover` |
 | A modal, dialog, confirmation, or anything that takes over the page | `docs/modals.html` | `.ds-modal*` on a native `<dialog>` + `showModal()` — never a `<div role="dialog">`, never `show()` |
 | A close or dismiss control | `docs/buttons.html` | `.ds-close` — one control on both surfaces; the host supplies position only |
+| An icon | `docs/icons.html` (generated from `docs/icons/`) | copy the file from `docs/icons/` inline, `aria-hidden="true"`, `stroke="currentColor"`; never draw a glyph from memory, and never a second icon set. Adding one: drop the file in `docs/icons/`, run `verification/gen-icons.py` |
 | Links | `docs/links.html` — identical on every surface | `.ds-link`; inline links underlined |
 | Tables (internal tools), row selection, bulk actions | `docs/internal/tables.html` | `.ds-table`, sortable headers, `.ds-filter`; bulk-bar + selection rules documented there |
 | One record's details (label + value panel) | `docs/internal/metadata-panel.html` (concept: `docs/organizing-content.html`) | `.ds-meta-panel` + `--editable` / `--reference` / `--ruled` |
