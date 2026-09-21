@@ -48,25 +48,15 @@
   /* Text one step above muted — column headers, a row's leading cell. */
   --ds-text-strong:           #4a433d;
 
-  /* Destructive. Public pages have no destructive tier: nothing a
-     reader can do on arxiv.org destroys anything. Internal tools delete,
-     withdraw and revoke, so the tier exists here and only here. */
-  --ds-danger:                #c62828;
-  --ds-danger-hover:          #b71c1c;
-  --ds-danger-active:         #9a0007;
-  --ds-danger-wash-hover:     #fdf0f0;
-  --ds-danger-wash-active:    #f5d0d0;
-  --ds-danger-disabled-fg:    #c47878;
-
 }
 
 
 /* ─── Icon button, internal variants ─────────────────────────
    Modifiers on tier 1's .ds-btn-icon, which is a shape composed with a
-   tier: <button class="ds-btn ds-btn-text ds-btn-icon ds-btn-icon--destructive">.
-   Only what internal tools alone have is here: two colour variants for
+   Only what internal tools alone have is here: the constructive colour for
    row and toolbar actions, the pressed state of a toggle, and a compact
-   size for dense tables. The button itself is tier 1's. */
+   size for dense tables. The button itself is tier 1's, and so is the
+   quiet destructive (.ds-btn-text.ds-btn-destructive). */
 
 /* Compact — inline field actions and table rows. 29px tall, above the 24px floor. */
 .ds-btn-icon--sm { font-size: 0.625rem; }
@@ -81,19 +71,6 @@
   background: var(--ds-accent-wash-hover);
   color: var(--ds-accent-border-active);
 }
-
-/* Destructive — remove, revoke, delete. Ghost red: a filled red on every
-   table row is alarm, not information. Always pair with a confirmation step. */
-.ds-btn-icon--destructive { color: var(--ds-danger); }
-.ds-btn-icon--destructive:hover:not(:disabled) {
-  background: var(--ds-danger-wash-hover);
-  color: var(--ds-danger-hover);
-}
-.ds-btn-icon--destructive:active:not(:disabled) {
-  background: var(--ds-danger-wash-active);
-  color: var(--ds-danger-active);
-}
-.ds-btn-icon--destructive:disabled { color: var(--ds-danger-disabled-fg); }
 
 /* Pressed — a toggle that is on. aria-pressed carries the state; this only shows it. */
 .ds-btn-icon[aria-pressed="true"] {
@@ -261,18 +238,8 @@
     --ds-text-strong:           #d4cfc9;  /* 11.22:1 on dark ✓ */
 
 
-    /* Destructive, which exists only on this surface. */
-    --ds-danger-wash-hover:     #2a0808;
-    --ds-danger-wash-active:    #380d0d;
-    --ds-danger-disabled-fg:    #864040;
 
   }
-
-  /* Destructive icon — #c62828 is only 3.09:1 on dark; a lighter red carries it */
-  html:not([data-theme="light"]) .ds-btn-icon--destructive { color: #e57373; }
-  html:not([data-theme="light"]) .ds-btn-icon--destructive:hover:not(:disabled) { background: var(--ds-danger-wash-hover);  color: #ef9a9a; }
-  html:not([data-theme="light"]) .ds-btn-icon--destructive:active:not(:disabled) { background: var(--ds-danger-wash-active); color: #ef9a9a; }
-  html:not([data-theme="light"]) .ds-btn-icon--destructive:disabled { color: var(--ds-danger-disabled-fg); }
 
   /* Constructive icon — lime holds its light value, so the label is lime on dark */
   html:not([data-theme="light"]) .ds-btn-icon--constructive:hover:not(:disabled) { background: #2e4a0a; color: var(--ds-accent); }
@@ -318,18 +285,8 @@
   --ds-text-strong:           #d4cfc9;  /* 11.22:1 on dark ✓ */
 
 
-  /* Destructive, which exists only on this surface. */
-  --ds-danger-wash-hover:     #2a0808;
-  --ds-danger-wash-active:    #380d0d;
-  --ds-danger-disabled-fg:    #864040;
 
 }
-
-/* Destructive icon — #c62828 is only 3.09:1 on dark; a lighter red carries it */
-[data-theme="dark"] .ds-btn-icon--destructive { color: #e57373; }
-[data-theme="dark"] .ds-btn-icon--destructive:hover:not(:disabled) { background: var(--ds-danger-wash-hover);  color: #ef9a9a; }
-[data-theme="dark"] .ds-btn-icon--destructive:active:not(:disabled) { background: var(--ds-danger-wash-active); color: #ef9a9a; }
-[data-theme="dark"] .ds-btn-icon--destructive:disabled { color: var(--ds-danger-disabled-fg); }
 
 /* Constructive icon — lime holds its light value, so the label is lime on dark */
 [data-theme="dark"] .ds-btn-icon--constructive:hover:not(:disabled) { background: #2e4a0a; color: var(--ds-accent); }
