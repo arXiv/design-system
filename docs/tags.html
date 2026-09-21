@@ -6,22 +6,8 @@
   <title>Tags — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
 <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
-  <style>.demo { margin-top:var(--ds-space-1); display: flex; gap:var(--ds-space-block); align-items: center; flex-wrap: wrap; }
-    .demo.tinted { background: var(--ds-surface-muted); }
-    .lbl { font-family: var(--ds-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ds-text-muted); width: 104px; flex: none; }
-    .spec-table { margin-top:10px; }
-    .spec-table th { background: var(--ds-surface-muted); text-align: left; padding: 8px 13px; font-family: var(--ds-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ds-text-muted); }
-    .spec-table td { padding: 9px 13px; border-top: 1px solid var(--ds-surface-muted); vertical-align: top; }
-    .spec-table td:first-child { white-space: nowrap; }
-.ok { color: var(--ds-success-fg); }
-
-  
-    /* Inline links in page copy. These sit on the page canvas. Nav links
-       carry their own, more specific rules. */
-
-    .badge-demo { display: inline-flex; gap: var(--ds-space-1); }
-</style>
 </head>
 <body class="ds-page">
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
@@ -77,235 +63,165 @@
   <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
 
-<div class="ds-container">
+<div class="ds-container ds-zone-secondary">
 
   <header class="ds-page-header">
     <h1>Tags</h1>
     <p>The small rounded label for subject categories, topics, and states. One component across all
-    three contexts: <code>.ds-tag</code> in both stylesheets, wearing each one&rsquo;s tokens.</p>
+    three contexts: <code>.ds-tag</code> in both stylesheets, wearing each one’s tokens.</p>
   </header>
 
-  <!-- ── Which small labelled thing ── -->
-  <div class="section">
-    <h2 class="section-title" id="four-small-labelled-things-and-which-is-which">Four small labelled things, and which is which</h2>
-    <p class="ds-section-desc">The system has four components that are all &ldquo;a bit of text in a
-    small box&rdquo;. They are not interchangeable, and the difference is what the text <em>is</em>,
-    not how it looks.</p>
 
-    <table class="ds-table-framed">
-      <thead><tr><th>Component</th><th>Shows</th><th>Where</th><th>Looks like</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><code>.ds-tag</code></td>
-          <td>What a thing <strong>is</strong> — a subject category, a topic, a state.</td>
-          <td>Both surfaces.</td>
-          <td><span class="ds-tag ds-tag--keep-case">math.CO</span>
-              <span class="ds-tag">Withdrawn</span></td>
-        </tr>
-        <tr>
-          <td><code>.ds-badge</code></td>
-          <td>A <strong>type</strong>. Today that means a submission's type in arXiv Check &mdash;
-          new, replacement, cross-list, withdrawal &mdash; but the component is not limited to
-          submissions; any other kind of type could use it.</td>
-          <td>Internal tools &mdash; <a href="internal/tables.html">table styles</a>.</td>
-          <td><span class="badge-demo">
-              <span class="ds-badge ds-badge--new">New</span>
-              <span class="ds-badge ds-badge--rep">Rep</span>
-              <span class="ds-badge ds-badge--wdr">Wdr</span>
-              <span class="ds-badge ds-badge--cross">Cross</span></span></td>
-        </tr>
-        <tr>
-          <td><code>.ds-panel-label</code></td>
-          <td>The <strong>label half</strong> of a label/value pair, or a small section heading. Not a
-          box at all.</td>
-          <td>Both surfaces &mdash; <a href="typography.html">typography</a>.</td>
-          <td><span class="ds-panel-label">Submitted</span></td>
-        </tr>
-        
-      </tbody>
-    </table>
-
-    <p class="ds-panel-label">The &ldquo;pill menus&rdquo; on HTML papers are not tags. Why?</p>
-    <p>They are not tags, they are <strong>actions</strong> &mdash; copy a permalink, open the figure
-    large, read the alt text. You can see it without knowing the markup: a tag is a filled pill with a
-    coloured background, and those are white with icon labels. They are documented on
-    <a href="buttons.html">Buttons</a>, under <em>Small actions attached to content</em>.</p>
-
-    <p class="ds-panel-label">Nor are the inline chips in a paper</p>
-    <p>A citation marker like <em>[12]</em> or an equation number like <em>(3.4)</em> is not a tag
-    either, and for a different reason: <strong>the author wrote it.</strong> It comes out of the
-    LaTeX source, and arXiv only makes it navigable &mdash; the citation becomes a link, the equation
-    number becomes an anchor. A tag is something arXiv <em>adds</em> to describe content. An inline
-    chip is content, which we layer on top of and never edit
-    (<a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>).</p>
-
-    <p class="ds-panel-label">Why the tag is a pill and the badge is a rectangle</p>
-    <p>Not decoration. A tag is a standalone object &mdash; it may be a link, it may carry a remove
-    control, and it sits in open space where its rounded ends read as one unit. A badge sits inside a
-    dense table row where a pill&rsquo;s horizontal padding costs column width that the title needs
-    more. Same idea, different pressure.</p>
-
-    <p class="ds-panel-label">Why the badge has its own colours rather than the status palette</p>
-    <p>Because a submission type is a <strong>category</strong>, not a status. &ldquo;New&rdquo; is not
-    success and &ldquo;Wdr&rdquo; is not an error &mdash; painting them with the status colours would
-    say something untrue about the queue. They carry their own tokens,
-    <code>--ds-badge-*</code>.</p>
+  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#the-three-levels">The three levels</a></li>
+            <li><a href="#in-use-the-endorsement-rows-in-the-admin-console">In use — the endorsement rows in the admin console</a></li>
+            <li><a href="#the-type-badge">The type badge</a></li>
+            <li><a href="#three-small-labelled-things-and-which-is-which">Three small labelled things, and which is which</a></li>
+            <li><a href="#contrast">Contrast</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
   </div>
 
-  <!-- ── The rendered thing ── -->
-  <div class="section">
+  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <div class="ds-full ds-zone-primary">
+
+  <!-- ───────── The three levels ───────── -->
+  <section class="section">
     <h2 class="section-title" id="the-three-levels">The three levels</h2>
     <p class="ds-section-desc">Prominence comes from color, and only three levels exist. Reach for the
     quietest one that still does the job.</p>
 
-    <h3 class="ds-panel-label">Quiet &mdash; the default</h3>
+    <p class="ds-panel-label">Quiet — the default</p>
     <p class="ds-section-desc">Warm grey. For labels that organize without claiming attention: counts,
     ancillary labels, anything that is simply true rather than notable.</p>
-    <div class="ds-card demo">
-      <span class="lbl">.ds-tag</span>
-      <span class="ds-tag">Preprint</span>
-      <span class="ds-tag">12 requests</span>
-      <span class="ds-tag ds-tag--keep-case">cs.AI</span>
+    <div class="ds-card">
+      <div class="tag-row">
+        <span class="ds-tag">Preprint</span>
+        <span class="ds-tag">12 requests</span>
+        <span class="ds-tag ds-tag--keep-case">cs.AI</span>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;span class="ds-tag"&gt;Preprint&lt;/span&gt;
+&lt;span class="ds-tag"&gt;12 requests&lt;/span&gt;
+
+&lt;!-- A category. Always --keep-case. --&gt;
+&lt;span class="ds-tag ds-tag--keep-case"&gt;cs.AI&lt;/span&gt;</code></pre>
+          <dl>
+            <dt>.ds-tag</dt>
+            <dd>Base. Mono, uppercase, 999px, <code>min-height: 24px</code> for the WCAG 2.2 target
+            floor. Goes on a <code>&lt;span&gt;</code>, an <code>&lt;a&gt;</code>, or a
+            <code>&lt;button&gt;</code>.</dd>
+            <dt>.ds-tag--keep-case</dt>
+            <dd>Opt out of uppercase. Required for identifiers, and for long labels: past roughly
+            three words, or with mixed-case names inside, caps slow reading down.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
 
-    <h3 class="ds-panel-label">Chrome &mdash; the workhorse</h3>
-    <p class="ds-section-desc">The &ldquo;arXiv is speaking&rdquo; blue. For categorizing labels: subject
+    <p class="ds-panel-label">Chrome — the workhorse</p>
+    <p class="ds-section-desc">The “arXiv is speaking” blue. For categorizing labels: subject
     categories, topics, blog post categories. Interactive ones get hover and focus states.</p>
-    <div class="ds-card demo">
-      <span class="lbl">--chrome</span>
-      <span class="ds-tag ds-tag--chrome">Policy</span>
-      <span class="ds-tag ds-tag--chrome ds-tag--keep-case">math.CO</span>
-      <a href="#tags-links" class="ds-tag ds-tag--chrome">Announcements</a>
-      <span style="font-size:12px;color:var(--ds-text-muted)">&larr; that one is a link</span>
-    </div>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Announcements is a link, so it takes the hover and focus states; a span never does.</p>
+      </details>
+      <div class="tag-row">
+        <span class="ds-tag ds-tag--chrome">Policy</span>
+        <span class="ds-tag ds-tag--chrome ds-tag--keep-case">math.CO</span>
+        <a href="#" class="ds-tag ds-tag--chrome">Announcements</a>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;span class="ds-tag ds-tag--chrome"&gt;Policy&lt;/span&gt;
 
-    <h3 class="ds-panel-label">Status &mdash; only for a real condition</h3>
-    <p class="ds-section-desc">Three of the four alert families. A tag earns a status color only when it
-    reports a <em>condition</em>. A state that is merely neutral, like &ldquo;under review&rdquo;,
-    stays chrome: it is information, not an alert. There is deliberately no info variant &mdash; it
-    was indistinguishable from chrome, identical in dark mode.</p>
-    <div class="ds-card demo">
-      <span class="lbl">status</span>
-      <span class="ds-tag ds-tag--success">Valid</span>
-      <span class="ds-tag ds-tag--warning">On hold</span>
-      <span class="ds-tag ds-tag--error">Removed</span>
-      <span class="ds-tag ds-tag--chrome">Under review</span>
-    </div>
-
-    <h3 class="ds-panel-label">In use &mdash; the endorsement rows in the admin console</h3>
-    <p class="ds-section-desc">The parts compose. A chrome tag carries a category; a nested
-    <code>.ds-tag-note</code> says where it came from &mdash; a username to ask, or
-    <code>--auto</code> for something the system decided; and the error variant carries the whole
-    thing when the endorsement was revoked. Every piece below is a real class.</p>
-    <div class="ds-card demo" style="display:flex; gap:var(--ds-space-tight); flex-wrap:wrap; align-items:center">
-      <span class="ds-tag ds-tag--chrome ds-tag--keep-case">cs.CV
-        <span class="ds-tag-note ds-tag-note--auto">auto</span></span>
-      <span class="ds-tag ds-tag--chrome ds-tag--keep-case">physics.bio-ph
-        <span class="ds-tag-note">bsmith</span></span>
-      <span class="ds-tag ds-tag--error ds-tag--keep-case">&minus; physics.gen-ph
-        <span class="ds-tag-note">ginsparg</span></span>
-      <span class="ds-tag ds-tag--chrome ds-tag--keep-case">math.AP
-        <button type="button" class="ds-tag-remove" aria-label="Remove math.AP">&#10005;</button></span>
-    </div>
-  </div>
-
-  <!-- ── The type badge ── -->
-  <div class="section">
-    <h2 class="section-title" id="the-type-badge">The type badge</h2>
-    <p class="ds-section-desc">The rectangular one. It marks what kind of thing a row is, inside a
-    table dense enough that a pill&rsquo;s rounded ends would cost the title column width it needs
-    more. Four, and only four &mdash; the palette is fixed in
-    <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> (<em>Content and
-    interaction</em>) so a badge means the same thing in every tool that shows one.</p>
-
-    <table class="ds-table-framed">
-      <thead><tr><th>Badge</th><th>Class</th><th>Means</th></tr></thead>
-      <tbody>
-        <tr><td><span class="ds-badge ds-badge--new">New</span></td><td><code>.ds-badge--new</code></td><td>A new submission.</td></tr>
-        <tr><td><span class="ds-badge ds-badge--rep">Rep</span></td><td><code>.ds-badge--rep</code></td><td>A replacement &mdash; a new version of a paper already in the archive.</td></tr>
-        <tr><td><span class="ds-badge ds-badge--cross">Cross</span></td><td><code>.ds-badge--cross</code></td><td>A cross-listing &mdash; the paper&rsquo;s primary category is elsewhere.</td></tr>
-        <tr><td><span class="ds-badge ds-badge--wdr">Wdr</span></td><td><code>.ds-badge--wdr</code></td><td>A withdrawal. Darkest of the four, because it is the one that changes what a reader gets.</td></tr>
-      </tbody>
-    </table>
-
-    <ul class="notes">
-      <li><strong>The abbreviation is the label.</strong> It is what the moderation queue has always
-      shown, and expanding it would widen the column for no gain.</li>
-      <li><strong>The palette is its own, not the status palette.</strong> A submission type is a
-      category. &ldquo;New&rdquo; is not success and &ldquo;Wdr&rdquo; is not an error, and painting
-      them with the status colours would say something untrue about the queue. The four carry
-      <code>--ds-badge-*</code> tokens.</li>
-      <li><strong>Today only internal tools show one</strong> &mdash; see
-      <a href="internal/tables.html">table styles</a> for badges in a live queue. The
-      component is not limited to submissions, and it is in the shared stylesheet, so any surface
-      that needs a type marker in a dense row can use it.</li>
-    </ul>
-  </div>
-
-  <!-- ── Spec ── -->
-  <div class="section">
-    <h2 class="section-title" id="spec">Spec</h2>
-    <table class="ds-table-framed spec-table">
-      <tr><th>Class</th><th>What it does</th></tr>
-      <tr><td><code>.ds-tag</code></td><td>Base. Mono, uppercase, 999px, <code>min-height: 24px</code> for the WCAG 2.2 target floor.</td></tr>
-      <tr><td><code>.ds-tag--chrome</code></td><td>The arXiv-blue tint. Categories and topics.</td></tr>
-      <tr><td><code>.ds-tag--success</code><br><code>.ds-tag--warning</code><br><code>.ds-tag--error</code></td><td>Only when the label reports a condition.</td></tr>
-      <tr><td><code>.ds-tag--keep-case</code></td><td>Opt out of uppercase. Required for identifiers.</td></tr>
-      <tr><td><code>.ds-tag-remove</code></td><td>The &#10005; control inside an editable tag. Needs an <code>aria-label</code> from you.</td></tr>
-      <tr><td><code>.ds-tag-note</code></td><td>A small badge nested inside a tag, saying where it came from &mdash; usually a username.</td></tr>
-      <tr><td><code>.ds-badge</code></td><td>The rectangular type marker for a dense table row. Its own palette, not the status one.</td></tr>
-      <tr><td><code>.ds-badge--new</code><br><code>.ds-badge--rep</code><br><code>.ds-badge--cross</code><br><code>.ds-badge--wdr</code></td><td>The four submission types. Four, and only four.</td></tr>
-      <tr><td><code>.ds-tag-note--auto</code></td><td>The same badge, quieter, for provenance the system set rather than a person. &ldquo;auto&rdquo; is a fact about the row; a username is someone to ask.</td></tr>
-    </table>
-
-    <h3 class="ds-panel-label" id="tags-links">Contrast</h3>
-    <table class="ds-table-framed spec-table">
-      <tr><th>Level</th><th>Light</th><th>Dark</th></tr>
-      <tr><td>Quiet</td><td class="ok">5.05:1 AA</td><td class="ok">6.51:1 AA</td></tr>
-      <tr><td>Chrome</td><td class="ok">6.11:1 AA</td><td class="ok">6.20:1 AA</td></tr>
-      <tr><td>Success</td><td class="ok">6.70:1 AA</td><td class="ok">10.44:1 AAA</td></tr>
-      <tr><td>Warning</td><td class="ok">5.89:1 AA</td><td class="ok">11.80:1 AAA</td></tr>
-      <tr><td>Error</td><td class="ok">8.64:1 AAA</td><td class="ok">7.99:1 AAA</td></tr>
-    </table>
-  </div>
-
-  <div class="section">
-    <h2 class="section-title" id="usage">Usage</h2>
-    <pre ><code>&lt;!-- A category. Always --keep-case. --&gt;
-&lt;span class="ds-tag ds-tag--chrome ds-tag--keep-case"&gt;cs.AI&lt;/span&gt;
+&lt;!-- A category. Always --keep-case. --&gt;
+&lt;span class="ds-tag ds-tag--chrome ds-tag--keep-case"&gt;math.CO&lt;/span&gt;
 
 &lt;!-- A topic that links to its listing --&gt;
-&lt;a class="ds-tag ds-tag--chrome" href="/list/policy"&gt;Policy&lt;/a&gt;
+&lt;a class="ds-tag ds-tag--chrome" href="/list/policy"&gt;Policy&lt;/a&gt;</code></pre>
+          <dl>
+            <dt>.ds-tag--chrome</dt>
+            <dd>The arXiv-blue tint. Categories and topics.</dd>
+            <dt>&lt;a&gt;, &lt;button&gt;</dt>
+            <dd>A tag that is a link or a button takes its hover and focus states from the element,
+            not from a class. A <code>&lt;span&gt;</code> gets neither.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
 
-&lt;!-- Editable, with a remove control --&gt;
-&lt;span class="ds-tag ds-tag--chrome ds-tag--keep-case"&gt;physics.optics
-  &lt;button class="ds-tag-remove" type="button" aria-label="Remove physics.optics"&gt;&amp;times;&lt;/button&gt;
-&lt;/span&gt;
+    <p class="ds-panel-label">Status — only for a real condition</p>
+    <p class="ds-section-desc">Three of the four alert families. A tag earns a status color only when it
+    reports a <em>condition</em>. A state that is merely neutral, like “under review”,
+    stays chrome: it is information, not an alert. There is deliberately no info variant: it would be
+    indistinguishable from chrome, and identical in dark mode.</p>
+    <div class="ds-card">
+      <div class="tag-row">
+        <span class="ds-tag ds-tag--success">Valid</span>
+        <span class="ds-tag ds-tag--warning">On hold</span>
+        <span class="ds-tag ds-tag--error">Removed</span>
+        <span class="ds-tag ds-tag--chrome">Under review</span>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;span class="ds-tag ds-tag--success"&gt;Valid&lt;/span&gt;
+&lt;span class="ds-tag ds-tag--warning"&gt;On hold&lt;/span&gt;
+&lt;span class="ds-tag ds-tag--error"&gt;Removed&lt;/span&gt;
 
-&lt;!-- With a nested provenance badge --&gt;
-&lt;span class="ds-tag ds-tag--chrome ds-tag--keep-case"&gt;cs.CV
-  &lt;span class="ds-tag-note"&gt;auto&lt;/span&gt;
-&lt;/span&gt;</code></pre>
+&lt;!-- A neutral state is chrome, not a status --&gt;
+&lt;span class="ds-tag ds-tag--chrome"&gt;Under review&lt;/span&gt;</code></pre>
+          <dl>
+            <dt>.ds-tag--success, .ds-tag--warning, .ds-tag--error</dt>
+            <dd>Only when the label reports a condition.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
 
-    <div class="ds-alert ds-alert-info note-alert">
-      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-      <div class="ds-alert-content">
-        <p class="ds-alert-title">Editing affordances are not part of the tag</p>
-        <p>Drag-to-reorder, the primary marker, and combo-search belong to the category editor, not to
-        <code>.ds-tag</code>. They are designed in the admin-console mockups and get their own pattern
-        page when that work lands.</p>
+    <div class="ds-note ds-note--internal">
+      <h3 class="ds-note-label">Internal variant</h3>
+      <p>In internal tools, <code>.ds-tag--chrome</code> takes the info palette instead of the accent
+      tints: the accent there is Access Lime, and a lime chrome tag would read as a status. The quiet
+      and status levels do not change.</p>
+      <div class="ds-card ds-internal">
+        <div class="tag-row">
+          <span class="ds-tag ds-tag--chrome">Policy</span>
+        <span class="ds-tag ds-tag--chrome ds-tag--keep-case">math.CO</span>
+        <a href="#" class="ds-tag ds-tag--chrome">Announcements</a>
+        </div>
+        <details class="ds-acc"><summary>Relevant code</summary><div class="ds-acc-body">
+<pre><code>&lt;html lang="en" class="ds-internal"&gt;
+  …
+  &lt;span class="ds-tag ds-tag--chrome"&gt;Chrome&lt;/span&gt;</code></pre>
+          <dl>
+            <dt>.ds-internal</dt>
+            <dd>On <code>&lt;html&gt;</code> for an internal page. The chrome tag inside it takes the info
+            palette; nothing in the markup changes.</dd>
+          </dl>
+        </div></details>
       </div>
     </div>
-  </div>
 
-  <div class="section">
-    <h2 class="section-title" id="rules">Rules</h2>
-
-    <div class="ds-alert ds-alert-error note-alert">
+    <div class="ds-alert ds-alert-error">
       <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
       <div class="ds-alert-content">
         <p class="ds-alert-title">Category names are copied, never restyled</p>
-        <p>Show a category exactly as arXiv publishes it &mdash; capitalization included &mdash; and
+        <p>Show a category exactly as arXiv publishes it — capitalization included — and
         always with <code>.ds-tag--keep-case</code>. <code>cs.AI</code>, <code>physics.optics</code>
         and <code>cond-mat.str-el</code> are all correct as written. Uppercasing the lowercase ones
         produces strings that are not real categories: every <code>physics.*</code> and
@@ -313,7 +229,7 @@
       </div>
     </div>
 
-    <div class="ds-alert ds-alert-error note-alert">
+    <div class="ds-alert ds-alert-error">
       <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
       <div class="ds-alert-content">
         <p class="ds-alert-title">A tag never stands in for a link</p>
@@ -322,23 +238,284 @@
         text rather than filled pills.</p>
       </div>
     </div>
+  </section>
 
-    <ul class="ds-section-desc" style="line-height:1.9; padding-left:20px">
+  <!-- ───────── Composed tags ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="in-use-the-endorsement-rows-in-the-admin-console">In use — the endorsement rows in the admin console</h2>
+    <p class="ds-section-desc">The parts compose. A chrome tag carries a category; a nested
+    <code>.ds-tag-note</code> says where it came from — a username to ask, or
+    <code>--auto</code> for something the system decided; and the error variant carries the whole
+    thing when the endorsement was revoked. Every piece below is a real class.</p>
+    <div class="ds-card">
+      <div class="tag-row">
+        <span class="ds-tag ds-tag--chrome ds-tag--keep-case">cs.CV
+          <span class="ds-tag-note ds-tag-note--auto">auto</span></span>
+        <span class="ds-tag ds-tag--chrome ds-tag--keep-case">physics.bio-ph
+          <span class="ds-tag-note">bsmith</span></span>
+        <span class="ds-tag ds-tag--error ds-tag--keep-case">− physics.gen-ph
+          <span class="ds-tag-note">ginsparg</span></span>
+        <span class="ds-tag ds-tag--chrome ds-tag--keep-case">math.AP
+          <button type="button" class="ds-tag-remove"><span aria-hidden="true">✕</span><span class="is-sr-only">Remove math.AP</span></button></span>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;!-- With a nested provenance badge --&gt;
+&lt;span class="ds-tag ds-tag--chrome ds-tag--keep-case"&gt;physics.bio-ph
+  &lt;span class="ds-tag-note"&gt;bsmith&lt;/span&gt;
+&lt;/span&gt;
+&lt;span class="ds-tag ds-tag--chrome ds-tag--keep-case"&gt;cs.CV
+  &lt;span class="ds-tag-note ds-tag-note--auto"&gt;auto&lt;/span&gt;
+&lt;/span&gt;
+
+&lt;!-- Revoked: the error variant carries the whole thing --&gt;
+&lt;span class="ds-tag ds-tag--error ds-tag--keep-case"&gt;− physics.gen-ph
+  &lt;span class="ds-tag-note"&gt;ginsparg&lt;/span&gt;
+&lt;/span&gt;
+
+&lt;!-- Editable, with a remove control --&gt;
+&lt;span class="ds-tag ds-tag--chrome ds-tag--keep-case"&gt;math.AP
+  &lt;button class="ds-tag-remove" type="button"&gt;
+    &lt;span aria-hidden="true"&gt;✕&lt;/span&gt;
+    &lt;span class="is-sr-only"&gt;Remove math.AP&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/span&gt;</code></pre>
+          <dl>
+            <dt>.ds-tag-note</dt>
+            <dd>A small badge nested inside a tag, saying where it came from — usually a username.</dd>
+            <dt>.ds-tag-note--auto</dt>
+            <dd>The same badge, quieter, for provenance the system set rather than a person.
+            “auto” is a fact about the row; a username is someone to ask.</dd>
+            <dt>.ds-tag-remove</dt>
+            <dd>The ✕ control inside an editable tag. A <code>&lt;button type="button"&gt;</code>
+            that is the last child of the tag. Removing the tag is the host’s job.</dd>
+            <dt>.is-sr-only</dt>
+            <dd>Required inside the remove control. The ✕ glyph is <code>aria-hidden</code>, so
+            without this span the button announces as “button” and nothing more. Say what it removes:
+            “Remove math.AP”.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <div class="ds-alert ds-alert-info">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Editing affordances are not part of the tag</p>
+        <p>Drag-to-reorder, the primary marker, and combo-search belong to the category editor, not to
+        <code>.ds-tag</code>. They are designed in the admin-console mockups and get their own pattern
+        page when that work lands.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── The type badge ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="the-type-badge">The type badge</h2>
+    <p class="ds-section-desc">The rectangular one. It marks what kind of thing a row is, inside a
+    table dense enough that a pill’s rounded ends would cost the title column width it needs
+    more. Four, and only four — the palette is fixed in
+    <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> (<em>Content and
+    interaction</em>) so a badge means the same thing in every tool that shows one.</p>
+    <div class="ds-card">
+      <div class="tag-row">
+        <span class="ds-badge ds-badge--new">New</span>
+        <span class="ds-badge ds-badge--rep">Rep</span>
+        <span class="ds-badge ds-badge--cross">Cross</span>
+        <span class="ds-badge ds-badge--wdr">Wdr</span>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;span class="ds-badge ds-badge--new"&gt;New&lt;/span&gt;
+&lt;span class="ds-badge ds-badge--rep"&gt;Rep&lt;/span&gt;
+&lt;span class="ds-badge ds-badge--cross"&gt;Cross&lt;/span&gt;
+&lt;span class="ds-badge ds-badge--wdr"&gt;Wdr&lt;/span&gt;</code></pre>
+          <dl>
+            <dt>.ds-badge</dt>
+            <dd>The rectangular type marker for a dense table row. Its own palette, not the status
+            one. Always used with one of the four type classes, never alone.</dd>
+            <dt>.ds-badge--new</dt>
+            <dd>A new submission.</dd>
+            <dt>.ds-badge--rep</dt>
+            <dd>A replacement — a new version of a paper already in the archive.</dd>
+            <dt>.ds-badge--cross</dt>
+            <dd>A cross-listing — the paper’s primary category is elsewhere.</dd>
+            <dt>.ds-badge--wdr</dt>
+            <dd>A withdrawal. Darkest of the four, because it is the one that changes what a reader
+            gets.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <ul class="notes">
+      <li><strong>The abbreviation is the label.</strong> It is what the moderation queue has always
+      shown, and expanding it would widen the column for no gain.</li>
+      <li><strong>The palette is its own, not the status palette.</strong> A submission type is a
+      category. “New” is not success and “Wdr” is not an error, and painting
+      them with the status colours would say something untrue about the queue. The four carry
+      <code>--ds-badge-*</code> tokens.</li>
+      <li><strong>Today only internal tools show one</strong> — see
+      <a href="internal/tables.html">table styles</a> for badges in a live queue. The
+      component is not limited to submissions, and it is in the shared stylesheet, so any surface
+      that needs a type marker in a dense row can use it.</li>
+    </ul>
+  </section>
+
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Use the element that matches the job.</strong> A tag that only labels is a
+      <code>&lt;span&gt;</code>. A tag that goes to a listing is an <code>&lt;a&gt;</code> with a
+      real <code>href</code>. A tag that does something on this page is a
+      <code>&lt;button type="button"&gt;</code>. Hover and focus styles come from the element, so a
+      <code>&lt;span&gt;</code> with a click handler has no focus ring and cannot be reached from
+      the keyboard.</li>
       <li><strong>Uppercase is applied with CSS, never typed.</strong> The underlying text then stays
       correct for copy-and-paste, in-page search, and screen readers.</li>
-      <li><strong>Long labels keep their own case.</strong> Past roughly three words, or with
-      mixed-case names inside, caps slow reading down &mdash; use <code>.ds-tag--keep-case</code>.</li>
-      <li><strong>Color is never the only signal.</strong> The label&rsquo;s own words carry the
+      <li><strong>Keep the case of every category and identifier.</strong> Put
+      <code>.ds-tag--keep-case</code> on any tag that holds a category name or an arXiv ID, so that
+      <code>physics.optics</code> is never shown as <code>PHYSICS.OPTICS</code>.</li>
+      <li><strong>Color is never the only signal.</strong> The label’s own words carry the
       meaning. A negative or removed state says so in text, not only in red.</li>
-      <li><strong>Not the same as a type badge.</strong> <code>.ds-badge</code> stays a 3px
-      rectangle: a compact code in a dense data grid. A tag is a discrete labeled object in a
-      wrapping list.</li>
+      <li><strong>Name the remove control.</strong> Every <code>.ds-tag-remove</code> holds a
+      <code>&lt;span class="is-sr-only"&gt;</code> that says what it removes, such as “Remove
+      cs.AI”, and the ✕ glyph sits in a span with <code>aria-hidden="true"</code>. Do not use
+      <code>title</code> or <code>aria-label</code> for this, because page translation tools skip
+      attributes.</li>
     </ul>
   </div>
 
-  <!-- ── Rules ── -->
-  <!-- ── Usage ── -->
+  </div> <!-- /core zone -->
+
+  <h2>Rules</h2>
+
+  <!-- ───────── Which small labelled thing ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="three-small-labelled-things-and-which-is-which">Three small labelled things, and which is which</h3>
+    <p class="ds-section-desc">The system has three components that are all “a bit of text in a
+    small box”. They are not interchangeable, and the difference is what the text <em>is</em>,
+    not how it looks.</p>
+
+    <div class="table-scroll" role="region" aria-label="Which small labelled thing" tabindex="0">
+    <table class="ds-table-framed">
+      <thead><tr><th>Component</th><th>Shows</th><th>Where</th><th>Looks like</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>.ds-tag</code></td>
+          <td>What a thing <strong>is</strong> — a subject category, a topic, a state.</td>
+          <td>Both surfaces.</td>
+          <td><div class="tag-row">
+              <span class="ds-tag ds-tag--keep-case">math.CO</span>
+              <span class="ds-tag">Withdrawn</span></div></td>
+        </tr>
+        <tr>
+          <td><code>.ds-badge</code></td>
+          <td>A <strong>type</strong>. Today that means a submission's type in arXiv Check —
+          new, replacement, cross-list, withdrawal — but the component is not limited to
+          submissions; any other kind of type could use it.</td>
+          <td>Internal tools — <a href="internal/tables.html">table styles</a>.</td>
+          <td><div class="tag-row">
+              <span class="ds-badge ds-badge--new">New</span>
+              <span class="ds-badge ds-badge--rep">Rep</span>
+              <span class="ds-badge ds-badge--wdr">Wdr</span>
+              <span class="ds-badge ds-badge--cross">Cross</span></div></td>
+        </tr>
+        <tr>
+          <td><code>.ds-panel-label</code></td>
+          <td>The <strong>label half</strong> of a label/value pair, or a small section heading. Not a
+          box at all.</td>
+          <td>Both surfaces — <a href="typography.html">typography</a>.</td>
+          <td><span class="ds-panel-label">Submitted</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p class="ds-panel-label">The “pill menus” on HTML papers are not tags. Why?</p>
+    <p>They are not tags, they are <strong>actions</strong> — copy a permalink, open the figure
+    large, read the alt text. You can see it without knowing the markup: a tag is a filled pill with a
+    coloured background, and those are white with icon labels. They are documented on
+    <a href="buttons.html">Buttons</a>, under <em>Small actions attached to content</em>.</p>
+
+    <p class="ds-panel-label">Nor are the inline chips in a paper</p>
+    <p>A citation marker like <em>[12]</em> or an equation number like <em>(3.4)</em> is not a tag
+    either, and for a different reason: <strong>the author wrote it.</strong> It comes out of the
+    LaTeX source, and arXiv only makes it navigable — the citation becomes a link, the equation
+    number becomes an anchor. A tag is something arXiv <em>adds</em> to describe content. An inline
+    chip is content, which we layer on top of and never edit
+    (<a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>).</p>
+
+    <p class="ds-panel-label">Why the tag is a pill and the badge is a rectangle</p>
+    <p>Not decoration. A tag is a standalone object — it may be a link, it may carry a remove
+    control, and it sits in open space where its rounded ends read as one unit. A badge sits inside a
+    dense table row where a pill’s horizontal padding costs column width that the title needs
+    more. Same idea, different pressure.</p>
+    <p><strong>Not the same as a type badge.</strong> <code>.ds-badge</code> stays a 3px
+    rectangle: a compact code in a dense data grid. A tag is a discrete labeled object in a
+    wrapping list.</p>
+
+    <p class="ds-panel-label">Why the badge has its own colours rather than the status palette</p>
+    <p>Because a submission type is a <strong>category</strong>, not a status. “New” is not
+    success and “Wdr” is not an error — painting them with the status colours would
+    say something untrue about the queue. They carry their own tokens,
+    <code>--ds-badge-*</code>.</p>
+  </section>
+
+  <h2>Spec</h2>
+
+  <!-- ───────── Contrast, read live ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="contrast">Contrast</h3>
+    <p class="ds-section-desc">Read at runtime from <code>design-system.css</code> via
+    <code>getComputedStyle</code> — swatches, hex codes, and contrast ratios reflect the currently active
+    mode and cannot drift from the stylesheet. Use the theme control in the header to see the dark
+    values. Contrast is text-on-background (target 4.5:1 AA).</p>
+    <div class="table-scroll" role="region" aria-label="Tag contrast" tabindex="0">
+      <table class="ds-table-framed token-table">
+        <thead><tr><th>Level</th><th>Background</th><th>Border</th><th>Text</th><th>Contrast</th></tr></thead>
+        <tbody id="tag-contrast-rows"><!-- populated at runtime --></tbody>
+      </table>
+    </div>
+  </section>
+
 </div>
+
+<script>
+  (function () {
+    var html = document.documentElement;
+    var LEVELS = [['Quiet', ''], ['Chrome', 'ds-tag--chrome'], ['Success', 'ds-tag--success'],
+                  ['Warning', 'ds-tag--warning'], ['Error', 'ds-tag--error']];
+    function rgb(value) { return value.match(/[\d.]+/g).slice(0, 3).map(Number); }
+    function hex(c) { return '#' + c.map(function (x) { return Math.round(x).toString(16).padStart(2, '0'); }).join(''); }
+    function lum(c) { var f = c.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126*f[0] + 0.7152*f[1] + 0.0722*f[2]; }
+    function ratio(a, b) { var L1 = lum(a), L2 = lum(b), hi = Math.max(L1, L2), lo = Math.min(L1, L2); return (hi + 0.05) / (lo + 0.05); }
+    function grade(r) { return r >= 7 ? 'AAA' : r >= 4.5 ? 'AA' : r >= 3 ? 'AA Large' : null; }
+    function cell(c) { return '<span class="swatch" style="background:' + hex(c) + '"></span><code>' + hex(c) + '</code>'; }
+    function render() {
+      // Each row reads a real tag, so the table shows what the component renders.
+      var rows = LEVELS.map(function (l) {
+        var probe = document.createElement('span');
+        probe.className = 'ds-tag ' + l[1];
+        probe.textContent = l[0];
+        document.body.appendChild(probe);
+        var cs = getComputedStyle(probe);
+        var bg = rgb(cs.backgroundColor), bd = rgb(cs.borderTopColor), fg = rgb(cs.color);
+        probe.remove();
+        var r = ratio(fg, bg), g = grade(r);
+        var label = g ? '<span class="ratio-pass">' + r.toFixed(1) + ':1 ✓ ' + g + '</span>'
+                      : '<span class="ratio-fail">' + r.toFixed(1) + ':1 ✗</span>';
+        return '<tr><td class="state-name">' + l[0] + '</td><td>' + cell(bg) + '</td><td>' + cell(bd) + '</td><td>' + cell(fg) + '</td><td>' + label + '</td></tr>';
+      }).join('');
+      document.getElementById('tag-contrast-rows').innerHTML = rows;
+    }
+    render();
+    // Re-read when the theme changes: the OS setting, or the page's own toggle.
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', render);
+    new MutationObserver(render).observe(html, { attributes: true, attributeFilter: ['data-theme'] });
+  })();
+</script>
 
 <script>
   // Nav dropdowns: close on outside click and Esc (enhancement only —
@@ -362,5 +539,6 @@
 </script>
 <script src="copy-code.js" defer></script>
 <script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
 </body>
 </html>
