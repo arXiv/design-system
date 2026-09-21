@@ -21,6 +21,7 @@ The shape it reads is buttons.html's (planning/DIGEST-PLAN.md has the table):
   .ds-note--internal      -> the component's internal variant
   .ds-note--essential     -> rules
   .ds-alert in a section  -> a rule for that component
+  sections under a plain "Rules" h2 -> rules; under "Spec" -> left out (the stylesheet is the spec)
 Everything else on the page is scaffolding and is left out.
 
 The output is Markdown with a YAML header: the header is the contract as
@@ -198,6 +199,14 @@ def extract(path):
             group = prev or group
         else:
             group = None
+        if group and group.lower() in ("rules", "spec", "specification"):
+            if group.lower() == "rules":
+                for li in section.find_all(lambda n: n.tag == "li"):
+                    page["rules"].append(md_inline(li))
+                for pp in section.find_all(lambda n: n.tag == "p" and not n.has("ds-section-desc")):
+                    if pp.ancestor(lambda n: n.tag == "li") is None:
+                        page["rules"].append(md_inline(pp))
+            continue
         comp = {"id": h.attrs.get("id", ""), "title": squash(h.text()), "group": group,
                 "summary": "", "classes": [], "markup": [], "notes": [], "rules": [], "internal": None}
         desc = section.find(lambda n: n.has("ds-section-desc"))

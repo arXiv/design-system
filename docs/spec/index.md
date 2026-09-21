@@ -23,6 +23,7 @@ These pages have not had their review pass. Read the page itself, and expect the
 - internal/metadata-panel.html
 - internal/tables.html
 - links.html
+- messages.html
 - modals.html
 - organizing-content.html
 - progressive-disclosure.html
