@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Alerts &amp; messaging — arXiv Design System</title>
+  <title>Alerts — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
   <link rel="stylesheet" href="docs.css">
@@ -15,21 +15,24 @@
   <details class="ds-site-header-dropdown">
     <summary>Design Patterns</summary>
     <div class="ds-site-header-menu">
+      <span class="ds-panel-label">Components</span>
       <a href="colors.html">Colors</a>
+      <a href="dark-mode.html">Dark mode</a>
       <a href="typography.html">Typography</a>
       <a href="spacing.html">Spacing</a>
       <a href="icons.html">Icons</a>
       <a href="buttons.html">Buttons</a>
       <a href="links.html">Links</a>
+      <a href="forms.html">Forms &amp; validation</a>
       <a href="alerts.html" aria-current="page">Alerts</a>
-      <a href="version-display.html">Versions</a>
-      <a href="organizing-content.html">Organizing content</a>
+      <a href="messages.html">Messaging</a>
+      <a href="tags.html">Tags</a>
+      <span class="ds-panel-label">Organizing content</span>
+      <a href="organizing-content.html">Layouts</a>
       <a href="progressive-disclosure.html">Progressive disclosure</a>
       <a href="modals.html">Modal dialogs</a>
-      <a href="dark-mode.html">Dark mode</a>
       <a href="internal/metadata-panel.html">Metadata panel</a>
-      <a href="forms.html">Forms &amp; validation</a>
-      <a href="tags.html">Tags</a>
+      <a href="version-display.html">arXiv Paper Versions</a>
     </div>
   </details>
   <details class="ds-site-header-dropdown">
@@ -66,15 +69,12 @@
 <div class="ds-container ds-zone-secondary">
 
   <header class="ds-page-header">
-    <h1>Alerts &amp; messaging</h1>
-    <p>How arXiv talks to people when something needs saying: the <code>.ds-alert</code> status banner
-    (success / info / warning / error), the site-wide announcement band, and inline form errors.
-    Every state pairs a distinct icon shape with a leading word, so meaning never rides on color alone
-    (WCAG 1.4.1).</p>
+    <h1>Alerts</h1>
+    <p>Alerts are a critical component of successful user journeys. They go hand in hand with <a href="forms.html">form validation</a> but have many uses beyond forms as well. Alerts are always related to the content of the page they are on. For general announcements, see <a href="messages.html">messages</a>.</p>
   </header>
 
 
-  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <!-- ═════════ TOC ═════════ -->
   <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
     <div class="ds-toc-bar-inner">
       <details class="ds-toc">
@@ -85,9 +85,9 @@
         </summary>
         <nav class="ds-toc-menu" aria-label="Contents">
           <ol>
-            <li><a href="#the-four-states">The four states</a></li>
-            <li><a href="#announcement-band">Announcement band</a></li>
-            <li><a href="#errors-in-forms">Errors in forms</a></li>
+            <li><a href="#the-four-states">The four alert states</a></li>
+            <li><a href="#single-line">Single line</a></li>
+            <li><a href="#dismissible">Dismissible</a></li>
             <li><a href="#placement">Placement</a></li>
             <li><a href="#writing-the-message">Writing the message</a></li>
             <li><a href="#status-tokens">Status tokens</a></li>
@@ -97,20 +97,18 @@
     </div>
   </div>
 
-  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <!-- ═════════ Core zone ═════════ -->
   <div class="ds-full ds-zone-primary">
 
-  <!-- ───────── The four states ───────── -->
+  <!-- ───────── The four alerts ───────── -->
   <section class="section">
-    <h2 class="section-title" id="the-four-states">The four states</h2>
-    <p class="ds-section-desc">Rendered live from <code>design-system.css</code>. Choosing a state is
-    choosing a tone: <strong>info</strong> is neutral and calm, <strong>warning</strong> is advisory amber —
-    “worth knowing, nothing broke” — and <strong>error</strong> is reserved for something actually failing.</p>
+    <h2 class="section-title" id="the-four-states">The four alert states</h2>
+    <p class="ds-section-desc">arXiv's design system contains four alerts that align with user expectations and established UI practices. Each state conveys a tone through color: <strong>Success</strong> uses green to signal that all is well, <strong>info</strong> is a calm blue, <strong>warning</strong> is an attention-grabbing yellow, while <strong>error</strong> is a powerful red and is reserved for blocking or failed states.</p>
 
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">Do not escalate: an old paper version is a warning, not an error.</p>
+        <p class="ds-marginalia-body ds-annotation">Every state uses a distinct icon shape so meaning never rides on color alone (WCAG 1.4.1).</p>
       </details>
 
       <div class="ds-alert ds-alert-success" role="status">
@@ -124,8 +122,8 @@
       <div class="ds-alert ds-alert-info" role="status">
         <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
         <div class="ds-alert-content">
-          <p class="ds-alert-title">Scheduled maintenance</p>
-          <p>Submission processing pauses Sunday 02:00–04:00 UTC. Browsing is unaffected.</p>
+          <p class="ds-alert-title">Submission limits added</p>
+          <p>Due to increased volume, arXiv is limiting submissions to 2 per month.</p>
         </div>
       </div>
 
@@ -184,202 +182,6 @@
         </div>
       </details>
     </div>
-
-    <p class="ds-panel-label">With a dismiss button, single line</p>
-    <div class="ds-card">
-      <div class="ds-alert ds-alert-success" role="status">
-        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-        <div class="ds-alert-content"><p>Link copied to clipboard.</p></div>
-        <button type="button" class="ds-close"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Dismiss this message</span></button>
-      </div>
-
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-alert ds-alert-success" role="status"&gt;
-  &lt;svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2"
-       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
-    &lt;!-- Lucide icon paths --&gt;
-  &lt;/svg&gt;
-  &lt;div class="ds-alert-content"&gt;&lt;p&gt;Link copied to clipboard.&lt;/p&gt;&lt;/div&gt;
-  &lt;button type="button" class="ds-close"&gt;
-    &lt;svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
-      &lt;path d="M18 6 6 18"/&gt;
-      &lt;path d="m6 6 12 12"/&gt;
-    &lt;/svg&gt;
-    &lt;span class="is-sr-only"&gt;Dismiss this message&lt;/span&gt;
-  &lt;/button&gt;
-&lt;/div&gt;</code></pre>
-          <dl>
-            <dt>.ds-close</dt>
-            <dd>The dismiss control, documented on <a href="buttons.html#the-close-control">Buttons</a>.
-            Put it last inside <code>.ds-alert</code>; the alert positions it at the end of the first
-            line and it takes the alert’s colour. Removing the alert from the page is the host’s job:
-            the stylesheet gives the control no behaviour.</dd>
-            <dt>.is-sr-only</dt>
-            <dd>Required inside the control. The icon is <code>aria-hidden</code>, so without this span
-            the button announces as “button” and nothing more.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-
-    <div class="ds-note ds-note--internal">
-      <h3 class="ds-note-label">Internal variant</h3>
-      <p>Nothing about the component changes on the internal surface: the status palette is shared,
-      so an error is the same red in the moderation queue as on a paper page. What changes is what
-      the messages are about, and these four are here because the wording is the part worth
-      copying.</p>
-      <div class="ds-card ds-internal">
-        <div class="ds-alert ds-alert-success" role="status">
-          <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-          <div class="ds-alert-content">
-            <p class="ds-alert-title">Submission accepted</p>
-            <p>The replacement was published and the listing has been updated.</p>
-          </div>
-        </div>
-        <div class="ds-alert ds-alert-info" role="status">
-          <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-          <div class="ds-alert-content">
-            <p class="ds-alert-title">Awaiting moderation</p>
-            <p>This submission is in the moderation queue — <a href="#">view its status</a>.</p>
-          </div>
-        </div>
-        <div class="ds-alert ds-alert-warning" role="alert">
-          <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-          <div class="ds-alert-content">
-            <p class="ds-alert-title">Unsaved changes</p>
-            <p>You have edits that have not been submitted. Leaving this page will discard them.</p>
-          </div>
-        </div>
-        <div class="ds-alert ds-alert-error" role="alert">
-          <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
-          <div class="ds-alert-content">
-            <p class="ds-alert-title">Action failed</p>
-            <p>The category change could not be saved. Retry or <a href="#">view the log</a>.</p>
-          </div>
-        </div>
-        <details class="ds-acc"><summary>Relevant code</summary>
-          <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-internal"&gt;
-  &lt;div class="ds-alert ds-alert-error" role="alert"&gt;
-    …
-  &lt;/div&gt;
-&lt;/div&gt;</code></pre>
-            <dl>
-              <dt>.ds-internal</dt>
-              <dd>On a parent, or on <code>&lt;html&gt;</code> for a whole internal page. The alert
-              classes are the same and the status tokens do not change, so the alert looks the same;
-              the wrapper is what makes the buttons and links around it internal.</dd>
-            </dl>
-          </div>
-        </details>
-      </div>
-      <p class="ds-note-gotcha"><strong>A queue message still says what to do next</strong>
-      “Action failed” on its own leaves a moderator with nowhere to go. Every one of the
-      four above ends in either a next step or a link to the thing that explains it — the same
-      rule as the public side, and the one most easily dropped when the reader is a colleague.</p>
-    </div>
-  </section>
-
-  <!-- ───────── Announcement band ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="announcement-band">Announcement band</h2>
-    <p class="ds-section-desc">Site-wide, minimal, and time-bound (DESIGN-POLICIES, Banner): a small glyph, one short
-    sentence, one link, a dismiss button. Dismissal persists — the banner never returns for that user, so page
-    function must not depend on it. It sits above the site header as part of the approved header unit; full demo on
-    <a href="public/header.html">the header reference page</a>.</p>
-
-    <div class="ds-card">
-      <div class="ds-announcement" role="region" aria-label="Announcement">
-        <svg class="ds-announcement-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11h3l9-7v16l-9-7H3z"/><path d="M19 8a5 5 0 0 1 0 8"/></svg>
-        <span class="ds-announcement-text">arXiv is now an independent nonprofit.</span>
-        <a class="ds-announcement-link" href="#">Learn more</a>
-        <button type="button" class="ds-close"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Dismiss announcement</span></button>
-      </div>
-
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-announcement" role="region" aria-label="Announcement"&gt;
-  &lt;svg class="ds-announcement-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
-    &lt;!-- Lucide icon paths --&gt;
-  &lt;/svg&gt;
-  &lt;span class="ds-announcement-text"&gt;arXiv is now an independent nonprofit.&lt;/span&gt;
-  &lt;a class="ds-announcement-link" href="/about"&gt;Learn more&lt;/a&gt;
-  &lt;button type="button" class="ds-close"&gt;
-    &lt;svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
-      &lt;path d="M18 6 6 18"/&gt;
-      &lt;path d="m6 6 12 12"/&gt;
-    &lt;/svg&gt;
-    &lt;span class="is-sr-only"&gt;Dismiss announcement&lt;/span&gt;
-  &lt;/button&gt;
-&lt;/div&gt;</code></pre>
-          <dl>
-            <dt>.ds-announcement</dt>
-            <dd>The band. Takes <code>role="region"</code> and an <code>aria-label</code> so a screen
-            reader user can find it and skip it. Goes directly above <code>.ds-site-header</code>.</dd>
-            <dt>.ds-announcement-glyph</dt>
-            <dd>The icon, an inline SVG with <code>aria-hidden="true"</code>.</dd>
-            <dt>.ds-announcement-text</dt>
-            <dd>The one sentence.</dd>
-            <dt>.ds-announcement-link</dt>
-            <dd>The one link. An <code>&lt;a&gt;</code> with a real <code>href</code>.</dd>
-            <dt>.ds-close</dt>
-            <dd>The dismiss control, last inside the band; the band positions it at the right edge.
-            Remembering the dismissal is the host’s job.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-
-    <div class="ds-note">
-      <h3 class="ds-note-label">Alert or announcement</h3>
-      <p>An alert belongs to the page’s content (“this PDF failed”, “this version is old”). The announcement band
-      belongs to the site — one message for everyone, temporal, dismissable. If a message must persist or is about
-      the current paper, it is an alert.</p>
-    </div>
-  </section>
-
-  <!-- ───────── Form errors ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="errors-in-forms">Errors in forms</h2>
-    <p class="ds-section-desc">Validation messages are the smallest messaging pattern, shared across public and
-    internal (<code>.is-invalid</code> / <code>.field-error</code>). The error text is
-    linked to its field with <code>aria-describedby</code>; the border color change is never the only signal.
-    The full pattern, with warning and info messages, is on <a href="forms.html#validation">Forms</a>.</p>
-
-    <div class="ds-card">
-      <div class="ds-field">
-        <label class="ds-label" for="demo-email">Email address</label>
-        <input id="demo-email" class="ds-input is-invalid" type="email" required aria-required="true"
-               aria-invalid="true" aria-describedby="demo-email-error" value="shamsi@example">
-        <p class="field-error" id="demo-email-error">Enter a complete email address, like name@institution.edu.</p>
-      </div>
-
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-field"&gt;
-  &lt;label class="ds-label" for="email"&gt;Email address&lt;/label&gt;
-  &lt;input class="ds-input is-invalid" id="email" type="email"
-         required aria-required="true" aria-invalid="true"
-         aria-describedby="email-err" value="shamsi@example"&gt;
-  &lt;p class="field-error" id="email-err"&gt;Enter a complete email address, like name@institution.edu.&lt;/p&gt;
-&lt;/div&gt;</code></pre>
-          <dl>
-            <dt>.ds-field, .ds-label, .ds-input</dt>
-            <dd>The field, its label, and its control, as on <a href="forms.html">Forms</a>.</dd>
-            <dt>.is-invalid</dt>
-            <dd>On the control, for the error state. Pair it with <code>aria-invalid="true"</code>.</dd>
-            <dt>.field-error</dt>
-            <dd>The message, after the control. Needs an <code>id</code>, named in the control’s
-            <code>aria-describedby</code>. Keep it <code>hidden</code> until it applies.</dd>
-            <dt>required, aria-required</dt>
-            <dd>Both on the control. A required field is not marked in the visible label on a public
-            form; only an optional one is, with the word “(optional)”.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
   </section>
 
 
@@ -395,60 +197,123 @@
       message must carry the meaning: “Could not load the PDF”, not “Oops”.</li>
       <li><strong>Name the dismiss control.</strong> The <code>.ds-close</code> button needs a
       <code>&lt;span class="is-sr-only"&gt;</code> that says what it dismisses, such as “Dismiss this
-      message” or “Dismiss announcement”. Do not use <code>title</code> or <code>aria-label</code>
+      message”. Do not use <code>title</code> or <code>aria-label</code>
       for this, because page translation tools skip attributes.</li>
       <li><strong>Put focus somewhere after a dismiss.</strong> Removing the alert removes the
       focused button with it. Move focus to the element just before where the alert was, so a
       keyboard user is not dropped back to the top of the page.</li>
-      <li><strong>Link a form error to its field.</strong> Give the <code>.field-error</code> an
-      <code>id</code>, name it in the control’s <code>aria-describedby</code>, and set
-      <code>aria-invalid="true"</code> on the control. The red border on its own tells a screen
-      reader user nothing.</li>
     </ul>
   </div>
 
   </div> <!-- /core zone -->
 
-  <h2>Rules</h2>
+  <h2>Modifiers</h2>
 
+  <section class="section">
+    <h3 class="section-title" id="single-line">Single line</h3>
+    <p class="ds-section-desc">Some messages are meant to be short and do not need lead-in text. Alerts can also be just a single line.</p>
+    <div class="ds-card">
+      <div class="ds-alert ds-alert-success" role="status">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        <div class="ds-alert-content"><p>Link copied to clipboard.</p></div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-alert ds-alert-success" role="status"&gt;
+  &lt;svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
+    &lt;circle cx="12" cy="12" r="10"/&gt;
+    &lt;path d="m9 12 2 2 4-4"/&gt;
+  &lt;/svg&gt;
+  &lt;div class="ds-alert-content"&gt;
+    &lt;p&gt;Link copied to clipboard.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-alert-content</dt>
+            <dd>One <code>&lt;p&gt;</code> and no <code>.ds-alert-title</code>. The sentence itself
+            has to name the state, because there is no title to do it.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section class="section">
+    <h3 class="section-title" id="dismissible">Dismissible</h3>
+    <p class="ds-section-desc">The dismiss control, fully documented on <a href="buttons.html#the-close-control">Buttons</a>, should be used for non-essential messages that the user can ignore without impeding progress. Critical form errors should never be dismissible.</p>
+    <div class="ds-card">
+      <div class="ds-alert ds-alert-warning" role="alert">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        <div class="ds-alert-content"><p>Choosing the wrong category may delay announcement.</p></div>
+        <button type="button" class="ds-close"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Dismiss this message</span></button>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-alert ds-alert-warning" role="alert"&gt;
+  &lt;svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
+    &lt;path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/&gt;
+    &lt;path d="M12 9v4"/&gt;
+    &lt;path d="M12 17h.01"/&gt;
+  &lt;/svg&gt;
+  &lt;div class="ds-alert-content"&gt;
+    &lt;p&gt;Choosing the wrong category may delay announcement.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;button type="button" class="ds-close"&gt;
+    &lt;svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
+      &lt;path d="M18 6 6 18"/&gt;
+      &lt;path d="m6 6 12 12"/&gt;
+    &lt;/svg&gt;
+    &lt;span class="is-sr-only"&gt;Dismiss this message&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-close</dt>
+            <dd>The dismiss control, documented on <a href="buttons.html#the-close-control">Buttons</a>.
+            Put it last inside <code>.ds-alert</code>; the alert pushes it to the end of the row and it
+            takes the alert’s colour. Removing the alert from the page is the host’s job: the
+            stylesheet gives the control no behaviour.</dd>
+            <dt>.is-sr-only</dt>
+            <dd>Required inside the control. The icon is <code>aria-hidden</code>, so without this span
+            the button announces as “button” and nothing more.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+
+  <h2>Rules and Specifications</h2>
   <!-- ───────── Placement ───────── -->
   <section class="section">
     <h3 class="section-title" id="placement">Placement</h3>
-    <p class="ds-section-desc">Time-critical messages live in the main reading column where every reader meets
-    them. As an example, on the HTML papers page the warning when viewing an older version sits under the
-    title in the main content area, while the full version history lives in the sidebar accordion.</p>
-    <p class="ds-section-desc">Never put a timely message into a sidebar where users might miss it, only in the
-    main content area.</p>
-    <p class="ds-section-desc">We also cannot expect a user to scroll up or down to catch a timely message. It
+    <p class="ds-section-desc">The default position is at the top of the main content area, below the page title.</p>
+    <p class="ds-section-desc">When possible, place alerts close to the content they refer to. This reduces cognitive load on our users.</p>
+    <p class="ds-section-desc">Alerts live in the main content area, not tucked away in a sidebar.</p>
+    <p class="ds-section-desc">We cannot expect a user to scroll up or down to catch a timely message. It
     either needs to appear in the area where they are working, or the page needs to scroll them to the area
     where the message appears.</p>
   </section>
 
-  <!-- ───────── Writing guidance ───────── -->
+  <!-- ───────── Content guidance ───────── -->
   <section class="section">
     <h3 class="section-title" id="writing-the-message">Writing the message</h3>
     <ul class="notes">
-      <li><strong>Title = the situation, body = what to do.</strong> “Could not load the PDF” / “Try the HTML version instead.”</li>
-      <li><strong>Offer the way forward as a link</strong> inside the body whenever one exists.</li>
-      <li><strong>Say what to do, not what went wrong internally.</strong> “Enter a complete email address” beats “Validation failed.”</li>
-      <li><strong>Match arXiv’s voice:</strong> plain, direct, no exclamation marks, no blame (“the file failed to render”, not “you uploaded a bad file”).</li>
-      <li><strong>One row when possible.</strong> The older-version warning is one compact row; alerts should not crowd out the content they annotate.</li>
+      <li><strong>Title:</strong> Announce the situation in a few words, for example “No files found”.</li>
+      <li><strong>Body:</strong> What the user should do about it, for example “Check the contents of the tarball or zip.”</li>
+      <li><strong>Links help:</strong> When available, offer links inside the body that take the user to the next step.</li>
+      <li><strong>Focus on action:</strong> Stay focused on what the user needs to do, do not explain what went wrong internally. “Enter a complete email address” is better than “Validation failed”.</li>
+      <li><strong>arXiv’s voice:</strong> Plain, jargon-free, contraction-free, and we never blame the user. “The file failed to render” is better than “You uploaded a bad file”.</li>
+      <li><strong>One row when possible:</strong> Shorter is better. Alerts should not crowd out the content they are supporting.</li>
     </ul>
   </section>
-
-  <h2>Spec</h2>
 
   <!-- ───────── Live token values ───────── -->
   <section class="section">
     <h3 class="section-title" id="status-tokens">Status tokens</h3>
-    <p class="ds-section-desc">Read at runtime from <code>design-system.css</code> via
-    <code>getComputedStyle</code> — swatches, hex codes, and contrast ratios reflect the currently active mode and
-    cannot drift from the stylesheet. Use the theme control in the header to see the dark values. Contrast is
-    text-on-background (target 4.5:1 AA).</p>
+    <p class="ds-section-desc">The complete list of status tokens and color values.</p>
     <div class="table-scroll" role="region" aria-label="Status tokens" tabindex="0">
       <table class="ds-table-framed token-table">
         <thead><tr><th>State</th><th>Background</th><th>Border</th><th>Text / icon</th><th>Contrast</th></tr></thead>
-        <tbody id="token-rows"><!-- populated at runtime --></tbody>
+        <tbody id="token-rows"><!-- populated at runtime to avoid drift --></tbody>
       </table>
     </div>
   </section>
