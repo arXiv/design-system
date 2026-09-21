@@ -2024,7 +2024,7 @@ html:has(.ds-modal[open]) {
   color: var(--ds-text);
 }
 /* Code sits on the tint, not on white, so it needs its own ground. */
-.ds-note code { background: color-mix(in srgb, var(--ds-surface) 70%, transparent); }
+.ds-note :not(pre) > code { background: color-mix(in srgb, var(--ds-surface) 70%, transparent); }   /* a code block keeps its own ground */
 
 /* Registers. Blue states a requirement, grey gives guidance, lime marks
    material belonging to the internal surface — the one place a public page may
@@ -2553,6 +2553,13 @@ html:has(.ds-modal[open]) {
 .ds-acc-body dt { white-space: nowrap; padding-top: 2px; }   /* type: .ds-panel-label */
 .ds-acc-body dd { margin: 0; grid-column: 2; min-width: 0; }   /* keeps a second dd out of the term column */
 .ds-acc-body a { color: var(--ds-link); }
+.ds-acc-body code { overflow-wrap: anywhere; }
+/* Narrow: one column, and a term may wrap. */
+@media (max-width: 40rem) {
+  .ds-acc-body dl { grid-template-columns: 1fr; }
+  .ds-acc-body dt { white-space: normal; }
+  .ds-acc-body dd { grid-column: auto; }
+}
 
 /* ── Rail variant (.ds-acc-rail) ────────────────────────────────────
    For a disclosure inside a container that already frames it — the paper
