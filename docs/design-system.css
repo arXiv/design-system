@@ -138,18 +138,6 @@
      "New" is not success and "Wdr" is not an error — so these are their own
      palette rather than the status tokens. Contrast verified: new 8.5:1,
      rep 5.6:1, wdr 9.8:1, cross 7.5:1. */
-  --ds-badge-new-bg:      #d4e9ff;
-  --ds-badge-new-fg:      #1a3d78;
-  --ds-badge-new-border:  #93c5fd;
-  --ds-badge-rep-bg:      #fef3c7;
-  --ds-badge-rep-fg:      #7a5c00;
-  --ds-badge-rep-border:  #fde68a;
-  --ds-badge-wdr-bg:      #474340;
-  --ds-badge-wdr-fg:      #ffffff;
-  --ds-badge-wdr-border:  #474340;
-  --ds-badge-cross-bg:    #e8e4df;
-  --ds-badge-cross-fg:    #4a4540;
-  --ds-badge-cross-border:#cbc5be;
 
   /* The note tab is a filled label; these are the two pieces of it that
      cannot follow an existing semantic pair through the dark flip. */
@@ -1213,8 +1201,10 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   color: var(--ds-text-muted);
 }
 .ds-tag--keep-case { text-transform: none; letter-spacing: 0; }
+/* Rectangular, for a dense row where a pill's side padding costs column width. */
+.ds-tag--rectangle { border-radius: 3px; padding-inline: 0.55em; }
 
-.ds-tag--chrome  { background: var(--ds-accent-surface);  border-color: var(--ds-accent-border);    color: var(--ds-accent-strong); }
+.ds-tag--info    { background: var(--ds-info-bg);     border-color: var(--ds-info-border);    color: var(--ds-info-fg); }
 .ds-tag--success { background: var(--ds-success-bg);  border-color: var(--ds-success-border); color: var(--ds-success-fg); }
 .ds-tag--warning { background: var(--ds-warning-bg);  border-color: var(--ds-warning-border); color: var(--ds-warning-fg); }
 .ds-tag--error   { background: var(--ds-error-bg);    border-color: var(--ds-error-border);   color: var(--ds-error-fg); }
@@ -2048,28 +2038,6 @@ html:has(.ds-modal[open]) {
   --ds-note-mark: var(--ds-note-mark-internal);
 }
 
-/* TYPE BADGE  (.ds-badge) — tags.html
-   A rectangular label for one field of a dense row: what kind of thing this
-   row is. Rectangular rather than a pill because a pill's horizontal padding
-   costs column width the title needs more; see tags.html for the whole
-   comparison with .ds-tag. Its palette is its own, because a type is a
-   category and painting it with the status colours would say something
-   untrue about the queue. */
-.ds-badge {
-  display: inline-block;
-  padding: 0.1em 0.55em;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  font-family: var(--ds-font-mono);
-  font-size: 0.6875rem;
-  font-weight: 400;
-  white-space: nowrap;
-}
-.ds-badge--new   { background: var(--ds-badge-new-bg);   color: var(--ds-badge-new-fg);   border-color: var(--ds-badge-new-border); }
-.ds-badge--rep   { background: var(--ds-badge-rep-bg);   color: var(--ds-badge-rep-fg);   border-color: var(--ds-badge-rep-border); }
-.ds-badge--wdr   { background: var(--ds-badge-wdr-bg);   color: var(--ds-badge-wdr-fg);   border-color: var(--ds-badge-wdr-border); }
-.ds-badge--cross { background: var(--ds-badge-cross-bg); color: var(--ds-badge-cross-fg); border-color: var(--ds-badge-cross-border); }
-
 /* SEGMENTED CONTROL  (.ds-seg) — forms.html
    An exclusive choice rendered as adjacent buttons, for a decision where
    every option should stay visible. Two to four options; past that it is a
@@ -2183,18 +2151,6 @@ html:has(.ds-modal[open]) {
     --ds-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
     --ds-note-mark-fg:       var(--ds-repository-brown);
     --ds-note-mark-internal: var(--ds-access-lime);
-    --ds-badge-new-bg:      #13294a;
-    --ds-badge-new-fg:      #93c5fd;
-    --ds-badge-new-border:  #2a4a7a;
-    --ds-badge-rep-bg:      #3a2f0e;
-    --ds-badge-rep-fg:      #fde68a;
-    --ds-badge-rep-border:  #7a5c00;
-    --ds-badge-wdr-bg:      #474340;
-    --ds-badge-wdr-fg:      #e8e4df;
-    --ds-badge-wdr-border:  #8b8680;
-    --ds-badge-cross-bg:    #36322e;
-    --ds-badge-cross-fg:    #cbc5be;
-    --ds-badge-cross-border:#5a554f;
   }
 
   /* Internal tools, dark. Lime holds its light value; the wash goes to a
@@ -2314,18 +2270,6 @@ html:has(.ds-modal[open]) {
   --ds-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
   --ds-note-mark-fg:       var(--ds-repository-brown);
   --ds-note-mark-internal: var(--ds-access-lime);
-  --ds-badge-new-bg:      #13294a;
-  --ds-badge-new-fg:      #93c5fd;
-  --ds-badge-new-border:  #2a4a7a;
-  --ds-badge-rep-bg:      #3a2f0e;
-  --ds-badge-rep-fg:      #fde68a;
-  --ds-badge-rep-border:  #7a5c00;
-  --ds-badge-wdr-bg:      #474340;
-  --ds-badge-wdr-fg:      #e8e4df;
-  --ds-badge-wdr-border:  #8b8680;
-  --ds-badge-cross-bg:    #36322e;
-  --ds-badge-cross-fg:    #cbc5be;
-  --ds-badge-cross-border:#5a554f;
 }
 
 [data-theme="light"] {
@@ -2419,13 +2363,6 @@ html:has(.ds-modal[open]) {
   --ds-btn-secondary-fg-hover:     var(--ds-text);
   --ds-btn-text-bg-hover:          var(--ds-accent-wash);
   --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
-}
-/* The chrome tag takes the info palette here: the accent tints are lime,
-   and a lime chrome tag would read as a status, not as chrome. */
-.ds-internal .ds-tag--chrome {
-  background: var(--ds-info-bg);
-  border-color: var(--ds-info-border);
-  color: var(--ds-info-fg);
 }
 .ds-internal a.ds-tag:hover,
 .ds-internal button.ds-tag:hover {
