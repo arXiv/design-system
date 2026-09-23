@@ -27,7 +27,7 @@ Key differences from internal:
 - Focus ring: `var(--ds-focus-ring)` with dark mode override
 - Warm grey ladder: same tokens (`--ds-text-muted`, `--ds-border-strong`, `--ds-text-disabled`)
 - Segmented controls: same semantic variants (positive/neutral/negative)
-- Form validation: same patterns (`.is-invalid`, `.field-error`, `.field-required`)
+- Form validation: same patterns (`.is-invalid`, `.field-error`); required fields are unmarked and optional ones say `(optional)`, on every surface
 
 ## Pattern pages
 

@@ -104,7 +104,7 @@ Session mockup: `../../mockups/internal/admin-console/paper-details/index.html`.
 - [x] **Filter select** (`.ds-filter`) — underline-only select with custom chevron for toolbar filters
 - [x] **Segmented control** (`.ds-seg`, `.ds-seg-btn`) — exclusive-choice button group with positive/neutral/negative active variants
 - [x] **Toggle switch** (`.toggle-switch`, `.toggle-track`, `.toggle-thumb`, `.toggle-label`) — boolean on/off with lime-green checked state
-- [x] **Form validation** (`.field-required`, `.is-invalid`, `.field-error`) — required indicators, invalid border/ring, inline error messages
+- [x] **Form validation** (`.is-invalid`, `.field-error`) — invalid border/ring, inline error messages. The red required asterisk (`.field-required`) was removed 2026-09-23: every surface marks the optional fields in words instead (DESIGN-POLICIES)
 - [x] **WCAG AA audit** — added `--ds-border-strong` (`#8b8680`, 3.61:1 on white) to fill palette gap between `--ds-text-disabled` (2.24:1) and `--ds-text-muted` (5.83:1). Updated toggle track, toggle off-label, sort arrow, filter underline, seg control border, icon button border, and info card label to pass 3:1 UI / 4.5:1 text thresholds
 - [x] **Status / alert colors + `.ds-alert`** — four-state semantic palette (success/info/warning/error) and a token-driven alert banner, light + dark, with `forced-colors` / `prefers-reduced-motion` handling. Mirrored into the public stylesheet. See "Decisions made — Status / alert colors" above
 

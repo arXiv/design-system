@@ -6,11 +6,11 @@
   <title>Using the design system — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
-<script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
+  <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
 </head>
 <body class="ds-page">
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
-  <a class="ds-site-header-logo" href="../index.html">arXiv Design System</a>
+  <a class="ds-site-header-logo" href="../index.html"><span aria-hidden="true">arXiv Design System</span><span class="is-sr-only">archive Design System</span></a>
   <details class="ds-site-header-dropdown">
     <summary>Design Patterns</summary>
     <div class="ds-site-header-menu">
@@ -64,22 +64,67 @@
   <button type="button" class="ds-theme-toggle"></button>
   <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
-<div class="ds-container">
+
+<div class="ds-container ds-zone-secondary">
 
   <header class="ds-page-header">
     <h1>Using the design system</h1>
-    <p class="ds-section-desc">Which files to link, in what order, what the two tiers mean, and the
-    handful of things that go wrong if you guess. Everything else in these docs answers &ldquo;what
-    should this look like&rdquo;; this page answers &ldquo;how do I get it&rdquo;.</p>
+    <p class="ds-section-desc">This page shares how to get started with the arXiv Design System: basic markup, which files to link to, in what order, and a handful of things to avoid.</p>
+    <p>If you are an AI assistant, <code>AGENTS.md</code> at the repository root holds the file map in a form you can route from.</p>
   </header>
 
-  <!-- ── Start here ── -->
-  <div class="section">
-    <h2 class="section-title" id="a-page-start-to-finish">A page, start to finish</h2>
-    <p class="ds-section-desc">This is the whole of it for a public arXiv page. Copy it, then put
-    your content where the comment is.</p>
 
-<pre><code>&lt;!doctype html&gt;
+  <!-- ═════════ TOC ═════════ -->
+  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#core-linked-files">Core linked files</a></li>
+            <li><a href="#basic-page-markup">Basic page markup</a></li>
+            <li><a href="#internal-tools">Internal tools</a></li>
+            <li><a href="#container-options">Container options</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ═════════ Core zone ═════════ -->
+  <div class="ds-full ds-zone-primary">
+
+  <section class="section">
+    <h2 class="section-title" id="core-linked-files">Core linked files</h2>
+    <p class="ds-section-desc">Every core file you need to include in your repo, and in what order.</p>
+
+    <ul class="notes">
+      <li><strong><code>fonts.css</code>.</strong> Include this file before <code>design-system.css</code>. The font file declares the faces, the stylesheet names them. Either order renders but we have chosen this way for consistency.</li>
+      <li><strong><code>design-system.css</code>.</strong> The foundational tier 1 stylesheet. When working on internal pages, there is a tier 2 stylesheet that builds on this one.</li>
+      <li><strong><code>theme.js</code>.</strong> The foundational tier 1 JavaScript. Internal tools add no JavaScript of their own.</li>
+      <li><strong><code>toc.js</code>, optional.</strong> Add it when the page has a contents bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See <a href="organizing-content.html#contents-bar">Contents bar</a>.</li>
+      <li><strong><code>copy-code.js</code>, optional.</strong> Add it when the page shows code a reader might take away. It needs no markup: it finds every <code>&lt;pre&gt;</code> on the page and puts a copy button on each one.</li>
+    </ul>
+
+    <div class="ds-note ds-note--essential">
+      <h3 class="ds-note-label">Accessibility essentials</h3>
+      <ul class="notes">
+        <li><strong><code>theme.js</code> is not deferred.</strong> The script is deliberately not deferred because it writes
+        the reader's theme onto <code>&lt;html&gt;</code> before the first paint. If we added <code>defer</code> then the page will render light first, and then flip if the reader chose dark mode in their system. Many readers choose dark mode because light mode is less legible or hurts their eyes and we want to honor that.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ───────── Page markup ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="basic-page-markup">Basic page markup</h2>
+    <p class="ds-section-desc">This is the whole of it for a public arXiv page. Copy it and follow the comments.</p>
+    
+    <pre><code>&lt;!doctype html&gt;
 &lt;html lang="en"&gt;
 &lt;head&gt;
   &lt;meta charset="utf-8"&gt;
@@ -99,155 +144,70 @@
 &lt;/html&gt;</code></pre>
 
     <ul class="notes">
-      <li><strong><code>fonts.css</code> before <code>design-system.css</code>.</strong> The
-      stylesheet names the faces; the font file declares them. Either order renders, but this one
-      matches every page in the repo, and consistency is the point of a template.</li>
-      <li><strong><code>theme.js</code> is not deferred, and that is deliberate.</strong> It writes
-      the reader's theme onto <code>&lt;html&gt;</code> before the first paint. Add
-      <code>defer</code> and the page renders light and then flips &mdash; worst for exactly the
-      reader who chose dark because light hurts.</li>
-      <li><strong><code>class="ds-page"</code> on the body is not optional.</strong> The foundation
-      &mdash; the type stack, the canvas colour, <code>box-sizing</code>, the base heading and list
-      rhythm &mdash; is scoped to it, so a page without it gets components on unstyled ground.</li>
-      <li><strong><code>.ds-container</code> is the page shell.</strong> See below; it does more
-      than centre things.</li>
+      <li><strong><code>class="ds-page"</code> on the body is not optional.</strong> A page without it gets components on unstyled ground.</li>
     </ul>
-  </div>
+
+    <div class="ds-note ds-note--essential">
+      <h3 class="ds-note-label">Accessibility essentials</h3>
+      <ul class="notes">
+        <li><strong>Every section starts with a heading.</strong> Screen reader users move through a page by its headings, so a <code>&lt;section&gt;</code> without one is a part of the page they cannot find. A name on the section itself (<code>aria-labelledby</code> pointing at the heading) is optional: add it only for a part of the page a reader would want to jump to directly, because every named section is one more entry in the landmark list.</li>
+        <li><strong>Write the name arXiv so that screen readers say &ldquo;archive&rdquo;.</strong> Left alone, a screen reader reads the Xiv as a Roman numeral. In the site header the wordmark is an image whose alt text says &ldquo;archive&rdquo;. Where the name is typed as text in a permanent element, such as the header of this documentation, it is two spans, one shown and one spoken: <code>&lt;span aria-hidden="true"&gt;arXiv Design System&lt;/span&gt;&lt;span class="is-sr-only"&gt;archive Design System&lt;/span&gt;</code>. Running text stays plain, because the hidden word is copied along with the visible one and would break every pasted citation.</li>
+      </ul>
+    </div>
+  </section>
+
+  </div><!-- /core zone -->
+
+  <h2>Building on the foundation</h2>
 
   <!-- ── Internal tools ── -->
   <div class="section">
-    <h2 class="section-title" id="if-you-are-building-an-internal-tool">If you are building an internal tool</h2>
-    <p class="ds-section-desc">One class on <code>&lt;html&gt;</code>, and two files, in this order, and never only the second one.</p>
+    <h2 class="section-title" id="internal-tools">Internal tools</h2>
+    <p class="ds-section-desc">When building internal tools like arXiv Check or Admin Console pages, one class is added to <code>&lt;html&gt;</code> and a tier 2 stylesheet is added to the <code>&lt;head&gt;</code> section, in this order.</p>
 
-<pre><code>&lt;html lang="en" class="ds-internal"&gt;
+    <pre><code>&lt;html lang="en" class="ds-internal"&gt;
 …
 &lt;link rel="stylesheet" href="../fonts.css"&gt;
 &lt;link rel="stylesheet" href="../design-system.css"&gt;    &lt;!-- tier 1 --&gt;
 &lt;link rel="stylesheet" href="internal-tools.css"&gt;      &lt;!-- tier 2 --&gt;
 &lt;script src="../theme.js"&gt;&lt;/script&gt;</code></pre>
 
-    <div class="ds-note ds-note--essential">
-      <h3 class="ds-note-label">The one mistake to avoid</h3>
-      <p><code>internal-tools.css</code> is <strong>not</strong> a standalone stylesheet. It holds
-      only what that surface alone has &mdash; tables, metadata panels, info cards, the internal
-      icon-button variants, and the tokens whose values change. Load it on its own and
-      you get those components on no foundation at all.</p>
+    <div class="ds-alert ds-alert--error">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">internal-tools.css does not work on its own</p>
+        <p><code>internal-tools.css</code> is <strong>not</strong> a standalone stylesheet. It is a lightweight file that holds only the special styles or overrides that are specific to internal tools. Load it on its own and you get no foundation at all.</p>
+      </div>
     </div>
 
     <ul class="notes">
-      <li><strong>The accent is the whole mechanism.</strong> <code>.ds-internal</code> re-points
-      <code>--ds-accent</code> and its family to Access Lime, and every component inside it that
-      reaches for the accent follows without being told. It works on any parent, so a page that
-      shows both surfaces puts it on a wrapper instead of on <code>&lt;html&gt;</code>. That is why there is no second copy of
-      the button, the tag or the switch.</li>
-      <li><strong>Never copy a component into tier 2 to restyle it.</strong> If it needs to look
-      different on your surface, that is a token, not a second copy. A component that exists twice
-      disagrees with itself within about a month &mdash; we have the commits.</li>
-      <li><strong>The two accents are never crossed.</strong> Access Lime means internal tools,
-      Open Blue means the public site, and the accent answers <em>where am I</em>. A privileged
-      control on a public page stays Open Blue &mdash; see
-      <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>.</li>
+      <li><strong>The accent color, Access Lime.</strong> This accent color is highly differentiated from the public site's Open Blue and clearly signals that you are in a different environment.</li>
+      <li><code>.ds-internal</code> re-points <code>--ds-accent</code> and its family to Access Lime, and every component inside it that reaches for the accent follows without being told. It works on any parent, so a page that shows both surfaces puts it on a wrapper instead of on <code>&lt;html&gt;</code>. There is no second copy of the button, the tag or the switch inside the tier 2 stylesheet: it is not needed. Just a handful of new styles and overrides, and that class on the wrapper, are enough.</li>
+      <li><strong>Never copy a component into the tier 2 stylesheet to restyle it.</strong> If it needs to look
+      different on your surface, what you need is a token change, not a second copy. A component that exists twice
+      creates drift and lots of sad devs.</li>
+      <li><strong>The two accents are never crossed.</strong> Access Lime means internal tools, Open Blue means the public site. Are you linking to the internal tools from a public page, or vice versa? Maintain the accent color of your environment on that button and let the button label clearly tell the user where it will take them. See <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> for more.</li>
     </ul>
   </div>
 
-  <!-- ── The shell ── -->
+  <!-- ── Shell variants ── -->
   <div class="section">
-    <h2 class="section-title" id="what-ds-container-does">What <code>.ds-container</code> does</h2>
-    <p class="ds-section-desc">It is three grid tracks, not a <code>max-width</code>, and the
-    difference matters in two places.</p>
+    <h2 class="section-title" id="container-options">Container options</h2>
+    <p class="ds-section-desc"><code>.ds-container</code> is a grid with various options for managing section layout.</p>
 
     <ul class="notes">
-      <li><strong>It owns the space between sections.</strong> Every direct child is a section and
-      the gap between them comes from the container, because a section cannot know what follows it
-      and so cannot know how far away that should be. Do not add top or bottom margins to
-      sections &mdash; the container already did.</li>
-      <li><strong>A band that runs edge to edge gets <code>.ds-full</code></strong> and spans the
-      outer track. No negative margins, and above all <em>no viewport units</em>:
-      <code>100vw</code> includes the scrollbar while the document width does not, so a
-      <code>calc(-50vw + 50%)</code> band overhangs and the page scrolls sideways. That is
-      invisible on a Mac with overlay scrollbars and obvious on Windows, which is why it survives
-      review. We found it in a live mockup at 18px of drift.</li>
-      <li><strong>Its width comes from <code>--ds-width-page</code> and <code>--ds-gutter</code>.</strong>
-      Change the page width by re-pointing one token, not by adding a second width beside it.</li>
+      <li><strong>Sections.</strong> The container's direct children are <code>&lt;section&gt;</code> elements, and the container sets the gap between them. Do not add top or bottom margins to sections, the container already does.</li>
+      <li><strong><code>.ds-full</code></strong>. A band that runs edge to edge gets <code>.ds-full</code> and spans the full width of the viewport. Do not add negative margins and do not use <em>viewport units</em> for placement. Using a calculation like <code>calc(-50vw + 50%)</code> overhangs the section band and causes the page to scroll sideways in some environments.</li>
+      <li><strong>Page width.</strong> Width comes from <code>--ds-width-page</code> and <code>--ds-gutter</code>.
+      Need to change the page width? Repoint one of the tokens, do not add a second width beside it.</li>
     </ul>
 
-<pre><code>&lt;div class="ds-container"&gt;
-  &lt;section&gt;&hellip;&lt;/section&gt;                   &lt;!-- content track --&gt;
-  &lt;section class="ds-full"&gt;&hellip;&lt;/section&gt;    &lt;!-- edge to edge --&gt;
+    <pre><code>&lt;div class="ds-container"&gt;
+&lt;section&gt;&hellip;&lt;/section&gt;                   &lt;!-- content track --&gt;
+&lt;section class="ds-full"&gt;&hellip;&lt;/section&gt;    &lt;!-- edge to edge --&gt;
 &lt;/div&gt;</code></pre>
   </div>
 
-  <!-- ── Optional parts ── -->
-  <div class="section">
-    <h2 class="section-title" id="the-optional-files">The optional files</h2>
-    <table class="ds-table-framed">
-      <thead><tr><th>File</th><th>Add it when</th><th>Markup it needs</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><code>theme.js</code></td>
-          <td>Always. It carries the reader's light/dark choice.</td>
-          <td><code>.ds-theme-toggle</code> button and a <code>#ds-theme-status</code> live region,
-          in the header. See <a href="dark-mode.html">Dark mode</a>.</td>
-        </tr>
-        <tr>
-          <td><code>copy-code.js</code></td>
-          <td>The page shows code a reader might take away.</td>
-          <td>None. It finds every <code>&lt;pre&gt;</code> itself &mdash; see
-          <a href="typography.html">Typography</a>.</td>
-        </tr>
-        <tr>
-          <td><code>marked.js</code></td>
-          <td>Only <code>doc.html</code>, which renders the repo's Markdown. Not part of the system.</td>
-          <td>&mdash;</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- ── What not to do ── -->
-  <div class="section">
-    <h2 class="section-title" id="five-things-that-go-wrong">Five things that go wrong</h2>
-    <p class="ds-section-desc">Each of these has happened in this repository, and each one is now
-    caught by <code>python3 verification/check-policies.py</code>. Run it before you push.</p>
-
-    <ol class="notes">
-      <li><strong>Loading a font or a script from someone else's server.</strong> Everything is
-      self-hosted. No Google Fonts, no CDN. If an existing page does it, that page is wrong.</li>
-      <li><strong>Writing a size in <code>px</code>.</strong> Type sizes are <code>rem</code>, and a
-      control's padding is <code>em</code> against its own label, so the whole control grows when a
-      reader raises their font size. A fixed box around growing text is the same failure as never
-      growing at all.</li>
-      <li><strong>Using a <code>var()</code> that does not exist.</strong> CSS drops the entire
-      declaration, silently. A component of ours shipped with no padding for a day that way.</li>
-      <li><strong>Typing the wordmark.</strong> The arXiv logo is a drawn mark in
-      <code>assets/images/logos/</code>, never the letters &ldquo;arXiv&rdquo; in a heading.</li>
-      <li><strong>Inventing a colour.</strong> If you need one that is not in
-      <a href="colors.html">the palette</a>, that is a conversation, not a hex value. Two surfaces
-      already share one palette and a third value is how that stops being true.</li>
-    </ol>
-  </div>
-
-  <!-- ── Where to look ── -->
-  <div class="section">
-    <h2 class="section-title" id="where-to-look-next">Where to look next</h2>
-    <p class="ds-section-desc">Start from what you are building, not from the file list.</p>
-    <table class="ds-table-framed">
-      <thead><tr><th>Building</th><th>Read</th></tr></thead>
-      <tbody>
-        <tr><td>Anything at all, first</td><td><a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> &mdash; the hard constraints</td></tr>
-        <tr><td>Buttons, links, small actions</td><td><a href="buttons.html">Buttons</a> &middot; <a href="links.html">Links</a></td></tr>
-        <tr><td>A form</td><td><a href="forms.html">Forms &amp; validation</a></td></tr>
-        <tr><td>A message to the reader</td><td><a href="alerts.html">Alerts</a></td></tr>
-        <tr><td>Page structure, cards, notes</td><td><a href="organizing-content.html">Organizing content</a></td></tr>
-        <tr><td>Something that hides and shows</td><td><a href="progressive-disclosure.html">Progressive disclosure</a> &middot; <a href="modals.html">Modal dialogs</a></td></tr>
-        <tr><td>Labels, categories, states</td><td><a href="tags.html">Tags</a></td></tr>
-        <tr><td>An internal tool's tables or panels</td><td><a href="internal/tables.html">Tables</a> &middot; <a href="internal/metadata-panel.html">Metadata panel</a></td></tr>
-        <tr><td>Colour, type, spacing</td><td><a href="colors.html">Color</a> &middot; <a href="typography.html">Typography</a> &middot; <a href="spacing.html">Spacing</a></td></tr>
-      </tbody>
-    </table>
-    <p class="ds-section-desc" style="margin-top:var(--ds-space-4)">If you are an AI assistant,
-    <code>AGENTS.md</code> at the repository root is the same map in a form you can route from.</p>
-  </div>
 
 </div>
 
