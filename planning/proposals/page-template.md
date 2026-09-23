@@ -20,7 +20,7 @@ They want the same thing at different depths, so every page is an inverted pyram
 2. **The rendered thing.** Live demos of the real classes, states visible, before any prose.
 3. **Spec table.** Classes, tokens, values — compact, exact.
 4. **Usage code.** Canonical markup, copy-paste ready, correct usage only.
-5. **Rules.** Hard rules use `.ds-alert-error`; each rationale ≤ 3 sentences.
+5. **Rules.** Hard rules use `.ds-alert--error`; each rationale ≤ 3 sentences.
 6. **Accessibility notes.** What the pattern must keep to stay compliant.
 
 Nothing else. No status boxes, no backlog pointers, no history — planning/ holds those.
