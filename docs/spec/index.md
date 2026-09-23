@@ -7,12 +7,12 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Component | Digest | Summary |
 |---|---|---|
 | Buttons | [buttons.md](buttons.md) | Each arXiv button family shares the same mechanical spec, with color used to differentiate by context: Open Blue for public pages and Access Lime for internal t |
+| Alerts | [alerts.md](alerts.md) | Alerts are a critical component of successful user journeys. They go hand in hand with [form validation](forms.html) but have many uses beyond forms as well. Al |
 
 ## Not yet digested
 
 These pages have not had their review pass. Read the page itself, and expect the shape to differ.
 
-- alerts.html
 - brand.html
 - colors.html
 - dark-mode.html
