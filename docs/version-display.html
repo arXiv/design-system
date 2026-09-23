@@ -6,63 +6,8 @@
   <title>Versions — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
 <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
-  <style>
-    /* ── Component reference page. Written spec: this page plus
-       color-mapping.md (Version link rows). Reference implementation:
-       mockups/public/abstract-phase2.html (the date row + version links + amber
-       warning shown here mirror it). Page chrome uses literal hex so it is
-       never mistaken for part of the system; the version affordances use
-       real tokens (--ds-link, --ds-text, --ds-text-muted, --ds-warning-*). ── */
-.ds-page-header code { color: var(--ds-accent-strong); background: none; }
-.demo { margin-bottom:var(--ds-space-3); }
-    .demo-cap { font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif; font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--ds-border-strong); margin:0 0 var(--ds-space-3); }
-
-    /* ── Date row + inline version links (mirrors abstract-phase2) ── */
-    .vd-date { font-size: 0.9rem; color: var(--ds-text-muted, var(--ds-text-muted)); margin:0; }
-    .vd-date time { color: inherit; }
-    .vd-ver { font-family: var(--ds-font-mono); font-size: 0.9rem; margin-left:6px; }
-    .vd-ver.is-other { color: var(--ds-link, var(--ds-link)); text-decoration: underline; text-underline-offset: 3px; }
-    .vd-ver.is-other:hover { color: var(--ds-link-hover, var(--ds-link-hover)); }
-    .vd-ver.is-current { color: var(--ds-text, var(--ds-text)); font-weight: 700; }
-    .vd-ver:focus-visible { outline: 2px solid var(--ds-link, var(--ds-link)); outline-offset: 2px; border-radius: 2px; }
-    .vd-verwrap { font-variant-numeric: tabular-nums; }
-    .vd-elide { color: var(--ds-text-muted, var(--ds-text-muted)); margin-left:6px; }
-    /* Text-button disclosure, same affordance family as the authors
-       "show all N authors" toggle. Padding + negative margin grows the
-       hit area to the 24px floor without moving the row (DESIGN-POLICIES,
-       target size). */
-    .vd-more { font-family: inherit; font-size: 0.85rem; font-style: italic;
-      color: var(--ds-link, var(--ds-link)); background: none; border: 0; cursor: pointer;
-      padding: 7px 6px; margin:-7px 0 -7px var(--ds-space-1); border-radius: 2px; }
-    .vd-more:hover { color: var(--ds-link-hover, var(--ds-link-hover)); text-decoration: underline; }
-    .vd-more:focus-visible { outline: 2px solid var(--ds-link, var(--ds-link)); outline-offset: 2px; }
-
-    /* ── Older-version warning — amber Warning tokens, compact single row.
-       In production this is the .ds-alert warning variant; styled locally
-       here so the pattern renders identically without the shared sheet. ── */
-    .vd-warn { display: flex; align-items: flex-start; gap:var(--ds-gap-glyph); margin:var(--ds-space-3) 0 0;
-      background: var(--ds-warning-bg, var(--ds-warning-bg)); border: 1px solid var(--ds-warning-border, var(--ds-warning-border));
-      border-radius: 4px; padding: 10px 14px; font-size: 0.8125rem; color: var(--ds-warning-fg, var(--ds-warning-fg)); }
-    .vd-warn-icon { flex-shrink: 0; width: 18px; height: 18px; color: #b88c00; margin-top:1px; }
-    .vd-warn p { margin:0; line-height: 1.5; }
-    .vd-warn a { color: var(--ds-warning-fg, var(--ds-warning-fg)); font-weight: 600; text-decoration: underline; }
-    .vd-warn a:hover { color: #5a4400; }
-
-    .rule-card { margin-bottom:var(--ds-space-3); }
-.rule-card p { }
-.who { display: grid; grid-template-columns: 1fr 1fr; gap:var(--ds-space-block); }
-    @media (max-width: 640px) { .who { grid-template-columns: 1fr; } }
-    .who-card { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; padding: 16px 18px; }
-    .who-card h3 { font-size: 13px; margin:0 0 var(--ds-space-1); }
-    .who-card p { font-size: 12.5px; color: var(--ds-text-muted); margin:0; line-height: 1.5; }
-
-    .is-sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin:-1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-
-  
-    /* Inline links in page copy. These sit on the page canvas. Nav links
-       carry their own, more specific rules. */
-</style>
 </head>
 <body class="ds-page">
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
@@ -120,248 +65,548 @@
   <button type="button" class="ds-theme-toggle"></button>
   <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
-<div class="ds-container">
+
+<div class="ds-container ds-zone-secondary">
+
   <header class="ds-page-header">
     <h1>Versions</h1>
-    <p>
-      How a paper shows its submission date, the timestamp it was announced at, its current revision
-      date, and its version history — below the title, on the abstract page and in internal tools. Prior versions are
-      inline text links; the version being viewed is bold, not a link. The same grammar scales from one
-      version to 100+. Reference implementation:
-      <a href="../mockups/public/abstract-phase2.html">abstract-phase2.html</a>. Spec:
-      this page plus <a href="doc.html?src=docs/color-mapping.md">color-mapping.md</a> (Version link rows).
-    </p>
+    <p>How a paper shows its submission date, the timestamp it was announced at, its current revision date, and its version history — below the title, on the abstract page and in internal tools. Prior versions are inline text links; the version being viewed is bold, not a link.</p>
   </header>
 
-  <!-- ══════════ EXAMPLES FIRST ══════════ -->
 
+  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#one-version-near-silent">One version — near-silent</a></li>
+            <li><a href="#a-few-versions-viewing-the-latest">A few versions — viewing the latest</a></li>
+            <li><a href="#many-versions-elide-the-middle">Many versions — elide the middle</a></li>
+            <li><a href="#viewing-an-older-version">Viewing an older version</a></li>
+            <li><a href="#three-dates-one-grammar">Three dates, one grammar</a></li>
+            <li><a href="#announced-carries-a-clock-time-submitted-and-revised-do-not">Announced carries a clock time; Submitted and Revised do not</a></li>
+            <li><a href="#every-date-carries-utc-in-the-rows-own-grey">Every date carries UTC, in the row's own grey</a></li>
+            <li><a href="#current-is-bold-and-aria-current-never-color-alone">Current is bold and aria-current, never color alone</a></li>
+            <li><a href="#prior-versions-are-inline-links-so-they-are-underlined">Prior versions are inline links, so they are underlined</a></li>
+            <li><a href="#older-version-warning-amber-compact-advisory">Older-version warning: amber, compact, advisory</a></li>
+            <li><a href="#one-grammar-elide-past-ten">One grammar; elide past ten</a></li>
+            <li><a href="#elision-signals-continuation-js-never-hides-content-for-good">Elision signals continuation; JS never hides content for good</a></li>
+            <li><a href="#why-it-is-designed-this-way">Why it is designed this way</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <div class="ds-full ds-zone-primary">
+
+  <!-- ───────── One version ───────── -->
   <section class="section">
     <h2 class="section-title" id="one-version-near-silent">One version — near-silent</h2>
-    <p class="ds-section-desc">
-      The common case: most papers have a single version. Show the submitted and announced dates and
-      nothing else — no "revised", no "(this version)", no version links to disambiguate. The
-      submitted–announced pair sitting side by side is arXiv's speed made visible
-      (BRAND, <em>Speed and efficiency</em>).
-    </p>
-    <div class="ds-card demo">
-      <p class="ds-card demo-cap">Abstract page · single version</p>
-      <p class="vd-date">Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC<span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC</p>
+    <p class="ds-section-desc">The common case: most papers have a single version. Show the submitted and announced dates and nothing else — no "revised", no "(this version)", no version links to disambiguate. The submitted–announced pair sitting side by side is arXiv's speed made visible (BRAND, <em>Speed and efficiency</em>).</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">The date row and version classes are not in design-system.css yet, so the demos here take the page defaults until they land.</p>
+      </details>
+      <p class="ds-date-row">
+        Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
+      </p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-date-row"&gt;
+  Submitted &lt;time datetime="2026-01-10"&gt;10&amp;nbsp;Jan&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Announced &lt;time datetime="2026-01-11T01:32Z"&gt;11&amp;nbsp;Jan&amp;nbsp;2026,&amp;nbsp;01:32&lt;/time&gt;&amp;nbsp;UTC
+&lt;/p&gt;
+</code></pre>
+          <dl>
+            <dt>.ds-date-row</dt>
+            <dd>The row. One <code>&lt;p&gt;</code> that holds the dates and, after them, the version
+            links. Small type in the muted colour, with tabular figures so the digits line up.</dd>
+            <dt>&lt;time datetime&gt;</dt>
+            <dd>Every date. Announced is a full instant (<code>2026-01-11T01:32Z</code>); Submitted and
+            Revised are date-only (<code>2026-01-10</code>). In the visible text, bind the day, month,
+            year and clock time to each other with <code>&amp;nbsp;</code>, and bind UTC to its date the
+            same way, outside the element.</dd>
+            <dt>.is-sr-only</dt>
+            <dd>The separator. The visible "·" is <code>aria-hidden</code>, and the sr-only comma
+            beside it is what a screen reader gets between one date and the next.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
   </section>
 
+  <!-- ───────── A few versions ───────── -->
   <section class="section">
     <h2 class="section-title" id="a-few-versions-viewing-the-latest">A few versions — viewing the latest</h2>
-    <p class="ds-section-desc">
-      Once a paper has more than one version, the date row carries all three dates:
-      <strong>Submitted</strong> and <strong>Announced</strong> are always the v1 dates;
-      <strong>Revised … (this version)</strong> is the date of the version you are reading. Prior
-      versions follow as Link&nbsp;Blue links; the current one is bold, not a link, and carries
-      <code>aria-current</code>.
-    </p>
-    <div class="ds-card demo">
-      <p class="ds-card demo-cap">Viewing v3 of 3 (latest)</p>
-      <p class="vd-date vd-verwrap">
+    <p class="ds-section-desc">Once a paper has more than one version, the date row carries all three dates: <strong>Submitted</strong> and <strong>Announced</strong> are always the v1 dates; <strong>Revised … (this version)</strong> is the date of the version you are reading. Prior versions follow as Link&nbsp;Blue links; the current one is bold, not a link, and carries <code>aria-current</code>.</p>
+    <p class="ds-panel-label">Viewing v3 of 3 (latest)</p>
+    <div class="ds-card">
+      <p class="ds-date-row">
         Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
-        <span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
         Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
-        <span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
         Revised <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC (this version)
-        &nbsp;
-        <a href="#v1" class="vd-ver is-other" aria-label="View version 1">v1</a>
-        <a href="#v2" class="vd-ver is-other" aria-label="View version 2">v2</a>
-        <span class="vd-ver is-current" aria-current="true" aria-label="Version 3, current version">v3</span>
+        <a class="ds-version" href="#v1" aria-label="View version 1">v1</a>
+        <a class="ds-version" href="#v2" aria-label="View version 2">v2</a>
+        <strong class="ds-version" aria-current="true">v3<span class="is-sr-only">, this version</span></strong>
       </p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-date-row"&gt;
+  Submitted &lt;time datetime="2026-01-10"&gt;10&amp;nbsp;Jan&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Announced &lt;time datetime="2026-01-11T01:32Z"&gt;11&amp;nbsp;Jan&amp;nbsp;2026,&amp;nbsp;01:32&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Revised &lt;time datetime="2026-04-24"&gt;24&amp;nbsp;Apr&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC (this version)
+  &lt;a class="ds-version" href="#v1" aria-label="View version 1"&gt;v1&lt;/a&gt;
+  &lt;a class="ds-version" href="#v2" aria-label="View version 2"&gt;v2&lt;/a&gt;
+  &lt;strong class="ds-version" aria-current="true"&gt;v3&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;&lt;/strong&gt;
+&lt;/p&gt;
+</code></pre>
+          <dl>
+            <dt>.ds-version</dt>
+            <dd>One version number in the row, in the mono face. A prior version is an
+            <code>&lt;a&gt;</code> with an <code>href</code>, and takes the page's link colour and
+            underline. The version being viewed is a <code>&lt;strong&gt;</code>, not a link.</dd>
+            <dt>aria-current="true"</dt>
+            <dd>On the version being viewed. Goes with the bold, so the current version is marked
+            twice and never by colour alone. The <code>.is-sr-only</code> span inside it says
+            ", this version", because the attribute alone is not announced by every screen reader.</dd>
+            <dt>aria-label="View version 1"</dt>
+            <dd>On every prior-version link: "View version 1". The visible "v1" on its own does not say
+            what the link does.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
   </section>
 
+  <!-- ───────── Many versions ───────── -->
   <section class="section">
     <h2 class="section-title" id="many-versions-elide-the-middle">Many versions — elide the middle</h2>
-    <p class="ds-section-desc">
-      Past ten versions, the inline list keeps its first three and last three and elides the middle
-      with an ellipsis — and the version being viewed always stays visible, wherever it falls.
-      A text button carrying the explicit total expands the full list in place, the same disclosure
-      grammar as "&hellip; show all 22 authors". Ten or fewer: every version, no elision.
-    </p>
-    <div class="ds-card demo">
-      <p class="ds-card demo-cap">Viewing v127 of 127 (latest) · collapsed, the default</p>
-      <p class="vd-date vd-verwrap">
+    <p class="ds-section-desc">Past ten versions, the inline list keeps its first three and last three and elides the middle with an ellipsis — and the version being viewed always stays visible, wherever it falls. A text button carrying the explicit total expands the full list in place, the same disclosure grammar as "… show all 22 authors". Ten or fewer: every version, no elision.</p>
+
+    <p class="ds-panel-label">Viewing v12 of 12 (latest), collapsed, the default</p>
+    <div class="ds-card">
+      <p class="ds-date-row">
         Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
-        <span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
         Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
-        <span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
         Revised <time datetime="2026-06-30">30&nbsp;Jun&nbsp;2026</time>&nbsp;UTC (this version)
-        &nbsp;
-        <a href="#" class="vd-ver is-other" aria-label="View version 1">v1</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 2">v2</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 3">v3</a>
-        <span class="vd-elide" aria-hidden="true">&hellip;</span><span class="is-sr-only">versions 4 through 124 hidden,</span>
-        <a href="#" class="vd-ver is-other" aria-label="View version 125">v125</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 126">v126</a>
-        <span class="vd-ver is-current" aria-current="true" aria-label="Version 127, current version">v127</span>
-        <button type="button" class="vd-more" aria-expanded="false">show all 127 versions</button>
+        <a class="ds-version" href="#v1" aria-label="View version 1">v1</a>
+        <a class="ds-version" href="#v2" aria-label="View version 2">v2</a>
+        <a class="ds-version" href="#v3" aria-label="View version 3">v3</a>
+        <span id="v12-elide"><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 9 hidden,</span></span>
+        <span id="v12-tail" hidden>
+          <a class="ds-version" href="#v4" aria-label="View version 4">v4</a>
+          <a class="ds-version" href="#v5" aria-label="View version 5">v5</a>
+          <a class="ds-version" href="#v6" aria-label="View version 6">v6</a>
+          <a class="ds-version" href="#v7" aria-label="View version 7">v7</a>
+          <a class="ds-version" href="#v8" aria-label="View version 8">v8</a>
+          <a class="ds-version" href="#v9" aria-label="View version 9">v9</a>
+        </span>
+        <a class="ds-version" href="#v10" aria-label="View version 10">v10</a>
+        <a class="ds-version" href="#v11" aria-label="View version 11">v11</a>
+        <strong class="ds-version" aria-current="true">v12<span class="is-sr-only">, this version</span></strong>
+        <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="v12-elide v12-tail">show all 12 versions</button>
       </p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-date-row"&gt;
+  Submitted &lt;time datetime="2026-01-10"&gt;10&amp;nbsp;Jan&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Announced &lt;time datetime="2026-01-11T01:32Z"&gt;11&amp;nbsp;Jan&amp;nbsp;2026,&amp;nbsp;01:32&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Revised &lt;time datetime="2026-06-30"&gt;30&amp;nbsp;Jun&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC (this version)
+  &lt;a class="ds-version" href="#v1" aria-label="View version 1"&gt;v1&lt;/a&gt;
+  &lt;a class="ds-version" href="#v2" aria-label="View version 2"&gt;v2&lt;/a&gt;
+  &lt;a class="ds-version" href="#v3" aria-label="View version 3"&gt;v3&lt;/a&gt;
+  &lt;span id="v12-elide"&gt;&lt;span aria-hidden="true"&gt;…&lt;/span&gt;&lt;span class="is-sr-only"&gt;versions 4 through 9 hidden,&lt;/span&gt;&lt;/span&gt;
+  &lt;span id="v12-tail" hidden&gt;
+    &lt;a class="ds-version" href="#v4" aria-label="View version 4"&gt;v4&lt;/a&gt;
+    &lt;a class="ds-version" href="#v5" aria-label="View version 5"&gt;v5&lt;/a&gt;
+    &lt;a class="ds-version" href="#v6" aria-label="View version 6"&gt;v6&lt;/a&gt;
+    &lt;a class="ds-version" href="#v7" aria-label="View version 7"&gt;v7&lt;/a&gt;
+    &lt;a class="ds-version" href="#v8" aria-label="View version 8"&gt;v8&lt;/a&gt;
+    &lt;a class="ds-version" href="#v9" aria-label="View version 9"&gt;v9&lt;/a&gt;
+  &lt;/span&gt;
+  &lt;a class="ds-version" href="#v10" aria-label="View version 10"&gt;v10&lt;/a&gt;
+  &lt;a class="ds-version" href="#v11" aria-label="View version 11"&gt;v11&lt;/a&gt;
+  &lt;strong class="ds-version" aria-current="true"&gt;v12&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;&lt;/strong&gt;
+  &lt;button type="button" class="ds-show-more" aria-expanded="false" aria-controls="v12-elide v12-tail"&gt;show all 12 versions&lt;/button&gt;
+&lt;/p&gt;
+</code></pre>
+          <dl>
+            <dt>.ds-show-more</dt>
+            <dd>The control that expands the list, documented on
+            <a href="progressive-disclosure.html#show-more">Progressive disclosure</a>. Requires
+            <code>aria-expanded</code>, flipped on every press, and <code>aria-controls</code> naming
+            every region it shows or hides. The label carries the total: "show all 12 versions", and
+            "show fewer" once open.</dd>
+            <dt>[hidden]</dt>
+            <dd>On the span that holds the elided versions. The attribute, not a class: the hidden links
+            are out of the tab order while they are off screen. The full list is in the HTML the server
+            sends; a script adds <code>hidden</code> and the button, so with no JavaScript the reader
+            gets every version.</dd>
+            <dt>aria-hidden="true"</dt>
+            <dd>On the ellipsis, which is decoration. The <code>.is-sr-only</code> span beside it says
+            which versions are hidden. Both sit in one span that the button hides when the list
+            opens.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
-    <div class="ds-card demo">
-      <p class="ds-card demo-cap">Viewing v57 of 127 — the viewed version stays visible inside the elision</p>
-      <p class="vd-date vd-verwrap">
+
+    <p class="ds-panel-label">Viewing v7 of 12: the viewed version stays visible inside the elision</p>
+    <div class="ds-card">
+      <p class="ds-date-row">
         Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
-        <span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
         Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
-        <span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
         Revised <time datetime="2026-03-12">12&nbsp;Mar&nbsp;2026</time>&nbsp;UTC (this version)
-        &nbsp;
-        <a href="#" class="vd-ver is-other" aria-label="View version 1">v1</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 2">v2</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 3">v3</a>
-        <span class="vd-elide" aria-hidden="true">&hellip;</span><span class="is-sr-only">versions 4 through 56 hidden,</span>
-        <span class="vd-ver is-current" aria-current="true" aria-label="Version 57, the version you are viewing">v57</span>
-        <span class="vd-elide" aria-hidden="true">&hellip;</span><span class="is-sr-only">versions 58 through 124 hidden,</span>
-        <a href="#" class="vd-ver is-other" aria-label="View version 125">v125</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 126">v126</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 127">v127</a>
-        <button type="button" class="vd-more" aria-expanded="false">show all 127 versions</button>
+        <a class="ds-version" href="#v1" aria-label="View version 1">v1</a>
+        <a class="ds-version" href="#v2" aria-label="View version 2">v2</a>
+        <a class="ds-version" href="#v3" aria-label="View version 3">v3</a>
+        <span id="v7-elide-a"><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 6 hidden,</span></span>
+        <span id="v7-tail-a" hidden>
+          <a class="ds-version" href="#v4" aria-label="View version 4">v4</a>
+          <a class="ds-version" href="#v5" aria-label="View version 5">v5</a>
+          <a class="ds-version" href="#v6" aria-label="View version 6">v6</a>
+        </span>
+        <strong class="ds-version" aria-current="true">v7<span class="is-sr-only">, this version</span></strong>
+        <span id="v7-elide-b"><span aria-hidden="true">…</span><span class="is-sr-only">versions 8 through 9 hidden,</span></span>
+        <span id="v7-tail-b" hidden>
+          <a class="ds-version" href="#v8" aria-label="View version 8">v8</a>
+          <a class="ds-version" href="#v9" aria-label="View version 9">v9</a>
+        </span>
+        <a class="ds-version" href="#v10" aria-label="View version 10">v10</a>
+        <a class="ds-version" href="#v11" aria-label="View version 11">v11</a>
+        <a class="ds-version" href="#v12" aria-label="View version 12">v12</a>
+        <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b">show all 12 versions</button>
       </p>
-      <div class="vd-warn" role="alert">
-        <svg class="vd-warn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <div class="ds-alert ds-alert--warning" role="alert">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
-          <path d="M12 9v4"/><path d="M12 17h.01"/>
+          <path d="M12 9v4"/>
+          <path d="M12 17h.01"/>
         </svg>
-        <p><strong>You are viewing version 57.</strong> A newer version is available &mdash; <a href="#v127">version 127, revised 30&nbsp;Jun&nbsp;2026</a>.</p>
+        <div class="ds-alert-content">
+          <p><strong>You are viewing version 7.</strong> A newer version is available — <a href="#v12">version 12, revised 30&nbsp;Jun&nbsp;2026</a>.</p>
+        </div>
       </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-date-row"&gt;
+  Submitted &lt;time datetime="2026-01-10"&gt;10&amp;nbsp;Jan&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Announced &lt;time datetime="2026-01-11T01:32Z"&gt;11&amp;nbsp;Jan&amp;nbsp;2026,&amp;nbsp;01:32&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Revised &lt;time datetime="2026-03-12"&gt;12&amp;nbsp;Mar&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC (this version)
+  &lt;a class="ds-version" href="#v1" aria-label="View version 1"&gt;v1&lt;/a&gt;
+  &lt;a class="ds-version" href="#v2" aria-label="View version 2"&gt;v2&lt;/a&gt;
+  &lt;a class="ds-version" href="#v3" aria-label="View version 3"&gt;v3&lt;/a&gt;
+  &lt;span id="v7-elide-a"&gt;&lt;span aria-hidden="true"&gt;…&lt;/span&gt;&lt;span class="is-sr-only"&gt;versions 4 through 6 hidden,&lt;/span&gt;&lt;/span&gt;
+  &lt;span id="v7-tail-a" hidden&gt;
+    &lt;a class="ds-version" href="#v4" aria-label="View version 4"&gt;v4&lt;/a&gt;
+    &lt;a class="ds-version" href="#v5" aria-label="View version 5"&gt;v5&lt;/a&gt;
+    &lt;a class="ds-version" href="#v6" aria-label="View version 6"&gt;v6&lt;/a&gt;
+  &lt;/span&gt;
+  &lt;strong class="ds-version" aria-current="true"&gt;v7&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;&lt;/strong&gt;
+  &lt;span id="v7-elide-b"&gt;&lt;span aria-hidden="true"&gt;…&lt;/span&gt;&lt;span class="is-sr-only"&gt;versions 8 through 9 hidden,&lt;/span&gt;&lt;/span&gt;
+  &lt;span id="v7-tail-b" hidden&gt;
+    &lt;a class="ds-version" href="#v8" aria-label="View version 8"&gt;v8&lt;/a&gt;
+    &lt;a class="ds-version" href="#v9" aria-label="View version 9"&gt;v9&lt;/a&gt;
+  &lt;/span&gt;
+  &lt;a class="ds-version" href="#v10" aria-label="View version 10"&gt;v10&lt;/a&gt;
+  &lt;a class="ds-version" href="#v11" aria-label="View version 11"&gt;v11&lt;/a&gt;
+  &lt;a class="ds-version" href="#v12" aria-label="View version 12"&gt;v12&lt;/a&gt;
+  &lt;button type="button" class="ds-show-more" aria-expanded="false" aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b"&gt;show all 12 versions&lt;/button&gt;
+&lt;/p&gt;
+&lt;div class="ds-alert ds-alert--warning" role="alert"&gt;
+  &lt;svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
+    &lt;path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/&gt;
+    &lt;path d="M12 9v4"/&gt;
+    &lt;path d="M12 17h.01"/&gt;
+  &lt;/svg&gt;
+  &lt;div class="ds-alert-content"&gt;
+    &lt;p&gt;&lt;strong&gt;You are viewing version 7.&lt;/strong&gt; A newer version is available — &lt;a href="#v12"&gt;version 12, revised 30&amp;nbsp;Jun&amp;nbsp;2026&lt;/a&gt;.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+          <dl>
+            <dt>aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b"</dt>
+            <dd>When the viewed version falls inside the elision there are two ellipses and two hidden
+            spans. List all four ids, separated by spaces, so one press opens the whole list.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
-    <div class="ds-card demo">
-      <p class="ds-card demo-cap">Expanded, shown at 24 versions — the full list simply wraps (also what renders without JavaScript)</p>
-      <p class="vd-date vd-verwrap">
+
+    <p class="ds-panel-label">Expanded, shown at 24 versions: the full list simply wraps (also what renders without JavaScript)</p>
+    <div class="ds-card">
+      <p class="ds-date-row">
         Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
-        <span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
         Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
-        <span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
         Revised <time datetime="2026-06-30">30&nbsp;Jun&nbsp;2026</time>&nbsp;UTC (this version)
-        &nbsp;
-        <a href="#" class="vd-ver is-other" aria-label="View version 1">v1</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 2">v2</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 3">v3</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 4">v4</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 5">v5</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 6">v6</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 7">v7</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 8">v8</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 9">v9</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 10">v10</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 11">v11</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 12">v12</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 13">v13</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 14">v14</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 15">v15</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 16">v16</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 17">v17</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 18">v18</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 19">v19</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 20">v20</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 21">v21</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 22">v22</a>
-        <a href="#" class="vd-ver is-other" aria-label="View version 23">v23</a>
-        <span class="vd-ver is-current" aria-current="true" aria-label="Version 24, current version">v24</span>
+        <a class="ds-version" href="#v1" aria-label="View version 1">v1</a>
+        <a class="ds-version" href="#v2" aria-label="View version 2">v2</a>
+        <a class="ds-version" href="#v3" aria-label="View version 3">v3</a>
+        <a class="ds-version" href="#v4" aria-label="View version 4">v4</a>
+        <a class="ds-version" href="#v5" aria-label="View version 5">v5</a>
+        <a class="ds-version" href="#v6" aria-label="View version 6">v6</a>
+        <a class="ds-version" href="#v7" aria-label="View version 7">v7</a>
+        <a class="ds-version" href="#v8" aria-label="View version 8">v8</a>
+        <a class="ds-version" href="#v9" aria-label="View version 9">v9</a>
+        <a class="ds-version" href="#v10" aria-label="View version 10">v10</a>
+        <a class="ds-version" href="#v11" aria-label="View version 11">v11</a>
+        <a class="ds-version" href="#v12" aria-label="View version 12">v12</a>
+        <a class="ds-version" href="#v13" aria-label="View version 13">v13</a>
+        <a class="ds-version" href="#v14" aria-label="View version 14">v14</a>
+        <a class="ds-version" href="#v15" aria-label="View version 15">v15</a>
+        <a class="ds-version" href="#v16" aria-label="View version 16">v16</a>
+        <a class="ds-version" href="#v17" aria-label="View version 17">v17</a>
+        <a class="ds-version" href="#v18" aria-label="View version 18">v18</a>
+        <a class="ds-version" href="#v19" aria-label="View version 19">v19</a>
+        <a class="ds-version" href="#v20" aria-label="View version 20">v20</a>
+        <a class="ds-version" href="#v21" aria-label="View version 21">v21</a>
+        <a class="ds-version" href="#v22" aria-label="View version 22">v22</a>
+        <a class="ds-version" href="#v23" aria-label="View version 23">v23</a>
+        <strong class="ds-version" aria-current="true">v24<span class="is-sr-only">, this version</span></strong>
       </p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-date-row"&gt;
+  Submitted &lt;time datetime="2026-01-10"&gt;10&amp;nbsp;Jan&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Announced &lt;time datetime="2026-01-11T01:32Z"&gt;11&amp;nbsp;Jan&amp;nbsp;2026,&amp;nbsp;01:32&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Revised &lt;time datetime="2026-06-30"&gt;30&amp;nbsp;Jun&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC (this version)
+  &lt;a class="ds-version" href="#v1" aria-label="View version 1"&gt;v1&lt;/a&gt;
+  &lt;a class="ds-version" href="#v2" aria-label="View version 2"&gt;v2&lt;/a&gt;
+  &lt;a class="ds-version" href="#v3" aria-label="View version 3"&gt;v3&lt;/a&gt;
+  &lt;a class="ds-version" href="#v4" aria-label="View version 4"&gt;v4&lt;/a&gt;
+  &lt;a class="ds-version" href="#v5" aria-label="View version 5"&gt;v5&lt;/a&gt;
+  &lt;a class="ds-version" href="#v6" aria-label="View version 6"&gt;v6&lt;/a&gt;
+  &lt;a class="ds-version" href="#v7" aria-label="View version 7"&gt;v7&lt;/a&gt;
+  &lt;a class="ds-version" href="#v8" aria-label="View version 8"&gt;v8&lt;/a&gt;
+  &lt;a class="ds-version" href="#v9" aria-label="View version 9"&gt;v9&lt;/a&gt;
+  &lt;a class="ds-version" href="#v10" aria-label="View version 10"&gt;v10&lt;/a&gt;
+  &lt;a class="ds-version" href="#v11" aria-label="View version 11"&gt;v11&lt;/a&gt;
+  &lt;a class="ds-version" href="#v12" aria-label="View version 12"&gt;v12&lt;/a&gt;
+  &lt;a class="ds-version" href="#v13" aria-label="View version 13"&gt;v13&lt;/a&gt;
+  &lt;a class="ds-version" href="#v14" aria-label="View version 14"&gt;v14&lt;/a&gt;
+  &lt;a class="ds-version" href="#v15" aria-label="View version 15"&gt;v15&lt;/a&gt;
+  &lt;a class="ds-version" href="#v16" aria-label="View version 16"&gt;v16&lt;/a&gt;
+  &lt;a class="ds-version" href="#v17" aria-label="View version 17"&gt;v17&lt;/a&gt;
+  &lt;a class="ds-version" href="#v18" aria-label="View version 18"&gt;v18&lt;/a&gt;
+  &lt;a class="ds-version" href="#v19" aria-label="View version 19"&gt;v19&lt;/a&gt;
+  &lt;a class="ds-version" href="#v20" aria-label="View version 20"&gt;v20&lt;/a&gt;
+  &lt;a class="ds-version" href="#v21" aria-label="View version 21"&gt;v21&lt;/a&gt;
+  &lt;a class="ds-version" href="#v22" aria-label="View version 22"&gt;v22&lt;/a&gt;
+  &lt;a class="ds-version" href="#v23" aria-label="View version 23"&gt;v23&lt;/a&gt;
+  &lt;strong class="ds-version" aria-current="true"&gt;v24&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;&lt;/strong&gt;
+&lt;/p&gt;
+</code></pre>
+          <dl>
+            <dt>[hidden]</dt>
+            <dd>Absent. This is the row as the server sends it: every version in the list, no elision,
+            no button. The row wraps like any other line of text.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
   </section>
 
+  <!-- ───────── Viewing an older version ───────── -->
   <section class="section">
     <h2 class="section-title" id="viewing-an-older-version">Viewing an older version</h2>
-    <p class="ds-section-desc">
-      When the reader is on anything but the latest, two things change. The date row reads
-      <strong>Submitted … (this version)</strong> on v1 — v1 <em>is</em> the submission, so there is no
-      "revised", and "(this version)" stays on the submitted date, with Announced following — and an
-      amber warning appears, pointing to the current version. The warning uses the shared Warning
-      color (never white, never an error red) and stays to one compact row.
-    </p>
-    <div class="ds-card demo">
-      <p class="ds-card demo-cap">Viewing v1, latest is v3</p>
-      <p class="vd-date vd-verwrap">
+    <p class="ds-section-desc">When the reader is on anything but the latest, two things change. The date row reads <strong>Submitted … (this version)</strong> on v1 — v1 <em>is</em> the submission, so there is no "revised", and "(this version)" stays on the submitted date, with Announced following — and an amber warning appears, pointing to the current version. The warning uses the shared Warning color (never white, never an error red) and stays to one compact row.</p>
+    <p class="ds-panel-label">Viewing v1, latest is v3</p>
+    <div class="ds-card">
+      <p class="ds-date-row">
         Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC (this version)
-        <span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
         Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
-        &nbsp;
-        <span class="vd-ver is-current" aria-current="true" aria-label="Version 1, the version you are viewing">v1</span>
-        <a href="#v2" class="vd-ver is-other" aria-label="View version 2">v2</a>
-        <a href="#v3" class="vd-ver is-other" aria-label="View version 3">v3</a>
+        <strong class="ds-version" aria-current="true">v1<span class="is-sr-only">, this version</span></strong>
+        <a class="ds-version" href="#v2" aria-label="View version 2">v2</a>
+        <a class="ds-version" href="#v3" aria-label="View version 3">v3</a>
       </p>
-      <div class="vd-warn" role="alert">
-        <svg class="vd-warn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <div class="ds-alert ds-alert--warning" role="alert">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
-          <path d="M12 9v4"/><path d="M12 17h.01"/>
+          <path d="M12 9v4"/>
+          <path d="M12 17h.01"/>
         </svg>
-        <p><strong>You are viewing version 1.</strong> A newer version is available &mdash; <a href="#v3">version 3, revised 24&nbsp;Apr&nbsp;2026</a>.</p>
+        <div class="ds-alert-content">
+          <p><strong>You are viewing version 1.</strong> A newer version is available — <a href="#v3">version 3, revised 24&nbsp;Apr&nbsp;2026</a>.</p>
+        </div>
       </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-date-row"&gt;
+  Submitted &lt;time datetime="2026-01-10"&gt;10&amp;nbsp;Jan&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC (this version)
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Announced &lt;time datetime="2026-01-11T01:32Z"&gt;11&amp;nbsp;Jan&amp;nbsp;2026,&amp;nbsp;01:32&lt;/time&gt;&amp;nbsp;UTC
+  &lt;strong class="ds-version" aria-current="true"&gt;v1&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;&lt;/strong&gt;
+  &lt;a class="ds-version" href="#v2" aria-label="View version 2"&gt;v2&lt;/a&gt;
+  &lt;a class="ds-version" href="#v3" aria-label="View version 3"&gt;v3&lt;/a&gt;
+&lt;/p&gt;
+&lt;div class="ds-alert ds-alert--warning" role="alert"&gt;
+  &lt;svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
+    &lt;path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/&gt;
+    &lt;path d="M12 9v4"/&gt;
+    &lt;path d="M12 17h.01"/&gt;
+  &lt;/svg&gt;
+  &lt;div class="ds-alert-content"&gt;
+    &lt;p&gt;&lt;strong&gt;You are viewing version 1.&lt;/strong&gt; A newer version is available — &lt;a href="#v3"&gt;version 3, revised 24&amp;nbsp;Apr&amp;nbsp;2026&lt;/a&gt;.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+          <dl>
+            <dt>.ds-alert.ds-alert--warning</dt>
+            <dd>The older-version warning, documented on <a href="alerts.html">Alerts</a>: the warning
+            state, the triangle icon copied whole, and <code>role="alert"</code>. Render it only when
+            the version being viewed is not the latest. One sentence that names the version being
+            viewed, then a link straight to the latest one.</dd>
+            <dt>aria-current="true"</dt>
+            <dd>On v1 here, since v1 is the version being viewed. "(this version)" moves to the
+            Submitted date for the same reason.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
   </section>
 
-  <!-- ══════════ RULES ══════════ -->
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Mark the version being viewed.</strong> Put <code>aria-current="true"</code> on
+      it, make it a <code>&lt;strong&gt;</code> and not a link, and put
+      <code>&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;</code> inside it. Bold alone
+      is invisible to a screen reader, and the attribute alone is not read out by every one.</li>
+      <li><strong>Say which version each link opens.</strong> Every prior-version link carries
+      <code>aria-label="View version 2"</code>. The visible "v2" does not say what the link does,
+      and a screen reader user listing the links on the page hears each one out of context.</li>
+      <li><strong>Give the warning its role.</strong> The older-version warning takes
+      <code>role="alert"</code>, so a screen reader announces it as soon as the page loads. Render it
+      only when the reader is not on the latest version; an alert that is always there is noise.</li>
+      <li><strong>Separate the dates in words.</strong> The visible "·" between dates is
+      <code>aria-hidden="true"</code>, and a <code>&lt;span class="is-sr-only"&gt;, &lt;/span&gt;</code>
+      sits beside it. Without the comma the three dates are read as one run-on sentence.</li>
+      <li><strong>Say what the ellipsis hides.</strong> The "…" is decoration and is
+      <code>aria-hidden="true"</code>. The <code>.is-sr-only</code> span beside it says which versions
+      are hidden, and the button says the total: "show all 12 versions". Use the
+      <code>hidden</code> attribute on the hidden versions, never a class, so they are out of the tab
+      order while they are off screen.</li>
+    </ul>
+  </div>
+
+  </div> <!-- /core zone -->
+
+  <h2>Rules</h2>
 
   <section class="section">
-    <h2 class="section-title" id="rules">Rules</h2>
-    <div class="ds-card rule-card">
-      <h3>Three dates, one grammar</h3>
-      <p><strong>Submitted [v1 date] UTC · Announced [announcement date and time] UTC</strong> are always shown, in that order — announced is when the paper entered the public listing. Add <strong>· Revised [this version's date] UTC (this version)</strong> only once a paper has more than one version. "(this version)" attaches to the version-defining date, never to Announced — on v1 it reads "Submitted … UTC (this version) · Announced … UTC", on a later revision "Revised … UTC (this version)". Dates use <code>&lt;time datetime&gt;</code>.</p>
-    </div>
-    <div class="ds-card rule-card">
-      <h3>Announced carries a clock time; Submitted and Revised do not</h3>
-      <p>Announcement is the moment a paper became public, and it is the one date a reader may need to the minute — so it renders as <strong>11&nbsp;Jan&nbsp;2026, 01:32 UTC</strong>. Three reasons it is not a bare date. It is the <em>actual</em> per-paper release moment, not the batch's nominal time: release drifts with processing and queue length, so two papers announced in one batch can differ. A batch can cross midnight, so papers released minutes apart carry different UTC dates — and in any other timezone the split falls somewhere else again. And priority claims are settled on this value. Minutes, never seconds: the queue cannot honor a guarantee finer than that. Submitted and Revised stay date-only — they mark when an author handed something over, not a public event, and a clock time there would imply a precision that does not matter to anyone.</p>
-    </div>
-    <div class="ds-card rule-card">
-      <h3>Every date carries UTC, in the row's own grey</h3>
-      <p>The same timestamp falls on different calendar days in different timezones, so each date states its reckoning: a plain-text <strong>UTC</strong> bound to its date with <code>&amp;nbsp;</code> so a wrap never strands it — and kept outside the <code>&lt;time&gt;</code> element, in the same position on every date in the row. Inside <code>datetime</code> the precision differs with the date: Announced is a full instant (<code>2026-01-11T01:32Z</code>), Submitted and Revised stay date-only (<code>2026-01-10</code>). Bind the clock time to its date with <code>&amp;nbsp;</code> too, so a wrap cannot leave <code>01:32</code> orphaned on the next line. The label renders in the date row's own size and color: the row is already Library Grey <code>--ds-text-muted</code>, and the next stop down the ladder (<code>--ds-border-strong</code>, 3.61:1) fails the 4.5:1 AA floor at this size, so never dim the label below the dates it belongs to (DESIGN-POLICIES, warm grey ladder). Where a date sits in near-black <code>--ds-text</code> — an admin metadata panel — the label may drop one step to <code>--ds-text-muted</code>: quieter than its date, still AA.</p>
-    </div>
-    <div class="ds-card rule-card">
-      <h3>Current is bold and <code>aria-current</code>, never color alone</h3>
-      <p>The version being viewed is distinguished by weight and by <code>aria-current</code> — two non-color signals — so it survives grayscale, forced-colors, and screen readers (WCAG 1.4.1). It is deliberately not a link: you cannot navigate to where you already are.</p>
-    </div>
-    <div class="ds-card rule-card">
-      <h3>Prior versions are inline links, so they are underlined</h3>
-      <p>They sit in a run of identifier text, so link-vs-text contrast cannot carry them alone — underlines are mandatory (DESIGN-POLICIES, link underlines). Link Blue <code>--ds-link</code>. Each carries an explicit <code>aria-label</code> ("View version 1").</p>
-    </div>
-    <div class="ds-card rule-card">
-      <h3>Older-version warning: amber, compact, advisory</h3>
-      <p>Render it only when the version being viewed is not the latest. Use the shared <strong>Warning</strong> tokens (<code>--ds-warning-bg</code> / <code>--ds-warning-border</code> / <code>--ds-warning-fg</code>) — amber says "advisory," not error-red and not a blank white box — with the alert-triangle icon inline (never on its own line) and the text to one row. In production this is the <code>.ds-alert</code> warning variant. It links straight to the current version.</p>
-    </div>
-    <div class="ds-card rule-card">
-      <h3>One grammar; elide past ten</h3>
-      <p>The date grammar never changes. Ten versions or fewer: the full inline list, wrapping as needed. More than ten: first three + last three with the middle elided, and the viewed version always visible even mid-elision — never a dropdown, never an internal scroll region. Version numbers render in the mono stack (public token <code>--ds-font-mono</code>; IBM Plex Mono is already tabular) or with <code>font-variant-numeric: tabular-nums</code> so they do not jitter as the list wraps.</p>
-    </div>
-    <div class="ds-card rule-card">
-      <h3>Elision signals continuation; JS never hides content for good</h3>
-      <p>The ellipsis is decoration (<code>aria-hidden</code>) with an sr-only count of what is hidden; the working affordance is a text button carrying the explicit total ("show all 127 versions"), toggling <code>aria-expanded</code> — the same disclosure grammar as the authors "show all 22 authors" toggle (DESIGN-POLICIES, truncation). The full list is server-rendered and collapsed by script under <code>html.js</code>, so without JavaScript readers simply get every version (DESIGN-POLICIES, progressive enhancement).</p>
-    </div>
+    <h3 class="section-title" id="three-dates-one-grammar">Three dates, one grammar</h3>
+    <p><strong>Submitted [v1 date] UTC · Announced [announcement date and time] UTC</strong> are always shown, in that order — announced is when the paper entered the public listing. Add <strong>· Revised [this version's date] UTC (this version)</strong> only once a paper has more than one version. "(this version)" attaches to the version-defining date, never to Announced — on v1 it reads "Submitted … UTC (this version) · Announced … UTC", on a later revision "Revised … UTC (this version)". Dates use <code>&lt;time datetime&gt;</code>.</p>
   </section>
 
-  <!-- ══════════ CONTEXT (read more, if you are interested) ══════════ -->
+  <section class="section">
+    <h3 class="section-title" id="announced-carries-a-clock-time-submitted-and-revised-do-not">Announced carries a clock time; Submitted and Revised do not</h3>
+    <p>Announcement is the moment a paper became public, and it is the one date a reader may need to the minute — so it renders as <strong>11&nbsp;Jan&nbsp;2026, 01:32 UTC</strong>. Three reasons it is not a bare date. It is the <em>actual</em> per-paper release moment, not the batch's nominal time: release drifts with processing and queue length, so two papers announced in one batch can differ. A batch can cross midnight, so papers released minutes apart carry different UTC dates — and in any other timezone the split falls somewhere else again. And priority claims are settled on this value. Minutes, never seconds: the queue cannot honor a guarantee finer than that. Submitted and Revised stay date-only — they mark when an author handed something over, not a public event, and a clock time there would imply a precision that does not matter to anyone.</p>
+  </section>
 
   <section class="section">
-    <h2 class="section-title" id="why-it-is-designed-this-way">Why it is designed this way</h2>
-    <p class="ds-section-desc">
-      Background, if you want it. The affordance has to disappear for the common case and stay
-      unbroken for the rare one — that constraint is what shapes everything above.
-    </p>
-    <div class="who">
-      <div class="who-card">
-        <h3>Who cares about versions</h3>
+    <h3 class="section-title" id="every-date-carries-utc-in-the-rows-own-grey">Every date carries UTC, in the row's own grey</h3>
+    <p>The same timestamp falls on different calendar days in different timezones, so each date states its reckoning: a plain-text <strong>UTC</strong> bound to its date with <code>&amp;nbsp;</code> so a wrap never strands it — and kept outside the <code>&lt;time&gt;</code> element, in the same position on every date in the row. Inside <code>datetime</code> the precision differs with the date: Announced is a full instant (<code>2026-01-11T01:32Z</code>), Submitted and Revised stay date-only (<code>2026-01-10</code>). Bind the clock time to its date with <code>&amp;nbsp;</code> too, so a wrap cannot leave <code>01:32</code> orphaned on the next line. The label renders in the date row's own size and color: the row is already Library Grey <code>--ds-text-muted</code>, and the next stop down the ladder (<code>--ds-border-strong</code>, 3.61:1) fails the 4.5:1 AA floor at this size, so never dim the label below the dates it belongs to (DESIGN-POLICIES, warm grey ladder). Where a date sits in near-black <code>--ds-text</code> — an admin metadata panel — the label may drop one step to <code>--ds-text-muted</code>: quieter than its date, still AA.</p>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title" id="current-is-bold-and-aria-current-never-color-alone">Current is bold and <code>aria-current</code>, never color alone</h3>
+    <p>The version being viewed is distinguished by weight and by <code>aria-current</code> — two non-color signals — so it survives grayscale, forced-colors, and screen readers (WCAG 1.4.1). It is deliberately not a link: you cannot navigate to where you already are.</p>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title" id="prior-versions-are-inline-links-so-they-are-underlined">Prior versions are inline links, so they are underlined</h3>
+    <p>They sit in a run of identifier text, so link-vs-text contrast cannot carry them alone — underlines are mandatory (DESIGN-POLICIES, link underlines). Link Blue <code>--ds-link</code>. Each carries an explicit <code>aria-label</code> ("View version 1").</p>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title" id="older-version-warning-amber-compact-advisory">Older-version warning: amber, compact, advisory</h3>
+    <p>Render it only when the version being viewed is not the latest. Use the shared <strong>Warning</strong> tokens (<code>--ds-warning-bg</code> / <code>--ds-warning-border</code> / <code>--ds-warning-fg</code>) — amber says "advisory," not error-red and not a blank white box — with the alert-triangle icon inline (never on its own line) and the text to one row. In production this is the <code>.ds-alert</code> warning variant. It links straight to the current version.</p>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title" id="one-grammar-elide-past-ten">One grammar; elide past ten</h3>
+    <p>The date grammar never changes. Ten versions or fewer: the full inline list, wrapping as needed. More than ten: first three + last three with the middle elided, and the viewed version always visible even mid-elision — never a dropdown, never an internal scroll region. Version numbers render in the mono stack (public token <code>--ds-font-mono</code>; IBM Plex Mono is already tabular) or with <code>font-variant-numeric: tabular-nums</code> so they do not jitter as the list wraps.</p>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title" id="elision-signals-continuation-js-never-hides-content-for-good">Elision signals continuation; JS never hides content for good</h3>
+    <p>The ellipsis is decoration (<code>aria-hidden</code>) with an sr-only count of what is hidden; the working affordance is a text button carrying the explicit total ("show all 127 versions"), toggling <code>aria-expanded</code> — the same disclosure grammar as the authors "show all 22 authors" toggle (DESIGN-POLICIES, truncation). The full list is server-rendered and collapsed by script under <code>html.js</code>, so without JavaScript readers simply get every version (DESIGN-POLICIES, progressive enhancement).</p>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title" id="why-it-is-designed-this-way">Why it is designed this way</h3>
+    <p class="ds-section-desc">Background, if you want it. The affordance has to disappear for the common case and stay unbroken for the rare one — that constraint is what shapes everything above.</p>
+    <div class="ds-card-grid">
+      <div class="ds-card">
+        <h4>Who cares about versions</h4>
         <p>Authors, publishers, and overlay journals — provenance, and citing or linking a <em>specific</em> version. For them the version and its date must be explicit and addressable.</p>
       </div>
-      <div class="who-card">
-        <h3>Who does not</h3>
+      <div class="ds-card">
+        <h4>Who does not</h4>
         <p>Most readers. They want the latest and go straight to reading. The version affordance must never tax them for attention they did not ask to spend.</p>
       </div>
-      <div class="who-card">
-        <h3>The distribution is lopsided</h3>
+      <div class="ds-card">
+        <h4>The distribution is lopsided</h4>
         <p>The vast majority of papers have one version; some have two or three; a tiny minority have many. Design for the whole spectrum with one treatment.</p>
       </div>
-      <div class="who-card">
-        <h3>So the rule is</h3>
+      <div class="ds-card">
+        <h4>So the rule is</h4>
         <p>Near-silent at one version, scannable at a few, unbroken at 20+ — and always answering the questions that matter: when was it first submitted, when did it go public, and when was the version I am reading revised.</p>
       </div>
     </div>
   </section>
+
 </div>
+
+<script>
+  // The elision demos: the same three things the show-more reference
+  // implementation on progressive-disclosure.html does — flip aria-expanded,
+  // toggle the `hidden` ATTRIBUTE, re-label with the count — except that
+  // here a press hides the ellipsis as well as showing the tail, so every id
+  // in aria-controls is toggled.
+  document.querySelectorAll('.ds-show-more[aria-controls]').forEach(function (toggle) {
+    var regions = toggle.getAttribute('aria-controls').split(/\s+/).map(function (id) {
+      return document.getElementById(id);
+    });
+    var collapsedLabel = toggle.textContent;
+    toggle.addEventListener('click', function () {
+      var expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      regions.forEach(function (r) { if (r) r.hidden = !r.hidden; });
+      toggle.textContent = expanded ? collapsedLabel : 'show fewer';
+    });
+  });
+</script>
 
 <script>
   // Nav dropdowns: close on outside click and Esc (enhancement only —
@@ -385,5 +630,6 @@
 </script>
 <script src="copy-code.js" defer></script>
 <script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
 </body>
 </html>
