@@ -6,45 +6,10 @@
   <title>Site footer — arXiv Design System</title>
   <link rel="stylesheet" href="../fonts.css">
   <link rel="stylesheet" href="../design-system.css">
+  <link rel="stylesheet" href="../docs.css">
 <script src="../theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
-  <style>
-    /* ── Page chrome (reference doc only). Mirrors the other public
-       pattern pages. This page CONSUMES design-system.css — it never
-       redefines .ds-site-footer; the rendered footer reads straight
-       from the stylesheet. ── */
-    *, *::before, *::after { box-sizing: border-box; }
-    body {
-      font-family: var(--ds-font-sans);
-      color: var(--ds-text);
-      background: var(--ds-canvas);
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    .page { max-width: 980px; margin: 0 auto; padding: 48px 28px 80px; }
-    .back-link { display: inline-block; margin-bottom: 20px; font-size: 13px; color: var(--ds-link); text-decoration: none; }
-    .back-link:hover { text-decoration: underline; }
-    .page-header { margin-bottom: 44px; padding-bottom: 20px; border-bottom: 3px solid var(--ds-accent); }
-    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
-    .page-header p { margin: 0; color: var(--ds-text-muted); font-size: 13px; max-width: 720px; }
-    .section { margin-bottom: var(--ds-space-12); }
-    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 var(--ds-space-1); }
-    .live-demo { background: var(--ds-surface); border: 1px solid var(--ds-surface-muted); border-radius: 8px; overflow: hidden; }
-    .usage-list { font-size: 13px; color: var(--ds-text-muted); line-height: 1.7; max-width: 720px; }
-    .usage-list code { font-family: var(--ds-font-mono); font-size: 12px; background: var(--ds-surface-muted); padding: 1px 5px; border-radius: 3px; }
-  
-    /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
-       <details>-based: works without JS; the small script at the end of the
-       page only adds close-on-outside-click and Esc. ── */
-  
-    /* Inline links in page copy. Bare <a> previously fell back to the
-       browser default, which is unreadable on the dark canvas. Nav links
-       carry their own, more specific rules. */
-    a { color: var(--ds-link); }
-    a:hover { color: var(--ds-link-hover); }
-</style>
 </head>
-<body>
+<body class="ds-page">
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
   <a class="ds-site-header-logo" href="../../index.html">arXiv Design System</a>
   <details class="ds-site-header-dropdown">
@@ -100,27 +65,45 @@
   <button type="button" class="ds-theme-toggle"></button>
   <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
-<div class="page">
 
-  <header class="page-header">
+<div class="ds-container ds-zone-secondary">
+
+  <header class="ds-page-header">
     <h1>Site footer</h1>
-    <p>
-      The universal arXiv public-page footer (<code>.ds-site-footer</code>). Validated by exact agreement across the
-      spinout-header-footer Cloud Run deployment and both redesign mockups (see the component audit).
-    </p>
+    <p>The universal arXiv public-page footer (<code>.ds-site-footer</code>). Validated by exact agreement across the spinout-header-footer Cloud Run deployment and both redesign mockups (see the component audit).</p>
   </header>
 
+
+  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#the-footer">The footer</a></li>
+            <li><a href="#the-acknowledgement-line">The acknowledgement line</a></li>
+            <li><a href="#the-funders-row">The funders row</a></li>
+            <li><a href="#wording">Wording</a></li>
+            <li><a href="#type-and-print">Type and print</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <div class="ds-full ds-zone-primary">
+
+  <!-- ───────── The footer ───────── -->
   <section class="section">
-    <h2 class="section-title" id="live-component">Live component</h2>
-    <p class="ds-section-desc">
-      Rendered directly from <code>design-system.css</code>. Resize the
-      window: the funders column drops below the main column under 720px.
-      The institutional mention after &ldquo;member institutions&rdquo; is
-      the optional IP-matched insertion — omit the wrapper span when no match exists.
-      (The span is an unstyled grouping hook for the templater, not a design-system class;
-      the bold comes from <code>.ds-site-footer-ack strong</code>.)
-    </p>
-    <div class="live-demo">
+    <h2 class="section-title" id="the-footer">The footer</h2>
+    <p class="ds-section-desc">Rendered directly from <code>design-system.css</code>: the acknowledgement line and the link row on the left, the funders on the right.</p>
+    <div class="ds-card chrome-demo">
       <footer class="ds-site-footer">
         <div class="ds-site-footer-grid">
           <div class="ds-site-footer-main">
@@ -131,40 +114,210 @@
               and <a href="#">all contributors</a>.
             </div>
             <nav class="ds-site-footer-links" aria-label="Site navigation">
-              <a href="https://info.arxiv.org/about">About</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
-              <a href="https://info.arxiv.org/help">Help</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
-              <a href="https://info.arxiv.org/help/contact.html">Contact</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
-              <a href="https://info.arxiv.org/help/subscribe">Subscribe</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
-              <a href="https://info.arxiv.org/help/license/index.html">Copyright</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
-              <a href="https://info.arxiv.org/help/policies/privacy_policy.html">Privacy</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
-              <a href="https://info.arxiv.org/help/web_accessibility.html">Accessibility</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+              <a href="https://info.arxiv.org/about">About</a> <span class="ds-site-footer-sep" aria-hidden="true">·</span>
+              <a href="https://info.arxiv.org/help">Help</a> <span class="ds-site-footer-sep" aria-hidden="true">·</span>
+              <a href="https://info.arxiv.org/help/contact.html">Contact</a> <span class="ds-site-footer-sep" aria-hidden="true">·</span>
+              <a href="https://info.arxiv.org/help/subscribe">Subscribe</a> <span class="ds-site-footer-sep" aria-hidden="true">·</span>
+              <a href="https://info.arxiv.org/help/license/index.html">Copyright</a> <span class="ds-site-footer-sep" aria-hidden="true">·</span>
+              <a href="https://info.arxiv.org/help/policies/privacy_policy.html">Privacy</a> <span class="ds-site-footer-sep" aria-hidden="true">·</span>
+              <a href="https://info.arxiv.org/help/web_accessibility.html">Accessibility</a> <span class="ds-site-footer-sep" aria-hidden="true">·</span>
               <a href="https://status.arxiv.org/" target="_blank" rel="noopener noreferrer">Operational Status<span class="is-sr-only"> (opens in new tab)</span></a>
             </nav>
           </div>
           <div class="ds-site-footer-funders">
             <div class="ds-site-footer-funders-label">Major funding support from</div>
             <div class="ds-site-footer-funders-logos">
-              <img class="ds-funder-logo" src="../../mockups/public/images/Simons-wordmark.png" alt="Simons Foundation">
-              <img class="ds-funder-logo" src="../../mockups/public/images/Schmidt-wordmark.png" alt="Schmidt Sciences">
+              <img class="ds-funder-logo" src="../assets/images/logos/other-org-logos/Simons-wordmark.png" alt="Simons Foundation">
+              <img class="ds-funder-logo" src="../assets/images/logos/other-org-logos/Schmidt_Sciences_wordmark.png" alt="Schmidt Sciences">
             </div>
           </div>
         </div>
       </footer>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;footer class="ds-site-footer"&gt;
+  &lt;div class="ds-site-footer-grid"&gt;
+    &lt;div class="ds-site-footer-main"&gt;
+      &lt;div class="ds-site-footer-ack"&gt;
+        We gratefully acknowledge support from our &lt;strong&gt;major funders&lt;/strong&gt;,
+        &lt;a href="#"&gt;&lt;strong&gt;member institutions&lt;/strong&gt;&lt;/a&gt;&lt;span class="ack-member-inline"&gt;,
+        &lt;strong&gt;Rheinisch-Westfälische Technische Hochschule Aachen&lt;/strong&gt;&lt;/span&gt;,
+        and &lt;a href="#"&gt;all contributors&lt;/a&gt;.
+      &lt;/div&gt;
+      &lt;nav class="ds-site-footer-links" aria-label="Site navigation"&gt;
+        &lt;a href="https://info.arxiv.org/about"&gt;About&lt;/a&gt; &lt;span class="ds-site-footer-sep" aria-hidden="true"&gt;·&lt;/span&gt;
+        &lt;a href="https://info.arxiv.org/help"&gt;Help&lt;/a&gt; &lt;span class="ds-site-footer-sep" aria-hidden="true"&gt;·&lt;/span&gt;
+        &lt;!-- … Contact, Subscribe, Copyright, Privacy, Accessibility, each followed by a separator … --&gt;
+        &lt;a href="https://status.arxiv.org/" target="_blank" rel="noopener noreferrer"&gt;Operational Status&lt;span class="is-sr-only"&gt; (opens in new tab)&lt;/span&gt;&lt;/a&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+    &lt;div class="ds-site-footer-funders"&gt;
+      &lt;div class="ds-site-footer-funders-label"&gt;Major funding support from&lt;/div&gt;
+      &lt;div class="ds-site-footer-funders-logos"&gt;
+        &lt;img class="ds-funder-logo" src="…/Simons-wordmark.png" alt="Simons Foundation"&gt;
+        &lt;img class="ds-funder-logo" src="…/Schmidt_Sciences_wordmark.png" alt="Schmidt Sciences"&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/footer&gt;</code></pre>
+          <dl>
+            <dt>.ds-site-footer</dt>
+            <dd>The whole unit, on a <code>&lt;footer&gt;</code> element. Canvas ground with a hairline
+            rule above it; hidden in print.</dd>
+            <dt>.ds-site-footer-grid</dt>
+            <dd>The row that holds the two columns. It wraps when the two do not fit on one line,
+            and the funders column drops below the main column; under 720px that column also takes
+            the full width.</dd>
+            <dt>.ds-site-footer-main</dt>
+            <dd>The left column: the acknowledgement line, then the link row. Capped at 720px and
+            shrinks to fit beside the funders.</dd>
+            <dt>.ds-site-footer-links</dt>
+            <dd>The link row, on a <code>&lt;nav aria-label="Site navigation"&gt;</code>. Plain
+            <code>&lt;a&gt;</code> elements that wrap as a line; underlined on hover only.</dd>
+            <dt>.ds-site-footer-sep</dt>
+            <dd>The dot between two links. A <code>&lt;span&gt;</code> holding a middle dot, with
+            <code>aria-hidden="true"</code>.</dd>
+            <dt>target="_blank"</dt>
+            <dd>Only on the Operational Status link, which leaves arxiv.org. It takes
+            <code>rel="noopener noreferrer"</code> and a <code>.is-sr-only</code> “(opens in new tab)”
+            inside the link text.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
   </section>
 
+  <!-- ───────── The acknowledgement line ───────── -->
   <section class="section">
-    <h2 class="section-title" id="rules">Rules</h2>
-    <ul class="usage-list">
-      <li>Real <code>&lt;footer&gt;</code> landmark; the link row is a <code>&lt;nav aria-label="Site navigation"&gt;</code>.</li>
-      <li>Dot separators must carry <code>aria-hidden="true"</code> — screen readers otherwise announce &ldquo;middot&rdquo; between every link.</li>
-      <li>Funder logos carry organization names as alt text.</li>
-      <li>External links (Operational Status) use <code>target="_blank"</code> + <code>rel="noopener noreferrer"</code> + a screen-reader-only &ldquo;(opens in new tab)&rdquo; notice.</li>
-      <li>Type sizes are rem so browser font-size overrides propagate (accessibility-priorities.md).</li>
-      <li>Hidden in print (<code>@media print</code>) — printouts keep the content, not the chrome.</li>
+    <h2 class="section-title" id="the-acknowledgement-line">The acknowledgement line</h2>
+    <p class="ds-section-desc">The institutional mention after “member institutions” is the optional IP-matched insertion: omit the wrapper span when no match exists.</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">The span is an unstyled grouping hook for the templater, not a design-system class; the bold comes from the strong element.</p>
+      </details>
+      <div class="ds-site-footer-ack">
+        We gratefully acknowledge support from our <strong>major funders</strong>,
+        <a href="#"><strong>member institutions</strong></a><span class="ack-member-inline">,
+        <strong>Rheinisch-Westfälische Technische Hochschule Aachen</strong></span>,
+        and <a href="#">all contributors</a>.
+      </div>
+      <div class="ds-site-footer-ack">
+        We gratefully acknowledge support from our <strong>major funders</strong>,
+        <a href="#"><strong>member institutions</strong></a>,
+        and <a href="#">all contributors</a>.
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;!-- With an IP-matched institution --&gt;
+&lt;div class="ds-site-footer-ack"&gt;
+  We gratefully acknowledge support from our &lt;strong&gt;major funders&lt;/strong&gt;,
+  &lt;a href="#"&gt;&lt;strong&gt;member institutions&lt;/strong&gt;&lt;/a&gt;&lt;span class="ack-member-inline"&gt;,
+  &lt;strong&gt;Rheinisch-Westfälische Technische Hochschule Aachen&lt;/strong&gt;&lt;/span&gt;,
+  and &lt;a href="#"&gt;all contributors&lt;/a&gt;.
+&lt;/div&gt;
+
+&lt;!-- No match: the span is omitted --&gt;
+&lt;div class="ds-site-footer-ack"&gt;
+  We gratefully acknowledge support from our &lt;strong&gt;major funders&lt;/strong&gt;,
+  &lt;a href="#"&gt;&lt;strong&gt;member institutions&lt;/strong&gt;&lt;/a&gt;,
+  and &lt;a href="#"&gt;all contributors&lt;/a&gt;.
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-site-footer-ack</dt>
+            <dd>The sentence, in muted small type. A <code>&lt;strong&gt;</code> inside it takes the
+            full text colour; a link inside it takes the link colour.</dd>
+            <dt>.ack-member-inline</dt>
+            <dd>The IP-matched institution, inserted after “member institutions” together with its
+            leading comma. Present only when there is a match.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── The funders row ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="the-funders-row">The funders row</h2>
+    <p class="ds-section-desc">The right-hand column: a label and the major funders’ wordmarks, each on a white chip.</p>
+    <div class="ds-card">
+      <div class="ds-site-footer-funders">
+        <div class="ds-site-footer-funders-label">Major funding support from</div>
+        <div class="ds-site-footer-funders-logos">
+          <img class="ds-funder-logo" src="../assets/images/logos/other-org-logos/Simons-wordmark.png" alt="Simons Foundation">
+          <img class="ds-funder-logo" src="../assets/images/logos/other-org-logos/Schmidt_Sciences_wordmark.png" alt="Schmidt Sciences">
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-site-footer-funders"&gt;
+  &lt;div class="ds-site-footer-funders-label"&gt;Major funding support from&lt;/div&gt;
+  &lt;div class="ds-site-footer-funders-logos"&gt;
+    &lt;img class="ds-funder-logo" src="…/Simons-wordmark.png" alt="Simons Foundation"&gt;
+    &lt;img class="ds-funder-logo" src="…/Schmidt_Sciences_wordmark.png" alt="Schmidt Sciences"&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-site-footer-funders</dt>
+            <dd>The column. Centred, and it keeps its width beside the main column; below 720px it
+            takes the full width on its own row.</dd>
+            <dt>.ds-site-footer-funders-label</dt>
+            <dd>The line above the logos.</dd>
+            <dt>.ds-site-footer-funders-logos</dt>
+            <dd>The row of wordmarks. Wraps when the chips do not fit.</dd>
+            <dt>.ds-funder-logo</dt>
+            <dd>One wordmark: an <code>&lt;img&gt;</code> 40px tall on a white chip with a hairline
+            border. The chip stays white in dark mode. Requires <code>alt</code> set to the
+            organization’s name.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Use the landmarks.</strong> The unit is a real <code>&lt;footer&gt;</code>, and the
+      link row is a <code>&lt;nav aria-label="Site navigation"&gt;</code>, so a screen reader user can
+      jump to either one from a list of landmarks.</li>
+      <li><strong>Hide the separators from assistive technology.</strong> Every dot separator carries
+      <code>aria-hidden="true"</code>; screen readers otherwise announce “middot” between every
+      link.</li>
+      <li><strong>Name each funder.</strong> Funder logos carry organization names as alt text.</li>
+      <li><strong>Say when a link opens a new tab.</strong> An external link (Operational Status) uses
+      <code>target="_blank"</code>, <code>rel="noopener noreferrer"</code>, and a screen-reader-only
+      “(opens in new tab)” notice inside the link text, so the link’s name says what will
+      happen.</li>
+      <li><strong>Keep the institution inside the sentence.</strong> The IP-matched institution is
+      inserted after “member institutions”, with its comma, so the acknowledgement reads as one
+      sentence. Omit the span when there is no match.</li>
+    </ul>
+  </div>
+
+  </div> <!-- /core zone -->
+
+  <h2>Rules</h2>
+
+  <!-- ───────── Wording ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="wording">Wording</h3>
+    <ul class="notes">
       <li>Wording is exact-match to the approved deployment; do not paraphrase the acknowledgment line.</li>
+      <li>Which links the footer carries, and that every acknowledgement is presented in the footer and never in the header, is set in <a href="../doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>.</li>
     </ul>
   </section>
+
+  <!-- ───────── Type and print ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="type-and-print">Type and print</h3>
+    <ul class="notes">
+      <li>Type sizes are rem so browser font-size overrides propagate (<a href="../doc.html?src=docs/public/accessibility-priorities.md">accessibility priorities</a>).</li>
+      <li>Hidden in print (<code>@media print</code>): printouts keep the content, not the chrome.</li>
+    </ul>
+  </section>
+
 </div>
 
 <script>
@@ -180,6 +333,7 @@
     document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
       // Return focus to the trigger, but only if it was inside the menu we are
       // closing — otherwise Escape anywhere on the page would steal focus.
+      // Without this a keyboard user is left on a link that no longer exists.
       var wasInside = d.contains(document.activeElement);
       d.removeAttribute('open');
       if (wasInside) d.querySelector('summary').focus();
@@ -188,5 +342,6 @@
 </script>
 <script src="../copy-code.js" defer></script>
 <script src="../anchors.js" defer></script>
+<script src="../toc.js" defer></script>
 </body>
 </html>
