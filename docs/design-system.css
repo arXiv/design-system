@@ -1108,10 +1108,11 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    genuinely needs different type inside a card overrides it without a
    specificity fight. */
 .ds-card + .ds-card { margin-top: var(--ds-space-4); }   /* stacked cards keep a gap */
+.ds-card-grid > .ds-card { margin-top: 0; }             /* side by side, the grid's gap does it */
 .ds-card > :first-child { margin-block-start: 0; }
 .ds-card > :last-child  { margin-block-end: 0; }
 :where(.ds-card) h3 { font-size: 1rem; margin: 0 0 var(--ds-space-tight); }
-:where(.ds-card) p  { color: var(--ds-text-muted); }
+:where(.ds-card) > p { color: var(--ds-text-muted); }   /* the card's own copy; a component inside keeps its colour */
 
 /* Cards side by side. auto-fit means the count follows the room rather than a
    breakpoint: the grid drops to one column when a card can no longer hold its

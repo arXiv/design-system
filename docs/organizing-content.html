@@ -6,56 +6,8 @@
   <title>Organizing content — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
 <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
-  <style>
-    /* ── Flagship pattern page: the containers that group and organize
-       content — the reading column + rail model, accordions, cards, and
-       anchored chrome (popover / element pill). Accordion, popover, and
-       element-pill demos render the real .ds- classes from
-       design-system.css; only demo staging is page-local. ── */
-/* Advisory notes use the system's own .ds-alert--info — no bespoke chrome. */
-.notes li { margin-bottom:var(--ds-space-1); }
-/* ── Layout model diagram — pure CSS boxes ── */
-    .layout-demo { display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(180px, 1fr); gap:var(--ds-space-block); background: var(--ds-surface); border: 1px solid var(--ds-surface-muted); border-radius: 8px; padding: 20px; }
-    .layout-demo .lane { border: 1.5px dashed var(--ds-border-strong); border-radius: 6px; padding: 14px 16px; font-size: 12px; color: var(--ds-text-muted); line-height: 1.6; }
-    .layout-demo .lane strong { display: block; color: var(--ds-text); font-size: 13px; margin-bottom:6px; }
-    .layout-demo .slot { background: var(--ds-surface-muted); border-radius: 4px; padding: 5px 10px; margin-top:6px; font-size: 11.5px; color: var(--ds-text); }
-    .layout-demo .slot.hot { background: var(--ds-warning-bg); border: 1px solid var(--ds-warning-border); color: var(--ds-warning-fg); }
-    @media (max-width: 640px) { .layout-demo { grid-template-columns: 1fr; } }
-
-    /* ── Accordion demo staging — the accordions themselves are the real
-       .ds-acc classes from design-system.css; page-local styles
-       only stage them (width cap for the card stack, a stand-in rail
-       whose hairlines separate the chrome-dropped variant). ── */
-    .acc-demo { max-width: 480px; }
-    .rail-demo { max-width: 300px; background: var(--ds-surface); border: 1px solid var(--ds-surface-muted); border-radius: 8px; padding: 18px 20px; }
-    .rail-demo > * + * { border-top: 1px solid var(--ds-border); margin-top:var(--ds-space-3); padding-top: 14px; }
-
-    /* ── Card demo ── */
-    .card-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:var(--ds-space-block); }
-    .demo-card { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; padding: 18px 20px; font-size: 13px; }
-    .demo-card h3 { font-size: 14px; margin:0 0 6px; }
-    .demo-card p { margin:0; color: var(--ds-text-muted); line-height: 1.55; }
-
-    /* ── Popover / pill demos — static positioning for display ── */
-    .popover-demo .ds-popover { position: static; max-width: 320px; }
-    .pill-stage { position: relative; background: var(--ds-surface); border: 1px solid var(--ds-surface-muted); border-radius: 8px; padding: 28px 24px 34px; max-width: 480px; text-align: center; font-family: var(--ds-font-mono); font-size: 15px; }
-    .pill-stage .ds-element-pill { bottom: -14px; left: 50%; transform: translateX(-50%); }
-    .pill-stage .ds-element-pill button { font: inherit; font-family: var(--ds-font-sans); font-size: 12px; background: none; border: none; color: var(--ds-link); cursor: pointer; padding: 2px 4px; }
-    .pill-stage .ds-element-pill button:hover { text-decoration: underline; }
-    .pill-stage .ds-element-pill button:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 1px; border-radius: 2px; }
-
-    /* ── Proximity mini-demo ── */
-    .prox { display: flex; gap:var(--ds-space-block); flex-wrap: wrap; }
-    .prox-col { flex: 1 1 260px; background: var(--ds-surface); border: 1px solid var(--ds-surface-muted); border-radius: 8px; padding: 20px; font-size: 12.5px; }
-    .prox-label { font-family: var(--ds-font-condensed); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ds-text-muted); margin-bottom:var(--ds-space-3); }
-    .prox .bar { height: 10px; border-radius: 3px; background: var(--ds-surface-muted); }
-    .prox .bar.head { width: 55%; background: var(--ds-border-strong); }
-
-  
-    /* Inline links in page copy. These sit on the page canvas. Nav links
-       carry their own, more specific rules. */
-</style>
 </head>
 <body class="ds-page">
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
@@ -113,7 +65,8 @@
   <button type="button" class="ds-theme-toggle"></button>
   <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
-<div class="ds-container">
+
+<div class="ds-container ds-zone-secondary">
 
   <header class="ds-page-header">
     <h1>Organizing content</h1>
@@ -123,39 +76,38 @@
     cannot express the grouping. Reference in action: <a href="../mockups/public/html-phase1.html">the HTML paper mockup</a>.</p>
   </header>
 
-  <!-- ───────── The column model ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="main-column-vs-sidebar-what-goes-where">Main column vs. sidebar — what goes where</h2>
-    <p class="ds-section-desc">The placement rule decided in the version-display work generalizes:
-    <strong>the main column is what every reader must meet; the rail is what some readers want to browse.</strong>
-    Screen-reader flow, mobile stacking, and citation-arrival readers all traverse the main column —
-    a rail may never be opened.</p>
 
-    <div class="layout-ds-card demo" role="img" aria-label="Layout diagram: a wide main reading column on the left holding title, version dates, older-version warning, abstract and body; a narrower rail on the right holding browsable accordions for version history, paper information, and related content.">
-      <div class="lane">
-        <strong>Main reading column</strong>
-        Time-critical, everyone meets it:
-        <div class="slot">Title · authors</div>
-        <div class="slot">Version date line ("Submitted … · Revised …")</div>
-        <div class="slot hot">Older-version warning (amber, advisory)</div>
-        <div class="slot">Abstract · body</div>
-      </div>
-      <div class="lane">
-        <strong>Rail (aside)</strong>
-        Browsable, opt-in:
-        <div class="slot">Versions accordion (full history)</div>
-        <div class="slot">Paper information</div>
-        <div class="slot">Related / Labs</div>
-      </div>
+  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#the-container-and-escaping-it">The container, and escaping it</a></li>
+            <li><a href="#page-zones">Page zones</a></li>
+            <li><a href="#contents-bar">Contents bar</a></li>
+            <li><a href="#cards-and-grouped-sections">Cards and grouped sections</a></li>
+            <li><a href="#notes">Notes</a></li>
+            <li><a href="#marginalia">Marginalia</a></li>
+            <li><a href="#dividers">Dividers</a></li>
+            <li><a href="#linking-to-a-section">Linking to a section</a></li>
+            <li><a href="#chrome-anchored-to-content">Chrome anchored to content</a></li>
+            <li><a href="#main-column-vs-sidebar-what-goes-where">Main column vs. sidebar — what goes where</a></li>
+            <li><a href="#accordions-and-other-disclosures">Accordions and other disclosures</a></li>
+            <li><a href="#motion-and-layering">Motion and layering</a></li>
+          </ol>
+        </nav>
+      </details>
     </div>
+  </div>
 
-    <ul class="notes" style="margin-top: 16px;">
-      <li>The rail is an <code>&lt;aside&gt;</code> with an <code>aria-label</code> — a complementary landmark, not part of the article.</li>
-      <li>Prose in the main column respects the measure: ~65 characters (~640–720px). Rails stay narrow; their content goes single-column.</li>
-      <li>On narrow viewports the rail stacks <em>below</em> the article content it supplements — never between the title and the abstract.</li>
-      <li>No permanent left sidebar: the reader replaced it with a header-anchored TOC dropdown (10+ GitHub issues asked to hide or collapse the old one).</li>
-    </ul>
-  </section>
+  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <div class="ds-full ds-zone-primary">
 
   <!-- ───────── The container, and escaping it ───────── -->
   <section class="section">
@@ -163,16 +115,36 @@
     <p class="ds-section-desc">Every page sits in <code>.ds-container</code>, a grid with two tracks: a
     <em>content</em> track at the reading width, and a <em>full</em> track running to the viewport edges.
     Everything lands in the content track unless it asks not to.</p>
-
-    <p>Asking not to is <code>.ds-full</code> &mdash; a band that runs edge to edge for a coloured
+    <p>Asking not to is <code>.ds-full</code> — a band that runs edge to edge for a coloured
     section, a reference zone, or a figure wider than the column. It brings its own contents back onto
     the content track with padding derived from the same width the container uses, so the band and the
     column cannot drift apart.</p>
-
-    <pre><code>&lt;div class="ds-container"&gt;
+    <div class="ds-card">
+      <div class="ds-container" style="padding-block:0; row-gap:var(--ds-space-block)">
+        <p>Normal content, in the reading column.</p>
+        <div class="ds-full" style="background:var(--ds-zone-secondary-bg); padding-block:var(--ds-space-3)">A band running to both edges of the container.</div>
+        <p>Normal content again, in the reading column.</p>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-container"&gt;
   &lt;p&gt;Normal content, in the reading column.&lt;/p&gt;
   &lt;div class="ds-full"&gt;A band running to both viewport edges.&lt;/div&gt;
+  &lt;p&gt;Normal content again, in the reading column.&lt;/p&gt;
 &lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-container</dt>
+            <dd>The page shell: three grid tracks, a gutter on each side of a content track at
+            <code>--ds-width-page</code>. Every child lands in the content track. The space between
+            children is the container's own <code>row-gap</code>, so a section carries no margin of
+            its own.</dd>
+            <dt>.ds-full</dt>
+            <dd>On a direct child of <code>.ds-container</code>. The band spans the full track, and its
+            own padding brings its contents back onto the content track.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
 
     <ul class="notes">
       <li><strong>It is a grid track, not a negative margin.</strong> The
@@ -181,156 +153,47 @@
       <li><strong>Only a direct child can escape.</strong> <code>.ds-full</code> works on children of
       <code>.ds-container</code>; nested deeper it does nothing, because it has no grid to address.</li>
     </ul>
+  </section>
 
-    <h3>Page zones</h3>
-    <p>A long page can tell a reader what kind of content they are in by its ground. The
+  <!-- ───────── Page zones ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="page-zones">Page zones</h2>
+    <p class="ds-section-desc">A long page can tell a reader what kind of content they are in by its ground. The
     <strong>primary</strong> zone holds the thing the page is about. The <strong>secondary</strong>
     zone holds what introduces or supports it: the opening of the page, and any closing material.
     The zones are named for their role, because both grounds change in dark mode.</p>
-
-    <pre><code>&lt;div class="ds-container ds-zone-secondary"&gt;
+    <div class="ds-card">
+      <div class="ds-container ds-zone-secondary" style="padding-block:var(--ds-space-3); row-gap:var(--ds-space-block)">
+        <p>The opening of the page, on the secondary ground.</p>
+        <div class="ds-full ds-zone-primary" style="padding-block:var(--ds-space-3)">The thing the page is about, on the primary ground.</div>
+        <p>Closing material, on the secondary ground.</p>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-container ds-zone-secondary"&gt;
   &lt;header class="ds-page-header"&gt;…&lt;/header&gt;            &lt;!-- secondary: introduces --&gt;
   &lt;div class="ds-full ds-zone-primary"&gt;
     &lt;section&gt;…&lt;/section&gt;                                &lt;!-- primary: the thing itself --&gt;
   &lt;/div&gt;
   &lt;section&gt;…&lt;/section&gt;                                  &lt;!-- secondary: supports --&gt;
 &lt;/div&gt;</code></pre>
-
-    <details class="ds-acc"><summary>Relevant CSS</summary><div class="ds-acc-body">
-      <dl>
-        <dt>.ds-zone-secondary</dt>
-        <dd>Goes on <code>.ds-container</code> and becomes the page ground,
-        <code>--ds-zone-secondary-bg</code>. Everything outside the primary band sits on it.</dd>
-        <dt>.ds-zone-primary</dt>
-        <dd>Goes on one <code>.ds-full</code> band. It sets the <code>--ds-surface</code> ground and
-        the band&rsquo;s own top and bottom padding. A page has one primary zone.</dd>
-      </dl>
-    </div></details>
-  </section>
-
-  <!-- ───────── Accordions: documented on their own page ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="accordions-and-other-disclosures">Accordions and other disclosures</h2>
-    <p class="ds-section-desc">An accordion is one of the containers this page is about, but it is
-    also one of several ways a page can show less than it has &mdash; and choosing between them is
-    the harder question. Accordions, show-more, and popovers are documented together on
-    <a href="progressive-disclosure.html">Progressive disclosure</a>, with the rule for picking one.</p>
-
-    <p>What belongs here is only where they sit: <strong>the rail variant</strong>
-    (<code>.ds-acc-rail</code>) is the one built for the sidebar in the column model above. It drops the
-    rules the default carries, because the rail's own hairline dividers already separate its contents,
-    and a boundary drawn twice is a boundary drawn wrong.</p>
-
-    <div class="rail-ds-card demo">
-      <details class="ds-acc ds-acc-rail" open>
-        <summary>Versions</summary>
-        <div class="ds-acc-body">
           <dl>
-            <dt>v3 &middot; current</dt><dd>24 Apr 2026</dd>
-            <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
-            <dt>v1</dt><dd><a href="#">10 Jan 2026</a></dd>
+            <dt>.ds-zone-secondary</dt>
+            <dd>Goes on <code>.ds-container</code> and becomes the page ground,
+            <code>--ds-zone-secondary-bg</code>. Everything outside the primary band sits on it.</dd>
+            <dt>.ds-zone-primary</dt>
+            <dd>Goes on one <code>.ds-full</code> band. It sets the <code>--ds-surface</code> ground and
+            the band’s own top and bottom padding. A page has one primary zone.</dd>
           </dl>
         </div>
       </details>
-      <details class="ds-acc ds-acc-rail">
-        <summary>Paper information</summary>
-        <div class="ds-acc-body">Single-column inside the narrow rail.</div>
-      </details>
     </div>
-
-    <ul class="notes" style="margin-top: 18px;">
-      <li><strong>Never put must-see information only inside a closed accordion.</strong> The
-      older-version warning surfaces in the main column even though the full history lives in the
-      Versions accordion &mdash; which is the column rule above, applied.</li>
-    </ul>
-  </section>
-
-  <!-- ───────── Cards & tinted sections ───────── -->
-  <!-- ───────── Dividers ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="dividers">Dividers</h2>
-    <p class="ds-section-desc">A rule between things. It belongs in the same conversation as the card,
-    because both answer the same question and the answer is usually neither: this system groups with
-    space first, and a line drawn where space would have done adds noise without adding meaning.</p>
-
-    <p class="ds-panel-label">Which to reach for</p>
-    <table class="ds-table-framed">
-      <thead><tr><th>Reach for</th><th>When</th></tr></thead>
-      <tbody>
-        <tr><td>Nothing</td><td>The default. If a larger gap between the groups than within them makes
-        the grouping read, you are done &mdash; see the proximity rule on
-        <a href="spacing.html">Spacing</a>.</td></tr>
-        <tr><td>A divider</td><td>Space alone is not enough, usually because the groups are the same
-        shape and sit close together &mdash; rows in a list, a run of controls.</td></tr>
-        <tr><td>A card</td><td>The group is an <em>object</em> on the page rather than a region of it,
-        and needs an edge on all four sides to say so.</td></tr>
-      </tbody>
-    </table>
-
-    <p class="ds-panel-label">The component</p>
-    <p>Prefer a plain <code>&lt;hr&gt;</code>: it needs no class, and it carries
-    <code>role="separator"</code> for free. <code>.ds-divider</code> is for the cases where an
-    <code>&lt;hr&gt;</code> cannot go &mdash; inside a flex row, or on an element that is already
-    there.</p>
-
-    <div style="max-width:520px">
-      <p style="margin:0">A section of content.</p>
-      <hr>
-      <p style="margin:0">The next section, separated by a plain <code>&lt;hr&gt;</code>.</p>
-      <div class="ds-divider ds-divider--tight" aria-hidden="true"></div>
-      <p style="margin:0">And by <code>.ds-divider--tight</code>, which uses the between-blocks gap
-      rather than the between-sections one.</p>
-      <div style="display:flex; align-items:center; gap:var(--ds-space-tight); margin-top:var(--ds-space-6)">
-        <span>Search</span>
-        <span class="ds-divider ds-divider--vertical" aria-hidden="true"></span>
-        <span>Submit</span>
-        <span class="ds-divider ds-divider--vertical" aria-hidden="true"></span>
-        <span>Donate</span>
-      </div>
-    </div>
-
-    <details class="ds-acc"><summary>Relevant CSS</summary><div class="ds-acc-body">
-      <dl>
-        <dt>&lt;hr&gt;</dt><dd>The preferred form. Styled by the foundation, no class needed.</dd>
-        <dt>.ds-divider</dt><dd>The class form, for where an <code>&lt;hr&gt;</code> will not fit. It is
-        decorative, so mark it <code>aria-hidden</code> &mdash; a real separator should be an
-        <code>&lt;hr&gt;</code>.</dd>
-        <dt>.ds-divider--tight</dt><dd>Between items in a group rather than between sections.</dd>
-        <dt>.ds-divider--flush</dt><dd>No margin at all; the caller owns the spacing.</dd>
-        <dt>.ds-divider--vertical</dt><dd>For a row of controls. Height is in <code>em</code>, so it
-        tracks the row's own text instead of needing a value per context.</dd>
-      </dl>
-    </div></details>
-  </section>
-
-    <section class="section">
-    <h2 class="section-title" id="linking-to-a-section">Linking to a section</h2>
-    <p class="ds-section-desc">Every section heading carries an <code>id</code> derived from its own
-    text, and <code>.ds-anchor</code> is the control beside it that copies the link. Hover the
-    heading above, or tab to it, and the control appears.</p>
-    <ul class="notes">
-      <li><strong>The ids are written into the HTML, not added by a script.</strong>
-      <code>verification/gen-anchors.py</code> writes them;
-      <code>--check</code> fails when a heading has none. A real id works with JavaScript off, works
-      for a link arriving from another page, and exists when the browser resolves the fragment on
-      first load &mdash; none of which a script running at <code>DOMContentLoaded</code> can
-      promise.</li>
-      <li><strong>The control is a button, not a link.</strong> An <code>&lt;a href="#here"&gt;</code>
-      inside a heading is a tab stop that goes nowhere the reader wanted to go &mdash; they are
-      already looking at the section. What they want is the address, so it copies it.</li>
-      <li><strong>An id follows its heading</strong>, so rewording a heading changes its anchor.
-      That is the right trade while nothing links in from outside; re-run the generator after
-      editing a heading and the check will tell you if you forget.</li>
-      <li><strong>Its accessible name carries the section.</strong> Twelve buttons all called
-      &ldquo;Copy link to section&rdquo; are useless in a list of controls, so each says which
-      section it belongs to.</li>
-    </ul>
   </section>
 
   <!-- ───────── Contents bar ───────── -->
   <section class="section">
     <h2 class="section-title" id="contents-bar">Contents bar</h2>
-    <p class="ds-section-desc">A long page&rsquo;s own table of contents: one control that names the
+    <p class="ds-section-desc">A long page’s own table of contents: one control that names the
     section the reader is in and opens the list of the others. This one lists the sections of the page
     you are reading.</p>
 
@@ -343,46 +206,23 @@
         </summary>
         <nav class="ds-toc-menu" aria-label="Contents">
           <ol>
-            <li><a href="#main-column-vs-sidebar-what-goes-where">Main column vs. sidebar — what goes where</a></li>
             <li><a href="#the-container-and-escaping-it">The container, and escaping it</a></li>
-            <li><a href="#accordions-and-other-disclosures">Accordions and other disclosures</a></li>
+            <li><a href="#page-zones">Page zones</a></li>
+            <li><a href="#contents-bar">Contents bar</a></li>
+            <li><a href="#cards-and-grouped-sections">Cards and grouped sections</a></li>
+            <li><a href="#notes">Notes</a></li>
+            <li><a href="#marginalia">Marginalia</a></li>
             <li><a href="#dividers">Dividers</a></li>
             <li><a href="#linking-to-a-section">Linking to a section</a></li>
-            <li><a href="#contents-bar">Contents bar</a></li>
-            <li><a href="#documentation-notes-special-blocks-used-to-organize-and-iden">Documentation notes: special blocks used to organize and identify Design System info</a></li>
-            <li><a href="#marginalia">Marginalia</a></li>
-            <li><a href="#cards-and-grouped-sections">Cards and grouped sections</a></li>
             <li><a href="#chrome-anchored-to-content">Chrome anchored to content</a></li>
-            <li><a href="#accessibility">Accessibility</a></li>
+            <li><a href="#main-column-vs-sidebar-what-goes-where">Main column vs. sidebar — what goes where</a></li>
+            <li><a href="#accordions-and-other-disclosures">Accordions and other disclosures</a></li>
+            <li><a href="#motion-and-layering">Motion and layering</a></li>
           </ol>
         </nav>
       </details>
-
-      <details class="ds-acc"><summary>Relevant CSS</summary><div class="ds-acc-body">
-        <dl>
-          <dt>.ds-toc</dt>
-          <dd>The control, a <code>&lt;details&gt;</code>. It works on its own anywhere, and it opens
-          with JavaScript off.</dd>
-          <dt>.ds-toc-trigger</dt>
-          <dd>The <code>&lt;summary&gt;</code>. Holds the list icon, <code>.ds-toc-text</code> with
-          its <code>.ds-toc-prefix</code>, and <code>.ds-toc-chevron</code>.</dd>
-          <dt>.ds-toc-menu</dt>
-          <dd>The list, a <code>&lt;nav&gt;</code> holding an <code>&lt;ol&gt;</code>. The link to the
-          current section gets <code>.is-current</code>. A page whose sections are numbered puts each
-          number in <code>.ds-toc-num</code>.</dd>
-          <dt>.ds-toc-bar</dt>
-          <dd>The edge-to-edge row that carries the control. A direct child of
-          <code>.ds-container</code>, with <code>.ds-full</code>. Placed directly before
-          <code>.ds-zone-primary</code>, it sits on that zone&rsquo;s top edge.
-          <code>.ds-toc-bar-inner</code> is its three-slot grid, which keeps the control centred
-          whatever sits beside it.</dd>
-          <dt>.ds-toc-bar--sticky</dt>
-          <dd>Keeps the bar at the top of the viewport, where it becomes <code>.is-stuck</code> and
-          tightens. It also sets <code>scroll-padding-top</code> so an anchor lands below the bar.
-          Sticky chrome is governed by
-          <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>; check there before
-          adding it to a page.</dd>
-        </dl>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
 <pre><code>&lt;div class="ds-container ds-zone-secondary"&gt;
   &lt;header class="ds-page-header"&gt;…&lt;/header&gt;
 
@@ -404,12 +244,37 @@
   &lt;div class="ds-full ds-zone-primary"&gt;…&lt;/div&gt;
 &lt;/div&gt;
 &lt;script src="toc.js" defer&gt;&lt;/script&gt;</code></pre>
-      </div></details>
+          <dl>
+            <dt>.ds-toc</dt>
+            <dd>The control, a <code>&lt;details&gt;</code>. It works on its own anywhere, and it opens
+            with JavaScript off.</dd>
+            <dt>.ds-toc-trigger</dt>
+            <dd>The <code>&lt;summary&gt;</code>. Holds the list icon, <code>.ds-toc-text</code> with
+            its <code>.ds-toc-prefix</code>, and <code>.ds-toc-chevron</code>.</dd>
+            <dt>.ds-toc-menu</dt>
+            <dd>The list, a <code>&lt;nav&gt;</code> holding an <code>&lt;ol&gt;</code>. The link to the
+            current section gets <code>.is-current</code>. A page whose sections are numbered puts each
+            number in <code>.ds-toc-num</code>.</dd>
+            <dt>.ds-toc-bar</dt>
+            <dd>The edge-to-edge row that carries the control. A direct child of
+            <code>.ds-container</code>, with <code>.ds-full</code>. Placed directly before
+            <code>.ds-zone-primary</code>, it sits on that zone’s top edge.
+            <code>.ds-toc-bar-inner</code> is its three-slot grid, which keeps the control centred
+            whatever sits beside it.</dd>
+            <dt>.ds-toc-bar--sticky</dt>
+            <dd>Keeps the bar at the top of the viewport, where it becomes <code>.is-stuck</code> and
+            tightens. It also sets <code>scroll-padding-top</code> so an anchor lands below the bar.
+            Sticky chrome is governed by
+            <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>; check there before
+            adding it to a page.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
 
     <ul class="notes">
       <li><strong>The list is generated, not written.</strong>
-      <code>verification/gen-anchors.py</code> fills the <code>&lt;ol&gt;</code> from the page&rsquo;s
+      <code>verification/gen-anchors.py</code> fills the <code>&lt;ol&gt;</code> from the page’s
       section headings, and <code>--check</code> fails when the two disagree. Leave the list empty
       and run the generator.</li>
       <li><strong>It opens without JavaScript.</strong> <code>toc.js</code> adds closing on Escape,
@@ -419,123 +284,46 @@
     </ul>
   </section>
 
-<section class="section">
-    <h2 class="section-title" id="documentation-notes-special-blocks-used-to-organize-and-iden">Documentation notes: special blocks used to organize and identify Design System info</h2>
-    <p class="ds-section-desc">A box in the flow of a page that names its own register before the
-    reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on
-    the internal surface. The tab is the whole design. It is also what keeps a note from reading as an
-    <a href="alerts.html">alert</a> &mdash; an alert reports a state as of right now and can be
-    dismissed, a note is always true and stays.</p>
-
-    <div class="ds-note">
-      <h3 class="ds-note-label">Tone</h3>
-      <p>Grey, the default. Guidance: how to write something, when to reach for one option over
-      another. Nothing here is a rule you can fail.</p>
-    </div>
-
-    <div class="ds-note ds-note--essential">
-      <h3 class="ds-note-label">Accessibility essentials</h3>
-      <p>Blue. A requirement &mdash; something that has to be true for the pattern to be correct,
-      usually with a WCAG success criterion behind it.</p>
-      <p class="ds-note-gotcha"><strong>Easy to get wrong</strong>
-      A note can carry a ruled-off warning at its foot with <code>.ds-note-gotcha</code>. Use it for
-      the mistake the rule keeps being broken by, not as a second paragraph.</p>
-    </div>
-
-    <div class="ds-note ds-note--internal">
-      <h3 class="ds-note-label">Internal variant</h3>
-      <p>Lime. How this component or rule differs in internal tools, shown in the section it belongs
-      to rather than on a separate page. This is the one place a public page may show Access Lime,
-      because here the internal surface is the subject rather than the accent.</p>
-    </div>
-
-    <p class="ds-panel-label">Markup</p>
-    <pre><code>&lt;div class="ds-note ds-note--essential"&gt;
-  &lt;h3 class="ds-note-label"&gt;Accessibility essentials&lt;/h3&gt;
-  &lt;p&gt;&hellip;&lt;/p&gt;
-  &lt;p class="ds-note-gotcha"&gt;&lt;strong&gt;Easy to get wrong&lt;/strong&gt; &hellip;&lt;/p&gt;
-&lt;/div&gt;</code></pre>
-
-    <ul class="notes">
-      <li><strong>The label is a heading, at whatever level the page is up to.</strong>
-      <code>.ds-note-label</code> resets the type completely, so <code>h2</code> through
-      <code>h4</code> all render the same tab. Keeping it a heading keeps the note in the document
-      outline, which is how a screen-reader user finds it.</li>
-      <li><strong>Three registers, and the set is closed on purpose.</strong> Adding one is three
-      custom properties &mdash; <code>--ds-note-tint</code>, <code>--ds-note-line</code>,
-      <code>--ds-note-mark</code> &mdash; but a colour only earns a register when it has a job.
-      There is no background-colour utility class, because a tint that a page picks freely teaches
-      the reader nothing.</li>
-      <li><strong>No left edge and no icon.</strong> Both belong to the alert, and the tab already
-      does the work of saying what kind of box this is &mdash; in words, so nothing has to be read
-      out of a colour.</li>
-    </ul>
-  </section>
-
-  <!-- ───────── Marginalia ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="marginalia">Marginalia</h2>
-    <p class="ds-section-desc">A short note beside the block it belongs to, in the annotation voice.
-    Where the viewport has a margin the note sits in it, always open. Narrower, it folds to an info
-    mark in the block&rsquo;s top-right corner that opens it in place. Try it by narrowing this
-    window.</p>
-
-    <div class="ds-card">
-      <details class="ds-marginalia">
-        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">A margin note is one or two sentences. Anything longer is a paragraph, and belongs in the flow.</p>
-      </details>
-      <p>The block the note belongs to. A demo, a figure, a table: anything in a card.</p>
-      <details class="ds-acc"><summary>Relevant code</summary><div class="ds-acc-body">
-<pre><code>&lt;div class="ds-card"&gt;
-  &lt;details class="ds-marginalia"&gt;
-    &lt;summary&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;&lt;span class="is-sr-only"&gt;Note&lt;/span&gt;&lt;/summary&gt;
-    &lt;p class="ds-marginalia-body ds-annotation"&gt;The note.&lt;/p&gt;
-  &lt;/details&gt;
-  …
-&lt;/div&gt;</code></pre>
-        <dl>
-          <dt>.ds-marginalia</dt>
-          <dd>The note, a <code>&lt;details&gt;</code>. Its first child in the block, so it is read
-          before the thing it annotates. The block supplies <code>position: relative</code>;
-          <code>.ds-card</code> already does.</dd>
-          <dt>.ds-marginalia-body</dt>
-          <dd>The text, with <code>.ds-annotation</code> for the voice. In the margin it has no
-          chrome; folded, it opens as a small panel under the mark.</dd>
-          <dt>.is-sr-only</dt>
-          <dd>Required on the mark. The icon is <code>aria-hidden</code>, so without it the control
-          announces as nothing.</dd>
-        </dl>
-      </div></details>
-    </div>
-
-    <ul class="notes">
-      <li><strong>It opens without JavaScript.</strong> The fold is the native disclosure.</li>
-      <li><strong>The margin appears at 1314px.</strong> The page width plus a note and its gaps on
-      each side. Below that, every note is folded.</li>
-      <li><strong>A note is not a rule.</strong> A reader on a narrow screen may never open it, so
-      anything a builder must not get wrong goes in a <a href="#documentation-notes-special-blocks-used-to-organize-and-iden">note block</a> or in the prose.</li>
-    </ul>
-  </section>
-
+  <!-- ───────── Cards ───────── -->
   <section class="section">
     <h2 class="section-title" id="cards-and-grouped-sections">Cards and grouped sections</h2>
     <p class="ds-section-desc">A card is a white surface with a hairline border and 8px radius on the Warm Wash page
     background — used when content is a <em>peer in a set</em> (context cards, swatch cards, editable form
     sections). It is not a decoration for single blocks of prose.</p>
 
-    <div class="card-row">
-      <div class="ds-card demo-card">
-        <h3>When a card earns its box</h3>
-        <p>Sets of parallel items; editable "section card" containers in forms; anything selected, compared, or repeated.</p>
-      </div>
-      <div class="ds-card demo-card">
-        <h3>When whitespace does it better</h3>
-        <p>Sequential prose and single sections — use the spacing scale's proximity rule instead of a border.</p>
-      </div>
+    <div class="ds-card">
+      <h3>When a card earns its box</h3>
+      <p>Sets of parallel items; editable "section card" containers in forms; anything selected, compared, or repeated.</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-card"&gt;
+  &lt;h3&gt;When a card earns its box&lt;/h3&gt;
+  &lt;p&gt;Sets of parallel items; editable "section card" containers in forms; anything selected, compared, or repeated.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;!-- Peers side by side --&gt;
+&lt;div class="ds-card-grid"&gt;
+  &lt;div class="ds-card"&gt;…&lt;/div&gt;
+  &lt;div class="ds-card"&gt;…&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-card</dt>
+            <dd>The box: white surface, hairline border, 8px radius, padding from the scale. Its first
+            and last children carry no outer margin, because the padding is the space at the edges. It
+            sets <code>position: relative</code>, so a margin note or an anchored pill measures from
+            it.</dd>
+            <dt>.ds-card-grid</dt>
+            <dd>Cards side by side. The count follows the room: the grid drops to one column when a card
+            can no longer hold its minimum width, with no breakpoint.</dd>
+            <dt>.ds-card &gt; .ds-acc:last-child</dt>
+            <dd>An accordion that is the card's last child runs flush to the card's foot, the way the
+            code panels on this page do.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
 
-    <div class="ds-alert ds-alert--error note-alert">
+    <div class="ds-alert ds-alert--error">
       <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
       <div class="ds-alert-content">
         <p class="ds-alert-title">Rows inside a card separate with spacing, never hairline dividers</p>
@@ -564,29 +352,258 @@
     <a href="../mockups/internal/admin-console/paper-details/index.html">admin paper-details mockup</a> and both panels on the
     <a href="../mockups/internal/admin-console/user-page/index.html">admin user-page mockup</a>.</p>
 
-    <p class="ds-panel-label">The proximity rule (see <a href="spacing.html">Spacing</a>)</p>
-    <div class="prox">
-      <div class="prox-col">
-        <div class="prox-label">Grouping by proximity — no boxes needed</div>
-        <div class="bar head"></div>
-        <div class="bar" style="margin-top:12px"></div>
-        <div class="bar" style="margin-top:12px; width:80%"></div>
-        <div class="bar head" style="margin-top:44px"></div>
-        <div class="bar" style="margin-top:12px"></div>
-        <div class="bar" style="margin-top:12px; width:70%"></div>
-      </div>
-      <div class="prox-col">
-        <div class="prox-label">Equal gaps — grouping lost, boxes get added to compensate</div>
-        <div class="bar head"></div>
-        <div class="bar" style="margin-top:20px"></div>
-        <div class="bar" style="margin-top:20px; width:80%"></div>
-        <div class="bar head" style="margin-top:20px"></div>
-        <div class="bar" style="margin-top:20px"></div>
-        <div class="bar" style="margin-top:20px; width:70%"></div>
-      </div>
-    </div>
-    <p class="ds-section-desc" style="margin-top: 12px;">Space between sections ≈ 3× the space within a section
+    <p class="ds-panel-label">The proximity rule (see <a href="spacing.html#the-proximity-rule">Spacing</a>)</p>
+    <p class="ds-section-desc">When whitespace does it better: sequential prose and single sections — use the spacing
+    scale's proximity rule instead of a border. Space between sections ≈ 3× the space within a section
     (16px within, 48px between). When that holds, most boxes become unnecessary.</p>
+  </section>
+
+  <!-- ───────── Notes ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="notes">Notes</h2>
+    <p class="ds-section-desc">A box in the flow of a page that names its own register before the
+    reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on
+    the internal surface. The tab is the whole design. It is also what keeps a note from reading as an
+    <a href="alerts.html">alert</a> — an alert reports a state as of right now and can be
+    dismissed, a note is always true and stays.</p>
+
+    <div class="ds-card">
+      <div>
+        <div class="ds-note">
+          <h3 class="ds-note-label">Tone</h3>
+          <p>Grey, the default. Guidance: how to write something, when to reach for one option over
+          another. Nothing here is a rule you can fail.</p>
+        </div>
+
+        <div class="ds-note ds-note--essential">
+          <h3 class="ds-note-label">Accessibility essentials</h3>
+          <p>Blue. A requirement — something that has to be true for the pattern to be correct,
+          usually with a WCAG success criterion behind it.</p>
+          <p class="ds-note-gotcha"><strong>Easy to get wrong</strong>
+          A note can carry a ruled-off warning at its foot with <code>.ds-note-gotcha</code>. Use it for
+          the mistake the rule keeps being broken by, not as a second paragraph.</p>
+        </div>
+
+        <div class="ds-note ds-note--internal">
+          <h3 class="ds-note-label">Internal variant</h3>
+          <p>Lime. How this component or rule differs in internal tools, shown in the section it belongs
+          to rather than on a separate page. This is the one place a public page may show Access Lime,
+          because here the internal surface is the subject rather than the accent.</p>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-note ds-note--essential"&gt;
+  &lt;h3 class="ds-note-label"&gt;Accessibility essentials&lt;/h3&gt;
+  &lt;p&gt;…&lt;/p&gt;
+  &lt;p class="ds-note-gotcha"&gt;&lt;strong&gt;Easy to get wrong&lt;/strong&gt; …&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-note</dt>
+            <dd>The box, on a <code>&lt;div&gt;</code> in the flow of the page. On its own it is the
+            grey register: guidance.</dd>
+            <dt>.ds-note-label</dt>
+            <dd>The tab, and the note's first child. The label is a heading, at whatever level the page
+            is up to: <code>.ds-note-label</code> resets the type completely, so <code>h2</code> through
+            <code>h4</code> all render the same tab. Keeping it a heading keeps the note in the document
+            outline, which is how a screen-reader user finds it.</dd>
+            <dt>.ds-note--essential</dt>
+            <dd>The blue register: a requirement.</dd>
+            <dt>.ds-note--internal</dt>
+            <dd>The lime register: how the component differs in internal tools.</dd>
+            <dt>.ds-note-gotcha</dt>
+            <dd>A ruled-off warning at the foot of the note, on a <code>&lt;p&gt;</code> whose first
+            child is a <code>&lt;strong&gt;</code> lead.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <ul class="notes">
+      <li><strong>Three registers, and the set is closed on purpose.</strong> Adding one is three
+      custom properties — <code>--ds-note-tint</code>, <code>--ds-note-line</code>,
+      <code>--ds-note-mark</code> — but a colour only earns a register when it has a job.
+      There is no background-colour utility class, because a tint that a page picks freely teaches
+      the reader nothing.</li>
+      <li><strong>No left edge and no icon.</strong> Both belong to the alert, and the tab already
+      does the work of saying what kind of box this is — in words, so nothing has to be read
+      out of a colour.</li>
+    </ul>
+  </section>
+
+  <!-- ───────── Marginalia ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="marginalia">Marginalia</h2>
+    <p class="ds-section-desc">A short note beside the block it belongs to, in the annotation voice.
+    Where the viewport has a margin the note sits in it, always open. Narrower, it folds to an info
+    mark in the block’s top-right corner that opens it in place. Try it by narrowing this
+    window.</p>
+
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">A margin note is one or two sentences. Anything longer is a paragraph, and belongs in the flow.</p>
+      </details>
+      <p>The block the note belongs to. A demo, a figure, a table: anything in a card.</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-card"&gt;
+  &lt;details class="ds-marginalia"&gt;
+    &lt;summary&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;&lt;span class="is-sr-only"&gt;Note&lt;/span&gt;&lt;/summary&gt;
+    &lt;p class="ds-marginalia-body ds-annotation"&gt;The note.&lt;/p&gt;
+  &lt;/details&gt;
+  …
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-marginalia</dt>
+            <dd>The note, a <code>&lt;details&gt;</code>. Its first child in the block, so it is read
+            before the thing it annotates. The block supplies <code>position: relative</code>;
+            <code>.ds-card</code> already does.</dd>
+            <dt>.ds-marginalia-body</dt>
+            <dd>The text, with <code>.ds-annotation</code> for the voice. In the margin it has no
+            chrome; folded, it opens as a small panel under the mark.</dd>
+            <dt>.is-sr-only</dt>
+            <dd>Required on the mark. The icon is <code>aria-hidden</code>, so without it the control
+            announces as nothing.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <ul class="notes">
+      <li><strong>It opens without JavaScript.</strong> The fold is the native disclosure.</li>
+      <li><strong>The margin appears at 1314px.</strong> The page width plus a note and its gaps on
+      each side. Below that, every note is folded.</li>
+      <li><strong>A note is not a rule.</strong> A reader on a narrow screen may never open it, so
+      anything a builder must not get wrong goes in a <a href="#notes">note block</a> or in the prose.</li>
+    </ul>
+  </section>
+
+  <!-- ───────── Dividers ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="dividers">Dividers</h2>
+    <p class="ds-section-desc">A rule between things. It belongs in the same conversation as the card,
+    because both answer the same question and the answer is usually neither: this system groups with
+    space first, and a line drawn where space would have done adds noise without adding meaning.</p>
+
+    <div class="ds-card">
+      <p>A section of content.</p>
+      <hr>
+      <p>The next section, separated by a plain <code>&lt;hr&gt;</code>.</p>
+      <div class="ds-divider ds-divider--tight" aria-hidden="true"></div>
+      <p>And by <code>.ds-divider--tight</code>, which uses the between-blocks gap
+      rather than the between-sections one.</p>
+      <div class="ds-btn-group">
+        <span>Search</span>
+        <span class="ds-divider ds-divider--vertical" aria-hidden="true"></span>
+        <span>Submit</span>
+        <span class="ds-divider ds-divider--vertical" aria-hidden="true"></span>
+        <span>Donate</span>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p&gt;A section of content.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;The next section, separated by a plain &lt;hr&gt;.&lt;/p&gt;
+&lt;div class="ds-divider ds-divider--tight" aria-hidden="true"&gt;&lt;/div&gt;
+&lt;p&gt;And by .ds-divider--tight, which uses the between-blocks gap rather than the between-sections one.&lt;/p&gt;
+
+&lt;!-- In a row of controls --&gt;
+&lt;div class="ds-btn-group"&gt;
+  &lt;span&gt;Search&lt;/span&gt;
+  &lt;span class="ds-divider ds-divider--vertical" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;span&gt;Submit&lt;/span&gt;
+  &lt;span class="ds-divider ds-divider--vertical" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;span&gt;Donate&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>&lt;hr&gt;</dt><dd>The preferred form. Styled by the foundation, no class needed, and it
+            carries <code>role="separator"</code> for free.</dd>
+            <dt>.ds-divider</dt><dd>The class form, for where an <code>&lt;hr&gt;</code> will not fit:
+            inside a flex row, or on an element that is already there. It is
+            decorative, so mark it <code>aria-hidden</code> — a real separator should be an
+            <code>&lt;hr&gt;</code>.</dd>
+            <dt>.ds-divider--tight</dt><dd>Between items in a group rather than between sections.</dd>
+            <dt>.ds-divider--flush</dt><dd>No margin at all; the caller owns the spacing.</dd>
+            <dt>.ds-divider--vertical</dt><dd>For a row of controls. Height is in <code>em</code>, so it
+            tracks the row's own text instead of needing a value per context.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <p class="ds-panel-label">Which to reach for</p>
+    <div class="table-scroll" role="region" aria-label="Which to reach for" tabindex="0">
+      <table class="ds-table-framed token-table">
+        <thead><tr><th>Reach for</th><th>When</th></tr></thead>
+        <tbody>
+          <tr><td>Nothing</td><td>The default. If a larger gap between the groups than within them makes
+          the grouping read, you are done — see the proximity rule on
+          <a href="spacing.html">Spacing</a>.</td></tr>
+          <tr><td>A divider</td><td>Space alone is not enough, usually because the groups are the same
+          shape and sit close together — rows in a list, a run of controls.</td></tr>
+          <tr><td>A card</td><td>The group is an <em>object</em> on the page rather than a region of it,
+          and needs an edge on all four sides to say so.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ───────── Linking to a section ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="linking-to-a-section">Linking to a section</h2>
+    <p class="ds-section-desc">Every section heading carries an <code>id</code> derived from its own
+    text, and <code>.ds-anchor</code> is the control beside it that copies the link. Hover the
+    heading above, or tab to it, and the control appears.</p>
+
+    <div class="ds-card">
+      <h3>A section heading <button type="button" class="ds-anchor" style="opacity:1" aria-label="Copy link to A section heading" title="Copy link to this section"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button></h3>
+      <p>The control as it appears on hover or focus. Here it is kept visible and copies nothing; the ones beside the headings on this page are live.</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;!-- What is written: a heading with the class. The id and the control are generated. --&gt;
+&lt;h2 class="section-title"&gt;Dividers&lt;/h2&gt;
+&lt;script src="anchors.js" defer&gt;&lt;/script&gt;
+
+&lt;!-- What renders, after gen-anchors.py and anchors.js --&gt;
+&lt;h2 class="section-title" id="dividers"&gt;Dividers
+  &lt;button type="button" class="ds-anchor" aria-label="Copy link to Dividers" title="Copy link to this section"&gt;
+    &lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;…&lt;/svg&gt;
+  &lt;/button&gt;
+&lt;/h2&gt;</code></pre>
+          <dl>
+            <dt>.section-title</dt>
+            <dd>On the <code>&lt;h2&gt;</code> or <code>&lt;h3&gt;</code> that starts a section.
+            <code>verification/gen-anchors.py</code> writes its <code>id</code>, and
+            <code>anchors.js</code> appends the control.</dd>
+            <dt>.ds-anchor</dt>
+            <dd>The control, a <code>&lt;button&gt;</code> that <code>anchors.js</code> adds to every
+            <code>.section-title</code> with an <code>id</code>. Quiet until wanted: it appears on
+            hover of the heading and on its own focus, and stays visible on a touch screen. Its
+            accessible name carries the section, and the copy result is announced in a live
+            region.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <ul class="notes">
+      <li><strong>The ids are written into the HTML, not added by a script.</strong>
+      <code>verification/gen-anchors.py</code> writes them;
+      <code>--check</code> fails when a heading has none. A real id works with JavaScript off, works
+      for a link arriving from another page, and exists when the browser resolves the fragment on
+      first load — none of which a script running at <code>DOMContentLoaded</code> can
+      promise.</li>
+      <li><strong>The control is a button, not a link.</strong> An <code>&lt;a href="#here"&gt;</code>
+      inside a heading is a tab stop that goes nowhere the reader wanted to go — they are
+      already looking at the section. What they want is the address, so it copies it.</li>
+      <li><strong>An id follows its heading</strong>, so rewording a heading changes its anchor.
+      That is the right trade while nothing links in from outside; re-run the generator after
+      editing a heading and the check will tell you if you forget.</li>
+      <li><strong>Its accessible name carries the section.</strong> Twelve buttons all called
+      “Copy link to section” are useless in a list of controls, so each says which
+      section it belongs to.</li>
+    </ul>
   </section>
 
   <!-- ───────── Anchored chrome ───────── -->
@@ -597,45 +614,143 @@
 
     <p class="ds-panel-label">Popover panel — .ds-popover</p>
     <p class="ds-section-desc">A light-blue tint floating panel anchored to inline elements (citation chips, footnote
-    markers). z-index 50, per the z-layer scale. Shown here statically:</p>
-    <div class="popover-ds-card demo">
-      <span class="ds-popover" role="region" aria-label="Reference 47" style="position: relative; display: inline-block;">
-        <span class="ds-popover-title">Reference 47</span>
-        <button type="button" class="ds-close"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close reference 47</span></button>
-        Stelle, K.S. — <em>Renormalization of higher-derivative quantum gravity</em>, Phys. Rev. D 16, 953 (1977).
-        <a href="#">View in references</a>
-      </span>
-    </div>
+    markers). z-index 110, per the z-layer scale. Its markup and its classes are documented on
+    <a href="progressive-disclosure.html#popover">Progressive disclosure</a>.</p>
 
-    <p class="ds-panel-label" style="margin-top: 28px;">Element pill — .ds-element-pill</p>
+    <p class="ds-panel-label">Element pill — .ds-element-pill</p>
     <p class="ds-section-desc">A small white pill straddling an element's bottom edge (equations, figures) to host its
     actions — Distill-style anchored chrome. Hidden at rest; revealed on hover/focus of the wrapped element.</p>
-    <div class="pill-stage">
-      R<sub>μν</sub> − ½R g<sub>μν</sub> + Λg<sub>μν</sub> = 8πG T<sub>μν</sub>
-      <div class="ds-element-pill is-revealed">
-        <button type="button">View TeX</button>
-        <button type="button">Permalink</button>
-        <button type="button">Copy</button>
+    <div class="ds-card">
+      <div class="chip-demo-stage" style="margin-bottom:var(--ds-space-4)">
+        R<sub>μν</sub> − ½R g<sub>μν</sub> + Λg<sub>μν</sub> = 8πG T<sub>μν</sub>
+        <div class="ds-element-pill is-revealed" style="bottom: -14px; left: 50%; transform: translateX(-50%);">
+          <button type="button" class="chip-demo">View TeX</button>
+          <button type="button" class="chip-demo">Permalink</button>
+          <button type="button" class="chip-demo">Copy</button>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="eqn-wrap" style="position: relative;"&gt;
+  &lt;!-- equation --&gt;
+  &lt;div class="ds-element-pill" style="bottom: -14px; left: 50%; transform: translateX(-50%);"&gt;
+    &lt;button type="button"&gt;View TeX&lt;/button&gt;
+    &lt;button type="button"&gt;Permalink&lt;/button&gt;
+    &lt;button type="button"&gt;Copy&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-element-pill</dt>
+            <dd>The pill: white, rounded, shadowed, and positioned absolutely inside the element it
+            belongs to. The wrapper supplies <code>position: relative</code>; the pill sets no position
+            of its own, so the host sets <code>bottom</code>, <code>left</code> and the centring
+            transform. Hidden at rest.</dd>
+            <dt>.is-revealed</dt>
+            <dd>Shows the pill. The host adds it while the wrapped content is hovered or holds focus and
+            removes it after; the demo above keeps it on. The stylesheet switches its fade off under
+            <code>prefers-reduced-motion</code>.</dd>
+            <dt>&lt;button&gt;, &lt;a&gt;</dt>
+            <dd>The actions, as direct children of the pill. The pill gives each a 24px target floor.
+            Their type and colour have no class of their own yet; this page stages them with a
+            docs-only class.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>One main landmark.</strong> Put the page's content in a single
+      <code>&lt;main&gt;</code>. A page with two, or with none, gives a screen-reader user nothing to
+      jump to.</li>
+      <li><strong>Label every aside.</strong> A rail is an <code>&lt;aside&gt;</code> with an
+      <code>aria-label</code> that says what it holds, so it announces as a complementary landmark
+      with a name, not as part of the article.</li>
+      <li><strong>Headings continue the outline inside a card.</strong> A heading inside a container
+      takes the next level down from the section it sits in. Do not skip a level because the content
+      is in a card.</li>
+      <li><strong>Use native disclosure.</strong> Build accordions, margin notes and the contents bar on
+      <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code>: the summary is focusable and
+      toggles with Enter and Space for free. Do not rebuild them from <code>&lt;div&gt;</code>
+      elements and click handlers.</li>
+      <li><strong>Nothing required lives only in a collapsed panel.</strong> Anything legally or
+      practically required, such as a warning or a licence, must also exist in always-visible flow. A
+      closed accordion, a folded margin note and a popover are all places a reader may never
+      open.</li>
+    </ul>
+  </div>
+
+  </div> <!-- /core zone -->
+
+  <h2>Rules</h2>
+
+  <!-- ───────── The column model ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="main-column-vs-sidebar-what-goes-where">Main column vs. sidebar — what goes where</h3>
+    <p class="ds-section-desc">The placement rule decided in the version-display work generalizes:
+    <strong>the main column is what every reader must meet; the rail is what some readers want to browse.</strong>
+    Screen-reader flow, mobile stacking, and citation-arrival readers all traverse the main column —
+    a rail may never be opened.</p>
+
+    <div class="ds-card-grid">
+      <div class="ds-card">
+        <h4>Main reading column</h4>
+        <p>Time-critical, everyone meets it:</p>
+        <ul>
+          <li>Title · authors</li>
+          <li>Version date line ("Submitted … · Revised …")</li>
+          <li>Older-version warning (amber, advisory)</li>
+          <li>Abstract · body</li>
+        </ul>
+      </div>
+      <div class="ds-card">
+        <h4>Rail (aside)</h4>
+        <p>Browsable, opt-in:</p>
+        <ul>
+          <li>Versions accordion (full history)</li>
+          <li>Paper information</li>
+          <li>Related / Labs</li>
+        </ul>
       </div>
     </div>
 
-    <pre><code>&lt;div class="eqn-wrap" style="position: relative;"&gt;
-  &lt;!-- equation --&gt;
-  &lt;div class="ds-element-pill" style="bottom: -14px; left: 50%; transform: translateX(-50%);"&gt;
-    &lt;button&gt;View TeX&lt;/button&gt; &lt;button&gt;Permalink&lt;/button&gt; &lt;button&gt;Copy&lt;/button&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</code></pre>
+    <ul class="notes">
+      <li>The rail is an <code>&lt;aside&gt;</code> with an <code>aria-label</code> — a complementary landmark, not part of the article.</li>
+      <li>Prose in the main column respects the measure: ~65 characters (~640–720px). Rails stay narrow; their content goes single-column.</li>
+      <li>On narrow viewports the rail stacks <em>below</em> the article content it supplements — never between the title and the abstract.</li>
+      <li>No permanent left sidebar: the reader replaced it with a header-anchored TOC dropdown (10+ GitHub issues asked to hide or collapse the old one).</li>
+    </ul>
   </section>
 
-  <!-- ───────── Accessibility ───────── -->
+  <!-- ───────── Accordions: documented on their own page ───────── -->
   <section class="section">
-    <h2 class="section-title" id="accessibility">Accessibility</h2>
+    <h3 class="section-title" id="accordions-and-other-disclosures">Accordions and other disclosures</h3>
+    <p class="ds-section-desc">An accordion is one of the containers this page is about, but it is
+    also one of several ways a page can show less than it has — and choosing between them is
+    the harder question. Accordions, show-more, and popovers are documented together on
+    <a href="progressive-disclosure.html">Progressive disclosure</a>, with the rule for picking one.</p>
+
+    <p>What belongs here is only where they sit: <strong>the rail variant</strong>
+    (<a href="progressive-disclosure.html#rail"><code>.ds-acc-rail</code></a>) is the one built for the sidebar in the column model above. It drops the
+    rules the default carries, because the rail's own hairline dividers already separate its contents,
+    and a boundary drawn twice is a boundary drawn wrong.</p>
+
     <ul class="notes">
-      <li><strong>Landmarks.</strong> One <code>&lt;main&gt;</code>; rails are <code>&lt;aside aria-label="…"&gt;</code>; headings inside containers continue the page's heading outline (no skipped levels because "it is in a card").</li>
-      <li><strong>Native disclosure semantics.</strong> <code>&lt;summary&gt;</code> is focusable and toggles with Enter/Space for free; do not rebuild accordions from divs and click handlers.</li>
-      <li><strong>Closed ≠ hidden from responsibility.</strong> Anything legally or practically required (warnings, licenses in some contexts) must also exist in always-visible flow.</li>
-      <li><strong>Z-layer scale.</strong> Content chrome (pills) &lt; 50 · popovers 50 · header dropdowns 60 · sticky headers 100 · skip link 200; dialogs use the native <code>&lt;dialog&gt;</code> top layer. No ad-hoc z-index values.</li>
+      <li><strong>Never put must-see information only inside a closed accordion.</strong> The
+      older-version warning surfaces in the main column even though the full history lives in the
+      Versions accordion — which is the column rule above, applied.</li>
       <li><strong>Truncation signals continuation.</strong> Prefer disclosure-with-count ("show all 1,247 authors"); where a region must scroll internally, cut the last visible item mid-item (half-item peek). Fade masks are decoration, never the sole signal.</li>
+    </ul>
+  </section>
+
+  <!-- ───────── Motion and layering ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="motion-and-layering">Motion and layering</h3>
+    <ul class="notes">
+      <li><strong>Z-layer scale.</strong> Content chrome (pills, marginalia) &lt; 50 · header dropdowns 60 · sticky headers 100 · popovers 110 · skip link 200; dialogs use the native <code>&lt;dialog&gt;</code> top layer. No ad-hoc z-index values. The scale is kept in <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>.</li>
       <li><strong>Reduced motion.</strong> The pill's fade respects <code>prefers-reduced-motion</code> via its own <code>reduce</code> rule (<code>.ds-element-pill { transition: none; }</code>); accordions have no animation to disable.</li>
     </ul>
   </section>
