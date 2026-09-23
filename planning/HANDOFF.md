@@ -85,6 +85,24 @@ Shamsi's decisions, and what is built (see git log from fdcdc95 onward):
   (buttons.html so far). `--diagnose <page>` lists what a page lacks in the
   reviewed shape. Plan: `planning/DIGEST-PLAN.md`. Discuss with Shamsi before
   the benchmark or the renderer.
+- **Page-shape pass, 2026-09-23:** sub-agents brought every component page
+  to the buttons.html shape (zones, contents bar, cards with generated
+  Relevant code, essentials, rules/spec in the secondary zone, no <style>
+  block). Done and committed: forms, links, modals, progressive-disclosure,
+  spacing, colors, typography, version-display, organizing-content,
+  dark-mode, public/header, public/footer, internal/tables, internal/cards,
+  internal/metadata-panel. Each is waiting on Shamsi's prose pass; the
+  agent-written sentences are listed in each commit's session report (ask
+  her which page, then read the page). Not done: brand, outreach/index,
+  internal/color-tokens (prose pages, lighter brief), using.html (hers),
+  internal/buttons.html (fold into buttons.html, her call on what to keep).
+  Decisions she still owes: .field-required deletion; links "same tab"
+  essential; author-link underlines; header "black bar" wording; info card
+  hairlines vs the card rule and its name; keyboard-operable sortable
+  headers (button in th, tier 2).
+- **Tier 1 follow-up, no decision needed:** a data-theme="light" island on
+  an OS-dark page keeps the dark button shadows (six selectors key on
+  html:not([data-theme="light"])); fix with the mirror kept in step.
 - **Still open:** the ~70 page-local rules in `buttons.html` (state grid,
   forced `.is-hover/.is-focus/.is-pressed` states, token tables) — promote
   or delete each, which needs a DS answer for "how a demo shows a state";
