@@ -45,8 +45,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | A code block on a docs page | `docs/typography.html` *Code blocks* | plain `<pre><code>` plus `<script src="copy-code.js" defer>` once per page — the copy button is added for you; never hand-build one |
 | Version display | `docs/version-display.html` | inline version links + `.ds-alert` warning |
 | Site header / footer | `docs/public/header.html`, `docs/public/footer.html` | `.ds-site-header` (+ `--light`, `--wrap` for a centre slot that folds), `.ds-site-footer` — never hand-build chrome or draw logos from text |
-| Category / topic / state labels | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-tag` (+ `--chrome` / status / `--keep-case`), `.ds-badge`; category names are copied, never restyled |
-| Type badges | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-badge` + `--new/--rep/--wdr/--cross` |
+| Category / topic / state labels | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-tag` (+ `--info` / `--success` / `--warning` / `--error`, `--keep-case`, `--rectangle`); category names are copied, never restyled |
 | Dark mode (status, mechanism, what flips) | `docs/dark-mode.html` | tokens flip automatically; never hand-pick dark values; lock demo pages light; `.ds-theme-toggle` + `theme.js` in the head **undeferred** — both stylesheets mirror their dark block under `[data-theme]` |
 | The blog, an event or campaign mini-site | `docs/outreach/` + DESIGN-POLICIES *Contexts* | the public stylesheet, plus only the differences listed there |
 | Error messages, form help, instructions | `docs/STYLE.md`, then `docs/brand.html` for voice | existing wording — one name per thing, never a synonym |
