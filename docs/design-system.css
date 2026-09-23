@@ -1119,6 +1119,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    last children need none of their own. Written with :where() so a page that
    genuinely needs different type inside a card overrides it without a
    specificity fight. */
+.ds-card + .ds-card { margin-top: var(--ds-space-4); }   /* stacked cards keep a gap */
 .ds-card > :first-child { margin-block-start: 0; }
 .ds-card > :last-child  { margin-block-end: 0; }
 :where(.ds-card) h3 { font-size: 1rem; margin: 0 0 var(--ds-space-tight); }
@@ -2917,13 +2918,17 @@ html:has(.ds-toc-bar--sticky) { scroll-padding-top: 5rem; }
 
 /* ── 1. Announcement band ── */
 .ds-announcement {
+  /* Colour comes through these three, so a register is three lines. */
+  --ds-announcement-bg:   var(--ds-accent-wash);
+  --ds-announcement-fg:   var(--ds-text);
+  --ds-announcement-link: var(--ds-link);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--ds-gap-glyph);
   padding: 6px 16px;
-  background: var(--ds-accent-wash);
-  color: var(--ds-text);
+  background: var(--ds-announcement-bg);
+  color: var(--ds-announcement-fg);
   font-family: var(--ds-font-sans);
   font-size: 0.8125rem; /* 13px */
   font-weight: 500;
@@ -2932,12 +2937,26 @@ html:has(.ds-toc-bar--sticky) { scroll-padding-top: 5rem; }
 .ds-announcement-glyph { width: 18px; height: 18px; flex-shrink: 0; }
 .ds-announcement-text { font-weight: 600; }
 .ds-announcement-link {
-  color: var(--ds-link);
+  color: var(--ds-announcement-link);
   text-decoration: underline;
   text-underline-offset: 2px;
   font-weight: 600;
 }
-.ds-announcement-link:hover { color: var(--ds-link-hover); }
+.ds-announcement-link:hover { text-decoration-thickness: 2px; }
+/* Registers, named for the job. Maintenance sits on the header's own dark
+   ground in both themes; event holds the smileybones yellow in both, with
+   fixed brown text, the way Access Lime holds its value. The link on yellow
+   is Link Hover at rest: Link Blue is 4.3:1 there. */
+.ds-announcement--maintenance {
+  --ds-announcement-bg:   var(--ds-chrome);
+  --ds-announcement-fg:   var(--ds-card-grey);
+  --ds-announcement-link: var(--ds-link-blue-dark);
+}
+.ds-announcement--event {
+  --ds-announcement-bg:   var(--ds-smileybones-yellow);
+  --ds-announcement-fg:   var(--ds-repository-brown);
+  --ds-announcement-link: var(--ds-link-blue-hover);
+}
 /* Position only — the control itself is .ds-close. */
 .ds-announcement > .ds-close {
   position: absolute;
