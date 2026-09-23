@@ -6,114 +6,11 @@
   <title>Tables (internal tools) — arXiv Design System</title>
   <link rel="stylesheet" href="../fonts.css">
   <link rel="stylesheet" href="../design-system.css">
-<script src="../theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
   <link rel="stylesheet" href="internal-tools.css">
-  <style>
-    /* ── Page chrome (reference doc only, not part of the component system) ── */
-    *, *::before, *::after { box-sizing: border-box; }
-
-    body {
-      font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
-      background: var(--ds-canvas);
-      color: var(--ds-text);
-      margin: 0;
-      padding: 0;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .page {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 48px 28px 80px;
-    }
-
-    /* Header */
-    .page-header {
-      margin-bottom: 52px;
-      padding-bottom: 20px;
-      border-bottom: 3px solid #c4d82e;
-    }
-    .page-header h1 {
-      font-size: 22px;
-      font-weight: 700;
-      margin: 0 0 6px;
-    }
-    .page-header p {
-      margin: 0;
-      color: var(--ds-text-muted);
-      font-size: 13px;
-      max-width: 680px;
-    }
-
-    /* Sections */
-    .section { margin-bottom: 60px; }
-    .section-title {
-      font-size: 16px;
-      font-weight: 700;
-      margin: 0 0 var(--ds-space-1);
-      color: var(--ds-text);
-    }
-
-    /* Demo wrapper */
-    .demo {
-      background: var(--ds-surface);
-      border: 1px solid var(--ds-border);
-      border-radius: 8px;
-      padding: 24px;
-      margin-bottom: var(--ds-space-4);
-    }
-    .demo-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--ds-text-muted);
-      margin: 0 0 var(--ds-space-3);
-    }
-
-    /* Callout */
-    /* Docs chrome, deliberately page-local: DESIGN-POLICIES keeps docs
-       furniture out of the design system. One definition, copied verbatim —
-       if you change it, change it everywhere (this text is the marker). */
-      margin-top: var(--ds-space-4); padding: 12px 16px;
-      background: var(--ds-surface); border: 1px solid var(--ds-border);
-      border-left: 3px solid var(--ds-accent-strong); border-radius: 0 6px 6px 0; }
-
-    code {
-      font-family: "IBM Plex Mono", ui-monospace, monospace;
-      font-size: 12px;
-      background: var(--ds-surface-muted);
-      padding: 2px 6px;
-      border-radius: 3px;
-      white-space: nowrap;
-    }
-    .usage-list {
-      margin: 0;
-      padding-left: 20px;
-      line-height: 2;
-    }
-
-    /* Filter toolbar above table in demo */
-    .demo-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      margin-bottom: 10px;
-    }
-  
-    /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
-       <details>-based: works without JS; the small script at the end of the
-       page only adds close-on-outside-click and Esc. ── */
-  
-    /* Inline links in page copy. Bare <a> previously fell back to the
-       browser default, which is unreadable on the dark canvas. Nav links
-       carry their own, more specific rules. */
-    a { color: var(--ds-link); }
-    a:hover { color: var(--ds-link-hover); }
-</style>
+  <link rel="stylesheet" href="../docs.css">
+<script src="../theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
 </head>
-<body>
+<body class="ds-page">
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
   <a class="ds-site-header-logo" href="../../index.html">arXiv Design System</a>
   <details class="ds-site-header-dropdown">
@@ -170,152 +67,246 @@
   <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
 
-<div class="page">
+<div class="ds-container ds-zone-secondary">
 
-  <div class="page-header">
+  <header class="ds-page-header">
     <h1>Tables</h1>
-    <p>
-      Base data table, sortable column headers, and filter toolbar patterns
-      used across the admin console and arXiv Check.
-    </p>
+    <p>Base data table, sortable column headers, and filter toolbar patterns used across the admin console and arXiv Check.</p>
+  </header>
+
+
+  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#the-base-table">The base table</a></li>
+            <li><a href="#sortable-column-headers">Sortable column headers</a></li>
+            <li><a href="#filter-toolbar">Filter toolbar</a></li>
+            <li><a href="#bulk-actions-and-row-selection">Bulk actions and row selection</a></li>
+            <li><a href="#sort-interaction">Sort interaction</a></li>
+            <li><a href="#bulk-action-bar-layout">Bulk-action bar layout</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
   </div>
 
-  <!-- ── Section: Base Table ───────────────────────────────── -->
-  <div class="section">
+  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <div class="ds-full ds-zone-primary">
+
+  <!-- ───────── The base table ───────── -->
+  <section class="section">
     <h2 class="section-title" id="the-base-table">The base table</h2>
-    <p class="ds-section-desc">
-      The <code>.ds-table</code> class provides warm-tinted header row,
-      subtle row dividers, and hover highlighting. Condensed uppercase
-      headers use IBM Plex Sans Condensed.
-    </p>
-
-    <div class="demo">
-      <p class="demo-label">Default table</p>
-      <table class="ds-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Title</th>
-            <th>Submitter</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>2026-03-24</td>
-            <td>Asymptotic Expansions of Schr&ouml;dinger Operators</td>
-            <td>Esther McGill-Henry</td>
-            <td><span class="ds-tag ds-tag--rectangle">New</span></td>
-          </tr>
-          <tr>
-            <td>2025-07-09</td>
-            <td>Symmetry Breaking in Non-Abelian Gauge Theories</td>
-            <td>Esther McGill-Henry</td>
-            <td><span class="ds-tag ds-tag--rectangle">Rep</span></td>
-          </tr>
-          <tr>
-            <td>2024-07-08</td>
-            <td>Spectral Properties of Discrete Schr&ouml;dinger Operators</td>
-            <td>Esther McGill-Henry</td>
-            <td><span class="ds-tag ds-tag--rectangle">Wdr</span></td>
-          </tr>
-        </tbody>
-      </table>
+    <p class="ds-section-desc">The <code>.ds-table</code> class provides warm-tinted header row, subtle row dividers, and hover highlighting. Condensed uppercase headers use IBM Plex Sans Condensed.</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">The Type column uses rectangular tags at the default level, documented on <a href="../tags.html#rectangular-labels">Tags</a>.</p>
+      </details>
+      <div class="table-scroll" role="region" aria-label="Submissions" tabindex="0">
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Title</th>
+              <th scope="col">Submitter</th>
+              <th scope="col">Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-03-24</td>
+              <td>Asymptotic Expansions of Schrödinger Operators</td>
+              <td>Esther McGill-Henry</td>
+              <td><span class="ds-tag ds-tag--rectangle">New</span></td>
+            </tr>
+            <tr>
+              <td>2025-07-09</td>
+              <td>Symmetry Breaking in Non-Abelian Gauge Theories</td>
+              <td>Esther McGill-Henry</td>
+              <td><span class="ds-tag ds-tag--rectangle">Rep</span></td>
+            </tr>
+            <tr>
+              <td>2024-07-08</td>
+              <td>Spectral Properties of Discrete Schrödinger Operators</td>
+              <td>Esther McGill-Henry</td>
+              <td><span class="ds-tag ds-tag--rectangle">Wdr</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="table-scroll" role="region" aria-label="Submissions" tabindex="0"&gt;
+  &lt;table class="ds-table"&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th scope="col"&gt;Date&lt;/th&gt;
+        &lt;th scope="col"&gt;Title&lt;/th&gt;
+        &lt;th scope="col"&gt;Submitter&lt;/th&gt;
+        &lt;th scope="col"&gt;Type&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;2026-03-24&lt;/td&gt;
+        &lt;td&gt;Asymptotic Expansions of Schrödinger Operators&lt;/td&gt;
+        &lt;td&gt;Esther McGill-Henry&lt;/td&gt;
+        &lt;td&gt;&lt;span class="ds-tag ds-tag--rectangle"&gt;New&lt;/span&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;2025-07-09&lt;/td&gt;
+        &lt;td&gt;Symmetry Breaking in Non-Abelian Gauge Theories&lt;/td&gt;
+        &lt;td&gt;Esther McGill-Henry&lt;/td&gt;
+        &lt;td&gt;&lt;span class="ds-tag ds-tag--rectangle"&gt;Rep&lt;/span&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;!-- … one row per record --&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-table</dt>
+            <dd>The whole table. Apply it to the <code>&lt;table&gt;</code> element: it gives the
+            header row its tint, the rows their dividers, and each row its hover highlight.</dd>
+            <dt>style="table-layout: fixed"</dt>
+            <dd>Add it inline on the <code>&lt;table&gt;</code> when fixed column widths are needed.
+            The table defaults to auto layout.</dd>
+            <dt>.ds-table-footer</dt>
+            <dd>A <code>&lt;div&gt;</code> below the table for row counts or pagination.</dd>
+            <dt>.ds-tag--rectangle</dt>
+            <dd>The Type column: a rectangular tag at the default level, one per row, documented on
+            <a href="../tags.html#rectangular-labels">Tags</a>. No colour is mapped to New, Rep or Wdr.</dd>
+            <dt>scope="col"</dt>
+            <dd>Required on every <code>&lt;th&gt;</code> in the header row, so a screen reader
+            reads the column name with each cell.</dd>
+            <dt>.table-scroll</dt>
+            <dd>The wrapper. A table wider than the viewport scrolls inside it, so the page never
+            scrolls sideways. It takes <code>role="region"</code>, an <code>aria-label</code> that
+            names the table, and <code>tabindex="0"</code> so a keyboard user can reach it to
+            scroll.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
+  </section>
 
-    <p class="ds-panel-label">Submission type badges</p>
-    <p>The <code>Type</code> column above uses rectangular tags, <code>.ds-tag--rectangle</code>,
-    documented on <a href="../tags.html#rectangular-labels">Tags</a>.</p>
-
-    <div class="ds-note">
-      <h3 class="ds-note-label">Usage</h3>
-      <p>Apply <code>.ds-table</code> to the <code>&lt;table&gt;</code> element.
-      Add <code>table-layout: fixed</code> inline when fixed column widths are needed.
-      Use <code>.ds-table-footer</code> on a <code>&lt;div&gt;</code> below the table for row
-      counts or pagination.</p>
-    </div>
-  </div>
-
-  <!-- ── Section: Sortable Headers ─────────────────────────── -->
-  <div class="section">
+  <!-- ───────── Sortable column headers ───────── -->
+  <section class="section">
     <h2 class="section-title" id="sortable-column-headers">Sortable column headers</h2>
-    <p class="ds-section-desc">
-      Add <code>.sortable</code> to a <code>&lt;th&gt;</code> to make it clickable.
-      Place a <code>&lt;span class="sort-arrow"&gt;</code> inside for the direction indicator.
-      Apply <code>.sort-asc</code> or <code>.sort-desc</code> to the <code>&lt;th&gt;</code>
-      to indicate current sort state.
-    </p>
-
-    <div class="demo">
-      <p class="demo-label">Sortable headers — click to sort</p>
-      <table class="ds-table" id="demo-sort-table">
-        <thead>
-          <tr>
-            <th class="sortable sort-desc" data-sort="date" style="width:120px;">Date <span class="sort-arrow">&#8595;</span></th>
-            <th>Title</th>
-            <th class="sortable" data-sort="type" style="width:80px;">Type <span class="sort-arrow">&#8661;</span></th>
-            <th class="sortable" data-sort="status" style="width:100px;">Status <span class="sort-arrow">&#8661;</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr data-date="2026-03-24" data-type="new" data-status="onhold">
-            <td>2026-03-24</td>
-            <td>Asymptotic Expansions</td>
-            <td><span class="ds-tag ds-tag--rectangle">New</span></td>
-            <td>On Hold</td>
-          </tr>
-          <tr data-date="2025-07-09" data-type="rep" data-status="removed">
-            <td>2025-07-09</td>
-            <td>Symmetry Breaking</td>
-            <td><span class="ds-tag ds-tag--rectangle">Rep</span></td>
-            <td>Removed</td>
-          </tr>
-          <tr data-date="2024-07-08" data-type="new" data-status="removed">
-            <td>2024-07-08</td>
-            <td>Spectral Properties</td>
-            <td><span class="ds-tag ds-tag--rectangle">New</span></td>
-            <td>Removed</td>
-          </tr>
-          <tr data-date="2023-04-18" data-type="wdr" data-status="removed">
-            <td>2023-04-18</td>
-            <td>Geometric Phases</td>
-            <td><span class="ds-tag ds-tag--rectangle">Wdr</span></td>
-            <td>Removed</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="ds-table-footer">1&ndash;4 of 4</div>
+    <p class="ds-section-desc">Add <code>.sortable</code> to a <code>&lt;th&gt;</code> to make it clickable. Place a <code>&lt;span class="sort-arrow"&gt;</code> inside for the direction indicator. Apply <code>.sort-asc</code> or <code>.sort-desc</code> to the <code>&lt;th&gt;</code> to indicate current sort state.</p>
+    <p class="ds-panel-label">Sortable headers, click to sort</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Sort logic is application-specific; the CSS only handles visual states.</p>
+      </details>
+      <div class="table-scroll" role="region" aria-label="Submissions, sortable" tabindex="0">
+        <table class="ds-table" id="demo-sort-table">
+          <thead>
+            <tr>
+              <th scope="col" class="sortable sort-desc" aria-sort="descending" data-sort="date">Date <span class="sort-arrow">↓</span></th>
+              <th scope="col">Title</th>
+              <th scope="col" class="sortable" data-sort="type">Type <span class="sort-arrow">⇅</span></th>
+              <th scope="col" class="sortable" data-sort="status">Status <span class="sort-arrow">⇅</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-date="2026-03-24" data-type="new" data-status="onhold">
+              <td>2026-03-24</td>
+              <td>Asymptotic Expansions</td>
+              <td><span class="ds-tag ds-tag--rectangle">New</span></td>
+              <td>On Hold</td>
+            </tr>
+            <tr data-date="2025-07-09" data-type="rep" data-status="removed">
+              <td>2025-07-09</td>
+              <td>Symmetry Breaking</td>
+              <td><span class="ds-tag ds-tag--rectangle">Rep</span></td>
+              <td>Removed</td>
+            </tr>
+            <tr data-date="2024-07-08" data-type="new" data-status="removed">
+              <td>2024-07-08</td>
+              <td>Spectral Properties</td>
+              <td><span class="ds-tag ds-tag--rectangle">New</span></td>
+              <td>Removed</td>
+            </tr>
+            <tr data-date="2023-04-18" data-type="wdr" data-status="removed">
+              <td>2023-04-18</td>
+              <td>Geometric Phases</td>
+              <td><span class="ds-tag ds-tag--rectangle">Wdr</span></td>
+              <td>Removed</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="ds-table-footer">1–4 of 4</div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;table class="ds-table"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th scope="col" class="sortable sort-desc" aria-sort="descending"&gt;Date &lt;span class="sort-arrow"&gt;↓&lt;/span&gt;&lt;/th&gt;
+      &lt;th scope="col"&gt;Title&lt;/th&gt;
+      &lt;th scope="col" class="sortable"&gt;Type &lt;span class="sort-arrow"&gt;⇅&lt;/span&gt;&lt;/th&gt;
+      &lt;th scope="col" class="sortable"&gt;Status &lt;span class="sort-arrow"&gt;⇅&lt;/span&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2026-03-24&lt;/td&gt;
+      &lt;td&gt;Asymptotic Expansions&lt;/td&gt;
+      &lt;td&gt;&lt;span class="ds-tag ds-tag--rectangle"&gt;New&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;On Hold&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2025-07-09&lt;/td&gt;
+      &lt;td&gt;Symmetry Breaking&lt;/td&gt;
+      &lt;td&gt;&lt;span class="ds-tag ds-tag--rectangle"&gt;Rep&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;Removed&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;!-- … one row per record --&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="ds-table-footer"&gt;1–4 of 4&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.sortable</dt>
+            <dd>On a <code>&lt;th&gt;</code>. Makes the header clickable: pointer cursor, and the
+            label darkens on hover.</dd>
+            <dt>.sort-arrow</dt>
+            <dd>The direction indicator, a <code>&lt;span&gt;</code> inside the header. Unsorted it
+            shows ⇅ in <code>--ds-border-strong</code> (3.12:1 on the header background).</dd>
+            <dt>.sort-asc</dt>
+            <dd>On the <code>&lt;th&gt;</code> of the sorted column. The arrow shows ↑ in
+            <code>--ds-text</code>.</dd>
+            <dt>.sort-desc</dt>
+            <dd>On the <code>&lt;th&gt;</code> of the sorted column. The arrow shows ↓ in
+            <code>--ds-text</code>.</dd>
+            <dt>aria-sort="ascending", aria-sort="descending"</dt>
+            <dd>Required on the sorted <code>&lt;th&gt;</code>, matching the class. Remove it from the column that is no
+            longer sorted. The arrow is a glyph, so this is what tells a screen reader which
+            column orders the table.</dd>
+            <dt>.ds-table-footer</dt>
+            <dd>The row count under the table.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
+  </section>
 
-    <div class="ds-note">
-      <h3 class="ds-note-label">Sort indicator states</h3>
-      <p></p><ul class="usage-list">
-        <li><strong>Unsorted</strong> &mdash; arrow shows &#8661; in <code>--ds-border-strong</code> <code>#8b8680</code> (3.12:1 on the header background)</li>
-        <li><strong>Ascending</strong> &mdash; <code>.sort-asc</code> on <code>&lt;th&gt;</code>, arrow shows &#8593; in <code>#1c1a17</code></li>
-        <li><strong>Descending</strong> &mdash; <code>.sort-desc</code> on <code>&lt;th&gt;</code>, arrow shows &#8595; in <code>#1c1a17</code></li>
-      </ul>
-    </div>
-    <div class="ds-note">
-      <h3 class="ds-note-label">Interaction</h3>
-      <p>Clicking a sortable header toggles through: descending &rarr; ascending &rarr; descending.
-      Clicking a different column resets the previous column to unsorted.
-      Sort logic is application-specific; the CSS only handles visual states.</p>
-    </div>
-  </div>
-
-  <!-- ── Section: Filter Toolbar ───────────────────────────── -->
-  <div class="section">
+  <!-- ───────── Filter toolbar ───────── -->
+  <section class="section">
     <h2 class="section-title" id="filter-toolbar">Filter toolbar</h2>
-    <p class="ds-section-desc">
-      The <code>.ds-filter</code> component provides a minimal underline-only
-      <code>&lt;select&gt;</code> for filtering data. Typically placed in a toolbar
-      row above or alongside a table. The custom chevron replaces the native
-      dropdown arrow for visual consistency.
-    </p>
+    <p class="ds-section-desc">The <code>.ds-filter</code> component provides a minimal underline-only <code>&lt;select&gt;</code> for filtering data. Typically placed in a toolbar row above or alongside a table. The custom chevron replaces the native dropdown arrow for visual consistency.</p>
 
-    <div class="demo">
-      <p class="demo-label">Filter select &mdash; standalone</p>
-      <div style="display:flex;gap:32px;align-items:center;">
+    <p class="ds-panel-label">Filter select, standalone</p>
+    <div class="ds-card">
+      <div class="ds-btn-group">
         <div class="ds-filter">
           <label for="demo-filter-1">Show:</label>
           <select id="demo-filter-1">
@@ -333,11 +324,36 @@
           </select>
         </div>
       </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-filter"&gt;
+  &lt;label for="filter-status"&gt;Show:&lt;/label&gt;
+  &lt;select id="filter-status"&gt;
+    &lt;option&gt;All&lt;/option&gt;
+    &lt;option selected&gt;Removed&lt;/option&gt;
+    &lt;option&gt;On Hold&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-filter</dt>
+            <dd>The wrapper. Holds one <code>&lt;label&gt;</code> and one
+            <code>&lt;select&gt;</code>. The select gets an underline-only border, the custom
+            chevron, and a focus ring in <code>--ds-focus-ring</code>. Always include an
+            “All” option as the inclusive default.</dd>
+            <dt>&lt;label for&gt;, &lt;select id&gt;</dt>
+            <dd>Required. The visible label is the select’s name: the <code>for</code> attribute
+            points at the select’s <code>id</code>.</dd>
+            <dt>.ds-btn-group</dt>
+            <dd>The container for two or more filters side by side, the same one any set of
+            related controls takes.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
 
-    <div class="demo">
-      <p class="demo-label">Filter above a table</p>
-      <div class="demo-toolbar">
+    <p class="ds-panel-label">Filter above a table</p>
+    <div class="ds-card">
+      <div class="ds-btn-group ds-btn-group--end" style="margin-bottom: var(--ds-space-3)">
         <div class="ds-filter">
           <label for="demo-filter-3">Show:</label>
           <select id="demo-filter-3">
@@ -347,114 +363,267 @@
           </select>
         </div>
       </div>
-      <table class="ds-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Alice Chen</td>
-            <td>cs.AI</td>
-            <td>Active</td>
-          </tr>
-          <tr>
-            <td>Bob Singh</td>
-            <td>math.AP</td>
-            <td>Archived</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-scroll" role="region" aria-label="Users" tabindex="0">
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Category</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Alice Chen</td>
+              <td>cs.AI</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>Bob Singh</td>
+              <td>math.AP</td>
+              <td>Archived</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-btn-group ds-btn-group--end" style="margin-bottom: var(--ds-space-3)"&gt;
+  &lt;div class="ds-filter"&gt;
+    &lt;label for="filter-users"&gt;Show:&lt;/label&gt;
+    &lt;select id="filter-users"&gt;
+      &lt;option selected&gt;All&lt;/option&gt;
+      &lt;option&gt;Active&lt;/option&gt;
+      &lt;option&gt;Archived&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="table-scroll" role="region" aria-label="Users" tabindex="0"&gt;
+  &lt;table class="ds-table"&gt;
+    …
+  &lt;/table&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-btn-group--end</dt>
+            <dd>Pushes the filter to the trailing edge of the toolbar row, where filters sit.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
+  </section>
 
-    <div class="ds-note">
-      <h3 class="ds-note-label">Usage</h3>
-      <p>Wrap a <code>&lt;label&gt;</code> and <code>&lt;select&gt;</code> in
-      <code>&lt;div class="ds-filter"&gt;</code>. The select gets an underline-only
-      border, custom chevron via background-image, and a focus ring matching
-      <code>var(--ds-focus-ring)</code>. Place the filter in a flex toolbar above
-      or alongside the table.</p>
-    </div>
-    <div class="ds-note">
-      <h3 class="ds-note-label">Accessibility</h3>
-      <p>Always associate the <code>&lt;label&gt;</code> with the
-      <code>&lt;select&gt;</code> via <code>for</code>/<code>id</code>. Add
-      <code>aria-label</code> on the select if the visible label text alone is ambiguous.</p>
-    </div>
-  </div>
-
-  <section>
+  <!-- ───────── Bulk actions and row selection ───────── -->
+  <section class="section">
     <h2 class="section-title" id="bulk-actions-and-row-selection">Bulk actions and row selection</h2>
-    <p style="font-size:13px; color: var(--ds-text-muted); max-width:680px;">Rules for tables whose rows can be
-    selected and acted on together &mdash; moderation queues, ownership lists.</p>
+    <p class="ds-section-desc">Rules for tables whose rows can be selected and acted on together — moderation queues, ownership lists.</p>
 
-    <div class="demo">
-      <p class="demo-label">Selection active — actions left, filter right, selected rows tinted</p>
-      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
-        <button class="ds-btn ds-btn-primary">Approve</button>
-        <button class="ds-btn ds-btn-secondary">Hold</button>
-        <span style="width:10px"></span>
-        <button class="ds-btn ds-btn-destructive">Remove…</button>
-        <span style="font-size:13px; color: var(--ds-text-muted);">2 selected · <a href="#" style="color: var(--ds-link);">Clear selection</a></span>
-        <span style="flex:1"></span>
+    <p class="ds-panel-label">Selection active — actions left, filter right, selected rows tinted</p>
+    <div class="ds-card">
+      <div class="ds-btn-group ds-btn-group--split" style="margin-bottom: var(--ds-space-3)">
+        <div class="ds-btn-group">
+          <button class="ds-btn ds-btn-primary" type="button">Approve</button>
+          <button class="ds-btn ds-btn-secondary" type="button">Hold</button>
+          <button class="ds-btn ds-btn-destructive" type="button" style="margin-inline-start: var(--ds-space-tight)">Remove…</button>
+          <span class="ds-bulk-count" role="status">2 selected · <a class="ds-link" href="#">Clear selection</a></span>
+        </div>
         <div class="ds-filter">
           <label for="bulk-filter-demo">Show</label>
           <select id="bulk-filter-demo"><option selected>All</option><option>Authored</option><option>Owned</option></select>
         </div>
       </div>
-      <table class="ds-table">
-        <thead><tr><th style="width:36px"></th><th>Date</th><th>Title</th><th>Type</th></tr></thead>
-        <tbody>
-          <tr class="is-selected"><td><input type="checkbox" checked aria-label="Select row: Asymptotic Expansions"></td><td>2026-03-24</td><td>Asymptotic Expansions of Schr&ouml;dinger Operators</td><td><span class="ds-tag ds-tag--rectangle">New</span></td></tr>
-          <tr><td><input type="checkbox" aria-label="Select row: Symmetry Breaking"></td><td>2025-07-09</td><td>Symmetry Breaking in Non-Abelian Gauge Theories</td><td><span class="ds-tag ds-tag--rectangle">Rep</span></td></tr>
-          <tr class="is-selected"><td><input type="checkbox" checked aria-label="Select row: Spectral Properties"></td><td>2024-07-08</td><td>Spectral Properties of Discrete Schr&ouml;dinger Operators</td><td><span class="ds-tag ds-tag--rectangle">Wdr</span></td></tr>
-        </tbody>
-      </table>
+      <div class="table-scroll" role="region" aria-label="Owned papers" tabindex="0">
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th scope="col"><span class="is-sr-only">Select</span></th>
+              <th scope="col">Date</th>
+              <th scope="col">Title</th>
+              <th scope="col">Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="is-selected">
+              <td><input type="checkbox" id="sel-1" checked><label for="sel-1" class="is-sr-only">Select Asymptotic Expansions of Schrödinger Operators</label></td>
+              <td>2026-03-24</td>
+              <td>Asymptotic Expansions of Schrödinger Operators</td>
+              <td><span class="ds-tag ds-tag--rectangle">New</span></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" id="sel-2"><label for="sel-2" class="is-sr-only">Select Symmetry Breaking in Non-Abelian Gauge Theories</label></td>
+              <td>2025-07-09</td>
+              <td>Symmetry Breaking in Non-Abelian Gauge Theories</td>
+              <td><span class="ds-tag ds-tag--rectangle">Rep</span></td>
+            </tr>
+            <tr class="is-selected">
+              <td><input type="checkbox" id="sel-3" checked><label for="sel-3" class="is-sr-only">Select Spectral Properties of Discrete Schrödinger Operators</label></td>
+              <td>2024-07-08</td>
+              <td>Spectral Properties of Discrete Schrödinger Operators</td>
+              <td><span class="ds-tag ds-tag--rectangle">Wdr</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-btn-group ds-btn-group--split" style="margin-bottom: var(--ds-space-3)"&gt;
+  &lt;div class="ds-btn-group"&gt;
+    &lt;button class="ds-btn ds-btn-primary" type="button"&gt;Approve&lt;/button&gt;
+    &lt;button class="ds-btn ds-btn-secondary" type="button"&gt;Hold&lt;/button&gt;
+    &lt;button class="ds-btn ds-btn-destructive" type="button" style="margin-inline-start: var(--ds-space-tight)"&gt;Remove…&lt;/button&gt;
+    &lt;span class="ds-bulk-count" role="status"&gt;2 selected · &lt;a class="ds-link" href="#"&gt;Clear selection&lt;/a&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="ds-filter"&gt;
+    &lt;label for="filter-owned"&gt;Show&lt;/label&gt;
+    &lt;select id="filter-owned"&gt;…&lt;/select&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="table-scroll" role="region" aria-label="Owned papers" tabindex="0"&gt;
+  &lt;table class="ds-table"&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th scope="col"&gt;&lt;span class="is-sr-only"&gt;Select&lt;/span&gt;&lt;/th&gt;
+        &lt;th scope="col"&gt;Date&lt;/th&gt;
+        &lt;th scope="col"&gt;Title&lt;/th&gt;
+        &lt;th scope="col"&gt;Type&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr class="is-selected"&gt;
+        &lt;td&gt;
+          &lt;input type="checkbox" id="sel-1" checked&gt;
+          &lt;label for="sel-1" class="is-sr-only"&gt;Select Asymptotic Expansions of Schrödinger Operators&lt;/label&gt;
+        &lt;/td&gt;
+        &lt;td&gt;2026-03-24&lt;/td&gt;
+        &lt;td&gt;Asymptotic Expansions of Schrödinger Operators&lt;/td&gt;
+        &lt;td&gt;&lt;span class="ds-tag ds-tag--rectangle"&gt;New&lt;/span&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;input type="checkbox" id="sel-2"&gt;
+          &lt;label for="sel-2" class="is-sr-only"&gt;Select Symmetry Breaking in Non-Abelian Gauge Theories&lt;/label&gt;
+        &lt;/td&gt;
+        &lt;td&gt;2025-07-09&lt;/td&gt;
+        &lt;td&gt;Symmetry Breaking in Non-Abelian Gauge Theories&lt;/td&gt;
+        &lt;td&gt;&lt;span class="ds-tag ds-tag--rectangle"&gt;Rep&lt;/span&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;!-- … one row per record --&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-btn-group--split</dt>
+            <dd>The bulk-action bar: one group at each end. The action buttons and their
+            descriptive text sit at the start, the filter at the end. The bar has no fill of its
+            own.</dd>
+            <dt>.ds-btn-primary, .ds-btn-secondary, .ds-btn-destructive</dt>
+            <dd>The actions, in the tiers documented on <a href="../buttons.html">Buttons</a>. The
+            destructive action comes last and stands apart from the constructive ones.</dd>
+            <dt>.ds-bulk-count</dt>
+            <dd>The selection count and the “Clear selection” link, beside the actions. Takes
+            <code>role="status"</code> so a change in the count is announced.</dd>
+            <dt>.is-selected</dt>
+            <dd>On the <code>&lt;tr&gt;</code>. Tints the row with <code>--ds-accent-wash</code>;
+            the tint aids scanability of the selection set. Selection state must not rely on the
+            tint alone: the row’s checkbox carries the state (WCAG 1.4.1).</dd>
+            <dt>&lt;input type="checkbox"&gt;</dt>
+            <dd>The first cell of every row. A direct child of the <code>&lt;td&gt;</code>, which
+            gives it a 24px target and this surface’s accent. Each one has a
+            <code>&lt;label class="is-sr-only"&gt;</code> that names its row.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
 
-    <div class="demo">
-      <p class="demo-label">Nothing selected — actions disable, they never disappear</p>
-      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-        <button class="ds-btn ds-btn-primary" disabled>Approve</button>
-        <button class="ds-btn ds-btn-secondary" disabled>Hold</button>
-        <span style="width:10px"></span>
-        <button class="ds-btn ds-btn-destructive" disabled>Remove…</button>
-        <span style="font-size:13px; color: var(--ds-text-disabled);">0 selected</span>
-        <span style="flex:1"></span>
+    <p class="ds-panel-label">Nothing selected — actions disable, they never disappear</p>
+    <div class="ds-card">
+      <div class="ds-btn-group ds-btn-group--split">
+        <div class="ds-btn-group">
+          <button class="ds-btn ds-btn-primary" type="button" disabled>Approve</button>
+          <button class="ds-btn ds-btn-secondary" type="button" disabled>Hold</button>
+          <button class="ds-btn ds-btn-destructive" type="button" disabled style="margin-inline-start: var(--ds-space-tight)">Remove…</button>
+          <span class="ds-bulk-count" role="status">0 selected</span>
+        </div>
         <div class="ds-filter">
           <label for="bulk-filter-demo2">Show</label>
           <select id="bulk-filter-demo2"><option selected>All</option><option>Authored</option><option>Owned</option></select>
         </div>
       </div>
-    </div>
-
-    <div class="ds-note">
-      <h3 class="ds-note-label">Bulk-action bar layout</h3>
-      <p>action buttons and their descriptive text (selection
-      count, "Clear selection") sit on the <strong>left</strong>; filter dropdowns sit on the
-      <strong>right</strong>. No background tint behind the action buttons — the bar itself stays
-      neutral. Destructive actions (Remove, Delete) are visually separated from constructive ones and
-      always require a confirmation step. Validated in the admin user-page mockup ("Owned Papers"
-      toolbar).</p>
-    </div>
-    <div class="ds-note">
-      <h3 class="ds-note-label">Selected rows</h3>
-      <p>add <code>.is-selected</code> to the <code>&lt;tr&gt;</code> (the lime tint <code>var(--ds-accent-wash)</code>, from the stylesheet) — the tint aids scanability of the selection set (adopted 2026-07-29).
-      Selection state must not rely on the tint alone: the row's checkbox carries the state
-      (WCAG 1.4.1).</p>
-    </div>
-    <div class="ds-note">
-      <h3 class="ds-note-label">Actions disable, they never disappear</h3>
-      <p>when nothing is selected, bulk-action
-      buttons render disabled — not removed. Controls that appear and vanish cost users their bearings.
-      This rule is universal (it also appears in the agent guide's hard rules).</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-btn-group ds-btn-group--split"&gt;
+  &lt;div class="ds-btn-group"&gt;
+    &lt;button class="ds-btn ds-btn-primary" type="button" disabled&gt;Approve&lt;/button&gt;
+    &lt;button class="ds-btn ds-btn-secondary" type="button" disabled&gt;Hold&lt;/button&gt;
+    &lt;button class="ds-btn ds-btn-destructive" type="button" disabled style="margin-inline-start: var(--ds-space-tight)"&gt;Remove…&lt;/button&gt;
+    &lt;span class="ds-bulk-count" role="status"&gt;0 selected&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="ds-filter"&gt;
+    &lt;label for="filter-owned"&gt;Show&lt;/label&gt;
+    &lt;select id="filter-owned"&gt;…&lt;/select&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>&lt;button disabled&gt;</dt>
+            <dd>The <code>disabled</code> attribute on every action button while nothing is selected. The buttons stay in place; the
+            filter stays live, because it does not depend on a selection.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
   </section>
 
-</div><!-- /.page -->
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Mark the header cells.</strong> Put <code>scope="col"</code> on every
+      <code>&lt;th&gt;</code> in the header row, so a screen reader reads the column name with
+      each cell instead of a bare value.</li>
+      <li><strong>Give the table a name.</strong> A <code>&lt;caption&gt;</code>, or an
+      <code>aria-label</code> on the scrolling region around the table, as the examples on this
+      page do. Without one, a screen reader user lands in “table, 4 columns” with no idea
+      which table it is.</li>
+      <li><strong>Say which column is sorted.</strong> Put <code>aria-sort="ascending"</code> or
+      <code>aria-sort="descending"</code> on the sorted <code>&lt;th&gt;</code> and remove it from
+      the others when the sort changes. The arrow is a glyph, and the class is invisible to a
+      screen reader.</li>
+      <li><strong>Label every row checkbox.</strong> Each checkbox gets a
+      <code>&lt;label class="is-sr-only"&gt;</code> that names its row, such as “Select
+      Asymptotic Expansions”. Without it the choice reads as “checkbox, not checked” and
+      nothing more. Prefer the label to <code>aria-label</code>, because page translation tools
+      skip attributes.</li>
+      <li><strong>Announce the count.</strong> The selection count sits in an element with
+      <code>role="status"</code>, so a screen reader user hears “2 selected” when it changes
+      without leaving the checkbox they just ticked.</li>
+      <li><strong>Actions disable, they never disappear.</strong> When nothing is selected,
+      bulk-action buttons render disabled — not removed. Controls that appear and vanish cost users
+      their bearings. This rule is universal (it also appears in the agent guide’s hard
+      rules).</li>
+    </ul>
+  </div>
+
+  </div> <!-- /core zone -->
+
+  <h2>Rules</h2>
+
+  <!-- ───────── Sort interaction ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="sort-interaction">Sort interaction</h3>
+    <p>Clicking a sortable header toggles through: descending → ascending → descending.
+    Clicking a different column resets the previous column to unsorted.
+    Sort logic is application-specific; the CSS only handles visual states.</p>
+  </section>
+
+  <!-- ───────── Bulk-action bar layout ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="bulk-action-bar-layout">Bulk-action bar layout</h3>
+    <p>Action buttons and their descriptive text (selection count, “Clear selection”) sit on
+    the left; filter dropdowns sit on the right. No background tint behind the action buttons — the
+    bar itself stays neutral. Destructive actions (Remove, Delete) are visually separated from
+    constructive ones and always require a confirmation step.</p>
+  </section>
+
+</div>
 
 <script>
   // ── Demo: sortable table ────────────────────────────────────
@@ -472,12 +641,14 @@
 
       headers.forEach(h => {
         h.classList.remove('sort-asc', 'sort-desc');
-        h.querySelector('.sort-arrow').textContent = '\u21C5';
+        h.removeAttribute('aria-sort');
+        h.querySelector('.sort-arrow').textContent = '⇅';
       });
 
       const dir = wasDesc || !wasAsc ? 'asc' : 'desc';
       th.classList.add('sort-' + dir);
-      th.querySelector('.sort-arrow').textContent = dir === 'asc' ? '\u2191' : '\u2193';
+      th.setAttribute('aria-sort', dir === 'asc' ? 'ascending' : 'descending');
+      th.querySelector('.sort-arrow').textContent = dir === 'asc' ? '↑' : '↓';
 
       const rows = Array.from(tbody.querySelectorAll('tr'));
       rows.sort((a, b) => {
@@ -507,6 +678,7 @@
     document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
       // Return focus to the trigger, but only if it was inside the menu we are
       // closing — otherwise Escape anywhere on the page would steal focus.
+      // Without this a keyboard user is left on a link that no longer exists.
       var wasInside = d.contains(document.activeElement);
       d.removeAttribute('open');
       if (wasInside) d.querySelector('summary').focus();
@@ -515,5 +687,6 @@
 </script>
 <script src="../copy-code.js" defer></script>
 <script src="../anchors.js" defer></script>
+<script src="../toc.js" defer></script>
 </body>
 </html>
