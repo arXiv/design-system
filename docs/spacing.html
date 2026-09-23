@@ -6,48 +6,8 @@
   <title>Spacing — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
 <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
-  <style>
-    /* ── Foundation reference page. The written spec is DESIGN-POLICIES.md
-       (Spacing) — source of truth for the scale and the proximity rule;
-       the tokens live in internal/internal-tools.css. This page renders
-       them. Page chrome uses literal hex (not component tokens) so it is
-       never mistaken for part of the system. ── */
-.ds-page-header code { color: var(--ds-accent-strong); background: none; }
-/* ── Scale specimens ── */
-    .scale { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; overflow: hidden; }
-    .scale-row { display: grid; grid-template-columns: 132px 1fr 150px; gap:var(--ds-space-block); align-items: center; padding: 14px 20px; border-bottom: 1px solid #efeae4; }
-    .scale-row:last-child { border-bottom: 0; }
-    .scale-meta code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12.5px; color: var(--ds-text); font-weight: 500; }
-    .scale-meta .px { display: block; font-size: 11px; color: var(--ds-border-strong); margin-top:2px; letter-spacing: .02em; }
-    .scale-bar { height: 20px; background: var(--ds-accent); border-radius: 3px; }
-    .scale-use { font-size: 12px; color: var(--ds-text-muted); line-height: 1.45; }
-    @media (max-width: 640px) { .scale-row { grid-template-columns: 110px 1fr; } .scale-use { display: none; } }
-
-    /* ── Proximity demo ── */
-    .prox-grid { display: grid; grid-template-columns: 1fr 1fr; gap:var(--ds-space-block); }
-    @media (max-width: 720px) { .prox-grid { grid-template-columns: 1fr; } }
-    .prox-card { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; padding: 22px 24px; }
-    .prox-card h3 { font-size: 13px; margin:0 0 2px; }
-    .prox-card .verdict { font-size: 12px; margin:0 0 var(--ds-space-4); font-weight: 600; }
-    .prox-card.good .verdict { color: var(--ds-success-fg); }
-    .prox-card.bad .verdict { color: var(--ds-error-fg); }
-.demo-value { font-size: 14px; color: var(--ds-text); }
-    /* GOOD: 4px label->value, 48px between groups */
-    .grp { }
-    .good .grp + .grp { margin-top:var(--ds-space-12); }
-    .good .demo-label + .demo-value { margin-top:var(--ds-space-1); }
-    .good .demo-value + .demo-label { margin-top:var(--ds-space-3); }
-    /* BAD: one flat gap everywhere */
-    .bad .grp + .grp,
-    .bad .demo-label + .demo-value,
-    .bad .demo-value + .demo-label { margin-top:var(--ds-space-3); }
-
-    .rule-card { margin-bottom:var(--ds-space-3); }
-.rule-card p { }
-/* Inline links in page copy. These sit on the page canvas. Nav links
-       carry their own, more specific rules. */
-</style>
 </head>
 <body class="ds-page">
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
@@ -105,173 +65,306 @@
   <button type="button" class="ds-theme-toggle"></button>
   <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
-<div class="ds-container">
+
+<div class="ds-container ds-zone-secondary">
+
   <header class="ds-page-header">
     <h1>Spacing</h1>
     <p>
       One 4px-based / 8-point scale, and one rule about how to use it. Every gap on
       every arXiv page comes from these seven steps — no off-scale values (14, 26, …).
       Written spec: <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES.md</a> (Spacing);
-      tokens: <code>--ds-space-1</code>…<code>--ds-space-12</code> in <code>internal/internal-tools.css</code>.
+      tokens: <code>--ds-space-1</code>…<code>--ds-space-12</code> in <code>design-system.css</code>.
     </p>
   </header>
 
+
+  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#the-scale">The scale</a></li>
+            <li><a href="#the-proximity-rule">The proximity rule</a></li>
+            <li><a href="#the-layout-tokens">The layout tokens</a></li>
+            <li><a href="#stay-on-the-scale">Stay on the scale</a></li>
+            <li><a href="#between-3-within">Between ≈ 3× within</a></li>
+            <li><a href="#everything-in-rem-spacing-included">Everything in rem, spacing included</a></li>
+            <li><a href="#name-the-break-not-the-value">Name the break, not the value</a></li>
+            <li><a href="#containers-own-the-space-between-regions">Containers own the space between regions</a></li>
+            <li><a href="#gap-takes-no-scale-of-its-own">Gap takes no scale of its own</a></li>
+            <li><a href="#a-set-of-related-controls-needs-a-container">A set of related controls needs a container</a></li>
+            <li><a href="#namespaced-in-production">Namespaced in production</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <div class="ds-full ds-zone-primary">
+
+  <!-- ───────── The scale ───────── -->
   <section class="section">
     <h2 class="section-title" id="the-scale">The scale</h2>
     <p class="ds-section-desc">
       Seven steps, each roughly 1.5× the last. The gaps in the bars below <em>are</em> the
       token values — the page pulls them live from <code>--ds-space-*</code>. Production code
-      uses them exactly as written &mdash; <code>--ds-space-4</code> everywhere, with no per-codebase renaming.
+      uses them exactly as written — <code>--ds-space-4</code> everywhere, with no per-codebase renaming.
     </p>
-    <div class="scale">
-      <div class="scale-row">
-        <div class="scale-meta"><code>--ds-space-1</code><span class="px">4px</span></div>
-        <div class="scale-bar" style="width: var(--ds-space-1)"></div>
-        <div class="scale-use">Tightest — label→value, icon→text.</div>
+    <div class="ds-card">
+      <div class="table-scroll" role="region" aria-label="The spacing scale" tabindex="0">
+        <table class="ds-table-framed token-table">
+          <thead><tr><th>Token</th><th>Value</th><th>Drawn at size</th></tr></thead>
+          <tbody>
+            <tr><td><code>--ds-space-1</code></td><td>0.25rem (4px)</td><td><span class="swatch" style="width: var(--ds-space-1); background: var(--ds-accent)"></span></td></tr>
+            <tr><td><code>--ds-space-2</code></td><td>0.5rem (8px)</td><td><span class="swatch" style="width: var(--ds-space-2); background: var(--ds-accent)"></span></td></tr>
+            <tr><td><code>--ds-space-3</code></td><td>0.75rem (12px)</td><td><span class="swatch" style="width: var(--ds-space-3); background: var(--ds-accent)"></span></td></tr>
+            <tr><td><code>--ds-space-4</code></td><td>1rem (16px)</td><td><span class="swatch" style="width: var(--ds-space-4); background: var(--ds-accent)"></span></td></tr>
+            <tr><td><code>--ds-space-6</code></td><td>1.5rem (24px)</td><td><span class="swatch" style="width: var(--ds-space-6); background: var(--ds-accent)"></span></td></tr>
+            <tr><td><code>--ds-space-8</code></td><td>2rem (32px)</td><td><span class="swatch" style="width: var(--ds-space-8); background: var(--ds-accent)"></span></td></tr>
+            <tr><td><code>--ds-space-12</code></td><td>3rem (48px)</td><td><span class="swatch" style="width: var(--ds-space-12); background: var(--ds-accent)"></span></td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="scale-row">
-        <div class="scale-meta"><code>--ds-space-2</code><span class="px">8px</span></div>
-        <div class="scale-bar" style="width: var(--ds-space-2)"></div>
-        <div class="scale-use">Closely related inline items.</div>
-      </div>
-      <div class="scale-row">
-        <div class="scale-meta"><code>--ds-space-3</code><span class="px">12px</span></div>
-        <div class="scale-bar" style="width: var(--ds-space-3)"></div>
-        <div class="scale-use">Related stacked elements.</div>
-      </div>
-      <div class="scale-row">
-        <div class="scale-meta"><code>--ds-space-4</code><span class="px">16px</span></div>
-        <div class="scale-bar" style="width: var(--ds-space-4)"></div>
-        <div class="scale-use">Default gap between elements in a section.</div>
-      </div>
-      <div class="scale-row">
-        <div class="scale-meta"><code>--ds-space-6</code><span class="px">24px</span></div>
-        <div class="scale-bar" style="width: var(--ds-space-6)"></div>
-        <div class="scale-use">Sub-section separation / card padding.</div>
-      </div>
-      <div class="scale-row">
-        <div class="scale-meta"><code>--ds-space-8</code><span class="px">32px</span></div>
-        <div class="scale-bar" style="width: var(--ds-space-8)"></div>
-        <div class="scale-use">Larger internal padding.</div>
-      </div>
-      <div class="scale-row">
-        <div class="scale-meta"><code>--ds-space-12</code><span class="px">48px</span></div>
-        <div class="scale-bar" style="width: var(--ds-space-12)"></div>
-        <div class="scale-use">Breathing space <em>between</em> major sections.</div>
-      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>/* A stop is used as written: a token, in rem, never a pixel value */
+.ds-card {
+  padding: var(--ds-space-4) var(--ds-space-6);   /* 16px 24px at a 16px root */
+}</code></pre>
+          <dl>
+            <dt>--ds-space-1</dt>
+            <dd>4px. Tightest — label→value, icon→text.</dd>
+            <dt>--ds-space-2</dt>
+            <dd>8px. Closely related inline items.</dd>
+            <dt>--ds-space-3</dt>
+            <dd>12px. Related stacked elements.</dd>
+            <dt>--ds-space-4</dt>
+            <dd>16px. Default gap between elements in a section.</dd>
+            <dt>--ds-space-6</dt>
+            <dd>24px. Sub-section separation / card padding.</dd>
+            <dt>--ds-space-8</dt>
+            <dd>32px. Larger internal padding.</dd>
+            <dt>--ds-space-12</dt>
+            <dd>48px. Breathing space <em>between</em> major sections.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
   </section>
 
+  <!-- ───────── The proximity rule ───────── -->
   <section class="section">
     <h2 class="section-title" id="the-proximity-rule">The proximity rule</h2>
     <p class="ds-section-desc">
       The gap <em>between</em> sections should be clearly larger than the gap <em>within</em>
       one — aim for ~3× (e.g., 16px within, 48px between). This is what makes grouping read
-      without borders or boxes. Same content, same words, both cards below — only the spacing
+      without borders or boxes. Same content, same words, both examples below — only the spacing
       differs.
     </p>
-    <div class="prox-grid">
-      <div class="prox-card good">
-        <h3>Proximity applied</h3>
-        <p class="verdict">✓ Two groups, read instantly</p>
-        <div class="grp">
-          <div class="ds-card ds-panel-label">Submitter</div>
-          <div class="ds-card demo-value">A. Palomares</div>
-          <div class="ds-card ds-panel-label">Submitted</div>
-          <div class="ds-card demo-value">14 Jul 2026</div>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Every gap in this demo sits on a container as gap, so no child carries a margin of its own.</p>
+      </details>
+      <div class="ds-card-grid">
+        <div>
+          <h3>Proximity applied</h3>
+          <p class="ds-annotation">✓ Two groups, read instantly</p>
+          <div class="prox">
+            <div class="prox-group">
+              <div class="prox-row"><span class="state-label">Submitter</span><span>A. Palomares</span></div>
+              <div class="prox-row"><span class="state-label">Submitted</span><span>14 Jul 2026</span></div>
+            </div>
+            <div class="prox-group">
+              <div class="prox-row"><span class="state-label">Primary category</span><span>gr-qc</span></div>
+              <div class="prox-row"><span class="state-label">License</span><span>CC BY 4.0</span></div>
+            </div>
+          </div>
         </div>
-        <div class="grp">
-          <div class="ds-card ds-panel-label">Primary category</div>
-          <div class="ds-card demo-value">gr-qc</div>
-          <div class="ds-card ds-panel-label">License</div>
-          <div class="ds-card demo-value">CC BY 4.0</div>
+        <div>
+          <h3>One flat gap (16px everywhere)</h3>
+          <p class="ds-annotation">✗ One undifferentiated list</p>
+          <div class="prox prox--flat">
+            <div class="prox-group">
+              <div class="prox-row"><span class="state-label">Submitter</span><span>A. Palomares</span></div>
+              <div class="prox-row"><span class="state-label">Submitted</span><span>14 Jul 2026</span></div>
+            </div>
+            <div class="prox-group">
+              <div class="prox-row"><span class="state-label">Primary category</span><span>gr-qc</span></div>
+              <div class="prox-row"><span class="state-label">License</span><span>CC BY 4.0</span></div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="prox-card bad">
-        <h3>One flat gap (14px everywhere)</h3>
-        <p class="verdict">✗ One undifferentiated list</p>
-        <div class="grp">
-          <div class="ds-card ds-panel-label">Submitter</div>
-          <div class="ds-card demo-value">A. Palomares</div>
-          <div class="ds-card ds-panel-label">Submitted</div>
-          <div class="ds-card demo-value">14 Jul 2026</div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>/* One named break per kind of gap, on the container, never on a child */
+.record       { display: grid; gap: var(--ds-space-section); }   /* between groups */
+.record-group { display: grid; gap: var(--ds-space-block); }     /* between rows in a group */
+.record-row   { display: grid; gap: var(--ds-space-tight); }     /* a label and its value */</code></pre>
+          <dl>
+            <dt>--ds-space-tight</dt>
+            <dd>8px. Inside a group: a label and its value, an icon and its text, two buttons
+            that belong together.</dd>
+            <dt>--ds-space-block</dt>
+            <dd>16px. Between blocks in a section. Twice tight.</dd>
+            <dt>--ds-space-section</dt>
+            <dd>48px. Between sections. Three times block, so that between is never mistaken
+            for within.</dd>
+          </dl>
         </div>
-        <div class="grp">
-          <div class="ds-card ds-panel-label">Primary category</div>
-          <div class="ds-card demo-value">gr-qc</div>
-          <div class="ds-card ds-panel-label">License</div>
-          <div class="ds-card demo-value">CC BY 4.0</div>
-        </div>
-      </div>
+      </details>
     </div>
+  </section>
+
+  <!-- ───────── The layout tokens ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="the-layout-tokens">The layout tokens</h2>
+    <p class="ds-section-desc">Three tokens set the shape of every page: the width of the content
+    column, the gutter that keeps it off the viewport edge, and the space the container puts between
+    one region and the next. The container that reads them is documented on
+    <a href="organizing-content.html#the-container-and-escaping-it">Organizing content</a>.</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">The demo is a real container, so the tracks it draws are the live token values.</p>
+      </details>
+      <div class="ds-container ds-zone-secondary">
+        <div class="ds-full ds-zone-primary">
+          <p>A band that runs edge to edge. Its own padding is <code>--ds-gutter</code>, so this
+          text still sits on the content track.</p>
+        </div>
+        <div class="ds-card">
+          <p>The next region. The container leaves <code>--ds-space-section</code> above it, and
+          the ground on either side of this card is the gutter.</p>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-container"&gt;
+  &lt;header class="ds-page-header"&gt;…&lt;/header&gt;
+  &lt;section&gt;…&lt;/section&gt;   &lt;!-- --ds-space-section above it, from the container --&gt;
+  &lt;section&gt;…&lt;/section&gt;
+&lt;/div&gt;</code></pre>
+<pre><code>/* A page that needs a different width changes the one token;
+   it never adds a second width beside it. Here: a dense internal
+   tool with tables that cannot compress. */
+:root { --ds-width-page: 1080px; }</code></pre>
+          <dl>
+            <dt>--ds-width-page</dt>
+            <dd>850px. The width of the content track, and the one width on a page: prose, tables,
+            demo blocks, code and callouts all share it. An element never declares its own.</dd>
+            <dt>--ds-gutter</dt>
+            <dd><code>--ds-space-6</code>, 24px. The least space between the content track and the
+            viewport edge. A <code>.ds-full</code> band uses the same token as its inline padding,
+            so the band and the column cannot drift apart.</dd>
+            <dt>--ds-space-section</dt>
+            <dd>48px. The container's <code>row-gap</code>: the space between one direct child and
+            the next. A section carries no margin of its own.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Spacing does not shrink a control.</strong> Every button, link and other
+      control keeps a hit area of at least 24 by 24 CSS pixels (WCAG 2.2, 2.5.8), however tight
+      the gap between it and its neighbours. Grow the hit area with padding where the visible
+      control is smaller than that.</li>
+      <li><strong>Spacing survives zoom.</strong> The scale is in <code>rem</code>, so every gap
+      grows with the reader's text size (WCAG 1.4.4). At 400% page zoom the page is 320 pixels
+      wide (WCAG 1.4.10): do not set a gap or a width that forces the page to scroll
+      sideways.</li>
+      <li><strong>Spacing is not a structure.</strong> Proximity tells a sighted reader what belongs
+      together, and a screen reader does not see it. Where a group has a name, give it a heading, a
+      <code>&lt;fieldset&gt;</code> or a landmark, so the grouping is in the markup as well as in
+      the gap.</li>
+    </ul>
+  </div>
+
+  </div> <!-- /core zone -->
+
+  <h2>Rules</h2>
+
+  <section class="section">
+    <h3 class="section-title" id="stay-on-the-scale">Stay on the scale</h3>
+    <p>Reach for a token, never a hand-picked pixel. If a layout seems to want 14px or 26px, it wants an existing step (12 or 24) — or the design is fighting the grid. New values are a change to DESIGN-POLICIES, not a local override.</p>
   </section>
 
   <section class="section">
-    <h2 class="section-title" id="rules-that-travel-with-the-scale">Rules that travel with the scale</h2>
-    <div class="ds-card rule-card">
-      <h3>Stay on the scale</h3>
-      <p>Reach for a token, never a hand-picked pixel. If a layout seems to want 14px or 26px, it wants an existing step (12 or 24) — or the design is fighting the grid. New values are a change to DESIGN-POLICIES, not a local override.</p>
-    </div>
-    <div class="ds-card rule-card">
-      <h3>Between ≈ 3× within</h3>
-      <p>Grouping is carried by contrast in spacing, not by lines. Reach for the named
-      break — <code>--ds-space-block</code> within, <code>--ds-space-section</code> between — rather than
-      the raw steps they map to. Block is 2&times; tight and section is 3&times; block; below about
-      1.5&times; the eye cannot tell the two apart and the grouping silently fails. When a border
-      feels necessary to separate two blocks, first try widening the gap.</p>
-    </div>
-    <div class="ds-card rule-card">
-      <h3>Everything in rem, spacing included</h3>
-      <p>The scale is expressed in <code>rem</code>, so spacing scales with the reader's text size.
-      A fixed gap beside growing text compresses the rhythm exactly for the person who asked for
-      more room, and the <em>ratio</em> between within and between is what carries meaning, so it
-      has to survive.</p>
-    </div>
-
-    <div class="ds-card rule-card">
-      <h3>Name the break, not the value</h3>
-      <p>Pages use <code>--ds-space-tight</code> (inside a group), <code>--ds-space-block</code> (between
-      blocks in a section) or <code>--ds-space-section</code> (between sections) &mdash; never a pixel
-      value, and never a raw <code>--ds-space-N</code>. The raw scale is the palette; these are the
-      roles, the same way colours are named for what they do rather than what hue they are.
-      Changing what a break <em>means</em> then moves every page together.</p>
-    </div>
-
-    <div class="ds-card rule-card">
-      <h3>Containers own the space between regions</h3>
-      <p>A section does not know what follows it, so it cannot know how far away that should be.
-      Put the space on the container as <code>gap</code>, not on each child as a margin: gap never
-      collapses, cannot be undone by a child, and needs no last-child resets. If a system needs
-      <code>:last-child { margin-bottom: 0 }</code>, that is not a fix, it is a symptom that the
-      space is owned by the wrong thing.</p>
-      <p>Prose flow <em>inside</em> a section stays element-owned, because a heading's space depends
-      on its own size, which a container cannot know. Two mechanisms, at two clearly separated
-      levels, never competing at the same one.</p>
-    </div>
-
-    <div class="ds-card rule-card">
-      <h3>Gap takes no scale of its own</h3>
-      <p>&ldquo;How far apart do these sit&rdquo; means the same thing whether the space comes from
-      a margin or a gap, and whether it runs down the page or across it. So gap between siblings
-      uses the rhythm above, on either axis.</p>
-      <p>One exception: the space between a glyph and its label <em>inside</em> a single control is
-      part of the control rather than layout. Use <code>--ds-gap-glyph</code> (<code>0.5em</code>),
-      which scales with that control's own type &mdash; the same exemption already given to button
-      padding.</p>
-    </div>
-
-    <div class="ds-card rule-card">
-      <h3>A set of related controls needs a container</h3>
-      <p>Buttons placed as bare siblings are spaced by the HTML whitespace between the tags &mdash;
-      narrower than any deliberate value, and it looks like a bug because it is one. Use
-      <code>.ds-btn-group</code>, or <code>--stack</code> for the vertical axis and
-      <code>--end</code> for a form's action area.</p>
-    </div>
-    <div class="ds-card rule-card">
-      <h3>Namespaced in production</h3>
-      <p>There is one name per stop, <code>--ds-space-6</code>, and every codebase uses it exactly as written. No per-repository prefixes and no mapping tables: a mapping kept in another repo is invisible to everything here.</p>
-    </div>
+    <h3 class="section-title" id="between-3-within">Between ≈ 3× within</h3>
+    <p>Grouping is carried by contrast in spacing, not by lines. Reach for the named
+    break — <code>--ds-space-block</code> within, <code>--ds-space-section</code> between — rather than
+    the raw steps they map to. Block is 2× tight and section is 3× block; below about
+    1.5× the eye cannot tell the two apart and the grouping silently fails. When a border
+    feels necessary to separate two blocks, first try widening the gap.</p>
   </section>
+
+  <section class="section">
+    <h3 class="section-title" id="everything-in-rem-spacing-included">Everything in rem, spacing included</h3>
+    <p>The scale is expressed in <code>rem</code>, so spacing scales with the reader's text size.
+    A fixed gap beside growing text compresses the rhythm exactly for the person who asked for
+    more room, and the <em>ratio</em> between within and between is what carries meaning, so it
+    has to survive.</p>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title" id="name-the-break-not-the-value">Name the break, not the value</h3>
+    <p>Pages use <code>--ds-space-tight</code> (inside a group), <code>--ds-space-block</code> (between
+    blocks in a section) or <code>--ds-space-section</code> (between sections) — never a pixel
+    value, and never a raw <code>--ds-space-N</code>. The raw scale is the palette; these are the
+    roles, the same way colours are named for what they do rather than what hue they are.
+    Changing what a break <em>means</em> then moves every page together.</p>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title" id="containers-own-the-space-between-regions">Containers own the space between regions</h3>
+    <p>A section does not know what follows it, so it cannot know how far away that should be.
+    Put the space on the container as <code>gap</code>, not on each child as a margin: gap never
+    collapses, cannot be undone by a child, and needs no last-child resets. If a system needs
+    <code>:last-child { margin-bottom: 0 }</code>, that is not a fix, it is a symptom that the
+    space is owned by the wrong thing.</p>
+    <p>Prose flow <em>inside</em> a section stays element-owned, because a heading's space depends
+    on its own size, which a container cannot know. Two mechanisms, at two clearly separated
+    levels, never competing at the same one.</p>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title" id="gap-takes-no-scale-of-its-own">Gap takes no scale of its own</h3>
+    <p>“How far apart do these sit” means the same thing whether the space comes from
+    a margin or a gap, and whether it runs down the page or across it. So gap between siblings
+    uses the rhythm above, on either axis.</p>
+    <p>One exception: the space between a glyph and its label <em>inside</em> a single control is
+    part of the control rather than layout. Use <code>--ds-gap-glyph</code> (<code>0.5em</code>),
+    which scales with that control's own type — the same exemption already given to button
+    padding.</p>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title" id="a-set-of-related-controls-needs-a-container">A set of related controls needs a container</h3>
+    <p>Buttons placed as bare siblings are spaced by the HTML whitespace between the tags —
+    narrower than any deliberate value, and it looks like a bug because it is one. Use
+    <code>.ds-btn-group</code>, or <code>--stack</code> for the vertical axis and
+    <code>--end</code> for a form's action area.</p>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title" id="namespaced-in-production">Namespaced in production</h3>
+    <p>There is one name per stop, <code>--ds-space-6</code>, and every codebase uses it exactly as written. No per-repository prefixes and no mapping tables: a mapping kept in another repo is invisible to everything here.</p>
+  </section>
+
 </div>
 
 <script>
@@ -296,5 +389,6 @@
 </script>
 <script src="copy-code.js" defer></script>
 <script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
 </body>
 </html>
