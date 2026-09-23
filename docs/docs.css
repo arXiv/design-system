@@ -193,3 +193,68 @@
   align-items: center;
   gap: var(--ds-space-tight);
 }
+
+
+/* ─── Moved from forms.html ──────────────────────────────────────
+   Field states side by side inside a demo card: one labelled field per
+   cell. The field takes .ds-field--full so the half-width default does not
+   leave it 130px wide in a narrow cell. */
+.form-states {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--ds-space-block);
+}
+.form-state {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-tight);
+}
+/* A label with a tooltip trigger beside it. */
+.form-label-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+  margin-bottom: var(--ds-space-2);
+}
+.form-label-row--end {
+  justify-content: flex-end;
+  margin-top: var(--ds-space-block);
+  padding-top: var(--ds-space-block);
+  border-top: 1px solid var(--ds-border);
+}
+
+
+/* ─── A labelled column in the variant grid ──────────────────────
+   For a component that is not a button; .ds-btn-group--stack does this
+   job for buttons. */
+.state-cell { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ds-space-tight); }
+
+
+/* ─── Moved from spacing.html ────────────────────────────────────
+   The proximity demo: the same label/value pairs twice, spaced by the
+   named breaks on one side and by one flat gap on the other. Every gap
+   sits on a container, none on a child. */
+.prox, .prox-group, .prox-row { display: grid; }
+.prox       { gap: var(--ds-space-section); }
+.prox-group { gap: var(--ds-space-block); }
+.prox-row   { gap: var(--ds-space-tight); }
+.prox--flat, .prox--flat .prox-group, .prox--flat .prox-row { gap: var(--ds-space-block); }
+
+
+/* ─── Moved from progressive-disclosure.html ─────────────────────
+   Staging for the disclosure demos: none of it is for building arXiv pages. */
+/* The author-list demo: a real list that reads as a sentence, which is the
+   shape .ds-show-more exists to serve. */
+.authors-demo { max-width: 560px; font-size: 0.95rem; line-height: 1.7; }
+.authors-demo ul { display: inline; list-style: none; padding: 0; margin: 0; }
+.authors-demo li { display: inline; }
+.authors-demo li:not(:last-child)::after { content: ', '; }
+.authors-demo a { color: var(--ds-link); text-decoration: none; }
+.authors-demo a:hover { text-decoration: underline; }
+/* A stand-in for the sidebar the rail accordion is built for: narrow, with
+   the rail's own hairline dividers between items. No box of its own. */
+.rail-demo { max-width: 300px; }
+.rail-demo > * + * { border-top: 1px solid var(--ds-border); margin-top: var(--ds-space-3); padding-top: 14px; }
+/* The popover, dropped into the page flow so it can be read here rather than
+   floating over it. */
+.popover-demo .ds-popover { position: relative; display: block; --ds-popover-width: 20rem; max-height: none; }

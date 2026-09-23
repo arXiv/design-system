@@ -215,7 +215,10 @@ def extract(path):
         else:
             warn.append(f"{comp['title']}: no .ds-section-desc")
 
-        accs = [d for d in section.find_all(lambda n: n.tag == "details" and n.has("ds-acc"))]
+        # only the reference accordions: a page that documents the accordion itself has demo ones too
+        accs = [d for d in section.find_all(lambda n: n.tag == "details" and n.has("ds-acc"))
+                if (d.find(lambda n: n.tag == "summary") is not None
+                    and squash(d.find(lambda n: n.tag == "summary").text()).lower().startswith("relevant"))]
         if not accs:
             warn.append(f"{comp['title']}: no Relevant code accordion")
         for acc in accs:
