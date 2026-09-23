@@ -6,44 +6,10 @@
   <title>Site header — arXiv Design System</title>
   <link rel="stylesheet" href="../fonts.css">
   <link rel="stylesheet" href="../design-system.css">
+  <link rel="stylesheet" href="../docs.css">
 <script src="../theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
-  <style>
-    /* ── Page chrome (reference doc only). This page CONSUMES
-       design-system.css — it never redefines the header pieces; the
-       rendered unit reads straight from the stylesheet. ── */
-    *, *::before, *::after { box-sizing: border-box; }
-    body {
-      font-family: var(--ds-font-sans);
-      color: var(--ds-text);
-      background: var(--ds-canvas);
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    .page { max-width: 980px; margin: 0 auto; padding: 48px 28px 80px; }
-    .back-link { display: inline-block; margin-bottom: 20px; font-size: 13px; color: var(--ds-link); text-decoration: none; }
-    .back-link:hover { text-decoration: underline; }
-    .page-header { margin-bottom: 44px; padding-bottom: 20px; border-bottom: 3px solid var(--ds-accent); }
-    .page-header h1 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
-    .page-header p { margin: 0; color: var(--ds-text-muted); font-size: 13px; max-width: 720px; }
-    .section { margin-bottom: var(--ds-space-12); }
-    .section-title { font-size: 18px; font-weight: 600; margin: 0 0 var(--ds-space-1); }
-    .live-demo { background: var(--ds-surface); border: 1px solid var(--ds-surface-muted); border-radius: 8px; overflow: hidden; }
-    .usage-list { font-size: 13px; color: var(--ds-text-muted); line-height: 1.7; max-width: 720px; }
-    .usage-list code { font-family: var(--ds-font-mono); font-size: 12px; background: var(--ds-surface-muted); padding: 1px 5px; border-radius: 3px; }
-  
-    /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
-       <details>-based: works without JS; the small script at the end of the
-       page only adds close-on-outside-click and Esc. ── */
-  
-    /* Inline links in page copy. Bare <a> previously fell back to the
-       browser default, which is unreadable on the dark canvas. Nav links
-       carry their own, more specific rules. */
-    a { color: var(--ds-link); }
-    a:hover { color: var(--ds-link-hover); }
-</style>
 </head>
-<body>
+<body class="ds-page">
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
   <a class="ds-site-header-logo" href="../../index.html">arXiv Design System</a>
   <details class="ds-site-header-dropdown">
@@ -99,35 +65,49 @@
   <button type="button" class="ds-theme-toggle"></button>
   <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
-<div class="page">
 
-  <header class="page-header">
+<div class="ds-container ds-zone-secondary">
+
+  <header class="ds-page-header">
     <h1>Site header</h1>
-    <p>
-      The universal arXiv public-page header: announcement band +
-      black bar (<code>.ds-announcement</code> /
-      <code>.ds-site-header</code>), plus the
-      <code>.ds-skip-link</code> utility. Validated against
-      the spinout-header-footer Cloud Run deployment — which covers
-      ONLY these two pieces; nothing below the black bar is approved
-      chrome. (A breadcrumb band was briefly part of this pattern and removed: too shallow to justify the real estate, and
-      its links exist elsewhere on the page.)
-    </p>
+    <p>The universal arXiv public-page header: announcement band + black bar (<code>.ds-announcement</code> / <code>.ds-site-header</code>), plus the <code>.ds-skip-link</code> utility. Nothing below the black bar is approved chrome.</p>
   </header>
 
+
+  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#the-header-unit">The header unit</a></li>
+            <li><a href="#signed-out-and-signed-in">Signed out, and signed in</a></li>
+            <li><a href="#the-light-variant">The light variant</a></li>
+            <li><a href="#dropdown-groups">Dropdown groups</a></li>
+            <li><a href="#folding-instead-of-collapsing">Folding instead of collapsing</a></li>
+            <li><a href="#hosting-the-header">Hosting the header</a></li>
+            <li><a href="#surface-tokens">Surface tokens</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <div class="ds-full ds-zone-primary">
+
+  <!-- ───────── The header unit ───────── -->
   <section class="section">
-    <h2 class="section-title" id="live-component">Live component</h2>
-    <p class="ds-section-desc">
-      Rendered directly from <code>design-system.css</code>. Resize the
-      window: at &le;599px the nav collapses behind the hamburger (the approved
-      mobile treatment); <strong>without JS it wraps to a second row instead</strong> —
-      every item stays visible, passing WCAG 1.4.10 reflow at 320px and keeping
-      voice-control working. The header is static — it scrolls away with the
-      page (the site header is never the sticky bar — DESIGN-POLICIES.md).
-    </p>
-    <div class="live-demo">
+    <h2 class="section-title" id="the-header-unit">The header unit</h2>
+    <p class="ds-section-desc">Rendered directly from <code>design-system.css</code>. Resize the window: at ≤599px the nav collapses behind the hamburger (the approved mobile treatment); <strong>without JS it wraps to a second row instead</strong> — every item stays visible, passing WCAG 1.4.10 reflow at 320px and keeping voice-control working. The header is static — it scrolls away with the page (the site header is never the sticky bar — DESIGN-POLICIES.md). The announcement band above the bar is documented on <a href="../messages.html#announcement-band">Special messages</a>; this page shows the unit it belongs to.</p>
+    <div class="ds-card">
       <div class="ds-announcement" role="region" aria-label="Announcement">
-        <img class="ds-announcement-glyph" src="../../mockups/public/images/smileybones-small.svg" alt="" aria-hidden="true">
+        <img class="ds-announcement-glyph" src="../assets/images/bones/icon_small-smileybones.svg" alt="">
         <span class="ds-announcement-text">arXiv is now an independent nonprofit!</span>
         <a class="ds-announcement-link" href="https://info.arxiv.org/about/index.html">Learn more</a>
         <button type="button" class="ds-close"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Dismiss announcement</span></button>
@@ -136,18 +116,12 @@
         <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
           <img src="../assets/images/logos/logo_arxiv-primary.svg" alt="archive">
         </a>
-        <button type="button" id="ds-nav-toggle" class="ds-site-header-nav-toggle"
-          aria-label="Open menu" aria-controls="ds-site-header-nav" aria-expanded="false">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-          </svg>
+        <button type="button" id="ds-nav-toggle" class="ds-site-header-nav-toggle" aria-label="Open menu" aria-controls="ds-site-header-nav" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
         <nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation">
           <a href="https://arxiv.org/search">
-            <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <circle cx="11" cy="11" r="8"/>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            </svg>
+            <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             Search
           </a>
           <a href="https://arxiv.org/submit">Submit</a>
@@ -156,181 +130,407 @@
           <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
         </nav>
       </header>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;!-- First focusable element on the page --&gt;
+&lt;a class="ds-skip-link" href="#main"&gt;Skip to main content&lt;/a&gt;
+
+&lt;!-- The band: see messages.html --&gt;
+&lt;div class="ds-announcement" role="region" aria-label="Announcement"&gt;
+  &lt;img class="ds-announcement-glyph" src="icon_small-smileybones.svg" alt=""&gt;
+  &lt;span class="ds-announcement-text"&gt;arXiv is now an independent nonprofit!&lt;/span&gt;
+  &lt;a class="ds-announcement-link" href="/about"&gt;Learn more&lt;/a&gt;
+  &lt;button type="button" class="ds-close"&gt;
+    &lt;svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
+      &lt;path d="M18 6 6 18"/&gt;
+      &lt;path d="m6 6 12 12"/&gt;
+    &lt;/svg&gt;
+    &lt;span class="is-sr-only"&gt;Dismiss announcement&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;header class="ds-site-header"&gt;
+  &lt;a href="/" class="ds-site-header-logo" aria-label="archive home"&gt;
+    &lt;img src="logo_arxiv-primary.svg" alt="archive"&gt;
+  &lt;/a&gt;
+  &lt;button type="button" id="ds-nav-toggle" class="ds-site-header-nav-toggle" aria-label="Open menu" aria-controls="ds-site-header-nav" aria-expanded="false"&gt;
+    &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
+      &lt;line x1="3" y1="6" x2="21" y2="6"/&gt;
+      &lt;line x1="3" y1="12" x2="21" y2="12"/&gt;
+      &lt;line x1="3" y1="18" x2="21" y2="18"/&gt;
+    &lt;/svg&gt;
+  &lt;/button&gt;
+  &lt;nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation"&gt;
+    &lt;a href="/search"&gt;
+      &lt;svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
+        &lt;circle cx="11" cy="11" r="8"/&gt;
+        &lt;line x1="21" y1="21" x2="16.65" y2="16.65"/&gt;
+      &lt;/svg&gt;
+      Search
+    &lt;/a&gt;
+    &lt;a href="/submit"&gt;Submit&lt;/a&gt;
+    &lt;a href="/about/donate"&gt;Donate&lt;/a&gt;
+    &lt;span class="ds-site-header-divider" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;a href="/login" class="ds-site-header-login"&gt;Log in&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;</code></pre>
+          <dl>
+            <dt>.ds-skip-link</dt>
+            <dd>The skip link. The first focusable element on the page, visible only on keyboard
+            focus. Its <code>href</code> is the id of the main content.</dd>
+            <dt>.ds-announcement</dt>
+            <dd>The band above the bar. Its parts, its colour registers and its tone are documented on
+            <a href="../messages.html#announcement-band">Special messages</a>; this page shows only
+            where it sits.</dd>
+            <dt>.ds-site-header</dt>
+            <dd>The bar. Bare, it is the arXiv header — arxiv.org cannot forget a class it never
+            has to write.</dd>
+            <dt>.ds-site-header-logo</dt>
+            <dd>The brand slot, image or wordmark. Takes <code>margin-right: auto</code>. On arxiv.org it
+            is the logo image, never the word typed out; its alt text says “archive”.</dd>
+            <dt>.ds-site-header-nav</dt>
+            <dd>The links, in a <code>&lt;nav&gt;</code> with an <code>aria-label</code>. The Search
+            control is an <code>&lt;a href="/search"&gt;</code> that JS may upgrade to open a search
+            overlay. Never a dead button — without JS it navigates to the search page.</dd>
+            <dt>.ds-nav-icon</dt>
+            <dd>An icon beside a link label, sized by the stylesheet and quieter than the text.
+            <code>aria-hidden="true"</code>; the label carries the name.</dd>
+            <dt>.ds-site-header-divider</dt>
+            <dd>A vertical hairline between groups of links, on the bar’s own divider token. Takes
+            <code>aria-hidden="true"</code>.</dd>
+            <dt>.ds-site-header-login</dt>
+            <dd>The emphasis slot: the last item in the bar, and the only nav item that takes weight.
+            Signed out it says <em>Log in</em>. Signed in it says <em>Account</em>, with the greeting
+            beside it.</dd>
+            <dt>.ds-site-header-nav-toggle, .is-collapsible, .is-open</dt>
+            <dd>At ≤599px the nav collapses behind a hamburger <strong>only after JS enables it</strong>:
+            the header script adds <code>.is-collapsible</code> to <code>.ds-site-header</code> and
+            wires the toggle (<code>.is-open</code> on the nav, <code>aria-expanded</code> in sync) in
+            the same call, so the hamburger appears only when it actually works. <strong>The default —
+            including no JS — is the wrap</strong> (all items visible, WCAG 1.4.10 reflow).</dd>
+          </dl>
+        </div>
+      </details>
     </div>
   </section>
 
+  <!-- ───────── Signed out, and signed in ───────── -->
   <section class="section">
-      <h2 class="section-title" id="one-component-two-surfaces">One component, two surfaces</h2>
-      <p class="ds-section-desc">The bare class <strong>is</strong> the arXiv header. A property that
-      is not arxiv.org adds <code>.ds-site-header--light</code>, which re-points seven surface tokens
-      and declares no property of its own &mdash; so there is no rule in the variant that can lose a
-      specificity argument with the rules above it.</p>
-
-      <p class="ds-panel-label">The surface tokens</p>
-      <table class="token-table">
-        <thead><tr><th>Token</th><th>Default (arXiv)</th><th><code>--light</code></th></tr></thead>
-        <tbody>
-          <tr><td><code>--ds-hdr-bg</code></td><td>Repository Brown</td><td>White (<code>--ds-surface</code>)</td></tr>
-          <tr><td><code>--ds-hdr-fg</code></td><td>Grey (7.4:1 on the dark bar)</td><td>Library Grey</td></tr>
-          <tr><td><code>--ds-hdr-fg-strong</code></td><td>Card Grey</td><td>Repository Brown</td></tr>
-          <tr><td><code>--ds-hdr-hover</code></td><td>#302c28</td><td>a 5% black wash</td></tr>
-          <tr><td><code>--ds-hdr-ring</code></td><td>Focus Ring on dark</td><td>Focus Ring</td></tr>
-          <tr><td><code>--ds-hdr-border</code></td><td>transparent</td><td>Border Light</td></tr>
-          <tr><td><code>--ds-hdr-divider</code></td><td>#4a433d</td><td>Border Light</td></tr>
-        </tbody>
-      </table>
-      <p>The focus ring is the one to notice: the standard Link Blue ring is invisible against
-      Repository Brown, so the dark surface needs its own. Because it is a token rather than a rule,
-      a property that switches surface gets the correct ring without knowing that it needed to.</p>
-
-      <p class="ds-panel-label">Dropdown groups &mdash; an optional part</p>
-      <p>A property whose sections need grouping adds <code>.ds-site-header-dropdown</code>, built on
-      <code>&lt;details&gt;</code> so it opens and closes with no JavaScript. A page may add
-      close-on-outside-click and Esc as enhancement.</p>
-      <p>The summary sits in the bar and takes the surface tokens, so it is correct on either
-      variant. The menu panel does not: a floating panel is a light surface whichever bar summoned
-      it, the same way a popover is.</p>
-      <p>The menu anchors to its trigger&rsquo;s <strong>right</strong> edge. The logo takes
-      <code>margin-right: auto</code>, so the nav always sits at the right of the bar and a
-      left-anchored menu runs off the viewport on the last item &mdash; which is every bar&rsquo;s
-      last item, not an edge case.</p>
-
-      <p class="ds-panel-label">Folding instead of collapsing &mdash; <code>--wrap</code></p>
-      <p>The default bar collapses behind a hamburger below 600px. A page whose own chrome already
-      owns that gesture cannot use it twice, and the HTML paper is exactly that case: the reader&rsquo;s
-      contents bar has the menu button there. <code>.ds-site-header--wrap</code> folds instead.</p>
-      <p>It also gives the bar a <strong>centre slot</strong>. Three grid columns rather than flex,
-      because flex has no way to keep a centre item centred regardless of what sits either side of
-      it. Put anything in <code>.ds-site-header-center</code> and it stays in the middle of the bar;
-      leave it empty and it costs nothing. Below 48rem the centre takes the full width as a third
-      row, and the bar&rsquo;s height becomes a floor rather than a fixed value, because a second row
-      needs somewhere to go.</p>
-      <pre><code>&lt;header class="ds-site-header ds-site-header--wrap"&gt;
-  &lt;a class="ds-site-header-logo" href="/"&gt;&hellip;&lt;/a&gt;
-  &lt;div class="ds-site-header-center"&gt;&hellip;&lt;/div&gt;
-  &lt;nav class="ds-site-header-nav"&gt;&hellip;&lt;/nav&gt;
-&lt;/header&gt;</code></pre>
-      <p>Measured on the paper mockup: 52px tall at 1280px, 56px at 700px, 89px at 390px and 320px,
-      with the centre slot spanning both columns from 48rem down.</p>
-
-      <p class="ds-panel-label">Signed out, and signed in</p>
-      <p>The bar's last item is the emphasis slot &mdash; the only nav item that takes weight. Signed
-      out it says <strong>Log in</strong>. Signed in it says <strong>Account</strong>, with the
-      greeting beside it.</p>
-      <div style="margin:var(--ds-space-4) 0">
-        <nav class="ds-site-header" aria-label="Signed-in example">
-          <a href="#" class="ds-site-header-logo" aria-label="archive home">
-            <img src="../assets/images/logos/logo_arxiv-primary.svg" alt="archive">
-          </a>
-          <nav class="ds-site-header-nav" aria-label="Example">
-            <a href="#">Search</a>
-            <a href="#">Submit</a>
-            <span class="ds-site-header-divider" aria-hidden="true"></span>
-            <span class="ds-site-header-greeting">Welcome <b>Ada</b></span>
-            <a href="#" class="ds-site-header-login">Account</a>
-          </nav>
+    <h2 class="section-title" id="signed-out-and-signed-in">Signed out, and signed in</h2>
+    <p class="ds-section-desc">The bar's last item is the emphasis slot — the only nav item that takes weight. Signed out it says <strong>Log in</strong>. Signed in it says <strong>Account</strong>, with the greeting beside it.</p>
+    <div class="ds-card">
+      <nav class="ds-site-header" aria-label="Signed-in example">
+        <a href="#" class="ds-site-header-logo" aria-label="archive home">
+          <img src="../assets/images/logos/logo_arxiv-primary.svg" alt="archive">
+        </a>
+        <nav class="ds-site-header-nav" aria-label="Signed-in example navigation">
+          <a href="#">Search</a>
+          <a href="#">Submit</a>
+          <span class="ds-site-header-divider" aria-hidden="true"></span>
+          <span class="ds-site-header-greeting">Welcome <b>Ada</b></span>
+          <a href="#" class="ds-site-header-login">Account</a>
         </nav>
-      </div>
-      <div style="margin:var(--ds-space-4) 0">
-        <nav class="ds-site-header" aria-label="Long-name example">
-          <a href="#" class="ds-site-header-logo" aria-label="archive home">
-            <img src="../assets/images/logos/logo_arxiv-primary.svg" alt="archive">
-          </a>
-          <nav class="ds-site-header-nav" aria-label="Example">
-            <a href="#">Search</a>
-            <a href="#">Submit</a>
-            <span class="ds-site-header-divider" aria-hidden="true"></span>
-            <span class="ds-site-header-greeting">Welcome <b>Sivaramakrishnan</b></span>
-            <a href="#" class="ds-site-header-login">Account</a>
-          </nav>
-        </nav>
-      </div>
-      <ul class="notes">
-        <li><strong>One word, and it truncates.</strong> The greeting takes the given name only
-        &mdash; its first word &mdash; because the bar is chrome and a full legal name is more of it
-        than the job needs. Even one word is user data of unbounded length in any script, so it is
-        capped at 14 characters with an ellipsis, as the second example shows. A bar that reflows or
-        overflows on a long name breaks for exactly the people whose names get tested least.</li>
-        <li><strong>The greeting is not a link.</strong> It is a statement; the thing you can act on
-        is the Account link beside it. Making the name itself the link would give that link the
-        accessible name &ldquo;Ada&rdquo;, which says nothing about where it goes.</li>
-        <li><strong>It is the first thing dropped on a narrow bar.</strong> Below 600px the greeting
-        hides and Account stays &mdash; the link is the useful half, and the reader already knows
-        their own name.</li>
-        <li><strong>Log out is not in the bar.</strong> It belongs on the account page. A destructive-adjacent action one mis-tap from Search is a bad trade for the two seconds it saves.</li>
-      </ul>
-
-      <p class="ds-panel-label">Keyboard and assistive technology</p>
-      <ul class="notes">
-        <li><strong>It is a disclosure, not an ARIA menu.</strong> <code>role="menu"</code> is for
-        application menus &mdash; the kind with arrow-key roving focus and menu items that are not
-        links. A list of links is a disclosure, and W3C's own guidance is to build it this way.
-        Using <code>role="menu"</code> here would make a screen reader promise keyboard behaviour
-        the component does not have.</li>
-        <li><strong>The state comes free.</strong> <code>&lt;summary&gt;</code> is announced as a
-        button with an expanded/collapsed state, without a single ARIA attribute. That is most of
-        why this is <code>&lt;details&gt;</code>.</li>
-        <li><strong>Escape closes it and returns focus to the trigger.</strong> The second half
-        matters: without it, a keyboard user who opened the menu, tabbed into it and pressed Escape
-        is left holding focus on a link that is no longer visible. Return focus only when it was
-        inside the menu &mdash; Escape pressed elsewhere on the page must not move it.</li>
-        <li><strong>It works with JavaScript off.</strong> Open, close and keyboard operation are
-        native; outside-click and Escape are enhancements layered on top.</li>
-      </ul>
-
-      <div class="ds-alert ds-alert--info">
-        <div class="ds-alert-content">
-          <p class="ds-alert-title">The five-item cap is about arxiv.org, not this component</p>
-          <p>DESIGN-POLICIES caps arXiv&rsquo;s own top-level navigation at five items. That is a
-          constraint on the content of one site, not on the header. Other properties carry the
-          navigation their content needs, including grouped menus.</p>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav class="ds-site-header-nav" aria-label="Main navigation"&gt;
+  &lt;a href="/search"&gt;Search&lt;/a&gt;
+  &lt;a href="/submit"&gt;Submit&lt;/a&gt;
+  &lt;span class="ds-site-header-divider" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;span class="ds-site-header-greeting"&gt;Welcome &lt;b&gt;Ada&lt;/b&gt;&lt;/span&gt;
+  &lt;a href="/account" class="ds-site-header-login"&gt;Account&lt;/a&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-site-header-greeting</dt>
+            <dd>The greeting takes the given name only — its first word — because the bar is chrome
+            and a full legal name is more of it than the job needs. Even one word is user data of
+            unbounded length in any script, so it is capped at 14 characters with an ellipsis, as the
+            second example shows. A bar that reflows or overflows on a long name breaks for exactly the
+            people whose names get tested least. The greeting is not a link. It is a statement; the
+            thing you can act on is the Account link beside it. Making the name itself the link would
+            give that link the accessible name “Ada”, which says nothing about where it goes. It is
+            the first thing dropped on a narrow bar: below 600px the greeting hides and Account stays —
+            the link is the useful half, and the reader already knows their own name.</dd>
+            <dt>.ds-site-header-login</dt>
+            <dd>The same emphasis slot as when signed out, now reading <em>Account</em>. The slot is about
+            rank in the bar, not about which of the two words is in it.</dd>
+          </dl>
         </div>
+      </details>
+    </div>
+    <div class="ds-card">
+      <nav class="ds-site-header" aria-label="Long-name example">
+        <a href="#" class="ds-site-header-logo" aria-label="archive home">
+          <img src="../assets/images/logos/logo_arxiv-primary.svg" alt="archive">
+        </a>
+        <nav class="ds-site-header-nav" aria-label="Long-name example navigation">
+          <a href="#">Search</a>
+          <a href="#">Submit</a>
+          <span class="ds-site-header-divider" aria-hidden="true"></span>
+          <span class="ds-site-header-greeting">Welcome <b>Sivaramakrishnan</b></span>
+          <a href="#" class="ds-site-header-login">Account</a>
+        </nav>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;span class="ds-site-header-greeting"&gt;Welcome &lt;b&gt;Sivaramakrishnan&lt;/b&gt;&lt;/span&gt;</code></pre>
+          <dl>
+            <dt>.ds-site-header-greeting &gt; b</dt>
+            <dd>The name. The stylesheet caps it at 14 characters and ends it with an ellipsis; the host
+            passes the given name and nothing else.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── The light variant ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="the-light-variant">The light variant</h2>
+    <p class="ds-section-desc">The bare class <strong>is</strong> the arXiv header. A property that is not arxiv.org adds <code>.ds-site-header--light</code>, which re-points seven surface tokens and declares no property of its own. The token values are listed under <a href="#surface-tokens">Surface tokens</a>.</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">The bar at the top of this page is the light variant, with dropdown groups.</p>
+      </details>
+      <nav class="ds-site-header ds-site-header--light" aria-label="Light variant example">
+        <a href="#" class="ds-site-header-logo">arXiv Design System</a>
+        <nav class="ds-site-header-nav" aria-label="Light variant example navigation">
+          <a href="#">Patterns</a>
+          <a href="#">Mockups</a>
+          <a href="#">Docs</a>
+        </nav>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav class="ds-site-header ds-site-header--light" aria-label="Design system"&gt;
+  &lt;a href="/" class="ds-site-header-logo"&gt;arXiv Design System&lt;/a&gt;
+  &lt;nav class="ds-site-header-nav" aria-label="Site navigation"&gt;
+    &lt;a href="/patterns"&gt;Patterns&lt;/a&gt;
+    &lt;a href="/mockups"&gt;Mockups&lt;/a&gt;
+    &lt;a href="/docs"&gt;Docs&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-site-header--light</dt>
+            <dd>Seven token values. No property overrides. The bar is white
+            (<code>--ds-surface</code>) with Library Grey links, Repository Brown emphasis, and a
+            Border Light bottom edge; the standard focus ring replaces the on-dark one.</dd>
+            <dt>.ds-site-header-logo</dt>
+            <dd>On a property that is not arxiv.org, the slot may hold that property’s own wordmark as
+            text; it takes the bar’s emphasis colour.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Dropdown groups ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="dropdown-groups">Dropdown groups</h2>
+    <p class="ds-section-desc">A property whose sections need grouping adds <code>.ds-site-header-dropdown</code>, built on <code>&lt;details&gt;</code> so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement.</p>
+    <div class="ds-card">
+      <nav class="ds-site-header ds-site-header--light" aria-label="Dropdown example">
+        <a href="#" class="ds-site-header-logo">arXiv Design System</a>
+        <details class="ds-site-header-dropdown">
+          <summary>Design Patterns</summary>
+          <div class="ds-site-header-menu">
+            <span class="ds-panel-label">Components</span>
+            <a href="#">Colors</a>
+            <a href="#">Typography</a>
+            <a href="#" aria-current="page">Site header</a>
+            <span class="ds-panel-label">Organizing content</span>
+            <a href="#">Layouts</a>
+            <a href="#">Progressive disclosure</a>
+          </div>
+        </details>
+        <details class="ds-site-header-dropdown">
+          <summary>Docs</summary>
+          <div class="ds-site-header-menu">
+            <a href="#">Using the system</a>
+            <a href="#">Design policies</a>
+            <a href="#">Brand &amp; vision</a>
+          </div>
+        </details>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav class="ds-site-header ds-site-header--light" aria-label="Design system"&gt;
+  &lt;a href="/" class="ds-site-header-logo"&gt;arXiv Design System&lt;/a&gt;
+  &lt;details class="ds-site-header-dropdown"&gt;
+    &lt;summary&gt;Design Patterns&lt;/summary&gt;
+    &lt;div class="ds-site-header-menu"&gt;
+      &lt;span class="ds-panel-label"&gt;Components&lt;/span&gt;
+      &lt;a href="colors.html"&gt;Colors&lt;/a&gt;
+      &lt;a href="public/header.html" aria-current="page"&gt;Site header&lt;/a&gt;
+      &lt;!-- … --&gt;
+    &lt;/div&gt;
+  &lt;/details&gt;
+  &lt;details class="ds-site-header-dropdown"&gt;
+    &lt;summary&gt;Docs&lt;/summary&gt;
+    &lt;div class="ds-site-header-menu"&gt;
+      &lt;a href="using.html"&gt;Using the system&lt;/a&gt;
+      &lt;!-- … --&gt;
+    &lt;/div&gt;
+  &lt;/details&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-site-header-dropdown</dt>
+            <dd>A <code>&lt;details&gt;</code> group in the bar. Optional. The summary sits in the bar
+            and takes the surface tokens, so it is correct on either variant.</dd>
+            <dt>.ds-site-header-menu</dt>
+            <dd>The floating panel. Right-anchored, capped to the viewport. A floating panel is a light
+            surface whichever bar summoned it, the same way a popover is. The menu anchors to its
+            trigger’s <strong>right</strong> edge: the nav always sits at the right of the bar, and a
+            left-anchored menu runs off the viewport on the last item — which is every bar’s last item,
+            not an edge case.</dd>
+            <dt>.ds-panel-label</dt>
+            <dd>Group headings inside a menu use the system-wide label, not a bespoke class.</dd>
+            <dt>aria-current="page"</dt>
+            <dd>On the menu link for the page the reader is on. The menu shows it in bold, and a screen
+            reader announces it.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+    <div class="ds-alert ds-alert--info">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">The five-item cap is about arxiv.org, not this component</p>
+        <p>DESIGN-POLICIES caps arXiv’s own top-level navigation at five items. That is a
+        constraint on the content of one site, not on the header. Other properties carry the
+        navigation their content needs, including grouped menus.</p>
       </div>
+    </div>
+  </section>
 
-      <details class="ds-acc"><summary>Relevant CSS</summary><div class="ds-acc-body">
-        <dl>
-          <dt>.ds-site-header</dt>
-          <dd>The bar. Bare, it is the arXiv header &mdash; arxiv.org cannot forget a class it never
-          has to write.</dd>
-          <dt>.ds-site-header--light</dt>
-          <dd>Seven token values. No property overrides.</dd>
-          <dt>.ds-site-header-logo</dt>
-          <dd>The brand slot, image or wordmark. Takes <code>margin-right: auto</code>.</dd>
-          <dt>.ds-site-header-dropdown</dt>
-          <dd>A <code>&lt;details&gt;</code> group in the bar. Optional.</dd>
-          <dt>.ds-site-header-menu</dt>
-          <dd>The floating panel. Right-anchored, capped to the viewport.</dd>
-          <dt>.ds-panel-label</dt>
-          <dd>Group headings inside a menu use the system-wide label, not a bespoke class.</dd>
-          <dt>.is-collapsible</dt>
-          <dd>The hamburger treatment, for bars that cannot wrap.</dd>
-        </dl>
-      </div></details>
-    </section>
+  <!-- ───────── The centre slot ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="folding-instead-of-collapsing">Folding instead of collapsing</h2>
+    <p class="ds-section-desc">The default bar collapses behind a hamburger below 600px. A page whose own chrome already owns that gesture cannot use it twice, and the HTML paper is exactly that case: the reader’s contents bar has the menu button there. <code>.ds-site-header--wrap</code> folds instead. It also gives the bar a <strong>centre slot</strong>.</p>
+    <div class="ds-card">
+      <nav class="ds-site-header ds-site-header--wrap" aria-label="Centre slot example">
+        <a href="#" class="ds-site-header-logo" aria-label="archive home">
+          <img src="../assets/images/logos/logo_arxiv-primary.svg" alt="archive">
+        </a>
+        <div class="ds-site-header-center"><span style="color: var(--ds-hdr-fg); font-family: var(--ds-font-mono); font-size: 0.8125rem;">arXiv:2604.22725v1</span></div>
+        <nav class="ds-site-header-nav" aria-label="Centre slot example navigation">
+          <a href="#">Search</a>
+          <a href="#">Submit</a>
+          <a href="#">Donate</a>
+          <span class="ds-site-header-divider" aria-hidden="true"></span>
+          <a href="#" class="ds-site-header-login">Log in</a>
+        </nav>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;header class="ds-site-header ds-site-header--wrap"&gt;
+  &lt;a class="ds-site-header-logo" href="/"&gt;…&lt;/a&gt;
+  &lt;div class="ds-site-header-center"&gt;…&lt;/div&gt;
+  &lt;nav class="ds-site-header-nav"&gt;…&lt;/nav&gt;
+&lt;/header&gt;</code></pre>
+          <dl>
+            <dt>.ds-site-header--wrap</dt>
+            <dd>Folds instead of collapsing: no hamburger, and no toggle button in the markup. Below
+            48rem the centre takes the full width as a third row, and the bar’s height becomes a
+            floor rather than a fixed value, because a second row needs somewhere to go.</dd>
+            <dt>.ds-site-header-center</dt>
+            <dd>The centre slot. Put anything in it and it stays in the middle of the bar; leave it
+            empty and it costs nothing. It sets no colour of its own, so what goes in it carries its
+            own.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
 
-    <section class="section">
-    <h2 class="section-title" id="rules">Rules</h2>
-    <ul class="usage-list">
-      <li>The skip link (<code>.ds-skip-link</code>) is the <strong>first focusable element</strong> on the page, visible only on keyboard focus.</li>
-      <li>Logo alt text and aria-labels say <strong>"archive"</strong> — the spoken form of "arXiv" (screen readers otherwise produce "ar-zhiv" / Roman-numeral gibberish).</li>
-      <li>The Search control is an <code>&lt;a href="/search"&gt;</code> that JS may upgrade to open a search overlay. <strong>Never a dead button</strong> — without JS it navigates to the search page.</li>
-      <li>At &le;599px the nav collapses behind a hamburger <strong>only after JS enables it</strong>: the header script adds <code>.is-collapsible</code> to <code>.ds-site-header</code> and wires the toggle (<code>.is-open</code> on the nav, <code>aria-expanded</code> in sync) in the same call, so the hamburger appears only when it actually works. <strong>The default — including no JS — is the wrap</strong> (all items visible, WCAG 1.4.10 reflow).</li>
-      <li>Focus rings on the dark bar use <code>--ds-focus-ring-on-dark</code> (#64b5f6); the standard Link Blue ring is invisible against #1c1a17.</li>
-      <li>The announcement is temporal: render only while active, persist dismissal in production, and never attach page-critical function to it.</li>
-      <li>Nothing in this unit is sticky — the whole header scrolls away with the page (the one bar a page may keep in view is the contents bar — DESIGN-POLICIES). No <code>scroll-padding</code> duty applies.</li>
-      <li>Type sizes are rem so browser font-size overrides propagate; both bands are hidden in print.</li>
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>The skip link comes first.</strong> <code>.ds-skip-link</code> is the first
+      focusable element on the page, visible only on keyboard focus, and it goes to the main
+      content.</li>
+      <li><strong>Name the navigation.</strong> The bar’s links sit in a <code>&lt;nav&gt;</code>
+      with an <code>aria-label</code>, such as “Main navigation”, so a screen reader user can tell
+      it from the other landmarks on the page.</li>
+      <li><strong>The wordmark is an image with alt text.</strong> Logo alt text and aria-labels say
+      “archive” — the spoken form of “arXiv” (screen readers otherwise produce “ar-zhiv” or
+      Roman-numeral gibberish).</li>
+      <li><strong>A menu is a disclosure, not an ARIA menu.</strong> <code>role="menu"</code> is for
+      application menus — the kind with arrow-key roving focus and menu items that are not links. A
+      list of links is a disclosure, and W3C’s own guidance is to build it this way. Using
+      <code>role="menu"</code> here would make a screen reader promise keyboard behaviour the
+      component does not have. The state comes free: <code>&lt;summary&gt;</code> is announced as a
+      button with an expanded/collapsed state, without a single ARIA attribute. That is most of why
+      this is <code>&lt;details&gt;</code>.</li>
+      <li><strong>Mark the current page.</strong> The menu link for the page the reader is on takes
+      <code>aria-current="page"</code>.</li>
+      <li><strong>Everything is reachable from the keyboard, with JavaScript off.</strong> Open,
+      close and keyboard operation are native; outside-click and Escape are enhancements layered on
+      top. Escape closes a menu and returns focus to the trigger. The second half matters: without it,
+      a keyboard user who opened the menu, tabbed into it and pressed Escape is left holding focus on
+      a link that is no longer visible. Return focus only when it was inside the menu — Escape
+      pressed elsewhere on the page must not move it.</li>
+      <li><strong>Nothing in this unit is sticky.</strong> The whole header scrolls away with the
+      page (the one bar a page may keep in view is the contents bar — DESIGN-POLICIES). No
+      <code>scroll-padding</code> duty applies.</li>
+    </ul>
+  </div>
+
+  </div> <!-- /core zone -->
+
+  <h2>Rules</h2>
+  <section class="section">
+    <h3 class="section-title" id="hosting-the-header">Hosting the header</h3>
+    <ul class="notes">
+      <li><strong>The announcement is temporal.</strong> Render only while active, persist dismissal
+      in production, and never attach page-critical function to it.</li>
+      <li><strong>Log out is not in the bar.</strong> It belongs on the account page. A
+      destructive-adjacent action one mis-tap from Search is a bad trade for the two seconds it
+      saves.</li>
+      <li><strong>Type sizes are rem</strong> so browser font-size overrides propagate; both bands are
+      hidden in print.</li>
     </ul>
   </section>
+
+  <h2>Spec</h2>
+  <section class="section">
+    <h3 class="section-title" id="surface-tokens">Surface tokens</h3>
+    <p class="ds-section-desc">The seven tokens the bar reads its surface from, and what <code>.ds-site-header--light</code> re-points each one to.</p>
+    <div class="table-scroll" role="region" aria-label="Surface tokens" tabindex="0">
+      <table class="ds-table-framed token-table">
+        <thead><tr><th>Token</th><th>Default (arXiv)</th><th><code>--light</code></th></tr></thead>
+        <tbody>
+          <tr><td><code>--ds-hdr-bg</code></td><td>Repository Brown (<code>--ds-chrome</code>)</td><td>White (<code>--ds-surface</code>)</td></tr>
+          <tr><td><code>--ds-hdr-fg</code></td><td>Grey (<code>--ds-text-disabled</code>, 7.4:1 on the dark bar)</td><td>Library Grey (<code>--ds-text-muted</code>)</td></tr>
+          <tr><td><code>--ds-hdr-fg-strong</code></td><td>Card Grey (<code>--ds-surface-muted</code>)</td><td>Repository Brown (<code>--ds-chrome</code>)</td></tr>
+          <tr><td><code>--ds-hdr-hover</code></td><td><code>#302c28</code></td><td>a 5% black wash</td></tr>
+          <tr><td><code>--ds-hdr-ring</code></td><td>Focus Ring on dark (<code>--ds-focus-ring-on-dark</code>)</td><td>Focus Ring (<code>--ds-focus-ring</code>)</td></tr>
+          <tr><td><code>--ds-hdr-border</code></td><td>transparent</td><td>Border Light (<code>--ds-border</code>)</td></tr>
+          <tr><td><code>--ds-hdr-divider</code></td><td><code>#4a433d</code></td><td>Border Light (<code>--ds-border</code>)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The focus ring is the one to notice: the standard Link Blue ring is invisible against
+    Repository Brown, so the dark surface needs its own. Because it is a token rather than a rule,
+    a property that switches surface gets the correct ring without knowing that it needed to.</p>
+  </section>
+
 </div>
+
 <script>
   /* Demo only — production hosts drive this via arxiv-header.js. The script adds
      .is-collapsible (which enables the hamburger) AND wires the toggle in one
      call, so the hamburger appears only when its script actually ran. */
   (function () {
-    var header = document.querySelector('.ds-site-header');
     var t = document.getElementById('ds-nav-toggle');
     var n = document.getElementById('ds-site-header-nav');
-    if (!header || !t || !n) return;
+    if (!t || !n) return;
+    // The toggle's own bar, not the first .ds-site-header on the page: this
+    // page's docs nav is one too and comes first in the DOM.
+    var header = t.closest('.ds-site-header');
+    if (!header) return;
     header.classList.add('is-collapsible');
     t.addEventListener('click', function () {
       var open = n.classList.toggle('is-open');
@@ -353,6 +553,7 @@
     document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
       // Return focus to the trigger, but only if it was inside the menu we are
       // closing — otherwise Escape anywhere on the page would steal focus.
+      // Without this a keyboard user is left on a link that no longer exists.
       var wasInside = d.contains(document.activeElement);
       d.removeAttribute('open');
       if (wasInside) d.querySelector('summary').focus();
@@ -361,5 +562,6 @@
 </script>
 <script src="../copy-code.js" defer></script>
 <script src="../anchors.js" defer></script>
+<script src="../toc.js" defer></script>
 </body>
 </html>
