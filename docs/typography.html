@@ -6,34 +6,8 @@
   <title>Typography — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
 <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
-  <style>
-    /* ── Foundation reference page. The written spec is typography.md
-       (source of truth — fonts, weights, self-hosting plan); this page
-       renders the specimens. ── */
-
-    /* Docs page chrome */
-/* Specimen cards — the point of this page */
-    .specimen { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; padding: var(--ds-space-6); margin-bottom: var(--ds-space-4); display: grid; grid-template-columns: 200px 1fr; gap: var(--ds-space-block); align-items: start; }
-    @media (max-width: 640px) { .specimen { grid-template-columns: 1fr; } }
-    .specimen-meta .name { font-weight: 600; }
-    .specimen-meta .detail { font-size: 0.875rem; color: var(--ds-text-muted); margin-top: var(--ds-space-1); }
-    .specimen-meta code { color: var(--ds-accent-strong); background: none; padding: 0; }
-    .specimen-sample .big { font-size: 1.75rem; line-height: 1.25; margin-bottom: var(--ds-space-2); }
-    .specimen-sample .body { line-height: 1.6; }
-    .weights { display: flex; gap: var(--ds-space-block); flex-wrap: wrap; margin-top: var(--ds-space-3); }
-
-    /* A bordered card-table, deliberately different from the foundation's
-       horizontal-rules-only default. */
-    .context-matrix { background: var(--ds-surface); border: 1px solid var(--ds-border); }
-    .context-matrix th { background: var(--ds-surface-muted); font-family: var(--ds-font-condensed); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ds-text-muted); border-bottom: 0; }
-    .context-matrix td { border-top: 1px solid var(--ds-surface-muted); border-bottom: 0; }
-    .context-matrix td:first-child { white-space: nowrap; }
-
-    .note { background: var(--ds-info-bg); border: 1px solid var(--ds-info-border); color: var(--ds-info-fg); border-radius: 6px; padding: var(--ds-space-3) var(--ds-space-4); }
-    .rule-card { margin-bottom: var(--ds-space-3); }
-.rule-card p { }
-</style>
 </head>
 <body class="ds-page">
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
@@ -91,101 +65,399 @@
   <button type="button" class="ds-theme-toggle"></button>
   <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
-<div class="ds-container">
+
+<div class="ds-container ds-zone-secondary">
+
   <header class="ds-page-header">
     <h1>Typography</h1>
-    <p>
-      arXiv sets all text in the IBM Plex family with STIX Two Math for notation,
-      self-hosted — no external font services. Written spec, weights, and the
-      self-hosting plan: <a href="typography.html">typography.md</a> (source of truth).
-    </p>
+    <p>arXiv sets all text in the IBM Plex family with STIX Two Math for notation, self-hosted — no external font services.</p>
   </header>
 
+
+  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#the-stack">The stack</a></li>
+            <li><a href="#the-type-scale">The type scale</a></li>
+            <li><a href="#the-heading-scale">The heading scale</a></li>
+            <li><a href="#text-links">Text links</a></li>
+            <li><a href="#code-blocks-and-the-copy-button">Code blocks, and the copy button</a></li>
+            <li><a href="#panel-label">Panel label</a></li>
+            <li><a href="#which-faces-where-the-three-contexts">Which faces where — the three contexts</a></li>
+            <li><a href="#headings">Headings</a></li>
+            <li><a href="#the-copy-button">The copy button</a></li>
+            <li><a href="#sizes-are-rem-and-a-box-that-holds-text-scales-with-its-text">Sizes are rem, and a box that holds text scales with its text</a></li>
+            <li><a href="#self-hosted-with-honest-fallbacks">Self-hosted, with honest fallbacks</a></li>
+            <li><a href="#do-not-fight-the-reader">Do not fight the reader</a></li>
+            <li><a href="#fluid-where-titles-meet-phones">Fluid where titles meet phones</a></li>
+            <li><a href="#why-ibm-plex">Why IBM Plex</a></li>
+            <li><a href="#tokens">Tokens</a></li>
+            <li><a href="#available-weights-and-sanctioned-ones">Available weights, and sanctioned ones</a></li>
+            <li><a href="#the-files">The files</a></li>
+            <li><a href="#font-face">@font-face</a></li>
+            <li><a href="#which-faces-each-surface-uses">Which faces each surface uses</a></li>
+            <li><a href="#sizes-in-use">Sizes in use</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <div class="ds-full ds-zone-primary">
+
+  <!-- ───────── The stack ───────── -->
   <section class="section">
     <h2 class="section-title" id="the-stack">The stack</h2>
+    <p class="ds-section-desc">The type family is IBM Plex, plus STIX Two Math for notation. Each face has a job.</p>
 
-    <div class="specimen">
-      <div class="specimen-meta">
-        <div class="name">IBM Plex Sans</div>
-        <div class="detail">Body text — paragraphs, author names, abstracts, UI.<br>Weights: 400 / 500 / 600<br><code>--ds-font-sans</code></div>
+    <p class="ds-panel-label">IBM Plex Sans</p>
+    <p class="ds-section-desc">Body text — paragraphs, author names, abstracts, UI.</p>
+    <div class="ds-card">
+      <div style="font-family:var(--ds-font-sans)">
+        <div class="specimen-big">Gauge-independent approach to inflation in quadratic gravity</div>
+        <div class="specimen-body">We explore inflation driven by the Starobinsky-like R + R² term using a manifestly gauge-independent approach to cosmological perturbation theory.</div>
+        <div class="specimen-weights"><span style="font-weight:400">Regular 400</span><span style="font-weight:500">Medium 500</span><span style="font-weight:600">Semibold 600</span></div>
       </div>
-      <div class="specimen-sample" style="font-family:var(--ds-font-sans)">
-        <div class="big">Gauge-independent approach to inflation in quadratic gravity</div>
-        <div class="body">We explore inflation driven by the Starobinsky-like R + R² term using a manifestly gauge-independent approach to cosmological perturbation theory.</div>
-        <div class="weights"><span style="font-weight:400">Regular 400</span><span style="font-weight:500">Medium 500</span><span style="font-weight:600">Semibold 600</span></div>
-      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>font-family: var(--ds-font-sans);</code></pre>
+          <dl>
+            <dt>--ds-font-sans</dt>
+            <dd>The default: where no other face applies, this is the answer. Weights 400 / 500 / 600.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
 
-    <div class="specimen">
-      <div class="specimen-meta">
-        <div class="name">IBM Plex Sans Condensed</div>
-        <div class="detail">Labels &amp; captions — metadata labels, table headers, uppercase section labels.<br>Weights: 500 / 600<br><code>--ds-font-condensed</code></div>
+    <p class="ds-panel-label">IBM Plex Sans Condensed</p>
+    <p class="ds-section-desc">Labels &amp; captions — metadata labels, table headers, uppercase section labels.</p>
+    <div class="ds-card">
+      <div style="font-family:var(--ds-font-condensed)">
+        <div class="specimen-big" style="font-size:1.375rem">SUBJECTS · DOI · LICENSE · ANCILLARY FILES</div>
+        <div class="specimen-weights"><span class="ds-panel-label">ArXiv identifier</span><span class="ds-panel-label">Journal DOI</span><span class="ds-panel-label">Who cites this paper</span></div>
       </div>
-      <div class="specimen-sample" style="font-family:var(--ds-font-condensed)">
-        <div class="big" style="font-size:22px">SUBJECTS · DOI · LICENSE · ANCILLARY FILES</div>
-        <div class="body" style="font-size:11px; text-transform:uppercase; letter-spacing:0.04em; font-weight:600; color:var(--ds-text-muted)">ArXiv identifier &nbsp; Journal DOI &nbsp; Who cites this paper</div>
-      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>font-family: var(--ds-font-condensed);</code></pre>
+          <dl>
+            <dt>--ds-font-condensed</dt>
+            <dd>Labels, captions, table headers and metadata, usually small and uppercase. Weights 500 / 600.</dd>
+            <dt>.ds-panel-label</dt>
+            <dd>The ready-made label in this face; see <a href="#panel-label">Panel label</a> below.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
 
-    <div class="specimen">
-      <div class="specimen-meta">
-        <div class="name">IBM Plex Mono</div>
-        <div class="detail">Code &amp; identifiers — arXiv IDs, DOIs, BibTeX, code blocks.<br>Weights: 400 / 500<br><code>--ds-font-mono</code></div>
+    <p class="ds-panel-label">IBM Plex Mono</p>
+    <p class="ds-section-desc">Code &amp; identifiers — arXiv IDs, DOIs, BibTeX, code blocks.</p>
+    <div class="ds-card">
+      <div style="font-family:var(--ds-font-mono)">
+        <div class="specimen-big" style="font-size:1.125rem">arXiv:2604.22725 [gr-qc]</div>
+        <div class="specimen-body" style="font-size:0.8125rem">@article{palomares2026gauge, doi={10.48550/arXiv.2604.22725}}</div>
       </div>
-      <div class="specimen-sample" style="font-family:var(--ds-font-mono)">
-        <div class="big" style="font-size:18px">arXiv:2604.22725 [gr-qc]</div>
-        <div class="body" style="font-size:13px">@article{palomares2026gauge, doi={10.48550/arXiv.2604.22725}}</div>
-      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>font-family: var(--ds-font-mono);</code></pre>
+          <dl>
+            <dt>--ds-font-mono</dt>
+            <dd>Identifiers and code. Weights 400 / 500. Inline <code>&lt;code&gt;</code> and <code>&lt;pre&gt;</code> already use it; see <a href="#code-blocks-and-the-copy-button">Code blocks</a> below.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
 
-    <div class="specimen">
-      <div class="specimen-meta">
-        <div class="name">IBM Plex Serif <em>Italic</em></div>
-        <div class="detail">Annotation voice — footnote text and figure alt-text in the reader margins. "The editor speaking quietly next to the body text."<br>Weight: 400 italic<br><code>--ds-font-serif</code> / <code>.ds-annotation</code></div>
-      </div>
-      <div class="specimen-sample" style="font-family:var(--ds-font-serif); font-style:italic; color:var(--ds-text-muted)">
-        <div class="body">Starobinsky's 1980 model adds only the R² term; the resulting scalaron drives inflation while leaving the gravitational sector otherwise unmodified.</div>
-      </div>
+    <p class="ds-panel-label">IBM Plex Serif italic</p>
+    <p class="ds-section-desc">Annotation voice — footnote text and figure alt-text in the reader margins. “The editor speaking quietly next to the body text.”</p>
+    <div class="ds-card">
+      <div class="ds-annotation">Starobinsky's 1980 model adds only the R² term; the resulting scalaron drives inflation while leaving the gravitational sector otherwise unmodified.</div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-annotation"&gt;Figure 2: the scalaron potential.&lt;/p&gt;</code></pre>
+          <dl>
+            <dt>.ds-annotation</dt>
+            <dd>The annotation voice: <code>--ds-font-serif</code>, italic, 400, 0.8125rem, <code>--ds-text-muted</code>. It is a voice, not a layout role; where it sits is the consumer's decision.</dd>
+            <dt>--ds-font-serif</dt>
+            <dd>The serif stack. On the public site and in internal tools it is used only through <code>.ds-annotation</code>.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
 
-    <div class="specimen">
-      <div class="specimen-meta">
-        <div class="name">IBM Plex Serif <span style="font-weight:400; color:var(--ds-text-muted)">(blog only)</span></div>
-        <div class="detail">Headlines and pull quotes on the arXiv blog. The upright serif weights appear in no other context.<br>Weights: 400, 600<br>stack: <code>--ds-font-serif</code></div>
+    <p class="ds-panel-label">IBM Plex Serif (blog only)</p>
+    <p class="ds-section-desc">Headlines and pull quotes on the arXiv blog. The upright serif weights appear in no other context.</p>
+    <div class="ds-card">
+      <div style="font-family:var(--ds-font-serif)">
+        <div class="specimen-big" style="font-size:1.3125rem; font-weight:600">Updates on all things arXiv</div>
+        <div class="specimen-body" style="font-size:0.9375rem">I am excited and honored to join arXiv at such a significant time for the organization.</div>
       </div>
-      <div class="specimen-sample" style="font-family:var(--ds-font-serif)">
-        <div class="big" style="font-size:21px; font-weight:600">Updates on all things arXiv</div>
-        <div class="body" style="font-size:15px; margin-top:6px">I am excited and honored to join arXiv at such a significant time for the organization.</div>
-      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>font-family: var(--ds-font-serif);</code></pre>
+          <dl>
+            <dt>--ds-font-serif</dt>
+            <dd>Upright, weights 400 and 600. Outreach properties only; see <a href="outreach/">outreach sites</a>.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
 
-    <div class="specimen">
-      <div class="specimen-meta">
-        <div class="name">STIX Two Math</div>
-        <div class="detail">Mathematical notation in HTML papers, rendered from MathML.<br>stack: <code>'STIX Two Math', 'Cambria Math', math</code> — no font token exists for math; use the stack directly (<code>font-display: auto</code> per DESIGN-POLICIES)</div>
+    <p class="ds-panel-label">STIX Two Math</p>
+    <p class="ds-section-desc">Mathematical notation in HTML papers, rendered from MathML.</p>
+    <div class="ds-card">
+      <div style="font-family:'STIX Two Math','Cambria Math',math">
+        <div class="specimen-big" style="font-size:1.375rem">𝑑𝑠² = −𝑑𝑡² + 𝑎²(𝑡) δ<sub>𝑖𝑗</sub> 𝑑𝑥<sup>𝑖</sup>𝑑𝑥<sup>𝑗</sup></div>
       </div>
-      <div class="specimen-sample" style="font-family:'STIX Two Math','Cambria Math',math">
-        <div class="big" style="font-size:22px">𝑑𝑠² = −𝑑𝑡² + 𝑎²(𝑡) δ<sub>𝑖𝑗</sub> 𝑑𝑥<sup>𝑖</sup>𝑑𝑥<sup>𝑗</sup></div>
-      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>font-family: "STIX Two Math", "Cambria Math", math;</code></pre>
+          <dl>
+            <dt>&lt;math&gt;</dt>
+            <dd>No font token exists for math; use the stack directly on the notation. Loads with <code>font-display: auto</code> per DESIGN-POLICIES.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
   </section>
 
+  <!-- ───────── The type scale ───────── -->
   <section class="section">
-    <h2 class="section-title" id="which-faces-where-the-three-contexts">Which faces where — the three contexts</h2>
+    <h2 class="section-title" id="the-type-scale">The type scale</h2>
+    <p class="ds-section-desc">The text sizes <code>design-system.css</code> sets, in rem, so every one of them moves with the reader's base size. Headings have their own scale below.</p>
+    <div class="ds-card">
+      <dl class="size-ladder">
+        <dt>1rem</dt>
+        <dd>Body text: paragraphs, abstracts, interface copy, on a 1.5 line-height.</dd>
+        <dt>0.875rem</dt>
+        <dd><small>Small: secondary text, captions, and the code block.</small></dd>
+        <dt>0.8125rem</dt>
+        <dd><span class="ds-annotation">Annotation: a margin footnote, figure alt text.</span></dd>
+        <dt>0.75rem</dt>
+        <dd><span class="ds-panel-label">Panel label</span></dd>
+        <dt>0.9em</dt>
+        <dd><code>inline code</code> tracks whatever it sits inside, a heading included.</dd>
+      </dl>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p&gt;Body text.&lt;/p&gt;
+&lt;small&gt;Secondary text.&lt;/small&gt;
+&lt;p class="ds-annotation"&gt;A margin footnote.&lt;/p&gt;
+&lt;p class="ds-panel-label"&gt;Paper information&lt;/p&gt;
+&lt;p&gt;An identifier: &lt;code&gt;arXiv:2604.22725&lt;/code&gt;&lt;/p&gt;</code></pre>
+          <dl>
+            <dt>&lt;p&gt;</dt>
+            <dd>1rem, the reader's base size. Nothing sets it; the browser does.</dd>
+            <dt>&lt;small&gt;</dt>
+            <dd>0.875rem in <code>--ds-text-muted</code>.</dd>
+            <dt>&lt;pre&gt;</dt>
+            <dd>0.875rem, line-height 1.6, on the dark chrome ground.</dd>
+            <dt>.ds-annotation</dt>
+            <dd>0.8125rem, serif italic, line-height 1.45.</dd>
+            <dt>.ds-panel-label</dt>
+            <dd>0.75rem, condensed, uppercase.</dd>
+            <dt>&lt;code&gt;</dt>
+            <dd>0.9em, so it follows the size of its parent.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── The heading scale ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="the-heading-scale">The heading scale</h2>
+    <p class="ds-section-desc">Four levels, one ratio: each level is a quarter larger than the one below it, which
+    puts h1 at exactly twice body size. Sizes are rem; the px equivalents assume a 16px root and move with the
+    reader's setting. Every level is <code>--ds-font-sans</code> in <code>--ds-text</code> —
+    rank is carried by size and weight alone, never by a colour change or a different face.</p>
+    <div class="ds-card">
+      <dl class="size-ladder">
+        <dt>h1 · 2rem · 700</dt>
+        <dd><div style="font-size:2rem; font-weight:700; line-height:1.25">Gauge-independent approach to inflation</div></dd>
+        <dt>h2 · 1.5rem · 600</dt>
+        <dd><div style="font-size:1.5rem; font-weight:600; line-height:1.25">Submission history</div></dd>
+        <dt>h3 · 1.25rem · 600</dt>
+        <dd><div style="font-size:1.25rem; font-weight:600; line-height:1.25">Gauge-invariant perturbations</div></dd>
+        <dt>h4 · 1rem · 600</dt>
+        <dd><div style="font-size:1rem; font-weight:600; line-height:1.25">Boundary conditions</div></dd>
+      </dl>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;h1&gt;Gauge-independent approach to inflation&lt;/h1&gt;
+  &lt;h2&gt;Submission history&lt;/h2&gt;
+    &lt;h3&gt;Gauge-invariant perturbations&lt;/h3&gt;
+      &lt;h4&gt;Boundary conditions&lt;/h4&gt;</code></pre>
+          <dl>
+            <dt>&lt;h1&gt;</dt>
+            <dd>The page's one subject: what the page is about, stated once — a paper title, a form name, a console view.
+            A page that seems to need two h1s is two pages. 2rem (32px) · 700 · line-height 1.25 · space above 0, below <code>--ds-space-4</code>.</dd>
+            <dt>&lt;h2&gt;</dt>
+            <dd>A major section: a top-level division of that subject — Abstract, Submission history, References,
+            each step of a submission form. 1.5rem (24px) · 600 · line-height 1.25 · space above <code>--ds-space-8</code>, below <code>--ds-space-3</code>.</dd>
+            <dt>&lt;h3&gt;</dt>
+            <dd>A division inside one section: a subsection of a paper, or a card heading inside a panel. It only exists where an
+            h2 already does. 1.25rem (20px) · 600 · line-height 1.25 · space above <code>--ds-space-6</code>, below <code>--ds-space-2</code>.</dd>
+            <dt>&lt;h4&gt;</dt>
+            <dd>The smallest named step: a named paragraph in a paper, a field group in a form. This is the last level the
+            scale defines; needing an h5 is a sign the content wants restructuring, not a fifth size. 1rem (16px) · 600 · line-height 1.25 · space above <code>--ds-space-4</code>, below <code>--ds-space-2</code>.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Text links ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="text-links">Text links</h2>
+    <p class="ds-section-desc">Links are typography with a job, so they live here. Color carries the state;
+    the underline carries the meaning — and inline links in body text are <strong>always</strong> underlined
+    (color alone fails WCAG 1.4.1 at our contrast levels). Standalone navigation links (headers, footers,
+    button-like rows) may drop the underline.</p>
+    <p class="ds-section-desc">Full state-by-state references (rest / hover / visited / focus / disabled, light and dark): <a href="links.html">Links</a>. Link color tokens with ratios: <a href="colors.html">Colors</a>.</p>
+    <div class="ds-card">
+      <div>
+        Reading text with <a class="ds-link" href="#ignore">an inline link</a> in its resting state —
+        Link Blue, underlined, offset so the descenders stay readable. Hover darkens it; a
+        <a class="ds-link" href="#ignore" style="color:var(--ds-link-visited)">visited link</a> turns
+        Visited Purple; keyboard focus draws the standard 3px ring.
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>Reading text with &lt;a class="ds-link" href="/abs/2604.22725"&gt;an inline link&lt;/a&gt; in it.</code></pre>
+          <dl>
+            <dt>.ds-link</dt>
+            <dd>The inline text link. Both surfaces use <code>.ds-link</code> and the <code>--ds-link-*</code> tokens: the same grammar, the same names and the same values. Inside a <code>.ds-page</code> a bare <code>&lt;a&gt;</code> gets the same treatment without the class.</dd>
+            <dt>--ds-link, --ds-link-hover, --ds-link-visited</dt>
+            <dd>Rest, hover and visited colours. The underline does not change between states.</dd>
+            <dt>--ds-focus-ring</dt>
+            <dd>The 3px keyboard focus ring, drawn on <code>:focus-visible</code> only.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Code blocks ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="code-blocks-and-the-copy-button">Code blocks, and the copy button</h2>
+    <p class="ds-section-desc">A code block is Plex Mono on the dark chrome ground, and it always
+    carries a copy button — the familiar two-sheets icon, top right. Someone reading a pattern
+    page is there to take the markup away with them, and asking them to select four lines of it by
+    hand without missing the last character is asking them to make a mistake.</p>
+    <div class="ds-card">
+<pre><code>&lt;button class="ds-btn ds-btn-primary" type="button"&gt;Save&lt;/button&gt;</code></pre>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;!-- Write the block the way you already do --&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;button class="ds-btn"&amp;gt;Save&amp;lt;/button&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!-- And include the script once, at the foot of the page --&gt;
+&lt;script src="copy-code.js" defer&gt;&lt;/script&gt;</code></pre>
+          <dl>
+            <dt>&lt;pre&gt;&lt;code&gt;</dt>
+            <dd>The block. Escape <code>&lt;</code>, <code>&gt;</code> and <code>&amp;</code> inside it. No wrapper and no button of your own.</dd>
+            <dt>&lt;script src="copy-code.js" defer&gt;</dt>
+            <dd>Once per page, at the foot. It finds every <code>&lt;pre&gt;</code> on the page and adds the control.</dd>
+            <dt>.ds-code, .ds-code-copy</dt>
+            <dd>The wrapper and the button. The script writes both; never hand-build them.</dd>
+            <dt>[data-no-copy]</dt>
+            <dd>On a <code>&lt;pre&gt;</code>, opts that block out — for a block that is an illustration of output rather than something to take away.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Panel label ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="panel-label">Panel label</h2>
+    <p class="ds-section-desc">The small uppercase Condensed label that names a panel, a column or
+    a group. It is not a heading level and stays out of the document outline — if a reader
+    needs to navigate to it, it is an <code>h3</code> or an <code>h4</code> at the sizes above.</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading, and belongs in the outline.</p>
+      </details>
+      <p class="ds-panel-label">Paper information</p>
+      <p>The label sits closer to what it introduces than to what precedes it,
+      so it bonds downward. That relationship is intrinsic to the thing, not something its
+      context supplies — which matters because half the instances in these pages are
+      paragraphs rather than headings.</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-panel-label"&gt;Paper information&lt;/p&gt;</code></pre>
+          <dl>
+            <dt>.ds-panel-label</dt>
+            <dd>One class for the whole system: 0.75rem · 600 · Condensed · uppercase · 0.04em · <code>--ds-text-muted</code>. Use it wherever this treatment appears — panel
+            headings, column labels, the label above a group of controls — on whichever element
+            is semantically right. A component that owns its internal spacing takes the margin back.</dd>
+            <dt>&lt;dt&gt;</dt>
+            <dd>A definition term inside <code>.ds-acc-body</code> is this label, and carries no class.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Keep the heading order.</strong> One <code>&lt;h1&gt;</code> per page, then
+      <code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code> and <code>&lt;h4&gt;</code> in order, without
+      skipping a level. Choose the level from the outline, not from the size you want; the scale gives
+      each level its size. A screen reader user moves through the page by these levels.</li>
+      <li><strong>Write sizes in rem, never in px.</strong> A reader who raises the browser font size
+      must see every piece of text grow. Give a control its padding and minimum width in
+      <code>em</code>, so the box grows with its label.</li>
+      <li><strong>Let text reflow at 200% zoom.</strong> Do not give a box that holds text a fixed
+      height, and do not cut text off with <code>overflow: hidden</code> unless there is another way
+      to read all of it. At 400% page zoom a 1280px screen is a 320px screen, and the page must not
+      scroll sideways there.</li>
+      <li><strong>Put text in text, not in images.</strong> An image of words cannot be resized,
+      translated, searched or read aloud. If an image must carry words, the same words go in its
+      <code>alt</code> text or next to it.</li>
+      <li><strong>Uppercase comes from CSS, never from the keyboard.</strong> The panel label is
+      uppercase because <code>.ds-panel-label</code> makes it so. Type it in sentence case, so
+      copy-and-paste, search and screen readers get the real words.</li>
+    </ul>
+  </div>
+
+  </div> <!-- /core zone -->
+
+  <h2>Rules</h2>
+
+  <!-- ───────── Which faces where ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="which-faces-where-the-three-contexts">Which faces where — the three contexts</h3>
     <p class="ds-section-desc">One family, three contexts. Internal tools and the public site share the working
     set; <a class="ds-link" href="outreach/">outreach properties</a> add the upright serif and the heaviest sans.
     A face without a mark is not used in that context.</p>
-    <table class="context-matrix">
-      <tr><th>Face · weights</th><th>Internal tools</th><th>Public site</th><th>Outreach</th></tr>
-      <tr><td>IBM Plex Sans · 400 / 500 / 600</td><td>✓ all text</td><td>✓ all text</td><td>✓ all text</td></tr>
-      <tr><td>IBM Plex Sans · 700 + 700 <em>italic</em></td><td>—</td><td>—</td><td>✓ the one heading that must not read as an article</td></tr>
-      <tr><td>IBM Plex Sans Condensed · 500 / 600</td><td>✓ labels, table headers</td><td>✓ labels</td><td>✓ labels</td></tr>
-      <tr><td>IBM Plex Mono · 400 / 500</td><td>✓ IDs, code</td><td>✓ arXiv IDs, code</td><td>✓ code, plus a display register (wordmark, standfirst)</td></tr>
-      <tr><td>IBM Plex Serif · 400 <em>italic</em></td><td>—</td><td>annotation voice only (<code>.ds-annotation</code>)</td><td>✓ emphasis, bylines, prev/next</td></tr>
-      <tr><td>IBM Plex Serif · 400 / 600 upright</td><td>—</td><td>—</td><td>✓ headlines to display size, pull quotes, drop caps</td></tr>
-      <tr><td>STIX Two Math · 400</td><td>—</td><td>✓ math in HTML papers</td><td>—</td></tr>
-    </table>
-    <ul class="notes" style="margin-top:14px; padding-left:22px; font-size:13px; line-height:1.7">
+    <div class="table-scroll" role="region" aria-label="Which faces where" tabindex="0">
+      <table class="ds-table-framed">
+        <thead><tr><th>Face · weights</th><th>Internal tools</th><th>Public site</th><th>Outreach</th></tr></thead>
+        <tbody>
+          <tr><td>IBM Plex Sans · 400 / 500 / 600</td><td>✓ all text</td><td>✓ all text</td><td>✓ all text</td></tr>
+          <tr><td>IBM Plex Sans · 700 + 700 <em>italic</em></td><td>✓ h1 only</td><td>✓ h1 only</td><td>✓ the one heading that must not read as an article</td></tr>
+          <tr><td>IBM Plex Sans Condensed · 500 / 600</td><td>✓ labels, table headers</td><td>✓ labels</td><td>✓ labels</td></tr>
+          <tr><td>IBM Plex Mono · 400 / 500</td><td>✓ IDs, code</td><td>✓ arXiv IDs, code</td><td>✓ code, plus a display register (wordmark, standfirst)</td></tr>
+          <tr><td>IBM Plex Serif · 400 <em>italic</em></td><td>annotation voice only (<code>.ds-annotation</code>)</td><td>annotation voice only (<code>.ds-annotation</code>)</td><td>✓ emphasis, bylines, prev/next</td></tr>
+          <tr><td>IBM Plex Serif · 400 / 600 upright</td><td>—</td><td>—</td><td>✓ headlines to display size, pull quotes, drop caps</td></tr>
+          <tr><td>STIX Two Math · 400</td><td>—</td><td>✓ math in HTML papers</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="notes">
       <li><strong>700 is the ceiling.</strong> IBM Plex ships no heavier weight, so a CSS <code>800</code> either
       falls back or gets faux-bolded, differently per browser. Ask for the weight that exists.</li>
       <li><strong>Two serif jobs, kept apart.</strong> Upright serif is the editorial voice — headlines, quotes,
@@ -194,71 +466,15 @@
       <li><strong>Mono as display type</strong> is an outreach liberty: the typewriter register echoes the main
       site's identifiers. On the public site, mono still means "this is an identifier or code."</li>
     </ul>
+  </section>
 
-
-    <h2 class="section-title" style="margin-top:52px" id="the-heading-scale">The heading scale</h2>
-    <p class="ds-section-desc">Four levels, one ratio: each level is a quarter larger than the one below it, which
-    puts h1 at exactly twice body size. Sizes are rem; the px equivalents assume a 16px root and move with the
-    reader's setting. Every level is <code>--ds-font-sans</code> in <code>--ds-text</code> —
-    rank is carried by size and weight alone, never by a colour change or a different face.</p>
-
-    <div class="specimen">
-      <div class="specimen-meta">
-        <div class="name">h1 — the page's one subject</div>
-        <div class="detail">What the page is about, stated once: a paper title, a form name, a console view.
-        A page that seems to need two h1s is two pages.<br>2rem · 700</div>
-      </div>
-      <div class="specimen-sample">
-        <div style="font-size:2rem; font-weight:700; line-height:1.25">Gauge-independent approach to inflation</div>
-      </div>
-    </div>
-
-    <div class="specimen">
-      <div class="specimen-meta">
-        <div class="name">h2 — a major section</div>
-        <div class="detail">A top-level division of that subject: Abstract, Submission history, References,
-        each step of a submission form.<br>1.5rem · 600</div>
-      </div>
-      <div class="specimen-sample">
-        <div style="font-size:1.5rem; font-weight:600; line-height:1.25">Submission history</div>
-      </div>
-    </div>
-
-    <div class="specimen">
-      <div class="specimen-meta">
-        <div class="name">h3 — a division inside one section</div>
-        <div class="detail">A subsection of a paper, or a card heading inside a panel. It only exists where an
-        h2 already does.<br>1.25rem · 600</div>
-      </div>
-      <div class="specimen-sample">
-        <div style="font-size:1.25rem; font-weight:600; line-height:1.25">Gauge-invariant perturbations</div>
-      </div>
-    </div>
-
-    <div class="specimen">
-      <div class="specimen-meta">
-        <div class="name">h4 — the smallest named step</div>
-        <div class="detail">A named paragraph in a paper, a field group in a form. This is the last level the
-        scale defines; needing an h5 is a sign the content wants restructuring, not a fifth size.<br>1rem · 600</div>
-      </div>
-      <div class="specimen-sample">
-        <div style="font-size:1rem; font-weight:600; line-height:1.25">Boundary conditions</div>
-      </div>
-    </div>
-
-    <p class="ds-section-desc">Space is given as spacing tokens, not pixels, because that is
+  <!-- ───────── Headings ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="headings">Headings</h3>
+    <p>Space is given as spacing tokens, not pixels, because that is
     what <code>design-system.css</code> implements — <code>--ds-space-8</code> is 2rem, <code>--ds-space-6</code>
     is 1.5rem, and so on down the scale.</p>
-
-    <table class="context-matrix" style="margin-top:18px">
-      <tr><th>Level</th><th>Size</th><th>Weight</th><th>Line-height</th><th>Space above / below</th></tr>
-      <tr><td>h1</td><td>2rem — 32px</td><td>700</td><td>1.25</td><td>0 / <code>--ds-space-4</code></td></tr>
-      <tr><td>h2</td><td>1.5rem — 24px</td><td>600</td><td>1.25</td><td><code>--ds-space-8</code> / <code>--ds-space-3</code></td></tr>
-      <tr><td>h3</td><td>1.25rem — 20px</td><td>600</td><td>1.25</td><td><code>--ds-space-6</code> / <code>--ds-space-2</code></td></tr>
-      <tr><td>h4</td><td>1rem — 16px</td><td>600</td><td>1.25</td><td><code>--ds-space-4</code> / <code>--ds-space-2</code></td></tr>
-    </table>
-
-    <ul class="notes" style="margin-top:14px; padding-left:22px; font-size:13px; line-height:1.7">
+    <ul class="notes">
       <li><strong>The ratio is 1.25</strong> — a major third — rounded to quarter-rem steps: 1, 1.25, 1.5, 2rem.
       A strict geometric run would put h2 at 1.5625rem; a quarter of a rem is the number a person can hold in
       their head and type without checking. The rounding is what makes h1 land on exactly double the body size.</li>
@@ -275,40 +491,12 @@
       <code>--ds-font-condensed</code> and <code>--ds-text-muted</code>, it marks a panel or a column and
       stays out of the document outline. If a reader needs to navigate to it, it is an h3 or an h4 at the size
       above, not a label.</li>
-      <li>These rules are not in <code>design-system.css</code>. Pages declare them on their own selectors today;
-      promoting the scale into the shared stylesheet is a separate decision.</li>
     </ul>
+  </section>
 
-    <h2 class="section-title" style="margin-top:52px" id="text-links">Text links</h2>
-    <p class="ds-section-desc">Links are typography with a job, so they live here. Color carries the state;
-    the underline carries the meaning — and inline links in body text are <strong>always</strong> underlined
-    (color alone fails WCAG 1.4.1 at our contrast levels). Standalone navigation links (headers, footers,
-    button-like rows) may drop the underline.</p>
-
-    <div style="background: var(--ds-surface); border:1px solid var(--ds-border); border-radius:8px; padding:20px 22px; font-size:15px; line-height:1.7">
-      Reading text with <a class="ds-link" href="#ignore">an inline link</a> in its resting state —
-      Link Blue, underlined, offset so the descenders stay readable. Hover darkens it; a
-      <a class="ds-link" href="#ignore" style="color:var(--ds-link-visited)">visited link</a> turns
-      Visited Purple; keyboard focus draws the standard 3px ring.
-    </div>
-
-    <ul class="notes" style="margin-top:14px; padding-left:22px; font-size:13px; line-height:1.7">
-      <li>Both surfaces use <code>.ds-link</code> and the <code>--ds-link-*</code> tokens. Same grammar and the same names; the values differ per surface.</li>
-      <li>Full state-by-state references (rest / hover / visited / focus / disabled, light and dark): <a class="ds-link" href="links.html">public link styles</a> · <a class="ds-link" href="links.html">internal link styles</a>. Link color tokens with ratios: <a class="ds-link" href="colors.html">Colors</a>.</li>
-    </ul>
-
-    <h2 class="section-title" id="code-blocks-and-the-copy-button">Code blocks, and the copy button</h2>
-    <p class="ds-section-desc">A code block is Plex Mono on the dark chrome ground, and it always
-    carries a copy button &mdash; the familiar two-sheets icon, top right. Someone reading a pattern
-    page is there to take the markup away with them, and asking them to select four lines of it by
-    hand without missing the last character is asking them to make a mistake.</p>
-
-    <p class="ds-panel-label">Write the block the way you already do</p>
-<pre><code>&lt;pre&gt;&lt;code&gt;&amp;lt;button class="ds-btn"&amp;gt;Save&amp;lt;/button&amp;gt;&lt;/code&gt;&lt;/pre&gt;</code></pre>
-
-    <p class="ds-panel-label">And include the script once, at the foot of the page</p>
-<pre><code>&lt;script src="copy-code.js" defer&gt;&lt;/script&gt;</code></pre>
-
+  <!-- ───────── The copy button ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="the-copy-button">The copy button</h3>
     <ul class="notes">
       <li><strong>There is no markup for the button</strong>, and that is the design.
       <code>copy-code.js</code> walks every <code>&lt;pre&gt;</code> on the page, wraps it in
@@ -317,18 +505,18 @@
       <code>docs/</code> already loads the script.</li>
       <li><strong>The button reserves a strip at the top, not the side.</strong> A
       <code>&lt;pre&gt;</code> scrolls horizontally, so padding at its inline end does not hold the
-      visible right edge clear &mdash; a long line runs straight under a right-hand button. A lane
+      visible right edge clear — a long line runs straight under a right-hand button. A lane
       across the top works at every line length.</li>
-      <li><strong>It is an icon, and it still says &ldquo;Copy&rdquo;.</strong> The two overlapping
+      <li><strong>It is an icon, and it still says “Copy”.</strong> The two overlapping
       sheets are the glyph people already know, so the control needs no label taking up room over
       the code. Both SVGs are <code>aria-hidden</code> and the button carries
       <code>aria-label="Copy code"</code>, which is what a screen reader announces. The
-      <code>title</code> is the pointer affordance only &mdash; assistive technology takes the
+      <code>title</code> is the pointer affordance only — assistive technology takes the
       <code>aria-label</code> and ignores it.</li>
       <li><strong>Success is announced, not just shown.</strong> The icon becomes a green tick, and
-      a visually hidden <code>role="status"</code> region says &ldquo;Copied to clipboard&rdquo;.
-      Both are needed: a tick is invisible to a screen reader, and the button&rsquo;s own name does
-      not change because its action did not change &mdash; it is still the copy button. Both reset
+      a visually hidden <code>role="status"</code> region says “Copied to clipboard”.
+      Both are needed: a tick is invisible to a screen reader, and the button’s own name does
+      not change because its action did not change — it is still the copy button. Both reset
       after two seconds.</li>
       <li><strong>The name stays put while the icon moves.</strong> Relabelling a control to report
       a result is the same mistake as bolding a switch label on toggle: the name of a control is
@@ -339,149 +527,118 @@
       so rather than the button quietly doing nothing.</li>
       <li><strong>Without JavaScript there is no button</strong> and the code is still selectable.
       The button is a convenience; it is never the only way to get the text.</li>
-      <li><strong>Opt a block out with <code>&lt;pre data-no-copy&gt;</code></strong> &mdash; for a
+      <li><strong>Opt a block out with <code>&lt;pre data-no-copy&gt;</code></strong> — for a
       block that is an illustration of output rather than something to take away.</li>
     </ul>
-
-    <h2 class="section-title" id="rules-that-travel-with-the-type">Rules that travel with the type</h2>
-
-    <div class="ds-card rule-card">
-      <h3>Sizes are rem, and a box that holds text scales with its text</h3>
-      <p>A browser font-size setting has to reach arXiv content (accessibility-priorities.md,
-      cognitive/dyslexia track), so every type size is <code>rem</code>. But a label that grows
-      inside a box that does not is no better than a label that never grew: set a control's padding
-      and minimum width in <code>em</code>, against its own label, and the whole control follows the
-      reader. Absolute floors stay absolute &mdash; <code>min-height: 24px</code> is a WCAG target
-      size, not a type size.</p>
-      <p><strong>This rule went unchecked for six weeks and tier 1 drifted from 6 pixel sizes to
-      17.</strong> <code>check-policies.py</code> now fails on any of them, in the stylesheets and
-      the public mockups both. The earlier guard ran in a browser against one mockup and read the
-      stylesheets that page loads &mdash; and that page loads none, so it never saw the design
-      system and reported green throughout.</p>
-    </div>
-    <div class="ds-card rule-card">
-      <h3>Self-hosted, with honest fallbacks</h3>
-      <p>No Google Fonts, no Typekit, no CDN fonts (DESIGN-POLICIES.md). Every <code>font-family</code> declaration carries system fallbacks; text fonts load with <code>font-display: swap</code> (readability first), STIX Two Math with <code>font-display: auto</code> (math must render in the correct face).</p>
-    </div>
-    <div class="ds-card rule-card">
-      <h3>Do not fight the reader</h3>
-      <p>No fixed line-heights, no pinned letter-spacing, no <code>!important</code> on font-family in content areas. User stylesheets, reader-mode extensions, and OS settings win — "HTML gives you freedom: you can use software to change colors or typefaces" (research, dyslexia track).</p>
-    </div>
-    <div class="ds-card rule-card">
-      <h3>Fluid where titles meet phones</h3>
-      <p>Paper titles use <code>clamp()</code> between rem bounds (22px–32px equivalent) so a seven-word title does not wrap to five lines at 320px. Body text never scales fluidly — it tracks the user's base size exactly.</p>
-    </div>
   </section>
-<section class="section">
-      <h2 class="section-title" id="panel-label">Panel label</h2>
-      <p class="ds-section-desc">The small uppercase Condensed label that names a panel, a column or
-      a group. It is not a heading level and stays out of the document outline &mdash; if a reader
-      needs to navigate to it, it is an <code>h3</code> or an <code>h4</code> at the sizes above.</p>
 
-      <div class="specimen">
-        <div class="specimen-meta">
-          <div class="name">.ds-panel-label</div>
-          <div class="detail">0.75rem &middot; 600 &middot; Condensed &middot; uppercase &middot;
-          0.04em &middot; <code>--ds-text-muted</code></div>
-        </div>
-        <div class="specimen-sample">
-          <p class="ds-panel-label">Paper information</p>
-          <p style="margin:0">The label sits closer to what it introduces than to what precedes it,
-          so it bonds downward. That relationship is intrinsic to the thing, not something its
-          context supplies &mdash; which matters because half the instances in these pages are
-          paragraphs rather than headings.</p>
-        </div>
-      </div>
+  <!-- ───────── Rules that travel with the type ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="sizes-are-rem-and-a-box-that-holds-text-scales-with-its-text">Sizes are rem, and a box that holds text scales with its text</h3>
+    <p>A browser font-size setting has to reach arXiv content (accessibility-priorities.md,
+    cognitive/dyslexia track), so every type size is <code>rem</code>. But a label that grows
+    inside a box that does not is no better than a label that never grew: set a control's padding
+    and minimum width in <code>em</code>, against its own label, and the whole control follows the
+    reader. Absolute floors stay absolute — <code>min-height: 24px</code> is a WCAG target
+    size, not a type size.</p>
+  </section>
+  <section class="section">
+    <h3 class="section-title" id="self-hosted-with-honest-fallbacks">Self-hosted, with honest fallbacks</h3>
+    <p>No Google Fonts, no Typekit, no CDN fonts (DESIGN-POLICIES.md). Every <code>font-family</code> declaration carries system fallbacks; text fonts load with <code>font-display: swap</code> (readability first), STIX Two Math with <code>font-display: auto</code> (math must render in the correct face).</p>
+  </section>
+  <section class="section">
+    <h3 class="section-title" id="do-not-fight-the-reader">Do not fight the reader</h3>
+    <p>No fixed line-heights, no pinned letter-spacing, no <code>!important</code> on font-family in content areas. User stylesheets, reader-mode extensions, and OS settings win — "HTML gives you freedom: you can use software to change colors or typefaces" (research, dyslexia track).</p>
+  </section>
+  <section class="section">
+    <h3 class="section-title" id="fluid-where-titles-meet-phones">Fluid where titles meet phones</h3>
+    <p>Paper titles use <code>clamp()</code> between rem bounds (22px–32px equivalent) so a seven-word title does not wrap to five lines at 320px. Body text never scales fluidly — it tracks the user's base size exactly.</p>
+  </section>
 
-      <details class="ds-acc"><summary>Relevant CSS</summary><div class="ds-acc-body">
-        <dl>
-          <dt>.ds-panel-label</dt>
-          <dd>One class for the whole system. Use it wherever this treatment appears &mdash; panel
-          headings, column labels, the label above a group of controls &mdash; on whichever element
-          is semantically right. A component that owns its internal spacing takes the margin back.</dd>
-          <dt>dt</dt>
-          <dd>A definition term inside <code>.ds-acc-body</code> is this label, and carries no class.</dd>
-        </dl>
-        <p style="margin:var(--ds-space-block) 0 0">Do not reach for it as a heading substitute. A
-        label that a reader needs to navigate to is a heading, and belongs in the outline.</p>
-      </div></details>
-    </section>
 
-    <!-- ───────── Implementation spec — dense, deliberately last ───────── -->
-    <section class="section">
-      <h2 class="section-title" id="spec">Spec</h2>
-      <p class="ds-section-desc">Everything above is the design. This is what an implementer needs: the tokens, the
-      files, the <code>@font-face</code> rules and the fallbacks. Placed last because it is reference, not reading.</p>
+  <h2>Spec</h2>
+  <p class="ds-section-desc">Everything above is the design. This is what an implementer needs: the tokens, the
+  files, the <code>@font-face</code> rules and the fallbacks. Placed last because it is reference, not reading.</p>
 
-      <h3 class="ds-panel-label">Why IBM Plex</h3>
-      <p>Open source under the SIL Open Font License, so there is no licensing cost and no vendor dependency;
-      self-hostable as woff2 from arXiv's own assets; one designer's family covering Sans, Condensed, Mono and Serif
-      so nothing is mixed; broad language coverage including Latin Extended, Cyrillic, Greek, Arabic, Hebrew,
-      Devanagari and Thai; and it pairs with STIX Two Math, which is built for the same technical context. The family
-      was re-evaluated in June 2026 against Atkinson Hyperlegible Next, Source Sans 3, Inter and Public Sans, and
-      kept &mdash; that comparison lives in
-      <a href="../planning/proposals/typeface-re-evaluation-2026-06.md">planning/proposals</a>, not here.</p>
+  <section class="section">
+    <h3 class="section-title" id="why-ibm-plex">Why IBM Plex</h3>
+    <p>Open source under the SIL Open Font License, so there is no licensing cost and no vendor dependency;
+    self-hostable as woff2 from arXiv's own assets; one designer's family covering Sans, Condensed, Mono and Serif
+    so nothing is mixed; broad language coverage including Latin Extended, Cyrillic, Greek, Arabic, Hebrew,
+    Devanagari and Thai; and it pairs with STIX Two Math, which is built for the same technical context. The family
+    was re-evaluated in June 2026 against Atkinson Hyperlegible Next, Source Sans 3, Inter and Public Sans, and
+    kept — that comparison lives in
+    <a href="../planning/proposals/typeface-re-evaluation-2026-06.md">planning/proposals</a>, not here.</p>
+  </section>
 
-      <h3 class="ds-panel-label">Tokens</h3>
-      <pre><code>--ds-font-sans:      "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  <section class="section">
+    <h3 class="section-title" id="tokens">Tokens</h3>
+<pre><code>--ds-font-sans:      "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 --ds-font-condensed: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
 --ds-font-mono:      "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
 --ds-font-serif:     "IBM Plex Serif", Georgia, "STIX Two Text", "Times New Roman", serif;</code></pre>
-      <p>Every stack carries system fallbacks so text stays readable if the web fonts fail: sans falls to the OS
-      system font, mono to the platform monospace. <strong>There is no math token</strong> &mdash; STIX Two Math is
-      applied by the paper renderer on HTML paper pages, not by the design system, so the stylesheet does not declare
-      one.</p>
+    <p>Every stack carries system fallbacks so text stays readable if the web fonts fail: sans falls to the OS
+    system font, mono to the platform monospace. <strong>There is no math token</strong> — STIX Two Math is
+    applied by the paper renderer on HTML paper pages, not by the design system, so the stylesheet does not declare
+    one.</p>
+  </section>
 
-      <h3 class="ds-panel-label">Available weights, and sanctioned ones</h3>
-      <p>Every weight and style IBM Plex ships is self-hosted &mdash; Thin 100, ExtraLight 200,
-      Light 300, Regular 400, Text 450, Medium 500, SemiBold 600 and Bold 700, each with an italic,
-      across Sans, Sans Condensed, Mono and Serif. That is 64 files and about 4 MB in the repository,
-      and it costs a reader nothing: a <code>@font-face</code> rule downloads only when a page uses
-      that face.</p>
-      <p><strong>Available is not the same as approved.</strong> Only the faces the design system uses
-      are declared in <a href="fonts.css">fonts.css</a>; the rest are present but commented out, so you
-      can see what exists without going to look for it. Uncommenting one is how you turn it on &mdash;
-      and it is a decision, not a formality.</p>
+  <section class="section">
+    <h3 class="section-title" id="available-weights-and-sanctioned-ones">Available weights, and sanctioned ones</h3>
+    <p>Every weight and style IBM Plex ships is self-hosted — Thin 100, ExtraLight 200,
+    Light 300, Regular 400, Text 450, Medium 500, SemiBold 600 and Bold 700, each with an italic,
+    across Sans, Sans Condensed, Mono and Serif. That is 64 files and about 4 MB in the repository,
+    and it costs a reader nothing: a <code>@font-face</code> rule downloads only when a page uses
+    that face.</p>
+    <p><strong>Available is not the same as approved.</strong> Only the faces the design system uses
+    are declared in <a href="fonts.css">fonts.css</a>; the rest are present but commented out, so you
+    can see what exists without going to look for it. Uncommenting one is how you turn it on —
+    and it is a decision, not a formality.</p>
+    <div class="table-scroll" role="region" aria-label="Sanctioned weights" tabindex="0">
       <table class="ds-table-framed">
         <thead><tr><th>Weight</th><th>Use it for</th></tr></thead>
         <tbody>
           <tr><td>400 Regular</td><td>Body copy, and anything that is read rather than scanned.</td></tr>
           <tr><td>500 Medium</td><td>Navigation, table headers, the quieter emphasis.</td></tr>
           <tr><td>600 SemiBold</td><td>Headings, button labels, and the label half of a label/value pair.</td></tr>
-          <tr><td>700 Bold</td><td>Available and in use in the internal mockups. Whether the scale sanctions
-          it above 600 is an open question &mdash; see the backlog before reaching for it.</td></tr>
+          <tr><td>700 Bold</td><td>The h1, and nothing else — see the heading scale.</td></tr>
           <tr><td>100, 200, 300, 450</td><td>Present, unused, and commented out.</td></tr>
         </tbody>
       </table>
-      <div class="ds-alert ds-alert--warning">
-        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-        <div class="ds-alert-content">
-          <p class="ds-alert-title">Light weights are an accessibility problem that contrast ratios do not catch</p>
-          <p>Thin, ExtraLight and Light are now reachable. At interface sizes their strokes are too fine
-          for many readers to resolve even when the colour passes AA &mdash; the ratio measures the
-          hue, not whether the letterform survives. <strong>Body and interface text use 400 or
-          heavier.</strong> Anything lighter belongs at display sizes, if anywhere, and is worth
-          testing before it ships.</p>
-        </div>
+    </div>
+    <div class="ds-alert ds-alert--warning">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Light weights are an accessibility problem that contrast ratios do not catch</p>
+        <p>Thin, ExtraLight and Light are now reachable. At interface sizes their strokes are too fine
+        for many readers to resolve even when the colour passes AA — the ratio measures the
+        hue, not whether the letterform survives. <strong>Body and interface text use 400 or
+        heavier.</strong> Anything lighter belongs at display sizes, if anywhere, and is worth
+        testing before it ships.</p>
       </div>
+    </div>
+  </section>
 
-      <h3 class="ds-panel-label">The files</h3>
-      <p>Self-hosted woff2, from arXiv's static assets. No external font service &mdash; see
-      <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> for why that one is a hard constraint.</p>
-      <pre><code>/static/fonts/
+  <section class="section">
+    <h3 class="section-title" id="the-files">The files</h3>
+    <p>Self-hosted woff2, from arXiv's static assets. No external font service — see
+    <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> for why that one is a hard constraint.</p>
+<pre><code>/static/fonts/
   IBMPlexSans-*.woff2            8 weights x roman/italic  = 16 files
   IBMPlexSansCondensed-*.woff2   8 weights x roman/italic  = 16 files
   IBMPlexMono-*.woff2            8 weights x roman/italic  = 16 files
   IBMPlexSerif-*.woff2           8 weights x roman/italic  = 16 files
-  STIXTwoMath-Regular.woff2      <em>&larr; HTML paper pages only</em></code></pre>
-      <p>This repo's pattern pages serve the same files from <code>docs/fonts/</code>, declared in
-      <a href="fonts.css">fonts.css</a>, which every page links ahead of the stylesheet. The
-      <code>@font-face</code> rules live in that separate file rather than in the design system itself, because
-      consumers bundle the design system with their own font paths. Files come from
-      <a href="https://github.com/IBM/plex">IBM/plex</a> (OFL).</p>
+  STIXTwoMath-Regular.woff2      ← HTML paper pages only</code></pre>
+    <p>This repo's pattern pages serve the same files from <code>docs/fonts/</code>, declared in
+    <a href="fonts.css">fonts.css</a>, which every page links ahead of the stylesheet. The
+    <code>@font-face</code> rules live in that separate file rather than in the design system itself, because
+    consumers bundle the design system with their own font paths. Files come from
+    <a href="https://github.com/IBM/plex">IBM/plex</a> (OFL).</p>
+  </section>
 
-      <h3 class="ds-panel-label">@font-face</h3>
-      <pre><code>@font-face {
+  <section class="section">
+    <h3 class="section-title" id="font-face">@font-face</h3>
+<pre><code>@font-face {
   font-family: "IBM Plex Sans";
   font-weight: 400;
   font-style: normal;
@@ -497,45 +654,53 @@
   src: local("STIX Two Math"),
        url("/static/fonts/STIXTwoMath-Regular.woff2") format("woff2");
 }</code></pre>
-      <ul class="notes">
-        <li><code>font-display: swap</code> for text: the fallback shows immediately and swaps when the real font
-        arrives. Readability beats visual stability.</li>
-        <li><code>font-display: auto</code> for STIX Two Math: maths in a fallback font can be actively wrong, so it
-        is better to wait briefly.</li>
-        <li><code>local()</code> for STIX Two Math skips the ~300KB download if the reader already has it.</li>
-        <li>Total: about 135KB for the Plex woff2 files, plus STIX only on paper pages.</li>
-      </ul>
+    <ul class="notes">
+      <li><code>font-display: swap</code> for text: the fallback shows immediately and swaps when the real font
+      arrives. Readability beats visual stability.</li>
+      <li><code>font-display: auto</code> for STIX Two Math: maths in a fallback font can be actively wrong, so it
+      is better to wait briefly.</li>
+      <li><code>local()</code> for STIX Two Math skips the ~300KB download if the reader already has it.</li>
+      <li>Total: about 135KB for the Plex woff2 files, plus STIX only on paper pages.</li>
+    </ul>
+  </section>
 
-      <h3 class="ds-panel-label">Which faces each surface uses</h3>
+  <section class="section">
+    <h3 class="section-title" id="which-faces-each-surface-uses">Which faces each surface uses</h3>
+    <div class="table-scroll" role="region" aria-label="Which faces each surface uses" tabindex="0">
       <table class="ds-table-framed">
         <thead><tr><th>Surface</th><th>Body</th><th>Labels</th><th>Code</th><th>Math</th></tr></thead>
         <tbody>
-          <tr><td>Abstract pages</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>&mdash;</td></tr>
+          <tr><td>Abstract pages</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>—</td></tr>
           <tr><td>HTML paper pages</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>STIX Two Math</td></tr>
-          <tr><td>Internal tools</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>&mdash;</td></tr>
-          <tr><td>Homepage, listings, search</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>&mdash;</td></tr>
+          <tr><td>Internal tools</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>—</td></tr>
+          <tr><td>Homepage, listings, search</td><td>Plex Sans</td><td>Plex Sans Condensed</td><td>Plex Mono</td><td>—</td></tr>
         </tbody>
       </table>
+    </div>
+  </section>
 
-      <h3 class="ds-panel-label">Sizes in use</h3>
-      <p>Not yet a formal scale &mdash; these are the sizes used consistently across the mockups, recorded so the
-      scale can be settled from what exists rather than invented.</p>
+  <section class="section">
+    <h3 class="section-title" id="sizes-in-use">Sizes in use</h3>
+    <p>Not yet a formal scale — these are the sizes used consistently across the mockups, recorded so the
+    scale can be settled from what exists rather than invented.</p>
+    <div class="table-scroll" role="region" aria-label="Sizes in use" tabindex="0">
       <table class="ds-table-framed">
         <thead><tr><th>Use</th><th>Size</th><th>Weight</th><th>Face</th></tr></thead>
         <tbody>
           <tr><td>Paper title (abstract page)</td><td>24px</td><td>600</td><td>Plex Sans</td></tr>
-          <tr><td>Section heading</td><td>15&ndash;16px</td><td>600</td><td>Plex Sans</td></tr>
+          <tr><td>Section heading</td><td>15–16px</td><td>600</td><td>Plex Sans</td></tr>
           <tr><td>Body text</td><td>15px</td><td>400</td><td>Plex Sans</td></tr>
           <tr><td>Metadata labels, table headers</td><td>11px uppercase</td><td>600</td><td>Plex Sans Condensed</td></tr>
-          <tr><td>Secondary text, captions</td><td>13px</td><td>400&ndash;500</td><td>Plex Sans</td></tr>
+          <tr><td>Secondary text, captions</td><td>13px</td><td>400–500</td><td>Plex Sans</td></tr>
           <tr><td>Annotation (margin footnote, alt text)</td><td>13px italic</td><td>400</td><td>Plex Serif</td></tr>
-          <tr><td>Code, identifiers</td><td>12&ndash;13px</td><td>400</td><td>Plex Mono</td></tr>
+          <tr><td>Code, identifiers</td><td>12–13px</td><td>400</td><td>Plex Mono</td></tr>
           <tr><td>Nav links</td><td>13px</td><td>500</td><td>Plex Sans</td></tr>
         </tbody>
       </table>
-    </section>
-
     </div>
+  </section>
+
+</div>
 
 <script>
   // Nav dropdowns: close on outside click and Esc (enhancement only —
@@ -559,5 +724,6 @@
 </script>
 <script src="copy-code.js" defer></script>
 <script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
 </body>
 </html>
