@@ -6,40 +6,8 @@
   <title>Forms &amp; validation — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
 <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
-  <style>
-    /* One content width for everything structural — demos, tables, accordions,
-       the guidance blocks. Cohesion comes from a shared measure, not from four
-       different ones. Prose keeps its own, narrower value: see --doc-prose. */
-    :root { --doc-measure: 860px; }
-.group-title { font-family: var(--ds-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ds-text-muted); margin:var(--ds-space-6) 0 var(--ds-space-3); }
-    .group-title:first-of-type { margin-top:0; }
-    .action-bar { margin-top:var(--ds-space-6); padding-top: 18px; border-top: 1px solid var(--ds-border); }
-    .spec-table { margin-top:10px; }
-    .spec-table th { background: var(--ds-surface-muted); text-align: left; padding: 8px 13px; font-family: var(--ds-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ds-text-muted); }
-    .spec-table td { padding: 9px 13px; border-top: 1px solid var(--ds-surface-muted); vertical-align: top; }
-    .spec-table td:first-child { white-space: nowrap; }
-    /* Local to this page: the Tone block's definition list and its
-       instead/write table. The box itself is .ds-note. */
-    .ds-note dl { margin: 0; font-size: 13px; }
-    .ds-note dt { font-family: var(--ds-font-condensed); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; color: var(--ds-text-muted); margin-top: 10px; }
-    .ds-note dd { margin: 2px 0 0; }
-    .ds-note .spec-table { margin-top: var(--ds-space-3); }
-    .ds-note li { margin: 7px 0; }
-
-    .states { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:var(--ds-space-block); }
-    .state-card { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; padding: 16px 18px; }
-    /* The state cards are display containers, not forms. The 50% default
-       assumes a full content column; inside a ~260px card it leaves a field
-       about 130px wide, which demonstrates nothing about the state it is there
-       to show. Width behaviour is demonstrated in the form demo above. */
-    .state-card .ds-field { max-width: 100%; }
-    .state-card h4 { font-family: var(--ds-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ds-text-muted); margin:0 0 var(--ds-space-3); }
-
-  
-    /* Inline links in page copy. These sit on the page canvas. Nav links
-       carry their own, more specific rules. */
-</style>
 </head>
 <body class="ds-page">
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
@@ -98,48 +66,73 @@
   <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
 
-<div class="ds-container">
+<div class="ds-container ds-zone-secondary">
 
   <header class="ds-page-header">
     <h1>Forms &amp; validation</h1>
-    <p>How arXiv builds a form, and how it tells someone what is wrong with one. Below:
-      field construction, the three dispositions a validation result can take, how a problem is
-      surfaced beside its field and again above the form, what every field owes a screen reader, and
-      how the messages should sound. Field widths are set by the type of control, on the
-      assumption that the element already tells you how much someone will type &mdash; a textarea
-      holds paragraphs, a date input holds eight characters &mdash; and two classes override that
-      where the content is unusually short or unusually long. <code>.ds-field</code> lives in both
-      stylesheets, so the same markup works in internal tools and on the public site &mdash; only the
-      accent color differs.</p>
+    <p>How arXiv builds a form, and how it tells someone what is wrong with one. The same markup works in internal tools and on the public site; only the accent color differs.</p>
   </header>
 
-  <!-- ── The rendered thing ── -->
-  <div class="section">
-    <h2 class="section-title" id="demo">Demo</h2>
+
+  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#fields">Fields</a></li>
+            <li><a href="#validation">Validation</a></li>
+            <li><a href="#alerts-above-the-form">Alerts above the form</a></li>
+            <li><a href="#switch">Switch</a></li>
+            <li><a href="#segmented-control">Segmented control</a></li>
+            <li><a href="#tooltip">Tooltip</a></li>
+            <li><a href="#stepping-through-a-set">Stepping through a set</a></li>
+            <li><a href="#field-width">Field width</a></li>
+            <li><a href="#validation-tiers">Validation tiers</a></li>
+            <li><a href="#layout">Layout</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <div class="ds-full ds-zone-primary">
+
+  <!-- ───────── Fields ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="fields">Fields</h2>
     <p class="ds-section-desc">A field is a label, a control, optional help text, and a slot for a
     message. That order never changes. Labels sit above their controls, and related fields group by
     spacing rather than boxes.</p>
 
-    <div class="ds-card demo">
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Field widths are set by the type of control, on the assumption that the element already tells you how much someone will type, and two classes override that where the content is unusually short or unusually long (see Field width, below).</p>
+      </details>
       <form class="ds-form" onsubmit="return false">
 
         <div class="ds-field">
           <label class="ds-label" for="f-email">Email address</label>
-          <input class="ds-input" id="f-email" type="email" required aria-required="true"
-                 aria-describedby="f-email-hint" value="e.vasquez@example.edu">
+          <input class="ds-input" id="f-email" type="email" required aria-required="true" aria-describedby="f-email-hint" value="e.vasquez@example.edu">
           <p class="ds-hint" id="f-email-hint">Used only to confirm your submission.</p>
         </div>
-
-
 
         <div class="ds-field">
           <label class="ds-label" for="f-cat">Primary category</label>
           <select class="ds-input" id="f-cat" required aria-required="true">
-            <option>hep-th &mdash; High Energy Physics &ndash; Theory</option>
-            <option>math.CO &mdash; Combinatorics</option>
-            <option>physics.optics &mdash; Optics</option>
+            <option>hep-th — High Energy Physics – Theory</option>
+            <option>math.CO — Combinatorics</option>
+            <option>physics.optics — Optics</option>
           </select>
         </div>
+
         <div class="ds-field ds-field--short">
           <label class="ds-label" for="f-orcid">ORCID iD<span class="label-optional">(optional)</span></label>
           <input class="ds-input" id="f-orcid" type="text" placeholder="0000-0000-0000-0000">
@@ -147,8 +140,7 @@
 
         <div class="ds-field">
           <label class="ds-label" for="f-reason">Reason for withdrawal</label>
-          <textarea class="ds-input is-invalid" id="f-reason" required aria-required="true"
-                    aria-describedby="f-reason-err"></textarea>
+          <textarea class="ds-input is-invalid" id="f-reason" required aria-required="true" aria-invalid="true" aria-describedby="f-reason-err"></textarea>
           <p class="field-error" id="f-reason-err">Give a reason. It appears publicly on the abstract page.</p>
         </div>
 
@@ -161,154 +153,246 @@
           <span>Apply the same change to all versions</span>
         </label>
 
-        <div class="ds-btn-group ds-btn-group--end action-bar">
+        <div class="ds-btn-group ds-btn-group--end" style="margin-top:var(--ds-space-block); border-top:1px solid var(--ds-border); padding-top:var(--ds-space-4)">
           <button class="ds-btn ds-btn-text" type="button">Cancel</button>
           <button class="ds-btn ds-btn-primary" type="submit">Save changes</button>
         </div>
       </form>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;form class="ds-form"&gt;
+  &lt;div class="ds-field"&gt;
+    &lt;label class="ds-label" for="f-email"&gt;Email address&lt;/label&gt;
+    &lt;input class="ds-input" id="f-email" type="email" required aria-required="true" aria-describedby="f-email-hint" value="e.vasquez@example.edu"&gt;
+    &lt;p class="ds-hint" id="f-email-hint"&gt;Used only to confirm your submission.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="ds-field"&gt;
+    &lt;label class="ds-label" for="f-cat"&gt;Primary category&lt;/label&gt;
+    &lt;select class="ds-input" id="f-cat" required aria-required="true"&gt;
+      &lt;option&gt;hep-th — High Energy Physics – Theory&lt;/option&gt;
+      &lt;option&gt;math.CO — Combinatorics&lt;/option&gt;
+      &lt;option&gt;physics.optics — Optics&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/div&gt;
+  &lt;div class="ds-field ds-field--short"&gt;
+    &lt;label class="ds-label" for="f-orcid"&gt;ORCID iD&lt;span class="label-optional"&gt;(optional)&lt;/span&gt;&lt;/label&gt;
+    &lt;input class="ds-input" id="f-orcid" type="text" placeholder="0000-0000-0000-0000"&gt;
+  &lt;/div&gt;
+  &lt;label class="ds-check"&gt;
+    &lt;input type="checkbox" checked&gt;
+    &lt;span&gt;Email me when the moderators respond&lt;/span&gt;
+  &lt;/label&gt;
+  &lt;div class="ds-btn-group ds-btn-group--end"&gt;
+    &lt;button class="ds-btn ds-btn-text" type="button"&gt;Cancel&lt;/button&gt;
+    &lt;button class="ds-btn ds-btn-primary" type="submit"&gt;Save changes&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</code></pre>
+          <dl>
+            <dt>.ds-form</dt>
+            <dd>Wraps the fields. Half-width fields share a line, a full-width one takes its own,
+            and anything that is not a field takes a whole row. Optional: a plain
+            <code>&lt;form&gt;</code> stacks every field.</dd>
+            <dt>.ds-field</dt>
+            <dd>Wraps one label, control, hint and message, in that order, and supplies the spacing
+            between fields.</dd>
+            <dt>.ds-label</dt>
+            <dd>The label. Always present, always above the control, and always tied to it with
+            <code>for</code>.</dd>
+            <dt>.label-optional</dt>
+            <dd>On the label of an <em>optional</em> field, holding the word
+            <code>(optional)</code>. Required fields carry no marker; they take
+            <code>required</code> and <code>aria-required="true"</code> on the control instead.</dd>
+            <dt>.ds-input</dt>
+            <dd>The control. Goes on <code>input</code>, <code>select</code> and
+            <code>textarea</code> alike.</dd>
+            <dt>.ds-hint</dt>
+            <dd>Help text, after the control. Give it an <code>id</code> and name it in the
+            control's <code>aria-describedby</code>. Say what good input looks like <em>before</em>
+            someone gets it wrong.</dd>
+            <dt>.ds-select</dt>
+            <dd>Optional wrapper around a <code>&lt;select class="ds-input"&gt;</code> that swaps the
+            native arrow for the drawn chevron. Not used above: the native arrow is right in dark
+            mode, at every zoom and in forced colors, so leave it unless there is a reason.</dd>
+            <dt>.ds-check</dt>
+            <dd>A checkbox or radio row: a <code>&lt;label&gt;</code> holding the native control and
+            a <code>&lt;span&gt;</code> with the text. The whole label is the target.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
-    <details class="ds-acc">
-      <summary>Relevant CSS</summary>
-      <div class="ds-acc-body"><table class="ds-table-framed spec-table">
-        <tr><td><code>.ds-field</code></td><td>Wraps one label + control + hint + message, and supplies the spacing between fields.</td></tr>
-        <tr><td><code>.ds-label</code></td><td>The label. Always present, always above the control.</td></tr>
-        <tr><td><code>.ds-input</code></td><td>The control &mdash; goes on <code>input</code>, <code>select</code> and <code>textarea</code> alike.</td></tr>
-        <tr><td><code>.ds-hint</code></td><td>Help text. Say what good input looks like <em>before</em> someone gets it wrong.</td></tr>
-        <tr><td><code>.label-optional</code></td><td>On the label of an <em>optional</em> field. Required fields carry no marker.</td></tr>
-        <tr><td><code>.ds-select</code></td><td>Optional wrapper that swaps the native arrow for the drawn chevron.</td></tr>
-        <tr><td><code>.ds-check</code></td><td>A checkbox or radio row. Native control, tinted with <code>accent-color</code>.</td></tr>
-      </table>
-    </div>
-    </details>
+  </section>
 
-  </div>
-
-  
-
-  <!-- ── Validation ── -->
-  <div class="section">
+  <!-- ───────── Validation ───────── -->
+  <section class="section">
     <h2 class="section-title" id="validation">Validation</h2>
     <p class="ds-section-desc">Fields can be in three possible states: normal, validated, or disabled.
-    Validation styles change based on the error disposition &mdash; that is, its severity.</p>
+    Validation styles change based on the error disposition, that is, its severity.</p>
 
-    <div class="states">
-      <div class="state-card">
-        <h4>Normal</h4>
-        <div class="ds-field">
-          <label class="ds-label" for="v1">Reason</label>
-          <input class="ds-input" id="v1" type="text" aria-describedby="v1-h">
-          <p class="ds-hint" id="v1-h">One sentence is enough.</p>
+    <div class="ds-card">
+      <div class="form-states">
+        <div class="form-state">
+          <span class="state-label">Normal</span>
+          <div class="ds-field ds-field--full">
+            <label class="ds-label" for="v1">Reason</label>
+            <input class="ds-input" id="v1" type="text" aria-describedby="v1-h">
+            <p class="ds-hint" id="v1-h">One sentence is enough.</p>
+          </div>
+        </div>
+        <div class="form-state">
+          <span class="state-label">Disabled</span>
+          <div class="ds-field ds-field--full">
+            <label class="ds-label" for="v2">Reason</label>
+            <input class="ds-input" id="v2" type="text" value="Superseded by v3" disabled>
+            <p class="ds-hint">Locked once a paper is announced.</p>
+          </div>
+        </div>
+        <div class="form-state">
+          <span class="state-label">Validated · error</span>
+          <div class="ds-field ds-field--full">
+            <label class="ds-label" for="v3">Abstract</label>
+            <input class="ds-input is-invalid" id="v3" type="text" aria-invalid="true" aria-describedby="v3-m" value="&lt;br&gt;Our analysis introduces">
+            <p class="field-error" id="v3-m">Remove the HTML markup <code>&lt;br&gt;</code>.</p>
+          </div>
+        </div>
+        <div class="form-state">
+          <span class="state-label">Validated · warning</span>
+          <div class="ds-field ds-field--full">
+            <label class="ds-label" for="v4">ACM classification<span class="label-optional">(optional)</span></label>
+            <input class="ds-input is-warning" id="v4" type="text" aria-describedby="v4-m" value="s 25">
+            <p class="field-warning" id="v4-m">This does not look like an ACM code. Expected form: <code>F.2.2</code>.</p>
+          </div>
+        </div>
+        <div class="form-state">
+          <span class="state-label">Validated · info</span>
+          <div class="ds-field ds-field--full">
+            <label class="ds-label" for="v5">Title</label>
+            <input class="ds-input is-info" id="v5" type="text" aria-describedby="v5-m" value="Heavy-tailed gradients in deep networks">
+            <p class="field-info" id="v5-m">Extra spaces were removed. Please confirm it reads correctly.</p>
+          </div>
+        </div>
+        <div class="form-state">
+          <span class="state-label">Validated · multiple problems</span>
+          <div class="ds-field ds-field--full">
+            <label class="ds-label" for="m1">Abstract</label>
+            <textarea class="ds-input is-invalid" id="m1" rows="3" aria-invalid="true" aria-describedby="m1-m">Abstract: We study the convergence of stochastic gradient methods.&lt;br&gt;Data at https://example.org/sgd.</textarea>
+            <ol class="field-messages" id="m1-m">
+              <li class="field-error">Do not begin the abstract with the word “Abstract”.</li>
+              <li class="field-error">Remove the HTML markup <code>&lt;br&gt;</code>.</li>
+              <li class="field-warning">Font commands are not processed and appear literally.</li>
+              <li class="field-warning">Add a space between a URL and the punctuation after it.</li>
+            </ol>
+          </div>
         </div>
       </div>
-      <div class="state-card">
-        <h4>Disabled</h4>
-        <div class="ds-field">
-          <label class="ds-label" for="v2">Reason</label>
-          <input class="ds-input" id="v2" type="text" value="Superseded by v3" disabled>
-          <p class="ds-hint">Locked once a paper is announced.</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-field ds-field--full"&gt;
+  &lt;label class="ds-label" for="v3"&gt;Abstract&lt;/label&gt;
+  &lt;input class="ds-input is-invalid" id="v3" type="text" aria-invalid="true" aria-describedby="v3-m" value="&lt;br&gt;Our analysis introduces"&gt;
+  &lt;p class="field-error" id="v3-m"&gt;Remove the HTML markup &lt;code&gt;&lt;br&gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="ds-field ds-field--full"&gt;
+  &lt;label class="ds-label" for="v4"&gt;ACM classification&lt;span class="label-optional"&gt;(optional)&lt;/span&gt;&lt;/label&gt;
+  &lt;input class="ds-input is-warning" id="v4" type="text" aria-describedby="v4-m" value="s 25"&gt;
+  &lt;p class="field-warning" id="v4-m"&gt;This does not look like an ACM code. Expected form: &lt;code&gt;F.2.2&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="ds-field ds-field--full"&gt;
+  &lt;label class="ds-label" for="m1"&gt;Abstract&lt;/label&gt;
+  &lt;textarea class="ds-input is-invalid" id="m1" rows="3" aria-invalid="true" aria-describedby="m1-m"&gt;Abstract: We study the convergence of stochastic gradient methods.&lt;br&gt;Data at https://example.org/sgd.&lt;/textarea&gt;
+  &lt;ol class="field-messages" id="m1-m"&gt;
+    &lt;li class="field-error"&gt;Do not begin the abstract with the word “Abstract”.&lt;/li&gt;
+    &lt;li class="field-error"&gt;Remove the HTML markup &lt;code&gt;&lt;br&gt;&lt;/code&gt;.&lt;/li&gt;
+    &lt;li class="field-warning"&gt;Font commands are not processed and appear literally.&lt;/li&gt;
+    &lt;li class="field-warning"&gt;Add a space between a URL and the punctuation after it.&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.is-invalid</dt>
+            <dd>On the control, for the error tier. Pair with <code>aria-invalid="true"</code>.</dd>
+            <dt>.is-warning</dt>
+            <dd>On the control, for the warning tier. No <code>aria-invalid</code>: the value is
+            accepted.</dd>
+            <dt>.is-info</dt>
+            <dd>On the control, for the info tier: arXiv changed the value and is telling the author.
+            No <code>aria-invalid</code>.</dd>
+            <dt>.field-error, .field-warning, .field-info</dt>
+            <dd>The message, <strong>after</strong> the control, one class per tier. Needs an
+            <code>id</code> that the control's <code>aria-describedby</code> names. Keep it
+            <code>hidden</code> until it applies.</dd>
+            <dt>.field-messages</dt>
+            <dd>An <code>&lt;ol&gt;</code> when one field carries several problems. Each
+            <code>&lt;li&gt;</code> takes its own tier class, and the list takes the <code>id</code>
+            the control points at. The control takes the class of the worst tier in the list.</dd>
+            <dt>[disabled]</dt>
+            <dd>On the control. The label and hint stay; the control greys out and leaves the tab
+            order. For a control that could explain why it is unavailable, prefer
+            <code>aria-disabled="true"</code>; see the accessibility essentials.</dd>
+          </dl>
         </div>
-      </div>
-      <div class="state-card">
-        <h4>Validated &middot; error</h4>
-        <div class="ds-field">
-          <label class="ds-label" for="v3">Abstract</label>
-          <input class="ds-input is-invalid" id="v3" type="text" aria-invalid="true"
-                 aria-describedby="v3-m" value="&lt;br&gt;Our analysis introduces">
-          <p class="field-error" id="v3-m">Remove the HTML markup <code>&lt;br&gt;</code>.</p>
-        </div>
-      </div>
-      <div class="state-card">
-        <h4>Validated &middot; warning</h4>
-        <div class="ds-field">
-          <label class="ds-label" for="v4">ACM classification<span class="label-optional">(optional)</span></label>
-          <input class="ds-input is-warning" id="v4" type="text" aria-describedby="v4-m" value="s 25">
-          <p class="field-warning" id="v4-m">This does not look like an ACM code. Expected form: <code>F.2.2</code>.</p>
-        </div>
-      </div>
-      <div class="state-card">
-        <h4>Validated &middot; info</h4>
-        <div class="ds-field">
-          <label class="ds-label" for="v5">Title</label>
-          <input class="ds-input is-info" id="v5" type="text" aria-describedby="v5-m"
-                 value="Heavy-tailed gradients in deep networks">
-          <p class="field-info" id="v5-m">Extra spaces were removed. Please confirm it reads correctly.</p>
-        </div>
-      </div>
-      <div class="state-card">
-        <h4>Validated &middot; multiple errors</h4>
-        <div class="ds-field">
-          <label class="ds-label" for="m1">Abstract</label>
-          <textarea class="ds-input" id="m1" rows="3" aria-invalid="true"
-                    aria-describedby="m1-m">Abstract: We study the convergence of stochastic gradient methods.&lt;br&gt;Data at https://example.org/sgd.</textarea>
-          <ol class="field-messages" id="m1-m">
-            <li class="field-error">Do not begin the abstract with the word &ldquo;Abstract&rdquo;.</li>
-            <li class="field-error">Remove the HTML markup <code>&lt;br&gt;</code>.</li>
-            <li class="field-warning">Font commands are not processed and appear literally.</li>
-            <li class="field-warning">Add a space between a URL and the punctuation after it.</li>
-          </ol>
-        </div>
-      </div>
+      </details>
     </div>
+  </section>
 
-    <table class="ds-table-framed spec-table">
-      <tr><th>Disposition</th><th>Can they continue?</th><th>What it means</th></tr>
-      <tr><td><strong>Error</strong></td><td>No</td><td>The value is not acceptable and must be corrected.</td></tr>
-      <tr><td><strong>Warning</strong></td><td>Yes</td><td>Accepted, but the submission may be held for moderator review.</td></tr>
-      <tr><td><strong>Info</strong></td><td>Yes</td><td>arXiv changed the value automatically. Nothing is wrong; the author is being told.</td></tr>
-    </table>
-
-    <p class="ds-section-desc" style="margin-top:14px">The <strong>info</strong> disposition is what makes
-    automatic correction legitimate: normalising whitespace or stripping markup is an edit to
-    author-submitted content, and what makes that acceptable is that the author sees the change before
-    it is committed. The review step is not a nicety to drop later for &ldquo;obvious&rdquo; fixes.</p>
-
-    <details class="ds-acc">
-      <summary>Relevant CSS</summary>
-      <div class="ds-acc-body"><table class="ds-table-framed spec-table">
-        <tr><td><code>.is-invalid</code></td><td>On the control, for the error disposition. Pair with <code>aria-invalid="true"</code>.</td></tr>
-        <tr><td><code>.is-warning</code></td><td>On the control, for the warning disposition.</td></tr>
-        <tr><td><code>.is-info</code></td><td>On the control, for the info disposition.</td></tr>
-        <tr><td><code>.field-error</code></td><td>The message, <strong>after</strong> the control. Keep <code>hidden</code> until it applies.</td></tr>
-        <tr><td><code>.field-warning</code></td><td>As above, for a warning.</td></tr>
-        <tr><td><code>.field-info</code></td><td>As above, for an automatic change.</td></tr>
-        <tr><td><code>.field-messages</code></td><td>An <code>&lt;ol&gt;</code> when one field carries several problems. Each <code>&lt;li&gt;</code> takes its own tier class.</td></tr>
-      </table></div>
-    </details>
-
-    <h3 class="ds-panel-label">Alerts above the form</h3>
+  <!-- ───────── Alerts above the form ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="alerts-above-the-form">Alerts above the form</h2>
     <p class="ds-section-desc">On a form of any length, repeat the problems above the first field. This
-    is not a new component &mdash; it is <a href="alerts.html"><code>.ds-alert</code></a>, specified
+    is not a new component: it is <a href="alerts.html"><code>.ds-alert</code></a>, specified
     on its own page, holding an ordered list of links. What follows is only what is particular to
     using one for validation.</p>
 
-    <ul class="ds-section-desc">
-      <li><strong>One alert per severity, never a mixed one.</strong> Red has to mean &ldquo;you
-      cannot proceed,&rdquo; and a non-blocking item inside a red alert destroys that. Two problems
-      of two severities means two alerts, in severity order.</li>
-      <li><strong>The heading carries the count</strong>, and the body says what that severity means
-      for the reader &mdash; whether they may continue.</li>
-      <li><strong>Every row names its field and links to it.</strong> Rows repeat the field name even
-      when several name the same field: without it the reader cannot tell whether three problems mean
-      one field to visit or three.</li>
-      <li><strong>Derive every count and every row from the field results.</strong> A summary written
-      by hand can disagree with the fields it describes, and eventually will.</li>
-    </ul>
-
-    <div class="ds-alert ds-alert--error note-alert">
-      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
-      <div class="ds-alert-content">
-        <p class="ds-alert-title">2 blocking errors</p>
-        <p>Blocking errors must be corrected before you can continue. Select an item to jump to that field.</p>
-        <ol>
-          <li><a href="#m1">Abstract &mdash; do not begin with the word &ldquo;Abstract&rdquo;</a></li>
-          <li><a href="#m1">Abstract &mdash; remove the HTML markup <code>&lt;br&gt;</code></a></li>
-        </ol>
+    <div class="ds-card">
+      <div class="ds-alert ds-alert--error" role="alert">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+        <div class="ds-alert-content">
+          <p class="ds-alert-title">2 blocking errors</p>
+          <p>Blocking errors must be corrected before you can continue. Select an item to jump to that field.</p>
+          <ol>
+            <li><a href="#m1">Abstract — do not begin with the word “Abstract”</a></li>
+            <li><a href="#m1">Abstract — remove the HTML markup <code>&lt;br&gt;</code></a></li>
+          </ol>
+        </div>
       </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-alert ds-alert--error" role="alert"&gt;
+  &lt;svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"&gt;
+    &lt;circle cx="12" cy="12" r="10"/&gt;
+    &lt;path d="m15 9-6 6"/&gt;
+    &lt;path d="m9 9 6 6"/&gt;
+  &lt;/svg&gt;
+  &lt;div class="ds-alert-content"&gt;
+    &lt;p class="ds-alert-title"&gt;2 blocking errors&lt;/p&gt;
+    &lt;p&gt;Blocking errors must be corrected before you can continue. Select an item to jump to that field.&lt;/p&gt;
+    &lt;ol&gt;
+      &lt;li&gt;&lt;a href="#m1"&gt;Abstract — do not begin with the word “Abstract”&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#m1"&gt;Abstract — remove the HTML markup &lt;code&gt;&lt;br&gt;&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-alert--error, .ds-alert--warning, .ds-alert--info</dt>
+            <dd>One alert per severity, never a mixed one: red has to mean “you cannot proceed”, and
+            a non-blocking item inside a red alert destroys that. Two problems of two severities means
+            two alerts, in severity order. A warning summary is the same construction in
+            <code>.ds-alert--warning</code>, and an automatic change is <code>.ds-alert--info</code>.
+            Takes <code>role="alert"</code> for error and warning, <code>role="status"</code> for
+            info. See <a href="alerts.html">Alerts</a> for the four severities and their markup.</dd>
+            <dt>.ds-alert-title</dt>
+            <dd>Carries the count. The body under it says what that severity means for the reader:
+            whether they may continue.</dd>
+            <dt>&lt;ol&gt;</dt>
+            <dd>One row per problem, each an <code>&lt;a&gt;</code> linking to its field. Rows repeat
+            the field name even when several name the same field: without it the reader cannot tell
+            whether three problems mean one field to visit or three. Derive every count and every row
+            from the field results; a summary written by hand can disagree with the fields it
+            describes, and eventually will.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
-
-    <p class="ds-section-desc" style="margin-top:16px">A warning summary is the same construction in
-    <code>.ds-alert--warning</code>, and an automatic change is <code>.ds-alert--info</code>. See
-    <a href="alerts.html">Alerts</a> for the four severities and their markup.</p>
 
     <div class="ds-note">
       <h3 class="ds-note-label">Tone</h3>
@@ -316,90 +400,455 @@
       same thing every time, no idiom in text someone reads while something is going wrong — live in
       <a href="STYLE.md">STYLE.md</a> and are not repeated here. What follows is specific to
       validation messages.</p>
-
-      <dl>
-        <dt>Error</dt>
-        <dd>Say what to do, not what went wrong. Never blame the reader, never use
-        <em>invalid</em> on its own, and never make someone guess which of eight rules they broke.</dd>
-
-        <dt>Warning</dt>
-        <dd>Say what happens if they continue, because they can. &ldquo;Your submission may be held
-        for moderator review&rdquo; is the message; &ldquo;check this field&rdquo; is not.</dd>
-
-        <dt>Info</dt>
-        <dd>Say what changed and ask them to confirm it. This message exists because arXiv edited
-        the author&rsquo;s content, so it reports rather than instructs, and it never implies fault.</dd>
-      </dl>
-
-      <table class="ds-table-framed spec-table">
-        <tr><th>Instead of</th><th>Write</th></tr>
-        <tr><td>Invalid email.</td><td>Enter an email address, like name@university.edu.</td></tr>
-        <tr><td>This field is required.</td><td>Give a reason before saving.</td></tr>
-        <tr><td>Password does not meet requirements.</td><td>Use at least 12 characters.</td></tr>
-        <tr><td>Check this field.</td><td>You may continue, but your submission may be delayed.</td></tr>
-        <tr><td>Title was invalid.</td><td>Extra spaces were removed. Please confirm it reads correctly.</td></tr>
-      </table>
-    </div>
-
-    <div class="ds-note ds-note--essential">
-      <h3 class="ds-note-label">Accessibility essentials</h3>
-      <ul>
-        <li>A real <code>&lt;label for&gt;</code> on every control, visible or <code>sr-only</code>.</li>
-        <li><code>required</code> and <code>aria-required="true"</code> on anything mandatory. Required
-        fields carry no visual marker, so this pair is the <em>only</em> signal &mdash; it is not optional.</li>
-        <li>Every message needs an <code>id</code>, and its control needs
-        <code>aria-describedby</code> pointing at it. Without that a screen reader announces the field
-        and nothing else.</li>
-        <li><code>aria-invalid="true"</code> on the control for the <strong>error</strong> tier only.
-        A warning is not invalid, and a note is not a problem at all.</li>
-        <li>Every tier states itself in text as well as colour &mdash; a visually hidden
-        &ldquo;Error:&rdquo; or &ldquo;Warning:&rdquo; prefix, or the word in the message. Colour and a
-        border are never the only signal (WCAG 1.4.1).</li>
-        <li>Prefer <code>aria-disabled</code> over <code>disabled</code> for a control that could
-        explain itself. <code>disabled</code> leaves the tab order entirely, so a user who cannot
-        proceed finds nothing there and no reason why. The two must look identical.</li>
+      <ul class="notes">
+        <li><strong>Error.</strong> Say what to do, not what went wrong. Never blame the reader, never
+        use <em>invalid</em> on its own, and never make someone guess which of eight rules they
+        broke.</li>
+        <li><strong>Warning.</strong> Say what happens if they continue, because they can. “Your
+        submission may be held for moderator review” is the message; “check this field” is not.</li>
+        <li><strong>Info.</strong> Say what changed and ask them to confirm it. This message exists
+        because arXiv edited the author’s content, so it reports rather than instructs, and it never
+        implies fault.</li>
       </ul>
-      <p class="ds-note-gotcha"><strong>Easy to get wrong</strong>
-      Setting <code>display: flex</code> on an <code>&lt;li&gt;</code> replaces
-      <code>display: list-item</code> and the marker silently disappears &mdash; taking the list
-      semantics with it in some screen readers, so the count is never announced. And
-      <code>aria-describedby</code> must point at something present in the accessibility tree: a
-      tooltip toggled with <code>hidden</code> leaves the control undescribed exactly when it is not
-      being hovered. Keep the description in a visually hidden element, written from the same string.</p>
+      <div class="table-scroll" role="region" aria-label="Wording examples" tabindex="0">
+        <table class="ds-table-framed token-table">
+          <thead><tr><th>Instead of</th><th>Write</th></tr></thead>
+          <tbody>
+            <tr><td>Invalid email.</td><td>Enter an email address, like name@university.edu.</td></tr>
+            <tr><td>This field is required.</td><td>Give a reason before saving.</td></tr>
+            <tr><td>Password does not meet requirements.</td><td>Use at least 12 characters.</td></tr>
+            <tr><td>Check this field.</td><td>You may continue, but your submission may be delayed.</td></tr>
+            <tr><td>Title was invalid.</td><td>Extra spaces were removed. Please confirm it reads correctly.</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </section>
+
+  <!-- ───────── Switch ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="switch">Switch</h2>
+    <p class="ds-section-desc">A boolean that applies the moment it is flipped. If the change needs a
+    Save step, it is a checkbox in a form and not this. That is the whole distinction, and it is
+    about when the change lands rather than how the control is built.</p>
+
+    <div class="ds-card">
+      <div class="state-flex">
+        <div class="ds-btn-group ds-btn-group--stack">
+          <span class="state-label">Public</span>
+          <label class="ds-switch">
+            <input type="checkbox" role="switch">
+            <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+            <span class="ds-switch-label">Email digest</span>
+          </label>
+          <label class="ds-switch">
+            <input type="checkbox" role="switch" checked>
+            <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+            <span class="ds-switch-label">Email digest</span>
+          </label>
+        </div>
+        <div class="ds-btn-group ds-btn-group--stack ds-internal" style="--ds-switch-on: var(--ds-access-lime-deep)">
+          <span class="state-label">Internal</span>
+          <label class="ds-switch">
+            <input type="checkbox" role="switch">
+            <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+            <span class="ds-switch-label">Show withdrawn</span>
+          </label>
+          <label class="ds-switch">
+            <input type="checkbox" role="switch" checked>
+            <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+            <span class="ds-switch-label">Show withdrawn</span>
+          </label>
+        </div>
+        <div class="ds-btn-group ds-btn-group--stack">
+          <span class="state-label">Disabled</span>
+          <label class="ds-switch">
+            <input type="checkbox" role="switch" disabled>
+            <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
+            <span class="ds-switch-label">Unavailable</span>
+          </label>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;label class="ds-switch"&gt;
+  &lt;input type="checkbox" role="switch" checked&gt;
+  &lt;span class="ds-switch-track"&gt;&lt;span class="ds-switch-thumb"&gt;&lt;/span&gt;&lt;/span&gt;
+  &lt;span class="ds-switch-label"&gt;Email digest&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+          <dl>
+            <dt>.ds-switch</dt>
+            <dd>The <code>&lt;label&gt;</code> that wraps the whole control. The visible text goes
+            inside it, because that is what names the switch; a switch with only a heading beside it
+            has no accessible name.</dd>
+            <dt>role="switch"</dt>
+            <dd>On the checkbox input. With it a screen reader says “on” and “off”; without it,
+            “checkbox, checked”. The input stays a real checkbox, so the keyboard behaviour, the
+            state and the form value are native and it works with no JavaScript.</dd>
+            <dt>.ds-switch-track, .ds-switch-thumb</dt>
+            <dd>The drawn track and the thumb that moves along it. Both required, nested as shown,
+            directly after the input.</dd>
+            <dt>.ds-switch-label</dt>
+            <dd>The visible text. Its colour follows the state; nothing else about it changes.</dd>
+            <dt>--ds-switch-on</dt>
+            <dd>The on-track colour: the darker end of the accent, never the accent itself, so the
+            white thumb keeps its contrast. The internal stylesheet re-points this one token and
+            changes nothing else.</dd>
+            <dt>[disabled]</dt>
+            <dd>On the input. The track and the label grey out together.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Segmented control ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="segmented-control">Segmented control</h2>
+    <p class="ds-section-desc">An exclusive choice rendered as adjacent buttons, for a decision where
+    every option should stay visible. Two to four options; past that it is a <code>&lt;select&gt;</code>
+    or a radio group, because a row of six buttons stops being scannable and starts being a wall.</p>
+
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Nothing is selected until something is selected: the undecided example is the resting state of a decision nobody has made yet, and it is a real state, not a bug to hide by pre-selecting the middle option.</p>
+      </details>
+      <div class="state-flex">
+        <div class="ds-btn-group ds-btn-group--stack">
+          <span class="state-label">Positive</span>
+          <fieldset class="ds-seg">
+            <legend class="is-sr-only">Positive example</legend>
+            <button type="button" class="ds-seg-btn ds-seg-btn--positive is-active">Author</button>
+            <button type="button" class="ds-seg-btn ds-seg-btn--neutral">Proxy</button>
+            <button type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
+          </fieldset>
+        </div>
+        <div class="ds-btn-group ds-btn-group--stack">
+          <span class="state-label">Neutral</span>
+          <fieldset class="ds-seg">
+            <legend class="is-sr-only">Neutral example</legend>
+            <button type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
+            <button type="button" class="ds-seg-btn ds-seg-btn--neutral is-active">Proxy</button>
+            <button type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
+          </fieldset>
+        </div>
+        <div class="ds-btn-group ds-btn-group--stack">
+          <span class="state-label">Negative</span>
+          <fieldset class="ds-seg">
+            <legend class="is-sr-only">Negative example</legend>
+            <button type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
+            <button type="button" class="ds-seg-btn ds-seg-btn--neutral">Proxy</button>
+            <button type="button" class="ds-seg-btn ds-seg-btn--negative is-active">No</button>
+          </fieldset>
+        </div>
+        <div class="ds-btn-group ds-btn-group--stack">
+          <span class="state-label">Undecided</span>
+          <fieldset class="ds-seg">
+            <legend class="is-sr-only">Undecided example</legend>
+            <button type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
+            <button type="button" class="ds-seg-btn ds-seg-btn--neutral">Proxy</button>
+            <button type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
+          </fieldset>
+        </div>
+        <div class="ds-btn-group ds-btn-group--stack">
+          <span class="state-label">Interactive</span>
+          <fieldset class="ds-seg" id="demo-seg">
+            <legend class="is-sr-only">Demo decision</legend>
+            <button type="button" class="ds-seg-btn ds-seg-btn--positive">Approve</button>
+            <button type="button" class="ds-seg-btn ds-seg-btn--neutral">Defer</button>
+            <button type="button" class="ds-seg-btn ds-seg-btn--negative">Reject</button>
+          </fieldset>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;fieldset class="ds-seg"&gt;
+  &lt;legend class="is-sr-only"&gt;Positive example&lt;/legend&gt;
+  &lt;button type="button" class="ds-seg-btn ds-seg-btn--positive is-active"&gt;Author&lt;/button&gt;
+  &lt;button type="button" class="ds-seg-btn ds-seg-btn--neutral"&gt;Proxy&lt;/button&gt;
+  &lt;button type="button" class="ds-seg-btn ds-seg-btn--negative"&gt;No&lt;/button&gt;
+&lt;/fieldset&gt;</code></pre>
+          <dl>
+            <dt>.ds-seg</dt>
+            <dd>A <code>&lt;fieldset&gt;</code> holding two to four <code>.ds-seg-btn</code>.</dd>
+            <dt>&lt;legend&gt;</dt>
+            <dd>Required. It is the group's accessible name: without it a screen reader announces
+            three buttons and never says what they decide. Hide it with <code>.is-sr-only</code>
+            when the surrounding text already says it; hide it, do not omit it.</dd>
+            <dt>.ds-seg-btn</dt>
+            <dd>One option, a <code>&lt;button type="button"&gt;</code>. Buttons and not a radio
+            group on purpose: this is for a decision that acts when clicked. A choice that is part
+            of a form that gets submitted is a radio group.</dd>
+            <dt>.ds-seg-btn--positive, .ds-seg-btn--neutral, .ds-seg-btn--negative</dt>
+            <dd>Accept, informational, reject. They take the success, info and error tokens and mean
+            the same thing those mean everywhere else; they are not free colours to pick from, and
+            they flip for dark mode with the rest of the status palette.</dd>
+            <dt>.is-active</dt>
+            <dd>The selected option. Set by script when an option is clicked, and removed from the
+            others; the stylesheet gives the buttons no behaviour.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Tooltip ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="tooltip">Tooltip</h2>
+    <p class="ds-section-desc">A short explanation attached to a control, on hover and on focus. The
+    lighter half of the popover family: no title, no close button, and never content that
+    exists nowhere else.</p>
+
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Not for anything required: if the reader must have it to fill the field in, it is hint text under the label, not a tooltip, which is for the person who stops and wonders.</p>
+      </details>
+      <div class="ds-field ds-field--short">
+        <div class="form-label-row">
+          <label class="ds-label" for="f-doi" style="margin:0">DOI</label>
+          <span class="ds-tooltip-host">
+            <button type="button" class="ds-btn ds-btn-text ds-btn-icon" aria-describedby="tip-doi" style="min-height:24px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span class="is-sr-only">What is a DOI?</span></button>
+            <span class="ds-tooltip" id="tip-doi" role="tooltip">
+              <span class="ds-tooltip-body">If the paper has been published, the publisher's DOI.
+              Leave it empty otherwise; arXiv mints its own.</span>
+            </span>
+          </span>
+        </div>
+        <input class="ds-input" id="f-doi" type="text" placeholder="10.1000/example">
+      </div>
+      <div class="form-label-row form-label-row--end">
+        <span class="ds-label" style="margin:0">Anchored at the trailing edge</span>
+        <span class="ds-tooltip-host">
+          <button type="button" class="ds-btn ds-btn-text ds-btn-icon" aria-describedby="tip-end" style="min-height:24px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span class="is-sr-only">What does end anchoring do?</span></button>
+          <span class="ds-tooltip ds-tooltip--end" id="tip-end" role="tooltip">
+            <span class="ds-tooltip-body">With <code>.ds-tooltip--end</code> the bubble runs back
+            toward the start, so a control near the trailing edge does not push it off screen.</span>
+          </span>
+        </span>
+      </div>
+      <p>Hover or tab to either question mark.</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-field ds-field--short"&gt;
+  &lt;div&gt;
+    &lt;label class="ds-label" for="f-doi"&gt;DOI&lt;/label&gt;
+    &lt;span class="ds-tooltip-host"&gt;
+      &lt;button type="button" class="ds-btn ds-btn-text ds-btn-icon" aria-describedby="tip-doi"&gt;
+        &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
+          &lt;circle cx="12" cy="12" r="10"/&gt;
+          &lt;path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/&gt;
+          &lt;path d="M12 17h.01"/&gt;
+        &lt;/svg&gt;
+        &lt;span class="is-sr-only"&gt;What is a DOI?&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;span class="ds-tooltip" id="tip-doi" role="tooltip"&gt;
+        &lt;span class="ds-tooltip-body"&gt;If the paper has been published, the publisher's DOI. Leave it empty otherwise; arXiv mints its own.&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/div&gt;
+  &lt;input class="ds-input" id="f-doi" type="text" placeholder="10.1000/example"&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-tooltip-host</dt>
+            <dd>Wraps the trigger and the bubble, and positions the bubble. It sits beside the
+            <code>&lt;label&gt;</code>, never inside it: a label forwards clicks to the control it
+            names, so a button nested in one is a button whose clicks land somewhere else.</dd>
+            <dt>aria-describedby="tip-doi"</dt>
+            <dd>On the trigger, naming the tooltip's <code>id</code>. The tooltip describes the
+            control and is never its accessible name: a name that only appears on hover is a name
+            most people never get, so the trigger has an <code>.is-sr-only</code> label of its own,
+            as above.</dd>
+            <dt>.ds-tooltip</dt>
+            <dd>The bubble, with <code>role="tooltip"</code> and the <code>id</code>. It opens
+            downward and toward the inline end, on hover and on focus, with no JavaScript. Escape
+            must close it without moving focus, which CSS cannot do: a listener sets
+            <code>hidden</code> on it, and clears it when the pointer or focus arrives again. The
+            script on this page is the reference.</dd>
+            <dt>.ds-tooltip-body</dt>
+            <dd>The text. Short, and never content that exists nowhere else.</dd>
+            <dt>.ds-tooltip--end</dt>
+            <dd>For a host near the trailing edge of its container: the bubble runs back toward the
+            start instead of off screen. Both directions use logical properties, so both are correct
+            in a right-to-left script.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Stepping through a set ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="stepping-through-a-set">Stepping through a set</h2>
+    <p class="ds-section-desc">Moving through items one at a time, such as a moderation queue or a run
+    of submissions, where each item has its own screen and someone works through them in order.</p>
+
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Not numbered pages: a stepper answers “what is next”, a row of page numbers answers “take me to item 40”, and if a surface ever needs the second it is a different component and not a variant of this one.</p>
+      </details>
+      <nav class="ds-pagination" aria-label="Queue navigation">
+        <button class="ds-btn ds-btn-secondary" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</button>
+        <span class="ds-pagination-position" aria-live="polite">Request 1 of 15</span>
+        <button class="ds-btn ds-btn-secondary" type="button">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav class="ds-pagination" aria-label="Queue navigation"&gt;
+  &lt;button class="ds-btn ds-btn-secondary" type="button" disabled&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m15 18-6-6 6-6"/&gt;&lt;/svg&gt; Previous&lt;/button&gt;
+  &lt;span class="ds-pagination-position" aria-live="polite"&gt;Request 1 of 15&lt;/span&gt;
+  &lt;button class="ds-btn ds-btn-secondary" type="button"&gt;Next &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m9 18 6-6-6-6"/&gt;&lt;/svg&gt;&lt;/button&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-pagination</dt>
+            <dd>A <code>&lt;nav&gt;</code> with an <code>aria-label</code> saying which set it steps
+            through. Holds Previous, the position and Next, in that order.</dd>
+            <dt>.ds-pagination-position</dt>
+            <dd>The counter. Takes <code>aria-live="polite"</code>: without it a reader who cannot
+            see the counter has no way to know that the Next they just pressed did anything. The
+            wording is the host's to choose; the counter takes the slack between the buttons, so the
+            buttons stay put as the number grows.</dd>
+            <dt>.ds-btn.ds-btn-secondary</dt>
+            <dd>The two buttons. At either end of the set the button is <code>disabled</code>, not
+            removed: a control that vanishes changes the shape of the toolbar under the reader, and
+            a disabled one says “there is nothing before this”, which is the actual information.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Every control has a label.</strong> Put a real <code>&lt;label for&gt;</code> on
+      every control, pointing at the control's <code>id</code>. Hide it with
+      <code>.is-sr-only</code> when there is no room for it; do not leave it out.</li>
+      <li><strong>Mark the optional fields, not the required ones.</strong> Put
+      <code>(optional)</code> inside the visible label of an optional field. Put
+      <code>required</code> and <code>aria-required="true"</code> on every required control: required
+      fields carry no visual marker, so this pair is the only signal a screen reader gets. Never put
+      either word in <code>aria-label</code> or <code>title</code>.</li>
+      <li><strong>Connect every hint and message to its control.</strong> Give each
+      <code>.ds-hint</code> and each message an <code>id</code>, and list them in the control's
+      <code>aria-describedby</code>. Without that a screen reader announces the field and nothing
+      else.</li>
+      <li><strong>Use <code>aria-invalid</code> for errors only.</strong> Set
+      <code>aria-invalid="true"</code> on a control in the error tier and remove it when the error
+      clears. A warning is not invalid, and an info message is not a problem at all.</li>
+      <li><strong>Say the tier in words.</strong> Colour and a border are never the only signal
+      (WCAG 1.4.1). The message says what is wrong or what changed, or carries a visually hidden
+      “Error:” or “Warning:” prefix.</li>
+      <li><strong>Validate on submit, then move focus.</strong> Do not tell someone they are wrong
+      while they are still typing. Once a field is invalid, re-check it on every <code>input</code>
+      event so the error clears the moment it is fixed. When submission fails, move focus to the
+      first invalid field.</li>
+      <li><strong>Give the summary its role.</strong> The alert above the form takes
+      <code>role="alert"</code> for errors and warnings, so a screen reader announces it at once,
+      and every row in it links to its field.</li>
+      <li><strong>Prefer <code>aria-disabled</code> to <code>disabled</code> for a control that could
+      explain itself.</strong> <code>disabled</code> leaves the tab order entirely, so a user who
+      cannot proceed finds nothing there and no reason why. The two must look identical.</li>
+    </ul>
   </div>
 
-    <div class="ds-note ds-note--internal">
-      <h3 class="ds-note-label">Internal variant</h3>
-      <p>Internal forms mark a required field with an asterisk:
-      <code>&lt;span class="field-required"&gt;*&lt;/span&gt;</code> inside the
-      <code>&lt;label&gt;</code>, rendered in <code>--ds-danger</code>. Public forms do not, which is
-      why <code>required</code> and <code>aria-required</code> are the only signal there.</p>
-      <p>The difference is who is filling the form in. A moderator works through the same six
-      screens all day and reads the asterisk as a glance-level scan of what is left; an author meets
-      the submission form a handful of times a year, and a form scattered with asterisks reads as a
-      list of hurdles. The pair of attributes is still required in both places &mdash; the asterisk
-      is an addition, never a replacement.</p>
-      <p class="ds-note-gotcha"><strong>The flow is the same on both surfaces</strong>
-      Validate on submit, not on the first keystroke, so nobody is told they are wrong while still
-      typing. Once a field is invalid, re-check it on every <code>input</code> event so the error
-      clears the moment it is fixed. On failure, move focus to the first invalid field.</p>
-    </div>
+  </div> <!-- /core zone -->
 
-  <!-- ── Layout ── -->
-  <div class="section">
-    <h2 class="section-title" id="layout">Layout</h2>
-    <ul class="ds-section-desc" style="line-height:1.9; padding-left:20px">
+  <h2>Modifiers</h2>
+
+  <!-- ───────── Field width ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="field-width">Field width</h3>
+    <p class="ds-section-desc">Width follows the content. A field the width of a postcode says what is
+    expected before anyone types, and stretching every control edge-to-edge throws that clue away. Most
+    of this happens without asking: the stylesheet sizes a field from its input <code>type</code>, so
+    a date, a time or a number is already narrow. Two overrides exist for the case the element cannot
+    infer, because <code>type="text"</code> covers a four-digit year and a paper title alike.</p>
+
+    <div class="ds-card">
+      <form class="ds-form" onsubmit="return false">
+        <div class="ds-field ds-field--short">
+          <label class="ds-label" for="w-year">Year</label>
+          <input class="ds-input" id="w-year" type="text" inputmode="numeric" value="2026">
+        </div>
+        <div class="ds-field">
+          <label class="ds-label" for="w-date">Date</label>
+          <input class="ds-input" id="w-date" type="date" value="2026-09-23">
+        </div>
+        <div class="ds-field ds-field--full">
+          <label class="ds-label" for="w-title">Title</label>
+          <input class="ds-input" id="w-title" type="text" value="Heavy-tailed gradients in deep networks: a study of convergence under stochastic optimisation">
+        </div>
+      </form>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;form class="ds-form"&gt;
+  &lt;div class="ds-field ds-field--short"&gt;
+    &lt;label class="ds-label" for="w-year"&gt;Year&lt;/label&gt;
+    &lt;input class="ds-input" id="w-year" type="text" inputmode="numeric" value="2026"&gt;
+  &lt;/div&gt;
+  &lt;div class="ds-field"&gt;
+    &lt;label class="ds-label" for="w-date"&gt;Date&lt;/label&gt;
+    &lt;input class="ds-input" id="w-date" type="date" value="2026-09-23"&gt;
+  &lt;/div&gt;
+  &lt;div class="ds-field ds-field--full"&gt;
+    &lt;label class="ds-label" for="w-title"&gt;Title&lt;/label&gt;
+    &lt;input class="ds-input" id="w-title" type="text" value="Heavy-tailed gradients in deep networks: a study of convergence under stochastic optimisation"&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</code></pre>
+          <dl>
+            <dt>.ds-field--short</dt>
+            <dd>Caps the field at 11rem, for a code, an identifier or a year.</dd>
+            <dt>.ds-field--full</dt>
+            <dd>Releases the cap, for something that genuinely wants the whole measure.</dd>
+            <dt>.ds-field--sm, .ds-field--md, .ds-field--lg</dt>
+            <dd>Internal tools only, in <code>internal/internal-tools.css</code>: caps the control at
+            240px, 360px or 480px. Internal screens are dense enough to need field widths chosen
+            rather than inferred, so on an internal form a person picks the size instead of the
+            input <code>type</code> picking it. Use the pair above on public pages and this trio on
+            internal pages, and do not mix them on one form.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+
+  <h2>Rules</h2>
+
+  <!-- ───────── Validation tiers ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="validation-tiers">Validation tiers</h3>
+    <p class="ds-section-desc">What each tier means for the person filling the form in.</p>
+    <div class="table-scroll" role="region" aria-label="Validation tiers" tabindex="0">
+      <table class="ds-table-framed token-table">
+        <thead><tr><th>Disposition</th><th>Can they continue?</th><th>What it means</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Error</strong></td><td>No</td><td>The value is not acceptable and must be corrected.</td></tr>
+          <tr><td><strong>Warning</strong></td><td>Yes</td><td>Accepted, but the submission may be held for moderator review.</td></tr>
+          <tr><td><strong>Info</strong></td><td>Yes</td><td>arXiv changed the value automatically. Nothing is wrong; the author is being told.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The <strong>info</strong> disposition is what makes automatic correction legitimate:
+    normalising whitespace or stripping markup is an edit to author-submitted content, and what makes
+    that acceptable is that the author sees the change before it is committed. The review step is not
+    a nicety to drop later for “obvious” fixes.</p>
+  </section>
+
+  <!-- ───────── Layout ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="layout">Layout</h3>
+    <ul class="notes">
       <li><strong>Labels go above the control.</strong> A label-left, field-right layout gives a
       ragged edge, reads badly on a phone, and makes it easy to ship a control with no label at all.</li>
       <li><strong>Width follows the content.</strong> A field the width of a postcode says what is
-      expected before anyone types. Stretching every control edge-to-edge throws that clue away. Most
-      of this happens without asking: the stylesheet sizes a field from its input <code>type</code>, so
-      a date, a time or a number is already narrow. Two overrides exist for the case the element cannot
-      infer &mdash; <code>type="text"</code> covers a four-digit year and a paper title alike.
-      <code>.ds-field--short</code> caps a field at 11rem, for a code, an identifier or a year;
-      <code>.ds-field--full</code> releases the cap for something that genuinely wants the whole
-      measure.</li>
+      expected before anyone types. Stretching every control edge-to-edge throws that clue away. The
+      stylesheet sizes a field from its input <code>type</code>, and two classes cover the rest; see
+      Field width, above.</li>
       <li><strong>Group with spacing and a small heading</strong>, not boxes or borders. If spacing
       cannot hold two groups apart, they probably want to be separate pages.</li>
       <li><strong>The action bar is right-aligned</strong>, primary last. On a long form, repeat it at
@@ -407,295 +856,7 @@
       <li><strong>Disabled, not missing.</strong> An action that is unavailable renders disabled, so
       the reader can see it exists and reason about why.</li>
     </ul>
-
-    <div class="ds-note ds-note--internal">
-      <h3 class="ds-note-label">Internal variant</h3>
-      <p>Internal screens are dense enough to need field widths chosen rather than inferred, so the
-      internal stylesheet adds three: <code>.ds-field--sm</code> caps a control at 240px,
-      <code>.ds-field--md</code> at 360px, <code>.ds-field--lg</code> at 480px. The public rule above
-      still holds &mdash; the width follows the content &mdash; but on an internal form a person picks
-      the size instead of the input <code>type</code> picking it.</p>
-      <p class="ds-note-gotcha"><strong>Not yet reconciled</strong>
-      Two width systems for one idea is one too many. They should become one family the next time
-      the field component is opened; until then, use the pair on public pages and the trio on internal
-      pages, and do not mix them on one form.</p>
-    </div>
-  </div>
-
-  <!-- ── Switch ── -->
-  <div class="section">
-    <h2 class="section-title" id="switch">Switch</h2>
-    <p class="ds-section-desc">A boolean that applies the moment it is flipped. If the change needs a
-    Save step, it is a checkbox in a form and not this &mdash; that is the whole distinction, and it is
-    about when the change lands rather than how the control is built.</p>
-
-    <div style="display:flex; gap:var(--ds-space-8); flex-wrap:wrap; align-items:center;
-                padding:var(--ds-space-6); background:var(--ds-surface);
-                border:1px solid var(--ds-border); border-radius:8px">
-      <label class="ds-switch">
-        <input type="checkbox" role="switch">
-        <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
-        <span class="ds-switch-label">Email digest</span>
-      </label>
-      <label class="ds-switch">
-        <input type="checkbox" role="switch" checked>
-        <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
-        <span class="ds-switch-label">Email digest</span>
-      </label>
-      <label class="ds-switch">
-        <input type="checkbox" role="switch" disabled>
-        <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
-        <span class="ds-switch-label">Unavailable</span>
-      </label>
-    </div>
-
-    <p class="ds-panel-label">Markup</p>
-    <pre><code>&lt;label class="ds-switch"&gt;
-  &lt;input type="checkbox" role="switch"&gt;
-  &lt;span class="ds-switch-track"&gt;&lt;span class="ds-switch-thumb"&gt;&lt;/span&gt;&lt;/span&gt;
-  &lt;span class="ds-switch-label"&gt;Email digest&lt;/span&gt;
-&lt;/label&gt;</code></pre>
-
-    <ul class="notes">
-      <li><strong>Why <code>role="switch"</code>.</strong> Without it a screen reader announces
-      &ldquo;checkbox, checked&rdquo;. With it, &ldquo;on&rdquo; and &ldquo;off&rdquo; &mdash; which is
-      what the control actually means. It goes on a real checkbox input, so the keyboard behaviour,
-      the state and the form value all stay native and it works with no JavaScript.</li>
-      <li><strong>Why the on-track is not the accent.</strong> Open Blue is a light fill built to carry
-      dark text, and a white thumb on it is 1.5:1. <code>--ds-switch-on</code> is the darker end of the
-      accent instead: 6.8:1 against the thumb and 6.4:1 against the page, which is what a UI component
-      boundary needs. The internal stylesheet re-points that one token and changes nothing else.</li>
-      <li><strong>State is not carried by colour alone.</strong> The thumb moves, which is a
-      positional cue that survives forced-colors and works for a reader who cannot separate the two
-      track colours (WCAG 1.4.1).</li>
-      <li><strong>The label never changes weight.</strong> It is 600 on and off. A bolder face is a
-      wider face &mdash; the label grew 1.7px on toggle and shoved every control after it along the
-      row, which is visible in a row of three. The general rule: <em>never signal state with anything
-      that changes text metrics</em> &mdash; weight, size, family, letter-spacing. Colour is free.</li>
-      <li><strong>The visible label goes inside the <code>&lt;label&gt;</code></strong>, which is what
-      names the control. A switch with only an adjacent heading has no accessible name.</li>
-    </ul>
-
-    <div class="ds-note ds-note--internal">
-      <h3 class="ds-note-label">Internal variant</h3>
-      <p>On the internal surface the switch is the same component with a different on-track. The internal
-      stylesheet re-points one token &mdash; <code>--ds-switch-on</code> &mdash; and nothing else
-      changes: no second copy of the switch, no override of its parts.</p>
-      <div style="display:flex; gap:var(--ds-space-6); flex-wrap:wrap; margin-top:var(--ds-space-4);
-                  --ds-switch-on: var(--ds-access-lime-deep)">
-        <label class="ds-switch">
-          <input type="checkbox" role="switch" checked>
-          <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
-          <span class="ds-switch-label">Show withdrawn</span>
-        </label>
-        <label class="ds-switch">
-          <input type="checkbox" role="switch">
-          <span class="ds-switch-track"><span class="ds-switch-thumb"></span></span>
-          <span class="ds-switch-label">Show withdrawn</span>
-        </label>
-      </div>
-      <p class="ds-note-gotcha"><strong>Why this is not just &ldquo;the green one&rdquo;</strong>
-      Access Lime itself is 1.5:1 against a white thumb, so the on-track takes the darker end of the
-      internal accent, exactly as the public one takes the darker end of Open Blue. The rule is the
-      contrast, not the hue &mdash; which is why the token is named for its job.</p>
-    </div>
-  </div>
-
-  <!-- ── Segmented control ── -->
-  <div class="section">
-    <h2 class="section-title" id="segmented-control">Segmented control</h2>
-    <p class="ds-section-desc">An exclusive choice rendered as adjacent buttons, for a decision where
-    every option should stay visible. Two to four options; past that it is a <code>&lt;select&gt;</code>
-    or a radio group, because a row of six buttons stops being scannable and starts being a wall.</p>
-
-    <div style="padding:var(--ds-space-6); background:var(--ds-surface);
-                border:1px solid var(--ds-border); border-radius:8px">
-      <p class="ds-panel-label">The three active states</p>
-      <div style="display:flex; gap:var(--ds-space-6); flex-wrap:wrap; margin-bottom:var(--ds-space-6)">
-        <fieldset class="ds-seg">
-          <legend class="is-sr-only">Positive example</legend>
-          <button type="button" class="ds-seg-btn ds-seg-btn--positive is-active">Author</button>
-          <button type="button" class="ds-seg-btn ds-seg-btn--neutral">Proxy</button>
-          <button type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
-        </fieldset>
-        <fieldset class="ds-seg">
-          <legend class="is-sr-only">Neutral example</legend>
-          <button type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
-          <button type="button" class="ds-seg-btn ds-seg-btn--neutral is-active">Proxy</button>
-          <button type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
-        </fieldset>
-        <fieldset class="ds-seg">
-          <legend class="is-sr-only">Negative example</legend>
-          <button type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
-          <button type="button" class="ds-seg-btn ds-seg-btn--neutral">Proxy</button>
-          <button type="button" class="ds-seg-btn ds-seg-btn--negative is-active">No</button>
-        </fieldset>
-        <fieldset class="ds-seg">
-          <legend class="is-sr-only">Undecided example</legend>
-          <button type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
-          <button type="button" class="ds-seg-btn ds-seg-btn--neutral">Proxy</button>
-          <button type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
-        </fieldset>
-      </div>
-      <p class="ds-panel-label">Interactive</p>
-      <fieldset class="ds-seg" id="demo-seg">
-        <legend class="is-sr-only">Demo decision</legend>
-        <button type="button" class="ds-seg-btn ds-seg-btn--positive">Approve</button>
-        <button type="button" class="ds-seg-btn ds-seg-btn--neutral">Defer</button>
-        <button type="button" class="ds-seg-btn ds-seg-btn--negative">Reject</button>
-      </fieldset>
-    </div>
-
-    <p class="ds-panel-label">Markup</p>
-    <pre><code>&lt;fieldset class="ds-seg"&gt;
-  &lt;legend class="is-sr-only"&gt;Endorsement decision&lt;/legend&gt;
-  &lt;button type="button" class="ds-seg-btn ds-seg-btn--positive is-active"&gt;Approve&lt;/button&gt;
-  &lt;button type="button" class="ds-seg-btn ds-seg-btn--neutral"&gt;Defer&lt;/button&gt;
-  &lt;button type="button" class="ds-seg-btn ds-seg-btn--negative"&gt;Reject&lt;/button&gt;
-&lt;/fieldset&gt;</code></pre>
-
-    <ul class="notes">
-      <li><strong>The legend is not optional.</strong> A <code>&lt;fieldset&gt;</code> without a
-      <code>&lt;legend&gt;</code> is a group with no accessible name, so a screen reader announces
-      three buttons and never says what they decide. Hide it with <code>.is-sr-only</code> when the
-      surrounding text already says it &mdash; hide it, do not omit it.</li>
-      <li><strong>The three colours mean the same thing they mean everywhere else.</strong>
-      <code>--positive</code> takes the success tokens, <code>--neutral</code> the info tokens,
-      <code>--negative</code> the error tokens. Accept, informational, reject. They are not free
-      colours to pick from, and they flip for dark mode with the rest of the status palette.</li>
-      <li><strong>Nothing is selected until something is selected.</strong> The fourth example above
-      is the resting state of a decision nobody has made yet, and it is a real state &mdash; not a
-      bug to hide by pre-selecting the middle option.</li>
-      <li><strong>Buttons, not a radio group, on purpose.</strong> A radio group is right when the
-      choice is part of a form that gets submitted. This is for a decision that acts when clicked,
-      which is why <code>.is-active</code> is set by script rather than by <code>:checked</code>.</li>
-    </ul>
-  </div>
-
-  <!-- ── Tooltip ── -->
-  <div class="section">
-    <h2 class="section-title" id="tooltip">Tooltip</h2>
-    <p class="ds-section-desc">A short explanation attached to a control, on hover and on focus. The
-    lighter half of the popover family &mdash; no title, no close button, and never content that
-    exists nowhere else.</p>
-
-    <div style="padding:var(--ds-space-8) var(--ds-space-6); background:var(--ds-surface);
-                border:1px solid var(--ds-border); border-radius:8px">
-      <div class="ds-field" style="margin:0; max-width:22rem">
-        <div style="display:flex; align-items:center; gap:var(--ds-space-1); margin-bottom:var(--ds-space-2)">
-          <label class="ds-label" for="f-doi" style="margin:0">DOI</label>
-          <span class="ds-tooltip-host">
-            <button type="button" class="ds-btn ds-btn-text ds-btn-icon" aria-describedby="tip-doi"
-                    style="min-height:24px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span class="is-sr-only">What is a DOI?</span></button>
-            <span class="ds-tooltip" id="tip-doi" role="tooltip">
-              <span class="ds-tooltip-body">If the paper has been published, the publisher's DOI.
-              Leave it empty otherwise &mdash; arXiv mints its own.</span>
-            </span>
-          </span>
-        </div>
-        <input class="ds-input" id="f-doi" type="text" placeholder="10.1000/example">
-      </div>
-      <div style="display:flex; justify-content:flex-end; align-items:center; gap:var(--ds-space-1);
-                  margin-top:var(--ds-space-8); padding-top:var(--ds-space-6);
-                  border-top:1px solid var(--ds-border)">
-        <span class="ds-label" style="margin:0">Anchored at the trailing edge</span>
-        <span class="ds-tooltip-host">
-          <button type="button" class="ds-btn ds-btn-text ds-btn-icon" aria-describedby="tip-end"
-                  style="min-height:24px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span class="is-sr-only">What does end anchoring do?</span></button>
-          <span class="ds-tooltip ds-tooltip--end" id="tip-end" role="tooltip">
-            <span class="ds-tooltip-body">With <code>.ds-tooltip--end</code> the bubble runs back
-            toward the start, so a control near the trailing edge does not push it off screen.</span>
-          </span>
-        </span>
-      </div>
-      <p style="margin-top:var(--ds-space-6); font-size:0.875rem; color:var(--ds-text-muted)">
-        Hover or tab to either question mark.</p>
-    </div>
-
-    <ul class="notes">
-      <li><strong>It opens downward, and toward the inline end.</strong> Down, because upward
-      collides with sticky chrome near the top of a page. Toward the end, because that is where a
-      form label sits &mdash; at the start of the line, with room to its right. A host near the
-      trailing edge of its container adds <code>.ds-tooltip--end</code> and the bubble runs back the
-      other way. Both use logical properties, so both are correct in a right-to-left script.</li>
-      <li><strong>WCAG 1.4.13 is the whole design</strong>, and it is what most hover bubbles fail.
-      <em>Hoverable</em>: the gap between control and bubble is the tooltip's own padding, not a
-      margin, so a pointer moving into it never crosses dead space and loses it. <em>Persistent</em>:
-      it stays while hovered or focused, on no timer. <em>Dismissible</em>: Escape closes it without
-      moving focus &mdash; the one part CSS cannot do, so it needs a listener.</li>
-      <li><strong>It opens downward.</strong> Upward collides with sticky chrome near the top of a
-      page, and raising <code>z-index</code> hides that rather than fixing it.</li>
-      <li><strong>Describe, never name.</strong> The host carries
-      <code>aria-describedby</code>; the tooltip is never the control's accessible name. A name that
-      only appears on hover is a name most people never get &mdash; give the control an
-      <code>.is-sr-only</code> label of its own, as the demo does.</li>
-      <li><strong>The trigger never goes inside the <code>&lt;label&gt;</code>.</strong> A
-      <code>&lt;label&gt;</code> forwards clicks to the control it names, so a button nested in one
-      is a button whose clicks land somewhere else. Put the label and the trigger side by side.</li>
-      <li><strong>Not for anything required.</strong> If the reader must have it to fill the field
-      in, it is hint text under the label, not a tooltip. A tooltip is for the person who stops and
-      wonders.</li>
-    </ul>
-  </div>
-
-  <!-- ── Pagination ── -->
-  <div class="section">
-    <h2 class="section-title" id="stepping-through-a-set">Stepping through a set</h2>
-    <p class="ds-section-desc">Moving through items one at a time &mdash; a moderation queue, a run of
-    submissions &mdash; where each item has its own screen and someone works through them in order.</p>
-
-    <div style="padding:var(--ds-space-6); background:var(--ds-surface);
-                border:1px solid var(--ds-border); border-radius:8px">
-      <nav class="ds-pagination" aria-label="Queue navigation">
-        <button class="ds-btn ds-btn-secondary" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</button>
-        <span class="ds-pagination-position" aria-live="polite">Request 1 of 15</span>
-        <button class="ds-btn ds-btn-secondary" type="button">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-      </nav>
-    </div>
-
-    <p class="ds-panel-label">Markup</p>
-    <pre><code>&lt;nav class="ds-pagination" aria-label="Queue navigation"&gt;
-  &lt;button class="ds-btn ds-btn-secondary" disabled&gt;&lt;svg …&gt;&lt;/svg&gt; Previous&lt;/button&gt;
-  &lt;span class="ds-pagination-position" aria-live="polite"&gt;Request 1 of 15&lt;/span&gt;
-  &lt;button class="ds-btn ds-btn-secondary"&gt;Next &lt;svg …&gt;&lt;/svg&gt;&lt;/button&gt;
-&lt;/nav&gt;</code></pre>
-
-    <ul class="notes">
-      <li><strong>The position is a live region.</strong> Without <code>aria-live="polite"</code> a
-      reader who cannot see the counter has no way to know that the Next they just pressed did
-      anything &mdash; the page changed and nothing said so.</li>
-      <li><strong>The ends disable, they do not disappear.</strong> A control that vanishes at the
-      first item changes the shape of the toolbar under the reader; a disabled one says
-      &ldquo;there is nothing before this&rdquo;, which is the actual information.</li>
-      <li><strong>The buttons do not move as you step.</strong> The counter takes the slack and
-      centres in it, so going from 9 to 10 grows the text inward rather than shoving the controls
-      either side &mdash; the same rule as the switch label: never let a state change alter layout.
-      A <code>min-width</code> cannot do this, because the caller chooses the wording and the
-      component cannot know how wide it gets.</li>
-      <li><strong>Not numbered pages.</strong> Nothing at arXiv needs those yet. A stepper answers
-      &ldquo;what is next&rdquo;; a row of page numbers answers &ldquo;take me to item 40&rdquo;. If a
-      surface ever needs the second, it is a different component and not a variant of this one.</li>
-    </ul>
-  </div>
-
-  <!-- ── Usage ── -->
-    <div class="section">
-    <h2 class="section-title" id="usage">Usage</h2>
-    <pre ><code>&lt;div class="ds-field"&gt;
-  &lt;label class="ds-label" for="email"&gt;Email address&lt;/label&gt;
-  &lt;input class="ds-input" id="email" type="email"
-         required aria-required="true" aria-describedby="email-hint email-err"&gt;
-  &lt;p class="ds-hint" id="email-hint"&gt;Used only to confirm your submission.&lt;/p&gt;
-  &lt;p class="field-error" id="email-err" hidden&gt;Enter an email address, like name@university.edu.&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;!-- On failure: add .is-invalid to the control, unhide the error --&gt;
-
-&lt;label class="ds-check"&gt;
-  &lt;input type="checkbox"&gt;
-  &lt;span&gt;Email me when the moderators respond&lt;/span&gt;
-&lt;/label&gt;</code></pre>
-  </div>
+  </section>
 
 </div>
 
@@ -756,5 +917,6 @@
 </script>
 <script src="copy-code.js" defer></script>
 <script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
 </body>
 </html>
