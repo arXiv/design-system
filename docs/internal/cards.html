@@ -6,231 +6,11 @@
   <title>Cards (internal tools) — arXiv Design System</title>
   <link rel="stylesheet" href="../fonts.css">
   <link rel="stylesheet" href="../design-system.css">
-<script src="../theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
   <link rel="stylesheet" href="internal-tools.css">
-  <style>
-    /* ── Page chrome (reference doc only, not part of the component system) ── */
-    *, *::before, *::after { box-sizing: border-box; }
-
-    body {
-      font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
-      background: var(--ds-canvas);
-      color: var(--ds-text);
-      margin: 0;
-      padding: 0;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .page {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 48px 28px 80px;
-    }
-
-    /* Header */
-    .page-header {
-      margin-bottom: 52px;
-      padding-bottom: 20px;
-      border-bottom: 3px solid #c4d82e;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: var(--ds-space-6);
-    }
-    .page-header-text { flex: 1; min-width: 0; }
-    .page-header h1 {
-      font-size: 22px;
-      font-weight: 700;
-      margin: 0 0 6px;
-    }
-    .page-header p {
-      margin: 0;
-      color: var(--ds-text-muted);
-      font-size: 13px;
-      max-width: 680px;
-    }
-
-    /* Theme toggle — page chrome only */
-    .theme-toggle {
-      display: inline-flex;
-      align-items: center;
-      border: 1px solid #cbc5be;
-      border-radius: 6px;
-      overflow: hidden;
-      flex-shrink: 0;
-      margin-top: 3px;
-    }
-    .theme-toggle-btn {
-      padding: 5px 12px;
-      font-family: inherit;
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      background: transparent;
-      border: none;
-      color: var(--ds-text-muted);
-      border-right: 1px solid #cbc5be;
-      transition: background 0.1s, color 0.1s;
-      white-space: nowrap;
-    }
-    .theme-toggle-btn:last-child { border-right: none; }
-    .theme-toggle-btn:hover { background: var(--ds-surface-muted); color: var(--ds-text); }
-    .theme-toggle-btn.active { background: #1c1a17; color: #c4d82e; }
-
-    /* Sections */
-    .section { margin-bottom: 60px; }
-    .section-title {
-      font-size: 16px;
-      font-weight: 700;
-      margin: 0 0 var(--ds-space-1);
-      color: var(--ds-text);
-    }
-
-    /* Demo grid */
-    .demo-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--ds-space-6);
-      align-items: flex-start;
-    }
-    .demo-item {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .demo-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--ds-text-muted);
-    }
-    .demo-card-wrap {
-      width: 240px;
-    }
-
-    /* Token table */
-    .token-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: var(--ds-surface);
-      border: 1px solid var(--ds-border);
-      border-radius: 8px;
-      overflow: hidden;
-      font-size: 13px;
-    }
-    .token-table th {
-      background: var(--ds-surface-muted);
-      text-align: left;
-      padding: 10px 16px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--ds-text-muted);
-      border-bottom: 1px solid var(--ds-border);
-    }
-    .token-table td {
-      padding: 10px 16px;
-      border-bottom: 1px solid var(--ds-border);
-      vertical-align: middle;
-    }
-    .token-table tr:last-child td { border-bottom: none; }
-
-    .swatch {
-      display: inline-block;
-      width: 22px;
-      height: 22px;
-      border-radius: 3px;
-      border: 1px solid rgba(255,255,255,0.2);
-      vertical-align: middle;
-      margin-right: var(--ds-space-2);
-      flex-shrink: 0;
-    }
-    .swatch-row { display: flex; align-items: center; }
-
-    code {
-      font-family: "IBM Plex Mono", ui-monospace, monospace;
-      font-size: 12px;
-      background: var(--ds-surface-muted);
-      padding: 2px 6px;
-      border-radius: 3px;
-      white-space: nowrap;
-    }
-    /* Docs chrome, deliberately page-local: DESIGN-POLICIES keeps docs
-       furniture out of the design system. One definition, copied verbatim —
-       if you change it, change it everywhere (this text is the marker). */
-      margin-top: var(--ds-space-4); padding: 12px 16px;
-      background: var(--ds-surface); border: 1px solid var(--ds-border);
-      border-left: 3px solid var(--ds-accent-strong); border-radius: 0 6px 6px 0; }
-
-    .usage-list {
-      margin: 0;
-      padding-left: 20px;
-      line-height: 2;
-    }
-
-    /* Context example: card beside a content area */
-    .context-example {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--ds-space-6);
-      padding: 28px;
-      background: var(--ds-surface);
-      border: 1px solid var(--ds-border);
-      border-radius: 8px;
-    }
-    .context-main {
-      flex: 1;
-      min-width: 0;
-    }
-    .context-placeholder {
-      background: var(--ds-surface-muted);
-      border-radius: 4px;
-      height: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      color: var(--ds-text-disabled);
-      font-style: italic;
-    }
-    .context-sidebar {
-      flex: 0 0 240px;
-      width: 240px;
-    }
-
-    /* Dark mode overrides for page chrome */
-    html[data-theme="dark"] body           { background: #1c1a17; color: #f0eeec; }
-    html[data-theme="dark"] .section-title { color: #f0eeec; }
-    html[data-theme="dark"] .section-desc  { color: var(--ds-text-muted); }
-    html[data-theme="dark"] .page-header p { color: var(--ds-text-muted); }
-    html[data-theme="dark"] .demo-label    { color: var(--ds-text-muted); }
-
-    html[data-theme="dark"] .token-table   { background: #252118; border-color: #3a3530; }
-    html[data-theme="dark"] .token-table th { background: #302c28; color: var(--ds-text-muted); border-color: #3a3530; }
-    html[data-theme="dark"] .token-table td { border-color: #3a3530; color: #f0eeec; }
-
-    html[data-theme="dark"] .context-example  { background: #252118; border-color: #3a3530; }
-    html[data-theme="dark"] .context-placeholder { background: #302c28; }
-
-    html[data-theme="dark"] code { background: #302c28; color: #f0eeec; }
-
-    html[data-theme="dark"] .theme-toggle-btn:hover { background: #302c28; color: #f0eeec; }
-  
-    /* ── Shared docs nav (hand-copied on every doc page) — three dropdowns.
-       <details>-based: works without JS; the small script at the end of the
-       page only adds close-on-outside-click and Esc. ── */
-  
-    /* Inline links in page copy. Bare <a> previously fell back to the
-       browser default, which is unreadable on the dark canvas. Nav links
-       carry their own, more specific rules. */
-    a { color: var(--ds-link); }
-    a:hover { color: var(--ds-link-hover); }
-</style>
+  <link rel="stylesheet" href="../docs.css">
+<script src="../theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
 </head>
-<body>
+<body class="ds-page">
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
   <a class="ds-site-header-logo" href="../../index.html">arXiv Design System</a>
   <details class="ds-site-header-dropdown">
@@ -286,29 +66,48 @@
   <button type="button" class="ds-theme-toggle"></button>
   <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
-  <div class="page">
 
-    <header class="page-header">
-      <div class="page-header-text">
-        <h1>Cards</h1>
-        <p>The info card is a read-only metadata panel for displaying system-supplied context (user identity, submission details, IP/date stamps). In light mode it renders as a warm tinted panel with a lime top border; in dark mode it takes the charcoal treatment shown below. Either way its filled surface creates a deliberate visual boundary from editable content areas.</p>
-      </div>
-      <div class="theme-toggle" role="group" aria-label="Color scheme">
-        <button class="theme-toggle-btn" id="toggle-light" type="button">☀ Light</button>
-        <button class="theme-toggle-btn" id="toggle-dark"  type="button">☾ Dark</button>
-      </div>
-    </header>
+<div class="ds-container ds-zone-secondary">
+
+  <header class="ds-page-header">
+    <h1>Cards</h1>
+    <p>The info card is a read-only metadata panel for displaying system-supplied context (user identity, submission details, IP/date stamps). In light mode it renders as a warm tinted panel with a lime top border; in dark mode it takes the charcoal treatment listed under Spec. Either way its filled surface creates a deliberate visual boundary from editable content areas. The general-purpose card, <code>.ds-card</code>, is documented on <a href="../organizing-content.html#cards-and-grouped-sections">Organizing content</a>.</p>
+  </header>
 
 
-    <!-- ── Live Examples ─────────────────────────────────────── -->
-    <section class="section">
-      <h2 class="section-title" id="variants">Variants</h2>
-      <p class="ds-section-desc">Each row stacks a label over a value. Values can be plain text, a link, or a monospace ID. The card always reads correctly against both the warm-wash page background and a white content area.</p>
+  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#the-info-card">The info card</a></li>
+            <li><a href="#usage-rules">Usage rules</a></li>
+            <li><a href="#dark-mode-values">Dark mode values</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
 
-      <div class="demo-grid">
+  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <div class="ds-full ds-zone-primary">
 
-        <div class="demo-item">
-          <span class="demo-label">User info (typical)</span>
+  <!-- ───────── The info card ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="the-info-card">The info card</h2>
+    <p class="ds-section-desc">Each row stacks a label over a value. Values can be plain text, a link, or a monospace ID. The card always reads correctly against both the warm-wash page background and a white content area.</p>
+
+    <p class="ds-panel-label">Variants</p>
+    <div>
+      <div class="state-flex">
+        <div class="state-cell">
+          <span class="state-label">User info (typical)</span>
           <div class="demo-card-wrap">
             <div class="info-card" role="region" aria-label="User information">
               <div class="info-card-row">
@@ -330,9 +129,8 @@
             </div>
           </div>
         </div>
-
-        <div class="demo-item">
-          <span class="demo-label">Submission context</span>
+        <div class="state-cell">
+          <span class="state-label">Submission context</span>
           <div class="demo-card-wrap">
             <div class="info-card" role="region" aria-label="Submission information">
               <div class="info-card-row">
@@ -354,9 +152,8 @@
             </div>
           </div>
         </div>
-
-        <div class="demo-item">
-          <span class="demo-label">Minimal (2 rows)</span>
+        <div class="state-cell">
+          <span class="state-label">Minimal (2 rows)</span>
           <div class="demo-card-wrap">
             <div class="info-card" role="region" aria-label="Request details">
               <div class="info-card-row">
@@ -370,16 +167,57 @@
             </div>
           </div>
         </div>
-
       </div>
-    </section>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="info-card" role="region" aria-label="User information"&gt;
+  &lt;div class="info-card-row"&gt;
+    &lt;span class="info-label"&gt;User&lt;/span&gt;
+    &lt;a href="#" class="info-value info-link"&gt;Katrin Solberg&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;div class="info-card-row"&gt;
+    &lt;span class="info-label"&gt;Email&lt;/span&gt;
+    &lt;a href="#" class="info-value info-link"&gt;katrin.solberg@example.org&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;div class="info-card-row"&gt;
+    &lt;span class="info-label"&gt;Remote host&lt;/span&gt;
+    &lt;span class="info-value"&gt;128.84.12.201&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="info-card-row"&gt;
+    &lt;span class="info-label"&gt;Date&lt;/span&gt;
+    &lt;span class="info-value"&gt;2024-12-31&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.info-card</dt>
+            <dd>The container: a warm tinted surface with a lime top border, holding only
+            <code>.info-card-row</code> children. It sets no width; the sidebar it sits in does.
+            Requires <code>role="region"</code> and an <code>aria-label</code>.</dd>
+            <dt>role="region" aria-label="…"</dt>
+            <dd>Required on the container. The label names what the card holds, such as
+            “User information” or “Submission information”, and is what a screen reader
+            user hears when jumping to it.</dd>
+            <dt>.info-card-row</dt>
+            <dd>One label over one value. Rows are separated by a hairline; the last row has none.</dd>
+            <dt>.info-label</dt>
+            <dd>The field name. Small, bold, and uppercased by CSS, in <code>--ds-text-muted</code>.
+            Type it in sentence case.</dd>
+            <dt>.info-value</dt>
+            <dd>The value, in IBM Plex Mono. It breaks anywhere, so a long address or identifier
+            wraps inside the card instead of widening it. Every value takes this class, whether
+            it is a plain <code>&lt;span&gt;</code> or a link.</dd>
+            <dt>.info-link</dt>
+            <dd>A value that navigates to a related record. An <code>&lt;a&gt;</code> with an
+            <code>href</code>, added alongside <code>.info-value</code>: underlined, in the link
+            colour, with the hover and visited colours of every other link.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
 
-
-    <!-- ── In Context ─────────────────────────────────────────── -->
-    <section class="section">
-      <h2 class="section-title" id="in-context">In context</h2>
-      <p class="ds-section-desc">The card sits in a fixed-width sidebar (240px) alongside the main content area. The dark surface anchors the page without competing with the editable content.</p>
-
+    <p class="ds-panel-label">In context</p>
+    <p class="ds-section-desc">The card sits in a fixed-width sidebar (240px) alongside the main content area. The tinted surface anchors the page without competing with the editable content.</p>
+    <div>
       <div class="context-example">
         <div class="context-main">
           <div class="context-placeholder">Main content area — table, form, or detail view</div>
@@ -405,18 +243,88 @@
           </div>
         </div>
       </div>
-    </section>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;!-- The main content area: a table, a form, or a detail view --&gt;
+…
+
+&lt;!-- The sidebar: a fixed 240px column beside the main content --&gt;
+&lt;div class="info-card" role="region" aria-label="User information"&gt;
+  &lt;div class="info-card-row"&gt;
+    &lt;span class="info-label"&gt;User&lt;/span&gt;
+    &lt;a href="#" class="info-value info-link"&gt;Katrin Solberg&lt;/a&gt;
+  &lt;/div&gt;
+  …
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.info-card</dt>
+            <dd>Fills the sidebar it is placed in. The sidebar is a fixed 240px column and the
+            main content area flexes beside it; neither width is set on the card.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
 
 
-    <!-- ── Color Values ───────────────────────────────────────── -->
-    <section class="section">
-      <h2 class="section-title" id="spec">Spec</h2>
-      <p class="ds-section-desc"><strong>These are the dark-mode values</strong> (applied under <code>html:not([data-theme="light"])</code>).
-      In light mode <code>.info-card</code> uses the tokens in <code>internal-tools.css</code>: <code>#e8e4dc</code> background with a
-      4px <code>#c4d82e</code> top border, labels <code>var(--ds-text-muted)</code>, values <code>#1c1a17</code>, links <code>var(--ds-link)</code>.
-      The dark palette below is hardcoded rather than tokenized — intentionally self-contained and only valid on the dark surface.</p>
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Name the region.</strong> Put <code>role="region"</code> and an
+      <code>aria-label</code> on every <code>.info-card</code>, so a screen reader user can jump
+      straight to it and hears what it holds, such as “User information”. A region without a
+      name is not exposed as a landmark at all.</li>
+      <li><strong>Keep each label with its value.</strong> A label and its value sit together in
+      one <code>.info-card-row</code>, label first, so they are read as a pair. The label is real
+      text in the markup and the uppercase comes from CSS, so it stays correct for a screen
+      reader and for copy and paste.</li>
+      <li><strong>Monospace values are still text.</strong> An identifier, an address, or a date
+      in <code>.info-value</code> is plain text: it can be selected, copied, found with in-page
+      search, and read aloud. Do not put a value in an image or draw it with CSS.</li>
+      <li><strong>No editable fields inside.</strong> The card is read-only system context, and
+      its filled surface says so. A form control inside it contradicts what the surface tells a
+      sighted reader and puts a focus stop inside a region that announces as reference.
+      Editable fields take a <code>.ds-card</code> instead.</li>
+    </ul>
+  </div>
 
-      <table class="token-table">
+  </div> <!-- /core zone -->
+
+  <h2>Rules</h2>
+  <!-- ───────── Usage rules ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="usage-rules">Usage rules</h3>
+    <ul class="notes">
+      <li><strong>Read-only only.</strong> Never place editable fields inside an <code>.info-card</code>. The filled surface signals “this is system context, not something you control here.”</li>
+      <li><strong>Editable content uses a different container.</strong> When a group of <em>editable</em> fields needs a boundary, use a neutral <em>section card</em> — a white panel with a 1px <code>--ds-border</code> hairline and an 8px radius, which is <a href="../organizing-content.html#cards-and-grouped-sections"><code>.ds-card</code></a> — not the <code>.info-card</code>. Keeping the two visually distinct is deliberate: a filled/tinted surface reads as read-only system context; a plain bordered panel reads as “you can edit this.”</li>
+      <li><strong>Sidebar placement.</strong> Use at a fixed 240px width in a flex sidebar alongside the main content area. The contrast between the card and the warm-wash page background creates the visual hierarchy.</li>
+      <li><strong>Links in the card.</strong> Use <code>.info-link</code> on values that navigate to a related record (user profile, submission detail). Limit links to navigational items — do not use them for inline actions.</li>
+      <li><strong>Monospace IDs.</strong> <code>.info-value</code> already renders in IBM Plex Mono at 12px for every value (“monospace signals read-only system data”) — arXiv IDs need no override.</li>
+      <li><strong>Row count.</strong> 2–6 rows is the intended range. If more fields are needed, consider grouping into two separate cards or a different layout rather than a very tall single card.</li>
+    </ul>
+
+    <div class="ds-note">
+      <h3 class="ds-note-label">Why lime on dark, not white?</h3>
+      <p>White text on the dark card would create a generic “dark panel” with no connection to the arXiv palette. Lime (#c4d82e) on the dark surface passes AAA contrast (8.4:1) while using the same brand accent as primary buttons and the action bar — reinforcing that this information belongs to the same system.</p>
+    </div>
+    <div class="ds-note">
+      <h3 class="ds-note-label">Why two greens (label vs value)?</h3>
+      <p>The two-tone treatment comes from the admin console pattern: a muted sage label (<code>#cbcdac</code>) that recedes, and a bright lime value that the eye lands on first. The hierarchy guides reading order — label names the field, value delivers the content.</p>
+    </div>
+  </section>
+
+
+  <h2>Spec</h2>
+  <!-- ───────── Dark mode values ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="dark-mode-values">Dark mode values</h3>
+    <p class="ds-section-desc"><strong>These are the dark-mode values</strong> (applied when the theme is dark, whether from the system setting or from the theme control in the header).
+    In light mode <code>.info-card</code> uses the tokens in <code>internal-tools.css</code>: <code>#e8e4dc</code> background with a
+    4px <code>#c4d82e</code> top border, labels <code>var(--ds-text-muted)</code>, values <code>#1c1a17</code>, links <code>var(--ds-link)</code>.
+    The dark palette below is hardcoded rather than tokenized — intentionally self-contained and only valid on the dark surface.</p>
+
+    <div class="table-scroll" role="region" aria-label="Dark mode values" tabindex="0">
+      <table class="ds-table-framed token-table">
         <thead>
           <tr>
             <th>Role</th>
@@ -427,7 +335,7 @@
         <tbody>
           <tr>
             <td>Card background</td>
-            <td><span class="swatch-row"><span class="swatch" style="background:#2e2b26;"></span><code>#2e2b26</code></span></td>
+            <td><span class="swatch" style="background:#2e2b26;"></span><code>#2e2b26</code></td>
             <td>Container background — Repository Brown darkened</td>
           </tr>
           <tr>
@@ -437,78 +345,35 @@
           </tr>
           <tr>
             <td>Label</td>
-            <td><span class="swatch-row"><span class="swatch" style="background:#cbcdac; border-color:rgba(0,0,0,0.15);"></span><code>#cbcdac</code></span></td>
+            <td><span class="swatch" style="background:#cbcdac;"></span><code>#cbcdac</code></td>
             <td>Field name — sage-green tint, ~8.6:1 on card bg ✓</td>
           </tr>
           <tr>
             <td>Value</td>
-            <td><span class="swatch-row"><span class="swatch" style="background:#c4d82e; border-color:rgba(0,0,0,0.15);"></span><code>#c4d82e</code></span></td>
+            <td><span class="swatch" style="background:#c4d82e;"></span><code>#c4d82e</code></td>
             <td>Plain value text — brand lime, ~8.4:1 on card bg ✓ AAA</td>
           </tr>
           <tr>
             <td>Link (rest)</td>
-            <td><span class="swatch-row"><span class="swatch" style="background:#c4d82e; border-color:rgba(0,0,0,0.15);"></span><code>#c4d82e</code></span></td>
+            <td><span class="swatch" style="background:#c4d82e;"></span><code>#c4d82e</code></td>
             <td>Linked value at rest — same as plain value + underline</td>
           </tr>
           <tr>
             <td>Link (hover)</td>
-            <td><span class="swatch-row"><span class="swatch" style="background:#d8ee50; border-color:rgba(0,0,0,0.15);"></span><code>#d8ee50</code></span></td>
+            <td><span class="swatch" style="background:#d8ee50;"></span><code>#d8ee50</code></td>
             <td>Brightened lime on hover</td>
           </tr>
           <tr>
             <td>Link (visited)</td>
-            <td><span class="swatch-row"><span class="swatch" style="background:#a8c020; border-color:rgba(0,0,0,0.15);"></span><code>#a8c020</code></span></td>
+            <td><span class="swatch" style="background:#a8c020;"></span><code>#a8c020</code></td>
             <td>Slightly muted lime — signals page was visited</td>
           </tr>
         </tbody>
       </table>
-    </section>
+    </div>
+  </section>
 
-
-    <!-- ── Usage Rules ────────────────────────────────────────── -->
-    <section class="section">
-      <h2 class="section-title" id="usage">Usage</h2>
-      <ul class="usage-list">
-        <li><strong>Read-only only.</strong> Never place editable fields inside an <code>.info-card</code>. The dark surface signals "this is system context, not something you control here."</li>
-        <li><strong>Editable content uses a different container.</strong> When a group of <em>editable</em> fields needs a boundary, use a neutral <em>section card</em> — a white panel with a 1px <code>#ddd8d2</code> hairline and an 8px radius (warm border grey — the internal stylesheet defines no border token; the public system names this value <code>--ds-border</code>) — not the <code>.info-card</code>. Keeping the two visually distinct is deliberate: a filled/tinted surface reads as read-only system context; a plain bordered panel reads as "you can edit this."</li>
-        <li><strong>Sidebar placement.</strong> Use at a fixed 240px width in a flex sidebar alongside the main content area. The contrast between the dark card and the warm-wash page background creates the visual hierarchy.</li>
-        <li><strong>Links in the card.</strong> Use <code>.info-link</code> on values that navigate to a related record (user profile, submission detail). Limit links to navigational items — do not use them for inline actions.</li>
-        <li><strong>Monospace IDs.</strong> <code>.info-value</code> already renders in IBM Plex Mono at 12px for every value ("monospace signals read-only system data") — arXiv IDs need no override.</li>
-        <li><strong>Row count.</strong> 2–6 rows is the intended range. If more fields are needed, consider grouping into two separate cards or a different layout rather than a very tall single card.</li>
-        <li><strong>Accessibility.</strong> Always add <code>role="region"</code> and <code>aria-label</code> on the <code>.info-card</code> container so screen readers can navigate directly to it.</li>
-      </ul>
-
-      <div class="ds-note">
-        <h3 class="ds-note-label">Why lime on dark, not white?</h3>
-        <p>White text on the dark card would create a generic "dark panel" with no connection to the arXiv palette. Lime (#c4d82e) on the dark surface passes AAA contrast (8.4:1) while using the same brand accent as primary buttons and the action bar — reinforcing that this information belongs to the same system.</p>
-      </div>
-      <div class="ds-note">
-        <h3 class="ds-note-label">Why two greens (label vs value)?</h3>
-        <p>The two-tone treatment comes from the admin console pattern: a muted sage label (<code>#cbcdac</code>) that recedes, and a bright lime value that the eye lands on first. The hierarchy guides reading order — label names the field, value delivers the content.</p>
-      </div>
-    </section>
-
-  </div>
-
-  <script>
-    (function () {
-      const html = document.documentElement;
-      const btnLight = document.getElementById('toggle-light');
-      const btnDark  = document.getElementById('toggle-dark');
-
-      function setTheme(theme) {
-        html.setAttribute('data-theme', theme);
-        btnLight.classList.toggle('active', theme === 'light');
-        btnDark.classList.toggle('active',  theme === 'dark');
-      }
-
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setTheme(prefersDark ? 'dark' : 'light');
-
-      btnLight.addEventListener('click', function () { setTheme('light'); });
-      btnDark.addEventListener('click',  function () { setTheme('dark');  });
-    })();
-  </script>
+</div>
 
 <script>
   // Nav dropdowns: close on outside click and Esc (enhancement only —
@@ -523,6 +388,7 @@
     document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
       // Return focus to the trigger, but only if it was inside the menu we are
       // closing — otherwise Escape anywhere on the page would steal focus.
+      // Without this a keyboard user is left on a link that no longer exists.
       var wasInside = d.contains(document.activeElement);
       d.removeAttribute('open');
       if (wasInside) d.querySelector('summary').focus();
@@ -531,5 +397,6 @@
 </script>
 <script src="../copy-code.js" defer></script>
 <script src="../anchors.js" defer></script>
+<script src="../toc.js" defer></script>
 </body>
 </html>
