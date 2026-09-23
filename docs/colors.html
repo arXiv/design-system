@@ -3,56 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Color — arXiv Design System</title>
+  <title>Colors — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
 <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
-  <style>
-    /* ── Foundation reference page. The written spec is color-mapping.md
-       (source of truth); this page renders it. Hex literals here ARE the
-       content — a palette page is the one place they belong. ── */
-.minor-title { font-size: 15px; font-weight: 600; margin:var(--ds-space-6) 0 6px; }
-
-    .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)); gap:var(--ds-space-block); }
-    .swatch-card { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; overflow: hidden; }
-    .swatch-chip { height: 64px; border-bottom: 1px solid rgba(0,0,0,0.06); }
-    .swatch-body { padding: 10px 14px 12px; }
-    .swatch-name { font-weight: 600; font-size: 13px; }
-    .swatch-hex { font-family: var(--ds-font-mono); font-size: 12px; color: var(--ds-text-muted); }
-    .swatch-token { font-family: var(--ds-font-mono); font-size: 11px; color: var(--ds-accent-strong); }
-    .swatch-role { font-size: 12px; color: var(--ds-text-muted); margin-top:5px; line-height: 1.45; }
-    .ratio { display: inline-block; font-size: 11px; font-family: var(--ds-font-mono); border-radius: 3px; padding: 0 5px; margin-top:5px; background: var(--ds-surface-muted); color: var(--ds-text); }
-.context-card h3 { display: flex; align-items: center; gap:var(--ds-gap-glyph); }
-    .context-dot { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.15); }
-.context-card ul { margin:var(--ds-space-2) 0 0; padding-left: 18px; }
-    .never { background: var(--ds-error-bg); border: 1px solid var(--ds-error-border); border-radius: 6px; padding: 12px 16px; font-size: 13px; color: var(--ds-error-fg); }
-
-    .status-table { width: 100%; border-collapse: collapse; background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; overflow: hidden; font-size: 13px; }
-    .status-table th { background: var(--ds-surface-muted); text-align: left; padding: 10px 14px; font-family: var(--ds-font-condensed); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ds-text-muted); }
-    .status-table td { padding: 12px 14px; border-top: 1px solid var(--ds-surface-muted); vertical-align: middle; }
-    .status-sample { display: inline-block; border-radius: 4px; padding: 5px 12px; font-size: 12.5px; font-weight: 500; border: 1px solid; }
-    .footnote { font-size: 12px; color: var(--ds-border-strong); }
-
-    /* In-page section nav */
-    .toc-nav { display: flex; flex-wrap: wrap; gap:var(--ds-space-tight) var(--ds-space-block); margin:0 0 var(--ds-space-8); font-size: 13px; }
-    .toc-nav a { color: var(--ds-link); text-decoration: none; }
-    .toc-nav a:hover { text-decoration: underline; }
-
-  
-    /* Inline links in page copy. These sit on the page canvas. Nav links
-       carry their own, more specific rules. */
-    /* ── Text-safe pairing table (generated section) ─────────────────── */
-    .ct-table { border-collapse: collapse; background: var(--ds-surface); border: 1px solid var(--ds-border); font-size: 12px; width: 100%; margin:var(--ds-space-3) 0 10px; }
-    .ct-table th { background: var(--ds-surface-muted); text-align: left; padding: 7px 10px; font-family: var(--ds-font-condensed); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ds-text-muted); }
-    .ct-table th code, .ct-table td code { text-transform: none; letter-spacing: 0; }
-    .ct-table td { padding: 8px 10px; border-top: 1px solid var(--ds-surface-muted); border-left: 1px solid var(--ds-surface-muted); font-weight: 600; }
-    .ct-table .ct-r { font-family: var(--ds-font-mono); font-size: 10.5px; font-weight: 400; opacity: 0.85; display: block; margin-top:1px; }
-    .ct-table .ct-no { color: var(--ds-text-muted); font-weight: 400; }
-    .ct-table .ct-span span { display: inline-block; padding: 6px 12px; border-radius: 4px; font-weight: 600; }
-    .ct-note { font-size: 12.5px; color: var(--ds-text-muted); line-height: 1.55; }
-    .ct-never { font-size: 13px; }
-    .ct-never li { margin-bottom:5px; }
-</style>
 </head>
 <body class="ds-page">
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
@@ -110,67 +65,203 @@
   <button type="button" class="ds-theme-toggle"></button>
   <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
-<div class="ds-container">
+
+<div class="ds-container ds-zone-secondary">
+
   <header class="ds-page-header">
-    <h1>Color</h1>
-    <p>
-      The full arXiv palette, rendered. Written spec and rationale:
+    <h1>Colors</h1>
+    <p>The full arXiv palette, rendered. Written spec and rationale:
       <a href="doc.html?src=docs/color-mapping.md">color-mapping.md</a> (source of truth — if this page
       and the spec disagree, the spec wins). Hard rules live in
       <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES.md</a>: all colors come from this
-      palette; no one-off hex values.
-    </p>
+      palette; no one-off hex values.</p>
   </header>
 
-  <nav class="toc-nav" aria-label="On this page">
-    <a href="#brand">Brand colors</a>
-    <a href="#links">Links &amp; interactive</a>
-    <a href="#status">Status &amp; alerts</a>
-    <a href="#backgrounds">Backgrounds</a>
-    <a href="#uses">Which tint for which job</a>
-    <a href="#tinted">Working on tinted backgrounds</a>
-  </nav>
 
-  <!-- ═══════════════════ BRAND COLORS ═══════════════════ -->
-  <section class="section" id="brand">
+  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#brand-colors">Brand colors</a></li>
+            <li><a href="#links-and-interactive">Links and interactive</a></li>
+            <li><a href="#status-and-alerts">Status and alerts</a></li>
+            <li><a href="#backgrounds-and-tints">Backgrounds and tints</a></li>
+            <li><a href="#which-tint-for-which-job">Which tint for which job</a></li>
+            <li><a href="#working-on-tinted-backgrounds">Working on tinted backgrounds</a></li>
+            <li><a href="#which-text-is-safe-on-which-surface">Which text is safe on which surface</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ═════════ Core zone — a white band. Every colour a person can build with. ═════════ -->
+  <div class="ds-full ds-zone-primary">
+
+  <!-- ───────── Brand colors ───────── -->
+  <section class="section">
     <h2 class="section-title" id="brand-colors">Brand colors</h2>
     <p class="ds-section-desc">arXiv's core post-spinout identity, grouped by the role each color plays. Primary and secondary carry the brand; support colors do the quieter structural and accent work.</p>
 
-    <h3 class="ds-panel-label">Primary</h3>
-    <div class="swatches">
-      <div class="swatch-card"><div class="swatch-chip" style="background:#a5d6fe"></div><div class="swatch-body"><div class="swatch-name">Open Blue</div><div class="swatch-hex">#a5d6fe</div><div class="swatch-token">--ds-accent</div><div class="swatch-role"><strong>arXiv’s primary brand color.</strong> Public primary actions (HTML/PDF buttons), highlights, section accents.</div></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#1c1a17"></div><div class="swatch-body"><div class="swatch-name">Repository Brown</div><div class="swatch-hex">#1c1a17</div><div class="swatch-token">--ds-text</div><div class="swatch-role">Body text, dark backgrounds, primary headers. The text workhorse — clears AA on every approved surface.</div></div></div>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">The three warm greys form a deliberate ladder, one stop per contrast tier: Disabled, UI Boundary, Library. Do not introduce intermediate values without a DESIGN-POLICIES.md change.</p>
+      </details>
+
+      <p class="ds-panel-label">Primary</p>
+      <ul class="swatch-grid">
+        <li class="swatch-card">
+          <span class="swatch" style="background:#a5d6fe"></span>
+          <strong>Open Blue</strong>
+          <code>#a5d6fe</code>
+          <code>--ds-accent</code>
+          <p>arXiv's primary brand color. Public primary actions (HTML/PDF buttons), highlights, section accents.</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#1c1a17"></span>
+          <strong>Repository Brown</strong>
+          <code>#1c1a17</code>
+          <code>--ds-text</code>
+          <p>Body text, dark backgrounds, primary headers. The text workhorse — clears AA on every approved surface.</p>
+        </li>
+      </ul>
+
+      <p class="ds-panel-label">Secondary</p>
+      <ul class="swatch-grid">
+        <li class="swatch-card">
+          <span class="swatch" style="background:#1f5e96"></span>
+          <strong>Archival Blue</strong>
+          <code>#1f5e96</code>
+          <code>--ds-accent-strong</code>
+          <p>Brand accent blue; public section headings.</p>
+          <p>6.8:1 on white ✓ AA</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#6b6459"></span>
+          <strong>Library Grey</strong>
+          <code>#6b6459</code>
+          <code>--ds-text-muted</code>
+          <p>Secondary text, labels, muted interactive elements.</p>
+          <p>5.83:1 on white ✓ AA</p>
+        </li>
+      </ul>
+
+      <p class="ds-panel-label">Support</p>
+      <ul class="swatch-grid">
+        <li class="swatch-card">
+          <span class="swatch" style="background:#8b8680"></span>
+          <strong>UI Boundary Grey</strong>
+          <code>#8b8680</code>
+          <code>--ds-border-strong</code>
+          <p>Interactive borders, tracks, arrows.</p>
+          <p>3.61:1 on white ✓ 3:1 UI</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#b0aba6"></span>
+          <strong>Disabled Grey</strong>
+          <code>#b0aba6</code>
+          <code>--ds-text-disabled</code>
+          <p>Disabled states only — exempt from contrast requirements.</p>
+          <p>2.24:1 — below AA, by design</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#ffe000"></span>
+          <strong>Smileybones Yellow</strong>
+          <code>#ffe000</code>
+          <code>--ds-brand-smileybones-yellow</code>
+          <p>The smileybones mascot; celebratory and playful contexts; callout fills; horizontal rules framing an image on outreach properties. Fails text contrast — fills and graphics only.</p>
+          <p>~1.3:1 — fills only</p>
+        </li>
+      </ul>
+
+      <p class="ds-panel-label">Heritage — used sparingly</p>
+      <ul class="swatch-grid">
+        <li class="swatch-card">
+          <span class="swatch" style="background:#b31b1b"></span>
+          <strong>Campus Red</strong>
+          <code>#b31b1b</code>
+          <p>The X in the logo mark; very occasional accent. Never headers, buttons, large fields, or text. No token: it is drawn in the logo, not written in a stylesheet.</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#fb595a"></span>
+          <strong>Publishing Pink</strong>
+          <code>#fb595a</code>
+          <p>Rare: time-limited announcements, celebratory accents. Never errors or body text. No token.</p>
+        </li>
+      </ul>
+
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>color: var(--ds-text);                 /* Repository Brown */
+color: var(--ds-text-muted);           /* Library Grey */
+border-color: var(--ds-border-strong); /* UI Boundary Grey */
+
+/* The public primary fill, and the only text colour that sits on it */
+background: var(--ds-accent);
+color: var(--ds-text-on-accent);</code></pre>
+          <dl>
+            <dt>--ds-accent</dt>
+            <dd>Open Blue on a public page. The fill of the primary button and of highlights; inside <code>.ds-internal</code> the same token is Access Lime.</dd>
+            <dt>--ds-text-on-accent</dt>
+            <dd>Repository Brown, fixed in both modes: the text colour on an accent fill. Nothing else clears AA on Open Blue.</dd>
+            <dt>--ds-text</dt>
+            <dd>Repository Brown. Body text and headings on every surface. Flips to a light value in dark mode.</dd>
+            <dt>--ds-text-muted</dt>
+            <dd>Library Grey. Secondary text, labels, and captions. Still AA on every approved surface except Grey Active.</dd>
+            <dt>--ds-accent-strong</dt>
+            <dd>Archival Blue. Section headings and the on state of a switch. Not a link colour.</dd>
+            <dt>--ds-border-strong</dt>
+            <dd>UI Boundary Grey. The edge of a control: input borders, switch tracks, arrows. Never for text.</dd>
+            <dt>--ds-text-disabled</dt>
+            <dd>Disabled Grey. The label of a disabled control and nothing else.</dd>
+            <dt>--ds-brand-smileybones-yellow</dt>
+            <dd>Smileybones Yellow. Fills and thick rules only; it holds its value in dark mode.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
 
-    <h3 class="ds-panel-label">Secondary</h3>
-    <div class="swatches">
-      <div class="swatch-card"><div class="swatch-chip" style="background:#1f5e96"></div><div class="swatch-body"><div class="swatch-name">Archival Blue</div><div class="swatch-hex">#1f5e96</div><div class="swatch-token">--ds-accent-strong</div><div class="swatch-role">Brand accent blue; public section headings.</div><span class="ratio">6.8:1 on white ✓ AA</span></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#6b6459"></div><div class="swatch-body"><div class="swatch-name">Library Grey</div><div class="swatch-hex">#6b6459</div><div class="swatch-token">--ds-text-muted</div><div class="swatch-role">Secondary text, labels, muted interactive elements.</div><span class="ratio">5.83:1 on white ✓ AA</span></div></div>
+    <p class="ds-panel-label">Internal accent</p>
+    <div class="ds-card ds-internal">
+      <ul class="swatch-grid">
+        <li class="swatch-card">
+          <span class="swatch" style="background:#c4d82e"></span>
+          <strong>Access Lime</strong>
+          <code>#c4d82e</code>
+          <code>--ds-accent</code>
+          <p>Internal primary-action identity — signals "you are in an internal tool." Not used on public pages. Fails text contrast — fills only.</p>
+          <p>~1.5:1 — fills only</p>
+        </li>
+      </ul>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;!-- An internal tool puts the class on the root; the accent follows --&gt;
+&lt;html lang="en" class="ds-internal"&gt;
+
+background: var(--ds-accent);        /* Access Lime inside .ds-internal */
+color: var(--ds-text-on-accent);</code></pre>
+          <dl>
+            <dt>.ds-internal</dt>
+            <dd>Re-points <code>--ds-accent</code> and the button colours to Access Lime for everything inside it. An internal tool puts it on <code>&lt;html&gt;</code>; a page that shows both surfaces puts it on a wrapper.</dd>
+            <dt>--ds-accent</dt>
+            <dd>Access Lime inside <code>.ds-internal</code>, Open Blue everywhere else. The same token name on both surfaces, so a component never has to know which one it is on.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
 
-    <h3 class="ds-panel-label">Support</h3>
-    <div class="swatches">
-      <div class="swatch-card"><div class="swatch-chip" style="background:#8b8680"></div><div class="swatch-body"><div class="swatch-name">UI Boundary Grey</div><div class="swatch-hex">#8b8680</div><div class="swatch-token">--ds-border-strong</div><div class="swatch-role">Interactive borders, tracks, arrows.</div><span class="ratio">3.61:1 on white ✓ 3:1 UI</span></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#b0aba6"></div><div class="swatch-body"><div class="swatch-name">Disabled Grey</div><div class="swatch-hex">#b0aba6</div><div class="swatch-token">--ds-text-disabled</div><div class="swatch-role">Disabled states only — exempt from contrast requirements.</div><span class="ratio">2.24:1 — below AA, by design</span></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#ffe000"></div><div class="swatch-body"><div class="swatch-name">Smileybones Yellow</div><div class="swatch-hex">#ffe000</div><div class="swatch-role">The smileybones mascot; celebratory and playful contexts; callout fills; horizontal rules framing an image on outreach properties. Fails text contrast — fills and graphics only. Token <code>--ds-brand-smileybones-yellow</code>.</div><span class="ratio">~1.3:1 — fills only</span></div></div>
-    </div>
-    <p class="footnote" style="margin-top:14px">The three warm greys form a deliberate ladder — one stop per contrast tier (Disabled / UI Boundary / Library, the last living in Secondary above). Do not introduce intermediate values without a DESIGN-POLICIES.md change.</p>
-
-    <h3 class="ds-panel-label">Internal accent</h3>
-    <div class="swatches">
-      <div class="swatch-card"><div class="swatch-chip" style="background:#c4d82e"></div><div class="swatch-body"><div class="swatch-name">Access Lime</div><div class="swatch-hex">#c4d82e</div><div class="swatch-token">--ds-accent <span style="color:var(--ds-border-strong)">(internal)</span></div><div class="swatch-role">Internal primary-action identity — signals "you are in an internal tool." On public pages: small highlights only (accent stripe, badge fill), never buttons. Fails text contrast — fills only.</div><span class="ratio">~1.5:1 — fills only</span></div></div>
-    </div>
-
-    <h3 class="ds-panel-label">Heritage — used sparingly</h3>
-    <div class="swatches">
-      <div class="swatch-card"><div class="swatch-chip" style="background:#b31b1b"></div><div class="swatch-body"><div class="swatch-name">Campus Red</div><div class="swatch-hex">#b31b1b</div><div class="swatch-role">The X in the logo mark; very occasional accent. Never headers, buttons, large fields, or text.</div></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#fb595a"></div><div class="swatch-body"><div class="swatch-name">Publishing Pink</div><div class="swatch-hex">#fb595a</div><div class="swatch-role">Rare: time-limited announcements, celebratory accents. Never errors or body text.</div></div></div>
-    </div>
-
-    <h3 class="ds-panel-label">Two contexts — never crossed</h3>
-    <div class="ds-card-grid context-cards">
-      <div class="ds-card context-card">
-        <h3><span class="context-dot" style="background:#a5d6fe"></span>Public pages — clean, fast, brown-and-blue</h3>
+    <p class="ds-panel-label">Two contexts — never crossed</p>
+    <div class="ds-card-grid">
+      <div class="ds-card">
+        <h3><span class="swatch" style="background:#a5d6fe"></span>Public pages — clean, fast, brown-and-blue</h3>
         <p>Researcher-facing, content-first, minimal chrome. Color comes from the logo, links, and subtle tinted bands.</p>
         <ul>
           <li>Primary buttons: <strong>Open Blue</strong> #a5d6fe</li>
@@ -178,9 +269,9 @@
           <li>Section bands: Warm Wash → Grey Hover → Grey Active</li>
         </ul>
       </div>
-      <div class="ds-card context-card">
-        <h3><span class="context-dot" style="background:#c4d82e"></span>Internal tools — warm, utilitarian, lime-accented</h3>
-        <p>Staff-facing workspaces (arXiv Check, Admin Console). Access Lime signals &ldquo;you are in an internal tool.&rdquo;</p>
+      <div class="ds-card">
+        <h3><span class="swatch" style="background:#c4d82e"></span>Internal tools — warm, utilitarian, lime-accented</h3>
+        <p>Staff-facing workspaces (arXiv Check, Admin Console). Access Lime signals “you are in an internal tool.”</p>
         <ul>
           <li>Primary buttons: <strong>Access Lime</strong> #c4d82e</li>
           <li>Secondary: lime tint #f0f9e8, border #9cb522</li>
@@ -188,92 +279,349 @@
         </ul>
       </div>
     </div>
-    <p class="never" style="margin-top:14px"><strong>Do not cross the accents.</strong> Access Lime never appears on public pages as an interactive color; Open Blue never on internal tools. The color difference is functional — it tells staff which context they are working in. (DESIGN-POLICIES.md)</p>
+
+    <div class="ds-alert ds-alert--error">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">Do not cross the accents</p>
+        <p>Access Lime never appears on public pages; Open Blue never on internal tools. The color difference is functional — it tells staff which context they are working in. (DESIGN-POLICIES.md)</p>
+      </div>
+    </div>
   </section>
 
-  <!-- ═══════════════════ LINKS & INTERACTIVE ═══════════════════ -->
-  <section class="section" id="links">
-    <h2 class="section-title" id="links-interactive">Links &amp; interactive</h2>
+  <!-- ───────── Links and interactive ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="links-and-interactive">Links and interactive</h2>
     <p class="ds-section-desc">Colors that signal "you can act on this." Link-vs-body contrast fails 3:1, so inline links are also underlined — color is never the only signal (WCAG 1.4.1).</p>
 
-    <h3 class="ds-panel-label">Text links</h3>
-    <div class="swatches">
-      <div class="swatch-card"><div class="swatch-chip" style="background:#1565c0"></div><div class="swatch-body"><div class="swatch-name">Link Blue</div><div class="swatch-hex">#1565c0</div><div class="swatch-token">--ds-link</div><div class="swatch-role">All interactive links, light mode. Author names, category links, DOIs.</div><span class="ratio">5.74:1 on white ✓ AA</span></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#1050a0"></div><div class="swatch-body"><div class="swatch-name">Link Hover</div><div class="swatch-hex">#1050a0</div><div class="swatch-token">--ds-link-hover</div><div class="swatch-role">Link hover state.</div><span class="ratio">7.83:1 on white ✓ AAA</span></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#7b2fbe"></div><div class="swatch-body"><div class="swatch-name">Visited Purple</div><div class="swatch-hex">#7b2fbe</div><div class="swatch-token">--ds-link-visited</div><div class="swatch-role">Visited link state.</div><span class="ratio">7.02:1 on white ✓ AAA</span></div></div>
-    </div>
+    <div class="ds-card">
+      <p class="ds-panel-label">Text links</p>
+      <ul class="swatch-grid">
+        <li class="swatch-card">
+          <span class="swatch" style="background:#1565c0"></span>
+          <strong>Link Blue</strong>
+          <code>#1565c0</code>
+          <code>--ds-link</code>
+          <p>All interactive links, light mode. Author names, category links, DOIs.</p>
+          <p>5.74:1 on white ✓ AA</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#1050a0"></span>
+          <strong>Link Hover</strong>
+          <code>#1050a0</code>
+          <code>--ds-link-hover</code>
+          <p>Link hover state.</p>
+          <p>7.83:1 on white ✓ AAA</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#7b2fbe"></span>
+          <strong>Visited Purple</strong>
+          <code>#7b2fbe</code>
+          <code>--ds-link-visited</code>
+          <p>Visited link state.</p>
+          <p>7.02:1 on white ✓ AAA</p>
+        </li>
+      </ul>
 
-    <h3 class="ds-panel-label">Focus indicators</h3>
-    <div class="swatches">
-      <div class="swatch-card"><div class="swatch-chip" style="background:linear-gradient(90deg,#1565c0 50%,#64b5f6 50%)"></div><div class="swatch-body"><div class="swatch-name">Focus Ring</div><div class="swatch-hex">#1565c0 light &middot; #64b5f6 dark</div><div class="swatch-token">--ds-focus-ring / --ds-focus-ring-on-dark</div><div class="swatch-role">Keyboard focus indicator; the dark variant is required on Repository Brown surfaces, where the standard ring is invisible.</div></div></div>
+      <p class="ds-panel-label">Focus indicators</p>
+      <ul class="swatch-grid">
+        <li class="swatch-card">
+          <span class="swatch" style="background:#1565c0"></span>
+          <strong>Focus Ring</strong>
+          <code>#1565c0</code>
+          <code>--ds-focus-ring</code>
+          <p>Keyboard focus indicator on light surfaces.</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#64b5f6"></span>
+          <strong>Focus Ring on dark</strong>
+          <code>#64b5f6</code>
+          <code>--ds-focus-ring-on-dark</code>
+          <p>Required on Repository Brown surfaces, where the standard ring is invisible.</p>
+        </li>
+      </ul>
+
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>a { color: var(--ds-link); }
+a:hover { color: var(--ds-link-hover); }
+a:visited { color: var(--ds-link-visited); }
+
+:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
+
+/* On the dark chrome bar the light-mode ring disappears */
+.ds-site-header :focus-visible { outline-color: var(--ds-focus-ring-on-dark); }</code></pre>
+          <dl>
+            <dt>--ds-link</dt>
+            <dd>Link Blue. Every inline and standalone link, and the text button. Flips to a lighter blue in dark mode.</dd>
+            <dt>--ds-link-hover</dt>
+            <dd>Link Hover. The hover and active colour of a link.</dd>
+            <dt>--ds-link-visited</dt>
+            <dd>Visited Purple. A link the reader has already followed.</dd>
+            <dt>--ds-focus-ring</dt>
+            <dd>The keyboard focus outline on every light surface. Use it with <code>:focus-visible</code>, never <code>:focus</code>.</dd>
+            <dt>--ds-focus-ring-on-dark</dt>
+            <dd>The focus outline on the dark chrome bars (<code>--ds-chrome</code>), which are dark in both modes.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
   </section>
 
-  <!-- ═══════════════════ STATUS & ALERTS ═══════════════════ -->
-  <section class="section" id="status">
-    <h2 class="section-title" id="status-alerts">Status &amp; alerts</h2>
+  <!-- ───────── Status and alerts ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="status-and-alerts">Status and alerts</h2>
     <p class="ds-section-desc">One semantic system in the public and internal contexts. Every state also carries an icon and a leading word — never color alone (WCAG 1.4.1). Light-mode values shown; dark overrides live in <a href="design-system.css">design-system.css</a>.</p>
-    <table class="status-table">
-      <tr><th>State</th><th>Sample</th><th>Background</th><th>Border</th><th>Text</th><th>Contrast</th></tr>
-      <tr><td><strong>Success</strong></td><td><span class="status-sample" style="background:#e8f5d8;border-color:#6b8e1e;color: var(--ds-success-fg)">Success: saved</span></td><td class="swatch-hex">#e8f5d8</td><td class="swatch-hex">#6b8e1e</td><td class="swatch-hex">#4a5a0a</td><td>6.7:1 ✓</td></tr>
-      <tr><td><strong>Info</strong></td><td><span class="status-sample" style="background:#e7f1fd;border-color:#5a82c8;color:#1a3a78">Info: new version</span></td><td class="swatch-hex">#e7f1fd</td><td class="swatch-hex">#5a82c8</td><td class="swatch-hex">#1a3a78</td><td>9.6:1 ✓</td></tr>
-      <tr><td><strong>Warning</strong></td><td><span class="status-sample" style="background:#fff8e1;border-color:#e8b800;color: var(--ds-warning-fg)">Warning: viewing v1</span></td><td class="swatch-hex">#fff8e1</td><td class="swatch-hex">#e8b800</td><td class="swatch-hex">#7a5c00</td><td>5.9:1 ✓</td></tr>
-      <tr><td><strong>Error</strong></td><td><span class="status-sample" style="background:#fdeaea;border-color:#c62828;color: var(--ds-error-fg)">Error: upload failed</span></td><td class="swatch-hex">#fdeaea</td><td class="swatch-hex">#c62828</td><td class="swatch-hex">#8b0000</td><td>8.6:1 ✓</td></tr>
-    </table>
-    <p class="footnote" style="margin-top:10px">Success is lime-olive, not forest green — arXiv has no success-green, and introducing one would loosen the palette. Info is navy, deliberately darker than Link Blue so banners are never mistaken for links. The error border is <strong>Danger Red #c62828</strong> — the functional color for destructive actions and error states everywhere, deliberately distinct from heritage Campus Red. Component usage and dark-mode variants: <a href="alerts.html">alert-styles.html</a>.</p>
+
+    <div class="ds-card">
+      <ul class="swatch-grid">
+        <li class="swatch-card">
+          <span class="swatch" style="background:#e8f5d8"></span>
+          <strong>Success</strong>
+          <code>#e8f5d8</code>
+          <code>--ds-success-bg</code>
+          <p><span class="swatch" style="background:#6b8e1e"></span>Border <code>#6b8e1e</code></p>
+          <p><span class="swatch" style="background:#4a5a0a"></span>Text <code>#4a5a0a</code></p>
+          <p>6.7:1 ✓ AA</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#e7f1fd"></span>
+          <strong>Info</strong>
+          <code>#e7f1fd</code>
+          <code>--ds-info-bg</code>
+          <p><span class="swatch" style="background:#5a82c8"></span>Border <code>#5a82c8</code></p>
+          <p><span class="swatch" style="background:#1a3a78"></span>Text <code>#1a3a78</code></p>
+          <p>9.6:1 ✓ AAA</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#fff8e1"></span>
+          <strong>Warning</strong>
+          <code>#fff8e1</code>
+          <code>--ds-warning-bg</code>
+          <p><span class="swatch" style="background:#e8b800"></span>Border <code>#e8b800</code></p>
+          <p><span class="swatch" style="background:#7a5c00"></span>Text <code>#7a5c00</code></p>
+          <p>5.9:1 ✓ AA</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#fdeaea"></span>
+          <strong>Error</strong>
+          <code>#fdeaea</code>
+          <code>--ds-error-bg</code>
+          <p><span class="swatch" style="background:#c62828"></span>Border <code>#c62828</code></p>
+          <p><span class="swatch" style="background:#8b0000"></span>Text <code>#8b0000</code></p>
+          <p>8.6:1 ✓ AAA</p>
+        </li>
+      </ul>
+
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>/* The alert component already does this; a new status surface follows it */
+background: var(--ds-success-bg);
+border-color: var(--ds-success-border);
+color: var(--ds-success-fg);
+
+/* The same three tokens for each state: -success-, -info-, -warning-, -error- */</code></pre>
+          <dl>
+            <dt>--ds-success-bg, --ds-success-border, --ds-success-fg</dt>
+            <dd>The success tint, its edge, and its text. Lime-olive, not forest green, so it never reads as the internal accent.</dd>
+            <dt>--ds-info-bg, --ds-info-border, --ds-info-fg</dt>
+            <dd>The info tint. Navy, deliberately darker than Link Blue, so an info banner is never mistaken for a link.</dd>
+            <dt>--ds-warning-bg, --ds-warning-border, --ds-warning-fg</dt>
+            <dd>The warning tint, the same amber as the version warning.</dd>
+            <dt>--ds-error-bg, --ds-error-border, --ds-error-fg</dt>
+            <dd>The error tint. Its border is Danger Red (<code>--ds-danger</code>), the functional red for errors and destructive actions.</dd>
+            <dt>--ds-danger</dt>
+            <dd>Danger Red <code>#c62828</code>. Destructive buttons and error states only; never a brand accent, and never Campus Red.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+    <p class="ds-annotation">Success is lime-olive, not forest green — arXiv has no success-green, and introducing one would loosen the palette. Info is navy, deliberately darker than Link Blue so banners are never mistaken for links. The error border is Danger Red #c62828 — the functional color for destructive actions and error states everywhere, deliberately distinct from heritage Campus Red. Component usage and dark-mode variants: <a href="alerts.html">Alerts</a>.</p>
   </section>
 
-  <!-- ═══════════════════ BACKGROUNDS ═══════════════════ -->
-  <section class="section" id="backgrounds">
-    <h2 class="section-title" id="backgrounds">Backgrounds</h2>
-    <p class="ds-section-desc">Tints for section depth without hard borders, plus the light-blue surfaces arXiv lays over paper content. Picking one and staying accessible on it are covered in the two subsections that follow.</p>
+  <!-- ───────── Backgrounds and tints ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="backgrounds-and-tints">Backgrounds and tints</h2>
+    <p class="ds-section-desc">Tints for section depth without hard borders, plus the light-blue surfaces arXiv lays over paper content. Picking one and staying accessible on it are covered under Rules below.</p>
 
-    <h3 class="ds-panel-label">Background tints</h3>
+    <p class="ds-panel-label">Background tints</p>
     <p class="ds-section-desc">Barely-perceptible tints for section depth without hard borders. Mostly warm (Repository Brown stepped toward white), with a cool wash and a code-block blue tint for jobs that read better cool.</p>
-    <div class="swatches">
-      <div class="swatch-card"><div class="swatch-chip" style="background:#f9f7f7"></div><div class="swatch-body"><div class="swatch-name">Warm Wash</div><div class="swatch-hex">#f9f7f7</div><div class="swatch-token">--ds-canvas</div><div class="swatch-role">Footer, metadata bands, internal page background</div></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#f7fafc"></div><div class="swatch-body"><div class="swatch-name">Cool Wash</div><div class="swatch-hex">#f7fafc</div><div class="swatch-role">Cool section differentiation</div></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#f0eeec"></div><div class="swatch-body"><div class="swatch-name">Grey Hover</div><div class="swatch-hex">#f0eeec</div><div class="swatch-token">--ds-surface-muted</div><div class="swatch-role">Hover fills, Related band, reader header</div></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#ddd8d2"></div><div class="swatch-body"><div class="swatch-name">Grey Active</div><div class="swatch-hex">#e4e0db</div><div class="swatch-token">--ds-border-muted</div><div class="swatch-role">Active fills, pill borders, footer edges</div></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#ddd8d2"></div><div class="swatch-body"><div class="swatch-name">Border Light</div><div class="swatch-hex">#ddd8d2</div><div class="swatch-token">--ds-border</div><div class="swatch-role">Component hairlines — inputs, tracks, card edges. Decorative only (below 3:1); never the sole boundary of an interactive control.</div></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#f0f5ff"></div><div class="swatch-body"><div class="swatch-name">Blue Tint</div><div class="swatch-hex">#f0f5ff</div><div class="swatch-role">Code and identifier backgrounds</div></div></div>
+    <div class="ds-card">
+      <ul class="swatch-grid">
+        <li class="swatch-card">
+          <span class="swatch" style="background:#f9f7f7"></span>
+          <strong>Warm Wash</strong>
+          <code>#f9f7f7</code>
+          <code>--ds-canvas</code>
+          <p>Footer, metadata bands, internal page background</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#f7fafc"></span>
+          <strong>Cool Wash</strong>
+          <code>#f7fafc</code>
+          <p>Cool section differentiation. No token.</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#f0eeec"></span>
+          <strong>Grey Hover</strong>
+          <code>#f0eeec</code>
+          <code>--ds-surface-muted</code>
+          <p>Hover fills, Related band, reader header</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#e4e0db"></span>
+          <strong>Grey Active</strong>
+          <code>#e4e0db</code>
+          <code>--ds-border-muted</code>
+          <p>Active fills, pill borders, footer edges</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#ddd8d2"></span>
+          <strong>Border Light</strong>
+          <code>#ddd8d2</code>
+          <code>--ds-border</code>
+          <p>Component hairlines — inputs, tracks, card edges. Decorative only (below 3:1); never the sole boundary of an interactive control.</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#f0f5ff"></span>
+          <strong>Blue Tint</strong>
+          <code>#f0f5ff</code>
+          <p>Code and identifier backgrounds. No token.</p>
+        </li>
+      </ul>
+
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>background: var(--ds-canvas);         /* the page ground */
+background: var(--ds-surface);        /* a card, a raised panel */
+background: var(--ds-surface-muted);  /* a secondary band, a hover fill */
+border: 1px solid var(--ds-border);   /* a decorative hairline */</code></pre>
+          <dl>
+            <dt>--ds-canvas</dt>
+            <dd>Warm Wash. The page ground behind everything.</dd>
+            <dt>--ds-surface</dt>
+            <dd>White. Cards, panels, and the primary zone of a page. In dark mode it becomes a raised dark surface, not white.</dd>
+            <dt>--ds-surface-muted</dt>
+            <dd>Grey Hover, also called Card Grey. A secondary band one step down from the page, a hover fill, the disabled button fill.</dd>
+            <dt>--ds-border-muted</dt>
+            <dd>Grey Active. The deepest warm band: pressed fills, pill borders, the footer edge. Body-size grey and links miss AA on it.</dd>
+            <dt>--ds-border</dt>
+            <dd>Border Light. A decorative hairline on inputs, cards, and tracks. Below 3:1, so never the only edge of a control.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
 
-    <h3 class="ds-panel-label">The arXiv Chrome family — Open Blue's tints</h3>
-    <p class="ds-section-desc">Open Blue stepped toward white (plus its hover step <span class="swatch-hex" style="display:inline">#c2e2ff</span>): light blues reserved for arXiv-added chrome layered over content — popovers, the TOC dropdown, active inline states, the read-aloud highlight, the reader footer band. The recognizable rule: <em>light blue = arXiv chrome speaking, not the paper</em>. (PROPOSED-GUIDELINES.md G4.)</p>
-    <div class="swatches">
-      <div class="swatch-card"><div class="swatch-chip" style="background:#edf4fc"></div><div class="swatch-body"><div class="swatch-name">Tint Light</div><div class="swatch-hex">#edf4fc</div><div class="swatch-token">--ds-accent-surface</div><div class="swatch-role">Popover, dropdown, and footer-band surface</div></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#c4dcf0"></div><div class="swatch-body"><div class="swatch-name">Tint Border</div><div class="swatch-hex">#c4dcf0</div><div class="swatch-token">--ds-accent-border</div><div class="swatch-role">Matching panel edge</div></div></div>
-      <div class="swatch-card"><div class="swatch-chip" style="background:#d6e8f7"></div><div class="swatch-body"><div class="swatch-name">Active Wash</div><div class="swatch-hex">#d6e8f7</div><div class="swatch-token">--ds-accent-wash</div><div class="swatch-role">Active inline states; hover within panels; read-aloud highlight</div></div></div>
+    <p class="ds-panel-label">The arXiv Chrome family — Open Blue's tints</p>
+    <p class="ds-section-desc">Open Blue stepped toward white (plus its hover step <code>#c2e2ff</code>): light blues reserved for arXiv-added chrome layered over content — popovers, the TOC dropdown, active inline states, the read-aloud highlight, the reader footer band. The recognizable rule: <em>light blue = arXiv chrome speaking, not the paper</em>. (PROPOSED-GUIDELINES.md G4.)</p>
+    <div class="ds-card">
+      <ul class="swatch-grid">
+        <li class="swatch-card">
+          <span class="swatch" style="background:#edf4fc"></span>
+          <strong>Tint Light</strong>
+          <code>#edf4fc</code>
+          <code>--ds-accent-surface</code>
+          <p>Popover, dropdown, and footer-band surface</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#c4dcf0"></span>
+          <strong>Tint Border</strong>
+          <code>#c4dcf0</code>
+          <code>--ds-accent-border</code>
+          <p>Matching panel edge</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#d6e8f7"></span>
+          <strong>Active Wash</strong>
+          <code>#d6e8f7</code>
+          <code>--ds-accent-wash</code>
+          <p>Active inline states; hover within panels; read-aloud highlight</p>
+        </li>
+        <li class="swatch-card">
+          <span class="swatch" style="background:#c2e2ff"></span>
+          <strong>Open Blue Bright</strong>
+          <code>#c2e2ff</code>
+          <code>--ds-accent-hover</code>
+          <p>Hover state for Open Blue primary fills</p>
+        </li>
+      </ul>
+
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>/* A panel arXiv floats over the paper */
+background: var(--ds-accent-surface);
+border: 1px solid var(--ds-accent-border);
+
+/* The active or hovered item inside it */
+background: var(--ds-accent-wash);</code></pre>
+          <dl>
+            <dt>--ds-accent-surface</dt>
+            <dd>Tint Light. The ground of a popover, a dropdown, the reader footer band.</dd>
+            <dt>--ds-accent-border</dt>
+            <dd>Tint Border. The edge of that panel. Inside <code>.ds-internal</code> it is the lime border instead.</dd>
+            <dt>--ds-accent-wash</dt>
+            <dd>Active Wash. The deepest chrome blue that still holds AA for body text: an active inline anchor, a hover inside a panel, the read-aloud highlight.</dd>
+            <dt>--ds-accent-hover</dt>
+            <dd>Open Blue Bright. The hover step of an Open Blue fill; it carries <code>--ds-text-on-accent</code> like the fill it hovers from.</dd>
+          </dl>
+        </div>
+      </details>
     </div>
   </section>
 
-  <!-- ═══════════════════ WHICH TINT FOR WHICH JOB ═══════════════════ -->
-  <section class="section" id="uses">
-    <h2 class="section-title" id="which-tint-for-which-job">Which tint for which job</h2>
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Use tokens, not hex values.</strong> Take every color from a <code>--ds-</code>
+      token. The hex values on this page are specimens to read, not values to paste into a
+      stylesheet. A color with no token is not available to build with.</li>
+      <li><strong>Check contrast on the actual ground.</strong> A color that passes on white can
+      fail on a tint. Body text needs 4.5:1; large text and the edge of a control need 3:1. The
+      tables under Spec show which text tokens are safe on which surface.</li>
+      <li><strong>Never use color alone.</strong> Pair a color with a word, an icon, an underline,
+      or a change of position, so a reader who cannot see the color still gets the message
+      (WCAG 1.4.1).</li>
+      <li><strong>Dark mode flips the tokens.</strong> Every token on this page takes its dark value
+      on its own. Never hand-pick a dark value into a page; see <a href="dark-mode.html">Dark
+      mode</a> for what flips and what stays fixed.</li>
+    </ul>
+  </div>
+
+  </div> <!-- /core zone -->
+
+  <h2>Rules</h2>
+
+  <!-- ───────── Which tint for which job ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="which-tint-for-which-job">Which tint for which job</h3>
     <p class="ds-section-desc">Dark-mode status and mechanics live on <a href="dark-mode.html">the dark mode page</a>.</p>
     <p class="ds-section-desc">The backgrounds above, sorted by the job they do. Reach for the named token. If your job is not listed, that is a <a href="doc.html?src=docs/color-mapping.md">color-mapping.md</a> question — not a new value (see the three tiers below).</p>
-    <table class="status-table">
-      <tr><th>The job</th><th>Reach for</th><th>Where it shows up</th></tr>
-      <tr><td>Page / section background, warm</td><td><span class="status-sample" style="background: var(--ds-canvas);border-color: var(--ds-border);color: var(--ds-text)">Warm Wash</span><br><span class="swatch-token">--ds-canvas</span></td><td>The default subtle ground — footer, metadata bands, internal page background</td></tr>
-      <tr><td>Section background, cooler</td><td><span class="status-sample" style="background:#f7fafc;border-color: var(--ds-border);color: var(--ds-text)">Cool Wash</span><br><span class="swatch-hex">#f7fafc</span></td><td>When a band should read cooler than Warm Wash to differentiate adjacent sections</td></tr>
-      <tr><td>Secondary content band</td><td><span class="status-sample" style="background: var(--ds-surface-muted);border-color: var(--ds-border);color: var(--ds-text)">Card Grey</span><br><span class="swatch-token">--ds-surface-muted</span></td><td>Related band, reader header — one step down from the page, no hard border needed</td></tr>
-      <tr><td>Card surface / hover fill</td><td><span class="status-sample" style="background: var(--ds-surface-muted);border-color: var(--ds-border);color: var(--ds-text)">Card Grey</span><br><span class="swatch-token">--ds-surface-muted</span></td><td>Card fills and hover fills — same tint as the secondary band, doing a smaller job</td></tr>
-      <tr><td>Active / pressed fill, deepest warm band</td><td><span class="status-sample" style="background: var(--ds-border);border-color:#c8c4be;color: var(--ds-text)">Grey Active</span><br><span class="swatch-token">--ds-border-muted</span></td><td>Footer edge, pressed states, pill borders. The darkest warm tint — body-size grey text and links miss AA here (use Repository Brown or Link Hover)</td></tr>
-      <tr><td>Decorative hairline</td><td><span class="status-sample" style="background: var(--ds-surface);border-color: var(--ds-border);color: var(--ds-text)">Border Light</span><br><span class="swatch-token">--ds-border</span></td><td>Input / card / track edges. Below 3:1 — never the sole boundary of an interactive control</td></tr>
-      <tr><td>arXiv chrome floating over paper</td><td><span class="status-sample" style="background:#edf4fc;border-color:#c4dcf0;color: var(--ds-text)">Tint Light + Border</span><br><span class="swatch-token">--ds-accent-surface</span></td><td>Popovers, the TOC dropdown, the reader footer band — the "light blue = arXiv speaking, not the paper" rule (G4)</td></tr>
-      <tr><td>Inline active anchor · read-aloud highlight · panel hover</td><td><span class="status-sample" style="background:#d6e8f7;border-color:#c4dcf0;color: var(--ds-text)">Active Wash</span><br><span class="swatch-token">--ds-accent-wash</span></td><td>The deepest arXiv-chrome blue that still holds AA for normal-size text</td></tr>
-      <tr><td>Open Blue hover step</td><td><span class="status-sample" style="background:#c2e2ff;border-color:#8fc1e8;color: var(--ds-text)">Open Blue Bright</span><br><span class="swatch-token">--ds-accent-hover</span></td><td>Hover state for Open Blue primary fills</td></tr>
-      <tr><td>Code / identifier background</td><td><span class="status-sample" style="background:#f0f5ff;border-color: var(--ds-border);color: var(--ds-text)">Blue Tint</span><br><span class="swatch-hex">#f0f5ff</span></td><td>Code blocks, citation and identifier display boxes</td></tr>
-      <tr><td>Public primary action fill</td><td><span class="status-sample" style="background:#a5d6fe;border-color:#6ba8da;color: var(--ds-text)">Open Blue</span><br><span class="swatch-token">--ds-accent</span></td><td>The one brand fill that carries Repository Brown text at AA (11.3:1) — see pairings below</td></tr>
-      <tr><td>Status surface (success / info / warning / error)</td><td><span class="status-sample" style="background:#e8f5d8;border-color:#6b8e1e;color: var(--ds-success-fg)">the status tints</span></td><td>See <strong>Status &amp; alerts</strong> above — each pairs with a distinct icon and leading word</td></tr>
-    </table>
-    <p class="footnote" style="margin-top:12px">No near-whites lighter than Warm Wash. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally.</p>
+    <div class="table-scroll" role="region" aria-label="Which tint for which job" tabindex="0">
+      <table class="ds-table-framed token-table">
+        <thead><tr><th>The job</th><th>Reach for</th><th>Where it shows up</th></tr></thead>
+        <tbody>
+          <tr><td>Page / section background, warm</td><td><span class="swatch" style="background:var(--ds-canvas)"></span>Warm Wash <code>--ds-canvas</code></td><td>The default subtle ground — footer, metadata bands, internal page background</td></tr>
+          <tr><td>Section background, cooler</td><td><span class="swatch" style="background:#f7fafc"></span>Cool Wash <code>#f7fafc</code></td><td>When a band should read cooler than Warm Wash to differentiate adjacent sections</td></tr>
+          <tr><td>Secondary content band</td><td><span class="swatch" style="background:var(--ds-surface-muted)"></span>Card Grey <code>--ds-surface-muted</code></td><td>Related band, reader header — one step down from the page, no hard border needed</td></tr>
+          <tr><td>Card surface / hover fill</td><td><span class="swatch" style="background:var(--ds-surface-muted)"></span>Card Grey <code>--ds-surface-muted</code></td><td>Card fills and hover fills — same tint as the secondary band, doing a smaller job</td></tr>
+          <tr><td>Active / pressed fill, deepest warm band</td><td><span class="swatch" style="background:var(--ds-border-muted)"></span>Grey Active <code>--ds-border-muted</code></td><td>Footer edge, pressed states, pill borders. The darkest warm tint — body-size grey text and links miss AA here (use Repository Brown or Link Hover)</td></tr>
+          <tr><td>Decorative hairline</td><td><span class="swatch" style="background:var(--ds-border)"></span>Border Light <code>--ds-border</code></td><td>Input / card / track edges. Below 3:1 — never the sole boundary of an interactive control</td></tr>
+          <tr><td>arXiv chrome floating over paper</td><td><span class="swatch" style="background:var(--ds-accent-surface)"></span>Tint Light + Border <code>--ds-accent-surface</code> <code>--ds-accent-border</code></td><td>Popovers, the TOC dropdown, the reader footer band — the "light blue = arXiv speaking, not the paper" rule (G4)</td></tr>
+          <tr><td>Inline active anchor · read-aloud highlight · panel hover</td><td><span class="swatch" style="background:var(--ds-accent-wash)"></span>Active Wash <code>--ds-accent-wash</code></td><td>The deepest arXiv-chrome blue that still holds AA for normal-size text</td></tr>
+          <tr><td>Open Blue hover step</td><td><span class="swatch" style="background:var(--ds-accent-hover)"></span>Open Blue Bright <code>--ds-accent-hover</code></td><td>Hover state for Open Blue primary fills</td></tr>
+          <tr><td>Code / identifier background</td><td><span class="swatch" style="background:#f0f5ff"></span>Blue Tint <code>#f0f5ff</code></td><td>Code blocks, citation and identifier display boxes</td></tr>
+          <tr><td>Public primary action fill</td><td><span class="swatch" style="background:var(--ds-accent)"></span>Open Blue <code>--ds-accent</code></td><td>The one brand fill that carries Repository Brown text at AA (11.3:1) — see pairings below</td></tr>
+          <tr><td>Status surface (success / info / warning / error)</td><td><span class="swatch" style="background:var(--ds-success-bg)"></span><span class="swatch" style="background:var(--ds-info-bg)"></span><span class="swatch" style="background:var(--ds-warning-bg)"></span><span class="swatch" style="background:var(--ds-error-bg)"></span>the status tints</td><td>See <strong>Status and alerts</strong> above — each pairs with a distinct icon and leading word</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="ds-annotation">No near-whites lighter than Warm Wash. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally.</p>
   </section>
 
-  <!-- ═══════════════════ WORKING ON TINTED BACKGROUNDS ═══════════════════ -->
-  <section class="section" id="tinted">
-    <h2 class="section-title" id="working-on-tinted-backgrounds">Working on tinted backgrounds</h2>
+  <!-- ───────── Working on tinted backgrounds ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="working-on-tinted-backgrounds">Working on tinted backgrounds</h3>
     <p class="ds-section-desc">
       "No one-off hex values" has three tiers. <strong>Tier 1 — palette
       tokens</strong> (everything on this page): free to use in their
@@ -287,45 +635,53 @@
       change, not a local invention.
     </p>
 
-    <h4 class="minor-title">Recommended pairings</h4>
+    <p class="ds-panel-label">Recommended pairings</p>
     <p class="ds-section-desc">The recommended set — what to reach for on each surface. It is deliberately not exhaustive: any pairing not listed here, and any new tint, must be checked against WCAG AA before use (4.5:1 normal text; 3:1 large text and UI boundaries).</p>
-    <table class="status-table">
-      <tr><th>On this surface</th><th>Text &amp; links</th><th>UI borders</th></tr>
-      <tr><td><strong>White · Warm Wash · Card Grey · Tint Light</strong></td><td>Repository Brown, Library Grey, Link Blue / Link Hover, Archival Blue, Visited Purple</td><td>UI Boundary Grey</td></tr>
-      <tr><td><strong>Active Wash</strong> #d6e8f7</td><td>Repository Brown, Library Grey, Link Blue / Link Hover, Archival Blue, Visited Purple</td><td>Library Grey</td></tr>
-      <tr><td><strong>Grey Active</strong> #e4e0db</td><td>Repository Brown, Link Hover, Archival Blue, Visited Purple</td><td>Library Grey</td></tr>
-      <tr><td><strong>Open Blue</strong> #a5d6fe</td><td>Repository Brown</td><td>Repository Brown</td></tr></table>
-    <p class="footnote" style="margin-top:12px">Repository Brown is the workhorse — it clears AA on every approved surface, which is why buttons set Repository Brown on Open Blue.</p>
+    <div class="table-scroll" role="region" aria-label="Recommended pairings" tabindex="0">
+      <table class="ds-table-framed token-table">
+        <thead><tr><th>On this surface</th><th>Text &amp; links</th><th>UI borders</th></tr></thead>
+        <tbody>
+          <tr><td><strong>White · Warm Wash · Card Grey · Tint Light</strong></td><td>Repository Brown, Library Grey, Link Blue / Link Hover, Archival Blue, Visited Purple</td><td>UI Boundary Grey</td></tr>
+          <tr><td><strong>Active Wash</strong> #d6e8f7</td><td>Repository Brown, Library Grey, Link Blue / Link Hover, Archival Blue, Visited Purple</td><td>Library Grey</td></tr>
+          <tr><td><strong>Grey Active</strong> #e4e0db</td><td>Repository Brown, Link Hover, Archival Blue, Visited Purple</td><td>Library Grey</td></tr>
+          <tr><td><strong>Open Blue</strong> #a5d6fe</td><td>Repository Brown</td><td>Repository Brown</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="ds-annotation">Repository Brown is the workhorse — it clears AA on every approved surface, which is why buttons set Repository Brown on Open Blue.</p>
 
-    <h4 class="minor-title">Buttons change clothes on tinted surfaces</h4>
+    <p class="ds-panel-label">Buttons change clothes on tinted surfaces</p>
     <p class="ds-section-desc">
       The secondary button's white fill reads as "primary" against a tinted band, so tinted
-      sections add the <code style="font-family:var(--ds-font-mono); font-size:12px">.on-tint</code>
+      sections add the <code>.on-tint</code>
       modifier: the fill swaps to Card Grey — same luminance as the surface, <em>warm</em> hue —
       so the button reads as secondary through warm-on-cool material difference, not through
       low contrast. Live from <a href="buttons.html">the button pattern</a>:
     </p>
-    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px">
-      <div style="background: var(--ds-surface); border:1px solid var(--ds-border); border-radius:8px; padding:22px; text-align:center">
-        <div style="font-family:var(--ds-font-condensed); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--ds-border-strong); margin-bottom:12px">On white — default secondary</div>
-        <span class="ds-btn ds-btn-secondary">TeX Source</span>
+    <div class="ds-card">
+      <p class="ds-panel-label">On white — default secondary</p>
+      <div class="state-flex">
+        <button class="ds-btn ds-btn-secondary" type="button">TeX Source</button>
       </div>
-      <div style="background:var(--ds-accent-surface); border:1px solid var(--ds-accent-border); border-radius:8px; padding:22px; text-align:center">
-        <div style="font-family:var(--ds-font-condensed); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--ds-text-muted); margin-bottom:12px">On a tinted band — add .on-tint</div>
-        <span class="ds-btn ds-btn-secondary on-tint">Submit a fix</span>
+      <p class="ds-panel-label">On a tinted band — add <code>.on-tint</code></p>
+      <div class="tinted-row">
+        <button class="ds-btn ds-btn-secondary on-tint" type="button">Submit a fix</button>
       </div>
     </div>
   </section>
 
-  <!-- ── Which text is safe on which surface ── -->
+  <h2>Spec</h2>
+
+  <!-- ───────── Which text is safe on which surface ───────── -->
   <section class="section">
-    <h2 class="section-title" id="which-text-is-safe-on-which-surface">Which text is safe on which surface</h2>
+    <h3 class="section-title" id="which-text-is-safe-on-which-surface">Which text is safe on which surface</h3>
     <p class="ds-section-desc">Three shipped bugs were text elements borrowing tokens from non-text roles
     — the paper watermark used the disabled tier, the skip link paired a flipping background with a
     fixed white, and the nav group labels used the border tier. This table is the positive answer:
     the pairings that clear WCAG AA in both modes. It is generated from the stylesheets by
     <code>verification/check-contrast.py</code>, which also fails if the table and the tokens ever
     disagree — regenerate it, do not hand-edit it.</p>
+<div class="table-scroll" role="region" aria-label="Text-safe pairings" tabindex="0">
 <!-- contrast-table:begin (generated by verification/check-contrast.py) -->
 <p class="ct-note">Each passing cell renders its own pairing in your current mode; the numbers are the measured contrast in <em>light / dark</em>. ✗ marks a ratio below WCAG AA for normal text (4.5:1). Large text (24px, or 18.66px bold) only needs 3:1, so a ✗ cell may still be usable for headings — check the number.</p>
 <h3>Public palette</h3>
@@ -338,7 +694,9 @@
 <h4>Looks tempting, is not for reading text</h4>
 <ul class="ct-never"><li><code>--ds-border-strong</code> — borders and arrows (3:1 non-text minimum)</li><li><code>--ds-text-disabled</code> — disabled text only</li><li><code>--ds-danger-disabled-fg</code> — disabled destructive icon buttons only</li></ul>
 <!-- contrast-table:end -->
+</div>
   </section>
+
 </div>
 
 <script>
@@ -363,5 +721,6 @@
 </script>
 <script src="copy-code.js" defer></script>
 <script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
 </body>
 </html>
