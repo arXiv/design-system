@@ -6,39 +6,8 @@
   <title>Dark mode — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
 <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
-  <style>/* ── Swatch pairs ── */
-    .pair-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:var(--ds-space-block); }
-    .pair { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 6px; padding: 10px 12px; font-size: 12px; }
-    .pair .chips { display: flex; gap:var(--ds-gap-glyph); margin:6px 0 var(--ds-space-1); }
-    .chip { flex: 1; border-radius: 4px; padding: 7px 8px; font-family: var(--ds-font-mono); font-size: 10.5px; border: 1px solid rgba(0,0,0,0.08); }
-    .pair .tok { font-family: var(--ds-font-mono); font-size: 11px; color: var(--ds-text); }
-
-    /* ── Live dark preview panel ──
-       Mirrors the INTERNAL stylesheet's dark block locally so the dark
-       rendering is visible without switching the OS theme. The stylesheet's
-       dark block is the source of truth — never fork values elsewhere. */
-    .dark-scope {
-      --ds-surface: #252118; --ds-surface-muted: #302c28; --ds-surface-hover: #2a2520;
-      --ds-border: #3a3530; --ds-text: #f0eeec; --ds-text-muted: #b0aba6; --ds-border-strong: #8b8680;
-      --ds-accent-wash: #1e2b0d; --ds-success-bg: #1e2b0d; --ds-success-border: #8fbd3a; --ds-success-fg: #c5e1a5;
-      background: #1c1a17; border-radius: 8px; padding: 22px;
-      font-family: "IBM Plex Sans", sans-serif; color: var(--ds-text);
-    }
-    .dark-scope .ds-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 6px; overflow: hidden; }
-    .dark-scope .ds-table th { text-align: left; font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ds-text-muted); padding: 9px 14px; background: var(--ds-surface-muted); border-bottom: 1px solid var(--ds-border); }
-    .dark-scope .ds-table td { padding: 10px 14px; border-bottom: 1px solid var(--ds-surface-muted); color: var(--ds-text); }
-    .dark-scope .ds-table tr.is-selected td { background: var(--ds-accent-wash); }
-    .dark-scope .badge { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: 11px; border-radius: 3px; padding: 1px 6px; border: 1px solid transparent; }
-    .dark-scope .b-new { background: #13294a; color: #93c5fd; border-color: #2a4a7a; }
-    .dark-scope .b-rep { background: #3a2f0e; color: #fde68a; border-color: #7a5c00; }
-    .dark-scope .b-wdr { background: #474340; color: #e8e4df; border-color: #8b8680; }
-    .dark-scope .alert { display: flex; gap:var(--ds-gap-glyph); padding: 12px 14px; border: 1px solid var(--ds-success-border); border-left-width: 4px; border-radius: 6px; background: var(--ds-success-bg); color: var(--ds-success-fg); font-size: 13px; margin-top:var(--ds-space-3); max-width: 560px; }
-
-  
-    /* Inline links in page copy. These sit on the page canvas. Nav links
-       carry their own, more specific rules. */
-</style>
 </head>
 <body class="ds-page">
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
@@ -96,52 +65,316 @@
   <button type="button" class="ds-theme-toggle"></button>
   <span id="ds-theme-status" class="is-sr-only" role="status"></span>
 </nav>
-<div class="ds-container">
+
+<div class="ds-container ds-zone-secondary">
 
   <header class="ds-page-header">
     <h1>Dark mode</h1>
-    <p>How dark mode works in this system, and what is dark-aware today. The rule that governs
-    everything else: <strong>new pages and components are light-only</strong> — dark values exist in the
-    stylesheets as foundation, and they flip automatically; nobody hand-picks them.</p>
+    <p>How dark mode works in this system. Every colour comes from a token and the tokens flip, so a page
+    or component built from them follows the reader without any work of its own; nobody hand-picks a dark
+    value.</p>
   </header>
 
 
-  <!-- ── Checklist: the first thing anyone reads ── -->
+  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#the-theme-control">The theme control</a></li>
+            <li><a href="#a-component-that-follows-the-tokens">A component that follows the tokens</a></li>
+            <li><a href="#a-page-locked-to-light">A page locked to light</a></li>
+            <li><a href="#checklist-adding-or-changing-a-component">Checklist: adding or changing a component</a></li>
+            <li><a href="#traps-that-only-show-up-on-a-real-page">Traps that only show up on a real page</a></li>
+            <li><a href="#scoping-a-mode">Scoping a mode</a></li>
+            <li><a href="#the-mechanism">The mechanism</a></li>
+            <li><a href="#tokens-that-flip">Tokens that flip</a></li>
+            <li><a href="#internal-tools">Internal tools</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <div class="ds-full ds-zone-primary">
+
+  <!-- ───────── The theme control ───────── -->
   <section class="section">
-    <h2 class="section-title" id="checklist">Checklist: adding or changing a component</h2>
+    <h2 class="section-title" id="the-theme-control">The theme control</h2>
+    <p class="ds-section-desc">One control, identical on both surfaces, because a reader who learns it on arxiv.org
+    should not have to learn it again in a moderation queue. It ships as <code>.ds-theme-toggle</code> plus
+    <code>theme.js</code>, and every page under <code>docs/</code> carries it.</p>
+    <p class="ds-section-desc">Why a control at all, when the standing preference is to honour OS-level signals rather
+    than offer in-product settings: an OS setting is one choice for a whole machine, and reading is per-context —
+    the same laptop at night in a bright room, a shared library machine whose OS the reader does not control. It
+    stays <em>one</em> control, not the first item of a settings page.</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">The live control is in the header bar of this page; the row here shows what it displays in each of its three states.</p>
+      </details>
+      <div class="state-flex">
+        <div class="state-cell">
+          <span class="state-label">Following the system</span>
+          <span class="tag-row"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 18v3"/></svg>System</span>
+        </div>
+        <div class="state-cell">
+          <span class="state-label">Always light</span>
+          <span class="tag-row"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m5 5 1.5 1.5"/><path d="M17.5 17.5 19 19"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m5 19 1.5-1.5"/><path d="M17.5 6.5 19 5"/></svg>Light</span>
+        </div>
+        <div class="state-cell">
+          <span class="state-label">Always dark</span>
+          <span class="tag-row"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>Dark</span>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;!-- in the head, NOT deferred --&gt;
+&lt;script src="theme.js"&gt;&lt;/script&gt;
+
+&lt;!-- in the header bar --&gt;
+&lt;button type="button" class="ds-theme-toggle"&gt;&lt;/button&gt;
+&lt;span id="ds-theme-status" class="is-sr-only" role="status"&gt;&lt;/span&gt;</code></pre>
+          <dl>
+            <dt>&lt;script src="theme.js"&gt;</dt>
+            <dd>Goes in the head, and it is not deferred; that is load-bearing. The attribute has to be on
+            <code>&lt;html&gt;</code> before the first paint or the page renders light and then flips — worst for
+            exactly the reader who chose dark because light hurts. <code>check-policies.py</code> fails on a page
+            that defers it.</dd>
+            <dt>.ds-theme-toggle</dt>
+            <dd>The control. Three states, not two: follow the system, always light, always dark — and
+            <em>follow the system</em> is the default a reader has to be able to get back to. A two-way switch
+            cannot express it, so the first touch would lose the machine's setting for good. That is also why it
+            is a <code>&lt;button&gt;</code> cycling a value rather than <a href="forms.html">the switch</a>, which
+            means on or off. Leave the element empty: the script fills in the icon and the label.</dd>
+            <dt>id="ds-theme-status"</dt>
+            <dd>The live region the result goes to. The button's name does not change when the theme does — the
+            name of a control is what it does, and it is still the theme control; the live region says “Theme is
+            now dark”. Same rule as the copy button and the switch.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── A component that follows the tokens ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="a-component-that-follows-the-tokens">A component that follows the tokens</h2>
+    <p class="ds-section-desc">The same card four times. Nothing in its markup changes between the cells except the
+    <code>data-theme</code> attribute and, for internal tools, <code>.ds-internal</code>: every colour inside comes
+    from a token, and the tokens are declared again under the attribute, so the nearest ancestor that carries it
+    wins.</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Accents hold in both modes: Open Blue and Access Lime stay themselves, which is why the text on them is a fixed token too.</p>
+      </details>
+      <div class="form-states">
+        <div class="form-state">
+          <span class="state-label">Public, light</span>
+          <div class="ds-card" data-theme="light" style="color: var(--ds-text)">
+            <p>Body text on a raised surface, with <a class="ds-link" href="#">an inline link</a>.</p>
+            <div class="ds-alert ds-alert--success" role="status">
+              <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <div class="ds-alert-content"><p>Preferences saved.</p></div>
+            </div>
+            <div class="ds-btn-group">
+              <button class="ds-btn ds-btn-primary" type="button">Primary</button>
+              <button class="ds-btn ds-btn-secondary" type="button">Secondary</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-state">
+          <span class="state-label">Public, dark</span>
+          <div class="ds-card" data-theme="dark" style="color: var(--ds-text)">
+            <p>Body text on a raised surface, with <a class="ds-link" href="#">an inline link</a>.</p>
+            <div class="ds-alert ds-alert--success" role="status">
+              <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <div class="ds-alert-content"><p>Preferences saved.</p></div>
+            </div>
+            <div class="ds-btn-group">
+              <button class="ds-btn ds-btn-primary" type="button">Primary</button>
+              <button class="ds-btn ds-btn-secondary" type="button">Secondary</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-state">
+          <span class="state-label">Internal tools, light</span>
+          <div class="ds-card ds-internal" data-theme="light" style="color: var(--ds-text)">
+            <p>Body text on a raised surface, with <a class="ds-link" href="#">an inline link</a>.</p>
+            <div class="ds-alert ds-alert--success" role="status">
+              <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <div class="ds-alert-content"><p>Preferences saved.</p></div>
+            </div>
+            <div class="ds-btn-group">
+              <button class="ds-btn ds-btn-primary" type="button">Primary</button>
+              <button class="ds-btn ds-btn-secondary" type="button">Secondary</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-state">
+          <span class="state-label">Internal tools, dark</span>
+          <div class="ds-card ds-internal" data-theme="dark" style="color: var(--ds-text)">
+            <p>Body text on a raised surface, with <a class="ds-link" href="#">an inline link</a>.</p>
+            <div class="ds-alert ds-alert--success" role="status">
+              <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <div class="ds-alert-content"><p>Preferences saved.</p></div>
+            </div>
+            <div class="ds-btn-group">
+              <button class="ds-btn ds-btn-primary" type="button">Primary</button>
+              <button class="ds-btn ds-btn-secondary" type="button">Secondary</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;!-- The component: nothing in it knows which mode it is in --&gt;
+&lt;div class="ds-card"&gt;
+  &lt;p&gt;Body text on a raised surface, with &lt;a class="ds-link" href="…"&gt;an inline link&lt;/a&gt;.&lt;/p&gt;
+  &lt;div class="ds-alert ds-alert--success" role="status"&gt;…&lt;/div&gt;
+  &lt;div class="ds-btn-group"&gt;
+    &lt;button class="ds-btn ds-btn-primary" type="button"&gt;Primary&lt;/button&gt;
+    &lt;button class="ds-btn ds-btn-secondary" type="button"&gt;Secondary&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- The same component, forced dark on any page --&gt;
+&lt;div class="ds-card" data-theme="dark" style="color: var(--ds-text)"&gt;…&lt;/div&gt;
+
+&lt;!-- Internal tools: the accent comes from the class, the mode from the attribute --&gt;
+&lt;div class="ds-card ds-internal" data-theme="dark" style="color: var(--ds-text)"&gt;…&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>data-theme="dark", data-theme="light"</dt>
+            <dd>On any element, not only the root. The tokens are declared on any element carrying the attribute
+            and custom properties inherit, so the <em>nearest</em> ancestor with <code>data-theme</code> wins, and
+            nesting works in both directions: a dark sample inside a light panel inside a page following the OS
+            renders correctly. The attribute re-points tokens and paints nothing itself. Anything inside that
+            already reads tokens follows; the container has to take its own ground and text from tokens too, which
+            here is <code>.ds-card</code> for the ground and <code>color: var(--ds-text)</code> for the text.</dd>
+            <dt>.ds-internal</dt>
+            <dd>Internal tools. Re-points the accent to Access Lime, from tier 1, and composes with the attribute:
+            lime holds its light value in dark, the wash goes to a dark olive, and text that sat on the wash turns
+            lime to stay legible. An internal page puts it on <code>&lt;html&gt;</code>.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── A page locked to light ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="a-page-locked-to-light">A page locked to light</h2>
+    <p class="ds-section-desc">Any page can opt out and lock to light, which is what a page whose job is to show
+    light-mode rendering needs — colour specimens, side-by-side comparisons. Lock a whole page only when the
+    entire page exists to demonstrate light-mode rendering; a single demo that must show one mode takes the
+    attribute on its own container instead.</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Use the theme control in the header: the page changes and this panel does not.</p>
+      </details>
+      <div class="ds-card" data-theme="light" style="color: var(--ds-text)">
+        <p>This panel stays light whatever the page does. Its <code>&lt;code&gt;</code>, its
+        <a class="ds-link" href="#">links</a> and its controls all read the light tokens declared on the panel.</p>
+        <div class="ds-btn-group">
+          <button class="ds-btn ds-btn-secondary" type="button">Secondary</button>
+          <button class="ds-btn ds-btn-text" type="button">Text-only</button>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;!-- The whole page: only when the page exists to show light rendering --&gt;
+&lt;html lang="en" data-theme="light"&gt;
+
+&lt;!-- One demo, while the page follows the reader --&gt;
+&lt;div class="ds-card" data-theme="light" style="color: var(--ds-text)"&gt;…&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>data-theme="light" on &lt;html&gt;</dt>
+            <dd>Locks the page to light and opts it out of the <code>@media</code> block. Check that nothing
+            rewrites it: a static attribute in the markup is not a lock if a script on the page sets the attribute
+            at load. <code>theme.js</code> does exactly that, so a page that carries the theme control cannot also
+            be locked.</dd>
+            <dt>data-theme="light" on a container</dt>
+            <dd>One demo shows light while the page follows the reader. The same scoping as the dark island
+            above, in the other direction.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Respect the setting the reader already made.</strong> A page follows the operating system's
+      colour scheme unless the reader says otherwise on the page itself. Without JavaScript there is no button
+      and the page follows the OS: the control is an addition, never the only route to a readable page.</li>
+      <li><strong>The control says its state in words as well as an icon.</strong> An icon alone leaves the reader
+      guessing whether the moon means “it is dark” or “make it dark”, which is the commonest failure of this
+      control on the web. A press announces its result in the live region, and the button's own name stays the
+      same, because the name of a control is what it does.</li>
+      <li><strong>Never a dark value by hand.</strong> Take every colour from a token and it flips with the rest of
+      the page. A hex written into a page or a component cannot flip, and it will not announce itself.</li>
+      <li><strong>Check contrast in both modes.</strong> Verify computed styles and measure contrast in every state
+      a reader can reach: OS dark, OS light, and the attribute forced either way. Do not trust the cascade and do
+      not judge by eye. Anything that uses colour to carry meaning keeps its second cue (icon, word, position) in
+      dark mode too — the WCAG 1.4.1 requirement applies in both modes.</li>
+      <li><strong>Let form controls follow.</strong> The stylesheet sets <code>color-scheme</code> beside the
+      tokens, so native form controls, scrollbars and the default canvas take the same mode as the page. Do not
+      set it yourself to force a mode: it governs those browser-rendered widgets only and does nothing to any
+      stylesheet's <code>prefers-color-scheme</code> rules. Use <code>data-theme</code>.</li>
+    </ul>
+  </div>
+
+  </div> <!-- /core zone -->
+
+  <h2>Rules</h2>
+
+  <!-- ───────── Checklist ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="checklist-adding-or-changing-a-component">Checklist: adding or changing a component</h3>
     <p class="ds-section-desc">In order. Each step links to the reasoning below. If you follow only this list and read
     nothing else, dark mode will work.</p>
-    <ol class="notes" style="margin-top:14px">
+    <ol class="notes">
       <li><strong>Take every colour from a token.</strong> Never write a dark hex into a page or a component.
-      Components that consume tokens flip for free. <a href="#mechanism">How it works</a></li>
+      Components that consume tokens flip for free. <a href="#the-mechanism">How it works</a></li>
 
       <li><strong>Decide whether the colour is content or identity.</strong> Content flips. Identity is pinned to a
       literal with a comment saying why — a masthead, a brand fill, a colour specimen whose subject is the value
-      itself. <a href="#traps">Trap 1</a></li>
+      itself. <a href="#traps-that-only-show-up-on-a-real-page">Trap 1</a></li>
 
       <li><strong>Fill raised things with <code>--ds-surface</code>.</strong> Not
       <code>--ds-canvas</code>: the wash is a pale tint in light and <em>is</em> the canvas in dark, so anything
-      filled with it disappears. <a href="#traps">Trap 2</a></li>
+      filled with it disappears. <a href="#traps-that-only-show-up-on-a-real-page">Trap 2</a></li>
 
       <li><strong>Check any text sitting on an accent fill.</strong> Accents hold their light values in dark, so the
-      text on them must not flip either — <code>--ds-text-on-accent</code> on lime,
-      <code>--ds-text-on-accent</code> on Open Blue. Reaching for the plain token puts near-white text on
-      a light fill, about 1.3:1.</li>
+      text on them must not flip either — <code>--ds-text-on-accent</code> on lime and on Open Blue alike.
+      Reaching for the plain token puts near-white text on a light fill, about 1.3:1.</li>
 
       <li><strong>Set the page's own background and text from tokens.</strong> An inherited colour from a platform
-      preset or a third-party stylesheet cannot flip, and it will not announce itself. <a href="#traps">Trap 3</a></li>
+      preset or a third-party stylesheet cannot flip, and it will not announce itself.
+      <a href="#traps-that-only-show-up-on-a-real-page">Trap 3</a></li>
 
       <li><strong>Do not use <code>color-scheme</code> to force a mode.</strong> It governs browser-rendered widgets
       only — scrollbars, form controls — and does nothing to any stylesheet's <code>prefers-color-scheme</code> rules.
-      Use <code>data-theme</code>. <a href="#rules">Rules</a></li>
+      Use <code>data-theme</code>. <a href="#scoping-a-mode">Scoping a mode</a></li>
 
       <li><strong>Scope a demo that must show one mode.</strong> Put <code>data-theme</code> on the demo's own
       container, not on the page. Pages should follow the reader.
-      <a href="#attribute">Scoping</a></li>
+      <a href="#scoping-a-mode">Scoping a mode</a></li>
 
       <li><strong>If anything can set <code>data-theme</code>, mirror the dark block under the attribute</strong> as
       well as the media query — including inherited code you did not write.
-      <a href="#attribute">Why the attribute, not the toggle</a></li>
+      <a href="#the-mechanism">Why the attribute, not the toggle</a></li>
 
       <li><strong>Verify computed styles in both modes, and measure contrast.</strong> Do not trust the cascade and do
       not judge by eye. Check the states a reader can actually reach: OS dark, OS light, and the attribute forced
@@ -149,172 +382,39 @@
     </ol>
   </section>
 
-  <!-- ── Mechanism ── -->
+  <!-- ───────── Traps ───────── -->
   <section class="section">
-    <h2 class="section-title" id="mechanism">The mechanism</h2>
-    <p class="ds-section-desc">Dark values live in one <code>@media (prefers-color-scheme: dark)</code> block
-    at the end of each stylesheet, keyed to the OS setting. Any page can opt out and lock to light, which is what a
-    page whose job is to show light-mode rendering needs — colour specimens, side-by-side comparisons, this page's own
-    panels:</p>
-    <pre><code>&lt;html lang="en" data-theme="light"&gt;   &lt;!-- locks this page to light --&gt;</code></pre>
-    <ul class="notes" style="margin-top:14px">
-      <li>Tokens flip; components consuming tokens flip for free. Never write a dark hex into a page.</li>
-      <li>Accent colors hold in both modes: Access Lime and Open Blue stay themselves. Text sitting <em>on</em> an accent fill therefore must not flip either — use <code>--ds-text-on-accent</code> on lime, and <code>--ds-text-on-accent</code> on Open Blue. Reaching for plain <code>--ds-text</code> puts near-white text on a light blue fill in dark mode, about 1.3:1.</li>
-      <li>Anything that uses color to carry meaning keeps its second cue (icon, word, position) in dark mode too — the WCAG 1.4.1 requirement applies in both modes.</li>
-    </ul>
-
-    <h3 class="section-title" id="attribute" style="font-size:15px; margin-top:26px">Keying dark to the attribute as well as the OS</h3>
-    <p class="ds-section-desc">The OS preference is the default and covers most readers, but dark also has to win on a
-    light-OS machine whenever something sets <code>data-theme="dark"</code>, so the public stylesheet mirrors the same
-    declarations under an explicit attribute. The trigger is the attribute, not a toggle: inherited code sets it too.
-    The HTML paper mockup has no toggle of its own, yet the ar5iv reader it builds on ships a theme control that writes
-    <code>ar5iv_theme</code> to <code>localStorage</code>, and a bootstrap script turns that into the attribute. Keying
-    only to the media query left a reader who picked dark there on a light-OS machine with a dark canvas and light
-    tokens. If a page can ever carry the attribute, mirror the block:</p>
-    <pre><code>&lt;html data-theme="dark"&gt;    &lt;!-- forces dark regardless of the OS --&gt;
-&lt;html data-theme="light"&gt;   &lt;!-- forces light, and opts out of the @media block --&gt;
-&lt;html&gt;                      &lt;!-- no attribute: follow the OS --&gt;</code></pre>
-    <p class="ds-section-desc" style="margin-top:12px">The mirror is generated from the <code>@media</code> block and
-    must stay identical to it &mdash; <code>python3 verification/check-drift.py</code> fails if the two disagree, on
-    <strong>both</strong> stylesheets. Until 2026-09-16 only tier 1 had a mirror at all, so an internal tool followed
-    the machine and could not be switched: an asymmetry that was inherited rather than chosen.</p>
-
-    <h3 class="section-title" id="toggle" style="font-size:15px; margin-top:26px">The control</h3>
-    <p class="ds-section-desc">One control, identical on both surfaces, because a reader who learns it on arxiv.org
-    should not have to learn it again in a moderation queue. It ships as <code>.ds-theme-toggle</code> plus
-    <code>theme.js</code>, and every page under <code>docs/</code> carries it.</p>
-
-    <pre><code>&lt;!-- in the head, NOT deferred --&gt;
-&lt;script src="theme.js"&gt;&lt;/script&gt;
-
-&lt;!-- in the header bar --&gt;
-&lt;button type="button" class="ds-theme-toggle"&gt;&lt;/button&gt;
-&lt;span id="ds-theme-status" class="is-sr-only" role="status"&gt;&lt;/span&gt;</code></pre>
-
-    <ul class="notes">
-      <li><strong>Three states, not two.</strong> Follow the system, always light, always dark &mdash; and
-      <em>follow the system</em> is the default a reader has to be able to get back to. A two-way switch cannot
-      express it, so the first touch would lose the machine's setting for good. That is also why it is a
-      <code>&lt;button&gt;</code> cycling a value rather than <a href="forms.html">the switch</a>, which means on
-      or off.</li>
-      <li><strong>It says its state in words as well as an icon.</strong> An icon alone leaves the reader guessing
-      whether the moon means &ldquo;it is dark&rdquo; or &ldquo;make it dark&rdquo;, which is the commonest failure
-      of this control on the web.</li>
-      <li><strong>The script is not deferred, and that is load-bearing.</strong> The attribute has to be on
-      <code>&lt;html&gt;</code> before the first paint or the page renders light and then flips &mdash; worst for
-      exactly the reader who chose dark because light hurts. <code>check-policies.py</code> fails on a page that
-      defers it.</li>
-      <li><strong>The button's name does not change when the theme does.</strong> The name of a control is what it
-      does, and it is still the theme control; the result goes to the live region, which says &ldquo;Theme is now
-      dark&rdquo;. Same rule as the copy button and the switch.</li>
-      <li><strong>Without JavaScript there is no button and the page follows the OS.</strong> The control
-      is an addition, never the only route to a readable page.</li>
-      <li><strong>Why a control at all</strong>, when the standing preference is to honour OS-level signals rather
-      than offer in-product settings: an OS setting is one choice for a whole machine, and reading is per-context
-      &mdash; the same laptop at night in a bright room, a shared library machine whose OS the reader does not
-      control. It stays <em>one</em> control, not the first item of a settings page.</li>
-    </ul>
-  </section>
-
-  <!-- ── What flips today ── -->
-  <section class="section">
-    <h2 class="section-title" id="dark-aware-today-internal-stylesheet">Dark-aware today — internal stylesheet</h2>
-    <p class="ds-section-desc">Tokens: surfaces (<code>--ds-surface</code>, <code>--ds-surface-muted</code>,
-    <code>--ds-surface-hover</code>, <code>--ds-border</code>), canvas text (<code>--ds-text</code>), grey ladder,
-    link family, lime + secondary families, status families, focus ring. Components riding those tokens:
-    buttons, icon buttons, info card, alerts, forms, data table, sortable headers, filter select,
-    segmented control, toggle, type badges, metadata panel.</p>
-    <div class="dark-scope">
-      <table class="ds-table">
-        <thead><tr><th>Date</th><th>Title</th><th>Type</th></tr></thead>
-        <tbody>
-          <tr class="is-selected"><td>2026-03-24</td><td>Asymptotic Expansions of Schrödinger Operators</td><td><span class="badge b-new">New</span></td></tr>
-          <tr><td>2025-07-09</td><td>Symmetry Breaking in Non-Abelian Gauge Theories</td><td><span class="badge b-rep">Rep</span></td></tr>
-          <tr><td>2024-07-08</td><td>Spectral Properties of Discrete Operators</td><td><span class="badge b-wdr">Wdr</span></td></tr>
-        </tbody>
-      </table>
-      <div class="alert">✓&nbsp; Preferences saved — table, selection tint, badges, and this alert are all token-driven dark.</div>
-    </div>
-    <p class="ds-section-desc" style="margin-top:12px">This panel mirrors the stylesheet's dark block locally
-    for display; the stylesheet is the source of truth. To see the real thing, open any <em>unlocked</em>
-    internal reference page with the OS in dark mode.</p>
-  </section>
-
-  <section class="section">
-    <h2 class="section-title" id="dark-aware-today-public-stylesheet">Dark-aware today — public stylesheet</h2>
-    <p class="ds-section-desc">The full public palette (accepted 2026-08-07): Repository Brown becomes the dark
-    canvas, accents hold their light values, and the button constructions deepen their borders and shadows
-    for definition. The panel below mirrors the stylesheet's dark values locally so you can judge the canvas
-    against real content:</p>
-    <div style="background:#1c1a17; border-radius:8px; padding:26px; font-family:'IBM Plex Sans',sans-serif">
-      <div style="color:#6ba8da; font-weight:600; font-size:18px; margin-bottom:4px;">Gauge-independent approach to inflation in quadratic gravity</div>
-      <div style="color: var(--ds-text-disabled); font-size:13px; margin-bottom:12px;">Elena M. Vasquez, Rahul Menon, Sofia Andersson · 24 Apr 2026</div>
-      <p style="color:#f0eeec; font-size:15px; max-width:60ch; margin:0 0 14px; line-height:1.6">We study the spectrum of
-      planar super-Yang-Mills theory using the numerical conformal bootstrap, deriving
-      <a href="#ignore" style="color:#64b5f6;">rigorous bounds</a> on the leading twist operators.</p>
-      <div style="background:#2b2723; border:1px solid #3a3530; border-radius:8px; padding:12px 16px; max-width:480px; margin-bottom:16px">
-        <span style="color: var(--ds-text-disabled); font-size:12px; font-family:'IBM Plex Sans Condensed',sans-serif; text-transform:uppercase; letter-spacing:.05em;">Card surface</span>
-        <div style="color:#f0eeec; font-size:13px;">Raised card on the Repository Brown canvas.</div>
-      </div>
-      <span style="display:inline-block; background:linear-gradient(#a5d6fe,#a5d6fe) padding-box, linear-gradient(to bottom,#6ba8da,#2a4a6a) border-box; border:1.5px solid transparent; color: var(--ds-text); font-weight:600; font-size:14px; padding:10px 20px; border-radius:6px; box-shadow: inset 0 0 6px rgba(31,94,150,0.2), 0 1px 3px rgba(0,0,0,0.6); margin-right:8px;">View PDF</span>
-      <span style="display:inline-block; background:linear-gradient(#2b2723,#2b2723) padding-box, linear-gradient(to bottom,#4a443d,#6b655c) border-box; border:1.5px solid transparent; color: var(--ds-text-disabled); font-weight:600; font-size:14px; padding:10px 20px; border-radius:6px; box-shadow: inset 0 0 6px rgba(0,0,0,0.25), 0 1px 3px rgba(0,0,0,0.5);">TeX Source</span>
-    </div>
-    <p class="ds-section-desc" style="margin-top:12px">Also dark-aware, as before — the link and status families:</p>
-    <div class="pair-grid">
-      <div class="pair"><span class="tok">--ds-link</span><div class="chips"><span class="chip" style="background: var(--ds-surface);color: var(--ds-link)">#1565c0 light</span><span class="chip" style="background:#1c1a17;color:#64b5f6">#64b5f6 dark</span></div></div>
-      <div class="pair"><span class="tok">--ds-link-visited</span><div class="chips"><span class="chip" style="background: var(--ds-surface);color: var(--ds-link-visited)">#7b2fbe light</span><span class="chip" style="background:#1c1a17;color:#c690e3">#c690e3 dark</span></div></div>
-      <div class="pair"><span class="tok">--ds-info-bg / -fg</span><div class="chips"><span class="chip" style="background:#e7f1fd;color:#1a3a78">light</span><span class="chip" style="background:#132433;color:#90caf9">dark</span></div></div>
-      <div class="pair"><span class="tok">--ds-warning-bg / -fg</span><div class="chips"><span class="chip" style="background:#fff8e1;color: var(--ds-warning-fg)">light</span><span class="chip" style="background:#2e2410;color:#ffe082">dark</span></div></div>
-      <div class="pair"><span class="tok">--ds-success-bg / -fg</span><div class="chips"><span class="chip" style="background:#e8f5d8;color: var(--ds-success-fg)">light</span><span class="chip" style="background:#1e2b0d;color:#c5e1a5">dark</span></div></div>
-      <div class="pair"><span class="tok">--ds-error-bg / -fg</span><div class="chips"><span class="chip" style="background:#fdeaea;color: var(--ds-error-fg)">light</span><span class="chip" style="background:#2d1414;color:#ef9a9a">dark</span></div></div>
-    </div>
-  </section>
-
-  <!-- ── Traps ── -->
-  <section class="section">
-    <h2 class="section-title" id="traps">Traps that only show up on a real page</h2>
+    <h3 class="section-title" id="traps-that-only-show-up-on-a-real-page">Traps that only show up on a real page</h3>
     <p class="ds-section-desc">Three ways a token-driven page still comes out wrong in dark mode. All three were
     found building the blog, which is the first arXiv site to run dark end to end.</p>
-
-    <table class="ds-table-framed spec-table" style="border-collapse:collapse; background: var(--ds-surface); border:1px solid var(--ds-border); font-size:13px; width:100%">
-      <tr style="background:var(--ds-surface-muted)">
-        <th style="text-align:left; padding:8px 13px; font-family:var(--ds-font-condensed); font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ds-text-muted)">Trap</th>
-        <th style="text-align:left; padding:8px 13px; font-family:var(--ds-font-condensed); font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ds-text-muted)">What goes wrong</th>
-        <th style="text-align:left; padding:8px 13px; font-family:var(--ds-font-condensed); font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ds-text-muted)">What to do</th>
-      </tr>
-      <tr>
-        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted); font-weight:600">A token that fills a large field</td>
-        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted)">Tokens whose dark value is a <em>text</em> accent go pale — Archival Blue flips to a light blue meant for headings. Painted across a masthead, the field washes out.</td>
-        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted)">Pin the literal value and say why in a comment, the way the accent colors are pinned. An identity field is a fixed-role color, not a flipping one.</td>
-      </tr>
-      <tr>
-        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted); font-weight:600">A fill that equals the canvas</td>
-        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted)">Warm Wash is a pale tint in light and <em>is</em> the canvas in dark. Anything filled with it — placeholder blocks, quiet panels — disappears in dark mode.</td>
-        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted)">Fill raised things with <code>--ds-surface</code>, which is white in light and a lifted surface in dark. Reserve the wash for the page itself.</td>
-      </tr>
-      <tr>
-        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted); font-weight:600">Text color set outside the tokens</td>
-        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted)">A platform preset or inherited color (a theme's global text setting, an inline style) cannot flip, so body text stays dark on a dark canvas.</td>
-        <td style="padding:9px 13px; border-top:1px solid var(--ds-surface-muted)">Set <code>body</code> color and background from tokens, and let everything inherit. Check computed styles rather than trusting the cascade.</td>
-      </tr>
-    </table>
+    <div class="table-scroll" role="region" aria-label="Traps" tabindex="0">
+      <table class="ds-table-framed token-table">
+        <thead><tr><th>Trap</th><th>What goes wrong</th><th>What to do</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="state-name">A token that fills a large field</td>
+            <td>Tokens whose dark value is a <em>text</em> accent go pale — Archival Blue flips to a light blue meant for headings. Painted across a masthead, the field washes out.</td>
+            <td>Pin the literal value and say why in a comment, the way the accent colors are pinned. An identity field is a fixed-role color, not a flipping one.</td>
+          </tr>
+          <tr>
+            <td class="state-name">A fill that equals the canvas</td>
+            <td>Warm Wash is a pale tint in light and <em>is</em> the canvas in dark. Anything filled with it — placeholder blocks, quiet panels — disappears in dark mode.</td>
+            <td>Fill raised things with <code>--ds-surface</code>, which is white in light and a lifted surface in dark. Reserve the wash for the page itself.</td>
+          </tr>
+          <tr>
+            <td class="state-name">Text color set outside the tokens</td>
+            <td>A platform preset or inherited color (a theme's global text setting, an inline style) cannot flip, so body text stays dark on a dark canvas.</td>
+            <td>Set <code>body</code> color and background from tokens, and let everything inherit. Check computed styles rather than trusting the cascade.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
-  <!-- ── Toggle UI ── -->
+  <!-- ───────── Scoping ───────── -->
   <section class="section">
-    <h2 class="section-title" id="the-toggle-control-when-a-site-adds-one">The toggle control, when a site adds one</h2>
-    <p class="ds-section-desc">The system ships no toggle UI, and most sites should not add one — the OS
-    preference is already the reader's answer. When a site does need one, follow the shape the blog uses, which
-    matches info.arxiv.org: a single bare icon in the header showing the <em>current</em> state, cycling
-    light&nbsp;&rarr;&nbsp;dark&nbsp;&rarr;&nbsp;auto on click. Three states, not two, so a reader can always get
-    back to "follow my system." Hide the control entirely without JavaScript: the OS preference still applies, so
-    nothing is lost, and a control that does nothing is worse than no control.</p>
-  </section>
-
-  <!-- ── Rules ── -->
-  <section class="section">
-    <h2 class="section-title" id="rules">Rules</h2>
-    <div class="ds-alert ds-alert--error note-alert">
+    <h3 class="section-title" id="scoping-a-mode">Scoping a mode</h3>
+    <div class="ds-alert ds-alert--error">
       <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
       <div class="ds-alert-content">
         <p class="ds-alert-title">Never hand-pick dark values into a light page</p>
@@ -324,13 +424,12 @@
         script on the page sets the attribute at load.</p>
       </div>
     </div>
-    <ul class="notes" style="margin-top:14px">
+    <ul class="notes">
       <li>Component CSS consumes tokens — never a literal dark hex.</li>
       <li><code>color-scheme: light</code> does not lock a page to light. It governs browser-rendered widgets —
       scrollbars, form controls, the default canvas — and does nothing to any stylesheet's
       <code>prefers-color-scheme</code> rules. A page that tried to force light this way still had a third-party
       stylesheet paint a dark canvas underneath its light tokens. Use <code>data-theme="light"</code> to opt out.</li>
-      <li>A page that deliberately previews dark (like this one's panel, or the alert references) scopes its overrides locally and says so in a comment.</li>
       <li><strong>Scope the demo, not the page.</strong> Documentation pages follow the reader's OS
       preference — a design system that documents dark mode while refusing to render in it is not much of an argument.
       A demo that must show a particular mode declares it on its own container instead:
@@ -338,15 +437,120 @@
       on the root, and custom properties inherit, so the <em>nearest</em> ancestor with <code>data-theme</code> wins.
       Nesting works in both directions: a dark sample inside a light panel inside a page following the OS renders
       correctly, and the order of the blocks in the stylesheet does not matter.</li>
+      <li><strong>Three things hold a fixed value in both modes.</strong> Text on an accent fill, which takes
+      <code>--ds-text-on-accent</code> because the accent underneath it does not flip. A colour
+      <em>specimen</em> — a chip whose subject is the value itself — which is pinned to a literal and never scoped,
+      because it documents one specific value. And a code block, whose text is a fixed light value because the
+      chrome ground it sits on is dark in both modes.</li>
       <li><strong>What still does not scope:</strong> the six dark button constructions key on the attribute as an
-      ancestor, so they follow an island correctly, but any future component rule must do the same deliberately. And a
-      colour <em>specimen</em> — a chip whose subject is the value itself — is pinned to a literal and never scoped,
-      because it documents one specific value. Four chips on the colour page were painted with tokens and flipped;
-      fixed 2026-08-17.</li>
+      ancestor, so a dark island on a light page renders correctly, but a light island on a page that is dark by
+      the OS keeps the darker button shadows. Any future component rule must follow an island deliberately.</li>
     </ul>
   </section>
 
+  <h2>Spec</h2>
+
+  <!-- ───────── Mechanism ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="the-mechanism">The mechanism</h3>
+    <p class="ds-section-desc">Dark values live in one <code>@media (prefers-color-scheme: dark)</code> block
+    in each stylesheet, keyed to the OS setting, and the same declarations are written again under
+    <code>[data-theme="dark"]</code> so the reader's choice wins over the machine's. The mirror is generated from
+    the <code>@media</code> block and must stay identical to it — <code>python3 verification/check-drift.py</code>
+    fails if the two disagree, on <strong>both</strong> stylesheets.</p>
+    <p class="ds-section-desc">The OS preference is the default and covers most readers, but dark also has to win on a
+    light-OS machine whenever something sets <code>data-theme="dark"</code>, which is why the mirror exists. The
+    trigger is the attribute, not a toggle: inherited code sets it too. The HTML paper mockup has no toggle of its
+    own, yet the ar5iv reader it builds on ships a theme control that writes <code>ar5iv_theme</code> to
+    <code>localStorage</code>, and a bootstrap script turns that into the attribute. Keying only to the media query
+    left a reader who picked dark there on a light-OS machine with a dark canvas and light tokens. If a page can
+    ever carry the attribute, mirror the block:</p>
+<pre><code>&lt;html data-theme="dark"&gt;    &lt;!-- forces dark regardless of the OS --&gt;
+&lt;html data-theme="light"&gt;   &lt;!-- forces light, and opts out of the @media block --&gt;
+&lt;html&gt;                      &lt;!-- no attribute: follow the OS --&gt;</code></pre>
+    <ul class="notes">
+      <li>Tokens flip; components consuming tokens flip for free. Never write a dark hex into a page.</li>
+      <li>Accent colors hold in both modes: Access Lime and Open Blue stay themselves. Text sitting <em>on</em> an accent fill therefore must not flip either — use <code>--ds-text-on-accent</code> on lime and on Open Blue alike. Reaching for plain <code>--ds-text</code> puts near-white text on a light blue fill in dark mode, about 1.3:1.</li>
+      <li>Only semantic tokens flip. The primitives name colours and never change — Repository Brown is Repository Brown in both modes; what changes is that it becomes the canvas rather than the text.</li>
+    </ul>
+  </section>
+
+  <!-- ───────── Tokens that flip, read live ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="tokens-that-flip">Tokens that flip</h3>
+    <p class="ds-section-desc">The full public palette: Repository Brown becomes the dark canvas, accents hold
+    their light values, and the button constructions deepen their borders and shadows for definition. The
+    secondary zone ground, <code>--ds-zone-secondary-bg</code>, is Card Grey in light and the canvas in dark,
+    because Card Grey is the raised surface in dark and the two zones would not show. Both columns are read at
+    runtime from <code>design-system.css</code> through a light island and a dark island, so the values cannot
+    drift from the stylesheet and do not depend on the mode this page is in.</p>
+    <div class="table-scroll" role="region" aria-label="Tokens in light and dark" tabindex="0">
+      <table class="ds-table-framed token-table">
+        <thead><tr><th>Token</th><th>Light</th><th>Dark</th><th>Between modes</th></tr></thead>
+        <tbody id="token-rows"><!-- populated at runtime to avoid drift --></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ───────── Internal tools ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="internal-tools">Internal tools</h3>
+    <p class="ds-section-desc">Internal tools load the same tier 1 and take their accent from <code>.ds-internal</code>
+    on <code>&lt;html&gt;</code>, so everything above applies to them unchanged. Their own stylesheet,
+    <code>internal/internal-tools.css</code>, re-points only the tokens whose dark value differs on that surface:
+    <code>--ds-surface</code>, <code>--ds-surface-muted</code>, <code>--ds-surface-hover</code>,
+    <code>--ds-surface-hover-strong</code>, <code>--ds-surface-active</code> and <code>--ds-text-strong</code>, a
+    shade apart from tier 1 because internal screens are dense with tables and want more separation between a row
+    and its ground. Its dark block is mirrored under <code>[data-theme="dark"]</code> the same way and checked by
+    the same script. Components riding those tokens: buttons, icon buttons, info card, alerts, forms, data table,
+    sortable headers, filter select, segmented control, toggle, type badges, metadata panel.</p>
+  </section>
+
 </div>
+
+<script>
+  (function () {
+    // Both columns come from the stylesheet: one probe forced light, one forced
+    // dark, read once. The table does not change when the page's theme does.
+    var TOKENS = [
+      '--ds-text', '--ds-text-muted', '--ds-text-disabled', '--ds-text-on-accent',
+      '--ds-canvas', '--ds-surface', '--ds-surface-muted', '--ds-zone-secondary-bg', '--ds-chrome',
+      '--ds-border', '--ds-border-muted', '--ds-border-strong',
+      '--ds-accent', '--ds-accent-strong', '--ds-accent-wash', '--ds-accent-surface', '--ds-accent-border',
+      '--ds-link', '--ds-link-hover', '--ds-link-visited', '--ds-danger-fg',
+      '--ds-success-bg', '--ds-success-border', '--ds-success-fg',
+      '--ds-info-bg', '--ds-info-border', '--ds-info-fg',
+      '--ds-warning-bg', '--ds-warning-border', '--ds-warning-fg',
+      '--ds-error-bg', '--ds-error-border', '--ds-error-fg'
+    ];
+    function probe(theme) {
+      var d = document.createElement('div');
+      d.setAttribute('data-theme', theme);
+      document.body.appendChild(d);
+      return d;
+    }
+    function toRGB(el, value) {
+      el.style.color = value;
+      var m = getComputedStyle(el).color.match(/[\d.]+/g);
+      return m ? m.slice(0, 3).map(Number) : null;
+    }
+    function hex(c) { return '#' + c.map(function (x) { return Math.round(x).toString(16).padStart(2, '0'); }).join(''); }
+    function cell(c) { return c ? '<span class="swatch" style="background:' + hex(c) + '"></span><code>' + hex(c) + '</code>' : '—'; }
+    function render() {
+      var light = probe('light'), dark = probe('dark');
+      var rows = TOKENS.map(function (name) {
+        var l = toRGB(light, getComputedStyle(light).getPropertyValue(name).trim());
+        var d = toRGB(dark, getComputedStyle(dark).getPropertyValue(name).trim());
+        var same = l && d && hex(l) === hex(d);
+        return '<tr><td class="state-name"><code>' + name + '</code></td><td>' + cell(l) + '</td><td>' + cell(d) + '</td><td>' + (same ? 'holds' : 'flips') + '</td></tr>';
+      }).join('');
+      light.remove();
+      dark.remove();
+      document.getElementById('token-rows').innerHTML = rows;
+    }
+    render();
+  })();
+</script>
 
 <script>
   // Nav dropdowns: close on outside click and Esc (enhancement only —
@@ -370,5 +574,6 @@
 </script>
 <script src="copy-code.js" defer></script>
 <script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
 </body>
 </html>
