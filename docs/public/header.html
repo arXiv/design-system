@@ -208,6 +208,14 @@
             wires the toggle (<code>.is-open</code> on the nav, <code>aria-expanded</code> in sync) in
             the same call, so the hamburger appears only when it actually works. <strong>The default —
             including no JS — is the wrap</strong> (all items visible, WCAG 1.4.10 reflow).</dd>
+            <dt>.ds-search-overlay</dt>
+            <dd>The search overlay: a <code>hidden</code> scrim after the header that the shared
+            chrome’s <code>header.js</code> opens from the Search link (or Ctrl/Cmd+K), and closes on
+            Escape, a click on the scrim, or focus moving out of it. Without JS the Search link goes
+            to the search page.</dd>
+            <dt>.ds-search-overlay-panel</dt>
+            <dd>The overlay’s panel, hanging from the bar. Its field and hint are the ordinary
+            <code>.ds-input</code> and <code>.ds-hint</code>.</dd>
           </dl>
         </div>
       </details>
@@ -485,12 +493,19 @@
     <h3 class="section-title" id="hosting-the-header">Hosting the header</h3>
     <ul class="notes">
       <li><strong>The announcement is temporal.</strong> Render only while active, persist dismissal
-      in production, and never attach page-critical function to it.</li>
+      across arXiv sites, and never attach page-critical function to it. The shared chrome’s
+      <code>chrome/banner.js</code> does both: it fetches the shared announcements
+      (<code>json/announcements.json</code> on the asset route), shows the band only between an
+      entry’s start and end, and records a dismissal in a cookie on the parent domain
+      (<code>arxiv.org</code>). The announcement is data: plain text and one link, never markup.</li>
+      <li><strong>The host provides the skip link.</strong> The shared templates start at the
+      announcement band, so a host puts <code>.ds-skip-link</code> before them, pointing at its own
+      main content.</li>
       <li><strong>Log out is not in the bar.</strong> It belongs on the account page. A
       destructive-adjacent action one mis-tap from Search is a bad trade for the two seconds it
       saves.</li>
-      <li><strong>Type sizes are rem</strong> so browser font-size overrides propagate; both bands are
-      hidden in print.</li>
+      <li><strong>Type sizes are rem</strong> so browser font-size overrides propagate. In print the
+      header keeps only its logo, 28px tall; the announcement band is hidden.</li>
     </ul>
   </section>
 
