@@ -363,11 +363,12 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 
 /* ── Links ───────────────────────────────────────────────────────────
-   The same tokens .ds-link uses, applied to bare anchors inside a .ds-page
-   so body copy does not need a class on every link. .ds-link stays for
-   anchors outside this scope. */
-:where(.ds-page) a               { color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; }
-:where(.ds-page) a:hover         { color: var(--ds-link-hover); }
+   Every bare anchor inside a .ds-page is the inline link; there is no
+   class to add. Hover thickens the underline as well as deepening the
+   colour: the colour step alone is under 1.4:1 and easy to miss, and
+   text-decoration is painted, not laid out, so the page does not shift. */
+:where(.ds-page) a               { color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+:where(.ds-page) a:hover         { color: var(--ds-link-hover); text-decoration-thickness: 0.15em; }
 :where(.ds-page) a:visited       { color: var(--ds-link-visited); }
 :where(.ds-page) a:focus-visible {
   outline: 3px solid var(--ds-focus-ring);
@@ -383,7 +384,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 :where(.ds-page) code {
   font-family: var(--ds-font-mono);
   font-size: 0.9em;
-  background: var(--ds-surface-muted);
+  background: var(--ds-border);   /* the hairline grey: the one value that differs from every ground in both themes */
   padding: 0.15em 0.35em;
   border-radius: 3px;
 }
@@ -1558,28 +1559,6 @@ select.ds-input { padding-right: 34px; }
   text-underline-offset: 2px;
 }
 
-
-/* LINK  (.ds-link) — links.html
-   Inline links are ALWAYS underlined — colour alone fails WCAG 1.4.1
-   and the underline is the only cue that survives forced-colors.
-   Standalone links (nav, cards) may drop it and underline on hover. */
-
-.ds-link {
-  color: var(--ds-link);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.ds-link:hover {
-  color: var(--ds-link-hover);
-}
-.ds-link:visited {
-  color: var(--ds-link-visited);
-}
-.ds-link:focus-visible {
-  outline: 3px solid var(--ds-focus-ring);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
 
 
 /* ANNOTATION TYPOGRAPHY  (.ds-annotation) — typography.html
