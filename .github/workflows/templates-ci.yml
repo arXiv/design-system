@@ -1,0 +1,52 @@
+# The brand templates' tests: the stdlib unit suite, every target against Jinja and the
+# package under Flask (pytest), and both hosts in Chromium (Playwright). The repo-wide
+# checks, including check-generated.py, run in checks.yml.
+name: templates ci
+
+on:
+  push:
+    paths:
+      - "templates/**"
+      - "docs/design-system.css"  # the integration host serves both
+      - "docs/fonts.css"
+      - "package.json"
+      - "upload_static_assets.py"
+      - "build_components_css.py"
+      - ".github/workflows/templates-ci.yml"
+  pull_request:
+    paths:
+      - "templates/**"
+      - "docs/design-system.css"  # the integration host serves both
+      - "docs/fonts.css"
+      - "package.json"
+      - "upload_static_assets.py"
+      - "build_components_css.py"
+      - ".github/workflows/templates-ci.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: templates/tests/integration
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: python3 -m unittest discover -s ..
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libtemplate-perl  # TemplateToolkit
+      - run: npm ci
+      - run: pip install flask pytest
+      - run: pytest -q
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: templates/tests/integration/test-results/
