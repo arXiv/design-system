@@ -113,8 +113,7 @@
     <div class="ds-note ds-note--essential">
       <h3 class="ds-note-label">Accessibility essentials</h3>
       <ul class="notes">
-        <li><strong><code>theme.js</code> is not deferred.</strong> The script is deliberately not deferred because it writes
-        the reader's theme onto <code>&lt;html&gt;</code> before the first paint. If we added <code>defer</code> then the page will render light first, and then flip if the reader chose dark mode in their system. Many readers choose dark mode because light mode is less legible or hurts their eyes and we want to honor that.</li>
+        <li><strong><code>theme.js</code> is not deferred.</strong> The script is deliberately not deferred because it writes the reader's theme onto <code>&lt;html&gt;</code> before the first paint. If we added <code>defer</code> then the page will render light first, and then flip if the reader chose dark mode in their system. Many readers choose dark mode because light mode is less legible or hurts their eyes and we want to honor that.</li>
       </ul>
     </div>
   </section>
@@ -122,7 +121,7 @@
   <!-- ───────── Page markup ───────── -->
   <section class="section">
     <h2 class="section-title" id="basic-page-markup">Basic page markup</h2>
-    <p class="ds-section-desc">This is the whole of it for a public arXiv page. Copy it and follow the comments.</p>
+    <p class="ds-section-desc">This is all you need for a public arXiv page. Copy it and follow the comments.</p>
     
     <pre><code>&lt;!doctype html&gt;
 &lt;html lang="en"&gt;
@@ -138,20 +137,27 @@
 
 &lt;body class="ds-page"&gt;
   &lt;div class="ds-container"&gt;
-    &lt;!-- every direct child here is one section --&gt;
+    &lt;!-- add section elements as direct children here --&gt;
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 
     <ul class="notes">
-      <li><strong><code>class="ds-page"</code> on the body is not optional.</strong> A page without it gets components on unstyled ground.</li>
+      <li><strong><code>class="ds-page"</code> on the body is not optional.</strong> A page without it gets components on unstyled ground. The foundation hangs on the class rather than on <code>&lt;body&gt;</code> so that a page which is not on the design system can link the stylesheet, for its header and footer, without its own body styles being overwritten.</li>
     </ul>
 
     <div class="ds-note ds-note--essential">
       <h3 class="ds-note-label">Accessibility essentials</h3>
       <ul class="notes">
-        <li><strong>Every section starts with a heading.</strong> Screen reader users move through a page by its headings, so a <code>&lt;section&gt;</code> without one is a part of the page they cannot find. A name on the section itself (<code>aria-labelledby</code> pointing at the heading) is optional: add it only for a part of the page a reader would want to jump to directly, because every named section is one more entry in the landmark list.</li>
-        <li><strong>Write the name arXiv so that screen readers say &ldquo;archive&rdquo;.</strong> Left alone, a screen reader reads the Xiv as a Roman numeral. In the site header the wordmark is an image whose alt text says &ldquo;archive&rdquo;. Where the name is typed as text in a permanent element, such as the header of this documentation, it is two spans, one shown and one spoken: <code>&lt;span aria-hidden="true"&gt;arXiv Design System&lt;/span&gt;&lt;span class="is-sr-only"&gt;archive Design System&lt;/span&gt;</code>. Running text stays plain, because the hidden word is copied along with the visible one and would break every pasted citation.</li>
+        <li><strong>Every section starts with a heading.</strong> Headings provide important navigation structure for screen reader users so a <code>&lt;section&gt;</code> without one is hard to find.</li>
+        <li><strong>Naming sections (optional).</strong> A name on the section itself (<code>aria-labelledby</code> pointing at the heading) is optional, but useful for a section that a reader would want to jump to directly. Use your discretion. Every named section becomes an entry in the landmark list.</li>
+        <li><strong>Write the name arXiv so that screen readers say &ldquo;archive&rdquo;.</strong> A screen reader reads the Xiv in our name as a Roman numeral. We can take a few steps to fix this:
+          <ul>
+            <li>For an image like the logo, add alt text that says &ldquo;archive&rdquo;. </li>
+            <li>Where the name is typed this markup will be pronounced correctly: <code>&lt;span aria-hidden="true"&gt;arXiv&lt;/span&gt;&lt;span class="is-sr-only"&gt;archive&lt;/span&gt;</code>.</li>
+            <li>When arXiv's name appears in a paragraph of text that is likely to be copied (ie: citations) we unfortunately must keep it as plain text and live with the screen reader mis-pronunciation. This is because the hidden word is copied along with the visible one and would break every pasted citation.</li>
+          </ul>
+        </li>
       </ul>
     </div>
   </section>
@@ -162,7 +168,7 @@
 
   <!-- ── Internal tools ── -->
   <div class="section">
-    <h2 class="section-title" id="internal-tools">Internal tools</h2>
+    <h3 class="section-title" id="internal-tools">Internal tools</h3>
     <p class="ds-section-desc">When building internal tools like arXiv Check or Admin Console pages, one class is added to <code>&lt;html&gt;</code> and a tier 2 stylesheet is added to the <code>&lt;head&gt;</code> section, in this order.</p>
 
     <pre><code>&lt;html lang="en" class="ds-internal"&gt;
@@ -181,23 +187,23 @@
     </div>
 
     <ul class="notes">
-      <li><strong>The accent color, Access Lime.</strong> This accent color is highly differentiated from the public site's Open Blue and clearly signals that you are in a different environment.</li>
-      <li><code>.ds-internal</code> re-points <code>--ds-accent</code> and its family to Access Lime, and every component inside it that reaches for the accent follows without being told. It works on any parent, so a page that shows both surfaces puts it on a wrapper instead of on <code>&lt;html&gt;</code>. There is no second copy of the button, the tag or the switch inside the tier 2 stylesheet: it is not needed. Just a handful of new styles and overrides, and that class on the wrapper, are enough.</li>
+      <li><strong>The accent color defines internal pages.</strong> Access Lime is highly differentiated from the public site's Open Blue and clearly signals that you are in a different environment.</li>
+      <li><strong>All you need is a parent class.</strong> <code>.ds-internal</code> re-points <code>--ds-accent</code> and its family to Access Lime, and every component inside it that reaches for the accent follows without being told. It works on any parent, so a page that shows both surfaces puts it on a wrapper instead of on <code>&lt;html&gt;</code>. There is no second copy of the button, the tag or the switch inside the tier 2 stylesheet: it is not needed. Just a handful of new styles and overrides, and that class on the wrapper, are enough.</li>
       <li><strong>Never copy a component into the tier 2 stylesheet to restyle it.</strong> If it needs to look
       different on your surface, what you need is a token change, not a second copy. A component that exists twice
       creates drift and lots of sad devs.</li>
-      <li><strong>The two accents are never crossed.</strong> Access Lime means internal tools, Open Blue means the public site. Are you linking to the internal tools from a public page, or vice versa? Maintain the accent color of your environment on that button and let the button label clearly tell the user where it will take them. See <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> for more.</li>
+      <li><strong>Maintain the accent even on links to the other environment.</strong> Are you linking to the internal tools from a public page, or vice versa? Maintain the accent color and let the button label clearly tell the user where it will take them. See <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>.</li>
     </ul>
   </div>
 
   <!-- ── Shell variants ── -->
   <div class="section">
-    <h2 class="section-title" id="container-options">Container options</h2>
+    <h3 class="section-title" id="container-options">Container options</h3>
     <p class="ds-section-desc"><code>.ds-container</code> is a grid with various options for managing section layout.</p>
 
     <ul class="notes">
       <li><strong>Sections.</strong> The container's direct children are <code>&lt;section&gt;</code> elements, and the container sets the gap between them. Do not add top or bottom margins to sections, the container already does.</li>
-      <li><strong><code>.ds-full</code></strong>. A band that runs edge to edge gets <code>.ds-full</code> and spans the full width of the viewport. Do not add negative margins and do not use <em>viewport units</em> for placement. Using a calculation like <code>calc(-50vw + 50%)</code> overhangs the section band and causes the page to scroll sideways in some environments.</li>
+      <li><strong>Full width.</strong> A band that runs edge to edge gets <code>.ds-full</code>. Do not add negative margins or use viewport units for placement. Using a calculation like <code>calc(-50vw + 50%)</code> overhangs the section band and causes the page to scroll sideways in some environments.</li>
       <li><strong>Page width.</strong> Width comes from <code>--ds-width-page</code> and <code>--ds-gutter</code>.
       Need to change the page width? Repoint one of the tokens, do not add a second width beside it.</li>
     </ul>

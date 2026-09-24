@@ -70,10 +70,7 @@
 
   <header class="ds-page-header">
     <h1>Links</h1>
-    <p><code>.ds-link</code> is the inline text link, and it is the same on every surface: internal
-    tools and public pages take the same Link Blue, the same visited purple and the same underline
-    rule. There is no accent-coloured link anywhere — the accent tells a reader which tool they
-    are in, and a link that changed colour with it would stop being recognisable as a link.</p>
+    <p>Text links are simple but important to get right. Every link inside a <code>.ds-page</code> is the inline text link, with no class to add, and appears in Link Blue, a special blue reserved only for this purpose. Do not override link styles, the colors are carefully chosen to maintain accessibility contrasts in light and dark modes and on tinted and shaded backgrounds.</p>
   </header>
 
 
@@ -88,8 +85,9 @@
         </summary>
         <nav class="ds-toc-menu" aria-label="Contents">
           <ol>
-            <li><a href="#the-four-states">The four states</a></li>
+            <li><a href="#the-inline-link">The inline link</a></li>
             <li><a href="#in-context">In context</a></li>
+            <li><a href="#links-and-text-only-buttons">Links and text-only buttons</a></li>
             <li><a href="#disabled-state">Disabled state</a></li>
             <li><a href="#visited-memory">Visited memory</a></li>
             <li><a href="#tokens">Tokens</a></li>
@@ -102,50 +100,28 @@
   <!-- ═════════ Core zone ═════════ -->
   <div class="ds-full ds-zone-primary">
 
-  <!-- ───────── The four states ───────── -->
+  <!-- ───────── The inline link ───────── -->
   <section class="section">
-    <h2 class="section-title" id="the-four-states">The four states</h2>
-    <p class="ds-section-desc">Default is Link Blue with a 2px-offset underline. Hover deepens the color
-    (no underline thickness change — kept subtle to avoid layout shift). Visited shifts to Visited
-    Purple. Focus shows the 3px Link Blue ring via <code>:focus-visible</code>.</p>
+    <h2 class="section-title" id="the-inline-link">The inline link</h2>
+    <p class="ds-section-desc">One link, four states. At rest it is Link Blue with a 1px underline set 2px
+    below the text. On hover the colour deepens and the underline thickens. Once followed it turns
+    Visited Purple. When reached by keyboard it shows a 3px Link Blue ring. The four colours are in the
+    <a href="#tokens">tokens table</a>, read live from the stylesheet.</p>
 
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">Every state here is real: follow the visited example once and it keeps the visited colour.</p>
+        <p class="ds-marginalia-body ds-annotation">Try the states here: point at the link, press Tab to reach it, follow it once and it keeps the visited colour.</p>
       </details>
-      <div class="state-flex">
-        <div class="state-cell">
-          <div class="state-label">Default</div>
-          <a class="ds-link" href="#default">Endorsement policy</a>
-        </div>
-        <div class="state-cell">
-          <div class="state-label">Hover: point at it</div>
-          <a class="ds-link" href="#hover">Endorsement policy</a>
-        </div>
-        <div class="state-cell">
-          <div class="state-label">Visited: follow it once</div>
-          <a class="ds-link" href="#visited">Endorsement policy</a>
-        </div>
-        <div class="state-cell">
-          <div class="state-label">Focus: press Tab to reach it</div>
-          <a class="ds-link" href="#focus">Endorsement policy</a>
-        </div>
-      </div>
+      <p>Read the <a href="#endorsement">Endorsement policy</a> before you ask a colleague to endorse you.</p>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;a class="ds-link" href="/help/endorsement"&gt;Endorsement policy&lt;/a&gt;</code></pre>
+<pre><code>&lt;p&gt;Read the &lt;a href="/help/endorsement"&gt;Endorsement policy&lt;/a&gt; before you ask a colleague to endorse you.&lt;/p&gt;</code></pre>
           <dl>
-            <dt>.ds-link</dt>
-            <dd>Add <code>.ds-link</code> to specific anchors you want to style. Use this when you are
-            cherry-picking — for example, in a page where some links should follow the public-side
-            treatment and others (button-styled, nav-styled) should not. It sets the colour, the
-            underline, and the hover, visited and focus states; the dark values arrive through the
-            same token flip as everything else.</dd>
-            <dt>&lt;a&gt; inside .ds-page</dt>
-            <dd>Every bare <code>&lt;a&gt;</code> inside a <code>.ds-page</code> already takes the same
-            treatment, so body copy needs no class on each link. <code>.ds-link</code> is for an anchor
-            outside that scope.</dd>
+            <dt>&lt;a href&gt; inside .ds-page</dt>
+            <dd>Every anchor with an <code>href</code> inside a <code>.ds-page</code> takes the link
+            treatment: the colour, the underline, and the hover, visited and focus states. There is no
+            class to add, and the dark values arrive through the same token flip as everything else.</dd>
           </dl>
         </div>
       </details>
@@ -162,37 +138,37 @@
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
         <p class="ds-marginalia-body ds-annotation">The visited state matters most for inline references in long articles, where it helps a reader scan papers they have already followed up on.</p>
       </details>
-      <p style="color: var(--ds-text)">
+      <p>
         Submissions that include figures must reference each in the
-        <a class="ds-link" href="#article-body">article body</a>. Co-authors are added on the
-        <a class="ds-link" href="#author-management">author management page</a> before finalisation.
-        Follow the <a class="ds-link" href="#submission-guidelines">submission guidelines</a> link
+        <a href="#article-body">article body</a>. Co-authors are added on the
+        <a href="#author-management">author management page</a> before finalisation.
+        Follow the <a href="#submission-guidelines">submission guidelines</a> link
         once and it takes the visited colour.
       </p>
       <p>
         Submitted 14 Jan 2024 · Updated 22 Feb 2024 ·
-        <a class="ds-link" href="#revision-history">view revision history</a> ·
-        category <a class="ds-link" href="#cs-cv">cs.CV</a>,
-        <a class="ds-link" href="#cs-lg">cs.LG</a>
+        <a href="#revision-history">view revision history</a> ·
+        category <a href="#cs-cv">cs.CV</a>,
+        <a href="#cs-lg">cs.LG</a>
       </p>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;p&gt;
   Submissions that include figures must reference each in the
-  &lt;a class="ds-link" href="/help/submit"&gt;article body&lt;/a&gt;. Co-authors are added on the
-  &lt;a class="ds-link" href="/auth/authorship"&gt;author management page&lt;/a&gt; before finalisation.
+  &lt;a href="/help/submit"&gt;article body&lt;/a&gt;. Co-authors are added on the
+  &lt;a href="/auth/authorship"&gt;author management page&lt;/a&gt; before finalisation.
 &lt;/p&gt;
 
 &lt;!-- Secondary text: the link keeps its own colour --&gt;
 &lt;p class="ds-section-desc"&gt;
   Submitted 14 Jan 2024 · Updated 22 Feb 2024 ·
-  &lt;a class="ds-link" href="/abs/2401.00001v2"&gt;view revision history&lt;/a&gt; ·
-  category &lt;a class="ds-link" href="/list/cs.CV/recent"&gt;cs.CV&lt;/a&gt;,
-  &lt;a class="ds-link" href="/list/cs.LG/recent"&gt;cs.LG&lt;/a&gt;
+  &lt;a href="/abs/2401.00001v2"&gt;view revision history&lt;/a&gt; ·
+  category &lt;a href="/list/cs.CV/recent"&gt;cs.CV&lt;/a&gt;,
+  &lt;a href="/list/cs.LG/recent"&gt;cs.LG&lt;/a&gt;
 &lt;/p&gt;</code></pre>
           <dl>
-            <dt>.ds-link</dt>
-            <dd>The same class in body text and in secondary text. The link keeps Link Blue on both;
+            <dt>&lt;a href&gt; in secondary text</dt>
+            <dd>The same link in body text and in secondary text. The link keeps Link Blue on both;
             only the surrounding text changes colour.</dd>
           </dl>
         </div>
@@ -210,6 +186,40 @@
     </div>
   </section>
 
+
+  <!-- ───────── Links and text-only buttons ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="links-and-text-only-buttons">Links and text-only buttons</h2>
+    <p class="ds-section-desc">A link goes somewhere: it has an <code>href</code>, it is underlined, and
+    it remembers being visited. A text-only button does something on this page, such as opening a panel
+    or copying a value: it is Link Blue too, but has no underline and no visited state. Use the one that
+    matches what happens when it is pressed. Text-only buttons are described on
+    <a href="buttons.html#button-tiers">Buttons</a>.</p>
+
+    <div class="ds-card">
+      <p>
+        Submitted 14 Jan 2024 · <a href="#revision-history">view revision history</a> ·
+        <button class="ds-btn ds-btn-text" type="button" aria-expanded="false">Show all versions</button>
+      </p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p&gt;
+  Submitted 14 Jan 2024 · &lt;a href="/abs/2401.00001v2"&gt;view revision history&lt;/a&gt; ·
+  &lt;button class="ds-btn ds-btn-text" type="button" aria-expanded="false"&gt;Show all versions&lt;/button&gt;
+&lt;/p&gt;</code></pre>
+          <dl>
+            <dt>&lt;a href&gt;</dt>
+            <dd>Goes to another page or another place on this one. Underlined, and takes the visited
+            colour once followed.</dd>
+            <dt>.ds-btn.ds-btn-text</dt>
+            <dd>Acts on this page. Plain Link Blue text with no underline and no visited state; the
+            surrounding text sets its size. When it opens or closes something, carry
+            <code>aria-expanded</code>.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
 
   <div class="ds-note ds-note--essential">
     <h3 class="ds-note-label">Accessibility essentials</h3>
