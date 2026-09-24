@@ -1,0 +1,55 @@
+{
+  "_comment": "The brand templates' variables. `type` decides escaping: attr and url are escaped, html is host markup printed as is, bool gates a {% if flag %} section and defaults to false. Each link defaults to arxiv.org, so a host passes only what differs.",
+  "vars": {
+    "static_base": {
+      "type": "url",
+      "default": "https://static.arxiv.org/static/design-system/latest/",
+      "doc": "Root URL of the design-system asset route, with a trailing slash; production by default (init_app reads BRAND_STATIC_BASE)."
+    },
+    "header_variant": {
+      "type": "attr",
+      "default": "",
+      "doc": "Extra classes on .ds-site-header (arxiv-docs passes mkdocs-material's 'md-header')."
+    },
+    "base_url": {
+      "type": "url",
+      "default": "https://arxiv.org",
+      "doc": "Scheme + BASE_SERVER, no trailing slash: home, search, submit and the IgnoreMe trap (init_app reads BASE_SERVER and EXTERNAL_URL_SCHEME)."
+    },
+    "auth_url": {
+      "type": "url",
+      "default": "https://arxiv.org",
+      "doc": "Scheme + AUTH_SERVER (else BASE_SERVER), no trailing slash: /login and account_path; \"\" makes them site-relative."
+    },
+    "account_path": {
+      "type": "url",
+      "default": "/user",
+      "doc": "The signed-in Account page on auth_url, with its leading slash (the keycloak account portal: /user-account/)."
+    },
+    "help_url": {
+      "type": "url",
+      "default": "https://info.arxiv.org",
+      "doc": "Scheme + HELP_SERVER, no trailing slash: donate and every footer info link."
+    },
+    "hide_nav": {
+      "type": "bool",
+      "default": false,
+      "doc": "Drop the public nav and the search overlay, for a sub-site with its own (info.arxiv.org)."
+    },
+    "hide_announcement": {
+      "type": "bool",
+      "default": false,
+      "doc": "Drop the announcement band, for a host that shows none (a staff tool, an embedded view)."
+    },
+    "signed_in": {
+      "type": "bool",
+      "default": false,
+      "doc": "Per session: one \"Account\" link (auth_url + account_path, where the reader logs out) instead of \"Log in\"."
+    },
+    "member_institution": {
+      "type": "html",
+      "default": "",
+      "doc": "Per request, the IP-matched member: '' (an anonymous reader), '<span class=\"ack-member-inline\">, <strong>Name</strong></span>', or that span empty and hidden, which chrome/header.js fills from the same-origin /institutional_banner."
+    }
+  }
+}
