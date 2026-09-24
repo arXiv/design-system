@@ -13,6 +13,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | `verification/` | audits, design reviews, agent test results | No |
 | `planning/` | backlog, proposals, decision logs | Only for program/planning work |
 | `blog-theme/` | packaged copy (zip) of the blog.arxiv.org WordPress theme — a **separate project** that extends the design system; its source lives in another repo | **Never.** Its CSS carries agreed blog-only exceptions; do not read it as the rule, and do not sync it — see below |
+| `templates/` | the distributable brand head/header/footer, written once in "portable Jinja" (`{{ var }}` + raw HTML; `arxiv_brand/`, which is also the Python package), the adapters generated from it (React, TemplateToolkit, static HTML) and the chrome JS — the reusable chrome other arXiv apps install from git, their lock files pinning the SHA (see `templates/README.md`) | **Markup only.** Styling stays in `docs/`; these templates are `docs/public/{header,footer}.html` parameterised, and never a second copy of the CSS |
 
 ## Before any frontend change
 
@@ -44,6 +45,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Forms, validation | `docs/forms.html` — one page, both surfaces | `.ds-field`/`.ds-label`/`.ds-input`/`.ds-hint`, `.is-invalid`, `.field-error`, `.ds-check`, `.ds-switch`, `.ds-seg` |
 | A code block on a docs page | `docs/typography.html` *Code blocks* | plain `<pre><code>` plus `<script src="copy-code.js" defer>` once per page — the copy button is added for you; never hand-build one |
 | Version display | `docs/version-display.html` | inline version links + `.ds-alert` warning |
+| A site-wide announcement (the banner) | `templates/BANNER_ANNOUNCEMENTS.md` | an entry in `templates/assets/json/announcements.json` — plain text and one link; never a per-app banner |
 | Site header / footer | `docs/public/header.html`, `docs/public/footer.html` | `.ds-site-header` (+ `--light`, `--wrap` for a centre slot that folds), `.ds-site-footer` — never hand-build chrome or draw logos from text |
 | Category / topic / state labels | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-tag` (+ `--info` / `--success` / `--warning` / `--error`, `--keep-case`, `--rectangle`); category names are copied, never restyled |
 | Dark mode (status, mechanism, what flips) | `docs/dark-mode.html` | tokens flip automatically; never hand-pick dark values; lock demo pages light; `.ds-theme-toggle` + `theme.js` in the head **undeferred** — both stylesheets mirror their dark block under `[data-theme]` |
