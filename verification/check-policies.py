@@ -279,6 +279,28 @@ def check_theme_control():
         ok(rule, f"{n} pages")
 
 
+# ── A contents bar needs its script ──
+# The bar is markup, but its behaviour (menu closes on a choice, the current
+# section is named, the bar compacts once it sticks) is toc.js. A page that
+# has the one without the other looks right until it is scrolled.
+TOC_SCRIPT = re.compile(r"<script[^>]*src=\"[^\"]*toc\.js\"")
+
+
+def check_toc_script():
+    rule = "every page with a contents bar loads toc.js"
+    n = 0
+    for path in sorted((REPO / "docs").rglob("*.html")):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        text = re.sub(r"<pre\b.*?</pre>", "", text, flags=re.S)
+        if 'class="ds-full ds-toc-bar' not in text and 'class="ds-toc-bar' not in text:
+            continue
+        n += 1
+        if not TOC_SCRIPT.search(text):
+            fail(rule, str(path.relative_to(REPO)), "has a .ds-toc-bar but does not load toc.js")
+    if rule not in FAILS:
+        ok(rule, f"{n} pages")
+
+
 # ── The docs do not narrate their own history ──
 # The system is new and in use nowhere, so a reader needs to know what a thing
 # IS. "Previously", "we dropped", a decision date in the prose — all of it is
@@ -367,6 +389,7 @@ def main():
     check_relative_type_sizes()
     check_page_shape()
     check_theme_control()
+    check_toc_script()
     check_no_changelog_prose()
     check_classes_documented()
     check_section_anchors()
