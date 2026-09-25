@@ -84,8 +84,8 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 - **Use the palette.** All colors must come from the documented palette in `docs/color-mapping.md`. Do not introduce one-off hex values.
 - **Warm grey ladder:** The palette provides specific stops for specific contrast needs:
-  - `--ds-text-disabled` (`#b0aba6`) — disabled/exempt states only (2.24:1, below AA thresholds)
-  - `--ds-border-strong` (`#8b8680`) — interactive UI boundaries: borders, tracks, arrows (3.61:1 on white, passes 3:1)
+  - `--ds-text-disabled` (`#aeaaa4`) — disabled/exempt states only (2.3:1, below AA thresholds)
+  - `--ds-border-strong` (`#89837a`) — interactive UI boundaries: borders, tracks, arrows (3.76:1 on white, passes 3:1)
   - `--ds-text-muted` (`#6b6459`) — body-weight text, muted labels (5.83:1 on white, passes 4.5:1)
 - **Semantic colors:** Use danger tokens (`--ds-danger`) only for destructive actions and error states. Not for brand accents.
 - **Red means one thing: error.** Nothing else may use it — not required-field markers, not inline `<code>`, not emphasis. A form that spends red on a non-error state cannot then use red to mean "you cannot proceed."

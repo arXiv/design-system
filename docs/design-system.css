@@ -35,12 +35,18 @@
      Full palette with contrast figures: color-mapping.md. */
   --ds-repository-brown:  #1c1a17;
   --ds-library-grey:      #6b6459;
-  --ds-ui-boundary-grey:  #8b8680;
-  --ds-disabled-grey:     #b0aba6;
-  --ds-warm-wash:         #f9f7f7;
-  --ds-card-grey:         #f0eeec;
   --ds-open-blue:         #a5d6fe;
-  --ds-open-blue-bright:  #c2e2ff;
+  /* Two ramps, one base each, the step is the number: the percentage of the
+     base over white. Every warm tint is Library Grey; every cool tint is
+     Open Blue. Retune a base and recompute the steps. */
+  --ds-grey-5:            #f8f7f7;   /* Warm Wash: the page ground */
+  --ds-grey-10:           #f0f0ee;   /* Card Grey: a secondary band, a hover fill */
+  --ds-grey-25:           #dad8d6;   /* Border Light: hairlines, pressed fills */
+  --ds-grey-55:           #aeaaa4;   /* Disabled Grey: disabled text, 2.3:1 */
+  --ds-grey-80:           #89837a;   /* UI Boundary Grey: a control's edge, 3.76:1 on white */
+  --ds-blue-20:           #edf7ff;   /* Tint Light: a panel arXiv floats over the paper */
+  --ds-blue-50:           #d2eafe;   /* Active Wash: the deepest chrome blue that holds AA for text */
+  --ds-blue-70:           #c0e2fe;   /* Open Blue Bright: the hover step, and a panel's edge */
   --ds-archival-blue:     #1f5e96;
   --ds-link-blue:         #1565c0;
   --ds-link-blue-hover:   #1050a0;
@@ -69,12 +75,12 @@
      re-points them; it never redefines a component. */
   --ds-text:              var(--ds-repository-brown);
   --ds-text-muted:        var(--ds-library-grey);      /* 5.83:1 on white */
-  --ds-text-disabled:     var(--ds-disabled-grey);     /* below AA — disabled only */
+  --ds-text-disabled:     var(--ds-grey-55);     /* below AA — disabled only */
   --ds-text-on-accent:    var(--ds-repository-brown);  /* on an Open Blue fill; Open Blue
                                                           does not flip, so this must not */
-  --ds-canvas:            var(--ds-warm-wash);
+  --ds-canvas:            var(--ds-grey-5);
   --ds-surface:           #ffffff;
-  --ds-surface-muted:     var(--ds-card-grey);
+  --ds-surface-muted:     var(--ds-grey-10);
   --ds-zone-secondary-bg: var(--ds-surface-muted);     /* ground behind supporting content — PAGE ZONES */
 
   /* Destructive: delete, withdraw, revoke. One tier on every surface. */
@@ -90,10 +96,10 @@
   --ds-scrim:             rgba(28, 26, 23, 0.55);      /* modal backdrop; Repository Brown
                                                           at 55%, warm rather than black */
 
-  --ds-border:            #ddd8d2;                     /* decorative hairline, 1.42:1 —
+  --ds-border:            var(--ds-grey-25);                     /* decorative hairline, 1.42:1 —
                                                           never the sole edge of a control */
-  --ds-border-muted:      #e4e0db;
-  --ds-border-strong:     var(--ds-ui-boundary-grey);  /* 3.61:1 — interactive boundaries */
+  --ds-border-muted:      var(--ds-grey-25);
+  --ds-border-strong:     var(--ds-grey-80);  /* 3.61:1 — interactive boundaries */
 
   --ds-link:              var(--ds-link-blue);
   --ds-link-hover:        var(--ds-link-blue-hover);
@@ -102,11 +108,11 @@
   --ds-focus-ring-on-dark:var(--ds-link-blue-dark);    /* on the dark chrome bars */
 
   --ds-accent:            var(--ds-open-blue);
-  --ds-accent-hover:      var(--ds-open-blue-bright);
+  --ds-accent-hover:      var(--ds-blue-70);
   --ds-accent-strong:     var(--ds-archival-blue);     /* section accents, anchor colour */
-  --ds-accent-wash:       #d6e8f7;                     /* inline active state */
-  --ds-accent-surface:    #edf4fc;                     /* popover panel */
-  --ds-accent-border:     #c4dcf0;
+  --ds-accent-wash:       var(--ds-blue-50);                     /* inline active state */
+  --ds-accent-surface:    var(--ds-blue-20);                     /* popover panel */
+  --ds-accent-border:     var(--ds-blue-70);
 
   /* Button construction — the colours a surface changes. Geometry, shadows
      and states live on .ds-btn*; .ds-internal re-points these and nothing
@@ -120,7 +126,7 @@
   --ds-btn-secondary-bg:           #ffffff;
   --ds-btn-secondary-bg-hover:     #ffffff;
   --ds-btn-secondary-bg-active:    #ffffff;
-  --ds-btn-secondary-rim-a:        #ddd8d2;
+  --ds-btn-secondary-rim-a:        var(--ds-grey-25);
   --ds-btn-secondary-rim-b:        #b3ada4;
   --ds-btn-secondary-rim-hover-a:  #c8c4be;
   --ds-btn-secondary-rim-hover-b:  var(--ds-border-strong);
@@ -139,7 +145,6 @@
   --ds-btn-text-bg-hover:          var(--ds-accent-surface);
   --ds-btn-text-bg-active:         var(--ds-accent-wash);
 
-  --ds-brand-smileybones-yellow: var(--ds-smileybones-yellow);
 
   /* Submission type badges. A submission type is a CATEGORY, not a status —
      "New" is not success and "Wdr" is not an error — so these are their own
@@ -400,7 +405,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   font-size: 0.875rem;
   line-height: 1.6;
   background: var(--ds-chrome);
-  color: var(--ds-card-grey);   /* a fixed light value: the chrome ground is dark in both themes */
+  color: var(--ds-grey-10);   /* a fixed light value: the chrome ground is dark in both themes */
   padding: var(--ds-space-4);
   border-radius: 6px;
   overflow-x: auto;                 /* long lines scroll; the page never does */
@@ -674,7 +679,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-btn.on-tint {
   background:
     linear-gradient(var(--ds-surface-muted), var(--ds-surface-muted)) padding-box,
-    linear-gradient(to bottom, #ddd8d2, #b3ada4) border-box;
+    linear-gradient(to bottom, var(--ds-grey-25), var(--ds-grey-55)) border-box;
 }
 .ds-btn.on-tint:hover {
   background:
@@ -2131,7 +2136,7 @@ html:has(.ds-modal[open]) {
        what changes is that it becomes the canvas rather than the text.
        Where a flipped value is one of the named brand colours, it points
        at the primitive so the relationship stays visible. */
-    --ds-text:              var(--ds-card-grey);
+    --ds-text:              var(--ds-grey-10);
     --ds-canvas:            var(--ds-repository-brown);
     --ds-surface-muted:     #2b2723;                     /* raised band, text 12.8:1 */
     --ds-zone-secondary-bg: var(--ds-canvas);         /* Card Grey equals the surface in dark, so the zones would not show */
@@ -2142,8 +2147,8 @@ html:has(.ds-modal[open]) {
     --ds-danger-fg-hover:       #ef9a9a;
     --ds-surface:           #2b2723;                     /* white fills become raised */
     --ds-border:            #3a3530;
-    --ds-border-muted:      #403b35;
-    --ds-text-muted:        var(--ds-disabled-grey);     /* 7.6:1 on the dark canvas */
+    --ds-border-muted:      #3a3530;
+    --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
     --ds-text-disabled:     #5a554f;
     --ds-chrome:            #262119;                     /* lifted off the canvas so the
                                                             bar still reads as a bar */
@@ -2249,7 +2254,7 @@ html:has(.ds-modal[open]) {
      what changes is that it becomes the canvas rather than the text.
      Where a flipped value is one of the named brand colours, it points
      at the primitive so the relationship stays visible. */
-  --ds-text:              var(--ds-card-grey);
+  --ds-text:              var(--ds-grey-10);
   --ds-canvas:            var(--ds-repository-brown);
   --ds-surface-muted:     #2b2723;                     /* raised band, text 12.8:1 */
   --ds-zone-secondary-bg: var(--ds-canvas);         /* Card Grey equals the surface in dark, so the zones would not show */
@@ -2260,8 +2265,8 @@ html:has(.ds-modal[open]) {
   --ds-danger-fg-hover:       #ef9a9a;
   --ds-surface:           #2b2723;                     /* white fills become raised */
   --ds-border:            #3a3530;
-  --ds-border-muted:      #403b35;
-  --ds-text-muted:        var(--ds-disabled-grey);     /* 7.6:1 on the dark canvas */
+  --ds-border-muted:      #3a3530;
+  --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
   --ds-text-disabled:     #5a554f;
   --ds-chrome:            #262119;                     /* lifted off the canvas so the
                                                           bar still reads as a bar */
@@ -2318,8 +2323,8 @@ html:has(.ds-modal[open]) {
 [data-theme="light"] {
   color-scheme: light;
   --ds-text:  #1c1a17;
-  --ds-canvas:         #f9f7f7;
-  --ds-surface-muted:         #f0eeec;
+  --ds-canvas:         var(--ds-grey-5);
+  --ds-surface-muted:         var(--ds-grey-10);
   --ds-zone-secondary-bg: var(--ds-surface-muted);
   --ds-danger-wash-hover:     #fdf0f0;
   --ds-danger-wash-active:    #f5d0d0;
@@ -2327,20 +2332,20 @@ html:has(.ds-modal[open]) {
   --ds-danger-fg:             var(--ds-danger);   /* red as text or a glyph, not a fill */
   --ds-danger-fg-hover:       var(--ds-danger-hover);
   --ds-surface:           #ffffff;
-  --ds-border:      #ddd8d2;
+  --ds-border:      var(--ds-grey-25);
   --ds-text-muted:      #6b6459;
-  --ds-text-disabled:          #b0aba6;
+  --ds-text-disabled:          var(--ds-grey-55);
   --ds-accent-strong:     #1f5e96;
-  --ds-accent-wash:         #d6e8f7;
-  --ds-accent-surface:        #edf4fc;
-  --ds-accent-border:       #c4dcf0;
+  --ds-accent-wash:         var(--ds-blue-50);
+  --ds-accent-surface:        var(--ds-blue-20);
+  --ds-accent-border:       var(--ds-blue-70);
   --ds-btn-primary-rim-a:          #b0d5ed;
   --ds-btn-primary-rim-b:          #6ba8da;
   --ds-btn-primary-rim-hover-b:    #4a86b8;
   --ds-btn-secondary-bg:           #ffffff;
   --ds-btn-secondary-bg-hover:     #ffffff;
   --ds-btn-secondary-bg-active:    #ffffff;
-  --ds-btn-secondary-rim-a:        #ddd8d2;
+  --ds-btn-secondary-rim-a:        var(--ds-grey-25);
   --ds-btn-secondary-rim-b:        #b3ada4;
   --ds-btn-secondary-rim-hover-a:  #c8c4be;
   /* restated so a data-theme island re-resolves them */
@@ -2359,7 +2364,7 @@ html:has(.ds-modal[open]) {
   --ds-btn-text-fg-hover:          var(--ds-link-hover);
   --ds-btn-text-bg-hover:          var(--ds-accent-surface);
   --ds-btn-text-bg-active:         var(--ds-accent-wash);
-  --ds-border-muted:       #e4e0db;
+  --ds-border-muted:       var(--ds-grey-25);
   --ds-chrome:        #1c1a17;
   --ds-link:         #1565c0;
   --ds-link-hover:        #1050a0;
@@ -2799,7 +2804,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   display: inline-block;
   width: 3px; height: 3px;
   border-radius: 50%;
-  background: var(--ds-border, #ddd8d2);
+  background: var(--ds-border, #dad8d6);
   vertical-align: middle;
   font-size: 0;
   margin: 0 3px;
@@ -2927,7 +2932,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
    is Link Hover at rest: Link Blue is 4.3:1 there. */
 .ds-announcement--maintenance {
   --ds-announcement-bg:   var(--ds-chrome);
-  --ds-announcement-fg:   var(--ds-card-grey);
+  --ds-announcement-fg:   var(--ds-grey-10);
   --ds-announcement-link: var(--ds-link-blue-dark);
 }
 .ds-announcement--event {
@@ -2966,8 +2971,8 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
      no property at all. One set of rules, two surfaces, no specificity to
      reason about. */
   --ds-hdr-bg:        var(--ds-chrome);   /* the bar is dark in both themes; --ds-text would flip it light */
-  --ds-hdr-fg:        var(--ds-disabled-grey);    /* fixed #b0aba6, 7.4:1 on the bar; --ds-text-disabled would go dark in dark mode */
-  --ds-hdr-fg-strong: var(--ds-card-grey);       /* hover, active, Log in — fixed for the same reason */
+  --ds-hdr-fg:        var(--ds-grey-55);    /* a fixed step, 7.3:1 on the bar; --ds-text-disabled would go dark in dark mode */
+  --ds-hdr-fg-strong: var(--ds-grey-10);       /* hover, active, Log in — fixed for the same reason */
   --ds-hdr-hover:     #302c28;
   --ds-hdr-ring:      var(--ds-focus-ring-on-dark, #64b5f6);
   --ds-hdr-border:    transparent;              /* the dark bar needs no edge */
