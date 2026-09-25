@@ -54,10 +54,8 @@
   // ── The control ──
   function paint(btn, choice) {
     btn.setAttribute('data-theme-choice', choice);
-    // The label is the state, in words. An icon alone leaves the reader
-    // guessing whether the moon means "it is dark" or "make it dark".
-    btn.querySelector('.ds-theme-toggle-label').textContent =
-      choice === 'system' ? 'System' : choice === 'light' ? 'Light' : 'Dark';
+    // The icon is the only visible part; the state is in the accessible name,
+    // and the result of a press goes to the live region.
     btn.setAttribute('aria-label', LABEL[choice] + '. Activate to change.');
   }
 
@@ -67,15 +65,14 @@
     var choice = read();
 
     buttons.forEach(function (btn) {
-      if (!btn.querySelector('.ds-theme-toggle-label')) {
+      if (!btn.querySelector('svg')) {
         btn.insertAdjacentHTML('beforeend',
           '<svg class="ds-theme-icon-system" viewBox="0 0 24 24" aria-hidden="true">' +
             '<circle cx="12" cy="12" r="10"/><path d="m8.5 16 3.5-8 3.5 8"/><path d="M9.9 13h4.2"/></svg>' +
           '<svg class="ds-theme-icon-light" viewBox="0 0 24 24" aria-hidden="true">' +
             '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 6.5v1.3"/><path d="M12 16.2v1.3"/><path d="M6.5 12h1.3"/><path d="M16.2 12h1.3"/><path d="m8.1 8.1.9.9"/><path d="m15 15 .9.9"/><path d="m8.1 15.9.9-.9"/><path d="m15 9 .9-.9"/></svg>' +
           '<svg class="ds-theme-icon-dark" viewBox="0 0 24 24" aria-hidden="true">' +
-            '<circle cx="12" cy="12" r="10"/><path d="M16.5 12.4A4.5 4.5 0 1 1 11.6 7.5a3.5 3.5 0 0 0 4.9 4.9Z"/></svg>' +
-          '<span class="ds-theme-toggle-label"></span>');
+            '<circle cx="12" cy="12" r="10"/><path d="M16.5 12.4A4.5 4.5 0 1 1 11.6 7.5a3.5 3.5 0 0 0 4.9 4.9Z"/></svg>');
       }
       paint(btn, choice);
 

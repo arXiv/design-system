@@ -138,6 +138,7 @@
         </div>
       </div>
       <p class="ds-panel-label">In the header, where it lives</p>
+      <div class="ds-card">
       <nav class="ds-site-header ds-site-header--light" aria-label="Header example">
         <a href="#" class="ds-site-header-logo">arXiv Design System</a>
         <nav class="ds-site-header-nav" aria-label="Header example navigation">
@@ -146,6 +147,7 @@
           <button type="button" class="ds-theme-toggle"></button>
         </nav>
       </nav>
+      </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;!-- in the head, NOT deferred --&gt;
@@ -165,7 +167,7 @@
             <em>follow the system</em> is the default a reader has to be able to get back to. A two-way switch
             cannot express it, so the first touch would lose the machine's setting for good. That is also why it
             is a <code>&lt;button&gt;</code> cycling a value rather than <a href="forms.html">the switch</a>, which
-            means on or off. Leave the element empty: the script fills in the icon and the label. It is the last item in the header bar, one button; the three states are never shown side by side.</dd>
+            means on or off. Leave the element empty: the script fills in the icon and the accessible name. It is the last item in the header bar, one button; the three states are never shown side by side.</dd>
             <dt>id="ds-theme-status"</dt>
             <dd>The live region the result goes to. The button's name does not change when the theme does — the
             name of a control is what it does, and it is still the theme control; the live region says “Theme is
@@ -330,10 +332,10 @@
       <li><strong>Respect the setting the reader already made.</strong> A page follows the operating system's
       colour scheme unless the reader says otherwise on the page itself. Without JavaScript there is no button
       and the page follows the OS: the control is an addition, never the only route to a readable page.</li>
-      <li><strong>The control says its state in words as well as an icon.</strong> An icon alone leaves the reader
-      guessing whether the moon means “it is dark” or “make it dark”, which is the commonest failure of this
-      control on the web. A press announces its result in the live region, and the button's own name stays the
-      same, because the name of a control is what it does.</li>
+      <li><strong>The icon is the only visible part, so the name carries the state.</strong> The button's
+      accessible name says which state is on (“Theme: following the system. Activate to change.”), and a press
+      announces its result in the live region. A sighted reader learns the three icons from the cards above; a
+      screen reader user is told, and is never guessing whether the moon means “it is dark” or “make it dark”.</li>
       <li><strong>Never a dark value by hand.</strong> Take every colour from a token and it flips with the rest of
       the page. A hex written into a page or a component cannot flip, and it will not announce itself.</li>
       <li><strong>Check contrast in both modes.</strong> Verify computed styles and measure contrast in every state
