@@ -1097,7 +1097,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   margin-inline: var(--ds-space-1);
 }
 
-/* CARD  (.ds-card) and FRAMED TABLE (.ds-table-framed) — organizing-content.html
+/* CARD  (.ds-card / .ds-card--data / .ds-card-grid) and FRAMED TABLE (.ds-table-framed) — cards.html
    Anything that groups related content on the page canvas. Padding comes
    from the scale; a card needing different room sets its own padding
    rather than becoming a different card. */
@@ -1121,6 +1121,55 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-card > :last-child  { margin-block-end: 0; }
 :where(.ds-card) h3 { font-size: 1rem; margin: 0 0 var(--ds-space-tight); }
 :where(.ds-card) > p { color: var(--ds-text-muted); }   /* the card's own copy; a component inside keeps its colour */
+
+/* DATA CARD (.ds-card--data) — cards.html
+   One record's facts as label and value pairs: a <dl> inside the card, one
+   <div> per pair. The ground is tinted and the top edge takes the accent, so
+   it reads as reference rather than content; the accent follows .ds-internal
+   on a parent, which is the only thing that changes between surfaces. */
+.ds-card--data {
+  background: var(--ds-surface-muted);
+  border-top: 4px solid var(--ds-accent);
+  padding: 0;
+}
+.ds-card--data > dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));   /* pairs sit side by side when there is room, one column when there is not */
+  gap: 1px;
+  background: var(--ds-border);   /* shows only in the gaps: a hairline between pairs in both directions, none at the edges */
+}
+.ds-card--data > dl > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  background: var(--ds-surface-muted);
+}
+.ds-card--data > dl > div:last-child { grid-column-end: -1; }   /* the last pair fills its row, so no gap is left open */
+.ds-card--data dt {
+  font-family: var(--ds-font-condensed);
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ds-text-muted);
+}
+.ds-card--data dd {
+  margin: 0;
+  font-family: var(--ds-font-mono);
+  font-size: 0.75rem;
+  color: var(--ds-text);
+  overflow-wrap: anywhere;   /* an identifier or address wraps inside the card instead of widening it */
+}
+
+/* An accordion stack inside a card: a card with a heading and a list of
+   disclosures, the paper reader's sidebar. A stack that is the card's last
+   child runs to the card's foot. A disclosure inside another's body is the
+   second level: indented, and its label a step smaller. */
+.ds-card > .ds-acc-stack:last-child { margin-bottom: calc(-1 * var(--ds-space-4)); }
+.ds-acc-body .ds-acc { margin-left: var(--ds-space-4); }
+.ds-acc-body .ds-acc > summary { font-size: 0.9em; }
 
 /* Cards side by side. auto-fit means the count follows the room rather than a
    breakpoint: the grid drops to one column when a card can no longer hold its

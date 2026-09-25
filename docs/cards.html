@@ -33,7 +33,6 @@
       <a href="cards.html">Cards</a>
       <a href="progressive-disclosure.html">Progressive disclosure</a>
       <a href="modals.html">Modal dialogs</a>
-      <a href="metadata-panel.html">Metadata panel</a>
       <a href="version-display.html">arXiv Paper Versions</a>
     </div>
   </details>
@@ -72,11 +71,11 @@
 
   <header class="ds-page-header">
     <h1>Cards</h1>
-    <p>Every container the system draws a box around, on both surfaces, shown side by side. The public site has one card, <code>.ds-card</code>, a white panel with a hairline border. Internal tools add two tinted panels for one record's facts: the info card and the metadata panel. Each section links to the page that documents its rules in full.</p>
+    <p>When you need to draw a box around related content, reach for a card. Public pages and internal tools each have their own color variations but the use cases are shared. The markup is the same on both surfaces; the internal colours come from <code>.ds-internal</code> on a parent element and nothing else changes.</p>
   </header>
 
 
-  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <!-- ═════════ Contents bar ═════════ -->
   <div class="ds-full ds-toc-bar">
     <div class="ds-toc-bar-inner">
       <details class="ds-toc">
@@ -87,28 +86,31 @@
         </summary>
         <nav class="ds-toc-menu" aria-label="Contents">
           <ol>
-            <li><a href="#the-content-card">The content card</a></li>
-            <li><a href="#cards-side-by-side">Cards side by side</a></li>
-            <li><a href="#the-info-card">The info card</a></li>
-            <li><a href="#the-metadata-panel">The metadata panel</a></li>
+            <li><a href="#basic-cards">Basic cards</a></li>
+            <li><a href="#data-cards">Data cards</a></li>
+            <li><a href="#groups-of-cards">Groups of cards</a></li>
+            <li><a href="#cards-with-accordions">Cards with accordions</a></li>
             <li><a href="#usage-rules">Usage rules</a></li>
-            <li><a href="#dark-mode-values">Dark mode values</a></li>
           </ol>
         </nav>
       </details>
     </div>
   </div>
 
-  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <!-- ═════════ Core zone ═════════ -->
   <div class="ds-full ds-zone-primary">
 
-  <!-- ───────── The content card ───────── -->
+  <!-- ───────── Basic cards ───────── -->
   <section class="section">
-    <h2 class="section-title" id="the-content-card">The content card</h2>
-    <p class="ds-section-desc">A white surface with a hairline border and 8px radius, for content that is a peer in a set: context cards, swatch cards, editable form sections. When a card earns its box, and when whitespace does the job instead, is decided on <a href="organizing-content.html#cards-and-grouped-sections">Organizing content</a>.</p>
+    <h2 class="section-title" id="basic-cards">Basic cards</h2>
+
+    <h3>Public card</h3>
+    <p class="ds-section-desc">A flexible and unopinionated white surface with a hairline border and 8px radius.</p>
     <div class="ds-card">
-      <h3>submit/5720431</h3>
-      <p>Spectral gaps in random regular hypergraphs. Submitted 2026-09-18 to math.CO, awaiting moderation.</p>
+      <div class="ds-card">
+        <h3>submit/5720431</h3>
+        <p>Spectral gaps in random regular hypergraphs. Submitted 2026-09-18 to math.CO, awaiting moderation.</p>
+      </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;div class="ds-card"&gt;
@@ -121,19 +123,118 @@
             Its first and last children carry no outer margin, because the padding is the space at the
             edges. It sets <code>position: relative</code>, so a margin note or an anchored pill measures
             from it.</dd>
-            <dt>.ds-card &gt; .ds-acc:last-child</dt>
-            <dd>An accordion that is the card's last child runs flush to the card's foot, the way the
-            code panels on this page do.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <h3>Internal card</h3>
+    <p class="ds-section-desc">The same markup inside <code>.ds-internal</code>. The basic card has no accent of its own, so it looks the same on both surfaces; what changes is everything inside it that reaches for the accent, such as the button.</p>
+    <div class="ds-card ds-internal">
+      <div class="ds-card">
+        <h3>submit/5720431</h3>
+        <p>Spectral gaps in random regular hypergraphs. Submitted 2026-09-18 to math.CO, awaiting moderation.</p>
+        <div class="ds-btn-group"><button type="button" class="ds-btn ds-btn-primary">Approve</button><button type="button" class="ds-btn">Hold</button></div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;body class="ds-page ds-internal"&gt;
+  …
+  &lt;div class="ds-card"&gt;
+    &lt;h3&gt;submit/5720431&lt;/h3&gt;
+    &lt;p&gt;Spectral gaps in random regular hypergraphs. Submitted 2026-09-18 to math.CO, awaiting moderation.&lt;/p&gt;
+    &lt;div class="ds-btn-group"&gt;&lt;button type="button" class="ds-btn ds-btn-primary"&gt;Approve&lt;/button&gt;&lt;button type="button" class="ds-btn"&gt;Hold&lt;/button&gt;&lt;/div&gt;
+  &lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-internal</dt>
+            <dd>On a parent, usually <code>&lt;html&gt;</code> or <code>&lt;body&gt;</code>. Re-points the accent to
+            Access Lime for everything inside. Nothing on the card itself changes.</dd>
           </dl>
         </div>
       </details>
     </div>
   </section>
 
-  <!-- ───────── Cards side by side ───────── -->
+  <!-- ───────── Data cards ───────── -->
   <section class="section">
-    <h2 class="section-title" id="cards-side-by-side">Cards side by side</h2>
-    <p class="ds-section-desc">Peers in a set share one grid. The count of columns follows the room, not a breakpoint: the grid drops to one column when a card can no longer hold its minimum width.</p>
+    <h2 class="section-title" id="data-cards">Data cards</h2>
+    <p class="ds-section-desc">Intended for organizing metadata and other reference information: the facts about one record, each pair stacking a label over a value. Cards read correctly against both white or a warm-wash page background.</p>
+
+    <h3>Public data card</h3>
+    <div class="ds-card">
+        <section class="ds-card ds-card--data" aria-label="Paper information">
+        <dl>
+          <div><dt>arXiv ID</dt><dd><a href="#">2311.04082</a></dd></div>
+          <div><dt>Submitted</dt><dd>2023-11-07</dd></div>
+          <div><dt>Subjects</dt><dd>cond-mat.soft</dd></div>
+          <div><dt>Licence</dt><dd><a href="#">CC BY 4.0</a></dd></div>
+        </dl>
+      </section>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>  &lt;section class="ds-card ds-card--data" aria-label="Paper information"&gt;
+  &lt;dl&gt;
+    &lt;div&gt;&lt;dt&gt;arXiv ID&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;2311.04082&lt;/a&gt;&lt;/dd&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;dt&gt;Submitted&lt;/dt&gt;&lt;dd&gt;2023-11-07&lt;/dd&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;dt&gt;Subjects&lt;/dt&gt;&lt;dd&gt;cond-mat.soft&lt;/dd&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;dt&gt;Licence&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;CC BY 4.0&lt;/a&gt;&lt;/dd&gt;&lt;/div&gt;
+  &lt;/dl&gt;
+&lt;/section&gt;</code></pre>
+          <dl>
+            <dt>.ds-card.ds-card--data</dt>
+            <dd>On a <code>&lt;section&gt;</code> with an <code>aria-label</code>, which makes it a named region. A
+            tinted ground (<code>--ds-surface-muted</code>) and a 4px top edge in the accent, so it reads as
+            reference rather than content. No padding of its own: the pairs carry it.</dd>
+            <dt>dl &gt; div</dt>
+            <dd>One pair per <code>&lt;div&gt;</code>, <code>&lt;dt&gt;</code> label then <code>&lt;dd&gt;</code> value.
+            Pairs sit side by side when the card is wide enough for two and stack in one column when it is
+            not; a hairline separates them in both directions.</dd>
+            <dt>dt, dd</dt>
+            <dd>The label is small, condensed and uppercased by CSS: type it in sentence case. The value is
+            in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A
+            value that goes somewhere is an <code>&lt;a href&gt;</code> and takes the ordinary link colours.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <h3>Internal data card</h3>
+    <div class="ds-card ds-internal">
+        <section class="ds-card ds-card--data" aria-label="User information">
+        <dl>
+          <div><dt>User</dt><dd><a href="#">Katrin Solberg</a></dd></div>
+          <div><dt>Email</dt><dd><a href="#">katrin.solberg@example.org</a></dd></div>
+          <div><dt>Remote host</dt><dd>128.84.12.201</dd></div>
+          <div><dt>Date</dt><dd>2024-12-31</dd></div>
+        </dl>
+      </section>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;body class="ds-page ds-internal"&gt;
+  …
+  &lt;section class="ds-card ds-card--data" aria-label="User information"&gt;
+  &lt;dl&gt;
+    &lt;div&gt;&lt;dt&gt;User&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;Katrin Solberg&lt;/a&gt;&lt;/dd&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;dt&gt;Email&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;katrin.solberg@example.org&lt;/a&gt;&lt;/dd&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;dt&gt;Remote host&lt;/dt&gt;&lt;dd&gt;128.84.12.201&lt;/dd&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;dt&gt;Date&lt;/dt&gt;&lt;dd&gt;2024-12-31&lt;/dd&gt;&lt;/div&gt;
+  &lt;/dl&gt;
+&lt;/section&gt;</code></pre>
+          <dl>
+            <dt>.ds-internal</dt>
+            <dd>The top edge takes Access Lime. The markup is the public one.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Groups of cards ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="groups-of-cards">Groups of cards</h2>
+    <p class="ds-section-desc">Peers in a set share one grid. The count of columns does not follow a breakpoint but adjusts to the content. The grid will drop to one column when a card can no longer hold its minimum width.</p>
+
+    <h3>Public card group</h3>
     <div class="ds-card">
       <div class="ds-card-grid">
         <div class="ds-card">
@@ -162,255 +263,217 @@
           <dl>
             <dt>.ds-card-grid</dt>
             <dd>Cards side by side. The grid supplies the gap, so a card inside it takes no top margin of
-            its own.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-  </section>
-
-  <!-- ───────── The info card ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="the-info-card">The info card</h2>
-    <p class="ds-section-desc">Internal tools only. The info card is a read-only metadata panel for displaying system-supplied context (user identity, submission details, IP/date stamps). In light mode it renders as a warm tinted panel with a lime top border; in dark mode it takes the charcoal treatment listed under Spec. Either way its filled surface creates a deliberate visual boundary from editable content areas. Each row stacks a label over a value. Values can be plain text, a link, or a monospace ID. The card always reads correctly against both the warm-wash page background and a white content area.</p>
-
-    <p class="ds-panel-label">Variants</p>
-    <div class="ds-card">
-      <div class="state-flex ds-internal">
-        <div class="state-cell">
-          <span class="state-label">User info (typical)</span>
-          <div class="demo-card-wrap">
-            <div class="ds-info-card" role="region" aria-label="User information">
-              <div class="ds-info-card-row">
-                <span class="ds-info-card-label">User</span>
-                <a href="#" class="ds-info-card-value ds-info-card-link">Katrin Solberg</a>
-              </div>
-              <div class="ds-info-card-row">
-                <span class="ds-info-card-label">Email</span>
-                <a href="#" class="ds-info-card-value ds-info-card-link">katrin.solberg@example.org</a>
-              </div>
-              <div class="ds-info-card-row">
-                <span class="ds-info-card-label">Remote host</span>
-                <span class="ds-info-card-value">128.84.12.201</span>
-              </div>
-              <div class="ds-info-card-row">
-                <span class="ds-info-card-label">Date</span>
-                <span class="ds-info-card-value">2024-12-31</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="state-cell">
-          <span class="state-label">Submission context</span>
-          <div class="demo-card-wrap">
-            <div class="ds-info-card" role="region" aria-label="Submission information">
-              <div class="ds-info-card-row">
-                <span class="ds-info-card-label">Submitter</span>
-                <a href="#" class="ds-info-card-value ds-info-card-link">Anne-Marie George</a>
-              </div>
-              <div class="ds-info-card-row">
-                <span class="ds-info-card-label">arXiv ID</span>
-                <span class="ds-info-card-value">2311.04082</span>
-              </div>
-              <div class="ds-info-card-row">
-                <span class="ds-info-card-label">Submitted</span>
-                <span class="ds-info-card-value">2023-11-07</span>
-              </div>
-              <div class="ds-info-card-row">
-                <span class="ds-info-card-label">Status</span>
-                <span class="ds-info-card-value">Pending review</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="state-cell">
-          <span class="state-label">Minimal (2 rows)</span>
-          <div class="demo-card-wrap">
-            <div class="ds-info-card" role="region" aria-label="Request details">
-              <div class="ds-info-card-row">
-                <span class="ds-info-card-label">Requested by</span>
-                <a href="#" class="ds-info-card-value ds-info-card-link">ksolberg</a>
-              </div>
-              <div class="ds-info-card-row">
-                <span class="ds-info-card-label">Date</span>
-                <span class="ds-info-card-value">2025-01-15</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-info-card" role="region" aria-label="User information"&gt;
-  &lt;div class="ds-info-card-row"&gt;
-    &lt;span class="ds-info-card-label"&gt;User&lt;/span&gt;
-    &lt;a href="#" class="ds-info-card-value ds-info-card-link"&gt;Katrin Solberg&lt;/a&gt;
-  &lt;/div&gt;
-  &lt;div class="ds-info-card-row"&gt;
-    &lt;span class="ds-info-card-label"&gt;Email&lt;/span&gt;
-    &lt;a href="#" class="ds-info-card-value ds-info-card-link"&gt;katrin.solberg@example.org&lt;/a&gt;
-  &lt;/div&gt;
-  &lt;div class="ds-info-card-row"&gt;
-    &lt;span class="ds-info-card-label"&gt;Remote host&lt;/span&gt;
-    &lt;span class="ds-info-card-value"&gt;128.84.12.201&lt;/span&gt;
-  &lt;/div&gt;
-  &lt;div class="ds-info-card-row"&gt;
-    &lt;span class="ds-info-card-label"&gt;Date&lt;/span&gt;
-    &lt;span class="ds-info-card-value"&gt;2024-12-31&lt;/span&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</code></pre>
-          <dl>
-            <dt>.ds-info-card</dt>
-            <dd>The container: a warm tinted surface with a lime top border, holding only
-            <code>.ds-info-card-row</code> children. It sets no width; the sidebar it sits in does.
-            Requires <code>role="region"</code> and an <code>aria-label</code>.</dd>
-            <dt>role="region" aria-label="…"</dt>
-            <dd>Required on the container. The label names what the card holds, such as
-            “User information” or “Submission information”, and is what a screen reader
-            user hears when jumping to it.</dd>
-            <dt>.ds-info-card-row</dt>
-            <dd>One label over one value. Rows are separated by a hairline; the last row has none.</dd>
-            <dt>.ds-info-card-label</dt>
-            <dd>The field name. Small, bold, and uppercased by CSS, in <code>--ds-text-muted</code>.
-            Type it in sentence case.</dd>
-            <dt>.ds-info-card-value</dt>
-            <dd>The value, in IBM Plex Mono. It breaks anywhere, so a long address or identifier
-            wraps inside the card instead of widening it. Every value takes this class, whether
-            it is a plain <code>&lt;span&gt;</code> or a link.</dd>
-            <dt>.ds-info-card-link</dt>
-            <dd>A value that navigates to a related record. An <code>&lt;a&gt;</code> with an
-            <code>href</code>, added alongside <code>.ds-info-card-value</code>: underlined, in the link
-            colour, with the hover and visited colours of every other link.</dd>
+            its own. Any card goes in it, a data card included.</dd>
           </dl>
         </div>
       </details>
     </div>
 
-    <p class="ds-panel-label">In context</p>
-    <p class="ds-section-desc">The card sits in a fixed-width sidebar (240px) alongside the main content area. The tinted surface anchors the page without competing with the editable content.</p>
-    <div class="ds-card">
-      <div class="context-example ds-internal">
-        <div class="context-main">
-          <div class="context-placeholder">Main content area — table, form, or detail view</div>
-        </div>
-        <div class="context-sidebar">
-          <div class="ds-info-card" role="region" aria-label="User information">
-            <div class="ds-info-card-row">
-              <span class="ds-info-card-label">User</span>
-              <a href="#" class="ds-info-card-value ds-info-card-link">Katrin Solberg</a>
-            </div>
-            <div class="ds-info-card-row">
-              <span class="ds-info-card-label">Email</span>
-              <a href="#" class="ds-info-card-value ds-info-card-link">katrin.solberg@example.org</a>
-            </div>
-            <div class="ds-info-card-row">
-              <span class="ds-info-card-label">Remote host</span>
-              <span class="ds-info-card-value">128.84.12.201</span>
-            </div>
-            <div class="ds-info-card-row">
-              <span class="ds-info-card-label">Date</span>
-              <span class="ds-info-card-value">2024-12-31</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;!-- The main content area: a table, a form, or a detail view --&gt;
-…
-
-&lt;!-- The sidebar: a fixed 240px column beside the main content --&gt;
-&lt;div class="ds-info-card" role="region" aria-label="User information"&gt;
-  &lt;div class="ds-info-card-row"&gt;
-    &lt;span class="ds-info-card-label"&gt;User&lt;/span&gt;
-    &lt;a href="#" class="ds-info-card-value ds-info-card-link"&gt;Katrin Solberg&lt;/a&gt;
-  &lt;/div&gt;
-  …
-&lt;/div&gt;</code></pre>
-          <dl>
-            <dt>.ds-info-card</dt>
-            <dd>Fills the sidebar it is placed in. The sidebar is a fixed 240px column and the
-            main content area flexes beside it; neither width is set on the card.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-  </section>
-
-  <!-- ───────── The metadata panel ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="the-metadata-panel">The metadata panel</h2>
-    <p class="ds-section-desc">Internal tools only. A grid of label and value pairs describing one record, in one of two tints. The reference variant is shown here so it can be compared with the info card beside it; the editable variant, the high-density modifier, and the rules are on <a href="metadata-panel.html">Metadata panel</a>.</p>
-    <div class="ds-card">
-      <div class="ds-internal">
-        <dl class="ds-meta-panel ds-meta-panel--reference">
-          <div class="ds-meta-cell">
-            <dt>User ID</dt>
-            <dd>461578</dd>
-          </div>
-          <div class="ds-meta-cell">
-            <dt>Joined</dt>
-            <dd>2010-02-14</dd>
-          </div>
-          <div class="ds-meta-cell">
-            <dt>Last login</dt>
-            <dd>2026-04-22 14:22:08</dd>
-          </div>
-          <div class="ds-meta-cell">
-            <dt>Total submissions</dt>
-            <dd>48</dd>
-          </div>
+    <h3>Internal card group</h3>
+    <div class="ds-card ds-internal">
+      <div class="ds-card-grid">
+        <section class="ds-card ds-card--data" aria-label="User information">
+        <dl>
+          <div><dt>User</dt><dd><a href="#">Katrin Solberg</a></dd></div>
+          <div><dt>Email</dt><dd><a href="#">katrin.solberg@example.org</a></dd></div>
+          <div><dt>Remote host</dt><dd>128.84.12.201</dd></div>
+          <div><dt>Date</dt><dd>2024-12-31</dd></div>
         </dl>
+      </section>
+        <section class="ds-card ds-card--data" aria-label="Submission information">
+        <dl>
+          <div><dt>Submitter</dt><dd><a href="#">Anne-Marie George</a></dd></div>
+          <div><dt>arXiv ID</dt><dd>2311.04082</dd></div>
+          <div><dt>Submitted</dt><dd>2023-11-07</dd></div>
+          <div><dt>Status</dt><dd>Pending review</dd></div>
+        </dl>
+      </section>
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;dl class="ds-meta-panel ds-meta-panel--reference"&gt;
-  &lt;div class="ds-meta-cell"&gt;
-    &lt;dt&gt;User ID&lt;/dt&gt;
-    &lt;dd&gt;461578&lt;/dd&gt;
-  &lt;/div&gt;
-  &lt;div class="ds-meta-cell"&gt;
-    &lt;dt&gt;Joined&lt;/dt&gt;
-    &lt;dd&gt;2010-02-14&lt;/dd&gt;
-  &lt;/div&gt;
-  &lt;!-- … one .ds-meta-cell per label + value pair … --&gt;
-&lt;/dl&gt;</code></pre>
+<pre><code>&lt;div class="ds-card-grid"&gt;
+  &lt;section class="ds-card ds-card--data" aria-label="User information"&gt;…&lt;/section&gt;
+  &lt;section class="ds-card ds-card--data" aria-label="Submission information"&gt;…&lt;/section&gt;
+&lt;/div&gt;</code></pre>
           <dl>
-            <dt>.ds-meta-panel</dt>
-            <dd>The grid, on a <code>&lt;dl&gt;</code>. One <code>.ds-meta-cell</code> per label and value pair;
-            cells separate with spacing.</dd>
-            <dt>.ds-meta-panel--reference</dt>
-            <dd>The read-only tint: a <code>--ds-surface-active</code> wash and a 4px
-            <code>--ds-accent</code> top bar.</dd>
-            <dt>.ds-meta-panel--editable</dt>
-            <dd>The lime wash for the record being worked on.</dd>
-            <dt>.ds-meta-panel--ruled</dt>
-            <dd>Faint cell rules, for high density only.</dd>
+            <dt>.ds-card-grid</dt>
+            <dd>The same grid, holding two data cards on the internal surface.</dd>
           </dl>
         </div>
       </details>
     </div>
   </section>
 
+  <!-- ───────── Cards with accordions ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="cards-with-accordions">Cards with accordions</h2>
+    <p class="ds-section-desc">A card with a heading and a stack of disclosures, the paper reader's sidebar. A disclosure inside another one is the second level. The accordion itself is documented on <a href="progressive-disclosure.html#accordion">Progressive disclosure</a>.</p>
+
+    <h3>Public</h3>
+    <div class="ds-card">
+      <div class="ds-card">
+        <h3>Paper information</h3>
+        <div class="ds-acc-stack">
+          <details class="ds-acc" open>
+            <summary>Versions</summary>
+            <div class="ds-acc-body">
+              <dl>
+                <dt>v3 · current</dt><dd>24 Apr 2026</dd>
+                <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
+                <dt>v1</dt><dd><a href="#">10 Jan 2026</a></dd>
+              </dl>
+            </div>
+          </details>
+          <details class="ds-acc">
+            <summary>Metadata</summary>
+            <div class="ds-acc-body">
+              <details class="ds-acc">
+                <summary>Subjects</summary>
+                <div class="ds-acc-body">General Relativity and Quantum Cosmology (<a href="#">gr-qc</a>); Cosmology and Nongalactic Astrophysics (<a href="#">astro-ph.CO</a>)</div>
+              </details>
+              <details class="ds-acc">
+                <summary>Identifiers</summary>
+                <div class="ds-acc-body">
+                  <dl>
+                    <dt>arXiv ID</dt><dd><a href="#">2604.22725</a></dd>
+                    <dt>DOI</dt><dd><a href="#">10.48550/arXiv.2604.22725</a></dd>
+                  </dl>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="ds-acc">
+            <summary>Related</summary>
+            <div class="ds-acc-body">Connected papers, datasets, and code links.</div>
+          </details>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-card"&gt;
+  &lt;h3&gt;Paper information&lt;/h3&gt;
+  &lt;div class="ds-acc-stack"&gt;
+    &lt;details class="ds-acc" open&gt;
+      &lt;summary&gt;Versions&lt;/summary&gt;
+      &lt;div class="ds-acc-body"&gt;
+        &lt;dl&gt;
+          &lt;dt&gt;v3 · current&lt;/dt&gt;&lt;dd&gt;24 Apr 2026&lt;/dd&gt;
+          &lt;dt&gt;v2&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;2 Mar 2026&lt;/a&gt;&lt;/dd&gt;
+          &lt;dt&gt;v1&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;10 Jan 2026&lt;/a&gt;&lt;/dd&gt;
+        &lt;/dl&gt;
+      &lt;/div&gt;
+    &lt;/details&gt;
+    &lt;details class="ds-acc"&gt;
+      &lt;summary&gt;Metadata&lt;/summary&gt;
+      &lt;div class="ds-acc-body"&gt;
+        &lt;details class="ds-acc"&gt;
+          &lt;summary&gt;Subjects&lt;/summary&gt;
+          &lt;div class="ds-acc-body"&gt;General Relativity and Quantum Cosmology (&lt;a href="#"&gt;gr-qc&lt;/a&gt;); Cosmology and Nongalactic Astrophysics (&lt;a href="#"&gt;astro-ph.CO&lt;/a&gt;)&lt;/div&gt;
+        &lt;/details&gt;
+        &lt;details class="ds-acc"&gt;
+          &lt;summary&gt;Identifiers&lt;/summary&gt;
+          &lt;div class="ds-acc-body"&gt;
+            &lt;dl&gt;
+              &lt;dt&gt;arXiv ID&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;2604.22725&lt;/a&gt;&lt;/dd&gt;
+              &lt;dt&gt;DOI&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;10.48550/arXiv.2604.22725&lt;/a&gt;&lt;/dd&gt;
+            &lt;/dl&gt;
+          &lt;/div&gt;
+        &lt;/details&gt;
+      &lt;/div&gt;
+    &lt;/details&gt;
+    &lt;details class="ds-acc"&gt;
+      &lt;summary&gt;Related&lt;/summary&gt;
+      &lt;div class="ds-acc-body"&gt;Connected papers, datasets, and code links.&lt;/div&gt;
+    &lt;/details&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-card &gt; h3 + .ds-acc-stack</dt>
+            <dd>The heading names the group; the stack holds the disclosures and, as the card's last
+            child, runs to the card's foot.</dd>
+            <dt>.ds-acc inside .ds-acc-body</dt>
+            <dd>The second level. Indented one step, its label a step smaller. Two levels is the limit
+            a reader can keep track of.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <h3>Internal</h3>
+    <div class="ds-card ds-internal">
+      <div class="ds-card">
+        <h3>Paper information</h3>
+        <div class="ds-acc-stack">
+          <details class="ds-acc" open>
+            <summary>Versions</summary>
+            <div class="ds-acc-body">
+              <dl>
+                <dt>v3 · current</dt><dd>24 Apr 2026</dd>
+                <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
+                <dt>v1</dt><dd><a href="#">10 Jan 2026</a></dd>
+              </dl>
+            </div>
+          </details>
+          <details class="ds-acc">
+            <summary>Metadata</summary>
+            <div class="ds-acc-body">
+              <details class="ds-acc">
+                <summary>Subjects</summary>
+                <div class="ds-acc-body">General Relativity and Quantum Cosmology (<a href="#">gr-qc</a>); Cosmology and Nongalactic Astrophysics (<a href="#">astro-ph.CO</a>)</div>
+              </details>
+              <details class="ds-acc">
+                <summary>Identifiers</summary>
+                <div class="ds-acc-body">
+                  <dl>
+                    <dt>arXiv ID</dt><dd><a href="#">2604.22725</a></dd>
+                    <dt>DOI</dt><dd><a href="#">10.48550/arXiv.2604.22725</a></dd>
+                  </dl>
+                </div>
+              </details>
+            </div>
+          </details>
+          <details class="ds-acc">
+            <summary>Related</summary>
+            <div class="ds-acc-body">Connected papers, datasets, and code links.</div>
+          </details>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;body class="ds-page ds-internal"&gt;
+  …
+  &lt;div class="ds-card"&gt;
+    &lt;h3&gt;Paper information&lt;/h3&gt;
+    &lt;div class="ds-acc-stack"&gt;…&lt;/div&gt;
+  &lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-internal</dt>
+            <dd>The same card; links and the open marker take the internal colours.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
 
   <div class="ds-note ds-note--essential">
     <h3 class="ds-note-label">Accessibility essentials</h3>
     <ul class="notes">
-      <li><strong>Name the region.</strong> Put <code>role="region"</code> and an
-      <code>aria-label</code> on every <code>.ds-info-card</code>, so a screen reader user can jump
-      straight to it and hears what it holds, such as “User information”. A region without a
-      name is not exposed as a landmark at all.</li>
-      <li><strong>Keep each label with its value.</strong> A label and its value sit together in
-      one <code>.ds-info-card-row</code>, label first, so they are read as a pair. The label is real
-      text in the markup and the uppercase comes from CSS, so it stays correct for a screen
-      reader and for copy and paste.</li>
-      <li><strong>Monospace values are still text.</strong> An identifier, an address, or a date
-      in <code>.ds-info-card-value</code> is plain text: it can be selected, copied, found with in-page
-      search, and read aloud. Do not put a value in an image or draw it with CSS.</li>
-      <li><strong>No editable fields inside.</strong> The card is read-only system context, and
-      its filled surface says so. A form control inside it contradicts what the surface tells a
-      sighted reader and puts a focus stop inside a region that announces as reference.
-      Editable fields take a <code>.ds-card</code> instead.</li>
+      <li><strong>Name a data card.</strong> It is a <code>&lt;section&gt;</code> with an
+      <code>aria-label</code> such as “User information”, so a screen reader user can jump straight to
+      it and hears what it holds. A section without a name is not exposed as a landmark at all.</li>
+      <li><strong>Keep each label with its value.</strong> A label and its value sit together in one
+      <code>&lt;div&gt;</code>, <code>&lt;dt&gt;</code> first, so they are read as a pair. The label is real
+      text in the markup and the uppercase comes from CSS, so it stays correct for a screen reader and
+      for copy and paste.</li>
+      <li><strong>Values are text.</strong> An identifier, an address or a date in a data card is plain
+      text: it can be selected, copied, found with in-page search and read aloud. Do not put a value in
+      an image or draw it with CSS.</li>
+      <li><strong>No editable fields inside a data card.</strong> Its tinted surface says read-only. A
+      form control inside it contradicts what the surface tells a sighted reader and puts a focus stop
+      inside a region that announces as reference. Editable fields take a basic <code>.ds-card</code>.</li>
+      <li><strong>A card with accordions starts with its heading.</strong> The <code>&lt;h3&gt;</code>
+      comes before the stack, so the group is found by heading navigation and every disclosure inside
+      it is announced under that name.</li>
     </ul>
   </div>
 
@@ -421,82 +484,13 @@
   <section class="section">
     <h3 class="section-title" id="usage-rules">Usage rules</h3>
     <ul class="notes">
-      <li><strong>Read-only only.</strong> Never place editable fields inside an <code>.ds-info-card</code>. The filled surface signals “this is system context, not something you control here.”</li>
-      <li><strong>Editable content uses a different container.</strong> When a group of <em>editable</em> fields needs a boundary, use a neutral <em>section card</em> — a white panel with a 1px <code>--ds-border</code> hairline and an 8px radius, which is <a href="organizing-content.html#cards-and-grouped-sections"><code>.ds-card</code></a> — not the <code>.ds-info-card</code>. Keeping the two visually distinct is deliberate: a filled/tinted surface reads as read-only system context; a plain bordered panel reads as “you can edit this.”</li>
-      <li><strong>Sidebar placement.</strong> Use at a fixed 240px width in a flex sidebar alongside the main content area. The contrast between the card and the warm-wash page background creates the visual hierarchy.</li>
-      <li><strong>Links in the card.</strong> Use <code>.ds-info-card-link</code> on values that navigate to a related record (user profile, submission detail). Limit links to navigational items — do not use them for inline actions.</li>
-      <li><strong>Monospace IDs.</strong> <code>.ds-info-card-value</code> already renders in IBM Plex Mono at 12px for every value (“monospace signals read-only system data”) — arXiv IDs need no override.</li>
-      <li><strong>Row count.</strong> 2–6 rows is the intended range. If more fields are needed, consider grouping into two separate cards or a different layout rather than a very tall single card.</li>
+      <li><strong>Read-only only.</strong> Never place editable fields inside a data card. The filled surface signals “this is system context, not something you control here.”</li>
+      <li><strong>Editable content uses the basic card.</strong> When a group of <em>editable</em> fields needs a boundary, use a plain <code>.ds-card</code>, a white panel with a hairline and an 8px radius, and not a data card. Keeping the two visually distinct is deliberate: a filled surface reads as read-only system context; a plain bordered panel reads as “you can edit this.”</li>
+      <li><strong>Sidebar placement.</strong> A data card sets no width of its own; the sidebar it sits in does. The contrast between the card and the warm-wash page background creates the visual hierarchy.</li>
+      <li><strong>Links in the card.</strong> A value that navigates to a related record (user profile, submission detail) is a link. Limit links to navigational items and do not use them for inline actions.</li>
+      <li><strong>Monospace IDs.</strong> Every value renders in IBM Plex Mono (“monospace signals read-only system data”), so an arXiv ID needs no override.</li>
+      <li><strong>Row count.</strong> 2–6 pairs is the intended range. If more fields are needed, consider grouping into two separate cards rather than a very tall single card.</li>
     </ul>
-
-    <div class="ds-note">
-      <h3 class="ds-note-label">Why lime on dark, not white?</h3>
-      <p>White text on the dark card would create a generic “dark panel” with no connection to the arXiv palette. Lime (#c4d82e) on the dark surface passes AAA contrast (8.4:1) while using the same brand accent as primary buttons and the action bar — reinforcing that this information belongs to the same system.</p>
-    </div>
-    <div class="ds-note">
-      <h3 class="ds-note-label">Why two greens (label vs value)?</h3>
-      <p>The two-tone treatment comes from the admin console pattern: a muted sage label (<code>#cbcdac</code>) that recedes, and a bright lime value that the eye lands on first. The hierarchy guides reading order — label names the field, value delivers the content.</p>
-    </div>
-  </section>
-
-
-  <h2>Spec</h2>
-  <!-- ───────── Dark mode values ───────── -->
-  <section class="section">
-    <h3 class="section-title" id="dark-mode-values">Dark mode values</h3>
-    <p class="ds-section-desc"><strong>These are the dark-mode values</strong> (applied when the theme is dark, whether from the system setting or from the theme control in the header).
-    In light mode <code>.ds-info-card</code> uses the tokens in <code>internal-tools.css</code>: <code>#e8e4dc</code> background with a
-    4px <code>#c4d82e</code> top border, labels <code>var(--ds-text-muted)</code>, values <code>#1c1a17</code>, links <code>var(--ds-link)</code>.
-    The dark palette below is hardcoded rather than tokenized — intentionally self-contained and only valid on the dark surface.</p>
-
-    <div class="table-scroll" role="region" aria-label="Dark mode values" tabindex="0">
-      <table class="ds-table-framed token-table">
-        <thead>
-          <tr>
-            <th>Role</th>
-            <th>Value</th>
-            <th>Usage</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Card background</td>
-            <td><span class="swatch" style="background:#2e2b26;"></span><code>#2e2b26</code></td>
-            <td>Container background — Repository Brown darkened</td>
-          </tr>
-          <tr>
-            <td>Row divider</td>
-            <td><code>rgba(255,255,255,0.07)</code></td>
-            <td>Hairline between rows — subtle on dark surface</td>
-          </tr>
-          <tr>
-            <td>Label</td>
-            <td><span class="swatch" style="background:#cbcdac;"></span><code>#cbcdac</code></td>
-            <td>Field name — sage-green tint, ~8.6:1 on card bg ✓</td>
-          </tr>
-          <tr>
-            <td>Value</td>
-            <td><span class="swatch" style="background:#c4d82e;"></span><code>#c4d82e</code></td>
-            <td>Plain value text — brand lime, ~8.4:1 on card bg ✓ AAA</td>
-          </tr>
-          <tr>
-            <td>Link (rest)</td>
-            <td><span class="swatch" style="background:#c4d82e;"></span><code>#c4d82e</code></td>
-            <td>Linked value at rest — same as plain value + underline</td>
-          </tr>
-          <tr>
-            <td>Link (hover)</td>
-            <td><span class="swatch" style="background:#d8ee50;"></span><code>#d8ee50</code></td>
-            <td>Brightened lime on hover</td>
-          </tr>
-          <tr>
-            <td>Link (visited)</td>
-            <td><span class="swatch" style="background:#a8c020;"></span><code>#a8c020</code></td>
-            <td>Slightly muted lime — signals page was visited</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </section>
 
 </div>

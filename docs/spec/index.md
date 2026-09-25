@@ -24,7 +24,6 @@ These pages have not had their review pass. Read the page itself, and expect the
 - forms.html
 - header.html
 - links.html
-- metadata-panel.html
 - modals.html
 - organizing-content.html
 - outreach.html
