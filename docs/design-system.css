@@ -2621,6 +2621,10 @@ html:has(.ds-modal[open]) {
 }
 .ds-toc-bar-inner > .ds-toc { grid-column: 2; }
 
+/* toc.js pins this to the bar's top edge and watches it leave the viewport;
+   that is what decides .is-stuck. */
+.ds-toc-sentinel { position: absolute; top: -3px; left: 0; width: 1px; height: 1px; pointer-events: none; }   /* -3px: past the 1px top border and clear of the viewport edge (an element touching the edge still counts as intersecting), so it is out of view exactly when the bar is held at 0 */
+
 /* A bar directly before the primary zone sits on that zone's top edge. */
 .ds-container > .ds-toc-bar + .ds-zone-primary { margin-top: calc(-1 * var(--ds-space-section)); }
 

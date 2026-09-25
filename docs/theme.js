@@ -70,13 +70,11 @@
       if (!btn.querySelector('.ds-theme-toggle-label')) {
         btn.insertAdjacentHTML('beforeend',
           '<svg class="ds-theme-icon-system" viewBox="0 0 24 24" aria-hidden="true">' +
-            '<rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 18v3"/></svg>' +
+            '<circle cx="12" cy="12" r="10"/><path d="m8.5 16 3.5-8 3.5 8"/><path d="M9.9 13h4.2"/></svg>' +
           '<svg class="ds-theme-icon-light" viewBox="0 0 24 24" aria-hidden="true">' +
-            '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m5 5 1.5 1.5"/>' +
-            '<path d="M17.5 17.5 19 19"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m5 19 1.5-1.5"/>' +
-            '<path d="M17.5 6.5 19 5"/></svg>' +
+            '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 6.5v1.3"/><path d="M12 16.2v1.3"/><path d="M6.5 12h1.3"/><path d="M16.2 12h1.3"/><path d="m8.1 8.1.9.9"/><path d="m15 15 .9.9"/><path d="m8.1 15.9.9-.9"/><path d="m15 9 .9-.9"/></svg>' +
           '<svg class="ds-theme-icon-dark" viewBox="0 0 24 24" aria-hidden="true">' +
-            '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>' +
+            '<circle cx="12" cy="12" r="10"/><path d="M16.5 12.4A4.5 4.5 0 1 1 11.6 7.5a3.5 3.5 0 0 0 4.9 4.9Z"/></svg>' +
           '<span class="ds-theme-toggle-label"></span>');
       }
       paint(btn, choice);
