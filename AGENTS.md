@@ -40,7 +40,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | An icon | `docs/icons.html` (generated from `docs/icons/`) | copy the file from `docs/icons/` inline, `aria-hidden="true"`, `stroke="currentColor"`; never draw a glyph from memory, and never a second icon set. Adding one: drop the file in `docs/icons/`, run `verification/gen-icons.py` |
 | Links | `docs/links.html` — identical on every surface | bare `<a>` inside `.ds-page`, no class; inline links underlined |
 | Tables (internal tools), row selection, bulk actions | `docs/tables.html` | `.ds-table`, sortable headers, `.ds-filter`; bulk-bar + selection rules documented there |
-| One record's details (label + value panel), any card | `docs/cards.html` (concept: `docs/organizing-content.html`) | `.ds-card`, `.ds-card--data`, `.ds-card-grid`; a card with `.ds-acc-stack` inside; same markup on both surfaces |
+| One record's details (label + value panel), any card | `docs/cards.html` (concept: `docs/organizing-content.html`) | `.ds-card`, `.ds-card--data`, `.ds-card-grid`; same markup on both surfaces |
 | Forms, validation | `docs/forms.html` — one page, both surfaces | `.ds-field`/`.ds-label`/`.ds-input`/`.ds-hint`, `.is-invalid`, `.field-error`, `.ds-check`, `.ds-switch`, `.ds-seg` |
 | A code block on a docs page | `docs/typography.html` *Code blocks* | plain `<pre><code>` plus `<script src="copy-code.js" defer>` once per page — the copy button is added for you; never hand-build one |
 | Version display | `docs/version-display.html` | inline version links + `.ds-alert` warning |

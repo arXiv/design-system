@@ -89,8 +89,6 @@
             <li><a href="#basic-cards">Basic cards</a></li>
             <li><a href="#data-cards">Data cards</a></li>
             <li><a href="#groups-of-cards">Groups of cards</a></li>
-            <li><a href="#cards-with-accordions">Cards with accordions</a></li>
-            <li><a href="#usage-rules">Usage rules</a></li>
           </ol>
         </nav>
       </details>
@@ -198,6 +196,15 @@
       </details>
     </div>
 
+    <ul class="notes">
+      <li><strong>Read-only only.</strong> Never place editable fields inside a data card. The filled surface signals “this is system context, not something you control here.”</li>
+      <li><strong>Editable content uses the basic card.</strong> When a group of <em>editable</em> fields needs a boundary, use a plain <code>.ds-card</code>, a white panel with a hairline and an 8px radius, and not a data card. Keeping the two visually distinct is deliberate: a filled surface reads as read-only system context; a plain bordered panel reads as “you can edit this.”</li>
+      <li><strong>Sidebar placement.</strong> A data card sets no width of its own; the sidebar it sits in does. The contrast between the card and the warm-wash page background creates the visual hierarchy.</li>
+      <li><strong>Links in the card.</strong> A value that navigates to a related record (user profile, submission detail) is a link. Limit links to navigational items and do not use them for inline actions.</li>
+      <li><strong>Monospace IDs.</strong> Every value renders in IBM Plex Mono (“monospace signals read-only system data”), so an arXiv ID needs no override.</li>
+      <li><strong>Row count.</strong> 2–6 pairs is the intended range. If more fields are needed, consider grouping into two separate cards rather than a very tall single card.</li>
+    </ul>
+
     <h3>Internal data card</h3>
     <div class="ds-card ds-internal">
         <section class="ds-card ds-card--data" aria-label="User information">
@@ -234,7 +241,6 @@
     <h2 class="section-title" id="groups-of-cards">Groups of cards</h2>
     <p class="ds-section-desc">Peers in a set share one grid. The count of columns does not follow a breakpoint but adjusts to the content. The grid will drop to one column when a card can no longer hold its minimum width.</p>
 
-    <h3>Public card group</h3>
     <div class="ds-card">
       <div class="ds-card-grid">
         <div class="ds-card">
@@ -263,23 +269,12 @@
           <dl>
             <dt>.ds-card-grid</dt>
             <dd>Cards side by side. The grid supplies the gap, so a card inside it takes no top margin of
-            its own. Any card goes in it, a data card included.</dd>
+            its own. Any card goes in it, a data card included, and it is the same on both surfaces.</dd>
           </dl>
         </div>
       </details>
     </div>
-
-    <h3>Internal card group</h3>
-    <div class="ds-card ds-internal">
-      <div class="ds-card-grid">
-        <section class="ds-card ds-card--data" aria-label="User information">
-        <dl>
-          <div><dt>User</dt><dd><a href="#">Katrin Solberg</a></dd></div>
-          <div><dt>Email</dt><dd><a href="#">katrin.solberg@example.org</a></dd></div>
-          <div><dt>Remote host</dt><dd>128.84.12.201</dd></div>
-          <div><dt>Date</dt><dd>2024-12-31</dd></div>
-        </dl>
-      </section>
+  </section>
         <section class="ds-card ds-card--data" aria-label="Submission information">
         <dl>
           <div><dt>Submitter</dt><dd><a href="#">Anne-Marie George</a></dd></div>
@@ -304,157 +299,6 @@
     </div>
   </section>
 
-  <!-- ───────── Cards with accordions ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="cards-with-accordions">Cards with accordions</h2>
-    <p class="ds-section-desc">A card with a heading and a stack of disclosures, the paper reader's sidebar. A disclosure inside another one is the second level. The accordion itself is documented on <a href="progressive-disclosure.html#accordion">Progressive disclosure</a>.</p>
-
-    <h3>Public</h3>
-    <div class="ds-card">
-      <div class="ds-card">
-        <h3>Paper information</h3>
-        <div class="ds-acc-stack">
-          <details class="ds-acc" open>
-            <summary>Versions</summary>
-            <div class="ds-acc-body">
-              <dl>
-                <dt>v3 · current</dt><dd>24 Apr 2026</dd>
-                <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
-                <dt>v1</dt><dd><a href="#">10 Jan 2026</a></dd>
-              </dl>
-            </div>
-          </details>
-          <details class="ds-acc">
-            <summary>Metadata</summary>
-            <div class="ds-acc-body">
-              <details class="ds-acc">
-                <summary>Subjects</summary>
-                <div class="ds-acc-body">General Relativity and Quantum Cosmology (<a href="#">gr-qc</a>); Cosmology and Nongalactic Astrophysics (<a href="#">astro-ph.CO</a>)</div>
-              </details>
-              <details class="ds-acc">
-                <summary>Identifiers</summary>
-                <div class="ds-acc-body">
-                  <dl>
-                    <dt>arXiv ID</dt><dd><a href="#">2604.22725</a></dd>
-                    <dt>DOI</dt><dd><a href="#">10.48550/arXiv.2604.22725</a></dd>
-                  </dl>
-                </div>
-              </details>
-            </div>
-          </details>
-          <details class="ds-acc">
-            <summary>Related</summary>
-            <div class="ds-acc-body">Connected papers, datasets, and code links.</div>
-          </details>
-        </div>
-      </div>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-card"&gt;
-  &lt;h3&gt;Paper information&lt;/h3&gt;
-  &lt;div class="ds-acc-stack"&gt;
-    &lt;details class="ds-acc" open&gt;
-      &lt;summary&gt;Versions&lt;/summary&gt;
-      &lt;div class="ds-acc-body"&gt;
-        &lt;dl&gt;
-          &lt;dt&gt;v3 · current&lt;/dt&gt;&lt;dd&gt;24 Apr 2026&lt;/dd&gt;
-          &lt;dt&gt;v2&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;2 Mar 2026&lt;/a&gt;&lt;/dd&gt;
-          &lt;dt&gt;v1&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;10 Jan 2026&lt;/a&gt;&lt;/dd&gt;
-        &lt;/dl&gt;
-      &lt;/div&gt;
-    &lt;/details&gt;
-    &lt;details class="ds-acc"&gt;
-      &lt;summary&gt;Metadata&lt;/summary&gt;
-      &lt;div class="ds-acc-body"&gt;
-        &lt;details class="ds-acc"&gt;
-          &lt;summary&gt;Subjects&lt;/summary&gt;
-          &lt;div class="ds-acc-body"&gt;General Relativity and Quantum Cosmology (&lt;a href="#"&gt;gr-qc&lt;/a&gt;); Cosmology and Nongalactic Astrophysics (&lt;a href="#"&gt;astro-ph.CO&lt;/a&gt;)&lt;/div&gt;
-        &lt;/details&gt;
-        &lt;details class="ds-acc"&gt;
-          &lt;summary&gt;Identifiers&lt;/summary&gt;
-          &lt;div class="ds-acc-body"&gt;
-            &lt;dl&gt;
-              &lt;dt&gt;arXiv ID&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;2604.22725&lt;/a&gt;&lt;/dd&gt;
-              &lt;dt&gt;DOI&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;10.48550/arXiv.2604.22725&lt;/a&gt;&lt;/dd&gt;
-            &lt;/dl&gt;
-          &lt;/div&gt;
-        &lt;/details&gt;
-      &lt;/div&gt;
-    &lt;/details&gt;
-    &lt;details class="ds-acc"&gt;
-      &lt;summary&gt;Related&lt;/summary&gt;
-      &lt;div class="ds-acc-body"&gt;Connected papers, datasets, and code links.&lt;/div&gt;
-    &lt;/details&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</code></pre>
-          <dl>
-            <dt>.ds-card &gt; h3 + .ds-acc-stack</dt>
-            <dd>The heading names the group; the stack holds the disclosures and, as the card's last
-            child, runs to the card's foot.</dd>
-            <dt>.ds-acc inside .ds-acc-body</dt>
-            <dd>The second level. Indented one step, its label a step smaller. Two levels is the limit
-            a reader can keep track of.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-
-    <h3>Internal</h3>
-    <div class="ds-card ds-internal">
-      <div class="ds-card">
-        <h3>Paper information</h3>
-        <div class="ds-acc-stack">
-          <details class="ds-acc" open>
-            <summary>Versions</summary>
-            <div class="ds-acc-body">
-              <dl>
-                <dt>v3 · current</dt><dd>24 Apr 2026</dd>
-                <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
-                <dt>v1</dt><dd><a href="#">10 Jan 2026</a></dd>
-              </dl>
-            </div>
-          </details>
-          <details class="ds-acc">
-            <summary>Metadata</summary>
-            <div class="ds-acc-body">
-              <details class="ds-acc">
-                <summary>Subjects</summary>
-                <div class="ds-acc-body">General Relativity and Quantum Cosmology (<a href="#">gr-qc</a>); Cosmology and Nongalactic Astrophysics (<a href="#">astro-ph.CO</a>)</div>
-              </details>
-              <details class="ds-acc">
-                <summary>Identifiers</summary>
-                <div class="ds-acc-body">
-                  <dl>
-                    <dt>arXiv ID</dt><dd><a href="#">2604.22725</a></dd>
-                    <dt>DOI</dt><dd><a href="#">10.48550/arXiv.2604.22725</a></dd>
-                  </dl>
-                </div>
-              </details>
-            </div>
-          </details>
-          <details class="ds-acc">
-            <summary>Related</summary>
-            <div class="ds-acc-body">Connected papers, datasets, and code links.</div>
-          </details>
-        </div>
-      </div>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;body class="ds-page ds-internal"&gt;
-  …
-  &lt;div class="ds-card"&gt;
-    &lt;h3&gt;Paper information&lt;/h3&gt;
-    &lt;div class="ds-acc-stack"&gt;…&lt;/div&gt;
-  &lt;/div&gt;</code></pre>
-          <dl>
-            <dt>.ds-internal</dt>
-            <dd>The same card; links and the open marker take the internal colours.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-  </section>
-
   <div class="ds-note ds-note--essential">
     <h3 class="ds-note-label">Accessibility essentials</h3>
     <ul class="notes">
@@ -471,27 +315,10 @@
       <li><strong>No editable fields inside a data card.</strong> Its tinted surface says read-only. A
       form control inside it contradicts what the surface tells a sighted reader and puts a focus stop
       inside a region that announces as reference. Editable fields take a basic <code>.ds-card</code>.</li>
-      <li><strong>A card with accordions starts with its heading.</strong> The <code>&lt;h3&gt;</code>
-      comes before the stack, so the group is found by heading navigation and every disclosure inside
-      it is announced under that name.</li>
     </ul>
   </div>
 
   </div> <!-- /core zone -->
-
-  <h2>Rules</h2>
-  <!-- ───────── Usage rules ───────── -->
-  <section class="section">
-    <h3 class="section-title" id="usage-rules">Usage rules</h3>
-    <ul class="notes">
-      <li><strong>Read-only only.</strong> Never place editable fields inside a data card. The filled surface signals “this is system context, not something you control here.”</li>
-      <li><strong>Editable content uses the basic card.</strong> When a group of <em>editable</em> fields needs a boundary, use a plain <code>.ds-card</code>, a white panel with a hairline and an 8px radius, and not a data card. Keeping the two visually distinct is deliberate: a filled surface reads as read-only system context; a plain bordered panel reads as “you can edit this.”</li>
-      <li><strong>Sidebar placement.</strong> A data card sets no width of its own; the sidebar it sits in does. The contrast between the card and the warm-wash page background creates the visual hierarchy.</li>
-      <li><strong>Links in the card.</strong> A value that navigates to a related record (user profile, submission detail) is a link. Limit links to navigational items and do not use them for inline actions.</li>
-      <li><strong>Monospace IDs.</strong> Every value renders in IBM Plex Mono (“monospace signals read-only system data”), so an arXiv ID needs no override.</li>
-      <li><strong>Row count.</strong> 2–6 pairs is the intended range. If more fields are needed, consider grouping into two separate cards rather than a very tall single card.</li>
-    </ul>
-  </section>
 
 </div>
 
