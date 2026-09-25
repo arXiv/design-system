@@ -1176,12 +1176,14 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-acc-body .ds-acc { margin-left: var(--ds-space-4); }
 .ds-acc-body .ds-acc > summary { font-size: 0.9em; }
 
-/* Cards side by side. auto-fit means the count follows the room rather than a
+/* Cards side by side. The count of columns follows the room rather than a
    breakpoint: the grid drops to one column when a card can no longer hold its
-   minimum, and nothing has to be told. */
+   minimum, and nothing has to be told. auto-fill, not auto-fit: an empty
+   column stays, so a lone card keeps the width of its neighbours instead of
+   stretching across the row. */
 .ds-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   gap: var(--ds-space-block);
 }
 
