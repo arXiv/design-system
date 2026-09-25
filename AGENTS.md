@@ -71,7 +71,7 @@ A tier 2 file may re-point a tier 1 token where its surface needs a different va
 
 - **Self-hosted everything.** Never load fonts, icons, or CSS from external URLs — no Google Fonts, no CDNs. If an existing page does it, that page is wrong, not the rule.
 - **Dark mode is live — build for it.** Take colors from tokens and pages flip on their own; never hand-pick a dark value. Text on an accent fill and specimen colors are the exceptions that stay fixed. Only lock a page light when it exists to show light-mode rendering. (`docs/dark-mode.html`.)
-- **Two accent colors, never crossed.** Internal tools: Access Lime primary. Public pages: Open Blue primary. The accent tells people where they are. Outreach sites (blog, mini-sites) use the public design and may differ from it only in the ways listed in `docs/outreach/`.
+- **Two accent colors, never crossed.** Internal tools: Access Lime primary. Public pages: Open Blue primary. The accent tells people where they are. Outreach sites (blog, mini-sites) use the public design and may differ from it only in the ways listed in `docs/outreach.html`.
 - **Palette and type stack only.** No one-off hex values, no new font families.
 - **Reuse before rebuilding.** If a `.ds-` component exists for your need, use its documented construction — don't re-style its tokens onto new markup.
 - **Actions disable, they don't disappear.** Contextual actions render disabled when unavailable, not removed.

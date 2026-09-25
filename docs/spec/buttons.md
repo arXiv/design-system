@@ -77,7 +77,7 @@ components:
       - name: ".on-tint"
         does: "On a *cool* tint, swaps the secondary's white fill for Card Grey (same luminance, warm hue) so it reads as secondary by material rather than by contrast. On a *warm* tint the default white secondary already sits comfortably."
       - name: ".on-dark"
-        does: "For a field dark enough to host white text: an outreach masthead, a photo band. A white fill would read as a paper rectangle stuck to the surface, louder than the primary beside it; `.on-dark` drops the fill so the field shows through and carries the boundary on a white border. See [outreach sites](outreach/) for where such fields are allowed."
+        does: "For a field dark enough to host white text: an outreach masthead, a photo band. A white fill would read as a paper rectangle stuck to the surface, louder than the primary beside it; `.on-dark` drops the fill so the field shows through and carries the boundary on a white border. See [outreach sites](outreach.html) for where such fields are allowed."
       - name: "Not this"
         does: "A default white secondary on a cool tint pops too hard and reads as primary — that is the case `.on-tint` exists for. Do not put `.on-tint` on a warm tint: its Card Grey fill melts into the surface. And `.on-dark` is only correct on a dark field; on a light tint use `.on-tint`."
   - id: button-groups
@@ -206,7 +206,7 @@ The primary button works everywhere. The gradient border and vignette keep the e
 ```
 
 - `.on-tint` — On a *cool* tint, swaps the secondary's white fill for Card Grey (same luminance, warm hue) so it reads as secondary by material rather than by contrast. On a *warm* tint the default white secondary already sits comfortably.
-- `.on-dark` — For a field dark enough to host white text: an outreach masthead, a photo band. A white fill would read as a paper rectangle stuck to the surface, louder than the primary beside it; `.on-dark` drops the fill so the field shows through and carries the boundary on a white border. See [outreach sites](outreach/) for where such fields are allowed.
+- `.on-dark` — For a field dark enough to host white text: an outreach masthead, a photo band. A white fill would read as a paper rectangle stuck to the surface, louder than the primary beside it; `.on-dark` drops the fill so the field shows through and carries the boundary on a white border. See [outreach sites](outreach.html) for where such fields are allowed.
 - `Not this` — A default white secondary on a cool tint pops too hard and reads as primary — that is the case `.on-tint` exists for. Do not put `.on-tint` on a warm tint: its Card Grey fill melts into the surface. And `.on-dark` is only correct on a dark field; on a light tint use `.on-tint`.
 
 ## Button groups  (Modifiers)
