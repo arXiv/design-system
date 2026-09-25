@@ -76,7 +76,7 @@
 
 
   <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
-  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+  <div class="ds-full ds-toc-bar">
     <div class="ds-toc-bar-inner">
       <details class="ds-toc">
         <summary class="ds-toc-trigger">
@@ -200,7 +200,7 @@
   <!-- ───────── Sortable column headers ───────── -->
   <section class="section">
     <h2 class="section-title" id="sortable-column-headers">Sortable column headers</h2>
-    <p class="ds-section-desc">Add <code>.sortable</code> to a <code>&lt;th&gt;</code> to make it clickable. Place a <code>&lt;span class="sort-arrow"&gt;</code> inside for the direction indicator. Apply <code>.sort-asc</code> or <code>.sort-desc</code> to the <code>&lt;th&gt;</code> to indicate current sort state.</p>
+    <p class="ds-section-desc">A sortable column has a <code>&lt;button class="sortable"&gt;</code> inside its <code>&lt;th&gt;</code>, holding the label and a <code>&lt;span class="sort-arrow"&gt;</code> for the direction. It looks like the plain header and it can be reached and pressed from the keyboard, which a <code>&lt;th&gt;</code> on its own cannot. <code>.sort-asc</code> or <code>.sort-desc</code> and <code>aria-sort</code> go on the <code>&lt;th&gt;</code> of the sorted column.</p>
     <p class="ds-panel-label">Sortable headers, click to sort</p>
     <div class="ds-card">
       <details class="ds-marginalia">
@@ -211,10 +211,10 @@
         <table class="ds-table" id="demo-sort-table">
           <thead>
             <tr>
-              <th scope="col" class="sortable sort-desc" aria-sort="descending" data-sort="date">Date <span class="sort-arrow">↓</span></th>
+              <th scope="col" class="sort-desc" aria-sort="descending"><button type="button" class="sortable" data-sort="date">Date <span class="sort-arrow">↓</span></button></th>
               <th scope="col">Title</th>
-              <th scope="col" class="sortable" data-sort="type">Type <span class="sort-arrow">⇅</span></th>
-              <th scope="col" class="sortable" data-sort="status">Status <span class="sort-arrow">⇅</span></th>
+              <th scope="col"><button type="button" class="sortable" data-sort="type">Type <span class="sort-arrow">⇅</span></button></th>
+              <th scope="col"><button type="button" class="sortable" data-sort="status">Status <span class="sort-arrow">⇅</span></button></th>
             </tr>
           </thead>
           <tbody>
@@ -251,10 +251,12 @@
 <pre><code>&lt;table class="ds-table"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
-      &lt;th scope="col" class="sortable sort-desc" aria-sort="descending"&gt;Date &lt;span class="sort-arrow"&gt;↓&lt;/span&gt;&lt;/th&gt;
+      &lt;th scope="col" class="sort-desc" aria-sort="descending"&gt;
+        &lt;button type="button" class="sortable"&gt;Date &lt;span class="sort-arrow"&gt;↓&lt;/span&gt;&lt;/button&gt;
+      &lt;/th&gt;
       &lt;th scope="col"&gt;Title&lt;/th&gt;
-      &lt;th scope="col" class="sortable"&gt;Type &lt;span class="sort-arrow"&gt;⇅&lt;/span&gt;&lt;/th&gt;
-      &lt;th scope="col" class="sortable"&gt;Status &lt;span class="sort-arrow"&gt;⇅&lt;/span&gt;&lt;/th&gt;
+      &lt;th scope="col"&gt;&lt;button type="button" class="sortable"&gt;Type &lt;span class="sort-arrow"&gt;⇅&lt;/span&gt;&lt;/button&gt;&lt;/th&gt;
+      &lt;th scope="col"&gt;&lt;button type="button" class="sortable"&gt;Status &lt;span class="sort-arrow"&gt;⇅&lt;/span&gt;&lt;/button&gt;&lt;/th&gt;
     &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
@@ -276,8 +278,10 @@
 &lt;div class="ds-table-footer"&gt;1–4 of 4&lt;/div&gt;</code></pre>
           <dl>
             <dt>.sortable</dt>
-            <dd>On a <code>&lt;th&gt;</code>. Makes the header clickable: pointer cursor, and the
-            label darkens on hover.</dd>
+            <dd>On a <code>&lt;button type="button"&gt;</code> inside the <code>&lt;th&gt;</code>. The
+            button is styled to look like the plain header text, so nothing changes visually; what it
+            adds is a keyboard stop, so a reader who cannot use a mouse can sort. Pointer cursor, and
+            the label darkens on hover.</dd>
             <dt>.sort-arrow</dt>
             <dd>The direction indicator, a <code>&lt;span&gt;</code> inside the header. Unsorted it
             shows ⇅ in <code>--ds-border-strong</code> (3.12:1 on the header background).</dd>
@@ -422,7 +426,7 @@
       <div class="ds-btn-group ds-btn-group--split" style="margin-bottom: var(--ds-space-3)">
         <div class="ds-btn-group">
           <button class="ds-btn ds-btn-primary" type="button">Approve</button>
-          <button class="ds-btn ds-btn-secondary" type="button">Hold</button>
+          <button class="ds-btn" type="button">Hold</button>
           <button class="ds-btn ds-btn-destructive" type="button" style="margin-inline-start: var(--ds-space-tight)">Remove…</button>
           <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
         </div>
@@ -468,7 +472,7 @@
 <pre><code>&lt;div class="ds-btn-group ds-btn-group--split" style="margin-bottom: var(--ds-space-3)"&gt;
   &lt;div class="ds-btn-group"&gt;
     &lt;button class="ds-btn ds-btn-primary" type="button"&gt;Approve&lt;/button&gt;
-    &lt;button class="ds-btn ds-btn-secondary" type="button"&gt;Hold&lt;/button&gt;
+    &lt;button class="ds-btn" type="button"&gt;Hold&lt;/button&gt;
     &lt;button class="ds-btn ds-btn-destructive" type="button" style="margin-inline-start: var(--ds-space-tight)"&gt;Remove…&lt;/button&gt;
     &lt;span class="ds-bulk-count" role="status"&gt;2 selected · &lt;a href="#"&gt;Clear selection&lt;/a&gt;&lt;/span&gt;
   &lt;/div&gt;
@@ -515,7 +519,7 @@
             <dd>The bulk-action bar: one group at each end. The action buttons and their
             descriptive text sit at the start, the filter at the end. The bar has no fill of its
             own.</dd>
-            <dt>.ds-btn-primary, .ds-btn-secondary, .ds-btn-destructive</dt>
+            <dt>.ds-btn-primary, .ds-btn, .ds-btn-destructive</dt>
             <dd>The actions, in the tiers documented on <a href="../buttons.html">Buttons</a>. The
             destructive action comes last and stands apart from the constructive ones.</dd>
             <dt>.ds-bulk-count</dt>
@@ -539,7 +543,7 @@
       <div class="ds-btn-group ds-btn-group--split">
         <div class="ds-btn-group">
           <button class="ds-btn ds-btn-primary" type="button" disabled>Approve</button>
-          <button class="ds-btn ds-btn-secondary" type="button" disabled>Hold</button>
+          <button class="ds-btn" type="button" disabled>Hold</button>
           <button class="ds-btn ds-btn-destructive" type="button" disabled style="margin-inline-start: var(--ds-space-tight)">Remove…</button>
           <span class="ds-bulk-count" role="status">0 selected</span>
         </div>
@@ -553,7 +557,7 @@
 <pre><code>&lt;div class="ds-btn-group ds-btn-group--split"&gt;
   &lt;div class="ds-btn-group"&gt;
     &lt;button class="ds-btn ds-btn-primary" type="button" disabled&gt;Approve&lt;/button&gt;
-    &lt;button class="ds-btn ds-btn-secondary" type="button" disabled&gt;Hold&lt;/button&gt;
+    &lt;button class="ds-btn" type="button" disabled&gt;Hold&lt;/button&gt;
     &lt;button class="ds-btn ds-btn-destructive" type="button" disabled style="margin-inline-start: var(--ds-space-tight)"&gt;Remove…&lt;/button&gt;
     &lt;span class="ds-bulk-count" role="status"&gt;0 selected&lt;/span&gt;
   &lt;/div&gt;
@@ -609,7 +613,7 @@
   <!-- ───────── Sort interaction ───────── -->
   <section class="section">
     <h3 class="section-title" id="sort-interaction">Sort interaction</h3>
-    <p>Clicking a sortable header toggles through: descending → ascending → descending.
+    <p>Pressing a sortable header, by mouse or keyboard, toggles through: descending → ascending → descending.
     Clicking a different column resets the previous column to unsorted.
     Sort logic is application-specific; the CSS only handles visual states.</p>
   </section>
@@ -628,27 +632,28 @@
 <script>
   // ── Demo: sortable table ────────────────────────────────────
   const table   = document.getElementById('demo-sort-table');
-  const headers = table.querySelectorAll('th.sortable');
+  const headers = table.querySelectorAll('th .sortable');
   const tbody   = table.querySelector('tbody');
 
   const typeOrder = { new: 0, rep: 1, cross: 2, wdr: 3 };
 
-  headers.forEach(th => {
-    th.addEventListener('click', () => {
-      const key    = th.dataset.sort;
+  headers.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const th     = btn.closest('th');
+      const key    = btn.dataset.sort;
       const wasDesc = th.classList.contains('sort-desc');
       const wasAsc  = th.classList.contains('sort-asc');
 
-      headers.forEach(h => {
-        h.classList.remove('sort-asc', 'sort-desc');
-        h.removeAttribute('aria-sort');
-        h.querySelector('.sort-arrow').textContent = '⇅';
+      headers.forEach(b => {
+        b.closest('th').classList.remove('sort-asc', 'sort-desc');
+        b.closest('th').removeAttribute('aria-sort');
+        b.querySelector('.sort-arrow').textContent = '⇅';
       });
 
       const dir = wasDesc || !wasAsc ? 'asc' : 'desc';
       th.classList.add('sort-' + dir);
       th.setAttribute('aria-sort', dir === 'asc' ? 'ascending' : 'descending');
-      th.querySelector('.sort-arrow').textContent = dir === 'asc' ? '↑' : '↓';
+      btn.querySelector('.sort-arrow').textContent = dir === 'asc' ? '↑' : '↓';
 
       const rows = Array.from(tbody.querySelectorAll('tr'));
       rows.sort((a, b) => {

@@ -125,6 +125,13 @@
   --ds-btn-secondary-rim-hover-a:  #c8c4be;
   --ds-btn-secondary-rim-hover-b:  var(--ds-border-strong);
   --ds-btn-secondary-rim-active:   var(--ds-border-strong);
+  --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.06);
+
+  --ds-btn-secondary-shadow-drop:      rgba(0, 0, 0, 0.08);
+
+  --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.03);
+
+  --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.13);
   --ds-btn-secondary-fg:           var(--ds-text-muted);
   --ds-btn-secondary-fg-hover:     var(--ds-text);
   --ds-btn-text-fg:                var(--ds-link);
@@ -580,7 +587,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-site-header-menu .ds-panel-label { padding: 8px 10px 2px; }
 
 
-/* BUTTONS  (.ds-btn / .ds-btn-primary / .ds-btn-secondary) — buttons.html
+/* BUTTONS  (.ds-btn / .ds-btn-primary / .ds-btn-text) — buttons.html
    Three tiers, plus .on-tint / .on-dark for buttons that sit on
    something other than the page canvas. Primary's border is a two-stop
    gradient, which is why its fill is a gradient too: a flat background
@@ -602,6 +609,33 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   border: 1.5px solid transparent;
   border-radius: 6px;
   transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, transform 0.08s, color 0.12s;
+
+  /* The default tier is the secondary (white) button: bare .ds-btn is it,
+     and the other tiers override it. Its state rules sit in :where() so
+     they stay at one class of specificity and a tier's rest rule wins. */
+  background:
+    linear-gradient(var(--ds-btn-secondary-bg), var(--ds-btn-secondary-bg)) padding-box,
+    linear-gradient(to bottom, var(--ds-btn-secondary-rim-a), var(--ds-btn-secondary-rim-b)) border-box;
+  color: var(--ds-btn-secondary-fg);
+  box-shadow:
+    inset 0 0 6px var(--ds-btn-secondary-shadow-in),
+    0 1px 3px var(--ds-btn-secondary-shadow-drop);
+}
+.ds-btn:where(:hover) {
+  background:
+    linear-gradient(var(--ds-btn-secondary-bg-hover), var(--ds-btn-secondary-bg-hover)) padding-box,
+    linear-gradient(to bottom, var(--ds-btn-secondary-rim-hover-a), var(--ds-btn-secondary-rim-hover-b)) border-box;
+  color: var(--ds-btn-secondary-fg-hover);
+  box-shadow:
+    inset 0 0 8px var(--ds-btn-secondary-shadow-in-hover),
+    0 1px 3px var(--ds-btn-secondary-shadow-drop);
+}
+.ds-btn:where(:active) {
+  transform: translateY(1px);
+  background:
+    linear-gradient(var(--ds-btn-secondary-bg-active), var(--ds-btn-secondary-bg-active)) padding-box,
+    linear-gradient(var(--ds-btn-secondary-rim-active), var(--ds-btn-secondary-rim-active)) border-box;
+  box-shadow: inset 0 0 10px var(--ds-btn-secondary-shadow-in-active);
 }
 .ds-btn:focus-visible {
   outline: 3px solid var(--ds-focus-ring);
@@ -634,47 +668,20 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   box-shadow: inset 0 0 10px color-mix(in srgb, var(--ds-btn-primary-glow) 35%, transparent);
 }
 
-/* ── Secondary (white) ───────────────────────────────────────────── */
-.ds-btn-secondary {
-  background:
-    linear-gradient(var(--ds-btn-secondary-bg), var(--ds-btn-secondary-bg)) padding-box,
-    linear-gradient(to bottom, var(--ds-btn-secondary-rim-a), var(--ds-btn-secondary-rim-b)) border-box;
-  color: var(--ds-btn-secondary-fg);
-  box-shadow:
-    inset 0 0 6px rgba(0, 0, 0, 0.06),
-    0 1px 3px rgba(0, 0, 0, 0.08);
-}
-.ds-btn-secondary:hover {
-  background:
-    linear-gradient(var(--ds-btn-secondary-bg-hover), var(--ds-btn-secondary-bg-hover)) padding-box,
-    linear-gradient(to bottom, var(--ds-btn-secondary-rim-hover-a), var(--ds-btn-secondary-rim-hover-b)) border-box;
-  color: var(--ds-btn-secondary-fg-hover);
-  box-shadow:
-    inset 0 0 8px rgba(0, 0, 0, 0.03),
-    0 1px 3px rgba(0, 0, 0, 0.08);
-}
-.ds-btn-secondary:active {
-  transform: translateY(1px);
-  background:
-    linear-gradient(var(--ds-btn-secondary-bg-active), var(--ds-btn-secondary-bg-active)) padding-box,
-    linear-gradient(var(--ds-btn-secondary-rim-active), var(--ds-btn-secondary-rim-active)) border-box;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.13);
-}
-
 /* ── Secondary on tinted surface (.on-tint) — buttons.html
-   Add to .ds-btn-secondary when the ground is not white. Its white fill
+   Add to a default-tier .ds-btn when the ground is not white. Its white fill
    would otherwise read as a hole in the tint. */
-.ds-btn-secondary.on-tint {
+.ds-btn.on-tint {
   background:
     linear-gradient(var(--ds-surface-muted), var(--ds-surface-muted)) padding-box,
     linear-gradient(to bottom, #ddd8d2, #b3ada4) border-box;
 }
-.ds-btn-secondary.on-tint:hover {
+.ds-btn.on-tint:hover {
   background:
     linear-gradient(var(--ds-canvas), var(--ds-canvas)) padding-box,
     linear-gradient(to bottom, #c8c4be, var(--ds-border-strong)) border-box;
 }
-.ds-btn-secondary.on-tint:active {
+.ds-btn.on-tint:active {
   background:
     linear-gradient(var(--ds-surface-muted), var(--ds-surface-muted)) padding-box,
     linear-gradient(var(--ds-border-strong), var(--ds-border-strong)) border-box;
@@ -683,25 +690,25 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 /* ── On a dark or saturated field (.on-dark) — buttons.html
    For a committed colour field, not a tint. Focus ring switches to
    --ds-focus-ring-on-dark: the light-mode ring disappears here. */
-.ds-btn.ds-btn-secondary.on-dark {
+.ds-btn.on-dark {
   background: none;
   border-color: rgba(255, 255, 255, 0.65);
   color: #fff;
   box-shadow: none;
 }
-.ds-btn.ds-btn-secondary.on-dark:hover {
+.ds-btn.on-dark:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: #fff;
   color: #fff;
   box-shadow: none;
 }
-.ds-btn.ds-btn-secondary.on-dark:active {
+.ds-btn.on-dark:active {
   transform: translateY(1px);
   background: rgba(255, 255, 255, 0.14);
   border-color: #fff;
   box-shadow: none;
 }
-.ds-btn.ds-btn-secondary.on-dark:focus-visible {
+.ds-btn.on-dark:focus-visible {
   outline: 3px solid var(--ds-focus-ring-on-dark);
 }
 
@@ -748,7 +755,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-btn:disabled:active,
 .ds-btn[aria-disabled="true"]:active,
 .ds-btn.is-disabled:active {
-  background: var(--ds-surface-muted);
+  background: color-mix(in srgb, var(--ds-text) 8%, transparent);   /* a wash, so the flat fill shows on every ground in both themes */
   border-color: transparent;
   color: var(--ds-text-muted);
   box-shadow: none;
@@ -1895,6 +1902,10 @@ html:has(.ds-modal[open]) {
   font-family: var(--ds-font-sans);
   font-size: 0.8125rem;
   line-height: 1.5;
+  /* The default state is info; the other three override it. */
+  background: var(--ds-info-bg);
+  border-color: var(--ds-info-border);
+  color: var(--ds-info-fg);
 }
 .ds-alert-icon {
   flex-shrink: 0;
@@ -1924,7 +1935,6 @@ html:has(.ds-modal[open]) {
 
 /* Variants — bg + border + fg (icon uses currentColor = fg) */
 .ds-alert--success { background: var(--ds-success-bg); border-color: var(--ds-success-border); color: var(--ds-success-fg); }
-.ds-alert--info    { background: var(--ds-info-bg);    border-color: var(--ds-info-border);    color: var(--ds-info-fg); }
 .ds-alert--warning { background: var(--ds-warning-bg); border-color: var(--ds-warning-border); color: var(--ds-warning-fg); }
 .ds-alert--error   { background: var(--ds-error-bg);   border-color: var(--ds-error-border);   color: var(--ds-error-fg); }
 
@@ -2056,8 +2066,9 @@ html:has(.ds-modal[open]) {
   outline-offset: 1px;
   z-index: 2;
 }
+/* Active: neutral (info) by default; positive and negative override it. */
+.ds-seg-btn.is-active           { background: var(--ds-info-bg);    border-color: var(--ds-info-border);    color: var(--ds-info-fg);    z-index: 1; }
 .ds-seg-btn--positive.is-active { background: var(--ds-success-bg); border-color: var(--ds-success-border); color: var(--ds-success-fg); z-index: 1; }
-.ds-seg-btn--neutral.is-active  { background: var(--ds-info-bg);    border-color: var(--ds-info-border);    color: var(--ds-info-fg);    z-index: 1; }
 .ds-seg-btn--negative.is-active { background: var(--ds-error-bg);   border-color: var(--ds-error-border);   color: var(--ds-error-fg);   z-index: 1; }
 
 /* Dark mode. Every value here is a token's dark value; never hand-pick a
@@ -2105,6 +2116,13 @@ html:has(.ds-modal[open]) {
     /* restated so a data-theme island re-resolves them */
     --ds-btn-secondary-rim-hover-b:  var(--ds-border-strong);
     --ds-btn-secondary-rim-active:   var(--ds-border-strong);
+    --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.25);
+
+    --ds-btn-secondary-shadow-drop:      rgba(0, 0, 0, 0.5);
+
+    --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.15);
+
+    --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.35);
     --ds-btn-secondary-fg:           var(--ds-text-muted);
     --ds-btn-secondary-fg-hover:     var(--ds-text);
     --ds-btn-text-fg:                var(--ds-link);
@@ -2168,15 +2186,6 @@ html:has(.ds-modal[open]) {
   html:not([data-theme="light"]) .ds-btn-primary:active {
     box-shadow: inset 0 0 10px color-mix(in srgb, var(--ds-btn-primary-glow) 45%, transparent);
   }
-  html:not([data-theme="light"]) .ds-btn-secondary {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.5);
-  }
-  html:not([data-theme="light"]) .ds-btn-secondary:hover {
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.5);
-  }
-  html:not([data-theme="light"]) .ds-btn-secondary:active {
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.35);
-  }
   --ds-switch-on:                  var(--ds-access-lime-deep);
 }
 
@@ -2225,6 +2234,13 @@ html:has(.ds-modal[open]) {
   /* restated so a data-theme island re-resolves them */
   --ds-btn-secondary-rim-hover-b:  var(--ds-border-strong);
   --ds-btn-secondary-rim-active:   var(--ds-border-strong);
+  --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.25);
+
+  --ds-btn-secondary-shadow-drop:      rgba(0, 0, 0, 0.5);
+
+  --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.15);
+
+  --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.35);
   --ds-btn-secondary-fg:           var(--ds-text-muted);
   --ds-btn-secondary-fg-hover:     var(--ds-text);
   --ds-btn-text-fg:                var(--ds-link);
@@ -2281,6 +2297,13 @@ html:has(.ds-modal[open]) {
   /* restated so a data-theme island re-resolves them */
   --ds-btn-secondary-rim-hover-b:  var(--ds-border-strong);
   --ds-btn-secondary-rim-active:   var(--ds-border-strong);
+  --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.06);
+
+  --ds-btn-secondary-shadow-drop:      rgba(0, 0, 0, 0.08);
+
+  --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.03);
+
+  --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.13);
   --ds-btn-secondary-fg:           var(--ds-text-muted);
   --ds-btn-secondary-fg-hover:     var(--ds-text);
   --ds-btn-text-fg:                var(--ds-link);
@@ -2386,15 +2409,6 @@ html:has(.ds-modal[open]) {
 }
 [data-theme="dark"] .ds-btn-primary:active {
   box-shadow: inset 0 0 10px color-mix(in srgb, var(--ds-btn-primary-glow) 45%, transparent);
-}
-[data-theme="dark"] .ds-btn-secondary {
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.5);
-}
-[data-theme="dark"] .ds-btn-secondary:hover {
-  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.5);
-}
-[data-theme="dark"] .ds-btn-secondary:active {
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.35);
 }
 
 
@@ -2527,12 +2541,13 @@ html:has(.ds-modal[open]) {
 
    .ds-toc alone is the control and works anywhere. .ds-toc-bar is the
    edge-to-edge row that carries it, a direct child of .ds-container with
-   .ds-full. The bar is static unless it also has .ds-toc-bar--sticky.
+   .ds-full, and it is sticky: the one bar a page may keep in view.
    STICKY CHROME IS GOVERNED BY DESIGN-POLICIES (Chrome and interaction
    structure): one sticky bar per page, and only on the pages named there. */
 
 .ds-toc-bar {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 50;   /* above content chrome, below the site header's open menu (60); the blur makes the bar a stacking context, so the bar itself must clear the page */
   padding-block: 10px;
   background: color-mix(in srgb, var(--ds-surface-muted) 92%, transparent);  /* 92% holds 5.05:1 for text over a white figure scrolling beneath */
@@ -2553,8 +2568,7 @@ html:has(.ds-modal[open]) {
 /* A bar directly before the primary zone sits on that zone's top edge. */
 .ds-container > .ds-toc-bar + .ds-zone-primary { margin-top: calc(-1 * var(--ds-space-section)); }
 
-.ds-toc-bar--sticky { position: sticky; top: 0; }
-.ds-toc-bar--sticky.is-stuck {
+.ds-toc-bar.is-stuck {
   z-index: 100;
   padding-block: 4px;
   background: color-mix(in srgb, var(--ds-surface-muted) 96%, transparent);
@@ -2562,7 +2576,7 @@ html:has(.ds-modal[open]) {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 /* A sticky bar covers the top of the viewport, so an anchor has to land below it. */
-html:has(.ds-toc-bar--sticky) { scroll-padding-top: 5rem; }
+html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 
 .ds-toc { position: relative; }
 .ds-toc-trigger {
@@ -2588,7 +2602,7 @@ html:has(.ds-toc-bar--sticky) { scroll-padding-top: 5rem; }
 .ds-toc-trigger::-webkit-details-marker { display: none; }
 .ds-toc-trigger:hover { background: var(--ds-canvas); }
 .ds-toc-trigger:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
-.ds-toc-bar--sticky.is-stuck .ds-toc-trigger { padding: 4px 13px; font-size: 0.8rem; }
+.ds-toc-bar.is-stuck .ds-toc-trigger { padding: 4px 13px; font-size: 0.8rem; }
 .ds-toc-trigger svg { width: 1.25em; height: 1.25em; flex: none; color: var(--ds-text-muted); }
 .ds-toc-trigger .ds-toc-chevron { width: 1.09em; height: 1.09em; transition: transform 0.15s; }
 .ds-toc[open] .ds-toc-chevron { transform: rotate(180deg); }
@@ -2920,39 +2934,6 @@ html:has(.ds-toc-bar--sticky) { scroll-padding-top: 5rem; }
      anchor-offset hazard class from every page using this pattern. */
   font-family: var(--ds-font-sans);
 }
-/* --wrap — three slots, and it folds rather than collapsing behind a
-   hamburger. For a page whose own chrome already owns the menu gesture, which
-   is why the HTML paper needs it: the reader's contents bar has the menu
-   button there. Grid rather than flex, because flex gives no centre slot that
-   stays centred regardless of what sits either side of it.
-   Height becomes a floor rather than a fix, because a second row needs
-   somewhere to go. */
-.ds-site-header--wrap {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  height: auto;
-  min-height: 52px;
-}
-.ds-site-header--wrap .ds-site-header-logo { justify-self: start; }
-.ds-site-header--wrap .ds-site-header-nav  { justify-self: end; }
-.ds-site-header-center { display: flex; justify-content: center; }
-
-@media (max-width: 48rem) {
-  /* The fold. The centre slot takes the full width as a third row, because at
-     this size there is no room beside anything. */
-  .ds-site-header--wrap {
-    grid-template-columns: auto auto;
-    row-gap: var(--ds-space-1);
-    padding-inline: var(--ds-space-3);
-  }
-  .ds-site-header--wrap .ds-site-header-center {
-    grid-column: 1 / -1;
-    order: 3;
-    padding-bottom: var(--ds-space-1);
-  }
-}
-
 .ds-site-header-logo {
   display: flex;
   align-items: center;

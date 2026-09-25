@@ -68,7 +68,7 @@ Semantic colors for the `.ds-alert` component and any success / informational / 
 Why these values:
 
 - **Success is lime-olive, not forest green.** arXiv has no success-green, and Access Lime `#c4d82e` is reserved as the "internal tools" signal *and* fails text contrast — so it cannot double as success. Rather than introduce a new green family, success reuses the existing `.ds-ds-seg-btn--positive` lime-olive (bg `#e8f5d8`, text `#4a5a0a`) with the border pulled off-yellow (`#6b8e1e` — lower red channel than `--ds-accent-border` `#9cb522`) so it reads as "success," not "brand accent." A forest-green alternative was considered and rejected to keep the palette tight.
-- **Info is navy, deliberately darker than Link Blue** `#1565c0`, so an info banner is never mistaken for a link. Reuses the `.ds-ds-seg-btn--neutral` / `.ds-badge--new` family.
+- **Info is navy, deliberately darker than Link Blue** `#1565c0`, so an info banner is never mistaken for a link. Reuses the `.ds-ds-seg-btn` / `.ds-badge--new` family.
 - **Warning is the existing version-warning amber** (`#fff8e1` / `#e8b800` / `#7a5c00`), promoted from the one-off abstract-page banner.
 - **Error reuses Danger Red** `#c62828` for the border, with a light tint background and the `.ds-ds-seg-btn--negative` deep-red text `#8b0000`.
 

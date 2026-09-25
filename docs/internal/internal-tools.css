@@ -59,18 +59,8 @@
    quiet destructive (.ds-btn-text.ds-btn-destructive). */
 
 /* Compact — inline field actions and table rows. 29px tall, above the 24px floor. */
-.ds-btn-icon--sm { font-size: 0.625rem; }
 
 /* Constructive — edit, add, copy */
-.ds-btn-icon--constructive { color: var(--ds-accent-border); }
-.ds-btn-icon--constructive:hover:not(:disabled) {
-  background: var(--ds-accent-wash);
-  color: var(--ds-accent-border-active);
-}
-.ds-btn-icon--constructive:active:not(:disabled) {
-  background: var(--ds-accent-wash-hover);
-  color: var(--ds-accent-border-active);
-}
 
 /* Pressed — a toggle that is on. aria-pressed carries the state; this only shows it. */
 .ds-btn-icon[aria-pressed="true"] {
@@ -243,8 +233,6 @@
   }
 
   /* Constructive icon — lime holds its light value, so the label is lime on dark */
-  html:not([data-theme="light"]) .ds-btn-icon--constructive:hover:not(:disabled) { background: #2e4a0a; color: var(--ds-accent); }
-  html:not([data-theme="light"]) .ds-btn-icon--constructive:active:not(:disabled) { background: #253a08; color: var(--ds-accent); }
 
   /* Info card — restore original charcoal + lime treatment in dark mode */
   html:not([data-theme="light"]) .info-card                 { background: #2e2b26; }
@@ -290,8 +278,6 @@
 }
 
 /* Constructive icon — lime holds its light value, so the label is lime on dark */
-[data-theme="dark"] .ds-btn-icon--constructive:hover:not(:disabled) { background: #2e4a0a; color: var(--ds-accent); }
-[data-theme="dark"] .ds-btn-icon--constructive:active:not(:disabled) { background: #253a08; color: var(--ds-accent); }
 
 /* Info card — restore original charcoal + lime treatment in dark mode */
 [data-theme="dark"] .info-card                 { background: #2e2b26; }
@@ -377,7 +363,7 @@
 
 /* ─── Sortable Column Headers ──────────────────────────────── */
 /*
- * Add .sortable to any <th> to make it clickable.
+ * Put <button class="sortable"> inside a <th> to make the column sortable from mouse and keyboard.
  * Add .sort-asc or .sort-desc to indicate current sort direction.
  * Place a <span class="sort-arrow"> inside the <th> for the indicator.
  *
@@ -386,14 +372,21 @@
  * Descending:↓ (dark)
  */
 
-.ds-table th.sortable {
+.ds-table th .sortable {
+  /* A button that looks like the header text it replaces: the keyboard stop is the point. */
+  all: unset;
+  display: inline;
+  font: inherit;
+  color: inherit;
   cursor: pointer;
   user-select: none;
   transition: color 0.1s;
 }
-
-.ds-table th.sortable:hover {
-  color: var(--ds-text);
+.ds-table th .sortable:hover { color: var(--ds-text); }
+.ds-table th .sortable:focus-visible {
+  outline: 2px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 .sort-arrow {

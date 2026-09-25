@@ -75,7 +75,7 @@
 
 
   <!-- ═════════ TOC ═════════ -->
-  <div class="ds-full ds-toc-bar ds-toc-bar--sticky">
+  <div class="ds-full ds-toc-bar">
     <div class="ds-toc-bar-inner">
       <details class="ds-toc">
         <summary class="ds-toc-trigger">
@@ -89,6 +89,7 @@
             <li><a href="#in-context">In context</a></li>
             <li><a href="#links-and-text-only-buttons">Links and text-only buttons</a></li>
             <li><a href="#disabled-state">Disabled state</a></li>
+            <li><a href="#lists-of-links">Lists of links</a></li>
             <li><a href="#visited-memory">Visited memory</a></li>
             <li><a href="#tokens">Tokens</a></li>
           </ol>
@@ -242,10 +243,10 @@
       <li><strong>Do not remove the focus ring.</strong> The stylesheet draws it on
       <code>:focus-visible</code>, so it appears for keyboard users and not on mouse click. An
       <code>outline: none</code> on a link takes it away for everyone.</li>
-      <li><strong>Say when a link leaves the page or opens a new tab.</strong> Open links in the same
-      tab unless the reader would lose work in progress. When a link does open a new tab, or goes
-      to another site, put that in the link text, for example “(opens in a new tab)”, so it is
-      read out with the link and survives page translation.</li>
+      <li><strong>Links open in the same tab</strong> unless the reader would lose work in progress.
+      A link that opens a new tab carries the external-link icon (<code>docs/icons/external-link.svg</code>)
+      after its text, with <code>aria-hidden="true"</code> on the icon and “(opens in a new tab)” in an
+      <code>.is-sr-only</code> span, so the change is announced and survives page translation.</li>
     </ul>
   </div>
 
@@ -260,6 +261,18 @@
     <code>pointer-events: none</code>. The underline stays so it is still recognisable as a
     (currently-unavailable) link. The disabled state falls below AA on contrast — WCAG exempts
     disabled controls from contrast requirements.</p>
+  </section>
+
+  <!-- ───────── Lists of links ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="lists-of-links">Lists of links</h3>
+    <p>A list of author names, a navigation bar, a footer column: these are lists in which every item
+    is a link, and none of them is underlined. The underline exists to tell a link apart from the
+    text around it, and in a list of links there is no such text; underlining every item would add
+    visual noise and tell the reader nothing. WCAG asks for the underline only where colour alone
+    would have to separate a link from ordinary text, which is the case for an inline link and not
+    for a list. The links keep Link Blue, the hover and focus states, and the visited colour where
+    it means something.</p>
   </section>
 
   <!-- ───────── Visited memory ───────── -->
