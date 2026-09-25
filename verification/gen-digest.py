@@ -327,7 +327,7 @@ def render(page):
     y.append("---")
 
     b = ["", f"# {page['title']}", "", page["summary"], ""]
-    b += ["Load `design-system.css`; internal tools also load `internal/internal-tools.css` and put",
+    b += ["Load `design-system.css`; internal tools also load `internal-tools.css` and put",
           "`class=\"ds-internal\"` on `<html>`. Every class below is in tier 1 unless it says otherwise.", ""]
     for c in page["components"]:
         b.append(f"## {c['title']}" + (f"  ({c['group']})" if c["group"] else ""))

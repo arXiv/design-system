@@ -57,7 +57,7 @@ rules:
 
 A small rounded element used for categories, search filters, states, and other small multiples. Tags remain the same across public and internal pages.
 
-Load `design-system.css`; internal tools also load `internal/internal-tools.css` and put
+Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
 
 ## Three tag levels

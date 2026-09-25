@@ -6,7 +6,7 @@ stylesheet: design-system.css
 components:
   - id: announcement-band
     title: "Announcement band"
-    summary: "The announcement band is minimal but gets a lot of attention. Use sparingly to maintain its impact. If it is frequently deployed then our users will get used to it and tune it out. It sits above the site header as part of the header unit (full demo on [the header reference page](public/header.html)). The dismissal action persists across all repositories, but only for that particular banner. A new banner with a new message should display again for all users even if they dismissed the previous one."
+    summary: "The announcement band is minimal but gets a lot of attention. Use sparingly to maintain its impact. If it is frequently deployed then our users will get used to it and tune it out. It sits above the site header as part of the header unit (full demo on [the header reference page](header.html)). The dismissal action persists across all repositories, but only for that particular banner. A new banner with a new message should display again for all users even if they dismissed the previous one."
     classes:
       - name: ".ds-announcement"
         does: "The band. Takes `role=\"region\"` and an `aria-label` so a screen reader user can find it and skip it. Goes directly above `.ds-site-header`."
@@ -47,12 +47,12 @@ rules:
 
 When arXiv has something special to say on the platform itself, this is how we do it. We are starting with a small announcement band above the header. Other options will be added as our communications team finds the need.
 
-Load `design-system.css`; internal tools also load `internal/internal-tools.css` and put
+Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
 
 ## Announcement band
 
-The announcement band is minimal but gets a lot of attention. Use sparingly to maintain its impact. If it is frequently deployed then our users will get used to it and tune it out. It sits above the site header as part of the header unit (full demo on [the header reference page](public/header.html)). The dismissal action persists across all repositories, but only for that particular banner. A new banner with a new message should display again for all users even if they dismissed the previous one.
+The announcement band is minimal but gets a lot of attention. Use sparingly to maintain its impact. If it is frequently deployed then our users will get used to it and tune it out. It sits above the site header as part of the header unit (full demo on [the header reference page](header.html)). The dismissal action persists across all repositories, but only for that particular banner. A new banner with a new message should display again for all users even if they dismissed the previous one.
 
 ```html
 <div class="ds-announcement" role="region" aria-label="Announcement">

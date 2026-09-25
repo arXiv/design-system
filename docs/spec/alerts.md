@@ -61,7 +61,7 @@ rules:
 
 Alerts are a critical component of successful user journeys. They go hand in hand with [form validation](forms.html) but have many uses beyond forms as well. Alerts are always related to the content of the page they are on. For general announcements, see [messages](messages.html).
 
-Load `design-system.css`; internal tools also load `internal/internal-tools.css` and put
+Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
 
 ## The four alert states

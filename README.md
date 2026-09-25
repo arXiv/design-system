@@ -15,7 +15,7 @@ Browse it rendered: **https://arxiv.github.io/design-system/**
 
 ```
 docs/           THE documentation — rules, tokens, pattern pages, stylesheets
-                (docs/public/, docs/internal/, docs/outreach/ hold per-context patterns + CSS)
+                (every pattern page shows both surfaces; docs/sharing/ holds audience-specific pages)
 mockups/        work-in-progress page explorations — never a build reference
 verification/   evidence — audits, design reviews, agent test results
 planning/       backlog (NEXT-STEPS.md), proposals, decision logs
@@ -25,7 +25,7 @@ index.html      the GitHub Pages landing page (docs/doc.html renders .md files o
 ## Start here
 
 - **Designers / product owners** — open the pattern pages in `docs/` in a browser (no build step); read `docs/brand.html` for the why.
-- **Developers** — `docs/DESIGN-POLICIES.md` holds the hard constraints. Stylesheets are tiered: `docs/design-system.css` is tier 1 and everything loads it; `docs/internal/internal-tools.css` is tier 2 for internal tools and is loaded *after* it, never alone. Plain CSS custom properties, consumable from Flask/Jinja, React, PHP, or static HTML.
+- **Developers** — `docs/DESIGN-POLICIES.md` holds the hard constraints. Stylesheets are tiered: `docs/design-system.css` is tier 1 and everything loads it; `docs/internal-tools.css` is tier 2 for internal tools and is loaded *after* it, never alone. Plain CSS custom properties, consumable from Flask/Jinja, React, PHP, or static HTML.
 - **AI coding agents** — read [`AGENTS.md`](AGENTS.md). It has the reading order, a routing table, and the guardrails. CLAUDE.md / GEMINI.md / copilot-instructions are pointers to it.
 
 ## Key decisions (short version)

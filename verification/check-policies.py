@@ -100,7 +100,7 @@ def check_self_hosted():
 # invalid and it is silently dropped — .ds-note shipped with no padding
 # that way. Fallbacks (var(--x, 1rem)) are legitimate and skipped.
 CSS_FILES = [REPO / "docs" / "design-system.css",
-             REPO / "docs" / "internal" / "internal-tools.css"]
+             REPO / "docs" / "internal-tools.css"]
 DEFINED = re.compile(r"^\s*(--[\w-]+)\s*:", re.M)
 USED = re.compile(r"var\(\s*(--[\w-]+)\s*\)")
 
@@ -174,7 +174,7 @@ def check_one_name_per_surface():
 PX_FONT = re.compile(r"font-size:\s*([0-9.]+)px")
 TYPE_REQUIRED = [
     REPO / "docs" / "design-system.css",
-    REPO / "docs" / "internal" / "internal-tools.css",
+    REPO / "docs" / "internal-tools.css",
     REPO / "mockups" / "public" / "html-phase1.html",
     REPO / "mockups" / "public" / "abstract-phase2.html",
 ]
