@@ -29,6 +29,7 @@
       <a href="../tags.html">Tags</a>
       <span class="ds-panel-label">Organizing content</span>
       <a href="../organizing-content.html">Layouts</a>
+      <a href="../cards.html">Cards</a>
       <a href="../progressive-disclosure.html">Progressive disclosure</a>
       <a href="../modals.html">Modal dialogs</a>
       <a href="../internal/metadata-panel.html">Metadata panel</a>
@@ -88,7 +89,6 @@
           <ol>
             <li><a href="#the-header-unit">The header unit</a></li>
             <li><a href="#signed-out-and-signed-in">Signed out, and signed in</a></li>
-            <li><a href="#dropdown-groups">Navigation</a></li>
             <li><a href="#with-the-announcement-band">With the announcement band</a></li>
             <li><a href="#the-light-variant">The light variant</a></li>
             <li><a href="#internal-headers">Internal header</a></li>
@@ -186,6 +186,10 @@
             wires the toggle (<code>.is-open</code> on the nav, <code>aria-expanded</code> in sync) in
             the same call, so the hamburger appears only when it actually works. <strong>The default —
             including no JS — is the wrap</strong> (all items visible, WCAG 1.4.10 reflow).</dd>
+            <dt>.ds-site-header-dropdown</dt>
+            <dd>A menu group in the bar, built on <code>&lt;details&gt;</code>; it is documented with
+            the other disclosures on
+            <a href="../progressive-disclosure.html#header-dropdown-menus">Progressive disclosure</a>.</dd>
           </dl>
         </div>
       </details>
@@ -268,78 +272,6 @@
     </div>
   </section>
 
-  
-
-  <!-- ───────── Navigation ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="dropdown-groups">Navigation</h2>
-    <p class="ds-section-desc">A property whose sections need grouping adds <code>.ds-site-header-dropdown</code>, built on <code>&lt;details&gt;</code> so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement.</p>
-    <div class="ds-card">
-      <nav class="ds-site-header ds-site-header--light" aria-label="Dropdown example">
-        <a href="#" class="ds-site-header-logo">arXiv Design System</a>
-        <details class="ds-site-header-dropdown">
-          <summary>Design Patterns</summary>
-          <div class="ds-site-header-menu">
-            <span class="ds-panel-label">Components</span>
-            <a href="#">Colors</a>
-            <a href="#">Typography</a>
-            <a href="#" aria-current="page">Site header</a>
-            <span class="ds-panel-label">Organizing content</span>
-            <a href="#">Layouts</a>
-            <a href="#">Progressive disclosure</a>
-          </div>
-        </details>
-        <details class="ds-site-header-dropdown">
-          <summary>Docs</summary>
-          <div class="ds-site-header-menu">
-            <a href="#">Using the system</a>
-            <a href="#">Design policies</a>
-            <a href="#">Brand &amp; vision</a>
-          </div>
-        </details>
-      </nav>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;nav class="ds-site-header ds-site-header--light" aria-label="Design system"&gt;
-  &lt;a href="/" class="ds-site-header-logo"&gt;arXiv Design System&lt;/a&gt;
-  &lt;details class="ds-site-header-dropdown"&gt;
-    &lt;summary&gt;Design Patterns&lt;/summary&gt;
-    &lt;div class="ds-site-header-menu"&gt;
-      &lt;span class="ds-panel-label"&gt;Components&lt;/span&gt;
-      &lt;a href="colors.html"&gt;Colors&lt;/a&gt;
-      &lt;a href="public/header.html" aria-current="page"&gt;Site header&lt;/a&gt;
-      &lt;!-- … --&gt;
-    &lt;/div&gt;
-  &lt;/details&gt;
-  &lt;details class="ds-site-header-dropdown"&gt;
-    &lt;summary&gt;Docs&lt;/summary&gt;
-    &lt;div class="ds-site-header-menu"&gt;
-      &lt;a href="using.html"&gt;Using the system&lt;/a&gt;
-      &lt;!-- … --&gt;
-    &lt;/div&gt;
-  &lt;/details&gt;
-&lt;/nav&gt;</code></pre>
-          <dl>
-            <dt>.ds-site-header-dropdown</dt>
-            <dd>A <code>&lt;details&gt;</code> group in the bar. Optional. The summary sits in the bar
-            and takes the surface tokens, so it is correct on either variant.</dd>
-            <dt>.ds-site-header-menu</dt>
-            <dd>The floating panel. Right-anchored, capped to the viewport. A floating panel is a light
-            surface whichever bar summoned it, the same way a popover is. The menu anchors to its
-            trigger’s <strong>right</strong> edge: the nav always sits at the right of the bar, and a
-            left-anchored menu runs off the viewport on the last item — which is every bar’s last item,
-            not an edge case.</dd>
-            <dt>.ds-panel-label</dt>
-            <dd>Group headings inside a menu use the system-wide label, not a bespoke class.</dd>
-            <dt>aria-current="page"</dt>
-            <dd>On the menu link for the page the reader is on. The menu shows it in bold, and a screen
-            reader announces it.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-  </section>
-
   <div class="ds-note ds-note--essential">
     <h3 class="ds-note-label">Accessibility essentials</h3>
     <ul class="notes">
@@ -352,21 +284,6 @@
       <li><strong>The wordmark is an image with alt text.</strong> Logo alt text and aria-labels say
       “archive” — the spoken form of “arXiv” (screen readers otherwise produce “ar-zhiv” or
       Roman-numeral gibberish).</li>
-      <li><strong>A menu is a disclosure, not an ARIA menu.</strong> <code>role="menu"</code> is for
-      application menus — the kind with arrow-key roving focus and menu items that are not links. A
-      list of links is a disclosure, and W3C’s own guidance is to build it this way. Using
-      <code>role="menu"</code> here would make a screen reader promise keyboard behaviour the
-      component does not have. The state comes free: <code>&lt;summary&gt;</code> is announced as a
-      button with an expanded/collapsed state, without a single ARIA attribute. That is most of why
-      this is <code>&lt;details&gt;</code>.</li>
-      <li><strong>Mark the current page.</strong> The menu link for the page the reader is on takes
-      <code>aria-current="page"</code>.</li>
-      <li><strong>Everything is reachable from the keyboard, with JavaScript off.</strong> Open,
-      close and keyboard operation are native; outside-click and Escape are enhancements layered on
-      top. Escape closes a menu and returns focus to the trigger. The second half matters: without it,
-      a keyboard user who opened the menu, tabbed into it and pressed Escape is left holding focus on
-      a link that is no longer visible. Return focus only when it was inside the menu — Escape
-      pressed elsewhere on the page must not move it.</li>
       <li><strong>Nothing in this unit is sticky.</strong> The whole header scrolls away with the
       page (the one bar a page may keep in view is the contents bar — DESIGN-POLICIES). No
       <code>scroll-padding</code> duty applies.</li>
