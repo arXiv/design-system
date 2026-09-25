@@ -6,7 +6,7 @@
  * list is written into the HTML by verification/gen-anchors.py. This adds what
  * markup cannot: it closes on Escape, on a click outside, and when a link is
  * followed; it names the section the reader is in on the control itself; and
- * on a bar with .ds-toc-bar--sticky it marks the bar .is-stuck once it has
+ * on a bar with .ds-toc-bar it marks the bar .is-stuck once it has
  * reached the top of the viewport.
  */
 (function () {
@@ -15,7 +15,7 @@
   var trigger = toc.querySelector('.ds-toc-trigger');
   var text = toc.querySelector('.ds-toc-text');
   var links = Array.prototype.slice.call(toc.querySelectorAll('.ds-toc-menu a'));
-  var bar = toc.closest('.ds-toc-bar--sticky');
+  var bar = toc.closest('.ds-toc-bar');
   var PREFIX = text ? (text.querySelector('.ds-toc-prefix') || text).textContent.replace(/\s*·\s*$/, '') : 'Contents';
 
   function close(refocus) {

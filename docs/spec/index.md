@@ -19,7 +19,6 @@ These pages have not had their review pass. Read the page itself, and expect the
 - colors.html
 - dark-mode.html
 - forms.html
-- internal/buttons.html
 - internal/cards.html
 - internal/color-tokens.html
 - internal/metadata-panel.html

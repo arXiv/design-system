@@ -10,7 +10,7 @@ components:
     classes:
       - name: ".ds-btn-primary"
         does: "The page's call to action (HTML, PDF on the abstract page). One cluster per view."
-      - name: ".ds-btn-secondary"
+      - name: ".ds-btn"
         does: "Adjacent destinations of equal weight but lower priority (TeX Source)."
       - name: ".ds-btn-text"
         does: "Real but minor actions beside a bigger choice: Copy link, Show all authors, Dismiss."
@@ -32,7 +32,7 @@ components:
     title: "Links styled as buttons"
     summary: "A control that goes to another page is a link, even when it looks like a button. The formats on the abstract page are the common case: each one is an `<a>` with the button classes, so it announces as a link, opens in a new tab, and works with JavaScript off."
     classes:
-      - name: ".ds-btn, .ds-btn-primary, .ds-btn-secondary, .ds-btn-text"
+      - name: ".ds-btn, .ds-btn-primary, .ds-btn-text"
         does: "The same classes as a button. Nothing about the link changes how they look."
       - name: ".is-disabled"
         does: "Gives a link the disabled look, the same as `disabled` gives a button. It only changes the look: remove the `href` so the link stops working, and add `aria-disabled=\"true\"` so a screen reader says so."
@@ -115,12 +115,12 @@ arXiv has three button tiers: primary, secondary, and a quiet text-only button (
 ```html
 <!-- Primary / secondary / text -->
 <a class="ds-btn ds-btn-primary" href="/html/2604.22725v1">HTML</a>
-<a class="ds-btn ds-btn-secondary" href="/src/2604.22725v1">TeX Source</a>
+<a class="ds-btn" href="/src/2604.22725v1">TeX Source</a>
 <button class="ds-btn ds-btn-text" type="button">Copy link</button>
 ```
 
 - `.ds-btn-primary` — The page's call to action (HTML, PDF on the abstract page). One cluster per view.
-- `.ds-btn-secondary` — Adjacent destinations of equal weight but lower priority (TeX Source).
+- `.ds-btn` — Adjacent destinations of equal weight but lower priority (TeX Source).
 - `.ds-btn-text` — Real but minor actions beside a bigger choice: Copy link, Show all authors, Dismiss.
 - `Construction` — Both filled variants share the V3 build: a 1.5px gradient border (lighter top → darker bottom) from dual `padding-box`/`border-box` backgrounds, plus an inner vignette. Hover brightens; press drops 1px and deepens the vignette.
 - `Quiet tier` — The text button borrows the link’s quietness, not its identity: Link Blue, never underlined, and hover is a background wash — the same feedback the other buttons give. Underlines stay with links, so a reader can still tell “this navigates” from “this acts here.”
@@ -138,13 +138,13 @@ A control that goes to another page is a link, even when it looks like a button.
 
 ```html
 <a class="ds-btn ds-btn-primary" href="/html/2604.22725v1">HTML</a>
-<a class="ds-btn ds-btn-secondary" href="/pdf/2604.22725v1">PDF</a>
+<a class="ds-btn" href="/pdf/2604.22725v1">PDF</a>
 
 <!-- disabled: no href, and both the class and the attribute -->
-<a class="ds-btn ds-btn-secondary is-disabled" aria-disabled="true">Other formats</a>
+<a class="ds-btn is-disabled" aria-disabled="true">Other formats</a>
 ```
 
-- `.ds-btn, .ds-btn-primary, .ds-btn-secondary, .ds-btn-text` — The same classes as a button. Nothing about the link changes how they look.
+- `.ds-btn, .ds-btn-primary, .ds-btn-text` — The same classes as a button. Nothing about the link changes how they look.
 - `.is-disabled` — Gives a link the disabled look, the same as `disabled` gives a button. It only changes the look: remove the `href` so the link stops working, and add `aria-disabled="true"` so a screen reader says so.
 
 > A link cannot take the disabled attribute. To disable one, add .is-disabled, remove the href, and add aria-disabled. With the href still there the link still works while looking switched off.
@@ -201,8 +201,8 @@ The primary button works everywhere. The gradient border and vignette keep the e
 
 ```html
 <!-- Secondary on a cool tint, and on a committed color field -->
-<a class="ds-btn ds-btn-secondary on-tint" href="/issues">Submit a fix</a>
-<a class="ds-btn ds-btn-secondary on-dark" href="/subscribe">Subscribe</a>
+<a class="ds-btn on-tint" href="/issues">Submit a fix</a>
+<a class="ds-btn on-dark" href="/subscribe">Subscribe</a>
 ```
 
 - `.on-tint` — On a *cool* tint, swaps the secondary's white fill for Card Grey (same luminance, warm hue) so it reads as secondary by material rather than by contrast. On a *warm* tint the default white secondary already sits comfortably.
