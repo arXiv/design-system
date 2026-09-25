@@ -1,0 +1,53 @@
+{#- arXiv brand header: announcement mount, header bar, search overlay. Portable Jinja
+    (templates/README.md): {{ var }} and boolean sections only. banner.js draws the shared
+    announcement (json/announcements.json) in the mount; header.js wires the overlay, the
+    phone hamburger and the client-side member acknowledgement. -#}
+{% if not hide_announcement %}
+<div id="ds-announcement"></div>
+{% endif %}
+<script src="{{ static_base }}chrome/banner.js" defer></script>
+<script src="{{ static_base }}chrome/header.js" defer></script>
+<header class="ds-site-header {{ header_variant }}">
+  <a aria-hidden="true" tabindex="-1" href="{{ base_url }}/IgnoreMe" class="is-sr-only"></a>
+  <a href="{{ base_url }}/" class="ds-site-header-logo" aria-label="archive home">
+    <img src="{{ static_base }}logos/arxiv-logo.svg" alt="archive">
+  </a>
+  <button type="button" id="ds-nav-toggle" class="ds-site-header-nav-toggle"
+    aria-label="Open menu" aria-controls="ds-site-header-nav" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  {% if not hide_nav %}
+  <nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation">
+    <a id="ds-search-toggle" href="{{ base_url }}/search" aria-controls="ds-search-overlay" aria-expanded="false">
+      <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      Search
+    </a>
+    <a href="{{ base_url }}/submit">Submit</a>
+    <a href="{{ help_url }}/about/donate.html">Donate</a>
+    <span class="ds-site-header-divider" aria-hidden="true"></span>
+    {% if signed_in %}<a href="{{ auth_url }}{{ account_path }}" class="ds-site-header-login">Account</a>{% endif %}
+    {% if not signed_in %}<a href="{{ auth_url }}/login" class="ds-site-header-login">Log in</a>{% endif %}
+  </nav>
+  {% endif %}
+</header>
+{% if not hide_nav %}
+<div class="ds-search-overlay" id="ds-search-overlay" hidden>
+  <div class="ds-search-overlay-panel" role="search">
+    <form method="GET" action="{{ base_url }}/search">
+      <label for="ds-search-input" class="is-sr-only">Search arXiv</label>
+      <input type="text" name="query" id="ds-search-input" class="ds-input" autocomplete="off"
+        placeholder="Search papers by title, author, abstract, or ID...">
+      <input type="hidden" name="searchtype" value="all">
+      <input type="hidden" name="source" value="header">
+    </form>
+    <p class="ds-hint">
+      Press Enter to search &middot; <a href="{{ base_url }}/search/advanced">Advanced search</a>
+    </p>
+  </div>
+</div>
+{% endif %}

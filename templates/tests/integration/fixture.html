@@ -1,0 +1,36 @@
+{#- Every construct the template rules allow, for test_targets.py (not a template; it uses the
+    real schema's variables). -#}
+<section class="fx {{ header_variant }}" aria-label="Labs &amp; tools" data-class="kept">
+  <p><strong>Note:</strong>
+  text after a tag, a {brace}, 2 &gt; 1, 2 > 1 &amp; R&D,
+  {% if signed_in %}<a href="{{ auth_url }}{{ account_path }}">account</a>{% endif %}
+  {% if not signed_in %}<a href="{{ auth_url }}/login">log in</a>{% endif %}
+  then more.</p>
+  <ul class="fx-list">{{ member_institution }}</ul>
+  <p>Inline{{ member_institution }} slot, and <em>emphasis</em>
+    <a href="{{ help_url }}/x">spanning
+    lines</a>.</p>
+  <details class="fx-acc">{% if not hide_nav %}<summary>Open {{ header_variant }}</summary>{% endif %}<div>body</div></details>
+  <form method="GET" action="{{ base_url }}/search?a=1&amp;b=`2`\d">
+    <label for="fx-q">Query</label>
+    <input type="text" id="fx-q" name="q" value="{{ header_variant }}" maxlength="80" readonly autocomplete="off">
+    <input type="checkbox" name="c" checked>
+    <input type="hidden" name="h" value="x">
+    <button type="submit" disabled>
+      Go
+    </button>
+  </form>
+  <picture><source srcset="{{ static_base }}w.svg" media="(prefers-color-scheme: dark)"><img src="{{ static_base }}b.svg" alt="" crossorigin></picture>
+  <hr>
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path fill-rule="evenodd" clip-rule="evenodd" stroke-width="2" d="M0 0h24v24H0z"/>
+    <use xlink:href="#x"/>
+  </svg>
+  <table>
+    <tbody>
+      <tr><td colspan="2">cell</td></tr>
+    </tbody>
+  </table>
+  {% if hide_announcement %}{% if not hide_nav %}<span class="fx-nested">nested</span>{% endif %}{% endif %}
+</section>
+<script src="{{ static_base }}chrome/fx.js?a=1&amp;b=2" async></script>

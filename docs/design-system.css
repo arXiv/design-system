@@ -2760,6 +2760,8 @@ html:has(.ds-toc-bar--sticky) { scroll-padding-top: 5rem; }
   border-radius: 50%;
   background: var(--ds-border, #ddd8d2);
   vertical-align: middle;
+  align-self: center; /* .ds-site-footer-links is a flex row, where vertical-align
+                         does nothing: without this the dot sits at the line's top */
   font-size: 0;
   margin: 0 3px;
 }
@@ -2793,6 +2795,14 @@ html:has(.ds-toc-bar--sticky) { scroll-padding-top: 5rem; }
   border: 1px solid var(--ds-border-muted);
   border-radius: 3px;
   background: #fff; /* stays white in dark mode: funder wordmarks need a light chip */
+}
+.ds-funder-link {
+  display: inline-flex; /* hug the logo chip so the focus ring traces its edge */
+  border-radius: 3px;
+}
+.ds-funder-link:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 2px;
 }
 @media (max-width: 720px) {
   .ds-site-footer-funders { width: 100%; margin-top: 8px; }
@@ -2924,9 +2934,13 @@ html:has(.ds-toc-bar--sticky) { scroll-padding-top: 5rem; }
      .ds-site-header--light, which re-points these seven values and overrides
      no property at all. One set of rules, two surfaces, no specificity to
      reason about. */
-  --ds-hdr-bg:        var(--ds-chrome);   /* the bar is dark in both themes; --ds-text would flip it light */
-  --ds-hdr-fg:        var(--ds-text-disabled);    /* 7.4:1 on #1c1a17 — AA on dark */
-  --ds-hdr-fg-strong: var(--ds-surface-muted);   /* hover, active, Log in */
+  /* The arXiv header is a fixed dark bar in BOTH themes, so these point at
+     theme-stable primitives, not semantic tokens that flip in dark mode.
+     --ds-chrome is the "header bar" token (#1c1a17 light / #262119 dark); the
+     fg greys are fixed on-dark values. */
+  --ds-hdr-bg:        var(--ds-chrome);           /* dark bar, both themes */
+  --ds-hdr-fg:        var(--ds-disabled-grey);    /* 7.4:1 on the dark bar — does not flip */
+  --ds-hdr-fg-strong: var(--ds-card-grey);        /* hover, active, Log in */
   --ds-hdr-hover:     #302c28;
   --ds-hdr-ring:      var(--ds-focus-ring-on-dark, #64b5f6);
   --ds-hdr-border:    transparent;              /* the dark bar needs no edge */
@@ -3103,7 +3117,7 @@ html:has(.ds-toc-bar--sticky) { scroll-padding-top: 5rem; }
   border: none;
   background: none;
   border-radius: 4px;
-  color: var(--ds-text-disabled);
+  color: var(--ds-hdr-fg); /* the bar's foreground: legible in both themes and on --light */
   cursor: pointer;
   flex-shrink: 0;
   transition: background 0.12s, color 0.12s;
@@ -3177,6 +3191,35 @@ html:has(.ds-toc-bar--sticky) { scroll-padding-top: 5rem; }
   .ds-site-header.is-collapsible .ds-site-header-divider { display: none; }
 }
 
+/* ── Header search overlay (.ds-search-overlay) ─────────────────────────
+   Opened from the header's Search link by chrome/header.js; without JS the
+   link navigates and this stays [hidden]. z-index 200: the overlay layer. The
+   field and hint are the ordinary .ds-input / .ds-hint. */
+.ds-search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: var(--ds-scrim);
+}
+.ds-search-overlay[hidden] { display: none; }
+.ds-search-overlay-panel {
+  margin-top: 52px; /* the header bar's height: the panel hangs from the bar */
+  width: 100%;
+  max-width: 640px;
+  box-sizing: border-box;
+  padding: 20px 24px;
+  background: var(--ds-surface);
+  color: var(--ds-text);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  font-family: var(--ds-font-sans);
+}
+.ds-search-overlay-panel .ds-input { font-size: 1rem; box-sizing: border-box; }
+.ds-search-overlay-panel .ds-hint a { color: var(--ds-link); }
+
 /* ── NO breadcrumb band ──: the approved spinout treatment covers
    ONLY the announcement banner and the black header bar; nothing below
    the header is approved chrome. A breadcrumb iteration was tried and
@@ -3184,10 +3227,14 @@ html:has(.ds-toc-bar--sticky) { scroll-padding-top: 5rem; }
    its links are available elsewhere (header logo = home; Subjects in
    the abstract metadata = category listing). */
 
+/* Print keeps the logo, at a modest size, and none of the bar or its controls. */
 @media print {
   .ds-announcement,
-  .ds-site-header,
+  .ds-site-header > :not(.ds-site-header-logo),
+  .ds-search-overlay,
   .ds-skip-link { display: none !important; }
+  .ds-site-header { height: auto; min-height: 0; padding: 0 0 var(--ds-space-4); background: none; border: 0; }
+  .ds-site-header-logo img { height: 28px; }
 }
 
 /* SECTION ANCHOR  (.ds-anchor) — organizing-content.html

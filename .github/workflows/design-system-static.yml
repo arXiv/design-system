@@ -1,0 +1,61 @@
+# Publishes the design system's static assets to the rolling route
+# static/design-system/latest/ (upload_static_assets.py): the dev bucket on every master push
+# that can change them, either bucket by hand, from master only. There are no versioned
+# snapshots: consumers' lock files pin template SHAs, and verification/check-template-compat.py
+# (run first) keeps every template version working with latest.
+#
+# One-time ops setup (not done here): a Workload Identity Federation provider and a service
+# account with roles/storage.objectAdmin on the buckets, exposed as the vars below.
+name: design-system static
+
+on:
+  push:
+    branches: [master]
+    # Broader than the published files on purpose: rsync uploads only what changed, and a
+    # narrower list could miss a file upload_static_assets.py starts publishing.
+    paths:
+      - "docs/**"
+      - "templates/assets/**"
+      - "build_components_css.py"
+      - "upload_static_assets.py"
+      - ".github/workflows/design-system-static.yml"
+  workflow_dispatch:
+    inputs:
+      bucket:
+        description: "Bucket to publish to"
+        type: choice
+        options: ["gs://arxiv-dev-web-static", "gs://arxiv-web-static"]
+        default: "gs://arxiv-dev-web-static"
+
+permissions:
+  contents: read
+  id-token: write # Workload Identity Federation
+
+# One publish per bucket at a time, the newest waiting for the running one: an older run
+# finishing last would put older files back on latest.
+concurrency:
+  group: design-system-static-${{ github.event.inputs.bucket || 'gs://arxiv-dev-web-static' }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    # Skipped, not failed, until those vars exist; never from another branch.
+    if: vars.GCP_WIF_PROVIDER != '' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # check-template-compat reads every template version in the history
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - run: python3 verification/check-components.py
+      - run: python3 verification/check-template-compat.py
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_STATIC_PUBLISHER_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - run: python3 upload_static_assets.py --bucket "$BUCKET" --yes
+        env:
+          BUCKET: ${{ github.event.inputs.bucket || 'gs://arxiv-dev-web-static' }}
