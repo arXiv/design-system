@@ -29,6 +29,7 @@
       <a href="tags.html">Tags</a>
       <span class="ds-panel-label">Organizing content</span>
       <a href="organizing-content.html">Layouts</a>
+      <a href="cards.html">Cards</a>
       <a href="progressive-disclosure.html" aria-current="page">Progressive disclosure</a>
       <a href="modals.html">Modal dialogs</a>
       <a href="internal/metadata-panel.html">Metadata panel</a>
@@ -92,6 +93,8 @@
             <li><a href="#accordion">Accordion</a></li>
             <li><a href="#show-more">Show more</a></li>
             <li><a href="#popover">Popover</a></li>
+            <li><a href="#header-dropdown-menus">Header dropdown menus</a></li>
+            <li><a href="#contents-bar">Contents bar</a></li>
             <li><a href="#rail">Rail</a></li>
             <li><a href="#which-affordance">Which affordance</a></li>
             <li><a href="#motion-and-layering">Motion and layering</a></li>
@@ -338,6 +341,167 @@
     </div>
   </section>
 
+  <!-- ───────── Header dropdown menus ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="header-dropdown-menus">Header dropdown menus</h2>
+    <p class="ds-section-desc">A property whose sections need grouping adds <code>.ds-site-header-dropdown</code>, built on <code>&lt;details&gt;</code> so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The bar that carries the menus is documented on <a href="public/header.html">Site header</a>.</p>
+    <div class="ds-card">
+      <nav class="ds-site-header ds-site-header--light" aria-label="Dropdown example">
+        <a href="#" class="ds-site-header-logo">arXiv Design System</a>
+        <details class="ds-site-header-dropdown">
+          <summary>Design Patterns</summary>
+          <div class="ds-site-header-menu">
+            <span class="ds-panel-label">Components</span>
+            <a href="#">Colors</a>
+            <a href="#">Typography</a>
+            <a href="#">Site header</a>
+            <span class="ds-panel-label">Organizing content</span>
+            <a href="#">Layouts</a>
+            <a href="#" aria-current="page">Progressive disclosure</a>
+          </div>
+        </details>
+        <details class="ds-site-header-dropdown">
+          <summary>Docs</summary>
+          <div class="ds-site-header-menu">
+            <a href="#">Using the system</a>
+            <a href="#">Design policies</a>
+            <a href="#">Brand &amp; vision</a>
+          </div>
+        </details>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav class="ds-site-header ds-site-header--light" aria-label="Design system"&gt;
+  &lt;a href="/" class="ds-site-header-logo"&gt;arXiv Design System&lt;/a&gt;
+  &lt;details class="ds-site-header-dropdown"&gt;
+    &lt;summary&gt;Design Patterns&lt;/summary&gt;
+    &lt;div class="ds-site-header-menu"&gt;
+      &lt;span class="ds-panel-label"&gt;Components&lt;/span&gt;
+      &lt;a href="colors.html"&gt;Colors&lt;/a&gt;
+      &lt;a href="progressive-disclosure.html" aria-current="page"&gt;Progressive disclosure&lt;/a&gt;
+      &lt;!-- … --&gt;
+    &lt;/div&gt;
+  &lt;/details&gt;
+  &lt;details class="ds-site-header-dropdown"&gt;
+    &lt;summary&gt;Docs&lt;/summary&gt;
+    &lt;div class="ds-site-header-menu"&gt;
+      &lt;a href="using.html"&gt;Using the system&lt;/a&gt;
+      &lt;!-- … --&gt;
+    &lt;/div&gt;
+  &lt;/details&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-site-header-dropdown</dt>
+            <dd>A <code>&lt;details&gt;</code> group in the bar. Optional. The summary sits in the bar
+            and takes the surface tokens, so it is correct on either variant.</dd>
+            <dt>.ds-site-header-menu</dt>
+            <dd>The floating panel. Right-anchored, capped to the viewport. A floating panel is a light
+            surface whichever bar summoned it, the same way a popover is. The menu anchors to its
+            trigger’s <strong>right</strong> edge: the nav always sits at the right of the bar, and a
+            left-anchored menu runs off the viewport on the last item — which is every bar’s last item,
+            not an edge case.</dd>
+            <dt>.ds-panel-label</dt>
+            <dd>Group headings inside a menu use the system-wide label, not a bespoke class.</dd>
+            <dt>aria-current="page"</dt>
+            <dd>On the menu link for the page the reader is on. The menu shows it in bold, and a screen
+            reader announces it.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Contents bar ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="contents-bar">Contents bar</h2>
+    <p class="ds-section-desc">A long page’s own table of contents: one control that names the
+    section the reader is in and opens the list of the others. This one lists the sections of the page
+    you are reading, shown on its own without the bar that carries it at the top of the page.</p>
+
+    <div class="ds-card">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#accordion">Accordion</a></li>
+            <li><a href="#show-more">Show more</a></li>
+            <li><a href="#popover">Popover</a></li>
+            <li><a href="#header-dropdown-menus">Header dropdown menus</a></li>
+            <li><a href="#contents-bar">Contents bar</a></li>
+            <li><a href="#rail">Rail</a></li>
+            <li><a href="#which-affordance">Which affordance</a></li>
+            <li><a href="#motion-and-layering">Motion and layering</a></li>
+          </ol>
+        </nav>
+      </details>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-container ds-zone-secondary"&gt;
+  &lt;header class="ds-page-header"&gt;…&lt;/header&gt;
+
+  &lt;div class="ds-full ds-toc-bar"&gt;
+    &lt;div class="ds-toc-bar-inner"&gt;
+      &lt;details class="ds-toc"&gt;
+        &lt;summary class="ds-toc-trigger"&gt;
+          &lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;
+          &lt;span class="ds-toc-text"&gt;&lt;span class="ds-toc-prefix"&gt;Contents&lt;/span&gt;&lt;/span&gt;
+          &lt;svg class="ds-toc-chevron" aria-hidden="true"&gt;…&lt;/svg&gt;
+        &lt;/summary&gt;
+        &lt;nav class="ds-toc-menu" aria-label="Contents"&gt;
+          &lt;ol&gt;&lt;/ol&gt;      &lt;!-- filled by verification/gen-anchors.py --&gt;
+        &lt;/nav&gt;
+      &lt;/details&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="ds-full ds-zone-primary"&gt;…&lt;/div&gt;
+&lt;/div&gt;
+&lt;script src="toc.js" defer&gt;&lt;/script&gt;</code></pre>
+          <dl>
+            <dt>.ds-toc</dt>
+            <dd>The control, a <code>&lt;details&gt;</code>. It works on its own anywhere, and it opens
+            with JavaScript off.</dd>
+            <dt>.ds-toc-trigger</dt>
+            <dd>The <code>&lt;summary&gt;</code>. Holds the list icon, <code>.ds-toc-text</code> with
+            its <code>.ds-toc-prefix</code>, and <code>.ds-toc-chevron</code>.</dd>
+            <dt>.ds-toc-menu</dt>
+            <dd>The list, a <code>&lt;nav&gt;</code> holding an <code>&lt;ol&gt;</code>. The link to the
+            current section gets <code>.is-current</code>. A page whose sections are numbered puts each
+            number in <code>.ds-toc-num</code>.</dd>
+            <dt>.ds-toc-bar</dt>
+            <dd>The edge-to-edge row that carries the control. A direct child of
+            <code>.ds-container</code>, with <code>.ds-full</code>. Placed directly before
+            <code>.ds-zone-primary</code>, it sits on that zone’s top edge. The bar is always sticky:
+            it keeps to the top of the viewport, where it becomes <code>.is-stuck</code> and
+            tightens, and it sets <code>scroll-padding-top</code> so an anchor lands below it.
+            Sticky chrome is governed by
+            <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>; check there before
+            adding the bar to a page.</dd>
+            <dt>.ds-toc-bar-inner</dt>
+            <dd>The bar’s three-slot grid, which keeps the control centred whatever sits beside
+            it.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <ul class="notes">
+      <li><strong>The list is generated, not written.</strong>
+      <code>verification/gen-anchors.py</code> fills the <code>&lt;ol&gt;</code> from the page’s
+      section headings, and <code>--check</code> fails when the two disagree. Leave the list empty
+      and run the generator.</li>
+      <li><strong>It opens without JavaScript.</strong> <code>toc.js</code> adds closing on Escape,
+      closing on a click outside, and the name of the current section on the control.</li>
+      <li><strong>One per page.</strong> <code>toc.js</code> drives the first
+      <code>.ds-toc</code> it finds, which on this page is the bar at the top; the control in the
+      card above comes later in the document, so it opens and closes on its own and nothing else.</li>
+    </ul>
+  </section>
+
 
   <div class="ds-note ds-note--essential">
     <h3 class="ds-note-label">Accessibility essentials</h3>
@@ -362,6 +526,21 @@
       who opened it from the keyboard must not be stranded at the end of the document. Close it on outside
       click and on scroll as well: the panel is <code>position: fixed</code>, so left open it would follow
       the viewport while the sentence it belongs to scrolls away.</li>
+      <li><strong>A menu is a disclosure, not an ARIA menu.</strong> <code>role="menu"</code> is for
+      application menus — the kind with arrow-key roving focus and menu items that are not links. A
+      list of links is a disclosure, and W3C’s own guidance is to build it this way. Using
+      <code>role="menu"</code> here would make a screen reader promise keyboard behaviour the
+      component does not have. The state comes free: <code>&lt;summary&gt;</code> is announced as a
+      button with an expanded/collapsed state, without a single ARIA attribute. That is most of why
+      this is <code>&lt;details&gt;</code>.</li>
+      <li><strong>Mark the current page.</strong> The menu link for the page the reader is on takes
+      <code>aria-current="page"</code>.</li>
+      <li><strong>Everything is reachable from the keyboard, with JavaScript off.</strong> Open,
+      close and keyboard operation are native; outside-click and Escape are enhancements layered on
+      top. Escape closes a menu and returns focus to the trigger. The second half matters: without it,
+      a keyboard user who opened the menu, tabbed into it and pressed Escape is left holding focus on
+      a link that is no longer visible. Return focus only when it was inside the menu — Escape
+      pressed elsewhere on the page must not move it.</li>
     </ul>
   </div>
 

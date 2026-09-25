@@ -75,7 +75,7 @@ Session mockup: `../../mockups/internal/admin-console/paper-details/index.html`.
 - **Spacing scale** — `--ds-space-1`…`--ds-space-12` added to `internal-tools.css`; scale + proximity rule in `DESIGN-POLICIES.md` (Spacing).
 - **Layout & content width** — content-driven, not audience-driven (measure for text; shell width by density). In `DESIGN-POLICIES.md` (Layout and content width).
 - **Versions** — context + current text-link treatment in `../../README.md` (Versions); stale filled "version pills" retired in `../color-mapping.md`. *Pending:* a proper `version-nav` pattern page covering the one-version → many-versions spectrum on both surfaces.
-- **Read-only vs editable cards** — `cards.html` now documents the editable "section card" alongside the read-only `.info-card`, and the deliberate visual distinction. *Pending:* extract the section-card CSS into `internal-tools.css`.
+- **Read-only vs editable cards** — `cards.html` now documents the editable "section card" alongside the read-only `.ds-info-card`, and the deliberate visual distinction. *Pending:* extract the section-card CSS into `internal-tools.css`.
 - **Form layout + category editor** — documented in `docs/forms.html` (Layout): top-aligned labels, typographic grouping, content-matched field widths, standardized action bar. *Pending:* interactive demos + extracting the category-editor / form-field classes into `internal-tools.css`.
 - **Nav selected state** — reuses the existing active/pressed convention (tint fill + darkened text, from the `--ds-accent-wash` ladder), not a bespoke white pill. No new rule needed.
 - **Raw / Browse display** — two variants of one toggle: a *display swap* on read-only pages, a *preview reveal* on editable forms.
