@@ -32,6 +32,12 @@ An alert is an alert everywhere — never a notification, toast, banner, or mess
 
 ---
 
+### Category names are copied, never restyled
+
+Show a category exactly as arXiv publishes it, capitalization included, and always with `.ds-tag--keep-case` when it is a tag. `cs.AI`, `physics.optics` and `cond-mat.str-el` are all correct as written. Uppercasing the lowercase ones produces strings that are not real categories: every `physics.*` and `cond-mat.*` subcategory is lowercase.
+
+---
+
 ## Rules for load-bearing text
 
 ### One instruction per sentence, imperative and active

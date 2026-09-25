@@ -51,17 +51,20 @@
     if (name) text.appendChild(document.createTextNode(' ' + (name.length > 64 ? name.slice(0, 61) + '…' : name)));
   }
 
-  var barHome = 0;
-  function measure() {
-    if (!bar) return;
-    var was = bar.style.position;
-    bar.style.position = 'static';
-    barHome = bar.getBoundingClientRect().top + window.pageYOffset;
-    bar.style.position = was;
+  // Stuck or not is read from a 1px sentinel pinned to the bar's top edge,
+  // outside the viewport exactly when the bar is held at the top. It is
+  // independent of the bar's height, so the bar tightening when it sticks
+  // cannot unstick it: measuring the bar itself did, and the bar flickered.
+  if (bar && 'IntersectionObserver' in window) {
+    var sentinel = document.createElement('span');
+    sentinel.className = 'ds-toc-sentinel';
+    bar.insertBefore(sentinel, bar.firstChild);
+    new IntersectionObserver(function (entries) {
+      bar.classList.toggle('is-stuck', !entries[0].isIntersecting && entries[0].boundingClientRect.top < 0);
+    }, { threshold: 0 }).observe(sentinel);
   }
 
   function sync() {
-    if (bar) bar.classList.toggle('is-stuck', window.pageYOffset >= barHome - 1);
     var line = window.pageYOffset + 120, current = null;
     targets.forEach(function (t) {
       if (t.el.getBoundingClientRect().top + window.pageYOffset <= line) current = t;
@@ -77,8 +80,7 @@
     label(current ? current.link.textContent.replace(/\s+/g, ' ').trim() : '');
   }
 
-  window.addEventListener('resize', function () { measure(); sync(); });
+  window.addEventListener('resize', sync);
   window.addEventListener('scroll', sync, { passive: true });
-  measure();
   sync();
 })();

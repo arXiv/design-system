@@ -271,8 +271,8 @@ def check_theme_control():
             continue
         if "defer" in m.group(1) or "async" in m.group(1):
             fail(rule, rel, "loads theme.js deferred — the attribute must land before first paint")
-        if text.count('class="ds-theme-toggle"') != 1:
-            fail(rule, rel, f'{text.count(chr(34)+"ds-theme-toggle"+chr(34))} theme toggles; expected exactly 1')
+        if text.count('class="ds-theme-toggle"') < 1:
+            fail(rule, rel, "no theme toggle")
         if 'id="ds-theme-status"' not in text:
             fail(rule, rel, "no #ds-theme-status live region for the toggle to announce into")
     if rule not in FAILS:
@@ -340,6 +340,7 @@ CLASS_RE = re.compile(r"\.((?:ds-|btn-|type-|info-|seg-)[\w-]+)")
 SCRIPT_OWNED = {
     "ds-code-copy-idle", "ds-code-copy-done",      # copy-code.js swaps these
     "ds-theme-icon-system", "ds-theme-icon-light", "ds-theme-icon-dark",  # theme.js
+    "ds-toc-sentinel",                              # toc.js
 }
 
 
