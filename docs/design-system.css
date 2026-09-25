@@ -384,7 +384,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 :where(.ds-page) code {
   font-family: var(--ds-font-mono);
   font-size: 0.9em;
-  background: var(--ds-border);   /* the hairline grey: the one value that differs from every ground in both themes */
+  background: color-mix(in srgb, var(--ds-text) 8%, transparent);   /* a wash: the same small step on every ground, in both themes */
   padding: 0.15em 0.35em;
   border-radius: 3px;
 }
@@ -2002,7 +2002,6 @@ html:has(.ds-modal[open]) {
   color: var(--ds-text);
 }
 /* Code sits on the tint, not on white, so it needs its own ground. */
-.ds-note :not(pre) > code { background: color-mix(in srgb, var(--ds-surface) 70%, transparent); }   /* a code block keeps its own ground */
 
 /* Registers. Blue states a requirement, grey gives guidance, lime marks
    material belonging to the internal surface — the one place a public page may
@@ -2904,8 +2903,8 @@ html:has(.ds-toc-bar--sticky) { scroll-padding-top: 5rem; }
      no property at all. One set of rules, two surfaces, no specificity to
      reason about. */
   --ds-hdr-bg:        var(--ds-chrome);   /* the bar is dark in both themes; --ds-text would flip it light */
-  --ds-hdr-fg:        var(--ds-text-disabled);    /* 7.4:1 on #1c1a17 — AA on dark */
-  --ds-hdr-fg-strong: var(--ds-surface-muted);   /* hover, active, Log in */
+  --ds-hdr-fg:        var(--ds-disabled-grey);    /* fixed #b0aba6, 7.4:1 on the bar; --ds-text-disabled would go dark in dark mode */
+  --ds-hdr-fg-strong: var(--ds-card-grey);       /* hover, active, Log in — fixed for the same reason */
   --ds-hdr-hover:     #302c28;
   --ds-hdr-ring:      var(--ds-focus-ring-on-dark, #64b5f6);
   --ds-hdr-border:    transparent;              /* the dark bar needs no edge */

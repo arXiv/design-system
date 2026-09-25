@@ -70,7 +70,8 @@
 
   <header class="ds-page-header">
     <h1>Site header</h1>
-    <p>The universal arXiv public-page header: announcement band + black bar (<code>.ds-announcement</code> / <code>.ds-site-header</code>), plus the <code>.ds-skip-link</code> utility. Nothing below the black bar is approved chrome.</p>
+    <p>The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left, and navigation, search, and account links on the right. An optional, dismissible announcement banner can be displayed above the header. Absolute consistency across all pages is critical.</p>
+    <p>Internal pages have their own header and variations, see <a href="#modifiers">Modifiers</a> for examples.</p>
   </header>
 
 
@@ -87,9 +88,11 @@
           <ol>
             <li><a href="#the-header-unit">The header unit</a></li>
             <li><a href="#signed-out-and-signed-in">Signed out, and signed in</a></li>
-            <li><a href="#the-light-variant">The light variant</a></li>
-            <li><a href="#dropdown-groups">Dropdown groups</a></li>
+            <li><a href="#dropdown-groups">Navigation</a></li>
             <li><a href="#folding-instead-of-collapsing">Folding instead of collapsing</a></li>
+            <li><a href="#with-the-announcement-band">With the announcement band</a></li>
+            <li><a href="#the-light-variant">The light variant</a></li>
+            <li><a href="#internal-headers">Internal header</a></li>
             <li><a href="#hosting-the-header">Hosting the header</a></li>
             <li><a href="#surface-tokens">Surface tokens</a></li>
           </ol>
@@ -98,20 +101,14 @@
     </div>
   </div>
 
-  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <!-- ═════════ Core zone ═════════ -->
   <div class="ds-full ds-zone-primary">
 
   <!-- ───────── The header unit ───────── -->
   <section class="section">
     <h2 class="section-title" id="the-header-unit">The header unit</h2>
-    <p class="ds-section-desc">Rendered directly from <code>design-system.css</code>. Resize the window: at ≤599px the nav collapses behind the hamburger (the approved mobile treatment); <strong>without JS it wraps to a second row instead</strong> — every item stays visible, passing WCAG 1.4.10 reflow at 320px and keeping voice-control working. The header is static — it scrolls away with the page (the site header is never the sticky bar — DESIGN-POLICIES.md). The announcement band above the bar is documented on <a href="../messages.html#announcement-band">Special messages</a>; this page shows the unit it belongs to.</p>
+    <p class="ds-section-desc">Rendered directly from <code>design-system.css</code>. Resize the window: at ≤599px the nav collapses behind the hamburger (the approved mobile treatment); <strong>without JS it wraps to a second row instead</strong> — every item stays visible, passing WCAG 1.4.10 reflow at 320px and keeping voice-control working. The header is static — it scrolls away with the page (the site header is never the sticky bar — DESIGN-POLICIES.md).</p>
     <div class="ds-card">
-      <div class="ds-announcement" role="region" aria-label="Announcement">
-        <img class="ds-announcement-glyph" src="../assets/images/bones/icon_small-smileybones.svg" alt="">
-        <span class="ds-announcement-text">arXiv is now an independent nonprofit!</span>
-        <a class="ds-announcement-link" href="https://info.arxiv.org/about/index.html">Learn more</a>
-        <button type="button" class="ds-close"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Dismiss announcement</span></button>
-      </div>
       <header class="ds-site-header">
         <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
           <img src="../assets/images/logos/logo_arxiv-primary.svg" alt="archive">
@@ -134,20 +131,6 @@
         <div class="ds-acc-body">
 <pre><code>&lt;!-- First focusable element on the page --&gt;
 &lt;a class="ds-skip-link" href="#main"&gt;Skip to main content&lt;/a&gt;
-
-&lt;!-- The band: see messages.html --&gt;
-&lt;div class="ds-announcement" role="region" aria-label="Announcement"&gt;
-  &lt;img class="ds-announcement-glyph" src="icon_small-smileybones.svg" alt=""&gt;
-  &lt;span class="ds-announcement-text"&gt;arXiv is now an independent nonprofit!&lt;/span&gt;
-  &lt;a class="ds-announcement-link" href="/about"&gt;Learn more&lt;/a&gt;
-  &lt;button type="button" class="ds-close"&gt;
-    &lt;svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
-      &lt;path d="M18 6 6 18"/&gt;
-      &lt;path d="m6 6 12 12"/&gt;
-    &lt;/svg&gt;
-    &lt;span class="is-sr-only"&gt;Dismiss announcement&lt;/span&gt;
-  &lt;/button&gt;
-&lt;/div&gt;
 
 &lt;header class="ds-site-header"&gt;
   &lt;a href="/" class="ds-site-header-logo" aria-label="archive home"&gt;
@@ -178,10 +161,6 @@
             <dt>.ds-skip-link</dt>
             <dd>The skip link. The first focusable element on the page, visible only on keyboard
             focus. Its <code>href</code> is the id of the main content.</dd>
-            <dt>.ds-announcement</dt>
-            <dd>The band above the bar. Its parts, its colour registers and its tone are documented on
-            <a href="../messages.html#announcement-band">Special messages</a>; this page shows only
-            where it sits.</dd>
             <dt>.ds-site-header</dt>
             <dd>The bar. Bare, it is the arXiv header — arxiv.org cannot forget a class it never
             has to write.</dd>
@@ -224,7 +203,7 @@
           <img src="../assets/images/logos/logo_arxiv-primary.svg" alt="archive">
         </a>
         <nav class="ds-site-header-nav" aria-label="Signed-in example navigation">
-          <a href="#">Search</a>
+          <a href="#"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</a>
           <a href="#">Submit</a>
           <span class="ds-site-header-divider" aria-hidden="true"></span>
           <span class="ds-site-header-greeting">Welcome <b>Ada</b></span>
@@ -234,7 +213,13 @@
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;nav class="ds-site-header-nav" aria-label="Main navigation"&gt;
-  &lt;a href="/search"&gt;Search&lt;/a&gt;
+  &lt;a href="/search"&gt;
+    &lt;svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
+      &lt;circle cx="11" cy="11" r="8"/&gt;
+      &lt;line x1="21" y1="21" x2="16.65" y2="16.65"/&gt;
+    &lt;/svg&gt;
+    Search
+  &lt;/a&gt;
   &lt;a href="/submit"&gt;Submit&lt;/a&gt;
   &lt;span class="ds-site-header-divider" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;span class="ds-site-header-greeting"&gt;Welcome &lt;b&gt;Ada&lt;/b&gt;&lt;/span&gt;
@@ -264,7 +249,7 @@
           <img src="../assets/images/logos/logo_arxiv-primary.svg" alt="archive">
         </a>
         <nav class="ds-site-header-nav" aria-label="Long-name example navigation">
-          <a href="#">Search</a>
+          <a href="#"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</a>
           <a href="#">Submit</a>
           <span class="ds-site-header-divider" aria-hidden="true"></span>
           <span class="ds-site-header-greeting">Welcome <b>Sivaramakrishnan</b></span>
@@ -284,50 +269,11 @@
     </div>
   </section>
 
-  <!-- ───────── The light variant ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="the-light-variant">The light variant</h2>
-    <p class="ds-section-desc">The bare class <strong>is</strong> the arXiv header. A property that is not arxiv.org adds <code>.ds-site-header--light</code>, which re-points seven surface tokens and declares no property of its own. The token values are listed under <a href="#surface-tokens">Surface tokens</a>.</p>
-    <div class="ds-card">
-      <details class="ds-marginalia">
-        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">The bar at the top of this page is the light variant, with dropdown groups.</p>
-      </details>
-      <nav class="ds-site-header ds-site-header--light" aria-label="Light variant example">
-        <a href="#" class="ds-site-header-logo">arXiv Design System</a>
-        <nav class="ds-site-header-nav" aria-label="Light variant example navigation">
-          <a href="#">Patterns</a>
-          <a href="#">Mockups</a>
-          <a href="#">Docs</a>
-        </nav>
-      </nav>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;nav class="ds-site-header ds-site-header--light" aria-label="Design system"&gt;
-  &lt;a href="/" class="ds-site-header-logo"&gt;arXiv Design System&lt;/a&gt;
-  &lt;nav class="ds-site-header-nav" aria-label="Site navigation"&gt;
-    &lt;a href="/patterns"&gt;Patterns&lt;/a&gt;
-    &lt;a href="/mockups"&gt;Mockups&lt;/a&gt;
-    &lt;a href="/docs"&gt;Docs&lt;/a&gt;
-  &lt;/nav&gt;
-&lt;/nav&gt;</code></pre>
-          <dl>
-            <dt>.ds-site-header--light</dt>
-            <dd>Seven token values. No property overrides. The bar is white
-            (<code>--ds-surface</code>) with Library Grey links, Repository Brown emphasis, and a
-            Border Light bottom edge; the standard focus ring replaces the on-dark one.</dd>
-            <dt>.ds-site-header-logo</dt>
-            <dd>On a property that is not arxiv.org, the slot may hold that property’s own wordmark as
-            text; it takes the bar’s emphasis colour.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-  </section>
+  
 
-  <!-- ───────── Dropdown groups ───────── -->
+  <!-- ───────── Navigation ───────── -->
   <section class="section">
-    <h2 class="section-title" id="dropdown-groups">Dropdown groups</h2>
+    <h2 class="section-title" id="dropdown-groups">Navigation</h2>
     <p class="ds-section-desc">A property whose sections need grouping adds <code>.ds-site-header-dropdown</code>, built on <code>&lt;details&gt;</code> so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement.</p>
     <div class="ds-card">
       <nav class="ds-site-header ds-site-header--light" aria-label="Dropdown example">
@@ -396,10 +342,8 @@
     <div class="ds-alert ds-alert--info">
       <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
       <div class="ds-alert-content">
-        <p class="ds-alert-title">The five-item cap is about arxiv.org, not this component</p>
-        <p>DESIGN-POLICIES caps arXiv’s own top-level navigation at five items. That is a
-        constraint on the content of one site, not on the header. Other properties carry the
-        navigation their content needs, including grouped menus.</p>
+        <p class="ds-alert-title">No more than five top-level navigation links</p>
+        <p>To improve usability, our design policies constrain top-level navigation to five items. More than five causes cognitive overload and reduces comprehension.</p>
       </div>
     </div>
   </section>
@@ -415,7 +359,7 @@
         </a>
         <div class="ds-site-header-center"><span style="color: var(--ds-hdr-fg); font-family: var(--ds-font-mono); font-size: 0.8125rem;">arXiv:2604.22725v1</span></div>
         <nav class="ds-site-header-nav" aria-label="Centre slot example navigation">
-          <a href="#">Search</a>
+          <a href="#"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</a>
           <a href="#">Submit</a>
           <a href="#">Donate</a>
           <span class="ds-site-header-divider" aria-hidden="true"></span>
@@ -480,6 +424,111 @@
 
   </div> <!-- /core zone -->
 
+  <h2>Modifiers</h2>
+
+  <!-- ───────── With the announcement band ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="with-the-announcement-band">With the announcement band</h2>
+    <p class="ds-section-desc">When arXiv has something to say to everyone, the announcement band sits
+    directly above the bar, and the two scroll away together. The band itself, its registers and its
+    tone are on <a href="../messages.html#announcement-band">Special messages</a>; this page shows only
+    where it sits.</p>
+    <div class="ds-card">
+      <div class="ds-announcement" role="region" aria-label="Announcement">
+        <img class="ds-announcement-glyph" src="../assets/images/bones/icon_small-smileybones.svg" alt="">
+        <span class="ds-announcement-text">arXiv is now an independent nonprofit!</span>
+        <a class="ds-announcement-link" href="https://info.arxiv.org/about/index.html">Learn more</a>
+        <button type="button" class="ds-close"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Dismiss announcement</span></button>
+      </div>
+      <nav class="ds-site-header" aria-label="Band example">
+        <a href="#" class="ds-site-header-logo" aria-label="archive home">
+          <img src="../assets/images/logos/logo_arxiv-primary.svg" alt="archive">
+        </a>
+        <nav class="ds-site-header-nav" aria-label="Band example navigation">
+          <a href="#"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</a>
+          <a href="#">Submit</a>
+          <a href="#">Donate</a>
+          <span class="ds-site-header-divider" aria-hidden="true"></span>
+          <a href="#" class="ds-site-header-login">Log in</a>
+        </nav>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;a class="ds-skip-link" href="#main"&gt;Skip to main content&lt;/a&gt;
+
+&lt;div class="ds-announcement" role="region" aria-label="Announcement"&gt;
+  &lt;img class="ds-announcement-glyph" src="icon_small-smileybones.svg" alt=""&gt;
+  &lt;span class="ds-announcement-text"&gt;arXiv is now an independent nonprofit!&lt;/span&gt;
+  &lt;a class="ds-announcement-link" href="/about"&gt;Learn more&lt;/a&gt;
+  &lt;button type="button" class="ds-close"&gt;
+    &lt;svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
+      &lt;path d="M18 6 6 18"/&gt;
+      &lt;path d="m6 6 12 12"/&gt;
+    &lt;/svg&gt;
+    &lt;span class="is-sr-only"&gt;Dismiss announcement&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;header class="ds-site-header"&gt;…&lt;/header&gt;</code></pre>
+          <dl>
+            <dt>.ds-announcement</dt>
+            <dd>The band, placed before <code>.ds-site-header</code> and after the skip link. See
+            <a href="../messages.html#announcement-band">Special messages</a> for its parts.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── The light variant ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="the-light-variant">The light variant</h2>
+    <p class="ds-section-desc">A secondary property, like this documentation, differentiates itself from the main arXiv with a light header variant. Adding <code>.ds-site-header--light</code> re-points seven surface tokens but declares no property of its own. The token values are listed under <a href="#surface-tokens">Surface tokens</a>.</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">The bar at the top of this page is the light variant, with dropdown groups.</p>
+      </details>
+      <nav class="ds-site-header ds-site-header--light" aria-label="Light variant example">
+        <a href="#" class="ds-site-header-logo">arXiv Design System</a>
+        <nav class="ds-site-header-nav" aria-label="Light variant example navigation">
+          <a href="#">Patterns</a>
+          <a href="#">Mockups</a>
+          <a href="#">Docs</a>
+        </nav>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav class="ds-site-header ds-site-header--light" aria-label="Design system"&gt;
+  &lt;a href="/" class="ds-site-header-logo"&gt;arXiv Design System&lt;/a&gt;
+  &lt;nav class="ds-site-header-nav" aria-label="Site navigation"&gt;
+    &lt;a href="/patterns"&gt;Patterns&lt;/a&gt;
+    &lt;a href="/mockups"&gt;Mockups&lt;/a&gt;
+    &lt;a href="/docs"&gt;Docs&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-site-header--light</dt>
+            <dd>Seven token values. No property overrides. The bar is white
+            (<code>--ds-surface</code>) with Library Grey links, Repository Brown emphasis, and a
+            Border Light bottom edge; the standard focus ring replaces the on-dark one.</dd>
+            <dt>.ds-site-header-logo</dt>
+            <dd>On a property that is not arxiv.org, the slot may hold that property’s own wordmark as
+            text; it takes the bar’s emphasis colour.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Internal header ───────── -->
+  <section class="section">
+    <h3 class="section-title" id="internal-headers">Internal header</h3>
+    <!-- add an example of the Admin Console header. Add a note that each internal tool may need to modify the header contents and navigation to suit specific user and tool needs. -->
+  </section>
+
+
+
   <h2>Rules</h2>
   <section class="section">
     <h3 class="section-title" id="hosting-the-header">Hosting the header</h3>
@@ -497,21 +546,12 @@
   <h2>Spec</h2>
   <section class="section">
     <h3 class="section-title" id="surface-tokens">Surface tokens</h3>
-    <p class="ds-section-desc">The seven tokens the bar reads its surface from, and what <code>.ds-site-header--light</code> re-points each one to.</p>
-    <div class="table-scroll" role="region" aria-label="Surface tokens" tabindex="0">
-      <table class="ds-table-framed token-table">
-        <thead><tr><th>Token</th><th>Default (arXiv)</th><th><code>--light</code></th></tr></thead>
-        <tbody>
-          <tr><td><code>--ds-hdr-bg</code></td><td>Repository Brown (<code>--ds-chrome</code>)</td><td>White (<code>--ds-surface</code>)</td></tr>
-          <tr><td><code>--ds-hdr-fg</code></td><td>Grey (<code>--ds-text-disabled</code>, 7.4:1 on the dark bar)</td><td>Library Grey (<code>--ds-text-muted</code>)</td></tr>
-          <tr><td><code>--ds-hdr-fg-strong</code></td><td>Card Grey (<code>--ds-surface-muted</code>)</td><td>Repository Brown (<code>--ds-chrome</code>)</td></tr>
-          <tr><td><code>--ds-hdr-hover</code></td><td><code>#302c28</code></td><td>a 5% black wash</td></tr>
-          <tr><td><code>--ds-hdr-ring</code></td><td>Focus Ring on dark (<code>--ds-focus-ring-on-dark</code>)</td><td>Focus Ring (<code>--ds-focus-ring</code>)</td></tr>
-          <tr><td><code>--ds-hdr-border</code></td><td>transparent</td><td>Border Light (<code>--ds-border</code>)</td></tr>
-          <tr><td><code>--ds-hdr-divider</code></td><td><code>#4a433d</code></td><td>Border Light (<code>--ds-border</code>)</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <p class="ds-section-desc">How the bar is coloured, and how a variant changes it.</p>
+    <p><code>.ds-site-header</code> declares seven <code>--ds-hdr-*</code> tokens on itself: background,
+    text, emphasis text, hover, focus ring, bottom border and divider. Every rule in the bar reads one
+    of them, so a variant is a re-pointing of tokens and never a property override:
+    <code>.ds-site-header--light</code> sets all seven and nothing else. A property with its own
+    colours does the same.</p>
     <p>The focus ring is the one to notice: the standard Link Blue ring is invisible against
     Repository Brown, so the dark surface needs its own. Because it is a token rather than a rule,
     a property that switches surface gets the correct ring without knowing that it needed to.</p>
