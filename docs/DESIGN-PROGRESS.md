@@ -11,7 +11,7 @@
 | `internal-tools.css` | Source of truth for all shared component CSS |
 | `buttons.html` | Button style guide / visual reference |
 | `cards.html` | Info card component guide |
-| `color-tokens.html` | Full color token reference (light + dark) |
+| `colors.html` | The palette, both surfaces; the separate internal token page was folded into it |
 | `link-styles.html` | Text link color reference — states, contexts, visited |
 | `tables.html` | Data table, sortable headers, filter toolbar |
 | *(merged)* | Segmented control, toggle switch and form validation moved to `docs/forms.html` |

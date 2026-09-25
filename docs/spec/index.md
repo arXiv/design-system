@@ -17,7 +17,6 @@ These pages have not had their review pass. Read the page itself, and expect the
 
 - brand.html
 - cards.html
-- color-tokens.html
 - colors.html
 - dark-mode.html
 - footer.html
