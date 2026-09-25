@@ -31,7 +31,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 PUBLIC_CSS = REPO / "docs" / "design-system.css"
-INTERNAL_CSS = REPO / "docs" / "internal" / "internal-tools.css"
+INTERNAL_CSS = REPO / "docs" / "internal-tools.css"
 DEFAULT_CONSUMER = REPO.parent / "arxiv-blog-theme"
 
 FAILS = []

@@ -105,7 +105,7 @@ rules:
 
 Each arXiv button family shares the same mechanical spec, with color used to differentiate by context: Open Blue for public pages and Access Lime for internal tools. Public pages are everywhere a reader or author can access. Internal pages include arXiv Check and the Admin Console.
 
-Load `design-system.css`; internal tools also load `internal/internal-tools.css` and put
+Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
 
 ## Button tiers

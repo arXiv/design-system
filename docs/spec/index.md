@@ -17,18 +17,19 @@ These pages have not had their review pass. Read the page itself, and expect the
 
 - brand.html
 - cards.html
+- color-tokens.html
 - colors.html
 - dark-mode.html
+- footer.html
 - forms.html
-- internal/color-tokens.html
-- internal/metadata-panel.html
-- internal/tables.html
+- header.html
 - links.html
+- metadata-panel.html
 - modals.html
 - organizing-content.html
+- outreach.html
 - progressive-disclosure.html
-- public/footer.html
-- public/header.html
 - spacing.html
+- tables.html
 - typography.html
 - version-display.html

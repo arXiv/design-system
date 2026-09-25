@@ -39,25 +39,25 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | A close or dismiss control | `docs/buttons.html` | `.ds-close` — one control on both surfaces; the host supplies position only |
 | An icon | `docs/icons.html` (generated from `docs/icons/`) | copy the file from `docs/icons/` inline, `aria-hidden="true"`, `stroke="currentColor"`; never draw a glyph from memory, and never a second icon set. Adding one: drop the file in `docs/icons/`, run `verification/gen-icons.py` |
 | Links | `docs/links.html` — identical on every surface | bare `<a>` inside `.ds-page`, no class; inline links underlined |
-| Tables (internal tools), row selection, bulk actions | `docs/internal/tables.html` | `.ds-table`, sortable headers, `.ds-filter`; bulk-bar + selection rules documented there |
-| One record's details (label + value panel) | `docs/internal/metadata-panel.html` (concept: `docs/organizing-content.html`) | `.ds-meta-panel` + `--editable` / `--reference` / `--ruled` |
+| Tables (internal tools), row selection, bulk actions | `docs/tables.html` | `.ds-table`, sortable headers, `.ds-filter`; bulk-bar + selection rules documented there |
+| One record's details (label + value panel) | `docs/metadata-panel.html` (concept: `docs/organizing-content.html`) | `.ds-meta-panel` + `--editable` / `--reference` / `--ruled` |
 | Forms, validation | `docs/forms.html` — one page, both surfaces | `.ds-field`/`.ds-label`/`.ds-input`/`.ds-hint`, `.is-invalid`, `.field-error`, `.ds-check`, `.ds-switch`, `.ds-seg` |
 | A code block on a docs page | `docs/typography.html` *Code blocks* | plain `<pre><code>` plus `<script src="copy-code.js" defer>` once per page — the copy button is added for you; never hand-build one |
 | Version display | `docs/version-display.html` | inline version links + `.ds-alert` warning |
-| Site header / footer | `docs/public/header.html`, `docs/public/footer.html` | `.ds-site-header` (+ `--light`, `--wrap` for a centre slot that folds), `.ds-site-footer` — never hand-build chrome or draw logos from text |
+| Site header / footer | `docs/header.html`, `docs/footer.html` | `.ds-site-header` (+ `--light`, `--wrap` for a centre slot that folds), `.ds-site-footer` — never hand-build chrome or draw logos from text |
 | Category / topic / state labels | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-tag` (+ `--info` / `--success` / `--warning` / `--error`, `--keep-case`, `--rectangle`); category names are copied, never restyled |
 | Dark mode (status, mechanism, what flips) | `docs/dark-mode.html` | tokens flip automatically; never hand-pick dark values; lock demo pages light; `.ds-theme-toggle` + `theme.js` in the head **undeferred** — both stylesheets mirror their dark block under `[data-theme]` |
-| The blog, an event or campaign mini-site | `docs/outreach/` + DESIGN-POLICIES *Contexts* | the public stylesheet, plus only the differences listed there |
+| The blog, an event or campaign mini-site | `docs/outreach.html` + DESIGN-POLICIES *Contexts* | the public stylesheet, plus only the differences listed there |
 | Error messages, form help, instructions | `docs/STYLE.md`, then `docs/brand.html` for voice | existing wording — one name per thing, never a synonym |
 | Something with no pattern | nearest pattern above + `docs/brand.html` | derive from documented rationale; say so in comments |
 
 **Stylesheets are tiered.** `docs/design-system.css` is **tier 1** — the foundation and every component more than one surface could use. Everything loads it.
 
-`docs/internal/internal-tools.css` is **tier 2 for internal tools**, and is *not* self-contained: an internal page loads tier 1 first, then this. It holds only what is internal-only (tables, metadata panels, info cards, the internal icon-button variants) plus the tokens whose values differ on that surface.
+`docs/internal-tools.css` is **tier 2 for internal tools**, and is *not* self-contained: an internal page loads tier 1 first, then this. It holds only what is internal-only (tables, metadata panels, info cards, the internal icon-button variants) plus the tokens whose values differ on that surface.
 
 **The accent comes from a class, not from a file.** `.ds-internal` lives in tier 1 and re-points `--ds-accent` and the button colours to Access Lime for everything inside it. An internal page puts it on `<html>`; a page that shows both surfaces puts it on a wrapper.
 
-**Two surfaces, and one name each.** They are the **public site** and **internal tools** — the wording DESIGN-POLICIES uses. Not `staff tools`, not `the staff surface`, not `the staff stylesheet`: one name per thing, and a second name for the same thing is how a reader ends up wondering whether it is a third thing. "Staff" stays for the people ("arXiv staff can see aggregate figures"). The stylesheet is named for it too: `docs/internal/internal-tools.css`.
+**Two surfaces, and one name each.** They are the **public site** and **internal tools** — the wording DESIGN-POLICIES uses. Not `staff tools`, not `the staff surface`, not `the staff stylesheet`: one name per thing, and a second name for the same thing is how a reader ends up wondering whether it is a third thing. "Staff" stays for the people ("arXiv staff can see aggregate figures"). The stylesheet is named for it too: `docs/internal-tools.css`.
 
 ```html
 <html lang="en" class="ds-internal">

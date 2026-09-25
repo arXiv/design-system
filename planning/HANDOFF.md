@@ -211,5 +211,5 @@ Shamsi's decisions, and what is built (see git log from fdcdc95 onward):
 - Type sizes are `rem`; a control's padding and min-width are `em` against its
   own label. Controls clear a 24px target floor, with two exemptions recorded
   by name in `verify-mockups.py`.
-- Tier 2 (`docs/internal/internal-tools.css`) holds only what differs. Never
+- Tier 2 (`docs/internal-tools.css`) holds only what differs. Never
   copy a component into it to restyle — that is a token.

@@ -54,5 +54,5 @@ Key differences from internal:
 
 - Color palette: `../color-mapping.md`
 - Typography: `../typography.md`
-- Internal patterns (shared foundations): `../internal/`
+- Internal patterns (shared foundations): `internal-tools.css` and the internal sections of each page
 - Visual audit (the "why"): `../../verification/audits/audit-visual.md`

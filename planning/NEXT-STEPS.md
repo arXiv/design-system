@@ -1,6 +1,6 @@
 # Next Steps — Program Backlog
 
-Program-level backlog for the design system. **The active list is the v1 plan immediately below (agreed 2026-09-09).** Everything after the horizontal rule is the older backlog, last groomed 2026-07-28 — read it as history until it is groomed again. The 2026-07-28 phased plan was the organizing layer for that era; the detailed queues that follow it are the backlog the phases draw from. Component-level roadmaps live in [public/README.md](../docs/public/README.md) (public patterns) and [internal/DESIGN-PROGRESS.md](../docs/internal/DESIGN-PROGRESS.md) (internal). When an item here is really about one of those, this file points at it rather than duplicating it.
+Program-level backlog for the design system. **The active list is the v1 plan immediately below (agreed 2026-09-09).** Everything after the horizontal rule is the older backlog, last groomed 2026-07-28 — read it as history until it is groomed again. The 2026-07-28 phased plan was the organizing layer for that era; the detailed queues that follow it are the backlog the phases draw from. Component-level roadmaps live in [PATTERNS.md](../docs/PATTERNS.md) (public patterns) and [DESIGN-PROGRESS.md](../docs/DESIGN-PROGRESS.md) (internal). When an item here is really about one of those, this file points at it rather than duplicating it.
 
 ## The v1 plan (agreed 2026-09-09) — ACTIVE
 
@@ -85,7 +85,7 @@ any parallelism possible.
       `forms.html`, `.ds-full` with
       `.ds-container` on `organizing-content.html`, `.ds-inline-active` on
       `progressive-disclosure.html`, `.is-disabled` on `buttons.html`, and
-      `.type-cross` via a four-badge legend on `internal/tables.html` —
+      `.type-cross` via a four-badge legend on `tables.html` —
       the whole badge family had only ever been demonstrated, never explained.
       **Undocumented classes: 8 → 0.**
 
@@ -205,7 +205,7 @@ Simplest first, so the pattern-page rhythm is set before the harder ones.
       **Checked and correct already:** targets clear the 24px floor (32px
       trigger, 33px item), the menu does not overflow the viewport, the nav
       landmark is named, and a second trigger closes the first.
-      **Documented** on `public/header.html`: why it is a disclosure and
+      **Documented** on `header.html`: why it is a disclosure and
       not `role="menu"` — an ARIA menu promises roving arrow-key focus that a
       list of links does not have.
 - [x] **8b.** DONE 2026-09-09 as `.ds-pagination` — a **record stepper**, which
@@ -415,7 +415,7 @@ unable to fail. Left out so the test can tell us whether the system covers it.
       notes" → Accessibility, "Semantics & markup" → Usage). The spine is now
       in AGENTS.md. **Still to do:** reorder the spine sections to that order
       where a page has them out of sequence, and fill the gaps — 9 of 15
-      component pages have no Spec section, and `internal/tables.html` has
+      component pages have no Spec section, and `tables.html` has
       none of the four.
 
       **Delete the changelog prose.** The system is new and in use nowhere, so
@@ -605,7 +605,7 @@ Sequencing rationale: (1) measure token burn *before* reorganizing files, so the
 **From the dev Slack thread (2026-07-30, Carly + Deyan on template reuse) — proposals pending discussion with devs, not unilateral actions:**
 - [ ] **Proposal: the design system as the dependency-free UI layer.** The devs need shared look-and-feel that works in services that can't take arxiv-base (vendored template copies drift; a footer change = ~9 PRs). Our CSS is already dependency-free by policy and published at a stable URL — draft a short proposal offering tokens + component CSS (possibly + reference Jinja partials) as the "reusable everywhere, nearly no dependencies" core Deyan described. Offers, never prescribes: packaging/Flask/arxiv-base governance is theirs (Brian C preferred keeping things in base as of January).
 - [ ] **Proposal: agent pointer file for other arXiv repos.** Carly's workflow (point Claude at browse's templates for "the new look and feel") makes whatever repo an agent reads the de facto design system — drift propagates. A three-line AGENTS.md-style pointer other repos could carry ("canonical look-and-feel reference: the design-system docs, not sibling services") fixes this cheaply and agent-agnostically. Draft for dev feedback alongside the layer proposal.
-- [x] **Write the week's design decisions into docs** (2026-07-30): card rows = spacing never dividers + tint-is-a-signal + card/table/metadata-panel distinction → `docs/organizing-content.html`; bulk-action bar layout + selected-row lime tint + disable-don't-disappear → `docs/internal/tables.html`; AGENTS.md routing rows added. Public tint rule written from the verified example (Card Grey citation block in the merged mockup); full public tint vocabulary still with the tint-families foundations item. Full metadata-panel pattern page remains with the Wombat promotion item.
+- [x] **Write the week's design decisions into docs** (2026-07-30): card rows = spacing never dividers + tint-is-a-signal + card/table/metadata-panel distinction → `docs/organizing-content.html`; bulk-action bar layout + selected-row lime tint + disable-don't-disappear → `docs/tables.html`; AGENTS.md routing rows added. Public tint rule written from the verified example (Card Grey citation block in the merged mockup); full public tint vocabulary still with the tint-families foundations item. Full metadata-panel pattern page remains with the Wombat promotion item.
 - [x] **Local mockups → GitHub — DONE 2026-07-30** *(historical record; `category-management/` was removed 2026-08-11, superseded by the category editors inside `user-page/` and `paper-details/`)* (commit f05714c; scrub verified, Shamsi approved pre-push; single-home follow-throughs applied: local folder CLAUDE.md pointer, promote-pattern skill paths, machine-map memory). Original plan: Destinations: Wombat `user-page` → `mockups/internal/user-page/` (scrub: confirmed real names/emails/IPs); `user-ownership-requests` → `mockups/internal/ownership-requests/` (scrub: confirmed real email + Cornell-range IP); `user-category-management` → `mockups/internal/category-management/` (verify pass); `arXiv Check mockups` → `mockups/internal/arxiv-check/` (review the 3 images with Shamsi first — may show real submissions); `Optin modal` → `mockups/public/optin-modal/` (verify pass; saved-production-page base). Existing repo mockups join the structure: `admin-paper-detail.html` → `mockups/internal/paper-details/` (Shamsi 2026-07-29), abstract/html/merged-reader files → `mockups/public/`, all with redirect stubs + link updates. Not publishing: dated .zip snapshots (git is the version record), `server.js` (local tool, stale path), Paper Detail local folder (already in repo), internal screenshots (reference), research folder (never). Post-migration: local CLAUDE.md becomes a pointer; update promote-pattern skill + machine-map memory (single-home). Working-tree staging only — nothing commits/pushes until Shamsi reviews the scrub replacement list.
  All four decisions approved by Shamsi: `mockups/internal/` + `mockups/public/` substructure; **mandatory scrub pass** before anything publishes (findings held and shown to Shamsi before push); the research folder never enters the repo; single-home after migration (mockups live only in the repo; `~/arxiv/design` keeps source assets only — update the promote-pattern skill paths and machine-map notes when executed). Original survey: Shamsi's local mockup work at `~/arxiv/design/arXiv-mockups/` should publish to this repo for easy sharing. Surveyed 2026-07-29: `Wombat mockups/` (4.8M), `arXiv Check mockups/` (4.1M), `Optin modal mockup/` (208K), plus a local `server.js` and a **`User and other research/` folder (109M) that must NOT publish** — research materials, possible participant data; it belongs elsewhere in `~/arxiv/research`-land. Decisions needed: (a) which mockup sets publish and where they land (`mockups/` substructure — flat today; likely `mockups/internal/` vs `mockups/public/`); (b) a **scrub pass before anything publishes** — this repo is public: check admin mockups for real user names/emails, internal URLs, anything sensitive; (c) asset weight (screenshots/images may need the gitignore treatment the audits use); (d) the single-home question — after migration, do mockups live *only* in the repo (killing the local/repo split the promote-pattern skill describes, whose paths are already stale)? Aligns with one-fact-one-home.
 
@@ -634,7 +634,7 @@ Sequencing rationale: (1) measure token burn *before* reorganizing files, so the
 ## User testing — gates the mockups and dark-mode completion
 
 - [ ] **User-testing plan** for `abstract-phase2.html` and `html-phase1.html` — moderated-test script, tasks, recruitment criteria (working researchers first), what to measure. (This round is also resume-criterion #1 for finishing dark mode.)
-- [x] **Created `accessibility-research-questions.md`** (2026-07-24) at `docs/public/accessibility-research-questions.md`, seeded with the parked questions (G9 silent ambient indicators, the "Journal article vs Related DOI" label tension, newcomer signposting after the announcement banner retires, justify/hyphenation reconsideration — issues #6533, #5028). Add findings as testing rounds complete.
+- [x] **Created `accessibility-research-questions.md`** (2026-07-24) at `docs/accessibility-research-questions.md`, seeded with the parked questions (G9 silent ambient indicators, the "Journal article vs Related DOI" label tension, newcomer signposting after the announcement banner retires, justify/hyphenation reconsideration — issues #6533, #5028). Add findings as testing rounds complete.
 - [ ] **Lightweight decision log** for open product questions so test findings have a home: co-equal vs HTML-first (G2), DOI-replaces-arXiv-ID in citations, the citation label question, newcomer signposting.
 
 ## Foundations
@@ -663,7 +663,7 @@ Sequencing rationale: (1) measure token burn *before* reorganizing files, so the
 - [ ] **Refine font choices** — *Family settled (2026-06-17): re-evaluated against Atkinson Hyperlegible Next / Source Sans 3 / Inter / Public Sans → stay with IBM Plex; CJK falls back to system; tabular figures + a subsetted variable build are the agreed direction. See the "Typeface re-evaluation" section in [typography.html](../docs/typography.html).* Still open: finalize the weight set; settle whether headings use a distinct display treatment or just Plex Sans; lock italic / 700-bold decisions; build and measure the subsetted variable woff2. Ties into the Rival Sans / Freight → self-hosted IBM Plex migration tracked in DESIGN-PROGRESS.md.
 - [ ] **Common tints in the color guidelines** — building on the recent tint-families / three-tier-rule / contrast-matrix work, document: (a) the named common tints and what each is for (section backgrounds, card fills, active/hover washes, alert surfaces); (b) usage scenarios for each; (c) accessible color combinations — which text/icon colors clear WCAG AA on each tint, as a ready-to-use pairing table. Update [color-mapping.md](../docs/color-mapping.md) and `colors.html`.
 - [ ] **Build out the internal-tools color reference** — `colors.html` documents the internal palette only lightly (Access Lime + the secondary lime tint). Document the full internal palette (primary/secondary lime, lime tints, internal surfaces, internal status usage) the way the public palette is documented, on `colors.html` and in [color-mapping.md](../docs/color-mapping.md).
-- [ ] **Modernize the internal components** — the internal styles were built first and predate the public refinements; e.g. internal buttons are still plain/flat while public buttons gained gradient/press construction and the `.on-tint` modifier. Audit `internal/internal-tools.css` against the public patterns and bring the internal components up to parity (buttons first). *Pairs naturally with the dark-mode tokenization pass (Phase 2 above) — both touch the same hardcoded surfaces.*
+- [ ] **Modernize the internal components** — the internal styles were built first and predate the public refinements; e.g. internal buttons are still plain/flat while public buttons gained gradient/press construction and the `.on-tint` modifier. Audit `internal-tools.css` against the public patterns and bring the internal components up to parity (buttons first). *Pairs naturally with the dark-mode tokenization pass (Phase 2 above) — both touch the same hardcoded surfaces.*
 
 ## Components — promotion order (from the 2026-06-11 component audit)
 
@@ -700,7 +700,7 @@ Demo / reference `.html` pages that don't exist yet — each renders the compone
 - [ ] **Labs toggle section** — opt-in toggles; third-party-login items deprioritized.
 - [ ] **Announcement / banner** — `.ds-announcement` as a standalone dismissible pattern.
 - [ ] **Reader chrome family** — popover, element-pill, inline-active, annotation on one page (the G4 tint vocabulary); today only in `design-system.css`.
-- [ ] **Tertiary / text-only button** — the unchecked item on `public/README.md`.
+- [ ] **Tertiary / text-only button** — the unchecked item on `PATTERNS.md`.
 
 **Shared / foundations**
 
