@@ -55,6 +55,30 @@
   // outside the viewport exactly when the bar is held at the top. It is
   // independent of the bar's height, so the bar tightening when it sticks
   // cannot unstick it: measuring the bar itself did, and the bar flickered.
+  // How much the bar loses when it tightens, handed to the stylesheet so the
+  // stuck bar can give it back as margin and the flow beneath does not move.
+  function shrink() {
+    if (!bar) return;
+    // Measured with every transition off, or the tight height is read mid-animation.
+    var parts = [bar, trigger].concat(Array.prototype.slice.call(trigger.querySelectorAll('*')));
+    var saved = parts.map(function (el) { return el.style.transition; });
+    parts.forEach(function (el) { el.style.transition = 'none'; });
+    var stuck = bar.classList.contains('is-stuck');
+    bar.classList.remove('is-stuck');
+    var rest = bar.offsetHeight;
+    bar.classList.add('is-stuck');
+    bar.style.setProperty('--ds-toc-shrink', '0px');
+    var tight = bar.offsetHeight;
+    bar.classList.toggle('is-stuck', stuck);
+    bar.style.setProperty('--ds-toc-shrink', (rest - tight) + 'px');
+    void bar.offsetHeight;
+    parts.forEach(function (el, i) { el.style.transition = saved[i]; });
+  }
+  shrink();
+  window.addEventListener('resize', shrink);
+  // The webfont changes the trigger's height, so measure again once it is in.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(shrink);
+
   if (bar && 'IntersectionObserver' in window) {
     var sentinel = document.createElement('span');
     sentinel.className = 'ds-toc-sentinel';

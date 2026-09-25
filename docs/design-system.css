@@ -2611,7 +2611,7 @@ html:has(.ds-modal[open]) {
   backdrop-filter: blur(8px);
   border-top: 1px solid var(--ds-border);
   border-bottom: 1px solid transparent;
-  transition: padding 0.2s ease, background 0.25s ease, border-color 0.15s;
+  transition: padding 0.2s ease, margin-bottom 0.2s ease, background 0.25s ease, border-color 0.15s;
 }
 .ds-toc-bar-inner {
   display: grid;
@@ -2631,6 +2631,7 @@ html:has(.ds-modal[open]) {
 .ds-toc-bar.is-stuck {
   z-index: 100;
   padding-block: 4px;
+  margin-bottom: var(--ds-toc-shrink, 0px);   /* what the tightening took off the height, given back below, so the flow does not move: toc.js measures it. A shorter bar with content moving up under it makes the browser's scroll anchoring scroll to follow, which unsticks the bar, which grows it back, without end */
   background: color-mix(in srgb, var(--ds-surface-muted) 96%, transparent);
   border-bottom-color: var(--ds-border);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
