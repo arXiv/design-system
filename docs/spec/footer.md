@@ -11,9 +11,9 @@ components:
       - name: ".ds-site-footer"
         does: "The whole unit, on a `<footer>` element. Canvas ground with a hairline rule above it; hidden in print."
       - name: ".ds-site-footer-grid"
-        does: "The row that holds the two columns. It wraps when the two do not fit on one line, and the funders column drops below the main column; under 720px that column also takes the full width."
+        does: "The row that holds the footer's columns. Columns that do not fit side by side wrap onto their own lines."
       - name: ".ds-site-footer-main"
-        does: "The left column: the acknowledgement line, then the link row. Capped at 720px and shrinks to fit beside the funders."
+        does: "The main column: the acknowledgement line, then the link row. Capped at 720px."
       - name: ".ds-site-footer-links"
         does: "The link row, on a `<nav aria-label=\"Site navigation\">`. Plain `<a>` elements that wrap as a line; underlined on hover only."
       - name: ".ds-site-footer-sep"
@@ -32,7 +32,6 @@ rules:
   - "Adding an image or icon? Be sure it has a max-width or height so that it does not print or flash full size before styles are applied."
   - "**Use appropriate landmarks.** The unit is a real `<footer>`, and the link row is a `<nav aria-label=\"Site navigation\">`, so a screen reader user can jump to either one from a list of landmarks."
   - "**Hide the separators from assistive technology.** Every dot separator carries `aria-hidden=\"true\"`; screen readers otherwise announce “middot” between every link."
-  - "**Name each funder.** Funder logos carry organization names as alt text."
   - "**Say when a link opens a new tab.** An external link (Operational Status) uses `target=\"_blank\"`, `rel=\"noopener noreferrer\"`, and a screen-reader-only “(opens in new tab)” notice inside the link text, so the link’s name says what will happen."
   - "**Keep the institution inside the sentence.** The IP-matched institution is inserted after “member institutions”, with its comma, so the acknowledgement reads as one sentence. Omit the span when there is no match."
 ---
@@ -70,8 +69,8 @@ Rendered directly from `design-system.css`: the acknowledgement line followed by
 ```
 
 - `.ds-site-footer` — The whole unit, on a `<footer>` element. Canvas ground with a hairline rule above it; hidden in print.
-- `.ds-site-footer-grid` — The row that holds the two columns. It wraps when the two do not fit on one line, and the funders column drops below the main column; under 720px that column also takes the full width.
-- `.ds-site-footer-main` — The left column: the acknowledgement line, then the link row. Capped at 720px and shrinks to fit beside the funders.
+- `.ds-site-footer-grid` — The row that holds the footer's columns. Columns that do not fit side by side wrap onto their own lines.
+- `.ds-site-footer-main` — The main column: the acknowledgement line, then the link row. Capped at 720px.
 - `.ds-site-footer-links` — The link row, on a `<nav aria-label="Site navigation">`. Plain `<a>` elements that wrap as a line; underlined on hover only.
 - `.ds-site-footer-sep` — The dot between two links. A `<span>` holding a middle dot, with `aria-hidden="true"`.
 - `target="_blank"` — Only on the Operational Status link, which leaves arxiv.org. It takes `rel="noopener noreferrer"` and a `.is-sr-only` “(opens in new tab)” inside the link text.
@@ -90,6 +89,5 @@ The institutional mention after “member institutions” is an optional IP-matc
 - Adding an image or icon? Be sure it has a max-width or height so that it does not print or flash full size before styles are applied.
 - **Use appropriate landmarks.** The unit is a real `<footer>`, and the link row is a `<nav aria-label="Site navigation">`, so a screen reader user can jump to either one from a list of landmarks.
 - **Hide the separators from assistive technology.** Every dot separator carries `aria-hidden="true"`; screen readers otherwise announce “middot” between every link.
-- **Name each funder.** Funder logos carry organization names as alt text.
 - **Say when a link opens a new tab.** An external link (Operational Status) uses `target="_blank"`, `rel="noopener noreferrer"`, and a screen-reader-only “(opens in new tab)” notice inside the link text, so the link’s name says what will happen.
 - **Keep the institution inside the sentence.** The IP-matched institution is inserted after “member institutions”, with its comma, so the acknowledgement reads as one sentence. Omit the span when there is no match.
