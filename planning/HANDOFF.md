@@ -1,215 +1,113 @@
-# Handoff — 2026-09-17
+# Handoff — 2026-09-28
 
-Written for the next session. The previous one ended mid-conversation when
-Shamsi restarted to switch models.
+Written for the next session. Everything below is committed and pushed to
+`master` unless it says otherwise.
 
 ## Where the programme is
 
-The v1 plan is `planning/NEXT-STEPS.md`, active list at the top. **Phases 0–5
-and 6b are closed.** What remains:
+The documentation is the work. Every pattern page has been brought to one
+shape (see *The page shape* below) and Shamsi is reviewing the pages one at
+a time, visually, sending notes as she goes; the session acts on the notes,
+she wordsmiths the prose herself. That loop is the whole job right now.
 
-| Item | Phase | Whose |
-|---|---|---|
-| 9 — build and audit skills | 6 | mine |
-| 17 — the exit test | 6 | mine, after her buttons/alerts pass |
-| 35 — rebuild the paper mockup's structure | 7 | mine, after v1 |
-| 37 — the spacing scale | deferred | hers, judged in a real page |
+Reviewed by her so far (notes acted on): buttons, alerts, tags, messages,
+icons, using, links, header, cards, colors, dark-mode (her prose pass on
+dark-mode.html was committed 2026-09-28). Not yet reviewed: forms, modals,
+progressive-disclosure, spacing, typography, version-display,
+organizing-content, footer, tables, brand, outreach.
 
-Everything is committed and pushed to `master`. Verification state:
+Digests (`docs/spec/<page>.md`, for agents) exist only for pages on
+`verification/reviewed-pages.txt`: buttons, alerts, tags, messages. Add a
+page there when she says it is finished; `gen-digest.py` does the rest.
 
-    python3 verification/check-policies.py    10 checks, 1 FAILING (see below)
-    python3 verification/check-drift.py       clean (1 expected NOTE: blog theme)
-    python3 verification/check-contrast.py    PASS
-    python3 verification/verify-mockups.py    42 passed, 0 failed   (needs playwright)
-    python3 verification/gen-anchors.py       run after editing any heading
-    python3 verification/gen-icons.py        run after adding an icon to docs/icons/
-    python3 verification/gen-digest.py       run after editing a reviewed page (verification/reviewed-pages.txt)
+Verification, all clean at handoff:
+
+    python3 verification/check-policies.py    policies, page shape, documented classes, toc.js on every bar
+    python3 verification/check-drift.py       dark mirror = media block (tier 1 and tier 2)
+    python3 verification/check-contrast.py    63 promised text pairings clear AA in both themes (no generated table any more)
+    python3 verification/gen-anchors.py       run after editing any heading; fills each page's contents list
+    python3 verification/gen-digest.py        run after editing a reviewed page
+    python3 verification/gen-icons.py         run after adding an icon to docs/icons/
 
 ## Read this before touching anything
 
-- **Several people and sessions edit this repo at once.** The last session
-  committed Shamsi's in-progress `buttons.html` and someone else's deletions by
-  using `git add -A`. Nothing was lost, but the commit message was wrong and a
-  correction had to be pushed (`1df553e`). **Stage specific files.**
-- **Shamsi is doing a prose pass** over every page, starting with `buttons.html`
-  and `alerts.html`. She wordsmiths; we do structure, deletion and code. She has
-  said `buttons.html` is free to take over right now.
-- **The system is new and in use nowhere**, so the docs never narrate their own
-  history. `check-policies.py` enforces this.
+- **Several people and sessions edit this repo.** Stage specific files; never
+  `git add -A` blindly. At handoff there is one untracked folder,
+  `mockups/public/user-portal/` (five PNG screenshots of the current user
+  portal, dropped 2026-09-25, not yet discussed): leave it alone.
+- **She wordsmiths; the session does structure, deletion and code.** When her
+  draft is wrong on a fact or a mechanic (contraction, typo, broken markup,
+  indented code block, duplicate id), fix it and say so; otherwise leave her
+  sentences. Every sentence the session or an agent writes is listed for her.
+- **No contractions** in anything arXiv-facing. **Never narrate history** on a
+  page (`check-policies.py` enforces). **One fact, one home.**
+- **Ask before inventing** a class, a token or a colour. The docs use only
+  the design system; docs-only scaffolding goes in `docs/docs.css`; no page
+  carries a `<style>` block.
+- Decisions she has made are in the git log; do not re-open them. The big
+  ones since 2026-09-18: bare classes are the defaults (`.ds-btn` is the
+  secondary tier, `.ds-alert` is info, `.ds-seg-btn` is neutral,
+  `.ds-toc-bar` is always sticky); one card family for both surfaces
+  (`.ds-card`, `.ds-card--data`, `.ds-card-grid`; internal colours come only
+  from `.ds-internal` on a parent); two colour ramps (`--ds-grey-5/10/25/55/80`
+  from Library Grey, `--ds-blue-20/50/70` from Open Blue; roles point at
+  steps); the theme control is icon only (state in the accessible name);
+  every link inside `.ds-page` is the link (`.ds-link` is gone); at most four
+  top-level links in the arXiv header; `internal/`, `public/`, `outreach/`
+  folded into `docs/`; metadata-panel, color-tokens and internal/buttons
+  pages deleted.
 
-## The immediate queue: 24 items of feedback on buttons.html
+## The page shape (every pattern page)
 
-### State at the end of 2026-09-18 — everything committed and pushed
+`<body class="ds-page">` → shared nav (copied verbatim from buttons.html) →
+`.ds-container.ds-zone-secondary` holding `.ds-page-header` (h1 + lede),
+the contents bar (`.ds-full.ds-toc-bar`, list generated), then one
+`.ds-full.ds-zone-primary` band with one `<section class="section">` per
+buildable thing (`h2.section-title`, `p.ds-section-desc`, every example in a
+`.ds-card` whose last child is a "Relevant code" accordion: markup first,
+then a `<dl>` class key), then the Accessibility essentials note; after the
+band, plain `<h2>` group headings (Modifiers / Rules / Spec) with
+`h3.section-title` sections, or nothing if there is nothing. Public and
+internal examples share markup; the internal one sits in a wrapper with
+`class="ds-internal"`. Scripts at the end: copy-code.js, anchors.js, toc.js
+(deferred); theme.js in the head, not deferred.
 
-Shamsi's decisions, and what is built (see git log from fdcdc95 onward):
+## Open, in her hands
 
-- **One button family.** `.ds-internal` on a parent re-points the accent and
-  the `--ds-btn-*` construction tokens; internal pages write `.ds-btn*`. The
-  `.btn-*` family and `.btn-link` are GONE from tier 2; tier 2 keeps only the
-  icon-button variants as modifiers on `.ds-btn-icon` (`--constructive`,
-  `--destructive`, `--sm`, `[aria-pressed]`). The internal text-only button
-  is Link Blue (no existing olive passes 4.5:1; she agreed no new colour).
-- **Page zones** (`.ds-zone-secondary` on the container, one
-  `.ds-full.ds-zone-primary` band) and the **contents bar** (`.ds-toc*`,
-  `toc.js`, list generated by `gen-anchors.py`) are in tier 1 and documented
-  on `organizing-content.html`. `buttons.html` uses both; its bar is sticky.
-- **Sticky policy** rewritten in DESIGN-POLICIES: one sticky bar per page,
-  contents bar only, on the paper reader and the docs; approval = being
-  named in the rule, by arXiv's design team.
-- **Documentation header** (`.ds-site-header--light`) is white.
-- **She is now working on `buttons.html` herself**: one page for both
-  surfaces, folding in what `docs/internal/buttons.html` still has (that
-  page is mechanically migrated and renders, but its prose and code
-  samples still describe the old family). Do not restructure `buttons.html`
-  while she has it. Delete row wrap in the internal variant: accepted for now.
-- **Her principle:** docs pages use the DS and invent nothing; promote
-  first. `~/.claude/skills/promote-pattern` was rewritten for this.
-- **Order of work, hers (2026-09-18):** finish cleaning up the documentation
-  first; then testing; then circle back and move the mockups onto the DS
-  (the paper mockup's own `.mg-toc-*` bar and zone grounds are the first
-  case). Leave the mockups alone until then.
-- **Icons (2026-09-21):** `docs/icons/` is the single source — 37 Lucide 1.47.0
-  files (LICENSE + VERSION beside them), one clean SVG each; `gen-icons.py`
-  writes `docs/icons.html`. Deyan will ship them as static assets at deploy;
-  the docs keep using them inline. The inline copies in the repo are OLDER
-  Lucide/Feather drawings (and a few Material glyphs in the admin mockups):
-  swapping them for the folder's versions is one scripted pass, not done.
-  Icon set choice: Lucide vs Tabler is open; check coverage when the reader's
-  glyph list exists. Smileybones are illustrations, kept as images, not icons.
-- **The docs.css sweep cannot be automated.** Tried on 12 pages: rules that
-  were page-local leak across pages when merged (a `code` colour rule, a
-  grid rule) and 9 pages changed visibly. Reverted. Each page's styles move
-  when that page gets its review pass, like buttons.html did.
-- **Digests for agents (2026-09-22):** `verification/gen-digest.py` writes
-  `docs/spec/<page>.md` + `index.md` for pages on `reviewed-pages.txt` only
-  (buttons.html so far). `--diagnose <page>` lists what a page lacks in the
-  reviewed shape. Plan: `planning/DIGEST-PLAN.md`. Discuss with Shamsi before
-  the benchmark or the renderer.
-- **Page-shape pass, 2026-09-23:** sub-agents brought every component page
-  to the buttons.html shape (zones, contents bar, cards with generated
-  Relevant code, essentials, rules/spec in the secondary zone, no <style>
-  block). Done and committed: forms, links, modals, progressive-disclosure,
-  spacing, colors, typography, version-display, organizing-content,
-  dark-mode, public/header, public/footer, internal/tables, internal/cards,
-  internal/metadata-panel. Each is waiting on Shamsi's prose pass; the
-  agent-written sentences are listed in each commit's session report (ask
-  her which page, then read the page). Not done: brand, outreach/index,
-  internal/color-tokens (prose pages, lighter brief), using.html (hers),
-  internal/buttons.html (fold into buttons.html, her call on what to keep).
-  Decisions she still owes: .field-required deletion; links "same tab"
-  essential; author-link underlines; header "black bar" wording; info card
-  hairlines vs the card rule and its name; keyboard-operable sortable
-  headers (button in th, tier 2).
-- **Tier 1 follow-up, no decision needed:** a data-theme="light" island on
-  an OS-dark page keeps the dark button shadows (six selectors key on
-  html:not([data-theme="light"])); fix with the mirror kept in step.
-- **Still open:** the ~70 page-local rules in `buttons.html` (state grid,
-  forced `.is-hover/.is-focus/.is-pressed` states, token tables) — promote
-  or delete each, which needs a DS answer for "how a demo shows a state";
-  item 21 (in-progress button state, port from the submission mockup);
-  moving the paper mockup onto the promoted zones and contents bar; the
-  AGENTS.md page spine rewrite once the page shape is settled; items 13,
-  17, 22, 24; renaming the `--light` header variant for role (low).
+- Whether the two tables merge: tier 1 `.ds-table-framed` (docs spec
+  tables) and tier 2 `.ds-table` (internal data table) are shown together
+  on tables.html for the decision.
+- tables.html is still built as an internal-only page (`.ds-internal` on
+  `<html>`); showing both surfaces on it is a later pass.
+- Which pages to mark finished for digests.
 
-### She asked a question — answer before building
+## Open, ours
 
-- **(8) Do internal buttons need their own class family at all?** Today it is
-  `.ibtn-*` on that page and `.btn-*` in `internal-tools.css`, against
-  `.ds-btn*` for public. Her instinct is a **parent class that establishes
-  context**, so one set of classes serves both surfaces and only colour
-  changes. She is right that this gets easier after (4). My view: agree, and it
-  is the same mechanism the switch already uses — tier 2 re-points
-  `--ds-accent` and the shared component follows. Worth confirming the scope
-  (does `.btn-*` disappear entirely?) before starting, because it touches the
-  admin mockups.
-- **(12) Rename "Relevant classes" to "Relevant CSS"?** Appears on ~10 pages.
-- **(3) The `outreach/` directory should not be in the nav** — those are links
-  she prepared for sharing. She suggested renaming the directory, maybe "For
-  sharing", and was unsure. Needs a decision, then a rename + nav sweep.
-
-### Bugs, confirmed by measurement
-
-- **(23) The accordion at ~line 563 rendered empty — FIXED, not yet committed.**
-  The cause was not unbalanced tags (the page had one unclosed `<p>`, nothing
-  more). Its `<dl>` had two `<dd>`s under one `<dt>`; the second fell into the
-  `max-content` term column, and its unbroken `<pre>` line made that column
-  wider than the page. `.ds-acc-body dd` in tier 1 now sets `grid-column: 2`
-  and `min-width: 0`.
-- **`.ds-btn-destructive` is now documented nowhere**, so `check-policies.py`
-  fails. Her deletion of the "Buttons in forms" section (15) took the only
-  mention. It needs a home on the page.
-- **(19) The disabled icon-only button needs a grey fill** — currently only
-  distinguishable on hover.
-
-### Things the design system lacks and must gain
-
-- **(18) A caption class.** For text under a demo — smaller, italic, tied to
-  the card above. No `.ds-caption` exists.
-- **(16) An on-page nav.** She added a row of text links near the top; there is
-  no component for it. Nothing in the stylesheet matches.
-- **(21) An in-progress button state** — grey with a spinner. Designed already
-  in `mockups/public/submission-metadata/`; port it.
-- **(10) A text-only internal button** to replace the tertiary tier, in a dark
-  or olive green already in the palette (`--ds-access-lime-deep` is `#6b7a10`).
-- **(6) Styling for the two grouping `<span>`s** she added to the Design
-  Patterns dropdown.
-- **(24) An icons page**, to hold the "why a Lucide icon and not ×" note she
-  quoted. That note currently lives on `buttons.html`.
-
-### Corrections to content
-
-- **(4) Internal buttons should match public construction** — shadows and all;
-  only colour differs. This is the one that unblocks (8), (9) and (20).
-- **(7) "four tiers" is wrong** — there are three.
-- **(9) Disabled styling should be identical** across both surfaces.
-- **(20) Drop the "internal stylesheet has its own icon button" alert.** If the
-  only difference is colour, showing both repeatedly is noise.
-- **(14) "Card Grey section fill"** — replace with the class name if one exists.
-- **(22)** `<!-- MISSING RELEVANT CLASSES ACCORDION HERE -->` at line 547 needs
-  its accordion.
-
-### Cross-cutting, and bigger than one page
-
-- **(1) Why is there a `<style>` block?** Her understanding is that docs pages
-  link only `design-system.css`. **She is right in principle and this is worth
-  raising properly**: `buttons.html` still has **74 local rules over 170
-  lines**, and the biggest family is `.ibtn-*` (20 rules) — which item (8)
-  would delete outright. The rest is demo scaffolding (state grids, token
-  tables). Some of that is legitimately page-local; some should be promoted.
-  Recommend: do (8) first, then re-measure, then decide what is left.
-- **(11) Every example in a card.** She added `.ds-card` to two divs — check
-  the usage is right, then apply to the rest.
-- **(13) Code blocks are single unbroken lines.** They need real line breaks
-  and indentation. Related to (17).
-- **(17) Remove HTML entities.** `&mdash;`, `&gt;`, `&nbsp;` and the rest.
-  **There are 1,277 across the docs** — 348 `&lt;`, 347 `&gt;`, 209 `&mdash;`,
-  94 `&amp;`, 77 `&nbsp;`. The `&lt;`/`&gt;`/`&amp;` inside `<pre>` blocks are
-  **load-bearing and must stay** — that is how code shows as code. The rest can
-  become real characters. Do this as a scripted pass with the `<pre>` contents
-  excluded, and verify nothing renders as raw markup afterwards.
-- **(2) `design-patterns/` is deleted** — she removed it, the pages live in
-  `docs/` now. Already committed. Nothing links to it.
-
-## Suggested order
-
-1. Answer (8), (12), (3) — they change what the rest of the work is.
-2. Fix the unbalanced markup in `buttons.html` (23) and the failing check.
-3. Do (4): make internal buttons share public construction. Then (7), (9),
-   (10), (20) fall out of it, and (8) becomes mechanical.
-4. Then the new components: (18) caption, (16) on-page nav, (21) in-progress.
-5. Then the page-level passes: (11) cards, (13) code formatting, (17) entities.
-6. Then (24) the icons page, and (1) re-measure what the `<style>` block still
-   needs to hold.
+- Tier 1 gaps the prose pages exposed: prose directly after a `.ds-card-grid`
+  has no rhythm rule; `<figure>`/`<figcaption>` carry browser margins; no
+  stat-number display (brand page). Promote only when a real page needs it.
+- The paper mockup (`mockups/public/html-phase1.html`) still uses its own
+  `.mg-toc-*` bar and `.ds-site-header--wrap`, which tier 1 no longer has;
+  moving it onto the promoted zones and contents bar is queued for after the
+  docs review. Leave mockups alone until then.
+- Backlog from `planning/NEXT-STEPS.md` and `planning/DIGEST-PLAN.md`: the
+  agent benchmark on digests once more pages are reviewed; the AGENTS.md
+  spine rewrite; the in-progress button state (item 21); the page renderer
+  from structured source.
 
 ## Conventions worth not rediscovering
 
-- Page spine, checked: page header, Demo, Spec, Usage, Rules, Accessibility.
-  A page may omit one but may not rename it. In `AGENTS.md`.
-- Every page: `<title>Name — arXiv Design System</title>`, sentence-case
-  section headings, `theme.js` in the head **undeferred**, `.ds-theme-toggle`
-  plus `#ds-theme-status` in the header.
-- Type sizes are `rem`; a control's padding and min-width are `em` against its
-  own label. Controls clear a 24px target floor, with two exemptions recorded
-  by name in `verify-mockups.py`.
-- Tier 2 (`docs/internal-tools.css`) holds only what differs. Never
-  copy a component into it to restyle — that is a token.
+- Modifiers take a double dash (`.ds-alert--error`), parts a single dash
+  (`.ds-alert-title`); tokens are `--ds-<role>`, primitives `--ds-<colour>`
+  or `--ds-<ramp>-<step>`.
+- Type sizes are `rem`; a control's padding is `em` against its own label;
+  controls clear a 24px target.
+- Tier 2 (`docs/internal-tools.css`) holds only what internal tools alone
+  have. Never copy a component into it to restyle: that is a token.
+- Dark mode: media block, `[data-theme="dark"]` mirror, `[data-theme="light"]`
+  restore; a fixed light value (the chrome bar, code blocks) is a fixed step,
+  never a flipping token.
+- Inline code and the disabled button fill are washes of the text colour
+  (`color-mix`), so they show on every ground in both themes.
+- The docs header wordmark is one shown span and one spoken span, so screen
+  readers say "archive".
