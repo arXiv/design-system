@@ -121,7 +121,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 - **Rectangular labels:** a shape modifier on the tag (`.ds-tag--rectangle`), for dense rows; it takes the tag levels and no palette of its own.
 - **Segmented controls:** Use semantic variants — `.ds-seg-btn--positive` (green/accept), a bare `.ds-seg-btn` (blue/informational, the default), `.ds-seg-btn--negative` (red/reject)
 - **Filter dropdowns:** Use `.ds-filter` with a visible `<label>`. Always include an "All" option as the inclusive default.
-- **Switches:** Off state uses `--ds-border-strong`. On state uses lime green (internal) or Link Blue (public). Label text uses `--ds-text-muted` (off) shifting to a darker shade (on).
+- **Switches:** Only the fill changes with the state: Border Light off, Open Blue on (public) or Access Lime on (internal). The UI Boundary Grey edge and the Repository Brown thumb never change. Label text uses `--ds-text-muted` (off) shifting to a darker shade (on).
 
 ## Writing
 
