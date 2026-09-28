@@ -70,7 +70,7 @@
 
   <header class="ds-page-header">
     <h1>Site footer</h1>
-    <p>The universal arXiv public-page footer (<code>.ds-site-footer</code>). Validated by exact agreement across the spinout-header-footer Cloud Run deployment and both redesign mockups (see the component audit).</p>
+    <p>The universal arXiv public-page footer (<code>.ds-site-footer</code>). Note that the footer is still changing post-spinout as we figure out the best way to acknowledge major funders. The footer below is accurate as of 9/28/2026.</p>
   </header>
 
 
@@ -88,7 +88,7 @@
             <li><a href="#the-footer">The footer</a></li>
             <li><a href="#the-acknowledgement-line">The acknowledgement line</a></li>
             <li><a href="#the-funders-row">The funders row</a></li>
-            <li><a href="#wording">Wording</a></li>
+            <li><a href="#content">Content</a></li>
             <li><a href="#type-and-print">Type and print</a></li>
           </ol>
         </nav>
@@ -96,19 +96,19 @@
     </div>
   </div>
 
-  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <!-- ═════════ Core zone ═════════ -->
   <div class="ds-full ds-zone-primary">
 
   <!-- ───────── The footer ───────── -->
   <section class="section">
     <h2 class="section-title" id="the-footer">The footer</h2>
-    <p class="ds-section-desc">Rendered directly from <code>design-system.css</code>: the acknowledgement line and the link row on the left, the funders on the right.</p>
+    <p class="ds-section-desc">Rendered directly from <code>design-system.css</code>: the acknowledgement line followed by footer links. Funders have been removed from the right side for now.</p>
     <div class="ds-card chrome-demo">
       <footer class="ds-site-footer">
         <div class="ds-site-footer-grid">
           <div class="ds-site-footer-main">
             <div class="ds-site-footer-ack">
-              We gratefully acknowledge support from our <strong>major funders</strong>,
+              We gratefully acknowledge support from our <a href="#"><strong>major funders</strong></a>,
               <a href="#"><strong>member institutions</strong></a><span class="ack-member-inline">,
               <strong>Rheinisch-Westfälische Technische Hochschule Aachen</strong></span>,
               and <a href="#">all contributors</a>.
@@ -124,7 +124,7 @@
               <a href="https://status.arxiv.org/" target="_blank" rel="noopener noreferrer">Operational Status<span class="is-sr-only"> (opens in new tab)</span></a>
             </nav>
           </div>
-          <div class="ds-site-footer-funders">
+          <!-- <div class="ds-site-footer-funders">
             <div class="ds-site-footer-funders-label">Major funding support from</div>
             <div class="ds-site-footer-funders-logos">
               <a class="ds-funder-link" href="https://www.simonsfoundation.org/" target="_blank" rel="noopener noreferrer">
@@ -137,7 +137,7 @@
                 <img class="ds-funder-logo" src="assets/images/logos/other-org-logos/schmidt-sciences.png" alt="Schmidt Sciences"><span class="is-sr-only"> (opens in new tab)</span>
               </a>
             </div>
-          </div>
+          </div> -->
         </div>
       </footer>
       <details class="ds-acc"><summary>Relevant code</summary>
@@ -146,7 +146,7 @@
   &lt;div class="ds-site-footer-grid"&gt;
     &lt;div class="ds-site-footer-main"&gt;
       &lt;div class="ds-site-footer-ack"&gt;
-        We gratefully acknowledge support from our &lt;strong&gt;major funders&lt;/strong&gt;,
+        We gratefully acknowledge support from our &lt;a href="#"&gt;&lt;strong&gt;major funders&lt;/strong&gt;&lt;/a&gt;,
         &lt;a href="#"&gt;&lt;strong&gt;member institutions&lt;/strong&gt;&lt;/a&gt;&lt;span class="ack-member-inline"&gt;,
         &lt;strong&gt;Rheinisch-Westfälische Technische Hochschule Aachen&lt;/strong&gt;&lt;/span&gt;,
         and &lt;a href="#"&gt;all contributors&lt;/a&gt;.
@@ -199,54 +199,11 @@
   <!-- ───────── The acknowledgement line ───────── -->
   <section class="section">
     <h2 class="section-title" id="the-acknowledgement-line">The acknowledgement line</h2>
-    <p class="ds-section-desc">The institutional mention after “member institutions” is the optional IP-matched insertion: omit the wrapper span when no match exists.</p>
-    <div class="ds-card">
-      <details class="ds-marginalia">
-        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">The span is an unstyled grouping hook for the templater, not a design-system class; the bold comes from the strong element.</p>
-      </details>
-      <div class="ds-site-footer-ack">
-        We gratefully acknowledge support from our <strong>major funders</strong>,
-        <a href="#"><strong>member institutions</strong></a><span class="ack-member-inline">,
-        <strong>Rheinisch-Westfälische Technische Hochschule Aachen</strong></span>,
-        and <a href="#">all contributors</a>.
-      </div>
-      <div class="ds-site-footer-ack">
-        We gratefully acknowledge support from our <strong>major funders</strong>,
-        <a href="#"><strong>member institutions</strong></a>,
-        and <a href="#">all contributors</a>.
-      </div>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;!-- With an IP-matched institution --&gt;
-&lt;div class="ds-site-footer-ack"&gt;
-  We gratefully acknowledge support from our &lt;strong&gt;major funders&lt;/strong&gt;,
-  &lt;a href="#"&gt;&lt;strong&gt;member institutions&lt;/strong&gt;&lt;/a&gt;&lt;span class="ack-member-inline"&gt;,
-  &lt;strong&gt;Rheinisch-Westfälische Technische Hochschule Aachen&lt;/strong&gt;&lt;/span&gt;,
-  and &lt;a href="#"&gt;all contributors&lt;/a&gt;.
-&lt;/div&gt;
-
-&lt;!-- No match: the span is omitted --&gt;
-&lt;div class="ds-site-footer-ack"&gt;
-  We gratefully acknowledge support from our &lt;strong&gt;major funders&lt;/strong&gt;,
-  &lt;a href="#"&gt;&lt;strong&gt;member institutions&lt;/strong&gt;&lt;/a&gt;,
-  and &lt;a href="#"&gt;all contributors&lt;/a&gt;.
-&lt;/div&gt;</code></pre>
-          <dl>
-            <dt>.ds-site-footer-ack</dt>
-            <dd>The sentence, in muted small type. A <code>&lt;strong&gt;</code> inside it takes the
-            full text colour; a link inside it takes the link colour.</dd>
-            <dt>.ack-member-inline</dt>
-            <dd>The IP-matched institution, inserted after “member institutions” together with its
-            leading comma. Present only when there is a match.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
+    <p class="ds-section-desc">The institutional mention after “member institutions” is an optional IP-matched insertion that will appear when a user accesses arXiv from campus or nearby. Omit when no match exists.</p>
   </section>
 
   <!-- ───────── The funders row ───────── -->
-  <section class="section">
+  <!-- <section class="section">
     <h2 class="section-title" id="the-funders-row">The funders row</h2>
     <p class="ds-section-desc">The right-hand column: a label and the major funders’ wordmarks, each on a white chip and a link to the funder’s site.</p>
     <div class="ds-card">
@@ -294,13 +251,13 @@
         </div>
       </details>
     </div>
-  </section>
+  </section> -->
 
 
   <div class="ds-note ds-note--essential">
     <h3 class="ds-note-label">Accessibility essentials</h3>
     <ul class="notes">
-      <li><strong>Use the landmarks.</strong> The unit is a real <code>&lt;footer&gt;</code>, and the
+      <li><strong>Use appropriate landmarks.</strong> The unit is a real <code>&lt;footer&gt;</code>, and the
       link row is a <code>&lt;nav aria-label="Site navigation"&gt;</code>, so a screen reader user can
       jump to either one from a list of landmarks.</li>
       <li><strong>Hide the separators from assistive technology.</strong> Every dot separator carries
@@ -322,12 +279,13 @@
 
   <h2>Rules</h2>
 
-  <!-- ───────── Wording ───────── -->
+  <!-- ───────── Content ───────── -->
   <section class="section">
-    <h3 class="section-title" id="wording">Wording</h3>
+    <h3 class="section-title" id="content">Content</h3>
     <ul class="notes">
-      <li>Wording is exact-match to the approved deployment; do not paraphrase the acknowledgment line.</li>
-      <li>Which links the footer carries, and that every acknowledgement is presented in the footer and never in the header, is set in <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>.</li>
+      <li>Wording has been carefully workshopped by leadership and must maintain an exact-match to the approved deployment.</li>
+      <li>Which links the footer carries is set in <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>.</li>
+      <li>Major funders were removed from the footer in September 2026. They may be added to the footer again in the future. Stay tuned.</li>
     </ul>
   </section>
 
@@ -336,7 +294,8 @@
     <h3 class="section-title" id="type-and-print">Type and print</h3>
     <ul class="notes">
       <li>Type sizes are rem so browser font-size overrides propagate (<a href="doc.html?src=docs/accessibility-priorities.md">accessibility priorities</a>).</li>
-      <li>Hidden in print (<code>@media print</code>): printouts keep the content, not the chrome.</li>
+      <li>When implementing, use <code>@media print</code> on the footer so only the content prints, not the chrome.</li>
+      <li>Adding an image or icon? Be sure it has a max-width or height so that it does not print or flash full size before styles are applied.</li>
     </ul>
   </section>
 

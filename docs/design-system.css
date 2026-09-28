@@ -2806,20 +2806,15 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   outline-offset: 2px;
   border-radius: 2px;
 }
-/* Drawn as a dot rather than rendered as a "·" glyph. The separators are
-   aria-hidden decoration, so WCAG 1.4.3 exempts them from contrast — but
-   an automated checker cannot infer that and reports about 1.16:1 in
-   light and 1.43:1 in dark. Drawing the dot with a background makes it
-   genuinely non-text: same appearance, nothing left to flag.
-   font-size:0 suppresses the character itself. */
+/* Drawn with a background, not the "·" glyph, so contrast checkers treat
+   it as non-text. font-size:0 suppresses the glyph. align-self centres it,
+   because the row is a flex container and vertical-align does not apply. */
 .ds-site-footer-sep {
   display: inline-block;
   width: 3px; height: 3px;
   border-radius: 50%;
-  background: var(--ds-border, #dad8d6);
-  vertical-align: middle;
-  align-self: center; /* .ds-site-footer-links is a flex row, where vertical-align
-                         does nothing: without this the dot sits at the line's top */
+  background: var(--ds-text-muted);
+  align-self: center;
   font-size: 0;
   margin: 0 3px;
 }
