@@ -13,7 +13,7 @@ components:
       - name: ".ds-site-footer-grid"
         does: "The row that holds the footer's columns. Columns that do not fit side by side wrap onto their own lines."
       - name: ".ds-site-footer-main"
-        does: "The main column: the acknowledgement line, then the link row. Capped at 720px."
+        does: "The main column: the acknowledgement line, then the link row."
       - name: ".ds-site-footer-links"
         does: "The link row, on a `<nav aria-label=\"Site navigation\">`. Plain `<a>` elements that wrap as a line; underlined on hover only."
       - name: ".ds-site-footer-sep"
@@ -70,7 +70,7 @@ Rendered directly from `design-system.css`: the acknowledgement line followed by
 
 - `.ds-site-footer` — The whole unit, on a `<footer>` element. Canvas ground with a hairline rule above it; hidden in print.
 - `.ds-site-footer-grid` — The row that holds the footer's columns. Columns that do not fit side by side wrap onto their own lines.
-- `.ds-site-footer-main` — The main column: the acknowledgement line, then the link row. Capped at 720px.
+- `.ds-site-footer-main` — The main column: the acknowledgement line, then the link row.
 - `.ds-site-footer-links` — The link row, on a `<nav aria-label="Site navigation">`. Plain `<a>` elements that wrap as a line; underlined on hover only.
 - `.ds-site-footer-sep` — The dot between two links. A `<span>` holding a middle dot, with `aria-hidden="true"`.
 - `target="_blank"` — Only on the Operational Status link, which leaves arxiv.org. It takes `rel="noopener noreferrer"` and a `.is-sr-only` “(opens in new tab)” inside the link text.
