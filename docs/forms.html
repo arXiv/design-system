@@ -70,7 +70,7 @@
 
   <header class="ds-page-header">
     <h1>Forms &amp; validation</h1>
-    <p>How arXiv builds a form, and how it tells someone what is wrong with one. The same markup works in internal tools and on the public site; only the accent color differs.</p>
+    <p>The design system supports highly accessible forms with robust validation display options. Explore validation examples in action in this <a href="../mockups/public/submission-metadata/index.html">submission metadata mockup</a>.</p>
   </header>
 
 
@@ -87,13 +87,13 @@
           <ol>
             <li><a href="#fields">Fields</a></li>
             <li><a href="#validation">Validation</a></li>
-            <li><a href="#alerts-above-the-form">Alerts above the form</a></li>
+            <li><a href="#alerts-in-forms">Alerts in forms</a></li>
             <li><a href="#switch">Switch</a></li>
             <li><a href="#segmented-control">Segmented control</a></li>
             <li><a href="#tooltip">Tooltip</a></li>
             <li><a href="#stepping-through-a-set">Stepping through a set</a></li>
             <li><a href="#field-width">Field width</a></li>
-            <li><a href="#validation-tiers">Validation tiers</a></li>
+            <li><a href="#disposition-tiers">Disposition tiers</a></li>
             <li><a href="#layout">Layout</a></li>
           </ol>
         </nav>
@@ -107,14 +107,13 @@
   <!-- ───────── Fields ───────── -->
   <section class="section">
     <h2 class="section-title" id="fields">Fields</h2>
-    <p class="ds-section-desc">A field is a label, a control, optional help text, and a slot for a
-    message. That order never changes. Labels sit above their controls, and related fields group by
+    <p class="ds-section-desc">A field is a label (for example, Email address), a control (for example, input field, checkbox), optional help text, and a slot for an error or info message. That order never changes. Labels sit above their controls, and related fields group by
     spacing rather than boxes.</p>
 
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">Field widths are set by the type of control, on the assumption that the element already tells you how much someone will type, and two classes override that where the content is unusually short or unusually long (see Field width, below).</p>
+        <p class="ds-marginalia-body ds-annotation">Field widths are set by the type of control, on the assumption that the element already tells you about how much someone will type. If you need to override a default width, two classes are available (see <a href="#field-width">Field width</a>).</p>
       </details>
       <form class="ds-form" onsubmit="return false">
 
@@ -335,13 +334,10 @@
     </div>
   </section>
 
-  <!-- ───────── Alerts above the form ───────── -->
+  <!-- ───────── Alerts in forms ───────── -->
   <section class="section">
-    <h2 class="section-title" id="alerts-above-the-form">Alerts above the form</h2>
-    <p class="ds-section-desc">On a form of any length, repeat the problems above the first field. This
-    is not a new component: it is <a href="alerts.html"><code>.ds-alert</code></a>, specified
-    on its own page, holding an ordered list of links. What follows is only what is particular to
-    using one for validation.</p>
+    <h2 class="section-title" id="alerts-in-forms">Alerts in forms</h2>
+    <p class="ds-section-desc">Repeat the problems below the page heading using an alert component. Errors are grouped into alerts by disposition (error, warning, info) and are not mixed. Each alert holds an ordered list of items. See <a href="alerts.html">Alerts</a> for full documentation. Below is an example of using an alert specifically for validation.</p>
 
     <div class="ds-card">
       <div class="ds-alert ds-alert--error" role="alert">
@@ -395,24 +391,17 @@
     </div>
 
     <div class="ds-note">
-      <h3 class="ds-note-label">Tone</h3>
-      <p>The general rules — no contractions, one instruction per sentence, the same word for the
-      same thing every time, no idiom in text someone reads while something is going wrong — live in
-      <a href="STYLE.md">STYLE.md</a> and are not repeated here. What follows is specific to
-      validation messages.</p>
+      <h3 class="ds-note-label">Alert message language and tone</h3>
+      <p>arXiv's general style rules all apply: no contractions, no jargon, keep it brief. See <a href="STYLE.md">STYLE.md</a> for full guidelines. In addition, these rules are specific to validation messages and will help users take action quickly.</p>
       <ul class="notes">
-        <li><strong>Error.</strong> Say what to do, not what went wrong. Never blame the reader, never
-        use <em>invalid</em> on its own, and never make someone guess which of eight rules they
-        broke.</li>
-        <li><strong>Warning.</strong> Say what happens if they continue, because they can. “Your
-        submission may be held for moderator review” is the message; “check this field” is not.</li>
-        <li><strong>Info.</strong> Say what changed and ask them to confirm it. This message exists
-        because arXiv edited the author’s content, so it reports rather than instructs, and it never
-        implies fault.</li>
+        <li><strong>One instruction per sentence.</strong> Each bullet should point out one thing and be tied to one action.</li>
+        <li><strong>Never blame the reader.</strong> "Upload processing failed" is neutral, while "You uploaded an invalid file type" is blaming.</li>
+        <li><strong>Use an issue count as the title.</strong> "2 blocking errors" gives the user a lot of important information about scope and severity upfront.</li>
+        <li><strong>Write actionable messages.</strong> Help the user take the next step by describing the problem as an action to take, rather than a passive error report. See the examples below.</li>
       </ul>
       <div class="table-scroll" role="region" aria-label="Wording examples" tabindex="0">
         <table class="ds-table-framed token-table">
-          <thead><tr><th>Instead of</th><th>Write</th></tr></thead>
+          <thead><tr><th>Too passive</th><th>More actionable</th></tr></thead>
           <tbody>
             <tr><td>Invalid email.</td><td>Enter an email address, like name@university.edu.</td></tr>
             <tr><td>This field is required.</td><td>Give a reason before saving.</td></tr>
@@ -422,6 +411,12 @@
           </tbody>
         </table>
       </div>
+      <p>These guidelines are specific to the severity level of each validation message:</p>
+      <ul>
+        <li><strong>Error messages:</strong> Tell the user how to fix the problem without over-describing technical details. "Remove the HTML markup" is actionable and explanatory, but describing the invalid markup would be too much detail.</li>
+        <li><strong>Warning messages:</strong> The user is not blocked, but tell them what happens if they choose to continue. “Your submission may be held for moderator review” gives important context and can nudge behavior, while “check this field for accuracy” is a lost opportunity.</li>
+        <li><strong>Info messages:</strong> Useful when the system has autocorrected content from the user. "Extra spaces were removed. Please confirm it reads correctly" tells the user what changed, does not imply something is wrong, and includes a clear ask.</li>
+      </ul>
     </div>
   </section>
 
@@ -429,8 +424,7 @@
   <section class="section">
     <h2 class="section-title" id="switch">Switch</h2>
     <p class="ds-section-desc">A boolean that applies the moment it is flipped. If the change needs a
-    Save step, it is a checkbox in a form and not this. That is the whole distinction, and it is
-    about when the change lands rather than how the control is built.</p>
+    Save step then use a checkbox, not a switch.</p>
 
     <div class="ds-card">
       <div class="state-flex">
@@ -762,11 +756,7 @@
   <!-- ───────── Field width ───────── -->
   <section class="section">
     <h3 class="section-title" id="field-width">Field width</h3>
-    <p class="ds-section-desc">Width follows the content. A field the width of a postcode says what is
-    expected before anyone types, and stretching every control edge-to-edge throws that clue away. Most
-    of this happens without asking: the stylesheet sizes a field from its input <code>type</code>, so
-    a date, a time or a number is already narrow. Two overrides exist for the case the element cannot
-    infer, because <code>type="text"</code> covers a four-digit year and a paper title alike.</p>
+    <p class="ds-section-desc">Default field widths are set to follow the expected amount of content and are an important clue for users as to what is expected in any given field. Widths will generally not need any manual adjustment but two overrides exist just in case: <code>.ds-field--short</code> and <code>.ds-field--full</code>.</p>
 
     <div class="ds-card">
       <form class="ds-form" onsubmit="return false">
@@ -819,24 +809,20 @@
 
   <h2>Rules</h2>
 
-  <!-- ───────── Validation tiers ───────── -->
+  <!-- ───────── Disposition tiers ───────── -->
   <section class="section">
-    <h3 class="section-title" id="validation-tiers">Validation tiers</h3>
+    <h3 class="section-title" id="disposition-tiers">Disposition tiers</h3>
     <p class="ds-section-desc">What each tier means for the person filling the form in.</p>
     <div class="table-scroll" role="region" aria-label="Validation tiers" tabindex="0">
       <table class="ds-table-framed token-table">
         <thead><tr><th>Disposition</th><th>Can they continue?</th><th>What it means</th></tr></thead>
         <tbody>
-          <tr><td><strong>Error</strong></td><td>No</td><td>The value is not acceptable and must be corrected.</td></tr>
-          <tr><td><strong>Warning</strong></td><td>Yes</td><td>Accepted, but the submission may be held for moderator review.</td></tr>
-          <tr><td><strong>Info</strong></td><td>Yes</td><td>arXiv changed the value automatically. Nothing is wrong; the author is being told.</td></tr>
+          <tr><td><strong>Error</strong></td><td>No</td><td>Blocking. The value is not acceptable and must be corrected.</td></tr>
+          <tr><td><strong>Warning</strong></td><td>Yes</td><td>Accepted, but the value may be suspect or cause issues later on.</td></tr>
+          <tr><td><strong>Info</strong></td><td>Yes</td><td>When used in validation it means arXiv changed the value automatically (for example, normalising whitespace). Nothing is wrong; the author is being informed.</td></tr>
         </tbody>
       </table>
     </div>
-    <p>The <strong>info</strong> disposition is what makes automatic correction legitimate:
-    normalising whitespace or stripping markup is an edit to author-submitted content, and what makes
-    that acceptable is that the author sees the change before it is committed. The review step is not
-    a nicety to drop later for “obvious” fixes.</p>
   </section>
 
   <!-- ───────── Layout ───────── -->
@@ -844,17 +830,11 @@
     <h3 class="section-title" id="layout">Layout</h3>
     <ul class="notes">
       <li><strong>Labels go above the control.</strong> A label-left, field-right layout gives a
-      ragged edge, reads badly on a phone, and makes it easy to ship a control with no label at all.</li>
-      <li><strong>Width follows the content.</strong> A field the width of a postcode says what is
-      expected before anyone types. Stretching every control edge-to-edge throws that clue away. The
-      stylesheet sizes a field from its input <code>type</code>, and two classes cover the rest; see
-      Field width, above.</li>
-      <li><strong>Group with spacing and a small heading</strong>, not boxes or borders. If spacing
-      cannot hold two groups apart, they probably want to be separate pages.</li>
-      <li><strong>The action bar is right-aligned</strong>, primary last. On a long form, repeat it at
-      the top so nobody has to scroll to save.</li>
-      <li><strong>Disabled, not missing.</strong> An action that is unavailable renders disabled, so
-      the reader can see it exists and reason about why.</li>
+      ragged edge and reads badly on a phone.</li>
+      <li><strong>Group related content with spacing</strong>, not by adding more bordered divs. If spacing
+      is insufficient then the form might be calling for subsections or to be broken up into different pages.</li>
+      <li><strong>The action bar is right-aligned</strong>, with the primary action button (Save, Continue, etc.) the last one on the right. On long forms, consider repeating it at the top so the user does not need to scroll as much.</li>
+      <li><strong>Disabled, not missing.</strong> An action that is unavailable renders disabled with a reason why in the optional message space. The reader can see it exists and is not left wondering what is happening.</li>
     </ul>
   </section>
 
