@@ -77,7 +77,8 @@ def contents(path, write):
         return False
     indent = "            "
     items = []
-    for h in re.finditer(r'<h[23]([^>]*\sclass="section-title"[^>]*)>(.*?)</h[23]>', text, re.S):
+    live = re.sub(r"<!--.*?-->", "", text, flags=re.S)  # a commented-out section is not in the contents
+    for h in re.finditer(r'<h[23]([^>]*\sclass="section-title"[^>]*)>(.*?)</h[23]>', live, re.S):
         hid = re.search(r'\bid="([^"]+)"', h.group(1))
         if hid:
             label = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", h.group(2))).strip()
