@@ -82,7 +82,7 @@ Barely perceptible tints for creating section depth without hard borders.
 |---|---|---|
 | **Warm Wash** | `#f8f7f7` | Warm background — footer, metadata sections |
 | **Grey Hover** | `#f0f0ee` | Table headers, hover fills, Related section background |
-| **Border Light** | `#dad8d6` | Component hairline borders — inputs, switch tracks, card edges. Decorative only (below 3:1); not for sole interactive boundaries. Promoted from the mockups 2026-06-11. |
+| **Border Light** | `#dad8d6` | Component hairline borders — inputs, card edges. Decorative only (below 3:1); not for sole interactive boundaries. Promoted from the mockups 2026-06-11. |
 
 ---
 
