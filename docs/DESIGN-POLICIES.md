@@ -121,7 +121,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 - **Rectangular labels:** a shape modifier on the tag (`.ds-tag--rectangle`), for dense rows; it takes the tag levels and no palette of its own.
 - **Segmented controls:** Use semantic variants — `.ds-seg-btn--positive` (green/accept), a bare `.ds-seg-btn` (blue/informational, the default), `.ds-seg-btn--negative` (red/reject)
 - **Filter dropdowns:** Use `.ds-filter` with a visible `<label>`. Always include an "All" option as the inclusive default.
-- **Toggle switches:** Off state uses `--ds-border-strong`. On state uses lime green (internal) or Link Blue (public). Label text uses `--ds-text-muted` (off) shifting to a darker shade (on).
+- **Switches:** Off state uses `--ds-border-strong`. On state uses lime green (internal) or Link Blue (public). Label text uses `--ds-text-muted` (off) shifting to a darker shade (on).
 
 ## Writing
 
@@ -133,7 +133,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 - **No metrics display:** arXiv does not display view counts, download counts, or citation counts on public pages. This is a core operating value — arXiv does not promote or rank papers.
 - **Citation export:** On abstract pages, we provide BibTeX (default), APA, Chicago, and MLA formats. Generate from metadata to save manual work for the user.
-- **arXiv Labs:** Labs tools that collect user data must be behind an opt-in toggle, not on by default (this policy is still in the early implementation phase as 6/24/26 and not enforced for Labs yet). Labs that require login to a third party platform should be deprioritized in placement.
+- **arXiv Labs:** Labs tools that collect user data must be behind an opt-in switch, not on by default (this policy is still in the early implementation phase as 6/24/26 and not enforced for Labs yet). Labs that require login to a third party platform should be deprioritized in placement.
 - **Header:** Single bar. Black (phase 1, spinout) transitioning to Repository Brown (phase 2). Logo, Search, Submit, Donate, Log in. No Cornell branding post-spinout. Outreach sites may run an Open Blue header instead — an agreed exception for them, never valid here.
 - **Footer:** Acknowledgment text (Simons Foundation, member institutions, IP matched institution name). Links: About, Help, Contact, Subscribe, Copyright, Privacy, Accessibility, Status. Special section for major funders on the right side. All acknowledgements are presented in the footer, never in the header.
 - **Banner:** A minimal and time-bound banner can be displayed with short announcements. It includes a small icon, a short sentence and link, and a dismiss button. After dismissing, the banner should not display for that user again. It is the one exception to *Progressive enhancement: scripts never carry content*: the shared banner is drawn by `chrome/banner.js` from the announcements file on the asset route, so a reader without JavaScript sees none. *Decided 2026-09-23: an announcement is temporal and never page-critical, and serving it as data is what lets a page cached for a year show a new one without a purge. An iframe was the alternative; without a script it can neither fit its text nor collapse when nothing is live.*
