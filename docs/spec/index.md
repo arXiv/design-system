@@ -13,16 +13,18 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Site footer | [footer.md](footer.md) | The universal arXiv public-page footer (`.ds-site-footer`). Note that the footer is still changing post-spinout as we figure out the best way to acknowledge maj |
 | Forms & validation | [forms.md](forms.md) | The design system supports highly accessible forms with robust validation display options. Explore validation examples in action in this [submission metadata mo |
 | Site header | [header.md](header.md) | The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left,  |
+| Icons | [icons.md](icons.md) | The design system uses the Lucide icon set which is open source, community supported, and available for both commercial and non-commercial use under the ISC lic |
+| Using the design system | [using.md](using.md) | This page shares how to get started with the arXiv Design System: basic markup, which files to link to, in what order, and a handful of things to avoid. If you  |
+| Links | [links.md](links.md) | Text links are simple but important to get right. Every link inside a `.ds-page` is the inline text link, with no class to add, and appears in Link Blue, a spec |
+| Cards | [cards.md](cards.md) | When you need to draw a box around related content, reach for a card. Public pages and internal tools each have their own color variations but the use cases are |
+| Colors | [colors.md](colors.md) | The full arXiv palette, rendered. Written spec and rationale: [color-mapping.md](doc.html?src=docs/color-mapping.md) (source of truth — if this page and the spe |
+| Dark mode | [dark-mode.md](dark-mode.md) | In the design system, every colour comes from a token and the tokens flip in each mode. A page or component built from the color tokens follows the mode without |
 
 ## Not yet digested
 
 These pages have not had their review pass. Read the page itself, and expect the shape to differ.
 
 - brand.html
-- cards.html
-- colors.html
-- dark-mode.html
-- links.html
 - modals.html
 - organizing-content.html
 - outreach.html
