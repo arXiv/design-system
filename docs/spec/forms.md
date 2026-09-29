@@ -97,7 +97,7 @@ components:
       - name: "aria-describedby=\"tip-doi\""
         does: "On the trigger, naming the tooltip's `id`. The tooltip describes the control and is never its accessible name: a name that only appears on hover is a name most people never get, so an icon trigger has an `.is-sr-only` label of its own, as above."
       - name: "aria-disabled=\"true\""
-        does: "On an unavailable action that explains itself. The tooltip holds the reason, which takes no room and does not move the layout. Use `aria-disabled`, not `disabled`: a disabled button cannot take focus, so a keyboard user would never reach the reason. The script must ignore clicks while it is set."
+        does: "On an unavailable action that explains itself. The reason goes in a tooltip by default, because it takes no room and does not move the layout. Where there is room, it can sit under the actions as `.ds-hint` text instead, named in the button's `aria-describedby`. Use `aria-disabled`, not `disabled`: a disabled button cannot take focus, so a keyboard user would never reach the reason. The script must ignore clicks while it is set."
       - name: ".ds-tooltip"
         does: "The bubble, with `role=\"tooltip\"` and the `id`. It opens downward and toward the inline end, on hover and on focus, with no JavaScript. Escape must close it without moving focus, which CSS cannot do: a listener sets `hidden` on it, and clears it when the pointer or focus arrives again. The script on this page is the reference."
       - name: ".ds-tooltip-body"
@@ -133,7 +133,7 @@ rules:
   - "**Labels go above the control.** A label-left, field-right layout gives a ragged edge and reads badly on a phone."
   - "**Group related content with spacing**, not by adding more bordered divs. If spacing is insufficient then the form might be calling for subsections or to be broken up into different pages."
   - "**The action bar is right-aligned**, with the primary action button (Save, Continue, etc.) the last one on the right. On long forms, consider repeating it at the top so the user does not need to scroll as much."
-  - "**Disabled, not missing.** An action that is unavailable renders disabled, with the reason in a tooltip (see [Tooltip](#tooltip)). The reader can see it exists and is not left wondering what is happening."
+  - "**Disabled, not missing.** An action that is unavailable renders disabled, with the reason in a tooltip, or as help text under the actions where there is room (see [Tooltip](#tooltip)). The reader can see it exists and is not left wondering what is happening."
   - "**Every control has a label.** Put a real `<label for>` on every control, pointing at the control's `id`. Hide it with `.is-sr-only` when there is no room for it; do not leave it out."
   - "**Mark the optional fields, not the required ones.** Put `(optional)` inside the visible label of an optional field. Put `required` and `aria-required=\"true\"` on every required control: required fields carry no visual marker, so this pair is the only signal a screen reader gets. Never put either word in `aria-label` or `title`."
   - "**Connect every hint and message to its control.** Give each `.ds-hint` and each message an `id`, and list them in the control's `aria-describedby`. Without that a screen reader announces the field and nothing else."
@@ -335,7 +335,7 @@ A short explanation attached to a control, on hover and on focus. The lighter ha
   <input class="ds-input" id="f-doi" type="text" placeholder="10.1000/example">
 </div>
 
-<!-- Tooltip on a disabled action -->
+<!-- Disabled action, reason in a tooltip -->
 <div class="ds-btn-group ds-btn-group--end">
   <button type="button" class="ds-btn ds-btn-text">Cancel</button>
   <span class="ds-tooltip-host">
@@ -345,12 +345,19 @@ A short explanation attached to a control, on hover and on focus. The lighter ha
     </span>
   </span>
 </div>
+
+<!-- Disabled action, reason as help text -->
+<div class="ds-btn-group ds-btn-group--end">
+  <button type="button" class="ds-btn ds-btn-text">Cancel</button>
+  <button type="button" class="ds-btn ds-btn-primary" aria-disabled="true" aria-describedby="continue-why">Continue</button>
+</div>
+<p class="ds-hint" id="continue-why">Correct the 2 blocking errors to continue.</p>
 ```
 
 - `.ds-tooltip-host` — Wraps the trigger and the bubble, and positions the bubble. It sits beside the `<label>`, never inside it: a label forwards clicks to the control it names, so a button nested in one is a button whose clicks land somewhere else.
 - `.ds-label-row` — Puts a label and its tooltip trigger on one line, in place of the label's own spacing. The icon trigger inside it is compact and still clears the 24px target.
 - `aria-describedby="tip-doi"` — On the trigger, naming the tooltip's `id`. The tooltip describes the control and is never its accessible name: a name that only appears on hover is a name most people never get, so an icon trigger has an `.is-sr-only` label of its own, as above.
-- `aria-disabled="true"` — On an unavailable action that explains itself. The tooltip holds the reason, which takes no room and does not move the layout. Use `aria-disabled`, not `disabled`: a disabled button cannot take focus, so a keyboard user would never reach the reason. The script must ignore clicks while it is set.
+- `aria-disabled="true"` — On an unavailable action that explains itself. The reason goes in a tooltip by default, because it takes no room and does not move the layout. Where there is room, it can sit under the actions as `.ds-hint` text instead, named in the button's `aria-describedby`. Use `aria-disabled`, not `disabled`: a disabled button cannot take focus, so a keyboard user would never reach the reason. The script must ignore clicks while it is set.
 - `.ds-tooltip` — The bubble, with `role="tooltip"` and the `id`. It opens downward and toward the inline end, on hover and on focus, with no JavaScript. Escape must close it without moving focus, which CSS cannot do: a listener sets `hidden` on it, and clears it when the pointer or focus arrives again. The script on this page is the reference.
 - `.ds-tooltip-body` — The text. Short, and never content that exists nowhere else.
 - `.ds-tooltip--end` — For a host near the trailing edge of its container, like the Continue button above: the bubble runs back toward the start instead of off screen. Both directions use logical properties, so both are correct in a right-to-left script.
@@ -405,7 +412,7 @@ Default field widths are set to follow the expected amount of content and are an
 - **Labels go above the control.** A label-left, field-right layout gives a ragged edge and reads badly on a phone.
 - **Group related content with spacing**, not by adding more bordered divs. If spacing is insufficient then the form might be calling for subsections or to be broken up into different pages.
 - **The action bar is right-aligned**, with the primary action button (Save, Continue, etc.) the last one on the right. On long forms, consider repeating it at the top so the user does not need to scroll as much.
-- **Disabled, not missing.** An action that is unavailable renders disabled, with the reason in a tooltip (see [Tooltip](#tooltip)). The reader can see it exists and is not left wondering what is happening.
+- **Disabled, not missing.** An action that is unavailable renders disabled, with the reason in a tooltip, or as help text under the actions where there is room (see [Tooltip](#tooltip)). The reader can see it exists and is not left wondering what is happening.
 - **Every control has a label.** Put a real `<label for>` on every control, pointing at the control's `id`. Hide it with `.is-sr-only` when there is no room for it; do not leave it out.
 - **Mark the optional fields, not the required ones.** Put `(optional)` inside the visible label of an optional field. Put `required` and `aria-required="true"` on every required control: required fields carry no visual marker, so this pair is the only signal a screen reader gets. Never put either word in `aria-label` or `title`.
 - **Connect every hint and message to its control.** Give each `.ds-hint` and each message an `id`, and list them in the control's `aria-describedby`. Without that a screen reader announces the field and nothing else.
