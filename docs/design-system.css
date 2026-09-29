@@ -138,6 +138,8 @@
   --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.03);
 
   --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.13);
+  --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.12);
+  --ds-btn-primary-glow-active:        35%;   /* the glow's strength while pressed */
   --ds-btn-secondary-fg:           var(--ds-text-muted);
   --ds-btn-secondary-fg-hover:     var(--ds-text);
   --ds-btn-text-fg:                var(--ds-link);
@@ -660,7 +662,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   color: var(--ds-text-on-accent);
   box-shadow:
     inset 0 0 6px color-mix(in srgb, var(--ds-btn-primary-glow) 20%, transparent),
-    0 1px 3px rgba(0, 0, 0, 0.12);
+    0 1px 3px var(--ds-btn-primary-shadow-drop);
 }
 .ds-btn-primary:hover {
   background:
@@ -668,14 +670,14 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
     linear-gradient(to bottom, var(--ds-btn-primary-rim-hover-a), var(--ds-btn-primary-rim-hover-b)) border-box;
   box-shadow:
     inset 0 0 8px color-mix(in srgb, var(--ds-btn-primary-glow) 10%, transparent),
-    0 1px 3px rgba(0, 0, 0, 0.12);
+    0 1px 3px var(--ds-btn-primary-shadow-drop);
 }
 .ds-btn-primary:active {
   transform: translateY(1px);
   background:
     linear-gradient(var(--ds-accent), var(--ds-accent)) padding-box,
     linear-gradient(var(--ds-btn-primary-rim-active), var(--ds-btn-primary-rim-active)) border-box;
-  box-shadow: inset 0 0 10px color-mix(in srgb, var(--ds-btn-primary-glow) 35%, transparent);
+  box-shadow: inset 0 0 10px color-mix(in srgb, var(--ds-btn-primary-glow) var(--ds-btn-primary-glow-active), transparent);
 }
 
 /* ── Secondary on tinted surface (.on-tint) — buttons.html
@@ -1242,6 +1244,13 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 /* The row's checkbox carries the selection; the tint is never the only signal. */
 .ds-table tbody tr.is-selected > * { background: var(--ds-accent-wash); }
 .ds-table tbody tr.hidden { display: none; }
+
+/* Striped rows. On a striped table the hover is a wash of the text colour,
+   because the stripe already uses the plain hover colour; a selected row steps
+   up one wash where the surface has one, so it never matches a stripe. */
+.ds-table--striped tbody tr:nth-child(even) > * { background: var(--ds-table-stripe, var(--ds-canvas)); }
+.ds-table--striped tbody tr:hover > * { background: color-mix(in srgb, var(--ds-text) 7%, var(--ds-surface)); }
+.ds-table--striped tbody tr.is-selected > * { background: var(--ds-accent-wash-hover, var(--ds-accent-wash)); }
 
 /* A row-selection checkbox has no label to lend it a target, so it takes 24px. */
 .ds-table td:has(> input[type="checkbox"]),
@@ -2279,6 +2288,8 @@ html:has(.ds-modal[open]) {
     --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.15);
 
     --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.35);
+    --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.6);
+    --ds-btn-primary-glow-active:        45%;
     --ds-btn-secondary-fg:           var(--ds-text-muted);
     --ds-btn-secondary-fg-hover:     var(--ds-text);
     --ds-btn-text-fg:                var(--ds-link);
@@ -2327,20 +2338,6 @@ html:has(.ds-modal[open]) {
     --ds-btn-secondary-fg-hover:     var(--ds-accent);
     --ds-btn-text-bg-hover:          var(--ds-accent-wash);
     --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
-  }
-
-  /* Buttons — dark constructions.
-     Fills and rims flip through the --ds-btn-* tokens; only the shadows
-     are restated, stronger, so the buttons keep definition on the dark
-     canvas. */
-  html:not([data-theme="light"]) .ds-btn-primary {
-    box-shadow: inset 0 0 6px color-mix(in srgb, var(--ds-btn-primary-glow) 20%, transparent), 0 1px 3px rgba(0, 0, 0, 0.6);
-  }
-  html:not([data-theme="light"]) .ds-btn-primary:hover {
-    box-shadow: inset 0 0 8px color-mix(in srgb, var(--ds-btn-primary-glow) 10%, transparent), 0 1px 3px rgba(0, 0, 0, 0.6);
-  }
-  html:not([data-theme="light"]) .ds-btn-primary:active {
-    box-shadow: inset 0 0 10px color-mix(in srgb, var(--ds-btn-primary-glow) 45%, transparent);
   }
 }
 
@@ -2396,6 +2393,8 @@ html:has(.ds-modal[open]) {
   --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.15);
 
   --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.35);
+  --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.6);
+  --ds-btn-primary-glow-active:        45%;
   --ds-btn-secondary-fg:           var(--ds-text-muted);
   --ds-btn-secondary-fg-hover:     var(--ds-text);
   --ds-btn-text-fg:                var(--ds-link);
@@ -2459,6 +2458,8 @@ html:has(.ds-modal[open]) {
   --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.03);
 
   --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.13);
+  --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.12);
+  --ds-btn-primary-glow-active:        35%;   /* the glow's strength while pressed */
   --ds-btn-secondary-fg:           var(--ds-text-muted);
   --ds-btn-secondary-fg-hover:     var(--ds-text);
   --ds-btn-text-fg:                var(--ds-link);
@@ -2492,6 +2493,7 @@ html:has(.ds-modal[open]) {
    a different shape on this surface is a different component. Sits after
    the [data-theme="light"] block so it wins when both are on <html>. */
 .ds-internal {
+  --ds-table-stripe:               var(--ds-accent-wash);
   --ds-accent:                     var(--ds-access-lime);
   --ds-accent-hover:               var(--ds-access-lime-hover);
   --ds-accent-active:              var(--ds-access-lime-active);
@@ -2551,20 +2553,6 @@ html:has(.ds-modal[open]) {
   --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
 }
 
-
-/* Buttons — dark constructions.
-   Fills and rims flip through the --ds-btn-* tokens; only the shadows
-   are restated, stronger, so the buttons keep definition on the dark
-   canvas. */
-[data-theme="dark"] .ds-btn-primary {
-  box-shadow: inset 0 0 6px color-mix(in srgb, var(--ds-btn-primary-glow) 20%, transparent), 0 1px 3px rgba(0, 0, 0, 0.6);
-}
-[data-theme="dark"] .ds-btn-primary:hover {
-  box-shadow: inset 0 0 8px color-mix(in srgb, var(--ds-btn-primary-glow) 10%, transparent), 0 1px 3px rgba(0, 0, 0, 0.6);
-}
-[data-theme="dark"] .ds-btn-primary:active {
-  box-shadow: inset 0 0 10px color-mix(in srgb, var(--ds-btn-primary-glow) 45%, transparent);
-}
 
 
 /* OS accessibility signals. forced-colors: the OS replaces our palette
@@ -2723,6 +2711,11 @@ html:has(.ds-modal[open]) {
 /* toc.js pins this to the bar's top edge and watches it leave the viewport;
    that is what decides .is-stuck. */
 .ds-toc-sentinel { position: absolute; top: -3px; left: 0; width: 1px; height: 1px; pointer-events: none; }   /* -3px: past the 1px top border and clear of the viewport edge (an element touching the edge still counts as intersecting), so it is out of view exactly when the bar is held at 0 */
+/* Once stuck, the sentinel moves 8px higher, so the bar unsticks only when it
+   has come a clear 8px off the top. Without the gap, the sub-pixel shift the
+   tightening leaves below makes the browser's scroll anchoring nudge the page
+   back across the line, and the bar flickers between its two heights. */
+.ds-toc-bar.is-stuck > .ds-toc-sentinel { top: -11px; }
 
 /* A bar directly before the primary zone sits on that zone's top edge. */
 .ds-container > .ds-toc-bar + .ds-zone-primary { margin-top: calc(-1 * var(--ds-space-section)); }
