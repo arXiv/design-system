@@ -382,6 +382,44 @@ def check_section_anchors():
     ok(rule, "checked by gen-anchors.py")
 
 
+# ── One docs menu, on every page ──
+# The shared nav is copied into each page by hand, so copies drift: pages
+# went missing from it, a deleted page stayed in it, and one page carried an
+# old order. Every copy must match buttons.html (ignoring which link is marked
+# current), mark its own page current if it is listed, and every docs page
+# must be listed except the ones kept out of the nav on purpose.
+NAV_MENUS = re.compile(
+    r'<nav class="ds-site-header ds-site-header--light" aria-label="Design system">.*?'
+    r'((?:\s*<details class="ds-site-header-dropdown">.*?</details>)+)',
+    re.S,
+)
+OFF_NAV = {"doc.html", "outreach.html"}   # the doc viewer; the outreach rules page
+
+
+def check_docs_menu():
+    rule = "every docs page carries the same menu, and the menu lists every page"
+    docs = REPO / "docs"
+    ref = NAV_MENUS.search((docs / "buttons.html").read_text(encoding="utf-8"))
+    canon = ref.group(1).replace(' aria-current="page"', "")
+    listed = set(re.findall(r'href="([a-z0-9-]+\.html)"', canon))
+    n = 0
+    for path in sorted(docs.glob("*.html")):
+        rel = str(path.relative_to(REPO))
+        m = NAV_MENUS.search(path.read_text(encoding="utf-8", errors="replace"))
+        if not m:
+            fail(rule, rel, "no shared docs menu")
+            continue
+        n += 1
+        if m.group(1).replace(' aria-current="page"', "") != canon:
+            fail(rule, rel, "menu differs from the one on buttons.html")
+        if path.name in listed and f'href="{path.name}" aria-current="page"' not in m.group(1):
+            fail(rule, rel, "does not mark its own menu link aria-current")
+        if path.name not in listed and path.name not in OFF_NAV:
+            fail(rule, rel, "is not in the menu")
+    if rule not in FAILS:
+        ok(rule, f"{n} pages, {len(listed)} listed")
+
+
 def main():
     check_wordmark_not_typed()
     check_self_hosted()
@@ -390,6 +428,7 @@ def main():
     check_relative_type_sizes()
     check_page_shape()
     check_theme_control()
+    check_docs_menu()
     check_toc_script()
     check_no_changelog_prose()
     check_classes_documented()

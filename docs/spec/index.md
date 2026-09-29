@@ -12,6 +12,7 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Special messages | [messages.md](messages.md) | When arXiv has something special to say on the platform itself, this is how we do it. We are starting with a small announcement band above the header. Other opt |
 | Site footer | [footer.md](footer.md) | The universal arXiv public-page footer (`.ds-site-footer`). Note that the footer is still changing post-spinout as we figure out the best way to acknowledge maj |
 | Forms & validation | [forms.md](forms.md) | The design system supports highly accessible forms with robust validation display options. Explore validation examples in action in this [submission metadata mo |
+| Site header | [header.md](header.md) | The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left,  |
 
 ## Not yet digested
 
@@ -21,7 +22,6 @@ These pages have not had their review pass. Read the page itself, and expect the
 - cards.html
 - colors.html
 - dark-mode.html
-- header.html
 - links.html
 - modals.html
 - organizing-content.html
