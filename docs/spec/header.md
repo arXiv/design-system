@@ -6,7 +6,7 @@ stylesheet: design-system.css
 components:
   - id: the-header-unit
     title: "The header unit"
-    summary: "Rendered directly from `design-system.css`. Resize the window: at ≤599px the nav collapses behind the hamburger (the approved mobile treatment); **without JS it wraps to a second row instead** — every item stays visible, passing WCAG 1.4.10 reflow at 320px and keeping voice-control working. The header is static — it scrolls away with the page (on arxiv.org the site header is never the sticky bar — DESIGN-POLICIES.md). Every header has the same regions, in this order: logo, navigation, tools (optional), and account."
+    summary: "Rendered directly from `design-system.css`. On a narrow screen the bar folds itself to fit; see [On small screens](#on-small-screens). The header is static — it scrolls away with the page (on arxiv.org the site header is never the sticky bar — DESIGN-POLICIES.md). Every header has the same regions, in this order: logo, navigation, tools (optional), and account."
     classes:
       - name: ".ds-skip-link"
         does: "The skip link. The first focusable element on the page, visible only on keyboard focus. Its `href` is the id of the main content."
@@ -19,15 +19,13 @@ components:
       - name: ".ds-nav-icon"
         does: "An icon beside a link label, sized by the stylesheet and quieter than the text. `aria-hidden=\"true\"`; the label carries the name."
       - name: ".ds-site-header-divider"
-        does: "A vertical hairline between groups of links or between regions, on the bar’s own divider token. Takes `aria-hidden=\"true\"`. Hidden below 600px."
+        does: "A vertical hairline between groups of links or between regions, on the bar’s own divider token. Takes `aria-hidden=\"true\"`. Hidden while the navigation is folded away."
       - name: ".ds-site-header-tools"
         does: "Optional. The controls one interface needs, after the navigation: search fields, icon buttons, the theme control. See [Internal header](#internal-headers)."
       - name: ".ds-site-header-account"
-        does: "The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section. Below 600px it stays on the first row, beside the logo."
+        does: "The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section. It stays in the bar at every width."
       - name: ".ds-site-header-login"
         does: "The emphasis slot, and the only item in the bar that takes weight. Signed out it is the *Log in* link. Signed in it is the *Account* menu, with the greeting beside it."
-      - name: ".ds-site-header-nav-toggle, .is-collapsible, .is-open"
-        does: "At ≤599px the nav collapses behind a hamburger **only after JS enables it**: the header script adds `.is-collapsible` to `.ds-site-header` and wires the toggle (`.is-open` on the nav, `aria-expanded` in sync) in the same call, so the hamburger appears only when it actually works. **The default — including no JS — is the wrap** (all items visible, WCAG 1.4.10 reflow)."
       - name: ".ds-site-header-dropdown"
         does: "A menu group in the bar, built on `<details>`. See [Header dropdown menus](#header-dropdown-menus)."
   - id: signed-out-and-signed-in
@@ -35,13 +33,25 @@ components:
     summary: "Account-related items display to the right of the navigation and are the only items in a heavier text weight. Signed out it says **Log in**. Signed in it displays a greeting and name, and an **Account** menu that holds Log out. When names are long (and arXiv users have every type and structure of name) we truncate to a reasonable number of characters."
     classes:
       - name: ".ds-site-header-greeting"
-        does: "The greeting takes the given name only — its first word — because the bar is chrome and a full legal name is more of it than the job needs. Even one word is user data of unbounded length in any script, so it is capped at 14 characters with an ellipsis, as the second example shows. A bar that reflows or overflows on a long name breaks for exactly the people whose names get tested least. The greeting is not a link. It is a statement; the thing you can act on is the Account menu beside it. Making the name itself the link would give that link the accessible name “Ada”, which says nothing about where it goes. It is the first thing dropped on a narrow bar: below 600px the greeting hides and Account stays — the menu is the useful half, and the reader already knows their own name."
+        does: "The greeting takes the given name only — its first word — because the bar is chrome and a full legal name is more of it than the job needs. Even one word is user data of unbounded length in any script, so it is capped at 14 characters with an ellipsis, as the second example shows. A bar that reflows or overflows on a long name breaks for exactly the people whose names get tested least. The greeting is not a link. It is a statement; the thing you can act on is the Account menu beside it. Making the name itself the link would give that link the accessible name “Ada”, which says nothing about where it goes. It is the first thing dropped on a narrow bar: when the bar runs out of room the greeting hides and Account stays — the menu is the useful half, and the reader already knows their own name."
       - name: ".ds-site-header-login"
         does: "The same emphasis slot as when signed out, now on the `<summary>` of an Account menu (`.ds-site-header-dropdown`). The slot is about rank in the bar, not about which of the two words is in it."
       - name: "<form method=\"post\">"
         does: "Log out is a button in a form that posts, never a link. A link can be followed by a browser prefetch or from another site, and logging someone out changes their state."
       - name: ".ds-site-header-greeting > b"
         does: "The name. The stylesheet caps it at 14 characters and ends it with an ellipsis; the host passes the given name and nothing else."
+  - id: on-small-screens
+    title: "On small screens"
+    summary: "The header fits itself to the space it has, and nobody has to plan for it. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button, then the tools fold behind a second button. The logo and the account area always stay in the bar. There is no breakpoint to choose, no button to add and no script to write: loading `header.js` is the whole job, and a header whose content changes later still fits."
+    classes:
+      - name: "header.js"
+        does: "The only thing to add, once per page. It finds every `.ds-site-header` on the page and keeps each one on a single row. Without JavaScript the bar wraps onto more rows instead, so nothing is ever hidden."
+      - name: ".ds-site-header-nav-toggle, .ds-site-header-tools-toggle"
+        does: "The menu button and the tools button. The script adds each one just before the region it opens, so they are not in the markup. Each carries `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button."
+      - name: ".is-collapsible, .is-greeting-hidden, .is-nav-collapsed, .is-tools-collapsed, .is-overfull, .is-open, .is-measuring"
+        does: "State classes the script sets on the bar and on an open region. They are never written by hand. `.is-overfull` lets the bar wrap when even the folded bar is too wide for its space."
+    notes:
+      - "The script answers to the width of the bar, not of the window, so these examples fold inside narrower boxes on a wide screen. Open the menu or the tools button to see the folded rows."
   - id: header-dropdown-menus
     title: "Header dropdown menus"
     summary: "A property whose sections need grouping adds `.ds-site-header-dropdown`, built on `<details>` so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The Account menu is the same component."
@@ -132,7 +142,7 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 ## The header unit
 
-Rendered directly from `design-system.css`. Resize the window: at ≤599px the nav collapses behind the hamburger (the approved mobile treatment); **without JS it wraps to a second row instead** — every item stays visible, passing WCAG 1.4.10 reflow at 320px and keeping voice-control working. The header is static — it scrolls away with the page (on arxiv.org the site header is never the sticky bar — DESIGN-POLICIES.md). Every header has the same regions, in this order: logo, navigation, tools (optional), and account.
+Rendered directly from `design-system.css`. On a narrow screen the bar folds itself to fit; see [On small screens](#on-small-screens). The header is static — it scrolls away with the page (on arxiv.org the site header is never the sticky bar — DESIGN-POLICIES.md). Every header has the same regions, in this order: logo, navigation, tools (optional), and account.
 
 ```html
 <!-- First focusable element on the page -->
@@ -142,13 +152,6 @@ Rendered directly from `design-system.css`. Resize the window: at ≤599px the n
   <a href="/" class="ds-site-header-logo" aria-label="archive home">
     <img src="logo_arxiv-primary.svg" alt="archive">
   </a>
-  <button type="button" id="ds-nav-toggle" class="ds-site-header-nav-toggle" aria-label="Open menu" aria-controls="ds-site-header-nav" aria-expanded="false">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-      <line x1="3" y1="6" x2="21" y2="6"/>
-      <line x1="3" y1="12" x2="21" y2="12"/>
-      <line x1="3" y1="18" x2="21" y2="18"/>
-    </svg>
-  </button>
   <nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation">
     <a href="/search">
       <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -172,11 +175,10 @@ Rendered directly from `design-system.css`. Resize the window: at ≤599px the n
 - `.ds-site-header-logo` — The brand slot, image or wordmark. Takes `margin-right: auto`. On arxiv.org it is the logo image, never the word typed out; its alt text says “archive”.
 - `.ds-site-header-nav` — The links, in a `<nav>` with an `aria-label`. The Search control is an `<a href="/search">` that JS may upgrade to open a search overlay. Never a dead button — without JS it navigates to the search page.
 - `.ds-nav-icon` — An icon beside a link label, sized by the stylesheet and quieter than the text. `aria-hidden="true"`; the label carries the name.
-- `.ds-site-header-divider` — A vertical hairline between groups of links or between regions, on the bar’s own divider token. Takes `aria-hidden="true"`. Hidden below 600px.
+- `.ds-site-header-divider` — A vertical hairline between groups of links or between regions, on the bar’s own divider token. Takes `aria-hidden="true"`. Hidden while the navigation is folded away.
 - `.ds-site-header-tools` — Optional. The controls one interface needs, after the navigation: search fields, icon buttons, the theme control. See [Internal header](#internal-headers).
-- `.ds-site-header-account` — The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section. Below 600px it stays on the first row, beside the logo.
+- `.ds-site-header-account` — The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section. It stays in the bar at every width.
 - `.ds-site-header-login` — The emphasis slot, and the only item in the bar that takes weight. Signed out it is the *Log in* link. Signed in it is the *Account* menu, with the greeting beside it.
-- `.ds-site-header-nav-toggle, .is-collapsible, .is-open` — At ≤599px the nav collapses behind a hamburger **only after JS enables it**: the header script adds `.is-collapsible` to `.ds-site-header` and wires the toggle (`.is-open` on the nav, `aria-expanded` in sync) in the same call, so the hamburger appears only when it actually works. **The default — including no JS — is the wrap** (all items visible, WCAG 1.4.10 reflow).
 - `.ds-site-header-dropdown` — A menu group in the bar, built on `<details>`. See [Header dropdown menus](#header-dropdown-menus).
 
 ## Signed out and signed in
@@ -213,10 +215,25 @@ Account-related items display to the right of the navigation and are the only it
 <span class="ds-site-header-greeting">Welcome <b>Sivaramakrishnan</b></span>
 ```
 
-- `.ds-site-header-greeting` — The greeting takes the given name only — its first word — because the bar is chrome and a full legal name is more of it than the job needs. Even one word is user data of unbounded length in any script, so it is capped at 14 characters with an ellipsis, as the second example shows. A bar that reflows or overflows on a long name breaks for exactly the people whose names get tested least. The greeting is not a link. It is a statement; the thing you can act on is the Account menu beside it. Making the name itself the link would give that link the accessible name “Ada”, which says nothing about where it goes. It is the first thing dropped on a narrow bar: below 600px the greeting hides and Account stays — the menu is the useful half, and the reader already knows their own name.
+- `.ds-site-header-greeting` — The greeting takes the given name only — its first word — because the bar is chrome and a full legal name is more of it than the job needs. Even one word is user data of unbounded length in any script, so it is capped at 14 characters with an ellipsis, as the second example shows. A bar that reflows or overflows on a long name breaks for exactly the people whose names get tested least. The greeting is not a link. It is a statement; the thing you can act on is the Account menu beside it. Making the name itself the link would give that link the accessible name “Ada”, which says nothing about where it goes. It is the first thing dropped on a narrow bar: when the bar runs out of room the greeting hides and Account stays — the menu is the useful half, and the reader already knows their own name.
 - `.ds-site-header-login` — The same emphasis slot as when signed out, now on the `<summary>` of an Account menu (`.ds-site-header-dropdown`). The slot is about rank in the bar, not about which of the two words is in it.
 - `<form method="post">` — Log out is a button in a form that posts, never a link. A link can be followed by a browser prefetch or from another site, and logging someone out changes their state.
 - `.ds-site-header-greeting > b` — The name. The stylesheet caps it at 14 characters and ends it with an ellipsis; the host passes the given name and nothing else.
+
+## On small screens
+
+The header fits itself to the space it has, and nobody has to plan for it. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button, then the tools fold behind a second button. The logo and the account area always stay in the bar. There is no breakpoint to choose, no button to add and no script to write: loading `header.js` is the whole job, and a header whose content changes later still fits.
+
+```html
+<!-- Once per page, after the header. Nothing else changes. -->
+<script src="header.js" defer></script>
+```
+
+- `header.js` — The only thing to add, once per page. It finds every `.ds-site-header` on the page and keeps each one on a single row. Without JavaScript the bar wraps onto more rows instead, so nothing is ever hidden.
+- `.ds-site-header-nav-toggle, .ds-site-header-tools-toggle` — The menu button and the tools button. The script adds each one just before the region it opens, so they are not in the markup. Each carries `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button.
+- `.is-collapsible, .is-greeting-hidden, .is-nav-collapsed, .is-tools-collapsed, .is-overfull, .is-open, .is-measuring` — State classes the script sets on the bar and on an open region. They are never written by hand. `.is-overfull` lets the bar wrap when even the folded bar is too wide for its space.
+
+> The script answers to the width of the bar, not of the window, so these examples fold inside narrower boxes on a wide screen. Open the menu or the tools button to see the folded rows.
 
 ## Header dropdown menus
 
