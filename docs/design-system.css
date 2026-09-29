@@ -565,7 +565,8 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   padding: 6px;
   z-index: 60;
 }
-.ds-site-header-menu a {
+.ds-site-header-menu a,
+.ds-site-header-menu button {
   color: var(--ds-text);
   text-decoration: none;
   padding: 6px 10px;
@@ -575,8 +576,20 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   display: flex;
   align-items: center;
 }
-.ds-site-header-menu a:hover { background: var(--ds-surface-muted); }
-.ds-site-header-menu a:focus-visible {
+/* Log out is a button in a form that posts; it matches the links beside it. */
+.ds-site-header-menu button {
+  width: 100%;
+  font: inherit;
+  text-align: start;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.ds-site-header-menu form { margin: 0; }
+.ds-site-header-menu a:hover,
+.ds-site-header-menu button:hover { background: var(--ds-surface-muted); }
+.ds-site-header-menu a:focus-visible,
+.ds-site-header-menu button:focus-visible {
   outline: 2px solid var(--ds-link);
   outline-offset: -2px;
 }
@@ -3024,8 +3037,9 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   align-items: center;
   gap: var(--ds-space-tight);
 }
-.ds-site-header-nav a,
-.ds-site-header-nav button {
+/* Direct children only: a dropdown menu inside the nav keeps its own panel styles. */
+.ds-site-header-nav > a,
+.ds-site-header-nav > button {
   font-family: var(--ds-font-sans);
   font-size: 0.8125rem; /* 13px */
   font-weight: 500;
@@ -3042,11 +3056,11 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   align-items: center;
   gap: var(--ds-gap-glyph);
 }
-.ds-site-header-nav a:visited { color: var(--ds-hdr-fg); }
-.ds-site-header-nav a:hover,
-.ds-site-header-nav button:hover { background: var(--ds-hdr-hover); color: var(--ds-hdr-fg-strong); }
-.ds-site-header-nav a:focus-visible,
-.ds-site-header-nav button:focus-visible {
+.ds-site-header-nav > a:visited { color: var(--ds-hdr-fg); }
+.ds-site-header-nav > a:hover,
+.ds-site-header-nav > button:hover { background: var(--ds-hdr-hover); color: var(--ds-hdr-fg-strong); }
+.ds-site-header-nav > a:focus-visible,
+.ds-site-header-nav > button:focus-visible {
   outline: 3px solid var(--ds-hdr-ring);
   outline-offset: 1px;
 }
@@ -3066,7 +3080,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
    the slot is about rank in the bar, not about which of those words is in it.
    Scoped through .ds-site-header-nav so it out-specifies the nav's own link
    colour rather than shouting !important at it. */
-.ds-site-header-nav a.ds-site-header-login {
+.ds-site-header-nav .ds-site-header-login {
   font-weight: 600;
   color: var(--ds-hdr-fg-strong);
 }
@@ -3161,8 +3175,8 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
     padding: 6px 12px;
   }
   .ds-site-header-nav { flex-wrap: wrap; row-gap: 2px; width: 100%; }
-  .ds-site-header-nav a,
-  .ds-site-header-nav button { padding: 6px 8px; }
+  .ds-site-header-nav > a,
+  .ds-site-header-nav > button { padding: 6px 8px; }
 
   /* JS enhancement: collapse the nav behind the hamburger. */
   .ds-site-header.is-collapsible {
@@ -3194,8 +3208,11 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
     z-index: 60;
   }
   .ds-site-header.is-collapsible .ds-site-header-nav.is-open { display: flex; }
-  .ds-site-header.is-collapsible .ds-site-header-nav a,
-  .ds-site-header.is-collapsible .ds-site-header-nav button {
+  .ds-site-header.is-collapsible .ds-site-header-nav > a,
+  .ds-site-header.is-collapsible .ds-site-header-nav > button,
+  .ds-site-header.is-collapsible .ds-site-header-dropdown > summary,
+  .ds-site-header.is-collapsible .ds-site-header-menu a,
+  .ds-site-header.is-collapsible .ds-site-header-menu button {
     width: 100%;
     justify-content: flex-start;
     padding: 12px 16px;
@@ -3209,6 +3226,33 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   /* The desktop vertical divider is meaningless in a stacked list — hide it
      (each row already carries its own separator). */
   .ds-site-header.is-collapsible .ds-site-header-divider { display: none; }
+  /* A dropdown in the collapsed list opens in place, as indented rows on the bar's own ground. */
+  .ds-site-header.is-collapsible .ds-site-header-dropdown > summary { display: flex; align-items: center; }
+  .ds-site-header.is-collapsible .ds-site-header-menu {
+    position: static;
+    min-width: 0;
+    max-width: none;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .ds-site-header.is-collapsible .ds-site-header-menu a,
+  .ds-site-header.is-collapsible .ds-site-header-menu button {
+    padding-inline-start: 32px;
+    color: var(--ds-hdr-fg);
+  }
+  .ds-site-header.is-collapsible .ds-site-header-menu a:hover,
+  .ds-site-header.is-collapsible .ds-site-header-menu button:hover {
+    background: var(--ds-hdr-hover);
+    color: var(--ds-hdr-fg-strong);
+  }
+  .ds-site-header.is-collapsible .ds-site-header-menu a:focus-visible,
+  .ds-site-header.is-collapsible .ds-site-header-menu button:focus-visible {
+    outline: 3px solid var(--ds-hdr-ring);
+    outline-offset: -3px;
+  }
 }
 
 /* ── Header search overlay (.ds-search-overlay) ─────────────────────────
