@@ -177,8 +177,8 @@
             <code>aria-hidden="true"</code>.</dd>
             <dt>.ds-site-header-login</dt>
             <dd>The emphasis slot: the last item in the bar, and the only nav item that takes weight.
-            Signed out it says <em>Log in</em>. Signed in it says <em>Account</em>, with the greeting
-            beside it.</dd>
+            Signed out it is the <em>Log in</em> link. Signed in it is the <em>Account</em> menu, with
+            the greeting beside it.</dd>
             <dt>.ds-site-header-nav-toggle, .is-collapsible, .is-open</dt>
             <dd>At ≤599px the nav collapses behind a hamburger <strong>only after JS enables it</strong>:
             the header script adds <code>.is-collapsible</code> to <code>.ds-site-header</code> and
@@ -206,7 +206,7 @@
   <!-- ───────── Signed out, and signed in ───────── -->
   <section class="section">
     <h2 class="section-title" id="signed-out-and-signed-in">Signed out and signed in</h2>
-    <p class="ds-section-desc">Account-related information goes all the way to the right of the navigation and are the only items in a heavier text weight. Signed out it says <strong>Log in</strong>. Signed in it says <strong>Account</strong>, with a greeting and name. When names are long (and arXiv users have every type and structure of name) we truncate to a reasonable number of characters.</p>
+    <p class="ds-section-desc">Account-related items display to the right of the navigation and are the only items in a heavier text weight. Signed out it says <strong>Log in</strong>. Signed in it displays a greeting and name, and an <strong>Account</strong> menu that holds Log out. When names are long (and arXiv users have every type and structure of name) we truncate to a reasonable number of characters.</p>
     <div class="ds-card">
       <nav class="ds-site-header" aria-label="Signed-in example">
         <a href="#" class="ds-site-header-logo" aria-label="archive home">
@@ -217,7 +217,15 @@
           <a href="#">Submit</a>
           <span class="ds-site-header-divider" aria-hidden="true"></span>
           <span class="ds-site-header-greeting">Welcome <b>Ada</b></span>
-          <a href="#" class="ds-site-header-login">Account</a>
+          <details class="ds-site-header-dropdown">
+            <summary class="ds-site-header-login">Account</summary>
+            <div class="ds-site-header-menu">
+              <a href="#">Your account</a>
+              <form method="post" action="#" onsubmit="return false">
+                <button type="submit">Log out</button>
+              </form>
+            </div>
+          </details>
         </nav>
       </nav>
       <details class="ds-acc"><summary>Relevant code</summary>
@@ -233,7 +241,15 @@
   &lt;a href="/submit"&gt;Submit&lt;/a&gt;
   &lt;span class="ds-site-header-divider" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;span class="ds-site-header-greeting"&gt;Welcome &lt;b&gt;Ada&lt;/b&gt;&lt;/span&gt;
-  &lt;a href="/account" class="ds-site-header-login"&gt;Account&lt;/a&gt;
+  &lt;details class="ds-site-header-dropdown"&gt;
+    &lt;summary class="ds-site-header-login"&gt;Account&lt;/summary&gt;
+    &lt;div class="ds-site-header-menu"&gt;
+      &lt;a href="/account"&gt;Your account&lt;/a&gt;
+      &lt;form method="post" action="/logout"&gt;
+        &lt;button type="submit"&gt;Log out&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/details&gt;
 &lt;/nav&gt;</code></pre>
           <dl>
             <dt>.ds-site-header-greeting</dt>
@@ -242,13 +258,17 @@
             unbounded length in any script, so it is capped at 14 characters with an ellipsis, as the
             second example shows. A bar that reflows or overflows on a long name breaks for exactly the
             people whose names get tested least. The greeting is not a link. It is a statement; the
-            thing you can act on is the Account link beside it. Making the name itself the link would
+            thing you can act on is the Account menu beside it. Making the name itself the link would
             give that link the accessible name “Ada”, which says nothing about where it goes. It is
             the first thing dropped on a narrow bar: below 600px the greeting hides and Account stays —
-            the link is the useful half, and the reader already knows their own name.</dd>
+            the menu is the useful half, and the reader already knows their own name.</dd>
             <dt>.ds-site-header-login</dt>
-            <dd>The same emphasis slot as when signed out, now reading <em>Account</em>. The slot is about
-            rank in the bar, not about which of the two words is in it.</dd>
+            <dd>The same emphasis slot as when signed out, now on the <code>&lt;summary&gt;</code> of an
+            Account menu (<code>.ds-site-header-dropdown</code>). The slot is about rank in the bar, not
+            about which of the two words is in it.</dd>
+            <dt>&lt;form method="post"&gt;</dt>
+            <dd>Log out is a button in a form that posts, never a link. A link can be followed by a
+            browser prefetch or from another site, and logging someone out changes their state.</dd>
           </dl>
         </div>
       </details>
@@ -263,7 +283,15 @@
           <a href="#">Submit</a>
           <span class="ds-site-header-divider" aria-hidden="true"></span>
           <span class="ds-site-header-greeting">Welcome <b>Sivaramakrishnan</b></span>
-          <a href="#" class="ds-site-header-login">Account</a>
+          <details class="ds-site-header-dropdown">
+            <summary class="ds-site-header-login">Account</summary>
+            <div class="ds-site-header-menu">
+              <a href="#">Your account</a>
+              <form method="post" action="#" onsubmit="return false">
+                <button type="submit">Log out</button>
+              </form>
+            </div>
+          </details>
         </nav>
       </nav>
       <details class="ds-acc"><summary>Relevant code</summary>
@@ -304,10 +332,7 @@
   <!-- ───────── With the announcement band ───────── -->
   <section class="section">
     <h2 class="section-title" id="with-the-announcement-band">With the announcement band</h2>
-    <p class="ds-section-desc">When arXiv has something to say to everyone, the announcement band sits
-    directly above the bar, and the two scroll away together. The band itself, its registers and its
-    tone are on <a href="messages.html#announcement-band">Special messages</a>; this page shows only
-    where it sits.</p>
+    <p class="ds-section-desc">When arXiv has something to say to everyone, an announcement band can be displayed above the header bar. Neither is fixed; the two scroll away together. See <a href="messages.html#announcement-band">Announcement band</a> for the full documentation.</p>
     <div class="ds-card">
       <div class="ds-announcement" role="region" aria-label="Announcement">
         <img class="ds-announcement-glyph" src="assets/images/bones/icon_small-smileybones.svg" alt="">
@@ -358,7 +383,7 @@
   <!-- ───────── The light variant ───────── -->
   <section class="section">
     <h2 class="section-title" id="the-light-variant">The light variant</h2>
-    <p class="ds-section-desc">A secondary property, like this documentation, differentiates itself from the main arXiv with a light header variant. Adding <code>.ds-site-header--light</code> re-points seven surface tokens but declares no property of its own. The token values are listed under <a href="#surface-tokens">Surface tokens</a>.</p>
+    <p class="ds-section-desc">Adding <code>.ds-site-header--light</code> re-points seven surface tokens but declares no property of its own. The light variant is used in this documentation to clearly signal we are in a distinct space from the main arXiv site.</p>
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
@@ -420,9 +445,9 @@
       <li><strong>The host provides the skip link.</strong> The shared templates start at the
       announcement band, so a host puts <code>.ds-skip-link</code> before them, pointing at its own
       main content.</li>
-      <li><strong>Log out is not in the bar.</strong> It belongs on the account page. A
-      destructive-adjacent action one mis-tap from Search is a bad trade for the two seconds it
-      saves.</li>
+      <li><strong>Log out is in the Account menu.</strong> Signed in, Account opens a menu holding
+      the account page and Log out. Logging out is then one menu away on every page, which matters
+      on shared computers, and still takes two deliberate actions.</li>
       <li><strong>Type sizes are rem</strong> so browser font-size overrides propagate. In print the
       header keeps only its logo, 28px tall; the announcement band is hidden.</li>
     </ul>
