@@ -2,7 +2,7 @@
 
 Rules for anyone — person or agent — writing text that ships: interface copy, error messages, instructions, and the docs in this repo.
 
-[BRAND.md](BRAND.md) sets arXiv's voice. [DESIGN-POLICIES.md](DESIGN-POLICIES.md) states the hard rules. This file carries the rules in full, with the reasoning behind them.
+[Brand & vision](brand.html) sets arXiv's voice. [DESIGN-POLICIES.md](DESIGN-POLICIES.md) states the hard rules. This file carries the rules in full, with the reasoning behind them.
 
 ---
 
@@ -10,9 +10,9 @@ Rules for anyone — person or agent — writing text that ships: interface copy
 
 **Load-bearing text** — error messages, validation messages, form labels and help text, submission and upload instructions, empty states that block a task, and agent-facing docs in this repo. Every rule below is a requirement here.
 
-**Everything else** — pattern page prose, rationale, planning and brand documents, announcements. BRAND.md's voice applies in full, dry wit included. The load-bearing rules are useful defaults here, not requirements.
+**Everything else** — pattern page prose, rationale, planning and brand documents, announcements. The brand page's voice applies in full, dry wit included. The load-bearing rules are useful defaults here, not requirements.
 
-BRAND.md already implies this split: the mischief belongs in "small, optional places … never in anything load-bearing or anything a stressed researcher has to parse." This file makes the strict half concrete.
+The brand page already implies this split: the mischief belongs in "small, optional places … never in anything load-bearing or anything a stressed researcher has to parse." This file makes the strict half concrete.
 
 ---
 
