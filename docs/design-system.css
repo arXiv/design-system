@@ -1117,7 +1117,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   margin-inline: var(--ds-space-1);
 }
 
-/* CARD  (.ds-card / .ds-card--data / .ds-card-grid) and FRAMED TABLE (.ds-table-framed) — cards.html
+/* CARD  (.ds-card / .ds-card--data / .ds-card-grid) — cards.html
    Anything that groups related content on the page canvas. Padding comes
    from the scale; a card needing different room sets its own padding
    rather than becoming a different card. */
@@ -1202,14 +1202,95 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   gap: var(--ds-space-block);
 }
 
-.ds-table-framed {
+
+/* TABLE  (.ds-table) — tables.html
+   One table for both surfaces. The header row comes from the markup: a
+   <thead> draws it, and a <th> in the body is a row header, set as a cell. */
+.ds-table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 0.8125rem;
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
   border-radius: 8px;
   overflow: hidden;      /* so the corners actually clip the header row */
 }
+.ds-table thead th {
+  text-align: left;
+  font-family: var(--ds-font-condensed);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ds-text-muted);
+  padding: 9px 14px;
+  background: var(--ds-surface-muted);
+  border-bottom: 1px solid var(--ds-border);
+  white-space: nowrap;
+}
+.ds-table td,
+.ds-table tbody th {
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--ds-surface-muted);
+  vertical-align: top;
+  color: var(--ds-text);
+}
+.ds-table tbody th { font-weight: 600; }
+.ds-table tbody tr:last-child > * { border-bottom: none; }
+.ds-table tbody tr:hover > * { background: var(--ds-canvas); }
+/* The row's checkbox carries the selection; the tint is never the only signal. */
+.ds-table tbody tr.is-selected > * { background: var(--ds-accent-wash); }
+.ds-table tbody tr.hidden { display: none; }
+
+/* A row-selection checkbox has no label to lend it a target, so it takes 24px. */
+.ds-table td:has(> input[type="checkbox"]),
+.ds-table th:has(> input[type="checkbox"]) { min-width: 24px; }
+.ds-table input[type="checkbox"] {
+  accent-color: var(--ds-link);
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Below the table: a row count or pagination. */
+.ds-table-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 9px 14px;
+  font-size: 0.75rem;
+  color: var(--ds-text-muted);
+  border-top: 1px solid var(--ds-border);
+}
+
+/* Sortable column: a <button class="sortable"> in the <th>, .sort-asc or
+   .sort-desc on the <th>, and a <span class="sort-arrow"> for the direction. */
+.ds-table thead th .sortable {
+  all: unset;   /* a button that looks like the header text it replaces */
+  display: inline;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.1s;
+}
+.ds-table thead th .sortable:hover { color: var(--ds-text); }
+.ds-table thead th .sortable:focus-visible {
+  outline: 2px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.sort-arrow {
+  display: inline-block;
+  margin-left: 3px;
+  font-size: 0.5625rem;
+  color: var(--ds-border-strong); /* 3.3:1 on the header row */
+  vertical-align: middle;
+}
+.ds-table th.sort-asc .sort-arrow,
+.ds-table th.sort-desc .sort-arrow { color: var(--ds-text); }
 
 
 /* ── Button group (.ds-btn-group) ─────────────────────────────────────
