@@ -54,7 +54,7 @@ rules:
   - "**Set the page's own background and text from tokens.** An inherited colour from a platform preset or a third-party stylesheet cannot flip, and it will not announce itself. [Trap 3](#traps-that-only-show-up-on-a-real-page)"
   - "**Do not use `color-scheme` to force a mode.** It governs browser-rendered widgets only — scrollbars, form controls — and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme`. [Scoping a mode](#scoping-a-mode)"
   - "**Scope a demo that must show one mode.** Put `data-theme` on the demo's own container, not on the page. Pages should follow the reader. [Scoping a mode](#scoping-a-mode)"
-  - "**If anything can set `data-theme`, mirror the dark block under the attribute** as well as the media query — including inherited code you did not write. [Why the attribute, not the toggle](#the-mechanism)"
+  - "**If anything can set `data-theme`, mirror the dark block under the attribute** as well as the media query — including inherited code you did not write. [How the attribute works](#the-mechanism)"
   - "**Verify computed styles in both modes, and measure contrast.** Do not trust the cascade and do not judge by eye. Check the states a reader can actually reach: OS dark, OS light, and the attribute forced either way."
   - "Component CSS consumes tokens. Do not write hex values directly."
   - "`color-scheme` does not lock a page to a mode. It governs browser-rendered widgets like scrollbars, form controls, and the default canvas. It does not touch a stylesheet's `prefers-color-scheme` rules. If absolutely needed, use `data-theme` to lock a mode."
@@ -156,7 +156,7 @@ Internal tools load the same tier 1 stylesheet as public pages. Their speciall a
 - **Set the page's own background and text from tokens.** An inherited colour from a platform preset or a third-party stylesheet cannot flip, and it will not announce itself. [Trap 3](#traps-that-only-show-up-on-a-real-page)
 - **Do not use `color-scheme` to force a mode.** It governs browser-rendered widgets only — scrollbars, form controls — and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme`. [Scoping a mode](#scoping-a-mode)
 - **Scope a demo that must show one mode.** Put `data-theme` on the demo's own container, not on the page. Pages should follow the reader. [Scoping a mode](#scoping-a-mode)
-- **If anything can set `data-theme`, mirror the dark block under the attribute** as well as the media query — including inherited code you did not write. [Why the attribute, not the toggle](#the-mechanism)
+- **If anything can set `data-theme`, mirror the dark block under the attribute** as well as the media query — including inherited code you did not write. [How the attribute works](#the-mechanism)
 - **Verify computed styles in both modes, and measure contrast.** Do not trust the cascade and do not judge by eye. Check the states a reader can actually reach: OS dark, OS light, and the attribute forced either way.
 - Component CSS consumes tokens. Do not write hex values directly.
 - `color-scheme` does not lock a page to a mode. It governs browser-rendered widgets like scrollbars, form controls, and the default canvas. It does not touch a stylesheet's `prefers-color-scheme` rules. If absolutely needed, use `data-theme` to lock a mode.

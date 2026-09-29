@@ -59,6 +59,7 @@
     <div class="ds-site-header-menu">
       <a href="using.html">Using the system</a>
       <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+      <a href="doc.html?src=docs/STYLE.md">Writing style</a>
       <a href="brand.html">Brand &amp; vision</a>
       <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
       <a href="doc.html?src=README.md">About this repo</a>
@@ -182,7 +183,7 @@
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
         <p class="ds-marginalia-body ds-annotation">Accents hold in both modes: Open Blue and Access Lime stay themselves, which is why the text on them is a fixed token too.</p>
       </details>
-      <div class="form-states">
+      <div class="form-states form-states--pairs">
         <div class="form-state">
           <span class="state-label">Public, light</span>
           <div class="ds-card" data-theme="light" style="color: var(--ds-text)">
@@ -383,7 +384,7 @@
 
       <li><strong>If anything can set <code>data-theme</code>, mirror the dark block under the attribute</strong> as
       well as the media query — including inherited code you did not write.
-      <a href="#the-mechanism">Why the attribute, not the toggle</a></li>
+      <a href="#the-mechanism">How the attribute works</a></li>
 
       <li><strong>Verify computed styles in both modes, and measure contrast.</strong> Do not trust the cascade and do
       not judge by eye. Check the states a reader can actually reach: OS dark, OS light, and the attribute forced
@@ -407,26 +408,14 @@
   <!-- ───────── Mechanism ───────── -->
   <section class="section">
     <h3 class="section-title" id="the-mechanism">The mechanism</h3>
-    <p class="ds-section-desc">Dark values live in one <code>@media (prefers-color-scheme: dark)</code> block
-    in each stylesheet, keyed to the OS setting, and the same declarations are written again under
-    <code>[data-theme="dark"]</code> so the reader's choice wins over the machine's. The mirror is generated from
-    the <code>@media</code> block and must stay identical to it — <code>python3 verification/check-drift.py</code>
-    fails if the two disagree, on <strong>both</strong> stylesheets.</p>
-    <p class="ds-section-desc">The OS preference is the default and covers most readers, but dark also has to win on a
-    light-OS machine whenever something sets <code>data-theme="dark"</code>, which is why the mirror exists. The
-    trigger is the attribute, not a toggle: inherited code sets it too. The HTML paper mockup has no toggle of its
-    own, yet the ar5iv reader it builds on ships a theme control that writes <code>ar5iv_theme</code> to
-    <code>localStorage</code>, and a bootstrap script turns that into the attribute. Keying only to the media query
-    left a reader who picked dark there on a light-OS machine with a dark canvas and light tokens. If a page can
-    ever carry the attribute, mirror the block:</p>
-<pre><code>&lt;html data-theme="dark"&gt;    &lt;!-- forces dark regardless of the OS --&gt;
-&lt;html data-theme="light"&gt;   &lt;!-- forces light, and opts out of the @media block --&gt;
-&lt;html&gt;                      &lt;!-- no attribute: follow the OS --&gt;</code></pre>
-    <ul class="notes">
-      <li>Tokens flip; components consuming tokens flip for free. Never write a dark hex into a page.</li>
-      <li>Accent colors hold in both modes: Access Lime and Open Blue stay themselves. Text sitting <em>on</em> an accent fill therefore must not flip either — use <code>--ds-text-on-accent</code> on lime and on Open Blue alike. Reaching for plain <code>--ds-text</code> puts near-white text on a light blue fill in dark mode, about 1.3:1.</li>
-      <li>Only semantic tokens flip. The primitives name colours and never change — Repository Brown is Repository Brown in both modes; what changes is that it becomes the canvas rather than the text.</li>
-    </ul>
+    <p class="ds-section-desc">Dark values are declared twice in each stylesheet: once in a
+    <code>@media (prefers-color-scheme: dark)</code> block that follows the OS, and once under
+    <code>[data-theme="dark"]</code> so the attribute can force a mode. A page takes one of three states:</p>
+<pre><code>&lt;html data-theme="dark"&gt;    &lt;!-- dark, whatever the OS says --&gt;
+&lt;html data-theme="light"&gt;   &lt;!-- light, whatever the OS says --&gt;
+&lt;html&gt;                      &lt;!-- follows the OS --&gt;</code></pre>
+    <p>Only semantic tokens change between modes. Primitives such as Repository Brown keep their value;
+    what changes is the role a token points them at.</p>
   </section>
 
   <!-- ───────── Color tokens ───────── -->

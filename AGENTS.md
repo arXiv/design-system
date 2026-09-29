@@ -40,7 +40,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | A close or dismiss control | `docs/buttons.html` | `.ds-close` — one control on both surfaces; the host supplies position only |
 | An icon | `docs/icons.html` (generated from `docs/icons/`) | copy the file from `docs/icons/` inline, `aria-hidden="true"`, `stroke="currentColor"`; never draw a glyph from memory, and never a second icon set. Adding one: drop the file in `docs/icons/`, run `verification/gen-icons.py` |
 | Links | `docs/links.html` — identical on every surface | bare `<a>` inside `.ds-page`, no class; inline links underlined |
-| Tables (both surfaces), row selection, bulk actions | `docs/tables.html` | `.ds-table` (header row from `<thead>`), sortable headers; `.ds-filter` is internal only; bulk-bar + selection rules documented there |
+| Tables (both surfaces), row selection, bulk actions | `docs/tables.html` | `.ds-table` (header row from `<thead>`), sortable headers, `.ds-filter`, `.ds-bulk-count`, all tier 1; bulk-bar + selection rules documented there |
 | One record's details (label + value panel), any card | `docs/cards.html` (concept: `docs/organizing-content.html`) | `.ds-card`, `.ds-card--data`, `.ds-card-grid`; same markup on both surfaces |
 | Forms, validation | `docs/forms.html` — one page, both surfaces | `.ds-field`/`.ds-label`/`.ds-input`/`.ds-hint`, `.is-invalid`, `.field-error`, `.ds-check`, `.ds-switch`, `.ds-seg` |
 | A code block on a docs page | `docs/typography.html` *Code blocks* | plain `<pre><code>` plus `<script src="copy-code.js" defer>` once per page — the copy button is added for you; never hand-build one |
