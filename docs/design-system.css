@@ -111,6 +111,7 @@
   --ds-accent-hover:      var(--ds-blue-70);
   --ds-accent-strong:     var(--ds-archival-blue);     /* section accents, anchor colour */
   --ds-accent-wash:       var(--ds-blue-50);                     /* inline active state */
+  --ds-table-selected:    var(--ds-blue-20);                     /* a selected table row */
   --ds-accent-surface:    var(--ds-blue-20);                     /* popover panel */
   --ds-accent-border:     var(--ds-blue-70);
 
@@ -975,7 +976,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-label-row > .ds-label { margin-bottom: 0; }
 .ds-label-row .ds-btn-icon { padding: 0.25em; }   /* 26px, clears the 24px target */
 
-/* PAGINATION  (.ds-pagination) — forms.html
+/* STEPPER  (.ds-pagination) — stepper.html
    Moving through a set one item at a time: a moderation queue, a run of
    submissions, anything where each item has its own screen and the reader
    works through them in order.
@@ -1238,18 +1239,18 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   vertical-align: top;
   color: var(--ds-text);
 }
-.ds-table tbody th { font-weight: 600; }
+.ds-table tbody th { font-weight: 600; background: var(--ds-canvas); }
 .ds-table tbody tr:last-child > * { border-bottom: none; }
 .ds-table tbody tr:hover > * { background: var(--ds-canvas); }
 /* The row's checkbox carries the selection; the tint is never the only signal. */
-.ds-table tbody tr.is-selected > * { background: var(--ds-accent-wash); }
+.ds-table tbody tr.is-selected > * { background: var(--ds-table-selected); }
 .ds-table tbody tr.hidden { display: none; }
 
 /* Striped rows. The hover is a wash of the text colour, because the stripe
    already uses the plain hover colour. */
 .ds-table--striped tbody tr:nth-child(even) > * { background: var(--ds-canvas); }
 .ds-table--striped tbody tr:hover > * { background: color-mix(in srgb, var(--ds-text) 7%, var(--ds-surface)); }
-.ds-table--striped tbody tr.is-selected > * { background: var(--ds-accent-wash); }
+.ds-table--striped tbody tr.is-selected > * { background: var(--ds-table-selected); }
 
 /* A row-selection checkbox has no label to lend it a target, so it takes 24px. */
 .ds-table td:has(> input[type="checkbox"]),
@@ -1316,6 +1317,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   outline-offset: 2px;
   border-radius: 2px;
 }
+
+/* A toolbar row directly above a table keeps a gap from it. */
+.ds-btn-group:has(+ .ds-table, + .table-scroll) { margin-bottom: var(--ds-space-3); }
 
 /* Below the table: a row count or pagination. */
 .ds-table-footer {
@@ -1878,6 +1882,7 @@ select.ds-input { padding-right: 34px; }
      instead — see .ds-modal-body. */
   width: min(92vw, 34rem);
   max-height: min(88vh, 44rem);
+  max-height: min(88dvh, 44rem);   /* dvh: the viewport a phone actually shows, between its browser bars */
   overflow: hidden;
 
   /* display:flex only while open, so the closed dialog stays display:none
@@ -1907,6 +1912,7 @@ html:has(.ds-modal[open]) {
 .ds-modal--wide {
   width: min(94vw, 1400px);
   height: min(92vh, 1000px);
+  height: min(92dvh, 1000px);
   max-height: none;
 }
 
@@ -1976,6 +1982,13 @@ html:has(.ds-modal[open]) {
   .ds-modal-footer { flex-direction: column-reverse; align-items: stretch; }
   .ds-modal-footer > .ds-btn { width: 100%; }
   .ds-modal-footer > .ds-modal-footer-start { margin-right: 0; }
+}
+
+/* Too short to hold the header, the footer and some body (a phone on its
+   side at high zoom): the whole dialog scrolls, so the footer is never cut off. */
+@media (max-height: 15rem) {
+  .ds-modal { overflow-y: auto; }
+  .ds-modal-body { flex: none; overflow: visible; }
 }
 
 /* ELEMENT PILL  (.ds-element-pill) — organizing-content.html
@@ -2321,6 +2334,7 @@ html:has(.ds-modal[open]) {
                                                             already dark */
     --ds-accent-strong:     #6ba8da;                     /* headings, 6.8:1 */
     --ds-accent-wash:       #1e3a5f;
+    --ds-table-selected:    var(--ds-accent-wash);
     --ds-accent-surface:    #132433;                     /* = the info dark surface */
     --ds-accent-border:     #2a4a7a;
     --ds-btn-primary-rim-a:          #6ba8da;
@@ -2329,11 +2343,11 @@ html:has(.ds-modal[open]) {
     --ds-btn-secondary-bg:           var(--ds-surface-muted);
     --ds-btn-secondary-bg-hover:     #322d28;
     --ds-btn-secondary-bg-active:    var(--ds-surface-muted);
-    --ds-btn-secondary-rim-a:        #4a443d;
-    --ds-btn-secondary-rim-b:        #6b655c;
-    --ds-btn-secondary-rim-hover-a:  #6b655c;
+    --ds-btn-secondary-rim-a:        #6b655c;
+    --ds-btn-secondary-rim-b:        var(--ds-grey-80);
+    --ds-btn-secondary-rim-hover-a:  var(--ds-grey-80);
     /* restated so a data-theme island re-resolves them */
-    --ds-btn-secondary-rim-hover-b:  var(--ds-border-strong);
+    --ds-btn-secondary-rim-hover-b:  var(--ds-grey-55);
     --ds-btn-secondary-rim-active:   var(--ds-border-strong);
     --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.25);
 
@@ -2344,7 +2358,7 @@ html:has(.ds-modal[open]) {
     --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.35);
     --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.6);
     --ds-btn-primary-glow-active:        45%;
-    --ds-btn-secondary-fg:           var(--ds-text-muted);
+    --ds-btn-secondary-fg:           var(--ds-grey-25);
     --ds-btn-secondary-fg-hover:     var(--ds-text);
     --ds-btn-text-fg:                var(--ds-link);
     --ds-btn-text-fg-hover:          var(--ds-link-hover);
@@ -2377,6 +2391,7 @@ html:has(.ds-modal[open]) {
     --ds-accent-wash:                #1a2306;
     --ds-accent-wash-hover:          #212e08;
     --ds-accent-wash-active:         #28380a;
+    --ds-table-selected:             #28380a;
     --ds-btn-primary-rim-a:          var(--ds-access-lime-border);
     --ds-btn-primary-rim-b:          var(--ds-access-lime-deep);
     --ds-btn-primary-rim-hover-b:    var(--ds-access-lime-deep);
@@ -2426,6 +2441,7 @@ html:has(.ds-modal[open]) {
                                                           already dark */
   --ds-accent-strong:     #6ba8da;                     /* headings, 6.8:1 */
   --ds-accent-wash:       #1e3a5f;
+  --ds-table-selected:    var(--ds-accent-wash);
   --ds-accent-surface:    #132433;                     /* = the info dark surface */
   --ds-accent-border:     #2a4a7a;
   --ds-btn-primary-rim-a:          #6ba8da;
@@ -2434,11 +2450,11 @@ html:has(.ds-modal[open]) {
   --ds-btn-secondary-bg:           var(--ds-surface-muted);
   --ds-btn-secondary-bg-hover:     #322d28;
   --ds-btn-secondary-bg-active:    var(--ds-surface-muted);
-  --ds-btn-secondary-rim-a:        #4a443d;
-  --ds-btn-secondary-rim-b:        #6b655c;
-  --ds-btn-secondary-rim-hover-a:  #6b655c;
+  --ds-btn-secondary-rim-a:        #6b655c;
+  --ds-btn-secondary-rim-b:        var(--ds-grey-80);
+  --ds-btn-secondary-rim-hover-a:  var(--ds-grey-80);
   /* restated so a data-theme island re-resolves them */
-  --ds-btn-secondary-rim-hover-b:  var(--ds-border-strong);
+  --ds-btn-secondary-rim-hover-b:  var(--ds-grey-55);
   --ds-btn-secondary-rim-active:   var(--ds-border-strong);
   --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.25);
 
@@ -2449,7 +2465,7 @@ html:has(.ds-modal[open]) {
   --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.35);
   --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.6);
   --ds-btn-primary-glow-active:        45%;
-  --ds-btn-secondary-fg:           var(--ds-text-muted);
+  --ds-btn-secondary-fg:           var(--ds-grey-25);
   --ds-btn-secondary-fg-hover:     var(--ds-text);
   --ds-btn-text-fg:                var(--ds-link);
   --ds-btn-text-fg-hover:          var(--ds-link-hover);
@@ -2491,6 +2507,7 @@ html:has(.ds-modal[open]) {
   --ds-text-disabled:          var(--ds-grey-55);
   --ds-accent-strong:     #1f5e96;
   --ds-accent-wash:         var(--ds-blue-50);
+  --ds-table-selected:      var(--ds-blue-20);
   --ds-accent-surface:        var(--ds-blue-20);
   --ds-accent-border:       var(--ds-blue-70);
   --ds-btn-primary-rim-a:          #b0d5ed;
@@ -2552,9 +2569,11 @@ html:has(.ds-modal[open]) {
   --ds-accent-active:              var(--ds-access-lime-active);
   --ds-accent-border:              var(--ds-access-lime-border);
   --ds-accent-border-active:       var(--ds-access-lime-deep);
+  --ds-subnav-current:             var(--ds-access-lime-deep);
   --ds-accent-wash:                var(--ds-access-lime-wash);
   --ds-accent-wash-hover:          var(--ds-access-lime-wash-2);
   --ds-accent-wash-active:         var(--ds-access-lime-wash-3);
+  --ds-table-selected:             var(--ds-access-lime-wash);
 
   --ds-btn-primary-rim-a:          var(--ds-access-lime-hover);
   --ds-btn-primary-rim-b:          var(--ds-access-lime-border);
@@ -2589,6 +2608,7 @@ html:has(.ds-modal[open]) {
   --ds-accent-wash:                #1a2306;
   --ds-accent-wash-hover:          #212e08;
   --ds-accent-wash-active:         #28380a;
+  --ds-table-selected:             #28380a;
   --ds-btn-primary-rim-a:          var(--ds-access-lime-border);
   --ds-btn-primary-rim-b:          var(--ds-access-lime-deep);
   --ds-btn-primary-rim-hover-b:    var(--ds-access-lime-deep);
@@ -2856,8 +2876,8 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
    aria-expanded and aria-controls, and the region uses the `hidden`
    ATTRIBUTE, not a class — a class leaves the hidden names tabbable and
    findable while off screen.
-   Grey italic rather than Link Blue: it sits at the end of a run of
-   author links and must not read as one more of them.
+   Link-coloured by default, in running text; --among-links turns it grey
+   italic, so at the end of a run of links it does not read as one more.
    Target size takes WCAG's inline exception — growing it to 24px would
    break the line it sits in. */
 
@@ -2869,8 +2889,10 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
      one control does not take the 24px floor the others do. */
   font-family: inherit;
   font-size: inherit;
-  font-style: italic;
-  color: var(--ds-text-muted);
+  color: var(--ds-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
   background: none;
   border: none;
   padding: 0;
@@ -2879,9 +2901,18 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   white-space: nowrap;
 }
 .ds-show-more:hover {
+  color: var(--ds-link-hover);
+  text-decoration-thickness: 0.15em;
+}
+.ds-show-more--among-links {
+  font-style: italic;
+  color: var(--ds-text-muted);
+  text-decoration: none;
+}
+.ds-show-more--among-links:hover {
   color: var(--ds-text);
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
 }
 .ds-show-more:focus-visible {
   outline: 3px solid var(--ds-focus-ring);
@@ -3028,9 +3059,9 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 /* SITE HEADER UNIT  (.ds-announcement + .ds-site-header) — header.html
    Announcement band + black bar + skip link. Nothing below the black bar
    is approved chrome.
-   NOT sticky: sticky chrome is exceptional at arXiv and only the reader
-   earns it (DESIGN-POLICIES). Static also returns the bar's height to
-   the mobile viewport and removes the anchor-offset hazard.
+   Static by default (DESIGN-POLICIES); internal tools may add
+   .ds-site-header--sticky. Regions, in this order: logo, nav, tools
+   (optional), account.
    --light re-points seven surface tokens and declares no property of its
    own, so no rule in the variant can lose a specificity argument.
    Focus rings on the dark bar use --ds-focus-ring-on-dark. */
@@ -3120,10 +3151,13 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 /* ── 2. Black header bar ── */
 .ds-site-header {
   display: flex;
+  flex-wrap: wrap;   /* a bar with more than fits wraps rather than overflowing */
+  justify-content: flex-end;   /* a wrapped row stays on the right, under the navigation */
   align-items: center;
   gap: var(--ds-space-tight);
-  padding: 0 24px;
-  height: 52px;
+  padding: 6px 24px;
+  min-height: 52px;
+  box-sizing: border-box;
 
   /* Surface, as tokens. The bare component IS the arXiv header — no modifier
      needed to get it right, which is the point: arxiv.org cannot forget a
@@ -3141,12 +3175,6 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 
   background: var(--ds-hdr-bg);
   border-bottom: 1px solid var(--ds-hdr-border);
-  /* NO sticky positioning —: the header
-     scrolls away like any other content. Sticky chrome is exceptional
-     at arXiv (DESIGN-POLICIES.md, "Chrome and interaction structure");
-     only the HTML reader's header earns it. Static positioning also
-     returns the bar's height to the mobile viewport and removes the
-     anchor-offset hazard class from every page using this pattern. */
   font-family: var(--ds-font-sans);
 }
 .ds-site-header-logo {
@@ -3166,7 +3194,10 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 }
 /* Direct children only: a dropdown menu inside the nav keeps its own panel styles. */
 .ds-site-header-nav > a,
-.ds-site-header-nav > button {
+.ds-site-header-nav > button,
+.ds-site-header-account > a,
+:where(.ds-site-header-tools) > a,
+:where(.ds-site-header-tools) > button {
   font-family: var(--ds-font-sans);
   font-size: 0.8125rem; /* 13px */
   font-weight: 500;
@@ -3183,13 +3214,45 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   align-items: center;
   gap: var(--ds-gap-glyph);
 }
-.ds-site-header-nav > a:visited { color: var(--ds-hdr-fg); }
+.ds-site-header-nav > a:visited,
+.ds-site-header-account > a:visited { color: var(--ds-hdr-fg); }
 .ds-site-header-nav > a:hover,
-.ds-site-header-nav > button:hover { background: var(--ds-hdr-hover); color: var(--ds-hdr-fg-strong); }
+.ds-site-header-nav > button:hover,
+.ds-site-header-account > a:hover,
+:where(.ds-site-header-tools) > a:hover,
+:where(.ds-site-header-tools) > button:hover { background: var(--ds-hdr-hover); color: var(--ds-hdr-fg-strong); }
 .ds-site-header-nav > a:focus-visible,
-.ds-site-header-nav > button:focus-visible {
+.ds-site-header-nav > button:focus-visible,
+.ds-site-header-account > a:focus-visible,
+:where(.ds-site-header-tools) > a:focus-visible,
+:where(.ds-site-header-tools) > button:focus-visible {
   outline: 3px solid var(--ds-hdr-ring);
   outline-offset: 1px;
+}
+
+/* Tools (optional) and account: the two regions after the navigation.
+   Tools holds whatever controls one interface needs; account holds Log in, or
+   the greeting and the Account menu. Account sits outside the <nav>, because
+   an account menu is not a site section. */
+.ds-site-header-tools,
+.ds-site-header-account {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-tight);
+}
+.ds-site-header-tools { flex: 0 1 auto; min-width: 0; }
+:where(.ds-site-header-tools) > button svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+/* A search field that stays in the bar. Two fields are two of these. */
+.ds-site-header-search { display: flex; flex: 0 1 13rem; min-width: 7rem; }
+.ds-site-header-search .ds-input {
+  width: 100%;
+  min-width: 0;
+  padding-block: 0.45em;
+}
+.ds-site-header-search .ds-input:focus-visible {
+  outline-color: var(--ds-hdr-ring);
+  border-color: var(--ds-hdr-ring);
 }
 .ds-site-header-nav .ds-nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
 /* The same thing as .ds-divider--vertical, on the header's own colour
@@ -3207,7 +3270,10 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
    the slot is about rank in the bar, not about which of those words is in it.
    Scoped through .ds-site-header-nav so it out-specifies the nav's own link
    colour rather than shouting !important at it. */
-.ds-site-header-nav .ds-site-header-login {
+.ds-site-header-nav .ds-site-header-login,
+.ds-site-header-account .ds-site-header-login,
+.ds-site-header-nav .ds-site-header-login:visited,
+.ds-site-header-account .ds-site-header-login:visited {
   font-weight: 600;
   color: var(--ds-hdr-fg-strong);
 }
@@ -3246,7 +3312,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
    tokens and declares no property of its own, so there is no rule here that
    can lose a specificity argument with the rules above.
 
-   DESIGN-POLICIES caps arXiv's universal navigation at five flat items. That
+   DESIGN-POLICIES caps arXiv's universal navigation at four links. That
    is a constraint on arxiv.org's content, not on this component: a property
    with more sections uses .ds-site-header-dropdown below. */
 .ds-site-header--light {
@@ -3303,12 +3369,19 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   }
   .ds-site-header-nav { flex-wrap: wrap; row-gap: 2px; width: 100%; }
   .ds-site-header-nav > a,
-  .ds-site-header-nav > button { padding: 6px 8px; }
+  .ds-site-header-nav > button,
+  .ds-site-header-account > a { padding: 6px 8px; }
+  /* First row: logo, account, menu button. Tools take their own row, then the nav. */
+  .ds-site-header-account { order: 1; }
+  .ds-site-header-nav-toggle { order: 2; }
+  .ds-site-header-tools { order: 3; flex: 1 1 100%; flex-wrap: wrap; }
+  .ds-site-header-nav { order: 4; }
+  .ds-site-header > .ds-site-header-divider { display: none; }
+  .ds-site-header-search { flex: 1 1 10rem; }
+  .ds-site-header-search .ds-input { width: 100%; }
 
   /* JS enhancement: collapse the nav behind the hamburger. */
   .ds-site-header.is-collapsible {
-    flex-wrap: nowrap;
-    height: 52px;
     position: relative;
   }
   .ds-site-header.is-collapsible .ds-site-header-nav-toggle { display: inline-flex; }
@@ -3320,7 +3393,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   .ds-site-header.is-collapsible .ds-site-header-nav {
     display: none;
     position: absolute;
-    top: 52px;
+    top: 100%;
     left: 0;
     right: 0;
     flex-direction: column;
@@ -3337,9 +3410,9 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   .ds-site-header.is-collapsible .ds-site-header-nav.is-open { display: flex; }
   .ds-site-header.is-collapsible .ds-site-header-nav > a,
   .ds-site-header.is-collapsible .ds-site-header-nav > button,
-  .ds-site-header.is-collapsible .ds-site-header-dropdown > summary,
-  .ds-site-header.is-collapsible .ds-site-header-menu a,
-  .ds-site-header.is-collapsible .ds-site-header-menu button {
+  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-dropdown > summary,
+  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu a,
+  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu button {
     width: 100%;
     justify-content: flex-start;
     padding: 12px 16px;
@@ -3354,8 +3427,8 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
      (each row already carries its own separator). */
   .ds-site-header.is-collapsible .ds-site-header-divider { display: none; }
   /* A dropdown in the collapsed list opens in place, as indented rows on the bar's own ground. */
-  .ds-site-header.is-collapsible .ds-site-header-dropdown > summary { display: flex; align-items: center; }
-  .ds-site-header.is-collapsible .ds-site-header-menu {
+  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-dropdown > summary { display: flex; align-items: center; }
+  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu {
     position: static;
     min-width: 0;
     max-width: none;
@@ -3365,21 +3438,71 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
     border-radius: 0;
     box-shadow: none;
   }
-  .ds-site-header.is-collapsible .ds-site-header-menu a,
-  .ds-site-header.is-collapsible .ds-site-header-menu button {
+  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu a,
+  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu button {
     padding-inline-start: 32px;
     color: var(--ds-hdr-fg);
   }
-  .ds-site-header.is-collapsible .ds-site-header-menu a:hover,
-  .ds-site-header.is-collapsible .ds-site-header-menu button:hover {
+  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu a:hover,
+  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu button:hover {
     background: var(--ds-hdr-hover);
     color: var(--ds-hdr-fg-strong);
   }
-  .ds-site-header.is-collapsible .ds-site-header-menu a:focus-visible,
-  .ds-site-header.is-collapsible .ds-site-header-menu button:focus-visible {
+  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu a:focus-visible,
+  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu button:focus-visible {
     outline: 3px solid var(--ds-hdr-ring);
     outline-offset: -3px;
   }
+}
+
+/* ── .ds-site-header--sticky ──
+   Internal tools only; arxiv.org's public header scrolls away (DESIGN-POLICIES).
+   After the narrow-viewport block, so it wins over .is-collapsible's
+   position: relative. The page's anchors clear the bar by themselves. */
+.ds-site-header.ds-site-header--sticky {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
+
+/* SECONDARY NAVIGATION  (.ds-subnav) — header.html
+   A row of section links directly under the header. It wraps rather than
+   scrolling sideways, so every section stays visible at 320px and at 200%
+   text. The current page is marked three ways: weight, an underline bar,
+   and aria-current. Breadcrumbs are for pages without one (DESIGN-POLICIES). */
+.ds-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--ds-space-6);
+  padding: 0 24px;
+  background: var(--ds-surface);
+  border-bottom: 1px solid var(--ds-border);
+  font-family: var(--ds-font-sans);
+}
+.ds-subnav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+}
+.ds-subnav a:visited { color: var(--ds-text-muted); }
+.ds-subnav a:hover { color: var(--ds-text); border-bottom-color: var(--ds-border-strong); }
+.ds-subnav a:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: -3px;
+  border-radius: 2px;
+}
+.ds-subnav a[aria-current="page"] {
+  color: var(--ds-text);
+  font-weight: 600;
+  border-bottom-color: var(--ds-subnav-current, var(--ds-accent-strong));
+}
+@media (max-width: 599px) {
+  .ds-subnav { padding: 0 12px; column-gap: var(--ds-space-4); }
 }
 
 /* ── Header search overlay (.ds-search-overlay) ─────────────────────────
@@ -3411,17 +3534,11 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 .ds-search-overlay-panel .ds-input { font-size: 1rem; box-sizing: border-box; }
 .ds-search-overlay-panel .ds-hint a { color: var(--ds-link); }
 
-/* ── NO breadcrumb band ──: the approved spinout treatment covers
-   ONLY the announcement banner and the black header bar; nothing below
-   the header is approved chrome. A breadcrumb iteration was tried and
-   removed — at 2 levels deep it does not justify the real estate, and
-   its links are available elsewhere (header logo = home; Subjects in
-   the abstract metadata = category listing). */
-
 /* Print keeps the logo, at a modest size, and none of the bar or its controls. */
 @media print {
   .ds-announcement,
   .ds-site-header > :not(.ds-site-header-logo),
+  .ds-subnav,
   .ds-search-overlay,
   .ds-skip-link { display: none !important; }
   .ds-site-header { height: auto; min-height: 0; padding: 0 0 var(--ds-space-4); background: none; border: 0; }

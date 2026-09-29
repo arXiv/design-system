@@ -48,10 +48,10 @@ components:
     summary: "Internal tools load the same tier 1 stylesheet as public pages. Their speciall accent color comes from adding `.ds-internal` on `<html>`, so everything above applies to them unchanged. The internal pages tier 2 stylesheet, `internal-tools.css`, re-points only the tokens whose dark value differs on that surface. No manual adjustments are needed."
 rules:
   - "**Take every colour from a token.** Never write a dark hex into a page or a component. Components that consume tokens flip for free. [How it works](#the-mechanism)"
-  - "**Decide whether the colour is content or identity.** Content flips. Identity is pinned to a literal with a comment saying why — a masthead, a brand fill, a colour specimen whose subject is the value itself. [Trap 1](#traps-that-only-show-up-on-a-real-page)"
-  - "**Fill raised things with `--ds-surface`.** Not `--ds-canvas`: the wash is a pale tint in light and *is* the canvas in dark, so anything filled with it disappears. [Trap 2](#traps-that-only-show-up-on-a-real-page)"
+  - "**Decide whether the colour is content or identity.** Content flips. Identity is pinned to a literal with a comment saying why — a masthead, a brand fill, a colour specimen whose subject is the value itself."
+  - "**Fill raised things with `--ds-surface`.** Not `--ds-canvas`: the wash is a pale tint in light and *is* the canvas in dark, so anything filled with it disappears."
   - "**Check any text sitting on an accent fill.** Accents hold their light values in dark, so the text on them must not flip either — `--ds-text-on-accent` on lime and on Open Blue alike. Reaching for the plain token puts near-white text on a light fill, about 1.3:1."
-  - "**Set the page's own background and text from tokens.** An inherited colour from a platform preset or a third-party stylesheet cannot flip, and it will not announce itself. [Trap 3](#traps-that-only-show-up-on-a-real-page)"
+  - "**Set the page's own background and text from tokens.** An inherited colour from a platform preset or a third-party stylesheet cannot flip, and it will not announce itself."
   - "**Do not use `color-scheme` to force a mode.** It governs browser-rendered widgets only — scrollbars, form controls — and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme`. [Scoping a mode](#scoping-a-mode)"
   - "**Scope a demo that must show one mode.** Put `data-theme` on the demo's own container, not on the page. Pages should follow the reader. [Scoping a mode](#scoping-a-mode)"
   - "**If anything can set `data-theme`, mirror the dark block under the attribute** as well as the media query — including inherited code you did not write. [How the attribute works](#the-mechanism)"
@@ -150,10 +150,10 @@ Internal tools load the same tier 1 stylesheet as public pages. Their speciall a
 ## Rules
 
 - **Take every colour from a token.** Never write a dark hex into a page or a component. Components that consume tokens flip for free. [How it works](#the-mechanism)
-- **Decide whether the colour is content or identity.** Content flips. Identity is pinned to a literal with a comment saying why — a masthead, a brand fill, a colour specimen whose subject is the value itself. [Trap 1](#traps-that-only-show-up-on-a-real-page)
-- **Fill raised things with `--ds-surface`.** Not `--ds-canvas`: the wash is a pale tint in light and *is* the canvas in dark, so anything filled with it disappears. [Trap 2](#traps-that-only-show-up-on-a-real-page)
+- **Decide whether the colour is content or identity.** Content flips. Identity is pinned to a literal with a comment saying why — a masthead, a brand fill, a colour specimen whose subject is the value itself.
+- **Fill raised things with `--ds-surface`.** Not `--ds-canvas`: the wash is a pale tint in light and *is* the canvas in dark, so anything filled with it disappears.
 - **Check any text sitting on an accent fill.** Accents hold their light values in dark, so the text on them must not flip either — `--ds-text-on-accent` on lime and on Open Blue alike. Reaching for the plain token puts near-white text on a light fill, about 1.3:1.
-- **Set the page's own background and text from tokens.** An inherited colour from a platform preset or a third-party stylesheet cannot flip, and it will not announce itself. [Trap 3](#traps-that-only-show-up-on-a-real-page)
+- **Set the page's own background and text from tokens.** An inherited colour from a platform preset or a third-party stylesheet cannot flip, and it will not announce itself.
 - **Do not use `color-scheme` to force a mode.** It governs browser-rendered widgets only — scrollbars, form controls — and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme`. [Scoping a mode](#scoping-a-mode)
 - **Scope a demo that must show one mode.** Put `data-theme` on the demo's own container, not on the page. Pages should follow the reader. [Scoping a mode](#scoping-a-mode)
 - **If anything can set `data-theme`, mirror the dark block under the attribute** as well as the media query — including inherited code you did not write. [How the attribute works](#the-mechanism)
