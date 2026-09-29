@@ -466,51 +466,73 @@
   <!-- ───────── Rail ───────── -->
   <section class="section">
     <h2 class="section-title" id="rail">Rail</h2>
-    <p class="ds-section-desc">The rail is the narrow sidebar beside the reading column, an
-    <code>&lt;aside&gt;</code> whose blocks are separated by hairline dividers. Accordions inside it take
-    <code>.ds-acc-rail</code>, which drops their own rules, because the rail's dividers already do the
-    separating. Their contents go single-column for the narrow measure, and the +/− marker turns Link Blue
-    so a closed accordion still reads as interactive.</p>
+    <p class="ds-section-desc">The rail is the sidebar beside the reading column, for supplementary
+    content that should stay distinct from the main content without being pushed far down the page. It is
+    an <code>&lt;aside class="ds-rail"&gt;</code>: its parent becomes a two-column layout, and its blocks
+    are separated by spacing, not by dividers. It holds supplementary content only, never section
+    navigation.</p>
     <div class="ds-card">
-      <div class="rail-demo">
-        <details class="ds-acc ds-acc-rail" open>
-          <summary>Versions</summary>
-          <div class="ds-acc-body">
-            <dl>
-              <dt>v3 · current</dt><dd>24 Apr 2026</dd>
-              <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
-            </dl>
-          </div>
-        </details>
-        <details class="ds-acc ds-acc-rail">
-          <summary>Paper information</summary>
-          <div class="ds-acc-body">Single-column inside the narrow rail.</div>
-        </details>
+      <div>
+        <div>
+          <h3>Heavy-tailed gradients in deep networks</h3>
+          <p>We study the convergence of stochastic gradient methods when the gradient noise is
+          heavy-tailed, and show that the step size must shrink with the tail index.</p>
+        </div>
+        <aside class="ds-rail" aria-label="Paper details">
+          <details class="ds-acc" open>
+            <summary>Versions</summary>
+            <div class="ds-acc-body">
+              <dl>
+                <dt>v3 · current</dt><dd>24 Apr 2026</dd>
+                <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
+              </dl>
+            </div>
+          </details>
+          <details class="ds-acc">
+            <summary>Paper information</summary>
+            <div class="ds-acc-body">Single-column inside the narrow rail.</div>
+          </details>
+          <details class="ds-acc">
+            <summary>Cite as</summary>
+            <div class="ds-acc-body">arXiv:2604.01234</div>
+          </details>
+        </aside>
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;aside aria-label="Paper details"&gt;
-  &lt;details class="ds-acc ds-acc-rail" open&gt;
-    &lt;summary&gt;Versions&lt;/summary&gt;
-    &lt;div class="ds-acc-body"&gt;
-      &lt;dl&gt;
-        &lt;dt&gt;v3 · current&lt;/dt&gt;&lt;dd&gt;24 Apr 2026&lt;/dd&gt;
-        &lt;dt&gt;v2&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;2 Mar 2026&lt;/a&gt;&lt;/dd&gt;
-      &lt;/dl&gt;
-    &lt;/div&gt;
-  &lt;/details&gt;
-  &lt;details class="ds-acc ds-acc-rail"&gt;
-    &lt;summary&gt;Paper information&lt;/summary&gt;
-    &lt;div class="ds-acc-body"&gt;Single-column inside the narrow rail.&lt;/div&gt;
-  &lt;/details&gt;
-&lt;/aside&gt;</code></pre>
+<pre><code>&lt;div&gt;
+  &lt;article&gt;…&lt;/article&gt;
+  &lt;aside class="ds-rail" aria-label="Paper details"&gt;
+    &lt;details class="ds-acc" open&gt;
+      &lt;summary&gt;Versions&lt;/summary&gt;
+      &lt;div class="ds-acc-body"&gt;
+        &lt;dl&gt;
+          &lt;dt&gt;v3 · current&lt;/dt&gt;&lt;dd&gt;24 Apr 2026&lt;/dd&gt;
+          &lt;dt&gt;v2&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;2 Mar 2026&lt;/a&gt;&lt;/dd&gt;
+        &lt;/dl&gt;
+      &lt;/div&gt;
+    &lt;/details&gt;
+    &lt;details class="ds-acc"&gt;
+      &lt;summary&gt;Paper information&lt;/summary&gt;
+      &lt;div class="ds-acc-body"&gt;…&lt;/div&gt;
+    &lt;/details&gt;
+  &lt;/aside&gt;
+&lt;/div&gt;</code></pre>
           <dl>
-            <dt>&lt;aside aria-label&gt;</dt>
-            <dd>The rail, a complementary landmark named for what it holds. The design system has no
-            class for the rail itself yet; the dividers between its blocks are the host's.</dd>
-            <dt>.ds-acc-rail</dt>
-            <dd>Added beside <code>.ds-acc</code> on the <code>&lt;details&gt;</code>, inside a container
-            whose own dividers already separate its contents, such as the rail.</dd>
+            <dt>.ds-rail</dt>
+            <dd>On an <code>&lt;aside&gt;</code> with an <code>aria-label</code> that names what it holds:
+            a complementary landmark. Its parent becomes the two-column layout, with the main content
+            taking the spare width, the rail 17rem wide, and <code>--ds-space-section</code> between
+            them. Blocks inside the rail are 24px apart (<code>--ds-space-6</code>). Nothing in it is
+            sticky.</dd>
+            <dt>&lt;aside&gt;</dt>
+            <dd>The rail comes after the main content in the markup. When the two no longer fit side by
+            side, the rail wraps below the content at full width, and a screen reader meets the article
+            first.</dd>
+            <dt>.ds-acc</dt>
+            <dd>An accordion inside the rail drops its rules, goes single-column for the narrow measure,
+            and turns its +/− marker Link Blue so a closed one still reads as interactive. No extra
+            class.</dd>
           </dl>
         </div>
       </details>
@@ -703,11 +725,6 @@
     The TOC bar is a disclosure as well, and its markup and classes are on
     <a href="progressive-disclosure.html#toc-bar">Progressive disclosure</a> too.</p>
 
-    <p>What belongs here is only where they sit: <strong>the rail variant</strong>
-    (<a href="#rail"><code>.ds-acc-rail</code></a>) is the one built for the sidebar in the column model above. It drops the
-    rules the default carries, because the rail's own hairline dividers already separate its contents,
-    and a boundary drawn twice is a boundary drawn wrong.</p>
-
     <ul class="notes">
       <li><strong>Never put must-see information only inside a closed accordion.</strong> The
       older-version warning surfaces in the main column even though the full history lives in the
@@ -747,6 +764,7 @@
     });
   });
 </script>
+<script src="header.js" defer></script>
 <script src="copy-code.js" defer></script>
 <script src="anchors.js" defer></script>
 <script src="toc.js" defer></script>

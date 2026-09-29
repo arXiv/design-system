@@ -333,12 +333,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 /* ── Headings ────────────────────────────────────────────────────────
    The scale published in typography.html: 2 / 1.5 / 1.25 / 1rem, at 700 for
    h1 and 600 below it, on a 1.25 line-height except h4. Sizes are rem so
-   they track the reader's base size.
-
-   Space above each heading is one scale stop tighter than the published
-   table (32 / 24 / 16 rather than 40 / 28):
-   the table's values are not on the spacing scale, and at 48/32 the sections
-   read too far apart. typography.html's table needs updating to match. */
+   they track the reader's base size. */
 :where(.ds-page) :is(h1, h2, h3, h4) {
   font-family: var(--ds-font-sans);
   color: var(--ds-text);
@@ -348,7 +343,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 :where(.ds-page) h1 { font-size: 2rem;    font-weight: 700; line-height: 1.25; margin: 0 0 var(--ds-space-4); }
 :where(.ds-page) h2 { font-size: 1.5rem;  font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-3); }
-:where(.ds-page) h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.25; margin: var(--ds-space-6) 0 var(--ds-space-2); }
+:where(.ds-page) h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-2); }
 :where(.ds-page) h4 { font-size: 1rem;    font-weight: 600; line-height: 1.25; margin: var(--ds-space-4) 0 var(--ds-space-2); }
 
 /* ── Prose ───────────────────────────────────────────────────────────
@@ -1142,7 +1137,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-card-grid > .ds-card { margin-top: 0; }             /* side by side, the grid's gap does it */
 .ds-card > :first-child { margin-block-start: 0; }
 .ds-card > :last-child  { margin-block-end: 0; }
-:where(.ds-card) h3 { font-size: 1rem; margin: 0 0 var(--ds-space-tight); }
+:where(.ds-card) > h3 { font-size: 1rem; margin: 0 0 var(--ds-space-tight); }   /* the card's own title; prose inside a card keeps its rhythm */
 :where(.ds-card) > p { color: var(--ds-text-muted); }   /* the card's own copy; a component inside keeps its colour */
 
 /* DATA CARD (.ds-card--data) — cards.html
@@ -2645,14 +2640,13 @@ html:has(.ds-modal[open]) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   ACCORDION  (.ds-acc / .ds-acc-stack / .ds-acc-body / .ds-acc-rail)
+   ACCORDION  (.ds-acc / .ds-acc-stack / .ds-acc-body)
    ───────────────────────────────────────────────────────────────────────
    Native <details>/<summary>. No JavaScript, keyboard and screen-reader
    behaviour for free, and find-in-page can open a closed panel to show a
    match inside it — which no hand-built accordion does.
 
-   Two dressings. The default is ruled: a line above and below, no box.
-   .ds-acc-rail drops the rules for a container that already frames it.
+   Ruled: a line above and below, no box. Inside .ds-rail the rules drop.
 
    Content rule (progressive-disclosure.html): never put must-see
    information ONLY inside a closed accordion. Default state is closed; a
@@ -2731,28 +2725,45 @@ html:has(.ds-modal[open]) {
   .ds-acc-body dd { grid-column: auto; }
 }
 
-/* ── Rail variant (.ds-acc-rail) ────────────────────────────────────
-   For a disclosure inside a container that already frames it — the paper
-   page's sidebar, where the rail's own hairline dividers separate its
-   contents. The rules go, because a boundary drawn twice is a boundary
-   drawn wrong. Internals go single-column for the narrow measure, and the
-   +/− marker turns Link Blue so a closed disclosure still reads as
-   interactive (Open Blue is too light for a glyph). */
-.ds-acc-rail { border-top: 0; border-bottom: 0; margin: 0; }
-.ds-acc-rail > summary {
+/* RAIL  (.ds-rail) — organizing-content.html
+   The sidebar beside the reading column, for supplementary content. The
+   rail's parent becomes the two-column layout; the rail wraps below the
+   content when both no longer fit. Blocks are separated by spacing only. */
+:where(:has(> .ds-rail)) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--ds-space-section);
+}
+/* The content takes all the spare width; alone on its row, the rail takes it all. */
+:where(:has(> .ds-rail)) > :not(.ds-rail) { flex: 999 1 24rem; min-width: 0; }
+/* Both columns start on the same line. */
+:where(:has(> .ds-rail)) > :not(.ds-rail) > :first-child { margin-block-start: 0; }
+.ds-rail {
+  flex: 1 0 17rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-6);
+}
+.ds-rail > * { margin: 0; }
+
+/* An accordion in the rail: no rules, because spacing already separates the
+   blocks; single-column internals for the narrow measure; a Link Blue +/−
+   so a closed one still reads as interactive. */
+.ds-rail .ds-acc { border-top: 0; border-bottom: 0; margin: 0; }
+.ds-rail .ds-acc > summary {
   font-size: 0.82rem;
-  /* 4px padding + matching negative margin: the ~20px text line grows to
-     a ≥24px hit target with zero layout shift (target-size floor). */
+  /* 4px padding + matching negative margin: a ≥24px target, no layout shift. */
   padding: 4px 0;
   margin: -4px 0;
 }
-.ds-acc-rail > summary::after { font-size: 1.1rem; color: var(--ds-link); }
-.ds-acc-rail[open] > summary { margin-bottom: 6px; }  /* + 4px hit-area padding = 10px visual gap */
-.ds-acc-rail .ds-acc-body { padding: 0; }
-.ds-acc-rail .ds-acc-body dl { grid-template-columns: 1fr; gap: 0; }
-.ds-acc-rail .ds-acc-body dt { margin-top: 10px; }
-.ds-acc-rail .ds-acc-body dt:first-child { margin-top: 0; }
-.ds-acc-rail .ds-acc-body dd { margin: 1px 0 0; grid-column: auto; }
+.ds-rail .ds-acc > summary::after { font-size: 1.1rem; color: var(--ds-link); }
+.ds-rail .ds-acc[open] > summary { margin-bottom: 6px; }
+.ds-rail .ds-acc-body { padding: 0; }
+.ds-rail .ds-acc-body dl { grid-template-columns: 1fr; gap: 0; }
+.ds-rail .ds-acc-body dt { margin-top: 10px; }
+.ds-rail .ds-acc-body dt:first-child { margin-top: 0; }
+.ds-rail .ds-acc-body dd { margin: 1px 0 0; grid-column: auto; }
 
 /* CONTENTS BAR  (.ds-toc-bar / .ds-toc / .ds-toc-trigger / .ds-toc-menu) — progressive-disclosure.html
    A page's own table of contents: one control that names the section the
@@ -3304,9 +3315,11 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   text-overflow: ellipsis;
   max-width: 14ch;
 }
+/* On a narrow bar the greeting is the first thing to go: the account link
+   is the useful half and the name is already known to the person reading.
+   header.js hides it by fit; without the script, a narrow screen hides it. */
+.ds-site-header.is-greeting-hidden .ds-site-header-greeting { display: none; }
 @media (max-width: 599px) {
-  /* On a narrow bar the greeting is the first thing to go: the account link
-     is the useful half and the name is already known to the person reading. */
   .ds-site-header-greeting { display: none; }
 }
 
@@ -3330,16 +3343,12 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   --ds-hdr-divider:   var(--ds-border);
 }
 
-/* Hamburger toggle — the approved mobile treatment (4383 spinout showcase;
-   QA'd as "<599px phone hamburger" in ARXIVCE-4426). Hidden by default; revealed
-   only when the header script marks the header collapsible (adds .is-collapsible)
-   at the phone breakpoint below. Because the SAME script adds that class AND
-   wires the toggle, the hamburger appears only when it actually works — no JS
-   (or a script that failed to run) leaves the WCAG-reflow wrap in place; we
-   do not gate on a global "js" class. Behavior contract: host JS adds
-   .is-collapsible to .ds-site-header, toggles .is-open on .ds-site-header-nav,
-   and keeps aria-expanded in sync on the toggle (reference impl: arxiv-header.js). */
-.ds-site-header-nav-toggle {
+/* Collapse by fit (header.js). When the regions do not fit on one row, the
+   navigation collapses behind a menu button, then the tools behind a second
+   button; the logo and the account area always stay. The script adds both
+   buttons and .is-collapsible, so a page without it keeps the wrap below. */
+.ds-site-header-nav-toggle,
+.ds-site-header-tools-toggle {
   display: none;
   align-items: center;
   justify-content: center;
@@ -3354,110 +3363,108 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   flex-shrink: 0;
   transition: background 0.12s, color 0.12s;
 }
-.ds-site-header-nav-toggle:hover { background: var(--ds-hdr-hover); color: var(--ds-hdr-fg-strong); }
-.ds-site-header-nav-toggle:focus-visible {
+.ds-site-header-nav-toggle:hover,
+.ds-site-header-tools-toggle:hover { background: var(--ds-hdr-hover); color: var(--ds-hdr-fg-strong); }
+.ds-site-header-nav-toggle:focus-visible,
+.ds-site-header-tools-toggle:focus-visible {
   outline: 3px solid var(--ds-hdr-ring);
   outline-offset: 1px;
 }
-.ds-site-header-nav-toggle svg { width: 22px; height: 22px; display: block; }
+.ds-site-header-nav-toggle svg,
+.ds-site-header-tools-toggle svg { width: 22px; height: 22px; display: block; }
 
-/* Narrow viewport (≤599px). DEFAULT (incl. no-JS, any browser): wrap the full
-   nav to a second row — WCAG 1.4.10 reflow, verified at 320px (no horizontal
-   scroll). This is the baseline. JS opts INTO the hamburger by adding
-   .is-collapsible (see above); nothing is gated on a global scripting flag. */
+/* A managed bar stays on one row, so its search fields shrink rather than
+   wrap; it wraps only when even the most collapsed state does not fit. */
+.ds-site-header.is-collapsible { position: relative; flex-wrap: nowrap; }
+.ds-site-header.is-collapsible.is-overfull { flex-wrap: wrap; }
+.ds-site-header.is-nav-collapsed .ds-site-header-nav-toggle,
+.ds-site-header.is-tools-collapsed .ds-site-header-tools-toggle { display: inline-flex; }
+.ds-site-header.is-nav-collapsed > .ds-site-header-divider { display: none; }
+/* header.js measures each state with the fields at their narrowest. */
+.ds-site-header.is-measuring { flex-wrap: nowrap; width: max-content; }
+.ds-site-header.is-measuring .ds-site-header-search { flex: 0 0 7rem; }
+
+/* A collapsed region opens below the bar as full-width rows. */
+.ds-site-header.is-nav-collapsed .ds-site-header-nav,
+.ds-site-header.is-tools-collapsed .ds-site-header-tools {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  width: auto;
+  gap: 0;
+  padding: 0;
+  background: var(--ds-hdr-bg);
+  border-top: 1px solid var(--ds-hdr-divider);
+  border-bottom: 1px solid var(--ds-hdr-border);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* the summoned-surface shadow */
+  z-index: 60;
+}
+.ds-site-header.is-nav-collapsed .ds-site-header-nav.is-open,
+.ds-site-header.is-tools-collapsed .ds-site-header-tools.is-open { display: flex; }
+.ds-site-header.is-nav-collapsed .ds-site-header-nav > a,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav > button,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-dropdown > summary,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu a,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button,
+.ds-site-header.is-tools-collapsed .ds-site-header-tools > * {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-start;
+  padding: 12px 16px;
+  min-height: 44px; /* the touch-target floor for menu rows */
+  box-sizing: border-box;
+  border-radius: 0;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--ds-hdr-divider);
+}
+.ds-site-header.is-nav-collapsed .ds-site-header-nav > :last-child,
+.ds-site-header.is-tools-collapsed .ds-site-header-tools > :last-child { border-bottom: none; }
+.ds-site-header.is-tools-collapsed .ds-site-header-tools > .ds-site-header-search { flex: none; min-width: 0; }
+/* A dropdown in the collapsed list opens in place, as indented rows on the bar's own ground. */
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu {
+  position: static;
+  min-width: 0;
+  max-width: none;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu a,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button {
+  padding-inline-start: 32px;
+  color: var(--ds-hdr-fg);
+}
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu a:hover,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button:hover {
+  background: var(--ds-hdr-hover);
+  color: var(--ds-hdr-fg-strong);
+}
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu a:focus-visible,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button:focus-visible {
+  outline: 3px solid var(--ds-hdr-ring);
+  outline-offset: -3px;
+}
+
+/* Narrow viewport. Without header.js the bar wraps (WCAG 1.4.10 reflow at
+   320px): logo and account on the first row, then tools, then the navigation. */
 @media (max-width: 599px) {
-  .ds-site-header {
-    flex-wrap: wrap;
-    height: auto;
-    min-height: 52px;
-    padding: 6px 12px;
-  }
-  .ds-site-header-nav { flex-wrap: wrap; row-gap: 2px; width: 100%; }
+  .ds-site-header { padding: 6px 12px; }
   .ds-site-header-nav > a,
   .ds-site-header-nav > button,
   .ds-site-header-account > a { padding: 6px 8px; }
-  /* First row: logo, account, menu button. Tools take their own row, then the nav. */
-  .ds-site-header-account { order: 1; }
-  .ds-site-header-nav-toggle { order: 2; }
-  .ds-site-header-tools { order: 3; flex: 1 1 100%; flex-wrap: wrap; }
-  .ds-site-header-nav { order: 4; }
-  .ds-site-header > .ds-site-header-divider { display: none; }
-  .ds-site-header-search { flex: 1 1 10rem; }
-  .ds-site-header-search .ds-input { width: 100%; }
-
-  /* JS enhancement: collapse the nav behind the hamburger. */
-  .ds-site-header.is-collapsible {
-    position: relative;
-  }
-  .ds-site-header.is-collapsible .ds-site-header-nav-toggle { display: inline-flex; }
-  /* Dropdown drops below the 52px bar; absolute (the header is non-sticky) so
-     it tracks the bar wherever it sits. z-index 60 = header-attached dropdown. */
-  /* Clean stacked list: flush full-width rows separated by hairlines (no gaps,
-     no rounded item backgrounds). Drops below the 52px bar; absolute (the header
-     is non-sticky) so it tracks the bar. z-index 60 = header-attached dropdown. */
-  .ds-site-header.is-collapsible .ds-site-header-nav {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    align-items: stretch;
-    flex-wrap: nowrap;
-    width: auto;
-    gap: 0;
-    padding: 0;
-    background: var(--ds-chrome);
-    border-top: 1px solid #4a433d;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* the summoned-surface shadow */
-    z-index: 60;
-  }
-  .ds-site-header.is-collapsible .ds-site-header-nav.is-open { display: flex; }
-  .ds-site-header.is-collapsible .ds-site-header-nav > a,
-  .ds-site-header.is-collapsible .ds-site-header-nav > button,
-  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-dropdown > summary,
-  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu a,
-  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu button {
-    width: 100%;
-    justify-content: flex-start;
-    padding: 12px 16px;
-    min-height: 44px; /* WCAG touch-target floor for menu items */
-    box-sizing: border-box;
-    border-radius: 0;
-    font-size: 0.875rem; /* 14px — matches the showcase mobile menu */
-    border-bottom: 1px solid #4a433d; /* hairline row separator */
-  }
-  .ds-site-header.is-collapsible .ds-site-header-nav > :last-child { border-bottom: none; }
-  /* The desktop vertical divider is meaningless in a stacked list — hide it
-     (each row already carries its own separator). */
-  .ds-site-header.is-collapsible .ds-site-header-divider { display: none; }
-  /* A dropdown in the collapsed list opens in place, as indented rows on the bar's own ground. */
-  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-dropdown > summary { display: flex; align-items: center; }
-  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu {
-    position: static;
-    min-width: 0;
-    max-width: none;
-    padding: 0;
-    background: none;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-  }
-  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu a,
-  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu button {
-    padding-inline-start: 32px;
-    color: var(--ds-hdr-fg);
-  }
-  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu a:hover,
-  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu button:hover {
-    background: var(--ds-hdr-hover);
-    color: var(--ds-hdr-fg-strong);
-  }
-  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu a:focus-visible,
-  .ds-site-header.is-collapsible .ds-site-header-nav .ds-site-header-menu button:focus-visible {
-    outline: 3px solid var(--ds-hdr-ring);
-    outline-offset: -3px;
-  }
+  .ds-site-header:not(.is-collapsible) .ds-site-header-account { order: 1; }
+  .ds-site-header:not(.is-collapsible) .ds-site-header-tools { order: 3; flex: 1 1 100%; flex-wrap: wrap; }
+  .ds-site-header:not(.is-collapsible) .ds-site-header-nav { order: 4; flex-wrap: wrap; row-gap: 2px; width: 100%; }
+  .ds-site-header:not(.is-collapsible) > .ds-site-header-divider { display: none; }
+  .ds-site-header:not(.is-collapsible) .ds-site-header-search { flex: 1 1 10rem; }
 }
 
 /* ── .ds-site-header--sticky ──
