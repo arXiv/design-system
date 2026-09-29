@@ -950,6 +950,16 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    equal-weight selector, rather than !important. */
 .ds-tooltip-host > .ds-tooltip[hidden] { display: none; }
 
+/* LABEL WITH A TOOLTIP  (.ds-label-row) — forms.html */
+.ds-label-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  margin-bottom: var(--ds-space-2);
+}
+.ds-label-row > .ds-label { margin-bottom: 0; }
+.ds-label-row .ds-btn-icon { padding: 0.25em; }   /* 26px, clears the 24px target */
+
 /* PAGINATION  (.ds-pagination) — forms.html
    Moving through a set one item at a time: a moderation queue, a run of
    submissions, anything where each item has its own screen and the reader
@@ -1458,7 +1468,8 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
   outline-offset: 1px;
   border-color: var(--ds-focus-ring);
 }
-.ds-input:disabled {
+.ds-input:disabled,
+.ds-input[aria-disabled="true"] {
   background: var(--ds-surface-muted);
   color: var(--ds-text-disabled);
   cursor: not-allowed;
