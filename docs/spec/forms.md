@@ -106,18 +106,6 @@ components:
         does: "For a host near the trailing edge of its container, like the Continue button above: the bubble runs back toward the start instead of off screen. Both directions use logical properties, so both are correct in a right-to-left script."
     notes:
       - "Not for anything required: if the reader must have it to fill the field in, it is help text under the control, not a tooltip, which is for the person who stops and wonders."
-  - id: stepping-through-a-set
-    title: "Stepping through a set"
-    summary: "Moving through items one at a time, such as a moderation queue or a run of submissions, where each item has its own screen and someone works through them in order."
-    classes:
-      - name: ".ds-pagination"
-        does: "A `<nav>` with an `aria-label` saying which set it steps through. Holds Previous, the position and Next, in that order."
-      - name: ".ds-pagination-position"
-        does: "The counter. Takes `aria-live=\"polite\"`: without it a reader who cannot see the counter has no way to know that the Next they just pressed did anything. The wording is the host's to choose; the counter takes the slack between the buttons, so the buttons stay put as the number grows."
-      - name: ".ds-btn"
-        does: "The two buttons. At either end of the set the button is `disabled`, not removed: a control that vanishes changes the shape of the toolbar under the reader, and a disabled one says “there is nothing before this”, which is the actual information."
-    notes:
-      - "Not numbered pages: a stepper answers “what is next”, a row of page numbers answers “take me to item 40”, and if a surface ever needs the second it is a different component and not a variant of this one."
   - id: field-width
     title: "Field width"
     group: "Modifiers"
@@ -363,24 +351,6 @@ A short explanation attached to a control, on hover and on focus. The lighter ha
 - `.ds-tooltip--end` — For a host near the trailing edge of its container, like the Continue button above: the bubble runs back toward the start instead of off screen. Both directions use logical properties, so both are correct in a right-to-left script.
 
 > Not for anything required: if the reader must have it to fill the field in, it is help text under the control, not a tooltip, which is for the person who stops and wonders.
-
-## Stepping through a set
-
-Moving through items one at a time, such as a moderation queue or a run of submissions, where each item has its own screen and someone works through them in order.
-
-```html
-<nav class="ds-pagination" aria-label="Queue navigation">
-  <button class="ds-btn" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</button>
-  <span class="ds-pagination-position" aria-live="polite">Request 1 of 15</span>
-  <button class="ds-btn" type="button">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-</nav>
-```
-
-- `.ds-pagination` — A `<nav>` with an `aria-label` saying which set it steps through. Holds Previous, the position and Next, in that order.
-- `.ds-pagination-position` — The counter. Takes `aria-live="polite"`: without it a reader who cannot see the counter has no way to know that the Next they just pressed did anything. The wording is the host's to choose; the counter takes the slack between the buttons, so the buttons stay put as the number grows.
-- `.ds-btn` — The two buttons. At either end of the set the button is `disabled`, not removed: a control that vanishes changes the shape of the toolbar under the reader, and a disabled one says “there is nothing before this”, which is the actual information.
-
-> Not numbered pages: a stepper answers “what is next”, a row of page numbers answers “take me to item 40”, and if a surface ever needs the second it is a different component and not a variant of this one.
 
 ## Field width  (Modifiers)
 

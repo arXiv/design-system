@@ -2,16 +2,34 @@
  *
  *   <script src="toc.js" defer></script>
  *
- * .ds-toc is a <details>, so it opens and closes with JavaScript off, and its
- * list is written into the HTML by verification/gen-anchors.py. This adds what
- * markup cannot: it closes on Escape, on a click outside, and when a link is
- * followed; it names the section the reader is in on the control itself; and
- * on a bar with .ds-toc-bar it marks the bar .is-stuck once it has
- * reached the top of the viewport.
+ * .ds-toc is a <details>, so it opens and closes with JavaScript off. Its list
+ * can be written into the HTML (these docs write theirs with
+ * verification/gen-anchors.py) or left empty, in which case this fills it from
+ * every h2 and h3 with an id inside <main>, or inside the element named by
+ * data-toc-scope on .ds-toc. A written list is left alone.
+ * This also adds what markup cannot: it closes on Escape, on a click outside,
+ * and when a link is followed; it names the section the reader is in on the
+ * control itself; and on a bar with .ds-toc-bar it marks the bar .is-stuck
+ * once it has reached the top of the viewport.
  */
 (function () {
   var toc = document.querySelector('.ds-toc');
   if (!toc) return;
+
+  var list = toc.querySelector('.ds-toc-menu ol');
+  if (list && !list.children.length) {
+    var scope = document.querySelector(toc.getAttribute('data-toc-scope') || 'main') || document.body;
+    Array.prototype.forEach.call(scope.querySelectorAll('h2[id], h3[id]'), function (h) {
+      if (toc.contains(h) || h.closest('pre')) return;
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent.replace(/\s+/g, ' ').trim();
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+  }
+
   var trigger = toc.querySelector('.ds-toc-trigger');
   var text = toc.querySelector('.ds-toc-text');
   var links = Array.prototype.slice.call(toc.querySelectorAll('.ds-toc-menu a'));

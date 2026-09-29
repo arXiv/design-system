@@ -389,7 +389,8 @@ def check_section_anchors():
 # current), mark its own page current if it is listed, and every docs page
 # must be listed except the ones kept out of the nav on purpose.
 NAV_MENUS = re.compile(
-    r'<nav class="ds-site-header ds-site-header--light" aria-label="Design system">.*?'
+    r'<header class="ds-site-header ds-site-header--light">.*?'
+    r'<nav class="ds-site-header-nav" aria-label="Design system">'
     r'((?:\s*<details class="ds-site-header-dropdown">.*?</details>)+)',
     re.S,
 )

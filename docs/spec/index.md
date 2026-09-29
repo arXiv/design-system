@@ -30,6 +30,7 @@ These pages have not had their review pass. Read the page itself, and expect the
 - outreach.html
 - progressive-disclosure.html
 - spacing.html
+- stepper.html
 - tables.html
 - typography.html
 - version-display.html
