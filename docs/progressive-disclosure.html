@@ -73,15 +73,11 @@
 
   <header class="ds-page-header">
     <h1>Progressive disclosure</h1>
-    <p>Every way arXiv shows less than it has, and how a reader gets the rest. A paper page holds
-    far more than any one reader wants at once — twenty-two authors, eleven versions, four
-    hundred references, the full licence text — and the choice is never whether to hide
-    something but which affordance does the hiding, because each one makes a different promise
-    about what is behind it.</p>
+    <p>Options to toggle open additional content. HTML paper pages, for example, hold far more than a reader wants to see all at once, so they use every progressive disclosure mechanisms we have: A "show more" link to toggle open a full author list, accordions for secondary metadata, and a popovers for footnotes. </p>
   </header>
 
 
-  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <!-- ═════════ TOC ═════════ -->
   <div class="ds-full ds-toc-bar">
     <div class="ds-toc-bar-inner">
       <details class="ds-toc">
@@ -107,21 +103,14 @@
     </div>
   </div>
 
-  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <!-- ═════════ Core ═════════ -->
   <div class="ds-full ds-zone-primary">
 
   <!-- ───────── Accordion ───────── -->
   <section class="section">
     <h2 class="section-title" id="accordion">Accordion</h2>
-    <p class="ds-section-desc">Native <code>&lt;details&gt;/&lt;summary&gt;</code>. No JavaScript, keyboard and
-    screen-reader behaviour for free, and the browser's find-in-page can open a closed panel to show a
-    match inside it — which no hand-built accordion does. A +/− glyph replaces the default
-    marker. Two dressings, one element.</p>
+    <p class="ds-section-desc">Using the native <code>&lt;details&gt;/&lt;summary&gt;</code> elements means no JavaScript is needed, and accordions are keyboard and screen-reader friendly by default. Another bonus is that the browser's find-in-page can open a closed panel to show a match inside it. A +/− glyph replaces the default marker.</p>
     <div class="ds-card">
-      <details class="ds-marginalia">
-        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">Two rules rather than one: a single rule reads as a heading with an underline, while two give the disclosure a top and a bottom, so a reader can see that what appears below the first rule belongs to the label above it.</p>
-      </details>
       <div class="ds-acc-stack">
         <details class="ds-acc" open>
           <summary>Versions</summary>
@@ -299,9 +288,8 @@
   <!-- ───────── Show more ───────── -->
   <section class="section">
     <h2 class="section-title" id="show-more">Show more</h2>
-    <p class="ds-section-desc">The other disclosure. An accordion hides a labelled section; this reveals
-    the <em>tail</em> of something already begun. The reader is already reading the thing — the
-    control only says how much of it is left.</p>
+    <p class="ds-section-desc">While an accordion hides an entire labelled section, the 'show more' control reveals
+    the hidden <em>tail end</em> of partially displayed content. When hiding the remainder of a list we display the additional item count in the link.</p>
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
@@ -362,32 +350,16 @@
         </div>
       </details>
     </div>
-
-    <div class="ds-alert">
-      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-      <div class="ds-alert-content">
-        <p class="ds-alert-title">Very long author lists are a third tier, not yet promoted</p>
-        <p>Above roughly a hundred names, expanding in place dumps the reader into pages of links with
-        the collapse control scrolled out of reach. The mockups answer this with a scrollable region
-        capped in height, with a collapse control at both ends. That pattern is validated in
-        <a href="../mockups/public/abstract-phase2.html">the abstract mockup</a> (open it with
-        <code>?authors=many</code>) but is specific to the paper surface, so it belongs in the reader
-        stylesheet rather than here. Until that stylesheet exists, treat the mockup as the reference.</p>
-      </div>
-    </div>
   </section>
 
   <!-- ───────── Popover ───────── -->
   <section class="section">
     <h2 class="section-title" id="popover">Popover</h2>
-    <p class="ds-section-desc">A lookup the reader wants without leaving their sentence: what reference 47
-    is, what footnote 3 says. It is the only disclosure here that does not move the page — which is
-    exactly why it suits a reader mid-paragraph, and why it is wrong for anything they might want to keep
-    open while they read on.</p>
+    <p class="ds-section-desc">A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type ofcontent including links but should be used only for short bursts of information.</p>
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">Size it for content nobody has measured: a bibliography entry, a footnote and a contents list are all different lengths, and none of them is known when the component is written.</p>
+        <p class="ds-marginalia-body ds-annotation">Popovers resize to the content but should be reserved for short pieces of information. If the content gets too long it may not be contained within the viewport.</p>
       </details>
       <div class="popover-demo">
         <span class="ds-popover" role="region" aria-label="Reference 47">
@@ -442,82 +414,10 @@
     </div>
   </section>
 
-  <!-- ───────── Header dropdown menus ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="header-dropdown-menus">Header dropdown menus</h2>
-    <p class="ds-section-desc">A property whose sections need grouping adds <code>.ds-site-header-dropdown</code>, built on <code>&lt;details&gt;</code> so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The bar that carries the menus is documented on <a href="header.html">Site header</a>.</p>
-    <div class="ds-card">
-      <nav class="ds-site-header ds-site-header--light" aria-label="Dropdown example">
-        <a href="#" class="ds-site-header-logo">arXiv Design System</a>
-        <details class="ds-site-header-dropdown">
-          <summary>Design Patterns</summary>
-          <div class="ds-site-header-menu">
-            <span class="ds-panel-label">Components</span>
-            <a href="#">Colors</a>
-            <a href="#">Typography</a>
-            <a href="#">Site header</a>
-            <span class="ds-panel-label">Organizing content</span>
-            <a href="#">Layouts</a>
-            <a href="#" aria-current="page">Progressive disclosure</a>
-          </div>
-        </details>
-        <details class="ds-site-header-dropdown">
-          <summary>Docs</summary>
-          <div class="ds-site-header-menu">
-            <a href="#">Using the system</a>
-            <a href="#">Design policies</a>
-            <a href="#">Brand &amp; vision</a>
-          </div>
-        </details>
-      </nav>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;nav class="ds-site-header ds-site-header--light" aria-label="Design system"&gt;
-  &lt;a href="/" class="ds-site-header-logo"&gt;arXiv Design System&lt;/a&gt;
-  &lt;details class="ds-site-header-dropdown"&gt;
-    &lt;summary&gt;Design Patterns&lt;/summary&gt;
-    &lt;div class="ds-site-header-menu"&gt;
-      &lt;span class="ds-panel-label"&gt;Components&lt;/span&gt;
-      &lt;a href="colors.html"&gt;Colors&lt;/a&gt;
-      &lt;a href="progressive-disclosure.html" aria-current="page"&gt;Progressive disclosure&lt;/a&gt;
-      &lt;!-- … --&gt;
-    &lt;/div&gt;
-  &lt;/details&gt;
-  &lt;details class="ds-site-header-dropdown"&gt;
-    &lt;summary&gt;Docs&lt;/summary&gt;
-    &lt;div class="ds-site-header-menu"&gt;
-      &lt;a href="using.html"&gt;Using the system&lt;/a&gt;
-      &lt;!-- … --&gt;
-    &lt;/div&gt;
-  &lt;/details&gt;
-&lt;/nav&gt;</code></pre>
-          <dl>
-            <dt>.ds-site-header-dropdown</dt>
-            <dd>A <code>&lt;details&gt;</code> group in the bar. Optional. The summary sits in the bar
-            and takes the surface tokens, so it is correct on either variant.</dd>
-            <dt>.ds-site-header-menu</dt>
-            <dd>The floating panel. Right-anchored, capped to the viewport. A floating panel is a light
-            surface whichever bar summoned it, the same way a popover is. The menu anchors to its
-            trigger’s <strong>right</strong> edge: the nav always sits at the right of the bar, and a
-            left-anchored menu runs off the viewport on the last item — which is every bar’s last item,
-            not an edge case.</dd>
-            <dt>.ds-panel-label</dt>
-            <dd>Group headings inside a menu use the system-wide label, not a bespoke class.</dd>
-            <dt>aria-current="page"</dt>
-            <dd>On the menu link for the page the reader is on. The menu shows it in bold, and a screen
-            reader announces it.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-  </section>
-
   <!-- ───────── Contents bar ───────── -->
   <section class="section">
-    <h2 class="section-title" id="contents-bar">Contents bar</h2>
-    <p class="ds-section-desc">A long page’s own table of contents: one control that names the
-    section the reader is in and opens the list of the others. This one lists the sections of the page
-    you are reading, shown on its own without the bar that carries it at the top of the page.</p>
+    <h2 class="section-title" id="contents-bar">Internal contents bar</h2>
+    <p class="ds-section-desc">Need in-page navigation? The internal contents bar is a row that carries a single disclosure control, which opens a list of the page’s sections. The bar is always sticky and it stays at the top of the viewport while the reader scrolls through the page.</p>
 
     <div class="ds-card">
       <details class="ds-toc">

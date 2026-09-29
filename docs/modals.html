@@ -73,14 +73,11 @@
 
   <header class="ds-page-header">
     <h1>Modal dialogs</h1>
-    <p>A window that takes the page away until it is answered or dismissed. The most expensive
-    thing this system can put in front of a reader, and the one with the most ways to build it
-    wrong — so it is a native <code>&lt;dialog&gt;</code>, which gets four of the five hard
-    parts right without being asked.</p>
+    <p>A window that overlays the background page until it is answered or dismissed. There are many ways to build a modal wrong. The design system starts with a native <code>&lt;dialog&gt;</code>, which gets four of the five hard parts right by default. The last part is achieved with css.</p>
   </header>
 
 
-  <!-- ═════════ Contents bar — on the threshold of the primary zone ═════════ -->
+  <!-- ═════════ TOC ═════════ -->
   <div class="ds-full ds-toc-bar">
     <div class="ds-toc-bar-inner">
       <details class="ds-toc">
@@ -102,14 +99,14 @@
     </div>
   </div>
 
-  <!-- ═════════ Core zone — a white band. Everything a person can build. ═════════ -->
+  <!-- ═════════ Core ═════════ -->
   <div class="ds-full ds-zone-primary">
 
   <!-- ───────── The modal dialog ───────── -->
   <section class="section">
     <h2 class="section-title" id="the-modal-dialog">The modal dialog</h2>
-    <p class="ds-section-desc">Both buttons open the real <code>.ds-modal</code>. Try Escape, try
-    tabbing past the last control, and try scrolling the page behind them.</p>
+    <p class="ds-section-desc">Click either button below to open a real <code>.ds-modal</code>. Modals can be closed with Escape, the close button, or by clicking one of the action buttons.</p>
+    <p class="ds-section-desc">Test keyboard-tabbing past the last control and scrolling the page behind the modal: neither will work. The modal is appropriately focus-trapped, critical for accessibility. Long content is scrollable within the modal.</p>
 
     <p class="ds-panel-label">A decision</p>
     <div class="ds-card">
@@ -308,10 +305,8 @@ document.getElementById('demo-confirm').close();</code></pre>
 
   <!-- ───────── Wide ───────── -->
   <section class="section">
-    <h3 class="section-title" id="wide-for-a-viewer">Wide, for a viewer</h3>
-    <p class="ds-section-desc">For a dialog whose content is the point and wants the room — a figure
-    viewer. Not for more text: a wider measure makes a paragraph harder to read, and the default
-    width is already at a comfortable line length.</p>
+    <h3 class="section-title" id="wide-for-a-viewer">Wide viewer</h3>
+    <p class="ds-section-desc">For a dialog where you need maximum viewing space, like a figure, add class <code>.ds-modal--wide</code>. Don't use the wide modifier for more text only. The default width is set to a comfortable line lenth and increasing the width reduces readability.</p>
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
@@ -372,38 +367,31 @@ document.getElementById('demo-confirm').close();</code></pre>
 
   <!-- ───────── When ───────── -->
   <section class="section">
-    <h3 class="section-title" id="when-a-modal-is-the-right-answer">When a modal is the right answer</h3>
-    <p class="ds-section-desc">Rarely. A modal interrupts: it takes focus, makes the rest of the
-    page inert, and cannot be ignored. That is the whole value and the whole cost.</p>
+    <h3 class="section-title" id="when-a-modal-is-the-right-answer">When to use a modal</h3>
+    <p class="ds-section-desc">Rarely. A modal interrupts the user experience, takes focus, makes the rest of the
+    page inert, and cannot be ignored. Use this table to decide:</p>
 
     <div class="table-scroll" role="region" aria-label="When to use a modal" tabindex="0">
       <table class="ds-table token-table">
         <thead><tr><th>Reach for a modal when</th><th>Not when</th></tr></thead>
         <tbody>
           <tr>
-            <td>The reader must decide before anything else can happen — confirming a
-            withdrawal, agreeing to a data policy.</td>
-            <td>The information is useful but not blocking. That is an
-            <a href="alerts.html">alert</a> in the page.</td>
+            <td>The user must decide before anything else can happen, for example confirming a deletion or agreeing to a policy.</td>
+            <td>The information is useful but not blocking. The right options are an <a href="alerts.html">alert</a> or marginalia note.</td>
           </tr>
           <tr>
-            <td>The content <em>is</em> the reader's current task and wants the whole screen —
-            a figure at full size.</td>
-            <td>The content is a lookup they want mid-sentence. That is a
-            <a href="progressive-disclosure.html">popover</a>.</td>
+            <td>Displaying a full-size version of a figure. It would disrupt reading if placed directly on the page at that size.</td>
+            <td>The user needs a quick lookup related to specific content on the page. The right component is a <a href="progressive-disclosure.html">popover</a>.</td>
           </tr>
           <tr>
-            <td>A short form belongs to something on the page and would lose its context on a page
-            of its own.</td>
+            <td>The user would lose context if the content were placed directly on the page. For example, a <em>short</em> optional form.</td>
             <td>The form is long enough to scroll, or the reader may need to consult the page
-            behind it. Give it a page.</td>
+            behind it for context. The right choice is to build it out as a full page form.</td>
           </tr>
           <tr>
             <td>—</td>
-            <td>Announcing something. arXiv does not interrupt readers to tell them things
-            (<a href="brand.html">Brand &amp; vision</a>); the
-            <a href="messages.html#announcement-band">announcement band</a> exists for
-            that and can be ignored.</td>
+            <td>Announcing something. arXiv does not interrupt readers to share news. The right components is the
+            <a href="messages.html#announcement-band">announcement band</a> which can be dismissed or ignored by users and does not interrupt them.</td>
           </tr>
         </tbody>
       </table>
@@ -412,45 +400,32 @@ document.getElementById('demo-confirm').close();</code></pre>
 
   <!-- ───────── What comes free ───────── -->
   <section class="section">
-    <h3 class="section-title" id="what-the-native-element-gets-right-for-you">What the native element gets right for you</h3>
-    <p class="ds-section-desc">These are the five things a modal must do. The reason this component
-    is a <code>&lt;dialog&gt;</code> rather than a <code>&lt;div role="dialog"&gt;</code> is the
-    right-hand column — and hand-built modals fail them in roughly this order.</p>
+    <h3 class="section-title" id="what-the-native-element-gets-right-for-you">The five requirements of a modal</h3>
+    <p class="ds-section-desc">The reason this component is a <code>&lt;dialog&gt;</code> rather than a <code>&lt;div role="dialog"&gt;</code> are the reasons listed below. Hand-built modals often fail at least one of them.</p>
 
     <div class="table-scroll" role="region" aria-label="What the native dialog provides" tabindex="0">
       <table class="ds-table token-table">
-        <thead><tr><th>Requirement</th><th>Native?</th><th>Why it is hard by hand</th></tr></thead>
+        <thead><tr><th>Requirement</th><th>Native?</th><th>What it does</th></tr></thead>
         <tbody>
           <tr>
             <td class="state-name">Focus trap</td><td>Yes</td>
-            <td>The browser makes the rest of the page inert — not just untabbable, but
-            unreachable by a screen reader's own navigation, which a JavaScript trap cannot do.
-            A hand-rolled trap has to enumerate every focusable element, and that list is longer
-            than anyone's implementation.</td>
+            <td>The browser makes the rest of the page unreachable by a screen reader's own navigation (including keyboard tabbing) which a JavaScript trap cannot do. A hand-built trap must enumerate every focusable element and that list is pretty long.</td>
           </tr>
           <tr>
             <td class="state-name">Focus restore</td><td>Yes</td>
-            <td><code>close()</code> returns focus to whatever opened it. Forget this and a keyboard
-            user is dropped at the top of the document with no idea where they were.</td>
+            <td><code>close()</code> returns focus to whatever opened it. If you forget this, a screen reader or keyboard-only user will be dropped at the top of the document again and lose their place.</td>
           </tr>
           <tr>
             <td class="state-name">Escape closes it</td><td>Yes</td>
-            <td>Free, and it fires a <code>cancel</code> event first if you need to intervene —
-            to warn about unsaved changes, say.</td>
+            <td>Default behavior, and it fires a <code>cancel</code> event first if you need to warn the user about unsaved changes, etc.</td>
           </tr>
           <tr>
-            <td class="state-name">Above everything</td><td>Yes</td>
-            <td>It renders in the top layer with no <code>z-index</code>, so it cannot lose to a
-            stacking context somewhere up the tree. This is what
-            <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a> means by
-            “modal dialogs use the native <code>&lt;dialog&gt;</code> top layer”.</td>
+            <td class="state-name">Overlays everything</td><td>Yes</td>
+            <td>It renders in the top layer with no <code>z-index</code>, so it cannot mistakenly lose it's order to a stacking context somewhere up the tree.</td>
           </tr>
           <tr>
             <td class="state-name">Scroll lock</td><td>No</td>
-            <td>The one gap. The page behind still scrolls, so a reader spinning the wheel loses
-            their place in a document they cannot see. The stylesheet closes it in CSS —
-            <code>html:has(.ds-modal[open]) { overflow: hidden }</code> — so it still needs no
-            JavaScript.</td>
+            <td>The one gap that <code>&lt;dialog&gt;</code> doesnt cover by default. The stylesheet resolves it with <code>html:has(.ds-modal[open]) { overflow: hidden }</code>. Still JavaScript-free .</td>
           </tr>
         </tbody>
       </table>
