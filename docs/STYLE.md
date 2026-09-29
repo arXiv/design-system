@@ -12,7 +12,7 @@ Rules for anyone — person or agent — writing text that ships: interface copy
 
 **Everything else** — pattern page prose, rationale, planning and brand documents, announcements. The brand page's voice applies in full, dry wit included. The load-bearing rules are useful defaults here, not requirements.
 
-The brand page already implies this split: the mischief belongs in "small, optional places … never in anything load-bearing or anything a stressed researcher has to parse." This file makes the strict half concrete.
+The brand page already implies this split: the mischief belongs in "small, optional places … never in anything load-bearing, and never in anything a stressed researcher has to parse." This file makes the strict half concrete.
 
 ---
 

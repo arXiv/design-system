@@ -1245,12 +1245,11 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-table tbody tr.is-selected > * { background: var(--ds-accent-wash); }
 .ds-table tbody tr.hidden { display: none; }
 
-/* Striped rows. On a striped table the hover is a wash of the text colour,
-   because the stripe already uses the plain hover colour; a selected row steps
-   up one wash where the surface has one, so it never matches a stripe. */
-.ds-table--striped tbody tr:nth-child(even) > * { background: var(--ds-table-stripe, var(--ds-canvas)); }
+/* Striped rows. The hover is a wash of the text colour, because the stripe
+   already uses the plain hover colour. */
+.ds-table--striped tbody tr:nth-child(even) > * { background: var(--ds-canvas); }
 .ds-table--striped tbody tr:hover > * { background: color-mix(in srgb, var(--ds-text) 7%, var(--ds-surface)); }
-.ds-table--striped tbody tr.is-selected > * { background: var(--ds-accent-wash-hover, var(--ds-accent-wash)); }
+.ds-table--striped tbody tr.is-selected > * { background: var(--ds-accent-wash); }
 
 /* A row-selection checkbox has no label to lend it a target, so it takes 24px. */
 .ds-table td:has(> input[type="checkbox"]),
@@ -1261,6 +1260,61 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   height: 24px;
   margin: 0;
   cursor: pointer;
+}
+
+/* The bulk bar's count: "2 selected", quieter than the actions beside it. */
+.ds-bulk-count { font-size: 0.75rem; color: var(--ds-text-muted); }
+
+/* FILTER SELECT  (.ds-filter) — tables.html */
+/*
+ * Minimal underline-only <select> for toolbar filters.
+ * Used inline with a <label> in a .ds-filter wrapper.
+ *
+ * Usage:
+ *   <div class="ds-filter">
+ *     <label for="…">Show:</label>
+ *     <select id="…">…</select>
+ *   </div>
+ */
+
+.ds-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--ds-text-muted);
+}
+
+.ds-filter label {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ds-filter select {
+  /* A filter is a control, so it carries the 24px floor even though its type
+     is small — the padding grows the hit area without growing the text. */
+  min-height: 24px;
+  font-family: inherit;
+  font-size: 0.75rem;
+  color: var(--ds-text);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--ds-border-strong); /* 3.61:1 on white ✓ */
+  border-radius: 0;
+  padding: 1px 18px 1px 2px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  /* Custom chevron */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238b8680'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 2px center;
+}
+
+.ds-filter select:focus-visible {
+  outline: 2px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 /* Below the table: a row count or pagination. */
@@ -2493,7 +2547,6 @@ html:has(.ds-modal[open]) {
    a different shape on this surface is a different component. Sits after
    the [data-theme="light"] block so it wins when both are on <html>. */
 .ds-internal {
-  --ds-table-stripe:               var(--ds-accent-wash);
   --ds-accent:                     var(--ds-access-lime);
   --ds-accent-hover:               var(--ds-access-lime-hover);
   --ds-accent-active:              var(--ds-access-lime-active);
