@@ -649,7 +649,7 @@
           </div>
         </div>
         <div class="form-state">
-          <span class="state-label">Tooltip on a disabled action</span>
+          <span class="state-label">Disabled action, reason in a tooltip</span>
           <div class="ds-btn-group ds-btn-group--end">
             <button type="button" class="ds-btn ds-btn-text">Cancel</button>
             <span class="ds-tooltip-host">
@@ -660,8 +660,16 @@
             </span>
           </div>
         </div>
+        <div class="form-state">
+          <span class="state-label">Disabled action, reason as help text</span>
+          <div class="ds-btn-group ds-btn-group--end">
+            <button type="button" class="ds-btn ds-btn-text">Cancel</button>
+            <button type="button" class="ds-btn ds-btn-primary" aria-disabled="true" aria-describedby="continue-why">Continue</button>
+          </div>
+          <p class="ds-hint" id="continue-why">Correct the 2 blocking errors to continue.</p>
+        </div>
       </div>
-      <p>Hover over or tab to the question mark or the Continue button.</p>
+      <p>Hover over or tab to the question mark or the first Continue button.</p>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;!-- Label with a tooltip --&gt;
@@ -685,7 +693,7 @@
   &lt;input class="ds-input" id="f-doi" type="text" placeholder="10.1000/example"&gt;
 &lt;/div&gt;
 
-&lt;!-- Tooltip on a disabled action --&gt;
+&lt;!-- Disabled action, reason in a tooltip --&gt;
 &lt;div class="ds-btn-group ds-btn-group--end"&gt;
   &lt;button type="button" class="ds-btn ds-btn-text"&gt;Cancel&lt;/button&gt;
   &lt;span class="ds-tooltip-host"&gt;
@@ -694,7 +702,14 @@
       &lt;span class="ds-tooltip-body"&gt;Correct the 2 blocking errors to continue.&lt;/span&gt;
     &lt;/span&gt;
   &lt;/span&gt;
-&lt;/div&gt;</code></pre>
+&lt;/div&gt;
+
+&lt;!-- Disabled action, reason as help text --&gt;
+&lt;div class="ds-btn-group ds-btn-group--end"&gt;
+  &lt;button type="button" class="ds-btn ds-btn-text"&gt;Cancel&lt;/button&gt;
+  &lt;button type="button" class="ds-btn ds-btn-primary" aria-disabled="true" aria-describedby="continue-why"&gt;Continue&lt;/button&gt;
+&lt;/div&gt;
+&lt;p class="ds-hint" id="continue-why"&gt;Correct the 2 blocking errors to continue.&lt;/p&gt;</code></pre>
           <dl>
             <dt>.ds-tooltip-host</dt>
             <dd>Wraps the trigger and the bubble, and positions the bubble. It sits beside the
@@ -709,8 +724,10 @@
             most people never get, so an icon trigger has an <code>.is-sr-only</code> label of its
             own, as above.</dd>
             <dt>aria-disabled="true"</dt>
-            <dd>On an unavailable action that explains itself. The tooltip holds the reason, which
-            takes no room and does not move the layout. Use <code>aria-disabled</code>, not
+            <dd>On an unavailable action that explains itself. The reason goes in a tooltip by
+            default, because it takes no room and does not move the layout. Where there is room, it
+            can sit under the actions as <code>.ds-hint</code> text instead, named in the button's
+            <code>aria-describedby</code>. Use <code>aria-disabled</code>, not
             <code>disabled</code>: a disabled button cannot take focus, so a keyboard user would never
             reach the reason. The script must ignore clicks while it is set.</dd>
             <dt>.ds-tooltip</dt>
@@ -893,7 +910,7 @@
       <li><strong>Group related content with spacing</strong>, not by adding more bordered divs. If spacing
       is insufficient then the form might be calling for subsections or to be broken up into different pages.</li>
       <li><strong>The action bar is right-aligned</strong>, with the primary action button (Save, Continue, etc.) the last one on the right. On long forms, consider repeating it at the top so the user does not need to scroll as much.</li>
-      <li><strong>Disabled, not missing.</strong> An action that is unavailable renders disabled, with the reason in a tooltip (see <a href="#tooltip">Tooltip</a>). The reader can see it exists and is not left wondering what is happening.</li>
+      <li><strong>Disabled, not missing.</strong> An action that is unavailable renders disabled, with the reason in a tooltip, or as help text under the actions where there is room (see <a href="#tooltip">Tooltip</a>). The reader can see it exists and is not left wondering what is happening.</li>
     </ul>
   </section>
 
