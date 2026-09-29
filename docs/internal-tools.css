@@ -11,7 +11,7 @@
 
    Tier 1 owns everything a second surface could use — the foundation,
    the alert, the tag, the field family, the close control. What lives
-   here is what only internal tools have (tables, metadata panels,
+   here is what only internal tools have (table filters, metadata panels,
    segmented controls, toggles, type badges, info cards, the internal
    icon-button variants), plus the tokens whose VALUES differ on this
    surface.
@@ -41,7 +41,6 @@
   /* Internal-only surfaces: two hover washes, because a table row wants a
      wash you barely notice and a control wants one you do, and a
      pressed state below both. */
-  --ds-surface-hover:         var(--ds-grey-5);
   --ds-surface-hover-strong:  var(--ds-grey-10);
   --ds-surface-active:        var(--ds-grey-25);
 
@@ -77,12 +76,6 @@
 /* The bulk bar's count: "2 selected", quieter than the actions beside it. */
 .ds-bulk-count { font-size: 0.75rem; color: var(--ds-text-muted); }
 
-/* ─── Table Row Selection ────────────────────────────────────
- * Selected rows carry the lime selection tint (
- * the tint aids scanability of the selection set). The row's checkbox
- * carries the state; the tint is never the only signal (WCAG 1.4.1).
- */
-.ds-table tr.is-selected td { background: var(--ds-accent-wash); }
 
 
 /* ─── Dark Mode Overrides ───────────────────────────────────── */
@@ -106,7 +99,6 @@
        with tables and want more separation between a row and its ground. */
     --ds-surface:               #252118;
     --ds-surface-muted:         #302c28;
-    --ds-surface-hover:         #2a2520;
     --ds-surface-hover-strong:  #272420;
     --ds-surface-active:        #302c28;
 
@@ -137,7 +129,6 @@
      with tables and want more separation between a row and its ground. */
   --ds-surface:               #252118;
   --ds-surface-muted:         #302c28;
-  --ds-surface-hover:         #2a2520;
   --ds-surface-hover-strong:  #272420;
   --ds-surface-active:        #302c28;
 
@@ -147,114 +138,6 @@
 }
 
 /* Constructive icon — lime holds its light value, so the label is lime on dark */
-
-
-/* ─── Data Table ───────────────────────────────────────────── */
-/*
- * Base table styles for admin data tables. Warm-tinted header row,
- * subtle row dividers, hover highlight. Use .ds-table on <table>.
- *
- * Column widths: set via classes on <th> / <td> or inline widths.
- * The table defaults to auto layout; add table-layout: fixed to
- * the <table> element when fixed columns are needed.
- */
-
-.ds-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.8125rem;
-  background: var(--ds-surface);
-  border: 1px solid var(--ds-border);
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.ds-table th {
-  text-align: left;
-  font-family: var(--ds-font-condensed);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--ds-text-muted);
-  padding: 9px 14px;
-  background: var(--ds-surface-muted);
-  border-bottom: 1px solid var(--ds-border);
-  white-space: nowrap;
-}
-
-.ds-table td {
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--ds-surface-muted);
-  vertical-align: top;
-  color: var(--ds-text);
-}
-
-.ds-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.ds-table tbody tr:hover td {
-  background: var(--ds-surface-hover);
-}
-
-/* Filtered-out / hidden rows */
-.ds-table tbody tr.hidden {
-  display: none;
-}
-
-/* Table footer — row count, pagination, etc. */
-.ds-table-footer {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 9px 14px;
-  font-size: 0.75rem;
-  color: var(--ds-text-muted);
-  border-top: 1px solid var(--ds-border);
-}
-
-
-/* ─── Sortable Column Headers ──────────────────────────────── */
-/*
- * Put <button class="sortable"> inside a <th> to make the column sortable from mouse and keyboard.
- * Add .sort-asc or .sort-desc to indicate current sort direction.
- * Place a <span class="sort-arrow"> inside the <th> for the indicator.
- *
- * Unsorted:  ⇅ (dimmed)
- * Ascending: ↑ (dark)
- * Descending:↓ (dark)
- */
-
-.ds-table th .sortable {
-  /* A button that looks like the header text it replaces: the keyboard stop is the point. */
-  all: unset;
-  display: inline;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-  user-select: none;
-  transition: color 0.1s;
-}
-.ds-table th .sortable:hover { color: var(--ds-text); }
-.ds-table th .sortable:focus-visible {
-  outline: 2px solid var(--ds-focus-ring);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
-
-.sort-arrow {
-  display: inline-block;
-  margin-left: 3px;
-  font-size: 0.5625rem;
-  color: var(--ds-border-strong); /* 3.3:1 on the table header ground ✓ */
-  vertical-align: middle;
-}
-
-.ds-table th.sort-asc .sort-arrow,
-.ds-table th.sort-desc .sort-arrow {
-  color: var(--ds-text);
-}
 
 
 /* ─── Filter Select ────────────────────────────────────────── */
@@ -350,21 +233,8 @@
 .ds-field--lg .ds-input { max-width: 480px; }
 
 /* The checkbox ticks this surface's accent, not Link Blue. */
-.ds-check input { accent-color: var(--ds-accent-border); }
-
-/* A row-selection checkbox has no label to borrow a target from, so it grows
-   its own: 24px of cell, with the box left at its natural size. A dense table
-   is exactly where this gets skipped, and exactly where mis-clicks cost most
-   — the control beside it removes someone's access. */
-.ds-table td:has(> input[type="checkbox"]),
-.ds-table th:has(> input[type="checkbox"]) { min-width: 24px; }
-.ds-table input[type="checkbox"] {
-  accent-color: var(--ds-accent-border);
-  width: 24px;
-  height: 24px;
-  margin: 0;
-  cursor: pointer;
-}
+.ds-check input,
+.ds-table input[type="checkbox"] { accent-color: var(--ds-accent-border); }
 
 /* .is-invalid without .ds-input, for the staff controls that are not
    inputs — the segmented control and the category editor. */
