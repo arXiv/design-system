@@ -1267,6 +1267,8 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-bulk-count { font-size: 0.75rem; color: var(--ds-text-muted); }
 
 /* FILTER SELECT  (.ds-filter) — tables.html */
+/* In a button group, a filter takes the row's far end. */
+.ds-btn-group > .ds-filter { margin-inline-start: auto; }
 /*
  * Minimal underline-only <select> for toolbar filters.
  * Used inline with a <label> in a .ds-filter wrapper.
@@ -1319,7 +1321,10 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 
 /* A toolbar row directly above a table keeps a gap from it. */
-.ds-btn-group:has(+ .ds-table, + .table-scroll) { margin-bottom: var(--ds-space-3); }
+.ds-btn-group:has(+ .ds-table, + .ds-table-scroll) { margin-bottom: var(--ds-space-3); }
+
+/* A table wider than its container scrolls inside this wrapper; the page never scrolls sideways. */
+.ds-table-scroll { overflow-x: auto; }
 
 /* Below the table: a row count or pagination. */
 .ds-table-footer {

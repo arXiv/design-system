@@ -99,7 +99,7 @@
             <li><a href="#the-layout-tokens">The layout tokens</a></li>
             <li><a href="#stay-on-the-scale">Stay on the scale</a></li>
             <li><a href="#between-3-within">Do not mix within and between, aim for 3× difference</a></li>
-            <li><a href="#between-3-within">You do not need a border, really</a></li>
+            <li><a href="#you-do-not-need-a-border">You do not need a border, really</a></li>
             <li><a href="#everything-in-rem-spacing-included">Rem everywhere</a></li>
             <li><a href="#name-the-break-not-the-value">Name the break, not the value</a></li>
             <li><a href="#containers-own-the-space-between-regions">Containers own the space between regions</a></li>
@@ -123,7 +123,7 @@
       token values pulled live from <code>--ds-space-*</code>.
     </p>
     <div class="ds-card">
-      <div class="table-scroll" role="region" aria-label="The spacing scale" tabindex="0">
+      <div class="ds-table-scroll" role="region" aria-label="The spacing scale" tabindex="0">
         <table class="ds-table token-table">
           <thead><tr><th>Token</th><th>Value</th><th>Drawn at size</th></tr></thead>
           <tbody>
@@ -173,51 +173,48 @@
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">Every gap in this demo sits on a container as gap, so no child carries a margin of its own.</p>
+        <p class="ds-marginalia-body ds-annotation">The markup is plain headings and paragraphs with no classes. The spacing is the design system's own default for those elements.</p>
       </details>
       <div class="ds-card-grid">
         <div class="ds-card">
-          <h3>Proximity applied to two groups</h3>
-          <div class="prox">
-            <div class="prox-group">
-              <div class="prox-row"><span class="state-label">Submitter</span><span>A. Palomares</span></div>
-              <div class="prox-row"><span class="state-label">Submitted</span><span>14 Jul 2026</span></div>
-            </div>
-            <div class="prox-group">
-              <div class="prox-row"><span class="state-label">Primary category</span><span>gr-qc</span></div>
-              <div class="prox-row"><span class="state-label">License</span><span>CC BY 4.0</span></div>
-            </div>
+          <p class="ds-panel-label">With proximity</p>
+          <div>
+            <h3>Submission</h3>
+            <p>Submitted by A. Palomares on 14 July 2026.</p>
+            <p>Revised on 2 August 2026.</p>
+            <h3>Classification</h3>
+            <p>Primary category: General Relativity and Quantum Cosmology (gr-qc).</p>
+            <p>License: CC BY 4.0.</p>
           </div>
         </div>
         <div class="ds-card">
-          <h3>Flat content distribution, no proximity</h3>
-          <div class="prox prox--flat">
-            <div class="prox-group">
-              <div class="prox-row"><span class="state-label">Submitter</span><span>A. Palomares</span></div>
-              <div class="prox-row"><span class="state-label">Submitted</span><span>14 Jul 2026</span></div>
-            </div>
-            <div class="prox-group">
-              <div class="prox-row"><span class="state-label">Primary category</span><span>gr-qc</span></div>
-              <div class="prox-row"><span class="state-label">License</span><span>CC BY 4.0</span></div>
-            </div>
+          <p class="ds-panel-label">Flat, no proximity</p>
+          <div class="prox-flat">
+            <h3>Submission</h3>
+            <p>Submitted by A. Palomares on 14 July 2026.</p>
+            <p>Revised on 2 August 2026.</p>
+            <h3>Classification</h3>
+            <p>Primary category: General Relativity and Quantum Cosmology (gr-qc).</p>
+            <p>License: CC BY 4.0.</p>
           </div>
         </div>
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>/* One named break per kind of gap, on the container, never on a child */
-.record       { display: grid; gap: var(--ds-space-section); }   /* between groups */
-.record-group { display: grid; gap: var(--ds-space-block); }     /* between rows in a group */
-.record-row   { display: grid; gap: var(--ds-space-tight); }     /* a label and its value */</code></pre>
+<pre><code>&lt;h3&gt;Submission&lt;/h3&gt;
+&lt;p&gt;Submitted by A. Palomares on 14 July 2026.&lt;/p&gt;
+&lt;p&gt;Revised on 2 August 2026.&lt;/p&gt;
+&lt;h3&gt;Classification&lt;/h3&gt;
+&lt;p&gt;Primary category: General Relativity and Quantum Cosmology (gr-qc).&lt;/p&gt;
+&lt;p&gt;License: CC BY 4.0.&lt;/p&gt;</code></pre>
           <dl>
-            <dt>--ds-space-tight</dt>
-            <dd>8px. Inside a group: a label and its value, an icon and its text, two buttons
-            that belong together.</dd>
-            <dt>--ds-space-block</dt>
-            <dd>16px. Between blocks in a section. Twice tight.</dd>
+            <dt>&lt;h3&gt;</dt>
+            <dd>24px above (<code>--ds-space-6</code>) and 8px below (<code>--ds-space-2</code>), so a
+            heading sits three times closer to its own text than to the text before it.</dd>
+            <dt>&lt;p&gt;</dt>
+            <dd>16px below (<code>--ds-space-4</code>), between paragraphs of the same group.</dd>
             <dt>--ds-space-section</dt>
-            <dd>48px. Between sections. Three times block, so that between is never mistaken
-            for within.</dd>
+            <dd>48px. Between the sections of a page, such as the sections of this one.</dd>
           </dl>
         </div>
       </details>
@@ -297,7 +294,7 @@
   </section>
 
   <section class="section">
-    <h3 class="section-title" id="between-3-within">You do not need a border, really</h3>
+    <h3 class="section-title" id="you-do-not-need-a-border">You do not need a border, really</h3>
     <p>Feel like you need a border to seperate content? First try widening the gap, using cards, or appling designated background colors for primary and secondary content zones.</p>
   </section>
 
