@@ -55,6 +55,9 @@
   // outside the viewport exactly when the bar is held at the top. It is
   // independent of the bar's height, so the bar tightening when it sticks
   // cannot unstick it: measuring the bar itself did, and the bar flickered.
+  // The stylesheet moves the sentinel higher while the bar is stuck, so
+  // sticking and unsticking happen 8px apart and a nudge of a pixel or two
+  // from scroll anchoring cannot toggle it back and forth.
   // How much the bar loses when it tightens, handed to the stylesheet so the
   // stuck bar can give it back as margin and the flow beneath does not move.
   function shrink() {
