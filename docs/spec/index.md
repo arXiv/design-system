@@ -19,6 +19,7 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Cards | [cards.md](cards.md) | When you need to draw a box around related content, reach for a card. Public pages and internal tools each have their own color variations but the use cases are |
 | Colors | [colors.md](colors.md) | The full arXiv palette, rendered. Written spec and rationale: [color-mapping.md](doc.html?src=docs/color-mapping.md) (source of truth — if this page and the spe |
 | Dark mode | [dark-mode.md](dark-mode.md) | In the design system, every colour comes from a token and the tokens flip in each mode. A page or component built from the color tokens follows the mode without |
+| Modal dialogs | [modals.md](modals.md) | A window that overlays the background page until it is answered or dismissed. There are many ways to build a modal wrong. The design system starts with a native |
 
 ## Not yet digested
 
@@ -26,7 +27,6 @@ These pages have not had their review pass. Read the page itself, and expect the
 
 - brand.html
 - layout-patterns.html
-- modals.html
 - outreach.html
 - progressive-disclosure.html
 - spacing.html
