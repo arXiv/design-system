@@ -62,12 +62,12 @@ Verification, all clean at handoff:
 `<body class="ds-page">` → shared nav (copied verbatim from buttons.html) →
 `.ds-container.ds-zone-secondary` holding `.ds-page-header` (h1 + lede),
 the contents bar (`.ds-full.ds-toc-bar`, list generated), then one
-`.ds-full.ds-zone-primary` band with one `<section class="section">` per
-buildable thing (`h2.section-title`, `p.ds-section-desc`, every example in a
+`.ds-full.ds-zone-primary` band with one `<section>` per
+buildable thing (an `h2` with an id as its first element, `p.ds-section-desc`, every example in a
 `.ds-card` whose last child is a "Relevant code" accordion: markup first,
 then a `<dl>` class key), then the Accessibility essentials note; after the
 band, plain `<h2>` group headings (Modifiers / Rules / Spec) with
-`h3.section-title` sections, or nothing if there is nothing. Public and
+`<section>` elements opened by an `h3`, or nothing if there is nothing. Public and
 internal examples share markup; the internal one sits in a wrapper with
 `class="ds-internal"`. Scripts at the end: copy-code.js, anchors.js, toc.js
 (deferred); theme.js in the head, not deferred.

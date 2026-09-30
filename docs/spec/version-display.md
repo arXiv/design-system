@@ -180,7 +180,7 @@ Once a paper has ten or more versions we make some additional changes.
 </p>
 ```
 
-**Viewing v7 of 12: the viewed version stays visible inside the elision**
+**Viewing v7 of 12**
 
 ```html
 <p class="ds-date-row">

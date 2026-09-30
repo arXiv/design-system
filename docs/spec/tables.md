@@ -137,7 +137,7 @@ One table, `.ds-table`, on the public site and in internal tools. It has row div
 </div>
 ```
 
-**Without a header row, with row headers**
+**Without a header row**
 
 ```html
 <table class="ds-table">
@@ -164,7 +164,7 @@ One table, `.ds-table`, on the public site and in internal tools. It has row div
 
 A sortable column has a `<button class="sortable">` inside its `<th>`, holding the label and a `<span class="sort-arrow">` for the direction. It looks like the plain header and it can be reached and pressed from the keyboard, which a `<th>` on its own cannot. `.sort-asc` or `.sort-desc` and `aria-sort` go on the `<th>` of the sorted column.
 
-**Sortable headers, click to sort**
+**Sortable headers**
 
 ```html
 <table class="ds-table">
@@ -313,7 +313,7 @@ Actions that apply to every selected row at once, as in moderation queues and ow
 </div>
 ```
 
-**Nothing selected — actions disable, they never disappear**
+**Nothing selected**
 
 ```html
 <div class="ds-btn-group">

@@ -48,7 +48,7 @@
       document.body.appendChild(status);
     }
 
-    document.querySelectorAll('.section-title[id]').forEach(function (h) {
+    document.querySelectorAll('section > :is(h2, h3):first-child[id]').forEach(function (h) {
       if (h.querySelector('.ds-anchor')) return;
       var btn = document.createElement('button');
       btn.type = 'button';

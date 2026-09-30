@@ -47,7 +47,7 @@ every other page is being brought to:
 | On the page | In the digest |
 |---|---|
 | `<h1>` and the header paragraph | The page's summary |
-| Each `<h2 class="section-title">` / `<h3 class="section-title">` and its `.ds-section-desc` | A component, with its one-line summary |
+| Each `<h2>` / `<h3>` that opens a plain `<section>`, and its `.ds-section-desc` | A component, with its one-line summary |
 | A "Relevant code" accordion: each `<dt>` / `<dd>` pair | The class key: name, what it does, what it requires |
 | A `<pre><code>` inside that accordion | The markup to copy |
 | The accessibility essentials list | Rules |
