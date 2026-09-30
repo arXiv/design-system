@@ -12,8 +12,8 @@ components:
         does: "A `<nav>` with an `aria-label` saying which set it steps through. Holds Previous, the position and Next, in that order."
       - name: ".ds-pagination-position"
         does: "The counter. Takes `aria-live=\"polite\"`: without it a reader who cannot see the counter has no way to know that the Next they just pressed did anything. The wording is the host's to choose; the counter takes the slack between the buttons, so the buttons stay put as the number grows."
-      - name: ".ds-btn"
-        does: "The two buttons. At either end of the set the button is `disabled`, not removed: a control that vanishes changes the shape of the toolbar under the reader, and a disabled one says “there is nothing before this”, which is the actual information."
+      - name: ".ds-btn.ds-btn-text"
+        does: "The two buttons, text-only, so they read as navigation rather than as actions. At either end of the set the button is `disabled`, not removed: a control that vanishes changes the shape of the toolbar under the reader, and a disabled one says “there is nothing before this”, which is the actual information."
       - name: ".ds-pagination"
         does: "Steps through the requests. It sits above everything that belongs to the current request, so the table and its actions change together when the reader moves on."
       - name: ".ds-btn-group, .ds-bulk-count, .ds-filter"
@@ -41,17 +41,17 @@ This component group is for moving through items one at a time, such as a modera
 
 ```html
 <nav class="ds-pagination" aria-label="Queue navigation">
-  <button class="ds-btn" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</button>
+  <button class="ds-btn ds-btn-text" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</button>
   <span class="ds-pagination-position" aria-live="polite">Request 1 of 15</span>
-  <button class="ds-btn" type="button">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+  <button class="ds-btn ds-btn-text" type="button">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
 </nav>
 ```
 
 ```html
 <nav class="ds-pagination" aria-label="Moderation queue">
-  <button class="ds-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</button>
+  <button class="ds-btn ds-btn-text" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</button>
   <span class="ds-pagination-position" aria-live="polite">Request 4 of 15</span>
-  <button class="ds-btn" type="button">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+  <button class="ds-btn ds-btn-text" type="button">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
 </nav>
 <div class="ds-btn-group">
   <button class="ds-btn ds-btn-primary" type="button">Approve</button>
@@ -99,7 +99,7 @@ This component group is for moving through items one at a time, such as a modera
 
 - `.ds-pagination` — A `<nav>` with an `aria-label` saying which set it steps through. Holds Previous, the position and Next, in that order.
 - `.ds-pagination-position` — The counter. Takes `aria-live="polite"`: without it a reader who cannot see the counter has no way to know that the Next they just pressed did anything. The wording is the host's to choose; the counter takes the slack between the buttons, so the buttons stay put as the number grows.
-- `.ds-btn` — The two buttons. At either end of the set the button is `disabled`, not removed: a control that vanishes changes the shape of the toolbar under the reader, and a disabled one says “there is nothing before this”, which is the actual information.
+- `.ds-btn.ds-btn-text` — The two buttons, text-only, so they read as navigation rather than as actions. At either end of the set the button is `disabled`, not removed: a control that vanishes changes the shape of the toolbar under the reader, and a disabled one says “there is nothing before this”, which is the actual information.
 - `.ds-pagination` — Steps through the requests. It sits above everything that belongs to the current request, so the table and its actions change together when the reader moves on.
 - `.ds-btn-group, .ds-bulk-count, .ds-filter` — The group actions row: the actions, the selection count, and a filter at the far end. See [Bulk actions](tables.html#bulk-actions).
 - `.ds-table, .is-selected` — The papers in the current request, with a checkbox per row. See [Row selection](tables.html#row-selection).

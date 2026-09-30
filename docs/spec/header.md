@@ -17,7 +17,7 @@ components:
       - name: ".ds-site-header-nav"
         does: "The links, in a `<nav>` with an `aria-label`. The Search control is an `<a href=\"/search\">` that JS may upgrade to open a search overlay. Never a dead button — without JS it navigates to the search page."
       - name: ".ds-nav-icon"
-        does: "An icon beside a link label, sized by the stylesheet and quieter than the text. `aria-hidden=\"true\"`; the label carries the name."
+        does: "An icon beside a link label, sized by the stylesheet and quieter than the text. `aria-hidden=\"true\"`; the label gives the name."
       - name: ".ds-site-header-divider"
         does: "A vertical hairline between groups of links or between regions, on the bar’s own divider token. Takes `aria-hidden=\"true\"`. Hidden while the navigation is folded away."
       - name: ".ds-site-header-tools"
@@ -47,7 +47,7 @@ components:
       - name: "header.js"
         does: "The only thing to add, once per page. It finds every `.ds-site-header` on the page and keeps each one on a single row. Without JavaScript the bar wraps onto more rows instead, so nothing is ever hidden."
       - name: ".ds-site-header-nav-toggle, .ds-site-header-tools-toggle"
-        does: "The menu button and the tools button. The script adds each one just before the region it opens, so they are not in the markup. Each carries `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button."
+        does: "The menu button and the tools button. The script adds each one just before the region it opens, so they are not in the markup. Each has `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button."
       - name: ".is-collapsible, .is-greeting-hidden, .is-nav-collapsed, .is-tools-collapsed, .is-overfull, .is-open, .is-measuring"
         does: "State classes the script sets on the bar and on an open region. They are never written by hand. `.is-overfull` lets the bar wrap when even the folded bar is too wide for its space."
     notes:
@@ -102,7 +102,7 @@ components:
       - name: ".ds-site-header-search"
         does: "A `<form role=\"search\">` holding one `.ds-input` and its label. It stays visible in the bar, because internal tools search constantly. A tool with two kinds of search uses two of these; there is no double-search component. On public pages search stays the Search link in the navigation, which opens search only when the reader asks."
       - name: ".ds-site-header-tools > button"
-        does: "An icon button that acts on the whole tool, such as Refresh or the sidebar toggle. Its name is `.is-sr-only` text. The sidebar toggle carries `aria-expanded`, and `aria-controls` naming the sidebar’s `id`."
+        does: "An icon button that acts on the whole tool, such as Refresh or the sidebar toggle. Its name is `.is-sr-only` text. The sidebar toggle has `aria-expanded`, and `aria-controls` naming the sidebar’s `id`."
       - name: ".ds-site-header-greeting"
         does: "The same first-name greeting as the public header, capped at 14 characters."
   - id: sticky-header
@@ -174,7 +174,7 @@ Rendered directly from `design-system.css`. On a narrow screen the bar folds its
 - `.ds-site-header` — The bar. Bare, it is the arXiv header — arxiv.org cannot forget a class it never has to write.
 - `.ds-site-header-logo` — The brand slot, image or wordmark. Takes `margin-right: auto`. On arxiv.org it is the logo image, never the word typed out; its alt text says “archive”.
 - `.ds-site-header-nav` — The links, in a `<nav>` with an `aria-label`. The Search control is an `<a href="/search">` that JS may upgrade to open a search overlay. Never a dead button — without JS it navigates to the search page.
-- `.ds-nav-icon` — An icon beside a link label, sized by the stylesheet and quieter than the text. `aria-hidden="true"`; the label carries the name.
+- `.ds-nav-icon` — An icon beside a link label, sized by the stylesheet and quieter than the text. `aria-hidden="true"`; the label gives the name.
 - `.ds-site-header-divider` — A vertical hairline between groups of links or between regions, on the bar’s own divider token. Takes `aria-hidden="true"`. Hidden while the navigation is folded away.
 - `.ds-site-header-tools` — Optional. The controls one interface needs, after the navigation: search fields, icon buttons, the theme control. See [Internal header](#internal-headers).
 - `.ds-site-header-account` — The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section. It stays in the bar at every width.
@@ -230,7 +230,7 @@ The header fits itself to the space it has, and nobody has to plan for it. When 
 ```
 
 - `header.js` — The only thing to add, once per page. It finds every `.ds-site-header` on the page and keeps each one on a single row. Without JavaScript the bar wraps onto more rows instead, so nothing is ever hidden.
-- `.ds-site-header-nav-toggle, .ds-site-header-tools-toggle` — The menu button and the tools button. The script adds each one just before the region it opens, so they are not in the markup. Each carries `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button.
+- `.ds-site-header-nav-toggle, .ds-site-header-tools-toggle` — The menu button and the tools button. The script adds each one just before the region it opens, so they are not in the markup. Each has `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button.
 - `.is-collapsible, .is-greeting-hidden, .is-nav-collapsed, .is-tools-collapsed, .is-overfull, .is-open, .is-measuring` — State classes the script sets on the bar and on an open region. They are never written by hand. `.is-overfull` lets the bar wrap when even the folded bar is too wide for its space.
 
 > The script answers to the width of the bar, not of the window, so these examples fold inside narrower boxes on a wide screen. Open the menu or the tools button to see the folded rows.
@@ -381,7 +381,7 @@ The Admin Console header, built from the same component on the light variant. Ea
 
 - `.ds-site-header-logo img` — The tool’s own wordmark image, from `assets/images/logos/`. Its alt text names the tool in spoken form, such as “archive Admin Console”.
 - `.ds-site-header-search` — A `<form role="search">` holding one `.ds-input` and its label. It stays visible in the bar, because internal tools search constantly. A tool with two kinds of search uses two of these; there is no double-search component. On public pages search stays the Search link in the navigation, which opens search only when the reader asks.
-- `.ds-site-header-tools > button` — An icon button that acts on the whole tool, such as Refresh or the sidebar toggle. Its name is `.is-sr-only` text. The sidebar toggle carries `aria-expanded`, and `aria-controls` naming the sidebar’s `id`.
+- `.ds-site-header-tools > button` — An icon button that acts on the whole tool, such as Refresh or the sidebar toggle. Its name is `.is-sr-only` text. The sidebar toggle has `aria-expanded`, and `aria-controls` naming the sidebar’s `id`.
 - `.ds-site-header-greeting` — The same first-name greeting as the public header, capped at 14 characters.
 
 ## Sticky header  (Modifiers)

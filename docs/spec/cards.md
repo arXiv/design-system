@@ -9,7 +9,7 @@ components:
     summary: "A flexible and unopinionated white surface with a hairline border and 8px radius."
     classes:
       - name: ".ds-card"
-        does: "The box: white surface, hairline `--ds-border`, 8px radius, padding from the scale. Its first and last children carry no outer margin, because the padding is the space at the edges. It sets `position: relative`, so a margin note or an anchored pill measures from it."
+        does: "The box: white surface, hairline `--ds-border`, 8px radius, padding from the scale. Its first and last children have no outer margin, because the padding is the space at the edges. It sets `position: relative`, so a margin note or an anchored pill measures from it."
       - name: ".ds-internal"
         does: "On a parent, usually `<html>` or `<body>`. Re-points the accent to Access Lime for everything inside. Nothing on the card itself changes."
   - id: data-cards
@@ -17,7 +17,7 @@ components:
     summary: "Intended for organizing metadata and other reference information: the facts about one record, each pair stacking a label over a value. Cards read correctly against both white or a warm-wash page background."
     classes:
       - name: ".ds-card.ds-card--data"
-        does: "On a `<section>` with an `aria-label`, which makes it a named region. A tinted ground (`--ds-surface-muted`) and a 4px top edge in the accent, so it reads as reference rather than content. No padding of its own: the pairs carry it."
+        does: "On a `<section>` with an `aria-label`, which makes it a named region. A tinted ground (`--ds-surface-muted`) and a 4px top edge in the accent, so it reads as reference rather than content. No padding of its own: the pairs have it."
       - name: "dl > div"
         does: "One pair per `<div>`, `<dt>` label then `<dd>` value. Pairs sit side by side when the card is wide enough for two and stack in one column when it is not; a hairline separates them in both directions."
       - name: "dt, dd"
@@ -65,7 +65,7 @@ A flexible and unopinionated white surface with a hairline border and 8px radius
   </div>
 ```
 
-- `.ds-card` — The box: white surface, hairline `--ds-border`, 8px radius, padding from the scale. Its first and last children carry no outer margin, because the padding is the space at the edges. It sets `position: relative`, so a margin note or an anchored pill measures from it.
+- `.ds-card` — The box: white surface, hairline `--ds-border`, 8px radius, padding from the scale. Its first and last children have no outer margin, because the padding is the space at the edges. It sets `position: relative`, so a margin note or an anchored pill measures from it.
 - `.ds-internal` — On a parent, usually `<html>` or `<body>`. Re-points the accent to Access Lime for everything inside. Nothing on the card itself changes.
 
 ## Data cards
@@ -96,7 +96,7 @@ Intended for organizing metadata and other reference information: the facts abou
 </section>
 ```
 
-- `.ds-card.ds-card--data` — On a `<section>` with an `aria-label`, which makes it a named region. A tinted ground (`--ds-surface-muted`) and a 4px top edge in the accent, so it reads as reference rather than content. No padding of its own: the pairs carry it.
+- `.ds-card.ds-card--data` — On a `<section>` with an `aria-label`, which makes it a named region. A tinted ground (`--ds-surface-muted`) and a 4px top edge in the accent, so it reads as reference rather than content. No padding of its own: the pairs have it.
 - `dl > div` — One pair per `<div>`, `<dt>` label then `<dd>` value. Pairs sit side by side when the card is wide enough for two and stack in one column when it is not; a hairline separates them in both directions.
 - `dt, dd` — The label is small, condensed and uppercased by CSS: type it in sentence case. The value is in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A value that goes somewhere is an `<a href>` and takes the ordinary link colours.
 - `.ds-internal` — The top edge takes Access Lime. The markup is the public one.

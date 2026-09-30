@@ -41,7 +41,7 @@ components:
     summary: "Once a paper has ten or more versions we make some additional changes."
     classes:
       - name: ".ds-show-more"
-        does: "The control that expands the list, documented on [Progressive disclosure](progressive-disclosure.html#show-more). Requires `aria-expanded`, flipped on every press, and `aria-controls` naming every region it shows or hides. The label carries the total: \"show all 12 versions\", and \"show fewer\" once open."
+        does: "The control that expands the list, documented on [Progressive disclosure](progressive-disclosure.html#show-more). Requires `aria-expanded`, flipped on every press, and `aria-controls` naming every region it shows or hides. The label includes the total: \"show all 12 versions\", and \"show fewer\" once open."
       - name: "[hidden]"
         does: "On the span that holds the elided versions. The attribute, not a class: the hidden links are out of the tab order while they are off screen. The full list is in the HTML the server sends; a script adds `hidden` and the button, so with no JavaScript the reader gets every version."
       - name: "aria-hidden=\"true\""
@@ -60,9 +60,9 @@ rules:
   - "Inside `datetime`, announced is a full instant (`2026-01-11T01:32Z`), Submitted and Revised stay date-only (`2026-01-10`)."
   - "The version being viewed is distinguished by weight and by `aria-current` and does not depend on color alone. It is deliberately not a link because the reader is already viewing it."
   - "Prior versions are inline links alongside other text, so they are underlined. Each is also tagged with an explicit `aria-label` (\"View version 1\")."
-  - "The ellipsis is decoration (`aria-hidden`) with an sr-only count of what is hidden; the working affordance is a text button carrying the explicit total (\"show all 127 versions\"), toggling `aria-expanded`. The full list is server-rendered and collapsed by the script in `html.js`. Without JavaScript, the fallback is that readers see the full list of versions."
+  - "The ellipsis is decoration (`aria-hidden`) with an sr-only count of what is hidden; the working affordance is a text button showing the explicit total (\"show all 127 versions\"), toggling `aria-expanded`. The full list is server-rendered and collapsed by the script in `html.js`. Without JavaScript, the fallback is that readers see the full list of versions."
   - "**Mark the version being viewed.** Put `aria-current=\"true\"` on it, make it a `<strong>` and not a link, and put `<span class=\"is-sr-only\">, this version</span>` inside it. Bold alone is invisible to a screen reader, and the attribute alone is not read out by every one."
-  - "**Say which version each link opens.** Every prior-version link carries `aria-label=\"View version 2\"`. The visible \"v2\" does not say what the link does, and a screen reader user listing the links on the page hears each one out of context."
+  - "**Say which version each link opens.** Every prior-version link has `aria-label=\"View version 2\"`. The visible \"v2\" does not say what the link does, and a screen reader user listing the links on the page hears each one out of context."
   - "**Give the warning its role.** The older-version warning takes `role=\"alert\"`, so a screen reader announces it as soon as the page loads. Render it only when the reader is not on the latest version; an alert that is always there is noise."
   - "**Separate the dates in words.** The visible \"·\" between dates is `aria-hidden=\"true\"`, and a `<span class=\"is-sr-only\">, </span>` sits beside it. Without the comma the three dates are read as one run-on sentence."
   - "**Say what the ellipsis hides.** The \"…\" is decoration and is `aria-hidden=\"true\"`. The `.is-sr-only` span beside it says which versions are hidden, and the button says the total: \"show all 12 versions\". Use the `hidden` attribute on the hidden versions, never a class, so they are out of the tab order while they are off screen."
@@ -261,7 +261,7 @@ Once a paper has ten or more versions we make some additional changes.
 </p>
 ```
 
-- `.ds-show-more` — The control that expands the list, documented on [Progressive disclosure](progressive-disclosure.html#show-more). Requires `aria-expanded`, flipped on every press, and `aria-controls` naming every region it shows or hides. The label carries the total: "show all 12 versions", and "show fewer" once open.
+- `.ds-show-more` — The control that expands the list, documented on [Progressive disclosure](progressive-disclosure.html#show-more). Requires `aria-expanded`, flipped on every press, and `aria-controls` naming every region it shows or hides. The label includes the total: "show all 12 versions", and "show fewer" once open.
 - `[hidden]` — On the span that holds the elided versions. The attribute, not a class: the hidden links are out of the tab order while they are off screen. The full list is in the HTML the server sends; a script adds `hidden` and the button, so with no JavaScript the reader gets every version.
 - `aria-hidden="true"` — On the ellipsis, which is decoration. The `.is-sr-only` span beside it says which versions are hidden. Both sit in one span that the button hides when the list opens.
 - `aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b"` — When the viewed version falls inside the elision there are two ellipses and two hidden spans. List all four ids, separated by spaces, so one press opens the whole list.
@@ -278,9 +278,9 @@ Once a paper has ten or more versions we make some additional changes.
 - Inside `datetime`, announced is a full instant (`2026-01-11T01:32Z`), Submitted and Revised stay date-only (`2026-01-10`).
 - The version being viewed is distinguished by weight and by `aria-current` and does not depend on color alone. It is deliberately not a link because the reader is already viewing it.
 - Prior versions are inline links alongside other text, so they are underlined. Each is also tagged with an explicit `aria-label` ("View version 1").
-- The ellipsis is decoration (`aria-hidden`) with an sr-only count of what is hidden; the working affordance is a text button carrying the explicit total ("show all 127 versions"), toggling `aria-expanded`. The full list is server-rendered and collapsed by the script in `html.js`. Without JavaScript, the fallback is that readers see the full list of versions.
+- The ellipsis is decoration (`aria-hidden`) with an sr-only count of what is hidden; the working affordance is a text button showing the explicit total ("show all 127 versions"), toggling `aria-expanded`. The full list is server-rendered and collapsed by the script in `html.js`. Without JavaScript, the fallback is that readers see the full list of versions.
 - **Mark the version being viewed.** Put `aria-current="true"` on it, make it a `<strong>` and not a link, and put `<span class="is-sr-only">, this version</span>` inside it. Bold alone is invisible to a screen reader, and the attribute alone is not read out by every one.
-- **Say which version each link opens.** Every prior-version link carries `aria-label="View version 2"`. The visible "v2" does not say what the link does, and a screen reader user listing the links on the page hears each one out of context.
+- **Say which version each link opens.** Every prior-version link has `aria-label="View version 2"`. The visible "v2" does not say what the link does, and a screen reader user listing the links on the page hears each one out of context.
 - **Give the warning its role.** The older-version warning takes `role="alert"`, so a screen reader announces it as soon as the page loads. Render it only when the reader is not on the latest version; an alert that is always there is noise.
 - **Separate the dates in words.** The visible "·" between dates is `aria-hidden="true"`, and a `<span class="is-sr-only">, </span>` sits beside it. Without the comma the three dates are read as one run-on sentence.
 - **Say what the ellipsis hides.** The "…" is decoration and is `aria-hidden="true"`. The `.is-sr-only` span beside it says which versions are hidden, and the button says the total: "show all 12 versions". Use the `hidden` attribute on the hidden versions, never a class, so they are out of the tab order while they are off screen.

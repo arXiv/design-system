@@ -421,6 +421,37 @@ def check_docs_menu():
         ok(rule, f"{n} pages, {len(listed)} listed")
 
 
+# ── Plain words ──
+# STYLE.md lists words that agents keep reaching for and Shamsi keeps
+# replacing. Checked in reader-facing prose only: code, class names, scripts
+# and styles are stripped first. STYLE.md itself quotes them, so it is skipped.
+PLAIN_WORDS = re.compile(r"\b(carr(?:y|ies|ied|ying)|rails?|walk(?:s|ed|ing)?|track(?:s|ed)?)\b", re.I)   # "tracking" allowed: surveillance, on brand.html
+
+
+def check_plain_words():
+    rule = "prose uses the plain word (STYLE.md: includes, sidebar, scan, type)"
+    files = sorted((REPO / "docs").rglob("*.html")) + sorted((REPO / "docs").glob("*.md")) + [REPO / "AGENTS.md"]
+    n = 0
+    for path in files:
+        if path.name == "STYLE.md" or "spec" in path.parts:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if path.suffix == ".html":
+            text = re.sub(r"<(pre|script|style|code)\b.*?</\1>", " ", text, flags=re.S)
+            text = re.sub(r"<[^>]+>", " ", text)
+        else:
+            text = re.sub(r"```.*?```", " ", text, flags=re.S)
+            text = re.sub(r"`[^`]*`", " ", text)
+        text = re.sub(r"[\w.-]*-track\b|track-[\w-]+", " ", text)
+        n += 1
+        for m in PLAIN_WORDS.finditer(text):
+            start = max(0, m.start() - 40)
+            context = " ".join(text[start:m.end() + 40].split())
+            fail(rule, str(path.relative_to(REPO)), f"“{m.group(0)}” in: …{context}…")
+    if rule not in FAILS:
+        ok(rule, f"{n} files")
+
+
 def main():
     check_wordmark_not_typed()
     check_self_hosted()
@@ -432,6 +463,7 @@ def main():
     check_docs_menu()
     check_toc_script()
     check_no_changelog_prose()
+    check_plain_words()
     check_classes_documented()
     check_section_anchors()
     print()
