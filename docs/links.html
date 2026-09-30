@@ -96,6 +96,7 @@
             <li><a href="#the-inline-link">The inline link</a></li>
             <li><a href="#in-context">In context</a></li>
             <li><a href="#links-and-text-only-buttons">Links and text-only buttons</a></li>
+            <li><a href="#linking-to-a-section">Linking to a section</a></li>
             <li><a href="#disabled-state">Disabled state</a></li>
             <li><a href="#lists-of-links">Lists of links</a></li>
             <li><a href="#visited-memory">Visited memory</a></li>
@@ -228,6 +229,69 @@
         </div>
       </details>
     </div>
+  </section>
+
+  <!-- ───────── Linking to a section ───────── -->
+  <section class="section">
+    <h2 class="section-title" id="linking-to-a-section">Linking to a section</h2>
+    <p class="ds-section-desc">A section heading can carry a control that copies a link to that
+    section. It is an option for long pages that readers cite or share in parts, such as HTML papers
+    and these docs; most headings do not need it. Hover a heading on this page, or tab to it, and the
+    control appears.</p>
+
+    <div class="ds-card anchor-demo">
+      <h3>A section heading <button type="button" class="ds-anchor" aria-label="Copy link to A section heading" title="Copy link to this section"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button></h3>
+      <p>The control as it appears on hover or focus. Here it is kept visible and copies nothing; the ones beside the headings on this page are live.</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;!-- 1. The heading: the class, and an id --&gt;
+&lt;h2 class="section-title" id="dividers"&gt;Dividers&lt;/h2&gt;
+
+&lt;!-- 2. The script, once per page --&gt;
+&lt;script src="anchors.js" defer&gt;&lt;/script&gt;
+
+&lt;!-- What renders --&gt;
+&lt;h2 class="section-title" id="dividers"&gt;Dividers
+  &lt;button type="button" class="ds-anchor" aria-label="Copy link to Dividers" title="Copy link to this section"&gt;
+    &lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;…&lt;/svg&gt;
+  &lt;/button&gt;
+&lt;/h2&gt;</code></pre>
+          <dl>
+            <dt>.section-title</dt>
+            <dd>On the <code>&lt;h2&gt;</code> or <code>&lt;h3&gt;</code> that starts a section.
+            <code>anchors.js</code> adds the control to every <code>.section-title</code> that has an
+            <code>id</code>; a heading without one gets no control.</dd>
+            <dt>id</dt>
+            <dd>Written into the HTML, by hand or by whatever builds the page. These docs use
+            <code>verification/gen-anchors.py</code>, which makes it from the heading text.</dd>
+            <dt>.ds-anchor</dt>
+            <dd>The control, a <code>&lt;button&gt;</code> that <code>anchors.js</code> adds to every
+            <code>.section-title</code> with an <code>id</code>. Quiet until wanted: it appears on
+            hover of the heading and on its own focus, and stays visible on a touch screen. Its
+            accessible name carries the section, and the copy result is announced in a live
+            region.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <ul class="notes">
+      <li><strong>The ids are written into the HTML, not added by a script.</strong> In these docs,
+      <code>verification/gen-anchors.py</code> writes them, and
+      <code>--check</code> fails when a heading has none. A real id works with JavaScript off, works
+      for a link arriving from another page, and exists when the browser resolves the fragment on
+      first load — none of which a script running at <code>DOMContentLoaded</code> can
+      promise.</li>
+      <li><strong>The control is a button, not a link.</strong> An <code>&lt;a href="#here"&gt;</code>
+      inside a heading is a tab stop that goes nowhere the reader wanted to go — they are
+      already looking at the section. What they want is the address, so it copies it.</li>
+      <li><strong>An id follows its heading</strong>, so rewording a heading changes its anchor.
+      That is the right trade while nothing links in from outside; re-run the generator after
+      editing a heading and the check will tell you if you forget.</li>
+      <li><strong>Its accessible name carries the section.</strong> Twelve buttons all called
+      “Copy link to section” are useless in a list of controls, so each says which
+      section it belongs to.</li>
+    </ul>
   </section>
 
   <div class="ds-note ds-note--essential">
