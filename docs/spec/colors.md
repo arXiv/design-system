@@ -12,6 +12,14 @@ components:
   - id: links-and-interactive
     title: "Links and interactive"
     summary: "Colors that signal \"you can act on this.\" Link-vs-body contrast fails 3:1, so inline links are also underlined — color is never the only signal (WCAG 1.4.1). Link Blue is its own blue, not a brand blue: Open Blue is 1.5:1 on white and cannot hold text at all, and Archival Blue is reserved for headings, so links take a darker blue chosen for reading."
+  - id: the-two-tints
+    title: "The two tints"
+    summary: "The system has two tints, warm and accent. A component fill uses a tint or a status colour. A new fill colour is discussed with the design team first."
+    classes:
+      - name: "--ds-tint-warm"
+        does: "The warm tint. The same value on both surfaces."
+      - name: "--ds-tint-accent"
+        does: "The accent tint. Tint Light on public pages, the Access Lime wash inside `.ds-internal`. A component uses the token and gets the right colour on each surface."
   - id: backgrounds-and-tints
     title: "Backgrounds and tints"
     summary: "Tints for section depth without hard borders fall into two families: warm-toned and cool-toned, following our two primary brand colors."
@@ -44,6 +52,18 @@ arXiv's defining brand colors grouped by prominence and role. These key colors a
 ## Links and interactive
 
 Colors that signal "you can act on this." Link-vs-body contrast fails 3:1, so inline links are also underlined — color is never the only signal (WCAG 1.4.1). Link Blue is its own blue, not a brand blue: Open Blue is 1.5:1 on white and cannot hold text at all, and Archival Blue is reserved for headings, so links take a darker blue chosen for reading.
+
+## The two tints
+
+The system has two tints, warm and accent. A component fill uses a tint or a status colour. A new fill colour is discussed with the design team first.
+
+```html
+background: var(--ds-tint-warm);
+background: var(--ds-tint-accent);
+```
+
+- `--ds-tint-warm` — The warm tint. The same value on both surfaces.
+- `--ds-tint-accent` — The accent tint. Tint Light on public pages, the Access Lime wash inside `.ds-internal`. A component uses the token and gets the right colour on each surface.
 
 ## Backgrounds and tints
 

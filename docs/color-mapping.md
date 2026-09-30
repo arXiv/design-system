@@ -149,6 +149,20 @@ Barely perceptible tints for creating section depth without hard borders.
 
 ---
 
+## The two tints
+
+A component fill uses one of these or a status colour. A new fill colour is discussed with the design team first.
+
+| Tint | Token | Light | Dark |
+|---|---|---|---|
+| **Warm** | `--ds-tint-warm` | Card Grey `#f0f0ee` | Repository Brown `#1c1a17` |
+| **Accent**, public | `--ds-tint-accent` | Tint Light `#edf7ff` | `#1e3a5f` |
+| **Accent**, inside `.ds-internal` | `--ds-tint-accent` | Access Lime wash `#f0f9e8` | `#28380a` |
+
+Warm: the secondary page zone, data cards, the table header row, row headers, striped rows, notes, tags. Accent: selected table rows.
+
+---
+
 ## Which tint for which job
 
 *(Added 2026-06-17. Rendered on the colors page: `colors.html#uses`.)*
@@ -158,7 +172,7 @@ The tints sorted by the job they do. Reach for the named token; if a job is not 
 | The job | Reach for | Where it shows up |
 |---|---|---|
 | Page / section background, warm | **Warm Wash** `--ds-canvas` | Default subtle ground — footer, metadata bands, internal page background |
-| Secondary content band | **Card Grey** `--ds-surface-muted` | Related band, reader header — one step down from the page, no hard border |
+| Secondary content band | **Card Grey** `--ds-tint-warm` | Related band, reader header — one step down from the page, no hard border |
 | Card surface / hover fill | **Card Grey** `--ds-surface-muted` | Card fills and hover fills |
 | Active / pressed fill, deepest warm band | **Border Light** `--ds-border-muted` `#dad8d6` | Footer edge, pressed states, pill borders. Body-size grey/links miss AA here — use Repository Brown or Link Hover |
 | Decorative hairline | **Border Light** `--ds-border` | Input / card edges. Below 3:1 — never the sole boundary of a control |

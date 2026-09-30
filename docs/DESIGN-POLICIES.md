@@ -83,6 +83,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 ## Colors
 
 - **Use the palette.** All colors must come from the documented palette in `docs/color-mapping.md`. Do not introduce one-off hex values.
+- **Two tints.** The system has two tints: warm (`--ds-tint-warm`) and accent (`--ds-tint-accent`, Tint Light on public pages and the Access Lime wash inside `.ds-internal`). A component fill uses a tint or a status colour. A new fill colour is discussed with the design team first and is never added without that step.
 - **Warm grey ladder:** The palette provides specific stops for specific contrast needs:
   - `--ds-text-disabled` (`#aeaaa4`) — disabled/exempt states only (2.3:1, below AA thresholds)
   - `--ds-border-strong` (`#89837a`) — interactive UI boundaries: borders, switch edges, arrows (3.76:1 on white, passes 3:1)

@@ -717,3 +717,5 @@ Demo / reference `.html` pages that don't exist yet — each renders the compone
 - [ ] **Interaction-state audit pass** — the 2026-06-11 audit was single-viewport/static; do a second pass triggering hover / focus / loading / disabled / error states.
 - [ ] **Stale inventory cleanup** — figure lightbox, section-heading permalinks, and Expand chips are missing from the net-new component inventory.
 - [ ] Reader TOC mobile fade mask → add the **half-item peek** as its primary continuation signal (small follow-up noted in PROPOSED-GUIDELINES G10).
+
+- **Sidebar tint or border (deferred 2026-09-30):** decide once the mockups are updated with the design-system sidebar, against real content. See planning/proposals/tints.html.
