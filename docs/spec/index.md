@@ -24,6 +24,8 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Progressive disclosure | [progressive-disclosure.md](progressive-disclosure.md) | Options to toggle open additional content. HTML paper pages, for example, hold far more than a reader wants to see all at once, so they use every progressive di |
 | Spacing | [spacing.md](spacing.md) | Every gap on arXiv pages comes from the scale defined below. The scale is a 4px-based / 8-point scale, with no off-scale values permitted. More details in [DESI |
 | Stepper | [stepper.md](stepper.md) | Previous and Next controls with a position counter for going through a set, one item at a time. |
+| Typography | [typography.md](typography.md) | arXiv sets all text in the IBM Plex family with STIX Two Math for notation. All fonts are self-hosted and open source with no external font services. |
+| Versions | [version-display.md](version-display.md) | How a paper shows its submission date, the timestamp it was announced at, its current revision date, and its version history. arXiv displays this info over and  |
 
 ## Not yet digested
 
@@ -32,5 +34,3 @@ These pages have not had their review pass. Read the page itself, and expect the
 - brand.html
 - layout-patterns.html
 - outreach.html
-- typography.html
-- version-display.html

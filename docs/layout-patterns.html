@@ -95,15 +95,11 @@
           <ol>
             <li><a href="#the-page-container">The page container</a></li>
             <li><a href="#notes">Notes</a></li>
-            <li><a href="#marginalia">Marginalia</a></li>
+            <li><a href="#marginalia">Marginalia and gutter space</a></li>
             <li><a href="#dividers">Dividers</a></li>
             <li><a href="#sidebar">Sidebar</a></li>
             <li><a href="#page-zones">Page zones</a></li>
-            <li><a href="#cards">Cards</a></li>
-            <li><a href="#actions-attached-to-content">Actions attached to content</a></li>
-            <li><a href="#main-column-vs-sidebar-what-goes-where">Main column vs. sidebar — what goes where</a></li>
-            <li><a href="#accordions-and-other-disclosures">Accordions and other disclosures</a></li>
-            <li><a href="#motion-and-layering">Motion and layering</a></li>
+            <li><a href="#motion-and-layering">Motion</a></li>
           </ol>
         </nav>
       </details>
@@ -239,18 +235,15 @@
 
   <!-- ───────── Marginalia ───────── -->
   <section class="section">
-    <h2 class="section-title" id="marginalia">Marginalia</h2>
-    <p class="ds-section-desc">A short note beside the block it belongs to, in the annotation voice.
-    Where the viewport has a margin the note sits in it, always open. Narrower, it folds to an info
-    mark in the block’s top-right corner that opens it in place. Try it by narrowing this
-    window.</p>
+    <h2 class="section-title" id="marginalia">Marginalia and gutter space</h2>
+    <p class="ds-section-desc">At wide screen widths, our max content width leaves enough gutter space on the sides for marginalia. A short note beside the block it belongs to is appropriate for annotation-style content. At narrower widths, it is hidden in an info icon in the block’s top-right corner. Try it by widening and narrowing your screen.</p>
 
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">A margin note is one or two sentences. Anything longer is a paragraph, and belongs in the flow.</p>
+        <p class="ds-marginalia-body ds-annotation">A margin note is one or two sentences. Anything longer belongs in the main content.</p>
       </details>
-      <p>The block the note belongs to. A demo, a figure, a table: anything in a card.</p>
+      <p>The block the note belongs to: a paragraph, a figure, a table or a card. Any block works once it is positioned (<code>position: relative</code>); a card already is.</p>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;div class="ds-card"&gt;
@@ -277,11 +270,11 @@
     </div>
 
     <ul class="notes">
-      <li><strong>It opens without JavaScript.</strong> The fold is the native disclosure.</li>
-      <li><strong>The margin appears at 1314px.</strong> The page width plus a note and its gaps on
-      each side. Below that, every note is folded.</li>
-      <li><strong>A note is not a rule.</strong> A reader on a narrow screen may never open it, so
-      anything a builder must not get wrong goes in a <a href="#notes">note block</a> or in the prose.</li>
+      <li><strong>No JavaScript required.</strong> Even the info links use a native disclosure.</li>
+      <li><strong>The marginalia appear at 1314px width.</strong> The page width plus a note and its gaps on
+      each side. Below that width, marginal notes are hidden behind an info icon.</li>
+      <li><strong>A note is not required.</strong> A reader on a narrow screen may never open or see it, so
+      annotations must contain only optional content.</li>
     </ul>
   </section>
 
@@ -340,7 +333,7 @@
     </div>
 
     <div class="ds-card">
-      <p class="ds-panel-label">In a row of controls</p>
+      <p class="ds-panel-label">Vertical dividers in a row of controls</p>
       <div class="ds-btn-group">
         <span>Search</span>
         <span class="ds-divider ds-divider--vertical" aria-hidden="true"></span>
@@ -368,32 +361,13 @@
         </div>
       </details>
     </div>
-
-    <p class="ds-panel-label">Which to reach for</p>
-    <div class="ds-table-scroll" role="region" aria-label="Which to reach for" tabindex="0">
-      <table class="ds-table token-table">
-        <thead><tr><th>Reach for</th><th>When</th></tr></thead>
-        <tbody>
-          <tr><td>Nothing</td><td>The default. If a larger gap between the groups than within them makes
-          the grouping read, you are done — see the proximity rule on
-          <a href="spacing.html">Spacing</a>.</td></tr>
-          <tr><td>A divider</td><td>Space alone is not enough, usually because the groups are the same
-          shape and sit close together — rows in a list, a run of controls.</td></tr>
-          <tr><td>A card</td><td>The group is an <em>object</em> on the page rather than a region of it,
-          and needs an edge on all four sides to say so.</td></tr>
-        </tbody>
-      </table>
-    </div>
   </section>
 
   <!-- ───────── Sidebar ───────── -->
   <section class="section">
     <h2 class="section-title" id="sidebar">Sidebar</h2>
-    <p class="ds-section-desc">The sidebar sits beside the reading column, for supplementary
-    content that should stay distinct from the main content without being pushed far down the page. It is
-    an <code>&lt;aside class="ds-sidebar"&gt;</code>: its parent becomes a two-column layout, and its blocks
-    are separated by spacing, not by dividers. It holds supplementary content only, never section
-    navigation.</p>
+    <p class="ds-section-desc">A sidebar sits to the right of the main column and contains supplementary
+    content. If the content is secondary, distinct from the main content, and it is important that it not be pushed far down the page, then a sidebar is appropriate.</p>
     <p>The sidebar has no background and no border. Space alone separates it from the reading column
     and separates its blocks from each other.</p>
     <div class="ds-card">
@@ -530,89 +504,20 @@
     </div>
   </section>
 
-
-  <h2>Rules</h2>
-
-  <!-- ───────── Cards: documented on their own page ───────── -->
+  <!-- ───────── Motion ───────── -->
   <section class="section">
-    <h3 class="section-title" id="cards">Cards</h3>
-    <p class="ds-section-desc">Cards are documented on <a href="cards.html">Cards</a>. Choose a card for
-    one of several peers in a set, a <a href="tables.html">table</a> for many records compared down
-    columns, and a data card for the details of one record.</p>
+    <h2 class="section-title" id="motion-and-layering">Motion</h2>
+    <p><strong>Reduced motion.</strong> The pill's fade respects <code>prefers-reduced-motion</code> via its own <code>reduce</code> rule (<code>.ds-element-pill { transition: none; }</code>); accordions have no animation to disable.</p>
   </section>
 
-  <!-- ───────── Actions attached to content: documented elsewhere ───────── -->
+
   <section class="section">
-    <h3 class="section-title" id="actions-attached-to-content">Actions attached to content</h3>
-    <p class="ds-section-desc">Two components attach small controls to one piece of content rather than
-    to the page. The popover is documented on
-    <a href="progressive-disclosure.html#popover">Progressive disclosure</a>, and the action pill on
-    figures and equations (<code>.ds-element-pill</code>) on
-    <a href="buttons.html#small-actions-attached-to-content">Buttons</a>.</p>
-  </section>
-
-  <!-- ───────── The column model ───────── -->
-  <section class="section">
-    <h3 class="section-title" id="main-column-vs-sidebar-what-goes-where">Main column vs. sidebar — what goes where</h3>
-    <p class="ds-section-desc">The placement rule decided in the version-display work generalizes:
-    <strong>the main column is what every reader must meet; the sidebar is what some readers want to browse.</strong>
-    Screen-reader flow, mobile stacking, and citation-arrival readers all traverse the main column —
-    a sidebar may never be opened.</p>
-
-    <div class="ds-card-grid">
-      <div class="ds-card">
-        <h4>Main reading column</h4>
-        <p>Time-critical, everyone meets it:</p>
-        <ul>
-          <li>Title · authors</li>
-          <li>Version date line ("Submitted … · Revised …")</li>
-          <li>Older-version warning (amber, advisory)</li>
-          <li>Abstract · body</li>
-        </ul>
-      </div>
-      <div class="ds-card">
-        <h4>Sidebar (aside)</h4>
-        <p>Browsable, opt-in:</p>
-        <ul>
-          <li>Versions accordion (full history)</li>
-          <li>Paper information</li>
-          <li>Related / Labs</li>
-        </ul>
-      </div>
-    </div>
-
-    <ul class="notes">
-      <li>The sidebar is an <code>&lt;aside&gt;</code> with an <code>aria-label</code> — a complementary landmark, not part of the article.</li>
-      <li>Prose in the main column respects the measure: ~65 characters (~640–720px). The sidebar stays narrow; its content goes single-column.</li>
-      <li>On narrow viewports the sidebar stacks <em>below</em> the article content it supplements — never between the title and the abstract.</li>
-      <li>No permanent left sidebar: the reader replaced it with a header-anchored TOC dropdown (10+ GitHub issues asked to hide or collapse the old one).</li>
-    </ul>
-  </section>
-
-  <!-- ───────── Accordions: documented on their own page ───────── -->
-  <section class="section">
-    <h3 class="section-title" id="accordions-and-other-disclosures">Accordions and other disclosures</h3>
-    <p class="ds-section-desc">An accordion is one of the containers this page is about, but it is
-    also one of several ways a page can show less than it has — and choosing between them is
-    the harder question. Accordions, show-more, and popovers are documented together on
-    <a href="progressive-disclosure.html">Progressive disclosure</a>, with the rule for picking one.
-    The TOC bar is a disclosure as well, and its markup and classes are on
-    <a href="progressive-disclosure.html#toc-bar">Progressive disclosure</a> too.</p>
-
-    <ul class="notes">
-      <li><strong>Never put must-see information only inside a closed accordion.</strong> The
-      older-version warning surfaces in the main column even though the full history lives in the
-      Versions accordion — which is the column rule above, applied.</li>
-      <li><strong>Truncation signals continuation.</strong> Prefer disclosure-with-count ("show all 1,247 authors"); where a region must scroll internally, cut the last visible item mid-item (half-item peek). Fade masks are decoration, never the sole signal.</li>
-    </ul>
-  </section>
-
-  <!-- ───────── Motion and layering ───────── -->
-  <section class="section">
-    <h3 class="section-title" id="motion-and-layering">Motion and layering</h3>
-    <ul class="notes">
-      <li><strong>Z-layer scale.</strong> Content chrome (pills, marginalia) &lt; 50 · header dropdowns 60 · sticky headers 100 · popovers 110 · skip link 200; dialogs use the native <code>&lt;dialog&gt;</code> top layer. No ad-hoc z-index values. The scale is kept in <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>.</li>
-      <li><strong>Reduced motion.</strong> The pill's fade respects <code>prefers-reduced-motion</code> via its own <code>reduce</code> rule (<code>.ds-element-pill { transition: none; }</code>); accordions have no animation to disable.</li>
+    <h2>Other organizational components</h2>
+    <ul>
+      <li><a href="cards.html">Cards</a>: Choose a card for one of several peers in a set, and a data card for the details of one record.</li>
+      <li><a href="buttons.html#small-actions-attached-to-content">Actions attached to content</a>: Two components can attach a small row of controls to a piece of content.</li>
+      <li><a href="accordions.html">Accordions</a>: Containers that allow users to expand or collapse sections of content.</li>
+      <li><a href="tables.html">Tables</a>: When displaying many records compared down columns.</li>
     </ul>
   </section>
 
