@@ -25,9 +25,7 @@ components:
     summary: "Tints for section depth without hard borders fall into two families: warm-toned and cool-toned, following our two primary brand colors."
 rules:
   - "No near-whites lighter than Warm Wash. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally."
-  - "Recommended pairings"
   - "Repository Brown is the workhorse — it clears AA on every approved surface, which is why buttons set Repository Brown on Open Blue."
-  - "Buttons change clothes on tinted surfaces"
   - "On white — default secondary"
   - "On a tinted band — add `.on-tint`"
   - "**Use tokens, not hex values.** Take every color from a `--ds-` token. The hex values on this page are specimens to read, not values to paste into a stylesheet. A color with no token is not available to build with."
@@ -72,9 +70,7 @@ Tints for section depth without hard borders fall into two families: warm-toned 
 ## Rules
 
 - No near-whites lighter than Warm Wash. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally.
-- Recommended pairings
 - Repository Brown is the workhorse — it clears AA on every approved surface, which is why buttons set Repository Brown on Open Blue.
-- Buttons change clothes on tinted surfaces
 - On white — default secondary
 - On a tinted band — add `.on-tint`
 - **Use tokens, not hex values.** Take every color from a `--ds-` token. The hex values on this page are specimens to read, not values to paste into a stylesheet. A color with no token is not available to build with.

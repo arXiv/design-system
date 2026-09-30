@@ -111,8 +111,8 @@
   <div class="ds-full ds-zone-primary">
 
   <!-- ───────── The inline link ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="the-inline-link">The inline link</h2>
+  <section>
+    <h2 id="the-inline-link">The inline link</h2>
     <p class="ds-section-desc">One link, four states. At rest it is Link Blue with a 1px underline set 2px
     below the text. On hover the colour deepens and the underline thickens. Once followed it turns
     Visited Purple. When reached by keyboard it shows a 3px Link Blue ring. The four colours are in the
@@ -139,8 +139,8 @@
   </section>
 
   <!-- ───────── In context ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="in-context">In context</h2>
+  <section>
+    <h2 id="in-context">In context</h2>
     <p class="ds-section-desc">Inline within body text and within muted-grey secondary text.</p>
 
     <div class="ds-card">
@@ -198,8 +198,8 @@
 
 
   <!-- ───────── Links and text-only buttons ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="links-and-text-only-buttons">Links and text-only buttons</h2>
+  <section>
+    <h2 id="links-and-text-only-buttons">Links and text-only buttons</h2>
     <p class="ds-section-desc">A link goes somewhere: it has an <code>href</code>, it is underlined, and
     it remembers being visited. A text-only button does something on this page, such as opening a panel
     or copying a value: it is Link Blue too, but has no underline and no visited state. Use the one that
@@ -232,8 +232,8 @@
   </section>
 
   <!-- ───────── Linking to a section ───────── -->
-  <section class="section">
-    <h2 class="section-title" id="linking-to-a-section">Linking to a section</h2>
+  <section>
+    <h2 id="linking-to-a-section">Linking to a section</h2>
     <p class="ds-section-desc">A section heading can include a control that copies a link to that
     section. It is an option for long pages that readers cite or share in parts, such as HTML papers
     and these docs; most headings do not need it. Hover a heading on this page, or tab to it, and the
@@ -244,29 +244,32 @@
       <p>The control as it appears on hover or focus. Here it is kept visible and copies nothing; the ones beside the headings on this page are live.</p>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;!-- 1. The heading: the class, and an id --&gt;
-&lt;h2 class="section-title" id="dividers"&gt;Dividers&lt;/h2&gt;
+<pre><code>&lt;!-- 1. The section heading, with an id --&gt;
+&lt;section&gt;
+  &lt;h2 id="dividers"&gt;Dividers&lt;/h2&gt;
+  …
+&lt;/section&gt;
 
 &lt;!-- 2. The script, once per page --&gt;
 &lt;script src="anchors.js" defer&gt;&lt;/script&gt;
 
 &lt;!-- What renders --&gt;
-&lt;h2 class="section-title" id="dividers"&gt;Dividers
+&lt;h2 id="dividers"&gt;Dividers
   &lt;button type="button" class="ds-anchor" aria-label="Copy link to Dividers" title="Copy link to this section"&gt;
     &lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;…&lt;/svg&gt;
   &lt;/button&gt;
 &lt;/h2&gt;</code></pre>
           <dl>
-            <dt>.section-title</dt>
-            <dd>On the <code>&lt;h2&gt;</code> or <code>&lt;h3&gt;</code> that starts a section.
-            <code>anchors.js</code> adds the control to every <code>.section-title</code> that has an
-            <code>id</code>; a heading without one gets no control.</dd>
+            <dt>&lt;section&gt; &gt; h2, h3</dt>
+            <dd>The section heading: the <code>&lt;h2&gt;</code> or <code>&lt;h3&gt;</code> that is the
+            first element in a <code>&lt;section&gt;</code>. <code>anchors.js</code> adds the control to
+            every section heading that has an <code>id</code>. No class is needed.</dd>
             <dt>id</dt>
             <dd>Written into the HTML, by hand or by whatever builds the page. These docs use
             <code>verification/gen-anchors.py</code>, which makes it from the heading text.</dd>
             <dt>.ds-anchor</dt>
             <dd>The control, a <code>&lt;button&gt;</code> that <code>anchors.js</code> adds to every
-            <code>.section-title</code> with an <code>id</code>. Quiet until wanted: it appears on
+            section heading with an <code>id</code>. Quiet until wanted: it appears on
             hover of the heading and on its own focus, and stays visible on a touch screen. Its
             accessible name includes the section, and the copy result is announced in a live
             region.</dd>
@@ -327,8 +330,8 @@
   <h2>Rules</h2>
 
   <!-- ───────── Disabled state ───────── -->
-  <section class="section">
-    <h3 class="section-title" id="disabled-state">Disabled state</h3>
+  <section>
+    <h3 id="disabled-state">Disabled state</h3>
     <p>Use <code>--ds-text-disabled</code> (<code>#aeaaa4</code>) for the disabled color and set
     <code>pointer-events: none</code>. The underline stays so it is still recognisable as a
     (currently-unavailable) link. The disabled state falls below AA on contrast — WCAG exempts
@@ -336,8 +339,8 @@
   </section>
 
   <!-- ───────── Lists of links ───────── -->
-  <section class="section">
-    <h3 class="section-title" id="lists-of-links">Lists of links</h3>
+  <section>
+    <h3 id="lists-of-links">Lists of links</h3>
     <p>A list of author names, a navigation bar, a footer column: these are lists in which every item
     is a link, and none of them is underlined. The underline exists to tell a link apart from the
     text around it, and in a list of links there is no such text; underlining every item would add
@@ -348,8 +351,8 @@
   </section>
 
   <!-- ───────── Visited memory ───────── -->
-  <section class="section">
-    <h3 class="section-title" id="visited-memory">Visited memory</h3>
+  <section>
+    <h3 id="visited-memory">Visited memory</h3>
     <p>The Visited Purple is intentionally strong, not a faint after-state. Researchers reading long
     bibliographies and listings benefit from seeing what they have already followed up on; a
     too-subtle visited treatment defeats the purpose. If a specific surface (e.g., a navigation
@@ -361,8 +364,8 @@
   <h2>Spec</h2>
 
   <!-- ───────── Tokens, read live ───────── -->
-  <section class="section">
-    <h3 class="section-title" id="tokens">Tokens</h3>
+  <section>
+    <h3 id="tokens">Tokens</h3>
     <p class="ds-section-desc">Four interactive states — default, hover, visited, focus — driven by
     <code>--ds-link</code>, <code>--ds-link-hover</code> and <code>--ds-link-visited</code>, with the
     dark values arriving through the same token flip as everything else. Per

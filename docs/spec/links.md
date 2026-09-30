@@ -34,12 +34,12 @@ components:
     title: "Linking to a section"
     summary: "A section heading can include a control that copies a link to that section. It is an option for long pages that readers cite or share in parts, such as HTML papers and these docs; most headings do not need it. Hover a heading on this page, or tab to it, and the control appears."
     classes:
-      - name: ".section-title"
-        does: "On the `<h2>` or `<h3>` that starts a section. `anchors.js` adds the control to every `.section-title` that has an `id`; a heading without one gets no control."
+      - name: "<section> > h2, h3"
+        does: "The section heading: the `<h2>` or `<h3>` that is the first element in a `<section>`. `anchors.js` adds the control to every section heading that has an `id`. No class is needed."
       - name: "id"
         does: "Written into the HTML, by hand or by whatever builds the page. These docs use `verification/gen-anchors.py`, which makes it from the heading text."
       - name: ".ds-anchor"
-        does: "The control, a `<button>` that `anchors.js` adds to every `.section-title` with an `id`. Quiet until wanted: it appears on hover of the heading and on its own focus, and stays visible on a touch screen. Its accessible name includes the section, and the copy result is announced in a live region."
+        does: "The control, a `<button>` that `anchors.js` adds to every section heading with an `id`. Quiet until wanted: it appears on hover of the heading and on its own focus, and stays visible on a touch screen. Its accessible name includes the section, and the copy result is announced in a live region."
 rules:
   - "Use `--ds-text-disabled` (`#aeaaa4`) for the disabled color and set `pointer-events: none`. The underline stays so it is still recognisable as a (currently-unavailable) link. The disabled state falls below AA on contrast — WCAG exempts disabled controls from contrast requirements."
   - "A list of author names, a navigation bar, a footer column: these are lists in which every item is a link, and none of them is underlined. The underline exists to tell a link apart from the text around it, and in a list of links there is no such text; underlining every item would add visual noise and tell the reader nothing. WCAG asks for the underline only where colour alone would have to separate a link from ordinary text, which is the case for an inline link and not for a list. The links keep Link Blue, the hover and focus states, and the visited colour where it means something. Put `.ds-link-list` on the element that holds the list."
@@ -116,23 +116,26 @@ A link goes somewhere: it has an `href`, it is underlined, and it remembers bein
 A section heading can include a control that copies a link to that section. It is an option for long pages that readers cite or share in parts, such as HTML papers and these docs; most headings do not need it. Hover a heading on this page, or tab to it, and the control appears.
 
 ```html
-<!-- 1. The heading: the class, and an id -->
-<h2 class="section-title" id="dividers">Dividers</h2>
+<!-- 1. The section heading, with an id -->
+<section>
+  <h2 id="dividers">Dividers</h2>
+  …
+</section>
 
 <!-- 2. The script, once per page -->
 <script src="anchors.js" defer></script>
 
 <!-- What renders -->
-<h2 class="section-title" id="dividers">Dividers
+<h2 id="dividers">Dividers
   <button type="button" class="ds-anchor" aria-label="Copy link to Dividers" title="Copy link to this section">
     <svg viewBox="0 0 24 24" aria-hidden="true">…</svg>
   </button>
 </h2>
 ```
 
-- `.section-title` — On the `<h2>` or `<h3>` that starts a section. `anchors.js` adds the control to every `.section-title` that has an `id`; a heading without one gets no control.
+- `<section> > h2, h3` — The section heading: the `<h2>` or `<h3>` that is the first element in a `<section>`. `anchors.js` adds the control to every section heading that has an `id`. No class is needed.
 - `id` — Written into the HTML, by hand or by whatever builds the page. These docs use `verification/gen-anchors.py`, which makes it from the heading text.
-- `.ds-anchor` — The control, a `<button>` that `anchors.js` adds to every `.section-title` with an `id`. Quiet until wanted: it appears on hover of the heading and on its own focus, and stays visible on a touch screen. Its accessible name includes the section, and the copy result is announced in a live region.
+- `.ds-anchor` — The control, a `<button>` that `anchors.js` adds to every section heading with an `id`. Quiet until wanted: it appears on hover of the heading and on its own focus, and stays visible on a touch screen. Its accessible name includes the section, and the copy result is announced in a live region.
 
 ## Rules
 

@@ -15,7 +15,7 @@ has not had its review pass is wrong with the same confidence.
 
 The shape it reads is buttons.html's (planning/DIGEST-PLAN.md has the table):
   page header            -> the page summary
-  h2/h3.section-title    -> a component; its .ds-section-desc is the summary
+  h2/h3 opening a plain <section> -> a component; its .ds-section-desc is the summary
   "Relevant code" .ds-acc -> <pre><code> is the markup, <dt>/<dd> the class key
   .ds-marginalia          -> a note on the component it sits in
   .ds-note--internal      -> the component's internal variant
@@ -161,7 +161,13 @@ def yaml_str(s):
 
 # ── Extraction ───────────────────────────────────────────────────────────
 def section_title(node):
-    return node.tag in ("h2", "h3") and node.has("section-title")
+    # A section heading is the h2 or h3 that opens a plain <section>; component
+    # sections (a data card) always have a class, so they never match.
+    parent = node.parent
+    if node.tag not in ("h2", "h3") or parent is None or parent.tag != "section" or parent.attrs.get("class"):
+        return False
+    first = next((c for c in parent.children if isinstance(c, Node)), None)
+    return first is node
 
 
 def extract(path):
@@ -194,7 +200,7 @@ def extract(path):
             for sib in section.parent.children:
                 if sib is section:
                     break
-                if isinstance(sib, Node) and sib.tag == "h2" and not sib.has("section-title"):
+                if isinstance(sib, Node) and sib.tag == "h2" and not section_title(sib):
                     prev = squash(sib.text())
             group = prev or group
         else:
