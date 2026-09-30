@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Organizing content — arXiv Design System</title>
+  <title>Layout patterns — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
   <link rel="stylesheet" href="docs.css">
@@ -32,7 +32,7 @@
         <a href="footer.html">Site footer</a>
         <a href="stepper.html">Stepper</a>
         <span class="ds-panel-label">Organizing content</span>
-        <a href="organizing-content.html" aria-current="page">Layouts</a>
+        <a href="layout-patterns.html" aria-current="page">Layouts</a>
         <a href="cards.html">Cards</a>
         <a href="tables.html">Tables</a>
         <a href="progressive-disclosure.html">Progressive disclosure</a>
@@ -77,11 +77,8 @@
 <div class="ds-container ds-zone-secondary">
 
   <header class="ds-page-header">
-    <h1>Organizing content</h1>
-    <p>The containers that group arXiv's content: the reading-column + sidebar model, accordions,
-    cards, and chrome that anchors to content (popovers, element pills). The organizing principle
-    throughout: whitespace first, boxes second — a box is a cost, paid only when proximity alone
-    cannot express the grouping. Reference in action: <a href="../mockups/public/html-phase1.html">the HTML paper mockup</a>.</p>
+    <h1>Layout patterns</h1>
+    <p>This section covers the containers that group arXiv's content and other patterns for differentiating and organizing content. The organizing principle to follow throughout: Choose typographic and proximity-based organization patterns first, reach for visible containers when you need to.</p>
   </header>
 
 
@@ -96,7 +93,7 @@
         </summary>
         <nav class="ds-toc-menu" aria-label="Contents">
           <ol>
-            <li><a href="#the-container-and-escaping-it">The container, and escaping it</a></li>
+            <li><a href="#the-container-and-escaping-it">The primary content container</a></li>
             <li><a href="#page-zones">Page zones</a></li>
             <li><a href="#cards-and-grouped-sections">Cards and grouped sections</a></li>
             <li><a href="#notes">Notes</a></li>
@@ -119,16 +116,14 @@
 
   <!-- ───────── The container, and escaping it ───────── -->
   <section class="section">
-    <h2 class="section-title" id="the-container-and-escaping-it">The container, and escaping it</h2>
-    <p class="ds-section-desc">Every page sits in <code>.ds-container</code>, a grid with two tracks: a
-    <em>content</em> track at the reading width, and a <em>full</em> track running to the viewport edges.
-    Everything lands in the content track unless it asks not to.</p>
-    <p>Asking not to is <code>.ds-full</code> — a band that runs edge to edge for a coloured
-    section, a reference zone, or a figure wider than the column. It brings its own contents back onto
-    the content track with padding derived from the same width the container uses, so the band and the
-    column cannot drift apart.</p>
-    <div class="ds-card">
-      <div class="ds-container" style="padding-block:0; row-gap:var(--ds-space-block)">
+    <h2 class="section-title" id="the-container-and-escaping-it">The primary content container</h2>
+    <p class="ds-section-desc">Every page sits in <code>.ds-container</code>, a grid with two options: By default content lands in a centered band at the standard reading width, and we also have a <em>full width</em> band, <code>.ds-full</code>, that goes to the viewport edges.</p>
+    <p>The full width band uses a background color to signal that it is secondary content. It's own internal content returns to the standard reading width. Both bands share the same padding/gutter styles so they can't drift.</p>
+    <p>See the top of this page for an example of the full width band, and the space you are reading now for the default. The heading and introduction are secondary to the actual design system contents.</p>
+
+    
+    <div class="ds-card ds-full">
+      <div class="ds-container ds-full" style="padding-block:0; row-gap:var(--ds-space-block)">
         <p>Normal content, in the reading column.</p>
         <div class="ds-full" style="background:var(--ds-zone-secondary-bg); padding-block:var(--ds-space-3)">A band running to both edges of the container.</div>
         <p>Normal content again, in the reading column.</p>
