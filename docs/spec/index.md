@@ -20,6 +20,10 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Colors | [colors.md](colors.md) | The full arXiv palette, rendered. Written spec and rationale: [color-mapping.md](doc.html?src=docs/color-mapping.md) (source of truth — if this page and the spe |
 | Dark mode | [dark-mode.md](dark-mode.md) | In the design system, every colour comes from a token and the tokens flip in each mode. A page or component built from the color tokens follows the mode without |
 | Modal dialogs | [modals.md](modals.md) | A window that overlays the background page until it is answered or dismissed. There are many ways to build a modal wrong. The design system starts with a native |
+| Tables | [tables.md](tables.md) | The table and what can be built on it: sortable columns, a filter toolbar, row selection and bulk actions. All of it is shared by the public site and internal t |
+| Progressive disclosure | [progressive-disclosure.md](progressive-disclosure.md) | Options to toggle open additional content. HTML paper pages, for example, hold far more than a reader wants to see all at once, so they use every progressive di |
+| Spacing | [spacing.md](spacing.md) | Every gap on arXiv pages comes from the scale defined below. The scale is a 4px-based / 8-point scale, with no off-scale values permitted. More details in [DESI |
+| Stepper | [stepper.md](stepper.md) | Previous and Next controls with a position counter for going through a set, one item at a time. |
 
 ## Not yet digested
 
@@ -28,9 +32,5 @@ These pages have not had their review pass. Read the page itself, and expect the
 - brand.html
 - layout-patterns.html
 - outreach.html
-- progressive-disclosure.html
-- spacing.html
-- stepper.html
-- tables.html
 - typography.html
 - version-display.html
