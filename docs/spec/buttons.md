@@ -43,7 +43,7 @@ components:
     summary: "This component is a variant of text-only buttons and attach a row of tiny controls to a content element. It is used on the HTML papers page for figures, formula, and more. They differ from default text-only buttons via their font size, color, and surrounding container. They appear when hovering over the parent element."
     classes:
       - name: ".ds-element-pill"
-        does: "The container: a white pill straddling the bottom edge of the content it belongs to. The wrapper supplies `position: relative`; the pill positions itself inside it. Documented with the other containers on [Organizing content](organizing-content.html#chrome-anchored-to-content)."
+        does: "The container: a white pill straddling the bottom edge of the content it belongs to. The wrapper supplies `position: relative`; the pill positions itself inside it. Documented with the other containers on [Organizing content](layout-patterns.html#chrome-anchored-to-content)."
       - name: ".is-revealed"
         does: "The pill is hidden at rest and shown while the wrapped content is hovered or holds focus. The consumer adds and removes this class; the demo above keeps it on."
       - name: "The actions"
@@ -96,6 +96,7 @@ components:
 rules:
   - "**Use the right element.** Use a `<button>` for an action that happens on this page, and an `<a>` for anything that goes to another page or another place on this one. Both take the same classes. Do not put a click handler on a link or an `href` on a button."
   - "**Every button needs a text label.** An icon-only button gets its name from a `<span class=\"is-sr-only\">` inside it that says what the button does, such as “Copy link”. Without it, a screen reader says only “button”. Do not use `title` for this, and prefer the span to `aria-label`, because page translation tools skip attributes."
+  - "**Show the name unless the icon is universal.** An icon-only button suits the few icons nearly every reader recognises in the place they expect them: the menu icon at the edge of a header, close in the corner of a dialog, the magnifying glass for search. Everywhere else, show the name beside the icon, and always where there is room for it, such as a row in a menu."
   - "**Say what will happen.** Label a button with the action it performs: “Save changes”, “Download PDF”, “Delete file”. Avoid “OK”, “Yes” and “Submit” on their own, because they only make sense to someone who can see the whole screen."
   - "**Disable, do not hide.** When an action is not available, keep the button in place and add the `disabled` attribute. A button that disappears leaves the user wondering where it went. When the user can do something to make the action available, use `aria-disabled=\"true\"` instead and say what they need to do; see [Forms](forms.html#validation)."
   - "**When a button acts like a toggle.** If a button switches something on and off and stays pressed, set `aria-pressed=\"true\"` or `\"false\"` on it and update it when it changes. A colour change on its own tells a screen reader user nothing. For a setting that is saved, use the [switch](forms.html#switch) instead."
@@ -164,7 +165,7 @@ This component is a variant of text-only buttons and attach a row of tiny contro
 </figure>
 ```
 
-- `.ds-element-pill` — The container: a white pill straddling the bottom edge of the content it belongs to. The wrapper supplies `position: relative`; the pill positions itself inside it. Documented with the other containers on [Organizing content](organizing-content.html#chrome-anchored-to-content).
+- `.ds-element-pill` — The container: a white pill straddling the bottom edge of the content it belongs to. The wrapper supplies `position: relative`; the pill positions itself inside it. Documented with the other containers on [Organizing content](layout-patterns.html#chrome-anchored-to-content).
 - `.is-revealed` — The pill is hidden at rest and shown while the wrapped content is hovered or holds focus. The consumer adds and removes this class; the demo above keeps it on.
 - `The actions` — Plain `<button>` or `<a>` elements. The pill gives each a 24px target floor. Their type and colour have no class of their own yet; this page stages them locally.
 
@@ -222,6 +223,7 @@ A set of related buttons with a parent container class that spaces them appropri
 
 - **Use the right element.** Use a `<button>` for an action that happens on this page, and an `<a>` for anything that goes to another page or another place on this one. Both take the same classes. Do not put a click handler on a link or an `href` on a button.
 - **Every button needs a text label.** An icon-only button gets its name from a `<span class="is-sr-only">` inside it that says what the button does, such as “Copy link”. Without it, a screen reader says only “button”. Do not use `title` for this, and prefer the span to `aria-label`, because page translation tools skip attributes.
+- **Show the name unless the icon is universal.** An icon-only button suits the few icons nearly every reader recognises in the place they expect them: the menu icon at the edge of a header, close in the corner of a dialog, the magnifying glass for search. Everywhere else, show the name beside the icon, and always where there is room for it, such as a row in a menu.
 - **Say what will happen.** Label a button with the action it performs: “Save changes”, “Download PDF”, “Delete file”. Avoid “OK”, “Yes” and “Submit” on their own, because they only make sense to someone who can see the whole screen.
 - **Disable, do not hide.** When an action is not available, keep the button in place and add the `disabled` attribute. A button that disappears leaves the user wondering where it went. When the user can do something to make the action available, use `aria-disabled="true"` instead and say what they need to do; see [Forms](forms.html#validation).
 - **When a button acts like a toggle.** If a button switches something on and off and stays pressed, set `aria-pressed="true"` or `"false"` on it and update it when it changes. A colour change on its own tells a screen reader user nothing. For a setting that is saved, use the [switch](forms.html#switch) instead.

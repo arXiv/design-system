@@ -207,7 +207,7 @@
 }
 
 
-/* FOUNDATION  (.ds-page / .ds-container) — organizing-content.html
+/* FOUNDATION  (.ds-page / .ds-container) — layout-patterns.html
    Scoped to .ds-page so a legacy page can link this stylesheet without
    its own body rules being overwritten. .ds-container is a two-track
    grid: content at the reading width, full to the viewport edges.
@@ -296,7 +296,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   padding-inline: max(var(--ds-gutter), (100% - var(--ds-width-page)) / 2);
 }
 
-/* PAGE ZONES  (.ds-zone-secondary / .ds-zone-primary) — organizing-content.html
+/* PAGE ZONES  (.ds-zone-secondary / .ds-zone-primary) — layout-patterns.html
    Two grounds that say what kind of content a reader is in. Primary is the
    thing the page is about; secondary is what introduces or supports it.
    Named for role, not colour, because both grounds flip in dark mode.
@@ -1083,7 +1083,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   .ds-switch-track, .ds-switch-thumb, .ds-switch-label { transition: none; }
 }
 
-/* DIVIDER  (.ds-divider) — organizing-content.html
+/* DIVIDER  (.ds-divider) — layout-patterns.html
    A rule between things. Reach for it only when whitespace has already
    failed: the system groups with space first, and a line drawn where
    space would have done adds noise without adding meaning.
@@ -1991,7 +1991,7 @@ html:has(.ds-modal[open]) {
   .ds-modal-body { flex: none; overflow: visible; }
 }
 
-/* ELEMENT PILL  (.ds-element-pill) — organizing-content.html
+/* ELEMENT PILL  (.ds-element-pill) — layout-patterns.html
    Floats anchored to a piece of content to carry actions for it. The
    consumer owns the positioning context (position: relative on the
    wrapper) — the pill only positions itself within one. */
@@ -2043,7 +2043,7 @@ html:has(.ds-modal[open]) {
 }
 
 
-/* MARGINALIA  (.ds-marginalia) — organizing-content.html
+/* MARGINALIA  (.ds-marginalia) — layout-patterns.html
    A short note beside the block it belongs to, in the annotation voice.
    Where the viewport has a margin it sits there, open, with no control.
    Narrower, it folds to an info mark in the block's top-right corner that
@@ -2725,7 +2725,7 @@ html:has(.ds-modal[open]) {
   .ds-acc-body dd { grid-column: auto; }
 }
 
-/* RAIL  (.ds-rail) — organizing-content.html
+/* RAIL  (.ds-rail) — layout-patterns.html
    The sidebar beside the reading column, for supplementary content. The
    rail's parent becomes the two-column layout; the rail wraps below the
    content when both no longer fit. Blocks are separated by spacing only. */
@@ -3425,6 +3425,15 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 }
 .ds-site-header.is-nav-collapsed .ds-site-header-nav > :last-child,
 .ds-site-header.is-tools-collapsed .ds-site-header-tools > :last-child { border-bottom: none; }
+/* A folded tool has a full row, so its name shows beside the icon. !important only
+   to undo .is-sr-only, which uses it. */
+.ds-site-header.is-tools-collapsed .ds-site-header-tools > button > .is-sr-only {
+  position: static !important;
+  width: auto !important; height: auto !important;
+  margin: 0 0 0 var(--ds-gap-glyph) !important;
+  overflow: visible !important;
+  clip: auto !important;
+}
 .ds-site-header.is-tools-collapsed .ds-site-header-tools > .ds-site-header-search { flex: none; min-width: 0; }
 /* A dropdown in the collapsed list opens in place, as indented rows on the bar's own ground. */
 .ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu {
@@ -3557,7 +3566,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   .ds-site-header-logo img { height: 28px; }
 }
 
-/* SECTION ANCHOR  (.ds-anchor) — organizing-content.html
+/* SECTION ANCHOR  (.ds-anchor) — layout-patterns.html
    A control beside a heading that copies the link to that section. It is a
    button rather than an <a href="#here">: a link to the section a reader is
    already looking at is a tab stop that goes nowhere they wanted to go. What
