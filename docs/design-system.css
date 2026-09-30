@@ -81,7 +81,7 @@
   --ds-canvas:            var(--ds-grey-5);
   --ds-surface:           #ffffff;
   --ds-surface-muted:     var(--ds-grey-10);
-  --ds-zone-secondary-bg: var(--ds-surface-muted);     /* ground behind supporting content — PAGE ZONES */
+  --ds-zone-secondary-bg: var(--ds-tint-warm);     /* ground behind supporting content — PAGE ZONES */
 
   /* Destructive: delete, withdraw, revoke. One tier on every surface. */
   --ds-danger:                #c62828;   /* white on it 5.62:1 */
@@ -111,7 +111,9 @@
   --ds-accent-hover:      var(--ds-blue-70);
   --ds-accent-strong:     var(--ds-archival-blue);     /* section accents, anchor colour */
   --ds-accent-wash:       var(--ds-blue-50);                     /* inline active state */
-  --ds-table-selected:    var(--ds-blue-20);                     /* a selected table row */
+  /* The two tints. A component fill uses one of these or a status colour; a new fill colour is agreed with the design team first. */
+  --ds-tint-warm:         var(--ds-grey-10);
+  --ds-tint-accent:       var(--ds-blue-20);
   --ds-accent-surface:    var(--ds-blue-20);                     /* popover panel */
   --ds-accent-border:     var(--ds-blue-70);
 
@@ -1151,7 +1153,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    it reads as reference rather than content; the accent follows .ds-internal
    on a parent, which is the only thing that changes between surfaces. */
 .ds-card--data {
-  background: var(--ds-surface-muted);
+  background: var(--ds-tint-warm);
   border-top: 4px solid var(--ds-accent);
   padding: 0;
 }
@@ -1167,7 +1169,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   flex-direction: column;
   gap: var(--ds-space-1);
   padding: var(--ds-space-3) var(--ds-space-4);
-  background: var(--ds-surface-muted);
+  background: var(--ds-tint-warm);
 }
 .ds-card--data > dl > div:last-child { grid-column-end: -1; }   /* the last pair fills its row, so no gap is left open */
 .ds-card--data dt {
@@ -1227,7 +1229,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   letter-spacing: 0.06em;
   color: var(--ds-text-muted);
   padding: 9px 14px;
-  background: var(--ds-surface-muted);
+  background: var(--ds-tint-warm);
   border-bottom: 1px solid var(--ds-border);
   white-space: nowrap;
 }
@@ -1239,18 +1241,18 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   vertical-align: top;
   color: var(--ds-text);
 }
-.ds-table tbody th { font-weight: 600; background: var(--ds-canvas); }
+.ds-table tbody th { font-weight: 600; background: var(--ds-tint-warm); }
 .ds-table tbody tr:last-child > * { border-bottom: none; }
 .ds-table tbody tr:hover > * { background: var(--ds-canvas); }
 /* The row's checkbox carries the selection; the tint is never the only signal. */
-.ds-table tbody tr.is-selected > * { background: var(--ds-table-selected); }
+.ds-table tbody tr.is-selected > * { background: var(--ds-tint-accent); }
 .ds-table tbody tr.hidden { display: none; }
 
 /* Striped rows. The hover is a wash of the text colour, because the stripe
    already uses the plain hover colour. */
-.ds-table--striped tbody tr:nth-child(even) > * { background: var(--ds-canvas); }
+.ds-table--striped tbody tr:nth-child(even) > * { background: var(--ds-tint-warm); }
 .ds-table--striped tbody tr:hover > * { background: color-mix(in srgb, var(--ds-text) 7%, var(--ds-surface)); }
-.ds-table--striped tbody tr.is-selected > * { background: var(--ds-table-selected); }
+.ds-table--striped tbody tr.is-selected > * { background: var(--ds-tint-accent); }
 
 /* A row-selection checkbox has no label to lend it a target, so it takes 24px. */
 .ds-table td:has(> input[type="checkbox"]),
@@ -1429,7 +1431,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   letter-spacing: 0.02em;
   white-space: nowrap;
   text-decoration: none;
-  background: var(--ds-surface-muted);
+  background: var(--ds-tint-warm);
   border: 1px solid var(--ds-border);
   color: var(--ds-text-muted);
 }
@@ -2199,7 +2201,7 @@ html:has(.ds-modal[open]) {
    starts, so nothing has to be read out of a colour.
    Each register sets three custom properties and inherits the rest. */
 .ds-note {
-  --ds-note-tint: var(--ds-surface-muted);
+  --ds-note-tint: var(--ds-tint-warm);
   --ds-note-line: var(--ds-border);
   --ds-note-mark: var(--ds-text-muted);
   position: relative;
@@ -2322,7 +2324,7 @@ html:has(.ds-modal[open]) {
     --ds-text:              var(--ds-grey-10);
     --ds-canvas:            var(--ds-repository-brown);
     --ds-surface-muted:     #2b2723;                     /* raised band, text 12.8:1 */
-    --ds-zone-secondary-bg: var(--ds-canvas);         /* Card Grey equals the surface in dark, so the zones would not show */
+    --ds-zone-secondary-bg: var(--ds-tint-warm);
     --ds-danger-wash-hover:     #2a0808;
     --ds-danger-wash-active:    #380d0d;
     --ds-danger-disabled-fg:    #864040;
@@ -2339,7 +2341,8 @@ html:has(.ds-modal[open]) {
                                                             already dark */
     --ds-accent-strong:     #6ba8da;                     /* headings, 6.8:1 */
     --ds-accent-wash:       #1e3a5f;
-    --ds-table-selected:    var(--ds-accent-wash);
+    --ds-tint-warm:         var(--ds-canvas);
+    --ds-tint-accent:       #1e3a5f;
     --ds-accent-surface:    #132433;                     /* = the info dark surface */
     --ds-accent-border:     #2a4a7a;
     --ds-btn-primary-rim-a:          #6ba8da;
@@ -2396,7 +2399,7 @@ html:has(.ds-modal[open]) {
     --ds-accent-wash:                #1a2306;
     --ds-accent-wash-hover:          #212e08;
     --ds-accent-wash-active:         #28380a;
-    --ds-table-selected:             #28380a;
+    --ds-tint-accent:                #28380a;
     --ds-btn-primary-rim-a:          var(--ds-access-lime-border);
     --ds-btn-primary-rim-b:          var(--ds-access-lime-deep);
     --ds-btn-primary-rim-hover-b:    var(--ds-access-lime-deep);
@@ -2429,7 +2432,7 @@ html:has(.ds-modal[open]) {
   --ds-text:              var(--ds-grey-10);
   --ds-canvas:            var(--ds-repository-brown);
   --ds-surface-muted:     #2b2723;                     /* raised band, text 12.8:1 */
-  --ds-zone-secondary-bg: var(--ds-canvas);         /* Card Grey equals the surface in dark, so the zones would not show */
+  --ds-zone-secondary-bg: var(--ds-tint-warm);
   --ds-danger-wash-hover:     #2a0808;
   --ds-danger-wash-active:    #380d0d;
   --ds-danger-disabled-fg:    #864040;
@@ -2446,7 +2449,8 @@ html:has(.ds-modal[open]) {
                                                           already dark */
   --ds-accent-strong:     #6ba8da;                     /* headings, 6.8:1 */
   --ds-accent-wash:       #1e3a5f;
-  --ds-table-selected:    var(--ds-accent-wash);
+  --ds-tint-warm:         var(--ds-canvas);
+  --ds-tint-accent:       #1e3a5f;
   --ds-accent-surface:    #132433;                     /* = the info dark surface */
   --ds-accent-border:     #2a4a7a;
   --ds-btn-primary-rim-a:          #6ba8da;
@@ -2500,7 +2504,7 @@ html:has(.ds-modal[open]) {
   --ds-text:  #1c1a17;
   --ds-canvas:         var(--ds-grey-5);
   --ds-surface-muted:         var(--ds-grey-10);
-  --ds-zone-secondary-bg: var(--ds-surface-muted);
+  --ds-zone-secondary-bg: var(--ds-tint-warm);
   --ds-danger-wash-hover:     #fdf0f0;
   --ds-danger-wash-active:    #f5d0d0;
   --ds-danger-disabled-fg:    #c47878;
@@ -2512,7 +2516,8 @@ html:has(.ds-modal[open]) {
   --ds-text-disabled:          var(--ds-grey-55);
   --ds-accent-strong:     #1f5e96;
   --ds-accent-wash:         var(--ds-blue-50);
-  --ds-table-selected:      var(--ds-blue-20);
+  --ds-tint-warm:           var(--ds-grey-10);
+  --ds-tint-accent:         var(--ds-blue-20);
   --ds-accent-surface:        var(--ds-blue-20);
   --ds-accent-border:       var(--ds-blue-70);
   --ds-btn-primary-rim-a:          #b0d5ed;
@@ -2578,7 +2583,7 @@ html:has(.ds-modal[open]) {
   --ds-accent-wash:                var(--ds-access-lime-wash);
   --ds-accent-wash-hover:          var(--ds-access-lime-wash-2);
   --ds-accent-wash-active:         var(--ds-access-lime-wash-3);
-  --ds-table-selected:             var(--ds-access-lime-wash);
+  --ds-tint-accent:                var(--ds-access-lime-wash);
 
   --ds-btn-primary-rim-a:          var(--ds-access-lime-hover);
   --ds-btn-primary-rim-b:          var(--ds-access-lime-border);
@@ -2613,7 +2618,7 @@ html:has(.ds-modal[open]) {
   --ds-accent-wash:                #1a2306;
   --ds-accent-wash-hover:          #212e08;
   --ds-accent-wash-active:         #28380a;
-  --ds-table-selected:             #28380a;
+  --ds-tint-accent:                #28380a;
   --ds-btn-primary-rim-a:          var(--ds-access-lime-border);
   --ds-btn-primary-rim-b:          var(--ds-access-lime-deep);
   --ds-btn-primary-rim-hover-b:    var(--ds-access-lime-deep);
