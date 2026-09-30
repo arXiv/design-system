@@ -20,6 +20,20 @@ components:
         does: "The dismiss control, last inside the band; the band positions it at the right edge. Remembering the dismissal is the host’s job."
     notes:
       - "Alert vs announcement? An alert belongs to the page’s content and is specific to that user’s journey. The announcement belongs to the site and is for all users."
+  - id: notes
+    title: "Notes"
+    summary: "A box in the flow of a page that names its own register before the reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on the internal surface. The tab is the whole design. It is also what keeps a note from reading as an [alert](alerts.html) — an alert reports a state as of right now and can be dismissed, a note is always true and stays."
+    classes:
+      - name: ".ds-note"
+        does: "The box, on a `<div>` in the flow of the page. On its own it is the grey register: guidance."
+      - name: ".ds-note-label"
+        does: "The tab, and the note's first child. The label is a heading, at whatever level the page is up to: `.ds-note-label` resets the type completely, so `h2` through `h4` all render the same tab. Keeping it a heading keeps the note in the document outline, which is how a screen-reader user finds it."
+      - name: ".ds-note--essential"
+        does: "The blue register: a requirement."
+      - name: ".ds-note--internal"
+        does: "The lime register: how the component differs in internal tools."
+      - name: ".ds-note-gotcha"
+        does: "A ruled-off warning at the foot of the note, on a `<p>` whose first child is a `<strong>` lead."
   - id: suggested-icons
     title: "Icon options"
     group: "Modifiers"
@@ -34,6 +48,7 @@ components:
       - name: ".ds-announcement--event"
         does: "For milestones and celebrations. The band takes the smileybones yellow in both themes, with fixed brown text; the link is the darker link blue, because the lighter one does not reach 4.5:1 on yellow."
 rules:
+  - "Easy to get wrong: A note can carry a ruled-off warning at its foot with `.ds-note-gotcha`. Use it for the mistake the rule keeps being broken by, not as a second paragraph."
   - "**Give the band a name.** Keep `role=\"region\"` and `aria-label=\"Announcement\"` on it. That is how a screen reader user finds the band in the page’s landmarks, and how they skip it once they have read it."
   - "**Do not make it a live region.** The band is part of the page as it loads, not a change that happens later. `role=\"alert\"` or `aria-live` would make every page announce it aloud, on every visit, before anything else."
   - "**The sentence carries the meaning.** The icon is hidden from assistive technology (`aria-hidden=\"true\"`, or an empty `alt`), and the band’s colour says nothing on its own. Read the sentence without the icon and the colour; it must still make sense."
@@ -79,6 +94,26 @@ The announcement band is minimal but gets a lot of attention. Use sparingly to m
 - `.ds-close` — The dismiss control, last inside the band; the band positions it at the right edge. Remembering the dismissal is the host’s job.
 
 > Alert vs announcement? An alert belongs to the page’s content and is specific to that user’s journey. The announcement belongs to the site and is for all users.
+
+## Notes
+
+A box in the flow of a page that names its own register before the reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on the internal surface. The tab is the whole design. It is also what keeps a note from reading as an [alert](alerts.html) — an alert reports a state as of right now and can be dismissed, a note is always true and stays.
+
+```html
+<div class="ds-note ds-note--essential">
+  <h3 class="ds-note-label">Accessibility essentials</h3>
+  <p>…</p>
+  <p class="ds-note-gotcha"><strong>Easy to get wrong</strong> …</p>
+</div>
+```
+
+- `.ds-note` — The box, on a `<div>` in the flow of the page. On its own it is the grey register: guidance.
+- `.ds-note-label` — The tab, and the note's first child. The label is a heading, at whatever level the page is up to: `.ds-note-label` resets the type completely, so `h2` through `h4` all render the same tab. Keeping it a heading keeps the note in the document outline, which is how a screen-reader user finds it.
+- `.ds-note--essential` — The blue register: a requirement.
+- `.ds-note--internal` — The lime register: how the component differs in internal tools.
+- `.ds-note-gotcha` — A ruled-off warning at the foot of the note, on a `<p>` whose first child is a `<strong>` lead.
+
+**Internal variant.** Lime. How this component or rule differs in internal tools, shown in the section it belongs to rather than on a separate page. This is the one place a public page may show Access Lime, because here the internal surface is the subject rather than the accent.
 
 ## Icon options  (Modifiers)
 
@@ -135,6 +170,7 @@ Open Blue is our default banner color, and should be overridden sparingly. For m
 
 ## Rules
 
+- Easy to get wrong: A note can carry a ruled-off warning at its foot with `.ds-note-gotcha`. Use it for the mistake the rule keeps being broken by, not as a second paragraph.
 - **Give the band a name.** Keep `role="region"` and `aria-label="Announcement"` on it. That is how a screen reader user finds the band in the page’s landmarks, and how they skip it once they have read it.
 - **Do not make it a live region.** The band is part of the page as it loads, not a change that happens later. `role="alert"` or `aria-live` would make every page announce it aloud, on every visit, before anything else.
 - **The sentence carries the meaning.** The icon is hidden from assistive technology (`aria-hidden="true"`, or an empty `alt`), and the band’s colour says nothing on its own. Read the sentence without the icon and the colour; it must still make sense.
