@@ -29,17 +29,17 @@ components:
       - name: "<a href>"
         does: "Goes to another page or another place on this one. Underlined, and takes the visited colour once followed."
       - name: ".ds-btn.ds-btn-text"
-        does: "Acts on this page. Plain Link Blue text with no underline and no visited state; the surrounding text sets its size. When it opens or closes something, carry `aria-expanded`."
+        does: "Acts on this page. Plain Link Blue text with no underline and no visited state; the surrounding text sets its size. When it opens or closes something, add `aria-expanded`."
   - id: linking-to-a-section
     title: "Linking to a section"
-    summary: "A section heading can carry a control that copies a link to that section. It is an option for long pages that readers cite or share in parts, such as HTML papers and these docs; most headings do not need it. Hover a heading on this page, or tab to it, and the control appears."
+    summary: "A section heading can include a control that copies a link to that section. It is an option for long pages that readers cite or share in parts, such as HTML papers and these docs; most headings do not need it. Hover a heading on this page, or tab to it, and the control appears."
     classes:
       - name: ".section-title"
         does: "On the `<h2>` or `<h3>` that starts a section. `anchors.js` adds the control to every `.section-title` that has an `id`; a heading without one gets no control."
       - name: "id"
         does: "Written into the HTML, by hand or by whatever builds the page. These docs use `verification/gen-anchors.py`, which makes it from the heading text."
       - name: ".ds-anchor"
-        does: "The control, a `<button>` that `anchors.js` adds to every `.section-title` with an `id`. Quiet until wanted: it appears on hover of the heading and on its own focus, and stays visible on a touch screen. Its accessible name carries the section, and the copy result is announced in a live region."
+        does: "The control, a `<button>` that `anchors.js` adds to every `.section-title` with an `id`. Quiet until wanted: it appears on hover of the heading and on its own focus, and stays visible on a touch screen. Its accessible name includes the section, and the copy result is announced in a live region."
 rules:
   - "Use `--ds-text-disabled` (`#aeaaa4`) for the disabled color and set `pointer-events: none`. The underline stays so it is still recognisable as a (currently-unavailable) link. The disabled state falls below AA on contrast — WCAG exempts disabled controls from contrast requirements."
   - "A list of author names, a navigation bar, a footer column: these are lists in which every item is a link, and none of them is underlined. The underline exists to tell a link apart from the text around it, and in a list of links there is no such text; underlining every item would add visual noise and tell the reader nothing. WCAG asks for the underline only where colour alone would have to separate a link from ordinary text, which is the case for an inline link and not for a list. The links keep Link Blue, the hover and focus states, and the visited colour where it means something. Put `.ds-link-list` on the element that holds the list."
@@ -47,9 +47,9 @@ rules:
   - "**Say where the link goes.** The link text on its own must make sense to someone who hears only the links on the page: “Endorsement policy”, not “click here”, “here” or “read more”. Put the name of the destination inside the `<a>`, not beside it."
   - "**A link always has an `href`.** Without one the element is not focusable, has no visited state, and does not announce as a link. Something that acts on this page rather than going somewhere is a [button](buttons.html), not a link with a click handler."
   - "**Keep the underline in body text.** Do not set `text-decoration: none` on an inline link. The underline is the only cue that survives forced-colors mode and a reader who cannot see the colour difference. Only a standalone link, such as one in navigation, may drop it."
-  - "**Keep the visited colour in content.** Do not override `:visited` on links to papers, listings or references. Suppress it only where “where have I been” carries no meaning, such as a breadcrumb or a menu."
+  - "**Keep the visited colour in content.** Do not override `:visited` on links to papers, listings or references. Suppress it only where “where have I been” has no meaning, such as a breadcrumb or a menu."
   - "**Do not remove the focus ring.** The stylesheet draws it on `:focus-visible`, so it appears for keyboard users and not on mouse click. An `outline: none` on a link takes it away for everyone."
-  - "**Links open in the same tab** unless the reader would lose work in progress. A link that opens a new tab carries the external-link icon (`docs/icons/external-link.svg`) after its text, with `aria-hidden=\"true\"` on the icon and “(opens in a new tab)” in an `.is-sr-only` span, so the change is announced and survives page translation."
+  - "**Links open in the same tab** unless the reader would lose work in progress. A link that opens a new tab includes the external-link icon (`docs/icons/external-link.svg`) after its text, with `aria-hidden=\"true\"` on the icon and “(opens in a new tab)” in an `.is-sr-only` span, so the change is announced and survives page translation."
 ---
 
 # Links
@@ -109,11 +109,11 @@ A link goes somewhere: it has an `href`, it is underlined, and it remembers bein
 ```
 
 - `<a href>` — Goes to another page or another place on this one. Underlined, and takes the visited colour once followed.
-- `.ds-btn.ds-btn-text` — Acts on this page. Plain Link Blue text with no underline and no visited state; the surrounding text sets its size. When it opens or closes something, carry `aria-expanded`.
+- `.ds-btn.ds-btn-text` — Acts on this page. Plain Link Blue text with no underline and no visited state; the surrounding text sets its size. When it opens or closes something, add `aria-expanded`.
 
 ## Linking to a section
 
-A section heading can carry a control that copies a link to that section. It is an option for long pages that readers cite or share in parts, such as HTML papers and these docs; most headings do not need it. Hover a heading on this page, or tab to it, and the control appears.
+A section heading can include a control that copies a link to that section. It is an option for long pages that readers cite or share in parts, such as HTML papers and these docs; most headings do not need it. Hover a heading on this page, or tab to it, and the control appears.
 
 ```html
 <!-- 1. The heading: the class, and an id -->
@@ -132,7 +132,7 @@ A section heading can carry a control that copies a link to that section. It is 
 
 - `.section-title` — On the `<h2>` or `<h3>` that starts a section. `anchors.js` adds the control to every `.section-title` that has an `id`; a heading without one gets no control.
 - `id` — Written into the HTML, by hand or by whatever builds the page. These docs use `verification/gen-anchors.py`, which makes it from the heading text.
-- `.ds-anchor` — The control, a `<button>` that `anchors.js` adds to every `.section-title` with an `id`. Quiet until wanted: it appears on hover of the heading and on its own focus, and stays visible on a touch screen. Its accessible name carries the section, and the copy result is announced in a live region.
+- `.ds-anchor` — The control, a `<button>` that `anchors.js` adds to every `.section-title` with an `id`. Quiet until wanted: it appears on hover of the heading and on its own focus, and stays visible on a touch screen. Its accessible name includes the section, and the copy result is announced in a live region.
 
 ## Rules
 
@@ -142,6 +142,6 @@ A section heading can carry a control that copies a link to that section. It is 
 - **Say where the link goes.** The link text on its own must make sense to someone who hears only the links on the page: “Endorsement policy”, not “click here”, “here” or “read more”. Put the name of the destination inside the `<a>`, not beside it.
 - **A link always has an `href`.** Without one the element is not focusable, has no visited state, and does not announce as a link. Something that acts on this page rather than going somewhere is a [button](buttons.html), not a link with a click handler.
 - **Keep the underline in body text.** Do not set `text-decoration: none` on an inline link. The underline is the only cue that survives forced-colors mode and a reader who cannot see the colour difference. Only a standalone link, such as one in navigation, may drop it.
-- **Keep the visited colour in content.** Do not override `:visited` on links to papers, listings or references. Suppress it only where “where have I been” carries no meaning, such as a breadcrumb or a menu.
+- **Keep the visited colour in content.** Do not override `:visited` on links to papers, listings or references. Suppress it only where “where have I been” has no meaning, such as a breadcrumb or a menu.
 - **Do not remove the focus ring.** The stylesheet draws it on `:focus-visible`, so it appears for keyboard users and not on mouse click. An `outline: none` on a link takes it away for everyone.
-- **Links open in the same tab** unless the reader would lose work in progress. A link that opens a new tab carries the external-link icon (`docs/icons/external-link.svg`) after its text, with `aria-hidden="true"` on the icon and “(opens in a new tab)” in an `.is-sr-only` span, so the change is announced and survives page translation.
+- **Links open in the same tab** unless the reader would lose work in progress. A link that opens a new tab includes the external-link icon (`docs/icons/external-link.svg`) after its text, with `aria-hidden="true"` on the icon and “(opens in a new tab)” in an `.is-sr-only` span, so the change is announced and survives page translation.

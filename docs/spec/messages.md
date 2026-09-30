@@ -11,7 +11,7 @@ components:
       - name: ".ds-announcement"
         does: "The band. Takes `role=\"region\"` and an `aria-label` so a screen reader user can find it and skip it. Goes directly above `.ds-site-header`."
       - name: ".ds-announcement-glyph"
-        does: "The icon: an inline SVG from the [icon set](icons.html) with `aria-hidden=\"true\"`, or an `<img>` with an empty `alt` for one of the bones. Either way it is decoration; the sentence carries the meaning."
+        does: "The icon: an inline SVG from the [icon set](icons.html) with `aria-hidden=\"true\"`, or an `<img>` with an empty `alt` for one of the bones. Either way it is decoration; the sentence conveys the meaning."
       - name: ".ds-announcement-text"
         does: "The one sentence."
       - name: ".ds-announcement-link"
@@ -37,7 +37,7 @@ components:
   - id: suggested-icons
     title: "Icon options"
     group: "Modifiers"
-    summary: "Icons are important for conveying meaning quickly and effectively. The small smileybones are drawn for this small use case. Each carries its own colours, so it goes in as an image, not as a true svg icon. No alt text needed, the icon is purely decorative and the text carries the meaning."
+    summary: "Icons are important for conveying meaning quickly and effectively. The small smileybones are drawn for this small use case. Each has its own colours, so it goes in as an image, not as a true svg icon. No alt text needed, the icon is purely decorative and the text conveys the meaning."
   - id: color-variations
     title: "Color variations"
     group: "Modifiers"
@@ -48,10 +48,10 @@ components:
       - name: ".ds-announcement--event"
         does: "For milestones and celebrations. The band takes the smileybones yellow in both themes, with fixed brown text; the link is the darker link blue, because the lighter one does not reach 4.5:1 on yellow."
 rules:
-  - "Easy to get wrong: A note can carry a ruled-off warning at its foot with `.ds-note-gotcha`. Use it for the mistake the rule keeps being broken by, not as a second paragraph."
+  - "Easy to get wrong: A note can include a ruled-off warning at its foot with `.ds-note-gotcha`. Use it for the mistake the rule keeps being broken by, not as a second paragraph."
   - "**Give the band a name.** Keep `role=\"region\"` and `aria-label=\"Announcement\"` on it. That is how a screen reader user finds the band in the page’s landmarks, and how they skip it once they have read it."
   - "**Do not make it a live region.** The band is part of the page as it loads, not a change that happens later. `role=\"alert\"` or `aria-live` would make every page announce it aloud, on every visit, before anything else."
-  - "**The sentence carries the meaning.** The icon is hidden from assistive technology (`aria-hidden=\"true\"`, or an empty `alt`), and the band’s colour says nothing on its own. Read the sentence without the icon and the colour; it must still make sense."
+  - "**The sentence conveys the meaning.** The icon is hidden from assistive technology (`aria-hidden=\"true\"`, or an empty `alt`), and the band’s colour says nothing on its own. Read the sentence without the icon and the colour; it must still make sense."
   - "**The link is a real link.** An `<a>` with an `href`, so it works with JavaScript off and opens in a new tab if the reader wants. Never a button that navigates."
   - "**Name the dismiss control.** The `.ds-close` button needs its `<span class=\"is-sr-only\">Dismiss announcement</span>`. Do not use `title` or `aria-label` for this; page translation tools skip attributes."
   - "**After a dismiss, focus has somewhere to go.** Removing the band removes the focused button. Move focus to the site header’s first item, so a keyboard user is not dropped back to the top of the document."
@@ -88,7 +88,7 @@ The announcement band is minimal but gets a lot of attention. Use sparingly to m
 ```
 
 - `.ds-announcement` — The band. Takes `role="region"` and an `aria-label` so a screen reader user can find it and skip it. Goes directly above `.ds-site-header`.
-- `.ds-announcement-glyph` — The icon: an inline SVG from the [icon set](icons.html) with `aria-hidden="true"`, or an `<img>` with an empty `alt` for one of the bones. Either way it is decoration; the sentence carries the meaning.
+- `.ds-announcement-glyph` — The icon: an inline SVG from the [icon set](icons.html) with `aria-hidden="true"`, or an `<img>` with an empty `alt` for one of the bones. Either way it is decoration; the sentence conveys the meaning.
 - `.ds-announcement-text` — The one sentence.
 - `.ds-announcement-link` — The one link. An `<a>` with a real `href`.
 - `.ds-close` — The dismiss control, last inside the band; the band positions it at the right edge. Remembering the dismissal is the host’s job.
@@ -117,7 +117,7 @@ A box in the flow of a page that names its own register before the reader starts
 
 ## Icon options  (Modifiers)
 
-Icons are important for conveying meaning quickly and effectively. The small smileybones are drawn for this small use case. Each carries its own colours, so it goes in as an image, not as a true svg icon. No alt text needed, the icon is purely decorative and the text carries the meaning.
+Icons are important for conveying meaning quickly and effectively. The small smileybones are drawn for this small use case. Each has its own colours, so it goes in as an image, not as a true svg icon. No alt text needed, the icon is purely decorative and the text conveys the meaning.
 
 ```html
 <img class="ds-announcement-glyph" src="assets/images/bones/icon_small-smileybones.svg" alt="">
@@ -170,10 +170,10 @@ Open Blue is our default banner color, and should be overridden sparingly. For m
 
 ## Rules
 
-- Easy to get wrong: A note can carry a ruled-off warning at its foot with `.ds-note-gotcha`. Use it for the mistake the rule keeps being broken by, not as a second paragraph.
+- Easy to get wrong: A note can include a ruled-off warning at its foot with `.ds-note-gotcha`. Use it for the mistake the rule keeps being broken by, not as a second paragraph.
 - **Give the band a name.** Keep `role="region"` and `aria-label="Announcement"` on it. That is how a screen reader user finds the band in the page’s landmarks, and how they skip it once they have read it.
 - **Do not make it a live region.** The band is part of the page as it loads, not a change that happens later. `role="alert"` or `aria-live` would make every page announce it aloud, on every visit, before anything else.
-- **The sentence carries the meaning.** The icon is hidden from assistive technology (`aria-hidden="true"`, or an empty `alt`), and the band’s colour says nothing on its own. Read the sentence without the icon and the colour; it must still make sense.
+- **The sentence conveys the meaning.** The icon is hidden from assistive technology (`aria-hidden="true"`, or an empty `alt`), and the band’s colour says nothing on its own. Read the sentence without the icon and the colour; it must still make sense.
 - **The link is a real link.** An `<a>` with an `href`, so it works with JavaScript off and opens in a new tab if the reader wants. Never a button that navigates.
 - **Name the dismiss control.** The `.ds-close` button needs its `<span class="is-sr-only">Dismiss announcement</span>`. Do not use `title` or `aria-label` for this; page translation tools skip attributes.
 - **After a dismiss, focus has somewhere to go.** Removing the band removes the focused button. Move focus to the site header’s first item, so a keyboard user is not dropped back to the top of the document.

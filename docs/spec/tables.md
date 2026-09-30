@@ -61,7 +61,7 @@ components:
     summary: "Rows a reader can choose, one checkbox per row, so an action can apply to several at once."
     classes:
       - name: ".is-selected"
-        does: "On the `<tr>`. Tints the row with `--ds-accent-wash`; the tint aids scanability of the selection set. Selection state must not rely on the tint alone: the row’s checkbox carries the state (WCAG 1.4.1)."
+        does: "On the `<tr>`. Tints the row with `--ds-accent-wash`; the tint aids scanability of the selection set. Selection state must not rely on the tint alone: the row’s checkbox shows the state (WCAG 1.4.1)."
       - name: "<input type=\"checkbox\">"
         does: "The first cell of every row. A direct child of the `<td>`, which gives it a 24px target and this surface’s accent. Each one has a `<label class=\"is-sr-only\">` that names its row."
   - id: bulk-actions
@@ -288,7 +288,7 @@ Rows a reader can choose, one checkbox per row, so an action can apply to severa
 </div>
 ```
 
-- `.is-selected` — On the `<tr>`. Tints the row with `--ds-accent-wash`; the tint aids scanability of the selection set. Selection state must not rely on the tint alone: the row’s checkbox carries the state (WCAG 1.4.1).
+- `.is-selected` — On the `<tr>`. Tints the row with `--ds-accent-wash`; the tint aids scanability of the selection set. Selection state must not rely on the tint alone: the row’s checkbox shows the state (WCAG 1.4.1).
 - `<input type="checkbox">` — The first cell of every row. A direct child of the `<td>`, which gives it a 24px target and this surface’s accent. Each one has a `<label class="is-sr-only">` that names its row.
 
 ## Bulk actions

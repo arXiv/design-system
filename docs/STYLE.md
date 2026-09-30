@@ -30,6 +30,25 @@ It applies to everything with words — interface copy, error messages, document
 
 An alert is an alert everywhere — never a notification, toast, banner, or message. Synonyms read as meaningful distinctions and send people looking for a difference that is not there. Component names in prose must match the names in the stylesheet.
 
+### Say what it is, and stop
+
+A description states what the thing is and does. Add a reason only when a builder would otherwise get it wrong, and keep it to one short sentence. Name a colour by its palette name.
+
+Write: "A code block uses Plex Mono on Repository Brown, and always includes a copy button."
+
+Not: "A code block is Plex Mono on the dark chrome ground, and it always carries a copy button — the familiar two-sheets icon, top right. Someone reading a pattern page is there to take the markup away with them…"
+
+Use the plain word:
+
+| Write | Not |
+|---|---|
+| includes, has, shows | carries |
+| sidebar | rail |
+| scan, read | walk |
+| type, format, column | track |
+
+`check-policies.py` fails a page that uses a word from the right-hand column. "Tracking" in the sense of surveillance is allowed.
+
 ---
 
 ### Category names are copied, never restyled

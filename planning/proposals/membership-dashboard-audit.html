@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Membership dashboard audit — arXiv Design System proposal</title>
+  <link rel="stylesheet" href="../../docs/fonts.css">
+  <link rel="stylesheet" href="../../docs/design-system.css">
+  <link rel="stylesheet" href="../../docs/internal-tools.css">
+  <style>
+    /* Planning page only: the three header options side by side. */
+    .opt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: var(--ds-space-block); }
+    .opt-b thead th { font-size: 0.75rem; color: var(--ds-text); }
+    .opt-c thead th { font-size: 0.8125rem; font-weight: 700; color: var(--ds-text); letter-spacing: 0.08em; }
+    .shot { max-width: 100%; border: 1px solid var(--ds-border); border-radius: 6px; }
+  </style>
+</head>
+<body class="ds-page">
+<div class="ds-container">
+
+  <header class="ds-page-header">
+    <h1>Membership dashboard audit</h1>
+    <p>Step 1 of the dashboard work: what Christopher's screens for dev.arxiv.org/activity/ use, how each element maps to the design system, and what the design system should change or add. The rebuild comes after these decisions.</p>
+  </header>
+
+  <section class="section">
+    <h2>Summary</h2>
+    <ul class="notes">
+      <li><strong>The table header is too quiet for dense data.</strong> Ours is 11px Library Grey on Card Grey, 5.12:1. Christopher's is larger and Repository Brown on the same grey, 15.22:1. Recommendation: change the default header, not add a variant.</li>
+      <li><strong>Most of his page is built from parts we already have.</strong> Header, footer, cards, card grid, tags, buttons, fields, sortable tables and the warning and error tints all exist.</li>
+      <li><strong>Four things are missing:</strong> tabs, a stat card (a label and a big number), a meter (a bar or a range against an average), and a colour legend.</li>
+      <li><strong>Several differences come from an older copy of the stylesheet.</strong> The footer dots are faint and the account area shows a name and Log out, both changed since. Pulling the current stylesheet fixes those.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>The screens</h2>
+    <div class="ds-card-grid">
+      <div class="ds-card"><p class="ds-panel-label">Sections home</p><img class="shot" src="../../mockups/public/membership-dashboard/activity-monitor-sections-top.png" alt="Sections home: a grid of subject cards, each with counts, a range gauge and progress bars."></div>
+      <div class="ds-card"><p class="ds-panel-label">Moderation statistics, charts tab</p><img class="shot" src="../../mockups/public/membership-dashboard/member-dashboard-home.png" alt="Moderation statistics: filter selects, two rows of tabs, a heading and long explanatory text."></div>
+      <div class="ds-card"><p class="ds-panel-label">Category submission stats tab</p><img class="shot" src="../../mockups/public/membership-dashboard/member-dashboard-group-bottom.png" alt="Date range fields, an Apply button, stat cards and threshold fields."></div>
+      <div class="ds-card"><p class="ds-panel-label">Category table</p><img class="shot" src="../../mockups/public/membership-dashboard/member-dashboard-group-top.png" alt="A sortable table with two threshold columns tinted yellow and pink, and a legend above it."></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Table header options</h2>
+    <p>All three use the same table. Only the header row changes.</p>
+    <div class="opt-grid">
+      <div class="ds-card">
+        <p class="ds-panel-label">A. Today</p>
+        <table class="ds-table"><thead><tr><th scope="col">Subject</th><th scope="col">New submissions</th><th scope="col">Holds</th></tr></thead>
+          <tbody><tr><td>AI</td><td>3957</td><td>2182</td></tr><tr><td>LG</td><td>2371</td><td>964</td></tr></tbody></table>
+        <p>11px, 600, Library Grey on Card Grey. 5.12:1 light.</p>
+      </div>
+      <div class="ds-card">
+        <p class="ds-panel-label">B. Proposed default</p>
+        <table class="ds-table opt-b"><thead><tr><th scope="col">Subject</th><th scope="col">New submissions</th><th scope="col">Holds</th></tr></thead>
+          <tbody><tr><td>AI</td><td>3957</td><td>2182</td></tr><tr><td>LG</td><td>2371</td><td>964</td></tr></tbody></table>
+        <p>12px, 600, Repository Brown on Card Grey. 15.22:1 light. Uses <code>--ds-text</code>, so dark mode follows.</p>
+      </div>
+      <div class="ds-card">
+        <p class="ds-panel-label">C. Christopher's (estimated)</p>
+        <table class="ds-table opt-c"><thead><tr><th scope="col">Subject</th><th scope="col">New submissions</th><th scope="col">Holds</th></tr></thead>
+          <tbody><tr><td>AI</td><td>3957</td><td>2182</td></tr><tr><td>LG</td><td>2371</td><td>964</td></tr></tbody></table>
+        <p>About 13px, 700, wide letter spacing, Repository Brown. 15.22:1 light.</p>
+      </div>
+    </div>
+    <ul class="notes">
+      <li><strong>Recommend B as the new default.</strong> The header names every column, so it should be as readable as the cells. One table stays one table, as decided on 2026-09-29.</li>
+      <li><strong>C as a variant is the alternative.</strong> If one is wanted, name it for its role, such as <code>.ds-table--dense</code>, not for its size.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Should a table always have a border all the way around?</h2>
+    <p>Recommend: yes, one rule with one exception that comes from the markup.</p>
+    <ul class="notes">
+      <li><strong>Always framed.</strong> A table without a header row has no tinted row to mark its top edge; the frame gives every table the same edge.</li>
+      <li><strong>Inside a card, no frame.</strong> The card is already the frame. The stylesheet can drop the table's border when the table sits directly in a card, so nobody chooses it.</li>
+      <li><strong>Christopher's table has no side frame.</strong> It works on his page because the header row is tinted and the table fills the width. It would not work for a table without a header row.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Inventory</h2>
+    <div class="ds-table-scroll" role="region" aria-label="Inventory" tabindex="0">
+      <table class="ds-table">
+        <thead><tr><th scope="col">Element</th><th scope="col">Design system</th><th scope="col">Status</th><th scope="col">Note</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Site header</th><td><code>.ds-site-header</code></td><td>Changed since</td><td>Name and Log out in the bar is the older pattern. Current: first-name greeting and an Account menu holding Log out.</td></tr>
+          <tr><th scope="row">Breadcrumb</th><td>none</td><td>Rule conflict</td><td>DESIGN-POLICIES: breadcrumbs only on pages without secondary navigation. These pages have tabs, so the breadcrumb goes.</td></tr>
+          <tr><th scope="row">Page title in Archival Blue</th><td>h1, h2 use <code>--ds-text</code></td><td>He changed it</td><td>Blue headings read as links on a page with many links. Decide in the headings proposal.</td></tr>
+          <tr><th scope="row">Filter selects (Group, Archive, Category)</th><td><code>.ds-field</code>, <code>.ds-label</code>, <code>.ds-input</code></td><td>He changed it</td><td>His labels sit in the border (outlined style). Ours sit above. A row of short fields fits <code>.ds-form</code> or a <code>.ds-btn-group</code> of fields.</td></tr>
+          <tr><th scope="row">Two rows of tabs</th><td>none (<code>.ds-subnav</code> is page navigation)</td><td>Missing</td><td>Tabs that switch views on one page need a tabs component (<code>role="tablist"</code>). Two levels of tabs is the densest part of the page; the rebuild should test one level plus the filters.</td></tr>
+          <tr><th scope="row">Section heading and long intro text</th><td>h2, p</td><td>Exists</td><td>The text is long; the rebuild can move the method notes into a disclosure.</td></tr>
+          <tr><th scope="row">"Showing categories" list of links</th><td><code>.ds-link-list</code></td><td>Exists</td><td>Category names keep their case (STYLE.md).</td></tr>
+          <tr><th scope="row">Date fields and Apply button</th><td><code>.ds-field</code>, <code>.ds-btn-primary</code></td><td>Exists</td><td>Same outlined-label difference as the filters.</td></tr>
+          <tr><th scope="row">"Currently showing … 7 min ago" and refresh</th><td><code>.ds-hint</code>-like text, <code>.ds-btn-icon</code></td><td>Exists</td><td>Refresh needs a visible or screen-reader name.</td></tr>
+          <tr><th scope="row">Stat cards (label and big number)</th><td><code>.ds-card</code> in <code>.ds-card-grid</code></td><td>Missing part</td><td>The card exists; a large-number display does not (noted as a gap on the brand page too).</td></tr>
+          <tr><th scope="row">Legend with colour swatches</th><td>none</td><td>Missing</td><td>Needed wherever colour marks data. The tint must never be the only signal.</td></tr>
+          <tr><th scope="row">Sortable table</th><td><code>.ds-table</code>, <code>.sortable</code></td><td>Exists</td><td>See header options above.</td></tr>
+          <tr><th scope="row">Threshold columns tinted yellow and pink</th><td><code>--ds-warning-bg</code>, <code>--ds-error-bg</code></td><td>Tokens exist, use is new</td><td>Tinting a column or cell by value is not documented. Decide in the tints proposal.</td></tr>
+          <tr><th scope="row">Subject cards</th><td><code>.ds-card</code>, <code>.ds-card-grid</code></td><td>Exists</td><td>Card titles in Archival Blue: headings proposal.</td></tr>
+          <tr><th scope="row">Archive code (cs, q-fin)</th><td>inline code or mono text</td><td>Exists</td><td>Plain mono text, not inline code styling.</td></tr>
+          <tr><th scope="row">"1 archive" and "40 categories" pills</th><td><code>.ds-tag</code></td><td>Exists</td><td>His first pill is bold and the second is not; tags have one weight.</td></tr>
+          <tr><th scope="row">Range gauge against the average</th><td>none</td><td>Missing</td><td>A meter: value, average marker, and -50% / +50% ends.</td></tr>
+          <tr><th scope="row">Progress bars, yellow and red with a warning icon</th><td>none</td><td>Missing</td><td>Also a meter. Red with an icon over the threshold is right: colour is not the only signal.</td></tr>
+          <tr><th scope="row">"View activity →" link in grey</th><td>links are Link Blue</td><td>He changed it</td><td>A grey link reads as disabled. Use a normal link.</td></tr>
+          <tr><th scope="row">"Reports for Staff" button</th><td><code>.ds-btn-primary</code></td><td>Exists</td><td>A primary button for navigation; a link may fit better.</td></tr>
+          <tr><th scope="row">Footer</th><td><code>.ds-site-footer</code></td><td>Changed since</td><td>His dots are the faint version, fixed on 2026-09-28.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>What the design system should change or add</h2>
+    <ol class="notes">
+      <li><strong>Table header, stronger by default</strong> (option B). Small change, helps every table.</li>
+      <li><strong>Table frame rule:</strong> always framed; no frame directly inside a card.</li>
+      <li><strong>Tabs</strong> for views on one page, separate from <code>.ds-subnav</code>, which links between pages.</li>
+      <li><strong>Stat card:</strong> a label and a large number, built on <code>.ds-card</code>.</li>
+      <li><strong>Meter:</strong> one component for the progress bar and the range gauge, with a threshold state that adds an icon.</li>
+      <li><strong>Legend:</strong> swatch and label pairs, for any colour that marks data.</li>
+      <li><strong>Tinted cells by value:</strong> document when a cell or column takes the warning or error tint.</li>
+    </ol>
+  </section>
+
+  <section class="section">
+    <h2>Depends on the parallel proposals</h2>
+    <ul class="notes">
+      <li><strong>Tints</strong> (planning/proposals/tints.html): tinted threshold columns, the legend swatches, the table header grey, tab backgrounds.</li>
+      <li><strong>Headings and labels</strong> (planning/proposals/headings-and-labels.html): blue headings and card titles, uppercase tab labels, stat card labels, the "Threshold Days:" label.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Decisions</h2>
+    <ol class="notes">
+      <li>Table header: change the default to option B, or keep today's and add a variant?</li>
+      <li>Table frame: always framed, except directly inside a card?</li>
+      <li>Build tabs as a new component, and should the rebuild allow two levels?</li>
+      <li>Add a stat card, a meter and a legend to the design system?</li>
+      <li>Headings in Archival Blue: allowed on internal tools, or text colour everywhere? (Headings proposal.)</li>
+      <li>Outlined fields with the label in the border: adopt, or keep labels above?</li>
+    </ol>
+  </section>
+
+</div>
+</body>
+</html>

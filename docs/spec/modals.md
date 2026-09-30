@@ -15,7 +15,7 @@ components:
       - name: ".ds-modal-header, .ds-modal-body, .ds-modal-footer"
         does: "The three regions, in this order. Header and footer hold their size; the body takes what is left and scrolls, which is what keeps the title and the actions on screen when the content is long."
       - name: ".ds-modal-title"
-        does: "The heading inside the header. It carries the id that `aria-labelledby` points at."
+        does: "The heading inside the header. It has the id that `aria-labelledby` points at."
       - name: ".ds-modal-footer-start"
         does: "Pushes one control to the opposite end — Cancel reads better away from the action it undoes."
       - name: ".ds-close"
@@ -123,7 +123,7 @@ document.getElementById('demo-confirm').close();
 - `.ds-modal` — The dialog, on a native `<dialog>` element opened with `showModal()`. Sized against the viewport rather than its content, because a modal that outgrows the window puts its own actions out of reach.
 - `aria-labelledby="…"` — Required on the `<dialog>`, pointing at the title. It is the one thing the native element cannot infer, and without it the dialog announces with no name at all.
 - `.ds-modal-header, .ds-modal-body, .ds-modal-footer` — The three regions, in this order. Header and footer hold their size; the body takes what is left and scrolls, which is what keeps the title and the actions on screen when the content is long.
-- `.ds-modal-title` — The heading inside the header. It carries the id that `aria-labelledby` points at.
+- `.ds-modal-title` — The heading inside the header. It has the id that `aria-labelledby` points at.
 - `.ds-modal-footer-start` — Pushes one control to the opposite end — Cancel reads better away from the action it undoes.
 - `.ds-close` — The same close control as everywhere else; see [Buttons](buttons.html#the-close-control). It sits inside `.ds-modal-header`, after the title.
 - `data-open="…", data-close` — Hooks for this page's demo script, which finds the button that opens a dialog and the controls that close it. The stylesheet gives them no meaning; your own script may use any hook it likes.

@@ -21,7 +21,7 @@ components:
     summary: "The same card in light and dark modes, on a public page vs. an internal page. Nothing in its markup changes except the `data-theme` attribute and, for internal tools, `.ds-internal` is added to the parent element."
     classes:
       - name: "data-theme=\"dark\", data-theme=\"light\""
-        does: "On any element, not only the root. The tokens are declared on any element carrying the attribute and custom properties inherit, so the *nearest* ancestor with `data-theme` wins, and nesting works in both directions: a dark sample inside a light panel inside a page following the OS renders correctly. The attribute re-points tokens and paints nothing itself. Anything inside that already reads tokens follows; the container has to take its own ground and text from tokens too, which here is `.ds-card` for the ground and `color: var(--ds-text)` for the text."
+        does: "On any element, not only the root. The tokens are declared on any element with the attribute and custom properties inherit, so the *nearest* ancestor with `data-theme` wins, and nesting works in both directions: a dark sample inside a light panel inside a page following the OS renders correctly. The attribute re-points tokens and paints nothing itself. Anything inside that already reads tokens follows; the container has to take its own ground and text from tokens too, which here is `.ds-card` for the ground and `color: var(--ds-text)` for the text."
       - name: ".ds-internal"
         does: "Internal tools. Re-points the accent to Access Lime, from tier 1, and composes with the attribute: lime holds its light value in dark, the wash goes to a dark olive, and text that sat on the wash turns lime to stay legible. An internal page puts it on `<html>`."
     notes:
@@ -37,7 +37,7 @@ components:
     summary: "Any page or element can lock to light mode only by adding `data-theme=\"light\"`. We use this feature when demonstrating light mode, but it can also be useful if the content being worked with has no dark mode. For example, if porting in complex visualizations from an external engine that does not support dark mode."
     classes:
       - name: "data-theme=\"light\" on <html>"
-        does: "Locks the page to light and opts it out of the `@media` block. Check that nothing rewrites it: a static attribute in the markup is not a lock if a script on the page sets the attribute at load. `theme.js` does exactly that, so a page that carries the theme control cannot also be locked."
+        does: "Locks the page to light and opts it out of the `@media` block. Check that nothing rewrites it: a static attribute in the markup is not a lock if a script on the page sets the attribute at load. `theme.js` does exactly that, so a page that includes the theme control cannot also be locked."
       - name: "data-theme=\"light\" on a container"
         does: "One demo shows light while the page follows the reader. The same scoping as the dark island above, in the other direction."
     notes:
@@ -59,9 +59,9 @@ rules:
   - "Component CSS consumes tokens. Do not write hex values directly."
   - "`color-scheme` does not lock a page to a mode. It governs browser-rendered widgets like scrollbars, form controls, and the default canvas. It does not touch a stylesheet's `prefers-color-scheme` rules. If absolutely needed, use `data-theme` to lock a mode."
   - "**Respect the setting the reader already made.** A page follows the operating system's colour scheme unless the reader says otherwise on the page itself. Without JavaScript there is no button and the page follows the OS: the control is an addition, never the only route to a readable page."
-  - "**The icon is the only visible part, so the name carries the state.** The button's accessible name says which state is on (“Theme: following the system. Activate to change.”), and a press announces its result in the live region. A sighted reader learns the three icons from the cards above; a screen reader user is told, and is never guessing whether the moon means “it is dark” or “make it dark”."
+  - "**The icon is the only visible part, so the name gives the state.** The button's accessible name says which state is on (“Theme: following the system. Activate to change.”), and a press announces its result in the live region. A sighted reader learns the three icons from the cards above; a screen reader user is told, and is never guessing whether the moon means “it is dark” or “make it dark”."
   - "**Never a dark value by hand.** Take every colour from a token and it flips with the rest of the page. A hex written into a page or a component cannot flip, and it will not announce itself."
-  - "**Check contrast in both modes.** Verify computed styles and measure contrast in every state a reader can reach: OS dark, OS light, and the attribute forced either way. Do not trust the cascade and do not judge by eye. Anything that uses colour to carry meaning keeps its second cue (icon, word, position) in dark mode too — the WCAG 1.4.1 requirement applies in both modes."
+  - "**Check contrast in both modes.** Verify computed styles and measure contrast in every state a reader can reach: OS dark, OS light, and the attribute forced either way. Do not trust the cascade and do not judge by eye. Anything that uses colour to convey meaning keeps its second cue (icon, word, position) in dark mode too — the WCAG 1.4.1 requirement applies in both modes."
   - "**Let form controls follow.** The stylesheet sets `color-scheme` beside the tokens, so native form controls, scrollbars and the default canvas take the same mode as the page. Do not set it yourself to force a mode: it governs those browser-rendered widgets only and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme`."
 ---
 
@@ -113,7 +113,7 @@ The same card in light and dark modes, on a public page vs. an internal page. No
 <div class="ds-card ds-internal" data-theme="dark" style="color: var(--ds-text)">…</div>
 ```
 
-- `data-theme="dark", data-theme="light"` — On any element, not only the root. The tokens are declared on any element carrying the attribute and custom properties inherit, so the *nearest* ancestor with `data-theme` wins, and nesting works in both directions: a dark sample inside a light panel inside a page following the OS renders correctly. The attribute re-points tokens and paints nothing itself. Anything inside that already reads tokens follows; the container has to take its own ground and text from tokens too, which here is `.ds-card` for the ground and `color: var(--ds-text)` for the text.
+- `data-theme="dark", data-theme="light"` — On any element, not only the root. The tokens are declared on any element with the attribute and custom properties inherit, so the *nearest* ancestor with `data-theme` wins, and nesting works in both directions: a dark sample inside a light panel inside a page following the OS renders correctly. The attribute re-points tokens and paints nothing itself. Anything inside that already reads tokens follows; the container has to take its own ground and text from tokens too, which here is `.ds-card` for the ground and `color: var(--ds-text)` for the text.
 - `.ds-internal` — Internal tools. Re-points the accent to Access Lime, from tier 1, and composes with the attribute: lime holds its light value in dark, the wash goes to a dark olive, and text that sat on the wash turns lime to stay legible. An internal page puts it on `<html>`.
 
 > Accents hold in both modes: Open Blue and Access Lime stay themselves, which is why the text on them is a fixed token too.
@@ -138,7 +138,7 @@ Any page or element can lock to light mode only by adding `data-theme="light"`. 
 <div class="ds-card" data-theme="light" style="color: var(--ds-text)">…</div>
 ```
 
-- `data-theme="light" on <html>` — Locks the page to light and opts it out of the `@media` block. Check that nothing rewrites it: a static attribute in the markup is not a lock if a script on the page sets the attribute at load. `theme.js` does exactly that, so a page that carries the theme control cannot also be locked.
+- `data-theme="light" on <html>` — Locks the page to light and opts it out of the `@media` block. Check that nothing rewrites it: a static attribute in the markup is not a lock if a script on the page sets the attribute at load. `theme.js` does exactly that, so a page that includes the theme control cannot also be locked.
 - `data-theme="light" on a container` — One demo shows light while the page follows the reader. The same scoping as the dark island above, in the other direction.
 
 > Test it with the theme control in the header: the page changes but this panel does not.
@@ -161,7 +161,7 @@ Internal tools load the same tier 1 stylesheet as public pages. Their speciall a
 - Component CSS consumes tokens. Do not write hex values directly.
 - `color-scheme` does not lock a page to a mode. It governs browser-rendered widgets like scrollbars, form controls, and the default canvas. It does not touch a stylesheet's `prefers-color-scheme` rules. If absolutely needed, use `data-theme` to lock a mode.
 - **Respect the setting the reader already made.** A page follows the operating system's colour scheme unless the reader says otherwise on the page itself. Without JavaScript there is no button and the page follows the OS: the control is an addition, never the only route to a readable page.
-- **The icon is the only visible part, so the name carries the state.** The button's accessible name says which state is on (“Theme: following the system. Activate to change.”), and a press announces its result in the live region. A sighted reader learns the three icons from the cards above; a screen reader user is told, and is never guessing whether the moon means “it is dark” or “make it dark”.
+- **The icon is the only visible part, so the name gives the state.** The button's accessible name says which state is on (“Theme: following the system. Activate to change.”), and a press announces its result in the live region. A sighted reader learns the three icons from the cards above; a screen reader user is told, and is never guessing whether the moon means “it is dark” or “make it dark”.
 - **Never a dark value by hand.** Take every colour from a token and it flips with the rest of the page. A hex written into a page or a component cannot flip, and it will not announce itself.
-- **Check contrast in both modes.** Verify computed styles and measure contrast in every state a reader can reach: OS dark, OS light, and the attribute forced either way. Do not trust the cascade and do not judge by eye. Anything that uses colour to carry meaning keeps its second cue (icon, word, position) in dark mode too — the WCAG 1.4.1 requirement applies in both modes.
+- **Check contrast in both modes.** Verify computed styles and measure contrast in every state a reader can reach: OS dark, OS light, and the attribute forced either way. Do not trust the cascade and do not judge by eye. Anything that uses colour to convey meaning keeps its second cue (icon, word, position) in dark mode too — the WCAG 1.4.1 requirement applies in both modes.
 - **Let form controls follow.** The stylesheet sets `color-scheme` beside the tokens, so native form controls, scrollbars and the default canvas take the same mode as the page. Do not set it yourself to force a mode: it governs those browser-rendered widgets only and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme`.

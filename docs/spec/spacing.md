@@ -39,11 +39,11 @@ components:
     summary: "Three tokens set the shape of every page: the width of the content column, the gutter that keeps it off the viewport edge, and the space the container puts between one region and the next. The container that reads them is documented on [Layout patterns](layout-patterns.html#the-page-container)."
     classes:
       - name: "--ds-width-page"
-        does: "850px. The width of the content track, and the one width on a page: prose, tables, demo blocks, code and callouts all share it. An element never declares its own."
+        does: "850px. The width of the content column, and the one width on a page: prose, tables, demo blocks, code and callouts all share it. An element never declares its own."
       - name: "--ds-gutter"
-        does: "`--ds-space-6`, 24px. The least space between the content track and the viewport edge. A `.ds-full` band uses the same token as its inline padding, so the band and the column cannot drift apart."
+        does: "`--ds-space-6`, 24px. The least space between the content column and the viewport edge. A `.ds-full` band uses the same token as its inline padding, so the band and the column cannot drift apart."
       - name: "--ds-space-section"
-        does: "48px. The container's `row-gap`: the space between one direct child and the next. A section carries no margin of its own."
+        does: "48px. The container's `row-gap`: the space between one direct child and the next. A section has no margin of its own."
 rules:
   - "Use the step tokens, never hand-code the spacing. Do not fight the grid. If the need arises for different spacing reach out to the design team. The new values mean a change to DESIGN-POLICIES, not a local override."
   - "When applying your own spacing use the named `--ds-space-block` for spacing *within*, and `--ds-space-section` for spacing *between*. Spacing between blocks is 2× tight while spacing between sections is 3× block; Lower than 1.5× the eye cannot tell the two apart and the grouping signal fails."
@@ -125,9 +125,9 @@ Three tokens set the shape of every page: the width of the content column, the g
 :root { --ds-width-page: 1080px; }
 ```
 
-- `--ds-width-page` — 850px. The width of the content track, and the one width on a page: prose, tables, demo blocks, code and callouts all share it. An element never declares its own.
-- `--ds-gutter` — `--ds-space-6`, 24px. The least space between the content track and the viewport edge. A `.ds-full` band uses the same token as its inline padding, so the band and the column cannot drift apart.
-- `--ds-space-section` — 48px. The container's `row-gap`: the space between one direct child and the next. A section carries no margin of its own.
+- `--ds-width-page` — 850px. The width of the content column, and the one width on a page: prose, tables, demo blocks, code and callouts all share it. An element never declares its own.
+- `--ds-gutter` — `--ds-space-6`, 24px. The least space between the content column and the viewport edge. A `.ds-full` band uses the same token as its inline padding, so the band and the column cannot drift apart.
+- `--ds-space-section` — 48px. The container's `row-gap`: the space between one direct child and the next. A section has no margin of its own.
 
 ## Rules
 

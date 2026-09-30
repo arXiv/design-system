@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tints, borders and space — proposal</title>
+<link rel="stylesheet" href="../../docs/fonts.css">
+<link rel="stylesheet" href="../../docs/design-system.css">
+<link rel="stylesheet" href="../../docs/internal-tools.css">
+<style>
+  .p-wrap { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .p-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+  .p-theme { padding: 1rem; border-radius: 8px; background: var(--ds-canvas); color: var(--ds-text); }
+  .p-theme > * + * { margin-top: 0.75rem; }
+  .p-theme > .ds-note { margin-top: 2.25rem; }
+  .p-theme-label { font: 600 0.75rem/1 var(--ds-font-condensed); text-transform: uppercase; letter-spacing: 0.04em; color: var(--ds-text-muted); margin: 0 0 0.5rem; }
+  .p-chip { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8125rem; }
+  .p-chip i { width: 2.25rem; height: 1.5rem; border-radius: 4px; border: 1px solid var(--ds-border); flex: none; }
+  .p-note { font-size: 0.8125rem; color: var(--ds-text-muted); }
+  .p-table td, .p-table th { font-size: 0.8125rem; }
+  .p-decision { border-left: 3px solid var(--ds-accent-strong); padding: 0.25rem 0 0.25rem 1rem; margin: 1rem 0; }
+  .p-decision h3 { margin-top: 0; font-size: 1rem; }
+  .p-sb { display: grid; grid-template-columns: 1fr 12rem; gap: 2rem; background: var(--ds-surface); padding: 1rem; border-radius: 8px; }
+  .p-sb-line { border-left: 1px solid var(--ds-border); padding-left: 1.25rem; }
+  .p-sb-tint { background: var(--ds-canvas); padding: 0.75rem; border-radius: 6px; }
+  .p-mini { font-size: 0.8125rem; }
+  .p-mini p { margin: 0 0 0.5rem; }
+</style>
+</head>
+<body class="ds-page">
+<div class="p-wrap">
+
+<h1>Tints, borders and space</h1>
+<p class="ds-section-desc">Proposal, 30 September 2026. The system uses about twenty different background fills today. Most of them do one of five jobs. This page lists every fill, proposes five tint roles, and proposes one rule for when a group of content gets space, a tint or a border.</p>
+
+<h2>1. What uses a tint today</h2>
+<p>Every background fill in <code>design-system.css</code> and <code>internal-tools.css</code>, grouped by the token it uses. Light values are for the public surface.</p>
+
+<div class="ds-table-scroll" role="region" aria-label="Background fills today" tabindex="0">
+<table class="ds-table p-table">
+  <thead><tr><th scope="col">Token</th><th scope="col">Light</th><th scope="col">Dark</th><th scope="col">Used by</th></tr></thead>
+  <tbody>
+    <tr><th scope="row"><code>--ds-canvas</code></th><td>Warm Wash #f8f7f7</td><td>Repository Brown #1c1a17</td><td>Page ground, site footer, modal footer, table row headers, row hover, striped rows, TOC menu hover</td></tr>
+    <tr><th scope="row"><code>--ds-surface</code></th><td>White</td><td>#2b2723</td><td>Primary zone band, card, table body, input, modal, menus, TOC menu and button, secondary navigation, marginalia, element pill, segmented button</td></tr>
+    <tr><th scope="row"><code>--ds-surface-muted</code></th><td>Card Grey #f0f0ee</td><td>#2b2723</td><td>Data card, table header row, tag, note (default), secondary zone, disabled input, TOC bar (92%), segmented-button hover, open marginalia mark</td></tr>
+    <tr><th scope="row"><code>--ds-accent-surface</code></th><td>Tint Light #edf7ff</td><td>#132433</td><td>Popover, tooltip, essential note</td></tr>
+    <tr><th scope="row"><code>--ds-table-selected</code></th><td>Tint Light #edf7ff</td><td>#1e3a5f</td><td>Selected table row</td></tr>
+    <tr><th scope="row"><code>--ds-accent-wash</code> (+ hover, active)</th><td>Active Wash #d2eafe</td><td>#1e3a5f</td><td>Inline active state, tag hover, TOC current item, announcement band, text-button hover</td></tr>
+    <tr><th scope="row">Status backgrounds (4)</th><td>info, success, warning, error</td><td>four dark values</td><td>Alerts, status tags, active segmented buttons</td></tr>
+    <tr><th scope="row">Note registers (2 more)</th><td>Tint Light; 18% Access Lime mix</td><td>follow the tokens</td><td>Essential note, internal note</td></tr>
+    <tr><th scope="row">Announcement (3)</th><td>Active Wash, Repository Brown, Smileybones Yellow</td><td>fixed</td><td>Announcement band registers</td></tr>
+    <tr><th scope="row"><code>--ds-chrome</code></th><td colspan="2">Repository Brown in both themes</td><td>Header bar, code blocks, skip link</td></tr>
+    <tr><th scope="row">Text-colour washes</th><td colspan="2">8% or 7% of the text colour</td><td>Inline code, disabled button, striped-table row hover</td></tr>
+    <tr><th scope="row">Internal only</th><td>Access Lime washes 1–3</td><td>#1a2306, #212e08, #28380a</td><td>Internal selection, internal secondary button, internal text-button hover</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>One problem the inventory shows.</strong> In dark mode <code>--ds-surface</code> and <code>--ds-surface-muted</code> are the same colour (#2b2723). A data card, a table header row, a tag and a note all look exactly like a plain card there. The difference between "raised" and "reference" disappears in dark mode.</p>
+
+<h3>Rendered, both themes</h3>
+<div class="p-cols">
+  <div class="p-theme" data-theme="light">
+    <p class="p-theme-label">Public, light</p>
+    <div class="ds-card"><p class="p-mini">A card: White</p></div>
+    <section class="ds-card ds-card--data" aria-label="Sample"><dl><div><dt>Data card</dt><dd>Card Grey</dd></div></dl></section>
+    <table class="ds-table"><thead><tr><th scope="col">Header</th></tr></thead><tbody><tr><td>Row</td></tr><tr class="is-selected"><td>Selected row</td></tr></tbody></table>
+    <div class="ds-note"><h3 class="ds-note-label">Note</h3><p>A note: Card Grey</p></div>
+    <p><span class="ds-tag">A tag</span> <span class="ds-tag ds-tag--info">Info tag</span></p>
+  </div>
+  <div class="p-theme" data-theme="dark">
+    <p class="p-theme-label">Public, dark</p>
+    <div class="ds-card"><p class="p-mini">A card</p></div>
+    <section class="ds-card ds-card--data" aria-label="Sample"><dl><div><dt>Data card</dt><dd>same as the card</dd></div></dl></section>
+    <table class="ds-table"><thead><tr><th scope="col">Header</th></tr></thead><tbody><tr><td>Row</td></tr><tr class="is-selected"><td>Selected row</td></tr></tbody></table>
+    <div class="ds-note"><h3 class="ds-note-label">Note</h3><p>A note</p></div>
+    <p><span class="ds-tag">A tag</span> <span class="ds-tag ds-tag--info">Info tag</span></p>
+  </div>
+  <div class="p-theme ds-internal" data-theme="light">
+    <p class="p-theme-label">Internal, light</p>
+    <div class="ds-card"><p class="p-mini">A card</p></div>
+    <section class="ds-card ds-card--data" aria-label="Sample"><dl><div><dt>Data card</dt><dd>Card Grey</dd></div></dl></section>
+    <table class="ds-table"><thead><tr><th scope="col">Header</th></tr></thead><tbody><tr><td>Row</td></tr><tr class="is-selected"><td>Selected row</td></tr></tbody></table>
+    <div class="ds-note ds-note--internal"><h3 class="ds-note-label">Internal note</h3><p>Access Lime mix</p></div>
+  </div>
+  <div class="p-theme ds-internal" data-theme="dark">
+    <p class="p-theme-label">Internal, dark</p>
+    <div class="ds-card"><p class="p-mini">A card</p></div>
+    <section class="ds-card ds-card--data" aria-label="Sample"><dl><div><dt>Data card</dt><dd>same as the card</dd></div></dl></section>
+    <table class="ds-table"><thead><tr><th scope="col">Header</th></tr></thead><tbody><tr><td>Row</td></tr><tr class="is-selected"><td>Selected row</td></tr></tbody></table>
+    <div class="ds-note ds-note--internal"><h3 class="ds-note-label">Internal note</h3><p>Access Lime mix</p></div>
+  </div>
+</div>
+
+<h2>2. Borders and hairlines used for grouping today</h2>
+<ul>
+  <li><strong>Full border, 1px Border Light:</strong> card, table, note, alert (plus a 4px start edge), input.</li>
+  <li><strong>One edge:</strong> data card (4px Open Blue top), secondary navigation (bottom), TOC bar (top), site footer (top), modal footer (top), divider <code>&lt;hr&gt;</code>.</li>
+  <li><strong>Hairlines between items:</strong> data card rows (the grid gap shows Border Light), table rows (Card Grey), the table header row (bottom).</li>
+  <li><strong>Nothing:</strong> the sidebar and its blocks, the stepper, button groups, the bulk-action row. These are grouped by space alone.</li>
+</ul>
+
+<h2>3. Proposal: five tint roles</h2>
+<p>Every fill becomes one of five roles. Each role has one token. A component picks a role; it never picks a colour.</p>
+
+<div class="ds-table-scroll" role="region" aria-label="Proposed tint roles" tabindex="0">
+<table class="ds-table p-table">
+  <thead><tr><th scope="col">Role</th><th scope="col">Token</th><th scope="col">Means</th><th scope="col">Light</th><th scope="col">Dark</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Page</th><td><code>--ds-canvas</code></td><td>The ground everything sits on. Also row headers, row hover and stripes inside a white table.</td><td>Warm Wash</td><td>Repository Brown</td></tr>
+    <tr><th scope="row">Surface</th><td><code>--ds-surface</code></td><td>An object the reader works with: card, table, field, dialog, menu.</td><td>White</td><td>#2b2723</td></tr>
+    <tr><th scope="row">Reference</th><td><code>--ds-surface-muted</code></td><td>Read-only or structural content: data card, table header, note, tag, secondary zone.</td><td>Card Grey</td><td><strong>new value</strong>, distinct from Surface (see decision 5)</td></tr>
+    <tr><th scope="row">Accent</th><td><code>--ds-accent-surface</code></td><td>Selected, current, or floating over the page: selected row, current TOC item, popover, tooltip, essential note.</td><td>Tint Light (Access Lime wash inside <code>.ds-internal</code>)</td><td>#132433 (lime dark inside <code>.ds-internal</code>)</td></tr>
+    <tr><th scope="row">Status</th><td>the four <code>--ds-*-bg</code></td><td>A state: info, success, warning, error. Alerts, status tags, segmented buttons only.</td><td>four washes</td><td>four dark values</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="p-note">Chrome (Repository Brown bars and code blocks), the modal scrim, and the text-colour washes for inline code, disabled controls and hover are not tints: they stay as they are. Active Wash stays for pressed and hover states of controls only. <code>--ds-table-selected</code> goes; a selected row uses the Accent role.</p>
+
+<h2>4. Proposal: always, never or optional</h2>
+<div class="ds-table-scroll" role="region" aria-label="Tint by component" tabindex="0">
+<table class="ds-table p-table">
+  <thead><tr><th scope="col">Always tinted</th><th scope="col">Never tinted</th><th scope="col">Optional (a modifier)</th></tr></thead>
+  <tbody><tr>
+    <td>Page (Page role). Data card, table header row, note, tag (Reference). Popover, tooltip, selected row, current item (Accent). Alert, status tag (Status).</td>
+    <td>Card, table body, field, dialog, menu, secondary navigation, stepper, button groups.</td>
+    <td>Page zones (<code>.ds-zone-secondary</code>). Striped rows (<code>.ds-table--striped</code>). Nothing else.</td>
+  </tr></tbody>
+</table>
+</div>
+<p>A component decides its tint once, in the design system. Two optional tints is the whole list. A new optional tint needs a real page that fails without it.</p>
+
+<h2>5. Proposal: space, tint or border</h2>
+<ol>
+  <li><strong>Space groups.</strong> Items that belong together sit closer than items that do not. This is the default and needs no drawing.</li>
+  <li><strong>A tint says what kind of content it is.</strong> Reference, status, selected. It is not used to mark where a group ends.</li>
+  <li><strong>A border marks the edge of one object</strong> the reader handles as a whole: a card, a table, a field, a dialog. It also marks the edge of a region that sits beside other content and has no tint.</li>
+</ol>
+
+<h3>The sidebar under this rule</h3>
+<p>The sidebar is a region beside the reading column with no tint, so rule 3 gives it a border: one hairline on its inner edge, beside the reading column, and on its top edge when it moves below the content. Its blocks stay separated by space.</p>
+<div class="p-cols">
+  <div>
+    <p class="p-theme-label">Space only (today)</p>
+    <div class="p-sb"><div class="p-mini"><p>Reading column text. The main content of the page sits here.</p><p>A second paragraph.</p></div><div class="p-mini"><p><strong>Versions</strong></p><p>v1, v2, v3</p><p><strong>Cite as</strong></p><p>arXiv:2604.01234</p></div></div>
+  </div>
+  <div>
+    <p class="p-theme-label">Hairline on the inner edge (recommended)</p>
+    <div class="p-sb"><div class="p-mini"><p>Reading column text. The main content of the page sits here.</p><p>A second paragraph.</p></div><div class="p-mini p-sb-line"><p><strong>Versions</strong></p><p>v1, v2, v3</p><p><strong>Cite as</strong></p><p>arXiv:2604.01234</p></div></div>
+  </div>
+  <div>
+    <p class="p-theme-label">Warm Wash tint</p>
+    <div class="p-sb"><div class="p-mini"><p>Reading column text. The main content of the page sits here.</p><p>A second paragraph.</p></div><div class="p-mini p-sb-tint"><p><strong>Versions</strong></p><p>v1, v2, v3</p><p><strong>Cite as</strong></p><p>arXiv:2604.01234</p></div></div>
+  </div>
+</div>
+<p class="p-note">A tinted sidebar was tried when the sidebar was built. A data card inside a Card Grey sidebar lost its edges. A Warm Wash tint avoids that clash in light mode but is very close to Card Grey, and in dark mode it is the page colour, so the sidebar would look like a hole in the white band.</p>
+
+<h3>The stepper under this rule</h3>
+<p>The stepper is one control, not a region, so it takes no line. With text-only buttons (proposed separately) and 24px below it, Previous, the count and Next read as one row. A dashed line would add a line style the system does not have.</p>
+
+<h3>Tables under this rule</h3>
+<p>A table is one object, so it always has a border all the way around. That matches today.</p>
+
+<h2>6. Decisions</h2>
+<div class="p-decision"><h3>1. Five tint roles</h3><p>Adopt Page, Surface, Reference, Accent and Status as the only tint roles, one token each. Recommended.</p></div>
+<div class="p-decision"><h3>2. Selected uses Accent</h3><p>Retire <code>--ds-table-selected</code>; selected rows, the current TOC item, popovers and tooltips all use Accent. Active Wash stays for pressed and hover states only. Recommended.</p></div>
+<div class="p-decision"><h3>3. Always, never, optional</h3><p>Adopt the table in section 4, with only two optional tints (page zones, striped rows). Recommended.</p></div>
+<div class="p-decision"><h3>4. Space, tint, border</h3><p>Adopt the three rules in section 5 and write them on spacing.html, replacing "You do not need a border, really". Recommended.</p></div>
+<div class="p-decision"><h3>5. A dark value for Reference</h3><p>Give <code>--ds-surface-muted</code> its own dark value so data cards, table headers, notes and tags stay distinct from cards in dark mode. Recommended; the value needs a contrast check.</p></div>
+<div class="p-decision"><h3>6. Sidebar</h3><p>A hairline on the sidebar's inner edge (top edge when stacked). Recommended over a tint and over space only.</p></div>
+<div class="p-decision"><h3>7. Stepper</h3><p>No line under the stepper; text-only buttons and the 24px gap group it. Recommended over a dashed or solid line.</p></div>
+<div class="p-decision"><h3>8. Tables</h3><p>A border all the way around, always. Recommended; no change from today.</p></div>
+
+</div>
+</body>
+</html>
