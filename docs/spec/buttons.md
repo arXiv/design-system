@@ -43,7 +43,7 @@ components:
     summary: "This component is a variant of text-only buttons and attach a row of tiny controls to a content element. It is used on the HTML papers page for figures, formula, and more. They differ from default text-only buttons via their font size, color, and surrounding container. They appear when hovering over the parent element."
     classes:
       - name: ".ds-element-pill"
-        does: "The container: a white pill straddling the bottom edge of the content it belongs to. The wrapper supplies `position: relative`; the pill positions itself inside it. Documented with the other containers on [Organizing content](layout-patterns.html#chrome-anchored-to-content)."
+        does: "The container: a white pill straddling the bottom edge of the content it belongs to. The wrapper supplies `position: relative`; the pill positions itself inside it."
       - name: ".is-revealed"
         does: "The pill is hidden at rest and shown while the wrapped content is hovered or holds focus. The consumer adds and removes this class; the demo above keeps it on."
       - name: "The actions"
@@ -165,7 +165,7 @@ This component is a variant of text-only buttons and attach a row of tiny contro
 </figure>
 ```
 
-- `.ds-element-pill` — The container: a white pill straddling the bottom edge of the content it belongs to. The wrapper supplies `position: relative`; the pill positions itself inside it. Documented with the other containers on [Organizing content](layout-patterns.html#chrome-anchored-to-content).
+- `.ds-element-pill` — The container: a white pill straddling the bottom edge of the content it belongs to. The wrapper supplies `position: relative`; the pill positions itself inside it.
 - `.is-revealed` — The pill is hidden at rest and shown while the wrapped content is hovered or holds focus. The consumer adds and removes this class; the demo above keeps it on.
 - `The actions` — Plain `<button>` or `<a>` elements. The pill gives each a 24px target floor. Their type and colour have no class of their own yet; this page stages them locally.
 

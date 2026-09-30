@@ -2646,7 +2646,7 @@ html:has(.ds-modal[open]) {
    behaviour for free, and find-in-page can open a closed panel to show a
    match inside it — which no hand-built accordion does.
 
-   Ruled: a line above and below, no box. Inside .ds-rail the rules drop.
+   Ruled: a line above and below, no box. Inside .ds-sidebar the rules drop.
 
    Content rule (progressive-disclosure.html): never put must-see
    information ONLY inside a closed accordion. Default state is closed; a
@@ -2725,45 +2725,45 @@ html:has(.ds-modal[open]) {
   .ds-acc-body dd { grid-column: auto; }
 }
 
-/* RAIL  (.ds-rail) — layout-patterns.html
-   The sidebar beside the reading column, for supplementary content. The
-   rail's parent becomes the two-column layout; the rail wraps below the
+/* SIDEBAR  (.ds-sidebar) — layout-patterns.html
+   Beside the reading column, for supplementary content. The sidebar's
+   parent becomes the two-column layout; the sidebar wraps below the
    content when both no longer fit. Blocks are separated by spacing only. */
-:where(:has(> .ds-rail)) {
+:where(:has(> .ds-sidebar)) {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   gap: var(--ds-space-section);
 }
-/* The content takes all the spare width; alone on its row, the rail takes it all. */
-:where(:has(> .ds-rail)) > :not(.ds-rail) { flex: 999 1 24rem; min-width: 0; }
+/* The content takes all the spare width; alone on its row, the sidebar takes it all. */
+:where(:has(> .ds-sidebar)) > :not(.ds-sidebar) { flex: 999 1 24rem; min-width: 0; }
 /* Both columns start on the same line. */
-:where(:has(> .ds-rail)) > :not(.ds-rail) > :first-child { margin-block-start: 0; }
-.ds-rail {
+:where(:has(> .ds-sidebar)) > :not(.ds-sidebar) > :first-child { margin-block-start: 0; }
+.ds-sidebar {
   flex: 1 0 17rem;
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-6);
 }
-.ds-rail > * { margin: 0; }
+.ds-sidebar > * { margin: 0; }
 
-/* An accordion in the rail: no rules, because spacing already separates the
+/* An accordion in the sidebar: no rules, because spacing already separates the
    blocks; single-column internals for the narrow measure; a Link Blue +/−
    so a closed one still reads as interactive. */
-.ds-rail .ds-acc { border-top: 0; border-bottom: 0; margin: 0; }
-.ds-rail .ds-acc > summary {
+.ds-sidebar .ds-acc { border-top: 0; border-bottom: 0; margin: 0; }
+.ds-sidebar .ds-acc > summary {
   font-size: 0.82rem;
   /* 4px padding + matching negative margin: a ≥24px target, no layout shift. */
   padding: 4px 0;
   margin: -4px 0;
 }
-.ds-rail .ds-acc > summary::after { font-size: 1.1rem; color: var(--ds-link); }
-.ds-rail .ds-acc[open] > summary { margin-bottom: 6px; }
-.ds-rail .ds-acc-body { padding: 0; }
-.ds-rail .ds-acc-body dl { grid-template-columns: 1fr; gap: 0; }
-.ds-rail .ds-acc-body dt { margin-top: 10px; }
-.ds-rail .ds-acc-body dt:first-child { margin-top: 0; }
-.ds-rail .ds-acc-body dd { margin: 1px 0 0; grid-column: auto; }
+.ds-sidebar .ds-acc > summary::after { font-size: 1.1rem; color: var(--ds-link); }
+.ds-sidebar .ds-acc[open] > summary { margin-bottom: 6px; }
+.ds-sidebar .ds-acc-body { padding: 0; }
+.ds-sidebar .ds-acc-body dl { grid-template-columns: 1fr; gap: 0; }
+.ds-sidebar .ds-acc-body dt { margin-top: 10px; }
+.ds-sidebar .ds-acc-body dt:first-child { margin-top: 0; }
+.ds-sidebar .ds-acc-body dd { margin: 1px 0 0; grid-column: auto; }
 
 /* CONTENTS BAR  (.ds-toc-bar / .ds-toc / .ds-toc-trigger / .ds-toc-menu) — progressive-disclosure.html
    A page's own table of contents: one control that names the section the
