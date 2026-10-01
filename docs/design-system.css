@@ -1230,10 +1230,11 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    <thead> draws it, and a <th> in the body is a row header, set as a cell. */
 .ds-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;   /* collapse draws half the outer border outside the box, where .ds-table-scroll clips it */
+  border-spacing: 0;
   font-size: 0.8125rem;
   background: var(--ds-surface);
-  border: 1px solid var(--ds-border);
+  border: 1px solid var(--ds-border-strong);
   border-radius: 8px;
   overflow: hidden;      /* so the corners actually clip the header row */
 }
@@ -3550,7 +3551,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 }
 .ds-subnav a[aria-current="page"] {
   color: var(--ds-text);
-  font-weight: 600;
+  text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;   /* bold without widening, so nothing beside it moves */
   border-bottom-color: var(--ds-subnav-current, var(--ds-accent-strong));
 }
 @media (max-width: 599px) {
@@ -3589,7 +3590,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 }
 .ds-tabs-list [role="tab"][aria-selected="true"] {
   color: var(--ds-text);
-  font-weight: 600;
+  text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;   /* bold without widening, so nothing beside it moves */
   border-bottom-color: var(--ds-tabs-current, var(--ds-accent-strong));
 }
 .ds-tabs-panel:focus-visible {
