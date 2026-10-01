@@ -85,6 +85,8 @@ components:
         does: "Tints every even row of the body in Warm Wash, on both surfaces."
 rules:
   - "A table has a border all the way round, except directly inside a card, where the card is the frame and the table has none."
+  - "Directly inside a card"
+  - "Not directly inside a card"
   - "Pressing a sortable header, by mouse or keyboard, toggles through: descending → ascending → descending. Clicking a different column resets the previous column to unsorted. Sort logic is application-specific; the CSS only handles visual states."
   - "Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row. No background tint behind the action buttons — the bar itself stays neutral. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step."
   - "**Mark the header cells.** Put `scope=\"col\"` on every `<th>` in the header row, so a screen reader reads the column name with each cell instead of a bare value."
@@ -349,6 +351,8 @@ Every other row takes a tint, which helps the eye follow a long row across a wid
 ## Rules
 
 - A table has a border all the way round, except directly inside a card, where the card is the frame and the table has none.
+- Directly inside a card
+- Not directly inside a card
 - Pressing a sortable header, by mouse or keyboard, toggles through: descending → ascending → descending. Clicking a different column resets the previous column to unsorted. Sort logic is application-specific; the CSS only handles visual states.
 - Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row. No background tint behind the action buttons — the bar itself stays neutral. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step.
 - **Mark the header cells.** Put `scope="col"` on every `<th>` in the header row, so a screen reader reads the column name with each cell instead of a bare value.
