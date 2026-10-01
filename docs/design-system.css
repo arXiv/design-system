@@ -1343,6 +1343,43 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   border-radius: 2px;
 }
 
+/* FILTER BAR  (.ds-filter-bar) — tables.html
+   A <form method="get"> that narrows a whole view. Its choices go in the
+   address, so a filtered view can be linked. */
+.ds-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--ds-space-4);
+  padding: var(--ds-space-4);
+  margin: 0 0 var(--ds-space-6);
+  background: var(--ds-tint-warm);
+  border-radius: 8px;
+}
+.ds-filter-bar .ds-field { flex: 0 1 9.5rem; max-width: none; min-width: 7rem; margin: 0; }
+.ds-filter-bar-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--ds-space-4);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.ds-filter-bar-group:not(.ds-filter-bar-group--settings) { flex: 1 1 auto; }   /* fills its row, so the fields wrap only when they must */
+.ds-filter-bar-group > legend { float: left; width: 100%; margin: 0; padding: 0; }
+.ds-filter-bar-group--settings {
+  padding-inline-start: var(--ds-space-4);
+  border-inline-start: 1px solid var(--ds-border-strong);
+}
+.ds-filter-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-tight);
+  margin-inline-start: auto;
+}
+
 /* A toolbar row directly above a table keeps a gap from it. */
 .ds-btn-group:has(+ .ds-table, + .ds-table-scroll) { margin-bottom: var(--ds-space-3); }
 
@@ -3556,6 +3593,55 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 }
 @media (max-width: 599px) {
   .ds-subnav { padding: 0 12px; column-gap: var(--ds-space-4); }
+}
+
+/* STEPS  (.ds-subnav--steps) — header.html
+   The steps of one ordered process, on the secondary navigation bar. A
+   complete or available step is a link; the current step has
+   aria-current="step"; a step not available yet is a <span>. Which steps are
+   available is the application's logic. Wraps, like the bar. */
+.ds-subnav--steps > ol {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: inherit;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ds-subnav--steps li > a,
+.ds-subnav--steps li > span {
+  gap: var(--ds-space-2);
+}
+.ds-subnav--steps li > span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+  border-bottom: 3px solid transparent;
+  cursor: default;
+}
+.ds-step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid var(--ds-border-strong);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+.ds-step-number svg { width: 0.875rem; height: 0.875rem; stroke: currentColor; fill: none; }
+.ds-subnav--steps li > span .ds-step-number { border-style: dashed; }
+.ds-subnav--steps a[aria-current="step"] {
+  color: var(--ds-text);
+  text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;
+  border-bottom-color: var(--ds-subnav-current, var(--ds-accent-strong));
+}
+.ds-subnav--steps a[aria-current="step"] .ds-step-number {
+  border: 2px solid var(--ds-subnav-current, var(--ds-accent-strong));
 }
 
 /* TABS  (.ds-tabs) — progressive-disclosure.html

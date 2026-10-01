@@ -97,6 +97,7 @@
             <li><a href="#the-table">The table</a></li>
             <li><a href="#sortable-column-headers">Sortable column headers</a></li>
             <li><a href="#filter-toolbar">Filter toolbar</a></li>
+            <li><a href="#filter-bar">Filter bar</a></li>
             <li><a href="#row-selection">Row selection</a></li>
             <li><a href="#bulk-actions">Bulk actions</a></li>
             <li><a href="#striped-rows">Striped rows</a></li>
@@ -355,7 +356,7 @@
   <!-- ───────── Filter toolbar ───────── -->
   <section>
     <h2 id="filter-toolbar">Filter toolbar</h2>
-    <p class="ds-section-desc">The <code>.ds-filter</code> component provides a minimal underline-only <code>&lt;select&gt;</code> for filtering data. Typically placed in a toolbar row above or alongside a table. The custom chevron replaces the native dropdown arrow for visual consistency.</p>
+    <p class="ds-section-desc">The <code>.ds-filter</code> component provides a minimal underline-only <code>&lt;select&gt;</code> for filtering data. Typically placed in a toolbar row above or alongside a table. The custom chevron replaces the native dropdown arrow for visual consistency. To narrow a whole view, use the <a href="#filter-bar">filter bar</a>.</p>
 
     <p class="ds-panel-label">Filter select, standalone</p>
     <div class="ds-card">
@@ -463,6 +464,148 @@
         </div>
       </details>
     </div>
+  </section>
+
+  <!-- ───────── Filter bar ───────── -->
+  <section>
+    <h2 id="filter-bar">Filter bar</h2>
+    <p class="ds-section-desc">A row of fields that narrows everything below it, with one Apply
+    button. It is a <code>&lt;form method="get"&gt;</code>, so the choices go in the page address and a
+    filtered view can be linked.</p>
+
+    <div class="ds-card">
+      <form class="ds-filter-bar" method="get" action="tables.html#filter-bar" aria-label="Filters">
+        <div class="ds-filter-bar-group">
+          <div class="ds-field">
+            <label class="ds-label" for="fb-group">Group</label>
+            <select class="ds-input" id="fb-group" name="group">
+              <option>Physics</option>
+              <option>Mathematics</option>
+              <option>Computer Science</option>
+            </select>
+          </div>
+          <div class="ds-field">
+            <label class="ds-label" for="fb-archive">Archive</label>
+            <select class="ds-input" id="fb-archive" name="archive">
+              <option>All archives</option>
+              <option>cond-mat</option>
+              <option>hep-th</option>
+            </select>
+          </div>
+          <div class="ds-field">
+            <label class="ds-label" for="fb-category">Category</label>
+            <select class="ds-input" id="fb-category" name="category">
+              <option>All categories</option>
+              <option>cond-mat.str-el</option>
+              <option>cond-mat.soft</option>
+            </select>
+          </div>
+          <div class="ds-field">
+            <label class="ds-label" for="fb-from">From</label>
+            <input class="ds-input" id="fb-from" name="from" type="date" value="2026-09-01">
+          </div>
+          <div class="ds-field">
+            <label class="ds-label" for="fb-to">To</label>
+            <input class="ds-input" id="fb-to" name="to" type="date" value="2026-09-30">
+          </div>
+        </div>
+        <fieldset class="ds-filter-bar-group ds-filter-bar-group--settings">
+          <legend class="ds-panel-label">Settings</legend>
+          <div class="ds-field">
+            <label class="ds-label" for="fb-threshold">Threshold days</label>
+            <input class="ds-input" id="fb-threshold" name="threshold" type="number" min="1" value="7">
+          </div>
+        </fieldset>
+        <div class="ds-filter-bar-actions">
+          <a href="tables.html#filter-bar">Clear</a>
+          <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
+        </div>
+      </form>
+      <div class="ds-table-scroll" role="region" aria-label="Categories, filtered" tabindex="0">
+        <table class="ds-table">
+          <thead><tr><th scope="col">Category</th><th scope="col">New submissions</th><th scope="col">Open holds</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">cond-mat.str-el</th><td>214</td><td>6</td></tr>
+            <tr><th scope="row">cond-mat.soft</th><td>132</td><td>2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;form class="ds-filter-bar" method="get" action="tables.html#filter-bar" aria-label="Filters"&gt;
+  &lt;div class="ds-filter-bar-group"&gt;
+    &lt;div class="ds-field"&gt;
+      &lt;label class="ds-label" for="fb-group"&gt;Group&lt;/label&gt;
+      &lt;select class="ds-input" id="fb-group" name="group"&gt;
+        &lt;option&gt;Physics&lt;/option&gt;
+        &lt;option&gt;Mathematics&lt;/option&gt;
+        &lt;option&gt;Computer Science&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/div&gt;
+    &lt;div class="ds-field"&gt;
+      &lt;label class="ds-label" for="fb-archive"&gt;Archive&lt;/label&gt;
+      &lt;select class="ds-input" id="fb-archive" name="archive"&gt;
+        &lt;option&gt;All archives&lt;/option&gt;
+        &lt;option&gt;cond-mat&lt;/option&gt;
+        &lt;option&gt;hep-th&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/div&gt;
+    &lt;div class="ds-field"&gt;
+      &lt;label class="ds-label" for="fb-category"&gt;Category&lt;/label&gt;
+      &lt;select class="ds-input" id="fb-category" name="category"&gt;
+        &lt;option&gt;All categories&lt;/option&gt;
+        &lt;option&gt;cond-mat.str-el&lt;/option&gt;
+        &lt;option&gt;cond-mat.soft&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/div&gt;
+    &lt;div class="ds-field"&gt;
+      &lt;label class="ds-label" for="fb-from"&gt;From&lt;/label&gt;
+      &lt;input class="ds-input" id="fb-from" name="from" type="date" value="2026-09-01"&gt;
+    &lt;/div&gt;
+    &lt;div class="ds-field"&gt;
+      &lt;label class="ds-label" for="fb-to"&gt;To&lt;/label&gt;
+      &lt;input class="ds-input" id="fb-to" name="to" type="date" value="2026-09-30"&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;fieldset class="ds-filter-bar-group ds-filter-bar-group--settings"&gt;
+    &lt;legend class="ds-panel-label"&gt;Settings&lt;/legend&gt;
+    &lt;div class="ds-field"&gt;
+      &lt;label class="ds-label" for="fb-threshold"&gt;Threshold days&lt;/label&gt;
+      &lt;input class="ds-input" id="fb-threshold" name="threshold" type="number" min="1" value="7"&gt;
+    &lt;/div&gt;
+  &lt;/fieldset&gt;
+  &lt;div class="ds-filter-bar-actions"&gt;
+    &lt;a href="tables.html#filter-bar"&gt;Clear&lt;/a&gt;
+    &lt;button class="ds-btn ds-btn-primary" type="submit"&gt;Apply&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</code></pre>
+          <dl>
+            <dt>.ds-filter-bar</dt>
+            <dd>The <code>&lt;form method="get"&gt;</code>, on the warm tint, with an
+            <code>aria-label</code> such as "Filters". It narrows everything below it. One per view.
+            The row wraps on a narrow screen.</dd>
+            <dt>.ds-filter-bar-group</dt>
+            <dd>A row of fields. The fields are the standard <code>.ds-field</code>,
+            <code>.ds-label</code> and <code>.ds-input</code>, with labels above.</dd>
+            <dt>.ds-filter-bar-group--settings</dt>
+            <dd>Optional. A <code>&lt;fieldset&gt;</code> with a <code>&lt;legend&gt;</code>, set
+            apart by a line, for a setting: a number that changes a calculation, such as threshold
+            days. A setting is not a filter.</dd>
+            <dt>.ds-filter-bar-actions</dt>
+            <dd>Apply, a submit button, and an optional Clear link to the address without filters.
+            They sit at the end of the row.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <ul class="notes">
+      <li><strong>Filter bar or filter select.</strong> The filter bar narrows a whole view and
+      applies on Apply. <code>.ds-filter</code> narrows one table from inside its toolbar and applies
+      as soon as it changes.</li>
+      <li><strong>After Apply,</strong> the page reloads with the results. The server writes the chosen values back into the
+      fields, so each field shows what was applied.</li>
+    </ul>
   </section>
 
   <!-- ───────── Row selection ───────── -->
