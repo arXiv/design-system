@@ -6,10 +6,10 @@ stylesheet: design-system.css
 components:
   - id: the-table
     title: "The table"
-    summary: "One table, `.ds-table`, on the public site and in internal tools. It has row dividers and a row hover. The header row comes from the markup: a table with a `<thead>` has one, in condensed uppercase on a tinted row, and a table without one does not."
+    summary: "One table, `.ds-table`, on the public site and in internal tools. It has row dividers and a row hover. The header row comes from the markup: a table with a `<thead>` has one, in condensed uppercase body-colour text on the warm tint, and a table without one does not."
     classes:
       - name: ".ds-table"
-        does: "The whole table, on the `<table>` element: the frame, the row dividers and the row hover."
+        does: "The whole table, on the `<table>` element: the frame, the row dividers and the row hover. Directly inside a card it has no frame of its own; the card is the frame."
       - name: "<thead>"
         does: "Draws the header row. Leave it out and the table has none; no class turns the header row on or off."
       - name: "style=\"table-layout: fixed\""
@@ -84,6 +84,7 @@ components:
       - name: ".ds-table--striped"
         does: "Tints every even row of the body in Warm Wash, on both surfaces."
 rules:
+  - "A table has a border all the way round, except directly inside a card, where the card is the frame and the table has none."
   - "Pressing a sortable header, by mouse or keyboard, toggles through: descending → ascending → descending. Clicking a different column resets the previous column to unsorted. Sort logic is application-specific; the CSS only handles visual states."
   - "Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row. No background tint behind the action buttons — the bar itself stays neutral. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step."
   - "**Mark the header cells.** Put `scope=\"col\"` on every `<th>` in the header row, so a screen reader reads the column name with each cell instead of a bare value."
@@ -103,7 +104,7 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 ## The table
 
-One table, `.ds-table`, on the public site and in internal tools. It has row dividers and a row hover. The header row comes from the markup: a table with a `<thead>` has one, in condensed uppercase on a tinted row, and a table without one does not.
+One table, `.ds-table`, on the public site and in internal tools. It has row dividers and a row hover. The header row comes from the markup: a table with a `<thead>` has one, in condensed uppercase body-colour text on the warm tint, and a table without one does not.
 
 **With a header row**
 
@@ -149,7 +150,7 @@ One table, `.ds-table`, on the public site and in internal tools. It has row div
 </table>
 ```
 
-- `.ds-table` — The whole table, on the `<table>` element: the frame, the row dividers and the row hover.
+- `.ds-table` — The whole table, on the `<table>` element: the frame, the row dividers and the row hover. Directly inside a card it has no frame of its own; the card is the frame.
 - `<thead>` — Draws the header row. Leave it out and the table has none; no class turns the header row on or off.
 - `style="table-layout: fixed"` — Add it inline on the `<table>` when fixed column widths are needed. The table defaults to auto layout.
 - `.ds-table-footer` — A `<div>` below the table for row counts or pagination.
@@ -347,6 +348,7 @@ Every other row takes a tint, which helps the eye follow a long row across a wid
 
 ## Rules
 
+- A table has a border all the way round, except directly inside a card, where the card is the frame and the table has none.
 - Pressing a sortable header, by mouse or keyboard, toggles through: descending → ascending → descending. Clicking a different column resets the previous column to unsorted. Sort logic is application-specific; the CSS only handles visual states.
 - Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row. No background tint behind the action buttons — the bar itself stays neutral. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step.
 - **Mark the header cells.** Put `scope="col"` on every `<th>` in the header row, so a screen reader reads the column name with each cell instead of a bare value.
