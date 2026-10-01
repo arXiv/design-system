@@ -52,6 +52,18 @@ components:
         does: "On the trigger while its popover is open: a light-blue wash and an underline, so a reader glancing back at the paragraph can see which citation the panel belongs to. Pair it with `aria-expanded` on the trigger, which is what gives the same fact to a screen reader; the wash is the visible half of one state, not a decoration."
     notes:
       - "Popovers resize to the content but should be reserved for short pieces of information. If the content gets too long it may not be contained within the viewport."
+  - id: tabs
+    title: "Tabs"
+    summary: "Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](header.html#secondary-navigation) instead."
+    classes:
+      - name: ".ds-tabs"
+        does: "Holds two or more panels. `data-label` names the set for a screen reader."
+      - name: ".ds-tabs-panel"
+        does: "One view, a `<section>` that starts with a heading. The heading becomes the tab label."
+      - name: "tabs.js"
+        does: "Builds the tab list from the panel headings and adds the roles, the selected state and the keyboard: Tab reaches the selected tab, the arrow keys move between tabs, Home and End go to the first and last. Moving to a tab shows its panel. Without the script, every panel shows under its own heading."
+      - name: ".ds-tabs-list"
+        does: "The row of tabs, added by the script. The selected tab is bold with an underline bar. The row wraps on a narrow screen."
   - id: toc-bar
     title: "TOC bar"
     summary: "Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. The bar is always sticky and it stays at the top of the viewport while the reader scrolls through the page."
@@ -80,6 +92,7 @@ components:
       - name: "h3 before the stack"
         does: "The heading names the group, so it is found by heading navigation and every disclosure inside it is announced under that name."
 rules:
+  - "A view has one level of tabs. Tabs inside a tab panel are not used."
   - "**Never put must-see information only behind a disclosure.** The older-version warning appears in the main column even though the full history lives in the Versions accordion. A reader who never opens anything must still meet everything that matters."
   - "**Disclosure is not a fix for too much content.** If a page needs six accordions to be tolerable, the page has a structure problem and hiding things postpones it. Ask what can be cut or moved before asking what can be collapsed."
   - "**Default state is closed**, except that a single most-relevant panel may start open. Open state is not persisted — predictability beats memory here."
@@ -203,6 +216,34 @@ A quick lookup the reader can access without losing their place. Popovers are us
 
 > Popovers resize to the content but should be reserved for short pieces of information. If the content gets too long it may not be contained within the viewport.
 
+## Tabs
+
+Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](header.html#secondary-navigation) instead.
+
+```html
+<div class="ds-tabs" data-label="Membership activity">
+  <section class="ds-tabs-panel">
+    <h3>Members</h3>
+    <p>1,284 member institutions in 46 countries.</p>
+  </section>
+  <section class="ds-tabs-panel">
+    <h3>Submissions</h3>
+    <p>2,391 submissions from member institutions this month.</p>
+  </section>
+  <section class="ds-tabs-panel">
+    <h3>Downloads</h3>
+    <p>4.2 million downloads from member institutions this month.</p>
+  </section>
+</div>
+
+<script src="tabs.js" defer></script>
+```
+
+- `.ds-tabs` — Holds two or more panels. `data-label` names the set for a screen reader.
+- `.ds-tabs-panel` — One view, a `<section>` that starts with a heading. The heading becomes the tab label.
+- `tabs.js` — Builds the tab list from the panel headings and adds the roles, the selected state and the keyboard: Tab reaches the selected tab, the arrow keys move between tabs, Home and End go to the first and last. Moving to a tab shows its panel. Without the script, every panel shows under its own heading.
+- `.ds-tabs-list` — The row of tabs, added by the script. The selected tab is bold with an underline bar. The row wraps on a narrow screen.
+
 ## TOC bar
 
 Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. The bar is always sticky and it stays at the top of the viewport while the reader scrolls through the page.
@@ -288,6 +329,7 @@ A disclosure inside another one is the second level: indented one step, its labe
 
 ## Rules
 
+- A view has one level of tabs. Tabs inside a tab panel are not used.
 - **Never put must-see information only behind a disclosure.** The older-version warning appears in the main column even though the full history lives in the Versions accordion. A reader who never opens anything must still meet everything that matters.
 - **Disclosure is not a fix for too much content.** If a page needs six accordions to be tolerable, the page has a structure problem and hiding things postpones it. Ask what can be cut or moved before asking what can be collapsed.
 - **Default state is closed**, except that a single most-relevant panel may start open. Open state is not persisted — predictability beats memory here.

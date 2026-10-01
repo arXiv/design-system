@@ -1196,6 +1196,23 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-acc-body .ds-acc { margin-left: var(--ds-space-4); }
 .ds-acc-body .ds-acc > summary { font-size: 0.9em; }
 
+/* Stat card: one number with its label. */
+.ds-card--stat { background: var(--ds-tint-warm); }
+.ds-stat-value {
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-text);
+}
+.ds-stat-context {
+  margin: var(--ds-space-1) 0 0;
+  font-size: 0.8125rem;
+  color: var(--ds-text-muted);
+}
+
 /* Cards side by side. The count of columns follows the room rather than a
    breakpoint: the grid drops to one column when a card can no longer hold its
    minimum, and nothing has to be told. auto-fill, not auto-fit: an empty
@@ -1220,14 +1237,17 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   border-radius: 8px;
   overflow: hidden;      /* so the corners actually clip the header row */
 }
+/* Directly inside a card, the card is the frame. */
+.ds-card > .ds-table,
+.ds-card > .ds-table-scroll > .ds-table { border: none; border-radius: 0; }
 .ds-table thead th {
   text-align: left;
   font-family: var(--ds-font-condensed);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--ds-text-muted);
+  color: var(--ds-text);
   padding: 9px 14px;
   background: var(--ds-tint-warm);
   border-bottom: 1px solid var(--ds-border);
@@ -2580,6 +2600,7 @@ html:has(.ds-modal[open]) {
   --ds-accent-border:              var(--ds-access-lime-border);
   --ds-accent-border-active:       var(--ds-access-lime-deep);
   --ds-subnav-current:             var(--ds-access-lime-deep);
+  --ds-tabs-current:               var(--ds-access-lime-deep);
   --ds-accent-wash:                var(--ds-access-lime-wash);
   --ds-accent-wash-hover:          var(--ds-access-lime-wash-2);
   --ds-accent-wash-active:         var(--ds-access-lime-wash-3);
@@ -3534,6 +3555,51 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 }
 @media (max-width: 599px) {
   .ds-subnav { padding: 0 12px; column-gap: var(--ds-space-4); }
+}
+
+/* TABS  (.ds-tabs) — progressive-disclosure.html
+   Views of one page's content. tabs.js builds the tab list from each
+   panel's heading; without it every panel shows, each under its heading. */
+.ds-tabs-list {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--ds-space-6);
+  margin: 0 0 var(--ds-space-4);
+  border-bottom: 1px solid var(--ds-border);
+}
+.ds-tabs-list [role="tab"] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  margin-bottom: -1px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  font-family: var(--ds-font-sans);
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+  cursor: pointer;
+}
+.ds-tabs-list [role="tab"]:hover { color: var(--ds-text); border-bottom-color: var(--ds-border-strong); }
+.ds-tabs-list [role="tab"]:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.ds-tabs-list [role="tab"][aria-selected="true"] {
+  color: var(--ds-text);
+  font-weight: 600;
+  border-bottom-color: var(--ds-tabs-current, var(--ds-accent-strong));
+}
+.ds-tabs-panel:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+}
+.ds-tabs-panel[hidden] { display: none; }
+@media print {
+  .ds-tabs-list { display: none; }
+  .ds-tabs-panel[hidden], .ds-tabs-panel > [hidden] { display: block; }
 }
 
 /* ── Header search overlay (.ds-search-overlay) ─────────────────────────

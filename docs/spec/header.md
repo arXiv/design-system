@@ -66,7 +66,7 @@ components:
         does: "On the menu link for the page the reader is on. The menu shows it in bold, and a screen reader announces it."
   - id: secondary-navigation
     title: "Secondary navigation"
-    summary: "A row of section links directly under the header, for an area that has its own sections, such as the account pages. It wraps onto a second line rather than scrolling sideways, so every section stays visible on a phone and at high zoom."
+    summary: "A row of section links directly under the header, for an area that has its own sections, such as the account pages. It wraps onto a second line rather than scrolling sideways, so every section stays visible on a phone and at high zoom. To switch views within one page, use [tabs](progressive-disclosure.html#tabs)."
     classes:
       - name: ".ds-subnav"
         does: "A `<nav>` directly after the header, with an `aria-label` that names the area, such as “Account sections”. Plain links; never `role=\"tab\"`, which would promise arrow-key behaviour that page links do not have. Hidden in print."
@@ -270,7 +270,7 @@ A property whose sections need grouping adds `.ds-site-header-dropdown`, built o
 
 ## Secondary navigation
 
-A row of section links directly under the header, for an area that has its own sections, such as the account pages. It wraps onto a second line rather than scrolling sideways, so every section stays visible on a phone and at high zoom.
+A row of section links directly under the header, for an area that has its own sections, such as the account pages. It wraps onto a second line rather than scrolling sideways, so every section stays visible on a phone and at high zoom. To switch views within one page, use [tabs](progressive-disclosure.html#tabs).
 
 ```html
 <header class="ds-site-header">…</header>

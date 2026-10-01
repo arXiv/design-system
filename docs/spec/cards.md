@@ -24,6 +24,18 @@ components:
         does: "The label is small, condensed and uppercased by CSS: type it in sentence case. The value is in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A value that goes somewhere is an `<a href>` and takes the ordinary link colours."
       - name: ".ds-internal"
         does: "The top edge takes Access Lime. The markup is the public one."
+  - id: stat-cards
+    title: "Stat cards"
+    summary: "One number with its label, on the warm tint. Use a group of them for a summary at the top of a dashboard."
+    classes:
+      - name: ".ds-card--stat"
+        does: "A card that holds one number. Warm tint, the same on both surfaces."
+      - name: ".ds-panel-label"
+        does: "What the number counts. It comes first, so a screen reader reads the label before the number."
+      - name: ".ds-stat-value"
+        does: "The number: 2rem, weight 600, with tabular figures so numbers in a row of cards line up."
+      - name: ".ds-stat-context"
+        does: "Optional. One short line under the number, such as a change or a unit."
   - id: groups-of-cards
     title: "Groups of cards"
     summary: "Peers in a set share one grid. The count of columns does not follow a breakpoint but adjusts to the content. The grid will drop to one column when a card can no longer hold its minimum width."
@@ -108,6 +120,23 @@ Intended for organizing metadata and other reference information: the facts abou
 - `dl > div` — One pair per `<div>`, `<dt>` label then `<dd>` value. Pairs sit side by side when the card is wide enough for two and stack in one column when it is not; a hairline separates them in both directions.
 - `dt, dd` — The label is small, condensed and uppercased by CSS: type it in sentence case. The value is in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A value that goes somewhere is an `<a href>` and takes the ordinary link colours.
 - `.ds-internal` — The top edge takes Access Lime. The markup is the public one.
+
+## Stat cards
+
+One number with its label, on the warm tint. Use a group of them for a summary at the top of a dashboard.
+
+```html
+<div class="ds-card ds-card--stat">
+  <p class="ds-panel-label">Member institutions</p>
+  <p class="ds-stat-value">1,284</p>
+  <p class="ds-stat-context">12 more than last month</p>
+</div>
+```
+
+- `.ds-card--stat` — A card that holds one number. Warm tint, the same on both surfaces.
+- `.ds-panel-label` — What the number counts. It comes first, so a screen reader reads the label before the number.
+- `.ds-stat-value` — The number: 2rem, weight 600, with tabular figures so numbers in a row of cards line up.
+- `.ds-stat-context` — Optional. One short line under the number, such as a change or a unit.
 
 ## Groups of cards
 
