@@ -22,14 +22,14 @@ components:
       - "Alert vs announcement? An alert belongs to the page’s content and is specific to that user’s journey. The announcement belongs to the site and is for all users."
   - id: notes
     title: "Notes"
-    summary: "A box in the flow of a page that names its own register before the reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on the internal surface. The tab is the whole design. It is also what keeps a note from reading as an [alert](alerts.html) — an alert reports a state as of right now and can be dismissed, a note is always true and stays."
+    summary: "A box in the flow of a page that names its own register before the reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on the internal surface. The tab is the whole design. It is also what keeps a note from reading as an [alert](alerts.html) — an alert reports a state as of right now and can be dismissed, a note is always true and stays. A note keeps its colours on every surface; `.ds-internal` does not change them."
     classes:
       - name: ".ds-note"
         does: "The box, on a `<div>` in the flow of the page. On its own it is the grey register: guidance."
       - name: ".ds-note-label"
         does: "The tab, and the note's first child. The label is a heading, at whatever level the page is up to: `.ds-note-label` resets the type completely, so `h2` through `h4` all render the same tab. Keeping it a heading keeps the note in the document outline, which is how a screen-reader user finds it."
       - name: ".ds-note--essential"
-        does: "The blue register: a requirement."
+        does: "The blue register: a requirement. It uses the info status colours."
       - name: ".ds-note--internal"
         does: "The lime register: how the component differs in internal tools."
       - name: ".ds-note-gotcha"
@@ -97,7 +97,7 @@ The announcement band is minimal but gets a lot of attention. Use sparingly to m
 
 ## Notes
 
-A box in the flow of a page that names its own register before the reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on the internal surface. The tab is the whole design. It is also what keeps a note from reading as an [alert](alerts.html) — an alert reports a state as of right now and can be dismissed, a note is always true and stays.
+A box in the flow of a page that names its own register before the reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on the internal surface. The tab is the whole design. It is also what keeps a note from reading as an [alert](alerts.html) — an alert reports a state as of right now and can be dismissed, a note is always true and stays. A note keeps its colours on every surface; `.ds-internal` does not change them.
 
 ```html
 <div class="ds-note ds-note--essential">
@@ -109,7 +109,7 @@ A box in the flow of a page that names its own register before the reader starts
 
 - `.ds-note` — The box, on a `<div>` in the flow of the page. On its own it is the grey register: guidance.
 - `.ds-note-label` — The tab, and the note's first child. The label is a heading, at whatever level the page is up to: `.ds-note-label` resets the type completely, so `h2` through `h4` all render the same tab. Keeping it a heading keeps the note in the document outline, which is how a screen-reader user finds it.
-- `.ds-note--essential` — The blue register: a requirement.
+- `.ds-note--essential` — The blue register: a requirement. It uses the info status colours.
 - `.ds-note--internal` — The lime register: how the component differs in internal tools.
 - `.ds-note-gotcha` — A ruled-off warning at the foot of the note, on a `<p>` whose first child is a `<strong>` lead.
 
