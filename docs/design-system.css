@@ -205,6 +205,7 @@
   --ds-gap-glyph: 0.5em;
 
   --ds-width-page:  850px;
+  --ds-width-wide:  1080px;   /* dense internal tools: .ds-container--wide */
   --ds-gutter:  var(--ds-space-6);
 }
 
@@ -297,6 +298,8 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   grid-column: full;
   padding-inline: max(var(--ds-gutter), (100% - var(--ds-width-page)) / 2);
 }
+/* A dense internal tool: the same container at the wider width. */
+.ds-container--wide { --ds-width-page: var(--ds-width-wide); }
 
 /* PAGE ZONES  (.ds-zone-secondary / .ds-zone-primary) — layout-patterns.html
    Two grounds that say what kind of content a reader is in. Primary is the
@@ -1357,6 +1360,11 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   border-radius: 8px;
 }
 .ds-filter-bar .ds-field { flex: 0 1 9.5rem; max-width: none; min-width: 7rem; margin: 0; }
+/* Once the fields stack, each takes the full width of the bar. */
+.ds-filter-bar { container-type: inline-size; }
+@container (max-width: 30rem) {
+  .ds-filter-bar .ds-field { flex: 1 1 100%; }
+}
 .ds-filter-bar-group {
   display: flex;
   flex-wrap: wrap;
@@ -1385,6 +1393,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 
 /* A table wider than its container scrolls inside this wrapper; the page never scrolls sideways. */
 .ds-table-scroll { overflow-x: auto; }
+
+/* A numeric column: numbers align on the right and their digits line up. */
+.ds-table .ds-num { text-align: end; font-variant-numeric: tabular-nums; }
 
 /* Below the table: a row count or pagination. */
 .ds-table-footer {
