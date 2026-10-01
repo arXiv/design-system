@@ -95,6 +95,13 @@ components:
     classes:
       - name: ".ds-table--striped"
         does: "Tints every even row of the body in Warm Wash, on both surfaces."
+  - id: numeric-columns
+    title: "Numeric columns"
+    group: "Modifiers"
+    summary: "Numbers align on the right, and their digits line up from row to row."
+    classes:
+      - name: ".ds-num"
+        does: "On every cell of a numeric column, the header included. Aligns the numbers on the right and uses tabular figures."
 rules:
   - "A table has a border all the way round, except directly inside a card, where the card is the frame and the table has none."
   - "Directly inside a card"
@@ -418,6 +425,18 @@ Every other row takes a tint, which helps the eye follow a long row across a wid
 ```
 
 - `.ds-table--striped` — Tints every even row of the body in Warm Wash, on both surfaces.
+
+## Numeric columns  (Modifiers)
+
+Numbers align on the right, and their digits line up from row to row.
+
+```html
+<th scope="col" class="ds-num">New submissions</th>
+…
+<td class="ds-num">3,961</td>
+```
+
+- `.ds-num` — On every cell of a numeric column, the header included. Aligns the numbers on the right and uses tabular figures.
 
 ## Rules
 
