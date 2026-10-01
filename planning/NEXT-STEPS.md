@@ -719,3 +719,4 @@ Demo / reference `.html` pages that don't exist yet — each renders the compone
 - [ ] Reader TOC mobile fade mask → add the **half-item peek** as its primary continuation signal (small follow-up noted in PROPOSED-GUIDELINES G10).
 
 - **Sidebar tint or border (deferred 2026-09-30):** decide once the mockups are updated with the design-system sidebar, against real content. See planning/proposals/tints.html.
+- User portal mockup (when rebuilt): Moderation and Administration move to the internal tools (decided 2026-10-01).
