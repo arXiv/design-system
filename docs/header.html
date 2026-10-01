@@ -99,6 +99,7 @@
             <li><a href="#on-small-screens">On small screens</a></li>
             <li><a href="#header-dropdown-menus">Header dropdown menus</a></li>
             <li><a href="#secondary-navigation">Secondary navigation</a></li>
+            <li><a href="#steps">Steps</a></li>
             <li><a href="#with-the-announcement-band">With the announcement band</a></li>
             <li><a href="#the-light-variant">The light variant</a></li>
             <li><a href="#internal-headers">Internal header</a></li>
@@ -600,6 +601,70 @@
     </div>
   </section>
 
+  <!-- ───────── Steps ───────── -->
+  <section>
+    <h2 id="steps">Steps</h2>
+    <p class="ds-section-desc">The steps of one ordered process, such as a submission, and which one the reader is on. Steps is a variant of the secondary navigation bar. To move through a queue one item at a time, use the <a href="pager.html">pager</a>. Which steps are available is the application's logic: submission, for example, lets the reader go back to a complete step but not jump ahead.</p>
+    <div class="ds-card">
+      <p class="ds-panel-label">Public</p>
+      <nav class="ds-subnav ds-subnav--steps" aria-label="Submission steps">
+        <ol role="list">
+            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Start<span class="is-sr-only">, completed</span></a></li>
+            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>License<span class="is-sr-only">, completed</span></a></li>
+            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Files<span class="is-sr-only">, completed</span></a></li>
+            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Process<span class="is-sr-only">, completed</span></a></li>
+            <li><a href="#" aria-current="step"><span class="ds-step-number" aria-hidden="true">5</span>Metadata</a></li>
+            <li><a href="#"><span class="ds-step-number" aria-hidden="true">6</span>Categories</a></li>
+            <li><span><span class="ds-step-number" aria-hidden="true">7</span>Preview<span class="is-sr-only">, not available yet</span></span></li>
+            <li><span><span class="ds-step-number" aria-hidden="true">8</span>Submit<span class="is-sr-only">, not available yet</span></span></li>
+        </ol>
+      </nav>
+      <div class="ds-internal">
+        <p class="ds-panel-label">Internal</p>
+        <nav class="ds-subnav ds-subnav--steps" aria-label="Review steps">
+          <ol role="list">
+            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Check<span class="is-sr-only">, completed</span></a></li>
+            <li><a href="#" aria-current="step"><span class="ds-step-number" aria-hidden="true">2</span>Classify</a></li>
+            <li><span><span class="ds-step-number" aria-hidden="true">3</span>Announce<span class="is-sr-only">, not available yet</span></span></li>
+          </ol>
+        </nav>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav class="ds-subnav ds-subnav--steps" aria-label="Submission steps"&gt;
+  &lt;ol role="list"&gt;
+    &lt;li&gt;&lt;a href="#"&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;&lt;svg …check…&gt;&lt;/span&gt;Start&lt;span class="is-sr-only"&gt;, completed&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#" aria-current="step"&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;5&lt;/span&gt;Metadata&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;6&lt;/span&gt;Categories&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;7&lt;/span&gt;Preview&lt;span class="is-sr-only"&gt;, not available yet&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-subnav--steps</dt>
+            <dd>On the secondary navigation bar. It holds an <code>&lt;ol role="list"&gt;</code>, one
+            <code>&lt;li&gt;</code> per step. It wraps onto more lines on a narrow screen, so every step
+            stays visible.</dd>
+            <dt>.ds-step-number</dt>
+            <dd>The step number in a circle, hidden from screen readers because the list gives the
+            position. A complete step shows a check mark instead of its number.</dd>
+            <dt>Complete step</dt>
+            <dd>A link, with the check mark and <code>.is-sr-only</code> text “, completed”.</dd>
+            <dt>aria-current="step"</dt>
+            <dd>On the link for the current step. It shows in bold with an underline bar and a heavier
+            circle.</dd>
+            <dt>Available step</dt>
+            <dd>A link with its number.</dd>
+            <dt>Step not available yet</dt>
+            <dd>A <code>&lt;span&gt;</code>, not a link, so it is not a tab stop. A dashed circle and
+            <code>.is-sr-only</code> text “, not available yet”.</dd>
+            <dt>.ds-internal</dt>
+            <dd>On a parent, it turns the underline bar and the current circle Access Lime Deep.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
   <div class="ds-note ds-note--essential">
     <h3 class="ds-note-label">Accessibility essentials</h3>
     <ul class="notes">
@@ -888,6 +953,7 @@
       internal tools; arxiv.org’s public header scrolls away (DESIGN-POLICIES).</li>
       <li><strong>The greeting is the first name, everywhere.</strong> Public and internal headers
       show the given name only, capped at 14 characters.</li>
+      <li><strong>One bar under the header.</strong> A page shows either secondary navigation or steps, never both.</li>
       <li><strong>Breadcrumbs only on pages without secondary navigation.</strong> arXiv’s sitemap is
       wide and shallow, so almost no page needs a breadcrumb. Where the secondary navigation shows
       the reader’s place, a breadcrumb would repeat it.</li>

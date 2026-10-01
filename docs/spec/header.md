@@ -74,6 +74,24 @@ components:
         does: "On the link for the current page. It shows in bold with an underline bar, so the current section never depends on colour alone, and a screen reader announces it."
       - name: ".ds-internal"
         does: "On a parent, it turns the underline bar Access Lime Deep. Nothing else changes."
+  - id: steps
+    title: "Steps"
+    summary: "The steps of one ordered process, such as a submission, and which one the reader is on. Steps is a variant of the secondary navigation bar. To move through a queue one item at a time, use the [pager](pager.html). Which steps are available is the application's logic: submission, for example, lets the reader go back to a complete step but not jump ahead."
+    classes:
+      - name: ".ds-subnav--steps"
+        does: "On the secondary navigation bar. It holds an `<ol role=\"list\">`, one `<li>` per step. It wraps onto more lines on a narrow screen, so every step stays visible."
+      - name: ".ds-step-number"
+        does: "The step number in a circle, hidden from screen readers because the list gives the position. A complete step shows a check mark instead of its number."
+      - name: "Complete step"
+        does: "A link, with the check mark and `.is-sr-only` text “, completed”."
+      - name: "aria-current=\"step\""
+        does: "On the link for the current step. It shows in bold with an underline bar and a heavier circle."
+      - name: "Available step"
+        does: "A link with its number."
+      - name: "Step not available yet"
+        does: "A `<span>`, not a link, so it is not a tab stop. A dashed circle and `.is-sr-only` text “, not available yet”."
+      - name: ".ds-internal"
+        does: "On a parent, it turns the underline bar and the current circle Access Lime Deep."
   - id: with-the-announcement-band
     title: "With the announcement band"
     group: "Modifiers"
@@ -122,6 +140,7 @@ rules:
   - "**Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link in the navigation. Internal tools keep their search fields in the tools region."
   - "**Sticky on internal tools only.** `.ds-site-header--sticky` is for internal tools; arxiv.org’s public header scrolls away (DESIGN-POLICIES)."
   - "**The greeting is the first name, everywhere.** Public and internal headers show the given name only, capped at 14 characters."
+  - "**One bar under the header.** A page shows either secondary navigation or steps, never both."
   - "**Breadcrumbs only on pages without secondary navigation.** arXiv’s sitemap is wide and shallow, so almost no page needs a breadcrumb. Where the secondary navigation shows the reader’s place, a breadcrumb would repeat it."
   - "**Type sizes are rem** so browser font-size overrides propagate; the header, the announcement band and the secondary navigation are hidden in print."
   - "**The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content."
@@ -286,6 +305,29 @@ A row of section links directly under the header, for an area that has its own s
 - `aria-current="page"` — On the link for the current page. It shows in bold with an underline bar, so the current section never depends on colour alone, and a screen reader announces it.
 - `.ds-internal` — On a parent, it turns the underline bar Access Lime Deep. Nothing else changes.
 
+## Steps
+
+The steps of one ordered process, such as a submission, and which one the reader is on. Steps is a variant of the secondary navigation bar. To move through a queue one item at a time, use the [pager](pager.html). Which steps are available is the application's logic: submission, for example, lets the reader go back to a complete step but not jump ahead.
+
+```html
+<nav class="ds-subnav ds-subnav--steps" aria-label="Submission steps">
+  <ol role="list">
+    <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg …check…></span>Start<span class="is-sr-only">, completed</span></a></li>
+    <li><a href="#" aria-current="step"><span class="ds-step-number" aria-hidden="true">5</span>Metadata</a></li>
+    <li><a href="#"><span class="ds-step-number" aria-hidden="true">6</span>Categories</a></li>
+    <li><span><span class="ds-step-number" aria-hidden="true">7</span>Preview<span class="is-sr-only">, not available yet</span></span></li>
+  </ol>
+</nav>
+```
+
+- `.ds-subnav--steps` — On the secondary navigation bar. It holds an `<ol role="list">`, one `<li>` per step. It wraps onto more lines on a narrow screen, so every step stays visible.
+- `.ds-step-number` — The step number in a circle, hidden from screen readers because the list gives the position. A complete step shows a check mark instead of its number.
+- `Complete step` — A link, with the check mark and `.is-sr-only` text “, completed”.
+- `aria-current="step"` — On the link for the current step. It shows in bold with an underline bar and a heavier circle.
+- `Available step` — A link with its number.
+- `Step not available yet` — A `<span>`, not a link, so it is not a tab stop. A dashed circle and `.is-sr-only` text “, not available yet”.
+- `.ds-internal` — On a parent, it turns the underline bar and the current circle Access Lime Deep.
+
 ## With the announcement band  (Modifiers)
 
 When arXiv has something to say to everyone, an announcement band can be displayed above the header bar. Neither is fixed; the two scroll away together. See [Announcement band](messages.html#announcement-band) for the full documentation.
@@ -405,6 +447,7 @@ Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top o
 - **Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link in the navigation. Internal tools keep their search fields in the tools region.
 - **Sticky on internal tools only.** `.ds-site-header--sticky` is for internal tools; arxiv.org’s public header scrolls away (DESIGN-POLICIES).
 - **The greeting is the first name, everywhere.** Public and internal headers show the given name only, capped at 14 characters.
+- **One bar under the header.** A page shows either secondary navigation or steps, never both.
 - **Breadcrumbs only on pages without secondary navigation.** arXiv’s sitemap is wide and shallow, so almost no page needs a breadcrumb. Where the secondary navigation shows the reader’s place, a breadcrumb would repeat it.
 - **Type sizes are rem** so browser font-size overrides propagate; the header, the announcement band and the secondary navigation are hidden in print.
 - **The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content.

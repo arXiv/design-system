@@ -46,7 +46,7 @@ components:
       - "Sort logic is application-specific; the CSS only handles visual states."
   - id: filter-toolbar
     title: "Filter toolbar"
-    summary: "The `.ds-filter` component provides a minimal underline-only `<select>` for filtering data. Typically placed in a toolbar row above or alongside a table. The custom chevron replaces the native dropdown arrow for visual consistency."
+    summary: "The `.ds-filter` component provides a minimal underline-only `<select>` for filtering data. Typically placed in a toolbar row above or alongside a table. The custom chevron replaces the native dropdown arrow for visual consistency. To narrow a whole view, use the [filter bar](#filter-bar)."
     classes:
       - name: ".ds-filter"
         does: "The wrapper. Holds one `<label>` and one `<select>`. The select gets an underline-only border, the custom chevron, and a focus ring in `--ds-focus-ring`. Always include an “All” option as the inclusive default."
@@ -56,6 +56,18 @@ components:
         does: "The container for two or more filters side by side, the same one any set of related controls takes."
       - name: ".ds-btn-group--end"
         does: "Pushes the filter to the trailing edge of the toolbar row, where filters sit."
+  - id: filter-bar
+    title: "Filter bar"
+    summary: "A row of fields that narrows everything below it, with one Apply button. It is a `<form method=\"get\">`, so the choices go in the page address and a filtered view can be linked."
+    classes:
+      - name: ".ds-filter-bar"
+        does: "The `<form method=\"get\">`, on the warm tint, with an `aria-label` such as \"Filters\". It narrows everything below it. One per view. The row wraps on a narrow screen."
+      - name: ".ds-filter-bar-group"
+        does: "A row of fields. The fields are the standard `.ds-field`, `.ds-label` and `.ds-input`, with labels above."
+      - name: ".ds-filter-bar-group--settings"
+        does: "Optional. A `<fieldset>` with a `<legend>`, set apart by a line, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter."
+      - name: ".ds-filter-bar-actions"
+        does: "Apply, a submit button, and an optional Clear link to the address without filters. They sit at the end of the row."
   - id: row-selection
     title: "Row selection"
     summary: "Rows a reader can choose, one checkbox per row, so an action can apply to several at once."
@@ -211,7 +223,7 @@ A sortable column has a `<button class="sortable">` inside its `<th>`, holding t
 
 ## Filter toolbar
 
-The `.ds-filter` component provides a minimal underline-only `<select>` for filtering data. Typically placed in a toolbar row above or alongside a table. The custom chevron replaces the native dropdown arrow for visual consistency.
+The `.ds-filter` component provides a minimal underline-only `<select>` for filtering data. Typically placed in a toolbar row above or alongside a table. The custom chevron replaces the native dropdown arrow for visual consistency. To narrow a whole view, use the [filter bar](#filter-bar).
 
 **Filter select, standalone**
 
@@ -250,6 +262,65 @@ The `.ds-filter` component provides a minimal underline-only `<select>` for filt
 - `<label for>, <select id>` — Required. The visible label is the select’s name: the `for` attribute points at the select’s `id`.
 - `.ds-btn-group` — The container for two or more filters side by side, the same one any set of related controls takes.
 - `.ds-btn-group--end` — Pushes the filter to the trailing edge of the toolbar row, where filters sit.
+
+## Filter bar
+
+A row of fields that narrows everything below it, with one Apply button. It is a `<form method="get">`, so the choices go in the page address and a filtered view can be linked.
+
+```html
+<form class="ds-filter-bar" method="get" action="tables.html#filter-bar" aria-label="Filters">
+  <div class="ds-filter-bar-group">
+    <div class="ds-field">
+      <label class="ds-label" for="fb-group">Group</label>
+      <select class="ds-input" id="fb-group" name="group">
+        <option>Physics</option>
+        <option>Mathematics</option>
+        <option>Computer Science</option>
+      </select>
+    </div>
+    <div class="ds-field">
+      <label class="ds-label" for="fb-archive">Archive</label>
+      <select class="ds-input" id="fb-archive" name="archive">
+        <option>All archives</option>
+        <option>cond-mat</option>
+        <option>hep-th</option>
+      </select>
+    </div>
+    <div class="ds-field">
+      <label class="ds-label" for="fb-category">Category</label>
+      <select class="ds-input" id="fb-category" name="category">
+        <option>All categories</option>
+        <option>cond-mat.str-el</option>
+        <option>cond-mat.soft</option>
+      </select>
+    </div>
+    <div class="ds-field">
+      <label class="ds-label" for="fb-from">From</label>
+      <input class="ds-input" id="fb-from" name="from" type="date" value="2026-09-01">
+    </div>
+    <div class="ds-field">
+      <label class="ds-label" for="fb-to">To</label>
+      <input class="ds-input" id="fb-to" name="to" type="date" value="2026-09-30">
+    </div>
+  </div>
+  <fieldset class="ds-filter-bar-group ds-filter-bar-group--settings">
+    <legend class="ds-panel-label">Settings</legend>
+    <div class="ds-field">
+      <label class="ds-label" for="fb-threshold">Threshold days</label>
+      <input class="ds-input" id="fb-threshold" name="threshold" type="number" min="1" value="7">
+    </div>
+  </fieldset>
+  <div class="ds-filter-bar-actions">
+    <a href="tables.html#filter-bar">Clear</a>
+    <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
+  </div>
+</form>
+```
+
+- `.ds-filter-bar` — The `<form method="get">`, on the warm tint, with an `aria-label` such as "Filters". It narrows everything below it. One per view. The row wraps on a narrow screen.
+- `.ds-filter-bar-group` — A row of fields. The fields are the standard `.ds-field`, `.ds-label` and `.ds-input`, with labels above.
+- `.ds-filter-bar-group--settings` — Optional. A `<fieldset>` with a `<legend>`, set apart by a line, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter.
+- `.ds-filter-bar-actions` — Apply, a submit button, and an optional Clear link to the address without filters. They sit at the end of the row.
 
 ## Row selection
 
