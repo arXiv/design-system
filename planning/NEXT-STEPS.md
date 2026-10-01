@@ -208,10 +208,10 @@ Simplest first, so the pattern-page rhythm is set before the harder ones.
       **Documented** on `header.html`: why it is a disclosure and
       not `role="menu"` — an ARIA menu promises roving arrow-key focus that a
       list of links does not have.
-- [x] **8b.** DONE 2026-09-09 as `.ds-pagination` — a **record stepper**, which
+- [x] **8b.** DONE 2026-09-09 as `.ds-pagination` — a **record pager**, which
       is what the internal styles actually had: the ownership-requests mockup's
       Previous / Next with "Request 3 of 15". Not numbered pages; nothing at
-      arXiv needs those, and a stepper answers "what is next" while page numbers
+      arXiv needs those, and a pager answers "what is next" while page numbers
       answer "take me to item 40".
       The position is an `aria-live` region — without it a reader who cannot see
       the counter has no way to know that Next did anything. Ends disable rather

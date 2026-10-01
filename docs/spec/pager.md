@@ -1,11 +1,11 @@
 ---
-page: stepper.html
-title: "Stepper"
+page: pager.html
+title: "Pager"
 summary: "Previous and Next controls with a position counter for going through a set, one item at a time."
 stylesheet: design-system.css
 components:
-  - id: the-stepper
-    title: "The stepper"
+  - id: the-pager
+    title: "The pager"
     summary: "This component group is for moving through items one at a time, such as a moderation queue or a run of submissions, where each item has its own screen and someone works through them in order. Our current usage is in the Admin Console but it is available in other contexts."
     classes:
       - name: ".ds-pagination"
@@ -21,21 +21,21 @@ components:
       - name: ".ds-table, .is-selected"
         does: "The papers in the current request, with a checkbox per row. See [Row selection](tables.html#row-selection)."
     notes:
-      - "Only use a stepper when the user can focus on just one item at a time without needing context from others in the set."
+      - "Only use a pager when the user can focus on just one item at a time without needing context from others in the set."
 rules:
   - "**Name the set.** The `<nav>` takes an `aria-label` that says what it steps through, such as “Queue navigation”."
   - "**Announce the position.** The counter is a polite live region, so each step is announced without moving focus."
   - "**Disable the ends, do not remove them.** Previous on the first item and Next on the last stay in place, disabled."
 ---
 
-# Stepper
+# Pager
 
 Previous and Next controls with a position counter for going through a set, one item at a time.
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
 
-## The stepper
+## The pager
 
 This component group is for moving through items one at a time, such as a moderation queue or a run of submissions, where each item has its own screen and someone works through them in order. Our current usage is in the Admin Console but it is available in other contexts.
 
@@ -104,7 +104,7 @@ This component group is for moving through items one at a time, such as a modera
 - `.ds-btn-group, .ds-bulk-count, .ds-filter` — The group actions row: the actions, the selection count, and a filter at the far end. See [Bulk actions](tables.html#bulk-actions).
 - `.ds-table, .is-selected` — The papers in the current request, with a checkbox per row. See [Row selection](tables.html#row-selection).
 
-> Only use a stepper when the user can focus on just one item at a time without needing context from others in the set.
+> Only use a pager when the user can focus on just one item at a time without needing context from others in the set.
 
 ## Rules
 
