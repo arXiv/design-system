@@ -9,9 +9,9 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Path | What it is | Build reference? |
 |---|---|---|
 | `docs/` | THE documentation: rules + pattern pages + stylesheets | **Yes — the only place** |
-| `mockups/` | work-in-progress page explorations | **Never.** Not for building, not for style reference — patterns get promoted *into* docs/ when stable |
+| `whiteboard/mockups/` | work-in-progress page explorations | **Never.** Not for building, not for style reference — patterns get promoted *into* docs/ when stable |
 | `verification/` | audits, design reviews, agent test results | No |
-| `planning/` | backlog, proposals, decision logs | Only for program/planning work |
+| `whiteboard/planning/` | backlog, proposals, decision logs | Only for program/planning work |
 | `blog-theme/` | packaged copy (zip) of the blog.arxiv.org WordPress theme — a **separate project** that extends the design system; its source lives in another repo | **Never.** Its CSS includes agreed blog-only exceptions; do not read it as the rule, and do not sync it — see below |
 | `templates/` | the distributable brand head/header/footer, written once in "portable Jinja" (`{{ var }}` + raw HTML; `arxiv_brand/`, which is also the Python package), the adapters generated from it (React, TemplateToolkit, static HTML) and the chrome JS — the reusable chrome other arXiv apps install from git, their lock files pinning the SHA (see `templates/README.md`) | **Markup only.** Styling stays in `docs/`; these templates are `docs/{header,footer}.html` parameterised, and never a second copy of the CSS |
 
@@ -89,7 +89,7 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
 
 ## Writing rules — for edits to docs/
 
-- **Write to be understood and believed, not admired.** Sincere directness; no quotable aphorisms, no edgy framing. Trust is the goal: calibrate claims honestly, attribute work honestly (including AI), and state limitations plainly — in planning/, not in the docs.
+- **Write to be understood and believed, not admired.** Sincere directness; no quotable aphorisms, no edgy framing. Trust is the goal: calibrate claims honestly, attribute work honestly (including AI), and state limitations plainly — in whiteboard/planning/, not in the docs.
 
 - **Minimal diffs.** Never rewrite a file wholesale; never reorganize while editing.
 - **One fact, one home.** State each rule in exactly one file; link from everywhere else.
@@ -105,11 +105,11 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
   | **Accessibility** | What has to be true, with the success criterion where there is one. |
 
   Not every page needs every section, but a page must not use a *different name* for one of these — no "Behavior contract" for Rules, no "Color tokens" for Spec, no "Accessibility notes" for Accessibility. Rationale ≤ 3 sentences per rule.
-- **The design system is new and is not in use anywhere.** So the docs never describe their own history: no "previously", no "we dropped", no "this was renamed", no decision dates in the prose. A reader needs to know what the thing *is*. Decisions and their dates belong in `planning/`, and the git history is the changelog.
+- **The design system is new and is not in use anywhere.** So the docs never describe their own history: no "previously", no "we dropped", no "this was renamed", no decision dates in the prose. A reader needs to know what the thing *is*. Decisions and their dates belong in `whiteboard/planning/`, and the git history is the changelog.
 - **One page shape, and one way of writing its headings.** `<title>` is `<Name> — arXiv Design System` and `<h1>` is `<Name>`, where the name matches the nav label; an internal-tools page adds `(internal tools)` to the title only, so headings stay clean and browser tabs stay unambiguous. Section headings are **sentence case** — they are read as prose, not as labels. No page has `Styles` or `Component Reference` in its name: the directory says which surface, and the filename says which component.
 - **Add prose only against evidence** — a failed agent test or a real misunderstanding, not speculation.
 - After changing a pattern, update its page; verify tokens/classes exist in the stylesheet, links resolve, HTML balances.
-- The shared nav is three dropdowns (Design Patterns / Mockups / Docs), hand-copied on every doc page. Adding a flagship pattern page means adding it to the Design Patterns menu on every page; adding a mockup means adding it to the Mockups menu on every page AND to `mockups/index.html`. Script the sweep; never update just one page.
+- The shared nav is three dropdowns (Design Patterns / Mockups / Docs), hand-copied on every doc page. Adding a flagship pattern page means adding it to the Design Patterns menu on every page; adding a mockup means adding it to the Mockups menu on every page AND to `whiteboard/mockups/index.html`. Script the sweep; never update just one page.
 - After changing either `design-system.css`, run `python3 verification/check-drift.py`. It guards the places where a value is written down twice — chiefly the mirrored dark palette. Any FAIL is yours to fix.
 - **Never sync the blog theme as a side effect of other work.** It is a separate project that *extends* the design system — more playful and more colorful than arxiv.org would ever be — and it is updated by a deliberate translation pass, where a person decides which changes belong there and how they should read in the blog's voice. The drift check reports blog differences as a NOTE, never a FAIL: that list is the agenda for the next translation, not a defect to clear. Overwriting the theme's copy with the canonical file destroys decisions it made on purpose.
 

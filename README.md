@@ -16,9 +16,9 @@ Browse it rendered: **https://arxiv.github.io/design-system/**
 ```
 docs/           THE documentation — rules, tokens, pattern pages, stylesheets
                 (every pattern page shows both surfaces; docs/sharing/ holds audience-specific pages)
-mockups/        work-in-progress page explorations — never a build reference
+whiteboard/mockups/        work-in-progress page explorations — never a build reference
 verification/   evidence — audits, design reviews, agent test results
-planning/       backlog (NEXT-STEPS.md), proposals, decision logs
+whiteboard/planning/       backlog (NEXT-STEPS.md), proposals, decision logs
 index.html      the GitHub Pages landing page (docs/doc.html renders .md files on the site)
 ```
 
@@ -41,7 +41,7 @@ Design decisions are grounded in user research — the 2025 annual survey (9,419
 
 ## Mockups vs. canonical
 
-Patterns are explored in `mockups/`, and **promoted into `docs/`** when they stabilize — only then are they canonical and fair game for production. Both are visible on the published site (deliberate — stakeholders see demos and mockups in one place); the folder READMEs mark the difference.
+Patterns are explored in `whiteboard/mockups/`, and **promoted into `docs/`** when they stabilize — only then are they canonical and fair game for production. Both are visible on the published site (deliberate — stakeholders see demos and mockups in one place); the folder READMEs mark the difference.
 
 ## License
 

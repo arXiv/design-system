@@ -28,6 +28,10 @@ components:
         does: "The emphasis slot, and the only item in the bar that takes weight. Signed out it is the *Log in* link. Signed in it is the *Account* menu, with the greeting beside it."
       - name: ".ds-site-header-dropdown"
         does: "A menu group in the bar, built on `<details>`. See [Header dropdown menus](#header-dropdown-menus)."
+      - name: ".ds-search-overlay"
+        does: "The search overlay: a `hidden` scrim after the header that the shared chrome’s `header.js` opens from the Search link (or Ctrl/Cmd+K), and closes on Escape, a click on the scrim, or focus moving out of it. Without JS the Search link goes to the search page."
+      - name: ".ds-search-overlay-panel"
+        does: "The overlay’s panel, hanging from the bar. Its field and hint are the ordinary `.ds-input` and `.ds-hint`."
   - id: signed-out-and-signed-in
     title: "Signed out and signed in"
     summary: "Account-related items display to the right of the navigation and are the only items in a heavier text weight. Signed out it says **Log in**. Signed in it displays a greeting and name, and an **Account** menu that holds Log out. When names are long (and arXiv users have every type and structure of name) we truncate to a reasonable number of characters."
@@ -131,8 +135,9 @@ components:
       - name: ".ds-site-header--sticky"
         does: "Sticks the bar to the top of the viewport. A page that uses it keeps no other sticky bar."
 rules:
-  - "**The announcement is temporal.** Render only while active, persist dismissal in production, and never attach page-critical function to it."
+  - "**The announcement is temporal.** Render only while active, persist dismissal across arXiv sites, and never attach page-critical function to it. The shared chrome’s `chrome/banner.js` does both: it fetches the shared announcements (`json/announcements.json` on the asset route), shows the band only between an entry’s start and end, and records a dismissal in a cookie on the parent domain (`arxiv.org`). The announcement is data: plain text and one link, never markup."
   - "**No more than four top-level links.** The logo and Log in do not count. More than four causes cognitive overload and reduces comprehension; resist link-creep permanently (DESIGN-POLICIES)."
+  - "**The host provides the skip link.** The shared templates start at the announcement band, so a host puts `.ds-skip-link` before them, pointing at its own main content."
   - "**Log out is in the Account menu.** Signed in, Account opens a menu holding the account page and Log out. Logging out is then one menu away on every page, which matters on shared computers, and still takes two deliberate actions."
   - "**Regions, in one order.** Logo, navigation, tools (optional), account. Every header on every surface keeps this order."
   - "**Navigation sits on the right.** On every header, the space after the logo stays empty and the navigation follows it."
@@ -142,7 +147,7 @@ rules:
   - "**The greeting is the first name, everywhere.** Public and internal headers show the given name only, capped at 14 characters."
   - "**One bar under the header.** A page shows either secondary navigation or steps, never both."
   - "**Breadcrumbs only on pages without secondary navigation.** arXiv’s sitemap is wide and shallow, so almost no page needs a breadcrumb. Where the secondary navigation shows the reader’s place, a breadcrumb would repeat it."
-  - "**Type sizes are rem** so browser font-size overrides propagate; the header, the announcement band and the secondary navigation are hidden in print."
+  - "**Type sizes are rem** so browser font-size overrides propagate. In print the header keeps only its logo, 28px tall; the announcement band and the secondary navigation are hidden."
   - "**The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content."
   - "**Name the navigation.** The bar’s links sit in a `<nav>` with an `aria-label`, such as “Main navigation”, so a screen reader user can tell it from the other landmarks on the page."
   - "**The wordmark is an image with alt text.** Logo alt text and aria-labels say “archive” — the spoken form of “arXiv” (screen readers otherwise produce “ar-zhiv” or Roman-numeral gibberish)."
@@ -199,6 +204,8 @@ Rendered directly from `design-system.css`. On a narrow screen the bar folds its
 - `.ds-site-header-account` — The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section. It stays in the bar at every width.
 - `.ds-site-header-login` — The emphasis slot, and the only item in the bar that takes weight. Signed out it is the *Log in* link. Signed in it is the *Account* menu, with the greeting beside it.
 - `.ds-site-header-dropdown` — A menu group in the bar, built on `<details>`. See [Header dropdown menus](#header-dropdown-menus).
+- `.ds-search-overlay` — The search overlay: a `hidden` scrim after the header that the shared chrome’s `header.js` opens from the Search link (or Ctrl/Cmd+K), and closes on Escape, a click on the scrim, or focus moving out of it. Without JS the Search link goes to the search page.
+- `.ds-search-overlay-panel` — The overlay’s panel, hanging from the bar. Its field and hint are the ordinary `.ds-input` and `.ds-hint`.
 
 ## Signed out and signed in
 
@@ -438,8 +445,9 @@ Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top o
 
 ## Rules
 
-- **The announcement is temporal.** Render only while active, persist dismissal in production, and never attach page-critical function to it.
+- **The announcement is temporal.** Render only while active, persist dismissal across arXiv sites, and never attach page-critical function to it. The shared chrome’s `chrome/banner.js` does both: it fetches the shared announcements (`json/announcements.json` on the asset route), shows the band only between an entry’s start and end, and records a dismissal in a cookie on the parent domain (`arxiv.org`). The announcement is data: plain text and one link, never markup.
 - **No more than four top-level links.** The logo and Log in do not count. More than four causes cognitive overload and reduces comprehension; resist link-creep permanently (DESIGN-POLICIES).
+- **The host provides the skip link.** The shared templates start at the announcement band, so a host puts `.ds-skip-link` before them, pointing at its own main content.
 - **Log out is in the Account menu.** Signed in, Account opens a menu holding the account page and Log out. Logging out is then one menu away on every page, which matters on shared computers, and still takes two deliberate actions.
 - **Regions, in one order.** Logo, navigation, tools (optional), account. Every header on every surface keeps this order.
 - **Navigation sits on the right.** On every header, the space after the logo stays empty and the navigation follows it.
@@ -449,7 +457,7 @@ Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top o
 - **The greeting is the first name, everywhere.** Public and internal headers show the given name only, capped at 14 characters.
 - **One bar under the header.** A page shows either secondary navigation or steps, never both.
 - **Breadcrumbs only on pages without secondary navigation.** arXiv’s sitemap is wide and shallow, so almost no page needs a breadcrumb. Where the secondary navigation shows the reader’s place, a breadcrumb would repeat it.
-- **Type sizes are rem** so browser font-size overrides propagate; the header, the announcement band and the secondary navigation are hidden in print.
+- **Type sizes are rem** so browser font-size overrides propagate. In print the header keeps only its logo, 28px tall; the announcement band and the secondary navigation are hidden.
 - **The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content.
 - **Name the navigation.** The bar’s links sit in a `<nav>` with an `aria-label`, such as “Main navigation”, so a screen reader user can tell it from the other landmarks on the page.
 - **The wordmark is an image with alt text.** Logo alt text and aria-labels say “archive” — the spoken form of “arXiv” (screen readers otherwise produce “ar-zhiv” or Roman-numeral gibberish).

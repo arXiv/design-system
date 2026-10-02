@@ -13,7 +13,7 @@ and the rules. It is generated only for pages on verification/reviewed-pages.txt
 a digest copies its page's contract faithfully, so a digest of a page that
 has not had its review pass is wrong with the same confidence.
 
-The shape it reads is buttons.html's (planning/DIGEST-PLAN.md has the table):
+The shape it reads is buttons.html's (whiteboard/planning/DIGEST-PLAN.md has the table):
   page header            -> the page summary
   h2/h3 opening a plain <section> -> a component; its .ds-section-desc is the summary
   "Relevant code" .ds-acc -> <pre><code> is the markup, <dt>/<dd> the class key
