@@ -29,7 +29,7 @@ components:
     summary: "One number with its label, on the warm tint. Use a group of them for a summary at the top of a dashboard."
     classes:
       - name: ".ds-card--stat"
-        does: "A card that holds one number. Warm tint, the same on both surfaces."
+        does: "A card that holds one number. Warm tint, the same on both surfaces. In a `.ds-card-grid`, stat cards are narrower than other cards and fill the row."
       - name: ".ds-panel-label"
         does: "What the number counts. It comes first, so a screen reader reads the label before the number."
       - name: ".ds-stat-value"
@@ -133,7 +133,7 @@ One number with its label, on the warm tint. Use a group of them for a summary a
 </div>
 ```
 
-- `.ds-card--stat` — A card that holds one number. Warm tint, the same on both surfaces.
+- `.ds-card--stat` — A card that holds one number. Warm tint, the same on both surfaces. In a `.ds-card-grid`, stat cards are narrower than other cards and fill the row.
 - `.ds-panel-label` — What the number counts. It comes first, so a screen reader reads the label before the number.
 - `.ds-stat-value` — The number: 2rem, weight 600, with tabular figures so numbers in a row of cards line up.
 - `.ds-stat-context` — Optional. One short line under the number, such as a change or a unit.
