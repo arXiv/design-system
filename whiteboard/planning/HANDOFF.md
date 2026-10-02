@@ -8,12 +8,10 @@ and it was rebased onto master once (after Deyan's brand-templates PR #6).
 ## Where the work is
 
 The docs review is nearly finished. Shamsi reviews a page, sends notes, the session acts on them,
-and she rewrites the prose herself. 20 pages are marked finished in
+and she rewrites the prose herself. 21 pages are marked finished in
 `verification/reviewed-pages.txt` and have agent digests in `docs/spec/`.
 
 Not finished:
-- **layout-patterns.html:** restructured this week; she is doing a final read. Mark it finished
-  and run `gen-digest.py` when she says so.
 - **brand.html and outreach.html:** deliberately left for later ("a different type of thinking").
 
 ## Repo layout (changed 2026-10-02)
@@ -97,7 +95,6 @@ body scrolls automatically and becomes a tab stop only while it overflows.
 
 ## Open, in Shamsi's hands
 
-- Final read of layout-patterns.html, then mark it finished.
 - Share the membership dashboard mockup with Christopher
   (`whiteboard/mockups/internal/membership-dashboard/`). Placeholders to raise with him: the
   holds-ratio basis and the Recruitment statuses.
