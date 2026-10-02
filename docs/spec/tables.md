@@ -26,6 +26,9 @@ components:
         does: "A `<th>` in the body is a row header: it names its row, in the cell type at full weight on a tinted ground, and a screen reader reads it with each cell in the row. The tint comes from the element, so no class is needed."
     notes:
       - "The Type column uses rectangular tags at the default level, documented on [Tags](tags.html#rectangular-labels)."
+  - id: one-frame
+    title: "One frame"
+    summary: "A table has a border all the way round, except directly inside a card, where the card is the frame and the table has none."
   - id: sortable-column-headers
     title: "Sortable column headers"
     summary: "A sortable column has a `<button class=\"sortable\">` inside its `<th>`, holding the label and a `<span class=\"sort-arrow\">` for the direction. It looks like the plain header and it can be reached and pressed from the keyboard, which a `<th>` on its own cannot. `.sort-asc` or `.sort-desc` and `aria-sort` go on the `<th>` of the sorted column."
@@ -33,7 +36,7 @@ components:
       - name: ".sortable"
         does: "On a `<button type=\"button\">` inside the `<th>`. The button is styled to look like the plain header text, so nothing changes visually; what it adds is a keyboard stop, so a reader who cannot use a mouse can sort. Pointer cursor, and the label darkens on hover."
       - name: ".sort-arrow"
-        does: "The direction indicator, a `<span>` inside the header. Unsorted it shows ⇅ in `--ds-border-strong` (3.12:1 on the header background)."
+        does: "The direction indicator, a `<span>` inside the header. The glyph in the markup is replaced by an icon: two arrows in `--ds-text-muted` when the column is unsorted."
       - name: ".sort-asc"
         does: "On the `<th>` of the sorted column. The arrow shows ↑ in `--ds-text`."
       - name: ".sort-desc"
@@ -65,7 +68,7 @@ components:
       - name: ".ds-filter-bar-group"
         does: "A row of fields. The fields are the standard `.ds-field`, `.ds-label` and `.ds-input`, with labels above."
       - name: ".ds-filter-bar-group--settings"
-        does: "Optional. A `<fieldset>` with a `<legend>`, set apart by a line, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter."
+        does: "Optional. A `<fieldset>` whose `<legend>` is `.is-sr-only`, so it is read out and takes no space. Set apart by a line, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter."
       - name: ".ds-filter-bar-actions"
         does: "Apply, a submit button, and an optional Clear link to the address without filters. They sit at the end of the row."
   - id: row-selection
@@ -94,7 +97,7 @@ components:
     summary: "Every other row takes a tint, which helps the eye follow a long row across a wide table."
     classes:
       - name: ".ds-table--striped"
-        does: "Tints every even row of the body in Warm Wash, on both surfaces."
+        does: "Tints every even row of the body in Card Grey, on both surfaces."
   - id: numeric-columns
     title: "Numeric columns"
     group: "Modifiers"
@@ -103,9 +106,6 @@ components:
       - name: ".ds-num"
         does: "On every cell of a numeric column, the header included. Aligns the numbers on the right and uses tabular figures."
 rules:
-  - "A table has a border all the way round, except directly inside a card, where the card is the frame and the table has none."
-  - "Directly inside a card"
-  - "Not directly inside a card"
   - "Pressing a sortable header, by mouse or keyboard, toggles through: descending → ascending → descending. Clicking a different column resets the previous column to unsorted. Sort logic is application-specific; the CSS only handles visual states."
   - "Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row. No background tint behind the action buttons — the bar itself stays neutral. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step."
   - "**Mark the header cells.** Put `scope=\"col\"` on every `<th>` in the header row, so a screen reader reads the column name with each cell instead of a bare value."
@@ -182,6 +182,10 @@ One table, `.ds-table`, on the public site and in internal tools. It has row div
 
 > The Type column uses rectangular tags at the default level, documented on [Tags](tags.html#rectangular-labels).
 
+## One frame
+
+A table has a border all the way round, except directly inside a card, where the card is the frame and the table has none.
+
 ## Sortable column headers
 
 A sortable column has a `<button class="sortable">` inside its `<th>`, holding the label and a `<span class="sort-arrow">` for the direction. It looks like the plain header and it can be reached and pressed from the keyboard, which a `<th>` on its own cannot. `.sort-asc` or `.sort-desc` and `aria-sort` go on the `<th>` of the sorted column.
@@ -220,7 +224,7 @@ A sortable column has a `<button class="sortable">` inside its `<th>`, holding t
 ```
 
 - `.sortable` — On a `<button type="button">` inside the `<th>`. The button is styled to look like the plain header text, so nothing changes visually; what it adds is a keyboard stop, so a reader who cannot use a mouse can sort. Pointer cursor, and the label darkens on hover.
-- `.sort-arrow` — The direction indicator, a `<span>` inside the header. Unsorted it shows ⇅ in `--ds-border-strong` (3.12:1 on the header background).
+- `.sort-arrow` — The direction indicator, a `<span>` inside the header. The glyph in the markup is replaced by an icon: two arrows in `--ds-text-muted` when the column is unsorted.
 - `.sort-asc` — On the `<th>` of the sorted column. The arrow shows ↑ in `--ds-text`.
 - `.sort-desc` — On the `<th>` of the sorted column. The arrow shows ↓ in `--ds-text`.
 - `aria-sort="ascending", aria-sort="descending"` — Required on the sorted `<th>`, matching the class. Remove it from the column that is no longer sorted. The arrow is a glyph, so this is what tells a screen reader which column orders the table.
@@ -311,7 +315,7 @@ A row of fields that narrows everything below it, with one Apply button. It is a
     </div>
   </div>
   <fieldset class="ds-filter-bar-group ds-filter-bar-group--settings">
-    <legend class="ds-panel-label">Settings</legend>
+    <legend class="is-sr-only">Settings</legend>
     <div class="ds-field">
       <label class="ds-label" for="fb-threshold">Threshold days</label>
       <input class="ds-input" id="fb-threshold" name="threshold" type="number" min="1" value="7">
@@ -326,7 +330,7 @@ A row of fields that narrows everything below it, with one Apply button. It is a
 
 - `.ds-filter-bar` — The `<form method="get">`, on the warm tint, with an `aria-label` such as "Filters". It narrows everything below it. One per view. The row wraps on a narrow screen.
 - `.ds-filter-bar-group` — A row of fields. The fields are the standard `.ds-field`, `.ds-label` and `.ds-input`, with labels above.
-- `.ds-filter-bar-group--settings` — Optional. A `<fieldset>` with a `<legend>`, set apart by a line, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter.
+- `.ds-filter-bar-group--settings` — Optional. A `<fieldset>` whose `<legend>` is `.is-sr-only`, so it is read out and takes no space. Set apart by a line, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter.
 - `.ds-filter-bar-actions` — Apply, a submit button, and an optional Clear link to the address without filters. They sit at the end of the row.
 
 ## Row selection
@@ -424,7 +428,7 @@ Every other row takes a tint, which helps the eye follow a long row across a wid
 </table>
 ```
 
-- `.ds-table--striped` — Tints every even row of the body in Warm Wash, on both surfaces.
+- `.ds-table--striped` — Tints every even row of the body in Card Grey, on both surfaces.
 
 ## Numeric columns  (Modifiers)
 
@@ -440,9 +444,6 @@ Numbers align on the right, and their digits line up from row to row.
 
 ## Rules
 
-- A table has a border all the way round, except directly inside a card, where the card is the frame and the table has none.
-- Directly inside a card
-- Not directly inside a card
 - Pressing a sortable header, by mouse or keyboard, toggles through: descending → ascending → descending. Clicking a different column resets the previous column to unsorted. Sort logic is application-specific; the CSS only handles visual states.
 - Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row. No background tint behind the action buttons — the bar itself stays neutral. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step.
 - **Mark the header cells.** Put `scope="col"` on every `<th>` in the header row, so a screen reader reads the column name with each cell instead of a bare value.

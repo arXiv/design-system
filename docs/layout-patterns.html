@@ -75,12 +75,14 @@
   </div>
 </header>
 
-<div class="ds-container ds-zone-secondary">
+<div class="ds-container">
 
+  <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
     <h1>Layout patterns</h1>
     <p>This section covers our primary patterns for differentiating and organizing content based on user needs. The organizing principle to follow throughout: Choose typographic and proximity-based organization patterns first, reach for visible containers only when called for.</p>
   </header>
+  </div>
 
 
   <!-- ═════════ TOC ═════════ -->
@@ -108,7 +110,6 @@
   </div>
 
   <!-- ═════════ Core ═════════ -->
-  <div class="ds-full ds-zone-primary">
 
   <!-- ───────── User needs ───────── -->
   <section>
@@ -402,48 +403,46 @@
     </ul>
   </div>
 
-  </div> <!-- /core zone -->
-
+  <div class="ds-full ds-zone-secondary">
   <h2>Modifiers</h2>
 
   <!-- ───────── Page zones ───────── -->
   <section>
     <h3 id="page-zones">Page zones</h3>
-    <p class="ds-section-desc">A long page can tell a reader what kind of content they are in by its ground. The
-    <strong>primary</strong> zone holds the thing the page is about. The <strong>secondary</strong>
-    zone holds what introduces or supports it: the opening of the page, and any closing material.
-    The zones are named for their role, because both grounds change in dark mode.</p>
-    <p>A zone is optional. Without one, the container and its bands show the page's own background,
-    <code>--ds-canvas</code> (Warm Wash in light mode).</p>
-    <p>The primary zone is a full band: a direct child of the container marked <code>.ds-full</code>,
+    <p class="ds-section-desc">The page ground is white, and the thing the page is about sits directly on it.
+    The <strong>secondary</strong> zone is a tinted band for what introduces or supports that content:
+    the opening of the page, and any closing material. The zone is named for its role, because the
+    ground changes in dark mode.</p>
+    <p>A zone is optional. Without one, the whole page is on the page ground, <code>--ds-canvas</code>
+    (white in light mode).</p>
+    <p>The secondary zone is a full band: a direct child of the container marked <code>.ds-full</code>,
     which runs edge to edge while its own content lines up with the reading column. Note that
     <code>.ds-full</code> adds no background colour. A band is coloured only by a page zone, or by a
-    component with its own background such as the TOC bar. On this page you are looking at, the TOC bar
-    and the white band you are reading now are <code>.ds-full</code> bands.</p>
+    component with its own background such as the TOC bar. On this page you are looking at, the tinted
+    band behind the title and the TOC bar are <code>.ds-full</code> bands.</p>
     <div class="ds-card">
-      <div class="ds-container ds-zone-secondary page-demo">
-        <p>The opening of the page, on the secondary ground.</p>
-        <div class="ds-full ds-zone-primary">The thing the page is about, on the primary ground.</div>
-        <p>Closing material, on the secondary ground.</p>
+      <div class="ds-container page-demo">
+        <div class="ds-full ds-zone-secondary">The opening of the page, in a secondary band.</div>
+        <p>The thing the page is about, on the page ground.</p>
+        <div class="ds-full ds-zone-secondary">Closing material, in a secondary band.</div>
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-container ds-zone-secondary"&gt;
-  &lt;header class="ds-page-header"&gt;…&lt;/header&gt;            &lt;!-- secondary: introduces --&gt;
-  &lt;div class="ds-full ds-zone-primary"&gt;
-    &lt;section&gt;…&lt;/section&gt;                                &lt;!-- primary: the thing itself --&gt;
+<pre><code>&lt;div class="ds-container"&gt;
+  &lt;div class="ds-full ds-zone-secondary"&gt;               &lt;!-- tinted: introduces --&gt;
+    &lt;header class="ds-page-header"&gt;…&lt;/header&gt;
   &lt;/div&gt;
-  &lt;section&gt;…&lt;/section&gt;                                  &lt;!-- secondary: supports --&gt;
+  &lt;section&gt;…&lt;/section&gt;                                  &lt;!-- page ground: the thing itself --&gt;
+  &lt;div class="ds-full ds-zone-secondary"&gt;               &lt;!-- tinted: supports --&gt;
+    &lt;section&gt;…&lt;/section&gt;
+  &lt;/div&gt;
 &lt;/div&gt;</code></pre>
           <dl>
             <dt>.ds-zone-secondary</dt>
-            <dd>Goes on <code>.ds-container</code> and paints it with the secondary ground. Everything
-            outside the primary band sits on it. The colour is the token
-            <code>--ds-zone-secondary-bg</code>: the class is what you write, and the token is the colour
-            the class applies, which changes in dark mode.</dd>
-            <dt>.ds-zone-primary</dt>
-            <dd>Goes on one <code>.ds-full</code> band. It sets the <code>--ds-surface</code> ground and
-            the band’s own top and bottom padding. A page has one primary zone.</dd>
+            <dd>Goes on a <code>.ds-full</code> band and gives it the tinted ground and its own top and
+            bottom padding. A band that opens or closes the page runs to the container’s edge. The
+            colour is the token <code>--ds-zone-secondary-bg</code>: the class is what you write, and
+            the token is the colour the class applies, which changes in dark mode.</dd>
             <dt>.ds-full</dt>
             <dd>On a direct child of <code>.ds-container</code>. The child runs across all three
             columns, from edge to edge, and its padding brings its own content back in line with the
@@ -487,9 +486,7 @@
       <li><strong>No breadcrumbs.</strong> In complex tools, the secondary navigation fills this role already. It shows the user's place as well as being functional navigation. arXiv has a wide but shallow site and does not need traditional breadcrumbs.</li>
     </ul>
   </section>
-
-
-
+  </div>
 
 </div>
 

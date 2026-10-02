@@ -75,12 +75,14 @@
   </div>
 </header>
 
-<div class="ds-container ds-zone-secondary">
+<div class="ds-container">
 
+  <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
     <h1>Progressive disclosure</h1>
     <p>Options to toggle open additional content. HTML paper pages, for example, hold far more than a reader wants to see all at once, so they use every progressive disclosure mechanism we have: A "show more" link to toggle open a full author list, accordions for secondary metadata, and popovers for footnotes. </p>
   </header>
+  </div>
 
 
   <!-- ═════════ TOC ═════════ -->
@@ -110,7 +112,6 @@
   </div>
 
   <!-- ═════════ Core ═════════ -->
-  <div class="ds-full ds-zone-primary">
 
   <!-- ───────── Accordion ───────── -->
   <section>
@@ -436,8 +437,10 @@
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-container ds-zone-secondary"&gt;
-  &lt;header class="ds-page-header"&gt;…&lt;/header&gt;
+<pre><code>&lt;div class="ds-container"&gt;
+  &lt;div class="ds-full ds-zone-secondary"&gt;
+    &lt;header class="ds-page-header"&gt;…&lt;/header&gt;
+  &lt;/div&gt;
 
   &lt;div class="ds-full ds-toc-bar"&gt;
     &lt;div class="ds-toc-bar-inner"&gt;
@@ -454,7 +457,7 @@
     &lt;/div&gt;
   &lt;/div&gt;
 
-  &lt;div class="ds-full ds-zone-primary"&gt;…&lt;/div&gt;
+  &lt;section&gt;…&lt;/section&gt;
 &lt;/div&gt;
 &lt;script src="toc.js" defer&gt;&lt;/script&gt;</code></pre>
           <dl>
@@ -470,8 +473,8 @@
             number in <code>.ds-toc-num</code>.</dd>
             <dt>.ds-toc-bar</dt>
             <dd>The edge-to-edge row that holds the control. A direct child of
-            <code>.ds-container</code>, with <code>.ds-full</code>. Placed directly before
-            <code>.ds-zone-primary</code>, it sits on that zone’s top edge. The bar is always sticky:
+            <code>.ds-container</code>, with <code>.ds-full</code>. Placed directly after a
+            <code>.ds-zone-secondary</code> band, it sits on that band’s bottom edge. The bar is always sticky:
             it keeps to the top of the viewport, where it becomes <code>.is-stuck</code> and
             tightens, and it sets <code>scroll-padding-top</code> so an anchor lands below it.
             Sticky chrome is governed by
@@ -545,8 +548,7 @@
     </ul>
   </div>
 
-  </div> <!-- /core zone -->
-
+  <div class="ds-full ds-zone-secondary">
   <h2>Variants</h2>
 
   <!-- ───────── Accordion inside a card ───────── -->
@@ -731,6 +733,7 @@
       the reader just asked for, so it is never the thing that gets hidden.</li>
     </ul>
   </section>
+  </div>
 
 </div>
 

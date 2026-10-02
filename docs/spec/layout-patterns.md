@@ -54,12 +54,10 @@ components:
   - id: page-zones
     title: "Page zones"
     group: "Modifiers"
-    summary: "A long page can tell a reader what kind of content they are in by its ground. The **primary** zone holds the thing the page is about. The **secondary** zone holds what introduces or supports it: the opening of the page, and any closing material. The zones are named for their role, because both grounds change in dark mode."
+    summary: "The page ground is white, and the thing the page is about sits directly on it. The **secondary** zone is a tinted band for what introduces or supports that content: the opening of the page, and any closing material. The zone is named for its role, because the ground changes in dark mode."
     classes:
       - name: ".ds-zone-secondary"
-        does: "Goes on `.ds-container` and paints it with the secondary ground. Everything outside the primary band sits on it. The colour is the token `--ds-zone-secondary-bg`: the class is what you write, and the token is the colour the class applies, which changes in dark mode."
-      - name: ".ds-zone-primary"
-        does: "Goes on one `.ds-full` band. It sets the `--ds-surface` ground and the band’s own top and bottom padding. A page has one primary zone."
+        does: "Goes on a `.ds-full` band and gives it the tinted ground and its own top and bottom padding. A band that opens or closes the page runs to the container’s edge. The colour is the token `--ds-zone-secondary-bg`: the class is what you write, and the token is the colour the class applies, which changes in dark mode."
       - name: ".ds-full"
         does: "On a direct child of `.ds-container`. The child runs across all three columns, from edge to edge, and its padding brings its own content back in line with the centre column. It has no background of its own."
   - id: wide-page
@@ -191,20 +189,21 @@ At wide screen widths, our max content width leaves enough gutter space on the s
 
 ## Page zones  (Modifiers)
 
-A long page can tell a reader what kind of content they are in by its ground. The **primary** zone holds the thing the page is about. The **secondary** zone holds what introduces or supports it: the opening of the page, and any closing material. The zones are named for their role, because both grounds change in dark mode.
+The page ground is white, and the thing the page is about sits directly on it. The **secondary** zone is a tinted band for what introduces or supports that content: the opening of the page, and any closing material. The zone is named for its role, because the ground changes in dark mode.
 
 ```html
-<div class="ds-container ds-zone-secondary">
-  <header class="ds-page-header">…</header>            <!-- secondary: introduces -->
-  <div class="ds-full ds-zone-primary">
-    <section>…</section>                                <!-- primary: the thing itself -->
+<div class="ds-container">
+  <div class="ds-full ds-zone-secondary">               <!-- tinted: introduces -->
+    <header class="ds-page-header">…</header>
   </div>
-  <section>…</section>                                  <!-- secondary: supports -->
+  <section>…</section>                                  <!-- page ground: the thing itself -->
+  <div class="ds-full ds-zone-secondary">               <!-- tinted: supports -->
+    <section>…</section>
+  </div>
 </div>
 ```
 
-- `.ds-zone-secondary` — Goes on `.ds-container` and paints it with the secondary ground. Everything outside the primary band sits on it. The colour is the token `--ds-zone-secondary-bg`: the class is what you write, and the token is the colour the class applies, which changes in dark mode.
-- `.ds-zone-primary` — Goes on one `.ds-full` band. It sets the `--ds-surface` ground and the band’s own top and bottom padding. A page has one primary zone.
+- `.ds-zone-secondary` — Goes on a `.ds-full` band and gives it the tinted ground and its own top and bottom padding. A band that opens or closes the page runs to the container’s edge. The colour is the token `--ds-zone-secondary-bg`: the class is what you write, and the token is the colour the class applies, which changes in dark mode.
 - `.ds-full` — On a direct child of `.ds-container`. The child runs across all three columns, from edge to edge, and its padding brings its own content back in line with the centre column. It has no background of its own.
 
 ## Wide page  (Modifiers)
