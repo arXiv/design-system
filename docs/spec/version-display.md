@@ -14,8 +14,6 @@ components:
         does: "Every date. Announced is a full instant (`2026-01-11T01:32Z`); Submitted and Revised are date-only (`2026-01-10`). In the visible text, bind the day, month, year and clock time to each other with `&nbsp;`, and bind UTC to its date the same way, outside the element."
       - name: ".is-sr-only"
         does: "The separator. The visible \"·\" is `aria-hidden`, and the sr-only comma beside it is what a screen reader gets between one date and the next."
-    notes:
-      - "The date row and version classes are not in design-system.css yet, so the demos here take the page defaults until they land."
   - id: a-few-versions-viewing-the-latest
     title: "A few versions"
     summary: "Once a paper has more than one version, the date row displays three dates: **Submitted** and **Announced** are always the v1 dates; **Revised … (this version)** is the date of the version you are reading. Prior versions follow as text links. The current version is displayed in bold, is not a link, and includes the `aria-current` tag."
@@ -90,8 +88,6 @@ The most common case because most papers have a single version. We show the subm
 - `.ds-date-row` — The row. One `<p>` that holds the dates and, after them, the version links. Small type in the muted colour, with tabular figures so the digits line up.
 - `<time datetime>` — Every date. Announced is a full instant (`2026-01-11T01:32Z`); Submitted and Revised are date-only (`2026-01-10`). In the visible text, bind the day, month, year and clock time to each other with `&nbsp;`, and bind UTC to its date the same way, outside the element.
 - `.is-sr-only` — The separator. The visible "·" is `aria-hidden`, and the sr-only comma beside it is what a screen reader gets between one date and the next.
-
-> The date row and version classes are not in design-system.css yet, so the demos here take the page defaults until they land.
 
 ## A few versions
 
