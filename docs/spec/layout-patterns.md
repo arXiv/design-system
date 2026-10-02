@@ -54,7 +54,7 @@ components:
   - id: page-zones
     title: "Page zones"
     group: "Modifiers"
-    summary: "The page ground is white, and the thing the page is about sits directly on it. The **secondary** zone is a tinted band for what introduces or supports that content: the opening of the page, and any closing material. The zone is named for its role, because the ground changes in dark mode."
+    summary: "The default page background is white, and that is the color that primary page content sits on. The **secondary** zone is a tinted band for what introduces or supports that content: the opening of the page, and any closing material. The zone is named for its role, because the ground changes in dark mode."
     classes:
       - name: ".ds-zone-secondary"
         does: "Goes on a `.ds-full` band and gives it the tinted ground and its own top and bottom padding. A band that opens or closes the page runs to the container’s edge. The colour is the token `--ds-zone-secondary-bg`: the class is what you write, and the token is the colour the class applies, which changes in dark mode."
@@ -189,7 +189,7 @@ At wide screen widths, our max content width leaves enough gutter space on the s
 
 ## Page zones  (Modifiers)
 
-The page ground is white, and the thing the page is about sits directly on it. The **secondary** zone is a tinted band for what introduces or supports that content: the opening of the page, and any closing material. The zone is named for its role, because the ground changes in dark mode.
+The default page background is white, and that is the color that primary page content sits on. The **secondary** zone is a tinted band for what introduces or supports that content: the opening of the page, and any closing material. The zone is named for its role, because the ground changes in dark mode.
 
 ```html
 <div class="ds-container">

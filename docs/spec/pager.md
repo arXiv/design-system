@@ -1,7 +1,7 @@
 ---
 page: pager.html
 title: "Pager"
-summary: "Previous and Next controls with a position counter for going through a set, one item at a time."
+summary: "Controls for moving through a set: one item at a time with the pager, or a page at a time with numbered pages."
 stylesheet: design-system.css
 components:
   - id: the-pager
@@ -47,7 +47,7 @@ rules:
 
 # Pager
 
-Previous and Next controls with a position counter for going through a set, one item at a time.
+Controls for moving through a set: one item at a time with the pager, or a page at a time with numbered pages.
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.

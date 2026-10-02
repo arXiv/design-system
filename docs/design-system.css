@@ -1816,15 +1816,20 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 .ds-form--compact > .ds-input-group,
 .ds-form--compact > .ds-input { flex: 1 1 calc(100% - 12rem); width: auto; min-width: 0; }
 .ds-form--compact > .ds-btn { flex: none; align-self: stretch; margin-inline-start: calc(var(--ds-space-2) - var(--ds-space-4)); }
-.ds-form--compact > .ds-check { margin: 0; }
-.ds-form--compact > a { font-size: 0.875rem; }
+/* Secondary options under the row: each is a 24px box with its content
+   centred, so a checkbox and a link line up. */
+.ds-form--compact > .ds-check { margin: 0; align-items: center; }
+.ds-form--compact > .ds-check input { margin: 0; }
+.ds-form--compact > a { display: inline-flex; align-items: center; min-height: 24px; font-size: 0.875rem; }
 .ds-input-group { display: flex; }
 .ds-input-group > .ds-input { width: auto; min-width: 0; border-radius: 0; }
 .ds-input-group > .ds-input:not(select) { flex: 1 1 auto; }
 .ds-input-group > select.ds-input { flex: 0 1 auto; max-width: 50%; }
 .ds-input-group > .ds-input ~ .ds-input { margin-inline-start: -1px; }
-.ds-input-group > .ds-input:first-of-type { border-start-start-radius: 6px; border-end-start-radius: 6px; }
-.ds-input-group > .ds-input:last-of-type { border-start-end-radius: 6px; border-end-end-radius: 6px; }
+/* Rounded only on the outside, like a button group: the first control has no
+   control before it, the last has none after it. */
+.ds-input-group > .ds-input:not(.ds-input ~ .ds-input) { border-start-start-radius: 6px; border-end-start-radius: 6px; }
+.ds-input-group > .ds-input:not(:has(~ .ds-input)) { border-start-end-radius: 6px; border-end-end-radius: 6px; }
 /* The focused or flagged control sits above its neighbour, so its whole edge shows. */
 .ds-input-group > .ds-input:focus-visible,
 .ds-input-group > .ds-input.is-invalid { position: relative; z-index: 1; }
