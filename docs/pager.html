@@ -80,7 +80,7 @@
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
     <h1>Pager</h1>
-    <p>Controls for moving through a set: one item at a time with the pager, or a page at a time with numbered pages.</p>
+    <p>Controls for moving through a list: one item at a time with the pager, or a group of items at a time with numbered pages.</p>
   </header>
   </div>
 
@@ -358,7 +358,7 @@
     </div>
 
     <div class="ds-card">
-      <p class="ds-panel-label">Below a filter bar</p>
+      <p class="ds-panel-label">Below a filter bar, with results per page</p>
       <form class="ds-filter-bar" method="get" action="pager.html#numbered-pages" aria-label="Filters">
         <div class="ds-filter-bar-group">
           <div class="ds-field">
@@ -370,13 +370,6 @@
             <select class="ds-input" id="pg-status" name="status"><option>Any</option><option>On hold</option></select>
           </div>
         </div>
-        <fieldset class="ds-filter-bar-group ds-filter-bar-group--settings">
-          <legend class="is-sr-only">Settings</legend>
-          <div class="ds-field">
-            <label class="ds-label" for="pg-size">Results per page</label>
-            <select class="ds-input" id="pg-size" name="size"><option selected>25</option><option>50</option><option>100</option><option>200</option></select>
-          </div>
-        </fieldset>
         <div class="ds-filter-bar-actions">
           <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
         </div>
@@ -392,6 +385,11 @@
           <li><a href="?page=67"><span class="is-sr-only">Page </span>67</a></li>
         </ol>
         <a class="ds-btn ds-btn-text" href="?page=3"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+        <form class="ds-filter" method="get" action="pager.html#numbered-pages">
+          <label for="pg-size">Per page</label>
+          <select id="pg-size" name="size"><option selected>25</option><option>50</option><option>100</option><option>200</option></select>
+          <button class="ds-btn ds-btn-text" type="submit">Apply</button>
+        </form>
       </nav>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
@@ -406,13 +404,6 @@
       &lt;select class="ds-input" id="pg-status" name="status"&gt;&lt;option&gt;Any&lt;/option&gt;&lt;option&gt;On hold&lt;/option&gt;&lt;/select&gt;
     &lt;/div&gt;
   &lt;/div&gt;
-  &lt;fieldset class="ds-filter-bar-group ds-filter-bar-group--settings"&gt;
-    &lt;legend class="is-sr-only"&gt;Settings&lt;/legend&gt;
-    &lt;div class="ds-field"&gt;
-      &lt;label class="ds-label" for="pg-size"&gt;Results per page&lt;/label&gt;
-      &lt;select class="ds-input" id="pg-size" name="size"&gt;&lt;option selected&gt;25&lt;/option&gt;&lt;option&gt;50&lt;/option&gt;&lt;option&gt;100&lt;/option&gt;&lt;option&gt;200&lt;/option&gt;&lt;/select&gt;
-    &lt;/div&gt;
-  &lt;/fieldset&gt;
   &lt;div class="ds-filter-bar-actions"&gt;
     &lt;button class="ds-btn ds-btn-primary" type="submit"&gt;Apply&lt;/button&gt;
   &lt;/div&gt;
@@ -428,11 +419,20 @@
     &lt;li&gt;&lt;a href="?page=67"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;67&lt;/a&gt;&lt;/li&gt;
   &lt;/ol&gt;
   &lt;a class="ds-btn ds-btn-text" href="?page=3"&gt;&lt;span class="ds-pagination-label"&gt;Next&lt;/span&gt; &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m9 18 6-6-6-6"/&gt;&lt;/svg&gt;&lt;/a&gt;
+  &lt;form class="ds-filter" method="get" action="pager.html#numbered-pages"&gt;
+    &lt;label for="pg-size"&gt;Per page&lt;/label&gt;
+    &lt;select id="pg-size" name="size"&gt;&lt;option selected&gt;25&lt;/option&gt;&lt;option&gt;50&lt;/option&gt;&lt;option&gt;100&lt;/option&gt;&lt;option&gt;200&lt;/option&gt;&lt;/select&gt;
+    &lt;button class="ds-btn ds-btn-text" type="submit"&gt;Apply&lt;/button&gt;
+  &lt;/form&gt;
 &lt;/nav&gt;</code></pre>
           <dl>
             <dt>.ds-filter-bar</dt>
-            <dd>Filters and settings for the list go in a filter bar above the numbered pages.
-            Results per page is a setting. See <a href="tables.html#filter-bar">Filter bar</a>.</dd>
+            <dd>Filters for the list go in a filter bar above it. See
+            <a href="tables.html#filter-bar">Filter bar</a>.</dd>
+            <dt>.ds-filter</dt>
+            <dd>Results per page, after Next: a small GET form with
+            its own button, so it works without JavaScript. Choose a default; the reader changes it
+            here, after seeing the results.</dd>
           </dl>
         </div>
       </details>
