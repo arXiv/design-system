@@ -1796,6 +1796,42 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
    error below it further from the control than the same message under an
    <input>. */
 textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; display: block; }
+
+/* COMPACT FORM  (.ds-form--compact, .ds-input-group) — forms.html
+   A form that is one line: one to three controls and its button. The
+   controls that make one input are joined in .ds-input-group. */
+.ds-form--compact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-2) var(--ds-space-4);
+  container-type: inline-size;
+}
+.ds-form--compact > .ds-label,
+.ds-form--compact > .field-error,
+.ds-form--compact > .field-warning,
+.ds-form--compact > .field-info { flex: 1 0 100%; margin: 0; }
+/* The controls leave room for the button and nothing else, so whatever
+   follows the button starts a new line. */
+.ds-form--compact > .ds-input-group,
+.ds-form--compact > .ds-input { flex: 1 1 calc(100% - 12rem); width: auto; min-width: 0; }
+.ds-form--compact > .ds-btn { flex: none; align-self: stretch; margin-inline-start: calc(var(--ds-space-2) - var(--ds-space-4)); }
+.ds-form--compact > .ds-check { margin: 0; }
+.ds-form--compact > a { font-size: 0.875rem; }
+.ds-input-group { display: flex; }
+.ds-input-group > .ds-input { width: auto; min-width: 0; border-radius: 0; }
+.ds-input-group > .ds-input:not(select) { flex: 1 1 auto; }
+.ds-input-group > select.ds-input { flex: 0 1 auto; max-width: 50%; }
+.ds-input-group > .ds-input ~ .ds-input { margin-inline-start: -1px; }
+.ds-input-group > .ds-input:first-of-type { border-start-start-radius: 6px; border-end-start-radius: 6px; }
+.ds-input-group > .ds-input:last-of-type { border-start-end-radius: 6px; border-end-end-radius: 6px; }
+/* The focused or flagged control sits above its neighbour, so its whole edge shows. */
+.ds-input-group > .ds-input:focus-visible,
+.ds-input-group > .ds-input.is-invalid { position: relative; z-index: 1; }
+@container (max-width: 26rem) {
+  .ds-form--compact > .ds-btn { flex: 1 0 100%; margin-inline-start: 0; }
+}
+
 /* Room on the right for the arrow, which renders inside the control's own
    padding box — without it a long option label runs into it. */
 select.ds-input:not([multiple]):not([size]) {

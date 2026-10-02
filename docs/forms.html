@@ -97,6 +97,7 @@
         <nav class="ds-toc-menu" aria-label="Contents">
           <ol>
             <li><a href="#fields">Fields</a></li>
+            <li><a href="#compact-form">Compact form</a></li>
             <li><a href="#validation">Validation</a></li>
             <li><a href="#alerts-in-forms">Alerts in forms</a></li>
             <li><a href="#switch">Switch</a></li>
@@ -224,6 +225,127 @@
         </div>
       </details>
     </div>
+  </section>
+
+  <!-- ───────── Compact form ───────── -->
+  <section>
+    <h2 id="compact-form">Compact form</h2>
+    <p class="ds-section-desc">A compact form is for a very short form, such as search: one to three controls and a button, on one row.</p>
+
+    <div class="ds-card">
+      <p class="ds-panel-label">Two joined controls and a button</p>
+      <form class="ds-form--compact" method="get" action="forms.html#compact-form" role="search" aria-label="Search arXiv">
+        <div class="ds-input-group">
+          <label class="is-sr-only" for="cf-query">Search term</label>
+          <input class="ds-input" id="cf-query" name="query" type="search" value="gravitational lensing">
+          <label class="is-sr-only" for="cf-field">Field to search</label>
+          <select class="ds-input" id="cf-field" name="searchtype"><option>All fields</option><option>Title</option><option>Author(s)</option><option>Abstract</option></select>
+        </div>
+        <button class="ds-btn ds-btn-primary" type="submit">Search</button>
+        <label class="ds-check"><input type="checkbox" name="abstracts" value="show" checked><span>Show abstracts</span></label>
+        <a href="forms.html#compact-form">Advanced search</a>
+      </form>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;form class="ds-form--compact" method="get" action="forms.html#compact-form" role="search" aria-label="Search arXiv"&gt;
+  &lt;div class="ds-input-group"&gt;
+    &lt;label class="is-sr-only" for="cf-query"&gt;Search term&lt;/label&gt;
+    &lt;input class="ds-input" id="cf-query" name="query" type="search" value="gravitational lensing"&gt;
+    &lt;label class="is-sr-only" for="cf-field"&gt;Field to search&lt;/label&gt;
+    &lt;select class="ds-input" id="cf-field" name="searchtype"&gt;&lt;option&gt;All fields&lt;/option&gt;&lt;option&gt;Title&lt;/option&gt;&lt;option&gt;Author(s)&lt;/option&gt;&lt;option&gt;Abstract&lt;/option&gt;&lt;/select&gt;
+  &lt;/div&gt;
+  &lt;button class="ds-btn ds-btn-primary" type="submit"&gt;Search&lt;/button&gt;
+  &lt;label class="ds-check"&gt;&lt;input type="checkbox" name="abstracts" value="show" checked&gt;&lt;span&gt;Show abstracts&lt;/span&gt;&lt;/label&gt;
+  &lt;a href="forms.html#compact-form"&gt;Advanced search&lt;/a&gt;
+&lt;/form&gt;</code></pre>
+          <dl>
+            <dt>.ds-form--compact</dt>
+            <dd>On the <code>&lt;form&gt;</code>. Puts the controls and the button on one row. Anything
+            after the button goes on the line below: a message first, then secondary options.</dd>
+            <dt>.ds-input-group</dt>
+            <dd>Joins the controls that make one input, such as a search term and the field it
+            searches. The text input takes the spare width and the select takes what it needs.</dd>
+            <dt>.is-sr-only</dt>
+            <dd>On each <code>&lt;label&gt;</code> when a heading or the button already says what the
+            form does. The label is read out and not shown.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <div class="ds-card">
+      <p class="ds-panel-label">One control, with a visible label</p>
+      <form class="ds-form--compact" method="get" action="forms.html#compact-form">
+        <label class="ds-label" for="cf-id">arXiv identifier</label>
+        <input class="ds-input" id="cf-id" name="id" type="text" value="2610.00999">
+        <button class="ds-btn ds-btn-primary" type="submit">Open paper</button>
+      </form>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;form class="ds-form--compact" method="get" action="forms.html#compact-form"&gt;
+  &lt;label class="ds-label" for="cf-id"&gt;arXiv identifier&lt;/label&gt;
+  &lt;input class="ds-input" id="cf-id" name="id" type="text" value="2610.00999"&gt;
+  &lt;button class="ds-btn ds-btn-primary" type="submit"&gt;Open paper&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+          <dl>
+            <dt>.ds-label</dt>
+            <dd>One visible label above the row, for a form whose purpose is not clear from what
+            is around it.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <div class="ds-card">
+      <p class="ds-panel-label">With an error</p>
+      <form class="ds-form--compact" method="get" action="forms.html#compact-form" role="search" aria-label="Search arXiv">
+        <div class="ds-input-group">
+          <label class="is-sr-only" for="cf-query-2">Search term</label>
+          <input class="ds-input is-invalid" id="cf-query-2" name="query" type="search" value="*lens" aria-invalid="true" aria-describedby="cf-query-2-err">
+          <label class="is-sr-only" for="cf-field-2">Field to search</label>
+          <select class="ds-input" id="cf-field-2" name="searchtype"><option>Title</option><option>All fields</option></select>
+        </div>
+        <button class="ds-btn ds-btn-primary" type="submit">Search</button>
+        <p class="field-error" id="cf-query-2-err">A search cannot start with a wildcard (? or *). Remove it and search again.</p>
+        <label class="ds-check"><input type="checkbox" name="abstracts" value="show" checked><span>Show abstracts</span></label>
+        <a href="forms.html#compact-form">Advanced search</a>
+      </form>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;form class="ds-form--compact" method="get" action="forms.html#compact-form" role="search" aria-label="Search arXiv"&gt;
+  &lt;div class="ds-input-group"&gt;
+    &lt;label class="is-sr-only" for="cf-query-2"&gt;Search term&lt;/label&gt;
+    &lt;input class="ds-input is-invalid" id="cf-query-2" name="query" type="search" value="*lens" aria-invalid="true" aria-describedby="cf-query-2-err"&gt;
+    &lt;label class="is-sr-only" for="cf-field-2"&gt;Field to search&lt;/label&gt;
+    &lt;select class="ds-input" id="cf-field-2" name="searchtype"&gt;&lt;option&gt;Title&lt;/option&gt;&lt;option&gt;All fields&lt;/option&gt;&lt;/select&gt;
+  &lt;/div&gt;
+  &lt;button class="ds-btn ds-btn-primary" type="submit"&gt;Search&lt;/button&gt;
+  &lt;p class="field-error" id="cf-query-2-err"&gt;A search cannot start with a wildcard (? or *). Remove it and search again.&lt;/p&gt;
+  &lt;label class="ds-check"&gt;&lt;input type="checkbox" name="abstracts" value="show" checked&gt;&lt;span&gt;Show abstracts&lt;/span&gt;&lt;/label&gt;
+  &lt;a href="forms.html#compact-form"&gt;Advanced search&lt;/a&gt;
+&lt;/form&gt;</code></pre>
+          <dl>
+            <dt>.field-error</dt>
+            <dd>Goes directly after the button, and shows under the row. The button stays beside
+            the field. The rest follows <a href="#validation">Validation</a>.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <ul class="notes">
+      <li><strong>Use it for a form that fits on one row.</strong> A form with help text, optional
+      fields or more than one row uses the standard fields.</li>
+      <li><strong>Every control has a label.</strong> Hide it with <code>.is-sr-only</code> only when a
+      heading or the button says what the form does. Never use a placeholder as the label.</li>
+      <li><strong>The button names the action.</strong> “Search”, not “Go” or “Submit”.</li>
+      <li><strong>Join only the controls that make one input.</strong> Controls that could be filled
+      in separately stay separate.</li>
+      <li><strong>Secondary options go below the row.</strong> A checkbox or a link there never moves
+      the button away from its field.</li>
+      <li><strong>On a narrow screen the button takes its own line.</strong> Joined controls stay on
+      one row and share it.</li>
+    </ul>
   </section>
 
   <!-- ───────── Validation ───────── -->

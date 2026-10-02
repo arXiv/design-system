@@ -24,6 +24,20 @@ components:
         does: "A checkbox or radio row: a `<label>` holding the native control and a `<span>` with the text. The whole label is the target."
     notes:
       - "Field widths are set by the type of control, on the assumption that the element already tells you about how much someone will type. If you need to override a default width, two classes are available (see [Field width](#field-width))."
+  - id: compact-form
+    title: "Compact form"
+    summary: "A compact form is for a very short form, such as search: one to three controls and a button, on one row."
+    classes:
+      - name: ".ds-form--compact"
+        does: "On the `<form>`. Puts the controls and the button on one row. Anything after the button goes on the line below: a message first, then secondary options."
+      - name: ".ds-input-group"
+        does: "Joins the controls that make one input, such as a search term and the field it searches. The text input takes the spare width and the select takes what it needs."
+      - name: ".is-sr-only"
+        does: "On each `<label>` when a heading or the button already says what the form does. The label is read out and not shown."
+      - name: ".ds-label"
+        does: "One visible label above the row, for a form whose purpose is not clear from what is around it."
+      - name: ".field-error"
+        does: "Goes directly after the button, and shows under the row. The button stays beside the field. The rest follows [Validation](#validation)."
   - id: validation
     title: "Validation"
     summary: "Fields can be in three possible states: normal, validated, or disabled. Validation styles change based on the error [disposition](#disposition-tiers), that is, its severity."
@@ -180,6 +194,53 @@ A field is a label (for example, Email address), a control (for example, input f
 - `.ds-check` — A checkbox or radio row: a `<label>` holding the native control and a `<span>` with the text. The whole label is the target.
 
 > Field widths are set by the type of control, on the assumption that the element already tells you about how much someone will type. If you need to override a default width, two classes are available (see [Field width](#field-width)).
+
+## Compact form
+
+A compact form is for a very short form, such as search: one to three controls and a button, on one row.
+
+```html
+<form class="ds-form--compact" method="get" action="forms.html#compact-form" role="search" aria-label="Search arXiv">
+  <div class="ds-input-group">
+    <label class="is-sr-only" for="cf-query">Search term</label>
+    <input class="ds-input" id="cf-query" name="query" type="search" value="gravitational lensing">
+    <label class="is-sr-only" for="cf-field">Field to search</label>
+    <select class="ds-input" id="cf-field" name="searchtype"><option>All fields</option><option>Title</option><option>Author(s)</option><option>Abstract</option></select>
+  </div>
+  <button class="ds-btn ds-btn-primary" type="submit">Search</button>
+  <label class="ds-check"><input type="checkbox" name="abstracts" value="show" checked><span>Show abstracts</span></label>
+  <a href="forms.html#compact-form">Advanced search</a>
+</form>
+```
+
+```html
+<form class="ds-form--compact" method="get" action="forms.html#compact-form">
+  <label class="ds-label" for="cf-id">arXiv identifier</label>
+  <input class="ds-input" id="cf-id" name="id" type="text" value="2610.00999">
+  <button class="ds-btn ds-btn-primary" type="submit">Open paper</button>
+</form>
+```
+
+```html
+<form class="ds-form--compact" method="get" action="forms.html#compact-form" role="search" aria-label="Search arXiv">
+  <div class="ds-input-group">
+    <label class="is-sr-only" for="cf-query-2">Search term</label>
+    <input class="ds-input is-invalid" id="cf-query-2" name="query" type="search" value="*lens" aria-invalid="true" aria-describedby="cf-query-2-err">
+    <label class="is-sr-only" for="cf-field-2">Field to search</label>
+    <select class="ds-input" id="cf-field-2" name="searchtype"><option>Title</option><option>All fields</option></select>
+  </div>
+  <button class="ds-btn ds-btn-primary" type="submit">Search</button>
+  <p class="field-error" id="cf-query-2-err">A search cannot start with a wildcard (? or *). Remove it and search again.</p>
+  <label class="ds-check"><input type="checkbox" name="abstracts" value="show" checked><span>Show abstracts</span></label>
+  <a href="forms.html#compact-form">Advanced search</a>
+</form>
+```
+
+- `.ds-form--compact` — On the `<form>`. Puts the controls and the button on one row. Anything after the button goes on the line below: a message first, then secondary options.
+- `.ds-input-group` — Joins the controls that make one input, such as a search term and the field it searches. The text input takes the spare width and the select takes what it needs.
+- `.is-sr-only` — On each `<label>` when a heading or the button already says what the form does. The label is read out and not shown.
+- `.ds-label` — One visible label above the row, for a form whose purpose is not clear from what is around it.
+- `.field-error` — Goes directly after the button, and shows under the row. The button stays beside the field. The rest follows [Validation](#validation).
 
 ## Validation
 
