@@ -26,8 +26,8 @@ components:
         does: "A `<th>` in the body is a row header: it names its row, in the cell type at full weight on a tinted ground, and a screen reader reads it with each cell in the row. The tint comes from the element, so no class is needed."
     notes:
       - "The Type column uses rectangular tags at the default level, documented on [Tags](tags.html#rectangular-labels)."
-  - id: one-frame
-    title: "One frame"
+  - id: outside-borders
+    title: "Outside borders"
     summary: "A table has a border all the way round, except directly inside a card, where the card is the frame and the table has none."
   - id: sortable-column-headers
     title: "Sortable column headers"
@@ -159,7 +159,7 @@ One table, `.ds-table`, on the public site and in internal tools. It has row div
 </div>
 ```
 
-**Without a header row**
+**With a header column**
 
 ```html
 <table class="ds-table">
@@ -182,7 +182,7 @@ One table, `.ds-table`, on the public site and in internal tools. It has row div
 
 > The Type column uses rectangular tags at the default level, documented on [Tags](tags.html#rectangular-labels).
 
-## One frame
+## Outside borders
 
 A table has a border all the way round, except directly inside a card, where the card is the frame and the table has none.
 
