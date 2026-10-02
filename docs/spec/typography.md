@@ -64,6 +64,12 @@ components:
         does: "The 3px keyboard focus ring, drawn on `:focus-visible` only."
       - name: ".ds-link-list"
         does: "On the element that holds a list in which every item is a link, such as an author list or a column of footer links. The links drop the underline at rest and keep everything else: Link Blue, the underline on hover, the focus ring and the visited colour. There is no ordinary text beside them for the underline to separate them from, so colour alone is enough here."
+  - id: matched-words
+    title: "Matched words"
+    summary: "The words that matched a search are marked with `<mark>`, in the accent wash and a heavier weight."
+    classes:
+      - name: "<mark>"
+        does: "One matched word or phrase. No class: the element is styled inside `.ds-page`. The weight marks it as well as the colour, so it is never colour alone. In internal tools the wash is Access Lime."
   - id: code-blocks-and-the-copy-button
     title: "Code blocks and the copy button"
     summary: "A code block uses Plex Mono on Repository Brown, and always includes a copy button."
@@ -214,6 +220,16 @@ Reading text with <a href="/abs/2604.22725">an inline link</a> in it.
 - `--ds-link, --ds-link-hover, --ds-link-visited` — Rest, hover and visited colours. The underline does not change between states.
 - `--ds-focus-ring` — The 3px keyboard focus ring, drawn on `:focus-visible` only.
 - `.ds-link-list` — On the element that holds a list in which every item is a link, such as an author list or a column of footer links. The links drop the underline at rest and keep everything else: Link Blue, the underline on hover, the focus ring and the visited colour. There is no ordinary text beside them for the underline to separate them from, so colour alone is enough here.
+
+## Matched words
+
+The words that matched a search are marked with `<mark>`, in the accent wash and a heavier weight.
+
+```html
+<p>Weak-<mark>Lensing</mark> Shear Response for Photometric Redshift-Based Tomographic Binning</p>
+```
+
+- `<mark>` — One matched word or phrase. No class: the element is styled inside `.ds-page`. The weight marks it as well as the colour, so it is never colour alone. In internal tools the wash is Access Lime.
 
 ## Code blocks and the copy button
 
