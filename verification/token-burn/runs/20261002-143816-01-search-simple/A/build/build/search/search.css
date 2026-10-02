@@ -1,0 +1,94 @@
+/* Search pages: only what design-system.css does not provide.
+
+   The design system has no pattern for a search result, for a matched search
+   term, or for a row of dates in a listing. Each block below is derived from
+   the nearest documented pattern and says which one. Every value is a design
+   system token: no colour, size or font is introduced here. When a pattern
+   for any of these is added to docs/, delete the block and use the pattern. */
+
+
+/* ONE RESULT  (.search-result)
+   No pattern exists for one record in a public listing. Derived from Layout
+   patterns: group with space first, no card. Results are separated by the
+   documented <hr class="ds-divider ds-divider--tight">.
+   The article owns the space between its lines as gap (DESIGN-POLICIES,
+   Spacing: containers own the space between regions), so no child needs a
+   margin and none needs a last-child reset. */
+.search-result {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);   /* a long identifier or address wraps; it never widens the page */
+  gap: var(--ds-space-tight);
+}
+.search-result > * { margin: 0; }
+
+/* Identifier, formats and categories: one row that wraps on a narrow screen. */
+.search-result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-tight) var(--ds-space-block);
+  font-size: 0.875rem;
+}
+.search-result-formats,
+.search-result-categories {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-tight);
+}
+.search-result-formats { column-gap: var(--ds-space-block); }
+/* Standalone links, not links in a sentence, so they take the 24px target floor (DESIGN-POLICIES, Target size). */
+.search-result-head > a,
+.search-result-formats > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+/* Identifiers are set in the mono face (DESIGN-POLICIES, Typography): arXiv identifiers and DOIs. */
+.search-id { font-family: var(--ds-font-mono); }
+
+/* DATES
+   Markup follows docs/version-display.html. That page says .ds-date-row is
+   not in design-system.css yet, so this supplies what the page describes:
+   small type, the muted colour, tabular figures. */
+.search-result-dates {
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* OPTIONAL FIELDS  (comments, journal reference, report number, classifications, DOI)
+   Derived from the label and value list in an accordion body (.ds-acc-body dl):
+   the same two columns and the same gaps. The label is .ds-panel-label, in the markup. */
+.search-result-meta {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--ds-space-tight) var(--ds-space-block);
+  font-size: 0.875rem;
+}
+.search-result-meta dt { margin: 0; padding-top: 2px; }   /* as .ds-acc-body dt: lines the small label up with its value */
+.search-result-meta dd { margin: 0; overflow-wrap: anywhere; }
+
+/* MATCHED SEARCH TERMS  (<mark>)
+   No pattern exists. The browser default is a yellow that is not in the
+   palette and does not change in dark mode. A fill must be one of the two
+   tints (DESIGN-POLICIES, Colors), so this is the accent tint with the accent
+   border, the pairing the popover and the tooltip use. The 1px edge means a
+   match is a box, and never marked by colour alone. Both tokens change in dark mode. */
+.search-result mark {
+  background: var(--ds-tint-accent);
+  box-shadow: 0 0 0 1px var(--ds-accent-border);
+  border-radius: 2px;
+  color: inherit;
+}
+/* Forced colours remove the fill and the shadow; the system's own highlight pair takes over. */
+@media (forced-colors: active) {
+  .search-result mark { background: Mark; color: MarkText; }
+}
+
+/* ORDER FIELD IN THE FILTER BAR
+   A filter bar field is 9.5rem wide, which cuts off "Announcement date (newest first)".
+   This one field starts wide enough to show its longest option. It still shrinks
+   and wraps with the bar. */
+.ds-filter-bar .search-field-order { flex-basis: 20rem; }

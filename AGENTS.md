@@ -41,6 +41,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | A close or dismiss control | `docs/buttons.html` | `.ds-close` — one control on both surfaces; the host supplies position only |
 | An icon | `docs/icons.html` (generated from `docs/icons/`) | copy the file from `docs/icons/` inline, `aria-hidden="true"`, `stroke="currentColor"`; never draw a glyph from memory, and never a second icon set. Adding one: drop the file in `docs/icons/`, run `verification/gen-icons.py` |
 | Links | `docs/links.html` — identical on every surface | bare `<a>` inside `.ds-page`, no class; inline links underlined |
+| Moving through a set: a queue one item at a time, or pages of a long list such as search results | `docs/pager.html` | `.ds-pagination` with `.ds-pagination-position` for a queue, or with `.ds-pagination-pages` for numbered pages; `.ds-pagination-position` states the position or range in both; results per page goes in a filter bar above; the ends disable, they are never removed |
 | Tables (both surfaces), row selection, bulk actions | `docs/tables.html` | `.ds-table` (header row from `<thead>`), sortable headers, `.ds-filter`, `.ds-bulk-count`, all tier 1; bulk-bar + selection rules documented there |
 | One record's details (label + value panel), any card | `docs/cards.html` (concept: `docs/layout-patterns.html`) | `.ds-card`, `.ds-card--data`, `.ds-card-grid`; same markup on both surfaces |
 | Forms, validation | `docs/forms.html` — one page, both surfaces | `.ds-field`/`.ds-label`/`.ds-input`/`.ds-hint`, `.is-invalid`, `.field-error`, `.ds-check`, `.ds-switch`, `.ds-seg` |
@@ -117,4 +118,4 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
 
 - Small team: never add anything needing manual upkeep.
 - Git: commit direct to master (WIP repo), identity SBBCornell. Published via GitHub Pages.
-- Tests: `verification/token-burn/` measures whether agents can work in this repo. Its tasks/rubrics are excluded from test workspaces — don't tune to them.
+- Tests: `verification/token-burn/` measures whether agents can work in this repo. Its tests and scoring notes are excluded from test workspaces — do not tune to them.

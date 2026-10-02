@@ -1,0 +1,89 @@
+/* Simple search pages — the CSS the design system does not provide.
+   Loaded after design-system.css. Tokens only: no hex values, no new fonts. */
+
+/* ── Search form ─────────────────────────────────────────────────────────
+   .ds-filter-bar fields are 9.5rem wide; the search term needs the room. */
+.search-form .search-form-query { flex: 1 1 18rem; max-width: none; }
+.search-form .search-form-radios { display: flex; gap: var(--ds-space-block); }
+.search-form .search-form-abstracts { flex: 0 0 auto; min-width: 0; }
+.search-form-abstracts .ds-label { display: block; }
+
+/* ── Results list ────────────────────────────────────────────────────────
+   One ds-card per result, in an ordered list. The list owns the gap. */
+.search-results {
+  list-style: none;
+  margin: 0 0 var(--ds-space-section);
+  padding: 0;
+  display: grid;
+  gap: var(--ds-space-block);
+}
+.search-result { display: grid; gap: var(--ds-space-tight); min-width: 0; }
+.search-result > * { margin: 0; }
+.search-result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-tight) var(--ds-space-block);
+}
+.search-result-id { font-family: var(--ds-font-mono); font-weight: 600; }
+.search-result-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-tight);
+}
+.search-result-title { font-size: 1.125rem; line-height: 1.4; overflow-wrap: anywhere; }
+.search-result-label { color: var(--ds-text-muted); }
+.search-result-excerpt { overflow-wrap: anywhere; }
+
+/* Progressive enhancement (:has, Baseline 2023): when the full abstract is open, the
+   excerpt steps aside so the text is not read twice. A browser without :has shows the
+   excerpt above the open abstract; nothing is lost. */
+.search-result-abstract:has(details[open]) .search-result-excerpt { display: none; }
+.search-result-abstract .ds-acc-body p { margin: 0; overflow-wrap: anywhere; }
+
+.search-result-dates { color: var(--ds-text-muted); }
+
+.search-result-meta { margin: 0; display: grid; gap: var(--ds-space-tight); }
+.search-result-meta > div { display: flex; flex-wrap: wrap; gap: var(--ds-space-tight) var(--ds-space-block); }
+.search-result-meta dt, .search-result-meta dd { margin: 0; }
+.search-result-meta dt {
+  flex: 0 0 9rem;
+  font-family: var(--ds-font-condensed);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ds-text-muted);
+}
+.search-result-meta dd { flex: 1 1 14rem; min-width: 0; overflow-wrap: anywhere; }
+
+/* ── Matched words ───────────────────────────────────────────────────────
+   The design system has no pattern for highlighting a match. Derived from its
+   colour rule: a light-blue wash is arXiv marking up the paper's own text.
+   The tint is the accent tint, so it flips in dark mode. Bold is the second cue,
+   so the mark survives greyscale (WCAG 1.4.1); forced-colors supplies its own. */
+mark {
+  background: var(--ds-tint-accent);
+  color: inherit;
+  font-weight: 600;
+  padding-inline: 0.15em;
+  border-radius: 3px;
+}
+
+/* ── Search tips ─────────────────────────────────────────────────────────
+   Each topic is a column that wraps when it runs out of room. */
+.search-tips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: var(--ds-space-block) var(--ds-space-section);
+}
+.search-tips h3 { margin-top: 0; }
+.search-tips ul { margin: 0; padding-inline-start: 1.25rem; }
+.search-tips li { overflow-wrap: anywhere; }
+
+/* The sort options are long; the filter-bar field width would cut them off. */
+.search-form .search-form-order { flex: 1 1 15rem; }

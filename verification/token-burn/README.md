@@ -1,74 +1,44 @@
-# Token-burn test harness
+# Agent build tests
 
-Measures whether this repo is structured so an AI agent can do frontend work
-in it **efficiently** (token burn, reading path) and **correctly** (rules
-followed, violations flagged, good judgment where no rule exists). Built
-2026-07-28 for Phase 1 of planning/NEXT-STEPS.md: run a baseline, reorganize the repo,
-re-run, compare.
+These tests answer one question: given only this repository, does an AI coding agent build an arXiv page that Shamsi accepts visually and that conforms to the design system technically?
 
-## How it works
+The plan (which tests, in what order, and what finishing means) is in `whiteboard/planning/TESTING-PLAN.md`. This file describes how one test works.
 
-Each test cell copies the repo (minus `tests/` and `.git`) into a clean temp
-workspace and runs a headless Claude agent (`claude -p`, Sonnet) on one task
-prompt inside it. The agent never sees the tasks, rubrics, or previous
-results — so the battery stays honest. The runner captures the full
-transcript, diffs the workspace to collect what the agent built, computes
-metrics, and generates a review page.
+## One test, five steps
 
-## The battery (5 tasks × 2 reps by default)
+1. **Spec.** Claude writes `tests/<name>/spec.md` in product words. It names no classes or components. Shamsi reviews it before anything is built. Sample content goes in `content.md`, and the notes on what to look for go in `scoring.md`, written before the builds.
+2. **Build.** Each build runs a fresh headless agent in a clean copy of the repository. The copy leaves out `verification/` and `whiteboard/`, so the builder cannot see the scoring notes, earlier results, or the mockups. By default there are four builds: two with Sonnet and two with Opus.
+3. **Technical evaluation.** Claude does this. Computed checks run first, then Claude reads each builder's reasoning.
+4. **Visual review.** Shamsi sees one build at a time, labelled A to D in shuffled order, without knowing which model made it. For each she answers "What is off?" and gives a verdict: accept, accept with changes, or reject. After the last one she sees them together and can add notes.
+5. **Summary.** One short page with thumbnails, both verdicts for each build, which model made which, what the builds had in common, and what changed in the design system as a result.
 
-| Task | Family | What it measures |
-|---|---|---|
-| 01 fidelity build | specced, public | finds + applies documented rules (card, links, truncation) |
-| 02 fidelity internal | specced, internal | surface identification (lime vs blue), component reuse |
-| 03 extrapolation | underspecified | reasoning from the *why* prose where no spec exists |
-| 04 violation trap | adversarial spec | guardrails: flag + compliant alternative, not silent compliance |
-| 05 real type badges | real backlog item | completing a partially-documented real pattern (retires once the real page is built) |
+## Commands
 
-## Running
+    python3 verification/token-burn/round.py build tests/01-search-simple
+    python3 verification/token-burn/round.py evaluate runs/<run>
+    python3 verification/token-burn/round.py review runs/<run>      # then open http://127.0.0.1:8765/
+    python3 verification/token-burn/round.py summary runs/<run>
 
-```bash
-bash verification/token-burn/run.sh              # full battery (≈10 agent runs)
-bash verification/token-burn/run.sh --smoke      # cheap plumbing check
-bash verification/token-burn/run.sh --task 03    # one task
-bash verification/token-burn/run.sh --variant digest --repo-dir /path/to/alt-repo
-```
+Run them from `verification/token-burn/`. `evaluate` needs Playwright (`pip install playwright`, `playwright install chromium`). `build` accepts `--models`, `--reps`, and `--budget`.
 
-The `--variant/--repo-dir` form tests an alternate repo structure (e.g. a
-specs-only digest) with the same battery — that comparison is the controlled
-experiment for whether the rationale prose earns its token cost.
+## Usage and billing
 
-## Battery v2 (2026-08-06)
+Builds run on the Claude subscription that the `claude` command is signed in to. `build` refuses to start if an API key is configured, runs one build at a time, and starts no further builds once a build reports usage beyond what the plan includes. `--budget` (10 by default) stops a single build that runs away; the figure is the estimated cost of the tokens, and on a subscription nothing is charged for it. Whether usage beyond the plan is allowed at all is an account setting at claude.ai (Settings, Usage, extra usage), and the runner cannot change it.
 
-Task specs now carry scope framing (component-only, neutral shell, no site
-chrome) and final-message caps; the review page is plain monospace (harness
-chrome can never be mistaken for design-system styling), shows each artifact
-beside its canonical pattern page, and an agent text pass (`report.py
-textpass <run>`) reads final messages against rubrics so the designer only
-judges visuals. Comparisons across the v1/v2 boundary (runs before
-2026-08-06) are confounded by these prompt changes — compare within a
-battery version.
+## What the computed checks cover
 
-## Reviewing
+For every page of every build: CSS written outside the one permitted file, classes that are defined nowhere, classes the builder invented, colours that are not in the design system, changes to existing files, anything loaded from another host, broken file paths, horizontal overflow at 768px and 320px, axe-core accessibility rules in light mode, contrast in dark mode, the tab order and whether each stop shows focus, and how much text is left with JavaScript off. It also takes screenshots at desktop width, at phone width, in dark mode, and with JavaScript off.
 
-Open `runs/<stamp>-<variant>/review.html` (or `runs/index.html`). Each cell
-shows metrics, auto-check flags (external resources, planted trap markers,
-non-palette hexes), the agent's final message, its reading path, and the
-built page in an iframe. Grade each cell (pass / minor / fail + notes —
-stored in your browser), then **Export grades** and paste the JSON back to
-Claude for the results write-up. Score against `rubrics/`.
+The results are in `runs/<run>/<label>/evaluation.json`. Claude writes its conclusions in `runs/<run>/technical.json`:
 
-Committed per run: metrics, prompts, artifacts, review page. Not committed:
-raw transcripts and stderr logs (bulky; see `.gitignore`).
+    {"result": "...", "builds": {"A": {"verdict": "...", "notes": "..."}}, "patterns": ["..."], "changes": ["..."]}
 
-## Interpreting the metrics
+## What is recorded
 
-- **Tokens / cost** — the headline burn per task; compare across variants.
-- **Files read (calls · unique · re-reads)** — the reading path. High
-  re-reads or many unique files for a small task suggest structure problems;
-  the ordered list shows *where* an agent wandered.
-- **Auto-check flags** — hard tells (external fonts/CDNs, planted trap
-  values, off-palette hexes). Any flag on tasks 01–03/05 is a correctness
-  miss; flags on 04 mean the trap was reproduced instead of refused.
-- **Designer grades** — the half the machine can't do. "Efficient but
-  fails the visual pass" means the structure is optimizing the wrong thing.
+Committed for each run: the spec, the built files, the screenshots, the measurements, Shamsi's review, and the summary. Not committed: transcripts and error logs.
+
+Each run keeps a copy of the stylesheets and scripts as they were when it was built (`snapshot/`), and the review server uses that copy. Later changes to the design system do not change how an old build looks. Fonts, icons, and images come from the current repository. `run.json` records the commit.
+
+## The July battery
+
+`retired/` holds the five tasks, rubrics, and scripts used in July 2026. Most of those tasks asked for things the design system now documents. Their results are in `BASELINE-RESULTS.md`, `REORG-COMPARISON.md`, and the older folders in `runs/`.

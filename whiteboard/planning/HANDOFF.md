@@ -102,6 +102,13 @@ body scrolls automatically and becomes a tab stop only while it overflows.
 
 ## Next, ours
 
+0. **Testing** — plan in `TESTING-PLAN.md`, protocol in `verification/token-burn/README.md`.
+   Test 1 (simple search) is built, reviewed and summarized; its 14 proposed changes are in the
+   plan under "Test 1". Next: design the compact search form on a proposal page, decide the
+   default page ground (white or tint), then rebuild with one page state.
+   The pager changed on 2026-10-02: position or range at the start, controls at the end, and a
+   numbered variant (`.ds-pagination-pages`). Open: its phone-width layout, the "Request 1–3 of
+   15" wording against the two descriptions under it, the Settings label on tables.html.
 1. **`docs/examples/`** — stable, generic full-page examples built only from documented
    components (approved in principle 2026-10-02). Start with form validation (states: empty,
    errors after submit, warnings, auto-corrected value, fixed); then a report page for
