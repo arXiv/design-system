@@ -103,12 +103,21 @@ body scrolls automatically and becomes a tab stop only while it overflows.
 ## Next, ours
 
 0. **Testing** — plan in `TESTING-PLAN.md`, protocol in `verification/token-burn/README.md`.
-   Test 1 (simple search) is built, reviewed and summarized; its 14 proposed changes are in the
-   plan under "Test 1". Next: design the compact search form on a proposal page, decide the
-   default page ground (white or tint), then rebuild with one page state.
-   The pager changed on 2026-10-02: position or range at the start, controls at the end, and a
-   numbered variant (`.ds-pagination-pages`). Open: its phone-width layout, the "Request 1–3 of
-   15" wording against the two descriptions under it, the Settings label on tables.html.
+   Test 1 (simple search) is built, reviewed and summarized; the status of its 14 proposed
+   changes is in the plan under "Test 1". Next: Shamsi reviews the evening's changes below, then
+   rebuild search with one page state.
+   Made 2026-10-02 without Shamsi's review, for her to check:
+   - **Page ground is white.** `.ds-full.ds-zone-secondary` is a tinted band; `.ds-zone-primary`
+     is gone; `--ds-surface-hover` is a new token for the hover fill. All docs pages converted.
+   - **Compact form** (`.ds-form--compact`, `.ds-input-group`) on forms.html.
+   - **Icons:** a select draws its own heavier arrow (`--ds-select-arrow`; `.ds-select` removed);
+     sort arrows are icons; small icons have a heavier stroke.
+   - **Pager:** position at the start, controls at the end; numbered pages
+     (`.ds-pagination-pages`); at phone width the words Previous and Next are hidden.
+   - **tables.html:** One frame moved up; the Settings legend is `.is-sr-only`.
+   Open: the filter bar wraps badly with five or more fields (To drops alone, the settings
+   divider hangs at the start of a row); whether numbered pages repeat below a long list is a
+   rule; the opening sentence of pager.html still describes only the one-at-a-time pager.
 1. **`docs/examples/`** — stable, generic full-page examples built only from documented
    components (approved in principle 2026-10-02). Start with form validation (states: empty,
    errors after submit, warnings, auto-corrected value, fixed); then a report page for

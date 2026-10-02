@@ -79,6 +79,8 @@ Shamsi did not realize she was looking at four separate builds of three pages ea
 
 ### Proposed changes to the design system
 
+Status on 2026-10-02, evening. Done, waiting for Shamsi's review: 1 (the compact form, forms.html), 2 (the page ground is white and the tint is a band), 3 (select arrow, and sort arrows and small icons), 4 (results per page goes in a filter bar above the numbered pages). Partly done: 6 (the compact form keeps messages and options under the row). Open: 5, 7, 8 and 9 to 14.
+
 From Shamsi's review:
 
 1. **A compact search form.** The query field, the field select and the Search button joined as one group on one row, with the label available to screen readers and not shown (DESIGN-POLICIES allows this). On a phone the two fields share a row and the button takes its own. Show abstracts and Advanced search sit together as secondary options. New component.
