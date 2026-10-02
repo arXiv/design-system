@@ -161,49 +161,11 @@
   <section>
     <h2 id="the-page-container">The page container</h2>
     <p class="ds-section-desc">Every page sits in <code>.ds-container</code>. It centres the content in a
-    column at the standard reading width, 850px at most, with a margin of at least 24px on each side. A
-    direct child marked <code>.ds-full</code> runs the full width of the container instead, and its own
-    content lines up with the reading column again.</p>
-    <p class="ds-section-desc">Note that neither class adds a background colour. A band is coloured only by a page zone (see <a href="#page-zones">Page zones</a> above). On this page you are looking at, the title and introduction sit in the reading column, and the TOC bar and the white band you are reading now are <code>.ds-full</code> bands.</p>
-
-    <div class="ds-card">
-      <p class="ds-panel-label">A page, drawn small</p>
-      <div class="ds-container page-demo page-demo--outlined">
-        <p>Content in the default column.</p>
-        <div class="ds-full">A <code>.ds-full</code> band, from edge to edge. Its content lines up with the columns.</div>
-        <p>Content again, in the default column.</p>
-      </div>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-container"&gt;
-&lt;p&gt;Content, in the reading column.&lt;/p&gt;
-&lt;div class="ds-full"&gt;A band from edge to edge.&lt;/div&gt;
-&lt;p&gt;Content again, in the reading column.&lt;/p&gt;
-&lt;/div&gt;</code></pre>
-          <dl>
-            <dt>.ds-container</dt>
-            <dd>The page shell: a centre column for content, at most <code>--ds-width-page</code>
-            (850px) wide, with a margin column of at least <code>--ds-gutter</code> (24px) on each
-            side. Every direct child goes in the centre column. The container also puts
-            <code>--ds-space-section</code> (48px) between its children, so a section has no
-            margin of its own.</dd>
-            <dt>.ds-full</dt>
-            <dd>On a direct child of <code>.ds-container</code>. The child runs across all three
-            columns, from edge to edge, and its padding brings its own content back in line with the
-            centre column. It has no background of its own.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-
-    <ul class="notes">
-      <li><strong>Only a direct child can run full width.</strong> <code>.ds-full</code> works on
-      children of <code>.ds-container</code>; nested deeper it does nothing.</li>
-      <li><strong>Do not build a full-width band with negative margins and <code>100vw</code>.</strong>
-      <code>100vw</code> includes the scrollbar, so a band built that way is wider than the page, and
-      the page scrolls sideways on Windows and Linux. <code>.ds-full</code> measures the container
-      instead, so it fits exactly.</li>
-    </ul>
+    column at the standard reading width, 850px at most, with a margin of at least 24px on each side.
+    For a band that runs edge to edge, see <a href="#page-zones">Page zones</a>.</p>
+<pre><code>&lt;main class="ds-container"&gt;…&lt;/main&gt;</code></pre>
+    <p><code>.ds-container</code> places every direct child in the reading column and puts
+    <code>--ds-space-section</code> (48px) between them, so a section has no margin of its own.</p>
   </section>
 
   <!-- ───────── Sidebar ───────── -->
@@ -452,6 +414,11 @@
     The zones are named for their role, because both grounds change in dark mode.</p>
     <p>A zone is optional. Without one, the container and its bands show the page's own background,
     <code>--ds-canvas</code> (Warm Wash in light mode).</p>
+    <p>The primary zone is a full band: a direct child of the container marked <code>.ds-full</code>,
+    which runs edge to edge while its own content lines up with the reading column. Note that
+    <code>.ds-full</code> adds no background colour. A band is coloured only by a page zone, or by a
+    component with its own background such as the TOC bar. On this page you are looking at, the TOC bar
+    and the white band you are reading now are <code>.ds-full</code> bands.</p>
     <div class="ds-card">
       <div class="ds-container ds-zone-secondary page-demo">
         <p>The opening of the page, on the secondary ground.</p>
@@ -476,10 +443,23 @@
             <dt>.ds-zone-primary</dt>
             <dd>Goes on one <code>.ds-full</code> band. It sets the <code>--ds-surface</code> ground and
             the band’s own top and bottom padding. A page has one primary zone.</dd>
+            <dt>.ds-full</dt>
+            <dd>On a direct child of <code>.ds-container</code>. The child runs across all three
+            columns, from edge to edge, and its padding brings its own content back in line with the
+            centre column. It has no background of its own.</dd>
           </dl>
         </div>
       </details>
     </div>
+
+    <ul class="notes">
+      <li><strong>Only a direct child can run full width.</strong> <code>.ds-full</code> works on
+      children of <code>.ds-container</code>; nested deeper it does nothing.</li>
+      <li><strong>Do not build a full-width band with negative margins and <code>100vw</code>.</strong>
+      <code>100vw</code> includes the scrollbar, so a band built that way is wider than the page, and
+      the page scrolls sideways on Windows and Linux. <code>.ds-full</code> measures the container
+      instead, so it fits exactly.</li>
+    </ul>
   </section>
 
   <!-- ───────── Wide page ───────── -->
