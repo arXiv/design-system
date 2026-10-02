@@ -1008,7 +1008,8 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 /* Narrow: the position takes its own line, and numbered pages keep the arrows
    and hide the words Previous and Next, which stay in the accessible name. */
 @container (max-width: 30rem) {
-  .ds-pagination > .ds-pagination-position { flex: 1 0 100%; }
+  .ds-pagination > .ds-pagination-position,
+  .ds-pagination > .ds-filter { flex: 1 0 100%; margin: 0; }
   .ds-pagination .ds-pagination-pages li, .ds-pagination .ds-pagination-pages a { min-width: 1.625rem; }
   .ds-pagination > .ds-pagination-pages { flex: 1 1 0; min-width: 0; justify-content: center; }
   .ds-pagination:has(.ds-pagination-pages) .ds-pagination-label {
@@ -1035,6 +1036,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   font-variant-numeric: tabular-nums;
 }
 .ds-pagination .ds-btn { min-width: 0; }
+/* Results per page comes after the controls, so they stay together; when
+   there is no room it takes the end of the next line. */
+.ds-pagination > .ds-filter { margin-inline-start: auto; padding-inline-start: var(--ds-space-4); }
 .ds-pagination-pages {
   display: flex;
   flex: 0 1 auto;
@@ -1418,42 +1422,38 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    A <form method="get"> that narrows a whole view. Its choices go in the
    address, so a filtered view can be linked. */
 .ds-filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(10rem, 100%), 1fr));
+  align-items: end;
   gap: var(--ds-space-4);
   padding: var(--ds-space-4);
   margin: 0 0 var(--ds-space-6);
   background: var(--ds-tint-warm);
   border-radius: 8px;
 }
-.ds-filter-bar .ds-field { flex: 0 1 9.5rem; max-width: none; min-width: 7rem; margin: 0; }
-/* Once the fields stack, each takes the full width of the bar. */
-.ds-filter-bar { container-type: inline-size; }
-@container (max-width: 30rem) {
-  .ds-filter-bar .ds-field { flex: 1 1 100%; }
-}
-.ds-filter-bar-group {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
+.ds-filter-bar .ds-field { max-width: none; min-width: 0; margin: 0; }
+/* Each filter is a cell in the bar's columns, as many as fit the width. */
+.ds-filter-bar-group { display: contents; }
+/* Settings start a new row, lined up with the columns above; the actions
+   take the last column of that row. */
+.ds-filter-bar-group--settings {
+  display: grid;
+  grid-column: 1 / -2;
+  grid-template-columns: repeat(auto-fill, minmax(min(10rem, 100%), 1fr));   /* the bar's own columns: same formula, one fewer track */
   gap: var(--ds-space-4);
+  align-items: end;
   min-width: 0;
   margin: 0;
   padding: 0;
   border: 0;
 }
-.ds-filter-bar-group:not(.ds-filter-bar-group--settings) { flex: 1 1 auto; }   /* fills its row, so the fields wrap only when they must */
-.ds-filter-bar-group > legend:not(.is-sr-only) { float: left; width: 100%; margin: 0; padding: 0; }
-.ds-filter-bar-group--settings {
-  padding-inline-start: var(--ds-space-4);
-  border-inline-start: 1px solid var(--ds-border-strong);
-}
+.ds-filter-bar-group > legend:not(.is-sr-only) { grid-column: 1 / -1; margin: 0; padding: 0; }
 .ds-filter-bar-actions {
+  grid-column: -2 / -1;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: var(--ds-space-tight);
-  margin-inline-start: auto;
 }
 
 /* A toolbar row directly above a table keeps a gap from it. */

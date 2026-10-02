@@ -64,13 +64,13 @@ components:
     summary: "A row of fields that narrows everything below it, with one Apply button. It is a `<form method=\"get\">`, so the choices go in the page address and a filtered view can be linked."
     classes:
       - name: ".ds-filter-bar"
-        does: "The `<form method=\"get\">`, on the warm tint, with an `aria-label` such as \"Filters\". It narrows everything below it. One per view. The row wraps on a narrow screen."
+        does: "The `<form method=\"get\">`, on the warm tint, with an `aria-label` such as \"Filters\". It narrows everything below it. One per view. The fields sit in equal columns, as many as fit the width."
       - name: ".ds-filter-bar-group"
-        does: "A row of fields. The fields are the standard `.ds-field`, `.ds-label` and `.ds-input`, with labels above."
+        does: "The filters. Each field takes a column. The fields are the standard `.ds-field`, `.ds-label` and `.ds-input`, with labels above."
       - name: ".ds-filter-bar-group--settings"
-        does: "Optional. A `<fieldset>` whose `<legend>` is `.is-sr-only`, so it is read out and takes no space. Set apart by a line, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter."
+        does: "Optional. A `<fieldset>` whose `<legend>` is `.is-sr-only`, so it is read out and takes no space. It starts its own row, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter."
       - name: ".ds-filter-bar-actions"
-        does: "Apply, a submit button, and an optional Clear link to the address without filters. They sit at the end of the row."
+        does: "Apply, a submit button, and an optional Clear link to the address without filters. They sit at the end of the last row."
   - id: row-selection
     title: "Row selection"
     summary: "Rows a reader can choose, one checkbox per row, so an action can apply to several at once."
@@ -328,10 +328,10 @@ A row of fields that narrows everything below it, with one Apply button. It is a
 </form>
 ```
 
-- `.ds-filter-bar` — The `<form method="get">`, on the warm tint, with an `aria-label` such as "Filters". It narrows everything below it. One per view. The row wraps on a narrow screen.
-- `.ds-filter-bar-group` — A row of fields. The fields are the standard `.ds-field`, `.ds-label` and `.ds-input`, with labels above.
-- `.ds-filter-bar-group--settings` — Optional. A `<fieldset>` whose `<legend>` is `.is-sr-only`, so it is read out and takes no space. Set apart by a line, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter.
-- `.ds-filter-bar-actions` — Apply, a submit button, and an optional Clear link to the address without filters. They sit at the end of the row.
+- `.ds-filter-bar` — The `<form method="get">`, on the warm tint, with an `aria-label` such as "Filters". It narrows everything below it. One per view. The fields sit in equal columns, as many as fit the width.
+- `.ds-filter-bar-group` — The filters. Each field takes a column. The fields are the standard `.ds-field`, `.ds-label` and `.ds-input`, with labels above.
+- `.ds-filter-bar-group--settings` — Optional. A `<fieldset>` whose `<legend>` is `.is-sr-only`, so it is read out and takes no space. It starts its own row, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter.
+- `.ds-filter-bar-actions` — Apply, a submit button, and an optional Clear link to the address without filters. They sit at the end of the last row.
 
 ## Row selection
 

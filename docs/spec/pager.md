@@ -1,7 +1,7 @@
 ---
 page: pager.html
 title: "Pager"
-summary: "Controls for moving through a set: one item at a time with the pager, or a page at a time with numbered pages."
+summary: "Controls for moving through a list: one item at a time with the pager, or a group of items at a time with numbered pages."
 stylesheet: design-system.css
 components:
   - id: the-pager
@@ -37,7 +37,9 @@ components:
       - name: ".ds-pagination-label"
         does: "The words Previous and Next. On a narrow screen they are hidden and the arrows remain. Screen readers still read the words."
       - name: ".ds-filter-bar"
-        does: "Filters and settings for the list go in a filter bar above the numbered pages. Results per page is a setting. See [Filter bar](tables.html#filter-bar)."
+        does: "Filters for the list go in a filter bar above it. See [Filter bar](tables.html#filter-bar)."
+      - name: ".ds-filter"
+        does: "Results per page, after Next: a small GET form with its own button, so it works without JavaScript. Choose a default; the reader changes it here, after seeing the results."
 rules:
   - "**Name the set.** The `<nav>` takes an `aria-label` that says what it steps through, such as “Queue navigation”."
   - "**Announce the position.** The counter is a polite live region, so each step is announced without moving focus."
@@ -47,7 +49,7 @@ rules:
 
 # Pager
 
-Controls for moving through a set: one item at a time with the pager, or a page at a time with numbered pages.
+Controls for moving through a list: one item at a time with the pager, or a group of items at a time with numbered pages.
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
@@ -173,13 +175,6 @@ Numbered pages are for a long list split across pages, such as search results, w
       <select class="ds-input" id="pg-status" name="status"><option>Any</option><option>On hold</option></select>
     </div>
   </div>
-  <fieldset class="ds-filter-bar-group ds-filter-bar-group--settings">
-    <legend class="is-sr-only">Settings</legend>
-    <div class="ds-field">
-      <label class="ds-label" for="pg-size">Results per page</label>
-      <select class="ds-input" id="pg-size" name="size"><option selected>25</option><option>50</option><option>100</option><option>200</option></select>
-    </div>
-  </fieldset>
   <div class="ds-filter-bar-actions">
     <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
   </div>
@@ -195,6 +190,11 @@ Numbered pages are for a long list split across pages, such as search results, w
     <li><a href="?page=67"><span class="is-sr-only">Page </span>67</a></li>
   </ol>
   <a class="ds-btn ds-btn-text" href="?page=3"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+  <form class="ds-filter" method="get" action="pager.html#numbered-pages">
+    <label for="pg-size">Per page</label>
+    <select id="pg-size" name="size"><option selected>25</option><option>50</option><option>100</option><option>200</option></select>
+    <button class="ds-btn ds-btn-text" type="submit">Apply</button>
+  </form>
 </nav>
 ```
 
@@ -203,7 +203,8 @@ Numbered pages are for a long list split across pages, such as search results, w
 - `.ds-pagination-pages` — An `<ol>` of links, one for each page shown. The current page takes `aria-current="page"`. Each link includes the word “Page” in `.is-sr-only` text, so a screen reader says “Page 2” and not “2”. A gap in the numbers is a list item holding an ellipsis.
 - `a.ds-btn.ds-btn-text` — Previous and Next are links, because each page has its own address. At either end of the list the link has no `href` and takes `aria-disabled="true"` and `.is-disabled`.
 - `.ds-pagination-label` — The words Previous and Next. On a narrow screen they are hidden and the arrows remain. Screen readers still read the words.
-- `.ds-filter-bar` — Filters and settings for the list go in a filter bar above the numbered pages. Results per page is a setting. See [Filter bar](tables.html#filter-bar).
+- `.ds-filter-bar` — Filters for the list go in a filter bar above it. See [Filter bar](tables.html#filter-bar).
+- `.ds-filter` — Results per page, after Next: a small GET form with its own button, so it works without JavaScript. Choose a default; the reader changes it here, after seeing the results.
 
 ## Rules
 
