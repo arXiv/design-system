@@ -80,7 +80,7 @@ Barely perceptible tints for creating section depth without hard borders.
 
 | Name | Hex | Use |
 |---|---|---|
-| **Warm Wash** | `#f8f7f7` | Warm background — footer, metadata sections |
+| **Warm Wash** | `#f8f7f7` | Hover fill on a white surface |
 | **Grey Hover** | `#f0f0ee` | Table headers, hover fills, Related section background |
 | **Border Light** | `#dad8d6` | Component hairline borders — inputs, card edges; the off fill of a switch. Decorative only (below 3:1); not for sole interactive boundaries. Promoted from the mockups 2026-06-11. |
 
@@ -94,7 +94,7 @@ Barely perceptible tints for creating section depth without hard borders.
 |---|---|---|
 | Primary button | Access Lime `#c4d82e` | `--ds-accent` |
 | Secondary button | Lime tint `#f0f9e8` border `#9cb522` | `--ds-accent-wash`, `--ds-accent-border` |
-| Page background | Warm Wash `#f8f7f7` | — |
+| Page background | White `#ffffff` | — |
 | Header | (varies by tool) | — |
 | Text | Repository Brown `#1c1a17` | `--ds-text` |
 | Secondary text | Library Grey `#6b6459` | `--ds-text-muted` |
@@ -171,7 +171,8 @@ The tints sorted by the job they do. Reach for the named token; if a job is not 
 
 | The job | Reach for | Where it shows up |
 |---|---|---|
-| Page / section background, warm | **Warm Wash** `--ds-canvas` | Default subtle ground — footer, metadata bands, internal page background |
+| Page ground | **White** `--ds-canvas` | The default ground of every page, and the footer |
+| Hover fill on a white surface | **Warm Wash** `--ds-surface-hover` | A table row or a TOC entry under the pointer |
 | Secondary content band | **Card Grey** `--ds-tint-warm` | Related band, reader header — one step down from the page, no hard border |
 | Card surface / hover fill | **Card Grey** `--ds-surface-muted` | Card fills and hover fills |
 | Active / pressed fill, deepest warm band | **Border Light** `--ds-border-muted` `#dad8d6` | Footer edge, pressed states, pill borders. Body-size grey/links miss AA here — use Repository Brown or Link Hover |

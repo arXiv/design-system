@@ -39,7 +39,7 @@
   /* Two ramps, one base each, the step is the number: the percentage of the
      base over white. Every warm tint is Library Grey; every cool tint is
      Open Blue. Retune a base and recompute the steps. */
-  --ds-grey-5:            #f8f7f7;   /* Warm Wash: the page ground */
+  --ds-grey-5:            #f8f7f7;   /* Warm Wash: a hover fill on a white surface */
   --ds-grey-10:           #f0f0ee;   /* Card Grey: a secondary band, a hover fill */
   --ds-grey-25:           #dad8d6;   /* Border Light: hairlines, pressed fills */
   --ds-grey-55:           #aeaaa4;   /* Disabled Grey: disabled text, 2.3:1 */
@@ -78,10 +78,11 @@
   --ds-text-disabled:     var(--ds-grey-55);     /* below AA — disabled only */
   --ds-text-on-accent:    var(--ds-repository-brown);  /* on an Open Blue fill; Open Blue
                                                           does not flip, so this must not */
-  --ds-canvas:            var(--ds-grey-5);
+  --ds-canvas:            #ffffff;                     /* the page ground */
   --ds-surface:           #ffffff;
+  --ds-surface-hover:     var(--ds-grey-5);            /* a row or control under the pointer */
   --ds-surface-muted:     var(--ds-grey-10);
-  --ds-zone-secondary-bg: var(--ds-tint-warm);     /* ground behind supporting content — PAGE ZONES */
+  --ds-zone-secondary-bg: var(--ds-tint-warm);     /* the tinted band — PAGE ZONES */
 
   /* Destructive: delete, withdraw, revoke. One tier on every surface. */
   --ds-danger:                #c62828;   /* white on it 5.62:1 */
@@ -161,8 +162,9 @@
   --ds-note-mark-fg:       #ffffff;
   --ds-note-mark-internal: var(--ds-access-lime-deep);
 
-
-  --ds-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  /* A select's arrow. A background image cannot take the text colour, so the
+     dark blocks restate it. */
+  --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%231c1a17' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 
   --ds-font-sans:       "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --ds-font-condensed:  "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
@@ -301,16 +303,23 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 /* A dense internal tool: the same container at the wider width. */
 .ds-container--wide { --ds-width-page: var(--ds-width-wide); }
 
-/* PAGE ZONES  (.ds-zone-secondary / .ds-zone-primary) — layout-patterns.html
-   Two grounds that say what kind of content a reader is in. Primary is the
-   thing the page is about; secondary is what introduces or supports it.
-   Named for role, not colour, because both grounds flip in dark mode.
-   .ds-zone-secondary goes on the container and becomes the page ground;
-   the primary content sits in one .ds-full band on top of it. */
-.ds-container.ds-zone-secondary { background: var(--ds-zone-secondary-bg); }
-.ds-container > .ds-zone-primary {
-  background: var(--ds-surface);
-  padding-block: var(--ds-space-4) var(--ds-space-section);
+/* PAGE ZONES  (.ds-zone-secondary) — layout-patterns.html
+   The page ground is white. A tinted band holds what introduces or supports
+   the page: put .ds-zone-secondary on a .ds-full band. Named for role, not
+   colour, because the ground changes in dark mode. */
+.ds-container > .ds-zone-secondary {
+  background: var(--ds-zone-secondary-bg);
+  padding-block: var(--ds-space-section);
+}
+.ds-container > .ds-zone-secondary > * + * { margin-top: var(--ds-space-section); }
+/* A band that opens or closes the page runs to the container's edge. */
+.ds-container > .ds-zone-secondary:first-child {
+  margin-top: calc(-1 * var(--ds-space-8));
+  padding-top: var(--ds-space-8);
+}
+.ds-container > .ds-zone-secondary:last-child {
+  margin-bottom: calc(-1.5 * var(--ds-space-section));
+  padding-bottom: calc(var(--ds-space-section) * 1.5);
 }
 .ds-container > * > :first-child { margin-block-start: 0; }
 .ds-container > * > :last-child  { margin-block-end: 0; }
@@ -694,7 +703,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 .ds-btn.on-tint:hover {
   background:
-    linear-gradient(var(--ds-canvas), var(--ds-canvas)) padding-box,
+    linear-gradient(var(--ds-surface-hover), var(--ds-surface-hover)) padding-box,
     linear-gradient(to bottom, #c8c4be, var(--ds-border-strong)) border-box;
 }
 .ds-btn.on-tint:active {
@@ -994,6 +1003,23 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   align-items: center;
   gap: var(--ds-space-2);
   flex-wrap: wrap;
+  container-type: inline-size;
+}
+/* Narrow: the position takes its own line, and numbered pages keep the arrows
+   and hide the words Previous and Next, which stay in the accessible name. */
+@container (max-width: 30rem) {
+  .ds-pagination > .ds-pagination-position { flex: 1 0 100%; }
+  .ds-pagination .ds-pagination-pages li, .ds-pagination .ds-pagination-pages a { min-width: 1.625rem; }
+  .ds-pagination > .ds-pagination-pages { flex: 1 1 0; min-width: 0; justify-content: center; }
+  .ds-pagination:has(.ds-pagination-pages) .ds-pagination-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .ds-pagination:has(.ds-pagination-pages) > .ds-btn { padding-inline: var(--ds-space-1); }
 }
 /* Above the content it steps through: twice the 12px that holds an actions row to its table. */
 .ds-pagination:has(+ .ds-btn-group, + .ds-table-scroll, + .ds-table) { margin-bottom: var(--ds-space-6); }
@@ -1309,7 +1335,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 .ds-table tbody th { font-weight: 600; background: var(--ds-tint-warm); }
 .ds-table tbody tr:last-child > * { border-bottom: none; }
-.ds-table tbody tr:hover > * { background: var(--ds-canvas); }
+.ds-table tbody tr:hover > * { background: var(--ds-surface-hover); }
 /* The row's checkbox carries the selection; the tint is never the only signal. */
 .ds-table tbody tr.is-selected > * { background: var(--ds-tint-accent); }
 .ds-table tbody tr.hidden { display: none; }
@@ -1372,14 +1398,14 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   border: none;
   border-bottom: 1px solid var(--ds-border-strong); /* 3.61:1 on white ✓ */
   border-radius: 0;
-  padding: 1px 18px 1px 2px;
+  padding: 1px 20px 1px 2px;
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
-  /* Custom chevron */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238b8680'/%3E%3C/svg%3E");
+  background-image: var(--ds-select-arrow);
   background-repeat: no-repeat;
-  background-position: right 2px center;
+  background-position: right 3px center;
+  background-size: 10px 7px;
 }
 
 .ds-filter select:focus-visible {
@@ -1418,7 +1444,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   border: 0;
 }
 .ds-filter-bar-group:not(.ds-filter-bar-group--settings) { flex: 1 1 auto; }   /* fills its row, so the fields wrap only when they must */
-.ds-filter-bar-group > legend { float: left; width: 100%; margin: 0; padding: 0; }
+.ds-filter-bar-group > legend:not(.is-sr-only) { float: left; width: 100%; margin: 0; padding: 0; }
 .ds-filter-bar-group--settings {
   padding-inline-start: var(--ds-space-4);
   border-inline-start: 1px solid var(--ds-border-strong);
@@ -1469,13 +1495,23 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 .sort-arrow {
   display: inline-block;
+  width: 0.875rem;
+  height: 0.875rem;
   margin-left: 3px;
-  font-size: 0.5625rem;
-  color: var(--ds-border-strong); /* 3.3:1 on the header row */
-  vertical-align: middle;
+  overflow: hidden;
+  font-size: 0;   /* the glyph in the markup is for a page with no stylesheet */
+  vertical-align: -0.15em;
+  color: var(--ds-text-muted);
+  background: currentColor;
+  --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m21 16-4 4-4-4'/%3E%3Cpath d='M17 20V4'/%3E%3Cpath d='m3 8 4-4 4 4'/%3E%3Cpath d='M7 4v16'/%3E%3C/svg%3E");
+  -webkit-mask: var(--ds-sort-icon) center / contain no-repeat;
+  mask: var(--ds-sort-icon) center / contain no-repeat;
 }
 .ds-table th.sort-asc .sort-arrow,
 .ds-table th.sort-desc .sort-arrow { color: var(--ds-text); }
+.ds-table th.sort-asc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3Cpath d='M12 19V5'/%3E%3C/svg%3E"); }
+.ds-table th.sort-desc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14'/%3E%3Cpath d='m19 12-7 7-7-7'/%3E%3C/svg%3E"); }
+@media (forced-colors: active) { .sort-arrow { background: CanvasText; } }
 
 
 /* ── Button group (.ds-btn-group) ─────────────────────────────────────
@@ -1519,6 +1555,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   height: 1em;
   display: block;
   flex: none;
+  stroke-width: 2.5;   /* at text size a 2 stroke draws about 1px */
 }
 
 
@@ -1761,41 +1798,17 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
 textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; display: block; }
 /* Room on the right for the arrow, which renders inside the control's own
    padding box — without it a long option label runs into it. */
-select.ds-input { padding-right: 34px; }
-
-/* ── Drawn chevron (.ds-select wrapper) — forms.html
-   Opt-in, and rarely worth it. The native arrow is correct in dark mode,
-   at every zoom, in forced-colors, and on every platform; a drawn one
-   has to be re-checked in all four. Uses appearance:none, so the
-   wrapper MUST supply its own focus ring. */
-.ds-select {
-  position: relative;
-  display: block;
-}
-.ds-select select.ds-input {
-  appearance: none;
+select.ds-input:not([multiple]):not([size]) {
   -webkit-appearance: none;
+  appearance: none;
+  padding-right: 40px;
+  background-image: var(--ds-select-arrow);
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px 8px;
 }
-.ds-select::after {
-  content: "";
-  position: absolute;
-  right: 13px;
-  top: 50%;
-  width: 0.72em;
-  height: 0.48em;              /* em, so it tracks the control's font at any zoom */
-  transform: translateY(-50%);
-  pointer-events: none;        /* clicks fall through to the select */
-  background-color: var(--ds-text-muted);
-  -webkit-mask: var(--ds-chevron) center / contain no-repeat;
-  mask: var(--ds-chevron) center / contain no-repeat;
-}
-
-/* Windows High Contrast overrides background-color, which would erase a masked
-   chevron and leave a select with no arrow at all. Hand the control back to the
-   system, which draws its own. */
 @media (forced-colors: active) {
-  .ds-select select.ds-input { appearance: auto; -webkit-appearance: auto; padding-right: 11px; }
-  .ds-select::after { display: none; }
+  select.ds-input:not([multiple]):not([size]) { -webkit-appearance: auto; appearance: auto; padding-right: 11px; background-image: none; }
 }
 
 .ds-hint {
@@ -2083,7 +2096,7 @@ html:has(.ds-modal[open]) {
   gap: var(--ds-space-tight);
   padding: var(--ds-space-4) var(--ds-space-6);
   border-top: 1px solid var(--ds-border);
-  background: var(--ds-canvas);
+  background: var(--ds-surface-hover);
   flex-shrink: 0;
 }
 /* A destructive or secondary choice that belongs at the other end —
@@ -2433,7 +2446,9 @@ html:has(.ds-modal[open]) {
        Where a flipped value is one of the named brand colours, it points
        at the primitive so the relationship stays visible. */
     --ds-text:              var(--ds-grey-10);
+    --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     --ds-canvas:            var(--ds-repository-brown);
+    --ds-surface-hover:     var(--ds-repository-brown);
     --ds-surface-muted:     #2b2723;                     /* raised band, text 12.8:1 */
     --ds-zone-secondary-bg: var(--ds-tint-warm);
     --ds-danger-wash-hover:     #2a0808;
@@ -2541,7 +2556,9 @@ html:has(.ds-modal[open]) {
      Where a flipped value is one of the named brand colours, it points
      at the primitive so the relationship stays visible. */
   --ds-text:              var(--ds-grey-10);
+  --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   --ds-canvas:            var(--ds-repository-brown);
+  --ds-surface-hover:     var(--ds-repository-brown);
   --ds-surface-muted:     #2b2723;                     /* raised band, text 12.8:1 */
   --ds-zone-secondary-bg: var(--ds-tint-warm);
   --ds-danger-wash-hover:     #2a0808;
@@ -2613,7 +2630,9 @@ html:has(.ds-modal[open]) {
 [data-theme="light"] {
   color-scheme: light;
   --ds-text:  #1c1a17;
-  --ds-canvas:         var(--ds-grey-5);
+  --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%231c1a17' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --ds-canvas:         #ffffff;
+  --ds-surface-hover:  var(--ds-grey-5);
   --ds-surface-muted:         var(--ds-grey-10);
   --ds-zone-secondary-bg: var(--ds-tint-warm);
   --ds-danger-wash-hover:     #fdf0f0;
@@ -2928,8 +2947,10 @@ html:has(.ds-modal[open]) {
    back across the line, and the bar flickers between its two heights. */
 .ds-toc-bar.is-stuck > .ds-toc-sentinel { top: -11px; }
 
-/* A bar directly before the primary zone sits on that zone's top edge. */
-.ds-container > .ds-toc-bar + .ds-zone-primary { margin-top: calc(-1 * var(--ds-space-section)); }
+/* A bar directly after a tinted band sits on that band's bottom edge, and the
+   content after the bar starts close under it. */
+.ds-container > .ds-zone-secondary + .ds-toc-bar { margin-top: calc(-1 * var(--ds-space-section)); }
+.ds-container > .ds-toc-bar + * { margin-top: calc(var(--ds-space-8) - var(--ds-space-section)); }
 
 .ds-toc-bar.is-stuck {
   z-index: 100;
@@ -2964,11 +2985,11 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   transition: padding 0.25s ease, font-size 0.25s ease, box-shadow 0.25s ease;
 }
 .ds-toc-trigger::-webkit-details-marker { display: none; }
-.ds-toc-trigger:hover { background: var(--ds-canvas); }
+.ds-toc-trigger:hover { background: var(--ds-surface-hover); }
 .ds-toc-trigger:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
 .ds-toc-bar.is-stuck .ds-toc-trigger { padding: 4px 13px; font-size: 0.8rem; }
 .ds-toc-trigger svg { width: 1.25em; height: 1.25em; flex: none; color: var(--ds-text-muted); }
-.ds-toc-trigger .ds-toc-chevron { width: 1.09em; height: 1.09em; transition: transform 0.15s; }
+.ds-toc-trigger .ds-toc-chevron { width: 1.09em; height: 1.09em; stroke-width: 2.5; transition: transform 0.15s; }
 .ds-toc[open] .ds-toc-chevron { transform: rotate(180deg); }
 .ds-toc-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ds-toc-prefix { font-weight: 400; color: var(--ds-text-muted); }
@@ -2998,7 +3019,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   color: var(--ds-text);
   text-decoration: none;
 }
-.ds-toc-menu a:hover { background: var(--ds-canvas); }
+.ds-toc-menu a:hover { background: var(--ds-surface-hover); }
 .ds-toc-menu a:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: -3px; }
 .ds-toc-menu a.is-current { background: var(--ds-accent-wash); color: var(--ds-link); font-weight: 600; }
 .ds-toc-num { min-width: 22px; color: var(--ds-text-muted); font-variant-numeric: tabular-nums; }
@@ -3686,7 +3707,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
 }
-.ds-step-number svg { width: 0.875rem; height: 0.875rem; stroke: currentColor; fill: none; }
+.ds-step-number svg { width: 0.875rem; height: 0.875rem; stroke: currentColor; stroke-width: 2.5; fill: none; }
 .ds-subnav--steps li > span .ds-step-number { border-style: dashed; }
 .ds-subnav--steps a[aria-current="step"] {
   color: var(--ds-text);

@@ -34,6 +34,8 @@ components:
         does: "An `<ol>` of links, one for each page shown. The current page takes `aria-current=\"page\"`. Each link includes the word “Page” in `.is-sr-only` text, so a screen reader says “Page 2” and not “2”. A gap in the numbers is a list item holding an ellipsis."
       - name: "a.ds-btn.ds-btn-text"
         does: "Previous and Next are links, because each page has its own address. At either end of the list the link has no `href` and takes `aria-disabled=\"true\"` and `.is-disabled`."
+      - name: ".ds-pagination-label"
+        does: "The words Previous and Next. On a narrow screen they are hidden and the arrows remain. Screen readers still read the words."
       - name: ".ds-filter-bar"
         does: "Filters and settings for the list go in a filter bar above the numbered pages. Results per page is a setting. See [Filter bar](tables.html#filter-bar)."
 rules:
@@ -128,7 +130,7 @@ Numbered pages are for a long list split across pages, such as search results, w
 ```html
 <nav class="ds-pagination" aria-label="Search results pages">
   <span class="ds-pagination-position">1–50 of 8,291 results</span>
-  <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</a>
+  <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
   <ol class="ds-pagination-pages">
     <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
     <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
@@ -138,14 +140,14 @@ Numbered pages are for a long list split across pages, such as search results, w
     <li>…</li>
     <li><a href="?page=166"><span class="is-sr-only">Page </span>166</a></li>
   </ol>
-  <a class="ds-btn ds-btn-text" href="?page=2">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+  <a class="ds-btn ds-btn-text" href="?page=2"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
 </nav>
 ```
 
 ```html
 <nav class="ds-pagination" aria-label="Search results pages">
   <span class="ds-pagination-position">2,451–2,500 of 8,291 results</span>
-  <a class="ds-btn ds-btn-text" href="?page=49"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</a>
+  <a class="ds-btn ds-btn-text" href="?page=49"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
   <ol class="ds-pagination-pages">
     <li><a href="?page=1"><span class="is-sr-only">Page </span>1</a></li>
     <li>…</li>
@@ -155,7 +157,7 @@ Numbered pages are for a long list split across pages, such as search results, w
     <li>…</li>
     <li><a href="?page=166"><span class="is-sr-only">Page </span>166</a></li>
   </ol>
-  <a class="ds-btn ds-btn-text" href="?page=51">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+  <a class="ds-btn ds-btn-text" href="?page=51"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
 </nav>
 ```
 
@@ -171,19 +173,20 @@ Numbered pages are for a long list split across pages, such as search results, w
       <select class="ds-input" id="pg-status" name="status"><option>Any</option><option>On hold</option></select>
     </div>
   </div>
-  <div class="ds-filter-bar-group ds-filter-bar-group--settings">
+  <fieldset class="ds-filter-bar-group ds-filter-bar-group--settings">
+    <legend class="is-sr-only">Settings</legend>
     <div class="ds-field">
       <label class="ds-label" for="pg-size">Results per page</label>
       <select class="ds-input" id="pg-size" name="size"><option selected>25</option><option>50</option><option>100</option><option>200</option></select>
     </div>
-  </div>
+  </fieldset>
   <div class="ds-filter-bar-actions">
     <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
   </div>
 </form>
 <nav class="ds-pagination" aria-label="Submission pages">
   <span class="ds-pagination-position">26–50 of 1,669 submissions</span>
-  <a class="ds-btn ds-btn-text" href="?page=1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</a>
+  <a class="ds-btn ds-btn-text" href="?page=1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
   <ol class="ds-pagination-pages">
     <li><a href="?page=1"><span class="is-sr-only">Page </span>1</a></li>
     <li><a href="?page=2" aria-current="page"><span class="is-sr-only">Page </span>2</a></li>
@@ -191,7 +194,7 @@ Numbered pages are for a long list split across pages, such as search results, w
     <li>…</li>
     <li><a href="?page=67"><span class="is-sr-only">Page </span>67</a></li>
   </ol>
-  <a class="ds-btn ds-btn-text" href="?page=3">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+  <a class="ds-btn ds-btn-text" href="?page=3"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
 </nav>
 ```
 
@@ -199,6 +202,7 @@ Numbered pages are for a long list split across pages, such as search results, w
 - `.ds-pagination-position` — Which items are on this page and how many there are in all, such as “1–50 of 8,291 results”.
 - `.ds-pagination-pages` — An `<ol>` of links, one for each page shown. The current page takes `aria-current="page"`. Each link includes the word “Page” in `.is-sr-only` text, so a screen reader says “Page 2” and not “2”. A gap in the numbers is a list item holding an ellipsis.
 - `a.ds-btn.ds-btn-text` — Previous and Next are links, because each page has its own address. At either end of the list the link has no `href` and takes `aria-disabled="true"` and `.is-disabled`.
+- `.ds-pagination-label` — The words Previous and Next. On a narrow screen they are hidden and the arrows remain. Screen readers still read the words.
 - `.ds-filter-bar` — Filters and settings for the list go in a filter bar above the numbered pages. Results per page is a setting. See [Filter bar](tables.html#filter-bar).
 
 ## Rules

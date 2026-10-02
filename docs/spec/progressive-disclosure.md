@@ -75,7 +75,7 @@ components:
       - name: ".ds-toc-menu"
         does: "The list, a `<nav>` holding an `<ol>`. The link to the current section gets `.is-current`. A page whose sections are numbered puts each number in `.ds-toc-num`."
       - name: ".ds-toc-bar"
-        does: "The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly before `.ds-zone-primary`, it sits on that zone’s top edge. The bar is always sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. Sticky chrome is governed by [DESIGN-POLICIES](doc.html?src=docs/DESIGN-POLICIES.md); check there before adding the bar to a page."
+        does: "The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly after a `.ds-zone-secondary` band, it sits on that band’s bottom edge. The bar is always sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. Sticky chrome is governed by [DESIGN-POLICIES](doc.html?src=docs/DESIGN-POLICIES.md); check there before adding the bar to a page."
       - name: ".ds-toc-bar-inner"
         does: "The bar’s three-slot grid, which keeps the control centred whatever sits beside it."
       - name: "[data-toc-scope]"
@@ -249,8 +249,10 @@ Tabs switch between views of the same page. Each tab shows one panel and hides t
 Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. The bar is always sticky and it stays at the top of the viewport while the reader scrolls through the page.
 
 ```html
-<div class="ds-container ds-zone-secondary">
-  <header class="ds-page-header">…</header>
+<div class="ds-container">
+  <div class="ds-full ds-zone-secondary">
+    <header class="ds-page-header">…</header>
+  </div>
 
   <div class="ds-full ds-toc-bar">
     <div class="ds-toc-bar-inner">
@@ -267,7 +269,7 @@ Need in-page navigation? The TOC bar is a row that holds a single disclosure con
     </div>
   </div>
 
-  <div class="ds-full ds-zone-primary">…</div>
+  <section>…</section>
 </div>
 <script src="toc.js" defer></script>
 ```
@@ -275,7 +277,7 @@ Need in-page navigation? The TOC bar is a row that holds a single disclosure con
 - `.ds-toc` — The control, a `<details>`. It works on its own anywhere, and it opens with JavaScript off.
 - `.ds-toc-trigger` — The `<summary>`. Holds the list icon, `.ds-toc-text` with its `.ds-toc-prefix`, and `.ds-toc-chevron`.
 - `.ds-toc-menu` — The list, a `<nav>` holding an `<ol>`. The link to the current section gets `.is-current`. A page whose sections are numbered puts each number in `.ds-toc-num`.
-- `.ds-toc-bar` — The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly before `.ds-zone-primary`, it sits on that zone’s top edge. The bar is always sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. Sticky chrome is governed by [DESIGN-POLICIES](doc.html?src=docs/DESIGN-POLICIES.md); check there before adding the bar to a page.
+- `.ds-toc-bar` — The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly after a `.ds-zone-secondary` band, it sits on that band’s bottom edge. The bar is always sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. Sticky chrome is governed by [DESIGN-POLICIES](doc.html?src=docs/DESIGN-POLICIES.md); check there before adding the bar to a page.
 - `.ds-toc-bar-inner` — The bar’s three-slot grid, which keeps the control centred whatever sits beside it.
 - `[data-toc-scope]` — Optional, on `.ds-toc`: a selector for the element whose headings fill an empty list. Without it, `toc.js` reads `<main>`, or the whole page when there is no `<main>`.
 

@@ -20,8 +20,6 @@ components:
         does: "The control. Goes on `input`, `select` and `textarea` alike."
       - name: ".ds-hint"
         does: "Help text, after the control. Give it an `id` and name it in the control's `aria-describedby`. Say what good input looks like *before* someone gets it wrong."
-      - name: ".ds-select"
-        does: "Optional wrapper around a `<select class=\"ds-input\">` that swaps the native arrow for the drawn chevron. Not used above: the native arrow is right in dark mode, at every zoom and in forced colors, so leave it unless there is a reason."
       - name: ".ds-check"
         does: "A checkbox or radio row: a `<label>` holding the native control and a `<span>` with the text. The whole label is the target."
     notes:
@@ -179,7 +177,6 @@ A field is a label (for example, Email address), a control (for example, input f
 - `.label-optional` — On the label of an *optional* field, holding the word `(optional)`. Required fields have no marker; they take `required` and `aria-required="true"` on the control instead.
 - `.ds-input` — The control. Goes on `input`, `select` and `textarea` alike.
 - `.ds-hint` — Help text, after the control. Give it an `id` and name it in the control's `aria-describedby`. Say what good input looks like *before* someone gets it wrong.
-- `.ds-select` — Optional wrapper around a `<select class="ds-input">` that swaps the native arrow for the drawn chevron. Not used above: the native arrow is right in dark mode, at every zoom and in forced colors, so leave it unless there is a reason.
 - `.ds-check` — A checkbox or radio row: a `<label>` holding the native control and a `<span>` with the text. The whole label is the target.
 
 > Field widths are set by the type of control, on the assumption that the element already tells you about how much someone will type. If you need to override a default width, two classes are available (see [Field width](#field-width)).
