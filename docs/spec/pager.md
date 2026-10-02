@@ -9,9 +9,9 @@ components:
     summary: "This component group is for moving through items one at a time, such as a moderation queue or a run of submissions, where each item has its own screen and someone works through them in order. Our current usage is in the Admin Console but it is available in other contexts."
     classes:
       - name: ".ds-pagination"
-        does: "A `<nav>` with an `aria-label` saying which set it steps through. Holds Previous, the position and Next, in that order."
+        does: "A `<nav>` with an `aria-label` saying which set it steps through. Holds the position, Previous and Next, in that order."
       - name: ".ds-pagination-position"
-        does: "The counter. Takes `aria-live=\"polite\"`: without it a reader who cannot see the counter has no way to know that the Next they just pressed did anything. The wording is the host's to choose; the counter takes the slack between the buttons, so the buttons stay put as the number grows."
+        does: "The counter. Takes `aria-live=\"polite\"`: without it a reader who cannot see the counter has no way to know that the Next they just pressed did anything. The wording is the host's to choose; the counter takes the slack before the buttons, so the buttons stay put as the number grows."
       - name: ".ds-btn.ds-btn-text"
         does: "The two buttons, text-only, so they read as navigation rather than as actions. At either end of the set the button is `disabled`, not removed: a control that vanishes changes the shape of the toolbar under the reader, and a disabled one says “there is nothing before this”, which is the actual information."
       - name: ".ds-pagination"
@@ -22,10 +22,25 @@ components:
         does: "The papers in the current request, with a checkbox per row. See [Row selection](tables.html#row-selection)."
     notes:
       - "Only use a pager when the user can focus on just one item at a time without needing context from others in the set."
+  - id: numbered-pages
+    title: "Numbered pages"
+    summary: "Numbered pages are for a long list split across pages, such as search results, where each page has its own address."
+    classes:
+      - name: ".ds-pagination"
+        does: "A `<nav>` with an `aria-label` saying which list it pages through. Holds the position, Previous, the page numbers and Next, in that order."
+      - name: ".ds-pagination-position"
+        does: "Which items are on this page and how many there are in all, such as “1–50 of 8,291 results”."
+      - name: ".ds-pagination-pages"
+        does: "An `<ol>` of links, one for each page shown. The current page takes `aria-current=\"page\"`. Each link includes the word “Page” in `.is-sr-only` text, so a screen reader says “Page 2” and not “2”. A gap in the numbers is a list item holding an ellipsis."
+      - name: "a.ds-btn.ds-btn-text"
+        does: "Previous and Next are links, because each page has its own address. At either end of the list the link has no `href` and takes `aria-disabled=\"true\"` and `.is-disabled`."
+      - name: ".ds-filter-bar"
+        does: "Filters and settings for the list go in a filter bar above the numbered pages. Results per page is a setting. See [Filter bar](tables.html#filter-bar)."
 rules:
   - "**Name the set.** The `<nav>` takes an `aria-label` that says what it steps through, such as “Queue navigation”."
   - "**Announce the position.** The counter is a polite live region, so each step is announced without moving focus."
   - "**Disable the ends, do not remove them.** Previous on the first item and Next on the last stay in place, disabled."
+  - "**Mark the current page.** In numbered pages the link to the current page takes `aria-current=\"page\"`."
 ---
 
 # Pager
@@ -41,16 +56,16 @@ This component group is for moving through items one at a time, such as a modera
 
 ```html
 <nav class="ds-pagination" aria-label="Queue navigation">
-  <button class="ds-btn ds-btn-text" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</button>
   <span class="ds-pagination-position" aria-live="polite">Request 1 of 15</span>
+  <button class="ds-btn ds-btn-text" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</button>
   <button class="ds-btn ds-btn-text" type="button">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
 </nav>
 ```
 
 ```html
 <nav class="ds-pagination" aria-label="Moderation queue">
+  <span class="ds-pagination-position" aria-live="polite">Request 1–3 of 15</span>
   <button class="ds-btn ds-btn-text" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</button>
-  <span class="ds-pagination-position" aria-live="polite">Request 4 of 15</span>
   <button class="ds-btn ds-btn-text" type="button">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
 </nav>
 <div class="ds-btn-group">
@@ -97,8 +112,8 @@ This component group is for moving through items one at a time, such as a modera
 </div>
 ```
 
-- `.ds-pagination` — A `<nav>` with an `aria-label` saying which set it steps through. Holds Previous, the position and Next, in that order.
-- `.ds-pagination-position` — The counter. Takes `aria-live="polite"`: without it a reader who cannot see the counter has no way to know that the Next they just pressed did anything. The wording is the host's to choose; the counter takes the slack between the buttons, so the buttons stay put as the number grows.
+- `.ds-pagination` — A `<nav>` with an `aria-label` saying which set it steps through. Holds the position, Previous and Next, in that order.
+- `.ds-pagination-position` — The counter. Takes `aria-live="polite"`: without it a reader who cannot see the counter has no way to know that the Next they just pressed did anything. The wording is the host's to choose; the counter takes the slack before the buttons, so the buttons stay put as the number grows.
 - `.ds-btn.ds-btn-text` — The two buttons, text-only, so they read as navigation rather than as actions. At either end of the set the button is `disabled`, not removed: a control that vanishes changes the shape of the toolbar under the reader, and a disabled one says “there is nothing before this”, which is the actual information.
 - `.ds-pagination` — Steps through the requests. It sits above everything that belongs to the current request, so the table and its actions change together when the reader moves on.
 - `.ds-btn-group, .ds-bulk-count, .ds-filter` — The group actions row: the actions, the selection count, and a filter at the far end. See [Bulk actions](tables.html#bulk-actions).
@@ -106,8 +121,89 @@ This component group is for moving through items one at a time, such as a modera
 
 > Only use a pager when the user can focus on just one item at a time without needing context from others in the set.
 
+## Numbered pages
+
+Numbered pages are for a long list split across pages, such as search results, where each page has its own address.
+
+```html
+<nav class="ds-pagination" aria-label="Search results pages">
+  <span class="ds-pagination-position">1–50 of 8,291 results</span>
+  <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</a>
+  <ol class="ds-pagination-pages">
+    <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
+    <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
+    <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+    <li><a href="?page=4"><span class="is-sr-only">Page </span>4</a></li>
+    <li><a href="?page=5"><span class="is-sr-only">Page </span>5</a></li>
+    <li>…</li>
+    <li><a href="?page=166"><span class="is-sr-only">Page </span>166</a></li>
+  </ol>
+  <a class="ds-btn ds-btn-text" href="?page=2">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+</nav>
+```
+
+```html
+<nav class="ds-pagination" aria-label="Search results pages">
+  <span class="ds-pagination-position">2,451–2,500 of 8,291 results</span>
+  <a class="ds-btn ds-btn-text" href="?page=49"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</a>
+  <ol class="ds-pagination-pages">
+    <li><a href="?page=1"><span class="is-sr-only">Page </span>1</a></li>
+    <li>…</li>
+    <li><a href="?page=49"><span class="is-sr-only">Page </span>49</a></li>
+    <li><a href="?page=50" aria-current="page"><span class="is-sr-only">Page </span>50</a></li>
+    <li><a href="?page=51"><span class="is-sr-only">Page </span>51</a></li>
+    <li>…</li>
+    <li><a href="?page=166"><span class="is-sr-only">Page </span>166</a></li>
+  </ol>
+  <a class="ds-btn ds-btn-text" href="?page=51">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+</nav>
+```
+
+```html
+<form class="ds-filter-bar" method="get" action="pager.html#numbered-pages" aria-label="Filters">
+  <div class="ds-filter-bar-group">
+    <div class="ds-field">
+      <label class="ds-label" for="pg-type">Type</label>
+      <select class="ds-input" id="pg-type" name="type"><option>Any</option><option>New</option><option>Replacement</option></select>
+    </div>
+    <div class="ds-field">
+      <label class="ds-label" for="pg-status">Status</label>
+      <select class="ds-input" id="pg-status" name="status"><option>Any</option><option>On hold</option></select>
+    </div>
+  </div>
+  <div class="ds-filter-bar-group ds-filter-bar-group--settings">
+    <div class="ds-field">
+      <label class="ds-label" for="pg-size">Results per page</label>
+      <select class="ds-input" id="pg-size" name="size"><option selected>25</option><option>50</option><option>100</option><option>200</option></select>
+    </div>
+  </div>
+  <div class="ds-filter-bar-actions">
+    <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
+  </div>
+</form>
+<nav class="ds-pagination" aria-label="Submission pages">
+  <span class="ds-pagination-position">26–50 of 1,669 submissions</span>
+  <a class="ds-btn ds-btn-text" href="?page=1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</a>
+  <ol class="ds-pagination-pages">
+    <li><a href="?page=1"><span class="is-sr-only">Page </span>1</a></li>
+    <li><a href="?page=2" aria-current="page"><span class="is-sr-only">Page </span>2</a></li>
+    <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+    <li>…</li>
+    <li><a href="?page=67"><span class="is-sr-only">Page </span>67</a></li>
+  </ol>
+  <a class="ds-btn ds-btn-text" href="?page=3">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+</nav>
+```
+
+- `.ds-pagination` — A `<nav>` with an `aria-label` saying which list it pages through. Holds the position, Previous, the page numbers and Next, in that order.
+- `.ds-pagination-position` — Which items are on this page and how many there are in all, such as “1–50 of 8,291 results”.
+- `.ds-pagination-pages` — An `<ol>` of links, one for each page shown. The current page takes `aria-current="page"`. Each link includes the word “Page” in `.is-sr-only` text, so a screen reader says “Page 2” and not “2”. A gap in the numbers is a list item holding an ellipsis.
+- `a.ds-btn.ds-btn-text` — Previous and Next are links, because each page has its own address. At either end of the list the link has no `href` and takes `aria-disabled="true"` and `.is-disabled`.
+- `.ds-filter-bar` — Filters and settings for the list go in a filter bar above the numbered pages. Results per page is a setting. See [Filter bar](tables.html#filter-bar).
+
 ## Rules
 
 - **Name the set.** The `<nav>` takes an `aria-label` that says what it steps through, such as “Queue navigation”.
 - **Announce the position.** The counter is a polite live region, so each step is announced without moving focus.
 - **Disable the ends, do not remove them.** Previous on the first item and Next on the last stay in place, disabled.
+- **Mark the current page.** In numbered pages the link to the current page takes `aria-current="page"`.
