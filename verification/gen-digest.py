@@ -289,7 +289,30 @@ def extract(path):
             body = note.find(lambda n: n.has("ds-marginalia-body"))
             if body:
                 comp["notes"].append(md_inline(body))
+        # a titled card holding a list (the questions on layout-patterns.html) is guidance for this section
+        for card in section.find_all(lambda n: n.has("ds-card")):
+            ct = next((c for c in card.children if isinstance(c, Node) and c.tag == "h3"), None)
+            ul = next((c for c in card.children if isinstance(c, Node) and c.tag == "ul"), None)
+            if ct is None or ul is None:
+                continue
+            first = next((c for c in card.children if isinstance(c, Node) and c.tag == "p"), None)
+            items = "; ".join(md_inline(li) for li in ul.find_all(lambda n: n.tag == "li"))
+            comp["notes"].append(squash(ct.text()) + (" (" + md_inline(first).rstrip(".") + ")" if first else "") + ": " + items)
         page["components"].append(comp)
+
+    # a section with no heading under a plain "Rules" h2 still holds rules
+    for sec in root.find_all(lambda n: n.tag == "section" and not n.classes):
+        if any(section_title(c) for c in sec.children if isinstance(c, Node)):
+            continue
+        prev = None
+        for sib in sec.parent.children:
+            if sib is sec:
+                break
+            if isinstance(sib, Node) and sib.tag == "h2" and not section_title(sib):
+                prev = squash(sib.text())
+        if prev and re.search(r"rule", prev, re.I):
+            for li in sec.find_all(lambda n: n.tag == "li"):
+                page["rules"].append(md_inline(li))
 
     for ess in root.find_all(lambda n: n.has("ds-note--essential")):
         for li in ess.find_all(lambda n: n.tag == "li"):

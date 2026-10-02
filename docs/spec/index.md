@@ -26,11 +26,11 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Pager | [pager.md](pager.md) | Previous and Next controls with a position counter for going through a set, one item at a time. |
 | Typography | [typography.md](typography.md) | arXiv sets all text in the IBM Plex family with STIX Two Math for notation. All fonts are self-hosted and open source with no external font services. |
 | Versions | [version-display.md](version-display.md) | How a paper shows its submission date, the timestamp it was announced at, its current revision date, and its version history. arXiv displays this info over and  |
+| Layout patterns | [layout-patterns.md](layout-patterns.md) | This section covers our primary patterns for differentiating and organizing content based on user needs. The organizing principle to follow throughout: Choose t |
 
 ## Not yet digested
 
 These pages have not had their review pass. Read the page itself, and expect the shape to differ.
 
 - brand.html
-- layout-patterns.html
 - outreach.html
