@@ -71,7 +71,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 ## Layout and content width
 
-- **Organizing a page starts from the four questions** on [Layout patterns](layout-patterns.html#evaluating-user-needs). Its [guardrails](layout-patterns.html#guardrails) are firm rules; the rest of that page is guidance.
+- **Organizing a page starts from the four questions** on [Layout patterns](layout-patterns.html#evaluating-user-needs). Its [Rules](layout-patterns.html#rules) are firm; the rest of that page is guidance.
 - **Content-driven, not audience-driven.** The same usability principle applies in every context; only the content differs, so there is no separate rule for "public" vs "internal."
 - **One width per page.** The default content width is **850px** (`--ds-width-page` in `design-system.css`). Prose, tables, demo blocks, code and callouts all share it, so everything on a page has the same left and right edge. Individual elements do not declare their own width. A page that needs a different width changes the one token; it does not add a second width beside it.
 - **Long-form reading narrows toward the measure.** Sustained reading — abstract text, a paper body, an extended explanation someone reads start to finish — targets a ~65-character line (~510px in IBM Plex Sans at a 16px root, ~590px at the 75-character upper bound). This is where the readability research applies most strongly, and where the return sweep between lines is most costly. Set it on the page, not on the paragraph.
