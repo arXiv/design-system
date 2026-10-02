@@ -31,7 +31,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--ds-space-*` |
 | Buttons | `docs/buttons.html` — both surfaces | bare `.ds-btn` is the secondary tier; `.ds-btn-primary`, `.ds-btn-text`, `.ds-btn-destructive`, `.ds-btn-icon`, `.on-tint` / `.on-dark` override it; internal tools get their colour from `.ds-internal` on a parent, never from a second class family. Internal-only: `[aria-pressed]` on an icon button, in tier 2 |
 | Alerts, status & feedback messages | `docs/alerts.html` — one page, both surfaces | `.ds-alert*` — never rebuild its chrome |
-| Organizing a page: start here | `docs/layout-patterns.html` *Evaluating user needs* | the four questions and their tests; the guardrails are firm rules |
+| Organizing a page: start here | `docs/layout-patterns.html` *Evaluating user needs* | the four questions and their tests; its Rules are firm |
 | Cards, sidebars, page organization | `docs/layout-patterns.html` | `.ds-sidebar` (accordions inside it need no class); `.ds-full` for an edge-to-edge band; `.ds-zone-secondary` on the container + one `.ds-full.ds-zone-primary` band for a zoned page |
 | A labelled aside — a requirement, guidance, or how a component differs in internal tools | `docs/messages.html` *Notes* | `.ds-note` (+ `--essential` / `--internal`), `.ds-note-label`, `.ds-note-gotcha` — never a bespoke tinted box, and never an alert |
 | A one-sentence note beside a block (a demo, a figure) | `docs/layout-patterns.html` *Marginalia* | `.ds-marginalia` inside a `.ds-card`, text in `.ds-marginalia-body.ds-annotation`; sits in the margin when there is one, folds to an info mark when there is not |

@@ -45,7 +45,7 @@ components:
       - name: ".ds-element-pill"
         does: "The container: a white pill straddling the bottom edge of the content it belongs to. The wrapper supplies `position: relative`; the pill positions itself inside it."
       - name: ".is-revealed"
-        does: "The pill is hidden at rest and shown while the wrapped content is hovered or holds focus. The consumer adds and removes this class; the demo above keeps it on."
+        does: "The pill is hidden at rest and shown while the wrapped content is hovered or holds focus. The consumer adds and removes this class; the demo above keeps it on. The pill fades in, and under `prefers-reduced-motion` it appears without the fade."
       - name: "The actions"
         does: "Plain `<button>` or `<a>` elements. The pill gives each a 24px target floor. Their type and colour have no class of their own yet; this page stages them locally."
   - id: the-close-control
@@ -166,7 +166,7 @@ This component is a variant of text-only buttons and attach a row of tiny contro
 ```
 
 - `.ds-element-pill` — The container: a white pill straddling the bottom edge of the content it belongs to. The wrapper supplies `position: relative`; the pill positions itself inside it.
-- `.is-revealed` — The pill is hidden at rest and shown while the wrapped content is hovered or holds focus. The consumer adds and removes this class; the demo above keeps it on.
+- `.is-revealed` — The pill is hidden at rest and shown while the wrapped content is hovered or holds focus. The consumer adds and removes this class; the demo above keeps it on. The pill fades in, and under `prefers-reduced-motion` it appears without the fade.
 - `The actions` — Plain `<button>` or `<a>` elements. The pill gives each a 24px target floor. Their type and colour have no class of their own yet; this page stages them locally.
 
 ## The close control
