@@ -1,0 +1,66 @@
+/* Search results page — page-specific styles only.
+   Everything else comes from docs/design-system.css. The design system has
+   no pattern for a result in a list of papers, so the rules below derive one
+   from what it does have: spacing tokens for grouping (DESIGN-POLICIES,
+   Spacing), mono for identifiers (Typography), and the muted text colour for
+   labels. No new colours, sizes off the type scale, or widths. */
+
+/* The list of results. Grouped by space, not boxes (layout-patterns.html):
+   a block break between results, a tight break inside one. */
+.search-results {
+  display: grid;
+  gap: var(--ds-space-block);
+  margin: var(--ds-space-block) 0;
+  padding: 0;
+  list-style: none;
+}
+.search-result > * { margin: 0; }
+.search-result > * + * { margin-top: var(--ds-space-tight); }
+
+/* Identifier, formats and categories on one line, wrapping as needed. */
+.search-result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-tight);
+}
+.search-result-head > p { margin: 0; }
+/* An arXiv ID is an identifier, so it is set in mono (typography.html). */
+.search-result-id,
+.search-result-doi { font-family: var(--ds-font-mono); }
+.search-result-formats { font-size: 0.875rem; }
+.search-result-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-tight);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The title is the heading of the result; the h3 top margin belongs to
+   prose flow, not to a list item. */
+.search-result-title { margin: 0; }
+
+/* "Authors:", "Abstract:" — a label inside running text. */
+.search-result-label {
+  color: var(--ds-text-muted);
+  font-weight: 600;
+}
+.search-result-more { color: var(--ds-text-muted); }
+
+/* Comments, journal reference, report number, classes, DOI. Label and value
+   inline, one pair per line: these are short facts, read in passing. */
+.search-result-meta { font-size: 0.875rem; }
+.search-result-meta dt {
+  display: inline;
+  color: var(--ds-text-muted);
+  font-weight: 600;
+}
+.search-result-meta dt::after { content: ": "; }
+.search-result-meta dd { display: inline; margin: 0; }
+
+/* The pager's results-per-page control (pager.html) holds a second select,
+   Order. A tight break keeps the two label-and-select pairs apart. */
+.search-display { flex-wrap: wrap; }
+.search-display select + label { margin-inline-start: var(--ds-space-tight); }

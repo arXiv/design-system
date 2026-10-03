@@ -1,0 +1,37 @@
+{
+ "result": "Every build used the new pieces as documented: the compact form with joined fields, the tinted band for the search, numbered pages with the range on the left, above and below the list, <mark> for matched words, the date row, and an alert for the 10,000 limit. No accessibility, contrast, overflow or outside-resource problems in any build. Shamsi rated all four 'accept with changes', against four rejections last round.\n\nWhat is left is design, not conformance: where order and results per page go, how the pagination and the results are separated, and how one result is told from the next. One fault was mine: AGENTS.md still said results per page goes in a filter bar after pager.html had moved it into the pager row. Two builds noticed the conflict and chose differently. AGENTS.md is fixed.\n\nModels: A and D are Opus 5.5, B and C are Sonnet 5.5. This time the Sonnet builds did not write more CSS (17 and 21 rules against 17 and 18). Both Sonnet builds put each result in a card; neither Opus build did.",
+ "builds": {
+  "A": {
+   "verdict": "Conformant",
+   "notes": "Order and results per page share one small form after Next, with one Apply. Results are separated by spacing only. No CSS overrides any design-system class. Abstract: Show more, full text without JavaScript."
+  },
+  "B": {
+   "verdict": "Conformant, with issues",
+   "notes": "Order and results per page in a filter bar. Each result is a card. The full abstract is in an accordion, which is the wrong component. Overrides the tooltip position and the filter bar's first field. Read the digests in docs/spec/, as in test 1."
+  },
+  "C": {
+   "verdict": "Conformant, with issues",
+   "notes": "Order and results per page in a filter bar settings group. Each result is a card. The result count is not announced to assistive technology. Restyles the category tag buttons and the tooltip body. It caught a fault in the sample data (a doubled DOI) and showed it once."
+  },
+  "D": {
+   "verdict": "Conformant",
+   "notes": "Sort order is under the search row; results per page is the form after Next. Each result opens with its title as a heading. No CSS overrides any design-system class. Took 29 minutes, most of it stalled, at normal cost. Did not look at its page in a browser."
+  }
+ },
+ "patterns": [
+  "All four: no accessibility, dark contrast, overflow or outside-resource problems; no existing file changed; no colour outside the design system.",
+  "All four used the compact form, the tinted band, numbered pages above and below the list, <mark>, the date row and an alert for the limit.",
+  "Order went to four different places in four builds. The design system does not say where it goes.",
+  "Results per page: two in the pager row, two in a filter bar. The docs contradicted each other (AGENTS.md against pager.html); fixed.",
+  "Both Sonnet builds put each result in a card; both Opus builds used spacing.",
+  "One build used an accordion for the full abstract; the docs do not say when Show more is right and an accordion is not.",
+  "Two builds found that the date row assumes Submitted is version 1 and has no month-only announcement date.",
+  "Two builds still moved the tooltip so it would not run off a narrow screen.",
+  "Two builds took the header and footer from templates/, which is right.",
+  "The sample data had a doubled DOI, from my extraction. Fixed for any rerun.",
+  "Predictions: right on the compact form and numbered pages, on <mark>, on order splitting, and on cards. Wrong on results per page (two, not three or more, in the pager row) and on Sonnet writing more CSS."
+ ],
+ "changes": [
+  "AGENTS.md: results per page is the small form after Next in the numbered pager row (it contradicted pager.html)."
+ ]
+}

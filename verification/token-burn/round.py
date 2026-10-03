@@ -399,8 +399,9 @@ function save() { return fetch('/save', {method: 'POST', body: JSON.stringify(st
 function src(l) { return '/b/' + l + '/' + R.pages[pg].path }
 function intro() {
   $('#app').innerHTML = `<main><h1>${R.labels.length} builds to review</h1>
-    <p>The same spec was built ${R.labels.length} separate times. Each build is a different attempt at the same ${R.pages.length} pages: ${R.pages.map(p => p.label).join(', ')}.</p>
-    <p>You will see one build at a time. For each build, look at its pages, write what is off, and choose a verdict. Then the next build appears. Notes and verdicts are separate for each build.</p>
+    <p>The same spec was built ${R.labels.length} separate times. Each build is a different attempt at the same ${R.pages.length === 1 ? 'page' : R.pages.length + ' pages: ' + R.pages.map(p => p.label).join(', ')}.</p>
+    ${R.pages.length === 1 ? '' : '<p>Look at every page of a build before you write its notes.</p>'}
+    <p>You will see one build at a time. For each build, write what is off and choose a verdict. Then the next build appears. Notes and verdicts are separate for each build.</p>
     <p>After the last build you will see all of them side by side.</p>
     <div class="row"><button class="go" id="start">Start with Build ${R.labels[0]}</button></div></main>`;
   $('#start').onclick = () => { started = true; show() };
@@ -517,6 +518,17 @@ def summary(args):
         row("Claude: technical notes", lambda c: fold(tech["builds"].get(c.name, {}).get("notes"))),
         row("Cost", cost)]) + "</table>"
     dirty = " (with uncommitted changes to docs/)" if info.get("uncommitted_docs_changes") else ""
+    prev_html = ""
+    prev = HERE / "runs" / info["previous"] if info.get("previous") else None
+    if prev and prev.exists():
+        pinfo, prev_rev = load(prev / "run.json"), load(prev / "review.json", {"builds": {}})
+        pfirst = Path(pinfo["pages"][0]["path"]).stem
+        cells_p = cells_of(prev)
+        prev_html = (f'<h2>Last round: {esc(pinfo.get("title", prev.name))}</h2><table><tr>'
+                     + "".join(f'<td><a href="../{prev.name}/summary.html"><img class="thumb" alt="Last round, build {c.name}" '
+                               f'src="../{prev.name}/{c.name}/shots/{pfirst}-desktop.jpg"></a>Build {c.name}: '
+                               f'{esc(VERDICTS.get(prev_rev["builds"].get(c.name, {}).get("verdict"), "not reviewed"))}</td>'
+                               for c in cells_p) + "</tr></table>")
     page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(info.get('title', run.name))}: test summary</title><style>{PLAIN}</style></head><body><main>
@@ -524,6 +536,7 @@ def summary(args):
 <p class="muted">{esc(info['date'])} · design system at commit {esc(info['commit'])}{dirty} · <a href="spec.md">the spec</a></p>
 <h2>Result</h2>{para(tech.get("result")) or "<p class='muted'>Not written yet.</p>"}
 <h2>Builds</h2>{table}
+{prev_html}
 {('<h2>Shamsi: notes after seeing them together</h2>' + para(rev.get('together'))) if rev.get('together') else ''}
 <h2>What the builds had in common</h2>{items(tech.get("patterns"))}
 <h2>What we changed in the design system</h2>{items(tech.get("changes"))}

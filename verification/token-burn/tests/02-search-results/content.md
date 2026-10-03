@@ -59,7 +59,7 @@ Real records from arXiv, in the order the results page shows them. Text inside [
 - Full abstract: We present LUMA, a convolutional neural network (CNN) pipeline for the automated detection of strong gravitational [[lenses]] in simulated astronomical imaging. The method combines a physically motivated preprocessing stage, which enhances faint arc and ring features, with a compact three-block CNN trained using class reweighting and modern learning-rate scheduling. On simulated data, the model reaches test accuracies of about \% and receiver operating characteristic (ROC) area-under-the-curve (AUC) values of for the non-trivial classes, while confusion-matrix analysis shows high completeness and purity for lens candidates. These results demonstrate that relatively lightweight CNN architectures can provide a competitive baseline for strong-lens searches, and they motivate future extensions toward real survey images and transformer-based models.
 - Submitted 29 September, 2026; originally announced September 2026.
 - Comments: Accepted for publication in Astronomy and Computing, 2027, Corresponding Author: G.V. Donatiello (see associated pdf for useful e-mail addresses). 14 Pages, 8 Figures, 3 Tables
-- DOI: 10.1016/j.ascom.2026.101198}{10.1016/j.ascom.2026.101198
+- DOI: 10.1016/j.ascom.2026.101198
 
 ## Result 6
 
