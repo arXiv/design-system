@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Search not run: the search term starts with a wildcard &mdash; arXiv</title>
+
+  <link rel="stylesheet" href="../../docs/fonts.css">
+  <link rel="stylesheet" href="../../docs/design-system.css">
+  <link rel="stylesheet" href="search.css">
+  <script src="../../docs/theme.js"></script>  <!-- not deferred: the theme must be set before first paint -->
+</head>
+
+<body class="ds-page">
+<a class="ds-skip-link" href="#main">Skip to main content</a>
+
+<header class="ds-site-header">
+  <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
+    <img src="../../docs/assets/images/logos/logo_arxiv-primary.svg" alt="archive">
+  </a>
+  <nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation">
+    <a href="https://arxiv.org/search">
+      <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Search
+    </a>
+    <a href="https://arxiv.org/submit">Submit</a>
+    <a href="https://info.arxiv.org/about/donate.html">Donate</a>
+  </nav>
+  <span class="ds-site-header-divider" aria-hidden="true"></span>
+  <div class="ds-site-header-account">
+    <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
+  </div>
+</header>
+
+<main id="main" class="ds-container">
+  <section>
+    <h1>Search</h1>
+    <!-- Validation summary, as in docs/forms.html "Alerts in forms": the title has the
+         count, and each row links to its field. -->
+    <div class="ds-alert ds-alert--error" role="alert">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+      <div class="ds-alert-content">
+        <p class="ds-alert-title">1 error: the search was not run</p>
+        <p>Correct the search term, then search again.</p>
+        <ol>
+          <li><a href="#query">Search term &mdash; cannot start with a wildcard (? or *)</a></li>
+        </ol>
+      </div>
+    </div>
+    <!-- The search form is the documented filter bar (docs/tables.html): a GET form
+         that narrows everything below it, with one submit button. Results per page,
+         order and abstracts do not narrow the results, so they are in the settings group. -->
+    <form class="ds-filter-bar search-form" method="get" action="/search" role="search" aria-label="Search arXiv papers">
+      <div class="ds-filter-bar-group">
+        <div class="ds-field search-field-query">
+          <label class="ds-label" for="query">Search term</label>
+          <input class="ds-input is-invalid" aria-invalid="true" aria-describedby="query-error" id="query" name="query" type="text" required aria-required="true" value="*lens">
+        <p class="field-error" id="query-error"><span class="is-sr-only">Error: </span>A search term cannot start with a wildcard (? or *). Remove the wildcard from the start of the search term.</p>
+        </div>
+        <div class="ds-field search-field-long">
+          <label class="ds-label" for="searchtype">Field</label>
+          <select class="ds-input" id="searchtype" name="searchtype">
+          <option value="all">All fields</option>
+          <option value="title" selected>Title</option>
+          <option value="author">Author(s)</option>
+          <option value="abstract">Abstract</option>
+          <option value="comments">Comments</option>
+          <option value="journal_ref">Journal reference</option>
+          <option value="acm_class">ACM classification</option>
+          <option value="msc_class">MSC classification</option>
+          <option value="report_num">Report number</option>
+          <option value="paper_id">arXiv identifier</option>
+          <option value="doi">DOI</option>
+          <option value="orcid">ORCID</option>
+          <option value="license">License (URI)</option>
+          <option value="author_id">arXiv author ID</option>
+          <option value="help">Help pages</option>
+          <option value="full_text">Full text</option>
+          </select>
+        </div>
+      </div>
+      <fieldset class="ds-filter-bar-group ds-filter-bar-group--settings">
+        <legend class="ds-panel-label">Results display</legend>
+        <div class="ds-field">
+          <label class="ds-label" for="size">Results per page</label>
+          <select class="ds-input" id="size" name="size">
+          <option value="25">25</option>
+          <option value="50" selected>50</option>
+          <option value="100">100</option>
+          <option value="200">200</option>
+          </select>
+        </div>
+        <div class="ds-field search-field-long">
+          <label class="ds-label" for="order">Order</label>
+          <select class="ds-input" id="order" name="order">
+          <option value="-announced_date_first" selected>Announcement date (newest first)</option>
+          <option value="announced_date_first">Announcement date (oldest first)</option>
+          <option value="-submitted_date">Submission date (newest first)</option>
+          <option value="submitted_date">Submission date (oldest first)</option>
+          <option value="">Relevance</option>
+          </select>
+        </div>
+        <label class="ds-check">
+          <input type="checkbox" name="abstracts" value="show" checked>
+          <span>Show abstracts</span>
+        </label>
+      </fieldset>
+      <div class="ds-filter-bar-actions">
+        <a href="/search/advanced">Advanced Search</a>
+        <button class="ds-btn ds-btn-primary" type="submit">Search</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Always in the page, never behind a disclosure: on this page the tips are what the
+       searcher needs next (progressive-disclosure.html, Rules). -->
+  <section aria-labelledby="search-tips">
+    <h2 id="search-tips">Search tips</h2>
+    <h3 id="tips-author">Searching by author name</h3>
+    <ul>
+      <li>Using the <strong>Author(s)</strong> field produces best results for author name searches.</li>
+      <li>For the most precise name search, follow the <strong>surname(s), forename(s)</strong> or <strong>surname(s), initial(s)</strong> pattern: example <code>Hawking, S</code> or <code>Hawking, Stephen</code></li>
+      <li>For best results on multiple author names, separate individuals with a <code>;</code> (semicolon). Example: <code>Jin, D S; Ye, J</code></li>
+      <li>Author names enclosed in quotes will return only exact matches. For example, <code>"Stephen Hawking"</code> will not return matches for Stephen W. Hawking.</li>
+      <li>Diacritic character variants are automatically searched in the Author(s) field.</li>
+      <li>Queries with no punctuation will treat each term independently.</li>
+    </ul>
+    <h3 id="tips-subcategory">Searching by subcategory</h3>
+    <ul>
+      <li>To search within a subcategory select <strong>All fields</strong>.</li>
+      <li>A subcategory search can be combined with an author or keyword search by clicking on <strong>add another term</strong> in <a href="/search/advanced">advanced search</a>.</li>
+    </ul>
+    <h3 id="tips-wildcards">Wildcards</h3>
+    <ul>
+      <li>Use <code>?</code> to replace a single character or <code>*</code> to replace any number of characters.</li>
+      <li>Can be used in any field, but not in the first character position. See <a href="#tips-journal-references">Journal references</a> tips for exceptions.</li>
+    </ul>
+    <h3 id="tips-expressions">Expressions</h3>
+    <ul>
+      <li>TeX expressions can be searched, enclosed in single <code>$</code> characters.</li>
+    </ul>
+    <h3 id="tips-phrases">Phrases</h3>
+    <ul>
+      <li>Enclose phrases in double quotes for exact matches in title, abstract, and comments.</li>
+    </ul>
+    <h3 id="tips-dates">Dates</h3>
+    <ul>
+      <li>Sorting by announcement date will use the year and month the original version (v1) of the paper was announced.</li>
+      <li>Sorting by submission date will use the year, month and day the latest version of the paper was submitted.</li>
+    </ul>
+    <h3 id="tips-journal-references">Journal references</h3>
+    <ul>
+      <li>If a journal reference search contains a wildcard, matches will be made using wildcard matching as expected. For example, <code>math*</code> will match <code>math</code>, <code>maths</code>, <code>mathematics</code>.</li>
+      <li>If a journal reference search does not contain a wildcard, only exact phrases entered will be matched. For example, <code>math</code> would match <code>math</code> or <code>math and science</code> but not <code>maths</code> or <code>mathematics</code>.</li>
+      <li>All journal reference searches that do not contain a wildcard are literal searches: a search for <code>Physica A</code> will match all papers with journal references containing <code>Physica A</code>, but a search for <code>Physica A, 245 (1997) 181</code> will only return the paper with journal reference <code>Physica A, 245 (1997) 181</code>.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="ds-site-footer">
+  <div class="ds-site-footer-grid">
+    <div class="ds-site-footer-main">
+      <div class="ds-site-footer-ack">
+        We gratefully acknowledge support from our <strong>major funders</strong>,
+        <a href="https://info.arxiv.org/about/ourmembers.html"><strong>member institutions</strong></a>,
+        and all contributors.
+      </div>
+      <nav class="ds-site-footer-links" aria-label="Site navigation">
+        <a href="https://info.arxiv.org/about">About</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help">Help</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/contact.html">Contact</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/subscribe.html">Subscribe</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/license/index.html">Copyright</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/policies/privacy_policy.html">Privacy</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/web_accessibility.html">Accessibility</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://status.arxiv.org/" target="_blank" rel="noopener noreferrer">Operational Status<span class="is-sr-only"> (opens in new tab)</span></a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="../../docs/header.js" defer></script>
+<script src="search.js" defer></script>
+</body>
+</html>

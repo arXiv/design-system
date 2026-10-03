@@ -1,0 +1,161 @@
+/* Search page — the only CSS the design system does not already provide.
+   Loaded after design-system.css. Every colour, space and face is a token; the
+   rules here only arrange things the system has no component for.
+   Gaps in the system, and what each block below does about them:
+     1. Matched words     — no highlight style exists  -> mark.search-match
+     2. A list of records — no result-list pattern     -> .search-results
+     3. Label/value rows  — the data card is a panel   -> .search-result-meta
+     4. The date row      — .ds-date-row is documented but not in the
+                            stylesheet yet             -> scoped here
+     5. Category tooltip  — the tooltip expects a control with room to open;
+                            a tag near the edge would open off screen
+   Starting from the pattern each one is nearest to, per docs/brand.html. */
+
+/* ── 1. Matched words ────────────────────────────────────────────────────
+   Light blue is "arXiv chrome speaking, not the paper" (colors.html), which is
+   what a match marker is: the system marking the author's words. Colour is not
+   the only cue (WCAG 1.4.1): the weight changes too. In forced-colors mode the
+   browser's own <mark> colours apply, so the background is left alone there. */
+mark.search-match {
+  background: var(--ds-accent-wash);
+  color: var(--ds-text);
+  font-weight: 600;
+  border-radius: 2px;
+  padding: 0 0.15em;
+}
+@media (forced-colors: active) {
+  mark.search-match { background: Mark; color: MarkText; }
+}
+
+/* ── Summary line above the results ──────────────────────────────────── */
+.search-summary { color: var(--ds-text-muted); margin-bottom: var(--ds-space-block); }
+
+/* ── 2. The list of results ──────────────────────────────────────────────
+   Grouping by space, not boxes (layout-patterns): the gap between results is
+   a section break and the gap inside one result is a block or tight break, so
+   the ratio the spacing policy asks for holds. The container owns the gap. */
+.search-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-section);
+}
+.search-result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-tight);
+  min-width: 0;
+}
+.search-result > * { margin: 0; }
+
+/* Identifier and formats share a line. The identifier is mono (typography). */
+.search-result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--ds-space-block);
+  row-gap: var(--ds-space-tight);
+}
+.search-result-id {
+  font-family: var(--ds-font-mono);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+.search-result-formats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-tight);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+}
+.search-result-formats li { margin: 0; }
+.search-result-formats li + li::before {
+  content: "·";
+  margin-inline-end: var(--ds-space-tight);
+  color: var(--ds-text-muted);
+}
+
+.search-result-title {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.search-label {
+  font-family: var(--ds-font-condensed);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;   /* typed in sentence case; CSS does the capitals */
+  color: var(--ds-text-muted);
+}
+
+.search-result-authors { font-size: 0.9375rem; }
+.search-result-more { color: var(--ds-text-muted); font-style: italic; }
+
+/* ── 5. Category tags and their tooltips ─────────────────────────────────
+   The tooltip opens below its host and runs toward the inline end. A tag late
+   in the row would run off a narrow screen, so each host stops positioning
+   itself and the bubble opens from the start of the row instead, where there
+   is always room. Hover and focus still show it; Escape still closes it. */
+.search-result-cats {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-tight);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.search-result-cats > li { margin: 0; }
+.search-result-cats .ds-tooltip-host { position: static; }
+.search-result-cats .ds-tag { cursor: help; }
+
+/* ── Abstract ────────────────────────────────────────────────────────────
+   Without script the full abstract shows and the excerpt does not, so nothing
+   is lost; script adds html.js, shows the excerpt and the button.
+   The measure follows long-form reading (~65 characters). */
+.search-abstract { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ds-space-tight); }
+.search-abstract > p { margin: 0; max-width: 65ch; overflow-wrap: anywhere; font-size: 0.9375rem; }
+html:not(.js) .search-abstract-excerpt { display: none; }
+.search-abstract .ds-show-more { margin-inline-start: 0; }
+
+/* ── 3. Label and value rows (comments, journal reference, …) ────────────
+   Nearest pattern is the data card; that is a tinted panel for one record on
+   its own, too heavy to repeat fifty times. This keeps its label style and
+   wraps the value under the label when the row is narrow. */
+.search-result-meta { margin: 0; display: flex; flex-direction: column; gap: var(--ds-space-tight); font-size: 0.875rem; }
+.search-result-meta > div { display: flex; flex-wrap: wrap; column-gap: var(--ds-space-block); }
+.search-result-meta dt { flex: 0 0 9rem; margin: 0; }
+.search-result-meta dd { flex: 1 1 14rem; margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.search-result-meta .search-ident { font-family: var(--ds-font-mono); font-size: 0.8125rem; }
+
+/* ── 4. Dates ────────────────────────────────────────────────────────── */
+.search-result .ds-date-row {
+  font-size: 0.8125rem;
+  color: var(--ds-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Search tips ─────────────────────────────────────────────────────── */
+.search-tips-grid { margin-top: var(--ds-space-block); }
+.search-tips-grid .ds-card ul { margin: 0; padding-inline-start: 1.25rem; font-size: 0.9375rem; }
+.search-tips-grid .ds-card li + li { margin-top: var(--ds-space-tight); }
+
+/* ── Pager hint ──────────────────────────────────────────────────────── */
+.search-limit-note { margin-top: var(--ds-space-block); }
+
+/* ── Radio group inside the form ─────────────────────────────────────────
+   The system styles a fieldset only as a segmented control. A group of radios
+   that is submitted with the form needs the browser's box taken off it. */
+.search-radios { border: 0; padding: 0; margin-inline: 0; min-width: 0; }
+.search-radios > legend { padding: 0; }
+
+/* Space between the last result and the pager: a section break, owned here
+   because both sit inside one section. */
+.search-results + .ds-pagination { margin-top: var(--ds-space-section); }

@@ -1,0 +1,91 @@
+/* Search results page — the only CSS this page adds to the design system.
+   The design system has no pattern for a search result. Everything here lays
+   out existing components (tags, link list, show more, date row) and takes
+   every value from a token. Grouping is by space, not boxes
+   (layout-patterns.html): tight inside a result, section between results, so
+   the gap between records is clearly larger than the gap within one
+   (DESIGN-POLICIES, Spacing → Proximity). */
+
+/* The results section: the container owns the space between its parts. */
+.search-results-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-block);
+}
+.search-results-section > * { margin: 0; }
+
+/* The list of results. */
+.search-results {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-section);
+}
+
+/* One result. */
+.search-result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-tight);
+}
+.search-result > * { margin: 0; }
+
+/* Identifier and formats on one line. Mono, because it is an identifier
+   (DESIGN-POLICIES, Typography). */
+.search-result-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ds-space-tight) var(--ds-space-block);
+}
+.search-result-id { font-family: var(--ds-font-mono); }
+.search-result-formats { font-size: 0.875rem; }
+
+/* Subject categories, primary first. */
+.search-result-cats {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-tight);
+}
+
+/* The count of authors a result does not list: ordinary text after a run of
+   links, so it is quieter than they are and never reads as one more link. */
+.search-result-more-authors {
+  color: var(--ds-text-muted);
+  font-style: italic;
+}
+
+/* The word "Abstract:" before the text, as a quiet label. */
+.search-result-label {
+  font-weight: 600;
+  margin-inline-end: var(--ds-gap-glyph);
+}
+
+/* Comments, journal reference, report number, MSC and ACM class, DOI: label
+   and value pairs, shown only when the record has them. */
+.search-result-meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0 var(--ds-space-block);
+  font-size: 0.875rem;
+}
+.search-result-meta > div { display: contents; }
+.search-result-meta dt {
+  font-weight: 600;
+  color: var(--ds-text-muted);
+}
+.search-result-meta dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* On a narrow screen the label goes above its value. Rem, because it is
+   about whether the text still reads (DESIGN-POLICIES, Layout). */
+@media (max-width: 30rem) {
+  .search-result-meta { grid-template-columns: 1fr; }
+  .search-result-meta > div + div > dt { margin-top: var(--ds-space-tight); }
+}

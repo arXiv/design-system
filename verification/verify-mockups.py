@@ -22,8 +22,8 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-ABS = (REPO / "mockups" / "public" / "abstract-phase2.html").as_uri()
-READER = (REPO / "mockups" / "public" / "html-phase1.html").as_uri()
+ABS = (REPO / "whiteboard" / "mockups" / "public" / "abstract-phase2.html").as_uri()
+READER = (REPO / "whiteboard" / "mockups" / "public" / "html-phase1.html").as_uri()
 
 PASSES = []
 FAILS = []

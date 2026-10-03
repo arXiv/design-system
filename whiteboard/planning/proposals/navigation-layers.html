@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Navigation layers — tested on arXiv pages</title>
+<link rel="stylesheet" href="../../../docs/fonts.css">
+<link rel="stylesheet" href="../../../docs/design-system.css">
+<link rel="stylesheet" href="../../../docs/internal-tools.css">
+<style>
+  .sketch { border: 1px dashed var(--ds-border-strong); border-radius: 8px; padding: var(--ds-space-4); background: var(--ds-surface); }
+  .sketch-title { margin: 0 0 var(--ds-space-2); }
+  .filter-bar { display: flex; flex-wrap: wrap; gap: var(--ds-space-4); align-items: end; padding: var(--ds-space-3) var(--ds-space-4); background: var(--ds-tint-warm); border-radius: 8px; margin-bottom: var(--ds-space-4); }
+  .filter-bar .ds-field { margin: 0; }
+  .grouped-nav { font-size: 0.8125rem; display: grid; gap: var(--ds-space-1); }
+  .grouped-nav a { text-decoration: none; }
+  .grouped-nav .ds-panel-label { margin: var(--ds-space-3) 0 0; }
+  .split { display: grid; grid-template-columns: 13rem 1fr; gap: var(--ds-space-6); }
+  .verdict-fit { color: var(--ds-success-fg); font-weight: 600; }
+  .verdict-strain { color: var(--ds-warning-fg); font-weight: 600; }
+  .verdict-break { color: var(--ds-error-fg); font-weight: 600; }
+  td, th { vertical-align: top; }
+</style>
+</head>
+<body class="ds-page">
+<div class="ds-container">
+
+<header class="ds-page-header">
+  <h1>Navigation layers, tested on arXiv pages</h1>
+  <p>Shamsi's hypothesis: internal navigation on top, tabs second, filters third. This page tests it on eleven real cases and drafts guidance an agent can reason with.</p>
+</header>
+
+<section>
+  <h2 id="summary">Summary</h2>
+  <ul>
+    <li><strong>The order holds; the depth does not.</strong> When a page uses more than one, they stack in that order. Every case used one or two; none needed all three.</li>
+    <li><strong>The three layers answer three questions.</strong> Which page or task (navigation). Which view of this subject (tabs). Which slice of the data (filters). Classifying by question worked on every case; classifying by level did not.</li>
+    <li><strong>Tabs were the rarest layer.</strong> Only the Admin Console user page needs them. In Christopher's dashboard, the second row of tabs holds content people want to see together, so it becomes sections.</li>
+    <li><strong>Five needs fall outside the model:</strong> where in this page (TOC bar), the next item in a queue (stepper), the step in a sequence (submission), the mode of a page (view or edit), and settings that change a calculation (threshold days). The guidance needs to name them so agents do not force them into tabs or filters.</li>
+    <li><strong>One real strain:</strong> navigation with many destinations. The Admin Console has 18 pages in 6 groups. A horizontal bar cannot hold that. This needs a decision (below).</li>
+  </ul>
+</section>
+
+<section>
+  <h2 id="cases">The cases</h2>
+  <div class="ds-table-scroll" role="region" aria-label="Cases" tabindex="0">
+  <table class="ds-table">
+    <thead><tr><th scope="col">Case</th><th scope="col">Choices a user makes</th><th scope="col">Classified</th><th scope="col">Result</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Membership dashboard, sections overview</th>
+        <td>Which group to look at</td>
+        <td>Navigation (each card links to a report)</td>
+        <td><span class="verdict-fit">Fits.</span> A landing page of cards needs no layer of its own.</td></tr>
+      <tr><th scope="row">Membership dashboard, group report</th>
+        <td>Submissions and holds, Moderators or Recruitment. Activity charts, category stats, recent releases or recent submissions. Group, archive, category. Date range. Threshold days.</td>
+        <td>Navigation: the first three. Sections, not tabs: the four views (people want them together, and search and print need them). Filters: scope and dates. Settings: threshold days.</td>
+        <td><span class="verdict-strain">Strains.</span> The group, archive and category selects change the subject of the whole page. They behave like a filter but people will want to link to one group. A filter bar that writes its choices to the address works for both.</td></tr>
+      <tr><th scope="row">Admin Console, user page</th>
+        <td>Submission history or account activity. Removed, on hold or all.</td>
+        <td>Tabs: two peer views of one user, with counts. Filter: status, inside the tab it narrows.</td>
+        <td><span class="verdict-fit">Fits.</span> The only case where tabs are right: two long lists about one subject, read one at a time.</td></tr>
+      <tr><th scope="row">Admin Console, paper details</th>
+        <td>Metadata, PDF, submission history, owners, files, admin log. View or edit metadata. Filter one table.</td>
+        <td>Sections on one page. Mode: view or edit. Filter: local to one table.</td>
+        <td><span class="verdict-fit">Fits</span> without tabs. A TOC bar would help this long page; that is outside the three layers.</td></tr>
+      <tr><th scope="row">Admin Console, the whole tool</th>
+        <td>18 destinations in 6 groups (Users, Papers, Submissions, Endorsements, Categories, Settings…)</td>
+        <td>Navigation</td>
+        <td><span class="verdict-break">Breaks the current form.</span> .ds-subnav is a horizontal row for a few sections. 18 grouped links need a grouped list or a menu. See decision 3.</td></tr>
+      <tr><th scope="row">Admin Console, ownership requests</th>
+        <td>Next or previous request. Author, proxy or no for each paper. Filter by name match.</td>
+        <td>Stepper (queue). Decisions (segmented control). Filter: local to one table.</td>
+        <td><span class="verdict-fit">Fits</span>, with the stepper named as its own need.</td></tr>
+      <tr><th scope="row">arXiv Check</th>
+        <td>Next item (1 of 731). Viewing or editing. Save and next. Back to the to-do queue.</td>
+        <td>Stepper. Mode. Navigation (the queue).</td>
+        <td><span class="verdict-strain">Outside the model.</span> No tabs or filters. Mode and stepper are the whole structure.</td></tr>
+      <tr><th scope="row">User portal</th>
+        <td>Account home, submissions, works you own, endorse, moderation, administration. On a page: in progress or already submitted.</td>
+        <td>Navigation. Sections (two short tables).</td>
+        <td><span class="verdict-fit">Fits.</span> Moderation and Administration are a different audience; they belong in the internal tools, not this bar.</td></tr>
+      <tr><th scope="row">Submission</th>
+        <td>Which step: upload, metadata, preview, submit. Back or continue.</td>
+        <td>Sequence</td>
+        <td><span class="verdict-strain">Outside the model.</span> Steps are ordered and have a status (done, current, to do). Not navigation, not tabs.</td></tr>
+      <tr><th scope="row">HTML paper reader</th>
+        <td>Go to a section. Open versions, paper information, citation.</td>
+        <td>Where in this page (TOC bar). Sidebar (supplementary).</td>
+        <td><span class="verdict-fit">Fits by absence.</span> One long document needs no layers, only the TOC bar.</td></tr>
+      <tr><th scope="row">These docs</th>
+        <td>Which page (menu with three groups). Where in this page (TOC bar). Public or internal example.</td>
+        <td>Navigation (dropdown groups). TOC bar. Panel labels, not tabs.</td>
+        <td><span class="verdict-fit">Fits.</span> Grouped dropdowns already solve "many destinations" for a light site.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2 id="sketches">Sketches</h2>
+
+  <h3>Group report: navigation, then filters, then sections</h3>
+  <div class="sketch">
+    <nav class="ds-subnav" aria-label="Group report">
+      <a href="#" aria-current="page">Submissions and holds</a>
+      <a href="#">Moderators</a>
+      <a href="#">Recruitment</a>
+    </nav>
+    <form class="filter-bar" onsubmit="return false" aria-label="Filters">
+      <div class="ds-field"><label class="ds-label" for="s1">Group</label><select class="ds-input" id="s1"><option>Computer science</option></select></div>
+      <div class="ds-field"><label class="ds-label" for="s2">Category</label><select class="ds-input" id="s2"><option>All</option></select></div>
+      <div class="ds-field"><label class="ds-label" for="s3">From</label><input class="ds-input" id="s3" type="date" value="2026-09-01"></div>
+      <div class="ds-field"><label class="ds-label" for="s4">Hold threshold, days</label><input class="ds-input" id="s4" type="number" value="14"></div>
+      <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
+    </form>
+    <div class="ds-card-grid">
+      <div class="ds-card ds-card--stat"><p class="ds-panel-label">Submissions</p><p class="ds-stat-value">15,324</p></div>
+      <div class="ds-card ds-card--stat"><p class="ds-panel-label">Holds</p><p class="ds-stat-value">6,377</p></div>
+      <div class="ds-card ds-card--stat"><p class="ds-panel-label">Held over 14 days</p><p class="ds-stat-value">2,163</p></div>
+    </div>
+    <p class="ds-panel-label">Then sections: backlog by category · activity over time · recent items</p>
+  </div>
+
+  <h3>Admin Console user page: tabs, with a filter inside the view</h3>
+  <div class="sketch ds-internal">
+    <div class="ds-tabs" data-label="User activity">
+      <section class="ds-tabs-panel">
+        <h4>Submission history (7)</h4>
+        <div class="ds-filter"><label for="f1">Show:</label><select id="f1"><option>Removed</option><option>On hold</option><option>All</option></select></div>
+        <p>The submissions table, narrowed by the filter.</p>
+      </section>
+      <section class="ds-tabs-panel">
+        <h4>Account activity (3)</h4>
+        <p>The activity log.</p>
+      </section>
+    </div>
+  </div>
+
+  <h3>Admin Console: many destinations (strain)</h3>
+  <div class="sketch ds-internal">
+    <div class="split">
+      <nav class="grouped-nav" aria-label="Admin Console">
+        <p class="ds-panel-label">People</p><a href="#">Users</a><a href="#">Moderators</a>
+        <p class="ds-panel-label">Papers</p><a href="#">Papers</a><a href="#">Submissions</a><a href="#" aria-current="page"><strong>Ownership requests</strong></a>
+        <p class="ds-panel-label">Endorsement</p><a href="#">Requests</a><a href="#">Qualified endorsers</a>
+        <p class="ds-panel-label">…three more groups</p>
+      </nav>
+      <div>
+        <nav class="ds-pagination" aria-label="Queue">
+          <button class="ds-btn ds-btn-text" type="button">Previous</button>
+          <span class="ds-pagination-position">Request 3 of 15</span>
+          <button class="ds-btn ds-btn-text" type="button">Next</button>
+        </nav>
+        <p>The request: papers, each with an author / proxy / no decision.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2 id="guidance">Draft guidance</h2>
+  <p>As it might appear on a docs page, "Organising complex pages", with a short pointer in AGENTS.md.</p>
+
+  <h3>Questions, with signals</h3>
+  <ol>
+    <li><strong>Does the user move to a different task or page?</strong> Navigation. A few sections: the secondary bar. Many destinations in groups: see decision 3.</li>
+    <li><strong>Does the user switch between peer views of one subject, one at a time?</strong> Tabs. Not tabs when people compare the views, search across them, print them or link to one part: use sections on one page.</li>
+    <li><strong>Does the user narrow the same content?</strong> Filters. Put them above everything they change. If people will share a filtered view, write the choices to the address.</li>
+    <li><strong>Does the user change how a number is calculated?</strong> A setting, not a filter. Group it with the filters under "Settings", and state its value where the numbers are.</li>
+    <li><strong>Is the content one long page?</strong> Sections and a TOC bar, not tabs.</li>
+    <li><strong>Does the user work through items one at a time?</strong> A stepper.</li>
+    <li><strong>Must the user complete steps in order?</strong> A sequence with step status (to be designed with the submission work).</li>
+    <li><strong>Does the user switch between viewing and editing?</strong> A mode control, not tabs.</li>
+  </ol>
+  <p>Use only the layers the content raises. When several apply, stack them in this order from the top: navigation, tabs, filters.</p>
+
+  <h3>Guardrails (from failures seen)</h3>
+  <ul>
+    <li>One control of each kind per view: one navigation bar, one row of tabs, one filter bar.</li>
+    <li>Tabs never sit inside a tab panel.</li>
+    <li>Filters apply to everything below them, and only to that.</li>
+    <li>One Apply button per filter bar.</li>
+    <li>No breadcrumb on a page that has secondary navigation.</li>
+  </ul>
+
+  <h3>Worked examples</h3>
+  <p>The membership dashboard, the Admin Console user page, arXiv Check and the paper reader, as above: what each user decides, which question it answers, and the result.</p>
+</section>
+
+<section>
+  <h2 id="where">Where it should live</h2>
+  <ul>
+    <li><strong>A new docs page, "Organising complex pages"</strong>, under Organizing content: the questions, the guardrails and the worked examples with rendered sketches. Its digest goes in docs/spec/, so agents read it.</li>
+    <li><strong>AGENTS.md:</strong> one routing row ("a page with several kinds of choice") pointing to it, and one line telling agents to classify each choice by question before picking a component.</li>
+    <li><strong>DESIGN-POLICIES.md:</strong> the guardrails only, since they are firm. The questions stay guidance.</li>
+  </ul>
+</section>
+
+<section>
+  <h2 id="decisions">Decisions for Shamsi</h2>
+  <ol>
+    <li>Adopt the three questions (navigation, view, slice) as the model, with "only the layers the content raises" instead of a fixed depth?</li>
+    <li>Name the five needs outside the model (TOC bar, stepper, sequence, mode, settings) in the guidance?</li>
+    <li>Many destinations (the Admin Console's 18 links in 6 groups): a grouped navigation list in the sidebar position for internal tools (this reverses "the sidebar never holds section navigation" for that case), or grouped dropdowns in the header like these docs, or both by size?</li>
+    <li>The dashboard scope selects (group, archive, category): a filter bar that writes to the address, so one group can be linked?</li>
+    <li>Moderation and Administration move out of the user portal's bar into the internal tools?</li>
+    <li>Create the "Organising complex pages" docs page, the AGENTS.md row, and the guardrails in DESIGN-POLICIES?</li>
+    <li>A filter bar component (fields, one Apply button, on the warm tint) as the next build, before the dashboard rebuild?</li>
+  </ol>
+</section>
+
+</div>
+<script src="../../../docs/tabs.js" defer></script>
+</body>
+</html>

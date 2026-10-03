@@ -1,0 +1,99 @@
+/* Search results page — the only CSS the design system does not already supply.
+   The design system has no search-result component, so this file lays one out
+   from its tokens and components (.ds-card, .ds-tag, .ds-date-row, .ds-show-more).
+   Nothing here sets a colour, a size or a font that a token does not name. */
+
+/* The section owns the space between its blocks (DESIGN-POLICIES, Spacing). */
+.search-results-section {
+  display: grid;
+  gap: var(--ds-space-block);
+}
+.search-results-section > h2 { margin: 0; }
+
+/* The list. The cards keep the gap .ds-card + .ds-card already gives them. */
+.search-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* One result: three groups, a block apart; inside a group, tight. */
+.search-result {
+  display: grid;
+  gap: var(--ds-space-block);
+}
+.search-result-group {
+  display: grid;
+  gap: var(--ds-space-tight);
+  min-width: 0;
+}
+.search-result-group > * { margin: 0; }
+.search-result-group > .search-result-title { overflow-wrap: anywhere; }
+
+/* Identifier and formats on one line. The identifier is IBM Plex Mono (typography). */
+.search-result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ds-space-tight) var(--ds-space-block);
+}
+.search-result-id {
+  font-family: var(--ds-font-mono);
+  font-weight: 500;
+}
+.search-result-formats {
+  font-size: 0.875rem;
+}
+
+/* Categories: tags in a row, each carrying a tooltip with its full name. */
+.search-result-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-tight);
+}
+.search-result-tags button.ds-tag { cursor: help; }
+
+/* Field labels: condensed and muted, the voice the design system gives labels. */
+.search-result-label,
+.search-result-meta dt {
+  font-family: var(--ds-font-condensed);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ds-text-muted);
+}
+.search-result-more { color: var(--ds-text-muted); }
+
+/* Comments, DOI and the other fields a record may have: one label and value per row. */
+.search-result-meta {
+  display: grid;
+  gap: var(--ds-space-tight);
+  font-size: 0.875rem;
+}
+.search-result-meta > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--ds-space-tight);
+}
+.search-result-meta dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Narrow screens: one tag to a row, so a tooltip opened from any tag has the
+   card's width to open into and never runs past the edge of the page. */
+@media (max-width: 30rem) {
+  .search-result-tags {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .search-result-tags .ds-tooltip-body {
+    max-width: min(15rem, calc(100vw - 5rem));
+  }
+}
+
+/* The order names are long: the Order field takes two of the filter bar's equal
+   columns so no option is cut off. Where the bar has one column, it fills it. */
+.search-results-section .ds-filter-bar-group--settings > .ds-field:first-of-type {
+  grid-column: span 2;
+}

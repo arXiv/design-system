@@ -1,0 +1,93 @@
+/* Search results page — the only styles the design system does not provide.
+   Loaded after design-system.css. Colours, type and spacing all come from
+   design-system tokens; nothing here introduces a value of its own.
+
+   What is here, and why:
+   - the page's own layout: the results list, and the rows inside one result,
+     for which the design system has no component (it documents a card, a table
+     and a pager, but no list of records);
+   - the rows of record metadata (comments, DOI, …), a label and a value that
+     wrap to a stack on a narrow screen without a media query;
+   - one placement rule for the category tooltips. */
+
+/* The region under the page header: its blocks sit one block apart, and the
+   container owns that space, so no child carries a margin of its own. */
+.search-results-body {
+  display: grid;
+  gap: var(--ds-space-block);
+}
+.search-results-body > * { margin: 0; }
+
+/* The results: an ordered list of cards, with no markers. */
+.search-results {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--ds-space-block);
+}
+.search-results > li { margin: 0; }
+
+/* One result: its parts sit a tight step apart. */
+.search-result {
+  display: grid;
+  gap: var(--ds-space-tight);
+}
+.search-result > * { margin: 0; }
+
+/* Identifier, formats and categories. The categories take a row of their own,
+   so the tooltip below has the card's width to open into. */
+.search-result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-tight) var(--ds-space-block);
+}
+.search-result-cats {
+  flex: 1 0 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-tight);
+  position: relative;
+}
+/* A tooltip opens under its tag and runs toward the inline end, which on a
+   narrow screen can leave the card. Here each bubble opens under the whole row
+   instead, from its start, so it stays inside the card at any width. A reader
+   without this rule sees the same bubble, placed under its own tag. */
+.search-result-cats .ds-tooltip-host { position: static; }
+
+/* Record metadata: a label and a value on one line while there is room, and
+   stacked when there is not. */
+.search-result-meta {
+  display: grid;
+  gap: var(--ds-space-tight);
+}
+.search-result-meta > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--ds-space-block);
+}
+.search-result-meta dt {
+  flex: 0 0 8rem;
+  margin: 0;
+}
+.search-result-meta dd {
+  flex: 1 1 14rem;
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* The excerpt and its full abstract: the accordion brings its own outer
+   margin, which the card's gap already supplies. */
+.search-abstract {
+  display: grid;
+  gap: var(--ds-space-tight);
+}
+.search-abstract > *,
+.search-abstract .ds-acc { margin: 0; }
+
+/* The label sits on the value's first line. */
+.search-result-meta > div { align-items: baseline; }
+
+/* The order names are long: that field takes two columns of the filter bar. */
+.search-results-body .ds-filter-bar .ds-field:first-child { grid-column: span 2; }
