@@ -53,6 +53,7 @@ components:
 rules:
   - "**Submitted [v1 date] UTC · Announced [announcement date and time] UTC** are always shown, in that order, separated by a dot. Announced is when the paper first entered the public listing. Revision dates are when subsequent versions of the same paper went public. Dates use `<time datetime>`."
   - "Announcement is the date that readers care about the most. It renders as **11 Jan 2026, 01:32 UTC**. Submitted and Revised stay date-only to save space."
+  - "When only the month of the announcement is known, as in a search index, show the month: **Announced Sep 2026**, with `datetime=\"2026-09\"`."
   - "arXiv's platform serves a global audience across all timezones. UTC was chosen as the universal standard to ensure consistency and clarity for all users. It is a group decision, made with arXiv staff."
   - "Times are rendered in plain-text **UTC** bound to its date with `&nbsp;` so a wrap never separates them. The `<time>` element is not bound to the date."
   - "Inside `datetime`, announced is a full instant (`2026-01-11T01:32Z`), Submitted and Revised stay date-only (`2026-01-10`)."
@@ -269,6 +270,7 @@ Once a paper has ten or more versions we make some additional changes.
 
 - **Submitted [v1 date] UTC · Announced [announcement date and time] UTC** are always shown, in that order, separated by a dot. Announced is when the paper first entered the public listing. Revision dates are when subsequent versions of the same paper went public. Dates use `<time datetime>`.
 - Announcement is the date that readers care about the most. It renders as **11 Jan 2026, 01:32 UTC**. Submitted and Revised stay date-only to save space.
+- When only the month of the announcement is known, as in a search index, show the month: **Announced Sep 2026**, with `datetime="2026-09"`.
 - arXiv's platform serves a global audience across all timezones. UTC was chosen as the universal standard to ensure consistency and clarity for all users. It is a group decision, made with arXiv staff.
 - Times are rendered in plain-text **UTC** bound to its date with `&nbsp;` so a wrap never separates them. The `<time>` element is not bound to the date.
 - Inside `datetime`, announced is a full instant (`2026-01-11T01:32Z`), Submitted and Revised stay date-only (`2026-01-10`).
