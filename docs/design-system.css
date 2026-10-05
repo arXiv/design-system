@@ -356,9 +356,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
      each line and only avoids leaving one word alone on the last. */
   text-wrap: pretty;
 }
-/* The page title alone is balanced: it is short and set large, where two even
-   lines read better than a full line and a short one. */
-:where(.ds-page) h1 { text-wrap: balance; }
+
 :where(.ds-page) h1 { font-size: 2rem;    font-weight: 700; line-height: 1.25; margin: 0 0 var(--ds-space-4); }
 :where(.ds-page) h2 { font-size: 1.5rem;  font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-3); }
 :where(.ds-page) h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-2); }
@@ -1845,7 +1843,9 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
   gap: var(--ds-space-1) var(--ds-space-4);
   margin-top: var(--ds-space-1);
 }
-.ds-paper-when > .ds-date-row { margin: 0; }
+/* The format links come first in the markup, so a screen reader reaches them
+   straight after the title; the dates are shown first. */
+.ds-paper-when > .ds-date-row { margin: 0; order: -1; }
 .ds-paper-formats { display: inline-flex; flex-wrap: wrap; gap: var(--ds-space-3); font-size: 0.8125rem; font-weight: 600; }
 .ds-paper-authors { font-size: 0.875rem; }
 .ds-paper-abstract { font-size: 0.9375rem; line-height: 1.55; }
