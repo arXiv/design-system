@@ -20,6 +20,10 @@
   .ds-container > .ds-alert + .ds-pagination--top { margin-top: calc(var(--ds-space-4) - var(--ds-space-section)); }
   /* Variant D: the page numbers sit in tinted bars that bookend the results. */
   [data-variant="D"] .ds-pagination--top, [data-variant="D"] .ds-pagination--bottom { border: 0; background: var(--ds-tint-warm); padding: var(--ds-space-2) var(--ds-space-4); border-radius: 6px; }
+  /* On a tinted bar the current page takes the page ground (white in light, Repository Brown in dark),
+     and so does a page number under the pointer, since the usual hover fill is near the bar's own tint. */
+  [data-variant="D"] .ds-pagination-pages a[aria-current="page"],
+  [data-variant="D"] .ds-pagination-pages a:hover { background: var(--ds-canvas); }
   /* Variant E: a full-width line under the search area, and a heading for the results. */
   [data-variant="E"] main > .ds-form--compact { padding-bottom: var(--ds-space-6); border-bottom: 1px solid var(--ds-border); }
   [data-variant="E"] main > .ds-form--compact { box-shadow: 0 1px 0 0 var(--ds-border); }
@@ -120,7 +124,7 @@
     <label><input type="radio" name="variant" value="A"> A. Changes zone: white before a search, tinted after</label>
     <label><input type="radio" name="variant" value="B"> B. Always in the tinted band</label>
     <label><input type="radio" name="variant" value="C"> C. Always on white</label>
-    <label><input type="radio" name="variant" value="D"> D. On white; tinted bars for the page numbers</label>
+    <label><input type="radio" name="variant" value="D"> D. On white; a results heading, tinted bars for the page numbers</label>
     <label><input type="radio" name="variant" value="E"> E. On white; a line under the search and a results heading</label>
   </fieldset>
   <p>Any search shows the same sample results. A search containing “zzz” shows no results. <a href="search-prototype.html" id="proto-reset">Start over</a></p>
@@ -154,7 +158,7 @@
     else main.appendChild(band([tips]));
     document.title = none ? 'No results for “' + q + '” — arXiv search' : 'Search — arXiv';
   } else {
-    if (v === 'E') {
+    if (v === 'D' || v === 'E') {
       var h2 = document.createElement('h2'); h2.className = 'results-heading';
       h2.textContent = '18,659 results for “' + q + '”'; main.appendChild(h2);
     }
