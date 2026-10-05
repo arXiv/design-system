@@ -29,7 +29,7 @@ components:
     summary: "A compact form is for a very short form, such as search: one to three controls and a button, on one row."
     classes:
       - name: ".ds-form--compact"
-        does: "On the `<form>`. Puts the controls and the button on one row. Anything after the button goes on the line below: a message first, then secondary options. A link to another page, such as Advanced search, sits at the end of that line."
+        does: "On the `<form>`. Puts the controls and the button on one row. Anything after the button goes on the line below: a message first, then secondary options, such as Show abstracts and the settings for the results (`.ds-filter` selects for order and results per page). A link to another page, such as Advanced search, sits at the end of that line."
       - name: ".ds-input-group"
         does: "Joins the controls that make one input, such as a search term and the field it searches. The text input takes the spare width and the select takes what it needs."
       - name: ".is-sr-only"
@@ -209,6 +209,8 @@ A compact form is for a very short form, such as search: one to three controls a
   </div>
   <button class="ds-btn ds-btn-primary" type="submit">Search</button>
   <label class="ds-check"><input type="checkbox" name="abstracts" value="show" checked><span>Show abstracts</span></label>
+  <div class="ds-filter"><label for="cf-order">Sort by</label><select id="cf-order" name="order"><option>Newest announced</option><option>Relevance</option></select></div>
+  <div class="ds-filter"><label for="cf-size">Per page</label><select id="cf-size" name="size"><option>25</option><option selected>50</option><option>100</option></select></div>
   <a href="forms.html#compact-form">Advanced search</a>
 </form>
 ```
@@ -236,7 +238,7 @@ A compact form is for a very short form, such as search: one to three controls a
 </form>
 ```
 
-- `.ds-form--compact` — On the `<form>`. Puts the controls and the button on one row. Anything after the button goes on the line below: a message first, then secondary options. A link to another page, such as Advanced search, sits at the end of that line.
+- `.ds-form--compact` — On the `<form>`. Puts the controls and the button on one row. Anything after the button goes on the line below: a message first, then secondary options, such as Show abstracts and the settings for the results (`.ds-filter` selects for order and results per page). A link to another page, such as Advanced search, sits at the end of that line.
 - `.ds-input-group` — Joins the controls that make one input, such as a search term and the field it searches. The text input takes the spare width and the select takes what it needs.
 - `.is-sr-only` — On each `<label>` when a heading or the button already says what the form does. The label is read out and not shown.
 - `.ds-label` — One visible label above the row, for a form whose purpose is not clear from what is around it.

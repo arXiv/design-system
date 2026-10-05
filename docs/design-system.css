@@ -1010,8 +1010,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 /* Narrow: the position takes its own line, and numbered pages keep the arrows
    and hide the words Previous and Next, which stay in the accessible name. */
 @container (max-width: 30rem) {
-  .ds-pagination > .ds-pagination-position,
-  .ds-pagination > .ds-filter { flex: 1 0 100%; margin: 0; }
+  .ds-pagination > .ds-pagination-position { flex: 1 0 100%; margin: 0; }
   .ds-pagination .ds-pagination-pages li, .ds-pagination .ds-pagination-pages a { min-width: 1.625rem; }
   .ds-pagination > .ds-pagination-pages { flex: 1 1 0; min-width: 0; justify-content: center; }
   .ds-pagination:has(.ds-pagination-pages) .ds-pagination-label {
@@ -1038,9 +1037,11 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   font-variant-numeric: tabular-nums;
 }
 .ds-pagination .ds-btn { min-width: 0; }
-/* Results per page comes after the controls, so they stay together; when
-   there is no room it takes the end of the next line. */
-.ds-pagination > .ds-filter { margin-inline-start: auto; padding-inline-start: var(--ds-space-4); }
+/* A pager above a list has a light line below it; below a list, above it.
+   The page leaves as much space between the line and the list as between
+   the list's items. */
+.ds-pagination--top { padding-bottom: var(--ds-space-3); border-bottom: 1px solid var(--ds-border); }
+.ds-pagination--bottom { padding-top: var(--ds-space-3); border-top: 1px solid var(--ds-border); }
 .ds-pagination-pages {
   display: flex;
   flex: 0 1 auto;
@@ -1842,6 +1843,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 /* Secondary options under the row: each is a 24px box with its content
    centred, so a checkbox and a link line up. */
 .ds-form--compact > .ds-check { margin: 0; align-items: center; }
+.ds-form--compact > .ds-filter { min-height: 24px; }
 .ds-form--compact > .ds-check input { margin: 0; }
 .ds-form--compact > a { display: inline-flex; align-items: center; min-height: 24px; font-size: 0.875rem; }
 /* A link to another page is a different kind of thing from the options: it takes the end of the line. */

@@ -102,7 +102,12 @@ body scrolls automatically and becomes a tab stop only while it overflows.
 
 ## Next, ours
 
-0. **Testing** — plan in `TESTING-PLAN.md`, protocol in `verification/token-burn/README.md`.
+0. **After PR #7 merges (2026-10-05):** start a new branch for the search result pattern:
+   Shamsi's changes to result hierarchy, `proposals/paper-metadata-hierarchy.md` (draft, evidence
+   in `~/arxiv/research/paper-metadata/`), and the layout in `proposals/search-a3.html`. Then test 3.
+   Decided 2026-10-05: search layout A3 (search and result settings in the band; range and pages on
+   white with light lines; notice above the pager; title first, spacing only, tags last).
+00. **Testing** — plan in `TESTING-PLAN.md`, protocol in `verification/token-burn/README.md`.
    Test 1 (simple search) is built, reviewed and summarized; the status of its 14 proposed
    changes is in the plan under "Test 1". Next: Shamsi reviews the evening's changes below, then
    rebuild search with one page state.

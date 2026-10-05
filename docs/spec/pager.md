@@ -37,9 +37,13 @@ components:
       - name: ".ds-pagination-label"
         does: "The words Previous and Next. On a narrow screen they are hidden and the arrows remain. Screen readers still read the words."
       - name: ".ds-filter-bar"
-        does: "Filters for the list go in a filter bar above it. See [Filter bar](tables.html#filter-bar)."
-      - name: ".ds-filter"
-        does: "Results per page, after Next: a small GET form with its own button, so it works without JavaScript. Choose a default; the reader changes it here, after seeing the results."
+        does: "Filters for the list go in a filter bar above it, and results per page goes in its settings. See [Filter bar](tables.html#filter-bar)."
+      - name: ".ds-pagination--top"
+        does: "A pager above a list. A light line below it separates it from the list."
+      - name: ".ds-pagination--bottom"
+        does: "A pager below a list. A light line above it separates it from the list."
+      - name: ".ds-pagination-position"
+        does: "On its own when the whole list fits on one page: the count still shows, with its line, and there are no controls and no pager below the list."
 rules:
   - "**Name the set.** The `<nav>` takes an `aria-label` that says what it steps through, such as “Queue navigation”."
   - "**Announce the position.** The counter is a polite live region, so each step is announced without moving focus."
@@ -175,6 +179,13 @@ Numbered pages are for a long list split across pages, such as search results, w
       <select class="ds-input" id="pg-status" name="status"><option>Any</option><option>On hold</option></select>
     </div>
   </div>
+  <fieldset class="ds-filter-bar-group ds-filter-bar-group--settings">
+    <legend class="is-sr-only">Settings</legend>
+    <div class="ds-field">
+      <label class="ds-label" for="pg-size">Results per page</label>
+      <select class="ds-input" id="pg-size" name="size"><option selected>25</option><option>50</option><option>100</option><option>200</option></select>
+    </div>
+  </fieldset>
   <div class="ds-filter-bar-actions">
     <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
   </div>
@@ -190,11 +201,43 @@ Numbered pages are for a long list split across pages, such as search results, w
     <li><a href="?page=67"><span class="is-sr-only">Page </span>67</a></li>
   </ol>
   <a class="ds-btn ds-btn-text" href="?page=3"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
-  <form class="ds-filter" method="get" action="pager.html#numbered-pages">
-    <label for="pg-size">Per page</label>
-    <select id="pg-size" name="size"><option selected>25</option><option>50</option><option>100</option><option>200</option></select>
-    <button class="ds-btn ds-btn-text" type="submit">Apply</button>
-  </form>
+</nav>
+```
+
+```html
+<nav class="ds-pagination ds-pagination--top" aria-label="Search results pages">
+  <span class="ds-pagination-position">1–50 of 8,291 results</span>
+  <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+  <ol class="ds-pagination-pages">
+    <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
+    <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
+    <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+    <li>…</li>
+    <li><a href="?page=166"><span class="is-sr-only">Page </span>166</a></li>
+  </ol>
+  <a class="ds-btn ds-btn-text" href="?page=2"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+</nav>
+<ol class="demo-list">
+  <li>The first result</li>
+  <li>The last result on this page</li>
+</ol>
+<nav class="ds-pagination ds-pagination--bottom" aria-label="Search results pages, below the list">
+  <span class="ds-pagination-position">1–50 of 8,291 results</span>
+  <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+  <ol class="ds-pagination-pages">
+    <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
+    <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
+    <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+    <li>…</li>
+    <li><a href="?page=166"><span class="is-sr-only">Page </span>166</a></li>
+  </ol>
+  <a class="ds-btn ds-btn-text" href="?page=2"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+</nav>
+```
+
+```html
+<nav class="ds-pagination ds-pagination--top" aria-label="Search results pages">
+  <span class="ds-pagination-position">3 results</span>
 </nav>
 ```
 
@@ -203,8 +246,10 @@ Numbered pages are for a long list split across pages, such as search results, w
 - `.ds-pagination-pages` — An `<ol>` of links, one for each page shown. The current page takes `aria-current="page"`. Each link includes the word “Page” in `.is-sr-only` text, so a screen reader says “Page 2” and not “2”. A gap in the numbers is a list item holding an ellipsis.
 - `a.ds-btn.ds-btn-text` — Previous and Next are links, because each page has its own address. At either end of the list the link has no `href` and takes `aria-disabled="true"` and `.is-disabled`.
 - `.ds-pagination-label` — The words Previous and Next. On a narrow screen they are hidden and the arrows remain. Screen readers still read the words.
-- `.ds-filter-bar` — Filters for the list go in a filter bar above it. See [Filter bar](tables.html#filter-bar).
-- `.ds-filter` — Results per page, after Next: a small GET form with its own button, so it works without JavaScript. Choose a default; the reader changes it here, after seeing the results.
+- `.ds-filter-bar` — Filters for the list go in a filter bar above it, and results per page goes in its settings. See [Filter bar](tables.html#filter-bar).
+- `.ds-pagination--top` — A pager above a list. A light line below it separates it from the list.
+- `.ds-pagination--bottom` — A pager below a list. A light line above it separates it from the list.
+- `.ds-pagination-position` — On its own when the whole list fits on one page: the count still shows, with its line, and there are no controls and no pager below the list.
 
 ## Rules
 
