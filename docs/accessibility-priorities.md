@@ -55,7 +55,7 @@ Operationalize as a template helper (Jinja/PHP/Smarty macro) emitting the dual-s
 
 ### Math accessibility
 
-**MathML 4 (with `intent` semantics) is the primary math substrate; LaTeX source preserved alongside.** Ship MathML for AT consumption, MathJax for visual rendering, LaTeX source for download. We do not replace LaTeX with MathML-only output. arXiv contributes to the W3C Math Working Group via Deyan Ginev.
+**MathML 4 (with `intent` semantics) is the primary math substrate; LaTeX source preserved alongside.** LaTeXML converts the author's LaTeX to MathML Core with MathML 4 `intent` annotations. The browser renders it natively, and assistive technology reads its structure from the annotations, with no math script on the page. LaTeX source stays available for download. We do not replace LaTeX with MathML-only output. arXiv contributes to the W3C Math Working Group via Deyan Ginev.
 *Status: validated. Why: Neil Soiffer (2022-08-10) "HTML + MathML and you are pretty much done"; Avneesh Singh (2022-09-26); Volker Sorge (2022-09-02) — Sorge's caution that "MathML throws away information that LaTeX has" is addressed by keeping both.*
 
 **Math serializes cleanly to braille displays.** Nemeth and UEB both supported via the screen reader's braille translator. Test using NVDA's Braille Viewer (engineering regression) and with real braille-display users (Nadolskis, Williams, Hartman).
@@ -161,7 +161,7 @@ Six independent voices in the research described distinct problems with the same
 
 - **WCAG 2.1 AA** is the compliance floor (the Accessible Canada Act, via CAN/ASC–EN 301 549). We **target WCAG 2.2 AA** on the abstract page and HTML reader. Audit date and methodology stated publicly when reached.
 - **MathML 4** (with `intent`) for math. arXiv contributes to the W3C Math Working Group via Deyan Ginev.
-- **Speech Rule Engine / MathCAT** for math read-aloud where the AT toolchain supports it.
+- **Native MathML speech:** read-aloud comes from the browser and assistive technology interpreting `intent` annotations, not from a speech engine arXiv ships.
 - **EPUB Accessibility 1.1** principles applied to HTML reader where they translate (structured navigation, alt text, language tagging).
 - **W3C Personalization / Adapt:** follow but do not build to until stable.
 
