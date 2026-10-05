@@ -45,9 +45,9 @@ components:
       - name: ".ds-element-pill"
         does: "The container: a white pill straddling the bottom edge of the content it belongs to. The wrapper supplies `position: relative`; the pill positions itself inside it."
       - name: ".is-revealed"
-        does: "The pill is hidden at rest and shown while the wrapped content is hovered or holds focus. The consumer adds and removes this class; the demo above keeps it on. The pill fades in, and under `prefers-reduced-motion` it appears without the fade."
+        does: "The pill is hidden at rest and shown while the wrapped content is hovered or holds focus. The consumer adds and removes this class; the demo above keeps it on. The pill also shows whenever one of its own actions has keyboard focus, and its actions stay in the tab order while it is hidden. The pill fades in, and under `prefers-reduced-motion` it appears without the fade."
       - name: "The actions"
-        does: "Plain `<button>` or `<a>` elements. The pill gives each a 24px target floor. Their type and colour have no class of their own yet; this page stages them locally."
+        does: "Plain `<button>` or `<a>` elements, with no class of their own. The pill gives each its small type, muted colour, a wash on hover and a 24px target floor. `.is-cta` marks the one main action in Link Blue."
   - id: the-close-control
     title: "The close control"
     summary: "Dismissing something is a simple job, but it needs a clear and consistent control everywhere it appears. Wether in an alert, a popover, an announcement banner, or an expanded figure, `.ds-close` supplies the right style."
@@ -166,8 +166,8 @@ This component is a variant of text-only buttons and attach a row of tiny contro
 ```
 
 - `.ds-element-pill` — The container: a white pill straddling the bottom edge of the content it belongs to. The wrapper supplies `position: relative`; the pill positions itself inside it.
-- `.is-revealed` — The pill is hidden at rest and shown while the wrapped content is hovered or holds focus. The consumer adds and removes this class; the demo above keeps it on. The pill fades in, and under `prefers-reduced-motion` it appears without the fade.
-- `The actions` — Plain `<button>` or `<a>` elements. The pill gives each a 24px target floor. Their type and colour have no class of their own yet; this page stages them locally.
+- `.is-revealed` — The pill is hidden at rest and shown while the wrapped content is hovered or holds focus. The consumer adds and removes this class; the demo above keeps it on. The pill also shows whenever one of its own actions has keyboard focus, and its actions stay in the tab order while it is hidden. The pill fades in, and under `prefers-reduced-motion` it appears without the fade.
+- `The actions` — Plain `<button>` or `<a>` elements, with no class of their own. The pill gives each its small type, muted colour, a wash on hover and a 24px target floor. `.is-cta` marks the one main action in Link Blue.
 
 ## The close control
 
