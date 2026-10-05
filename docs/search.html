@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Search — arXiv Design System</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
+<script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
+</head>
+<body class="ds-page">
+<header class="ds-site-header ds-site-header--light">
+  <a class="ds-site-header-logo" href="../index.html"><span aria-hidden="true">arXiv Design System</span><span class="is-sr-only">archive Design System</span></a>
+  <nav class="ds-site-header-nav" aria-label="Design system">
+    <details class="ds-site-header-dropdown">
+      <summary>Design Patterns</summary>
+      <div class="ds-site-header-menu">
+        <span class="ds-panel-label">Components</span>
+        <a href="colors.html">Colors</a>
+        <a href="dark-mode.html">Dark mode</a>
+        <a href="typography.html">Typography</a>
+        <a href="spacing.html">Spacing</a>
+        <a href="icons.html">Icons</a>
+        <a href="buttons.html">Buttons</a>
+        <a href="links.html">Links</a>
+        <a href="forms.html">Forms &amp; validation</a>
+        <a href="alerts.html">Alerts</a>
+        <a href="messages.html">Messaging</a>
+        <a href="tags.html">Tags</a>
+        <a href="header.html">Site header</a>
+        <a href="footer.html">Site footer</a>
+        <a href="pager.html">Pager</a>
+        <span class="ds-panel-label">Organizing content</span>
+        <a href="layout-patterns.html">Layouts</a>
+        <a href="cards.html">Cards</a>
+        <a href="tables.html">Tables</a>
+        <a href="search.html" aria-current="page">Search</a>
+        <a href="progressive-disclosure.html">Progressive disclosure</a>
+        <a href="modals.html">Modal dialogs</a>
+        <a href="papers.html">Papers</a>
+        <a href="version-display.html">arXiv Paper Versions</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Mockups</summary>
+      <div class="ds-site-header-menu">
+        <a href="../whiteboard/mockups/">All mockups</a>
+        <span class="ds-panel-label">Public</span>
+        <a href="../whiteboard/mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+        <a href="../whiteboard/mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+        <a href="../whiteboard/mockups/public/optin-modal/">Labs opt-in modal</a>
+        <a href="../whiteboard/mockups/public/submission-metadata/">Submission — Metadata Form</a>
+        <span class="ds-panel-label">Internal</span>
+        <a href="../whiteboard/mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+        <a href="../whiteboard/mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+        <a href="../whiteboard/mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+        <a href="../whiteboard/mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+        <a href="../whiteboard/mockups/internal/membership-dashboard/">Membership dashboard</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Docs</summary>
+      <div class="ds-site-header-menu">
+        <a href="using.html">Using the system</a>
+        <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+        <a href="doc.html?src=docs/STYLE.md">Writing style</a>
+        <a href="brand.html">Brand &amp; vision</a>
+        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
+        <a href="doc.html?src=README.md">About this repo</a>
+      </div>
+    </details>
+  </nav>
+  <div class="ds-site-header-tools">
+    <button type="button" class="ds-theme-toggle"></button>
+    <span id="ds-theme-status" class="is-sr-only" role="status"></span>
+  </div>
+</header>
+
+<div class="ds-container">
+
+  <div class="ds-full ds-zone-secondary">
+  <header class="ds-page-header">
+    <h1>Search</h1>
+    <p>A search page is built from parts documented elsewhere. This page puts them together.</p>
+  </header>
+  </div>
+
+  <!-- ═════════ TOC ═════════ -->
+  <div class="ds-full ds-toc-bar">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#before-a-search">Before a search</a></li>
+            <li><a href="#after-a-search">After a search</a></li>
+            <li><a href="#search-rules">Search pages</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ───────── Before a search ───────── -->
+  <section>
+    <h2 id="before-a-search">Before a search</h2>
+    <p class="ds-section-desc">Before a search, the form is the thing the page is about, so it sits on the page ground. Help for searching sits in a tinted band below it, where the results will appear.</p>
+
+    <div class="ds-card">
+      <div class="ds-container page-demo page-demo--wide">
+        <form class="ds-form--compact" method="get" action="search.html" role="search" aria-label="Search arXiv">
+          <div class="ds-input-group">
+            <label class="is-sr-only" for="sq1">Search term</label>
+            <input class="ds-input" id="sq1" name="query" type="search" value="">
+            <label class="is-sr-only" for="sf1">Field to search</label>
+            <select class="ds-input" id="sf1" name="searchtype"><option>All fields</option><option>Title</option><option>Author(s)</option><option>Abstract</option></select>
+          </div>
+          <button class="ds-btn ds-btn-primary" type="submit">Search</button>
+          <label class="ds-check"><input type="checkbox" name="abstracts" value="show" checked><span>Show abstracts</span></label>
+          <a href="search.html">Advanced search</a>
+        </form>
+        <div class="ds-full ds-zone-secondary">
+          <p><strong>Search tips</strong></p>
+          <p>How to search by author, by category, with wildcards and phrases.</p>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-container page-demo page-demo--wide"&gt;
+  &lt;form class="ds-form--compact" method="get" action="search.html" role="search" aria-label="Search arXiv"&gt;
+    &lt;div class="ds-input-group"&gt;
+      &lt;label class="is-sr-only" for="sq1"&gt;Search term&lt;/label&gt;
+      &lt;input class="ds-input" id="sq1" name="query" type="search" value=""&gt;
+      &lt;label class="is-sr-only" for="sf1"&gt;Field to search&lt;/label&gt;
+      &lt;select class="ds-input" id="sf1" name="searchtype"&gt;&lt;option&gt;All fields&lt;/option&gt;&lt;option&gt;Title&lt;/option&gt;&lt;option&gt;Author(s)&lt;/option&gt;&lt;option&gt;Abstract&lt;/option&gt;&lt;/select&gt;
+    &lt;/div&gt;
+    &lt;button class="ds-btn ds-btn-primary" type="submit"&gt;Search&lt;/button&gt;
+    &lt;label class="ds-check"&gt;&lt;input type="checkbox" name="abstracts" value="show" checked&gt;&lt;span&gt;Show abstracts&lt;/span&gt;&lt;/label&gt;
+    &lt;a href="search.html"&gt;Advanced search&lt;/a&gt;
+  &lt;/form&gt;
+  &lt;div class="ds-full ds-zone-secondary"&gt;
+    &lt;p&gt;&lt;strong&gt;Search tips&lt;/strong&gt;&lt;/p&gt;
+    &lt;p&gt;How to search by author, by category, with wildcards and phrases.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-form--compact</dt>
+            <dd>The search form. See <a href="forms.html#compact-form">Compact form</a>.</dd>
+            <dt>.ds-full.ds-zone-secondary</dt>
+            <dd>The help, in a tinted band. See <a href="layout-patterns.html#page-zones">Page zones</a>.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── After a search ───────── -->
+  <section>
+    <h2 id="after-a-search">After a search</h2>
+    <p class="ds-section-desc">After a search, the tinted band holds the question: the search row, and under it the settings for the results. The page ground holds the answer: the range and page numbers, then the results, then the page numbers again.</p>
+
+    <div class="ds-card">
+      <div class="ds-container page-demo page-demo--wide">
+        <div class="ds-full ds-zone-secondary">
+          <form class="ds-form--compact" method="get" action="search.html" role="search" aria-label="Search arXiv">
+            <div class="ds-input-group">
+              <label class="is-sr-only" for="sq2">Search term</label>
+              <input class="ds-input" id="sq2" name="query" type="search" value="lensing">
+              <label class="is-sr-only" for="sf2">Field to search</label>
+              <select class="ds-input" id="sf2" name="searchtype"><option>All fields</option><option>Title</option><option>Author(s)</option><option>Abstract</option></select>
+            </div>
+            <button class="ds-btn ds-btn-primary" type="submit">Search</button>
+            <label class="ds-check"><input type="checkbox" name="abstracts" value="show" checked><span>Show abstracts</span></label>
+            <div class="ds-filter"><label for="so2">Sort by</label><select id="so2" name="order"><option>Newest announced</option><option>Relevance</option></select></div>
+            <div class="ds-filter"><label for="sp2">Per page</label><select id="sp2" name="size"><option>25</option><option selected>50</option><option>100</option></select></div>
+            <a href="search.html">Advanced search</a>
+          </form>
+        </div>
+        <div class="ds-alert" role="status"><p>Search shows the first 10,000 results. To see the rest, narrow the search.</p></div>
+        <nav class="ds-pagination ds-pagination--top" aria-label="Search results pages">
+          <span class="ds-pagination-position">1–50 of 18,659 results</span>
+          <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+          <ol class="ds-pagination-pages">
+            <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
+            <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
+            <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+            <li>…</li>
+            <li><a href="?page=374"><span class="is-sr-only">Page </span>374</a></li>
+          </ol>
+          <a class="ds-btn ds-btn-text" href="?page=2"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+        </nav>
+        <ol class="demo-list">
+          <li>The first result</li>
+          <li>The last result on this page</li>
+        </ol>
+        <nav class="ds-pagination ds-pagination--bottom" aria-label="Search results pages, below the list">
+          <span class="ds-pagination-position">1–50 of 18,659 results</span>
+          <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+          <ol class="ds-pagination-pages">
+            <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
+            <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
+            <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+            <li>…</li>
+            <li><a href="?page=374"><span class="is-sr-only">Page </span>374</a></li>
+          </ol>
+          <a class="ds-btn ds-btn-text" href="?page=2"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+        </nav>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-container page-demo page-demo--wide"&gt;
+  &lt;div class="ds-full ds-zone-secondary"&gt;
+    &lt;form class="ds-form--compact" method="get" action="search.html" role="search" aria-label="Search arXiv"&gt;
+      &lt;div class="ds-input-group"&gt;
+        &lt;label class="is-sr-only" for="sq2"&gt;Search term&lt;/label&gt;
+        &lt;input class="ds-input" id="sq2" name="query" type="search" value="lensing"&gt;
+        &lt;label class="is-sr-only" for="sf2"&gt;Field to search&lt;/label&gt;
+        &lt;select class="ds-input" id="sf2" name="searchtype"&gt;&lt;option&gt;All fields&lt;/option&gt;&lt;option&gt;Title&lt;/option&gt;&lt;option&gt;Author(s)&lt;/option&gt;&lt;option&gt;Abstract&lt;/option&gt;&lt;/select&gt;
+      &lt;/div&gt;
+      &lt;button class="ds-btn ds-btn-primary" type="submit"&gt;Search&lt;/button&gt;
+      &lt;label class="ds-check"&gt;&lt;input type="checkbox" name="abstracts" value="show" checked&gt;&lt;span&gt;Show abstracts&lt;/span&gt;&lt;/label&gt;
+      &lt;div class="ds-filter"&gt;&lt;label for="so2"&gt;Sort by&lt;/label&gt;&lt;select id="so2" name="order"&gt;&lt;option&gt;Newest announced&lt;/option&gt;&lt;option&gt;Relevance&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+      &lt;div class="ds-filter"&gt;&lt;label for="sp2"&gt;Per page&lt;/label&gt;&lt;select id="sp2" name="size"&gt;&lt;option&gt;25&lt;/option&gt;&lt;option selected&gt;50&lt;/option&gt;&lt;option&gt;100&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+      &lt;a href="search.html"&gt;Advanced search&lt;/a&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+  &lt;div class="ds-alert" role="status"&gt;&lt;p&gt;Search shows the first 10,000 results. To see the rest, narrow the search.&lt;/p&gt;&lt;/div&gt;
+  &lt;nav class="ds-pagination ds-pagination--top" aria-label="Search results pages"&gt;
+    &lt;span class="ds-pagination-position"&gt;1–50 of 18,659 results&lt;/span&gt;
+    &lt;a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m15 18-6-6 6-6"/&gt;&lt;/svg&gt; &lt;span class="ds-pagination-label"&gt;Previous&lt;/span&gt;&lt;/a&gt;
+    &lt;ol class="ds-pagination-pages"&gt;
+      &lt;li&gt;&lt;a href="?page=1" aria-current="page"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;1&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="?page=2"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;2&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="?page=3"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;3&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;…&lt;/li&gt;
+      &lt;li&gt;&lt;a href="?page=374"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;374&lt;/a&gt;&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;a class="ds-btn ds-btn-text" href="?page=2"&gt;&lt;span class="ds-pagination-label"&gt;Next&lt;/span&gt; &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m9 18 6-6-6-6"/&gt;&lt;/svg&gt;&lt;/a&gt;
+  &lt;/nav&gt;
+  &lt;ol class="demo-list"&gt;
+    &lt;li&gt;The first result&lt;/li&gt;
+    &lt;li&gt;The last result on this page&lt;/li&gt;
+  &lt;/ol&gt;
+  &lt;nav class="ds-pagination ds-pagination--bottom" aria-label="Search results pages, below the list"&gt;
+    &lt;span class="ds-pagination-position"&gt;1–50 of 18,659 results&lt;/span&gt;
+    &lt;a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m15 18-6-6 6-6"/&gt;&lt;/svg&gt; &lt;span class="ds-pagination-label"&gt;Previous&lt;/span&gt;&lt;/a&gt;
+    &lt;ol class="ds-pagination-pages"&gt;
+      &lt;li&gt;&lt;a href="?page=1" aria-current="page"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;1&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="?page=2"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;2&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="?page=3"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;3&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;…&lt;/li&gt;
+      &lt;li&gt;&lt;a href="?page=374"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;374&lt;/a&gt;&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;a class="ds-btn ds-btn-text" href="?page=2"&gt;&lt;span class="ds-pagination-label"&gt;Next&lt;/span&gt; &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m9 18 6-6-6-6"/&gt;&lt;/svg&gt;&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-zone-secondary</dt>
+            <dd>The band. It holds the form and nothing about the results themselves.</dd>
+            <dt>.ds-filter</dt>
+            <dd>The settings for the results, such as order and results per page, beside the other options under the search row. A link to another page, such as Advanced search, takes the end of that line.</dd>
+            <dt>.ds-alert</dt>
+            <dd>A message about the whole set of results, such as a limit on how many can be reached. It goes above the page numbers.</dd>
+            <dt>.ds-pagination--top, .ds-pagination--bottom</dt>
+            <dd>The range and page numbers above and below the results, each with a light line on the side that faces them. See <a href="pager.html#numbered-pages">Numbered pages</a>.</dd>
+            <dt>The results</dt>
+            <dd>Whatever the search finds. A paper is shown as on <a href="papers.html#a-paper-in-a-list">Papers</a>; another kind of record has its own pattern.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Name the form.</strong> The search form takes <code>role="search"</code> and an <code>aria-label</code>.</li>
+      <li><strong>Say what was found in the page title.</strong> The <code>&lt;title&gt;</code> names the query and the number of results, so a screen reader announces both when the page loads.</li>
+    </ul>
+  </div>
+
+  <div class="ds-full ds-zone-secondary">
+  <h2>Rules</h2>
+
+  <!-- ───────── Rules ───────── -->
+  <section>
+    <h3 id="search-rules">Search pages</h3>
+    <ul class="notes">
+      <li><strong>The search form changes zone.</strong> On the page ground before a search, in a tinted band once there are results.</li>
+      <li><strong>Settings for the results go with the search, never in the pager.</strong> Choose a default for each; the reader changes it under the search row.</li>
+      <li><strong>The range and page numbers belong to the results.</strong> They sit on the page ground, between the band and the results, and repeat below a long list.</li>
+      <li><strong>Matched words are marked</strong> with <code>&lt;mark&gt;</code>. See <a href="typography.html#matched-words">Matched words</a>.</li>
+      <li><strong>No results is a message, not an empty page.</strong> An info alert where the results would be says what was searched for, and the help for searching follows it.</li>
+    </ul>
+  </section>
+  </div>
+
+</div>
+
+<script>
+  // Nav dropdowns: close on outside click and Esc (enhancement only —
+  // the <details> menus work without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      // Return focus to the trigger, but only if it was inside the menu we are
+      // closing — otherwise Escape anywhere on the page would steal focus.
+      // Without this a keyboard user is left on a link that no longer exists.
+      var wasInside = d.contains(document.activeElement);
+      d.removeAttribute('open');
+      if (wasInside) d.querySelector('summary').focus();
+    });
+  });
+</script>
+<script src="header.js" defer></script>
+<script src="copy-code.js" defer></script>
+<script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
+</body>
+</html>

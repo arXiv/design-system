@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Papers — arXiv Design System</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
+<script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
+</head>
+<body class="ds-page">
+<header class="ds-site-header ds-site-header--light">
+  <a class="ds-site-header-logo" href="../index.html"><span aria-hidden="true">arXiv Design System</span><span class="is-sr-only">archive Design System</span></a>
+  <nav class="ds-site-header-nav" aria-label="Design system">
+    <details class="ds-site-header-dropdown">
+      <summary>Design Patterns</summary>
+      <div class="ds-site-header-menu">
+        <span class="ds-panel-label">Components</span>
+        <a href="colors.html">Colors</a>
+        <a href="dark-mode.html">Dark mode</a>
+        <a href="typography.html">Typography</a>
+        <a href="spacing.html">Spacing</a>
+        <a href="icons.html">Icons</a>
+        <a href="buttons.html">Buttons</a>
+        <a href="links.html">Links</a>
+        <a href="forms.html">Forms &amp; validation</a>
+        <a href="alerts.html">Alerts</a>
+        <a href="messages.html">Messaging</a>
+        <a href="tags.html">Tags</a>
+        <a href="header.html">Site header</a>
+        <a href="footer.html">Site footer</a>
+        <a href="pager.html">Pager</a>
+        <span class="ds-panel-label">Organizing content</span>
+        <a href="layout-patterns.html">Layouts</a>
+        <a href="cards.html">Cards</a>
+        <a href="tables.html">Tables</a>
+        <a href="search.html">Search</a>
+        <a href="progressive-disclosure.html">Progressive disclosure</a>
+        <a href="modals.html">Modal dialogs</a>
+        <a href="papers.html" aria-current="page">Papers</a>
+        <a href="version-display.html">arXiv Paper Versions</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Mockups</summary>
+      <div class="ds-site-header-menu">
+        <a href="../whiteboard/mockups/">All mockups</a>
+        <span class="ds-panel-label">Public</span>
+        <a href="../whiteboard/mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+        <a href="../whiteboard/mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+        <a href="../whiteboard/mockups/public/optin-modal/">Labs opt-in modal</a>
+        <a href="../whiteboard/mockups/public/submission-metadata/">Submission — Metadata Form</a>
+        <span class="ds-panel-label">Internal</span>
+        <a href="../whiteboard/mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+        <a href="../whiteboard/mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+        <a href="../whiteboard/mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+        <a href="../whiteboard/mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+        <a href="../whiteboard/mockups/internal/membership-dashboard/">Membership dashboard</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Docs</summary>
+      <div class="ds-site-header-menu">
+        <a href="using.html">Using the system</a>
+        <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+        <a href="doc.html?src=docs/STYLE.md">Writing style</a>
+        <a href="brand.html">Brand &amp; vision</a>
+        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
+        <a href="doc.html?src=README.md">About this repo</a>
+      </div>
+    </details>
+  </nav>
+  <div class="ds-site-header-tools">
+    <button type="button" class="ds-theme-toggle"></button>
+    <span id="ds-theme-status" class="is-sr-only" role="status"></span>
+  </div>
+</header>
+
+<div class="ds-container">
+
+  <div class="ds-full ds-zone-secondary">
+  <header class="ds-page-header">
+    <h1>Papers</h1>
+    <p>Rules for showing a paper: what comes first, and how a paper looks in a list of papers.</p>
+  </header>
+  </div>
+
+  <!-- ═════════ TOC ═════════ -->
+  <div class="ds-full ds-toc-bar">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#the-metadata-hierarchy">The metadata hierarchy</a></li>
+            <li><a href="#a-paper-in-a-list">A paper in a list</a></li>
+            <li><a href="#paper-rules">Papers</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ───────── The metadata hierarchy ───────── -->
+  <section>
+    <h2 id="the-metadata-hierarchy">The metadata hierarchy</h2>
+    <p class="ds-section-desc">The order in which a list of papers shows each paper's details, most important first. It comes from what arXiv readers have told us they look for.</p>
+    <div class="ds-table-scroll" role="region" aria-label="Paper metadata in a list, in order" tabindex="0">
+      <table class="ds-table">
+        <thead><tr><th scope="col">Order</th><th scope="col">Detail</th><th scope="col">Shown as</th></tr></thead>
+        <tbody><tr><td>1</td><td>Title</td><td>A link to the paper's abstract page.</td></tr><tr><td>2</td><td>Dates</td><td>Submitted and Announced, as on <a href="version-display.html">arXiv Paper Versions</a>.</td></tr><tr><td>3</td><td>Formats</td><td>PDF, HTML and Other formats, on the same line as the dates.</td></tr><tr><td>4</td><td>Authors</td><td>Each a link to a search for that author.</td></tr><tr><td>5</td><td>Abstract</td><td>An excerpt, with Show more for the rest.</td></tr><tr><td>6</td><td>Metadata</td><td>Comments, journal reference, DOI and the arXiv ID, each only when the paper has it.</td></tr><tr><td>7</td><td>Categories</td><td>The subject categories, primary first.</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ───────── A paper in a list ───────── -->
+  <section>
+    <h2 id="a-paper-in-a-list">A paper in a list</h2>
+    <p class="ds-section-desc">Search results and listings show each paper in the order of the hierarchy, close together inside a paper and well apart between papers.</p>
+
+    <div class="ds-card">
+      <ol class="ds-paper-list">
+        <li class="ds-paper">
+          <h3 class="ds-paper-title"><a href="#">LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging</a></h3>
+          <p class="ds-paper-when"><span class="ds-date-row">Submitted <time datetime="2026-09-29">29&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time></span>
+            <span class="ds-paper-formats ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.36857</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.36857</span></a> <a href="#">Other formats<span class="is-sr-only"> of 2609.36857</span></a></span></p>
+          <p class="ds-paper-authors ds-link-list"><a href="#">Giovanni Vincenzo Donatiello</a>, <a href="#">Achille A. Nucita</a>, <a href="#">Francesco De Paolis</a>, <a href="#">Antonio Franco</a>, <a href="#">Francesco Strafella</a></p>
+          <p class="ds-paper-abstract">We present LUMA, a convolutional neural network (CNN) pipeline for the automated detection of strong gravitational <mark>lenses</mark> in simulated astronomical imaging. The method combines a physically motivated preprocessing stage, which enhances faint arc and ring features, with a compact three-block CNN trained using class reweighting and modern learning-rate schedul… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p>
+          <dl class="ds-paper-meta">
+            <div><dt>Comments</dt><dd>Accepted for publication in Astronomy and Computing, 2027, Corresponding Author: G.V. Donatiello (see associated pdf for useful e-mail addresses). 14 Pages, 8 Figures, 3 Tables</dd></div>
+            <div><dt>DOI</dt><dd><a href="https://doi.org/10.1016/j.ascom.2026.101198">10.1016/j.ascom.2026.101198</a></dd></div>
+            <div><dt>arXiv ID</dt><dd><a href="#">2609.36857</a></dd></div>
+          </dl>
+          <ul class="ds-paper-categories" aria-label="Subject categories, primary first">
+            <li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-1-0">astro-ph.IM</button><span class="ds-tooltip" id="cat-1-0" role="tooltip"><span class="ds-tooltip-body">Instrumentation and Methods for Astrophysics (primary)</span></span></span></li>
+            <li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-1-1">astro-ph.GA</button><span class="ds-tooltip" id="cat-1-1" role="tooltip"><span class="ds-tooltip-body">Astrophysics of Galaxies</span></span></span></li>
+          </ul>
+        </li>
+        <li class="ds-paper">
+          <h3 class="ds-paper-title"><a href="#">SN Helios: A Multiply Imaged Type II Supernova Opening Time-Delay Cosmography beyond redshift of 3</a></h3>
+          <p class="ds-paper-when"><span class="ds-date-row">Submitted <time datetime="2026-09-24">24&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time></span>
+            <span class="ds-paper-formats ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.30440</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.30440</span></a> <a href="#">Other formats<span class="is-sr-only"> of 2609.30440</span></a></span></p>
+          <p class="ds-paper-authors ds-link-list"><a href="#">Seiji Fujimoto</a>, <a href="#">Conor Larison</a>, <a href="#">Justin D. R. Pierel</a>, <a href="#">Lukas J. Furtak</a>, <a href="#">Masamune Oguri</a>, <a href="#">Adi Zitrin</a>, <a href="#">Jose M. Diego</a>, <a href="#">Keren Sharon</a> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false">show all 67 authors</button></p>
+          <p class="ds-paper-abstract">We report the discovery and spectroscopic confirmation of SN Helios, a strongly <mark>lensed</mark>, multiply imaged Type II supernova (SN) at behind the galaxy cluster RXC J0018.5+1626. The transient was identified as a red F150W-dropout source (F277W = 26.1 mag) in JWST/NIRCam imaging taken on 2026 July 3 for the VENUS survey, with no counterpart in 2024 Decem… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p>
+          <dl class="ds-paper-meta">
+            <div><dt>Comments</dt><dd>14 pages, 9 figures, 5 tables. Comments welcome!</dd></div>
+            <div><dt>arXiv ID</dt><dd><a href="#">2609.30440</a></dd></div>
+          </dl>
+          <ul class="ds-paper-categories" aria-label="Subject categories, primary first">
+            <li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-2-0">astro-ph.GA</button><span class="ds-tooltip" id="cat-2-0" role="tooltip"><span class="ds-tooltip-body">Astrophysics of Galaxies (primary)</span></span></span></li>
+            <li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-2-1">astro-ph.CO</button><span class="ds-tooltip" id="cat-2-1" role="tooltip"><span class="ds-tooltip-body">Cosmology and Nongalactic Astrophysics</span></span></span></li>
+            <li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-2-2">astro-ph.HE</button><span class="ds-tooltip" id="cat-2-2" role="tooltip"><span class="ds-tooltip-body">High Energy Astrophysical Phenomena</span></span></span></li>
+          </ul>
+        </li>
+      </ol>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;ol class="ds-paper-list"&gt;
+  &lt;li class="ds-paper"&gt;
+    &lt;h3 class="ds-paper-title"&gt;&lt;a href="#"&gt;LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging&lt;/a&gt;&lt;/h3&gt;
+    &lt;p class="ds-paper-when"&gt;&lt;span class="ds-date-row"&gt;Submitted &lt;time datetime="2026-09-29"&gt;29&amp;nbsp;Sep&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC &lt;span aria-hidden="true"&gt;·&lt;/span&gt;&lt;span class="is-sr-only"&gt;,&lt;/span&gt; Announced &lt;time datetime="2026-09"&gt;Sep&amp;nbsp;2026&lt;/time&gt;&lt;/span&gt;
+      &lt;span class="ds-paper-formats ds-link-list"&gt;&lt;a href="#"&gt;PDF&lt;span class="is-sr-only"&gt; of 2609.36857&lt;/span&gt;&lt;/a&gt; &lt;a href="#"&gt;HTML&lt;span class="is-sr-only"&gt; of 2609.36857&lt;/span&gt;&lt;/a&gt; &lt;a href="#"&gt;Other formats&lt;span class="is-sr-only"&gt; of 2609.36857&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;&lt;/p&gt;
+    &lt;p class="ds-paper-authors ds-link-list"&gt;&lt;a href="#"&gt;Giovanni Vincenzo Donatiello&lt;/a&gt;, &lt;a href="#"&gt;Achille A. Nucita&lt;/a&gt;, &lt;a href="#"&gt;Francesco De Paolis&lt;/a&gt;, &lt;a href="#"&gt;Antonio Franco&lt;/a&gt;, &lt;a href="#"&gt;Francesco Strafella&lt;/a&gt;&lt;/p&gt;
+    &lt;p class="ds-paper-abstract"&gt;We present LUMA, a convolutional neural network (CNN) pipeline for the automated detection of strong gravitational &lt;mark&gt;lenses&lt;/mark&gt; in simulated astronomical imaging. The method combines a physically motivated preprocessing stage, which enhances faint arc and ring features, with a compact three-block CNN trained using class reweighting and modern learning-rate schedul… &lt;button type="button" class="ds-show-more" aria-expanded="false"&gt;show more&lt;/button&gt;&lt;/p&gt;
+    &lt;dl class="ds-paper-meta"&gt;
+      &lt;div&gt;&lt;dt&gt;Comments&lt;/dt&gt;&lt;dd&gt;Accepted for publication in Astronomy and Computing, 2027, Corresponding Author: G.V. Donatiello (see associated pdf for useful e-mail addresses). 14 Pages, 8 Figures, 3 Tables&lt;/dd&gt;&lt;/div&gt;
+      &lt;div&gt;&lt;dt&gt;DOI&lt;/dt&gt;&lt;dd&gt;&lt;a href="https://doi.org/10.1016/j.ascom.2026.101198"&gt;10.1016/j.ascom.2026.101198&lt;/a&gt;&lt;/dd&gt;&lt;/div&gt;
+      &lt;div&gt;&lt;dt&gt;arXiv ID&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;2609.36857&lt;/a&gt;&lt;/dd&gt;&lt;/div&gt;
+    &lt;/dl&gt;
+    &lt;ul class="ds-paper-categories" aria-label="Subject categories, primary first"&gt;
+      &lt;li&gt;&lt;span class="ds-tooltip-host"&gt;&lt;button type="button" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-1-0"&gt;astro-ph.IM&lt;/button&gt;&lt;span class="ds-tooltip" id="cat-1-0" role="tooltip"&gt;&lt;span class="ds-tooltip-body"&gt;Instrumentation and Methods for Astrophysics (primary)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span class="ds-tooltip-host"&gt;&lt;button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-1-1"&gt;astro-ph.GA&lt;/button&gt;&lt;span class="ds-tooltip" id="cat-1-1" role="tooltip"&gt;&lt;span class="ds-tooltip-body"&gt;Astrophysics of Galaxies&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li class="ds-paper"&gt;
+    &lt;h3 class="ds-paper-title"&gt;&lt;a href="#"&gt;SN Helios: A Multiply Imaged Type II Supernova Opening Time-Delay Cosmography beyond redshift of 3&lt;/a&gt;&lt;/h3&gt;
+    &lt;p class="ds-paper-when"&gt;&lt;span class="ds-date-row"&gt;Submitted &lt;time datetime="2026-09-24"&gt;24&amp;nbsp;Sep&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC &lt;span aria-hidden="true"&gt;·&lt;/span&gt;&lt;span class="is-sr-only"&gt;,&lt;/span&gt; Announced &lt;time datetime="2026-09"&gt;Sep&amp;nbsp;2026&lt;/time&gt;&lt;/span&gt;
+      &lt;span class="ds-paper-formats ds-link-list"&gt;&lt;a href="#"&gt;PDF&lt;span class="is-sr-only"&gt; of 2609.30440&lt;/span&gt;&lt;/a&gt; &lt;a href="#"&gt;HTML&lt;span class="is-sr-only"&gt; of 2609.30440&lt;/span&gt;&lt;/a&gt; &lt;a href="#"&gt;Other formats&lt;span class="is-sr-only"&gt; of 2609.30440&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;&lt;/p&gt;
+    &lt;p class="ds-paper-authors ds-link-list"&gt;&lt;a href="#"&gt;Seiji Fujimoto&lt;/a&gt;, &lt;a href="#"&gt;Conor Larison&lt;/a&gt;, &lt;a href="#"&gt;Justin D. R. Pierel&lt;/a&gt;, &lt;a href="#"&gt;Lukas J. Furtak&lt;/a&gt;, &lt;a href="#"&gt;Masamune Oguri&lt;/a&gt;, &lt;a href="#"&gt;Adi Zitrin&lt;/a&gt;, &lt;a href="#"&gt;Jose M. Diego&lt;/a&gt;, &lt;a href="#"&gt;Keren Sharon&lt;/a&gt; &lt;button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false"&gt;show all 67 authors&lt;/button&gt;&lt;/p&gt;
+    &lt;p class="ds-paper-abstract"&gt;We report the discovery and spectroscopic confirmation of SN Helios, a strongly &lt;mark&gt;lensed&lt;/mark&gt;, multiply imaged Type II supernova (SN) at behind the galaxy cluster RXC J0018.5+1626. The transient was identified as a red F150W-dropout source (F277W = 26.1 mag) in JWST/NIRCam imaging taken on 2026 July 3 for the VENUS survey, with no counterpart in 2024 Decem… &lt;button type="button" class="ds-show-more" aria-expanded="false"&gt;show more&lt;/button&gt;&lt;/p&gt;
+    &lt;dl class="ds-paper-meta"&gt;
+      &lt;div&gt;&lt;dt&gt;Comments&lt;/dt&gt;&lt;dd&gt;14 pages, 9 figures, 5 tables. Comments welcome!&lt;/dd&gt;&lt;/div&gt;
+      &lt;div&gt;&lt;dt&gt;arXiv ID&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;2609.30440&lt;/a&gt;&lt;/dd&gt;&lt;/div&gt;
+    &lt;/dl&gt;
+    &lt;ul class="ds-paper-categories" aria-label="Subject categories, primary first"&gt;
+      &lt;li&gt;&lt;span class="ds-tooltip-host"&gt;&lt;button type="button" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-2-0"&gt;astro-ph.GA&lt;/button&gt;&lt;span class="ds-tooltip" id="cat-2-0" role="tooltip"&gt;&lt;span class="ds-tooltip-body"&gt;Astrophysics of Galaxies (primary)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span class="ds-tooltip-host"&gt;&lt;button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-2-1"&gt;astro-ph.CO&lt;/button&gt;&lt;span class="ds-tooltip" id="cat-2-1" role="tooltip"&gt;&lt;span class="ds-tooltip-body"&gt;Cosmology and Nongalactic Astrophysics&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span class="ds-tooltip-host"&gt;&lt;button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-2-2"&gt;astro-ph.HE&lt;/button&gt;&lt;span class="ds-tooltip" id="cat-2-2" role="tooltip"&gt;&lt;span class="ds-tooltip-body"&gt;High Energy Astrophysical Phenomena&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+          <dl>
+            <dt>.ds-paper-list</dt>
+            <dd>An <code>&lt;ol&gt;</code> of papers. Papers are separated by space, four times the space inside one, with no lines or boxes.</dd>
+            <dt>.ds-paper</dt>
+            <dd>One paper, an <code>&lt;li&gt;</code>.</dd>
+            <dt>.ds-paper-title</dt>
+            <dd>The title, a heading one level below the list's own heading, linked to the abstract page.</dd>
+            <dt>.ds-paper-when</dt>
+            <dd>The dates (<code>.ds-date-row</code>) and the format links (<code>.ds-paper-formats</code>) on one line. On a narrow screen the links wrap below the dates.</dd>
+            <dt>.ds-paper-authors</dt>
+            <dd>The authors, with <code>.ds-link-list</code>. After eight names, Show more for the rest.</dd>
+            <dt>.ds-paper-abstract</dt>
+            <dd>The abstract excerpt and its Show more. See <a href="progressive-disclosure.html#show-more">Show more</a>.</dd>
+            <dt>.ds-paper-meta</dt>
+            <dd>A <code>&lt;dl&gt;</code> of comments, journal reference, DOI and arXiv ID, in that order. A paper shows only the rows it has.</dd>
+            <dt>.ds-paper-categories</dt>
+            <dd>A <code>&lt;ul&gt;</code> of category tags, primary first, each with its full name in a <a href="forms.html#tooltip">tooltip</a>. It sits close under the metadata.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Each title is a heading</strong>, so a screen reader user can move from paper to paper.</li>
+      <li><strong>Name each format link's paper.</strong> “PDF” alone is the same link text fifty times; an <code>.is-sr-only</code> span adds the identifier.</li>
+      <li><strong>Category names are in the tooltip, never only in a <code>title</code> attribute.</strong> See <a href="forms.html#tooltip">Tooltip</a>.</li>
+    </ul>
+  </div>
+
+  <div class="ds-full ds-zone-secondary">
+  <h2>Rules</h2>
+
+  <!-- ───────── Rules ───────── -->
+  <section>
+    <h3 id="paper-rules">Papers</h3>
+    <ul class="notes">
+      <li><strong>Show the author's text as written.</strong> A title or abstract is never shortened, reworded or corrected; TeX shows as the author wrote it. An excerpt is cut, never edited.</li>
+      <li><strong>Leave out what a paper does not have.</strong> No empty labels and no placeholders.</li>
+      <li><strong>Every date has its label.</strong> Readers confuse submitted and announced dates when either stands alone.</li>
+      <li><strong>The primary category comes first</strong> and is told apart by more than colour: its tooltip names it as primary.</li>
+    </ul>
+  </section>
+  </div>
+
+</div>
+
+<script>
+  // Nav dropdowns: close on outside click and Esc (enhancement only —
+  // the <details> menus work without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      // Return focus to the trigger, but only if it was inside the menu we are
+      // closing — otherwise Escape anywhere on the page would steal focus.
+      // Without this a keyboard user is left on a link that no longer exists.
+      var wasInside = d.contains(document.activeElement);
+      d.removeAttribute('open');
+      if (wasInside) d.querySelector('summary').focus();
+    });
+  });
+</script>
+<script src="tooltip.js" defer></script>
+<script src="header.js" defer></script>
+<script src="copy-code.js" defer></script>
+<script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
+</body>
+</html>
