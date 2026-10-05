@@ -50,7 +50,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | A very short form on one row, such as search | `docs/forms.html` *Compact form* | `.ds-form--compact` on the form, `.ds-input-group` to join the controls that make one input; labels may be `.is-sr-only`; messages, secondary options and the results' settings (order, results per page) go under the row; a link to another page takes the end of that line |
 | Forms, validation | `docs/forms.html` — one page, both surfaces | `.ds-field`/`.ds-label`/`.ds-input`/`.ds-hint`, `.is-invalid`, `.field-error`, `.ds-check`, `.ds-switch`, `.ds-seg` |
 | A code block on a docs page | `docs/typography.html` *Code blocks* | plain `<pre><code>` plus `<script src="copy-code.js" defer>` once per page — the copy button is added for you; never hand-build one |
-| Version display | `docs/version-display.html` | inline version links + `.ds-alert` warning |
+| Version display | `docs/papers.html#paper-versions` | inline version links + `.ds-alert` warning |
 | A site-wide announcement (the banner) | `templates/BANNER_ANNOUNCEMENTS.md` | an entry in `templates/assets/json/announcements.json` — plain text and one link; never a per-app banner |
 | Site header / footer | `docs/header.html`, `docs/footer.html` | `.ds-site-header` (+ `--light`, `--wrap` for a centre slot that folds), `.ds-site-footer` — never hand-build chrome or draw logos from text |
 | Category / topic / state labels | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-tag` (+ `--info` / `--success` / `--warning` / `--error`, `--keep-case`, `--rectangle`); category names are copied, never restyled |

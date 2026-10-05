@@ -25,7 +25,6 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Spacing | [spacing.md](spacing.md) | Every gap on arXiv pages comes from the scale defined below. The scale is a 4px-based / 8-point scale, with no off-scale values permitted. More details in [DESI |
 | Pager | [pager.md](pager.md) | Controls for moving through a list: one item at a time with the pager, or a group of items at a time with numbered pages. |
 | Typography | [typography.md](typography.md) | arXiv sets all text in the IBM Plex family with STIX Two Math for notation. All fonts are self-hosted and open source with no external font services. |
-| Versions | [version-display.md](version-display.md) | How a paper shows its submission date, the timestamp it was announced at, its current revision date, and its version history. arXiv displays this info over and  |
 | Layout patterns | [layout-patterns.md](layout-patterns.md) | This section covers our primary patterns for differentiating and organizing content based on user needs. The organizing principle to follow throughout: Choose t |
 
 ## Not yet digested
@@ -34,3 +33,5 @@ These pages have not had their review pass. Read the page itself, and expect the
 
 - brand.html
 - outreach.html
+- papers.html
+- search.html
