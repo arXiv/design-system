@@ -117,7 +117,7 @@ Barely perceptible tints for creating section depth without hard borders.
 | **Primary action buttons (PDF, HTML)** | Open Blue `#a5d6fe`, Repository Brown text | Locked public primary. Repository Brown is the only AA text color on Open Blue (11.3:1). |
 | **Secondary buttons (TeX Source)** | White with UI Boundary Grey border `#89837a` | Lighter weight for secondary actions. |
 | **Version link (current)** | Repository Brown `#1c1a17`, bold | Inline text link, **not** a filled pill; sets `aria-current`. |
-| **Version link (other)** | Link Blue `#1565c0`, underlined | Navigates to that version. (Supersedes the earlier filled "version pills" — see `version-display.html`.) |
+| **Version link (other)** | Link Blue `#1565c0`, underlined | Navigates to that version. (Supersedes the earlier filled "version pills" — see `papers.html#paper-versions`.) |
 | **Version warning banner** | Light amber `#fff8e1` border `#e8b800` | — |
 | **Cite section borders** | `#dad8d6` | Bordered columns within the cite section. |
 | **Labs switches (on)** | Open Blue `#a5d6fe` | Indicates active state; the UI Boundary Grey edge provides the contrast. |
