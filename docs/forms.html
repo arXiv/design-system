@@ -861,14 +861,16 @@
             <dd>The bubble, with <code>role="tooltip"</code> and the <code>id</code>. It opens
             downward and toward the inline end, on hover and on focus, with no JavaScript. Escape
             must close it without moving focus, which CSS cannot do: a listener sets
-            <code>hidden</code> on it, and clears it when the pointer or focus arrives again. The
-            script on this page is the reference.</dd>
+            <code>hidden</code> on it, and clears it when the pointer or focus arrives again.
+            <code>tooltip.js</code> does this, once per page.</dd>
             <dt>.ds-tooltip-body</dt>
             <dd>The text. Short, and never content that exists nowhere else.</dd>
             <dt>.ds-tooltip--end</dt>
-            <dd>For a host near the trailing edge of its container, like the Continue button above:
-            the bubble runs back toward the start instead of off screen. Both directions use logical
-            properties, so both are correct in a right-to-left script.</dd>
+            <dd>For a host that always sits at the trailing edge of its container, like the Continue
+            button above: the bubble opens back toward the start. Anywhere else, including a tag in a
+            row that wraps, <code>tooltip.js</code> slides the bubble back onto the screen when it
+            would cross an edge. Both directions use logical properties, so both are correct in a
+            right-to-left script.</dd>
           </dl>
         </div>
       </details>
@@ -1001,33 +1003,6 @@
 </div>
 
 <script>
-  // Tooltips: CSS does the showing on hover and focus. Only dismissal needs
-  // JavaScript — WCAG 1.4.13 asks that content shown on hover can be closed
-  // without moving the pointer or focus away.
-  //
-  // Listeners are attached per host rather than delegated on purpose: the
-  // reset has to happen when you LEAVE, and "did focus really leave this
-  // host" is fiddly to answer from a delegated handler.
-  document.querySelectorAll('.ds-tooltip-host').forEach(function (host) {
-    var tip = host.querySelector('.ds-tooltip');
-    // Arriving clears any earlier dismissal, so the next visit shows it again.
-    host.addEventListener('mouseenter', function () { tip.hidden = false; });
-    host.addEventListener('focusin',    function () { tip.hidden = false; });
-    // Leaving does too, for whichever way you left.
-    host.addEventListener('mouseleave', function () { tip.hidden = false; });
-    host.addEventListener('focusout', function (e) {
-      if (!host.contains(e.relatedTarget)) tip.hidden = false;
-    });
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key !== 'Escape') return;
-    document.querySelectorAll('.ds-tooltip-host').forEach(function (host) {
-      if (host.contains(document.activeElement) || host.matches(':hover')) {
-        host.querySelector('.ds-tooltip').hidden = true;   // focus does NOT move
-      }
-    });
-  });
-
   // Segmented control demo.
   document.getElementById('demo-seg').addEventListener('click', function (e) {
     var btn = e.target.closest('.ds-seg-btn');
@@ -1059,6 +1034,7 @@
     });
   });
 </script>
+<script src="tooltip.js" defer></script>
 <script src="header.js" defer></script>
 <script src="copy-code.js" defer></script>
 <script src="anchors.js" defer></script>

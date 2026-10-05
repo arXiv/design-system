@@ -933,8 +933,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
      persistent   it stays while hovered or focused; no timer, and a pointer
                   twitch does not dismiss it
    Opens downward and toward the inline end. Upward collides with sticky chrome
-   near the top of a page; a host sitting near the trailing edge instead adds
-   .ds-tooltip--end so the bubble runs back the other way.
+   near the top of a page. tooltip.js slides a bubble that would run off the
+   screen back onto it. A host that always sits at the trailing edge carries
+   .ds-tooltip--end in the markup, which also covers a page with no script.
    The host supplies aria-describedby pointing at .ds-tooltip; the tooltip is
    never the accessible NAME, because a name that only appears on hover is a
    name most people never get. */
@@ -949,11 +950,12 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   inset-inline-start: 0;
   z-index: 200;
   padding-top: 6px;   /* the gap, as hoverable padding rather than margin */
+  translate: var(--ds-tooltip-shift, 0) 0;   /* set by tooltip.js to keep the bubble on screen */
 }
 .ds-tooltip-body {
   display: block;
   width: max-content;
-  max-width: 15rem;
+  max-width: min(15rem, calc(100vw - 2 * var(--ds-gutter)));   /* never wider than a phone's column */
   padding: var(--ds-space-2) 0.85em;
   background: var(--ds-tint-accent);
   border: 1px solid var(--ds-accent-border);
