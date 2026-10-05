@@ -1,4 +1,4 @@
-# Handoff — 2026-10-02
+# Handoff — 2026-10-05
 
 Written for the next session. PR #7 (`docs-review-2026-09-28`) merged into `master` on
 2026-10-05. Shamsi wants to commit to `master` directly, but GitHub rulesets still require a pull
@@ -103,30 +103,23 @@ body scrolls automatically and becomes a tab stop only while it overflows.
 
 ## Next, ours
 
-0. **After PR #7 merges (2026-10-05):** start a new branch for the search result pattern:
-   Shamsi's changes to result hierarchy, `proposals/paper-metadata-hierarchy.md` (draft, evidence
-   in `~/arxiv/research/paper-metadata/`), and the layout in `proposals/search-a3.html`. Then test 3.
-   Decided 2026-10-05: search layout A3 (search and result settings in the band; range and pages on
-   white with light lines; notice above the pager; title first, spacing only, tags last).
-000. **Dark mode tints review (Shamsi, 2026-10-05):** check that the dark tints and shades mirror
-   their light-mode jobs. Found while choosing the pager bar: in dark, `--ds-surface-muted` (the bar)
-   is the same colour as `--ds-surface` (a card), so a bar inside a card disappears.
-00. **Testing** — plan in `TESTING-PLAN.md`, protocol in `verification/token-burn/README.md`.
-   Test 1 (simple search) is built, reviewed and summarized; the status of its 14 proposed
-   changes is in the plan under "Test 1". Next: Shamsi reviews the evening's changes below, then
-   rebuild search with one page state.
-   Made 2026-10-02 without Shamsi's review, for her to check:
-   - **Page ground is white.** `.ds-full.ds-zone-secondary` is a tinted band; `.ds-zone-primary`
-     is gone; `--ds-surface-hover` is a new token for the hover fill. All docs pages converted.
-   - **Compact form** (`.ds-form--compact`, `.ds-input-group`) on forms.html.
-   - **Icons:** a select draws its own heavier arrow (`--ds-select-arrow`; `.ds-select` removed);
-     sort arrows are icons; small icons have a heavier stroke.
-   - **Pager:** position at the start, controls at the end; numbered pages
-     (`.ds-pagination-pages`); at phone width the words Previous and Next are hidden.
-   - **tables.html:** One frame moved up; the Settings legend is `.is-sr-only`.
-   Open: the filter bar wraps badly with five or more fields (To drops alone, the settings
-   divider hangs at the start of a row); whether numbered pages repeat below a long list is a
-   rule; the opening sentence of pager.html still describes only the one-at-a-time pager.
+0. **State on 2026-10-05 (overnight run).** Branch `search-results-2026-10` holds: search
+   version D (`search.html`), the Papers page (`papers.html`: hierarchy, a paper in a list,
+   versions, categories, full papers, sidebar, contents bar, section permalinks, equations,
+   figures and references, citations and footnotes, rules incl. paper body and printing), and the
+   inventory promotions from `proposals/paper-decisions-inventory.md` sections 1 to 8. The
+   promotion rule (Shamsi): promote everything unless it directly breaks a docs guideline;
+   conflicts are listed for her, not promoted. `abstract-phase2.html` is ignored (stale).
+   Waiting on Shamsi: the conflicts list in the morning summary; her second pass on papers.html
+   and search.html; the new prose (she wordsmiths).
+000. **Dark mode tints:** audit `dark-mode-tints-audit.html`, proposal `dark-mode-proposal.html`.
+   Shamsi likes nearly every proposed value; she asked for a stronger selected-row tint, now 1.20
+   against the page. Nothing is in design-system.css yet: adopt the proposal only after she
+   approves it, then run check-contrast and check-drift.
+0000. **Questions for Deyan:** `questions-for-deyan.html` (17 questions, renderer only).
+00. **Testing** — plan in `TESTING-PLAN.md`, protocol in `verification/token-burn/README.md`,
+   team report in `verification/token-burn/reports/2026-10-search/`. Tests 1 and 2 are done.
+   Test 3 rebuilds search results once Papers settles; then arXiv Check as the non-paper search.
 1. **`docs/examples/`** — stable, generic full-page examples built only from documented
    components (approved in principle 2026-10-02). Start with form validation (states: empty,
    errors after submit, warnings, auto-corrected value, fixed); then a report page for
