@@ -352,9 +352,13 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   font-family: var(--ds-font-sans);
   color: var(--ds-text);
   /* Below the support floor (Baseline newly available, Oct 2024) —
-     progressive enhancement. Without it, headings wrap normally. */
-  text-wrap: balance;
+     progressive enhancement. Without it, headings wrap normally. Pretty fills
+     each line and only avoids leaving one word alone on the last. */
+  text-wrap: pretty;
 }
+/* The page title alone is balanced: it is short and set large, where two even
+   lines read better than a full line and a short one. */
+:where(.ds-page) h1 { text-wrap: balance; }
 :where(.ds-page) h1 { font-size: 2rem;    font-weight: 700; line-height: 1.25; margin: 0 0 var(--ds-space-4); }
 :where(.ds-page) h2 { font-size: 1.5rem;  font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-3); }
 :where(.ds-page) h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-2); }
