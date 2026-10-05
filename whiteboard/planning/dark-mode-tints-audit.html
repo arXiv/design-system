@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dark mode tints audit</title>
+<link rel="stylesheet" href="../../docs/fonts.css">
+<link rel="stylesheet" href="../../docs/design-system.css">
+<style>
+  /* Planning page only. Colour specimens are fixed values on purpose, so the page is locked to light mode. */
+  body { margin: 0; }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 32px 24px 64px; }
+  .sw { display: inline-block; width: 1em; height: 1em; border: 1px solid #89837a; border-radius: 3px; vertical-align: -0.15em; margin-right: 6px; }
+  .pairs { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 16px; margin: 12px 0 32px; }
+  .pairs figure { margin: 0; }
+  .pairs figcaption { font-size: 0.875rem; font-weight: 600; margin-bottom: 4px; }
+  .duo { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #89837a; border-radius: 6px; overflow: hidden; }
+  .under { position: relative; height: 110px; padding: 18px; }
+  .over { height: 50px; border-radius: 4px; }
+  .under span { position: absolute; bottom: 6px; left: 8px; font-size: 0.75rem; }
+</style>
+</head>
+<body class="ds-page"><div class="wrap">
+<h1>Dark mode tints and shades: audit</h1>
+<p>2026-10-05. Do the public site's surface and tint tokens do the same jobs in dark mode as in light mode? Values are read from <code>docs/design-system.css</code> (<code>:root</code> and the public dark block). Internal tools (Access Lime) are not covered yet.</p>
+<p>The numbers are contrast ratios between two fills, the same measure as text contrast. 1.00 means the two are the same colour. Fills do not need to pass 3:1; what matters is that a step that shows in light mode also shows in dark mode, and about as strongly.</p>
+<h2>The tokens</h2>
+<div class="ds-table-scroll" tabindex="0" role="region" aria-label="Token"><table class="ds-table"><thead><tr><th scope="col">Token</th><th scope="col">Its job</th><th scope="col">Light</th><th scope="col">Dark</th></tr></thead><tbody><tr><td><code>--ds-canvas</code></td><td>The page ground</td><td><span class="sw" style="background:#ffffff"></span><code>#ffffff</code></td><td><span class="sw" style="background:#1c1a17"></span><code>#1c1a17</code></td></tr><tr><td><code>--ds-surface</code></td><td>Cards, inputs, raised things</td><td><span class="sw" style="background:#ffffff"></span><code>#ffffff</code></td><td><span class="sw" style="background:#2b2723"></span><code>#2b2723</code></td></tr><tr><td><code>--ds-surface-muted</code></td><td>Table header cells, the pager bars, secondary bands</td><td><span class="sw" style="background:#f0f0ee"></span><code>#f0f0ee</code></td><td><span class="sw" style="background:#2b2723"></span><code>#2b2723</code></td></tr><tr><td><code>--ds-surface-hover</code></td><td>A row or control under the pointer</td><td><span class="sw" style="background:#f8f7f7"></span><code>#f8f7f7</code></td><td><span class="sw" style="background:#1c1a17"></span><code>#1c1a17</code></td></tr><tr><td><code>--ds-tint-warm</code> / <code>--ds-zone-secondary-bg</code></td><td>The tinted band, striped rows, the filter bar</td><td><span class="sw" style="background:#f0f0ee"></span><code>#f0f0ee</code></td><td><span class="sw" style="background:#221f1b"></span><code>#221f1b</code></td></tr><tr><td><code>--ds-tint-accent</code></td><td>Selected rows, the current page, tooltips, popovers</td><td><span class="sw" style="background:#edf7ff"></span><code>#edf7ff</code></td><td><span class="sw" style="background:#1e3a5f"></span><code>#1e3a5f</code></td></tr><tr><td><code>--ds-accent-wash</code></td><td>The deeper accent fill: matched words, a pressed text button</td><td><span class="sw" style="background:#d2eafe"></span><code>#d2eafe</code></td><td><span class="sw" style="background:#1e3a5f"></span><code>#1e3a5f</code></td></tr><tr><td><code>--ds-border</code></td><td>Hairlines</td><td><span class="sw" style="background:#dad8d6"></span><code>#dad8d6</code></td><td><span class="sw" style="background:#3a3530"></span><code>#3a3530</code></td></tr></tbody></table></div>
+<h2>The layers, measured</h2>
+<div class="ds-table-scroll" tabindex="0" role="region" aria-label="Fill"><table class="ds-table"><thead><tr><th scope="col">Fill</th><th scope="col">On</th><th scope="col">Light</th><th scope="col">Dark</th><th scope="col">Finding</th></tr></thead><tbody><tr><td>surface-muted</td><td>surface</td><td>1.14</td><td><strong>1.00</strong></td><td>1. Collapses</td></tr><tr><td>surface-hover</td><td>canvas</td><td>1.07</td><td><strong>1.00</strong></td><td>2. Collapses</td></tr><tr><td>accent-wash</td><td>tint-accent</td><td>1.14</td><td><strong>1.00</strong></td><td>3. Collapses</td></tr><tr><td>tint-warm</td><td>canvas</td><td>1.14</td><td>1.06</td><td>4. Half as strong</td></tr><tr><td>tint-accent</td><td>canvas</td><td>1.09</td><td>1.51</td><td>5. Much stronger</td></tr><tr><td>border</td><td>surface</td><td>1.42</td><td>1.22</td><td>6. Weaker</td></tr><tr><td>surface</td><td>canvas</td><td>1.00</td><td>1.17</td><td>By design: dark mode raises cards</td></tr><tr><td>surface-muted</td><td>canvas</td><td>1.14</td><td>1.17</td><td>Matches</td></tr><tr><td>border</td><td>canvas</td><td>1.42</td><td>1.43</td><td>Matches</td></tr></tbody></table></div>
+<h2>See it</h2><p>Each pair: the fill as a block on the colour beneath it, in light mode and in dark mode, using the values above.</p><div class="pairs"><figure><figcaption>surface-muted on surface</figcaption><div class="duo"><div class="under" style="background:#ffffff"><div class="over" style="background:#f0f0ee"></div><span>light</span></div><div class="under" style="background:#2b2723"><div class="over" style="background:#2b2723"></div><span style="color:#f0f0ee">dark</span></div></div></figure><figure><figcaption>surface-hover on canvas</figcaption><div class="duo"><div class="under" style="background:#ffffff"><div class="over" style="background:#f8f7f7"></div><span>light</span></div><div class="under" style="background:#1c1a17"><div class="over" style="background:#1c1a17"></div><span style="color:#f0f0ee">dark</span></div></div></figure><figure><figcaption>accent-wash on tint-accent</figcaption><div class="duo"><div class="under" style="background:#edf7ff"><div class="over" style="background:#d2eafe"></div><span>light</span></div><div class="under" style="background:#1e3a5f"><div class="over" style="background:#1e3a5f"></div><span style="color:#f0f0ee">dark</span></div></div></figure><figure><figcaption>tint-warm on canvas</figcaption><div class="duo"><div class="under" style="background:#ffffff"><div class="over" style="background:#f0f0ee"></div><span>light</span></div><div class="under" style="background:#1c1a17"><div class="over" style="background:#221f1b"></div><span style="color:#f0f0ee">dark</span></div></div></figure><figure><figcaption>tint-accent on canvas</figcaption><div class="duo"><div class="under" style="background:#ffffff"><div class="over" style="background:#edf7ff"></div><span>light</span></div><div class="under" style="background:#1c1a17"><div class="over" style="background:#1e3a5f"></div><span style="color:#f0f0ee">dark</span></div></div></figure><figure><figcaption>border on surface</figcaption><div class="duo"><div class="under" style="background:#ffffff"><div class="over" style="background:#dad8d6"></div><span>light</span></div><div class="under" style="background:#2b2723"><div class="over" style="background:#3a3530"></div><span style="color:#f0f0ee">dark</span></div></div></figure></div><h2>Findings</h2>
+<ol>
+<li><strong>Inside a card, grey fills disappear in dark mode.</strong> <code>--ds-surface-muted</code> is the same colour as <code>--ds-surface</code>. A table's header row, a pager bar or a secondary band inside a card has no fill at all. This is how the pager demo on <code>search.html</code> looks in dark mode.</li>
+<li><strong>Hover does nothing on the page ground in dark mode.</strong> <code>--ds-surface-hover</code> is the page ground itself. A table row that sits on the page (not in a card) gives no hover feedback. Inside a card it works.</li>
+<li><strong>The two accent fills are one colour in dark mode.</strong> Light mode has a pale tint and a deeper wash; dark mode uses one value for both. Anything that relies on the difference, such as a matched word inside a selected row, loses it.</li>
+<li><strong>The tinted band is half as visible in dark mode.</strong> The band behind a page's introduction, and the filter bar, are much fainter than in light mode.</li>
+<li><strong>The accent tint is far louder in dark mode.</strong> The dark navy stands out about five times more against the page than the pale blue does in light mode. Selected rows, tooltips and the current page draw more attention in dark than they were designed to.</li>
+<li><strong>Hairlines are fainter on cards in dark mode.</strong></li>
+</ol>
+<h2>What would make dark a mirror of light</h2>
+<p>One ladder of fills, each a visible step from the one below, in both modes:</p>
+<ul>
+<li>page ground, then tinted band, then card, then a grey fill inside a card, each a little lighter than the last in dark mode, as each is a little darker in light mode;</li>
+<li>hover is always one step from whatever it sits on, never the page ground itself;</li>
+<li>the accent tint and the accent wash are two steps in dark as in light, and both closer to the light-mode strength.</li>
+</ul>
+<p>These are new dark values for existing tokens, not new colours in light mode. Each would need its text contrast checked (<code>verification/check-contrast.py</code>). No values are proposed here until Shamsi has read the findings.</p>
+<h2>Not yet covered</h2>
+<ul>
+<li>Internal tools (Access Lime): the same measurements with <code>.ds-internal</code>.</li>
+<li>Status fills (alerts, status tags) in dark mode.</li>
+<li>The site header in dark mode: <code>--ds-chrome</code> is only 1.09 against the page ground, so the header barely separates from the page.</li>
+</ul>
+</div></body></html>
