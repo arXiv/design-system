@@ -20,7 +20,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 # blog-theme/ is a packaged copy of a separate project — see AGENTS.md.
-ROOTS = [REPO / "docs", REPO / "mockups"]
+ROOTS = [REPO / "docs", REPO / "whiteboard" / "mockups"]
 
 FAILS = []
 
@@ -175,12 +175,12 @@ PX_FONT = re.compile(r"font-size:\s*([0-9.]+)px")
 TYPE_REQUIRED = [
     REPO / "docs" / "design-system.css",
     REPO / "docs" / "internal-tools.css",
-    REPO / "mockups" / "public" / "html-phase1.html",
-    REPO / "mockups" / "public" / "abstract-phase2.html",
+    REPO / "whiteboard" / "mockups" / "public" / "html-phase1.html",
+    REPO / "whiteboard" / "mockups" / "public" / "abstract-phase2.html",
 ]
 TYPE_DEFERRED = [
-    REPO / "mockups" / "internal" / "admin-console" / "user-page" / "index.html",
-    REPO / "mockups" / "internal" / "admin-console" / "paper-details" / "index.html",
+    REPO / "whiteboard" / "mockups" / "internal" / "admin-console" / "user-page" / "index.html",
+    REPO / "whiteboard" / "mockups" / "internal" / "admin-console" / "paper-details" / "index.html",
 ]
 
 
@@ -207,7 +207,7 @@ def check_relative_type_sizes():
             deferred += len(PX_FONT.findall(f.read_text()))
     if deferred:
         print(f"NOTE  {rule} — {deferred} px font sizes in the two admin console "
-              "mockups,\n      deferred with the internal tools work (planning/NEXT-STEPS.md 20a)")
+              "mockups,\n      deferred with the internal tools work (whiteboard/planning/NEXT-STEPS.md 20a)")
     if rule not in FAILS:
         ok(rule, f"{total} files")
 
@@ -304,7 +304,7 @@ def check_toc_script():
 # ── The docs do not narrate their own history ──
 # The system is new and in use nowhere, so a reader needs to know what a thing
 # IS. "Previously", "we dropped", a decision date in the prose — all of it is
-# a changelog in the wrong place. Decisions live in planning/; git is the log.
+# a changelog in the wrong place. Decisions live in whiteboard/planning/; git is the log.
 HISTORY = re.compile(
     r"\b(decided 20\d\d|settled 20\d\d|reviewed 20\d\d|renamed 20\d\d"
     r"|we (?:rejected|dropped|removed|replaced)|the earlier version"
@@ -382,6 +382,76 @@ def check_section_anchors():
     ok(rule, "checked by gen-anchors.py")
 
 
+# ── One docs menu, on every page ──
+# The shared nav is copied into each page by hand, so copies drift: pages
+# went missing from it, a deleted page stayed in it, and one page carried an
+# old order. Every copy must match buttons.html (ignoring which link is marked
+# current), mark its own page current if it is listed, and every docs page
+# must be listed except the ones kept out of the nav on purpose.
+NAV_MENUS = re.compile(
+    r'<header class="ds-site-header ds-site-header--light">.*?'
+    r'<nav class="ds-site-header-nav" aria-label="Design system">'
+    r'((?:\s*<details class="ds-site-header-dropdown">.*?</details>)+)',
+    re.S,
+)
+OFF_NAV = {"doc.html", "outreach.html"}   # the doc viewer; the outreach rules page
+
+
+def check_docs_menu():
+    rule = "every docs page carries the same menu, and the menu lists every page"
+    docs = REPO / "docs"
+    ref = NAV_MENUS.search((docs / "buttons.html").read_text(encoding="utf-8"))
+    canon = ref.group(1).replace(' aria-current="page"', "")
+    listed = set(re.findall(r'href="([a-z0-9-]+\.html)"', canon))
+    n = 0
+    for path in sorted(docs.glob("*.html")):
+        rel = str(path.relative_to(REPO))
+        m = NAV_MENUS.search(path.read_text(encoding="utf-8", errors="replace"))
+        if not m:
+            fail(rule, rel, "no shared docs menu")
+            continue
+        n += 1
+        if m.group(1).replace(' aria-current="page"', "") != canon:
+            fail(rule, rel, "menu differs from the one on buttons.html")
+        if path.name in listed and f'href="{path.name}" aria-current="page"' not in m.group(1):
+            fail(rule, rel, "does not mark its own menu link aria-current")
+        if path.name not in listed and path.name not in OFF_NAV:
+            fail(rule, rel, "is not in the menu")
+    if rule not in FAILS:
+        ok(rule, f"{n} pages, {len(listed)} listed")
+
+
+# ── Plain words ──
+# STYLE.md lists words that agents keep reaching for and Shamsi keeps
+# replacing. Checked in reader-facing prose only: code, class names, scripts
+# and styles are stripped first. STYLE.md itself quotes them, so it is skipped.
+PLAIN_WORDS = re.compile(r"\b(carr(?:y|ies|ied|ying)|rails?|walk(?:s|ed|ing)?|track(?:s|ed)?)\b", re.I)   # "tracking" allowed: surveillance, on brand.html
+
+
+def check_plain_words():
+    rule = "prose uses the plain word (STYLE.md: includes, sidebar, scan, type)"
+    files = sorted((REPO / "docs").rglob("*.html")) + sorted((REPO / "docs").glob("*.md")) + [REPO / "AGENTS.md"]
+    n = 0
+    for path in files:
+        if path.name == "STYLE.md" or "spec" in path.parts:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if path.suffix == ".html":
+            text = re.sub(r"<(pre|script|style|code)\b.*?</\1>", " ", text, flags=re.S)
+            text = re.sub(r"<[^>]+>", " ", text)
+        else:
+            text = re.sub(r"```.*?```", " ", text, flags=re.S)
+            text = re.sub(r"`[^`]*`", " ", text)
+        text = re.sub(r"[\w.-]*-track\b|track-[\w-]+", " ", text)
+        n += 1
+        for m in PLAIN_WORDS.finditer(text):
+            start = max(0, m.start() - 40)
+            context = " ".join(text[start:m.end() + 40].split())
+            fail(rule, str(path.relative_to(REPO)), f"“{m.group(0)}” in: …{context}…")
+    if rule not in FAILS:
+        ok(rule, f"{n} files")
+
+
 def main():
     check_wordmark_not_typed()
     check_self_hosted()
@@ -390,8 +460,10 @@ def main():
     check_relative_type_sizes()
     check_page_shape()
     check_theme_control()
+    check_docs_menu()
     check_toc_script()
     check_no_changelog_prose()
+    check_plain_words()
     check_classes_documented()
     check_section_anchors()
     print()

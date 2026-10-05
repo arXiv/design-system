@@ -103,6 +103,7 @@ test("the search overlay closes when focus leaves it; Ctrl/Cmd+K is the host's i
   await expect(toggle).toBeFocused();                          // Escape returns focus
 
   await page.setViewportSize({ width: 400, height: 800 });      // the phone menu hides Search:
+  await expect(page.locator("#ds-nav-toggle")).toBeVisible();   // folded on the media change
   await page.keyboard.press("ControlOrMeta+k");
   await page.keyboard.press("Escape");
   await expect(page.locator("#ds-nav-toggle")).toBeFocused();  // focus goes to the hamburger

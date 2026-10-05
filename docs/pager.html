@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pager — arXiv Design System</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
+<script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
+</head>
+<body class="ds-page">
+<header class="ds-site-header ds-site-header--light">
+  <a class="ds-site-header-logo" href="../index.html"><span aria-hidden="true">arXiv Design System</span><span class="is-sr-only">archive Design System</span></a>
+  <nav class="ds-site-header-nav" aria-label="Design system">
+    <details class="ds-site-header-dropdown">
+      <summary>Design Patterns</summary>
+      <div class="ds-site-header-menu">
+        <span class="ds-panel-label">Components</span>
+        <a href="colors.html">Colors</a>
+        <a href="dark-mode.html">Dark mode</a>
+        <a href="typography.html">Typography</a>
+        <a href="spacing.html">Spacing</a>
+        <a href="icons.html">Icons</a>
+        <a href="buttons.html">Buttons</a>
+        <a href="links.html">Links</a>
+        <a href="forms.html">Forms &amp; validation</a>
+        <a href="alerts.html">Alerts</a>
+        <a href="messages.html">Messaging</a>
+        <a href="tags.html">Tags</a>
+        <a href="header.html">Site header</a>
+        <a href="footer.html">Site footer</a>
+        <a href="pager.html" aria-current="page">Pager</a>
+        <span class="ds-panel-label">Organizing content</span>
+        <a href="layout-patterns.html">Layouts</a>
+        <a href="cards.html">Cards</a>
+        <a href="tables.html">Tables</a>
+        <a href="progressive-disclosure.html">Progressive disclosure</a>
+        <a href="modals.html">Modal dialogs</a>
+        <a href="version-display.html">arXiv Paper Versions</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Mockups</summary>
+      <div class="ds-site-header-menu">
+        <a href="../whiteboard/mockups/">All mockups</a>
+        <span class="ds-panel-label">Public</span>
+        <a href="../whiteboard/mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+        <a href="../whiteboard/mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+        <a href="../whiteboard/mockups/public/optin-modal/">Labs opt-in modal</a>
+        <a href="../whiteboard/mockups/public/submission-metadata/">Submission — Metadata Form</a>
+        <span class="ds-panel-label">Internal</span>
+        <a href="../whiteboard/mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+        <a href="../whiteboard/mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+        <a href="../whiteboard/mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+        <a href="../whiteboard/mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+        <a href="../whiteboard/mockups/internal/membership-dashboard/">Membership dashboard</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Docs</summary>
+      <div class="ds-site-header-menu">
+        <a href="using.html">Using the system</a>
+        <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+        <a href="doc.html?src=docs/STYLE.md">Writing style</a>
+        <a href="brand.html">Brand &amp; vision</a>
+        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
+        <a href="doc.html?src=README.md">About this repo</a>
+      </div>
+    </details>
+  </nav>
+  <div class="ds-site-header-tools">
+    <button type="button" class="ds-theme-toggle"></button>
+    <span id="ds-theme-status" class="is-sr-only" role="status"></span>
+  </div>
+</header>
+
+<div class="ds-container">
+
+  <div class="ds-full ds-zone-secondary">
+  <header class="ds-page-header">
+    <h1>Pager</h1>
+    <p>Controls for moving through a list: one item at a time with the pager, or a group of items at a time with numbered pages.</p>
+  </header>
+  </div>
+
+
+  <!-- ═════════ TOC ═════════ -->
+  <div class="ds-full ds-toc-bar">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#the-pager">The pager</a></li>
+            <li><a href="#numbered-pages">Numbered pages</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ═════════ Core ═════════ -->
+
+  <!-- ───────── The pager ───────── -->
+  <section>
+    <h2 id="the-pager">The pager</h2>
+    <p class="ds-section-desc">This component group is for moving through items one at a time, such as a moderation queue or a run of submissions, where each item has its own screen and someone works through them in order. Our current usage is in the Admin Console but it is available in other contexts.</p>
+
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Only use a pager when the user can focus on just one item at a time without needing context from others in the set.</p>
+      </details>
+      <nav class="ds-pagination" aria-label="Queue navigation">
+        <span class="ds-pagination-position" aria-live="polite">Request 1 of 15</span>
+        <button class="ds-btn ds-btn-text" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</button>
+        <button class="ds-btn ds-btn-text" type="button">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav class="ds-pagination" aria-label="Queue navigation"&gt;
+  &lt;span class="ds-pagination-position" aria-live="polite"&gt;Request 1 of 15&lt;/span&gt;
+  &lt;button class="ds-btn ds-btn-text" type="button" disabled&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m15 18-6-6 6-6"/&gt;&lt;/svg&gt; Previous&lt;/button&gt;
+  &lt;button class="ds-btn ds-btn-text" type="button"&gt;Next &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m9 18 6-6-6-6"/&gt;&lt;/svg&gt;&lt;/button&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-pagination</dt>
+            <dd>A <code>&lt;nav&gt;</code> with an <code>aria-label</code> saying which set it steps
+            through. Holds the position, Previous and Next, in that order.</dd>
+            <dt>.ds-pagination-position</dt>
+            <dd>The counter. Takes <code>aria-live="polite"</code>: without it a reader who cannot
+            see the counter has no way to know that the Next they just pressed did anything. The
+            wording is the host's to choose; the counter takes the slack before the buttons, so the
+            buttons stay put as the number grows.</dd>
+            <dt>.ds-btn.ds-btn-text</dt>
+            <dd>The two buttons, text-only, so they read as navigation rather than as actions. At either end of the set the button is <code>disabled</code>, not
+            removed: a control that vanishes changes the shape of the toolbar under the reader, and
+            a disabled one says “there is nothing before this”, which is the actual information.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <div class="ds-card">
+      <p class="ds-panel-label">Above a table with group actions</p>
+      <nav class="ds-pagination" aria-label="Moderation queue">
+        <span class="ds-pagination-position" aria-live="polite">Request 1–3 of 15</span>
+        <button class="ds-btn ds-btn-text" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Previous</button>
+        <button class="ds-btn ds-btn-text" type="button">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+      </nav>
+      <div class="ds-btn-group">
+        <button class="ds-btn ds-btn-primary" type="button">Approve</button>
+        <button class="ds-btn" type="button">Hold</button>
+        <button class="ds-btn ds-btn-destructive" type="button">Remove…</button>
+        <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
+        <div class="ds-filter">
+          <label for="queue-filter">Show</label>
+          <select id="queue-filter"><option selected>All</option><option>New</option><option>Replaced</option></select>
+        </div>
+      </div>
+      <div class="ds-table-scroll" role="region" aria-label="Papers in this request" tabindex="0">
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th scope="col"><span class="is-sr-only">Select</span></th>
+              <th scope="col">Date</th>
+              <th scope="col">Title</th>
+              <th scope="col">Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="is-selected">
+              <td><input type="checkbox" id="q-1" checked><label for="q-1" class="is-sr-only">Select Asymptotic Expansions of Schrödinger Operators</label></td>
+              <td>2026-03-24</td>
+              <td>Asymptotic Expansions of Schrödinger Operators</td>
+              <td><span class="ds-tag ds-tag--rectangle">New</span></td>
+            </tr>
+            <tr class="is-selected">
+              <td><input type="checkbox" id="q-2" checked><label for="q-2" class="is-sr-only">Select Symmetry Breaking in Non-Abelian Gauge Theories</label></td>
+              <td>2025-07-09</td>
+              <td>Symmetry Breaking in Non-Abelian Gauge Theories</td>
+              <td><span class="ds-tag ds-tag--rectangle">Rep</span></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" id="q-3"><label for="q-3" class="is-sr-only">Select Spectral Properties of Discrete Schrödinger Operators</label></td>
+              <td>2024-07-08</td>
+              <td>Spectral Properties of Discrete Schrödinger Operators</td>
+              <td><span class="ds-tag ds-tag--rectangle">Wdr</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav class="ds-pagination" aria-label="Moderation queue"&gt;
+  &lt;span class="ds-pagination-position" aria-live="polite"&gt;Request 1–3 of 15&lt;/span&gt;
+  &lt;button class="ds-btn ds-btn-text" type="button"&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m15 18-6-6 6-6"/&gt;&lt;/svg&gt; Previous&lt;/button&gt;
+  &lt;button class="ds-btn ds-btn-text" type="button"&gt;Next &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m9 18 6-6-6-6"/&gt;&lt;/svg&gt;&lt;/button&gt;
+&lt;/nav&gt;
+&lt;div class="ds-btn-group"&gt;
+  &lt;button class="ds-btn ds-btn-primary" type="button"&gt;Approve&lt;/button&gt;
+  &lt;button class="ds-btn" type="button"&gt;Hold&lt;/button&gt;
+  &lt;button class="ds-btn ds-btn-destructive" type="button"&gt;Remove…&lt;/button&gt;
+  &lt;span class="ds-bulk-count" role="status"&gt;2 selected · &lt;a href="#"&gt;Clear selection&lt;/a&gt;&lt;/span&gt;
+  &lt;div class="ds-filter"&gt;
+    &lt;label for="queue-filter"&gt;Show&lt;/label&gt;
+    &lt;select id="queue-filter"&gt;&lt;option selected&gt;All&lt;/option&gt;&lt;option&gt;New&lt;/option&gt;&lt;option&gt;Replaced&lt;/option&gt;&lt;/select&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="ds-table-scroll" role="region" aria-label="Papers in this request" tabindex="0"&gt;
+  &lt;table class="ds-table"&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th scope="col"&gt;&lt;span class="is-sr-only"&gt;Select&lt;/span&gt;&lt;/th&gt;
+        &lt;th scope="col"&gt;Date&lt;/th&gt;
+        &lt;th scope="col"&gt;Title&lt;/th&gt;
+        &lt;th scope="col"&gt;Type&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr class="is-selected"&gt;
+        &lt;td&gt;&lt;input type="checkbox" id="q-1" checked&gt;&lt;label for="q-1" class="is-sr-only"&gt;Select Asymptotic Expansions of Schrödinger Operators&lt;/label&gt;&lt;/td&gt;
+        &lt;td&gt;2026-03-24&lt;/td&gt;
+        &lt;td&gt;Asymptotic Expansions of Schrödinger Operators&lt;/td&gt;
+        &lt;td&gt;&lt;span class="ds-tag ds-tag--rectangle"&gt;New&lt;/span&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr class="is-selected"&gt;
+        &lt;td&gt;&lt;input type="checkbox" id="q-2" checked&gt;&lt;label for="q-2" class="is-sr-only"&gt;Select Symmetry Breaking in Non-Abelian Gauge Theories&lt;/label&gt;&lt;/td&gt;
+        &lt;td&gt;2025-07-09&lt;/td&gt;
+        &lt;td&gt;Symmetry Breaking in Non-Abelian Gauge Theories&lt;/td&gt;
+        &lt;td&gt;&lt;span class="ds-tag ds-tag--rectangle"&gt;Rep&lt;/span&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;&lt;input type="checkbox" id="q-3"&gt;&lt;label for="q-3" class="is-sr-only"&gt;Select Spectral Properties of Discrete Schrödinger Operators&lt;/label&gt;&lt;/td&gt;
+        &lt;td&gt;2024-07-08&lt;/td&gt;
+        &lt;td&gt;Spectral Properties of Discrete Schrödinger Operators&lt;/td&gt;
+        &lt;td&gt;&lt;span class="ds-tag ds-tag--rectangle"&gt;Wdr&lt;/span&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-pagination</dt>
+            <dd>Steps through the requests. It sits above everything that belongs to the current
+            request, so the table and its actions change together when the reader moves on.</dd>
+            <dt>.ds-btn-group, .ds-bulk-count, .ds-filter</dt>
+            <dd>The group actions row: the actions, the selection count, and a filter at the far end.
+            See <a href="tables.html#bulk-actions">Bulk actions</a>.</dd>
+            <dt>.ds-table, .is-selected</dt>
+            <dd>The papers in the current request, with a checkbox per row. See
+            <a href="tables.html#row-selection">Row selection</a>.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Numbered pages ───────── -->
+  <section>
+    <h2 id="numbered-pages">Numbered pages</h2>
+    <p class="ds-section-desc">Numbered pages are for a long list split across pages, such as search results, where each page has its own address.</p>
+
+    <div class="ds-card">
+      <p class="ds-panel-label">First page</p>
+      <nav class="ds-pagination" aria-label="Search results pages">
+        <span class="ds-pagination-position">1–50 of 8,291 results</span>
+        <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+        <ol class="ds-pagination-pages">
+          <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
+          <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
+          <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+          <li><a href="?page=4"><span class="is-sr-only">Page </span>4</a></li>
+          <li><a href="?page=5"><span class="is-sr-only">Page </span>5</a></li>
+          <li>…</li>
+          <li><a href="?page=166"><span class="is-sr-only">Page </span>166</a></li>
+        </ol>
+        <a class="ds-btn ds-btn-text" href="?page=2"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav class="ds-pagination" aria-label="Search results pages"&gt;
+  &lt;span class="ds-pagination-position"&gt;1–50 of 8,291 results&lt;/span&gt;
+  &lt;a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m15 18-6-6 6-6"/&gt;&lt;/svg&gt; &lt;span class="ds-pagination-label"&gt;Previous&lt;/span&gt;&lt;/a&gt;
+  &lt;ol class="ds-pagination-pages"&gt;
+    &lt;li&gt;&lt;a href="?page=1" aria-current="page"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=2"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=3"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;3&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=4"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;4&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=5"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;5&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;…&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=166"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;166&lt;/a&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+  &lt;a class="ds-btn ds-btn-text" href="?page=2"&gt;&lt;span class="ds-pagination-label"&gt;Next&lt;/span&gt; &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m9 18 6-6-6-6"/&gt;&lt;/svg&gt;&lt;/a&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-pagination</dt>
+            <dd>A <code>&lt;nav&gt;</code> with an <code>aria-label</code> saying which list it pages
+            through. Holds the position, Previous, the page numbers and Next, in that order.</dd>
+            <dt>.ds-pagination-position</dt>
+            <dd>Which items are on this page and how many there are in all, such as “1–50 of
+            8,291 results”.</dd>
+            <dt>.ds-pagination-pages</dt>
+            <dd>An <code>&lt;ol&gt;</code> of links, one for each page shown. The current page takes
+            <code>aria-current="page"</code>. Each link includes the word “Page” in
+            <code>.is-sr-only</code> text, so a screen reader says “Page 2” and not “2”. A gap in
+            the numbers is a list item holding an ellipsis.</dd>
+            <dt>a.ds-btn.ds-btn-text</dt>
+            <dd>Previous and Next are links, because each page has its own address. At either end
+            of the list the link has no <code>href</code> and takes
+            <code>aria-disabled="true"</code> and <code>.is-disabled</code>.</dd>
+            <dt>.ds-pagination-label</dt>
+            <dd>The words Previous and Next. On a narrow screen they are hidden and the arrows
+            remain. Screen readers still read the words.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <div class="ds-card">
+      <p class="ds-panel-label">A middle page</p>
+      <nav class="ds-pagination" aria-label="Search results pages">
+        <span class="ds-pagination-position">2,451–2,500 of 8,291 results</span>
+        <a class="ds-btn ds-btn-text" href="?page=49"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+        <ol class="ds-pagination-pages">
+          <li><a href="?page=1"><span class="is-sr-only">Page </span>1</a></li>
+          <li>…</li>
+          <li><a href="?page=49"><span class="is-sr-only">Page </span>49</a></li>
+          <li><a href="?page=50" aria-current="page"><span class="is-sr-only">Page </span>50</a></li>
+          <li><a href="?page=51"><span class="is-sr-only">Page </span>51</a></li>
+          <li>…</li>
+          <li><a href="?page=166"><span class="is-sr-only">Page </span>166</a></li>
+        </ol>
+        <a class="ds-btn ds-btn-text" href="?page=51"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav class="ds-pagination" aria-label="Search results pages"&gt;
+  &lt;span class="ds-pagination-position"&gt;2,451–2,500 of 8,291 results&lt;/span&gt;
+  &lt;a class="ds-btn ds-btn-text" href="?page=49"&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m15 18-6-6 6-6"/&gt;&lt;/svg&gt; &lt;span class="ds-pagination-label"&gt;Previous&lt;/span&gt;&lt;/a&gt;
+  &lt;ol class="ds-pagination-pages"&gt;
+    &lt;li&gt;&lt;a href="?page=1"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;…&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=49"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;49&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=50" aria-current="page"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;50&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=51"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;51&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;…&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=166"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;166&lt;/a&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+  &lt;a class="ds-btn ds-btn-text" href="?page=51"&gt;&lt;span class="ds-pagination-label"&gt;Next&lt;/span&gt; &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m9 18 6-6-6-6"/&gt;&lt;/svg&gt;&lt;/a&gt;
+&lt;/nav&gt;</code></pre>
+        </div>
+      </details>
+    </div>
+
+    <div class="ds-card">
+      <p class="ds-panel-label">Below a filter bar</p>
+      <form class="ds-filter-bar" method="get" action="pager.html#numbered-pages" aria-label="Filters">
+        <div class="ds-filter-bar-group">
+          <div class="ds-field">
+            <label class="ds-label" for="pg-type">Type</label>
+            <select class="ds-input" id="pg-type" name="type"><option>Any</option><option>New</option><option>Replacement</option></select>
+          </div>
+          <div class="ds-field">
+            <label class="ds-label" for="pg-status">Status</label>
+            <select class="ds-input" id="pg-status" name="status"><option>Any</option><option>On hold</option></select>
+          </div>
+        </div>
+        <fieldset class="ds-filter-bar-group ds-filter-bar-group--settings">
+          <legend class="is-sr-only">Settings</legend>
+          <div class="ds-field">
+            <label class="ds-label" for="pg-size">Results per page</label>
+            <select class="ds-input" id="pg-size" name="size"><option selected>25</option><option>50</option><option>100</option><option>200</option></select>
+          </div>
+        </fieldset>
+        <div class="ds-filter-bar-actions">
+          <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
+        </div>
+      </form>
+      <nav class="ds-pagination" aria-label="Submission pages">
+        <span class="ds-pagination-position">26–50 of 1,669 submissions</span>
+        <a class="ds-btn ds-btn-text" href="?page=1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+        <ol class="ds-pagination-pages">
+          <li><a href="?page=1"><span class="is-sr-only">Page </span>1</a></li>
+          <li><a href="?page=2" aria-current="page"><span class="is-sr-only">Page </span>2</a></li>
+          <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+          <li>…</li>
+          <li><a href="?page=67"><span class="is-sr-only">Page </span>67</a></li>
+        </ol>
+        <a class="ds-btn ds-btn-text" href="?page=3"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;form class="ds-filter-bar" method="get" action="pager.html#numbered-pages" aria-label="Filters"&gt;
+  &lt;div class="ds-filter-bar-group"&gt;
+    &lt;div class="ds-field"&gt;
+      &lt;label class="ds-label" for="pg-type"&gt;Type&lt;/label&gt;
+      &lt;select class="ds-input" id="pg-type" name="type"&gt;&lt;option&gt;Any&lt;/option&gt;&lt;option&gt;New&lt;/option&gt;&lt;option&gt;Replacement&lt;/option&gt;&lt;/select&gt;
+    &lt;/div&gt;
+    &lt;div class="ds-field"&gt;
+      &lt;label class="ds-label" for="pg-status"&gt;Status&lt;/label&gt;
+      &lt;select class="ds-input" id="pg-status" name="status"&gt;&lt;option&gt;Any&lt;/option&gt;&lt;option&gt;On hold&lt;/option&gt;&lt;/select&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;fieldset class="ds-filter-bar-group ds-filter-bar-group--settings"&gt;
+    &lt;legend class="is-sr-only"&gt;Settings&lt;/legend&gt;
+    &lt;div class="ds-field"&gt;
+      &lt;label class="ds-label" for="pg-size"&gt;Results per page&lt;/label&gt;
+      &lt;select class="ds-input" id="pg-size" name="size"&gt;&lt;option selected&gt;25&lt;/option&gt;&lt;option&gt;50&lt;/option&gt;&lt;option&gt;100&lt;/option&gt;&lt;option&gt;200&lt;/option&gt;&lt;/select&gt;
+    &lt;/div&gt;
+  &lt;/fieldset&gt;
+  &lt;div class="ds-filter-bar-actions"&gt;
+    &lt;button class="ds-btn ds-btn-primary" type="submit"&gt;Apply&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/form&gt;
+&lt;nav class="ds-pagination" aria-label="Submission pages"&gt;
+  &lt;span class="ds-pagination-position"&gt;26–50 of 1,669 submissions&lt;/span&gt;
+  &lt;a class="ds-btn ds-btn-text" href="?page=1"&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m15 18-6-6 6-6"/&gt;&lt;/svg&gt; &lt;span class="ds-pagination-label"&gt;Previous&lt;/span&gt;&lt;/a&gt;
+  &lt;ol class="ds-pagination-pages"&gt;
+    &lt;li&gt;&lt;a href="?page=1"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=2" aria-current="page"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=3"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;3&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;…&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=67"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;67&lt;/a&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+  &lt;a class="ds-btn ds-btn-text" href="?page=3"&gt;&lt;span class="ds-pagination-label"&gt;Next&lt;/span&gt; &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m9 18 6-6-6-6"/&gt;&lt;/svg&gt;&lt;/a&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-filter-bar</dt>
+            <dd>Filters for the list go in a filter bar above it, and results per page goes in its
+            settings. See <a href="tables.html#filter-bar">Filter bar</a>.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+    <div class="ds-card">
+      <p class="ds-panel-label">Above and below a list</p>
+      <nav class="ds-pagination ds-pagination--top" aria-label="Search results pages">
+        <span class="ds-pagination-position">1–50 of 8,291 results</span>
+        <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+        <ol class="ds-pagination-pages">
+          <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
+          <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
+          <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+          <li>…</li>
+          <li><a href="?page=166"><span class="is-sr-only">Page </span>166</a></li>
+        </ol>
+        <a class="ds-btn ds-btn-text" href="?page=2"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+      </nav>
+      <ol class="demo-list">
+        <li>The first result</li>
+        <li>The last result on this page</li>
+      </ol>
+      <nav class="ds-pagination ds-pagination--bottom" aria-label="Search results pages, below the list">
+        <span class="ds-pagination-position">1–50 of 8,291 results</span>
+        <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+        <ol class="ds-pagination-pages">
+          <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
+          <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
+          <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+          <li>…</li>
+          <li><a href="?page=166"><span class="is-sr-only">Page </span>166</a></li>
+        </ol>
+        <a class="ds-btn ds-btn-text" href="?page=2"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav class="ds-pagination ds-pagination--top" aria-label="Search results pages"&gt;
+  &lt;span class="ds-pagination-position"&gt;1–50 of 8,291 results&lt;/span&gt;
+  &lt;a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m15 18-6-6 6-6"/&gt;&lt;/svg&gt; &lt;span class="ds-pagination-label"&gt;Previous&lt;/span&gt;&lt;/a&gt;
+  &lt;ol class="ds-pagination-pages"&gt;
+    &lt;li&gt;&lt;a href="?page=1" aria-current="page"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=2"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=3"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;3&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;…&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=166"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;166&lt;/a&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+  &lt;a class="ds-btn ds-btn-text" href="?page=2"&gt;&lt;span class="ds-pagination-label"&gt;Next&lt;/span&gt; &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m9 18 6-6-6-6"/&gt;&lt;/svg&gt;&lt;/a&gt;
+&lt;/nav&gt;
+&lt;ol class="demo-list"&gt;
+  &lt;li&gt;The first result&lt;/li&gt;
+  &lt;li&gt;The last result on this page&lt;/li&gt;
+&lt;/ol&gt;
+&lt;nav class="ds-pagination ds-pagination--bottom" aria-label="Search results pages, below the list"&gt;
+  &lt;span class="ds-pagination-position"&gt;1–50 of 8,291 results&lt;/span&gt;
+  &lt;a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m15 18-6-6 6-6"/&gt;&lt;/svg&gt; &lt;span class="ds-pagination-label"&gt;Previous&lt;/span&gt;&lt;/a&gt;
+  &lt;ol class="ds-pagination-pages"&gt;
+    &lt;li&gt;&lt;a href="?page=1" aria-current="page"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=2"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=3"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;3&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;…&lt;/li&gt;
+    &lt;li&gt;&lt;a href="?page=166"&gt;&lt;span class="is-sr-only"&gt;Page &lt;/span&gt;166&lt;/a&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+  &lt;a class="ds-btn ds-btn-text" href="?page=2"&gt;&lt;span class="ds-pagination-label"&gt;Next&lt;/span&gt; &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m9 18 6-6-6-6"/&gt;&lt;/svg&gt;&lt;/a&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-pagination--top</dt>
+            <dd>A pager above a list. A light line below it separates it from the list.</dd>
+            <dt>.ds-pagination--bottom</dt>
+            <dd>A pager below a list. A light line above it separates it from the list.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <div class="ds-card">
+      <p class="ds-panel-label">One page of results</p>
+      <nav class="ds-pagination ds-pagination--top" aria-label="Search results pages">
+        <span class="ds-pagination-position">3 results</span>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav class="ds-pagination ds-pagination--top" aria-label="Search results pages"&gt;
+  &lt;span class="ds-pagination-position"&gt;3 results&lt;/span&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-pagination-position</dt>
+            <dd>On its own when the whole list fits on one page: the count still shows, with its
+            line, and there are no controls and no pager below the list.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <ul class="notes">
+      <li><strong>A line separates the pager from the list.</strong> Leave as much space between
+      the line and the list as between the list's items.</li>
+      <li><strong>A message about the whole list goes above the pager</strong>, such as a limit on
+      how many results can be reached.</li>
+      <li><strong>Results per page and order are not in the pager.</strong> They go with the search
+      or the filters that produced the list.</li>
+      <li><strong>Repeat numbered pages below a long list.</strong> A reader at the end of the list
+      can go on without scrolling back up. The developer decides when a list is long.</li>
+    </ul>
+  </section>
+
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Name the set.</strong> The <code>&lt;nav&gt;</code> takes an <code>aria-label</code>
+      that says what it steps through, such as “Queue navigation”.</li>
+      <li><strong>Announce the position.</strong> The counter is a polite live region, so each step is
+      announced without moving focus.</li>
+      <li><strong>Disable the ends, do not remove them.</strong> Previous on the first item and Next on
+      the last stay in place, disabled.</li>
+      <li><strong>Mark the current page.</strong> In numbered pages the link to the current page
+      takes <code>aria-current="page"</code>.</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+  // Nav dropdowns: close on outside click and Esc (enhancement only —
+  // the <details> menus work without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      // Return focus to the trigger, but only if it was inside the menu we are
+      // closing — otherwise Escape anywhere on the page would steal focus.
+      // Without this a keyboard user is left on a link that no longer exists.
+      var wasInside = d.contains(document.activeElement);
+      d.removeAttribute('open');
+      if (wasInside) d.querySelector('summary').focus();
+    });
+  });
+</script>
+<script src="header.js" defer></script>
+<script src="copy-code.js" defer></script>
+<script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
+</body>
+</html>

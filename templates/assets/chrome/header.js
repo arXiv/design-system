@@ -59,6 +59,15 @@
 
   if (ownsNav) {
     header.classList.add("is-collapsible");
+    // The stylesheet folds the nav under .is-nav-collapsed (docs/header.js sets it by fit);
+    // this header folds at the phone breakpoint.
+    var phone = window.matchMedia("(max-width: 599px)");
+    var fold = function () {
+      header.classList.toggle("is-nav-collapsed", phone.matches);
+      if (!phone.matches) setNav(false);
+    };
+    fold();
+    phone.addEventListener("change", fold);
     navToggle.addEventListener("click", function (e) {
       e.stopPropagation();
       setNav(!nav.classList.contains("is-open"));

@@ -9,13 +9,13 @@
 
 ### Primary colors — browns & blues
 
-These are arXiv's core identity colors post-spinout. They carry the weight of the brand on both internal and public platforms.
+These are arXiv's core identity colors post-spinout. They hold the weight of the brand on both internal and public platforms.
 
 | Name | Hex | Role |
 |---|---|---|
 | **Repository Brown** | `#1c1a17` | Body text, dark backgrounds, primary headers |
 | **Library Grey** | `#6b6459` | Secondary text, labels, muted interactive elements (5.83:1 on white) |
-| **UI Boundary Grey** | `#89837a` | Interactive borders, tracks, arrows — WCAG 3:1 compliant (3.61:1 on white) |
+| **UI Boundary Grey** | `#89837a` | Interactive borders, switch edges, arrows — WCAG 3:1 compliant (3.61:1 on white) |
 | **Disabled Grey** | `#aeaaa4` | Disabled states, exempt from WCAG contrast requirements |
 | **Link Blue** | `#1565c0` | All interactive links, light mode (5.74:1 on white) |
 | **Link Hover** | `#1050a0` | Link hover state (7.83:1 on white) |
@@ -80,9 +80,9 @@ Barely perceptible tints for creating section depth without hard borders.
 
 | Name | Hex | Use |
 |---|---|---|
-| **Warm Wash** | `#f8f7f7` | Warm background — footer, metadata sections |
+| **Warm Wash** | `#f8f7f7` | Hover fill on a white surface |
 | **Grey Hover** | `#f0f0ee` | Table headers, hover fills, Related section background |
-| **Border Light** | `#dad8d6` | Component hairline borders — inputs, toggle tracks, card edges. Decorative only (below 3:1); not for sole interactive boundaries. Promoted from the mockups 2026-06-11. |
+| **Border Light** | `#dad8d6` | Component hairline borders — inputs, card edges; the off fill of a switch. Decorative only (below 3:1); not for sole interactive boundaries. Promoted from the mockups 2026-06-11. |
 
 ---
 
@@ -94,7 +94,7 @@ Barely perceptible tints for creating section depth without hard borders.
 |---|---|---|
 | Primary button | Access Lime `#c4d82e` | `--ds-accent` |
 | Secondary button | Lime tint `#f0f9e8` border `#9cb522` | `--ds-accent-wash`, `--ds-accent-border` |
-| Page background | Warm Wash `#f8f7f7` | — |
+| Page background | White `#ffffff` | — |
 | Header | (varies by tool) | — |
 | Text | Repository Brown `#1c1a17` | `--ds-text` |
 | Secondary text | Library Grey `#6b6459` | `--ds-text-muted` |
@@ -120,13 +120,13 @@ Barely perceptible tints for creating section depth without hard borders.
 | **Version link (other)** | Link Blue `#1565c0`, underlined | Navigates to that version. (Supersedes the earlier filled "version pills" — see `version-display.html`.) |
 | **Version warning banner** | Light amber `#fff8e1` border `#e8b800` | — |
 | **Cite section borders** | `#dad8d6` | Bordered columns within the cite section. |
-| **Labs toggles (on)** | Link Blue `#1565c0` | Indicates active state. |
+| **Labs switches (on)** | Open Blue `#a5d6fe` | Indicates active state; the UI Boundary Grey edge provides the contrast. |
 
 ### When to use accent colors on public pages
 
 **Access Lime** `#c4d82e`:
 - **Not used on public pages.** Access Lime is the internal-tools signal, and putting it on a public page crosses the one line the two accent colors exist to draw. The public stylesheet has no lime token, deliberately.
-- The design system's own documentation pages carry a lime header rule; those are internal reference material, not public arXiv pages.
+- The design system's own documentation pages have a lime header rule; those are internal reference material, not public arXiv pages.
 - *Removed 2026-08-11:* this entry used to offer lime for a public "category marker" or "new" badge. It contradicted both the stylesheet and the never-cross rule (Shamsi: "that is crossing the internal/public line").
 
 **Smileybones Yellow** `#ffe000` — token `--ds-smileybones-yellow`:
@@ -149,6 +149,20 @@ Barely perceptible tints for creating section depth without hard borders.
 
 ---
 
+## The two tints
+
+A component fill uses one of these or a status colour. A new fill colour is discussed with the design team first.
+
+| Tint | Token | Light | Dark |
+|---|---|---|---|
+| **Warm** | `--ds-tint-warm` | Card Grey `#f0f0ee` | `#221f1b`, between the page and a card |
+| **Accent**, public | `--ds-tint-accent` | Tint Light `#edf7ff` | `#1e3a5f` |
+| **Accent**, inside `.ds-internal` | `--ds-tint-accent` | Access Lime wash `#f0f9e8` | `#28380a` |
+
+Warm: the secondary page zone, data cards, the table header row, row headers, striped rows, notes, tags. Accent: selected table rows.
+
+---
+
 ## Which tint for which job
 
 *(Added 2026-06-17. Rendered on the colors page: `colors.html#uses`.)*
@@ -157,15 +171,16 @@ The tints sorted by the job they do. Reach for the named token; if a job is not 
 
 | The job | Reach for | Where it shows up |
 |---|---|---|
-| Page / section background, warm | **Warm Wash** `--ds-canvas` | Default subtle ground — footer, metadata bands, internal page background |
-| Secondary content band | **Card Grey** `--ds-surface-muted` | Related band, reader header — one step down from the page, no hard border |
+| Page ground | **White** `--ds-canvas` | The default ground of every page, and the footer |
+| Hover fill on a white surface | **Warm Wash** `--ds-surface-hover` | A table row or a TOC entry under the pointer |
+| Secondary content band | **Card Grey** `--ds-tint-warm` | Related band, reader header — one step down from the page, no hard border |
 | Card surface / hover fill | **Card Grey** `--ds-surface-muted` | Card fills and hover fills |
 | Active / pressed fill, deepest warm band | **Border Light** `--ds-border-muted` `#dad8d6` | Footer edge, pressed states, pill borders. Body-size grey/links miss AA here — use Repository Brown or Link Hover |
-| Decorative hairline | **Border Light** `--ds-border` | Input / card / track edges. Below 3:1 — never the sole boundary of a control |
+| Decorative hairline | **Border Light** `--ds-border` | Input / card edges. Below 3:1 — never the sole boundary of a control |
 | arXiv chrome floating over paper | **Tint Light** + **Tint Border** | Popovers, TOC dropdown — the "light blue = arXiv speaking, not the paper" rule (G4) |
 | Inline active anchor · read-aloud highlight · panel hover | **Active Wash** `--ds-accent-wash` | Deepest arXiv-chrome blue that still holds AA for normal-size text |
 | Open Blue hover step | **Open Blue Bright** `--ds-accent-hover` `#c0e2fe` | Hover state for Open Blue primary fills |
-| Public primary action fill | **Open Blue** `--ds-accent` | The one brand fill that carries Repository Brown text at AA |
+| Public primary action fill | **Open Blue** `--ds-accent` | The one brand fill that takes Repository Brown text at AA |
 | Status surface | the four status tints | See "Status & alert colors" above — each pairs with an icon + leading word |
 
 **Ready-to-use pairings** (the contrast matrix read as instructions):
@@ -205,7 +220,7 @@ Every tint in the system belongs to one of two families: the **warm tints** (Lib
 
 ## Decisions made
 
-- **Browns and blues are the primary palette.** Post-spinout, arXiv's visual identity is built on Repository Brown, Library Grey, and the blue family. These carry the brand.
+- **Browns and blues are the primary palette.** Post-spinout, arXiv's visual identity is built on Repository Brown, Library Grey, and the blue family. These define the brand.
 
 - **Access Lime and Smileybones Yellow are accent colors.** Both are high-energy "pop" colors used sparingly. Both fail text contrast on white, so they are restricted to fills, borders, and graphic elements.
 

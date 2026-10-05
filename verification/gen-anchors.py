@@ -2,7 +2,8 @@
 """
 Section anchors — generated, never hand-maintained.
 
-Every `.section-title` gets an `id` derived from its own text, written into
+Every section heading (the h2 or h3 that opens a plain <section>) gets an `id`
+derived from its own text, written into
 the HTML rather than added at runtime: a real id works with JavaScript off,
 works for an incoming link from another page, and is there when the browser
 resolves the fragment on first load — none of which a script running at
@@ -30,7 +31,9 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 DOCS = REPO / "docs"
-HEADING = re.compile(r"<(h[23])([^>]*)\sclass=\"section-title\"([^>]*)>(.*?)</\1>", re.S)
+# A section heading is the h2 or h3 that opens a plain <section>. Component
+# sections (a data card, for example) always have a class, so they never match.
+HEADING = re.compile(r"(<section>\s*)<(h[23])([^>]*)>(.*?)</\2>", re.S)
 
 
 def slug(text):
@@ -45,8 +48,8 @@ def process(path, write):
     text = path.read_text(encoding="utf-8")
     seen, problems, out, last = {}, [], [], 0
     for m in HEADING.finditer(text):
-        tag, before, after, inner = m.group(1), m.group(2), m.group(3), m.group(4)
-        existing = re.search(r'\bid="([^"]+)"', before + after)
+        opening, tag, attrs, inner = m.group(1), m.group(2), m.group(3), m.group(4)
+        existing = re.search(r'\bid="([^"]+)"', attrs)
         want = slug(inner)
         if not want:
             continue
@@ -57,7 +60,7 @@ def process(path, write):
             # Hand-written ids are kept: something links to them already.
             continue
         out.append(text[last:m.start()])
-        out.append(f'<{tag}{before} class="section-title"{after} id="{want}">{inner}</{tag}>')
+        out.append(f'{opening}<{tag}{attrs} id="{want}">{inner}</{tag}>')
         last = m.end()
         problems.append(want)
     out.append(text[last:])
@@ -77,10 +80,11 @@ def contents(path, write):
         return False
     indent = "            "
     items = []
-    for h in re.finditer(r'<h[23]([^>]*\sclass="section-title"[^>]*)>(.*?)</h[23]>', text, re.S):
-        hid = re.search(r'\bid="([^"]+)"', h.group(1))
+    live = re.sub(r"<!--.*?-->", "", text, flags=re.S)  # a commented-out section is not in the contents
+    for h in HEADING.finditer(live):
+        hid = re.search(r'\bid="([^"]+)"', h.group(3))
         if hid:
-            label = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", h.group(2))).strip()
+            label = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", h.group(4))).strip()
             items.append(f'{indent}<li><a href="#{hid.group(1)}">{label}</a></li>')
     want = "\n" + "\n".join(items) + "\n" + indent[:-2]
     if m.group(2) == want:

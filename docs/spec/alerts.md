@@ -6,7 +6,7 @@ stylesheet: design-system.css
 components:
   - id: the-four-states
     title: "The four alert states"
-    summary: "arXiv's design system contains four alerts that align with user expectations and established UI practices. Each state conveys a tone through color: **Success** uses green to signal that all is well, **info** is a calm blue, **warning** is an attention-grabbing yellow, while **error** is a powerful red and is reserved for blocking or failed states. Color sets the tone; the icon and the title carry the meaning, so a reader who cannot see the color still knows what kind of message it is."
+    summary: "arXiv's design system contains four alerts that align with user expectations and established UI practices. Each state conveys a tone through color: **Success** uses green to signal that all is well, **info** is a calm blue, **warning** is an attention-grabbing yellow, while **error** is a powerful red and is reserved for blocking or failed states. Color sets the tone; the icon and the title convey the meaning, so a reader who cannot see the color still knows what kind of message it is."
     classes:
       - name: ".ds-alert"
         does: "The container. Always used with one of the four state classes, never alone. Takes `role=\"status\"` for success and info, `role=\"alert\"` for warning and error."
@@ -17,7 +17,7 @@ components:
       - name: ".ds-alert-content"
         does: "Holds the text. One or more `<p>` elements; a link inside it takes the alert’s own colour."
       - name: ".ds-alert-title"
-        does: "The leading line, in bold. It names the situation, and it is what carries the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert."
+        does: "The leading line, in bold. It names the situation, and it is what conveys the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert."
     rules:
       - "Preferences saved: You will get a weekly digest of new papers in your selected categories."
       - "Submission limits added: Due to increased volume, arXiv is limiting submissions to 2 per month."
@@ -51,8 +51,8 @@ rules:
   - "**arXiv’s voice:** Plain, jargon-free, contraction-free, and we never blame the user. “The file failed to render” is better than “You uploaded a bad file”."
   - "**One row when possible:** Shorter is better. Alerts should not crowd out the content they are supporting."
   - "**Choose the role by state.** Put `role=\"status\"` on a success or info alert: it is polite, and a screen reader announces it when idle. Put `role=\"alert\"` on a warning or error alert: it is assertive, and a screen reader announces it immediately. Do not use `role=\"alert\"` for anything that can wait."
-  - "**Say the state in words.** The icon is `aria-hidden=\"true\"` and the colour is invisible to a screen reader, so the title or the first words of the message must carry the meaning: “Could not load the PDF”, not “Oops”."
-  - "**Copy the icon whole.** Each state has its own icon shape, and the shape is part of the meaning. Copy the `<svg>` element with every attribute it carries: the “i” and “!” dots are drawn as tiny paths that only render with `stroke-linecap=\"round\"`, and without it the icon is an empty outline."
+  - "**Say the state in words.** The icon is `aria-hidden=\"true\"` and the colour is invisible to a screen reader, so the title or the first words of the message must convey the meaning: “Could not load the PDF”, not “Oops”."
+  - "**Copy the icon whole.** Each state has its own icon shape, and the shape is part of the meaning. Copy the `<svg>` element with every attribute it has: the “i” and “!” dots are drawn as tiny paths that only render with `stroke-linecap=\"round\"`, and without it the icon is an empty outline."
   - "**Name the dismiss control.** The `.ds-close` button needs a `<span class=\"is-sr-only\">` that says what it dismisses, such as “Dismiss this message”. Do not use `title` or `aria-label` for this, because page translation tools skip attributes."
   - "**Put focus somewhere after a dismiss.** Removing the alert removes the focused button with it. Move focus to the element just before where the alert was, so a keyboard user is not dropped back to the top of the page."
 ---
@@ -66,7 +66,7 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 ## The four alert states
 
-arXiv's design system contains four alerts that align with user expectations and established UI practices. Each state conveys a tone through color: **Success** uses green to signal that all is well, **info** is a calm blue, **warning** is an attention-grabbing yellow, while **error** is a powerful red and is reserved for blocking or failed states. Color sets the tone; the icon and the title carry the meaning, so a reader who cannot see the color still knows what kind of message it is.
+arXiv's design system contains four alerts that align with user expectations and established UI practices. Each state conveys a tone through color: **Success** uses green to signal that all is well, **info** is a calm blue, **warning** is an attention-grabbing yellow, while **error** is a powerful red and is reserved for blocking or failed states. Color sets the tone; the icon and the title convey the meaning, so a reader who cannot see the color still knows what kind of message it is.
 
 ```html
 <div class="ds-alert ds-alert--warning" role="alert">
@@ -85,7 +85,7 @@ arXiv's design system contains four alerts that align with user expectations and
 - `.ds-alert--success, -info, -warning, -error` — The state: `.ds-alert--success`, `.ds-alert--warning`, or `.ds-alert--error`. Sets the background, border, and text colour from the status tokens. The same four classes and the same colours on both surfaces.
 - `.ds-alert-icon` — The icon, an inline SVG with `aria-hidden="true"`. Each state has its own shape: a check, an “i”, a triangle, an “x”. Copy the icon element whole, attributes included: Lucide draws each “!” or “i” dot as a 0.01-unit path that only renders with `stroke-linecap="round"`. Without these attributes it renders as an empty hairline outline.
 - `.ds-alert-content` — Holds the text. One or more `<p>` elements; a link inside it takes the alert’s own colour.
-- `.ds-alert-title` — The leading line, in bold. It names the situation, and it is what carries the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert.
+- `.ds-alert-title` — The leading line, in bold. It names the situation, and it is what conveys the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert.
 
 **Rule.** Preferences saved: You will get a weekly digest of new papers in your selected categories.
 
@@ -153,7 +153,7 @@ The dismiss control, fully documented on [Buttons](buttons.html#the-close-contro
 - **arXiv’s voice:** Plain, jargon-free, contraction-free, and we never blame the user. “The file failed to render” is better than “You uploaded a bad file”.
 - **One row when possible:** Shorter is better. Alerts should not crowd out the content they are supporting.
 - **Choose the role by state.** Put `role="status"` on a success or info alert: it is polite, and a screen reader announces it when idle. Put `role="alert"` on a warning or error alert: it is assertive, and a screen reader announces it immediately. Do not use `role="alert"` for anything that can wait.
-- **Say the state in words.** The icon is `aria-hidden="true"` and the colour is invisible to a screen reader, so the title or the first words of the message must carry the meaning: “Could not load the PDF”, not “Oops”.
-- **Copy the icon whole.** Each state has its own icon shape, and the shape is part of the meaning. Copy the `<svg>` element with every attribute it carries: the “i” and “!” dots are drawn as tiny paths that only render with `stroke-linecap="round"`, and without it the icon is an empty outline.
+- **Say the state in words.** The icon is `aria-hidden="true"` and the colour is invisible to a screen reader, so the title or the first words of the message must convey the meaning: “Could not load the PDF”, not “Oops”.
+- **Copy the icon whole.** Each state has its own icon shape, and the shape is part of the meaning. Copy the `<svg>` element with every attribute it has: the “i” and “!” dots are drawn as tiny paths that only render with `stroke-linecap="round"`, and without it the icon is an empty outline.
 - **Name the dismiss control.** The `.ds-close` button needs a `<span class="is-sr-only">` that says what it dismisses, such as “Dismiss this message”. Do not use `title` or `aria-label` for this, because page translation tools skip attributes.
 - **Put focus somewhere after a dismiss.** Removing the alert removes the focused button with it. Move focus to the element just before where the alert was, so a keyboard user is not dropped back to the top of the page.
