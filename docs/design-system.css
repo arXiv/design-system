@@ -1041,11 +1041,18 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   font-variant-numeric: tabular-nums;
 }
 .ds-pagination .ds-btn { min-width: 0; }
-/* A pager above a list has a light line below it; below a list, above it.
-   The page leaves as much space between the line and the list as between
-   the list's items. */
-.ds-pagination--top { padding-bottom: var(--ds-space-3); border-bottom: 1px solid var(--ds-border); }
-.ds-pagination--bottom { padding-top: var(--ds-space-3); border-top: 1px solid var(--ds-border); }
+/* A pager above or below a list sits in a tinted bar, so the two bars
+   bookend the list. Inside a bar the current page, and a page number under
+   the pointer, take the page ground: the usual fills are too close to the
+   bar's own tint. */
+.ds-pagination--top,
+.ds-pagination--bottom {
+  padding: var(--ds-space-2) var(--ds-space-4);
+  background: var(--ds-surface-muted);
+  border-radius: 6px;
+}
+:is(.ds-pagination--top, .ds-pagination--bottom) .ds-pagination-pages a[aria-current="page"],
+:is(.ds-pagination--top, .ds-pagination--bottom) .ds-pagination-pages a:hover { background: var(--ds-canvas); }
 .ds-pagination-pages {
   display: flex;
   flex: 0 1 auto;
