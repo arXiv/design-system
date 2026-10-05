@@ -1,9 +1,10 @@
 # Handoff — 2026-10-02
 
-Written for the next session. Everything below is committed and pushed to the branch
-`docs-review-2026-09-28`, which is open as a pull request into `master` (master is PR-only).
-Commit to that branch until Shamsi says otherwise. Fetch before every push: others push to it,
-and it was rebased onto master once (after Deyan's brand-templates PR #6).
+Written for the next session. PR #7 (`docs-review-2026-09-28`) merged into `master` on
+2026-10-05. Shamsi wants to commit to `master` directly, but GitHub rulesets still require a pull
+request and status checks there, and she is asking the team to change them. Until then, work goes
+on the branch `search-results-2026-10` and reaches `master` through a pull request she opens.
+Fetch before every push: others push too.
 
 ## Where the work is
 
