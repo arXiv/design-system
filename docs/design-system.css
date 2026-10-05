@@ -209,6 +209,7 @@
   --ds-width-page:  850px;
   --ds-width-wide:  1080px;   /* dense internal tools: .ds-container--wide */
   --ds-gutter:  var(--ds-space-6);
+  --ds-marginalia-width: 12rem;
 }
 
 
@@ -1822,7 +1823,9 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 @media (forced-colors: active) { .ds-page mark { background: Mark; color: MarkText; } }
 
 /* A PAPER  (.ds-paper-list, .ds-paper, .ds-paper-when, .ds-paper-identity,
-   .ds-paper-versions, .ds-paper-files, .ds-paper-cite, .ds-paper-capabilities) — papers.html
+   .ds-paper-versions, .ds-paper-files, .ds-paper-cite, .ds-paper-capabilities,
+   .ds-paper-element, .ds-paper-sidenote, .ds-paper-permalink, .ds-paper-bar-logo,
+   .ds-paper-tools) — papers.html
    Only what is particular to a paper has a paper class; the rest is built
    from .ds-link-list, .ds-date-row, .ds-data-list and .ds-tag-list. In a
    list: tight inside a paper, four times as far between papers. */
@@ -1876,6 +1879,76 @@ html:not(.js) .ds-paper-cite-tools { display: none; }
 .ds-paper-capabilities > li { display: flex; align-items: flex-start; gap: var(--ds-space-2); }
 .ds-paper-capabilities > li + li { margin-top: var(--ds-space-2); }
 .ds-paper-capabilities svg { flex: none; width: 1.1em; height: 1.1em; margin-top: 0.15em; color: var(--ds-link); }
+/* A display equation, figure or reference with actions: a hairline and the
+   element pill on its bottom edge, on hover, on focus inside, or .is-active
+   (set by a tap). */
+/* The bottom padding keeps the content clear of the pill. */
+.ds-paper-element { position: relative; margin: var(--ds-space-block) 0; padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-4); border: 1px solid transparent; border-radius: 6px; }
+.ds-paper-element:is(:hover, :focus-within, .is-active) { border-color: var(--ds-border); }
+.ds-paper-element:is(:hover, :focus-within, .is-active) > .ds-element-pill { opacity: 1; pointer-events: auto; }
+.ds-paper-element > .ds-element-pill { bottom: 0; left: 50%; translate: -50% 50%; }
+.ds-paper-element img { max-width: 100%; height: auto; }
+@media (hover: none) {
+  .ds-paper-element:hover:not(.is-active, :focus-within) { border-color: transparent; }
+  .ds-paper-element:hover:not(.is-active, :focus-within) > .ds-element-pill { opacity: 0; pointer-events: none; }
+}
+/* A copy of a footnote in the right margin; the script sets top. */
+.ds-paper-sidenote { position: absolute; left: calc(100% + var(--ds-space-4)); width: var(--ds-marginalia-width); }
+.ds-paper-sidenote.is-active { color: var(--ds-text); background: var(--ds-accent-wash); }
+@media (max-width: 82.125rem) { .ds-paper-sidenote { display: none; } }
+/* The Permalink control in a paper's section headings. */
+.ds-paper-permalink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-gap-glyph);
+  min-height: 24px;
+  margin-inline-start: var(--ds-space-tight);
+  padding: 0 0.7em;
+  vertical-align: middle;
+  font-family: var(--ds-font-condensed);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ds-text-muted);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-muted);
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+.ds-paper-permalink svg { width: 1.05em; height: 1.05em; flex: none; }
+:is(h2, h3, h4):is(:hover, .is-active) > .ds-paper-permalink,
+.ds-paper-permalink:focus-visible { opacity: 1; }
+.ds-paper-permalink:hover { color: var(--ds-link); }
+.ds-paper-permalink:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .ds-paper-permalink { transition: none; } }
+/* A paper's contents bar: the logo in the start slot, the other formats in the end slot. */
+.ds-paper-bar-logo { grid-column: 1; justify-self: start; display: inline-flex; color: var(--ds-text-muted); }
+.ds-paper-bar-logo svg { height: 1.5rem; width: auto; }
+.ds-paper-tools {
+  grid-column: 3;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-tight);
+  font-family: var(--ds-font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.ds-paper-tools a { display: inline-flex; align-items: center; gap: var(--ds-gap-glyph); min-height: 24px; color: var(--ds-text); text-decoration: none; }
+.ds-paper-tools a:hover { color: var(--ds-link); text-decoration: underline; }
+.ds-paper-tools svg { width: 1.25em; height: 1.25em; flex: none; color: var(--ds-text-muted); }
+/* Narrow, the format links take a second row and keep their names. */
+@media (max-width: 40rem) {
+  .ds-toc-bar-inner:has(> .ds-paper-tools) { grid-template-columns: auto 1fr; row-gap: var(--ds-space-1); }
+  .ds-toc-bar-inner > .ds-paper-tools { grid-column: 1 / -1; grid-row: 2; justify-self: start; flex-wrap: wrap; }
+}
+@media print {
+  .ds-paper-permalink, .ds-element-pill, .ds-paper-tools, .ds-paper-sidenote { display: none; }
+  .ds-paper-identity { font-size: 10pt; }
+  .ds-paper-element, .ds-page :is(figure, table) { break-inside: avoid; }
+  .ds-page :is(h2, h3, h4) { break-after: avoid; }
+}
 
 /* TAG LIST  (.ds-tag-list) — tags.html
    A <ul> of tags that wraps. */
@@ -2292,10 +2365,10 @@ html:has(.ds-modal[open]) {
   border: 1px solid var(--ds-border-muted);
   border-radius: 999px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  /* Hidden by opacity only, so its buttons stay in the tab order. */
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.18s ease, visibility 0s linear 0.18s;
+  transition: opacity 0.18s ease;
   z-index: 2;
 }
 /* The pill's own actions. It carries no class of its own on purpose — the pill
@@ -2306,13 +2379,30 @@ html:has(.ds-modal[open]) {
 .ds-element-pill > a {
   display: inline-flex;
   align-items: center;
+  gap: 5px;
   min-height: 24px;
+  margin-block: -5px;
+  padding: 0 var(--ds-space-1);
+  font-family: var(--ds-font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ds-text-muted);
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
 }
-.ds-element-pill.is-revealed {
+.ds-element-pill > :is(button, a):hover { color: var(--ds-link); background: var(--ds-accent-wash); }
+.ds-element-pill > :is(button, a):focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
+.ds-element-pill > .is-cta { color: var(--ds-link); font-weight: 600; }
+.ds-element-pill svg { width: 1em; height: 1em; flex: none; }
+.ds-element-pill.is-revealed,
+.ds-element-pill:focus-within {
   opacity: 1;
-  visibility: visible;
   pointer-events: auto;
-  transition: opacity 0.18s ease, visibility 0s linear 0s;
 }
 /* After .is-revealed so the reduce override wins the cascade for both states */
 @media (prefers-reduced-motion: reduce) {
@@ -2330,7 +2420,6 @@ html:has(.ds-modal[open]) {
    The wide breakpoint is the page width plus a note and its gaps each
    side: 850 + 2 × (24 + 16 + 192) = 1314px. */
 .ds-marginalia {
-  --ds-marginalia-width: 12rem;
   position: absolute;
   top: var(--ds-space-3);
   right: var(--ds-space-3);
