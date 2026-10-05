@@ -1821,21 +1821,18 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 }
 @media (forced-colors: active) { .ds-page mark { background: Mark; color: MarkText; } }
 
-/* A PAPER IN A LIST  (.ds-paper-list, .ds-paper) — papers.html
-   Search results and listings. The order is the paper metadata hierarchy:
-   title, dates and formats, authors, abstract, metadata, categories. Tight
-   inside a paper, four times as far between papers. */
+/* A PAPER  (.ds-paper-list, .ds-paper, .ds-paper-when, .ds-paper-identity,
+   .ds-paper-versions) — papers.html
+   Only what is particular to a paper has a paper class; the rest is built
+   from .ds-link-list, .ds-date-row, .ds-data-list and .ds-tag-list. In a
+   list: tight inside a paper, four times as far between papers. */
 .ds-paper-list { list-style: none; margin: 0; padding: 0; }
 .ds-paper-list > .ds-paper + .ds-paper { margin-top: var(--ds-space-8); }
 .ds-paper > * { margin: 0; }
 .ds-paper > * + * { margin-top: var(--ds-space-2); }
-.ds-paper > .ds-paper-title {
-  margin: 0;
-  font-size: 1.125rem;
-  line-height: 1.35;
-}
-.ds-paper-title a { text-decoration: none; }
-.ds-paper-title a:hover { text-decoration: underline; }
+.ds-paper > :is(h2, h3, h4):first-child { margin: 0; font-size: 1.125rem; line-height: 1.35; }
+.ds-paper > :is(h2, h3, h4):first-child a { text-decoration: none; }
+.ds-paper > :is(h2, h3, h4):first-child a:hover { text-decoration: underline; }
 .ds-paper > .ds-paper-when {
   display: flex;
   flex-wrap: wrap;
@@ -1846,22 +1843,40 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 /* The format links come first in the markup, so a screen reader reaches them
    straight after the title; the dates are shown first. */
 .ds-paper-when > .ds-date-row { margin: 0; order: -1; }
-.ds-paper-formats { display: inline-flex; flex-wrap: wrap; gap: var(--ds-space-3); font-size: 0.8125rem; font-weight: 600; }
-.ds-paper-authors { font-size: 0.875rem; }
-.ds-paper-abstract { font-size: 0.9375rem; line-height: 1.55; }
-.ds-paper-meta { font-size: 0.8125rem; color: var(--ds-text-muted); }
-.ds-paper-meta > div { display: flex; gap: var(--ds-space-2); }
-.ds-paper-meta > div + div { margin-top: 2px; }
-.ds-paper-meta dt { flex: none; font-weight: 600; color: var(--ds-text); }
-.ds-paper-meta dd { margin: 0; }
-.ds-paper > .ds-paper-categories {
+.ds-paper-when > .ds-link-list { display: inline-flex; flex-wrap: wrap; gap: var(--ds-space-3); font-size: 0.8125rem; font-weight: 600; }
+.ds-paper > p.ds-link-list { font-size: 0.875rem; }
+.ds-paper > .ds-tag-list { margin-top: var(--ds-space-1); }
+/* The identity line above a paper's title: identifier, primary category, DOI, licence. */
+.ds-paper-identity {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ds-space-2);
-  margin-top: var(--ds-space-1);
-  padding: 0;
-  list-style: none;
+  align-items: baseline;
+  gap: var(--ds-space-1) var(--ds-space-4);
+  margin: 0 0 var(--ds-space-2);
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
 }
+/* A paper's version history, newest first; the version being viewed is marked. */
+.ds-paper-versions { list-style: none; margin: 0; padding: 0; }
+.ds-paper-versions > li { padding-inline-start: var(--ds-space-3); border-inline-start: 2px solid var(--ds-border); }
+.ds-paper-versions > li[aria-current] { border-inline-start-color: var(--ds-accent-strong); }
+.ds-paper-versions > li + li { margin-top: var(--ds-space-3); }
+.ds-paper-versions > li > * { margin: 0; }
+.ds-paper-versions > li > p:not(.ds-date-row) { margin-top: 2px; font-size: 0.8125rem; }
+
+/* TAG LIST  (.ds-tag-list) — tags.html
+   A <ul> of tags that wraps. */
+.ds-tag-list { display: flex; flex-wrap: wrap; gap: var(--ds-space-2); margin: 0; padding: 0; list-style: none; }
+
+/* DATA LIST  (.ds-data-list) — cards.html
+   A few short label and value pairs, each label beside its value: a <dl>,
+   one <div> per pair. Inside an accordion a plain <dl> already lays out
+   pairs (progressive-disclosure.html). */
+.ds-data-list { margin: 0; font-size: 0.8125rem; color: var(--ds-text-muted); }
+.ds-data-list > div { display: flex; gap: var(--ds-space-2); }
+.ds-data-list > div + div { margin-top: 2px; }
+.ds-data-list dt { flex: none; font-weight: 600; color: var(--ds-text); }
+.ds-data-list dd { margin: 0; overflow-wrap: anywhere; }
 
 /* VERSION DISPLAY  (.ds-date-row, .ds-version) — papers.html#paper-versions */
 .ds-date-row {
