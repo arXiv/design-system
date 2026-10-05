@@ -1,6 +1,6 @@
 # What the HTML paper mockup asks of the design system
 
-Audit of `mockups/public/html-phase1.html` against `docs/design-system.css`,
+Audit of `whiteboard/mockups/public/html-phase1.html` against `docs/design-system.css`,
 2026-09-10. Item 20 in the v1 plan.
 
 Shamsi asked for this to be read **both ways**: where the page fails to use the

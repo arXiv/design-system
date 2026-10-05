@@ -113,22 +113,6 @@
 .ref .token-table { max-width: 100%; }
 .ref .token-table + dl { margin-top: var(--ds-space-3); }
 .token-table { margin-top: var(--ds-space-2); }
-.token-table th,
-.token-table td {
-  padding: 8px 12px;
-  font-size: 0.75rem;
-  text-align: left;
-  border-top: 1px solid var(--ds-surface-muted);
-}
-.token-table thead th {
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ds-text-muted);
-  background: var(--ds-surface-muted);
-  border-top: none;
-}
 .token-table code {
   padding: 0;
   font-family: var(--ds-font-mono);
@@ -182,18 +166,9 @@
 
 
 /* ─── Moved from alerts.html ──────────────────────────────────────
-   The live status-token table: one row per state, read from the stylesheet
-   at runtime. .token-table and .swatch above give it its type. */
-.token-table td.state-name {
-  font-weight: 700;
-  color: var(--ds-text-muted);
-  background: var(--ds-canvas);
-  white-space: nowrap;
-}
+   The live status-token table's contrast verdicts. */
 .ratio-pass { font-weight: 700; }
 .ratio-fail { font-weight: 700; color: var(--ds-error-border); }
-/* A table wider than a phone scrolls inside its own box; the page never does. */
-.table-scroll { overflow-x: auto; }
 
 
 /* ─── Moved from tags.html ───────────────────────────────────────
@@ -221,19 +196,8 @@
   flex-direction: column;
   gap: var(--ds-space-tight);
 }
-/* A label with a tooltip trigger beside it. */
-.form-label-row {
-  display: flex;
-  align-items: center;
-  gap: var(--ds-space-1);
-  margin-bottom: var(--ds-space-2);
-}
-.form-label-row--end {
-  justify-content: flex-end;
-  margin-top: var(--ds-space-block);
-  padding-top: var(--ds-space-block);
-  border-top: 1px solid var(--ds-border);
-}
+/* At most two per row: a light and dark pair per line. */
+.form-states--pairs { grid-template-columns: repeat(auto-fit, minmax(max(16rem, calc(50% - var(--ds-space-block))), 1fr)); }
 
 
 /* ─── A labelled column in the variant grid ──────────────────────
@@ -242,15 +206,10 @@
 .state-cell { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ds-space-tight); }
 
 
-/* ─── Moved from spacing.html ────────────────────────────────────
-   The proximity demo: the same label/value pairs twice, spaced by the
-   named breaks on one side and by one flat gap on the other. Every gap
-   sits on a container, none on a child. */
-.prox, .prox-group, .prox-row { display: grid; }
-.prox       { gap: var(--ds-space-section); }
-.prox-group { gap: var(--ds-space-block); }
-.prox-row   { gap: var(--ds-space-tight); }
-.prox--flat, .prox--flat .prox-group, .prox--flat .prox-row { gap: var(--ds-space-block); }
+/* ─── spacing.html: the proximity demo's flat version, every gap the same ─── */
+.prox-demo > :first-child { margin-top: 0; }
+.prox-flat > * { margin: 0; }
+.prox-flat > * + * { margin-top: var(--ds-space-4); }
 
 
 /* ─── Moved from progressive-disclosure.html ─────────────────────
@@ -263,13 +222,11 @@
 .authors-demo li:not(:last-child)::after { content: ', '; }
 .authors-demo a { color: var(--ds-link); text-decoration: none; }
 .authors-demo a:hover { text-decoration: underline; }
-/* A stand-in for the sidebar the rail accordion is built for: narrow, with
-   the rail's own hairline dividers between items. No box of its own. */
-.rail-demo { max-width: 300px; }
-.rail-demo > * + * { border-top: 1px solid var(--ds-border); margin-top: var(--ds-space-3); padding-top: 14px; }
 /* The popover, dropped into the page flow so it can be read here rather than
    floating over it. */
 .popover-demo .ds-popover { position: relative; display: block; --ds-popover-width: 20rem; max-height: none; }
+/* The TOC bar shown inside a card stays in place; the page's own bar is the sticky one. */
+.toc-demo .ds-toc-bar { position: static; }
 
 
 /* ─── Site chrome inside a card (header.html, footer.html) ──
@@ -280,11 +237,7 @@
 .chrome-demo > .ds-acc:last-child { margin: 0; }
 
 
-/* ─── Moved from cards.html ─────────────────────────────
-   The info card at the width its sidebar gives it, and a stand-in for
-   that sidebar beside a main content area. */
-.context-example { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--ds-space-block); }
-.context-main { flex: 1 1 16rem; min-width: 0; }
+/* ─── outreach.html: a grey stand-in where an image will go ─── */
 .context-placeholder {
   display: flex;
   align-items: center;
@@ -296,4 +249,25 @@
   font-style: italic;
   color: var(--ds-text-muted);
 }
-.context-sidebar { flex: 0 0 240px; max-width: 100%; }
+
+/* ─── modals.html: a stand-in for the figure in the wide viewer demo ─── */
+.figure-stage { display: grid; place-items: center; background: var(--ds-surface-hover); }
+.figure-stage p { color: var(--ds-text-muted); font-family: var(--ds-font-mono); font-size: 0.8rem; }
+
+/* ─── header.html: a header shown at a phone's width ─── */
+.demo-width-narrow { max-width: 23.4375rem; }   /* 375px */
+
+/* ─── layout-patterns.html: a page drawn small inside a card. The reading
+   width is narrowed so a band's reach past the column shows. ─── */
+.ds-container.page-demo { --ds-width-page: 18rem; padding-block: var(--ds-space-4); row-gap: var(--ds-space-block); }
+.ds-container.page-demo > .ds-zone-secondary { margin-block: 0; padding-block: var(--ds-space-3); }
+
+/* ─── links.html: the anchor control kept visible in its demo ─── */
+.anchor-demo .ds-anchor { opacity: 1; }
+
+/* ─── typography.html: condensed labels in a row, spaced apart ─── */
+.specimen-weights { display: flex; flex-wrap: wrap; gap: var(--ds-space-6); }
+.specimen-weights > * { margin: 0; }
+
+/* ─── pager.html: a stand-in list between two pagers ─── */
+.demo-list { margin: var(--ds-space-8) 0; padding-inline-start: 1.25rem; }

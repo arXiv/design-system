@@ -1,0 +1,114 @@
+/* Search pages: results.html, no-results.html, invalid-query.html.
+   Loads after design-system.css. It holds only what the design system does not
+   provide: the search result (a record in a list, which has no component yet)
+   and the mark on a matched word. Every value is a design-system token.
+   Each block says which documented pattern it is derived from. */
+
+/* ── The search form ──────────────────────────────────────────────────────
+   The form is the documented .ds-filter-bar. Its fields default to a 9.5rem
+   basis, sized for a short select. A search term and the order names are
+   longer, so these two fields ask for more room. Nothing else changes. */
+.search-form .search-field-query { flex: 1 1 100%; }
+.search-form .search-field-long  { flex-basis: 18rem; }
+
+/* ── The list of results ──────────────────────────────────────────────────
+   Derived from Dividers (layout-patterns.html): items in one group are
+   separated the way .ds-divider--tight separates them, a hairline with
+   --ds-space-block above and below. An <hr> cannot be a child of <ol>, so
+   the rule is drawn on the list item. */
+.search-results {
+  display: grid;
+  gap: var(--ds-space-block);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.search-results > li { margin: 0; min-width: 0; }
+.search-results > li + li {
+  padding-top: var(--ds-space-block);
+  border-top: 1px solid var(--ds-border);
+}
+
+/* ── One result ───────────────────────────────────────────────────────────
+   Grouped by space, not by a box (layout-patterns.html: typographic and
+   proximity patterns first). The container owns the gap between the parts,
+   so the parts have no margins of their own. */
+.search-result {
+  display: grid;
+  gap: var(--ds-space-tight);
+  overflow-wrap: break-word;   /* TeX strings and URLs must not widen the page at 320px */
+}
+.search-result > * { margin: 0; min-width: 0; }
+
+/* Identifier, formats and subject categories: one row that wraps. */
+.search-result-ids {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-tight) var(--ds-space-block);
+  font-size: 0.875rem;
+}
+.search-result-ids ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-tight) var(--ds-space-block);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.search-result-ids li { margin: 0; }
+/* Standalone links in a row: the 24px target floor (DESIGN-POLICIES, Target size). */
+.search-result-ids a:not(.ds-tag) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+/* An arXiv identifier, a DOI and a report number are identifiers: Plex Mono (DESIGN-POLICIES, Typography). */
+.search-result-id,
+.search-result-mono { font-family: var(--ds-font-mono); }
+.search-result-ids .search-result-subjects { gap: var(--ds-space-tight); }
+
+/* The category tooltip is the documented .ds-tooltip. The host normally
+   positions the bubble from its own start edge. A tag near the end of a row
+   would then push the bubble past a 320px viewport, so here the bubble is
+   positioned from the start of the list of categories instead. */
+.search-result-subjects { position: relative; }
+.search-result-subjects .ds-tooltip-host { position: static; }
+
+/* Dates. Markup follows version-display.html, whose .ds-date-row class is not
+   in design-system.css yet. This is the treatment that page describes: small,
+   muted, tabular figures. Remove this rule when .ds-date-row is in the stylesheet. */
+.search-result-dates {
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Details that only some records have: label and value pairs. The label is
+   the documented .ds-panel-label; a pair wraps onto two lines when the row
+   is too narrow, with no breakpoint. */
+.search-result-meta {
+  display: grid;
+  gap: var(--ds-space-tight);
+  font-size: 0.875rem;
+}
+.search-result-meta > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--ds-space-block);
+}
+.search-result-meta dt { flex: 0 0 8rem; margin: 0; }
+.search-result-meta dd { flex: 1 1 16rem; margin: 0; min-width: 0; }
+
+/* ── A matched word ───────────────────────────────────────────────────────
+   No pattern exists for this. Derived from .ds-inline-active, which uses
+   --ds-accent-wash to say "this is the one you asked about". The underline
+   of that pattern is left out, because here it would read as a link. Weight
+   is the second cue, so the mark does not depend on colour (WCAG 1.4.1). */
+.search-result mark {
+  background: var(--ds-accent-wash);
+  color: inherit;
+  font-weight: 700;
+}

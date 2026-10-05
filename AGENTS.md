@@ -9,10 +9,10 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Path | What it is | Build reference? |
 |---|---|---|
 | `docs/` | THE documentation: rules + pattern pages + stylesheets | **Yes — the only place** |
-| `mockups/` | work-in-progress page explorations | **Never.** Not for building, not for style reference — patterns get promoted *into* docs/ when stable |
+| `whiteboard/mockups/` | work-in-progress page explorations | **Never.** Not for building, not for style reference — patterns get promoted *into* docs/ when stable |
 | `verification/` | audits, design reviews, agent test results | No |
-| `planning/` | backlog, proposals, decision logs | Only for program/planning work |
-| `blog-theme/` | packaged copy (zip) of the blog.arxiv.org WordPress theme — a **separate project** that extends the design system; its source lives in another repo | **Never.** Its CSS carries agreed blog-only exceptions; do not read it as the rule, and do not sync it — see below |
+| `whiteboard/planning/` | backlog, proposals, decision logs | Only for program/planning work |
+| `blog-theme/` | packaged copy (zip) of the blog.arxiv.org WordPress theme — a **separate project** that extends the design system; its source lives in another repo | **Never.** Its CSS includes agreed blog-only exceptions; do not read it as the rule, and do not sync it — see below |
 | `templates/` | the distributable brand head/header/footer, written once in "portable Jinja" (`{{ var }}` + raw HTML; `arxiv_brand/`, which is also the Python package), the adapters generated from it (React, TemplateToolkit, static HTML) and the chrome JS — the reusable chrome other arXiv apps install from git, their lock files pinning the SHA (see `templates/README.md`) | **Markup only.** Styling stays in `docs/`; these templates are `docs/{header,footer}.html` parameterised, and never a second copy of the CSS |
 
 ## Before any frontend change
@@ -31,17 +31,21 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--ds-space-*` |
 | Buttons | `docs/buttons.html` — both surfaces | bare `.ds-btn` is the secondary tier; `.ds-btn-primary`, `.ds-btn-text`, `.ds-btn-destructive`, `.ds-btn-icon`, `.on-tint` / `.on-dark` override it; internal tools get their colour from `.ds-internal` on a parent, never from a second class family. Internal-only: `[aria-pressed]` on an icon button, in tier 2 |
 | Alerts, status & feedback messages | `docs/alerts.html` — one page, both surfaces | `.ds-alert*` — never rebuild its chrome |
-| Cards, rails, page organization | `docs/organizing-content.html` | card conventions, dl row grammar, `.ds-acc-rail` in a sidebar; `.ds-full` for an edge-to-edge band; `.ds-zone-secondary` on the container + one `.ds-full.ds-zone-primary` band for a zoned page |
-| A labelled aside — a requirement, guidance, or how a component differs in internal tools | `docs/organizing-content.html` *Notes* | `.ds-note` (+ `--essential` / `--internal`), `.ds-note-label`, `.ds-note-gotcha` — never a bespoke tinted box, and never an alert |
-| A one-sentence note beside a block (a demo, a figure) | `docs/organizing-content.html` *Marginalia* | `.ds-marginalia` inside a `.ds-card`, text in `.ds-marginalia-body.ds-annotation`; sits in the margin when there is one, folds to an info mark when there is not |
-| A table of contents for a long page | `docs/progressive-disclosure.html` *Contents bar* | `.ds-toc` in a `.ds-toc-bar`, plus `toc.js`; leave the `<ol>` empty and run `verification/gen-anchors.py`. Sticky only where DESIGN-POLICIES allows it |
+| Organizing a page: start here | `docs/layout-patterns.html` *Evaluating user needs* | the four questions and their tests; its Rules are firm |
+| Cards, sidebars, page organization | `docs/layout-patterns.html` | `.ds-sidebar` (accordions inside it need no class); `.ds-full` for an edge-to-edge band; the page ground is white; `.ds-full.ds-zone-secondary` is a tinted band for what introduces or supports the page |
+| A labelled aside — a requirement, guidance, or how a component differs in internal tools | `docs/messages.html` *Notes* | `.ds-note` (+ `--essential` / `--internal`), `.ds-note-label`, `.ds-note-gotcha` — never a bespoke tinted box, and never an alert |
+| A one-sentence note beside a block (a demo, a figure) | `docs/layout-patterns.html` *Marginalia* | `.ds-marginalia` inside a `.ds-card`, text in `.ds-marginalia-body.ds-annotation`; sits in the margin when there is one, folds to an info mark when there is not |
+| A table of contents for a long page | `docs/progressive-disclosure.html` *TOC bar* | `.ds-toc` in a `.ds-toc-bar`, plus `toc.js`; leave the `<ol>` empty and run `verification/gen-anchors.py`. Sticky only where DESIGN-POLICIES allows it |
 | Accordions, show more, popovers — anything hiding content behind a control | `docs/progressive-disclosure.html` | `.ds-acc*`, `.ds-show-more`, `.ds-popover` |
+| A tooltip: a short explanation on hover and focus | `docs/forms.html` *Tooltip* | `.ds-tooltip-host`, `.ds-tooltip`, `.ds-tooltip-body`, plus `tooltip.js` once per page (Escape, and keeping the bubble on screen); never position it yourself |
 | A modal, dialog, confirmation, or anything that takes over the page | `docs/modals.html` | `.ds-modal*` on a native `<dialog>` + `showModal()` — never a `<div role="dialog">`, never `show()` |
 | A close or dismiss control | `docs/buttons.html` | `.ds-close` — one control on both surfaces; the host supplies position only |
 | An icon | `docs/icons.html` (generated from `docs/icons/`) | copy the file from `docs/icons/` inline, `aria-hidden="true"`, `stroke="currentColor"`; never draw a glyph from memory, and never a second icon set. Adding one: drop the file in `docs/icons/`, run `verification/gen-icons.py` |
 | Links | `docs/links.html` — identical on every surface | bare `<a>` inside `.ds-page`, no class; inline links underlined |
-| Tables (internal tools), row selection, bulk actions | `docs/tables.html` | `.ds-table`, sortable headers, `.ds-filter`; bulk-bar + selection rules documented there |
-| One record's details (label + value panel), any card | `docs/cards.html` (concept: `docs/organizing-content.html`) | `.ds-card`, `.ds-card--data`, `.ds-card-grid`; same markup on both surfaces |
+| Moving through a set: a queue one item at a time, or pages of a long list such as search results | `docs/pager.html` | `.ds-pagination` with `.ds-pagination-position` for a queue, or with `.ds-pagination-pages` for numbered pages; `.ds-pagination-position` states the position or range in both; `.ds-pagination--top` / `--bottom` draw the line between pager and list; results per page and order go with the search or filters, never in the pager; the ends disable, they are never removed |
+| Tables (both surfaces), row selection, bulk actions | `docs/tables.html` | `.ds-table` (header row from `<thead>`), sortable headers, `.ds-filter`, `.ds-bulk-count`, all tier 1; bulk-bar + selection rules documented there |
+| One record's details (label + value panel), any card | `docs/cards.html` (concept: `docs/layout-patterns.html`) | `.ds-card`, `.ds-card--data`, `.ds-card-grid`; same markup on both surfaces |
+| A very short form on one row, such as search | `docs/forms.html` *Compact form* | `.ds-form--compact` on the form, `.ds-input-group` to join the controls that make one input; labels may be `.is-sr-only`; messages, secondary options and the results' settings (order, results per page) go under the row; a link to another page takes the end of that line |
 | Forms, validation | `docs/forms.html` — one page, both surfaces | `.ds-field`/`.ds-label`/`.ds-input`/`.ds-hint`, `.is-invalid`, `.field-error`, `.ds-check`, `.ds-switch`, `.ds-seg` |
 | A code block on a docs page | `docs/typography.html` *Code blocks* | plain `<pre><code>` plus `<script src="copy-code.js" defer>` once per page — the copy button is added for you; never hand-build one |
 | Version display | `docs/version-display.html` | inline version links + `.ds-alert` warning |
@@ -88,7 +92,7 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
 
 ## Writing rules — for edits to docs/
 
-- **Write to be understood and believed, not admired.** Sincere directness; no quotable aphorisms, no edgy framing. Trust is the goal: calibrate claims honestly, attribute work honestly (including AI), and state limitations plainly — in planning/, not in the docs.
+- **Write to be understood and believed, not admired.** Sincere directness; no quotable aphorisms, no edgy framing. Trust is the goal: calibrate claims honestly, attribute work honestly (including AI), and state limitations plainly — in whiteboard/planning/, not in the docs.
 
 - **Minimal diffs.** Never rewrite a file wholesale; never reorganize while editing.
 - **One fact, one home.** State each rule in exactly one file; link from everywhere else.
@@ -104,11 +108,11 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
   | **Accessibility** | What has to be true, with the success criterion where there is one. |
 
   Not every page needs every section, but a page must not use a *different name* for one of these — no "Behavior contract" for Rules, no "Color tokens" for Spec, no "Accessibility notes" for Accessibility. Rationale ≤ 3 sentences per rule.
-- **The design system is new and is not in use anywhere.** So the docs never describe their own history: no "previously", no "we dropped", no "this was renamed", no decision dates in the prose. A reader needs to know what the thing *is*. Decisions and their dates belong in `planning/`, and the git history is the changelog.
-- **One page shape, and one way of writing its headings.** `<title>` is `<Name> — arXiv Design System` and `<h1>` is `<Name>`, where the name matches the nav label; an internal-tools page adds `(internal tools)` to the title only, so headings stay clean and browser tabs stay unambiguous. Section headings are **sentence case** — they are read as prose, not as labels. No page carries `Styles` or `Component Reference` in its name: the directory says which surface, and the filename says which component.
+- **The design system is new and is not in use anywhere.** So the docs never describe their own history: no "previously", no "we dropped", no "this was renamed", no decision dates in the prose. A reader needs to know what the thing *is*. Decisions and their dates belong in `whiteboard/planning/`, and the git history is the changelog.
+- **One page shape, and one way of writing its headings.** `<title>` is `<Name> — arXiv Design System` and `<h1>` is `<Name>`, where the name matches the nav label; an internal-tools page adds `(internal tools)` to the title only, so headings stay clean and browser tabs stay unambiguous. Section headings are **sentence case** — they are read as prose, not as labels. No page has `Styles` or `Component Reference` in its name: the directory says which surface, and the filename says which component.
 - **Add prose only against evidence** — a failed agent test or a real misunderstanding, not speculation.
 - After changing a pattern, update its page; verify tokens/classes exist in the stylesheet, links resolve, HTML balances.
-- The shared nav is three dropdowns (Design Patterns / Mockups / Docs), hand-copied on every doc page. Adding a flagship pattern page means adding it to the Design Patterns menu on every page; adding a mockup means adding it to the Mockups menu on every page AND to `mockups/index.html`. Script the sweep; never update just one page.
+- The shared nav is three dropdowns (Design Patterns / Mockups / Docs), hand-copied on every doc page. Adding a flagship pattern page means adding it to the Design Patterns menu on every page; adding a mockup means adding it to the Mockups menu on every page AND to `whiteboard/mockups/index.html`. Script the sweep; never update just one page.
 - After changing either `design-system.css`, run `python3 verification/check-drift.py`. It guards the places where a value is written down twice — chiefly the mirrored dark palette. Any FAIL is yours to fix.
 - **Never sync the blog theme as a side effect of other work.** It is a separate project that *extends* the design system — more playful and more colorful than arxiv.org would ever be — and it is updated by a deliberate translation pass, where a person decides which changes belong there and how they should read in the blog's voice. The drift check reports blog differences as a NOTE, never a FAIL: that list is the agenda for the next translation, not a defect to clear. Overwriting the theme's copy with the canonical file destroys decisions it made on purpose.
 
@@ -116,4 +120,4 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
 
 - Small team: never add anything needing manual upkeep.
 - Git: commit direct to master (WIP repo), identity SBBCornell. Published via GitHub Pages.
-- Tests: `verification/token-burn/` measures whether agents can work in this repo. Its tasks/rubrics are excluded from test workspaces — don't tune to them.
+- Tests: `verification/token-burn/` measures whether agents can work in this repo. Its tests and scoring notes are excluded from test workspaces — do not tune to them.

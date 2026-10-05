@@ -33,7 +33,7 @@ components:
         does: "The shape only: square corners and less side padding. Add it to any tag, at any level, with any other modifier."
   - id: complex-tags
     title: "More complex uses of tags"
-    summary: "Different parts of a tag can be combined, even doubled, for more complex uses. Consult with the design team on your specific use case. Below is one example from the Admin console of tags that carry both a category name and a nested `.ds-tag-note` that says where it came from."
+    summary: "Different parts of a tag can be combined, even doubled, for more complex uses. Consult with the design team on your specific use case. Below is one example from the Admin console of tags that include both a category name and a nested `.ds-tag-note` that says where it came from."
     classes:
       - name: ".ds-tag-note"
         does: "A small badge nested inside a tag, saying where it came from — usually a username."
@@ -49,7 +49,7 @@ rules:
   - "**Use the element that matches the job.** Use tags for labels, not to replace content that should be buttons or links instead."
   - "**Uppercase is applied with CSS, never typed.** The underlying text then stays correct for copy-and-paste, in-page search, and screen readers."
   - "**Keep the case of every category and identifier.** Put `.ds-tag--keep-case` on any tag that holds a category name or an arXiv ID, so that `physics.optics` is never shown as `PHYSICS.OPTICS`."
-  - "**Color is never the only signal.** The label’s own words carry the meaning. A negative or removed state says so in text, not only in red."
+  - "**Color is never the only signal.** The label’s own words convey the meaning. A negative or removed state says so in text, not only in red."
   - "**Name the remove control.** Every `.ds-tag-remove` holds a `<span class=\"is-sr-only\">` that says what it removes, such as “Remove cs.AI”, and the ✕ glyph sits in a span with `aria-hidden=\"true\"`. Do not use `title` or `aria-label` for this, because page translation tools skip attributes."
 ---
 
@@ -127,7 +127,7 @@ Rectangular instead of pill-shaped, this label variant is useful in very dense i
 
 ## More complex uses of tags
 
-Different parts of a tag can be combined, even doubled, for more complex uses. Consult with the design team on your specific use case. Below is one example from the Admin console of tags that carry both a category name and a nested `.ds-tag-note` that says where it came from.
+Different parts of a tag can be combined, even doubled, for more complex uses. Consult with the design team on your specific use case. Below is one example from the Admin console of tags that include both a category name and a nested `.ds-tag-note` that says where it came from.
 
 ```html
 <!-- With a nested provenance badge -->
@@ -164,5 +164,5 @@ Different parts of a tag can be combined, even doubled, for more complex uses. C
 - **Use the element that matches the job.** Use tags for labels, not to replace content that should be buttons or links instead.
 - **Uppercase is applied with CSS, never typed.** The underlying text then stays correct for copy-and-paste, in-page search, and screen readers.
 - **Keep the case of every category and identifier.** Put `.ds-tag--keep-case` on any tag that holds a category name or an arXiv ID, so that `physics.optics` is never shown as `PHYSICS.OPTICS`.
-- **Color is never the only signal.** The label’s own words carry the meaning. A negative or removed state says so in text, not only in red.
+- **Color is never the only signal.** The label’s own words convey the meaning. A negative or removed state says so in text, not only in red.
 - **Name the remove control.** Every `.ds-tag-remove` holds a `<span class="is-sr-only">` that says what it removes, such as “Remove cs.AI”, and the ✕ glyph sits in a span with `aria-hidden="true"`. Do not use `title` or `aria-label` for this, because page translation tools skip attributes.

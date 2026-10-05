@@ -5,4 +5,4 @@ Read **AGENTS.md** at the repo root — the canonical guide for all AI assistant
 Two things worth repeating even here:
 
 - `docs/DESIGN-POLICIES.md` is non-negotiable. If a request conflicts with it, flag the conflict and offer a compliant alternative — never silently comply.
-- `mockups/` is never a build or style reference.
+- `whiteboard/mockups/` is never a build or style reference.

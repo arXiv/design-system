@@ -1,0 +1,4012 @@
+/* =============================================================
+   arXiv Design System — tier 1
+
+   The foundation, and every component more than one surface could use.
+   Everything loads this: public pages, internal tools, the reader.
+
+   A surface that needs more loads a tier 2 file AFTER this one —
+   docs/internal-tools.css for internal tools. A tier 2 file may
+   re-point a token here where its surface needs a different value; it
+   must never redefine a component or reuse a token name for a different
+   meaning. The internal accent comes from the .ds-internal class below.
+   ============================================================= */
+
+/* ═══════════════════════════════════════════════════════════════════════
+   arXiv public design-system stylesheet
+   ───────────────────────────────────────────────────────────────────────
+   Canonical CSS for arxiv.org public-facing pages (abstract page,
+   HTML paper reader, search, browse, info pages). Internal/admin pages
+   use design-patterns/internal-tools.css instead.
+
+   Naming: shared design-system classes use the `.ds-` prefix
+   (DESIGN-POLICIES.md). Mockup-specific classes belong in the mockup's
+   own <style> block.
+
+   Tokens live in `:root` as CSS custom properties (see color-mapping.md
+   for the full palette and why each color exists).
+
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Primitives: the named brand palette ───────────────────────────
+     These name a COLOUR. They never change between themes, and no
+     component rule uses them — components use the semantic tokens below,
+     which name a JOB. Retuning a brand colour is one edit here.
+     Full palette with contrast figures: color-mapping.md. */
+  --ds-repository-brown:  #1c1a17;
+  --ds-library-grey:      #6b6459;
+  --ds-open-blue:         #a5d6fe;
+  /* Two ramps, one base each, the step is the number: the percentage of the
+     base over white. Every warm tint is Library Grey; every cool tint is
+     Open Blue. Retune a base and recompute the steps. */
+  --ds-grey-5:            #f8f7f7;   /* Warm Wash: a hover fill on a white surface */
+  --ds-grey-10:           #f0f0ee;   /* Card Grey: a secondary band, a hover fill */
+  --ds-grey-25:           #dad8d6;   /* Border Light: hairlines, pressed fills */
+  --ds-grey-55:           #aeaaa4;   /* Disabled Grey: disabled text, 2.3:1 */
+  --ds-grey-80:           #89837a;   /* UI Boundary Grey: a control's edge, 3.76:1 on white */
+  --ds-blue-20:           #edf7ff;   /* Tint Light: a panel arXiv floats over the paper */
+  --ds-blue-50:           #d2eafe;   /* Active Wash: the deepest chrome blue that holds AA for text */
+  --ds-blue-70:           #c0e2fe;   /* Open Blue Bright: the hover step, and a panel's edge */
+  --ds-archival-blue:     #1f5e96;
+  --ds-link-blue:         #1565c0;
+  --ds-link-blue-hover:   #1050a0;
+  --ds-link-blue-dark:    #64b5f6;
+  --ds-visited-purple:    #7b2fbe;
+  /* Access Lime, the whole ramp. Tier 1 names it for the same reason it names
+     Open Blue's: a primitive names a COLOUR, and a colour is nameable whether
+     or not this surface uses it. Naming it here is what lets a public page
+     point at internal-tools material — an Internal variant note, the buttons
+     page showing both accents — without copying a hex. Which surface takes it
+     as its accent is a separate decision, made in tier 2. */
+  --ds-access-lime:          #c4d82e;
+  --ds-access-lime-hover:    #b5c626;
+  --ds-access-lime-active:   #a4b520;
+  --ds-access-lime-border:   #9cb522;
+  --ds-access-lime-deep:     #6b7a10;
+  --ds-access-lime-wash:     #f0f9e8;
+  --ds-access-lime-wash-2:   #e2f3d0;
+  --ds-access-lime-wash-3:   #d4edb8;
+  --ds-access-lime-faded:    #e6efb8;
+  --ds-access-lime-faded-fg: #8a9a5a;
+  --ds-smileybones-yellow:#ffe000;
+
+  /* ── Semantic: what each colour is FOR ─────────────────────────────
+     Components use only these. A surface that wants its own accent
+     re-points them; it never redefines a component. */
+  --ds-text:              var(--ds-repository-brown);
+  --ds-text-muted:        var(--ds-library-grey);      /* 5.83:1 on white */
+  --ds-text-disabled:     var(--ds-grey-55);     /* below AA — disabled only */
+  --ds-text-on-accent:    var(--ds-repository-brown);  /* on an Open Blue fill; Open Blue
+                                                          does not flip, so this must not */
+  --ds-canvas:            #ffffff;                     /* the page ground */
+  --ds-surface:           #ffffff;
+  --ds-surface-hover:     var(--ds-grey-5);            /* a row or control under the pointer */
+  --ds-surface-muted:     var(--ds-grey-10);
+  --ds-zone-secondary-bg: var(--ds-tint-warm);     /* the tinted band — PAGE ZONES */
+
+  /* Destructive: delete, withdraw, revoke. One tier on every surface. */
+  --ds-danger:                #c62828;   /* white on it 5.62:1 */
+  --ds-danger-hover:          #b71c1c;
+  --ds-danger-active:         #9a0007;
+  --ds-danger-wash-hover:     #fdf0f0;
+  --ds-danger-wash-active:    #f5d0d0;
+  --ds-danger-disabled-fg:    #c47878;
+  --ds-danger-fg:             var(--ds-danger);   /* red as text or a glyph, not a fill */
+  --ds-danger-fg-hover:       var(--ds-danger-hover);
+  --ds-chrome:            var(--ds-repository-brown);  /* header bar, skip link */
+  --ds-scrim:             rgba(28, 26, 23, 0.55);      /* modal backdrop; Repository Brown
+                                                          at 55%, warm rather than black */
+
+  --ds-border:            var(--ds-grey-25);                     /* decorative hairline, 1.42:1 —
+                                                          never the sole edge of a control */
+  --ds-border-muted:      var(--ds-grey-25);
+  --ds-border-strong:     var(--ds-grey-80);  /* 3.61:1 — interactive boundaries */
+
+  --ds-link:              var(--ds-link-blue);
+  --ds-link-hover:        var(--ds-link-blue-hover);
+  --ds-link-visited:      var(--ds-visited-purple);
+  --ds-focus-ring:        var(--ds-link);
+  --ds-focus-ring-on-dark:var(--ds-link-blue-dark);    /* on the dark chrome bars */
+
+  --ds-accent:            var(--ds-open-blue);
+  --ds-accent-hover:      var(--ds-blue-70);
+  --ds-accent-strong:     var(--ds-archival-blue);     /* section accents, anchor colour */
+  --ds-accent-wash:       var(--ds-blue-50);                     /* inline active state */
+  /* The two tints. A component fill uses one of these or a status colour; a new fill colour is agreed with the design team first. */
+  --ds-tint-warm:         var(--ds-grey-10);
+  --ds-tint-accent:       var(--ds-blue-20);
+  --ds-accent-surface:    var(--ds-blue-20);                     /* popover panel */
+  --ds-accent-border:     var(--ds-blue-70);
+
+  /* Button construction — the colours a surface changes. Geometry, shadows
+     and states live on .ds-btn*; .ds-internal re-points these and nothing
+     else. */
+  --ds-btn-primary-rim-a:          #b0d5ed;
+  --ds-btn-primary-rim-b:          #6ba8da;
+  --ds-btn-primary-rim-hover-a:    #8fc1e8;
+  --ds-btn-primary-rim-hover-b:    #4a86b8;
+  --ds-btn-primary-rim-active:     #6ba8da;
+  --ds-btn-primary-glow:           var(--ds-archival-blue);
+  --ds-btn-secondary-bg:           #ffffff;
+  --ds-btn-secondary-bg-hover:     #ffffff;
+  --ds-btn-secondary-bg-active:    #ffffff;
+  --ds-btn-secondary-rim-a:        var(--ds-grey-25);
+  --ds-btn-secondary-rim-b:        #b3ada4;
+  --ds-btn-secondary-rim-hover-a:  #c8c4be;
+  --ds-btn-secondary-rim-hover-b:  var(--ds-border-strong);
+  --ds-btn-secondary-rim-active:   var(--ds-border-strong);
+  --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.06);
+
+  --ds-btn-secondary-shadow-drop:      rgba(0, 0, 0, 0.08);
+
+  --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.03);
+
+  --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.13);
+  --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.12);
+  --ds-btn-primary-glow-active:        35%;   /* the glow's strength while pressed */
+  --ds-btn-secondary-fg:           var(--ds-text-muted);
+  --ds-btn-secondary-fg-hover:     var(--ds-text);
+  --ds-btn-text-fg:                var(--ds-link);
+  --ds-btn-text-fg-hover:          var(--ds-link-hover);
+  --ds-btn-text-bg-hover:          var(--ds-accent-surface);
+  --ds-btn-text-bg-active:         var(--ds-accent-wash);
+
+
+  /* Submission type badges. A submission type is a CATEGORY, not a status —
+     "New" is not success and "Wdr" is not an error — so these are their own
+     palette rather than the status tokens. Contrast verified: new 8.5:1,
+     rep 5.6:1, wdr 9.8:1, cross 7.5:1. */
+
+  /* The note tab is a filled label; these are the two pieces of it that
+     cannot follow an existing semantic pair through the dark flip. */
+  --ds-note-mark-fg:       #ffffff;
+  --ds-note-mark-internal: var(--ds-access-lime-deep);
+
+  /* A select's arrow. A background image cannot take the text colour, so the
+     dark blocks restate it. */
+  --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%231c1a17' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+
+  --ds-font-sans:       "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ds-font-condensed:  "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  --ds-font-mono:       "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ds-font-serif:      "IBM Plex Serif", Georgia, "STIX Two Text", "Times New Roman", serif;
+
+  /* Status. Success is lime-olive, not forest green, and its border is
+     off-yellow so success never reads as the internal accent. */
+  --ds-success-bg:      #e8f5d8;
+  --ds-success-border:  #6b8e1e;
+  --ds-success-fg:      #4a5a0a;  /* 6.7:1 on bg */
+  --ds-info-bg:         #e7f1fd;
+  --ds-info-border:     #5a82c8;
+  --ds-info-fg:         #1a3a78;  /* 9.6:1 on bg */
+  --ds-warning-bg:      #fff8e1;
+  --ds-warning-border:  #e8b800;
+  --ds-warning-fg:      #7a5c00;  /* 5.9:1 on bg */
+  --ds-error-bg:        #fdeaea;
+  --ds-error-border:    #c62828;  /* Danger Red — functional, not Campus Red */
+  --ds-error-fg:        #8b0000;  /* 8.6:1 on bg */
+
+  /* Spacing. The number is the multiplier: --ds-space-6 is 6x4px. In rem
+     so it scales with the reader's text size. */
+  --ds-space-1:   0.25rem;
+  --ds-space-2:   0.5rem;
+  --ds-space-3:  0.75rem;
+  --ds-space-4:  1rem;
+  --ds-space-6:  1.5rem;
+  --ds-space-8:  2rem;
+  --ds-space-12: 3rem;
+
+  /* Named rhythm. Pages name the KIND of break, never a raw stop and
+     never a pixel — that is what makes the rhythm retunable. */
+  --ds-space-tight:   var(--ds-space-2);    /*  8px — inside a group */
+  --ds-space-block:   var(--ds-space-4);    /* 16px — between blocks */
+  --ds-space-section: var(--ds-space-12);   /* 48px — between sections */
+
+  /* The one gap the rhythm cannot supply: glyph to label inside a
+     control. In em, so it tracks the control's own font size. */
+  --ds-gap-glyph: 0.5em;
+
+  --ds-width-page:  850px;
+  --ds-width-wide:  1080px;   /* dense internal tools: .ds-container--wide */
+  --ds-gutter:  var(--ds-space-6);
+}
+
+
+/* FOUNDATION  (.ds-page / .ds-container) — layout-patterns.html
+   Scoped to .ds-page so a legacy page can link this stylesheet without
+   its own body rules being overwritten. .ds-container is a two-track
+   grid: content at the reading width, full to the viewport edges.
+   Only a DIRECT child can escape with .ds-full. */
+
+/* Border-box everywhere inside the scope. Every docs page set this by hand;
+   it is foundational, not page-specific. */
+.ds-page,
+.ds-page *,
+.ds-page *::before,
+.ds-page *::after { box-sizing: border-box; }
+
+/* And every component, whether or not the page adopted the foundation. A
+   component has to stand up on a page that has not: 19 of them carry padding,
+   and given a width without this, each overflows its container by exactly its
+   padding. */
+[class^="ds-"], [class*=" ds-"] { box-sizing: border-box; }
+
+/* Reserve the scrollbar's width whether or not the page scrolls. Without
+   this, anything that locks scrolling — a modal — removes the scrollbar and
+   the page jumps sideways underneath it. Scoped to pages that opt into the
+   foundation, so a legacy page linking this stylesheet is untouched. Where
+   the platform draws overlay scrollbars (macOS by default) it costs nothing,
+   because there was no gutter to reserve. */
+/* Below the browser-support floor (Baseline newly available, Dec 2024) —
+   progressive enhancement. Without it, a platform with classic scrollbars
+   shifts the page sideways when a modal opens. Cosmetic, transient. */
+html:has(> body.ds-page) { scrollbar-gutter: stable; }
+
+.ds-page {
+  font-family: var(--ds-font-sans);
+  line-height: 1.5;
+  color: var(--ds-text);
+  background: var(--ds-canvas);
+  margin: 0;
+  -webkit-text-size-adjust: 100%;   /* stop iOS inflating text in landscape */
+}
+
+/* The shell. Centred, guttered, capped at the dense width. */
+/* The shell, and the owner of section rhythm. Space between regions belongs
+   to the container, not to the regions: a section does not know what follows
+   it, so it cannot know how far away that should be. One gap value here
+   replaces a margin repeated on every section of every page.
+
+   grid rather than margins because gap never collapses and cannot be undone
+   by a child. The first/last reset is the companion to that, not a patch:
+   when the parent owns the space between children, the first child needs
+   none above it and the last needs none below.
+
+   Prose flow INSIDE a section stays element-owned — a heading's space depends
+   on its own size, which the container cannot know. Two mechanisms, but at
+   two clearly separated levels, never competing at the same one. */
+.ds-container {
+  display: grid;
+  align-content: start;
+
+  /* Three tracks, not a max-width. The centre track holds the content and the
+     two side tracks are the margins — so a band that must run edge to edge
+     spans `full` and needs no negative margins and no viewport units.
+
+     This replaces the calc(-50vw + 50%) full-bleed trick, which is subtly
+     broken: 100vw INCLUDES the scrollbar while the document width excludes
+     it, so a "full width" band overhangs by the scrollbar and the page
+     scrolls sideways. Invisible on overlay scrollbars, visible on Windows
+     and Linux. Tracks have no such problem because they measure the element,
+     not the viewport. */
+  grid-template-columns:
+    [full-start] minmax(var(--ds-gutter), 1fr)
+    [content-start] min(var(--ds-width-page), 100% - 2 * var(--ds-gutter)) [content-end]
+    minmax(var(--ds-gutter), 1fr) [full-end];
+
+  row-gap: var(--ds-space-section);
+  column-gap: 0;
+  padding-block: var(--ds-space-8) calc(var(--ds-space-section) * 1.5);
+}
+
+/* Everything sits in the content track unless it asks not to. */
+.ds-container > * { grid-column: content; }
+
+/* A band that runs to the viewport edges — a reference zone, a coloured
+   section, a full-width figure. The inline padding brings its contents back
+   onto the content track, derived from the same width rather than restated,
+   so the band and the column cannot drift apart. */
+.ds-container > .ds-full {
+  grid-column: full;
+  padding-inline: max(var(--ds-gutter), (100% - var(--ds-width-page)) / 2);
+}
+/* A dense internal tool: the same container at the wider width. */
+.ds-container--wide { --ds-width-page: var(--ds-width-wide); }
+
+/* PAGE ZONES  (.ds-zone-secondary) — layout-patterns.html
+   The page ground is white. A tinted band holds what introduces or supports
+   the page: put .ds-zone-secondary on a .ds-full band. Named for role, not
+   colour, because the ground changes in dark mode. */
+.ds-container > .ds-zone-secondary {
+  background: var(--ds-zone-secondary-bg);
+  padding-block: var(--ds-space-section);
+}
+.ds-container > .ds-zone-secondary > * + * { margin-top: var(--ds-space-section); }
+/* A band that opens or closes the page runs to the container's edge. */
+.ds-container > .ds-zone-secondary:first-child {
+  margin-top: calc(-1 * var(--ds-space-8));
+  padding-top: var(--ds-space-8);
+}
+.ds-container > .ds-zone-secondary:last-child {
+  margin-bottom: calc(-1.5 * var(--ds-space-section));
+  padding-bottom: calc(var(--ds-space-section) * 1.5);
+}
+.ds-container > * > :first-child { margin-block-start: 0; }
+.ds-container > * > :last-child  { margin-block-end: 0; }
+
+/* ── Page header (.ds-page-header) ────────────────────────────────────────
+   Title, lede, and an accent rule beneath. Carries no outer margin: the
+   container provides the space to whatever follows.
+
+   PROVISIONAL. This originated in the documentation and has not appeared in
+   any mockup, so unlike the rest of the components here it has not been
+   validated against a real arXiv page. It is codified because it is on eleven
+   pages and DESIGN-POLICIES says two is the threshold — not because its
+   authority is settled. */
+.ds-page-header {
+  padding-bottom: var(--ds-space-6);
+}
+.ds-page-header h1 { margin-bottom: var(--ds-space-tight); }
+.ds-page-header p  { color: var(--ds-text-muted); }
+
+/* The lede under a section heading. Quieter than body copy, same size —
+   it introduces rather than competes. Takes no margin of its own; paragraph
+   rhythm comes from the foundation. */
+.ds-section-desc { color: var(--ds-text-muted); }
+
+/* ── Headings ────────────────────────────────────────────────────────
+   The scale published in typography.html: 2 / 1.5 / 1.25 / 1rem, at 700 for
+   h1 and 600 below it, on a 1.25 line-height except h4. Sizes are rem so
+   they track the reader's base size. */
+:where(.ds-page) :is(h1, h2, h3, h4) {
+  font-family: var(--ds-font-sans);
+  color: var(--ds-text);
+  /* Below the support floor (Baseline newly available, Oct 2024) —
+     progressive enhancement. Without it, headings wrap normally. */
+  text-wrap: balance;
+}
+:where(.ds-page) h1 { font-size: 2rem;    font-weight: 700; line-height: 1.25; margin: 0 0 var(--ds-space-4); }
+:where(.ds-page) h2 { font-size: 1.5rem;  font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-3); }
+:where(.ds-page) h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-2); }
+:where(.ds-page) h4 { font-size: 1rem;    font-weight: 600; line-height: 1.25; margin: var(--ds-space-4) 0 var(--ds-space-2); }
+
+/* ── Prose ───────────────────────────────────────────────────────────
+   Prose takes no width of its own: the container is the width. Zero-specificity
+   :where() means any component overrides these margins by existing. */
+:where(.ds-page p, .ds-page ul, .ds-page ol, .ds-page dl) {
+  margin: 0 0 var(--ds-space-4);
+}
+:where(.ds-page ul, .ds-page ol) { padding-left: var(--ds-space-6); }
+:where(.ds-page li)              { margin-bottom: var(--ds-space-2); }
+:where(.ds-page li:last-child)   { margin-bottom: 0; }
+
+:where(.ds-page) small { font-size: 0.875rem; color: var(--ds-text-muted); }
+
+:where(.ds-page) hr {
+  border: 0;
+  border-top: 1px solid var(--ds-border);
+  margin: var(--ds-space-8) 0;
+}
+
+/* ── Links ───────────────────────────────────────────────────────────
+   Every bare anchor inside a .ds-page is the inline link; there is no
+   class to add. Hover thickens the underline as well as deepening the
+   colour: the colour step alone is under 1.4:1 and easy to miss, and
+   text-decoration is painted, not laid out, so the page does not shift. */
+:where(.ds-page) a               { color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+:where(.ds-page) a:hover         { color: var(--ds-link-hover); text-decoration-thickness: 0.15em; }
+:where(.ds-page) a:visited       { color: var(--ds-link-visited); }
+/* A list in which every item is a link: no underline at rest, since no ordinary text sits beside it. */
+.ds-link-list a { text-decoration: none; }
+.ds-link-list a:hover { text-decoration: underline; }
+:where(.ds-page) a:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── Code ────────────────────────────────────────────────────────────
+   Inline code is tinted rather than boxed: a border around a two-character
+   token inside a sentence adds more noise than it resolves. Sized in em, not
+   rem, so it tracks whatever it sits inside — including a heading. Blocks
+   keep the dark surface the docs pages already used. */
+:where(.ds-page) code {
+  font-family: var(--ds-font-mono);
+  font-size: 0.9em;
+  background: color-mix(in srgb, var(--ds-text) 8%, transparent);   /* a wash: the same small step on every ground, in both themes */
+  padding: 0.15em 0.35em;
+  border-radius: 3px;
+}
+:where(.ds-page) pre {
+  font-family: var(--ds-font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  background: var(--ds-chrome);
+  color: var(--ds-grey-10);   /* a fixed light value: the chrome ground is dark in both themes */
+  padding: var(--ds-space-4);
+  border-radius: 6px;
+  overflow-x: auto;                 /* long lines scroll; the page never does */
+  margin: 0 0 var(--ds-space-4);
+}
+/* CODE BLOCK COPY  (.ds-code / .ds-code-copy) — typography.html
+   Every code block gets a copy button, and no page has to remember to add
+   one: copy-code.js wraps each <pre> and inserts the control. A <pre> cannot
+   host the button itself, because it scrolls — an absolutely positioned child
+   would scroll out of view with the code. */
+.ds-code { position: relative; }
+/* The lane is vertical, not horizontal. A <pre> scrolls, so padding at its
+   inline end does not hold the visible right edge clear — a long line runs
+   straight under the button. Reserving a strip at the top always works,
+   whatever the line length. */
+.ds-code > pre { padding-block-start: 2.5rem; }
+.ds-code-copy {
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-end: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;                                   /* WCAG 2.2 target size floor
+                                                    is 24; 28 leaves the icon
+                                                    room without crowding it */
+  height: 28px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.35);   /* 3.4:1 on the code ground */
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ds-surface-muted);
+  cursor: pointer;
+}
+.ds-code-copy svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* The tick replaces the sheets for two seconds. Both glyphs are always in
+   the DOM, so nothing is fetched or measured at the moment of the click. */
+.ds-code-copy .ds-code-copy-done,
+.ds-code-copy.is-done .ds-code-copy-idle { display: none; }
+.ds-code-copy.is-done .ds-code-copy-done { display: block; }
+.ds-code-copy.is-done { color: var(--ds-success-border); }
+.ds-code-copy:hover { background: rgba(255, 255, 255, 0.16); }
+.ds-code-copy:focus-visible {
+  outline: 3px solid var(--ds-focus-ring-on-dark);
+  outline-offset: 2px;
+}
+
+:where(.ds-page) pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* ── Tables ──────────────────────────────────────────────────────────
+   Horizontal rules only. Vertical lines add a boundary the eye does not need
+   when the columns already align, and they make a wide table read as a grid
+   of cells rather than as rows of records. */
+:where(.ds-page) table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  margin: 0 0 var(--ds-space-4);
+}
+:where(.ds-page) th {
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--ds-border-strong);
+  padding: var(--ds-space-2) var(--ds-space-3);
+}
+:where(.ds-page) td {
+  border-bottom: 1px solid var(--ds-border);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  vertical-align: top;
+}
+:where(.ds-page) caption {
+  text-align: left;
+  color: var(--ds-text-muted);
+  font-size: 0.875rem;
+  padding-bottom: var(--ds-space-2);
+}
+
+
+/* ── Panel label (.ds-panel-label) — typography.html
+   Condensed caps. A <dt> inside .ds-acc-body IS this label and needs no
+   class. Never set it on something interactive: at this size and letter
+   spacing it reads as a heading, not a control. */
+.ds-panel-label,
+.ds-acc-body dt {          /* a <dt> in an accordion body IS this label */
+  font-family: var(--ds-font-condensed);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ds-text-muted);
+  margin: var(--ds-space-6) 0 var(--ds-space-tight);   /* 24 above, 8 below — bonds down */
+}
+
+/* Components that own their internal spacing take the margin back. */
+.ds-site-header-menu .ds-panel-label,
+.ds-acc-body dt { margin: 0; }
+
+/* ── Dropdown groups (optional part of .ds-site-header) ──────────────────
+   A <details>/<summary> menu in the bar, for a property whose sections need
+   grouping. Opens and closes with no JavaScript; a page may add
+   close-on-outside-click and Esc as enhancement.
+
+   The summary sits IN the bar and takes the surface tokens, so it is correct
+   on either variant. The menu panel does not: a floating panel is a light
+   surface whichever bar summoned it, the same way a popover is. */
+.ds-site-header-dropdown { position: relative; }
+
+.ds-site-header-dropdown > summary {
+  list-style: none;
+  cursor: pointer;
+  color: var(--ds-hdr-fg);
+  padding: 6px 10px;
+  border-radius: 4px;
+  user-select: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+}
+.ds-site-header-dropdown > summary::-webkit-details-marker { display: none; }
+.ds-site-header-dropdown > summary::after { content: " \25BE"; font-size: 0.625rem; }
+.ds-site-header-dropdown > summary:hover,
+.ds-site-header-dropdown[open] > summary {
+  color: var(--ds-hdr-fg-strong);
+  background: var(--ds-hdr-hover);
+}
+.ds-site-header-dropdown > summary:focus-visible {
+  outline: 3px solid var(--ds-hdr-ring);
+  outline-offset: 1px;
+}
+
+.ds-site-header-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  /* Anchored to the trigger's RIGHT edge, not its left. The logo takes
+     margin-right: auto, so the nav always sits at the right of the bar and a
+     left-anchored menu runs off the viewport on the last item — which is every
+     bar's last item, not an edge case. Growing inward is correct for all of
+     them. The max-width is a floor-level guard for narrow viewports, where the
+     bar has already wrapped. */
+  right: 0;
+  left: auto;
+  max-width: calc(100vw - 32px);
+  display: flex;
+  flex-direction: column;
+  min-width: min(235px, 100%)   /* a dropdown panel must never be wider than the viewport it opens in */;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);   /* the summoned-surface shadow */
+  padding: 6px;
+  z-index: 60;
+}
+.ds-site-header-menu a,
+.ds-site-header-menu button {
+  color: var(--ds-text);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  min-height: 24px;              /* WCAG 2.5.8 target floor */
+  display: flex;
+  align-items: center;
+}
+/* Log out is a button in a form that posts; it matches the links beside it. */
+.ds-site-header-menu button {
+  width: 100%;
+  font: inherit;
+  text-align: start;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.ds-site-header-menu form { margin: 0; }
+.ds-site-header-menu a:hover,
+.ds-site-header-menu button:hover { background: var(--ds-surface-muted); }
+.ds-site-header-menu a:focus-visible,
+.ds-site-header-menu button:focus-visible {
+  outline: 2px solid var(--ds-link);
+  outline-offset: -2px;
+}
+.ds-site-header-menu a[aria-current="page"] { font-weight: 600; }
+.ds-site-header-menu .ds-panel-label { padding: 8px 10px 2px; }
+
+
+/* BUTTONS  (.ds-btn / .ds-btn-primary / .ds-btn-text) — buttons.html
+   Three tiers, plus .on-tint / .on-dark for buttons that sit on
+   something other than the page canvas. Primary's border is a two-stop
+   gradient, which is why its fill is a gradient too: a flat background
+   cannot paint into a border-box gradient. */
+
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-gap-glyph);
+  padding: 0.715em 1.43em;
+  min-width: 8.6em;
+  font-family: var(--ds-font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  border-radius: 6px;
+  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, transform 0.08s, color 0.12s;
+
+  /* The default tier is the secondary (white) button: bare .ds-btn is it,
+     and the other tiers override it. Its state rules sit in :where() so
+     they stay at one class of specificity and a tier's rest rule wins. */
+  background:
+    linear-gradient(var(--ds-btn-secondary-bg), var(--ds-btn-secondary-bg)) padding-box,
+    linear-gradient(to bottom, var(--ds-btn-secondary-rim-a), var(--ds-btn-secondary-rim-b)) border-box;
+  color: var(--ds-btn-secondary-fg);
+  box-shadow:
+    inset 0 0 6px var(--ds-btn-secondary-shadow-in),
+    0 1px 3px var(--ds-btn-secondary-shadow-drop);
+}
+.ds-btn:where(:hover) {
+  background:
+    linear-gradient(var(--ds-btn-secondary-bg-hover), var(--ds-btn-secondary-bg-hover)) padding-box,
+    linear-gradient(to bottom, var(--ds-btn-secondary-rim-hover-a), var(--ds-btn-secondary-rim-hover-b)) border-box;
+  color: var(--ds-btn-secondary-fg-hover);
+  box-shadow:
+    inset 0 0 8px var(--ds-btn-secondary-shadow-in-hover),
+    0 1px 3px var(--ds-btn-secondary-shadow-drop);
+}
+.ds-btn:where(:active) {
+  transform: translateY(1px);
+  background:
+    linear-gradient(var(--ds-btn-secondary-bg-active), var(--ds-btn-secondary-bg-active)) padding-box,
+    linear-gradient(var(--ds-btn-secondary-rim-active), var(--ds-btn-secondary-rim-active)) border-box;
+  box-shadow: inset 0 0 10px var(--ds-btn-secondary-shadow-in-active);
+}
+.ds-btn:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Primary (Open Blue) ─────────────────────────────────────────── */
+.ds-btn-primary {
+  background:
+    linear-gradient(var(--ds-accent), var(--ds-accent)) padding-box,
+    linear-gradient(to bottom, var(--ds-btn-primary-rim-a), var(--ds-btn-primary-rim-b)) border-box;
+  color: var(--ds-text-on-accent);
+  box-shadow:
+    inset 0 0 6px color-mix(in srgb, var(--ds-btn-primary-glow) 20%, transparent),
+    0 1px 3px var(--ds-btn-primary-shadow-drop);
+}
+.ds-btn-primary:hover {
+  background:
+    linear-gradient(var(--ds-accent-hover), var(--ds-accent-hover)) padding-box,
+    linear-gradient(to bottom, var(--ds-btn-primary-rim-hover-a), var(--ds-btn-primary-rim-hover-b)) border-box;
+  box-shadow:
+    inset 0 0 8px color-mix(in srgb, var(--ds-btn-primary-glow) 10%, transparent),
+    0 1px 3px var(--ds-btn-primary-shadow-drop);
+}
+.ds-btn-primary:active {
+  transform: translateY(1px);
+  background:
+    linear-gradient(var(--ds-accent), var(--ds-accent)) padding-box,
+    linear-gradient(var(--ds-btn-primary-rim-active), var(--ds-btn-primary-rim-active)) border-box;
+  box-shadow: inset 0 0 10px color-mix(in srgb, var(--ds-btn-primary-glow) var(--ds-btn-primary-glow-active), transparent);
+}
+
+/* ── Secondary on tinted surface (.on-tint) — buttons.html
+   Add to a default-tier .ds-btn when the ground is not white. Its white fill
+   would otherwise read as a hole in the tint. */
+.ds-btn.on-tint {
+  background:
+    linear-gradient(var(--ds-surface-muted), var(--ds-surface-muted)) padding-box,
+    linear-gradient(to bottom, var(--ds-grey-25), var(--ds-grey-55)) border-box;
+}
+.ds-btn.on-tint:hover {
+  background:
+    linear-gradient(var(--ds-surface-hover), var(--ds-surface-hover)) padding-box,
+    linear-gradient(to bottom, #c8c4be, var(--ds-border-strong)) border-box;
+}
+.ds-btn.on-tint:active {
+  background:
+    linear-gradient(var(--ds-surface-muted), var(--ds-surface-muted)) padding-box,
+    linear-gradient(var(--ds-border-strong), var(--ds-border-strong)) border-box;
+}
+
+/* ── On a dark or saturated field (.on-dark) — buttons.html
+   For a committed colour field, not a tint. Focus ring switches to
+   --ds-focus-ring-on-dark: the light-mode ring disappears here. */
+.ds-btn.on-dark {
+  background: none;
+  border-color: rgba(255, 255, 255, 0.65);
+  color: #fff;
+  box-shadow: none;
+}
+.ds-btn.on-dark:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #fff;
+  color: #fff;
+  box-shadow: none;
+}
+.ds-btn.on-dark:active {
+  transform: translateY(1px);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: #fff;
+  box-shadow: none;
+}
+.ds-btn.on-dark:focus-visible {
+  outline: 3px solid var(--ds-focus-ring-on-dark);
+}
+
+/* ── Destructive (.ds-btn-destructive) — buttons.html
+   Delete, withdraw, revoke, on any surface. Always pair with a
+   confirmation step. */
+.ds-btn-destructive {
+  background:
+    linear-gradient(var(--ds-danger), var(--ds-danger)) padding-box,
+    linear-gradient(to bottom, #d4453f, #8e1c1c) border-box;
+  color: #ffffff;
+  box-shadow:
+    inset 0 0 6px rgba(90, 10, 10, 0.28),
+    0 1px 3px rgba(0, 0, 0, 0.14);
+}
+.ds-btn-destructive:hover {
+  background:
+    linear-gradient(var(--ds-danger), var(--ds-danger)) padding-box,
+    linear-gradient(to bottom, #e0605a, #a52626) border-box;
+  color: #ffffff;
+  box-shadow:
+    inset 0 0 8px rgba(90, 10, 10, 0.10),
+    0 1px 3px rgba(0, 0, 0, 0.14);
+}
+.ds-btn-destructive:active {
+  transform: translateY(1px);
+  background:
+    linear-gradient(var(--ds-danger), var(--ds-danger)) padding-box,
+    linear-gradient(#8e1c1c, #8e1c1c) border-box;
+  box-shadow: inset 0 0 10px rgba(90, 10, 10, 0.42);
+}
+
+/* ── Disabled — buttons.html
+   Flat neutral fill, not reduced opacity: opacity dims border and label
+   by the same amount and can render a light fill invisible. Both
+   :disabled and .is-disabled, because <a> cannot take the attribute —
+   an <a> also needs its href removed and aria-disabled set. */
+.ds-btn:disabled,
+.ds-btn[aria-disabled="true"],
+.ds-btn.is-disabled,
+.ds-btn:disabled:hover,
+.ds-btn[aria-disabled="true"]:hover,
+.ds-btn.is-disabled:hover,
+.ds-btn:disabled:active,
+.ds-btn[aria-disabled="true"]:active,
+.ds-btn.is-disabled:active {
+  background: color-mix(in srgb, var(--ds-text) 8%, transparent);   /* a wash, so the flat fill shows on every ground in both themes */
+  border-color: transparent;
+  color: var(--ds-text-muted);
+  box-shadow: none;
+  transform: none;
+  cursor: not-allowed;
+}
+
+/* ── Text button (.ds-btn-text) — the quiet third tier — buttons.html
+   Link Blue but NEVER underlined: it is a control, not a link. Hover is
+   a background wash, the same feedback the other tiers give. */
+.ds-btn-text {
+  background: none;
+  border-color: transparent;
+  box-shadow: none; /* DESIGN-POLICIES, Buttons: no shadow on tertiary/text-only */
+  color: var(--ds-btn-text-fg);
+  min-width: 0;
+  padding: 0.715em 0.715em;
+}
+.ds-btn-text:hover {
+  background: var(--ds-btn-text-bg-hover);
+  color: var(--ds-btn-text-fg-hover);
+}
+.ds-btn-text:active {
+  transform: translateY(1px);
+  background: var(--ds-btn-text-bg-active);
+  color: var(--ds-btn-text-fg-hover);
+}
+.ds-btn-text:disabled,
+.ds-btn-text.is-disabled {
+  color: var(--ds-text-disabled);
+  background: none;
+  cursor: not-allowed;
+}
+
+/* ── Quiet destructive (.ds-btn-text.ds-btn-destructive) — buttons.html
+   The text tier in the danger colour: a remove action in a table row or a
+   toolbar, where a filled red on every row would be alarm rather than
+   information. Same confirmation rule as the filled tier. */
+.ds-btn-text.ds-btn-destructive {
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+  color: var(--ds-danger-fg);
+}
+.ds-btn-text.ds-btn-destructive:hover {
+  background: var(--ds-danger-wash-hover);
+  color: var(--ds-danger-fg-hover);
+}
+.ds-btn-text.ds-btn-destructive:active {
+  background: var(--ds-danger-wash-active);
+  color: var(--ds-danger-fg-hover);
+  box-shadow: none;
+}
+.ds-btn-text.ds-btn-destructive:disabled,
+.ds-btn-text.ds-btn-destructive.is-disabled {
+  background: none;
+  color: var(--ds-danger-disabled-fg);
+}
+
+/* ── Icon-only control (.ds-btn-icon) — buttons.html
+   A shape modifier, not a tier: compose it with one. Square by
+   aspect-ratio so it stays exactly as tall as a labelled button beside
+   it. The accessible name is REQUIRED — .is-sr-only text, because the
+   icon is aria-hidden and the control would otherwise announce as
+   "button" and nothing more. */
+.ds-btn-icon {
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0.715em;
+  gap: 0;
+  flex-shrink: 0;
+}
+.ds-btn-icon svg {
+  width: 1.15em;
+  height: 1.15em;
+  stroke: currentColor;
+  fill: none;
+  pointer-events: none;  /* clicks land on the button, never on a path */
+}
+
+/* ── The close control (.ds-close) — buttons.html
+   One control for every host: alert, popover, announcement band, figure
+   viewer, both surfaces. Hosts supply POSITION only.
+   Standalone rather than a .ds-btn variant because the internal stylesheet
+   names its buttons .btn-*, so a close built on .ds-btn could not be the
+   same control there.
+   color: inherit — one rule serves four alert palettes and dark chrome.
+   The accessible name is REQUIRED (.is-sr-only); the Lucide x is
+   aria-hidden. Never the × character: the icon policy allows one icon
+   language, and on arXiv × is the multiplication sign. */
+.ds-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  /* A <button> takes the UA's own font size unless told otherwise, and that
+     size does not follow the reader's setting — so the em box below would be
+     pinned to it. Stating the size is what lets the box scale. */
+  font-size: 1rem;
+  width: 2em;
+  height: 2em;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.ds-close svg {
+  width: 1.15em;
+  height: 1.15em;
+  stroke: currentColor;
+  stroke-width: 2.5;   /* the attribute says 2; at this size that is 1.3px and reads as thin */
+  fill: none;
+  pointer-events: none;  /* clicks land on the button, never on a path */
+}
+.ds-close:hover {
+  /* A wash mixed from the host's own foreground, so one rule works on
+     white, on the announcement's pale blue, and on all four alert
+     palettes without the control knowing which it is on. */
+  /* One flat wash for every host. Mid-grey at low alpha darkens a light
+     ground and lightens a dark one, so the same value reads on white, on the
+     announcement band, on all four alert palettes and on dark chrome.
+     color-mix(in srgb, currentColor 10%, transparent) would tint the wash
+     toward each host's own foreground, which is marginally prettier and was
+     tested side by side against this on all seven surfaces: the difference is
+     barely visible, and it costs a second CSS feature plus a fallback
+     declaration for the browsers without it. Not worth it. */
+  background: rgba(128, 128, 128, 0.18);
+}
+.ds-close:active {
+  background: rgba(128, 128, 128, 0.30);
+}
+.ds-close:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+}
+
+/* TOOLTIP  (.ds-tooltip) — forms.html
+   A short explanation attached to a control, shown on hover and on focus.
+   Borrows the popover's material so the two read as one family; it is the
+   lighter of the pair — no title, no close button, and it never holds
+   content that exists nowhere else.
+   WCAG 1.4.13 is the whole design, and it is what most hover bubbles fail:
+     hoverable    the gap between control and bubble is the tooltip's own
+                  padding, not a margin, so the pointer never crosses dead
+                  space and lose it on the way in
+     dismissible  Escape closes it WITHOUT moving focus
+     persistent   it stays while hovered or focused; no timer, and a pointer
+                  twitch does not dismiss it
+   Opens downward and toward the inline end. Upward collides with sticky chrome
+   near the top of a page; a host sitting near the trailing edge instead adds
+   .ds-tooltip--end so the bubble runs back the other way.
+   The host supplies aria-describedby pointing at .ds-tooltip; the tooltip is
+   never the accessible NAME, because a name that only appears on hover is a
+   name most people never get. */
+.ds-tooltip-host {
+  position: relative;
+  display: inline-flex;
+}
+.ds-tooltip {
+  display: none;
+  position: absolute;
+  top: 100%;
+  inset-inline-start: 0;
+  z-index: 200;
+  padding-top: 6px;   /* the gap, as hoverable padding rather than margin */
+}
+.ds-tooltip-body {
+  display: block;
+  width: max-content;
+  max-width: 15rem;
+  padding: var(--ds-space-2) 0.85em;
+  background: var(--ds-tint-accent);
+  border: 1px solid var(--ds-accent-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  font-family: var(--ds-font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--ds-text);
+}
+/* Shown on hover or focus of the host, with no JavaScript. Escape still
+   needs a listener — that is the one part CSS cannot do. */
+.ds-tooltip--end {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+.ds-tooltip-host:hover > .ds-tooltip,
+.ds-tooltip-host:focus-within > .ds-tooltip { display: block; }
+/* Escape sets [hidden], and this has to beat "still hovering" — so it needs
+   to MATCH the specificity of the rules above (:hover and :focus-within each
+   count as a class, making those 0-3-0) and come after them. Ordering and an
+   equal-weight selector, rather than !important. */
+.ds-tooltip-host > .ds-tooltip[hidden] { display: none; }
+
+/* LABEL WITH A TOOLTIP  (.ds-label-row) — forms.html */
+.ds-label-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  margin-bottom: var(--ds-space-2);
+}
+.ds-label-row > .ds-label { margin-bottom: 0; }
+.ds-label-row .ds-btn-icon { padding: 0.25em; }   /* 26px, clears the 24px target */
+
+/* PAGER  (.ds-pagination) — pager.html
+   Moving through a set one item at a time: a moderation queue, a run of
+   submissions, anything where each item has its own screen and the reader
+   works through them in order.
+   Numbered pages (.ds-pagination-pages) are for a long list split across
+   pages, where each page has its own address.
+   The position must be a live region: a reader who cannot see the counter
+   otherwise has no way to know the Next they just pressed did anything.
+   Ends disable rather than disappear (DESIGN-POLICIES, Content and
+   interaction), so the shape of the control does not change under them. */
+.ds-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  flex-wrap: wrap;
+  container-type: inline-size;
+}
+/* Narrow: the position takes its own line, and numbered pages keep the arrows
+   and hide the words Previous and Next, which stay in the accessible name. */
+@container (max-width: 30rem) {
+  .ds-pagination > .ds-pagination-position,
+  .ds-pagination > .ds-filter { flex: 1 0 100%; margin: 0; }
+  .ds-pagination .ds-pagination-pages li, .ds-pagination .ds-pagination-pages a { min-width: 1.625rem; }
+  .ds-pagination > .ds-pagination-pages { flex: 1 1 0; min-width: 0; justify-content: center; }
+  .ds-pagination:has(.ds-pagination-pages) .ds-pagination-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .ds-pagination:has(.ds-pagination-pages) > .ds-btn { padding-inline: var(--ds-space-1); }
+}
+/* Above the content it steps through: twice the 12px that holds an actions row to its table. */
+.ds-pagination:has(+ .ds-btn-group, + .ds-table-scroll, + .ds-table) { margin-bottom: var(--ds-space-6); }
+.ds-pagination-position {
+  font-family: var(--ds-font-condensed);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ds-text-muted);
+  white-space: nowrap;
+  /* The counter takes the slack, so Previous and Next stay at the end of the
+     row and do not move as the number grows. */
+  flex: 1;
+  font-variant-numeric: tabular-nums;
+}
+.ds-pagination .ds-btn { min-width: 0; }
+/* Results per page comes after the controls, so they stay together; when
+   there is no room it takes the end of the next line. */
+.ds-pagination > .ds-filter { margin-inline-start: auto; padding-inline-start: var(--ds-space-4); }
+.ds-pagination-pages {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--ds-font-sans);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-text-muted);
+}
+.ds-pagination-pages li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  min-height: 2rem;
+  margin: 0;
+}
+.ds-pagination-pages a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  min-height: 2rem;
+  padding: 0 var(--ds-space-1);
+  color: var(--ds-text-muted);
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+.ds-pagination-pages a:visited { color: var(--ds-text-muted); }
+.ds-pagination-pages a:hover { color: var(--ds-text); background: var(--ds-tint-warm); }
+.ds-pagination-pages a:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: -3px;
+}
+.ds-pagination-pages a[aria-current="page"] {
+  color: var(--ds-text);
+  text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;
+  background: var(--ds-tint-accent);
+  border-color: var(--ds-accent-border);
+}
+
+/* SWITCH  (.ds-switch) — forms.html
+   A boolean that applies the moment it is flipped. If the change needs a
+   Save step it is a checkbox in a form, not this.
+   Called switch, not toggle: "toggle" already means the show/hide control
+   in this system, and role="switch" is what makes a screen reader say
+   "on"/"off" rather than "checked".
+   Built on a real <input type="checkbox" role="switch">: native keyboard
+   behaviour and state, works with no JavaScript, and the track and thumb
+   are decoration. The visible label must be inside the <label>. */
+.ds-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  cursor: pointer;
+  user-select: none;
+}
+.ds-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.ds-switch-track {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+  background: var(--ds-grey-25);
+  box-shadow: inset 0 0 0 1px var(--ds-grey-80);   /* the edge carries the 3:1; fixed, like the thumb */
+  border-radius: 999px;
+  flex-shrink: 0;
+  transition: background 0.18s;
+}
+.ds-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 13px;
+  height: 13px;
+  background: var(--ds-repository-brown);
+  border-radius: 50%;
+  transition: transform 0.18s;
+}
+.ds-switch input:checked + .ds-switch-track { background: var(--ds-accent); }
+.ds-switch input:checked + .ds-switch-track .ds-switch-thumb { transform: translateX(13px); }
+.ds-switch input:focus-visible + .ds-switch-track {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+}
+.ds-switch input:disabled + .ds-switch-track { background: var(--ds-text-disabled); cursor: not-allowed; }
+.ds-switch:has(input:disabled) { cursor: not-allowed; color: var(--ds-text-disabled); }
+
+/* Weight 600 in BOTH states, matching .ds-panel-label — the switch's label
+   is a label like any other. It must not change weight with the state: a
+   bolder face is a wider face, so the label grows about 1.7px on toggle and
+   shoves every control after it along the row. State is carried by the
+   thumb's position, the track colour and this colour; the weight was a
+   fourth cue that cost layout stability, which is a bad trade.
+   The general rule: never signal state with anything that changes text
+   metrics — weight, size, family, letter-spacing. Colour is free. */
+.ds-switch-label {
+  font-family: var(--ds-font-condensed);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ds-text-muted);
+  transition: color 0.18s;
+}
+.ds-switch input:checked ~ .ds-switch-label { color: var(--ds-text); }
+
+/* The thumb's travel is the only thing here that carries meaning by
+   moving — state is also in the colour and in the label weight, so
+   removing the motion loses nothing. */
+@media (prefers-reduced-motion: reduce) {
+  .ds-switch-track, .ds-switch-thumb, .ds-switch-label { transition: none; }
+}
+
+/* DIVIDER  (.ds-divider) — layout-patterns.html
+   A rule between things. Reach for it only when whitespace has already
+   failed: the system groups with space first, and a line drawn where
+   space would have done adds noise without adding meaning.
+   <hr> is the preferred form and needs no class — it carries
+   role="separator" for free. .ds-divider is for the cases where an <hr>
+   cannot go: inside a flex row, or on an element that already exists.
+   It is decorative, so it is aria-hidden. */
+.ds-divider {
+  border: 0;
+  border-top: 1px solid var(--ds-border);
+  margin-block: var(--ds-space-8);
+  margin-inline: 0;
+}
+/* Between items in a group rather than between sections. */
+.ds-divider--tight { margin-block: var(--ds-space-block); }
+/* Flush: the caller owns the spacing, for a divider inside a component
+   that already has its own rhythm. */
+.ds-divider--flush { margin-block: 0; }
+
+/* Vertical, for a row of controls — the separator between nav groups in
+   the site header is this. Sized in em so it tracks the row's own text
+   rather than needing a height per context. */
+.ds-divider--vertical {
+  border-top: 0;
+  border-left: 1px solid var(--ds-border);
+  align-self: stretch;
+  min-height: 1.25em;
+  margin-block: 0;
+  margin-inline: var(--ds-space-1);
+}
+
+/* CARD  (.ds-card / .ds-card--data / .ds-card-grid) — cards.html
+   Anything that groups related content on the page canvas. Padding comes
+   from the scale; a card needing different room sets its own padding
+   rather than becoming a different card. */
+
+.ds-card {
+  position: relative;   /* a margin note measures from the card */
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: 8px;
+  padding: var(--ds-space-4) var(--ds-space-6);
+}
+
+/* A card owns its internal rhythm, the same way .ds-container owns the space
+   between regions: the padding is the space at the edges, so the first and
+   last children need none of their own. Written with :where() so a page that
+   genuinely needs different type inside a card overrides it without a
+   specificity fight. */
+.ds-card + .ds-card { margin-top: var(--ds-space-4); }   /* stacked cards keep a gap */
+.ds-card-grid > .ds-card { margin-top: 0; }             /* side by side, the grid's gap does it */
+.ds-card > :first-child { margin-block-start: 0; }
+.ds-card > :last-child  { margin-block-end: 0; }
+:where(.ds-card) > h3 { font-size: 1rem; margin: 0 0 var(--ds-space-tight); }   /* the card's own title; prose inside a card keeps its rhythm */
+:where(.ds-card) > p { color: var(--ds-text-muted); }   /* the card's own copy; a component inside keeps its colour */
+
+/* DATA CARD (.ds-card--data) — cards.html
+   One record's facts as label and value pairs: a <dl> inside the card, one
+   <div> per pair. The ground is tinted and the top edge takes the accent, so
+   it reads as reference rather than content; the accent follows .ds-internal
+   on a parent, which is the only thing that changes between surfaces. */
+.ds-card--data {
+  background: var(--ds-tint-warm);
+  border-top: 4px solid var(--ds-accent);
+  padding: 0;
+}
+.ds-card--data > dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));   /* pairs sit side by side when there is room, one column when there is not */
+  gap: 1px;
+  background: var(--ds-border);   /* shows only in the gaps: a hairline between pairs in both directions, none at the edges */
+}
+.ds-card--data > dl > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  background: var(--ds-tint-warm);
+}
+.ds-card--data > dl > div:last-child { grid-column-end: -1; }   /* the last pair fills its row, so no gap is left open */
+.ds-card--data dt {
+  font-family: var(--ds-font-condensed);
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ds-text-muted);
+}
+.ds-card--data dd {
+  margin: 0;
+  font-family: var(--ds-font-mono);
+  font-size: 0.75rem;
+  color: var(--ds-text);
+  overflow-wrap: anywhere;   /* an identifier or address wraps inside the card instead of widening it */
+}
+
+/* An accordion stack that ends a card: the card's own edge closes the last
+   disclosure, so its lower rule is dropped; with content below, the rule
+   stays. A disclosure inside another's body is the second level: indented,
+   and its label a step smaller (progressive-disclosure.html). */
+.ds-card > .ds-acc-stack:last-child > .ds-acc:last-child { border-bottom: 0; }
+.ds-acc-body .ds-acc { margin-left: var(--ds-space-4); }
+.ds-acc-body .ds-acc > summary { font-size: 0.9em; }
+
+/* Stat card: one number with its label. */
+.ds-card--stat { background: var(--ds-tint-warm); }
+/* Stat cards are narrow, so their grid takes a smaller minimum and the cards fill the row. */
+.ds-card-grid:has(> .ds-card--stat) { grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); }
+.ds-stat-value {
+  margin: 0;
+  font-family: var(--ds-font-sans);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-text);
+}
+.ds-stat-context {
+  margin: var(--ds-space-1) 0 0;
+  font-size: 0.8125rem;
+  color: var(--ds-text-muted);
+}
+
+/* Cards side by side. The count of columns follows the room rather than a
+   breakpoint: the grid drops to one column when a card can no longer hold its
+   minimum, and nothing has to be told. auto-fill, not auto-fit: an empty
+   column stays, so a lone card keeps the width of its neighbours instead of
+   stretching across the row. */
+.ds-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: var(--ds-space-block);
+}
+
+
+/* TABLE  (.ds-table) — tables.html
+   One table for both surfaces. The header row comes from the markup: a
+   <thead> draws it, and a <th> in the body is a row header, set as a cell. */
+.ds-table {
+  width: 100%;
+  border-collapse: separate;   /* collapse draws half the outer border outside the box, where .ds-table-scroll clips it */
+  border-spacing: 0;
+  font-size: 0.8125rem;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-strong);
+  border-radius: 8px;
+  overflow: hidden;      /* so the corners actually clip the header row */
+}
+/* Directly inside a card, the card is the frame. */
+.ds-card > .ds-table,
+.ds-card > .ds-table-scroll > .ds-table { border: none; border-radius: 0; }
+.ds-table thead th {
+  text-align: left;
+  font-family: var(--ds-font-condensed);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ds-text);
+  padding: 9px 14px;
+  background: var(--ds-tint-warm);
+  border-bottom: 1px solid var(--ds-border);
+  white-space: nowrap;
+}
+.ds-table td,
+.ds-table tbody th {
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--ds-surface-muted);
+  vertical-align: top;
+  color: var(--ds-text);
+}
+.ds-table tbody th { font-weight: 600; background: var(--ds-tint-warm); }
+.ds-table tbody tr:last-child > * { border-bottom: none; }
+.ds-table tbody tr:hover > * { background: var(--ds-surface-hover); }
+/* The row's checkbox carries the selection; the tint is never the only signal. */
+.ds-table tbody tr.is-selected > * { background: var(--ds-tint-accent); }
+.ds-table tbody tr.hidden { display: none; }
+
+/* Striped rows. The hover is a wash of the text colour, because the stripe
+   already uses the plain hover colour. */
+.ds-table--striped tbody tr:nth-child(even) > * { background: var(--ds-tint-warm); }
+.ds-table--striped tbody tr:hover > * { background: color-mix(in srgb, var(--ds-text) 7%, var(--ds-surface)); }
+.ds-table--striped tbody tr.is-selected > * { background: var(--ds-tint-accent); }
+
+/* A row-selection checkbox has no label to lend it a target, so it takes 24px. */
+.ds-table td:has(> input[type="checkbox"]),
+.ds-table th:has(> input[type="checkbox"]) { min-width: 24px; }
+.ds-table input[type="checkbox"] {
+  accent-color: var(--ds-link);
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* The bulk bar's count: "2 selected", quieter than the actions beside it. */
+.ds-bulk-count { font-size: 0.75rem; color: var(--ds-text-muted); }
+
+/* FILTER SELECT  (.ds-filter) — tables.html */
+/* In a button group, a filter takes the row's far end. */
+.ds-btn-group > .ds-filter { margin-inline-start: auto; }
+/*
+ * Minimal underline-only <select> for toolbar filters.
+ * Used inline with a <label> in a .ds-filter wrapper.
+ *
+ * Usage:
+ *   <div class="ds-filter">
+ *     <label for="…">Show:</label>
+ *     <select id="…">…</select>
+ *   </div>
+ */
+
+.ds-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--ds-text-muted);
+}
+
+.ds-filter label {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ds-filter select {
+  /* A filter is a control, so it carries the 24px floor even though its type
+     is small — the padding grows the hit area without growing the text. */
+  min-height: 24px;
+  font-family: inherit;
+  font-size: 0.75rem;
+  color: var(--ds-text);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--ds-border-strong); /* 3.61:1 on white ✓ */
+  border-radius: 0;
+  padding: 1px 20px 1px 2px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: var(--ds-select-arrow);
+  background-repeat: no-repeat;
+  background-position: right 3px center;
+  background-size: 10px 7px;
+}
+
+.ds-filter select:focus-visible {
+  outline: 2px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* FILTER BAR  (.ds-filter-bar) — tables.html
+   A <form method="get"> that narrows a whole view. Its choices go in the
+   address, so a filtered view can be linked. */
+.ds-filter-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(10rem, 100%), 1fr));
+  align-items: end;
+  gap: var(--ds-space-4);
+  padding: var(--ds-space-4);
+  margin: 0 0 var(--ds-space-6);
+  background: var(--ds-tint-warm);
+  border-radius: 8px;
+}
+.ds-filter-bar .ds-field { max-width: none; min-width: 0; margin: 0; }
+/* Each filter is a cell in the bar's columns, as many as fit the width. */
+.ds-filter-bar-group { display: contents; }
+/* Settings start a new row, lined up with the columns above; the actions
+   take the last column of that row. */
+.ds-filter-bar-group--settings {
+  display: grid;
+  grid-column: 1 / -2;
+  grid-template-columns: repeat(auto-fill, minmax(min(10rem, 100%), 1fr));   /* the bar's own columns: same formula, one fewer track */
+  gap: var(--ds-space-4);
+  align-items: end;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.ds-filter-bar-group > legend:not(.is-sr-only) { grid-column: 1 / -1; margin: 0; padding: 0; }
+.ds-filter-bar-actions {
+  grid-column: -2 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ds-space-tight);
+}
+
+/* A toolbar row directly above a table keeps a gap from it. */
+.ds-btn-group:has(+ .ds-table, + .ds-table-scroll) { margin-bottom: var(--ds-space-3); }
+
+/* A table wider than its container scrolls inside this wrapper; the page never scrolls sideways. */
+.ds-table-scroll { overflow-x: auto; }
+
+/* A numeric column: numbers align on the right and their digits line up. */
+.ds-table .ds-num { text-align: end; font-variant-numeric: tabular-nums; }
+
+/* Below the table: a row count or pagination. */
+.ds-table-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 9px 14px;
+  font-size: 0.75rem;
+  color: var(--ds-text-muted);
+  border-top: 1px solid var(--ds-border);
+}
+
+/* Sortable column: a <button class="sortable"> in the <th>, .sort-asc or
+   .sort-desc on the <th>, and a <span class="sort-arrow"> for the direction. */
+.ds-table thead th .sortable {
+  all: unset;   /* a button that looks like the header text it replaces */
+  display: inline;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.1s;
+}
+.ds-table thead th .sortable:hover { color: var(--ds-text); }
+.ds-table thead th .sortable:focus-visible {
+  outline: 2px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.sort-arrow {
+  display: inline-block;
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-left: 3px;
+  overflow: hidden;
+  font-size: 0;   /* the glyph in the markup is for a page with no stylesheet */
+  vertical-align: -0.15em;
+  color: var(--ds-text-muted);
+  background: currentColor;
+  --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m21 16-4 4-4-4'/%3E%3Cpath d='M17 20V4'/%3E%3Cpath d='m3 8 4-4 4 4'/%3E%3Cpath d='M7 4v16'/%3E%3C/svg%3E");
+  -webkit-mask: var(--ds-sort-icon) center / contain no-repeat;
+  mask: var(--ds-sort-icon) center / contain no-repeat;
+}
+.ds-table th.sort-asc .sort-arrow,
+.ds-table th.sort-desc .sort-arrow { color: var(--ds-text); }
+.ds-table th.sort-asc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3Cpath d='M12 19V5'/%3E%3C/svg%3E"); }
+.ds-table th.sort-desc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14'/%3E%3Cpath d='m19 12-7 7-7-7'/%3E%3C/svg%3E"); }
+@media (forced-colors: active) { .sort-arrow { background: CanvasText; } }
+
+
+/* ── Button group (.ds-btn-group) ─────────────────────────────────────
+   A set of related buttons. The system had no such component, so every page
+   invented one — nine of them across the docs alone (.live-row, .form-actions,
+   .action-group, .repeat-row, .btn-pair, .action-bar, .state-cell and more),
+   at three different gaps. And a set with no container at all gets whatever
+   the HTML whitespace between the tags happens to be, which is narrower than
+   any of them and looks like a bug because it is one.
+
+   Two buttons side by side are siblings that belong together, so the gap is
+   --ds-space-tight, the same as any other such pair. Nothing about buttons makes
+   their spacing special; what was missing was somewhere to put it. */
+.ds-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-tight);
+}
+
+/* Stacked rather than side by side — same relationship, other axis. */
+.ds-btn-group--stack {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* The action area at the end of a form: primary last, hard right. */
+.ds-btn-group--end { justify-content: flex-end; }
+/* One choice at each end — "Back" against "Continue" in a stepped form.
+   Only for a genuine pair going opposite ways; three buttons split like this
+   leaves the middle one belonging to neither side. */
+.ds-btn-group--split { justify-content: space-between; }
+
+
+/* ── Icons inside any button ────────────────────────────────────────
+   Sized in em so an icon tracks its button's font-size; display:block
+   kills the inline baseline gap; flex:none stops a long label from
+   squashing it. Stroke icons inherit the button's text color. */
+.ds-btn svg {
+  width: 1em;
+  height: 1em;
+  display: block;
+  flex: none;
+  stroke-width: 2.5;   /* at text size a 2 stroke draws about 1px */
+}
+
+
+/* TAGS  (.ds-tag) — tags.html
+   Uppercase comes from text-transform, never from typed capitals.
+   CATEGORY NAMES ALWAYS USE .ds-tag--keep-case: a category is copied,
+   not restyled. A tag is a label, not a link — if it navigates, it is a
+   link that happens to look like this. */
+.ds-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-gap-glyph);
+  min-height: 24px;
+  padding: 0.17em 1em;
+  border-radius: 999px;
+  font-family: var(--ds-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-decoration: none;
+  background: var(--ds-tint-warm);
+  border: 1px solid var(--ds-border);
+  color: var(--ds-text-muted);
+}
+.ds-tag--keep-case { text-transform: none; letter-spacing: 0; }
+/* Rectangular, for a dense row where a pill's side padding costs column width. */
+.ds-tag--rectangle { border-radius: 3px; padding-inline: 0.55em; }
+
+.ds-tag--info    { background: var(--ds-info-bg);     border-color: var(--ds-info-border);    color: var(--ds-info-fg); }
+.ds-tag--success { background: var(--ds-success-bg);  border-color: var(--ds-success-border); color: var(--ds-success-fg); }
+.ds-tag--warning { background: var(--ds-warning-bg);  border-color: var(--ds-warning-border); color: var(--ds-warning-fg); }
+.ds-tag--error   { background: var(--ds-error-bg);    border-color: var(--ds-error-border);   color: var(--ds-error-fg); }
+
+/* Interactive tags only. A static tag takes no hover and needs no ring. */
+a.ds-tag:hover, button.ds-tag:hover { background: var(--ds-accent-wash); color: var(--ds-link-hover); }
+a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
+
+/* Remove control, for tags the user can take off. Inherits the tag's color
+   so it never becomes a second signal; the accessible name comes from the
+   consumer — an .is-sr-only span ("Remove cs.AI") beside the aria-hidden
+   glyph, never the glyph itself. */
+.ds-tag-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* The glyph is the size of the tag's own type; the target is not. It is
+     grown to 24px and pulled back with a negative block margin, so the tag
+     keeps its shape. Same technique as .ds-anchor — a small control is still
+     a control. */
+  width: 24px;
+  height: 24px;
+  margin-block: -12px;
+  margin-right: -6px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  color: inherit;
+  opacity: 0.65;
+  font-size: 0.8125rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.ds-tag-remove:hover { opacity: 1; background: rgba(0, 0, 0, 0.08); }
+.ds-tag-remove:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 1px; opacity: 1; }
+
+/* A badge nested inside a tag — says where the tag came from, without
+   competing with it. The only pill-inside-a-pill in the system. */
+.ds-tag-note {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1em 0.55em;
+  border-radius: 999px;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  color: var(--ds-text-muted);
+  font-family: var(--ds-font-sans);
+  font-size: 0.625rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+/* Provenance that is machine-set rather than a person's name. Quieter,
+   because "auto" is a fact about the row and a username is someone to ask. */
+.ds-tag-note--auto { color: var(--ds-text-disabled); }
+/* Inside an error tag the note has to come off the tinted ground rather than
+   the white one it assumes. Mixed from the host's own colour so the rule does
+   not need to know which status it is sitting in. */
+.ds-tag--error .ds-tag-note {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: var(--ds-error-border);
+  color: var(--ds-error-fg);
+}
+
+
+/* FORM FIELDS  (.ds-field / .ds-label / .ds-input / .ds-hint) — forms.html
+   Label above the control, always. Accessibility contract, not optional:
+   a real <label for> on every control; the error linked with
+   aria-describedby; required marked on the control with required +
+   aria-required. The <select> keeps its native arrow on every platform
+   except where .ds-select draws one — see below. */
+.ds-field { margin-bottom: var(--ds-space-4); }
+/* ── Field width and flow — forms.html
+   Width comes from the input type, so a date or a number is already
+   narrow. .ds-field--short and --full are the two overrides, for the
+   case type="text" cannot infer: a four-digit year and a paper title
+   are the same type. */
+
+.ds-input { width: 100%; }
+
+/* Half is roughly 55 characters at the content measure: comfortable for a name,
+   an email, a code. */
+:where(.ds-field:has(.ds-input)) { max-width: 50%; }
+
+/* Full: multi-line by definition; multi-select needs room to show more than one
+   selection; a URL is long and has to be checkable at a glance. */
+:where(.ds-field:has(textarea.ds-input),
+       .ds-field:has(select[multiple].ds-input),
+       .ds-field:has(.ds-input[type="url"])) { max-width: 100%; }
+
+/* Narrow: fixed format, and the browser's own picker has an intrinsic size. */
+:where(.ds-field:has(.ds-input[type="date"]),
+       .ds-field:has(.ds-input[type="time"])) { max-width: max-content; }
+
+/* The two overrides. type="text" covers a four-digit year and a paper title
+   alike, which is the one case the element cannot tell apart. */
+.ds-field--short { max-width: 11rem; }
+.ds-field--full  { max-width: 100%; }
+
+/* ── .ds-form: fields flow, they do not merely stack ──
+   A wrapping flex row, so two half-width fields share a line and a full-width
+   one takes its own. Order in the DOM is order on the screen, so tab order and
+   screen-reader order still match what a sighted reader sees — the usual
+   objection to multi-column forms does not apply.
+
+   Opt in with .ds-form. A plain <form> still stacks, so nothing that exists
+   today changes shape. */
+.ds-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  column-gap: 24px;
+  /* A query container, so the collapse below responds to the space this form
+     actually has rather than to the size of the window. A form in a sidebar,
+     a modal or one column of a two-column page is narrow on a wide screen —
+     a media query cannot see that, and would leave half-width fields at
+     roughly 130px with no way to notice. */
+  container-type: inline-size;
+}
+
+/* EVERY default here is inside :where(), including the base — so they are all
+   specificity zero and the last matching one wins. A base rule at ordinary
+   specificity would beat the :where() ones that follow it, which is exactly
+   the bug this replaces: fields sized to their content instead of to their
+   type, because `.ds-form > .ds-field` outranked every default below it. */
+:where(.ds-form > *) { flex: 0 1 auto; }
+
+/* Anything that is not a field takes the whole row: a checkbox, an action bar,
+   a heading. None of them share a line with a text input. */
+:where(.ds-form > :not(.ds-field)) { flex-basis: 100%; }
+
+:where(.ds-form > .ds-field) { flex-basis: calc(50% - 12px); max-width: none; }
+:where(.ds-form > .ds-field:has(textarea.ds-input),
+       .ds-form > .ds-field:has(select[multiple].ds-input),
+       .ds-form > .ds-field:has(.ds-input[type="url"])) { flex-basis: 100%; }
+:where(.ds-form > .ds-field:has(.ds-input[type="date"]),
+       .ds-form > .ds-field:has(.ds-input[type="time"])) { flex-basis: auto; }
+
+/* Overrides at ordinary specificity, so they beat every default above. */
+.ds-form > .ds-field--short { flex-basis: 11rem; max-width: 11rem; }
+.ds-form > .ds-field--full  { flex-basis: 100%; max-width: none; }
+
+/* Below this, half is around 170px — too narrow to type in — so every field
+   takes the whole row. .ds-field--short deliberately does not collapse: 11rem
+   is still comfortable on a phone, and a year field stretched across a small
+   screen is the same mismatch the research warns about. */
+/* Container query first: this is the one that matters, because it measures the
+   form rather than the viewport. */
+@container (max-width: 40rem) {
+  :where(.ds-form > .ds-field) { flex-basis: 100%; }
+}
+
+/* And a viewport fallback for fields NOT inside a .ds-form, which have no query
+   container to measure. */
+@media (max-width: 40rem) {
+  :where(.ds-field) { max-width: 100%; }
+}
+
+.ds-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ds-text);
+  margin-bottom: var(--ds-space-2);
+}
+/* Mark the OPTIONAL fields, in words. Required fields carry no visual marker;
+   `required` + aria-required on the control carry the fact, which is what
+   assistive technology announces. See DESIGN-POLICIES, Accessibility.
+
+   The word goes inside the visible <label>, never in aria-label or title, so
+   it joins the accessible name for free. */
+.label-optional {
+  margin-left: 0.3rem;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 0.875em;
+  color: var(--ds-text-muted);
+}
+
+.ds-input {
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--ds-text);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-strong);   /* 3.61:1 — a real boundary, not decoration */
+  border-radius: 6px;
+  padding: 0.64em 0.786em;
+}
+.ds-input:focus-visible {
+  outline: 2px solid var(--ds-focus-ring);
+  outline-offset: 1px;
+  border-color: var(--ds-focus-ring);
+}
+.ds-input:disabled,
+.ds-input[aria-disabled="true"] {
+  background: var(--ds-surface-muted);
+  color: var(--ds-text-disabled);
+  cursor: not-allowed;
+}
+.ds-input::placeholder { color: var(--ds-text-muted); opacity: 1; }
+/* display:block, not the inline-block a textarea gets by default: on a text
+   baseline it leaves a descender gap underneath, which pushes the hint or
+   error below it further from the control than the same message under an
+   <input>. */
+textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; display: block; }
+
+/* MATCHED WORDS  (<mark>) — typography.html
+   The words that matched a search. Weight as well as the wash, so the mark is
+   never colour alone. */
+.ds-page mark {
+  background: var(--ds-accent-wash);
+  color: inherit;
+  font-weight: 600;
+  padding-inline: 0.1em;
+  border-radius: 2px;
+}
+@media (forced-colors: active) { .ds-page mark { background: Mark; color: MarkText; } }
+
+/* VERSION DISPLAY  (.ds-date-row, .ds-version) — version-display.html */
+.ds-date-row {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ds-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.ds-version { font-family: var(--ds-font-mono); }
+
+/* COMPACT FORM  (.ds-form--compact, .ds-input-group) — forms.html
+   A form that is one line: one to three controls and its button. The
+   controls that make one input are joined in .ds-input-group. */
+.ds-form--compact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-2) var(--ds-space-4);
+  container-type: inline-size;
+}
+.ds-form--compact > .ds-label,
+.ds-form--compact > .field-error,
+.ds-form--compact > .field-warning,
+.ds-form--compact > .field-info { flex: 1 0 100%; margin: 0; }
+/* The controls leave room for the button and nothing else, so whatever
+   follows the button starts a new line. */
+.ds-form--compact > .ds-input-group,
+.ds-form--compact > .ds-input { flex: 1 1 calc(100% - 12rem); width: auto; min-width: 0; }
+.ds-form--compact > .ds-btn { flex: none; align-self: stretch; margin-inline-start: calc(var(--ds-space-2) - var(--ds-space-4)); }
+/* Secondary options under the row: each is a 24px box with its content
+   centred, so a checkbox and a link line up. */
+.ds-form--compact > .ds-check { margin: 0; align-items: center; }
+.ds-form--compact > .ds-check input { margin: 0; }
+.ds-form--compact > a { display: inline-flex; align-items: center; min-height: 24px; font-size: 0.875rem; }
+.ds-input-group { display: flex; }
+.ds-input-group > .ds-input { width: auto; min-width: 0; border-radius: 0; }
+.ds-input-group > .ds-input:not(select) { flex: 1 1 auto; }
+.ds-input-group > select.ds-input { flex: 0 1 auto; max-width: 50%; }
+.ds-input-group > .ds-input ~ .ds-input { margin-inline-start: -1px; }
+/* Rounded only on the outside, like a button group: the first control has no
+   control before it, the last has none after it. */
+.ds-input-group > .ds-input:not(.ds-input ~ .ds-input) { border-start-start-radius: 6px; border-end-start-radius: 6px; }
+.ds-input-group > .ds-input:not(:has(~ .ds-input)) { border-start-end-radius: 6px; border-end-end-radius: 6px; }
+/* The focused or flagged control sits above its neighbour, so its whole edge shows. */
+.ds-input-group > .ds-input:focus-visible,
+.ds-input-group > .ds-input.is-invalid { position: relative; z-index: 1; }
+@container (max-width: 26rem) {
+  .ds-form--compact > .ds-btn { flex: 1 0 100%; margin-inline-start: 0; }
+}
+
+/* Room on the right for the arrow, which renders inside the control's own
+   padding box — without it a long option label runs into it. */
+select.ds-input:not([multiple]):not([size]) {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 40px;
+  background-image: var(--ds-select-arrow);
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px 8px;
+}
+@media (forced-colors: active) {
+  select.ds-input:not([multiple]):not([size]) { -webkit-appearance: auto; appearance: auto; padding-right: 11px; background-image: none; }
+}
+
+.ds-hint {
+  margin: var(--ds-space-1) 0 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--ds-text-muted);
+}
+
+/* Rejected state. Specificity, not !important — .ds-input.is-invalid
+   already outweighs .ds-input. */
+.ds-input.is-invalid {
+  border-color: var(--ds-error-border);
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.10);
+}
+.ds-input.is-invalid:focus-visible {
+  border-color: var(--ds-error-border);
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15);
+}
+/* Warning: accepted, but the submission may be held for review. The tier that
+   was missing — everything used to be valid or rejected, with nothing in
+   between for a problem that does not block. */
+.ds-input.is-warning {
+  border-color: var(--ds-warning-border);
+  box-shadow: 0 0 0 3px rgba(232, 184, 0, 0.14);
+}
+.ds-input.is-warning:focus-visible {
+  border-color: var(--ds-warning-border);
+  box-shadow: 0 0 0 3px rgba(232, 184, 0, 0.22);
+}
+
+/* Info: the value was changed automatically and the author is being told.
+   Nothing is wrong. It gets the same ring as the other two — a bare border
+   among ringed fields disappears, and a signal nobody notices fails at the
+   only job it has. */
+.ds-input.is-info {
+  border-color: var(--ds-info-border);
+  box-shadow: 0 0 0 3px rgba(90, 130, 200, 0.14);
+}
+.ds-input.is-info:focus-visible {
+  border-color: var(--ds-info-border);
+  box-shadow: 0 0 0 3px rgba(90, 130, 200, 0.22);
+}
+
+/* Messages sit AFTER the control, not before it. Above the input they are
+   furthest from what they describe, and the control jumps down the page when
+   one appears. Each needs an id, with aria-describedby on the control. */
+.field-error,
+.field-warning,
+.field-info {
+  margin: var(--ds-space-1) 0 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+.field-error   { color: var(--ds-error-border); }
+.field-warning { color: var(--ds-warning-fg); }
+.field-info    { color: var(--ds-info-fg); }
+.field-error[hidden],
+.field-warning[hidden],
+.field-info[hidden] { display: none; }
+
+/* Several problems on one field. Ordered and numbered: the count is checkable
+   against the summary, and "the second one" has to be sayable while someone
+   works through them.
+
+   display: list-item is stated because it is easy to lose — setting
+   display:flex on an li replaces it and the marker silently disappears. */
+.field-messages {
+  margin: var(--ds-space-1) 0 0;
+  padding-left: 1.5rem;
+  list-style: decimal;
+}
+.field-messages li {
+  display: list-item;
+  margin: 4px 0;
+}
+.field-messages li::marker { font-weight: 700; }
+
+/* Checkbox / radio row. Native controls, tinted with accent-color: they
+   stay correct in dark mode, at any zoom, with the platform's own focus
+   behavior — none of which a hand-drawn box gives you. The accent follows
+   the context rule (DESIGN-POLICIES): Link Blue public, Access Lime internal. */
+.ds-check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-gap-glyph);
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+/* The box stays 16px — a 24px checkbox looks like a mistake — but the target
+   is the whole <label>, because clicking anywhere in it toggles the input. So
+   the floor goes on the label, where WCAG 2.5.8 actually measures it. */
+.ds-check { min-height: 24px; }
+.ds-check input { accent-color: var(--ds-link); width: 1em; height: 1em; margin: 2px 0 0; flex: none; }
+.ds-check input:disabled { cursor: not-allowed; }
+.ds-check input:disabled + span { color: var(--ds-text-disabled); }
+
+
+/* INLINE ACTIVE STATE  (.ds-inline-active) — progressive-disclosure.html
+   The wash on a citation chip while its popover is open. Pair it with
+   aria-expanded on the trigger: this is the visible half of one state,
+   and the attribute is the half a screen reader gets. */
+
+.ds-inline-active {
+  background: var(--ds-accent-wash);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+
+
+/* ANNOTATION TYPOGRAPHY  (.ds-annotation) — typography.html
+   Serif italic: arXiv speaking quietly beside the author's text —
+   margin footnotes, figure alt text surfaced as a note. It is a VOICE,
+   not a layout role; placement is the consumer's decision. */
+
+.ds-annotation {
+  font-family: var(--ds-font-serif);
+  font-style: italic;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--ds-text-muted);
+}
+/* Directly under a card it is that card's caption, so it sits close. */
+.ds-card + .ds-annotation { margin-top: var(--ds-space-2); }
+
+
+/* POPOVER PANEL  (.ds-popover and parts) — progressive-disclosure.html
+   position: fixed — the consumer sets top/left and must portal it to
+   <body> if the inline source has a transformed ancestor. Hidden by the
+   `hidden` attribute. Escape closes it AND returns focus to the trigger.
+   Never put content here that exists nowhere else. */
+
+.ds-popover {
+  /* Width and height are the caller's, because a popover holds content nobody
+     has measured — a bibliography entry, a footnote, a contents list. Three
+     were hand-built on the paper mockup for want of these three lines. */
+  --ds-popover-width: 22rem;
+  --ds-popover-max-height: 60vh;
+  position: fixed;
+  width: var(--ds-popover-width);
+  max-width: calc(100vw - 2rem);
+  max-height: var(--ds-popover-max-height);
+  overflow-y: auto;
+  overscroll-behavior: contain;   /* scrolling it never scrolls the page beneath */
+  z-index: 110;
+  background: var(--ds-tint-accent);
+  border: 1px solid var(--ds-accent-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  padding: 0.92em 1.08em;
+  font-family: var(--ds-font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ds-text);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ds-popover[hidden] { display: none; }
+
+.ds-popover-title {
+  font-family: var(--ds-font-condensed);
+  font-weight: 600;
+  font-size: 0.6875rem;
+  color: var(--ds-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 8px;
+  padding-right: 28px;  /* room for the close button */
+}
+
+/* Position only — the control itself is .ds-close. */
+.ds-popover > .ds-close {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+
+
+/* MODAL DIALOG  (.ds-modal) — modals.html
+   Native <dialog> + showModal(), never show(): show() gives a
+   non-modal dialog with no backdrop, no inert page and no focus trap,
+   on markup that looks identical.
+   aria-labelledby is REQUIRED — the one thing the element cannot infer.
+   closedby="any" only where the reader is looking THROUGH the dialog; on
+   one that asks a question, a stray click outside must not answer it.
+   Scroll lock is the html:has() rule below, not JavaScript. */
+
+.ds-modal {
+  /* Reset the UA's dialog chrome; auto margins keep it centred. */
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: var(--ds-surface);
+  color: var(--ds-text);
+  font-family: var(--ds-font-sans);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.30);
+
+  /* Sized against the viewport, not the content: a modal that grows past
+     the window puts its own actions out of reach. The body scrolls
+     instead — see .ds-modal-body. */
+  width: min(92vw, 34rem);
+  max-height: min(88vh, 44rem);
+  max-height: min(88dvh, 44rem);   /* dvh: the viewport a phone actually shows, between its browser bars */
+  overflow: hidden;
+
+  /* display:flex only while open, so the closed dialog stays display:none
+     and its contents stay out of the accessibility tree. */
+  flex-direction: column;
+}
+.ds-modal[open] { display: flex; }
+
+.ds-modal::backdrop {
+  background: var(--ds-scrim);
+}
+
+/* Scroll lock, with no JavaScript. The page behind a modal must not
+   scroll: the reader cannot see what they are moving, and they lose
+   their place in it. The foundation sets scrollbar-gutter: stable on the
+   scrolling element, so taking the scrollbar away here does not shift the
+   page sideways underneath the dialog. */
+html:has(.ds-modal[open]) {
+  overflow: hidden;
+}
+
+/* ── Wide variant (.ds-modal--wide) ─────────────────────────────────
+   For a dialog whose content is the point and wants the room — a figure
+   viewer, a full-size image. Not for more text: a wider measure makes a
+   paragraph harder to read, not easier, and the default width is already
+   at the comfortable line length. */
+.ds-modal--wide {
+  width: min(94vw, 1400px);
+  height: min(92vh, 1000px);
+  height: min(92dvh, 1000px);
+  max-height: none;
+}
+
+/* ── Parts ──────────────────────────────────────────────────────────
+   Header and footer hold their size; the body takes what is left and
+   scrolls. That is what keeps the title and the actions on screen when
+   the content is long, which is the whole reason to cap the height. */
+.ds-modal-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-block);
+  padding: var(--ds-space-4) var(--ds-space-6);
+  border-bottom: 1px solid var(--ds-border);
+  flex-shrink: 0;
+}
+.ds-modal-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ds-text);
+}
+/* The close sits on the header's first line, and its 32px target is
+   pulled back over the padding so it does not add height. */
+.ds-modal-header > .ds-close {
+  margin-top: -4px;
+  margin-right: -8px;
+}
+
+.ds-modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;  /* a scroll that reaches the end here
+                                    does not continue on the page behind */
+  padding: var(--ds-space-6);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.ds-modal-body > :first-child { margin-top: 0; }
+.ds-modal-body > :last-child  { margin-bottom: 0; }
+
+.ds-modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--ds-space-tight);
+  padding: var(--ds-space-4) var(--ds-space-6);
+  border-top: 1px solid var(--ds-border);
+  background: var(--ds-surface-hover);
+  flex-shrink: 0;
+}
+/* A destructive or secondary choice that belongs at the other end —
+   "Cancel" reads better away from the action it undoes. */
+.ds-modal-footer > .ds-modal-footer-start { margin-right: auto; }
+
+@media (max-width: 480px) {
+  /* On a narrow screen the buttons stack and go full width rather than
+     shrinking below a comfortable target. */
+  .ds-modal { width: 94vw; }
+  .ds-modal-header, .ds-modal-body, .ds-modal-footer {
+    padding-inline: var(--ds-space-4);
+  }
+  .ds-modal-footer { flex-direction: column-reverse; align-items: stretch; }
+  .ds-modal-footer > .ds-btn { width: 100%; }
+  .ds-modal-footer > .ds-modal-footer-start { margin-right: 0; }
+}
+
+/* Too short to hold the header, the footer and some body (a phone on its
+   side at high zoom): the whole dialog scrolls, so the footer is never cut off. */
+@media (max-height: 15rem) {
+  .ds-modal { overflow-y: auto; }
+  .ds-modal-body { flex: none; overflow: visible; }
+}
+
+/* ELEMENT PILL  (.ds-element-pill) — layout-patterns.html
+   Floats anchored to a piece of content to carry actions for it. The
+   consumer owns the positioning context (position: relative on the
+   wrapper) — the pill only positions itself within one. */
+
+.ds-element-pill {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  /* The one gap not on the named rhythm: this pill is absolutely positioned
+     chrome whose parts wrap, and its row/column relationship is part of the
+     component rather than page layout. Raw scale steps, deliberately. */
+  gap: var(--ds-space-1) var(--ds-space-3);
+  width: max-content;
+  max-width: calc(100% - 16px);
+  padding: 6px 14px;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-muted);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s ease, visibility 0s linear 0.18s;
+  z-index: 2;
+}
+/* The pill's own actions. It carries no class of its own on purpose — the pill
+   is the component and its children are whatever the consumer puts in — so the
+   target floor goes on the element rather than on a class somebody has to
+   remember to add. */
+.ds-element-pill > button,
+.ds-element-pill > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+.ds-element-pill.is-revealed {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.18s ease, visibility 0s linear 0s;
+}
+/* After .is-revealed so the reduce override wins the cascade for both states */
+@media (prefers-reduced-motion: reduce) {
+  .ds-element-pill,
+  .ds-element-pill.is-revealed { transition: none; }
+}
+
+
+/* MARGINALIA  (.ds-marginalia) — layout-patterns.html
+   A short note beside the block it belongs to, in the annotation voice.
+   Where the viewport has a margin it sits there, open, with no control.
+   Narrower, it folds to an info mark in the block's top-right corner that
+   opens it in place. Built on <details>, so the fold works with JavaScript
+   off. The block supplies position: relative; .ds-card already does.
+   The wide breakpoint is the page width plus a note and its gaps each
+   side: 850 + 2 × (24 + 16 + 192) = 1314px. */
+.ds-marginalia {
+  --ds-marginalia-width: 12rem;
+  position: absolute;
+  top: var(--ds-space-3);
+  right: var(--ds-space-3);
+  margin: 0;
+}
+/* Folded, the mark needs the card's corner to itself: content that fills the
+   card, such as a band, would otherwise sit under it. */
+.ds-card:has(> .ds-marginalia) { padding-right: calc(var(--ds-space-6) + 28px); }
+.ds-card:has(> .ds-marginalia) > .ds-acc:last-child { margin-right: calc(-1 * (var(--ds-space-6) + 28px)); }
+.ds-marginalia > summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: var(--ds-text-muted);
+  cursor: pointer;
+  list-style: none;
+}
+.ds-marginalia > summary::-webkit-details-marker { display: none; }
+.ds-marginalia > summary svg { width: 1.1rem; height: 1.1rem; stroke: currentColor; fill: none; }
+.ds-marginalia > summary:hover,
+.ds-marginalia[open] > summary { color: var(--ds-link); background: var(--ds-surface-muted); }
+.ds-marginalia > summary:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
+.ds-marginalia-body {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 110;   /* popovers tier: it is the thing the reader just asked for */
+  width: min(var(--ds-marginalia-width), 100vw - 3rem);
+  margin: 0;
+  padding: var(--ds-space-3) var(--ds-space-4);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+}
+@media (min-width: 82.125rem) {
+  @supports selector(::details-content) {
+    .ds-marginalia {
+      top: 0;
+      right: auto;
+      left: calc(100% + var(--ds-space-4));
+      width: var(--ds-marginalia-width);
+    }
+    .ds-marginalia > summary { display: none; }
+    .ds-card:has(> .ds-marginalia) { padding-right: var(--ds-space-6); }
+    .ds-card:has(> .ds-marginalia) > .ds-acc:last-child { margin-right: calc(-1 * var(--ds-space-6)); }
+    .ds-marginalia::details-content { content-visibility: visible; display: block; }
+    .ds-marginalia-body {
+      position: static;
+      width: auto;
+      padding: 0;
+      background: none;
+      border: 0;
+      box-shadow: none;
+    }
+  }
+}
+
+
+/* ALERT / STATUS MESSAGE  (.ds-alert) — alerts.html
+   Colour is never the only signal: each variant pairs a distinct icon
+   SHAPE with a leading word (WCAG 1.4.1). role="status" for
+   success/info, role="alert" for warning/error. Identical on both
+   surfaces, token for token. */
+
+.ds-alert {
+  margin-block: var(--ds-space-block);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-tight);
+  padding: 0.92em 1.08em;
+  border: 1px solid;
+  border-left-width: 4px;
+  border-radius: 6px;
+  font-family: var(--ds-font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  /* The default state is info; the other three override it. */
+  background: var(--ds-info-bg);
+  border-color: var(--ds-info-border);
+  color: var(--ds-info-fg);
+}
+.ds-alert-icon {
+  flex-shrink: 0;
+  width: 1.54em;
+  height: 1.54em;
+  margin-top: 1px;
+  stroke: currentColor;
+  fill: none;
+}
+.ds-alert-content { margin: 0; min-width: 0; }
+.ds-alert-title { font-weight: 700; margin: 0 0 2px; }
+.ds-alert-content p { margin: 0; }
+.ds-alert a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+/* Position only — the control itself is .ds-close. The negative top margin
+   pulls the 32px target back onto the first text line without adding height
+   to a single-line alert. */
+.ds-alert > .ds-close {
+  margin-left: auto;
+  margin-top: -6px;
+  margin-right: -6px;
+}
+
+/* Variants — bg + border + fg (icon uses currentColor = fg) */
+.ds-alert--success { background: var(--ds-success-bg); border-color: var(--ds-success-border); color: var(--ds-success-fg); }
+.ds-alert--warning { background: var(--ds-warning-bg); border-color: var(--ds-warning-border); color: var(--ds-warning-fg); }
+.ds-alert--error   { background: var(--ds-error-bg);   border-color: var(--ds-error-border);   color: var(--ds-error-fg); }
+
+/* HOST DEFENCE — one rule, and the reason it exists
+   The HTML paper page is arXiv's own page and a first-class consumer of this
+   stylesheet, but it is served inside ar5iv's, which sets `svg { z-index: -1 }`
+   globally to keep LaTeXML's generated figures under the text. Inside an
+   inline-flex control an icon is a flex item, so that z-index applies with no
+   positioning of its own and paints the icon BEHIND the control's fill —
+   invisible on anything opaque. Every component here that carries an icon is
+   affected, and the paper mockup carried eight separate workarounds.
+   This lifts them back, once, for all of them. It costs nothing where no host
+   stylesheet is doing anything, and it stays correct when ar5iv is replaced. */
+:where(.ds-btn, .ds-close, .ds-btn-icon, .ds-alert, .ds-tag, .ds-seg-btn,
+       .ds-code-copy, .ds-note, .ds-popover, .ds-site-header) svg {
+  position: relative;
+  z-index: 1;
+}
+
+/* NOTE  (.ds-note) — a labelled aside inside a page's flow: a rule that has
+   to be met, guidance on tone, the way a component differs on the internal
+   surface. Not an alert. An alert reports a state as of right now and can be
+   dismissed; a note is always true and stays.
+   The tab is what carries that difference, and it is why there is no left
+   edge and no icon: the register is named in words before the paragraph
+   starts, so nothing has to be read out of a colour.
+   Each register sets three custom properties and inherits the rest. */
+.ds-note {
+  --ds-note-tint: var(--ds-tint-warm);
+  --ds-note-line: var(--ds-border);
+  --ds-note-mark: var(--ds-text-muted);
+  position: relative;
+  margin: 2.5rem 0 var(--ds-space-4);
+  padding: var(--ds-space-4) var(--ds-space-6);
+  background: var(--ds-note-tint);
+  border: 1px solid var(--ds-note-line);
+  border-radius: 0 8px 8px 8px;   /* square where the tab lands */
+  font-family: var(--ds-font-sans);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--ds-text);
+}
+.ds-note-label {
+  position: absolute;
+  bottom: 100%;
+  inset-inline-start: -1px;
+  margin: 0;
+  padding: 0.42em 1em;
+  background: var(--ds-note-mark);
+  color: var(--ds-note-mark-fg);
+  border-radius: 6px 6px 0 0;
+  font-family: var(--ds-font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+}
+/* The label is out of flow, so the first block after it starts the box. */
+.ds-note > .ds-note-label + * { margin-top: 0; }
+.ds-note > :last-child { margin-bottom: 0; }
+.ds-note ul { padding-inline-start: 1.15rem; }
+/* A ruled-off warning at the foot of a note: the mistake this rule keeps
+   being broken by. Set off, because it is the thing to read twice. */
+.ds-note-gotcha {
+  margin-top: var(--ds-space-4);
+  padding-top: var(--ds-space-3);
+  border-top: 1px solid var(--ds-note-line);
+}
+.ds-note-gotcha > strong {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--ds-font-mono);
+  font-size: 0.8125rem;
+  color: var(--ds-text);
+}
+/* Code sits on the tint, not on white, so it needs its own ground. */
+
+/* Registers. Blue states a requirement, grey gives guidance, lime marks
+   material belonging to the internal surface — the one place a public page may
+   show Access Lime, because there it is the subject rather than the accent. */
+.ds-note--essential {
+  --ds-note-tint: var(--ds-info-bg);       /* status colours: a note keeps its colours on every surface */
+  --ds-note-line: var(--ds-info-border);
+  --ds-note-mark: var(--ds-link);
+}
+.ds-note--internal {
+  --ds-note-tint: color-mix(in srgb, var(--ds-access-lime) 18%, var(--ds-surface));
+  --ds-note-line: color-mix(in srgb, var(--ds-access-lime) 55%, var(--ds-surface));
+  --ds-note-mark: var(--ds-note-mark-internal);
+}
+
+/* SEGMENTED CONTROL  (.ds-seg) — forms.html
+   An exclusive choice rendered as adjacent buttons, for a decision where
+   every option should stay visible. Two to four options; past that it is a
+   <select> or a radio group.
+   It is a <fieldset> with an .is-sr-only <legend>, because without the legend
+   the group has no accessible name. The three active states take the status
+   tokens, so they flip with everything else. */
+.ds-seg {
+  display: inline-flex;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.ds-seg-btn {
+  position: relative;
+  margin-inline-start: -1px;   /* one shared edge between neighbours */
+  padding: 0.42em 0.84em;
+  border: 1px solid var(--ds-border-strong);
+  background: var(--ds-surface);
+  color: var(--ds-text-muted);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+/* of-type, not child: the legend is the fieldset's first child. */
+.ds-seg-btn:first-of-type { margin-inline-start: 0; border-radius: 6px 0 0 6px; }
+.ds-seg-btn:last-of-type  { border-radius: 0 6px 6px 0; }
+.ds-seg-btn:hover:not(:disabled) {
+  background: var(--ds-surface-muted);
+  color: var(--ds-text);
+  z-index: 1;
+}
+.ds-seg-btn:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 1px;
+  z-index: 2;
+}
+/* Active: neutral (info) by default; positive and negative override it. */
+.ds-seg-btn.is-active           { background: var(--ds-info-bg);    border-color: var(--ds-info-border);    color: var(--ds-info-fg);    z-index: 1; }
+.ds-seg-btn--positive.is-active { background: var(--ds-success-bg); border-color: var(--ds-success-border); color: var(--ds-success-fg); z-index: 1; }
+.ds-seg-btn--negative.is-active { background: var(--ds-error-bg);   border-color: var(--ds-error-border);   color: var(--ds-error-fg);   z-index: 1; }
+
+/* Dark mode. Every value here is a token's dark value; never hand-pick a
+   dark colour into a component rule. Lock a page light only when the whole
+   page exists to show light rendering (docs/dark-mode.html). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    /* Only SEMANTIC tokens flip. The primitives above name colours and
+       never change — Repository Brown is Repository Brown in both modes;
+       what changes is that it becomes the canvas rather than the text.
+       Where a flipped value is one of the named brand colours, it points
+       at the primitive so the relationship stays visible. */
+    --ds-text:              var(--ds-grey-10);
+    --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --ds-canvas:            var(--ds-repository-brown);
+    --ds-surface-hover:     var(--ds-repository-brown);
+    --ds-surface-muted:     #2b2723;                     /* raised band, text 12.8:1 */
+    --ds-zone-secondary-bg: var(--ds-tint-warm);
+    --ds-danger-wash-hover:     #2a0808;
+    --ds-danger-wash-active:    #380d0d;
+    --ds-danger-disabled-fg:    #864040;
+    --ds-danger-fg:             #e57373;   /* #c62828 is 2.64:1 on the dark card */
+    --ds-danger-fg-hover:       #ef9a9a;
+    --ds-surface:           #2b2723;                     /* white fills become raised */
+    --ds-border:            #3a3530;
+    --ds-border-muted:      #3a3530;
+    --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
+    --ds-text-disabled:     #5a554f;
+    --ds-chrome:            #262119;                     /* lifted off the canvas so the
+                                                            bar still reads as a bar */
+    --ds-scrim:             rgba(10, 9, 8, 0.72);        /* denser: the page beneath is
+                                                            already dark */
+    --ds-accent-strong:     #6ba8da;                     /* headings, 6.8:1 */
+    --ds-accent-wash:       #1e3a5f;
+    --ds-tint-warm:         #221f1b;                     /* between the page and a card */
+    --ds-tint-accent:       #1e3a5f;
+    --ds-accent-surface:    #132433;                     /* = the info dark surface */
+    --ds-accent-border:     #2a4a7a;
+    --ds-btn-primary-rim-a:          #6ba8da;
+    --ds-btn-primary-rim-b:          #2a4a6a;
+    --ds-btn-primary-rim-hover-b:    #3a6a94;
+    --ds-btn-secondary-bg:           var(--ds-surface-muted);
+    --ds-btn-secondary-bg-hover:     #322d28;
+    --ds-btn-secondary-bg-active:    var(--ds-surface-muted);
+    --ds-btn-secondary-rim-a:        #6b655c;
+    --ds-btn-secondary-rim-b:        var(--ds-grey-80);
+    --ds-btn-secondary-rim-hover-a:  var(--ds-grey-80);
+    /* restated so a data-theme island re-resolves them */
+    --ds-btn-secondary-rim-hover-b:  var(--ds-grey-55);
+    --ds-btn-secondary-rim-active:   var(--ds-border-strong);
+    --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.25);
+
+    --ds-btn-secondary-shadow-drop:      rgba(0, 0, 0, 0.5);
+
+    --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.15);
+
+    --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.35);
+    --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.6);
+    --ds-btn-primary-glow-active:        45%;
+    --ds-btn-secondary-fg:           var(--ds-grey-25);
+    --ds-btn-secondary-fg-hover:     var(--ds-text);
+    --ds-btn-text-fg:                var(--ds-link);
+    --ds-btn-text-fg-hover:          var(--ds-link-hover);
+    --ds-btn-text-bg-hover:          var(--ds-accent-surface);
+    --ds-btn-text-bg-active:         var(--ds-accent-wash);
+    --ds-link:              var(--ds-link-blue-dark);    /* 7.84:1 on the canvas */
+    --ds-link-hover:        #90caf9;
+    --ds-link-visited:      #c690e3;                     /* 7.03:1 on the canvas */
+    --ds-success-bg:      #1e2b0d;
+    --ds-success-border:  #8fbd3a;
+    --ds-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
+    --ds-info-bg:         #132433;
+    --ds-info-border:     #64b5f6;
+    --ds-info-fg:         #90caf9;  /* 9.0:1 ✓ AAA */
+    --ds-warning-bg:      #2e2410;
+    --ds-warning-border:  #e8b800;
+    --ds-warning-fg:      #ffe082;  /* 11.8:1 ✓ AAA */
+    --ds-error-bg:        #2d1414;
+    --ds-error-border:    #e57373;
+    --ds-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
+    --ds-note-mark-fg:       var(--ds-repository-brown);
+    --ds-note-mark-internal: var(--ds-access-lime);
+  }
+
+  /* Internal tools, dark. Lime holds its light value; the wash goes to a
+     dark olive, and text that sat on the wash turns lime to stay legible. */
+  :root:not([data-theme="light"]).ds-internal,
+  :root:not([data-theme="light"]) .ds-internal {
+    --ds-accent-border:              var(--ds-access-lime-border);
+    --ds-accent-wash:                #1a2306;
+    --ds-accent-wash-hover:          #212e08;
+    --ds-accent-wash-active:         #28380a;
+    --ds-tint-accent:                #28380a;
+    --ds-btn-primary-rim-a:          var(--ds-access-lime-border);
+    --ds-btn-primary-rim-b:          var(--ds-access-lime-deep);
+    --ds-btn-primary-rim-hover-b:    var(--ds-access-lime-deep);
+    --ds-btn-secondary-bg:           var(--ds-accent-wash);
+    --ds-btn-secondary-bg-hover:     var(--ds-accent-wash-hover);
+    --ds-btn-secondary-bg-active:    var(--ds-accent-wash-active);
+    --ds-btn-secondary-rim-a:        var(--ds-access-lime-deep);
+    --ds-btn-secondary-rim-b:        var(--ds-access-lime-deep);
+    --ds-btn-secondary-rim-hover-a:  var(--ds-access-lime-border);
+    --ds-btn-secondary-rim-hover-b:  var(--ds-access-lime-deep);
+    --ds-btn-secondary-rim-active:   var(--ds-access-lime-border);
+    --ds-btn-secondary-fg:           var(--ds-accent);
+    --ds-btn-secondary-fg-hover:     var(--ds-accent);
+    --ds-btn-text-bg-hover:          var(--ds-accent-wash);
+    --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
+  }
+}
+
+/* ── Explicit dark override (the toggle guard)
+   Mirrors the @media block above so a consumer's own toggle can set
+   [data-theme="dark"]. NEVER edit one side alone —
+   `python3 verification/check-drift.py` fails if they disagree. */
+[data-theme="dark"] {
+  color-scheme: dark;
+  /* Only SEMANTIC tokens flip. The primitives above name colours and
+     never change — Repository Brown is Repository Brown in both modes;
+     what changes is that it becomes the canvas rather than the text.
+     Where a flipped value is one of the named brand colours, it points
+     at the primitive so the relationship stays visible. */
+  --ds-text:              var(--ds-grey-10);
+  --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --ds-canvas:            var(--ds-repository-brown);
+  --ds-surface-hover:     var(--ds-repository-brown);
+  --ds-surface-muted:     #2b2723;                     /* raised band, text 12.8:1 */
+  --ds-zone-secondary-bg: var(--ds-tint-warm);
+  --ds-danger-wash-hover:     #2a0808;
+  --ds-danger-wash-active:    #380d0d;
+  --ds-danger-disabled-fg:    #864040;
+  --ds-danger-fg:             #e57373;   /* #c62828 is 2.64:1 on the dark card */
+  --ds-danger-fg-hover:       #ef9a9a;
+  --ds-surface:           #2b2723;                     /* white fills become raised */
+  --ds-border:            #3a3530;
+  --ds-border-muted:      #3a3530;
+  --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
+  --ds-text-disabled:     #5a554f;
+  --ds-chrome:            #262119;                     /* lifted off the canvas so the
+                                                          bar still reads as a bar */
+  --ds-scrim:             rgba(10, 9, 8, 0.72);        /* denser: the page beneath is
+                                                          already dark */
+  --ds-accent-strong:     #6ba8da;                     /* headings, 6.8:1 */
+  --ds-accent-wash:       #1e3a5f;
+  --ds-tint-warm:         #221f1b;                     /* between the page and a card */
+  --ds-tint-accent:       #1e3a5f;
+  --ds-accent-surface:    #132433;                     /* = the info dark surface */
+  --ds-accent-border:     #2a4a7a;
+  --ds-btn-primary-rim-a:          #6ba8da;
+  --ds-btn-primary-rim-b:          #2a4a6a;
+  --ds-btn-primary-rim-hover-b:    #3a6a94;
+  --ds-btn-secondary-bg:           var(--ds-surface-muted);
+  --ds-btn-secondary-bg-hover:     #322d28;
+  --ds-btn-secondary-bg-active:    var(--ds-surface-muted);
+  --ds-btn-secondary-rim-a:        #6b655c;
+  --ds-btn-secondary-rim-b:        var(--ds-grey-80);
+  --ds-btn-secondary-rim-hover-a:  var(--ds-grey-80);
+  /* restated so a data-theme island re-resolves them */
+  --ds-btn-secondary-rim-hover-b:  var(--ds-grey-55);
+  --ds-btn-secondary-rim-active:   var(--ds-border-strong);
+  --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.25);
+
+  --ds-btn-secondary-shadow-drop:      rgba(0, 0, 0, 0.5);
+
+  --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.15);
+
+  --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.35);
+  --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.6);
+  --ds-btn-primary-glow-active:        45%;
+  --ds-btn-secondary-fg:           var(--ds-grey-25);
+  --ds-btn-secondary-fg-hover:     var(--ds-text);
+  --ds-btn-text-fg:                var(--ds-link);
+  --ds-btn-text-fg-hover:          var(--ds-link-hover);
+  --ds-btn-text-bg-hover:          var(--ds-accent-surface);
+  --ds-btn-text-bg-active:         var(--ds-accent-wash);
+  --ds-link:              var(--ds-link-blue-dark);    /* 7.84:1 on the canvas */
+  --ds-link-hover:        #90caf9;
+  --ds-link-visited:      #c690e3;                     /* 7.03:1 on the canvas */
+  --ds-success-bg:      #1e2b0d;
+  --ds-success-border:  #8fbd3a;
+  --ds-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
+  --ds-info-bg:         #132433;
+  --ds-info-border:     #64b5f6;
+  --ds-info-fg:         #90caf9;  /* 9.0:1 ✓ AAA */
+  --ds-warning-bg:      #2e2410;
+  --ds-warning-border:  #e8b800;
+  --ds-warning-fg:      #ffe082;  /* 11.8:1 ✓ AAA */
+  --ds-error-bg:        #2d1414;
+  --ds-error-border:    #e57373;
+  --ds-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
+  --ds-note-mark-fg:       var(--ds-repository-brown);
+  --ds-note-mark-internal: var(--ds-access-lime);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --ds-text:  #1c1a17;
+  --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%231c1a17' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --ds-canvas:         #ffffff;
+  --ds-surface-hover:  var(--ds-grey-5);
+  --ds-surface-muted:         var(--ds-grey-10);
+  --ds-zone-secondary-bg: var(--ds-tint-warm);
+  --ds-danger-wash-hover:     #fdf0f0;
+  --ds-danger-wash-active:    #f5d0d0;
+  --ds-danger-disabled-fg:    #c47878;
+  --ds-danger-fg:             var(--ds-danger);   /* red as text or a glyph, not a fill */
+  --ds-danger-fg-hover:       var(--ds-danger-hover);
+  --ds-surface:           #ffffff;
+  --ds-border:      var(--ds-grey-25);
+  --ds-text-muted:      #6b6459;
+  --ds-text-disabled:          var(--ds-grey-55);
+  --ds-accent-strong:     #1f5e96;
+  --ds-accent-wash:         var(--ds-blue-50);
+  --ds-tint-warm:           var(--ds-grey-10);
+  --ds-tint-accent:         var(--ds-blue-20);
+  --ds-accent-surface:        var(--ds-blue-20);
+  --ds-accent-border:       var(--ds-blue-70);
+  --ds-btn-primary-rim-a:          #b0d5ed;
+  --ds-btn-primary-rim-b:          #6ba8da;
+  --ds-btn-primary-rim-hover-b:    #4a86b8;
+  --ds-btn-secondary-bg:           #ffffff;
+  --ds-btn-secondary-bg-hover:     #ffffff;
+  --ds-btn-secondary-bg-active:    #ffffff;
+  --ds-btn-secondary-rim-a:        var(--ds-grey-25);
+  --ds-btn-secondary-rim-b:        #b3ada4;
+  --ds-btn-secondary-rim-hover-a:  #c8c4be;
+  /* restated so a data-theme island re-resolves them */
+  --ds-btn-secondary-rim-hover-b:  var(--ds-border-strong);
+  --ds-btn-secondary-rim-active:   var(--ds-border-strong);
+  --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.06);
+
+  --ds-btn-secondary-shadow-drop:      rgba(0, 0, 0, 0.08);
+
+  --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.03);
+
+  --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.13);
+  --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.12);
+  --ds-btn-primary-glow-active:        35%;   /* the glow's strength while pressed */
+  --ds-btn-secondary-fg:           var(--ds-text-muted);
+  --ds-btn-secondary-fg-hover:     var(--ds-text);
+  --ds-btn-text-fg:                var(--ds-link);
+  --ds-btn-text-fg-hover:          var(--ds-link-hover);
+  --ds-btn-text-bg-hover:          var(--ds-accent-surface);
+  --ds-btn-text-bg-active:         var(--ds-accent-wash);
+  --ds-border-muted:       var(--ds-grey-25);
+  --ds-chrome:        #1c1a17;
+  --ds-link:         #1565c0;
+  --ds-link-hover:        #1050a0;
+  --ds-link-visited:      #7b2fbe;
+  --ds-success-bg:        #e8f5d8;
+  --ds-success-border:    #6b8e1e;
+  --ds-success-fg:        #4a5a0a;
+  --ds-info-bg:           #e7f1fd;
+  --ds-info-border:       #5a82c8;
+  --ds-info-fg:           #1a3a78;
+  --ds-warning-bg:        #fff8e1;
+  --ds-warning-border:    #e8b800;
+  --ds-warning-fg:        #7a5c00;
+  --ds-error-bg:          #fdeaea;
+  --ds-error-border:      #c62828;
+  --ds-error-fg:          #8b0000;
+}
+
+
+/* INTERNAL TOOLS CONTEXT  (.ds-internal) — buttons.html
+   Put it on a parent: <html> for an internal page, a wrapper for an
+   internal region of a mixed page. It re-points the accent to Access Lime
+   and every component inside follows. Colour only — a component that needs
+   a different shape on this surface is a different component. Sits after
+   the [data-theme="light"] block so it wins when both are on <html>. */
+.ds-internal {
+  --ds-accent:                     var(--ds-access-lime);
+  --ds-accent-hover:               var(--ds-access-lime-hover);
+  --ds-accent-active:              var(--ds-access-lime-active);
+  --ds-accent-border:              var(--ds-access-lime-border);
+  --ds-accent-border-active:       var(--ds-access-lime-deep);
+  --ds-subnav-current:             var(--ds-access-lime-deep);
+  --ds-tabs-current:               var(--ds-access-lime-deep);
+  --ds-accent-wash:                var(--ds-access-lime-wash);
+  --ds-accent-wash-hover:          var(--ds-access-lime-wash-2);
+  --ds-accent-wash-active:         var(--ds-access-lime-wash-3);
+  --ds-tint-accent:                var(--ds-access-lime-wash);
+
+  --ds-btn-primary-rim-a:          var(--ds-access-lime-hover);
+  --ds-btn-primary-rim-b:          var(--ds-access-lime-border);
+  --ds-btn-primary-rim-hover-a:    var(--ds-access-lime-border);
+  --ds-btn-primary-rim-hover-b:    var(--ds-access-lime-deep);
+  --ds-btn-primary-rim-active:     var(--ds-access-lime-border);
+  --ds-btn-primary-glow:           var(--ds-access-lime-deep);
+  --ds-btn-secondary-bg:           var(--ds-accent-wash);
+  --ds-btn-secondary-bg-hover:     var(--ds-accent-wash-hover);
+  --ds-btn-secondary-bg-active:    var(--ds-accent-wash-active);
+  --ds-btn-secondary-rim-a:        var(--ds-access-lime-hover);
+  --ds-btn-secondary-rim-b:        var(--ds-access-lime-border);
+  --ds-btn-secondary-rim-hover-a:  var(--ds-access-lime-border);
+  --ds-btn-secondary-rim-hover-b:  var(--ds-access-lime-deep);
+  --ds-btn-secondary-rim-active:   var(--ds-access-lime-deep);
+  --ds-btn-secondary-fg:           var(--ds-text);
+  --ds-btn-secondary-fg-hover:     var(--ds-text);
+  --ds-btn-text-bg-hover:          var(--ds-accent-wash);
+  --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
+}
+.ds-internal a.ds-tag:hover,
+.ds-internal button.ds-tag:hover {
+  background: var(--ds-surface-active);
+  color: var(--ds-link-hover);
+}
+
+/* Internal tools, dark. Lime holds its light value; the wash goes to a
+   dark olive, and text that sat on the wash turns lime to stay legible. */
+[data-theme="dark"].ds-internal,
+[data-theme="dark"] .ds-internal {
+  --ds-accent-border:              var(--ds-access-lime-border);
+  --ds-accent-wash:                #1a2306;
+  --ds-accent-wash-hover:          #212e08;
+  --ds-accent-wash-active:         #28380a;
+  --ds-tint-accent:                #28380a;
+  --ds-btn-primary-rim-a:          var(--ds-access-lime-border);
+  --ds-btn-primary-rim-b:          var(--ds-access-lime-deep);
+  --ds-btn-primary-rim-hover-b:    var(--ds-access-lime-deep);
+  --ds-btn-secondary-bg:           var(--ds-accent-wash);
+  --ds-btn-secondary-bg-hover:     var(--ds-accent-wash-hover);
+  --ds-btn-secondary-bg-active:    var(--ds-accent-wash-active);
+  --ds-btn-secondary-rim-a:        var(--ds-access-lime-deep);
+  --ds-btn-secondary-rim-b:        var(--ds-access-lime-deep);
+  --ds-btn-secondary-rim-hover-a:  var(--ds-access-lime-border);
+  --ds-btn-secondary-rim-hover-b:  var(--ds-access-lime-deep);
+  --ds-btn-secondary-rim-active:   var(--ds-access-lime-border);
+  --ds-btn-secondary-fg:           var(--ds-accent);
+  --ds-btn-secondary-fg-hover:     var(--ds-accent);
+  --ds-btn-text-bg-hover:          var(--ds-accent-wash);
+  --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
+}
+
+
+
+/* OS accessibility signals. forced-colors: the OS replaces our palette
+   and the hues collapse, but icon shape + leading word still carry meaning
+   and icons follow system text color; pin links to LinkText. Never set
+   forced-color-adjust:none. */
+@media (forced-colors: active) {
+  .ds-alert a { color: LinkText; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-close { transition: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ACCORDION  (.ds-acc / .ds-acc-stack / .ds-acc-body)
+   ───────────────────────────────────────────────────────────────────────
+   Native <details>/<summary>. No JavaScript, keyboard and screen-reader
+   behaviour for free, and find-in-page can open a closed panel to show a
+   match inside it — which no hand-built accordion does.
+
+   Ruled: a line above and below, no box. Inside .ds-sidebar the rules drop.
+
+   Content rule (progressive-disclosure.html): never put must-see
+   information ONLY inside a closed accordion. Default state is closed; a
+   single most-relevant panel may start open. Open state is not persisted.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Stacked, they read as one ruled list: items butt together and each
+   shared edge is one line, because the preceding item's lower rule is the
+   next item's upper one. */
+.ds-acc-stack { display: flex; flex-direction: column; }
+.ds-acc-stack > .ds-acc { margin: 0; }
+.ds-acc + .ds-acc { border-top: 0; }
+
+.ds-acc {
+  font-family: var(--ds-font-sans);
+  background: transparent;
+  /* Two rules, not one. One line reads as a heading with an underline; two
+     give the disclosure a top and a bottom, which is what tells a reader
+     that what appears below the first line belongs to the label above it.
+     --ds-border-strong because the rules are the only thing carrying the
+     component, and an interactive boundary needs 3:1. */
+  border-top: 1px solid var(--ds-border-strong);
+  border-bottom: 1px solid var(--ds-border-strong);
+  margin: 20px 0 44px;   /* standing alone it needs its own room; in a
+                            .ds-acc-stack the stack sets this to 0 */
+}
+.ds-acc > summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ds-text);
+  padding: 10px 0;   /* no horizontal padding: the label sits on the same
+                        left edge as the prose around it */
+  display: flex;
+  align-items: center;
+  gap: var(--ds-gap-glyph);
+}
+.ds-acc > summary::-webkit-details-marker { display: none; }
+.ds-acc > summary::marker { content: ""; }
+.ds-acc > summary::after {
+  content: "+";
+  content: "+" / "";  /* alt-text form: decorative to AT — <details>
+                         already announces expanded/collapsed */
+  margin-left: auto;
+  font-weight: 400;
+  color: var(--ds-text-muted);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+.ds-acc[open] > summary::after { content: "−"; content: "−" / ""; }
+.ds-acc > summary:hover { color: var(--ds-link); }
+.ds-acc > summary:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+.ds-acc-body { padding: 4px 0 16px; font-size: 0.85rem; color: var(--ds-text); }
+/* Ending a card, the accordion is the card's foot: it runs to the card's
+   edges and the card's own border closes it. */
+.ds-card > .ds-acc:last-child {
+  margin: var(--ds-space-4) calc(-1 * var(--ds-space-6)) calc(-1 * var(--ds-space-4));
+  border-bottom: 0;
+}
+.ds-card > .ds-acc:last-child > summary,
+.ds-card > .ds-acc:last-child > .ds-acc-body { padding-inline: var(--ds-space-6); }
+.ds-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--ds-space-tight) var(--ds-space-block); margin: 0; }
+.ds-acc-body dt { white-space: nowrap; padding-top: 2px; }   /* type: .ds-panel-label */
+.ds-acc-body dd { margin: 0; grid-column: 2; min-width: 0; }   /* keeps a second dd out of the term column */
+.ds-acc-body a { color: var(--ds-link); }
+.ds-acc-body code { overflow-wrap: anywhere; }
+/* Narrow: one column, and a term may wrap. */
+@media (max-width: 40rem) {
+  .ds-acc-body dl { grid-template-columns: 1fr; }
+  .ds-acc-body dt { white-space: normal; }
+  .ds-acc-body dd { grid-column: auto; }
+}
+
+/* SIDEBAR  (.ds-sidebar) — layout-patterns.html
+   Beside the reading column, for supplementary content. The sidebar's
+   parent becomes the two-column layout; the sidebar wraps below the
+   content when both no longer fit. Blocks are separated by spacing only. */
+:where(:has(> .ds-sidebar)) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--ds-space-section);
+}
+/* The content takes all the spare width; alone on its row, the sidebar takes it all. */
+:where(:has(> .ds-sidebar)) > :not(.ds-sidebar) { flex: 999 1 24rem; min-width: 0; }
+/* Both columns start on the same line. */
+:where(:has(> .ds-sidebar)) > :not(.ds-sidebar) > :first-child { margin-block-start: 0; }
+.ds-sidebar {
+  flex: 1 0 17rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-6);
+}
+.ds-sidebar > * { margin: 0; }
+
+/* An accordion in the sidebar: no rules, because spacing already separates the
+   blocks; single-column internals for the narrow measure; a Link Blue +/−
+   so a closed one still reads as interactive. */
+.ds-sidebar .ds-acc { border-top: 0; border-bottom: 0; margin: 0; }
+.ds-sidebar .ds-acc > summary {
+  font-size: 0.82rem;
+  /* 4px padding + matching negative margin: a ≥24px target, no layout shift. */
+  padding: 4px 0;
+  margin: -4px 0;
+}
+.ds-sidebar .ds-acc > summary::after { font-size: 1.1rem; color: var(--ds-link); }
+.ds-sidebar .ds-acc[open] > summary { margin-bottom: 6px; }
+.ds-sidebar .ds-acc-body { padding: 0; }
+.ds-sidebar .ds-acc-body dl { grid-template-columns: 1fr; gap: 0; }
+.ds-sidebar .ds-acc-body dt { margin-top: 10px; }
+.ds-sidebar .ds-acc-body dt:first-child { margin-top: 0; }
+.ds-sidebar .ds-acc-body dd { margin: 1px 0 0; grid-column: auto; }
+
+/* CONTENTS BAR  (.ds-toc-bar / .ds-toc / .ds-toc-trigger / .ds-toc-menu) — progressive-disclosure.html
+   A page's own table of contents: one control that names the section the
+   reader is in and opens the list of the others. Built on <details>, the
+   same as the site header's menus, so it opens with JavaScript off; toc.js
+   adds close-on-Escape, close-on-outside-click and the current-section label.
+
+   .ds-toc alone is the control and works anywhere. .ds-toc-bar is the
+   edge-to-edge row that carries it, a direct child of .ds-container with
+   .ds-full, and it is sticky: the one bar a page may keep in view.
+   STICKY CHROME IS GOVERNED BY DESIGN-POLICIES (Chrome and interaction
+   structure): one sticky bar per page, and only on the pages named there. */
+
+.ds-toc-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;   /* above content chrome, below the site header's open menu (60); the blur makes the bar a stacking context, so the bar itself must clear the page */
+  padding-block: 10px;
+  background: color-mix(in srgb, var(--ds-surface-muted) 92%, transparent);  /* 92% holds 5.05:1 for text over a white figure scrolling beneath */
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--ds-border);
+  border-bottom: 1px solid transparent;
+  transition: padding 0.2s ease, margin-bottom 0.2s ease, background 0.25s ease, border-color 0.15s;
+}
+.ds-toc-bar-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;   /* start slot · contents · end slot: the control stays centred whatever sits beside it */
+  align-items: center;
+  gap: var(--ds-space-3);
+}
+.ds-toc-bar-inner > .ds-toc { grid-column: 2; }
+
+/* toc.js pins this to the bar's top edge and watches it leave the viewport;
+   that is what decides .is-stuck. */
+.ds-toc-sentinel { position: absolute; top: -3px; left: 0; width: 1px; height: 1px; pointer-events: none; }   /* -3px: past the 1px top border and clear of the viewport edge (an element touching the edge still counts as intersecting), so it is out of view exactly when the bar is held at 0 */
+/* Once stuck, the sentinel moves 8px higher, so the bar unsticks only when it
+   has come a clear 8px off the top. Without the gap, the sub-pixel shift the
+   tightening leaves below makes the browser's scroll anchoring nudge the page
+   back across the line, and the bar flickers between its two heights. */
+.ds-toc-bar.is-stuck > .ds-toc-sentinel { top: -11px; }
+
+/* A bar directly after a tinted band sits on that band's bottom edge, and the
+   content after the bar starts close under it. */
+.ds-container > .ds-zone-secondary + .ds-toc-bar { margin-top: calc(-1 * var(--ds-space-section)); }
+.ds-container > .ds-toc-bar + * { margin-top: calc(var(--ds-space-8) - var(--ds-space-section)); }
+
+.ds-toc-bar.is-stuck {
+  z-index: 100;
+  padding-block: 4px;
+  margin-bottom: var(--ds-toc-shrink, 0px);   /* what the tightening took off the height, given back below, so the flow does not move: toc.js measures it. A shorter bar with content moving up under it makes the browser's scroll anchoring scroll to follow, which unsticks the bar, which grows it back, without end */
+  background: color-mix(in srgb, var(--ds-surface-muted) 96%, transparent);
+  border-bottom-color: var(--ds-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+/* A sticky bar covers the top of the viewport, so an anchor has to land below it. */
+html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
+
+.ds-toc { position: relative; }
+.ds-toc-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 24px;
+  max-width: min(30rem, 100vw - 3rem);
+  padding: 7px 14px;
+  font-family: var(--ds-font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ds-text);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-muted);
+  border-radius: 22px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  transition: padding 0.25s ease, font-size 0.25s ease, box-shadow 0.25s ease;
+}
+.ds-toc-trigger::-webkit-details-marker { display: none; }
+.ds-toc-trigger:hover { background: var(--ds-surface-hover); }
+.ds-toc-trigger:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
+.ds-toc-bar.is-stuck .ds-toc-trigger { padding: 4px 13px; font-size: 0.8rem; }
+.ds-toc-trigger svg { width: 1.25em; height: 1.25em; flex: none; color: var(--ds-text-muted); }
+.ds-toc-trigger .ds-toc-chevron { width: 1.09em; height: 1.09em; stroke-width: 2.5; transition: transform 0.15s; }
+.ds-toc[open] .ds-toc-chevron { transform: rotate(180deg); }
+.ds-toc-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ds-toc-prefix { font-weight: 400; color: var(--ds-text-muted); }
+
+.ds-toc-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  min-width: 17.5rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: var(--ds-space-2) 0;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+}
+.ds-toc-menu ol { list-style: none; margin: 0; padding: 0; }
+.ds-toc-menu a {
+  display: flex;
+  gap: 10px;
+  padding: 6px 18px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--ds-text);
+  text-decoration: none;
+}
+.ds-toc-menu a:hover { background: var(--ds-surface-hover); }
+.ds-toc-menu a:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: -3px; }
+.ds-toc-menu a.is-current { background: var(--ds-accent-wash); color: var(--ds-link); font-weight: 600; }
+.ds-toc-num { min-width: 22px; color: var(--ds-text-muted); font-variant-numeric: tabular-nums; }
+.ds-toc-menu a.is-current .ds-toc-num { color: var(--ds-link); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-toc-bar, .ds-toc-trigger, .ds-toc-trigger .ds-toc-chevron { transition: none; }
+}
+
+/* SHOW MORE  (.ds-show-more) — progressive-disclosure.html
+   Reveals the TAIL of something already begun, where an accordion would
+   put a heading in the middle of a sentence. The button REQUIRES
+   aria-expanded and aria-controls, and the region uses the `hidden`
+   ATTRIBUTE, not a class — a class leaves the hidden names tabbable and
+   findable while off screen.
+   Link-coloured by default, in running text; --among-links turns it grey
+   italic, so at the end of a run of links it does not read as one more.
+   Target size takes WCAG's inline exception — growing it to 24px would
+   break the line it sits in. */
+
+.ds-show-more {
+  /* No display declaration: a browser blockifies a <button> whatever is asked
+     for, so stating `inline` here only looked like it was doing something.
+     What matters is that it sits at the end of a run of links and is sized by
+     their line-height — which is WCAG 2.5.8's inline exception, and why this
+     one control does not take the 24px floor the others do. */
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--ds-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: var(--ds-gap-glyph);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ds-show-more:hover {
+  color: var(--ds-link-hover);
+  text-decoration-thickness: 0.15em;
+}
+.ds-show-more--among-links {
+  font-style: italic;
+  color: var(--ds-text-muted);
+  text-decoration: none;
+}
+.ds-show-more--among-links:hover {
+  color: var(--ds-text);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+.ds-show-more:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* SITE FOOTER  (.ds-site-footer) — footer.html
+   Never hand-build this chrome and never draw the logos from text. */
+
+.ds-site-footer {
+  clear: both;
+  border-top: 1px solid var(--ds-border-muted);
+  background: var(--ds-canvas);
+  padding: 24px 24px 28px;
+  margin: 0;
+  font-family: var(--ds-font-sans);
+}
+.ds-site-footer-grid {
+  display: flex;
+  row-gap: 24px;
+  column-gap: 32px;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.ds-site-footer-main {
+  flex: 0 1 auto;
+  min-width: min(280px, 100%)   /* the footer is 24px-padded, so a hard 280px floor forces the page to scroll
+     sideways below 328px — WCAG 1.4.10 requires reflow at 320px */;
+}
+.ds-site-footer-ack {
+  font-size: 0.8125rem; /* 13px */
+  color: var(--ds-text-muted);
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+/* A host's `footer a:hover { border-bottom: 1px dotted }` (the arXiv.css browse, search and
+   stats copy) would underline footer links twice; arxiv-base resets it the same way. */
+.ds-site-footer a,
+.ds-site-footer a:hover,
+.ds-site-footer a:active { border-bottom: 0; }
+.ds-site-footer-ack a {
+  font-size: 0.8125rem;
+  color: var(--ds-link);
+}
+.ds-site-footer-ack strong { color: var(--ds-text); font-weight: 600; }
+.ds-site-footer-links {
+  display: flex;
+  gap: var(--ds-space-tight);
+  flex-wrap: wrap;
+  font-size: 0.8125rem; /* 13px */
+  line-height: 1.8;
+}
+.ds-site-footer-links a {
+  font-size: 0.8125rem;
+  color: var(--ds-text-muted);
+  text-decoration: none;
+}
+.ds-site-footer-links a:hover {
+  color: var(--ds-text);
+  text-decoration: underline;
+}
+.ds-site-footer-links a:focus-visible {
+  outline: 2px solid var(--ds-link);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+/* Drawn with a background, not the "·" glyph, so contrast checkers treat
+   it as non-text. font-size:0 suppresses the glyph. align-self centres it,
+   because the row is a flex container and vertical-align does not apply. */
+.ds-site-footer-sep {
+  display: inline-block;
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--ds-text-muted);
+  align-self: center;
+  font-size: 0;
+  margin: 0 3px;
+}
+.ds-site-footer-funders {
+  flex-shrink: 0;
+  text-align: center;
+}
+.ds-site-footer-funders-label {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+  color: var(--ds-text);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+.ds-site-footer-funders-logos {
+  display: flex;
+  gap: var(--ds-space-tight);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.ds-funder-logo {
+  /* content-box so height:40px describes the IMAGE content height —
+     with the global border-box, padding + border would shrink the
+     logo to ~30px (visibly small vs the approved layout). */
+  box-sizing: content-box;
+  display: block;
+  height: 40px;
+  width: auto;
+  flex-shrink: 0;
+  padding: 4px 8px;
+  border: 1px solid var(--ds-border-muted);
+  border-radius: 3px;
+  background: #fff; /* stays white in dark mode: funder wordmarks need a light chip */
+}
+.ds-funder-link {
+  display: inline-flex; /* hug the logo chip so the focus ring traces its edge */
+  border-radius: 3px;
+}
+.ds-funder-link:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+}
+@media (max-width: 720px) {
+  .ds-site-footer-funders { width: 100%; margin-top: 8px; }
+}
+@media print {
+  .ds-site-footer { display: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   UTILITY: screen-reader-only  (.is-sr-only)
+   ═══════════════════════════════════════════════════════════════════════
+   Visually hidden, available to assistive technology. Both mockups
+   define this identically; promoted here because every composed pattern
+   (footer external links, dual-span "arXiv"→"archive" pronunciation,
+   sr-only headings) depends on it. */
+.is-sr-only {
+  position: absolute !important;
+  width: 1px !important; height: 1px !important;
+  padding: 0 !important; margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* SITE HEADER UNIT  (.ds-announcement + .ds-site-header) — header.html
+   Announcement band + black bar + skip link. Nothing below the black bar
+   is approved chrome.
+   Static by default (DESIGN-POLICIES); internal tools may add
+   .ds-site-header--sticky. Regions, in this order: logo, nav, tools
+   (optional), account.
+   --light re-points seven surface tokens and declares no property of its
+   own, so no rule in the variant can lose a specificity argument.
+   Focus rings on the dark bar use --ds-focus-ring-on-dark. */
+
+/* ── Skip link ── */
+.ds-skip-link {
+  position: absolute;
+  top: -100px; left: 8px;
+  z-index: 200;
+  /* Repository Brown and Warm Wash invert together between modes, so
+     pairing them keeps this chip legible in both: light-on-dark in light
+     mode, dark-on-light in dark. It was previously paired with a literal
+     #fff, which in dark mode put white text on the near-white dark value
+     of Repository Brown — 1.16:1, on the first control a keyboard user
+     ever reaches. */
+  background: var(--ds-text);
+  color: var(--ds-canvas);
+  padding: 10px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-family: var(--ds-font-sans);
+  font-weight: 600;
+}
+.ds-skip-link:focus-visible {
+  top: 8px;
+  outline: 3px solid var(--ds-hdr-ring);
+  outline-offset: 2px;
+}
+
+/* ── 1. Announcement band ── */
+.ds-announcement {
+  /* Colour comes through these three, so a register is three lines. */
+  --ds-announcement-bg:   var(--ds-accent-wash);
+  --ds-announcement-fg:   var(--ds-text);
+  --ds-announcement-link: var(--ds-link);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-gap-glyph);
+  padding: 6px 16px;
+  background: var(--ds-announcement-bg);
+  color: var(--ds-announcement-fg);
+  font-family: var(--ds-font-sans);
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 500;
+  position: relative;
+}
+.ds-announcement-glyph { width: 18px; height: 18px; flex-shrink: 0; }
+.ds-announcement-text { font-weight: 600; }
+.ds-announcement-link {
+  color: var(--ds-announcement-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+.ds-announcement-link:hover { text-decoration-thickness: 2px; }
+/* Registers, named for the job. Maintenance sits on the header's own dark
+   ground in both themes; event holds the smileybones yellow in both, with
+   fixed brown text, the way Access Lime holds its value. The link on yellow
+   is Link Hover at rest: Link Blue is 4.3:1 there. */
+.ds-announcement--maintenance {
+  --ds-announcement-bg:   var(--ds-chrome);
+  --ds-announcement-fg:   var(--ds-grey-10);
+  --ds-announcement-link: var(--ds-link-blue-dark);
+}
+.ds-announcement--event {
+  --ds-announcement-bg:   var(--ds-smileybones-yellow);
+  --ds-announcement-fg:   var(--ds-repository-brown);
+  --ds-announcement-link: var(--ds-link-blue-hover);
+}
+/* Position only — the control itself is .ds-close. */
+.ds-announcement > .ds-close {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ds-text-muted);
+}
+@media (max-width: 520px) {
+  .ds-announcement {
+    flex-wrap: wrap;
+    padding-right: 36px; /* keep clear of the close button */
+    text-align: center;
+  }
+}
+
+/* ── 2. Black header bar ── */
+.ds-site-header {
+  display: flex;
+  flex-wrap: wrap;   /* a bar with more than fits wraps rather than overflowing */
+  justify-content: flex-end;   /* a wrapped row stays on the right, under the navigation */
+  align-items: center;
+  gap: var(--ds-space-tight);
+  padding: 6px 24px;
+  min-height: 52px;
+  box-sizing: border-box;
+
+  /* Surface, as tokens. The bare component IS the arXiv header — no modifier
+     needed to get it right, which is the point: arxiv.org cannot forget a
+     class it never has to write. A property that is not arxiv.org adds
+     .ds-site-header--light, which re-points these seven values and overrides
+     no property at all. One set of rules, two surfaces, no specificity to
+     reason about. */
+  --ds-hdr-bg:        var(--ds-chrome);   /* the bar is dark in both themes; --ds-text would flip it light */
+  --ds-hdr-fg:        var(--ds-grey-55);    /* a fixed step, 7.3:1 on the bar; --ds-text-disabled would go dark in dark mode */
+  --ds-hdr-fg-strong: var(--ds-grey-10);       /* hover, active, Log in — fixed for the same reason */
+  --ds-hdr-hover:     #302c28;
+  --ds-hdr-ring:      var(--ds-focus-ring-on-dark, #64b5f6);
+  --ds-hdr-border:    transparent;              /* the dark bar needs no edge */
+  --ds-hdr-divider:   #4a433d;
+
+  background: var(--ds-hdr-bg);
+  border-bottom: 1px solid var(--ds-hdr-border);
+  font-family: var(--ds-font-sans);
+}
+.ds-site-header-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-right: auto;
+  font-weight: 600;                /* only shows when the brand is text, not an image */
+  color: var(--ds-hdr-fg-strong);
+}
+.ds-site-header-logo img { height: 39px; width: auto; }
+.ds-site-header-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-tight);
+}
+/* Direct children only: a dropdown menu inside the nav keeps its own panel styles. */
+.ds-site-header-nav > a,
+.ds-site-header-nav > button,
+.ds-site-header-account > a,
+:where(.ds-site-header-tools) > a,
+:where(.ds-site-header-tools) > button {
+  font-family: var(--ds-font-sans);
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 500;
+  color: var(--ds-hdr-fg);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-gap-glyph);
+}
+.ds-site-header-nav > a:visited,
+.ds-site-header-account > a:visited { color: var(--ds-hdr-fg); }
+.ds-site-header-nav > a:hover,
+.ds-site-header-nav > button:hover,
+.ds-site-header-account > a:hover,
+:where(.ds-site-header-tools) > a:hover,
+:where(.ds-site-header-tools) > button:hover { background: var(--ds-hdr-hover); color: var(--ds-hdr-fg-strong); }
+.ds-site-header-nav > a:focus-visible,
+.ds-site-header-nav > button:focus-visible,
+.ds-site-header-account > a:focus-visible,
+:where(.ds-site-header-tools) > a:focus-visible,
+:where(.ds-site-header-tools) > button:focus-visible {
+  outline: 3px solid var(--ds-hdr-ring);
+  outline-offset: 1px;
+}
+
+/* Tools (optional) and account: the two regions after the navigation.
+   Tools holds whatever controls one interface needs; account holds Log in, or
+   the greeting and the Account menu. Account sits outside the <nav>, because
+   an account menu is not a site section. */
+.ds-site-header-tools,
+.ds-site-header-account {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-tight);
+}
+.ds-site-header-tools { flex: 0 1 auto; min-width: 0; }
+:where(.ds-site-header-tools) > button svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+/* A search field that stays in the bar. Two fields are two of these. */
+.ds-site-header-search { display: flex; flex: 0 1 13rem; min-width: 7rem; }
+.ds-site-header-search .ds-input {
+  width: 100%;
+  min-width: 0;
+  padding-block: 0.45em;
+}
+.ds-site-header-search .ds-input:focus-visible {
+  outline-color: var(--ds-hdr-ring);
+  border-color: var(--ds-hdr-ring);
+}
+.ds-site-header-nav .ds-nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
+/* The same thing as .ds-divider--vertical, on the header's own colour
+   token rather than --ds-border. Left separate rather than merged: the
+   two mockups declare this class locally, so consolidating it is part of
+   the mockup cleanup (backlog #20), not a change to make here. */
+.ds-site-header-divider {
+  width: 1px; height: 20px;
+  background: var(--ds-hdr-divider);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+/* The emphasis slot: the last item in the bar, and the only one that gets
+   weight. It carries "Log in" when signed out and "Account" when signed in —
+   the slot is about rank in the bar, not about which of those words is in it.
+   Scoped through .ds-site-header-nav so it out-specifies the nav's own link
+   colour rather than shouting !important at it. */
+.ds-site-header-nav .ds-site-header-login,
+.ds-site-header-account .ds-site-header-login,
+.ds-site-header-nav .ds-site-header-login:visited,
+.ds-site-header-account .ds-site-header-login:visited {
+  font-weight: 600;
+  color: var(--ds-hdr-fg-strong);
+}
+
+/* Signed-in greeting. Not a link and not focusable — it is a statement, and
+   the account link beside it is the thing you can act on.
+   It truncates. A name is user data of unbounded length, in any script, and
+   a header that reflows or overflows on a long one is a header that breaks
+   for exactly the people whose names are least often tested. */
+.ds-site-header-greeting {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-gap-glyph);
+  min-width: 0;
+  font-size: 0.8125rem;
+  color: var(--ds-hdr-fg);
+  white-space: nowrap;
+}
+.ds-site-header-greeting > b {
+  font-weight: 600;
+  color: var(--ds-hdr-fg-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 14ch;
+}
+/* On a narrow bar the greeting is the first thing to go: the account link
+   is the useful half and the name is already known to the person reading.
+   header.js hides it by fit; without the script, a narrow screen hides it. */
+.ds-site-header.is-greeting-hidden .ds-site-header-greeting { display: none; }
+@media (max-width: 599px) {
+  .ds-site-header-greeting { display: none; }
+}
+
+/* ── .ds-site-header--light ───────────────────────────────────────────────
+   The same bar on a property that is not arxiv.org: the design system docs
+   today, and the kind of thing an info or outreach site would use. It changes
+   nothing about how the component works — it re-points the seven surface
+   tokens and declares no property of its own, so there is no rule here that
+   can lose a specificity argument with the rules above.
+
+   DESIGN-POLICIES caps arXiv's universal navigation at four links. That
+   is a constraint on arxiv.org's content, not on this component: a property
+   with more sections uses .ds-site-header-dropdown below. */
+.ds-site-header--light {
+  --ds-hdr-bg:        var(--ds-surface);
+  --ds-hdr-fg:        var(--ds-text-muted);
+  --ds-hdr-fg-strong: var(--ds-text);
+  --ds-hdr-hover:     rgba(0, 0, 0, 0.05);
+  --ds-hdr-ring:      var(--ds-focus-ring);
+  --ds-hdr-border:    var(--ds-border);
+  --ds-hdr-divider:   var(--ds-border);
+}
+
+/* Collapse by fit (header.js). When the regions do not fit on one row, the
+   navigation collapses behind a menu button, then the tools behind a second
+   button; the logo and the account area always stay. The script adds both
+   buttons and .is-collapsible, so a page without it keeps the wrap below. */
+.ds-site-header-nav-toggle,
+.ds-site-header-tools-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;  /* 44x44 touch target (matches the system's menu-control sizing) */
+  height: 44px;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: 4px;
+  color: var(--ds-hdr-fg); /* the bar's foreground: legible in both themes and on --light */
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.12s, color 0.12s;
+}
+.ds-site-header-nav-toggle:hover,
+.ds-site-header-tools-toggle:hover { background: var(--ds-hdr-hover); color: var(--ds-hdr-fg-strong); }
+.ds-site-header-nav-toggle:focus-visible,
+.ds-site-header-tools-toggle:focus-visible {
+  outline: 3px solid var(--ds-hdr-ring);
+  outline-offset: 1px;
+}
+.ds-site-header-nav-toggle svg,
+.ds-site-header-tools-toggle svg { width: 22px; height: 22px; display: block; }
+
+/* A managed bar stays on one row, so its search fields shrink rather than
+   wrap; it wraps only when even the most collapsed state does not fit. */
+.ds-site-header.is-collapsible { position: relative; flex-wrap: nowrap; }
+.ds-site-header.is-collapsible.is-overfull { flex-wrap: wrap; }
+.ds-site-header.is-nav-collapsed .ds-site-header-nav-toggle,
+.ds-site-header.is-tools-collapsed .ds-site-header-tools-toggle { display: inline-flex; }
+.ds-site-header.is-nav-collapsed > .ds-site-header-divider { display: none; }
+/* header.js measures each state with the fields at their narrowest. */
+.ds-site-header.is-measuring { flex-wrap: nowrap; width: max-content; }
+.ds-site-header.is-measuring .ds-site-header-search { flex: 0 0 7rem; }
+
+/* A collapsed region opens below the bar as full-width rows. */
+.ds-site-header.is-nav-collapsed .ds-site-header-nav,
+.ds-site-header.is-tools-collapsed .ds-site-header-tools {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  width: auto;
+  gap: 0;
+  padding: 0;
+  background: var(--ds-hdr-bg);
+  border-top: 1px solid var(--ds-hdr-divider);
+  border-bottom: 1px solid var(--ds-hdr-border);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* the summoned-surface shadow */
+  z-index: 60;
+}
+.ds-site-header.is-nav-collapsed .ds-site-header-nav.is-open,
+.ds-site-header.is-tools-collapsed .ds-site-header-tools.is-open { display: flex; }
+.ds-site-header.is-nav-collapsed .ds-site-header-nav > a,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav > button,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-dropdown > summary,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu a,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button,
+.ds-site-header.is-tools-collapsed .ds-site-header-tools > * {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-start;
+  padding: 12px 16px;
+  min-height: 44px; /* the touch-target floor for menu rows */
+  box-sizing: border-box;
+  border-radius: 0;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--ds-hdr-divider);
+}
+.ds-site-header.is-nav-collapsed .ds-site-header-nav > :last-child,
+.ds-site-header.is-tools-collapsed .ds-site-header-tools > :last-child { border-bottom: none; }
+/* A folded tool has a full row, so its name shows beside the icon. !important only
+   to undo .is-sr-only, which uses it. */
+.ds-site-header.is-tools-collapsed .ds-site-header-tools > button > .is-sr-only {
+  position: static !important;
+  width: auto !important; height: auto !important;
+  margin: 0 0 0 var(--ds-gap-glyph) !important;
+  overflow: visible !important;
+  clip: auto !important;
+}
+.ds-site-header.is-tools-collapsed .ds-site-header-tools > .ds-site-header-search { flex: none; min-width: 0; }
+/* A dropdown in the collapsed list opens in place, as indented rows on the bar's own ground. */
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu {
+  position: static;
+  min-width: 0;
+  max-width: none;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu a,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button {
+  padding-inline-start: 32px;
+  color: var(--ds-hdr-fg);
+}
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu a:hover,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button:hover {
+  background: var(--ds-hdr-hover);
+  color: var(--ds-hdr-fg-strong);
+}
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu a:focus-visible,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button:focus-visible {
+  outline: 3px solid var(--ds-hdr-ring);
+  outline-offset: -3px;
+}
+
+/* Narrow viewport. Without header.js the bar wraps (WCAG 1.4.10 reflow at
+   320px): logo and account on the first row, then tools, then the navigation. */
+@media (max-width: 599px) {
+  .ds-site-header { padding: 6px 12px; }
+  .ds-site-header-nav > a,
+  .ds-site-header-nav > button,
+  .ds-site-header-account > a { padding: 6px 8px; }
+  .ds-site-header:not(.is-collapsible) .ds-site-header-account { order: 1; }
+  .ds-site-header:not(.is-collapsible) .ds-site-header-tools { order: 3; flex: 1 1 100%; flex-wrap: wrap; }
+  .ds-site-header:not(.is-collapsible) .ds-site-header-nav { order: 4; flex-wrap: wrap; row-gap: 2px; width: 100%; }
+  .ds-site-header:not(.is-collapsible) > .ds-site-header-divider { display: none; }
+  .ds-site-header:not(.is-collapsible) .ds-site-header-search { flex: 1 1 10rem; }
+}
+
+/* ── .ds-site-header--sticky ──
+   Internal tools only; arxiv.org's public header scrolls away (DESIGN-POLICIES).
+   After the narrow-viewport block, so it wins over .is-collapsible's
+   position: relative. The page's anchors clear the bar by themselves. */
+.ds-site-header.ds-site-header--sticky {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
+
+/* SECONDARY NAVIGATION  (.ds-subnav) — header.html
+   A row of section links directly under the header. It wraps rather than
+   scrolling sideways, so every section stays visible at 320px and at 200%
+   text. The current page is marked three ways: weight, an underline bar,
+   and aria-current. Breadcrumbs are for pages without one (DESIGN-POLICIES). */
+.ds-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--ds-space-6);
+  padding: 0 24px;
+  background: var(--ds-surface);
+  border-bottom: 1px solid var(--ds-border);
+  font-family: var(--ds-font-sans);
+}
+.ds-subnav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+}
+.ds-subnav a:visited { color: var(--ds-text-muted); }
+.ds-subnav a:hover { color: var(--ds-text); border-bottom-color: var(--ds-border-strong); }
+.ds-subnav a:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: -3px;
+  border-radius: 2px;
+}
+.ds-subnav a[aria-current="page"] {
+  color: var(--ds-text);
+  text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;   /* bold without widening, so nothing beside it moves */
+  border-bottom-color: var(--ds-subnav-current, var(--ds-accent-strong));
+}
+@media (max-width: 599px) {
+  .ds-subnav { padding: 0 12px; column-gap: var(--ds-space-4); }
+}
+
+/* STEPS  (.ds-subnav--steps) — header.html
+   The steps of one ordered process, on the secondary navigation bar. A
+   complete or available step is a link; the current step has
+   aria-current="step"; a step not available yet is a <span>. Which steps are
+   available is the application's logic. Wraps, like the bar. */
+.ds-subnav--steps > ol {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: inherit;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ds-subnav--steps li > a,
+.ds-subnav--steps li > span {
+  gap: var(--ds-space-2);
+}
+.ds-subnav--steps li > span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+  border-bottom: 3px solid transparent;
+  cursor: default;
+}
+.ds-step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid var(--ds-border-strong);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+.ds-step-number svg { width: 0.875rem; height: 0.875rem; stroke: currentColor; stroke-width: 2.5; fill: none; }
+.ds-subnav--steps li > span .ds-step-number { border-style: dashed; }
+.ds-subnav--steps a[aria-current="step"] {
+  color: var(--ds-text);
+  text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;
+  border-bottom-color: var(--ds-subnav-current, var(--ds-accent-strong));
+}
+.ds-subnav--steps a[aria-current="step"] .ds-step-number {
+  border: 2px solid var(--ds-subnav-current, var(--ds-accent-strong));
+}
+
+/* TABS  (.ds-tabs) — progressive-disclosure.html
+   Views of one page's content. tabs.js builds the tab list from each
+   panel's heading; without it every panel shows, each under its heading. */
+.ds-tabs-list {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--ds-space-6);
+  margin: 0 0 var(--ds-space-4);
+  border-bottom: 1px solid var(--ds-border);
+}
+.ds-tabs-list [role="tab"] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  margin-bottom: -1px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  font-family: var(--ds-font-sans);
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+  cursor: pointer;
+}
+.ds-tabs-list [role="tab"]:hover { color: var(--ds-text); border-bottom-color: var(--ds-border-strong); }
+.ds-tabs-list [role="tab"]:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.ds-tabs-list [role="tab"][aria-selected="true"] {
+  color: var(--ds-text);
+  text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;   /* bold without widening, so nothing beside it moves */
+  border-bottom-color: var(--ds-tabs-current, var(--ds-accent-strong));
+}
+.ds-tabs-panel:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+}
+.ds-tabs-panel[hidden] { display: none; }
+@media print {
+  .ds-tabs-list { display: none; }
+  .ds-tabs-panel[hidden], .ds-tabs-panel > [hidden] { display: block; }
+}
+
+/* ── Header search overlay (.ds-search-overlay) ─────────────────────────
+   Opened from the header's Search link by chrome/header.js; without JS the
+   link navigates and this stays [hidden]. z-index 200: the overlay layer. The
+   field and hint are the ordinary .ds-input / .ds-hint. */
+.ds-search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: var(--ds-scrim);
+}
+.ds-search-overlay[hidden] { display: none; }
+.ds-search-overlay-panel {
+  margin-top: 52px; /* the header bar's height: the panel hangs from the bar */
+  width: 100%;
+  max-width: 640px;
+  box-sizing: border-box;
+  padding: 20px 24px;
+  background: var(--ds-surface);
+  color: var(--ds-text);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  font-family: var(--ds-font-sans);
+}
+.ds-search-overlay-panel .ds-input { font-size: 1rem; box-sizing: border-box; }
+.ds-search-overlay-panel .ds-hint a { color: var(--ds-link); }
+
+/* Print keeps the logo, at a modest size, and none of the bar or its controls. */
+@media print {
+  .ds-announcement,
+  .ds-site-header > :not(.ds-site-header-logo),
+  .ds-subnav,
+  .ds-search-overlay,
+  .ds-skip-link { display: none !important; }
+  .ds-site-header { height: auto; min-height: 0; padding: 0 0 var(--ds-space-4); background: none; border: 0; }
+  .ds-site-header-logo img { height: 28px; }
+}
+
+/* SECTION ANCHOR  (.ds-anchor) — links.html
+   A control beside a heading that copies the link to that section. It is a
+   button rather than an <a href="#here">: a link to the section a reader is
+   already looking at is a tab stop that goes nowhere they wanted to go. What
+   they want is the address.
+   Quiet until wanted — it appears on hover of the heading, and on focus of
+   itself, so a keyboard user reaches it in order rather than never. Opacity
+   rather than display, so it holds its space and the heading does not reflow
+   when it appears. */
+.ds-anchor {
+  /* The glyph is under 10px, so the hit area is grown with padding and pulled
+     back with a negative margin — the technique DESIGN-POLICIES names, because
+     it clears the 24px target floor without moving the heading a pixel. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
+  margin-inline-start: 0.1em;
+  margin-block: -12px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ds-text-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s;
+  vertical-align: middle;
+}
+.ds-anchor svg {
+  width: 0.72em;
+  height: 0.72em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
+}
+:is(h2, h3):hover > .ds-anchor,
+.ds-anchor:focus-visible { opacity: 1; }
+.ds-anchor:hover { color: var(--ds-link); }
+.ds-anchor:focus-visible {
+  outline: 3px solid var(--ds-focus-ring);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+/* A reader who cannot hover gets it permanently: on a touch screen the quiet
+   state has no way back. */
+@media (hover: none) {
+  .ds-anchor { opacity: 1; }
+}
+
+/* THEME TOGGLE  (.ds-theme-toggle) — dark-mode.html
+   One control, identical on both surfaces, because a reader who learns it on
+   arxiv.org should not have to learn it again in a moderation queue.
+
+   It is a three-state control, not a switch, and that is the whole design.
+   The states are follow the system / always light / always dark, and "follow
+   the system" is the default a reader must be able to get back to — a two-way
+   switch cannot express it, so once it was touched the OS setting would be
+   lost for good. That is also why it is a <button> cycling a value rather than
+   .ds-switch: a switch means on or off.
+
+   The icon is the only visible part. The state is in the accessible name
+   ("Theme: following the system. Activate to change.") and a press
+   announces its result in the live region, so a screen reader user is
+   never guessing what the moon means.
+
+   The button lives in the header bar, so it takes the bar's own tokens and
+   works on either variant without being told which. */
+.ds-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-gap-glyph);
+  min-height: 24px;               /* WCAG 2.2 target size */
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: none;
+  color: var(--ds-hdr-fg);
+  font-family: var(--ds-font-sans);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.ds-theme-toggle:hover {
+  background: var(--ds-hdr-hover);
+  color: var(--ds-hdr-fg-strong);
+}
+.ds-theme-toggle:focus-visible {
+  outline: 3px solid var(--ds-hdr-ring);
+  outline-offset: 2px;
+}
+.ds-theme-toggle svg {
+  width: 1.25rem;    /* on its own, so larger than an icon beside a label; with the padding a 32px target */
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* One icon per state, all three in the DOM, so nothing is fetched or measured
+   at the moment of the click. The host sets data-theme-choice; the script that
+   sets it is the same one that sets the attribute on <html>. */
+.ds-theme-toggle > svg { display: none; }
+.ds-theme-toggle[data-theme-choice="system"] > .ds-theme-icon-system,
+.ds-theme-toggle[data-theme-choice="light"]  > .ds-theme-icon-light,
+.ds-theme-toggle[data-theme-choice="dark"]   > .ds-theme-icon-dark { display: block; }
+
+/* Outside a header bar — a settings page, a docs page with no chrome — the
+   bar tokens are undefined, so it falls back to the page's own. */
+.ds-theme-toggle:not(.ds-site-header-nav *) {
+  color: var(--ds-hdr-fg, var(--ds-text-muted));
+}
+
+/* PRINT IS ALWAYS LIGHT
+   Dark mode answers "what is comfortable on this screen", and paper is not a
+   screen. Without this, a reader whose OS is set to dark gets a page of dark
+   ink — or, on the printers that drop backgrounds, light grey text on white.
+   The tokens are re-pointed rather than the components overridden, so every
+   component prints correctly without knowing that it is printing. */
+@media print {
+  /* The selector list has to match the dark rules it is undoing, or it loses
+     on specificity rather than on order: the @media dark block keys on
+     :root:not([data-theme="light"]), which is 0-2-0. */
+  :root,
+  :root:not([data-theme="light"]),
+  html:not([data-theme="light"]),
+  [data-theme="dark"] {
+    color-scheme: light;
+    --ds-text:          #000000;
+    --ds-text-muted:    #333333;
+    --ds-canvas:        #ffffff;
+    --ds-surface:       #ffffff;
+    --ds-surface-muted: #ffffff;
+    --ds-border:        #cccccc;
+    --ds-border-muted:  #dddddd;
+    --ds-link:          #000000;
+    --ds-link-visited:  #000000;
+  }
+  body { background: #ffffff; color: #000000; }
+}

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Headings and labels — proposal</title>
+  <link rel="stylesheet" href="../../../docs/fonts.css">
+  <link rel="stylesheet" href="../../../docs/design-system.css">
+  <style>
+    .wrap { max-width: 900px; margin: 0 auto; padding: var(--ds-space-8) var(--ds-space-6); }
+    .sample { border: 1px dashed var(--ds-border-strong); border-radius: 8px; padding: var(--ds-space-4); margin: var(--ds-space-3) 0 var(--ds-space-6); }
+    .sample > :first-child { margin-top: 0; }
+    .sample > :last-child { margin-bottom: 0; }
+    .tag-yes { color: var(--ds-success-fg); font-weight: 600; }
+    .tag-no { color: var(--ds-error-fg); font-weight: 600; }
+    td, th { vertical-align: top; }
+  </style>
+</head>
+<body class="ds-page">
+<main class="wrap">
+
+<h1>Headings and labels</h1>
+<p>A proposal for one rule that decides when content gets a heading and when it gets a panel label.
+Audit of the 24 docs pages, 30 September 2026.</p>
+
+<h2>The proposed rule</h2>
+<ol>
+  <li><strong>A heading names something a reader would want to find.</strong> It has its own
+  description, or it holds more than one example. It appears in the outline.</li>
+  <li><strong>A panel label names the one example directly below it.</strong> It has no description of
+  its own. It stays out of the outline.</li>
+  <li><strong>A state label names one cell inside a demo</strong>, where variants sit side by side in a
+  single card.</li>
+  <li><strong>Levels:</strong> h1 is the page title. h2 is a section, or a group heading (Modifiers,
+  Rules, Spec). h3 is a part of a section, or a section under a group heading.</li>
+</ol>
+
+<p>The test a builder applies: <em>does a paragraph follow it, or does it cover several examples?</em>
+Yes: heading. No: panel label.</p>
+
+<div class="sample">
+  <h3>Heading: IBM Plex Mono</h3>
+  <p class="ds-section-desc">Code and identifiers.</p>
+  <p class="ds-panel-label">Panel label: a code block</p>
+  <div class="ds-card"><p>The one example the label names.</p></div>
+</div>
+
+<h2>What the audit found</h2>
+<table class="ds-table">
+  <thead><tr><th scope="col">Element</th><th scope="col">Count</th><th scope="col">Used for</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">h2.section-title</th><td>77</td><td>Sections. Consistent.</td></tr>
+    <tr><th scope="row">h2 (plain)</th><td>33</td><td>Group headings: Modifiers, Rules, Spec. Consistent.</td></tr>
+    <tr><th scope="row">h3.section-title</th><td>77</td><td>Sections under a group heading. Consistent.</td></tr>
+    <tr><th scope="row">h3.ds-note-label</th><td>27</td><td>Note tabs such as Accessibility essentials. Consistent.</td></tr>
+    <tr><th scope="row">h3 (plain)</th><td>30</td><td>Parts of a section on colors.html and cards.html; card titles inside demos.</td></tr>
+    <tr><th scope="row">.ds-panel-label</th><td>67</td><td>Mostly the name of one demo. On four pages, a named part of a section with its own description.</td></tr>
+    <tr><th scope="row">.state-label</th><td>39</td><td>One cell in a demo of side-by-side variants. Consistent.</td></tr>
+  </tbody>
+</table>
+
+<p><span class="tag-yes">No skipped levels</span> on any page. The outline problem is that the same job
+is done two ways.</p>
+
+<h3>The same job, done two ways</h3>
+<ul>
+  <li><strong>A named part of a section, with its own description:</strong> colors.html uses h3
+  (Primary, Secondary, Warm tints). typography.html uses panel labels for the six typefaces (IBM Plex Sans,
+  IBM Plex Mono…), and tags.html uses panel labels for its colour groups. A screen reader user can jump to
+  "Warm tints" but not to "IBM Plex Mono".</li>
+  <li><strong>Inside one page:</strong> colors.html uses h3 for Primary to Heritage, then panel labels
+  for Text links and Focus indicators, which do the same job. It also uses panel labels for Recommended
+  pairings and "Buttons change clothes on tinted surfaces", each followed by a description.</li>
+  <li><strong>Surface variants of one example:</strong> cards.html names its internal and data-card
+  demos with h3. Other pages name the same kind of demo with a panel label (header.html, dark-mode.html,
+  tables.html).</li>
+  <li><strong>Long labels:</strong> some panel labels hold a sentence, such as "Nothing selected —
+  actions disable, they never disappear" (tables.html). In uppercase they are slow to read.</li>
+</ul>
+
+<h2>Changes each page would need</h2>
+<table class="ds-table">
+  <thead><tr><th scope="col">Page</th><th scope="col">Change</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">typography.html</th><td>The six typeface panel labels become h3. The
+    Panel label section states the rule above.</td></tr>
+    <tr><th scope="row">tags.html</th><td>"Blue: the arXiv voice" and "Alert colors: Status and
+    condition" become h3.</td></tr>
+    <tr><th scope="row">colors.html</th><td>Text links, Focus indicators, Recommended pairings and
+    "Buttons change clothes on tinted surfaces" become h3. "On a tinted band — add .on-tint" stays a panel
+    label.</td></tr>
+    <tr><th scope="row">cards.html</th><td>Internal card, Public data card and Internal data card become
+    panel labels. The one description under Internal card moves into its class key.</td></tr>
+    <tr><th scope="row">tables.html, version-display.html, header.html</th><td>Shorten labels that hold a
+    sentence to a few words; the rest of the sentence moves to the description or class key.</td></tr>
+    <tr><th scope="row">All other pages</th><td>No change.</td></tr>
+  </tbody>
+</table>
+
+<h2>Rules on typography.html</h2>
+<ul>
+  <li>The Panel label section says a label is not a heading so it stays out of the outline. That stays
+  true. It needs the test above, so a builder knows which one to use.</li>
+  <li>"A label that a reader needs to navigate to is a heading" is already in the marginal note. The
+  rule above makes that concrete.</li>
+</ul>
+
+<h2>Decisions</h2>
+<ol>
+  <li>Adopt the test: a paragraph follows it or it covers several examples, so it is a heading;
+  otherwise a panel label.</li>
+  <li>Surface variants of one example (public and internal) are panel labels, on every page.</li>
+  <li>Panel labels stay short: a few words, no full sentence.</li>
+  <li>Card titles inside demos stay h3, because they are the component's own content and a real page
+  would have them.</li>
+  <li>Apply the changes listed above in one pass, then regenerate the contents lists and digests.</li>
+</ol>
+
+</main>
+</body>
+</html>

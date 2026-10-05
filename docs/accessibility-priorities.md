@@ -37,11 +37,11 @@ Where NOT to apply:
 - **Copy-out content** (BibTeX, formatted citation text). The sr-only pattern is included in some browsers' selection copy; readers selecting the BibTeX would copy "archivearXiv2604.22725" — broken. Leave citation text strings alone.
 - **Plain identifiers in metadata that are already inside `aria-label` wrappers** — do not double-wrap.
 
-Operationalize as a template helper (Jinja/PHP/Smarty macro) emitting the dual-span on every "arXiv" instance in site-controlled chrome. For user-uploaded content that mentions arXiv (paper titles, comments), a small once-on-DOMContentLoaded script can walk text nodes and apply the same wrapping.
+Operationalize as a template helper (Jinja/PHP/Smarty macro) emitting the dual-span on every "arXiv" instance in site-controlled chrome. For user-uploaded content that mentions arXiv (paper titles, comments), a small once-on-DOMContentLoaded script can scan text nodes and apply the same wrapping.
 
 *Status: validated; rollout in progress. Why: Dan Miner (2023-02-28) "the way your name is read is baffling, I've gone there several times over the years and it's gibberish." Same source as the arXiv ID announcement.*
 
-**Primary download/HTML/source buttons carry the paper title in their accessible name.** Use `aria-describedby` pointing to the title element on the primary action; buttons further from the title use `aria-label` with the title included.
+**Primary download/HTML/source buttons include the paper title in their accessible name.** Use `aria-describedby` pointing to the title element on the primary action; buttons further from the title use `aria-label` with the title included.
 *Status: validated. Why: Sam Hartman (2022-08-02), Robin Williams (2022-09-14).*
 
 **Filenames include paper title and file extension.** `Author_Title_2401.12345.tar.gz` not `2401.12345`. Applies to PDF, HTML, and source-bundle downloads.
@@ -63,7 +63,7 @@ Operationalize as a template helper (Jinja/PHP/Smarty macro) emitting the dual-s
 
 ### Figures and tables
 
-**Alt text on figures.** Authors are expected to provide alt text. Figure caption serves as fallback where missing. Author-facing tooling at submission to surface gaps is a separate track (submission-pipeline-as-lever).
+**Alt text on figures.** Authors are expected to provide alt text. Figure caption serves as fallback where missing. Author-facing tooling at submission to surface gaps is a separate workstream (submission-pipeline-as-lever).
 *Status: validated. Why: every screen-reader-user voice in the research; Volker Sorge framing of submission-time as the lever.*
 
 **Tables marked up semantically.** `<th scope>`, `<caption>`, row/column headers explicit. Where possible, also available as ancillary CSV.
@@ -83,7 +83,7 @@ Operationalize as a template helper (Jinja/PHP/Smarty macro) emitting the dual-s
 **Color independence on all status badges, version links, type markers.** Color is never the sole carrier of meaning. Each marker has text or icon redundancy. (WCAG 1.4.1.)
 *Status: design-side validation needed.*
 
-**Low vision is its own track.** Wayne Dick's principle: low-vision users have distinct needs from screen-reader users — magnification, line length at zoom, independent equation enlargement, custom stylesheet support. Optimizing for blind users does not solve low-vision needs.
+**Low vision is its own area.** Wayne Dick's principle: low-vision users have distinct needs from screen-reader users — magnification, line length at zoom, independent equation enlargement, custom stylesheet support. Optimizing for blind users does not solve low-vision needs.
 *Status: ongoing. Why: Wayne Dick (2023-06-06) — "It is not 'once you fix it for the blind, you fix it for everyone.'"*
 
 ### Cognitive and dyslexia
@@ -132,10 +132,10 @@ Beyond-baseline features specifically for the HTML reader, to push accessibility
 
 Six independent voices in the research described distinct problems with the same inline-citation surface. The combined design moves:
 
-- **Every inline citation carries full context in its accessible name.** `<a class="citation-ref" href="#ref12" aria-label="Reference 12: Smith et al., Title, 2024">[12]</a>` — visible "[12]" stays compact for sighted readers; the `aria-label` gives AT users the same context a sighted reader gets from author-year style citations. Addresses Tigwell's *"what is reference 10? Is that the paper I have in mind?"* without requiring a UI toggle.
+- **Every inline citation includes full context in its accessible name.** `<a class="citation-ref" href="#ref12" aria-label="Reference 12: Smith et al., Title, 2024">[12]</a>` — visible "[12]" stays compact for sighted readers; the `aria-label` gives AT users the same context a sighted reader gets from author-year style citations. Addresses Tigwell's *"what is reference 10? Is that the paper I have in mind?"* without requiring a UI toggle.
 - **Citation marks are aurally compact by default.** Wrap each inline mark so the announcement is "Smith 2024, reference 12" or similar — not "open bracket twelve close bracket." Sighted readers see "[12]"; listening readers experience low-noise prose flow. Addresses Dan Miner's *"auditory disturbance you cannot skip."*
 - **References open as popups, not jumps.** On hover (sighted) or focus (keyboard/AT), a small popover shows the full reference inline. On explicit click, the user jumps to the references section and browser-back returns focus to the citation. Closes Godfrey's *"why jump around?"* + Firshman's arXiv Vanity precedent + Branham's TAPS jump-back pattern.
-- **Reference list is structured for navigation.** `<ol>` with each `<li id="ref12">` carrying bibliographic info in semantically distinguishable spans (`<cite>`, author span, venue span, year span). Screen-reader users can list-navigate and jump.
+- **Reference list is structured for navigation.** `<ol>` with each `<li id="ref12">` holding bibliographic info in semantically distinguishable spans (`<cite>`, author span, venue span, year span). Screen-reader users can list-navigate and jump.
 - **"Cited by" affordance in each reference.** Each entry in the references section has a small icon-link back to the in-text citation(s) that use it — orientation aid for AT users who jumped to the bib and want to find context.
 - **External link targets are scoped within each reference.** DOI / arXiv-ID / publisher URL within a reference is its own link, not the whole reference entry. Avoids "open bracket twelve close bracket open new tab" announcements.
 
@@ -153,7 +153,7 @@ Six independent voices in the research described distinct problems with the same
 
 - **MathML vs LaTeX as math substrate.** Resolution: both. MathML for AT consumption; LaTeX preserved as source download and authoring trust.
 - **PDF: keep tagging vs abandon.** Resolution: HTML is the priority substrate. Tagged PDF is best-effort for legacy corpus; not feature parity.
-- **Accessibility grade public vs author-only.** Resolution: per-capability advertisement to readers (not a single grade); author-facing detailed report at submission (separate track).
+- **Accessibility grade public vs author-only.** Resolution: per-capability advertisement to readers (not a single grade); author-facing detailed report at submission (separate workstream).
 - **Crowd alt-text trustworthy vs not.** Resolution: differentiate roles. Authors canonical; community suggests; author reviews before publication. Reader-contributed alt text goes through Labs-style opt-in with provenance labeling.
 - **arXiv full-stack vs focused publisher.** Resolution: core arXiv ships HTML, math, alt-text, ID announcements, declutter, capability advertisement. Labs hosts opt-in experiments. arXiv never recommends third-party AI/audio/AT tools by name.
 
@@ -163,7 +163,7 @@ Six independent voices in the research described distinct problems with the same
 - **MathML 4** (with `intent`) for math. arXiv contributes to the W3C Math Working Group via Deyan Ginev.
 - **Speech Rule Engine / MathCAT** for math read-aloud where the AT toolchain supports it.
 - **EPUB Accessibility 1.1** principles applied to HTML reader where they translate (structured navigation, alt text, language tagging).
-- **W3C Personalization / Adapt:** track but do not build to until stable.
+- **W3C Personalization / Adapt:** follow but do not build to until stable.
 
 ## Brand-level positions
 
@@ -176,5 +176,5 @@ Six independent voices in the research described distinct problems with the same
 ## Pointers
 
 - Research syntheses, raw data, and open research questions: `~/Desktop/arxiv-mockups/arxiv-public/references/`
-- Submission-pipeline-as-accessibility-lever work: separate track (not in this document; the submission flow is where most author-side accessibility behavior change can happen)
-- Brand updates (post-spinout): separate track
+- Submission-pipeline-as-accessibility-lever work: separate workstream (not in this document; the submission flow is where most author-side accessibility behavior change can happen)
+- Brand updates (post-spinout): separate workstream
