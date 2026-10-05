@@ -111,11 +111,11 @@ components:
       - name: "aria-disabled=\"true\""
         does: "On an unavailable action that explains itself. The reason goes in a tooltip by default, because it takes no room and does not move the layout. Where there is room, it can sit under the actions as `.ds-hint` text instead, named in the button's `aria-describedby`. Use `aria-disabled`, not `disabled`: a disabled button cannot take focus, so a keyboard user would never reach the reason. The script must ignore clicks while it is set."
       - name: ".ds-tooltip"
-        does: "The bubble, with `role=\"tooltip\"` and the `id`. It opens downward and toward the inline end, on hover and on focus, with no JavaScript. Escape must close it without moving focus, which CSS cannot do: a listener sets `hidden` on it, and clears it when the pointer or focus arrives again. The script on this page is the reference."
+        does: "The bubble, with `role=\"tooltip\"` and the `id`. It opens downward and toward the inline end, on hover and on focus, with no JavaScript. Escape must close it without moving focus, which CSS cannot do: a listener sets `hidden` on it, and clears it when the pointer or focus arrives again. `tooltip.js` does this, once per page."
       - name: ".ds-tooltip-body"
         does: "The text. Short, and never content that exists nowhere else."
       - name: ".ds-tooltip--end"
-        does: "For a host near the trailing edge of its container, like the Continue button above: the bubble runs back toward the start instead of off screen. Both directions use logical properties, so both are correct in a right-to-left script."
+        does: "For a host that always sits at the trailing edge of its container, like the Continue button above: the bubble opens back toward the start. Anywhere else, including a tag in a row that wraps, `tooltip.js` slides the bubble back onto the screen when it would cross an edge. Both directions use logical properties, so both are correct in a right-to-left script."
     notes:
       - "Not for anything required: if the reader must have it to fill the field in, it is help text under the control, not a tooltip, which is for the person who stops and wonders."
   - id: field-width
@@ -404,9 +404,9 @@ A short explanation attached to a control, on hover and on focus. The lighter ha
 - `.ds-label-row` — Puts a label and its tooltip trigger on one line, in place of the label's own spacing. The icon trigger inside it is compact and still clears the 24px target.
 - `aria-describedby="tip-doi"` — On the trigger, naming the tooltip's `id`. The tooltip describes the control and is never its accessible name: a name that only appears on hover is a name most people never get, so an icon trigger has an `.is-sr-only` label of its own, as above.
 - `aria-disabled="true"` — On an unavailable action that explains itself. The reason goes in a tooltip by default, because it takes no room and does not move the layout. Where there is room, it can sit under the actions as `.ds-hint` text instead, named in the button's `aria-describedby`. Use `aria-disabled`, not `disabled`: a disabled button cannot take focus, so a keyboard user would never reach the reason. The script must ignore clicks while it is set.
-- `.ds-tooltip` — The bubble, with `role="tooltip"` and the `id`. It opens downward and toward the inline end, on hover and on focus, with no JavaScript. Escape must close it without moving focus, which CSS cannot do: a listener sets `hidden` on it, and clears it when the pointer or focus arrives again. The script on this page is the reference.
+- `.ds-tooltip` — The bubble, with `role="tooltip"` and the `id`. It opens downward and toward the inline end, on hover and on focus, with no JavaScript. Escape must close it without moving focus, which CSS cannot do: a listener sets `hidden` on it, and clears it when the pointer or focus arrives again. `tooltip.js` does this, once per page.
 - `.ds-tooltip-body` — The text. Short, and never content that exists nowhere else.
-- `.ds-tooltip--end` — For a host near the trailing edge of its container, like the Continue button above: the bubble runs back toward the start instead of off screen. Both directions use logical properties, so both are correct in a right-to-left script.
+- `.ds-tooltip--end` — For a host that always sits at the trailing edge of its container, like the Continue button above: the bubble opens back toward the start. Anywhere else, including a tag in a row that wraps, `tooltip.js` slides the bubble back onto the screen when it would cross an edge. Both directions use logical properties, so both are correct in a right-to-left script.
 
 > Not for anything required: if the reader must have it to fill the field in, it is help text under the control, not a tooltip, which is for the person who stops and wonders.
 
