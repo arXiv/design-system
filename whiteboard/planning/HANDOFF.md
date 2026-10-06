@@ -107,7 +107,7 @@ body scrolls automatically and becomes a tab stop only while it overflows.
    version D (`search.html`), the Papers page (`papers.html`: hierarchy, a paper in a list,
    versions, categories, full papers, sidebar, contents bar, section permalinks, equations,
    figures and references, citations and footnotes, rules incl. paper body and printing), and the
-   inventory promotions from `proposals/paper-decisions-inventory.md` sections 1 to 8. The
+   inventory promotions from the paper decisions inventory (sections 1 to 8; deleted after promotion, in git history). The
    promotion rule (Shamsi): promote everything unless it directly breaks a docs guideline;
    conflicts are listed for her, not promoted. `abstract-phase2.html` is ignored (stale).
    Waiting on Shamsi: the conflicts list in the morning summary; her second pass on papers.html
@@ -117,8 +117,8 @@ body scrolls automatically and becomes a tab stop only while it overflows.
    against the page. Nothing is in design-system.css yet: adopt the proposal only after she
    approves it, then run check-contrast and check-drift.
 0000. **Questions for Deyan:** `questions-for-deyan.html`, Shamsi's edited list (2026-10-06). Math in headings, footnotes, authors and captions are answered without him: see `live-html-markup-2026-10-06.md`.
-00000. **Shamsi's answers, 2026-10-06** (done): deliberate exceptions live in `docs/EXCEPTIONS.md`
-   (first: back-to-abstract, phase 1); the missing-alt-text note is shown, to teach;
+00000. **Shamsi's answers, 2026-10-06** (done): papers.html has an optional area above the identity line for temporary content (Back to abstract); no exceptions file;
+   the missing-alt-text note is shown, to teach;
    references are shown as the author wrote them and arXiv has no reference format; one
    `.ds-permalink` pill everywhere (replaces `.ds-anchor`); element pill is one tab stop with arrow
    keys (`element-pill.js`); PDF from a paper opens a new tab; external links print their address;
@@ -149,6 +149,10 @@ body scrolls automatically and becomes a tab stop only while it overflows.
 
 ## Proposals (whiteboard/planning/proposals/)
 
-Decided and implemented: header-component, secondary-navigation (option B), bulk-action-bar
-(option A), tints, headings-and-labels, membership-dashboard-audit and -structure,
-navigation-layers. Their pages describe the options; the decisions above are what stands.
+Cleaned up on 2026-10-06: implemented and superseded proposals were deleted (they are in git
+history before that date). What remains is still open or is linked from the docs:
+brand-metrics-brainstorm (parked; linked from brand.html), dev-workflow-comparison with
+fifth-option-self-verifying-spec and options-3-and-5-on-browse-and-search (how dev repos adopt the
+DS; linked from index.html and templates/README.md), icon-only-controls (figure viewer zoom
+controls, still proposed), typeface-re-evaluation-2026-06 (decision record; linked from
+typography.html).
