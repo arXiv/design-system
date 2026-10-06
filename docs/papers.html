@@ -1240,7 +1240,7 @@
   <section>
     <h3 id="paper-contents-bar-rules">Contents bar</h3>
     <ul class="notes">
-      <li><strong>The contents list repeats the author&#39;s headings exactly</strong>, including appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX.</li>
+      <li><strong>The contents list repeats the author&#39;s headings exactly</strong>, including appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML&#39;s contents entries with their MathML. A script that reads a heading&#39;s words leaves out the TeX annotation, as <code>toc.js</code> and <code>anchors.js</code> do.</li>
       <li><strong>LaTeXML&#39;s own sidebar is not shown.</strong> The <code>.ds-toc</code> list replaces it.</li>
       <li><strong>Each link in the bar shows an icon and its name</strong>, and the names match the sidebar&#39;s.</li>
       <li><strong>PDF opens in a new tab, in the bar and in the sidebar</strong>, so the reader keeps their place in the HTML paper. It has the external-link icon and “(opens in a new tab)”, as on <a href="links.html">Links</a>.</li>
@@ -1261,7 +1261,7 @@
     <ul class="notes">
       <li><strong>Inline math gets nothing from arXiv</strong>: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly.</li>
       <li><strong>View TeX swaps the equation for its TeX in place</strong>, in plain monospace with no code box. The TeX view is hidden until asked for, and MathML annotations are never displayed.</li>
-      <li><strong>The TeX is exactly what the author wrote.</strong> arXiv does not strip or tidy it.</li>
+      <li><strong>View TeX and Copy use the TeX that LaTeXML keeps with the equation.</strong> The author&#39;s own files are the TeX Source download.</li>
       <li><strong>Copy copies what is on screen</strong>: the MathML in math view, the TeX in TeX view.</li>
       <li><strong>A wide equation scrolls inside its own box, never the page.</strong> The box has <code>tabindex="0"</code>, <code>role="region"</code> and a name: “Equation 2.14, scrolls sideways”.</li>
       <li><strong>The equation number stays in view</strong>, pinned to the right edge while the equation scrolls.</li>
@@ -1294,7 +1294,7 @@
       <li><strong>Jump to reference lands on the entry</strong>, with the accent wash and keyboard focus, and the address gets its id. The scroll is smooth only when reduced motion is not set.</li>
       <li><strong>Back to your place shows only during a jump.</strong> It returns focus and scroll to the citation. The browser&#39;s Back button does the same.</li>
       <li><strong>A bibliography entry is highlighted as one box</strong>, number included, never line by line.</li>
-      <li><strong>A footnote marker is a link to the note</strong>, which stays where the author put it. At wide widths a copy sits in the margin beside its marker (<code>.ds-paper-sidenote</code>), the same width as a margin note and shown at the same widths; narrower, the marker opens a popover.</li>
+      <li><strong>A footnote stays where LaTeXML puts it</strong>: the marker, then the note itself, in one <code>.ltx_note</code>. At wide widths the note is shown in the margin beside its marker, with CSS only, at the width of a margin note (<code>--ds-marginalia-width</code>) and at the same widths. Narrower, a script makes the marker a button that opens the note in a popover. Without JavaScript the note shows after its marker.</li>
     </ul>
   </section>
   <section>

@@ -8,6 +8,13 @@
  * browser on first load. This adds only the control that copies the link.
  */
 (function () {
+  // The words of a heading or link as shown: MathML's TeX annotation is never
+  // displayed, so it is left out, as is the Permalink control.
+  function plain(el) {
+    var c = el.cloneNode(true);
+    Array.prototype.forEach.call(c.querySelectorAll('annotation, annotation-xml, .ds-permalink'), function (n) { n.remove(); });
+    return c.textContent.replace(/\s+/g, ' ').trim();
+  }
   var LINK_ICON =
     '<svg viewBox="0 0 24 24" aria-hidden="true">' +
       '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>' +
@@ -44,7 +51,7 @@
 
     document.querySelectorAll('section > :is(h2, h3):first-child[id]').forEach(function (h) {
       if (h.querySelector('.ds-permalink')) return;
-      var name = h.textContent.replace(/\s+/g, ' ').trim();
+      var name = plain(h);
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'ds-permalink';

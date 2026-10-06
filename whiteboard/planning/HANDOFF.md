@@ -116,7 +116,7 @@ body scrolls automatically and becomes a tab stop only while it overflows.
    Shamsi likes nearly every proposed value; she asked for a stronger selected-row tint, now 1.20
    against the page. Nothing is in design-system.css yet: adopt the proposal only after she
    approves it, then run check-contrast and check-drift.
-0000. **Questions for Deyan:** `questions-for-deyan.html` (six questions, the first three most needed).
+0000. **Questions for Deyan:** `questions-for-deyan.html`, Shamsi's edited list (2026-10-06). Math in headings, footnotes, authors and captions are answered without him: see `live-html-markup-2026-10-06.md`.
 00000. **Shamsi's answers, 2026-10-06** (done): deliberate exceptions live in `docs/EXCEPTIONS.md`
    (first: back-to-abstract, phase 1); the missing-alt-text note is shown, to teach;
    references are shown as the author wrote them and arXiv has no reference format; one
