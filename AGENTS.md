@@ -92,6 +92,8 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
 2. **Suggest a compliant alternative** that achieves the intent.
 3. **Proceed only if the user explicitly acknowledges** the conflict and confirms the override; document it in a code comment.
 
+A confirmed override is a **deliberate exception**. Record it in `docs/EXCEPTIONS.md` (what, where, why, and when it ends) and put `<!-- exception: <name>, see docs/EXCEPTIONS.md -->` next to it in the code. Before flagging a departure from a rule, check that file: a listed exception is not an error, and is not "fixed".
+
 ## Writing rules — for edits to docs/
 
 - **Write to be understood and believed, not admired.** Sincere directness; no quotable aphorisms, no edgy framing. Trust is the goal: calibrate claims honestly, attribute work honestly (including AI), and state limitations plainly — in whiteboard/planning/, not in the docs.

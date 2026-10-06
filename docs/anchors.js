@@ -1,23 +1,17 @@
-/* A link to every section, added to the page rather than written into it.
+/* A Permalink in every section heading, added to the page rather than written into it.
  *
  *   <script src="anchors.js" defer></script>
  *
  * The ids themselves are NOT this script's job — they are written into the
  * HTML by verification/gen-anchors.py, so a fragment works with JavaScript
  * off, works for a link arriving from another page, and is resolved by the
- * browser on first load. This adds only the affordance: a control beside each
- * heading that copies the link to it.
- *
- * It is a button, not an anchor. An <a href="#section"> in a heading is a
- * second tab stop that goes nowhere a reader wanted to go — they are already
- * looking at the section. What they want is the address, so the control
- * copies it and says so.
+ * browser on first load. This adds only the control that copies the link.
  */
 (function () {
   var LINK_ICON =
     '<svg viewBox="0 0 24 24" aria-hidden="true">' +
-      '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/>' +
-      '<path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>';
+      '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>' +
+      '<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
 
   function write(text) {
     if (navigator.clipboard && window.isSecureContext) {
@@ -49,23 +43,33 @@
     }
 
     document.querySelectorAll('section > :is(h2, h3):first-child[id]').forEach(function (h) {
-      if (h.querySelector('.ds-anchor')) return;
+      if (h.querySelector('.ds-permalink')) return;
+      var name = h.textContent.replace(/\s+/g, ' ').trim();
       var btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'ds-anchor';
-      btn.innerHTML = LINK_ICON;
-      // The name carries the section, so a screen-reader user hearing a list
-      // of buttons is not given twelve identical "Copy link to section".
-      btn.setAttribute('aria-label', 'Copy link to ' + h.textContent.trim());
-      btn.title = 'Copy link to this section';
-      btn.addEventListener('click', function () {
+      btn.className = 'ds-permalink';
+      // The visible word starts the name; the hidden part says which section.
+      btn.innerHTML = LINK_ICON + 'Permalink<span class="is-sr-only"> to ' + name.replace(/[&<>]/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }) + '</span>';
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
         var url = location.href.split('#')[0] + '#' + h.id;
         write(url).then(
-          function () { status.textContent = 'Link to ' + h.textContent.trim() + ' copied'; },
+          function () { status.textContent = 'Link to ' + name + ' copied'; },
           function () { status.textContent = 'Copy failed — the address is ' + url; }
         );
       });
       h.appendChild(btn);
     });
+
+    // Without hover, a tap on a heading shows its Permalink; a tap elsewhere hides it.
+    if (window.matchMedia('(hover: none)').matches) {
+      document.addEventListener('click', function (e) {
+        var hit = e.target.closest('section > :is(h2, h3):first-child[id]');
+        document.querySelectorAll('.is-active > .ds-permalink').forEach(function (b) {
+          if (b.parentElement !== hit) b.parentElement.classList.remove('is-active');
+        });
+        if (hit) hit.classList.toggle('is-active');
+      });
+    }
   });
 })();
