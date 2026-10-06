@@ -4,7 +4,8 @@
   round.py build    tests/<name> [--models a,b] [--reps 2] [--budget 10]
   round.py evaluate runs/<run>          computed checks + screenshots (needs playwright)
   round.py review   runs/<run>          serves the blind visual review; saves review.json
-  round.py summary  runs/<run>          writes summary.html and rebuilds runs/index.html
+  round.py summary  runs/<run>          writes summary.html (the detailed record) and rebuilds runs/index.html
+  round.py report   runs/<run>          writes report.html, the one-page report for the team
 
 The protocol is in README.md. Builds are labelled A, B, C... in shuffled order;
 key.json maps labels to models and is only shown in the summary.
@@ -554,6 +555,63 @@ def summary(args):
     print(f"summary: {run / 'summary.html'}")
 
 
+# ── report: the one-page version for the team ────────────────────────────────
+
+GRADES = {"pass": "Pass", "changes": "Pass with changes", "fail": "Fail"}
+VISUAL = {"accept": "pass", "changes": "changes", "reject": "fail"}
+AGENTS = {"claude-sonnet-5-5": "Claude Sonnet 5.5", "claude-opus-5-5": "Claude Opus 5.5"}
+
+
+def total_tokens(m: dict) -> int:
+    u = m.get("usage") or {}
+    return sum(u.get(k, 0) or 0 for k in
+               ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens"))
+
+
+def millions(n: int) -> str:
+    return f"{n / 1e6:.1f} million" if n >= 1e6 else f"{n:,}"
+
+
+def report(args):
+    run = Path(args.run).resolve()
+    info, key = load(run / "run.json"), load(run / "key.json")
+    rev = load(run / "review.json", {"builds": {}})
+    tech = load(run / "technical.json", {"builds": {}})
+    first = Path(info["pages"][0]["path"]).stem
+    cards = []
+    for c in cells_of(run):
+        shot = f"{c.name}/shots/{first}-desktop.jpg"
+        img = (f'<a href="{shot}"><img src="{shot}" alt="Build {c.name}, full size"></a>'
+               if (run / shot).exists() else "<p>No page built.</p>")
+        vis = GRADES.get(VISUAL.get(rev["builds"].get(c.name, {}).get("verdict")), "Not reviewed")
+        prog = GRADES.get(tech["builds"].get(c.name, {}).get("programmatic"), "Not graded")
+        tok = millions(total_tokens(load(c / "metrics.json", {})))
+        cards.append(f"""<figure>{img}<figcaption><strong>Build {c.name}</strong><dl>
+<dt>Visual fidelity</dt><dd>{vis}</dd><dt>Programmatic fidelity</dt><dd>{prog}</dd>
+<dt>Agent</dt><dd>{esc(AGENTS.get(key[c.name]["model"], key[c.name]["model"]))}</dd><dt>Tokens</dt><dd>{tok}</dd></dl></figcaption></figure>""")
+    found = tech.get("findings") or []
+    found_html = ("<h2>What the review found</h2><ul>" + "".join(f"<li>{esc(x)}</li>" for x in found[:3]) + "</ul>") if found else ""
+    nxt = f"<h2>Next</h2><p>{esc(tech['next'])}</p>" if tech.get("next") else ""
+    page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(info.get("subject", info.get("title", run.name)))}: test report</title><style>
+body{{font:16px/1.5 system-ui,sans-serif;margin:0;color:#1c1a17;background:#fff}}
+main{{max-width:960px;margin:0 auto;padding:16px 16px 48px}}h1{{font-size:24px;margin:16px 0 4px}}h2{{font-size:18px;margin:32px 0 8px}}
+.meta{{margin:0;padding:0;list-style:none;color:#59534c}}a{{color:#1565c0}}
+.grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:24px}}
+@media (max-width:600px){{.grid{{grid-template-columns:1fr}}}}
+figure{{margin:0}}figure img{{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top;border:1px solid #dad8d6;border-radius:6px}}
+figcaption{{margin-top:8px}}dl{{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:4px 0 0;font-size:14px}}dt{{color:#59534c}}dd{{margin:0;font-weight:600}}
+</style></head><body><main>
+<h1>{esc(info.get("subject", info.get("title", run.name)))}</h1>
+<ul class="meta"><li>{esc(info["date"])}</li><li><a href="spec.md">The spec</a></li><li><a href="summary.html">The detailed report</a></li></ul>
+<div class="grid">{"".join(cards)}</div>
+{found_html}{nxt}
+</main></body></html>"""
+    (run / "report.html").write_text(page)
+    print(f"report: {run / 'report.html'}")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -563,10 +621,10 @@ if __name__ == "__main__":
     b.add_argument("--reps", type=int, default=2)
     b.add_argument("--budget", type=float, default=10, help="stop a build once its estimated cost passes this many dollars")
     b.add_argument("--parallel", type=int, default=1)
-    for name in ("evaluate", "review", "summary"):
+    for name in ("evaluate", "review", "summary", "report"):
         s = sub.add_parser(name)
         s.add_argument("run")
         if name == "review":
             s.add_argument("--port", type=int, default=8765)
     a = ap.parse_args()
-    {"build": build, "evaluate": evaluate, "review": review, "summary": summary}[a.cmd](a)
+    {"build": build, "evaluate": evaluate, "review": review, "summary": summary, "report": report}[a.cmd](a)
