@@ -155,9 +155,9 @@ A component fill uses one of these or a status colour. A new fill colour is disc
 
 | Tint | Token | Light | Dark |
 |---|---|---|---|
-| **Warm** | `--ds-tint-warm` | Card Grey `#f0f0ee` | `#221f1b`, between the page and a card |
-| **Accent**, public | `--ds-tint-accent` | Tint Light `#edf7ff` | `#1e3a5f` |
-| **Accent**, inside `.ds-internal` | `--ds-tint-accent` | Access Lime wash `#f0f9e8` | `#28380a` |
+| **Warm** | `--ds-tint-warm` | Card Grey `#f0f0ee` | `#282622`, one step lighter than the page |
+| **Accent**, public | `--ds-tint-accent` | Tint Light `#edf7ff` | `#202b38` |
+| **Accent**, inside `.ds-internal` | `--ds-tint-accent` | Access Lime wash `#f0f9e8` | `#292b18` |
 
 Warm: the secondary page zone, data cards, the table header row, row headers, striped rows, notes, tags. Accent: selected table rows.
 
