@@ -1619,8 +1619,7 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
   justify-content: center;
   /* The glyph is the size of the tag's own type; the target is not. It is
      grown to 24px and pulled back with a negative block margin, so the tag
-     keeps its shape. Same technique as .ds-anchor — a small control is still
-     a control. */
+     keeps its shape. A small control is still a control. */
   width: 24px;
   height: 24px;
   margin-block: -12px;
@@ -1824,7 +1823,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 
 /* A PAPER  (.ds-paper-list, .ds-paper, .ds-paper-when, .ds-paper-identity,
    .ds-paper-versions, .ds-paper-files, .ds-paper-cite, .ds-paper-capabilities,
-   .ds-paper-element, .ds-paper-sidenote, .ds-paper-permalink, .ds-paper-bar-logo,
+   .ds-paper-element, .ds-paper-sidenote, .ds-paper-bar-logo,
    .ds-paper-tools) — papers.html
    Only what is particular to a paper has a paper class; the rest is built
    from .ds-link-list, .ds-date-row, .ds-data-list and .ds-tag-list. In a
@@ -1896,32 +1895,6 @@ html:not(.js) .ds-paper-cite-tools { display: none; }
 .ds-paper-sidenote { position: absolute; left: calc(100% + var(--ds-space-4)); width: var(--ds-marginalia-width); }
 .ds-paper-sidenote.is-active { color: var(--ds-text); background: var(--ds-accent-wash); }
 @media (max-width: 82.125rem) { .ds-paper-sidenote { display: none; } }
-/* The Permalink control in a paper's section headings. */
-.ds-paper-permalink {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ds-gap-glyph);
-  min-height: 24px;
-  margin-inline-start: var(--ds-space-tight);
-  padding: 0 0.7em;
-  vertical-align: middle;
-  font-family: var(--ds-font-condensed);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--ds-text-muted);
-  background: var(--ds-surface);
-  border: 1px solid var(--ds-border-muted);
-  border-radius: 999px;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.12s;
-}
-.ds-paper-permalink svg { width: 1.05em; height: 1.05em; flex: none; }
-:is(h2, h3, h4):is(:hover, .is-active) > .ds-paper-permalink,
-.ds-paper-permalink:focus-visible { opacity: 1; }
-.ds-paper-permalink:hover { color: var(--ds-link); }
-.ds-paper-permalink:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
-@media (prefers-reduced-motion: reduce) { .ds-paper-permalink { transition: none; } }
 /* A paper's contents bar: the logo in the start slot, the other formats in the end slot. */
 .ds-paper-bar-logo { grid-column: 1; justify-self: start; display: inline-flex; color: var(--ds-text-muted); }
 .ds-paper-bar-logo svg { height: 1.5rem; width: auto; }
@@ -1944,7 +1917,7 @@ html:not(.js) .ds-paper-cite-tools { display: none; }
   .ds-toc-bar-inner > .ds-paper-tools { grid-column: 1 / -1; grid-row: 2; justify-self: start; flex-wrap: wrap; }
 }
 @media print {
-  .ds-paper-permalink, .ds-element-pill, .ds-paper-tools, .ds-paper-sidenote { display: none; }
+  .ds-toc-bar, .ds-permalink, .ds-element-pill, .ds-paper-sidenote { display: none; }
   .ds-paper-identity { font-size: 10pt; }
   .ds-paper-element, .ds-page :is(figure, table) { break-inside: avoid; }
   .ds-page :is(h2, h3, h4) { break-after: avoid; }
@@ -4039,57 +4012,47 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   .ds-site-header-logo img { height: 28px; }
 }
 
-/* SECTION ANCHOR  (.ds-anchor) — links.html
-   A control beside a heading that copies the link to that section. It is a
-   button rather than an <a href="#here">: a link to the section a reader is
-   already looking at is a tab stop that goes nowhere they wanted to go. What
-   they want is the address.
-   Quiet until wanted — it appears on hover of the heading, and on focus of
-   itself, so a keyboard user reaches it in order rather than never. Opacity
-   rather than display, so it holds its space and the heading does not reflow
-   when it appears. */
-.ds-anchor {
-  /* The glyph is under 10px, so the hit area is grown with padding and pulled
-     back with a negative margin — the technique DESIGN-POLICIES names, because
-     it clears the 24px target floor without moving the heading a pixel. */
+/* PERMALINK  (.ds-permalink) — links.html
+   A button in a section heading that copies the link to that section.
+   Hidden by opacity only, so it holds its space and stays in the tab order. */
+.ds-permalink {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-width: 24px;
+  gap: var(--ds-gap-glyph);
   min-height: 24px;
-  margin-inline-start: 0.1em;
-  margin-block: -12px;
-  padding: 0;
-  border: none;
-  background: none;
+  margin-inline-start: var(--ds-space-tight);
+  padding: 0 0.7em;
+  vertical-align: middle;
+  font-family: var(--ds-font-condensed);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
   color: var(--ds-text-muted);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-muted);
+  border-radius: 999px;
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.12s;
-  vertical-align: middle;
 }
-.ds-anchor svg {
-  width: 0.72em;
-  height: 0.72em;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  display: block;
-}
-:is(h2, h3):hover > .ds-anchor,
-.ds-anchor:focus-visible { opacity: 1; }
-.ds-anchor:hover { color: var(--ds-link); }
-.ds-anchor:focus-visible {
-  outline: 3px solid var(--ds-focus-ring);
-  outline-offset: 2px;
-  border-radius: 3px;
-}
-/* A reader who cannot hover gets it permanently: on a touch screen the quiet
-   state has no way back. */
+.ds-permalink svg { width: 1.05em; height: 1.05em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+:is(h2, h3, h4):is(:hover, .is-active) > .ds-permalink,
+.ds-permalink:focus-visible { opacity: 1; }
 @media (hover: none) {
-  .ds-anchor { opacity: 1; }
+  :is(h2, h3, h4):hover:not(.is-active) > .ds-permalink:not(:focus-visible) { opacity: 0; }
+}
+.ds-permalink:hover { color: var(--ds-link); }
+.ds-permalink:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .ds-permalink { transition: none; } }
+
+/* PRINTED LINKS — links.html
+   On paper an external link shows its address after its text. */
+@media print {
+  .ds-page a[href^="http"]:not(.ds-btn, .ds-site-header-logo, :has(img))::after {
+    content: " (" attr(href) ")";
+    font-size: 0.875em;
+    overflow-wrap: anywhere;
+  }
 }
 
 /* THEME TOGGLE  (.ds-theme-toggle) — dark-mode.html

@@ -11,64 +11,43 @@
 <body class="ds-page">
 <main class="ds-container">
   <h1>Questions for Deyan</h1>
-  <p>2026-10-05. Questions about the HTML papers renderer that came up while moving decisions from the HTML paper mockup into the design system. Each one is something only the renderer can answer or produce. The design-system rule that depends on it is named under each question.</p>
+  <p>2026-10-06. Six questions about the HTML papers renderer. They came up while moving decisions from the HTML paper mockup into the design system, and only the renderer can answer them. The first three matter most; the rest can wait.</p>
 
-  <section>
-    <h2 id="tex-and-math">TeX and math</h2>
-    <ol>
-      <li><strong>Is the TeX in each equation&#39;s <code>annotation</code> exactly what the author typed?</strong> The sample paper shows <code>\displaystyle</code> in aligned cells and braces such as <code>R^{2}</code>. If LaTeXML adds these, can it keep the author&#39;s original string, so that Copy in the TeX view gives it back unchanged?<br>
-      <em>Depends on it:</em> “The TeX is exactly what the author wrote. arXiv does not strip or tidy it.”</li>
-      <li><strong>Can headings in LaTeXML&#39;s contents list have a plain-text form?</strong> A section title that contains math includes the TeX annotation in its <code>textContent</code>, so a contents list built from it shows “Ψ\Psi”. Can LaTeXML output a plain-text form of each heading, or should arXiv&#39;s scripts skip <code>annotation</code> elements? (<code>toc.js</code> and <code>anchors.js</code> both read <code>textContent</code> today.)<br>
-      <em>Depends on it:</em> “Math in a heading appears as it renders, never as its TeX.”</li>
-      <li><strong>Are display equations laid out in layout tables?</strong> They use <code>&lt;table class="ltx_equationgroup"&gt;</code>. Making a wide equation scroll changes it to <code>display: block</code>, which removes the table semantics. Does a screen reader use those rows, or can they take <code>role="presentation"</code>?<br>
-      <em>Depends on it:</em> “A wide equation scrolls inside its own box, never the page.”</li>
-    </ol>
-  </section>
+  <h2 id="first">Most needed</h2>
+  <ol>
+    <li><p><strong>Is what arXiv shows exactly what the author wrote?</strong> The design system shows the author&#39;s TeX and captions unchanged, in View TeX, Copy, the contents list and the figure viewer. Three places where that may not hold:</p>
+      <ul>
+        <li>An equation&#39;s <code>annotation</code> in the sample paper has <code>\displaystyle</code> in aligned cells and braces such as <code>R^{2}</code>. If LaTeXML adds these, can it keep the author&#39;s original string?</li>
+        <li>A heading with math includes its TeX annotation in <code>textContent</code>, so a contents list built from it shows “Ψ\Psi”. Can LaTeXML give each heading a plain-text form, or should arXiv&#39;s scripts skip <code>annotation</code>?</li>
+        <li>Does a figure caption pass through with its label and punctuation (“Figure 1:”) exactly as written?</li>
+      </ul></li>
+    <li><p><strong>Which ids stay the same?</strong> Permalinks need ids that last. Are these stable for a given paper version, including across LaTeXML upgrades?</p>
+      <ul>
+        <li>paragraphs (<code>S2.p3</code>);</li>
+        <li>figures, display equations and bibliography entries;</li>
+        <li>each citation, so a reference can link back to where it is cited (“Cited by”).</li>
+      </ul></li>
+    <li><p><strong>Can LaTeXML output this markup?</strong> The mockup made each of these by hand.</p>
+      <ul>
+        <li>a <code>&lt;main&gt;</code> landmark round the paper, and a visually hidden “Abstract” heading;</li>
+        <li>footnotes: a marker linked to its note, and where that note is;</li>
+        <li>authors and affiliations, each author a separate element;</li>
+        <li>a scroll wrapper on every table, with <code>role="region"</code>, <code>tabindex="0"</code> and a name from its caption;</li>
+        <li>a way to tell which figures have no alt text, so the page can say so.</li>
+      </ul></li>
+  </ol>
 
-  <section>
-    <h2 id="stable-ids">Stable ids</h2>
-    <ol start="4">
-      <li><strong>Are paragraph ids such as <code>S2.p3</code> the same across LaTeXML upgrades</strong> for the same paper version? If not, a paragraph permalink cannot promise to last.</li>
-      <li><strong>Does every figure, display equation and bibliography entry get a stable id</strong> that a Permalink can use?</li>
-      <li><strong>Can each citation have a stable id</strong>, so that a reference can link back to every place it is cited (“Cited by”)?</li>
-    </ol>
-  </section>
-
-  <section>
-    <h2 id="markup">Markup only the renderer can produce</h2>
-    <ol start="7">
-      <li><strong>The <code>&lt;main&gt;</code> landmark</strong> round the paper.</li>
-      <li><strong>A visually hidden “Abstract” heading</strong>, so a screen reader user can jump to the abstract by heading.</li>
-      <li><strong>Footnotes.</strong> What does LaTeXML output for a footnote: an inline <code>.ltx_note</code>, or a marker with the note elsewhere? Where is the note that the marker should link to? The mockup&#39;s footnote markup was made by hand.</li>
-      <li><strong>Authors.</strong> The mockup&#39;s author markup was also made by hand. What does LaTeXML output for authors and their affiliations?</li>
-      <li><strong>Table scroll regions.</strong> Can LaTeXML wrap every tabular, including one with no <code>.ltx_table</code> wrapper today, in an element that can be the scroll region, with <code>role="region"</code>, <code>tabindex="0"</code> and a name taken from its caption? Or should arXiv&#39;s script add those attributes?</li>
-      <li><strong>Captions as written.</strong> Does the caption text, with its label and punctuation (“Figure 1:”), pass through exactly as the author wrote it?</li>
-      <li><strong>The bibliography as a direct child of the page container.</strong> Can the bibliography, and anything after it, be output there? Only then can arXiv&#39;s full-width closing band replace the viewport-width trick the mockup uses.</li>
-    </ol>
-  </section>
-
-  <section>
-    <h2 id="stylesheets">Stylesheets</h2>
-    <ol start="14">
-      <li><strong>Cascade layers.</strong> Does the production papers stylesheet import ar5iv and the theme file into named cascade layers, as the mockup&#39;s copy does? If not, can it, so that arXiv&#39;s rules win without <code>!important</code>?</li>
-      <li><strong>The bibliography overflow.</strong> The bibliography scrolls sideways because of a 10px indent on each entry and a stray 8px. Can this be fixed in the papers stylesheet, for example by moving the indent onto the number cell?</li>
-      <li><strong>ar5iv&#39;s theme control.</strong> Will it still appear on the paper page? If it does, can it read and write the same <code>data-theme</code> attribute and storage key as arXiv&#39;s <code>theme.js</code>, so the page does not have two theme switches?</li>
-    </ol>
-  </section>
-
-  <section>
-    <h2 id="references">References</h2>
-    <ol start="17">
-      <li><strong>Can a citation always find its bibliography entry?</strong> The citation popover copies the entry whole. When the entry cannot be found, the citation stays a plain link to the reference list with no popover. How often does that happen?</li>
-    </ol>
-  </section>
-
-  <section>
-    <h2 id="waiting-on-shamsi">Waiting on a design decision first</h2>
-    <ul>
-      <li><strong>Missing alt text.</strong> If Shamsi decides a paper shows a notice when a figure has no alt text, can the renderer say reliably which figures have none? If she decides it shows nothing, this question goes away.</li>
-    </ul>
-  </section>
+  <h2 id="later">Can wait</h2>
+  <ol start="4">
+    <li><p><strong>Layout.</strong> Are display equations (<code>table.ltx_equationgroup</code>) layout tables, so a wide one can scroll as a block without losing anything for a screen reader? And can the bibliography, and anything after it, be a direct child of the page container, so arXiv can give it a full-width closing band?</p></li>
+    <li><p><strong>Stylesheets.</strong> Three things in the papers stylesheet:</p>
+      <ul>
+        <li>Does production import ar5iv and the theme file into named cascade layers, as the mockup&#39;s copy does?</li>
+        <li>Can the bibliography&#39;s sideways overflow (a 10px indent on each entry and a stray 8px) be fixed there?</li>
+        <li>If ar5iv&#39;s own theme control still appears, can it use the same <code>data-theme</code> attribute and storage key as arXiv&#39;s <code>theme.js</code>, so there is one theme switch?</li>
+      </ul></li>
+    <li><p><strong>Citations.</strong> A citation popover copies the bibliography entry whole. How often can a citation not find its entry? In that case the citation stays a plain link to the reference list.</p></li>
+  </ol>
 </main>
 </body>
 </html>

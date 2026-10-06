@@ -63,7 +63,7 @@ Operationalize as a template helper (Jinja/PHP/Smarty macro) emitting the dual-s
 
 ### Figures and tables
 
-**Alt text on figures.** Authors are expected to provide alt text. Figure caption serves as fallback where missing. Author-facing tooling at submission to surface gaps is a separate workstream (submission-pipeline-as-lever).
+**Alt text on figures.** Authors are expected to provide alt text. Figure caption serves as fallback where missing. A figure without alt text shows a visible note, "No alt text provided", with a link to how to add it. The note teaches every reader what alt text is; it does not grade the paper. Author-facing tooling at submission to surface gaps is a separate workstream (submission-pipeline-as-lever).
 *Status: validated. Why: every screen-reader-user voice in the research; Volker Sorge framing of submission-time as the lever.*
 
 **Tables marked up semantically.** `<th scope>`, `<caption>`, row/column headers explicit. Where possible, also available as ancillary CSV.
@@ -132,7 +132,7 @@ Beyond-baseline features specifically for the HTML reader, to push accessibility
 
 Six independent voices in the research described distinct problems with the same inline-citation surface. The combined design moves:
 
-- **Every inline citation includes full context in its accessible name.** `<a class="citation-ref" href="#ref12" aria-label="Reference 12: Smith et al., Title, 2024">[12]</a>` — visible "[12]" stays compact for sighted readers; the `aria-label` gives AT users the same context a sighted reader gets from author-year style citations. Addresses Tigwell's *"what is reference 10? Is that the paper I have in mind?"* without requiring a UI toggle.
+- **Every inline citation includes full context in its accessible name.** `<a class="citation-ref" href="#ref12" aria-label="Reference 12: …">[12]</a>`, where "…" is the bibliography entry exactly as the author wrote it — visible "[12]" stays compact for sighted readers; the `aria-label` gives AT users the same context a sighted reader gets from author-year style citations. Addresses Tigwell's *"what is reference 10? Is that the paper I have in mind?"* without requiring a UI toggle.
 - **Citation marks are aurally compact by default.** Wrap each inline mark so the announcement is "Smith 2024, reference 12" or similar — not "open bracket twelve close bracket." Sighted readers see "[12]"; listening readers experience low-noise prose flow. Addresses Dan Miner's *"auditory disturbance you cannot skip."*
 - **References open as popups, not jumps.** A click, Enter or tap on a citation opens a small popover with the reference; hover and focus do not open it, so moving the pointer or tabbing through a paragraph of citations opens nothing. The popover links to the reference in the list, and going back returns focus to the citation. Closes Godfrey's *"why jump around?"* + Firshman's arXiv Vanity precedent + Branham's TAPS jump-back pattern.
 - **Reference list is structured for navigation.** `<ol>` with each `<li id="ref12">` holding bibliographic info in semantically distinguishable spans (`<cite>`, author span, venue span, year span). Screen-reader users can list-navigate and jump.
@@ -170,7 +170,7 @@ Six independent voices in the research described distinct problems with the same
 - **Decisions over preferences.** arXiv does not build internal preference centers for accessibility (font picker, theme toggle, motion toggle, font-size selector, reading-mode toggle). OS/browser-level accessibility signals are respected as defaults. We pick the right defaults once, courageously, rather than punting to user configuration.
 - **No third-party tool recommendations.** arXiv does not maintain or publish lists of external AI tools, audio-summary services, or AT software. Such lists age poorly. arXiv provides high-quality metadata so external tools can do their work well.
 - **No author-uploaded audio/video abstract field.** Adoption would be too low; abstracts rarely contain the complex math where author intent matters most; HTML reader serves the same use case better. Video/ASL for deaf accessibility remains an open research question — distinct from this decision.
-- **Capability advertisement, not compliance claim.** Every paper shows what it actually supports, honestly. No single grade. First-pass surface (visible to readers, above the metadata block on the abstract page): present-only — no "missing" indicators. arXiv is not here to punish hard-working researchers who managed to finish their paper; only to help all researchers as much as we can.
+- **Capability advertisement, not compliance claim.** Every paper shows what it actually supports, honestly. No single grade. The capability list (visible to readers, above the metadata block on the abstract page) is present-only: no "missing" lines and no score. This is separate from the alt text note on a figure, which is there to teach. arXiv is not here to punish hard-working researchers who managed to finish their paper; only to help all researchers as much as we can.
 - **No paid retainer experts; no annual a11y forum committed.** Reader goodwill leveraged for occasional testing. Revisit as conditions change.
 
 ## Pointers

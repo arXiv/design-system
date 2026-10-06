@@ -116,7 +116,20 @@ body scrolls automatically and becomes a tab stop only while it overflows.
    Shamsi likes nearly every proposed value; she asked for a stronger selected-row tint, now 1.20
    against the page. Nothing is in design-system.css yet: adopt the proposal only after she
    approves it, then run check-contrast and check-drift.
-0000. **Questions for Deyan:** `questions-for-deyan.html` (17 questions, renderer only).
+0000. **Questions for Deyan:** `questions-for-deyan.html` (six questions, the first three most needed).
+00000. **Shamsi's answers, 2026-10-06** (done): deliberate exceptions live in `docs/EXCEPTIONS.md`
+   (first: back-to-abstract, phase 1); the missing-alt-text note is shown, to teach;
+   references are shown as the author wrote them and arXiv has no reference format; one
+   `.ds-permalink` pill everywhere (replaces `.ds-anchor`); element pill is one tab stop with arrow
+   keys (`element-pill.js`); PDF from a paper opens a new tab; external links print their address;
+   captions are Plex Sans small. Visual choices waiting on her: `paper-type-choices.html` (section
+   number weight, hyphenation, TeX glyph draft).
+00000a. **To do later:** an accessibility-visibility discussion (the Accessibility accordion stays
+   closed for now; does a closed accordion count as "visible"?).
+00000b. **Next plan candidate: reconcile the mockups with the docs.** `abstract-phase2.html` and
+   `html-phase1.html` should follow the docs: Permalink pill, body line-height from typography,
+   figure viewer caption unchanged, remove "Who cites this", and every other refinement since. Treat
+   it as an early test: the mockups are real future uses of the system.
 00. **Testing** — plan in `TESTING-PLAN.md`, protocol in `verification/token-burn/README.md`,
    team report in `verification/token-burn/reports/2026-10-search/`. Tests 1 and 2 are done.
    Test 3 rebuilds search results once Papers settles; then arXiv Check as the non-paper search.

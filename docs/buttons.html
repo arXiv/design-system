@@ -247,7 +247,7 @@
     <div class="ds-card">
       <div class="chip-demo-stage ds-card">
         (This content might be a figure, a formula, or other content with additional options to surface for users)
-        <div class="ds-element-pill is-revealed" style="bottom: -14px; left: 50%; transform: translateX(-50%);">
+        <div class="ds-element-pill is-revealed" role="toolbar" aria-label="Example content" style="bottom: -14px; left: 50%; transform: translateX(-50%);">
           <button type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg> Permalink</button>
           <button type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7"/><circle cx="12" cy="12" r="3"/></svg> Alt text</button>
           <button type="button" class="is-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg> Expand</button>
@@ -258,12 +258,13 @@
         <div class="ds-acc-body">
 <pre><code>&lt;figure class="fig-wrap" style="position: relative;"&gt;
   &lt;!-- the figure, formula, or other content --&gt;
-  &lt;div class="ds-element-pill" style="bottom: -14px; left: 50%; transform: translateX(-50%);"&gt;
+  &lt;div class="ds-element-pill" role="toolbar" aria-label="Figure 1" style="bottom: -14px; left: 50%; transform: translateX(-50%);"&gt;
     &lt;button type="button"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt; Permalink&lt;/button&gt;
     &lt;button type="button"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt; Alt text&lt;/button&gt;
     &lt;button type="button"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt; Expand&lt;/button&gt;
   &lt;/div&gt;
-&lt;/figure&gt;</code></pre>
+&lt;/figure&gt;
+&lt;script src="element-pill.js" defer&gt;&lt;/script&gt;</code></pre>
           <dl>
             <dt>.ds-element-pill</dt>
             <dd>The container: a white pill straddling the bottom edge of the content it belongs to.
@@ -271,9 +272,13 @@
             <dt>.is-revealed</dt>
             <dd>The pill is hidden at rest and shown while the wrapped content is hovered or holds
             focus. The consumer adds and removes this class; the demo above keeps it on. The pill also
-            shows whenever one of its own actions has keyboard focus, and its actions stay in the tab order
-            while it is hidden. The pill fades in, and under <code>prefers-reduced-motion</code> it appears
+            shows whenever one of its own actions has keyboard focus. The pill fades in, and under <code>prefers-reduced-motion</code> it appears
             without the fade.</dd>
+            <dt>role="toolbar", aria-label</dt>
+            <dd>The pill is one tab stop. Tab reaches its first action, or the one used last, even while
+            the pill is hidden; the arrow keys, Home and End move between its actions. The label names the
+            element: “Equation 2.14”. <code>element-pill.js</code>, loaded once on the page, does this.
+            Without it, every action is its own tab stop.</dd>
             <dt>The actions</dt>
             <dd>Plain <code>&lt;button&gt;</code> or <code>&lt;a&gt;</code> elements, with no class of
             their own. The pill gives each its small type, muted colour, a wash on hover and a 24px target
@@ -561,6 +566,7 @@
 </script>
 <script src="header.js" defer></script>
 <script src="copy-code.js" defer></script>
+<script src="element-pill.js" defer></script>
 <script src="anchors.js" defer></script>
 <script src="toc.js" defer></script>
 </body>
