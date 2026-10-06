@@ -1,35 +1,58 @@
 You are a frontend developer at arXiv. This repository is the arXiv design system. Follow its guidance for AI assistants.
 
-# Redesign the moderation reports
+# Redesign the moderation and staff reports
 
-arXiv staff use moderation reports to see how submissions and holds are moving in each subject, and where moderators need help. The reports are being redesigned on the design system. Build two static HTML pages that show the new design. They are internal tools for arXiv staff.
+arXiv moderators and staff use these reports to see how submissions and holds are moving in each subject, and where moderators need help. The reports are being redesigned on the design system. Build four static HTML pages that show the new design. They are internal tools: only signed-in moderators and arXiv staff can see them.
+
+Build the pages as an arXiv staff member with admin permissions sees them. Some parts are for staff only; moderators do not see them. Make clear which parts those are.
 
 Work only from this repository and this brief. Do not fetch anything from the network.
 
+## Charts
+
+Some views hold charts. The design system has no guidance for charts yet, so do not design or draw any. Where a chart belongs, put a short placeholder that says which chart goes there, for example "Chart: cs.DB weekly moderator touches, 13 weeks". Where the current reports show a small meter or bar beside a figure, show the figure as text and leave the meter out.
+
 ## Page 1: all sections
 
-`build/reports/sections.html`. The starting page of the reports.
+`build/reports/sections.html`. The starting page of the moderation reports.
 
 - The page says what it is for: choose a subject to explore its archives and categories.
 - It says which period the figures cover and when they were last updated, and the reader can refresh them.
-- Each subject group (Computer Science, Economics, and the rest) shows: its name; its short code; how many archives and categories it has; and three figures for the period: new submissions in the last 7 days, open holds, and unresolved primaries. Each figure has a ratio beside it. For new submissions, the ratio compares the last 7 days with the 3-week weekly average; the reader needs to see at a glance whether it is above or below average, by how much, within a range of 50% either side. For open holds and unresolved primaries, a ratio above 1.0 needs attention, and the reader must be able to tell which groups need it.
-- Each subject group links to its own report.
-- A link goes to the other reports for staff.
+- Each subject group shows: its name; its short code; how many archives and categories it has; and three figures: new submissions in the last 7 days, open holds, and unresolved primaries. Each figure has a ratio beside it. A ratio above 1.0 on open holds or unresolved primaries needs attention, and the reader must be able to see which groups need it.
+- Each subject group links to its report. Physics links to its archives instead.
+- For staff only: a link to the staff reports.
 
-## Page 2: one section's submission statistics
+## Page 2: a section report, activity charts
 
-`build/reports/cs-submissions.html`. The report for Computer Science, open at its submission statistics.
+`build/reports/cs-activity.html`. The Computer Science report, open at its activity charts.
 
-- The reader can see where they are: the reports, then Computer Science.
+- The reader can see where they are, and go back to all sections.
 - The reader can choose which part of arXiv the report covers: a group, an archive within it, and a category within that, or all of them.
-- The report has three parts: Submissions and holds, Moderators, and Recruitment. Submissions and holds is open. It has four views: Activity charts, Category submission stats, Recent releases, and Recent submissions. Category submission stats is open. Build only that view; the others are links.
-- The reader can set the date range (a start date and an inclusive end date) and apply it. The page says which period is showing and when it was last updated, and the reader can refresh it.
-- A short note explains how the figures are counted (in the sample content).
-- The reader can set two thresholds, in days, and apply them. A held submission older than the first threshold, or older than the second, counts toward the two threshold columns.
-- Four totals: submissions, holds, held longer than the first threshold, held longer than the second.
-- A table with one row per category: group, archive, subject, new submissions, new accepted, new rejected, holds, held longer than the first threshold, held longer than the second. The reader can sort it. The two threshold columns stand out, and differently from each other, and the reader can tell what each means.
+- The report has three parts: Submissions and holds, Moderators, and Recruitment. Submissions and holds is open. It has four views: Activity charts, Category submission stats, Recent releases, and Recent submissions. Activity charts is open. The other parts and views are links.
+- The page says which period is showing and when it was last updated, and the reader can refresh it.
+- An explanation of the charts (in the sample content), and the list of categories shown, each a link.
+- The reader can sort the categories by category, current holds, weekly holds trend, or monthly holds trend.
+- For each category: its code, its open holds, and its monthly and weekly trends; then two charts, weekly touches over 13 weeks and daily touches over 21 days. A trend of more than 15% stands out; the reader can tell growth from a fall.
 
-Both pages work as ordinary forms sent with GET, with the chosen values in the address.
+## Page 3: a section report, recent submissions
+
+`build/reports/cs-submissions.html`. The same report, open at Recent submissions.
+
+- The same place in the reports, choosers, parts and views as page 2, with Recent submissions open.
+- The reader can set the date range (a start date and an inclusive end date) and apply it. The page says which period is showing and when it was last updated, and the reader can refresh it.
+- A note on what the figures count (in the sample content).
+- Five totals.
+- A table of submissions: submitted primary category, current categories, submission ID, submit date, status, and whether it was held. Each submission ID opens that submission in arXiv Check. The reader can sort the table and move between its pages, and choose how many rows are on a page.
+- The reader can download the table as CSV.
+
+## Page 4: staff reports
+
+`build/reports/staff.html`. The starting page of the staff reports. Staff only.
+
+- The page says what it is for: choose a report.
+- Five reports, each a link: User activity, Section health and Suspicious activity are for staff only; Sections and Moderators are also open to moderators. The reader can tell which is which.
+
+All four pages work as ordinary forms sent with GET, with the chosen values in the address.
 
 ## Sample content
 
