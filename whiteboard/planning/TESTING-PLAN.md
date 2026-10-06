@@ -42,6 +42,10 @@ Tests 3 to 5 are a proposal. Shamsi confirms each one when its spec is written, 
 2. Shamsi and Claude decide what to change in the design system. A change to the docs needs evidence from more than one build, or a rule Shamsi confirms was missing.
 3. After the changes, the same spec is built again with one build for each model. Shamsi looks only at what the changes were meant to fix.
 
+## To do later
+
+- **arXiv Check, in React (added 2026-10-06).** arXiv Check is built in React, so the brief asks for React components built on the design system's CSS and docs. That adds a translation step the HTML tests do not have. Shamsi takes screenshots first; not before she has time for it.
+
 ## Not decided yet
 
 - How much of Shamsi's time a test should take. She decides after reviewing the first outputs.
