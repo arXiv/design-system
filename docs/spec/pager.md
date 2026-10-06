@@ -197,6 +197,8 @@ Numbered pages are for a long list split across pages, such as search results, w
     <li><a href="?page=1"><span class="is-sr-only">Page </span>1</a></li>
     <li><a href="?page=2" aria-current="page"><span class="is-sr-only">Page </span>2</a></li>
     <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+    <li><a href="?page=4"><span class="is-sr-only">Page </span>4</a></li>
+    <li><a href="?page=5"><span class="is-sr-only">Page </span>5</a></li>
     <li>…</li>
     <li><a href="?page=67"><span class="is-sr-only">Page </span>67</a></li>
   </ol>
@@ -212,6 +214,8 @@ Numbered pages are for a long list split across pages, such as search results, w
     <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
     <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
     <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+    <li><a href="?page=4"><span class="is-sr-only">Page </span>4</a></li>
+    <li><a href="?page=5"><span class="is-sr-only">Page </span>5</a></li>
     <li>…</li>
     <li><a href="?page=166"><span class="is-sr-only">Page </span>166</a></li>
   </ol>
@@ -228,6 +232,8 @@ Numbered pages are for a long list split across pages, such as search results, w
     <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
     <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
     <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+    <li><a href="?page=4"><span class="is-sr-only">Page </span>4</a></li>
+    <li><a href="?page=5"><span class="is-sr-only">Page </span>5</a></li>
     <li>…</li>
     <li><a href="?page=166"><span class="is-sr-only">Page </span>166</a></li>
   </ol>
