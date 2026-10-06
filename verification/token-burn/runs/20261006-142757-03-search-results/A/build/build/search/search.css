@@ -1,0 +1,24 @@
+/* Search results page — the few things the design system does not provide.
+   Everything else comes from design-system.css. Tokens only: no hex values,
+   no pixel spacing, so dark mode and text zoom follow the system. */
+
+/* The results section holds the heading, the alert, two pager bars and the
+   list. None of them spaces itself from its neighbours (the pager has no
+   margin at all), so the section owns the space between them as a gap —
+   DESIGN-POLICIES, Spacing: "Containers own the space between regions". */
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-block);
+}
+.search-results > * { margin-block: 0; }
+
+/* Identifiers are set in IBM Plex Mono (DESIGN-POLICIES, Typography). The
+   data list has no identifier variant, so the arXiv ID and DOI values take
+   the mono face here, at the list's own size. */
+.search-id { font-family: var(--ds-font-mono); }
+
+/* The search index lists at most 25 authors. The count of the rest is plain
+   text after the names, muted like the show-more beside it so it does not
+   read as one more author. */
+.search-authors-unlisted { color: var(--ds-text-muted); }

@@ -1,0 +1,40 @@
+{
+ "result": "All four builds reached search version D from the docs alone: form and results on white, the Results for heading, tinted pager bars, settings under the search row, the paper list with dates and formats on one line, category tooltips and <mark>. Every automated check passed apart from the skip link, which was a design-system bug (its focus ring used a token defined only inside the header); fixed. Each build wrote one to four CSS rules, all on tokens. Shamsi rated all four Accept with changes: the page before a search was not built (the brief did not ask for it), two builds showed only pages 1 to 3, and the 10,000-result notice wording varied and was too long or alarming.",
+ "builds": {
+  "A": {
+   "programmatic": "pass",
+   "verdict": "Conformant",
+   "notes": "Four rules, tokens only: a gap between the regions of the results section, the arXiv ID and DOI in mono, and the muted count of unlisted authors. Pages 1 to 5."
+  },
+  "B": {
+   "programmatic": "pass",
+   "verdict": "Conformant",
+   "notes": "One rule: space between the pager bars and the list. Pages 1 to 5."
+  },
+  "C": {
+   "programmatic": "pass",
+   "verdict": "Conformant",
+   "notes": "Two rules: hide the excerpt and Show more without JavaScript, and the muted count of unlisted authors. Pages 1 to 3."
+  },
+  "D": {
+   "programmatic": "pass",
+   "verdict": "Conformant",
+   "notes": "One rule: space between the pager bars and the list. Pages 1 to 3. The longest notice."
+  }
+ },
+ "patterns": [
+  "All four used .ds-form--compact, .ds-input-group, .ds-pagination--top and --bottom, .ds-paper-list, .ds-paper-when, .ds-data-list, .ds-tag-list with tooltips, .ds-show-more, an info alert and <mark>.",
+  "Three of four wrote CSS for the space between the pager bars and the list: the docs ask for it but the bars do not provide it.",
+  "Two of four showed pages 1 to 3, two showed 1 to 5: how many numbers to show is not a rule.",
+  "Each wrote its own 10,000-result notice.",
+  "Two marked the count of unlisted authors as muted text; the docs have no pattern for it.",
+  "The skip link had no visible focus ring in every build (and in round 2): a design-system bug, now fixed.",
+  "Predictions: 1 right (all on white with the heading). 2 right (all four used .ds-paper and .ds-paper-when). 3 wrong: no build put order or results per page in a filter bar."
+ ],
+ "findings": [
+  "How many page numbers to show is not written down: two builds showed only 1 to 3.",
+  "The notice about the 10,000-result limit has no set wording: each build wrote its own, some too long or alarming.",
+  "The pager bars do not space themselves from the list, so three builds added that space by hand."
+ ],
+ "next": "Fix these three in the design system, then build again with the page before a search added to the brief."
+}

@@ -59,6 +59,7 @@ Tests 3 to 5 are a proposal. Shamsi confirms each one when its spec is written, 
 
 ## Status
 
+- 2026-10-06: test 3 (search results, answer key version D) built and reviewed. All four reached D from the docs; visual Pass with changes, programmatic Pass for all four. Found: no rule for how many page numbers, no wording for the 10,000-result notice, pager bars do not space themselves from the list; and a skip-link focus bug (fixed). Report: `verification/token-burn/runs/20261006-142757-03-search-results/report.html`.
 - 2026-10-05: test 2 (search results, one page state) built and reviewed: all four builds accepted with changes. Changes since: search version D (`search.html`), the Papers page, tooltips that stay on screen. Team report: `verification/token-burn/reports/2026-10-search/`. Next: test 3 rebuilds search results with the same spec once Shamsi has settled Papers; after that, arXiv Check as the non-paper search. The numbering in the table above is now out of date: the order is search results again, then arXiv Check.
 - 2026-10-02: numbered pages added to the pager (`.ds-pagination-pages`, pager.html), with a routing row in AGENTS.md. Search needs them, and the pager had no row in the routing table.
 - 2026-10-02: test 1 built, evaluated, reviewed and summarized. See "Test 1" below.
