@@ -1824,7 +1824,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 @media (forced-colors: active) { .ds-page mark { background: Mark; color: MarkText; } }
 
 /* A PAPER  (.ds-paper-list, .ds-paper, .ds-paper-when, .ds-paper-identity,
-   .ds-paper-versions, .ds-paper-files, .ds-paper-cite, .ds-paper-capabilities,
+   .ds-paper-versions, .ds-paper-files, .ds-paper-cite, .ds-paper-cite-head, .ds-paper-capabilities,
    .ds-paper-element, .ds-paper-bar-logo,
    .ds-paper-tools) — papers.html
    Only what is particular to a paper has a paper class; the rest is built
@@ -1870,8 +1870,12 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 /* A full paper's sidebar: the downloads, the citation and the accessibility panel. */
 .ds-paper-files { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--ds-space-2); font-size: 0.875rem; }
 .ds-paper-files .ds-btn-primary { width: 100%; }
-.ds-paper-files .ds-btn small { font-weight: 400; }
+.ds-paper-files .ds-btn small { font-weight: 400; color: inherit; }
+.ds-paper-files li { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--ds-space-2); }
+.ds-paper-files li > a:last-child:not(:first-child) { margin-inline-start: auto; }
 .ds-paper-files li > small { color: var(--ds-text-muted); }
+.ds-paper-cite-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-space-2); }
+.ds-paper-cite-head > .ds-panel-label { margin: 0; }
 .ds-paper-cite > * + * { margin-top: var(--ds-space-2); }
 .ds-paper-cite-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-space-2); }
 html:not(.js) .ds-paper-cite-tools { display: none; }
@@ -3095,6 +3099,9 @@ html:has(.ds-modal[open]) {
 }
 .ds-sidebar > * { margin: 0; }
 .ds-sidebar > * > :first-child { margin-block-start: 0; }
+/* Framed: a border round the sidebar and a rule between its blocks. */
+.ds-sidebar--framed { padding: var(--ds-space-6); border: 1px solid var(--ds-border); border-radius: 8px; }
+.ds-sidebar--framed > * + * { padding-top: var(--ds-space-6); border-top: 1px solid var(--ds-border); }
 
 /* An accordion in the sidebar: no rules, because spacing already separates the
    blocks; single-column internals for the narrow measure; a Link Blue +/−
