@@ -50,7 +50,8 @@
     }
 
     document.querySelectorAll('section > :is(h2, h3):first-child[id]').forEach(function (h) {
-      if (h.querySelector('.ds-permalink')) return;
+      // A label inside a demo or a sidebar names a block, not a section of the page.
+      if (h.querySelector('.ds-permalink') || h.closest('aside, .ds-card')) return;
       var name = plain(h);
       var btn = document.createElement('button');
       btn.type = 'button';
