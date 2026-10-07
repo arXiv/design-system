@@ -116,7 +116,10 @@ body scrolls automatically and becomes a tab stop only while it overflows.
    Shamsi likes nearly every proposed value; she asked for a stronger selected-row tint, now 1.20
    against the page. Nothing is in design-system.css yet: adopt the proposal only after she
    approves it, then run check-contrast and check-drift.
-0000. **Questions for Deyan:** `questions-for-deyan.html`, Shamsi's edited list (2026-10-06). Math in headings, footnotes, authors and captions are answered without him: see `live-html-markup-2026-10-06.md`.
+0000. **Questions for Deyan** (answered 2026-10-06): his answers and what follows from them are in
+   `live-html-markup-2026-10-06.md`. Still open: the abstract heading level (Shamsi decides);
+   table scroll regions (Deyan and Bruce; Shamsi sent the reasons for `role="region"`); the
+   stylesheet reconciliation and theme switcher removal (a later conversation with Deyan).
 00000. **Shamsi's answers, 2026-10-06** (done): papers.html has an optional area above the identity line for temporary content (Back to abstract); no exceptions file;
    the missing-alt-text note is shown, to teach;
    references are shown as the author wrote them and arXiv has no reference format; one
