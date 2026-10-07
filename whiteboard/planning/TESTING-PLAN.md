@@ -34,7 +34,7 @@ Nothing in Shamsi's area should be obviously wrong: design and visual display, a
 | 4 | arXiv Check submission queue | Internal tools | The first internal page: tables, row selection, bulk actions, Access Lime. | Screenshots in `whiteboard/mockups/internal/arxiv-check/` |
 | 5 | Membership dashboard | Internal tools | The most complex page, and the original exit test. | `whiteboard/planning/specs/membership-dashboard.md` |
 
-Tests 3 to 5 are a proposal. Shamsi confirms each one when its spec is written, since what tests 1 and 2 find may change what is worth testing next.
+**Out of date (2026-10-06):** the rounds actually run are 1 to 3 on search (done) and 4 on the moderation and staff reports (waiting for review); arXiv Check, in React, is under *To do later*. V1 is defined in `HANDOFF.md`. Tests 3 to 5 in this table were a proposal. Shamsi confirms each one when its spec is written, since what tests 1 and 2 find may change what is worth testing next.
 
 ## After each test
 
