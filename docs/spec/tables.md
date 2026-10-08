@@ -71,6 +71,8 @@ components:
         does: "Optional. A `<fieldset>` whose `<legend>` is `.is-sr-only`, so it is read out and takes no space. It starts its own row, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter."
       - name: ".ds-filter-bar-actions"
         does: "Apply, a submit button, and an optional Clear link to the address without filters. They sit at the end of the last row."
+      - name: ".ds-filter-bar with .ds-filter"
+        does: "A filter bar whose filters are the compact `.ds-filter` controls lays them out on one row, with less padding. Use it where a full filter bar would push the content down, such as beside navigation. Apply is a secondary `.ds-btn`, sized to the row."
   - id: row-selection
     title: "Row selection"
     summary: "Rows a reader can choose, one checkbox per row, so an action can apply to several at once."
@@ -328,10 +330,22 @@ A row of fields that narrows everything below it, with one Apply button. It is a
 </form>
 ```
 
+**Compact: one row**
+
+```html
+<form class="ds-filter-bar" method="get" action="tables.html#filter-bar" aria-label="Subject">
+  <div class="ds-filter"><label for="cfb-group">Group</label><select id="cfb-group" name="group"><option>cs</option><option>math</option></select></div>
+  <div class="ds-filter"><label for="cfb-archive">Archive</label><select id="cfb-archive" name="archive"><option>cs</option></select></div>
+  <div class="ds-filter"><label for="cfb-cat">Category</label><select id="cfb-cat" name="category"><option>All</option></select></div>
+  <button class="ds-btn" type="submit">Apply</button>
+</form>
+```
+
 - `.ds-filter-bar` — The `<form method="get">`, on the warm tint, with an `aria-label` such as "Filters". It narrows everything below it. One per view. The fields sit in equal columns, as many as fit the width.
 - `.ds-filter-bar-group` — The filters. Each field takes a column. The fields are the standard `.ds-field`, `.ds-label` and `.ds-input`, with labels above.
 - `.ds-filter-bar-group--settings` — Optional. A `<fieldset>` whose `<legend>` is `.is-sr-only`, so it is read out and takes no space. It starts its own row, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter.
 - `.ds-filter-bar-actions` — Apply, a submit button, and an optional Clear link to the address without filters. They sit at the end of the last row.
+- `.ds-filter-bar with .ds-filter` — A filter bar whose filters are the compact `.ds-filter` controls lays them out on one row, with less padding. Use it where a full filter bar would push the content down, such as beside navigation. Apply is a secondary `.ds-btn`, sized to the row.
 
 ## Row selection
 
