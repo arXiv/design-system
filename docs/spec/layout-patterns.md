@@ -9,9 +9,12 @@ components:
     summary: "What a user needs to learn determines the right organizational pattern to employ for any group of content. Use the four questions below as a starting point. Each question has a test and a set of patterns that answer it. Most content will fit under one of these questions. Have an edge case? Discuss it with the design team."
     notes:
       - "Where am I? (The address or the item changes): [Header](header.html) and [secondary navigation](header.html#secondary-navigation): sections of a site or tool; [Steps](header.html#steps): an ordered process; [Pager](pager.html): a queue, one item at a time; [Numbered pages](pager.html#numbered-pages): a long list split across pages; [TOC bar](progressive-disclosure.html#toc-bar): sections of one long page"
-      - "What matters here? (Directing user attention): [Spacing](spacing.html) and [dividers](#dividers): separate content; [Page container](#the-page-container), [page zones](#page-zones) and [wide page](#wide-page): the page frame; [Sidebar](#sidebar) and [marginalia](#marginalia): supporting content; [Cards](cards.html) and [tables](tables.html): records"
+      - "What matters here? (Directing user attention): [Spacing](spacing.html) and [dividers](#dividers): separate content; [Page container](#the-page-container), [page zones](#page-zones) and [wide page](#wide-page): the page frame; [Sidebar](#sidebar) and [marginalia](#marginalia): supporting content; [Cards](cards.html) and [tables](tables.html): records; [Cards that link](cards.html#cards-that-link): a page that sends the reader on"
       - "Which part do I need? (The content swaps in place): [Tabs](progressive-disclosure.html#tabs): one view at a time; [Filter bar](tables.html#filter-bar): narrowed data; [Sections of one page](typography.html#the-heading-scale): views to compare"
       - "Can I learn more? (Richer details are revealed upon request): [Tooltip](forms.html#tooltip) and [popover](progressive-disclosure.html#popover): detail on request; [Show more](progressive-disclosure.html#show-more) and [accordion](progressive-disclosure.html#accordion): more in the flow; [Modal](modals.html): a decision first; [Actions attached to content](buttons.html#small-actions-attached-to-content): act on one item"
+  - id: the-main-content-comes-first
+    title: "The main content comes first"
+    summary: "Before choosing components, decide what the page is for and which content is primary. Everything else is arranged so it does not push the primary content down."
   - id: the-page-container
     title: "The page container"
     summary: "Every page sits in `.ds-container`. It centres the content in a column at the standard reading width, 850px at most, with a margin of at least 24px on each side. For a band that runs edge to edge, see [Page zones](#page-zones)."
@@ -92,11 +95,15 @@ What a user needs to learn determines the right organizational pattern to employ
 
 > Where am I? (The address or the item changes): [Header](header.html) and [secondary navigation](header.html#secondary-navigation): sections of a site or tool; [Steps](header.html#steps): an ordered process; [Pager](pager.html): a queue, one item at a time; [Numbered pages](pager.html#numbered-pages): a long list split across pages; [TOC bar](progressive-disclosure.html#toc-bar): sections of one long page
 
-> What matters here? (Directing user attention): [Spacing](spacing.html) and [dividers](#dividers): separate content; [Page container](#the-page-container), [page zones](#page-zones) and [wide page](#wide-page): the page frame; [Sidebar](#sidebar) and [marginalia](#marginalia): supporting content; [Cards](cards.html) and [tables](tables.html): records
+> What matters here? (Directing user attention): [Spacing](spacing.html) and [dividers](#dividers): separate content; [Page container](#the-page-container), [page zones](#page-zones) and [wide page](#wide-page): the page frame; [Sidebar](#sidebar) and [marginalia](#marginalia): supporting content; [Cards](cards.html) and [tables](tables.html): records; [Cards that link](cards.html#cards-that-link): a page that sends the reader on
 
 > Which part do I need? (The content swaps in place): [Tabs](progressive-disclosure.html#tabs): one view at a time; [Filter bar](tables.html#filter-bar): narrowed data; [Sections of one page](typography.html#the-heading-scale): views to compare
 
 > Can I learn more? (Richer details are revealed upon request): [Tooltip](forms.html#tooltip) and [popover](progressive-disclosure.html#popover): detail on request; [Show more](progressive-disclosure.html#show-more) and [accordion](progressive-disclosure.html#accordion): more in the flow; [Modal](modals.html): a decision first; [Actions attached to content](buttons.html#small-actions-attached-to-content): act on one item
+
+## The main content comes first
+
+Before choosing components, decide what the page is for and which content is primary. Everything else is arranged so it does not push the primary content down.
 
 ## The page container
 

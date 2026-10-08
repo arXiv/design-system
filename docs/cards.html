@@ -11,6 +11,7 @@
 <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
 </head>
 <body class="ds-page">
+<!-- The docs site's own header (the light variant). It is not a pattern: build pages from the header in templates/ and docs/header.html. -->
 <header class="ds-site-header ds-site-header--light">
   <a class="ds-site-header-logo" href="../index.html"><span aria-hidden="true">arXiv Design System</span><span class="is-sr-only">archive Design System</span></a>
   <nav class="ds-site-header-nav" aria-label="Design system">
@@ -102,6 +103,7 @@
             <li><a href="#data-cards">Data cards</a></li>
             <li><a href="#stat-cards">Stat cards</a></li>
             <li><a href="#groups-of-cards">Groups of cards</a></li>
+            <li><a href="#cards-that-link">Cards that link</a></li>
             <li><a href="#data-list">Data list</a></li>
           </ol>
         </nav>
@@ -328,6 +330,57 @@
             <dt>.ds-card-grid</dt>
             <dd>Cards side by side. The grid supplies the gap, so a card inside it takes no top margin of
             its own. Any card goes in it, a data card included, and it is the same on both surfaces.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Cards that link ───────── -->
+  <section>
+    <h2 id="cards-that-link">Cards that link</h2>
+    <p class="ds-section-desc">A card that is one link, for a page whose job is to send the reader somewhere else: the whole card opens the page its heading names.</p>
+
+    <div class="ds-card">
+      <div class="ds-card-grid">
+        <div class="ds-card ds-card--link">
+          <h3><a href="#">Computer Science</a></h3>
+          <p>40 categories</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="#">Economics</a></h3>
+          <p>3 categories</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="#">Quantitative Finance</a></h3>
+          <p>9 categories</p>
+          <p><span class="ds-tag ds-tag--warning">Needs attention</span></p>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-card-grid"&gt;
+  &lt;div class="ds-card ds-card--link"&gt;
+    &lt;h3&gt;&lt;a href="#"&gt;Computer Science&lt;/a&gt;&lt;/h3&gt;
+    &lt;p&gt;40 categories&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="ds-card ds-card--link"&gt;
+    &lt;h3&gt;&lt;a href="#"&gt;Economics&lt;/a&gt;&lt;/h3&gt;
+    &lt;p&gt;3 categories&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="ds-card ds-card--link"&gt;
+    &lt;h3&gt;&lt;a href="#"&gt;Quantitative Finance&lt;/a&gt;&lt;/h3&gt;
+    &lt;p&gt;9 categories&lt;/p&gt;
+    &lt;p&gt;&lt;span class="ds-tag ds-tag--warning"&gt;Needs attention&lt;/span&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-card--link</dt>
+            <dd>The heading&#39;s link covers the whole card, so the card is one target and one tab stop. Hover and keyboard focus mark the whole card.</dd>
+            <dt>The heading&#39;s <code>&lt;a&gt;</code></dt>
+            <dd>The only link in the card. A second link or a button inside it cannot be reached by pointer, because the heading&#39;s link lies over it.</dd>
+            <dt>.ds-tag--warning</dt>
+            <dd>A card that needs attention says so on the card itself. See <a href="tags.html">Tags</a>.</dd>
           </dl>
         </div>
       </details>

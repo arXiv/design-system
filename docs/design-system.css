@@ -1223,6 +1223,14 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   padding: var(--ds-space-4) var(--ds-space-6);
 }
 
+/* A card that is one link: the heading's link covers the whole card. */
+.ds-card--link :is(h2, h3, h4) a { text-decoration: none; }
+.ds-card--link :is(h2, h3, h4) a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.ds-card--link:hover { border-color: var(--ds-border-strong); }
+.ds-card--link:hover :is(h2, h3, h4) a { text-decoration: underline; }
+.ds-card--link :is(h2, h3, h4) a:focus-visible { outline: none; }
+.ds-card--link:has(:is(h2, h3, h4) a:focus-visible) { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
+
 /* A card owns its internal rhythm, the same way .ds-container owns the space
    between regions: the padding is the space at the edges, so the first and
    last children need none of their own. Written with :where() so a page that
@@ -3857,6 +3865,8 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
    scrolling sideways, so every section stays visible at 320px and at 200%
    text. The current page is marked three ways: weight, an underline bar,
    and aria-current. Breadcrumbs are for pages without one (DESIGN-POLICIES). */
+/* Second level, inside the page: the same links and current bar, in the content column. */
+.ds-subnav.ds-subnav--in-page { padding-inline: 0; background: none; }
 .ds-subnav {
   display: flex;
   flex-wrap: wrap;
