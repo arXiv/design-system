@@ -78,6 +78,16 @@ components:
         does: "On the link for the current page. It shows in bold with an underline bar, so the current section never depends on colour alone, and a screen reader announces it."
       - name: ".ds-internal"
         does: "On a parent, it turns the underline bar Access Lime Deep. Nothing else changes."
+  - id: two-levels-of-navigation
+    title: "Two levels of navigation"
+    summary: "An area with its own sections, each with several views, such as a report with parts and views. The sections are the secondary navigation under the header; the views of the current section are a second row inside the page."
+    classes:
+      - name: ".ds-subnav"
+        does: "The first row, directly under the header. Here it holds two groups: a `<nav>` of the area's sections, then a compact [filter bar](tables.html#filter-bar) for choices that apply to every view, such as the subject. The groups sit twice as far apart as the items inside them."
+      - name: "<h1>"
+        does: "Names what the page is about, such as the subject, so the reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page."
+      - name: ".ds-subnav--in-page"
+        does: "The second level: the views of the current section, in the content column, with the same current marking as the first level. Each view is its own page."
   - id: steps
     title: "Steps"
     summary: "The steps of one ordered process, such as a submission, and which one the reader is on. Steps is a variant of the secondary navigation bar. To move through a queue one item at a time, use the [pager](pager.html). Which steps are available is the application's logic: submission, for example, lets the reader go back to a complete step but not jump ahead."
@@ -106,7 +116,7 @@ components:
   - id: the-light-variant
     title: "The light variant"
     group: "Modifiers"
-    summary: "Adding `.ds-site-header--light` re-points seven surface tokens but declares no property of its own. The light variant is used in this documentation to clearly signal we are in a distinct space from the main arXiv site."
+    summary: "Adding `.ds-site-header--light` re-points seven surface tokens but declares no property of its own. It is for pages that comment on arXiv from outside it, such as this documentation. Every page that is part of arXiv, public or internal, uses the standard bar."
     classes:
       - name: ".ds-site-header--light"
         does: "Seven token values. No property overrides. The bar is white (`--ds-surface`) with Library Grey links, Repository Brown emphasis, and a Border Light bottom edge; the standard focus ring replaces the on-dark one."
@@ -117,7 +127,7 @@ components:
   - id: internal-headers
     title: "Internal header"
     group: "Modifiers"
-    summary: "The Admin Console header, built from the same component on the light variant. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. The internal stylesheet may re-point the bar’s colour tokens and nothing else."
+    summary: "The Admin Console header: the standard bar, with the Admin Console logo. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. The internal stylesheet may re-point the bar’s colour tokens and nothing else."
     classes:
       - name: ".ds-site-header-logo img"
         does: "The tool’s own wordmark image, from `assets/images/logos/`. Its alt text names the tool in spoken form, such as “archive Admin Console”."
@@ -312,6 +322,42 @@ A row of section links directly under the header, for an area that has its own s
 - `aria-current="page"` — On the link for the current page. It shows in bold with an underline bar, so the current section never depends on colour alone, and a screen reader announces it.
 - `.ds-internal` — On a parent, it turns the underline bar Access Lime Deep. Nothing else changes.
 
+## Two levels of navigation
+
+An area with its own sections, each with several views, such as a report with parts and views. The sections are the secondary navigation under the header; the views of the current section are a second row inside the page.
+
+```html
+<div class="ds-internal">
+  <div class="ds-subnav">
+    <nav aria-label="Report parts">
+      <a href="#" aria-current="page">Submissions and holds</a>
+      <a href="#">Moderators</a>
+      <a href="#">Recruitment</a>
+    </nav>
+    <form class="ds-filter-bar" method="get" action="#" aria-label="Subject">
+      <div class="ds-filter"><label for="tl-group">Group</label><select id="tl-group"><option>cs</option></select></div>
+      <div class="ds-filter"><label for="tl-archive">Archive</label><select id="tl-archive"><option>cs</option></select></div>
+      <div class="ds-filter"><label for="tl-cat">Category</label><select id="tl-cat"><option>All</option></select></div>
+      <button class="ds-btn" type="submit">Apply</button>
+    </form>
+  </div>
+  <div class="ds-container page-demo page-demo--wide">
+    <h2>Computer Science</h2>
+    <nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views">
+      <a href="#">Activity charts</a>
+      <a href="#" aria-current="page">Category submission stats</a>
+      <a href="#">Recent releases</a>
+      <a href="#">Recent submissions</a>
+    </nav>
+    <p>The view.</p>
+  </div>
+</div>
+```
+
+- `.ds-subnav` — The first row, directly under the header. Here it holds two groups: a `<nav>` of the area's sections, then a compact [filter bar](tables.html#filter-bar) for choices that apply to every view, such as the subject. The groups sit twice as far apart as the items inside them.
+- `<h1>` — Names what the page is about, such as the subject, so the reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page.
+- `.ds-subnav--in-page` — The second level: the views of the current section, in the content column, with the same current marking as the first level. Each view is its own page.
+
 ## Steps
 
 The steps of one ordered process, such as a submission, and which one the reader is on. Steps is a variant of the secondary navigation bar. To move through a queue one item at a time, use the [pager](pager.html). Which steps are available is the application's logic: submission, for example, lets the reader go back to a complete step but not jump ahead.
@@ -362,7 +408,7 @@ When arXiv has something to say to everyone, an announcement band can be display
 
 ## The light variant  (Modifiers)
 
-Adding `.ds-site-header--light` re-points seven surface tokens but declares no property of its own. The light variant is used in this documentation to clearly signal we are in a distinct space from the main arXiv site.
+Adding `.ds-site-header--light` re-points seven surface tokens but declares no property of its own. It is for pages that comment on arXiv from outside it, such as this documentation. Every page that is part of arXiv, public or internal, uses the standard bar.
 
 ```html
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
@@ -382,10 +428,10 @@ Adding `.ds-site-header--light` re-points seven surface tokens but declares no p
 
 ## Internal header  (Modifiers)
 
-The Admin Console header, built from the same component on the light variant. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. The internal stylesheet may re-point the bar’s colour tokens and nothing else.
+The Admin Console header: the standard bar, with the Admin Console logo. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. The internal stylesheet may re-point the bar’s colour tokens and nothing else.
 
 ```html
-<header class="ds-site-header ds-site-header--light">
+<header class="ds-site-header">
   <a href="/" class="ds-site-header-logo">
     <img src="logo_arxiv-admin.png" alt="archive Admin Console">
   </a>
@@ -438,7 +484,7 @@ The Admin Console header, built from the same component on the light variant. Ea
 Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top of the viewport while the page scrolls, and the stylesheet sets `scroll-padding-top` on the page so a link to a section does not land under the bar. It is not applied to the examples on this page, which already keeps the TOC bar in view.
 
 ```html
-<header class="ds-site-header ds-site-header--light ds-site-header--sticky">…</header>
+<header class="ds-site-header ds-site-header--sticky">…</header>
 ```
 
 - `.ds-site-header--sticky` — Sticks the bar to the top of the viewport. A page that uses it keeps no other sticky bar.

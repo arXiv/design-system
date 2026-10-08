@@ -1,19 +1,17 @@
-# Handoff — 2026-10-05
+# Handoff — 2026-10-07
 
-Written for the next session. PR #7 (`docs-review-2026-09-28`) merged into `master` on
-2026-10-05. Shamsi wants to commit to `master` directly, but GitHub rulesets still require a pull
-request and status checks there, and she is asking the team to change them. Until then, work goes
-on the branch `search-results-2026-10` and reaches `master` through a pull request she opens.
-Fetch before every push: others push too.
+Written for the next session. **PR #8** (`search-results-2026-10` into `master`) is open and
+waiting for a reviewer; Shamsi merges it. Work started after PR #8 goes on a new branch
+(`internal-tools-2026-10`, renamed from `overnight-2026-10-07`) so the PR under review does not change. `master` still
+requires a pull request and status checks. Fetch before every push: others push too, and a second
+Claude session sometimes works in the same repo (stage files by name).
 
 ## Where the work is
 
-The docs review is nearly finished. Shamsi reviews a page, sends notes, the session acts on them,
-and she rewrites the prose herself. 21 pages are marked finished in
-`verification/reviewed-pages.txt` and have agent digests in `docs/spec/`.
-
-Not finished:
-- **brand.html and outreach.html:** deliberately left for later ("a different type of thinking").
+Shamsi reviews a page, sends notes, the session acts on them, and she rewrites the prose herself.
+Pages with a finished review are listed in `verification/reviewed-pages.txt` and have agent
+digests in `docs/spec/`. papers.html and search.html have had her review (2026-10-06) and are not
+yet in that list. brand.html and outreach.html are deliberately left for later.
 
 ## Repo layout (changed 2026-10-02)
 
@@ -41,6 +39,9 @@ The system `python3` is 3.9 and fails on Deyan's two scripts.
 
 ## Working rules (do not rediscover)
 
+- **Links are full `file:///` URLs** (and `http://127.0.0.1:8765/` for the review page), never
+  bare paths: Shamsi clicks them to review.
+- **Blind review:** Claude does not look at a test's builds before Shamsi has reviewed them.
 - **She wordsmiths; the session does structure, deletion and code.** Fix facts and mechanics in
   her drafts (typos, contractions, broken links, wrong anchors) and say so. List every sentence
   you or an agent write.
@@ -94,61 +95,65 @@ Other: stat card `.ds-card--stat` (stat grids fill the row, 12rem minimum); `.ds
 help text below fields with messages under it; disabled reasons in a tooltip or help text; modal
 body scrolls automatically and becomes a tab stop only while it overflows.
 
+## V1 (agreed 2026-10-06)
+
+**V1 is done when an agent with no help beyond the docs builds a public page and an internal page
+that both pass visual and programmatic fidelity, and Shamsi has reviewed every docs page those
+builds depend on.** This replaces the 2026-09-09 exit test (the membership dashboard spec in
+`specs/`, which described a different page). Not needed for V1: the agent skills (#9), the old
+dashboard spec, the Papers scope work (Papers follows V1 as the first product built on it).
+
+1. **Public page:** search. Done: test 3 passed programmatic fidelity in all four builds; its two
+   gaps are fixed. Shamsi called search testing sufficient.
+2. **Internal page:** test 4, moderation and staff reports. Reviewed 2026-10-08: all four rejected
+   on hierarchy (report in `verification/token-burn/runs/20261006-192823-04-staff-reports/`).
+   Next: guidance for page hierarchy and doorway pages, a pattern for two-level navigation, the
+   header example on docs pages; then a rerun with the data replaced by placeholders. Shamsi to
+   decide whether phone widths are part of these tests.
+3. **Docs pages the builds depend on:** reviewed, except any that test 4 shows are missing.
+4. Then the next plan: Papers scope (what belongs to the renderer), simplifying the Papers rules,
+   reconciling the mockups with the docs.
+
 ## Open, in Shamsi's hands
 
-- Share the membership dashboard mockup with Christopher
-  (`whiteboard/mockups/internal/membership-dashboard/`). Placeholders to raise with him: the
-  holds-ratio basis and the Recruitment statuses.
+- Merge PR #8 after the reviewer approves.
+- Decide the abstract heading level (from Deyan's answers, `live-html-markup-2026-10-06.md`).
+- Approve or change the direction for the Papers rules: three to five rules per section for
+  people; the detail in each demo's class key; LaTeXML-specific rules moved to the renderer.
 - Brand & vision and Outreach pages.
 
-## Next, ours
+## To do later (agreed, not scheduled)
 
-0. **State on 2026-10-05 (overnight run).** Branch `search-results-2026-10` holds: search
-   version D (`search.html`), the Papers page (`papers.html`: hierarchy, a paper in a list,
-   versions, categories, full papers, sidebar, contents bar, section permalinks, equations,
-   figures and references, citations and footnotes, rules incl. paper body and printing), and the
-   inventory promotions from the paper decisions inventory (sections 1 to 8; deleted after promotion, in git history). The
-   promotion rule (Shamsi): promote everything unless it directly breaks a docs guideline;
-   conflicts are listed for her, not promoted. `abstract-phase2.html` is ignored (stale).
-   Waiting on Shamsi: the conflicts list in the morning summary; her second pass on papers.html
-   and search.html; the new prose (she wordsmiths).
-000. **Dark mode tints:** audit `dark-mode-tints-audit.html`, proposal `dark-mode-proposal.html`.
-   Shamsi likes nearly every proposed value; she asked for a stronger selected-row tint, now 1.20
-   against the page. Nothing is in design-system.css yet: adopt the proposal only after she
-   approves it, then run check-contrast and check-drift.
-0000. **Questions for Deyan** (answered 2026-10-06): his answers and what follows from them are in
-   `live-html-markup-2026-10-06.md`. Still open: the abstract heading level (Shamsi decides);
-   table scroll regions (Deyan and Bruce; Shamsi sent the reasons for `role="region"`); the
-   stylesheet reconciliation and theme switcher removal (a later conversation with Deyan).
-00000. **Shamsi's answers, 2026-10-06** (done): papers.html has an optional area above the identity line for temporary content (Back to abstract); no exceptions file;
-   the missing-alt-text note is shown, to teach;
-   references are shown as the author wrote them and arXiv has no reference format; one
-   `.ds-permalink` pill everywhere (replaces `.ds-anchor`); element pill is one tab stop with arrow
-   keys (`element-pill.js`); PDF from a paper opens a new tab; external links print their address;
-   captions are Plex Sans small. Visual choices waiting on her: `paper-type-choices.html` (section
-   number weight, hyphenation, TeX glyph draft).
-00000a. **To do later:** an accessibility-visibility discussion (the Accessibility accordion stays
-   closed for now; does a closed accordion count as "visible"?).
-00000b. **Next plan candidate: reconcile the mockups with the docs.** `abstract-phase2.html` and
-   `html-phase1.html` should follow the docs: Permalink pill, body line-height from typography,
-   figure viewer caption unchanged, remove "Who cites this", and every other refinement since. Treat
-   it as an early test: the mockups are real future uses of the system.
-00. **Testing** — plan in `TESTING-PLAN.md`, protocol in `verification/token-burn/README.md`,
-   team report in `verification/token-burn/reports/2026-10-search/`. Tests 1 and 2 are done.
-   Test 3 rebuilds search results once Papers settles; then arXiv Check as the non-paper search.
-1. **`docs/examples/`** — stable, generic full-page examples built only from documented
-   components (approved in principle 2026-10-02). Start with form validation (states: empty,
-   errors after submit, warnings, auto-corrected value, fixed); then a report page for
-   layout-patterns. Once the form example exists, forms.html links to it instead of the
-   submission mockup. Demo switchers are docs-only scaffolding. Add one AGENTS.md line.
-2. **Deferred, decide against real content:** sidebar tint or border (after mockups move onto the
-   DS); data visualisation (charts, gauges, meters, legends); user portal mockup (Moderation and
-   Administration move to internal tools); Admin Console mockup (test the four questions; many
-   destinations probably go in grouped header dropdowns).
-3. **Mockups onto the DS:** the paper and abstract mockups still use their own TOC and header
-   classes; move them after the review.
-4. **Cleanup:** about 15 links in older notes and the mockups README point at files gone before
-   the reorg (`docs/public/`, `metadata-panel.html`, `BRAND.md`).
+- **arXiv Check test, in React.** Shamsi takes screenshots first. See `TESTING-PLAN.md`.
+- **Accessibility visibility discussion.** The Accessibility accordion in the paper sidebar stays
+  closed for now; does a closed accordion count as "visible"?
+- **The accessibility guidelines' direction.** Shamsi is unsure about
+  `accessibility-priorities.md` being focused on the abstract and HTML paper pages. Proposed: one
+  general set of accessibility rules in the design system, informed by the HTML papers work, with
+  paper-specific decisions living with the renderer.
+- **Reconcile the mockups with the docs** (`html-phase1.html`; the abstract page mockup is stale):
+  Permalink pill, typography line-height, figure viewer caption unchanged, remove "Who cites
+  this", author list from arXiv's metadata (LaTeXML's author blocks are not one per person).
+- **Process.** On trial from 2026-10-08 for a few days: `process-proposal.md`. Then decide what to keep.
+- **`docs/examples/`**: stable full-page examples built only from documented components (approved
+  in principle 2026-10-02); start with form validation.
+- **Deferred, decide against real content:** data visualisation (charts, meters, legends); user
+  portal and Admin Console mockups.
+- **Cleanup:** links in older notes and the mockups README that point at files gone before the
+  reorg (`docs/public/`, `metadata-panel.html`, `BRAND.md`).
+
+## Decided 2026-10-06 (details in the commits)
+
+Dark mode tints adopted (cards sit on the page with a border; every fill steps away by its
+light-mode amount). One `.ds-permalink` pill on every heading. `.ds-element-pill` is one tab stop
+with arrow keys. PDF from a paper opens a new tab; in a row of links that each have an icon, the
+new-tab icon is left out. External links print their address. Captions are Plex Sans small.
+Paper body text is hyphenated; section numbers stay at 600. TeX glyph from Font Awesome Free
+(CC BY 4.0). The papers page: TOC bar (renamed from contents bar), framed sidebar matching the
+mockup, references shown as the author wrote them, alt-text note shown to teach. Alerts go at the
+top of the part of the page they are about. Pager: which page numbers to show; bars space
+themselves from the list. Test report: one page for the team (`round.py report`), grades in
+`verification/token-burn/GRADING.md`.
 
 ## Proposals (whiteboard/planning/proposals/)
 

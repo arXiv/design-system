@@ -34,7 +34,7 @@ Nothing in Shamsi's area should be obviously wrong: design and visual display, a
 | 4 | arXiv Check submission queue | Internal tools | The first internal page: tables, row selection, bulk actions, Access Lime. | Screenshots in `whiteboard/mockups/internal/arxiv-check/` |
 | 5 | Membership dashboard | Internal tools | The most complex page, and the original exit test. | `whiteboard/planning/specs/membership-dashboard.md` |
 
-Tests 3 to 5 are a proposal. Shamsi confirms each one when its spec is written, since what tests 1 and 2 find may change what is worth testing next.
+**Out of date (2026-10-06):** the rounds actually run are 1 to 3 on search (done) and 4 on the moderation and staff reports (waiting for review); arXiv Check, in React, is under *To do later*. V1 is defined in `HANDOFF.md`. Tests 3 to 5 in this table were a proposal. Shamsi confirms each one when its spec is written, since what tests 1 and 2 find may change what is worth testing next.
 
 ## After each test
 
@@ -63,7 +63,9 @@ Tests 3 to 5 are a proposal. Shamsi confirms each one when its spec is written, 
 
 ## Status
 
-- 2026-10-06: test 4 (moderation and staff reports, four pages, internal tools) built and evaluated. Waiting for Shamsi's review: `verification/token-burn/runs/20261006-192823-04-staff-reports/`. Start the review with `python3 round.py review runs/20261006-192823-04-staff-reports`.
+- 2026-10-08: round 5 (the reports again: figures as placeholders, no staff-only labelling) built and evaluated after the test 4 guidance; waiting for Shamsi's review: `verification/token-burn/runs/20261008-130110-05-staff-reports/`.
+- 2026-10-08: Shamsi: phone widths are not checked for the internal-tools tests. Guidance drafted for her review from test 4: the main content comes first and pages that send the reader on (layout-patterns.html), cards that link (cards.html), two levels of navigation (header.html), and directing agents to the standard header (AGENTS.md, a note on every docs page's header).
+- 2026-10-08: test 4 (moderation and staff reports, internal tools) reviewed: all four rejected on page hierarchy; programmatic Pass for two, Pass with changes for two. Found: no guidance on doorway pages or keeping secondary content out of the way; no two-level navigation; agents copy the docs pages' light header. Design-system bug fixed: `.ds-table-scroll` is positioned. Report: `verification/token-burn/runs/20261006-192823-04-staff-reports/report.html`.
 - 2026-10-06: test 3 (search results, answer key version D) built and reviewed. All four reached D from the docs; visual Pass with changes, programmatic Pass for all four. Found: no rule for how many page numbers, no wording for the 10,000-result notice, pager bars do not space themselves from the list; and a skip-link focus bug (fixed). Report: `verification/token-burn/runs/20261006-142757-03-search-results/report.html`.
 - 2026-10-05: test 2 (search results, one page state) built and reviewed: all four builds accepted with changes. Changes since: search version D (`search.html`), the Papers page, tooltips that stay on screen. Team report: `verification/token-burn/reports/2026-10-search/`. Next: test 3 rebuilds search results with the same spec once Shamsi has settled Papers; after that, arXiv Check as the non-paper search. The numbering in the table above is now out of date: the order is search results again, then arXiv Check.
 - 2026-10-02: numbered pages added to the pager (`.ds-pagination-pages`, pager.html), with a routing row in AGENTS.md. Search needs them, and the pager had no row in the routing table.

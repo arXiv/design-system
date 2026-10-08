@@ -44,7 +44,7 @@ components:
       - name: ".ds-tag-note"
         does: "A small badge nested inside a tag, saying where it came from — usually a username."
       - name: ".ds-tag-note--auto"
-        does: "The same badge, quieter, for provenance the system set rather than a person. “auto” is a fact about the row; a username is someone to ask."
+        does: "The same badge in italic, for provenance the system set rather than a person. “auto” is a fact about the row; a username is someone to ask."
       - name: ".ds-tag-remove"
         does: "The ✕ control inside an editable tag. A `<button type=\"button\">` that is the last child of the tag. Removing the tag is the host’s job."
       - name: ".is-sr-only"
@@ -173,7 +173,7 @@ Different parts of a tag can be combined, even doubled, for more complex uses. C
 ```
 
 - `.ds-tag-note` — A small badge nested inside a tag, saying where it came from — usually a username.
-- `.ds-tag-note--auto` — The same badge, quieter, for provenance the system set rather than a person. “auto” is a fact about the row; a username is someone to ask.
+- `.ds-tag-note--auto` — The same badge in italic, for provenance the system set rather than a person. “auto” is a fact about the row; a username is someone to ask.
 - `.ds-tag-remove` — The ✕ control inside an editable tag. A `<button type="button">` that is the last child of the tag. Removing the tag is the host’s job.
 - `.is-sr-only` — Required inside the remove control. The ✕ glyph is `aria-hidden`, so without this span the button announces as “button” and nothing more. Say what it removes: “Remove math.AP”.
 

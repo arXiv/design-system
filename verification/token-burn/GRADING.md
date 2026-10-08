@@ -16,6 +16,8 @@ Shamsi's verdict in the blind review:
 
 Claude's grade from the automated checks and a read of the code. It is written to `technical.json` as `programmatic`, with the reasons in `notes`, which appear in the detailed report.
 
+Phone widths are not part of the grade for the internal-tools tests (decided 2026-10-08); they still count for public pages.
+
 - **Pass:** every automated check passes, and the code uses only design-system classes and tokens. The checks are accessibility (axe), contrast in light and dark, no sideways scrolling on a phone, a visible keyboard focus, the page working without JavaScript, and nothing loaded from another site.
 - **Pass with changes:** the checks pass, but the code departs from the design system in small ways: a few page-only styles, the wrong component for a job, or a component rebuilt by hand instead of reused.
 - **Fail:** any accessibility failure, or the page ignores the design system's components.

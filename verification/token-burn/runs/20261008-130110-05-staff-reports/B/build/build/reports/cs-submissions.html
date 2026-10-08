@@ -1,0 +1,254 @@
+<!doctype html>
+<!-- Internal tool: moderation and staff reports. Signed-in moderators and
+     arXiv staff only, so .ds-internal (Access Lime) on <html>. Shown as an
+     arXiv staff member with admin permissions sees it. -->
+<html lang="en" class="ds-internal">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Computer Science: recent submissions — Moderation reports — arXiv</title>
+  <link rel="stylesheet" href="../../docs/fonts.css">
+  <link rel="stylesheet" href="../../docs/design-system.css">    <!-- tier 1 -->
+  <link rel="stylesheet" href="../../docs/internal-tools.css">   <!-- tier 2 -->
+  <link rel="stylesheet" href="reports.css">
+  <script src="../../docs/theme.js"></script>  <!-- not deferred: the theme must land before first paint -->
+  <script src="../../docs/header.js" defer></script>
+</head>
+<body class="ds-page">
+<a class="ds-skip-link" href="#main">Skip to main content</a>
+
+<header class="ds-site-header">
+  <a href="sections.html" class="ds-site-header-logo" aria-label="archive reports home">
+    <img src="../../docs/assets/images/logos/logo_arxiv-primary.svg" alt="archive">
+  </a>
+  <nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Reports">
+    <a href="sections.html">Moderation reports</a>
+    <a href="staff.html">Staff reports</a>
+  </nav>
+  <span class="ds-site-header-divider" aria-hidden="true"></span>
+  <div class="ds-site-header-account">
+    <span class="ds-site-header-greeting">Welcome <b>Ada</b></span>
+    <details class="ds-site-header-dropdown">
+      <summary class="ds-site-header-login">Account</summary>
+      <div class="ds-site-header-menu">
+        <a href="/account">Your account</a>
+        <!-- Log out changes state, so it posts (header.html); the only non-GET form. -->
+        <form method="post" action="/logout">
+          <button type="submit">Log out</button>
+        </form>
+      </div>
+    </details>
+  </div>
+</header>
+
+<!-- Two levels of navigation (header.html): the report's parts and the
+     subject chooser, which applies to every view, directly under the header;
+     the views of the open part inside the page. No breadcrumb: the bars and
+     the <h1> say where the reader is, and Moderation reports in the header
+     goes back to all sections. -->
+<div class="ds-subnav">
+  <nav aria-label="Report parts">
+      <a href="cs-activity.html?group=cs&amp;archive=cs&amp;category=All" aria-current="page">Submissions and holds</a>
+      <a href="cs-moderators.html?group=cs&amp;archive=cs&amp;category=All">Moderators</a>
+      <a href="cs-recruitment.html?group=cs&amp;archive=cs&amp;category=All">Recruitment</a>
+  </nav>
+  <form class="ds-filter-bar" method="get" action="cs-submissions.html" aria-label="Subject">
+    <div class="ds-filter"><label for="s-group">Group</label><select id="s-group" name="group"><option>All</option><option selected>cs</option><option>econ</option><option>eess</option><option>math</option><option>physics</option><option>q-bio</option><option>q-fin</option><option>stat</option></select></div>
+    <div class="ds-filter"><label for="s-archive">Archive</label><select id="s-archive" name="archive"><option>All</option><option selected>cs</option></select></div>
+    <div class="ds-filter"><label for="s-category">Category</label><select id="s-category" name="category"><option selected>All</option><option>cs.AI</option><option>cs.AR</option><option>cs.CC</option><option>cs.CE</option><option>cs.CG</option><option>cs.CL</option><option>cs.CR</option><option>cs.CV</option><option>cs.CY</option><option>cs.DB</option><option>cs.DC</option><option>cs.DL</option><option>cs.DM</option><option>cs.DS</option><option>cs.ET</option><option>cs.FL</option><option>cs.GL</option><option>cs.GR</option><option>cs.GT</option><option>cs.HC</option><option>cs.IR</option><option>cs.IT</option><option>cs.LG</option><option>cs.LO</option><option>cs.MA</option><option>cs.MM</option><option>cs.MS</option><option>cs.NA</option><option>cs.NE</option><option>cs.NI</option><option>cs.OH</option><option>cs.OS</option><option>cs.PF</option><option>cs.PL</option><option>cs.RO</option><option>cs.SC</option><option>cs.SD</option><option>cs.SE</option><option>cs.SI</option><option>cs.SY</option></select></div>
+    <button class="ds-btn" type="submit">Apply</button>
+  </form>
+</div>
+
+<main id="main" class="ds-container ds-container--wide">
+  <div class="reports-stack">
+    <h1>Computer Science</h1>
+    <nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views">
+      <a href="cs-activity.html?group=cs&amp;archive=cs&amp;category=All">Activity charts</a>
+      <a href="cs-category-stats.html?group=cs&amp;archive=cs&amp;category=All">Category submission stats</a>
+      <a href="cs-releases.html?group=cs&amp;archive=cs&amp;category=All">Recent releases</a>
+      <a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All" aria-current="page">Recent submissions</a>
+    </nav>
+  </div>
+
+  <div class="reports-stack">
+  <!-- Choices for this view only go inside it, below the second row
+       (header.html, Two levels of navigation). Rows per page is a setting of
+       the list, so it is in the settings row (pager.html). -->
+  <form class="ds-filter-bar" id="view-settings" method="get" action="cs-submissions.html" aria-label="Date range">
+    <input type="hidden" name="group" value="cs">
+    <input type="hidden" name="archive" value="cs">
+    <input type="hidden" name="category" value="All">
+    <div class="ds-filter-bar-group">
+      <div class="ds-field">
+        <label class="ds-label" for="start">Start date</label>
+        <input class="ds-input" type="date" id="start" name="start" value="2026-09-16" required aria-required="true">
+      </div>
+      <div class="ds-field">
+        <label class="ds-label" for="end">End date (inclusive)</label>
+        <input class="ds-input" type="date" id="end" name="end" value="2026-10-06" required aria-required="true">
+      </div>
+    </div>
+    <fieldset class="ds-filter-bar-group ds-filter-bar-group--settings">
+      <legend class="is-sr-only">Settings</legend>
+      <div class="ds-field">
+        <label class="ds-label" for="size">Rows per page</label>
+        <select class="ds-input" id="size" name="size"><option>25</option><option>50</option><option selected>100</option><option>200</option></select>
+      </div>
+    </fieldset>
+    <div class="ds-filter-bar-actions">
+      <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
+    </div>
+  </form>
+  <form class="ds-btn-group reports-status" method="get" action="cs-submissions.html" aria-label="Data status">
+    <input type="hidden" name="group" value="cs">
+    <input type="hidden" name="archive" value="cs">
+    <input type="hidden" name="category" value="All">
+    <input type="hidden" name="start" value="2026-09-16">
+    <input type="hidden" name="end" value="2026-10-06">
+    <input type="hidden" name="size" value="100">
+    <input type="hidden" name="sort" value="-submitted">
+    <input type="hidden" name="refresh" value="1">
+    <p class="ds-section-desc">Showing the last 3 weeks, 16 Sep to 6 Oct 2026. Last updated 2 hours ago.</p>
+    <button class="ds-btn ds-btn-text" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> Refresh</button>
+  </form>
+  </div>
+
+  <section class="reports-stack" aria-labelledby="submissions">
+    <h2 id="submissions" class="is-sr-only">Submissions</h2>
+    <p class="reports-placeholder">Figures: five totals for the submissions in this date range</p>
+    <div>
+    <div class="ds-btn-group ds-btn-group--end">
+      <a class="ds-btn ds-btn-text" href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;format=csv" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg> Download CSV</a>
+    </div>
+  <nav class="ds-pagination ds-pagination--top" aria-label="Submission pages">
+    <span class="ds-pagination-position">1–100 of 16,590 submissions</span>
+    <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+    <ol class="ds-pagination-pages">
+    <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
+    <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;page=2"><span class="is-sr-only">Page </span>2</a></li>
+    <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;page=3"><span class="is-sr-only">Page </span>3</a></li>
+    <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;page=4"><span class="is-sr-only">Page </span>4</a></li>
+    <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;page=5"><span class="is-sr-only">Page </span>5</a></li>
+    <li>…</li>
+    <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;page=166"><span class="is-sr-only">Page </span>166</a></li>
+    </ol>
+    <a class="ds-btn ds-btn-text" href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;page=2"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+  </nav>
+    <div class="ds-table-scroll" role="region" aria-label="Submissions, 16 Sep to 6 Oct 2026" tabindex="0">
+      <table class="ds-table">
+        <thead>
+          <tr>
+          <th scope="col"><button type="submit" form="view-settings" name="sort" value="-primary" class="sortable">Submitted primary <span class="sort-arrow">⇅</span></button></th>
+          <th scope="col"><button type="submit" form="view-settings" name="sort" value="-categories" class="sortable">Current categories <span class="sort-arrow">⇅</span></button></th>
+          <th scope="col"><button type="submit" form="view-settings" name="sort" value="-id" class="sortable">Submission ID <span class="sort-arrow">⇅</span></button></th>
+          <th scope="col" class="sort-desc" aria-sort="descending"><button type="submit" form="view-settings" name="sort" value="submitted" class="sortable">Submit date <span class="sort-arrow">↓</span></button></th>
+          <th scope="col"><button type="submit" form="view-settings" name="sort" value="-status" class="sortable">Status <span class="sort-arrow">⇅</span></button></th>
+          <th scope="col"><button type="submit" form="view-settings" name="sort" value="-held" class="sortable">Held <span class="sort-arrow">⇅</span></button></th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>cs.RO</td>
+          <td>cs.RO</td>
+          <td class="reports-id"><a href="/check/submission/9000101">9000101</a></td>
+          <td><time datetime="2026-10-06T20:05:40Z">Tue, 06 Oct 2026 20:05:40 GMT</time></td>
+          <td>For tomorrow</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>cs.CE</td>
+          <td>cs.CE</td>
+          <td class="reports-id"><a href="/check/submission/9000102">9000102</a></td>
+          <td><time datetime="2026-10-06T18:10:19Z">Tue, 06 Oct 2026 18:10:19 GMT</time></td>
+          <td>On hold</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>cs.AI</td>
+          <td>cs.CV</td>
+          <td class="reports-id"><a href="/check/submission/9000103">9000103</a></td>
+          <td><time datetime="2026-10-06T18:09:36Z">Tue, 06 Oct 2026 18:09:36 GMT</time></td>
+          <td>For tomorrow</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>cs.HC</td>
+          <td>cs.HC</td>
+          <td class="reports-id"><a href="/check/submission/9000104">9000104</a></td>
+          <td><time datetime="2026-10-06T18:06:38Z">Tue, 06 Oct 2026 18:06:38 GMT</time></td>
+          <td>For tomorrow</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>cs.CV</td>
+          <td>cs.CV</td>
+          <td class="reports-id"><a href="/check/submission/9000105">9000105</a></td>
+          <td><time datetime="2026-10-06T18:05:45Z">Tue, 06 Oct 2026 18:05:45 GMT</time></td>
+          <td>For tomorrow</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>cs.LG</td>
+          <td>cs.LG</td>
+          <td class="reports-id"><a href="/check/submission/9000106">9000106</a></td>
+          <td><time datetime="2026-10-06T18:03:24Z">Tue, 06 Oct 2026 18:03:24 GMT</time></td>
+          <td>Working</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>cs.RO</td>
+          <td>cs.RO</td>
+          <td class="reports-id"><a href="/check/submission/9000107">9000107</a></td>
+          <td><time datetime="2026-10-06T18:03:09Z">Tue, 06 Oct 2026 18:03:09 GMT</time></td>
+          <td>For tomorrow</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>cs.IT</td>
+          <td>cs.IT</td>
+          <td class="reports-id"><a href="/check/submission/9000108">9000108</a></td>
+          <td><time datetime="2026-10-06T18:03:00Z">Tue, 06 Oct 2026 18:03:00 GMT</time></td>
+          <td>For tomorrow</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>cs.DC</td>
+          <td>cs.DC</td>
+          <td class="reports-id"><a href="/check/submission/9000109">9000109</a></td>
+          <td><time datetime="2026-10-06T18:00:45Z">Tue, 06 Oct 2026 18:00:45 GMT</time></td>
+          <td>For tomorrow</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>cs.AI</td>
+          <td>cs.AI</td>
+          <td class="reports-id"><a href="/check/submission/9000110">9000110</a></td>
+          <td><time datetime="2026-10-06T18:00:08Z">Tue, 06 Oct 2026 18:00:08 GMT</time></td>
+          <td>On hold</td>
+          <td>Yes</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  <nav class="ds-pagination ds-pagination--bottom" aria-label="Submission pages, below the table">
+    <span class="ds-pagination-position">1–100 of 16,590 submissions</span>
+    <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+    <ol class="ds-pagination-pages">
+    <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
+    <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;page=2"><span class="is-sr-only">Page </span>2</a></li>
+    <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;page=3"><span class="is-sr-only">Page </span>3</a></li>
+    <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;page=4"><span class="is-sr-only">Page </span>4</a></li>
+    <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;page=5"><span class="is-sr-only">Page </span>5</a></li>
+    <li>…</li>
+    <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;page=166"><span class="is-sr-only">Page </span>166</a></li>
+    </ol>
+    <a class="ds-btn ds-btn-text" href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=All&amp;start=2026-09-16&amp;end=2026-10-06&amp;size=100&amp;sort=-submitted&amp;page=2"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+  </nav>
+    </div>
+    <p class="ds-section-desc">Papers that were submitted within the date range relevant to archive cs. Holds include all hold types, as moderator holds often cannot be distinguished from admin/legacy holds based on database information.</p>
+  </section>
+</main>
+
+</body>
+</html>

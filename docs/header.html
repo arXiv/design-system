@@ -10,6 +10,7 @@
 <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
 </head>
 <body class="ds-page">
+<!-- The docs site's own header (the light variant). It is not a pattern: build pages from the header in templates/ and docs/header.html. -->
 <header class="ds-site-header ds-site-header--light">
   <a class="ds-site-header-logo" href="../index.html"><span aria-hidden="true">arXiv Design System</span><span class="is-sr-only">archive Design System</span></a>
   <nav class="ds-site-header-nav" aria-label="Design system">
@@ -103,6 +104,7 @@
             <li><a href="#on-small-screens">On small screens</a></li>
             <li><a href="#header-dropdown-menus">Header dropdown menus</a></li>
             <li><a href="#secondary-navigation">Secondary navigation</a></li>
+            <li><a href="#two-levels-of-navigation">Two levels of navigation</a></li>
             <li><a href="#steps">Steps</a></li>
             <li><a href="#with-the-announcement-band">With the announcement band</a></li>
             <li><a href="#the-light-variant">The light variant</a></li>
@@ -367,7 +369,7 @@
       </div>
       <p class="ds-panel-label">Admin Console, column width</p>
         <div class="ds-internal">
-        <header class="ds-site-header ds-site-header--light">
+        <header class="ds-site-header">
           <a href="#" class="ds-site-header-logo">
             <img src="assets/images/logos/logo_arxiv-admin.png" alt="archive Admin Console">
           </a>
@@ -408,7 +410,7 @@
       <p class="ds-panel-label">Admin Console, phone width</p>
       <div class="demo-width-narrow">
         <div class="ds-internal">
-        <header class="ds-site-header ds-site-header--light">
+        <header class="ds-site-header">
           <a href="#" class="ds-site-header-logo">
             <img src="assets/images/logos/logo_arxiv-admin.png" alt="archive Admin Console">
           </a>
@@ -604,6 +606,82 @@
     </div>
   </section>
 
+  <!-- ───────── Two levels ───────── -->
+  <section>
+    <h2 id="two-levels-of-navigation">Two levels of navigation</h2>
+    <p class="ds-section-desc">An area with its own sections, each with several views, such as a report with parts and views. The sections are the secondary navigation under the header; the views of the current section are a second row inside the page.</p>
+    <div class="ds-card">
+      <div class="ds-internal">
+        <div class="ds-subnav">
+          <nav aria-label="Report parts">
+            <a href="#" aria-current="page">Submissions and holds</a>
+            <a href="#">Moderators</a>
+            <a href="#">Recruitment</a>
+          </nav>
+          <form class="ds-filter-bar" method="get" action="#" aria-label="Subject">
+            <div class="ds-filter"><label for="tl-group">Group</label><select id="tl-group"><option>cs</option></select></div>
+            <div class="ds-filter"><label for="tl-archive">Archive</label><select id="tl-archive"><option>cs</option></select></div>
+            <div class="ds-filter"><label for="tl-cat">Category</label><select id="tl-cat"><option>All</option></select></div>
+            <button class="ds-btn" type="submit">Apply</button>
+          </form>
+        </div>
+        <div class="ds-container page-demo page-demo--wide">
+          <h2>Computer Science</h2>
+          <nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views">
+            <a href="#">Activity charts</a>
+            <a href="#" aria-current="page">Category submission stats</a>
+            <a href="#">Recent releases</a>
+            <a href="#">Recent submissions</a>
+          </nav>
+          <p>The view.</p>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-internal"&gt;
+  &lt;div class="ds-subnav"&gt;
+    &lt;nav aria-label="Report parts"&gt;
+      &lt;a href="#" aria-current="page"&gt;Submissions and holds&lt;/a&gt;
+      &lt;a href="#"&gt;Moderators&lt;/a&gt;
+      &lt;a href="#"&gt;Recruitment&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;form class="ds-filter-bar" method="get" action="#" aria-label="Subject"&gt;
+      &lt;div class="ds-filter"&gt;&lt;label for="tl-group"&gt;Group&lt;/label&gt;&lt;select id="tl-group"&gt;&lt;option&gt;cs&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+      &lt;div class="ds-filter"&gt;&lt;label for="tl-archive"&gt;Archive&lt;/label&gt;&lt;select id="tl-archive"&gt;&lt;option&gt;cs&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+      &lt;div class="ds-filter"&gt;&lt;label for="tl-cat"&gt;Category&lt;/label&gt;&lt;select id="tl-cat"&gt;&lt;option&gt;All&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+      &lt;button class="ds-btn" type="submit"&gt;Apply&lt;/button&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+  &lt;div class="ds-container page-demo page-demo--wide"&gt;
+    &lt;h2&gt;Computer Science&lt;/h2&gt;
+    &lt;nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views"&gt;
+      &lt;a href="#"&gt;Activity charts&lt;/a&gt;
+      &lt;a href="#" aria-current="page"&gt;Category submission stats&lt;/a&gt;
+      &lt;a href="#"&gt;Recent releases&lt;/a&gt;
+      &lt;a href="#"&gt;Recent submissions&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;p&gt;The view.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-subnav</dt>
+            <dd>The first row, directly under the header. Here it holds two groups: a <code>&lt;nav&gt;</code> of the area&#39;s sections, then a compact <a href="tables.html#filter-bar">filter bar</a> for choices that apply to every view, such as the subject. The groups sit twice as far apart as the items inside them.</dd>
+            <dt>&lt;h1&gt;</dt>
+            <dd>Names what the page is about, such as the subject, so the reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page.</dd>
+            <dt>.ds-subnav--in-page</dt>
+            <dd>The second level: the views of the current section, in the content column, with the same current marking as the first level. Each view is its own page.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+    <ul class="notes">
+      <li><strong>Two levels at most.</strong> A third level is a sign the content needs restructuring.</li>
+      <li><strong>Each row keeps the same links on every page it appears on.</strong> Only the current link changes.</li>
+      <li><strong>Choices that apply to one view go inside that view</strong>, below the second row.</li>
+      <li><strong>When the views share one address</strong> and swap in place, use <a href="progressive-disclosure.html#tabs">tabs</a> for the second level instead.</li>
+    </ul>
+  </section>
+
   <!-- ───────── Steps ───────── -->
   <section>
     <h2 id="steps">Steps</h2>
@@ -755,7 +833,7 @@
   <!-- ───────── The light variant ───────── -->
   <section>
     <h3 id="the-light-variant">The light variant</h3>
-    <p class="ds-section-desc">Adding <code>.ds-site-header--light</code> re-points seven surface tokens but declares no property of its own. The light variant is used in this documentation to clearly signal we are in a distinct space from the main arXiv site.</p>
+    <p class="ds-section-desc">Adding <code>.ds-site-header--light</code> re-points seven surface tokens but declares no property of its own. It is for pages that comment on arXiv from outside it, such as this documentation. Every page that is part of arXiv, public or internal, uses the standard bar.</p>
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
@@ -796,10 +874,10 @@
   <!-- ───────── Internal header ───────── -->
   <section>
     <h3 id="internal-headers">Internal header</h3>
-    <p class="ds-section-desc">The Admin Console header, built from the same component on the light variant. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. The internal stylesheet may re-point the bar’s colour tokens and nothing else.</p>
+    <p class="ds-section-desc">The Admin Console header: the standard bar, with the Admin Console logo. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. The internal stylesheet may re-point the bar’s colour tokens and nothing else.</p>
     <div class="ds-card">
       <div class="ds-internal">
-      <header class="ds-site-header ds-site-header--light">
+      <header class="ds-site-header">
         <a href="#" class="ds-site-header-logo">
           <img src="assets/images/logos/logo_arxiv-admin.png" alt="archive Admin Console">
         </a>
@@ -839,7 +917,7 @@
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;header class="ds-site-header ds-site-header--light"&gt;
+<pre><code>&lt;header class="ds-site-header"&gt;
   &lt;a href="/" class="ds-site-header-logo"&gt;
     &lt;img src="logo_arxiv-admin.png" alt="archive Admin Console"&gt;
   &lt;/a&gt;
@@ -910,7 +988,7 @@
     <div class="ds-card">
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;header class="ds-site-header ds-site-header--light ds-site-header--sticky"&gt;…&lt;/header&gt;</code></pre>
+<pre><code>&lt;header class="ds-site-header ds-site-header--sticky"&gt;…&lt;/header&gt;</code></pre>
           <dl>
             <dt>.ds-site-header--sticky</dt>
             <dd>Sticks the bar to the top of the viewport. A page that uses it keeps no other sticky

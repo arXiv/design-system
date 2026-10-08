@@ -1,0 +1,71 @@
+/* Moderation and staff reports — page CSS the design system does not provide.
+   Loaded after design-system.css and internal-tools.css. Every value is a design
+   system token; nothing here restyles a .ds- component. */
+
+/* A stack of blocks inside one section. The container owns the space between
+   them (DESIGN-POLICIES, Spacing), so the children drop their own margins. */
+.reports-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-block);
+}
+.reports-stack > * { margin-block: 0; }
+.reports-stack--tight   { gap: var(--ds-space-tight); }
+.reports-stack--section { gap: var(--ds-space-section); }
+
+/* The update line: when the figures were last updated, then Refresh (and any
+   other secondary action) as text buttons. Wraps on a narrow screen. */
+.reports-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--ds-space-block);
+  row-gap: var(--ds-space-tight);
+  color: var(--ds-text-muted);
+}
+.reports-status > p { margin: 0; }
+.reports-status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-tight);
+}
+
+/* A subject group's short code is an identifier: Plex Mono (typography.html). */
+.reports-code { font-family: var(--ds-font-mono); }
+
+/* The categories shown on a report, as one wrapping run of links. */
+.reports-inline-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-tight) var(--ds-space-block);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.reports-inline-list > li { margin: 0; }
+
+/* Placeholder for a figure or chart. The design system has no guidance for
+   charts or figures yet, so this only marks where one goes and says what it
+   is. Dashed, so it cannot be mistaken for a card. */
+.reports-placeholder {
+  margin: 0;
+  padding: var(--ds-space-block);
+  border: 1px dashed var(--ds-border-strong);
+  border-radius: 8px;
+  color: var(--ds-text-muted);
+}
+.reports-placeholder--chart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 12rem;
+  text-align: center;
+}
+
+/* The two charts of a category row side by side, one column when they no
+   longer fit. No breakpoint: the grid runs out of room on its own. */
+.reports-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100%), 1fr));
+  gap: var(--ds-space-block);
+}

@@ -1,8 +1,11 @@
 # Next Steps — Program Backlog
 
-Program-level backlog for the design system. **The active list is the v1 plan immediately below (agreed 2026-09-09).** Everything after the horizontal rule is the older backlog, last groomed 2026-07-28 — read it as history until it is groomed again. The 2026-07-28 phased plan was the organizing layer for that era; the detailed queues that follow it are the backlog the phases draw from. Component-level roadmaps live in [PATTERNS.md](../../docs/PATTERNS.md) (public patterns) and [DESIGN-PROGRESS.md](../../docs/DESIGN-PROGRESS.md) (internal). When an item here is really about one of those, this file points at it rather than duplicating it.
+Program-level backlog for the design system. **The active plan is in `HANDOFF.md` (V1, agreed 2026-10-06); the September v1 plan below is kept as a record.** Everything after the horizontal rule is the older backlog, last groomed 2026-07-28 — read it as history until it is groomed again. The 2026-07-28 phased plan was the organizing layer for that era; the detailed queues that follow it are the backlog the phases draw from. Component-level roadmaps live in [PATTERNS.md](../../docs/PATTERNS.md) (public patterns) and [DESIGN-PROGRESS.md](../../docs/DESIGN-PROGRESS.md) (internal). When an item here is really about one of those, this file points at it rather than duplicating it.
 
-## The v1 plan (agreed 2026-09-09) — ACTIVE
+## The v1 plan (agreed 2026-09-09) — SUPERSEDED 2026-10-06
+
+**Superseded.** V1 was redefined on 2026-10-06: see `HANDOFF.md`, *V1*. The list below is kept as
+the record of what the September plan did.
 
 This is the working list. Everything below the horizontal rule further down is
 the older backlog, which has not been groomed since July and should be read as
