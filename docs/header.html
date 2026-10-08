@@ -10,6 +10,7 @@
 <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
 </head>
 <body class="ds-page">
+<!-- The docs site's own header (the light variant). It is not a pattern: build pages from the header in templates/ and docs/header.html. -->
 <header class="ds-site-header ds-site-header--light">
   <a class="ds-site-header-logo" href="../index.html"><span aria-hidden="true">arXiv Design System</span><span class="is-sr-only">archive Design System</span></a>
   <nav class="ds-site-header-nav" aria-label="Design system">
@@ -103,6 +104,7 @@
             <li><a href="#on-small-screens">On small screens</a></li>
             <li><a href="#header-dropdown-menus">Header dropdown menus</a></li>
             <li><a href="#secondary-navigation">Secondary navigation</a></li>
+            <li><a href="#two-levels-of-navigation">Two levels of navigation</a></li>
             <li><a href="#steps">Steps</a></li>
             <li><a href="#with-the-announcement-band">With the announcement band</a></li>
             <li><a href="#the-light-variant">The light variant</a></li>
@@ -602,6 +604,82 @@
         </div>
       </details>
     </div>
+  </section>
+
+  <!-- ───────── Two levels ───────── -->
+  <section>
+    <h2 id="two-levels-of-navigation">Two levels of navigation</h2>
+    <p class="ds-section-desc">An area with its own sections, each with several views, such as a report with parts and views. The sections are the secondary navigation under the header; the views of the current section are a second row inside the page.</p>
+    <div class="ds-card">
+      <div class="ds-internal">
+        <nav class="ds-subnav" aria-label="Report parts">
+          <a href="#" aria-current="page">Submissions and holds</a>
+          <a href="#">Moderators</a>
+          <a href="#">Recruitment</a>
+        </nav>
+        <div class="ds-container page-demo page-demo--wide">
+          <h2>Computer Science</h2>
+          <form class="ds-filter-bar" method="get" action="#" aria-label="Subject">
+            <div class="ds-filter-bar-group">
+              <div class="ds-field"><label class="ds-label" for="tl-group">Group</label><select class="ds-input" id="tl-group"><option>cs</option></select></div>
+              <div class="ds-field"><label class="ds-label" for="tl-cat">Category</label><select class="ds-input" id="tl-cat"><option>All</option></select></div>
+            </div>
+            <div class="ds-filter-bar-actions"><button class="ds-btn ds-btn-primary" type="submit">Apply</button></div>
+          </form>
+          <nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views">
+            <a href="#">Activity charts</a>
+            <a href="#" aria-current="page">Category submission stats</a>
+            <a href="#">Recent releases</a>
+            <a href="#">Recent submissions</a>
+          </nav>
+          <p>The view.</p>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-internal"&gt;
+  &lt;nav class="ds-subnav" aria-label="Report parts"&gt;
+    &lt;a href="#" aria-current="page"&gt;Submissions and holds&lt;/a&gt;
+    &lt;a href="#"&gt;Moderators&lt;/a&gt;
+    &lt;a href="#"&gt;Recruitment&lt;/a&gt;
+  &lt;/nav&gt;
+  &lt;div class="ds-container page-demo page-demo--wide"&gt;
+    &lt;h2&gt;Computer Science&lt;/h2&gt;
+    &lt;form class="ds-filter-bar" method="get" action="#" aria-label="Subject"&gt;
+      &lt;div class="ds-filter-bar-group"&gt;
+        &lt;div class="ds-field"&gt;&lt;label class="ds-label" for="tl-group"&gt;Group&lt;/label&gt;&lt;select class="ds-input" id="tl-group"&gt;&lt;option&gt;cs&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+        &lt;div class="ds-field"&gt;&lt;label class="ds-label" for="tl-cat"&gt;Category&lt;/label&gt;&lt;select class="ds-input" id="tl-cat"&gt;&lt;option&gt;All&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="ds-filter-bar-actions"&gt;&lt;button class="ds-btn ds-btn-primary" type="submit"&gt;Apply&lt;/button&gt;&lt;/div&gt;
+    &lt;/form&gt;
+    &lt;nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views"&gt;
+      &lt;a href="#"&gt;Activity charts&lt;/a&gt;
+      &lt;a href="#" aria-current="page"&gt;Category submission stats&lt;/a&gt;
+      &lt;a href="#"&gt;Recent releases&lt;/a&gt;
+      &lt;a href="#"&gt;Recent submissions&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;p&gt;The view.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-subnav</dt>
+            <dd>The first level, directly under the header: the sections of the area.</dd>
+            <dt>&lt;h1&gt;</dt>
+            <dd>Names what the page is about, such as the subject, so the reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page.</dd>
+            <dt>.ds-filter-bar</dt>
+            <dd>Choices that apply to every view, such as the subject, come before the views.</dd>
+            <dt>.ds-subnav--in-page</dt>
+            <dd>The second level: the views of the current section, in the content column, with the same current marking as the first level. Each view is its own page.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+    <ul class="notes">
+      <li><strong>Two levels at most.</strong> A third level is a sign the content needs restructuring.</li>
+      <li><strong>Each row keeps the same links on every page it appears on.</strong> Only the current link changes.</li>
+      <li><strong>Choices that apply to one view go inside that view</strong>, below the second row.</li>
+      <li><strong>When the views share one address</strong> and swap in place, use <a href="progressive-disclosure.html#tabs">tabs</a> for the second level instead.</li>
+    </ul>
   </section>
 
   <!-- ───────── Steps ───────── -->

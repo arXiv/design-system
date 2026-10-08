@@ -78,6 +78,18 @@ components:
         does: "On the link for the current page. It shows in bold with an underline bar, so the current section never depends on colour alone, and a screen reader announces it."
       - name: ".ds-internal"
         does: "On a parent, it turns the underline bar Access Lime Deep. Nothing else changes."
+  - id: two-levels-of-navigation
+    title: "Two levels of navigation"
+    summary: "An area with its own sections, each with several views, such as a report with parts and views. The sections are the secondary navigation under the header; the views of the current section are a second row inside the page."
+    classes:
+      - name: ".ds-subnav"
+        does: "The first level, directly under the header: the sections of the area."
+      - name: "<h1>"
+        does: "Names what the page is about, such as the subject, so the reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page."
+      - name: ".ds-filter-bar"
+        does: "Choices that apply to every view, such as the subject, come before the views."
+      - name: ".ds-subnav--in-page"
+        does: "The second level: the views of the current section, in the content column, with the same current marking as the first level. Each view is its own page."
   - id: steps
     title: "Steps"
     summary: "The steps of one ordered process, such as a submission, and which one the reader is on. Steps is a variant of the secondary navigation bar. To move through a queue one item at a time, use the [pager](pager.html). Which steps are available is the application's logic: submission, for example, lets the reader go back to a complete step but not jump ahead."
@@ -311,6 +323,42 @@ A row of section links directly under the header, for an area that has its own s
 - `.ds-subnav` — A `<nav>` directly after the header, with an `aria-label` that names the area, such as “Account sections”. Plain links; never `role="tab"`, which would promise arrow-key behaviour that page links do not have. Hidden in print.
 - `aria-current="page"` — On the link for the current page. It shows in bold with an underline bar, so the current section never depends on colour alone, and a screen reader announces it.
 - `.ds-internal` — On a parent, it turns the underline bar Access Lime Deep. Nothing else changes.
+
+## Two levels of navigation
+
+An area with its own sections, each with several views, such as a report with parts and views. The sections are the secondary navigation under the header; the views of the current section are a second row inside the page.
+
+```html
+<div class="ds-internal">
+  <nav class="ds-subnav" aria-label="Report parts">
+    <a href="#" aria-current="page">Submissions and holds</a>
+    <a href="#">Moderators</a>
+    <a href="#">Recruitment</a>
+  </nav>
+  <div class="ds-container page-demo page-demo--wide">
+    <h2>Computer Science</h2>
+    <form class="ds-filter-bar" method="get" action="#" aria-label="Subject">
+      <div class="ds-filter-bar-group">
+        <div class="ds-field"><label class="ds-label" for="tl-group">Group</label><select class="ds-input" id="tl-group"><option>cs</option></select></div>
+        <div class="ds-field"><label class="ds-label" for="tl-cat">Category</label><select class="ds-input" id="tl-cat"><option>All</option></select></div>
+      </div>
+      <div class="ds-filter-bar-actions"><button class="ds-btn ds-btn-primary" type="submit">Apply</button></div>
+    </form>
+    <nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views">
+      <a href="#">Activity charts</a>
+      <a href="#" aria-current="page">Category submission stats</a>
+      <a href="#">Recent releases</a>
+      <a href="#">Recent submissions</a>
+    </nav>
+    <p>The view.</p>
+  </div>
+</div>
+```
+
+- `.ds-subnav` — The first level, directly under the header: the sections of the area.
+- `<h1>` — Names what the page is about, such as the subject, so the reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page.
+- `.ds-filter-bar` — Choices that apply to every view, such as the subject, come before the views.
+- `.ds-subnav--in-page` — The second level: the views of the current section, in the content column, with the same current marking as the first level. Each view is its own page.
 
 ## Steps
 

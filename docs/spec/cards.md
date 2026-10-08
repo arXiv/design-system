@@ -42,6 +42,16 @@ components:
     classes:
       - name: ".ds-card-grid"
         does: "Cards side by side. The grid supplies the gap, so a card inside it takes no top margin of its own. Any card goes in it, a data card included, and it is the same on both surfaces."
+  - id: cards-that-link
+    title: "Cards that link"
+    summary: "A card that is one link, for a page whose job is to send the reader somewhere else: the whole card opens the page its heading names."
+    classes:
+      - name: ".ds-card--link"
+        does: "The heading's link covers the whole card, so the card is one target and one tab stop. Hover and keyboard focus mark the whole card."
+      - name: "The heading's <a>"
+        does: "The only link in the card. A second link or a button inside it cannot be reached by pointer, because the heading's link lies over it."
+      - name: ".ds-tag--warning"
+        does: "A card that needs attention says so on the card itself. See [Tags](tags.html)."
   - id: data-list
     title: "Data list"
     summary: "A few short details as label and value pairs, each label beside its value, without a card: for example under an item in a list. Inside an accordion, a plain `<dl>` already lays out pairs."
@@ -160,6 +170,32 @@ Peers in a set share one grid. The count of columns does not follow a breakpoint
 ```
 
 - `.ds-card-grid` — Cards side by side. The grid supplies the gap, so a card inside it takes no top margin of its own. Any card goes in it, a data card included, and it is the same on both surfaces.
+
+## Cards that link
+
+A card that is one link, for a page whose job is to send the reader somewhere else: the whole card opens the page its heading names.
+
+```html
+<div class="ds-card-grid">
+  <div class="ds-card ds-card--link">
+    <h3><a href="#">Computer Science</a></h3>
+    <p>40 categories</p>
+  </div>
+  <div class="ds-card ds-card--link">
+    <h3><a href="#">Economics</a></h3>
+    <p>3 categories</p>
+  </div>
+  <div class="ds-card ds-card--link">
+    <h3><a href="#">Quantitative Finance</a></h3>
+    <p>9 categories</p>
+    <p><span class="ds-tag ds-tag--warning">Needs attention</span></p>
+  </div>
+</div>
+```
+
+- `.ds-card--link` — The heading's link covers the whole card, so the card is one target and one tab stop. Hover and keyboard focus mark the whole card.
+- `The heading's <a>` — The only link in the card. A second link or a button inside it cannot be reached by pointer, because the heading's link lies over it.
+- `.ds-tag--warning` — A card that needs attention says so on the card itself. See [Tags](tags.html).
 
 ## Data list
 
