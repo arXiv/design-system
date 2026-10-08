@@ -9,11 +9,10 @@
 <link rel="stylesheet" href="../../../docs/internal-tools.css">
 <script src="../../../docs/theme.js"></script>
 <style>
-  /* Proposed design-system rules: a secondary navigation bar that also holds a form. */
-  .ds-subnav > nav { display: flex; flex-wrap: wrap; column-gap: inherit; }
-  .ds-subnav > form { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2) var(--ds-space-4); margin-inline-start: auto; padding-block: var(--ds-space-2); }
+  /* Proposed design-system rules: a secondary navigation bar that also holds a filter bar. */
+  .ds-subnav > nav { display: flex; flex-wrap: wrap; align-self: flex-end; column-gap: inherit; }
+  .ds-subnav > .ds-filter-bar { flex: 0 1 52rem; margin-block: var(--ds-space-3); }
   /* Planning page only. */
-  .option-b.ds-subnav > form { margin-inline-start: 0; padding-inline-start: var(--ds-space-6); border-inline-start: 1px solid var(--ds-border); }
   .option-label { margin: var(--ds-space-8) 24px var(--ds-space-2); }
   .frame { border-block: 1px solid var(--ds-border); }
   .placeholder { padding: var(--ds-space-6); border: 1px dashed var(--ds-border-strong); border-radius: 6px; color: var(--ds-text-muted); }
@@ -22,9 +21,9 @@
 <body class="ds-page">
 <div class="ds-container">
   <h1>Report navigation</h1>
-  <p>2026-10-08. A bar built from two existing parts: secondary navigation, and a form of filters. Both change what the page shows, so they share one bar. The views of the open part are a second row under the heading. Shown at the full width of the window, as on a real page.</p>
+  <p>2026-10-08. A bar built from two existing parts: secondary navigation, and a filter bar. Both change what the page shows, so they share one bar. The views of the open part are a second row under the heading. Shown at the full width of the window, as on a real page.</p>
 </div>
-  <p class="ds-panel-label option-label">A — navigation at the start, filters at the end</p>
+  <p class="ds-panel-label option-label">B, with the filter bar</p>
   <div class="frame">
     <header class="ds-site-header">
       <a href="#" class="ds-site-header-logo"><img src="../../../docs/assets/images/logos/logo_arxiv-admin.png" alt="archive Admin Console"></a>
@@ -37,42 +36,13 @@
         <a href="#">Moderators</a>
         <a href="#">Recruitment</a>
       </nav>
-      <form method="get" action="#" aria-label="Subject">
-        <div class="ds-filter"><label>Group <select><option>cs</option></select></label></div>
-        <div class="ds-filter"><label>Archive <select><option>cs</option></select></label></div>
-        <div class="ds-filter"><label>Category <select><option>All</option></select></label></div>
-        <button class="ds-btn ds-btn-text" type="submit">Apply</button>
-      </form>
-    </div>
-    <main class="ds-container ds-container--wide">
-      <h1>Computer Science</h1>
-      <nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views">
-        <a href="#">Activity charts</a>
-        <a href="#" aria-current="page">Category submission stats</a>
-        <a href="#">Recent releases</a>
-        <a href="#">Recent submissions</a>
-      </nav>
-      <p class="placeholder">The view.</p>
-    </main>
-  </div>
-  <p class="ds-panel-label option-label">B — both at the start, with a divider</p>
-  <div class="frame">
-    <header class="ds-site-header">
-      <a href="#" class="ds-site-header-logo"><img src="../../../docs/assets/images/logos/logo_arxiv-admin.png" alt="archive Admin Console"></a>
-      <span class="ds-site-header-divider" aria-hidden="true"></span>
-      <div class="ds-site-header-account"><span class="ds-site-header-greeting">Welcome <b>Shamsi</b></span><a href="#" class="ds-site-header-login">Account</a></div>
-    </header>
-    <div class="ds-subnav option-b">
-      <nav aria-label="Report parts">
-        <a href="#" aria-current="page">Submissions and holds</a>
-        <a href="#">Moderators</a>
-        <a href="#">Recruitment</a>
-      </nav>
-      <form method="get" action="#" aria-label="Subject">
-        <div class="ds-filter"><label>Group <select><option>cs</option></select></label></div>
-        <div class="ds-filter"><label>Archive <select><option>cs</option></select></label></div>
-        <div class="ds-filter"><label>Category <select><option>All</option></select></label></div>
-        <button class="ds-btn ds-btn-text" type="submit">Apply</button>
+      <form class="ds-filter-bar" method="get" action="#" aria-label="Subject">
+        <div class="ds-filter-bar-group">
+          <div class="ds-field"><label class="ds-label" for="f-group">Group</label><select class="ds-input" id="f-group"><option>cs</option></select></div>
+          <div class="ds-field"><label class="ds-label" for="f-archive">Archive</label><select class="ds-input" id="f-archive"><option>cs</option></select></div>
+          <div class="ds-field"><label class="ds-label" for="f-cat">Category</label><select class="ds-input" id="f-cat"><option>All</option></select></div>
+        </div>
+        <div class="ds-filter-bar-actions"><button class="ds-btn ds-btn-primary" type="submit">Apply</button></div>
       </form>
     </div>
     <main class="ds-container ds-container--wide">
