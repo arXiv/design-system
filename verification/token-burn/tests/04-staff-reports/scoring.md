@@ -1,6 +1,6 @@
 # Scoring notes: moderation reports
 
-The builder never sees this file. Written 2026-10-06, before any build, from the 24 screenshots in `whiteboard/mockups/internal/membership-dashboard/member-dashboard-new-screenshots/`. The test workspace leaves out `whiteboard/`, so the builder cannot see the screenshots or the DS-built mockup beside them.
+The builder never sees this file. Written 2026-10-06, before any build, from 24 screenshots of the live reports. They show real people's data, so they are kept outside the repository, in `~/arxiv/research/moderation-reports-screenshots-2026-10/` on Shamsi's machine.
 
 ## What the screenshots do that a correct build should not
 
