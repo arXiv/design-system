@@ -394,7 +394,7 @@ REVIEW_JS = """
 const R = JSON.parse(document.getElementById('data').textContent);
 const state = R.saved || {builds: {}, together: ''};
 let i = R.labels.findIndex(l => !(state.builds[l] && state.builds[l].verdict)); if (i < 0) i = R.labels.length;
-let pg = 0, narrow = false, started = !!R.saved;
+let pg = 0, narrow = false, started = !!R.saved, panelOpen = false;
 const $ = s => document.querySelector(s);
 function save() { return fetch('/save', {method: 'POST', body: JSON.stringify(state)}) }
 function src(l) { return '/b/' + l + '/' + R.pages[pg].path }
@@ -415,13 +415,20 @@ function show() {
   $('#app').innerHTML = `<div class="bar"><div class="row"><strong>Build ${l}</strong><span class="muted">attempt ${i + 1} of ${R.labels.length} at the same pages</span>
     ${R.pages.map((p, n) => `<button data-pg="${n}" aria-pressed="${n === pg}">${p.label}</button>`).join('')}
     <button id="narrow" aria-pressed="${narrow}">Phone width</button>
-    <a class="btn" href="${src(l)}" target="_blank">Open in a new tab</a></div></div>
+    <a class="btn" href="${src(l)}" target="_blank">Open in a new tab</a>
+    <button class="go" id="notesbtn" aria-expanded="${panelOpen}" aria-controls="panel">Notes and verdict</button></div></div>
     <iframe src="${src(l)}" style="width:${narrow ? '390px' : '100%'}" title="Build ${l}"></iframe>
-    <main><label class="q" for="notes">What is off in Build ${l}?</label>
+    <dialog id="panel" aria-labelledby="notes-q"><label class="q" id="notes-q" for="notes">What is off in Build ${l}?</label>
     <textarea id="notes">${b.notes.replace(/</g, '&lt;')}</textarea>
     <fieldset><legend>Verdict</legend>${Object.entries(R.verdicts).map(([v, t]) =>
       `<label><input type="radio" name="v" value="${v}" ${b.verdict === v ? 'checked' : ''}> ${t}</label>`).join('')}</fieldset>
-    <div class="row">${i > 0 ? '<button id="back">Back</button>' : ''}<button class="go" id="next">${i + 1 < R.labels.length ? 'Save and go to Build ' + R.labels[i + 1] : 'Save and see all builds together'}</button><span id="msg" class="muted"></span></div></main>`;
+    <div class="row">${i > 0 ? '<button id="back">Back</button>' : ''}<button class="go" id="next">${i + 1 < R.labels.length ? 'Save and go to Build ' + R.labels[i + 1] : 'Save and see all builds together'}</button><button id="hide">Close</button><span id="msg" class="muted"></span></div></dialog>`;
+  const panel = $('#panel');
+  function setPanel(open) { panelOpen = open; if (open) { panel.show(); $('#notes').focus() } else panel.close(); $('#notesbtn').setAttribute('aria-expanded', open) }
+  if (panelOpen) panel.show();
+  $('#notesbtn').onclick = () => setPanel(!panel.open);
+  $('#hide').onclick = () => { setPanel(false); $('#notesbtn').focus() };
+  panel.addEventListener('keydown', e => { if (e.key === 'Escape') { setPanel(false); $('#notesbtn').focus() } });
   document.querySelectorAll('[data-pg]').forEach(b => b.onclick = () => { keep(l); pg = +b.dataset.pg; show() });
   $('#narrow').onclick = () => { keep(l); narrow = !narrow; show() };
   if ($('#back')) $('#back').onclick = () => { keep(l); save(); i--; pg = 0; show() };
@@ -454,8 +461,10 @@ def review_page(run: Path) -> str:
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Review: {esc(info.get('title', run.name))}</title>
 <style>{PLAIN}
-.bar{{border-bottom:2px solid #111;padding:4px 16px;background:#fff}}
-iframe{{display:block;height:78vh;border:0;border-bottom:2px solid #111;margin:0 auto;background:#fff}}</style></head>
+.bar{{position:sticky;top:0;z-index:2;border-bottom:2px solid #111;padding:4px 16px;background:#fff}}
+iframe{{display:block;height:calc(100vh - 56px);border:0;margin:0 auto;background:#fff}}
+#panel{{position:fixed;inset:auto 16px 16px auto;margin:0;width:min(480px,calc(100vw - 32px));max-height:calc(100vh - 96px);overflow:auto;box-sizing:border-box;border:2px solid #111;padding:16px;background:#fff;box-shadow:0 8px 28px rgba(0,0,0,.25);z-index:3}}
+#panel textarea{{min-height:200px}}</style></head>
 <body><div id="app"></div><script type="application/json" id="data">{blob}</script>
 <script>{REVIEW_JS}</script></body></html>"""
 
