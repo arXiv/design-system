@@ -118,7 +118,7 @@ components:
   - id: the-light-variant
     title: "The light variant"
     group: "Modifiers"
-    summary: "Adding `.ds-site-header--light` re-points seven surface tokens but declares no property of its own. The light variant is used in this documentation to clearly signal we are in a distinct space from the main arXiv site."
+    summary: "Adding `.ds-site-header--light` re-points seven surface tokens but declares no property of its own. It is for pages that comment on arXiv from outside it, such as this documentation. Every page that is part of arXiv, public or internal, uses the standard bar."
     classes:
       - name: ".ds-site-header--light"
         does: "Seven token values. No property overrides. The bar is white (`--ds-surface`) with Library Grey links, Repository Brown emphasis, and a Border Light bottom edge; the standard focus ring replaces the on-dark one."
@@ -129,7 +129,7 @@ components:
   - id: internal-headers
     title: "Internal header"
     group: "Modifiers"
-    summary: "The Admin Console header, built from the same component on the light variant. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. The internal stylesheet may re-point the bar’s colour tokens and nothing else."
+    summary: "The Admin Console header: the standard bar, with the Admin Console logo. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. The internal stylesheet may re-point the bar’s colour tokens and nothing else."
     classes:
       - name: ".ds-site-header-logo img"
         does: "The tool’s own wordmark image, from `assets/images/logos/`. Its alt text names the tool in spoken form, such as “archive Admin Console”."
@@ -410,7 +410,7 @@ When arXiv has something to say to everyone, an announcement band can be display
 
 ## The light variant  (Modifiers)
 
-Adding `.ds-site-header--light` re-points seven surface tokens but declares no property of its own. The light variant is used in this documentation to clearly signal we are in a distinct space from the main arXiv site.
+Adding `.ds-site-header--light` re-points seven surface tokens but declares no property of its own. It is for pages that comment on arXiv from outside it, such as this documentation. Every page that is part of arXiv, public or internal, uses the standard bar.
 
 ```html
 <nav class="ds-site-header ds-site-header--light" aria-label="Design system">
@@ -430,10 +430,10 @@ Adding `.ds-site-header--light` re-points seven surface tokens but declares no p
 
 ## Internal header  (Modifiers)
 
-The Admin Console header, built from the same component on the light variant. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. The internal stylesheet may re-point the bar’s colour tokens and nothing else.
+The Admin Console header: the standard bar, with the Admin Console logo. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. The internal stylesheet may re-point the bar’s colour tokens and nothing else.
 
 ```html
-<header class="ds-site-header ds-site-header--light">
+<header class="ds-site-header">
   <a href="/" class="ds-site-header-logo">
     <img src="logo_arxiv-admin.png" alt="archive Admin Console">
   </a>
@@ -486,7 +486,7 @@ The Admin Console header, built from the same component on the light variant. Ea
 Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top of the viewport while the page scrolls, and the stylesheet sets `scroll-padding-top` on the page so a link to a section does not land under the bar. It is not applied to the examples on this page, which already keeps the TOC bar in view.
 
 ```html
-<header class="ds-site-header ds-site-header--light ds-site-header--sticky">…</header>
+<header class="ds-site-header ds-site-header--sticky">…</header>
 ```
 
 - `.ds-site-header--sticky` — Sticks the bar to the top of the viewport. A page that uses it keeps no other sticky bar.
