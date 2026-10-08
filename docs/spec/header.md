@@ -83,11 +83,9 @@ components:
     summary: "An area with its own sections, each with several views, such as a report with parts and views. The sections are the secondary navigation under the header; the views of the current section are a second row inside the page."
     classes:
       - name: ".ds-subnav"
-        does: "The first level, directly under the header: the sections of the area."
+        does: "The first row, directly under the header. Here it holds two groups: a `<nav>` of the area's sections, then a compact [filter bar](tables.html#filter-bar) for choices that apply to every view, such as the subject. The groups sit twice as far apart as the items inside them."
       - name: "<h1>"
         does: "Names what the page is about, such as the subject, so the reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page."
-      - name: ".ds-filter-bar"
-        does: "Choices that apply to every view, such as the subject, come before the views."
       - name: ".ds-subnav--in-page"
         does: "The second level: the views of the current section, in the content column, with the same current marking as the first level. Each view is its own page."
   - id: steps
@@ -330,20 +328,21 @@ An area with its own sections, each with several views, such as a report with pa
 
 ```html
 <div class="ds-internal">
-  <nav class="ds-subnav" aria-label="Report parts">
-    <a href="#" aria-current="page">Submissions and holds</a>
-    <a href="#">Moderators</a>
-    <a href="#">Recruitment</a>
-  </nav>
+  <div class="ds-subnav">
+    <nav aria-label="Report parts">
+      <a href="#" aria-current="page">Submissions and holds</a>
+      <a href="#">Moderators</a>
+      <a href="#">Recruitment</a>
+    </nav>
+    <form class="ds-filter-bar" method="get" action="#" aria-label="Subject">
+      <div class="ds-filter"><label for="tl-group">Group</label><select id="tl-group"><option>cs</option></select></div>
+      <div class="ds-filter"><label for="tl-archive">Archive</label><select id="tl-archive"><option>cs</option></select></div>
+      <div class="ds-filter"><label for="tl-cat">Category</label><select id="tl-cat"><option>All</option></select></div>
+      <button class="ds-btn" type="submit">Apply</button>
+    </form>
+  </div>
   <div class="ds-container page-demo page-demo--wide">
     <h2>Computer Science</h2>
-    <form class="ds-filter-bar" method="get" action="#" aria-label="Subject">
-      <div class="ds-filter-bar-group">
-        <div class="ds-field"><label class="ds-label" for="tl-group">Group</label><select class="ds-input" id="tl-group"><option>cs</option></select></div>
-        <div class="ds-field"><label class="ds-label" for="tl-cat">Category</label><select class="ds-input" id="tl-cat"><option>All</option></select></div>
-      </div>
-      <div class="ds-filter-bar-actions"><button class="ds-btn ds-btn-primary" type="submit">Apply</button></div>
-    </form>
     <nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views">
       <a href="#">Activity charts</a>
       <a href="#" aria-current="page">Category submission stats</a>
@@ -355,9 +354,8 @@ An area with its own sections, each with several views, such as a report with pa
 </div>
 ```
 
-- `.ds-subnav` — The first level, directly under the header: the sections of the area.
+- `.ds-subnav` — The first row, directly under the header. Here it holds two groups: a `<nav>` of the area's sections, then a compact [filter bar](tables.html#filter-bar) for choices that apply to every view, such as the subject. The groups sit twice as far apart as the items inside them.
 - `<h1>` — Names what the page is about, such as the subject, so the reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page.
-- `.ds-filter-bar` — Choices that apply to every view, such as the subject, come before the views.
 - `.ds-subnav--in-page` — The second level: the views of the current section, in the content column, with the same current marking as the first level. Each view is its own page.
 
 ## Steps

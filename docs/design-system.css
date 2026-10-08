@@ -1455,6 +1455,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   border-radius: 8px;
 }
 .ds-filter-bar .ds-field { max-width: none; min-width: 0; margin: 0; }
+/* Compact: a filter bar of .ds-filter controls is one row. */
+.ds-filter-bar:has(> .ds-filter) { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2) var(--ds-space-6); padding: var(--ds-space-1) var(--ds-space-3); }
+.ds-filter-bar:has(> .ds-filter) > .ds-btn { min-height: 24px; padding-block: 2px; font-size: 0.8125rem; }
 /* Each filter is a cell in the bar's columns, as many as fit the width. */
 .ds-filter-bar-group { display: contents; }
 /* Settings start a new row, lined up with the columns above; the actions
@@ -3865,6 +3868,11 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
    scrolling sideways, so every section stays visible at 320px and at 200%
    text. The current page is marked three ways: weight, an underline bar,
    and aria-current. Breadcrumbs are for pages without one (DESIGN-POLICIES). */
+/* A bar can hold more than links: a <nav> of links, then a compact filter bar.
+   Groups sit twice as far apart as the items inside them. */
+.ds-subnav:has(> nav) { column-gap: var(--ds-space-12); }
+.ds-subnav > nav { display: flex; flex-wrap: wrap; column-gap: var(--ds-space-6); }
+.ds-subnav > .ds-filter-bar { align-self: center; margin-block: var(--ds-space-1); }
 /* Second level, inside the page: the same links and current bar, in the content column. */
 .ds-subnav.ds-subnav--in-page { padding-inline: 0; background: none; }
 .ds-subnav {

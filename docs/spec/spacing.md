@@ -24,7 +24,7 @@ components:
         does: "48px. Breathing space *between* major sections."
   - id: the-proximity-rule
     title: "The proximity rule"
-    summary: "The gap *between* sections should be clearly larger than the gap *within* a section. We aim for at least 2× (e.g., 16px between paragraphs, 32px before the next heading, 48px between sections). This is what allows grouping to work without adding extra lines, borders or boxes."
+    summary: "The gap *between* sections should be clearly larger than the gap *within* a section. We aim for at least 2× (e.g., 16px between paragraphs, 32px before the next heading, 48px between sections). The same holds across a row: groups of controls side by side sit at least twice as far apart as the controls inside each group. This is what allows grouping to work without adding extra lines, borders or boxes."
     classes:
       - name: "<h3>"
         does: "32px above (`--ds-space-8`) and 8px below (`--ds-space-2`), so a heading sits four times closer to its own text than to the text before it."
@@ -89,7 +89,7 @@ A seven step scale, with each step roughly 1.5x larger than the previous. The wi
 
 ## The proximity rule
 
-The gap *between* sections should be clearly larger than the gap *within* a section. We aim for at least 2× (e.g., 16px between paragraphs, 32px before the next heading, 48px between sections). This is what allows grouping to work without adding extra lines, borders or boxes.
+The gap *between* sections should be clearly larger than the gap *within* a section. We aim for at least 2× (e.g., 16px between paragraphs, 32px before the next heading, 48px between sections). The same holds across a row: groups of controls side by side sit at least twice as far apart as the controls inside each group. This is what allows grouping to work without adding extra lines, borders or boxes.
 
 ```html
 <h3>Submission</h3>
