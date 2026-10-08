@@ -2,7 +2,7 @@
 
 Written for the next session. **PR #8** (`search-results-2026-10` into `master`) is open and
 waiting for a reviewer; Shamsi merges it. Work started after PR #8 goes on a new branch
-(`overnight-2026-10-07` from 2026-10-07) so the PR under review does not change. `master` still
+(`internal-tools-2026-10`, renamed from `overnight-2026-10-07`) so the PR under review does not change. `master` still
 requires a pull request and status checks. Fetch before every push: others push too, and a second
 Claude session sometimes works in the same repo (stage files by name).
 
@@ -105,17 +105,17 @@ dashboard spec, the Papers scope work (Papers follows V1 as the first product bu
 
 1. **Public page:** search. Done: test 3 passed programmatic fidelity in all four builds; its two
    gaps are fixed. Shamsi called search testing sufficient.
-2. **Internal page:** test 4, moderation and staff reports. Built and evaluated
-   (`verification/token-burn/runs/20261006-192823-04-staff-reports/`). Next: Shamsi's blind
-   review, then Claude's programmatic grades, then `round.py report`. Do not look at the builds
-   before her review.
+2. **Internal page:** test 4, moderation and staff reports. Reviewed 2026-10-08: all four rejected
+   on hierarchy (report in `verification/token-burn/runs/20261006-192823-04-staff-reports/`).
+   Next: guidance for page hierarchy and doorway pages, a pattern for two-level navigation, the
+   header example on docs pages; then a rerun with the data replaced by placeholders. Shamsi to
+   decide whether phone widths are part of these tests.
 3. **Docs pages the builds depend on:** reviewed, except any that test 4 shows are missing.
 4. Then the next plan: Papers scope (what belongs to the renderer), simplifying the Papers rules,
    reconciling the mockups with the docs.
 
 ## Open, in Shamsi's hands
 
-- Review test 4 (start the review page with `python3 round.py review runs/20261006-192823-04-staff-reports`).
 - Merge PR #8 after the reviewer approves.
 - Decide the abstract heading level (from Deyan's answers, `live-html-markup-2026-10-06.md`).
 - Approve or change the direction for the Papers rules: three to five rules per section for
@@ -134,8 +134,7 @@ dashboard spec, the Papers scope work (Papers follows V1 as the first product bu
 - **Reconcile the mockups with the docs** (`html-phase1.html`; the abstract page mockup is stale):
   Permalink pill, typography line-height, figure viewer caption unchanged, remove "Who cites
   this", author list from arXiv's metadata (LaTeXML's author blocks are not one per person).
-- **Process.** Shamsi finds the amount of text after a session overwhelming. A proposal is in
-  `process-proposal.md`.
+- **Process.** On trial from 2026-10-08 for a few days: `process-proposal.md`. Then decide what to keep.
 - **`docs/examples/`**: stable full-page examples built only from documented components (approved
   in principle 2026-10-02); start with form validation.
 - **Deferred, decide against real content:** data visualisation (charts, meters, legends); user

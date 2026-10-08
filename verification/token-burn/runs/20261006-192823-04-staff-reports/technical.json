@@ -1,0 +1,38 @@
+{
+ "result": "Shamsi rejected all four. Every build used the design system's parts correctly, but none worked out the hierarchy the pages need: all four organised the sample data (tables on the two doorway pages, alerts and status lines above the content) instead of deciding what is primary. Two design-system problems showed up: a table's scroll wrapper let hidden header text widen the page on a phone (fixed: .ds-table-scroll is now positioned), and the card grid ran past a 360px screen (fixed 2026-10-07). All four used the light header that the docs pages themselves use.",
+ "builds": {
+  "A": {
+   "programmatic": "changes",
+   "verdict": "Conformant, with issues",
+   "notes": "No page CSS. The report's parts and views are a sidebar of accordions, which is not what the sidebar is for. Two landmarks share a name on the sections page."
+  },
+  "B": {
+   "programmatic": "pass",
+   "verdict": "Conformant",
+   "notes": "Seven rules on tokens: the views as a row of links with the current one marked, and the period line. Report parts in .ds-subnav."
+  },
+  "C": {
+   "programmatic": "changes",
+   "verdict": "Conformant, with issues",
+   "notes": "No page CSS. Parts and views in a sidebar of accordions; the secondary navigation changes from page to page. Two landmarks share a name on the sections page."
+  },
+  "D": {
+   "programmatic": "pass",
+   "verdict": "Conformant",
+   "notes": "Eight rules on tokens: .ds-subnav reused for the views inside the page, a status row, IDs in mono."
+  }
+ },
+ "patterns": [
+  "All four used .ds-internal, the light header, .ds-card--stat for totals, tables for the two doorway pages, an alert for groups that need attention, and chart placeholders as asked.",
+  "No build used .ds-tabs. Two put parts and views in sidebar accordions; two used .ds-subnav for the parts and a row of links or a second .ds-subnav for the views.",
+  "All four put status lines, refresh and alerts above the main content.",
+  "Design-system bugs: .ds-table-scroll was not positioned, so is-sr-only text in sortable headers widened the page (fixed); .ds-card-grid's 20rem minimum (fixed 2026-10-07).",
+  "Predictions: 1 right (all .ds-internal). 2 right (all four used .ds-card--stat). 3 partly: they split, but between sidebar accordions and secondary navigation, not tabs."
+ ],
+ "findings": [
+  "The builds organised the data instead of the page: there is no guidance on telling a doorway page (choose where to go) from a working page, or on keeping secondary content from pushing the main content down.",
+  "There is no pattern for navigation with two levels (a report's parts, then its views), so each build invented one.",
+  "All four copied the light header from the docs pages, which use it for their own navigation."
+ ],
+ "next": "Write guidance for page hierarchy and doorway pages, settle two-level navigation, then build again with the data replaced by placeholders."
+}
