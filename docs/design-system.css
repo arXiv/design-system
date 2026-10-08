@@ -209,6 +209,7 @@
   --ds-width-page:  850px;
   --ds-width-wide:  1080px;   /* dense internal tools: .ds-container--wide */
   --ds-gutter:  var(--ds-space-6);
+  --ds-marginalia-width: 12rem;
 }
 
 
@@ -352,9 +353,11 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   font-family: var(--ds-font-sans);
   color: var(--ds-text);
   /* Below the support floor (Baseline newly available, Oct 2024) —
-     progressive enhancement. Without it, headings wrap normally. */
-  text-wrap: balance;
+     progressive enhancement. Without it, headings wrap normally. Pretty fills
+     each line and only avoids leaving one word alone on the last. */
+  text-wrap: pretty;
 }
+
 :where(.ds-page) h1 { font-size: 2rem;    font-weight: 700; line-height: 1.25; margin: 0 0 var(--ds-space-4); }
 :where(.ds-page) h2 { font-size: 1.5rem;  font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-3); }
 :where(.ds-page) h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-2); }
@@ -1037,11 +1040,20 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   font-variant-numeric: tabular-nums;
 }
 .ds-pagination .ds-btn { min-width: 0; }
-/* A pager above a list has a light line below it; below a list, above it.
-   The page leaves as much space between the line and the list as between
-   the list's items. */
-.ds-pagination--top { padding-bottom: var(--ds-space-3); border-bottom: 1px solid var(--ds-border); }
-.ds-pagination--bottom { padding-top: var(--ds-space-3); border-top: 1px solid var(--ds-border); }
+/* A pager above or below a list sits in a tinted bar, so the two bars
+   bookend the list. Inside a bar the current page, and a page number under
+   the pointer, take the page ground: the usual fills are too close to the
+   bar's own tint. */
+.ds-pagination--top,
+.ds-pagination--bottom {
+  padding: var(--ds-space-2) var(--ds-space-4);
+  background: var(--ds-surface-muted);
+  border-radius: 6px;
+}
+.ds-pagination--top { margin-bottom: var(--ds-space-8); }
+.ds-pagination--bottom { margin-top: var(--ds-space-8); }
+:is(.ds-pagination--top, .ds-pagination--bottom) .ds-pagination-pages a[aria-current="page"],
+:is(.ds-pagination--top, .ds-pagination--bottom) .ds-pagination-pages a:hover { background: var(--ds-canvas); }
 .ds-pagination-pages {
   display: flex;
   flex: 0 1 auto;
@@ -1609,8 +1621,7 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
   justify-content: center;
   /* The glyph is the size of the tag's own type; the target is not. It is
      grown to 24px and pulled back with a negative block margin, so the tag
-     keeps its shape. Same technique as .ds-anchor — a small control is still
-     a control. */
+     keeps its shape. A small control is still a control. */
   width: 24px;
   height: 24px;
   margin-block: -12px;
@@ -1812,7 +1823,129 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 }
 @media (forced-colors: active) { .ds-page mark { background: Mark; color: MarkText; } }
 
-/* VERSION DISPLAY  (.ds-date-row, .ds-version) — version-display.html */
+/* A PAPER  (.ds-paper-list, .ds-paper, .ds-paper-when, .ds-paper-identity,
+   .ds-paper-versions, .ds-paper-files, .ds-paper-cite, .ds-paper-cite-head, .ds-paper-cite-block, .ds-paper-capabilities,
+   .ds-paper-element, .ds-paper-bar-logo,
+   .ds-paper-tools) — papers.html
+   Only what is particular to a paper has a paper class; the rest is built
+   from .ds-link-list, .ds-date-row, .ds-data-list and .ds-tag-list. In a
+   list: tight inside a paper, four times as far between papers. */
+.ds-paper-list { list-style: none; margin: 0; padding: 0; }
+.ds-paper-list > .ds-paper + .ds-paper { margin-top: var(--ds-space-8); }
+.ds-paper > * { margin: 0; }
+.ds-paper > * + * { margin-top: var(--ds-space-2); }
+.ds-paper > :is(h2, h3, h4):first-child { margin: 0; font-size: 1.125rem; line-height: 1.35; }
+.ds-paper > :is(h2, h3, h4):first-child a { text-decoration: none; }
+.ds-paper > :is(h2, h3, h4):first-child a:hover { text-decoration: underline; }
+.ds-paper > .ds-paper-when {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ds-space-1) var(--ds-space-4);
+  margin-top: var(--ds-space-1);
+}
+/* The format links come first in the markup, so a screen reader reaches them
+   straight after the title; the dates are shown first. */
+.ds-paper-when > .ds-date-row { margin: 0; order: -1; }
+.ds-paper-when > .ds-link-list { display: inline-flex; flex-wrap: wrap; gap: var(--ds-space-3); font-size: 0.8125rem; font-weight: 600; }
+.ds-paper > p.ds-link-list { font-size: 0.875rem; }
+.ds-paper > .ds-tag-list { margin-top: var(--ds-space-1); }
+/* The identity line above a paper's title: identifier, primary category, DOI, licence. */
+.ds-paper-identity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ds-space-1) var(--ds-space-4);
+  margin: 0 0 var(--ds-space-2);
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+}
+/* A paper's version history, newest first; the version being viewed is marked. */
+.ds-paper-versions { list-style: none; margin: 0; padding: 0; }
+.ds-paper-versions > li { padding-inline-start: var(--ds-space-3); border-inline-start: 2px solid var(--ds-border); }
+.ds-paper-versions > li[aria-current] { border-inline-start-color: var(--ds-accent-strong); }
+.ds-paper-versions > li + li { margin-top: var(--ds-space-3); }
+.ds-paper-versions > li > * { margin: 0; }
+.ds-paper-versions > li > p:not(.ds-date-row) { margin-top: 2px; font-size: 0.8125rem; }
+/* A full paper's sidebar: the downloads, the citation and the accessibility panel. */
+.ds-paper-files { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--ds-space-1); }
+.ds-paper-files > li { margin: 0; }
+.ds-paper-files .ds-btn-primary { width: 100%; }
+.ds-paper-files .ds-btn small { font-weight: 400; color: inherit; }
+.ds-paper-files li { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--ds-space-2); }
+.ds-paper-files li > a:last-child:not(:first-child) { margin-inline-start: auto; }
+.ds-paper-files li > small { font-size: 0.75rem; color: var(--ds-text-muted); }
+.ds-paper-cite-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-space-2); }
+.ds-paper-cite-head > .ds-panel-label { margin: 0; }
+.ds-paper-cite > * + * { margin-top: var(--ds-space-2); }
+.ds-paper-cite-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-space-2); }
+html:not(.js) .ds-paper-cite-tools { display: none; }
+/* The citation's code area: the bar, then the text, in one light box. */
+.ds-paper-cite-block { padding: var(--ds-space-2) var(--ds-space-3); background: var(--ds-surface-muted); border-radius: 6px; }
+.ds-paper-cite-block .ds-btn-text { gap: var(--ds-space-1); font-size: inherit; }
+.ds-paper-cite-block figure { margin: var(--ds-space-2) 0 0; }
+html.js .ds-paper-cite-block figcaption { display: none; }
+.ds-paper-cite pre { margin: 0; padding: 0; background: none; color: var(--ds-text); white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.75rem; }
+.ds-paper-capabilities { list-style: none; margin: 0; padding: 0; font-size: 0.8125rem; }
+.ds-paper-capabilities > li { display: flex; align-items: flex-start; gap: var(--ds-space-2); }
+.ds-paper-capabilities > li + li { margin-top: var(--ds-space-2); }
+.ds-paper-capabilities svg { flex: none; width: 1.1em; height: 1.1em; margin-top: 0.15em; color: var(--ds-link); }
+/* A display equation, figure or reference with actions: a hairline and the
+   element pill on its bottom edge, on hover, on focus inside, or .is-active
+   (set by a tap). */
+/* The bottom padding keeps the content clear of the pill. */
+.ds-paper-element { position: relative; margin: var(--ds-space-block) 0; padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-4); border: 1px solid transparent; border-radius: 6px; }
+.ds-paper-element:is(:hover, :focus-within, .is-active) { border-color: var(--ds-border); }
+.ds-paper-element:is(:hover, :focus-within, .is-active) > .ds-element-pill { opacity: 1; pointer-events: auto; }
+.ds-paper-element > .ds-element-pill { bottom: 0; left: 50%; translate: -50% 50%; }
+.ds-paper-element img { max-width: 100%; height: auto; }
+@media (hover: none) {
+  .ds-paper-element:hover:not(.is-active, :focus-within) { border-color: transparent; }
+  .ds-paper-element:hover:not(.is-active, :focus-within) > .ds-element-pill { opacity: 0; pointer-events: none; }
+}
+/* A paper's TOC bar: the logo in the start slot, the other formats in the end slot. */
+.ds-paper-bar-logo { grid-column: 1; justify-self: start; display: inline-flex; color: var(--ds-text-muted); }
+.ds-paper-bar-logo svg { height: 1.5rem; width: auto; }
+.ds-paper-tools {
+  grid-column: 3;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-6);
+  font-family: var(--ds-font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.ds-paper-tools a { display: inline-flex; align-items: center; gap: var(--ds-space-1); min-height: 24px; color: var(--ds-text); text-decoration: none; }
+.ds-paper-tools a:hover { color: var(--ds-link); text-decoration: underline; }
+.ds-paper-tools svg { width: auto; height: 1.25em; flex: none; color: var(--ds-text-muted); }
+/* Narrow, the format links take a second row and keep their names. */
+@media (max-width: 40rem) {
+  .ds-toc-bar-inner:has(> .ds-paper-tools) { grid-template-columns: auto 1fr; row-gap: var(--ds-space-1); }
+  .ds-toc-bar-inner > .ds-paper-tools { grid-column: 1 / -1; grid-row: 2; justify-self: start; flex-wrap: wrap; }
+}
+@media print {
+  .ds-toc-bar, .ds-permalink, .ds-element-pill { display: none; }
+  .ds-paper-identity { font-size: 10pt; }
+  .ds-paper-element, .ds-page :is(figure, table) { break-inside: avoid; }
+  .ds-page :is(h2, h3, h4) { break-after: avoid; }
+}
+
+/* TAG LIST  (.ds-tag-list) — tags.html
+   A <ul> of tags that wraps. */
+.ds-tag-list { display: flex; flex-wrap: wrap; gap: var(--ds-space-2); margin: 0; padding: 0; list-style: none; }
+
+/* DATA LIST  (.ds-data-list) — cards.html
+   A few short label and value pairs, each label beside its value: a <dl>,
+   one <div> per pair. Inside an accordion a plain <dl> already lays out
+   pairs (progressive-disclosure.html). */
+.ds-data-list { margin: 0; font-size: 0.8125rem; color: var(--ds-text-muted); }
+.ds-data-list > div { display: flex; gap: var(--ds-space-2); }
+.ds-data-list > div + div { margin-top: 2px; }
+.ds-data-list dt { flex: none; font-weight: 600; color: var(--ds-text); }
+.ds-data-list dd { margin: 0; overflow-wrap: anywhere; }
+
+/* VERSION DISPLAY  (.ds-date-row, .ds-version) — papers.html#paper-versions */
 .ds-date-row {
   font-size: 0.8125rem;
   line-height: 1.5;
@@ -2213,10 +2346,10 @@ html:has(.ds-modal[open]) {
   border: 1px solid var(--ds-border-muted);
   border-radius: 999px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  /* Hidden by opacity only, so its buttons stay in the tab order. */
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.18s ease, visibility 0s linear 0.18s;
+  transition: opacity 0.18s ease;
   z-index: 2;
 }
 /* The pill's own actions. It carries no class of its own on purpose — the pill
@@ -2227,13 +2360,30 @@ html:has(.ds-modal[open]) {
 .ds-element-pill > a {
   display: inline-flex;
   align-items: center;
+  gap: 5px;
   min-height: 24px;
+  margin-block: -5px;
+  padding: 0 var(--ds-space-1);
+  font-family: var(--ds-font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ds-text-muted);
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
 }
-.ds-element-pill.is-revealed {
+.ds-element-pill > :is(button, a):hover { color: var(--ds-link); background: var(--ds-accent-wash); }
+.ds-element-pill > :is(button, a):focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
+.ds-element-pill > .is-cta { color: var(--ds-link); font-weight: 600; }
+.ds-element-pill svg { width: 1em; height: 1em; flex: none; }
+.ds-element-pill.is-revealed,
+.ds-element-pill:focus-within {
   opacity: 1;
-  visibility: visible;
   pointer-events: auto;
-  transition: opacity 0.18s ease, visibility 0s linear 0s;
 }
 /* After .is-revealed so the reduce override wins the cascade for both states */
 @media (prefers-reduced-motion: reduce) {
@@ -2251,7 +2401,6 @@ html:has(.ds-modal[open]) {
    The wide breakpoint is the page width plus a note and its gaps each
    side: 850 + 2 × (24 + 16 + 192) = 1314px. */
 .ds-marginalia {
-  --ds-marginalia-width: 12rem;
   position: absolute;
   top: var(--ds-space-3);
   right: var(--ds-space-3);
@@ -2516,17 +2665,17 @@ html:has(.ds-modal[open]) {
     --ds-text:              var(--ds-grey-10);
     --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     --ds-canvas:            var(--ds-repository-brown);
-    --ds-surface-hover:     var(--ds-repository-brown);
-    --ds-surface-muted:     #2b2723;                     /* raised band, text 12.8:1 */
+    --ds-surface-hover:     #23201d;
+    --ds-surface-muted:     #282622;
     --ds-zone-secondary-bg: var(--ds-tint-warm);
     --ds-danger-wash-hover:     #2a0808;
     --ds-danger-wash-active:    #380d0d;
     --ds-danger-disabled-fg:    #864040;
     --ds-danger-fg:             #e57373;   /* #c62828 is 2.64:1 on the dark card */
     --ds-danger-fg-hover:       #ef9a9a;
-    --ds-surface:           #2b2723;                     /* white fills become raised */
-    --ds-border:            #3a3530;
-    --ds-border-muted:      #3a3530;
+    --ds-surface:           var(--ds-repository-brown);   /* cards sit on the page, with a border */
+    --ds-border:            #383531;
+    --ds-border-muted:      #383531;
     --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
     --ds-text-disabled:     #5a554f;
     --ds-chrome:            #262119;                     /* lifted off the canvas so the
@@ -2534,10 +2683,10 @@ html:has(.ds-modal[open]) {
     --ds-scrim:             rgba(10, 9, 8, 0.72);        /* denser: the page beneath is
                                                             already dark */
     --ds-accent-strong:     #6ba8da;                     /* headings, 6.8:1 */
-    --ds-accent-wash:       #1e3a5f;
-    --ds-tint-warm:         #221f1b;                     /* between the page and a card */
-    --ds-tint-accent:       #1e3a5f;
-    --ds-accent-surface:    #132433;                     /* = the info dark surface */
+    --ds-accent-wash:       #22344a;
+    --ds-tint-warm:         #282622;
+    --ds-tint-accent:       #202b38;
+    --ds-accent-surface:    #1e2328;
     --ds-accent-border:     #2a4a7a;
     --ds-btn-primary-rim-a:          #6ba8da;
     --ds-btn-primary-rim-b:          #2a4a6a;
@@ -2585,15 +2734,15 @@ html:has(.ds-modal[open]) {
     --ds-note-mark-internal: var(--ds-access-lime);
   }
 
-  /* Internal tools, dark. Lime holds its light value; the wash goes to a
-     dark olive, and text that sat on the wash turns lime to stay legible. */
+  /* Internal tools, dark. Lime holds its light value; the washes are dark
+     olive steps, and text that sat on the wash turns lime to stay legible. */
   :root:not([data-theme="light"]).ds-internal,
   :root:not([data-theme="light"]) .ds-internal {
     --ds-accent-border:              var(--ds-access-lime-border);
-    --ds-accent-wash:                #1a2306;
-    --ds-accent-wash-hover:          #212e08;
-    --ds-accent-wash-active:         #28380a;
-    --ds-tint-accent:                #28380a;
+    --ds-accent-wash:                #222217;
+    --ds-accent-wash-hover:          #272918;
+    --ds-accent-wash-active:         #2c3018;
+    --ds-tint-accent:                #292b18;
     --ds-btn-primary-rim-a:          var(--ds-access-lime-border);
     --ds-btn-primary-rim-b:          var(--ds-access-lime-deep);
     --ds-btn-primary-rim-hover-b:    var(--ds-access-lime-deep);
@@ -2626,17 +2775,17 @@ html:has(.ds-modal[open]) {
   --ds-text:              var(--ds-grey-10);
   --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   --ds-canvas:            var(--ds-repository-brown);
-  --ds-surface-hover:     var(--ds-repository-brown);
-  --ds-surface-muted:     #2b2723;                     /* raised band, text 12.8:1 */
+  --ds-surface-hover:     #23201d;
+  --ds-surface-muted:     #282622;
   --ds-zone-secondary-bg: var(--ds-tint-warm);
   --ds-danger-wash-hover:     #2a0808;
   --ds-danger-wash-active:    #380d0d;
   --ds-danger-disabled-fg:    #864040;
   --ds-danger-fg:             #e57373;   /* #c62828 is 2.64:1 on the dark card */
   --ds-danger-fg-hover:       #ef9a9a;
-  --ds-surface:           #2b2723;                     /* white fills become raised */
-  --ds-border:            #3a3530;
-  --ds-border-muted:      #3a3530;
+  --ds-surface:           var(--ds-repository-brown);   /* cards sit on the page, with a border */
+  --ds-border:            #383531;
+  --ds-border-muted:      #383531;
   --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
   --ds-text-disabled:     #5a554f;
   --ds-chrome:            #262119;                     /* lifted off the canvas so the
@@ -2644,10 +2793,10 @@ html:has(.ds-modal[open]) {
   --ds-scrim:             rgba(10, 9, 8, 0.72);        /* denser: the page beneath is
                                                           already dark */
   --ds-accent-strong:     #6ba8da;                     /* headings, 6.8:1 */
-  --ds-accent-wash:       #1e3a5f;
-  --ds-tint-warm:         #221f1b;                     /* between the page and a card */
-  --ds-tint-accent:       #1e3a5f;
-  --ds-accent-surface:    #132433;                     /* = the info dark surface */
+  --ds-accent-wash:       #22344a;
+  --ds-tint-warm:         #282622;
+  --ds-tint-accent:       #202b38;
+  --ds-accent-surface:    #1e2328;
   --ds-accent-border:     #2a4a7a;
   --ds-btn-primary-rim-a:          #6ba8da;
   --ds-btn-primary-rim-b:          #2a4a6a;
@@ -2814,10 +2963,10 @@ html:has(.ds-modal[open]) {
 [data-theme="dark"].ds-internal,
 [data-theme="dark"] .ds-internal {
   --ds-accent-border:              var(--ds-access-lime-border);
-  --ds-accent-wash:                #1a2306;
-  --ds-accent-wash-hover:          #212e08;
-  --ds-accent-wash-active:         #28380a;
-  --ds-tint-accent:                #28380a;
+  --ds-accent-wash:                #222217;
+  --ds-accent-wash-hover:          #272918;
+  --ds-accent-wash-active:         #2c3018;
+  --ds-tint-accent:                #292b18;
   --ds-btn-primary-rim-a:          var(--ds-access-lime-border);
   --ds-btn-primary-rim-b:          var(--ds-access-lime-deep);
   --ds-btn-primary-rim-hover-b:    var(--ds-access-lime-deep);
@@ -2955,13 +3104,18 @@ html:has(.ds-modal[open]) {
   gap: var(--ds-space-6);
 }
 .ds-sidebar > * { margin: 0; }
+.ds-sidebar > * > :first-child { margin-block-start: 0; }
+/* Framed: a border round the sidebar and a rule between its blocks. */
+.ds-sidebar--framed { gap: var(--ds-space-4); padding: var(--ds-space-6); border: 1px solid var(--ds-border); border-radius: 8px; }
+.ds-sidebar--framed > * + * { padding-top: var(--ds-space-4); border-top: 1px solid var(--ds-border); }
+.ds-sidebar--framed { font-size: 0.8125rem; }
 
 /* An accordion in the sidebar: no rules, because spacing already separates the
    blocks; single-column internals for the narrow measure; a Link Blue +/−
    so a closed one still reads as interactive. */
 .ds-sidebar .ds-acc { border-top: 0; border-bottom: 0; margin: 0; }
 .ds-sidebar .ds-acc > summary {
-  font-size: 0.82rem;
+  font-size: 0.8125rem;
   /* 4px padding + matching negative margin: a ≥24px target, no layout shift. */
   padding: 4px 0;
   margin: -4px 0;
@@ -2974,7 +3128,7 @@ html:has(.ds-modal[open]) {
 .ds-sidebar .ds-acc-body dt:first-child { margin-top: 0; }
 .ds-sidebar .ds-acc-body dd { margin: 1px 0 0; grid-column: auto; }
 
-/* CONTENTS BAR  (.ds-toc-bar / .ds-toc / .ds-toc-trigger / .ds-toc-menu) — progressive-disclosure.html
+/* TOC BAR  (.ds-toc-bar / .ds-toc / .ds-toc-trigger / .ds-toc-menu) — progressive-disclosure.html
    A page's own table of contents: one control that names the section the
    reader is in and opens the list of the others. Built on <details>, the
    same as the site header's menus, so it opens with JavaScript off; toc.js
@@ -3314,7 +3468,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 }
 .ds-skip-link:focus-visible {
   top: 8px;
-  outline: 3px solid var(--ds-hdr-ring);
+  outline: 3px solid var(--ds-focus-ring);   /* the link sits outside the header, so the header's ring token is not set here */
   outline-offset: 2px;
 }
 
@@ -3871,57 +4025,47 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   .ds-site-header-logo img { height: 28px; }
 }
 
-/* SECTION ANCHOR  (.ds-anchor) — links.html
-   A control beside a heading that copies the link to that section. It is a
-   button rather than an <a href="#here">: a link to the section a reader is
-   already looking at is a tab stop that goes nowhere they wanted to go. What
-   they want is the address.
-   Quiet until wanted — it appears on hover of the heading, and on focus of
-   itself, so a keyboard user reaches it in order rather than never. Opacity
-   rather than display, so it holds its space and the heading does not reflow
-   when it appears. */
-.ds-anchor {
-  /* The glyph is under 10px, so the hit area is grown with padding and pulled
-     back with a negative margin — the technique DESIGN-POLICIES names, because
-     it clears the 24px target floor without moving the heading a pixel. */
+/* PERMALINK  (.ds-permalink) — links.html
+   A button in a section heading that copies the link to that section.
+   Hidden by opacity only, so it holds its space and stays in the tab order. */
+.ds-permalink {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-width: 24px;
+  gap: var(--ds-gap-glyph);
   min-height: 24px;
-  margin-inline-start: 0.1em;
-  margin-block: -12px;
-  padding: 0;
-  border: none;
-  background: none;
+  margin-inline-start: var(--ds-space-tight);
+  padding: 0 0.7em;
+  vertical-align: middle;
+  font-family: var(--ds-font-condensed);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
   color: var(--ds-text-muted);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-muted);
+  border-radius: 999px;
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.12s;
-  vertical-align: middle;
 }
-.ds-anchor svg {
-  width: 0.72em;
-  height: 0.72em;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  display: block;
-}
-:is(h2, h3):hover > .ds-anchor,
-.ds-anchor:focus-visible { opacity: 1; }
-.ds-anchor:hover { color: var(--ds-link); }
-.ds-anchor:focus-visible {
-  outline: 3px solid var(--ds-focus-ring);
-  outline-offset: 2px;
-  border-radius: 3px;
-}
-/* A reader who cannot hover gets it permanently: on a touch screen the quiet
-   state has no way back. */
+.ds-permalink svg { width: 1.05em; height: 1.05em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+:is(h2, h3, h4):is(:hover, .is-active) > .ds-permalink,
+.ds-permalink:focus-visible { opacity: 1; }
 @media (hover: none) {
-  .ds-anchor { opacity: 1; }
+  :is(h2, h3, h4):hover:not(.is-active) > .ds-permalink:not(:focus-visible) { opacity: 0; }
+}
+.ds-permalink:hover { color: var(--ds-link); }
+.ds-permalink:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .ds-permalink { transition: none; } }
+
+/* PRINTED LINKS — links.html
+   On paper an external link shows its address after its text. */
+@media print {
+  .ds-page a[href^="http"]:not(.ds-btn, .ds-site-header-logo, :has(img))::after {
+    content: " (" attr(href) ")";
+    font-size: 0.875em;
+    overflow-wrap: anywhere;
+  }
 }
 
 /* THEME TOGGLE  (.ds-theme-toggle) — dark-mode.html

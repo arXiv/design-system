@@ -1,9 +1,10 @@
-# Handoff — 2026-10-02
+# Handoff — 2026-10-05
 
-Written for the next session. Everything below is committed and pushed to the branch
-`docs-review-2026-09-28`, which is open as a pull request into `master` (master is PR-only).
-Commit to that branch until Shamsi says otherwise. Fetch before every push: others push to it,
-and it was rebased onto master once (after Deyan's brand-templates PR #6).
+Written for the next session. PR #7 (`docs-review-2026-09-28`) merged into `master` on
+2026-10-05. Shamsi wants to commit to `master` directly, but GitHub rulesets still require a pull
+request and status checks there, and she is asking the team to change them. Until then, work goes
+on the branch `search-results-2026-10` and reaches `master` through a pull request she opens.
+Fetch before every push: others push too.
 
 ## Where the work is
 
@@ -102,27 +103,39 @@ body scrolls automatically and becomes a tab stop only while it overflows.
 
 ## Next, ours
 
-0. **After PR #7 merges (2026-10-05):** start a new branch for the search result pattern:
-   Shamsi's changes to result hierarchy, `proposals/paper-metadata-hierarchy.md` (draft, evidence
-   in `~/arxiv/research/paper-metadata/`), and the layout in `proposals/search-a3.html`. Then test 3.
-   Decided 2026-10-05: search layout A3 (search and result settings in the band; range and pages on
-   white with light lines; notice above the pager; title first, spacing only, tags last).
-00. **Testing** — plan in `TESTING-PLAN.md`, protocol in `verification/token-burn/README.md`.
-   Test 1 (simple search) is built, reviewed and summarized; the status of its 14 proposed
-   changes is in the plan under "Test 1". Next: Shamsi reviews the evening's changes below, then
-   rebuild search with one page state.
-   Made 2026-10-02 without Shamsi's review, for her to check:
-   - **Page ground is white.** `.ds-full.ds-zone-secondary` is a tinted band; `.ds-zone-primary`
-     is gone; `--ds-surface-hover` is a new token for the hover fill. All docs pages converted.
-   - **Compact form** (`.ds-form--compact`, `.ds-input-group`) on forms.html.
-   - **Icons:** a select draws its own heavier arrow (`--ds-select-arrow`; `.ds-select` removed);
-     sort arrows are icons; small icons have a heavier stroke.
-   - **Pager:** position at the start, controls at the end; numbered pages
-     (`.ds-pagination-pages`); at phone width the words Previous and Next are hidden.
-   - **tables.html:** One frame moved up; the Settings legend is `.is-sr-only`.
-   Open: the filter bar wraps badly with five or more fields (To drops alone, the settings
-   divider hangs at the start of a row); whether numbered pages repeat below a long list is a
-   rule; the opening sentence of pager.html still describes only the one-at-a-time pager.
+0. **State on 2026-10-05 (overnight run).** Branch `search-results-2026-10` holds: search
+   version D (`search.html`), the Papers page (`papers.html`: hierarchy, a paper in a list,
+   versions, categories, full papers, sidebar, contents bar, section permalinks, equations,
+   figures and references, citations and footnotes, rules incl. paper body and printing), and the
+   inventory promotions from the paper decisions inventory (sections 1 to 8; deleted after promotion, in git history). The
+   promotion rule (Shamsi): promote everything unless it directly breaks a docs guideline;
+   conflicts are listed for her, not promoted. `abstract-phase2.html` is ignored (stale).
+   Waiting on Shamsi: the conflicts list in the morning summary; her second pass on papers.html
+   and search.html; the new prose (she wordsmiths).
+000. **Dark mode tints:** audit `dark-mode-tints-audit.html`, proposal `dark-mode-proposal.html`.
+   Shamsi likes nearly every proposed value; she asked for a stronger selected-row tint, now 1.20
+   against the page. Nothing is in design-system.css yet: adopt the proposal only after she
+   approves it, then run check-contrast and check-drift.
+0000. **Questions for Deyan** (answered 2026-10-06): his answers and what follows from them are in
+   `live-html-markup-2026-10-06.md`. Still open: the abstract heading level (Shamsi decides);
+   table scroll regions (Deyan and Bruce; Shamsi sent the reasons for `role="region"`); the
+   stylesheet reconciliation and theme switcher removal (a later conversation with Deyan).
+00000. **Shamsi's answers, 2026-10-06** (done): papers.html has an optional area above the identity line for temporary content (Back to abstract); no exceptions file;
+   the missing-alt-text note is shown, to teach;
+   references are shown as the author wrote them and arXiv has no reference format; one
+   `.ds-permalink` pill everywhere (replaces `.ds-anchor`); element pill is one tab stop with arrow
+   keys (`element-pill.js`); PDF from a paper opens a new tab; external links print their address;
+   captions are Plex Sans small. Visual choices waiting on her: `paper-type-choices.html` (section
+   number weight, hyphenation, TeX glyph draft).
+00000a. **To do later:** an accessibility-visibility discussion (the Accessibility accordion stays
+   closed for now; does a closed accordion count as "visible"?).
+00000b. **Next plan candidate: reconcile the mockups with the docs.** `abstract-phase2.html` and
+   `html-phase1.html` should follow the docs: Permalink pill, body line-height from typography,
+   figure viewer caption unchanged, remove "Who cites this", and every other refinement since. Treat
+   it as an early test: the mockups are real future uses of the system.
+00. **Testing** — plan in `TESTING-PLAN.md`, protocol in `verification/token-burn/README.md`,
+   team report in `verification/token-burn/reports/2026-10-search/`. Tests 1 and 2 are done.
+   Test 3 rebuilds search results once Papers settles; then arXiv Check as the non-paper search.
 1. **`docs/examples/`** — stable, generic full-page examples built only from documented
    components (approved in principle 2026-10-02). Start with form validation (states: empty,
    errors after submit, warnings, auto-corrected value, fixed); then a report page for
@@ -139,6 +152,10 @@ body scrolls automatically and becomes a tab stop only while it overflows.
 
 ## Proposals (whiteboard/planning/proposals/)
 
-Decided and implemented: header-component, secondary-navigation (option B), bulk-action-bar
-(option A), tints, headings-and-labels, membership-dashboard-audit and -structure,
-navigation-layers. Their pages describe the options; the decisions above are what stands.
+Cleaned up on 2026-10-06: implemented and superseded proposals were deleted (they are in git
+history before that date). What remains is still open or is linked from the docs:
+brand-metrics-brainstorm (parked; linked from brand.html), dev-workflow-comparison with
+fifth-option-self-verifying-spec and options-3-and-5-on-browse-and-search (how dev repos adopt the
+DS; linked from index.html and templates/README.md), icon-only-controls (figure viewer zoom
+controls, still proposed), typeface-re-evaluation-2026-06 (decision record; linked from
+typography.html).

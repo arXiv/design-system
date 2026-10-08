@@ -55,7 +55,7 @@ Operationalize as a template helper (Jinja/PHP/Smarty macro) emitting the dual-s
 
 ### Math accessibility
 
-**MathML 4 (with `intent` semantics) is the primary math substrate; LaTeX source preserved alongside.** Ship MathML for AT consumption, MathJax for visual rendering, LaTeX source for download. We do not replace LaTeX with MathML-only output. arXiv contributes to the W3C Math Working Group via Deyan Ginev.
+**MathML 4 (with `intent` semantics) is the primary math substrate; LaTeX source preserved alongside.** LaTeXML converts the author's LaTeX to MathML Core with MathML 4 `intent` annotations. The browser renders it natively, and assistive technology reads its structure from the annotations, with no math script on the page. LaTeX source stays available for download. We do not replace LaTeX with MathML-only output. arXiv contributes to the W3C Math Working Group via Deyan Ginev.
 *Status: validated. Why: Neil Soiffer (2022-08-10) "HTML + MathML and you are pretty much done"; Avneesh Singh (2022-09-26); Volker Sorge (2022-09-02) — Sorge's caution that "MathML throws away information that LaTeX has" is addressed by keeping both.*
 
 **Math serializes cleanly to braille displays.** Nemeth and UEB both supported via the screen reader's braille translator. Test using NVDA's Braille Viewer (engineering regression) and with real braille-display users (Nadolskis, Williams, Hartman).
@@ -63,7 +63,7 @@ Operationalize as a template helper (Jinja/PHP/Smarty macro) emitting the dual-s
 
 ### Figures and tables
 
-**Alt text on figures.** Authors are expected to provide alt text. Figure caption serves as fallback where missing. Author-facing tooling at submission to surface gaps is a separate workstream (submission-pipeline-as-lever).
+**Alt text on figures.** Authors are expected to provide alt text. Figure caption serves as fallback where missing. A figure without alt text shows a visible note, "No alt text provided", with a link to how to add it. The note teaches every reader what alt text is; it does not grade the paper. Author-facing tooling at submission to surface gaps is a separate workstream (submission-pipeline-as-lever).
 *Status: validated. Why: every screen-reader-user voice in the research; Volker Sorge framing of submission-time as the lever.*
 
 **Tables marked up semantically.** `<th scope>`, `<caption>`, row/column headers explicit. Where possible, also available as ancillary CSV.
@@ -132,9 +132,9 @@ Beyond-baseline features specifically for the HTML reader, to push accessibility
 
 Six independent voices in the research described distinct problems with the same inline-citation surface. The combined design moves:
 
-- **Every inline citation includes full context in its accessible name.** `<a class="citation-ref" href="#ref12" aria-label="Reference 12: Smith et al., Title, 2024">[12]</a>` — visible "[12]" stays compact for sighted readers; the `aria-label` gives AT users the same context a sighted reader gets from author-year style citations. Addresses Tigwell's *"what is reference 10? Is that the paper I have in mind?"* without requiring a UI toggle.
+- **Every inline citation includes full context in its accessible name.** `<a class="citation-ref" href="#ref12" aria-label="Reference 12: …">[12]</a>`, where "…" is the bibliography entry exactly as the author wrote it — visible "[12]" stays compact for sighted readers; the `aria-label` gives AT users the same context a sighted reader gets from author-year style citations. Addresses Tigwell's *"what is reference 10? Is that the paper I have in mind?"* without requiring a UI toggle.
 - **Citation marks are aurally compact by default.** Wrap each inline mark so the announcement is "Smith 2024, reference 12" or similar — not "open bracket twelve close bracket." Sighted readers see "[12]"; listening readers experience low-noise prose flow. Addresses Dan Miner's *"auditory disturbance you cannot skip."*
-- **References open as popups, not jumps.** On hover (sighted) or focus (keyboard/AT), a small popover shows the full reference inline. On explicit click, the user jumps to the references section and browser-back returns focus to the citation. Closes Godfrey's *"why jump around?"* + Firshman's arXiv Vanity precedent + Branham's TAPS jump-back pattern.
+- **References open as popups, not jumps.** A click, Enter or tap on a citation opens a small popover with the reference; hover and focus do not open it, so moving the pointer or tabbing through a paragraph of citations opens nothing. The popover links to the reference in the list, and going back returns focus to the citation. Closes Godfrey's *"why jump around?"* + Firshman's arXiv Vanity precedent + Branham's TAPS jump-back pattern.
 - **Reference list is structured for navigation.** `<ol>` with each `<li id="ref12">` holding bibliographic info in semantically distinguishable spans (`<cite>`, author span, venue span, year span). Screen-reader users can list-navigate and jump.
 - **"Cited by" affordance in each reference.** Each entry in the references section has a small icon-link back to the in-text citation(s) that use it — orientation aid for AT users who jumped to the bib and want to find context.
 - **External link targets are scoped within each reference.** DOI / arXiv-ID / publisher URL within a reference is its own link, not the whole reference entry. Avoids "open bracket twelve close bracket open new tab" announcements.
@@ -161,7 +161,7 @@ Six independent voices in the research described distinct problems with the same
 
 - **WCAG 2.1 AA** is the compliance floor (the Accessible Canada Act, via CAN/ASC–EN 301 549). We **target WCAG 2.2 AA** on the abstract page and HTML reader. Audit date and methodology stated publicly when reached.
 - **MathML 4** (with `intent`) for math. arXiv contributes to the W3C Math Working Group via Deyan Ginev.
-- **Speech Rule Engine / MathCAT** for math read-aloud where the AT toolchain supports it.
+- **Native MathML speech:** read-aloud comes from the browser and assistive technology interpreting `intent` annotations, not from a speech engine arXiv ships.
 - **EPUB Accessibility 1.1** principles applied to HTML reader where they translate (structured navigation, alt text, language tagging).
 - **W3C Personalization / Adapt:** follow but do not build to until stable.
 
@@ -170,7 +170,7 @@ Six independent voices in the research described distinct problems with the same
 - **Decisions over preferences.** arXiv does not build internal preference centers for accessibility (font picker, theme toggle, motion toggle, font-size selector, reading-mode toggle). OS/browser-level accessibility signals are respected as defaults. We pick the right defaults once, courageously, rather than punting to user configuration.
 - **No third-party tool recommendations.** arXiv does not maintain or publish lists of external AI tools, audio-summary services, or AT software. Such lists age poorly. arXiv provides high-quality metadata so external tools can do their work well.
 - **No author-uploaded audio/video abstract field.** Adoption would be too low; abstracts rarely contain the complex math where author intent matters most; HTML reader serves the same use case better. Video/ASL for deaf accessibility remains an open research question — distinct from this decision.
-- **Capability advertisement, not compliance claim.** Every paper shows what it actually supports, honestly. No single grade. First-pass surface (visible to readers, above the metadata block on the abstract page): present-only — no "missing" indicators. arXiv is not here to punish hard-working researchers who managed to finish their paper; only to help all researchers as much as we can.
+- **Capability advertisement, not compliance claim.** Every paper shows what it actually supports, honestly. No single grade. The capability list (visible to readers, above the metadata block on the abstract page) is present-only: no "missing" lines and no score. This is separate from the alt text note on a figure, which is there to teach. arXiv is not here to punish hard-working researchers who managed to finish their paper; only to help all researchers as much as we can.
 - **No paid retainer experts; no annual a11y forum committed.** Reader goodwill leveraged for occasional testing. Revisit as conditions change.
 
 ## Pointers

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search — arXiv</title>
+<link rel="stylesheet" href="../../../docs/fonts.css">
+<link rel="stylesheet" href="../../../docs/design-system.css">
+<script src="../../../docs/theme.js"></script>
+<style>
+  /* Prototype only. The tips layout and the prototype's control panel; everything else is the design system. */
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(16rem, 100%), 1fr)); gap: var(--ds-space-4) var(--ds-space-8); }
+  .tips-grid .tip h3 { font-size: 1rem; margin: 0 0 var(--ds-space-2); }
+  .tip ul { margin: 0; padding-inline-start: 1.1rem; font-size: 0.875rem; }
+  .tip li + li { margin-top: var(--ds-space-1); }
+  .ds-container > .ds-pagination--top + .ds-paper-list,
+  .ds-container > .ds-paper-list + .ds-pagination--bottom { margin-top: calc(var(--ds-space-8) - var(--ds-space-section)); }
+  .ds-container > .ds-zone-secondary + .ds-pagination--top { margin-top: calc(-1 * var(--ds-space-section)); }
+  .ds-container > .ds-alert { margin: 0; }
+  .ds-container > .ds-alert + .ds-pagination--top { margin-top: calc(var(--ds-space-4) - var(--ds-space-section)); }
+  /* Variants A, B, C and E keep the earlier light lines; D uses the design system's bars as they now are. */
+  body:not([data-variant="D"]) .ds-pagination--top { background: none; border-radius: 0; padding: 0 0 var(--ds-space-3); border-bottom: 1px solid var(--ds-border); }
+  body:not([data-variant="D"]) .ds-pagination--bottom { background: none; border-radius: 0; padding: var(--ds-space-3) 0 0; border-top: 1px solid var(--ds-border); }
+  /* Variant E: a full-width line under the search area, and a heading for the results. */
+  [data-variant="E"] main > .ds-form--compact { padding-bottom: var(--ds-space-6); border-bottom: 1px solid var(--ds-border); }
+  [data-variant="E"] main > .ds-form--compact { box-shadow: 0 1px 0 0 var(--ds-border); }
+  .results-heading { font-size: 1.25rem; margin: 0; }
+  .ds-container > .results-heading + .ds-pagination--top { margin-top: calc(var(--ds-space-2) - var(--ds-space-section)); }
+  .proto { position: fixed; inset-inline-end: 12px; inset-block-end: 12px; z-index: 300; font: 13px/1.4 system-ui, sans-serif; background: #111; color: #fff; padding: 10px 12px; border-radius: 6px; max-width: 18rem; }
+  .proto fieldset { border: 0; margin: 0; padding: 0; }
+  .proto legend { font-weight: 700; margin-bottom: 4px; }
+  .proto label { display: block; cursor: pointer; }
+  .proto a { color: #9cf; }
+  .proto p { margin: 6px 0 0; color: #ccc; }
+</style>
+</head>
+<body class="ds-page">
+<a class="ds-skip-link" href="#main">Skip to main content</a>
+<header class="ds-site-header">
+  <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
+    <img src="../../../docs/assets/images/logos/logo_arxiv-primary.svg" alt="archive">
+  </a>
+  <button type="button" id="ds-nav-toggle" class="ds-site-header-nav-toggle"
+    aria-label="Open menu" aria-controls="ds-site-header-nav" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation">
+    <a id="ds-search-toggle" href="search-prototype.html">
+      <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      Search
+    </a>
+    <a href="https://arxiv.org/submit">Submit</a>
+    <a href="https://info.arxiv.org/about/donate.html">Donate</a>
+    <span class="ds-site-header-divider" aria-hidden="true"></span>
+    <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
+  </nav>
+</header>
+<main id="main" class="ds-container"></main>
+<footer class="ds-site-footer">
+  <div class="ds-site-footer-grid">
+    <div class="ds-site-footer-main">
+      <div class="ds-site-footer-ack">
+        We gratefully acknowledge support from our <strong>major funders</strong>,
+        <a href="https://info.arxiv.org/about/ourmembers.html"><strong>member institutions</strong></a>,
+        and all contributors.
+      </div>
+      <nav class="ds-site-footer-links" aria-label="Site navigation">
+        <a href="https://info.arxiv.org/about">About</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help">Help</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/contact.html">Contact</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/subscribe.html">Subscribe</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/license/index.html">Copyright</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/policies/privacy_policy.html">Privacy</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/web_accessibility.html">Accessibility</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://status.arxiv.org/" target="_blank" rel="noopener noreferrer">Operational Status<span class="is-sr-only"> (opens in new tab)</span></a>
+      </nav>
+    </div>
+    <div class="ds-site-footer-funders">
+      <div class="ds-site-footer-funders-label">Major funding support from</div>
+      <div class="ds-site-footer-funders-logos">
+        <a class="ds-funder-link" href="https://www.simonsfoundation.org/" target="_blank" rel="noopener noreferrer">
+          <img class="ds-funder-logo" src="../../../docs/assets/images/logos/other-org-logos/simons-foundation.png" alt="Simons Foundation"><span class="is-sr-only"> (opens in new tab)</span>
+        </a>
+        <a class="ds-funder-link" href="https://www.sfi.org.bm/" target="_blank" rel="noopener noreferrer">
+          <img class="ds-funder-logo" src="../../../docs/assets/images/logos/other-org-logos/simons-foundation-international.png" alt="Simons Foundation International"><span class="is-sr-only"> (opens in new tab)</span>
+        </a>
+        <a class="ds-funder-link" href="https://www.schmidtsciences.org/" target="_blank" rel="noopener noreferrer">
+          <img class="ds-funder-logo" src="../../../docs/assets/images/logos/other-org-logos/schmidt-sciences.png" alt="Schmidt Sciences"><span class="is-sr-only"> (opens in new tab)</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+<template id="tpl-form"><form class="ds-form--compact" method="get" action="search-prototype.html" role="search" aria-label="Search arXiv">
+  <div class="ds-input-group">
+    <label class="is-sr-only" for="q">Search term</label>
+    <input class="ds-input" id="q" name="q" type="search" autocomplete="off">
+    <label class="is-sr-only" for="field">Field to search</label>
+    <select class="ds-input" id="field" name="field"><option>All fields</option><option>Title</option><option>Author(s)</option><option>Abstract</option><option>Comments</option><option>Journal reference</option><option>ACM classification</option><option>MSC classification</option><option>Report number</option><option>arXiv identifier</option><option>DOI</option><option>ORCID</option><option>License (URI)</option><option>arXiv author ID</option><option>Help pages</option><option>Full text</option></select>
+  </div>
+  <button class="ds-btn ds-btn-primary" type="submit">Search</button>
+  <label class="ds-check"><input type="checkbox" name="abstracts" value="show" checked><span>Show abstracts</span></label>
+  <div class="ds-filter settings"><label for="order">Sort by</label><select id="order" name="order"><option>Newest announced</option><option>Oldest announced</option><option>Newest submitted</option><option>Oldest submitted</option><option>Relevance</option></select></div>
+  <div class="ds-filter settings"><label for="size">Per page</label><select id="size" name="size"><option>25</option><option selected>50</option><option>100</option><option>200</option></select></div>
+  <a href="#">Advanced search</a>
+  <input type="hidden" name="v" id="v-field">
+</form></template>
+<template id="tpl-tips"><h2>Search tips</h2><div class="tips-grid"><section class="tip"><h3>Searching by author name</h3><ul><li>Using the Author(s) field produces best results for author name searches.</li><li>For the most precise name search, follow the surname(s), forename(s) or surname(s), initial(s) pattern: example Hawking, S or Hawking, Stephen</li><li>For best results on multiple author names, separate individuals with a ; (semicolon). Example: Jin, D S; Ye, J</li><li>Author names enclosed in quotes will return only exact matches. For example, "Stephen Hawking" will not return matches for Stephen W. Hawking.</li><li>Diacritic character variants are automatically searched in the Author(s) field.</li><li>Queries with no punctuation will treat each term independently.</li></ul></section><section class="tip"><h3>Searching by subcategory</h3><ul><li>To search within a subcategory select All fields.</li><li>A subcategory search can be combined with an author or keyword search by clicking on add another term in advanced search.</li></ul></section><section class="tip"><h3>Wildcards</h3><ul><li>Use ? to replace a single character or * to replace any number of characters.</li><li>Can be used in any field, but not in the first character position. See Journal References tips for exceptions.</li></ul></section><section class="tip"><h3>Expressions</h3><ul><li>TeX expressions can be searched, enclosed in single $ characters.</li></ul></section><section class="tip"><h3>Phrases</h3><ul><li>Enclose phrases in double quotes for exact matches in title, abstract, and comments.</li></ul></section><section class="tip"><h3>Dates</h3><ul><li>Sorting by announcement date will use the year and month the original version (v1) of the paper was announced.</li><li>Sorting by submission date will use the year, month and day the latest version of the paper was submitted.</li></ul></section><section class="tip"><h3>Journal references</h3><ul><li>If a journal reference search contains a wildcard, matches will be made using wildcard matching as expected. For example, math* will match math, maths, mathematics.</li><li>If a journal reference search does not contain a wildcard, only exact phrases entered will be matched. For example, math would match math or math and science but not maths or mathematics.</li><li>All journal reference searches that do not contain a wildcard are literal searches: a search for Physica A will match all papers with journal references containing Physica A, but a search for Physica A, 245 (1997) 181 will only return the paper with journal reference Physica A, 245 (1997) 181.</li></ul></section></div></template>
+<template id="tpl-notice"><div class="ds-alert" role="status"><p>Search shows the first 10,000 results. To see the rest, narrow the search.</p></div></template>
+<template id="tpl-pager-top"><nav class="ds-pagination ds-pagination--top" aria-label="Search results pages"><span class="ds-pagination-position">1–50 of 18,659 results</span><a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a><ol class="ds-pagination-pages"><li><a href="#" aria-current="page"><span class="is-sr-only">Page </span>1</a></li><li><a href="#"><span class="is-sr-only">Page </span>2</a></li><li><a href="#"><span class="is-sr-only">Page </span>3</a></li><li><a href="#"><span class="is-sr-only">Page </span>4</a></li><li><a href="#"><span class="is-sr-only">Page </span>5</a></li><li>…</li><li><a href="#"><span class="is-sr-only">Page </span>200</a></li></ol><a class="ds-btn ds-btn-text" href="#"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a></nav></template>
+<template id="tpl-results"><ol class="ds-paper-list"><li class="ds-paper"><h3><a href="#">Additive solid immersion <mark>lenses</mark> for enhanced collection efficiency of shallow NV centers by pulsed laser deposition and structurization of high-k amorphous oxides</a></h3><p class="ds-paper-when"><span class="ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2610.01183</span></a> <a href="#">HTML<span class="is-sr-only"> of 2610.01183</span></a> <a href="#">TeX Source<span class="is-sr-only"> of 2610.01183</span></a> </span><span class="ds-date-row">Submitted <time datetime="2026-10-01">1&nbsp;Oct&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-10">Oct&nbsp;2026</time></span></p><p class="ds-link-list"><a href="#">Michael S. Bar</a>, <a href="#">Nicole Raatz</a>, <a href="#">Max Kneiss</a>, <a href="#">Andreas Koenig</a>, <a href="#">Marius Grundmann</a>, <a href="#">Holger von Wenckstern</a></p><p>…air causes low photon extraction efficiency due to total internal reflection losses. Here, we investigate the photon extraction numerically and report additive solid immersion <mark>lenses</mark> (SILs) consisting of the high-k dielectric yttria-stabilized-zirconia (YSZ) for surface modification and enhanced light extraction of shallow implanted nitrogen-vacancy centers.… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p><dl class="ds-data-list"><div><dt>arXiv ID</dt><dd><a href="#">2610.01183</a></dd></div></dl><ul class="ds-tag-list" aria-label="Subject categories, primary first"><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-0-0">cond-mat.mtrl-sci</button><span class="ds-tooltip" id="cat-0-0" role="tooltip"><span class="ds-tooltip-body">Materials Science (primary)</span></span></span></li><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-0-1">physics.optics</button><span class="ds-tooltip" id="cat-0-1" role="tooltip"><span class="ds-tooltip-body">Optics</span></span></span></li><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-0-2">quant-ph</button><span class="ds-tooltip" id="cat-0-2" role="tooltip"><span class="ds-tooltip-body">Quantum Physics</span></span></span></li></ul></li><li class="ds-paper"><h3><a href="#">An LSST-DESC Precursor Project: Hyper Suprime-Cam Year 1 $3\times2$pt in Harmonic Space</a></h3><p class="ds-paper-when"><span class="ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.39603</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.39603</span></a> <a href="#">TeX Source<span class="is-sr-only"> of 2609.39603</span></a> </span><span class="ds-date-row">Submitted <time datetime="2026-09-30">30&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time></span></p><p class="ds-link-list"><a href="#">D. Sanchez-Cid</a>, <a href="#">J. Sanchez</a>, <a href="#">I. Sevilla-Noarbe</a>, <a href="#">D. Alonso</a>, <a href="#">F. Andrade-Oliveira</a>, <a href="#">H. Awan</a>, <a href="#">C. Chang</a>, <a href="#">J. Ellison</a> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false">show all 22 authors</button></p><p>We present the first fully photometric joint analysis of weak gravitational <mark>lensing</mark> and galaxy clustering ($3\times2$pt) in harmonic space with LSST-DESC analysis pipelines applied to Hyper Suprime-Cam Year 1 (HSC Y1) data. The HSC Y1 dataset, with imaging depth and galaxy number density similar to those expected for the first year of LSST observations, is a… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p><dl class="ds-data-list"><div><dt>Comments</dt><dd>17 pages, 12 figures. To be submitted to The Open Journal of Astrophysics</dd></div><div><dt>arXiv ID</dt><dd><a href="#">2609.39603</a></dd></div></dl><ul class="ds-tag-list" aria-label="Subject categories, primary first"><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-1-0">astro-ph.CO</button><span class="ds-tooltip" id="cat-1-0" role="tooltip"><span class="ds-tooltip-body">Cosmology and Nongalactic Astrophysics (primary)</span></span></span></li></ul></li><li class="ds-paper"><h3><a href="#">Testing Offsets Between Cluster-Scale Halos and BCGs in Strong <mark>Lensing</mark> Models Using the Jackknife Method</a></h3><p class="ds-paper-when"><span class="ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.38310</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.38310</span></a> <a href="#">TeX Source<span class="is-sr-only"> of 2609.38310</span></a> </span><span class="ds-date-row">Submitted <time datetime="2026-09-29">29&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time> <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Revised <time datetime="2026-10-01">1&nbsp;Oct&nbsp;2026</time>&nbsp;UTC (this version)</span></p><p class="ds-link-list"><a href="#">Sangjun Cha</a>, <a href="#">Marceau Limousin</a>, <a href="#">M. James Jee</a></p><p>Offsets between cluster-scale dark matter halos and brightest cluster galaxies (BCGs) inferred from strong <mark>lensing</mark> (SL) models have been used to investigate cluster dynamics and dark matter physics. However, it is necessary to test whether these offsets are required by SL data themselves. We investigate whether allowing these offsets improves predictive accu… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p><dl class="ds-data-list"><div><dt>Comments</dt><dd>10 pages, 6 figures, submitted to A&amp;A</dd></div><div><dt>arXiv ID</dt><dd><a href="#">2609.38310</a></dd></div></dl><ul class="ds-tag-list" aria-label="Subject categories, primary first"><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-2-0">astro-ph.CO</button><span class="ds-tooltip" id="cat-2-0" role="tooltip"><span class="ds-tooltip-body">Cosmology and Nongalactic Astrophysics (primary)</span></span></span></li><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-2-1">astro-ph.GA</button><span class="ds-tooltip" id="cat-2-1" role="tooltip"><span class="ds-tooltip-body">Astrophysics of Galaxies</span></span></span></li></ul></li><li class="ds-paper"><h3><a href="#">Detecting Extragalactic Exoplanets With Fast Radio Burst Nanolensing</a></h3><p class="ds-paper-when"><span class="ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.36988</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.36988</span></a> <a href="#">TeX Source<span class="is-sr-only"> of 2609.36988</span></a> </span><span class="ds-date-row">Submitted <time datetime="2026-09-29">29&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time></span></p><p class="ds-link-list"><a href="#">Kenneth F. Olibrice</a>, <a href="#">Dylan L. Jow</a></p><p>Fast Radio Bursts (FRBs) are spatially and temporally compact sources at cosmological distances. As background sources, they will be uniquely sensitive to the gravitational <mark>lensing</mark> of exoplanets outside of our own galaxy. We present a method to detect extragalactic exoplanets using planetary echo nanolensing-periodic, nanosecond-scale variations in the relat… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p><dl class="ds-data-list"><div><dt>arXiv ID</dt><dd><a href="#">2609.36988</a></dd></div></dl><ul class="ds-tag-list" aria-label="Subject categories, primary first"><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-3-0">astro-ph.EP</button><span class="ds-tooltip" id="cat-3-0" role="tooltip"><span class="ds-tooltip-body">Earth and Planetary Astrophysics (primary)</span></span></span></li><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-3-1">astro-ph.GA</button><span class="ds-tooltip" id="cat-3-1" role="tooltip"><span class="ds-tooltip-body">Astrophysics of Galaxies</span></span></span></li><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-3-2">astro-ph.HE</button><span class="ds-tooltip" id="cat-3-2" role="tooltip"><span class="ds-tooltip-body">High Energy Astrophysical Phenomena</span></span></span></li><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-3-3">astro-ph.IM</button><span class="ds-tooltip" id="cat-3-3" role="tooltip"><span class="ds-tooltip-body">Instrumentation and Methods for Astrophysics</span></span></span></li></ul></li><li class="ds-paper"><h3><a href="#">LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging</a></h3><p class="ds-paper-when"><span class="ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.36857</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.36857</span></a> <a href="#">TeX Source<span class="is-sr-only"> of 2609.36857</span></a> </span><span class="ds-date-row">Submitted <time datetime="2026-09-29">29&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time></span></p><p class="ds-link-list"><a href="#">Giovanni Vincenzo Donatiello</a>, <a href="#">Achille A. Nucita</a>, <a href="#">Francesco De Paolis</a>, <a href="#">Antonio Franco</a>, <a href="#">Francesco Strafella</a></p><p>We present LUMA, a convolutional neural network (CNN) pipeline for the automated detection of strong gravitational <mark>lenses</mark> in simulated astronomical imaging. The method combines a physically motivated preprocessing stage, which enhances faint arc and ring features, with a compact three-block CNN trained using class reweighting and modern learning-rate schedul… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p><dl class="ds-data-list"><div><dt>Comments</dt><dd>Accepted for publication in Astronomy and Computing, 2027, Corresponding Author: G.V. Donatiello (see associated pdf for useful e-mail addresses). 14 Pages, 8 Figures, 3 Tables</dd></div><div><dt>DOI</dt><dd><a href="https://doi.org/10.1016/j.ascom.2026.101198">10.1016/j.ascom.2026.101198</a></dd></div><div><dt>arXiv ID</dt><dd><a href="#">2609.36857</a></dd></div></dl><ul class="ds-tag-list" aria-label="Subject categories, primary first"><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-4-0">astro-ph.IM</button><span class="ds-tooltip" id="cat-4-0" role="tooltip"><span class="ds-tooltip-body">Instrumentation and Methods for Astrophysics (primary)</span></span></span></li><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-4-1">astro-ph.GA</button><span class="ds-tooltip" id="cat-4-1" role="tooltip"><span class="ds-tooltip-body">Astrophysics of Galaxies</span></span></span></li></ul></li><li class="ds-paper"><h3><a href="#">SN Helios: A Multiply Imaged Type II Supernova Opening Time-Delay Cosmography beyond redshift of 3</a></h3><p class="ds-paper-when"><span class="ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.30440</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.30440</span></a> <a href="#">TeX Source<span class="is-sr-only"> of 2609.30440</span></a> </span><span class="ds-date-row">Submitted <time datetime="2026-09-24">24&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time></span></p><p class="ds-link-list"><a href="#">Seiji Fujimoto</a>, <a href="#">Conor Larison</a>, <a href="#">Justin D. R. Pierel</a>, <a href="#">Lukas J. Furtak</a>, <a href="#">Masamune Oguri</a>, <a href="#">Adi Zitrin</a>, <a href="#">Jose M. Diego</a>, <a href="#">Keren Sharon</a> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false">show all 67 authors</button></p><p>We report the discovery and spectroscopic confirmation of SN Helios, a strongly <mark>lensed</mark>, multiply imaged Type II supernova (SN) at behind the galaxy cluster RXC J0018.5+1626. The transient was identified as a red F150W-dropout source (F277W = 26.1 mag) in JWST/NIRCam imaging taken on 2026 July 3 for the VENUS survey, with no counterpart in 2024 Decem… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p><dl class="ds-data-list"><div><dt>Comments</dt><dd>14 pages, 9 figures, 5 tables. Comments welcome!</dd></div><div><dt>arXiv ID</dt><dd><a href="#">2609.30440</a></dd></div></dl><ul class="ds-tag-list" aria-label="Subject categories, primary first"><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-5-0">astro-ph.GA</button><span class="ds-tooltip" id="cat-5-0" role="tooltip"><span class="ds-tooltip-body">Astrophysics of Galaxies (primary)</span></span></span></li><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-5-1">astro-ph.CO</button><span class="ds-tooltip" id="cat-5-1" role="tooltip"><span class="ds-tooltip-body">Cosmology and Nongalactic Astrophysics</span></span></span></li><li><span class="ds-tooltip-host"><button type="button" class="ds-tag ds-tag--keep-case" aria-describedby="cat-5-2">astro-ph.HE</button><span class="ds-tooltip" id="cat-5-2" role="tooltip"><span class="ds-tooltip-body">High Energy Astrophysical Phenomena</span></span></span></li></ul></li></ol></template>
+<template id="tpl-pager-bottom"><nav class="ds-pagination ds-pagination--bottom" aria-label="Search results pages, below the list"><span class="ds-pagination-position">1–50 of 18,659 results</span><a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a><ol class="ds-pagination-pages"><li><a href="#" aria-current="page"><span class="is-sr-only">Page </span>1</a></li><li><a href="#"><span class="is-sr-only">Page </span>2</a></li><li><a href="#"><span class="is-sr-only">Page </span>3</a></li><li><a href="#"><span class="is-sr-only">Page </span>4</a></li><li><a href="#"><span class="is-sr-only">Page </span>5</a></li><li>…</li><li><a href="#"><span class="is-sr-only">Page </span>200</a></li></ol><a class="ds-btn ds-btn-text" href="#"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a></nav></template>
+<template id="tpl-none"><div class="ds-alert" role="status"><p></p></div></template>
+<form class="proto" aria-label="Prototype controls">
+  <fieldset><legend>Prototype: where the search form sits</legend>
+    <label><input type="radio" name="variant" value="A"> A. Changes zone: white before a search, tinted after</label>
+    <label><input type="radio" name="variant" value="B"> B. Always in the tinted band</label>
+    <label><input type="radio" name="variant" value="C"> C. Always on white</label>
+    <label><input type="radio" name="variant" value="D"> D. On white; a results heading, tinted bars for the page numbers (chosen)</label>
+    <label><input type="radio" name="variant" value="E"> E. On white; a line under the search and a results heading</label>
+  </fieldset>
+  <p>Any search shows the same sample results. A search containing “zzz” shows no results. <a href="search-prototype.html" id="proto-reset">Start over</a></p>
+</form>
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  var q = (params.get('q') || '').trim();
+  var v = params.get('v') || 'D';
+  var main = document.getElementById('main');
+  function tpl(id) { return document.getElementById(id).content.cloneNode(true); }
+  function band(nodes) { var d = document.createElement('div'); d.className = 'ds-full ds-zone-secondary'; nodes.forEach(function (n) { d.appendChild(n); }); return d; }
+  function heading() { var h = document.createElement('h1'); h.textContent = 'Search'; return h; }
+  var hasQuery = q !== '';
+  var none = hasQuery && /zzz/i.test(q);
+  var form = tpl('tpl-form');
+  var formEl = form.querySelector('form');
+  formEl.querySelector('#q').value = q;
+  formEl.querySelector('#v-field').value = v;
+  if (params.get('field')) formEl.querySelector('#field').value = params.get('field');
+  // settings for the results only appear once there are results
+  if (!hasQuery || none) formEl.querySelectorAll('.settings').forEach(function (s) { s.remove(); });
+  var formInBand = v === 'B' || (v === 'A' && hasQuery);
+  document.body.dataset.variant = v;
+  var top = [heading(), form];
+  if (formInBand) main.appendChild(band(top)); else top.forEach(function (n) { main.appendChild(n); });
+  if (!hasQuery || none) {
+    if (none) { var a = tpl('tpl-none'); a.querySelector('p').textContent = 'No results for “' + q + '”. Check the spelling, or try fewer words.'; main.appendChild(a); }
+    var tips = tpl('tpl-tips');
+    if (formInBand) { var wrap = document.createElement('section'); wrap.appendChild(tips); main.appendChild(wrap); }
+    else main.appendChild(band([tips]));
+    document.title = none ? 'No results for “' + q + '” — arXiv search' : 'Search — arXiv';
+  } else {
+    if (v === 'D' || v === 'E') {
+      var h2 = document.createElement('h2'); h2.className = 'results-heading';
+      h2.textContent = 'Results for “' + q + '”'; main.appendChild(h2);
+    }
+    main.appendChild(tpl('tpl-pager-top'));
+    main.appendChild(tpl('tpl-results'));
+    main.appendChild(tpl('tpl-pager-bottom'));
+    document.title = '18,659 results for “' + q + '” — arXiv search';
+  }
+  // prototype controls
+  document.querySelectorAll('.proto input[name=variant]').forEach(function (r) {
+    r.checked = r.value === v;
+    r.addEventListener('change', function () { params.set('v', r.value); location.search = params.toString(); });
+  });
+  document.getElementById('proto-reset').href = 'search-prototype.html?v=' + v;
+})();
+</script>
+<script src="../../../docs/tooltip.js" defer></script>
+</body>
+</html>

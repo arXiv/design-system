@@ -1,0 +1,375 @@
+<!doctype html>
+<!-- Internal tool: only signed-in moderators and arXiv staff see the reports,
+     so the page is on the internal surface (.ds-internal, Access Lime). Shown
+     as an arXiv staff member with admin permissions sees it. -->
+<html lang="en" class="ds-internal">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recent submissions — Computer Science — arXiv reports</title>
+  <link rel="stylesheet" href="../../docs/fonts.css">
+  <link rel="stylesheet" href="../../docs/design-system.css">
+  <link rel="stylesheet" href="../../docs/internal-tools.css">
+  <link rel="stylesheet" href="reports.css">
+  <script src="../../docs/theme.js"></script>  <!-- not deferred: the theme must land before first paint -->
+  <script src="../../docs/header.js" defer></script>
+</head>
+<body class="ds-page">
+<a class="ds-skip-link" href="#main">Skip to main content</a>
+
+<header class="ds-site-header ds-site-header--light">
+  <!-- No reports wordmark image exists, so the wordmark is text (header.html, The light variant). -->
+  <a class="ds-site-header-logo" href="sections.html"><span aria-hidden="true">arXiv Reports</span><span class="is-sr-only">archive Reports</span></a>
+  <nav class="ds-site-header-nav" aria-label="Reports">
+    <a href="sections.html">All sections</a>
+  </nav>
+  <span class="ds-site-header-divider" aria-hidden="true"></span>
+  <div class="ds-site-header-tools">
+    <button type="button" class="ds-theme-toggle"></button>
+    <span id="ds-theme-status" class="is-sr-only" role="status"></span>
+  </div>
+  <span class="ds-site-header-divider" aria-hidden="true"></span>
+  <div class="ds-site-header-account">
+    <span class="ds-site-header-greeting">Welcome <b>Shamsi</b></span>
+    <details class="ds-site-header-dropdown">
+      <summary class="ds-site-header-login">Account</summary>
+      <div class="ds-site-header-menu">
+        <a href="#">Your account</a>
+        <form method="post" action="#">
+          <button type="submit">Log out</button>
+        </form>
+      </div>
+    </details>
+  </div>
+</header>
+
+<!-- The report's three parts: secondary navigation, directly after the header (header.html). -->
+<nav class="ds-subnav" aria-label="Computer Science report parts">
+  <a href="cs-activity.html?group=cs&amp;archive=cs&amp;category=all" aria-current="page">Submissions and holds</a>
+  <a href="cs-moderators.html?group=cs&amp;archive=cs&amp;category=all">Moderators</a>
+  <a href="cs-recruitment.html?group=cs&amp;archive=cs&amp;category=all">Recruitment</a>
+</nav>
+
+<main id="main" class="ds-container ds-container--wide">
+
+  <div class="ds-full ds-zone-secondary">
+    <header class="ds-page-header">
+      <h1>Computer Science</h1>
+      <p>Moderation report for the cs group: submissions and holds.</p>
+    </header>
+    <!-- The four views of Submissions and holds. Each has its own address,
+         so they are links, not tabs (tabs swap panels inside one page), and
+         the one bar under the header already holds the parts. See reports.css. -->
+    <nav class="reports-views" aria-label="Submissions and holds views">
+      <ul class="ds-link-list">
+        <li><a href="cs-activity.html?group=cs&amp;archive=cs&amp;category=all">Activity charts</a></li>
+        <li><a href="cs-category-stats.html?group=cs&amp;archive=cs&amp;category=all">Category submission stats</a></li>
+        <li><a href="cs-releases.html?group=cs&amp;archive=cs&amp;category=all">Recent releases</a></li>
+        <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all" aria-current="page">Recent submissions</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <section aria-labelledby="choose-heading">
+    <h2 id="choose-heading" class="is-sr-only">Choose what the report covers</h2>
+    <!-- Filter bar (tables.html): scope and date range narrow everything
+         below; rows per page is a setting (pager.html). -->
+    <form class="ds-filter-bar" method="get" action="cs-submissions.html" aria-label="Filters">
+        <div class="ds-filter-bar-group">
+          <div class="ds-field">
+            <label class="ds-label" for="rs-group">Group</label>
+            <select class="ds-input" id="rs-group" name="group">
+              <option value="all">All</option>
+              <option value="cs" selected>Computer Science (cs)</option>
+              <option value="econ">Economics (econ)</option>
+              <option value="eess">Electrical Engineering and Systems Science (eess)</option>
+              <option value="math">Mathematics (math)</option>
+              <option value="physics">Physics (physics)</option>
+              <option value="q-bio">Quantitative Biology (q-bio)</option>
+              <option value="q-fin">Quantitative Finance (q-fin)</option>
+              <option value="stat">Statistics (stat)</option>
+            </select>
+          </div>
+          <div class="ds-field">
+            <label class="ds-label" for="rs-archive">Archive</label>
+            <select class="ds-input" id="rs-archive" name="archive">
+              <option value="all">All</option>
+              <option value="cs" selected>cs</option>
+            </select>
+          </div>
+          <div class="ds-field">
+            <label class="ds-label" for="rs-category">Category</label>
+            <select class="ds-input" id="rs-category" name="category">
+              <option value="all" selected>All</option>
+              <option value="cs.DB">cs.DB</option>
+              <option value="cs.NI">cs.NI</option>
+              <option value="cs.NE">cs.NE</option>
+              <option value="cs.CG">cs.CG</option>
+              <option value="cs.AR">cs.AR</option>
+              <option value="cs.IT">cs.IT</option>
+              <option value="cs.PF">cs.PF</option>
+              <option value="cs.OS">cs.OS</option>
+              <option value="cs.RO">cs.RO</option>
+              <option value="cs.CE">cs.CE</option>
+              <option value="cs.ET">cs.ET</option>
+              <option value="cs.IR">cs.IR</option>
+              <option value="cs.CC">cs.CC</option>
+              <option value="cs.CY">cs.CY</option>
+              <option value="cs.GT">cs.GT</option>
+              <option value="cs.LO">cs.LO</option>
+              <option value="cs.LG">cs.LG</option>
+              <option value="cs.CR">cs.CR</option>
+              <option value="cs.DL">cs.DL</option>
+              <option value="cs.CV">cs.CV</option>
+              <option value="cs.PL">cs.PL</option>
+              <option value="cs.SD">cs.SD</option>
+              <option value="cs.SI">cs.SI</option>
+              <option value="cs.MS">cs.MS</option>
+              <option value="cs.SE">cs.SE</option>
+              <option value="cs.HC">cs.HC</option>
+              <option value="cs.DS">cs.DS</option>
+              <option value="cs.CL">cs.CL</option>
+              <option value="cs.GR">cs.GR</option>
+              <option value="cs.DM">cs.DM</option>
+              <option value="cs.MM">cs.MM</option>
+              <option value="cs.FL">cs.FL</option>
+              <option value="cs.DC">cs.DC</option>
+              <option value="cs.MA">cs.MA</option>
+              <option value="cs.OH">cs.OH</option>
+              <option value="cs.SC">cs.SC</option>
+              <option value="cs.AI">cs.AI</option>
+              <option value="cs.GL">cs.GL</option>
+              <option value="cs.NA">cs.NA</option>
+              <option value="cs.SY">cs.SY</option>
+            </select>
+          </div>
+          <div class="ds-field">
+            <label class="ds-label" for="rs-from">From</label>
+            <input class="ds-input" id="rs-from" name="from" type="date" value="2026-09-16">
+          </div>
+          <div class="ds-field">
+            <label class="ds-label" for="rs-to">To (inclusive)</label>
+            <input class="ds-input" id="rs-to" name="to" type="date" value="2026-10-06">
+          </div>
+        </div>
+        <fieldset class="ds-filter-bar-group ds-filter-bar-group--settings">
+          <legend class="is-sr-only">Settings</legend>
+          <div class="ds-field">
+            <label class="ds-label" for="rs-per-page">Rows per page</label>
+            <select class="ds-input" id="rs-per-page" name="per_page">
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100" selected>100</option>
+              <option value="200">200</option>
+            </select>
+          </div>
+        </fieldset>
+        <!-- Keeps the table's order when the filters change. -->
+        <input type="hidden" name="sort" value="date-desc">
+        <div class="ds-filter-bar-actions">
+          <a href="cs-submissions.html?group=cs">Clear</a>
+          <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
+        </div>
+    </form>
+
+    <div class="reports-period">
+      <p>Showing the last 3 weeks, <time datetime="2026-09-16">16 Sep 2026</time> to <time datetime="2026-10-06">6 Oct 2026</time>. Last updated 2 hours ago.</p>
+      <form method="get" action="cs-submissions.html">
+        <input type="hidden" name="group" value="cs">
+        <input type="hidden" name="archive" value="cs">
+        <input type="hidden" name="category" value="all">
+        <input type="hidden" name="from" value="2026-09-16">
+        <input type="hidden" name="to" value="2026-10-06">
+        <input type="hidden" name="per_page" value="100">
+        <input type="hidden" name="sort" value="date-desc">
+        <input type="hidden" name="refresh" value="1">
+        <button type="submit" class="ds-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> Refresh figures</button>
+      </form>
+    </div>
+  </section>
+
+  <section aria-labelledby="totals-heading">
+    <h2 id="totals-heading">Totals</h2>
+    <div class="ds-note">
+      <h3 class="ds-note-label">What the figures count</h3>
+      <p>Papers that were submitted within the date range relevant to archive cs. Holds include all hold types, as moderator holds often cannot be distinguished from admin/legacy holds based on database information.</p>
+    </div>
+    <div class="ds-card-grid">
+      <div class="ds-card ds-card--stat">
+        <p class="ds-panel-label">New submissions</p>
+        <p class="ds-stat-value">16,590</p>
+      </div>
+      <div class="ds-card ds-card--stat">
+        <p class="ds-panel-label">Currently accepted</p>
+        <p class="ds-stat-value">13,133</p>
+        <p class="ds-stat-context">79% of new submissions</p>
+      </div>
+      <div class="ds-card ds-card--stat">
+        <p class="ds-panel-label">Currently rejected</p>
+        <p class="ds-stat-value">750</p>
+        <p class="ds-stat-context">4% of new submissions</p>
+      </div>
+      <div class="ds-card ds-card--stat">
+        <p class="ds-panel-label">With holds</p>
+        <p class="ds-stat-value">3,859</p>
+        <p class="ds-stat-context">23% of new submissions</p>
+      </div>
+      <div class="ds-card ds-card--stat">
+        <p class="ds-panel-label">Currently held</p>
+        <p class="ds-stat-value">1,274</p>
+        <p class="ds-stat-context">7% of new submissions</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="submissions-heading">
+    <h2 id="submissions-heading">Submissions</h2>
+    <p class="ds-section-desc">Sorted by submit date, newest first. Each submission ID opens the submission in arXiv Check.</p>
+    <div class="ds-btn-group ds-btn-group--end">
+      <!-- Downloading goes to an address, so it is a link with the button classes (buttons.html). -->
+      <a class="ds-btn" href="cs-submissions.csv?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;sort=date-desc" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg> Download CSV<span class="is-sr-only">, all 16,590 rows</span></a>
+    </div>
+
+    <!-- Sorting reloads the page with the order in the address. The header
+         buttons submit this form, which carries the current filters; the
+         filter bar carries the current order. Two forms, so neither sends
+         "sort" twice. -->
+    <form id="sort-form" method="get" action="cs-submissions.html">
+        <input type="hidden" name="group" value="cs">
+        <input type="hidden" name="archive" value="cs">
+        <input type="hidden" name="category" value="all">
+        <input type="hidden" name="from" value="2026-09-16">
+        <input type="hidden" name="to" value="2026-10-06">
+        <input type="hidden" name="per_page" value="100">
+    </form>
+
+    <nav class="ds-pagination ds-pagination--top" aria-label="Submission pages">
+      <span class="ds-pagination-position">1–100 of 16,590 submissions</span>
+      <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+      <ol class="ds-pagination-pages">
+        <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;per_page=100&amp;sort=date-desc&amp;page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
+        <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;per_page=100&amp;sort=date-desc&amp;page=2"><span class="is-sr-only">Page </span>2</a></li>
+        <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;per_page=100&amp;sort=date-desc&amp;page=3"><span class="is-sr-only">Page </span>3</a></li>
+        <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;per_page=100&amp;sort=date-desc&amp;page=4"><span class="is-sr-only">Page </span>4</a></li>
+        <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;per_page=100&amp;sort=date-desc&amp;page=5"><span class="is-sr-only">Page </span>5</a></li>
+        <li>…</li>
+        <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;per_page=100&amp;sort=date-desc&amp;page=166"><span class="is-sr-only">Page </span>166</a></li>
+      </ol>
+      <a class="ds-btn ds-btn-text" href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;per_page=100&amp;sort=date-desc&amp;page=2"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+    </nav>
+    <div class="ds-table-scroll" role="region" aria-label="Recent submissions, page 1 of 166" tabindex="0">
+      <table class="ds-table">
+        <thead>
+          <tr>
+            <th scope="col"><button type="submit" form="sort-form" name="sort" value="primary-desc" class="sortable">Submitted primary <span class="sort-arrow">⇅</span></button></th>
+            <th scope="col"><button type="submit" form="sort-form" name="sort" value="categories-desc" class="sortable">Current categories <span class="sort-arrow">⇅</span></button></th>
+            <th scope="col"><button type="submit" form="sort-form" name="sort" value="id-desc" class="sortable">Submission ID <span class="sort-arrow">⇅</span></button></th>
+            <th scope="col" class="sort-desc" aria-sort="descending"><button type="submit" form="sort-form" name="sort" value="date-asc" class="sortable">Submit date <span class="sort-arrow">↓</span></button></th>
+            <th scope="col"><button type="submit" form="sort-form" name="sort" value="status-desc" class="sortable">Status <span class="sort-arrow">⇅</span></button></th>
+            <th scope="col"><button type="submit" form="sort-form" name="sort" value="held-desc" class="sortable">Held <span class="sort-arrow">⇅</span></button></th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+              <td>cs.RO</td>
+              <td>cs.RO</td>
+              <td><a class="reports-id" href="https://check.arxiv.org/submission/9000101">9000101<span class="is-sr-only">, open in arXiv Check</span></a></td>
+              <td><time datetime="2026-10-06T20:05:40Z">Tue, 06 Oct 2026 20:05:40 GMT</time></td>
+              <td>For tomorrow</td>
+              <td><span class="is-sr-only">No</span></td>
+            </tr>
+            <tr>
+              <td>cs.CE</td>
+              <td>cs.CE</td>
+              <td><a class="reports-id" href="https://check.arxiv.org/submission/9000102">9000102<span class="is-sr-only">, open in arXiv Check</span></a></td>
+              <td><time datetime="2026-10-06T18:10:19Z">Tue, 06 Oct 2026 18:10:19 GMT</time></td>
+              <td>On hold</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>cs.AI</td>
+              <td>cs.CV</td>
+              <td><a class="reports-id" href="https://check.arxiv.org/submission/9000103">9000103<span class="is-sr-only">, open in arXiv Check</span></a></td>
+              <td><time datetime="2026-10-06T18:09:36Z">Tue, 06 Oct 2026 18:09:36 GMT</time></td>
+              <td>For tomorrow</td>
+              <td><span class="is-sr-only">No</span></td>
+            </tr>
+            <tr>
+              <td>cs.HC</td>
+              <td>cs.HC</td>
+              <td><a class="reports-id" href="https://check.arxiv.org/submission/9000104">9000104<span class="is-sr-only">, open in arXiv Check</span></a></td>
+              <td><time datetime="2026-10-06T18:06:38Z">Tue, 06 Oct 2026 18:06:38 GMT</time></td>
+              <td>For tomorrow</td>
+              <td><span class="is-sr-only">No</span></td>
+            </tr>
+            <tr>
+              <td>cs.CV</td>
+              <td>cs.CV</td>
+              <td><a class="reports-id" href="https://check.arxiv.org/submission/9000105">9000105<span class="is-sr-only">, open in arXiv Check</span></a></td>
+              <td><time datetime="2026-10-06T18:05:45Z">Tue, 06 Oct 2026 18:05:45 GMT</time></td>
+              <td>For tomorrow</td>
+              <td><span class="is-sr-only">No</span></td>
+            </tr>
+            <tr>
+              <td>cs.LG</td>
+              <td>cs.LG</td>
+              <td><a class="reports-id" href="https://check.arxiv.org/submission/9000106">9000106<span class="is-sr-only">, open in arXiv Check</span></a></td>
+              <td><time datetime="2026-10-06T18:03:24Z">Tue, 06 Oct 2026 18:03:24 GMT</time></td>
+              <td>Working</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>cs.RO</td>
+              <td>cs.RO</td>
+              <td><a class="reports-id" href="https://check.arxiv.org/submission/9000107">9000107<span class="is-sr-only">, open in arXiv Check</span></a></td>
+              <td><time datetime="2026-10-06T18:03:09Z">Tue, 06 Oct 2026 18:03:09 GMT</time></td>
+              <td>For tomorrow</td>
+              <td><span class="is-sr-only">No</span></td>
+            </tr>
+            <tr>
+              <td>cs.IT</td>
+              <td>cs.IT</td>
+              <td><a class="reports-id" href="https://check.arxiv.org/submission/9000108">9000108<span class="is-sr-only">, open in arXiv Check</span></a></td>
+              <td><time datetime="2026-10-06T18:03:00Z">Tue, 06 Oct 2026 18:03:00 GMT</time></td>
+              <td>For tomorrow</td>
+              <td><span class="is-sr-only">No</span></td>
+            </tr>
+            <tr>
+              <td>cs.DC</td>
+              <td>cs.DC</td>
+              <td><a class="reports-id" href="https://check.arxiv.org/submission/9000109">9000109<span class="is-sr-only">, open in arXiv Check</span></a></td>
+              <td><time datetime="2026-10-06T18:00:45Z">Tue, 06 Oct 2026 18:00:45 GMT</time></td>
+              <td>For tomorrow</td>
+              <td><span class="is-sr-only">No</span></td>
+            </tr>
+            <tr>
+              <td>cs.AI</td>
+              <td>cs.AI</td>
+              <td><a class="reports-id" href="https://check.arxiv.org/submission/9000110">9000110<span class="is-sr-only">, open in arXiv Check</span></a></td>
+              <td><time datetime="2026-10-06T18:00:08Z">Tue, 06 Oct 2026 18:00:08 GMT</time></td>
+              <td>On hold</td>
+              <td>Yes</td>
+            </tr>
+            <!-- … 90 more rows on this page … -->
+        </tbody>
+      </table>
+    </div>
+    <nav class="ds-pagination ds-pagination--bottom" aria-label="Submission pages, below the table">
+      <span class="ds-pagination-position">1–100 of 16,590 submissions</span>
+      <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+      <ol class="ds-pagination-pages">
+        <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;per_page=100&amp;sort=date-desc&amp;page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
+        <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;per_page=100&amp;sort=date-desc&amp;page=2"><span class="is-sr-only">Page </span>2</a></li>
+        <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;per_page=100&amp;sort=date-desc&amp;page=3"><span class="is-sr-only">Page </span>3</a></li>
+        <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;per_page=100&amp;sort=date-desc&amp;page=4"><span class="is-sr-only">Page </span>4</a></li>
+        <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;per_page=100&amp;sort=date-desc&amp;page=5"><span class="is-sr-only">Page </span>5</a></li>
+        <li>…</li>
+        <li><a href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;per_page=100&amp;sort=date-desc&amp;page=166"><span class="is-sr-only">Page </span>166</a></li>
+      </ol>
+      <a class="ds-btn ds-btn-text" href="cs-submissions.html?group=cs&amp;archive=cs&amp;category=all&amp;from=2026-09-16&amp;to=2026-10-06&amp;per_page=100&amp;sort=date-desc&amp;page=2"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+    </nav>
+  </section>
+
+</main>
+</body>
+</html>

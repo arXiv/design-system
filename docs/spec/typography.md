@@ -11,7 +11,7 @@ components:
       - name: "--ds-font-sans"
         does: "The default: where no other face applies, this is the answer. Weights 400 / 500 / 600."
       - name: "--ds-font-condensed"
-        does: "Labels, captions, table headers and metadata, usually small and uppercase. Weights 500 / 600."
+        does: "Labels, table headers and metadata, usually small and uppercase. Weights 500 / 600."
       - name: ".ds-panel-label"
         does: "The ready-made label in this face; see [Panel label](#panel-label) below."
       - name: "--ds-font-mono"
@@ -157,7 +157,7 @@ font-family: "STIX Two Math", "Cambria Math", math;
 ```
 
 - `--ds-font-sans` — The default: where no other face applies, this is the answer. Weights 400 / 500 / 600.
-- `--ds-font-condensed` — Labels, captions, table headers and metadata, usually small and uppercase. Weights 500 / 600.
+- `--ds-font-condensed` — Labels, table headers and metadata, usually small and uppercase. Weights 500 / 600.
 - `.ds-panel-label` — The ready-made label in this face; see [Panel label](#panel-label) below.
 - `--ds-font-mono` — Identifiers and code. Weights 400 / 500. Inline `<code>` and `<pre>` already use it; see [Code blocks](#code-blocks-and-the-copy-button) below.
 - `.ds-annotation` — The annotation voice: `--ds-font-serif`, italic, 400, 0.8125rem, `--ds-text-muted`. It is a voice, not a layout role; where it sits is the consumer's decision.
