@@ -9,9 +9,12 @@
 <link rel="stylesheet" href="../../../docs/internal-tools.css">
 <script src="../../../docs/theme.js"></script>
 <style>
-  /* Proposed design-system rules: a secondary navigation bar that also holds a filter bar. */
-  .ds-subnav > nav { display: flex; flex-wrap: wrap; align-self: flex-end; column-gap: inherit; }
-  .ds-subnav > .ds-filter-bar { flex: 0 1 52rem; margin-block: var(--ds-space-3); }
+  /* Proposed design-system rules. */
+  /* 1. A filter bar of compact filters is one row. */
+  .ds-filter-bar:has(> .ds-filter) { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2) var(--ds-space-4); padding: var(--ds-space-2) var(--ds-space-3); }
+  /* 2. A secondary navigation bar can hold a filter bar after its links. */
+  .ds-subnav > nav { display: flex; flex-wrap: wrap; column-gap: inherit; }
+  .ds-subnav > .ds-filter-bar { align-self: center; margin-block: var(--ds-space-1); }
   /* Planning page only. */
   .option-label { margin: var(--ds-space-8) 24px var(--ds-space-2); }
   .frame { border-block: 1px solid var(--ds-border); }
@@ -23,7 +26,7 @@
   <h1>Report navigation</h1>
   <p>2026-10-08. A bar built from two existing parts: secondary navigation, and a filter bar. Both change what the page shows, so they share one bar. The views of the open part are a second row under the heading. Shown at the full width of the window, as on a real page.</p>
 </div>
-  <p class="ds-panel-label option-label">B, with the filter bar</p>
+  <p class="ds-panel-label option-label">B, with a one-row filter bar of compact filters</p>
   <div class="frame">
     <header class="ds-site-header">
       <a href="#" class="ds-site-header-logo"><img src="../../../docs/assets/images/logos/logo_arxiv-admin.png" alt="archive Admin Console"></a>
@@ -37,12 +40,10 @@
         <a href="#">Recruitment</a>
       </nav>
       <form class="ds-filter-bar" method="get" action="#" aria-label="Subject">
-        <div class="ds-filter-bar-group">
-          <div class="ds-field"><label class="ds-label" for="f-group">Group</label><select class="ds-input" id="f-group"><option>cs</option></select></div>
-          <div class="ds-field"><label class="ds-label" for="f-archive">Archive</label><select class="ds-input" id="f-archive"><option>cs</option></select></div>
-          <div class="ds-field"><label class="ds-label" for="f-cat">Category</label><select class="ds-input" id="f-cat"><option>All</option></select></div>
-        </div>
-        <div class="ds-filter-bar-actions"><button class="ds-btn ds-btn-primary" type="submit">Apply</button></div>
+        <div class="ds-filter"><label for="f-group">Group</label><select id="f-group"><option>cs</option></select></div>
+        <div class="ds-filter"><label for="f-archive">Archive</label><select id="f-archive"><option>cs</option></select></div>
+        <div class="ds-filter"><label for="f-cat">Category</label><select id="f-cat"><option>All</option></select></div>
+        <button class="ds-btn ds-btn-text" type="submit">Apply</button>
       </form>
     </div>
     <main class="ds-container ds-container--wide">
