@@ -34,3 +34,9 @@
 - **Fewer headings on a light page:** "Subject groups" under "All sections" adds nothing when the page holds little else.
 - **Question content the brief did not ask for,** such as an "About these figures" section; now in the review step in `AGENTS.md` ("Is it needed at all?").
 - **A sidebar for context the reader may want while scrolling:** agents considered it and rejected it to keep the charts wide. Worth a docs example that shows when a sidebar beats putting context at the bottom.
+
+## Status, 2026-10-13 (branch `dashboard-followups-2026-10`, PR 11)
+
+Done: the review pass, internal logo, page zones, heading follows the reader's choices, pager placement, no repeated header links, compact date fields, the sort bar, no breadcrumbs (one home in Header *Rules*), one name for one thing, the data line above the main content, fewer headings, compact internal tools by default. Staff reports in the header and the placeholder wording are in the round 7 spec only.
+
+Still open: applying dates to every view, a prominent card variant (Shamsi prefers fewer variants), a docs example of when a sidebar beats the bottom of the page.
