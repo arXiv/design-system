@@ -39,11 +39,14 @@ class TestSource(unittest.TestCase):
                     self.assertRaises((KeyError, ValueError), msg=bad):
                 g.template("t", bad)
 
-    def test_an_html_slot_filling_an_element_is_its_inner_html(self):
-        """React sets it on the element itself: no <span> between the element and the markup."""
+    def test_an_html_slot_is_react_content(self):
+        """React takes elements, never markup it would inject: no span, no innerHTML."""
         jsx = g.to_react(*g.template("t", '<div class="w">{{ header_page_actions }}</div><p>a{{ header_page_actions }}</p>'), "T")
-        self.assertIn('<div className="w" dangerouslySetInnerHTML={{ __html: header_page_actions }} />', jsx)
-        self.assertIn('<p>a<span dangerouslySetInnerHTML={{ __html: header_page_actions }} /></p>', jsx)
+        self.assertIn('<div className="w">{header_page_actions}</div><p>a{header_page_actions}</p>', jsx)
+        for section in g.SECTIONS:
+            tokens, vars_ = g.template(section)
+            self.assertNotIn("dangerouslySetInnerHTML", g.to_react(tokens, vars_, "T"))
+        self.assertIn("header_page_actions?: ReactNode;", g.to_dts(*g.template("header")[1:], "Header"))
 
 
 class TestTemplates(unittest.TestCase):

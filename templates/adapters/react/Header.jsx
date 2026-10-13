@@ -46,7 +46,7 @@ export default function Header({ static_base = "https://static.arxiv.org/static/
           {!signed_in && (<><a href={`${auth_url}/login`} className="ds-site-header-login">Log in</a></>)}{" "}
         </nav>{" "}
         </>)}{" "}
-        {header_page_actions && (<><div className="ds-site-header-tools" dangerouslySetInnerHTML={{ __html: header_page_actions }} /></>)}{" "}
+        {header_page_actions && (<><div className="ds-site-header-tools">{header_page_actions}</div></>)}{" "}
       </header>{" "}
       {!hide_nav && (<>{" "}
       <div className="ds-search-overlay" id="ds-search-overlay" hidden>{" "}
