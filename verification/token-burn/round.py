@@ -112,7 +112,7 @@ def plan_only():
             sys.exit(f"{f} configures an API key; not starting any build")
 
 
-def build_cell(cell: Path, model: str, prompt: str, budget: float):
+def build_cell(cell: Path, model: str, prompt: str, budget: float, followup: str = None):
     if STOP.is_set():
         print(f"  {cell.name}: not started", flush=True)
         return
@@ -122,15 +122,28 @@ def build_cell(cell: Path, model: str, prompt: str, budget: float):
     before = tree(repo)
     env = {k: v for k, v in os.environ.items() if not SCRUB.match(k)}
     start = time.time()
-    with open(cell / "transcript.jsonl", "w") as out, open(cell / "stderr.log", "w") as err:
-        try:
-            status = subprocess.run(
-                ["claude", "-p", prompt, "--model", model, "--permission-mode", "bypassPermissions",
-                 "--setting-sources", "project", "--max-budget-usd", str(budget),
-                 "--output-format", "stream-json", "--verbose"],
-                cwd=repo, env=env, stdout=out, stderr=err, timeout=60 * 60).returncode
-        except subprocess.TimeoutExpired:
-            status = "timeout"
+    def ask(text, name, more=()):
+        with open(cell / name, "w") as out, open(cell / name.replace("transcript", "stderr").replace(".jsonl", ".log"), "w") as err:
+            try:
+                return subprocess.run(
+                    ["claude", "-p", text, *more, "--model", model, "--permission-mode", "bypassPermissions",
+                     "--setting-sources", "project", "--max-budget-usd", str(budget),
+                     "--output-format", "stream-json", "--verbose"],
+                    cwd=repo, env=env, stdout=out, stderr=err, timeout=60 * 60).returncode
+            except subprocess.TimeoutExpired:
+                return "timeout"
+
+    def keep(dest_dir):
+        now = tree(repo)
+        for rel in sorted(r for r in now if r not in before or now[r] != before[r]):
+            dest = dest_dir / "build" / rel
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(repo / rel, dest)
+
+    status = ask(prompt, "transcript.jsonl")
+    if followup:
+        keep(cell / "before")
+        status2 = ask(followup, "transcript-followup.jsonl", ("--continue",))
     after = tree(repo)
     new = sorted(r for r in after if r not in before)
     modified = sorted(r for r in after if r in before and after[r] != before[r])
@@ -147,6 +160,11 @@ def build_cell(cell: Path, model: str, prompt: str, budget: float):
         m["file_reads"] = [f.replace(prefix, "") for f in m["file_reads"]]
     m.update(exit=status, wall_seconds=int(time.time() - start), new_files=new,
              modified_existing=modified, deleted=sorted(r for r in before if r not in after))
+    if followup:
+        m2 = parse_transcript(cell / "transcript-followup.jsonl")
+        keep(cell / "after")
+        (cell / "final-message-followup.md").write_text(m2["final_message"])
+        (cell / "metrics-followup.json").write_text(json.dumps({**m2, "exit": status2}, indent=2))
     (cell / "metrics.json").write_text(json.dumps(m, indent=2))
     (cell / "final-message.md").write_text(m["final_message"])
     shutil.rmtree(ws, ignore_errors=True)
@@ -184,10 +202,30 @@ def build(args):
     shutil.copy2(test / "spec.md", run / "spec.md")
     snapshot(run)
     print(f"run {run.name}: {len(jobs)} builds (labels hide the model)", flush=True)
+    followup = (test / load(test / "test.json", {})["followup"]).read_text() if load(test / "test.json", {}).get("followup") else None
+    if followup:
+        shutil.copy2(test / load(test / "test.json")["followup"], run / "followup.md")
     with ThreadPoolExecutor(max_workers=args.parallel) as pool:
         for label in key:
             (run / label).mkdir()
-            pool.submit(build_cell, run / label, key[label]["model"], prompt, args.budget)
+            pool.submit(build_cell, run / label, key[label]["model"], prompt, args.budget, followup)
+    if followup:
+        # Each agent's before and after become two cells, 1 and 2, in random order.
+        for label in key:
+            order = ["before", "after"]
+            random.shuffle(order)
+            key[label]["versions"] = {}
+            for n, version in enumerate(order, 1):
+                src, dest = run / label / version, run / f"{label}{n}"
+                if not src.exists():
+                    continue
+                shutil.move(str(src), str(dest))
+                metrics = "metrics.json" if version == "before" else "metrics-followup.json"
+                if (run / label / metrics).exists():
+                    shutil.copy2(run / label / metrics, dest / "metrics.json")
+                key[label]["versions"][f"{label}{n}"] = version
+            (run / label / "metrics.json").rename(run / label / "metrics-build.json") if (run / label / "metrics.json").exists() else None
+        (run / "key.json").write_text(json.dumps(key, indent=2))
     print(f"next: python3 {Path(__file__).name} evaluate {run.relative_to(HERE)}")
 
 
@@ -393,12 +431,20 @@ img.thumb{width:220px;height:300px;object-fit:cover;object-position:top;border:1
 REVIEW_JS = """
 const R = JSON.parse(document.getElementById('data').textContent);
 const state = R.saved || {builds: {}, together: ''};
-let i = R.labels.findIndex(l => !(state.builds[l] && state.builds[l].verdict)); if (i < 0) i = R.labels.length;
+let i = R.labels.findIndex(l => !(state.builds[l] && (state.builds[l].verdict || state.builds[l].choice))); if (i < 0) i = R.labels.length;
 let pg = 0, narrow = false, started = !!R.saved, panelOpen = false;
 const $ = s => document.querySelector(s);
 function save() { return fetch('/save', {method: 'POST', body: JSON.stringify(state)}) }
 function src(l) { return '/b/' + l + '/' + R.pages[pg].path }
 function intro() {
+  if (R.pairs) {
+    $('#app').innerHTML = `<main><h1>${R.labels.length} pairs to review</h1>
+    <p>Each pair is one agent's pages in two versions, side by side, labelled 1 and 2 in random order: ${R.pages.map(p => p.label).join(' and ')}.</p>
+    <p>For each pair, look at both pages, then open Notes and choice: say which version is better, or that they are about the same, and why.</p>
+    <div class="row"><button class="go" id="start">Start with pair 1</button></div></main>`;
+    $('#start').onclick = () => { started = true; show() };
+    return;
+  }
   $('#app').innerHTML = `<main><h1>${R.labels.length} builds to review</h1>
     <p>The same spec was built ${R.labels.length} separate times. Each build is a different attempt at the same ${R.pages.length === 1 ? 'page' : R.pages.length + ' pages: ' + R.pages.map(p => p.label).join(', ')}.</p>
     ${R.pages.length === 1 ? '' : '<p>Look at every page of a build before you write its notes.</p>'}
@@ -410,6 +456,7 @@ function intro() {
 function show() {
   window.scrollTo(0, 0);
   if (!started) return intro();
+  if (R.pairs) return showPair();
   if (i >= R.labels.length) return together();
   const l = R.labels[i], b = state.builds[l] || {notes: '', verdict: ''};
   $('#app').innerHTML = `<div class="bar"><div class="row"><strong>Build ${l}</strong><span class="muted">attempt ${i + 1} of ${R.labels.length} at the same pages</span>
@@ -435,6 +482,34 @@ function show() {
   $('#next').onclick = () => { keep(l); if (!state.builds[l].verdict) { $('#msg').textContent = 'Choose a verdict first.'; return }
     save().then(() => { i++; pg = 0; show() }) };
 }
+function showPair() {
+  window.scrollTo(0, 0);
+  if (i >= R.labels.length) return together();
+  const l = R.labels[i], b = state.builds[l] || {notes: '', choice: ''};
+  const s = n => '/b/' + l + n + '/' + R.pages[pg].path;
+  $('#app').innerHTML = `<div class="bar"><div class="row"><strong>Pair ${i + 1} of ${R.labels.length}</strong><span class="muted">two versions of one agent's pages</span>
+    ${R.pages.map((p, n) => `<button data-pg="${n}" aria-pressed="${n === pg}">${p.label}</button>`).join('')}
+    <button class="go" id="notesbtn" aria-expanded="${panelOpen}" aria-controls="panel">Notes and choice</button></div></div>
+    <div style="display:flex;gap:4px;background:#111">${[1, 2].map(n => `<div style="flex:1;min-width:0;background:#fff"><div class="row" style="padding:2px 8px;margin:0"><strong>Version ${n}</strong><a class="btn" href="${s(n)}" target="_blank">Open in a new tab</a></div>
+      <iframe src="${s(n)}" style="width:100%;height:calc(100vh - 100px)" title="Version ${n}"></iframe></div>`).join('')}</div>
+    <dialog id="panel" aria-labelledby="notes-q"><label class="q" id="notes-q" for="notes">Which version is better, and why?</label>
+    <textarea id="notes">${b.notes.replace(/</g, '&lt;')}</textarea>
+    <fieldset><legend>Better</legend>${[['1', 'Version 1'], ['2', 'Version 2'], ['same', 'About the same']].map(([v, t]) =>
+      `<label><input type="radio" name="v" value="${v}" ${b.choice === v ? 'checked' : ''}> ${t}</label>`).join('')}</fieldset>
+    <div class="row">${i > 0 ? '<button id="back">Back</button>' : ''}<button class="go" id="next">${i + 1 < R.labels.length ? 'Save and go to the next pair' : 'Save and finish'}</button><button id="hide">Close</button><span id="msg" class="muted"></span></div></dialog>`;
+  const panel = $('#panel');
+  function setPanel(open) { panelOpen = open; if (open) { panel.show(); $('#notes').focus() } else panel.close(); $('#notesbtn').setAttribute('aria-expanded', open) }
+  if (panelOpen) panel.show();
+  $('#notesbtn').onclick = () => setPanel(!panel.open);
+  $('#hide').onclick = () => { setPanel(false); $('#notesbtn').focus() };
+  panel.addEventListener('keydown', e => { if (e.key === 'Escape') { setPanel(false); $('#notesbtn').focus() } });
+  const keepPair = () => { state.builds[l] = {notes: $('#notes').value, choice: (document.querySelector('input[name=v]:checked') || {}).value || ''} };
+  document.querySelectorAll('[data-pg]').forEach(x => x.onclick = () => { keepPair(); pg = +x.dataset.pg; showPair() });
+  if ($('#back')) $('#back').onclick = () => { keepPair(); save(); i--; pg = 0; showPair() };
+  $('#next').onclick = () => { keepPair(); if (!state.builds[l].choice) { $('#msg').textContent = 'Choose one first.'; return }
+    if (i + 1 >= R.labels.length) state.finished = true;
+    save().then(() => { i++; pg = 0; if (i >= R.labels.length) { $('#app').innerHTML = '<main><h1>Saved</h1><p>Tell Claude you are finished.</p></main>' } else showPair() }) };
+}
 function keep(l) { state.builds[l] = {notes: $('#notes').value, verdict: (document.querySelector('input[name=v]:checked') || {}).value || ''} }
 function together() {
   $('#app').innerHTML = `<main><h1>All ${R.labels.length} builds together</h1>
@@ -455,7 +530,10 @@ show();
 
 def review_page(run: Path) -> str:
     info = load(run / "run.json")
-    data = {"labels": [c.name for c in cells_of(run)], "pages": info["pages"], "verdicts": VERDICTS,
+    labels = [c.name for c in cells_of(run)]
+    if info.get("pairs"):
+        labels = sorted({l[:-1] for l in labels})
+    data = {"labels": labels, "pages": info["pages"], "verdicts": VERDICTS, "pairs": bool(info.get("pairs")),
             "saved": load(run / "review.json")}
     blob = json.dumps(data).replace("</", "<\\/")
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
