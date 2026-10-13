@@ -46,7 +46,9 @@ class TestSource(unittest.TestCase):
         for section in g.SECTIONS:
             tokens, vars_ = g.template(section)
             self.assertNotIn("dangerouslySetInnerHTML", g.to_react(tokens, vars_, "T"))
-        self.assertIn("header_page_actions?: ReactNode;", g.to_dts(*g.template("header")[1:], "Header"))
+        dts = g.to_dts(*g.template("header")[1:], "Header")
+        self.assertIn("header_page_actions?: ReactNode;", dts)
+        self.assertIn("In React: elements (JSX), not a markup string", dts)
 
 
 class TestTemplates(unittest.TestCase):

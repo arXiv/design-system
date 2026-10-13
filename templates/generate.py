@@ -260,10 +260,12 @@ def to_react(tokens: list, vars_: dict, component: str) -> str:
 def to_dts(vars_: dict, component: str) -> str:
     """The component's props, typed from schema.json: an html slot takes React content."""
     types = {"bool": "boolean", "html": "ReactNode"}
+    # schema.json describes an html slot as markup, the server templates' form; React's differs.
+    react = {"html": " In React: elements (JSX), not a markup string, which would show as text."}
     imports = ["ReactElement"] + ["ReactNode"] * any(m["type"] == "html" for m in vars_.values())
     lines = []
     for name, meta in vars_.items():
-        doc = meta["doc"].replace("*/", "* /")
+        doc = (meta["doc"] + react.get(meta["type"], "")).replace("*/", "* /")
         lines.append(f"  /** {doc} Default: {json.dumps(meta['default'])}. */")
         lines.append(f"  {name}?: {types.get(meta['type'], 'string')};")
     return (
