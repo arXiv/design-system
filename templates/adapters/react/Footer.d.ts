@@ -6,7 +6,7 @@ export interface FooterProps {
   static_base?: string;
   /** Scheme + HELP_SERVER, no trailing slash: donate and every footer info link. Default: "https://info.arxiv.org". */
   help_url?: string;
-  /** Per request, the IP-matched member: '' (an anonymous reader), '<span class="ack-member-inline">, <strong>Name</strong></span>', or that span empty and hidden, which chrome/header.js fills from the same-origin /institutional_banner. Default: "". */
+  /** Per request, the IP-matched member: '' (an anonymous reader), '<span class="ack-member-inline">, <strong>Name</strong></span>', or that span empty and hidden, which chrome/header.js fills from the same-origin /institutional_banner. In React: elements (JSX), not a markup string, which would show as text. Default: "". */
   member_institution?: ReactNode;
 }
 
