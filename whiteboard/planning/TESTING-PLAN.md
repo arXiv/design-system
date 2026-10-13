@@ -42,6 +42,10 @@ Tests 3 to 5 are a proposal. Shamsi confirms each one when its spec is written, 
 2. Shamsi and Claude decide what to change in the design system. A change to the docs needs evidence from more than one build, or a rule Shamsi confirms was missing.
 3. After the changes, the same spec is built again with one build for each model. Shamsi looks only at what the changes were meant to fix.
 
+## To do later
+
+- **arXiv Check, in React (added 2026-10-06).** arXiv Check is built in React, so the brief asks for React components built on the design system's CSS and docs. That adds a translation step the HTML tests do not have. Shamsi takes screenshots first; not before she has time for it.
+
 ## Not decided yet
 
 - How much of Shamsi's time a test should take. She decides after reviewing the first outputs.
@@ -59,6 +63,9 @@ Tests 3 to 5 are a proposal. Shamsi confirms each one when its spec is written, 
 
 ## Status
 
+- 2026-10-06: test 4 (moderation and staff reports, four pages, internal tools) built and evaluated. Waiting for Shamsi's review: `verification/token-burn/runs/20261006-192823-04-staff-reports/`. Start the review with `python3 round.py review runs/20261006-192823-04-staff-reports`.
+- 2026-10-06: test 3 (search results, answer key version D) built and reviewed. All four reached D from the docs; visual Pass with changes, programmatic Pass for all four. Found: no rule for how many page numbers, no wording for the 10,000-result notice, pager bars do not space themselves from the list; and a skip-link focus bug (fixed). Report: `verification/token-burn/runs/20261006-142757-03-search-results/report.html`.
+- 2026-10-05: test 2 (search results, one page state) built and reviewed: all four builds accepted with changes. Changes since: search version D (`search.html`), the Papers page, tooltips that stay on screen. Team report: `verification/token-burn/reports/2026-10-search/`. Next: test 3 rebuilds search results with the same spec once Shamsi has settled Papers; after that, arXiv Check as the non-paper search. The numbering in the table above is now out of date: the order is search results again, then arXiv Check.
 - 2026-10-02: numbered pages added to the pager (`.ds-pagination-pages`, pager.html), with a routing row in AGENTS.md. Search needs them, and the pager had no row in the routing table.
 - 2026-10-02: test 1 built, evaluated, reviewed and summarized. See "Test 1" below.
 - 2026-10-02: numbered pages changed to one compact group with the accent tint on the current page (proposal: `proposals/numbered-pages.html`). The current page has the accent tint with the accent border. Both pagers share one structure: the position or range at the start (`.ds-pagination-position`), the controls at the end. Results per page goes in a filter bar above. Open: whether the row repeats below the list; the filter bar looks jumbled with five filters.

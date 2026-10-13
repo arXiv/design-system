@@ -1924,14 +1924,16 @@ ul.ltx_biblist { overflow-x: clip; }
    where the line may wrap, not what it says. */
 li.ltx_bibitem, li.ltx_bibitem a { overflow-wrap: anywhere; }
 
-/* Reference band: full-bleed using negative-margin viewport-width trick.
-   Production should achieve this with proper full-bleed grid layout. */
+/* Reference band: the bibliography stays where LaTeXML puts it, at the body
+   width. A shadow paints the tint out to the viewport edges and the clip-path
+   trims it to the band's own height. A shadow is not part of the page width,
+   so it cannot cause sideways scroll, and it works the same for a nested,
+   chapter-level bibliography (LaTeXML cannot move bibliographies out of the
+   narrative flow: Deyan, 2026-10-06). */
 .ltx_bibliography {
   background: var(--ds-surface-muted);
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  padding-left: calc(50vw - 50%);
-  padding-right: calc(50vw - 50%);
+  box-shadow: 0 0 0 100vmax var(--ds-surface-muted);
+  clip-path: inset(0 -100vmax);
   padding-top: 32px;
   padding-bottom: 36px;
 }
@@ -1958,10 +1960,8 @@ li.ltx_bibitem, li.ltx_bibitem a { overflow-wrap: anywhere; }
 .ltx_bibliography ~ .ltx_acknowledgements,
 .ltx_bibliography ~ .ltx_para {
   background: var(--ds-surface-muted);
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  padding-left: calc(50vw - 50%);
-  padding-right: calc(50vw - 50%);
+  box-shadow: 0 0 0 100vmax var(--ds-surface-muted);
+  clip-path: inset(0 -100vmax);
   padding-bottom: 24px;
 }
 
@@ -2491,34 +2491,12 @@ table.ltx_equationgroup math.ltx_math_unparsed {
     background: var(--ds-canvas);
     padding-left: 6px;
   }
-
-  /* The reference band bleeds by exactly the article's own padding here, so
-     it is stated as that and not derived from the viewport. calc(-50vw + 50%)
-     measures the viewport while the document width does not include the
-     scrollbar, and the two disagree — 18px of sideways scroll at 320px and
-     390px, which WCAG 1.4.10 counts as a reflow failure and which breaks
-     middle-click autoscroll. design-system.css says the same thing under
-     .ds-container, which is the real fix: three grid tracks that measure the
-     element instead of the viewport. Adopting it here means restructuring
-     article.ltx_document, which belongs to the papers tier 2 work. */
-  .ltx_bibliography,
-  .ltx_bibliography ~ section,
-  .ltx_bibliography ~ .ltx_section,
-  .ltx_bibliography ~ .ltx_appendix,
-  .ltx_bibliography ~ .ltx_acknowledgements,
-  .ltx_bibliography ~ .ltx_para {
-    margin-inline: calc(-1 * var(--article-pad));
-    padding-inline: var(--article-pad);
-  }
 }
 
 /* Phone-width margins: at narrow viewports body text otherwise sits
    right against the screen edge, which kills legibility. A tighter
    16px article padding gives content a breathing band without eating
-   too much of an already-narrow column. The full-bleed bibliography
-   band still extends to the viewport edges because its negative-
-   margin trick (calc(-50vw + 50%)) computes against the article's
-   content box and absorbs this padding correctly. */
+   too much of an already-narrow column. */
 @media (max-width: 48rem) {
   article.ltx_document { --article-pad: 16px; }
 }
@@ -3408,18 +3386,16 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
      --ds-canvas, which flips — so dark-mode readers printed a dark page. */
   .ltx_page_main { margin: 0; }
 
-  /* The reference band bleeds by measuring the viewport, and in print the
-     viewport is the sheet — so the padding survived as a wide empty margin
-     with the tint running off both edges. On paper it is just a section. */
+  /* On paper the reference band is just a section. */
   .ltx_bibliography,
   .ltx_bibliography ~ section,
   .ltx_bibliography ~ .ltx_section,
   .ltx_bibliography ~ .ltx_appendix,
   .ltx_bibliography ~ .ltx_acknowledgements,
   .ltx_bibliography ~ .ltx_para {
-    margin-inline: 0;
-    padding-inline: 0;
     background: none;
+    box-shadow: none;
+    clip-path: none;
   }
   .new-watermark {
     position: static;
@@ -8675,7 +8651,9 @@ We thus see that</p>
       var sectionEl = h.closest('section, .ltx_appendix');
       var id = sectionEl && sectionEl.id;
       if (!id) return;
-      var titleText = h.textContent.replace(/\s+/g, ' ').trim();
+      var titleClone = h.cloneNode(true);
+      Array.prototype.forEach.call(titleClone.querySelectorAll('annotation, annotation-xml'), function (n) { n.remove(); });
+      var titleText = titleClone.textContent.replace(/\s+/g, ' ').trim();
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'heading-permalink mg-mark';
@@ -9194,6 +9172,9 @@ We thus see that</p>
    not reflow. */
 :root {
   --main-width:        850px;   /* the article: title, authors, abstract, sidebar */
+  /* The theme's side columns hold LaTeXML's sidebar, which is not shown. At
+     their 14rem minimum, 850px no longer fits a 1280px window. */
+  --nav-width:         minmax(0, 25rem);
   --paper-body:        720px;   /* sections below the TOC bar */
   --marginalia-width:  190px;
   --marginalia-gap:     16px;
@@ -9210,37 +9191,12 @@ We thus see that</p>
   --marginalia-bp: 1200px;   /* measured from the SECTION edge, not the article */
 }
 
-article.ltx_document > section:not(.ltx_bibliography) {
+/* Every top-level section takes the body width, the bibliography and what
+   follows it included; the band's tint reaches the edges by its shadow. */
+article.ltx_document > section,
+article.ltx_document > .ltx_bibliography ~ .ltx_para {
   max-width: var(--paper-body);
   margin-inline: auto;
-}
-
-/* The reference band is full-bleed by design (negative-margin trick), so it
-   must NOT take the section max-width — capping it at 720px leaves the grey
-   band short of the viewport and its content stranded left. Instead the band
-   stays full width and its padding centres a --paper-body column inside it,
-   so the references line up with the body text above them. */
-section.ltx_bibliography,
-.ltx_bibliography ~ .ltx_appendix,
-.ltx_bibliography ~ .ltx_acknowledgements,
-.ltx_bibliography ~ .ltx_para {
-  padding-left:  calc(50vw - var(--paper-body) / 2);
-  padding-right: calc(50vw - var(--paper-body) / 2);
-}
-
-/* In print the viewport is the sheet, so that padding becomes a wide empty
-   margin with the tint running off both edges. On paper the band is just a
-   section. Stated here rather than in the print block above because this is
-   the rule it has to beat — same specificity, and last. */
-@media print {
-  section.ltx_bibliography,
-  .ltx_bibliography ~ .ltx_appendix,
-  .ltx_bibliography ~ .ltx_acknowledgements,
-  .ltx_bibliography ~ .ltx_para {
-    margin-inline: 0;
-    padding-inline: 0;
-    background: none;
-  }
 }
 
 /* ── Marginalia offsets: the one thing the two notes cannot share ──────
@@ -9494,7 +9450,13 @@ section.ltx_bibliography,
       var link = linksById[current.id];
       if (link) link.classList.add('is-current');
       var title = current.querySelector('.ltx_title_section');
-      var text = title ? title.textContent.replace(/\s+/g, ' ').trim() : 'Contents';
+      // The heading's words only: not the TeX annotation, not the Permalink button.
+      var text = 'Contents';
+      if (title) {
+        var clone = title.cloneNode(true);
+        Array.prototype.forEach.call(clone.querySelectorAll('annotation, annotation-xml, button'), function (n) { n.remove(); });
+        text = clone.textContent.replace(/\s+/g, ' ').trim();
+      }
       // Trim long titles to fit the trigger button
       if (text.length > 64) text = text.slice(0, 61) + '…';
       tocText.innerHTML = '<span class="toc-prefix">Contents ·</span> ' + text;

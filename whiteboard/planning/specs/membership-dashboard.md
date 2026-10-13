@@ -117,8 +117,7 @@ States, 05gvnxz63) · Australian National University (Australia, 019wvm592) ·
 Bibliothèque Diderot de Lyon (École Normale Supérieure de Lyon / ENS Lyon)
 (France, 04zmssz18) · Big Ten Academic Alliance (United States, 02ntfsb56)
 
-**Users:** 446345 Werbeloff, Marina · werbeloff@fas.harvard.edu · Harvard
-University · ror.org/03vek6s52 · not a manager — 939007 Pan, Jianhao ·
-1604134186@qq.com · DESY (HGF - Helmholtz Association, German Research Centers)
-· ror.org/01js2sh04 · manager — 186092 Köhler, Martin · martin.koehler@desy.de ·
-DESY · ror.org/01js2sh04 · not a manager
+**Users** (made up): 100001 Lindqvist, Maren · m.lindqvist@example.edu · Harvard
+University · ror.org/03vek6s52 · not a manager — 100002 Okoro, Chidi · c.okoro@example.org · DESY
+(HGF - Helmholtz Association, German Research Centers) · ror.org/01js2sh04 · manager — 100003
+Brandt, Ilse · i.brandt@example.org · DESY · ror.org/01js2sh04 · not a manager

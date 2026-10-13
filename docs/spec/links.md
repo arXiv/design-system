@@ -38,8 +38,12 @@ components:
         does: "The section heading: the `<h2>` or `<h3>` that is the first element in a `<section>`. `anchors.js` adds the control to every section heading that has an `id`. No class is needed."
       - name: "id"
         does: "Written into the HTML, by hand or by whatever builds the page. These docs use `verification/gen-anchors.py`, which makes it from the heading text."
-      - name: ".ds-anchor"
-        does: "The control, a `<button>` that `anchors.js` adds to every section heading with an `id`. Quiet until wanted: it appears on hover of the heading and on its own focus, and stays visible on a touch screen. Its accessible name includes the section, and the copy result is announced in a live region."
+      - name: ".ds-permalink"
+        does: "The control, a `<button>` with the link icon and the word “Permalink”, that `anchors.js` adds to every section heading with an `id`. It shows while the heading is hovered, while it has focus, and after a tap on a screen without hover. It stays in the tab order while it is hidden."
+      - name: ".is-sr-only"
+        does: "Completes the accessible name with the section: “Permalink to Dividers”. The name starts with the visible word."
+      - name: "[role=\"status\"]"
+        does: "One region on the page. The script writes “Link to Dividers copied” into it."
 rules:
   - "Use `--ds-text-disabled` (`#aeaaa4`) for the disabled color and set `pointer-events: none`. The underline stays so it is still recognisable as a (currently-unavailable) link. The disabled state falls below AA on contrast — WCAG exempts disabled controls from contrast requirements."
   - "A list of author names, a navigation bar, a footer column: these are lists in which every item is a link, and none of them is underlined. The underline exists to tell a link apart from the text around it, and in a list of links there is no such text; underlining every item would add visual noise and tell the reader nothing. WCAG asks for the underline only where colour alone would have to separate a link from ordinary text, which is the case for an inline link and not for a list. The links keep Link Blue, the hover and focus states, and the visited colour where it means something. Put `.ds-link-list` on the element that holds the list."
@@ -49,7 +53,8 @@ rules:
   - "**Keep the underline in body text.** Do not set `text-decoration: none` on an inline link. The underline is the only cue that survives forced-colors mode and a reader who cannot see the colour difference. Only a standalone link, such as one in navigation, may drop it."
   - "**Keep the visited colour in content.** Do not override `:visited` on links to papers, listings or references. Suppress it only where “where have I been” has no meaning, such as a breadcrumb or a menu."
   - "**Do not remove the focus ring.** The stylesheet draws it on `:focus-visible`, so it appears for keyboard users and not on mouse click. An `outline: none` on a link takes it away for everyone."
-  - "**Links open in the same tab** unless the reader would lose work in progress. A link that opens a new tab includes the external-link icon (`docs/icons/external-link.svg`) after its text, with `aria-hidden=\"true\"` on the icon and “(opens in a new tab)” in an `.is-sr-only` span, so the change is announced and survives page translation."
+  - "**Links open in the same tab** unless the reader would lose work in progress. A reader's place in an HTML paper is work in progress, so a link from a paper to its PDF opens a new tab. A link that opens a new tab includes the external-link icon (`docs/icons/external-link.svg`) after its text, with `aria-hidden=\"true\"` on the icon and “(opens in a new tab)” in an `.is-sr-only` span, so the change is announced and survives page translation. In a row of links that each already have an icon, such as a paper's TOC bar, the external-link icon is left out; the hidden text stays."
+  - "**In print, an external link shows its address after its text.** An in-page link, a button and a link that is an image do not. The stylesheet does this; nothing is needed in the markup."
 ---
 
 # Links
@@ -127,15 +132,15 @@ A section heading can include a control that copies a link to that section. It i
 
 <!-- What renders -->
 <h2 id="dividers">Dividers
-  <button type="button" class="ds-anchor" aria-label="Copy link to Dividers" title="Copy link to this section">
-    <svg viewBox="0 0 24 24" aria-hidden="true">…</svg>
-  </button>
+  <button type="button" class="ds-permalink"><svg aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to Dividers</span></button>
 </h2>
 ```
 
 - `<section> > h2, h3` — The section heading: the `<h2>` or `<h3>` that is the first element in a `<section>`. `anchors.js` adds the control to every section heading that has an `id`. No class is needed.
 - `id` — Written into the HTML, by hand or by whatever builds the page. These docs use `verification/gen-anchors.py`, which makes it from the heading text.
-- `.ds-anchor` — The control, a `<button>` that `anchors.js` adds to every section heading with an `id`. Quiet until wanted: it appears on hover of the heading and on its own focus, and stays visible on a touch screen. Its accessible name includes the section, and the copy result is announced in a live region.
+- `.ds-permalink` — The control, a `<button>` with the link icon and the word “Permalink”, that `anchors.js` adds to every section heading with an `id`. It shows while the heading is hovered, while it has focus, and after a tap on a screen without hover. It stays in the tab order while it is hidden.
+- `.is-sr-only` — Completes the accessible name with the section: “Permalink to Dividers”. The name starts with the visible word.
+- `[role="status"]` — One region on the page. The script writes “Link to Dividers copied” into it.
 
 ## Rules
 
@@ -147,4 +152,5 @@ A section heading can include a control that copies a link to that section. It i
 - **Keep the underline in body text.** Do not set `text-decoration: none` on an inline link. The underline is the only cue that survives forced-colors mode and a reader who cannot see the colour difference. Only a standalone link, such as one in navigation, may drop it.
 - **Keep the visited colour in content.** Do not override `:visited` on links to papers, listings or references. Suppress it only where “where have I been” has no meaning, such as a breadcrumb or a menu.
 - **Do not remove the focus ring.** The stylesheet draws it on `:focus-visible`, so it appears for keyboard users and not on mouse click. An `outline: none` on a link takes it away for everyone.
-- **Links open in the same tab** unless the reader would lose work in progress. A link that opens a new tab includes the external-link icon (`docs/icons/external-link.svg`) after its text, with `aria-hidden="true"` on the icon and “(opens in a new tab)” in an `.is-sr-only` span, so the change is announced and survives page translation.
+- **Links open in the same tab** unless the reader would lose work in progress. A reader's place in an HTML paper is work in progress, so a link from a paper to its PDF opens a new tab. A link that opens a new tab includes the external-link icon (`docs/icons/external-link.svg`) after its text, with `aria-hidden="true"` on the icon and “(opens in a new tab)” in an `.is-sr-only` span, so the change is announced and survives page translation. In a row of links that each already have an icon, such as a paper's TOC bar, the external-link icon is left out; the hidden text stays.
+- **In print, an external link shows its address after its text.** An in-page link, a button and a link that is an image do not. The stylesheet does this; nothing is needed in the markup.

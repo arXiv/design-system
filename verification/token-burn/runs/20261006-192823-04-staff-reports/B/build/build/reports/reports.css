@@ -1,0 +1,48 @@
+/* =============================================================
+   Moderation and staff reports — page styles
+   Loaded after fonts.css, design-system.css and internal-tools.css.
+   Only what the design system does not provide. Every value is a token.
+   ============================================================= */
+
+/* The views of one report part (Activity charts, Recent submissions …).
+   The design system has one bar under the header (.ds-subnav), and that
+   holds the report's three parts; tabs swap panels inside one page, but
+   each view has its own address. So the views are a plain list of links
+   (.ds-link-list, links.html "Lists of links") laid out in a row, with the
+   current one marked by weight as well as aria-current, the same signal
+   .ds-subnav uses for the current page. */
+.reports-views ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-tight) var(--ds-space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.reports-views a[aria-current="page"] {
+  font-weight: 600;
+  color: var(--ds-text);
+}
+
+/* "Showing … last updated …" beside its Refresh button. Wraps below the
+   sentence when the two no longer fit side by side. */
+.reports-period {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-tight) var(--ds-space-block);
+}
+.reports-period p { margin: 0; }
+
+/* Identifiers are IBM Plex Mono (DESIGN-POLICIES, Typography). A table
+   cell has no class for it, and inline <code> is tinted as code. */
+.reports-id { font-family: var(--ds-font-mono); }
+
+/* Stacked blocks inside one section: the holds status, then its two
+   chart placeholders. Space comes from the container (DESIGN-POLICIES,
+   Spacing), at the "between blocks" break. */
+.reports-stack {
+  display: grid;
+  gap: var(--ds-space-block);
+}
+.reports-stack > * { margin: 0; }

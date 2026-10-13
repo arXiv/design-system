@@ -1,0 +1,199 @@
+/* =============================================================
+   arXiv Design System — internal tools (tier 2)
+   Admin Console, arXiv Check, the moderation queue.
+
+   This file is NOT self-contained. Load the tier 1 stylesheet first, and
+   put .ds-internal on <html> — that class is what makes the accent lime:
+
+     <html lang="en" class="ds-internal">
+     <link rel="stylesheet" href="design-system.css">
+     <link rel="stylesheet" href="internal-tools.css">
+
+   Tier 1 owns everything a second surface could use — the foundation,
+   the alert, the tag, the field family, the close control. What lives
+   here is what only internal tools have (metadata panels,
+   segmented controls, toggles, type badges, info cards, the internal
+   icon-button variants), plus the tokens whose VALUES differ on this
+   surface.
+
+   The rule for this file: it may re-point a tier 1 token where this
+   surface needs a different value. It must never introduce a token that
+   reuses a tier 1 name for a different meaning.
+   ============================================================= */
+
+
+/* ─── Tokens that differ on this surface ────────────────────── */
+/*
+ * Only what disagrees with tier 1 is declared here. Everything else —
+ * text, canvas, borders, links, focus ring, the four status families,
+ * the spacing scale, the type stack — is inherited, because it is
+ * identical on both surfaces and a second copy is only somewhere for
+ * the two to drift apart.
+ */
+:root {
+
+  /* Surfaces. Light matches tier 1; the dark values are a shade
+     different because internal screens are dense with tables and want a
+     little more separation between a row and its ground. */
+  --ds-surface:               #ffffff;
+  --ds-surface-muted:         var(--ds-grey-10);
+
+  /* Internal-only surfaces: two hover washes, because a table row wants a
+     wash you barely notice and a control wants one you do, and a
+     pressed state below both. */
+  --ds-surface-hover-strong:  var(--ds-grey-10);
+  --ds-surface-active:        var(--ds-grey-25);
+
+  /* Text one step above muted — column headers, a row's leading cell. */
+  --ds-text-strong:           #4a433d;
+
+}
+
+
+/* ─── Icon button, internal variants ─────────────────────────
+   Modifiers on tier 1's .ds-btn-icon, which is a shape composed with a
+   Only what internal tools alone have is here: the pressed state of a
+   toggle. The button itself is tier 1's, and so is the quiet destructive
+   (.ds-btn-text.ds-btn-destructive). */
+
+/* Compact — inline field actions and table rows. 29px tall, above the 24px floor. */
+
+/* Constructive — edit, add, copy */
+
+/* Pressed — a toggle that is on. aria-pressed carries the state; this only shows it. */
+.ds-btn-icon[aria-pressed="true"] {
+  background: var(--ds-surface-active);
+  border-color: var(--ds-text-disabled);
+  color: var(--ds-text-strong);
+}
+.ds-btn-icon[aria-pressed="true"]:hover:not(:disabled) {
+  background: var(--ds-surface-hover-strong);
+  border-color: var(--ds-text-disabled);
+  color: var(--ds-text-strong);
+}
+
+
+
+
+
+/* ─── Dark Mode Overrides ───────────────────────────────────── */
+/*
+ * Fires when: OS is set to dark  AND  the page has not locked to light mode.
+ *
+ * To lock a page to light mode, add data-theme="light" to <html>:
+ *   <html lang="en" data-theme="light">
+ * The :not([data-theme="light"]) guard prevents this block from applying.
+ */
+
+/* Dark mode. Only the tokens whose dark value differs from tier 1's; never
+ * hand-pick a dark colour into a component rule. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* Only the tokens whose dark value differs from tier 1's. Everything
+       else — text, canvas, borders, links, focus ring, all four status
+       families — flips identically on both surfaces and is inherited. */
+
+    /* The two internal hover washes, at the same steps as in light mode. */
+    --ds-surface-hover-strong:  #282622;
+    --ds-surface-active:        #383531;
+
+    --ds-text-strong:           #d4cfc9;  /* 11.22:1 on dark ✓ */
+
+
+  }
+
+  /* Constructive icon — lime holds its light value, so the label is lime on dark */
+
+
+}
+
+/* ── The same values, keyed to the attribute ──────────────────────────────
+   Generated from the @media block above; check-drift.py fails if the two
+   disagree. The block above answers the OS; this one answers the reader,
+   who can now say so on either surface. Until 2026-09-16 this file had no
+   attribute rules at all, so an internal tool followed the machine and could
+   not be switched — an asymmetry with tier 1 that was inherited, not chosen.
+   Dropping the :root / html prefix also makes it scopable: a data-theme
+   island anywhere in the DOM picks up the same values. */
+[data-theme="dark"] {
+  /* Only the tokens whose dark value differs from tier 1's. Everything
+     else — text, canvas, borders, links, focus ring, all four status
+     families — flips identically on both surfaces and is inherited. */
+
+  /* The two internal hover washes, at the same steps as in light mode. */
+  --ds-surface-hover-strong:  #282622;
+  --ds-surface-active:        #383531;
+
+  --ds-text-strong:           #d4cfc9;  /* 11.22:1 on dark ✓ */
+
+
+}
+
+/* Constructive icon — lime holds its light value, so the label is lime on dark */
+
+
+/* ─── Form Validation ──────────────────────────────────────── */
+/*
+ * Invalid state: add .is-invalid to the input/textarea/select.
+ * Error message: <p class="field-error"> below the field.
+ * The field-error should have [hidden] by default, removed on validation failure.
+ *
+ * Usage:
+ *   <label>Reason</label>
+ *   <textarea class="is-invalid" required aria-required="true" aria-describedby="err-1">…</textarea>
+ *   <p class="field-error" id="err-1">Please provide a reason.</p>
+ */
+
+/* ─── Form fields — internal-only additions ────────────────────── */
+/*
+ * The field family itself — .ds-field, .ds-label, .ds-input, .ds-hint,
+ * .ds-check, the invalid state and the error message — lives in the tier 1
+ * stylesheet, which this surface loads first. What is here is what only
+ * internal tools need.
+ *
+ * The checkbox accent is the one genuine difference: a public checkbox
+ * ticks Link Blue, a staff one ticks the accent, which is the same rule
+ * every other control on this surface follows.
+ *
+ * Usage is unchanged:
+ *   <div class="ds-field ds-field--md">
+ *     <label class="ds-label" for="reason">Reason</label>
+ *     <textarea class="ds-input is-invalid" id="reason"
+ *               required aria-required="true" aria-describedby="reason-err"></textarea>
+ *     <p class="field-error" id="reason-err">Say why this is being withdrawn.</p>
+ *   </div>
+ */
+
+/* Field width follows the content: size a control to what it expects
+   rather than stretching everything edge-to-edge. Internal screens are dense
+   enough that this matters; public forms have not needed it yet. */
+.ds-field--sm .ds-input { max-width: 240px; }
+.ds-field--md .ds-input { max-width: 360px; }
+.ds-field--lg .ds-input { max-width: 480px; }
+
+/* Checkboxes tick the deep lime: the lighter lime border is 2.3:1 on white. */
+.ds-internal .ds-check input,
+.ds-internal .ds-table input[type="checkbox"] { accent-color: var(--ds-accent-border-active); }
+
+/* .is-invalid without .ds-input, for the staff controls that are not
+   inputs — the segmented control and the category editor. */
+.is-invalid {
+  border-color: var(--ds-error-border);
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.10);
+}
+.is-invalid:focus-visible {
+  border-color: var(--ds-error-border);
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15);
+}
+
+/* Error slots render empty until validation fails. */
+.field-error[hidden] { display: none; }
+
+/* ─── Alert / Status Message ────────────────────────────────── */
+/*
+ * Nothing here. The whole component — .ds-alert and its four variants,
+ * the icon, the title, the close control, and the forced-colors and
+ * reduced-motion handling — lives in the tier 1 stylesheet, which this
+ * surface loads first. The status palettes were already identical
+ * between the two surfaces, so there was nothing left to override.
+ */

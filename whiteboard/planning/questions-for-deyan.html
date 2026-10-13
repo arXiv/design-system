@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Questions for Deyan</title>
+<link rel="stylesheet" href="../../docs/fonts.css">
+<link rel="stylesheet" href="../../docs/design-system.css">
+<script src="../../docs/theme.js"></script>
+</head>
+<body class="ds-page">
+<main class="ds-container">
+  <h1>Questions for Deyan</h1>
+
+  <ul>
+    <li>I added this rule for HTML paper layouts: “A wide equation scrolls inside its own box, never the page.” Checking with you on whether that is realistic for <code>&lt;table class="ltx_equationgroup"&gt;</code>. Making a wide equation scroll changes it to <code>display: block</code>, which removes the table semantics. Does a screen reader use those rows, or can they take <code>role="presentation"</code>?</li>
+    <li>Another rule is “The TeX is exactly what the author wrote. arXiv does not strip or tidy it.” This rule applies not only to the TeX source, but also to the “copy” feature for equations. The sample paper shows <code>\displaystyle</code> in aligned cells and braces such as <code>R^{2}</code>. If LaTeXML adds these, can it keep the author&#39;s original string so that Copy can use that? It also might be an artifact of me messing around with the mockup so much.</li>
+    <li>In the paper mockup we have permalinks for every paragraph, figure, equation, and more. How permanent are the paragraph ids like <code>S2.p3</code>? Might they change when LaTeXML upgrades and a paper is regenerated?</li>
+    <li>We will want to discuss reconciling ar5iv&#39;s stylesheet with the DS, and whether the DS stylesheet can and should “win” any battles. We will also want to remove the theme switcher, since the header/DS now include that feature.</li>
+  </ul>
+
+  <p>Any issues with rendering any of this markup? I assume not but wanted to check on each one that Claude has pointed out:</p>
+  <ul>
+    <li>The <code>&lt;main&gt;</code> landmark round the paper.</li>
+    <li>A visually hidden “Abstract” heading, so a screen reader user can jump to the abstract by heading.</li>
+    <li>Table scroll regions. Can LaTeXML wrap every tabular, including one with no <code>.ltx_table</code> wrapper today, in an element that can be the scroll region, with <code>role="region"</code>, <code>tabindex="0"</code> and a name taken from its caption? Or should arXiv&#39;s script add those attributes?</li>
+    <li>Make the bibliography a direct child of the page container. Can the bibliography be output in the location shown in the mockup? That will support the full-width tinted band. I know this is still an unknown and will probably break on at least some papers, just floating it again.</li>
+  </ul>
+</main>
+</body>
+</html>

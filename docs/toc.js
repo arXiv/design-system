@@ -13,6 +13,13 @@
  * once it has reached the top of the viewport.
  */
 (function () {
+  // The words of a heading or link as shown: MathML's TeX annotation is never
+  // displayed, so it is left out, as is the Permalink control.
+  function plain(el) {
+    var c = el.cloneNode(true);
+    Array.prototype.forEach.call(c.querySelectorAll('annotation, annotation-xml, .ds-permalink'), function (n) { n.remove(); });
+    return c.textContent.replace(/\s+/g, ' ').trim();
+  }
   var toc = document.querySelector('.ds-toc');
   if (!toc) return;
 
@@ -24,7 +31,7 @@
       var li = document.createElement('li');
       var a = document.createElement('a');
       a.href = '#' + h.id;
-      a.textContent = h.textContent.replace(/\s+/g, ' ').trim();
+      a.textContent = plain(h);
       li.appendChild(a);
       list.appendChild(li);
     });
@@ -122,7 +129,7 @@
       current.link.classList.add('is-current');
       current.link.setAttribute('aria-current', 'location');
     }
-    label(current ? current.link.textContent.replace(/\s+/g, ' ').trim() : '');
+    label(current ? plain(current.link) : '');
   }
 
   window.addEventListener('resize', sync);

@@ -1,0 +1,1428 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Papers — arXiv Design System</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
+<script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
+</head>
+<body class="ds-page">
+<header class="ds-site-header ds-site-header--light">
+  <a class="ds-site-header-logo" href="../index.html"><span aria-hidden="true">arXiv Design System</span><span class="is-sr-only">archive Design System</span></a>
+  <nav class="ds-site-header-nav" aria-label="Design system">
+    <details class="ds-site-header-dropdown">
+      <summary>Design Patterns</summary>
+      <div class="ds-site-header-menu">
+        <span class="ds-panel-label">Components</span>
+        <a href="colors.html">Colors</a>
+        <a href="dark-mode.html">Dark mode</a>
+        <a href="typography.html">Typography</a>
+        <a href="spacing.html">Spacing</a>
+        <a href="icons.html">Icons</a>
+        <a href="buttons.html">Buttons</a>
+        <a href="links.html">Links</a>
+        <a href="forms.html">Forms &amp; validation</a>
+        <a href="alerts.html">Alerts</a>
+        <a href="messages.html">Messaging</a>
+        <a href="tags.html">Tags</a>
+        <a href="header.html">Site header</a>
+        <a href="footer.html">Site footer</a>
+        <a href="pager.html">Pager</a>
+        <span class="ds-panel-label">Organizing content</span>
+        <a href="layout-patterns.html">Layouts</a>
+        <a href="cards.html">Cards</a>
+        <a href="tables.html">Tables</a>
+        <a href="search.html">Search</a>
+        <a href="progressive-disclosure.html">Progressive disclosure</a>
+        <a href="modals.html">Modal dialogs</a>
+        <a href="papers.html" aria-current="page">Papers</a>
+        </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Mockups</summary>
+      <div class="ds-site-header-menu">
+        <a href="../whiteboard/mockups/">All mockups</a>
+        <span class="ds-panel-label">Public</span>
+        <a href="../whiteboard/mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+        <a href="../whiteboard/mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+        <a href="../whiteboard/mockups/public/optin-modal/">Labs opt-in modal</a>
+        <a href="../whiteboard/mockups/public/submission-metadata/">Submission — Metadata Form</a>
+        <span class="ds-panel-label">Internal</span>
+        <a href="../whiteboard/mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+        <a href="../whiteboard/mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+        <a href="../whiteboard/mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+        <a href="../whiteboard/mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+        <a href="../whiteboard/mockups/internal/membership-dashboard/">Membership dashboard</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Docs</summary>
+      <div class="ds-site-header-menu">
+        <a href="using.html">Using the system</a>
+        <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+        <a href="doc.html?src=docs/STYLE.md">Writing style</a>
+        <a href="brand.html">Brand &amp; vision</a>
+        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
+        <a href="doc.html?src=README.md">About this repo</a>
+      </div>
+    </details>
+  </nav>
+  <div class="ds-site-header-tools">
+    <button type="button" class="ds-theme-toggle"></button>
+    <span id="ds-theme-status" class="is-sr-only" role="status"></span>
+  </div>
+</header>
+
+<div class="ds-container">
+
+  <div class="ds-full ds-zone-secondary">
+  <header class="ds-page-header">
+    <h1>Papers</h1>
+    <p>Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to HTML papers pages, search results, displaying version information, and more.</p>
+  </header>
+  </div>
+
+  <!-- ═════════ TOC ═════════ -->
+  <div class="ds-full ds-toc-bar">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#the-metadata-hierarchy">The metadata hierarchy</a></li>
+            <li><a href="#a-paper-in-a-list">A paper in a list</a></li>
+            <li><a href="#paper-versions">Displaying paper versions</a></li>
+            <li><a href="#paper-categories">Displaying categories</a></li>
+            <li><a href="#full-papers">Displaying full papers</a></li>
+            <li><a href="#paper-toc-bar">The TOC bar on a paper</a></li>
+            <li><a href="#paper-permalinks">Section permalinks</a></li>
+            <li><a href="#paper-elements">Equations, figures and references</a></li>
+            <li><a href="#paper-citations">Citations and footnotes</a></li>
+            <li><a href="#paper-rules">Metadata</a></li>
+            <li><a href="#full-paper-rules">Full papers</a></li>
+            <li><a href="#paper-body-rules">Paper body</a></li>
+            <li><a href="#paper-toc-bar-rules">TOC bar</a></li>
+            <li><a href="#paper-permalink-rules">Permalinks</a></li>
+            <li><a href="#paper-equation-rules">Equations</a></li>
+            <li><a href="#paper-figure-rules">Figures</a></li>
+            <li><a href="#paper-citation-rules">Citations and footnotes</a></li>
+            <li><a href="#paper-print-rules">Printing</a></li>
+            <li><a href="#three-dates">Formatting the three dates</a></li>
+            <li><a href="#elision-signals-continuation-js-never-hides-content-for-good">Formatting the ellipsis and show all toggle</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ───────── The metadata hierarchy ───────── -->
+  <section>
+    <h2 id="the-metadata-hierarchy">The metadata hierarchy</h2>
+    <p class="ds-section-desc">This order is based on what we hear from arXiv readers. They focus in on certain information first and want it easy to find, while other content is lower in their reading order.  Look for guidance on visual display? This table is purely about hierarchy and content flow. You will find design and display notes elsewhere on this page and in mockups, .</p>
+    <div class="ds-table-scroll" role="region" aria-label="Paper metadata in a list, in order" tabindex="0">
+      <table class="ds-table">
+        <thead><tr><th scope="col">Order</th><th scope="col">Detail</th><th scope="col">Shown as</th></tr></thead>
+        <tbody><tr><td>1</td><td>Title</td><td>A link to the paper's abstract page.</td></tr><tr><td>2</td><td>Dates</td><td>Submitted and Announced.</td></tr><tr><td>3</td><td>Formats</td><td>PDF, HTML and TeX Source, on the same line as the dates.</td></tr><tr><td>4</td><td>Authors</td><td>Each a link to a search for that author.</td></tr><tr><td>5</td><td>Abstract</td><td>An excerpt, with Show more for the rest.</td></tr><tr><td>6</td><td>Metadata</td><td>Comments, journal reference, DOI, other formats (when a paper has it), and the arXiv ID.</td></tr><tr><td>7</td><td>Categories</td><td>The subject categories, primary first.</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ───────── A paper in a list ───────── -->
+  <section>
+    <h2 id="a-paper-in-a-list">A paper in a list</h2>
+    <p class="ds-section-desc">Search results and listings use the metadata hierarchy. We rely on proximity to define rows instead of relying on visual blocks or dividers. Information is close together within each result and with a comfortable gap between result rows.</p>
+
+    <div class="ds-card">
+      <ol class="ds-paper-list">
+        <li class="ds-paper">
+          <h3><a href="#">LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging</a></h3>
+          <p class="ds-paper-when"><span class="ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.36857</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.36857</span></a> <a href="#">TeX Source<span class="is-sr-only"> of 2609.36857</span></a></span>
+            <span class="ds-date-row">Submitted <time datetime="2026-09-29">29&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time></span></p>
+          <p class="ds-link-list"><a href="#">Giovanni Vincenzo Donatiello</a>, <a href="#">Achille A. Nucita</a>, <a href="#">Francesco De Paolis</a>, <a href="#">Antonio Franco</a>, <a href="#">Francesco Strafella</a></p>
+          <p>We present LUMA, a convolutional neural network (CNN) pipeline for the automated detection of strong gravitational <mark>lenses</mark> in simulated astronomical imaging. The method combines a physically motivated preprocessing stage, which enhances faint arc and ring features, with a compact three-block CNN trained using class reweighting and modern learning-rate schedul… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p>
+          <dl class="ds-data-list">
+            <div><dt>Comments</dt><dd>Accepted for publication in Astronomy and Computing, 2027, Corresponding Author: G.V. Donatiello (see associated pdf for useful e-mail addresses). 14 Pages, 8 Figures, 3 Tables</dd></div>
+            <div><dt>DOI</dt><dd><a href="https://doi.org/10.1016/j.ascom.2026.101198">10.1016/j.ascom.2026.101198</a></dd></div>
+            <div><dt>arXiv ID</dt><dd><a href="#">2609.36857</a></dd></div>
+          </dl>
+          <ul class="ds-tag-list" aria-label="Subject categories, primary first">
+            <li><span class="ds-tooltip-host"><a href="https://arxiv.org/list/astro-ph.IM/recent" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-1-0">astro-ph.IM</a><span class="ds-tooltip" id="cat-1-0" role="tooltip"><span class="ds-tooltip-body">Instrumentation and Methods for Astrophysics (primary)</span></span></span></li>
+            <li><span class="ds-tooltip-host"><a href="https://arxiv.org/list/astro-ph.GA/recent" class="ds-tag ds-tag--keep-case" aria-describedby="cat-1-1">astro-ph.GA</a><span class="ds-tooltip" id="cat-1-1" role="tooltip"><span class="ds-tooltip-body">Astrophysics of Galaxies</span></span></span></li>
+          </ul>
+        </li>
+        <li class="ds-paper">
+          <h3><a href="#">SN Helios: A Multiply Imaged Type II Supernova Opening Time-Delay Cosmography beyond redshift of 3</a></h3>
+          <p class="ds-paper-when"><span class="ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.30440</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.30440</span></a> <a href="#">TeX Source<span class="is-sr-only"> of 2609.30440</span></a></span>
+            <span class="ds-date-row">Submitted <time datetime="2026-09-24">24&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time></span></p>
+          <p class="ds-link-list"><a href="#">Seiji Fujimoto</a>, <a href="#">Conor Larison</a>, <a href="#">Justin D. R. Pierel</a>, <a href="#">Lukas J. Furtak</a>, <a href="#">Masamune Oguri</a>, <a href="#">Adi Zitrin</a>, <a href="#">Jose M. Diego</a>, <a href="#">Keren Sharon</a> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false">show all 67 authors</button></p>
+          <p>We report the discovery and spectroscopic confirmation of SN Helios, a strongly <mark>lensed</mark>, multiply imaged Type II supernova (SN) at behind the galaxy cluster RXC J0018.5+1626. The transient was identified as a red F150W-dropout source (F277W = 26.1 mag) in JWST/NIRCam imaging taken on 2026 July 3 for the VENUS survey, with no counterpart in 2024 Decem… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p>
+          <dl class="ds-data-list">
+            <div><dt>Comments</dt><dd>14 pages, 9 figures, 5 tables. Comments welcome!</dd></div>
+            <div><dt>arXiv ID</dt><dd><a href="#">2609.30440</a></dd></div>
+          </dl>
+          <ul class="ds-tag-list" aria-label="Subject categories, primary first">
+            <li><span class="ds-tooltip-host"><a href="https://arxiv.org/list/astro-ph.GA/recent" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-2-0">astro-ph.GA</a><span class="ds-tooltip" id="cat-2-0" role="tooltip"><span class="ds-tooltip-body">Astrophysics of Galaxies (primary)</span></span></span></li>
+            <li><span class="ds-tooltip-host"><a href="https://arxiv.org/list/astro-ph.CO/recent" class="ds-tag ds-tag--keep-case" aria-describedby="cat-2-1">astro-ph.CO</a><span class="ds-tooltip" id="cat-2-1" role="tooltip"><span class="ds-tooltip-body">Cosmology and Nongalactic Astrophysics</span></span></span></li>
+            <li><span class="ds-tooltip-host"><a href="https://arxiv.org/list/astro-ph.HE/recent" class="ds-tag ds-tag--keep-case" aria-describedby="cat-2-2">astro-ph.HE</a><span class="ds-tooltip" id="cat-2-2" role="tooltip"><span class="ds-tooltip-body">High Energy Astrophysical Phenomena</span></span></span></li>
+          </ul>
+        </li>
+      </ol>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;ol class="ds-paper-list"&gt;
+  &lt;li class="ds-paper"&gt;
+    &lt;h3&gt;&lt;a href="#"&gt;LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging&lt;/a&gt;&lt;/h3&gt;
+    &lt;p class="ds-paper-when"&gt;&lt;span class="ds-link-list"&gt;&lt;a href="#"&gt;PDF&lt;span class="is-sr-only"&gt; of 2609.36857&lt;/span&gt;&lt;/a&gt; &lt;a href="#"&gt;HTML&lt;span class="is-sr-only"&gt; of 2609.36857&lt;/span&gt;&lt;/a&gt; &lt;a href="#"&gt;TeX Source&lt;span class="is-sr-only"&gt; of 2609.36857&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;
+      &lt;span class="ds-date-row"&gt;Submitted &lt;time datetime="2026-09-29"&gt;29&amp;nbsp;Sep&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC &lt;span aria-hidden="true"&gt;·&lt;/span&gt;&lt;span class="is-sr-only"&gt;,&lt;/span&gt; Announced &lt;time datetime="2026-09"&gt;Sep&amp;nbsp;2026&lt;/time&gt;&lt;/span&gt;&lt;/p&gt;
+    &lt;p class="ds-link-list"&gt;&lt;a href="#"&gt;Giovanni Vincenzo Donatiello&lt;/a&gt;, &lt;a href="#"&gt;Achille A. Nucita&lt;/a&gt;, &lt;a href="#"&gt;Francesco De Paolis&lt;/a&gt;, &lt;a href="#"&gt;Antonio Franco&lt;/a&gt;, &lt;a href="#"&gt;Francesco Strafella&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;We present LUMA, a convolutional neural network (CNN) pipeline for the automated detection of strong gravitational &lt;mark&gt;lenses&lt;/mark&gt; in simulated astronomical imaging. The method combines a physically motivated preprocessing stage, which enhances faint arc and ring features, with a compact three-block CNN trained using class reweighting and modern learning-rate schedul… &lt;button type="button" class="ds-show-more" aria-expanded="false"&gt;show more&lt;/button&gt;&lt;/p&gt;
+    &lt;dl class="ds-data-list"&gt;
+      &lt;div&gt;&lt;dt&gt;Comments&lt;/dt&gt;&lt;dd&gt;Accepted for publication in Astronomy and Computing, 2027, Corresponding Author: G.V. Donatiello (see associated pdf for useful e-mail addresses). 14 Pages, 8 Figures, 3 Tables&lt;/dd&gt;&lt;/div&gt;
+      &lt;div&gt;&lt;dt&gt;DOI&lt;/dt&gt;&lt;dd&gt;&lt;a href="https://doi.org/10.1016/j.ascom.2026.101198"&gt;10.1016/j.ascom.2026.101198&lt;/a&gt;&lt;/dd&gt;&lt;/div&gt;
+      &lt;div&gt;&lt;dt&gt;arXiv ID&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;2609.36857&lt;/a&gt;&lt;/dd&gt;&lt;/div&gt;
+    &lt;/dl&gt;
+    &lt;ul class="ds-tag-list" aria-label="Subject categories, primary first"&gt;
+      &lt;li&gt;&lt;span class="ds-tooltip-host"&gt;&lt;a href="https://arxiv.org/list/astro-ph.IM/recent" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-1-0"&gt;astro-ph.IM&lt;/a&gt;&lt;span class="ds-tooltip" id="cat-1-0" role="tooltip"&gt;&lt;span class="ds-tooltip-body"&gt;Instrumentation and Methods for Astrophysics (primary)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span class="ds-tooltip-host"&gt;&lt;a href="https://arxiv.org/list/astro-ph.GA/recent" class="ds-tag ds-tag--keep-case" aria-describedby="cat-1-1"&gt;astro-ph.GA&lt;/a&gt;&lt;span class="ds-tooltip" id="cat-1-1" role="tooltip"&gt;&lt;span class="ds-tooltip-body"&gt;Astrophysics of Galaxies&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li class="ds-paper"&gt;
+    &lt;h3&gt;&lt;a href="#"&gt;SN Helios: A Multiply Imaged Type II Supernova Opening Time-Delay Cosmography beyond redshift of 3&lt;/a&gt;&lt;/h3&gt;
+    &lt;p class="ds-paper-when"&gt;&lt;span class="ds-link-list"&gt;&lt;a href="#"&gt;PDF&lt;span class="is-sr-only"&gt; of 2609.30440&lt;/span&gt;&lt;/a&gt; &lt;a href="#"&gt;HTML&lt;span class="is-sr-only"&gt; of 2609.30440&lt;/span&gt;&lt;/a&gt; &lt;a href="#"&gt;TeX Source&lt;span class="is-sr-only"&gt; of 2609.30440&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;
+      &lt;span class="ds-date-row"&gt;Submitted &lt;time datetime="2026-09-24"&gt;24&amp;nbsp;Sep&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC &lt;span aria-hidden="true"&gt;·&lt;/span&gt;&lt;span class="is-sr-only"&gt;,&lt;/span&gt; Announced &lt;time datetime="2026-09"&gt;Sep&amp;nbsp;2026&lt;/time&gt;&lt;/span&gt;&lt;/p&gt;
+    &lt;p class="ds-link-list"&gt;&lt;a href="#"&gt;Seiji Fujimoto&lt;/a&gt;, &lt;a href="#"&gt;Conor Larison&lt;/a&gt;, &lt;a href="#"&gt;Justin D. R. Pierel&lt;/a&gt;, &lt;a href="#"&gt;Lukas J. Furtak&lt;/a&gt;, &lt;a href="#"&gt;Masamune Oguri&lt;/a&gt;, &lt;a href="#"&gt;Adi Zitrin&lt;/a&gt;, &lt;a href="#"&gt;Jose M. Diego&lt;/a&gt;, &lt;a href="#"&gt;Keren Sharon&lt;/a&gt; &lt;button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false"&gt;show all 67 authors&lt;/button&gt;&lt;/p&gt;
+    &lt;p&gt;We report the discovery and spectroscopic confirmation of SN Helios, a strongly &lt;mark&gt;lensed&lt;/mark&gt;, multiply imaged Type II supernova (SN) at behind the galaxy cluster RXC J0018.5+1626. The transient was identified as a red F150W-dropout source (F277W = 26.1 mag) in JWST/NIRCam imaging taken on 2026 July 3 for the VENUS survey, with no counterpart in 2024 Decem… &lt;button type="button" class="ds-show-more" aria-expanded="false"&gt;show more&lt;/button&gt;&lt;/p&gt;
+    &lt;dl class="ds-data-list"&gt;
+      &lt;div&gt;&lt;dt&gt;Comments&lt;/dt&gt;&lt;dd&gt;14 pages, 9 figures, 5 tables. Comments welcome!&lt;/dd&gt;&lt;/div&gt;
+      &lt;div&gt;&lt;dt&gt;arXiv ID&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;2609.30440&lt;/a&gt;&lt;/dd&gt;&lt;/div&gt;
+    &lt;/dl&gt;
+    &lt;ul class="ds-tag-list" aria-label="Subject categories, primary first"&gt;
+      &lt;li&gt;&lt;span class="ds-tooltip-host"&gt;&lt;a href="https://arxiv.org/list/astro-ph.GA/recent" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-2-0"&gt;astro-ph.GA&lt;/a&gt;&lt;span class="ds-tooltip" id="cat-2-0" role="tooltip"&gt;&lt;span class="ds-tooltip-body"&gt;Astrophysics of Galaxies (primary)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span class="ds-tooltip-host"&gt;&lt;a href="https://arxiv.org/list/astro-ph.CO/recent" class="ds-tag ds-tag--keep-case" aria-describedby="cat-2-1"&gt;astro-ph.CO&lt;/a&gt;&lt;span class="ds-tooltip" id="cat-2-1" role="tooltip"&gt;&lt;span class="ds-tooltip-body"&gt;Cosmology and Nongalactic Astrophysics&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span class="ds-tooltip-host"&gt;&lt;a href="https://arxiv.org/list/astro-ph.HE/recent" class="ds-tag ds-tag--keep-case" aria-describedby="cat-2-2"&gt;astro-ph.HE&lt;/a&gt;&lt;span class="ds-tooltip" id="cat-2-2" role="tooltip"&gt;&lt;span class="ds-tooltip-body"&gt;High Energy Astrophysical Phenomena&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+          <dl>
+            <dt>.ds-paper-list</dt>
+            <dd>An <code>&lt;ol&gt;</code> of papers. Papers are separated by space, four times the space inside one, with no lines or boxes.</dd>
+            <dt>.ds-paper</dt>
+            <dd>One paper, an <code>&lt;li&gt;</code>. Its first child is the title: a heading one level below the list's own heading, linked to the abstract page.</dd>
+            <dt>.ds-paper-when</dt>
+            <dd>The format links (a <code>.ds-link-list</code>) and the dates (<code>.ds-date-row</code>) on one line. The links come first in the markup, so a screen reader reaches them straight after the title; the dates are shown first. On a narrow screen the links wrap below the dates.</dd>
+            <dt>p.ds-link-list</dt>
+            <dd>The authors. After eight names, Show more for the rest.</dd>
+            <dt>&lt;p&gt;</dt>
+            <dd>The abstract excerpt and its Show more. See <a href="progressive-disclosure.html#show-more">Show more</a>.</dd>
+            <dt>.ds-data-list</dt>
+            <dd>Comments, journal reference, DOI and the arXiv ID, in that order, each label beside its value. A paper shows only the rows it has. See <a href="cards.html#data-list">Data list</a>.</dd>
+            <dt>.ds-tag-list</dt>
+            <dd>The category tags, primary first. See <a href="#paper-categories">Displaying categories</a>. It sits close under the metadata.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Displaying paper versions ───────── -->
+  <section>
+    <h2 id="paper-versions">Displaying paper versions</h2>
+    <p class="ds-section-desc">Every paper shows its dates, and its versions once there is more than one. What is shown depends on how many versions there are and which one the reader is viewing.</p>
+
+    <p class="ds-panel-label">One version</p>
+    <p>The most common case because most papers have a single version. We show the submitted and announced dates and nothing else.</p>
+    <div class="ds-card">
+      <p class="ds-date-row">
+        Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
+      </p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-date-row"&gt;
+  Submitted &lt;time datetime="2026-01-10"&gt;10&amp;nbsp;Jan&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Announced &lt;time datetime="2026-01-11T01:32Z"&gt;11&amp;nbsp;Jan&amp;nbsp;2026,&amp;nbsp;01:32&lt;/time&gt;&amp;nbsp;UTC
+&lt;/p&gt;
+</code></pre>
+          <dl>
+            <dt>.ds-date-row</dt>
+            <dd>The row. One <code>&lt;p&gt;</code> that holds the dates and, after them, the version
+            links. Small type in the muted colour, with tabular figures so the digits line up.</dd>
+            <dt>&lt;time datetime&gt;</dt>
+            <dd>Every date. Announced is a full instant (<code>2026-01-11T01:32Z</code>); Submitted and
+            Revised are date-only (<code>2026-01-10</code>). In the visible text, bind the day, month,
+            year and clock time to each other with <code>&amp;nbsp;</code>, and bind UTC to its date the
+            same way, outside the element.</dd>
+            <dt>.is-sr-only</dt>
+            <dd>The separator. The visible "·" is <code>aria-hidden</code>, and the sr-only comma
+            beside it is what a screen reader gets between one date and the next.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <p class="ds-panel-label">A few versions</p>
+    <p>Once a paper has more than one version, the date row displays three dates: <strong>Submitted</strong> and <strong>Announced</strong> are always the v1 dates; <strong>Revised … (this version)</strong> is the date of the version you are reading. Prior versions follow as text links. The current version is displayed in bold, is not a link, and includes the <code>aria-current</code> tag. </p>
+    <p class="ds-section-desc">In the example below, we are viewing the latest version.</p>
+    <p class="ds-panel-label">Viewing v3 of 3 (latest)</p>
+    <div class="ds-card">
+      <p class="ds-date-row">
+        Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Revised <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC (this version)
+        <a class="ds-version" href="#v1" aria-label="View version 1">v1</a>
+        <a class="ds-version" href="#v2" aria-label="View version 2">v2</a>
+        <strong class="ds-version" aria-current="true">v3<span class="is-sr-only">, this version</span></strong>
+      </p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-date-row"&gt;
+  Submitted &lt;time datetime="2026-01-10"&gt;10&amp;nbsp;Jan&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Announced &lt;time datetime="2026-01-11T01:32Z"&gt;11&amp;nbsp;Jan&amp;nbsp;2026,&amp;nbsp;01:32&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Revised &lt;time datetime="2026-04-24"&gt;24&amp;nbsp;Apr&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC (this version)
+  &lt;a class="ds-version" href="#v1" aria-label="View version 1"&gt;v1&lt;/a&gt;
+  &lt;a class="ds-version" href="#v2" aria-label="View version 2"&gt;v2&lt;/a&gt;
+  &lt;strong class="ds-version" aria-current="true"&gt;v3&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;&lt;/strong&gt;
+&lt;/p&gt;
+</code></pre>
+          <dl>
+            <dt>.ds-version</dt>
+            <dd>One version number in the row, in the mono face. A prior version is an
+            <code>&lt;a&gt;</code> with an <code>href</code>, and takes the page's link colour and
+            underline. The version being viewed is a <code>&lt;strong&gt;</code>, not a link.</dd>
+            <dt>aria-current="true"</dt>
+            <dd>On the version being viewed. Goes with the bold, so the current version is marked
+            twice and never by colour alone. The <code>.is-sr-only</code> span inside it says
+            ", this version", because the attribute alone is not announced by every screen reader.</dd>
+            <dt>aria-label="View version 1"</dt>
+            <dd>On every prior-version link: "View version 1". The visible "v1" on its own does not say
+            what the link does.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <p class="ds-panel-label">Viewing an older version</p>
+    <p>When the reader is on anything but the latest version, a few things change.</p>
+    <ul>
+      <li>If you are viewing V1, we add <strong>(this version)</strong> to the submitted date.</li>
+      <li>In all cases, an amber warning appears (not error red or neutral blue) pointing to the current version.</li>
+    </ul>
+    <p class="ds-panel-label">Viewing v1, latest is v3</p>
+    <div class="ds-card">
+      <p class="ds-date-row">
+        Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC (this version)
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
+        <strong class="ds-version" aria-current="true">v1<span class="is-sr-only">, this version</span></strong>
+        <a class="ds-version" href="#v2" aria-label="View version 2">v2</a>
+        <a class="ds-version" href="#v3" aria-label="View version 3">v3</a>
+      </p>
+      <div class="ds-alert ds-alert--warning" role="alert">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+          <path d="M12 9v4"/>
+          <path d="M12 17h.01"/>
+        </svg>
+        <div class="ds-alert-content">
+          <p><strong>You are viewing version 1.</strong> A newer version is available — <a href="#v3">version 3, revised 24&nbsp;Apr&nbsp;2026</a>.</p>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-date-row"&gt;
+  Submitted &lt;time datetime="2026-01-10"&gt;10&amp;nbsp;Jan&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC (this version)
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Announced &lt;time datetime="2026-01-11T01:32Z"&gt;11&amp;nbsp;Jan&amp;nbsp;2026,&amp;nbsp;01:32&lt;/time&gt;&amp;nbsp;UTC
+  &lt;strong class="ds-version" aria-current="true"&gt;v1&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;&lt;/strong&gt;
+  &lt;a class="ds-version" href="#v2" aria-label="View version 2"&gt;v2&lt;/a&gt;
+  &lt;a class="ds-version" href="#v3" aria-label="View version 3"&gt;v3&lt;/a&gt;
+&lt;/p&gt;
+&lt;div class="ds-alert ds-alert--warning" role="alert"&gt;
+  &lt;svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
+    &lt;path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/&gt;
+    &lt;path d="M12 9v4"/&gt;
+    &lt;path d="M12 17h.01"/&gt;
+  &lt;/svg&gt;
+  &lt;div class="ds-alert-content"&gt;
+    &lt;p&gt;&lt;strong&gt;You are viewing version 1.&lt;/strong&gt; A newer version is available — &lt;a href="#v3"&gt;version 3, revised 24&amp;nbsp;Apr&amp;nbsp;2026&lt;/a&gt;.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+          <dl>
+            <dt>.ds-alert.ds-alert--warning</dt>
+            <dd>The older-version warning, documented on <a href="alerts.html">Alerts</a>: the warning
+            state, the triangle icon copied whole, and <code>role="alert"</code>. Render it only when
+            the version being viewed is not the latest. One sentence that names the version being
+            viewed, then a link straight to the latest one.</dd>
+            <dt>aria-current="true"</dt>
+            <dd>On v1 here, since v1 is the version being viewed. "(this version)" moves to the
+            Submitted date for the same reason.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <p class="ds-panel-label">Many versions</p>
+    <p>Once a paper has ten or more versions we make some additional changes.</p>
+    <ul>
+      <li>The inline list keeps its first three and last three and elides the middle with an ellipsis. The elided versions are still in the DOM, but hidden with <code>hidden</code> and <code>aria-hidden</code>.</li>
+      <li>The ellipsis has <code>aria-hidden</code> and a screen-reader-only span beside it says "versions 4 through 9 hidden," so the reader knows there are more versions than they can see.</li>
+      <li>The version being viewed always stays visible, wherever it falls in the list. It may interrupt the ellipsis.</li>
+      <li>A text button displays the total count and expands the full list.</li>
+      <li>The expanded list shows all versions in a list, wrapping if necessary. No javascript required.</li>
+    </ul>
+
+    <p class="ds-panel-label">Viewing v12 of 12 (latest), collapsed</p>
+    <div class="ds-card">
+      <p class="ds-date-row">
+        Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Revised <time datetime="2026-06-30">30&nbsp;Jun&nbsp;2026</time>&nbsp;UTC (this version)
+        <a class="ds-version" href="#v1" aria-label="View version 1">v1</a>
+        <a class="ds-version" href="#v2" aria-label="View version 2">v2</a>
+        <a class="ds-version" href="#v3" aria-label="View version 3">v3</a>
+        <span id="v12-elide"><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 9 hidden,</span></span>
+        <span id="v12-tail" hidden>
+          <a class="ds-version" href="#v4" aria-label="View version 4">v4</a>
+          <a class="ds-version" href="#v5" aria-label="View version 5">v5</a>
+          <a class="ds-version" href="#v6" aria-label="View version 6">v6</a>
+          <a class="ds-version" href="#v7" aria-label="View version 7">v7</a>
+          <a class="ds-version" href="#v8" aria-label="View version 8">v8</a>
+          <a class="ds-version" href="#v9" aria-label="View version 9">v9</a>
+        </span>
+        <a class="ds-version" href="#v10" aria-label="View version 10">v10</a>
+        <a class="ds-version" href="#v11" aria-label="View version 11">v11</a>
+        <strong class="ds-version" aria-current="true">v12<span class="is-sr-only">, this version</span></strong>
+        <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v12-elide v12-tail">show all 12 versions</button>
+      </p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-date-row"&gt;
+  Submitted &lt;time datetime="2026-01-10"&gt;10&amp;nbsp;Jan&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Announced &lt;time datetime="2026-01-11T01:32Z"&gt;11&amp;nbsp;Jan&amp;nbsp;2026,&amp;nbsp;01:32&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Revised &lt;time datetime="2026-06-30"&gt;30&amp;nbsp;Jun&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC (this version)
+  &lt;a class="ds-version" href="#v1" aria-label="View version 1"&gt;v1&lt;/a&gt;
+  &lt;a class="ds-version" href="#v2" aria-label="View version 2"&gt;v2&lt;/a&gt;
+  &lt;a class="ds-version" href="#v3" aria-label="View version 3"&gt;v3&lt;/a&gt;
+  &lt;span id="v12-elide"&gt;&lt;span aria-hidden="true"&gt;…&lt;/span&gt;&lt;span class="is-sr-only"&gt;versions 4 through 9 hidden,&lt;/span&gt;&lt;/span&gt;
+  &lt;span id="v12-tail" hidden&gt;
+    &lt;a class="ds-version" href="#v4" aria-label="View version 4"&gt;v4&lt;/a&gt;
+    &lt;a class="ds-version" href="#v5" aria-label="View version 5"&gt;v5&lt;/a&gt;
+    &lt;a class="ds-version" href="#v6" aria-label="View version 6"&gt;v6&lt;/a&gt;
+    &lt;a class="ds-version" href="#v7" aria-label="View version 7"&gt;v7&lt;/a&gt;
+    &lt;a class="ds-version" href="#v8" aria-label="View version 8"&gt;v8&lt;/a&gt;
+    &lt;a class="ds-version" href="#v9" aria-label="View version 9"&gt;v9&lt;/a&gt;
+  &lt;/span&gt;
+  &lt;a class="ds-version" href="#v10" aria-label="View version 10"&gt;v10&lt;/a&gt;
+  &lt;a class="ds-version" href="#v11" aria-label="View version 11"&gt;v11&lt;/a&gt;
+  &lt;strong class="ds-version" aria-current="true"&gt;v12&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;&lt;/strong&gt;
+  &lt;button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v12-elide v12-tail"&gt;show all 12 versions&lt;/button&gt;
+&lt;/p&gt;
+</code></pre>
+          <dl>
+            <dt>.ds-show-more</dt>
+            <dd>The control that expands the list, documented on
+            <a href="progressive-disclosure.html#show-more">Progressive disclosure</a>. Requires
+            <code>aria-expanded</code>, flipped on every press, and <code>aria-controls</code> naming
+            every region it shows or hides. The label includes the total: "show all 12 versions", and
+            "show fewer" once open.</dd>
+            <dt>[hidden]</dt>
+            <dd>On the span that holds the elided versions. The attribute, not a class: the hidden links
+            are out of the tab order while they are off screen. The full list is in the HTML the server
+            sends; a script adds <code>hidden</code> and the button, so with no JavaScript the reader
+            gets every version.</dd>
+            <dt>aria-hidden="true"</dt>
+            <dd>On the ellipsis, which is decoration. The <code>.is-sr-only</code> span beside it says
+            which versions are hidden. Both sit in one span that the button hides when the list
+            opens.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <p class="ds-panel-label">Viewing v7 of 12</p>
+    <div class="ds-card">
+      <p class="ds-date-row">
+        Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Revised <time datetime="2026-03-12">12&nbsp;Mar&nbsp;2026</time>&nbsp;UTC (this version)
+        <a class="ds-version" href="#v1" aria-label="View version 1">v1</a>
+        <a class="ds-version" href="#v2" aria-label="View version 2">v2</a>
+        <a class="ds-version" href="#v3" aria-label="View version 3">v3</a>
+        <span id="v7-elide-a"><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 6 hidden,</span></span>
+        <span id="v7-tail-a" hidden>
+          <a class="ds-version" href="#v4" aria-label="View version 4">v4</a>
+          <a class="ds-version" href="#v5" aria-label="View version 5">v5</a>
+          <a class="ds-version" href="#v6" aria-label="View version 6">v6</a>
+        </span>
+        <strong class="ds-version" aria-current="true">v7<span class="is-sr-only">, this version</span></strong>
+        <span id="v7-elide-b"><span aria-hidden="true">…</span><span class="is-sr-only">versions 8 through 9 hidden,</span></span>
+        <span id="v7-tail-b" hidden>
+          <a class="ds-version" href="#v8" aria-label="View version 8">v8</a>
+          <a class="ds-version" href="#v9" aria-label="View version 9">v9</a>
+        </span>
+        <a class="ds-version" href="#v10" aria-label="View version 10">v10</a>
+        <a class="ds-version" href="#v11" aria-label="View version 11">v11</a>
+        <a class="ds-version" href="#v12" aria-label="View version 12">v12</a>
+        <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b">show all 12 versions</button>
+      </p>
+      <div class="ds-alert ds-alert--warning" role="alert">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+          <path d="M12 9v4"/>
+          <path d="M12 17h.01"/>
+        </svg>
+        <div class="ds-alert-content">
+          <p><strong>You are viewing version 7.</strong> A newer version is available — <a href="#v12">version 12, revised 30&nbsp;Jun&nbsp;2026</a>.</p>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-date-row"&gt;
+  Submitted &lt;time datetime="2026-01-10"&gt;10&amp;nbsp;Jan&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Announced &lt;time datetime="2026-01-11T01:32Z"&gt;11&amp;nbsp;Jan&amp;nbsp;2026,&amp;nbsp;01:32&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Revised &lt;time datetime="2026-03-12"&gt;12&amp;nbsp;Mar&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC (this version)
+  &lt;a class="ds-version" href="#v1" aria-label="View version 1"&gt;v1&lt;/a&gt;
+  &lt;a class="ds-version" href="#v2" aria-label="View version 2"&gt;v2&lt;/a&gt;
+  &lt;a class="ds-version" href="#v3" aria-label="View version 3"&gt;v3&lt;/a&gt;
+  &lt;span id="v7-elide-a"&gt;&lt;span aria-hidden="true"&gt;…&lt;/span&gt;&lt;span class="is-sr-only"&gt;versions 4 through 6 hidden,&lt;/span&gt;&lt;/span&gt;
+  &lt;span id="v7-tail-a" hidden&gt;
+    &lt;a class="ds-version" href="#v4" aria-label="View version 4"&gt;v4&lt;/a&gt;
+    &lt;a class="ds-version" href="#v5" aria-label="View version 5"&gt;v5&lt;/a&gt;
+    &lt;a class="ds-version" href="#v6" aria-label="View version 6"&gt;v6&lt;/a&gt;
+  &lt;/span&gt;
+  &lt;strong class="ds-version" aria-current="true"&gt;v7&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;&lt;/strong&gt;
+  &lt;span id="v7-elide-b"&gt;&lt;span aria-hidden="true"&gt;…&lt;/span&gt;&lt;span class="is-sr-only"&gt;versions 8 through 9 hidden,&lt;/span&gt;&lt;/span&gt;
+  &lt;span id="v7-tail-b" hidden&gt;
+    &lt;a class="ds-version" href="#v8" aria-label="View version 8"&gt;v8&lt;/a&gt;
+    &lt;a class="ds-version" href="#v9" aria-label="View version 9"&gt;v9&lt;/a&gt;
+  &lt;/span&gt;
+  &lt;a class="ds-version" href="#v10" aria-label="View version 10"&gt;v10&lt;/a&gt;
+  &lt;a class="ds-version" href="#v11" aria-label="View version 11"&gt;v11&lt;/a&gt;
+  &lt;a class="ds-version" href="#v12" aria-label="View version 12"&gt;v12&lt;/a&gt;
+  &lt;button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b"&gt;show all 12 versions&lt;/button&gt;
+&lt;/p&gt;
+&lt;div class="ds-alert ds-alert--warning" role="alert"&gt;
+  &lt;svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
+    &lt;path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/&gt;
+    &lt;path d="M12 9v4"/&gt;
+    &lt;path d="M12 17h.01"/&gt;
+  &lt;/svg&gt;
+  &lt;div class="ds-alert-content"&gt;
+    &lt;p&gt;&lt;strong&gt;You are viewing version 7.&lt;/strong&gt; A newer version is available — &lt;a href="#v12"&gt;version 12, revised 30&amp;nbsp;Jun&amp;nbsp;2026&lt;/a&gt;.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+          <dl>
+            <dt>aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b"</dt>
+            <dd>When the viewed version falls inside the elision there are two ellipses and two hidden
+            spans. List all four ids, separated by spaces, so one press opens the whole list.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <p class="ds-panel-label">Expanded, show all 24 versions</p>
+    <div class="ds-card">
+      <p class="ds-date-row">
+        Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Revised <time datetime="2026-06-30">30&nbsp;Jun&nbsp;2026</time>&nbsp;UTC (this version)
+        <a class="ds-version" href="#v1" aria-label="View version 1">v1</a>
+        <a class="ds-version" href="#v2" aria-label="View version 2">v2</a>
+        <a class="ds-version" href="#v3" aria-label="View version 3">v3</a>
+        <span id="v24-elide" hidden><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 21 hidden,</span></span>
+        <span id="v24-tail">
+          <a class="ds-version" href="#v4" aria-label="View version 4">v4</a>
+          <a class="ds-version" href="#v5" aria-label="View version 5">v5</a>
+          <a class="ds-version" href="#v6" aria-label="View version 6">v6</a>
+          <a class="ds-version" href="#v7" aria-label="View version 7">v7</a>
+          <a class="ds-version" href="#v8" aria-label="View version 8">v8</a>
+          <a class="ds-version" href="#v9" aria-label="View version 9">v9</a>
+          <a class="ds-version" href="#v10" aria-label="View version 10">v10</a>
+          <a class="ds-version" href="#v11" aria-label="View version 11">v11</a>
+          <a class="ds-version" href="#v12" aria-label="View version 12">v12</a>
+          <a class="ds-version" href="#v13" aria-label="View version 13">v13</a>
+          <a class="ds-version" href="#v14" aria-label="View version 14">v14</a>
+          <a class="ds-version" href="#v15" aria-label="View version 15">v15</a>
+          <a class="ds-version" href="#v16" aria-label="View version 16">v16</a>
+          <a class="ds-version" href="#v17" aria-label="View version 17">v17</a>
+          <a class="ds-version" href="#v18" aria-label="View version 18">v18</a>
+          <a class="ds-version" href="#v19" aria-label="View version 19">v19</a>
+          <a class="ds-version" href="#v20" aria-label="View version 20">v20</a>
+          <a class="ds-version" href="#v21" aria-label="View version 21">v21</a>
+        </span>
+        <a class="ds-version" href="#v22" aria-label="View version 22">v22</a>
+        <a class="ds-version" href="#v23" aria-label="View version 23">v23</a>
+        <strong class="ds-version" aria-current="true">v24<span class="is-sr-only">, this version</span></strong>
+        <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="true" aria-controls="v24-elide v24-tail" data-closed-label="show all 24 versions">show fewer</button>
+      </p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-date-row"&gt;
+  Submitted &lt;time datetime="2026-01-10"&gt;10&amp;nbsp;Jan&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Announced &lt;time datetime="2026-01-11T01:32Z"&gt;11&amp;nbsp;Jan&amp;nbsp;2026,&amp;nbsp;01:32&lt;/time&gt;&amp;nbsp;UTC
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Revised &lt;time datetime="2026-06-30"&gt;30&amp;nbsp;Jun&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC (this version)
+  &lt;a class="ds-version" href="#v1" aria-label="View version 1"&gt;v1&lt;/a&gt;
+  &lt;a class="ds-version" href="#v2" aria-label="View version 2"&gt;v2&lt;/a&gt;
+  &lt;a class="ds-version" href="#v3" aria-label="View version 3"&gt;v3&lt;/a&gt;
+  &lt;span id="v24-elide" hidden&gt;&lt;span aria-hidden="true"&gt;…&lt;/span&gt;&lt;span class="is-sr-only"&gt;versions 4 through 21 hidden,&lt;/span&gt;&lt;/span&gt;
+  &lt;span id="v24-tail"&gt;
+    &lt;a class="ds-version" href="#v4" aria-label="View version 4"&gt;v4&lt;/a&gt;
+    &lt;a class="ds-version" href="#v5" aria-label="View version 5"&gt;v5&lt;/a&gt;
+    &lt;a class="ds-version" href="#v6" aria-label="View version 6"&gt;v6&lt;/a&gt;
+    &lt;a class="ds-version" href="#v7" aria-label="View version 7"&gt;v7&lt;/a&gt;
+    &lt;a class="ds-version" href="#v8" aria-label="View version 8"&gt;v8&lt;/a&gt;
+    &lt;a class="ds-version" href="#v9" aria-label="View version 9"&gt;v9&lt;/a&gt;
+    &lt;a class="ds-version" href="#v10" aria-label="View version 10"&gt;v10&lt;/a&gt;
+    &lt;a class="ds-version" href="#v11" aria-label="View version 11"&gt;v11&lt;/a&gt;
+    &lt;a class="ds-version" href="#v12" aria-label="View version 12"&gt;v12&lt;/a&gt;
+    &lt;a class="ds-version" href="#v13" aria-label="View version 13"&gt;v13&lt;/a&gt;
+    &lt;a class="ds-version" href="#v14" aria-label="View version 14"&gt;v14&lt;/a&gt;
+    &lt;a class="ds-version" href="#v15" aria-label="View version 15"&gt;v15&lt;/a&gt;
+    &lt;a class="ds-version" href="#v16" aria-label="View version 16"&gt;v16&lt;/a&gt;
+    &lt;a class="ds-version" href="#v17" aria-label="View version 17"&gt;v17&lt;/a&gt;
+    &lt;a class="ds-version" href="#v18" aria-label="View version 18"&gt;v18&lt;/a&gt;
+    &lt;a class="ds-version" href="#v19" aria-label="View version 19"&gt;v19&lt;/a&gt;
+    &lt;a class="ds-version" href="#v20" aria-label="View version 20"&gt;v20&lt;/a&gt;
+    &lt;a class="ds-version" href="#v21" aria-label="View version 21"&gt;v21&lt;/a&gt;
+  &lt;/span&gt;
+  &lt;a class="ds-version" href="#v22" aria-label="View version 22"&gt;v22&lt;/a&gt;
+  &lt;a class="ds-version" href="#v23" aria-label="View version 23"&gt;v23&lt;/a&gt;
+  &lt;strong class="ds-version" aria-current="true"&gt;v24&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;&lt;/strong&gt;
+  &lt;button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="true" aria-controls="v24-elide v24-tail" data-closed-label="show all 24 versions"&gt;show fewer&lt;/button&gt;
+&lt;/p&gt;
+</code></pre>
+          <dl>
+            <dt>[hidden]</dt>
+            <dd>Absent. This is the row as the server sends it: every version in the list, no elision,
+            no button. The row wraps like any other line of text.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="paper-categories">Displaying categories</h2>
+    <p class="ds-section-desc">A paper's subject categories show as tags, primary first. Each code links to its listing, and its full name appears in a tooltip.</p>
+    <div class="ds-card">
+      <ul class="ds-tag-list" aria-label="Subject categories, primary first">
+        <li><span class="ds-tooltip-host"><a href="https://arxiv.org/list/astro-ph.GA/recent" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-demo-0">astro-ph.GA</a><span class="ds-tooltip" id="cat-demo-0" role="tooltip"><span class="ds-tooltip-body">Astrophysics of Galaxies (primary)</span></span></span></li>
+        <li><span class="ds-tooltip-host"><a href="https://arxiv.org/list/astro-ph.CO/recent" class="ds-tag ds-tag--keep-case" aria-describedby="cat-demo-1">astro-ph.CO</a><span class="ds-tooltip" id="cat-demo-1" role="tooltip"><span class="ds-tooltip-body">Cosmology and Nongalactic Astrophysics</span></span></span></li>
+        <li><span class="ds-tooltip-host"><a href="https://arxiv.org/list/astro-ph.HE/recent" class="ds-tag ds-tag--keep-case" aria-describedby="cat-demo-2">astro-ph.HE</a><span class="ds-tooltip" id="cat-demo-2" role="tooltip"><span class="ds-tooltip-body">High Energy Astrophysical Phenomena</span></span></span></li>
+      </ul>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;ul class="ds-tag-list" aria-label="Subject categories, primary first"&gt;
+  &lt;li&gt;&lt;span class="ds-tooltip-host"&gt;&lt;a href="https://arxiv.org/list/astro-ph.GA/recent" class="ds-tag ds-tag--keep-case ds-tag--info" aria-describedby="cat-demo-0"&gt;astro-ph.GA&lt;/a&gt;&lt;span class="ds-tooltip" id="cat-demo-0" role="tooltip"&gt;&lt;span class="ds-tooltip-body"&gt;Astrophysics of Galaxies (primary)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;span class="ds-tooltip-host"&gt;&lt;a href="https://arxiv.org/list/astro-ph.CO/recent" class="ds-tag ds-tag--keep-case" aria-describedby="cat-demo-1"&gt;astro-ph.CO&lt;/a&gt;&lt;span class="ds-tooltip" id="cat-demo-1" role="tooltip"&gt;&lt;span class="ds-tooltip-body"&gt;Cosmology and Nongalactic Astrophysics&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;span class="ds-tooltip-host"&gt;&lt;a href="https://arxiv.org/list/astro-ph.HE/recent" class="ds-tag ds-tag--keep-case" aria-describedby="cat-demo-2"&gt;astro-ph.HE&lt;/a&gt;&lt;span class="ds-tooltip" id="cat-demo-2" role="tooltip"&gt;&lt;span class="ds-tooltip-body"&gt;High Energy Astrophysical Phenomena&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+          <dl>
+            <dt>a.ds-tag</dt>
+            <dd>Each category is a link to its listing of recent papers, with <code>.ds-tag--keep-case</code> so the code keeps its case. See <a href="tags.html">Tags</a>.</dd>
+            <dt>.ds-tag--info</dt>
+            <dd>On the primary category only. The others are the plain grey tag.</dd>
+            <dt>.ds-tooltip</dt>
+            <dd>The full name of the category, on hover and on focus, named by the link&#39;s <code>aria-describedby</code>. The primary one adds “(primary)”. Load <code>tooltip.js</code> once on the page. See <a href="forms.html#tooltip">Tooltip</a>.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="full-papers">Displaying full papers</h2>
+    <p class="ds-section-desc">On a paper&#39;s own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The version history and the paper&#39;s details sit in the sidebar.</p>
+
+    <p class="ds-panel-label">The top of a paper, viewing an older version</p>
+    <div class="ds-card">
+      <p class="ds-paper-identity">
+        <span><span class="ds-version" aria-hidden="true">arXiv:2604.22725v1</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1</span></span>
+        <span>[gr-qc] General Relativity and Quantum Cosmology</span>
+        <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a>
+        <a href="https://creativecommons.org/licenses/by/4.0/">License: CC BY 4.0</a>
+      </p>
+      <h2 id="paper-title-demo">Gauge-independent approach to inflation in quadratic gravity</h2>
+      <p class="ds-date-row">
+        Submitted <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC (this version)
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Announced <time datetime="2026-04-25T02:07Z">25&nbsp;Apr&nbsp;2026,&nbsp;02:07</time>&nbsp;UTC
+        <strong class="ds-version" aria-current="true">v1<span class="is-sr-only">, this version</span></strong>
+        <a class="ds-version" href="https://arxiv.org/abs/2604.22725v2" aria-label="View version 2">v2</a>
+        <a class="ds-version" href="https://arxiv.org/abs/2604.22725v3" aria-label="View version 3">v3</a>
+      </p>
+      <div class="ds-alert ds-alert--warning" role="alert">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        <div class="ds-alert-content">
+          <p><strong>You are viewing version 1.</strong> A newer version is available — <a href="https://arxiv.org/abs/2604.22725v3">version 3, revised 28&nbsp;Jun&nbsp;2026</a>.</p>
+        </div>
+      </div>
+      <p class="ds-link-list"><a href="#">Adrian Palomares</a>, <a href="#">Ilya L. Shapiro</a>, <a href="#">Maria C. Gonzalez-Garcia</a>, <a href="#">Tomohiro Harada</a>, <a href="#">Elena Castellani</a>, <a href="#">Kei-ichi Maeda</a>, <a href="#">Francesca Vidotto</a>, <a href="#">Abhay Ashtekar</a> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false">show all 22 authors</button></p>
+      <p>We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p class="ds-paper-identity"&gt;
+  &lt;span&gt;&lt;span class="ds-version" aria-hidden="true"&gt;arXiv:2604.22725v1&lt;/span&gt;&lt;span class="is-sr-only"&gt;archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1&lt;/span&gt;&lt;/span&gt;
+  &lt;span&gt;[gr-qc] General Relativity and Quantum Cosmology&lt;/span&gt;
+  &lt;a href="https://doi.org/10.48550/arXiv.2604.22725"&gt;doi:10.48550/arXiv.2604.22725&lt;/a&gt;
+  &lt;a href="https://creativecommons.org/licenses/by/4.0/"&gt;License: CC BY 4.0&lt;/a&gt;
+&lt;/p&gt;
+&lt;h1&gt;Gauge-independent approach to inflation in quadratic gravity&lt;/h1&gt;
+&lt;p class="ds-date-row"&gt;
+  Submitted &lt;time datetime="2026-04-24"&gt;24&amp;nbsp;Apr&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC (this version)
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Announced &lt;time datetime="2026-04-25T02:07Z"&gt;25&amp;nbsp;Apr&amp;nbsp;2026,&amp;nbsp;02:07&lt;/time&gt;&amp;nbsp;UTC
+  &lt;strong class="ds-version" aria-current="true"&gt;v1&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;&lt;/strong&gt;
+  &lt;a class="ds-version" href="https://arxiv.org/abs/2604.22725v2" aria-label="View version 2"&gt;v2&lt;/a&gt;
+  &lt;a class="ds-version" href="https://arxiv.org/abs/2604.22725v3" aria-label="View version 3"&gt;v3&lt;/a&gt;
+&lt;/p&gt;
+&lt;div class="ds-alert ds-alert--warning" role="alert"&gt;
+  &lt;svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/&gt;&lt;path d="M12 9v4"/&gt;&lt;path d="M12 17h.01"/&gt;&lt;/svg&gt;
+  &lt;div class="ds-alert-content"&gt;
+    &lt;p&gt;&lt;strong&gt;You are viewing version 1.&lt;/strong&gt; A newer version is available — &lt;a href="https://arxiv.org/abs/2604.22725v3"&gt;version 3, revised 28&amp;nbsp;Jun&amp;nbsp;2026&lt;/a&gt;.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p class="ds-link-list"&gt;&lt;a href="#"&gt;Adrian Palomares&lt;/a&gt;, &lt;a href="#"&gt;Ilya L. Shapiro&lt;/a&gt;, &lt;a href="#"&gt;Maria C. Gonzalez-Garcia&lt;/a&gt;, &lt;a href="#"&gt;Tomohiro Harada&lt;/a&gt;, &lt;a href="#"&gt;Elena Castellani&lt;/a&gt;, &lt;a href="#"&gt;Kei-ichi Maeda&lt;/a&gt;, &lt;a href="#"&gt;Francesca Vidotto&lt;/a&gt;, &lt;a href="#"&gt;Abhay Ashtekar&lt;/a&gt; &lt;button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false"&gt;show all 22 authors&lt;/button&gt;&lt;/p&gt;
+&lt;p&gt;We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.&lt;/p&gt;</code></pre>
+          <dl>
+            <dt>.ds-paper-identity</dt>
+            <dd>The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the licence as a link. The identifier is read out digit by digit from an <code>.is-sr-only</code> span; the visible one is hidden from screen readers.</dd>
+            <dt>&lt;h1&gt;</dt>
+            <dd>The paper title. The demo here uses a smaller heading because it sits inside this page.</dd>
+            <dt>.ds-date-row</dt>
+            <dd>The dates and the version links, as in <a href="#paper-versions">Displaying paper versions</a>. Each version link goes to that version&#39;s abstract page, never its HTML: an HTML version may not exist for every version.</dd>
+            <dt>.ds-alert--warning</dt>
+            <dd>Only when an older version is being viewed. See <a href="#paper-versions">Displaying paper versions</a>.</dd>
+            <dt>p.ds-link-list</dt>
+            <dd>The authors, with Show more after eight.</dd>
+            <dt>&lt;p&gt;</dt>
+            <dd>The abstract, in full.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+        <p class="ds-panel-label">The sidebar</p>
+    <div class="ds-card">
+      <div>
+      <div>
+        <p><strong>The paper</strong></p>
+        <p>The identity line, the title, the dates, the authors and the abstract, then the paper itself. The sidebar sits beside this column, separated from it by the page&#39;s section spacing, and moves below it when both no longer fit.</p>
+      </div>
+      <aside class="ds-sidebar ds-sidebar--framed" aria-label="About this paper">
+        <section aria-labelledby="files-h">
+          <h3 class="ds-panel-label" id="files-h">Files</h3>
+          <ul class="ds-paper-files">
+            <li><a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="paper-title-demo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg> Download PDF <small>· 1.2&nbsp;MB</small><span class="is-sr-only"> (opens in a new tab)</span></a></li>
+            <li><a href="https://arxiv.org/src/2604.22725v1" aria-describedby="paper-title-demo">TeX Source</a> <small>.tar.gz · 286&nbsp;KB</small></li>
+            <li><a href="https://arxiv.org/format/2604.22725v1">Other formats</a></li>
+            <li>Ancillary files <small>· 3.6&nbsp;MB</small> <a href="https://arxiv.org/src/2604.22725v1/anc">Download all<span class="is-sr-only"> 3 ancillary files</span></a></li>
+          </ul>
+        </section>
+        <section aria-labelledby="cite-h" class="ds-paper-cite">
+          <div class="ds-paper-cite-head">
+            <h3 class="ds-panel-label" id="cite-h">Cite</h3>
+            <div class="ds-filter ds-paper-cite-tools">
+              <label class="is-sr-only" for="cite-format">Citation format</label>
+              <select id="cite-format">
+                <option value="bibtex" selected>BibTeX</option>
+                <option value="apa">APA</option>
+                <option value="chicago">Chicago</option>
+                <option value="mla">MLA</option>
+              </select>
+            </div>
+          </div>
+          <div class="ds-paper-cite-block">
+            <div class="ds-paper-cite-tools">
+              <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="cite-code">Show BibTeX</button>
+              <button type="button" class="ds-btn ds-btn-text" id="cite-copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy<span class="is-sr-only"> citation</span></button>
+            </div>
+            <div id="cite-code">
+              <figure data-format="bibtex">
+                <figcaption>BibTeX</figcaption>
+                <pre data-no-copy><code>@article{palomares2026gauge,
+        title = {Gauge-independent approach to inflation in quadratic gravity},
+        author = {Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and Castellani, Elena and Maeda, Kei-ichi and Vidotto, Francesca and Ashtekar, Abhay and Emparan, Roberto and Castro, Alejandra and Boer, Jan de and Nojiri, Shin'ichi and Odintsov, Sergei D. and Mukhanov, Viatcheslav and Sasaki, Misao and Soda, Jiro and Tsujikawa, Shinji and Padilla, Antonio and Gregory, Ruth and Malik, Karim A. and Wands, David and Tanaka, Takahiro},
+        journal = {arXiv preprint arXiv:2604.22725},
+        year = {2026},
+        doi = {10.48550/arXiv.2604.22725}
+      }</code></pre>
+              </figure>
+              <figure data-format="apa">
+                <figcaption>APA</figcaption>
+                <pre data-no-copy><code>Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., Castellani, E., Maeda, K., Vidotto, F., Ashtekar, A., Emparan, R., Castro, A., Boer, J. d., Nojiri, S., Odintsov, S. D., Mukhanov, V., Sasaki, M., Soda, J., Tsujikawa, S., Padilla, A., Gregory, R., … Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. arXiv. https://doi.org/10.48550/arXiv.2604.22725</code></pre>
+              </figure>
+              <figure data-format="chicago">
+                <figcaption>Chicago</figcaption>
+                <pre data-no-copy><code>Palomares, Adrian, Ilya L. Shapiro, Maria C. Gonzalez-Garcia, Tomohiro Harada, Elena Castellani, Kei-ichi Maeda, Francesca Vidotto, et al. 2026. “Gauge-independent approach to inflation in quadratic gravity.” arXiv. https://doi.org/10.48550/arXiv.2604.22725.</code></pre>
+              </figure>
+              <figure data-format="mla">
+                <figcaption>MLA</figcaption>
+                <pre data-no-copy><code>Palomares, Adrian, et al. “Gauge-independent approach to inflation in quadratic gravity.” arXiv, 2026, https://doi.org/10.48550/arXiv.2604.22725.</code></pre>
+              </figure>
+            </div>
+          </div>
+        </section>
+        <section aria-labelledby="info-h">
+          <h3 class="ds-panel-label" id="info-h">Paper information</h3>
+          <details class="ds-acc">
+            <summary>Version history</summary>
+            <div class="ds-acc-body">
+              <ol class="ds-paper-versions">
+                <li>
+                  <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v3" aria-label="View version 3">v3</a> · <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC · Latest</p>
+                  <p>18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.</p>
+                </li>
+                <li>
+                  <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v2" aria-label="View version 2">v2</a> · <time datetime="2026-05-19">19&nbsp;May&nbsp;2026</time>&nbsp;UTC</p>
+                  <p>17 pages, 6 figures. Corrected Eq. (4.7).</p>
+                </li>
+                <li aria-current="true">
+                  <p class="ds-date-row"><strong class="ds-version">v1</strong> · <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC · Viewing</p>
+                  <p>16 pages, 5 figures.</p>
+                </li>
+              </ol>
+            </div>
+          </details>
+          <details class="ds-acc">
+            <summary>Accessibility</summary>
+            <div class="ds-acc-body">
+              <ul class="ds-paper-capabilities">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg> HTML, PDF and TeX Source</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg> Structured math</li>
+              </ul>
+            </div>
+          </details>
+          <details class="ds-acc">
+            <summary>Metadata</summary>
+            <div class="ds-acc-body">
+              <dl>
+                <dt>Subjects</dt><dd>General Relativity and Quantum Cosmology (<a href="https://arxiv.org/list/gr-qc/recent">gr-qc</a>); Cosmology and Nongalactic Astrophysics (<a href="https://arxiv.org/list/astro-ph.CO/recent">astro-ph.CO</a>); High Energy Physics — Theory (<a href="https://arxiv.org/list/hep-th/recent">hep-th</a>)</dd>
+                <dt>arXiv DOI</dt><dd><a href="https://doi.org/10.48550/arXiv.2604.22725">10.48550/arXiv.2604.22725</a></dd>
+                <dt>License</dt><dd><a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></dd>
+                <dt>Journal</dt><dd><a href="#">Journal of Cosmology and Astroparticle Physics, 2026(05), 012</a></dd>
+                <dt>Comments</dt><dd>v3: 18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.</dd>
+              </dl>
+            </div>
+          </details>
+        </section>
+      </aside>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div&gt;
+&lt;div&gt;…the paper…&lt;/div&gt;
+&lt;aside class="ds-sidebar ds-sidebar--framed" aria-label="About this paper"&gt;
+  &lt;section aria-labelledby="files-h"&gt;
+    &lt;h3 class="ds-panel-label" id="files-h"&gt;Files&lt;/h3&gt;
+    &lt;ul class="ds-paper-files"&gt;
+      &lt;li&gt;&lt;a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="paper-title-demo"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt; Download PDF &lt;small&gt;· 1.2&amp;nbsp;MB&lt;/small&gt;&lt;span class="is-sr-only"&gt; (opens in a new tab)&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="https://arxiv.org/src/2604.22725v1" aria-describedby="paper-title-demo"&gt;TeX Source&lt;/a&gt; &lt;small&gt;.tar.gz · 286&amp;nbsp;KB&lt;/small&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="https://arxiv.org/format/2604.22725v1"&gt;Other formats&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;Ancillary files &lt;small&gt;· 3.6&amp;nbsp;MB&lt;/small&gt; &lt;a href="https://arxiv.org/src/2604.22725v1/anc"&gt;Download all&lt;span class="is-sr-only"&gt; 3 ancillary files&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/section&gt;
+  &lt;section aria-labelledby="cite-h" class="ds-paper-cite"&gt;
+    &lt;div class="ds-paper-cite-head"&gt;
+      &lt;h3 class="ds-panel-label" id="cite-h"&gt;Cite&lt;/h3&gt;
+      &lt;div class="ds-filter ds-paper-cite-tools"&gt;
+        &lt;label class="is-sr-only" for="cite-format"&gt;Citation format&lt;/label&gt;
+        &lt;select id="cite-format"&gt;
+          &lt;option value="bibtex" selected&gt;BibTeX&lt;/option&gt;
+          &lt;option value="apa"&gt;APA&lt;/option&gt;
+          &lt;option value="chicago"&gt;Chicago&lt;/option&gt;
+          &lt;option value="mla"&gt;MLA&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="ds-paper-cite-block"&gt;
+      &lt;div class="ds-paper-cite-tools"&gt;
+        &lt;button type="button" class="ds-show-more" aria-expanded="false" aria-controls="cite-code"&gt;Show BibTeX&lt;/button&gt;
+        &lt;button type="button" class="ds-btn ds-btn-text" id="cite-copy"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;Copy&lt;span class="is-sr-only"&gt; citation&lt;/span&gt;&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div id="cite-code"&gt;
+        &lt;figure data-format="bibtex"&gt;
+          &lt;figcaption&gt;BibTeX&lt;/figcaption&gt;
+          &lt;pre data-no-copy&gt;&lt;code&gt;…&lt;/code&gt;&lt;/pre&gt;
+        &lt;/figure&gt;
+        &lt;figure data-format="apa"&gt;
+          &lt;figcaption&gt;APA&lt;/figcaption&gt;
+          &lt;pre data-no-copy&gt;&lt;code&gt;…&lt;/code&gt;&lt;/pre&gt;
+        &lt;/figure&gt;
+        &lt;figure data-format="chicago"&gt;
+          &lt;figcaption&gt;Chicago&lt;/figcaption&gt;
+          &lt;pre data-no-copy&gt;&lt;code&gt;…&lt;/code&gt;&lt;/pre&gt;
+        &lt;/figure&gt;
+        &lt;figure data-format="mla"&gt;
+          &lt;figcaption&gt;MLA&lt;/figcaption&gt;
+          &lt;pre data-no-copy&gt;&lt;code&gt;…&lt;/code&gt;&lt;/pre&gt;
+        &lt;/figure&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+  &lt;section aria-labelledby="info-h"&gt;
+    &lt;h3 class="ds-panel-label" id="info-h"&gt;Paper information&lt;/h3&gt;
+    &lt;details class="ds-acc"&gt;
+      &lt;summary&gt;Version history&lt;/summary&gt;
+      &lt;div class="ds-acc-body"&gt;
+        &lt;ol class="ds-paper-versions"&gt;
+          &lt;li&gt;
+            &lt;p class="ds-date-row"&gt;&lt;a class="ds-version" href="https://arxiv.org/abs/2604.22725v3" aria-label="View version 3"&gt;v3&lt;/a&gt; · &lt;time datetime="2026-06-28"&gt;28&amp;nbsp;Jun&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC · Latest&lt;/p&gt;
+            &lt;p&gt;18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p class="ds-date-row"&gt;&lt;a class="ds-version" href="https://arxiv.org/abs/2604.22725v2" aria-label="View version 2"&gt;v2&lt;/a&gt; · &lt;time datetime="2026-05-19"&gt;19&amp;nbsp;May&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC&lt;/p&gt;
+            &lt;p&gt;17 pages, 6 figures. Corrected Eq. (4.7).&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li aria-current="true"&gt;
+            &lt;p class="ds-date-row"&gt;&lt;strong class="ds-version"&gt;v1&lt;/strong&gt; · &lt;time datetime="2026-04-24"&gt;24&amp;nbsp;Apr&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC · Viewing&lt;/p&gt;
+            &lt;p&gt;16 pages, 5 figures.&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/div&gt;
+    &lt;/details&gt;
+    &lt;details class="ds-acc"&gt;
+      &lt;summary&gt;Accessibility&lt;/summary&gt;
+      &lt;div class="ds-acc-body"&gt;
+        &lt;ul class="ds-paper-capabilities"&gt;
+          &lt;li&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt; HTML, PDF and TeX Source&lt;/li&gt;
+          &lt;li&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt; Structured math&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/details&gt;
+    &lt;details class="ds-acc"&gt;
+      &lt;summary&gt;Metadata&lt;/summary&gt;
+      &lt;div class="ds-acc-body"&gt;
+        &lt;dl&gt;
+          &lt;dt&gt;Subjects&lt;/dt&gt;&lt;dd&gt;General Relativity and Quantum Cosmology (&lt;a href="https://arxiv.org/list/gr-qc/recent"&gt;gr-qc&lt;/a&gt;); Cosmology and Nongalactic Astrophysics (&lt;a href="https://arxiv.org/list/astro-ph.CO/recent"&gt;astro-ph.CO&lt;/a&gt;); High Energy Physics — Theory (&lt;a href="https://arxiv.org/list/hep-th/recent"&gt;hep-th&lt;/a&gt;)&lt;/dd&gt;
+          &lt;dt&gt;arXiv DOI&lt;/dt&gt;&lt;dd&gt;&lt;a href="https://doi.org/10.48550/arXiv.2604.22725"&gt;10.48550/arXiv.2604.22725&lt;/a&gt;&lt;/dd&gt;
+          &lt;dt&gt;License&lt;/dt&gt;&lt;dd&gt;&lt;a href="https://creativecommons.org/licenses/by/4.0/"&gt;CC BY 4.0&lt;/a&gt;&lt;/dd&gt;
+          &lt;dt&gt;Journal&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;Journal of Cosmology and Astroparticle Physics, 2026(05), 012&lt;/a&gt;&lt;/dd&gt;
+          &lt;dt&gt;Comments&lt;/dt&gt;&lt;dd&gt;v3: 18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.&lt;/dd&gt;
+        &lt;/dl&gt;
+      &lt;/div&gt;
+    &lt;/details&gt;
+  &lt;/section&gt;
+&lt;/aside&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-sidebar</dt>
+            <dd>The column beside the paper: Files, Cite and Paper information, in that order. See <a href="layout-patterns.html#sidebar">Sidebar</a>. It grows with its content; it never scrolls inside itself.</dd>
+            <dt>.ds-sidebar--framed</dt>
+            <dd>A border round the sidebar and a rule between its blocks. Beside a long paper, the frame keeps the controls together.</dd>
+            <dt>.ds-paper-files</dt>
+            <dd>The downloads. PDF is the primary button and fills the sidebar&#39;s width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.</dd>
+            <dt>aria-describedby</dt>
+            <dd>On each download, pointing to the paper title, so a screen reader names the paper with the link.</dd>
+            <dt>.ds-paper-cite</dt>
+            <dd>The citation. <code>.ds-paper-cite-head</code> holds the Cite label and a <code>.ds-filter</code> to choose the format. <code>.ds-paper-cite-block</code> is a light box with a <code>.ds-show-more</code> that shows or hides the citation (“Show BibTeX”) and a Copy button that works while it is hidden. Every format is in the page, one <code>&lt;figure&gt;</code> each; without JavaScript all four are shown with their names, and the select and buttons are hidden.</dd>
+            <dt>.ds-paper-capabilities</dt>
+            <dd>The accessibility panel: one line per capability the paper has, each a <code>shield-check</code> icon from <code>docs/icons/</code> and words. Only what is present is listed, and there is no score.</dd>
+            <dt>.ds-acc</dt>
+            <dd>Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="paper-toc-bar">The TOC bar on a paper</h2>
+    <p class="ds-section-desc">On a paper, the TOC bar also has the arXiv logo on the left and links to the paper&#39;s abstract page, PDF and TeX source on the right.</p>
+
+    <div class="ds-card chrome-demo toc-demo">
+      <div class="ds-toc-bar">
+        <div class="ds-toc-bar-inner">
+          <a class="ds-paper-bar-logo" href="https://arxiv.org/" aria-label="archive home"><svg viewBox="0 0 246.98 111.12" fill="currentColor" aria-hidden="true"><path d="M134.81,46.73l24.36-29.89c1.49-1.99,2.2-3.03,1.49-4.72-.74-1.77-2.59-3.16-4.48-3.16h0c-1.06,0-1.72.09-3.01,1.11l-26.14,28.26,7.78,8.41Z" /><path d="M168.11,102.57l-32.36-38.28-.97,1.03-7.79-9.21-7.74-9.36-4.69,5.08c-1.72,1.84-1.71,4.7.02,6.53l47.79,51.07c1.02,1.05,2.05,1.19,3.14,1.19,1.93,0,3.19-1.14,4.03-2.82.72-1.73-.08-3.44-1.4-5.23Z" /><path d="M121.05,65.32l6.05,6.48-26.55,28.13c-.99,1-1.59,1.19-2.27,1.19-1.45,0-2.69-.82-3.24-2.14-.51-1.23.17-3.15,1.12-4.17l.02-.02.02-.03,24.85-29.45M121,63.43l-25.76,30.52c-1.29,1.37-2.08,3.78-1.36,5.5.75,1.8,2.46,2.91,4.4,2.91,1.09,0,1.99-.38,3.16-1.56l27.38-29.01-7.81-8.37h0Z" /><path d="M69.41,32.38c1.86,0,3.1,1.24,3.99,3.45,1.06-2.21,2.57-3.45,4.69-3.45h14.88c2.3,0,4.07,1.86,4.07,4.07v7.83c0,2.66-1.33,4.07-4.07,4.07s-4.07-1.42-4.07-4.07v-3.75h-10.54c-1.77,0-2.66.97-2.66,2.75v27.19h10.01c2.66,0,4.07,1.33,4.07,4.07s-1.42,4.07-4.07,4.07h-26.39c-2.66,0-3.99-1.33-3.99-4.07s1.33-4.07,3.99-4.07h8.24v-29.93h-7.26c-2.66,0-3.99-1.33-3.99-4.07s1.33-4.07,3.99-4.07h9.12Z" /><path d="M181.07,32.38c2.66,0,4.07,1.42,4.07,4.07v34.01h10.1c2.75,0,4.07,1.33,4.07,4.07s-1.33,4.07-4.07,4.07h-28.6c-2.66,0-4.07-1.33-4.07-4.07s1.42-4.07,4.07-4.07h10.36v-29.93h-8.53c-2.74,0-4.07-1.33-4.07-4.07s1.33-4.07,4.07-4.07h12.61ZM185.29,14.77c0,3.19-2.71,5.82-5.82,5.82s-5.9-2.63-5.9-5.82,2.71-5.82,5.9-5.82,5.82,2.63,5.82,5.82Z" /><path d="M246.98,36.46c0,.53-.09,1.15-.27,1.59l-14.88,38.08c-.71,1.68-1.95,2.48-3.72,2.48h-5.93c-1.86,0-3.19-.8-3.81-2.48l-15.05-38.08c-.27-.44-.36-1.06-.36-1.59,0-2.3,1.86-4.07,4.16-4.07,1.86,0,3.01.97,3.72,2.66l14.35,36.13,13.9-36.13c.71-1.68,1.86-2.66,3.72-2.66,2.3,0,4.16,1.77,4.16,4.07Z" /><path d="M32.45,32.38c5.02,0,8.21,3.31,8.21,8.4v37.83H5.14c-2.88,0-5.14-1.87-5.14-4.93v-13.03c0-4.07,2.83-7.35,7-8.15l25.51-3.57v-8.41H4.14c-2.05,0-4.14-1.45-4.14-4.07,0-2.87,2.14-4.07,4.36-4.07h28.09ZM32.5,70.47v-13.29l-24.35,3.4v9.9h24.35Z" /><path d="M90.37,1.75h.08c1,.02,2.24,1.25,2.59,1.67l.02.03.02.03,46.66,50.43c1.13,1.22,1.12,3.12-.03,4.34l-4.89,5.2-6.88-8.13L88.49,7.63c-1.51-2.17-1.62-2.84-1.19-3.86.5-1.21,1.74-2.02,3.08-2.02M90.37.5c-1.77,0-3.51,1.06-4.23,2.79-.7,1.69-.2,2.88,1.35,5.1l39.49,47.72,7.79,9.21,5.85-6.22c1.6-1.69,1.62-4.33.04-6.04L94,2.63s-1.71-2.08-3.52-2.12c-.04,0-.07,0-.11,0h0Z" /></svg></a>
+          <details class="ds-toc">
+            <summary class="ds-toc-trigger">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+              <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+              <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <nav class="ds-toc-menu" aria-label="Contents, example">
+              <ol>
+                <li><a href="#"><span class="ds-toc-num">1</span>Introduction</a></li>
+                <li><a href="#"><span class="ds-toc-num">2</span>Setup</a></li>
+                <li><a href="#"><span class="ds-toc-num">3</span>Evolution of gauge-invariant variables</a></li>
+                <li><a href="#"><span class="ds-toc-num">4</span>Analysis of gauges</a></li>
+                <li><a href="#"><span class="ds-toc-num">5</span>Conclusion</a></li>
+                <li><a href="#">Acknowledgments</a></li>
+                <li><a href="#"><span class="ds-toc-num">A</span>Evolution equations</a></li>
+                <li><a href="#">References</a></li>
+              </ol>
+            </nav>
+          </details>
+          <nav class="ds-paper-tools" aria-label="Other formats">
+            <a href="https://arxiv.org/abs/2604.22725v1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Abstract</a>
+            <a href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>PDF<span class="is-sr-only"> (opens in a new tab)</span></a>
+            <a href="https://arxiv.org/src/2604.22725v1"><svg viewBox="-20 70 680 500" fill="currentColor" stroke="currentColor" stroke-width="28" stroke-linejoin="round" aria-hidden="true"><path d="M620.8 159.4C590 159.8 578.7 176 573.1 183.9L573 184L517.3 264.5L600.1 385.6C607.6 396.2 611.4 398.1 635.5 398.1L635.5 407.2C626.4 406.5 607.5 406.5 597.8 406.5C585.4 406.5 567 406.5 554.9 407.2L554.9 398.1C568.1 397.3 571.5 390.8 571.5 387.9C571.5 386.8 571.5 385.6 568.5 381.5L503 285.2L442.8 373.1C440.9 375.8 439 378.5 439 383.3C439 389.4 442.4 396.9 454 398L454 407.1C444.6 406.4 426.9 406.4 416.8 406.4L414 406.4L402.3 489L206.4 489L206.4 479.9C233.1 479.9 237.3 479.9 237.3 463L237.3 259.8C237.3 242.9 233 242.9 206.4 242.9L206.4 232.6L226.2 232.6C221.4 171.5 215.4 160.9 158.2 160.8L137.5 160.8C130.7 162.3 130.7 166.9 130.7 175.2L130.7 380.2C130.7 393.8 131.8 398 163.1 398L173.6 398L173.6 407.1L173.2 407.1C155.3 406.8 136.5 406.4 118.3 406.4C100.1 406.4 81.4 406.7 63.5 407.1L62.9 407.1L62.9 398L73.6 398C105.3 398 106.4 393.9 106.4 380.2L106.4 175.2C106.4 166.5 106.4 162 99.2 160.9L78.4 160.9C20 160.9 14.7 171.8 9.8 234.2L3 234.2L9.3 150.9L226.8 150.9L232.9 232.7L397 232.7L406 316L399.2 316C393.9 266.2 387.1 243 328.9 243L277.4 243C262.4 243 261.6 244.9 261.6 257.6L261.6 350.9L297.1 350.9C332.6 350.9 336 338.1 336 306.9L342 306.9L342 404.8L336 404.8C336 373 332.6 360 297.1 360L261.6 360L261.6 465.2C261.6 478.2 262.3 480 277.4 480L329.6 480C390.7 480 399.5 454.2 407 406.4C399.3 406.4 390.7 406.6 384.8 407.1L384.8 398C392 398 416.5 397.6 432.6 374.2L498.1 278.5L425.4 171.8C417.1 160.1 410.3 159.3 389.6 159.3L389.6 150.2C398.7 150.9 417.5 150.9 427.3 150.9C439.7 150.9 458.1 150.9 470.2 150.2L470.2 159.3C457.7 159.7 453.6 166.1 453.6 169.5C453.6 170.6 454 171.8 456.6 175.9L512.3 257.5L562 185.4C564.7 181.7 566.5 178.6 566.5 174.1C566.5 168 563.5 160.5 551.5 159.3L551.5 150.2C560.9 150.9 576.3 150.9 588.7 150.9C597.7 150.9 612 150.9 620.7 150.2L620.7 159.3z"/></svg><span class="is-sr-only">TeX </span>Source</a>
+          </nav>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-full ds-toc-bar"&gt;
+  &lt;div class="ds-toc-bar-inner"&gt;
+    &lt;a class="ds-paper-bar-logo" href="https://arxiv.org/" aria-label="archive home"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;&lt;/a&gt;
+    &lt;details class="ds-toc"&gt;
+      &lt;summary class="ds-toc-trigger"&gt;
+        &lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;
+        &lt;span class="ds-toc-text"&gt;&lt;span class="ds-toc-prefix"&gt;Contents&lt;/span&gt;&lt;/span&gt;
+        &lt;svg class="ds-toc-chevron" aria-hidden="true"&gt;…&lt;/svg&gt;
+      &lt;/summary&gt;
+      &lt;nav class="ds-toc-menu" aria-label="Contents"&gt;
+        &lt;ol&gt;
+          &lt;li&gt;&lt;a href="#"&gt;&lt;span class="ds-toc-num"&gt;1&lt;/span&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;&lt;span class="ds-toc-num"&gt;2&lt;/span&gt;Setup&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;&lt;span class="ds-toc-num"&gt;3&lt;/span&gt;Evolution of gauge-invariant variables&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;&lt;span class="ds-toc-num"&gt;4&lt;/span&gt;Analysis of gauges&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;&lt;span class="ds-toc-num"&gt;5&lt;/span&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;Acknowledgments&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;&lt;span class="ds-toc-num"&gt;A&lt;/span&gt;Evolution equations&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;References&lt;/a&gt;&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/nav&gt;
+    &lt;/details&gt;
+    &lt;nav class="ds-paper-tools" aria-label="Other formats"&gt;
+      &lt;a href="https://arxiv.org/abs/2604.22725v1"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;Abstract&lt;/a&gt;
+      &lt;a href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;PDF&lt;span class="is-sr-only"&gt; (opens in a new tab)&lt;/span&gt;&lt;/a&gt;
+      &lt;a href="https://arxiv.org/src/2604.22725v1"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;&lt;span class="is-sr-only"&gt;TeX &lt;/span&gt;Source&lt;/a&gt;
+    &lt;/nav&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-toc-bar</dt>
+            <dd>The bar, as on <a href="progressive-disclosure.html#toc-bar">Progressive disclosure</a>. On a paper it is <code>.ds-full</code>, the full width of the page.</dd>
+            <dt>.ds-paper-bar-logo</dt>
+            <dd>The one-colour Library Grey logo, inlined from <code>docs/assets/images/logos/logo_arxiv-library-grey.svg</code> with <code>fill="currentColor"</code>, so it follows the theme. It links to the arXiv home page, and its name is “archive home”.</dd>
+            <dt>.ds-toc-menu</dt>
+            <dd>The paper&#39;s own headings, numbers in <code>.ds-toc-num</code>, written into the HTML from LaTeXML&#39;s contents list.</dd>
+            <dt>.ds-paper-tools</dt>
+            <dd>Abstract, PDF and Source, each an icon and its name, in a <code>&lt;nav&gt;</code> named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an <code>.is-sr-only</code> “TeX” makes the spoken name “TeX Source”. The icons are <code>arrow-left</code>, <code>file-text</code> and <code>tex</code> from <code>docs/icons/</code>.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="paper-permalinks">Section permalinks</h2>
+    <p class="ds-section-desc">Each section heading in a paper has a Permalink control that copies the link to that section, including the version.</p>
+
+    <div class="ds-card">
+      <h3 id="demo-S2" class="is-active"><span class="ltx_tag">2 </span>Setup<button type="button" class="ds-permalink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Permalink<span class="is-sr-only"> to section 2, Setup</span></button></h3>
+      <p>We consider quadratic gravity in four dimensions and work in the Einstein frame throughout.</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;h3 id="S2"&gt;&lt;span class="ltx_tag"&gt;2 &lt;/span&gt;Setup&lt;button type="button" class="ds-permalink"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;Permalink&lt;span class="is-sr-only"&gt; to section 2, Setup&lt;/span&gt;&lt;/button&gt;&lt;/h3&gt;
+&lt;p&gt;We consider quadratic gravity in four dimensions and work in the Einstein frame throughout.&lt;/p&gt;
+&lt;span class="is-sr-only" role="status"&gt;&lt;/span&gt;</code></pre>
+          <dl>
+            <dt>.ds-permalink</dt>
+            <dd>The Permalink control from <a href="links.html#linking-to-a-section">Linking to a section</a>, the same as on every other page. The demo holds it open.</dd>
+            <dt>.is-sr-only</dt>
+            <dd>Completes the name: “Permalink to section 2, Setup”. The name starts with the visible word.</dd>
+            <dt>[role="status"]</dt>
+            <dd>One region on the page. The script writes “Link to section 2, Setup copied” into it, as <code>anchors.js</code> does.</dd>
+            <dt>.is-active</dt>
+            <dd>Set on the heading by a tap, on screens without hover.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="paper-elements">Equations, figures and references</h2>
+    <p class="ds-section-desc">A display equation, a figure and a bibliography entry each have a small row of actions on their bottom edge. The row shows on hover, on keyboard focus and after a tap.</p>
+
+    <div class="ds-card">
+      <div class="ds-paper-element is-active">
+        <math display="block"><mrow><msup><mi>R</mi><mn>2</mn></msup><mo>=</mo><msub><mi>R</mi><mrow><mi>μ</mi><mi>ν</mi></mrow></msub><msup><mi>R</mi><mrow><mi>μ</mi><mi>ν</mi></mrow></msup><mo>−</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msup><mi>R</mi><mn>2</mn></msup></mrow></math>
+        <div class="ds-element-pill" role="toolbar" aria-label="Equation 2.14">
+          <button type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg>View TeX<span class="is-sr-only"> of equation 2.14</span></button>
+          <button type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy<span class="is-sr-only"> equation 2.14</span></button>
+          <button type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Permalink<span class="is-sr-only"> to equation 2.14</span></button>
+        </div>
+      </div>
+      <figure class="ds-paper-element is-active">
+        <details class="ds-marginalia">
+          <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Alt text</span></summary>
+          <p class="ds-marginalia-body ds-annotation"><strong>Alt text</strong><br>Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently.</p>
+        </details>
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Crect width='400' height='200' fill='white'/%3E%3Cpath d='M40 20v160h340' stroke='%23333' fill='none'/%3E%3Cpath d='M40 170 C120 160 160 120 200 100 S300 40 370 30' stroke='%231565c0' stroke-width='3' fill='none'/%3E%3Cpath d='M40 175 C140 170 220 150 370 120' stroke='%23b71c1c' stroke-width='3' stroke-dasharray='8 6' fill='none'/%3E%3C/svg%3E" alt="Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently." width="400" height="200">
+        <figcaption>Figure 1: The scalar power spectrum in the Newtonian gauge (solid) and the comoving gauge (dashed).</figcaption>
+        <div class="ds-element-pill" role="toolbar" aria-label="Figure 1">
+          <button type="button" class="is-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>Expand<span class="is-sr-only"> figure 1</span></button>
+          <button type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Permalink<span class="is-sr-only"> to figure 1</span></button>
+        </div>
+      </figure>
+      <div class="ds-paper-element is-active">
+        <p>[30] A. Ashtekar and M. Bojowald. Quantum geometry and the Schwarzschild singularity. <em>Class. Quantum Grav.</em> 23 (2006) 391.</p>
+        <div class="ds-element-pill" role="toolbar" aria-label="Reference 30">
+          <button type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Permalink<span class="is-sr-only"> to reference 30</span></button>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-paper-element"&gt;
+  &lt;!-- LaTeXML's MathML, unchanged --&gt;
+  &lt;div class="ds-element-pill" role="toolbar" aria-label="Equation 2.14"&gt;
+    &lt;button type="button" aria-pressed="false"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;View TeX&lt;span class="is-sr-only"&gt; of equation 2.14&lt;/span&gt;&lt;/button&gt;
+    &lt;button type="button"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;Copy&lt;span class="is-sr-only"&gt; equation 2.14&lt;/span&gt;&lt;/button&gt;
+    &lt;button type="button"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;Permalink&lt;span class="is-sr-only"&gt; to equation 2.14&lt;/span&gt;&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;figure class="ds-paper-element"&gt;
+  &lt;details class="ds-marginalia"&gt;
+    &lt;summary&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;&lt;span class="is-sr-only"&gt;Alt text&lt;/span&gt;&lt;/summary&gt;
+    &lt;p class="ds-marginalia-body ds-annotation"&gt;&lt;strong&gt;Alt text&lt;/strong&gt;&lt;br&gt;Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently.&lt;/p&gt;
+  &lt;/details&gt;
+  &lt;img src="fig1.png" alt="Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently." width="400" height="200"&gt;
+  &lt;figcaption&gt;Figure 1: The scalar power spectrum in the Newtonian gauge (solid) and the comoving gauge (dashed).&lt;/figcaption&gt;
+  &lt;div class="ds-element-pill" role="toolbar" aria-label="Figure 1"&gt;
+    &lt;button type="button" class="is-cta"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;Expand&lt;span class="is-sr-only"&gt; figure 1&lt;/span&gt;&lt;/button&gt;
+    &lt;button type="button"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;Permalink&lt;span class="is-sr-only"&gt; to figure 1&lt;/span&gt;&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/figure&gt;
+&lt;div class="ds-paper-element"&gt;
+  &lt;p&gt;[30] A. Ashtekar and M. Bojowald. Quantum geometry and the Schwarzschild singularity. &lt;em&gt;Class. Quantum Grav.&lt;/em&gt; 23 (2006) 391.&lt;/p&gt;
+  &lt;div class="ds-element-pill" role="toolbar" aria-label="Reference 30"&gt;
+    &lt;button type="button"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;Permalink&lt;span class="is-sr-only"&gt; to reference 30&lt;/span&gt;&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;span class="is-sr-only" role="status"&gt;&lt;/span&gt;</code></pre>
+          <dl>
+            <dt>.ds-paper-element</dt>
+            <dd>The wrapper round one equation, figure or entry. Hovering it, focusing anything inside it, or tapping it shows a hairline border and the pill. The demo holds all three open.</dd>
+            <dt>.ds-element-pill</dt>
+            <dd>The actions, as on <a href="buttons.html#small-actions-attached-to-content">Buttons</a>: one tab stop per element, with the arrow keys moving between its actions. Focusing an action shows the pill.</dd>
+            <dt>.is-sr-only</dt>
+            <dd>Each action&#39;s name says which element it acts on: “Permalink to equation 2.14”, not “Permalink” a hundred times.</dd>
+            <dt>aria-pressed</dt>
+            <dd>On View TeX, which switches the equation to its TeX and back. Its label becomes “View math”.</dd>
+            <dt>.ds-marginalia</dt>
+            <dd>The figure&#39;s alt text, under the label “Alt text”, in the margin at wide widths and folded to its info mark when narrower. See <a href="layout-patterns.html#marginalia">Marginalia</a>.</dd>
+            <dt>.is-cta</dt>
+            <dd>Expand, the one main action on a figure. It opens the figure viewer.</dd>
+            <dt>[role="status"]</dt>
+            <dd>One region on the page, where the script confirms a copy in words: “Link to equation 2.14 copied”.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="paper-citations">Citations and footnotes</h2>
+    <p class="ds-section-desc">A citation or footnote marker opens a popover that repeats the reference or the note, with a way to the full entry and back.</p>
+
+    <div class="ds-card">
+      <div class="popover-demo">
+        <div class="ds-popover" role="region" aria-label="2 references">
+          <div class="ds-popover-title">2 references</div>
+          <button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close references</span></button>
+          <p>[46] A. Salvio. Quadratic gravity. <em>Front. Phys.</em> 6 (2018) 77. <a href="#">Jump to reference<span class="is-sr-only"> 46</span></a></p>
+          <p>[47] K. S. Stelle. Renormalization of higher-derivative quantum gravity. <em>Phys. Rev. D</em> 16 (1977) 953. <a href="#">Jump to reference<span class="is-sr-only"> 47</span></a></p>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-popover" role="region" aria-label="2 references"&gt;
+  &lt;div class="ds-popover-title"&gt;2 references&lt;/div&gt;
+  &lt;button type="button" class="ds-close"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;&lt;span class="is-sr-only"&gt;Close references&lt;/span&gt;&lt;/button&gt;
+  &lt;p&gt;[46] A. Salvio. Quadratic gravity. &lt;em&gt;Front. Phys.&lt;/em&gt; 6 (2018) 77. &lt;a href="#"&gt;Jump to reference&lt;span class="is-sr-only"&gt; 46&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+  &lt;p&gt;[47] K. S. Stelle. Renormalization of higher-derivative quantum gravity. &lt;em&gt;Phys. Rev. D&lt;/em&gt; 16 (1977) 953. &lt;a href="#"&gt;Jump to reference&lt;span class="is-sr-only"&gt; 47&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;</code></pre>
+          <dl>
+            <dt>.ds-popover</dt>
+            <dd>One popover per citation cluster, as on <a href="progressive-disclosure.html#popover">Progressive disclosure</a>. It opens on a click, Enter or a tap, never on hover or focus.</dd>
+            <dt>.ds-popover-title</dt>
+            <dd>“Reference 46” for one entry, “2 references” for more.</dd>
+            <dt>&lt;p&gt;</dt>
+            <dd>Each entry, copied whole from the bibliography, then its own Jump to reference link.</dd>
+            <dt>.ds-close</dt>
+            <dd>Closes the popover and returns focus to the number that was pressed.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Paper titles are always a heading</strong>, so a screen reader user can easily find it and move from paper to paper in a list.</li>
+      <li><strong>Name each format link's paper.</strong> In a list, “PDF” alone is the same link text fifty times; an <code>.is-sr-only</code> span adds the identifier.</li>
+      <li><strong>Category names are in the tooltip, never only in a <code>title</code> attribute.</strong> See <a href="forms.html#tooltip">Tooltip</a>.</li>
+      <li><strong>Paper title just before links.</strong> For screen reader users, to maintain context, the title should appear before the format links, and just before them, so that the context is not forgotten. That means displaying the row with dates and links using the CSS <code>order</code> property (ie: the visual display will show the dates first, but the DOM order lists the links first).</li>
+      <li><strong>Mark the version being viewed.</strong> Put <code>aria-current="true"</code> on
+      it, make it a <code>&lt;strong&gt;</code> and not a link, and put
+      <code>&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;</code> inside it. Bold alone
+      is invisible to a screen reader, and the attribute alone is not read out by every one.</li>
+      <li><strong>Say which version each link opens.</strong> Every prior-version link has
+      <code>aria-label="View version 2"</code>. The visible "v2" does not say what the link does,
+      and a screen reader user listing the links on the page hears each one out of context.</li>
+      <li><strong>Give the warning its role.</strong> The older-version warning takes
+      <code>role="alert"</code>, so a screen reader announces it as soon as the page loads. Render it
+      only when the reader is not on the latest version; an alert that is always there is noise.</li>
+      <li><strong>Separate the dates in words.</strong> The visible "·" between dates is
+      <code>aria-hidden="true"</code>, and a <code>&lt;span class="is-sr-only"&gt;, &lt;/span&gt;</code>
+      sits beside it. Without the comma the three dates are read as one run-on sentence.</li>
+      <li><strong>Say what the ellipsis hides.</strong> The "…" is decoration and is
+      <code>aria-hidden="true"</code>. The <code>.is-sr-only</code> span beside it says which versions
+      are hidden, and the button says the total: "show all 12 versions". Use the
+      <code>hidden</code> attribute on the hidden versions, never a class, so they are out of the tab
+      order while they are off screen.</li>
+    
+    </ul>
+  </div>
+
+  <div class="ds-full ds-zone-secondary">
+  <h2>Rules</h2>
+
+  <!-- ───────── Rules ───────── -->
+  <section>
+    <h3 id="paper-rules">Metadata</h3>
+    <ul class="notes">
+      <li><strong>Show the author's text as written.</strong> A title or abstract is never shortened, reworded or corrected; TeX shows as the author wrote it. An excerpt is cut, never edited.</li>
+      <li><strong>References are shown as the author wrote them.</strong> Each field formats references in its own way, and arXiv has no reference format. A bibliography entry, a citation popover and a citation&#39;s accessible name all repeat the author&#39;s entry unchanged. This is separate from Cite, which gives the formats for citing the paper itself.</li>
+      <li><strong>Leave out what a paper does not have.</strong> No empty labels and no placeholders.</li>
+      <li><strong>Every date has its label.</strong> Readers confuse submitted and announced dates when either stands alone.</li>
+      <li><strong>The primary category comes first</strong> and is told apart by more than colour: its tooltip names it as primary.</li>
+    </ul>
+  </section>
+
+
+  <!-- ───────── Full papers ───────── -->
+  <section>
+    <h3 id="full-paper-rules">Full papers</h3>
+    <ul class="notes">
+      <li><strong>The identity line comes first.</strong> Many readers arrive at a paper directly, without passing its abstract page.</li>
+      <li><strong>An optional area above the identity line</strong> holds a temporary message or link, such as Back to abstract while readers move to HTML papers. It is <code>.ds-btn-text</code> for a link, or an alert for a message.</li>
+      <li><strong>The licence is a link, with no explanation.</strong></li>
+      <li><strong>Version links go to abstract pages.</strong></li>
+      <li><strong>The dates and the older-version warning stay by the title.</strong> The full history goes in the sidebar.</li>
+      <li><strong>Each version shows its own comments</strong>, as the author wrote them for that version.</li>
+      <li><strong>Other formats, when a paper has them, are a link in the sidebar</strong>, under TeX Source and above Ancillary Files.</li>
+      <li><strong>The sidebar order is Files, Cite, Paper information.</strong> Files and Cite are always open; Version history, Accessibility and Metadata, under Paper information, start closed.</li>
+      <li><strong>Every download shows its size.</strong></li>
+      <li><strong>A citation names the arXiv identifier and the arXiv DOI</strong>, never the HTML page, even when the paper has a journal reference.</li>
+      <li><strong>BibTeX lists every author.</strong> “and others” becomes “et al.” in a reference manager, and the other authors are lost.</li>
+      <li><strong>APA, Chicago and MLA follow their own style rules</strong> for long author lists.</li>
+      <li><strong>Every citation format is in the page.</strong> The script only chooses which one shows.</li>
+      <li><strong>The accessibility panel lists only what the paper has.</strong> A missing capability has no line, and there is no overall score.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h3 id="paper-body-rules">Paper body</h3>
+    <ul class="notes">
+      <li><strong>The body markup is LaTeXML&#39;s, unchanged.</strong> arXiv styles it from outside with CSS and never rewrites, reorders or wraps the author&#39;s elements.</li>
+      <li><strong>ar5iv&#39;s stylesheet is in a cascade layer</strong>, so an ordinary rule outranks it without <code>!important</code>. The <code>arxiv-override</code> layer is only for a property ar5iv itself marks <code>!important</code>.</li>
+      <li><strong>Body text is set as on <a href="typography.html">Typography</a>.</strong> ar5iv sets weight 300, so set 400.</li>
+      <li><strong>Body text is left-aligned, never justified.</strong> Inline math gives a justified line nowhere to break.</li>
+      <li><strong>Body text is hyphenated</strong> with <code>hyphens: auto</code>. It needs the page&#39;s <code>lang</code> attribute, which tells the browser which language to hyphenate.</li>
+      <li><strong>A figure caption is Plex Sans at 0.875rem, left-aligned, the width of the figure.</strong> Its label, text and punctuation are as the author wrote them.</li>
+      <li><strong>Paper figures keep ar5iv&#39;s white background in dark mode; arXiv&#39;s own images do not.</strong> Clear it on the header, TOC bar and footer images.</li>
+      <li><strong>LaTeXML&#39;s beta badge and conversion logo are not shown.</strong></li>
+    </ul>
+    <pre><code>&lt;style&gt;@layer arxiv-override, ar5iv, arxiv-theme;&lt;/style&gt;
+&lt;link rel="stylesheet" href="design-system.css"&gt;
+&lt;!-- the papers stylesheet starts with:
+     @import "ar5iv.css" layer(ar5iv);
+     @import "arxiv-html-papers-theme.css" layer(arxiv-theme); --&gt;
+&lt;link rel="stylesheet" href="arxiv-html-papers.css"&gt;</code></pre>
+  </section>
+  <section>
+    <h3 id="paper-toc-bar-rules">TOC bar</h3>
+    <ul class="notes">
+      <li><strong>The contents list repeats the author&#39;s headings exactly</strong>, including appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML&#39;s contents entries with their MathML. A script that reads a heading&#39;s words leaves out the TeX annotation, as <code>toc.js</code> and <code>anchors.js</code> do.</li>
+      <li><strong>LaTeXML&#39;s own sidebar is not shown.</strong> The <code>.ds-toc</code> list replaces it.</li>
+      <li><strong>Each link in the bar shows an icon and its name.</strong></li>
+      <li><strong>PDF opens in a new tab, in the bar and in the sidebar</strong>, so the reader keeps their place in the HTML paper. It has the external-link icon and “(opens in a new tab)”, as on <a href="links.html">Links</a>.</li>
+      <li><strong>A second skip link goes to the paper&#39;s first section</strong>, before the sidebar, so a keyboard user can pass it.</li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="paper-permalink-rules">Permalinks</h3>
+    <ul class="notes">
+      <li><strong>Every section, subsection and appendix heading has a Permalink control.</strong> It copies the address with the section&#39;s LaTeXML id and the version: <code>…/2604.22725v1#S2</code>.</li>
+      <li><strong>The accessible name starts with the visible word</strong>, then names the section.</li>
+      <li><strong>Copying is announced in words</strong> in a <code>role="status"</code> region. A changed label alone is not read out.</li>
+      <li><strong>One action gets the Permalink control; several get the element pill.</strong></li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="paper-equation-rules">Equations</h3>
+    <ul class="notes">
+      <li><strong>Inline math gets nothing from arXiv</strong>: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly.</li>
+      <li><strong>View TeX swaps the equation for its TeX in place</strong>, in plain monospace with no code box. The TeX view is hidden until asked for, and MathML annotations are never displayed.</li>
+      <li><strong>View TeX and Copy use the TeX that LaTeXML keeps with the equation.</strong> LaTeXML expands the author&#39;s own macros into standard TeX, so the copy works outside the paper. The author&#39;s own files are the TeX Source download.</li>
+      <li><strong>Copy copies what is on screen</strong>: the MathML in math view, the TeX in TeX view.</li>
+      <li><strong>A wide equation scrolls inside its own box, never the page.</strong> The box has <code>tabindex="0"</code>, <code>role="region"</code> and a name: “Equation 2.14, scrolls sideways”.</li>
+      <li><strong>The equation number stays in view</strong>, pinned to the right edge while the equation scrolls.</li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="paper-figure-rules">Figures</h3>
+    <ul class="notes">
+      <li><strong>Only the author&#39;s alt text is shown</strong>, whole and unchanged. The image&#39;s <code>alt</code> is never changed, and no reader-written or machine-written description is added. Write it in with <code>textContent</code>.</li>
+      <li><strong>Long alt text is not shortened.</strong> This is the one margin note longer than two sentences.</li>
+      <li><strong>A figure without alt text says so.</strong> Its margin note reads “No alt text provided”, in <code>--ds-text-muted</code>, with a link to how to add alt text.</li>
+      <li><strong>Expand opens the figure viewer</strong>, a <code>.ds-modal.ds-modal--wide</code> with <code>closedby="any"</code>. Clicking the image opens it too; Expand is the keyboard path.</li>
+      <li><strong>The viewer shows a copy.</strong> The figure in the paper is never moved or changed.</li>
+      <li><strong>The viewer shows the caption exactly as the author wrote it</strong>, under the figure. The dialog is named by the caption&#39;s own label, such as “Figure 1:”, with <code>aria-labelledby</code>.</li>
+      <li><strong>Zoom stays until the reader closes the viewer.</strong> Zoom in, Zoom out and Fit buttons, the wheel, double-click, pinch and the <kbd>+</kbd>, <kbd>-</kbd> and <kbd>0</kbd> keys all work; drag or the arrow keys pan.</li>
+      <li><strong>The zoom level is shown and announced</strong>, with <code>aria-live="polite"</code>.</li>
+      <li><strong>Closing returns focus to what opened the viewer.</strong></li>
+      <li><strong>Zoom is animated only when reduced motion is not set.</strong></li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="paper-citation-rules">Citations and footnotes</h3>
+    <ul class="notes">
+      <li><strong>One popover per citation cluster</strong>, listing every reference in it, each with its own Jump to reference link.</li>
+      <li><strong>The popover repeats each entry as the bibliography shows it</strong>, never rebuilt, reordered or shortened. If the entry cannot be found, the citation stays a plain link to the reference list.</li>
+      <li><strong>It opens next to the citation and never covers it</strong>: below the line if it fits, else above, else just under the TOC bar.</li>
+      <li><strong>A cluster of seven or more may use two columns on a wide screen.</strong></li>
+      <li><strong>Below 48rem a popover is a bottom sheet.</strong> The script and the CSS read the same threshold.</li>
+      <li><strong>Escape returns focus to the number that was pressed.</strong></li>
+      <li><strong>Jump to reference lands on the entry</strong>, with the accent wash and keyboard focus, and the address gets its id. The scroll is smooth only when reduced motion is not set.</li>
+      <li><strong>Back to your place shows only during a jump.</strong> It returns focus and scroll to the citation. The browser&#39;s Back button does the same.</li>
+      <li><strong>A bibliography entry is highlighted as one box</strong>, number included, never line by line.</li>
+      <li><strong>A footnote stays where LaTeXML puts it</strong>: the marker, then the note itself, in one <code>.ltx_note</code>. At wide widths the note is shown in the margin beside its marker, with CSS only, at the width of a margin note (<code>--ds-marginalia-width</code>) and at the same widths. Narrower, a script makes the marker a button that opens the note in a popover. Without JavaScript the note shows after its marker.</li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="paper-print-rules">Printing</h3>
+    <ul class="notes">
+      <li><strong>Print hides the TOC bar, the permalinks, the element pills and every popover.</strong> The identity line prints at 10pt.</li>
+      <li><strong>No page break inside an equation, table or figure, and none straight after a heading.</strong> Sections may break.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h3 id="three-dates">Formatting the three dates</h3>
+    <p><strong>Submitted [v1 date] UTC · Announced [announcement date and time] UTC</strong> are always shown, in that order, separated by a dot. Announced is when the paper first entered the public listing. Revision dates are when subsequent versions of the same paper went public. Dates use <code>&lt;time datetime&gt;</code>.</p>
+    <p>Announcement is the date that readers care about the most. It renders as <strong>11&nbsp;Jan&nbsp;2026, 01:32 UTC</strong>. Submitted and Revised stay date-only to save space.</p>
+    <p>When only the month of the announcement is known, as in a search index, show the month: <strong>Announced Sep&nbsp;2026</strong>, with <code>datetime="2026-09"</code>.</p>
+    <p>arXiv's platform serves a global audience across all timezones. UTC was chosen as the universal standard to ensure consistency and clarity for all users. It is a group decision, made with arXiv staff.</p>
+    <p>Times are rendered in plain-text <strong>UTC</strong> bound to its date with <code>&amp;nbsp;</code> so a wrap never separates them. The <code>&lt;time&gt;</code> element is not bound to the date.</p>
+    <p>Inside <code>datetime</code>, announced is a full instant (<code>2026-01-11T01:32Z</code>), Submitted and Revised stay date-only (<code>2026-01-10</code>).</p>
+    <p>The version being viewed is distinguished by weight and by <code>aria-current</code> and does not depend on color alone. It is deliberately not a link because the reader is already viewing it.</p>
+    <p>Prior versions are inline links alongside other text, so they are underlined. Each is also tagged with an explicit <code>aria-label</code> ("View version 1").</p>
+  </section>
+
+  <section>
+    <h3 id="elision-signals-continuation-js-never-hides-content-for-good">Formatting the ellipsis and show all toggle</h3>
+    <p>The ellipsis is decoration (<code>aria-hidden</code>) with an sr-only count of what is hidden; the working affordance is a text button showing the explicit total ("show all 127 versions"), toggling <code>aria-expanded</code>. The full list is server-rendered and collapsed by the script in <code>html.js</code>. Without JavaScript, the fallback is that readers see the full list of versions.</p>
+  </section>
+  </div>
+
+</div>
+
+<script>
+  // The elision demos: the same three things the show-more reference
+  // implementation on progressive-disclosure.html does — flip aria-expanded,
+  // toggle the `hidden` ATTRIBUTE, re-label with the count — except that
+  // here a press hides the ellipsis as well as showing the tail, so every id
+  // in aria-controls is toggled.
+  document.querySelectorAll('.ds-show-more[aria-controls]:not(.ds-paper-cite .ds-show-more)').forEach(function (toggle) {
+    var regions = toggle.getAttribute('aria-controls').split(/\s+/).map(function (id) {
+      return document.getElementById(id);
+    });
+    // A toggle that starts open names its closed label in data-closed-label.
+    var collapsedLabel = toggle.dataset.closedLabel || toggle.textContent;
+    toggle.addEventListener('click', function () {
+      var expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      regions.forEach(function (r) { if (r) r.hidden = !r.hidden; });
+      toggle.textContent = expanded ? collapsedLabel : 'show fewer';
+    });
+  });
+</script>
+
+<script>
+  // Cite: the chosen format is the one shown and copied. Without this script
+  // every format is listed, each with its name, and the select and buttons are hidden.
+  document.documentElement.classList.add('js');
+  document.querySelectorAll('.ds-paper-cite').forEach(function (cite) {
+    var select = cite.querySelector('select');
+    var toggle = cite.querySelector('.ds-show-more');
+    var region = document.getElementById(toggle.getAttribute('aria-controls'));
+    var figures = cite.querySelectorAll('figure[data-format]');
+    function name() { return select.options[select.selectedIndex].text; }
+    function label() { toggle.textContent = (toggle.getAttribute('aria-expanded') === 'true' ? 'Hide ' : 'Show ') + name(); }
+    function show() { figures.forEach(function (f) { f.hidden = f.dataset.format !== select.value; }); label(); }
+    region.hidden = true;
+    select.addEventListener('change', show); show();
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+      region.hidden = open;
+      label();
+    });
+    document.getElementById('cite-copy').addEventListener('click', function () {
+      var code = cite.querySelector('figure[data-format="' + select.value + '"] code');
+      if (code && navigator.clipboard) navigator.clipboard.writeText(code.textContent);
+    });
+  });
+</script>
+
+<script>
+  // Nav dropdowns: close on outside click and Esc (enhancement only —
+  // the <details> menus work without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      // Return focus to the trigger, but only if it was inside the menu we are
+      // closing — otherwise Escape anywhere on the page would steal focus.
+      // Without this a keyboard user is left on a link that no longer exists.
+      var wasInside = d.contains(document.activeElement);
+      d.removeAttribute('open');
+      if (wasInside) d.querySelector('summary').focus();
+    });
+  });
+</script>
+<script src="tooltip.js" defer></script>
+<script src="header.js" defer></script>
+<script src="copy-code.js" defer></script>
+<script src="element-pill.js" defer></script>
+<script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
+</body>
+</html>

@@ -40,7 +40,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 - **What each family is for.** The type family is IBM Plex, plus STIX Two Math for notation. Each face has a job:
   - **IBM Plex Sans** — body copy, headings, and interface text. The default: where nothing below applies, this is the answer.
-  - **IBM Plex Sans Condensed** — labels, captions, table headers, and metadata, usually small and uppercase.
+  - **IBM Plex Sans Condensed** — labels, table headers, and metadata, usually small and uppercase. Captions are IBM Plex Sans at the small size (see `typography.html`).
   - **IBM Plex Mono** — identifiers and code: arXiv IDs, DOIs, BibTeX, code blocks.
   - **IBM Plex Serif, italic** — the annotation voice: arXiv speaking quietly beside the author's text, as in footnote and figure alt-text marginalia (`.ds-annotation`). It is a voice, not a layout role; placement is a separate decision.
   - **IBM Plex Serif, upright (400 / 600)** — editorial headlines and pull quotes on outreach properties.
@@ -101,7 +101,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 - **New patterns:** If a UI element appears in two or more pages, extract it into a design system CSS file and create or update a pattern page in `docs/`.
 - **Platform independence:** Components use plain CSS custom properties — no Sass, no CSS-in-JS, no framework-specific syntax. This allows consumption from React, Jinja, PHP, or static HTML.
 - **Naming:** Use `.ds-` prefix for shared design system classes (e.g., `.ds-table`, `.ds-filter`). Page-specific styles stay in the page's own `<style>` block or stylesheet.
-- **Icons:** One icon language: inline SVG from the [Lucide](https://lucide.dev) set (ISC license) — stroke-based, `stroke-width="2"`, round caps/joins, `aria-hidden="true"` with an adjacent visible or `.is-sr-only` text label (reference impl: `alerts.html`). No icon fonts. Brand glyphs Lucide lacks (social logos) are one-off inline SVGs following the same sizing rules.
+- **Icons:** One icon language: inline SVG from the [Lucide](https://lucide.dev) set (ISC license) — stroke-based, `stroke-width="2"`, round caps/joins, `aria-hidden="true"` with an adjacent visible or `.is-sr-only` text label (reference impl: `alerts.html`). No icon fonts. An icon Lucide lacks is drawn to the same specification and added to `docs/icons/` (see `icons.html`, Drawing a custom icon). A brand glyph, such as a social logo or the TeX wordmark, follows the same sizing rules.
 
 ## Buttons
 

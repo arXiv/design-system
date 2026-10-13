@@ -16,6 +16,12 @@ components:
         does: "The info tint, the same blue the info alert uses. Categories, topics, and neutral states."
       - name: ".ds-tag--success, .ds-tag--warning, .ds-tag--error"
         does: "Only when the label reports a condition."
+  - id: a-list-of-tags
+    title: "A list of tags"
+    summary: "Several tags that belong together, such as a paper's categories, go in a list that wraps."
+    classes:
+      - name: ".ds-tag-list"
+        does: "A `<ul>` of tags, one per `<li>`, spaced evenly and wrapping on a narrow screen. Give it an `aria-label` that names what the tags are."
   - id: labels-as-links
     title: "Labels as links"
     group: "Modifiers"
@@ -95,6 +101,20 @@ Size and shape remain the same across all levels, prominence comes from color an
 - `.ds-tag--keep-case` — Opt out of uppercase. Required for identifiers, and for long labels: past roughly three words, or with mixed-case names inside, caps slow reading down.
 - `.ds-tag--info` — The info tint, the same blue the info alert uses. Categories, topics, and neutral states.
 - `.ds-tag--success, .ds-tag--warning, .ds-tag--error` — Only when the label reports a condition.
+
+## A list of tags
+
+Several tags that belong together, such as a paper's categories, go in a list that wraps.
+
+```html
+<ul class="ds-tag-list" aria-label="Subject categories">
+  <li><span class="ds-tag ds-tag--info ds-tag--keep-case">math.CO</span></li>
+  <li><span class="ds-tag ds-tag--keep-case">cs.DM</span></li>
+  <li><span class="ds-tag ds-tag--keep-case">math.PR</span></li>
+</ul>
+```
+
+- `.ds-tag-list` — A `<ul>` of tags, one per `<li>`, spaced evenly and wrapping on a narrow screen. Give it an `aria-label` that names what the tags are.
 
 ## Labels as links  (Modifiers)
 

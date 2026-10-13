@@ -42,6 +42,12 @@ components:
     classes:
       - name: ".ds-card-grid"
         does: "Cards side by side. The grid supplies the gap, so a card inside it takes no top margin of its own. Any card goes in it, a data card included, and it is the same on both surfaces."
+  - id: data-list
+    title: "Data list"
+    summary: "A few short details as label and value pairs, each label beside its value, without a card: for example under an item in a list. Inside an accordion, a plain `<dl>` already lays out pairs."
+    classes:
+      - name: ".ds-data-list"
+        does: "A `<dl>`, one `<div>` per pair, in smaller type. A label never wraps; a long value does."
 rules:
   - "**Name a data card.** It is a `<section>` with an `aria-label` such as “User information”, so a screen reader user can jump straight to it and hears what it holds. A section without a name is not exposed as a landmark at all."
   - "**Keep each label with its value.** A label and its value sit together in one `<div>`, `<dt>` first, so they are read as a pair. The label is real text in the markup and the uppercase comes from CSS, so it stays correct for a screen reader and for copy and paste."
@@ -154,6 +160,20 @@ Peers in a set share one grid. The count of columns does not follow a breakpoint
 ```
 
 - `.ds-card-grid` — Cards side by side. The grid supplies the gap, so a card inside it takes no top margin of its own. Any card goes in it, a data card included, and it is the same on both surfaces.
+
+## Data list
+
+A few short details as label and value pairs, each label beside its value, without a card: for example under an item in a list. Inside an accordion, a plain `<dl>` already lays out pairs.
+
+```html
+<dl class="ds-data-list">
+  <div><dt>Comments</dt><dd>18 pages, 6 figures</dd></div>
+  <div><dt>DOI</dt><dd><a href="#">10.1016/j.ascom.2026.101198</a></dd></div>
+  <div><dt>arXiv ID</dt><dd><a href="#">2609.36857</a></dd></div>
+</dl>
+```
+
+- `.ds-data-list` — A `<dl>`, one `<div>` per pair, in smaller type. A label never wraps; a long value does.
 
 ## Rules
 

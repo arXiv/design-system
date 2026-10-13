@@ -1,0 +1,55 @@
+/* =============================================================
+   Moderation and staff reports — page CSS
+   Loaded after fonts.css, design-system.css and internal-tools.css.
+   Only what the design system does not provide. Every value is a token;
+   no colour, size or space is chosen here.
+   ============================================================= */
+
+/* The period, the last update and the Refresh button, on one line that
+   wraps. No component holds a sentence and a button together; this is a
+   flex row spaced with the named breaks. */
+.reports-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-tight) var(--ds-space-block);
+}
+.reports-status > p { margin: 0; }
+
+/* The views of one report part, a second level of navigation inside the
+   page. The design system has one secondary navigation bar, under the
+   header; there is no pattern for a level below it. This reuses .ds-subnav
+   unchanged (wrapping, aria-current, the lime current bar) and only lines
+   it up with the content column instead of the page edge. */
+.reports-views.ds-subnav {
+  padding-inline: 0;
+  background: transparent;
+}
+
+/* A submission ID is an identifier: IBM Plex Mono (DESIGN-POLICIES,
+   Typography). Inline <code> would add its wash to every row of the table. */
+.reports-id { font-family: var(--ds-font-mono); }
+
+/* The ratio beside a figure: the figure leads, the ratio is quieter. */
+.reports-ratio { color: var(--ds-text-muted); }
+
+/* A short line under a link in a table cell, saying where the link goes. */
+.reports-subtext {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--ds-text-muted);
+}
+
+/* Where a chart will go. The design system has no chart guidance yet, so
+   nothing is drawn: a .ds-card with a dashed edge (so it does not read as
+   a finished card) holds one sentence naming the chart. */
+.reports-chart {
+  margin: 0;
+  border-style: dashed;
+  color: var(--ds-text-muted);
+}
+
+/* The sort setting's options are sentences ("Monthly holds trend, largest
+   first"); one filter-bar column cuts them off. It takes two columns of
+   the settings row, which is still the bar's own grid. */
+.reports-field-wide { grid-column: span 2; }

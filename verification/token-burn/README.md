@@ -18,8 +18,9 @@ The plan (which tests, in what order, and what finishing means) is in `whiteboar
     python3 verification/token-burn/round.py evaluate runs/<run>
     python3 verification/token-burn/round.py review runs/<run>      # then open http://127.0.0.1:8765/
     python3 verification/token-burn/round.py summary runs/<run>
+    python3 verification/token-burn/round.py report runs/<run>      # the one-page report for the team
 
-Run them from `verification/token-burn/`. `evaluate` needs Playwright (`pip install playwright`, `playwright install chromium`). `build` accepts `--models`, `--reps`, and `--budget`.
+Run them from `verification/token-burn/`. `evaluate` needs Playwright (`pip install playwright`, `playwright install chromium`). `build` accepts `--models`, `--reps`, and `--budget`. `summary` writes the detailed report; `report` writes the short one for the team, graded as described in [GRADING.md](GRADING.md).
 
 ## Usage and billing
 
