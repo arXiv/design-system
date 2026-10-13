@@ -85,7 +85,7 @@ components:
       - name: ".ds-subnav"
         does: "The first row, directly under the header. Here it holds two groups: a `<nav>` of the area's sections, then a compact [filter bar](tables.html#filter-bar) for choices that apply to every view, such as the subject. The groups sit twice as far apart as the items inside them."
       - name: "<h1>"
-        does: "Names what the page is about, such as the subject, so the reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page."
+        does: "Follows the reader's choices: the open section, then the filters, in that order, such as “Submissions and holds, all of cs” or “Moderators, cs.DC”. The reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page."
       - name: ".ds-subnav--in-page"
         does: "The second level: the views of the current section, in the content column, with the same current marking as the first level. Each view is its own page."
   - id: steps
@@ -127,7 +127,7 @@ components:
   - id: internal-headers
     title: "Internal header"
     group: "Modifiers"
-    summary: "The Admin Console header: the standard bar, with the Admin Console logo. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. The internal stylesheet may re-point the bar’s colour tokens and nothing else."
+    summary: "The Admin Console header: the standard bar, with the Admin Console logo. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. Every internal tool uses an internal logo, not the public one, so the reader can tell they are in an internal tool. The internal stylesheet may re-point the bar’s colour tokens and nothing else."
     classes:
       - name: ".ds-site-header-logo img"
         does: "The tool’s own wordmark image, from `assets/images/logos/`. Its alt text names the tool in spoken form, such as “archive Admin Console”."
@@ -156,7 +156,7 @@ rules:
   - "**Sticky on internal tools only.** `.ds-site-header--sticky` is for internal tools; arxiv.org’s public header scrolls away (DESIGN-POLICIES)."
   - "**The greeting is the first name, everywhere.** Public and internal headers show the given name only, capped at 14 characters."
   - "**One bar under the header.** A page shows either secondary navigation or steps, never both."
-  - "**Breadcrumbs only on pages without secondary navigation.** arXiv’s sitemap is wide and shallow, so almost no page needs a breadcrumb. Where the secondary navigation shows the reader’s place, a breadcrumb would repeat it."
+  - "**No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the secondary navigation show the reader’s place. A tool’s main pages, such as its starting page, are links in the header navigation; the way back is there, not in a link above the page heading."
   - "**Type sizes are rem** so browser font-size overrides propagate. In print the header keeps only its logo, 28px tall; the announcement band and the secondary navigation are hidden."
   - "**The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content."
   - "**Name the navigation.** The bar’s links sit in a `<nav>` with an `aria-label`, such as “Main navigation”, so a screen reader user can tell it from the other landmarks on the page."
@@ -342,7 +342,7 @@ An area with its own sections, each with several views, such as a report with pa
     </form>
   </div>
   <div class="ds-container page-demo page-demo--wide">
-    <h2>Computer Science</h2>
+    <h2>Submissions and holds, all of cs</h2>
     <nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views">
       <a href="#">Activity charts</a>
       <a href="#" aria-current="page">Category submission stats</a>
@@ -355,7 +355,7 @@ An area with its own sections, each with several views, such as a report with pa
 ```
 
 - `.ds-subnav` — The first row, directly under the header. Here it holds two groups: a `<nav>` of the area's sections, then a compact [filter bar](tables.html#filter-bar) for choices that apply to every view, such as the subject. The groups sit twice as far apart as the items inside them.
-- `<h1>` — Names what the page is about, such as the subject, so the reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page.
+- `<h1>` — Follows the reader's choices: the open section, then the filters, in that order, such as “Submissions and holds, all of cs” or “Moderators, cs.DC”. The reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page.
 - `.ds-subnav--in-page` — The second level: the views of the current section, in the content column, with the same current marking as the first level. Each view is its own page.
 
 ## Steps
@@ -428,7 +428,7 @@ Adding `.ds-site-header--light` re-points seven surface tokens but declares no p
 
 ## Internal header  (Modifiers)
 
-The Admin Console header: the standard bar, with the Admin Console logo. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. The internal stylesheet may re-point the bar’s colour tokens and nothing else.
+The Admin Console header: the standard bar, with the Admin Console logo. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. Every internal tool uses an internal logo, not the public one, so the reader can tell they are in an internal tool. The internal stylesheet may re-point the bar’s colour tokens and nothing else.
 
 ```html
 <header class="ds-site-header">
@@ -502,7 +502,7 @@ Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top o
 - **Sticky on internal tools only.** `.ds-site-header--sticky` is for internal tools; arxiv.org’s public header scrolls away (DESIGN-POLICIES).
 - **The greeting is the first name, everywhere.** Public and internal headers show the given name only, capped at 14 characters.
 - **One bar under the header.** A page shows either secondary navigation or steps, never both.
-- **Breadcrumbs only on pages without secondary navigation.** arXiv’s sitemap is wide and shallow, so almost no page needs a breadcrumb. Where the secondary navigation shows the reader’s place, a breadcrumb would repeat it.
+- **No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the secondary navigation show the reader’s place. A tool’s main pages, such as its starting page, are links in the header navigation; the way back is there, not in a link above the page heading.
 - **Type sizes are rem** so browser font-size overrides propagate. In print the header keeps only its logo, 28px tall; the announcement band and the secondary navigation are hidden.
 - **The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content.
 - **Name the navigation.** The bar’s links sit in a `<nav>` with an `aria-label`, such as “Main navigation”, so a screen reader user can tell it from the other landmarks on the page.
