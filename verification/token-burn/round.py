@@ -598,10 +598,10 @@ def summary(args):
 
     table = "<table>" + "".join([
         "<tr><th></th>" + "".join(f"<th>Build {c.name}</th>" for c in cells) + "</tr>",
-        row("Model", lambda c: esc(key[c.name]["model"])),
+        row("Model", lambda c: esc((key.get(c.name) or key[c.name[:-1]])["model"]) + (f" ({(key.get(c.name[:-1]) or {}).get('versions', {}).get(c.name, '')})" if info.get("pairs") else "")),
         row("Pages", shots),
-        row("Shamsi: verdict", lambda c: esc(VERDICTS.get(rev["builds"].get(c.name, {}).get("verdict"), "not reviewed"))),
-        row("Shamsi: what is off", lambda c: fold(rev["builds"].get(c.name, {}).get("notes"))),
+        row("Shamsi: verdict", lambda c: esc(VERDICTS.get(rev["builds"].get(c.name, {}).get("verdict"), "not reviewed")) if not info.get("pairs") else esc("preferred" if rev["builds"].get(c.name[:-1], {}).get("choice") == c.name[-1] else "about the same" if rev["builds"].get(c.name[:-1], {}).get("choice") == "same" else "not preferred")),
+        row("Shamsi: what is off", lambda c: fold(rev["builds"].get(c.name if not info.get("pairs") else c.name[:-1], {}).get("notes"))),
         row("Claude: technical verdict", lambda c: esc(tech["builds"].get(c.name, {}).get("verdict", "not evaluated"))),
         row("Claude: technical notes", lambda c: fold(tech["builds"].get(c.name, {}).get("notes"))),
         row("Cost", cost)]) + "</table>"
