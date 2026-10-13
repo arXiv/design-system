@@ -1,5 +1,6 @@
 // Server-renders generated components for test_targets.py: reads {components: {name: path},
-// cases: [{component, props}]} on stdin, writes [{html, scripts, errors}]: the markup, the
+// cases: [{component, props}]} on stdin (a prop {$element: [type, props, ...children]} is
+// that React element: an html slot's value), writes [{html, scripts, errors}]: the markup, the
 // scripts its useEffect loads (run at once, against a stub document) and what React logged
 // (a development build, so every warning shows).
 const fs = require("fs");
@@ -25,13 +26,14 @@ const esbuild = require("esbuild");
       (args) => (files.has(args.importer) ? { path: shim } : undefined)) }],
   });
   const lib = require(path.join(dir, "bundle.cjs"));
+  const element = (v) => (v && v.$element ? lib.createElement(...v.$element) : v);
   const log = console.error;
   const results = cases.map(({ component, props }) => {
     const scripts = [], errors = [];
     global.document = { createElement: () => ({}), body: { appendChild: (s) => scripts.push(s.src) } };
     console.error = (format, ...args) => errors.push(String(format).replace(/%s/g, () => String(args.shift())));
     try {
-      return { html: lib.renderToStaticMarkup(lib.createElement(lib[component], props)), scripts, errors };
+      return { html: lib.renderToStaticMarkup(lib.createElement(lib[component], Object.fromEntries(Object.entries(props).map(([k, v]) => [k, element(v)])))), scripts, errors };
     } catch (e) {
       return { html: "", scripts, errors: [...errors, `threw: ${e.message}`] };
     }

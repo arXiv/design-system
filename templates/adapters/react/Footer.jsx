@@ -7,7 +7,7 @@ export default function Footer({ static_base = "https://static.arxiv.org/static/
           <div className="ds-site-footer-main">{" "}
             <div className="ds-site-footer-ack">{" "}
               We gratefully acknowledge support from our <strong>major funders</strong>,{" "}
-              <a href={`${help_url}/about/ourmembers.html`}><strong>member institutions</strong></a><span dangerouslySetInnerHTML={{ __html: member_institution }} />,{" "}
+              <a href={`${help_url}/about/ourmembers.html`}><strong>member institutions</strong></a>{member_institution},{" "}
               and all contributors.{" "}
             </div>{" "}
             <nav className="ds-site-footer-links" aria-label="Site navigation">{" "}
