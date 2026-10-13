@@ -15,6 +15,9 @@ components:
   - id: the-main-content-comes-first
     title: "The main content comes first"
     summary: "Before choosing components, decide what the page is for and which content is primary. Everything else is arranged so it does not push the primary content down."
+  - id: where-secondary-content-goes
+    title: "Where secondary content goes"
+    summary: "Each kind of secondary content has a home that keeps the main content high and wide. Compare at least two homes for each piece, and keep the one that leaves the main content highest and widest."
   - id: the-page-container
     title: "The page container"
     summary: "Every page sits in `.ds-container`. It centres the content in a column at the standard reading width, 850px at most, with a margin of at least 24px on each side. For a band that runs edge to edge, see [Page zones](#page-zones)."
@@ -104,6 +107,10 @@ What a user needs to learn determines the right organizational pattern to employ
 ## The main content comes first
 
 Before choosing components, decide what the page is for and which content is primary. Everything else is arranged so it does not push the primary content down.
+
+## Where secondary content goes
+
+Each kind of secondary content has a home that keeps the main content high and wide. Compare at least two homes for each piece, and keep the one that leaves the main content highest and widest.
 
 ## The page container
 

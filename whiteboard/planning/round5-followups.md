@@ -50,3 +50,11 @@ Still open: applying dates to every view, a prominent card variant (Shamsi prefe
 - **Try the alternatives.** Shamsi: as a human designer she would try each relevant component to see which works best. Idea: in the review step, build two arrangements of the hardest placement choice and compare them. Costs more tokens per build.
 - **Placeholders in a card** (spec only, for the next round): a card border around each placeholder makes the page easier to read.
 - **A condensed secondary navigation at phone width.** The secondary navigation wraps to two lines and is hard to read. Ideas to explore: a menu button, the current label with icons, letters or numbers for the others, a small carousel with back and next. Part of the larger conversation about compact elements.
+
+### Status after round 7 (2026-10-13)
+
+Done in the docs: what a sidebar costs (Layout patterns, *Sidebar*); *Where secondary content goes*, a home for each kind with a test; an accordion holds more than a line or two (*Which affordance*); the sort bar as a GET form with submit buttons. Placeholders in a card go in the round 8 spec only.
+
+Future sessions, not today:
+- **Compact elements**, its own session: the condensed secondary navigation at phone width, and wide elements (filter bars, tables, button groups) at phone width.
+- **Agents try the alternatives**: build two arrangements of the hardest placement choice and compare them, as a designer would. Test it as a before-and-after pair, like round 6, and weigh the extra tokens.
