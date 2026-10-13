@@ -302,9 +302,11 @@ PAGE_JS = """() => {
 }"""
 OVERFLOW_JS = "() => document.documentElement.scrollWidth - document.documentElement.clientWidth"
 FOCUS_JS = """() => { const e = document.activeElement; if (!e || e === document.body) return null;
-  const s = getComputedStyle(e);
+  const ring = el => { const s = getComputedStyle(el); return (s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0) || s.boxShadow !== 'none'; };
+  // A link that covers a card shows its ring on the card (.ds-card--link), so look up three levels.
+  let indicator = false; for (let el = e, i = 0; el && i < 4 && !indicator; el = el.parentElement, i++) indicator = ring(el);
   return { what: e.tagName.toLowerCase() + ' "' + (e.getAttribute('aria-label') || e.textContent || e.value || e.name || '').trim().replace(/\\s+/g, ' ').slice(0, 40) + '"',
-    indicator: (s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0) || s.boxShadow !== 'none' } }"""
+    indicator } }"""
 AXE_JS = """opts => axe.run(document, opts).then(r => r.violations.map(v => ({ id: v.id, impact: v.impact, help: v.help,
   count: v.nodes.length, where: v.nodes.slice(0, 3).map(n => n.target.join(' ')) })))"""
 

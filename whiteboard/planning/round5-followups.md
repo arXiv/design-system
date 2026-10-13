@@ -40,3 +40,13 @@
 Done: the review pass, internal logo, page zones, heading follows the reader's choices, pager placement, no repeated header links, compact date fields, the sort bar, no breadcrumbs (one home in Header *Rules*), one name for one thing, the data line above the main content, fewer headings, compact internal tools by default. Staff reports in the header and the placeholder wording are in the round 7 spec only.
 
 Still open: applying dates to every view, a prominent card variant (Shamsi prefers fewer variants), a docs example of when a sidebar beats the bottom of the page.
+
+## From round 7 (2026-10-13)
+
+- **What a sidebar costs.** Three builds put the category list or the explanation in a sidebar; Shamsi rejected all three. The sidebar guidance says when one is appropriate but not that it narrows the main content, or that beside a long main column it leaves an empty column. Home: layout-patterns.html *Sidebar*.
+- **More than one home for secondary content.** The main-content rule names only "below the main content or in an accordion", so no agent weighed a popover, a modal or a footnote. Give a short list of homes with a test for each.
+- **A short note needs no accordion.** One or two lines read as a footnote below the main content. (A round 5 content note that never reached the docs.) Home: progressive-disclosure.html *Accordion*.
+- **The sort bar in a GET form.** The demo uses `type="button"`; two agents fell back to a select with a Sort button. Show it as submit buttons with a name and value.
+- **Try the alternatives.** Shamsi: as a human designer she would try each relevant component to see which works best. Idea: in the review step, build two arrangements of the hardest placement choice and compare them. Costs more tokens per build.
+- **Placeholders in a card** (spec only, for the next round): a card border around each placeholder makes the page easier to read.
+- **A condensed secondary navigation at phone width.** The secondary navigation wraps to two lines and is hard to read. Ideas to explore: a menu button, the current label with icons, letters or numbers for the others, a small carousel with back and next. Part of the larger conversation about compact elements.
