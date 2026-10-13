@@ -206,6 +206,15 @@
      control. In em, so it tracks the control's own font size. */
   --ds-gap-glyph: 0.5em;
 
+  /* Density: the padding inside controls, table cells and cards.
+     .ds-internal sets the compact values. */
+  --ds-btn-padding:     0.715em 1.43em;
+  --ds-btn-min-width:   8.6em;
+  --ds-input-padding:   0.64em 0.786em;
+  --ds-cell-padding:    10px 14px;
+  --ds-head-padding:    9px 14px;
+  --ds-card-padding:    var(--ds-space-4) var(--ds-space-6);
+
   --ds-width-page:  850px;
   --ds-width-wide:  1080px;   /* dense internal tools: .ds-container--wide */
   --ds-gutter:  var(--ds-space-6);
@@ -626,8 +635,8 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   align-items: center;
   justify-content: center;
   gap: var(--ds-gap-glyph);
-  padding: 0.715em 1.43em;
-  min-width: 8.6em;
+  padding: var(--ds-btn-padding);
+  min-width: var(--ds-btn-min-width);
   font-family: var(--ds-font-sans);
   font-size: 0.875rem;
   font-weight: 600;
@@ -1220,7 +1229,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
   border-radius: 8px;
-  padding: var(--ds-space-4) var(--ds-space-6);
+  padding: var(--ds-card-padding);
 }
 
 /* A card that is one link: the heading's link covers the whole card. */
@@ -1347,7 +1356,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--ds-text);
-  padding: 9px 14px;
+  padding: var(--ds-head-padding);
   background: var(--ds-tint-warm);
   border-bottom: 1px solid var(--ds-border);
   white-space: nowrap;
@@ -1355,7 +1364,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-table td,
 .ds-table tbody th {
   text-align: left;
-  padding: 10px 14px;
+  padding: var(--ds-cell-padding);
   border-bottom: 1px solid var(--ds-surface-muted);
   vertical-align: top;
   color: var(--ds-text);
@@ -1829,7 +1838,7 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
   background: var(--ds-surface);
   border: 1px solid var(--ds-border-strong);   /* 3.61:1 — a real boundary, not decoration */
   border-radius: 6px;
-  padding: 0.64em 0.786em;
+  padding: var(--ds-input-padding);
 }
 .ds-input:focus-visible {
   outline: 2px solid var(--ds-focus-ring);
@@ -2955,8 +2964,9 @@ html:has(.ds-modal[open]) {
 /* INTERNAL TOOLS CONTEXT  (.ds-internal) — buttons.html
    Put it on a parent: <html> for an internal page, a wrapper for an
    internal region of a mixed page. It re-points the accent to Access Lime
-   and every component inside follows. Colour only — a component that needs
-   a different shape on this surface is a different component. Sits after
+   and every component inside follows, and sets the compact density.
+   Colour and density only — a component that needs a different shape on
+   this surface is a different component. Sits after
    the [data-theme="light"] block so it wins when both are on <html>. */
 .ds-internal {
   --ds-accent:                     var(--ds-access-lime);
@@ -2989,6 +2999,13 @@ html:has(.ds-modal[open]) {
   --ds-btn-secondary-fg-hover:     var(--ds-text);
   --ds-btn-text-bg-hover:          var(--ds-accent-wash);
   --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
+
+  --ds-btn-padding:     0.55em 1.143em;    /* 32px tall */
+  --ds-btn-min-width:   6em;
+  --ds-input-padding:   0.37em 0.643em;    /* 32px tall */
+  --ds-cell-padding:    6px 10px;
+  --ds-head-padding:    6px 10px;
+  --ds-card-padding:    var(--ds-space-3) var(--ds-space-4);
 }
 .ds-internal a.ds-tag:hover,
 .ds-internal button.ds-tag:hover {
