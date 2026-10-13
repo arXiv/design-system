@@ -84,6 +84,26 @@ test("the phone menu opens and closes on each click, on both hosts", async ({ pa
   }
 });
 
+// The bar's shape on a phone, which the class check (check-template-compat.py) cannot see.
+test("the phone bar stays 52px with a 44px menu button, and its menu has only link rows", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 });
+  for (const host of ["jinja", "react"]) {
+    await open(page, `${ONE}/${host}?hide_announcement`);
+    const box = (sel) => page.locator(sel).boundingBox();
+    const bar = await box(".ds-site-header"), toggle = await box("#ds-nav-toggle");
+    expect(bar.height, host).toBe(52);
+    expect([toggle.width, toggle.height], host).toEqual([44, 44]);
+    await page.locator("#ds-nav-toggle").click();
+    const nav = page.locator("#ds-site-header-nav");
+    const edge = await page.locator(".ds-site-header").evaluate((h) => h.clientHeight);   // inside its border
+    expect((await nav.boundingBox()).y, host).toBe(bar.y + edge);         // opens under the bar
+    await expect(nav.locator(".ds-site-header-divider"), host).toBeHidden();
+    const rows = await nav.evaluate((n) => [...n.children]
+      .filter((c) => getComputedStyle(c).display !== "none").map((c) => c.textContent.trim()));
+    expect(rows, host).toEqual(["Search", "Submit", "Donate", "Log in"]);
+  }
+});
+
 test("the search overlay closes when focus leaves it; Ctrl/Cmd+K is the host's in a field", async ({ page }) => {
   await open(page, `${ONE}/jinja`);
   const overlay = page.locator("#ds-search-overlay");
