@@ -1435,6 +1435,19 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   background-size: 10px 7px;
 }
 
+/* A date in a compact filter: the same underline, at the date's own width. */
+.ds-filter input {
+  min-height: 24px;
+  font-family: inherit;
+  font-size: 0.75rem;
+  color: var(--ds-text);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--ds-border-strong);
+  border-radius: 0;
+  padding: 1px 2px;
+}
+.ds-filter input:focus-visible,
 .ds-filter select:focus-visible {
   outline: 2px solid var(--ds-focus-ring);
   outline-offset: 2px;
@@ -1455,6 +1468,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   border-radius: 8px;
 }
 .ds-filter-bar .ds-field { max-width: none; min-width: 0; margin: 0; }
+.ds-filter-bar .ds-field:has(.ds-input[type="date"]) .ds-input { width: auto; max-width: 100%; }   /* a date keeps its own width */
 /* Compact: a filter bar of .ds-filter controls is one row. */
 .ds-filter-bar:has(> .ds-filter) { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2) var(--ds-space-6); padding: var(--ds-space-1) var(--ds-space-3); }
 .ds-filter-bar:has(> .ds-filter) > .ds-btn { min-height: 24px; padding-block: 2px; font-size: 0.8125rem; }
@@ -1533,10 +1547,11 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   -webkit-mask: var(--ds-sort-icon) center / contain no-repeat;
   mask: var(--ds-sort-icon) center / contain no-repeat;
 }
-.ds-table th.sort-asc .sort-arrow,
-.ds-table th.sort-desc .sort-arrow { color: var(--ds-text); }
-.ds-table th.sort-asc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3Cpath d='M12 19V5'/%3E%3C/svg%3E"); }
-.ds-table th.sort-desc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14'/%3E%3Cpath d='m19 12-7 7-7-7'/%3E%3C/svg%3E"); }
+.sort-asc .sort-arrow,
+.sort-desc .sort-arrow { color: inherit; }
+.ds-table th:is(.sort-asc, .sort-desc) .sort-arrow { color: var(--ds-text); }
+.sort-asc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3Cpath d='M12 19V5'/%3E%3C/svg%3E"); }
+.sort-desc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14'/%3E%3Cpath d='m19 12-7 7-7-7'/%3E%3C/svg%3E"); }
 @media (forced-colors: active) { .sort-arrow { background: CanvasText; } }
 
 
@@ -1557,6 +1572,18 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   align-items: center;
   gap: var(--ds-space-tight);
 }
+
+/* A toggle: plain when off, the accent tint when on (aria-pressed). */
+.ds-btn[aria-pressed] { background: var(--ds-surface); border-color: var(--ds-border-strong); color: var(--ds-text-muted); box-shadow: none; }
+.ds-btn[aria-pressed]:hover { color: var(--ds-text); background: var(--ds-surface-hover); }
+.ds-btn[aria-pressed="true"] { background: var(--ds-tint-accent); border-color: var(--ds-accent-border); color: var(--ds-text); }
+/* A group of toggles, such as a sort bar, joins into one compact bar. */
+.ds-btn-group:has(> .ds-btn[aria-pressed]) { gap: 0; }
+.ds-btn-group > .ds-btn[aria-pressed] { min-height: 32px; padding-block: 2px; font-size: 0.875rem; font-weight: 500; }
+.ds-btn-group > .ds-btn[aria-pressed="true"] { position: relative; z-index: 1; }
+.ds-btn-group:has(> .ds-btn[aria-pressed]) > :not(.ds-btn) { margin-inline-end: var(--ds-space-tight); }
+.ds-btn-group > .ds-btn[aria-pressed] + .ds-btn[aria-pressed] { margin-inline-start: -1px; border-start-start-radius: 0; border-end-start-radius: 0; }
+.ds-btn-group > .ds-btn[aria-pressed]:has(+ .ds-btn[aria-pressed]) { border-start-end-radius: 0; border-end-end-radius: 0; }
 
 /* Stacked rather than side by side — same relationship, other axis. */
 .ds-btn-group--stack {
@@ -3867,7 +3894,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
    A row of section links directly under the header. It wraps rather than
    scrolling sideways, so every section stays visible at 320px and at 200%
    text. The current page is marked three ways: weight, an underline bar,
-   and aria-current. Breadcrumbs are for pages without one (DESIGN-POLICIES). */
+   and aria-current. */
 /* A bar can hold more than links: a <nav> of links, then a compact filter bar.
    Groups sit twice as far apart as the items inside them. */
 .ds-subnav:has(> nav) { column-gap: var(--ds-space-12); }

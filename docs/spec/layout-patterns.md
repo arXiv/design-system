@@ -74,7 +74,7 @@ rules:
   - "**Filters apply to everything below them.**"
   - "**One Apply button per filter bar.**"
   - "**A number that changes a calculation is a setting, not a filter.**"
-  - "**No breadcrumbs.** In complex tools, the secondary navigation fills this role already. It shows the user's place as well as being functional navigation. arXiv has a wide but shallow site and does not need traditional breadcrumbs."
+  - "**No breadcrumbs.** See [Header](header.html), *Rules*."
   - "**One main landmark.** Put the page's content in a single `<main>`. A page with two, or with none, gives a screen-reader user nothing to jump to."
   - "**Label every aside.** A sidebar is an `<aside>` with an `aria-label` that says what it holds, so it announces as a complementary landmark with a name, not as part of the article."
   - "**Headings continue the outline inside a card.** A heading inside a container takes the next level down from the section it sits in. Do not skip a level because the content is in a card."
@@ -225,7 +225,7 @@ A dense internal tool can use a wider page: 1080px instead of 850px. Use it for 
 - **Filters apply to everything below them.**
 - **One Apply button per filter bar.**
 - **A number that changes a calculation is a setting, not a filter.**
-- **No breadcrumbs.** In complex tools, the secondary navigation fills this role already. It shows the user's place as well as being functional navigation. arXiv has a wide but shallow site and does not need traditional breadcrumbs.
+- **No breadcrumbs.** See [Header](header.html), *Rules*.
 - **One main landmark.** Put the page's content in a single `<main>`. A page with two, or with none, gives a screen-reader user nothing to jump to.
 - **Label every aside.** A sidebar is an `<aside>` with an `aria-label` that says what it holds, so it announces as a complementary landmark with a name, not as part of the article.
 - **Headings continue the outline inside a card.** A heading inside a container takes the next level down from the section it sits in. Do not skip a level because the content is in a card.

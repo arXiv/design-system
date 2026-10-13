@@ -105,6 +105,7 @@
             <li><a href="#icon-only-buttons">Icon-only buttons</a></li>
             <li><a href="#on-dark-surfaces">On dark surfaces</a></li>
             <li><a href="#button-groups">Button groups</a></li>
+            <li><a href="#a-group-of-toggles">A group of toggles</a></li>
           </ol>
         </nav>
       </details>
@@ -540,6 +541,42 @@
         </div></details>
       </div>
       <p class="ds-annotation">Only use for pairs. Three buttons split like this leaves the middle one belonging to neither side.</p>
+  </section>
+
+  <!-- ───────── A group of toggles ───────── -->
+  <section>
+      <h3 id="a-group-of-toggles">A group of toggles</h3>
+      <p class="ds-section-desc">Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once.</p>
+
+      <p class="ds-panel-label">A sort bar</p>
+      <div class="ds-card">
+        <div class="ds-btn-group" role="group" aria-labelledby="sort-by">
+          <span id="sort-by">Sort charts by</span>
+          <button class="ds-btn sort-asc" type="button" aria-pressed="true">Category <span class="sort-arrow">↑</span><span class="is-sr-only">, A to Z</span></button>
+          <button class="ds-btn" type="button" aria-pressed="false">Current holds <span class="sort-arrow">↕</span></button>
+          <button class="ds-btn" type="button" aria-pressed="false">Weekly holds trend <span class="sort-arrow">↕</span></button>
+          <button class="ds-btn" type="button" aria-pressed="false">Monthly holds trend <span class="sort-arrow">↕</span></button>
+        </div>
+        <details class="ds-acc"><summary>Relevant code</summary>
+          <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-btn-group" role="group" aria-labelledby="sort-by"&gt;
+  &lt;span id="sort-by"&gt;Sort charts by&lt;/span&gt;
+  &lt;button class="ds-btn sort-asc" type="button" aria-pressed="true"&gt;Category &lt;span class="sort-arrow"&gt;↑&lt;/span&gt;&lt;span class="is-sr-only"&gt;, A to Z&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="ds-btn" type="button" aria-pressed="false"&gt;Current holds &lt;span class="sort-arrow"&gt;↕&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="ds-btn" type="button" aria-pressed="false"&gt;Weekly holds trend &lt;span class="sort-arrow"&gt;↕&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="ds-btn" type="button" aria-pressed="false"&gt;Monthly holds trend &lt;span class="sort-arrow"&gt;↕&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+            <dl>
+              <dt>.ds-btn-group with role="group"</dt>
+              <dd>The bar, named by its label through <code>aria-labelledby</code>. When its buttons have <code>aria-pressed</code>, they join, and the bar is compact.</dd>
+              <dt>aria-pressed</dt>
+              <dd>On every button: <code>"true"</code> on the one that is on, <code>"false"</code> on the rest. Off is plain; on takes the accent tint.</dd>
+              <dt>.sort-asc, .sort-desc, .sort-arrow</dt>
+              <dd>For a sort, the arrow shows the direction on the button that is on, as in a <a href="tables.html#sortable-column-headers">sortable column header</a>. Pressing it again reverses the direction. An <code>.is-sr-only</code> span says the direction in words.</dd>
+            </dl>
+          </div>
+        </details>
+      </div>
   </section>
   </div>
 
