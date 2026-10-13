@@ -24,3 +24,13 @@
 - Activity charts: the heading is "Recent moderator activity"; four sort options (category, current holds, weekly holds trend, monthly holds trend); the category list and the explanation are secondary.
 - Staff reports: "Choose a report" is not needed; one sentence saying the page is not available to moderators is optional.
 - "About these figures": a single line needs no accordion, especially at the bottom of the page.
+
+## From round 6 (2026-10-13)
+
+- **No breadcrumbs.** One revision added a breadcrumb above the heading. The design system has none on purpose: arXiv's site map is broad and shallow, so a link back belongs in the header navigation. Check that the docs say this plainly where an agent would look.
+- **Staff reports in the header navigation,** beside All sections: it is one of the tool's sections, and a small link at the bottom of a page is too hard to find.
+- **One name for one thing:** a page called them "sections" in its heading and "groups" in the next. Pick one word and use it everywhere.
+- **The date and last-updated line above the cards:** it is one line of important context, so it goes before the main content, not at the bottom.
+- **Fewer headings on a light page:** "Subject groups" under "All sections" adds nothing when the page holds little else.
+- **Question content the brief did not ask for,** such as an "About these figures" section; now in the review step in `AGENTS.md` ("Is it needed at all?").
+- **A sidebar for context the reader may want while scrolling:** agents considered it and rejected it to keep the charts wide. Worth a docs example that shows when a sidebar beats putting context at the bottom.
