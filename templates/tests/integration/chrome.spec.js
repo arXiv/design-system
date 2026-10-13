@@ -51,6 +51,26 @@ function feedRequests(page) {
   return seen;
 }
 
+test("Jinja host: header_page_actions sit in the bar, beside the navigation, and take clicks", async ({ page }) => {
+  const height = () => page.locator(".ds-site-header").evaluate((h) => h.getBoundingClientRect().height);
+  for (const width of [1280, 390]) {
+    await page.setViewportSize({ width, height: 800 });
+    for (const nav of ["", "&hide_nav"]) {
+      await open(page, `${ONE}/jinja?hide_announcement${nav}`);
+      const bare = await height();
+      await open(page, `${ONE}/jinja?hide_announcement&actions${nav}`);
+      // A bar without navigation keeps the reflow layout on phones, where they take a row.
+      if (width > 599 || !nav) expect(await height(), `${width}px${nav}`).toBe(bare);
+      for (const tool of [page.getByRole("link", { name: "PDF" }), page.getByRole("button", { name: "Contents" })]) {
+        await expect(tool).toBeVisible();
+        const svg = await tool.locator("svg").boundingBox();
+        expect([svg.width, svg.height]).toEqual([18, 18]);
+      }
+      await page.getByRole("button", { name: "Contents" }).click({ trial: true });   // nothing covers it
+    }
+  }
+});
+
 test("Jinja host: the chrome paints and header.js opens the search overlay", async ({ page }) => {
   const errors = collectErrors(page);
   await open(page, `${ONE}/jinja`);

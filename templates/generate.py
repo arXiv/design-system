@@ -105,8 +105,10 @@ def template(section: str, src: str | None = None) -> tuple[list, dict]:
     for n, m in vars_.items():
         if m["type"] not in ("attr", "url", "html", "bool"):
             raise ValueError(f"schema.json {n!r}: the type is attr, url, html or bool")
-        if (m["type"] == "bool") != (n in flags) or (n in flags and n in printed):
-            raise ValueError(f"{section}.html '{n}': only a bool gates a section, and it is never printed")
+        if m["type"] == "bool" and (n not in flags or n in printed) or \
+                n in flags and m["type"] not in ("bool", "html"):
+            raise ValueError(f"{section}.html '{n}': a section is gated by a bool, which is never "
+                             "printed, or by an html slot")
         if m["type"] == "bool" and m["default"] is not False:
             raise ValueError(f"bool '{n}' must default to false (undefined = default everywhere)")
     return tokens, vars_
@@ -129,7 +131,7 @@ def render(tokens: list, vars_: dict, context: dict) -> str:
     out, shown = [], []
     for t in tokens:
         if t[0] == "if":
-            shown.append(bool(context.get(t[1], False)) != t[2])
+            shown.append(bool(context.get(t[1], vars_[t[1]]["default"])) != t[2])
         elif t[0] == "endif":
             shown.pop()
         elif all(shown):
@@ -201,7 +203,8 @@ def _jsx_attr(tag: str, attrs: list, name: str, value) -> str:
 def _jsx_text(text: str, vars_: dict, parent) -> str:
     """Text as JSX children that mean what the HTML means: JSX drops a whitespace run holding
     a line break, which HTML shows as a space, so each becomes {" "} (the break stays, for
-    layout). An html slot goes in a <span> (README.md, Template rules)."""
+    layout). An html slot goes in a <span> (README.md, Template rules), unless it is an
+    element's whole content (_sole_slot)."""
     if parent in NO_TEXT and not text.strip():
         return text if "\n" in text else ""
     parts = VAR_RE.split(text)
@@ -215,10 +218,21 @@ def _jsx_text(text: str, vars_: dict, parent) -> str:
     return "".join(parts)
 
 
+def _sole_slot(tokens: list, i: int, vars_: dict) -> str | None:
+    """The html slot that is the whole content of the element tokens[i] opens: React sets it
+    as that element's innerHTML, with no <span> between the element and the host's markup."""
+    if tokens[i][3] or [t[:2] for t in tokens[i + 2:i + 3]] != [("end", tokens[i][1])]:
+        return None
+    exact = tokens[i + 1][0] == "text" and VAR_RE.fullmatch(tokens[i + 1][1])
+    return exact[1] if exact and vars_[exact[1]]["type"] == "html" else None
+
+
 def to_react(tokens: list, vars_: dict, component: str) -> str:
-    scripts, out, stack = [], [], []
-    for t in tokens:
-        if t[0] == "text":
+    scripts, out, stack, skip = [], [], [], 0
+    for i, t in enumerate(tokens):
+        if skip:
+            skip -= 1
+        elif t[0] == "text":
             out.append(_jsx_text(t[1], vars_, stack[-1] if stack else None))
         elif t[0] == "if":
             out.append(f"{{{'!' if t[2] else ''}{t[1]} && (<>")
@@ -229,9 +243,14 @@ def to_react(tokens: list, vars_: dict, component: str) -> str:
                 scripts.append(next(v for _, a, v in t[2] if a == "src"))
         elif t[0] == "start":
             attrs = "".join(sep + _jsx_attr(t[1], t[2], a, v) for sep, a, v in t[2])
-            out.append(f"<{t[1]}{attrs}{' />' if t[3] else '>'}")
-            if not t[3]:
-                stack.append(t[1])
+            slot = _sole_slot(tokens, i, vars_)
+            if slot:
+                out.append(f"<{t[1]}{attrs} dangerouslySetInnerHTML={{{{ __html: {slot} }}}} />")
+                skip = 2   # its text and end tag
+            else:
+                out.append(f"<{t[1]}{attrs}{' />' if t[3] else '>'}")
+                if not t[3]:
+                    stack.append(t[1])
         else:
             stack.pop()
             out.append(f"</{t[1]}>")
