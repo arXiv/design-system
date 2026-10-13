@@ -10,7 +10,7 @@ Work only from this repository and this brief. Do not fetch anything from the ne
 
 ## Figures and charts
 
-This test is about where things go on each page, not about showing data. The design system has no guidance for charts or figures yet, so do not design or draw any. Wherever figures or a chart belong, put a short placeholder that says what goes there, for example "Figures: new submissions, open holds and unresolved primaries" or "Chart: cs.DB weekly moderator touches, 13 weeks".
+This test is about where things go on each page, not about showing data. The design system has no guidance for charts or figures yet, so do not design or draw any. Wherever figures or a chart belong, put a short placeholder that says what goes there, for example, "Content placeholder for [a very short description of the content to go in that space]".
 
 ## Page 1: all sections
 
