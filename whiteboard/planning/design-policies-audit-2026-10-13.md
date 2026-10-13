@@ -19,7 +19,7 @@ The idea: `DESIGN-POLICIES.md` keeps each non-negotiable as one or two sentences
 | Font display, system fallbacks | typography.html | Drop; the stylesheet already sets them. |
 | Spacing: scale, rem, break names, proximity, gap | spacing.html | "Use the named breaks, never a pixel value; gaps between groups are at least twice the gaps inside one. See spacing.html." |
 | Layout: 850px, 1080px, long-form measure | layout-patterns.html, spacing.html | "One width per page, from the width tokens. See Layout patterns." |
-| Breakpoints (three bullets) | none yet | Move to layout-patterns.html, keep one line here. |
+| Breakpoints (three bullets) | only component-level mentions (cards.html, header.html) | Move to layout-patterns.html, keep one line here. |
 | Buttons (whole section, 10 bullets) | buttons.html | "Three tiers; disabled is a flat grey, never opacity; a control that navigates is a link. See buttons.html." |
 | Segmented controls, filter dropdowns, switches | forms.html | Drop; forms.html holds them. |
 | Rectangular labels | tags.html | Drop. |
