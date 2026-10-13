@@ -1,7 +1,8 @@
 {#- arXiv brand header: announcement mount, header bar, search overlay. Portable Jinja
-    (templates/README.md): {{ var }} and boolean sections only. banner.js draws the shared
+    (templates/README.md): {{ var }} and {% if %} sections only. banner.js draws the shared
     announcement (json/announcements.json) in the mount; header.js wires the overlay, the
-    phone hamburger and the client-side member acknowledgement. -#}
+    phone hamburger and the client-side member acknowledgement. header_page_actions fills the
+    tools region after the navigation, which is left out without it. -#}
 {% if not hide_announcement %}
 <div id="ds-announcement"></div>
 {% endif %}
@@ -34,6 +35,7 @@
     {% if not signed_in %}<a href="{{ auth_url }}/login" class="ds-site-header-login">Log in</a>{% endif %}
   </nav>
   {% endif %}
+  {% if header_page_actions %}<div class="ds-site-header-tools">{{ header_page_actions }}</div>{% endif %}
 </header>
 {% if not hide_nav %}
 <div class="ds-search-overlay" id="ds-search-overlay" hidden>

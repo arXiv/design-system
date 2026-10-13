@@ -1,7 +1,7 @@
 // GENERATED from templates/arxiv_brand/header.html by templates/generate.py — do not edit
 import { useEffect } from 'react';
 
-export default function Header({ static_base = "https://static.arxiv.org/static/design-system/latest/", header_variant = "", base_url = "https://arxiv.org", auth_url = "https://arxiv.org", account_path = "/user", help_url = "https://info.arxiv.org", hide_nav = false, hide_announcement = false, signed_in = false }) {
+export default function Header({ static_base = "https://static.arxiv.org/static/design-system/latest/", header_variant = "", base_url = "https://arxiv.org", auth_url = "https://arxiv.org", account_path = "/user", help_url = "https://info.arxiv.org", hide_nav = false, hide_announcement = false, signed_in = false, header_page_actions = "" }) {
   useEffect(() => {
     const tags = [`${static_base}chrome/banner.js`, `${static_base}chrome/header.js`].map((src) => {
       const s = document.createElement('script');
@@ -46,6 +46,7 @@ export default function Header({ static_base = "https://static.arxiv.org/static/
           {!signed_in && (<><a href={`${auth_url}/login`} className="ds-site-header-login">Log in</a></>)}{" "}
         </nav>{" "}
         </>)}{" "}
+        {header_page_actions && (<><div className="ds-site-header-tools" dangerouslySetInnerHTML={{ __html: header_page_actions }} /></>)}{" "}
       </header>{" "}
       {!hide_nav && (<>{" "}
       <div className="ds-search-overlay" id="ds-search-overlay" hidden>{" "}
