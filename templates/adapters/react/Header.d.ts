@@ -20,6 +20,8 @@ export interface HeaderProps {
   hide_announcement?: boolean;
   /** Per session: one "Account" link (auth_url + account_path, where the reader logs out) instead of "Log in". Default: false. */
   signed_in?: boolean;
+  /** Per page, this page's actions (its links and buttons) in the bar's tools region (.ds-site-header-tools, after the navigation): host markup, each <a> or <button> a direct child. '' (the default) leaves the region out. Never site navigation, which stays as DESIGN-POLICIES sets it. Default: "". */
+  header_page_actions?: string;
 }
 
 export default function Header(props: HeaderProps): ReactElement;

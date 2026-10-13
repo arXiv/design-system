@@ -1,7 +1,7 @@
 """The integration host: a Flask app that uses the brand templates the way consumers do.
 
   /jinja     arxiv_brand.init_app + a context processor; ?hide_announcement drops the
-             band, for the banner tests
+             band, for the banner tests; ?actions fills header_page_actions, ?hide_nav drops the nav
   /react     the React host, react.js bundled to dist/ by `npm run build`
   /assets/   the design-system asset route, staged by upload_static_assets.stage
 
@@ -30,6 +30,10 @@ upload_static_assets.stage(ASSETS)
 # The html slot, resolved by the host. Both pages carry the one page-level rule a host's own
 # CSS provides (body margin), which the component stylesheet leaves to the host.
 MEMBER = '<span class="ack-member-inline">, <strong>RWTH Aachen</strong></span>'
+# A page's actions as a host writes them: an icon and a hidden label in each, no CSS of its own.
+ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>'
+ACTIONS = (f'<a href="#pdf" title="PDF">{ICON}<span class="is-sr-only">PDF</span></a>'
+         f'<button type="button" title="Contents">{ICON}<span class="is-sr-only">Contents</span></button>')
 
 PAGE = """<!DOCTYPE html>
 <html lang="en">
@@ -62,8 +66,10 @@ arxiv_brand.init_app(app)
 
 @app.context_processor
 def brand():
-    hide = "hide_announcement" in request.args
-    return arxiv_brand.context(member_institution=MEMBER, hide_announcement=hide)
+    args = request.args
+    return arxiv_brand.context(member_institution=MEMBER, hide_nav="hide_nav" in args,
+                               hide_announcement="hide_announcement" in args,
+                               header_page_actions=ACTIONS if "actions" in args else None)
 
 
 @app.get("/jinja")
