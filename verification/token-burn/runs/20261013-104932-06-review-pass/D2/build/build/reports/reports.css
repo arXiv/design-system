@@ -1,0 +1,78 @@
+/* =============================================================
+   Moderation reports — page CSS for build/reports/.
+   Loaded after tier 1 (design-system.css) and tier 2 (internal-tools.css).
+
+   Only what the design system has no pattern for lives here. Every value
+   comes from a --ds- token, so the pages flip with dark mode.
+   ============================================================= */
+
+
+/* ─── Content placeholder ──────────────────────────────────────
+   No pattern: the design system has no guidance for charts or figures
+   yet. Derived from the card (8px radius, scale padding) with a dashed
+   --ds-border-strong edge, so a placeholder cannot be mistaken for a
+   real card, and muted text, because it is not content. The words say
+   what goes there; the dashes are not the only signal. */
+.reports-placeholder {
+  margin: 0;
+  padding: var(--ds-space-4) var(--ds-space-6);
+  border: 1px dashed var(--ds-border-strong);
+  border-radius: 8px;
+  color: var(--ds-text-muted);
+}
+/* A chart takes room on the real page; the placeholder holds it, in rem so
+   it grows with the reader's text size. */
+.reports-placeholder--chart {
+  display: flex;
+  align-items: center;
+  min-height: 12rem;
+}
+
+
+/* ─── Categories shown ─────────────────────────────────────────
+   A list of links (.ds-link-list) laid out in wrapping rows, the way
+   .ds-tag-list lays out tags. Plain links, not tags: a tag never stands
+   in for a link (DESIGN-POLICIES, Content and interaction). */
+.reports-category-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-tight) var(--ds-space-block);
+  padding: 0;
+  list-style: none;
+  font-family: var(--ds-font-mono);   /* category codes are identifiers */
+}
+.reports-category-index li { margin: 0; }
+
+
+/* ─── Category rows ────────────────────────────────────────────
+   The container owns the space between rows (DESIGN-POLICIES, Spacing):
+   section-sized between categories, tight within one. */
+.reports-categories {
+  display: grid;
+  gap: var(--ds-space-section);
+}
+.reports-category {
+  display: grid;
+  gap: var(--ds-space-tight);
+}
+.reports-category > h3 { margin: 0; }
+
+/* The two charts side by side while each still has room, stacked when not.
+   No breakpoint: the grid column runs out (DESIGN-POLICIES, Layout). */
+.reports-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  gap: var(--ds-space-tight);
+}
+
+
+/* ─── The view ─────────────────────────────────────────────────
+   The main section's blocks — status line, explanation, sort, list,
+   rows — are siblings without margins of their own (forms, a card grid),
+   so the section owns the space between them as a gap. */
+.reports-view {
+  display: grid;
+  gap: var(--ds-space-block);
+}
+.reports-view > h2 { margin: 0; }
+.reports-view > ul { margin: 0; }

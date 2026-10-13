@@ -666,7 +666,21 @@ def report(args):
     tech = load(run / "technical.json", {"builds": {}})
     first = Path(info["pages"][0]["path"]).stem
     cards = []
-    for c in cells_of(run):
+    if info.get("pairs"):
+        tops = load(run / "primary-top.json", {})
+        for label in sorted(key):
+            v = {ver: cell for cell, ver in key[label].get("versions", {}).items()}
+            choice = rev["builds"].get(label, {}).get("choice")
+            pick = "About the same" if choice == "same" else {"before": "Before", "after": "After"}.get(key[label]["versions"].get(f"{label}{choice}"), "Not reviewed")
+            moved = "; ".join(f"{pg['label']}: {tops[label][Path(pg['path']).stem]['before'] - tops[label][Path(pg['path']).stem]['after']:+d}px"
+                              for pg in info["pages"] if tops.get(label, {}).get(Path(pg["path"]).stem, {}).get("after") is not None)
+            tok = millions(total_tokens(load(run / label / "metrics-build.json", {})) + total_tokens(load(run / label / "metrics-followup.json", {})))
+            pics = "".join(f'<a href="{v[ver]}/shots/{first}-desktop.jpg"><img src="{v[ver]}/shots/{first}-desktop.jpg" alt="Build {label}, {ver} the review"></a><span class="cap">{ver.capitalize()}</span>'
+                           for ver in ("before", "after") if ver in v)
+            cards.append(f"""<figure><div class="pair">{pics}</div><figcaption><strong>Build {label}</strong><dl>
+<dt>Preferred</dt><dd>{pick}</dd><dt>Main content moved up</dt><dd>{esc(moved) or "Not measured"}</dd>
+<dt>Agent</dt><dd>{esc(AGENTS.get(key[label]["model"], key[label]["model"]))}</dd><dt>Tokens</dt><dd>{tok}</dd></dl></figcaption></figure>""")
+    for c in ([] if info.get("pairs") else cells_of(run)):
         shot = f"{c.name}/shots/{first}-desktop.jpg"
         img = (f'<a href="{shot}"><img src="{shot}" alt="Build {c.name}, full size"></a>'
                if (run / shot).exists() else "<p>No page built.</p>")
@@ -688,7 +702,7 @@ main{{max-width:960px;margin:0 auto;padding:16px 16px 48px}}h1{{font-size:24px;m
 .grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:24px}}
 @media (max-width:600px){{.grid{{grid-template-columns:1fr}}}}
 figure{{margin:0}}figure img{{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top;border:1px solid #dad8d6;border-radius:6px}}
-figcaption{{margin-top:8px}}dl{{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:4px 0 0;font-size:14px}}dt{{color:#59534c}}dd{{margin:0;font-weight:600}}
+figcaption{{margin-top:8px}}.pair{{display:grid;grid-template-columns:1fr 1fr;gap:6px}}.pair .cap{{font-size:13px;color:#59534c}}.pair a{{grid-row:1}}dl{{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:4px 0 0;font-size:14px}}dt{{color:#59534c}}dd{{margin:0;font-weight:600}}
 </style></head><body><main>
 <h1>{esc(info.get("subject", info.get("title", run.name)))}</h1>
 <ul class="meta"><li>{esc(info["date"])}</li><li><a href="spec.md">The spec</a></li><li><a href="summary.html">The detailed report</a></li></ul>

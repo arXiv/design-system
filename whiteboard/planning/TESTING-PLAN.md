@@ -63,6 +63,7 @@ Nothing in Shamsi's area should be obviously wrong: design and visual display, a
 
 ## Status
 
+- 2026-10-13: round 6 measured the review pass (before and after, same agent): Shamsi preferred the revised pages for three of four agents; the main content moved up in seven of eight pages. Report: `verification/token-burn/runs/20261013-104932-06-review-pass/report.html`.
 - 2026-10-13: round 5 (the reports again, after the test 4 guidance) reviewed: all four accepted with changes (round 4: all rejected). Programmatic: one Pass, three Pass with changes. Follow-ups in `whiteboard/planning/round5-followups.md`.
 - 2026-10-08: Shamsi: phone widths are not checked for the internal-tools tests. Guidance drafted for her review from test 4: the main content comes first and pages that send the reader on (layout-patterns.html), cards that link (cards.html), two levels of navigation (header.html), and directing agents to the standard header (AGENTS.md, a note on every docs page's header).
 - 2026-10-08: test 4 (moderation and staff reports, internal tools) reviewed: all four rejected on page hierarchy; programmatic Pass for two, Pass with changes for two. Found: no guidance on doorway pages or keeping secondary content out of the way; no two-level navigation; agents copy the docs pages' light header. Design-system bug fixed: `.ds-table-scroll` is positioned. Report: `verification/token-burn/runs/20261006-192823-04-staff-reports/report.html`.
