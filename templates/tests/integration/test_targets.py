@@ -22,7 +22,8 @@ sys.path.insert(0, str(HERE.parents[1]))
 import arxiv_brand  # noqa: E402
 import generate as g  # noqa: E402
 
-SLOT = '<b class="brand-slot">x &amp; y</b>'   # every html slot's value
+SLOT = '<b class="brand-slot">x &amp; y</b>'   # every html slot's value; React gets SLOT_JSX
+SLOT_JSX = {"$element": ["b", {"className": "brand-slot"}, "x & y"]}   # render_react.cjs builds it
 TT = r"""use strict; use Template; use JSON::PP;
 my $tt = Template->new({ INCLUDE_PATH => $ARGV[0], ENCODING => 'utf8' }) or die Template->error;
 my @out = map { my ($c, $out) = ($_, '');
@@ -67,7 +68,8 @@ def rendered(tmp_path_factory):
     react = json.loads(subprocess.run(
         ["node", str(HERE / "render_react.cjs")], capture_output=True, text=True, check=True,
         input=json.dumps({"components": components, "cases": [
-            {"component": g.component(name), "props": values} for name, _, values in CASES]})).stdout)
+            {"component": g.component(name), "props": {k: SLOT_JSX if v == SLOT else v for k, v in values.items()}}
+            for name, _, values in CASES]})).stdout)
     out = []
     for (name, _, values), t, r in zip(CASES, tt, react):
         page = jinja.get_template("fixture.html" if name == "fixture" else f"arxiv_brand/{name}.html")
@@ -105,15 +107,10 @@ class Read(HTMLParser):
             self.out.append(("#text", data))
 
 
-def read(html: str, react: bool = False) -> tuple[list, list]:
+def read(html: str) -> tuple[list, list]:
     r = Read(html)
-    ev = r.out
-    if react:   # the <span> React puts an html slot in
-        for i in reversed(range(len(ev) - 1)):
-            if ev[i] == ("span", ()) and ev[i + 1] in (("/span",), ("b", (("class", "brand-slot"),))):
-                del ev[next(j for j in range(i + 1, len(ev)) if ev[j] == ("/span",))], ev[i]
     out = []
-    for e in ev:   # adjacent text reads as one
+    for e in r.out:   # adjacent text reads as one
         if e[0] == "#text" and out and out[-1][0] == "#text":
             out[-1] = ("#text", out[-1][1] + e[1])
         else:
@@ -133,4 +130,4 @@ def test_every_target_renders_what_jinja_renders(rendered, i):
     want = read(out["jinja"])
     assert read(out["tt"]) == want, "TemplateToolkit"
     assert out["react"]["errors"] == [], "React logged"
-    assert (read(out["react"]["html"], react=True)[0], out["react"]["scripts"]) == want, "React"
+    assert (read(out["react"]["html"])[0], out["react"]["scripts"]) == want, "React"

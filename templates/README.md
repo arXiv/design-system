@@ -91,10 +91,10 @@ renders other than Jinja.
   | Type | | Jinja | TemplateToolkit | React |
   |---|---|---|---|---|
   | `attr`, `url` | escaped | `{{ v }}` | `[% v \| html %]` | `{v}`, ``{`…${v}…`}`` |
-  | `html` | trusted host markup | `{{ v }}` (marked safe) | `[% v %]` | `dangerouslySetInnerHTML`: on the element it fills, else a `<span>` |
+  | `html` | trusted host content | `{{ v }}` (marked safe) | `[% v %]` | `{v}`: React elements, never injected markup |
   | `bool` | gates a section | `{% if v %}` | `[% IF v %]` / `[% UNLESS v %]` | `{v && (…)}` / `{!v && (…)}` |
 
-  The `html` slots:
+  The `html` slots, which a React host fills with elements (JSX), not strings:
   - `member_institution` (footer): `""` for an anonymous reader (the default); the resolved
     `<span class="ack-member-inline">, <strong>Name</strong></span>` for a recognised IP; or
     that span empty and `hidden`, which `chrome/header.js` fills from the same-origin
@@ -104,7 +104,8 @@ renders other than Jinja.
     the host passes its `<a>`s and `<button>`s as direct children, an icon `<svg>` and an
     `is-sr-only` label in each, so the bar styles them. `""` (the default) leaves the region
     out. They belong to the page, never to the site navigation, which stays as
-    DESIGN-POLICIES sets it.
+    DESIGN-POLICIES sets it. In React they are the app's own elements, handlers included:
+    `<Header header_page_actions={<><button onClick={…}>…</button></>} />`.
 - **Defaults travel with each target:** Jinja through `init_env`'s globals, React as prop
   defaults, TemplateToolkit through `[% UNLESS v.defined %]` (an explicit `""` wins); the
   vendored HTML is rendered with them.
