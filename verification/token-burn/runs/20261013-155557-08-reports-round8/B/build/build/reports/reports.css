@@ -1,0 +1,37 @@
+/* Moderation and staff reports — the page CSS the design system does not provide.
+   Everything here is a page-level arrangement of existing components; no
+   component is restyled. Colours and spaces come from tokens only. */
+
+/* A placeholder where figures or a chart will go. The brief sets the colour;
+   there is no design-system class for placeholder text, so this is the one rule. */
+.reports-placeholder { color: var(--ds-text-muted); }
+
+/* The context line: the period and the last update, then Refresh as a text
+   button at the end of the line (layout-patterns.html, The main content comes
+   first). A <form> because Refresh is a GET submit, so it cannot sit in a <p>.
+   The gap inside the line is the tight break, as between items in one group. */
+.reports-context {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-tight) var(--ds-space-block);
+}
+.reports-context > p { margin: 0; color: var(--ds-text-muted); }
+
+/* One category row: its heading, then the holds card, then the two chart cards
+   in a .ds-card-grid. The card grid already supplies the gap between the charts;
+   this gives the holds card the same gap below it, so the three cards read as one
+   group under the heading. */
+.reports-category > h3 { margin-top: 0; }
+.reports-category > .ds-card + .ds-card-grid { margin-top: var(--ds-space-block); }
+/* The two charts of a row share the row, half each, and stack when one can no
+   longer hold the card grid's minimum. auto-fit rather than the grid's auto-fill,
+   because a row always holds exactly two, and an empty third column on the wide
+   page would read as a missing chart. */
+.reports-category > .ds-card-grid { grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr)); }
+
+/* Rows are the sections of the view, so they sit a section apart. */
+.reports-category + .reports-category { margin-top: var(--ds-space-section); }
+
+/* The note under the cards on All sections is a footnote to them, a block below. */
+.reports-footnote { margin-top: var(--ds-space-block); }

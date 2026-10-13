@@ -1,0 +1,35 @@
+/* Moderation reports: only what the design system does not provide.
+   Every value is a design-system token. Each rule says which gap it fills. */
+
+/* The line under a heading that holds the period and a Refresh text button
+   (layout-patterns.html, The main content comes first). The button sits at the
+   end of the sentence (it submits a form outside the paragraph through its form
+   attribute), so it keeps the line's height instead of taking a row. */
+.reports-context { color: var(--ds-text-muted); }
+.reports-context > .ds-btn-text { padding: 0; min-height: 0; margin-inline-start: var(--ds-space-tight); vertical-align: baseline; }
+
+/* The title of a card that links, as an h2: the outline needs h2 under the
+   page's h1 (layout-patterns.html, Accessibility essentials), and the system
+   sizes only an h3 as a card title. Same values as that rule. */
+.reports-sections .ds-card > h2 { font-size: 1rem; margin: 0 0 var(--ds-space-tight); }
+
+/* A footnote under the cards: what the figures count. */
+.reports-footnote { color: var(--ds-text-muted); font-size: 0.875rem; }
+
+/* The run of category links. */
+.reports-cat-list-label { color: var(--ds-text-muted); }
+
+/* The sort toolbar sits directly above the rows it orders. */
+.reports-sort { margin-block: var(--ds-space-block); }
+.reports-sort > .ds-check { margin: 0; align-items: center; }
+
+/* Category rows: the gap between rows (section) is at least twice the gap
+   inside one (tight), as DESIGN-POLICIES, Spacing asks. */
+.reports-cats { display: grid; gap: var(--ds-space-section); margin-top: var(--ds-space-6); }
+.reports-cat { display: grid; gap: var(--ds-space-tight); }
+.reports-cat > h3 { margin: 0; }
+.reports-cat .ds-card + .ds-card-grid { margin-top: 0; }
+
+/* The two charts of a row share its width: the card grid's auto-fill keeps an
+   empty third column on the wide page, auto-fit lets two cards fill it. */
+.reports-cat .ds-card-grid { grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr)); }

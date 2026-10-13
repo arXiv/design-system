@@ -433,7 +433,7 @@ img.thumb{width:220px;height:300px;object-fit:cover;object-position:top;border:1
 REVIEW_JS = """
 const R = JSON.parse(document.getElementById('data').textContent);
 const state = R.saved || {builds: {}, together: ''};
-let i = R.labels.findIndex(l => !(state.builds[l] && (state.builds[l].verdict || state.builds[l].choice))); if (i < 0) i = R.labels.length;
+let i = R.labels.findIndex(l => !(state.builds[l] && (state.builds[l].verdict || state.builds[l].choice || (R.rank && state.builds[l].seen)))); if (i < 0) i = R.labels.length;
 let pg = 0, narrow = false, started = !!R.saved, panelOpen = false;
 const $ = s => document.querySelector(s);
 function save() { return fetch('/save', {method: 'POST', body: JSON.stringify(state)}) }
@@ -450,8 +450,8 @@ function intro() {
   $('#app').innerHTML = `<main><h1>${R.labels.length} builds to review</h1>
     <p>The same spec was built ${R.labels.length} separate times. Each build is a different attempt at the same ${R.pages.length === 1 ? 'page' : R.pages.length + ' pages: ' + R.pages.map(p => p.label).join(', ')}.</p>
     ${R.pages.length === 1 ? '' : '<p>Look at every page of a build before you write its notes.</p>'}
-    <p>You will see one build at a time. For each build, write what is off and choose a verdict. Then the next build appears. Notes and verdicts are separate for each build.</p>
-    <p>After the last build you will see all of them side by side.</p>
+    <p>${R.rank ? 'You will see one build at a time. For each build, write what is off. Then the next build appears.' : 'You will see one build at a time. For each build, write what is off and choose a verdict. Then the next build appears. Notes and verdicts are separate for each build.'}</p>
+    <p>After the last build you will see all of them side by side${R.rank ? ', and choose the best and the worst' : ''}.</p>
     <div class="row"><button class="go" id="start">Start with Build ${R.labels[0]}</button></div></main>`;
   $('#start').onclick = () => { started = true; show() };
 }
@@ -465,12 +465,12 @@ function show() {
     ${R.pages.map((p, n) => `<button data-pg="${n}" aria-pressed="${n === pg}">${p.label}</button>`).join('')}
     <button id="narrow" aria-pressed="${narrow}">Phone width</button>
     <a class="btn" href="${src(l)}" target="_blank">Open in a new tab</a>
-    <button class="go" id="notesbtn" aria-expanded="${panelOpen}" aria-controls="panel">Notes and verdict</button></div></div>
+    <button class="go" id="notesbtn" aria-expanded="${panelOpen}" aria-controls="panel">${R.rank ? 'Notes' : 'Notes and verdict'}</button></div></div>
     <iframe src="${src(l)}" style="width:${narrow ? '390px' : '100%'}" title="Build ${l}"></iframe>
     <dialog id="panel" aria-labelledby="notes-q"><label class="q" id="notes-q" for="notes">What is off in Build ${l}?</label>
     <textarea id="notes">${b.notes.replace(/</g, '&lt;')}</textarea>
-    <fieldset><legend>Verdict</legend>${Object.entries(R.verdicts).map(([v, t]) =>
-      `<label><input type="radio" name="v" value="${v}" ${b.verdict === v ? 'checked' : ''}> ${t}</label>`).join('')}</fieldset>
+    ${R.rank ? '' : `<fieldset><legend>Verdict</legend>${Object.entries(R.verdicts).map(([v, t]) =>
+      `<label><input type="radio" name="v" value="${v}" ${b.verdict === v ? 'checked' : ''}> ${t}</label>`).join('')}</fieldset>`}
     <div class="row">${i > 0 ? '<button id="back">Back</button>' : ''}<button class="go" id="next">${i + 1 < R.labels.length ? 'Save and go to Build ' + R.labels[i + 1] : 'Save and see all builds together'}</button><button id="hide">Close</button><span id="msg" class="muted"></span></div></dialog>`;
   const panel = $('#panel');
   function setPanel(open) { panelOpen = open; if (open) { panel.show(); $('#notes').focus() } else panel.close(); $('#notesbtn').setAttribute('aria-expanded', open) }
@@ -481,7 +481,7 @@ function show() {
   document.querySelectorAll('[data-pg]').forEach(b => b.onclick = () => { keep(l); pg = +b.dataset.pg; show() });
   $('#narrow').onclick = () => { keep(l); narrow = !narrow; show() };
   if ($('#back')) $('#back').onclick = () => { keep(l); save(); i--; pg = 0; show() };
-  $('#next').onclick = () => { keep(l); if (!state.builds[l].verdict) { $('#msg').textContent = 'Choose a verdict first.'; return }
+  $('#next').onclick = () => { keep(l); if (!R.rank && !state.builds[l].verdict) { $('#msg').textContent = 'Choose a verdict first.'; return }
     save().then(() => { i++; pg = 0; show() }) };
 }
 function showPair() {
@@ -512,18 +512,24 @@ function showPair() {
     if (i + 1 >= R.labels.length) state.finished = true;
     save().then(() => { i++; pg = 0; if (i >= R.labels.length) { $('#app').innerHTML = '<main><h1>Saved</h1><p>Tell Claude you are finished.</p></main>' } else showPair() }) };
 }
-function keep(l) { state.builds[l] = {notes: $('#notes').value, verdict: (document.querySelector('input[name=v]:checked') || {}).value || ''} }
+function keep(l) { state.builds[l] = R.rank ? {notes: $('#notes').value, seen: true} : {notes: $('#notes').value, verdict: (document.querySelector('input[name=v]:checked') || {}).value || ''} }
 function together() {
   $('#app').innerHTML = `<main><h1>All ${R.labels.length} builds together</h1>
     <p>Your answers are saved. Is there anything to add now that you can see them side by side?</p>
-    <table><tr>${R.labels.map(l => `<th>Build ${l}<br><span class="muted">${R.verdicts[state.builds[l].verdict]}</span></th>`).join('')}</tr>
+    <table><tr>${R.labels.map(l => `<th>Build ${l}${R.rank ? '' : `<br><span class="muted">${R.verdicts[state.builds[l].verdict]}</span>`}</th>`).join('')}</tr>
     ${R.pages.map(p => `<tr>${R.labels.map(l => { const s = p.path.split('/').pop().replace('.html', '');
       return `<td><a href="/b/${l}/${p.path}" target="_blank"><img class="thumb" alt="Build ${l}, ${p.label}" src="/shots/${l}/${s}-desktop.jpg"></a>${p.label}</td>` }).join('')}</tr>`).join('')}</table>
+    ${R.rank ? ['best', 'worst'].map(k => `<fieldset><legend>The ${k} build</legend>${R.labels.map(l =>
+      `<label><input type="radio" name="${k}" value="${l}" ${state[k] === l ? 'checked' : ''}> Build ${l}</label>`).join('')}</fieldset>`).join('') : ''}
     <label class="q" for="tog" style="margin-top:24px">Notes after seeing them together</label>
     <textarea id="tog">${(state.together || '').replace(/</g, '&lt;')}</textarea>
     <div class="row"><button id="back">Back</button><button class="go" id="done">Save and finish</button><span id="msg" class="muted"></span></div></main>`;
-  $('#back').onclick = () => { state.together = $('#tog').value; i = R.labels.length - 1; show() };
-  $('#done').onclick = () => { state.together = $('#tog').value; state.finished = true;
+  const keepRank = () => { if (R.rank) ['best', 'worst'].forEach(k => state[k] = (document.querySelector(`input[name=${k}]:checked`) || {}).value || '') };
+  $('#back').onclick = () => { keepRank(); state.together = $('#tog').value; i = R.labels.length - 1; show() };
+  $('#done').onclick = () => { keepRank(); state.together = $('#tog').value;
+    if (R.rank && (!state.best || !state.worst)) { $('#msg').textContent = 'Choose the best and the worst first.'; return }
+    if (R.rank && state.best === state.worst) { $('#msg').textContent = 'The best and the worst must be different builds.'; return }
+    state.finished = true;
     save().then(() => $('#msg').textContent = 'Saved. Tell Claude you are finished.') };
 }
 show();
@@ -535,7 +541,7 @@ def review_page(run: Path) -> str:
     labels = [c.name for c in cells_of(run)]
     if info.get("pairs"):
         labels = sorted({l[:-1] for l in labels})
-    data = {"labels": labels, "pages": info["pages"], "verdicts": VERDICTS, "pairs": bool(info.get("pairs")),
+    data = {"labels": labels, "pages": info["pages"], "verdicts": VERDICTS, "pairs": bool(info.get("pairs")), "rank": bool(info.get("rank")),
             "saved": load(run / "review.json")}
     blob = json.dumps(data).replace("</", "<\\/")
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
@@ -602,6 +608,7 @@ def summary(args):
         "<tr><th></th>" + "".join(f"<th>Build {c.name}</th>" for c in cells) + "</tr>",
         row("Model", lambda c: esc((key.get(c.name) or key[c.name[:-1]])["model"]) + (f" ({(key.get(c.name[:-1]) or {}).get('versions', {}).get(c.name, '')})" if info.get("pairs") else "")),
         row("Pages", shots),
+        row("Shamsi: pick", lambda c: esc("best" if rev.get("best") == c.name else "worst" if rev.get("worst") == c.name else "neither")) if info.get("rank") else
         row("Shamsi: verdict", lambda c: esc(VERDICTS.get(rev["builds"].get(c.name, {}).get("verdict"), "not reviewed")) if not info.get("pairs") else esc("preferred" if rev["builds"].get(c.name[:-1], {}).get("choice") == c.name[-1] else "about the same" if rev["builds"].get(c.name[:-1], {}).get("choice") == "same" else "not preferred")),
         row("Shamsi: what is off", lambda c: fold(rev["builds"].get(c.name if not info.get("pairs") else c.name[:-1], {}).get("notes"))),
         row("Claude: technical verdict", lambda c: esc(tech["builds"].get(c.name, {}).get("verdict", "not evaluated"))),
@@ -686,11 +693,12 @@ def report(args):
         shot = f"{c.name}/shots/{first}-desktop.jpg"
         img = (f'<a href="{shot}"><img src="{shot}" alt="Build {c.name}, full size"></a>'
                if (run / shot).exists() else "<p>No page built.</p>")
-        vis = GRADES.get(VISUAL.get(rev["builds"].get(c.name, {}).get("verdict")), "Not reviewed")
+        vis = ({rev.get("best"): "Best", rev.get("worst"): "Worst"}.get(c.name, "Neither") if info.get("rank")
+               else GRADES.get(VISUAL.get(rev["builds"].get(c.name, {}).get("verdict")), "Not reviewed"))
         prog = GRADES.get(tech["builds"].get(c.name, {}).get("programmatic"), "Not graded")
         tok = millions(total_tokens(load(c / "metrics.json", {})))
         cards.append(f"""<figure>{img}<figcaption><strong>Build {c.name}</strong><dl>
-<dt>Visual fidelity</dt><dd>{vis}</dd><dt>Programmatic fidelity</dt><dd>{prog}</dd>
+<dt>{"Shamsi's pick" if info.get("rank") else "Visual fidelity"}</dt><dd>{vis}</dd><dt>Programmatic fidelity</dt><dd>{prog}</dd>
 <dt>Agent</dt><dd>{esc(AGENTS.get(key[c.name]["model"], key[c.name]["model"]))}</dd><dt>Tokens</dt><dd>{tok}</dd></dl></figcaption></figure>""")
     found = tech.get("findings") or []
     found_html = ("<h2>What the review found</h2><ul>" + "".join(f"<li>{esc(x)}</li>" for x in found[:3]) + "</ul>") if found else ""

@@ -12,6 +12,8 @@ Shamsi's verdict in the blind review:
 | Accept with changes | Pass with changes |
 | Reject | Fail |
 
+From round 9 (2026-10-13), the iterating rounds use Shamsi's pick instead: after the blind review she chooses the best and the worst build, with notes for each. Her standard rises as the builds improve, so a verdict stops measuring progress; a ranking says what worked. A test sets `"rank": true` in its `test.json` for this. The verdict stays for the V1 exit test, where the question is whether a build is good enough to ship.
+
 ## Programmatic fidelity
 
 Claude's grade from the automated checks and a read of the code. It is written to `technical.json` as `programmatic`, with the reasons in `notes`, which appear in the detailed report.

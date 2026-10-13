@@ -98,7 +98,7 @@ components:
   - id: a-group-of-toggles
     title: "A group of toggles"
     group: "Modifiers"
-    summary: "Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once."
+    summary: "Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once. Use a sort bar for up to five ways to sort a list or a set of rows that are not a table; use a [sortable column header](tables.html#sortable-column-headers) in a table, and a [Sort by](forms.html) select in a search form."
     classes:
       - name: ".ds-btn-group with role=\"group\""
         does: "The bar, named by its label through `aria-labelledby`. When its buttons have `aria-pressed`, they join, and the bar is compact. Here the bar is a GET form, so it works without JavaScript; hidden inputs keep the reader's other choices in the address."
@@ -238,7 +238,7 @@ A set of related buttons with a parent container class that spaces them appropri
 
 ## A group of toggles  (Modifiers)
 
-Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once.
+Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once. Use a sort bar for up to five ways to sort a list or a set of rows that are not a table; use a [sortable column header](tables.html#sortable-column-headers) in a table, and a [Sort by](forms.html) select in a search form.
 
 **A sort bar**
 
