@@ -35,10 +35,11 @@
         <a href="layout-patterns.html">Layouts</a>
         <a href="cards.html">Cards</a>
         <a href="tables.html">Tables</a>
+        <a href="search.html">Search</a>
         <a href="progressive-disclosure.html">Progressive disclosure</a>
         <a href="modals.html">Modal dialogs</a>
-        <a href="version-display.html">arXiv Paper Versions</a>
-      </div>
+        <a href="papers.html">Papers</a>
+        </div>
     </details>
     <details class="ds-site-header-dropdown">
       <summary>Mockups</summary>
@@ -242,7 +243,7 @@
     control appears.</p>
 
     <div class="ds-card anchor-demo">
-      <h3>A section heading <button type="button" class="ds-anchor" aria-label="Copy link to A section heading" title="Copy link to this section"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button></h3>
+      <h3>A section heading <button type="button" class="ds-permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Permalink<span class="is-sr-only"> to A section heading</span></button></h3>
       <p>The control as it appears on hover or focus. Here it is kept visible and copies nothing; the ones beside the headings on this page are live.</p>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
@@ -257,9 +258,7 @@
 
 &lt;!-- What renders --&gt;
 &lt;h2 id="dividers"&gt;Dividers
-  &lt;button type="button" class="ds-anchor" aria-label="Copy link to Dividers" title="Copy link to this section"&gt;
-    &lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;…&lt;/svg&gt;
-  &lt;/button&gt;
+  &lt;button type="button" class="ds-permalink"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;Permalink&lt;span class="is-sr-only"&gt; to Dividers&lt;/span&gt;&lt;/button&gt;
 &lt;/h2&gt;</code></pre>
           <dl>
             <dt>&lt;section&gt; &gt; h2, h3</dt>
@@ -269,12 +268,16 @@
             <dt>id</dt>
             <dd>Written into the HTML, by hand or by whatever builds the page. These docs use
             <code>verification/gen-anchors.py</code>, which makes it from the heading text.</dd>
-            <dt>.ds-anchor</dt>
-            <dd>The control, a <code>&lt;button&gt;</code> that <code>anchors.js</code> adds to every
-            section heading with an <code>id</code>. Quiet until wanted: it appears on
-            hover of the heading and on its own focus, and stays visible on a touch screen. Its
-            accessible name includes the section, and the copy result is announced in a live
-            region.</dd>
+            <dt>.ds-permalink</dt>
+            <dd>The control, a <code>&lt;button&gt;</code> with the link icon and the word “Permalink”,
+            that <code>anchors.js</code> adds to every section heading with an <code>id</code>. It shows
+            while the heading is hovered, while it has focus, and after a tap on a screen without hover.
+            It stays in the tab order while it is hidden.</dd>
+            <dt>.is-sr-only</dt>
+            <dd>Completes the accessible name with the section: “Permalink to Dividers”. The name starts
+            with the visible word.</dd>
+            <dt>[role="status"]</dt>
+            <dd>One region on the page. The script writes “Link to Dividers copied” into it.</dd>
           </dl>
         </div>
       </details>
@@ -294,8 +297,12 @@
       That is the right trade while nothing links in from outside; re-run the generator after
       editing a heading and the check will tell you if you forget.</li>
       <li><strong>Its accessible name includes the section.</strong> Twelve buttons all called
-      “Copy link to section” are useless in a list of controls, so each says which
+      “Permalink” are useless in a list of controls, so each says which
       section it belongs to.</li>
+      <li><strong>The control is the same wherever it is used</strong>, on a docs page or in an HTML
+      paper. A heading that has one action uses this control; an element with several actions, such
+      as an equation, uses the <a href="buttons.html#small-actions-attached-to-content">element
+      pill</a>.</li>
     </ul>
   </section>
 
@@ -321,9 +328,16 @@
       <code>:focus-visible</code>, so it appears for keyboard users and not on mouse click. An
       <code>outline: none</code> on a link takes it away for everyone.</li>
       <li><strong>Links open in the same tab</strong> unless the reader would lose work in progress.
+      A reader&#39;s place in an HTML paper is work in progress, so a link from a paper to its PDF opens a
+      new tab.
       A link that opens a new tab includes the external-link icon (<code>docs/icons/external-link.svg</code>)
       after its text, with <code>aria-hidden="true"</code> on the icon and “(opens in a new tab)” in an
-      <code>.is-sr-only</code> span, so the change is announced and survives page translation.</li>
+      <code>.is-sr-only</code> span, so the change is announced and survives page translation. In a row
+      of links that each already have an icon, such as a paper&#39;s TOC bar, the external-link icon is left
+      out; the hidden text stays.</li>
+      <li><strong>In print, an external link shows its address after its text.</strong> An in-page link,
+      a button and a link that is an image do not. The stylesheet does this; nothing is needed in the
+      markup.</li>
     </ul>
   </div>
 

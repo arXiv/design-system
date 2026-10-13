@@ -39,11 +39,11 @@ components:
       - name: ".ds-filter-bar"
         does: "Filters for the list go in a filter bar above it, and results per page goes in its settings. See [Filter bar](tables.html#filter-bar)."
       - name: ".ds-pagination--top"
-        does: "A pager above a list. A light line below it separates it from the list."
+        does: "A pager above a list, in a tinted bar."
       - name: ".ds-pagination--bottom"
-        does: "A pager below a list. A light line above it separates it from the list."
+        does: "A pager below a list, in a tinted bar. With the bar above, it bookends the list."
       - name: ".ds-pagination-position"
-        does: "On its own when the whole list fits on one page: the count still shows, with its line, and there are no controls and no pager below the list."
+        does: "On its own when the whole list fits on one page: the count still shows, in its bar, and there are no controls and no pager below the list."
 rules:
   - "**Name the set.** The `<nav>` takes an `aria-label` that says what it steps through, such as “Queue navigation”."
   - "**Announce the position.** The counter is a polite live region, so each step is announced without moving focus."
@@ -197,6 +197,8 @@ Numbered pages are for a long list split across pages, such as search results, w
     <li><a href="?page=1"><span class="is-sr-only">Page </span>1</a></li>
     <li><a href="?page=2" aria-current="page"><span class="is-sr-only">Page </span>2</a></li>
     <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+    <li><a href="?page=4"><span class="is-sr-only">Page </span>4</a></li>
+    <li><a href="?page=5"><span class="is-sr-only">Page </span>5</a></li>
     <li>…</li>
     <li><a href="?page=67"><span class="is-sr-only">Page </span>67</a></li>
   </ol>
@@ -212,6 +214,8 @@ Numbered pages are for a long list split across pages, such as search results, w
     <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
     <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
     <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+    <li><a href="?page=4"><span class="is-sr-only">Page </span>4</a></li>
+    <li><a href="?page=5"><span class="is-sr-only">Page </span>5</a></li>
     <li>…</li>
     <li><a href="?page=166"><span class="is-sr-only">Page </span>166</a></li>
   </ol>
@@ -228,6 +232,8 @@ Numbered pages are for a long list split across pages, such as search results, w
     <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
     <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
     <li><a href="?page=3"><span class="is-sr-only">Page </span>3</a></li>
+    <li><a href="?page=4"><span class="is-sr-only">Page </span>4</a></li>
+    <li><a href="?page=5"><span class="is-sr-only">Page </span>5</a></li>
     <li>…</li>
     <li><a href="?page=166"><span class="is-sr-only">Page </span>166</a></li>
   </ol>
@@ -247,9 +253,9 @@ Numbered pages are for a long list split across pages, such as search results, w
 - `a.ds-btn.ds-btn-text` — Previous and Next are links, because each page has its own address. At either end of the list the link has no `href` and takes `aria-disabled="true"` and `.is-disabled`.
 - `.ds-pagination-label` — The words Previous and Next. On a narrow screen they are hidden and the arrows remain. Screen readers still read the words.
 - `.ds-filter-bar` — Filters for the list go in a filter bar above it, and results per page goes in its settings. See [Filter bar](tables.html#filter-bar).
-- `.ds-pagination--top` — A pager above a list. A light line below it separates it from the list.
-- `.ds-pagination--bottom` — A pager below a list. A light line above it separates it from the list.
-- `.ds-pagination-position` — On its own when the whole list fits on one page: the count still shows, with its line, and there are no controls and no pager below the list.
+- `.ds-pagination--top` — A pager above a list, in a tinted bar.
+- `.ds-pagination--bottom` — A pager below a list, in a tinted bar. With the bar above, it bookends the list.
+- `.ds-pagination-position` — On its own when the whole list fits on one page: the count still shows, in its bar, and there are no controls and no pager below the list.
 
 ## Rules
 
