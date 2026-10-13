@@ -60,8 +60,7 @@ for (const host of ["jinja", "react"]) {
         await open(page, `${ONE}/${host}?hide_announcement${nav}`);
         const bare = await height();
         await open(page, `${ONE}/${host}?hide_announcement&actions${nav}`);
-        // A bar without navigation keeps the reflow layout on phones, where they take a row.
-        if (width > 599 || !nav) expect(await height(), `${width}px${nav}`).toBe(bare);
+        expect(await height(), `${width}px${nav}`).toBe(bare);   // no row of their own
         const contents = page.getByRole("button", { name: "Contents" });
         for (const action of [page.getByRole("link", { name: "PDF" }), contents]) {
           await expect(action).toBeVisible();
