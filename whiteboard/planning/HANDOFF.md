@@ -105,11 +105,7 @@ dashboard spec, the Papers scope work (Papers follows V1 as the first product bu
 
 1. **Public page:** search. Done: test 3 passed programmatic fidelity in all four builds; its two
    gaps are fixed. Shamsi called search testing sufficient.
-2. **Internal page:** test 4, moderation and staff reports. Reviewed 2026-10-08: all four rejected
-   on hierarchy (report in `verification/token-burn/runs/20261006-192823-04-staff-reports/`).
-   Next: guidance for page hierarchy and doorway pages, a pattern for two-level navigation, the
-   header example on docs pages; then a rerun with the data replaced by placeholders. Shamsi to
-   decide whether phone widths are part of these tests.
+2. **Internal page:** the moderation and staff reports. Round 4 (2026-10-08): all rejected on hierarchy. Round 5 (2026-10-13), after new guidance: all accepted with changes. Next: the follow-ups in `round5-followups.md`, then one more round.
 3. **Docs pages the builds depend on:** reviewed, except any that test 4 shows are missing.
 4. Then the next plan: Papers scope (what belongs to the renderer), simplifying the Papers rules,
    reconciling the mockups with the docs.
