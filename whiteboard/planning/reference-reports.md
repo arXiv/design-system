@@ -17,12 +17,15 @@
 
 `docs/examples/reports/reports.css` holds what the design system does not provide yet:
 
-1. **The data line**: the period and last update, then Refresh, on one wrapping line.
-2. **A heading with a button beside it**: the view heading and "About these charts".
-3. **The heading group**: a heading and what introduces it (lede, data line, views), close together, with the main content a block below.
+1. **The page heading with "Last updated" and Refresh at its right end**, the same on every page of the tool.
+2. **A text button at the end of a sentence**, such as "About these charts": no box of its own, on the text's line.
+3. **The heading group**: a heading and what introduces it, close together, with the main content a block below.
 4. **A footnote** under the main content: smaller muted text.
-5. **Equal items in columns**, for the list in the popover.
-6. **The popover's opening script**: the docs style the popover but leave opening, placing and closing to each page. A shared `popover.js`, like `tooltip.js`, would settle it.
+5. **The filter at the right end of the second row**, after the views.
+
+## Design-system change on this branch, for review
+
+- **The header marks the section the reader is in**: a link with `aria-current` in the header navigation has full-strength text and an accent underline. The header had no current marking. It also applies to any public header that sets `aria-current`; none does today.
 
 ## Checks
 
