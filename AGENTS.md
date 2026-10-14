@@ -133,5 +133,5 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
 ## Repo conventions
 
 - Small team: never add anything needing manual upkeep.
-- Git: commit direct to master (WIP repo), identity SBBCornell. Published via GitHub Pages.
+- Git: work on a branch named for what it changes; changes reach master only through a pull request, which GitHub enforces. Identity SBBCornell. Published via GitHub Pages.
 - Tests: `verification/token-burn/` measures whether agents can work in this repo. Its tests and scoring notes are excluded from test workspaces — do not tune to them.
