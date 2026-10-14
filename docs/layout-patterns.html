@@ -10,6 +10,7 @@
 <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
 </head>
 <body class="ds-page">
+<!-- The docs site's own header (the light variant). It is not a pattern: build pages from the header in templates/ and docs/header.html. -->
 <header class="ds-site-header ds-site-header--light">
   <a class="ds-site-header-logo" href="../index.html"><span aria-hidden="true">arXiv Design System</span><span class="is-sr-only">archive Design System</span></a>
   <nav class="ds-site-header-nav" aria-label="Design system">
@@ -98,6 +99,8 @@
         <nav class="ds-toc-menu" aria-label="Contents">
           <ol>
             <li><a href="#evaluating-user-needs">Evaluating user needs</a></li>
+            <li><a href="#the-main-content-comes-first">The main content comes first</a></li>
+            <li><a href="#where-secondary-content-goes">Where secondary content goes</a></li>
             <li><a href="#the-page-container">The page container</a></li>
             <li><a href="#sidebar">Sidebar</a></li>
             <li><a href="#dividers">Dividers</a></li>
@@ -136,6 +139,7 @@
           <li><a href="#the-page-container">Page container</a>, <a href="#page-zones">page zones</a> and <a href="#wide-page">wide page</a>: the page frame</li>
           <li><a href="#sidebar">Sidebar</a> and <a href="#marginalia">marginalia</a>: supporting content</li>
           <li><a href="cards.html">Cards</a> and <a href="tables.html">tables</a>: records</li>
+          <li><a href="cards.html#cards-that-link">Cards that link</a>: a page that sends the reader on</li>
         </ul>
       </div>
       <div class="ds-card">
@@ -160,6 +164,39 @@
     </div>
   </section>
 
+  <!-- ───────── Main content first ───────── -->
+  <section>
+    <h2 id="the-main-content-comes-first">The main content comes first</h2>
+    <p class="ds-section-desc">Before choosing components, decide what the page is for and which content is primary. Everything else is arranged so it does not push the primary content down.</p>
+    <ul class="notes">
+      <li><strong>A page either sends the reader on or is where they work.</strong> A page that sends the reader on, such as a list of sections or reports, shows each destination as a <a href="cards.html#cards-that-link">card that links</a>, with only what helps the reader choose. A page where the reader reads, compares or acts on records uses <a href="tables.html">tables</a> and <a href="tables.html#filter-bar">filters</a>.</li>
+      <li><strong>Leave detailed figures for the page they belong to.</strong> A card shows a name and, at most, a count or a mark that something needs attention; the figures are on the page it opens.</li>
+      <li><strong>The page heading is followed by the main content.</strong> At most one short line comes between them. A line that sets the data in context, such as the period it covers and when it was last updated, goes there, just above the main content. The refresh control ends that line: a text button with the refresh icon (<code>refresh-cw</code>). An explanation of the figures is secondary: see <a href="#where-secondary-content-goes">Where secondary content goes</a>.</li>
+      <li><strong>Controls for a list sit on one row just above it.</strong> The sort bar is at the left edge; another control, such as a Categories button, is at the right edge (<code>.ds-btn-group--split</code> around the two). The row is close to the list and clearly apart from the text above it.</li>
+      <li><strong>A page with little on it needs no section headings.</strong> The page heading names it; a heading such as &ldquo;Subject groups&rdquo; under &ldquo;All sections&rdquo; adds nothing.</li>
+      <li><strong>A link in the header navigation is not repeated on the page</strong>, and no link on the page repeats the page heading.</li>
+      <li><strong>One name for one thing.</strong> Choose one word for each kind of thing, such as &ldquo;section&rdquo;, and use it in every heading, link and sentence.</li>
+      <li><strong>Mark what needs attention where it is.</strong> A status tag on the card or row, not an alert that lists the items, which the reader then has to find.</li>
+      <li><strong>Only the page&#39;s main action is a primary button.</strong> Refresh, export and other secondary actions are text buttons.</li>
+      <li><strong>Show readers what they can use, without labelling their access.</strong> A page shows each reader only what their permissions allow. It does not label parts of the page with who is allowed to see them.</li>
+      <li><strong>Dense pages do not organise content with <a href="#page-zones">page zones</a></strong>, and neither do the lighter pages of the same tool, so every page of the tool looks the same.</li>
+    </ul>
+  </section>
+
+  <!-- ───────── Where secondary content goes ───────── -->
+  <section>
+    <h3 id="where-secondary-content-goes">Where secondary content goes</h3>
+    <p class="ds-section-desc">Each kind of secondary content has a home that keeps the main content high and wide. Compare at least two homes for each piece, and keep the one that leaves the main content highest and widest.</p>
+    <ul class="notes">
+      <li><strong>A line or two: a line below the main content.</strong> A short note, such as what the figures count, reads as a footnote. It needs no heading and no accordion.</li>
+      <li><strong>A labelled section the reader may want: an <a href="progressive-disclosure.html#accordion">accordion</a></strong> below the main content. An accordion holds more than a line or two.</li>
+      <li><strong>The rest of a list whose first items matter most: <a href="progressive-disclosure.html#show-more">show more</a></strong>, such as authors after the first eight. A list of equal items, such as the categories a report covers, is shown or hidden whole.</li>
+      <li><strong>A list or explanation the reader opens when needed: a <a href="progressive-disclosure.html#popover">popover</a> or a <a href="modals.html">modal</a></strong>, opened from a button with a visible label, such as &ldquo;Categories (40)&rdquo; or &ldquo;About these charts&rdquo; beside the heading; an icon on its own is easy to miss. A popover opens beside its button and leaves the page usable; a modal takes over the page while the reader looks through it.</li>
+      <li><strong>A sentence about one label or control: a <a href="forms.html#tooltip">tooltip</a>.</strong></li>
+      <li><strong>Supporting content beside short main content: a <a href="#sidebar">sidebar</a>.</strong></li>
+    </ul>
+  </section>
+
   <!-- ───────── The page container ───────── -->
   <section>
     <h2 id="the-page-container">The page container</h2>
@@ -169,6 +206,12 @@
 <pre><code>&lt;main class="ds-container"&gt;…&lt;/main&gt;</code></pre>
     <p><code>.ds-container</code> places every direct child in the reading column and puts
     <code>--ds-space-section</code> (48px) between them, so a section has no margin of its own.</p>
+    <ul class="notes">
+      <li><strong>One width per page.</strong> Prose, tables, demos, code and callouts share the reading column, so everything on a page has the same left and right edge. A page that needs a different width changes the width token; it does not add a second width.</li>
+      <li><strong>Long-form reading is narrower.</strong> An abstract, a paper body or an explanation read from start to finish targets a line of about 65 characters, set on the page, not on the paragraph.</li>
+      <li><strong>Reference pages accept a longer line.</strong> At 850px a line is about 109 characters. That suits short reference paragraphs and two-column layouts; it is not a reason to set long text that wide.</li>
+      <li><strong>Few breakpoints, each for a change in structure.</strong> Prefer a layout that needs no query, then a container query, then a media query. Breakpoints about text are in rem; breakpoints about fixed widths are in px. A threshold that CSS and JavaScript share is a custom property, read by the script with <code>getComputedStyle</code>.</li>
+    </ul>
   </section>
 
   <!-- ───────── Sidebar ───────── -->
@@ -244,6 +287,10 @@
         </div>
       </details>
     </div>
+    <ul class="notes">
+      <li><strong>A sidebar is for a page whose main content is about as long as the sidebar</strong>, such as an abstract page beside its versions and citation. The main content gives up the sidebar&#39;s width and the gap, about 22rem.</li>
+      <li><strong>When the main content needs its width or runs long, choose another home.</strong> Charts, tables and wide pages need the width, and beside a long main column a sidebar leaves an empty column for most of the page. See <a href="#where-secondary-content-goes">Where secondary content goes</a>.</li>
+    </ul>
   </section>
 
   <!-- ───────── Dividers ───────── -->
@@ -454,6 +501,9 @@
     </div>
 
     <ul class="notes">
+      <li><strong>Dense pages do not use page zones.</strong> On an admin tool or a data view, where the
+      reader needs to find and act on content quickly, a tinted band pushes the main content too far down
+      the page. Separate content with spacing and headings instead.</li>
       <li><strong>Only a direct child can run full width.</strong> <code>.ds-full</code> works on
       children of <code>.ds-container</code>; nested deeper it does nothing.</li>
       <li><strong>Do not build a full-width band with negative margins and <code>100vw</code>.</strong>
@@ -484,7 +534,7 @@
       <li><strong>Filters apply to everything below them.</strong></li>
       <li><strong>One Apply button per filter bar.</strong></li>
       <li><strong>A number that changes a calculation is a setting, not a filter.</strong></li>
-      <li><strong>No breadcrumbs.</strong> In complex tools, the secondary navigation fills this role already. It shows the user's place as well as being functional navigation. arXiv has a wide but shallow site and does not need traditional breadcrumbs.</li>
+      <li><strong>No breadcrumbs.</strong> See <a href="header.html">Header</a>, <em>Rules</em>.</li>
     </ul>
   </section>
   </div>

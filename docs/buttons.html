@@ -10,6 +10,7 @@
 <script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
 </head>
 <body class="ds-page">
+<!-- The docs site's own header (the light variant). It is not a pattern: build pages from the header in templates/ and docs/header.html. -->
 <header class="ds-site-header ds-site-header--light">
   <a class="ds-site-header-logo" href="../index.html"><span aria-hidden="true">arXiv Design System</span><span class="is-sr-only">archive Design System</span></a>
   <nav class="ds-site-header-nav" aria-label="Design system">
@@ -104,6 +105,7 @@
             <li><a href="#icon-only-buttons">Icon-only buttons</a></li>
             <li><a href="#on-dark-surfaces">On dark surfaces</a></li>
             <li><a href="#button-groups">Button groups</a></li>
+            <li><a href="#a-group-of-toggles">A group of toggles</a></li>
           </ol>
         </nav>
       </details>
@@ -539,6 +541,74 @@
         </div></details>
       </div>
       <p class="ds-annotation">Only use for pairs. Three buttons split like this leaves the middle one belonging to neither side.</p>
+  </section>
+
+  <!-- ───────── A group of toggles ───────── -->
+  <section>
+      <h3 id="a-group-of-toggles">A group of toggles</h3>
+      <p class="ds-section-desc">Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once. Use a sort bar for up to five ways to sort a list or a set of rows that are not a table; use a <a href="tables.html#sortable-column-headers">sortable column header</a> in a table, and a <a href="forms.html">Sort by</a> select in a search form.</p>
+
+      <p class="ds-panel-label">A sort bar</p>
+      <div class="ds-card">
+        <form class="ds-btn-group" method="get" action="buttons.html#a-group-of-toggles" role="group" aria-labelledby="sort-by">
+          <span id="sort-by">Sort charts by</span>
+          <input type="hidden" name="group" value="cs">
+          <button class="ds-btn sort-asc" type="submit" name="sort" value="category-desc" aria-pressed="true">Category <span class="sort-arrow">↑</span><span class="is-sr-only">, A to Z</span></button>
+          <button class="ds-btn" type="submit" name="sort" value="holds" aria-pressed="false">Current holds <span class="sort-arrow">↕</span></button>
+          <button class="ds-btn" type="submit" name="sort" value="weekly" aria-pressed="false">Weekly holds trend <span class="sort-arrow">↕</span></button>
+          <button class="ds-btn" type="submit" name="sort" value="monthly" aria-pressed="false">Monthly holds trend <span class="sort-arrow">↕</span></button>
+        </form>
+        <details class="ds-acc"><summary>Relevant code</summary>
+          <div class="ds-acc-body">
+<pre><code>&lt;form class="ds-btn-group" method="get" action="buttons.html#a-group-of-toggles" role="group" aria-labelledby="sort-by"&gt;
+  &lt;span id="sort-by"&gt;Sort charts by&lt;/span&gt;
+  &lt;input type="hidden" name="group" value="cs"&gt;
+  &lt;button class="ds-btn sort-asc" type="submit" name="sort" value="category-desc" aria-pressed="true"&gt;Category &lt;span class="sort-arrow"&gt;↑&lt;/span&gt;&lt;span class="is-sr-only"&gt;, A to Z&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="ds-btn" type="submit" name="sort" value="holds" aria-pressed="false"&gt;Current holds &lt;span class="sort-arrow"&gt;↕&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="ds-btn" type="submit" name="sort" value="weekly" aria-pressed="false"&gt;Weekly holds trend &lt;span class="sort-arrow"&gt;↕&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="ds-btn" type="submit" name="sort" value="monthly" aria-pressed="false"&gt;Monthly holds trend &lt;span class="sort-arrow"&gt;↕&lt;/span&gt;&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+            <dl>
+              <dt>.ds-btn-group with role="group"</dt>
+              <dd>The bar, named by its label through <code>aria-labelledby</code>. When its buttons have <code>aria-pressed</code>, they join, and the bar is compact. Here the bar is a GET form, so it works without JavaScript; hidden inputs keep the reader&#39;s other choices in the address.</dd>
+              <dt>type="submit" with name and value</dt>
+              <dd>Each button sends its sort. The button that is on sends the reverse direction, so pressing it again reverses the order.</dd>
+              <dt>aria-pressed</dt>
+              <dd>On every button: <code>"true"</code> on the one that is on, <code>"false"</code> on the rest. Off is plain; on takes the accent tint.</dd>
+              <dt>.sort-asc, .sort-desc, .sort-arrow</dt>
+              <dd>For a sort, the arrow shows the direction on the button that is on, as in a <a href="tables.html#sortable-column-headers">sortable column header</a>. Pressing it again reverses the direction. An <code>.is-sr-only</code> span says the direction in words.</dd>
+            </dl>
+          </div>
+        </details>
+      </div>
+
+      <p class="ds-panel-label">A sort bar with another control</p>
+      <div class="ds-card">
+        <div class="ds-btn-group ds-btn-group--split">
+          <form class="ds-btn-group" method="get" action="buttons.html#a-group-of-toggles" role="group" aria-labelledby="sort-by-2">
+            <span id="sort-by-2">Sort by</span>
+            <button class="ds-btn sort-desc" type="submit" name="sort" value="holds-asc" aria-pressed="true">Current holds <span class="sort-arrow">↓</span><span class="is-sr-only">, largest first</span></button>
+            <button class="ds-btn" type="submit" name="sort" value="category" aria-pressed="false">Category <span class="sort-arrow">↕</span></button>
+          </form>
+          <button class="ds-btn ds-btn-text" type="button">Categories (40)</button>
+        </div>
+        <details class="ds-acc"><summary>Relevant code</summary>
+          <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-btn-group ds-btn-group--split"&gt;
+  &lt;form class="ds-btn-group" method="get" action="buttons.html#a-group-of-toggles" role="group" aria-labelledby="sort-by-2"&gt;
+    &lt;span id="sort-by-2"&gt;Sort by&lt;/span&gt;
+    &lt;button class="ds-btn sort-desc" type="submit" name="sort" value="holds-asc" aria-pressed="true"&gt;Current holds &lt;span class="sort-arrow"&gt;↓&lt;/span&gt;&lt;span class="is-sr-only"&gt;, largest first&lt;/span&gt;&lt;/button&gt;
+    &lt;button class="ds-btn" type="submit" name="sort" value="category" aria-pressed="false"&gt;Category &lt;span class="sort-arrow"&gt;↕&lt;/span&gt;&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;button class="ds-btn ds-btn-text" type="button"&gt;Categories (40)&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+            <dl>
+              <dt>.ds-btn-group--split</dt>
+              <dd>Two groups of controls for one list, on one row: the sort bar at the left edge, the other control at the right edge.</dd>
+            </dl>
+          </div>
+        </details>
+      </div>
   </section>
   </div>
 
