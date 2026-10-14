@@ -51,7 +51,7 @@ components:
       - name: "The heading's <a>"
         does: "The only link in the card. A second link or a button inside it cannot be reached by pointer, because the heading's link lies over it."
       - name: ".ds-tag--warning"
-        does: "A card that needs attention says so on the card itself. See [Tags](tags.html)."
+        does: "A card that needs attention says so on the card itself. A tag placed first in the card sits in its top corner, beside the heading, so the rest of the card lines up with its neighbours. See [Tags](tags.html)."
   - id: data-list
     title: "Data list"
     summary: "A few short details as label and value pairs, each label beside its value, without a card: for example under an item in a list. Inside an accordion, a plain `<dl>` already lays out pairs."
@@ -186,16 +186,16 @@ A card that is one link, for a page whose job is to send the reader somewhere el
     <p>3 categories</p>
   </div>
   <div class="ds-card ds-card--link">
+    <span class="ds-tag ds-tag--warning">Needs attention</span>
     <h3><a href="#">Quantitative Finance</a></h3>
     <p>9 categories</p>
-    <p><span class="ds-tag ds-tag--warning">Needs attention</span></p>
   </div>
 </div>
 ```
 
 - `.ds-card--link` — The heading's link covers the whole card, so the card is one target and one tab stop. Hover and keyboard focus mark the whole card.
 - `The heading's <a>` — The only link in the card. A second link or a button inside it cannot be reached by pointer, because the heading's link lies over it.
-- `.ds-tag--warning` — A card that needs attention says so on the card itself. See [Tags](tags.html).
+- `.ds-tag--warning` — A card that needs attention says so on the card itself. A tag placed first in the card sits in its top corner, beside the heading, so the rest of the card lines up with its neighbours. See [Tags](tags.html).
 
 ## Data list
 
