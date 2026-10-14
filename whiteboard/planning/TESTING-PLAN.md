@@ -76,7 +76,7 @@ Nothing in Shamsi's area should be obviously wrong: design and visual display, a
 
 ## Test 1: simple search (2026-10-02)
 
-Summary: `verification/token-burn/runs/20261002-143816-01-search-simple/summary.html`.
+Results: `verification/token-burn/TEST-LOG.md`.
 
 All four builds conformed on the computed checks, and Shamsi rejected the design. The design system lacks a pattern for a compact search form, and no builder used the page zones.
 

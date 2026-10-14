@@ -10,7 +10,8 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 |---|---|---|
 | `docs/` | THE documentation: rules + pattern pages + stylesheets | **Yes — the only place** |
 | `whiteboard/mockups/` | work-in-progress page explorations | **Never.** Not for building, not for style reference — patterns get promoted *into* docs/ when stable |
-| `verification/` | audits, design reviews, agent test results | No |
+| `docs/assets/` | arXiv's official image library: logos, the bones, illustrations, backgrounds, photos, portraits | **Yes, for images.** Part of the design system. Other repos link to these files by URL, so most are not used by any docs page and are still in use: keep every file and path |
+| `verification/` | the checks, audits, design reviews, and the agent tests with their log (`token-burn/TEST-LOG.md`) | No |
 | `whiteboard/planning/` | backlog, proposals, decision logs | Only for program/planning work |
 | `blog-theme/` | packaged copy (zip) of the blog.arxiv.org WordPress theme — a **separate project** that extends the design system; its source lives in another repo | **Never.** Its CSS includes agreed blog-only exceptions; do not read it as the rule, and do not sync it — see below |
 | `templates/` | the distributable brand head/header/footer, written once in "portable Jinja" (`{{ var }}` + raw HTML; `arxiv_brand/`, which is also the Python package), the adapters generated from it (React, TemplateToolkit, static HTML) and the chrome JS — the reusable chrome other arXiv apps install from git, their lock files pinning the SHA (see `templates/README.md`) | **Markup only.** Styling stays in `docs/`; these templates are `docs/{header,footer}.html` parameterised, and never a second copy of the CSS |

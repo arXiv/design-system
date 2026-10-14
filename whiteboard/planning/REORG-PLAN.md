@@ -1,7 +1,7 @@
 # Repo reorganization — plan of record (2026-07-29)
 
 Approved by Shamsi 2026-07-29 after the token-burn baseline (see
-[../verification/token-burn/BASELINE-RESULTS.md](../../verification/token-burn/BASELINE-RESULTS.md)).
+[../verification/token-burn/TEST-LOG.md](../../verification/token-burn/TEST-LOG.md)).
 This file records what changed, why, and what's deliberately deferred.
 
 ## The four categories
