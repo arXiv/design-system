@@ -137,6 +137,7 @@ dashboard spec, the Papers scope work (Papers follows V1 as the first product bu
   portal and Admin Console mockups.
 - **Cleanup:** links in older notes and the mockups README that point at files gone before the
   reorg (`docs/public/`, `metadata-panel.html`, `BRAND.md`).
+- Audit the design system repo for crufty files: unused or out of date files that are no longer useful.
 
 ## Decided 2026-10-06 (details in the commits)
 

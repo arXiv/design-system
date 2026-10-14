@@ -9,3 +9,7 @@ arXiv's GitHub manager decided that nobody commits directly to master. Work goes
 ## Colours come from tokens, and a check enforces it (2026-10-14)
 
 `check-policies.py` now fails any colour written straight into a rule in the two stylesheets, except white, black and the component-internal constants listed in `docs/color-mapping.md`, which the check reads. The destructive button's colours and the close button's wash joined that list. The field halos (invalid, warning, info) are now made from their status border tokens, so in dark mode they match their borders; light mode is unchanged. The tinted-band button's hover edge keeps `#c8c4be`, already on the list, because the nearest token changes in dark mode and on internal tools.
+
+## Python version, and two stale notes removed (2026-10-14)
+
+A `.python-version` file says 3.11, which meets the `>=3.10` the templates package already requires; two of the six checks do not run on 3.9. `docs/PATTERNS.md` and `docs/DESIGN-PROGRESS.md` were removed, with the one link to them on `index.html`: both were out of date, and their open items were already in `NEXT-STEPS.md`. A cruft audit of the whole repo is on the to do list in `HANDOFF.md`.
