@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- Reference example: the moderation reports, Computer Science, activity charts. Internal tools. -->
+<!-- Reference example: the moderation reports, Submissions, Charts for cs. Internal tools. -->
 <html lang="en" class="ds-internal">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Example: moderation reports, activity charts — arXiv Design System</title>
+  <title>Example: moderation reports, submissions charts — arXiv Design System</title>
   <link rel="stylesheet" href="../../fonts.css">
   <link rel="stylesheet" href="../../design-system.css">
   <link rel="stylesheet" href="../../internal-tools.css">
@@ -16,12 +16,22 @@
 <a class="ds-skip-link" href="#main">Skip to main content</a>
 
 <header class="ds-site-header">
-  <a href="sections.html" class="ds-site-header-logo">
+  <a href="overview.html" class="ds-site-header-logo">
     <img src="../../assets/images/logos/logo_arxiv-admin.png" alt="archive Admin Console">
   </a>
   <nav class="ds-site-header-nav" aria-label="Reports">
-    <a href="sections.html">All sections</a>
-    <a href="#staff-reports">Staff reports</a>
+    <details class="ds-site-header-dropdown">
+      <summary>Staff reports</summary>
+      <div class="ds-site-header-menu">
+        <a href="#user-activity">User activity</a>
+        <a href="#section-health">Section health</a>
+        <a href="#admin-effort">Admin effort</a>
+        <a href="#suspicious-activity">Suspicious activity</a>
+      </div>
+    </details>
+    <a href="overview.html" aria-current="true">Submissions</a>
+    <a href="moderators.html">Moderators</a>
+    <a href="#recruitment">Recruitment</a>
   </nav>
   <span class="ds-site-header-divider" aria-hidden="true"></span>
   <div class="ds-site-header-tools">
@@ -42,14 +52,18 @@
   </div>
 </header>
 
-<!-- First level: the parts of the report, then the subject choice that applies to every view. -->
+<!-- The views of the Submissions report, then the subject filter that applies to every view.
+     When the two do not fit on one line, the filter moves to a line of its own. -->
 <div class="ds-subnav">
-  <nav aria-label="Report parts">
-    <a href="activity.html" aria-current="page">Submissions and holds</a>
-    <a href="#moderators">Moderators</a>
-    <a href="#recruitment">Recruitment</a>
+  <nav aria-label="Submissions views">
+    <a href="overview.html">Overview</a>
+    <a href="charts.html" aria-current="page">Charts</a>
+    <a href="#category-stats">Category stats</a>
+    <a href="#workload-stats">Workload stats</a>
+    <a href="#releases">Releases</a>
+    <a href="#submissions">Submissions</a>
   </nav>
-  <form class="ds-filter-bar" method="get" action="activity.html" aria-label="Subject">
+  <form class="ds-filter-bar" method="get" action="charts.html" aria-label="Subject">
     <div class="ds-filter"><label for="f-group">Group</label>
       <select id="f-group" name="group">
         <option value="all">All</option>
@@ -117,23 +131,14 @@
 
 <main id="main" class="ds-container ds-container--wide">
 
-  <div class="reports-view">
-  <h1>Submissions and holds, all of cs</h1>
-  <nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views">
-    <a href="activity.html" aria-current="page">Activity charts</a>
-    <a href="#category-stats">Category submission stats</a>
-    <a href="#releases">Recent releases</a>
-    <a href="#submissions">Recent submissions</a>
-  </nav>
-  </div>
-
-  <section class="reports-view" aria-labelledby="view-title">
+  <section class="reports-view" aria-labelledby="page-title">
+    <h1 id="page-title">Charts for cs</h1>
     <div class="reports-heading">
       <h2 id="view-title">Recent moderator activity</h2>
       <button type="button" class="ds-btn ds-btn-text reports-js-only" data-open="about-charts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> About these charts</button>
     </div>
 
-    <form class="reports-data-line" method="get" action="activity.html">
+    <form class="reports-data-line" method="get" action="charts.html">
         <input type="hidden" name="group" value="cs">
         <input type="hidden" name="archive" value="cs">
         <input type="hidden" name="category" value="all">
@@ -144,7 +149,7 @@
 
     <div class="ds-btn-group ds-btn-group--split">
       <!-- The button that is on sends the reverse direction, so pressing it again reverses the order. -->
-      <form method="get" action="activity.html">
+      <form method="get" action="charts.html">
         <div class="ds-btn-group" role="group" aria-labelledby="sort-by">
           <span id="sort-by">Sort by</span>
           <input type="hidden" name="group" value="cs">
@@ -161,7 +166,7 @@
 
     <div class="reports-rows reports-main">
       <section class="reports-row" aria-labelledby="row-cs-db">
-        <h3 id="row-cs-db"><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.DB">cs.DB</a></h3>
+        <h3 id="row-cs-db"><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.DB">cs.DB</a></h3>
         <div class="ds-card-grid">
           <div class="ds-card"><p>Content placeholder for holds open now and the weekly and monthly trends</p></div>
           <div class="ds-card"><p>Content placeholder for the weekly touches chart, 13 weeks</p></div>
@@ -169,7 +174,7 @@
         </div>
       </section>
       <section class="reports-row" aria-labelledby="row-cs-sy">
-        <h3 id="row-cs-sy"><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.SY">cs.SY</a></h3>
+        <h3 id="row-cs-sy"><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.SY">cs.SY</a></h3>
         <div class="ds-card-grid">
           <div class="ds-card"><p>Content placeholder for holds open now and the weekly and monthly trends</p></div>
           <div class="ds-card"><p>Content placeholder for the weekly touches chart, 13 weeks</p></div>
@@ -187,44 +192,44 @@
   <button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close categories</span></button>
   <ul class="reports-category-list">
           <li><a href="#row-cs-db">cs.DB</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.NI">cs.NI</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.NE">cs.NE</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.CG">cs.CG</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.AR">cs.AR</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.IT">cs.IT</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.PF">cs.PF</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.OS">cs.OS</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.RO">cs.RO</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.CE">cs.CE</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.ET">cs.ET</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.IR">cs.IR</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.CC">cs.CC</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.CY">cs.CY</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.GT">cs.GT</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.LO">cs.LO</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.LG">cs.LG</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.CR">cs.CR</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.DL">cs.DL</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.CV">cs.CV</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.PL">cs.PL</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.SD">cs.SD</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.SI">cs.SI</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.MS">cs.MS</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.SE">cs.SE</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.HC">cs.HC</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.DS">cs.DS</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.CL">cs.CL</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.GR">cs.GR</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.DM">cs.DM</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.MM">cs.MM</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.FL">cs.FL</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.DC">cs.DC</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.MA">cs.MA</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.OH">cs.OH</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.SC">cs.SC</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.AI">cs.AI</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.GL">cs.GL</a></li>
-          <li><a href="activity.html?group=cs&amp;archive=cs&amp;category=cs.NA">cs.NA</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.NI">cs.NI</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.NE">cs.NE</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.CG">cs.CG</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.AR">cs.AR</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.IT">cs.IT</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.PF">cs.PF</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.OS">cs.OS</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.RO">cs.RO</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.CE">cs.CE</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.ET">cs.ET</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.IR">cs.IR</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.CC">cs.CC</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.CY">cs.CY</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.GT">cs.GT</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.LO">cs.LO</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.LG">cs.LG</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.CR">cs.CR</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.DL">cs.DL</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.CV">cs.CV</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.PL">cs.PL</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.SD">cs.SD</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.SI">cs.SI</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.MS">cs.MS</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.SE">cs.SE</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.HC">cs.HC</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.DS">cs.DS</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.CL">cs.CL</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.GR">cs.GR</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.DM">cs.DM</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.MM">cs.MM</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.FL">cs.FL</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.DC">cs.DC</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.MA">cs.MA</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.OH">cs.OH</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.SC">cs.SC</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.AI">cs.AI</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.GL">cs.GL</a></li>
+          <li><a href="charts.html?group=cs&amp;archive=cs&amp;category=cs.NA">cs.NA</a></li>
           <li><a href="#row-cs-sy">cs.SY</a></li>
   </ul>
 </div>

@@ -1,6 +1,6 @@
 # Reference example: the moderation reports
 
-2026-10-14. Two pages in `docs/examples/reports/`, hand-finished from round 9's best build (D), with build C's code pills and categories popover, and Shamsi's notes from rounds 7 to 9. Not linked from the docs menu until Shamsi approves them.
+2026-10-14. Pages in `docs/examples/reports/`, hand-finished from round 9's best build (D), with build C's code pills and categories popover, and Shamsi's notes from rounds 7 to 9. Not linked from the docs menu until Shamsi approves them.
 
 ## What changed from build D
 
@@ -27,3 +27,21 @@
 ## Checks
 
 All repo checks pass. axe finds nothing on either page in light or dark mode, and neither page scrolls sideways at 1440 or 360px.
+
+## Navigation and sitemap (Shamsi, 2026-10-14)
+
+The live tool put three reports under an All sections page, with a fourth, staff-only area beside them. The reports are now the tool's sections, in the header:
+
+| Header (right-aligned) | Second row: views, then the shared filter | Example page |
+|---|---|---|
+| Staff reports (menu, staff only): User activity, Section health, Admin effort, Suspicious activity | none: each report has its own controls inside the page | — |
+| Submissions | Overview, Charts, Category stats, Workload stats, Releases, Submissions; Group, Archive, Category (not on Overview) | `overview.html`, `charts.html` |
+| Moderators | Moderator contacts, Moderator touches; the same filter | `moderators.html` |
+| Recruitment | Frequent authors, Endorsers; the same filter | — |
+
+- Staff reports comes first: the navigation is right-aligned, so the three shared reports keep their place for readers who do not see it.
+- Overview replaces All sections and is the Submissions landing page. It shows every section, so it has no filter.
+- Every view stays visible: no "More" menu. When the views and the filter do not fit on one line, the filter moves to a line of its own.
+- The filter narrows the page the reader is on; it never moves them to another page.
+- Headings: the view and the reader's choice, such as "Charts for cs" and "Moderator contacts for cs".
+- How each level displays (for example Physics and its archives) is for the lead developer.
