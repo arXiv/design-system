@@ -206,6 +206,15 @@
      control. In em, so it tracks the control's own font size. */
   --ds-gap-glyph: 0.5em;
 
+  /* Density: the padding inside controls, table cells and cards.
+     .ds-internal sets the compact values. */
+  --ds-btn-padding:     0.715em 1.43em;
+  --ds-btn-min-width:   8.6em;
+  --ds-input-padding:   0.64em 0.786em;
+  --ds-cell-padding:    10px 14px;
+  --ds-head-padding:    9px 14px;
+  --ds-card-padding:    var(--ds-space-4) var(--ds-space-6);
+
   --ds-width-page:  850px;
   --ds-width-wide:  1080px;   /* dense internal tools: .ds-container--wide */
   --ds-gutter:  var(--ds-space-6);
@@ -406,7 +415,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 :where(.ds-page) code {
   font-family: var(--ds-font-mono);
   font-size: 0.9em;
-  background: color-mix(in srgb, var(--ds-text) 8%, transparent);   /* a wash: the same small step on every ground, in both themes */
+  background: color-mix(in srgb, var(--ds-text) 5%, transparent);   /* a wash: the same small step on every ground, in both themes; 5% keeps muted text at 4.5:1 on the tinted band */
   padding: 0.15em 0.35em;
   border-radius: 3px;
 }
@@ -626,8 +635,8 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   align-items: center;
   justify-content: center;
   gap: var(--ds-gap-glyph);
-  padding: 0.715em 1.43em;
-  min-width: 8.6em;
+  padding: var(--ds-btn-padding);
+  min-width: var(--ds-btn-min-width);
   font-family: var(--ds-font-sans);
   font-size: 0.875rem;
   font-weight: 600;
@@ -1220,8 +1229,16 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
   border-radius: 8px;
-  padding: var(--ds-space-4) var(--ds-space-6);
+  padding: var(--ds-card-padding);
 }
+
+/* A card that is one link: the heading's link covers the whole card. */
+.ds-card--link :is(h2, h3, h4) a { text-decoration: none; }
+.ds-card--link :is(h2, h3, h4) a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.ds-card--link:hover { border-color: var(--ds-border-strong); }
+.ds-card--link:hover :is(h2, h3, h4) a { text-decoration: underline; }
+.ds-card--link :is(h2, h3, h4) a:focus-visible { outline: none; }
+.ds-card--link:has(:is(h2, h3, h4) a:focus-visible) { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
 
 /* A card owns its internal rhythm, the same way .ds-container owns the space
    between regions: the padding is the space at the edges, so the first and
@@ -1234,6 +1251,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-card > :last-child  { margin-block-end: 0; }
 :where(.ds-card) > h3 { font-size: 1rem; margin: 0 0 var(--ds-space-tight); }   /* the card's own title; prose inside a card keeps its rhythm */
 :where(.ds-card) > p { color: var(--ds-text-muted); }   /* the card's own copy; a component inside keeps its colour */
+/* A status tag first in a card sits in the top corner, beside the heading. */
+.ds-card > .ds-tag:first-child { float: right; margin: 0 0 var(--ds-space-2) var(--ds-space-3); }
+.ds-card > .ds-tag:first-child + * { margin-block-start: 0; }
 
 /* DATA CARD (.ds-card--data) — cards.html
    One record's facts as label and value pairs: a <dl> inside the card, one
@@ -1310,7 +1330,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    stretching across the row. */
 .ds-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
   gap: var(--ds-space-block);
 }
 
@@ -1339,7 +1359,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--ds-text);
-  padding: 9px 14px;
+  padding: var(--ds-head-padding);
   background: var(--ds-tint-warm);
   border-bottom: 1px solid var(--ds-border);
   white-space: nowrap;
@@ -1347,7 +1367,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-table td,
 .ds-table tbody th {
   text-align: left;
-  padding: 10px 14px;
+  padding: var(--ds-cell-padding);
   border-bottom: 1px solid var(--ds-surface-muted);
   vertical-align: top;
   color: var(--ds-text);
@@ -1427,6 +1447,19 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   background-size: 10px 7px;
 }
 
+/* A date in a compact filter: the same underline, at the date's own width. */
+.ds-filter input {
+  min-height: 24px;
+  font-family: inherit;
+  font-size: 0.75rem;
+  color: var(--ds-text);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--ds-border-strong);
+  border-radius: 0;
+  padding: 1px 2px;
+}
+.ds-filter input:focus-visible,
 .ds-filter select:focus-visible {
   outline: 2px solid var(--ds-focus-ring);
   outline-offset: 2px;
@@ -1447,6 +1480,10 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   border-radius: 8px;
 }
 .ds-filter-bar .ds-field { max-width: none; min-width: 0; margin: 0; }
+.ds-filter-bar .ds-field:has(.ds-input[type="date"]) .ds-input { width: auto; max-width: 100%; }   /* a date keeps its own width */
+/* Compact: a filter bar of .ds-filter controls is one row. */
+.ds-filter-bar:has(> .ds-filter) { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2) var(--ds-space-6); padding: var(--ds-space-1) var(--ds-space-3); }
+.ds-filter-bar:has(> .ds-filter) > .ds-btn { min-height: 24px; padding-block: 2px; font-size: 0.8125rem; }
 /* Each filter is a cell in the bar's columns, as many as fit the width. */
 .ds-filter-bar-group { display: contents; }
 /* Settings start a new row, lined up with the columns above; the actions
@@ -1475,7 +1512,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-btn-group:has(+ .ds-table, + .ds-table-scroll) { margin-bottom: var(--ds-space-3); }
 
 /* A table wider than its container scrolls inside this wrapper; the page never scrolls sideways. */
-.ds-table-scroll { overflow-x: auto; }
+.ds-table-scroll { position: relative; overflow-x: auto; }   /* positioned, so hidden text inside the table cannot widen the page */
 
 /* A numeric column: numbers align on the right and their digits line up. */
 .ds-table .ds-num { text-align: end; font-variant-numeric: tabular-nums; }
@@ -1522,10 +1559,11 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   -webkit-mask: var(--ds-sort-icon) center / contain no-repeat;
   mask: var(--ds-sort-icon) center / contain no-repeat;
 }
-.ds-table th.sort-asc .sort-arrow,
-.ds-table th.sort-desc .sort-arrow { color: var(--ds-text); }
-.ds-table th.sort-asc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3Cpath d='M12 19V5'/%3E%3C/svg%3E"); }
-.ds-table th.sort-desc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14'/%3E%3Cpath d='m19 12-7 7-7-7'/%3E%3C/svg%3E"); }
+.sort-asc .sort-arrow,
+.sort-desc .sort-arrow { color: inherit; }
+.ds-table th:is(.sort-asc, .sort-desc) .sort-arrow { color: var(--ds-text); }
+.sort-asc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3Cpath d='M12 19V5'/%3E%3C/svg%3E"); }
+.sort-desc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14'/%3E%3Cpath d='m19 12-7 7-7-7'/%3E%3C/svg%3E"); }
 @media (forced-colors: active) { .sort-arrow { background: CanvasText; } }
 
 
@@ -1546,6 +1584,18 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   align-items: center;
   gap: var(--ds-space-tight);
 }
+
+/* A toggle: plain when off, the accent tint when on (aria-pressed). */
+.ds-btn[aria-pressed] { background: var(--ds-surface); border-color: var(--ds-border-strong); color: var(--ds-text-muted); box-shadow: none; }
+.ds-btn[aria-pressed]:hover { color: var(--ds-text); background: var(--ds-surface-hover); }
+.ds-btn[aria-pressed="true"] { background: var(--ds-tint-accent); border-color: var(--ds-accent-border); color: var(--ds-text); }
+/* A group of toggles, such as a sort bar, joins into one compact bar. */
+.ds-btn-group:has(> .ds-btn[aria-pressed]) { gap: 0; }
+.ds-btn-group > .ds-btn[aria-pressed] { min-height: 32px; padding-block: 2px; font-size: 0.875rem; font-weight: 500; }
+.ds-btn-group > .ds-btn[aria-pressed="true"] { position: relative; z-index: 1; }
+.ds-btn-group:has(> .ds-btn[aria-pressed]) > :not(.ds-btn) { margin-inline-end: var(--ds-space-tight); }
+.ds-btn-group > .ds-btn[aria-pressed] + .ds-btn[aria-pressed] { margin-inline-start: -1px; border-start-start-radius: 0; border-end-start-radius: 0; }
+.ds-btn-group > .ds-btn[aria-pressed]:has(+ .ds-btn[aria-pressed]) { border-start-end-radius: 0; border-end-end-radius: 0; }
 
 /* Stacked rather than side by side — same relationship, other axis. */
 .ds-btn-group--stack {
@@ -1656,14 +1706,14 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
   letter-spacing: 0;
   white-space: nowrap;
 }
-/* Provenance that is machine-set rather than a person's name. Quieter,
-   because "auto" is a fact about the row and a username is someone to ask. */
-.ds-tag-note--auto { color: var(--ds-text-disabled); }
+/* Provenance that is machine-set rather than a person's name: italic, so it
+   reads differently from a username, at the same contrast. */
+.ds-tag-note--auto { font-style: italic; }
 /* Inside an error tag the note has to come off the tinted ground rather than
    the white one it assumes. Mixed from the host's own colour so the rule does
    not need to know which status it is sitting in. */
 .ds-tag--error .ds-tag-note {
-  background: rgba(255, 255, 255, 0.55);
+  background: color-mix(in srgb, var(--ds-canvas) 55%, transparent);
   border-color: var(--ds-error-border);
   color: var(--ds-error-fg);
 }
@@ -1791,7 +1841,7 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
   background: var(--ds-surface);
   border: 1px solid var(--ds-border-strong);   /* 3.61:1 — a real boundary, not decoration */
   border-radius: 6px;
-  padding: 0.64em 0.786em;
+  padding: var(--ds-input-padding);
 }
 .ds-input:focus-visible {
   outline: 2px solid var(--ds-focus-ring);
@@ -2920,8 +2970,9 @@ html:has(.ds-modal[open]) {
 /* INTERNAL TOOLS CONTEXT  (.ds-internal) — buttons.html
    Put it on a parent: <html> for an internal page, a wrapper for an
    internal region of a mixed page. It re-points the accent to Access Lime
-   and every component inside follows. Colour only — a component that needs
-   a different shape on this surface is a different component. Sits after
+   and every component inside follows, and sets the compact density.
+   Colour and density only — a component that needs a different shape on
+   this surface is a different component. Sits after
    the [data-theme="light"] block so it wins when both are on <html>. */
 .ds-internal {
   --ds-accent:                     var(--ds-access-lime);
@@ -2954,6 +3005,13 @@ html:has(.ds-modal[open]) {
   --ds-btn-secondary-fg-hover:     var(--ds-text);
   --ds-btn-text-bg-hover:          var(--ds-accent-wash);
   --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
+
+  --ds-btn-padding:     0.55em 1.143em;    /* 32px tall */
+  --ds-btn-min-width:   6em;
+  --ds-input-padding:   0.37em 0.643em;    /* 32px tall */
+  --ds-cell-padding:    6px 10px;
+  --ds-head-padding:    6px 10px;
+  --ds-card-padding:    var(--ds-space-3) var(--ds-space-4);
 }
 .ds-internal a.ds-tag:hover,
 .ds-internal button.ds-tag:hover {
@@ -3862,7 +3920,14 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
    A row of section links directly under the header. It wraps rather than
    scrolling sideways, so every section stays visible at 320px and at 200%
    text. The current page is marked three ways: weight, an underline bar,
-   and aria-current. Breadcrumbs are for pages without one (DESIGN-POLICIES). */
+   and aria-current. */
+/* A bar can hold more than links: a <nav> of links, then a compact filter bar.
+   Groups sit twice as far apart as the items inside them. */
+.ds-subnav:has(> nav) { column-gap: var(--ds-space-12); }
+.ds-subnav > nav { display: flex; flex-wrap: wrap; column-gap: var(--ds-space-6); }
+.ds-subnav > .ds-filter-bar { align-self: center; margin-block: var(--ds-space-1); }
+/* Second level, inside the page: the same links and current bar, in the content column. */
+.ds-subnav.ds-subnav--in-page { padding-inline: 0; background: none; }
 .ds-subnav {
   display: flex;
   flex-wrap: wrap;

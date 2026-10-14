@@ -20,6 +20,10 @@ components:
     title: "Container options"
     group: "Building on the foundation"
     summary: "`.ds-container` is a grid with various options for managing section layout."
+  - id: combining-components
+    title: "Combining components"
+    group: "Building on the foundation"
+    summary: "Most areas of a page can be built by putting existing components together. Look for a combination before inventing a component."
 rules:
   - "**`theme.js` is not deferred.** The script is deliberately not deferred because it writes the reader's theme onto `<html>` before the first paint. If we added `defer` then the page will render light first, and then flip if the reader chose dark mode in their system. Many readers choose dark mode because light mode is less legible or hurts their eyes and we want to honor that."
   - "**Every section starts with a heading.** Headings provide important navigation structure for screen reader users so a `<section>` without one is hard to find."
@@ -54,6 +58,10 @@ When building internal tools like arXiv Check or Admin Console pages, one class 
 ## Container options  (Building on the foundation)
 
 `.ds-container` is a grid with various options for managing section layout.
+
+## Combining components  (Building on the foundation)
+
+Most areas of a page can be built by putting existing components together. Look for a combination before inventing a component.
 
 ## Rules
 

@@ -9,7 +9,7 @@ The plan (which tests, in what order, and what finishing means) is in `whiteboar
 1. **Spec.** Claude writes `tests/<name>/spec.md` in product words. It names no classes or components. Shamsi reviews it before anything is built. Sample content goes in `content.md`, and the notes on what to look for go in `scoring.md`, written before the builds.
 2. **Build.** Each build runs a fresh headless agent in a clean copy of the repository. The copy leaves out `verification/` and `whiteboard/`, so the builder cannot see the scoring notes, earlier results, or the mockups. By default there are four builds: two with Sonnet and two with Opus.
 3. **Technical evaluation.** Claude does this. Computed checks run first, then Claude reads each builder's reasoning.
-4. **Visual review.** Shamsi sees one build at a time, labelled A to D in shuffled order, without knowing which model made it. For each she answers "What is off?" and gives a verdict: accept, accept with changes, or reject. After the last one she sees them together and can add notes.
+4. **Visual review.** Shamsi sees one build at a time, labelled A to D in shuffled order, without knowing which model made it. For each she answers "What is off?". After the last one she sees them together and can add notes. A test that sets `"rank": true` in its `test.json` asks her to pick the best and the worst build; without it she gives each build a verdict, as in the V1 exit test (see [GRADING.md](GRADING.md)).
 5. **Summary.** One short page with thumbnails, both verdicts for each build, which model made which, what the builds had in common, and what changed in the design system as a result.
 
 ## Commands
@@ -36,10 +36,6 @@ The results are in `runs/<run>/<label>/evaluation.json`. Claude writes its concl
 
 ## What is recorded
 
-Committed for each run: the spec, the built files, the screenshots, the measurements, Shamsi's review, and the summary. Not committed: transcripts and error logs.
+Runs are written to `runs/`, which git ignores: the screenshots, built pages and measurements are for the review, not for the record. When a round is done, add a short entry to [TEST-LOG.md](TEST-LOG.md): what was built, what happened, and what changed in the docs.
 
-Each run keeps a copy of the stylesheets and scripts as they were when it was built (`snapshot/`), and the review server uses that copy. Later changes to the design system do not change how an old build looks. Fonts, icons, and images come from the current repository. `run.json` records the commit.
-
-## The July battery
-
-`retired/` holds the five tasks, rubrics, and scripts used in July 2026. Most of those tasks asked for things the design system now documents. Their results are in `BASELINE-RESULTS.md`, `REORG-COMPARISON.md`, and the older folders in `runs/`.
+Each run keeps a copy of the stylesheets and scripts as they were when it was built (`snapshot/`), and the review server uses that copy. Later changes to the design system do not change how an old build looks. `run.json` records the commit.

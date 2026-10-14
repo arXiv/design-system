@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" class="ds-internal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Report navigation</title>
+<link rel="stylesheet" href="../../../docs/fonts.css">
+<link rel="stylesheet" href="../../../docs/design-system.css">
+<link rel="stylesheet" href="../../../docs/internal-tools.css">
+<script src="../../../docs/theme.js"></script>
+<style>
+  /* Proposed design-system rules. */
+  /* 1. A filter bar of compact filters is one row. */
+  .ds-filter-bar:has(> .ds-filter) { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2) var(--ds-space-6); padding: var(--ds-space-1) var(--ds-space-3); }
+  .ds-filter-bar:has(> .ds-filter) > .ds-btn { min-height: 24px; padding-block: 2px; font-size: 0.8125rem; }
+  /* 2. A secondary navigation bar can hold a filter bar after its links. */
+  .ds-subnav:has(> nav) { column-gap: var(--ds-space-12); }   /* between groups: twice the gap inside a group */
+  .ds-subnav > nav { display: flex; flex-wrap: wrap; column-gap: var(--ds-space-6); }
+  .ds-subnav > .ds-filter-bar { align-self: center; margin-block: var(--ds-space-1); }
+  /* Planning page only. */
+  .option-label { margin: var(--ds-space-8) 24px var(--ds-space-2); }
+  .frame { border-block: 1px solid var(--ds-border); }
+  .placeholder { padding: var(--ds-space-6); border: 1px dashed var(--ds-border-strong); border-radius: 6px; color: var(--ds-text-muted); }
+</style>
+</head>
+<body class="ds-page">
+<div class="ds-container">
+  <h1>Report navigation</h1>
+  <p>2026-10-08. A bar built from two existing parts: secondary navigation, and a filter bar. Both change what the page shows, so they share one bar. The views of the open part are a second row under the heading. Shown at the full width of the window, as on a real page.</p>
+</div>
+  <p class="ds-panel-label option-label">B, with a one-row filter bar of compact filters</p>
+  <div class="frame">
+    <header class="ds-site-header">
+      <a href="#" class="ds-site-header-logo"><img src="../../../docs/assets/images/logos/logo_arxiv-admin.png" alt="archive Admin Console"></a>
+      <span class="ds-site-header-divider" aria-hidden="true"></span>
+      <div class="ds-site-header-account"><span class="ds-site-header-greeting">Welcome <b>Shamsi</b></span><a href="#" class="ds-site-header-login">Account</a></div>
+    </header>
+    <div class="ds-subnav">
+      <nav aria-label="Report parts">
+        <a href="#" aria-current="page">Submissions and holds</a>
+        <a href="#">Moderators</a>
+        <a href="#">Recruitment</a>
+      </nav>
+      <form class="ds-filter-bar" method="get" action="#" aria-label="Subject">
+        <div class="ds-filter"><label for="f-group">Group</label><select id="f-group"><option>cs</option></select></div>
+        <div class="ds-filter"><label for="f-archive">Archive</label><select id="f-archive"><option>cs</option></select></div>
+        <div class="ds-filter"><label for="f-cat">Category</label><select id="f-cat"><option>All</option></select></div>
+        <button class="ds-btn" type="submit">Apply</button>
+      </form>
+    </div>
+    <main class="ds-container ds-container--wide">
+      <h1>Computer Science</h1>
+      <nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views">
+        <a href="#">Activity charts</a>
+        <a href="#" aria-current="page">Category submission stats</a>
+        <a href="#">Recent releases</a>
+        <a href="#">Recent submissions</a>
+      </nav>
+      <p class="placeholder">The view.</p>
+    </main>
+  </div>
+</body>
+</html>

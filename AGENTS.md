@@ -10,7 +10,8 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 |---|---|---|
 | `docs/` | THE documentation: rules + pattern pages + stylesheets | **Yes — the only place** |
 | `whiteboard/mockups/` | work-in-progress page explorations | **Never.** Not for building, not for style reference — patterns get promoted *into* docs/ when stable |
-| `verification/` | audits, design reviews, agent test results | No |
+| `docs/assets/` | arXiv's official image library: logos, the bones, illustrations, backgrounds, photos, portraits | **Yes, for images.** Part of the design system. Other repos link to these files by URL, so most are not used by any docs page and are still in use: keep every file and path |
+| `verification/` | the checks, audits, design reviews, and the agent tests with their log (`token-burn/TEST-LOG.md`) | No |
 | `whiteboard/planning/` | backlog, proposals, decision logs | Only for program/planning work |
 | `blog-theme/` | packaged copy (zip) of the blog.arxiv.org WordPress theme — a **separate project** that extends the design system; its source lives in another repo | **Never.** Its CSS includes agreed blog-only exceptions; do not read it as the rule, and do not sync it — see below |
 | `templates/` | the distributable brand head/header/footer, written once in "portable Jinja" (`{{ var }}` + raw HTML; `arxiv_brand/`, which is also the Python package), the adapters generated from it (React, TemplateToolkit, static HTML) and the chrome JS — the reusable chrome other arXiv apps install from git, their lock files pinning the SHA (see `templates/README.md`) | **Markup only.** Styling stays in `docs/`; these templates are `docs/{header,footer}.html` parameterised, and never a second copy of the CSS |
@@ -21,6 +22,16 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 1. Read `docs/DESIGN-POLICIES.md` — hard constraints. Non-negotiable.
 2. Read `docs/brand.html` — the *why*; use it when no explicit rule covers your case.
 3. Use the routing table to read **only** what your task touches. Do not read the whole repo.
+
+## Before you finish: review the layout
+
+Look at each page you built as a reader would, on a laptop screen, and revise it before you finish.
+
+1. **Name the primary content** of each page: the primary thing the reader came for. Write it down in a sentence.
+2. **Check that it starts as high as it can.** Everything above it must earn its place.
+3. **Evaluate each element or content that displays above it** and ask: "Is this the right place in the content hierarchy for this content? Should this content be in a sidebar, inside an accordion, behind a control, or in a tooltip? Is it needed at all?"
+4. **Check each component against the alternatives.** For each choice, name the other components the docs offer for that job, and keep yours only if it is the better fit (`docs/layout-patterns.html`, *Evaluating user needs*, *The main content comes first* and *Where secondary content goes*).
+5. **Change the pages** where the review shows a better arrangement. Then look at the changed pages again: nothing overlaps, wraps badly or is misaligned. End with a short list of what you changed and why.
 
 ## Routing — building X? read Y, reuse Z
 
@@ -43,6 +54,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | An icon | `docs/icons.html` (generated from `docs/icons/`) | copy the file from `docs/icons/` inline, `aria-hidden="true"`, `stroke="currentColor"`; never draw a glyph from memory, and never a second icon set. Adding one: drop the file in `docs/icons/`, run `verification/gen-icons.py` |
 | Links | `docs/links.html` — identical on every surface | bare `<a>` inside `.ds-page`, no class; inline links underlined |
 | Moving through a set: a queue one item at a time, or pages of a long list such as search results | `docs/pager.html` | `.ds-pagination` with `.ds-pagination-position` for a queue, or with `.ds-pagination-pages` for numbered pages; `.ds-pagination-position` states the position or range in both; `.ds-pagination--top` / `--bottom` put a pager in a tinted bar above or below a list; results per page and order go with the search or filters, never in the pager; the ends disable, they are never removed |
+| Sorting a list: a sort bar, a sortable column header, or a Sort by select | `docs/buttons.html` *A group of toggles* | a sort bar is a GET form of `.ds-btn` submit buttons with `aria-pressed` in a `.ds-btn-group`; the pressed one sends the reverse direction, so it needs no JavaScript |
 | Tables (both surfaces), row selection, bulk actions | `docs/tables.html` | `.ds-table` (header row from `<thead>`), sortable headers, `.ds-filter`, `.ds-bulk-count`, all tier 1; bulk-bar + selection rules documented there |
 | One record's details (label + value panel), any card | `docs/cards.html` (concept: `docs/layout-patterns.html`) | `.ds-card`, `.ds-card--data`, `.ds-card-grid`; same markup on both surfaces |
 | A search page: before and after a search | `docs/search.html` | the compact form on the page ground, a results heading (“Results for” and the query), `.ds-pagination--top` / `--bottom` as tinted bars around the results; what a result shows depends on what is searched |
@@ -52,7 +64,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 | A code block on a docs page | `docs/typography.html` *Code blocks* | plain `<pre><code>` plus `<script src="copy-code.js" defer>` once per page — the copy button is added for you; never hand-build one |
 | Version display | `docs/papers.html#paper-versions` | inline version links + `.ds-alert` warning |
 | A site-wide announcement (the banner) | `templates/BANNER_ANNOUNCEMENTS.md` | an entry in `templates/assets/json/announcements.json` — plain text and one link; never a per-app banner |
-| Site header / footer | `docs/header.html`, `docs/footer.html` | `.ds-site-header` (+ `--light`, `--wrap` for a centre slot that folds), `.ds-site-footer` — never hand-build chrome or draw logos from text |
+| Site header / footer | `templates/` (the rendered header and footer), then `docs/header.html` and `docs/footer.html` for the parts you change | Start from the standard header and footer in `templates/` and change only what your context needs: the logo for the surface, the navigation, the tools, the account area — as `docs/header.html` shows for public pages and internal tools. The header at the top of every docs page is the docs site's own chrome, not a pattern: never copy it. `.ds-site-header` (+ `--wrap` for a centre slot that folds; `--light` only for pages outside the platform, such as these docs), `.ds-site-footer` — never hand-build chrome or draw logos from text |
 | Category / topic / state labels | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-tag` (+ `--info` / `--success` / `--warning` / `--error`, `--keep-case`, `--rectangle`); category names are copied, never restyled |
 | Dark mode (status, mechanism, what flips) | `docs/dark-mode.html` | tokens flip automatically; never hand-pick dark values; lock demo pages light; `.ds-theme-toggle` + `theme.js` in the head **undeferred** — both stylesheets mirror their dark block under `[data-theme]` |
 | The blog, an event or campaign mini-site | `docs/outreach.html` + DESIGN-POLICIES *Contexts* | the public stylesheet, plus only the differences listed there |

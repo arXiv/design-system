@@ -30,7 +30,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 - **UI component contrast:** 3:1 minimum for interactive boundaries (borders, outlines, switch edges) against their background
 - **Focus indicators:** All interactive elements must have a visible focus ring on keyboard navigation. Use `:focus-visible` (not `:focus`) to avoid showing rings on mouse click
 - **Labels:** Every form input must have an associated `<label>` (visible or `sr-only`). Use `aria-label` when a visible label is impractical
-- **Required and optional fields:** Mark the *optional* ones, in words — `(optional)` inside the visible label. Leave required fields unmarked, and put `required` + `aria-required="true"` on the control, which is what assistive technology announces. Two reasons for words over an asterisk: a word machine-translates and reads plainly for an international audience with limited English (the same reason contractions are banned), while an asterisk is a convention you must already know and means nothing without a legend the reader has scrolled past. And red is reserved for errors — an empty required field is not an error. Marking only the exception also keeps single-purpose pages clean: most arXiv forms are entirely required, and labelling every field on them would distinguish nothing. Never put either word in `aria-label` or `title`; it must be in the visible label, where it joins the accessible name for free
+- **Required and optional fields:** Mark the optional ones in words, `(optional)` in the visible label, and leave required fields unmarked, with `required` on the control. See `forms.html`.
 - **Validation errors:** Link error messages to their field with `aria-describedby`
 - **Color alone:** Never use color as the sole means of conveying information (WCAG 1.4.1). Always provide a secondary cue (text, icon, position change)
 - **Link underlines:** Inline links in body text must be underlined. Standalone navigation links may omit underlines
@@ -38,18 +38,8 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 ## Typography
 
-- **What each family is for.** The type family is IBM Plex, plus STIX Two Math for notation. Each face has a job:
-  - **IBM Plex Sans** — body copy, headings, and interface text. The default: where nothing below applies, this is the answer.
-  - **IBM Plex Sans Condensed** — labels, table headers, and metadata, usually small and uppercase. Captions are IBM Plex Sans at the small size (see `typography.html`).
-  - **IBM Plex Mono** — identifiers and code: arXiv IDs, DOIs, BibTeX, code blocks.
-  - **IBM Plex Serif, italic** — the annotation voice: arXiv speaking quietly beside the author's text, as in footnote and figure alt-text marginalia (`.ds-annotation`). It is a voice, not a layout role; placement is a separate decision.
-  - **IBM Plex Serif, upright (400 / 600)** — editorial headlines and pull quotes on outreach properties.
-  - **STIX Two Math** — mathematical notation.
-
-  Adding a face or a family is a decision, recorded here. `docs/typography.html` holds the full spec, including sizes and weights.
+- **The type family is IBM Plex, plus STIX Two Math for notation.** Adding a face or a family is a decision, recorded here. `typography.html` holds what each face is for, the sizes, weights and font stacks.
 - **Fonts are served from arXiv's own static assets**, self-hosted. This one is a hard constraint rather than a default: an external font service (Google Fonts, Adobe Typekit, a CDN) makes every reader's visit observable by a third party and makes the archive's rendering depend on someone else staying up. Neither is acceptable for a permanent record.
-- **Font display:** Use `font-display: swap` for text fonts (prioritize readability). Use `font-display: auto` for STIX Two Math (math rendering needs the correct font).
-- **System fallbacks:** Every `font-family` declaration must include system fallbacks. See `typography.md` for the standard stacks.
 
 ## Design tokens
 
@@ -61,25 +51,14 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 ## Spacing
 
-- **Scale.** Use the 4px-based scale (`--ds-space-1`…`--ds-space-12` in `design-system.css`): 4, 8, 12, 16, 24, 32, 48. The number is the multiplier — `--ds-space-6` is 6×4px. Only those seven stops exist, so an off-scale value (14, 26, …) has no token to hide behind.
-- **In rem, not px.** Spacing scales with the reader's text size. A fixed gap beside growing text compresses the rhythm exactly for the person who asked for more room, and the *ratio* between "within" and "between" is what conveys meaning, so it has to survive.
-- **Name the break, not the value.** Pages use `--ds-space-tight` (inside a group), `--ds-space-block` (between blocks in a section) or `--ds-space-section` (between sections). Never a pixel value, and never a raw `--ds-space-N`. That is what makes rhythm retunable: change what a break *means* and every page moves together, coherently.
-- **Proximity.** The gap between sections must be clearly larger than the gap within one — block is 2× tight, section is 3× block. Below about 1.5× the eye cannot tell "between" from "within" and the grouping silently fails. This is what makes grouping read without borders or boxes.
-- **Containers own the space between regions.** A section does not know what follows it, so it cannot know how far away that should be. Put the space on the container as `gap`, not on each child as a margin: gap never collapses, cannot be undone by a child, and needs no last-child resets. Prose flow *inside* a section stays element-owned, because a heading's space depends on its own size, which a container cannot know. Two mechanisms, at two clearly separated levels, never competing at the same one.
-- **Gap takes no scale of its own.** "How far apart do these sit" means the same thing whether the space comes from a margin or a gap, and whether it runs down the page or across it, so gap between siblings uses the rhythm above on either axis. One exception: the space between a glyph and its label *inside* a single control is part of the control rather than layout — use `--ds-gap-glyph` (0.5em), which scales with that control's own type. This is the same exemption already given to button padding.
-- **A set of related controls needs a container.** Buttons placed as bare siblings are spaced by the HTML whitespace between the tags, which is narrower than any deliberate value and looks like a bug because it is one. Use `.ds-btn-group`.
+- **Use the named breaks, never a pixel value:** `--ds-space-tight`, `--ds-space-block` and `--ds-space-section`, in rem. Gaps between groups are at least twice the gaps inside one, across the page as well as down it. See `spacing.html`.
+- **A set of related controls needs a container.** Use `.ds-btn-group`; bare sibling buttons are spaced by the HTML whitespace between them.
 
 ## Layout and content width
 
 - **Organizing a page starts from the four questions** on [Layout patterns](layout-patterns.html#evaluating-user-needs). Its [Rules](layout-patterns.html#rules) are firm; the rest of that page is guidance.
 - **Content-driven, not audience-driven.** The same usability principle applies in every context; only the content differs, so there is no separate rule for "public" vs "internal."
-- **One width per page.** The default content width is **850px** (`--ds-width-page` in `design-system.css`). Prose, tables, demo blocks, code and callouts all share it, so everything on a page has the same left and right edge. Individual elements do not declare their own width. A page that needs a different width changes the one token; it does not add a second width beside it.
-- **Long-form reading narrows toward the measure.** Sustained reading — abstract text, a paper body, an extended explanation someone reads start to finish — targets a ~65-character line (~510px in IBM Plex Sans at a 16px root, ~590px at the 75-character upper bound). This is where the readability research applies most strongly, and where the return sweep between lines is most costly. Set it on the page, not on the paragraph.
-- **Reference pages accept a longer line, knowingly.** At 850px a line runs about 109 characters, past the researched comfortable range. This is a deliberate trade for pages built from short reference paragraphs of two to five lines, where the return-sweep cost is smallest, and where a container narrow enough for 65 characters cannot hold a two-column layout at all. It is a cost, not a target: do not cite 850px as evidence that long lines are fine.
-- **Dense internal tools may go wider.** Around 1080px, centered (`.ds-container--wide`). The reason is tables and multi-column metadata that cannot compress further, not that the people using them deserve more room. Do not widen a page that has no such content.
-- **Few breakpoints, named, and content-derived.** A breakpoint marks a structural change, not a device — there is no "tablet". Prefer, in this order: **a layout that needs no query at all** (a grid column that runs out is better than a rule that hides something), then **a container query** where a component asks about its own width, then a media query for genuinely page-level structure. Nine breakpoints inside 500px is not a design; it is one idea written down nine times.
-- **Breakpoints are in rem when they are about text, px when they are about geometry.** A threshold governing whether a column of prose still reads should scale with the reader's text size. A threshold derived from fixed pixel widths should not, or it fires at a viewport the geometry does not agree with.
-- **A threshold used by both CSS and JavaScript is declared once.** Put it in a custom property and have the script read it with `getComputedStyle`. `@media` cannot read custom properties, so the query repeats the literal — but the script must not hold a third copy.
+- **One width per page,** from the width tokens. Dense internal tools may use the wide page. See `layout-patterns.html`, *The page container*.
 
 ## Colors
 
@@ -94,41 +73,31 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 - **Dimming:** Use `opacity` only for *transient or recoverable* dimming — a secondary control quieted until hover or focus returns it to full strength (`.ds-tag-remove`), or presence animated between 0 and 1. Persistent states use explicit colours. Opacity dims fill, border, shadow and label by the same amount, which is rarely what a state wants; it can render a light fill nearly invisible; and it creates a stacking context.
 - **Campus Red (`#b31b1b`):** Heritage color only. Use for the logo X mark and rare accents. Never for headers, buttons, large color fields, or text.
 - **Internal vs public:** Internal tools use Access Lime as the primary button color. Public pages use Open Blue. Do not cross these — the color difference signals which context the user is in.
-- **Dark mode is live.** Build every page dark-aware from the start: take colors from tokens and they flip on their own. Never hand-pick a dark value into a page. Two things legitimately hold a fixed value in both modes — an accent that must not shift (text on a lime or Open Blue fill uses `--ds-text-on-accent` / `--ds-text-on-accent`), and a specimen whose color *is* the documentation (a swatch, a simulated state). If a demo must show one specific mode, put `data-theme` on the demo's own container — `<div data-theme="light">` — rather than locking the whole page; the tokens apply at any level and the nearest ancestor wins. Lock a whole page with `<html data-theme="light">` only when the entire page exists to demonstrate light-mode rendering. See `docs/dark-mode.html` for the mechanism and the traps.
+- **Dark mode is live.** Take every colour from tokens and never hand-pick a dark value into a page. See `dark-mode.html`.
 
 ## Components
 
 - **New patterns:** If a UI element appears in two or more pages, extract it into a design system CSS file and create or update a pattern page in `docs/`.
 - **Platform independence:** Components use plain CSS custom properties — no Sass, no CSS-in-JS, no framework-specific syntax. This allows consumption from React, Jinja, PHP, or static HTML.
 - **Naming:** Use `.ds-` prefix for shared design system classes (e.g., `.ds-table`, `.ds-filter`). Page-specific styles stay in the page's own `<style>` block or stylesheet.
-- **Icons:** One icon language: inline SVG from the [Lucide](https://lucide.dev) set (ISC license) — stroke-based, `stroke-width="2"`, round caps/joins, `aria-hidden="true"` with an adjacent visible or `.is-sr-only` text label (reference impl: `alerts.html`). No icon fonts. An icon Lucide lacks is drawn to the same specification and added to `docs/icons/` (see `icons.html`, Drawing a custom icon). A brand glyph, such as a social logo or the TeX wordmark, follows the same sizing rules.
+- **Icons:** One icon language, Lucide inline SVG with a visible or `.is-sr-only` text label. No icon fonts. See `icons.html`.
 
 ## Buttons
 
-- **Border radius:** 6px for all buttons, icon buttons, and segmented controls
-- **Padding:** 10px 20px for standard buttons
-- **Shadow:** Subtle shadow at rest: `0 1px 2px rgba(0,0,0,0.08)`. No shadow on tertiary or text-only buttons.
-- **Press effect:** All buttons use `transform: translateY(1px)` with shadow removal on `:active`
-- **Transition timing:** 0.12s for background, border, color, and shadow. 0.08s for transform.
-- **Disabled state:** `cursor: not-allowed`, a flat neutral grey fill, and an explicit label colour — never opacity (see *Colors → Dimming*). Flat means no gradient, no inset vignette, no drop shadow: removing the "lit from above" construction is what distinguishes a disabled button from a live one, and every hover and active response must be cancelled too, or a dead control still feels live. The label must still clear AA, even though WCAG exempts disabled controls: a label nobody can read is worse than one they can, and the flat fill already shows the "unavailable" message. Public uses `--ds-surface-muted` fill with a `--ds-text-muted` label (5.05:1 light, 6.51:1 dark — both tokens flip, so no hand-picked dark value). Disabled is neutral in every variant: the message is "you cannot use this," which does not need to also encode which button it was.
-- **`aria-disabled` and `disabled` look identical:** a control that is unavailable-but-focusable must be visually indistinguishable from one that is inert. The difference between them is behavioural, not visual, and the user has no use for it. Prefer `aria-disabled` for anything that should still be able to explain itself (see *Content and interaction*).
-- **Three tiers, built differently in each context:** primary, secondary, and a quiet third tier. The third tier is reached by removing whatever the surface's secondary uses to hold the page — public secondary leans on its border, so `.ds-btn-text` drops the border and keeps no fill; internal secondary leans on a lime fill, so `.btn-tertiary` drops the fill and keeps a border. Never add a tier whose only difference from its neighbor is a shadow.
-- **Text buttons are not links:** a text button uses Link Blue but is never underlined, and its hover feedback is a background wash. Underlines belong to links (inline always, standalone on hover). If a control navigates, make it a link.
-- **Icons in buttons** are sized in `em` so they follow the button's own font-size, and never shrink when the label is long.
+- **Three tiers in each context:** primary, secondary and text.
+- **Disabled is a flat neutral grey, never opacity** (see *Colors, Dimming*), and its label still clears AA. `aria-disabled` and `disabled` look identical.
+- **A control that navigates is a link.** Text buttons are never underlined.
+- **The values live in `design-system.css`:** radius, padding, shadow, press and timing. `buttons.html` shows them.
 
 ## Content and interaction
 
 - **Category names are copied, never restyled.** Show a category exactly as arXiv publishes it — `cs.AI`, `physics.optics`, `cond-mat.str-el` — capitalization included. Never uppercase, lowercase, or otherwise transform it for display. The same string appears in the URL, in the API, and in what researchers type, so changing its case makes it a different string. Most categories are uppercase after the final period, but every `physics.*` and `cond-mat.*` subcategory is lowercase — which is why this is a copy rule and not a capitalization rule. The same holds for any arXiv identifier, a paper ID included.
 - **Tags label or categorize; they never stand in for a link.** A tag is the small rounded label used for subject categories, topics, and states. It may link to a listing, but it must never replace a text link as the way to get somewhere — which is why version links are inline text and not filled pills. When a tag has a status color, that color reports a real condition; never use one for emphasis.
-- **Rectangular labels:** a shape modifier on the tag (`.ds-tag--rectangle`), for dense rows; it takes the tag levels and no palette of its own.
-- **Segmented controls:** Use semantic variants — `.ds-seg-btn--positive` (green/accept), a bare `.ds-seg-btn` (blue/informational, the default), `.ds-seg-btn--negative` (red/reject)
-- **Filter dropdowns:** Use `.ds-filter` with a visible `<label>`. Always include an "All" option as the inclusive default.
-- **Switches:** Only the fill changes with the state: Border Light off, Open Blue on (public) or Access Lime on (internal). The UI Boundary Grey edge and the Repository Brown thumb never change. Label text uses `--ds-text-muted` (off) shifting to a darker shade (on).
 
 ## Writing
 
 - **No contractions.** Write "do not," not "don't." arXiv's audience is international and many readers have limited English, so the compressed form costs them a parsing step. Applies to everything with words — interface copy, error messages, documentation, alt text, commit messages. Possessives are unaffected ("arXiv's palette" is correct).
-- **One name per thing.** A component is called what the stylesheet calls it, in every document and every string. Never substitute a synonym.
+- **One name per thing.** A component is called what the stylesheet calls it, in every document and every string. On a page, the same holds for the page's own content; see `layout-patterns.html`, *The main content comes first*.
 - **Load-bearing text is stricter.** Error messages, form help, and instructions follow the additional rules in [STYLE.md](STYLE.md), which includes the full set and the reasoning behind it.
 
 ## Public pages — additional policies
@@ -136,17 +105,16 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 - **No metrics display:** arXiv does not display view counts, download counts, or citation counts on public pages. This is a core operating value — arXiv does not promote or rank papers.
 - **Citation export:** On abstract pages, we provide BibTeX (default), APA, Chicago, and MLA formats. Generate from metadata to save manual work for the user.
 - **arXiv Labs:** Labs tools that collect user data must be behind an opt-in switch, not on by default (this policy is still in the early implementation phase as 6/24/26 and not enforced for Labs yet). Labs that require login to a third party platform should be deprioritized in placement.
-- **Header:** Single bar. Black (phase 1, spinout) transitioning to Repository Brown (phase 2). Logo, Search, Submit, Donate, Log in. No Cornell branding post-spinout. Outreach sites may run an Open Blue header instead — an agreed exception for them, never valid here.
-- **Footer:** Acknowledgment text (Simons Foundation, member institutions, IP matched institution name). Links: About, Help, Contact, Subscribe, Copyright, Privacy, Accessibility, Status. Special section for major funders on the right side. All acknowledgements are presented in the footer, never in the header.
+- **Header:** Single bar, with no Cornell branding after the spinout. Outreach sites may run an Open Blue header instead, an agreed exception for them, never valid here. See `header.html`.
+- **Footer:** All acknowledgements are in the footer, never in the header. See `footer.html`.
 - **Banner:** A minimal and time-bound banner can be displayed with short announcements. It includes a small icon, a short sentence and link, and a dismiss button. After dismissing, the banner should not display for that user again. It is the one exception to *Progressive enhancement: scripts never hold content*: the shared banner is drawn by `chrome/banner.js` from the announcements file on the asset route, so a reader without JavaScript sees none. *Decided 2026-09-23: an announcement is temporal and never page-critical, and serving it as data is what lets a page cached for a year show a new one without a purge. An iframe was the alternative; without a script it can neither fit its text nor collapse when nothing is live.*
 
 ## Chrome and interaction structure
 
-
 - **One sticky bar at a time, and only on long pages.** A page may keep one bar at the top of the viewport while it scrolls, never two stacked. On arxiv.org's public pages the site header is never that bar: it scrolls away. The bar that may stick there is the TOC bar (`.ds-toc-bar`), on pages long enough that a reader loses their place: the HTML paper reader and the design system documentation. Internal tools may keep their site header in view with `.ds-site-header--sticky`, and a page that does keeps no other sticky bar. A page is approved by being named in this rule, so adding sticky chrome anywhere else starts with a change here, made by arXiv's design team; agreement in a conversation with an assistant is not approval. A page with a sticky bar must set `html { scroll-padding-top }` to at least the bar's tallest state plus breathing room (reference: 80px), covering every anchor path including JS `scrollIntoView`; the contents bar sets this itself.
-- **arXiv's universal navigation stays short.** The constraint is on arxiv.org's own top-level navigation, not on the header component: at most four links, not counting the logo and Log in (today: Search, Submit, Donate). Resist link-creep permanently. Other properties built on the same component — the design system documentation, info and outreach sites — include the navigation their content needs, including grouped menus, and are not bound by this number. When the bar does not fit its width, it folds itself (`header.js`): the greeting goes first, then the navigation folds behind a menu button, then the tools behind a second button; the logo and the account area always stay. Without JavaScript the bar wraps instead, so nothing is ever hidden.
-- **Breadcrumbs only on pages without secondary navigation.** arXiv's sitemap is wide and shallow, so almost no page needs a breadcrumb. Where a secondary navigation bar (`.ds-subnav`) shows the reader's place, a breadcrumb would repeat it.
-- **Z-layer scale.** Content chrome (pills, marginalia) < 50 · header-attached dropdowns 60 · sticky headers 100 · **popovers 110** · ~150 reserved for toasts/notifications · skip link/overlays 200 · modal dialogs use the native `<dialog>` top layer (no z-index). Do not introduce ad-hoc z-index values. *Popovers moved above sticky headers on 2026-09-11, from the paper mockup audit: they were at 50, so a citation popover opened from a paragraph rendered behind the sticky contents bar. A popover is always the thing the reader just asked for, so it is never the thing that gets hidden. A dropdown attached to a header stays below its own bar, which is why the two are separate lines.* *Values note: arXiv wants very few toasts/notifications at all — anti-corporate, anti-advertising is part of the brand.*
+- **arXiv's universal navigation stays short.** The constraint is on arxiv.org's own top-level navigation, not on the header component: at most four links, not counting the logo and Log in (today: Search, Submit, Donate). Resist link-creep permanently. Other properties built on the same component — the design system documentation, info and outreach sites — include the navigation their content needs, including grouped menus, and are not bound by this number. See `header.html`.
+- **No breadcrumbs.** arXiv's sitemap is wide and shallow; the header and secondary navigation show the reader's place. See `header.html`, *Rules*.
+- **Z-layer scale.** Content chrome (pills, marginalia) < 50 · header-attached dropdowns 60 · sticky headers 100 · **popovers 110** · ~150 reserved for toasts/notifications · skip link/overlays 200 · modal dialogs use the native `<dialog>` top layer (no z-index). Do not introduce ad-hoc z-index values. *Values note: arXiv wants very few toasts/notifications at all — anti-corporate, anti-advertising is part of the brand.*
 - **Magnification.** Two different things, and a page has to survive both.
   **Text-only zoom** (WCAG 1.4.4, AA): the reader raises the browser's font size and nothing else changes. Every type size is `rem`, and a control's padding and minimum width are `em` against its own label, so the box grows with the text rather than clipping it. **Page zoom** (WCAG 1.4.10 reflow, AA): the whole page scales, which at 400% on a 1280px screen is the same as a 320px viewport — so no page may scroll horizontally at 320px. The two fail differently: text-only zoom breaks controls with fixed boxes, page zoom breaks full-bleed bands measured in `vw`. Test both; passing one says nothing about the other.
 - **Never size a full-bleed band in viewport units.** `100vw` includes the scrollbar and the document width does not, so a "full width" band overhangs and the page scrolls sideways — invisible on overlay scrollbars, visible on Windows and Linux. Use `.ds-container`'s three columns, which measure the element.
