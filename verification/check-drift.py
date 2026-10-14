@@ -142,7 +142,45 @@ def check_dark_mirror(css_path=None, label="public stylesheet"):
     ok(name)
 
 
-# ── 2. Consumers that bundle a copy of the stylesheet ───────────────
+# ── 2. The light reset ──────────────────────────────────────────────
+# [data-theme="light"] puts the light values back inside a dark page, for a
+# demo or for content with no dark mode. It must reset every token the dark
+# mirror changes, each to its :root value. A token it misses keeps its dark
+# value there; a copy edited on one side only paints the old colour.
+def check_light_reset(css_path=None, label="public stylesheet"):
+    name = f"light block resets every dark token to its :root value ({label})"
+    css = re.sub(r"/\*.*?\*/", "", (css_path or PUBLIC_CSS).read_text(), flags=re.S)
+
+    def tokens(marker):
+        block = matching_block(css, css.index(marker))
+        return {p: v for p, v in declarations(block) if p.startswith("--")}
+
+    def resolve(value, table, depth=0):
+        m = re.fullmatch(r"var\((--[-\w]+)\)", value)
+        if m and m.group(1) in table and depth < 10:
+            return resolve(table[m.group(1)], table, depth + 1)
+        return value.lower()
+
+    root = tokens(":root {")
+    dark = tokens('[data-theme="dark"] {')
+    if '[data-theme="light"] {' not in css:
+        return fail(name, f'no [data-theme="light"] block; dark changes {list(dark)}')
+    light = tokens('[data-theme="light"] {')
+    missing = [t for t in dark if t not in light]
+    differ = [
+        f"{t}: light {light[t]} vs :root {root.get(t)}"
+        for t in light
+        if resolve(light[t], {**root, **light}) != resolve(root.get(t, ""), root)
+    ]
+    if missing or differ:
+        return fail(
+            name,
+            f"dark tokens not reset: {missing or 'none'}; values that differ: {differ or 'none'}",
+        )
+    ok(name)
+
+
+# ── 3. Consumers that bundle a copy of the stylesheet ───────────────
 # The WordPress theme cannot link a stylesheet from another origin (and our
 # policy forbids it anyway), so it ships its own copy. That copy is allowed to
 # diverge: the blog is a separate project that extends the design system, more
@@ -181,7 +219,7 @@ def check_bundled_copy(consumer):
     )
 
 
-# ── 3. Shared .ds- names across surfaces ────────────────────────────
+# ── 4. Shared .ds- names across surfaces ────────────────────────────
 # Both stylesheets define some .ds- classes. Sharing a NAME is fine — the
 # same component wearing each surface's tokens. Sharing a name while the
 # constructions have drifted apart means an agent reading one page builds
@@ -226,6 +264,8 @@ def main():
 
     check_dark_mirror(PUBLIC_CSS, "tier 1")
     check_dark_mirror(INTERNAL_CSS, "internal tools")
+    check_light_reset(PUBLIC_CSS, "tier 1")
+    check_light_reset(INTERNAL_CSS, "internal tools")
     check_bundled_copy(args.consumer)
     check_shared_names()
 
