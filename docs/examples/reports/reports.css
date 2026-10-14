@@ -1,0 +1,48 @@
+/* Moderation reports example: the layout the design system does not provide yet.
+   Each rule is a candidate for promotion (whiteboard/planning/reference-reports.md). */
+
+/* The data line: the period, when it was updated, then Refresh. */
+.reports-data-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--ds-space-tight);
+  margin: 0;
+  color: var(--ds-text-muted);
+}
+.reports-data-line > form { display: contents; }
+
+/* A heading with the button that opens its explanation. */
+.reports-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ds-space-tight) var(--ds-space-block);
+}
+.reports-heading > h2 { margin: 0; }
+
+/* A heading with what introduces it: lede, data line, views. The main content
+   follows a block away; the rows inside it are a section apart. */
+.reports-view { display: grid; gap: var(--ds-space-tight); }
+.reports-view > :is(h1, h2, p, nav) { margin: 0; }
+.reports-view > .ds-btn-group--split { margin-block-start: var(--ds-space-block); }
+.reports-main { margin-block-start: var(--ds-space-block); }
+.reports-rows { display: grid; gap: var(--ds-space-section); }
+.reports-row > h3 { margin: 0 0 var(--ds-space-tight); }
+
+/* A footnote under the main content. */
+.reports-footnote { margin-block-start: var(--ds-space-tight); font-size: 0.875rem; color: var(--ds-text-muted); }
+
+/* Equal items in columns, inside the categories popover. */
+.reports-category-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+  gap: var(--ds-space-1) var(--ds-space-tight);
+}
+#categories-popover { --ds-popover-width: 26rem; }
+
+/* Buttons that only work with JavaScript. */
+html:not(.js) .reports-js-only { display: none; }

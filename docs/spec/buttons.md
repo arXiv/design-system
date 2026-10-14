@@ -101,7 +101,7 @@ components:
     summary: "Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once. Use a sort bar for up to five ways to sort a list or a set of rows that are not a table; use a [sortable column header](tables.html#sortable-column-headers) in a table, and a [Sort by](forms.html) select in a search form."
     classes:
       - name: ".ds-btn-group with role=\"group\""
-        does: "The bar, named by its label through `aria-labelledby`. When its buttons have `aria-pressed`, they join, and the bar is compact. Here the bar is a GET form, so it works without JavaScript; hidden inputs keep the reader's other choices in the address."
+        does: "The bar, named by its label through `aria-labelledby`. When its buttons have `aria-pressed`, they join, and the bar is compact. Here the bar sits in a GET form, so it works without JavaScript; hidden inputs keep the reader's other choices in the address. The group role goes on the bar, not on the form."
       - name: "type=\"submit\" with name and value"
         does: "Each button sends its sort. The button that is on sends the reverse direction, so pressing it again reverses the order."
       - name: "aria-pressed"
@@ -245,13 +245,15 @@ Buttons that each turn on one choice, such as a sort bar: the buttons join into 
 **A sort bar**
 
 ```html
-<form class="ds-btn-group" method="get" action="buttons.html#a-group-of-toggles" role="group" aria-labelledby="sort-by">
-  <span id="sort-by">Sort charts by</span>
-  <input type="hidden" name="group" value="cs">
-  <button class="ds-btn sort-asc" type="submit" name="sort" value="category-desc" aria-pressed="true">Category <span class="sort-arrow">↑</span><span class="is-sr-only">, A to Z</span></button>
-  <button class="ds-btn" type="submit" name="sort" value="holds" aria-pressed="false">Current holds <span class="sort-arrow">↕</span></button>
-  <button class="ds-btn" type="submit" name="sort" value="weekly" aria-pressed="false">Weekly holds trend <span class="sort-arrow">↕</span></button>
-  <button class="ds-btn" type="submit" name="sort" value="monthly" aria-pressed="false">Monthly holds trend <span class="sort-arrow">↕</span></button>
+<form method="get" action="buttons.html#a-group-of-toggles">
+  <div class="ds-btn-group" role="group" aria-labelledby="sort-by">
+    <span id="sort-by">Sort charts by</span>
+    <input type="hidden" name="group" value="cs">
+    <button class="ds-btn sort-asc" type="submit" name="sort" value="category-desc" aria-pressed="true">Category <span class="sort-arrow">↑</span><span class="is-sr-only">, A to Z</span></button>
+    <button class="ds-btn" type="submit" name="sort" value="holds" aria-pressed="false">Current holds <span class="sort-arrow">↕</span></button>
+    <button class="ds-btn" type="submit" name="sort" value="weekly" aria-pressed="false">Weekly holds trend <span class="sort-arrow">↕</span></button>
+    <button class="ds-btn" type="submit" name="sort" value="monthly" aria-pressed="false">Monthly holds trend <span class="sort-arrow">↕</span></button>
+  </div>
 </form>
 ```
 
@@ -259,16 +261,18 @@ Buttons that each turn on one choice, such as a sort bar: the buttons join into 
 
 ```html
 <div class="ds-btn-group ds-btn-group--split">
-  <form class="ds-btn-group" method="get" action="buttons.html#a-group-of-toggles" role="group" aria-labelledby="sort-by-2">
-    <span id="sort-by-2">Sort by</span>
-    <button class="ds-btn sort-desc" type="submit" name="sort" value="holds-asc" aria-pressed="true">Current holds <span class="sort-arrow">↓</span><span class="is-sr-only">, largest first</span></button>
-    <button class="ds-btn" type="submit" name="sort" value="category" aria-pressed="false">Category <span class="sort-arrow">↕</span></button>
+  <form method="get" action="buttons.html#a-group-of-toggles">
+    <div class="ds-btn-group" role="group" aria-labelledby="sort-by-2">
+      <span id="sort-by-2">Sort by</span>
+      <button class="ds-btn sort-desc" type="submit" name="sort" value="holds-asc" aria-pressed="true">Current holds <span class="sort-arrow">↓</span><span class="is-sr-only">, largest first</span></button>
+      <button class="ds-btn" type="submit" name="sort" value="category" aria-pressed="false">Category <span class="sort-arrow">↕</span></button>
+    </div>
   </form>
   <button class="ds-btn ds-btn-text" type="button">Categories (40)</button>
 </div>
 ```
 
-- `.ds-btn-group with role="group"` — The bar, named by its label through `aria-labelledby`. When its buttons have `aria-pressed`, they join, and the bar is compact. Here the bar is a GET form, so it works without JavaScript; hidden inputs keep the reader's other choices in the address.
+- `.ds-btn-group with role="group"` — The bar, named by its label through `aria-labelledby`. When its buttons have `aria-pressed`, they join, and the bar is compact. Here the bar sits in a GET form, so it works without JavaScript; hidden inputs keep the reader's other choices in the address. The group role goes on the bar, not on the form.
 - `type="submit" with name and value` — Each button sends its sort. The button that is on sends the reverse direction, so pressing it again reverses the order.
 - `aria-pressed` — On every button: `"true"` on the one that is on, `"false"` on the rest. Off is plain; on takes the accent tint.
 - `.sort-asc, .sort-desc, .sort-arrow` — For a sort, the arrow shows the direction on the button that is on, as in a [sortable column header](tables.html#sortable-column-headers). Pressing it again reverses the direction. An `.is-sr-only` span says the direction in words.
