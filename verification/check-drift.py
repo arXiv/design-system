@@ -257,6 +257,31 @@ def check_shared_names():
         ok(name + f" ({len(shared)} shared)")
 
 
+# ── 5. Tier 2 must not undo tier 1's dark values ────────────────────
+# internal-tools.css loads after design-system.css. A token it sets on :root
+# beats tier 1's [data-theme="dark"] value (same specificity, later in the
+# cascade), so with the theme toggle on dark that token keeps its light value.
+# The OS query is not affected, which is how this hid until 2026-10-14: cards,
+# the secondary navigation and the sort bar stayed white under the toggle.
+def check_tier2_keeps_dark():
+    name = "internal tools do not override tier 1's dark tokens with light ones"
+    pub = re.sub(r"/\*.*?\*/", "", PUBLIC_CSS.read_text(), flags=re.S)
+    intl = re.sub(r"/\*.*?\*/", "", INTERNAL_CSS.read_text(), flags=re.S)
+
+    def tokens(css, marker):
+        if marker not in css:
+            return {}
+        return {p: v for p, v in declarations(matching_block(css, css.index(marker))) if p.startswith("--")}
+
+    tier1_dark = tokens(pub, '[data-theme="dark"] {')
+    tier2_root = tokens(intl, ":root {")
+    tier2_dark = tokens(intl, '[data-theme="dark"] {')
+    stuck = sorted(t for t in tier2_root if t in tier1_dark and t not in tier2_dark)
+    if stuck:
+        return fail(name, f"set on :root in internal-tools.css with no dark value of their own: {stuck}")
+    ok(name)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--consumer", type=Path, default=DEFAULT_CONSUMER)
@@ -266,6 +291,7 @@ def main():
     check_dark_mirror(INTERNAL_CSS, "internal tools")
     check_light_reset(PUBLIC_CSS, "tier 1")
     check_light_reset(INTERNAL_CSS, "internal tools")
+    check_tier2_keeps_dark()
     check_bundled_copy(args.consumer)
     check_shared_names()
 
