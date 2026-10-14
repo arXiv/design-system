@@ -23,9 +23,9 @@
 4. **A footnote** under the main content: smaller muted text.
 5. **The filter at the right end of the second row**, after the views.
 
-## Design-system change on this branch, for review
+## Still open
 
-- **The header marks the section the reader is in**: a link with `aria-current` in the header navigation has full-strength text and an accent underline. The header had no current marking. It also applies to any public header that sets `aria-current`; none does today.
+- **The header does not yet mark the report the reader is in.** The pages set `aria-current="true"` on it, so a screen reader announces it, but there is no visual marking. Shamsi wants a better style than the first try; it is being worked on in its own branch, `header-current-section`.
 
 ## Checks
 
