@@ -58,3 +58,13 @@ Done in the docs: what a sidebar costs (Layout patterns, *Sidebar*); *Where seco
 Future sessions, not today:
 - **Compact elements**, its own session: the condensed secondary navigation at phone width, and wide elements (filter bars, tables, button groups) at phone width.
 - **Agents try the alternatives**: build two arrangements of the hardest placement choice and compare them, as a designer would. Test it as a before-and-after pair, like round 6, and weigh the extra tokens.
+
+## From rounds 8 and 9 (2026-10-14)
+
+Done in the docs: the toolbar row above a list (sort bar left, other control right, `.ds-btn-group--split`); an information button with a visible label; a status tag first in a card floats to its top corner.
+
+Still open:
+- **No popover script.** The popover is styling only; agents write their own opening code or avoid popovers. A shared script, like `tooltip.js`, would settle it.
+- **The joined sort bar wraps badly at phone width.** For the compact-elements session.
+- **A footer check.** Build C left out the footer and nobody noticed in review; the evaluation could flag a page without the standard footer.
+- **Shamsi liked the codes as pills** (`.ds-tag--keep-case`) in build C's cards.

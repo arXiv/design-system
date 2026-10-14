@@ -1,0 +1,55 @@
+/* Moderation and staff reports — page CSS the design system does not provide.
+   Loaded after design-system.css and internal-tools.css. Only layout of
+   existing components and one muted text rule; every value is a token. */
+
+/* The context line: what the data covers and when it was updated, ended by the
+   refresh text button (layout-patterns.html, "The main content comes first").
+   It is a GET form so Refresh works without JavaScript. */
+.rpt-context {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--ds-space-tight);
+  margin-block: var(--ds-space-tight) var(--ds-space-block);
+}
+.rpt-context > p { margin: 0; color: var(--ds-text-muted); }
+
+/* Placeholder for figures and charts. The design system has no figure pattern
+   yet; the brief asks for one muted line in a card. */
+.rpt-placeholder { margin: 0; color: var(--ds-text-muted); }
+
+/* The controls above the category rows: the sort bar on the left edge, the
+   categories popover button after it. Groups sit twice as far apart as the
+   items inside them (DESIGN-POLICIES, Spacing). */
+.rpt-list-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-tight) calc(2 * var(--ds-space-tight));
+  margin-bottom: var(--ds-space-block);
+}
+
+/* One category row: its code, the holds placeholder, then the two charts.
+   Blocks inside a row are a block apart; rows are separated by an <hr>. */
+.rpt-category > * + * { margin-top: var(--ds-space-block); }
+
+/* The two charts of a row share it in halves; auto-fit rather than the card
+   grid's auto-fill, so a row of two leaves no empty third column. They still
+   drop to one column when a card can no longer hold its minimum. */
+.rpt-category > .ds-card-grid { grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr)); }
+
+/* The category list inside the popover: equal items, in columns. */
+.rpt-category-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+  gap: var(--ds-space-1) var(--ds-space-tight);
+}
+
+/* The footnote under the section cards: what the period counts. */
+.rpt-footnote { margin-top: var(--ds-space-block); color: var(--ds-text-muted); }
+
+/* The categories popover is wider than the default, for four columns of codes. */
+#categories-popover { --ds-popover-width: 26rem; }
