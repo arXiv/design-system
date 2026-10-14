@@ -17,7 +17,7 @@
 
 `docs/examples/reports/reports.css` holds what the design system does not provide yet:
 
-1. **The page heading with "Last updated" and Refresh at its right end**, the same on every page of the tool.
+1. **The page heading with "Last updated" and Refresh at its right end**, the same on every page of the tool. The time uses `.ds-date-row`, the style of a paper's submitted date.
 2. **A text button at the end of a sentence**, such as "About these charts": no box of its own, on the text's line.
 3. **The heading group**: a heading and what introduces it, close together, with the main content a block below.
 4. **A footnote** under the main content: smaller muted text.
