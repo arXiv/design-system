@@ -1,6 +1,6 @@
-# Reference example: the moderation reports
+# Mockup: the moderation reports
 
-2026-10-14. Pages in `docs/examples/reports/`, hand-finished from round 9's best build (D), with build C's code pills and categories popover, and Shamsi's notes from rounds 7 to 9. Not linked from the docs menu until Shamsi approves them.
+2026-10-14. Pages in `whiteboard/mockups/internal/membership-dashboard/` (they replaced the older mockup there, which is in git history), hand-finished from round 9's best build (D), with build C's code pills and categories popover, and Shamsi's notes from rounds 7 to 9. The docs' Mockups menu links to `index.html`, the Submissions overview.
 
 ## What changed from build D
 
@@ -15,7 +15,7 @@
 
 ## Page-only CSS: candidates for the design system (Shamsi decides)
 
-`docs/examples/reports/reports.css` holds what the design system does not provide yet:
+`reports.css` beside the pages holds what the design system does not provide yet:
 
 1. **The page heading with "Last updated" and Refresh at its right end**, the same on every page of the tool. The time uses `.ds-date-row`, the style of a paper's submitted date.
 2. **A text button at the end of a sentence**, such as "About these charts": no box of its own, on the text's line.
@@ -38,7 +38,7 @@ The live tool put three reports under an All sections page, with a fourth, staff
 | Header (right-aligned) | Second row: views, then the shared filter | Example page |
 |---|---|---|
 | Staff reports (menu, staff only): User activity, Section health, Admin effort, Suspicious activity | none: each report has its own controls inside the page | — |
-| Submissions | Overview, Charts, Category stats, Workload stats, Releases, Submissions; Group, Archive, Category (not on Overview) | `overview.html`, `charts.html` |
+| Submissions | Overview, Charts, Category stats, Workload stats, Releases, Submissions; Group, Archive, Category (not on Overview) | `index.html`, `charts.html` |
 | Moderators | Moderator contacts, Moderator touches; the same filter | `moderators.html` |
 | Recruitment | Frequent authors, Endorsers; the same filter | — |
 
