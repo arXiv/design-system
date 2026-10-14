@@ -205,7 +205,7 @@ Every tint in the system belongs to one of two families: the **warm tints** (Lib
 **"No one-off hex values" has three tiers:**
 
 1. **Palette tokens** — everything in this document. Free to use in their documented roles.
-2. **Component-internal constants** — values that exist only inside a component's own CSS: the button-border gradient stops (`#b0d5ed`, `#6ba8da`, `#8fc1e8`, `#4a86b8`, `#c8c4be`, `#b3ada4`, `#7eb8e0`), the dark header's hover fill `#302c28` and divider `#4a433d`. They are part of those components, not the palette — do not lift them for new uses.
+2. **Component-internal constants** — values that exist only inside a component's own CSS: the button-border gradient stops (`#b0d5ed`, `#6ba8da`, `#8fc1e8`, `#4a86b8`, `#c8c4be`, `#b3ada4`, `#7eb8e0`), the destructive button's border stops (`#d4453f`, `#8e1c1c`, `#e0605a`, `#a52626`) and inner shadow (`rgb(90, 10, 10)` at any opacity), the close button's wash (`rgb(128, 128, 128)` at any opacity), the dark header's hover fill `#302c28` and divider `#4a433d`. They are part of those components, not the palette — do not lift them for new uses. `verification/check-policies.py` reads this list: it allows these, white and black, and fails any other colour written straight into a rule in the two stylesheets.
 3. **Everything else** — does not exist. A new value is a change to this document, not a local invention.
 
 **Accessible combinations on tints** (computed, WCAG; full matrix on the colors page):

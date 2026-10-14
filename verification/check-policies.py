@@ -126,6 +126,56 @@ def check_tokens_defined():
         ok(rule, f"{n} references")
 
 
+# ── Colours come from tokens ──
+# DESIGN-POLICIES: "Do not introduce one-off hex values." A colour written
+# straight into a rule, instead of into a token, is one. White and black are
+# allowed, at any opacity, and so are the component-internal constants listed
+# in docs/color-mapping.md. The list is read from there so the exceptions are
+# written down once.
+COLOUR = re.compile(r"#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?)\([^)]*\)")
+CONSTANTS_DOC = REPO / "docs" / "color-mapping.md"
+
+
+def rgb(colour):
+    """The red, green and blue of a colour, ignoring opacity; None for hsl()."""
+    if colour.startswith("#"):
+        h = colour[1:]
+        if len(h) in (3, 4):
+            h = "".join(c * 2 for c in h[:3])
+        return tuple(int(h[i : i + 2], 16) for i in (0, 2, 4))
+    if colour.startswith("rgb"):
+        return tuple(int(n) for n in re.findall(r"\d+", colour)[:3])
+    return None
+
+
+def check_colours_from_tokens():
+    rule = "colours come from tokens (white, black and listed constants allowed)"
+    line = next((l for l in CONSTANTS_DOC.read_text().splitlines()
+                 if "**Component-internal constants**" in l), None)
+    if line is None:
+        return fail(rule, str(CONSTANTS_DOC.relative_to(REPO)),
+                    "no **Component-internal constants** line to read the exceptions from")
+    allowed = {(255, 255, 255), (0, 0, 0)}
+    allowed |= {rgb(c) for c in COLOUR.findall(" ".join(re.findall(r"`([^`]+)`", line)))}
+    n = 0
+    for f in CSS_FILES:
+        # Blank comments rather than drop them, so line numbers stay true.
+        text = re.sub(r"/\*.*?\*/", lambda m: re.sub(r"[^\n]", " ", m.group(0)),
+                      f.read_text(), flags=re.S)
+        for d in re.finditer(r"([-\w]+)\s*:\s*([^;{}]+);", text):
+            if d.group(1).startswith("--"):
+                continue
+            for c in COLOUR.finditer(d.group(2)):
+                n += 1
+                if rgb(c.group(0)) not in allowed:
+                    at = text[: d.start(2) + c.start()].count("\n") + 1
+                    fail(rule, f"{f.relative_to(REPO)}:{at}",
+                         f"{d.group(1)}: {c.group(0)} — use a token, or list it as a "
+                         "component-internal constant in docs/color-mapping.md")
+    if rule not in FAILS:
+        ok(rule, f"{n} raw colours, all allowed")
+
+
 # ── One name per surface ──
 # The two surfaces are "the public site" and "internal tools" (DESIGN-POLICIES).
 # "Staff" is for people, not for the surface, its stylesheet or its pages —
@@ -456,6 +506,7 @@ def main():
     check_wordmark_not_typed()
     check_self_hosted()
     check_tokens_defined()
+    check_colours_from_tokens()
     check_one_name_per_surface()
     check_relative_type_sizes()
     check_page_shape()
