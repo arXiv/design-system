@@ -86,15 +86,16 @@
     mount.setAttribute("role", "region");
     mount.setAttribute("aria-label", "Announcement");
     mount.innerHTML =
-      '<img class="ds-announcement-glyph" src="' + base + 'logos/smileybones.svg" alt="">' +
-      '<span class="ds-announcement-text"></span>' +
+      // The glyph starts the text, so it wraps with the first line instead of taking a row.
+      '<span class="ds-announcement-text"><img class="ds-announcement-glyph" src="' + base +
+        'logos/smileybones.svg" alt=""></span>' +
       '<a class="ds-announcement-link"></a>' +
       '<button type="button" class="ds-close">' +
         '<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
           '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>' +
         '</svg><span class="is-sr-only">Dismiss announcement</span></button>';
 
-    mount.querySelector(".ds-announcement-text").textContent = str(a.text);
+    mount.querySelector(".ds-announcement-text").append(str(a.text));
     var link = mount.querySelector(".ds-announcement-link");
     var href = httpsUrl(a.url);
     if (str(a.link_text) && href) {
