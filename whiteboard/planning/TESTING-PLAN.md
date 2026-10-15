@@ -32,7 +32,7 @@ Nothing in Shamsi's area should be obviously wrong: design and visual display, a
 | 2 | Advanced search | Public | A long form with validation, date ranges, and groups of options. | `arxiv-search` repository |
 | 3 | A change to an existing page | Public | Developers asked for this shape of task: bring an existing page onto the design system. The request includes one thing that conflicts with a policy, to see whether the builder flags it. | An existing template from an arXiv repository |
 | 4 | arXiv Check submission queue | Internal tools | The first internal page: tables, row selection, bulk actions, Access Lime. | Screenshots in `whiteboard/mockups/internal/arxiv-check/` |
-| 5 | Membership dashboard | Internal tools | The most complex page, and the original exit test. | `whiteboard/planning/specs/membership-dashboard.md` |
+| 5 | Membership dashboard | Internal tools | The most complex page, and the original exit test. | Not written |
 
 **Out of date (2026-10-06):** the rounds actually run are 1 to 3 on search (done) and 4 on the moderation and staff reports (waiting for review); arXiv Check, in React, is under *To do later*. V1 is defined in `HANDOFF.md`. Tests 3 to 5 in this table were a proposal. Shamsi confirms each one when its spec is written, since what tests 1 and 2 find may change what is worth testing next.
 
@@ -64,7 +64,7 @@ Nothing in Shamsi's area should be obviously wrong: design and visual display, a
 ## Status
 
 - 2026-10-13: round 6 measured the review pass (before and after, same agent): Shamsi preferred the revised pages for three of four agents; the main content moved up in seven of eight pages. Report: `verification/token-burn/runs/20261013-104932-06-review-pass/report.html`.
-- 2026-10-13: round 5 (the reports again, after the test 4 guidance) reviewed: all four accepted with changes (round 4: all rejected). Programmatic: one Pass, three Pass with changes. Follow-ups in `whiteboard/planning/round5-followups.md`.
+- 2026-10-13: round 5 (the reports again, after the test 4 guidance) reviewed: all four accepted with changes (round 4: all rejected). Programmatic: one Pass, three Pass with changes. Its open follow-ups are in `NEXT-STEPS.md`.
 - 2026-10-08: Shamsi: phone widths are not checked for the internal-tools tests. Guidance drafted for her review from test 4: the main content comes first and pages that send the reader on (layout-patterns.html), cards that link (cards.html), two levels of navigation (header.html), and directing agents to the standard header (AGENTS.md, a note on every docs page's header).
 - 2026-10-08: test 4 (moderation and staff reports, internal tools) reviewed: all four rejected on page hierarchy; programmatic Pass for two, Pass with changes for two. Found: no guidance on doorway pages or keeping secondary content out of the way; no two-level navigation; agents copy the docs pages' light header. Design-system bug fixed: `.ds-table-scroll` is positioned. Report: `verification/token-burn/runs/20261006-192823-04-staff-reports/report.html`.
 - 2026-10-06: test 3 (search results, answer key version D) built and reviewed. All four reached D from the docs; visual Pass with changes, programmatic Pass for all four. Found: no rule for how many page numbers, no wording for the 10,000-result notice, pager bars do not space themselves from the list; and a skip-link focus bug (fixed). Report: `verification/token-burn/runs/20261006-142757-03-search-results/report.html`.

@@ -280,7 +280,7 @@ async def run():
         # 1.4.4 is text-only zoom — the reader raises the font size and nothing
         # else moves. 1.4.10 is page zoom, and 400% on a 1280px screen is a
         # 320px viewport. The reader mockup fails the first at 1280px because
-        # ar5iv's body grid is sized by its content; recorded in NEXT-STEPS 7,
+        # ar5iv's body grid is sized by its content; recorded in NEXT-STEPS.md, Mockups,
         # and it needs the papers tier 2 restructure, so only the abstract is
         # asserted here rather than reddening the build over a known defect.
         pg = await b.new_page(viewport={"width": 1280, "height": 1024})
