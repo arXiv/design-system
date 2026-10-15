@@ -17,8 +17,8 @@ const banner = (page) => page.locator("#ds-announcement.ds-announcement");
 const landmark = (page) => page.getByRole("region", { name: "Announcement" });
 
 // What the file holds unless a test serves its own: one live announcement.
-const SHARED = { id: "shared", text: "Shared news", link_text: "Read more",
-                 url: "https://info.example.org/news", start: at(-HOUR), end: at(HOUR) };
+const SHARED = { id: "shared", text: "Shared news", links: [{ text: "Read more", url: "https://info.example.org/news" }],
+                 start: at(-HOUR), end: at(HOUR) };
 const serve = (...announcements) => (route) => route.fulfill({ json: { announcements } });
 
 test.beforeEach(async ({ context }) => {
@@ -207,8 +207,8 @@ test("banner: the shared announcement, a landmark with its link and the default 
 });
 
 test("banner: a second link joins the first as one unit, under the text when it wraps, centred", async ({ page }) => {
-  await page.route(FEED, serve({ ...SHARED, link_text: "Status updates", link2_text: "Read more on our blog",
-    url2: "https://blog.example.org/post",
+  await page.route(FEED, serve({ ...SHARED, links: [{ text: "Status updates", url: "https://status.example.org/" },
+                                                  { text: "Read more on our blog", url: "https://blog.example.org/post" }],
     text: "Scheduled maintenance downtime: Wednesday, October 28, 7:00 to 12:00 EDT (11:00 to 16:00 UTC)." }));
   for (const [width, textSize, under] of [[1280, "100%", false], [768, "100%", true], [390, "100%", true],
                                           [320, "200%", true]]) {
@@ -269,7 +269,7 @@ test("banner: the file is data: text stays text, links only https", async ({ pag
   const markup = '<img src=x onerror="window.pwned = 1">News';
   for (const url of ["javascript:window.pwned = 1", "http://info.example.org/", "data:text/html,x",
                      "/relative", "https://https://info.example.org"]) {
-    expect(await bannerWith(page, serve({ ...SHARED, text: markup, url })), url).toBe(markup);
+    expect(await bannerWith(page, serve({ ...SHARED, text: markup, links: [{ text: "Read more", url }] })), url).toBe(markup);
     await expect(banner(page).locator(".ds-announcement-text :not(.ds-announcement-glyph), a")).toHaveCount(0);
   }
   expect(await page.evaluate(() => window.pwned)).toBeUndefined();
@@ -317,8 +317,8 @@ test("banner: a dismissal holds for that message, on every site, until 30 days a
   for (const [change, shown] of [
     [{ end: at(24 * HOUR) }, ""],                                        // a new window: still dismissed
     [{ text: "Shared news, updated" }, "Shared news, updated"],         // an edited message shows
-    [{ link_text: "Details" }, "Shared news"],
-    [{ url: "https://info.example.org/other" }, "Shared news"],
+    [{ links: [{ text: "Details", url: "https://info.example.org/news" }] }, "Shared news"],
+    [{ links: [{ text: "Read more", url: "https://info.example.org/other" }] }, "Shared news"],
   ]) {
     expect(await bannerWith(page, serve({ ...SHARED, ...change })), JSON.stringify(change)).toBe(shown);
   }
