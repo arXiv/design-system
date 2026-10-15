@@ -15,7 +15,7 @@ components:
       - name: ".ds-site-header-logo"
         does: "The brand slot, image or wordmark. Takes `margin-right: auto`. On arxiv.org it is the logo image, never the word typed out; its alt text says “archive”."
       - name: ".ds-site-header-nav"
-        does: "The links, in a `<nav>` with an `aria-label`. The Search control is an `<a href=\"/search\">` that JS may upgrade to open a search overlay. Never a dead button — without JS it navigates to the search page. The link for the section the reader is in takes `aria-current` and is set in semibold, full-strength text; see [Internal header](#internal-headers)."
+        does: "The links, in a `<nav>` with an `aria-label`. The Search control is an `<a href=\"/search\">` that JS may upgrade to open a search overlay. Never a dead button — without JS it navigates to the search page. The link for the section the reader is in takes `aria-current` and is set in semibold, full-strength text; see [The current section](#the-current-section)."
       - name: ".ds-nav-icon"
         does: "An icon beside a link label, sized by the stylesheet and quieter than the text. `aria-hidden=\"true\"`; the label gives the name."
       - name: ".ds-site-header-divider"
@@ -137,6 +137,13 @@ components:
         does: "An icon button that acts on the whole tool, such as Refresh or the sidebar toggle. Its name is `.is-sr-only` text. The sidebar toggle has `aria-expanded`, and `aria-controls` naming the sidebar’s `id`."
       - name: ".ds-site-header-greeting"
         does: "The same first-name greeting as the public header, capped at 14 characters."
+  - id: the-current-section
+    title: "The current section"
+    group: "Modifiers"
+    summary: "When the header navigation holds a tool's sections, the link for the reader's current section is set in semibold, full-strength text."
+    classes:
+      - name: "aria-current"
+        does: "On the link for the section the reader is in: `\"true\"` when the page is inside that section, `\"page\"` when the link opens this exact page. Screen readers announce it, and the stylesheet sets the link in semibold, full-strength text."
   - id: sticky-header
     title: "Sticky header"
     group: "Modifiers"
@@ -207,7 +214,7 @@ Rendered directly from `design-system.css`. On a narrow screen the bar folds its
 - `.ds-skip-link` — The skip link. The first focusable element on the page, visible only on keyboard focus. Its `href` is the id of the main content.
 - `.ds-site-header` — The bar. Bare, it is the arXiv header — arxiv.org cannot forget a class it never has to write.
 - `.ds-site-header-logo` — The brand slot, image or wordmark. Takes `margin-right: auto`. On arxiv.org it is the logo image, never the word typed out; its alt text says “archive”.
-- `.ds-site-header-nav` — The links, in a `<nav>` with an `aria-label`. The Search control is an `<a href="/search">` that JS may upgrade to open a search overlay. Never a dead button — without JS it navigates to the search page. The link for the section the reader is in takes `aria-current` and is set in semibold, full-strength text; see [Internal header](#internal-headers).
+- `.ds-site-header-nav` — The links, in a `<nav>` with an `aria-label`. The Search control is an `<a href="/search">` that JS may upgrade to open a search overlay. Never a dead button — without JS it navigates to the search page. The link for the section the reader is in takes `aria-current` and is set in semibold, full-strength text; see [The current section](#the-current-section).
 - `.ds-nav-icon` — An icon beside a link label, sized by the stylesheet and quieter than the text. `aria-hidden="true"`; the label gives the name.
 - `.ds-site-header-divider` — A vertical hairline between groups of links or between regions, on the bar’s own divider token. Takes `aria-hidden="true"`. Hidden while the navigation is folded away.
 - `.ds-site-header-tools` — Optional. The controls one interface needs, after the navigation: search fields, icon buttons, the theme control. See [Internal header](#internal-headers).
@@ -437,7 +444,7 @@ The Admin Console header: the standard bar, with the Admin Console logo. Each in
   </a>
   <nav class="ds-site-header-nav" aria-label="Admin Console">
     <a href="/resources">Resources</a>
-    <a href="/submission" aria-current="true">Submission</a>
+    <a href="/submission">Submission</a>
     <a href="/support">User Support</a>
     <a href="/students">Students</a>
   </nav>
@@ -478,6 +485,26 @@ The Admin Console header: the standard bar, with the Admin Console logo. Each in
 - `.ds-site-header-search` — A `<form role="search">` holding one `.ds-input` and its label. It stays visible in the bar, because internal tools search constantly. A tool with two kinds of search uses two of these; there is no double-search component. On public pages search stays the Search link in the navigation, which opens search only when the reader asks.
 - `.ds-site-header-tools > button` — An icon button that acts on the whole tool, such as Refresh or the sidebar toggle. Its name is `.is-sr-only` text. The sidebar toggle has `aria-expanded`, and `aria-controls` naming the sidebar’s `id`.
 - `.ds-site-header-greeting` — The same first-name greeting as the public header, capped at 14 characters.
+
+## The current section  (Modifiers)
+
+When the header navigation holds a tool's sections, the link for the reader's current section is set in semibold, full-strength text.
+
+```html
+<header class="ds-site-header">
+  <a href="#" class="ds-site-header-logo">
+    <img src="assets/images/logos/logo_arxiv-admin.png" alt="arXiv Admin Console">
+  </a>
+  <nav class="ds-site-header-nav" aria-label="Reports">
+    <a href="#">Staff reports</a>
+    <a href="#" aria-current="true">Submissions</a>
+    <a href="#">Moderators</a>
+    <a href="#">Recruitment</a>
+  </nav>
+</header>
+```
+
+- `aria-current` — On the link for the section the reader is in: `"true"` when the page is inside that section, `"page"` when the link opens this exact page. Screen readers announce it, and the stylesheet sets the link in semibold, full-strength text.
 
 ## Sticky header  (Modifiers)
 

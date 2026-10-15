@@ -109,6 +109,7 @@
             <li><a href="#with-the-announcement-band">With the announcement band</a></li>
             <li><a href="#the-light-variant">The light variant</a></li>
             <li><a href="#internal-headers">Internal header</a></li>
+            <li><a href="#the-current-section">The current section</a></li>
             <li><a href="#sticky-header">Sticky header</a></li>
             <li><a href="#hosting-the-header">Hosting the header</a></li>
             <li><a href="#surface-tokens">Surface tokens</a></li>
@@ -182,7 +183,7 @@
             control is an <code>&lt;a href="/search"&gt;</code> that JS may upgrade to open a search
             overlay. Never a dead button — without JS it navigates to the search page. The link for
             the section the reader is in takes <code>aria-current</code> and is set in semibold,
-            full-strength text; see <a href="#internal-headers">Internal header</a>.</dd>
+            full-strength text; see <a href="#the-current-section">The current section</a>.</dd>
             <dt>.ds-nav-icon</dt>
             <dd>An icon beside a link label, sized by the stylesheet and quieter than the text.
             <code>aria-hidden="true"</code>; the label gives the name.</dd>
@@ -885,7 +886,7 @@
         </a>
         <nav class="ds-site-header-nav" aria-label="Admin Console">
           <a href="#">Resources</a>
-          <a href="#" aria-current="true">Submission</a>
+          <a href="#">Submission</a>
           <a href="#">User Support</a>
           <a href="#">Students</a>
         </nav>
@@ -925,7 +926,7 @@
   &lt;/a&gt;
   &lt;nav class="ds-site-header-nav" aria-label="Admin Console"&gt;
     &lt;a href="/resources"&gt;Resources&lt;/a&gt;
-    &lt;a href="/submission" aria-current="true"&gt;Submission&lt;/a&gt;
+    &lt;a href="/submission"&gt;Submission&lt;/a&gt;
     &lt;a href="/support"&gt;User Support&lt;/a&gt;
     &lt;a href="/students"&gt;Students&lt;/a&gt;
   &lt;/nav&gt;
@@ -977,6 +978,46 @@
             <code>id</code>.</dd>
             <dt>.ds-site-header-greeting</dt>
             <dd>The same first-name greeting as the public header, capped at 14 characters.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── The current section ───────── -->
+  <section>
+    <h3 id="the-current-section">The current section</h3>
+    <p class="ds-section-desc">When the header navigation holds a tool&#39;s sections, the link for the reader&#39;s current section is set in semibold, full-strength text.</p>
+    <div class="ds-card">
+      <div class="ds-internal">
+      <header class="ds-site-header">
+        <a href="#" class="ds-site-header-logo">
+          <img src="assets/images/logos/logo_arxiv-admin.png" alt="arXiv Admin Console">
+        </a>
+        <nav class="ds-site-header-nav" aria-label="Reports">
+          <a href="#">Staff reports</a>
+          <a href="#" aria-current="true">Submissions</a>
+          <a href="#">Moderators</a>
+          <a href="#">Recruitment</a>
+        </nav>
+      </header>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;header class="ds-site-header"&gt;
+  &lt;a href="#" class="ds-site-header-logo"&gt;
+    &lt;img src="assets/images/logos/logo_arxiv-admin.png" alt="arXiv Admin Console"&gt;
+  &lt;/a&gt;
+  &lt;nav class="ds-site-header-nav" aria-label="Reports"&gt;
+    &lt;a href="#"&gt;Staff reports&lt;/a&gt;
+    &lt;a href="#" aria-current="true"&gt;Submissions&lt;/a&gt;
+    &lt;a href="#"&gt;Moderators&lt;/a&gt;
+    &lt;a href="#"&gt;Recruitment&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;</code></pre>
+          <dl>
+            <dt>aria-current</dt>
+            <dd>On the link for the section the reader is in: <code>"true"</code> when the page is inside that section, <code>"page"</code> when the link opens this exact page. Screen readers announce it, and the stylesheet sets the link in semibold, full-strength text.</dd>
           </dl>
         </div>
       </details>
