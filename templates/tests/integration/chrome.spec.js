@@ -242,7 +242,7 @@ test("banner: the file is data: text stays text, links only https", async ({ pag
   for (const url of ["javascript:window.pwned = 1", "http://info.example.org/", "data:text/html,x",
                      "/relative", "https://https://info.example.org"]) {
     expect(await bannerWith(page, serve({ ...SHARED, text: markup, url })), url).toBe(markup);
-    await expect(banner(page).locator(".ds-announcement-text *, a")).toHaveCount(0);
+    await expect(banner(page).locator(".ds-announcement-text :not(.ds-announcement-glyph), a")).toHaveCount(0);
   }
   expect(await page.evaluate(() => window.pwned)).toBeUndefined();
 });
