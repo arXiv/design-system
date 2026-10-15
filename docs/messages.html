@@ -113,7 +113,7 @@
   <!-- ───────── Announcement band ───────── -->
   <section>
     <h2 id="announcement-band">Announcement band</h2>
-    <p class="ds-section-desc">The announcement band is minimal but gets a lot of attention. Use sparingly to maintain its impact. If it is frequently deployed then our users will get used to it and tune it out. It sits above the site header as part of the header unit (full demo on <a href="header.html">the header reference page</a>). The dismissal action persists across all repositories, but only for that particular banner. A new banner with a new message should display again for all users even if they dismissed the previous one.</p>
+    <p class="ds-section-desc">The announcement band is minimal but gets a lot of attention. Use sparingly to maintain its impact. If it is frequently deployed then our users will get used to it and tune it out. It sits above the site header as part of the header unit (full demo on <a href="header.html">the header reference page</a>). The dismissal action persists across all repositories, but only for that particular banner. A new banner with a new message should display again for all users even if they dismissed the previous one. To put one up, see <a href="doc.html?src=templates/BANNER_ANNOUNCEMENTS.md">Banner announcements</a>: the shared announcements file, its fields, and how an entry is checked, previewed and published.</p>
 
     <div class="ds-card">
       <details class="ds-marginalia">
@@ -121,20 +121,18 @@
         <p class="ds-marginalia-body ds-annotation">Alert vs announcement? An alert belongs to the page’s content and is specific to that user’s journey. The announcement belongs to the site and is for all users.</p>
       </details>
       <div class="ds-announcement" role="region" aria-label="Announcement">
-        <svg class="ds-announcement-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11h3l9-7v16l-9-7H3z"/><path d="M19 8a5 5 0 0 1 0 8"/></svg>
-        <span class="ds-announcement-text">arXiv is now an independent nonprofit.</span>
-        <a class="ds-announcement-link" href="#">Learn more</a>
+        <span class="ds-announcement-text"><svg class="ds-announcement-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11h3l9-7v16l-9-7H3z"/><path d="M19 8a5 5 0 0 1 0 8"/></svg>arXiv is now an independent nonprofit.</span>
+        <span class="ds-announcement-links"><a class="ds-announcement-link" href="#">Learn more</a></span>
         <button type="button" class="ds-close"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Dismiss announcement</span></button>
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;div class="ds-announcement" role="region" aria-label="Announcement"&gt;
-  &lt;svg class="ds-announcement-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
+  &lt;span class="ds-announcement-text"&gt;&lt;svg class="ds-announcement-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
     &lt;path d="M3 11h3l9-7v16l-9-7H3z"/&gt;
     &lt;path d="M19 8a5 5 0 0 1 0 8"/&gt;
-  &lt;/svg&gt;
-  &lt;span class="ds-announcement-text"&gt;arXiv is now an independent nonprofit.&lt;/span&gt;
-  &lt;a class="ds-announcement-link" href="#"&gt;Learn more&lt;/a&gt;
+  &lt;/svg&gt;arXiv is now an independent nonprofit.&lt;/span&gt;
+  &lt;span class="ds-announcement-links"&gt;&lt;a class="ds-announcement-link" href="#"&gt;Learn more&lt;/a&gt;&lt;/span&gt;
   &lt;button type="button" class="ds-close"&gt;
     &lt;svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
       &lt;path d="M18 6 6 18"/&gt;
@@ -151,11 +149,19 @@
             <dd>The icon: an inline SVG from the <a href="icons.html">icon set</a> with
             <code>aria-hidden="true"</code>, or an <code>&lt;img&gt;</code> with an empty
             <code>alt</code> for one of the bones. Either way it is decoration; the sentence conveys the
-            meaning.</dd>
+            meaning. It goes first inside <code>.ds-announcement-text</code>, so on a narrow screen it
+            stays on the sentence’s first line.</dd>
             <dt>.ds-announcement-text</dt>
-            <dd>The one sentence.</dd>
+            <dd>The one sentence, after the glyph.</dd>
             <dt>.ds-announcement-link</dt>
-            <dd>The one link. An <code>&lt;a&gt;</code> with a real <code>href</code>.</dd>
+            <dd>The link. An <code>&lt;a&gt;</code> with a real <code>href</code>.</dd>
+            <dt>.ds-announcement-links</dt>
+            <dd>Holds the link, or two, so they wrap together, under the text when it does not
+            fit.</dd>
+            <dt>.ds-announcement-sep</dt>
+            <dd>Between the two links: an empty <code>&lt;span aria-hidden="true"&gt;</code> with a
+            no-break space on each side, drawn as a line. The spaces keep it from starting or ending
+            a line, which a typed "|" cannot do.</dd>
             <dt>.ds-close</dt>
             <dd>The dismiss control, last inside the band; the band positions it at the right edge.
             Remembering the dismissal is the host’s job.</dd>
@@ -322,17 +328,15 @@
 
     <div class="ds-card">
       <div class="ds-announcement ds-announcement--maintenance" role="region" aria-label="Announcement">
-        <img class="ds-announcement-glyph" src="assets/images/bones/icon_small-errorbones.svg" alt="">
-        <span class="ds-announcement-text">arXiv will be closed for maintenance on January 1st</span>
-        <a class="ds-announcement-link" href="#">Learn more</a>
+        <span class="ds-announcement-text"><img class="ds-announcement-glyph" src="assets/images/bones/icon_small-errorbones.svg" alt="">arXiv will be closed for maintenance on January 1st</span>
+        <span class="ds-announcement-links"><a class="ds-announcement-link" href="#">Learn more</a></span>
         <button type="button" class="ds-close"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Dismiss announcement</span></button>
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;div class="ds-announcement ds-announcement--maintenance" role="region" aria-label="Announcement"&gt;
-  &lt;img class="ds-announcement-glyph" src="assets/images/bones/icon_small-errorbones.svg" alt=""&gt;
-  &lt;span class="ds-announcement-text"&gt;arXiv will be closed for maintenance on January 1st&lt;/span&gt;
-  &lt;a class="ds-announcement-link" href="#"&gt;Learn more&lt;/a&gt;
+  &lt;span class="ds-announcement-text"&gt;&lt;img class="ds-announcement-glyph" src="assets/images/bones/icon_small-errorbones.svg" alt=""&gt;arXiv will be closed for maintenance on January 1st&lt;/span&gt;
+  &lt;span class="ds-announcement-links"&gt;&lt;a class="ds-announcement-link" href="#"&gt;Learn more&lt;/a&gt;&lt;/span&gt;
   &lt;button type="button" class="ds-close"&gt;
     &lt;svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
       &lt;path d="M18 6 6 18"/&gt;
@@ -352,17 +356,15 @@
 
     <div class="ds-card">
       <div class="ds-announcement ds-announcement--event" role="region" aria-label="Announcement">
-        <img class="ds-announcement-glyph" src="assets/images/bones/icon_small-smileybones.svg" alt="">
-        <span class="ds-announcement-text">We are celebrating 35 years of open science!</span>
-        <a class="ds-announcement-link" href="#">Join the party</a>
+        <span class="ds-announcement-text"><img class="ds-announcement-glyph" src="assets/images/bones/icon_small-smileybones.svg" alt="">We are celebrating 35 years of open science!</span>
+        <span class="ds-announcement-links"><a class="ds-announcement-link" href="#">Join the party</a></span>
         <button type="button" class="ds-close"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Dismiss announcement</span></button>
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;div class="ds-announcement ds-announcement--event" role="region" aria-label="Announcement"&gt;
-  &lt;img class="ds-announcement-glyph" src="assets/images/bones/icon_small-smileybones.svg" alt=""&gt;
-  &lt;span class="ds-announcement-text"&gt;We are celebrating 35 years of open science!&lt;/span&gt;
-  &lt;a class="ds-announcement-link" href="#"&gt;Join the party&lt;/a&gt;
+  &lt;span class="ds-announcement-text"&gt;&lt;img class="ds-announcement-glyph" src="assets/images/bones/icon_small-smileybones.svg" alt=""&gt;We are celebrating 35 years of open science!&lt;/span&gt;
+  &lt;span class="ds-announcement-links"&gt;&lt;a class="ds-announcement-link" href="#"&gt;Join the party&lt;/a&gt;&lt;/span&gt;
   &lt;button type="button" class="ds-close"&gt;
     &lt;svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
       &lt;path d="M18 6 6 18"/&gt;

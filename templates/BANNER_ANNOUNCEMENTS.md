@@ -1,8 +1,27 @@
 # Banner announcements
 
-[`assets/json/announcements.json`](assets/json/announcements.json) is the banner above the
-header on every arXiv page. Edit it and merge to `master`: the dev route publishes at once,
-prod on the manual run, and readers see the change within five minutes.
+The banner is the band above the header on every arXiv page built from these templates. What it
+says comes from one shared file, [`assets/json/announcements.json`](assets/json/announcements.json):
+an entry there shows on every one of those sites at once, from its start to its end, until a
+reader dismisses it. How the band looks, and how to word an announcement:
+[Special messages](https://arxiv.github.io/design-system/docs/messages.html#announcement-band).
+
+## Put up an announcement
+
+1. **Write it:** one sentence that says what is happening and when, and a short link to where
+   the reader finds the rest. The band is seen by everyone, so use it sparingly.
+2. **Add an entry** at the top of `announcements.json` on a branch, and check the file:
+   `python3 -m unittest discover -s templates/tests`.
+3. **Preview it:** `python3 templates/tests/integration/app.py` (needs Flask) serves a page with
+   the band from your copy of the file at <http://127.0.0.1:5001/jinja>. Like every page, it
+   shows only an entry whose window includes now.
+4. **Open a pull request.** CI refuses a file that breaks the rules below.
+5. **Merge it to `master`.** The dev asset route publishes at once, prod on the manual run, and
+   readers see the change within five minutes.
+
+To change an announcement or end it early, edit or delete its entry the same way.
+
+## The entry
 
 ```json
 {
@@ -10,8 +29,7 @@ prod on the manual run, and readers see the change within five minutes.
     {
       "id": "2026-08-maintenance",
       "text": "System maintenance August 4th and 5th",
-      "link_text": "Learn more",
-      "url": "https://status.arxiv.org",
+      "links": [{ "text": "Learn more", "url": "https://status.arxiv.org" }],
       "start": "2026-08-03T00:00-04:00",
       "end": "2026-08-06T00:00-04:00"
     }
@@ -24,13 +42,16 @@ prod on the manual run, and readers see the change within five minutes.
 | `id` | required | Names the entry for dismissal (below). |
 | `text` | required | One short sentence, plain text (markup shows as typed). |
 | `start`, `end` | required | ISO 8601 with the offset (`-04:00`, `Z`); shown from `start` to `end`. |
-| `link_text`, `url` | optional, together | One link; `url` is an absolute `https://` URL, any host. |
+| `links` | optional | One link, or two, each `{ "text": …, "url": … }`; `url` is an absolute `https://` URL, any host. A second link is on trial: DESIGN-POLICIES (Banner) describes a sentence and one link. |
 
 - **Order:** newest first, so add a new entry at the top. When entries overlap, the latest
   `start` shows (a short notice over a long campaign). Expired entries never show and may stay.
 - **Dismissal** holds on every arXiv site (a cookie on the parent domain), for that `id` and
-  message, until 30 days after `end`, so an extended `end` stays dismissed. Editing `text`,
-  `link_text` or `url` shows the entry again to everyone.
+  message, until 30 days after `end`, so an extended `end` stays dismissed. Editing `text` or a
+  link shows the entry again to everyone.
+- **Times:** write a range with "to", not a dash ("7:00 to 12:00 EDT"): screen readers skip or
+  misread a dash between times. Join the range with no-break spaces, ` ` in the file
+  (`7:00 to 12:00 EDT`), so a narrow screen never splits it.
 - **Checks:** CI refuses a file that breaks these rules; run
   `python3 -m unittest discover -s templates/tests` to check locally.
 
@@ -42,7 +63,7 @@ prod on the manual run, and readers see the change within five minutes.
 - **The script draws the band.** This is the one recorded exception to "scripts never carry
   content" (DESIGN-POLICIES, Banner): an announcement is temporal and never page-critical, so a
   reader without JavaScript sees none.
-- **Plain text and one link:**
+- **Plain text and links:**
   - no HTML, which would need a sanitizer on every page for markup the Banner policy excludes;
   - no images: acknowledgements belong in the footer, and an off-site image would let a third
     party observe every page view.

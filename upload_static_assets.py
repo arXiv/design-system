@@ -43,7 +43,9 @@ PUBLISHED = [
 CACHE_CONTROL = {"": "public, max-age=60, must-revalidate", "json": "public, max-age=300"}
 
 ANNOUNCEMENTS = "templates/assets/json/announcements.json"
-ANNOUNCEMENT_KEYS = ("id", "text", "link_text", "url", "start", "end")
+ANNOUNCEMENT_KEYS = ("id", "text", "links", "start", "end")
+# A second link is on trial: DESIGN-POLICIES (Banner) describes one.
+MAX_LINKS = 2
 # The ISO 8601 forms every browser's Date.parse reads, with the offset (never local time).
 TIME_RE = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,3})?)?(Z|[+-]\d{2}:\d{2})")
 
@@ -55,16 +57,21 @@ def check_announcements(data: object) -> list[str]:
         return ['expected {"announcements": [...]}']
     problems, ids, previous = [], set(), None
     for i, a in enumerate(entries):
-        if not isinstance(a, dict) or not all(isinstance(v, str) for v in a.values()):
+        if not isinstance(a, dict) or not all(isinstance(v, str) for k, v in a.items() if k != "links"):
             problems.append(f"entry {i}: not an object of strings")
             continue
         at = f"entry {i} ({a.get('id')!r})"
         problems += [f"{at}: unknown key {k!r}" for k in a if k not in ANNOUNCEMENT_KEYS]
         problems += [f"{at}: {k} is required" for k in ("id", "text", "start", "end") if not a.get(k)]
-        if bool(a.get("link_text")) != bool(a.get("url")):
-            problems.append(f"{at}: link_text and url go together")
-        if a.get("url") and not _https_url(a["url"]):
-            problems.append(f"{at}: url is not an absolute https URL on a named host")
+        links = a.get("links", [])
+        if "links" in a and (not isinstance(links, list) or not 1 <= len(links) <= MAX_LINKS):
+            problems.append(f"{at}: links is a list of one or two links")
+        for j, link in enumerate(links if isinstance(links, list) else []):
+            if (not isinstance(link, dict) or set(link) != {"text", "url"}
+                    or not all(isinstance(v, str) and v for v in link.values())):
+                problems.append(f"{at}: link {j} is not an object of text and url")
+            elif not _https_url(link["url"]):
+                problems.append(f"{at}: link {j}: url is not an absolute https URL on a named host")
         start, end = _time(a.get("start", "")), _time(a.get("end", ""))
         problems += [f"{at}: {k} is not an ISO 8601 time with its offset"
                      for k, t in (("start", start), ("end", end)) if a.get(k) and not t]
