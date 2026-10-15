@@ -15,7 +15,7 @@ components:
       - name: ".ds-site-header-logo"
         does: "The brand slot, image or wordmark. Takes `margin-right: auto`. On arxiv.org it is the logo image, never the word typed out; its alt text says “archive”."
       - name: ".ds-site-header-nav"
-        does: "The links, in a `<nav>` with an `aria-label`. The Search control is an `<a href=\"/search\">` that JS may upgrade to open a search overlay. Never a dead button — without JS it navigates to the search page."
+        does: "The links, in a `<nav>` with an `aria-label`. The Search control is an `<a href=\"/search\">` that JS may upgrade to open a search overlay. Never a dead button — without JS it navigates to the search page. The link for the section the reader is in takes `aria-current` and is set in semibold, full-strength text; see [Internal header](#internal-headers)."
       - name: ".ds-nav-icon"
         does: "An icon beside a link label, sized by the stylesheet and quieter than the text. `aria-hidden=\"true\"`; the label gives the name."
       - name: ".ds-site-header-divider"
@@ -207,7 +207,7 @@ Rendered directly from `design-system.css`. On a narrow screen the bar folds its
 - `.ds-skip-link` — The skip link. The first focusable element on the page, visible only on keyboard focus. Its `href` is the id of the main content.
 - `.ds-site-header` — The bar. Bare, it is the arXiv header — arxiv.org cannot forget a class it never has to write.
 - `.ds-site-header-logo` — The brand slot, image or wordmark. Takes `margin-right: auto`. On arxiv.org it is the logo image, never the word typed out; its alt text says “archive”.
-- `.ds-site-header-nav` — The links, in a `<nav>` with an `aria-label`. The Search control is an `<a href="/search">` that JS may upgrade to open a search overlay. Never a dead button — without JS it navigates to the search page.
+- `.ds-site-header-nav` — The links, in a `<nav>` with an `aria-label`. The Search control is an `<a href="/search">` that JS may upgrade to open a search overlay. Never a dead button — without JS it navigates to the search page. The link for the section the reader is in takes `aria-current` and is set in semibold, full-strength text; see [Internal header](#internal-headers).
 - `.ds-nav-icon` — An icon beside a link label, sized by the stylesheet and quieter than the text. `aria-hidden="true"`; the label gives the name.
 - `.ds-site-header-divider` — A vertical hairline between groups of links or between regions, on the bar’s own divider token. Takes `aria-hidden="true"`. Hidden while the navigation is folded away.
 - `.ds-site-header-tools` — Optional. The controls one interface needs, after the navigation: search fields, icon buttons, the theme control. See [Internal header](#internal-headers).
@@ -437,7 +437,7 @@ The Admin Console header: the standard bar, with the Admin Console logo. Each in
   </a>
   <nav class="ds-site-header-nav" aria-label="Admin Console">
     <a href="/resources">Resources</a>
-    <a href="/submission">Submission</a>
+    <a href="/submission" aria-current="true">Submission</a>
     <a href="/support">User Support</a>
     <a href="/students">Students</a>
   </nav>
