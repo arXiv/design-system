@@ -257,7 +257,7 @@ def check_relative_type_sizes():
             deferred += len(PX_FONT.findall(f.read_text()))
     if deferred:
         print(f"NOTE  {rule} — {deferred} px font sizes in the two admin console "
-              "mockups,\n      deferred with the internal tools work (whiteboard/planning/NEXT-STEPS.md 20a)")
+              "mockups,\n      deferred with the internal tools work (whiteboard/planning/NEXT-STEPS.md, Mockups)")
     if rule not in FAILS:
         ok(rule, f"{total} files")
 
