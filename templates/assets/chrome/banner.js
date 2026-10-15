@@ -19,7 +19,10 @@
   // The dismissal key: the id and the message the reader sees, hashed (FNV-1a, base 36). Any
   // edit to the text or the link is a new key; a new window is not.
   function key(a) {
-    var s = [str(a.id), str(a.text), str(a.link_text), str(a.url)].join("\n");
+    var parts = [str(a.id), str(a.text), str(a.link_text), str(a.url)];
+    // The second link joins only when there is one: an entry without it keeps its key.
+    if (str(a.link2_text) || str(a.url2)) parts.push(str(a.link2_text), str(a.url2));
+    var s = parts.join("\n");
     var h = 0x811c9dc5;
     for (var i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 0x01000193) >>> 0;
     return h.toString(36);
@@ -89,7 +92,7 @@
       // The glyph starts the text, so it wraps with the first line instead of taking a row.
       '<span class="ds-announcement-text"><img class="ds-announcement-glyph" src="' + base +
         'logos/smileybones.svg" alt=""></span>' +
-      '<a class="ds-announcement-link"></a>' +
+      '<span class="ds-announcement-links"><a class="ds-announcement-link"></a></span>' +
       '<button type="button" class="ds-close">' +
         '<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
           '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>' +
@@ -98,11 +101,26 @@
     mount.querySelector(".ds-announcement-text").append(str(a.text));
     var link = mount.querySelector(".ds-announcement-link");
     var href = httpsUrl(a.url);
-    if (str(a.link_text) && href) {
+    var linked = str(a.link_text) && href;
+    if (linked) {
       link.textContent = str(a.link_text);
       link.setAttribute("href", href);
     } else {
-      link.remove();
+      link.parentNode.remove();
+    }
+    // A second link after the first, set apart by a drawn separator that no-break spaces hold
+    // to both (docs/design-system.css). OVERRIDE ON TRIAL: DESIGN-POLICIES (Banner) describes
+    // "a short sentence and link"; the design team decides before this merges.
+    var href2 = httpsUrl(a.url2);
+    if (linked && str(a.link2_text) && href2) {
+      var sep = document.createElement("span");
+      sep.className = "ds-announcement-sep";
+      sep.setAttribute("aria-hidden", "true");
+      var link2 = document.createElement("a");
+      link2.className = "ds-announcement-link";
+      link2.textContent = str(a.link2_text);
+      link2.setAttribute("href", href2);
+      link.after("\u00a0", sep, "\u00a0", link2);
     }
 
     mount.querySelector(".ds-close").addEventListener("click", function () {

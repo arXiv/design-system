@@ -180,6 +180,34 @@ test("banner: the shared announcement, a landmark with its link and the default 
   await expect(page.locator(".ds-site-header-logo")).toBeFocused();  // not the page's top
 });
 
+test("banner: a second link joins the first as one unit, under the text when it wraps, centred", async ({ page }) => {
+  await page.route(FEED, serve({ ...SHARED, link_text: "Status updates", link2_text: "Read more on our blog",
+    url2: "https://blog.example.org/post",
+    text: "Scheduled maintenance downtime: Wednesday, October 28, 7:00 to 12:00 EDT (11:00 to 16:00 UTC)." }));
+  for (const [width, textSize, under] of [[1280, "100%", false], [768, "100%", true], [390, "100%", true],
+                                          [320, "200%", true]]) {
+    await page.setViewportSize({ width, height: 800 });
+    await open(page, `${ONE}/jinja`);
+    await expect(banner(page).locator(".ds-announcement-links > a")).toHaveText(["Status updates", "Read more on our blog"]);
+    await expect(banner(page).locator('.ds-announcement-sep[aria-hidden="true"]')).toHaveCount(1);
+    await page.evaluate((size) => { document.documentElement.style.fontSize = size; }, textSize);
+    const layout = await banner(page).evaluate((band) => {
+      const box = (selector) => band.querySelector(selector).getBoundingClientRect();
+      const text = box(".ds-announcement-text"), glyph = box(".ds-announcement-glyph");
+      const links = box(".ds-announcement-links"), centre = (r) => (r.left + r.right) / 2;
+      const [first, second] = [...band.querySelectorAll("a")].map((a) => [...a.getClientRects()]);
+      const under = first[0].top >= text.bottom - 1;
+      return { under,
+               together: Math.abs(first[first.length - 1].top - second[0].top) < 2,
+               glyphWithText: glyph.bottom > text.top && glyph.top < text.top + glyph.height,
+               centred: !under || [text, links].every((r) => Math.abs(centre(r) - centre(band.getBoundingClientRect())) < 1),
+               fits: band.scrollWidth <= band.clientWidth };
+    });
+    expect(layout, `${width}px at ${textSize} text`)
+      .toEqual({ under, together: true, glyphWithText: true, centred: true, fits: true });
+  }
+});
+
 test("banner: an entry shows only inside its window", async ({ page }) => {
   const cases = [
     [{ start: at(-HOUR), end: at(HOUR) }, "Windowed"],
@@ -254,6 +282,8 @@ test("banner: a dismissal holds for that message, on every site, until 30 days a
   await expect(landmark(page)).toHaveCount(0);
   const [cookie] = await context.cookies(ONE);
   expect(cookie.name).toMatch(new RegExp(`^${COOKIE}[0-9a-z]+$`));    // one cookie per message
+  // Pinned: a change to key() would show every dismissed banner again.
+  expect(cookie.name).toBe(`${COOKIE}1fz0zbg`);
   expect(cookie.domain).toBe(".brand.test");                            // the parent domain
   expect(Math.abs(cookie.expires - (Date.parse(SHARED.end) + 30 * DAY) / 1000)).toBeLessThan(2);
 
