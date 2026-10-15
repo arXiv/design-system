@@ -12,6 +12,7 @@ ROOT = Path(u.ROOT)
 GOOD = {"id": "maint", "text": "Maintenance tonight", "start": "2026-08-03T00:00-04:00",
         "end": "2026-08-06T00:00Z"}
 LINK = dict(GOOD, link_text="Status", url="https://status.arxiv.org")
+LINK2 = dict(LINK, link2_text="Blog", url2="https://blog.arxiv.org/")
 
 
 def problems(*entries):
@@ -25,6 +26,7 @@ class TestAnnouncements(unittest.TestCase):
                      json.loads(doc.split("```json")[1].split("```")[0])):
             self.assertEqual(u.check_announcements(data), [])
         self.assertEqual(problems(GOOD), [])  # the link is optional
+        self.assertEqual(problems(LINK2), [])
 
     def test_each_rule(self):
         older = dict(GOOD, id="older", start="2026-07-01T00:00Z", end="2026-07-02T00:00Z")
@@ -35,6 +37,9 @@ class TestAnnouncements(unittest.TestCase):
             ("not an object of strings", dict(GOOD, text=["a"])),
             ("not an object of strings", "text"),
             ("link_text and url go together", dict(LINK, link_text="")),
+            ("link2_text and url2 go together", dict(LINK2, url2="")),
+            ("a second link needs the first", dict(GOOD, link2_text="Blog", url2="https://blog.arxiv.org/")),
+            ("url2 is not an absolute https URL", dict(LINK2, url2="http://blog.arxiv.org/")),
             ("end is not after start", dict(GOOD, end="2026-08-02T00:00-04:00")),
             ("newest first", older, GOOD),
             ("duplicate id", GOOD, GOOD),

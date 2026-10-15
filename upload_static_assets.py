@@ -43,7 +43,8 @@ PUBLISHED = [
 CACHE_CONTROL = {"": "public, max-age=60, must-revalidate", "json": "public, max-age=300"}
 
 ANNOUNCEMENTS = "templates/assets/json/announcements.json"
-ANNOUNCEMENT_KEYS = ("id", "text", "link_text", "url", "start", "end")
+# link2_text and url2: a second link, on trial; DESIGN-POLICIES (Banner) describes one.
+ANNOUNCEMENT_KEYS = ("id", "text", "link_text", "url", "link2_text", "url2", "start", "end")
 # The ISO 8601 forms every browser's Date.parse reads, with the offset (never local time).
 TIME_RE = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,3})?)?(Z|[+-]\d{2}:\d{2})")
 
@@ -61,10 +62,13 @@ def check_announcements(data: object) -> list[str]:
         at = f"entry {i} ({a.get('id')!r})"
         problems += [f"{at}: unknown key {k!r}" for k in a if k not in ANNOUNCEMENT_KEYS]
         problems += [f"{at}: {k} is required" for k in ("id", "text", "start", "end") if not a.get(k)]
-        if bool(a.get("link_text")) != bool(a.get("url")):
-            problems.append(f"{at}: link_text and url go together")
-        if a.get("url") and not _https_url(a["url"]):
-            problems.append(f"{at}: url is not an absolute https URL on a named host")
+        for text, url in (("link_text", "url"), ("link2_text", "url2")):
+            if bool(a.get(text)) != bool(a.get(url)):
+                problems.append(f"{at}: {text} and {url} go together")
+            if a.get(url) and not _https_url(a[url]):
+                problems.append(f"{at}: {url} is not an absolute https URL on a named host")
+        if a.get("url2") and not a.get("url"):
+            problems.append(f"{at}: a second link needs the first")
         start, end = _time(a.get("start", "")), _time(a.get("end", ""))
         problems += [f"{at}: {k} is not an ISO 8601 time with its offset"
                      for k, t in (("start", start), ("end", end)) if a.get(k) and not t]
