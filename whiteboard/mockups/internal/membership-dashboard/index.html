@@ -1,179 +1,140 @@
 <!doctype html>
+<!-- Mockup: the moderation reports, Submissions, Overview. Internal tools. -->
 <html lang="en" class="ds-internal">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sections — Moderation reports (mockup)</title>
+  <title>Submissions overview — Moderation reports (mockup)</title>
   <link rel="stylesheet" href="../../../../docs/fonts.css">
   <link rel="stylesheet" href="../../../../docs/design-system.css">
   <link rel="stylesheet" href="../../../../docs/internal-tools.css">
+  <link rel="stylesheet" href="reports.css">
   <script src="../../../../docs/theme.js"></script>
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body class="ds-page">
 <a class="ds-skip-link" href="#main">Skip to main content</a>
-<header class="ds-site-header ds-site-header--light">
+
+<header class="ds-site-header">
   <a href="index.html" class="ds-site-header-logo">
     <img src="../../../../docs/assets/images/logos/logo_arxiv-admin.png" alt="archive Admin Console">
   </a>
-  <nav class="ds-site-header-nav" aria-label="Staff reports">
-    <a href="index.html">Sections</a>
-    <a href="#">Staff reports</a>
+  <nav class="ds-site-header-nav" aria-label="Reports">
+    <details class="ds-site-header-dropdown">
+      <summary>Staff reports</summary>
+      <div class="ds-site-header-menu">
+        <a href="#user-activity">User activity</a>
+        <a href="#section-health">Section health</a>
+        <a href="#admin-effort">Admin effort</a>
+        <a href="#suspicious-activity">Suspicious activity</a>
+      </div>
+    </details>
+    <a href="index.html" aria-current="true">Submissions</a>
+    <a href="moderators.html">Moderators</a>
+    <a href="#recruitment">Recruitment</a>
   </nav>
   <span class="ds-site-header-divider" aria-hidden="true"></span>
   <div class="ds-site-header-tools">
-    <button type="button" onclick="location.reload()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg><span class="is-sr-only">Refresh</span></button>
     <button type="button" class="ds-theme-toggle"></button>
     <span id="ds-theme-status" class="is-sr-only" role="status"></span>
   </div>
   <span class="ds-site-header-divider" aria-hidden="true"></span>
   <div class="ds-site-header-account">
-    <span class="ds-site-header-greeting">Welcome <b>Shamsi</b></span>
     <details class="ds-site-header-dropdown">
       <summary class="ds-site-header-login">Account</summary>
       <div class="ds-site-header-menu">
-        <a href="#">Your account</a>
-        <form method="post" action="#" onsubmit="return false">
+        <a href="/account">Your account</a>
+        <form method="post" action="/logout">
           <button type="submit">Log out</button>
         </form>
       </div>
     </details>
   </div>
 </header>
+
+<!-- The views of the Submissions report. The overview has no subject filter: it shows every section. -->
+<div class="ds-subnav">
+  <nav aria-label="Submissions views">
+    <a href="index.html" aria-current="page">Overview</a>
+    <a href="charts.html">Charts</a>
+    <a href="#category-stats">Category stats</a>
+    <a href="#workload-stats">Workload stats</a>
+    <a href="#releases">Releases</a>
+    <a href="#submissions">Submissions</a>
+  </nav>
+</div>
+
 <main id="main" class="ds-container ds-container--wide">
-  <header class="ds-page-header">
-    <h1>arXiv sections</h1>
-    <p>Submissions and holds for each subject group. Select a group to open its reports.</p>
+
+  <header class="reports-view">
+    <div class="reports-heading">
+      <h1 id="page-title">Submissions overview</h1>
+      <form class="ds-btn-group reports-updated" method="get" action="index.html">
+        <span class="ds-date-row">Last updated <time datetime="2026-10-14T13:00Z">2 hours ago</time></span>
+        <button type="submit" class="ds-btn ds-btn-text" name="refresh" value="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> Refresh</button>
+      </form>
+    </div>
+    <p class="ds-section-desc">Choose a subject to explore its archives and categories. Submissions 16 Sep to 6 Oct 2026, plus open holds and unresolved primaries.</p>
+
   </header>
 
-  <section>
-    <h2 id="all-of-arxiv">All of arXiv</h2>
-    <p class="ds-section-desc">New submissions from 24 to 30 September 2026. Holds and unresolved primaries as of 9 minutes ago.</p>
+  <section class="reports-main" aria-label="Subject groups">
     <div class="ds-card-grid">
-      <div class="ds-card ds-card--stat">
-        <p class="ds-panel-label">New submissions, 7 days</p>
-        <p class="ds-stat-value">12,284</p>
+      <div class="ds-card ds-card--link">
+        <h2><a href="charts.html?group=cs">Computer Science</a></h2>
+        <p><span class="ds-tag ds-tag--keep-case">cs</span> 1 archive, 40 categories</p>
+        <p>Content placeholder for the group&#39;s submission and hold figures</p>
       </div>
-      <div class="ds-card ds-card--stat">
-        <p class="ds-panel-label">Open holds</p>
-        <p class="ds-stat-value">3,595</p>
+      <div class="ds-card ds-card--link">
+        <h2><a href="#">Economics</a></h2>
+        <p><span class="ds-tag ds-tag--keep-case">econ</span> 1 archive, 3 categories</p>
+        <p>Content placeholder for the group&#39;s submission and hold figures</p>
       </div>
-      <div class="ds-card ds-card--stat">
-        <p class="ds-panel-label">Unresolved primaries</p>
-        <p class="ds-stat-value">1,077</p>
+      <div class="ds-card ds-card--link">
+        <h2><a href="#">Electrical Engineering and Systems Science</a></h2>
+        <p><span class="ds-tag ds-tag--keep-case">eess</span> 1 archive, 4 categories</p>
+        <p>Content placeholder for the group&#39;s submission and hold figures</p>
+      </div>
+      <div class="ds-card ds-card--link">
+        <h2><a href="#">Mathematics</a></h2>
+        <p><span class="ds-tag ds-tag--keep-case">math</span> 1 archive, 32 categories</p>
+        <p>Content placeholder for the group&#39;s submission and hold figures</p>
+      </div>
+      <div class="ds-card ds-card--link">
+        <h2><a href="#physics-archives">Physics</a></h2>
+        <p><span class="ds-tag ds-tag--keep-case">physics</span> 13 archives, 51 categories</p>
+        <p>Content placeholder for the group&#39;s submission and hold figures</p>
+      </div>
+      <div class="ds-card ds-card--link">
+        <h2><a href="#">Quantitative Biology</a></h2>
+        <p><span class="ds-tag ds-tag--keep-case">q-bio</span> 1 archive, 10 categories</p>
+        <p>Content placeholder for the group&#39;s submission and hold figures</p>
+      </div>
+      <div class="ds-card ds-card--link">
+        <span class="ds-tag ds-tag--warning">Needs attention</span>
+        <h2><a href="#">Quantitative Finance</a></h2>
+        <p><span class="ds-tag ds-tag--keep-case">q-fin</span> 1 archive, 9 categories</p>
+        <p>Content placeholder for the group&#39;s submission and hold figures</p>
+      </div>
+      <div class="ds-card ds-card--link">
+        <h2><a href="#">Statistics</a></h2>
+        <p><span class="ds-tag ds-tag--keep-case">stat</span> 1 archive, 6 categories</p>
+        <p>Content placeholder for the group&#39;s submission and hold figures</p>
       </div>
     </div>
-    <details class="ds-acc">
-      <summary>How these are counted</summary>
-      <div class="ds-acc-body">
-        <p>New submissions are the last 7 days. The figure in brackets compares them with the weekly average of the 3 weeks before.</p>
-        <p>Open holds and unresolved primaries are counted now. The figure in brackets is the ratio the current dashboard shows; its basis is to be confirmed.</p>
-        <p>A ratio above 1× is marked "Above 1×".</p>
-      </div>
-    </details>
+
+    <p><small>Submissions compare the last 7 days with the 3-week weekly average.</small></p>
   </section>
 
-  <section>
-    <h2 id="subject-groups">Subject groups</h2>
-    <p class="ds-section-desc">The current dashboard shows each figure as a gauge or a bar. Those charts wait for the data visualisation work; the numbers are here now.</p>
-    <div class="ds-card-grid">
-      <div class="ds-card">
-        <h3 id="g-cs"><a href="submissions.html">Computer Science</a> (cs)</h3>
-        <section class="ds-card ds-card--data" aria-labelledby="g-cs">
-          <dl>
-            <div><dt>New submissions, 7 days</dt><dd>6,827 (1.34×)</dd></div>
-            <div><dt>Open holds</dt><dd>2,387 (0.47×)</dd></div>
-            <div><dt>Unresolved primaries</dt><dd>538 (0.11×)</dd></div>
-            <div><dt>Archives, categories</dt><dd>1, 40</dd></div>
-          </dl>
-        </section>
-      </div>
-      <div class="ds-card">
-        <h3 id="g-econ"><a href="#">Economics</a> (econ)</h3>
-        <section class="ds-card ds-card--data" aria-labelledby="g-econ">
-          <dl>
-            <div><dt>New submissions, 7 days</dt><dd>73 (0.99×)</dd></div>
-            <div><dt>Open holds</dt><dd>19 (0.26×)</dd></div>
-            <div><dt>Unresolved primaries</dt><dd>0 (0.00×)</dd></div>
-            <div><dt>Archives, categories</dt><dd>1, 3</dd></div>
-          </dl>
-        </section>
-      </div>
-      <div class="ds-card">
-        <h3 id="g-eess"><a href="#">Electrical Engineering and Systems Science</a> (eess)</h3>
-        <section class="ds-card ds-card--data" aria-labelledby="g-eess">
-          <dl>
-            <div><dt>New submissions, 7 days</dt><dd>362 (1.00×)</dd></div>
-            <div><dt>Open holds</dt><dd>96 (0.26×)</dd></div>
-            <div><dt>Unresolved primaries</dt><dd>70 (0.19×)</dd></div>
-            <div><dt>Archives, categories</dt><dd>1, 4</dd></div>
-          </dl>
-        </section>
-      </div>
-      <div class="ds-card">
-        <h3 id="g-math"><a href="#">Mathematics</a> (math)</h3>
-        <section class="ds-card ds-card--data" aria-labelledby="g-math">
-          <dl>
-            <div><dt>New submissions, 7 days</dt><dd>2,069 (0.98×)</dd></div>
-            <div><dt>Open holds</dt><dd>414 (0.20×)</dd></div>
-            <div><dt>Unresolved primaries</dt><dd>122 (0.06×)</dd></div>
-            <div><dt>Archives, categories</dt><dd>1, 32</dd></div>
-          </dl>
-        </section>
-      </div>
-      <div class="ds-card">
-        <h3 id="g-physics"><a href="#">Physics</a> (physics)</h3>
-        <section class="ds-card ds-card--data" aria-labelledby="g-physics">
-          <dl>
-            <div><dt>New submissions, 7 days</dt><dd>2,565 (1.01×)</dd></div>
-            <div><dt>Open holds</dt><dd>540 (0.21×)</dd></div>
-            <div><dt>Unresolved primaries</dt><dd>218 (0.09×)</dd></div>
-            <div><dt>Archives, categories</dt><dd>13, 51</dd></div>
-          </dl>
-        </section>
-      </div>
-      <div class="ds-card">
-        <h3 id="g-q-bio"><a href="#">Quantitative Biology</a> (q-bio)</h3>
-        <section class="ds-card ds-card--data" aria-labelledby="g-q-bio">
-          <dl>
-            <div><dt>New submissions, 7 days</dt><dd>66 (1.14×)</dd></div>
-            <div><dt>Open holds</dt><dd>22 (0.38×)</dd></div>
-            <div><dt>Unresolved primaries</dt><dd>24 (0.41×)</dd></div>
-            <div><dt>Archives, categories</dt><dd>1, 10</dd></div>
-          </dl>
-        </section>
-      </div>
-      <div class="ds-card">
-        <h3 id="g-q-fin"><a href="#">Quantitative Finance</a> (q-fin)</h3>
-        <section class="ds-card ds-card--data" aria-labelledby="g-q-fin">
-          <dl>
-            <div><dt>New submissions, 7 days</dt><dd>38 (1.12×)</dd></div>
-            <div><dt>Open holds</dt><dd>42 (1.24×) <span class="ds-tag ds-tag--error">Above 1×</span></dd></div>
-            <div><dt>Unresolved primaries</dt><dd>63 (1.85×) <span class="ds-tag ds-tag--error">Above 1×</span></dd></div>
-            <div><dt>Archives, categories</dt><dd>1, 9</dd></div>
-          </dl>
-        </section>
-      </div>
-      <div class="ds-card">
-        <h3 id="g-stat"><a href="#">Statistics</a> (stat)</h3>
-        <section class="ds-card ds-card--data" aria-labelledby="g-stat">
-          <dl>
-            <div><dt>New submissions, 7 days</dt><dd>284 (1.21×)</dd></div>
-            <div><dt>Open holds</dt><dd>75 (0.32×)</dd></div>
-            <div><dt>Unresolved primaries</dt><dd>42 (0.18×)</dd></div>
-            <div><dt>Archives, categories</dt><dd>1, 6</dd></div>
-          </dl>
-        </section>
-      </div>
-    </div>
-  </section>
 </main>
+
 <footer class="ds-site-footer">
   <div class="ds-site-footer-grid">
     <div class="ds-site-footer-main">
       <div class="ds-site-footer-ack">
-        We gratefully acknowledge support from our <a href="#"><strong>major funders</strong></a>,
-        <a href="#"><strong>member institutions</strong></a>,
-        and <a href="#">all contributors</a>.
+        We gratefully acknowledge support from our <strong>major funders</strong>,
+        <a href="https://info.arxiv.org/about/ourmembers.html"><strong>member institutions</strong></a>,
+        and all contributors.
       </div>
       <nav class="ds-site-footer-links" aria-label="Site navigation">
         <a href="https://info.arxiv.org/about">About</a> <span class="ds-site-footer-sep" aria-hidden="true">·</span>
@@ -188,6 +149,23 @@
     </div>
   </div>
 </footer>
+
+<script>
+  // Account menu: close on outside click and Esc (enhancement only — the <details> menu works without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      var wasInside = d.contains(document.activeElement);
+      d.removeAttribute('open');
+      if (wasInside) d.querySelector('summary').focus();
+    });
+  });
+</script>
 <script src="../../../../docs/header.js" defer></script>
 </body>
 </html>
