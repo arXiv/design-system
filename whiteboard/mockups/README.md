@@ -19,7 +19,7 @@ Mockups are organized by context, mirroring `docs/` (migrated 2026-07-30 from Sh
 
 - **`admin-console/`** — Admin Console mockups: `user-page/`, `ownership-requests/`, `paper-details/`. Home of the metadata-panel, action-bar, and category-editor patterns queued for promotion. (A standalone `category-management/` page was removed 2026-08-11 — the category editor now lives inside the user page's privileges accordion and the paper page's edit-metadata modal.)
 - **`arxiv-check/`** — arXiv Check checkmark/save affordances: `checkmark-buttons.html` plus three annotated design images.
-- **`membership-dashboard/`** — the moderation reports (Submissions overview, Charts, Moderator contacts), in the structure Shamsi set on 2026-10-14: the reports in the header, each report's views and the subject filter in the second row. Notes: `whiteboard/planning/reference-reports.md`.
+- **`activity-dashboard/`** — the moderation reports (Submissions overview, Charts, Moderator contacts), in the structure Shamsi set on 2026-10-14: the reports in the header, each report's views and the subject filter in the second row. Notes: `whiteboard/planning/reference-reports.md`.
 
 Each page is static HTML (some with a sibling `styles.css`/`script.js`). Open in a browser; no build step, no server required.
 

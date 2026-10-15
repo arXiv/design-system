@@ -1,6 +1,6 @@
 # Mockup: the moderation reports
 
-2026-10-14. Pages in `whiteboard/mockups/internal/membership-dashboard/` (they replaced the older mockup there, which is in git history), hand-finished from round 9's best build (D), with build C's code pills and categories popover, and Shamsi's notes from rounds 7 to 9. The docs' Mockups menu links to `index.html`, the Submissions overview.
+2026-10-14. Pages in `whiteboard/mockups/internal/activity-dashboard/` (they replaced the older mockup there, which is in git history), hand-finished from round 9's best build (D), with build C's code pills and categories popover, and Shamsi's notes from rounds 7 to 9. The docs' Mockups menu links to `index.html`, the Submissions overview.
 
 ## What changed from build D
 
@@ -22,6 +22,10 @@
 3. **The heading group**: a heading and what introduces it, close together, with the main content a block below.
 4. **A footnote** under the main content: smaller muted text.
 5. **The filter at the right end of the second row**, after the views.
+
+## Welcome dialog (2026-10-15)
+
+On the Submissions, Moderators and Recruitment pages (not Staff reports), a dialog greets the moderator and asks for their subject group, which the reports then open on. Knowing the group is what the new organisation rests on. In the mockup it cannot be dismissed, to show that the choice will be required, but it accepts any choice so testers can pass it. It shows once per browser session and again after a refresh (`welcome.js`).
 
 ## Still open
 
