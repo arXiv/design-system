@@ -25,12 +25,13 @@ prod on the manual run, and readers see the change within five minutes.
 | `text` | required | One short sentence, plain text (markup shows as typed). |
 | `start`, `end` | required | ISO 8601 with the offset (`-04:00`, `Z`); shown from `start` to `end`. |
 | `link_text`, `url` | optional, together | One link; `url` is an absolute `https://` URL, any host. |
+| `link2_text`, `url2` | optional, together | A second link after the first, which it needs. On trial: DESIGN-POLICIES (Banner) describes a sentence and one link; the design team decides before this merges. |
 
 - **Order:** newest first, so add a new entry at the top. When entries overlap, the latest
   `start` shows (a short notice over a long campaign). Expired entries never show and may stay.
 - **Dismissal** holds on every arXiv site (a cookie on the parent domain), for that `id` and
   message, until 30 days after `end`, so an extended `end` stays dismissed. Editing `text`,
-  `link_text` or `url` shows the entry again to everyone.
+  `link_text`, `url`, `link2_text` or `url2` shows the entry again to everyone.
 - **Checks:** CI refuses a file that breaks these rules; run
   `python3 -m unittest discover -s templates/tests` to check locally.
 
