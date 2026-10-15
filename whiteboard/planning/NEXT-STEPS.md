@@ -1,6 +1,6 @@
 # Next Steps — Program Backlog
 
-Program-level backlog for the design system. **The active plan is in `HANDOFF.md` (V1, agreed 2026-10-06); the September v1 plan below is kept as a record.** Everything after the horizontal rule is the older backlog, last groomed 2026-07-28 — read it as history until it is groomed again. The 2026-07-28 phased plan was the organizing layer for that era; the detailed queues that follow it are the backlog the phases draw from. Component-level roadmaps live in [PATTERNS.md](../../docs/PATTERNS.md) (public patterns) and [DESIGN-PROGRESS.md](../../docs/DESIGN-PROGRESS.md) (internal). When an item here is really about one of those, this file points at it rather than duplicating it.
+Program-level backlog for the design system. **The active plan is in `HANDOFF.md` (V1, agreed 2026-10-06); the September v1 plan below is kept as a record.** Everything after the horizontal rule is the older backlog, last groomed 2026-07-28 — read it as history until it is groomed again. The 2026-07-28 phased plan was the organizing layer for that era; the detailed queues that follow it are the backlog the phases draw from.
 
 ## The v1 plan (agreed 2026-09-09) — SUPERSEDED 2026-10-06
 
@@ -663,7 +663,7 @@ Sequencing rationale: (1) measure token burn *before* reorganizing files, so the
   it concrete. *(Settled and not carried
   over: Plex Serif upright 400/600 are real and outreach-only, 2026-08-11; CJK
   falls back to system fonts, 2026-06-17.)*
-- [ ] **Refine font choices** — *Family settled (2026-06-17): re-evaluated against Atkinson Hyperlegible Next / Source Sans 3 / Inter / Public Sans → stay with IBM Plex; CJK falls back to system; tabular figures + a subsetted variable build are the agreed direction. See the "Typeface re-evaluation" section in [typography.html](../../docs/typography.html).* Still open: finalize the weight set; settle whether headings use a distinct display treatment or just Plex Sans; lock italic / 700-bold decisions; build and measure the subsetted variable woff2. Ties into the Rival Sans / Freight → self-hosted IBM Plex migration tracked in DESIGN-PROGRESS.md.
+- [ ] **Refine font choices** — *Family settled (2026-06-17): re-evaluated against Atkinson Hyperlegible Next / Source Sans 3 / Inter / Public Sans → stay with IBM Plex; CJK falls back to system; tabular figures + a subsetted variable build are the agreed direction. See the "Typeface re-evaluation" section in [typography.html](../../docs/typography.html).* Still open: finalize the weight set; settle whether headings use a distinct display treatment or just Plex Sans; lock italic / 700-bold decisions; build and measure the subsetted variable woff2. Ties into the Rival Sans / Freight → self-hosted IBM Plex migration.
 - [ ] **Common tints in the color guidelines** — building on the recent tint-families / three-tier-rule / contrast-matrix work, document: (a) the named common tints and what each is for (section backgrounds, card fills, active/hover washes, alert surfaces); (b) usage scenarios for each; (c) accessible color combinations — which text/icon colors clear WCAG AA on each tint, as a ready-to-use pairing table. Update [color-mapping.md](../../docs/color-mapping.md) and `colors.html`.
 - [ ] **Build out the internal-tools color reference** — `colors.html` documents the internal palette only lightly (Access Lime + the secondary lime tint). Document the full internal palette (primary/secondary lime, lime tints, internal surfaces, internal status usage) the way the public palette is documented, on `colors.html` and in [color-mapping.md](../../docs/color-mapping.md).
 - [ ] **Modernize the internal components** — the internal styles were built first and predate the public refinements; e.g. internal buttons are still plain/flat while public buttons gained gradient/press construction and the `.on-tint` modifier. Audit `internal-tools.css` against the public patterns and bring the internal components up to parity (buttons first). *Pairs naturally with the dark-mode tokenization pass (Phase 2 above) — both touch the same hardcoded surfaces.*
@@ -694,7 +694,7 @@ Demo / reference `.html` pages that don't exist yet — each renders the compone
 - [ ] **Category editor** — lozenge rows, combo-search, drag-to-reorder (primary = first, bold), inline remove. Admin-console session, pending.
 - [x] **Version display** — built: `docs/papers.html#paper-versions` (inline-version-links + `.ds-alert` warning across the one-version → many-versions spectrum). *Next: extract the `.versions` / `.v-current` CSS into `design-system.css`.*
 - [ ] **Type badges** — `.type-new` / `.type-rep` / `.type-wdr` / `.type-cross`, referenced in DESIGN-POLICIES but never demoed.
-- [ ] **Icon buttons** — constructive / destructive, light + dark variants (documented in DESIGN-PROGRESS, no dedicated page).
+- [ ] **Icon buttons** — constructive / destructive, light + dark variants (no dedicated page).
 
 **Public (arxiv.org / abstract / reader)**
 
@@ -703,7 +703,7 @@ Demo / reference `.html` pages that don't exist yet — each renders the compone
 - [ ] **Labs toggle section** — opt-in toggles; third-party-login items deprioritized.
 - [ ] **Announcement / banner** — `.ds-announcement` as a standalone dismissible pattern.
 - [ ] **Reader chrome family** — popover, element-pill, inline-active, annotation on one page (the G4 tint vocabulary); today only in `design-system.css`.
-- [ ] **Tertiary / text-only button** — the unchecked item on `PATTERNS.md`.
+- [ ] **Tertiary / text-only button**.
 
 **Shared / foundations**
 
