@@ -51,6 +51,29 @@ function feedRequests(page) {
   return seen;
 }
 
+for (const host of ["jinja", "react"]) {
+  test(`${host} host: header_page_actions sit in the bar, beside the navigation, and take clicks`, async ({ page }) => {
+    const height = () => page.locator(".ds-site-header").evaluate((h) => h.getBoundingClientRect().height);
+    for (const width of [1280, 390]) {
+      await page.setViewportSize({ width, height: 800 });
+      for (const nav of ["", "&hide_nav"]) {
+        await open(page, `${ONE}/${host}?hide_announcement${nav}`);
+        const bare = await height();
+        await open(page, `${ONE}/${host}?hide_announcement&actions${nav}`);
+        expect(await height(), `${width}px${nav}`).toBe(bare);   // no row of their own
+        const contents = page.getByRole("button", { name: "Contents" });
+        for (const action of [page.getByRole("link", { name: "PDF" }), contents]) {
+          await expect(action).toBeVisible();
+          const svg = await action.locator("svg").boundingBox();
+          expect([svg.width, svg.height]).toEqual([18, 18]);
+        }
+        await contents.click();   // nothing covers it; React's own handler runs
+        if (host === "react") await expect(contents).toHaveAttribute("data-clicks", "1");
+      }
+    }
+  });
+}
+
 test("Jinja host: the chrome paints and header.js opens the search overlay", async ({ page }) => {
   const errors = collectErrors(page);
   await open(page, `${ONE}/jinja`);
