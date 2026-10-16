@@ -435,7 +435,7 @@ The Admin Console header: the standard bar, with the Admin Console logo. Each in
 ```html
 <header class="ds-site-header">
   <a href="/" class="ds-site-header-logo">
-    <img src="logo_arxiv-admin.png" alt="archive Admin Console">
+    <img src="logo_arxiv-admin-light.svg" alt="archive Admin Console">
   </a>
   <nav class="ds-site-header-nav" aria-label="Admin Console">
     <a href="/resources">Resources</a>
