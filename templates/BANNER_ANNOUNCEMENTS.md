@@ -53,8 +53,8 @@ To change an announcement or end it early, edit or delete its entry the same way
   entry the midnight before and add a copy above it, with its own `id`, starting at that
   midnight (DESIGN-POLICIES, Banner).
 - **Times:** write a range with "to", not a dash ("7:00 to 12:00 EDT"): screen readers skip or
-  misread a dash between times. Join the range with no-break spaces, ` ` in the file
-  (`7:00 to 12:00 EDT`), so a narrow screen never splits it.
+  misread a dash between times. Join the range with no-break spaces, written `\u00a0` in the
+  file (`7:00\u00a0to\u00a012:00\u00a0EDT`), so a narrow screen never splits it.
 - **Checks:** CI refuses a file that breaks these rules; run
   `python3 -m unittest discover -s templates/tests` to check locally.
 
