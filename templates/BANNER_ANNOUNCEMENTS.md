@@ -49,6 +49,9 @@ To change an announcement or end it early, edit or delete its entry the same way
 - **Dismissal** holds on every arXiv site (a cookie on the parent domain), for that `id` and
   message, until 30 days after `end`, so an extended `end` stays dismissed. Editing `text` or a
   link shows the entry again to everyone.
+- **Day-of reminder:** to show a notice again on its day to readers who dismissed it, end the
+  entry the midnight before and add a copy above it, with its own `id`, starting at that
+  midnight (DESIGN-POLICIES, Banner).
 - **Times:** write a range with "to", not a dash ("7:00 to 12:00 EDT"): screen readers skip or
   misread a dash between times. Join the range with no-break spaces, ` ` in the file
   (`7:00 to 12:00 EDT`), so a narrow screen never splits it.
