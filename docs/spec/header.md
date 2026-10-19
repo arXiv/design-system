@@ -147,7 +147,7 @@ components:
       - name: ".ds-site-header--sticky"
         does: "Sticks the bar to the top of the viewport. A page that uses it keeps no other sticky bar."
 rules:
-  - "**The announcement is temporal.** Render only while active, persist dismissal across arXiv sites, and never attach page-critical function to it. The shared chrome’s `chrome/banner.js` does both: it fetches the shared announcements (`json/announcements.json` on the asset route), shows the band only between an entry’s start and end, and records a dismissal in a cookie on the parent domain (`arxiv.org`). The announcement is data: plain text and one link, never markup."
+  - "**The announcement is temporal.** Render only while active, persist dismissal across arXiv sites, and never attach page-critical function to it. The shared chrome’s `chrome/banner.js` does both: it fetches the shared announcements (`json/announcements.json` on the asset route), shows the band only between an entry’s start and end, and records a dismissal in a cookie on the parent domain (`arxiv.org`). The announcement is data: plain text and its links, never markup. How to put one up: [Banner announcements](doc.html?src=templates/BANNER_ANNOUNCEMENTS.md)."
   - "**No more than four top-level links.** The logo and Log in do not count. More than four causes cognitive overload and reduces comprehension; resist link-creep permanently (DESIGN-POLICIES)."
   - "**The host provides the skip link.** The shared templates start at the announcement band, so a host puts `.ds-skip-link` before them, pointing at its own main content."
   - "**Log out is in the Account menu.** Signed in, Account opens a menu holding the account page and Log out. Logging out is then one menu away on every page, which matters on shared computers, and still takes two deliberate actions."
@@ -392,9 +392,8 @@ When arXiv has something to say to everyone, an announcement band can be display
 <a class="ds-skip-link" href="#main">Skip to main content</a>
 
 <div class="ds-announcement" role="region" aria-label="Announcement">
-  <img class="ds-announcement-glyph" src="icon_small-smileybones.svg" alt="">
-  <span class="ds-announcement-text">arXiv is now an independent nonprofit!</span>
-  <a class="ds-announcement-link" href="/about">Learn more</a>
+  <span class="ds-announcement-text"><img class="ds-announcement-glyph" src="icon_small-smileybones.svg" alt="">arXiv is now an independent nonprofit!</span>
+  <span class="ds-announcement-links"><a class="ds-announcement-link" href="/about">Learn more</a></span>
   <button type="button" class="ds-close">
     <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M18 6 6 18"/>
@@ -494,7 +493,7 @@ Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top o
 
 ## Rules
 
-- **The announcement is temporal.** Render only while active, persist dismissal across arXiv sites, and never attach page-critical function to it. The shared chrome’s `chrome/banner.js` does both: it fetches the shared announcements (`json/announcements.json` on the asset route), shows the band only between an entry’s start and end, and records a dismissal in a cookie on the parent domain (`arxiv.org`). The announcement is data: plain text and one link, never markup.
+- **The announcement is temporal.** Render only while active, persist dismissal across arXiv sites, and never attach page-critical function to it. The shared chrome’s `chrome/banner.js` does both: it fetches the shared announcements (`json/announcements.json` on the asset route), shows the band only between an entry’s start and end, and records a dismissal in a cookie on the parent domain (`arxiv.org`). The announcement is data: plain text and its links, never markup. How to put one up: [Banner announcements](doc.html?src=templates/BANNER_ANNOUNCEMENTS.md).
 - **No more than four top-level links.** The logo and Log in do not count. More than four causes cognitive overload and reduces comprehension; resist link-creep permanently (DESIGN-POLICIES).
 - **The host provides the skip link.** The shared templates start at the announcement band, so a host puts `.ds-skip-link` before them, pointing at its own main content.
 - **Log out is in the Account menu.** Signed in, Account opens a menu holding the account page and Log out. Logging out is then one menu away on every page, which matters on shared computers, and still takes two deliberate actions.
