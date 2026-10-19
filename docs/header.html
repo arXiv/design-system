@@ -123,17 +123,17 @@
   <!-- ───────── The header unit ───────── -->
   <section>
     <h2 id="the-header-unit">The header unit</h2>
-    <p class="ds-section-desc">Rendered directly from <code>design-system.css</code>. On a narrow screen the bar folds itself to fit; see <a href="#on-small-screens">On small screens</a>. The header is static — it scrolls away with the page (on arxiv.org the site header is never the sticky bar — DESIGN-POLICIES.md). Every header has the same regions, in this order: logo, navigation, tools (optional), and account.</p>
+    <p class="ds-section-desc">Rendered directly from <code>design-system.css</code>. On a narrow screen the bar folds itself to fit; see <a href="#on-small-screens">On small screens</a>. The header is static — it scrolls away with the page (on arxiv.org the site header is never the sticky bar — DESIGN-POLICIES.md). Every header has the same regions, in this order: logo, navigation, tools (optional), and account. On arxiv.org, Search comes just before the navigation.</p>
     <div class="ds-card">
       <header class="ds-site-header">
         <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
           <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
         </a>
+        <a href="https://arxiv.org/search" class="ds-site-header-search-link">
+          <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Search</span>
+        </a>
         <nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation">
-          <a href="https://arxiv.org/search">
-            <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            Search
-          </a>
           <a href="https://arxiv.org/submit">Submit</a>
           <a href="https://info.arxiv.org/about/donate.html">Donate</a>
         </nav>
@@ -151,14 +151,14 @@
   &lt;a href="/" class="ds-site-header-logo" aria-label="archive home"&gt;
     &lt;img src="logo_arxiv-primary.svg" alt="archive"&gt;
   &lt;/a&gt;
+  &lt;a href="/search" class="ds-site-header-search-link"&gt;
+    &lt;svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
+      &lt;circle cx="11" cy="11" r="8"/&gt;
+      &lt;line x1="21" y1="21" x2="16.65" y2="16.65"/&gt;
+    &lt;/svg&gt;
+    &lt;span&gt;Search&lt;/span&gt;
+  &lt;/a&gt;
   &lt;nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation"&gt;
-    &lt;a href="/search"&gt;
-      &lt;svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
-        &lt;circle cx="11" cy="11" r="8"/&gt;
-        &lt;line x1="21" y1="21" x2="16.65" y2="16.65"/&gt;
-      &lt;/svg&gt;
-      Search
-    &lt;/a&gt;
     &lt;a href="/submit"&gt;Submit&lt;/a&gt;
     &lt;a href="/about/donate"&gt;Donate&lt;/a&gt;
   &lt;/nav&gt;
@@ -178,9 +178,14 @@
             <dd>The brand slot, image or wordmark. Takes <code>margin-right: auto</code>. On arxiv.org it
             is the logo image, never the word typed out; its alt text says “archive”.</dd>
             <dt>.ds-site-header-nav</dt>
-            <dd>The links, in a <code>&lt;nav&gt;</code> with an <code>aria-label</code>. The Search
-            control is an <code>&lt;a href="/search"&gt;</code> that JS may upgrade to open a search
-            overlay. Never a dead button — without JS it navigates to the search page.</dd>
+            <dd>The links, in a <code>&lt;nav&gt;</code> with an <code>aria-label</code>.</dd>
+            <dt>.ds-site-header-search-link</dt>
+            <dd>arxiv.org’s Search: an <code>&lt;a href="/search"&gt;</code> just before the
+            navigation and outside it, so it stays in the bar when the navigation folds, and search
+            opens from the same place at every width. JS may upgrade it to open the search overlay.
+            Never a dead button — without JS it navigates to the search page. Folded, it shows its
+            icon alone, at the menu button’s size; the word in its <code>&lt;span&gt;</code> stays for
+            screen readers.</dd>
             <dt>.ds-nav-icon</dt>
             <dd>An icon beside a link label, sized by the stylesheet and quieter than the text.
             <code>aria-hidden="true"</code>; the label gives the name.</dd>
@@ -225,8 +230,8 @@
         <a href="#" class="ds-site-header-logo" aria-label="archive home">
           <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
         </a>
+        <a href="#" class="ds-site-header-search-link"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> <span>Search</span></a>
         <nav class="ds-site-header-nav" aria-label="Signed-in example navigation">
-          <a href="#"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</a>
           <a href="#">Submit</a>
         </nav>
         <span class="ds-site-header-divider" aria-hidden="true"></span>
@@ -245,14 +250,14 @@
       </header>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;nav class="ds-site-header-nav" aria-label="Main navigation"&gt;
-  &lt;a href="/search"&gt;
-    &lt;svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
-      &lt;circle cx="11" cy="11" r="8"/&gt;
-      &lt;line x1="21" y1="21" x2="16.65" y2="16.65"/&gt;
-    &lt;/svg&gt;
-    Search
-  &lt;/a&gt;
+<pre><code>&lt;a href="/search" class="ds-site-header-search-link"&gt;
+  &lt;svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
+    &lt;circle cx="11" cy="11" r="8"/&gt;
+    &lt;line x1="21" y1="21" x2="16.65" y2="16.65"/&gt;
+  &lt;/svg&gt;
+  &lt;span&gt;Search&lt;/span&gt;
+&lt;/a&gt;
+&lt;nav class="ds-site-header-nav" aria-label="Main navigation"&gt;
   &lt;a href="/submit"&gt;Submit&lt;/a&gt;
 &lt;/nav&gt;
 &lt;span class="ds-site-header-divider" aria-hidden="true"&gt;&lt;/span&gt;
@@ -295,8 +300,8 @@
         <a href="#" class="ds-site-header-logo" aria-label="archive home">
           <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
         </a>
+        <a href="#" class="ds-site-header-search-link"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> <span>Search</span></a>
         <nav class="ds-site-header-nav" aria-label="Long-name example navigation">
-          <a href="#"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</a>
           <a href="#">Submit</a>
         </nav>
         <span class="ds-site-header-divider" aria-hidden="true"></span>
@@ -329,7 +334,7 @@
   <!-- ───────── On small screens ───────── -->
   <section>
     <h2 id="on-small-screens">On small screens</h2>
-    <p class="ds-section-desc">The header fits itself to the space it has, and nobody has to plan for it. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button, then the tools fold behind a second button. The logo and the account area always stay in the bar. There is no breakpoint to choose, no button to add and no script to write: loading <code>header.js</code> is the whole job, and a header whose content changes later still fits.</p>
+    <p class="ds-section-desc">The header fits itself to the space it has, and nobody has to plan for it. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button, then the tools fold behind a second button. The logo, arxiv.org’s Search and the account area always stay in the bar. There is no breakpoint to choose, no button to add and no script to write: loading <code>header.js</code> is the whole job, and a header whose content changes later still fits.</p>
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
@@ -340,8 +345,8 @@
           <a href="#" class="ds-site-header-logo" aria-label="archive home">
             <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
           </a>
+          <a href="#" class="ds-site-header-search-link"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> <span>Search</span></a>
           <nav class="ds-site-header-nav" aria-label="Public header example, column width">
-            <a href="#"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</a>
             <a href="#">Submit</a>
             <a href="#">Donate</a>
           </nav>
@@ -356,8 +361,8 @@
           <a href="#" class="ds-site-header-logo" aria-label="archive home">
             <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
           </a>
+          <a href="#" class="ds-site-header-search-link"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> <span>Search</span></a>
           <nav class="ds-site-header-nav" aria-label="Public header example, phone width">
-            <a href="#"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</a>
             <a href="#">Submit</a>
             <a href="#">Donate</a>
           </nav>
@@ -794,8 +799,8 @@
         <a href="#" class="ds-site-header-logo" aria-label="archive home">
           <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
         </a>
+        <a href="#" class="ds-site-header-search-link"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> <span>Search</span></a>
         <nav class="ds-site-header-nav" aria-label="Band example navigation">
-          <a href="#"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</a>
           <a href="#">Submit</a>
           <a href="#">Donate</a>
           <span class="ds-site-header-divider" aria-hidden="true"></span>
@@ -966,8 +971,8 @@
             <dd>A <code>&lt;form role="search"&gt;</code> holding one <code>.ds-input</code> and its
             label. It stays visible in the bar, because internal tools search constantly. A tool with
             two kinds of search uses two of these; there is no double-search component. On public
-            pages search stays the Search link in the navigation, which opens search only when the
-            reader asks.</dd>
+            pages search stays the Search link beside the navigation, which opens search only when
+            the reader asks.</dd>
             <dt>.ds-site-header-tools &gt; button</dt>
             <dd>An icon button that acts on the whole tool, such as Refresh or the sidebar toggle. Its
             name is <code>.is-sr-only</code> text. The sidebar toggle has
@@ -1027,8 +1032,8 @@
       <li><strong>Tools hold what one interface needs.</strong> Search fields, icon buttons such as
       Refresh and the sidebar toggle, and the theme control go in the tools region.</li>
       <li><strong>Public search opens on request; internal search stays in view.</strong> On
-      arxiv.org, Search is a link in the navigation. Internal tools keep their search fields in the
-      tools region.</li>
+      arxiv.org, Search is a link just before the navigation, and it stays in the bar on small
+      screens. Internal tools keep their search fields in the tools region.</li>
       <li><strong>Sticky on internal tools only.</strong> <code>.ds-site-header--sticky</code> is for
       internal tools; arxiv.org’s public header scrolls away (DESIGN-POLICIES).</li>
       <li><strong>The greeting is the first name, everywhere.</strong> Public and internal headers

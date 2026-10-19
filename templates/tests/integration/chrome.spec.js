@@ -83,6 +83,8 @@ test("Jinja host: the chrome paints and header.js opens the search overlay", asy
   await expect(banner(page)).toContainText("Shared news");
   await page.locator("#ds-search-toggle").click();
   await expect(page.locator("#ds-search-overlay")).toBeVisible();
+  const bar = await page.locator(".ds-site-header").boundingBox();   // the panel hangs from the bar, under the band
+  expect((await page.locator(".ds-search-overlay-panel").boundingBox()).y).toBeCloseTo(bar.y + bar.height, 0);
   expect(errors).toEqual([]);
 });
 
@@ -108,14 +110,15 @@ test("the phone menu opens and closes on each click, on both hosts", async ({ pa
 });
 
 // The bar's shape on a phone, which the class check (check-template-compat.py) cannot see.
-test("the phone bar stays 52px with a 44px menu button, and its menu has only link rows", async ({ page }) => {
+test("the phone bar stays 52px with Search and the menu button beside it, 44px each; the menu has only link rows", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 800 });
   for (const host of ["jinja", "react"]) {
     await open(page, `${ONE}/${host}?hide_announcement`);
     const box = (sel) => page.locator(sel).boundingBox();
-    const bar = await box(".ds-site-header"), toggle = await box("#ds-nav-toggle");
+    const bar = await box(".ds-site-header"), toggle = await box("#ds-nav-toggle"), search = await box("#ds-search-toggle");
     expect(bar.height, host).toBe(52);
     expect([toggle.width, toggle.height], host).toEqual([44, 44]);
+    expect([search.width, search.height, search.y], host).toEqual([44, 44, toggle.y]);
     await page.locator("#ds-nav-toggle").click();
     const nav = page.locator("#ds-site-header-nav");
     const edge = await page.locator(".ds-site-header").evaluate((h) => h.clientHeight);   // inside its border
@@ -123,7 +126,7 @@ test("the phone bar stays 52px with a 44px menu button, and its menu has only li
     await expect(nav.locator(".ds-site-header-divider"), host).toBeHidden();
     const rows = await nav.evaluate((n) => [...n.children]
       .filter((c) => getComputedStyle(c).display !== "none").map((c) => c.textContent.trim()));
-    expect(rows, host).toEqual(["Search", "Submit", "Donate", "Log in"]);
+    expect(rows, host).toEqual(["Submit", "Donate", "Log in"]);
   }
 });
 
@@ -145,11 +148,11 @@ test("the search overlay closes when focus leaves it; Ctrl/Cmd+K is the host's i
   await expect(overlay).toBeHidden();
   await expect(toggle).toBeFocused();                          // Escape returns focus
 
-  await page.setViewportSize({ width: 400, height: 800 });      // the phone menu hides Search:
-  await expect(page.locator("#ds-nav-toggle")).toBeVisible();   // folded on the media change
+  await page.setViewportSize({ width: 400, height: 800 });      // the phone menu folds the nav
+  await expect(page.locator("#ds-nav-toggle")).toBeVisible();   // away; Search stays in the bar
   await page.keyboard.press("ControlOrMeta+k");
   await page.keyboard.press("Escape");
-  await expect(page.locator("#ds-nav-toggle")).toBeFocused();  // focus goes to the hamburger
+  await expect(toggle).toBeFocused();
   await page.setViewportSize({ width: 1280, height: 720 });
 
   await page.locator("main").evaluate((m) => m.insertAdjacentHTML("beforeend", "<textarea></textarea>"));
@@ -182,7 +185,7 @@ test("printing keeps the logo, small, and hides the rest of the chrome", async (
   await open(page, `${ONE}/jinja`);
   await expect(banner(page)).toBeVisible();
   await page.emulateMedia({ media: "print" });
-  for (const part of [".ds-announcement", ".ds-site-header-nav", ".ds-site-header-nav-toggle", ".ds-site-footer"]) {
+  for (const part of [".ds-announcement", ".ds-site-header-search-link", ".ds-site-header-nav", ".ds-site-header-nav-toggle", ".ds-site-footer"]) {
     await expect(page.locator(part), part).toBeHidden();
   }
   const logo = page.locator(".ds-site-header-logo img");
