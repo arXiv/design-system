@@ -26,7 +26,7 @@ components:
         does: "No font token exists for math; use the stack directly on the notation. Loads with `font-display: auto` per DESIGN-POLICIES."
   - id: the-type-scale
     title: "The body text scale"
-    summary: "The text sizes are set in rem so they move with the reader's base size."
+    summary: "The text sizes are set in rem so they move with the reader's base size. Browsers set the base size to 16px unless the reader changes it, so 1rem is 16px by default; the pixel sizes on this page assume that default."
     classes:
       - name: "<p>"
         does: "1rem, the reader's base size. Nothing sets it; the browser does."
@@ -42,7 +42,7 @@ components:
         does: "0.9em, so it follows the size of its parent."
   - id: the-heading-scale
     title: "The heading scale"
-    summary: "Four levels, each level is a quarter larger than the one below it, which puts h1 at exactly twice body size. Sizes are in rem so they follow the user's base setting."
+    summary: "Four levels, each level is a quarter larger than the one below it, which puts h1 at exactly twice body size. Sizes are in rem so they follow the user's base setting. That base is 16px unless the reader has changed the browser's default, so the pixel sizes below assume 16px."
     classes:
       - name: "<h1>"
         does: "The page's one subject: what the page is about, stated once — a paper title, a form name, a console view. A page that seems to need two h1s is two pages. 2rem (32px) · 700 · line-height 1.25 · space above 0, below `--ds-space-4`."
@@ -65,7 +65,7 @@ components:
       - name: ".ds-link-list"
         does: "On the element that holds a list in which every item is a link, such as an author list or a column of footer links. The links drop the underline at rest and keep everything else: Link Blue, the underline on hover, the focus ring and the visited colour. There is no ordinary text beside them for the underline to separate them from, so colour alone is enough here."
   - id: matched-words
-    title: "Matched words"
+    title: "Search-matched words"
     summary: "The words that matched a search are marked with `<mark>`, in the accent wash and a heavier weight."
     classes:
       - name: "<mark>"
@@ -110,10 +110,9 @@ rules:
   - "**It works from disk.** The asynchronous Clipboard API needs a secure context, which `file://` is not, and it rejects when the window is not focused. Both cases fall back to `execCommand`, and if that fails too the status region says so rather than the button quietly doing nothing."
   - "**Without JavaScript there is no button** and the code is still selectable. The button is a convenience; it is never the only way to get the text."
   - "**Opt a block out with `<pre data-no-copy>`** — for a block that is an illustration of output rather than something to take away."
-  - "A browser font-size setting has to reach arXiv content (accessibility-priorities.md, cognitive/dyslexia section), so every type size is `rem`. But a label that grows inside a box that does not is no better than a label that never grew: set a control's padding and minimum width in `em`, against its own label, and the whole control follows the reader. Absolute floors stay absolute — `min-height: 24px` is a WCAG target size, not a type size."
+  - "A browser font-size setting has to reach arXiv content (accessibility-priorities.md, cognitive/dyslexia section), so every type size is `rem`. But a label that grows inside a box that does not is no better than a label that never grew: set a control's padding and minimum width in `em`, against its own label, and the whole control follows the reader. Absolute floors stay absolute — `min-height: 24px` is a WCAG target size, not a type size. Body text never scales fluidly — it follows the user's base size exactly."
   - "No Google Fonts, no Typekit, no CDN fonts (DESIGN-POLICIES.md). Every `font-family` declaration includes system fallbacks; text fonts load with `font-display: swap` (readability first), STIX Two Math with `font-display: auto` (math must render in the correct face)."
   - "No fixed line-heights, no pinned letter-spacing, no `!important` on font-family in content areas. User stylesheets, reader-mode extensions, and OS settings win — \"HTML gives you freedom: you can use software to change colors or typefaces\" (research, dyslexia section)."
-  - "Paper titles use `clamp()` between rem bounds (22px–32px equivalent) so a seven-word title does not wrap to five lines at 320px. Body text never scales fluidly — it follows the user's base size exactly."
   - "**Keep the heading order.** One `<h1>` per page, then `<h2>`, `<h3>` and `<h4>` in order, without skipping a level. Choose the level from the outline, not from the size you want; the scale gives each level its size. A screen reader user moves through the page by these levels."
   - "**Write sizes in rem, never in px.** A reader who raises the browser font size must see every piece of text grow. Give a control its padding and minimum width in `em`, so the box grows with its label."
   - "**Let text reflow at 200% zoom.** Do not give a box that holds text a fixed height, and do not cut text off with `overflow: hidden` unless there is another way to read all of it. At 400% page zoom a 1280px screen is a 320px screen, and the page must not scroll sideways there."
@@ -167,7 +166,7 @@ font-family: "STIX Two Math", "Cambria Math", math;
 
 ## The body text scale
 
-The text sizes are set in rem so they move with the reader's base size.
+The text sizes are set in rem so they move with the reader's base size. Browsers set the base size to 16px unless the reader changes it, so 1rem is 16px by default; the pixel sizes on this page assume that default.
 
 ```html
 <p>Body text.</p>
@@ -186,7 +185,7 @@ The text sizes are set in rem so they move with the reader's base size.
 
 ## The heading scale
 
-Four levels, each level is a quarter larger than the one below it, which puts h1 at exactly twice body size. Sizes are in rem so they follow the user's base setting.
+Four levels, each level is a quarter larger than the one below it, which puts h1 at exactly twice body size. Sizes are in rem so they follow the user's base setting. That base is 16px unless the reader has changed the browser's default, so the pixel sizes below assume 16px.
 
 ```html
 <h1>Gauge-independent approach to inflation</h1>
@@ -221,7 +220,7 @@ Reading text with <a href="/abs/2604.22725">an inline link</a> in it.
 - `--ds-focus-ring` — The 3px keyboard focus ring, drawn on `:focus-visible` only.
 - `.ds-link-list` — On the element that holds a list in which every item is a link, such as an author list or a column of footer links. The links drop the underline at rest and keep everything else: Link Blue, the underline on hover, the focus ring and the visited colour. There is no ordinary text beside them for the underline to separate them from, so colour alone is enough here.
 
-## Matched words
+## Search-matched words
 
 The words that matched a search are marked with `<mark>`, in the accent wash and a heavier weight.
 
@@ -280,10 +279,9 @@ The small uppercase Condensed label that names a panel, a column or a group. It 
 - **It works from disk.** The asynchronous Clipboard API needs a secure context, which `file://` is not, and it rejects when the window is not focused. Both cases fall back to `execCommand`, and if that fails too the status region says so rather than the button quietly doing nothing.
 - **Without JavaScript there is no button** and the code is still selectable. The button is a convenience; it is never the only way to get the text.
 - **Opt a block out with `<pre data-no-copy>`** — for a block that is an illustration of output rather than something to take away.
-- A browser font-size setting has to reach arXiv content (accessibility-priorities.md, cognitive/dyslexia section), so every type size is `rem`. But a label that grows inside a box that does not is no better than a label that never grew: set a control's padding and minimum width in `em`, against its own label, and the whole control follows the reader. Absolute floors stay absolute — `min-height: 24px` is a WCAG target size, not a type size.
+- A browser font-size setting has to reach arXiv content (accessibility-priorities.md, cognitive/dyslexia section), so every type size is `rem`. But a label that grows inside a box that does not is no better than a label that never grew: set a control's padding and minimum width in `em`, against its own label, and the whole control follows the reader. Absolute floors stay absolute — `min-height: 24px` is a WCAG target size, not a type size. Body text never scales fluidly — it follows the user's base size exactly.
 - No Google Fonts, no Typekit, no CDN fonts (DESIGN-POLICIES.md). Every `font-family` declaration includes system fallbacks; text fonts load with `font-display: swap` (readability first), STIX Two Math with `font-display: auto` (math must render in the correct face).
 - No fixed line-heights, no pinned letter-spacing, no `!important` on font-family in content areas. User stylesheets, reader-mode extensions, and OS settings win — "HTML gives you freedom: you can use software to change colors or typefaces" (research, dyslexia section).
-- Paper titles use `clamp()` between rem bounds (22px–32px equivalent) so a seven-word title does not wrap to five lines at 320px. Body text never scales fluidly — it follows the user's base size exactly.
 - **Keep the heading order.** One `<h1>` per page, then `<h2>`, `<h3>` and `<h4>` in order, without skipping a level. Choose the level from the outline, not from the size you want; the scale gives each level its size. A screen reader user moves through the page by these levels.
 - **Write sizes in rem, never in px.** A reader who raises the browser font size must see every piece of text grow. Give a control its padding and minimum width in `em`, so the box grows with its label.
 - **Let text reflow at 200% zoom.** Do not give a box that holds text a fixed height, and do not cut text off with `overflow: hidden` unless there is another way to read all of it. At 400% page zoom a 1280px screen is a 320px screen, and the page must not scroll sideways there.
