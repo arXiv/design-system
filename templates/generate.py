@@ -105,8 +105,10 @@ def template(section: str, src: str | None = None) -> tuple[list, dict]:
     for n, m in vars_.items():
         if m["type"] not in ("attr", "url", "html", "bool"):
             raise ValueError(f"schema.json {n!r}: the type is attr, url, html or bool")
-        if (m["type"] == "bool") != (n in flags) or (n in flags and n in printed):
-            raise ValueError(f"{section}.html '{n}': only a bool gates a section, and it is never printed")
+        if m["type"] == "bool" and (n not in flags or n in printed) or \
+                n in flags and m["type"] not in ("bool", "html"):
+            raise ValueError(f"{section}.html '{n}': a section is gated by a bool, which is never "
+                             "printed, or by an html slot")
         if m["type"] == "bool" and m["default"] is not False:
             raise ValueError(f"bool '{n}' must default to false (undefined = default everywhere)")
     return tokens, vars_
@@ -129,7 +131,7 @@ def render(tokens: list, vars_: dict, context: dict) -> str:
     out, shown = [], []
     for t in tokens:
         if t[0] == "if":
-            shown.append(bool(context.get(t[1], False)) != t[2])
+            shown.append(bool(context.get(t[1], vars_[t[1]]["default"])) != t[2])
         elif t[0] == "endif":
             shown.pop()
         elif all(shown):
@@ -198,10 +200,10 @@ def _jsx_attr(tag: str, attrs: list, name: str, value) -> str:
     return f"{jsx}={{{_expr(value)}}}" if "{{" in value else f'{jsx}="{value}"'
 
 
-def _jsx_text(text: str, vars_: dict, parent) -> str:
+def _jsx_text(text: str, parent) -> str:
     """Text as JSX children that mean what the HTML means: JSX drops a whitespace run holding
     a line break, which HTML shows as a space, so each becomes {" "} (the break stays, for
-    layout). An html slot goes in a <span> (README.md, Template rules)."""
+    layout). An html slot is React content (README.md, Template rules), printed like any value."""
     if parent in NO_TEXT and not text.strip():
         return text if "\n" in text else ""
     parts = VAR_RE.split(text)
@@ -209,9 +211,7 @@ def _jsx_text(text: str, vars_: dict, parent) -> str:
         s = parts[i].replace("{", "&#123;").replace("}", "&#125;").replace(">", "&gt;")
         parts[i] = re.sub(r"\s*\n\s*", lambda w: '{" "}' + w[0], s)
     for i in range(1, len(parts), 2):
-        n = parts[i]
-        parts[i] = f"<span dangerouslySetInnerHTML={{{{ __html: {n} }}}} />" \
-            if vars_[n]["type"] == "html" else f"{{{n}}}"
+        parts[i] = f"{{{parts[i]}}}"
     return "".join(parts)
 
 
@@ -219,7 +219,7 @@ def to_react(tokens: list, vars_: dict, component: str) -> str:
     scripts, out, stack = [], [], []
     for t in tokens:
         if t[0] == "text":
-            out.append(_jsx_text(t[1], vars_, stack[-1] if stack else None))
+            out.append(_jsx_text(t[1], stack[-1] if stack else None))
         elif t[0] == "if":
             out.append(f"{{{'!' if t[2] else ''}{t[1]} && (<>")
         elif t[0] == "endif":
@@ -258,14 +258,18 @@ def to_react(tokens: list, vars_: dict, component: str) -> str:
 
 
 def to_dts(vars_: dict, component: str) -> str:
-    """The component's props, typed from schema.json."""
+    """The component's props, typed from schema.json: an html slot takes React content."""
+    types = {"bool": "boolean", "html": "ReactNode"}
+    # schema.json describes an html slot as markup, the server templates' form; React's differs.
+    react = {"html": " In React: elements (JSX), not a markup string, which would show as text."}
+    imports = ["ReactElement"] + ["ReactNode"] * any(m["type"] == "html" for m in vars_.values())
     lines = []
     for name, meta in vars_.items():
-        doc = meta["doc"].replace("*/", "* /")
+        doc = (meta["doc"] + react.get(meta["type"], "")).replace("*/", "* /")
         lines.append(f"  /** {doc} Default: {json.dumps(meta['default'])}. */")
-        lines.append(f"  {name}?: {'boolean' if meta['type'] == 'bool' else 'string'};")
+        lines.append(f"  {name}?: {types.get(meta['type'], 'string')};")
     return (
-        "import type { ReactElement } from 'react';\n\n"
+        f"import type {{ {', '.join(imports)} }} from 'react';\n\n"
         f"export interface {component}Props {{\n" + "\n".join(lines) + "\n}\n\n"
         f"export default function {component}(props: {component}Props): ReactElement;\n"
     )

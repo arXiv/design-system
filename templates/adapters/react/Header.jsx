@@ -1,7 +1,7 @@
 // GENERATED from templates/arxiv_brand/header.html by templates/generate.py — do not edit
 import { useEffect } from 'react';
 
-export default function Header({ static_base = "https://static.arxiv.org/static/design-system/latest/", header_variant = "", base_url = "https://arxiv.org", auth_url = "https://arxiv.org", account_path = "/user", help_url = "https://info.arxiv.org", hide_nav = false, hide_announcement = false, signed_in = false }) {
+export default function Header({ static_base = "https://static.arxiv.org/static/design-system/latest/", header_variant = "", base_url = "https://arxiv.org", auth_url = "https://arxiv.org", account_path = "/user", help_url = "https://info.arxiv.org", hide_nav = false, hide_announcement = false, signed_in = false, header_page_actions = "" }) {
   useEffect(() => {
     const tags = [`${static_base}chrome/banner.js`, `${static_base}chrome/header.js`].map((src) => {
       const s = document.createElement('script');
@@ -24,6 +24,15 @@ export default function Header({ static_base = "https://static.arxiv.org/static/
         <a href={`${base_url}/`} className="ds-site-header-logo" aria-label="archive home">{" "}
           <img src={`${static_base}logos/arxiv-logo.svg`} alt="archive" />{" "}
         </a>{" "}
+        {!hide_nav && (<>{" "}
+        <a id="ds-search-toggle" className="ds-site-header-search-link" href={`${base_url}/search`} aria-controls="ds-search-overlay" aria-expanded="false">{" "}
+          <svg className="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{" "}
+            <circle cx="11" cy="11" r="8" />{" "}
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />{" "}
+          </svg>{" "}
+          <span>Search</span>{" "}
+        </a>{" "}
+        </>)}{" "}
         <button type="button" id="ds-nav-toggle" className="ds-site-header-nav-toggle"
           aria-label="Open menu" aria-controls="ds-site-header-nav" aria-expanded="false">{" "}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{" "}
@@ -32,13 +41,6 @@ export default function Header({ static_base = "https://static.arxiv.org/static/
         </button>{" "}
         {!hide_nav && (<>{" "}
         <nav className="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation">{" "}
-          <a id="ds-search-toggle" href={`${base_url}/search`} aria-controls="ds-search-overlay" aria-expanded="false">{" "}
-            <svg className="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{" "}
-              <circle cx="11" cy="11" r="8" />{" "}
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />{" "}
-            </svg>{" "}
-            Search{" "}
-          </a>{" "}
           <a href={`${base_url}/submit`}>Submit</a>{" "}
           <a href={`${help_url}/about/donate.html`}>Donate</a>{" "}
           <span className="ds-site-header-divider" aria-hidden="true"></span>{" "}
@@ -46,6 +48,7 @@ export default function Header({ static_base = "https://static.arxiv.org/static/
           {!signed_in && (<><a href={`${auth_url}/login`} className="ds-site-header-login">Log in</a></>)}{" "}
         </nav>{" "}
         </>)}{" "}
+        {header_page_actions && (<><div className="ds-site-header-tools">{header_page_actions}</div></>)}{" "}
       </header>{" "}
       {!hide_nav && (<>{" "}
       <div className="ds-search-overlay" id="ds-search-overlay" hidden>{" "}

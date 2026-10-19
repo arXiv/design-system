@@ -67,7 +67,7 @@ They keep every target a mechanical rewrite of the source: `generate.py` rejects
 cannot read, quoting it, and `tests/integration/test_targets.py` fails where a target
 renders other than Jinja.
 
-- **Syntax:** raw HTML, `{{ variable }}` and boolean sections only: no `else`, expressions,
+- **Syntax:** raw HTML, `{{ variable }}` and `{% if %}` sections only: no `else`, expressions,
   loops, filters, includes, macros or inheritance. Notes are Jinja comments, which no target
   outputs. Each variable has one `schema.json` entry with an arxiv.org default, for what the
   host resolves on the server.
@@ -79,7 +79,8 @@ renders other than Jinja.
   value, and false is arxiv.org. `hide_nav` drops the nav and the search overlay (a sub-site
   with its own, like info.arxiv.org); `hide_announcement` drops the band; `signed_in` shows
   one Account link for Log in (the five items DESIGN-POLICIES allows; logout is on the
-  account page).
+  account page). An `html` slot may gate the element that holds it, so an empty slot leaves
+  no empty element: `{% if header_page_actions %}<div …>{{ header_page_actions }}</div>{% endif %}`.
 - **Links** are fixed paths on `base_url` (home, `/search`, `/search/advanced`, `/submit`,
   `/IgnoreMe`), `auth_url` (`/login`, `account_path`) and `help_url` (donate, the footer
   links): no trailing slash, arxiv.org by default. The one per-link override is
@@ -90,13 +91,21 @@ renders other than Jinja.
   | Type | | Jinja | TemplateToolkit | React |
   |---|---|---|---|---|
   | `attr`, `url` | escaped | `{{ v }}` | `[% v \| html %]` | `{v}`, ``{`…${v}…`}`` |
-  | `html` | trusted host markup | `{{ v }}` (marked safe) | `[% v %]` | `dangerouslySetInnerHTML`, on a `<span>` |
+  | `html` | trusted host content | `{{ v }}` (marked safe) | `[% v %]` | `{v}`: React elements, never injected markup |
   | `bool` | gates a section | `{% if v %}` | `[% IF v %]` / `[% UNLESS v %]` | `{v && (…)}` / `{!v && (…)}` |
 
-  The one `html` slot is `member_institution` (footer): `""` for an anonymous reader (the
-  default); the resolved `<span class="ack-member-inline">, <strong>Name</strong></span>` for
-  a recognised IP; or that span empty and `hidden`, which `chrome/header.js` fills from the
-  same-origin `/institutional_banner`.
+  The `html` slots, which a React host fills with elements (JSX), not strings:
+  - `member_institution` (footer): `""` for an anonymous reader (the default); the resolved
+    `<span class="ack-member-inline">, <strong>Name</strong></span>` for a recognised IP; or
+    that span empty and `hidden`, which `chrome/header.js` fills from the same-origin
+    `/institutional_banner`.
+  - `header_page_actions` (header): this page's actions, its links and buttons, in the bar's
+    tools region after the navigation. The template draws `<div class="ds-site-header-tools">`;
+    the host passes its `<a>`s and `<button>`s as direct children, an icon `<svg>` and an
+    `is-sr-only` label in each, so the bar styles them. `""` (the default) leaves the region
+    out. They belong to the page, never to the site navigation, which stays as
+    DESIGN-POLICIES sets it. In React they are the app's own elements, handlers included:
+    `<Header header_page_actions={<><button onClick={…}>…</button></>} />`.
 - **Defaults travel with each target:** Jinja through `init_env`'s globals, React as prop
   defaults, TemplateToolkit through `[% UNLESS v.defined %]` (an explicit `""` wins); the
   vendored HTML is rendered with them.

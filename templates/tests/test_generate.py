@@ -39,6 +39,17 @@ class TestSource(unittest.TestCase):
                     self.assertRaises((KeyError, ValueError), msg=bad):
                 g.template("t", bad)
 
+    def test_an_html_slot_is_react_content(self):
+        """React takes elements, never markup it would inject: no span, no innerHTML."""
+        jsx = g.to_react(*g.template("t", '<div class="w">{{ header_page_actions }}</div><p>a{{ header_page_actions }}</p>'), "T")
+        self.assertIn('<div className="w">{header_page_actions}</div><p>a{header_page_actions}</p>', jsx)
+        for section in g.SECTIONS:
+            tokens, vars_ = g.template(section)
+            self.assertNotIn("dangerouslySetInnerHTML", g.to_react(tokens, vars_, "T"))
+        dts = g.to_dts(*g.template("header")[1:], "Header")
+        self.assertIn("header_page_actions?: ReactNode;", dts)
+        self.assertIn("In React: elements (JSX), not a markup string", dts)
+
 
 class TestTemplates(unittest.TestCase):
     """The content, through the stdlib renderer."""
@@ -65,6 +76,15 @@ class TestTemplates(unittest.TestCase):
             self.assertNotIn(gone, header)
         self.assertIn('class="ds-site-header-logo"', header)
         self.assertNotIn('id="ds-announcement"', render("header", {"hide_announcement": True}))
+
+    def test_header_page_actions(self):
+        """The tools region holds the page's actions, last in the bar, and is left out without it."""
+        for context in ({}, {"header_page_actions": ""}):
+            self.assertNotIn("ds-site-header-tools", render("header", context))
+        actions = '<button type="button">Go</button>'
+        for hide_nav in (False, True):
+            header = render("header", {"header_page_actions": actions, "hide_nav": hide_nav})
+            self.assertIn(f'<div class="ds-site-header-tools">{actions}</div>\n</header>', header)
 
     def test_every_new_tab_link_says_so(self):
         for section in g.SECTIONS:
