@@ -23,6 +23,7 @@
   var toggle = document.getElementById("ds-search-toggle");
   var overlay = document.getElementById("ds-search-overlay");
   var input = document.getElementById("ds-search-input");
+  var panel = overlay && overlay.querySelector(".ds-search-overlay-panel");
   var navToggle = document.getElementById("ds-nav-toggle");
   var nav = document.getElementById("ds-site-header-nav");
   var ownsNav = navToggle && nav && !navToggle.hasAttribute("data-host-nav");
@@ -33,6 +34,9 @@
   // unless focus is already going elsewhere.
   function setOverlay(open, refocus) {
     if (!overlay) return;
+    // The panel hangs from the bar, below the band when one shows, or from the top of the
+    // window once the bar has scrolled away.
+    if (open && panel) panel.style.marginTop = Math.max(0, header.getBoundingClientRect().bottom) + "px";
     overlay.hidden = !open;
     if (toggle) toggle.setAttribute("aria-expanded", String(open));
     if (open && input) setTimeout(function () { input.focus(); }, 50);
