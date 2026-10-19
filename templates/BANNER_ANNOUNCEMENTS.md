@@ -8,8 +8,8 @@ reader dismisses it. How the band looks, and how to word an announcement:
 
 ## Put up an announcement
 
-1. **Write it:** one sentence that says what is happening and when, and a short link to where
-   the reader finds the rest. The band is seen by everyone, so use it sparingly.
+1. **Write it:** one sentence that says what is happening and when, and a short link or two to
+   where the reader finds the rest. The band is seen by everyone, so use it sparingly.
 2. **Add an entry** at the top of `announcements.json` on a branch, and check the file:
    `python3 -m unittest discover -s templates/tests`.
 3. **Preview it:** `python3 templates/tests/integration/app.py` (needs Flask) serves a page with
@@ -42,7 +42,7 @@ To change an announcement or end it early, edit or delete its entry the same way
 | `id` | required | Names the entry for dismissal (below). |
 | `text` | required | One short sentence, plain text (markup shows as typed). |
 | `start`, `end` | required | ISO 8601 with the offset (`-04:00`, `Z`); shown from `start` to `end`. |
-| `links` | optional | One link, or two, each `{ "text": …, "url": … }`; `url` is an absolute `https://` URL, any host. A second link is on trial: DESIGN-POLICIES (Banner) describes a sentence and one link. |
+| `links` | optional | One link, or two, each `{ "text": …, "url": … }`; `url` is an absolute `https://` URL, any host. |
 
 - **Order:** newest first, so add a new entry at the top. When entries overlap, the latest
   `start` shows (a short notice over a long campaign). Expired entries never show and may stay.

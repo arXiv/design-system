@@ -44,7 +44,7 @@ CACHE_CONTROL = {"": "public, max-age=60, must-revalidate", "json": "public, max
 
 ANNOUNCEMENTS = "templates/assets/json/announcements.json"
 ANNOUNCEMENT_KEYS = ("id", "text", "links", "start", "end")
-# A second link is on trial: DESIGN-POLICIES (Banner) describes one.
+# DESIGN-POLICIES (Banner): one link or two.
 MAX_LINKS = 2
 # The ISO 8601 forms every browser's Date.parse reads, with the offset (never local time).
 TIME_RE = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,3})?)?(Z|[+-]\d{2}:\d{2})")

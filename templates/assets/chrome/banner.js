@@ -101,10 +101,9 @@
         '</svg><span class="is-sr-only">Dismiss announcement</span></button>';
 
     mount.querySelector(".ds-announcement-text").append(str(a.text));
-    // The links with text and an https URL, at most two; a second follows the first after a
-    // drawn separator that no-break spaces hold to both (docs/design-system.css). OVERRIDE ON
-    // TRIAL: DESIGN-POLICIES (Banner) describes "a short sentence and link"; the design team
-    // decides on a second before this merges.
+    // The links with text and an https URL, at most two (DESIGN-POLICIES, Banner); a second
+    // follows the first after a drawn separator that no-break spaces hold to both
+    // (docs/design-system.css).
     var group = mount.querySelector(".ds-announcement-links");
     linksOf(a).filter(function (l) { return l && str(l.text) && httpsUrl(l.url); }).slice(0, 2)
       .forEach(function (l, i) {
