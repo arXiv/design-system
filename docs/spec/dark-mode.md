@@ -80,9 +80,11 @@ One control that is identical everywhere it appears. It ships as `.ds-theme-togg
 <!-- in the head, NOT deferred -->
 <script src="theme.js"></script>
 
-<!-- in the header bar -->
-<button type="button" class="ds-theme-toggle"></button>
-<span id="ds-theme-status" class="is-sr-only" role="status"></span>
+<!-- in the header bar, after the navigation -->
+<div class="ds-site-header-tools">
+  <button type="button" class="ds-theme-toggle"></button>
+  <span id="ds-theme-status" class="is-sr-only" role="status"></span>
+</div>
 ```
 
 - `<script src="theme.js">` — Goes in the head, and it is not deferred; that is load-bearing. The attribute has to be on `<html>` before the first paint or the page renders light and then flips — worst for exactly the reader who chose dark because light hurts. `check-policies.py` fails on a page that defers it.
