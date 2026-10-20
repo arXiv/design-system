@@ -426,8 +426,7 @@
             divider token. Takes <code>aria-hidden="true"</code>. Hidden while the navigation is folded
             away.</dd>
             <dt>.ds-site-header-tools</dt>
-            <dd>Optional, after the navigation. On public pages it holds the theme control; internal
-            tools add search fields and icon buttons.</dd>
+            <dd>Optional, after the navigation: the theme control, and a page’s own actions.</dd>
             <dt>.ds-theme-toggle</dt>
             <dd>The theme control, with its live region <code>#ds-theme-status</code>. See
             <a href="dark-mode.html#the-theme-control">The theme control</a>.</dd>
@@ -545,7 +544,7 @@
   <!-- ───────── On small screens ───────── -->
   <section>
     <h3 id="on-small-screens">On small screens</h3>
-    <p class="ds-section-desc">The header fits itself to the space it has. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button. On a public bar the tools and the account area fold into the same menu, so the bar keeps the logo, the Search icon and the menu button. An internal bar folds the same way at its last step, with its search fields behind a Search button of their own; see <a href="#internal-headers">Internal header</a>. The transitional header folds its navigation when the window is narrower than 600px.</p>
+    <p class="ds-section-desc">The header fits itself to the space it has. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button. On a public bar the tools and the account area fold into the same menu, so the bar keeps the logo, the Search icon and the menu button. An internal bar folds the same way, and keeps its search fields in the bar while they fit; after that they open from a Search button. See <a href="#internal-headers">Internal header</a>. The transitional header folds its navigation when the window is narrower than 600px.</p>
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
@@ -581,15 +580,15 @@
             every <code>.ds-site-header</code> and keeps each one on a single row, with no breakpoint to
             choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The
             templates load their own script, so a page that uses them adds none.</dd>
-            <dt>.ds-site-header-nav-toggle, .ds-site-header-tools-toggle</dt>
-            <dd>The menu button, and a second button: Search on a folded internal bar, or Tools on a
-            bar that has tools and no navigation. The script adds each one, so they are not in the
+            <dt>.ds-site-header-nav-toggle, .ds-site-header-search-toggle, .ds-site-header-tools-toggle</dt>
+            <dd>The menu button, the Search button for search fields, and the Tools button on a bar
+            without an account area. The script adds each one, so they are not in the
             markup. Each has <code>aria-expanded</code> and <code>aria-controls</code>, and Escape
             closes the open region and returns focus to its button.</dd>
-            <dt>.is-collapsible, .is-single-menu, .is-greeting-hidden, .is-nav-collapsed, .is-tools-collapsed, .is-menu-open, .is-overfull, .is-open, .is-measuring</dt>
+            <dt>.is-collapsible, .is-single-menu, .is-greeting-hidden, .is-nav-collapsed, .is-search-collapsed, .is-tools-collapsed, .is-menu-open, .is-search-open, .is-overfull, .is-open, .is-measuring</dt>
             <dd>State classes the script sets on the bar and on an open region. They are never written
-            by hand. <code>.is-single-menu</code> marks a bar whose menu holds the navigation, the
-            tools and the account area: a public bar once folded, an internal bar at its last fold.
+            by hand. <code>.is-single-menu</code> marks a bar with an account area, whose menu holds
+            the navigation, the tools and the account area.
             <code>.is-overfull</code> lets the bar wrap when even the folded bar is too wide for its
             space.</dd>
           </dl>
@@ -785,37 +784,28 @@
   <!-- ───────── Internal header ───────── -->
   <section>
     <h3 id="internal-headers">Internal header</h3>
-    <p class="ds-section-desc">The Admin Console header: the standard bar, with the Admin Console logo. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. Every internal tool uses an internal logo, not the public one, so the reader can tell they are in an internal tool. The internal stylesheet may re-point the bar’s colour tokens and nothing else.</p>
-    <div class="ds-card">
-      <details class="ds-marginalia">
-        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">The phone example folds inside a narrower box, as <a href="#on-small-screens">On small screens</a> describes. Open the menu or the Search button to see the folded rows.</p>
-      </details>
-      <p class="ds-panel-label">Column width</p>
+    <p class="ds-section-desc">The Admin Console header: the standard bar, with the Admin Console logo. Each internal tool chooses the search fields, navigation and wordmark its users need; the regions, their order and the rules stay the same. Every internal tool uses an internal logo, not the public one, so the reader can tell they are in an internal tool. The internal stylesheet may re-point the bar’s colour tokens and nothing else.</p>
+    <div class="ds-card demo-full-width">
+      <p class="ds-panel-label">Full width</p>
       <div class="ds-internal">
       <header class="ds-site-header">
         <a href="#" class="ds-site-header-logo">
           <img src="assets/images/logos/logo_arxiv-admin-light.svg" alt="archive Admin Console">
         </a>
-        <nav class="ds-site-header-nav" aria-label="Admin Console">
+        <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
+          <label class="is-sr-only" for="adm-users-full">Search users</label>
+          <input class="ds-input" type="search" id="adm-users-full" placeholder="Search users">
+        </form>
+        <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
+          <label class="is-sr-only" for="adm-docs-full">Search submissions and documents</label>
+          <input class="ds-input" type="search" id="adm-docs-full" placeholder="Search submissions">
+        </form>
+        <nav class="ds-site-header-nav" aria-label="Admin Console, full width">
           <a href="#">Resources</a>
           <a href="#">Submission</a>
           <a href="#">User Support</a>
           <a href="#">Students</a>
         </nav>
-        <span class="ds-site-header-divider" aria-hidden="true"></span>
-        <div class="ds-site-header-tools">
-          <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
-            <label class="is-sr-only" for="adm-search-users">Search users</label>
-            <input class="ds-input" type="search" id="adm-search-users" placeholder="Search users">
-          </form>
-          <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
-            <label class="is-sr-only" for="adm-search-docs">Search submissions and documents</label>
-            <input class="ds-input" type="search" id="adm-search-docs" placeholder="Search submissions">
-          </form>
-          <button type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg><span class="is-sr-only">Refresh</span></button>
-          <button type="button" aria-expanded="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg><span class="is-sr-only">Sidebar</span></button>
-        </div>
         <span class="ds-site-header-divider" aria-hidden="true"></span>
         <div class="ds-site-header-account">
           <span class="ds-site-header-greeting">Welcome <b>Shamsi</b></span>
@@ -831,6 +821,43 @@
         </div>
       </header>
       </div>
+      <p class="ds-panel-label">Tablet width</p>
+      <div class="demo-width-tablet">
+        <div class="ds-internal">
+        <header class="ds-site-header">
+          <a href="#" class="ds-site-header-logo">
+            <img src="assets/images/logos/logo_arxiv-admin-light.svg" alt="archive Admin Console">
+          </a>
+          <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
+            <label class="is-sr-only" for="adm-users-tablet">Search users</label>
+            <input class="ds-input" type="search" id="adm-users-tablet" placeholder="Search users">
+          </form>
+          <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
+            <label class="is-sr-only" for="adm-docs-tablet">Search submissions and documents</label>
+            <input class="ds-input" type="search" id="adm-docs-tablet" placeholder="Search submissions">
+          </form>
+          <nav class="ds-site-header-nav" aria-label="Admin Console, tablet width">
+            <a href="#">Resources</a>
+            <a href="#">Submission</a>
+            <a href="#">User Support</a>
+            <a href="#">Students</a>
+          </nav>
+          <span class="ds-site-header-divider" aria-hidden="true"></span>
+          <div class="ds-site-header-account">
+            <span class="ds-site-header-greeting">Welcome <b>Shamsi</b></span>
+            <details class="ds-site-header-dropdown">
+              <summary class="ds-site-header-login">Account</summary>
+              <div class="ds-site-header-menu">
+                <a href="#">Your account</a>
+                <form method="post" action="#" onsubmit="return false">
+                  <button type="submit">Log out</button>
+                </form>
+              </div>
+            </details>
+          </div>
+        </header>
+        </div>
+      </div>
       <p class="ds-panel-label">Phone width</p>
       <div class="demo-width-narrow">
         <div class="ds-internal">
@@ -838,25 +865,20 @@
           <a href="#" class="ds-site-header-logo">
             <img src="assets/images/logos/logo_arxiv-admin-light.svg" alt="archive Admin Console">
           </a>
-          <nav class="ds-site-header-nav" aria-label="Admin Console example, phone width">
+          <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
+            <label class="is-sr-only" for="adm-users-phone">Search users</label>
+            <input class="ds-input" type="search" id="adm-users-phone" placeholder="Search users">
+          </form>
+          <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
+            <label class="is-sr-only" for="adm-docs-phone">Search submissions and documents</label>
+            <input class="ds-input" type="search" id="adm-docs-phone" placeholder="Search submissions">
+          </form>
+          <nav class="ds-site-header-nav" aria-label="Admin Console, phone width">
             <a href="#">Resources</a>
             <a href="#">Submission</a>
             <a href="#">User Support</a>
             <a href="#">Students</a>
           </nav>
-          <span class="ds-site-header-divider" aria-hidden="true"></span>
-          <div class="ds-site-header-tools">
-            <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
-              <label class="is-sr-only" for="small-users-phone">Search users</label>
-              <input class="ds-input" type="search" id="small-users-phone" placeholder="Search users">
-            </form>
-            <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
-              <label class="is-sr-only" for="small-docs-phone">Search submissions and documents</label>
-              <input class="ds-input" type="search" id="small-docs-phone" placeholder="Search submissions">
-            </form>
-            <button type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg><span class="is-sr-only">Refresh</span></button>
-            <button type="button" aria-expanded="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg><span class="is-sr-only">Sidebar</span></button>
-          </div>
           <span class="ds-site-header-divider" aria-hidden="true"></span>
           <div class="ds-site-header-account">
             <span class="ds-site-header-greeting">Welcome <b>Shamsi</b></span>
@@ -875,10 +897,19 @@
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;header class="ds-site-header"&gt;
+<pre><code>&lt;div class="ds-internal"&gt;
+&lt;header class="ds-site-header"&gt;
   &lt;a href="/" class="ds-site-header-logo"&gt;
     &lt;img src="logo_arxiv-admin-light.svg" alt="archive Admin Console"&gt;
   &lt;/a&gt;
+  &lt;form class="ds-site-header-search" role="search" action="/users"&gt;
+    &lt;label class="is-sr-only" for="search-users"&gt;Search users&lt;/label&gt;
+    &lt;input class="ds-input" type="search" id="search-users" name="q" placeholder="Search users"&gt;
+  &lt;/form&gt;
+  &lt;form class="ds-site-header-search" role="search" action="/documents"&gt;
+    &lt;label class="is-sr-only" for="search-docs"&gt;Search submissions and documents&lt;/label&gt;
+    &lt;input class="ds-input" type="search" id="search-docs" name="q" placeholder="Search submissions"&gt;
+  &lt;/form&gt;
   &lt;nav class="ds-site-header-nav" aria-label="Admin Console"&gt;
     &lt;a href="/resources"&gt;Resources&lt;/a&gt;
     &lt;a href="/submission"&gt;Submission&lt;/a&gt;
@@ -886,49 +917,21 @@
     &lt;a href="/students"&gt;Students&lt;/a&gt;
   &lt;/nav&gt;
   &lt;span class="ds-site-header-divider" aria-hidden="true"&gt;&lt;/span&gt;
-  &lt;div class="ds-site-header-tools"&gt;
-    &lt;form class="ds-site-header-search" role="search" action="/users"&gt;
-      &lt;label class="is-sr-only" for="search-users"&gt;Search users&lt;/label&gt;
-      &lt;input class="ds-input" type="search" id="search-users" name="q" placeholder="Search users"&gt;
-    &lt;/form&gt;
-    &lt;form class="ds-site-header-search" role="search" action="/documents"&gt;
-      &lt;label class="is-sr-only" for="search-docs"&gt;Search submissions and documents&lt;/label&gt;
-      &lt;input class="ds-input" type="search" id="search-docs" name="q" placeholder="Search submissions"&gt;
-    &lt;/form&gt;
-    &lt;button type="button"&gt;
-      &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
-        &lt;path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/&gt;
-        &lt;path d="M21 3v5h-5"/&gt;
-      &lt;/svg&gt;
-      &lt;span class="is-sr-only"&gt;Refresh&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" aria-expanded="true" aria-controls="sidebar"&gt;
-      &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
-        &lt;rect width="18" height="18" x="3" y="3" rx="2"/&gt;
-        &lt;path d="M15 3v18"/&gt;
-      &lt;/svg&gt;
-      &lt;span class="is-sr-only"&gt;Sidebar&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-  &lt;span class="ds-site-header-divider" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;div class="ds-site-header-account"&gt;
     &lt;span class="ds-site-header-greeting"&gt;Welcome &lt;b&gt;Shamsi&lt;/b&gt;&lt;/span&gt;
     &lt;details class="ds-site-header-dropdown"&gt;…&lt;/details&gt;
   &lt;/div&gt;
-&lt;/header&gt;</code></pre>
+&lt;/header&gt;
+&lt;/div&gt;</code></pre>
           <dl>
             <dt>.ds-site-header-logo img</dt>
             <dd>The tool’s own wordmark image, from <code>assets/images/logos/</code>. Its alt text
             names the tool in spoken form, such as “archive Admin Console”.</dd>
             <dt>.ds-site-header-search</dt>
-            <dd>A <code>&lt;form role="search"&gt;</code> holding one <code>.ds-input</code> and its label.
-            It stays in the bar while it fits, because internal tools search constantly. Two kinds of
-            search are two of these.</dd>
-            <dt>.ds-site-header-tools &gt; button</dt>
-            <dd>An icon button that acts on the whole tool, such as Refresh or the sidebar toggle. Its
-            name is <code>.is-sr-only</code> text. The sidebar toggle has
-            <code>aria-expanded</code>, and <code>aria-controls</code> naming the sidebar’s
-            <code>id</code>.</dd>
+            <dd>A <code>&lt;form role="search"&gt;</code> holding one <code>.ds-input</code> and its label,
+            before the navigation, where public pages have the Search link. Two kinds of search are two
+            of these. They stay in the bar while they fit, after the navigation and the account area
+            have folded into the menu; on a phone they open from a Search button.</dd>
             <dt>.ds-site-header-greeting</dt>
             <dd>The same first-name greeting as the public header, capped at 14 characters.</dd>
           </dl>
@@ -957,18 +960,18 @@
   <section>
     <h3 id="design-rules">Design rules</h3>
     <ul class="notes">
-      <li><strong>Regions, in one order.</strong> Logo, Search (public pages), navigation, tools
-      (optional), account. In the transitional header, Log in or Account is the last link in the
+      <li><strong>Regions, in one order.</strong> Logo, search (the Search link on public pages,
+      search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the
       navigation, and page actions come after it.</li>
       <li><strong>Navigation sits on the right.</strong> The space after the logo stays empty.</li>
       <li><strong>No more than four links in arxiv.org’s navigation.</strong> The logo and Log in do
       not count (DESIGN-POLICIES). A host does not change the template’s navigation.</li>
-      <li><strong>Tools hold what one page or tool needs.</strong> On public pages: this page’s
-      actions, and in the aspirational header the theme control. On internal tools: search fields
-      and icon buttons such as Refresh and the sidebar toggle.</li>
+      <li><strong>Tools hold the theme control and a page’s own actions.</strong> The transitional
+      header has page actions only. A control that acts on the page’s data, such as Refresh, goes
+      beside the page heading, with the time the data was last updated.</li>
       <li><strong>Public search opens on request; internal search stays in view.</strong> On
       arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in
-      the tools region.</li>
+      the bar while they fit.</li>
       <li><strong>Log out.</strong> Today a signed-in reader logs out on the account page. In the
       aspirational header, Log out is in the Account menu, one menu away on every page.</li>
       <li><strong>The greeting is the first name.</strong> The aspirational header shows the given

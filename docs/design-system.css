@@ -3784,13 +3784,13 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 }
 
 /* Collapse by fit (header.js). When the regions do not fit on one row, the
-   navigation collapses behind a menu button. On a public bar with an account
-   area the tools and the account area go into the same menu (.is-single-menu);
-   an internal bar does the same at its last fold, with its search fields
-   behind a Search button. A bar with tools and no navigation folds them
-   behind a Tools button. The script
+   navigation collapses behind a menu button. On a bar with an account area the
+   tools and the account area go into the same menu (.is-single-menu). Search
+   fields stay while they fit, then fold behind a Search button. A bar without
+   an account area folds its tools behind a Tools button. The script
    adds the buttons and .is-collapsible, so a page without it keeps the wrap below. */
 .ds-site-header-nav-toggle,
+.ds-site-header-search-toggle,
 .ds-site-header-tools-toggle {
   display: none;
   align-items: center;
@@ -3809,13 +3809,16 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   transition: background 0.12s, color 0.12s;
 }
 .ds-site-header-nav-toggle:hover,
+.ds-site-header-search-toggle:hover,
 .ds-site-header-tools-toggle:hover { background: var(--ds-hdr-hover); color: var(--ds-hdr-fg-strong); }
 .ds-site-header-nav-toggle:focus-visible,
+.ds-site-header-search-toggle:focus-visible,
 .ds-site-header-tools-toggle:focus-visible {
   outline: 3px solid var(--ds-hdr-ring);
   outline-offset: 1px;
 }
 .ds-site-header-nav-toggle svg,
+.ds-site-header-search-toggle svg,
 .ds-site-header-tools-toggle svg { width: 22px; height: 22px; display: block; }
 
 /* A managed bar stays on one row, so its search fields shrink rather than
@@ -3823,6 +3826,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 .ds-site-header.is-collapsible { position: relative; flex-wrap: nowrap; }
 .ds-site-header.is-collapsible.is-overfull { flex-wrap: wrap; }
 .ds-site-header.is-nav-collapsed .ds-site-header-nav-toggle,
+.ds-site-header.is-search-collapsed .ds-site-header-search-toggle,
 .ds-site-header.is-tools-collapsed .ds-site-header-tools-toggle { display: inline-flex; }
 .ds-site-header.is-nav-collapsed > .ds-site-header-divider,
 .ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-divider { display: none; }
@@ -3943,31 +3947,37 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   outline-offset: -3px;
 }
 
-/* One menu (.is-single-menu: a public bar with an account area once folded, an
-   internal bar at its last fold). Folded, the tools
-   and the account area leave the bar with the navigation, and the menu button
-   opens all three as rows, in that order. The bar keeps its height and the rows
-   hang below it, over the page. */
+/* One menu (.is-single-menu: a bar with an account area). Folded, the tools and
+   the account area leave the bar with the navigation, and the menu button opens
+   all three as rows, in that order. Search fields fold last, behind the Search
+   button, and open as rows the same way. The bar keeps its height: an empty
+   first item holds the first line at the bar's full height, and the rows hang
+   below it, over the page. */
 .ds-site-header.is-single-menu.is-nav-collapsed > .ds-site-header-tools,
-.ds-site-header.is-single-menu.is-nav-collapsed > .ds-site-header-account { display: none; }
-.ds-site-header.is-single-menu.is-menu-open {
-  display: grid;
-  grid-template-columns: 1fr auto auto;   /* logo, Search, menu button */
-  grid-template-rows: 100%;
-  align-items: center;
+.ds-site-header.is-single-menu.is-nav-collapsed > .ds-site-header-account,
+.ds-site-header.is-search-collapsed > .ds-site-header-search { display: none; }
+.ds-site-header.is-collapsible:is(.is-menu-open, .is-search-open) {
+  flex-wrap: wrap;
+  align-content: flex-start;
   height: 52px;
   padding-block: 0;
   row-gap: 0;
 }
-.ds-site-header.is-single-menu.is-menu-open > .ds-site-header-nav-toggle { grid-column: 3; }
-.ds-site-header.is-single-menu.is-menu-open > .is-open {
+.ds-site-header.is-collapsible:is(.is-menu-open, .is-search-open)::before {
+  content: "";
+  height: 100%;
+  margin-inline-end: calc(-1 * var(--ds-space-tight));   /* takes no room in the line */
+}
+.ds-site-header.is-collapsible:is(.is-menu-open, .is-search-open) > .is-open {
   display: flex;
-  grid-column: 1 / -1;
+  flex: 0 0 calc(100% + 2 * var(--ds-hdr-pad-inline));
+  order: 1;   /* after everything that stays in the bar */
   position: relative;
   inset: auto;
   flex-direction: column;
   align-items: stretch;
   gap: 0;
+  min-width: 0;
   margin-inline: calc(-1 * var(--ds-hdr-pad-inline));
   padding: 0;
   background: var(--ds-hdr-bg);
@@ -3975,15 +3985,11 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   box-shadow: none;
   z-index: 60;
 }
-.ds-site-header.is-single-menu.is-menu-open > .is-open:not(:has(~ .is-open)) {
+.ds-site-header.is-search-open > .ds-site-header-search.is-open { padding: 8px 16px; }
+.ds-site-header.is-collapsible:is(.is-menu-open, .is-search-open) > .is-open:not(:has(~ .is-open)) {
   border-bottom: 1px solid var(--ds-hdr-border);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* the summoned-surface shadow */
 }
-/* An internal bar at its last fold: the search fields open on their own, below
-   the Search button, and stay out of the menu. */
-.ds-site-header.is-single-menu.is-tools-collapsed:not(.is-menu-open) > .ds-site-header-tools.is-open { display: flex; }
-.ds-site-header.is-single-menu.is-tools-collapsed:not(.is-menu-open) .ds-site-header-tools > :not(.ds-site-header-search),
-.ds-site-header.is-single-menu.is-tools-collapsed.is-menu-open .ds-site-header-tools > .ds-site-header-search { display: none; }
 
 /* Narrow viewport. Without header.js the bar wraps (WCAG 1.4.10 reflow at
    320px): logo and account on the first row, then tools, then the navigation.
