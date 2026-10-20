@@ -3785,9 +3785,10 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 
 /* Collapse by fit (header.js). When the regions do not fit on one row, the
    navigation collapses behind a menu button. On a public bar with an account
-   area (.is-single-menu) the tools and the account area go into the same menu;
-   on any other bar the account area stays and the tools collapse behind a
-   second button. The script
+   area the tools and the account area go into the same menu (.is-single-menu);
+   an internal bar does the same at its last fold, with its search fields
+   behind a Search button. A bar with tools and no navigation folds them
+   behind a Tools button. The script
    adds the buttons and .is-collapsible, so a page without it keeps the wrap below. */
 .ds-site-header-nav-toggle,
 .ds-site-header-tools-toggle {
@@ -3942,7 +3943,8 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   outline-offset: -3px;
 }
 
-/* One menu (.is-single-menu: a bar with an account area, outside .ds-internal). Folded, the tools
+/* One menu (.is-single-menu: a public bar with an account area once folded, an
+   internal bar at its last fold). Folded, the tools
    and the account area leave the bar with the navigation, and the menu button
    opens all three as rows, in that order. The bar keeps its height and the rows
    hang below it, over the page. */
@@ -3977,6 +3979,11 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   border-bottom: 1px solid var(--ds-hdr-border);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* the summoned-surface shadow */
 }
+/* An internal bar at its last fold: the search fields open on their own, below
+   the Search button, and stay out of the menu. */
+.ds-site-header.is-single-menu.is-tools-collapsed:not(.is-menu-open) > .ds-site-header-tools.is-open { display: flex; }
+.ds-site-header.is-single-menu.is-tools-collapsed:not(.is-menu-open) .ds-site-header-tools > :not(.ds-site-header-search),
+.ds-site-header.is-single-menu.is-tools-collapsed.is-menu-open .ds-site-header-tools > .ds-site-header-search { display: none; }
 
 /* Narrow viewport. Without header.js the bar wraps (WCAG 1.4.10 reflow at
    320px): logo and account on the first row, then tools, then the navigation.
@@ -4006,7 +4013,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 }
 html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 
-/* SECONDARY NAVIGATION  (.ds-subnav) — header.html
+/* SECONDARY NAVIGATION  (.ds-subnav) — navigation.html
    A row of section links directly under the header. It wraps rather than
    scrolling sideways, so every section stays visible at 320px and at 200%
    text. The current page is marked three ways: weight, an underline bar,
@@ -4052,7 +4059,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   .ds-subnav { padding: 0 12px; column-gap: var(--ds-space-4); }
 }
 
-/* STEPS  (.ds-subnav--steps) — header.html
+/* STEPS  (.ds-subnav--steps) — navigation.html
    The steps of one ordered process, on the secondary navigation bar. A
    complete or available step is a link; the current step has
    aria-current="step"; a step not available yet is a <span>. Which steps are

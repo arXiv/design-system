@@ -1,7 +1,7 @@
 ---
 page: header.html
 title: "Site header"
-summary: "The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left, and navigation, search, and account links on the right. An optional, dismissible announcement banner can be displayed above the header. Absolute consistency across all pages is critical. The header is in transition. Pages on arxiv.org use the [transitional header](#transitional-header) from `templates/` now, and will move to the [aspirational header](#aspirational-header) after the migration. Internal pages have their own header and variations, see [Internal header](#internal-headers) for an example."
+summary: "The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left, and navigation, search, and account links on the right. An optional, dismissible announcement banner can be displayed above the header. Absolute consistency across all pages is critical. The header is in transition. Pages on arxiv.org use the [transitional header](#transitional-header) from `templates/` now, and will move to the [aspirational header](#aspirational-header) after the migration. Internal pages have their own header and variations, see [Internal header](#internal-headers) for an example. The bars under the header, such as secondary navigation and steps, are on [Navigation](navigation.html)."
 stylesheet: design-system.css
 components:
   - id: transitional-header
@@ -47,28 +47,28 @@ components:
         does: "The search overlay: a `hidden` scrim after the header that the shared chrome’s `header.js` opens from the Search link (or Ctrl/Cmd+K), and closes on Escape, a click on the scrim, or focus moving out of it. Without JS the Search link goes to the search page. Its markup is the transitional header’s."
       - name: ".ds-search-overlay-panel"
         does: "The overlay’s panel, hanging from the bottom of the bar at every width. Opening it closes the menu. Its field and hint are the ordinary `.ds-input` and `.ds-hint`."
-  - id: signed-out-and-signed-in
-    title: "Signed out and signed in"
+  - id: signed-in
+    title: "Signed in"
     summary: "Account-related items display at the right end of the bar and are the only items in a heavier text weight. Signed out it says **Log in**. Signed in it displays a greeting and name, and an **Account** menu that holds Log out. When names are long (and arXiv users have every type and structure of name) we truncate to a reasonable number of characters."
     classes:
       - name: ".ds-site-header-greeting"
-        does: "The greeting takes the given name only — its first word — because the bar is chrome and a full legal name is more of it than the job needs. Even one word is user data of unbounded length in any script, so it is capped at 14 characters with an ellipsis, as the second example shows. A bar that reflows or overflows on a long name breaks for exactly the people whose names get tested least. The greeting is not a link. It is a statement; the thing you can act on is the Account menu beside it. Making the name itself the link would give that link the accessible name “Ada”, which says nothing about where it goes. It is the first thing dropped on a narrow bar: when the bar runs out of room the greeting hides and Account stays — the menu is the useful half, and the reader already knows their own name."
+        does: "The greeting takes the given name only — its first word — because the bar is chrome and a full legal name is more of it than the job needs. Even one word is user data of unbounded length in any script, so it is capped at 14 characters with an ellipsis, as the Long name example shows. A bar that reflows or overflows on a long name breaks for exactly the people whose names get tested least. The greeting is not a link. It is a statement; the thing you can act on is the Account menu beside it. Making the name itself the link would give that link the accessible name “Ada”, which says nothing about where it goes. It is the first thing dropped on a narrow bar: when the bar runs out of room the greeting hides and Account stays — the menu is the useful half, and the reader already knows their own name."
+      - name: ".ds-site-header-greeting > b"
+        does: "The name. The stylesheet caps it at 14 characters and ends it with an ellipsis; the host passes the given name and nothing else."
       - name: ".ds-site-header-login"
         does: "The same emphasis slot as when signed out, now on the `<summary>` of an Account menu (`.ds-site-header-dropdown`). The slot is about rank in the bar, not about which of the two words is in it."
       - name: "<form method=\"post\">"
         does: "Log out is a button in a form that posts, never a link. A link can be followed by a browser prefetch or from another site, and logging someone out changes their state."
-      - name: ".ds-site-header-greeting > b"
-        does: "The name. The stylesheet caps it at 14 characters and ends it with an ellipsis; the host passes the given name and nothing else."
   - id: on-small-screens
     title: "On small screens"
-    summary: "The header fits itself to the space it has, and nobody has to plan for it. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button. On a public bar the tools and the account area fold into the same menu, so the bar keeps the logo, the Search icon and the menu button, and the menu lists the navigation, the theme control, then Log in or Account. On an internal bar the account area stays, and the tools fold behind a second button. There is no breakpoint to choose, no button to add and no script to write: loading `header.js` is the whole job, and a header whose content changes later still fits."
+    summary: "The header fits itself to the space it has. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button. On a public bar the tools and the account area fold into the same menu, so the bar keeps the logo, the Search icon and the menu button. An internal bar folds the same way at its last step, with its search fields behind a Search button of their own; see [Internal header](#internal-headers). The transitional header folds its navigation when the window is narrower than 600px."
     classes:
       - name: "header.js"
-        does: "The only thing to add, once per page. It finds every `.ds-site-header` on the page and keeps each one on a single row. Without JavaScript the bar wraps onto more rows instead, so nothing is ever hidden."
+        does: "These docs’ fold-by-fit script, `docs/header.js`, once per page. It finds every `.ds-site-header` and keeps each one on a single row, with no breakpoint to choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The templates load their own script, so a page that uses them adds none."
       - name: ".ds-site-header-nav-toggle, .ds-site-header-tools-toggle"
-        does: "The menu button and, on an internal bar, the tools button. The script adds each one just before the region it opens, so they are not in the markup. Each has `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button. On a public bar the menu button controls the navigation, the tools and the account area together."
+        does: "The menu button, and a second button: Search on a folded internal bar, or Tools on a bar that has tools and no navigation. The script adds each one, so they are not in the markup. Each has `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button."
       - name: ".is-collapsible, .is-single-menu, .is-greeting-hidden, .is-nav-collapsed, .is-tools-collapsed, .is-menu-open, .is-overfull, .is-open, .is-measuring"
-        does: "State classes the script sets on the bar and on an open region. They are never written by hand. `.is-single-menu` marks a public bar, a bar with an account area outside `.ds-internal`, whose menu holds all three regions. `.is-overfull` lets the bar wrap when even the folded bar is too wide for its space."
+        does: "State classes the script sets on the bar and on an open region. They are never written by hand. `.is-single-menu` marks a bar whose menu holds the navigation, the tools and the account area: a public bar once folded, an internal bar at its last fold. `.is-overfull` lets the bar wrap when even the folded bar is too wide for its space."
     notes:
       - "The script answers to the width of the bar, not of the window, so the phone example folds inside a narrower box on a wide screen. Open the menu to see the folded rows."
   - id: header-dropdown-menus
@@ -83,51 +83,13 @@ components:
         does: "Group headings inside a menu use the system-wide label, not a bespoke class."
       - name: "aria-current=\"page\""
         does: "On the menu link for the page the reader is on. The menu shows it in bold, and a screen reader announces it."
-  - id: secondary-navigation
-    title: "Secondary navigation"
-    summary: "A row of section links directly under the header, for an area that has its own sections, such as the account pages. It wraps onto a second line rather than scrolling sideways, so every section stays visible on a phone and at high zoom. To switch views within one page, use [tabs](progressive-disclosure.html#tabs)."
-    classes:
-      - name: ".ds-subnav"
-        does: "A `<nav>` directly after the header, with an `aria-label` that names the area, such as “Account sections”. Plain links; never `role=\"tab\"`, which would promise arrow-key behaviour that page links do not have. Hidden in print."
-      - name: "aria-current=\"page\""
-        does: "On the link for the current page. It shows in bold with an underline bar, so the current section never depends on colour alone, and a screen reader announces it."
-      - name: ".ds-internal"
-        does: "On a parent, it turns the underline bar Access Lime Deep. Nothing else changes."
-  - id: two-levels-of-navigation
-    title: "Two levels of navigation"
-    summary: "An area with its own sections, each with several views, such as a report with parts and views. The sections are the secondary navigation under the header; the views of the current section are a second row inside the page."
-    classes:
-      - name: ".ds-subnav"
-        does: "The first row, directly under the header. Here it holds two groups: a `<nav>` of the area's sections, then a compact [filter bar](tables.html#filter-bar) for choices that apply to every view, such as the subject. The groups sit twice as far apart as the items inside them."
-      - name: "<h1>"
-        does: "Follows the reader's choices: the open section, then the filters, in that order, such as “Submissions and holds, all of cs” or “Moderators, cs.DC”. The reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page."
-      - name: ".ds-subnav--in-page"
-        does: "The second level: the views of the current section, in the content column, with the same current marking as the first level. Each view is its own page."
-  - id: steps
-    title: "Steps"
-    summary: "The steps of one ordered process, such as a submission, and which one the reader is on. Steps is a variant of the secondary navigation bar. To move through a queue one item at a time, use the [pager](pager.html). Which steps are available is the application's logic: submission, for example, lets the reader go back to a complete step but not jump ahead."
-    classes:
-      - name: ".ds-subnav--steps"
-        does: "On the secondary navigation bar. It holds an `<ol role=\"list\">`, one `<li>` per step. It wraps onto more lines on a narrow screen, so every step stays visible."
-      - name: ".ds-step-number"
-        does: "The step number in a circle, hidden from screen readers because the list gives the position. A complete step shows a check mark instead of its number."
-      - name: "Complete step"
-        does: "A link, with the check mark and `.is-sr-only` text “, completed”."
-      - name: "aria-current=\"step\""
-        does: "On the link for the current step. It shows in bold with an underline bar and a heavier circle."
-      - name: "Available step"
-        does: "A link with its number."
-      - name: "Step not available yet"
-        does: "A `<span>`, not a link, so it is not a tab stop. A dashed circle and `.is-sr-only` text “, not available yet”."
-      - name: ".ds-internal"
-        does: "On a parent, it turns the underline bar and the current circle Access Lime Deep."
   - id: with-the-announcement-band
     title: "With the announcement band"
     group: "Modifiers"
     summary: "When arXiv has something to say to everyone, an announcement band can be displayed above the header bar. Neither is fixed; the two scroll away together. See [Announcement band](messages.html#announcement-band) for the full documentation."
     classes:
-      - name: ".ds-announcement"
-        does: "The band, placed before `.ds-site-header` and after the skip link. See [Special messages](messages.html#announcement-band) for its parts."
+      - name: "#ds-announcement"
+        does: "The mount, which the header template writes before the bar. While an announcement is active, `banner.js` draws the band into it; the host writes only the skip link and the include. The band’s parts are on [Special messages](messages.html#announcement-band)."
   - id: the-light-variant
     title: "The light variant"
     group: "Modifiers"
@@ -153,40 +115,35 @@ components:
       - name: ".ds-site-header-greeting"
         does: "The same first-name greeting as the public header, capped at 14 characters."
     notes:
-      - "The phone example folds inside a narrower box, as [On small screens](#on-small-screens) describes. Open the menu or the tools button to see the folded rows."
+      - "The phone example folds inside a narrower box, as [On small screens](#on-small-screens) describes. Open the menu or the Search button to see the folded rows."
   - id: sticky-header
     title: "Sticky header"
     group: "Modifiers"
-    summary: "Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top of the viewport while the page scrolls, and the stylesheet sets `scroll-padding-top` on the page so a link to a section does not land under the bar. It is not applied to the examples on this page, which already keeps the TOC bar in view."
-    classes:
-      - name: ".ds-site-header--sticky"
-        does: "Sticks the bar to the top of the viewport. A page that uses it keeps no other sticky bar."
+    summary: "Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top of the viewport while the page scrolls, and the stylesheet sets `scroll-padding-top` on the page so a link to a section does not land under the bar. A page that uses it keeps no other sticky bar. It is not applied to the examples on this page, which already keeps the TOC bar in view."
 rules:
-  - "**The announcement is temporal.** Render only while active, persist dismissal across arXiv sites, and never attach page-critical function to it. The shared chrome’s `chrome/banner.js` does both: it fetches the shared announcements (`json/announcements.json` on the asset route), shows the band only between an entry’s start and end, and records a dismissal in a cookie on the parent domain (`arxiv.org`). The announcement is data: plain text and its links, never markup. How to put one up: [Banner announcements](doc.html?src=templates/BANNER_ANNOUNCEMENTS.md)."
-  - "**No more than four top-level links.** The logo and Log in do not count. More than four causes cognitive overload and reduces comprehension; resist link-creep permanently (DESIGN-POLICIES)."
-  - "**The host provides the skip link.** The shared templates start at the announcement band, so a host puts `.ds-skip-link` before them, pointing at its own main content."
-  - "**Log out is in the Account menu.** Signed in, Account opens a menu holding the account page and Log out. Logging out is then one menu away on every page, which matters on shared computers, and still takes two deliberate actions."
-  - "**Regions, in one order.** Logo, Search (public pages), navigation, tools (optional), account. Every header on every surface keeps this order."
-  - "**Navigation sits on the right.** On every header, the space after the logo stays empty and the navigation follows it."
-  - "**Tools hold what one interface needs.** Search fields, icon buttons such as Refresh and the sidebar toggle, and the theme control go in the tools region."
-  - "**Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link just before the navigation, and it stays in the bar on small screens. Internal tools keep their search fields in the tools region."
-  - "**Sticky on internal tools only.** `.ds-site-header--sticky` is for internal tools; arxiv.org’s public header scrolls away (DESIGN-POLICIES)."
-  - "**The greeting is the first name, everywhere.** Public and internal headers show the given name only, capped at 14 characters."
-  - "**One bar under the header.** A page shows either secondary navigation or steps, never both."
-  - "**No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the secondary navigation show the reader’s place. A tool’s main pages, such as its starting page, are links in the header navigation; the way back is there, not in a link above the page heading."
-  - "**Type sizes are rem** so browser font-size overrides propagate. In print the header keeps only its logo, 28px tall; the announcement band and the secondary navigation are hidden."
+  - "A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The [templates README](doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement."
+  - "**Regions, in one order.** Logo, Search (public pages), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it."
+  - "**Navigation sits on the right.** The space after the logo stays empty."
+  - "**No more than four links in arxiv.org’s navigation.** The logo and Log in do not count (DESIGN-POLICIES). A host does not change the template’s navigation."
+  - "**Tools hold what one page or tool needs.** On public pages: this page’s actions, and in the aspirational header the theme control. On internal tools: search fields and icon buttons such as Refresh and the sidebar toggle."
+  - "**Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in the tools region."
+  - "**Log out.** Today a signed-in reader logs out on the account page. In the aspirational header, Log out is in the Account menu, one menu away on every page."
+  - "**The greeting is the first name.** The aspirational header shows the given name only, capped at 14 characters, on public and internal headers."
+  - "**Sticky on internal tools only.** arxiv.org’s public header scrolls away (DESIGN-POLICIES)."
+  - "**No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the [secondary navigation](navigation.html#secondary-navigation) show the reader’s place."
+  - "**Type sizes are rem**, so a reader’s browser font size applies. In print the header keeps only its logo, 28px tall."
   - "**The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content."
   - "**Name the navigation.** The bar’s links sit in a `<nav>` with an `aria-label`, such as “Main navigation”, so a screen reader user can tell it from the other landmarks on the page."
   - "**The wordmark is an image with alt text.** Logo alt text and aria-labels say “archive” — the spoken form of “arXiv” (screen readers otherwise produce “ar-zhiv” or Roman-numeral gibberish)."
   - "**On arxiv.org nothing in this unit is sticky.** The whole header scrolls away with the page (the one bar a public page may keep in view is the TOC bar — DESIGN-POLICIES). An internal tool that adds `.ds-site-header--sticky` gets `scroll-padding-top` from the stylesheet, so a link to a section does not land under the bar."
-  - "**The account area is not navigation.** It sits outside the `<nav>`, so a screen reader user who lists landmarks finds only site sections there."
+  - "**The account area is not navigation.** In the aspirational header it sits outside the `<nav>`, so a screen reader user who lists landmarks finds only site sections there."
   - "**Name every search field.** A search field in the bar is a `<form role=\"search\">` with a `<label>`, hidden with `.is-sr-only` if needed, that says what it searches. The placeholder is not the name: it disappears as soon as someone types."
   - "**Mark the current page in the markup.** Put `aria-current=\"page\"` on the current link in the secondary navigation and in header menus."
 ---
 
 # Site header
 
-The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left, and navigation, search, and account links on the right. An optional, dismissible announcement banner can be displayed above the header. Absolute consistency across all pages is critical. The header is in transition. Pages on arxiv.org use the [transitional header](#transitional-header) from `templates/` now, and will move to the [aspirational header](#aspirational-header) after the migration. Internal pages have their own header and variations, see [Internal header](#internal-headers) for an example.
+The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left, and navigation, search, and account links on the right. An optional, dismissible announcement banner can be displayed above the header. Absolute consistency across all pages is critical. The header is in transition. Pages on arxiv.org use the [transitional header](#transitional-header) from `templates/` now, and will move to the [aspirational header](#aspirational-header) after the migration. Internal pages have their own header and variations, see [Internal header](#internal-headers) for an example. The bars under the header, such as secondary navigation and steps, are on [Navigation](navigation.html).
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
@@ -296,7 +253,7 @@ Rendered directly from `design-system.css`. On a narrow screen the bar folds its
 - `.ds-search-overlay` — The search overlay: a `hidden` scrim after the header that the shared chrome’s `header.js` opens from the Search link (or Ctrl/Cmd+K), and closes on Escape, a click on the scrim, or focus moving out of it. Without JS the Search link goes to the search page. Its markup is the transitional header’s.
 - `.ds-search-overlay-panel` — The overlay’s panel, hanging from the bottom of the bar at every width. Opening it closes the menu. Its field and hint are the ordinary `.ds-input` and `.ds-hint`.
 
-## Signed out and signed in
+## Signed in
 
 Account-related items display at the right end of the bar and are the only items in a heavier text weight. Signed out it says **Log in**. Signed in it displays a greeting and name, and an **Account** menu that holds Log out. When names are long (and arXiv users have every type and structure of name) we truncate to a reasonable number of characters.
 
@@ -316,27 +273,23 @@ Account-related items display at the right end of the bar and are the only items
 </div>
 ```
 
-```html
-<span class="ds-site-header-greeting">Welcome <b>Sivaramakrishnan</b></span>
-```
-
-- `.ds-site-header-greeting` — The greeting takes the given name only — its first word — because the bar is chrome and a full legal name is more of it than the job needs. Even one word is user data of unbounded length in any script, so it is capped at 14 characters with an ellipsis, as the second example shows. A bar that reflows or overflows on a long name breaks for exactly the people whose names get tested least. The greeting is not a link. It is a statement; the thing you can act on is the Account menu beside it. Making the name itself the link would give that link the accessible name “Ada”, which says nothing about where it goes. It is the first thing dropped on a narrow bar: when the bar runs out of room the greeting hides and Account stays — the menu is the useful half, and the reader already knows their own name.
+- `.ds-site-header-greeting` — The greeting takes the given name only — its first word — because the bar is chrome and a full legal name is more of it than the job needs. Even one word is user data of unbounded length in any script, so it is capped at 14 characters with an ellipsis, as the Long name example shows. A bar that reflows or overflows on a long name breaks for exactly the people whose names get tested least. The greeting is not a link. It is a statement; the thing you can act on is the Account menu beside it. Making the name itself the link would give that link the accessible name “Ada”, which says nothing about where it goes. It is the first thing dropped on a narrow bar: when the bar runs out of room the greeting hides and Account stays — the menu is the useful half, and the reader already knows their own name.
+- `.ds-site-header-greeting > b` — The name. The stylesheet caps it at 14 characters and ends it with an ellipsis; the host passes the given name and nothing else.
 - `.ds-site-header-login` — The same emphasis slot as when signed out, now on the `<summary>` of an Account menu (`.ds-site-header-dropdown`). The slot is about rank in the bar, not about which of the two words is in it.
 - `<form method="post">` — Log out is a button in a form that posts, never a link. A link can be followed by a browser prefetch or from another site, and logging someone out changes their state.
-- `.ds-site-header-greeting > b` — The name. The stylesheet caps it at 14 characters and ends it with an ellipsis; the host passes the given name and nothing else.
 
 ## On small screens
 
-The header fits itself to the space it has, and nobody has to plan for it. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button. On a public bar the tools and the account area fold into the same menu, so the bar keeps the logo, the Search icon and the menu button, and the menu lists the navigation, the theme control, then Log in or Account. On an internal bar the account area stays, and the tools fold behind a second button. There is no breakpoint to choose, no button to add and no script to write: loading `header.js` is the whole job, and a header whose content changes later still fits.
+The header fits itself to the space it has. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button. On a public bar the tools and the account area fold into the same menu, so the bar keeps the logo, the Search icon and the menu button. An internal bar folds the same way at its last step, with its search fields behind a Search button of their own; see [Internal header](#internal-headers). The transitional header folds its navigation when the window is narrower than 600px.
 
 ```html
 <!-- Once per page, after the header. Nothing else changes. -->
 <script src="header.js" defer></script>
 ```
 
-- `header.js` — The only thing to add, once per page. It finds every `.ds-site-header` on the page and keeps each one on a single row. Without JavaScript the bar wraps onto more rows instead, so nothing is ever hidden.
-- `.ds-site-header-nav-toggle, .ds-site-header-tools-toggle` — The menu button and, on an internal bar, the tools button. The script adds each one just before the region it opens, so they are not in the markup. Each has `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button. On a public bar the menu button controls the navigation, the tools and the account area together.
-- `.is-collapsible, .is-single-menu, .is-greeting-hidden, .is-nav-collapsed, .is-tools-collapsed, .is-menu-open, .is-overfull, .is-open, .is-measuring` — State classes the script sets on the bar and on an open region. They are never written by hand. `.is-single-menu` marks a public bar, a bar with an account area outside `.ds-internal`, whose menu holds all three regions. `.is-overfull` lets the bar wrap when even the folded bar is too wide for its space.
+- `header.js` — These docs’ fold-by-fit script, `docs/header.js`, once per page. It finds every `.ds-site-header` and keeps each one on a single row, with no breakpoint to choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The templates load their own script, so a page that uses them adds none.
+- `.ds-site-header-nav-toggle, .ds-site-header-tools-toggle` — The menu button, and a second button: Search on a folded internal bar, or Tools on a bar that has tools and no navigation. The script adds each one, so they are not in the markup. Each has `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button.
+- `.is-collapsible, .is-single-menu, .is-greeting-hidden, .is-nav-collapsed, .is-tools-collapsed, .is-menu-open, .is-overfull, .is-open, .is-measuring` — State classes the script sets on the bar and on an open region. They are never written by hand. `.is-single-menu` marks a bar whose menu holds the navigation, the tools and the account area: a public bar once folded, an internal bar at its last fold. `.is-overfull` lets the bar wrap when even the folded bar is too wide for its space.
 
 > The script answers to the width of the bar, not of the window, so the phone example folds inside a narrower box on a wide screen. Open the menu to see the folded rows.
 
@@ -373,106 +326,17 @@ A property whose sections need grouping adds `.ds-site-header-dropdown`, built o
 - `.ds-panel-label` — Group headings inside a menu use the system-wide label, not a bespoke class.
 - `aria-current="page"` — On the menu link for the page the reader is on. The menu shows it in bold, and a screen reader announces it.
 
-## Secondary navigation
-
-A row of section links directly under the header, for an area that has its own sections, such as the account pages. It wraps onto a second line rather than scrolling sideways, so every section stays visible on a phone and at high zoom. To switch views within one page, use [tabs](progressive-disclosure.html#tabs).
-
-```html
-<header class="ds-site-header">…</header>
-<nav class="ds-subnav" aria-label="Account sections">
-  <a href="/account">Account home</a>
-  <a href="/account/submissions">Submissions</a>
-  <a href="/account/works" aria-current="page">Works you own</a>
-  <a href="/account/endorse">Endorse</a>
-</nav>
-```
-
-- `.ds-subnav` — A `<nav>` directly after the header, with an `aria-label` that names the area, such as “Account sections”. Plain links; never `role="tab"`, which would promise arrow-key behaviour that page links do not have. Hidden in print.
-- `aria-current="page"` — On the link for the current page. It shows in bold with an underline bar, so the current section never depends on colour alone, and a screen reader announces it.
-- `.ds-internal` — On a parent, it turns the underline bar Access Lime Deep. Nothing else changes.
-
-## Two levels of navigation
-
-An area with its own sections, each with several views, such as a report with parts and views. The sections are the secondary navigation under the header; the views of the current section are a second row inside the page.
-
-```html
-<div class="ds-internal">
-  <div class="ds-subnav">
-    <nav aria-label="Report parts">
-      <a href="#" aria-current="page">Submissions and holds</a>
-      <a href="#">Moderators</a>
-      <a href="#">Recruitment</a>
-    </nav>
-    <form class="ds-filter-bar" method="get" action="#" aria-label="Subject">
-      <div class="ds-filter"><label for="tl-group">Group</label><select id="tl-group"><option>cs</option></select></div>
-      <div class="ds-filter"><label for="tl-archive">Archive</label><select id="tl-archive"><option>cs</option></select></div>
-      <div class="ds-filter"><label for="tl-cat">Category</label><select id="tl-cat"><option>All</option></select></div>
-      <button class="ds-btn" type="submit">Apply</button>
-    </form>
-  </div>
-  <div class="ds-container page-demo page-demo--wide">
-    <h2>Submissions and holds, all of cs</h2>
-    <nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views">
-      <a href="#">Activity charts</a>
-      <a href="#" aria-current="page">Category submission stats</a>
-      <a href="#">Recent releases</a>
-      <a href="#">Recent submissions</a>
-    </nav>
-    <p>The view.</p>
-  </div>
-</div>
-```
-
-- `.ds-subnav` — The first row, directly under the header. Here it holds two groups: a `<nav>` of the area's sections, then a compact [filter bar](tables.html#filter-bar) for choices that apply to every view, such as the subject. The groups sit twice as far apart as the items inside them.
-- `<h1>` — Follows the reader's choices: the open section, then the filters, in that order, such as “Submissions and holds, all of cs” or “Moderators, cs.DC”. The reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page.
-- `.ds-subnav--in-page` — The second level: the views of the current section, in the content column, with the same current marking as the first level. Each view is its own page.
-
-## Steps
-
-The steps of one ordered process, such as a submission, and which one the reader is on. Steps is a variant of the secondary navigation bar. To move through a queue one item at a time, use the [pager](pager.html). Which steps are available is the application's logic: submission, for example, lets the reader go back to a complete step but not jump ahead.
-
-```html
-<nav class="ds-subnav ds-subnav--steps" aria-label="Submission steps">
-  <ol role="list">
-    <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg …check…></span>Start<span class="is-sr-only">, completed</span></a></li>
-    <li><a href="#" aria-current="step"><span class="ds-step-number" aria-hidden="true">5</span>Metadata</a></li>
-    <li><a href="#"><span class="ds-step-number" aria-hidden="true">6</span>Categories</a></li>
-    <li><span><span class="ds-step-number" aria-hidden="true">7</span>Preview<span class="is-sr-only">, not available yet</span></span></li>
-  </ol>
-</nav>
-```
-
-- `.ds-subnav--steps` — On the secondary navigation bar. It holds an `<ol role="list">`, one `<li>` per step. It wraps onto more lines on a narrow screen, so every step stays visible.
-- `.ds-step-number` — The step number in a circle, hidden from screen readers because the list gives the position. A complete step shows a check mark instead of its number.
-- `Complete step` — A link, with the check mark and `.is-sr-only` text “, completed”.
-- `aria-current="step"` — On the link for the current step. It shows in bold with an underline bar and a heavier circle.
-- `Available step` — A link with its number.
-- `Step not available yet` — A `<span>`, not a link, so it is not a tab stop. A dashed circle and `.is-sr-only` text “, not available yet”.
-- `.ds-internal` — On a parent, it turns the underline bar and the current circle Access Lime Deep.
-
 ## With the announcement band  (Modifiers)
 
 When arXiv has something to say to everyone, an announcement band can be displayed above the header bar. Neither is fixed; the two scroll away together. See [Announcement band](messages.html#announcement-band) for the full documentation.
 
 ```html
 <a class="ds-skip-link" href="#main">Skip to main content</a>
-
-<div class="ds-announcement" role="region" aria-label="Announcement">
-  <span class="ds-announcement-text"><img class="ds-announcement-glyph" src="icon_small-smileybones.svg" alt="">arXiv is now an independent nonprofit!</span>
-  <span class="ds-announcement-links"><a class="ds-announcement-link" href="/about">Learn more</a></span>
-  <button type="button" class="ds-close">
-    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M18 6 6 18"/>
-      <path d="m6 6 12 12"/>
-    </svg>
-    <span class="is-sr-only">Dismiss announcement</span>
-  </button>
-</div>
-
+<div id="ds-announcement"></div>
 <header class="ds-site-header">…</header>
 ```
 
-- `.ds-announcement` — The band, placed before `.ds-site-header` and after the skip link. See [Special messages](messages.html#announcement-band) for its parts.
+- `#ds-announcement` — The mount, which the header template writes before the bar. While an announcement is active, `banner.js` draws the band into it; the host writes only the skip link and the include. The band’s parts are on [Special messages](messages.html#announcement-band).
 
 ## The light variant  (Modifiers)
 
@@ -547,37 +411,29 @@ The Admin Console header: the standard bar, with the Admin Console logo. Each in
 - `.ds-site-header-tools > button` — An icon button that acts on the whole tool, such as Refresh or the sidebar toggle. Its name is `.is-sr-only` text. The sidebar toggle has `aria-expanded`, and `aria-controls` naming the sidebar’s `id`.
 - `.ds-site-header-greeting` — The same first-name greeting as the public header, capped at 14 characters.
 
-> The phone example folds inside a narrower box, as [On small screens](#on-small-screens) describes. Open the menu or the tools button to see the folded rows.
+> The phone example folds inside a narrower box, as [On small screens](#on-small-screens) describes. Open the menu or the Search button to see the folded rows.
 
 ## Sticky header  (Modifiers)
 
-Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top of the viewport while the page scrolls, and the stylesheet sets `scroll-padding-top` on the page so a link to a section does not land under the bar. It is not applied to the examples on this page, which already keeps the TOC bar in view.
-
-```html
-<header class="ds-site-header ds-site-header--sticky">…</header>
-```
-
-- `.ds-site-header--sticky` — Sticks the bar to the top of the viewport. A page that uses it keeps no other sticky bar.
+Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top of the viewport while the page scrolls, and the stylesheet sets `scroll-padding-top` on the page so a link to a section does not land under the bar. A page that uses it keeps no other sticky bar. It is not applied to the examples on this page, which already keeps the TOC bar in view.
 
 ## Rules
 
-- **The announcement is temporal.** Render only while active, persist dismissal across arXiv sites, and never attach page-critical function to it. The shared chrome’s `chrome/banner.js` does both: it fetches the shared announcements (`json/announcements.json` on the asset route), shows the band only between an entry’s start and end, and records a dismissal in a cookie on the parent domain (`arxiv.org`). The announcement is data: plain text and its links, never markup. How to put one up: [Banner announcements](doc.html?src=templates/BANNER_ANNOUNCEMENTS.md).
-- **No more than four top-level links.** The logo and Log in do not count. More than four causes cognitive overload and reduces comprehension; resist link-creep permanently (DESIGN-POLICIES).
-- **The host provides the skip link.** The shared templates start at the announcement band, so a host puts `.ds-skip-link` before them, pointing at its own main content.
-- **Log out is in the Account menu.** Signed in, Account opens a menu holding the account page and Log out. Logging out is then one menu away on every page, which matters on shared computers, and still takes two deliberate actions.
-- **Regions, in one order.** Logo, Search (public pages), navigation, tools (optional), account. Every header on every surface keeps this order.
-- **Navigation sits on the right.** On every header, the space after the logo stays empty and the navigation follows it.
-- **Tools hold what one interface needs.** Search fields, icon buttons such as Refresh and the sidebar toggle, and the theme control go in the tools region.
-- **Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link just before the navigation, and it stays in the bar on small screens. Internal tools keep their search fields in the tools region.
-- **Sticky on internal tools only.** `.ds-site-header--sticky` is for internal tools; arxiv.org’s public header scrolls away (DESIGN-POLICIES).
-- **The greeting is the first name, everywhere.** Public and internal headers show the given name only, capped at 14 characters.
-- **One bar under the header.** A page shows either secondary navigation or steps, never both.
-- **No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the secondary navigation show the reader’s place. A tool’s main pages, such as its starting page, are links in the header navigation; the way back is there, not in a link above the page heading.
-- **Type sizes are rem** so browser font-size overrides propagate. In print the header keeps only its logo, 28px tall; the announcement band and the secondary navigation are hidden.
+- A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The [templates README](doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement.
+- **Regions, in one order.** Logo, Search (public pages), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it.
+- **Navigation sits on the right.** The space after the logo stays empty.
+- **No more than four links in arxiv.org’s navigation.** The logo and Log in do not count (DESIGN-POLICIES). A host does not change the template’s navigation.
+- **Tools hold what one page or tool needs.** On public pages: this page’s actions, and in the aspirational header the theme control. On internal tools: search fields and icon buttons such as Refresh and the sidebar toggle.
+- **Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in the tools region.
+- **Log out.** Today a signed-in reader logs out on the account page. In the aspirational header, Log out is in the Account menu, one menu away on every page.
+- **The greeting is the first name.** The aspirational header shows the given name only, capped at 14 characters, on public and internal headers.
+- **Sticky on internal tools only.** arxiv.org’s public header scrolls away (DESIGN-POLICIES).
+- **No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the [secondary navigation](navigation.html#secondary-navigation) show the reader’s place.
+- **Type sizes are rem**, so a reader’s browser font size applies. In print the header keeps only its logo, 28px tall.
 - **The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content.
 - **Name the navigation.** The bar’s links sit in a `<nav>` with an `aria-label`, such as “Main navigation”, so a screen reader user can tell it from the other landmarks on the page.
 - **The wordmark is an image with alt text.** Logo alt text and aria-labels say “archive” — the spoken form of “arXiv” (screen readers otherwise produce “ar-zhiv” or Roman-numeral gibberish).
 - **On arxiv.org nothing in this unit is sticky.** The whole header scrolls away with the page (the one bar a public page may keep in view is the TOC bar — DESIGN-POLICIES). An internal tool that adds `.ds-site-header--sticky` gets `scroll-padding-top` from the stylesheet, so a link to a section does not land under the bar.
-- **The account area is not navigation.** It sits outside the `<nav>`, so a screen reader user who lists landmarks finds only site sections there.
+- **The account area is not navigation.** In the aspirational header it sits outside the `<nav>`, so a screen reader user who lists landmarks finds only site sections there.
 - **Name every search field.** A search field in the bar is a `<form role="search">` with a `<label>`, hidden with `.is-sr-only` if needed, that says what it searches. The placeholder is not the name: it disappears as soon as someone types.
 - **Mark the current page in the markup.** Put `aria-current="page"` on the current link in the secondary navigation and in header menus.

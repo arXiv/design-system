@@ -6,10 +6,11 @@
    greeting goes first, then the navigation collapses behind a menu button.
    On a public bar with an account area, the tools and the account area go
    into the same menu, so the bar keeps only the logo, Search and the menu
-   button. On any other bar the account area stays, and if the bar still does
-   not fit, the tools collapse behind a second button. The script adds the buttons
-   itself, and it
-   answers to the width of the bar, not of the window, so a bar in a narrow
+   button. An internal bar (inside .ds-internal) keeps its tools and account
+   area while they fit; at its last fold its search fields go behind a Search
+   button and everything else into the menu. On a bar with no navigation the
+   tools collapse behind a second button. The script adds the buttons itself,
+   and it answers to the width of the bar, not of the window, so a bar in a narrow
    column collapses too. Without the script the bar wraps onto more rows and
    nothing is hidden.
 
@@ -28,6 +29,7 @@
   var MENU_ICON = ICON + '<path d="M4 12h16"/><path d="M4 18h16"/><path d="M4 6h16"/></svg>';
   var MORE_ICON = ICON + '<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>' +
     '<circle cx="5" cy="12" r="1"/></svg>';
+  var SEARCH_ICON = ICON + '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>';
   var count = 0;
 
   function setUp(header) {
@@ -37,45 +39,52 @@
     if (!nav && !tools) return;
     count += 1;
 
-    // A public bar with an account area has one menu: folded, it holds the
-    // navigation, then the tools, then the account area, each region keeping
-    // its own element.
-    var single = !!(nav && account) && !header.closest('.ds-internal');
-    header.classList.toggle('is-single-menu', single);
+    // A public bar with an account area has one menu from its first fold: it
+    // holds the navigation, then the tools, then the account area, each region
+    // keeping its own element. An internal bar gets the same menu at its last
+    // fold, with its search fields behind a Search button of their own.
+    var internal = !!header.closest('.ds-internal');
+    var single = !!(nav && account) && !internal;
+    var foldsAll = !!nav && internal;
+    var fields = tools && tools.querySelector(':scope > .ds-site-header-search');
 
     function name(region, suffix) {
       if (region && !region.id) region.id = 'ds-site-header-' + suffix + '-' + count;
     }
     name(nav, 'nav');
     name(tools, 'tools');
-    if (single) name(account, 'account');
+    name(account, 'account');
 
     var entries = [];
-    function addButton(regions, className, label, icon) {
+    function addButton(regions, className, label, icon, before) {
       var button = header.querySelector(':scope > .' + className);
       if (!button) {
         button = document.createElement('button');
         button.type = 'button';
         button.className = className;
         button.innerHTML = icon + '<span class="is-sr-only">' + label + '</span>';
-        header.insertBefore(button, regions[0]);
+        header.insertBefore(button, before);
       }
-      button.setAttribute('aria-controls', regions.map(function (r) { return r.id; }).join(' '));
       button.setAttribute('aria-expanded', 'false');
       var entry = { regions: regions, button: button };
       button.addEventListener('click', function () { toggle(entry); });
       entries.push(entry);
+      return entry;
     }
-    if (single) {
-      addButton([nav, tools, account].filter(Boolean), 'ds-site-header-nav-toggle', 'Menu', MENU_ICON);
-    } else {
-      if (nav) addButton([nav], 'ds-site-header-nav-toggle', 'Menu', MENU_ICON);
-      if (tools) addButton([tools], 'ds-site-header-tools-toggle', 'Tools', MORE_ICON);
+    function inMenu() {
+      return header.classList.contains('is-single-menu') ? [nav, tools, account].filter(Boolean) : [nav];
+    }
+    var menu = nav && addButton(inMenu, 'ds-site-header-nav-toggle', 'Menu', MENU_ICON, nav);
+    var search = null;
+    if (tools && !single) {
+      if (!foldsAll) addButton(function () { return [tools]; }, 'ds-site-header-tools-toggle', 'Tools', MORE_ICON, tools);
+      else if (fields) search = addButton(function () { return [tools]; }, 'ds-site-header-tools-toggle', 'Search', SEARCH_ICON, menu.button);
     }
 
     // Each level folds one more thing away: the greeting first, because the
     // reader already knows their own name, then the navigation (on a public
-    // bar, with the tools and the account area), then the tools.
+    // bar, with the tools and the account area), then the tools (on an
+    // internal bar, with the account area).
     var greeting = header.querySelector('.ds-site-header-greeting');
     var steps = [];
     if (greeting) steps.push('is-greeting-hidden');
@@ -89,17 +98,22 @@
 
     function apply(level) {
       steps.forEach(function (cls, i) { header.classList.toggle(cls, i < level); });
+      header.classList.toggle('is-single-menu', single || (foldsAll && level === steps.length));
+      entries.forEach(function (entry) {
+        entry.button.setAttribute('aria-controls', entry.regions().map(function (r) { return r.id; }).join(' '));
+      });
     }
     function setOpen(entry, open) {
-      entry.regions.forEach(function (r) { r.classList.toggle('is-open', open); });
+      entry.regions().forEach(function (r) { r.classList.toggle('is-open', open); });
       entry.button.setAttribute('aria-expanded', String(open));
-      if (single) header.classList.toggle('is-menu-open', open);
+      if (entry === menu) header.classList.toggle('is-menu-open', open && header.classList.contains('is-single-menu'));
+      if (open && entry === search) setTimeout(function () { fields.querySelector('input').focus(); }, 0);
     }
     function closeAll() {
       entries.forEach(function (entry) { setOpen(entry, false); });
     }
     function toggle(entry) {
-      var opening = !entry.regions[0].classList.contains('is-open');
+      var opening = entry.button.getAttribute('aria-expanded') !== 'true';
       closeAll();
       if (opening) setOpen(entry, true);
     }
@@ -158,9 +172,9 @@
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
       entries.forEach(function (entry) {
-        if (!entry.regions[0].classList.contains('is-open')) return;
+        if (entry.button.getAttribute('aria-expanded') !== 'true') return;
         var inside = entry.button === document.activeElement ||
-          entry.regions.some(function (r) { return r.contains(document.activeElement); });
+          entry.regions().some(function (r) { return r.contains(document.activeElement); });
         setOpen(entry, false);
         if (inside) entry.button.focus();
       });

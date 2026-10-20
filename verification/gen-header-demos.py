@@ -48,7 +48,7 @@ def icon(name: str) -> str:
 STATES = [
     ("signed-out", "Signed out", {}, False),
     ("signed-in", "Signed in", {"signed_in": True}, False),
-    ("phone", "Signed out, phone width", {}, True),
+    ("phone", "Phone width", {}, True),
     ("page-actions", "With page actions", {"header_page_actions": (
         f'<a href="#">{icon("file-text")}<span class="is-sr-only">PDF</span></a>'
         f'<button type="button">{icon("list")}<span class="is-sr-only">Contents</span></button>')}, False),

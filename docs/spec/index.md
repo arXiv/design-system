@@ -32,6 +32,7 @@ Nothing else. A digest exists only for a page that has had its review pass.
 These pages have not had their review pass. Read the page itself, and expect the shape to differ.
 
 - brand.html
+- navigation.html
 - outreach.html
 - papers.html
 - search.html
