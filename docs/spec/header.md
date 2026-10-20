@@ -6,7 +6,12 @@ stylesheet: design-system.css
 components:
   - id: transitional-header
     title: "Transitional header (currently in production)"
-    summary: "The header on arxiv.org now. A page includes it from `templates/` rather than copying its markup; the [templates README](doc.html?src=templates/README.md) says how to install it and what each variable does. On arxiv.org the navigation folds behind the menu button when the window is narrower than 600px."
+    summary: "The header on arxiv.org now. A page includes it from `templates/` rather than copying its markup; the [templates README](doc.html?src=templates/README.md) says how to install it and what each variable does. The examples are the template itself, rendered, so they always match production. On arxiv.org the navigation folds behind the menu button when the window is narrower than 600px; the phone example here folds to fit its box."
+    classes:
+      - name: "signed_in"
+        does: "Per session: one \"Account\" link (auth_url + account_path, where the reader logs out) instead of \"Log in\"."
+      - name: "header_page_actions"
+        does: "Per page, this page's actions (its links and buttons) in the bar's tools region (.ds-site-header-tools, after the navigation): host markup, each <a> or <button> a direct child. '' (the default) leaves the region out. Never site navigation, which stays as DESIGN-POLICIES sets it."
   - id: aspirational-header
     title: "Aspirational header (post-migration)"
     summary: "The header arxiv.org will move to. It differs from the transitional header in three ways: the bar has a theme control after the navigation; Log in and Account sit outside the navigation, in the account area; and signed in, the bar shows a greeting and an Account menu that holds Log out."
@@ -136,7 +141,55 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 ## Transitional header (currently in production)
 
-The header on arxiv.org now. A page includes it from `templates/` rather than copying its markup; the [templates README](doc.html?src=templates/README.md) says how to install it and what each variable does. On arxiv.org the navigation folds behind the menu button when the window is narrower than 600px.
+The header on arxiv.org now. A page includes it from `templates/` rather than copying its markup; the [templates README](doc.html?src=templates/README.md) says how to install it and what each variable does. The examples are the template itself, rendered, so they always match production. On arxiv.org the navigation folds behind the menu button when the window is narrower than 600px; the phone example here folds to fit its box.
+
+```html
+<div id="ds-announcement"></div>
+<script src="https://static.arxiv.org/static/design-system/latest/chrome/banner.js" defer></script>
+<script src="https://static.arxiv.org/static/design-system/latest/chrome/header.js" defer></script>
+<header class="ds-site-header ">
+  <a aria-hidden="true" tabindex="-1" href="https://arxiv.org/IgnoreMe" class="is-sr-only"></a>
+  <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
+    <img src="https://static.arxiv.org/static/design-system/latest/logos/arxiv-logo.svg" alt="archive">
+  </a>
+  <a id="ds-search-toggle" class="ds-site-header-search-link" href="https://arxiv.org/search" aria-controls="ds-search-overlay" aria-expanded="false">
+    <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <span>Search</span>
+  </a>
+  <button type="button" id="ds-nav-toggle" class="ds-site-header-nav-toggle"
+    aria-label="Open menu" aria-controls="ds-site-header-nav" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation">
+    <a href="https://arxiv.org/submit">Submit</a>
+    <a href="https://info.arxiv.org/about/donate.html">Donate</a>
+    <span class="ds-site-header-divider" aria-hidden="true"></span>
+    <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
+  </nav>
+</header>
+<div class="ds-search-overlay" id="ds-search-overlay" hidden>
+  <div class="ds-search-overlay-panel" role="search">
+    <form method="GET" action="https://arxiv.org/search">
+      <label for="ds-search-input" class="is-sr-only">Search arXiv</label>
+      <input type="text" name="query" id="ds-search-input" class="ds-input" autocomplete="off"
+        placeholder="Search papers by title, author, abstract, or ID...">
+      <input type="hidden" name="searchtype" value="all">
+      <input type="hidden" name="source" value="header">
+    </form>
+    <p class="ds-hint">
+      Press Enter to search · <a href="https://arxiv.org/search/advanced">Advanced search</a>
+    </p>
+  </div>
+</div>
+```
+
+- `signed_in` — Per session: one "Account" link (auth_url + account_path, where the reader logs out) instead of "Log in".
+- `header_page_actions` — Per page, this page's actions (its links and buttons) in the bar's tools region (.ds-site-header-tools, after the navigation): host markup, each <a> or <button> a direct child. '' (the default) leaves the region out. Never site navigation, which stays as DESIGN-POLICIES sets it.
 
 ## Aspirational header (post-migration)
 
