@@ -6,16 +6,20 @@ stylesheet: design-system.css
 components:
   - id: announcement-band
     title: "Announcement band"
-    summary: "The announcement band is minimal but gets a lot of attention. Use sparingly to maintain its impact. If it is frequently deployed then our users will get used to it and tune it out. It sits above the site header as part of the header unit (full demo on [the header reference page](header.html)). The dismissal action persists across all repositories, but only for that particular banner. A new banner with a new message should display again for all users even if they dismissed the previous one."
+    summary: "The announcement band is minimal but gets a lot of attention. Use sparingly to maintain its impact. If it is frequently deployed then our users will get used to it and tune it out. It sits above the site header as part of the header unit (full demo on [the header reference page](header.html)). The dismissal action persists across all repositories, but only for that particular banner. A new banner with a new message should display again for all users even if they dismissed the previous one. To put one up, see [Banner announcements](doc.html?src=templates/BANNER_ANNOUNCEMENTS.md): the shared announcements file, its fields, and how an entry is checked, previewed and published."
     classes:
       - name: ".ds-announcement"
         does: "The band. Takes `role=\"region\"` and an `aria-label` so a screen reader user can find it and skip it. Goes directly above `.ds-site-header`."
       - name: ".ds-announcement-glyph"
-        does: "The icon: an inline SVG from the [icon set](icons.html) with `aria-hidden=\"true\"`, or an `<img>` with an empty `alt` for one of the bones. Either way it is decoration; the sentence conveys the meaning."
+        does: "The icon: an inline SVG from the [icon set](icons.html) with `aria-hidden=\"true\"`, or an `<img>` with an empty `alt` for one of the bones. Either way it is decoration; the sentence conveys the meaning. It goes first inside `.ds-announcement-text`, so on a narrow screen it stays on the sentence’s first line."
       - name: ".ds-announcement-text"
-        does: "The one sentence."
+        does: "The one sentence, after the glyph."
       - name: ".ds-announcement-link"
-        does: "The one link. An `<a>` with a real `href`."
+        does: "The link. An `<a>` with a real `href`."
+      - name: ".ds-announcement-links"
+        does: "Holds the link, or two, so they wrap together, under the text when it does not fit."
+      - name: ".ds-announcement-sep"
+        does: "Between the two links: an empty `<span aria-hidden=\"true\">` with a no-break space on each side, drawn as a line. The spaces keep it from starting or ending a line, which a typed \"|\" cannot do."
       - name: ".ds-close"
         does: "The dismiss control, last inside the band; the band positions it at the right edge. Remembering the dismissal is the host’s job."
     notes:
@@ -67,16 +71,15 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 ## Announcement band
 
-The announcement band is minimal but gets a lot of attention. Use sparingly to maintain its impact. If it is frequently deployed then our users will get used to it and tune it out. It sits above the site header as part of the header unit (full demo on [the header reference page](header.html)). The dismissal action persists across all repositories, but only for that particular banner. A new banner with a new message should display again for all users even if they dismissed the previous one.
+The announcement band is minimal but gets a lot of attention. Use sparingly to maintain its impact. If it is frequently deployed then our users will get used to it and tune it out. It sits above the site header as part of the header unit (full demo on [the header reference page](header.html)). The dismissal action persists across all repositories, but only for that particular banner. A new banner with a new message should display again for all users even if they dismissed the previous one. To put one up, see [Banner announcements](doc.html?src=templates/BANNER_ANNOUNCEMENTS.md): the shared announcements file, its fields, and how an entry is checked, previewed and published.
 
 ```html
 <div class="ds-announcement" role="region" aria-label="Announcement">
-  <svg class="ds-announcement-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <span class="ds-announcement-text"><svg class="ds-announcement-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M3 11h3l9-7v16l-9-7H3z"/>
     <path d="M19 8a5 5 0 0 1 0 8"/>
-  </svg>
-  <span class="ds-announcement-text">arXiv is now an independent nonprofit.</span>
-  <a class="ds-announcement-link" href="#">Learn more</a>
+  </svg>arXiv is now an independent nonprofit.</span>
+  <span class="ds-announcement-links"><a class="ds-announcement-link" href="#">Learn more</a></span>
   <button type="button" class="ds-close">
     <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M18 6 6 18"/>
@@ -88,9 +91,11 @@ The announcement band is minimal but gets a lot of attention. Use sparingly to m
 ```
 
 - `.ds-announcement` — The band. Takes `role="region"` and an `aria-label` so a screen reader user can find it and skip it. Goes directly above `.ds-site-header`.
-- `.ds-announcement-glyph` — The icon: an inline SVG from the [icon set](icons.html) with `aria-hidden="true"`, or an `<img>` with an empty `alt` for one of the bones. Either way it is decoration; the sentence conveys the meaning.
-- `.ds-announcement-text` — The one sentence.
-- `.ds-announcement-link` — The one link. An `<a>` with a real `href`.
+- `.ds-announcement-glyph` — The icon: an inline SVG from the [icon set](icons.html) with `aria-hidden="true"`, or an `<img>` with an empty `alt` for one of the bones. Either way it is decoration; the sentence conveys the meaning. It goes first inside `.ds-announcement-text`, so on a narrow screen it stays on the sentence’s first line.
+- `.ds-announcement-text` — The one sentence, after the glyph.
+- `.ds-announcement-link` — The link. An `<a>` with a real `href`.
+- `.ds-announcement-links` — Holds the link, or two, so they wrap together, under the text when it does not fit.
+- `.ds-announcement-sep` — Between the two links: an empty `<span aria-hidden="true">` with a no-break space on each side, drawn as a line. The spaces keep it from starting or ending a line, which a typed "|" cannot do.
 - `.ds-close` — The dismiss control, last inside the band; the band positions it at the right edge. Remembering the dismissal is the host’s job.
 
 > Alert vs announcement? An alert belongs to the page’s content and is specific to that user’s journey. The announcement belongs to the site and is for all users.
@@ -137,9 +142,8 @@ Open Blue is our default banner color, and should be overridden sparingly. For m
 
 ```html
 <div class="ds-announcement ds-announcement--maintenance" role="region" aria-label="Announcement">
-  <img class="ds-announcement-glyph" src="assets/images/bones/icon_small-errorbones.svg" alt="">
-  <span class="ds-announcement-text">arXiv will be closed for maintenance on January 1st</span>
-  <a class="ds-announcement-link" href="#">Learn more</a>
+  <span class="ds-announcement-text"><img class="ds-announcement-glyph" src="assets/images/bones/icon_small-errorbones.svg" alt="">arXiv will be closed for maintenance on January 1st</span>
+  <span class="ds-announcement-links"><a class="ds-announcement-link" href="#">Learn more</a></span>
   <button type="button" class="ds-close">
     <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M18 6 6 18"/>
@@ -152,9 +156,8 @@ Open Blue is our default banner color, and should be overridden sparingly. For m
 
 ```html
 <div class="ds-announcement ds-announcement--event" role="region" aria-label="Announcement">
-  <img class="ds-announcement-glyph" src="assets/images/bones/icon_small-smileybones.svg" alt="">
-  <span class="ds-announcement-text">We are celebrating 35 years of open science!</span>
-  <a class="ds-announcement-link" href="#">Join the party</a>
+  <span class="ds-announcement-text"><img class="ds-announcement-glyph" src="assets/images/bones/icon_small-smileybones.svg" alt="">We are celebrating 35 years of open science!</span>
+  <span class="ds-announcement-links"><a class="ds-announcement-link" href="#">Join the party</a></span>
   <button type="button" class="ds-close">
     <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M18 6 6 18"/>
