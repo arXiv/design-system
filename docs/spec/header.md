@@ -100,7 +100,7 @@ components:
   - id: internal-headers
     title: "Internal header"
     group: "Modifiers"
-    summary: "Internal headers use a compact account area, one icon button that opens the account menu, not the greeting and Account menu of the public header. Each internal tool chooses the search fields, navigation and wordmark its users need; the regions, their order and the rules stay the same. Every internal tool uses an internal logo, not the public one, so the reader can tell they are in an internal tool. The internal stylesheet may re-point the bar’s colour tokens and nothing else."
+    summary: "Each internal tool chooses the search fields, navigation and wordmark its users need; the regions, their order and the rules stay the same. Internal headers use a compact account area, one icon button that opens the account menu, not the greeting and Account menu of the public header. Every internal tool uses an internal logo, not the public one, so the reader can tell they are in an internal tool. The internal stylesheet may re-point the bar’s colour tokens and nothing else."
     classes:
       - name: ".ds-site-header-logo img"
         does: "The tool’s own wordmark image, from `assets/images/logos/`. Its alt text names the tool in spoken form, such as “archive Admin Console”."
@@ -349,7 +349,7 @@ For pages about arXiv from outside it, such as this documentation. `.ds-site-hea
 
 ## Internal header  (Modifiers)
 
-Internal headers use a compact account area, one icon button that opens the account menu, not the greeting and Account menu of the public header. Each internal tool chooses the search fields, navigation and wordmark its users need; the regions, their order and the rules stay the same. Every internal tool uses an internal logo, not the public one, so the reader can tell they are in an internal tool. The internal stylesheet may re-point the bar’s colour tokens and nothing else.
+Each internal tool chooses the search fields, navigation and wordmark its users need; the regions, their order and the rules stay the same. Internal headers use a compact account area, one icon button that opens the account menu, not the greeting and Account menu of the public header. Every internal tool uses an internal logo, not the public one, so the reader can tell they are in an internal tool. The internal stylesheet may re-point the bar’s colour tokens and nothing else.
 
 ```html
 <div class="ds-internal">
