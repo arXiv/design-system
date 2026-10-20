@@ -3763,6 +3763,31 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   .ds-site-header-greeting { display: none; }
 }
 
+/* Compact account area: internal tools, where everyone is signed in and the
+   account is rarely the errand. One icon button at the menu buttons' size; the
+   name is the first line of its menu. */
+.ds-site-header-account--compact > .ds-site-header-dropdown > summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  margin-block: -3px;   /* as the menu buttons: the bar stays 52px */
+  padding: 0 6px;
+}
+.ds-site-header-account--compact > .ds-site-header-dropdown > summary svg { width: 22px; height: 22px; flex-shrink: 0; }
+.ds-site-header-account--compact .ds-site-header-menu > p {
+  margin: 0 0 4px;
+  padding: 6px 10px 8px;
+  border-bottom: 1px solid var(--ds-border);
+  font-size: 0.8125rem;
+  color: var(--ds-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-site-header-account--compact .ds-site-header-menu > p > b { font-weight: 600; color: var(--ds-text); }
+
 /* ── .ds-site-header--light ───────────────────────────────────────────────
    The same bar on a property that is not arxiv.org: the design system docs
    today, and the kind of thing an info or outreach site would use. It changes
@@ -3986,6 +4011,17 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   z-index: 60;
 }
 .ds-site-header.is-search-open > .ds-site-header-search.is-open { padding: 8px 16px; }
+/* Folded, the compact account button is a row with its name showing, so the
+   menu's own name line would say it twice. !important only to undo .is-sr-only. */
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account--compact summary { height: auto; margin-block: 0; justify-content: flex-start; }
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account--compact summary > .is-sr-only {
+  position: static !important;
+  width: auto !important; height: auto !important;
+  margin: 0 0 0 var(--ds-gap-glyph) !important;
+  overflow: visible !important;
+  clip: auto !important;
+}
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account--compact .ds-site-header-menu > p { display: none; }
 .ds-site-header.is-collapsible:is(.is-menu-open, .is-search-open) > .is-open:not(:has(~ .is-open)) {
   border-bottom: 1px solid var(--ds-hdr-border);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* the summoned-surface shadow */

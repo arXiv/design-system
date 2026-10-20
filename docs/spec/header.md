@@ -106,8 +106,8 @@ components:
         does: "The tool’s own wordmark image, from `assets/images/logos/`. Its alt text names the tool in spoken form, such as “archive Admin Console”."
       - name: ".ds-site-header-search"
         does: "A `<form role=\"search\">` holding one `.ds-input` and its label, before the navigation, where public pages have the Search link. Two kinds of search are two of these. They stay in the bar while they fit, after the navigation and the account area have folded into the menu; on a phone they open from a Search button."
-      - name: ".ds-site-header-greeting"
-        does: "The same first-name greeting as the public header, capped at 14 characters."
+      - name: ".ds-site-header-account--compact"
+        does: "The account area as one icon button, for internal tools, where everyone is signed in and the account is rarely what they came for. The button’s name, “Account, signed in as Shamsi”, is `.is-sr-only` text; the menu’s first line shows the name, so a person on a shared computer can check whose account they are in. On a phone it folds into the menu, where the name shows beside the icon."
   - id: sticky-header
     title: "Sticky header"
     group: "Modifiers"
@@ -120,7 +120,7 @@ rules:
   - "**Tools hold the theme control and a page’s own actions.** The transitional header has page actions only. A control that acts on the page’s data, such as Refresh, goes beside the page heading, with the time the data was last updated."
   - "**Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in the bar while they fit."
   - "**Log out.** Today a signed-in reader logs out on the account page. In the aspirational header, Log out is in the Account menu, one menu away on every page."
-  - "**The greeting is the first name.** The aspirational header shows the given name only, capped at 14 characters, on public and internal headers."
+  - "**The greeting is the first name.** The aspirational public header shows the given name only, capped at 14 characters. Internal headers use the compact account area, with the name in its menu."
   - "**Sticky on internal tools only.** arxiv.org’s public header scrolls away (DESIGN-POLICIES)."
   - "**No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the [secondary navigation](navigation.html#secondary-navigation) show the reader’s place."
   - "**Type sizes are rem**, so a reader’s browser font size applies. In print the header keeps only its logo, 28px tall."
@@ -372,9 +372,20 @@ The Admin Console header: the standard bar, with the Admin Console logo. Each in
     <a href="/students">Students</a>
   </nav>
   <span class="ds-site-header-divider" aria-hidden="true"></span>
-  <div class="ds-site-header-account">
-    <span class="ds-site-header-greeting">Welcome <b>Shamsi</b></span>
-    <details class="ds-site-header-dropdown">…</details>
+  <div class="ds-site-header-account ds-site-header-account--compact">
+    <details class="ds-site-header-dropdown">
+      <summary class="ds-site-header-login">
+        <svg …>…</svg>   <!-- Lucide circle-user -->
+        <span class="is-sr-only">Account, signed in as Shamsi</span>
+      </summary>
+      <div class="ds-site-header-menu">
+        <p>Signed in as <b>Shamsi</b></p>
+        <a href="/account">Your account</a>
+        <form method="post" action="/logout">
+          <button type="submit">Log out</button>
+        </form>
+      </div>
+    </details>
   </div>
 </header>
 </div>
@@ -382,7 +393,7 @@ The Admin Console header: the standard bar, with the Admin Console logo. Each in
 
 - `.ds-site-header-logo img` — The tool’s own wordmark image, from `assets/images/logos/`. Its alt text names the tool in spoken form, such as “archive Admin Console”.
 - `.ds-site-header-search` — A `<form role="search">` holding one `.ds-input` and its label, before the navigation, where public pages have the Search link. Two kinds of search are two of these. They stay in the bar while they fit, after the navigation and the account area have folded into the menu; on a phone they open from a Search button.
-- `.ds-site-header-greeting` — The same first-name greeting as the public header, capped at 14 characters.
+- `.ds-site-header-account--compact` — The account area as one icon button, for internal tools, where everyone is signed in and the account is rarely what they came for. The button’s name, “Account, signed in as Shamsi”, is `.is-sr-only` text; the menu’s first line shows the name, so a person on a shared computer can check whose account they are in. On a phone it folds into the menu, where the name shows beside the icon.
 
 ## Sticky header  (Modifiers)
 
@@ -397,7 +408,7 @@ Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top o
 - **Tools hold the theme control and a page’s own actions.** The transitional header has page actions only. A control that acts on the page’s data, such as Refresh, goes beside the page heading, with the time the data was last updated.
 - **Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in the bar while they fit.
 - **Log out.** Today a signed-in reader logs out on the account page. In the aspirational header, Log out is in the Account menu, one menu away on every page.
-- **The greeting is the first name.** The aspirational header shows the given name only, capped at 14 characters, on public and internal headers.
+- **The greeting is the first name.** The aspirational public header shows the given name only, capped at 14 characters. Internal headers use the compact account area, with the name in its menu.
 - **Sticky on internal tools only.** arxiv.org’s public header scrolls away (DESIGN-POLICIES).
 - **No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the [secondary navigation](navigation.html#secondary-navigation) show the reader’s place.
 - **Type sizes are rem**, so a reader’s browser font size applies. In print the header keeps only its logo, 28px tall.
