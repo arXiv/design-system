@@ -3,9 +3,12 @@
      <script src="header.js" defer></script>
 
    Nothing else is needed. When the bar's regions do not fit on one row, the
-   navigation collapses behind a menu button; if the bar still does not fit,
-   the tools region collapses behind a second button. The logo and the account
-   area always stay in the bar. The script adds both buttons itself, and it
+   greeting goes first, then the navigation collapses behind a menu button.
+   On a public bar with an account area, the tools and the account area go
+   into the same menu, so the bar keeps only the logo, Search and the menu
+   button. On any other bar the account area stays, and if the bar still does
+   not fit, the tools collapse behind a second button. The script adds the buttons
+   itself, and it
    answers to the width of the bar, not of the window, so a bar in a narrow
    column collapses too. Without the script the bar wraps onto more rows and
    nothing is hidden.
@@ -30,36 +33,54 @@
   function setUp(header) {
     var nav = header.querySelector(':scope > .ds-site-header-nav');
     var tools = header.querySelector(':scope > .ds-site-header-tools');
+    var account = header.querySelector(':scope > .ds-site-header-account');
     if (!nav && !tools) return;
     count += 1;
 
-    var panels = [];
-    function addButton(panel, className, label, icon, suffix) {
-      if (!panel.id) panel.id = 'ds-site-header-' + suffix + '-' + count;
+    // A public bar with an account area has one menu: folded, it holds the
+    // navigation, then the tools, then the account area, each region keeping
+    // its own element.
+    var single = !!(nav && account) && !header.closest('.ds-internal');
+    header.classList.toggle('is-single-menu', single);
+
+    function name(region, suffix) {
+      if (region && !region.id) region.id = 'ds-site-header-' + suffix + '-' + count;
+    }
+    name(nav, 'nav');
+    name(tools, 'tools');
+    if (single) name(account, 'account');
+
+    var entries = [];
+    function addButton(regions, className, label, icon) {
       var button = header.querySelector(':scope > .' + className);
       if (!button) {
         button = document.createElement('button');
         button.type = 'button';
         button.className = className;
         button.innerHTML = icon + '<span class="is-sr-only">' + label + '</span>';
-        header.insertBefore(button, panel);
+        header.insertBefore(button, regions[0]);
       }
-      button.setAttribute('aria-controls', panel.id);
+      button.setAttribute('aria-controls', regions.map(function (r) { return r.id; }).join(' '));
       button.setAttribute('aria-expanded', 'false');
-      var entry = { panel: panel, button: button };
+      var entry = { regions: regions, button: button };
       button.addEventListener('click', function () { toggle(entry); });
-      panels.push(entry);
+      entries.push(entry);
     }
-    if (nav) addButton(nav, 'ds-site-header-nav-toggle', 'Menu', MENU_ICON, 'nav');
-    if (tools) addButton(tools, 'ds-site-header-tools-toggle', 'Tools', MORE_ICON, 'tools');
+    if (single) {
+      addButton([nav, tools, account].filter(Boolean), 'ds-site-header-nav-toggle', 'Menu', MENU_ICON);
+    } else {
+      if (nav) addButton([nav], 'ds-site-header-nav-toggle', 'Menu', MENU_ICON);
+      if (tools) addButton([tools], 'ds-site-header-tools-toggle', 'Tools', MORE_ICON);
+    }
 
     // Each level folds one more thing away: the greeting first, because the
-    // reader already knows their own name, then the navigation, then the tools.
+    // reader already knows their own name, then the navigation (on a public
+    // bar, with the tools and the account area), then the tools.
     var greeting = header.querySelector('.ds-site-header-greeting');
     var steps = [];
     if (greeting) steps.push('is-greeting-hidden');
     if (nav) steps.push('is-nav-collapsed');
-    if (tools) steps.push('is-tools-collapsed');
+    if (tools && !single) steps.push('is-tools-collapsed');
     var all = [];
     for (var n = 0; n <= steps.length; n++) all.push(n);
     var levels = all;
@@ -69,19 +90,18 @@
     function apply(level) {
       steps.forEach(function (cls, i) { header.classList.toggle(cls, i < level); });
     }
+    function setOpen(entry, open) {
+      entry.regions.forEach(function (r) { r.classList.toggle('is-open', open); });
+      entry.button.setAttribute('aria-expanded', String(open));
+      if (single) header.classList.toggle('is-menu-open', open);
+    }
     function closeAll() {
-      panels.forEach(function (p) {
-        p.panel.classList.remove('is-open');
-        p.button.setAttribute('aria-expanded', 'false');
-      });
+      entries.forEach(function (entry) { setOpen(entry, false); });
     }
     function toggle(entry) {
-      var opening = !entry.panel.classList.contains('is-open');
+      var opening = !entry.regions[0].classList.contains('is-open');
       closeAll();
-      if (opening) {
-        entry.panel.classList.add('is-open');
-        entry.button.setAttribute('aria-expanded', 'true');
-      }
+      if (opening) setOpen(entry, true);
     }
     function measure() {
       header.classList.add('is-measuring');
@@ -137,12 +157,12 @@
     // was inside the region, so Escape elsewhere on the page never moves it.
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
-      panels.forEach(function (p) {
-        if (!p.panel.classList.contains('is-open')) return;
-        var inside = p.panel.contains(document.activeElement) || p.button === document.activeElement;
-        p.panel.classList.remove('is-open');
-        p.button.setAttribute('aria-expanded', 'false');
-        if (inside) p.button.focus();
+      entries.forEach(function (entry) {
+        if (!entry.regions[0].classList.contains('is-open')) return;
+        var inside = entry.button === document.activeElement ||
+          entry.regions.some(function (r) { return r.contains(document.activeElement); });
+        setOpen(entry, false);
+        if (inside) entry.button.focus();
       });
     });
     document.addEventListener('click', function (e) {

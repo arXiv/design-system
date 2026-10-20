@@ -14,7 +14,7 @@ components:
         does: "Per page, this page's actions (its links and buttons) in the bar's tools region (.ds-site-header-tools, after the navigation): host markup, each <a> or <button> a direct child. '' (the default) leaves the region out. Never site navigation, which stays as DESIGN-POLICIES sets it."
   - id: aspirational-header
     title: "Aspirational header (post-migration)"
-    summary: "The header arxiv.org will move to. It differs from the transitional header in three ways: the theme control follows the navigation; Log in and Account sit outside the navigation and stay in the bar at every width; and signed in, the bar shows a greeting and an Account menu that holds Log out."
+    summary: "The header arxiv.org will move to. It differs from the transitional header in three ways: the bar has a theme control after the navigation; Log in and Account sit outside the navigation, in the account area; and signed in, the bar shows a greeting and an Account menu that holds Log out."
   - id: the-header-unit
     title: "The header unit"
     summary: "Rendered directly from `design-system.css`. On a narrow screen the bar folds itself to fit; see [On small screens](#on-small-screens). The header is static — it scrolls away with the page (on arxiv.org the site header is never the sticky bar — DESIGN-POLICIES.md). Every header has the same regions, in this order: logo, Search (public pages), navigation, tools (optional), and account."
@@ -38,7 +38,7 @@ components:
       - name: ".ds-theme-toggle"
         does: "The theme control, with its live region `#ds-theme-status`. See [The theme control](dark-mode.html#the-theme-control)."
       - name: ".ds-site-header-account"
-        does: "The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section. It stays in the bar at every width."
+        does: "The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section. On a phone it folds into the menu with the navigation, as the last rows."
       - name: ".ds-site-header-login"
         does: "The emphasis slot, and the only item in the bar that takes weight. Signed out it is the *Log in* link. Signed in it is the *Account* menu, with the greeting beside it."
       - name: ".ds-site-header-dropdown"
@@ -61,14 +61,14 @@ components:
         does: "The name. The stylesheet caps it at 14 characters and ends it with an ellipsis; the host passes the given name and nothing else."
   - id: on-small-screens
     title: "On small screens"
-    summary: "The header fits itself to the space it has, and nobody has to plan for it. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button, then the tools fold behind a second button. The logo, the Search link and the account area always stay in the bar; Search keeps only its icon, beside the menu button. There is no breakpoint to choose, no button to add and no script to write: loading `header.js` is the whole job, and a header whose content changes later still fits."
+    summary: "The header fits itself to the space it has, and nobody has to plan for it. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button. On a public bar the tools and the account area fold into the same menu, so the bar keeps the logo, the Search icon and the menu button, and the menu lists the navigation, the theme control, then Log in or Account. On an internal bar the account area stays, and the tools fold behind a second button. There is no breakpoint to choose, no button to add and no script to write: loading `header.js` is the whole job, and a header whose content changes later still fits."
     classes:
       - name: "header.js"
         does: "The only thing to add, once per page. It finds every `.ds-site-header` on the page and keeps each one on a single row. Without JavaScript the bar wraps onto more rows instead, so nothing is ever hidden."
       - name: ".ds-site-header-nav-toggle, .ds-site-header-tools-toggle"
-        does: "The menu button and the tools button. The script adds each one just before the region it opens, so they are not in the markup. Each has `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button."
-      - name: ".is-collapsible, .is-greeting-hidden, .is-nav-collapsed, .is-tools-collapsed, .is-overfull, .is-open, .is-measuring"
-        does: "State classes the script sets on the bar and on an open region. They are never written by hand. `.is-overfull` lets the bar wrap when even the folded bar is too wide for its space."
+        does: "The menu button and, on an internal bar, the tools button. The script adds each one just before the region it opens, so they are not in the markup. Each has `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button. On a public bar the menu button controls the navigation, the tools and the account area together."
+      - name: ".is-collapsible, .is-single-menu, .is-greeting-hidden, .is-nav-collapsed, .is-tools-collapsed, .is-menu-open, .is-overfull, .is-open, .is-measuring"
+        does: "State classes the script sets on the bar and on an open region. They are never written by hand. `.is-single-menu` marks a public bar, a bar with an account area outside `.ds-internal`, whose menu holds all three regions. `.is-overfull` lets the bar wrap when even the folded bar is too wide for its space."
     notes:
       - "The script answers to the width of the bar, not of the window, so the phone example folds inside a narrower box on a wide screen. Open the menu to see the folded rows."
   - id: header-dropdown-menus
@@ -245,7 +245,7 @@ The header on arxiv.org now. A page includes it from `templates/` rather than co
 
 ## Aspirational header (post-migration)
 
-The header arxiv.org will move to. It differs from the transitional header in three ways: the theme control follows the navigation; Log in and Account sit outside the navigation and stay in the bar at every width; and signed in, the bar shows a greeting and an Account menu that holds Log out.
+The header arxiv.org will move to. It differs from the transitional header in three ways: the bar has a theme control after the navigation; Log in and Account sit outside the navigation, in the account area; and signed in, the bar shows a greeting and an Account menu that holds Log out.
 
 ## The header unit
 
@@ -290,7 +290,7 @@ Rendered directly from `design-system.css`. On a narrow screen the bar folds its
 - `.ds-site-header-divider` — A vertical hairline between groups of links or between regions, on the bar’s own divider token. Takes `aria-hidden="true"`. Hidden while the navigation is folded away.
 - `.ds-site-header-tools` — Optional. The controls one interface needs, after the navigation. On public pages it holds the theme control; internal tools add search fields and icon buttons. See [Internal header](#internal-headers).
 - `.ds-theme-toggle` — The theme control, with its live region `#ds-theme-status`. See [The theme control](dark-mode.html#the-theme-control).
-- `.ds-site-header-account` — The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section. It stays in the bar at every width.
+- `.ds-site-header-account` — The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section. On a phone it folds into the menu with the navigation, as the last rows.
 - `.ds-site-header-login` — The emphasis slot, and the only item in the bar that takes weight. Signed out it is the *Log in* link. Signed in it is the *Account* menu, with the greeting beside it.
 - `.ds-site-header-dropdown` — A menu group in the bar, built on `<details>`. See [Header dropdown menus](#header-dropdown-menus).
 - `.ds-search-overlay` — The search overlay: a `hidden` scrim after the header that the shared chrome’s `header.js` opens from the Search link (or Ctrl/Cmd+K), and closes on Escape, a click on the scrim, or focus moving out of it. Without JS the Search link goes to the search page. Its markup is the transitional header’s.
@@ -327,7 +327,7 @@ Account-related items display at the right end of the bar and are the only items
 
 ## On small screens
 
-The header fits itself to the space it has, and nobody has to plan for it. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button, then the tools fold behind a second button. The logo, the Search link and the account area always stay in the bar; Search keeps only its icon, beside the menu button. There is no breakpoint to choose, no button to add and no script to write: loading `header.js` is the whole job, and a header whose content changes later still fits.
+The header fits itself to the space it has, and nobody has to plan for it. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button. On a public bar the tools and the account area fold into the same menu, so the bar keeps the logo, the Search icon and the menu button, and the menu lists the navigation, the theme control, then Log in or Account. On an internal bar the account area stays, and the tools fold behind a second button. There is no breakpoint to choose, no button to add and no script to write: loading `header.js` is the whole job, and a header whose content changes later still fits.
 
 ```html
 <!-- Once per page, after the header. Nothing else changes. -->
@@ -335,8 +335,8 @@ The header fits itself to the space it has, and nobody has to plan for it. When 
 ```
 
 - `header.js` — The only thing to add, once per page. It finds every `.ds-site-header` on the page and keeps each one on a single row. Without JavaScript the bar wraps onto more rows instead, so nothing is ever hidden.
-- `.ds-site-header-nav-toggle, .ds-site-header-tools-toggle` — The menu button and the tools button. The script adds each one just before the region it opens, so they are not in the markup. Each has `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button.
-- `.is-collapsible, .is-greeting-hidden, .is-nav-collapsed, .is-tools-collapsed, .is-overfull, .is-open, .is-measuring` — State classes the script sets on the bar and on an open region. They are never written by hand. `.is-overfull` lets the bar wrap when even the folded bar is too wide for its space.
+- `.ds-site-header-nav-toggle, .ds-site-header-tools-toggle` — The menu button and, on an internal bar, the tools button. The script adds each one just before the region it opens, so they are not in the markup. Each has `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button. On a public bar the menu button controls the navigation, the tools and the account area together.
+- `.is-collapsible, .is-single-menu, .is-greeting-hidden, .is-nav-collapsed, .is-tools-collapsed, .is-menu-open, .is-overfull, .is-open, .is-measuring` — State classes the script sets on the bar and on an open region. They are never written by hand. `.is-single-menu` marks a public bar, a bar with an account area outside `.ds-internal`, whose menu holds all three regions. `.is-overfull` lets the bar wrap when even the folded bar is too wide for its space.
 
 > The script answers to the width of the bar, not of the window, so the phone example folds inside a narrower box on a wide screen. Open the menu to see the folded rows.
 
