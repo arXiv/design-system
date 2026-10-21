@@ -54,7 +54,7 @@ components:
       - "Popovers resize to the content but should be reserved for short pieces of information. If the content gets too long it may not be contained within the viewport."
   - id: tabs
     title: "Tabs"
-    summary: "Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](header.html#secondary-navigation) instead."
+    summary: "Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](navigation.html#secondary-navigation) instead."
     classes:
       - name: ".ds-tabs"
         does: "Holds two or more panels. `data-label` names the set for a screen reader."
@@ -219,7 +219,7 @@ A quick lookup the reader can access without losing their place. Popovers are us
 
 ## Tabs
 
-Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](header.html#secondary-navigation) instead.
+Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](navigation.html#secondary-navigation) instead.
 
 ```html
 <div class="ds-tabs" data-label="Membership activity">

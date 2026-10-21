@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Navigation — arXiv Design System</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
+<script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
+</head>
+<body class="ds-page">
+<!-- The docs site's own header (the light variant). It is not a pattern: build pages from the header in templates/ and docs/header.html. -->
+<header class="ds-site-header ds-site-header--light">
+  <a class="ds-site-header-logo" href="../index.html"><span aria-hidden="true">arXiv Design System</span><span class="is-sr-only">archive Design System</span></a>
+  <nav class="ds-site-header-nav" aria-label="Design system">
+    <details class="ds-site-header-dropdown">
+      <summary>Design Patterns</summary>
+      <div class="ds-site-header-menu">
+        <span class="ds-panel-label">Components</span>
+        <a href="colors.html">Colors</a>
+        <a href="dark-mode.html">Dark mode</a>
+        <a href="typography.html">Typography</a>
+        <a href="spacing.html">Spacing</a>
+        <a href="icons.html">Icons</a>
+        <a href="buttons.html">Buttons</a>
+        <a href="links.html">Links</a>
+        <a href="forms.html">Forms &amp; validation</a>
+        <a href="alerts.html">Alerts</a>
+        <a href="messages.html">Messaging</a>
+        <a href="tags.html">Tags</a>
+        <a href="header.html">Site header</a>
+        <a href="footer.html">Site footer</a>
+        <a href="navigation.html" aria-current="page">Navigation</a>
+        <a href="pager.html">Pager</a>
+        <span class="ds-panel-label">Organizing content</span>
+        <a href="layout-patterns.html">Layouts</a>
+        <a href="cards.html">Cards</a>
+        <a href="tables.html">Tables</a>
+        <a href="search.html">Search</a>
+        <a href="progressive-disclosure.html">Progressive disclosure</a>
+        <a href="modals.html">Modal dialogs</a>
+        <a href="papers.html">Papers</a>
+        </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Mockups</summary>
+      <div class="ds-site-header-menu">
+        <a href="../whiteboard/mockups/">All mockups</a>
+        <span class="ds-panel-label">Public</span>
+        <a href="../whiteboard/mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+        <a href="../whiteboard/mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+        <a href="../whiteboard/mockups/public/optin-modal/">Labs opt-in modal</a>
+        <a href="../whiteboard/mockups/public/submission-metadata/">Submission — Metadata Form</a>
+        <span class="ds-panel-label">Internal</span>
+        <a href="../whiteboard/mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+        <a href="../whiteboard/mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+        <a href="../whiteboard/mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+        <a href="../whiteboard/mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+        <a href="../whiteboard/mockups/internal/activity-dashboard/">Activity dashboard</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Docs</summary>
+      <div class="ds-site-header-menu">
+        <a href="using.html">Using the system</a>
+        <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+        <a href="doc.html?src=docs/STYLE.md">Writing style</a>
+        <a href="brand.html">Brand &amp; vision</a>
+        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
+        <a href="doc.html?src=README.md">About this repo</a>
+      </div>
+    </details>
+  </nav>
+  <div class="ds-site-header-tools">
+    <button type="button" class="ds-theme-toggle"></button>
+    <span id="ds-theme-status" class="is-sr-only" role="status"></span>
+  </div>
+</header>
+
+<div class="ds-container">
+
+  <div class="ds-full ds-zone-secondary">
+  <header class="ds-page-header">
+    <h1>Navigation</h1>
+    <p>The bars under the <a href="header.html">site header</a> that tell a reader where they are inside an area: secondary navigation, two levels of it, and steps.</p>
+  </header>
+  </div>
+
+
+  <!-- ═════════ TOC ═════════ -->
+  <div class="ds-full ds-toc-bar">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#secondary-navigation">Secondary navigation</a></li>
+            <li><a href="#two-levels-of-navigation">Two levels of navigation</a></li>
+            <li><a href="#steps">Steps</a></li>
+            <li><a href="#internal">Internal</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ═════════ Core ═════════ -->
+
+  <!-- ───────── Secondary navigation ───────── -->
+  <section>
+    <h2 id="secondary-navigation">Secondary navigation</h2>
+    <p class="ds-section-desc">A row of section links directly under the header, for an area that has its own sections, such as the account pages. It wraps onto a second line rather than scrolling sideways, so every section stays visible on a phone and at high zoom. To switch views within one page, use <a href="progressive-disclosure.html#tabs">tabs</a>.</p>
+    <div class="ds-card">
+      <header class="ds-site-header">
+        <a href="#" class="ds-site-header-logo" aria-label="archive home">
+          <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
+        </a>
+        <a href="#" class="ds-site-header-search-link"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></a>
+        <nav class="ds-site-header-nav" aria-label="Secondary navigation example, main">
+          <a href="#">Submit</a>
+          <a href="#">Donate</a>
+        </nav>
+        <div class="ds-site-header-tools">
+          <button type="button" class="ds-theme-toggle"></button>
+        </div>
+        <span class="ds-site-header-divider" aria-hidden="true"></span>
+        <div class="ds-site-header-account">
+          <span class="ds-site-header-greeting">Welcome <b>Ada</b></span>
+          <details class="ds-site-header-dropdown">
+            <summary class="ds-site-header-login">Account</summary>
+            <div class="ds-site-header-menu">
+              <a href="#">Your account</a>
+              <form method="post" action="#" onsubmit="return false">
+                <button type="submit">Log out</button>
+              </form>
+            </div>
+          </details>
+        </div>
+      </header>
+      <nav class="ds-subnav" aria-label="Account sections">
+        <a href="#">Account home</a>
+        <a href="#">Submissions</a>
+        <a href="#" aria-current="page">Works you own</a>
+        <a href="#">Endorse</a>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;header class="ds-site-header"&gt;…&lt;/header&gt;
+&lt;nav class="ds-subnav" aria-label="Account sections"&gt;
+  &lt;a href="/account"&gt;Account home&lt;/a&gt;
+  &lt;a href="/account/submissions"&gt;Submissions&lt;/a&gt;
+  &lt;a href="/account/works" aria-current="page"&gt;Works you own&lt;/a&gt;
+  &lt;a href="/account/endorse"&gt;Endorse&lt;/a&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-subnav</dt>
+            <dd>A <code>&lt;nav&gt;</code> directly after the header, with an <code>aria-label</code>
+            that names the area, such as “Account sections”. Plain links; never
+            <code>role="tab"</code>, which would promise arrow-key behaviour that page links do not
+            have. Hidden in print.</dd>
+            <dt>aria-current="page"</dt>
+            <dd>On the link for the current page. It shows in bold with an underline bar, so the
+            current section never depends on colour alone, and a screen reader announces it.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Two levels ───────── -->
+  <section>
+    <h2 id="two-levels-of-navigation">Two levels of navigation</h2>
+    <p class="ds-section-desc">An area with its own sections, each with several views, such as a report with parts and views. The sections are the secondary navigation under the header; the views of the current section are a second row inside the page.</p>
+    <div class="ds-card">
+      <div class="ds-internal">
+        <div class="ds-subnav">
+          <nav aria-label="Report parts">
+            <a href="#" aria-current="page">Submissions and holds</a>
+            <a href="#">Moderators</a>
+            <a href="#">Recruitment</a>
+          </nav>
+          <form class="ds-filter-bar" method="get" action="#" aria-label="Subject">
+            <div class="ds-filter"><label for="tl-group">Group</label><select id="tl-group"><option>cs</option></select></div>
+            <div class="ds-filter"><label for="tl-archive">Archive</label><select id="tl-archive"><option>cs</option></select></div>
+            <div class="ds-filter"><label for="tl-cat">Category</label><select id="tl-cat"><option>All</option></select></div>
+            <button class="ds-btn" type="submit">Apply</button>
+          </form>
+        </div>
+        <div class="ds-container page-demo page-demo--wide">
+          <h2>Submissions and holds, all of cs</h2>
+          <nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views">
+            <a href="#">Activity charts</a>
+            <a href="#" aria-current="page">Category submission stats</a>
+            <a href="#">Recent releases</a>
+            <a href="#">Recent submissions</a>
+          </nav>
+          <p>The view.</p>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-internal"&gt;
+  &lt;div class="ds-subnav"&gt;
+    &lt;nav aria-label="Report parts"&gt;
+      &lt;a href="#" aria-current="page"&gt;Submissions and holds&lt;/a&gt;
+      &lt;a href="#"&gt;Moderators&lt;/a&gt;
+      &lt;a href="#"&gt;Recruitment&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;form class="ds-filter-bar" method="get" action="#" aria-label="Subject"&gt;
+      &lt;div class="ds-filter"&gt;&lt;label for="tl-group"&gt;Group&lt;/label&gt;&lt;select id="tl-group"&gt;&lt;option&gt;cs&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+      &lt;div class="ds-filter"&gt;&lt;label for="tl-archive"&gt;Archive&lt;/label&gt;&lt;select id="tl-archive"&gt;&lt;option&gt;cs&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+      &lt;div class="ds-filter"&gt;&lt;label for="tl-cat"&gt;Category&lt;/label&gt;&lt;select id="tl-cat"&gt;&lt;option&gt;All&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+      &lt;button class="ds-btn" type="submit"&gt;Apply&lt;/button&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+  &lt;div class="ds-container page-demo page-demo--wide"&gt;
+    &lt;h2&gt;Submissions and holds, all of cs&lt;/h2&gt;
+    &lt;nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views"&gt;
+      &lt;a href="#"&gt;Activity charts&lt;/a&gt;
+      &lt;a href="#" aria-current="page"&gt;Category submission stats&lt;/a&gt;
+      &lt;a href="#"&gt;Recent releases&lt;/a&gt;
+      &lt;a href="#"&gt;Recent submissions&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;p&gt;The view.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-subnav</dt>
+            <dd>The first row, directly under the header. Here it holds two groups: a <code>&lt;nav&gt;</code> of the area&#39;s sections, then a compact <a href="tables.html#filter-bar">filter bar</a> for choices that apply to every view, such as the subject. The groups sit twice as far apart as the items inside them.</dd>
+            <dt>&lt;h1&gt;</dt>
+            <dd>Follows the reader&#39;s choices: the open section, then the filters, in that order, such as &ldquo;Submissions and holds, all of cs&rdquo; or &ldquo;Moderators, cs.DC&rdquo;. The reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page.</dd>
+            <dt>.ds-subnav--in-page</dt>
+            <dd>The second level: the views of the current section, in the content column, with the same current marking as the first level. Each view is its own page.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+    <ul class="notes">
+      <li><strong>Two levels at most.</strong> A third level is a sign the content needs restructuring.</li>
+      <li><strong>Each row keeps the same links on every page it appears on.</strong> Only the current link changes.</li>
+      <li><strong>Choices that apply to one view go inside that view</strong>, below the second row.</li>
+      <li><strong>When the views share one address</strong> and swap in place, use <a href="progressive-disclosure.html#tabs">tabs</a> for the second level instead.</li>
+    </ul>
+  </section>
+
+  <!-- ───────── Steps ───────── -->
+  <section>
+    <h2 id="steps">Steps</h2>
+    <p class="ds-section-desc">The steps of one ordered process, such as a submission, and which one the reader is on. Steps is a variant of the secondary navigation bar. To move through a queue one item at a time, use the <a href="pager.html">pager</a>. Which steps are available is the application's logic: submission, for example, lets the reader go back to a complete step but not jump ahead.</p>
+    <div class="ds-card">
+      <nav class="ds-subnav ds-subnav--steps" aria-label="Submission steps">
+        <ol role="list">
+            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Start<span class="is-sr-only">, completed</span></a></li>
+            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>License<span class="is-sr-only">, completed</span></a></li>
+            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Files<span class="is-sr-only">, completed</span></a></li>
+            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Process<span class="is-sr-only">, completed</span></a></li>
+            <li><a href="#" aria-current="step"><span class="ds-step-number" aria-hidden="true">5</span>Metadata</a></li>
+            <li><a href="#"><span class="ds-step-number" aria-hidden="true">6</span>Categories</a></li>
+            <li><span><span class="ds-step-number" aria-hidden="true">7</span>Preview<span class="is-sr-only">, not available yet</span></span></li>
+            <li><span><span class="ds-step-number" aria-hidden="true">8</span>Submit<span class="is-sr-only">, not available yet</span></span></li>
+        </ol>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav class="ds-subnav ds-subnav--steps" aria-label="Submission steps"&gt;
+  &lt;ol role="list"&gt;
+    &lt;li&gt;&lt;a href="#"&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;&lt;svg …check…&gt;&lt;/span&gt;Start&lt;span class="is-sr-only"&gt;, completed&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#" aria-current="step"&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;5&lt;/span&gt;Metadata&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;6&lt;/span&gt;Categories&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;7&lt;/span&gt;Preview&lt;span class="is-sr-only"&gt;, not available yet&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-subnav--steps</dt>
+            <dd>On the secondary navigation bar. It holds an <code>&lt;ol role="list"&gt;</code>, one
+            <code>&lt;li&gt;</code> per step. It wraps onto more lines on a narrow screen, so every step
+            stays visible.</dd>
+            <dt>.ds-step-number</dt>
+            <dd>The step number in a circle, hidden from screen readers because the list gives the
+            position. A complete step shows a check mark instead of its number.</dd>
+            <dt>Complete step</dt>
+            <dd>A link, with the check mark and <code>.is-sr-only</code> text “, completed”.</dd>
+            <dt>aria-current="step"</dt>
+            <dd>On the link for the current step. It shows in bold with an underline bar and a heavier
+            circle.</dd>
+            <dt>Available step</dt>
+            <dd>A link with its number.</dd>
+            <dt>Step not available yet</dt>
+            <dd>A <code>&lt;span&gt;</code>, not a link, so it is not a tab stop. A dashed circle and
+            <code>.is-sr-only</code> text “, not available yet”.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+    <ul class="notes">
+      <li><strong>One bar under the header.</strong> A page shows either secondary navigation or steps, never both.</li>
+    </ul>
+  </section>
+
+
+  <div class="ds-full ds-zone-secondary">
+  <h2>Modifiers</h2>
+
+  <!-- ───────── Internal ───────── -->
+  <section>
+    <h3 id="internal">Internal</h3>
+    <p class="ds-section-desc">The secondary navigation and steps in an internal tool. <code>.ds-internal</code> on a parent turns the current marking Access Lime Deep.</p>
+    <div class="ds-card">
+      <p class="ds-panel-label">Secondary navigation</p>
+      <div class="ds-internal">
+        <nav class="ds-subnav" aria-label="Admin Console sections">
+          <a href="#" aria-current="page">Dashboard</a>
+          <a href="#">Users</a>
+          <a href="#">Moderators</a>
+        </nav>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-internal"&gt;
+  &lt;header class="ds-site-header"&gt;…&lt;/header&gt;
+  &lt;nav class="ds-subnav" aria-label="Admin Console sections"&gt;
+    &lt;a href="/admin" aria-current="page"&gt;Dashboard&lt;/a&gt;
+    &lt;a href="/admin/users"&gt;Users&lt;/a&gt;
+    &lt;a href="/admin/moderators"&gt;Moderators&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-internal</dt>
+            <dd>On a parent, it turns the current link&#39;s underline bar Access Lime Deep. Nothing else
+            changes; see <a href="#secondary-navigation">Secondary navigation</a>.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <div class="ds-card">
+      <p class="ds-panel-label">Steps</p>
+      <div class="ds-internal">
+        <nav class="ds-subnav ds-subnav--steps" aria-label="Review steps">
+          <ol role="list">
+            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Check<span class="is-sr-only">, completed</span></a></li>
+            <li><a href="#" aria-current="step"><span class="ds-step-number" aria-hidden="true">2</span>Classify</a></li>
+            <li><span><span class="ds-step-number" aria-hidden="true">3</span>Announce<span class="is-sr-only">, not available yet</span></span></li>
+          </ol>
+        </nav>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-internal"&gt;
+  &lt;nav class="ds-subnav ds-subnav--steps" aria-label="Review steps"&gt;
+    &lt;ol role="list"&gt;
+      &lt;li&gt;&lt;a href="#"&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;&lt;svg …check…&gt;&lt;/span&gt;Check&lt;span class="is-sr-only"&gt;, completed&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#" aria-current="step"&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;2&lt;/span&gt;Classify&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;3&lt;/span&gt;Announce&lt;span class="is-sr-only"&gt;, not available yet&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/nav&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-internal</dt>
+            <dd>On a parent, it turns the underline bar and the current circle Access Lime Deep.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+  </div>
+
+</div>
+
+<script>
+  // Nav dropdowns: close on outside click and Esc (enhancement only —
+  // the <details> menus work without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      // Return focus to the trigger, but only if it was inside the menu we are
+      // closing — otherwise Escape anywhere on the page would steal focus.
+      // Without this a keyboard user is left on a link that no longer exists.
+      var wasInside = d.contains(document.activeElement);
+      d.removeAttribute('open');
+      if (wasInside) d.querySelector('summary').focus();
+    });
+  });
+</script>
+<script src="header.js" defer></script>
+<script src="copy-code.js" defer></script>
+<script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
+</body>
+</html>
