@@ -17,7 +17,7 @@ components:
     summary: "The header arxiv.org will move to. It differs from the transitional header in three ways: the bar has a theme control after the navigation; Log in and Account sit outside the navigation, in the account area; and signed in, the bar shows a greeting and an Account menu that holds Log out."
   - id: the-header-unit
     title: "The header unit"
-    summary: "Every header has the same regions, in this order: logo, Search (public pages), navigation, tools (optional) and account. The header scrolls away with the page; see [On small screens](#on-small-screens) for narrow screens."
+    summary: "Every header has the same regions, in this order: Logo, Search, Nav, and Account. The header scrolls away with the page; see [On small screens](#on-small-screens) for narrow screens."
     classes:
       - name: ".ds-skip-link"
         does: "The skip link. The first focusable element on the page, visible only on keyboard focus. Its `href` is the id of the main content."
@@ -197,7 +197,7 @@ The header arxiv.org will move to. It differs from the transitional header in th
 
 ## The header unit
 
-Every header has the same regions, in this order: logo, Search (public pages), navigation, tools (optional) and account. The header scrolls away with the page; see [On small screens](#on-small-screens) for narrow screens.
+Every header has the same regions, in this order: Logo, Search, Nav, and Account. The header scrolls away with the page; see [On small screens](#on-small-screens) for narrow screens.
 
 ```html
 <!-- First focusable element on the page -->
