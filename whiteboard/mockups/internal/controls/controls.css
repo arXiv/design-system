@@ -9,12 +9,17 @@
 :root {
   --x-control: 1.75rem;
   --x-control-text: 0.8125rem;
+  --x-control-box: 1.75rem;   /* the drawn box of a button that is not a form field */
 }
 @media (pointer: coarse) {
-  :root { --x-control: 2.75rem; --x-control-text: 1rem; }
+  :root { --x-control: 2.75rem; --x-control-text: 1rem; --x-control-box: 2rem; }
 }
 /* Demo only: index.html asks for touch sizes, because a frame on a laptop cannot report a finger. */
-:root[data-pointer="coarse"] { --x-control: 2.75rem; --x-control-text: 1rem; }
+:root[data-pointer="coarse"] { --x-control: 2.75rem; --x-control-text: 1rem; --x-control-box: 2rem; }
+/* A button drawn smaller than its target: the target grows past the box, unseen,
+   to the full control height (DESIGN-POLICIES, Target size). */
+.x-hit { position: relative; }
+.x-hit::after { content: ""; position: absolute; inset: calc((var(--x-control-box) - var(--x-control)) / 2) 0; }
 
 
 /* ── Controls: one size rule for selects, inputs and buttons ── */
@@ -147,14 +152,15 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ds-space-2);
+  /* Rows far enough apart that the unseen targets of two rows never overlap. */
+  gap: max(var(--ds-space-2), calc(var(--x-control) - var(--x-control-box) + 2px)) var(--ds-space-2);
   font-size: 0.875rem;
 }
 .x-filter-trigger {
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
-  min-height: var(--x-control);
+  min-height: var(--x-control-box);
   max-width: 100%;
   padding: 0 0.85em;
   font: inherit;
@@ -185,7 +191,7 @@
 .x-chip {
   display: inline-flex;
   align-items: center;
-  min-height: var(--x-control);
+  min-height: var(--x-control-box);
   padding-inline-start: 0.75em;
   background: var(--ds-tint-warm);
   border: 1px solid var(--ds-border);
@@ -197,11 +203,12 @@
   display: inline-grid;
   place-items: center;
   align-self: stretch;
-  min-width: max(var(--x-control), 1.5rem);
+  min-width: var(--x-control-box);
   margin-inline-start: 0.15em;
   color: var(--ds-text-muted);
   border-radius: 999px;
 }
+.x-chip-remove::after { inset: calc((var(--x-control-box) - var(--x-control)) / 2 - 1px) calc((var(--x-control-box) - var(--x-control)) / 2); }   /* the chip's border makes the button 2px shorter than the box */
 .x-chip-remove:hover { color: var(--ds-text); background: var(--ds-surface-hover); }
 .x-chip-remove:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: -2px; }
 .x-chip-remove svg { width: 1em; height: 1em; }
