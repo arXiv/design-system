@@ -15,6 +15,7 @@ adapters/templatetoolkit/               GENERATED {head,header,footer}.tt
 adapters/vendored/                      GENERATED static HTML, every variable at its default
 ../package.json                         GENERATED npm manifest for the React components
 generate.py                             writes every generated file (stdlib only)
+vendor.py                               updates a site's copies of them (stdlib only)
 assets/                                 chrome JS and json/announcements.json (asset route)
 ```
 
@@ -53,9 +54,10 @@ arxiv-brand-templates`. A site on arxiv-base gets the chrome through base.
 components are JSX for the automatic runtime (Vite's and Next.js's default), which the
 bundler transpiles. Update with `npm update @arxiv/brand-templates`.
 
-**TemplateToolkit or static HTML** (submit, tapir, status, lib). Copy
-`adapters/templatetoolkit/` or `adapters/vendored/` at a `master` SHA, record the SHA, and copy
-again to update.
+**TemplateToolkit or static HTML** (submit, tapir, status, lib). The site keeps a copy of
+`adapters/templatetoolkit/` or `adapters/vendored/` files between marker lines, and updates it
+with `python3 templates/vendor.py --ref origin/master FILE…`.
+`python3 templates/vendor.py --help` explains the markers and the update.
 
 `static_base`, the asset route, defaults to production. Dev deployments and local previews set
 their own (`BRAND_STATIC_BASE`, or the React prop), so a production page never depends on the

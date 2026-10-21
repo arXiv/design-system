@@ -19,6 +19,8 @@ docs/           THE documentation — rules, tokens, pattern pages, stylesheets
 whiteboard/mockups/        work-in-progress page explorations — never a build reference
 verification/   evidence — audits, design reviews, agent test results
 whiteboard/planning/       backlog (NEXT-STEPS.md), proposals, decision logs
+templates/      the shared site chrome other arXiv apps install (templates/README.md), and the
+                announcement banner's file (templates/BANNER_ANNOUNCEMENTS.md)
 index.html      the GitHub Pages landing page (docs/doc.html renders .md files on the site)
 ```
 
