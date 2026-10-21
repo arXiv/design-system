@@ -293,6 +293,43 @@
 </dialog>
 
 <script>
+  // Demo only: index.html shows a section with many views with ?views=many.
+  if (new URLSearchParams(location.search).get('views') === 'many') {
+    var more = ['Pending holds', 'Proposals', 'Reclassifications', 'Cross-lists', 'Withdrawals', 'Replacements'];
+    var list = document.querySelector('.x-views');
+    more.forEach(function (name) {
+      var a = document.createElement('a'); a.href = '#';
+      a.innerHTML = '<span class="x-view-full">' + name + '</span><span class="x-view-short" aria-hidden="true">' + name.split(' ').pop().replace(/^./, function (c) { return c.toUpperCase(); }) + '</span>';
+      list.appendChild(a);
+    });
+  }
+
+  // The views fold into one menu when their tabs do not fit on one line, as the header folds.
+  // Without this script the tabs wrap.
+  document.querySelectorAll('.ds-subnav .x-views').forEach(function (views) {
+    var row = views.closest('.ds-subnav');
+    var current = views.querySelector('[aria-current="page"]');
+    var menu = document.createElement('details');
+    menu.className = 'x-views-menu';
+    menu.innerHTML = '<summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4"/><path d="M2 8h20"/><path d="M6 4v4"/></svg>View: <b></b><svg class="x-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div class="x-section-menu-list"></div>';
+    menu.querySelector('b').textContent = current.querySelector('.x-view-full').textContent;
+    views.querySelectorAll('a').forEach(function (a) {
+      var link = document.createElement('a');
+      link.href = a.getAttribute('href');
+      link.textContent = a.querySelector('.x-view-full').textContent;
+      if (a === current) link.setAttribute('aria-current', 'page');
+      menu.lastChild.appendChild(link);
+    });
+    views.after(menu);
+    function fit() {
+      row.classList.remove('is-views-folded');
+      var tabs = views.querySelectorAll('a');
+      if (tabs[tabs.length - 1].offsetTop > tabs[0].offsetTop + 4) row.classList.add('is-views-folded');
+    }
+    new ResizeObserver(fit).observe(row);
+  });
+
+
   // A filter control opens its panel just below its row, as header search hangs from the bar.
   document.querySelectorAll('[data-filter-panel]').forEach(function (trigger) {
     var panel = document.getElementById(trigger.dataset.filterPanel);

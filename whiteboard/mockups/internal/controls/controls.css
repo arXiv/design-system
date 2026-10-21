@@ -86,27 +86,61 @@
   text-decoration: none;
 }
 .ds-subnav .x-section-menu-list a:hover { background: var(--ds-surface-hover); }
-.ds-subnav .x-section-menu-list a[aria-current="true"] { font-weight: 600; box-shadow: inset 3px 0 0 var(--ds-subnav-current, var(--ds-accent-strong)); }
+.ds-subnav .x-section-menu-list a:is([aria-current="true"], [aria-current="page"]) { font-weight: 600; box-shadow: inset 3px 0 0 var(--ds-subnav-current, var(--ds-accent-strong)); }
 
-/* The views are text links; the current view is plain text on the current bar. */
-.ds-subnav .x-views { display: flex; flex-wrap: wrap; column-gap: var(--ds-space-6); }
+/* The views are tabs. The current tab is a box joined to the page below it, with an
+   accent line along its top; the others are text on the row, tinted under the pointer. */
+.ds-subnav .x-views { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--ds-space-1) var(--ds-space-1); align-self: flex-end; }
 .ds-subnav .x-views a,
 .ds-subnav .x-views a:visited {
-  color: var(--ds-link);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
+  min-height: 2.25rem;
+  margin-top: var(--ds-space-1);
+  margin-bottom: -1px;
+  padding: 0 var(--ds-space-4);
+  color: var(--ds-text-muted);
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
 }
-.ds-subnav .x-views a:hover { color: var(--ds-link-hover); text-decoration-thickness: 0.15em; border-bottom-color: transparent; }
-.ds-subnav .x-views a[aria-current="page"] { color: var(--ds-text); text-decoration: none; }
+.ds-subnav .x-views a:hover { color: var(--ds-text); background: var(--ds-tint-warm); border-bottom-color: transparent; }
+.ds-subnav .x-views a[aria-current="page"] {
+  color: var(--ds-text);
+  background: var(--ds-canvas);
+  border-color: var(--ds-border);
+  box-shadow: inset 0 3px 0 var(--ds-subnav-current, var(--ds-accent-strong));
+  text-shadow: none;
+  font-weight: 600;
+}
 .x-view-short { display: none; }
+
+/* The views folded into one menu, when the tabs do not fit on one line. The script sets
+   .is-views-folded; without it the tabs wrap. */
+.x-views-menu { display: none; position: relative; }
+.ds-subnav.is-views-folded .x-views { display: none; }
+.ds-subnav.is-views-folded .x-views-menu { display: flex; }
+.x-views-menu > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  min-height: max(var(--x-control), 2.5rem);
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+  list-style: none;
+  cursor: pointer;
+}
+.x-views-menu > summary::-webkit-details-marker { display: none; }
+.x-views-menu > summary b { color: var(--ds-text); font-weight: 600; }
+.x-views-menu > summary:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 2px; border-radius: 2px; }
+.x-views-menu > summary svg { width: 1.1em; height: 1.1em; flex: none; }
+.x-views-menu > summary .x-chevron { transition: transform 0.15s; }
+.x-views-menu[open] > summary .x-chevron { transform: rotate(180deg); }
+.x-views-menu > .x-section-menu-list { left: 0; }
 
 /* When the full names would not fit beside the menu: the menu takes the whole
    first row, and each view shows its last word. The full name stays for screen readers. */
 @container x-subnav (max-width: 64rem) {
   .x-section-menu { flex: 1 0 100%; margin-inline: calc(-1 * var(--x-row-pad)); }
   .x-section-menu > summary { flex: 1; padding-inline: var(--x-row-pad); }
-  .ds-subnav .x-views { column-gap: var(--ds-space-4); }
   .x-view-short { display: inline; }
   .x-view-full {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
