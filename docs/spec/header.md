@@ -34,7 +34,7 @@ components:
       - name: ".ds-site-header-divider"
         does: "A vertical hairline between groups of links or between regions, on the bar’s own divider token. Takes `aria-hidden=\"true\"`. Hidden while the navigation is folded away."
       - name: ".ds-site-header-tools"
-        does: "Optional, after the navigation: the theme control, and a page’s own actions."
+        does: "After the navigation: the theme control."
       - name: ".ds-theme-toggle"
         does: "The theme control, with its live region `#ds-theme-status`. See [The theme control](dark-mode.html#the-theme-control)."
       - name: ".ds-site-header-account"
@@ -57,7 +57,7 @@ components:
         does: "Log out is a button in a form that posts, never a link, because a browser can follow a link by itself, and logging out changes the reader’s state."
   - id: on-small-screens
     title: "On small screens"
-    summary: "The header fits itself to the space it has. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button. On a public bar the tools and the account area fold into the same menu, so the bar keeps the logo, the Search icon and the menu button. An internal bar folds the same way, and keeps its search fields in the bar while they fit; after that they open from a Search button. See [Internal header](#internal-headers). The transitional header folds its navigation when the window is narrower than 600px."
+    summary: "When the header does not fit on one row, it folds. The greeting goes first. Then the navigation, tools and account area fold into one menu, leaving the logo, Search and the menu button. Internal headers keep their search fields in the bar while they fit, then open them from a Search button. The transitional header folds when the window is narrower than 600px."
     classes:
       - name: "header.js"
         does: "These docs’ fold-by-fit script, `docs/header.js`, once per page. It finds every `.ds-site-header` and keeps each one on a single row, with no breakpoint to choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The templates load their own script, so a page that uses them adds none."
@@ -117,7 +117,7 @@ rules:
   - "**Regions, in one order.** Logo, search (the Search link on public pages, search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it."
   - "**Navigation sits on the right.** The space after the logo stays empty."
   - "**No more than four links in arxiv.org’s navigation.** The logo and Log in do not count (DESIGN-POLICIES). A host does not change the template’s navigation."
-  - "**Tools hold the theme control and a page’s own actions.** The transitional header has page actions only. A control that acts on the page’s data, such as Refresh, goes beside the page heading, with the time the data was last updated."
+  - "**Tools holds the theme control.** The transitional header also puts a page’s actions there; in the aspirational header they move to the TOC bar. A control that acts on the page’s data, such as Refresh, goes beside the page heading, with the time the data was last updated."
   - "**Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in the bar while they fit."
   - "**Log out.** Today a signed-in reader logs out on the account page. In the aspirational header, Log out is in the Account menu, one menu away on every page."
   - "**The greeting is the first name.** The aspirational public header shows the given name only, capped at 14 characters. Internal headers use the compact account area, with the name in its menu."
@@ -236,7 +236,7 @@ Every header has the same regions, in this order: Logo, Search, Nav, Tools, and 
 - `.ds-site-header-nav` — The site’s sections, in a `<nav>` with an `aria-label`.
 - `.ds-nav-icon` — An icon beside a link label, sized by the stylesheet and quieter than the text. `aria-hidden="true"`; the label gives the name.
 - `.ds-site-header-divider` — A vertical hairline between groups of links or between regions, on the bar’s own divider token. Takes `aria-hidden="true"`. Hidden while the navigation is folded away.
-- `.ds-site-header-tools` — Optional, after the navigation: the theme control, and a page’s own actions.
+- `.ds-site-header-tools` — After the navigation: the theme control.
 - `.ds-theme-toggle` — The theme control, with its live region `#ds-theme-status`. See [The theme control](dark-mode.html#the-theme-control).
 - `.ds-site-header-account` — The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section.
 - `.ds-site-header-login` — The only item in the bar with heavier text: Log in, or the Account menu’s `<summary>`.
@@ -269,7 +269,7 @@ Signed in, the account area shows a greeting with the reader’s given name and 
 
 ## On small screens
 
-The header fits itself to the space it has. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button. On a public bar the tools and the account area fold into the same menu, so the bar keeps the logo, the Search icon and the menu button. An internal bar folds the same way, and keeps its search fields in the bar while they fit; after that they open from a Search button. See [Internal header](#internal-headers). The transitional header folds its navigation when the window is narrower than 600px.
+When the header does not fit on one row, it folds. The greeting goes first. Then the navigation, tools and account area fold into one menu, leaving the logo, Search and the menu button. Internal headers keep their search fields in the bar while they fit, then open them from a Search button. The transitional header folds when the window is narrower than 600px.
 
 ```html
 <!-- Once per page, after the header. Nothing else changes. -->
@@ -408,7 +408,7 @@ Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top o
 - **Regions, in one order.** Logo, search (the Search link on public pages, search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it.
 - **Navigation sits on the right.** The space after the logo stays empty.
 - **No more than four links in arxiv.org’s navigation.** The logo and Log in do not count (DESIGN-POLICIES). A host does not change the template’s navigation.
-- **Tools hold the theme control and a page’s own actions.** The transitional header has page actions only. A control that acts on the page’s data, such as Refresh, goes beside the page heading, with the time the data was last updated.
+- **Tools holds the theme control.** The transitional header also puts a page’s actions there; in the aspirational header they move to the TOC bar. A control that acts on the page’s data, such as Refresh, goes beside the page heading, with the time the data was last updated.
 - **Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in the bar while they fit.
 - **Log out.** Today a signed-in reader logs out on the account page. In the aspirational header, Log out is in the Account menu, one menu away on every page.
 - **The greeting is the first name.** The aspirational public header shows the given name only, capped at 14 characters. Internal headers use the compact account area, with the name in its menu.
