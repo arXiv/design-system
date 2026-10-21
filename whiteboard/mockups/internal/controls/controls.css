@@ -1,0 +1,146 @@
+/* One version of the filter bar, the sort bar and forms. Candidates for docs/;
+   the x- names would become ds- names there.
+
+   Size comes from the pointer: 28px controls for a mouse, 44px with 16px
+   text for a finger (smaller text makes iOS zoom the page on focus).
+   Layout comes from the width each component has, through container queries.
+   Each component's font size is the control text, so a breakpoint in em
+   moves with the pointer and with text zoom: one breakpoint, not one per size. */
+:root {
+  --x-control: 1.75rem;
+  --x-control-text: 0.8125rem;
+}
+@media (pointer: coarse) {
+  :root { --x-control: 2.75rem; --x-control-text: 1rem; }
+}
+/* Demo only: index.html asks for touch sizes, because a frame on a laptop cannot report a finger. */
+:root[data-pointer="coarse"] { --x-control: 2.75rem; --x-control-text: 1rem; }
+
+
+/* ── Controls: one size rule for selects, inputs and buttons in all three ── */
+:is(.x-filter-bar, .ds-form) :is(.ds-input:not(textarea), .ds-btn) {
+  min-height: var(--x-control);
+  padding-block: 0;
+  font-size: var(--x-control-text);
+}
+:is(.x-filter-bar, .ds-form) .ds-btn { min-width: 0; padding-inline: 1em; }
+:is(.x-filter-bar, .ds-form) select.ds-input:not([multiple]):not([size]) {
+  padding-right: 2em;
+  background-position: right 0.65em center;
+}
+.ds-form textarea.ds-input { font-size: var(--x-control-text); }
+.ds-form .ds-label { margin-bottom: var(--ds-space-1); }
+.ds-form .ds-check { min-height: var(--x-control); }
+
+
+/* ── Filter bar ──
+   Wide: the filters flow along a row, label beside control, and wrap when
+   there are many. Narrow: one line saying what is applied; open it to get
+   one full-width row per filter. */
+.x-filter-bar { container: x-filter-bar / inline-size; margin: 0; font-size: var(--x-control-text); }
+.x-filter-bar > details {
+  width: fit-content;
+  max-width: 100%;
+  background: var(--ds-tint-warm);
+  border-radius: 8px;
+}
+.x-filter-bar > details > summary { display: none; }
+.x-filter-bar > details::details-content { content-visibility: visible; }
+
+.x-filter-bar-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-2) var(--ds-space-6);
+  padding: var(--ds-space-1) var(--ds-space-3);
+}
+.x-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: var(--x-control-text);
+}
+.x-filter > label { color: var(--ds-text-muted); font-weight: 500; white-space: nowrap; }
+.x-filter > .ds-input { width: auto; }
+.x-filter > .ds-input[type="number"] { width: 5em; }
+.x-filter-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-4);
+  margin-inline-start: auto;
+  font-size: var(--x-control-text);
+}
+
+/* In the second row, the bar takes the rest of the line, or a line of its own. */
+.ds-subnav > .x-filter-bar { flex: 1 1 34rem; align-self: center; margin-block: var(--ds-space-1); }
+.ds-subnav > .x-filter-bar > details { margin-inline-start: auto; }
+
+@container x-filter-bar (max-width: 36em) {
+  .x-filter-bar > details { width: auto; }
+  .x-filter-bar > details:not([open])::details-content { content-visibility: hidden; }
+  .x-filter-bar > details > summary {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+    min-height: max(var(--x-control), 2.25rem);
+    padding: var(--ds-space-1) var(--ds-space-3);
+    font-size: var(--x-control-text);
+    list-style: none;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  .x-filter-bar > details > summary::-webkit-details-marker { display: none; }
+  .x-filter-bar > details > summary:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 2px; }
+  .x-filter-bar-name { font-weight: 600; }
+  .x-filter-bar-applied { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ds-text-muted); }
+  .x-filter-bar > details > summary svg { width: 1.1em; height: 1.1em; flex: none; transition: transform 0.15s; }
+  .x-filter-bar > details[open] > summary svg { transform: rotate(180deg); }
+
+  .x-filter-bar-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; padding: 0 var(--ds-space-3) var(--ds-space-3); }
+  .x-filter {
+    gap: var(--ds-space-3);
+    padding-block: var(--ds-space-2);
+    border-top: 1px solid var(--ds-border);
+  }
+  .x-filter > label { flex: 0 0 7.5rem; white-space: normal; }
+  .x-filter > .ds-input,
+  .x-filter > .ds-input[type="number"] { flex: 1; width: auto; min-width: 0; }
+  .x-filter-bar-actions {
+    margin: 0;
+    padding-top: var(--ds-space-3);
+    border-top: 1px solid var(--ds-border);
+  }
+  .x-filter-bar-actions > .ds-btn { flex: 1; }
+}
+
+
+/* ── Sort bar: two to four keys. More than that is a Sort by select in the filter bar. ──
+   Wide: one joined bar. Narrower than four keys need: two buttons to a row,
+   the full width between them, so the joined bar never wraps. */
+.x-sort { container: x-sort / inline-size; margin: 0; font-size: var(--x-control-text); }
+.x-sort .ds-btn-group > span { font-size: var(--x-control-text); color: var(--ds-text-muted); }
+.x-sort .ds-btn-group > .ds-btn[aria-pressed][name] {
+  min-height: var(--x-control);
+  min-width: 0;
+  padding: 0 0.9em;
+  font-size: var(--x-control-text);
+}
+@container x-sort (max-width: 48em) {
+  .x-sort .ds-btn-group:has(> .ds-btn) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-space-2); }
+  .x-sort .ds-btn-group > span { grid-column: 1 / -1; margin: 0; }
+  .x-sort .ds-btn-group > .ds-btn[aria-pressed][name] {
+    justify-content: space-between;
+    margin: 0;
+    padding-block: 0.3em;
+    border-radius: 6px;
+    white-space: normal;
+    text-align: start;
+    line-height: 1.25;
+  }
+}
+
+
+/* ── Forms: a button straight after a field shares its row, so a one-field
+   form such as search needs nothing of its own. ── */
+.ds-form > .ds-field:has(> .ds-input[type="search"]) { flex: 1 1 10rem; }
+.ds-form > .ds-field + .ds-btn { flex: none; align-self: flex-end; margin-bottom: var(--ds-space-4); }
