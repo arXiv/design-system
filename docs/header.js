@@ -31,6 +31,9 @@
   var count = 0;
 
   function setUp(header) {
+    // A copy of production's markup on a docs page (.demo-static) is shown as
+    // it is, without this script's behaviour.
+    if (header.closest('.demo-static')) return;
     var nav = header.querySelector(':scope > .ds-site-header-nav');
     var tools = header.querySelector(':scope > .ds-site-header-tools');
     var account = header.querySelector(':scope > .ds-site-header-account');
