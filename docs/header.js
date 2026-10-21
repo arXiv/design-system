@@ -116,12 +116,16 @@
       if (opening) setOpen(entry, true);
     }
     function measure() {
+      // An open menu's rows are in the bar's flow; measure the bar without them.
+      var open = ['is-menu-open', 'is-search-open'].filter(function (c) { return header.classList.contains(c); });
+      open.forEach(function (c) { header.classList.remove(c); });
       header.classList.add('is-measuring');
       all.forEach(function (level) {
         apply(level);
         need[level] = Math.ceil(header.getBoundingClientRect().width);
       });
       header.classList.remove('is-measuring');
+      open.forEach(function (c) { header.classList.add(c); });
       // A step that saves no room is skipped: folding a region smaller than
       // its button away would only make the bar wider.
       levels = all.filter(function (level, i) {
