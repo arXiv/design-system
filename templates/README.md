@@ -187,7 +187,6 @@ all three.
   route, and objects can take a longer CDN TTL.
 - **Root font size:** base's fixed 14px root and mkdocs-material's 125% root scale the
   rem-sized chrome (a question for the designer).
-- **ARXIVCE-4522:** replace the funder logos with a "major funders" link once that page exists.
 - **HTML2X-230:** the banner must not cover the phone menu.
 - **Clean-up:** drain the design-system assets and the retired banner macro from arxiv-base,
   and move status, lib, submit and tapir onto the TemplateToolkit and static targets.

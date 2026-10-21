@@ -30,7 +30,8 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 PUBLISHED = [
     ("docs/assets/images/logos/logo_arxiv-primary.svg", "logos/arxiv-logo.svg"),
     ("docs/assets/images/bones/icon_small-smileybones.svg", "logos/smileybones.svg"),  # banner glyph
-    # The footer's funder marks, at the size it shows them (the folder also holds the sources).
+    # The funder marks, at the size footers pinned before the funders page show them (the
+    # folder also holds the sources).
     ("docs/assets/images/logos/other-org-logos/simons-foundation.png", "funders/simons-foundation.png"),
     ("docs/assets/images/logos/other-org-logos/simons-foundation-international.png",
      "funders/simons-foundation-international.png"),
