@@ -70,7 +70,7 @@
   </div>
 </header>
 
-<!-- The second row: the section menu, the section's views, then the subject control. -->
+<!-- The second row is navigation only: the section menu, then the section's views. -->
 <div class="ds-subnav">
   <nav class="x-subnav-nav" aria-label="Moderator reports">
   <details class="x-section-menu">
@@ -82,27 +82,29 @@
     </div>
   </details>
   <div class="x-views">
-    <a href="#">Overview</a>
-    <a href="#" aria-current="page">Activity charts</a>
-    <a href="#">Category submission stats</a>
-    <a href="#">Recent submissions</a>
-    <a href="#">Recent holds</a>
-    <a href="#">Recent releases</a>
+    <a href="#"><span class="x-view-full">Overview</span><span class="x-view-short" aria-hidden="true">Overview</span></a>
+    <a href="#" aria-current="page"><span class="x-view-full">Activity charts</span><span class="x-view-short" aria-hidden="true">Charts</span></a>
+    <a href="#"><span class="x-view-full">Category submission stats</span><span class="x-view-short" aria-hidden="true">Stats</span></a>
+    <a href="#"><span class="x-view-full">Recent submissions</span><span class="x-view-short" aria-hidden="true">Submissions</span></a>
+    <a href="#"><span class="x-view-full">Recent holds</span><span class="x-view-short" aria-hidden="true">Holds</span></a>
+    <a href="#"><span class="x-view-full">Recent releases</span><span class="x-view-short" aria-hidden="true">Releases</span></a>
   </div>
   </nav>
-  <!-- The subject applies to every view of every section, so it ends the row and its panel hangs below the row. -->
-  <button type="button" class="x-filter-trigger" data-filter-panel="subject-panel" aria-haspopup="dialog" aria-expanded="false">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h20"/><path d="M6 12h12"/><path d="M9 19h6"/></svg>
-    Subject
-    <span class="x-filter-value"><b>cs</b><span class="x-path-sep" aria-hidden="true">/</span><span class="is-sr-only">, </span>All categories</span>
-  </button>
 </div>
 
 <main id="main" class="ds-container ds-container--wide">
 
     <section class="mock-section" aria-labelledby="charts-title">
     <header>
-      <h1 id="charts-title">Activity charts</h1>
+      <div class="x-heading-row">
+        <h1 id="charts-title">Activity charts</h1>
+        <!-- The subject applies to every view of every section, so it sits at the top right of each page. -->
+        <button type="button" class="x-filter-trigger" data-filter-panel="subject-panel" aria-haspopup="dialog" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h20"/><path d="M6 12h12"/><path d="M9 19h6"/></svg>
+          Subject
+          <span class="x-filter-value"><b>cs</b><span class="x-path-sep" aria-hidden="true">/</span><span class="is-sr-only">, </span>All categories</span>
+        </button>
+      </div>
       <p class="ds-section-desc">Showing the past 3 months. Submissions compare the last 7 days with the 3-week weekly average.</p>
     </header>
     <form class="x-sort" method="get" action="page.html">
@@ -223,7 +225,7 @@
 </main>
 
 <!-- The subject's panel. It hangs below the row of the control that opened it. -->
-<dialog class="ds-modal x-filter-panel" id="subject-panel" closedby="any" aria-labelledby="subject-panel-title">
+<dialog class="ds-modal x-filter-panel" id="subject-panel" style="--x-panel-width: 34rem" closedby="any" aria-labelledby="subject-panel-title">
   <form method="get" action="page.html">
     <div class="ds-modal-header">
       <h2 class="ds-modal-title" id="subject-panel-title">Subject</h2>
@@ -295,15 +297,15 @@
   document.querySelectorAll('[data-filter-panel]').forEach(function (trigger) {
     var panel = document.getElementById(trigger.dataset.filterPanel);
     trigger.addEventListener('click', function () {
-      // In the views row the panel lines up with the control's right edge; elsewhere with the row's left.
-      var row = trigger.closest('.x-filter-row, .ds-subnav').getBoundingClientRect();
+      // Beside the heading the panel lines up with the control's right edge; elsewhere with the row's left.
+      var row = trigger.closest('.x-filter-row, .x-heading-row').getBoundingClientRect();
       var own = trigger.getBoundingClientRect();
-      var width = Math.min(window.innerWidth - 32, 736);
-      var start = trigger.closest('.ds-subnav') ? own.right - width : row.left;
+      panel.showModal();
+      var width = panel.getBoundingClientRect().width;
+      var start = trigger.closest('.x-heading-row') ? own.right - width : row.left;
       var left = Math.max(16, Math.min(start, window.innerWidth - width - 16));
       panel.style.setProperty('--x-panel-top', Math.round(row.bottom + 8) + 'px');
       panel.style.setProperty('--x-panel-left', Math.round(left) + 'px');
-      panel.showModal();
       trigger.setAttribute('aria-expanded', 'true');
     });
     panel.addEventListener('close', function () { trigger.setAttribute('aria-expanded', 'false'); });
