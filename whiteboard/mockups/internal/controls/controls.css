@@ -1,5 +1,5 @@
-/* One version of the filter bar, the sort bar and forms. Candidates for docs/;
-   the x- names would become ds- names there.
+/* One version of the filter bar, the sort bar and forms (option G). Candidates
+   for docs/; the x- names would become ds- names there.
 
    Size comes from the pointer: 28px controls for a mouse, 44px with 16px
    text for a finger (smaller text makes iOS zoom the page on focus).
@@ -17,13 +17,13 @@
 :root[data-pointer="coarse"] { --x-control: 2.75rem; --x-control-text: 1rem; }
 
 
-/* ── Controls: one size rule for selects, inputs and buttons in all three ── */
-:is(.x-filter-bar, .ds-form) :is(.ds-input:not(textarea), .ds-btn) {
+/* ── Controls: one size rule for selects, inputs and buttons ── */
+:is(.x-filter-bar, .ds-form, .x-filter-panel) :is(.ds-input:not(textarea), .ds-btn) {
   min-height: var(--x-control);
   padding-block: 0;
   font-size: var(--x-control-text);
 }
-:is(.x-filter-bar, .ds-form) .ds-btn { min-width: 0; padding-inline: 1em; }
+:is(.x-filter-bar, .ds-form, .x-filter-panel) .ds-btn { min-width: 0; padding-inline: 1em; }
 :is(.x-filter-bar, .ds-form) select.ds-input:not([multiple]):not([size]) {
   padding-right: 2em;
   background-position: right 0.65em center;
@@ -33,88 +33,159 @@
 .ds-form .ds-check { min-height: var(--x-control); }
 
 
-/* ── Filter bar ──
-   Wide: the filters flow along a row, label beside control, and wrap when
-   there are many. Narrow: one line saying what is applied; open it to get
-   one full-width row per filter. */
-.x-filter-bar { container: x-filter-bar / inline-size; margin: 0; font-size: var(--x-control-text); }
-.x-filter-bar > details {
-  width: fit-content;
-  max-width: 100%;
-  background: var(--ds-tint-warm);
-  border-radius: 8px;
+/* ── Section menu: navigation, so it reads as a link with a chevron, no box ── */
+.x-section-menu { position: relative; display: flex; }
+.x-section-menu > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  min-height: 2.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ds-text);
+  list-style: none;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
 }
-.x-filter-bar > details > summary { display: none; }
-.x-filter-bar > details::details-content { content-visibility: visible; }
+.x-section-menu > summary::-webkit-details-marker { display: none; }
+.x-section-menu > summary:hover { border-bottom-color: var(--ds-border-strong); }
+.x-section-menu > summary:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: -3px; border-radius: 2px; }
+.x-section-menu > summary svg { width: 1em; height: 1em; transition: transform 0.15s; }
+.x-section-menu[open] > summary svg { transform: rotate(180deg); }
+.x-section-menu-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 50;
+  display: grid;
+  min-width: 14rem;
+  padding: var(--ds-space-1) 0;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+.ds-subnav .x-section-menu-list a {
+  min-height: var(--x-control);
+  padding: 0 var(--ds-space-4);
+  border-bottom: 0;
+  color: var(--ds-text);
+}
+.ds-subnav .x-section-menu-list a:hover { background: var(--ds-surface-hover); }
+.ds-subnav .x-section-menu-list a[aria-current="true"] { font-weight: 600; box-shadow: inset 3px 0 0 var(--ds-subnav-current, var(--ds-accent-strong)); }
+/* The section menu, then the views, a group's gap apart. */
+.ds-subnav:has(> .x-section-menu) { column-gap: var(--ds-space-12); }
+.ds-subnav > .x-views { display: flex; flex-wrap: wrap; column-gap: var(--ds-space-6); }
+.ds-subnav .x-section-menu-list a[aria-current] { color: var(--ds-text); }
 
+
+/* ── Filter control: a boxed button with the filter icon, the name and what is applied ──
+   It opens the filter panel. A dropdown that navigates has a chevron and no box;
+   a control that filters has a box and this icon, never a chevron. */
+.x-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-2);
+  font-size: var(--x-control-text);
+}
+.x-filter-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: var(--x-control);
+  max-width: 100%;
+  padding: 0 0.85em;
+  font: inherit;
+  font-weight: 600;
+  color: var(--ds-text);
+  text-decoration: none;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-strong);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.x-filter-trigger:visited { color: var(--ds-text); }
+.x-filter-trigger:hover { background: var(--ds-surface-hover); }
+.x-filter-trigger:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 2px; }
+.x-filter-trigger[aria-expanded="true"] { background: var(--ds-tint-accent); border-color: var(--ds-accent-border); }
+.x-filter-trigger > svg { width: 1.1em; height: 1.1em; flex: none; }
+/* What is applied: for a subject, a path from broad to narrow. */
+.x-filter-value { min-width: 0; font-weight: 400; color: var(--ds-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.x-filter-value b { font-weight: 600; color: var(--ds-text); }
+.x-path-sep { margin-inline: 0.3em; color: var(--ds-text-muted); }
+
+/* Applied filters that do not depend on each other: one chip each, and its × removes it. */
+.x-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--x-control);
+  padding-inline-start: 0.75em;
+  background: var(--ds-tint-warm);
+  border: 1px solid var(--ds-border);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.x-chip-name { color: var(--ds-text-muted); margin-inline-end: 0.3em; }
+.x-chip-remove {
+  display: inline-grid;
+  place-items: center;
+  align-self: stretch;
+  min-width: max(var(--x-control), 1.5rem);
+  margin-inline-start: 0.15em;
+  color: var(--ds-text-muted);
+  border-radius: 999px;
+}
+.x-chip-remove:hover { color: var(--ds-text); background: var(--ds-surface-hover); }
+.x-chip-remove:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: -2px; }
+.x-chip-remove svg { width: 1em; height: 1em; }
+.x-filter-row > .x-clear { margin-inline-start: var(--ds-space-2); }
+
+
+/* ── Filter panel: a .ds-modal that hangs below the row of its control, as header search does ── */
+.x-filter-panel {
+  position: fixed;
+  inset: var(--x-panel-top, 6rem) auto auto var(--x-panel-left, 1rem);
+  margin: 0;
+  width: min(calc(100vw - 2rem), var(--x-panel-width, 46rem));
+  max-height: calc(100dvh - var(--x-panel-top, 6rem) - 1rem);
+}
+.x-filter-panel > form { display: contents; }
+.x-filter-panel .ds-modal-header { padding-block: var(--ds-space-3); }
+.x-filter-panel .ds-modal-title { font-size: 1rem; }
+.x-filter-panel .ds-modal-body { padding: var(--ds-space-4) var(--ds-space-6); }
+.x-filter-panel .ds-modal-footer { justify-content: space-between; padding-block: var(--ds-space-3); }
+.x-filter-panel .ds-modal-footer > a { font-size: var(--x-control-text); }
+
+
+/* ── Filter bar: the fields, here inside the panel ──
+   Wide: label beside control, the fields flow and wrap. Narrow: one full-width row per field. */
+.x-filter-bar { container: x-filter-bar / inline-size; margin: 0; font-size: var(--x-control-text); }
 .x-filter-bar-body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ds-space-2) var(--ds-space-6);
-  padding: var(--ds-space-1) var(--ds-space-3);
+  gap: var(--ds-space-3) var(--ds-space-6);
 }
 .x-filter {
   display: flex;
   align-items: center;
   gap: 0.4em;
-  font-size: var(--x-control-text);
 }
 .x-filter > label { color: var(--ds-text-muted); font-weight: 500; white-space: nowrap; }
 .x-filter > .ds-input { width: auto; }
 .x-filter > .ds-input[type="number"] { width: 5em; }
-.x-filter-bar-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--ds-space-4);
-  margin-inline-start: auto;
-  font-size: var(--x-control-text);
-}
-
-/* In the second row, the bar takes the rest of the line, or a line of its own. */
-.ds-subnav > .x-filter-bar { flex: 1 1 34rem; align-self: center; margin-block: var(--ds-space-1); }
-.ds-subnav > .x-filter-bar > details { margin-inline-start: auto; }
-
-@container x-filter-bar (max-width: 36em) {
-  .x-filter-bar > details { width: auto; }
-  .x-filter-bar > details:not([open])::details-content { content-visibility: hidden; }
-  .x-filter-bar > details > summary {
-    display: flex;
-    align-items: center;
-    gap: var(--ds-space-2);
-    min-height: max(var(--x-control), 2.25rem);
-    padding: var(--ds-space-1) var(--ds-space-3);
-    font-size: var(--x-control-text);
-    list-style: none;
-    cursor: pointer;
-    border-radius: 8px;
-  }
-  .x-filter-bar > details > summary::-webkit-details-marker { display: none; }
-  .x-filter-bar > details > summary:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 2px; }
-  .x-filter-bar-name { font-weight: 600; }
-  .x-filter-bar-applied { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ds-text-muted); }
-  .x-filter-bar > details > summary svg { width: 1.1em; height: 1.1em; flex: none; transition: transform 0.15s; }
-  .x-filter-bar > details[open] > summary svg { transform: rotate(180deg); }
-
-  .x-filter-bar-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; padding: 0 var(--ds-space-3) var(--ds-space-3); }
-  .x-filter {
-    gap: var(--ds-space-3);
-    padding-block: var(--ds-space-2);
-    border-top: 1px solid var(--ds-border);
-  }
+@container x-filter-bar (max-width: 30em) {
+  .x-filter-bar-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .x-filter { gap: var(--ds-space-3); padding-block: var(--ds-space-2); }
+  .x-filter + .x-filter { border-top: 1px solid var(--ds-border); }
   .x-filter > label { flex: 0 0 7.5rem; white-space: normal; }
   .x-filter > .ds-input,
   .x-filter > .ds-input[type="number"] { flex: 1; width: auto; min-width: 0; }
-  .x-filter-bar-actions {
-    margin: 0;
-    padding-top: var(--ds-space-3);
-    border-top: 1px solid var(--ds-border);
-  }
-  .x-filter-bar-actions > .ds-btn { flex: 1; }
 }
 
 
-/* ── Sort bar: two to four keys. More than that is a Sort by select in the filter bar. ──
+/* ── Sort bar: two to four keys. With more, sort from the table's column headers. ──
    Wide: one joined bar. Narrower than four keys need: two buttons to a row,
    the full width between them, so the joined bar never wraps. */
 .x-sort { container: x-sort / inline-size; margin: 0; font-size: var(--x-control-text); }

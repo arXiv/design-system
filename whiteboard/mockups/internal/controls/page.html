@@ -1,11 +1,11 @@
 <!doctype html>
-<!-- Mockup: the filter bar, the sort bar and forms, one version of each. Internal tools.
-     index.html shows this page at three widths. -->
+<!-- Mockup, option G: navigation stays in the bars; filters sit with the content they filter.
+     Internal tools. index.html shows this page at three widths. -->
 <html lang="en" class="ds-internal">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>One version of each control (mockup)</title>
+  <title>Filters with the content (mockup)</title>
   <link rel="stylesheet" href="../../../../docs/fonts.css">
   <link rel="stylesheet" href="../../../../docs/design-system.css">
   <link rel="stylesheet" href="../../../../docs/internal-tools.css">
@@ -28,9 +28,7 @@
 <body class="ds-page">
 <a class="ds-skip-link" href="#main">Skip to main content</a>
 
-<!-- The internal header from docs/header.html: search fields, navigation, tools, compact account.
-     header.js folds it to fit: the navigation, tools and account into one menu,
-     then the search fields behind a Search button. -->
+<!-- The internal header from docs/header.html. Its navigation holds the two sets of reports. -->
 <header class="ds-site-header">
   <a href="#" class="ds-site-header-logo">
     <img src="../../../../docs/assets/images/logos/logo_arxiv-admin-light.svg" alt="archive Admin Console">
@@ -44,6 +42,7 @@
     <input class="ds-input" type="search" id="hdr-docs" placeholder="Search submissions">
   </form>
   <nav class="ds-site-header-nav" aria-label="Reports">
+    <a href="#" aria-current="true">Moderator reports</a>
     <details class="ds-site-header-dropdown">
       <summary>Staff reports</summary>
       <div class="ds-site-header-menu">
@@ -53,9 +52,6 @@
         <a href="#">Suspicious activity</a>
       </div>
     </details>
-    <a href="#" aria-current="true">Submissions</a>
-    <a href="#">Moderators</a>
-    <a href="#">Recruitment</a>
   </nav>
   <div class="ds-site-header-tools">
     <button type="button" class="ds-theme-toggle"></button>
@@ -74,48 +70,40 @@
   </div>
 </header>
 
-<!-- A filter bar with a few filters, in the second row. -->
-<div class="ds-subnav">
-  <nav aria-label="Submissions views">
+<!-- The second row is navigation only: the section menu, then the section's views. -->
+<nav class="ds-subnav" aria-label="Moderator reports">
+  <details class="x-section-menu">
+    <summary>Submissions and holds <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+    <div class="x-section-menu-list">
+      <a href="#" aria-current="true">Submissions and holds</a>
+      <a href="#">Moderators</a>
+      <a href="#">Recruitment</a>
+    </div>
+  </details>
+  <div class="x-views">
     <a href="#">Overview</a>
-    <a href="#" aria-current="page">Charts</a>
-    <a href="#">Category stats</a>
-    <a href="#">Workload stats</a>
-    <a href="#">Releases</a>
-    <a href="#">Submissions</a>
-  </nav>
-  <form class="x-filter-bar" method="get" action="page.html" aria-label="Subject">
-    <details>
-      <summary>
-        <span class="x-filter-bar-name">Subject</span>
-        <span class="x-filter-bar-applied">cs, all categories</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-      </summary>
-      <div class="x-filter-bar-body">
-        <div class="x-filter"><label for="s-group">Group</label>
-          <select class="ds-input" id="s-group" name="group">
-            <option>All</option><option selected>cs</option><option>econ</option><option>eess</option><option>math</option><option>physics</option><option>q-bio</option><option>q-fin</option><option>stat</option>
-          </select></div>
-        <div class="x-filter"><label for="s-archive">Archive</label>
-          <select class="ds-input" id="s-archive" name="archive"><option>All</option><option selected>cs</option></select></div>
-        <div class="x-filter"><label for="s-category">Category</label>
-          <select class="ds-input" id="s-category" name="category">
-            <option selected>All</option><option>cs.AI</option><option>cs.CL</option><option>cs.CV</option><option>cs.DB</option><option>cs.LG</option><option>cs.SY</option>
-          </select></div>
-        <div class="x-filter-bar-actions">
-          <button class="ds-btn" type="submit">Apply</button>
-        </div>
-      </div>
-    </details>
-  </form>
-</div>
+    <a href="#" aria-current="page">Activity charts</a>
+    <a href="#">Category submission stats</a>
+    <a href="#">Recent submissions</a>
+    <a href="#">Recent holds</a>
+    <a href="#">Recent releases</a>
+  </div>
+</nav>
 
 <main id="main" class="ds-container ds-container--wide">
 
-  <section class="mock-section" aria-labelledby="sort-title">
+  <!-- A subject: its levels narrow each other, so the control shows one path, and it is changed, not removed. -->
+  <section class="mock-section" aria-labelledby="charts-title">
     <header>
-      <h1 id="sort-title">Charts for cs</h1>
-      <p class="ds-section-desc">A sort bar with four keys. Each button sorts at once; the pressed one sends the reverse order.</p>
+      <h1 id="charts-title">Activity charts</h1>
+      <div class="x-filter-row">
+        <button type="button" class="x-filter-trigger" data-filter-panel="subject-panel" aria-haspopup="dialog" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h20"/><path d="M6 12h12"/><path d="M9 19h6"/></svg>
+          Subject
+          <span class="x-filter-value"><b>cs</b><span class="x-path-sep" aria-hidden="true">/</span><span class="is-sr-only">, </span>All categories</span>
+        </button>
+      </div>
+      <p class="ds-section-desc">Showing the past 3 months. Submissions compare the last 7 days with the 3-week weekly average.</p>
     </header>
     <form class="x-sort" method="get" action="page.html">
       <div class="ds-btn-group" role="group" aria-labelledby="sort-by">
@@ -133,47 +121,30 @@
     </div>
   </section>
 
-  <section class="mock-section" aria-labelledby="many-title">
+  <!-- Filters that do not depend on each other: one chip each, removed with its ×. -->
+  <section class="mock-section" aria-labelledby="holds-title">
     <header>
-      <h2 id="many-title">Holds</h2>
-      <p class="ds-section-desc">A filter bar with many filters. With more than four orders, the order is a Sort by select in the filter bar, applied with the rest.</p>
+      <h2 id="holds-title">Recent holds</h2>
+      <p class="ds-section-desc">Holds in cs. Sort by a column heading.</p>
     </header>
-    <form class="x-filter-bar" method="get" action="page.html" aria-label="Filters">
-      <details>
-        <summary>
-          <span class="x-filter-bar-name">Filters</span>
-          <span class="x-filter-bar-applied">cs, 1 to 30 Sep 2026, on hold, oldest first, 50 per page</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-        </summary>
-        <div class="x-filter-bar-body">
-          <div class="x-filter"><label for="m-group">Group</label>
-            <select class="ds-input" id="m-group" name="group"><option>All</option><option selected>cs</option><option>math</option><option>physics</option></select></div>
-          <div class="x-filter"><label for="m-archive">Archive</label>
-            <select class="ds-input" id="m-archive" name="archive"><option>All</option><option selected>cs</option></select></div>
-          <div class="x-filter"><label for="m-category">Category</label>
-            <select class="ds-input" id="m-category" name="category"><option selected>All</option><option>cs.AI</option><option>cs.LG</option></select></div>
-          <div class="x-filter"><label for="m-from">From</label>
-            <input class="ds-input" id="m-from" name="from" type="date" value="2026-09-01"></div>
-          <div class="x-filter"><label for="m-to">To</label>
-            <input class="ds-input" id="m-to" name="to" type="date" value="2026-09-30"></div>
-          <div class="x-filter"><label for="m-status">Status</label>
-            <select class="ds-input" id="m-status" name="status"><option>Any</option><option selected>On hold</option><option>Released</option><option>Removed</option></select></div>
-          <div class="x-filter"><label for="m-days">Held for at least</label>
-            <input class="ds-input" id="m-days" name="days" type="number" inputmode="numeric" min="0" value="7" aria-describedby="m-days-unit"><span id="m-days-unit">days</span></div>
-          <div class="x-filter"><label for="m-sort">Sort by</label>
-            <select class="ds-input" id="m-sort" name="sort"><option>Newest first</option><option selected>Oldest first</option><option>Category</option><option>Most comments</option><option>Submitter</option><option>Moderator</option></select></div>
-          <div class="x-filter"><label for="m-size">Per page</label>
-            <select class="ds-input" id="m-size" name="size"><option>25</option><option selected>50</option><option>100</option></select></div>
-          <div class="x-filter-bar-actions">
-            <a href="page.html">Clear</a>
-            <button class="ds-btn" type="submit">Apply</button>
-          </div>
-        </div>
-      </details>
-    </form>
-    <div class="ds-table-scroll" role="region" aria-label="Holds" tabindex="0">
+    <div class="x-filter-row" role="group" aria-label="Filters on recent holds">
+      <button type="button" class="x-filter-trigger" data-filter-panel="holds-panel" aria-haspopup="dialog" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h20"/><path d="M6 12h12"/><path d="M9 19h6"/></svg>
+        Filters
+      </button>
+      <span class="x-chip"><span class="x-chip-name">Status</span>On hold<a class="x-chip-remove" href="page.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Remove the filter Status: On hold</span></a></span>
+      <span class="x-chip"><span class="x-chip-name">Held since</span>1 to 30 Sep 2026<a class="x-chip-remove" href="page.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Remove the filter Held since: 1 to 30 Sep 2026</span></a></span>
+      <span class="x-chip"><span class="x-chip-name">Held for</span>7 days or more<a class="x-chip-remove" href="page.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Remove the filter Held for: 7 days or more</span></a></span>
+      <a class="x-clear" href="page.html">Clear all</a>
+    </div>
+    <div class="ds-table-scroll" role="region" aria-label="Recent holds" tabindex="0">
       <table class="ds-table">
-        <thead><tr><th scope="col">Submission</th><th scope="col">Category</th><th scope="col">Held since</th><th scope="col">Moderator</th></tr></thead>
+        <thead><tr>
+          <th scope="col"><button type="button" class="sortable">Submission <span class="sort-arrow">⇅</span></button></th>
+          <th scope="col"><button type="button" class="sortable">Category <span class="sort-arrow">⇅</span></button></th>
+          <th scope="col" class="sort-asc" aria-sort="ascending"><button type="button" class="sortable">Held since <span class="sort-arrow">↑</span></button></th>
+          <th scope="col"><button type="button" class="sortable">Moderator <span class="sort-arrow">⇅</span></button></th>
+        </tr></thead>
         <tbody>
           <tr><td>submit/6614203</td><td>cs.LG</td><td>2026-09-02</td><td>lfischer</td></tr>
           <tr><td>submit/6617750</td><td>cs.AI</td><td>2026-09-05</td><td>rnatarajan</td></tr>
@@ -228,7 +199,7 @@
   <section class="mock-section" aria-labelledby="search-title">
     <header>
       <h2 id="search-title">Find a moderator</h2>
-      <p class="ds-section-desc">A one-field form. The button shares the field’s row, and the results’ settings are a filter bar inside the same form.</p>
+      <p class="ds-section-desc">A one-field form. The button shares the field’s row, and the results’ settings are the filter bar, under it in the same form.</p>
     </header>
     <form class="ds-form" method="get" action="page.html" role="search" aria-label="Moderators">
       <div class="ds-field">
@@ -237,28 +208,122 @@
       </div>
       <button class="ds-btn ds-btn-primary" type="submit">Search</button>
       <div class="x-filter-bar" role="group" aria-label="Results">
-        <details>
-          <summary>
-            <span class="x-filter-bar-name">Results</span>
-            <span class="x-filter-bar-applied">all groups, best match, 25 per page</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </summary>
-          <div class="x-filter-bar-body">
-            <div class="x-filter"><label for="r-group">Group</label>
-              <select class="ds-input" id="r-group" name="group"><option selected>All</option><option>cs</option><option>math</option></select></div>
-            <div class="x-filter"><label for="r-sort">Sort by</label>
-              <select class="ds-input" id="r-sort" name="sort"><option selected>Best match</option><option>Name</option><option>Newest</option></select></div>
-            <div class="x-filter"><label for="r-size">Per page</label>
-              <select class="ds-input" id="r-size" name="size"><option selected>25</option><option>50</option><option>100</option></select></div>
-          </div>
-        </details>
+        <div class="x-filter-bar-body">
+          <div class="x-filter"><label for="r-group">Group</label>
+            <select class="ds-input" id="r-group" name="group"><option selected>All</option><option>cs</option><option>math</option></select></div>
+          <div class="x-filter"><label for="r-sort">Sort by</label>
+            <select class="ds-input" id="r-sort" name="sort"><option selected>Best match</option><option>Name</option><option>Newest</option></select></div>
+          <div class="x-filter"><label for="r-size">Per page</label>
+            <select class="ds-input" id="r-size" name="size"><option selected>25</option><option>50</option><option>100</option></select></div>
+        </div>
       </div>
     </form>
   </section>
 
 </main>
 
+<!-- The subject's panel. It hangs below the row of the control that opened it. -->
+<dialog class="ds-modal x-filter-panel" id="subject-panel" closedby="any" aria-labelledby="subject-panel-title">
+  <form method="get" action="page.html">
+    <div class="ds-modal-header">
+      <h2 class="ds-modal-title" id="subject-panel-title">Subject</h2>
+      <button type="button" class="ds-close" data-close>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        <span class="is-sr-only">Close</span>
+      </button>
+    </div>
+    <div class="ds-modal-body">
+      <div class="x-filter-bar">
+        <div class="x-filter-bar-body">
+          <div class="x-filter"><label for="s-group">Group</label>
+            <select class="ds-input" id="s-group" name="group" autofocus>
+              <option>All</option><option selected>cs</option><option>econ</option><option>eess</option><option>math</option><option>physics</option><option>q-bio</option><option>q-fin</option><option>stat</option>
+            </select></div>
+          <div class="x-filter"><label for="s-archive">Archive</label>
+            <select class="ds-input" id="s-archive" name="archive"><option>All</option><option selected>cs</option></select></div>
+          <div class="x-filter"><label for="s-category">Category</label>
+            <select class="ds-input" id="s-category" name="category">
+              <option selected>All categories</option><option>cs.AI</option><option>cs.CL</option><option>cs.CV</option><option>cs.DB</option><option>cs.LG</option><option>cs.SY</option>
+            </select></div>
+        </div>
+      </div>
+    </div>
+    <div class="ds-modal-footer">
+      <a href="page.html">Show all of arXiv</a>
+      <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- The holds filters' panel: every filter, set or not. -->
+<dialog class="ds-modal x-filter-panel" id="holds-panel" closedby="any" aria-labelledby="holds-panel-title">
+  <form method="get" action="page.html">
+    <div class="ds-modal-header">
+      <h2 class="ds-modal-title" id="holds-panel-title">Filters on recent holds</h2>
+      <button type="button" class="ds-close" data-close>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        <span class="is-sr-only">Close</span>
+      </button>
+    </div>
+    <div class="ds-modal-body">
+      <div class="x-filter-bar">
+        <div class="x-filter-bar-body">
+          <div class="x-filter"><label for="h-status">Status</label>
+            <select class="ds-input" id="h-status" name="status" autofocus><option>Any</option><option selected>On hold</option><option>Released</option><option>Removed</option></select></div>
+          <div class="x-filter"><label for="h-from">Held since</label>
+            <input class="ds-input" id="h-from" name="from" type="date" value="2026-09-01"></div>
+          <div class="x-filter"><label for="h-to">to</label>
+            <input class="ds-input" id="h-to" name="to" type="date" value="2026-09-30"></div>
+          <div class="x-filter"><label for="h-days">Held for at least</label>
+            <input class="ds-input" id="h-days" name="days" type="number" inputmode="numeric" min="0" value="7" aria-describedby="h-days-unit"><span id="h-days-unit">days</span></div>
+          <div class="x-filter"><label for="h-mod">Moderator</label>
+            <select class="ds-input" id="h-mod" name="moderator"><option selected>Anyone</option><option>lfischer</option><option>meilin</option><option>rnatarajan</option></select></div>
+          <div class="x-filter"><label for="h-size">Per page</label>
+            <select class="ds-input" id="h-size" name="size"><option>25</option><option selected>50</option><option>100</option></select></div>
+        </div>
+      </div>
+    </div>
+    <div class="ds-modal-footer">
+      <a href="page.html">Clear all</a>
+      <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
+    </div>
+  </form>
+</dialog>
+
 <script>
+  // A filter control opens its panel just below its row, as header search hangs from the bar.
+  document.querySelectorAll('[data-filter-panel]').forEach(function (trigger) {
+    var panel = document.getElementById(trigger.dataset.filterPanel);
+    trigger.addEventListener('click', function () {
+      var row = trigger.closest('.x-filter-row').getBoundingClientRect();
+      var width = Math.min(window.innerWidth - 32, 736);
+      var left = Math.max(16, Math.min(row.left, window.innerWidth - width - 16));
+      panel.style.setProperty('--x-panel-top', Math.round(row.bottom + 8) + 'px');
+      panel.style.setProperty('--x-panel-left', Math.round(left) + 'px');
+      panel.showModal();
+      trigger.setAttribute('aria-expanded', 'true');
+    });
+    panel.addEventListener('close', function () { trigger.setAttribute('aria-expanded', 'false'); });
+    // closedby="any" where supported; a click on the backdrop otherwise.
+    panel.addEventListener('click', function (e) { if (e.target === panel) panel.close(); });
+    panel.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { panel.close(); }); });
+  });
+
+  // Section and account menus: close on outside click and Esc (the <details> menus work without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.x-section-menu[open], .ds-site-header-dropdown[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.x-section-menu[open]').forEach(function (d) {
+      var inside = d.contains(document.activeElement);
+      d.removeAttribute('open');
+      if (inside) d.querySelector('summary').focus();
+    });
+  });
+
   // Tell index.html how tall this page is, so each frame shows all of it.
   if (window.parent !== window) {
     new ResizeObserver(function () {
