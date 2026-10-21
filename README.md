@@ -1,4 +1,6 @@
-# arXiv Design System
+# Smileybones
+
+The arXiv design system.
 
 arXiv's DNA for product design and frontend development: design tokens, component specs, typography and color decisions, accessibility requirements, and interactive pattern references. These define the visual language production code should follow — they are not production code themselves.
 
