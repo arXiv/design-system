@@ -11,7 +11,8 @@ import upload_static_assets as u  # noqa: E402
 ROOT = Path(u.ROOT)
 GOOD = {"id": "maint", "text": "Maintenance tonight", "start": "2026-08-03T00:00-04:00",
         "end": "2026-08-06T00:00Z"}
-LINK = dict(GOOD, link_text="Status", url="https://status.arxiv.org")
+STATUS, BLOG = {"text": "Status", "url": "https://status.arxiv.org"}, {"text": "Blog", "url": "https://blog.arxiv.org/"}
+LINK2 = dict(GOOD, links=[STATUS, BLOG])
 
 
 def problems(*entries):
@@ -25,6 +26,7 @@ class TestAnnouncements(unittest.TestCase):
                      json.loads(doc.split("```json")[1].split("```")[0])):
             self.assertEqual(u.check_announcements(data), [])
         self.assertEqual(problems(GOOD), [])  # the link is optional
+        self.assertEqual(problems(LINK2), [])
 
     def test_each_rule(self):
         older = dict(GOOD, id="older", start="2026-07-01T00:00Z", end="2026-07-02T00:00Z")
@@ -34,12 +36,14 @@ class TestAnnouncements(unittest.TestCase):
             ("start is required", {k: v for k, v in GOOD.items() if k != "start"}),
             ("not an object of strings", dict(GOOD, text=["a"])),
             ("not an object of strings", "text"),
-            ("link_text and url go together", dict(LINK, link_text="")),
+            ("links is a list of one or two links", dict(GOOD, links=[])),
+            ("links is a list of one or two links", dict(GOOD, links=[STATUS, BLOG, STATUS])),
+            ("link 0 is not an object of text and url", dict(GOOD, links=[{"text": "Status"}])),
             ("end is not after start", dict(GOOD, end="2026-08-02T00:00-04:00")),
             ("newest first", older, GOOD),
             ("duplicate id", GOOD, GOOD),
         ]
-        cases += [("not an absolute https URL", dict(LINK, url=url)) for url in (
+        cases += [("not an absolute https URL", dict(GOOD, links=[dict(STATUS, url=url)])) for url in (
             "http://bit.ly/x", "https://https://status.arxiv.org", "https://logout",
             "javascript:alert(1)", "/about", "https://[broken")]
         cases += [("not an ISO 8601 time with its offset", dict(GOOD, start=t)) for t in (
