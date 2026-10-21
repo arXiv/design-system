@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="../../../../docs/internal-tools.css">
   <link rel="stylesheet" href="controls.css">
   <script src="../../../../docs/theme.js"></script>
+  <script src="../../../../docs/header.js" defer></script>
   <script>
     // Demo only: index.html asks for touch sizes with ?pointer=coarse.
     var pointer = new URLSearchParams(location.search).get('pointer');
@@ -27,10 +28,21 @@
 <body class="ds-page">
 <a class="ds-skip-link" href="#main">Skip to main content</a>
 
+<!-- The internal header from docs/header.html: search fields, navigation, tools, compact account.
+     header.js folds it to fit: the navigation, tools and account into one menu,
+     then the search fields behind a Search button. -->
 <header class="ds-site-header">
   <a href="#" class="ds-site-header-logo">
-    <img src="../../../../docs/assets/images/logos/logo_arxiv-admin.png" alt="archive Admin Console">
+    <img src="../../../../docs/assets/images/logos/logo_arxiv-admin-light.svg" alt="archive Admin Console">
   </a>
+  <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
+    <label class="is-sr-only" for="hdr-users">Search users</label>
+    <input class="ds-input" type="search" id="hdr-users" placeholder="Search users">
+  </form>
+  <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
+    <label class="is-sr-only" for="hdr-docs">Search submissions and documents</label>
+    <input class="ds-input" type="search" id="hdr-docs" placeholder="Search submissions">
+  </form>
   <nav class="ds-site-header-nav" aria-label="Reports">
     <details class="ds-site-header-dropdown">
       <summary>Staff reports</summary>
@@ -45,18 +57,18 @@
     <a href="#">Moderators</a>
     <a href="#">Recruitment</a>
   </nav>
-  <span class="ds-site-header-divider" aria-hidden="true"></span>
   <div class="ds-site-header-tools">
     <button type="button" class="ds-theme-toggle"></button>
     <span id="ds-theme-status" class="is-sr-only" role="status"></span>
   </div>
   <span class="ds-site-header-divider" aria-hidden="true"></span>
-  <div class="ds-site-header-account">
+  <div class="ds-site-header-account ds-site-header-account--compact">
     <details class="ds-site-header-dropdown">
-      <summary class="ds-site-header-login">Account</summary>
+      <summary class="ds-site-header-login"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg><span class="is-sr-only">Account, signed in as Ada</span></summary>
       <div class="ds-site-header-menu">
+        <p>Signed in as <b>Ada</b></p>
         <a href="#">Your account</a>
-        <form method="post" action="#"><button type="submit">Log out</button></form>
+        <form method="post" action="#" onsubmit="return false"><button type="submit">Log out</button></form>
       </div>
     </details>
   </div>
