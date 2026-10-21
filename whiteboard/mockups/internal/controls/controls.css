@@ -38,7 +38,6 @@
    is text links; a filter control is an outlined box with the filter icon. */
 .ds-subnav:has(.x-section-menu) {
   --x-row-pad: 24px;
-  container: x-subnav / inline-size;
   column-gap: var(--ds-space-8);
 }
 @media (max-width: 599px) { .ds-subnav:has(.x-section-menu) { --x-row-pad: 12px; } }
@@ -111,10 +110,9 @@
   text-shadow: none;
   font-weight: 600;
 }
-.x-view-short { display: none; }
 
-/* The views folded into one menu, when the tabs do not fit on one line. The script sets
-   .is-views-folded; without it the tabs wrap. */
+/* The views folded into one menu, when the tabs do not fit beside the section menu.
+   The script sets .is-views-folded; without it the tabs wrap. */
 .x-views-menu { display: none; position: relative; }
 .ds-subnav.is-views-folded .x-views { display: none; }
 .ds-subnav.is-views-folded .x-views-menu { display: flex; }
@@ -136,17 +134,10 @@
 .x-views-menu[open] > summary .x-chevron { transform: rotate(180deg); }
 .x-views-menu > .x-section-menu-list { left: 0; }
 
-/* When the full names would not fit beside the menu: the menu takes the whole
-   first row, and each view shows its last word. The full name stays for screen readers. */
-@container x-subnav (max-width: 64rem) {
-  .x-section-menu { flex: 1 0 100%; margin-inline: calc(-1 * var(--x-row-pad)); }
-  .x-section-menu > summary { flex: 1; padding-inline: var(--x-row-pad); }
-  .x-view-short { display: inline; }
-  .x-view-full {
-    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
-  }
-}
+/* When even the View menu does not fit beside the section menu, the section menu
+   takes a row of its own, filled edge to edge. The script sets .is-menu-row. */
+.ds-subnav.is-menu-row .x-section-menu { flex: 1 0 100%; margin-inline: calc(-1 * var(--x-row-pad)); }
+.ds-subnav.is-menu-row .x-section-menu > summary { flex: 1; padding-inline: var(--x-row-pad); }
 
 
 /* ── Filter control: a boxed button with the filter icon, the name and what is applied ──

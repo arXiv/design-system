@@ -82,12 +82,12 @@
     </div>
   </details>
   <div class="x-views">
-    <a href="#"><span class="x-view-full">Overview</span><span class="x-view-short" aria-hidden="true">Overview</span></a>
-    <a href="#" aria-current="page"><span class="x-view-full">Activity charts</span><span class="x-view-short" aria-hidden="true">Charts</span></a>
-    <a href="#"><span class="x-view-full">Category submission stats</span><span class="x-view-short" aria-hidden="true">Stats</span></a>
-    <a href="#"><span class="x-view-full">Recent submissions</span><span class="x-view-short" aria-hidden="true">Submissions</span></a>
-    <a href="#"><span class="x-view-full">Recent holds</span><span class="x-view-short" aria-hidden="true">Holds</span></a>
-    <a href="#"><span class="x-view-full">Recent releases</span><span class="x-view-short" aria-hidden="true">Releases</span></a>
+    <a href="#">Overview</a>
+    <a href="#" aria-current="page">Activity charts</a>
+    <a href="#">Category submission stats</a>
+    <a href="#">Recent submissions</a>
+    <a href="#">Recent holds</a>
+    <a href="#">Recent releases</a>
   </div>
   </nav>
 </div>
@@ -299,12 +299,12 @@
     var list = document.querySelector('.x-views');
     more.forEach(function (name) {
       var a = document.createElement('a'); a.href = '#';
-      a.innerHTML = '<span class="x-view-full">' + name + '</span><span class="x-view-short" aria-hidden="true">' + name.split(' ').pop().replace(/^./, function (c) { return c.toUpperCase(); }) + '</span>';
+      a.innerHTML = '' + name + '';
       list.appendChild(a);
     });
   }
 
-  // The views fold into one menu when their tabs do not fit on one line, as the header folds.
+  // The views fold into one menu when their tabs do not fit beside the section menu, as the header folds.
   // Without this script the tabs wrap.
   document.querySelectorAll('.ds-subnav .x-views').forEach(function (views) {
     var row = views.closest('.ds-subnav');
@@ -312,19 +312,26 @@
     var menu = document.createElement('details');
     menu.className = 'x-views-menu';
     menu.innerHTML = '<summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4"/><path d="M2 8h20"/><path d="M6 4v4"/></svg>View: <b></b><svg class="x-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div class="x-section-menu-list"></div>';
-    menu.querySelector('b').textContent = current.querySelector('.x-view-full').textContent;
+    menu.querySelector('b').textContent = current.textContent;
     views.querySelectorAll('a').forEach(function (a) {
       var link = document.createElement('a');
       link.href = a.getAttribute('href');
-      link.textContent = a.querySelector('.x-view-full').textContent;
+      link.textContent = a.textContent;
       if (a === current) link.setAttribute('aria-current', 'page');
       menu.lastChild.appendChild(link);
     });
     views.after(menu);
+    // Three layouts, tried in order: the tabs beside the section menu; the View menu
+    // beside it; the section menu on a row of its own, with the View menu below.
+    var section = row.querySelector('.x-section-menu');
+    function top(el) { return el.getBoundingClientRect().top; }
     function fit() {
-      row.classList.remove('is-views-folded');
+      row.classList.remove('is-views-folded', 'is-menu-row');
       var tabs = views.querySelectorAll('a');
-      if (tabs[tabs.length - 1].offsetTop > tabs[0].offsetTop + 4) row.classList.add('is-views-folded');
+      if (top(tabs[tabs.length - 1]) - top(section) < 12) return;
+      row.classList.add('is-views-folded');
+      if (top(menu) - top(section) < 12) return;
+      row.classList.add('is-menu-row');
     }
     new ResizeObserver(fit).observe(row);
   });
