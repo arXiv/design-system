@@ -261,16 +261,17 @@
 /* ── Sort bar: two to four keys. With more, sort from the table's column headers. ──
    Wide: one joined bar. Narrower than four keys need: two buttons to a row,
    the full width between them, so the joined bar never wraps. */
-.x-sort { container: x-sort / inline-size; margin: 0; font-size: var(--x-control-text); }
-.x-sort .ds-btn-group > span { font-size: var(--x-control-text); color: var(--ds-text-muted); }
+.x-sort { container: x-sort / inline-size; margin: 0; font-size: 0.875rem; }
+.x-sort .ds-btn-group > span { color: var(--ds-text-muted); }
+/* Buttons, so the second row's text size, and drawn at the box height with the full target. */
 .x-sort .ds-btn-group > .ds-btn[aria-pressed][name] {
-  min-height: var(--x-control);
+  min-height: var(--x-control-box);
   min-width: 0;
   padding: 0 0.9em;
-  font-size: var(--x-control-text);
+  font-size: 0.875rem;
 }
 @container x-sort (max-width: 48em) {
-  .x-sort .ds-btn-group:has(> .ds-btn) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-space-2); }
+  .x-sort .ds-btn-group:has(> .ds-btn) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: max(var(--ds-space-2), calc(var(--x-control) - var(--x-control-box) + 2px)) var(--ds-space-2); }
   .x-sort .ds-btn-group > span { grid-column: 1 / -1; margin: 0; }
   .x-sort .ds-btn-group > .ds-btn[aria-pressed][name] {
     justify-content: space-between;
