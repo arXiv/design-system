@@ -6,7 +6,7 @@ export default function Footer({ help_url = "https://info.arxiv.org", member_ins
         <div className="ds-site-footer-grid">{" "}
           <div className="ds-site-footer-main">{" "}
             <div className="ds-site-footer-ack">{" "}
-              We gratefully acknowledge support from our <a href={`${help_url}/about/funders.html`}><strong>major funders</strong></a>,{" "}
+              We gratefully acknowledge support from our <a href={`${help_url}/about/major_funders.html`}><strong>major funders</strong></a>,{" "}
               <a href={`${help_url}/about/ourmembers.html`}><strong>member institutions</strong></a>{member_institution},{" "}
               and all contributors.{" "}
             </div>{" "}
