@@ -371,6 +371,9 @@ Each internal tool chooses the search fields, navigation and wordmark its users 
     <a href="/support">User Support</a>
     <a href="/students">Students</a>
   </nav>
+  <div class="ds-site-header-tools">
+    <button type="button" class="ds-theme-toggle"></button>
+  </div>
   <span class="ds-site-header-divider" aria-hidden="true"></span>
   <div class="ds-site-header-account ds-site-header-account--compact">
     <details class="ds-site-header-dropdown">
