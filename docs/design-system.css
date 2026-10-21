@@ -3538,10 +3538,12 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   --ds-announcement-fg:   var(--ds-text);
   --ds-announcement-link: var(--ds-link);
   display: flex;
+  flex-wrap: wrap;   /* text that does not fit sends the links under it */
   align-items: center;
   justify-content: center;
   gap: var(--ds-gap-glyph);
-  padding: 6px 16px;
+  padding: 6px 36px; /* clear of the close button, and even, so a row stays centred */
+  text-align: center;
   background: var(--ds-announcement-bg);
   color: var(--ds-announcement-fg);
   font-family: var(--ds-font-sans);
@@ -3550,14 +3552,29 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   position: relative;
 }
 .ds-announcement-glyph { width: 18px; height: 18px; flex-shrink: 0; }
+/* Inside the text, the glyph starts its first line: on a wrap it stays with the words
+   rather than taking a row of its own. */
+.ds-announcement-text > .ds-announcement-glyph {
+  margin-right: var(--ds-gap-glyph);
+  vertical-align: -4px;
+}
 .ds-announcement-text { font-weight: 600; }
-.ds-announcement-link {
+/* Through the band, so a host's own a:link rule (browse's and stats' arXiv.css) cannot take
+   the underline and the weight. */
+.ds-announcement .ds-announcement-link {
   color: var(--ds-announcement-link);
   text-decoration: underline;
   text-underline-offset: 2px;
   font-weight: 600;
 }
-.ds-announcement-link:hover { text-decoration-thickness: 2px; }
+.ds-announcement .ds-announcement-link:hover { text-decoration-thickness: 2px; }
+/* Two links are one unit (.ds-announcement-links), so they wrap together, and between
+   them only inside a label. The separator is drawn, not a "|" (a line may break after
+   that), and no-break spaces hold it to both labels: it never starts or ends a line. */
+.ds-announcement-sep {
+  border-left: 1px solid currentColor;
+  margin: 0 0.25em;
+}
 /* Registers, named for the job. Maintenance sits on the header's own dark
    ground in both themes; event holds the smileybones yellow in both, with
    fixed brown text, the way Access Lime holds its value. The link on yellow
@@ -3579,13 +3596,6 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   top: 50%;
   transform: translateY(-50%);
   color: var(--ds-text-muted);
-}
-@media (max-width: 520px) {
-  .ds-announcement {
-    flex-wrap: wrap;
-    padding-right: 36px; /* keep clear of the close button */
-    text-align: center;
-  }
 }
 
 /* ── 2. Black header bar ── */
@@ -4225,7 +4235,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 
 /* Outside a header bar — a settings page, a docs page with no chrome — the
    bar tokens are undefined, so it falls back to the page's own. */
-.ds-theme-toggle:not(.ds-site-header-nav *) {
+.ds-theme-toggle:not(.ds-site-header *) {
   color: var(--ds-hdr-fg, var(--ds-text-muted));
 }
 
