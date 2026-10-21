@@ -33,28 +33,32 @@
 .ds-form .ds-check { min-height: var(--x-control); }
 
 
-/* ── Section menu: navigation, so it reads as a link with a chevron, no box ── */
-.x-section-menu { position: relative; display: flex; }
+/* ── Section menu: a dropdown, so a tinted box with a chevron. Navigation beside it
+   is plain text; a filter control is an outlined box with the filter icon. ── */
+.x-section-menu { position: relative; display: flex; align-items: center; margin-block: var(--ds-space-1); }
 .x-section-menu > summary {
   display: inline-flex;
   align-items: center;
-  gap: 0.35em;
-  min-height: 2.5rem;
+  gap: 0.4em;
+  min-height: max(var(--x-control), 2rem);
+  padding: 0 0.75em;
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--ds-text);
+  background: var(--ds-tint-warm);
+  border-radius: 6px;
   list-style: none;
   cursor: pointer;
-  border-bottom: 3px solid transparent;
 }
 .x-section-menu > summary::-webkit-details-marker { display: none; }
-.x-section-menu > summary:hover { border-bottom-color: var(--ds-border-strong); }
-.x-section-menu > summary:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: -3px; border-radius: 2px; }
-.x-section-menu > summary svg { width: 1em; height: 1em; transition: transform 0.15s; }
+.x-section-menu > summary:hover,
+.x-section-menu[open] > summary { background: var(--ds-surface-active); }
+.x-section-menu > summary:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 2px; }
+.x-section-menu > summary svg { width: 1.1em; height: 1.1em; transition: transform 0.15s; }
 .x-section-menu[open] > summary svg { transform: rotate(180deg); }
 .x-section-menu-list {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px);
   left: 0;
   z-index: 50;
   display: grid;
@@ -62,7 +66,7 @@
   padding: var(--ds-space-1) 0;
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
-  border-radius: 0 0 8px 8px;
+  border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 .ds-subnav .x-section-menu-list a {
@@ -74,8 +78,10 @@
 .ds-subnav .x-section-menu-list a:hover { background: var(--ds-surface-hover); }
 .ds-subnav .x-section-menu-list a[aria-current="true"] { font-weight: 600; box-shadow: inset 3px 0 0 var(--ds-subnav-current, var(--ds-accent-strong)); }
 /* The section menu, then the views, a group's gap apart. */
-.ds-subnav:has(> .x-section-menu) { column-gap: var(--ds-space-12); }
-.ds-subnav > .x-views { display: flex; flex-wrap: wrap; column-gap: var(--ds-space-6); }
+.ds-subnav:has(.x-section-menu) { column-gap: var(--ds-space-12); }
+/* The navigation lays out in the row itself, so the control after it can take the far end. */
+.ds-subnav > nav.x-subnav-nav { display: contents; }
+.ds-subnav .x-views { display: flex; flex-wrap: wrap; column-gap: var(--ds-space-6); }
 .ds-subnav .x-section-menu-list a[aria-current] { color: var(--ds-text); }
 
 
@@ -114,6 +120,9 @@
 .x-filter-value { min-width: 0; font-weight: 400; color: var(--ds-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .x-filter-value b { font-weight: 600; color: var(--ds-text); }
 .x-path-sep { margin-inline: 0.3em; color: var(--ds-text-muted); }
+
+/* In the views row, the subject control takes the row's far end. */
+.ds-subnav > .x-filter-trigger { align-self: center; margin: var(--ds-space-1) 0 var(--ds-space-1) auto; font-size: var(--x-control-text); }
 
 /* Applied filters that do not depend on each other: one chip each, and its × removes it. */
 .x-chip {

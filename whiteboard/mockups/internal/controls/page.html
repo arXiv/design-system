@@ -70,8 +70,9 @@
   </div>
 </header>
 
-<!-- The second row is navigation only: the section menu, then the section's views. -->
-<nav class="ds-subnav" aria-label="Moderator reports">
+<!-- The second row: the section menu, the section's views, then the subject control. -->
+<div class="ds-subnav">
+  <nav class="x-subnav-nav" aria-label="Moderator reports">
   <details class="x-section-menu">
     <summary>Submissions and holds <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
     <div class="x-section-menu-list">
@@ -88,21 +89,20 @@
     <a href="#">Recent holds</a>
     <a href="#">Recent releases</a>
   </div>
-</nav>
+  </nav>
+  <!-- The subject applies to every view of every section, so it ends the row and its panel hangs below the row. -->
+  <button type="button" class="x-filter-trigger" data-filter-panel="subject-panel" aria-haspopup="dialog" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h20"/><path d="M6 12h12"/><path d="M9 19h6"/></svg>
+    Subject
+    <span class="x-filter-value"><b>cs</b><span class="x-path-sep" aria-hidden="true">/</span><span class="is-sr-only">, </span>All categories</span>
+  </button>
+</div>
 
 <main id="main" class="ds-container ds-container--wide">
 
-  <!-- A subject: its levels narrow each other, so the control shows one path, and it is changed, not removed. -->
-  <section class="mock-section" aria-labelledby="charts-title">
+    <section class="mock-section" aria-labelledby="charts-title">
     <header>
       <h1 id="charts-title">Activity charts</h1>
-      <div class="x-filter-row">
-        <button type="button" class="x-filter-trigger" data-filter-panel="subject-panel" aria-haspopup="dialog" aria-expanded="false">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h20"/><path d="M6 12h12"/><path d="M9 19h6"/></svg>
-          Subject
-          <span class="x-filter-value"><b>cs</b><span class="x-path-sep" aria-hidden="true">/</span><span class="is-sr-only">, </span>All categories</span>
-        </button>
-      </div>
       <p class="ds-section-desc">Showing the past 3 months. Submissions compare the last 7 days with the 3-week weekly average.</p>
     </header>
     <form class="x-sort" method="get" action="page.html">
@@ -295,9 +295,12 @@
   document.querySelectorAll('[data-filter-panel]').forEach(function (trigger) {
     var panel = document.getElementById(trigger.dataset.filterPanel);
     trigger.addEventListener('click', function () {
-      var row = trigger.closest('.x-filter-row').getBoundingClientRect();
+      // In the views row the panel lines up with the control's right edge; elsewhere with the row's left.
+      var row = trigger.closest('.x-filter-row, .ds-subnav').getBoundingClientRect();
+      var own = trigger.getBoundingClientRect();
       var width = Math.min(window.innerWidth - 32, 736);
-      var left = Math.max(16, Math.min(row.left, window.innerWidth - width - 16));
+      var start = trigger.closest('.ds-subnav') ? own.right - width : row.left;
+      var left = Math.max(16, Math.min(start, window.innerWidth - width - 16));
       panel.style.setProperty('--x-panel-top', Math.round(row.bottom + 8) + 'px');
       panel.style.setProperty('--x-panel-left', Math.round(left) + 'px');
       panel.showModal();
