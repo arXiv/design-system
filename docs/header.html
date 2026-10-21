@@ -31,6 +31,7 @@
         <a href="tags.html">Tags</a>
         <a href="header.html" aria-current="page">Site header</a>
         <a href="footer.html">Site footer</a>
+        <a href="navigation.html">Navigation</a>
         <a href="pager.html">Pager</a>
         <span class="ds-panel-label">Organizing content</span>
         <a href="layout-patterns.html">Layouts</a>
@@ -83,7 +84,9 @@
   <header class="ds-page-header">
     <h1>Site header</h1>
     <p>The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left, and navigation, search, and account links on the right. An optional, dismissible announcement banner can be displayed above the header. Absolute consistency across all pages is critical.</p>
+    <p>The header is in transition. Pages on arxiv.org use the <a href="#transitional-header">transitional header</a> from <code>templates/</code> now, and will move to the <a href="#aspirational-header">aspirational header</a> after the migration.</p>
     <p>Internal pages have their own header and variations, see <a href="#internal-headers">Internal header</a> for an example.</p>
+    <p>The bars under the header, such as secondary navigation and steps, are on <a href="navigation.html">Navigation</a>.</p>
   </header>
   </div>
 
@@ -99,18 +102,18 @@
         </summary>
         <nav class="ds-toc-menu" aria-label="Contents">
           <ol>
+            <li><a href="#transitional-header">Transitional header (currently in production)</a></li>
+            <li><a href="#aspirational-header">Aspirational header (post-migration)</a></li>
             <li><a href="#the-header-unit">The header unit</a></li>
-            <li><a href="#signed-out-and-signed-in">Signed out and signed in</a></li>
+            <li><a href="#signed-in">Signed in</a></li>
             <li><a href="#on-small-screens">On small screens</a></li>
             <li><a href="#header-dropdown-menus">Header dropdown menus</a></li>
-            <li><a href="#secondary-navigation">Secondary navigation</a></li>
-            <li><a href="#two-levels-of-navigation">Two levels of navigation</a></li>
-            <li><a href="#steps">Steps</a></li>
             <li><a href="#with-the-announcement-band">With the announcement band</a></li>
             <li><a href="#the-light-variant">The light variant</a></li>
             <li><a href="#internal-headers">Internal header</a></li>
             <li><a href="#sticky-header">Sticky header</a></li>
             <li><a href="#hosting-the-header">Hosting the header</a></li>
+            <li><a href="#design-rules">Design rules</a></li>
             <li><a href="#surface-tokens">Surface tokens</a></li>
           </ol>
         </nav>
@@ -118,12 +121,241 @@
     </div>
   </div>
 
-  <!-- ═════════ Core ═════════ -->
+  <!-- ═════════ Transitional ═════════ -->
+  <section>
+    <h2 id="transitional-header">Transitional header (currently in production)</h2>
+    <p class="ds-section-desc">The header in production now. A page includes it from <code>templates/</code> rather than copying its markup; the <a href="doc.html?src=templates/README.md">templates README</a> says how to install it and what each variable does. The examples are a copy of the template’s markup taken on 21 October 2026; when they differ from the template, the template is right. In production, the navigation folds behind the menu button when the window is narrower than 600px, as the phone example shows.</p>
+    <!-- A copy of templates/arxiv_brand/header.html's output, taken on 2026-10-21. The template
+         is the source: when the two differ, the template is right. Changes for one page: each id
+         (and the for and aria-controls naming it) takes a suffix, each navigation its own label,
+         the logo comes from assets/, and the hidden IgnoreMe link, a trap for crawlers, is left
+         out. The phone example has the two classes production's header script adds below 600px.
+         docs/header.js leaves headers inside .demo-static alone. -->
+    <div class="ds-card demo-static">
+      <p class="ds-panel-label">Signed out</p>
+      <header class="ds-site-header ">
+        <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
+          <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
+        </a>
+        <a id="ds-search-toggle-signed-out" class="ds-site-header-search-link" href="https://arxiv.org/search" aria-controls="ds-search-overlay-signed-out" aria-expanded="false">
+          <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <span>Search</span>
+        </a>
+        <button type="button" id="ds-nav-toggle-signed-out" class="ds-site-header-nav-toggle"
+          aria-label="Open menu" aria-controls="ds-site-header-nav-signed-out" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <nav class="ds-site-header-nav" id="ds-site-header-nav-signed-out" aria-label="Main navigation, signed out example">
+          <a href="https://arxiv.org/submit">Submit</a>
+          <a href="https://info.arxiv.org/about/donate.html">Donate</a>
+          <span class="ds-site-header-divider" aria-hidden="true"></span>
+          <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
+        </nav>
+      </header>
+      <div class="ds-search-overlay" id="ds-search-overlay-signed-out" hidden>
+        <div class="ds-search-overlay-panel" role="search">
+          <form method="GET" action="https://arxiv.org/search">
+            <label for="ds-search-input-signed-out" class="is-sr-only">Search arXiv</label>
+            <input type="text" name="query" id="ds-search-input-signed-out" class="ds-input" autocomplete="off"
+              placeholder="Search papers by title, author, abstract, or ID...">
+            <input type="hidden" name="searchtype" value="all">
+            <input type="hidden" name="source" value="header">
+          </form>
+          <p class="ds-hint">
+            Press Enter to search &middot; <a href="https://arxiv.org/search/advanced">Advanced search</a>
+          </p>
+        </div>
+      </div>
+      <p class="ds-panel-label">Signed in</p>
+      <header class="ds-site-header ">
+        <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
+          <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
+        </a>
+        <a id="ds-search-toggle-signed-in" class="ds-site-header-search-link" href="https://arxiv.org/search" aria-controls="ds-search-overlay-signed-in" aria-expanded="false">
+          <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <span>Search</span>
+        </a>
+        <button type="button" id="ds-nav-toggle-signed-in" class="ds-site-header-nav-toggle"
+          aria-label="Open menu" aria-controls="ds-site-header-nav-signed-in" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <nav class="ds-site-header-nav" id="ds-site-header-nav-signed-in" aria-label="Main navigation, signed in example">
+          <a href="https://arxiv.org/submit">Submit</a>
+          <a href="https://info.arxiv.org/about/donate.html">Donate</a>
+          <span class="ds-site-header-divider" aria-hidden="true"></span>
+          <a href="https://arxiv.org/user" class="ds-site-header-login">Account</a>
+        </nav>
+      </header>
+      <div class="ds-search-overlay" id="ds-search-overlay-signed-in" hidden>
+        <div class="ds-search-overlay-panel" role="search">
+          <form method="GET" action="https://arxiv.org/search">
+            <label for="ds-search-input-signed-in" class="is-sr-only">Search arXiv</label>
+            <input type="text" name="query" id="ds-search-input-signed-in" class="ds-input" autocomplete="off"
+              placeholder="Search papers by title, author, abstract, or ID...">
+            <input type="hidden" name="searchtype" value="all">
+            <input type="hidden" name="source" value="header">
+          </form>
+          <p class="ds-hint">
+            Press Enter to search &middot; <a href="https://arxiv.org/search/advanced">Advanced search</a>
+          </p>
+        </div>
+      </div>
+      <p class="ds-panel-label">Phone width</p>
+      <div class="demo-width-narrow">
+        <header class="ds-site-header is-collapsible is-nav-collapsed">
+          <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
+            <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
+          </a>
+          <a id="ds-search-toggle-phone" class="ds-site-header-search-link" href="https://arxiv.org/search" aria-controls="ds-search-overlay-phone" aria-expanded="false">
+            <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span>Search</span>
+          </a>
+          <button type="button" id="ds-nav-toggle-phone" class="ds-site-header-nav-toggle"
+            aria-label="Open menu" aria-controls="ds-site-header-nav-phone" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+          <nav class="ds-site-header-nav" id="ds-site-header-nav-phone" aria-label="Main navigation, phone width example">
+            <a href="https://arxiv.org/submit">Submit</a>
+            <a href="https://info.arxiv.org/about/donate.html">Donate</a>
+            <span class="ds-site-header-divider" aria-hidden="true"></span>
+            <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
+          </nav>
+        </header>
+        <div class="ds-search-overlay" id="ds-search-overlay-phone" hidden>
+          <div class="ds-search-overlay-panel" role="search">
+            <form method="GET" action="https://arxiv.org/search">
+              <label for="ds-search-input-phone" class="is-sr-only">Search arXiv</label>
+              <input type="text" name="query" id="ds-search-input-phone" class="ds-input" autocomplete="off"
+                placeholder="Search papers by title, author, abstract, or ID...">
+              <input type="hidden" name="searchtype" value="all">
+              <input type="hidden" name="source" value="header">
+            </form>
+            <p class="ds-hint">
+              Press Enter to search &middot; <a href="https://arxiv.org/search/advanced">Advanced search</a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <p class="ds-panel-label">With page actions</p>
+      <header class="ds-site-header ">
+        <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
+          <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
+        </a>
+        <a id="ds-search-toggle-page-actions" class="ds-site-header-search-link" href="https://arxiv.org/search" aria-controls="ds-search-overlay-page-actions" aria-expanded="false">
+          <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <span>Search</span>
+        </a>
+        <button type="button" id="ds-nav-toggle-page-actions" class="ds-site-header-nav-toggle"
+          aria-label="Open menu" aria-controls="ds-site-header-nav-page-actions" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <nav class="ds-site-header-nav" id="ds-site-header-nav-page-actions" aria-label="Main navigation, with page actions example">
+          <a href="https://arxiv.org/submit">Submit</a>
+          <a href="https://info.arxiv.org/about/donate.html">Donate</a>
+          <span class="ds-site-header-divider" aria-hidden="true"></span>
+          <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
+        </nav>
+        <div class="ds-site-header-tools"><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span class="is-sr-only">PDF</span></a><button type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></svg><span class="is-sr-only">Contents</span></button></div>
+      </header>
+      <div class="ds-search-overlay" id="ds-search-overlay-page-actions" hidden>
+        <div class="ds-search-overlay-panel" role="search">
+          <form method="GET" action="https://arxiv.org/search">
+            <label for="ds-search-input-page-actions" class="is-sr-only">Search arXiv</label>
+            <input type="text" name="query" id="ds-search-input-page-actions" class="ds-input" autocomplete="off"
+              placeholder="Search papers by title, author, abstract, or ID...">
+            <input type="hidden" name="searchtype" value="all">
+            <input type="hidden" name="source" value="header">
+          </form>
+          <p class="ds-hint">
+            Press Enter to search &middot; <a href="https://arxiv.org/search/advanced">Advanced search</a>
+          </p>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div id="ds-announcement"&gt;&lt;/div&gt;
+&lt;script src="https://static.arxiv.org/static/design-system/latest/chrome/banner.js" defer&gt;&lt;/script&gt;
+&lt;script src="https://static.arxiv.org/static/design-system/latest/chrome/header.js" defer&gt;&lt;/script&gt;
+&lt;header class="ds-site-header "&gt;
+  &lt;a aria-hidden="true" tabindex="-1" href="https://arxiv.org/IgnoreMe" class="is-sr-only"&gt;&lt;/a&gt;
+  &lt;a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home"&gt;
+    &lt;img src="https://static.arxiv.org/static/design-system/latest/logos/arxiv-logo.svg" alt="archive"&gt;
+  &lt;/a&gt;
+  &lt;a id="ds-search-toggle" class="ds-site-header-search-link" href="https://arxiv.org/search" aria-controls="ds-search-overlay" aria-expanded="false"&gt;
+    &lt;svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
+      &lt;circle cx="11" cy="11" r="8"/&gt;
+      &lt;line x1="21" y1="21" x2="16.65" y2="16.65"/&gt;
+    &lt;/svg&gt;
+    &lt;span&gt;Search&lt;/span&gt;
+  &lt;/a&gt;
+  &lt;button type="button" id="ds-nav-toggle" class="ds-site-header-nav-toggle"
+    aria-label="Open menu" aria-controls="ds-site-header-nav" aria-expanded="false"&gt;
+    &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
+      &lt;line x1="3" y1="6" x2="21" y2="6"/&gt;&lt;line x1="3" y1="12" x2="21" y2="12"/&gt;&lt;line x1="3" y1="18" x2="21" y2="18"/&gt;
+    &lt;/svg&gt;
+  &lt;/button&gt;
+  &lt;nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation"&gt;
+    &lt;a href="https://arxiv.org/submit"&gt;Submit&lt;/a&gt;
+    &lt;a href="https://info.arxiv.org/about/donate.html"&gt;Donate&lt;/a&gt;
+    &lt;span class="ds-site-header-divider" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;a href="https://arxiv.org/login" class="ds-site-header-login"&gt;Log in&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;
+&lt;div class="ds-search-overlay" id="ds-search-overlay" hidden&gt;
+  &lt;div class="ds-search-overlay-panel" role="search"&gt;
+    &lt;form method="GET" action="https://arxiv.org/search"&gt;
+      &lt;label for="ds-search-input" class="is-sr-only"&gt;Search arXiv&lt;/label&gt;
+      &lt;input type="text" name="query" id="ds-search-input" class="ds-input" autocomplete="off"
+        placeholder="Search papers by title, author, abstract, or ID..."&gt;
+      &lt;input type="hidden" name="searchtype" value="all"&gt;
+      &lt;input type="hidden" name="source" value="header"&gt;
+    &lt;/form&gt;
+    &lt;p class="ds-hint"&gt;
+      Press Enter to search &amp;middot; &lt;a href="https://arxiv.org/search/advanced"&gt;Advanced search&lt;/a&gt;
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        <dl>
+          <dt>signed_in</dt>
+          <dd>Per session: one "Account" link (auth_url + account_path, where the reader logs out) instead of "Log in".</dd>
+          <dt>header_page_actions</dt>
+          <dd>Per page, this page's actions (its links and buttons) in the bar's tools region (.ds-site-header-tools, after the navigation): host markup, each &lt;a&gt; or &lt;button&gt; a direct child. '' (the default) leaves the region out. Never site navigation, which stays as DESIGN-POLICIES sets it.</dd>
+        </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ═════════ Aspirational ═════════ -->
+  <section>
+    <h2 id="aspirational-header">Aspirational header (post-migration)</h2>
+    <p class="ds-section-desc">The header arxiv.org will move to. It differs from the transitional header in three ways: the bar has a theme control after the navigation; Log in and Account sit outside the navigation, in the account area; and signed in, the bar shows a greeting and an Account menu that holds Log out.</p>
+  </section>
 
   <!-- ───────── The header unit ───────── -->
   <section>
-    <h2 id="the-header-unit">The header unit</h2>
-    <p class="ds-section-desc">Rendered directly from <code>design-system.css</code>. On a narrow screen the bar folds itself to fit; see <a href="#on-small-screens">On small screens</a>. The header is static — it scrolls away with the page (on arxiv.org the site header is never the sticky bar — DESIGN-POLICIES.md). Every header has the same regions, in this order: logo, navigation, tools (optional), and account. On arxiv.org, Search comes just before the navigation.</p>
+    <h3 id="the-header-unit">The header unit</h3>
+    <p class="ds-section-desc">Every header has the same regions, in this order: Logo, Search, Nav, Tools, and Account. Tools currently holds only the theme control but is a flexible region for future use.</p>
     <div class="ds-card">
       <header class="ds-site-header">
         <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
@@ -137,6 +369,9 @@
           <a href="https://arxiv.org/submit">Submit</a>
           <a href="https://info.arxiv.org/about/donate.html">Donate</a>
         </nav>
+        <div class="ds-site-header-tools">
+          <button type="button" class="ds-theme-toggle"></button>
+        </div>
         <span class="ds-site-header-divider" aria-hidden="true"></span>
         <div class="ds-site-header-account">
           <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
@@ -151,7 +386,7 @@
   &lt;a href="/" class="ds-site-header-logo" aria-label="archive home"&gt;
     &lt;img src="logo_arxiv-primary.svg" alt="archive"&gt;
   &lt;/a&gt;
-  &lt;a href="/search" class="ds-site-header-search-link"&gt;
+  &lt;a id="ds-search-toggle" class="ds-site-header-search-link" href="/search" aria-controls="ds-search-overlay" aria-expanded="false"&gt;
     &lt;svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
       &lt;circle cx="11" cy="11" r="8"/&gt;
       &lt;line x1="21" y1="21" x2="16.65" y2="16.65"/&gt;
@@ -162,6 +397,10 @@
     &lt;a href="/submit"&gt;Submit&lt;/a&gt;
     &lt;a href="/about/donate"&gt;Donate&lt;/a&gt;
   &lt;/nav&gt;
+  &lt;div class="ds-site-header-tools"&gt;
+    &lt;button type="button" class="ds-theme-toggle"&gt;&lt;/button&gt;
+    &lt;span id="ds-theme-status" class="is-sr-only" role="status"&gt;&lt;/span&gt;
+  &lt;/div&gt;
   &lt;span class="ds-site-header-divider" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;div class="ds-site-header-account"&gt;
     &lt;a href="/login" class="ds-site-header-login"&gt;Log in&lt;/a&gt;
@@ -172,20 +411,17 @@
             <dd>The skip link. The first focusable element on the page, visible only on keyboard
             focus. Its <code>href</code> is the id of the main content.</dd>
             <dt>.ds-site-header</dt>
-            <dd>The bar. Bare, it is the arXiv header — arxiv.org cannot forget a class it never
-            has to write.</dd>
+            <dd>The bar. With no modifier it is the arxiv.org header.</dd>
             <dt>.ds-site-header-logo</dt>
             <dd>The brand slot, image or wordmark. Takes <code>margin-right: auto</code>. On arxiv.org it
             is the logo image, never the word typed out; its alt text says “archive”.</dd>
-            <dt>.ds-site-header-nav</dt>
-            <dd>The links, in a <code>&lt;nav&gt;</code> with an <code>aria-label</code>.</dd>
             <dt>.ds-site-header-search-link</dt>
-            <dd>arxiv.org’s Search: an <code>&lt;a href="/search"&gt;</code> just before the
-            navigation and outside it, so it stays in the bar when the navigation folds, and search
-            opens from the same place at every width. JS may upgrade it to open the search overlay.
-            Never a dead button — without JS it navigates to the search page. Folded, it shows its
-            icon alone, at the menu button’s size; the word in its <code>&lt;span&gt;</code> stays for
-            screen readers.</dd>
+            <dd>arxiv.org’s Search: an <code>&lt;a href="/search"&gt;</code> before the navigation and
+            outside it, so it stays in the bar when the navigation folds. JavaScript upgrades it to open
+            the search overlay; without JavaScript it goes to the search page.</dd>
+            <dt>.ds-site-header-nav</dt>
+            <dd>The site’s sections, in a <code>&lt;nav&gt;</code> with an
+            <code>aria-label</code>.</dd>
             <dt>.ds-nav-icon</dt>
             <dd>An icon beside a link label, sized by the stylesheet and quieter than the text.
             <code>aria-hidden="true"</code>; the label gives the name.</dd>
@@ -194,46 +430,51 @@
             divider token. Takes <code>aria-hidden="true"</code>. Hidden while the navigation is folded
             away.</dd>
             <dt>.ds-site-header-tools</dt>
-            <dd>Optional. The controls one interface needs, after the navigation: search fields, icon
-            buttons, the theme control. See <a href="#internal-headers">Internal header</a>.</dd>
+            <dd>After the navigation: the theme control.</dd>
+            <dt>.ds-theme-toggle</dt>
+            <dd>The theme control, with its live region <code>#ds-theme-status</code>. See
+            <a href="dark-mode.html#the-theme-control">The theme control</a>.</dd>
             <dt>.ds-site-header-account</dt>
             <dd>The last region: Log in, or the greeting and the Account menu. It sits outside the
-            <code>&lt;nav&gt;</code>, because an account menu is not a site section. It stays in the bar
-            at every width.</dd>
+            <code>&lt;nav&gt;</code>, because an account menu is not a site section.</dd>
             <dt>.ds-site-header-login</dt>
-            <dd>The emphasis slot, and the only item in the bar that takes weight. Signed out it is the
-            <em>Log in</em> link. Signed in it is the <em>Account</em> menu, with the greeting beside
-            it.</dd>
+            <dd>The only item in the bar with heavier text: Log in, or the Account menu’s
+            <code>&lt;summary&gt;</code>.</dd>
             <dt>.ds-site-header-dropdown</dt>
             <dd>A menu group in the bar, built on <code>&lt;details&gt;</code>. See
             <a href="#header-dropdown-menus">Header dropdown menus</a>.</dd>
             <dt>.ds-search-overlay</dt>
-            <dd>The search overlay: a <code>hidden</code> scrim after the header that the shared
-            chrome’s <code>header.js</code> opens from the Search link (or Ctrl/Cmd+K), and closes on
-            Escape, a click on the scrim, or focus moving out of it. Without JS the Search link goes
-            to the search page.</dd>
+            <dd>The search overlay, after the header. The template’s <code>header.js</code> opens it from
+            the Search link or Ctrl/Cmd+K, and closes it on Escape, a click outside the panel, or focus
+            leaving it.</dd>
             <dt>.ds-search-overlay-panel</dt>
-            <dd>The overlay’s panel, hanging from the bar. Its field and hint are the ordinary
-            <code>.ds-input</code> and <code>.ds-hint</code>.</dd>
+            <dd>The overlay’s panel, hanging from the bottom of the bar at every width. Opening it
+            closes the menu. Its field and hint are the ordinary <code>.ds-input</code> and
+            <code>.ds-hint</code>.</dd>
           </dl>
         </div>
       </details>
     </div>
   </section>
 
-  <!-- ───────── Signed out, and signed in ───────── -->
+  <!-- ───────── Signed in ───────── -->
   <section>
-    <h2 id="signed-out-and-signed-in">Signed out and signed in</h2>
-    <p class="ds-section-desc">Account-related items display to the right of the navigation and are the only items in a heavier text weight. Signed out it says <strong>Log in</strong>. Signed in it displays a greeting and name, and an <strong>Account</strong> menu that holds Log out. When names are long (and arXiv users have every type and structure of name) we truncate to a reasonable number of characters.</p>
+    <h3 id="signed-in">Signed in</h3>
+    <p class="ds-section-desc">Signed in, the account area shows a greeting with the reader’s given name and an <strong>Account</strong> menu that holds Log out. A long name is cut to 14 characters.</p>
     <div class="ds-card">
+      <p class="ds-panel-label">Short name</p>
       <header class="ds-site-header">
         <a href="#" class="ds-site-header-logo" aria-label="archive home">
           <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
         </a>
-        <a href="#" class="ds-site-header-search-link"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> <span>Search</span></a>
+        <a href="#" class="ds-site-header-search-link"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></a>
         <nav class="ds-site-header-nav" aria-label="Signed-in example navigation">
           <a href="#">Submit</a>
+          <a href="#">Donate</a>
         </nav>
+        <div class="ds-site-header-tools">
+          <button type="button" class="ds-theme-toggle"></button>
+        </div>
         <span class="ds-site-header-divider" aria-hidden="true"></span>
         <div class="ds-site-header-account">
           <span class="ds-site-header-greeting">Welcome <b>Ada</b></span>
@@ -248,62 +489,19 @@
           </details>
         </div>
       </header>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;a href="/search" class="ds-site-header-search-link"&gt;
-  &lt;svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
-    &lt;circle cx="11" cy="11" r="8"/&gt;
-    &lt;line x1="21" y1="21" x2="16.65" y2="16.65"/&gt;
-  &lt;/svg&gt;
-  &lt;span&gt;Search&lt;/span&gt;
-&lt;/a&gt;
-&lt;nav class="ds-site-header-nav" aria-label="Main navigation"&gt;
-  &lt;a href="/submit"&gt;Submit&lt;/a&gt;
-&lt;/nav&gt;
-&lt;span class="ds-site-header-divider" aria-hidden="true"&gt;&lt;/span&gt;
-&lt;div class="ds-site-header-account"&gt;
-  &lt;span class="ds-site-header-greeting"&gt;Welcome &lt;b&gt;Ada&lt;/b&gt;&lt;/span&gt;
-  &lt;details class="ds-site-header-dropdown"&gt;
-    &lt;summary class="ds-site-header-login"&gt;Account&lt;/summary&gt;
-    &lt;div class="ds-site-header-menu"&gt;
-      &lt;a href="/account"&gt;Your account&lt;/a&gt;
-      &lt;form method="post" action="/logout"&gt;
-        &lt;button type="submit"&gt;Log out&lt;/button&gt;
-      &lt;/form&gt;
-    &lt;/div&gt;
-  &lt;/details&gt;
-&lt;/div&gt;</code></pre>
-          <dl>
-            <dt>.ds-site-header-greeting</dt>
-            <dd>The greeting takes the given name only — its first word — because the bar is chrome
-            and a full legal name is more of it than the job needs. Even one word is user data of
-            unbounded length in any script, so it is capped at 14 characters with an ellipsis, as the
-            second example shows. A bar that reflows or overflows on a long name breaks for exactly the
-            people whose names get tested least. The greeting is not a link. It is a statement; the
-            thing you can act on is the Account menu beside it. Making the name itself the link would
-            give that link the accessible name “Ada”, which says nothing about where it goes. It is
-            the first thing dropped on a narrow bar: when the bar runs out of room the greeting hides and Account stays —
-            the menu is the useful half, and the reader already knows their own name.</dd>
-            <dt>.ds-site-header-login</dt>
-            <dd>The same emphasis slot as when signed out, now on the <code>&lt;summary&gt;</code> of an
-            Account menu (<code>.ds-site-header-dropdown</code>). The slot is about rank in the bar, not
-            about which of the two words is in it.</dd>
-            <dt>&lt;form method="post"&gt;</dt>
-            <dd>Log out is a button in a form that posts, never a link. A link can be followed by a
-            browser prefetch or from another site, and logging someone out changes their state.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-    <div class="ds-card">
+      <p class="ds-panel-label">Long name</p>
       <header class="ds-site-header">
         <a href="#" class="ds-site-header-logo" aria-label="archive home">
           <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
         </a>
-        <a href="#" class="ds-site-header-search-link"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> <span>Search</span></a>
+        <a href="#" class="ds-site-header-search-link"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></a>
         <nav class="ds-site-header-nav" aria-label="Long-name example navigation">
           <a href="#">Submit</a>
+          <a href="#">Donate</a>
         </nav>
+        <div class="ds-site-header-tools">
+          <button type="button" class="ds-theme-toggle"></button>
+        </div>
         <span class="ds-site-header-divider" aria-hidden="true"></span>
         <div class="ds-site-header-account">
           <span class="ds-site-header-greeting">Welcome <b>Sivaramakrishnan</b></span>
@@ -320,11 +518,27 @@
       </header>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;span class="ds-site-header-greeting"&gt;Welcome &lt;b&gt;Sivaramakrishnan&lt;/b&gt;&lt;/span&gt;</code></pre>
+<pre><code>&lt;span class="ds-site-header-divider" aria-hidden="true"&gt;&lt;/span&gt;
+&lt;div class="ds-site-header-account"&gt;
+  &lt;span class="ds-site-header-greeting"&gt;Welcome &lt;b&gt;Ada&lt;/b&gt;&lt;/span&gt;
+  &lt;details class="ds-site-header-dropdown"&gt;
+    &lt;summary class="ds-site-header-login"&gt;Account&lt;/summary&gt;
+    &lt;div class="ds-site-header-menu"&gt;
+      &lt;a href="/account"&gt;Your account&lt;/a&gt;
+      &lt;form method="post" action="/logout"&gt;
+        &lt;button type="submit"&gt;Log out&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/details&gt;
+&lt;/div&gt;</code></pre>
           <dl>
-            <dt>.ds-site-header-greeting &gt; b</dt>
-            <dd>The name. The stylesheet caps it at 14 characters and ends it with an ellipsis; the host
-            passes the given name and nothing else.</dd>
+            <dt>.ds-site-header-greeting</dt>
+            <dd>The given name only, capped at 14 characters with an ellipsis, as the Long name example
+            shows; the host passes the given name and nothing else. It is not a link: the Account menu
+            beside it is what the reader acts on. On a narrow bar it is the first thing to go.</dd>
+            <dt>&lt;form method="post"&gt;</dt>
+            <dd>Log out is a button in a form that posts, never a link, because a browser can follow a
+            link by itself, and logging out changes the reader’s state.</dd>
           </dl>
         </div>
       </details>
@@ -333,126 +547,32 @@
 
   <!-- ───────── On small screens ───────── -->
   <section>
-    <h2 id="on-small-screens">On small screens</h2>
-    <p class="ds-section-desc">The header fits itself to the space it has, and nobody has to plan for it. When the regions do not fit on one row, the greeting goes first, then the navigation folds behind a menu button, then the tools fold behind a second button. The logo, arxiv.org’s Search and the account area always stay in the bar. There is no breakpoint to choose, no button to add and no script to write: loading <code>header.js</code> is the whole job, and a header whose content changes later still fits.</p>
+    <h3 id="on-small-screens">On small screens</h3>
+    <p class="ds-section-desc">When the header does not fit on one row, it folds. The greeting goes first. Then the navigation, tools and account area fold into one menu, leaving the logo, Search and the menu button. Internal headers keep their search fields in the bar while they fit, then open them from a Search button. The transitional header folds when the window is narrower than 600px.</p>
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">The script answers to the width of the bar, not of the window, so these examples fold inside narrower boxes on a wide screen. Open the menu or the tools button to see the folded rows.</p>
+        <p class="ds-marginalia-body ds-annotation">The script answers to the width of the bar, not of the window, so the phone example folds inside a narrower box on a wide screen. Open the menu to see the folded rows.</p>
       </details>
-      <p class="ds-panel-label">Public, column width</p>
-        <header class="ds-site-header">
-          <a href="#" class="ds-site-header-logo" aria-label="archive home">
-            <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
-          </a>
-          <a href="#" class="ds-site-header-search-link"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> <span>Search</span></a>
-          <nav class="ds-site-header-nav" aria-label="Public header example, column width">
-            <a href="#">Submit</a>
-            <a href="#">Donate</a>
-          </nav>
-          <span class="ds-site-header-divider" aria-hidden="true"></span>
-          <div class="ds-site-header-account">
-            <a href="#" class="ds-site-header-login">Log in</a>
-          </div>
-        </header>
-      <p class="ds-panel-label">Public, phone width</p>
+      <p class="ds-panel-label">Phone width</p>
       <div class="demo-width-narrow">
         <header class="ds-site-header">
           <a href="#" class="ds-site-header-logo" aria-label="archive home">
             <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
           </a>
-          <a href="#" class="ds-site-header-search-link"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> <span>Search</span></a>
+          <a href="#" class="ds-site-header-search-link"><svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></a>
           <nav class="ds-site-header-nav" aria-label="Public header example, phone width">
             <a href="#">Submit</a>
             <a href="#">Donate</a>
           </nav>
+          <div class="ds-site-header-tools">
+            <button type="button" class="ds-theme-toggle"></button>
+          </div>
           <span class="ds-site-header-divider" aria-hidden="true"></span>
           <div class="ds-site-header-account">
             <a href="#" class="ds-site-header-login">Log in</a>
           </div>
         </header>
-      </div>
-      <p class="ds-panel-label">Admin Console, column width</p>
-        <div class="ds-internal">
-        <header class="ds-site-header">
-          <a href="#" class="ds-site-header-logo">
-            <img src="assets/images/logos/logo_arxiv-admin.png" alt="archive Admin Console">
-          </a>
-          <nav class="ds-site-header-nav" aria-label="Admin Console example, column width">
-            <a href="#">Resources</a>
-            <a href="#">Submission</a>
-            <a href="#">User Support</a>
-            <a href="#">Students</a>
-          </nav>
-          <span class="ds-site-header-divider" aria-hidden="true"></span>
-          <div class="ds-site-header-tools">
-            <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
-              <label class="is-sr-only" for="small-users-column">Search users</label>
-              <input class="ds-input" type="search" id="small-users-column" placeholder="Search users">
-            </form>
-            <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
-              <label class="is-sr-only" for="small-docs-column">Search submissions and documents</label>
-              <input class="ds-input" type="search" id="small-docs-column" placeholder="Search submissions">
-            </form>
-            <button type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg><span class="is-sr-only">Refresh</span></button>
-            <button type="button" aria-expanded="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg><span class="is-sr-only">Sidebar</span></button>
-          </div>
-          <span class="ds-site-header-divider" aria-hidden="true"></span>
-          <div class="ds-site-header-account">
-            <span class="ds-site-header-greeting">Welcome <b>Shamsi</b></span>
-            <details class="ds-site-header-dropdown">
-              <summary class="ds-site-header-login">Account</summary>
-              <div class="ds-site-header-menu">
-                <a href="#">Your account</a>
-                <form method="post" action="#" onsubmit="return false">
-                  <button type="submit">Log out</button>
-                </form>
-              </div>
-            </details>
-          </div>
-        </header>
-        </div>
-      <p class="ds-panel-label">Admin Console, phone width</p>
-      <div class="demo-width-narrow">
-        <div class="ds-internal">
-        <header class="ds-site-header">
-          <a href="#" class="ds-site-header-logo">
-            <img src="assets/images/logos/logo_arxiv-admin.png" alt="archive Admin Console">
-          </a>
-          <nav class="ds-site-header-nav" aria-label="Admin Console example, phone width">
-            <a href="#">Resources</a>
-            <a href="#">Submission</a>
-            <a href="#">User Support</a>
-            <a href="#">Students</a>
-          </nav>
-          <span class="ds-site-header-divider" aria-hidden="true"></span>
-          <div class="ds-site-header-tools">
-            <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
-              <label class="is-sr-only" for="small-users-phone">Search users</label>
-              <input class="ds-input" type="search" id="small-users-phone" placeholder="Search users">
-            </form>
-            <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
-              <label class="is-sr-only" for="small-docs-phone">Search submissions and documents</label>
-              <input class="ds-input" type="search" id="small-docs-phone" placeholder="Search submissions">
-            </form>
-            <button type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg><span class="is-sr-only">Refresh</span></button>
-            <button type="button" aria-expanded="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg><span class="is-sr-only">Sidebar</span></button>
-          </div>
-          <span class="ds-site-header-divider" aria-hidden="true"></span>
-          <div class="ds-site-header-account">
-            <span class="ds-site-header-greeting">Welcome <b>Shamsi</b></span>
-            <details class="ds-site-header-dropdown">
-              <summary class="ds-site-header-login">Account</summary>
-              <div class="ds-site-header-menu">
-                <a href="#">Your account</a>
-                <form method="post" action="#" onsubmit="return false">
-                  <button type="submit">Log out</button>
-                </form>
-              </div>
-            </details>
-          </div>
-        </header>
-        </div>
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
@@ -460,18 +580,21 @@
 &lt;script src="header.js" defer&gt;&lt;/script&gt;</code></pre>
           <dl>
             <dt>header.js</dt>
-            <dd>The only thing to add, once per page. It finds every <code>.ds-site-header</code> on
-            the page and keeps each one on a single row. Without JavaScript the bar wraps onto more
-            rows instead, so nothing is ever hidden.</dd>
-            <dt>.ds-site-header-nav-toggle, .ds-site-header-tools-toggle</dt>
-            <dd>The menu button and the tools button. The script adds each one just before the region
-            it opens, so they are not in the markup. Each has <code>aria-expanded</code> and
-            <code>aria-controls</code>, and Escape closes the open region and returns focus to its
-            button.</dd>
-            <dt>.is-collapsible, .is-greeting-hidden, .is-nav-collapsed, .is-tools-collapsed, .is-overfull, .is-open, .is-measuring</dt>
+            <dd>These docs’ fold-by-fit script, <code>docs/header.js</code>, once per page. It finds
+            every <code>.ds-site-header</code> and keeps each one on a single row, with no breakpoint to
+            choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The
+            templates load their own script, so a page that uses them adds none.</dd>
+            <dt>.ds-site-header-nav-toggle, .ds-site-header-search-toggle, .ds-site-header-tools-toggle</dt>
+            <dd>The menu button, the Search button for search fields, and the Tools button on a bar
+            without an account area. The script adds each one, so they are not in the
+            markup. Each has <code>aria-expanded</code> and <code>aria-controls</code>, and Escape
+            closes the open region and returns focus to its button.</dd>
+            <dt>.is-collapsible, .is-single-menu, .is-greeting-hidden, .is-nav-collapsed, .is-search-collapsed, .is-tools-collapsed, .is-menu-open, .is-search-open, .is-overfull, .is-open, .is-measuring</dt>
             <dd>State classes the script sets on the bar and on an open region. They are never written
-            by hand. <code>.is-overfull</code> lets the bar wrap when even the folded bar is too wide
-            for its space.</dd>
+            by hand. <code>.is-single-menu</code> marks a bar with an account area, whose menu holds
+            the navigation, the tools and the account area.
+            <code>.is-overfull</code> lets the bar wrap when even the folded bar is too wide for its
+            space.</dd>
           </dl>
         </div>
       </details>
@@ -480,7 +603,7 @@
 
   <!-- ───────── Header dropdown menus ───────── -->
   <section>
-    <h2 id="header-dropdown-menus">Header dropdown menus</h2>
+    <h3 id="header-dropdown-menus">Header dropdown menus</h3>
     <p class="ds-section-desc">A property whose sections need grouping adds <code>.ds-site-header-dropdown</code>, built on <code>&lt;details&gt;</code> so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The Account menu is the same component.</p>
     <div class="ds-card">
       <header class="ds-site-header ds-site-header--light">
@@ -536,13 +659,10 @@
             <dd>A <code>&lt;details&gt;</code> group in the bar. Optional. The summary sits in the bar
             and takes the surface tokens, so it is correct on either variant.</dd>
             <dt>.ds-site-header-menu</dt>
-            <dd>The floating panel. Right-anchored, capped to the viewport. A floating panel is a light
-            surface whichever bar summoned it, the same way a popover is. The menu anchors to its
-            trigger’s <strong>right</strong> edge: the nav always sits at the right of the bar, and a
-            left-anchored menu runs off the viewport on the last item — which is every bar’s last item,
-            not an edge case.</dd>
+            <dd>The floating panel, a light surface on either bar. It is anchored to its trigger’s right
+            edge, so the last menu in the bar stays on screen.</dd>
             <dt>.ds-panel-label</dt>
-            <dd>Group headings inside a menu use the system-wide label, not a bespoke class.</dd>
+            <dd>A group heading inside a menu.</dd>
             <dt>aria-current="page"</dt>
             <dd>On the menu link for the page the reader is on. The menu shows it in bold, and a screen
             reader announces it.</dd>
@@ -552,204 +672,6 @@
     </div>
   </section>
 
-  <!-- ───────── Secondary navigation ───────── -->
-  <section>
-    <h2 id="secondary-navigation">Secondary navigation</h2>
-    <p class="ds-section-desc">A row of section links directly under the header, for an area that has its own sections, such as the account pages. It wraps onto a second line rather than scrolling sideways, so every section stays visible on a phone and at high zoom. To switch views within one page, use <a href="progressive-disclosure.html#tabs">tabs</a>.</p>
-    <div class="ds-card">
-      <p class="ds-panel-label">Public</p>
-      <header class="ds-site-header">
-        <a href="#" class="ds-site-header-logo" aria-label="archive home">
-          <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
-        </a>
-        <nav class="ds-site-header-nav" aria-label="Secondary navigation example, main">
-          <a href="#">Search</a>
-          <a href="#">Submit</a>
-        </nav>
-        <span class="ds-site-header-divider" aria-hidden="true"></span>
-        <div class="ds-site-header-account">
-          <a href="#" class="ds-site-header-login">Account</a>
-        </div>
-      </header>
-      <nav class="ds-subnav" aria-label="Account sections">
-        <a href="#">Account home</a>
-        <a href="#">Submissions</a>
-        <a href="#" aria-current="page">Works you own</a>
-        <a href="#">Endorse</a>
-      </nav>
-      <div class="ds-internal">
-        <p class="ds-panel-label">Internal</p>
-        <nav class="ds-subnav" aria-label="Admin Console sections">
-          <a href="#" aria-current="page">Dashboard</a>
-          <a href="#">Users</a>
-          <a href="#">Moderators</a>
-        </nav>
-      </div>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;header class="ds-site-header"&gt;…&lt;/header&gt;
-&lt;nav class="ds-subnav" aria-label="Account sections"&gt;
-  &lt;a href="/account"&gt;Account home&lt;/a&gt;
-  &lt;a href="/account/submissions"&gt;Submissions&lt;/a&gt;
-  &lt;a href="/account/works" aria-current="page"&gt;Works you own&lt;/a&gt;
-  &lt;a href="/account/endorse"&gt;Endorse&lt;/a&gt;
-&lt;/nav&gt;</code></pre>
-          <dl>
-            <dt>.ds-subnav</dt>
-            <dd>A <code>&lt;nav&gt;</code> directly after the header, with an <code>aria-label</code>
-            that names the area, such as “Account sections”. Plain links; never
-            <code>role="tab"</code>, which would promise arrow-key behaviour that page links do not
-            have. Hidden in print.</dd>
-            <dt>aria-current="page"</dt>
-            <dd>On the link for the current page. It shows in bold with an underline bar, so the
-            current section never depends on colour alone, and a screen reader announces it.</dd>
-            <dt>.ds-internal</dt>
-            <dd>On a parent, it turns the underline bar Access Lime Deep. Nothing else changes.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-  </section>
-
-  <!-- ───────── Two levels ───────── -->
-  <section>
-    <h2 id="two-levels-of-navigation">Two levels of navigation</h2>
-    <p class="ds-section-desc">An area with its own sections, each with several views, such as a report with parts and views. The sections are the secondary navigation under the header; the views of the current section are a second row inside the page.</p>
-    <div class="ds-card">
-      <div class="ds-internal">
-        <div class="ds-subnav">
-          <nav aria-label="Report parts">
-            <a href="#" aria-current="page">Submissions and holds</a>
-            <a href="#">Moderators</a>
-            <a href="#">Recruitment</a>
-          </nav>
-          <form class="ds-filter-bar" method="get" action="#" aria-label="Subject">
-            <div class="ds-filter"><label for="tl-group">Group</label><select id="tl-group"><option>cs</option></select></div>
-            <div class="ds-filter"><label for="tl-archive">Archive</label><select id="tl-archive"><option>cs</option></select></div>
-            <div class="ds-filter"><label for="tl-cat">Category</label><select id="tl-cat"><option>All</option></select></div>
-            <button class="ds-btn" type="submit">Apply</button>
-          </form>
-        </div>
-        <div class="ds-container page-demo page-demo--wide">
-          <h2>Submissions and holds, all of cs</h2>
-          <nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views">
-            <a href="#">Activity charts</a>
-            <a href="#" aria-current="page">Category submission stats</a>
-            <a href="#">Recent releases</a>
-            <a href="#">Recent submissions</a>
-          </nav>
-          <p>The view.</p>
-        </div>
-      </div>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-internal"&gt;
-  &lt;div class="ds-subnav"&gt;
-    &lt;nav aria-label="Report parts"&gt;
-      &lt;a href="#" aria-current="page"&gt;Submissions and holds&lt;/a&gt;
-      &lt;a href="#"&gt;Moderators&lt;/a&gt;
-      &lt;a href="#"&gt;Recruitment&lt;/a&gt;
-    &lt;/nav&gt;
-    &lt;form class="ds-filter-bar" method="get" action="#" aria-label="Subject"&gt;
-      &lt;div class="ds-filter"&gt;&lt;label for="tl-group"&gt;Group&lt;/label&gt;&lt;select id="tl-group"&gt;&lt;option&gt;cs&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
-      &lt;div class="ds-filter"&gt;&lt;label for="tl-archive"&gt;Archive&lt;/label&gt;&lt;select id="tl-archive"&gt;&lt;option&gt;cs&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
-      &lt;div class="ds-filter"&gt;&lt;label for="tl-cat"&gt;Category&lt;/label&gt;&lt;select id="tl-cat"&gt;&lt;option&gt;All&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
-      &lt;button class="ds-btn" type="submit"&gt;Apply&lt;/button&gt;
-    &lt;/form&gt;
-  &lt;/div&gt;
-  &lt;div class="ds-container page-demo page-demo--wide"&gt;
-    &lt;h2&gt;Submissions and holds, all of cs&lt;/h2&gt;
-    &lt;nav class="ds-subnav ds-subnav--in-page" aria-label="Submissions and holds views"&gt;
-      &lt;a href="#"&gt;Activity charts&lt;/a&gt;
-      &lt;a href="#" aria-current="page"&gt;Category submission stats&lt;/a&gt;
-      &lt;a href="#"&gt;Recent releases&lt;/a&gt;
-      &lt;a href="#"&gt;Recent submissions&lt;/a&gt;
-    &lt;/nav&gt;
-    &lt;p&gt;The view.&lt;/p&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</code></pre>
-          <dl>
-            <dt>.ds-subnav</dt>
-            <dd>The first row, directly under the header. Here it holds two groups: a <code>&lt;nav&gt;</code> of the area&#39;s sections, then a compact <a href="tables.html#filter-bar">filter bar</a> for choices that apply to every view, such as the subject. The groups sit twice as far apart as the items inside them.</dd>
-            <dt>&lt;h1&gt;</dt>
-            <dd>Follows the reader&#39;s choices: the open section, then the filters, in that order, such as &ldquo;Submissions and holds, all of cs&rdquo; or &ldquo;Moderators, cs.DC&rdquo;. The reader knows where they are without breadcrumbs. The demo uses a smaller heading because it sits inside this page.</dd>
-            <dt>.ds-subnav--in-page</dt>
-            <dd>The second level: the views of the current section, in the content column, with the same current marking as the first level. Each view is its own page.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-    <ul class="notes">
-      <li><strong>Two levels at most.</strong> A third level is a sign the content needs restructuring.</li>
-      <li><strong>Each row keeps the same links on every page it appears on.</strong> Only the current link changes.</li>
-      <li><strong>Choices that apply to one view go inside that view</strong>, below the second row.</li>
-      <li><strong>When the views share one address</strong> and swap in place, use <a href="progressive-disclosure.html#tabs">tabs</a> for the second level instead.</li>
-    </ul>
-  </section>
-
-  <!-- ───────── Steps ───────── -->
-  <section>
-    <h2 id="steps">Steps</h2>
-    <p class="ds-section-desc">The steps of one ordered process, such as a submission, and which one the reader is on. Steps is a variant of the secondary navigation bar. To move through a queue one item at a time, use the <a href="pager.html">pager</a>. Which steps are available is the application's logic: submission, for example, lets the reader go back to a complete step but not jump ahead.</p>
-    <div class="ds-card">
-      <p class="ds-panel-label">Public</p>
-      <nav class="ds-subnav ds-subnav--steps" aria-label="Submission steps">
-        <ol role="list">
-            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Start<span class="is-sr-only">, completed</span></a></li>
-            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>License<span class="is-sr-only">, completed</span></a></li>
-            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Files<span class="is-sr-only">, completed</span></a></li>
-            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Process<span class="is-sr-only">, completed</span></a></li>
-            <li><a href="#" aria-current="step"><span class="ds-step-number" aria-hidden="true">5</span>Metadata</a></li>
-            <li><a href="#"><span class="ds-step-number" aria-hidden="true">6</span>Categories</a></li>
-            <li><span><span class="ds-step-number" aria-hidden="true">7</span>Preview<span class="is-sr-only">, not available yet</span></span></li>
-            <li><span><span class="ds-step-number" aria-hidden="true">8</span>Submit<span class="is-sr-only">, not available yet</span></span></li>
-        </ol>
-      </nav>
-      <div class="ds-internal">
-        <p class="ds-panel-label">Internal</p>
-        <nav class="ds-subnav ds-subnav--steps" aria-label="Review steps">
-          <ol role="list">
-            <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Check<span class="is-sr-only">, completed</span></a></li>
-            <li><a href="#" aria-current="step"><span class="ds-step-number" aria-hidden="true">2</span>Classify</a></li>
-            <li><span><span class="ds-step-number" aria-hidden="true">3</span>Announce<span class="is-sr-only">, not available yet</span></span></li>
-          </ol>
-        </nav>
-      </div>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;nav class="ds-subnav ds-subnav--steps" aria-label="Submission steps"&gt;
-  &lt;ol role="list"&gt;
-    &lt;li&gt;&lt;a href="#"&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;&lt;svg …check…&gt;&lt;/span&gt;Start&lt;span class="is-sr-only"&gt;, completed&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href="#" aria-current="step"&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;5&lt;/span&gt;Metadata&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href="#"&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;6&lt;/span&gt;Categories&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;span&gt;&lt;span class="ds-step-number" aria-hidden="true"&gt;7&lt;/span&gt;Preview&lt;span class="is-sr-only"&gt;, not available yet&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/nav&gt;</code></pre>
-          <dl>
-            <dt>.ds-subnav--steps</dt>
-            <dd>On the secondary navigation bar. It holds an <code>&lt;ol role="list"&gt;</code>, one
-            <code>&lt;li&gt;</code> per step. It wraps onto more lines on a narrow screen, so every step
-            stays visible.</dd>
-            <dt>.ds-step-number</dt>
-            <dd>The step number in a circle, hidden from screen readers because the list gives the
-            position. A complete step shows a check mark instead of its number.</dd>
-            <dt>Complete step</dt>
-            <dd>A link, with the check mark and <code>.is-sr-only</code> text “, completed”.</dd>
-            <dt>aria-current="step"</dt>
-            <dd>On the link for the current step. It shows in bold with an underline bar and a heavier
-            circle.</dd>
-            <dt>Available step</dt>
-            <dd>A link with its number.</dd>
-            <dt>Step not available yet</dt>
-            <dd>A <code>&lt;span&gt;</code>, not a link, so it is not a tab stop. A dashed circle and
-            <code>.is-sr-only</code> text “, not available yet”.</dd>
-            <dt>.ds-internal</dt>
-            <dd>On a parent, it turns the underline bar and the current circle Access Lime Deep.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-  </section>
 
   <div class="ds-note ds-note--essential">
     <h3 class="ds-note-label">Accessibility essentials</h3>
@@ -763,14 +685,9 @@
       <li><strong>The wordmark is an image with alt text.</strong> Logo alt text and aria-labels say
       “archive” — the spoken form of “arXiv” (screen readers otherwise produce “ar-zhiv” or
       Roman-numeral gibberish).</li>
-      <li><strong>On arxiv.org nothing in this unit is sticky.</strong> The whole header scrolls
-      away with the page (the one bar a public page may keep in view is the TOC bar —
-      DESIGN-POLICIES). An internal tool that adds <code>.ds-site-header--sticky</code> gets
-      <code>scroll-padding-top</code> from the stylesheet, so a link to a section does not land
-      under the bar.</li>
-      <li><strong>The account area is not navigation.</strong> It sits outside the
-      <code>&lt;nav&gt;</code>, so a screen reader user who lists landmarks finds only site
-      sections there.</li>
+      <li><strong>The account area is not navigation.</strong> In the aspirational header it sits
+      outside the <code>&lt;nav&gt;</code>, so a screen reader user who lists landmarks finds only
+      site sections there.</li>
       <li><strong>Name every search field.</strong> A search field in the bar is a
       <code>&lt;form role="search"&gt;</code> with a <code>&lt;label&gt;</code>, hidden with
       <code>.is-sr-only</code> if needed, that says what it searches. The placeholder is not the
@@ -787,14 +704,14 @@
   <!-- ───────── With the announcement band ───────── -->
   <section>
     <h3 id="with-the-announcement-band">With the announcement band</h3>
-    <p class="ds-section-desc">When arXiv has something to say to everyone, an announcement band can be displayed above the header bar. Neither is fixed; the two scroll away together. See <a href="messages.html#announcement-band">Announcement band</a> for the full documentation.</p>
+    <p class="ds-section-desc">When arXiv has something to say to everyone, an announcement band shows above the bar, and the two scroll away together. See <a href="messages.html#announcement-band">Announcement band</a>.</p>
     <div class="ds-card">
       <div class="ds-announcement" role="region" aria-label="Announcement">
         <span class="ds-announcement-text"><img class="ds-announcement-glyph" src="assets/images/bones/icon_small-smileybones.svg" alt="">arXiv is now an independent nonprofit!</span>
         <span class="ds-announcement-links"><a class="ds-announcement-link" href="https://info.arxiv.org/about/index.html">Learn more</a></span>
         <button type="button" class="ds-close"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Dismiss announcement</span></button>
       </div>
-      <nav class="ds-site-header" aria-label="Band example">
+      <header class="ds-site-header">
         <a href="#" class="ds-site-header-logo" aria-label="archive home">
           <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
         </a>
@@ -802,31 +719,26 @@
         <nav class="ds-site-header-nav" aria-label="Band example navigation">
           <a href="#">Submit</a>
           <a href="#">Donate</a>
-          <span class="ds-site-header-divider" aria-hidden="true"></span>
-          <a href="#" class="ds-site-header-login">Log in</a>
         </nav>
-      </nav>
+        <div class="ds-site-header-tools">
+          <button type="button" class="ds-theme-toggle"></button>
+        </div>
+        <span class="ds-site-header-divider" aria-hidden="true"></span>
+        <div class="ds-site-header-account">
+          <a href="#" class="ds-site-header-login">Log in</a>
+        </div>
+      </header>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;a class="ds-skip-link" href="#main"&gt;Skip to main content&lt;/a&gt;
-
-&lt;div class="ds-announcement" role="region" aria-label="Announcement"&gt;
-  &lt;span class="ds-announcement-text"&gt;&lt;img class="ds-announcement-glyph" src="icon_small-smileybones.svg" alt=""&gt;arXiv is now an independent nonprofit!&lt;/span&gt;
-  &lt;span class="ds-announcement-links"&gt;&lt;a class="ds-announcement-link" href="/about"&gt;Learn more&lt;/a&gt;&lt;/span&gt;
-  &lt;button type="button" class="ds-close"&gt;
-    &lt;svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
-      &lt;path d="M18 6 6 18"/&gt;
-      &lt;path d="m6 6 12 12"/&gt;
-    &lt;/svg&gt;
-    &lt;span class="is-sr-only"&gt;Dismiss announcement&lt;/span&gt;
-  &lt;/button&gt;
-&lt;/div&gt;
-
+&lt;div id="ds-announcement"&gt;&lt;/div&gt;
 &lt;header class="ds-site-header"&gt;…&lt;/header&gt;</code></pre>
           <dl>
-            <dt>.ds-announcement</dt>
-            <dd>The band, placed before <code>.ds-site-header</code> and after the skip link. See
-            <a href="messages.html#announcement-band">Special messages</a> for its parts.</dd>
+            <dt>#ds-announcement</dt>
+            <dd>The mount, which the header template writes before the bar. While an announcement is
+            active, <code>banner.js</code> draws the band into it; the host writes only the skip link
+            and the include. The band’s parts are on <a href="messages.html#announcement-band">Special
+            messages</a>.</dd>
           </dl>
         </div>
       </details>
@@ -836,35 +748,34 @@
   <!-- ───────── The light variant ───────── -->
   <section>
     <h3 id="the-light-variant">The light variant</h3>
-    <p class="ds-section-desc">Adding <code>.ds-site-header--light</code> re-points seven surface tokens but declares no property of its own. It is for pages that comment on arXiv from outside it, such as this documentation. Every page that is part of arXiv, public or internal, uses the standard bar.</p>
+    <p class="ds-section-desc">For pages about arXiv from outside it, such as this documentation. <code>.ds-site-header--light</code> re-points the seven surface tokens and nothing else. Every page that is part of arXiv, public or internal, uses the standard bar.</p>
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
         <p class="ds-marginalia-body ds-annotation">The bar at the top of this page is the light variant, with dropdown groups.</p>
       </details>
-      <nav class="ds-site-header ds-site-header--light" aria-label="Light variant example">
+      <header class="ds-site-header ds-site-header--light">
         <a href="#" class="ds-site-header-logo">arXiv Design System</a>
         <nav class="ds-site-header-nav" aria-label="Light variant example navigation">
           <a href="#">Patterns</a>
           <a href="#">Mockups</a>
           <a href="#">Docs</a>
         </nav>
-      </nav>
+      </header>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;nav class="ds-site-header ds-site-header--light" aria-label="Design system"&gt;
+<pre><code>&lt;header class="ds-site-header ds-site-header--light"&gt;
   &lt;a href="/" class="ds-site-header-logo"&gt;arXiv Design System&lt;/a&gt;
   &lt;nav class="ds-site-header-nav" aria-label="Site navigation"&gt;
     &lt;a href="/patterns"&gt;Patterns&lt;/a&gt;
     &lt;a href="/mockups"&gt;Mockups&lt;/a&gt;
     &lt;a href="/docs"&gt;Docs&lt;/a&gt;
   &lt;/nav&gt;
-&lt;/nav&gt;</code></pre>
+&lt;/header&gt;</code></pre>
           <dl>
             <dt>.ds-site-header--light</dt>
-            <dd>Seven token values. No property overrides. The bar is white
-            (<code>--ds-surface</code>) with Library Grey links, Repository Brown emphasis, and a
-            Border Light bottom edge; the standard focus ring replaces the on-dark one.</dd>
+            <dd>The bar is white with Library Grey links, Repository Brown emphasis and a Border Light
+            bottom edge, and the standard focus ring.</dd>
             <dt>.ds-site-header-logo</dt>
             <dd>On a property that is not arxiv.org, the slot may hold that property’s own wordmark as
             text; it takes the bar’s emphasis colour.</dd>
@@ -877,38 +788,37 @@
   <!-- ───────── Internal header ───────── -->
   <section>
     <h3 id="internal-headers">Internal header</h3>
-    <p class="ds-section-desc">The Admin Console header: the standard bar, with the Admin Console logo. Each internal tool chooses the navigation, tools and wordmark its users need; the regions, their order and the rules stay the same. Every internal tool uses an internal logo, not the public one, so the reader can tell they are in an internal tool. The internal stylesheet may re-point the bar’s colour tokens and nothing else.</p>
-    <div class="ds-card">
+    <p class="ds-section-desc">Each internal tool chooses the search fields, navigation and wordmark its users need; the regions, their order and the rules stay the same. Internal headers use a compact account area, one icon button that opens the account menu, not the greeting and Account menu of the public header. Every internal tool uses an internal logo, not the public one, so the reader can tell they are in an internal tool. The internal stylesheet may re-point the bar’s colour tokens and nothing else.</p>
+    <div class="ds-card demo-full-width">
+      <p class="ds-panel-label">Full width</p>
       <div class="ds-internal">
       <header class="ds-site-header">
         <a href="#" class="ds-site-header-logo">
-          <img src="assets/images/logos/logo_arxiv-admin.png" alt="archive Admin Console">
+          <img src="assets/images/logos/logo_arxiv-admin-light.svg" alt="archive Admin Console">
         </a>
-        <nav class="ds-site-header-nav" aria-label="Admin Console">
+        <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
+          <label class="is-sr-only" for="adm-users-full">Search users</label>
+          <input class="ds-input" type="search" id="adm-users-full" placeholder="Search users">
+        </form>
+        <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
+          <label class="is-sr-only" for="adm-docs-full">Search submissions and documents</label>
+          <input class="ds-input" type="search" id="adm-docs-full" placeholder="Search submissions">
+        </form>
+        <nav class="ds-site-header-nav" aria-label="Admin Console, full width">
           <a href="#">Resources</a>
           <a href="#">Submission</a>
           <a href="#">User Support</a>
           <a href="#">Students</a>
         </nav>
-        <span class="ds-site-header-divider" aria-hidden="true"></span>
         <div class="ds-site-header-tools">
-          <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
-            <label class="is-sr-only" for="adm-search-users">Search users</label>
-            <input class="ds-input" type="search" id="adm-search-users" placeholder="Search users">
-          </form>
-          <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
-            <label class="is-sr-only" for="adm-search-docs">Search submissions and documents</label>
-            <input class="ds-input" type="search" id="adm-search-docs" placeholder="Search submissions">
-          </form>
-          <button type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg><span class="is-sr-only">Refresh</span></button>
-          <button type="button" aria-expanded="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg><span class="is-sr-only">Sidebar</span></button>
+          <button type="button" class="ds-theme-toggle"></button>
         </div>
         <span class="ds-site-header-divider" aria-hidden="true"></span>
-        <div class="ds-site-header-account">
-          <span class="ds-site-header-greeting">Welcome <b>Shamsi</b></span>
+        <div class="ds-site-header-account ds-site-header-account--compact">
           <details class="ds-site-header-dropdown">
-            <summary class="ds-site-header-login">Account</summary>
+            <summary class="ds-site-header-login"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg><span class="is-sr-only">Account, signed in as Shamsi</span></summary>
             <div class="ds-site-header-menu">
+              <p>Signed in as <b>Shamsi</b></p>
               <a href="#">Your account</a>
               <form method="post" action="#" onsubmit="return false">
                 <button type="submit">Log out</button>
@@ -918,66 +828,143 @@
         </div>
       </header>
       </div>
+      <p class="ds-panel-label">Tablet width</p>
+      <div class="demo-width-tablet">
+        <div class="ds-internal">
+        <header class="ds-site-header">
+          <a href="#" class="ds-site-header-logo">
+            <img src="assets/images/logos/logo_arxiv-admin-light.svg" alt="archive Admin Console">
+          </a>
+          <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
+            <label class="is-sr-only" for="adm-users-tablet">Search users</label>
+            <input class="ds-input" type="search" id="adm-users-tablet" placeholder="Search users">
+          </form>
+          <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
+            <label class="is-sr-only" for="adm-docs-tablet">Search submissions and documents</label>
+            <input class="ds-input" type="search" id="adm-docs-tablet" placeholder="Search submissions">
+          </form>
+          <nav class="ds-site-header-nav" aria-label="Admin Console, tablet width">
+            <a href="#">Resources</a>
+            <a href="#">Submission</a>
+            <a href="#">User Support</a>
+            <a href="#">Students</a>
+          </nav>
+          <div class="ds-site-header-tools">
+            <button type="button" class="ds-theme-toggle"></button>
+          </div>
+          <span class="ds-site-header-divider" aria-hidden="true"></span>
+          <div class="ds-site-header-account ds-site-header-account--compact">
+            <details class="ds-site-header-dropdown">
+              <summary class="ds-site-header-login"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg><span class="is-sr-only">Account, signed in as Shamsi</span></summary>
+              <div class="ds-site-header-menu">
+                <p>Signed in as <b>Shamsi</b></p>
+                <a href="#">Your account</a>
+                <form method="post" action="#" onsubmit="return false">
+                  <button type="submit">Log out</button>
+                </form>
+              </div>
+            </details>
+          </div>
+        </header>
+        </div>
+      </div>
+      <p class="ds-panel-label">Phone width</p>
+      <div class="demo-width-narrow">
+        <div class="ds-internal">
+        <header class="ds-site-header">
+          <a href="#" class="ds-site-header-logo">
+            <img src="assets/images/logos/logo_arxiv-admin-light.svg" alt="archive Admin Console">
+          </a>
+          <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
+            <label class="is-sr-only" for="adm-users-phone">Search users</label>
+            <input class="ds-input" type="search" id="adm-users-phone" placeholder="Search users">
+          </form>
+          <form class="ds-site-header-search" role="search" action="#" onsubmit="return false">
+            <label class="is-sr-only" for="adm-docs-phone">Search submissions and documents</label>
+            <input class="ds-input" type="search" id="adm-docs-phone" placeholder="Search submissions">
+          </form>
+          <nav class="ds-site-header-nav" aria-label="Admin Console, phone width">
+            <a href="#">Resources</a>
+            <a href="#">Submission</a>
+            <a href="#">User Support</a>
+            <a href="#">Students</a>
+          </nav>
+          <div class="ds-site-header-tools">
+            <button type="button" class="ds-theme-toggle"></button>
+          </div>
+          <span class="ds-site-header-divider" aria-hidden="true"></span>
+          <div class="ds-site-header-account ds-site-header-account--compact">
+            <details class="ds-site-header-dropdown">
+              <summary class="ds-site-header-login"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg><span class="is-sr-only">Account, signed in as Shamsi</span></summary>
+              <div class="ds-site-header-menu">
+                <p>Signed in as <b>Shamsi</b></p>
+                <a href="#">Your account</a>
+                <form method="post" action="#" onsubmit="return false">
+                  <button type="submit">Log out</button>
+                </form>
+              </div>
+            </details>
+          </div>
+        </header>
+        </div>
+      </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;header class="ds-site-header"&gt;
+<pre><code>&lt;div class="ds-internal"&gt;
+&lt;header class="ds-site-header"&gt;
   &lt;a href="/" class="ds-site-header-logo"&gt;
-    &lt;img src="logo_arxiv-admin.png" alt="archive Admin Console"&gt;
+    &lt;img src="logo_arxiv-admin-light.svg" alt="archive Admin Console"&gt;
   &lt;/a&gt;
+  &lt;form class="ds-site-header-search" role="search" action="/users"&gt;
+    &lt;label class="is-sr-only" for="search-users"&gt;Search users&lt;/label&gt;
+    &lt;input class="ds-input" type="search" id="search-users" name="q" placeholder="Search users"&gt;
+  &lt;/form&gt;
+  &lt;form class="ds-site-header-search" role="search" action="/documents"&gt;
+    &lt;label class="is-sr-only" for="search-docs"&gt;Search submissions and documents&lt;/label&gt;
+    &lt;input class="ds-input" type="search" id="search-docs" name="q" placeholder="Search submissions"&gt;
+  &lt;/form&gt;
   &lt;nav class="ds-site-header-nav" aria-label="Admin Console"&gt;
     &lt;a href="/resources"&gt;Resources&lt;/a&gt;
     &lt;a href="/submission"&gt;Submission&lt;/a&gt;
     &lt;a href="/support"&gt;User Support&lt;/a&gt;
     &lt;a href="/students"&gt;Students&lt;/a&gt;
   &lt;/nav&gt;
-  &lt;span class="ds-site-header-divider" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;div class="ds-site-header-tools"&gt;
-    &lt;form class="ds-site-header-search" role="search" action="/users"&gt;
-      &lt;label class="is-sr-only" for="search-users"&gt;Search users&lt;/label&gt;
-      &lt;input class="ds-input" type="search" id="search-users" name="q" placeholder="Search users"&gt;
-    &lt;/form&gt;
-    &lt;form class="ds-site-header-search" role="search" action="/documents"&gt;
-      &lt;label class="is-sr-only" for="search-docs"&gt;Search submissions and documents&lt;/label&gt;
-      &lt;input class="ds-input" type="search" id="search-docs" name="q" placeholder="Search submissions"&gt;
-    &lt;/form&gt;
-    &lt;button type="button"&gt;
-      &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
-        &lt;path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/&gt;
-        &lt;path d="M21 3v5h-5"/&gt;
-      &lt;/svg&gt;
-      &lt;span class="is-sr-only"&gt;Refresh&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" aria-expanded="true" aria-controls="sidebar"&gt;
-      &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
-        &lt;rect width="18" height="18" x="3" y="3" rx="2"/&gt;
-        &lt;path d="M15 3v18"/&gt;
-      &lt;/svg&gt;
-      &lt;span class="is-sr-only"&gt;Sidebar&lt;/span&gt;
-    &lt;/button&gt;
+    &lt;button type="button" class="ds-theme-toggle"&gt;&lt;/button&gt;
   &lt;/div&gt;
   &lt;span class="ds-site-header-divider" aria-hidden="true"&gt;&lt;/span&gt;
-  &lt;div class="ds-site-header-account"&gt;
-    &lt;span class="ds-site-header-greeting"&gt;Welcome &lt;b&gt;Shamsi&lt;/b&gt;&lt;/span&gt;
-    &lt;details class="ds-site-header-dropdown"&gt;…&lt;/details&gt;
+  &lt;div class="ds-site-header-account ds-site-header-account--compact"&gt;
+    &lt;details class="ds-site-header-dropdown"&gt;
+      &lt;summary class="ds-site-header-login"&gt;
+        &lt;svg …&gt;…&lt;/svg&gt;   &lt;!-- Lucide circle-user --&gt;
+        &lt;span class="is-sr-only"&gt;Account, signed in as Shamsi&lt;/span&gt;
+      &lt;/summary&gt;
+      &lt;div class="ds-site-header-menu"&gt;
+        &lt;p&gt;Signed in as &lt;b&gt;Shamsi&lt;/b&gt;&lt;/p&gt;
+        &lt;a href="/account"&gt;Your account&lt;/a&gt;
+        &lt;form method="post" action="/logout"&gt;
+          &lt;button type="submit"&gt;Log out&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/details&gt;
   &lt;/div&gt;
-&lt;/header&gt;</code></pre>
+&lt;/header&gt;
+&lt;/div&gt;</code></pre>
           <dl>
             <dt>.ds-site-header-logo img</dt>
             <dd>The tool’s own wordmark image, from <code>assets/images/logos/</code>. Its alt text
             names the tool in spoken form, such as “archive Admin Console”.</dd>
             <dt>.ds-site-header-search</dt>
-            <dd>A <code>&lt;form role="search"&gt;</code> holding one <code>.ds-input</code> and its
-            label. It stays visible in the bar, because internal tools search constantly. A tool with
-            two kinds of search uses two of these; there is no double-search component. On public
-            pages search stays the Search link beside the navigation, which opens search only when
-            the reader asks.</dd>
-            <dt>.ds-site-header-tools &gt; button</dt>
-            <dd>An icon button that acts on the whole tool, such as Refresh or the sidebar toggle. Its
-            name is <code>.is-sr-only</code> text. The sidebar toggle has
-            <code>aria-expanded</code>, and <code>aria-controls</code> naming the sidebar’s
-            <code>id</code>.</dd>
-            <dt>.ds-site-header-greeting</dt>
-            <dd>The same first-name greeting as the public header, capped at 14 characters.</dd>
+            <dd>A <code>&lt;form role="search"&gt;</code> holding one <code>.ds-input</code> and its label,
+            before the navigation, where public pages have the Search link. Two kinds of search are two
+            of these. They stay in the bar while they fit, after the navigation and the account area
+            have folded into the menu; on a phone they open from a Search button.</dd>
+            <dt>.ds-site-header-account--compact</dt>
+            <dd>The account area as one icon button, for internal tools, where everyone is signed in
+            and the account is rarely what they came for. The button’s name, “Account, signed in as
+            Shamsi”, is <code>.is-sr-only</code> text; the menu’s first line shows the name, so a
+            person on a shared computer can check whose account they are in. On a phone it folds into
+            the menu, where the name shows beside the icon.</dd>
           </dl>
         </div>
       </details>
@@ -987,19 +974,7 @@
   <!-- ───────── Sticky header ───────── -->
   <section>
     <h3 id="sticky-header">Sticky header</h3>
-    <p class="ds-section-desc">Internal tools only. Adding <code>.ds-site-header--sticky</code> keeps the bar at the top of the viewport while the page scrolls, and the stylesheet sets <code>scroll-padding-top</code> on the page so a link to a section does not land under the bar. It is not applied to the examples on this page, which already keeps the TOC bar in view.</p>
-    <div class="ds-card">
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;header class="ds-site-header ds-site-header--sticky"&gt;…&lt;/header&gt;</code></pre>
-          <dl>
-            <dt>.ds-site-header--sticky</dt>
-            <dd>Sticks the bar to the top of the viewport. A page that uses it keeps no other sticky
-            bar.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
+    <p class="ds-section-desc">Internal tools only. Adding <code>.ds-site-header--sticky</code> keeps the bar at the top of the viewport while the page scrolls, and the stylesheet sets <code>scroll-padding-top</code> on the page so a link to a section does not land under the bar. A page that uses it keeps no other sticky bar. It is not applied to the examples on this page, which already keeps the TOC bar in view.</p>
   </section>
 
 
@@ -1007,44 +982,39 @@
   <h2>Rules</h2>
   <section>
     <h3 id="hosting-the-header">Hosting the header</h3>
+    <p>A page includes the header from <code>templates/</code> and writes the skip link before it,
+    pointing at its own main content. The <a href="doc.html?src=templates/README.md">templates
+    README</a> says how to install the header, which variables a host sets, and how the stylesheet,
+    scripts and logo are published and cached. <a href="doc.html?src=templates/BANNER_ANNOUNCEMENTS.md">Banner
+    announcements</a> says how to put up an announcement.</p>
+  </section>
+  <section>
+    <h3 id="design-rules">Design rules</h3>
     <ul class="notes">
-      <li><strong>The announcement is temporal.</strong> Render only while active, persist dismissal
-      across arXiv sites, and never attach page-critical function to it. The shared chrome’s
-      <code>chrome/banner.js</code> does both: it fetches the shared announcements
-      (<code>json/announcements.json</code> on the asset route), shows the band only between an
-      entry’s start and end, and records a dismissal in a cookie on the parent domain
-      (<code>arxiv.org</code>). The announcement is data: plain text and its links, never markup.
-      How to put one up: <a href="doc.html?src=templates/BANNER_ANNOUNCEMENTS.md">Banner announcements</a>.</li>
-      <li><strong>No more than four top-level links.</strong> The logo and Log in do not count. More
-      than four causes cognitive overload and reduces comprehension; resist link-creep permanently
-      (DESIGN-POLICIES).</li>
-      <li><strong>The host provides the skip link.</strong> The shared templates start at the
-      announcement band, so a host puts <code>.ds-skip-link</code> before them, pointing at its own
-      main content.</li>
-      <li><strong>Log out is in the Account menu.</strong> Signed in, Account opens a menu holding
-      the account page and Log out. Logging out is then one menu away on every page, which matters
-      on shared computers, and still takes two deliberate actions.</li>
-      <li><strong>Regions, in one order.</strong> Logo, navigation, tools (optional), account. Every
-      header on every surface keeps this order.</li>
-      <li><strong>Navigation sits on the right.</strong> On every header, the space after the logo
-      stays empty and the navigation follows it.</li>
-      <li><strong>Tools hold what one interface needs.</strong> Search fields, icon buttons such as
-      Refresh and the sidebar toggle, and the theme control go in the tools region.</li>
+      <li><strong>Regions, in one order.</strong> Logo, search (the Search link on public pages,
+      search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the
+      navigation, and page actions come after it.</li>
+      <li><strong>Navigation sits on the right.</strong> The space after the logo stays empty.</li>
+      <li><strong>No more than four links in arxiv.org’s navigation.</strong> The logo and Log in do
+      not count (DESIGN-POLICIES). A host does not change the template’s navigation.</li>
+      <li><strong>Tools holds the theme control.</strong> The transitional header also puts a
+      page’s actions there; in the aspirational header they move to the TOC bar. A control that
+      acts on the page’s data, such as Refresh, goes beside the page heading, with the time the data was last updated.</li>
       <li><strong>Public search opens on request; internal search stays in view.</strong> On
-      arxiv.org, Search is a link just before the navigation, and it stays in the bar on small
-      screens. Internal tools keep their search fields in the tools region.</li>
-      <li><strong>Sticky on internal tools only.</strong> <code>.ds-site-header--sticky</code> is for
-      internal tools; arxiv.org’s public header scrolls away (DESIGN-POLICIES).</li>
-      <li><strong>The greeting is the first name, everywhere.</strong> Public and internal headers
-      show the given name only, capped at 14 characters.</li>
-      <li><strong>One bar under the header.</strong> A page shows either secondary navigation or steps, never both.</li>
+      arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in
+      the bar while they fit.</li>
+      <li><strong>Log out.</strong> Today a signed-in reader logs out on the account page. In the
+      aspirational header, Log out is in the Account menu, one menu away on every page.</li>
+      <li><strong>The greeting is the first name.</strong> The aspirational public header shows the
+      given name only, capped at 14 characters. Internal headers use the compact account area,
+      with the name in its menu.</li>
+      <li><strong>Sticky on internal tools only.</strong> arxiv.org’s public header scrolls away
+      (DESIGN-POLICIES).</li>
       <li><strong>No breadcrumbs.</strong> arXiv’s sitemap is wide and shallow, so the header
-      navigation and the secondary navigation show the reader’s place. A tool’s main pages, such as
-      its starting page, are links in the header navigation; the way back is there, not in a link
-      above the page heading.</li>
-      <li><strong>Type sizes are rem</strong> so browser font-size overrides propagate. In print the
-      header keeps only its logo, 28px tall; the announcement band and the secondary navigation are
-      hidden.</li>
+      navigation and the <a href="navigation.html#secondary-navigation">secondary navigation</a>
+      show the reader’s place.</li>
+      <li><strong>Type sizes are rem</strong>, so a reader’s browser font size applies. In print the
+      header keeps only its logo, 28px tall.</li>
     </ul>
   </section>
 

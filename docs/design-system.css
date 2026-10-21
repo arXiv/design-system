@@ -3500,8 +3500,8 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
    Announcement band + black bar + skip link. Nothing below the black bar
    is approved chrome.
    Static by default (DESIGN-POLICIES); internal tools may add
-   .ds-site-header--sticky. Regions, in this order: logo, nav, tools
-   (optional), account.
+   .ds-site-header--sticky. Regions, in this order: logo, Search (public),
+   nav, tools (optional), account.
    --light re-points seven surface tokens and declares no property of its
    own, so no rule in the variant can lose a specificity argument.
    Focus rings on the dark bar use --ds-focus-ring-on-dark. */
@@ -3605,7 +3605,8 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   justify-content: flex-end;   /* a wrapped row stays on the right, under the navigation */
   align-items: center;
   gap: var(--ds-space-tight);
-  padding: 6px 24px;
+  --ds-hdr-pad-inline: 24px;   /* a folded menu's rows reach past it to the bar's edges */
+  padding: 6px var(--ds-hdr-pad-inline);
   min-height: 52px;
   box-sizing: border-box;
 
@@ -3762,6 +3763,33 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   .ds-site-header-greeting { display: none; }
 }
 
+/* Compact account area: internal tools, where everyone is signed in and the
+   account is rarely the errand. One icon button at the menu buttons' size; the
+   name is the first line of its menu. */
+.ds-site-header-account--compact > .ds-site-header-dropdown > summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  margin-block: -3px;   /* as the menu buttons: the bar stays 52px */
+  padding: 0 6px;
+}
+.ds-site-header-account--compact > .ds-site-header-dropdown > summary svg { width: 22px; height: 22px; flex-shrink: 0; }
+/* In the bar the icon alone is the trigger, as on other platforms; no caret. */
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-account--compact > .ds-site-header-dropdown > summary::after { content: none; }
+.ds-site-header-account--compact .ds-site-header-menu > p {
+  margin: 0 0 4px;
+  padding: 6px 10px 8px;
+  border-bottom: 1px solid var(--ds-border);
+  font-size: 0.8125rem;
+  color: var(--ds-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-site-header-account--compact .ds-site-header-menu > p > b { font-weight: 600; color: var(--ds-text); }
+
 /* ── .ds-site-header--light ───────────────────────────────────────────────
    The same bar on a property that is not arxiv.org: the design system docs
    today, and the kind of thing an info or outreach site would use. It changes
@@ -3783,10 +3811,13 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 }
 
 /* Collapse by fit (header.js). When the regions do not fit on one row, the
-   navigation collapses behind a menu button, then the tools behind a second
-   button; the logo and the account area always stay. The script adds both
-   buttons and .is-collapsible, so a page without it keeps the wrap below. */
+   navigation collapses behind a menu button. On a bar with an account area the
+   tools and the account area go into the same menu (.is-single-menu). Search
+   fields stay while they fit, then fold behind a Search button. A bar without
+   an account area folds its tools behind a Tools button. The script
+   adds the buttons and .is-collapsible, so a page without it keeps the wrap below. */
 .ds-site-header-nav-toggle,
+.ds-site-header-search-toggle,
 .ds-site-header-tools-toggle {
   display: none;
   align-items: center;
@@ -3805,13 +3836,16 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   transition: background 0.12s, color 0.12s;
 }
 .ds-site-header-nav-toggle:hover,
+.ds-site-header-search-toggle:hover,
 .ds-site-header-tools-toggle:hover { background: var(--ds-hdr-hover); color: var(--ds-hdr-fg-strong); }
 .ds-site-header-nav-toggle:focus-visible,
+.ds-site-header-search-toggle:focus-visible,
 .ds-site-header-tools-toggle:focus-visible {
   outline: 3px solid var(--ds-hdr-ring);
   outline-offset: 1px;
 }
 .ds-site-header-nav-toggle svg,
+.ds-site-header-search-toggle svg,
 .ds-site-header-tools-toggle svg { width: 22px; height: 22px; display: block; }
 
 /* A managed bar stays on one row, so its search fields shrink rather than
@@ -3819,6 +3853,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 .ds-site-header.is-collapsible { position: relative; flex-wrap: nowrap; }
 .ds-site-header.is-collapsible.is-overfull { flex-wrap: wrap; }
 .ds-site-header.is-nav-collapsed .ds-site-header-nav-toggle,
+.ds-site-header.is-search-collapsed .ds-site-header-search-toggle,
 .ds-site-header.is-tools-collapsed .ds-site-header-tools-toggle { display: inline-flex; }
 .ds-site-header.is-nav-collapsed > .ds-site-header-divider,
 .ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-divider { display: none; }
@@ -3872,7 +3907,13 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 .ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-dropdown > summary,
 .ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu a,
 .ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button,
-.ds-site-header.is-tools-collapsed .ds-site-header-tools > * {
+.ds-site-header.is-tools-collapsed .ds-site-header-tools > *,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-tools > *,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account > a,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-greeting,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account .ds-site-header-dropdown > summary,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account .ds-site-header-menu a,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account .ds-site-header-menu button {
   display: flex;
   align-items: center;
   width: 100%;
@@ -3885,10 +3926,13 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   border-bottom: 1px solid var(--ds-hdr-divider);
 }
 .ds-site-header.is-nav-collapsed .ds-site-header-nav > :last-child,
-.ds-site-header.is-tools-collapsed .ds-site-header-tools > :last-child { border-bottom: none; }
+.ds-site-header.is-tools-collapsed .ds-site-header-tools > :last-child,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-tools > :last-child,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account > :last-child { border-bottom: none; }
 /* A folded tool has a full row, so its name shows beside the icon. !important only
    to undo .is-sr-only, which uses it. */
-.ds-site-header.is-tools-collapsed .ds-site-header-tools > button > .is-sr-only {
+.ds-site-header.is-tools-collapsed .ds-site-header-tools > button > .is-sr-only,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-tools > button > .is-sr-only {
   position: static !important;
   width: auto !important; height: auto !important;
   margin: 0 0 0 var(--ds-gap-glyph) !important;
@@ -3897,7 +3941,8 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 }
 .ds-site-header.is-tools-collapsed .ds-site-header-tools > .ds-site-header-search { flex: none; min-width: 0; }
 /* A dropdown in the collapsed list opens in place, as indented rows on the bar's own ground. */
-.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu {
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account .ds-site-header-menu {
   position: static;
   min-width: 0;
   max-width: none;
@@ -3908,19 +3953,80 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   box-shadow: none;
 }
 .ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu a,
-.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button {
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account .ds-site-header-menu a,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account .ds-site-header-menu button {
   padding-inline-start: 32px;
   color: var(--ds-hdr-fg);
 }
 .ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu a:hover,
-.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button:hover {
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button:hover,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account .ds-site-header-menu a:hover,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account .ds-site-header-menu button:hover {
   background: var(--ds-hdr-hover);
   color: var(--ds-hdr-fg-strong);
 }
 .ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu a:focus-visible,
-.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button:focus-visible {
+.ds-site-header.is-nav-collapsed .ds-site-header-nav .ds-site-header-menu button:focus-visible,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account .ds-site-header-menu a:focus-visible,
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account .ds-site-header-menu button:focus-visible {
   outline: 3px solid var(--ds-hdr-ring);
   outline-offset: -3px;
+}
+
+/* One menu (.is-single-menu: a bar with an account area). Folded, the tools and
+   the account area leave the bar with the navigation, and the menu button opens
+   all three as rows, in that order. Search fields fold last, behind the Search
+   button, and open as rows the same way. The bar keeps its height: an empty
+   first item holds the first line at the bar's full height, and the rows hang
+   below it, over the page. */
+.ds-site-header.is-single-menu.is-nav-collapsed > .ds-site-header-tools,
+.ds-site-header.is-single-menu.is-nav-collapsed > .ds-site-header-account,
+.ds-site-header.is-search-collapsed > .ds-site-header-search { display: none; }
+.ds-site-header.is-collapsible:is(.is-menu-open, .is-search-open) {
+  flex-wrap: wrap;
+  align-content: flex-start;
+  height: 52px;
+  padding-block: 0;
+  row-gap: 0;
+}
+.ds-site-header.is-collapsible:is(.is-menu-open, .is-search-open)::before {
+  content: "";
+  height: 100%;
+  margin-inline-end: calc(-1 * var(--ds-space-tight));   /* takes no room in the line */
+}
+.ds-site-header.is-collapsible:is(.is-menu-open, .is-search-open) > .is-open {
+  display: flex;
+  flex: 0 0 calc(100% + 2 * var(--ds-hdr-pad-inline));
+  order: 1;   /* after everything that stays in the bar */
+  position: relative;
+  inset: auto;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  min-width: 0;
+  margin-inline: calc(-1 * var(--ds-hdr-pad-inline));
+  padding: 0;
+  background: var(--ds-hdr-bg);
+  border-top: 1px solid var(--ds-hdr-divider);
+  box-shadow: none;
+  z-index: 60;
+}
+.ds-site-header.is-search-open > .ds-site-header-search.is-open { padding: 8px 16px; }
+/* Folded, the compact account button is a row with its name showing, so the
+   menu's own name line would say it twice. !important only to undo .is-sr-only. */
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account--compact summary { height: auto; margin-block: 0; justify-content: flex-start; }
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account--compact summary > .is-sr-only {
+  position: static !important;
+  width: auto !important; height: auto !important;
+  margin: 0 0 0 var(--ds-gap-glyph) !important;
+  overflow: visible !important;
+  clip: auto !important;
+}
+.ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account--compact .ds-site-header-menu > p { display: none; }
+.ds-site-header.is-collapsible:is(.is-menu-open, .is-search-open) > .is-open:not(:has(~ .is-open)) {
+  border-bottom: 1px solid var(--ds-hdr-border);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* the summoned-surface shadow */
 }
 
 /* Narrow viewport. Without header.js the bar wraps (WCAG 1.4.10 reflow at
@@ -3928,7 +4034,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
    A bar without navigation has nothing to fold: its tools stay on the first
    row and wrap only if they do not fit. */
 @media (max-width: 599px) {
-  .ds-site-header { padding: 6px 12px; }
+  .ds-site-header { --ds-hdr-pad-inline: 12px; }
   .ds-site-header-search-link,
   .ds-site-header-nav > a,
   .ds-site-header-nav > button,
@@ -3951,7 +4057,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 }
 html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 
-/* SECONDARY NAVIGATION  (.ds-subnav) — header.html
+/* SECONDARY NAVIGATION  (.ds-subnav) — navigation.html
    A row of section links directly under the header. It wraps rather than
    scrolling sideways, so every section stays visible at 320px and at 200%
    text. The current page is marked three ways: weight, an underline bar,
@@ -3997,7 +4103,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   .ds-subnav { padding: 0 12px; column-gap: var(--ds-space-4); }
 }
 
-/* STEPS  (.ds-subnav--steps) — header.html
+/* STEPS  (.ds-subnav--steps) — navigation.html
    The steps of one ordered process, on the secondary navigation bar. A
    complete or available step is a link; the current step has
    aria-current="step"; a step not available yet is a <span>. Which steps are

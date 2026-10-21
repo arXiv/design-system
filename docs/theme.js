@@ -54,9 +54,12 @@
   // ── The control ──
   function paint(btn, choice) {
     btn.setAttribute('data-theme-choice', choice);
-    // The icon is the only visible part; the state is in the accessible name,
-    // and the result of a press goes to the live region.
+    // In the bar the icon is the only visible part; the state is in the
+    // accessible name, and the result of a press goes to the live region. The
+    // label is also hidden text, which a folded header menu shows as the row's
+    // words.
     btn.setAttribute('aria-label', LABEL[choice] + '. Activate to change.');
+    btn.querySelector('.is-sr-only').textContent = LABEL[choice];
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -74,6 +77,7 @@
           '<svg class="ds-theme-icon-dark" viewBox="0 0 24 24" aria-hidden="true">' +
             '<circle cx="12" cy="12" r="10"/><path d="M16.5 12.4A4.5 4.5 0 1 1 11.6 7.5a3.5 3.5 0 0 0 4.9 4.9Z"/></svg>');
       }
+      if (!btn.querySelector('.is-sr-only')) btn.insertAdjacentHTML('beforeend', '<span class="is-sr-only"></span>');
       paint(btn, choice);
 
       btn.addEventListener('click', function () {
