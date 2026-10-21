@@ -3390,14 +3390,19 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   margin-bottom: 14px;
   line-height: 1.6;
 }
-/* A host's `footer a:hover { border-bottom: 1px dotted }` (the arXiv.css browse, search and
-   stats copy) would underline footer links twice; arxiv-base resets it the same way. */
+/* Through the footer, so the host's own footer link rules (the arXiv.css copies in browse,
+   search, stats and status: `footer a, footer a:visited` black or white, `footer a:hover`
+   dotted or on grey) cannot recolour, underline or shade these links; arxiv-base resets them
+   the same way. */
 .ds-site-footer a,
+.ds-site-footer a:visited,
 .ds-site-footer a:hover,
-.ds-site-footer a:active { border-bottom: 0; }
-.ds-site-footer-ack a {
-  font-size: 0.8125rem;
+.ds-site-footer a:active { border-bottom: 0; background: none; line-height: inherit; }
+/* Sizes stay on the plain selectors, so a host that pins its own still can. */
+.ds-site-footer-ack a { font-size: 0.8125rem; }
+.ds-site-footer .ds-site-footer-ack a {
   color: var(--ds-link);
+  text-decoration: underline;   /* the only cue: the bold words inside take the text colour */
 }
 .ds-site-footer-ack strong { color: var(--ds-text); font-weight: 600; }
 .ds-site-footer-links {
@@ -3407,12 +3412,12 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   font-size: 0.8125rem; /* 13px */
   line-height: 1.8;
 }
-.ds-site-footer-links a {
-  font-size: 0.8125rem;
+.ds-site-footer-links a { font-size: 0.8125rem; }
+.ds-site-footer .ds-site-footer-links a {
   color: var(--ds-text-muted);
   text-decoration: none;
 }
-.ds-site-footer-links a:hover {
+.ds-site-footer .ds-site-footer-links a:hover {
   color: var(--ds-text);
   text-decoration: underline;
 }
