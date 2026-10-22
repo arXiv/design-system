@@ -211,27 +211,11 @@
   gap: max(var(--ds-space-2), calc(var(--x-control) - var(--x-control-box) + 2px)) var(--ds-space-2);
   font-size: 0.875rem;
 }
-.x-filter-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-  min-height: var(--x-control-box);
-  max-width: 100%;
-  padding: 0 0.85em;
-  font: inherit;
-  font-size: 0.875rem;   /* the second row's size: a button, so no 16px for touch */
-  font-weight: 600;
-  color: var(--ds-text);
-  text-decoration: none;
-  background: var(--ds-surface);
-  border: 1px solid var(--ds-border-strong);
-  border-radius: 6px;
-  cursor: pointer;
-}
-.x-filter-trigger:visited { color: var(--ds-text); }
-.x-filter-trigger:hover { background: var(--ds-surface-hover); }
-.x-filter-trigger:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 2px; }
-.x-filter-trigger[aria-expanded="true"] { background: var(--ds-tint-accent); border-color: var(--ds-accent-border); }
+/* The control is a compact secondary button (.ds-btn .ds-btn-compact), so it reads as
+   something to press, like every other button on the page; it adds the icon, the name
+   and the applied value. Its filter icon, not a chevron, says what it opens. */
+.x-filter-trigger { gap: 0.5em; min-width: 0; max-width: 100%; font-size: 0.875rem; }
+.x-filter-trigger[aria-expanded="true"] { background: var(--ds-btn-secondary-bg-active, var(--ds-tint-accent)); }
 .x-filter-trigger > svg { width: 1.1em; height: 1.1em; flex: none; }
 /* What is applied: for a subject, a path from broad to narrow. */
 .x-filter-value { min-width: 0; font-weight: 400; color: var(--ds-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -250,14 +234,10 @@
 /* In the dark header: the subject as the bar's scope, after the logo. The same control,
    drawn with the bar's colours. It stays in the bar at every width. */
 .ds-site-header:has(> .x-scope) > .ds-site-header-logo { margin-right: var(--ds-space-4); }
-.ds-site-header > .x-scope { margin-right: auto; color: var(--ds-hdr-fg-strong); background: transparent; border-color: var(--ds-hdr-divider); }
-.ds-site-header > .x-scope:visited { color: var(--ds-hdr-fg-strong); }
-.ds-site-header > .x-scope:hover,
-.ds-site-header > .x-scope[aria-expanded="true"] { background: var(--ds-hdr-hover); border-color: var(--ds-hdr-fg); }
-.ds-site-header > .x-scope:focus-visible { outline-color: var(--ds-hdr-ring); }
-.ds-site-header > .x-scope .x-filter-value { color: var(--ds-hdr-fg); }
-.ds-site-header > .x-scope .x-filter-value b { color: var(--ds-hdr-fg-strong); }
+.ds-site-header > .x-scope { margin-right: auto; }
+.ds-site-header > .x-scope .x-filter-value,
 .ds-site-header > .x-scope .x-path-sep { color: var(--ds-hdr-fg); }
+.ds-site-header > .x-scope .x-filter-value b { color: var(--ds-hdr-fg-strong); }
 /* On a phone the scope shows its value alone; the word stays for screen readers. */
 @media (max-width: 599px) {
   .ds-site-header > .x-scope { min-width: 0; flex: 0 1 auto; }
@@ -277,7 +257,7 @@
   justify-content: space-between;
   gap: var(--ds-space-2) var(--ds-space-block);
   padding: var(--ds-space-2) var(--ds-space-3);
-  background: var(--ds-surface);   /* white, so it never matches a table's tinted header row */
+  background: color-mix(in srgb, var(--ds-tint-warm) 50%, var(--ds-surface));   /* half the table header's tint, so the two stay apart */
   border-bottom: 1px solid var(--ds-border);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);   /* lifts the controls off the data beneath */
   position: relative;
@@ -374,3 +354,40 @@
    form such as search needs nothing of its own. ── */
 .ds-form > .ds-field:has(> .ds-input[type="search"]) { flex: 1 1 10rem; }
 .ds-form > .ds-field + .ds-btn { flex: none; align-self: flex-end; margin-bottom: var(--ds-space-4); }
+
+
+/* ── The header's dropdowns, on a wide screen: dark sheets, as the header's menu is on a
+   phone — square corners, 44px rows with hairlines, hanging from the bar's bottom edge.
+   (docs/design-system.css draws them as light panels on purpose; this tries the other way.) ── */
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu {
+  top: calc(100% + 13px);   /* the bar's bottom edge: the summary sits 13px above it */
+  min-width: 16rem;
+  padding: 0;
+  background: var(--ds-hdr-bg);
+  border: 0;
+  border-top: 1px solid var(--ds-hdr-divider);
+  border-radius: 0;
+}
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > a,
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > p,
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > form > button {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  margin: 0;
+  padding: 0 var(--ds-space-4);
+  color: var(--ds-hdr-fg-strong);
+  font-size: 0.875rem;
+  text-decoration: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--ds-hdr-divider);
+}
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > form > button { width: 100%; background: none; border-left: 0; border-right: 0; border-top: 0; font-family: inherit; font-size: 0.875rem; cursor: pointer; }
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > :last-child,
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > form:last-child > button { border-bottom: 0; }
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > p { gap: 0.3em; color: var(--ds-hdr-fg); }
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > p > b { color: var(--ds-hdr-fg-strong); }
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > a:hover,
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > form > button:hover { color: var(--ds-hdr-fg-strong); background: var(--ds-hdr-hover); }
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > a:focus-visible,
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > form > button:focus-visible { outline: 2px solid var(--ds-hdr-ring); outline-offset: -2px; }
