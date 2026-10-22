@@ -216,26 +216,32 @@
     <div class="ds-card-grid">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">Meets accessibility guideline <a href="https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html">WCAG 2.2 SC 1.4.1</a> Use of Color (Level A)</p>
+        <p class="ds-marginalia-body ds-annotation">Meets accessibility guidelines <a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html">WCAG 2.2 SC 1.4.3</a> Contrast (Minimum) (Level AA) and <a href="https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html">WCAG 2.2 SC 1.4.1</a> Use of Color (Level A)</p>
       </details>
       <div class="ds-card">
-        <span class="swatch" style="background:#1565c0"></span>
+        <div class="contrast-pair">
+          <div class="contrast-sample" data-theme="light"><span class="contrast-link">Link text</span><span class="contrast-ratio"></span></div>
+          <div class="contrast-sample" data-theme="dark"><span class="contrast-link">Link text</span><span class="contrast-ratio"></span></div>
+        </div>
         <strong>Link Blue</strong>
-        <code>#1565c0</code>
         <code>--ds-link</code>
-        <p>All interactive links, light mode. Author names, category links, DOIs.</p>
+        <p>All interactive links. Author names, category links, DOIs.</p>
       </div>
       <div class="ds-card">
-        <span class="swatch" style="background:#1050a0"></span>
+        <div class="contrast-pair">
+          <div class="contrast-sample" data-theme="light"><span class="contrast-link contrast-link--hover">Link text</span><span class="contrast-ratio"></span></div>
+          <div class="contrast-sample" data-theme="dark"><span class="contrast-link contrast-link--hover">Link text</span><span class="contrast-ratio"></span></div>
+        </div>
         <strong>Link Hover</strong>
-        <code>#1050a0</code>
         <code>--ds-link-hover</code>
         <p>Link hover state.</p>
       </div>
       <div class="ds-card">
-        <span class="swatch" style="background:#7b2fbe"></span>
+        <div class="contrast-pair">
+          <div class="contrast-sample" data-theme="light"><span class="contrast-link contrast-link--visited">Link text</span><span class="contrast-ratio"></span></div>
+          <div class="contrast-sample" data-theme="dark"><span class="contrast-link contrast-link--visited">Link text</span><span class="contrast-ratio"></span></div>
+        </div>
         <strong>Visited Purple</strong>
-        <code>#7b2fbe</code>
         <code>--ds-link-visited</code>
         <p>Visited link state.</p>
       </div>
@@ -248,16 +254,19 @@
         <p class="ds-marginalia-body ds-annotation">Meets accessibility guideline <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">WCAG 2.2 SC 1.4.11</a> Non-text Contrast (Level AA)</p>
       </details>
       <div class="ds-card">
-        <span class="swatch" style="background:#1565c0"></span>
+        <div class="contrast-pair">
+          <div class="contrast-sample" data-theme="light"><span class="contrast-ring">Button</span><span class="contrast-ratio"></span></div>
+          <div class="contrast-sample" data-theme="dark"><span class="contrast-ring">Button</span><span class="contrast-ratio"></span></div>
+        </div>
         <strong>Focus Ring</strong>
-        <code>#1565c0</code>
         <code>--ds-focus-ring</code>
-        <p>Keyboard focus indicator on light surfaces.</p>
+        <p>Keyboard focus indicator on the page, in light and dark mode.</p>
       </div>
       <div class="ds-card">
-        <span class="swatch" style="background:#64b5f6"></span>
+        <div class="contrast-pair contrast-pair--single">
+          <div class="contrast-sample contrast-sample--bar" data-theme="light"><span class="contrast-ring contrast-ring--on-dark">Submit</span><span class="contrast-ratio"></span></div>
+        </div>
         <strong>Focus Ring on dark</strong>
-        <code>#64b5f6</code>
         <code>--ds-focus-ring-on-dark</code>
         <p>Required on Repository Brown surfaces, where the standard ring is invisible.</p>
       </div>
@@ -502,6 +511,23 @@ background: var(--ds-tint-accent);</code></pre>
       if (wasInside) d.querySelector('summary').focus();
     });
   });
+</script>
+<script>
+  // Each contrast sample shows its colour's hex and its contrast with the
+  // sample's ground, read from the tokens in that sample's theme, so the
+  // numbers follow any change to a token.
+  (function () {
+    function rgb(value) { return value.match(/[\d.]+/g).slice(0, 3).map(Number); }
+    function hex(c) { return '#' + c.map(function (x) { return Math.round(x).toString(16).padStart(2, '0'); }).join(''); }
+    function lum(c) { var f = c.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * f[0] + 0.7152 * f[1] + 0.0722 * f[2]; }
+    function ratio(a, b) { var hi = Math.max(lum(a), lum(b)), lo = Math.min(lum(a), lum(b)); return (hi + 0.05) / (lo + 0.05); }
+    document.querySelectorAll('.contrast-sample').forEach(function (sample) {
+      var ground = rgb(getComputedStyle(sample).backgroundColor);
+      var link = sample.querySelector('.contrast-link'), ring = sample.querySelector('.contrast-ring');
+      var colour = rgb(link ? getComputedStyle(link).color : getComputedStyle(ring).outlineColor);
+      sample.querySelector('.contrast-ratio').textContent = hex(colour) + ' · ' + ratio(colour, ground).toFixed(2) + ':1';
+    });
+  })();
 </script>
 <script src="header.js" defer></script>
 <script src="tooltip.js" defer></script>

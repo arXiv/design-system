@@ -13,7 +13,7 @@ components:
     title: "Links and interactive"
     summary: "Link colors signal \"you can act on this\" and are a foundational part of accessibility. All link colors maintain accessible contrast levels with their background color in light and dark mode. In addition, inline links are always underlined and color is not the only signal."
     notes:
-      - "Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
+      - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA) and [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
       - "Meets accessibility guideline [WCAG 2.2 SC 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) Non-text Contrast (Level AA)"
   - id: the-two-tints
     title: "The two tints"
@@ -54,7 +54,7 @@ arXiv's defining brand colors grouped by prominence and role. These key colors a
 
 Link colors signal "you can act on this" and are a foundational part of accessibility. All link colors maintain accessible contrast levels with their background color in light and dark mode. In addition, inline links are always underlined and color is not the only signal.
 
-> Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)
+> Meets accessibility guidelines [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA) and [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) Non-text Contrast (Level AA)
 
