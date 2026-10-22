@@ -224,6 +224,55 @@
 .x-heading-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-space-tight) var(--ds-space-block); }
 .x-heading-row > h1 { margin: 0; }
 
+/* The page's own data controls, at the heading's far end. */
+.x-heading-tools { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2) var(--ds-space-4); font-size: 0.875rem; }
+.x-updated { color: var(--ds-text-muted); }
+.x-heading-tools .ds-btn svg { width: 1em; height: 1em; }
+
+/* In the dark header: the subject as the bar's scope, after the logo. The same control,
+   drawn with the bar's colours. It stays in the bar at every width. */
+.ds-site-header:has(> .x-scope) > .ds-site-header-logo { margin-right: var(--ds-space-4); }
+.ds-site-header > .x-scope { margin-right: auto; color: var(--ds-hdr-fg-strong); background: transparent; border-color: var(--ds-hdr-divider); }
+.ds-site-header > .x-scope:visited { color: var(--ds-hdr-fg-strong); }
+.ds-site-header > .x-scope:hover,
+.ds-site-header > .x-scope[aria-expanded="true"] { background: var(--ds-hdr-hover); border-color: var(--ds-hdr-fg); }
+.ds-site-header > .x-scope:focus-visible { outline-color: var(--ds-hdr-ring); }
+.ds-site-header > .x-scope .x-filter-value { color: var(--ds-hdr-fg); }
+.ds-site-header > .x-scope .x-filter-value b { color: var(--ds-hdr-fg-strong); }
+.ds-site-header > .x-scope .x-path-sep { color: var(--ds-hdr-fg); }
+/* On a phone the scope shows its value alone; the word stays for screen readers. */
+@media (max-width: 599px) {
+  .ds-site-header > .x-scope { min-width: 0; flex: 0 1 auto; }
+  .x-scope-label,
+  .x-scope-rest { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+
+
+/* ── A set of data with its controls: one box, the controls in its header bar ──
+   The toolbar is the box's top edge, so the controls read as part of what they change.
+   It says what is shown (a count, the order) on the left; the controls go where they fit. */
+.x-data { border: 1px solid var(--ds-border-strong); border-radius: 8px; overflow: hidden; }
+.x-data-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-2) var(--ds-space-block);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  background: var(--ds-tint-warm);
+  border-bottom: 1px solid var(--ds-border);
+  font-size: 0.875rem;
+}
+.x-data-state { margin: 0; color: var(--ds-text); font-weight: 600; }
+.x-data-state span { font-weight: 400; color: var(--ds-text-muted); }
+.x-data-body { padding: var(--ds-space-3); }
+.x-data > .ds-table-scroll > .ds-table { border: 0; border-radius: 0; }
+/* The sort bar takes the rest of the row, or a row of its own when it does not fit
+   beside the count; then it joins or splits by its own width. */
+.x-data-toolbar > .x-sort { flex: 1 1 36rem; }
+.x-data-toolbar .x-sort .ds-btn-group { justify-content: flex-end; }
+.x-data-toolbar .x-sort .ds-btn[aria-pressed="false"] { background: var(--ds-surface); }
+
 /* Applied filters that do not depend on each other: one chip each, and its × removes it. */
 .x-chip {
   display: inline-flex;
