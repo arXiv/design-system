@@ -39,7 +39,6 @@
   /* Two ramps, one base each, the step is the number: the percentage of the
      base over white. Every warm tint is Library Grey; every cool tint is
      Open Blue. Retune a base and recompute the steps. */
-  --ds-grey-5:            #f8f7f7;   /* Warm Wash: a hover fill on a white surface */
   --ds-grey-10:           #f0f0ee;   /* Card Grey: a secondary band, a hover fill */
   --ds-grey-25:           #dad8d6;   /* Border Light: hairlines, pressed fills */
   --ds-grey-55:           #aeaaa4;   /* Disabled Grey: disabled text, 2.3:1 */
@@ -80,8 +79,8 @@
                                                           does not flip, so this must not */
   --ds-canvas:            #ffffff;                     /* the page ground */
   --ds-surface:           #ffffff;
-  --ds-surface-hover:     var(--ds-grey-5);            /* a row or control under the pointer */
-  --ds-surface-muted:     var(--ds-grey-10);
+  --ds-surface-hover:     var(--ds-tint-warm);         /* a row or control under the pointer */
+  --ds-surface-muted:     var(--ds-tint-warm);         /* old name for --ds-tint-warm */
   --ds-zone-secondary-bg: var(--ds-tint-warm);     /* the tinted band — PAGE ZONES */
 
   /* Destructive: delete, withdraw, revoke. One tier on every surface. */
@@ -99,7 +98,7 @@
 
   --ds-border:            var(--ds-grey-25);                     /* decorative hairline, 1.42:1 —
                                                           never the sole edge of a control */
-  --ds-border-muted:      var(--ds-grey-25);
+  --ds-border-muted:      var(--ds-border);            /* old name for --ds-border */
   --ds-border-strong:     var(--ds-grey-80);  /* 3.61:1 — interactive boundaries */
 
   --ds-link:              var(--ds-link-blue);
@@ -612,7 +611,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 .ds-site-header-menu form { margin: 0; }
 .ds-site-header-menu a:hover,
-.ds-site-header-menu button:hover { background: var(--ds-surface-muted); }
+.ds-site-header-menu button:hover { background: var(--ds-tint-warm); }
 .ds-site-header-menu a:focus-visible,
 .ds-site-header-menu button:focus-visible {
   outline: 2px solid var(--ds-link);
@@ -708,17 +707,17 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    would otherwise read as a hole in the tint. */
 .ds-btn.on-tint {
   background:
-    linear-gradient(var(--ds-surface-muted), var(--ds-surface-muted)) padding-box,
+    linear-gradient(var(--ds-tint-warm), var(--ds-tint-warm)) padding-box,
     linear-gradient(to bottom, var(--ds-grey-25), var(--ds-grey-55)) border-box;
 }
 .ds-btn.on-tint:hover {
   background:
-    linear-gradient(var(--ds-surface-hover), var(--ds-surface-hover)) padding-box,
+    linear-gradient(var(--ds-surface), var(--ds-surface)) padding-box,
     linear-gradient(to bottom, #c8c4be, var(--ds-border-strong)) border-box;
 }
 .ds-btn.on-tint:active {
   background:
-    linear-gradient(var(--ds-surface-muted), var(--ds-surface-muted)) padding-box,
+    linear-gradient(var(--ds-tint-warm), var(--ds-tint-warm)) padding-box,
     linear-gradient(var(--ds-border-strong), var(--ds-border-strong)) border-box;
 }
 
@@ -1059,7 +1058,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-pagination--top,
 .ds-pagination--bottom {
   padding: var(--ds-space-2) var(--ds-space-4);
-  background: var(--ds-surface-muted);
+  background: var(--ds-tint-warm);
   border-radius: 6px;
 }
 .ds-pagination--top { margin-bottom: var(--ds-space-8); }
@@ -1372,7 +1371,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-table tbody th {
   text-align: left;
   padding: var(--ds-cell-padding);
-  border-bottom: 1px solid var(--ds-surface-muted);
+  border-bottom: 1px solid var(--ds-tint-warm);
   vertical-align: top;
   color: var(--ds-text);
 }
@@ -1854,7 +1853,7 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
 }
 .ds-input:disabled,
 .ds-input[aria-disabled="true"] {
-  background: var(--ds-surface-muted);
+  background: var(--ds-tint-warm);
   color: var(--ds-text-disabled);
   cursor: not-allowed;
 }
@@ -1935,7 +1934,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 .ds-paper-cite-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-space-2); }
 html:not(.js) .ds-paper-cite-tools { display: none; }
 /* The citation's code area: the bar, then the text, in one light box. */
-.ds-paper-cite-block { padding: var(--ds-space-2) var(--ds-space-3); background: var(--ds-surface-muted); border-radius: 6px; }
+.ds-paper-cite-block { padding: var(--ds-space-2) var(--ds-space-3); background: var(--ds-tint-warm); border-radius: 6px; }
 .ds-paper-cite-block .ds-btn-text { gap: var(--ds-space-1); font-size: inherit; }
 .ds-paper-cite-block figure { margin: var(--ds-space-2) 0 0; }
 html.js .ds-paper-cite-block figcaption { display: none; }
@@ -2397,7 +2396,7 @@ html:has(.ds-modal[open]) {
   max-width: calc(100% - 16px);
   padding: 6px 14px;
   background: var(--ds-surface);
-  border: 1px solid var(--ds-border-muted);
+  border: 1px solid var(--ds-border);
   border-radius: 999px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
   /* Hidden by opacity only, so its buttons stay in the tab order. */
@@ -2482,7 +2481,7 @@ html:has(.ds-modal[open]) {
 .ds-marginalia > summary::-webkit-details-marker { display: none; }
 .ds-marginalia > summary svg { width: 1.1rem; height: 1.1rem; stroke: currentColor; fill: none; }
 .ds-marginalia > summary:hover,
-.ds-marginalia[open] > summary { color: var(--ds-link); background: var(--ds-surface-muted); }
+.ds-marginalia[open] > summary { color: var(--ds-link); background: var(--ds-tint-warm); }
 .ds-marginalia > summary:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
 .ds-marginalia-body {
   position: absolute;
@@ -2696,7 +2695,7 @@ html:has(.ds-modal[open]) {
 .ds-seg-btn:first-of-type { margin-inline-start: 0; border-radius: 6px 0 0 6px; }
 .ds-seg-btn:last-of-type  { border-radius: 0 6px 6px 0; }
 .ds-seg-btn:hover:not(:disabled) {
-  background: var(--ds-surface-muted);
+  background: var(--ds-tint-warm);
   color: var(--ds-text);
   z-index: 1;
 }
@@ -2724,8 +2723,8 @@ html:has(.ds-modal[open]) {
     --ds-text:              var(--ds-grey-10);
     --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     --ds-canvas:            var(--ds-repository-brown);
-    --ds-surface-hover:     #23201d;
-    --ds-surface-muted:     #282622;
+    --ds-surface-hover:     var(--ds-tint-warm);
+    --ds-surface-muted:     var(--ds-tint-warm);
     --ds-zone-secondary-bg: var(--ds-tint-warm);
     --ds-danger-wash-hover:     #2a0808;
     --ds-danger-wash-active:    #380d0d;
@@ -2734,7 +2733,7 @@ html:has(.ds-modal[open]) {
     --ds-danger-fg-hover:       #ef9a9a;
     --ds-surface:           var(--ds-repository-brown);   /* cards sit on the page, with a border */
     --ds-border:            #383531;
-    --ds-border-muted:      #383531;
+    --ds-border-muted:      var(--ds-border);
     --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
     --ds-text-disabled:     #5a554f;
     --ds-chrome:            #262119;                     /* lifted off the canvas so the
@@ -2745,14 +2744,14 @@ html:has(.ds-modal[open]) {
     --ds-accent-wash:       #22344a;
     --ds-tint-warm:         #282622;
     --ds-tint-accent:       #202b38;
-    --ds-accent-surface:    #1e2328;
+    --ds-accent-surface:    #202b38;
     --ds-accent-border:     #2a4a7a;
     --ds-btn-primary-rim-a:          #6ba8da;
     --ds-btn-primary-rim-b:          #2a4a6a;
     --ds-btn-primary-rim-hover-b:    #3a6a94;
-    --ds-btn-secondary-bg:           var(--ds-surface-muted);
+    --ds-btn-secondary-bg:           var(--ds-tint-warm);
     --ds-btn-secondary-bg-hover:     #322d28;
-    --ds-btn-secondary-bg-active:    var(--ds-surface-muted);
+    --ds-btn-secondary-bg-active:    var(--ds-tint-warm);
     --ds-btn-secondary-rim-a:        #6b655c;
     --ds-btn-secondary-rim-b:        var(--ds-grey-80);
     --ds-btn-secondary-rim-hover-a:  var(--ds-grey-80);
@@ -2836,8 +2835,8 @@ html:has(.ds-modal[open]) {
   --ds-text:              var(--ds-grey-10);
   --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   --ds-canvas:            var(--ds-repository-brown);
-  --ds-surface-hover:     #23201d;
-  --ds-surface-muted:     #282622;
+  --ds-surface-hover:     var(--ds-tint-warm);
+  --ds-surface-muted:     var(--ds-tint-warm);
   --ds-zone-secondary-bg: var(--ds-tint-warm);
   --ds-danger-wash-hover:     #2a0808;
   --ds-danger-wash-active:    #380d0d;
@@ -2846,7 +2845,7 @@ html:has(.ds-modal[open]) {
   --ds-danger-fg-hover:       #ef9a9a;
   --ds-surface:           var(--ds-repository-brown);   /* cards sit on the page, with a border */
   --ds-border:            #383531;
-  --ds-border-muted:      #383531;
+  --ds-border-muted:      var(--ds-border);
   --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
   --ds-text-disabled:     #5a554f;
   --ds-chrome:            #262119;                     /* lifted off the canvas so the
@@ -2857,14 +2856,14 @@ html:has(.ds-modal[open]) {
   --ds-accent-wash:       #22344a;
   --ds-tint-warm:         #282622;
   --ds-tint-accent:       #202b38;
-  --ds-accent-surface:    #1e2328;
+  --ds-accent-surface:    #202b38;
   --ds-accent-border:     #2a4a7a;
   --ds-btn-primary-rim-a:          #6ba8da;
   --ds-btn-primary-rim-b:          #2a4a6a;
   --ds-btn-primary-rim-hover-b:    #3a6a94;
-  --ds-btn-secondary-bg:           var(--ds-surface-muted);
+  --ds-btn-secondary-bg:           var(--ds-tint-warm);
   --ds-btn-secondary-bg-hover:     #322d28;
-  --ds-btn-secondary-bg-active:    var(--ds-surface-muted);
+  --ds-btn-secondary-bg-active:    var(--ds-tint-warm);
   --ds-btn-secondary-rim-a:        #6b655c;
   --ds-btn-secondary-rim-b:        var(--ds-grey-80);
   --ds-btn-secondary-rim-hover-a:  var(--ds-grey-80);
@@ -2910,8 +2909,8 @@ html:has(.ds-modal[open]) {
   --ds-text:  var(--ds-repository-brown);
   --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%231c1a17' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   --ds-canvas:         #ffffff;
-  --ds-surface-hover:  var(--ds-grey-5);
-  --ds-surface-muted:         var(--ds-grey-10);
+  --ds-surface-hover:  var(--ds-tint-warm);
+  --ds-surface-muted:         var(--ds-tint-warm);
   --ds-zone-secondary-bg: var(--ds-tint-warm);
   --ds-danger-wash-hover:     #fdf0f0;
   --ds-danger-wash-active:    #f5d0d0;
@@ -2955,7 +2954,7 @@ html:has(.ds-modal[open]) {
   --ds-btn-text-fg-hover:          var(--ds-link-hover);
   --ds-btn-text-bg-hover:          var(--ds-accent-surface);
   --ds-btn-text-bg-active:         var(--ds-accent-wash);
-  --ds-border-muted:       var(--ds-grey-25);
+  --ds-border-muted:       var(--ds-border);
   --ds-chrome:        var(--ds-repository-brown);
   --ds-scrim:         rgba(28, 26, 23, 0.55);
   --ds-link:         var(--ds-link-blue);
@@ -3218,7 +3217,7 @@ html:has(.ds-modal[open]) {
   top: 0;
   z-index: 50;   /* above content chrome, below the site header's open menu (60); the blur makes the bar a stacking context, so the bar itself must clear the page */
   padding-block: 10px;
-  background: color-mix(in srgb, var(--ds-surface-muted) 92%, transparent);  /* 92% holds 5.05:1 for text over a white figure scrolling beneath */
+  background: color-mix(in srgb, var(--ds-tint-warm) 92%, transparent);  /* 92% holds 5.05:1 for text over a white figure scrolling beneath */
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   border-top: 1px solid var(--ds-border);
@@ -3251,7 +3250,7 @@ html:has(.ds-modal[open]) {
   z-index: 100;
   padding-block: 4px;
   margin-bottom: var(--ds-toc-shrink, 0px);   /* what the tightening took off the height, given back below, so the flow does not move: toc.js measures it. A shorter bar with content moving up under it makes the browser's scroll anchoring scroll to follow, which unsticks the bar, which grows it back, without end */
-  background: color-mix(in srgb, var(--ds-surface-muted) 96%, transparent);
+  background: color-mix(in srgb, var(--ds-tint-warm) 96%, transparent);
   border-bottom-color: var(--ds-border);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
@@ -3271,7 +3270,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   font-weight: 600;
   color: var(--ds-text);
   background: var(--ds-surface);
-  border: 1px solid var(--ds-border-muted);
+  border: 1px solid var(--ds-border);
   border-radius: 22px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   cursor: pointer;
@@ -3379,7 +3378,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 
 .ds-site-footer {
   clear: both;
-  border-top: 1px solid var(--ds-border-muted);
+  border-top: 1px solid var(--ds-border);
   background: var(--ds-canvas);
   padding: 24px 24px 28px;
   margin: 0;
@@ -3479,7 +3478,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   width: auto;
   flex-shrink: 0;
   padding: 4px 8px;
-  border: 1px solid var(--ds-border-muted);
+  border: 1px solid var(--ds-border);
   border-radius: 3px;
   background: #fff; /* stays white in dark mode: funder wordmarks need a light chip */
 }
@@ -4273,7 +4272,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   line-height: 1.2;
   color: var(--ds-text-muted);
   background: var(--ds-surface);
-  border: 1px solid var(--ds-border-muted);
+  border: 1px solid var(--ds-border);
   border-radius: 999px;
   cursor: pointer;
   opacity: 0;
@@ -4383,9 +4382,8 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
     --ds-text-muted:    #333333;
     --ds-canvas:        #ffffff;
     --ds-surface:       #ffffff;
-    --ds-surface-muted: #ffffff;
+    --ds-tint-warm:     #ffffff;
     --ds-border:        #cccccc;
-    --ds-border-muted:  #dddddd;
     --ds-link:          #000000;
     --ds-link-visited:  #000000;
   }

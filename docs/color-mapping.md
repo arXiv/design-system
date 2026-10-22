@@ -56,7 +56,7 @@ These serve specific UI functions and are not part of the brand identity.
 
 ### Status & alert colors — shared
 
-Semantic colors for the `.ds-alert` component and any success / informational / warning / error messaging. One system in both the public (white) and internal (Warm Wash) surfaces, light and dark. Each state is also distinguished by an icon and a leading word — never color alone (WCAG 1.4.1). All text/background pairings clear AA; most clear AAA.
+Semantic colors for the `.ds-alert` component and any success / informational / warning / error messaging. One system in both the public (white) and internal surfaces, light and dark. Each state is also distinguished by an icon and a leading word — never color alone (WCAG 1.4.1). All text/background pairings clear AA; most clear AAA.
 
 | State | Light bg | Light border | Light text/icon | Dark bg | Dark border | Dark text/icon | Text contrast (light / dark) |
 |---|---|---|---|---|---|---|---|
@@ -80,7 +80,6 @@ Barely perceptible tints for creating section depth without hard borders.
 
 | Name | Hex | Use |
 |---|---|---|
-| **Warm Wash** | `#f8f7f7` | Hover fill on a white surface |
 | **Grey Hover** | `#f0f0ee` | Table headers, hover fills, Related section background |
 | **Border Light** | `#dad8d6` | Component hairline borders — inputs, card edges; the off fill of a switch. Decorative only (below 3:1); not for sole interactive boundaries. Promoted from the mockups 2026-06-11. |
 
@@ -172,10 +171,10 @@ The tints sorted by the job they do. Reach for the named token; if a job is not 
 | The job | Reach for | Where it shows up |
 |---|---|---|
 | Page ground | **White** `--ds-canvas` | The default ground of every page, and the footer |
-| Hover fill on a white surface | **Warm Wash** `--ds-surface-hover` | A table row or a TOC entry under the pointer |
+| Hover fill on a white surface | **Card Grey** `--ds-surface-hover` | A table row or a TOC entry under the pointer |
 | Secondary content band | **Card Grey** `--ds-tint-warm` | Related band, reader header — one step down from the page, no hard border |
-| Card surface / hover fill | **Card Grey** `--ds-surface-muted` | Card fills and hover fills |
-| Active / pressed fill, deepest warm band | **Border Light** `--ds-border-muted` `#dad8d6` | Footer edge, pressed states, pill borders. Body-size grey/links miss AA here — use Repository Brown or Link Hover |
+| Card surface / hover fill | **Card Grey** `--ds-tint-warm` | Card fills and hover fills |
+| Active / pressed fill, deepest warm band | **Border Light** `--ds-border` `#dad8d6` | Footer edge, pressed states, pill borders. Body-size grey/links miss AA here — use Repository Brown or Link Hover |
 | Decorative hairline | **Border Light** `--ds-border` | Input / card edges. Below 3:1 — never the sole boundary of a control |
 | arXiv chrome floating over paper | **Tint Light** + **Tint Border** | Popovers, TOC dropdown — the "light blue = arXiv speaking, not the paper" rule (G4) |
 | Inline active anchor · read-aloud highlight · panel hover | **Active Wash** `--ds-accent-wash` | Deepest arXiv-chrome blue that still holds AA for normal-size text |
@@ -187,12 +186,12 @@ The tints sorted by the job they do. Reach for the named token; if a job is not 
 
 | On this surface | Body text & links (AA) | Large text / borders only (3:1) | Do not use |
 |---|---|---|---|
-| White · Warm Wash · Card Grey · Tint Light | Repository Brown, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | UI Boundary Grey (borders) | — |
+| White · Card Grey · Tint Light | Repository Brown, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | UI Boundary Grey (borders) | — |
 | Active Wash `#d2eafe` | Repository Brown, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | — | UI Boundary Grey |
 | Border Light `#dad8d6` | Repository Brown, Link Hover, Archival Blue, Visited Purple | Library Grey, Link Blue (≥18px) | UI Boundary Grey |
 | Open Blue `#a5d6fe` | Repository Brown only | Library Grey, Link Blue, Archival Blue (≥18px) | UI Boundary Grey; body-size grey & links |
 
-> **Drift reconciled (2026-06-17):** the mockups' off-palette one-offs were snapped to tokens — near-white grounds `#fafaf8` / `#fafaf9` → Warm Wash; light-blue footer band `#e8f4ff` → Tint Light; hover blue `#0d4a96` → Link Hover `#1050a0`. Do not reintroduce near-whites lighter than Warm Wash; if a lighter step is ever needed, add it here first.
+> **Drift reconciled (2026-06-17):** the mockups' off-palette one-offs were snapped to tokens — near-white grounds `#fafaf8` / `#fafaf9` → Warm Wash; light-blue footer band `#e8f4ff` → Tint Light; hover blue `#0d4a96` → Link Hover `#1050a0`. Do not reintroduce near-whites lighter than Card Grey; if a lighter step is ever needed, add it here first. (Warm Wash merged into Card Grey on 2026-10-22, with `--ds-surface-muted` and `--ds-border-muted` kept as old names for `--ds-tint-warm` and `--ds-border`.)
 
 ---
 
@@ -200,7 +199,7 @@ The tints sorted by the job they do. Reach for the named token; if a job is not 
 
 *(Added 2026-06-13. Rendered with computed ratios on the colors page: `colors.html#tinted`.)*
 
-Every tint in the system belongs to one of two families: the **warm tints** (Library Grey stepped toward white — Warm Wash, Grey Hover/Card Grey, Border Light, plus the text greys) and the **arXiv Chrome family** (Open Blue's tints — Tint Light, Tint Border, Active Wash, and the hover step `#c0e2fe`).
+Every tint in the system belongs to one of two families: the **warm tints** (Library Grey stepped toward white — Grey Hover/Card Grey, Border Light, plus the text greys) and the **arXiv Chrome family** (Open Blue's tints — Tint Light, Tint Border, Active Wash, and the hover step `#c0e2fe`).
 
 **"No one-off hex values" has three tiers:**
 
