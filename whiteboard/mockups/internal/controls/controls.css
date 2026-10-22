@@ -213,7 +213,13 @@
    something to press, like every other button on the page; it adds the icon, the name
    and the applied value. Its filter icon, not a chevron, says what it opens. */
 .x-filter-trigger { gap: 0.5em; min-width: 0; max-width: 100%; font-size: 0.875rem; }
-.x-filter-trigger[aria-expanded="true"] { background: var(--ds-btn-secondary-bg-active, var(--ds-tint-accent)); }
+/* Open: the button's own pressed colours, set through its tokens so its gradient rim stays. */
+.x-filter-trigger[aria-expanded="true"]:not(.on-dark) {
+  --ds-btn-secondary-bg: var(--ds-btn-secondary-bg-active);
+  --ds-btn-secondary-bg-hover: var(--ds-btn-secondary-bg-active);
+  --ds-btn-secondary-rim-a: var(--ds-btn-secondary-rim-active);
+  --ds-btn-secondary-rim-b: var(--ds-btn-secondary-rim-active);
+}
 .x-filter-trigger > svg { width: 1.1em; height: 1.1em; flex: none; }
 /* What is applied: for a subject, a path from broad to narrow. */
 .x-filter-value { min-width: 0; font-weight: 400; color: var(--ds-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -225,6 +231,8 @@
 .x-heading-row > h1 { margin: 0; }
 
 /* The page's own data controls, at the heading's far end. */
+.x-date-range { display: inline-flex; align-items: center; gap: var(--ds-space-2); }
+.x-date-to { color: var(--ds-text-muted); }
 .x-heading-tools { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2) var(--ds-space-4); font-size: 0.875rem; }
 .x-updated { color: var(--ds-text-muted); }
 .x-heading-tools .ds-btn svg { width: 1em; height: 1em; }
@@ -278,7 +286,7 @@
   align-items: center;
   min-height: var(--x-control-box);
   padding-inline-start: 0.75em;
-  background: var(--ds-tint-warm);
+  background: var(--ds-surface);   /* white on the toolbar's tint */
   border: 1px solid var(--ds-border);
   border-radius: 999px;
   white-space: nowrap;

@@ -97,11 +97,18 @@
         <h1 id="charts-title">Activity charts</h1>
         <!-- The controls for this page's data, beside its heading: the dates, then when it was updated. -->
         <div class="x-heading-tools">
-          <button type="button" class="ds-btn ds-btn-compact x-filter-trigger x-hit" popovertarget="dates-panel" aria-expanded="false">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
-            Dates
-            <span class="x-filter-value"><b>23 Sep</b> to <b>20 Oct 2026</b></span>
-          </button>
+          <!-- Each date is its own control, opening a small form for that date. -->
+          <span class="x-date-range" role="group" aria-label="Dates">
+            <button type="button" class="ds-btn ds-btn-compact x-filter-trigger x-hit" popovertarget="start-panel" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+              <span class="is-sr-only">Start date: </span>23 Sep 2026
+            </button>
+            <span class="x-date-to" aria-hidden="true">to</span>
+            <button type="button" class="ds-btn ds-btn-compact x-filter-trigger x-hit" popovertarget="end-panel" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+              <span class="is-sr-only">End date, inclusive: </span>20 Oct 2026
+            </button>
+          </span>
           <span class="x-updated">Updated 2 hours ago</span>
           <button type="button" class="ds-btn ds-btn-text ds-btn-compact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> Refresh</button>
         </div>
@@ -255,17 +262,24 @@
   </form>
 </div>
 
-<!-- The dates' panel: a small form below the Dates control. -->
-<div class="x-filter-panel" id="dates-panel" popover role="dialog" aria-label="Dates" style="--x-panel-width: 30rem">
+<!-- Each date's panel: one field and Apply. The other date goes along unchanged. -->
+<div class="x-filter-panel" id="start-panel" popover role="dialog" aria-label="Start date" style="--x-panel-width: 17rem">
   <form class="x-form-small" method="get" action="page.html">
+    <input type="hidden" name="end" value="2026-10-20">
     <div class="x-form-small-body">
-      <div class="x-filter"><label for="d-start">Start</label>
+      <div class="x-filter"><label for="d-start">Start date</label>
         <input class="ds-input" id="d-start" name="start" type="date" value="2026-09-23" autofocus></div>
-      <div class="x-filter"><label for="d-end">End (inclusive)</label>
-        <input class="ds-input" id="d-end" name="end" type="date" value="2026-10-20"></div>
-      <div class="x-form-small-actions">
-        <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
-      </div>
+      <div class="x-form-small-actions"><button class="ds-btn ds-btn-compact" type="submit">Apply</button></div>
+    </div>
+  </form>
+</div>
+<div class="x-filter-panel" id="end-panel" popover role="dialog" aria-label="End date" style="--x-panel-width: 17rem">
+  <form class="x-form-small" method="get" action="page.html">
+    <input type="hidden" name="start" value="2026-09-23">
+    <div class="x-form-small-body">
+      <div class="x-filter"><label for="d-end">End date (inclusive)</label>
+        <input class="ds-input" id="d-end" name="end" type="date" value="2026-10-20" autofocus></div>
+      <div class="x-form-small-actions"><button class="ds-btn ds-btn-compact" type="submit">Apply</button></div>
     </div>
   </form>
 </div>
