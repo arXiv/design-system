@@ -15,9 +15,9 @@ components:
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA) and [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
       - "Meets accessibility guideline [WCAG 2.2 SC 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) Non-text Contrast (Level AA)"
-  - id: tints-and-greys
-    title: "Tints and greys"
-    summary: "Tints give a section depth without a hard border. The warm tints are Library Grey stepped toward white. The cool tints are Open Blue stepped toward white, and light blue means arXiv is speaking, not the paper. Two darker warm greys are not grounds: one is the edge of a control, one is disabled text. A component fill uses a tint or a status color. A new fill color is discussed with the design team first."
+  - id: tints-and-shades
+    title: "Tints and shades"
+    summary: "Tints and shades are used in a variety of ways: to define page areas and boundaries, to fill components, and to indicate disabled states. They come in two color families, warm brown and cool blue, which can be used to establish two content languages on complex pages. As an example, blue tints are used on HTML papers to distinguish content that belongs to arXiv (DOI, citation tools, and more) while author-created content belongs on the warm tints and white."
     classes:
       - name: "--ds-tint-warm"
         does: "The warm tint. The same value on both surfaces."
@@ -25,6 +25,7 @@ components:
         does: "The accent tint. Tint Light on public pages, the Access Lime wash inside `.ds-internal`. A component uses the token and gets the right colour on each surface."
 rules:
   - "No near-whites lighter than Warm Wash. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally."
+  - "A component fill uses a tint or a status color. A new fill color is discussed with the design team first."
   - "Repository Brown is the workhorse — it clears AA on every approved surface, which is why buttons set Repository Brown on Open Blue."
   - "On white — default secondary"
   - "On a tinted band — add `.on-tint`"
@@ -55,9 +56,9 @@ Link colors signal "you can act on this" and are a foundational part of accessib
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) Non-text Contrast (Level AA)
 
-## Tints and greys
+## Tints and shades
 
-Tints give a section depth without a hard border. The warm tints are Library Grey stepped toward white. The cool tints are Open Blue stepped toward white, and light blue means arXiv is speaking, not the paper. Two darker warm greys are not grounds: one is the edge of a control, one is disabled text. A component fill uses a tint or a status color. A new fill color is discussed with the design team first.
+Tints and shades are used in a variety of ways: to define page areas and boundaries, to fill components, and to indicate disabled states. They come in two color families, warm brown and cool blue, which can be used to establish two content languages on complex pages. As an example, blue tints are used on HTML papers to distinguish content that belongs to arXiv (DOI, citation tools, and more) while author-created content belongs on the warm tints and white.
 
 ```html
 background: var(--ds-tint-warm);
@@ -70,6 +71,7 @@ background: var(--ds-tint-accent);
 ## Rules
 
 - No near-whites lighter than Warm Wash. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally.
+- A component fill uses a tint or a status color. A new fill color is discussed with the design team first.
 - Repository Brown is the workhorse — it clears AA on every approved surface, which is why buttons set Repository Brown on Open Blue.
 - On white — default secondary
 - On a tinted band — add `.on-tint`
