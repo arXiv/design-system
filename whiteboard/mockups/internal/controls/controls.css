@@ -350,6 +350,7 @@
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
 }
+.x-filter-panel.is-attached { border-top-left-radius: 0; border-top-right-radius: 0; }
 /* Without the script the popover still opens, centred by the browser. */
 .x-filter-panel:not([style*="--x-panel-top"]) { inset: 0; margin: auto; height: fit-content; }
 
@@ -391,7 +392,7 @@
    phone — square corners, 44px rows with hairlines, hanging from the bar's bottom edge.
    (docs/design-system.css draws them as light panels on purpose; this tries the other way.) ── */
 .ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu {
-  top: calc(100% + 13px);   /* the bar's bottom edge: the summary sits 13px above it */
+  top: var(--x-menu-top, calc(100% + 13px));   /* the bar's bottom edge; the script measures it */
   min-width: 16rem;
   padding: 0;
   background: var(--ds-hdr-bg);

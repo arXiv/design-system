@@ -333,11 +333,15 @@
   // is no room, and marks the control as open.
   document.querySelectorAll('.x-filter-trigger[popovertarget]').forEach(function (trigger) {
     var panel = document.getElementById(trigger.getAttribute('popovertarget'));
+    // A control in the header attaches its panel to the header's bottom edge.
+    var bar = trigger.closest('.ds-site-header');
+    panel.classList.toggle('is-attached', !!bar);
     function place() {
       var own = trigger.getBoundingClientRect();
       var width = panel.getBoundingClientRect().width;
       var left = own.left + width > window.innerWidth - 16 ? own.right - width : own.left;
-      panel.style.setProperty('--x-panel-top', Math.round(own.bottom + window.scrollY + 6) + 'px');
+      var top = bar ? bar.getBoundingClientRect().bottom : own.bottom + 6;
+      panel.style.setProperty('--x-panel-top', Math.round(top + window.scrollY) + 'px');
       panel.style.setProperty('--x-panel-left', Math.round(Math.max(16, left) + window.scrollX) + 'px');
     }
     panel.addEventListener('toggle', function (e) {
@@ -346,6 +350,15 @@
       if (open) place();
     });
     window.addEventListener('resize', function () { if (panel.matches(':popover-open')) place(); });
+  });
+
+  // The header's dropdowns hang from the bar's bottom edge, wherever their summary sits in it.
+  document.querySelectorAll('.ds-site-header .ds-site-header-dropdown').forEach(function (d) {
+    d.addEventListener('toggle', function () {
+      if (!d.open) return;
+      var bar = d.closest('.ds-site-header').getBoundingClientRect();
+      d.style.setProperty('--x-menu-top', Math.round(bar.bottom - d.getBoundingClientRect().top) + 'px');
+    });
   });
 
   // Section and account menus: close on outside click and Esc (the <details> menus work without this).
