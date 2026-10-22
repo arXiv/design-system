@@ -40,7 +40,7 @@ Look at each page you built as a reader would, on a laptop screen, and revise it
 | Anything with color | `docs/color-mapping.md`, `docs/colors.html` | tokens in that context's stylesheet |
 | Typography, text sizes | `docs/typography.html` | `--ds-font-*` |
 | Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--ds-space-*` |
-| Buttons | `docs/buttons.html` — both surfaces | bare `.ds-btn` is the secondary tier; `.ds-btn-primary`, `.ds-btn-text`, `.ds-btn-destructive`, `.ds-btn-icon`, `.on-tint` / `.on-dark` override it; internal tools get their colour from `.ds-internal` on a parent, never from a second class family. Internal-only: `[aria-pressed]` on an icon button, in tier 2 |
+| Buttons | `docs/buttons.html` — both surfaces | bare `.ds-btn` is the secondary tier; `.ds-btn-primary`, `.ds-btn-text`, `.ds-btn-destructive`, `.ds-btn-icon`, `.on-tint` / `.on-dark` override it; `.ds-btn-compact` makes any of them smaller, for a small form; internal tools get their colour from `.ds-internal` on a parent, never from a second class family. Internal-only: `[aria-pressed]` on an icon button, in tier 2 |
 | Alerts, status & feedback messages | `docs/alerts.html` — one page, both surfaces | `.ds-alert*` — never rebuild its chrome |
 | Organizing a page: start here | `docs/layout-patterns.html` *Evaluating user needs* | the four questions and their tests; its Rules are firm |
 | Cards, sidebars, page organization | `docs/layout-patterns.html` | `.ds-sidebar` (accordions inside it need no class); `.ds-full` for an edge-to-edge band; the page ground is white; `.ds-full.ds-zone-secondary` is a tinted band for what introduces or supports the page |
