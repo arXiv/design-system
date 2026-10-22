@@ -31,6 +31,7 @@ Open items only. Finished items are removed; the git history keeps them. The cur
 - The secondary navigation at phone width wraps to two lines and is hard to read.
 - The joined sort bar wraps badly at phone width.
 - Other wide elements at phone width: filter bars, tables, button groups.
+- **Small forms and the compact button** (added 2026-10-22): review forms; do we need a small form variant? What is the use case for the compact button (`.ds-btn-compact`, branch `compact-buttons`)? Review the activity dashboard filter bar: is that a small form, and does it use a compact button?
 
 ## Testing
 
