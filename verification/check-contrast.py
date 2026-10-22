@@ -79,15 +79,15 @@ def ratio(fg, bg):
 # Both surfaces now share one token vocabulary, so the row and column names are
 # the same for each; only the values behind them differ.
 PUBLIC_TEXT = ["text", "text-muted", "link", "link-hover", "link-visited"]
-PUBLIC_SURF = ["canvas", "surface", "surface-muted", "accent-surface", "accent-wash"]
+PUBLIC_SURF = ["canvas", "surface", "tint-warm", "accent-surface", "accent-wash"]
 PUBLIC_SPECIAL = [("text-on-accent", "accent"), ("text-on-accent", "accent-hover")]
 PUBLIC_STATUS = [("info-fg", "info-bg"), ("success-fg", "success-bg"), ("warning-fg", "warning-bg"), ("error-fg", "error-bg")]
 PUBLIC_NEVER = [("border-strong", "interactive borders, tracks, and arrows (3:1 non-text minimum)"),
                 ("text-disabled", "disabled text only — exempt from AA, never for content"),
-                ("border", "decorative hairlines"), ("border-muted", "component borders")]
+                ("border", "decorative hairlines and component borders")]
 
 INT_TEXT = ["text", "text-muted", "link", "link-hover", "link-visited"]
-INT_SURF = ["canvas", "surface", "surface-muted", "surface-hover-strong"]
+INT_SURF = ["canvas", "surface", "tint-warm", "surface-hover-strong"]
 INT_SPECIAL = [("text-on-accent", "accent"), ("text-on-accent", "accent-hover"), ("text-on-accent", "accent-active")]
 INT_STATUS = [("info-fg", "info-bg"), ("success-fg", "success-bg"), ("warning-fg", "warning-bg"), ("error-fg", "error-bg")]
 INT_NEVER = [("border-strong", "borders and arrows (3:1 non-text minimum)"),

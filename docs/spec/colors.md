@@ -24,7 +24,7 @@ components:
       - name: "--ds-tint-accent"
         does: "The accent tint. Tint Light on public pages, the Access Lime wash inside `.ds-internal`. A component uses the token and gets the right colour on each surface."
 rules:
-  - "No near-whites lighter than Warm Wash. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally."
+  - "No near-whites lighter than Card Grey. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally."
   - "A component fill uses a tint or a status color. A new fill color is discussed with the design team first."
   - "Repository Brown is the workhorse — it clears AA on every approved surface, which is why buttons set Repository Brown on Open Blue."
   - "On white — default secondary"
@@ -70,7 +70,7 @@ background: var(--ds-tint-accent);
 
 ## Rules
 
-- No near-whites lighter than Warm Wash. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally.
+- No near-whites lighter than Card Grey. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally.
 - A component fill uses a tint or a status color. A new fill color is discussed with the design team first.
 - Repository Brown is the workhorse — it clears AA on every approved surface, which is why buttons set Repository Brown on Open Blue.
 - On white — default secondary
