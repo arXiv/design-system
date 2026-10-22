@@ -2813,6 +2813,8 @@ html:has(.ds-modal[open]) {
     --ds-btn-text-bg-hover:          var(--ds-accent-wash);
     --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
   }
+  :root:not([data-theme="light"]) .ds-theme-light-only { display: none; }
+  :root:not([data-theme="light"]) .ds-theme-dark-only { display: revert; }
 }
 
 /* ── Explicit dark override (the toggle guard)
@@ -3047,7 +3049,11 @@ html:has(.ds-modal[open]) {
   --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
 }
 
-
+/* Shown in one theme only: an image drawn for a light ground and its version
+   for a dark one, such as the logo on .ds-site-header--light. */
+.ds-theme-dark-only { display: none; }
+[data-theme="dark"] .ds-theme-light-only { display: none; }
+[data-theme="dark"] .ds-theme-dark-only { display: revert; }
 
 /* OS accessibility signals. forced-colors: the OS replaces our palette
    and the hues collapse, but icon shape + leading word still carry meaning
