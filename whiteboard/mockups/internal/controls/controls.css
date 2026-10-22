@@ -32,9 +32,11 @@
 
 
 /* ── Small form: a few fields that adjust what is already on the page ──
-   The same fields, labels and buttons as a full form. Four things change:
-   the padding inside controls (the compact values), the spacing between them,
-   where the label sits (beside its control), and how wide a field is (its content). */
+   The same fields, labels and buttons as a full form, with the labels above. Three things
+   change: the padding inside controls (the compact values), the spacing between fields,
+   and how wide a field is (its content); the submit shares the fields' row. */
+/* Preview of the internal-fields-fix branch: internal fields at the public size. */
+.ds-internal { --ds-input-padding: 0.64em 0.786em; }
 .x-form-small {
   --ds-input-padding: 0.37em 0.643em;   /* compact, as .ds-btn-compact is for buttons */
   container: x-form-small / inline-size;
@@ -44,32 +46,28 @@
 .x-form-small-body {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: var(--ds-space-3) var(--ds-space-block);
+  align-items: flex-end;
+  gap: var(--ds-space-3) var(--ds-space-4);
 }
-/* A field: its label beside it, in the full form's label style. */
-.x-form-small .x-filter { display: flex; align-items: center; gap: var(--ds-space-2); }
-.x-form-small .x-filter > label { font-size: 0.8125rem; font-weight: 600; color: var(--ds-text); white-space: nowrap; }
+/* A field: the full form's label, above it, with a smaller gap. */
+.x-form-small .x-filter { display: grid; grid-template-columns: max-content max-content; align-items: center; gap: var(--ds-space-1) 0.4em; }
+.x-form-small .x-filter > label { grid-column: 1 / -1; font-size: 0.8125rem; font-weight: 600; color: var(--ds-text); }
 .x-form-small .x-filter > span { color: var(--ds-text-muted); }
 /* As wide as what goes in it: a select fits its longest choice, a date its own picker. */
 .x-form-small .ds-input { width: auto; font-size: max(0.875rem, var(--x-control-text)); }
 .x-form-small .ds-input[type="number"] { width: 5em; }
 .x-form-small select.ds-input:not([multiple]):not([size]) { padding-right: 2.25em; background-position: right 0.75em center; }
 .x-form-small :is(.ds-input, .ds-btn) { min-height: var(--x-control-min); }
-/* The actions end the row: a text link that resets, then the submit, compact and secondary. */
-.x-form-small-actions { display: flex; align-items: center; gap: var(--ds-space-4); margin-inline-start: auto; }
-/* Narrow: one row per field, labels in a column, the actions across the bottom. */
+/* The submit, compact and secondary, on the fields' row. */
+.x-form-small-actions { display: flex; align-items: center; gap: var(--ds-space-4); }
+/* Narrow: each field takes the full width, and the submit ends the form on the right. */
 @container x-form-small (max-width: 30em) {
-  .x-form-small-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .x-form-small .x-filter { padding-block: var(--ds-space-2); }
-  .x-form-small .x-filter + .x-filter { border-top: 1px solid var(--ds-border); }
-  .x-form-small .x-filter > label { flex: 0 0 7.5rem; white-space: normal; }
-  .x-form-small .x-filter > .ds-input { flex: 1; min-width: 0; }
-  .x-form-small-actions { margin: var(--ds-space-2) 0 0; justify-content: space-between; }
+  .x-form-small-body { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .x-form-small .x-filter { grid-template-columns: minmax(0, 1fr) auto; }
+  .x-form-small .x-filter > .ds-input { width: 100%; min-width: 0; }
+  .x-form-small .x-filter > .ds-input:only-of-type:not(:has(~ span)) { grid-column: 1 / -1; }
+  .x-form-small-actions { justify-content: flex-end; }
 }
-/* On the page, a small form sits on the warm tint, as wide as its contents. Sized by its
-   contents, it cannot also be a size container, so it wraps instead of folding into rows. */
-.x-form-small--bar { container-type: normal; width: fit-content; max-width: 100%; padding: var(--ds-space-2) var(--ds-space-3); background: var(--ds-tint-warm); border-radius: 8px; }
 
 
 /* ── The second row: the section menu, then the views ──
@@ -106,28 +104,43 @@
 .x-section-menu > summary svg,
 .x-views-menu > summary .x-chevron { width: 1.25em; height: 1.25em; stroke-width: 3; color: var(--ds-text); }
 .x-section-menu[open] > summary svg { transform: rotate(180deg); }
+/* A navigation menu is a dark sheet, as the header's menu is on a phone: square corners,
+   44px rows with hairlines. It hangs from its control, at least 18rem wide; when its row is
+   the full width of the screen, so is the sheet. (A filter panel is a light, rounded popover.)
+   The colours are the header's own (--ds-hdr-*), which are set on .ds-site-header only. */
+.ds-subnav { position: relative; }
 .x-section-menu-list {
+  --x-menu-bg: var(--ds-chrome);
+  --x-menu-fg: var(--ds-grey-55);
+  --x-menu-fg-strong: var(--ds-grey-10);
+  --x-menu-hover: #302c28;
+  --x-menu-divider: #4a433d;
   position: absolute;
   top: 100%;
-  left: var(--x-row-pad);
+  left: 0;
   z-index: 50;
   display: grid;
-  min-width: 14rem;
-  padding: var(--ds-space-1) 0;
-  background: var(--ds-surface);
-  border: 1px solid var(--ds-border);
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  min-width: 18rem;
+  padding: 0;
+  background: var(--x-menu-bg);
+  border-top: 1px solid var(--x-menu-divider);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 .ds-subnav .x-section-menu-list a {
-  min-height: var(--x-control);
-  padding: 0 var(--ds-space-4);
-  border-bottom: 0;
-  color: var(--ds-text);
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 var(--ds-space-4) 0 var(--x-row-pad);
+  color: var(--x-menu-fg-strong);
+  font-size: 0.875rem;
   text-decoration: none;
+  border-bottom: 1px solid var(--x-menu-divider);
 }
-.ds-subnav .x-section-menu-list a:hover { background: var(--ds-surface-hover); }
-.ds-subnav .x-section-menu-list a:is([aria-current="true"], [aria-current="page"]) { font-weight: 600; box-shadow: inset 3px 0 0 var(--ds-subnav-current, var(--ds-accent-strong)); }
+.ds-subnav .x-section-menu-list a:last-child { border-bottom: 0; }
+.ds-subnav .x-section-menu-list a:visited { color: var(--x-menu-fg-strong); }
+.ds-subnav .x-section-menu-list a:hover { color: var(--x-menu-fg-strong); background: var(--x-menu-hover); }
+.ds-subnav .x-section-menu-list a:focus-visible { outline: 2px solid var(--ds-focus-ring-on-dark, #64b5f6); outline-offset: -2px; }
+.ds-subnav .x-section-menu-list a:is([aria-current="true"], [aria-current="page"]) { font-weight: 600; box-shadow: inset 3px 0 0 var(--ds-access-lime); }
 
 /* The views are tabs. The current tab is a box joined to the page below it, with an
    accent line along its top; the others are text on the row, tinted under the pointer. */
@@ -174,12 +187,17 @@
 .x-views-menu > summary svg { width: 1.1em; height: 1.1em; flex: none; }
 .x-views-menu > summary .x-chevron { transition: transform 0.15s; }
 .x-views-menu[open] > summary .x-chevron { transform: rotate(180deg); }
-.x-views-menu > .x-section-menu-list { left: 0; }
+.x-views-menu > .x-section-menu-list { left: calc(-1 * var(--x-row-pad)); }
+.x-views-menu > .x-section-menu-list a { padding-inline-start: var(--x-row-pad); }
 
 /* When even the View menu does not fit beside the section menu, the section menu
    takes a row of its own, filled edge to edge. The script sets .is-menu-row. */
 .ds-subnav.is-menu-row .x-section-menu { flex: 1 0 100%; margin-inline: calc(-1 * var(--x-row-pad)); }
 .ds-subnav.is-menu-row .x-section-menu > summary { flex: 1; padding-inline: var(--x-row-pad); }
+/* Then each menu is a sheet across the whole row, under its own control. */
+.ds-subnav.is-menu-row .x-section-menu > .x-section-menu-list { right: 0; }
+.ds-subnav.is-menu-row .x-views-menu { position: static; }
+.ds-subnav.is-menu-row .x-views-menu > .x-section-menu-list { left: 0; right: 0; top: 100%; }
 
 
 /* ── Filter control: a boxed button with the filter icon, the name and what is applied ──
@@ -259,8 +277,11 @@
   justify-content: space-between;
   gap: var(--ds-space-2) var(--ds-space-block);
   padding: var(--ds-space-2) var(--ds-space-3);
-  background: var(--ds-tint-warm);
+  background: var(--ds-surface-hover);   /* lighter than a table's header row, so the two stay apart */
   border-bottom: 1px solid var(--ds-border);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);   /* lifts the controls off the data beneath */
+  position: relative;
+  z-index: 1;
   font-size: 0.875rem;
 }
 .x-data-state { margin: 0; color: var(--ds-text); font-weight: 600; }
