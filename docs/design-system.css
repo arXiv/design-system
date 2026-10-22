@@ -205,6 +205,13 @@
      control. In em, so it tracks the control's own font size. */
   --ds-gap-glyph: 0.5em;
 
+  /* A dropdown's arrow: the chevron-down icon (docs/icons) at a heavier stroke,
+     used as a mask so it takes the text colour. */
+  /* A menu row: compact with a mouse, the full touch target on a touch screen. */
+  --ds-menu-row: 2rem;
+
+  --ds-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+
   /* Density: the padding inside controls, table cells and cards.
      .ds-internal sets the compact values for table cells and cards;
      buttons and fields are the same size on both surfaces. */
@@ -538,9 +545,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    grouping. Opens and closes with no JavaScript; a page may add
    close-on-outside-click and Esc as enhancement.
 
-   The summary sits IN the bar and takes the surface tokens, so it is correct
-   on either variant. The menu panel does not: a floating panel is a light
-   surface whichever bar summoned it, the same way a popover is. */
+   A dropdown matches its control: the menu takes the bar's own surface tokens,
+   so it is dark under the dark bar and light under the light one, and it hangs
+   from the bar's bottom edge (header.js measures where that is). */
 .ds-site-header-dropdown { position: relative; }
 
 .ds-site-header-dropdown > summary {
@@ -556,7 +563,23 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   transition: background 0.12s, color 0.12s;
 }
 .ds-site-header-dropdown > summary::-webkit-details-marker { display: none; }
-.ds-site-header-dropdown > summary::after { content: " \25BE"; font-size: 0.625rem; }
+.ds-site-header-dropdown > summary::after {
+  content: "";
+  display: inline-block;
+  width: 1.35em;
+  height: 1.35em;
+  margin-inline-start: 0.3em;
+  vertical-align: -0.35em;
+  background: currentColor;
+  -webkit-mask: var(--ds-chevron) center / contain no-repeat;
+  mask: var(--ds-chevron) center / contain no-repeat;
+  transition: transform 0.15s;
+}
+.ds-site-header-dropdown[open] > summary::after { transform: rotate(180deg); }
+/* Forced colours drop backgrounds, which would hide the drawn arrow. */
+@media (forced-colors: active) {
+  .ds-site-header-dropdown > summary::after { forced-color-adjust: none; background: CanvasText; }
+}
 .ds-site-header-dropdown > summary:hover,
 .ds-site-header-dropdown[open] > summary {
   color: var(--ds-hdr-fg-strong);
@@ -569,7 +592,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 
 .ds-site-header-menu {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + var(--ds-menu-gap, 11px));   /* the bar's bottom edge */
   /* Anchored to the trigger's RIGHT edge, not its left. The logo takes
      margin-right: auto, so the nav always sits at the right of the bar and a
      left-anchored menu runs off the viewport on the last item — which is every
@@ -581,44 +604,47 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   max-width: calc(100vw - 32px);
   display: flex;
   flex-direction: column;
-  min-width: min(235px, 100%)   /* a dropdown panel must never be wider than the viewport it opens in */;
-  background: var(--ds-surface);
-  border: 1px solid var(--ds-border);
-  border-radius: 8px;
+  min-width: min(16rem, 100vw - 32px);
+  background: var(--ds-hdr-bg);
+  border-top: 1px solid var(--ds-hdr-divider);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);   /* the summoned-surface shadow */
-  padding: 6px;
+  padding: 0;
   z-index: 60;
 }
 .ds-site-header-menu a,
 .ds-site-header-menu button {
-  color: var(--ds-text);
+  color: var(--ds-hdr-fg-strong);
   text-decoration: none;
-  padding: 6px 10px;
-  border-radius: 4px;
+  padding: 0 var(--ds-space-4);
   white-space: nowrap;
-  min-height: 24px;              /* WCAG 2.5.8 target floor */
+  min-height: var(--ds-menu-row);
   display: flex;
   align-items: center;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--ds-hdr-divider);
 }
+.ds-site-header-menu > :last-child,
+.ds-site-header-menu > form:last-child > button { border-bottom: 0; }
 /* Log out is a button in a form that posts; it matches the links beside it. */
 .ds-site-header-menu button {
   width: 100%;
-  font: inherit;
+  font-family: inherit;
   text-align: start;
   background: none;
-  border: none;
+  border-top: 0;
+  border-inline: 0;
   cursor: pointer;
 }
 .ds-site-header-menu form { margin: 0; }
 .ds-site-header-menu a:hover,
-.ds-site-header-menu button:hover { background: var(--ds-tint-warm); }
+.ds-site-header-menu button:hover { background: var(--ds-hdr-hover); }
 .ds-site-header-menu a:focus-visible,
 .ds-site-header-menu button:focus-visible {
-  outline: 2px solid var(--ds-link);
+  outline: 2px solid var(--ds-hdr-ring);
   outline-offset: -2px;
 }
 .ds-site-header-menu a[aria-current="page"] { font-weight: 600; }
-.ds-site-header-menu .ds-panel-label { padding: 8px 10px 2px; }
+.ds-site-header-menu .ds-panel-label { padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-1); color: var(--ds-hdr-fg); }
 
 
 /* BUTTONS  (.ds-btn / .ds-btn-primary / .ds-btn-text) — buttons.html
@@ -3797,16 +3823,16 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 /* In the bar the icon alone is the trigger, as on other platforms; no caret. */
 .ds-site-header:not(.is-nav-collapsed) .ds-site-header-account--compact > .ds-site-header-dropdown > summary::after { content: none; }
 .ds-site-header-account--compact .ds-site-header-menu > p {
-  margin: 0 0 4px;
-  padding: 6px 10px 8px;
-  border-bottom: 1px solid var(--ds-border);
+  margin: 0;
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border-bottom: 1px solid var(--ds-hdr-divider);
   font-size: 0.8125rem;
-  color: var(--ds-text-muted);
+  color: var(--ds-hdr-fg);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.ds-site-header-account--compact .ds-site-header-menu > p > b { font-weight: 600; color: var(--ds-text); }
+.ds-site-header-account--compact .ds-site-header-menu > p > b { font-weight: 600; color: var(--ds-hdr-fg-strong); }
 
 /* ── .ds-site-header--light ───────────────────────────────────────────────
    The same bar on a property that is not arxiv.org: the design system docs
@@ -3827,6 +3853,9 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   --ds-hdr-border:    var(--ds-border);
   --ds-hdr-divider:   var(--ds-border);
 }
+
+/* On a touch screen a menu row is the full touch target. */
+@media (pointer: coarse) { :root { --ds-menu-row: 2.75rem; } }
 
 /* Collapse by fit (header.js). When the regions do not fit on one row, the
    navigation collapses behind a menu button. On a bar with an account area the
@@ -3947,6 +3976,10 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 .ds-site-header.is-tools-collapsed .ds-site-header-tools > :last-child,
 .ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-tools > :last-child,
 .ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account > :last-child { border-bottom: none; }
+/* A list that ends in a dropdown: the dropdown's row, or its last item when open, is the
+   list's last line, so it drops its border too and the next region's top line stands alone. */
+.ds-site-header.is-nav-collapsed .ds-site-header-nav > .ds-site-header-dropdown:last-child:not([open]) > summary,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav > .ds-site-header-dropdown[open]:last-child .ds-site-header-menu > :last-child { border-bottom: none; }
 /* A folded tool has a full row, so its name shows beside the icon. !important only
    to undo .is-sr-only, which uses it. */
 .ds-site-header.is-tools-collapsed .ds-site-header-tools > button > .is-sr-only,
