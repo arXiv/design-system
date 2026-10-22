@@ -15,17 +15,14 @@ components:
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA) and [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
       - "Meets accessibility guideline [WCAG 2.2 SC 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) Non-text Contrast (Level AA)"
-  - id: the-two-tints
-    title: "The two tints"
-    summary: "The system has two tints, warm and accent. A component fill uses a tint or a status colour. A new fill colour is discussed with the design team first."
+  - id: tints-and-greys
+    title: "Tints and greys"
+    summary: "Tints give a section depth without a hard border. The warm tints are Library Grey stepped toward white. The cool tints are Open Blue stepped toward white, and light blue means arXiv is speaking, not the paper. Two darker warm greys are not grounds: one is the edge of a control, one is disabled text. A component fill uses a tint or a status color. A new fill color is discussed with the design team first."
     classes:
       - name: "--ds-tint-warm"
         does: "The warm tint. The same value on both surfaces."
       - name: "--ds-tint-accent"
         does: "The accent tint. Tint Light on public pages, the Access Lime wash inside `.ds-internal`. A component uses the token and gets the right colour on each surface."
-  - id: backgrounds-and-tints
-    title: "Backgrounds and tints"
-    summary: "Tints for section depth without hard borders fall into two families: warm-toned and cool-toned, following our two primary brand colors."
 rules:
   - "No near-whites lighter than Warm Wash. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally."
   - "Repository Brown is the workhorse — it clears AA on every approved surface, which is why buttons set Repository Brown on Open Blue."
@@ -58,9 +55,9 @@ Link colors signal "you can act on this" and are a foundational part of accessib
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) Non-text Contrast (Level AA)
 
-## The two tints
+## Tints and greys
 
-The system has two tints, warm and accent. A component fill uses a tint or a status colour. A new fill colour is discussed with the design team first.
+Tints give a section depth without a hard border. The warm tints are Library Grey stepped toward white. The cool tints are Open Blue stepped toward white, and light blue means arXiv is speaking, not the paper. Two darker warm greys are not grounds: one is the edge of a control, one is disabled text. A component fill uses a tint or a status color. A new fill color is discussed with the design team first.
 
 ```html
 background: var(--ds-tint-warm);
@@ -69,10 +66,6 @@ background: var(--ds-tint-accent);
 
 - `--ds-tint-warm` — The warm tint. The same value on both surfaces.
 - `--ds-tint-accent` — The accent tint. Tint Light on public pages, the Access Lime wash inside `.ds-internal`. A component uses the token and gets the right colour on each surface.
-
-## Backgrounds and tints
-
-Tints for section depth without hard borders fall into two families: warm-toned and cool-toned, following our two primary brand colors.
 
 ## Rules
 

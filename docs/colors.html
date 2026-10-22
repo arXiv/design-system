@@ -105,8 +105,7 @@
           <ol>
             <li><a href="#brand-colors">Brand colors</a></li>
             <li><a href="#links-and-interactive">Links and interactive</a></li>
-            <li><a href="#the-two-tints">The two tints</a></li>
-            <li><a href="#backgrounds-and-tints">Backgrounds and tints</a></li>
+            <li><a href="#tints-and-greys">Tints and greys</a></li>
             <li><a href="#which-tint-for-which-job">Which tint for which job</a></li>
             <li><a href="#working-on-tinted-backgrounds">Working on tinted backgrounds</a></li>
           </ol>
@@ -274,19 +273,57 @@
   </section>
 
 
-  <!-- ───────── The two tints ───────── -->
+  <!-- ───────── Tints and greys ───────── -->
   <section>
-    <h2 id="the-two-tints">The two tints</h2>
-    <p class="ds-section-desc">The system has two tints, warm and accent. A component fill uses a tint or a
-    status colour. A new fill colour is discussed with the design team first.</p>
+    <h2 id="tints-and-greys">Tints and greys</h2>
+    <p class="ds-section-desc">Tints give a section depth without a hard border. The warm tints are Library Grey
+    stepped toward white. The cool tints are Open Blue stepped toward white, and light blue means arXiv is
+    speaking, not the paper. Two darker warm greys are not grounds: one is the edge of a control, one is
+    disabled text. A component fill uses a tint or a status color. A new fill color is discussed with the
+    design team first.</p>
     <div class="ds-card">
-      <div class="ds-table-scroll" role="region" aria-label="The two tints" tabindex="0">
-        <table class="ds-table token-table">
-          <thead><tr><th scope="col">Tint</th><th scope="col">Light</th><th scope="col">Dark</th><th scope="col">Used by</th></tr></thead>
+      <div class="ds-table-scroll" role="region" aria-label="Tints and greys" tabindex="0">
+        <table class="ds-table token-table tint-table">
+          <thead><tr><th scope="col">Color and tokens</th><th scope="col">Light</th><th scope="col">Dark</th><th scope="col">Why it exists</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Warm</th><td><span class="swatch" style="background:#f0f0ee"></span>Card Grey</td><td><span class="swatch" style="background:#282622"></span><code>#282622</code>, one step lighter than the page</td><td>Secondary page zone, data cards, table header row, row headers, striped rows, notes, tags</td></tr>
-            <tr><th scope="row">Accent, public</th><td><span class="swatch" style="background:#edf7ff"></span>Tint Light</td><td><span class="swatch" style="background:#202b38"></span><code>#202b38</code></td><td>Selected table rows</td></tr>
-            <tr><th scope="row">Accent, internal</th><td><span class="swatch" style="background:#f0f9e8"></span>Access Lime wash</td><td><span class="swatch" style="background:#292b18"></span><code>#292b18</code></td><td>Selected table rows</td></tr>
+            <tr><th scope="row">Warm Wash <code>--ds-surface-hover</code></th>
+              <td><span class="swatch" style="background:var(--ds-grey-5)"></span><code class="tint-hex"></code></td>
+              <td><span data-theme="dark"><span class="swatch" style="background:var(--ds-surface-hover)"></span></span><code class="tint-hex"></code></td>
+              <td>A row or a control under the pointer, on a white surface.</td></tr>
+            <tr><th scope="row">Card Grey <code>--ds-tint-warm</code> <code>--ds-surface-muted</code></th>
+              <td><span class="swatch" style="background:var(--ds-grey-10)"></span><code class="tint-hex"></code></td>
+              <td><span data-theme="dark"><span class="swatch" style="background:var(--ds-tint-warm)"></span></span><code class="tint-hex"></code></td>
+              <td>The warm tint: the secondary page band, data cards, the table header row, row headers, striped rows, notes, tags, and the disabled button fill.</td></tr>
+            <tr><th scope="row">Border Light <code>--ds-border</code> <code>--ds-border-muted</code></th>
+              <td><span class="swatch" style="background:var(--ds-grey-25)"></span><code class="tint-hex"></code></td>
+              <td><span data-theme="dark"><span class="swatch" style="background:var(--ds-border)"></span></span><code class="tint-hex"></code></td>
+              <td>Hairlines on inputs and cards, pressed fills, pill borders, the footer edge. Decorative only: it is below 3:1, so it is never the only edge of a control, and body-size grey text and links miss AA on it.</td></tr>
+            <tr><th scope="row">Disabled Grey <code>--ds-text-disabled</code></th>
+              <td><span class="swatch" style="background:var(--ds-grey-55)"></span><code class="tint-hex"></code></td>
+              <td><span data-theme="dark"><span class="swatch" style="background:var(--ds-text-disabled)"></span></span><code class="tint-hex"></code></td>
+              <td>Disabled text only. A disabled control is exempt from contrast requirements.</td></tr>
+            <tr><th scope="row">UI Boundary Grey <code>--ds-border-strong</code></th>
+              <td><span class="swatch" style="background:var(--ds-grey-80)"></span><code class="tint-hex"></code></td>
+              <td><span data-theme="dark"><span class="swatch" style="background:var(--ds-border-strong)"></span></span><code class="tint-hex"></code></td>
+              <td>The edge of a control: input borders, switch edges, sort arrows. The one grey that clears 3:1 on white, which is what the edge of a control needs.</td></tr>
+            <tr><th scope="row">Tint Light <code>--ds-tint-accent</code> <code>--ds-accent-surface</code></th>
+              <td><span class="swatch" style="background:var(--ds-blue-20)"></span><code class="tint-hex"></code></td>
+              <td><span data-theme="dark"><span class="swatch" style="background:var(--ds-tint-accent)"></span></span><code class="tint-hex"></code> selected rows<br>
+                <span data-theme="dark"><span class="swatch" style="background:var(--ds-accent-surface)"></span></span><code class="tint-hex"></code> panels</td>
+              <td>The accent tint on public pages: selected table rows and a pressed button. Also the ground of a panel arXiv adds over the paper: a popover, a dropdown, the reader footer band.</td></tr>
+            <tr><th scope="row">Active Wash <code>--ds-accent-wash</code></th>
+              <td><span class="swatch" style="background:var(--ds-blue-50)"></span><code class="tint-hex"></code></td>
+              <td><span data-theme="dark"><span class="swatch" style="background:var(--ds-accent-wash)"></span></span><code class="tint-hex"></code></td>
+              <td>The deepest chrome blue that still holds AA for body text: an active inline anchor, a hover inside a panel, the read-aloud highlight.</td></tr>
+            <tr><th scope="row">Open Blue Bright <code>--ds-accent-hover</code> <code>--ds-accent-border</code></th>
+              <td><span class="swatch" style="background:var(--ds-blue-70)"></span><code class="tint-hex"></code></td>
+              <td><span data-theme="dark"><span class="swatch" style="background:var(--ds-accent-hover)"></span></span><code class="tint-hex"></code> hover<br>
+                <span data-theme="dark"><span class="swatch" style="background:var(--ds-accent-border)"></span></span><code class="tint-hex"></code> panel edges</td>
+              <td>The hover step of an Open Blue fill, which takes <code>--ds-text-on-accent</code> like the fill it hovers from, and the edge of a panel arXiv adds over the paper.</td></tr>
+            <tr><th scope="row">Access Lime Wash <code>--ds-tint-accent</code></th>
+              <td><span class="swatch" style="background:var(--ds-access-lime-wash)"></span><code class="tint-hex"></code></td>
+              <td><span data-theme="dark"><span class="ds-internal"><span class="swatch" style="background:var(--ds-tint-accent)"></span></span></span><code class="tint-hex"></code></td>
+              <td>The accent tint in internal tools: selected table rows and a pressed button. Inside <code>.ds-internal</code>, the accent tokens take Access Lime values.</td></tr>
           </tbody>
         </table>
       </div>
@@ -303,88 +340,6 @@ background: var(--ds-tint-accent);</code></pre>
           </dl>
         </div>
       </details>
-    </div>
-  </section>
-
-  <!-- ───────── Backgrounds and tints ───────── -->
-  <section>
-    <h2 id="backgrounds-and-tints">Backgrounds and tints</h2>
-    <p class="ds-section-desc">Tints for section depth without hard borders fall into two families: warm-toned and cool-toned, following our two primary brand colors.</p>
-    
-    <h3>Warm tints</h3>
-    <p class="ds-section-desc">Every warm tint is Library Grey stepped toward white; the number in the token is the percentage. Three are grounds and edges; two darker steps have jobs of their own, the edge of a control and disabled text.</p>
-    <div class="ds-card-grid">
-      <div class="ds-card">
-        <span class="swatch" style="background:#f8f7f7"></span>
-        <strong>Warm Wash</strong>
-        <code>#f8f7f7</code>
-        <code>--ds-grey-5</code>
-        <code>--ds-surface-hover</code>
-        <p>A row or a control under the pointer, on a white surface.</p>
-      </div>
-      <div class="ds-card">
-        <span class="swatch" style="background:#f0f0ee"></span>
-        <strong>Card Grey</strong>
-        <code>#f0f0ee</code>
-        <code>--ds-grey-10</code>
-        <code>--ds-surface-muted</code>
-        <p>A secondary band one step down from the page, a hover fill, the disabled button fill.</p>
-      </div>
-      <div class="ds-card">
-        <span class="swatch" style="background:#dad8d6"></span>
-        <strong>Border Light</strong>
-        <code>#dad8d6</code>
-        <code>--ds-grey-25</code>
-        <code>--ds-border</code>
-        <code>--ds-border-muted</code>
-        <p>Component hairlines — inputs, switch backgrounds, card edges — and the deepest warm fill: pressed states, pill borders, the footer edge. Decorative only (below 3:1); never the sole boundary of an interactive control, and body-size grey and links miss AA on it.</p>
-      </div>
-      <div class="ds-card">
-        <span class="swatch" style="background:#aeaaa4"></span>
-        <strong>Disabled Grey</strong>
-        <code>#aeaaa4</code>
-        <code>--ds-grey-55</code>
-        <code>--ds-text-disabled</code>
-        <p>Disabled states only — exempt from contrast requirements.</p>
-      </div>
-      <div class="ds-card">
-        <span class="swatch" style="background:#89837a"></span>
-        <strong>UI Boundary Grey</strong>
-        <code>#89837a</code>
-        <code>--ds-grey-80</code>
-        <code>--ds-border-strong</code>
-        <p>The edge of a control: input borders, switch edges, sort arrows. The one grey that clears 3:1 on white, which is what a control's boundary needs.</p>
-      </div>
-    </div>
-
-    <h3>Cool tints</h3>
-    <p class="ds-section-desc">Every cool tint is Open Blue stepped toward white: light blues reserved for arXiv-added chrome layered over content — popovers, the TOC dropdown, active inline states, the read-aloud highlight, the reader footer band. The recognizable rule: <em>light blue = arXiv chrome speaking, not the paper</em>.</p>
-    <div class="ds-card-grid">
-      <div class="ds-card">
-        <span class="swatch" style="background:#edf7ff"></span>
-        <strong>Tint Light</strong>
-        <code>#edf7ff</code>
-        <code>--ds-blue-20</code>
-        <code>--ds-accent-surface</code>
-        <p>The ground of a popover, a dropdown, the reader footer band.</p>
-      </div>
-      <div class="ds-card">
-        <span class="swatch" style="background:#d2eafe"></span>
-        <strong>Active Wash</strong>
-        <code>#d2eafe</code>
-        <code>--ds-blue-50</code>
-        <code>--ds-accent-wash</code>
-        <p>The deepest chrome blue that still holds AA for body text: an active inline anchor, a hover inside a panel, the read-aloud highlight.</p>
-      </div>
-      <div class="ds-card">
-        <span class="swatch" style="background:#c0e2fe"></span>
-        <strong>Open Blue Bright</strong>
-        <code>#c0e2fe</code>
-        <code>--ds-blue-70</code>
-        <code>--ds-accent-hover</code>
-        <code>--ds-accent-border</code>
-        <p>The hover step of an Open Blue fill, taking <code>--ds-text-on-accent</code> like the fill it hovers from, and the edge of a chrome panel. Inside <code>.ds-internal</code> both roles take the lime values instead.</p>
-      </div>
     </div>
   </section>
 
@@ -514,8 +469,8 @@ background: var(--ds-tint-accent);</code></pre>
 </script>
 <script>
   // Each contrast sample shows its colour's hex and its contrast with the
-  // sample's ground, read from the tokens in that sample's theme, so the
-  // numbers follow any change to a token.
+  // sample's ground, and each tint its hex, read from the tokens in that
+  // theme, so the numbers follow any change to a token.
   (function () {
     function rgb(value) { return value.match(/[\d.]+/g).slice(0, 3).map(Number); }
     function hex(c) { return '#' + c.map(function (x) { return Math.round(x).toString(16).padStart(2, '0'); }).join(''); }
@@ -526,6 +481,12 @@ background: var(--ds-tint-accent);</code></pre>
       var link = sample.querySelector('.contrast-link'), ring = sample.querySelector('.contrast-ring');
       var colour = rgb(link ? getComputedStyle(link).color : getComputedStyle(ring).outlineColor);
       sample.querySelector('.contrast-ratio').textContent = hex(colour) + ' · ' + ratio(colour, ground).toFixed(2) + ':1';
+    });
+    // Each tint shows the hex of the swatch before it.
+    document.querySelectorAll('.tint-hex').forEach(function (code) {
+      var swatch = code.previousElementSibling;
+      if (!swatch.classList.contains('swatch')) swatch = swatch.querySelector('.swatch');
+      code.textContent = hex(rgb(getComputedStyle(swatch).backgroundColor));
     });
   })();
 </script>
