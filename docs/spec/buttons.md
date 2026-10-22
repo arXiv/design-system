@@ -77,11 +77,11 @@ components:
     summary: "The primary button works everywhere. The gradient border and vignette keep the edge legible on cool, warm, and dark backgrounds. The secondary button can be adapted with a modifier class when using it on a tinted background."
     classes:
       - name: ".on-tint"
-        does: "On a *cool* tint, swaps the secondary's white fill for Card Grey (same luminance, warm hue) so it reads as secondary by material rather than by contrast. On a *warm* tint the default white secondary already sits comfortably."
+        does: "On a *cool* tint, swaps the secondary's white fill for Warm Tint (same luminance, warm hue) so it reads as secondary by material rather than by contrast. On a *warm* tint the default white secondary already sits comfortably."
       - name: ".on-dark"
         does: "For a field dark enough to host white text: an outreach masthead, a photo band. A white fill would read as a paper rectangle stuck to the surface, louder than the primary beside it; `.on-dark` drops the fill so the field shows through and draws the boundary with a white border. See [outreach sites](outreach.html) for where such fields are allowed."
       - name: "Not this"
-        does: "A default white secondary on a cool tint pops too hard and reads as primary — that is the case `.on-tint` exists for. Do not put `.on-tint` on a warm tint: its Card Grey fill melts into the surface. And `.on-dark` is only correct on a dark field; on a light tint use `.on-tint`."
+        does: "A default white secondary on a cool tint pops too hard and reads as primary — that is the case `.on-tint` exists for. Do not put `.on-tint` on a warm tint: its Warm Tint fill melts into the surface. And `.on-dark` is only correct on a dark field; on a light tint use `.on-tint`."
   - id: compact-buttons
     title: "Compact buttons"
     group: "Modifiers"
@@ -234,9 +234,9 @@ The primary button works everywhere. The gradient border and vignette keep the e
 <a class="ds-btn on-dark" href="/subscribe">Subscribe</a>
 ```
 
-- `.on-tint` — On a *cool* tint, swaps the secondary's white fill for Card Grey (same luminance, warm hue) so it reads as secondary by material rather than by contrast. On a *warm* tint the default white secondary already sits comfortably.
+- `.on-tint` — On a *cool* tint, swaps the secondary's white fill for Warm Tint (same luminance, warm hue) so it reads as secondary by material rather than by contrast. On a *warm* tint the default white secondary already sits comfortably.
 - `.on-dark` — For a field dark enough to host white text: an outreach masthead, a photo band. A white fill would read as a paper rectangle stuck to the surface, louder than the primary beside it; `.on-dark` drops the fill so the field shows through and draws the boundary with a white border. See [outreach sites](outreach.html) for where such fields are allowed.
-- `Not this` — A default white secondary on a cool tint pops too hard and reads as primary — that is the case `.on-tint` exists for. Do not put `.on-tint` on a warm tint: its Card Grey fill melts into the surface. And `.on-dark` is only correct on a dark field; on a light tint use `.on-tint`.
+- `Not this` — A default white secondary on a cool tint pops too hard and reads as primary — that is the case `.on-tint` exists for. Do not put `.on-tint` on a warm tint: its Warm Tint fill melts into the surface. And `.on-dark` is only correct on a dark field; on a light tint use `.on-tint`.
 
 ## Compact buttons  (Modifiers)
 
