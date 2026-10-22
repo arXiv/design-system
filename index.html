@@ -3,316 +3,229 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>arXiv Design System</title>
+  <title>Smileybones</title>
   <link rel="stylesheet" href="docs/fonts.css">
   <link rel="stylesheet" href="docs/design-system.css">
-  <style>
-    /* ── Showcase home. This page is itself built from the design
-       system: every rendered teaser below consumes design-system.css
-       directly, so the directory doubles as a living proof that the
-       tokens and components work. Page-chrome styles here are
-       documentation furniture only. ── */
-    *, *::before, *::after { box-sizing: border-box; }
-    body {
-      font-family: var(--ds-font-sans);
-      color: var(--ds-text);
-      background: var(--ds-canvas);
-      margin: 0;
-      font-size: 15px;
-      line-height: 1.5;
-    }
-    .page { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
-    .masthead { margin-bottom: 12px; display: flex; align-items: center; gap: 14px; }
-    .masthead img { height: 44px; width: auto; }
-    .masthead h1 { font-size: 28px; font-weight: 700; margin: 0; }
-    .intro { color: var(--ds-text-muted); font-size: 15px; max-width: 760px; margin: 0 0 8px; line-height: 1.6; }
-    .intro-meta { color: var(--ds-border-strong); font-size: 13px; margin: 0 0 44px; }
-
-    .group { margin-bottom: 44px; }
-    .group-title {
-      font-family: var(--ds-font-condensed);
-      font-size: 13px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.06em;
-      color: var(--ds-text-muted);
-      margin: 0 0 14px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid var(--ds-accent);
-    }
-    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 16px; }
-    .card {
-      display: block;
-      background: var(--ds-surface);
-      border: 1px solid var(--ds-border);
-      border-radius: 8px;
-      padding: 18px 20px;
-      text-decoration: none;
-      color: var(--ds-text);
-      transition: border-color 0.12s, box-shadow 0.12s;
-    }
-    .card:hover { border-color: var(--ds-border-strong); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-    .card:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
-    .card h2 { font-size: 16px; font-weight: 600; margin: 0 0 4px; }
-    .card p { font-size: 13px; color: var(--ds-text-muted); margin: 0 0 14px; line-height: 1.5; }
-    .card .teaser {
-      border-top: 1px dashed var(--ds-border);
-      padding-top: 14px;
-      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-      pointer-events: none; /* teasers are illustrations; the card is the link */
-    }
-    .card.is-doc .teaser { font-family: var(--ds-font-mono); font-size: 12px; color: var(--ds-text-muted); }
-    .swatch-row { display: flex; gap: 4px; }
-    .swatch { width: 22px; height: 22px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.12); }
-    .mini-alert {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: var(--ds-warning-bg); border: 1px solid var(--ds-warning-border);
-      color: var(--ds-warning-fg); border-radius: 4px;
-      font-size: 12px; padding: 4px 10px;
-    }
-    .mini-header { display: flex; align-items: center; gap: 8px; background: var(--ds-text); border-radius: 4px; padding: 6px 10px; flex: 1; }
-    .mini-header span { color: var(--ds-text-muted); font-size: 11px; }
-    .mini-header b { color: var(--ds-surface-muted); font-size: 11px; font-weight: 600; }
-.mini-footer { font-size: 11px; color: var(--ds-text-muted); background: var(--ds-canvas); border: 1px solid var(--ds-border-muted); border-radius: 4px; padding: 6px 10px; flex: 1; }
-    .mini-pop { background: var(--ds-accent-surface); border: 1px solid var(--ds-accent-border); border-radius: 4px; font-size: 11px; padding: 4px 10px; color: var(--ds-text); }
-    .mini-cite { background: var(--ds-accent-wash); border-radius: 3px; font-size: 12px; padding: 1px 4px; color: var(--ds-link); }
-    .teaser .ds-btn { font-size: 12px; padding: 6px 12px; }
-    footer.docs-footer { margin-top: 16px; font-size: 13px; color: var(--ds-text-muted); border-top: 1px solid var(--ds-border); padding-top: 20px; }
-    footer.docs-footer a { color: var(--ds-link); }
-  
-    /* Inline links in page copy. Bare <a> previously fell back to the
-       browser default, which is unreadable on the dark canvas. Nav links
-       carry their own, more specific rules. */
-    a { color: var(--ds-link); }
-    a:hover { color: var(--ds-link-hover); }
-</style>
+  <link rel="stylesheet" href="docs/docs.css">
+  <script src="docs/theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
 </head>
-<body>
-<div class="page">
-  <div class="masthead">
-    <img src="whiteboard/mockups/public/images/arxiv-logo-primary-light.png" alt="arXiv">
-    <h1>Design System</h1>
-  </div>
-  <p class="intro">
-    The visual language and interaction patterns for arXiv's public pages —
-    tokens, components, page mockups, and the policies behind them. Every
-    rendered sample on this page is drawn live from
-    <code>design-system.css</code>: the directory is itself built from the
-    system it documents.
-  </p>
-  <p class="intro-meta">Work in progress · everything here iterates freely · feedback to Shamsi</p>
-
-  <div class="group">
-    <h2 class="group-title">Start here</h2>
-    <div class="cards">
-      <a class="card" href="docs/using.html">
-        <h2>Using the design system</h2>
-        <p>Which files to link, in what order, what the two tiers mean, and the five things that go
-        wrong if you guess. Read this before the component pages.</p>
-        <div class="teaser is-doc"><code>&lt;body class="ds-page"&gt;</code></div>
-      </a>
-      <a class="card is-doc" href="docs/doc.html?src=docs/DESIGN-POLICIES.md">
-        <h2>Design policies</h2>
-        <p>The hard constraints: accessibility floor, the two accents, browser support, spacing,
-        target size. Non-negotiable, and the first thing to read.</p>
-        <div class="teaser is-doc"><code>DESIGN-POLICIES.md</code></div>
-      </a>
-    </div>
-  </div>
-
-  <div class="group">
-    <h2 class="group-title">Components</h2>
-    <div class="cards">
-      <a class="card" href="docs/buttons.html">
-        <h2>Buttons</h2>
-        <p>Primary (Open Blue) and secondary, V3 construction: gradient border, inner vignette, brighten-on-hover.</p>
-        <div class="teaser">
-          <span class="ds-btn ds-btn-primary">HTML</span>
-          <span class="ds-btn ds-btn-secondary">TeX Source</span>
+<body class="ds-page">
+<!-- The docs site's own header (the light variant). It is not a pattern: build pages from the header in templates/ and docs/header.html. -->
+<header class="ds-site-header ds-site-header--light">
+  <span class="ds-site-header-logo ds-tooltip-host"><a href="index.html" aria-describedby="ds-logo-tip"><img class="ds-theme-light-only" src="docs/assets/images/logos/logo_smileybones-ds.svg" alt="Smileybones"><img class="ds-theme-dark-only" src="docs/assets/images/logos/logo_smileybones-ds-light.svg" alt="Smileybones"></a><span class="ds-tooltip" id="ds-logo-tip" role="tooltip"><span class="ds-tooltip-body">Smileybones Design System from arXiv</span></span></span>
+  <nav class="ds-site-header-nav" aria-label="Design system">
+    <details class="ds-site-header-dropdown">
+      <summary>Design Patterns</summary>
+      <div class="ds-site-header-menu">
+        <span class="ds-panel-label">Components</span>
+        <a href="docs/colors.html">Colors</a>
+        <a href="docs/dark-mode.html">Dark mode</a>
+        <a href="docs/typography.html">Typography</a>
+        <a href="docs/spacing.html">Spacing</a>
+        <a href="docs/icons.html">Icons</a>
+        <a href="docs/buttons.html">Buttons</a>
+        <a href="docs/links.html">Links</a>
+        <a href="docs/forms.html">Forms &amp; validation</a>
+        <a href="docs/alerts.html">Alerts</a>
+        <a href="docs/messages.html">Messaging</a>
+        <a href="docs/tags.html">Tags</a>
+        <a href="docs/header.html">Site header</a>
+        <a href="docs/footer.html">Site footer</a>
+        <a href="docs/navigation.html">Navigation</a>
+        <a href="docs/pager.html">Pager</a>
+        <span class="ds-panel-label">Organizing content</span>
+        <a href="docs/layout-patterns.html">Layouts</a>
+        <a href="docs/cards.html">Cards</a>
+        <a href="docs/tables.html">Tables</a>
+        <a href="docs/search.html">Search</a>
+        <a href="docs/progressive-disclosure.html">Progressive disclosure</a>
+        <a href="docs/modals.html">Modal dialogs</a>
+        <a href="docs/papers.html">Papers</a>
         </div>
-      </a>
-      <a class="card" href="docs/links.html">
-        <h2>Links</h2>
-        <p>Inline link grammar: Link Blue, underlined, hover-darken, visited purple. Light and dark.</p>
-        <div class="teaser"><span class="ds-link" style="font-size:13px">Gauge-independent approach to inflation…</span></div>
-      </a>
-      <a class="card" href="docs/alerts.html">
-        <h2>Alerts</h2>
-        <p>Success / info / warning / error — icon + leading word, never color alone. Light and dark.</p>
-        <div class="teaser"><span class="mini-alert">&#9888; You're viewing version 1.</span></div>
-      </a>
-      <a class="card" href="docs/header.html">
-        <h2>Site header</h2>
-        <p>Announcement band + black bar. Skip link, "archive" pronunciation, search-as-link enhancement.</p>
-        <div class="teaser">
-          <span class="mini-header"><b>arXiv</b><span style="margin-left:auto">Search · Submit · Donate</span></span>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Mockups</summary>
+      <div class="ds-site-header-menu">
+        <a href="whiteboard/mockups/">All mockups</a>
+        <span class="ds-panel-label">Public</span>
+        <a href="whiteboard/mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+        <a href="whiteboard/mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+        <a href="whiteboard/mockups/public/optin-modal/">Labs opt-in modal</a>
+        <a href="whiteboard/mockups/public/submission-metadata/">Submission — Metadata Form</a>
+        <span class="ds-panel-label">Internal</span>
+        <a href="whiteboard/mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+        <a href="whiteboard/mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+        <a href="whiteboard/mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+        <a href="whiteboard/mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+        <a href="whiteboard/mockups/internal/activity-dashboard/">Activity dashboard</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Docs</summary>
+      <div class="ds-site-header-menu">
+        <a href="docs/using.html">Using the system</a>
+        <a href="docs/doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+        <a href="docs/doc.html?src=docs/STYLE.md">Writing style</a>
+        <a href="docs/brand.html">Brand &amp; vision</a>
+        <a href="docs/doc.html?src=docs/color-mapping.md">Color spec</a>
+        <a href="docs/doc.html?src=README.md">About this repo</a>
+      </div>
+    </details>
+  </nav>
+  <div class="ds-site-header-tools">
+    <button type="button" class="ds-theme-toggle"></button>
+    <span id="ds-theme-status" class="is-sr-only" role="status"></span>
+  </div>
+</header>
+
+<div class="ds-container">
+
+  <div class="ds-full ds-zone-secondary">
+  <header class="ds-page-header">
+    <h1>Smileybones</h1>
+    <p class="ds-section-desc">The arXiv design system: design tokens, component specs, typography and color decisions, accessibility requirements, and interactive pattern references. These define the visual language production code should follow; they are not production code themselves.</p>
+  </header>
+  </div>
+
+  <section>
+    <h2 id="start-here">Start here</h2>
+      <div class="ds-card-grid">
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/using.html">Using the system</a></h3>
+          <p>How to get started with the design system: basic markup, which files to link to, in what order, and a handful of things to avoid.</p>
         </div>
-      </a>
-      <a class="card" href="docs/footer.html">
-        <h2>Site footer</h2>
-        <p>Acknowledgment line, footer nav, funder logos. The most-validated component in the system.</p>
-        <div class="teaser"><span class="mini-footer">We gratefully acknowledge support from our <b>major funders</b>…</span></div>
-      </a>
-      <a class="card" href="docs/links.html">
-        <h2>arXiv Chrome surfaces</h2>
-        <p>Popovers, inline active states, element pills — the light-blue family that means "arXiv chrome speaking."</p>
-        <div class="teaser"><span class="mini-cite">[46]</span><span class="mini-pop">Stelle (1977) · Renormalization of…</span></div>
-      </a>
-    </div>
-  </div>
-
-  <div class="group">
-    <h2 class="group-title">The system in use — page mockups</h2>
-    <div class="cards">
-      <a class="card is-doc" href="whiteboard/mockups/public/abstract-phase2.html">
-        <h2>Abstract page</h2>
-        <p>arXiv's most-visited page: title, authors, downloads with sizes, accessibility notes, citation workshop, Labs.</p>
-        <div class="teaser">whiteboard/mockups/public/abstract-phase2.html</div>
-      </a>
-      <a class="card is-doc" href="whiteboard/mockups/public/html-phase1.html">
-        <h2>HTML paper</h2>
-        <p>Citation popovers, footnote marginalia, figure lightbox, read-aloud, section permalinks, equation tools.</p>
-        <div class="teaser">whiteboard/mockups/public/html-phase1.html</div>
-      </a>
-      <a class="card is-doc" href="docs/doc.html?src=whiteboard/mockups/README.md">
-        <h2>About these mockups</h2>
-        <p>What's preview vs. validated, what to try, where the source of truth lives.</p>
-        <div class="teaser">whiteboard/mockups/README.md</div>
-      </a>
-    </div>
-  </div>
-
-  <div class="group">
-    <h2 class="group-title">Foundations</h2>
-    <div class="cards">
-      <a class="card" href="docs/colors.html">
-        <h2>Color</h2>
-        <p>The full palette, rendered with contrast ratios — browns and blues, both context accents, the never-cross rule, status family.</p>
-        <div class="teaser">
-          <span class="swatch-row">
-            <span class="swatch" style="background:var(--ds-text)"></span>
-            <span class="swatch" style="background:var(--ds-text-muted)"></span>
-            <span class="swatch" style="background:var(--ds-accent)"></span>
-            <span class="swatch" style="background:var(--ds-link)"></span>
-            <span class="swatch" style="background:var(--ds-canvas)"></span>
-            <span class="swatch" style="background:var(--ds-surface-muted)"></span>
-          </span>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a></h3>
+          <p>Hard constraints for all arXiv frontend work — internal tools and public-facing pages.</p>
         </div>
-      </a>
-      <a class="card" href="docs/typography.html">
-        <h2>Typography</h2>
-        <p>Specimens of the IBM Plex stack + STIX Two Math, with the rules that travel with the type (rem sizing, fallbacks, don't fight the reader).</p>
-        <div class="teaser" style="font-family:var(--ds-font-sans); font-size:14px; color:var(--ds-text); pointer-events:none">Aa <span style="font-family:var(--ds-font-condensed)">Aa</span> <span style="font-family:var(--ds-font-mono)">Aa</span> <span style="font-family:var(--ds-font-serif); font-style:italic">Aa</span></div>
-      </a>
-      <a class="card" href="docs/spacing.html">
-        <h2>Spacing</h2>
-        <p>The 4px-based scale (--ds-space-1…--ds-space-12) and the proximity rule: space between sections ≈ 3× space within, so grouping reads without boxes.</p>
-        <div class="teaser">docs/spacing.html</div>
-      </a>
-    </div>
-  </div>
+      </div>
+  </section>
 
-  <div class="group">
-    <h2 class="group-title">Patterns</h2>
-    <div class="cards">
-      <a class="card" href="docs/buttons.html">
-        <h2>Buttons</h2>
-        <p>One mechanical spec, two context accents — Open Blue public, Access Lime internal, never crossed — with states, .on-tint, and the internal hierarchy.</p>
-        <div class="teaser">docs/buttons.html</div>
-      </a>
-      <a class="card" href="docs/alerts.html">
-        <h2>Alerts &amp; messaging</h2>
-        <p>The .ds-alert status banner, the announcement band, and inline form errors — with live token values and writing guidance.</p>
-        <div class="teaser">docs/alerts.html</div>
-      </a>
-      <a class="card" href="docs/version-display.html">
-        <h2>Versions</h2>
-        <p>Submission and revision dates, inline version links, and the older-version warning — one grammar from one version to twenty.</p>
-        <div class="teaser">docs/version-display.html</div>
-      </a>
-      <a class="card" href="docs/layout-patterns.html">
-        <h2>Organizing content</h2>
-        <p>The reading-column + rail model, accordions, cards, and content-anchored chrome (popovers, element pills) — whitespace first, boxes second.</p>
-        <div class="teaser">docs/layout-patterns.html</div>
-      </a>
-      <a class="card" href="docs/modals.html">
-        <h2>Modal dialogs</h2>
-        <p>The most expensive thing the system can put in front of a reader — built on native &lt;dialog&gt;, which gets four of the five hard parts right unasked.</p>
-        <div class="teaser">docs/modals.html</div>
-      </a>
-      <a class="card" href="docs/progressive-disclosure.html">
-        <h2>Progressive disclosure</h2>
-        <p>Every way a page shows less than it has: accordions, show-more, popovers — and which one to reach for, since each makes a different promise about what is behind it.</p>
-        <div class="teaser">docs/progressive-disclosure.html</div>
-      </a>
-      <a class="card" href="docs/dark-mode.html">
-        <h2>Dark mode</h2>
-        <p>How the colors flip, what is dark-aware today, the traps a token-driven page still falls into, and the rule that new pages lock to light.</p>
-        <div class="teaser">docs/dark-mode.html</div>
-      </a>
-      <a class="card" href="docs/outreach.html">
-        <h2>Outreach sites</h2>
-        <p>The blog, event and campaign mini-sites: the public design as-is, plus a short list of agreed differences — and what keeps those differences from spreading to arxiv.org.</p>
-        <div class="teaser">docs/outreach.html</div>
-      </a>
-    </div>
-  </div>
+  <section>
+    <h2 id="components">Components</h2>
+      <div class="ds-card-grid">
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/colors.html">Colors</a></h3>
+          <p>The full arXiv palette, rendered.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/dark-mode.html">Dark mode</a></h3>
+          <p>In the design system, every colour comes from a token and the tokens flip in each mode.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/typography.html">Typography</a></h3>
+          <p>arXiv sets all text in the IBM Plex family with STIX Two Math for notation.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/spacing.html">Spacing</a></h3>
+          <p>Every gap on arXiv pages comes from one spacing scale.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/icons.html">Icons</a></h3>
+          <p>The design system uses the Lucide icon set which is open source, community supported, and available for both commercial and non-commercial use under the ISC license.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/buttons.html">Buttons</a></h3>
+          <p>Each arXiv button family shares the same mechanical spec, with color used to differentiate by context: Open Blue for public pages and Access Lime for internal tools.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/links.html">Links</a></h3>
+          <p>Text links are simple but important to get right.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/forms.html">Forms &amp; validation</a></h3>
+          <p>The design system supports highly accessible forms with robust validation display options.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/alerts.html">Alerts</a></h3>
+          <p>Alerts are a critical component of successful user journeys.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/messages.html">Messaging</a></h3>
+          <p>When arXiv has something special to say on the platform itself, this is how we do it.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/tags.html">Tags</a></h3>
+          <p>A small rounded element used for categories, search filters, states, and other small multiples.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/header.html">Site header</a></h3>
+          <p>The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/footer.html">Site footer</a></h3>
+          <p>The universal arXiv public-page footer (.ds-site-footer).</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/navigation.html">Navigation</a></h3>
+          <p>The bars under the site header that tell a reader where they are inside an area: secondary navigation, two levels of it, and steps.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/pager.html">Pager</a></h3>
+          <p>Controls for moving through a list: one item at a time with the pager, or a group of items at a time with numbered pages.</p>
+        </div>
+      </div>
+  </section>
 
-  <div class="group">
-    <h2 class="group-title">Principles</h2>
-    <div class="cards">
-      <a class="card is-doc" href="docs/doc.html?src=docs/DESIGN-POLICIES.md">
-        <h2>Design policies</h2>
-        <p>The non-negotiables: WCAG 2.2 AA, tokens, self-hosted fonts, no metrics, sticky-chrome-is-exceptional, progressive enhancement.</p>
-        <div class="teaser">DESIGN-POLICIES.md</div>
-      </a>
-      <a class="card is-doc" href="docs/doc.html?src=whiteboard/planning/PROPOSED-GUIDELINES.md">
-        <h2>Proposed guidelines</h2>
-        <p>Rules the patterns embody, under universality review — each with evidence and disposition.</p>
-        <div class="teaser">whiteboard/planning/PROPOSED-GUIDELINES.md</div>
-      </a>
-      <a class="card is-doc" href="docs/doc.html?src=docs/accessibility-priorities.md">
-        <h2>Accessibility priorities</h2>
-        <p>Decisions and rationale for the public pages, grounded in 42 interviews and four research datasets.</p>
-        <div class="teaser">accessibility-priorities.md</div>
-      </a>
-    </div>
-  </div>
+  <section>
+    <h2 id="organizing-content">Organizing content</h2>
+      <div class="ds-card-grid">
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/layout-patterns.html">Layouts</a></h3>
+          <p>Our primary patterns for differentiating and organizing content based on user needs.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/cards.html">Cards</a></h3>
+          <p>When you need to draw a box around related content, reach for a card.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/tables.html">Tables</a></h3>
+          <p>The table and what can be built on it: sortable columns, a filter toolbar, row selection and bulk actions.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/search.html">Search</a></h3>
+          <p>A search page contains many components and elements documented elsewhere.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/progressive-disclosure.html">Progressive disclosure</a></h3>
+          <p>Options to toggle open additional content.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/modals.html">Modal dialogs</a></h3>
+          <p>A window that overlays the background page until it is answered or dismissed.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/papers.html">Papers</a></h3>
+          <p>Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge.</p>
+        </div>
+      </div>
+  </section>
 
-  <div class="group">
-    <h2 class="group-title">Process</h2>
-    <div class="cards">
-      <a class="card is-doc" href="docs/doc.html?src=verification/audits/2026-06-11/AUDIT-COMPONENTS.md">
-        <h2>Component audit — 2026</h2>
-        <p>Operational: component inventory across nine pages, responsiveness review at six widths, and the evaluation pass.</p>
-        <div class="teaser">verification/audits/2026-06-11/</div>
-      </a>
-      <a class="card is-doc" href="docs/doc.html?src=verification/README.md">
-        <h2>Verification harness</h2>
-        <p>29 automated checks — reflow, ARIA, no-JS, axe-core — each annotated with its research basis.</p>
-        <div class="teaser">verification/verify-mockups.py</div>
-      </a>
-      <a class="card is-doc" href="docs/doc.html?src=verification/audits/audit-visual.md">
-        <h2>Visual audit — 2025</h2>
-        <p>Strategic: the platform-wide 11-silo audit that motivated the design system (the "why").</p>
-        <div class="teaser">verification/audits/audit-visual.md</div>
-      </a>
-    </div>
-  </div>
+  <section>
+    <h2 id="more-documents">More documents</h2>
+      <div class="ds-card-grid">
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/doc.html?src=docs/STYLE.md">Writing style</a></h3>
+          <p>Rules for anyone — person or agent — writing text that ships: interface copy, error messages, instructions, and the docs in this repo.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/brand.html">Brand &amp; vision</a></h3>
+          <p>What arXiv stands for, how that differs from the rest of the research-publishing field, and what it looks like when it reaches the page.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/doc.html?src=docs/color-mapping.md">Color spec</a></h3>
+          <p>The written color spec, and the source of truth for the colors page.</p>
+        </div>
+        <div class="ds-card ds-card--link">
+          <h3><a href="docs/doc.html?src=README.md">About this repo</a></h3>
+          <p>The three contexts the system serves, public pages, internal tools and outreach sites, and how the repository is organized.</p>
+        </div>
+      </div>
+  </section>
 
-  <div class="group">
-    <h2 class="group-title">Proposals — open for discussion</h2>
-    <div class="cards">
-      <a class="card is-doc" href="whiteboard/planning/proposals/dev-workflow-comparison.html">
-        <h2>Dev workflow comparison</h2>
-        <p>Four ways a developer's active repo could consume the design system — manual, agent sync, package, hybrid — scored across six dimensions. A draft to spark discussion.</p>
-        <div class="teaser">whiteboard/planning/proposals/dev-workflow-comparison.html</div>
-      </a>
-    </div>
-  </div>
-
-  <footer class="docs-footer">
-    Canonical CSS: <a href="docs/design-system.css">docs/design-system.css</a> ·
-    Feedback: open an issue or message Shamsi.
-  </footer>
 </div>
+
+<script src="docs/header.js" defer></script>
+<script src="docs/tooltip.js" defer></script>
 </body>
 </html>
