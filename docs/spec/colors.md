@@ -22,9 +22,9 @@ components:
       - name: "--ds-tint-warm"
         does: "The warm tint. The same value on both surfaces."
       - name: "--ds-tint-accent"
-        does: "The accent tint. Tint Light on public pages, the Access Lime wash inside `.ds-internal`. A component uses the token and gets the right colour on each surface."
+        does: "The accent tint: blue on public pages, a lime wash inside `.ds-internal`. A component uses the token and gets the right colour on each surface."
 rules:
-  - "No near-whites lighter than Card Grey. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally."
+  - "No near-whites lighter than Warm Tint. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally."
   - "A component fill uses a tint or a status color. A new fill color is discussed with the design team first."
   - "Repository Brown is the workhorse — it clears AA on every approved surface, which is why buttons set Repository Brown on Open Blue."
   - "On white — default secondary"
@@ -66,11 +66,11 @@ background: var(--ds-tint-accent);
 ```
 
 - `--ds-tint-warm` — The warm tint. The same value on both surfaces.
-- `--ds-tint-accent` — The accent tint. Tint Light on public pages, the Access Lime wash inside `.ds-internal`. A component uses the token and gets the right colour on each surface.
+- `--ds-tint-accent` — The accent tint: blue on public pages, a lime wash inside `.ds-internal`. A component uses the token and gets the right colour on each surface.
 
 ## Rules
 
-- No near-whites lighter than Card Grey. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally.
+- No near-whites lighter than Warm Tint. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally.
 - A component fill uses a tint or a status color. A new fill color is discussed with the design team first.
 - Repository Brown is the workhorse — it clears AA on every approved surface, which is why buttons set Repository Brown on Open Blue.
 - On white — default secondary

@@ -92,7 +92,7 @@ components:
     summary: "For pages about arXiv from outside it, such as this documentation. `.ds-site-header--light` re-points the seven surface tokens and nothing else. Every page that is part of arXiv, public or internal, uses the standard bar."
     classes:
       - name: ".ds-site-header--light"
-        does: "The bar is white with Library Grey links, Repository Brown emphasis and a Border Light bottom edge, and the standard focus ring."
+        does: "The bar is white with Library Grey links, Repository Brown emphasis, a bottom edge in the Border color, and the standard focus ring."
       - name: ".ds-site-header-logo"
         does: "On a property that is not arxiv.org, the slot may hold that property’s own wordmark as text; it takes the bar’s emphasis colour."
     notes:
@@ -342,7 +342,7 @@ For pages about arXiv from outside it, such as this documentation. `.ds-site-hea
 </header>
 ```
 
-- `.ds-site-header--light` — The bar is white with Library Grey links, Repository Brown emphasis and a Border Light bottom edge, and the standard focus ring.
+- `.ds-site-header--light` — The bar is white with Library Grey links, Repository Brown emphasis, a bottom edge in the Border color, and the standard focus ring.
 - `.ds-site-header-logo` — On a property that is not arxiv.org, the slot may hold that property’s own wordmark as text; it takes the bar’s emphasis colour.
 
 > The bar at the top of this page is the light variant, with dropdown groups.
