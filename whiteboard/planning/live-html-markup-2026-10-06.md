@@ -49,7 +49,7 @@ None of the five has a `<main>` element or `role="main"`.
 
 ## Deyan's answers, 2026-10-06
 
-The questions are in `questions-for-deyan.html`; he answered in Slack.
+He answered in Slack.
 
 **Display equations.** LaTeXML's `<table>` markup for display equations is due to change: Vincenzo has a proposal for new markup, probably CSS grid, because the tables are bad for accessibility and do not reflow on phones. Reflow on phones needs a line-breaking script until browsers support MathML line-breaking. The `role="presentation"` question waits for the new markup. Deyan agrees a wide equation should never scroll the page, because that would also move the margin notes on wide screens.
 
