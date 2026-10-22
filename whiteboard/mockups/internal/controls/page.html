@@ -16,8 +16,6 @@
     // Demo only: index.html asks for touch sizes with ?pointer=coarse.
     var pointer = new URLSearchParams(location.search).get('pointer');
     if (pointer) document.documentElement.dataset.pointer = pointer;
-    // Demo only: ?toolbar=sentence shows the sentence toolbar instead of the recommended one.
-    document.documentElement.dataset.toolbar = new URLSearchParams(location.search).get('toolbar') || 'joined';
   </script>
   <style>
     /* Page layout for the mockup only. */
@@ -98,50 +96,26 @@
     <header class="x-page-head">
       <h1 id="charts-title">Activity charts</h1>
       <p class="ds-section-desc">Submissions compare the last 7 days with the 3-week weekly average.</p>
-      <p class="x-updated-line">Updated 2 hours ago <span aria-hidden="true">·</span> <button type="button" class="ds-btn ds-btn-text ds-btn-compact x-hit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> Refresh</button></p>
-    </header>
-
-    <!-- Recommended: every control for the charts in the box's toolbar. The dates are one joined
-         control whose visible labels, From and to, are segments of it. -->
-    <div class="x-data x-layout-joined">
-      <div class="x-data-toolbar">
-        <form class="x-date-joined" method="get" action="page.html" aria-label="Dates">
-          <label for="d-start">From</label>
-          <input class="ds-input" id="d-start" name="start" type="date" value="2026-09-23">
-          <label for="d-end">to</label>
-          <input class="ds-input" id="d-end" name="end" type="date" value="2026-10-20">
+      <!-- What applies to the whole page: its dates, and how fresh its data is. -->
+      <div class="x-page-context">
+        <form class="x-sentence" method="get" action="page.html" aria-label="Dates">
+          <span class="x-pair"><label for="d-start">From</label>
+            <input class="ds-input" id="d-start" name="start" type="date" value="2026-09-23"></span>
+          <span class="x-pair"><label for="d-end">to</label>
+            <input class="ds-input" id="d-end" name="end" type="date" value="2026-10-20"></span>
           <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
         </form>
-        <form class="x-sort" method="get" action="page.html">
-            <div class="ds-btn-group" role="group" aria-labelledby="sort-by">
-              <span id="sort-by">Sort by</span>
-              <button class="ds-btn x-hit" type="submit" name="sort" value="category-asc" aria-pressed="false">Category <span class="sort-arrow">↕</span></button>
-              <button class="ds-btn x-hit" type="submit" name="sort" value="holds-desc" aria-pressed="false">Current holds <span class="sort-arrow">↕</span></button>
-              <button class="ds-btn x-hit" type="submit" name="sort" value="weekly-desc" aria-pressed="false">Weekly holds trend <span class="sort-arrow">↕</span></button>
-              <button class="ds-btn sort-desc x-hit" type="submit" name="sort" value="monthly-asc" aria-pressed="true">Monthly holds trend <span class="sort-arrow">↓</span><span class="is-sr-only">, largest first</span></button>
-            </div>
-          </form>
+        <p class="x-updated-line">Updated 2 hours ago <span aria-hidden="true">·</span> <button type="button" class="ds-btn ds-btn-text ds-btn-compact x-hit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> Refresh</button></p>
       </div>
-      <div class="x-data-body">
-        <div class="ds-card-grid">
-          <div class="ds-card"><p>Content placeholder for cs.DB holds and trends</p></div>
-          <div class="ds-card"><p>Content placeholder for cs.SY holds and trends</p></div>
-          <div class="ds-card"><p>Content placeholder for cs.LG holds and trends</p></div>
-        </div>
-      </div>
-    </div>
+    </header>
 
-    <!-- Alternative: the toolbar as one sentence. The words are the visible labels. -->
-    <div class="x-data x-layout-sentence">
-      <form class="x-data-toolbar x-sentence" method="get" action="page.html" aria-label="What the charts show">
-        <span>Showing <b>3 categories</b></span>
-        <label for="t-start">from</label>
-        <input class="ds-input" id="t-start" name="start" type="date" value="2026-09-23">
-        <label for="t-end">to</label>
-        <input class="ds-input" id="t-end" name="end" type="date" value="2026-10-20">
-        <label for="t-sort"><span aria-hidden="true">, </span>sorted by</label>
-        <select class="ds-input" id="t-sort" name="sort"><option>Category</option><option>Current holds</option><option>Weekly holds trend</option><option selected>Monthly holds trend</option></select>
-        <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+    <!-- The charts and their order, in one box; its toolbar is a sentence whose words are the labels. -->
+    <div class="x-data">
+      <form class="x-data-toolbar x-sentence" method="get" action="page.html" aria-label="Order of the charts">
+        <span>Showing <b>3 categories</b>,</span>
+        <span class="x-pair"><label for="t-sort">sorted by</label>
+          <select class="ds-input" id="t-sort" name="sort"><option>Category</option><option>Current holds</option><option>Weekly holds trend</option><option selected>Monthly holds trend</option></select></span>
+        <button class="ds-btn ds-btn-compact" type="submit">Sort</button>
       </form>
       <div class="x-data-body">
         <div class="ds-card-grid">
