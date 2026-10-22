@@ -427,8 +427,12 @@
 .x-page-head > * { margin: 0; }
 .x-updated-line { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2); font-size: 0.875rem; color: var(--ds-text-muted); }
 .x-updated-line .ds-btn svg { width: 1em; height: 1em; }
-/* The heading block is a group's gap above the data, more than any gap inside either. */
-.mock-section:has(> .x-page-head) { gap: var(--ds-space-6); }
+/* The heading block, with the page's dates, is a section's gap above the first set of data,
+   the same gap as between sets, so the dates read as the page's and not one set's. */
+.mock-section:has(> .x-page-head) { gap: var(--ds-space-section); }
+.x-subsection { display: grid; gap: var(--ds-space-block); }
+.x-subsection > header { display: grid; gap: var(--ds-space-tight); }
+.x-subsection > header > * { margin: 0; }
 
 /* The page's context line: its dates on the left, its freshness at the right end. */
 .x-page-context { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-space-2) var(--ds-space-block); }
