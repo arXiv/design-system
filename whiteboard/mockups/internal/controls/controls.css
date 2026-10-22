@@ -22,20 +22,54 @@
 .x-hit::after { content: ""; position: absolute; inset: calc((var(--x-control-box) - var(--x-control)) / 2) 0; }
 
 
-/* ── Controls: one size rule for selects, inputs and buttons ── */
-:is(.x-filter-bar, .ds-form, .x-filter-panel) :is(.ds-input:not(textarea), .ds-btn) {
-  min-height: var(--x-control);
-  padding-block: 0;
-  font-size: var(--x-control-text);
+/* ── Full forms keep the design system's sizes. On touch, every control is at
+   least 44px and typed text is 16px. ── */
+:root { --x-control-min: 0px; }
+@media (pointer: coarse) { :root { --x-control-min: 2.75rem; } }
+:root[data-pointer="coarse"] { --x-control-min: 2.75rem; }
+.ds-form :is(.ds-input:not(textarea), .ds-btn, .ds-check) { min-height: var(--x-control-min); }
+.ds-form .ds-input { font-size: max(0.875rem, var(--x-control-text)); }
+
+
+/* ── Small form: a few fields that adjust what is already on the page ──
+   The same fields, labels and buttons as a full form. Four things change:
+   the padding inside controls (the compact values), the spacing between them,
+   where the label sits (beside its control), and how wide a field is (its content). */
+.x-form-small {
+  --ds-input-padding: 0.37em 0.643em;   /* compact, as .ds-btn-compact is for buttons */
+  container: x-form-small / inline-size;
+  margin: 0;
+  font-size: 0.875rem;
 }
-:is(.x-filter-bar, .ds-form, .x-filter-panel) .ds-btn { min-width: 0; padding-inline: 1em; }
-:is(.x-filter-bar, .ds-form) select.ds-input:not([multiple]):not([size]) {
-  padding-right: 2em;
-  background-position: right 0.65em center;
+.x-form-small-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-3) var(--ds-space-block);
 }
-.ds-form textarea.ds-input { font-size: var(--x-control-text); }
-.ds-form .ds-label { margin-bottom: var(--ds-space-1); }
-.ds-form .ds-check { min-height: var(--x-control); }
+/* A field: its label beside it, in the full form's label style. */
+.x-form-small .x-filter { display: flex; align-items: center; gap: var(--ds-space-2); }
+.x-form-small .x-filter > label { font-size: 0.8125rem; font-weight: 600; color: var(--ds-text); white-space: nowrap; }
+.x-form-small .x-filter > span { color: var(--ds-text-muted); }
+/* As wide as what goes in it: a select fits its longest choice, a date its own picker. */
+.x-form-small .ds-input { width: auto; font-size: max(0.875rem, var(--x-control-text)); }
+.x-form-small .ds-input[type="number"] { width: 5em; }
+.x-form-small select.ds-input:not([multiple]):not([size]) { padding-right: 2.25em; background-position: right 0.75em center; }
+.x-form-small :is(.ds-input, .ds-btn) { min-height: var(--x-control-min); }
+/* The actions end the row: a text link that resets, then the submit, compact and secondary. */
+.x-form-small-actions { display: flex; align-items: center; gap: var(--ds-space-4); margin-inline-start: auto; }
+/* Narrow: one row per field, labels in a column, the actions across the bottom. */
+@container x-form-small (max-width: 30em) {
+  .x-form-small-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .x-form-small .x-filter { padding-block: var(--ds-space-2); }
+  .x-form-small .x-filter + .x-filter { border-top: 1px solid var(--ds-border); }
+  .x-form-small .x-filter > label { flex: 0 0 7.5rem; white-space: normal; }
+  .x-form-small .x-filter > .ds-input { flex: 1; min-width: 0; }
+  .x-form-small-actions { margin: var(--ds-space-2) 0 0; justify-content: space-between; }
+}
+/* On the page, a small form sits on the warm tint, as wide as its contents. Sized by its
+   contents, it cannot also be a size container, so it wraps instead of folding into rows. */
+.x-form-small--bar { container-type: normal; width: fit-content; max-width: 100%; padding: var(--ds-space-2) var(--ds-space-3); background: var(--ds-tint-warm); border-radius: 8px; }
 
 
 /* ── The second row: the section menu, then the views ──
@@ -218,47 +252,25 @@
 .x-filter-row > .x-clear { margin-inline-start: var(--ds-space-2); }
 
 
-/* ── Filter panel: a .ds-modal that hangs below the row of its control, as header search does ── */
+/* ── Filter panel: a popover that opens directly below its control ──
+   Aligned to the control's edge, and the control stays visible in its open state,
+   so the reader sees which control opened it. Nothing dims the page. */
 .x-filter-panel {
-  position: fixed;
-  inset: var(--x-panel-top, 6rem) auto auto var(--x-panel-left, 1rem);
+  position: absolute;
+  inset: auto;
+  top: var(--x-panel-top, 0);
+  left: var(--x-panel-left, 0);
   margin: 0;
   width: min(calc(100vw - 2rem), var(--x-panel-width, 46rem));
-  max-height: calc(100dvh - var(--x-panel-top, 6rem) - 1rem);
+  padding: var(--ds-space-4);
+  color: var(--ds-text);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
 }
-.x-filter-panel > form { display: contents; }
-.x-filter-panel .ds-modal-header { padding-block: var(--ds-space-3); }
-.x-filter-panel .ds-modal-title { font-size: 1rem; }
-.x-filter-panel .ds-modal-body { padding: var(--ds-space-4) var(--ds-space-6); }
-.x-filter-panel .ds-modal-footer { justify-content: space-between; padding-block: var(--ds-space-3); }
-.x-filter-panel .ds-modal-footer > a { font-size: var(--x-control-text); }
-
-
-/* ── Filter bar: the fields, here inside the panel ──
-   Wide: label beside control, the fields flow and wrap. Narrow: one full-width row per field. */
-.x-filter-bar { container: x-filter-bar / inline-size; margin: 0; font-size: var(--x-control-text); }
-.x-filter-bar-body {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--ds-space-3) var(--ds-space-6);
-}
-.x-filter {
-  display: flex;
-  align-items: center;
-  gap: 0.4em;
-}
-.x-filter > label { color: var(--ds-text-muted); font-weight: 500; white-space: nowrap; }
-.x-filter > .ds-input { width: auto; }
-.x-filter > .ds-input[type="number"] { width: 5em; }
-@container x-filter-bar (max-width: 30em) {
-  .x-filter-bar-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .x-filter { gap: var(--ds-space-3); padding-block: var(--ds-space-2); }
-  .x-filter + .x-filter { border-top: 1px solid var(--ds-border); }
-  .x-filter > label { flex: 0 0 7.5rem; white-space: normal; }
-  .x-filter > .ds-input,
-  .x-filter > .ds-input[type="number"] { flex: 1; width: auto; min-width: 0; }
-}
+/* Without the script the popover still opens, centred by the browser. */
+.x-filter-panel:not([style*="--x-panel-top"]) { inset: 0; margin: auto; height: fit-content; }
 
 
 /* ── Sort bar: two to four keys. With more, sort from the table's column headers. ──

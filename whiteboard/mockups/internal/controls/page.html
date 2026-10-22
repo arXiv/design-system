@@ -89,13 +89,25 @@
       <div class="x-heading-row">
         <h1 id="charts-title">Activity charts</h1>
         <!-- The subject applies to every view of every section, so it sits at the top right of each page. -->
-        <button type="button" class="x-filter-trigger x-hit" data-filter-panel="subject-panel" aria-haspopup="dialog" aria-expanded="false">
+        <button type="button" class="x-filter-trigger x-hit" popovertarget="subject-panel" aria-expanded="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h20"/><path d="M6 12h12"/><path d="M9 19h6"/></svg>
           Subject
           <span class="x-filter-value"><b>cs</b><span class="x-path-sep" aria-hidden="true">/</span><span class="is-sr-only">, </span>All categories</span>
         </button>
       </div>
-      <p class="ds-section-desc">Showing the past 3 months. Submissions compare the last 7 days with the 3-week weekly average.</p>
+      <p class="ds-section-desc">Submissions compare the last 7 days with the 3-week weekly average.</p>
+      <!-- A small form on the page: the date range, on the warm tint, with a compact Apply. -->
+      <form class="x-form-small x-form-small--bar" method="get" action="page.html" aria-label="Dates">
+        <div class="x-form-small-body">
+          <div class="x-filter"><label for="d-start">Start</label>
+            <input class="ds-input" id="d-start" name="start" type="date" value="2026-09-23"></div>
+          <div class="x-filter"><label for="d-end">End (inclusive)</label>
+            <input class="ds-input" id="d-end" name="end" type="date" value="2026-10-20"></div>
+          <div class="x-form-small-actions">
+            <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+          </div>
+        </div>
+      </form>
     </header>
     <form class="x-sort" method="get" action="page.html">
       <div class="ds-btn-group" role="group" aria-labelledby="sort-by">
@@ -120,7 +132,7 @@
       <p class="ds-section-desc">Holds in cs. Sort by a column heading.</p>
     </header>
     <div class="x-filter-row" role="group" aria-label="Filters on recent holds">
-      <button type="button" class="x-filter-trigger x-hit" data-filter-panel="holds-panel" aria-haspopup="dialog" aria-expanded="false">
+      <button type="button" class="x-filter-trigger x-hit" popovertarget="holds-panel" aria-expanded="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h20"/><path d="M6 12h12"/><path d="M9 19h6"/></svg>
         Filters
       </button>
@@ -191,7 +203,7 @@
   <section class="mock-section" aria-labelledby="search-title">
     <header>
       <h2 id="search-title">Find a moderator</h2>
-      <p class="ds-section-desc">A one-field form. The button shares the field’s row, and the results’ settings are the filter bar, under it in the same form.</p>
+      <p class="ds-section-desc">A one-field form. The button shares the field’s row, and the results’ settings are a small form under it, inside the same form.</p>
     </header>
     <form class="ds-form" method="get" action="page.html" role="search" aria-label="Moderators">
       <div class="ds-field">
@@ -199,8 +211,8 @@
         <input class="ds-input" id="q" name="q" type="search" value="asante">
       </div>
       <button class="ds-btn ds-btn-primary" type="submit">Search</button>
-      <div class="x-filter-bar" role="group" aria-label="Results">
-        <div class="x-filter-bar-body">
+      <div class="x-form-small" role="group" aria-label="Results">
+        <div class="x-form-small-body">
           <div class="x-filter"><label for="r-group">Group</label>
             <select class="ds-input" id="r-group" name="group"><option selected>All</option><option>cs</option><option>math</option></select></div>
           <div class="x-filter"><label for="r-sort">Sort by</label>
@@ -214,52 +226,28 @@
 
 </main>
 
-<!-- The subject's panel. It hangs below the row of the control that opened it. -->
-<dialog class="ds-modal x-filter-panel" id="subject-panel" style="--x-panel-width: 34rem" closedby="any" aria-labelledby="subject-panel-title">
-  <form method="get" action="page.html">
-    <div class="ds-modal-header">
-      <h2 class="ds-modal-title" id="subject-panel-title">Subject</h2>
-      <button type="button" class="ds-close" data-close>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        <span class="is-sr-only">Close</span>
-      </button>
-    </div>
-    <div class="ds-modal-body">
-      <div class="x-filter-bar">
-        <div class="x-filter-bar-body">
+<!-- The subject's panel: a popover directly below its control, holding a small form. -->
+<div class="x-filter-panel" id="subject-panel" popover role="dialog" aria-label="Subject" style="--x-panel-width: 34rem">
+  <form class="x-form-small" method="get" action="page.html">
+    <div class="x-form-small-body">
           <div class="x-filter"><label for="s-group">Group</label>
-            <select class="ds-input" id="s-group" name="group" autofocus>
-              <option>All</option><option selected>cs</option><option>econ</option><option>eess</option><option>math</option><option>physics</option><option>q-bio</option><option>q-fin</option><option>stat</option>
-            </select></div>
+            <select class="ds-input" id="s-group" name="group" autofocus><option>All</option><option selected>cs</option><option>econ</option><option>eess</option><option>math</option><option>physics</option><option>q-bio</option><option>q-fin</option><option>stat</option></select></div>
           <div class="x-filter"><label for="s-archive">Archive</label>
             <select class="ds-input" id="s-archive" name="archive"><option>All</option><option selected>cs</option></select></div>
           <div class="x-filter"><label for="s-category">Category</label>
-            <select class="ds-input" id="s-category" name="category">
-              <option selected>All categories</option><option>cs.AI</option><option>cs.CL</option><option>cs.CV</option><option>cs.DB</option><option>cs.LG</option><option>cs.SY</option>
-            </select></div>
-        </div>
+            <select class="ds-input" id="s-category" name="category"><option selected>All categories</option><option>cs.AI</option><option>cs.CL</option><option>cs.CV</option><option>cs.DB</option><option>cs.LG</option><option>cs.SY</option></select></div>
+      <div class="x-form-small-actions">
+        <a href="page.html">Show all of arXiv</a>
+        <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
       </div>
     </div>
-    <div class="ds-modal-footer">
-      <a href="page.html">Show all of arXiv</a>
-      <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
-    </div>
   </form>
-</dialog>
+</div>
 
-<!-- The holds filters' panel: every filter, set or not. -->
-<dialog class="ds-modal x-filter-panel" id="holds-panel" closedby="any" aria-labelledby="holds-panel-title">
-  <form method="get" action="page.html">
-    <div class="ds-modal-header">
-      <h2 class="ds-modal-title" id="holds-panel-title">Filters on recent holds</h2>
-      <button type="button" class="ds-close" data-close>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        <span class="is-sr-only">Close</span>
-      </button>
-    </div>
-    <div class="ds-modal-body">
-      <div class="x-filter-bar">
-        <div class="x-filter-bar-body">
+<!-- The holds filters' panel: every filter, set or not, as a small form. -->
+<div class="x-filter-panel" id="holds-panel" popover role="dialog" aria-label="Filters on recent holds">
+  <form class="x-form-small" method="get" action="page.html">
+    <div class="x-form-small-body">
           <div class="x-filter"><label for="h-status">Status</label>
             <select class="ds-input" id="h-status" name="status" autofocus><option>Any</option><option selected>On hold</option><option>Released</option><option>Removed</option></select></div>
           <div class="x-filter"><label for="h-from">Held since</label>
@@ -272,15 +260,13 @@
             <select class="ds-input" id="h-mod" name="moderator"><option selected>Anyone</option><option>lfischer</option><option>meilin</option><option>rnatarajan</option></select></div>
           <div class="x-filter"><label for="h-size">Per page</label>
             <select class="ds-input" id="h-size" name="size"><option>25</option><option selected>50</option><option>100</option></select></div>
-        </div>
+      <div class="x-form-small-actions">
+        <a href="page.html">Clear all</a>
+        <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
       </div>
     </div>
-    <div class="ds-modal-footer">
-      <a href="page.html">Clear all</a>
-      <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
-    </div>
   </form>
-</dialog>
+</div>
 
 <script>
   // Demo only: index.html shows a section with many views with ?views=many.
@@ -327,25 +313,24 @@
   });
 
 
-  // A filter control opens its panel just below its row, as header search hangs from the bar.
-  document.querySelectorAll('[data-filter-panel]').forEach(function (trigger) {
-    var panel = document.getElementById(trigger.dataset.filterPanel);
-    trigger.addEventListener('click', function () {
-      // Beside the heading the panel lines up with the control's right edge; elsewhere with the row's left.
-      var row = trigger.closest('.x-filter-row, .x-heading-row').getBoundingClientRect();
+  // A filter control's panel is a popover (it opens without this script). The script places
+  // it directly below its control, at the control's left edge, or its right edge where there
+  // is no room, and marks the control as open.
+  document.querySelectorAll('.x-filter-trigger[popovertarget]').forEach(function (trigger) {
+    var panel = document.getElementById(trigger.getAttribute('popovertarget'));
+    function place() {
       var own = trigger.getBoundingClientRect();
-      panel.showModal();
       var width = panel.getBoundingClientRect().width;
-      var start = trigger.closest('.x-heading-row') ? own.right - width : row.left;
-      var left = Math.max(16, Math.min(start, window.innerWidth - width - 16));
-      panel.style.setProperty('--x-panel-top', Math.round(row.bottom + 8) + 'px');
-      panel.style.setProperty('--x-panel-left', Math.round(left) + 'px');
-      trigger.setAttribute('aria-expanded', 'true');
+      var left = own.left + width > window.innerWidth - 16 ? own.right - width : own.left;
+      panel.style.setProperty('--x-panel-top', Math.round(own.bottom + window.scrollY + 6) + 'px');
+      panel.style.setProperty('--x-panel-left', Math.round(Math.max(16, left) + window.scrollX) + 'px');
+    }
+    panel.addEventListener('toggle', function (e) {
+      var open = e.newState === 'open';
+      trigger.setAttribute('aria-expanded', String(open));
+      if (open) place();
     });
-    panel.addEventListener('close', function () { trigger.setAttribute('aria-expanded', 'false'); });
-    // closedby="any" where supported; a click on the backdrop otherwise.
-    panel.addEventListener('click', function (e) { if (e.target === panel) panel.close(); });
-    panel.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { panel.close(); }); });
+    window.addEventListener('resize', function () { if (panel.matches(':popover-open')) place(); });
   });
 
   // Section and account menus: close on outside click and Esc (the <details> menus work without this).
