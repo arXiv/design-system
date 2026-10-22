@@ -8,7 +8,7 @@ components:
     title: "Brand colors"
     summary: "arXiv's defining brand colors grouped by prominence and role. These key colors are expanded upon in the design system with additional tints and shades, but the identity remains consistent."
     rules:
-      - "Do not cross Open Blue and Access Lime: Access Lime never appears on public pages; Open Blue never on internal tools. The color difference is functional and quickly informs the user staff which context they are working in."
+      - "Do not cross Open Blue and Access Lime: Access Lime never appears on public pages; Open Blue never on internal tools. The color difference is functional and quickly tells staff which context they are working in."
   - id: links-and-interactive
     title: "Links and interactive"
     summary: "Link colors signal \"you can act on this\" and are a foundational part of accessibility. All link colors maintain accessible contrast levels with their background color in light and dark mode. In addition, inline links are always underlined and color is not the only signal."
@@ -17,7 +17,7 @@ components:
       - "Meets accessibility guideline [WCAG 2.2 SC 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) Non-text Contrast (Level AA)"
   - id: tints-and-shades
     title: "Tints and shades"
-    summary: "Tints and shades are used in a variety of ways: to define page areas and boundaries, to fill components, and to indicate disabled states. They come in two color families, warm brown and cool blue, which can be used to establish two content languages on complex pages. As an example, blue tints are used on HTML papers to distinguish content that belongs to arXiv (DOI, citation tools, and more) while author-created content belongs on the warm tints and white."
+    summary: "Tints and shades are used in a variety of ways: to define page areas and boundaries, to fill components, and to indicate disabled states. They come in two color families, warm brown and cool blue, which can be used to establish two kinds of content on complex pages. As an example, blue tints are used on HTML papers to distinguish content that belongs to arXiv (DOI, citation tools, and more) while author-created content belongs on the warm tints and white."
     classes:
       - name: "--ds-tint-warm"
         does: "The warm tint. The same value on both surfaces."
@@ -46,7 +46,7 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 arXiv's defining brand colors grouped by prominence and role. These key colors are expanded upon in the design system with additional tints and shades, but the identity remains consistent.
 
-**Rule.** Do not cross Open Blue and Access Lime: Access Lime never appears on public pages; Open Blue never on internal tools. The color difference is functional and quickly informs the user staff which context they are working in.
+**Rule.** Do not cross Open Blue and Access Lime: Access Lime never appears on public pages; Open Blue never on internal tools. The color difference is functional and quickly tells staff which context they are working in.
 
 ## Links and interactive
 
@@ -58,7 +58,7 @@ Link colors signal "you can act on this" and are a foundational part of accessib
 
 ## Tints and shades
 
-Tints and shades are used in a variety of ways: to define page areas and boundaries, to fill components, and to indicate disabled states. They come in two color families, warm brown and cool blue, which can be used to establish two content languages on complex pages. As an example, blue tints are used on HTML papers to distinguish content that belongs to arXiv (DOI, citation tools, and more) while author-created content belongs on the warm tints and white.
+Tints and shades are used in a variety of ways: to define page areas and boundaries, to fill components, and to indicate disabled states. They come in two color families, warm brown and cool blue, which can be used to establish two kinds of content on complex pages. As an example, blue tints are used on HTML papers to distinguish content that belongs to arXiv (DOI, citation tools, and more) while author-created content belongs on the warm tints and white.
 
 ```html
 background: var(--ds-tint-warm);
