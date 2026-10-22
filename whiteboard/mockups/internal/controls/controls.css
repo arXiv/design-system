@@ -299,7 +299,7 @@
 .x-data > .ds-table-scroll > .ds-table { border: 0; border-radius: 0; }
 /* The sort bar takes the rest of the row, or a row of its own when it does not fit
    beside the count; then it joins or splits by its own width. */
-.x-data-toolbar > .x-sort { flex: 1 1 36rem; }
+.x-data-toolbar > .x-sort { flex: 1 1 44rem; }
 .x-data-toolbar .x-sort .ds-btn-group { justify-content: flex-end; }
 .x-data-toolbar .x-sort .ds-btn[aria-pressed="false"] { background: var(--ds-surface); }
 
@@ -420,3 +420,64 @@
 .ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > form > button:hover { color: var(--ds-hdr-fg-strong); background: var(--ds-hdr-hover); }
 .ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > a:focus-visible,
 .ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > form > button:focus-visible { outline: 2px solid var(--ds-hdr-ring); outline-offset: -2px; }
+
+
+/* ── The page's heading block: title, description and freshness, tight together ── */
+.x-page-head { display: grid; gap: var(--ds-space-tight); }
+.x-page-head > * { margin: 0; }
+.x-updated-line { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2); font-size: 0.875rem; color: var(--ds-text-muted); }
+.x-updated-line .ds-btn svg { width: 1em; height: 1em; }
+/* The heading block is a group's gap above the data, more than any gap inside either. */
+.mock-section:has(> .x-page-head) { gap: var(--ds-space-6); }
+
+/* Demo only: one toolbar at a time (index.html shows both). */
+:root[data-toolbar="joined"] .x-layout-sentence,
+:root[data-toolbar="sentence"] .x-layout-joined { display: none; }
+
+/* ── The dates as one joined control: [From | date | to | date | Apply] ──
+   The labels are segments of the control, so the whole range shares one baseline and reads
+   as one thing, as .ds-input-group joins controls (shared edges, outer corners rounded). */
+.x-date-joined {
+  --ds-input-padding: 0.37em 0.643em;
+  display: inline-flex;
+  align-items: stretch;
+  margin: 0;
+  font-size: 0.875rem;
+}
+.x-date-joined > * { margin: 0; border-radius: 0; }
+.x-date-joined > * + * { margin-inline-start: -1px; }
+.x-date-joined > label {
+  display: flex;
+  align-items: center;
+  padding: 0 0.7em;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ds-text);
+  background: var(--ds-tint-warm);
+  border: 1px solid var(--ds-border-strong);
+}
+.x-date-joined > .ds-input { width: auto; min-width: 0; font-size: max(0.875rem, var(--x-control-text)); min-height: var(--x-control-min); }
+.x-date-joined > .ds-input:focus-visible { position: relative; z-index: 1; }
+.x-date-joined > :first-child { border-start-start-radius: 6px; border-end-start-radius: 6px; }
+.x-date-joined > .ds-btn { min-height: var(--x-control-min); border-start-end-radius: 6px; border-end-end-radius: 6px; }
+/* On a phone: From and its date on one line, to and its date on the next, Apply below. */
+@media (max-width: 30rem) {
+  .x-date-joined { display: grid; grid-template-columns: auto 1fr; width: 100%; row-gap: var(--ds-space-2); }
+  .x-date-joined > * + * { margin-inline-start: 0; }
+  .x-date-joined > label { border-start-start-radius: 6px; border-end-start-radius: 6px; }
+  .x-date-joined > .ds-input { width: 100%; margin-inline-start: -1px; border-start-end-radius: 6px; border-end-end-radius: 6px; }
+  .x-date-joined > .ds-btn { grid-column: 1 / -1; justify-self: end; border-radius: 6px; }
+}
+
+/* ── The sentence toolbar: the controls inside a sentence that says what is shown ── */
+.x-sentence {
+  --ds-input-padding: 0.37em 0.643em;
+  justify-content: flex-start;
+  gap: var(--ds-space-2);
+  margin: 0;
+  color: var(--ds-text);
+}
+.x-sentence > label { font-weight: 400; color: var(--ds-text); }
+.x-sentence > .ds-input { width: auto; font-size: max(0.875rem, var(--x-control-text)); min-height: var(--x-control-min); }
+.x-sentence > select.ds-input { padding-right: 2.25em; background-position: right 0.75em center; }
+.x-sentence > .ds-btn { margin-inline-start: auto; min-height: var(--x-control-min); }
