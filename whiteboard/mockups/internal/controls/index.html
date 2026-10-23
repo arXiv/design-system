@@ -1,0 +1,55 @@
+<!doctype html>
+<!-- Mockup: page.html at three widths, side by side. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Activity dashboard: hierarchy and controls (mockup)</title>
+  <link rel="stylesheet" href="../../../../docs/fonts.css">
+  <link rel="stylesheet" href="../../../../docs/design-system.css">
+  <script src="../../../../docs/theme.js"></script>
+  <style>
+    /* Frame layout for the mockup only. */
+    .mock-intro { display: grid; gap: var(--ds-space-tight); }
+    .mock-intro > * { margin: 0; }
+    .mock-frames { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--ds-space-section) var(--ds-space-8); }
+    .mock-frame { margin: 0; display: grid; gap: var(--ds-space-tight); max-width: 100%; }
+    .mock-frame--wide { flex: 1 1 100%; }
+    .mock-frame figcaption { font-weight: 600; }
+    .mock-frame figcaption span { font-weight: 400; color: var(--ds-text-muted); }
+    .mock-frame iframe { display: block; width: 100%; height: 900px; border: 1px solid var(--ds-border); border-radius: 8px; background: var(--ds-canvas); }
+  </style>
+</head>
+<body class="ds-page">
+<main class="ds-container" style="--ds-width-page: 1240px">
+  <header class="mock-intro">
+    <h1>Activity dashboard: hierarchy and controls</h1>
+    <p class="ds-section-desc">An exploration of the activity dashboard: where each kind of control belongs in the page’s hierarchy, and which component fits each job. The subject applies to every report, so it sits in the header; the dates apply to the whole page, so they sit with its heading; each sort or filter sits in the toolbar of the data it changes. The mockup also develops two things the design system needs: a compact variant of forms, for small forms that adjust what is already on the page, and clearer navigation styles, with tabs for views and menus that take the colour of the control they drop from.</p>
+    <p class="ds-section-desc">This is a working mockup, not a decision. The two narrow frames use touch sizes. Open <a href="page.html">the page on its own</a> and resize the window to see the navigation fold.</p>
+  </header>
+  <div class="mock-frames">
+    <figure class="mock-frame mock-frame--wide">
+      <figcaption>Laptop <span>(the width of this window, a mouse)</span></figcaption>
+      <iframe src="page.html" title="The page at laptop width"></iframe>
+    </figure>
+    <figure class="mock-frame" style="width: 770px">
+      <figcaption>Tablet <span>(768 pixels, touch)</span></figcaption>
+      <iframe src="page.html?pointer=coarse" title="The page at tablet width"></iframe>
+    </figure>
+    <figure class="mock-frame" style="width: 377px">
+      <figcaption>Phone <span>(375 pixels, touch)</span></figcaption>
+      <iframe src="page.html?pointer=coarse" title="The page at phone width"></iframe>
+    </figure>
+  </div>
+</main>
+<script>
+  // Each frame reports its page's height, so nothing inside scrolls.
+  window.addEventListener('message', function (e) {
+    if (!e.data || !e.data.mockHeight) return;
+    document.querySelectorAll('.mock-frame iframe').forEach(function (f) {
+      if (f.contentWindow === e.source) f.style.height = (e.data.mockHeight + 2) + 'px';
+    });
+  });
+</script>
+</body>
+</html>
