@@ -486,3 +486,15 @@
 .x-pair { display: inline-flex; align-items: center; gap: var(--ds-space-2); }
 .x-sentence .ds-input { width: auto; font-size: max(0.875rem, var(--x-control-text)); }
 .x-sentence select.ds-input { padding-right: 2.25em; background-position: right 0.75em center; }
+/* On a phone a sentence stops reading as one: labels take a column, each field and the
+   button fill the other, so the form is one tidy block instead of ragged lines. */
+@media (max-width: 30rem) {
+  .x-sentence { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--ds-space-2) var(--ds-space-3); width: 100%; }
+  .x-sentence .x-pair { display: contents; }
+  .x-sentence label { display: block; }
+  .x-sentence label::first-letter { text-transform: uppercase; }   /* "to" becomes "To" once it starts a row */
+  .x-sentence .ds-input { width: 100%; }
+  .x-sentence > .ds-btn { grid-column: 2; }
+  .x-sentence > span:not(.x-pair) { grid-column: 1 / -1; }
+  .x-page-context { display: block; }
+}
