@@ -15,8 +15,8 @@ These are arXiv's core identity colors post-spinout. They hold the weight of the
 |---|---|---|
 | **Repository Brown** | `#1c1a17` | Body text, dark backgrounds, primary headers |
 | **Library Grey** | `#6b6459` | Secondary text, labels, muted interactive elements (5.83:1 on white) |
-| **UI Boundary Grey** | `#89837a` | Interactive borders, switch edges, arrows — WCAG 3:1 compliant (3.61:1 on white) |
-| **Disabled Grey** | `#aeaaa4` | Disabled states, exempt from WCAG contrast requirements |
+| **Strong Border** | `#89837a` | Interactive borders, switch edges, arrows — WCAG 3:1 compliant (3.61:1 on white) |
+| **Disabled Text** | `#aeaaa4` | Disabled states, exempt from WCAG contrast requirements |
 | **Link Blue** | `#1565c0` | All interactive links, light mode (5.74:1 on white) |
 | **Link Hover** | `#1050a0` | Link hover state (7.83:1 on white) |
 | **Visited Purple** | `#7b2fbe` | Visited link state (7.02:1 on white) |
@@ -56,7 +56,7 @@ These serve specific UI functions and are not part of the brand identity.
 
 ### Status & alert colors — shared
 
-Semantic colors for the `.ds-alert` component and any success / informational / warning / error messaging. One system in both the public (white) and internal (Warm Wash) surfaces, light and dark. Each state is also distinguished by an icon and a leading word — never color alone (WCAG 1.4.1). All text/background pairings clear AA; most clear AAA.
+Semantic colors for the `.ds-alert` component and any success / informational / warning / error messaging. One system in both the public (white) and internal surfaces, light and dark. Each state is also distinguished by an icon and a leading word — never color alone (WCAG 1.4.1). All text/background pairings clear AA; most clear AAA.
 
 | State | Light bg | Light border | Light text/icon | Dark bg | Dark border | Dark text/icon | Text contrast (light / dark) |
 |---|---|---|---|---|---|---|---|
@@ -80,9 +80,8 @@ Barely perceptible tints for creating section depth without hard borders.
 
 | Name | Hex | Use |
 |---|---|---|
-| **Warm Wash** | `#f8f7f7` | Hover fill on a white surface |
-| **Grey Hover** | `#f0f0ee` | Table headers, hover fills, Related section background |
-| **Border Light** | `#dad8d6` | Component hairline borders — inputs, card edges; the off fill of a switch. Decorative only (below 3:1); not for sole interactive boundaries. Promoted from the mockups 2026-06-11. |
+| **Warm Tint** | `#f0f0ee` | Table headers, hover fills, Related section background |
+| **Border** | `#dad8d6` | Component hairline borders — inputs, card edges; the off fill of a switch. Decorative only (below 3:1); not for sole interactive boundaries. Promoted from the mockups 2026-06-11. |
 
 ---
 
@@ -94,7 +93,7 @@ Barely perceptible tints for creating section depth without hard borders.
 |---|---|---|
 | Primary button | Access Lime `#c4d82e` | `--ds-accent` |
 | Secondary button | Lime tint `#f0f9e8` border `#9cb522` | `--ds-accent-wash`, `--ds-accent-border` |
-| Page background | White `#ffffff` | — |
+| Page background | Canvas `#ffffff` | — |
 | Header | (varies by tool) | — |
 | Text | Repository Brown `#1c1a17` | `--ds-text` |
 | Secondary text | Library Grey `#6b6459` | `--ds-text-muted` |
@@ -108,19 +107,19 @@ Barely perceptible tints for creating section depth without hard borders.
 | Element | Color | Notes |
 |---|---|---|
 | **Header bar** | Black (phase 1) → Repository Brown (phase 2) | See phasing notes below. |
-| **Page background** | White `#ffffff` | Clean reading surface. |
-| **Related section background** | Grey Hover `#f0f0ee` | Full-width band, clearly secondary. |
-| **Footer background** | Border Light `#dad8d6` | Darker than Related, anchors the bottom. |
+| **Page background** | Canvas `#ffffff` | Clean reading surface. |
+| **Related section background** | Warm Tint `#f0f0ee` | Full-width band, clearly secondary. |
+| **Footer background** | Border `#dad8d6` | Darker than Related, anchors the bottom. |
 | **Body text** | Repository Brown `#1c1a17` | — |
 | **Secondary text** | Library Grey `#6b6459` | Metadata labels, dates, muted captions. |
 | **Links** | Link Blue `#1565c0` | All interactive links. Author names, category links, DOIs. |
 | **Primary action buttons (PDF, HTML)** | Open Blue `#a5d6fe`, Repository Brown text | Locked public primary. Repository Brown is the only AA text color on Open Blue (11.3:1). |
-| **Secondary buttons (TeX Source)** | White with UI Boundary Grey border `#89837a` | Lighter weight for secondary actions. |
+| **Secondary buttons (TeX Source)** | White with a Strong Border edge `#89837a` | Lighter weight for secondary actions. |
 | **Version link (current)** | Repository Brown `#1c1a17`, bold | Inline text link, **not** a filled pill; sets `aria-current`. |
 | **Version link (other)** | Link Blue `#1565c0`, underlined | Navigates to that version. (Supersedes the earlier filled "version pills" — see `papers.html#paper-versions`.) |
 | **Version warning banner** | Light amber `#fff8e1` border `#e8b800` | — |
 | **Cite section borders** | `#dad8d6` | Bordered columns within the cite section. |
-| **Labs switches (on)** | Open Blue `#a5d6fe` | Indicates active state; the UI Boundary Grey edge provides the contrast. |
+| **Labs switches (on)** | Open Blue `#a5d6fe` | Indicates active state; the Strong Border edge provides the contrast. |
 
 ### When to use accent colors on public pages
 
@@ -155,9 +154,9 @@ A component fill uses one of these or a status colour. A new fill colour is disc
 
 | Tint | Token | Light | Dark |
 |---|---|---|---|
-| **Warm** | `--ds-tint-warm` | Card Grey `#f0f0ee` | `#282622`, one step lighter than the page |
-| **Accent**, public | `--ds-tint-accent` | Tint Light `#edf7ff` | `#202b38` |
-| **Accent**, inside `.ds-internal` | `--ds-tint-accent` | Access Lime wash `#f0f9e8` | `#292b18` |
+| **Warm** | `--ds-tint-warm` | Warm Tint `#f0f0ee` | `#282622`, one step lighter than the page |
+| **Accent**, public | `--ds-tint-accent` | Accent Tint `#edf7ff` | `#202b38` |
+| **Accent**, inside `.ds-internal` | `--ds-tint-accent` | Accent Tint, internal `#f0f9e8` | `#292b18` |
 
 Warm: the secondary page zone, data cards, the table header row, row headers, striped rows, notes, tags. Accent: selected table rows.
 
@@ -171,15 +170,15 @@ The tints sorted by the job they do. Reach for the named token; if a job is not 
 
 | The job | Reach for | Where it shows up |
 |---|---|---|
-| Page ground | **White** `--ds-canvas` | The default ground of every page, and the footer |
-| Hover fill on a white surface | **Warm Wash** `--ds-surface-hover` | A table row or a TOC entry under the pointer |
-| Secondary content band | **Card Grey** `--ds-tint-warm` | Related band, reader header — one step down from the page, no hard border |
-| Card surface / hover fill | **Card Grey** `--ds-surface-muted` | Card fills and hover fills |
-| Active / pressed fill, deepest warm band | **Border Light** `--ds-border-muted` `#dad8d6` | Footer edge, pressed states, pill borders. Body-size grey/links miss AA here — use Repository Brown or Link Hover |
-| Decorative hairline | **Border Light** `--ds-border` | Input / card edges. Below 3:1 — never the sole boundary of a control |
-| arXiv chrome floating over paper | **Tint Light** + **Tint Border** | Popovers, TOC dropdown — the "light blue = arXiv speaking, not the paper" rule (G4) |
-| Inline active anchor · read-aloud highlight · panel hover | **Active Wash** `--ds-accent-wash` | Deepest arXiv-chrome blue that still holds AA for normal-size text |
-| Open Blue hover step | **Open Blue Bright** `--ds-accent-hover` `#c0e2fe` | Hover state for Open Blue primary fills |
+| Page ground | **Canvas** `--ds-canvas` | The default ground of every page, and the footer |
+| Hover fill on a white surface | **Warm Tint** `--ds-surface-hover` | A table row or a TOC entry under the pointer |
+| Secondary content band | **Warm Tint** `--ds-tint-warm` | Related band, reader header — one step down from the page, no hard border |
+| Card surface / hover fill | **Warm Tint** `--ds-tint-warm` | Card fills and hover fills |
+| Active / pressed fill, deepest warm band | **Border** `--ds-border` `#dad8d6` | Footer edge, pressed states, pill borders. Body-size grey/links miss AA here — use Repository Brown or Link Hover |
+| Decorative hairline | **Border** `--ds-border` | Input / card edges. Below 3:1 — never the sole boundary of a control |
+| arXiv chrome floating over paper | **Accent Tint** with an `--ds-accent-border` edge | Popovers, TOC dropdown — the "light blue = arXiv speaking, not the paper" rule (G4) |
+| Inline active anchor · read-aloud highlight · panel hover | **Accent Wash** `--ds-accent-wash` | Deepest arXiv-chrome blue that still holds AA for normal-size text |
+| Open Blue hover step | **Accent Hover** `--ds-accent-hover` `#c0e2fe` | Hover state for Open Blue primary fills |
 | Public primary action fill | **Open Blue** `--ds-accent` | The one brand fill that takes Repository Brown text at AA |
 | Status surface | the four status tints | See "Status & alert colors" above — each pairs with an icon + leading word |
 
@@ -187,12 +186,14 @@ The tints sorted by the job they do. Reach for the named token; if a job is not 
 
 | On this surface | Body text & links (AA) | Large text / borders only (3:1) | Do not use |
 |---|---|---|---|
-| White · Warm Wash · Card Grey · Tint Light | Repository Brown, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | UI Boundary Grey (borders) | — |
-| Active Wash `#d2eafe` | Repository Brown, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | — | UI Boundary Grey |
-| Border Light `#dad8d6` | Repository Brown, Link Hover, Archival Blue, Visited Purple | Library Grey, Link Blue (≥18px) | UI Boundary Grey |
-| Open Blue `#a5d6fe` | Repository Brown only | Library Grey, Link Blue, Archival Blue (≥18px) | UI Boundary Grey; body-size grey & links |
+| Canvas · Warm Tint · Accent Tint | Repository Brown, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | Strong Border (borders) | — |
+| Accent Wash `#d2eafe` | Repository Brown, Library Grey, Link Blue, Link Hover, Archival Blue, Visited Purple | — | Strong Border |
+| Border `#dad8d6` | Repository Brown, Link Hover, Archival Blue, Visited Purple | Library Grey, Link Blue (≥18px) | Strong Border |
+| Open Blue `#a5d6fe` | Repository Brown only | Library Grey, Link Blue, Archival Blue (≥18px) | Strong Border; body-size grey & links |
 
-> **Drift reconciled (2026-06-17):** the mockups' off-palette one-offs were snapped to tokens — near-white grounds `#fafaf8` / `#fafaf9` → Warm Wash; light-blue footer band `#e8f4ff` → Tint Light; hover blue `#0d4a96` → Link Hover `#1050a0`. Do not reintroduce near-whites lighter than Warm Wash; if a lighter step is ever needed, add it here first.
+> **Drift reconciled (2026-06-17):** the mockups' off-palette one-offs were snapped to tokens — near-white grounds `#fafaf8` / `#fafaf9` → Warm Wash; light-blue footer band `#e8f4ff` → Accent Tint; hover blue `#0d4a96` → Link Hover `#1050a0`. Do not reintroduce near-whites lighter than Warm Tint; if a lighter step is ever needed, add it here first. (Warm Wash merged into Warm Tint on 2026-10-22, with `--ds-surface-muted` and `--ds-border-muted` kept as old names for `--ds-tint-warm` and `--ds-border`.)
+
+> **Renamed (2026-10-22)** so each color is named for its token and the name holds in both modes. Old names: Card Grey and Grey Hover → Warm Tint; Tint Light → Accent Tint; Access Lime wash → Accent Tint, internal; Active Wash → Accent Wash; Open Blue Bright and Tint Border → Accent Hover; Border Light → Border; UI Boundary Grey → Strong Border; Disabled Grey → Disabled Text; White → Canvas.
 
 ---
 
@@ -200,7 +201,7 @@ The tints sorted by the job they do. Reach for the named token; if a job is not 
 
 *(Added 2026-06-13. Rendered with computed ratios on the colors page: `colors.html#tinted`.)*
 
-Every tint in the system belongs to one of two families: the **warm tints** (Library Grey stepped toward white — Warm Wash, Grey Hover/Card Grey, Border Light, plus the text greys) and the **arXiv Chrome family** (Open Blue's tints — Tint Light, Tint Border, Active Wash, and the hover step `#c0e2fe`).
+Every tint in the system belongs to one of two families: the **warm tints** (Library Grey stepped toward white — Warm Tint, Border, Strong Border and Disabled Text) and the **arXiv Chrome family** (Open Blue's tints — Accent Tint, Accent Wash, and Accent Hover `#c0e2fe`, which is also the panel edge `--ds-accent-border`).
 
 **"No one-off hex values" has three tiers:**
 
@@ -211,10 +212,10 @@ Every tint in the system belongs to one of two families: the **warm tints** (Lib
 **Accessible combinations on tints** (computed, WCAG; full matrix on the colors page):
 
 - **Repository Brown `#1c1a17` passes AA on every approved surface** — including Open Blue (11.3:1), which is why buttons set Repository Brown on Open Blue.
-- **Library Grey and Link Blue hold AA through Active Wash** (`#d2eafe`) but miss it on **Border Light** (`#dad8d6`: 4.45 / 4.37) — on Border Light use Repository Brown, Link Hover `#1050a0` (6.0:1), or large text.
-- **UI Boundary Grey holds its 3:1 only through Tint Light** — on Border Light, Active Wash, or Open Blue, draw boundaries with Library Grey instead.
+- **Library Grey and Link Blue hold AA through Accent Wash** (`#d2eafe`) but miss it on **Border** (`#dad8d6`: 4.45 / 4.37) — on Border use Repository Brown, Link Hover `#1050a0` (6.0:1), or large text.
+- **Strong Border holds its 3:1 only through Accent Tint** — on Border, Accent Wash, or Open Blue, draw boundaries with Library Grey instead.
 - **On Open Blue itself, Repository Brown is the only text color.**
-- **Secondary buttons on tinted bands take the `.on-tint` modifier** (fill swaps to Card Grey — secondary via warm-on-cool material difference, not low contrast). See `design-system.css`.
+- **Secondary buttons on tinted bands take the `.on-tint` modifier** (fill swaps to Warm Tint — secondary via warm-on-cool material difference, not low contrast). See `design-system.css`.
 
 ---
 
