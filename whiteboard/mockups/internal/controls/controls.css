@@ -187,7 +187,7 @@
 .ds-subnav .x-views a:hover { color: var(--ds-text); background: var(--ds-tint-warm); border-bottom-color: transparent; }
 .ds-subnav .x-views a[aria-current="page"] {
   color: var(--ds-text);
-  background: var(--ds-canvas);
+  background: var(--x-tab-joins, var(--ds-canvas));   /* the ground of what comes below it */
   border-color: var(--ds-border);
   box-shadow: inset 0 3px 0 var(--ds-subnav-current, var(--ds-accent-strong));
   text-shadow: none;
@@ -498,3 +498,7 @@
   .x-sentence > span:not(.x-pair) { grid-column: 1 / -1; }
   .x-page-context { display: block; }
 }
+
+
+/* A page that opens with a secondary band: the current tab joins the band, not the white page. */
+body:has(main > .ds-zone-secondary:first-child) { --x-tab-joins: var(--ds-zone-secondary-bg); }
