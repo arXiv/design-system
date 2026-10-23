@@ -11,7 +11,7 @@ components:
       - name: "<a href> inside .ds-page"
         does: "Every anchor with an `href` inside a `.ds-page` takes the link treatment: the colour, the underline, and the hover, visited and focus states. There is no class to add, and the dark values arrive through the same token flip as everything else."
     notes:
-      - "Try the states here: point at the link, press Tab to reach it, follow it once and it keeps the visited colour."
+      - "Try the states here: point at the link, press Tab to reach it, follow it once and it keeps the visited colour. Meets accessibility guidelines [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA) and [WCAG 2.2 SC 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) Focus Visible (Level AA)"
   - id: in-context
     title: "In context"
     summary: "Inline within body text and within muted-grey secondary text."
@@ -19,7 +19,7 @@ components:
       - name: "<a href> in secondary text"
         does: "The same link in body text and in secondary text. The link keeps Link Blue on both; only the surrounding text changes colour."
     notes:
-      - "The visited state matters most for inline references in long articles, where it helps a reader scan papers they have already followed up on."
+      - "The visited state matters most for inline references in long articles, where it helps a reader scan papers they have already followed up on. Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
     rules:
       - "Inline body links must be underlined: Color contrast against body text is only 3.0:1 in light mode — too marginal to rely on alone. Underlines are mandatory for inline links per DESIGN-POLICIES.md and WCAG 1.4.1 (use of color). Standalone navigation links (header, footer, button-like surfaces) may omit the underline."
   - id: links-and-text-only-buttons
@@ -30,6 +30,8 @@ components:
         does: "Goes to another page or another place on this one. Underlined, and takes the visited colour once followed."
       - name: ".ds-btn.ds-btn-text"
         does: "Acts on this page. Plain Link Blue text with no underline and no visited state; the surrounding text sets its size. When it opens or closes something, add `aria-expanded`."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
   - id: linking-to-a-section
     title: "Linking to a section"
     summary: "A section heading can include a control that copies a link to that section. It is an option for long pages that readers cite or share in parts, such as HTML papers and these docs; most headings do not need it. Hover a heading on this page, or tab to it, and the control appears."
@@ -44,6 +46,8 @@ components:
         does: "Completes the accessible name with the section: “Permalink to Dividers”. The name starts with the visible word."
       - name: "[role=\"status\"]"
         does: "One region on the page. The script writes “Link to Dividers copied” into it."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A) and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)"
 rules:
   - "Use `--ds-text-disabled` (`#aeaaa4`) for the disabled color and set `pointer-events: none`. The underline stays so it is still recognisable as a (currently-unavailable) link. The disabled state falls below AA on contrast — WCAG exempts disabled controls from contrast requirements."
   - "A list of author names, a navigation bar, a footer column: these are lists in which every item is a link, and none of them is underlined. The underline exists to tell a link apart from the text around it, and in a list of links there is no such text; underlining every item would add visual noise and tell the reader nothing. WCAG asks for the underline only where colour alone would have to separate a link from ordinary text, which is the case for an inline link and not for a list. The links keep Link Blue, the hover and focus states, and the visited colour where it means something. Put `.ds-link-list` on the element that holds the list."
@@ -74,7 +78,7 @@ One link, four states. At rest it is Link Blue with a 1px underline set 2px belo
 
 - `<a href> inside .ds-page` — Every anchor with an `href` inside a `.ds-page` takes the link treatment: the colour, the underline, and the hover, visited and focus states. There is no class to add, and the dark values arrive through the same token flip as everything else.
 
-> Try the states here: point at the link, press Tab to reach it, follow it once and it keeps the visited colour.
+> Try the states here: point at the link, press Tab to reach it, follow it once and it keeps the visited colour. Meets accessibility guidelines [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA) and [WCAG 2.2 SC 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) Focus Visible (Level AA)
 
 ## In context
 
@@ -98,7 +102,7 @@ Inline within body text and within muted-grey secondary text.
 
 - `<a href> in secondary text` — The same link in body text and in secondary text. The link keeps Link Blue on both; only the surrounding text changes colour.
 
-> The visited state matters most for inline references in long articles, where it helps a reader scan papers they have already followed up on.
+> The visited state matters most for inline references in long articles, where it helps a reader scan papers they have already followed up on. Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)
 
 **Rule.** Inline body links must be underlined: Color contrast against body text is only 3.0:1 in light mode — too marginal to rely on alone. Underlines are mandatory for inline links per DESIGN-POLICIES.md and WCAG 1.4.1 (use of color). Standalone navigation links (header, footer, button-like surfaces) may omit the underline.
 
@@ -115,6 +119,8 @@ A link goes somewhere: it has an `href`, it is underlined, and it remembers bein
 
 - `<a href>` — Goes to another page or another place on this one. Underlined, and takes the visited colour once followed.
 - `.ds-btn.ds-btn-text` — Acts on this page. Plain Link Blue text with no underline and no visited state; the surrounding text sets its size. When it opens or closes something, add `aria-expanded`.
+
+> Meets accessibility guideline [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)
 
 ## Linking to a section
 
@@ -141,6 +147,8 @@ A section heading can include a control that copies a link to that section. It i
 - `.ds-permalink` — The control, a `<button>` with the link icon and the word “Permalink”, that `anchors.js` adds to every section heading with an `id`. It shows while the heading is hovered, while it has focus, and after a tap on a screen without hover. It stays in the tab order while it is hidden.
 - `.is-sr-only` — Completes the accessible name with the section: “Permalink to Dividers”. The name starts with the visible word.
 - `[role="status"]` — One region on the page. The script writes “Link to Dividers copied” into it.
+
+> Meets accessibility guidelines [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A) and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)
 
 ## Rules
 

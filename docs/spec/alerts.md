@@ -18,6 +18,8 @@ components:
         does: "Holds the text. One or more `<p>` elements; a link inside it takes the alert’s own colour."
       - name: ".ds-alert-title"
         does: "The leading line, in bold. It names the situation, and it is what conveys the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A), [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA), and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)"
     rules:
       - "Preferences saved: You will get a weekly digest of new papers in your selected categories."
       - "Submission limits added: Due to increased volume, arXiv is limiting submissions to 2 per month."
@@ -41,6 +43,8 @@ components:
         does: "The dismiss control, documented on [Buttons](buttons.html#the-close-control). Put it last inside `.ds-alert`; the alert pushes it to the end of the row and it takes the alert’s colour. Removing the alert from the page is the host’s job: the stylesheet gives the control no behaviour."
       - name: ".is-sr-only"
         does: "Required inside the control. The icon is `aria-hidden`, so without this span the button announces as “button” and nothing more."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A) and [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)"
     rules:
       - "Choosing the wrong category may delay announcement."
 rules:
@@ -86,6 +90,8 @@ arXiv's design system contains four alerts that align with user expectations and
 - `.ds-alert-icon` — The icon, an inline SVG with `aria-hidden="true"`. Each state has its own shape: a check, an “i”, a triangle, an “x”. Copy the icon element whole, attributes included: Lucide draws each “!” or “i” dot as a 0.01-unit path that only renders with `stroke-linecap="round"`. Without these attributes it renders as an empty hairline outline.
 - `.ds-alert-content` — Holds the text. One or more `<p>` elements; a link inside it takes the alert’s own colour.
 - `.ds-alert-title` — The leading line, in bold. It names the situation, and it is what conveys the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert.
+
+> Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A), [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA), and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)
 
 **Rule.** Preferences saved: You will get a weekly digest of new papers in your selected categories.
 
@@ -141,6 +147,8 @@ The dismiss control, fully documented on [Buttons](buttons.html#the-close-contro
 
 - `.ds-close` — The dismiss control, documented on [Buttons](buttons.html#the-close-control). Put it last inside `.ds-alert`; the alert pushes it to the end of the row and it takes the alert’s colour. Removing the alert from the page is the host’s job: the stylesheet gives the control no behaviour.
 - `.is-sr-only` — Required inside the control. The icon is `aria-hidden`, so without this span the button announces as “button” and nothing more.
+
+> Meets accessibility guidelines [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A) and [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)
 
 **Rule.** Choosing the wrong category may delay announcement.
 
