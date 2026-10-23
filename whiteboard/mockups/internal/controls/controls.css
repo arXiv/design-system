@@ -18,8 +18,12 @@
 :root[data-pointer="coarse"] { --x-control: 2.75rem; --x-control-text: 1rem; --x-control-box: 2rem; }
 /* A button drawn smaller than its target: the target grows past the box, unseen,
    to the full control height (DESIGN-POLICIES, Target size). */
+:root {
+  --x-compact-h: 1.9375rem;   /* a compact control's drawn height: .ds-btn-compact's 31px */
+  --x-reach: max(0px, (var(--x-control) - var(--x-compact-h)) / 2);   /* 0 with a mouse; on touch, what makes 44px */
+}
 .x-hit { position: relative; }
-.x-hit::after { content: ""; position: absolute; inset: calc((var(--x-control-box) - var(--x-control)) / 2) 0; }
+.x-hit::after { content: ""; position: absolute; inset: min(0px, (100% - var(--x-control)) / 2) 0; }   /* at least the control height, whatever the box */
 
 
 /* ── Full forms keep the design system's sizes. On touch, every control is at
@@ -48,16 +52,17 @@
   gap: var(--ds-space-3) var(--ds-space-4);
 }
 /* A field: the full form's label, above it, with a smaller gap. */
-.x-form-small .x-filter { display: grid; grid-template-columns: max-content max-content; align-items: center; gap: var(--ds-space-1) 0.4em; }
+.x-form-small .x-filter { display: grid; grid-template-columns: max-content max-content; align-items: center; gap: max(0px, var(--ds-space-1) - var(--x-reach)) 0.4em; }
 .x-form-small .x-filter > label { grid-column: 1 / -1; font-size: 0.8125rem; font-weight: 600; color: var(--ds-text); }
 .x-form-small .x-filter > span { color: var(--ds-text-muted); }
 /* As wide as what goes in it: a select fits its longest choice, a date its own picker. */
 .x-form-small .ds-input { width: auto; font-size: max(0.875rem, var(--x-control-text)); }
 .x-form-small .ds-input[type="number"] { width: 5em; }
+.x-form-small .ds-input[type="search"] { width: 24em; max-width: 100%; }
+.x-form-small-body + .x-form-small-body { margin-top: var(--ds-space-3); }
 .x-form-small select.ds-input:not([multiple]):not([size]) { padding-right: 2.25em; background-position: right 0.75em center; }
-.x-form-small :is(.ds-input, .ds-btn) { min-height: var(--x-control-min); }
 /* The submit, compact and secondary, on the fields' row. */
-.x-form-small-actions { display: flex; align-items: center; gap: var(--ds-space-4); }
+.x-form-small-actions { display: flex; align-items: center; gap: var(--ds-space-4); margin-bottom: var(--x-reach); }
 /* Narrow: each field takes the full width, and the submit ends the form on the right. */
 @container x-form-small (max-width: 30em) {
   .x-form-small-body { display: grid; grid-template-columns: minmax(0, 1fr); }
@@ -66,6 +71,31 @@
   .x-form-small .x-filter > .ds-input:only-of-type:not(:has(~ span)) { grid-column: 1 / -1; }
   .x-form-small-actions { justify-content: flex-end; }
 }
+
+
+/* ── A compact field: drawn at the compact size, with a full touch target ──
+   A field cannot carry an unseen ::after like a button, so its target grows another way:
+   on touch it has a transparent border above and below (the reach), its fill stops inside that
+   border, and its visible edge is an inset line. The box looks compact; the field itself,
+   and so its target, is the full control height. With a mouse the reach is 0. */
+:is(.x-form-small, .x-sentence) .ds-input:not(textarea) {
+  border: solid transparent;
+  border-width: var(--x-reach) 0;   /* above and below only, so its edges line up with its label */
+  border-radius: 6px / calc(6px + var(--x-reach));   /* the inner corners stay a 6px circle */
+  background-clip: padding-box;
+  box-shadow: inset 0 0 0 1px var(--ds-border-strong);
+  min-height: calc(var(--x-compact-h) + 2 * var(--x-reach));
+  padding-block: 0;
+}
+:is(.x-form-small, .x-sentence) .ds-input:not(textarea):focus-visible {
+  /* The ring on the visible edge; the transparent outline is what forced-colours mode draws. */
+  outline: 2px solid transparent;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px var(--ds-focus-ring);
+}
+:is(.x-form-small, .x-sentence) .ds-input:not(textarea).is-invalid { box-shadow: inset 0 0 0 2px var(--ds-error-border, var(--ds-border-strong)); }
+/* Its buttons: drawn compact, the target grown unseen (.x-hit); level with the field's visible box. */
+:is(.x-form-small, .x-sentence) .ds-btn { min-height: 0; }
 
 
 /* ── The second row: the section menu, then the views ──
@@ -220,7 +250,7 @@
   --ds-btn-secondary-rim-a: var(--ds-btn-secondary-rim-active);
   --ds-btn-secondary-rim-b: var(--ds-btn-secondary-rim-active);
 }
-.x-filter-trigger > svg { width: 1.1em; height: 1.1em; flex: none; }
+.x-filter-trigger > svg { width: 1em; height: 1em; flex: none; }
 /* What is applied: for a subject, a path from broad to narrow. */
 .x-filter-value { min-width: 0; font-weight: 400; color: var(--ds-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .x-filter-value b { font-weight: 600; color: var(--ds-text); }
@@ -454,6 +484,5 @@
 .x-sentence label { font-weight: 400; color: var(--ds-text); }
 /* A label and its field wrap together, so a word is never left at the end of a line. */
 .x-pair { display: inline-flex; align-items: center; gap: var(--ds-space-2); }
-.x-sentence .ds-input { width: auto; font-size: max(0.875rem, var(--x-control-text)); min-height: var(--x-control-min); }
+.x-sentence .ds-input { width: auto; font-size: max(0.875rem, var(--x-control-text)); }
 .x-sentence select.ds-input { padding-right: 2.25em; background-position: right 0.75em center; }
-.x-sentence > .ds-btn { min-height: var(--x-control-min); }
