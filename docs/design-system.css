@@ -2464,6 +2464,10 @@ html:has(.ds-modal[open]) {
    card, such as a band, would otherwise sit under it. */
 .ds-card:has(> .ds-marginalia) { padding-right: calc(var(--ds-space-6) + 28px); }
 .ds-card:has(> .ds-marginalia) > .ds-acc:last-child { margin-right: calc(-1 * (var(--ds-space-6) + 28px)); }
+/* Beside a card grid, the grid is the block. Folded, the mark sits just above
+   the grid's top-right corner, clear of the cards. */
+.ds-card-grid:has(> .ds-marginalia) { position: relative; }
+.ds-card-grid > .ds-marginalia { top: auto; bottom: calc(100% + var(--ds-space-1)); }
 .ds-marginalia > summary {
   display: inline-flex;
   align-items: center;
@@ -2504,6 +2508,7 @@ html:has(.ds-modal[open]) {
     .ds-marginalia > summary { display: none; }
     .ds-card:has(> .ds-marginalia) { padding-right: var(--ds-space-6); }
     .ds-card:has(> .ds-marginalia) > .ds-acc:last-child { margin-right: calc(-1 * var(--ds-space-6)); }
+    .ds-card-grid > .ds-marginalia { top: 0; bottom: auto; }
     .ds-marginalia::details-content { content-visibility: visible; display: block; }
     .ds-marginalia-body {
       position: static;
