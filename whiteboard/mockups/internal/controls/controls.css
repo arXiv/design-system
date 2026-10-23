@@ -133,17 +133,17 @@
 .x-section-menu > summary svg,
 .x-views-menu > summary .x-chevron { width: 1.25em; height: 1.25em; stroke-width: 3; color: var(--ds-text); }
 .x-section-menu[open] > summary svg { transform: rotate(180deg); }
-/* A navigation menu is a dark sheet, as the header's menu is on a phone: square corners,
-   44px rows with hairlines. It hangs from its control, at least 18rem wide; when its row is
-   the full width of the screen, so is the sheet. (A filter panel is a light, rounded popover.)
-   The colours are the header's own (--ds-hdr-*), which are set on .ds-site-header only. */
+/* A navigation menu is a sheet: square corners, 44px rows with hairlines. It hangs from its
+   control, at least 18rem wide; when its row is the full width of the screen, so is the sheet.
+   It takes the colour of the control it drops from: white from the white row, the accent's
+   light tint from the section menu, dark from the header. (A filter panel is a light, rounded popover.) */
 .ds-subnav { position: relative; }
 .x-section-menu-list {
-  --x-menu-bg: var(--ds-chrome);
-  --x-menu-fg: var(--ds-grey-55);
-  --x-menu-fg-strong: var(--ds-grey-10);
-  --x-menu-hover: #302c28;
-  --x-menu-divider: #4a433d;
+  --x-menu-bg: var(--ds-surface);
+  --x-menu-fg-strong: var(--ds-text);
+  --x-menu-hover: var(--ds-surface-hover);
+  --x-menu-divider: var(--ds-border);
+  --x-menu-current: var(--ds-subnav-current, var(--ds-accent-strong));   /* the current tab's colour */
   position: absolute;
   top: 100%;
   left: 0;
@@ -152,8 +152,15 @@
   min-width: 18rem;
   padding: 0;
   background: var(--x-menu-bg);
-  border-top: 1px solid var(--x-menu-divider);
+  border: 1px solid var(--x-menu-divider);
+  border-top: 0;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+/* From the section menu: its light accent tint. */
+.x-section-menu > .x-section-menu-list {
+  --x-menu-bg: var(--ds-tint-accent);
+  --x-menu-hover: var(--ds-accent-wash-hover, var(--ds-accent-wash));
+  --x-menu-divider: var(--ds-accent-border);
 }
 .ds-subnav .x-section-menu-list a {
   display: flex;
@@ -168,8 +175,8 @@
 .ds-subnav .x-section-menu-list a:last-child { border-bottom: 0; }
 .ds-subnav .x-section-menu-list a:visited { color: var(--x-menu-fg-strong); }
 .ds-subnav .x-section-menu-list a:hover { color: var(--x-menu-fg-strong); background: var(--x-menu-hover); }
-.ds-subnav .x-section-menu-list a:focus-visible { outline: 2px solid var(--ds-focus-ring-on-dark, #64b5f6); outline-offset: -2px; }
-.ds-subnav .x-section-menu-list a:is([aria-current="true"], [aria-current="page"]) { font-weight: 600; box-shadow: inset 3px 0 0 var(--ds-access-lime); }
+.ds-subnav .x-section-menu-list a:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: -2px; }
+.ds-subnav .x-section-menu-list a:is([aria-current="true"], [aria-current="page"]) { font-weight: 600; box-shadow: inset 3px 0 0 var(--x-menu-current); }
 
 /* The views are tabs. The current tab is a box joined to the page below it, with an
    accent line along its top; the others are text on the row, tinted under the pointer. */
