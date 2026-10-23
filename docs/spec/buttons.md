@@ -23,7 +23,7 @@ components:
       - name: "Icons"
         does: "Any `.ds-btn` accepts an inline SVG. The stylesheet sizes it in `em`, blocks the baseline gap, and stops it shrinking beside a long label. Set `stroke=\"currentColor\"` and nothing else."
       - name: "Disabled"
-        does: "One flat `--ds-surface-muted` fill for every variant. An action that is merely not available yet takes `aria-disabled` instead — see [Forms](forms.html#validation)."
+        does: "One flat `--ds-tint-warm` fill for every variant. An action that is merely not available yet takes `aria-disabled` instead — see [Forms](forms.html#validation)."
     notes:
       - "When to use a text button vs a text link: Use a text button for actions that do not navigate to a new page. Use a text link when navigating to a new page or to an anchor link on the same page."
     rules:
@@ -77,11 +77,20 @@ components:
     summary: "The primary button works everywhere. The gradient border and vignette keep the edge legible on cool, warm, and dark backgrounds. The secondary button can be adapted with a modifier class when using it on a tinted background."
     classes:
       - name: ".on-tint"
-        does: "On a *cool* tint, swaps the secondary's white fill for Card Grey (same luminance, warm hue) so it reads as secondary by material rather than by contrast. On a *warm* tint the default white secondary already sits comfortably."
+        does: "On a *cool* tint, swaps the secondary's white fill for Warm Tint (same luminance, warm hue) so it reads as secondary by material rather than by contrast. On a *warm* tint the default white secondary already sits comfortably."
       - name: ".on-dark"
         does: "For a field dark enough to host white text: an outreach masthead, a photo band. A white fill would read as a paper rectangle stuck to the surface, louder than the primary beside it; `.on-dark` drops the fill so the field shows through and draws the boundary with a white border. See [outreach sites](outreach.html) for where such fields are allowed."
       - name: "Not this"
-        does: "A default white secondary on a cool tint pops too hard and reads as primary — that is the case `.on-tint` exists for. Do not put `.on-tint` on a warm tint: its Card Grey fill melts into the surface. And `.on-dark` is only correct on a dark field; on a light tint use `.on-tint`."
+        does: "A default white secondary on a cool tint pops too hard and reads as primary — that is the case `.on-tint` exists for. Do not put `.on-tint` on a warm tint: its Warm Tint fill melts into the surface. And `.on-dark` is only correct on a dark field; on a light tint use `.on-tint`."
+  - id: compact-buttons
+    title: "Compact buttons"
+    group: "Modifiers"
+    summary: "A smaller button for a small form, such as a single field with its own actions. `.ds-btn-compact` reduces the padding of a primary, secondary, text-only or icon-only button; its colour still comes from the surface."
+    classes:
+      - name: ".ds-btn-compact"
+        does: "Sets smaller padding and a smaller minimum width on the button. It works with every tier and with `.ds-btn-icon`."
+      - name: "When to use it"
+        does: "A small form, or a row of controls that sits inside content, where a full-size button would outweigh what it acts on. The main action of a page or of a full form stays full size."
   - id: button-groups
     title: "Button groups"
     group: "Modifiers"
@@ -144,7 +153,7 @@ arXiv has three button tiers: primary, secondary, and a quiet text-only button (
 - `Quiet tier` — The text button borrows the link’s quietness, not its identity: Link Blue, never underlined, and hover is a background wash — the same feedback the other buttons give. Underlines stay with links, so a reader can still tell “this navigates” from “this acts here.”
 - `No outline tier` — The secondary is already white fill plus border, and on a white canvas a transparent fill is the same pixels as a white one.
 - `Icons` — Any `.ds-btn` accepts an inline SVG. The stylesheet sizes it in `em`, blocks the baseline gap, and stops it shrinking beside a long label. Set `stroke="currentColor"` and nothing else.
-- `Disabled` — One flat `--ds-surface-muted` fill for every variant. An action that is merely not available yet takes `aria-disabled` instead — see [Forms](forms.html#validation).
+- `Disabled` — One flat `--ds-tint-warm` fill for every variant. An action that is merely not available yet takes `aria-disabled` instead — see [Forms](forms.html#validation).
 
 > When to use a text button vs a text link: Use a text button for actions that do not navigate to a new page. Use a text link when navigating to a new page or to an anchor link on the same page.
 
@@ -225,9 +234,23 @@ The primary button works everywhere. The gradient border and vignette keep the e
 <a class="ds-btn on-dark" href="/subscribe">Subscribe</a>
 ```
 
-- `.on-tint` — On a *cool* tint, swaps the secondary's white fill for Card Grey (same luminance, warm hue) so it reads as secondary by material rather than by contrast. On a *warm* tint the default white secondary already sits comfortably.
+- `.on-tint` — On a *cool* tint, swaps the secondary's white fill for Warm Tint (same luminance, warm hue) so it reads as secondary by material rather than by contrast. On a *warm* tint the default white secondary already sits comfortably.
 - `.on-dark` — For a field dark enough to host white text: an outreach masthead, a photo band. A white fill would read as a paper rectangle stuck to the surface, louder than the primary beside it; `.on-dark` drops the fill so the field shows through and draws the boundary with a white border. See [outreach sites](outreach.html) for where such fields are allowed.
-- `Not this` — A default white secondary on a cool tint pops too hard and reads as primary — that is the case `.on-tint` exists for. Do not put `.on-tint` on a warm tint: its Card Grey fill melts into the surface. And `.on-dark` is only correct on a dark field; on a light tint use `.on-tint`.
+- `Not this` — A default white secondary on a cool tint pops too hard and reads as primary — that is the case `.on-tint` exists for. Do not put `.on-tint` on a warm tint: its Warm Tint fill melts into the surface. And `.on-dark` is only correct on a dark field; on a light tint use `.on-tint`.
+
+## Compact buttons  (Modifiers)
+
+A smaller button for a small form, such as a single field with its own actions. `.ds-btn-compact` reduces the padding of a primary, secondary, text-only or icon-only button; its colour still comes from the surface.
+
+```html
+<div class="ds-btn-group ds-btn-group--end">
+  <button class="ds-btn ds-btn-text ds-btn-compact" type="button">Cancel</button>
+  <button class="ds-btn ds-btn-primary ds-btn-compact" type="submit">Rename</button>
+</div>
+```
+
+- `.ds-btn-compact` — Sets smaller padding and a smaller minimum width on the button. It works with every tier and with `.ds-btn-icon`.
+- `When to use it` — A small form, or a row of controls that sits inside content, where a full-size button would outweigh what it acts on. The main action of a page or of a full form stays full size.
 
 ## Button groups  (Modifiers)
 

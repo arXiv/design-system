@@ -101,7 +101,7 @@ components:
     summary: "Every other row takes a tint, which helps the eye follow a long row across a wide table."
     classes:
       - name: ".ds-table--striped"
-        does: "Tints every even row of the body in Card Grey, on both surfaces."
+        does: "Tints every even row of the body in Warm Tint, on both surfaces."
   - id: numeric-columns
     title: "Numeric columns"
     group: "Modifiers"
@@ -455,7 +455,7 @@ Every other row takes a tint, which helps the eye follow a long row across a wid
 </table>
 ```
 
-- `.ds-table--striped` — Tints every even row of the body in Card Grey, on both surfaces.
+- `.ds-table--striped` — Tints every even row of the body in Warm Tint, on both surfaces.
 
 ## Numeric columns  (Modifiers)
 

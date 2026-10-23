@@ -14,10 +14,10 @@ components:
         does: "On a parent, usually `<html>` or `<body>`. Re-points the accent to Access Lime for everything inside. Nothing on the card itself changes. The basic card has no accent of its own, so it looks the same on both surfaces; what changes is everything inside it that reaches for the accent, such as the button."
   - id: data-cards
     title: "Data cards"
-    summary: "Intended for organizing metadata and other reference information: the facts about one record, each pair stacking a label over a value. Cards read correctly against both white or a warm-wash page background."
+    summary: "Intended for organizing metadata and other reference information: the facts about one record, each pair stacking a label over a value. Cards read correctly on both the Canvas and the Warm Tint."
     classes:
       - name: ".ds-card.ds-card--data"
-        does: "On a `<section>` with an `aria-label`, which makes it a named region. A tinted ground (`--ds-surface-muted`) and a 4px top edge in the accent, so it reads as reference rather than content. No padding of its own: the pairs have it."
+        does: "On a `<section>` with an `aria-label`, which makes it a named region. A tinted ground (`--ds-tint-warm`) and a 4px top edge in the accent, so it reads as reference rather than content. No padding of its own: the pairs have it."
       - name: "dl > div"
         does: "One pair per `<div>`, `<dt>` label then `<dd>` value. Pairs sit side by side when the card is wide enough for two and stack in one column when it is not; a hairline separates them in both directions."
       - name: "dt, dd"
@@ -102,7 +102,7 @@ A flexible and unopinionated white surface with a hairline border and 8px radius
 
 ## Data cards
 
-Intended for organizing metadata and other reference information: the facts about one record, each pair stacking a label over a value. Cards read correctly against both white or a warm-wash page background.
+Intended for organizing metadata and other reference information: the facts about one record, each pair stacking a label over a value. Cards read correctly on both the Canvas and the Warm Tint.
 
 **Public**
 
@@ -132,7 +132,7 @@ Intended for organizing metadata and other reference information: the facts abou
 </section>
 ```
 
-- `.ds-card.ds-card--data` — On a `<section>` with an `aria-label`, which makes it a named region. A tinted ground (`--ds-surface-muted`) and a 4px top edge in the accent, so it reads as reference rather than content. No padding of its own: the pairs have it.
+- `.ds-card.ds-card--data` — On a `<section>` with an `aria-label`, which makes it a named region. A tinted ground (`--ds-tint-warm`) and a 4px top edge in the accent, so it reads as reference rather than content. No padding of its own: the pairs have it.
 - `dl > div` — One pair per `<div>`, `<dt>` label then `<dd>` value. Pairs sit side by side when the card is wide enough for two and stack in one column when it is not; a hairline separates them in both directions.
 - `dt, dd` — The label is small, condensed and uppercased by CSS: type it in sentence case. The value is in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A value that goes somewhere is an `<a href>` and takes the ordinary link colours.
 - `.ds-internal` — The top edge takes Access Lime. The markup is the public one.

@@ -77,7 +77,7 @@ components:
       - name: "role=\"switch\""
         does: "On the checkbox input. With it a screen reader says “on” and “off”; without it, “checkbox, checked”. The input stays a real checkbox, so the keyboard behaviour, the state and the form value are native and it works with no JavaScript."
       - name: ".ds-switch-track, .ds-switch-thumb"
-        does: "The drawn background and the thumb that moves across it. Both required, nested as shown, directly after the input. Only the background fill changes with the state: Border Light when off, the accent when on (Open Blue public, Access Lime inside `.ds-internal`). The UI Boundary Grey edge and the Repository Brown thumb stay the same in both states and both themes."
+        does: "The drawn background and the thumb that moves across it. Both required, nested as shown, directly after the input. Only the background fill changes with the state: the Border color when off, the accent when on (Open Blue public, Access Lime inside `.ds-internal`). The Strong Border edge and the Repository Brown thumb stay the same in both states and both themes."
       - name: ".ds-switch-label"
         does: "The visible text. Its colour follows the state; nothing else about it changes."
       - name: "[disabled]"
@@ -332,7 +332,7 @@ A boolean that applies the moment it is flipped. If the change needs a Save step
 
 - `.ds-switch` — The `<label>` that wraps the whole control. The visible text goes inside it, because that is what names the switch; a switch with only a heading beside it has no accessible name.
 - `role="switch"` — On the checkbox input. With it a screen reader says “on” and “off”; without it, “checkbox, checked”. The input stays a real checkbox, so the keyboard behaviour, the state and the form value are native and it works with no JavaScript.
-- `.ds-switch-track, .ds-switch-thumb` — The drawn background and the thumb that moves across it. Both required, nested as shown, directly after the input. Only the background fill changes with the state: Border Light when off, the accent when on (Open Blue public, Access Lime inside `.ds-internal`). The UI Boundary Grey edge and the Repository Brown thumb stay the same in both states and both themes.
+- `.ds-switch-track, .ds-switch-thumb` — The drawn background and the thumb that moves across it. Both required, nested as shown, directly after the input. Only the background fill changes with the state: the Border color when off, the accent when on (Open Blue public, Access Lime inside `.ds-internal`). The Strong Border edge and the Repository Brown thumb stay the same in both states and both themes.
 - `.ds-switch-label` — The visible text. Its colour follows the state; nothing else about it changes.
 - `[disabled]` — On the input. The background and the label grey out together.
 
