@@ -510,3 +510,24 @@
 
 /* A page that opens with a secondary band: the current tab joins the band, not the white page. */
 body:has(main > .ds-zone-secondary:first-child) { --x-tab-joins: var(--ds-zone-secondary-bg); }
+
+/* The header's dropdown arrow: the second row's heavy chevron (docs/icons/chevron-down.svg at
+   stroke 3), not the 10px "▾" character, so every dropdown on the page says it the same way. */
+.ds-site-header .ds-site-header-dropdown > summary::after {
+  content: "";
+  display: inline-block;
+  font-size: inherit;   /* design-system.css sets 0.625rem here, for the character */
+  width: 1.35em;
+  height: 1.35em;
+  margin-inline-start: 0.3em;
+  vertical-align: -0.35em;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform 0.15s;
+}
+.ds-site-header .ds-site-header-dropdown[open] > summary::after { transform: rotate(180deg); }
+/* Forced colours drop backgrounds, so the drawn chevron would vanish: the character instead. */
+@media (forced-colors: active) {
+  .ds-site-header .ds-site-header-dropdown > summary::after { content: " \25BE"; width: auto; height: auto; background: none; -webkit-mask: none; mask: none; }
+}
