@@ -40,6 +40,8 @@ components:
         does: "0.75rem, condensed, uppercase."
       - name: "<code>"
         does: "0.9em, so it follows the size of its parent."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 1.4.4](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html) Resize Text (Level AA)"
   - id: the-heading-scale
     title: "The heading scale"
     summary: "Four levels, each level is a quarter larger than the one below it, which puts h1 at exactly twice body size. Sizes are in rem so they follow the user's base setting. That base is 16px unless the reader has changed the browser's default, so the pixel sizes below assume 16px."
@@ -64,12 +66,16 @@ components:
         does: "The 3px keyboard focus ring, drawn on `:focus-visible` only."
       - name: ".ds-link-list"
         does: "On the element that holds a list in which every item is a link, such as an author list or a column of footer links. The links drop the underline at rest and keep everything else: Link Blue, the underline on hover, the focus ring and the visited colour. There is no ordinary text beside them for the underline to separate them from, so colour alone is enough here."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
   - id: matched-words
     title: "Search-matched words"
     summary: "The words that matched a search are marked with `<mark>`, in the accent wash and a heavier weight."
     classes:
       - name: "<mark>"
         does: "One matched word or phrase. No class: the element is styled inside `.ds-page`. The weight marks it as well as the colour, so it is never colour alone. In internal tools the wash is Access Lime."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA)"
   - id: code-blocks-and-the-copy-button
     title: "Code blocks and the copy button"
     summary: "A code block uses Plex Mono on Repository Brown, and always includes a copy button."
@@ -82,6 +88,8 @@ components:
         does: "The wrapper and the button. The script writes both; never hand-build them."
       - name: "[data-no-copy]"
         does: "On a `<pre>`, opts that block out — for a block that is an illustration of output rather than something to take away."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A) and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)"
   - id: panel-label
     title: "Panel label"
     summary: "The small uppercase Condensed label that names a panel, a column or a group. It is not a heading level and stays out of the document outline — if a reader needs to navigate to it, it is an `h3` or an `h4` at the sizes above."
@@ -183,6 +191,8 @@ The text sizes are set in rem so they move with the reader's base size. Browsers
 - `.ds-panel-label` — 0.75rem, condensed, uppercase.
 - `<code>` — 0.9em, so it follows the size of its parent.
 
+> Meets accessibility guideline [WCAG 2.2 SC 1.4.4](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html) Resize Text (Level AA)
+
 ## The heading scale
 
 Four levels, each level is a quarter larger than the one below it, which puts h1 at exactly twice body size. Sizes are in rem so they follow the user's base setting. That base is 16px unless the reader has changed the browser's default, so the pixel sizes below assume 16px.
@@ -220,6 +230,8 @@ Reading text with <a href="/abs/2604.22725">an inline link</a> in it.
 - `--ds-focus-ring` — The 3px keyboard focus ring, drawn on `:focus-visible` only.
 - `.ds-link-list` — On the element that holds a list in which every item is a link, such as an author list or a column of footer links. The links drop the underline at rest and keep everything else: Link Blue, the underline on hover, the focus ring and the visited colour. There is no ordinary text beside them for the underline to separate them from, so colour alone is enough here.
 
+> Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)
+
 ## Search-matched words
 
 The words that matched a search are marked with `<mark>`, in the accent wash and a heavier weight.
@@ -229,6 +241,8 @@ The words that matched a search are marked with `<mark>`, in the accent wash and
 ```
 
 - `<mark>` — One matched word or phrase. No class: the element is styled inside `.ds-page`. The weight marks it as well as the colour, so it is never colour alone. In internal tools the wash is Access Lime.
+
+> Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA)
 
 ## Code blocks and the copy button
 
@@ -246,6 +260,8 @@ A code block uses Plex Mono on Repository Brown, and always includes a copy butt
 - `<script src="copy-code.js" defer>` — Once per page, at the foot. It finds every `<pre>` on the page and adds the control.
 - `.ds-code, .ds-code-copy` — The wrapper and the button. The script writes both; never hand-build them.
 - `[data-no-copy]` — On a `<pre>`, opts that block out — for a block that is an illustration of output rather than something to take away.
+
+> Meets accessibility guidelines [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A) and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)
 
 ## Panel label
 
