@@ -54,7 +54,7 @@ components:
       - "Popovers resize to the content but should be reserved for short pieces of information. If the content gets too long it may not be contained within the viewport."
   - id: tabs
     title: "Tabs"
-    summary: "Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](navigation.html#secondary-navigation) instead."
+    summary: "Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](navigation.html#secondary-navigation) instead; it looks the same."
     classes:
       - name: ".ds-tabs"
         does: "Holds two or more panels. `data-label` names the set for a screen reader."
@@ -63,7 +63,7 @@ components:
       - name: "tabs.js"
         does: "Builds the tab list from the panel headings and adds the roles, the selected state and the keyboard: Tab reaches the selected tab, the arrow keys move between tabs, Home and End go to the first and last. Moving to a tab shows its panel. Without the script, every panel shows under its own heading."
       - name: ".ds-tabs-list"
-        does: "The row of tabs, added by the script. The selected tab is bold with an underline bar. The row wraps on a narrow screen."
+        does: "The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. The row wraps on a narrow screen."
   - id: toc-bar
     title: "TOC bar"
     summary: "Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. The bar is always sticky and it stays at the top of the viewport while the reader scrolls through the page."
@@ -219,7 +219,7 @@ A quick lookup the reader can access without losing their place. Popovers are us
 
 ## Tabs
 
-Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](navigation.html#secondary-navigation) instead.
+Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](navigation.html#secondary-navigation) instead; it looks the same.
 
 ```html
 <div class="ds-tabs" data-label="Membership activity">
@@ -243,7 +243,7 @@ Tabs switch between views of the same page. Each tab shows one panel and hides t
 - `.ds-tabs` — Holds two or more panels. `data-label` names the set for a screen reader.
 - `.ds-tabs-panel` — One view, a `<section>` that starts with a heading. The heading becomes the tab label.
 - `tabs.js` — Builds the tab list from the panel headings and adds the roles, the selected state and the keyboard: Tab reaches the selected tab, the arrow keys move between tabs, Home and End go to the first and last. Moving to a tab shows its panel. Without the script, every panel shows under its own heading.
-- `.ds-tabs-list` — The row of tabs, added by the script. The selected tab is bold with an underline bar. The row wraps on a narrow screen.
+- `.ds-tabs-list` — The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. The row wraps on a narrow screen.
 
 ## TOC bar
 

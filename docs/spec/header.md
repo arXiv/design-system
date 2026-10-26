@@ -69,12 +69,12 @@ components:
       - "The script answers to the width of the bar, not of the window, so the phone example folds inside a narrower box on a wide screen. Open the menu to see the folded rows."
   - id: header-dropdown-menus
     title: "Header dropdown menus"
-    summary: "A property whose sections need grouping adds `.ds-site-header-dropdown`, built on `<details>` so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The Account menu is the same component."
+    summary: "A property whose sections need grouping adds `.ds-site-header-dropdown`, built on `<details>` so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The Account menu is the same component. A dropdown matches its control: its background is the control’s background, and it attaches to the control’s edge, with no gap."
     classes:
       - name: ".ds-site-header-dropdown"
         does: "A `<details>` group in the bar. Optional. The summary sits in the bar and takes the surface tokens, so it is correct on either variant."
       - name: ".ds-site-header-menu"
-        does: "The floating panel, a light surface on either bar. It is anchored to its trigger’s right edge, so the last menu in the bar stays on screen."
+        does: "The menu, on the bar’s own background: dark under the dark bar, light under the light one. It hangs from the bar’s bottom edge, which `header.js` measures, and is anchored to its trigger’s right edge, so the last menu in the bar stays on screen. Its rows are 32px with a mouse and 44px on a touch screen, with a hairline between them."
       - name: ".ds-panel-label"
         does: "A group heading inside a menu."
       - name: "aria-current=\"page\""
@@ -284,7 +284,7 @@ When the header does not fit on one row, it folds. The greeting goes first. Then
 
 ## Header dropdown menus
 
-A property whose sections need grouping adds `.ds-site-header-dropdown`, built on `<details>` so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The Account menu is the same component.
+A property whose sections need grouping adds `.ds-site-header-dropdown`, built on `<details>` so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The Account menu is the same component. A dropdown matches its control: its background is the control’s background, and it attaches to the control’s edge, with no gap.
 
 ```html
 <header class="ds-site-header ds-site-header--light">
@@ -311,7 +311,7 @@ A property whose sections need grouping adds `.ds-site-header-dropdown`, built o
 ```
 
 - `.ds-site-header-dropdown` — A `<details>` group in the bar. Optional. The summary sits in the bar and takes the surface tokens, so it is correct on either variant.
-- `.ds-site-header-menu` — The floating panel, a light surface on either bar. It is anchored to its trigger’s right edge, so the last menu in the bar stays on screen.
+- `.ds-site-header-menu` — The menu, on the bar’s own background: dark under the dark bar, light under the light one. It hangs from the bar’s bottom edge, which `header.js` measures, and is anchored to its trigger’s right edge, so the last menu in the bar stays on screen. Its rows are 32px with a mouse and 44px on a touch screen, with a hairline between them.
 - `.ds-panel-label` — A group heading inside a menu.
 - `aria-current="page"` — On the menu link for the page the reader is on. The menu shows it in bold, and a screen reader announces it.
 
