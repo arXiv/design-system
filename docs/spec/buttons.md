@@ -85,10 +85,10 @@ components:
   - id: compact-buttons
     title: "Compact buttons"
     group: "Modifiers"
-    summary: "A smaller button for a small form, such as a single field with its own actions. `.ds-btn-compact` reduces the padding of a primary, secondary, text-only or icon-only button; its colour still comes from the surface."
+    summary: "A smaller button for a [compact form](forms.html#compact-form), such as a filter or a single field with its own actions. `.ds-btn-compact` reduces the padding of a primary, secondary, text-only or icon-only button; its colour still comes from the surface."
     classes:
       - name: ".ds-btn-compact"
-        does: "Sets smaller padding and a smaller minimum width on the button. It works with every tier and with `.ds-btn-icon`."
+        does: "Sets smaller padding and a smaller minimum width on the button. It works with every tier and with `.ds-btn-icon`. On a touch screen the button keeps its drawn size and its target reaches, unseen, to 44px."
       - name: "When to use it"
         does: "A small form, or a row of controls that sits inside content, where a full-size button would outweigh what it acts on. The main action of a page or of a full form stays full size."
   - id: button-groups
@@ -240,7 +240,7 @@ The primary button works everywhere. The gradient border and vignette keep the e
 
 ## Compact buttons  (Modifiers)
 
-A smaller button for a small form, such as a single field with its own actions. `.ds-btn-compact` reduces the padding of a primary, secondary, text-only or icon-only button; its colour still comes from the surface.
+A smaller button for a [compact form](forms.html#compact-form), such as a filter or a single field with its own actions. `.ds-btn-compact` reduces the padding of a primary, secondary, text-only or icon-only button; its colour still comes from the surface.
 
 ```html
 <div class="ds-btn-group ds-btn-group--end">
@@ -249,7 +249,7 @@ A smaller button for a small form, such as a single field with its own actions. 
 </div>
 ```
 
-- `.ds-btn-compact` — Sets smaller padding and a smaller minimum width on the button. It works with every tier and with `.ds-btn-icon`.
+- `.ds-btn-compact` — Sets smaller padding and a smaller minimum width on the button. It works with every tier and with `.ds-btn-icon`. On a touch screen the button keeps its drawn size and its target reaches, unseen, to 44px.
 - `When to use it` — A small form, or a row of controls that sits inside content, where a full-size button would outweigh what it acts on. The main action of a page or of a full form stays full size.
 
 ## Button groups  (Modifiers)

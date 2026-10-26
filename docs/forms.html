@@ -233,10 +233,41 @@
   <!-- ───────── Compact form ───────── -->
   <section>
     <h2 id="compact-form">Compact form</h2>
-    <p class="ds-section-desc">A compact form is for a very short form, such as search: one to three controls and a button, on one row.</p>
+    <p class="ds-section-desc">A normal form is the main content of the page, or an important part of it. A compact form supports the main content: it changes the view or controls part of it, such as a filter, or it is a small form beside it, such as a signup in a sidebar. A supporting form that needs long text or detailed help stays a normal form.</p>
+    <p>A compact form is one row, or one short column when its container is narrow. Each label sits beside its field, and the fields and buttons are compact.</p>
 
     <div class="ds-card">
-      <p class="ds-panel-label">Two joined controls and a button</p>
+      <p class="ds-panel-label">Filters for a view</p>
+      <form class="ds-form--compact" method="get" action="forms.html#compact-form" aria-label="Filter submissions">
+        <label>Group <select class="ds-input" name="group"><option>All groups</option><option selected>Computer Science</option><option>Mathematics</option></select></label>
+        <label>Sort by <select class="ds-input" name="order"><option selected>Newest</option><option>Oldest</option></select></label>
+        <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+      </form>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;form class="ds-form--compact" method="get" action="…" aria-label="Filter submissions"&gt;
+  &lt;label&gt;Group &lt;select class="ds-input" name="group"&gt;…&lt;/select&gt;&lt;/label&gt;
+  &lt;label&gt;Sort by &lt;select class="ds-input" name="order"&gt;…&lt;/select&gt;&lt;/label&gt;
+  &lt;button class="ds-btn ds-btn-compact" type="submit"&gt;Apply&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+          <dl>
+            <dt>.ds-form--compact</dt>
+            <dd>On the <code>&lt;form&gt;</code>. Puts the controls and the button on one row, and makes
+            each field compact. When the form's container is narrow, the labels make one column and
+            the fields another.</dd>
+            <dt>&lt;label&gt;</dt>
+            <dd>Each control sits inside its own label, the label's words before it. No wrapper class
+            is needed.</dd>
+            <dt>.ds-btn-compact</dt>
+            <dd>The button. Secondary when it changes the view, such as Apply; primary when sending
+            the form is the form's job.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <div class="ds-card">
+      <p class="ds-panel-label">A search, with joined controls</p>
       <form class="ds-form--compact" method="get" action="forms.html#compact-form" role="search" aria-label="Search arXiv">
         <div class="ds-input-group">
           <label class="is-sr-only" for="cf-query">Search term</label>
@@ -246,8 +277,8 @@
         </div>
         <button class="ds-btn ds-btn-primary" type="submit">Search</button>
         <label class="ds-check"><input type="checkbox" name="abstracts" value="show" checked><span>Show abstracts</span></label>
-        <div class="ds-filter"><label for="cf-order">Sort by</label><select id="cf-order" name="order"><option>Newest announced</option><option>Relevance</option></select></div>
-        <div class="ds-filter"><label for="cf-size">Per page</label><select id="cf-size" name="size"><option>25</option><option selected>50</option><option>100</option></select></div>
+        <label>Sort by <select class="ds-input" name="order"><option>Newest announced</option><option>Relevance</option></select></label>
+        <label>Per page <select class="ds-input" name="size"><option>25</option><option selected>50</option><option>100</option></select></label>
         <a href="forms.html#compact-form">Advanced search</a>
       </form>
       <details class="ds-acc"><summary>Relevant code</summary>
@@ -261,20 +292,21 @@
   &lt;/div&gt;
   &lt;button class="ds-btn ds-btn-primary" type="submit"&gt;Search&lt;/button&gt;
   &lt;label class="ds-check"&gt;&lt;input type="checkbox" name="abstracts" value="show" checked&gt;&lt;span&gt;Show abstracts&lt;/span&gt;&lt;/label&gt;
-  &lt;div class="ds-filter"&gt;&lt;label for="cf-order"&gt;Sort by&lt;/label&gt;&lt;select id="cf-order" name="order"&gt;&lt;option&gt;Newest announced&lt;/option&gt;&lt;option&gt;Relevance&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
-  &lt;div class="ds-filter"&gt;&lt;label for="cf-size"&gt;Per page&lt;/label&gt;&lt;select id="cf-size" name="size"&gt;&lt;option&gt;25&lt;/option&gt;&lt;option selected&gt;50&lt;/option&gt;&lt;option&gt;100&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+  &lt;label&gt;Sort by &lt;select class="ds-input" name="order"&gt;&lt;option&gt;Newest announced&lt;/option&gt;&lt;option&gt;Relevance&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+  &lt;label&gt;Per page &lt;select class="ds-input" name="size"&gt;&lt;option&gt;25&lt;/option&gt;&lt;option selected&gt;50&lt;/option&gt;&lt;option&gt;100&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
   &lt;a href="forms.html#compact-form"&gt;Advanced search&lt;/a&gt;
 &lt;/form&gt;</code></pre>
           <dl>
             <dt>.ds-form--compact</dt>
-            <dd>On the <code>&lt;form&gt;</code>. Puts the controls and the button on one row. Anything
-            after the button goes on the line below: a message first, then secondary options, such as
-            Show abstracts and the settings for the results (<code>.ds-filter</code> selects for order
-            and results per page). A link to another page, such as Advanced search, sits at the end of
-            that line.</dd>
+            <dd>With joined controls, the joined input takes the spare width of the row. Anything after
+            the button goes on the line below: a message first, then secondary options, such as Show
+            abstracts and the settings for the results (compact selects for order and results per
+            page). A link to another page, such as Advanced search, sits at the end of that line.</dd>
             <dt>.ds-input-group</dt>
             <dd>Joins the controls that make one input, such as a search term and the field it
-            searches. The text input takes the spare width and the select takes what it needs.</dd>
+            searches. The text input takes the spare width and the select takes what it needs. Joined
+            controls and the button after them keep the full size, because they are the form's main
+            input.</dd>
             <dt>.is-sr-only</dt>
             <dd>On each <code>&lt;label&gt;</code> when a heading or the button already says what the
             form does. The label is read out and not shown.</dd>
@@ -284,23 +316,23 @@
     </div>
 
     <div class="ds-card">
-      <p class="ds-panel-label">One control, with a visible label</p>
+      <p class="ds-panel-label">A small form beside the main content</p>
       <form class="ds-form--compact" method="get" action="forms.html#compact-form">
-        <label class="ds-label" for="cf-id">arXiv identifier</label>
-        <input class="ds-input" id="cf-id" name="id" type="text" value="2610.00999">
-        <button class="ds-btn ds-btn-primary" type="submit">Open paper</button>
+        <label>arXiv identifier <input class="ds-input" name="id" type="text" value="2610.00999" size="12"></label>
+        <button class="ds-btn ds-btn-primary ds-btn-compact" type="submit">Open paper</button>
       </form>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;form class="ds-form--compact" method="get" action="forms.html#compact-form"&gt;
-  &lt;label class="ds-label" for="cf-id"&gt;arXiv identifier&lt;/label&gt;
-  &lt;input class="ds-input" id="cf-id" name="id" type="text" value="2610.00999"&gt;
-  &lt;button class="ds-btn ds-btn-primary" type="submit"&gt;Open paper&lt;/button&gt;
+<pre><code>&lt;form class="ds-form--compact" method="get" action="…"&gt;
+  &lt;label&gt;arXiv identifier &lt;input class="ds-input" name="id" type="text" size="12"&gt;&lt;/label&gt;
+  &lt;button class="ds-btn ds-btn-primary ds-btn-compact" type="submit"&gt;Open paper&lt;/button&gt;
 &lt;/form&gt;</code></pre>
           <dl>
-            <dt>.ds-label</dt>
-            <dd>One visible label above the row, for a form whose purpose is not clear from what
-            is around it.</dd>
+            <dt>size</dt>
+            <dd>A field is as wide as its content. The <code>size</code> attribute sets a text field's
+            width in characters.</dd>
+            <dt>.ds-btn-primary</dt>
+            <dd>Primary, because opening the paper is what the form is for.</dd>
           </dl>
         </div>
       </details>
@@ -344,17 +376,25 @@
     </div>
 
     <ul class="notes">
-      <li><strong>Use it for a form that fits on one row.</strong> A form with help text, optional
-      fields or more than one row uses the standard fields.</li>
-      <li><strong>Every control has a label.</strong> Hide it with <code>.is-sr-only</code> only when a
-      heading or the button says what the form does. Never use a placeholder as the label.</li>
-      <li><strong>The button names the action.</strong> “Search”, not “Go” or “Submit”.</li>
+      <li><strong>Use it for a form that supports the main content.</strong> A form with long text or
+      detailed help uses the standard fields.</li>
+      <li><strong>Every control has a label beside it.</strong> Hide it with <code>.is-sr-only</code>
+      only when a heading or the button says what the form does. Never use a placeholder as the
+      label.</li>
+      <li><strong>The button names the action.</strong> “Search” or “Apply”, not “Go” or “Submit”.</li>
+      <li><strong>Keep Apply when a change reloads the page, or when the form has several
+      fields.</strong> A reader expects a change of page only when they ask for it. Leave Apply out
+      only when the page updates in place, and keep a submit button for a page without script.</li>
       <li><strong>Join only the controls that make one input.</strong> Controls that could be filled
       in separately stay separate.</li>
       <li><strong>Secondary options go below the row.</strong> A checkbox or a link there never moves
       the button away from its field.</li>
-      <li><strong>On a narrow screen the button takes its own line.</strong> Joined controls stay on
-      one row and share it.</li>
+      <li><strong>On a narrow screen the form is one short column.</strong> Labels in one column,
+      fields in the other. With joined controls, the joined controls share one row and the button
+      takes its own line.</li>
+      <li><strong>On a touch screen every target is 44px.</strong> A compact field and a compact
+      button keep their drawn size; the target reaches, unseen, above and below. Typed text is
+      16px, so the page does not zoom when a field takes focus.</li>
     </ul>
   </section>
 

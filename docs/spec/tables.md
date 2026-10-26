@@ -49,14 +49,12 @@ components:
       - "Sort logic is application-specific; the CSS only handles visual states."
   - id: filter-toolbar
     title: "Filter toolbar"
-    summary: "The `.ds-filter` component provides a minimal underline-only `<select>` for filtering data. Typically placed in a toolbar row above or alongside a table. The custom chevron replaces the native dropdown arrow for visual consistency. To narrow a whole view, use the [filter bar](#filter-bar)."
+    summary: "A [compact form](forms.html#compact-form) in a table's toolbar narrows that one table. To narrow a whole view, use the [filter bar](#filter-bar)."
     classes:
-      - name: ".ds-filter"
-        does: "The wrapper. Holds one `<label>` and one `<select>`. The select gets an underline-only border, the custom chevron, and a focus ring in `--ds-focus-ring`. Always include an “All” option as the inclusive default."
-      - name: "<label for>, <select id>"
-        does: "Required. The visible label is the select’s name: the `for` attribute points at the select’s `id`."
-      - name: ".ds-btn-group"
-        does: "The container for two or more filters side by side, the same one any set of related controls takes."
+      - name: ".ds-form--compact"
+        does: "The filters, as a [compact form](forms.html#compact-form): one row, each select inside its label. Always include an “All” option as the inclusive default."
+      - name: "Apply"
+        does: "A compact secondary button. It stays while a change reloads the page."
       - name: ".ds-btn-group--end"
         does: "Pushes the filter to the trailing edge of the toolbar row, where filters sit."
   - id: filter-bar
@@ -71,10 +69,10 @@ components:
         does: "Optional. A `<fieldset>` whose `<legend>` is `.is-sr-only`, so it is read out and takes no space. It starts its own row, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter."
       - name: ".ds-filter-bar-actions"
         does: "Apply, a submit button, and an optional Clear link to the address without filters. They sit at the end of the last row."
-      - name: ".ds-filter-bar with .ds-filter"
-        does: "A filter bar whose filters are the compact `.ds-filter` controls lays them out on one row, with less padding. Use it where a full filter bar would push the content down, such as beside navigation. Apply is a secondary `.ds-btn`, sized to the row."
-      - name: ".ds-filter with a date input"
-        does: "A compact filter can hold a date as well as a select. The date keeps its own width."
+      - name: ".ds-form--compact"
+        does: "A [compact form](forms.html#compact-form) in place of the filter bar, for a few filters on one row. Use it where a full filter bar would push the content down, such as beside navigation. Apply is a compact secondary button."
+      - name: "A date input"
+        does: "A compact form can hold a date as well as a select. The date keeps its own width."
   - id: row-selection
     title: "Row selection"
     summary: "Rows a reader can choose, one checkbox per row, so an action can apply to several at once."
@@ -238,33 +236,30 @@ A sortable column has a `<button class="sortable">` inside its `<th>`, holding t
 
 ## Filter toolbar
 
-The `.ds-filter` component provides a minimal underline-only `<select>` for filtering data. Typically placed in a toolbar row above or alongside a table. The custom chevron replaces the native dropdown arrow for visual consistency. To narrow a whole view, use the [filter bar](#filter-bar).
+A [compact form](forms.html#compact-form) in a table's toolbar narrows that one table. To narrow a whole view, use the [filter bar](#filter-bar).
 
-**Filter select, standalone**
+**Two filters**
 
 ```html
-<div class="ds-filter">
-  <label for="filter-status">Show:</label>
-  <select id="filter-status">
+<form class="ds-form--compact" method="get" action="…" aria-label="Filter requests">
+  <label>Show <select class="ds-input" name="show">
     <option>All</option>
     <option selected>Removed</option>
-    <option>On Hold</option>
-  </select>
-</div>
+    <option>On hold</option>
+  </select></label>
+  <label>Match <select class="ds-input" name="match">…</select></label>
+  <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+</form>
 ```
 
 **Filter above a table**
 
 ```html
 <div class="ds-btn-group ds-btn-group--end">
-  <div class="ds-filter">
-    <label for="filter-users">Show:</label>
-    <select id="filter-users">
-      <option selected>All</option>
-      <option>Active</option>
-      <option>Archived</option>
-    </select>
-  </div>
+  <form class="ds-form--compact" method="get" action="…" aria-label="Filter users">
+    <label>Show <select class="ds-input" name="show">…</select></label>
+    <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+  </form>
 </div>
 <div class="ds-table-scroll" role="region" aria-label="Users" tabindex="0">
   <table class="ds-table">
@@ -273,9 +268,8 @@ The `.ds-filter` component provides a minimal underline-only `<select>` for filt
 </div>
 ```
 
-- `.ds-filter` — The wrapper. Holds one `<label>` and one `<select>`. The select gets an underline-only border, the custom chevron, and a focus ring in `--ds-focus-ring`. Always include an “All” option as the inclusive default.
-- `<label for>, <select id>` — Required. The visible label is the select’s name: the `for` attribute points at the select’s `id`.
-- `.ds-btn-group` — The container for two or more filters side by side, the same one any set of related controls takes.
+- `.ds-form--compact` — The filters, as a [compact form](forms.html#compact-form): one row, each select inside its label. Always include an “All” option as the inclusive default.
+- `Apply` — A compact secondary button. It stays while a change reloads the page.
 - `.ds-btn-group--end` — Pushes the filter to the trailing edge of the toolbar row, where filters sit.
 
 ## Filter bar
@@ -335,21 +329,21 @@ A row of fields that narrows everything below it, with one Apply button. It is a
 **Compact: one row**
 
 ```html
-<form class="ds-filter-bar" method="get" action="tables.html#filter-bar" aria-label="Subject">
-  <div class="ds-filter"><label for="cfb-group">Group</label><select id="cfb-group" name="group"><option>cs</option><option>math</option></select></div>
-  <div class="ds-filter"><label for="cfb-archive">Archive</label><select id="cfb-archive" name="archive"><option>cs</option></select></div>
-  <div class="ds-filter"><label for="cfb-cat">Category</label><select id="cfb-cat" name="category"><option>All</option></select></div>
-  <button class="ds-btn" type="submit">Apply</button>
+<form class="ds-form--compact" method="get" action="tables.html#filter-bar" aria-label="Subject">
+  <label>Group <select class="ds-input" name="group"><option>cs</option><option>math</option></select></label>
+  <label>Archive <select class="ds-input" name="archive"><option>cs</option></select></label>
+  <label>Category <select class="ds-input" name="category"><option>All</option></select></label>
+  <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
 </form>
 ```
 
 **Compact: a date range**
 
 ```html
-<form class="ds-filter-bar" method="get" action="tables.html#filter-bar" aria-label="Dates">
-  <div class="ds-filter"><label for="cfb-start">Start</label><input id="cfb-start" name="start" type="date" value="2026-09-16"></div>
-  <div class="ds-filter"><label for="cfb-end">End (inclusive)</label><input id="cfb-end" name="end" type="date" value="2026-10-06"></div>
-  <button class="ds-btn" type="submit">Apply</button>
+<form class="ds-form--compact" method="get" action="tables.html#filter-bar" aria-label="Dates">
+  <label>Start <input class="ds-input" name="start" type="date" value="2026-09-16"></label>
+  <label>End (inclusive) <input class="ds-input" name="end" type="date" value="2026-10-06"></label>
+  <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
 </form>
 ```
 
@@ -357,8 +351,8 @@ A row of fields that narrows everything below it, with one Apply button. It is a
 - `.ds-filter-bar-group` — The filters. Each field takes a column. The fields are the standard `.ds-field`, `.ds-label` and `.ds-input`, with labels above.
 - `.ds-filter-bar-group--settings` — Optional. A `<fieldset>` whose `<legend>` is `.is-sr-only`, so it is read out and takes no space. It starts its own row, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter.
 - `.ds-filter-bar-actions` — Apply, a submit button, and an optional Clear link to the address without filters. They sit at the end of the last row.
-- `.ds-filter-bar with .ds-filter` — A filter bar whose filters are the compact `.ds-filter` controls lays them out on one row, with less padding. Use it where a full filter bar would push the content down, such as beside navigation. Apply is a secondary `.ds-btn`, sized to the row.
-- `.ds-filter with a date input` — A compact filter can hold a date as well as a select. The date keeps its own width.
+- `.ds-form--compact` — A [compact form](forms.html#compact-form) in place of the filter bar, for a few filters on one row. Use it where a full filter bar would push the content down, such as beside navigation. Apply is a compact secondary button.
+- `A date input` — A compact form can hold a date as well as a select. The date keeps its own width.
 
 ## Row selection
 
@@ -415,10 +409,10 @@ Actions that apply to every selected row at once, as in moderation queues and ow
   <button class="ds-btn" type="button">Hold</button>
   <button class="ds-btn ds-btn-destructive" type="button">Remove…</button>
   <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
-  <div class="ds-filter">
-    <label for="filter-owned">Show</label>
-    <select id="filter-owned">…</select>
-  </div>
+  <form class="ds-form--compact" method="get" action="…" aria-label="Filter papers">
+    <label>Show <select class="ds-input" name="show">…</select></label>
+    <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+  </form>
 </div>
 <div class="ds-table-scroll" role="region" aria-label="Owned papers" tabindex="0">
   <table class="ds-table">…</table>
@@ -433,10 +427,10 @@ Actions that apply to every selected row at once, as in moderation queues and ow
   <button class="ds-btn" type="button" disabled>Hold</button>
   <button class="ds-btn ds-btn-destructive" type="button" disabled>Remove…</button>
   <span class="ds-bulk-count" role="status">0 selected</span>
-  <div class="ds-filter">
-    <label for="filter-owned">Show</label>
-    <select id="filter-owned">…</select>
-  </div>
+  <form class="ds-form--compact" method="get" action="…" aria-label="Filter papers">
+    <label>Show <select class="ds-input" name="show">…</select></label>
+    <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+  </form>
 </div>
 ```
 
