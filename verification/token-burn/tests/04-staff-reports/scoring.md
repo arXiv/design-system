@@ -27,7 +27,7 @@ Four pages: sections overview, CS activity charts, CS recent submissions, staff 
 | Totals | `.ds-card--stat` in a stat grid |
 | Subject groups | cards, the whole card one link target |
 | Report parts | `.ds-tabs` (one level), with the views as secondary navigation |
-| Group, archive, category; dates; thresholds | `.ds-filter-bar`, one Apply |
+| Group, archive, category; dates; thresholds | filters.html: a Filters button and filter panel in the card header bar, the date range as one fieldset, thresholds under Settings, one Apply |
 | Table | `.ds-table`, `.ds-num`, sortable headers only where useful |
 | Codes | mono (`cs`, `q-fin`) |
 

@@ -46,7 +46,7 @@ components:
       - name: ".ds-tag-note--auto"
         does: "The same badge in italic, for provenance the system set rather than a person. “auto” is a fact about the row; a username is someone to ask."
       - name: ".ds-tag-remove"
-        does: "The ✕ control inside an editable tag. A `<button type=\"button\">` that is the last child of the tag. Removing the tag is the host’s job. Its target is 24px, and 44px on a touch screen, without changing the tag's size."
+        does: "The ✕ control inside an editable tag. A `<button type=\"button\">` that is the last child of the tag. Removing the tag is the host’s job. Its target is 24px, and 44px on a touch screen, without changing the tag's size. A removable tag is also used for applied filter options, next to the [filter control](filters.html#multiple-choice-filters) that sets it."
       - name: ".is-sr-only"
         does: "Required inside the remove control. The ✕ glyph is `aria-hidden`, so without this span the button announces as “button” and nothing more. Say what it removes: “Remove math.AP”."
     rules:
@@ -174,7 +174,7 @@ Different parts of a tag can be combined, even doubled, for more complex uses. C
 
 - `.ds-tag-note` — A small badge nested inside a tag, saying where it came from — usually a username.
 - `.ds-tag-note--auto` — The same badge in italic, for provenance the system set rather than a person. “auto” is a fact about the row; a username is someone to ask.
-- `.ds-tag-remove` — The ✕ control inside an editable tag. A `<button type="button">` that is the last child of the tag. Removing the tag is the host’s job. Its target is 24px, and 44px on a touch screen, without changing the tag's size.
+- `.ds-tag-remove` — The ✕ control inside an editable tag. A `<button type="button">` that is the last child of the tag. Removing the tag is the host’s job. Its target is 24px, and 44px on a touch screen, without changing the tag's size. A removable tag is also used for applied filter options, next to the [filter control](filters.html#multiple-choice-filters) that sets it.
 - `.is-sr-only` — Required inside the remove control. The ✕ glyph is `aria-hidden`, so without this span the button announces as “button” and nothing more. Say what it removes: “Remove math.AP”.
 
 **Rule.** The remove control is the only editing the tag knows about: Anything else a person can do to a tag, such as drag it into a different order or pick it from a search box, belongs to the editor around the tags, not to `.ds-tag`. That editor is not documented yet.

@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Filters — arXiv Design System</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="internal-tools.css">
+  <link rel="stylesheet" href="docs.css">
+<script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
+</head>
+<body class="ds-page">
+<!-- The docs site's own header (the light variant). It is not a pattern: build pages from the header in templates/ and docs/header.html. -->
+<header class="ds-site-header ds-site-header--light">
+  <span class="ds-site-header-logo ds-tooltip-host"><a href="../index.html" aria-describedby="ds-logo-tip"><img class="ds-theme-light-only" src="assets/images/logos/logo_smileybones-ds.svg" alt="Smileybones"><img class="ds-theme-dark-only" src="assets/images/logos/logo_smileybones-ds-light.svg" alt="Smileybones"></a><span class="ds-tooltip" id="ds-logo-tip" role="tooltip"><span class="ds-tooltip-body">Smileybones Design System from arXiv</span></span></span>
+  <nav class="ds-site-header-nav" aria-label="Design system">
+    <details class="ds-site-header-dropdown">
+      <summary>Design Patterns</summary>
+      <div class="ds-site-header-menu">
+        <span class="ds-panel-label">Components</span>
+        <a href="colors.html">Colors</a>
+        <a href="dark-mode.html">Dark mode</a>
+        <a href="typography.html">Typography</a>
+        <a href="spacing.html">Spacing</a>
+        <a href="icons.html">Icons</a>
+        <a href="buttons.html">Buttons</a>
+        <a href="links.html">Links</a>
+        <a href="forms.html">Forms &amp; validation</a>
+        <a href="alerts.html">Alerts</a>
+        <a href="messages.html">Messaging</a>
+        <a href="tags.html">Tags</a>
+        <a href="header.html">Site header</a>
+        <a href="footer.html">Site footer</a>
+        <a href="navigation.html">Navigation</a>
+        <a href="pager.html">Pager</a>
+        <span class="ds-panel-label">Organizing content</span>
+        <a href="layout-patterns.html">Layouts</a>
+        <a href="cards.html">Cards</a>
+        <a href="tables.html">Tables</a>
+        <a href="filters.html" aria-current="page">Filters</a>
+        <a href="search.html">Search</a>
+        <a href="progressive-disclosure.html">Progressive disclosure</a>
+        <a href="modals.html">Modal dialogs</a>
+        <a href="papers.html">Papers</a>
+        </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Mockups</summary>
+      <div class="ds-site-header-menu">
+        <a href="../whiteboard/mockups/">All mockups</a>
+        <span class="ds-panel-label">Public</span>
+        <a href="../whiteboard/mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+        <a href="../whiteboard/mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+        <a href="../whiteboard/mockups/public/optin-modal/">Labs opt-in modal</a>
+        <a href="../whiteboard/mockups/public/submission-metadata/">Submission — Metadata Form</a>
+        <span class="ds-panel-label">Internal</span>
+        <a href="../whiteboard/mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+        <a href="../whiteboard/mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+        <a href="../whiteboard/mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+        <a href="../whiteboard/mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+        <a href="../whiteboard/mockups/internal/activity-dashboard/">Activity dashboard</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Docs</summary>
+      <div class="ds-site-header-menu">
+        <a href="using.html">Using the system</a>
+        <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+        <a href="doc.html?src=docs/STYLE.md">Writing style</a>
+        <a href="brand.html">Brand &amp; vision</a>
+        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
+        <a href="doc.html?src=README.md">About this repo</a>
+      </div>
+    </details>
+  </nav>
+  <div class="ds-site-header-tools">
+    <button type="button" class="ds-theme-toggle"></button>
+    <span id="ds-theme-status" class="is-sr-only" role="status"></span>
+  </div>
+</header>
+
+<div class="ds-container">
+
+  <div class="ds-full ds-zone-secondary">
+  <header class="ds-page-header">
+    <h1>Filters</h1>
+    <p>Filters narrow a set of data, such as a table, a list of cards or a chart, to the items a reader wants. When each filter takes one choice, such as one status, the filters are selects in a row. When a filter takes several choices at once, such as three categories, the filters go in a panel behind a Filters button. Both go in the header bar of the set they change.</p>
+  </header>
+  </div>
+
+  <!-- ═════════ TOC ═════════ -->
+  <div class="ds-full ds-toc-bar">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#single-choice-filters">Single-choice filters</a></li>
+            <li><a href="#multiple-choice-filters">Multiple-choice filters</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ───────── Single-choice filters ───────── -->
+  <section>
+    <h2 id="single-choice-filters">Single-choice filters</h2>
+    <p class="ds-section-desc">Each filter takes one choice, so each is a select. Two or three selects sit in a row in the header bar of the set they change, with one Apply button. Each is always set, with an inclusive default such as “All”, so the row shows every choice in force.</p>
+    <div class="ds-card">
+      <p class="ds-panel-label">Selects in a row</p>
+      <div class="ds-card">
+        <div class="ds-card-bar">
+          <form class="ds-form--compact" method="get" action="filters.html#single-choice-filters" aria-label="Filter categories">
+            <label>Group <select class="ds-input" name="group"><option selected>Physics</option><option>Mathematics</option><option>Computer Science</option></select></label>
+            <label>Archive <select class="ds-input" name="archive"><option>All archives</option><option selected>cond-mat</option><option>hep-th</option></select></label>
+            <label>Category <select class="ds-input" name="category"><option selected>All categories</option><option>cond-mat.str-el</option><option>cond-mat.soft</option></select></label>
+            <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+          </form>
+        </div>
+        <div class="ds-table-scroll" role="region" aria-label="Categories in cond-mat" tabindex="0">
+          <table class="ds-table">
+            <thead><tr><th scope="col">Category</th><th scope="col">New submissions</th><th scope="col">Open holds</th></tr></thead>
+            <tbody>
+              <tr><td>cond-mat.str-el</td><td>214</td><td>6</td></tr>
+              <tr><td>cond-mat.soft</td><td>132</td><td>2</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-card"&gt;
+  &lt;div class="ds-card-bar"&gt;
+    &lt;form class="ds-form--compact" method="get" action="…" aria-label="Filter categories"&gt;
+      &lt;label&gt;Group &lt;select class="ds-input" name="group"&gt;…&lt;/select&gt;&lt;/label&gt;
+      &lt;label&gt;Archive &lt;select class="ds-input" name="archive"&gt;…&lt;/select&gt;&lt;/label&gt;
+      &lt;label&gt;Category &lt;select class="ds-input" name="category"&gt;…&lt;/select&gt;&lt;/label&gt;
+      &lt;button class="ds-btn ds-btn-compact" type="submit"&gt;Apply&lt;/button&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+  &lt;div class="ds-table-scroll" …&gt;&lt;table class="ds-table"&gt;…&lt;/table&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-card-bar</dt>
+            <dd>The header bar of the set, with the filters at its start. Every category is in view,
+            so the bar shows no total. See <a href="cards.html#cards-with-a-header-bar">Cards with a header
+            bar</a>.</dd>
+            <dt>.ds-form--compact</dt>
+            <dd>The filters, as a <a href="forms.html#compact-form">compact form</a>: one row, each
+            select inside its label. It is a <code>&lt;form method="get"&gt;</code>, so the choices go
+            in the page address and a filtered view can be linked.</dd>
+            <dt>Apply</dt>
+            <dd>A compact secondary button, at the end of the row.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <div class="ds-card">
+      <p class="ds-panel-label">A date range</p>
+      <div class="ds-card">
+        <div class="ds-card-bar">
+          <form class="ds-form--compact" method="get" action="filters.html#single-choice-filters" aria-label="Filter submissions by date">
+            <fieldset>
+              <legend>Submitted</legend>
+              <label>from <input class="ds-input" name="from" type="date" value="2026-09-16"></label>
+              <label>to <input class="ds-input" name="to" type="date" value="2026-10-06"></label>
+            </fieldset>
+            <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+          </form>
+          <p>1,669 submissions</p>
+        </div>
+        <p>The submissions in the range.</p>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;form class="ds-form--compact" method="get" action="…" aria-label="Filter submissions by date"&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;Submitted&lt;/legend&gt;
+    &lt;label&gt;from &lt;input class="ds-input" name="from" type="date"&gt;&lt;/label&gt;
+    &lt;label&gt;to &lt;input class="ds-input" name="to" type="date"&gt;&lt;/label&gt;
+  &lt;/fieldset&gt;
+  &lt;button class="ds-btn ds-btn-compact" type="submit"&gt;Apply&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+          <dl>
+            <dt>&lt;fieldset&gt;, &lt;legend&gt;</dt>
+            <dd>The two dates of a range are one fieldset, so they stay together on the row and a
+            screen reader reads each with the range's name: “Submitted, from”.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Multiple-choice filters ───────── -->
+  <section>
+    <h2 id="multiple-choice-filters">Multiple-choice filters</h2>
+    <p class="ds-section-desc">A filter that takes several choices at once is a group of checkboxes, in a filter panel opened by a Filters button. The panel holds every filter for the set, including single-choice ones, so it is also the home for more filters than fit in a row. The filters that are applied show beside the button as tags, with Clear all after them.</p>
+    <div class="ds-card">
+      <p class="ds-panel-label">A Filters button and its panel</p>
+      <div class="ds-card">
+        <div class="ds-card-bar">
+          <div class="ds-btn-group" role="group" aria-label="Filters on recent holds">
+            <button type="button" class="ds-btn ds-btn-compact ds-filter-button" popovertarget="holds-panel" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h20"/><path d="M6 12h12"/><path d="M9 19h6"/></svg>
+              Filters
+            </button>
+            <span class="ds-tag ds-tag--keep-case">Status: On hold<a class="ds-tag-remove" href="filters.html#multiple-choice-filters"><span aria-hidden="true">✕</span><span class="is-sr-only">Remove the filter Status: On hold</span></a></span>
+            <span class="ds-tag ds-tag--keep-case">Category: cs.AI, cs.LG<a class="ds-tag-remove" href="filters.html#multiple-choice-filters"><span aria-hidden="true">✕</span><span class="is-sr-only">Remove the filter Category: cs.AI, cs.LG</span></a></span>
+            <a href="filters.html#multiple-choice-filters">Clear all</a>
+          </div>
+          <p>3 of 120 holds</p>
+        </div>
+        <div class="ds-table-scroll" role="region" aria-label="Recent holds" tabindex="0">
+          <table class="ds-table">
+            <thead><tr><th scope="col">Submission</th><th scope="col">Category</th><th scope="col">Held since</th></tr></thead>
+            <tbody>
+              <tr><td>submit/6614203</td><td>cs.LG</td><td>2026-09-02</td></tr>
+              <tr><td>submit/6617750</td><td>cs.AI</td><td>2026-09-05</td></tr>
+              <tr><td>submit/6620418</td><td>cs.LG</td><td>2026-09-11</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="ds-filter-panel" id="holds-panel" popover role="dialog" aria-label="Filters on recent holds">
+        <form class="ds-form--compact" method="get" action="filters.html#multiple-choice-filters">
+          <label>Status <select class="ds-input" name="status" autofocus><option>Any</option><option selected>On hold</option><option>Released</option><option>Removed</option></select></label>
+          <fieldset>
+            <legend>Category</legend>
+            <label class="ds-check"><input type="checkbox" name="category" value="cs.AI" checked><span>cs.AI</span></label>
+            <label class="ds-check"><input type="checkbox" name="category" value="cs.CV"><span>cs.CV</span></label>
+            <label class="ds-check"><input type="checkbox" name="category" value="cs.LG" checked><span>cs.LG</span></label>
+          </fieldset>
+          <fieldset>
+            <legend>Held</legend>
+            <label>from <input class="ds-input" name="from" type="date"></label>
+            <label>to <input class="ds-input" name="to" type="date"></label>
+          </fieldset>
+          <label>Moderator <select class="ds-input" name="moderator"><option selected>Anyone</option><option>Moderator A</option><option>Moderator B</option></select></label>
+          <fieldset>
+            <legend>Settings</legend>
+            <label>Threshold days <input class="ds-input" name="threshold" type="number" inputmode="numeric" min="1" value="7" size="3"></label>
+          </fieldset>
+          <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+        </form>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-card-bar"&gt;
+  &lt;div class="ds-btn-group" role="group" aria-label="Filters on recent holds"&gt;
+    &lt;button type="button" class="ds-btn ds-btn-compact ds-filter-button" popovertarget="holds-panel" aria-expanded="false"&gt;
+      &lt;svg …the list-filter icon… aria-hidden="true"&gt;…&lt;/svg&gt;
+      Filters
+    &lt;/button&gt;
+    &lt;span class="ds-tag ds-tag--keep-case"&gt;Status: On hold&lt;a class="ds-tag-remove" href="…"&gt;&lt;span aria-hidden="true"&gt;✕&lt;/span&gt;&lt;span class="is-sr-only"&gt;Remove the filter Status: On hold&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;
+    …
+    &lt;a href="…"&gt;Clear all&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;p&gt;3 of 120 holds&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ds-filter-panel" id="holds-panel" popover role="dialog" aria-label="Filters on recent holds"&gt;
+  &lt;form class="ds-form--compact" method="get" action="…"&gt;
+    &lt;label&gt;Status &lt;select class="ds-input" name="status" autofocus&gt;…&lt;/select&gt;&lt;/label&gt;
+    &lt;fieldset&gt;
+      &lt;legend&gt;Category&lt;/legend&gt;
+      &lt;label class="ds-check"&gt;&lt;input type="checkbox" name="category" value="cs.AI"&gt;&lt;span&gt;cs.AI&lt;/span&gt;&lt;/label&gt;
+      …
+    &lt;/fieldset&gt;
+    …
+    &lt;fieldset&gt;
+      &lt;legend&gt;Settings&lt;/legend&gt;
+      &lt;label&gt;Threshold days &lt;input class="ds-input" name="threshold" type="number"&gt;&lt;/label&gt;
+    &lt;/fieldset&gt;
+    &lt;button class="ds-btn ds-btn-compact" type="submit"&gt;Apply&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+&lt;script src="filter-panel.js" defer&gt;&lt;/script&gt;</code></pre>
+          <dl>
+            <dt>.ds-filter-button</dt>
+            <dd>A compact secondary button with the filter icon (<code>list-filter</code>) and no
+            chevron. <code>popovertarget</code> names its panel. While the panel is open the button
+            shows its pressed state.</dd>
+            <dt>.ds-filter-value</dt>
+            <dd>Optional, inside the button: what is applied, after the button's name. It shortens
+            with an ellipsis when the row is narrow.</dd>
+            <dt>.ds-filter-panel</dt>
+            <dd>The filter panel, a <code>popover</code> with <code>role="dialog"</code> and a name.
+            Its background is the open button's background, and it attaches to the button's bottom
+            edge. It holds a <a href="forms.html#compact-form">compact form</a>, one short column.
+            <code>--ds-panel-width</code> sets its width.</dd>
+            <dt>&lt;fieldset&gt; with checkboxes</dt>
+            <dd>A filter that takes several values, such as categories, is a fieldset of
+            <code>.ds-check</code> checkboxes.</dd>
+            <dt>Settings</dt>
+            <dd>A setting, such as threshold days, changes a calculation and is not a filter. It goes
+            after the filters, in a fieldset of its own, and is not shown as a tag.</dd>
+            <dt>.ds-tag, .ds-tag-remove</dt>
+            <dd>One tag for each applied filter, after the button. Its remove control is a link to the
+            page without that filter. See <a href="tags.html#complex-tags">Tags</a>.</dd>
+            <dt>Clear all</dt>
+            <dd>A link to the page without filters, after the tags, while a filter is applied.</dd>
+            <dt>filter-panel.js</dt>
+            <dd>Places the panel at the button's edge and keeps <code>aria-expanded</code> current.
+            Without it the panel opens in the centre of the window.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Every control sits inside its label.</strong> A date range or a group of checkboxes
+      is a fieldset with a legend.</li>
+      <li><strong>The filter panel is a named dialog.</strong> The button reports whether it is open
+      with <code>aria-expanded</code>. Escape closes the panel and returns focus to the button.</li>
+      <li><strong>Each remove control says what it removes</strong>, in a
+      <code>&lt;span class="is-sr-only"&gt;</code>: “Remove the filter Status: On hold”.</li>
+      <li><strong>On a touch screen every target is 44px.</strong> Compact fields, compact buttons and
+      remove controls have it built in.</li>
+    </ul>
+  </div>
+
+  <div class="ds-full ds-zone-secondary">
+  <h2 id="rules">Rules</h2>
+  <section>
+    <ul class="notes">
+      <li><strong>One set of filters for each set of data</strong>, in the set's header bar. A filter
+      applies to everything in the set.</li>
+      <li><strong>A total ends the header bar only when the reader cannot see the whole set</strong>:
+      the set runs over more than one page, as in “1,669 submissions”, or the filters hide part of it,
+      as in “3 of 120 holds”. A set with every item in view needs no total. When the controls do not
+      fit on one line, the bar wraps and the total takes a line of its own.</li>
+      <li><strong>Keep Apply when a change reloads the page.</strong> See
+      <a href="forms.html#compact-form">Compact form</a>.</li>
+      <li><strong>After Apply, the page shows what was applied</strong>: the server writes the chosen
+      values back into the fields, and into the tags.</li>
+      <li><strong>Sorting is not filtering.</strong> A Sort by select can end the row of filters; a
+      table sorts from its <a href="tables.html#sortable-column-headers">column headers</a>.</li>
+    </ul>
+  </section>
+  </div>
+
+</div>
+
+<script>
+  // Nav dropdowns: close on outside click and Esc (enhancement only —
+  // the <details> menus work without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      // Return focus to the trigger, but only if it was inside the menu we are
+      // closing — otherwise Escape anywhere on the page would steal focus.
+      // Without this a keyboard user is left on a link that no longer exists.
+      var wasInside = d.contains(document.activeElement);
+      d.removeAttribute('open');
+      if (wasInside) d.querySelector('summary').focus();
+    });
+  });
+</script>
+<script src="header.js" defer></script>
+<script src="tooltip.js" defer></script>
+<script src="copy-code.js" defer></script>
+<script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
+<script src="filter-panel.js" defer></script>
+</body>
+</html>

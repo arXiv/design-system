@@ -1057,13 +1057,14 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   flex-wrap: wrap;
   container-type: inline-size;
 }
-/* Narrow: the position takes its own line, and numbered pages keep the arrows
-   and hide the words Previous and Next, which stay in the accessible name. */
+/* Narrow: one row, the position between Previous and Next. Numbered pages
+   hide the page numbers, and the words Previous and Next are read out but not
+   shown, so the arrows hold the ends. */
 @container (max-width: 30rem) {
-  .ds-pagination > .ds-pagination-position { flex: 1 0 100%; margin: 0; }
-  .ds-pagination .ds-pagination-pages li, .ds-pagination .ds-pagination-pages a { min-width: 1.625rem; }
-  .ds-pagination > .ds-pagination-pages { flex: 1 1 0; min-width: 0; justify-content: center; }
-  .ds-pagination:has(.ds-pagination-pages) .ds-pagination-label {
+  .ds-pagination > .ds-pagination-position { order: 1; flex: 1 1 auto; min-width: 0; margin: 0; text-align: center; white-space: normal; }
+  .ds-pagination > .ds-btn:last-child { order: 2; }
+  .ds-pagination > .ds-pagination-pages { display: none; }
+  .ds-pagination .ds-pagination-label {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -1071,10 +1072,10 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
     clip-path: inset(50%);
     white-space: nowrap;
   }
-  .ds-pagination:has(.ds-pagination-pages) > .ds-btn { padding-inline: var(--ds-space-1); }
+  .ds-pagination > .ds-btn { min-width: 2.75rem; padding-inline: var(--ds-space-1); }
 }
 /* Above the content it steps through: twice the 12px that holds an actions row to its table. */
-.ds-pagination:has(+ .ds-btn-group, + .ds-table-scroll, + .ds-table) { margin-bottom: var(--ds-space-6); }
+.ds-pagination:has(+ .ds-btn-group, + .ds-table-scroll, + .ds-table, + .ds-card) { margin-bottom: var(--ds-space-6); }
 .ds-pagination-position {
   font-family: var(--ds-font-condensed);
   font-size: 0.8125rem;
@@ -1288,6 +1289,39 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-card > :first-child { margin-block-start: 0; }
 .ds-card > .ds-marginalia:first-child + * { margin-block-start: 0; }   /* a margin note sits beside the card */
 .ds-card > :last-child  { margin-block-end: 0; }
+
+/* A card whose first row is a header bar (.ds-card-bar): the bar holds the
+   controls for the set of data in the card, on one line while they fit. A
+   table directly inside the card has no border of its own. */
+.ds-card:has(> .ds-card-bar) { padding: 0; overflow: hidden; }
+.ds-card:has(> .ds-card-bar) > :not(.ds-card-bar, .ds-table-scroll, .ds-table) { margin: var(--ds-card-padding); }
+.ds-card:has(> .ds-card-bar) > .ds-table,
+.ds-card:has(> .ds-card-bar) > .ds-table-scroll > .ds-table { margin-bottom: 0; }
+.ds-card-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-2) var(--ds-space-block);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  background: color-mix(in srgb, var(--ds-tint-warm) 50%, var(--ds-surface));   /* half a table header's tint, so the two stay apart */
+  border-bottom: 1px solid var(--ds-border);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 1;
+  font-size: 0.875rem;
+}
+.ds-card-bar > p { margin: 0; font-weight: 600; }
+.ds-card-bar .ds-tag { background: var(--ds-surface); }
+/* A pager as the last row of a card with a header bar: below the list, edge to
+   edge, on the bar's tint. */
+.ds-card:has(> .ds-card-bar) > .ds-pagination:last-child {
+  margin: 0;
+  padding: var(--ds-space-2) var(--ds-space-3);
+  background: color-mix(in srgb, var(--ds-tint-warm) 50%, var(--ds-surface));
+  border-top: 1px solid var(--ds-border);
+}
+.ds-card:has(> .ds-card-bar) > .ds-pagination:last-child .ds-pagination-pages a:is([aria-current="page"], :hover) { background: var(--ds-canvas); }
 :where(.ds-card) > :is(h2, h3) { font-size: 1rem; margin: 0 0 var(--ds-space-tight); }   /* the card's own title, at whatever level the page needs; prose inside a card keeps its rhythm */
 :where(.ds-card) > p { color: var(--ds-text-muted); }   /* the card's own copy; a component inside keeps its colour */
 /* A status tag first in a card sits in the top corner, beside the heading. */
@@ -1437,45 +1471,6 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 
 /* The bulk bar's count: "2 selected", quieter than the actions beside it. */
 .ds-bulk-count { font-size: 0.75rem; color: var(--ds-text-muted); }
-
-/* FILTER BAR  (.ds-filter-bar) — tables.html
-   A <form method="get"> that narrows a whole view. Its choices go in the
-   address, so a filtered view can be linked. */
-.ds-filter-bar {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(10rem, 100%), 1fr));
-  align-items: end;
-  gap: var(--ds-space-4);
-  padding: var(--ds-space-4);
-  margin: 0 0 var(--ds-space-6);
-  background: var(--ds-tint-warm);
-  border-radius: 8px;
-}
-.ds-filter-bar .ds-field { max-width: none; min-width: 0; margin: 0; }
-.ds-filter-bar .ds-field:has(.ds-input[type="date"]) .ds-input { width: auto; max-width: 100%; }   /* a date keeps its own width */
-/* Each filter is a cell in the bar's columns, as many as fit the width. */
-.ds-filter-bar-group { display: contents; }
-/* Settings start a new row, lined up with the columns above; the actions
-   take the last column of that row. */
-.ds-filter-bar-group--settings {
-  display: grid;
-  grid-column: 1 / -2;
-  grid-template-columns: repeat(auto-fill, minmax(min(10rem, 100%), 1fr));   /* the bar's own columns: same formula, one fewer track */
-  gap: var(--ds-space-4);
-  align-items: end;
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-.ds-filter-bar-group > legend:not(.is-sr-only) { grid-column: 1 / -1; margin: 0; padding: 0; }
-.ds-filter-bar-actions {
-  grid-column: -2 / -1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--ds-space-tight);
-}
 
 /* A toolbar row directly above a table keeps a gap from it. */
 .ds-btn-group:has(+ .ds-table, + .ds-table-scroll) { margin-bottom: var(--ds-space-3); }
@@ -1983,7 +1978,6 @@ html.js .ds-paper-cite-block figcaption { display: none; }
    one input are joined in .ds-input-group and keep the full size. */
 :where(*):has(> .ds-form--compact) { container-type: inline-size; }
 .ds-form--compact {
-  --ds-input-padding: 0.37em 0.643em;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1991,7 +1985,15 @@ html.js .ds-paper-cite-block figcaption { display: none; }
   margin: 0;
   font-size: 0.875rem;
 }
-.ds-form--compact > label:not(.ds-label, .ds-check, .is-sr-only) { display: inline-flex; align-items: center; gap: var(--ds-space-2); font-weight: 600; }
+.ds-form--compact > label:not(.ds-label, .ds-check, .is-sr-only),
+.ds-form--compact > fieldset > label:not(.ds-check, .is-sr-only) { display: inline-flex; align-items: center; gap: var(--ds-space-2); font-weight: 600; }
+/* A fieldset, for a date range or a group of checkboxes: its legend and its
+   controls on one line, wrapping when they do not fit. A floated legend
+   becomes an item of the line. */
+.ds-form--compact > fieldset { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2) var(--ds-space-3); min-width: 0; margin: 0; padding: 0; border: 0; }
+.ds-form--compact > fieldset > legend { float: left; padding: 0; font-weight: 600; }
+.ds-form--compact > fieldset > label:not(.ds-check) { font-weight: 400; }
+.ds-form--compact > fieldset > .ds-check { margin: 0; }
 .ds-form--compact .ds-input { width: auto; font-weight: 400; }
 .ds-form--compact select.ds-input { padding-right: 2.25em; background-position: right 0.75em center; }
 .ds-form--compact > .ds-label,
@@ -2002,6 +2004,7 @@ html.js .ds-paper-cite-block figcaption { display: none; }
    cannot carry an unseen ::after, so the reach is a transparent border above
    and below, the fill stops inside it, and the visible edge is an inset line. */
 .ds-form--compact .ds-input:not(textarea, .ds-input-group > *) {
+  --ds-input-padding: 0.37em 0.643em;
   border: solid transparent;
   border-width: var(--ds-reach) 0;
   border-radius: 6px / calc(6px + var(--ds-reach));
@@ -2054,6 +2057,8 @@ html.js .ds-paper-cite-block figcaption { display: none; }
   .ds-form--compact:not(:has(> .ds-input-group)) .ds-input { width: 100%; }
   .ds-form--compact:not(:has(> .ds-input-group)) > .ds-btn { grid-column: 2; justify-self: start; }
   .ds-form--compact:not(:has(> .ds-input-group)) > :not(label, .ds-btn) { grid-column: 1 / -1; }
+  /* A fieldset: its legend on a line of its own, its controls one under another. */
+  .ds-form--compact:not(:has(> .ds-input-group)) > fieldset { flex-direction: column; align-items: flex-start; }
 }
 
 /* Room on the right for the arrow, which renders inside the control's own
@@ -2196,6 +2201,35 @@ select.ds-input:not([multiple]):not([size]) {
 /* Directly under a card it is that card's caption, so it sits close. */
 .ds-card + .ds-annotation { margin-top: var(--ds-space-2); }
 
+
+/* FILTER BUTTON AND FILTER PANEL  (.ds-filter-button, .ds-filter-panel) — filters.html
+   A compact secondary button that opens a popover of filters for one set of
+   data. Its filter icon, not a chevron, says what it opens. filter-panel.js
+   places the panel at the button's edge; without it the browser centres it. */
+.ds-filter-button { gap: 0.5em; min-width: 0; max-width: 100%; }
+.ds-filter-value { min-width: 0; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Open: the button's own pressed colours, through its tokens, so its rim stays. */
+.ds-filter-button[aria-expanded="true"] {
+  --ds-btn-secondary-bg: var(--ds-btn-secondary-bg-active);
+  --ds-btn-secondary-bg-hover: var(--ds-btn-secondary-bg-active);
+  --ds-btn-secondary-rim-a: var(--ds-btn-secondary-rim-active);
+  --ds-btn-secondary-rim-b: var(--ds-btn-secondary-rim-active);
+}
+.ds-filter-panel {
+  position: absolute;
+  inset: auto;
+  top: var(--ds-panel-top, 0);
+  left: var(--ds-panel-left, 0);
+  margin: 0;
+  width: min(calc(100vw - 2rem), var(--ds-panel-width, 22rem));
+  padding: var(--ds-space-4);
+  color: var(--ds-text);
+  background: var(--ds-btn-secondary-bg-active);   /* the open button's own background */
+  border: 1px solid var(--ds-border);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+.ds-filter-panel:not([style*="--ds-panel-top"]) { inset: 0; margin: auto; height: fit-content; border-radius: 8px; }
 
 /* POPOVER PANEL  (.ds-popover and parts) — progressive-disclosure.html
    position: fixed — the consumer sets top/left and must portal it to
