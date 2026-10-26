@@ -11,17 +11,9 @@ components:
       - name: "<a href> inside .ds-page"
         does: "Every anchor with an `href` inside a `.ds-page` takes the link treatment: the colour, the underline, and the hover, visited and focus states. There is no class to add, and the dark values arrive through the same token flip as everything else."
     notes:
-      - "Try the states here: point at the link, press Tab to reach it, follow it once and it keeps the visited colour. Meets accessibility guidelines [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA) and [WCAG 2.2 SC 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) Focus Visible (Level AA)"
-  - id: in-context
-    title: "In context"
-    summary: "Inline within body text and within muted-grey secondary text."
-    classes:
-      - name: "<a href> in secondary text"
-        does: "The same link in body text and in secondary text. The link keeps Link Blue on both; only the surrounding text changes colour."
-    notes:
-      - "The visited state matters most for inline references in long articles, where it helps a reader scan papers they have already followed up on. Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
+      - "All states meet accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A), [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA), and [WCAG 2.2 SC 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) Focus Visible (Level AA)"
     rules:
-      - "Inline body links must be underlined: Color contrast against body text is only 3.0:1 in light mode — too marginal to rely on alone. Underlines are mandatory for inline links per DESIGN-POLICIES.md and WCAG 1.4.1 (use of color). Standalone navigation links (header, footer, button-like surfaces) may omit the underline."
+      - "Inline body links must be underlined: Color contrast against body text is only 3.0:1 in light mode and 1.9:1 in dark mode — too marginal to rely on alone. Underlines are mandatory for inline links per DESIGN-POLICIES.md and WCAG 1.4.1 (use of color). Standalone navigation links (header, footer, button-like surfaces) may omit the underline."
   - id: links-and-text-only-buttons
     title: "Links and text-only buttons"
     summary: "A link goes somewhere: it has an `href`, it is underlined, and it remembers being visited. A text-only button does something on this page, such as opening a panel or copying a value: it is Link Blue too, but has no underline and no visited state. Use the one that matches what happens when it is pressed. Text-only buttons are described on [Buttons](buttons.html#button-tiers)."
@@ -51,6 +43,8 @@ components:
 rules:
   - "Use `--ds-text-disabled` (`#aeaaa4`) for the disabled color and set `pointer-events: none`. The underline stays so it is still recognisable as a (currently-unavailable) link. The disabled state falls below AA on contrast — WCAG exempts disabled controls from contrast requirements."
   - "A list of author names, a navigation bar, a footer column: these are lists in which every item is a link, and none of them is underlined. The underline exists to tell a link apart from the text around it, and in a list of links there is no such text; underlining every item would add visual noise and tell the reader nothing. WCAG asks for the underline only where colour alone would have to separate a link from ordinary text, which is the case for an inline link and not for a list. The links keep Link Blue, the hover and focus states, and the visited colour where it means something. Put `.ds-link-list` on the element that holds the list."
+  - "Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A). An underline is needed only where a link sits in running text; in a list, the layout shows which words are links."
+  - "[Adrian Palomares](#lists-of-links), [Mei Lin Chen](#lists-of-links), [Kwame Mensah](#lists-of-links)"
   - "The Visited Purple is intentionally strong, not a faint after-state. Researchers reading long bibliographies and listings benefit from seeing what they have already followed up on; a too-subtle visited treatment defeats the purpose. If a specific surface (e.g., a navigation breadcrumb) needs to suppress visited styling, override `:visited { color: inherit }` locally."
   - "**Say where the link goes.** The link text on its own must make sense to someone who hears only the links on the page: “Endorsement policy”, not “click here”, “here” or “read more”. Put the name of the destination inside the `<a>`, not beside it."
   - "**A link always has an `href`.** Without one the element is not focusable, has no visited state, and does not announce as a link. Something that acts on this page rather than going somewhere is a [button](buttons.html), not a link with a click handler."
@@ -78,33 +72,9 @@ One link, four states. At rest it is Link Blue with a 1px underline set 2px belo
 
 - `<a href> inside .ds-page` — Every anchor with an `href` inside a `.ds-page` takes the link treatment: the colour, the underline, and the hover, visited and focus states. There is no class to add, and the dark values arrive through the same token flip as everything else.
 
-> Try the states here: point at the link, press Tab to reach it, follow it once and it keeps the visited colour. Meets accessibility guidelines [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA) and [WCAG 2.2 SC 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) Focus Visible (Level AA)
+> All states meet accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A), [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA), and [WCAG 2.2 SC 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) Focus Visible (Level AA)
 
-## In context
-
-Inline within body text and within muted-grey secondary text.
-
-```html
-<p>
-  Submissions that include figures must reference each in the
-  <a href="/help/submit">article body</a>. Co-authors are added on the
-  <a href="/auth/authorship">author management page</a> before finalisation.
-</p>
-
-<!-- Secondary text: the link keeps its own colour -->
-<p class="ds-section-desc">
-  Submitted 14 Jan 2024 · Updated 22 Feb 2024 ·
-  <a href="/abs/2401.00001v2">view revision history</a> ·
-  category <a href="/list/cs.CV/recent">cs.CV</a>,
-  <a href="/list/cs.LG/recent">cs.LG</a>
-</p>
-```
-
-- `<a href> in secondary text` — The same link in body text and in secondary text. The link keeps Link Blue on both; only the surrounding text changes colour.
-
-> The visited state matters most for inline references in long articles, where it helps a reader scan papers they have already followed up on. Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)
-
-**Rule.** Inline body links must be underlined: Color contrast against body text is only 3.0:1 in light mode — too marginal to rely on alone. Underlines are mandatory for inline links per DESIGN-POLICIES.md and WCAG 1.4.1 (use of color). Standalone navigation links (header, footer, button-like surfaces) may omit the underline.
+**Rule.** Inline body links must be underlined: Color contrast against body text is only 3.0:1 in light mode and 1.9:1 in dark mode — too marginal to rely on alone. Underlines are mandatory for inline links per DESIGN-POLICIES.md and WCAG 1.4.1 (use of color). Standalone navigation links (header, footer, button-like surfaces) may omit the underline.
 
 ## Links and text-only buttons
 
@@ -154,6 +124,8 @@ A section heading can include a control that copies a link to that section. It i
 
 - Use `--ds-text-disabled` (`#aeaaa4`) for the disabled color and set `pointer-events: none`. The underline stays so it is still recognisable as a (currently-unavailable) link. The disabled state falls below AA on contrast — WCAG exempts disabled controls from contrast requirements.
 - A list of author names, a navigation bar, a footer column: these are lists in which every item is a link, and none of them is underlined. The underline exists to tell a link apart from the text around it, and in a list of links there is no such text; underlining every item would add visual noise and tell the reader nothing. WCAG asks for the underline only where colour alone would have to separate a link from ordinary text, which is the case for an inline link and not for a list. The links keep Link Blue, the hover and focus states, and the visited colour where it means something. Put `.ds-link-list` on the element that holds the list.
+- Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A). An underline is needed only where a link sits in running text; in a list, the layout shows which words are links.
+- [Adrian Palomares](#lists-of-links), [Mei Lin Chen](#lists-of-links), [Kwame Mensah](#lists-of-links)
 - The Visited Purple is intentionally strong, not a faint after-state. Researchers reading long bibliographies and listings benefit from seeing what they have already followed up on; a too-subtle visited treatment defeats the purpose. If a specific surface (e.g., a navigation breadcrumb) needs to suppress visited styling, override `:visited { color: inherit }` locally.
 - **Say where the link goes.** The link text on its own must make sense to someone who hears only the links on the page: “Endorsement policy”, not “click here”, “here” or “read more”. Put the name of the destination inside the `<a>`, not beside it.
 - **A link always has an `href`.** Without one the element is not focusable, has no visited state, and does not announce as a link. Something that acts on this page rather than going somewhere is a [button](buttons.html), not a link with a click handler.
