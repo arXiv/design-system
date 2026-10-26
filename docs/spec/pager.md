@@ -16,7 +16,7 @@ components:
         does: "The two buttons, text-only, so they read as navigation rather than as actions. At either end of the set the button is `disabled`, not removed: a control that vanishes changes the shape of the toolbar under the reader, and a disabled one says “there is nothing before this”, which is the actual information."
       - name: ".ds-pagination"
         does: "Steps through the requests. It sits above everything that belongs to the current request, so the table and its actions change together when the reader moves on."
-      - name: ".ds-btn-group, .ds-bulk-count, .ds-filter"
+      - name: ".ds-btn-group, .ds-bulk-count, .ds-form--compact"
         does: "The group actions row: the actions, the selection count, and a filter at the far end. See [Bulk actions](tables.html#bulk-actions)."
       - name: ".ds-table, .is-selected"
         does: "The papers in the current request, with a checkbox per row. See [Row selection](tables.html#row-selection)."
@@ -81,10 +81,10 @@ This component group is for moving through items one at a time, such as a modera
   <button class="ds-btn" type="button">Hold</button>
   <button class="ds-btn ds-btn-destructive" type="button">Remove…</button>
   <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
-  <div class="ds-filter">
-    <label for="queue-filter">Show</label>
-    <select id="queue-filter"><option selected>All</option><option>New</option><option>Replaced</option></select>
-  </div>
+  <form class="ds-form--compact" method="get" action="…" aria-label="Filter papers">
+    <label>Show <select class="ds-input" name="show"><option selected>All</option><option>New</option><option>Replaced</option></select></label>
+    <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+  </form>
 </div>
 <div class="ds-table-scroll" role="region" aria-label="Papers in this request" tabindex="0">
   <table class="ds-table">
@@ -124,7 +124,7 @@ This component group is for moving through items one at a time, such as a modera
 - `.ds-pagination-position` — The counter. Takes `aria-live="polite"`: without it a reader who cannot see the counter has no way to know that the Next they just pressed did anything. The wording is the host's to choose; the counter takes the slack before the buttons, so the buttons stay put as the number grows.
 - `.ds-btn.ds-btn-text` — The two buttons, text-only, so they read as navigation rather than as actions. At either end of the set the button is `disabled`, not removed: a control that vanishes changes the shape of the toolbar under the reader, and a disabled one says “there is nothing before this”, which is the actual information.
 - `.ds-pagination` — Steps through the requests. It sits above everything that belongs to the current request, so the table and its actions change together when the reader moves on.
-- `.ds-btn-group, .ds-bulk-count, .ds-filter` — The group actions row: the actions, the selection count, and a filter at the far end. See [Bulk actions](tables.html#bulk-actions).
+- `.ds-btn-group, .ds-bulk-count, .ds-form--compact` — The group actions row: the actions, the selection count, and a filter at the far end. See [Bulk actions](tables.html#bulk-actions).
 - `.ds-table, .is-selected` — The papers in the current request, with a checkbox per row. See [Row selection](tables.html#row-selection).
 
 > Only use a pager when the user can focus on just one item at a time without needing context from others in the set.
