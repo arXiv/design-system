@@ -1,7 +1,7 @@
 ---
 page: tables.html
 title: "Tables"
-summary: "The table and what can be built on it: sortable columns, a filter toolbar, row selection and bulk actions. All of it is shared by the public site and internal tools; internal tools change only the colours."
+summary: "The table and what can be built on it: sortable columns, filters, row selection and bulk actions. All of it is shared by the public site and internal tools; internal tools change only the colours."
 stylesheet: design-system.css
 components:
   - id: the-table
@@ -47,32 +47,9 @@ components:
         does: "The row count under the table."
     notes:
       - "Sort logic is application-specific; the CSS only handles visual states."
-  - id: filter-toolbar
-    title: "Filter toolbar"
-    summary: "A [compact form](forms.html#compact-form) in a table's toolbar narrows that one table. To narrow a whole view, use the [filter bar](#filter-bar)."
-    classes:
-      - name: ".ds-form--compact"
-        does: "The filters, as a [compact form](forms.html#compact-form): one row, each select inside its label. Always include an “All” option as the inclusive default."
-      - name: "Apply"
-        does: "A compact secondary button. It stays while a change reloads the page."
-      - name: ".ds-btn-group--end"
-        does: "Pushes the filter to the trailing edge of the toolbar row, where filters sit."
-  - id: filter-bar
-    title: "Filter bar"
-    summary: "A row of fields that narrows everything below it, with one Apply button. It is a `<form method=\"get\">`, so the choices go in the page address and a filtered view can be linked."
-    classes:
-      - name: ".ds-filter-bar"
-        does: "The `<form method=\"get\">`, on the warm tint, with an `aria-label` such as \"Filters\". It narrows everything below it. One per view. The fields sit in equal columns, as many as fit the width."
-      - name: ".ds-filter-bar-group"
-        does: "The filters. Each field takes a column. The fields are the standard `.ds-field`, `.ds-label` and `.ds-input`, with labels above."
-      - name: ".ds-filter-bar-group--settings"
-        does: "Optional. A `<fieldset>` whose `<legend>` is `.is-sr-only`, so it is read out and takes no space. It starts its own row, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter."
-      - name: ".ds-filter-bar-actions"
-        does: "Apply, a submit button, and an optional Clear link to the address without filters. They sit at the end of the last row."
-      - name: ".ds-form--compact"
-        does: "A [compact form](forms.html#compact-form) in place of the filter bar, for a few filters on one row. Use it where a full filter bar would push the content down, such as beside navigation. Apply is a compact secondary button."
-      - name: "A date input"
-        does: "A compact form can hold a date as well as a select. The date keeps its own width."
+  - id: filters
+    title: "Filters"
+    summary: "Filters for a table go in the header bar of the card that holds it. For a demo, see [Filters](filters.html)."
   - id: row-selection
     title: "Row selection"
     summary: "Rows a reader can choose, one checkbox per row, so an action can apply to several at once."
@@ -83,12 +60,14 @@ components:
         does: "The first cell of every row. A direct child of the `<td>`, which gives it a 24px target and this surface’s accent. Each one has a `<label class=\"is-sr-only\">` that names its row."
   - id: bulk-actions
     title: "Bulk actions"
-    summary: "Actions that apply to every selected row at once, as in moderation queues and ownership lists. The bar sits above a table with [row selection](#row-selection)."
+    summary: "Actions that apply to every selected row at once, as in moderation queues and ownership lists. The actions sit in the header bar of the card that holds a table with [row selection](#row-selection)."
     classes:
+      - name: ".ds-card-bar"
+        does: "The header bar of the card that holds the table: the actions and the selection count at its start, and any filter at its end. It wraps on a narrow screen. See [Cards with a header bar](cards.html#cards-with-a-header-bar)."
       - name: ".ds-btn-group"
-        does: "The bulk-action bar: the actions, then the selection count, with any filter at the far end of the row. It wraps on a narrow screen. The bar has no fill of its own. Directly above a table it keeps a gap from it."
-      - name: ".ds-btn-primary, .ds-btn, .ds-btn-destructive"
-        does: "The actions, in the tiers documented on [Buttons](buttons.html). The destructive action comes last."
+        does: "The actions and the selection count, kept together."
+      - name: ".ds-btn-primary, .ds-btn, .ds-btn-destructive, with .ds-btn-compact"
+        does: "The actions, in the tiers documented on [Buttons](buttons.html), compact like every control in a header bar. The destructive action comes last."
       - name: ".ds-bulk-count"
         does: "The selection count and the “Clear selection” link, beside the actions. Takes `role=\"status\"` so a change in the count is announced."
       - name: "<button disabled>"
@@ -109,7 +88,7 @@ components:
         does: "On every cell of a numeric column, the header included. Aligns the numbers on the right and uses tabular figures."
 rules:
   - "Pressing a sortable header, by mouse or keyboard, toggles through: descending → ascending → descending. Clicking a different column resets the previous column to unsorted. Sort logic is application-specific; the CSS only handles visual states."
-  - "Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row. No background tint behind the action buttons — the bar itself stays neutral. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step."
+  - "Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row, all in the header bar of the card that holds the table. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step."
   - "**Mark the header cells.** Put `scope=\"col\"` on every `<th>` in the header row, so a screen reader reads the column name with each cell instead of a bare value."
   - "**Give the table a name.** A `<caption>`, or an `aria-label` on the scrolling region around the table, as the examples on this page do. Without one, a screen reader user lands in “table, 4 columns” with no idea which table it is."
   - "**Say which column is sorted.** Put `aria-sort=\"ascending\"` or `aria-sort=\"descending\"` on the sorted `<th>` and remove it from the others when the sort changes. The arrow is a glyph, and the class is invisible to a screen reader."
@@ -120,7 +99,7 @@ rules:
 
 # Tables
 
-The table and what can be built on it: sortable columns, a filter toolbar, row selection and bulk actions. All of it is shared by the public site and internal tools; internal tools change only the colours.
+The table and what can be built on it: sortable columns, filters, row selection and bulk actions. All of it is shared by the public site and internal tools; internal tools change only the colours.
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
@@ -234,125 +213,9 @@ A sortable column has a `<button class="sortable">` inside its `<th>`, holding t
 
 > Sort logic is application-specific; the CSS only handles visual states.
 
-## Filter toolbar
+## Filters
 
-A [compact form](forms.html#compact-form) in a table's toolbar narrows that one table. To narrow a whole view, use the [filter bar](#filter-bar).
-
-**Two filters**
-
-```html
-<form class="ds-form--compact" method="get" action="…" aria-label="Filter requests">
-  <label>Show <select class="ds-input" name="show">
-    <option>All</option>
-    <option selected>Removed</option>
-    <option>On hold</option>
-  </select></label>
-  <label>Match <select class="ds-input" name="match">…</select></label>
-  <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
-</form>
-```
-
-**Filter above a table**
-
-```html
-<div class="ds-btn-group ds-btn-group--end">
-  <form class="ds-form--compact" method="get" action="…" aria-label="Filter users">
-    <label>Show <select class="ds-input" name="show">…</select></label>
-    <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
-  </form>
-</div>
-<div class="ds-table-scroll" role="region" aria-label="Users" tabindex="0">
-  <table class="ds-table">
-    …
-  </table>
-</div>
-```
-
-- `.ds-form--compact` — The filters, as a [compact form](forms.html#compact-form): one row, each select inside its label. Always include an “All” option as the inclusive default.
-- `Apply` — A compact secondary button. It stays while a change reloads the page.
-- `.ds-btn-group--end` — Pushes the filter to the trailing edge of the toolbar row, where filters sit.
-
-## Filter bar
-
-A row of fields that narrows everything below it, with one Apply button. It is a `<form method="get">`, so the choices go in the page address and a filtered view can be linked.
-
-```html
-<form class="ds-filter-bar" method="get" action="tables.html#filter-bar" aria-label="Filters">
-  <div class="ds-filter-bar-group">
-    <div class="ds-field">
-      <label class="ds-label" for="fb-group">Group</label>
-      <select class="ds-input" id="fb-group" name="group">
-        <option>Physics</option>
-        <option>Mathematics</option>
-        <option>Computer Science</option>
-      </select>
-    </div>
-    <div class="ds-field">
-      <label class="ds-label" for="fb-archive">Archive</label>
-      <select class="ds-input" id="fb-archive" name="archive">
-        <option>All archives</option>
-        <option>cond-mat</option>
-        <option>hep-th</option>
-      </select>
-    </div>
-    <div class="ds-field">
-      <label class="ds-label" for="fb-category">Category</label>
-      <select class="ds-input" id="fb-category" name="category">
-        <option>All categories</option>
-        <option>cond-mat.str-el</option>
-        <option>cond-mat.soft</option>
-      </select>
-    </div>
-    <div class="ds-field">
-      <label class="ds-label" for="fb-from">From</label>
-      <input class="ds-input" id="fb-from" name="from" type="date" value="2026-09-01">
-    </div>
-    <div class="ds-field">
-      <label class="ds-label" for="fb-to">To</label>
-      <input class="ds-input" id="fb-to" name="to" type="date" value="2026-09-30">
-    </div>
-  </div>
-  <fieldset class="ds-filter-bar-group ds-filter-bar-group--settings">
-    <legend class="is-sr-only">Settings</legend>
-    <div class="ds-field">
-      <label class="ds-label" for="fb-threshold">Threshold days</label>
-      <input class="ds-input" id="fb-threshold" name="threshold" type="number" min="1" value="7">
-    </div>
-  </fieldset>
-  <div class="ds-filter-bar-actions">
-    <a href="tables.html#filter-bar">Clear</a>
-    <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
-  </div>
-</form>
-```
-
-**Compact: one row**
-
-```html
-<form class="ds-form--compact" method="get" action="tables.html#filter-bar" aria-label="Subject">
-  <label>Group <select class="ds-input" name="group"><option>cs</option><option>math</option></select></label>
-  <label>Archive <select class="ds-input" name="archive"><option>cs</option></select></label>
-  <label>Category <select class="ds-input" name="category"><option>All</option></select></label>
-  <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
-</form>
-```
-
-**Compact: a date range**
-
-```html
-<form class="ds-form--compact" method="get" action="tables.html#filter-bar" aria-label="Dates">
-  <label>Start <input class="ds-input" name="start" type="date" value="2026-09-16"></label>
-  <label>End (inclusive) <input class="ds-input" name="end" type="date" value="2026-10-06"></label>
-  <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
-</form>
-```
-
-- `.ds-filter-bar` — The `<form method="get">`, on the warm tint, with an `aria-label` such as "Filters". It narrows everything below it. One per view. The fields sit in equal columns, as many as fit the width.
-- `.ds-filter-bar-group` — The filters. Each field takes a column. The fields are the standard `.ds-field`, `.ds-label` and `.ds-input`, with labels above.
-- `.ds-filter-bar-group--settings` — Optional. A `<fieldset>` whose `<legend>` is `.is-sr-only`, so it is read out and takes no space. It starts its own row, for a setting: a number that changes a calculation, such as threshold days. A setting is not a filter.
-- `.ds-filter-bar-actions` — Apply, a submit button, and an optional Clear link to the address without filters. They sit at the end of the last row.
-- `.ds-form--compact` — A [compact form](forms.html#compact-form) in place of the filter bar, for a few filters on one row. Use it where a full filter bar would push the content down, such as beside navigation. Apply is a compact secondary button.
-- `A date input` — A compact form can hold a date as well as a select. The date keeps its own width.
+Filters for a table go in the header bar of the card that holds it. For a demo, see [Filters](filters.html).
 
 ## Row selection
 
@@ -399,43 +262,47 @@ Rows a reader can choose, one checkbox per row, so an action can apply to severa
 
 ## Bulk actions
 
-Actions that apply to every selected row at once, as in moderation queues and ownership lists. The bar sits above a table with [row selection](#row-selection).
+Actions that apply to every selected row at once, as in moderation queues and ownership lists. The actions sit in the header bar of the card that holds a table with [row selection](#row-selection).
 
 **Selection active**
 
 ```html
-<div class="ds-btn-group">
-  <button class="ds-btn ds-btn-primary" type="button">Approve</button>
-  <button class="ds-btn" type="button">Hold</button>
-  <button class="ds-btn ds-btn-destructive" type="button">Remove…</button>
-  <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
-  <form class="ds-form--compact" method="get" action="…" aria-label="Filter papers">
-    <label>Show <select class="ds-input" name="show">…</select></label>
-    <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
-  </form>
-</div>
-<div class="ds-table-scroll" role="region" aria-label="Owned papers" tabindex="0">
-  <table class="ds-table">…</table>
+<div class="ds-card">
+  <div class="ds-card-bar">
+    <div class="ds-btn-group">
+      <button class="ds-btn ds-btn-primary ds-btn-compact" type="button">Approve</button>
+      <button class="ds-btn ds-btn-compact" type="button">Hold</button>
+      <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button">Remove…</button>
+      <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
+    </div>
+    <form class="ds-form--compact" method="get" action="…" aria-label="Filter papers">
+      <label>Show <select class="ds-input" name="show">…</select></label>
+      <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+    </form>
+  </div>
+  <div class="ds-table-scroll" role="region" aria-label="Owned papers" tabindex="0">
+    <table class="ds-table">…</table>
+  </div>
 </div>
 ```
 
 **Nothing selected**
 
 ```html
-<div class="ds-btn-group">
-  <button class="ds-btn ds-btn-primary" type="button" disabled>Approve</button>
-  <button class="ds-btn" type="button" disabled>Hold</button>
-  <button class="ds-btn ds-btn-destructive" type="button" disabled>Remove…</button>
-  <span class="ds-bulk-count" role="status">0 selected</span>
-  <form class="ds-form--compact" method="get" action="…" aria-label="Filter papers">
-    <label>Show <select class="ds-input" name="show">…</select></label>
-    <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
-  </form>
+<div class="ds-card-bar">
+  <div class="ds-btn-group">
+    <button class="ds-btn ds-btn-primary ds-btn-compact" type="button" disabled>Approve</button>
+    <button class="ds-btn ds-btn-compact" type="button" disabled>Hold</button>
+    <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button" disabled>Remove…</button>
+    <span class="ds-bulk-count" role="status">0 selected</span>
+  </div>
+  <form class="ds-form--compact" method="get" action="…" aria-label="Filter papers">…</form>
 </div>
 ```
 
-- `.ds-btn-group` — The bulk-action bar: the actions, then the selection count, with any filter at the far end of the row. It wraps on a narrow screen. The bar has no fill of its own. Directly above a table it keeps a gap from it.
-- `.ds-btn-primary, .ds-btn, .ds-btn-destructive` — The actions, in the tiers documented on [Buttons](buttons.html). The destructive action comes last.
+- `.ds-card-bar` — The header bar of the card that holds the table: the actions and the selection count at its start, and any filter at its end. It wraps on a narrow screen. See [Cards with a header bar](cards.html#cards-with-a-header-bar).
+- `.ds-btn-group` — The actions and the selection count, kept together.
+- `.ds-btn-primary, .ds-btn, .ds-btn-destructive, with .ds-btn-compact` — The actions, in the tiers documented on [Buttons](buttons.html), compact like every control in a header bar. The destructive action comes last.
 - `.ds-bulk-count` — The selection count and the “Clear selection” link, beside the actions. Takes `role="status"` so a change in the count is announced.
 - `<button disabled>` — The `disabled` attribute on every action button while nothing is selected. The buttons stay in place; the filter stays live, because it does not depend on a selection.
 
@@ -466,7 +333,7 @@ Numbers align on the right, and their digits line up from row to row.
 ## Rules
 
 - Pressing a sortable header, by mouse or keyboard, toggles through: descending → ascending → descending. Clicking a different column resets the previous column to unsorted. Sort logic is application-specific; the CSS only handles visual states.
-- Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row. No background tint behind the action buttons — the bar itself stays neutral. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step.
+- Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row, all in the header bar of the card that holds the table. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step.
 - **Mark the header cells.** Put `scope="col"` on every `<th>` in the header row, so a screen reader reads the column name with each cell instead of a bare value.
 - **Give the table a name.** A `<caption>`, or an `aria-label` on the scrolling region around the table, as the examples on this page do. Without one, a screen reader user lands in “table, 4 columns” with no idea which table it is.
 - **Say which column is sorted.** Put `aria-sort="ascending"` or `aria-sort="descending"` on the sorted `<th>` and remove it from the others when the sort changes. The arrow is a glyph, and the class is invisible to a screen reader.

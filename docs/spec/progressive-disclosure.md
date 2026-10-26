@@ -36,7 +36,7 @@ components:
       - "A tail cannot be a details element, because a summary would put a heading in the middle of a sentence."
   - id: popover
     title: "Popover"
-    summary: "A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers."
+    summary: "A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers. The filter panel, a popover of filters for a set of data, is on [Filters](filters.html)."
     classes:
       - name: ".ds-popover"
         does: "The panel. It is `position: fixed`: the host sets `top` and `left`, and moves it to `<body>` if the trigger has a transformed ancestor. Closed, it has the `hidden` attribute."
@@ -193,7 +193,7 @@ While an accordion hides an entire labelled section, the 'show more' control rev
 
 ## Popover
 
-A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers.
+A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers. The filter panel, a popover of filters for a set of data, is on [Filters](filters.html).
 
 ```html
 <span class="ds-popover" role="region" aria-label="Reference 47">
