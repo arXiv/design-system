@@ -26,6 +26,9 @@ components:
         does: "Takes whatever height the header and footer leave and scrolls inside it. Nothing to add: the same markup as a short dialog, with more in the body. It scrolls whenever its content does not fit, at any screen size, including content a script adds after the dialog opens. On a screen too short to hold the header, the footer and some of the body, the whole dialog scrolls instead, so the actions are never cut off."
       - name: "tabindex=\"0\", role=\"region\", aria-labelledby (added by script)"
         does: "Not in the markup: the page script adds them while the body overflows and removes them when it fits. A scrolling area with no links or buttons in it cannot be reached from the keyboard in every browser, so a keyboard user could not scroll it. The tab stop fixes that, and the region takes the dialog's title as its name so a screen reader says what it is. Adding it only while the body overflows means a short dialog has no empty tab stop, and a body that grows later, because a script added content or the window got smaller, gets one without anyone changing the markup. The reference script is at the end of this page."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 2.1.2](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html) No Keyboard Trap (Level A), [WCAG 2.2 SC 2.4.3](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html) Focus Order (Level A), and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
+      - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.10](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html) Reflow (Level AA) and [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A)"
   - id: wide-for-a-viewer
     title: "Wide viewer"
     group: "Modifiers"
@@ -129,6 +132,10 @@ document.getElementById('demo-confirm').close();
 - `data-open="…", data-close` — Hooks for this page's demo script, which finds the button that opens a dialog and the controls that close it. The stylesheet gives them no meaning; your own script may use any hook it likes.
 - `.ds-modal-body` — Takes whatever height the header and footer leave and scrolls inside it. Nothing to add: the same markup as a short dialog, with more in the body. It scrolls whenever its content does not fit, at any screen size, including content a script adds after the dialog opens. On a screen too short to hold the header, the footer and some of the body, the whole dialog scrolls instead, so the actions are never cut off.
 - `tabindex="0", role="region", aria-labelledby (added by script)` — Not in the markup: the page script adds them while the body overflows and removes them when it fits. A scrolling area with no links or buttons in it cannot be reached from the keyboard in every browser, so a keyboard user could not scroll it. The tab stop fixes that, and the region takes the dialog's title as its name so a screen reader says what it is. Adding it only while the body overflows means a short dialog has no empty tab stop, and a body that grows later, because a script added content or the window got smaller, gets one without anyone changing the markup. The reference script is at the end of this page.
+
+> Meets accessibility guidelines [WCAG 2.2 SC 2.1.2](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html) No Keyboard Trap (Level A), [WCAG 2.2 SC 2.4.3](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html) Focus Order (Level A), and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)
+
+> Meets accessibility guidelines [WCAG 2.2 SC 1.4.10](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html) Reflow (Level AA) and [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A)
 
 ## Wide viewer  (Modifiers)
 
