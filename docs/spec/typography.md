@@ -20,8 +20,6 @@ components:
         does: "The annotation voice: `--ds-font-serif`, italic, 400, 0.8125rem, `--ds-text-muted`. It is a voice, not a layout role; where it sits is the consumer's decision."
       - name: "--ds-font-serif"
         does: "The serif stack. On the public site and in internal tools it is used only through `.ds-annotation`."
-      - name: "--ds-font-serif"
-        does: "Upright, weights 400 and 600. Outreach properties only; see [outreach sites](outreach.html)."
       - name: "<math>"
         does: "No font token exists for math; use the stack directly on the notation. Loads with `font-display: auto` per DESIGN-POLICIES."
   - id: the-type-scale
@@ -99,7 +97,7 @@ components:
       - name: "<dt>"
         does: "A definition term inside `.ds-acc-body` is this label, and has no class."
     notes:
-      - "Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading, and belongs in the outline."
+      - "Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading."
 rules:
   - "**700 is the ceiling.** IBM Plex ships no heavier weight, so a CSS `800` either falls back or gets faux-bolded, differently per browser. Ask for the weight that exists."
   - "**Two serif jobs, kept apart.** Upright serif is the editorial voice — headlines, quotes, drop caps. Italic serif stays the annotation voice everywhere. A heading that must not read as \"another article\" uses the heavy *sans* instead, which is why 700 exists in this context at all."
@@ -156,10 +154,6 @@ font-family: var(--ds-font-mono);
 ```
 
 ```html
-font-family: var(--ds-font-serif);
-```
-
-```html
 font-family: "STIX Two Math", "Cambria Math", math;
 ```
 
@@ -169,7 +163,6 @@ font-family: "STIX Two Math", "Cambria Math", math;
 - `--ds-font-mono` — Identifiers and code. Weights 400 / 500. Inline `<code>` and `<pre>` already use it; see [Code blocks](#code-blocks-and-the-copy-button) below.
 - `.ds-annotation` — The annotation voice: `--ds-font-serif`, italic, 400, 0.8125rem, `--ds-text-muted`. It is a voice, not a layout role; where it sits is the consumer's decision.
 - `--ds-font-serif` — The serif stack. On the public site and in internal tools it is used only through `.ds-annotation`.
-- `--ds-font-serif` — Upright, weights 400 and 600. Outreach properties only; see [outreach sites](outreach.html).
 - `<math>` — No font token exists for math; use the stack directly on the notation. Loads with `font-display: auto` per DESIGN-POLICIES.
 
 ## The body text scale
@@ -274,7 +267,7 @@ The small uppercase Condensed label that names a panel, a column or a group. It 
 - `.ds-panel-label` — One class for the whole system: 0.75rem · 600 · Condensed · uppercase · 0.04em · `--ds-text-muted`. Use it wherever this treatment appears — panel headings, column labels, the label above a group of controls — on whichever element is semantically right. A component that owns its internal spacing takes the margin back.
 - `<dt>` — A definition term inside `.ds-acc-body` is this label, and has no class.
 
-> Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading, and belongs in the outline.
+> Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading.
 
 ## Rules
 
