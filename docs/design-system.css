@@ -3017,7 +3017,6 @@ html:has(.ds-modal[open]) {
   --ds-accent-border:              var(--ds-access-lime-border);
   --ds-accent-border-active:       var(--ds-access-lime-deep);
   --ds-subnav-current:             var(--ds-access-lime-deep);
-  --ds-tabs-current:               var(--ds-access-lime-deep);
   --ds-accent-wash:                var(--ds-access-lime-wash);
   --ds-accent-wash-hover:          var(--ds-access-lime-wash-2);
   --ds-accent-wash-active:         var(--ds-access-lime-wash-3);
@@ -4111,20 +4110,18 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 /* SECONDARY NAVIGATION  (.ds-subnav) — navigation.html
    A row of section links directly under the header. It wraps rather than
    scrolling sideways, so every section stays visible at 320px and at 200%
-   text. The current page is marked three ways: weight, an underline bar,
-   and aria-current. */
+   text. Its links are tabs (the one tab style, below). */
 /* A bar can hold more than links: a <nav> of links, then a compact filter bar.
    Groups sit twice as far apart as the items inside them. */
 .ds-subnav:has(> nav) { column-gap: var(--ds-space-12); }
 .ds-subnav > nav { display: flex; flex-wrap: wrap; column-gap: var(--ds-space-6); }
-.ds-subnav > .ds-filter-bar { align-self: center; margin-block: var(--ds-space-1); }
-/* Second level, inside the page: the same links and current bar, in the content column. */
-.ds-subnav.ds-subnav--in-page { padding-inline: 0; background: none; }
 .ds-subnav {
+  --ds-row-pad: 24px;   /* the row's side padding: the section menu reaches back over it */
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   column-gap: var(--ds-space-6);
-  padding: 0 24px;
+  padding: 0 var(--ds-row-pad);
   background: var(--ds-surface);
   border-bottom: 1px solid var(--ds-border);
   font-family: var(--ds-font-sans);
@@ -4151,8 +4148,153 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   border-bottom-color: var(--ds-subnav-current, var(--ds-accent-strong));
 }
 @media (max-width: 599px) {
-  .ds-subnav { padding: 0 12px; column-gap: var(--ds-space-4); }
+  .ds-subnav { --ds-row-pad: 12px; column-gap: var(--ds-space-4); }
 }
+
+/* THE ONE TAB STYLE — navigation.html, progressive-disclosure.html
+   Secondary navigation (pages) and tabs (views in a page) look the same. Each
+   tab is text on the row; the current one is a box joined to what follows it,
+   with the accent along its top. The line is not the only cue: the box, the
+   weight and aria-current mark it too. The current tab takes the ground of what
+   follows it (--ds-tab-ground), so it opens into a tinted band when one comes next. */
+.ds-subnav:not(.ds-subnav--steps),
+.ds-subnav:not(.ds-subnav--steps) > nav,
+.ds-tabs-list { column-gap: var(--ds-space-1); align-items: flex-end; }
+:is(:is(.ds-subnav:not(.ds-subnav--steps), .ds-subnav:not(.ds-subnav--steps) > nav) > a, .ds-tabs-list [role="tab"]) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  margin-top: var(--ds-space-1);
+  margin-bottom: -1px;
+  padding: 0 var(--ds-space-4);
+  font-family: var(--ds-font-sans);
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+  text-decoration: none;
+  background: none;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+}
+:is(:is(.ds-subnav:not(.ds-subnav--steps), .ds-subnav:not(.ds-subnav--steps) > nav) > a, .ds-tabs-list [role="tab"]):hover { color: var(--ds-text); background: var(--ds-tint-warm); }
+:is(:is(.ds-subnav:not(.ds-subnav--steps), .ds-subnav:not(.ds-subnav--steps) > nav) > a, .ds-tabs-list [role="tab"]):focus-visible {
+  outline: 2px solid var(--ds-focus-ring);
+  outline-offset: -2px;
+}
+:is(:is(.ds-subnav:not(.ds-subnav--steps), .ds-subnav:not(.ds-subnav--steps) > nav) > a[aria-current="page"], .ds-tabs-list [role="tab"][aria-selected="true"]) {
+  color: var(--ds-text);
+  font-weight: 600;
+  text-shadow: none;
+  background: var(--ds-tab-ground, var(--ds-canvas));
+  border-color: var(--ds-border);
+  box-shadow: inset 0 3px 0 var(--ds-tab-current, var(--ds-accent));
+}
+body:has(.ds-container > .ds-zone-secondary:first-child) .ds-subnav { --ds-tab-ground: var(--ds-zone-secondary-bg); }
+
+/* SECTION MENU (.ds-subnav-section) AND MENU (.ds-menu) — navigation.html
+   An area whose sections each have several views: the section menu starts the
+   row, a cell in the accent's light tint from the row's edge, and the views of
+   the current section follow it as tabs. A menu matches its control: the
+   section menu's opens in the same tint; a menu from the white row is white. */
+.ds-subnav-section {
+  --ds-menu-bg: var(--ds-tint-accent);
+  --ds-menu-hover: var(--ds-accent-wash-hover, var(--ds-accent-wash));
+  --ds-menu-line: var(--ds-accent-border);
+  position: relative;
+  display: flex;
+  margin-inline-start: calc(-1 * var(--ds-row-pad));
+}
+.ds-subnav-section > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  min-height: max(var(--ds-menu-row), 2.5rem);
+  padding: 0 var(--ds-space-4) 0 var(--ds-row-pad);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ds-text);
+  background: var(--ds-menu-bg);
+  border-inline-end: 1px solid var(--ds-border);
+  list-style: none;
+  cursor: pointer;
+}
+.ds-subnav-section > summary::-webkit-details-marker { display: none; }
+.ds-subnav-section > summary:hover,
+.ds-subnav-section[open] > summary { background: var(--ds-menu-hover); }
+.ds-subnav-section > summary:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: -2px; }
+:is(.ds-subnav-section, .ds-subnav-views) > summary::after {
+  content: "";
+  width: 1.25em;
+  height: 1.25em;
+  background: currentColor;
+  -webkit-mask: var(--ds-chevron) center / contain no-repeat;
+  mask: var(--ds-chevron) center / contain no-repeat;
+  transition: transform 0.15s;
+}
+:is(.ds-subnav-section, .ds-subnav-views)[open] > summary::after { transform: rotate(180deg); }
+@media (forced-colors: active) {
+  :is(.ds-subnav-section, .ds-subnav-views) > summary::after { forced-color-adjust: none; background: CanvasText; }
+}
+/* The sheet: square corners, rows with hairlines, hanging from its control. */
+.ds-menu {
+  position: absolute;
+  top: 100%;
+  left: var(--ds-row-pad, 0);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  min-width: 18rem;
+  max-width: calc(100vw - 2 * var(--ds-row-pad, 16px));
+  background: var(--ds-menu-bg, var(--ds-surface));
+  border: 1px solid var(--ds-menu-line, var(--ds-border));
+  border-top: 0;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);   /* the summoned-surface shadow */
+}
+.ds-menu > a {
+  display: flex;
+  align-items: center;
+  min-height: var(--ds-menu-row);
+  padding: 0 var(--ds-space-4);
+  font-size: 0.875rem;
+  color: var(--ds-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ds-menu-line, var(--ds-border));
+}
+.ds-menu > a:last-child { border-bottom: 0; }
+.ds-menu > a:visited { color: var(--ds-text); }
+.ds-menu > a:hover { background: var(--ds-menu-hover, var(--ds-surface-hover)); }
+.ds-menu > a:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: -2px; }
+.ds-menu > a[aria-current] { font-weight: 600; box-shadow: inset 3px 0 0 var(--ds-tab-current, var(--ds-accent)); }
+
+/* Folding by fit (subnav.js), as the header folds; without the script the tabs
+   wrap. When the views do not fit beside the section menu they fold into a
+   View menu (.ds-subnav-views); when that does not fit either, the section menu
+   takes a row of its own and each menu spans the row. */
+.ds-subnav-views { display: none; position: relative; }
+.ds-subnav.is-views-folded:not(.ds-subnav--steps) > a { display: none; }   /* outranks the tab style's display */
+.ds-subnav.is-views-folded > .ds-subnav-views { display: flex; }
+.ds-subnav-views > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  min-height: max(var(--ds-menu-row), 2.5rem);
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+  list-style: none;
+  cursor: pointer;
+}
+.ds-subnav-views > summary::-webkit-details-marker { display: none; }
+.ds-subnav-views > summary > b { color: var(--ds-text); font-weight: 600; }
+.ds-subnav-views > summary > svg { width: 1.1em; height: 1.1em; flex: none; }
+.ds-subnav-views > summary:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 2px; border-radius: 2px; }
+.ds-subnav-views > summary::after { color: var(--ds-text); }
+.ds-subnav-views > .ds-menu { left: calc(-1 * var(--ds-row-pad)); }
+.ds-subnav.is-menu-row > .ds-subnav-section { flex: 1 0 100%; margin-inline: calc(-1 * var(--ds-row-pad)); }
+.ds-subnav.is-menu-row > .ds-subnav-section > summary { flex: 1; padding-inline: var(--ds-row-pad); border-inline-end: 0; border-bottom: 1px solid var(--ds-border); }
+.ds-subnav.is-menu-row > .ds-subnav-section > .ds-menu,
+.ds-subnav.is-menu-row > .ds-subnav-views > .ds-menu { left: 0; right: 0; max-width: none; }
+.ds-subnav.is-menu-row > .ds-subnav-views { position: static; }
 
 /* STEPS  (.ds-subnav--steps) — navigation.html
    The steps of one ordered process, on the secondary navigation bar. A
@@ -4209,35 +4351,10 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 .ds-tabs-list {
   display: flex;
   flex-wrap: wrap;
-  column-gap: var(--ds-space-6);
   margin: 0 0 var(--ds-space-4);
   border-bottom: 1px solid var(--ds-border);
 }
-.ds-tabs-list [role="tab"] {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.5rem;
-  margin-bottom: -1px;
-  padding: 0;
-  background: none;
-  border: 0;
-  border-bottom: 3px solid transparent;
-  font-family: var(--ds-font-sans);
-  font-size: 0.875rem;
-  color: var(--ds-text-muted);
-  cursor: pointer;
-}
-.ds-tabs-list [role="tab"]:hover { color: var(--ds-text); border-bottom-color: var(--ds-border-strong); }
-.ds-tabs-list [role="tab"]:focus-visible {
-  outline: 3px solid var(--ds-focus-ring);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
-.ds-tabs-list [role="tab"][aria-selected="true"] {
-  color: var(--ds-text);
-  text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;   /* bold without widening, so nothing beside it moves */
-  border-bottom-color: var(--ds-tabs-current, var(--ds-accent-strong));
-}
+/* The tabs themselves take the one tab style (secondary navigation). */
 .ds-tabs-panel:focus-visible {
   outline: 3px solid var(--ds-focus-ring);
   outline-offset: 2px;
