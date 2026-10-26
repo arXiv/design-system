@@ -107,7 +107,7 @@ components:
   - id: a-group-of-toggles
     title: "A group of toggles"
     group: "Modifiers"
-    summary: "Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once. Use a sort bar for up to five ways to sort a list or a set of rows that are not a table; use a [sortable column header](tables.html#sortable-column-headers) in a table, and a [Sort by](forms.html) select in a search form."
+    summary: "Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once. Use a sort bar for up to five ways to sort a list or a set of rows that are not a table. A table sorts from its [column headers](tables.html#sortable-column-headers). A set of data with a [header bar](cards.html#cards-with-a-header-bar), and a search form, sort with a Sort by select in a [compact form](forms.html#compact-form), which stays on one line."
     classes:
       - name: ".ds-btn-group with role=\"group\""
         does: "The bar, named by its label through `aria-labelledby`. When its buttons have `aria-pressed`, they join, and the bar is compact. Here the bar sits in a GET form, so it works without JavaScript; hidden inputs keep the reader's other choices in the address. The group role goes on the bar, not on the form."
@@ -263,7 +263,7 @@ A set of related buttons with a parent container class that spaces them appropri
 
 ## A group of toggles  (Modifiers)
 
-Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once. Use a sort bar for up to five ways to sort a list or a set of rows that are not a table; use a [sortable column header](tables.html#sortable-column-headers) in a table, and a [Sort by](forms.html) select in a search form.
+Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once. Use a sort bar for up to five ways to sort a list or a set of rows that are not a table. A table sorts from its [column headers](tables.html#sortable-column-headers). A set of data with a [header bar](cards.html#cards-with-a-header-bar), and a search form, sort with a Sort by select in a [compact form](forms.html#compact-form), which stays on one line.
 
 **A sort bar**
 
