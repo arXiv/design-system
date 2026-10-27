@@ -530,11 +530,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 
 
 /* ── Panel label (.ds-panel-label) — typography.html
-   Condensed caps. A <dt> inside .ds-acc-body IS this label and needs no
-   class. Never set it on something interactive: at this size and letter
-   spacing it reads as a heading, not a control. */
-.ds-panel-label,
-.ds-acc-body dt {          /* a <dt> in an accordion body IS this label */
+   Condensed caps. Never set it on something interactive: at this size and
+   letter spacing it reads as a heading, not a control. */
+.ds-panel-label {
   font-family: var(--ds-font-condensed);
   font-size: 0.75rem;
   font-weight: 600;
@@ -545,8 +543,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 
 /* Components that own their internal spacing take the margin back. */
-.ds-site-header-menu .ds-panel-label,
-.ds-acc-body dt { margin: 0; }
+.ds-site-header-menu .ds-panel-label { margin: 0; }
 
 /* ── Dropdown groups (optional part of .ds-site-header) ──────────────────
    A <details>/<summary> menu in the bar, for a property whose sections need
@@ -3116,7 +3113,7 @@ html:has(.ds-modal[open]) {
    behaviour for free, and find-in-page can open a closed panel to show a
    match inside it — which no hand-built accordion does.
 
-   Ruled: a line above and below, no box. Inside .ds-sidebar the rules drop.
+   Ruled: a line above and below, no box.
 
    Content rule (progressive-disclosure.html): never put must-see
    information ONLY inside a closed accordion. Default state is closed; a
@@ -3184,7 +3181,7 @@ html:has(.ds-modal[open]) {
 .ds-card > .ds-acc:last-child > summary,
 .ds-card > .ds-acc:last-child > .ds-acc-body { padding-inline: var(--ds-space-6); }
 .ds-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--ds-space-tight) var(--ds-space-block); margin: 0; }
-.ds-acc-body dt { white-space: nowrap; padding-top: 2px; }   /* type: .ds-panel-label */
+.ds-acc-body dt { white-space: nowrap; padding-top: 2px; margin: 0; font-size: 0.8125rem; color: var(--ds-text-muted); }
 .ds-acc-body dd { margin: 0; grid-column: 2; min-width: 0; }   /* keeps a second dd out of the term column */
 .ds-acc-body a { color: var(--ds-link); }
 .ds-acc-body code { overflow-wrap: anywhere; }
@@ -3222,19 +3219,15 @@ html:has(.ds-modal[open]) {
 .ds-sidebar--framed > * + * { padding-top: var(--ds-space-4); border-top: 1px solid var(--ds-border); }
 .ds-sidebar--framed { font-size: 0.8125rem; }
 
-/* An accordion in the sidebar: no rules, because spacing already separates the
-   blocks; single-column internals for the narrow measure; a Link Blue +/−
-   so a closed one still reads as interactive. */
-.ds-sidebar .ds-acc { border-top: 0; border-bottom: 0; margin: 0; }
-.ds-sidebar .ds-acc > summary {
-  font-size: 0.8125rem;
-  /* 4px padding + matching negative margin: a ≥24px target, no layout shift. */
-  padding: 4px 0;
-  margin: -4px 0;
-}
-.ds-sidebar .ds-acc > summary::after { font-size: 1.1rem; color: var(--ds-link); }
-.ds-sidebar .ds-acc[open] > summary { margin-bottom: 6px; }
-.ds-sidebar .ds-acc-body { padding: 0; }
+/* An accordion in the sidebar: the same ruled accordion, a step smaller to
+   match the sidebar's text, with single-column internals for the narrow
+   measure. The sidebar's frame closes the first and the last one. */
+.ds-sidebar .ds-acc { margin: 0; }
+.ds-sidebar > .ds-acc:first-child,
+.ds-sidebar > .ds-acc-stack:first-child > .ds-acc:first-child { border-top: 0; }
+.ds-sidebar .ds-acc:last-child { border-bottom: 0; }
+.ds-sidebar .ds-acc > summary { font-size: 0.875rem; }
+.ds-sidebar .ds-acc-body { padding: 0 0 12px; font-size: 0.8125rem; }
 .ds-sidebar .ds-acc-body dl { grid-template-columns: 1fr; gap: 0; }
 .ds-sidebar .ds-acc-body dt { margin-top: 10px; }
 .ds-sidebar .ds-acc-body dt:first-child { margin-top: 0; }
