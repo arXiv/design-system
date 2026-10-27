@@ -6,7 +6,7 @@ stylesheet: design-system.css
 components:
   - id: button-tiers
     title: "Button tiers"
-    summary: "arXiv has three button tiers: primary, secondary, and a quiet text-only button (text links can be found on the [typography](typography.html) page)."
+    summary: "arXiv has three button tiers: primary, secondary, and a quiet text-only button (text links can be found on the [typography](typography.md) page)."
     classes:
       - name: ".ds-btn-primary"
         does: "The page's call to action (HTML, PDF on the abstract page). One cluster per view."
@@ -23,7 +23,7 @@ components:
       - name: "Icons"
         does: "Any `.ds-btn` accepts an inline SVG. The stylesheet sizes it in `em`, blocks the baseline gap, and stops it shrinking beside a long label. Set `stroke=\"currentColor\"` and nothing else."
       - name: "Disabled"
-        does: "One flat `--ds-tint-warm` fill for every variant. An action that is merely not available yet takes `aria-disabled` instead — see [Forms](forms.html#validation)."
+        does: "One flat `--ds-tint-warm` fill for every variant. An action that is merely not available yet takes `aria-disabled` instead — see [Forms](forms.md#validation)."
     notes:
       - "When to use a text button vs a text link: Use a text button for actions that do not navigate to a new page. Use a text link when navigating to a new page or to an anchor link on the same page."
     rules:
@@ -79,13 +79,13 @@ components:
       - name: ".on-tint"
         does: "On a *cool* tint, swaps the secondary's white fill for Warm Tint (same luminance, warm hue) so it reads as secondary by material rather than by contrast. On a *warm* tint the default white secondary already sits comfortably."
       - name: ".on-dark"
-        does: "For a field dark enough to host white text: an outreach masthead, a photo band. A white fill would read as a paper rectangle stuck to the surface, louder than the primary beside it; `.on-dark` drops the fill so the field shows through and draws the boundary with a white border. See [outreach sites](outreach.html) for where such fields are allowed."
+        does: "For a field dark enough to host white text: an outreach masthead, a photo band. A white fill would read as a paper rectangle stuck to the surface, louder than the primary beside it; `.on-dark` drops the fill so the field shows through and draws the boundary with a white border. See [outreach sites](../outreach.html) for where such fields are allowed."
       - name: "Not this"
         does: "A default white secondary on a cool tint pops too hard and reads as primary — that is the case `.on-tint` exists for. Do not put `.on-tint` on a warm tint: its Warm Tint fill melts into the surface. And `.on-dark` is only correct on a dark field; on a light tint use `.on-tint`."
   - id: compact-buttons
     title: "Compact buttons"
     group: "Modifiers"
-    summary: "A smaller button for a [compact form](forms.html#compact-form), such as a filter or a single field with its own actions. `.ds-btn-compact` reduces the padding of a primary, secondary, text-only or icon-only button; its colour still comes from the surface."
+    summary: "A smaller button for a [compact form](forms.md#compact-form), such as a filter or a single field with its own actions. `.ds-btn-compact` reduces the padding of a primary, secondary, text-only or icon-only button; its colour still comes from the surface."
     classes:
       - name: ".ds-btn-compact"
         does: "Sets smaller padding and a smaller minimum width on the button. It works with every tier and with `.ds-btn-icon`. On a touch screen the button keeps its drawn size and its target reaches, unseen, to 44px."
@@ -107,7 +107,7 @@ components:
   - id: a-group-of-toggles
     title: "A group of toggles"
     group: "Modifiers"
-    summary: "Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once. Use a sort bar for up to five ways to sort a list or a set of rows that are not a table. A table sorts from its [column headers](tables.html#sortable-column-headers). A set of data with a [header bar](cards.html#cards-with-a-header-bar), and a search form, sort with a Sort by select in a [compact form](forms.html#compact-form), which stays on one line."
+    summary: "Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once. Use a sort bar for up to five ways to sort a list or a set of rows that are not a table. A table sorts from its [column headers](tables.md#sortable-column-headers). A set of data with a [header bar](cards.md#cards-with-a-header-bar), and a search form, sort with a Sort by select in a [compact form](forms.md#compact-form), which stays on one line."
     classes:
       - name: ".ds-btn-group with role=\"group\""
         does: "The bar, named by its label through `aria-labelledby`. When its buttons have `aria-pressed`, they join, and the bar is compact. Here the bar sits in a GET form, so it works without JavaScript; hidden inputs keep the reader's other choices in the address. The group role goes on the bar, not on the form."
@@ -116,7 +116,7 @@ components:
       - name: "aria-pressed"
         does: "On every button: `\"true\"` on the one that is on, `\"false\"` on the rest. Off is plain; on takes the accent tint."
       - name: ".sort-asc, .sort-desc, .sort-arrow"
-        does: "For a sort, the arrow shows the direction on the button that is on, as in a [sortable column header](tables.html#sortable-column-headers). Pressing it again reverses the direction. An `.is-sr-only` span says the direction in words."
+        does: "For a sort, the arrow shows the direction on the button that is on, as in a [sortable column header](tables.md#sortable-column-headers). Pressing it again reverses the direction. An `.is-sr-only` span says the direction in words."
       - name: ".ds-btn-group--split"
         does: "Two groups of controls for one list, on one row: the sort bar at the left edge, the other control at the right edge."
 rules:
@@ -124,8 +124,8 @@ rules:
   - "**Every button needs a text label.** An icon-only button gets its name from a `<span class=\"is-sr-only\">` inside it that says what the button does, such as “Copy link”. Without it, a screen reader says only “button”. Do not use `title` for this, and prefer the span to `aria-label`, because page translation tools skip attributes."
   - "**Show the name unless the icon is universal.** An icon-only button suits the few icons nearly every reader recognises in the place they expect them: the menu icon at the edge of a header, close in the corner of a dialog, the magnifying glass for search. Everywhere else, show the name beside the icon, and always where there is room for it, such as a row in a menu."
   - "**Say what will happen.** Label a button with the action it performs: “Save changes”, “Download PDF”, “Delete file”. Avoid “OK”, “Yes” and “Submit” on their own, because they only make sense to someone who can see the whole screen."
-  - "**Disable, do not hide.** When an action is not available, keep the button in place and add the `disabled` attribute. A button that disappears leaves the user wondering where it went. When the user can do something to make the action available, use `aria-disabled=\"true\"` instead and say what they need to do; see [Forms](forms.html#validation)."
-  - "**When a button acts like a toggle.** If a button switches something on and off and stays pressed, set `aria-pressed=\"true\"` or `\"false\"` on it and update it when it changes. A colour change on its own tells a screen reader user nothing. For a setting that is saved, use the [switch](forms.html#switch) instead."
+  - "**Disable, do not hide.** When an action is not available, keep the button in place and add the `disabled` attribute. A button that disappears leaves the user wondering where it went. When the user can do something to make the action available, use `aria-disabled=\"true\"` instead and say what they need to do; see [Forms](forms.md#validation)."
+  - "**When a button acts like a toggle.** If a button switches something on and off and stays pressed, set `aria-pressed=\"true\"` or `\"false\"` on it and update it when it changes. A colour change on its own tells a screen reader user nothing. For a setting that is saved, use the [switch](forms.md#switch) instead."
 ---
 
 # Buttons
@@ -137,7 +137,7 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 ## Button tiers
 
-arXiv has three button tiers: primary, secondary, and a quiet text-only button (text links can be found on the [typography](typography.html) page).
+arXiv has three button tiers: primary, secondary, and a quiet text-only button (text links can be found on the [typography](typography.md) page).
 
 ```html
 <!-- Primary / secondary / text -->
@@ -153,7 +153,7 @@ arXiv has three button tiers: primary, secondary, and a quiet text-only button (
 - `Quiet tier` — The text button borrows the link’s quietness, not its identity: Link Blue, never underlined, and hover is a background wash — the same feedback the other buttons give. Underlines stay with links, so a reader can still tell “this navigates” from “this acts here.”
 - `No outline tier` — The secondary is already white fill plus border, and on a white canvas a transparent fill is the same pixels as a white one.
 - `Icons` — Any `.ds-btn` accepts an inline SVG. The stylesheet sizes it in `em`, blocks the baseline gap, and stops it shrinking beside a long label. Set `stroke="currentColor"` and nothing else.
-- `Disabled` — One flat `--ds-tint-warm` fill for every variant. An action that is merely not available yet takes `aria-disabled` instead — see [Forms](forms.html#validation).
+- `Disabled` — One flat `--ds-tint-warm` fill for every variant. An action that is merely not available yet takes `aria-disabled` instead — see [Forms](forms.md#validation).
 
 > When to use a text button vs a text link: Use a text button for actions that do not navigate to a new page. Use a text link when navigating to a new page or to an anchor link on the same page.
 
@@ -235,12 +235,12 @@ The primary button works everywhere. The gradient border and vignette keep the e
 ```
 
 - `.on-tint` — On a *cool* tint, swaps the secondary's white fill for Warm Tint (same luminance, warm hue) so it reads as secondary by material rather than by contrast. On a *warm* tint the default white secondary already sits comfortably.
-- `.on-dark` — For a field dark enough to host white text: an outreach masthead, a photo band. A white fill would read as a paper rectangle stuck to the surface, louder than the primary beside it; `.on-dark` drops the fill so the field shows through and draws the boundary with a white border. See [outreach sites](outreach.html) for where such fields are allowed.
+- `.on-dark` — For a field dark enough to host white text: an outreach masthead, a photo band. A white fill would read as a paper rectangle stuck to the surface, louder than the primary beside it; `.on-dark` drops the fill so the field shows through and draws the boundary with a white border. See [outreach sites](../outreach.html) for where such fields are allowed.
 - `Not this` — A default white secondary on a cool tint pops too hard and reads as primary — that is the case `.on-tint` exists for. Do not put `.on-tint` on a warm tint: its Warm Tint fill melts into the surface. And `.on-dark` is only correct on a dark field; on a light tint use `.on-tint`.
 
 ## Compact buttons  (Modifiers)
 
-A smaller button for a [compact form](forms.html#compact-form), such as a filter or a single field with its own actions. `.ds-btn-compact` reduces the padding of a primary, secondary, text-only or icon-only button; its colour still comes from the surface.
+A smaller button for a [compact form](forms.md#compact-form), such as a filter or a single field with its own actions. `.ds-btn-compact` reduces the padding of a primary, secondary, text-only or icon-only button; its colour still comes from the surface.
 
 ```html
 <div class="ds-btn-group ds-btn-group--end">
@@ -263,7 +263,7 @@ A set of related buttons with a parent container class that spaces them appropri
 
 ## A group of toggles  (Modifiers)
 
-Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once. Use a sort bar for up to five ways to sort a list or a set of rows that are not a table. A table sorts from its [column headers](tables.html#sortable-column-headers). A set of data with a [header bar](cards.html#cards-with-a-header-bar), and a search form, sort with a Sort by select in a [compact form](forms.html#compact-form), which stays on one line.
+Buttons that each turn on one choice, such as a sort bar: the buttons join into one bar, and the choice that is on is tinted. Each press applies at once. Use a sort bar for up to five ways to sort a list or a set of rows that are not a table. A table sorts from its [column headers](tables.md#sortable-column-headers). A set of data with a [header bar](cards.md#cards-with-a-header-bar), and a search form, sort with a Sort by select in a [compact form](forms.md#compact-form), which stays on one line.
 
 **A sort bar**
 
@@ -298,7 +298,7 @@ Buttons that each turn on one choice, such as a sort bar: the buttons join into 
 - `.ds-btn-group with role="group"` — The bar, named by its label through `aria-labelledby`. When its buttons have `aria-pressed`, they join, and the bar is compact. Here the bar sits in a GET form, so it works without JavaScript; hidden inputs keep the reader's other choices in the address. The group role goes on the bar, not on the form.
 - `type="submit" with name and value` — Each button sends its sort. The button that is on sends the reverse direction, so pressing it again reverses the order.
 - `aria-pressed` — On every button: `"true"` on the one that is on, `"false"` on the rest. Off is plain; on takes the accent tint.
-- `.sort-asc, .sort-desc, .sort-arrow` — For a sort, the arrow shows the direction on the button that is on, as in a [sortable column header](tables.html#sortable-column-headers). Pressing it again reverses the direction. An `.is-sr-only` span says the direction in words.
+- `.sort-asc, .sort-desc, .sort-arrow` — For a sort, the arrow shows the direction on the button that is on, as in a [sortable column header](tables.md#sortable-column-headers). Pressing it again reverses the direction. An `.is-sr-only` span says the direction in words.
 - `.ds-btn-group--split` — Two groups of controls for one list, on one row: the sort bar at the left edge, the other control at the right edge.
 
 ## Rules
@@ -307,5 +307,5 @@ Buttons that each turn on one choice, such as a sort bar: the buttons join into 
 - **Every button needs a text label.** An icon-only button gets its name from a `<span class="is-sr-only">` inside it that says what the button does, such as “Copy link”. Without it, a screen reader says only “button”. Do not use `title` for this, and prefer the span to `aria-label`, because page translation tools skip attributes.
 - **Show the name unless the icon is universal.** An icon-only button suits the few icons nearly every reader recognises in the place they expect them: the menu icon at the edge of a header, close in the corner of a dialog, the magnifying glass for search. Everywhere else, show the name beside the icon, and always where there is room for it, such as a row in a menu.
 - **Say what will happen.** Label a button with the action it performs: “Save changes”, “Download PDF”, “Delete file”. Avoid “OK”, “Yes” and “Submit” on their own, because they only make sense to someone who can see the whole screen.
-- **Disable, do not hide.** When an action is not available, keep the button in place and add the `disabled` attribute. A button that disappears leaves the user wondering where it went. When the user can do something to make the action available, use `aria-disabled="true"` instead and say what they need to do; see [Forms](forms.html#validation).
-- **When a button acts like a toggle.** If a button switches something on and off and stays pressed, set `aria-pressed="true"` or `"false"` on it and update it when it changes. A colour change on its own tells a screen reader user nothing. For a setting that is saved, use the [switch](forms.html#switch) instead.
+- **Disable, do not hide.** When an action is not available, keep the button in place and add the `disabled` attribute. A button that disappears leaves the user wondering where it went. When the user can do something to make the action available, use `aria-disabled="true"` instead and say what they need to do; see [Forms](forms.md#validation).
+- **When a button acts like a toggle.** If a button switches something on and off and stays pressed, set `aria-pressed="true"` or `"false"` on it and update it when it changes. A colour change on its own tells a screen reader user nothing. For a setting that is saved, use the [switch](forms.md#switch) instead.

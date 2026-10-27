@@ -1,7 +1,7 @@
 ---
 page: alerts.html
 title: "Alerts"
-summary: "Alerts are a critical component of successful user journeys. They go hand in hand with [form validation](forms.html) but have many uses beyond forms as well. Alerts are always related to the content of the page they are on. For general announcements, see [messages](messages.html)."
+summary: "Alerts are a critical component of successful user journeys. They go hand in hand with [form validation](forms.md) but have many uses beyond forms as well. Alerts are always related to the content of the page they are on. For general announcements, see [messages](messages.md)."
 stylesheet: design-system.css
 components:
   - id: the-four-states
@@ -37,10 +37,10 @@ components:
   - id: dismissible
     title: "Dismissible"
     group: "Modifiers"
-    summary: "The dismiss control, fully documented on [Buttons](buttons.html#the-close-control), should be used for non-essential messages that the user can ignore without impeding progress. Critical form errors should never be dismissible."
+    summary: "The dismiss control, fully documented on [Buttons](buttons.md#the-close-control), should be used for non-essential messages that the user can ignore without impeding progress. Critical form errors should never be dismissible."
     classes:
       - name: ".ds-close"
-        does: "The dismiss control, documented on [Buttons](buttons.html#the-close-control). Put it last inside `.ds-alert`; the alert pushes it to the end of the row and it takes the alert’s colour. Removing the alert from the page is the host’s job: the stylesheet gives the control no behaviour."
+        does: "The dismiss control, documented on [Buttons](buttons.md#the-close-control). Put it last inside `.ds-alert`; the alert pushes it to the end of the row and it takes the alert’s colour. Removing the alert from the page is the host’s job: the stylesheet gives the control no behaviour."
       - name: ".is-sr-only"
         does: "Required inside the control. The icon is `aria-hidden`, so without this span the button announces as “button” and nothing more."
     notes:
@@ -63,7 +63,7 @@ rules:
 
 # Alerts
 
-Alerts are a critical component of successful user journeys. They go hand in hand with [form validation](forms.html) but have many uses beyond forms as well. Alerts are always related to the content of the page they are on. For general announcements, see [messages](messages.html).
+Alerts are a critical component of successful user journeys. They go hand in hand with [form validation](forms.md) but have many uses beyond forms as well. Alerts are always related to the content of the page they are on. For general announcements, see [messages](messages.md).
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
@@ -123,7 +123,7 @@ Some messages are meant to be short and do not need lead-in text. Alerts can als
 
 ## Dismissible  (Modifiers)
 
-The dismiss control, fully documented on [Buttons](buttons.html#the-close-control), should be used for non-essential messages that the user can ignore without impeding progress. Critical form errors should never be dismissible.
+The dismiss control, fully documented on [Buttons](buttons.md#the-close-control), should be used for non-essential messages that the user can ignore without impeding progress. Critical form errors should never be dismissible.
 
 ```html
 <div class="ds-alert" role="status">
@@ -145,7 +145,7 @@ The dismiss control, fully documented on [Buttons](buttons.html#the-close-contro
 </div>
 ```
 
-- `.ds-close` — The dismiss control, documented on [Buttons](buttons.html#the-close-control). Put it last inside `.ds-alert`; the alert pushes it to the end of the row and it takes the alert’s colour. Removing the alert from the page is the host’s job: the stylesheet gives the control no behaviour.
+- `.ds-close` — The dismiss control, documented on [Buttons](buttons.md#the-close-control). Put it last inside `.ds-alert`; the alert pushes it to the end of the row and it takes the alert’s colour. Removing the alert from the page is the host’s job: the stylesheet gives the control no behaviour.
 - `.is-sr-only` — Required inside the control. The icon is `aria-hidden`, so without this span the button announces as “button” and nothing more.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A) and [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)

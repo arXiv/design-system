@@ -1,7 +1,7 @@
 ---
 page: colors.html
 title: "Colors"
-summary: "The full arXiv palette, rendered. Written spec and rationale: [color-mapping.md](doc.html?src=docs/color-mapping.md) (source of truth — if this page and the spec disagree, the spec wins). Hard rules live in [DESIGN-POLICIES.md](doc.html?src=docs/DESIGN-POLICIES.md): all colors come from this palette; no one-off hex values."
+summary: "The full arXiv palette, rendered. Written spec and rationale: [color-mapping.md](../doc.html?src=docs/color-mapping.md) (source of truth — if this page and the spec disagree, the spec wins). Hard rules live in [DESIGN-POLICIES.md](../doc.html?src=docs/DESIGN-POLICIES.md): all colors come from this palette; no one-off hex values."
 stylesheet: design-system.css
 components:
   - id: brand-colors
@@ -32,12 +32,12 @@ rules:
   - "**Use tokens, not hex values.** Take every color from a `--ds-` token. The hex values on this page are specimens to read, not values to paste into a stylesheet. A color with no token is not available to build with."
   - "**Every pairing on this page already passes.** Each text colour clears WCAG AA (4.5:1) on every surface it is documented for, in both modes, and `verification/check-contrast.py` fails if a token change ever breaks one. That is the reason to take colours from tokens and never to override one: a hex typed by hand is a pairing nobody has checked."
   - "**Never use color alone.** Pair a color with a word, an icon, an underline, or a change of position, so a reader who cannot see the color still gets the message (WCAG 1.4.1)."
-  - "**Dark mode flips the tokens.** Every token on this page takes its dark value on its own. Never hand-pick a dark value into a page; see [Dark mode](dark-mode.html) for what flips and what stays fixed."
+  - "**Dark mode flips the tokens.** Every token on this page takes its dark value on its own. Never hand-pick a dark value into a page; see [Dark mode](dark-mode.md) for what flips and what stays fixed."
 ---
 
 # Colors
 
-The full arXiv palette, rendered. Written spec and rationale: [color-mapping.md](doc.html?src=docs/color-mapping.md) (source of truth — if this page and the spec disagree, the spec wins). Hard rules live in [DESIGN-POLICIES.md](doc.html?src=docs/DESIGN-POLICIES.md): all colors come from this palette; no one-off hex values.
+The full arXiv palette, rendered. Written spec and rationale: [color-mapping.md](../doc.html?src=docs/color-mapping.md) (source of truth — if this page and the spec disagree, the spec wins). Hard rules live in [DESIGN-POLICIES.md](../doc.html?src=docs/DESIGN-POLICIES.md): all colors come from this palette; no one-off hex values.
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
@@ -78,4 +78,4 @@ background: var(--ds-tint-accent);
 - **Use tokens, not hex values.** Take every color from a `--ds-` token. The hex values on this page are specimens to read, not values to paste into a stylesheet. A color with no token is not available to build with.
 - **Every pairing on this page already passes.** Each text colour clears WCAG AA (4.5:1) on every surface it is documented for, in both modes, and `verification/check-contrast.py` fails if a token change ever breaks one. That is the reason to take colours from tokens and never to override one: a hex typed by hand is a pairing nobody has checked.
 - **Never use color alone.** Pair a color with a word, an icon, an underline, or a change of position, so a reader who cannot see the color still gets the message (WCAG 1.4.1).
-- **Dark mode flips the tokens.** Every token on this page takes its dark value on its own. Never hand-pick a dark value into a page; see [Dark mode](dark-mode.html) for what flips and what stays fixed.
+- **Dark mode flips the tokens.** Every token on this page takes its dark value on its own. Never hand-pick a dark value into a page; see [Dark mode](dark-mode.md) for what flips and what stays fixed.

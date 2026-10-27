@@ -7,7 +7,7 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Component | Digest | Summary |
 |---|---|---|
 | Buttons | [buttons.md](buttons.md) | Each arXiv button family shares the same mechanical spec, with color used to differentiate by context: Open Blue for public pages and Access Lime for internal t |
-| Alerts | [alerts.md](alerts.md) | Alerts are a critical component of successful user journeys. They go hand in hand with [form validation](forms.html) but have many uses beyond forms as well. Al |
+| Alerts | [alerts.md](alerts.md) | Alerts are a critical component of successful user journeys. They go hand in hand with [form validation](forms.md) but have many uses beyond forms as well. Aler |
 | Tags | [tags.md](tags.md) | A small rounded element used for categories, search filters, states, and other small multiples. Tags remain the same across public and internal pages. |
 | Special messages | [messages.md](messages.md) | When arXiv has something special to say on the platform itself, this is how we do it. We are starting with a small announcement band above the header. Other opt |
 | Site footer | [footer.md](footer.md) | The universal arXiv public-page footer (`.ds-site-footer`). Note that the footer is still changing post-spinout as we figure out the best way to acknowledge maj |
@@ -17,7 +17,7 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Using the design system | [using.md](using.md) | This page shares how to get started with the arXiv Design System: basic markup, which files to link to, in what order, and a handful of things to avoid. If you  |
 | Links | [links.md](links.md) | Text links are simple but important to get right. Every link inside a `.ds-page` is the inline text link, with no class to add, and appears in Link Blue, a spec |
 | Cards | [cards.md](cards.md) | When you need to draw a box around related content, reach for a card. Public pages and internal tools each have their own color variations but the use cases are |
-| Colors | [colors.md](colors.md) | The full arXiv palette, rendered. Written spec and rationale: [color-mapping.md](doc.html?src=docs/color-mapping.md) (source of truth — if this page and the spe |
+| Colors | [colors.md](colors.md) | The full arXiv palette, rendered. Written spec and rationale: [color-mapping.md](../doc.html?src=docs/color-mapping.md) (source of truth — if this page and the  |
 | Dark mode | [dark-mode.md](dark-mode.md) | In the design system, every colour comes from a token and the tokens flip in each mode. A page or component built from the color tokens follows the mode without |
 | Modal dialogs | [modals.md](modals.md) | A window that overlays the background page until it is answered or dismissed. There are many ways to build a modal wrong. The design system starts with a native |
 | Tables | [tables.md](tables.md) | The table and what can be built on it: sortable columns, filters, row selection and bulk actions. All of it is shared by the public site and internal tools; int |
@@ -26,14 +26,7 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Pager | [pager.md](pager.md) | Controls for moving through a list: one item at a time with the pager, or a group of items at a time with numbered pages. |
 | Typography | [typography.md](typography.md) | arXiv sets all text in the IBM Plex family with STIX Two Math for notation. All fonts are self-hosted and open source with no external font services. |
 | Layout patterns | [layout-patterns.md](layout-patterns.md) | This section covers our primary patterns for differentiating and organizing content based on user needs. The organizing principle to follow throughout: Choose t |
-
-## Not yet digested
-
-These pages have not had their review pass. Read the page itself, and expect the shape to differ.
-
-- brand.html
-- filters.html
-- navigation.html
-- outreach.html
-- papers.html
-- search.html
+| Filters | [filters.md](filters.md) | Filters narrow a set of data, such as a table, a list of cards or a chart, to the items a reader wants. When each filter takes one choice, such as one status, t |
+| Navigation | [navigation.md](navigation.md) | The bars under the [site header](header.md) that tell a reader where they are inside an area: secondary navigation, two levels of it, and steps. |
+| Search | [search.md](search.md) | A search page contains many components and elements documented elsewhere. This page is about how to put them together, the hierarchy of content, and other desig |
+| Papers | [papers.md](papers.md) | Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us displ |

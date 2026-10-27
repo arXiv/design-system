@@ -19,7 +19,7 @@ components:
       - name: ".ds-modal-footer-start"
         does: "Pushes one control to the opposite end — Cancel reads better away from the action it undoes."
       - name: ".ds-close"
-        does: "The same close control as everywhere else; see [Buttons](buttons.html#the-close-control). It sits inside `.ds-modal-header`, after the title."
+        does: "The same close control as everywhere else; see [Buttons](buttons.md#the-close-control). It sits inside `.ds-modal-header`, after the title."
       - name: "data-open=\"…\", data-close"
         does: "Hooks for this page's demo script, which finds the button that opens a dialog and the controls that close it. The stylesheet gives them no meaning; your own script may use any hook it likes."
       - name: ".ds-modal-body"
@@ -128,7 +128,7 @@ document.getElementById('demo-confirm').close();
 - `.ds-modal-header, .ds-modal-body, .ds-modal-footer` — The three regions, in this order. Header and footer hold their size; the body takes what is left and scrolls, which is what keeps the title and the actions on screen when the content is long.
 - `.ds-modal-title` — The heading inside the header. It has the id that `aria-labelledby` points at.
 - `.ds-modal-footer-start` — Pushes one control to the opposite end — Cancel reads better away from the action it undoes.
-- `.ds-close` — The same close control as everywhere else; see [Buttons](buttons.html#the-close-control). It sits inside `.ds-modal-header`, after the title.
+- `.ds-close` — The same close control as everywhere else; see [Buttons](buttons.md#the-close-control). It sits inside `.ds-modal-header`, after the title.
 - `data-open="…", data-close` — Hooks for this page's demo script, which finds the button that opens a dialog and the controls that close it. The stylesheet gives them no meaning; your own script may use any hook it likes.
 - `.ds-modal-body` — Takes whatever height the header and footer leave and scrolls inside it. Nothing to add: the same markup as a short dialog, with more in the body. It scrolls whenever its content does not fit, at any screen size, including content a script adds after the dialog opens. On a screen too short to hold the header, the footer and some of the body, the whole dialog scrolls instead, so the actions are never cut off.
 - `tabindex="0", role="region", aria-labelledby (added by script)` — Not in the markup: the page script adds them while the body overflows and removes them when it fits. A scrolling area with no links or buttons in it cannot be reached from the keyboard in every browser, so a keyboard user could not scroll it. The tab stop fixes that, and the region takes the dialog's title as its name so a screen reader says what it is. Adding it only while the body overflows means a short dialog has no empty tab stop, and a body that grows later, because a script added content or the window got smaller, gets one without anyone changing the markup. The reference script is at the end of this page.

@@ -1,7 +1,7 @@
 ---
 page: forms.html
 title: "Forms & validation"
-summary: "The design system supports highly accessible forms with robust validation display options. Explore validation examples in action in this [submission metadata mockup](../whiteboard/mockups/public/submission-metadata/index.html)."
+summary: "The design system supports highly accessible forms with robust validation display options. Explore validation examples in action in this [submission metadata mockup](../../whiteboard/mockups/public/submission-metadata/index.html)."
 stylesheet: design-system.css
 components:
   - id: fields
@@ -35,7 +35,7 @@ components:
       - name: ".ds-btn-compact"
         does: "The button. Secondary when it changes the view, such as Apply; primary when sending the form is the form's job."
       - name: ".ds-card-bar"
-        does: "The header bar of the set the form changes. See [Cards with a header bar](cards.html#cards-with-a-header-bar)."
+        does: "The header bar of the set the form changes. See [Cards with a header bar](cards.md#cards-with-a-header-bar)."
       - name: ".ds-form--compact"
         does: "With joined controls, the joined input takes the spare width of the row. Anything after the button goes on the line below: a message first, then secondary options, such as Show abstracts and the settings for the results (compact selects for order and results per page). A link to another page, such as Advanced search, sits at the end of that line."
       - name: ".ds-input-group"
@@ -64,10 +64,10 @@ components:
         does: "Names the hint first, then the message, so a screen reader reads them in the order they appear."
   - id: alerts-in-forms
     title: "Alerts in forms"
-    summary: "Repeat the problems below the page heading using an alert component. Errors are grouped into alerts by disposition (error, warning, info) and are not mixed. Each alert holds an ordered list of items. See [Alerts](alerts.html) for full documentation. Below is an example of using an alert specifically for validation."
+    summary: "Repeat the problems below the page heading using an alert component. Errors are grouped into alerts by disposition (error, warning, info) and are not mixed. Each alert holds an ordered list of items. See [Alerts](alerts.md) for full documentation. Below is an example of using an alert specifically for validation."
     classes:
       - name: ".ds-alert--error, .ds-alert--warning, .ds-alert"
-        does: "One alert per severity, never a mixed one: red has to mean “you cannot proceed”, and a non-blocking item inside a red alert destroys that. Two problems of two severities means two alerts, in severity order. A warning summary is the same construction in `.ds-alert--warning`, and an automatic change is a bare `.ds-alert`, which is the info state. Takes `role=\"alert\"` for error and warning, `role=\"status\"` for info. See [Alerts](alerts.html) for the four severities and their markup."
+        does: "One alert per severity, never a mixed one: red has to mean “you cannot proceed”, and a non-blocking item inside a red alert destroys that. Two problems of two severities means two alerts, in severity order. A warning summary is the same construction in `.ds-alert--warning`, and an automatic change is a bare `.ds-alert`, which is the info state. Takes `role=\"alert\"` for error and warning, `role=\"status\"` for info. See [Alerts](alerts.md) for the four severities and their markup."
       - name: ".ds-alert-title"
         does: "Includes the count. The body under it says what that severity means for the reader: whether they may continue."
       - name: "<ol>"
@@ -152,7 +152,7 @@ rules:
 
 # Forms & validation
 
-The design system supports highly accessible forms with robust validation display options. Explore validation examples in action in this [submission metadata mockup](../whiteboard/mockups/public/submission-metadata/index.html).
+The design system supports highly accessible forms with robust validation display options. Explore validation examples in action in this [submission metadata mockup](../../whiteboard/mockups/public/submission-metadata/index.html).
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
@@ -237,7 +237,7 @@ A normal form is the main content of the page, or an important part of it. A com
 - `.ds-form--compact` — On the `<form>`. Puts the controls and the button on one row, and makes each field compact. When the form's container is narrow, the labels make one column and the fields another.
 - `<label>` — Each control sits inside its own label, the label's words before it. No wrapper class is needed.
 - `.ds-btn-compact` — The button. Secondary when it changes the view, such as Apply; primary when sending the form is the form's job.
-- `.ds-card-bar` — The header bar of the set the form changes. See [Cards with a header bar](cards.html#cards-with-a-header-bar).
+- `.ds-card-bar` — The header bar of the set the form changes. See [Cards with a header bar](cards.md#cards-with-a-header-bar).
 - `.ds-form--compact` — With joined controls, the joined input takes the spare width of the row. Anything after the button goes on the line below: a message first, then secondary options, such as Show abstracts and the settings for the results (compact selects for order and results per page). A link to another page, such as Advanced search, sits at the end of that line.
 - `.ds-input-group` — Joins the controls that make one input, such as a search term and the field it searches. The text input takes the spare width and the select takes what it needs. Joined controls and the button after them keep the full size, because they are the form's main input.
 - `.field-error` — A message goes directly after the button and shows under the row, so the button stays beside the field. The rest follows [Validation](#validation).
@@ -291,7 +291,7 @@ Fields can be in three possible states: normal, validated, or disabled. Validati
 
 ## Alerts in forms
 
-Repeat the problems below the page heading using an alert component. Errors are grouped into alerts by disposition (error, warning, info) and are not mixed. Each alert holds an ordered list of items. See [Alerts](alerts.html) for full documentation. Below is an example of using an alert specifically for validation.
+Repeat the problems below the page heading using an alert component. Errors are grouped into alerts by disposition (error, warning, info) and are not mixed. Each alert holds an ordered list of items. See [Alerts](alerts.md) for full documentation. Below is an example of using an alert specifically for validation.
 
 ```html
 <div class="ds-alert ds-alert--error" role="alert">
@@ -311,7 +311,7 @@ Repeat the problems below the page heading using an alert component. Errors are 
 </div>
 ```
 
-- `.ds-alert--error, .ds-alert--warning, .ds-alert` — One alert per severity, never a mixed one: red has to mean “you cannot proceed”, and a non-blocking item inside a red alert destroys that. Two problems of two severities means two alerts, in severity order. A warning summary is the same construction in `.ds-alert--warning`, and an automatic change is a bare `.ds-alert`, which is the info state. Takes `role="alert"` for error and warning, `role="status"` for info. See [Alerts](alerts.html) for the four severities and their markup.
+- `.ds-alert--error, .ds-alert--warning, .ds-alert` — One alert per severity, never a mixed one: red has to mean “you cannot proceed”, and a non-blocking item inside a red alert destroys that. Two problems of two severities means two alerts, in severity order. A warning summary is the same construction in `.ds-alert--warning`, and an automatic change is a bare `.ds-alert`, which is the info state. Takes `role="alert"` for error and warning, `role="status"` for info. See [Alerts](alerts.md) for the four severities and their markup.
 - `.ds-alert-title` — Includes the count. The body under it says what that severity means for the reader: whether they may continue.
 - `<ol>` — One row per problem, each an `<a>` linking to its field. Rows repeat the field name even when several name the same field: without it the reader cannot tell whether three problems mean one field to visit or three. Derive every count and every row from the field results; a summary written by hand can disagree with the fields it describes, and eventually will.
 
