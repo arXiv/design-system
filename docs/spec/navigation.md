@@ -11,7 +11,7 @@ components:
       - name: ".ds-subnav"
         does: "A `<nav>` directly after the header, with an `aria-label` that names the area, such as “Account sections”. Plain links; never `role=\"tab\"`, which would promise arrow-key behaviour that page links do not have. Hidden in print."
       - name: "aria-current=\"page\""
-        does: "On the link for the current page. It shows as a bold tab joined to the page below, with the accent along its top, so the current section never depends on colour alone, and a screen reader announces it."
+        does: "On the link for the current page. It shows as a bold tab joined to the page below, with the accent along its top, so the current section never depends on colour alone, and a screen reader announces it. The current tab takes the background of the zone below it: the page ground (white in light mode) above primary content, or the secondary zone's tint (light grey in light mode) when the page opens with a [secondary band](layout-patterns.md#page-zones)."
   - id: two-levels-of-navigation
     title: "Two levels of navigation"
     summary: "An area with its own sections, each with several views, such as a report with parts and views. A section menu starts the row, and the views of the current section follow it as tabs. The row keeps to one line by folding: first the views fold into a View menu beside the section menu, then the section menu takes a row of its own."
@@ -37,7 +37,7 @@ components:
       - name: "<a> for a complete step"
         does: "A link, with the check mark and `.is-sr-only` text “, completed”."
       - name: "aria-current=\"step\""
-        does: "On the link for the current step. It shows in bold with an underline bar and a heavier circle."
+        does: "On the link for the current step. It shows in bold, and its circle has a heavier border in the accent colour."
       - name: "<a> for an available step"
         does: "A link with its number."
       - name: "<span> for a step not available yet"
@@ -45,12 +45,14 @@ components:
   - id: internal
     title: "Internal"
     group: "Modifiers"
-    summary: "The secondary navigation and steps in an internal tool. `.ds-internal` on a parent turns the current tab’s top line Access Lime, and the current step’s marking Access Lime Deep."
+    summary: "The secondary navigation and steps in an internal tool. `.ds-internal` on a parent turns the current tab’s top line and the current step’s circle Access Lime, and the section menu’s background and lines the Access Lime washes."
     classes:
       - name: ".ds-internal"
         does: "On a parent, it turns the current tab's top line Access Lime. Nothing else changes; see [Secondary navigation](#secondary-navigation)."
       - name: ".ds-internal"
-        does: "On a parent, it turns the underline bar and the current circle Access Lime Deep."
+        does: "On a parent, it turns the section menu's background, its hover and open state and its edge line to the Access Lime washes, and the current view's top line and the current row's bar in the open menu Access Lime. The markup and the folding are the same as in [Two levels of navigation](#two-levels-of-navigation)."
+      - name: ".ds-internal"
+        does: "On a parent, it turns the current step’s circle Access Lime."
 rules:
   - "**Name each bar.** The `<nav>` takes an `aria-label` that names the area, such as “Account sections” or “Submission steps”, so a screen reader can tell it from the header's navigation."
   - "**Mark the current page or step with `aria-current`.** The tab's shape and weight show it too, so the current section never depends on colour alone."
@@ -81,7 +83,7 @@ A row of section links directly under the header, for an area that has its own s
 ```
 
 - `.ds-subnav` — A `<nav>` directly after the header, with an `aria-label` that names the area, such as “Account sections”. Plain links; never `role="tab"`, which would promise arrow-key behaviour that page links do not have. Hidden in print.
-- `aria-current="page"` — On the link for the current page. It shows as a bold tab joined to the page below, with the accent along its top, so the current section never depends on colour alone, and a screen reader announces it.
+- `aria-current="page"` — On the link for the current page. It shows as a bold tab joined to the page below, with the accent along its top, so the current section never depends on colour alone, and a screen reader announces it. The current tab takes the background of the zone below it: the page ground (white in light mode) above primary content, or the secondary zone's tint (light grey in light mode) when the page opens with a [secondary band](layout-patterns.md#page-zones).
 
 ## Two levels of navigation
 
@@ -129,13 +131,13 @@ The steps of one ordered process, such as a submission, and which one the reader
 - `.ds-subnav--steps` — On the secondary navigation bar. It holds an `<ol role="list">`, one `<li>` per step. It wraps onto more lines on a narrow screen, so every step stays visible.
 - `.ds-step-number` — The step number in a circle, hidden from screen readers because the list gives the position. A complete step shows a check mark instead of its number.
 - `<a> for a complete step` — A link, with the check mark and `.is-sr-only` text “, completed”.
-- `aria-current="step"` — On the link for the current step. It shows in bold with an underline bar and a heavier circle.
+- `aria-current="step"` — On the link for the current step. It shows in bold, and its circle has a heavier border in the accent colour.
 - `<a> for an available step` — A link with its number.
 - `<span> for a step not available yet` — A `<span>`, not a link, so it is not a tab stop. A dashed circle and `.is-sr-only` text “, not available yet”.
 
 ## Internal  (Modifiers)
 
-The secondary navigation and steps in an internal tool. `.ds-internal` on a parent turns the current tab’s top line Access Lime, and the current step’s marking Access Lime Deep.
+The secondary navigation and steps in an internal tool. `.ds-internal` on a parent turns the current tab’s top line and the current step’s circle Access Lime, and the section menu’s background and lines the Access Lime washes.
 
 ```html
 <div class="ds-internal">
@@ -146,6 +148,25 @@ The secondary navigation and steps in an internal tool. `.ds-internal` on a pare
     <a href="/admin/moderators">Moderators</a>
   </nav>
 </div>
+```
+
+```html
+<div class="ds-internal">
+  <nav class="ds-subnav" aria-label="Moderator reports">
+    <details class="ds-subnav-section">
+      <summary>Submissions and holds</summary>
+      <div class="ds-menu">
+        <a href="…" aria-current="true">Submissions and holds</a>
+        <a href="…">Moderators</a>
+        <a href="…">Recruitment</a>
+      </div>
+    </details>
+    <a href="…">Overview</a>
+    <a href="…" aria-current="page">Activity charts</a>
+    <a href="…">Recent holds</a>
+  </nav>
+</div>
+<script src="subnav.js" defer></script>
 ```
 
 ```html
@@ -161,7 +182,8 @@ The secondary navigation and steps in an internal tool. `.ds-internal` on a pare
 ```
 
 - `.ds-internal` — On a parent, it turns the current tab's top line Access Lime. Nothing else changes; see [Secondary navigation](#secondary-navigation).
-- `.ds-internal` — On a parent, it turns the underline bar and the current circle Access Lime Deep.
+- `.ds-internal` — On a parent, it turns the section menu's background, its hover and open state and its edge line to the Access Lime washes, and the current view's top line and the current row's bar in the open menu Access Lime. The markup and the folding are the same as in [Two levels of navigation](#two-levels-of-navigation).
+- `.ds-internal` — On a parent, it turns the current step’s circle Access Lime.
 
 ## Rules
 
