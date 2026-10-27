@@ -1057,11 +1057,12 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   flex-wrap: wrap;
   container-type: inline-size;
 }
+.ds-pagination .ds-btn { min-width: 0; }   /* before the narrow rules, so their 44px wins */
 /* Narrow: one row, the position between Previous and Next. Numbered pages
    hide the page numbers, and the words Previous and Next are read out but not
    shown, so the arrows hold the ends. */
 @container (max-width: 30rem) {
-  .ds-pagination > .ds-pagination-position { order: 1; flex: 1 1 auto; min-width: 0; margin: 0; text-align: center; white-space: normal; }
+  .ds-pagination > .ds-pagination-position { order: 1; flex: 1 1 0; min-width: 0; margin: 0; text-align: center; white-space: normal; }
   .ds-pagination > .ds-btn:last-child { order: 2; }
   .ds-pagination > .ds-pagination-pages { display: none; }
   .ds-pagination .ds-pagination-label {
@@ -1087,7 +1088,6 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   flex: 1;
   font-variant-numeric: tabular-nums;
 }
-.ds-pagination .ds-btn { min-width: 0; }
 /* A pager above or below a list sits in a tinted bar, so the two bars
    bookend the list. Inside a bar the current page, and a page number under
    the pointer, take the page ground: the usual fills are too close to the
