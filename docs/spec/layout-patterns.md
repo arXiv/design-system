@@ -33,7 +33,7 @@ components:
       - name: "<aside>"
         does: "The sidebar comes after the main content in the markup. When the two no longer fit side by side, the sidebar wraps below the content at full width, and a screen reader meets the article first."
       - name: ".ds-acc"
-        does: "An accordion inside the sidebar drops its rules, goes single-column for the narrow measure, and turns its +/− marker Link Blue so a closed one still reads as interactive. No extra class."
+        does: "An accordion inside the sidebar is the same ruled accordion as anywhere else, a step smaller to match the sidebar's text, and single-column for the narrow measure. Several in a row go in a `.ds-acc-stack`. No extra class."
   - id: dividers
     title: "Dividers"
     summary: "A rule between things. It belongs in the same conversation as the card, because both answer the same question and the answer is usually neither: this system groups with space first, and a line drawn where space would have done adds noise without adding meaning."
@@ -131,26 +131,28 @@ A sidebar sits to the right of the main column and contains supplementary conten
 <div>
 <article>…</article>
 <aside class="ds-sidebar" aria-label="Paper details">
-  <details class="ds-acc" open>
-    <summary>Versions</summary>
-    <div class="ds-acc-body">
-      <dl>
-        <dt>v3 · current</dt><dd>24 Apr 2026</dd>
-        <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
-      </dl>
-    </div>
-  </details>
-  <details class="ds-acc">
-    <summary>Paper information</summary>
-    <div class="ds-acc-body">…</div>
-  </details>
+  <div class="ds-acc-stack">
+    <details class="ds-acc" open>
+      <summary>Versions</summary>
+      <div class="ds-acc-body">
+        <dl>
+          <dt>v3 · current</dt><dd>24 Apr 2026</dd>
+          <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
+        </dl>
+      </div>
+    </details>
+    <details class="ds-acc">
+      <summary>Paper information</summary>
+      <div class="ds-acc-body">…</div>
+    </details>
+  </div>
 </aside>
 </div>
 ```
 
 - `.ds-sidebar` — On an `<aside>` with an `aria-label` that names what it holds: a complementary landmark. Its parent becomes the two-column layout, with the main content taking the spare width, the sidebar 17rem wide, and `--ds-space-section` between them. Blocks inside the sidebar are 24px apart (`--ds-space-6`). Nothing in it is sticky.
 - `<aside>` — The sidebar comes after the main content in the markup. When the two no longer fit side by side, the sidebar wraps below the content at full width, and a screen reader meets the article first.
-- `.ds-acc` — An accordion inside the sidebar drops its rules, goes single-column for the narrow measure, and turns its +/− marker Link Blue so a closed one still reads as interactive. No extra class.
+- `.ds-acc` — An accordion inside the sidebar is the same ruled accordion as anywhere else, a step smaller to match the sidebar's text, and single-column for the narrow measure. Several in a row go in a `.ds-acc-stack`. No extra class.
 
 ## Dividers
 
