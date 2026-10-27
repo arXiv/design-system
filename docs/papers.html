@@ -1441,6 +1441,25 @@
     });
   });
 </script>
+<script>
+  // The permalink demo: anchors.js leaves headings inside a demo alone, so the
+  // demo's control copies its link and announces it here, as anchors.js does.
+  document.querySelectorAll('.ds-card h3[id] > .ds-permalink').forEach(function (btn) {
+    var h = btn.parentElement;
+    var name = btn.querySelector('.is-sr-only').textContent.replace(/^ to /, '');
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var status = document.getElementById('ds-anchor-status');
+      var url = location.href.split('#')[0] + '#' + h.id;
+      if (!navigator.clipboard || !status) return;
+      navigator.clipboard.writeText(url).then(
+        function () { status.textContent = 'Link to ' + name + ' copied'; },
+        function () { status.textContent = 'Copy failed. The address is ' + url; }
+      );
+    });
+  });
+</script>
+
 <script src="tooltip.js" defer></script>
 <script src="header.js" defer></script>
 <script src="copy-code.js" defer></script>
