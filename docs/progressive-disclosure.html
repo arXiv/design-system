@@ -106,6 +106,7 @@
             <li><a href="#tabs">Tabs</a></li>
             <li><a href="#toc-bar">TOC bar</a></li>
             <li><a href="#accordion-inside-a-card">Accordion inside a card</a></li>
+            <li><a href="#one-panel-open-at-a-time">One panel open at a time</a></li>
             <li><a href="#one-level-of-tabs">One level of tabs</a></li>
             <li><a href="#which-affordance">Which affordance</a></li>
             <li><a href="#motion-and-layering">Motion and layering</a></li>
@@ -653,6 +654,68 @@
     </div>
   </section>
 
+  <!-- ───────── One panel open at a time ───────── -->
+  <section>
+    <h3 id="one-panel-open-at-a-time">One panel open at a time</h3>
+    <p class="ds-section-desc">Opening one panel closes the panel that was open. For a group of short
+    reference panels in a narrow column, such as Paper information in the paper sidebar, where every
+    open panel makes the column longer and harder to read. The browser does this without JavaScript.</p>
+    <div class="ds-card">
+      <div class="ds-acc-stack">
+        <details class="ds-acc" name="demo-paper-info">
+          <summary>Versions</summary>
+          <div class="ds-acc-body">
+            <dl>
+              <dt>v3 · current</dt><dd>24 Apr 2026</dd>
+              <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
+              <dt>v1</dt><dd><a href="#">10 Jan 2026</a></dd>
+            </dl>
+          </div>
+        </details>
+        <details class="ds-acc" name="demo-paper-info">
+          <summary>Paper information</summary>
+          <div class="ds-acc-body">
+            <dl>
+              <dt>arXiv ID</dt><dd><a href="#">2604.22725</a></dd>
+              <dt>Subjects</dt><dd>gr-qc · hep-th</dd>
+              <dt>Licence</dt><dd><a href="#">CC BY 4.0</a></dd>
+            </dl>
+          </div>
+        </details>
+        <details class="ds-acc" name="demo-paper-info">
+          <summary>Related</summary>
+          <div class="ds-acc-body">Connected papers, datasets, and code links.</div>
+        </details>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-acc-stack"&gt;
+  &lt;details class="ds-acc" name="paper-info"&gt;
+    &lt;summary&gt;Versions&lt;/summary&gt;
+    &lt;div class="ds-acc-body"&gt;…&lt;/div&gt;
+  &lt;/details&gt;
+  &lt;details class="ds-acc" name="paper-info"&gt;
+    &lt;summary&gt;Paper information&lt;/summary&gt;
+    &lt;div class="ds-acc-body"&gt;…&lt;/div&gt;
+  &lt;/details&gt;
+  &lt;details class="ds-acc" name="paper-info"&gt;
+    &lt;summary&gt;Related&lt;/summary&gt;
+    &lt;div class="ds-acc-body"&gt;…&lt;/div&gt;
+  &lt;/details&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>[name]</dt>
+            <dd>The same value on every <code>&lt;details&gt;</code> in the group, and a value no other
+            group on the page uses. Opening one closes the others. In a browser too old to support it,
+            every panel opens on its own, as in a plain stack.</dd>
+            <dt>[open]</dt>
+            <dd>On one panel in the group at most, if one starts open.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
 
   <h2>Rules</h2>
 
@@ -713,6 +776,8 @@
       cut or moved before asking what can be collapsed.</li>
       <li><strong>Default state is closed</strong>, except that a single most-relevant panel may start
       open. Open state is not persisted — predictability beats memory here.</li>
+      <li><strong>One panel open at a time is for panels read one at a time.</strong> When a reader
+      needs two panels open together to compare them, leave the group without a <code>name</code>.</li>
       <li><strong>One panel, one label.</strong> If a summary needs a sentence to explain what is inside,
       the content is not a section and probably wants show-more or a page of its own.</li>
       <li><strong>An abstract cut short is show more, not an accordion.</strong> This holds when the
