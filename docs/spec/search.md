@@ -33,7 +33,7 @@ components:
       - name: ".ds-pagination--top, .ds-pagination--bottom"
         does: "The range and page numbers above and below the results, in tinted bars. See [Numbered pages](pager.md#numbered-pages)."
       - name: "<section aria-labelledby> for the results"
-        does: "Whatever the search finds. A paper is shown as on [Papers](../papers.html#a-paper-in-a-list); another kind of record has its own pattern."
+        does: "Whatever the search finds. A paper is shown as on [Papers](papers.md#a-paper-in-a-list); another kind of record has its own pattern."
     rules:
       - "Search shows the first 10,000 results. To see the rest, narrow the search."
 rules:
@@ -150,7 +150,7 @@ After a search, the form stays where it was, on the page ground. A heading names
 - `<h2>` — The results heading, “Results for” and the query. It gives no count: the count is in the bar below it.
 - `.ds-alert` — A message about the whole set of results, such as a limit on how many can be reached. It goes above the page numbers.
 - `.ds-pagination--top, .ds-pagination--bottom` — The range and page numbers above and below the results, in tinted bars. See [Numbered pages](pager.md#numbered-pages).
-- `<section aria-labelledby> for the results` — Whatever the search finds. A paper is shown as on [Papers](../papers.html#a-paper-in-a-list); another kind of record has its own pattern.
+- `<section aria-labelledby> for the results` — Whatever the search finds. A paper is shown as on [Papers](papers.md#a-paper-in-a-list); another kind of record has its own pattern.
 
 **Rule.** Search shows the first 10,000 results. To see the rest, narrow the search.
 
