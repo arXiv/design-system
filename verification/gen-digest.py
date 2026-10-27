@@ -178,8 +178,8 @@ def section_title(node):
     parent = node.parent
     if node.tag not in ("h2", "h3") or parent is None or parent.tag != "section" or parent.attrs.get("class"):
         return False
-    # a section inside a whole-page demo is part of the demo, not a component
-    if parent.ancestor(lambda n: n.has("page-demo")) is not None:
+    # a section inside a demo (a demo card or a whole-page demo) is part of the demo, not a component
+    if parent.ancestor(lambda n: n.has("ds-card") or n.has("page-demo")) is not None:
         return False
     first = next((c for c in parent.children if isinstance(c, Node)), None)
     return first is node
