@@ -17,6 +17,8 @@ components:
         does: "The icon takes the colour of the text around it, in every state and both themes."
       - name: "No width or height"
         does: "The component that holds the icon sizes it in `em`, so it follows the control’s own type size. A bare icon in text takes the line’s height."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 1.1.1](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html) Non-text Content (Level A)"
   - id: adding-an-icon
     title: "Adding an icon"
     summary: ""
@@ -52,6 +54,8 @@ The icon inherits the text colour around it, and it is hidden from assistive tec
 - `aria-hidden="true"` — On every icon. The icon never conveys meaning on its own: a button gets its name from its label or an `.is-sr-only` span, and an icon beside text is decoration.
 - `stroke="currentColor"` — The icon takes the colour of the text around it, in every state and both themes.
 - `No width or height` — The component that holds the icon sizes it in `em`, so it follows the control’s own type size. A bare icon in text takes the line’s height.
+
+> Meets accessibility guideline [WCAG 2.2 SC 1.1.1](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html) Non-text Content (Level A)
 
 ## Adding an icon
 
