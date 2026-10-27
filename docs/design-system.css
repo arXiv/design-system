@@ -1874,6 +1874,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
   margin: 0 0 var(--ds-space-2);
   font-size: 0.875rem;
   color: var(--ds-text-muted);
+  overflow-wrap: anywhere;   /* the DOI breaks rather than widen the page at large text sizes */
 }
 /* A paper's version history, newest first; the version being viewed is marked. */
 .ds-paper-versions { list-style: none; margin: 0; padding: 0; }
@@ -1944,6 +1945,7 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 @media (max-width: 40rem) {
   .ds-toc-bar-inner:has(> .ds-paper-tools) { grid-template-columns: auto 1fr; row-gap: var(--ds-space-1); }
   .ds-toc-bar-inner > .ds-paper-tools { grid-column: 1 / -1; grid-row: 2; justify-self: start; flex-wrap: wrap; }
+  .ds-toc-bar-inner:has(> .ds-paper-tools) > .ds-toc { position: static; }   /* the list centres on the bar, not on the off-centre control, so it stays on screen */
 }
 @media print {
   .ds-toc-bar, .ds-permalink, .ds-element-pill { display: none; }
@@ -3214,7 +3216,9 @@ html:has(.ds-modal[open]) {
 /* Both columns start on the same line. */
 :where(:has(> .ds-sidebar)) > :not(.ds-sidebar) > :first-child { margin-block-start: 0; }
 .ds-sidebar {
-  flex: 1 0 17rem;
+  flex: 1 1 17rem;
+  min-width: 0;   /* alone on its row, it narrows to the screen at 320px and at large text sizes */
+  overflow-wrap: anywhere;
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-4);
@@ -3335,7 +3339,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   left: 50%;
   transform: translateX(-50%);
   z-index: 60;
-  min-width: 17.5rem;
+  min-width: min(17.5rem, 100vw - 2rem);
   max-height: 60vh;
   overflow-y: auto;
   padding: var(--ds-space-2) 0;
