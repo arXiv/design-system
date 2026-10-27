@@ -10,7 +10,7 @@ The builder never sees this file. Written 2026-10-02, before any build, so the p
 | Query field, field select, labels | `.ds-field`, `.ds-label`, `.ds-input` (forms.html). The label is visible. |
 | Search button | `.ds-btn-primary`, Open Blue. No Access Lime anywhere. |
 | Show or hide abstracts | `.ds-seg` or `.ds-check` radios (forms.html) |
-| Results per page and order | compact selects under the search row, in the same GET form (search.html). |
+| Results per page and order | `.ds-filter-bar`, a GET form. layout-patterns.html says settings sit apart from filters, and results per page is a setting. |
 | Moving between pages | `.ds-pagination` with `.ds-pagination-pages` (pager.html, added 2026-10-02 before the test) |
 | Category codes | `.ds-tag`; category names are copied, never restyled (tags.html). Full name through the tooltip or visible text. |
 | Opening the abstract | `.ds-show-more` (progressive-disclosure.html) |
@@ -49,7 +49,7 @@ A developer would not restate these, because the design system states them. A bu
 Recorded so the summary can say which were right.
 
 1. All four builds find the header, footer, form fields, button, and pager. These are well routed from AGENTS.md.
-2. At least two builds miss the compact selects under the search row, or put results per page in a separate form.
+2. At least two builds miss `.ds-filter-bar` or put results per page inside it as if it were a filter.
 3. At least one build invents a highlight colour for matched words.
 4. The Sonnet builds write more custom CSS for the result than the Opus builds.
 5. No build loads an external resource.
