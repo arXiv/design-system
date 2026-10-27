@@ -90,6 +90,8 @@ components:
         does: "The abstract, in full."
       - name: ".ds-sidebar"
         does: "The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
+      - name: ".ds-panel-label"
+        does: "On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page."
       - name: ".ds-paper-files"
         does: "The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count."
       - name: "[aria-describedby]"
@@ -110,6 +112,8 @@ components:
     classes:
       - name: ".ds-sidebar"
         does: "The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
+      - name: ".ds-panel-label"
+        does: "On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page."
       - name: ".ds-paper-files"
         does: "The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count."
       - name: "[aria-describedby]"
@@ -187,6 +191,8 @@ rules:
   - "**Every date has its label.** Readers confuse submitted and announced dates when either stands alone."
   - "**The primary category comes first** and is told apart by more than colour: its tooltip names it as primary."
   - "**The identity line comes first.** Many readers arrive at a paper directly, without passing its abstract page."
+  - "**The paper follows its abstract on the same page.** A reader reaches the first section by scrolling, by the TOC bar or by the skip link, with no click to open the paper."
+  - "**The page has one `<main>`**, from the area above the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it. When LaTeXML's output has no `<main>`, the page around the paper supplies it."
   - "**An optional area above the identity line** holds a temporary message or link, such as Back to abstract while readers move to HTML papers. It is `.ds-btn-text` for a link, or an alert for a message."
   - "**The licence is a link, with no explanation.**"
   - "**Version links go to abstract pages.**"
@@ -564,7 +570,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 <div>…the paper…</div>
 <aside class="ds-sidebar" aria-label="About this paper">
   <section aria-labelledby="files-h">
-    <h3 class="ds-panel-label" id="files-h">Files</h3>
+    <h2 class="ds-panel-label" id="files-h">Files</h2>
     <ul class="ds-paper-files">
       <li><a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="paper-title-demo"><svg aria-hidden="true">…</svg> Download PDF <small>· 1.2 MB</small><span class="is-sr-only"> (opens in a new tab)</span></a></li>
       <li><a href="https://arxiv.org/src/2604.22725v1" aria-describedby="paper-title-demo">TeX Source</a> <small>.tar.gz · 286 KB</small></li>
@@ -574,7 +580,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
   </section>
   <section aria-labelledby="cite-h" class="ds-paper-cite">
     <div class="ds-paper-cite-head">
-      <h3 class="ds-panel-label" id="cite-h">Cite</h3>
+      <h2 class="ds-panel-label" id="cite-h">Cite</h2>
       <div class="ds-form--compact ds-paper-cite-tools">
         <label class="is-sr-only" for="cite-format">Citation format</label>
         <select class="ds-input" id="cite-format">
@@ -606,7 +612,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
     <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="cite-code" hidden>Show full citation</button>
   </section>
   <section aria-labelledby="info-h">
-    <h3 class="ds-panel-label" id="info-h">Paper information</h3>
+    <h2 class="ds-panel-label" id="info-h">Paper information</h2>
     <details class="ds-acc" name="paper-info">
       <summary>Version history</summary>
       <div class="ds-acc-body">
@@ -659,6 +665,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 - `.ds-link-list` — On a `<p>`: the authors, with Show more after eight.
 - `<p>` — The abstract, in full.
 - `.ds-sidebar` — The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
+- `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link.
 - `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy-code.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
@@ -678,7 +685,7 @@ Beside a full paper, the sidebar holds the paper's files, its citation and its i
 <div>…the paper…</div>
 <aside class="ds-sidebar" aria-label="About this paper">
   <section aria-labelledby="files-h">
-    <h3 class="ds-panel-label" id="files-h">Files</h3>
+    <h2 class="ds-panel-label" id="files-h">Files</h2>
     <ul class="ds-paper-files">
       <li><a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="paper-title-demo"><svg aria-hidden="true">…</svg> Download PDF <small>· 1.2 MB</small><span class="is-sr-only"> (opens in a new tab)</span></a></li>
       <li><a href="https://arxiv.org/src/2604.22725v1" aria-describedby="paper-title-demo">TeX Source</a> <small>.tar.gz · 286 KB</small></li>
@@ -688,7 +695,7 @@ Beside a full paper, the sidebar holds the paper's files, its citation and its i
   </section>
   <section aria-labelledby="cite-h" class="ds-paper-cite">
     <div class="ds-paper-cite-head">
-      <h3 class="ds-panel-label" id="cite-h">Cite</h3>
+      <h2 class="ds-panel-label" id="cite-h">Cite</h2>
       <div class="ds-form--compact ds-paper-cite-tools">
         <label class="is-sr-only" for="cite-format">Citation format</label>
         <select class="ds-input" id="cite-format">
@@ -720,7 +727,7 @@ Beside a full paper, the sidebar holds the paper's files, its citation and its i
     <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="cite-code" hidden>Show full citation</button>
   </section>
   <section aria-labelledby="info-h">
-    <h3 class="ds-panel-label" id="info-h">Paper information</h3>
+    <h2 class="ds-panel-label" id="info-h">Paper information</h2>
     <details class="ds-acc" name="paper-info">
       <summary>Version history</summary>
       <div class="ds-acc-body">
@@ -767,6 +774,7 @@ Beside a full paper, the sidebar holds the paper's files, its citation and its i
 ```
 
 - `.ds-sidebar` — The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
+- `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link.
 - `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy-code.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
@@ -902,6 +910,8 @@ A citation or footnote marker opens a popover that repeats the reference or the 
 - **Every date has its label.** Readers confuse submitted and announced dates when either stands alone.
 - **The primary category comes first** and is told apart by more than colour: its tooltip names it as primary.
 - **The identity line comes first.** Many readers arrive at a paper directly, without passing its abstract page.
+- **The paper follows its abstract on the same page.** A reader reaches the first section by scrolling, by the TOC bar or by the skip link, with no click to open the paper.
+- **The page has one `<main>`**, from the area above the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it. When LaTeXML's output has no `<main>`, the page around the paper supplies it.
 - **An optional area above the identity line** holds a temporary message or link, such as Back to abstract while readers move to HTML papers. It is `.ds-btn-text` for a link, or an alert for a message.
 - **The licence is a link, with no explanation.**
 - **Version links go to abstract pages.**
