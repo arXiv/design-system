@@ -24,6 +24,14 @@ components:
         does: "The label is small, condensed and uppercased by CSS: type it in sentence case. The value is in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A value that goes somewhere is an `<a href>` and takes the ordinary link colours."
       - name: ".ds-internal"
         does: "The top edge takes Access Lime. The markup is the public one."
+  - id: cards-with-a-header-bar
+    title: "Cards with a header bar"
+    summary: "A set of data with its own controls, such as a table with a filter, is a card whose first row is a header bar. The bar holds the controls for that set only."
+    classes:
+      - name: ".ds-card-bar"
+        does: "The first child of the card. It holds the controls for the set: filters, as a [compact form](forms.html#compact-form) or a [Filters button](filters.html#multiple-choice-filters) with its tags, a sort, and [group actions](tables.html#bulk-actions). They are compact and sit at its start. A total sits at its end when the reader cannot see the whole set: the set runs over more than one page, or the filters hide part of it. When the controls do not fit on one line, the bar wraps and the total takes a line of its own. Its tint is half a table header's, so the two stay apart. A [pager](pager.html#numbered-pages) for the set is the card's last row, below the list."
+      - name: ".ds-card"
+        does: "The frame. With a header bar it has no padding of its own: a table inside it runs to its edges with no border of its own, and any other content keeps the card's padding."
   - id: stat-cards
     title: "Stat cards"
     summary: "One number with its label, on the warm tint. Use a group of them for a summary at the top of a dashboard."
@@ -136,6 +144,28 @@ Intended for organizing metadata and other reference information: the facts abou
 - `dl > div` — One pair per `<div>`, `<dt>` label then `<dd>` value. Pairs sit side by side when the card is wide enough for two and stack in one column when it is not; a hairline separates them in both directions.
 - `dt, dd` — The label is small, condensed and uppercased by CSS: type it in sentence case. The value is in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A value that goes somewhere is an `<a href>` and takes the ordinary link colours.
 - `.ds-internal` — The top edge takes Access Lime. The markup is the public one.
+
+## Cards with a header bar
+
+A set of data with its own controls, such as a table with a filter, is a card whose first row is a header bar. The bar holds the controls for that set only.
+
+```html
+<div class="ds-card">
+  <div class="ds-card-bar">
+    <form class="ds-form--compact" method="get" action="…" aria-label="Filter holds">
+      <label>Status <select class="ds-input" name="status">…</select></label>
+      <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+    </form>
+    <p>3 of 120 holds</p>
+  </div>
+  <div class="ds-table-scroll" role="region" aria-label="Recent holds" tabindex="0">
+    <table class="ds-table">…</table>
+  </div>
+</div>
+```
+
+- `.ds-card-bar` — The first child of the card. It holds the controls for the set: filters, as a [compact form](forms.html#compact-form) or a [Filters button](filters.html#multiple-choice-filters) with its tags, a sort, and [group actions](tables.html#bulk-actions). They are compact and sit at its start. A total sits at its end when the reader cannot see the whole set: the set runs over more than one page, or the filters hide part of it. When the controls do not fit on one line, the bar wraps and the total takes a line of its own. Its tint is half a table header's, so the two stay apart. A [pager](pager.html#numbered-pages) for the set is the card's last row, below the list.
+- `.ds-card` — The frame. With a header bar it has no padding of its own: a table inside it runs to its edges with no border of its own, and any other content keeps the card's padding.
 
 ## Stat cards
 

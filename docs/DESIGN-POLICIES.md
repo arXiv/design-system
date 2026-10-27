@@ -79,7 +79,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 - **New patterns:** If a UI element appears in two or more pages, extract it into a design system CSS file and create or update a pattern page in `docs/`.
 - **Platform independence:** Components use plain CSS custom properties — no Sass, no CSS-in-JS, no framework-specific syntax. This allows consumption from React, Jinja, PHP, or static HTML.
-- **Naming:** Use `.ds-` prefix for shared design system classes (e.g., `.ds-table`, `.ds-filter`). Page-specific styles stay in the page's own `<style>` block or stylesheet.
+- **Naming:** Use `.ds-` prefix for shared design system classes (e.g., `.ds-table`, `.ds-tag`). Page-specific styles stay in the page's own `<style>` block or stylesheet.
 - **Icons:** One icon language, Lucide inline SVG with a visible or `.is-sr-only` text label. No icon fonts. See `icons.html`.
 
 ## Buttons

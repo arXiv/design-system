@@ -36,7 +36,7 @@ components:
       - "A tail cannot be a details element, because a summary would put a heading in the middle of a sentence."
   - id: popover
     title: "Popover"
-    summary: "A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers."
+    summary: "A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers. The filter panel, a popover of filters for a set of data, is on [Filters](filters.html)."
     classes:
       - name: ".ds-popover"
         does: "The panel. It is `position: fixed`: the host sets `top` and `left`, and moves it to `<body>` if the trigger has a transformed ancestor. Closed, it has the `hidden` attribute."
@@ -54,7 +54,7 @@ components:
       - "Popovers resize to the content but should be reserved for short pieces of information. If the content gets too long it may not be contained within the viewport."
   - id: tabs
     title: "Tabs"
-    summary: "Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](navigation.html#secondary-navigation) instead."
+    summary: "Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](navigation.html#secondary-navigation) instead; it looks the same."
     classes:
       - name: ".ds-tabs"
         does: "Holds two or more panels. `data-label` names the set for a screen reader."
@@ -63,7 +63,7 @@ components:
       - name: "tabs.js"
         does: "Builds the tab list from the panel headings and adds the roles, the selected state and the keyboard: Tab reaches the selected tab, the arrow keys move between tabs, Home and End go to the first and last. Moving to a tab shows its panel. Without the script, every panel shows under its own heading."
       - name: ".ds-tabs-list"
-        does: "The row of tabs, added by the script. The selected tab is bold with an underline bar. The row wraps on a narrow screen."
+        does: "The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. The row wraps on a narrow screen."
   - id: toc-bar
     title: "TOC bar"
     summary: "Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. The bar is always sticky and it stays at the top of the viewport while the reader scrolls through the page."
@@ -193,7 +193,7 @@ While an accordion hides an entire labelled section, the 'show more' control rev
 
 ## Popover
 
-A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers.
+A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers. The filter panel, a popover of filters for a set of data, is on [Filters](filters.html).
 
 ```html
 <span class="ds-popover" role="region" aria-label="Reference 47">
@@ -219,7 +219,7 @@ A quick lookup the reader can access without losing their place. Popovers are us
 
 ## Tabs
 
-Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](navigation.html#secondary-navigation) instead.
+Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](navigation.html#secondary-navigation) instead; it looks the same.
 
 ```html
 <div class="ds-tabs" data-label="Membership activity">
@@ -243,7 +243,7 @@ Tabs switch between views of the same page. Each tab shows one panel and hides t
 - `.ds-tabs` — Holds two or more panels. `data-label` names the set for a screen reader.
 - `.ds-tabs-panel` — One view, a `<section>` that starts with a heading. The heading becomes the tab label.
 - `tabs.js` — Builds the tab list from the panel headings and adds the roles, the selected state and the keyboard: Tab reaches the selected tab, the arrow keys move between tabs, Home and End go to the first and last. Moving to a tab shows its panel. Without the script, every panel shows under its own heading.
-- `.ds-tabs-list` — The row of tabs, added by the script. The selected tab is bold with an underline bar. The row wraps on a narrow screen.
+- `.ds-tabs-list` — The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. The row wraps on a narrow screen.
 
 ## TOC bar
 

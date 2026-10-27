@@ -38,6 +38,7 @@
         <a href="layout-patterns.html">Layouts</a>
         <a href="cards.html">Cards</a>
         <a href="tables.html" aria-current="page">Tables</a>
+        <a href="filters.html">Filters</a>
         <a href="search.html">Search</a>
         <a href="progressive-disclosure.html">Progressive disclosure</a>
         <a href="modals.html">Modal dialogs</a>
@@ -84,7 +85,7 @@
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
     <h1>Tables</h1>
-    <p>The table and what can be built on it: sortable columns, a filter toolbar, row selection and bulk actions. All of it is shared by the public site and internal tools; internal tools change only the colours.</p>
+    <p>The table and what can be built on it: sortable columns, filters, row selection and bulk actions. All of it is shared by the public site and internal tools; internal tools change only the colours.</p>
   </header>
   </div>
 
@@ -103,8 +104,7 @@
             <li><a href="#the-table">The table</a></li>
             <li><a href="#outside-borders">Outside borders</a></li>
             <li><a href="#sortable-column-headers">Sortable column headers</a></li>
-            <li><a href="#filter-toolbar">Filter toolbar</a></li>
-            <li><a href="#filter-bar">Filter bar</a></li>
+            <li><a href="#filters">Filters</a></li>
             <li><a href="#row-selection">Row selection</a></li>
             <li><a href="#bulk-actions">Bulk actions</a></li>
             <li><a href="#striped-rows">Striped rows</a></li>
@@ -394,307 +394,10 @@
     </div>
   </section>
 
-  <!-- ───────── Filter toolbar ───────── -->
+  <!-- ───────── Filters ───────── -->
   <section>
-    <h2 id="filter-toolbar">Filter toolbar</h2>
-    <p class="ds-section-desc">The <code>.ds-filter</code> component provides a minimal underline-only <code>&lt;select&gt;</code> for filtering data. Typically placed in a toolbar row above or alongside a table. The custom chevron replaces the native dropdown arrow for visual consistency. To narrow a whole view, use the <a href="#filter-bar">filter bar</a>.</p>
-
-    <p class="ds-panel-label">Filter select, standalone</p>
-    <div class="ds-card">
-      <div class="ds-btn-group">
-        <div class="ds-filter">
-          <label for="demo-filter-1">Show:</label>
-          <select id="demo-filter-1">
-            <option>All</option>
-            <option selected>Removed</option>
-            <option>On Hold</option>
-          </select>
-        </div>
-        <div class="ds-filter">
-          <label for="demo-filter-2">Match:</label>
-          <select id="demo-filter-2">
-            <option selected>All</option>
-            <option>Name match</option>
-            <option>No match</option>
-          </select>
-        </div>
-      </div>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-filter"&gt;
-  &lt;label for="filter-status"&gt;Show:&lt;/label&gt;
-  &lt;select id="filter-status"&gt;
-    &lt;option&gt;All&lt;/option&gt;
-    &lt;option selected&gt;Removed&lt;/option&gt;
-    &lt;option&gt;On Hold&lt;/option&gt;
-  &lt;/select&gt;
-&lt;/div&gt;</code></pre>
-          <dl>
-            <dt>.ds-filter</dt>
-            <dd>The wrapper. Holds one <code>&lt;label&gt;</code> and one
-            <code>&lt;select&gt;</code>. The select gets an underline-only border, the custom
-            chevron, and a focus ring in <code>--ds-focus-ring</code>. Always include an
-            “All” option as the inclusive default.</dd>
-            <dt>&lt;label for&gt;, &lt;select id&gt;</dt>
-            <dd>Required. The visible label is the select’s name: the <code>for</code> attribute
-            points at the select’s <code>id</code>.</dd>
-            <dt>.ds-btn-group</dt>
-            <dd>The container for two or more filters side by side, the same one any set of
-            related controls takes.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-
-    <p class="ds-panel-label">Filter above a table</p>
-    <div class="ds-card">
-      <div class="ds-btn-group ds-btn-group--end">
-        <div class="ds-filter">
-          <label for="demo-filter-3">Show:</label>
-          <select id="demo-filter-3">
-            <option selected>All</option>
-            <option>Active</option>
-            <option>Archived</option>
-          </select>
-        </div>
-      </div>
-      <div class="ds-table-scroll" role="region" aria-label="Users" tabindex="0">
-        <table class="ds-table">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Category</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Alice Chen</td>
-              <td>cs.AI</td>
-              <td>Active</td>
-            </tr>
-            <tr>
-              <td>Bob Singh</td>
-              <td>math.AP</td>
-              <td>Archived</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-btn-group ds-btn-group--end"&gt;
-  &lt;div class="ds-filter"&gt;
-    &lt;label for="filter-users"&gt;Show:&lt;/label&gt;
-    &lt;select id="filter-users"&gt;
-      &lt;option selected&gt;All&lt;/option&gt;
-      &lt;option&gt;Active&lt;/option&gt;
-      &lt;option&gt;Archived&lt;/option&gt;
-    &lt;/select&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="ds-table-scroll" role="region" aria-label="Users" tabindex="0"&gt;
-  &lt;table class="ds-table"&gt;
-    …
-  &lt;/table&gt;
-&lt;/div&gt;</code></pre>
-          <dl>
-            <dt>.ds-btn-group--end</dt>
-            <dd>Pushes the filter to the trailing edge of the toolbar row, where filters sit.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-  </section>
-
-  <!-- ───────── Filter bar ───────── -->
-  <section>
-    <h2 id="filter-bar">Filter bar</h2>
-    <p class="ds-section-desc">A row of fields that narrows everything below it, with one Apply
-    button. It is a <code>&lt;form method="get"&gt;</code>, so the choices go in the page address and a
-    filtered view can be linked.</p>
-
-    <div class="ds-card">
-      <form class="ds-filter-bar" method="get" action="tables.html#filter-bar" aria-label="Filters">
-        <div class="ds-filter-bar-group">
-          <div class="ds-field">
-            <label class="ds-label" for="fb-group">Group</label>
-            <select class="ds-input" id="fb-group" name="group">
-              <option>Physics</option>
-              <option>Mathematics</option>
-              <option>Computer Science</option>
-            </select>
-          </div>
-          <div class="ds-field">
-            <label class="ds-label" for="fb-archive">Archive</label>
-            <select class="ds-input" id="fb-archive" name="archive">
-              <option>All archives</option>
-              <option>cond-mat</option>
-              <option>hep-th</option>
-            </select>
-          </div>
-          <div class="ds-field">
-            <label class="ds-label" for="fb-category">Category</label>
-            <select class="ds-input" id="fb-category" name="category">
-              <option>All categories</option>
-              <option>cond-mat.str-el</option>
-              <option>cond-mat.soft</option>
-            </select>
-          </div>
-          <div class="ds-field">
-            <label class="ds-label" for="fb-from">From</label>
-            <input class="ds-input" id="fb-from" name="from" type="date" value="2026-09-01">
-          </div>
-          <div class="ds-field">
-            <label class="ds-label" for="fb-to">To</label>
-            <input class="ds-input" id="fb-to" name="to" type="date" value="2026-09-30">
-          </div>
-        </div>
-        <fieldset class="ds-filter-bar-group ds-filter-bar-group--settings">
-          <legend class="is-sr-only">Settings</legend>
-          <div class="ds-field">
-            <label class="ds-label" for="fb-threshold">Threshold days</label>
-            <input class="ds-input" id="fb-threshold" name="threshold" type="number" min="1" value="7">
-          </div>
-        </fieldset>
-        <div class="ds-filter-bar-actions">
-          <a href="tables.html#filter-bar">Clear</a>
-          <button class="ds-btn ds-btn-primary" type="submit">Apply</button>
-        </div>
-      </form>
-      <div class="ds-table-scroll" role="region" aria-label="Categories, filtered" tabindex="0">
-        <table class="ds-table">
-          <thead><tr><th scope="col">Category</th><th scope="col">New submissions</th><th scope="col">Open holds</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">cond-mat.str-el</th><td>214</td><td>6</td></tr>
-            <tr><th scope="row">cond-mat.soft</th><td>132</td><td>2</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;form class="ds-filter-bar" method="get" action="tables.html#filter-bar" aria-label="Filters"&gt;
-  &lt;div class="ds-filter-bar-group"&gt;
-    &lt;div class="ds-field"&gt;
-      &lt;label class="ds-label" for="fb-group"&gt;Group&lt;/label&gt;
-      &lt;select class="ds-input" id="fb-group" name="group"&gt;
-        &lt;option&gt;Physics&lt;/option&gt;
-        &lt;option&gt;Mathematics&lt;/option&gt;
-        &lt;option&gt;Computer Science&lt;/option&gt;
-      &lt;/select&gt;
-    &lt;/div&gt;
-    &lt;div class="ds-field"&gt;
-      &lt;label class="ds-label" for="fb-archive"&gt;Archive&lt;/label&gt;
-      &lt;select class="ds-input" id="fb-archive" name="archive"&gt;
-        &lt;option&gt;All archives&lt;/option&gt;
-        &lt;option&gt;cond-mat&lt;/option&gt;
-        &lt;option&gt;hep-th&lt;/option&gt;
-      &lt;/select&gt;
-    &lt;/div&gt;
-    &lt;div class="ds-field"&gt;
-      &lt;label class="ds-label" for="fb-category"&gt;Category&lt;/label&gt;
-      &lt;select class="ds-input" id="fb-category" name="category"&gt;
-        &lt;option&gt;All categories&lt;/option&gt;
-        &lt;option&gt;cond-mat.str-el&lt;/option&gt;
-        &lt;option&gt;cond-mat.soft&lt;/option&gt;
-      &lt;/select&gt;
-    &lt;/div&gt;
-    &lt;div class="ds-field"&gt;
-      &lt;label class="ds-label" for="fb-from"&gt;From&lt;/label&gt;
-      &lt;input class="ds-input" id="fb-from" name="from" type="date" value="2026-09-01"&gt;
-    &lt;/div&gt;
-    &lt;div class="ds-field"&gt;
-      &lt;label class="ds-label" for="fb-to"&gt;To&lt;/label&gt;
-      &lt;input class="ds-input" id="fb-to" name="to" type="date" value="2026-09-30"&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;fieldset class="ds-filter-bar-group ds-filter-bar-group--settings"&gt;
-    &lt;legend class="is-sr-only"&gt;Settings&lt;/legend&gt;
-    &lt;div class="ds-field"&gt;
-      &lt;label class="ds-label" for="fb-threshold"&gt;Threshold days&lt;/label&gt;
-      &lt;input class="ds-input" id="fb-threshold" name="threshold" type="number" min="1" value="7"&gt;
-    &lt;/div&gt;
-  &lt;/fieldset&gt;
-  &lt;div class="ds-filter-bar-actions"&gt;
-    &lt;a href="tables.html#filter-bar"&gt;Clear&lt;/a&gt;
-    &lt;button class="ds-btn ds-btn-primary" type="submit"&gt;Apply&lt;/button&gt;
-  &lt;/div&gt;
-&lt;/form&gt;</code></pre>
-          <dl>
-            <dt>.ds-filter-bar</dt>
-            <dd>The <code>&lt;form method="get"&gt;</code>, on the warm tint, with an
-            <code>aria-label</code> such as "Filters". It narrows everything below it. One per view.
-            The fields sit in equal columns, as many as fit the width.</dd>
-            <dt>.ds-filter-bar-group</dt>
-            <dd>The filters. Each field takes a column. The fields are the standard
-            <code>.ds-field</code>, <code>.ds-label</code> and <code>.ds-input</code>, with labels
-            above.</dd>
-            <dt>.ds-filter-bar-group--settings</dt>
-            <dd>Optional. A <code>&lt;fieldset&gt;</code> whose <code>&lt;legend&gt;</code> is
-            <code>.is-sr-only</code>, so it is read out and takes no space. It starts its own row, for
-            a setting: a number that changes a calculation, such as threshold days. A setting is not
-            a filter.</dd>
-            <dt>.ds-filter-bar-actions</dt>
-            <dd>Apply, a submit button, and an optional Clear link to the address without filters.
-            They sit at the end of the last row.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-
-    <ul class="notes">
-      <li><strong>Filter bar or filter select.</strong> The filter bar narrows a whole view and
-      applies on Apply. <code>.ds-filter</code> narrows one table from inside its toolbar and applies
-      as soon as it changes.</li>
-      <li><strong>After Apply,</strong> the page reloads with the results. The server writes the chosen values back into the
-      fields, so each field shows what was applied.</li>
-    </ul>
-
-    <p class="ds-panel-label">Compact: one row</p>
-    <div class="ds-card">
-      <form class="ds-filter-bar" method="get" action="tables.html#filter-bar" aria-label="Subject">
-        <div class="ds-filter"><label for="cfb-group">Group</label><select id="cfb-group" name="group"><option>cs</option><option>math</option></select></div>
-        <div class="ds-filter"><label for="cfb-archive">Archive</label><select id="cfb-archive" name="archive"><option>cs</option></select></div>
-        <div class="ds-filter"><label for="cfb-cat">Category</label><select id="cfb-cat" name="category"><option>All</option></select></div>
-        <button class="ds-btn" type="submit">Apply</button>
-      </form>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;form class="ds-filter-bar" method="get" action="tables.html#filter-bar" aria-label="Subject"&gt;
-  &lt;div class="ds-filter"&gt;&lt;label for="cfb-group"&gt;Group&lt;/label&gt;&lt;select id="cfb-group" name="group"&gt;&lt;option&gt;cs&lt;/option&gt;&lt;option&gt;math&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
-  &lt;div class="ds-filter"&gt;&lt;label for="cfb-archive"&gt;Archive&lt;/label&gt;&lt;select id="cfb-archive" name="archive"&gt;&lt;option&gt;cs&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
-  &lt;div class="ds-filter"&gt;&lt;label for="cfb-cat"&gt;Category&lt;/label&gt;&lt;select id="cfb-cat" name="category"&gt;&lt;option&gt;All&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
-  &lt;button class="ds-btn" type="submit"&gt;Apply&lt;/button&gt;
-&lt;/form&gt;</code></pre>
-          <dl>
-            <dt>.ds-filter-bar with .ds-filter</dt>
-            <dd>A filter bar whose filters are the compact <code>.ds-filter</code> controls lays them out on one row, with less padding. Use it where a full filter bar would push the content down, such as beside navigation. Apply is a secondary <code>.ds-btn</code>, sized to the row.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
-
-    <p class="ds-panel-label">Compact: a date range</p>
-    <div class="ds-card">
-      <form class="ds-filter-bar" method="get" action="tables.html#filter-bar" aria-label="Dates">
-        <div class="ds-filter"><label for="cfb-start">Start</label><input id="cfb-start" name="start" type="date" value="2026-09-16"></div>
-        <div class="ds-filter"><label for="cfb-end">End (inclusive)</label><input id="cfb-end" name="end" type="date" value="2026-10-06"></div>
-        <button class="ds-btn" type="submit">Apply</button>
-      </form>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;form class="ds-filter-bar" method="get" action="tables.html#filter-bar" aria-label="Dates"&gt;
-  &lt;div class="ds-filter"&gt;&lt;label for="cfb-start"&gt;Start&lt;/label&gt;&lt;input id="cfb-start" name="start" type="date" value="2026-09-16"&gt;&lt;/div&gt;
-  &lt;div class="ds-filter"&gt;&lt;label for="cfb-end"&gt;End (inclusive)&lt;/label&gt;&lt;input id="cfb-end" name="end" type="date" value="2026-10-06"&gt;&lt;/div&gt;
-  &lt;button class="ds-btn" type="submit"&gt;Apply&lt;/button&gt;
-&lt;/form&gt;</code></pre>
-          <dl>
-            <dt>.ds-filter with a date input</dt>
-            <dd>A compact filter can hold a date as well as a select. The date keeps its own width.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
+    <h2 id="filters">Filters</h2>
+    <p class="ds-section-desc">Filters for a table go in the header bar of the card that holds it. For a demo, see <a href="filters.html">Filters</a>.</p>
   </section>
 
   <!-- ───────── Row selection ───────── -->
@@ -787,75 +490,85 @@
   <!-- ───────── Bulk actions ───────── -->
   <section>
     <h2 id="bulk-actions">Bulk actions</h2>
-    <p class="ds-section-desc">Actions that apply to every selected row at once, as in moderation queues and ownership lists. The bar sits above a table with <a href="#row-selection">row selection</a>.</p>
+    <p class="ds-section-desc">Actions that apply to every selected row at once, as in moderation queues and ownership lists. The actions sit in the header bar of the card that holds a table with <a href="#row-selection">row selection</a>.</p>
 
     <p class="ds-panel-label">Selection active</p>
     <div class="ds-card">
-      <div class="ds-btn-group">
-        <button class="ds-btn ds-btn-primary" type="button">Approve</button>
-        <button class="ds-btn" type="button">Hold</button>
-        <button class="ds-btn ds-btn-destructive" type="button">Remove…</button>
-        <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
-        <div class="ds-filter">
-          <label for="bulk-filter-demo">Show</label>
-          <select id="bulk-filter-demo"><option selected>All</option><option>Authored</option><option>Owned</option></select>
+      <div class="ds-card">
+        <div class="ds-card-bar">
+          <div class="ds-btn-group">
+            <button class="ds-btn ds-btn-primary ds-btn-compact" type="button">Approve</button>
+            <button class="ds-btn ds-btn-compact" type="button">Hold</button>
+            <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button">Remove…</button>
+            <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
+          </div>
+          <form class="ds-form--compact" method="get" action="tables.html#bulk-actions" aria-label="Filter papers">
+            <label>Show <select class="ds-input" name="show"><option selected>All</option><option>Authored</option><option>Owned</option></select></label>
+            <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+          </form>
         </div>
-      </div>
-      <div class="ds-table-scroll" role="region" aria-label="Owned papers, bulk actions" tabindex="0">
-        <table class="ds-table">
-          <thead>
-            <tr>
-              <th scope="col"><span class="is-sr-only">Select</span></th>
-              <th scope="col">Date</th>
-              <th scope="col">Title</th>
-              <th scope="col">Type</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="is-selected">
-              <td><input type="checkbox" id="bsel-1" checked><label for="bsel-1" class="is-sr-only">Select Asymptotic Expansions of Schrödinger Operators</label></td>
-              <td>2026-03-24</td>
-              <td>Asymptotic Expansions of Schrödinger Operators</td>
-              <td><span class="ds-tag ds-tag--rectangle">New</span></td>
-            </tr>
-            <tr class="is-selected">
-              <td><input type="checkbox" id="bsel-2" checked><label for="bsel-2" class="is-sr-only">Select Symmetry Breaking in Non-Abelian Gauge Theories</label></td>
-              <td>2025-07-09</td>
-              <td>Symmetry Breaking in Non-Abelian Gauge Theories</td>
-              <td><span class="ds-tag ds-tag--rectangle">Rep</span></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" id="bsel-3"><label for="bsel-3" class="is-sr-only">Select Spectral Properties of Discrete Schrödinger Operators</label></td>
-              <td>2024-07-08</td>
-              <td>Spectral Properties of Discrete Schrödinger Operators</td>
-              <td><span class="ds-tag ds-tag--rectangle">Wdr</span></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="ds-table-scroll" role="region" aria-label="Owned papers, bulk actions" tabindex="0">
+          <table class="ds-table">
+            <thead>
+              <tr>
+                <th scope="col"><span class="is-sr-only">Select</span></th>
+                <th scope="col">Date</th>
+                <th scope="col">Title</th>
+                <th scope="col">Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="is-selected">
+                <td><input type="checkbox" id="bsel-1" checked><label for="bsel-1" class="is-sr-only">Select Asymptotic Expansions of Schrödinger Operators</label></td>
+                <td>2026-03-24</td>
+                <td>Asymptotic Expansions of Schrödinger Operators</td>
+                <td><span class="ds-tag ds-tag--rectangle">New</span></td>
+              </tr>
+              <tr class="is-selected">
+                <td><input type="checkbox" id="bsel-2" checked><label for="bsel-2" class="is-sr-only">Select Symmetry Breaking in Non-Abelian Gauge Theories</label></td>
+                <td>2025-07-09</td>
+                <td>Symmetry Breaking in Non-Abelian Gauge Theories</td>
+                <td><span class="ds-tag ds-tag--rectangle">Rep</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="bsel-3"><label for="bsel-3" class="is-sr-only">Select Spectral Properties of Discrete Schrödinger Operators</label></td>
+                <td>2024-07-08</td>
+                <td>Spectral Properties of Discrete Schrödinger Operators</td>
+                <td><span class="ds-tag ds-tag--rectangle">Wdr</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-btn-group"&gt;
-  &lt;button class="ds-btn ds-btn-primary" type="button"&gt;Approve&lt;/button&gt;
-  &lt;button class="ds-btn" type="button"&gt;Hold&lt;/button&gt;
-  &lt;button class="ds-btn ds-btn-destructive" type="button"&gt;Remove…&lt;/button&gt;
-  &lt;span class="ds-bulk-count" role="status"&gt;2 selected · &lt;a href="#"&gt;Clear selection&lt;/a&gt;&lt;/span&gt;
-  &lt;div class="ds-filter"&gt;
-    &lt;label for="filter-owned"&gt;Show&lt;/label&gt;
-    &lt;select id="filter-owned"&gt;…&lt;/select&gt;
+<pre><code>&lt;div class="ds-card"&gt;
+  &lt;div class="ds-card-bar"&gt;
+    &lt;div class="ds-btn-group"&gt;
+      &lt;button class="ds-btn ds-btn-primary ds-btn-compact" type="button"&gt;Approve&lt;/button&gt;
+      &lt;button class="ds-btn ds-btn-compact" type="button"&gt;Hold&lt;/button&gt;
+      &lt;button class="ds-btn ds-btn-destructive ds-btn-compact" type="button"&gt;Remove…&lt;/button&gt;
+      &lt;span class="ds-bulk-count" role="status"&gt;2 selected · &lt;a href="#"&gt;Clear selection&lt;/a&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;form class="ds-form--compact" method="get" action="…" aria-label="Filter papers"&gt;
+      &lt;label&gt;Show &lt;select class="ds-input" name="show"&gt;…&lt;/select&gt;&lt;/label&gt;
+      &lt;button class="ds-btn ds-btn-compact" type="submit"&gt;Apply&lt;/button&gt;
+    &lt;/form&gt;
   &lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="ds-table-scroll" role="region" aria-label="Owned papers" tabindex="0"&gt;
-  &lt;table class="ds-table"&gt;…&lt;/table&gt;
+  &lt;div class="ds-table-scroll" role="region" aria-label="Owned papers" tabindex="0"&gt;
+    &lt;table class="ds-table"&gt;…&lt;/table&gt;
+  &lt;/div&gt;
 &lt;/div&gt;</code></pre>
           <dl>
+            <dt>.ds-card-bar</dt>
+            <dd>The header bar of the card that holds the table: the actions and the selection count
+            at its start, and any filter at its end. It wraps on a narrow screen. See
+            <a href="cards.html#cards-with-a-header-bar">Cards with a header bar</a>.</dd>
             <dt>.ds-btn-group</dt>
-            <dd>The bulk-action bar: the actions, then the selection count, with any filter at the far end of the row.
-            It wraps on a narrow screen. The bar has no fill of its own. Directly above a
-            table it keeps a gap from it.</dd>
-            <dt>.ds-btn-primary, .ds-btn, .ds-btn-destructive</dt>
-            <dd>The actions, in the tiers documented on <a href="buttons.html">Buttons</a>. The
-            destructive action comes last.</dd>
+            <dd>The actions and the selection count, kept together.</dd>
+            <dt>.ds-btn-primary, .ds-btn, .ds-btn-destructive, with .ds-btn-compact</dt>
+            <dd>The actions, in the tiers documented on <a href="buttons.html">Buttons</a>, compact
+            like every control in a header bar. The destructive action comes last.</dd>
             <dt>.ds-bulk-count</dt>
             <dd>The selection count and the “Clear selection” link, beside the actions. Takes
             <code>role="status"</code> so a change in the count is announced.</dd>
@@ -866,27 +579,62 @@
 
     <p class="ds-panel-label">Nothing selected</p>
     <div class="ds-card">
-      <div class="ds-btn-group">
-        <button class="ds-btn ds-btn-primary" type="button" disabled>Approve</button>
-        <button class="ds-btn" type="button" disabled>Hold</button>
-        <button class="ds-btn ds-btn-destructive" type="button" disabled>Remove…</button>
-        <span class="ds-bulk-count" role="status">0 selected</span>
-        <div class="ds-filter">
-          <label for="bulk-filter-demo2">Show</label>
-          <select id="bulk-filter-demo2"><option selected>All</option><option>Authored</option><option>Owned</option></select>
+      <div class="ds-card">
+        <div class="ds-card-bar">
+          <div class="ds-btn-group">
+            <button class="ds-btn ds-btn-primary ds-btn-compact" type="button" disabled>Approve</button>
+            <button class="ds-btn ds-btn-compact" type="button" disabled>Hold</button>
+            <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button" disabled>Remove…</button>
+            <span class="ds-bulk-count" role="status">0 selected</span>
+          </div>
+          <form class="ds-form--compact" method="get" action="tables.html#bulk-actions" aria-label="Filter papers">
+            <label>Show <select class="ds-input" name="show"><option selected>All</option><option>Authored</option><option>Owned</option></select></label>
+            <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+          </form>
+        </div>
+        <div class="ds-table-scroll" role="region" aria-label="Owned papers, nothing selected" tabindex="0">
+          <table class="ds-table">
+            <thead>
+              <tr>
+                <th scope="col"><span class="is-sr-only">Select</span></th>
+                <th scope="col">Date</th>
+                <th scope="col">Title</th>
+                <th scope="col">Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" id="bsel-1b"><label for="bsel-1b" class="is-sr-only">Select Asymptotic Expansions of Schrödinger Operators</label></td>
+                <td>2026-03-24</td>
+                <td>Asymptotic Expansions of Schrödinger Operators</td>
+                <td><span class="ds-tag ds-tag--rectangle">New</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="bsel-2b"><label for="bsel-2b" class="is-sr-only">Select Symmetry Breaking in Non-Abelian Gauge Theories</label></td>
+                <td>2025-07-09</td>
+                <td>Symmetry Breaking in Non-Abelian Gauge Theories</td>
+                <td><span class="ds-tag ds-tag--rectangle">Rep</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="bsel-3b"><label for="bsel-3b" class="is-sr-only">Select Spectral Properties of Discrete Schrödinger Operators</label></td>
+                <td>2024-07-08</td>
+                <td>Spectral Properties of Discrete Schrödinger Operators</td>
+                <td><span class="ds-tag ds-tag--rectangle">Wdr</span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-btn-group"&gt;
-  &lt;button class="ds-btn ds-btn-primary" type="button" disabled&gt;Approve&lt;/button&gt;
-  &lt;button class="ds-btn" type="button" disabled&gt;Hold&lt;/button&gt;
-  &lt;button class="ds-btn ds-btn-destructive" type="button" disabled&gt;Remove…&lt;/button&gt;
-  &lt;span class="ds-bulk-count" role="status"&gt;0 selected&lt;/span&gt;
-  &lt;div class="ds-filter"&gt;
-    &lt;label for="filter-owned"&gt;Show&lt;/label&gt;
-    &lt;select id="filter-owned"&gt;…&lt;/select&gt;
+<pre><code>&lt;div class="ds-card-bar"&gt;
+  &lt;div class="ds-btn-group"&gt;
+    &lt;button class="ds-btn ds-btn-primary ds-btn-compact" type="button" disabled&gt;Approve&lt;/button&gt;
+    &lt;button class="ds-btn ds-btn-compact" type="button" disabled&gt;Hold&lt;/button&gt;
+    &lt;button class="ds-btn ds-btn-destructive ds-btn-compact" type="button" disabled&gt;Remove…&lt;/button&gt;
+    &lt;span class="ds-bulk-count" role="status"&gt;0 selected&lt;/span&gt;
   &lt;/div&gt;
+  &lt;form class="ds-form--compact" method="get" action="…" aria-label="Filter papers"&gt;…&lt;/form&gt;
 &lt;/div&gt;</code></pre>
           <dl>
             <dt>&lt;button disabled&gt;</dt>
@@ -1005,8 +753,8 @@
   <section>
     <h3 id="bulk-action-bar-layout">Bulk-action bar layout</h3>
     <p>Action buttons come first, then their descriptive text (selection count, “Clear
-    selection”), with any filter at the far end of the row. No background tint behind the action buttons — the
-    bar itself stays neutral. Destructive actions (Remove, Delete) come last among the actions and
+    selection”), with any filter at the far end of the row, all in the header bar of the card that holds
+    the table. Destructive actions (Remove, Delete) come last among the actions and
     always require a confirmation step.</p>
   </section>
   </div>

@@ -205,6 +205,20 @@
      control. In em, so it tracks the control's own font size. */
   --ds-gap-glyph: 0.5em;
 
+  /* A menu row: compact with a mouse, the full touch target on a touch screen. */
+  --ds-menu-row: 2rem;
+
+  /* A small control's target, and the height a compact control is drawn at.
+     On a touch screen the target grows and the drawing does not: the target
+     reaches past what is drawn by --ds-reach above and below. */
+  --ds-target: 1.75rem;
+  --ds-compact-h: 1.9375rem;
+  --ds-reach: max(0px, (var(--ds-target) - var(--ds-compact-h)) / 2);
+
+  /* A dropdown's arrow: the chevron-down icon (docs/icons) at a heavier stroke,
+     used as a mask so it takes the text colour. */
+  --ds-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+
   /* Density: the padding inside controls, table cells and cards.
      .ds-internal sets the compact values for table cells and cards;
      buttons and fields are the same size on both surfaces. */
@@ -539,9 +553,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    grouping. Opens and closes with no JavaScript; a page may add
    close-on-outside-click and Esc as enhancement.
 
-   The summary sits IN the bar and takes the surface tokens, so it is correct
-   on either variant. The menu panel does not: a floating panel is a light
-   surface whichever bar summoned it, the same way a popover is. */
+   A dropdown matches its control: the menu takes the bar's own surface tokens,
+   so it is dark under the dark bar and light under the light one, and it hangs
+   from the bar's bottom edge (header.js measures where that is). */
 .ds-site-header-dropdown { position: relative; }
 
 .ds-site-header-dropdown > summary {
@@ -557,7 +571,23 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   transition: background 0.12s, color 0.12s;
 }
 .ds-site-header-dropdown > summary::-webkit-details-marker { display: none; }
-.ds-site-header-dropdown > summary::after { content: " \25BE"; font-size: 0.625rem; }
+.ds-site-header-dropdown > summary::after {
+  content: "";
+  display: inline-block;
+  width: 1.35em;
+  height: 1.35em;
+  margin-inline-start: 0.3em;
+  vertical-align: -0.35em;
+  background: currentColor;
+  -webkit-mask: var(--ds-chevron) center / contain no-repeat;
+  mask: var(--ds-chevron) center / contain no-repeat;
+  transition: transform 0.15s;
+}
+.ds-site-header-dropdown[open] > summary::after { transform: rotate(180deg); }
+/* Forced colours drop backgrounds, which would hide the drawn arrow. */
+@media (forced-colors: active) {
+  .ds-site-header-dropdown > summary::after { forced-color-adjust: none; background: CanvasText; }
+}
 .ds-site-header-dropdown > summary:hover,
 .ds-site-header-dropdown[open] > summary {
   color: var(--ds-hdr-fg-strong);
@@ -570,7 +600,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 
 .ds-site-header-menu {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + var(--ds-menu-gap, 11px));   /* the bar's bottom edge */
   /* Anchored to the trigger's RIGHT edge, not its left. The logo takes
      margin-right: auto, so the nav always sits at the right of the bar and a
      left-anchored menu runs off the viewport on the last item — which is every
@@ -582,44 +612,47 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   max-width: calc(100vw - 32px);
   display: flex;
   flex-direction: column;
-  min-width: min(235px, 100%)   /* a dropdown panel must never be wider than the viewport it opens in */;
-  background: var(--ds-surface);
-  border: 1px solid var(--ds-border);
-  border-radius: 8px;
+  min-width: min(16rem, 100vw - 32px);
+  background: var(--ds-hdr-bg);
+  border-top: 1px solid var(--ds-hdr-divider);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);   /* the summoned-surface shadow */
-  padding: 6px;
+  padding: 0;
   z-index: 60;
 }
 .ds-site-header-menu a,
 .ds-site-header-menu button {
-  color: var(--ds-text);
+  color: var(--ds-hdr-fg-strong);
   text-decoration: none;
-  padding: 6px 10px;
-  border-radius: 4px;
+  padding: 0 var(--ds-space-4);
   white-space: nowrap;
-  min-height: 24px;              /* WCAG 2.5.8 target floor */
+  min-height: var(--ds-menu-row);
   display: flex;
   align-items: center;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--ds-hdr-divider);
 }
+.ds-site-header-menu > :last-child,
+.ds-site-header-menu > form:last-child > button { border-bottom: 0; }
 /* Log out is a button in a form that posts; it matches the links beside it. */
 .ds-site-header-menu button {
   width: 100%;
-  font: inherit;
+  font-family: inherit;
   text-align: start;
   background: none;
-  border: none;
+  border-top: 0;
+  border-inline: 0;
   cursor: pointer;
 }
 .ds-site-header-menu form { margin: 0; }
 .ds-site-header-menu a:hover,
-.ds-site-header-menu button:hover { background: var(--ds-tint-warm); }
+.ds-site-header-menu button:hover { background: var(--ds-hdr-hover); }
 .ds-site-header-menu a:focus-visible,
 .ds-site-header-menu button:focus-visible {
-  outline: 2px solid var(--ds-link);
+  outline: 2px solid var(--ds-hdr-ring);
   outline-offset: -2px;
 }
 .ds-site-header-menu a[aria-current="page"] { font-weight: 600; }
-.ds-site-header-menu .ds-panel-label { padding: 8px 10px 2px; }
+.ds-site-header-menu .ds-panel-label { padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-1); color: var(--ds-hdr-fg); }
 
 
 /* BUTTONS  (.ds-btn / .ds-btn-primary / .ds-btn-text) — buttons.html
@@ -875,6 +908,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-btn-compact { --ds-btn-padding: 0.55em 1.143em; --ds-btn-min-width: 6em; }
 .ds-btn-text.ds-btn-compact { padding: 0.55em 0.715em; }
 .ds-btn-icon.ds-btn-compact { padding: 0.55em; }
+/* A compact button is drawn small; its target reaches, unseen, to --ds-target. */
+.ds-btn-compact { position: relative; }
+.ds-btn-compact::after { content: ""; position: absolute; inset: min(0px, (100% - var(--ds-target)) / 2) 0; }
 
 /* ── The close control (.ds-close) — buttons.html
    One control for every host: alert, popover, announcement band, figure
@@ -1022,13 +1058,15 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   flex-wrap: wrap;
   container-type: inline-size;
 }
-/* Narrow: the position takes its own line, and numbered pages keep the arrows
-   and hide the words Previous and Next, which stay in the accessible name. */
+.ds-pagination .ds-btn { min-width: 0; }   /* before the narrow rules, so their 44px wins */
+/* Narrow: one row, the position between Previous and Next. Numbered pages
+   hide the page numbers, and the words Previous and Next are read out but not
+   shown, so the arrows hold the ends. */
 @container (max-width: 30rem) {
-  .ds-pagination > .ds-pagination-position { flex: 1 0 100%; margin: 0; }
-  .ds-pagination .ds-pagination-pages li, .ds-pagination .ds-pagination-pages a { min-width: 1.625rem; }
-  .ds-pagination > .ds-pagination-pages { flex: 1 1 0; min-width: 0; justify-content: center; }
-  .ds-pagination:has(.ds-pagination-pages) .ds-pagination-label {
+  .ds-pagination > .ds-pagination-position { order: 1; flex: 1 1 0; min-width: 0; margin: 0; text-align: center; white-space: normal; }
+  .ds-pagination > .ds-btn:last-child { order: 2; }
+  .ds-pagination > .ds-pagination-pages { display: none; }
+  .ds-pagination .ds-pagination-label {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -1036,10 +1074,10 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
     clip-path: inset(50%);
     white-space: nowrap;
   }
-  .ds-pagination:has(.ds-pagination-pages) > .ds-btn { padding-inline: var(--ds-space-1); }
+  .ds-pagination > .ds-btn { min-width: 2.75rem; padding-inline: var(--ds-space-1); }
 }
 /* Above the content it steps through: twice the 12px that holds an actions row to its table. */
-.ds-pagination:has(+ .ds-btn-group, + .ds-table-scroll, + .ds-table) { margin-bottom: var(--ds-space-6); }
+.ds-pagination:has(+ .ds-btn-group, + .ds-table-scroll, + .ds-table, + .ds-card) { margin-bottom: var(--ds-space-6); }
 .ds-pagination-position {
   font-family: var(--ds-font-condensed);
   font-size: 0.8125rem;
@@ -1051,7 +1089,6 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   flex: 1;
   font-variant-numeric: tabular-nums;
 }
-.ds-pagination .ds-btn { min-width: 0; }
 /* A pager above or below a list sits in a tinted bar, so the two bars
    bookend the list. Inside a bar the current page, and a page number under
    the pointer, take the page ground: the usual fills are too close to the
@@ -1253,6 +1290,39 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-card > :first-child { margin-block-start: 0; }
 .ds-card > .ds-marginalia:first-child + * { margin-block-start: 0; }   /* a margin note sits beside the card */
 .ds-card > :last-child  { margin-block-end: 0; }
+
+/* A card whose first row is a header bar (.ds-card-bar): the bar holds the
+   controls for the set of data in the card, on one line while they fit. A
+   table directly inside the card has no border of its own. */
+.ds-card:has(> .ds-card-bar) { padding: 0; overflow: hidden; }
+.ds-card:has(> .ds-card-bar) > :not(.ds-card-bar, .ds-table-scroll, .ds-table) { margin: var(--ds-card-padding); }
+.ds-card:has(> .ds-card-bar) > .ds-table,
+.ds-card:has(> .ds-card-bar) > .ds-table-scroll > .ds-table { margin-bottom: 0; }
+.ds-card-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-2) var(--ds-space-block);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  background: color-mix(in srgb, var(--ds-tint-warm) 50%, var(--ds-surface));   /* half a table header's tint, so the two stay apart */
+  border-bottom: 1px solid var(--ds-border);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 1;
+  font-size: 0.875rem;
+}
+.ds-card-bar > p { margin: 0; font-weight: 600; }
+.ds-card-bar .ds-tag { background: var(--ds-surface); }
+/* A pager as the last row of a card with a header bar: below the list, edge to
+   edge, on the bar's tint. */
+.ds-card:has(> .ds-card-bar) > .ds-pagination:last-child {
+  margin: 0;
+  padding: var(--ds-space-2) var(--ds-space-3);
+  background: color-mix(in srgb, var(--ds-tint-warm) 50%, var(--ds-surface));
+  border-top: 1px solid var(--ds-border);
+}
+.ds-card:has(> .ds-card-bar) > .ds-pagination:last-child .ds-pagination-pages a:is([aria-current="page"], :hover) { background: var(--ds-canvas); }
 :where(.ds-card) > :is(h2, h3) { font-size: 1rem; margin: 0 0 var(--ds-space-tight); }   /* the card's own title, at whatever level the page needs; prose inside a card keeps its rhythm */
 :where(.ds-card) > p { color: var(--ds-text-muted); }   /* the card's own copy; a component inside keeps its colour */
 /* A status tag first in a card sits in the top corner, beside the heading. */
@@ -1402,115 +1472,6 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 
 /* The bulk bar's count: "2 selected", quieter than the actions beside it. */
 .ds-bulk-count { font-size: 0.75rem; color: var(--ds-text-muted); }
-
-/* FILTER SELECT  (.ds-filter) — tables.html */
-/* In a button group, a filter takes the row's far end. */
-.ds-btn-group > .ds-filter { margin-inline-start: auto; }
-/*
- * Minimal underline-only <select> for toolbar filters.
- * Used inline with a <label> in a .ds-filter wrapper.
- *
- * Usage:
- *   <div class="ds-filter">
- *     <label for="…">Show:</label>
- *     <select id="…">…</select>
- *   </div>
- */
-
-.ds-filter {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.75rem;
-  color: var(--ds-text-muted);
-}
-
-.ds-filter label {
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.ds-filter select {
-  /* A filter is a control, so it carries the 24px floor even though its type
-     is small — the padding grows the hit area without growing the text. */
-  min-height: 24px;
-  font-family: inherit;
-  font-size: 0.75rem;
-  color: var(--ds-text);
-  background: none;
-  border: none;
-  border-bottom: 1px solid var(--ds-border-strong); /* 3.61:1 on white ✓ */
-  border-radius: 0;
-  padding: 1px 20px 1px 2px;
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image: var(--ds-select-arrow);
-  background-repeat: no-repeat;
-  background-position: right 3px center;
-  background-size: 10px 7px;
-}
-
-/* A date in a compact filter: the same underline, at the date's own width. */
-.ds-filter input {
-  min-height: 24px;
-  font-family: inherit;
-  font-size: 0.75rem;
-  color: var(--ds-text);
-  background: none;
-  border: none;
-  border-bottom: 1px solid var(--ds-border-strong);
-  border-radius: 0;
-  padding: 1px 2px;
-}
-.ds-filter input:focus-visible,
-.ds-filter select:focus-visible {
-  outline: 2px solid var(--ds-focus-ring);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
-
-/* FILTER BAR  (.ds-filter-bar) — tables.html
-   A <form method="get"> that narrows a whole view. Its choices go in the
-   address, so a filtered view can be linked. */
-.ds-filter-bar {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(10rem, 100%), 1fr));
-  align-items: end;
-  gap: var(--ds-space-4);
-  padding: var(--ds-space-4);
-  margin: 0 0 var(--ds-space-6);
-  background: var(--ds-tint-warm);
-  border-radius: 8px;
-}
-.ds-filter-bar .ds-field { max-width: none; min-width: 0; margin: 0; }
-.ds-filter-bar .ds-field:has(.ds-input[type="date"]) .ds-input { width: auto; max-width: 100%; }   /* a date keeps its own width */
-/* Compact: a filter bar of .ds-filter controls is one row. */
-.ds-filter-bar:has(> .ds-filter) { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2) var(--ds-space-6); padding: var(--ds-space-1) var(--ds-space-3); }
-.ds-filter-bar:has(> .ds-filter) > .ds-btn { min-height: 24px; padding-block: 2px; font-size: 0.8125rem; }
-/* Each filter is a cell in the bar's columns, as many as fit the width. */
-.ds-filter-bar-group { display: contents; }
-/* Settings start a new row, lined up with the columns above; the actions
-   take the last column of that row. */
-.ds-filter-bar-group--settings {
-  display: grid;
-  grid-column: 1 / -2;
-  grid-template-columns: repeat(auto-fill, minmax(min(10rem, 100%), 1fr));   /* the bar's own columns: same formula, one fewer track */
-  gap: var(--ds-space-4);
-  align-items: end;
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-.ds-filter-bar-group > legend:not(.is-sr-only) { grid-column: 1 / -1; margin: 0; padding: 0; }
-.ds-filter-bar-actions {
-  grid-column: -2 / -1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--ds-space-tight);
-}
 
 /* A toolbar row directly above a table keeps a gap from it. */
 .ds-btn-group:has(+ .ds-table, + .ds-table-scroll) { margin-bottom: var(--ds-space-3); }
@@ -1689,7 +1650,10 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
   font-size: 0.8125rem;
   line-height: 1;
   cursor: pointer;
+  position: relative;
 }
+/* On a touch screen the target reaches, unseen, to --ds-target. */
+.ds-tag-remove::after { content: ""; position: absolute; inset: min(0px, (100% - var(--ds-target)) / 2); }
 .ds-tag-remove:hover { opacity: 1; background: rgba(0, 0, 0, 0.08); }
 .ds-tag-remove:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 1px; opacity: 1; }
 
@@ -2009,28 +1973,65 @@ html.js .ds-paper-cite-block figcaption { display: none; }
 .ds-version { font-family: var(--ds-font-mono); }
 
 /* COMPACT FORM  (.ds-form--compact, .ds-input-group) — forms.html
-   A form that is one line: one to three controls and its button. The
-   controls that make one input are joined in .ds-input-group. */
+   A form that supports the main content: one row, or one short column when
+   its container is narrow. Each control sits inside its own <label>, the
+   label's words beside it. Fields are drawn compact; the controls that make
+   one input are joined in .ds-input-group and keep the full size. */
+:where(*):has(> .ds-form--compact) { container-type: inline-size; }
 .ds-form--compact {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--ds-space-2) var(--ds-space-4);
-  container-type: inline-size;
+  margin: 0;
+  font-size: 0.875rem;
 }
+.ds-form--compact > label:not(.ds-label, .ds-check, .is-sr-only),
+.ds-form--compact > fieldset > label:not(.ds-check, .is-sr-only) { display: inline-flex; align-items: center; gap: var(--ds-space-2); font-weight: 600; }
+/* A fieldset, for a date range or a group of checkboxes: its legend and its
+   controls on one line, wrapping when they do not fit. A floated legend
+   becomes an item of the line. */
+.ds-form--compact > fieldset { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2) var(--ds-space-3); min-width: 0; margin: 0; padding: 0; border: 0; }
+.ds-form--compact > fieldset > legend { float: left; padding: 0; font-weight: 600; }
+.ds-form--compact > fieldset > label:not(.ds-check) { font-weight: 400; }
+.ds-form--compact > fieldset > .ds-check { margin: 0; }
+.ds-form--compact .ds-input { width: auto; font-weight: 400; }
+.ds-form--compact select.ds-input { padding-right: 2.25em; background-position: right 0.75em center; }
 .ds-form--compact > .ds-label,
 .ds-form--compact > .field-error,
 .ds-form--compact > .field-warning,
 .ds-form--compact > .field-info { flex: 1 0 100%; margin: 0; }
-/* The controls leave room for the button and nothing else, so whatever
-   follows the button starts a new line. */
-.ds-form--compact > .ds-input-group,
-.ds-form--compact > .ds-input { flex: 1 1 calc(100% - 12rem); width: auto; min-width: 0; }
-.ds-form--compact > .ds-btn { flex: none; align-self: stretch; margin-inline-start: calc(var(--ds-space-2) - var(--ds-space-4)); }
+/* A compact field is drawn at the compact size with the full target. A field
+   cannot carry an unseen ::after, so the reach is a transparent border above
+   and below, the fill stops inside it, and the visible edge is an inset line. */
+.ds-form--compact .ds-input:not(textarea, .ds-input-group > *) {
+  --ds-input-padding: 0.37em 0.643em;
+  border: solid transparent;
+  border-width: var(--ds-reach) 0;
+  border-radius: 6px / calc(6px + var(--ds-reach));
+  background-clip: padding-box;
+  box-shadow: inset 0 0 0 1px var(--ds-border-strong);
+  min-height: calc(var(--ds-compact-h) + 2 * var(--ds-reach));
+  padding-block: 0;
+}
+.ds-form--compact .ds-input:not(textarea, .ds-input-group > *):focus-visible {
+  outline: 2px solid transparent;   /* what forced-colours mode draws */
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px var(--ds-focus-ring);
+}
+.ds-form--compact .ds-input.is-invalid:not(textarea, .ds-input-group > *) { box-shadow: inset 0 0 0 2px var(--ds-error-border); }
+.ds-form--compact .ds-input.is-warning:not(textarea, .ds-input-group > *) { box-shadow: inset 0 0 0 2px var(--ds-warning-border); }
+/* Typed text under 16px makes iOS zoom the page on focus. */
+@media (pointer: coarse) { .ds-form--compact .ds-input { font-size: 1rem; } }
+/* In a toolbar, a compact form takes the row's far end. */
+.ds-btn-group > .ds-form--compact { margin-inline-start: auto; }
+/* With a joined input, the input takes the spare width and leaves room for
+   the button and nothing else, so whatever follows the button starts a new line. */
+.ds-form--compact > .ds-input-group { flex: 1 1 calc(100% - 12rem); min-width: 0; }
+.ds-form--compact > .ds-input-group + .ds-btn { flex: none; align-self: stretch; margin-inline-start: calc(var(--ds-space-2) - var(--ds-space-4)); }
 /* Secondary options under the row: each is a 24px box with its content
    centred, so a checkbox and a link line up. */
 .ds-form--compact > .ds-check { margin: 0; align-items: center; }
-.ds-form--compact > .ds-filter { min-height: 24px; }
 .ds-form--compact > .ds-check input { margin: 0; }
 .ds-form--compact > a { display: inline-flex; align-items: center; min-height: 24px; font-size: 0.875rem; }
 /* A link to another page is a different kind of thing from the options: it takes the end of the line. */
@@ -2048,7 +2049,17 @@ html.js .ds-paper-cite-block figcaption { display: none; }
 .ds-input-group > .ds-input:focus-visible,
 .ds-input-group > .ds-input.is-invalid { position: relative; z-index: 1; }
 @container (max-width: 26rem) {
-  .ds-form--compact > .ds-btn { flex: 1 0 100%; margin-inline-start: 0; }
+  .ds-form--compact > .ds-input-group + .ds-btn { flex: 1 0 100%; margin-inline-start: 0; }
+}
+/* Narrow: one short column, labels in one column and fields in the other. */
+@container (max-width: 34em) {
+  .ds-form--compact:not(:has(> .ds-input-group)) { display: grid; grid-template-columns: fit-content(9rem) minmax(0, 1fr); column-gap: var(--ds-space-3); width: 100%; }   /* a long label wraps rather than squeezing its field */
+  .ds-form--compact:not(:has(> .ds-input-group)) > label:not(.ds-label, .ds-check, .is-sr-only) { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; }
+  .ds-form--compact:not(:has(> .ds-input-group)) .ds-input { width: 100%; }
+  .ds-form--compact:not(:has(> .ds-input-group)) > .ds-btn { grid-column: 2; justify-self: start; }
+  .ds-form--compact:not(:has(> .ds-input-group)) > :not(label, .ds-btn) { grid-column: 1 / -1; }
+  /* A fieldset: its legend on a line of its own, its controls one under another. */
+  .ds-form--compact:not(:has(> .ds-input-group)) > fieldset { flex-direction: column; align-items: flex-start; }
 }
 
 /* Room on the right for the arrow, which renders inside the control's own
@@ -2191,6 +2202,35 @@ select.ds-input:not([multiple]):not([size]) {
 /* Directly under a card it is that card's caption, so it sits close. */
 .ds-card + .ds-annotation { margin-top: var(--ds-space-2); }
 
+
+/* FILTER BUTTON AND FILTER PANEL  (.ds-filter-button, .ds-filter-panel) — filters.html
+   A compact secondary button that opens a popover of filters for one set of
+   data. Its filter icon, not a chevron, says what it opens. filter-panel.js
+   places the panel at the button's edge; without it the browser centres it. */
+.ds-filter-button { gap: 0.5em; min-width: 0; max-width: 100%; }
+.ds-filter-value { min-width: 0; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Open: the button's own pressed colours, through its tokens, so its rim stays. */
+.ds-filter-button[aria-expanded="true"] {
+  --ds-btn-secondary-bg: var(--ds-btn-secondary-bg-active);
+  --ds-btn-secondary-bg-hover: var(--ds-btn-secondary-bg-active);
+  --ds-btn-secondary-rim-a: var(--ds-btn-secondary-rim-active);
+  --ds-btn-secondary-rim-b: var(--ds-btn-secondary-rim-active);
+}
+.ds-filter-panel {
+  position: absolute;
+  inset: auto;
+  top: var(--ds-panel-top, 0);
+  left: var(--ds-panel-left, 0);
+  margin: 0;
+  width: min(calc(100vw - 2rem), var(--ds-panel-width, 22rem));
+  padding: var(--ds-space-4);
+  color: var(--ds-text);
+  background: var(--ds-btn-secondary-bg-active);   /* the open button's own background */
+  border: 1px solid var(--ds-border);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+.ds-filter-panel:not([style*="--ds-panel-top"]) { inset: 0; margin: auto; height: fit-content; border-radius: 8px; }
 
 /* POPOVER PANEL  (.ds-popover and parts) — progressive-disclosure.html
    position: fixed — the consumer sets top/left and must portal it to
@@ -2992,7 +3032,6 @@ html:has(.ds-modal[open]) {
   --ds-accent-border:              var(--ds-access-lime-border);
   --ds-accent-border-active:       var(--ds-access-lime-deep);
   --ds-subnav-current:             var(--ds-access-lime-deep);
-  --ds-tabs-current:               var(--ds-access-lime-deep);
   --ds-accent-wash:                var(--ds-access-lime-wash);
   --ds-accent-wash-hover:          var(--ds-access-lime-wash-2);
   --ds-accent-wash-active:         var(--ds-access-lime-wash-3);
@@ -3798,16 +3837,16 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 /* In the bar the icon alone is the trigger, as on other platforms; no caret. */
 .ds-site-header:not(.is-nav-collapsed) .ds-site-header-account--compact > .ds-site-header-dropdown > summary::after { content: none; }
 .ds-site-header-account--compact .ds-site-header-menu > p {
-  margin: 0 0 4px;
-  padding: 6px 10px 8px;
-  border-bottom: 1px solid var(--ds-border);
+  margin: 0;
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border-bottom: 1px solid var(--ds-hdr-divider);
   font-size: 0.8125rem;
-  color: var(--ds-text-muted);
+  color: var(--ds-hdr-fg);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.ds-site-header-account--compact .ds-site-header-menu > p > b { font-weight: 600; color: var(--ds-text); }
+.ds-site-header-account--compact .ds-site-header-menu > p > b { font-weight: 600; color: var(--ds-hdr-fg-strong); }
 
 /* ── .ds-site-header--light ───────────────────────────────────────────────
    The same bar on a property that is not arxiv.org: the design system docs
@@ -3828,6 +3867,9 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   --ds-hdr-border:    var(--ds-border);
   --ds-hdr-divider:   var(--ds-border);
 }
+
+/* On a touch screen a menu row and a small control's target are 44px. */
+@media (pointer: coarse) { :root { --ds-menu-row: 2.75rem; --ds-target: 2.75rem; } }
 
 /* Collapse by fit (header.js). When the regions do not fit on one row, the
    navigation collapses behind a menu button. On a bar with an account area the
@@ -3948,6 +3990,10 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 .ds-site-header.is-tools-collapsed .ds-site-header-tools > :last-child,
 .ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-tools > :last-child,
 .ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account > :last-child { border-bottom: none; }
+/* A list that ends in a dropdown: the dropdown's row, or its last item when open, is the
+   list's last line, so it drops its border too and the next region's top line stands alone. */
+.ds-site-header.is-nav-collapsed .ds-site-header-nav > .ds-site-header-dropdown:last-child:not([open]) > summary,
+.ds-site-header.is-nav-collapsed .ds-site-header-nav > .ds-site-header-dropdown[open]:last-child .ds-site-header-menu > :last-child { border-bottom: none; }
 /* A folded tool has a full row, so its name shows beside the icon. !important only
    to undo .is-sr-only, which uses it. */
 .ds-site-header.is-tools-collapsed .ds-site-header-tools > button > .is-sr-only,
@@ -4079,20 +4125,18 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 /* SECONDARY NAVIGATION  (.ds-subnav) — navigation.html
    A row of section links directly under the header. It wraps rather than
    scrolling sideways, so every section stays visible at 320px and at 200%
-   text. The current page is marked three ways: weight, an underline bar,
-   and aria-current. */
+   text. Its links are tabs (the one tab style, below). */
 /* A bar can hold more than links: a <nav> of links, then a compact filter bar.
    Groups sit twice as far apart as the items inside them. */
 .ds-subnav:has(> nav) { column-gap: var(--ds-space-12); }
 .ds-subnav > nav { display: flex; flex-wrap: wrap; column-gap: var(--ds-space-6); }
-.ds-subnav > .ds-filter-bar { align-self: center; margin-block: var(--ds-space-1); }
-/* Second level, inside the page: the same links and current bar, in the content column. */
-.ds-subnav.ds-subnav--in-page { padding-inline: 0; background: none; }
 .ds-subnav {
+  --ds-row-pad: 24px;   /* the row's side padding: the section menu reaches back over it */
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   column-gap: var(--ds-space-6);
-  padding: 0 24px;
+  padding: 0 var(--ds-row-pad);
   background: var(--ds-surface);
   border-bottom: 1px solid var(--ds-border);
   font-family: var(--ds-font-sans);
@@ -4119,8 +4163,153 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   border-bottom-color: var(--ds-subnav-current, var(--ds-accent-strong));
 }
 @media (max-width: 599px) {
-  .ds-subnav { padding: 0 12px; column-gap: var(--ds-space-4); }
+  .ds-subnav { --ds-row-pad: 12px; column-gap: var(--ds-space-4); }
 }
+
+/* THE ONE TAB STYLE — navigation.html, progressive-disclosure.html
+   Secondary navigation (pages) and tabs (views in a page) look the same. Each
+   tab is text on the row; the current one is a box joined to what follows it,
+   with the accent along its top. The line is not the only cue: the box, the
+   weight and aria-current mark it too. The current tab takes the ground of what
+   follows it (--ds-tab-ground), so it opens into a tinted band when one comes next. */
+.ds-subnav:not(.ds-subnav--steps),
+.ds-subnav:not(.ds-subnav--steps) > nav,
+.ds-tabs-list { column-gap: var(--ds-space-1); align-items: flex-end; }
+:is(:is(.ds-subnav:not(.ds-subnav--steps), .ds-subnav:not(.ds-subnav--steps) > nav) > a, .ds-tabs-list [role="tab"]) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  margin-top: var(--ds-space-1);
+  margin-bottom: -1px;
+  padding: 0 var(--ds-space-4);
+  font-family: var(--ds-font-sans);
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+  text-decoration: none;
+  background: none;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+}
+:is(:is(.ds-subnav:not(.ds-subnav--steps), .ds-subnav:not(.ds-subnav--steps) > nav) > a, .ds-tabs-list [role="tab"]):hover { color: var(--ds-text); background: var(--ds-tint-warm); }
+:is(:is(.ds-subnav:not(.ds-subnav--steps), .ds-subnav:not(.ds-subnav--steps) > nav) > a, .ds-tabs-list [role="tab"]):focus-visible {
+  outline: 2px solid var(--ds-focus-ring);
+  outline-offset: -2px;
+}
+:is(:is(.ds-subnav:not(.ds-subnav--steps), .ds-subnav:not(.ds-subnav--steps) > nav) > a[aria-current="page"], .ds-tabs-list [role="tab"][aria-selected="true"]) {
+  color: var(--ds-text);
+  font-weight: 600;
+  text-shadow: none;
+  background: var(--ds-tab-ground, var(--ds-canvas));
+  border-color: var(--ds-border);
+  box-shadow: inset 0 3px 0 var(--ds-tab-current, var(--ds-accent));
+}
+body:has(.ds-container > .ds-zone-secondary:first-child) .ds-subnav { --ds-tab-ground: var(--ds-zone-secondary-bg); }
+
+/* SECTION MENU (.ds-subnav-section) AND MENU (.ds-menu) — navigation.html
+   An area whose sections each have several views: the section menu starts the
+   row, a cell in the accent's light tint from the row's edge, and the views of
+   the current section follow it as tabs. A menu matches its control: the
+   section menu's opens in the same tint; a menu from the white row is white. */
+.ds-subnav-section {
+  --ds-menu-bg: var(--ds-tint-accent);
+  --ds-menu-hover: var(--ds-accent-wash-hover, var(--ds-accent-wash));
+  --ds-menu-line: var(--ds-accent-border);
+  position: relative;
+  display: flex;
+  margin-inline-start: calc(-1 * var(--ds-row-pad));
+}
+.ds-subnav-section > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  min-height: max(var(--ds-menu-row), 2.5rem);
+  padding: 0 var(--ds-space-4) 0 var(--ds-row-pad);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ds-text);
+  background: var(--ds-menu-bg);
+  border-inline-end: 1px solid var(--ds-border);
+  list-style: none;
+  cursor: pointer;
+}
+.ds-subnav-section > summary::-webkit-details-marker { display: none; }
+.ds-subnav-section > summary:hover,
+.ds-subnav-section[open] > summary { background: var(--ds-menu-hover); }
+.ds-subnav-section > summary:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: -2px; }
+:is(.ds-subnav-section, .ds-subnav-views) > summary::after {
+  content: "";
+  width: 1.25em;
+  height: 1.25em;
+  background: currentColor;
+  -webkit-mask: var(--ds-chevron) center / contain no-repeat;
+  mask: var(--ds-chevron) center / contain no-repeat;
+  transition: transform 0.15s;
+}
+:is(.ds-subnav-section, .ds-subnav-views)[open] > summary::after { transform: rotate(180deg); }
+@media (forced-colors: active) {
+  :is(.ds-subnav-section, .ds-subnav-views) > summary::after { forced-color-adjust: none; background: CanvasText; }
+}
+/* The sheet: square corners, rows with hairlines, hanging from its control. */
+.ds-menu {
+  position: absolute;
+  top: 100%;
+  left: var(--ds-row-pad, 0);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  min-width: 18rem;
+  max-width: calc(100vw - 2 * var(--ds-row-pad, 16px));
+  background: var(--ds-menu-bg, var(--ds-surface));
+  border: 1px solid var(--ds-menu-line, var(--ds-border));
+  border-top: 0;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);   /* the summoned-surface shadow */
+}
+.ds-menu > a {
+  display: flex;
+  align-items: center;
+  min-height: var(--ds-menu-row);
+  padding: 0 var(--ds-space-4);
+  font-size: 0.875rem;
+  color: var(--ds-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ds-menu-line, var(--ds-border));
+}
+.ds-menu > a:last-child { border-bottom: 0; }
+.ds-menu > a:visited { color: var(--ds-text); }
+.ds-menu > a:hover { background: var(--ds-menu-hover, var(--ds-surface-hover)); }
+.ds-menu > a:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: -2px; }
+.ds-menu > a[aria-current] { font-weight: 600; box-shadow: inset 3px 0 0 var(--ds-tab-current, var(--ds-accent)); }
+
+/* Folding by fit (subnav.js), as the header folds; without the script the tabs
+   wrap. When the views do not fit beside the section menu they fold into a
+   View menu (.ds-subnav-views); when that does not fit either, the section menu
+   takes a row of its own and each menu spans the row. */
+.ds-subnav-views { display: none; position: relative; }
+.ds-subnav.is-views-folded:not(.ds-subnav--steps) > a { display: none; }   /* outranks the tab style's display */
+.ds-subnav.is-views-folded > .ds-subnav-views { display: flex; }
+.ds-subnav-views > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  min-height: max(var(--ds-menu-row), 2.5rem);
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+  list-style: none;
+  cursor: pointer;
+}
+.ds-subnav-views > summary::-webkit-details-marker { display: none; }
+.ds-subnav-views > summary > b { color: var(--ds-text); font-weight: 600; }
+.ds-subnav-views > summary > svg { width: 1.1em; height: 1.1em; flex: none; }
+.ds-subnav-views > summary:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 2px; border-radius: 2px; }
+.ds-subnav-views > summary::after { color: var(--ds-text); }
+.ds-subnav-views > .ds-menu { left: calc(-1 * var(--ds-row-pad)); }
+.ds-subnav.is-menu-row > .ds-subnav-section { flex: 1 0 100%; margin-inline: calc(-1 * var(--ds-row-pad)); }
+.ds-subnav.is-menu-row > .ds-subnav-section > summary { flex: 1; padding-inline: var(--ds-row-pad); border-inline-end: 0; border-bottom: 1px solid var(--ds-border); }
+.ds-subnav.is-menu-row > .ds-subnav-section > .ds-menu,
+.ds-subnav.is-menu-row > .ds-subnav-views > .ds-menu { left: 0; right: 0; max-width: none; }
+.ds-subnav.is-menu-row > .ds-subnav-views { position: static; }
 
 /* STEPS  (.ds-subnav--steps) — navigation.html
    The steps of one ordered process, on the secondary navigation bar. A
@@ -4177,35 +4366,10 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 .ds-tabs-list {
   display: flex;
   flex-wrap: wrap;
-  column-gap: var(--ds-space-6);
   margin: 0 0 var(--ds-space-4);
   border-bottom: 1px solid var(--ds-border);
 }
-.ds-tabs-list [role="tab"] {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.5rem;
-  margin-bottom: -1px;
-  padding: 0;
-  background: none;
-  border: 0;
-  border-bottom: 3px solid transparent;
-  font-family: var(--ds-font-sans);
-  font-size: 0.875rem;
-  color: var(--ds-text-muted);
-  cursor: pointer;
-}
-.ds-tabs-list [role="tab"]:hover { color: var(--ds-text); border-bottom-color: var(--ds-border-strong); }
-.ds-tabs-list [role="tab"]:focus-visible {
-  outline: 3px solid var(--ds-focus-ring);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
-.ds-tabs-list [role="tab"][aria-selected="true"] {
-  color: var(--ds-text);
-  text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;   /* bold without widening, so nothing beside it moves */
-  border-bottom-color: var(--ds-tabs-current, var(--ds-accent-strong));
-}
+/* The tabs themselves take the one tab style (secondary navigation). */
 .ds-tabs-panel:focus-visible {
   outline: 3px solid var(--ds-focus-ring);
   outline-offset: 2px;

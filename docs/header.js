@@ -184,6 +184,14 @@
     document.addEventListener('click', function (e) {
       if (!header.contains(e.target)) closeAll();
     });
+    // A dropdown's menu hangs from the bar's bottom edge, wherever its summary sits in the bar.
+    header.querySelectorAll('.ds-site-header-dropdown').forEach(function (d) {
+      d.addEventListener('toggle', function () {
+        if (!d.open) return;
+        var gap = header.getBoundingClientRect().bottom - d.getBoundingClientRect().bottom;
+        d.style.setProperty('--ds-menu-gap', Math.round(gap) + 'px');
+      });
+    });
   }
 
   function start() {
