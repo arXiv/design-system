@@ -38,6 +38,7 @@
         <a href="layout-patterns.html">Layouts</a>
         <a href="cards.html" aria-current="page">Cards</a>
         <a href="tables.html">Tables</a>
+        <a href="filters.html">Filters</a>
         <a href="search.html">Search</a>
         <a href="progressive-disclosure.html">Progressive disclosure</a>
         <a href="modals.html">Modal dialogs</a>
@@ -102,6 +103,7 @@
           <ol>
             <li><a href="#basic-cards">Basic cards</a></li>
             <li><a href="#data-cards">Data cards</a></li>
+            <li><a href="#cards-with-a-header-bar">Cards with a header bar</a></li>
             <li><a href="#stat-cards">Stat cards</a></li>
             <li><a href="#groups-of-cards">Groups of cards</a></li>
             <li><a href="#cards-that-link">Cards that link</a></li>
@@ -245,6 +247,64 @@
           <dl>
             <dt>.ds-internal</dt>
             <dd>The top edge takes Access Lime. The markup is the public one.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Cards with a header bar ───────── -->
+  <section>
+    <h2 id="cards-with-a-header-bar">Cards with a header bar</h2>
+    <p class="ds-section-desc">A set of data with its own controls, such as a table with a filter, is a card whose first row is a header bar. The bar holds the controls for that set only.</p>
+    <div class="ds-card">
+      <div class="ds-card">
+        <div class="ds-card-bar">
+          <form class="ds-form--compact" method="get" action="cards.html#cards-with-a-header-bar" aria-label="Filter holds">
+            <label>Status <select class="ds-input" name="status"><option>Any</option><option selected>On hold</option><option>Released</option></select></label>
+            <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+          </form>
+          <p>3 of 120 holds</p>
+        </div>
+        <div class="ds-table-scroll" role="region" aria-label="Recent holds" tabindex="0">
+          <table class="ds-table">
+            <thead><tr><th scope="col">Submission</th><th scope="col">Category</th><th scope="col">Held since</th></tr></thead>
+            <tbody>
+              <tr><td>submit/6614203</td><td>cs.LG</td><td>2026-09-02</td></tr>
+              <tr><td>submit/6617750</td><td>cs.AI</td><td>2026-09-05</td></tr>
+              <tr><td>submit/6620418</td><td>cs.CV</td><td>2026-09-11</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-card"&gt;
+  &lt;div class="ds-card-bar"&gt;
+    &lt;form class="ds-form--compact" method="get" action="…" aria-label="Filter holds"&gt;
+      &lt;label&gt;Status &lt;select class="ds-input" name="status"&gt;…&lt;/select&gt;&lt;/label&gt;
+      &lt;button class="ds-btn ds-btn-compact" type="submit"&gt;Apply&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;p&gt;3 of 120 holds&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="ds-table-scroll" role="region" aria-label="Recent holds" tabindex="0"&gt;
+    &lt;table class="ds-table"&gt;…&lt;/table&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-card-bar</dt>
+            <dd>The first child of the card. It holds the controls for the set: filters, as a
+            <a href="forms.html#compact-form">compact form</a> or a
+            <a href="filters.html#multiple-choice-filters">Filters button</a> with its tags, a sort, and
+            <a href="tables.html#bulk-actions">group actions</a>. They are compact and sit at its
+            start. A total sits at its end when the reader cannot see the whole set: the set runs over
+            more than one page, or the filters hide part of it. When the controls do not fit on one
+            line, the bar wraps and the total takes a line of its own. Its tint is half a table header's, so the
+            two stay apart. A <a href="pager.html#numbered-pages">pager</a> for the set is the card's
+            last row, below the list.</dd>
+            <dt>.ds-card</dt>
+            <dd>The frame. With a header bar it has no padding of its own: a table inside it runs to
+            its edges with no border of its own, and any other content keeps the card's padding.</dd>
           </dl>
         </div>
       </details>

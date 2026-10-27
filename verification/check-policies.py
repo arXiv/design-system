@@ -95,6 +95,24 @@ def check_self_hosted():
         ok(rule, f"{n} pages")
 
 
+# ── Arrows are icons, never text characters ──
+# A dropdown arrow drawn as a character ("▾" at a small font size) is a glyph
+# from memory: it rendered at 10px on every header dropdown. Arrows come from
+# docs/icons, as --ds-chevron does.
+TEXT_ARROW = re.compile(r'content:\s*"[^"]*(?:\\25B[A-F]|\\25C[0-4]|[▴▸▾◂▲▶▼◀])')
+
+
+def check_no_text_arrows():
+    rule = "arrows are icons, never text characters"
+    for f in [REPO / "docs" / "design-system.css", REPO / "docs" / "internal-tools.css"]:
+        text = f.read_text()
+        for m in TEXT_ARROW.finditer(text):
+            line = text[: m.start()].count("\n") + 1
+            fail(rule, f"{f.relative_to(REPO)}:{line}", "draw the arrow from docs/icons (see --ds-chevron)")
+    if rule not in FAILS:
+        ok(rule, "stylesheets")
+
+
 # ── Every token a rule uses is a token that exists ──
 # A var() naming a property nothing defines makes the whole declaration
 # invalid and it is silently dropped — .ds-note shipped with no padding
@@ -506,6 +524,7 @@ def main():
     check_wordmark_not_typed()
     check_self_hosted()
     check_tokens_defined()
+    check_no_text_arrows()
     check_colours_from_tokens()
     check_one_name_per_surface()
     check_relative_type_sizes()

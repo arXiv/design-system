@@ -26,18 +26,24 @@ components:
       - "Field widths are set by the type of control, on the assumption that the element already tells you about how much someone will type. If you need to override a default width, two classes are available (see [Field width](#field-width))."
   - id: compact-form
     title: "Compact form"
-    summary: "A compact form is for a very short form, such as search: one to three controls and a button, on one row."
+    summary: "A normal form is the main content of the page, or an important part of it. A compact form supports the main content: it changes the view or controls part of it, such as a filter, or it is a small form beside it, such as a signup in a sidebar. A supporting form that needs long text or detailed help stays a normal form."
     classes:
       - name: ".ds-form--compact"
-        does: "On the `<form>`. Puts the controls and the button on one row. Anything after the button goes on the line below: a message first, then secondary options, such as Show abstracts and the settings for the results (`.ds-filter` selects for order and results per page). A link to another page, such as Advanced search, sits at the end of that line."
+        does: "On the `<form>`. Puts the controls and the button on one row, and makes each field compact. When the form's container is narrow, the labels make one column and the fields another."
+      - name: "<label>"
+        does: "Each control sits inside its own label, the label's words before it. No wrapper class is needed."
+      - name: ".ds-btn-compact"
+        does: "The button. Secondary when it changes the view, such as Apply; primary when sending the form is the form's job."
+      - name: ".ds-card-bar"
+        does: "The header bar of the set the form changes. See [Cards with a header bar](cards.html#cards-with-a-header-bar)."
+      - name: ".ds-form--compact"
+        does: "With joined controls, the joined input takes the spare width of the row. Anything after the button goes on the line below: a message first, then secondary options, such as Show abstracts and the settings for the results (compact selects for order and results per page). A link to another page, such as Advanced search, sits at the end of that line."
       - name: ".ds-input-group"
-        does: "Joins the controls that make one input, such as a search term and the field it searches. The text input takes the spare width and the select takes what it needs."
+        does: "Joins the controls that make one input, such as a search term and the field it searches. The text input takes the spare width and the select takes what it needs. Joined controls and the button after them keep the full size, because they are the form's main input."
+      - name: ".field-error"
+        does: "A message goes directly after the button and shows under the row, so the button stays beside the field. The rest follows [Validation](#validation)."
       - name: ".is-sr-only"
         does: "On each `<label>` when a heading or the button already says what the form does. The label is read out and not shown."
-      - name: ".ds-label"
-        does: "One visible label above the row, for a form whose purpose is not clear from what is around it."
-      - name: ".field-error"
-        does: "Goes directly after the button, and shows under the row. The button stays beside the field. The rest follows [Validation](#validation)."
   - id: validation
     title: "Validation"
     summary: "Fields can be in three possible states: normal, validated, or disabled. Validation styles change based on the error [disposition](#disposition-tiers), that is, its severity."
@@ -197,7 +203,20 @@ A field is a label (for example, Email address), a control (for example, input f
 
 ## Compact form
 
-A compact form is for a very short form, such as search: one to three controls and a button, on one row.
+A normal form is the main content of the page, or an important part of it. A compact form supports the main content: it changes the view or controls part of it, such as a filter, or it is a small form beside it, such as a signup in a sidebar. A supporting form that needs long text or detailed help stays a normal form.
+
+```html
+<div class="ds-card">
+  <div class="ds-card-bar">
+    <form class="ds-form--compact" method="get" action="…" aria-label="Filter submissions">
+      <label>Group <select class="ds-input" name="group">…</select></label>
+      <label>Sort by <select class="ds-input" name="order">…</select></label>
+      <button class="ds-btn ds-btn-compact" type="submit">Apply</button>
+    </form>
+  </div>
+  <div class="ds-table-scroll" …><table class="ds-table">…</table></div>
+</div>
+```
 
 ```html
 <form class="ds-form--compact" method="get" action="forms.html#compact-form" role="search" aria-label="Search arXiv">
@@ -209,40 +228,20 @@ A compact form is for a very short form, such as search: one to three controls a
   </div>
   <button class="ds-btn ds-btn-primary" type="submit">Search</button>
   <label class="ds-check"><input type="checkbox" name="abstracts" value="show" checked><span>Show abstracts</span></label>
-  <div class="ds-filter"><label for="cf-order">Sort by</label><select id="cf-order" name="order"><option>Newest announced</option><option>Relevance</option></select></div>
-  <div class="ds-filter"><label for="cf-size">Per page</label><select id="cf-size" name="size"><option>25</option><option selected>50</option><option>100</option></select></div>
+  <label>Sort by <select class="ds-input" name="order"><option>Newest announced</option><option>Relevance</option></select></label>
+  <label>Per page <select class="ds-input" name="size"><option>25</option><option selected>50</option><option>100</option></select></label>
   <a href="forms.html#compact-form">Advanced search</a>
 </form>
 ```
 
-```html
-<form class="ds-form--compact" method="get" action="forms.html#compact-form">
-  <label class="ds-label" for="cf-id">arXiv identifier</label>
-  <input class="ds-input" id="cf-id" name="id" type="text" value="2610.00999">
-  <button class="ds-btn ds-btn-primary" type="submit">Open paper</button>
-</form>
-```
-
-```html
-<form class="ds-form--compact" method="get" action="forms.html#compact-form" role="search" aria-label="Search arXiv">
-  <div class="ds-input-group">
-    <label class="is-sr-only" for="cf-query-2">Search term</label>
-    <input class="ds-input is-invalid" id="cf-query-2" name="query" type="search" value="*lens" aria-invalid="true" aria-describedby="cf-query-2-err">
-    <label class="is-sr-only" for="cf-field-2">Field to search</label>
-    <select class="ds-input" id="cf-field-2" name="searchtype"><option>Title</option><option>All fields</option></select>
-  </div>
-  <button class="ds-btn ds-btn-primary" type="submit">Search</button>
-  <p class="field-error" id="cf-query-2-err">A search cannot start with a wildcard (? or *). Remove it and search again.</p>
-  <label class="ds-check"><input type="checkbox" name="abstracts" value="show" checked><span>Show abstracts</span></label>
-  <a href="forms.html#compact-form">Advanced search</a>
-</form>
-```
-
-- `.ds-form--compact` — On the `<form>`. Puts the controls and the button on one row. Anything after the button goes on the line below: a message first, then secondary options, such as Show abstracts and the settings for the results (`.ds-filter` selects for order and results per page). A link to another page, such as Advanced search, sits at the end of that line.
-- `.ds-input-group` — Joins the controls that make one input, such as a search term and the field it searches. The text input takes the spare width and the select takes what it needs.
+- `.ds-form--compact` — On the `<form>`. Puts the controls and the button on one row, and makes each field compact. When the form's container is narrow, the labels make one column and the fields another.
+- `<label>` — Each control sits inside its own label, the label's words before it. No wrapper class is needed.
+- `.ds-btn-compact` — The button. Secondary when it changes the view, such as Apply; primary when sending the form is the form's job.
+- `.ds-card-bar` — The header bar of the set the form changes. See [Cards with a header bar](cards.html#cards-with-a-header-bar).
+- `.ds-form--compact` — With joined controls, the joined input takes the spare width of the row. Anything after the button goes on the line below: a message first, then secondary options, such as Show abstracts and the settings for the results (compact selects for order and results per page). A link to another page, such as Advanced search, sits at the end of that line.
+- `.ds-input-group` — Joins the controls that make one input, such as a search term and the field it searches. The text input takes the spare width and the select takes what it needs. Joined controls and the button after them keep the full size, because they are the form's main input.
+- `.field-error` — A message goes directly after the button and shows under the row, so the button stays beside the field. The rest follows [Validation](#validation).
 - `.is-sr-only` — On each `<label>` when a heading or the button already says what the form does. The label is read out and not shown.
-- `.ds-label` — One visible label above the row, for a form whose purpose is not clear from what is around it.
-- `.field-error` — Goes directly after the button, and shows under the row. The button stays beside the field. The rest follows [Validation](#validation).
 
 ## Validation
 
