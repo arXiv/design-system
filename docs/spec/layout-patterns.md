@@ -18,6 +18,9 @@ components:
   - id: where-secondary-content-goes
     title: "Where secondary content goes"
     summary: "Each kind of secondary content has a home that keeps the main content high and wide. Compare at least two homes for each piece, and keep the one that leaves the main content highest and widest."
+  - id: where-controls-go
+    title: "Where controls go"
+    summary: "A control sits with what it changes. The more of the site it changes, the higher it sits on the page."
   - id: the-page-container
     title: "The page container"
     summary: "Every page sits in `.ds-container`. It centres the content in a column at the standard reading width, 850px at most, with a margin of at least 24px on each side. For a band that runs edge to edge, see [Page zones](#page-zones)."
@@ -111,6 +114,10 @@ Before choosing components, decide what the page is for and which content is pri
 ## Where secondary content goes
 
 Each kind of secondary content has a home that keeps the main content high and wide. Compare at least two homes for each piece, and keep the one that leaves the main content highest and widest.
+
+## Where controls go
+
+A control sits with what it changes. The more of the site it changes, the higher it sits on the page.
 
 ## The page container
 

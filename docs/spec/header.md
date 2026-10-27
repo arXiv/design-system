@@ -115,7 +115,8 @@ components:
 rules:
   - "A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The [templates README](doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement."
   - "**Regions, in one order.** Logo, search (the Search link on public pages, search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it."
-  - "**Navigation sits on the right.** The space after the logo stays empty."
+  - "**Navigation sits on the right.** The space after the logo stays empty, apart from the centred space below."
+  - "**An optional centred space** holds one site-wide tool or filter. Use it sparingly. It is for the aspirational header; see [Where controls go](layout-patterns.html#where-controls-go)."
   - "**No more than four links in arxiv.org’s navigation.** The logo and Log in do not count (DESIGN-POLICIES). A host does not change the template’s navigation."
   - "**Tools holds the theme control.** The transitional header also puts a page’s actions there; in the aspirational header they move to the TOC bar. A control that acts on the page’s data, such as Refresh, goes beside the page heading, with the time the data was last updated."
   - "**Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in the bar while they fit."
@@ -406,7 +407,8 @@ Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top o
 
 - A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The [templates README](doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement.
 - **Regions, in one order.** Logo, search (the Search link on public pages, search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it.
-- **Navigation sits on the right.** The space after the logo stays empty.
+- **Navigation sits on the right.** The space after the logo stays empty, apart from the centred space below.
+- **An optional centred space** holds one site-wide tool or filter. Use it sparingly. It is for the aspirational header; see [Where controls go](layout-patterns.html#where-controls-go).
 - **No more than four links in arxiv.org’s navigation.** The logo and Log in do not count (DESIGN-POLICIES). A host does not change the template’s navigation.
 - **Tools holds the theme control.** The transitional header also puts a page’s actions there; in the aspirational header they move to the TOC bar. A control that acts on the page’s data, such as Refresh, goes beside the page heading, with the time the data was last updated.
 - **Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in the bar while they fit.
