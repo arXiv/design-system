@@ -213,6 +213,7 @@ rules:
   - "**Each link in the bar shows an icon and its name.**"
   - "**PDF opens in a new tab, in the bar and in the sidebar**, so the reader keeps their place in the HTML paper. It has the external-link icon and “(opens in a new tab)”, as on [Links](links.md)."
   - "**A second skip link goes to the paper's first section**, before the sidebar, so a keyboard user can pass it."
+  - "**Every link to a place in the paper lands below the TOC bar.** The bar sets `scroll-padding-top`, which covers the TOC, a permalink, a citation and a cross-reference; a script that scrolls uses `scrollIntoView`, which respects it."
   - "**Every section, subsection and appendix heading has a Permalink control.** It copies the address with the section's LaTeXML id and the version: `…/2604.22725v1#S2`."
   - "**The accessible name starts with the visible word**, then names the section."
   - "**Copying is announced in words** in a `role=\"status\"` region. A changed label alone is not read out."
@@ -234,15 +235,19 @@ rules:
   - "**Closing returns focus to what opened the viewer.**"
   - "**Zoom is animated only when reduced motion is not set.**"
   - "**One popover per citation cluster**, listing every reference in it, each with its own Jump to reference link."
+  - "**The popover comes straight after the number in the tab order.** Tab moves from the number into the popover, and Tab past its last link goes on to the text after the citation. Opening it does not move focus."
   - "**The popover repeats each entry as the bibliography shows it**, never rebuilt, reordered or shortened. If the entry cannot be found, the citation stays a plain link to the reference list."
   - "**It opens next to the citation and never covers it**: below the line if it fits, else above, else just under the TOC bar."
   - "**A cluster of seven or more may use two columns on a wide screen.**"
   - "**Below 48rem a popover is a bottom sheet.** The script and the CSS read the same threshold."
   - "**Escape returns focus to the number that was pressed.**"
-  - "**Jump to reference lands on the entry**, with the accent wash and keyboard focus, and the address gets its id. The scroll is smooth only when reduced motion is not set."
-  - "**Back to your place shows only during a jump.** It returns focus and scroll to the citation. The browser's Back button does the same."
+  - "**Jump to reference lands on the entry**, with the accent wash and keyboard focus, and the address gets its id. The entry is a `.ds-paper-element` with `tabindex=\"-1\"`, and the wash is its `:target` style, so the link changes the address itself: `history.pushState` does not update `:target`. The scroll is smooth only when reduced motion is not set."
+  - "**A cross-reference works the same way.** A link to a section, equation, figure, table or theorem lands below the TOC bar, and a `.ds-paper-element` it lands on shows the wash."
+  - "**Every jump adds an entry to the browser history**, from a citation or a cross-reference, so the browser's Back button returns to the link. With JavaScript, Back also returns focus to the link."
+  - "**Back to your place shows only during a jump**, from a citation or a cross-reference. It returns focus and scroll to the link the reader followed."
+  - "**Without JavaScript, a citation is LaTeXML's link to its entry.** The entry shows the wash through `:target`, and the browser's Back button returns to the citation."
   - "**A bibliography entry is highlighted as one box**, number included, never line by line."
-  - "**A footnote stays where LaTeXML puts it**: the marker, then the note itself, in one `.ltx_note`. At wide widths the note is shown in the margin beside its marker, with CSS only, at the width of a margin note (`--ds-marginalia-width`) and at the same widths. Narrower, a script makes the marker a button that opens the note in a popover. Without JavaScript the note shows after its marker."
+  - "**A footnote stays where LaTeXML puts it**: the marker, then the note itself, in one `.ltx_note`. At wide widths the note is shown in the margin beside its marker, with CSS only, at the width of a margin note (`--ds-marginalia-width`) and at the same widths. Narrower, a script makes the marker a button that opens the note in a popover. The popover opens on a click, Enter or a tap, never on hover, and stays open while the reader uses the links in it. Without JavaScript the note shows after its marker."
   - "**Print hides the TOC bar, the permalinks, the element pills and every popover.** The identity line prints at 10pt."
   - "**No page break inside an equation, table or figure, and none straight after a heading.** Sections may break."
   - "**Submitted [v1 date] UTC · Announced [announcement date and time] UTC** are always shown, in that order, separated by a dot. Announced is when the paper first entered the public listing. Revision dates are when subsequent versions of the same paper went public. Dates use `<time datetime>`."
@@ -923,6 +928,7 @@ A citation or footnote marker opens a popover that repeats the reference or the 
 - **Each link in the bar shows an icon and its name.**
 - **PDF opens in a new tab, in the bar and in the sidebar**, so the reader keeps their place in the HTML paper. It has the external-link icon and “(opens in a new tab)”, as on [Links](links.md).
 - **A second skip link goes to the paper's first section**, before the sidebar, so a keyboard user can pass it.
+- **Every link to a place in the paper lands below the TOC bar.** The bar sets `scroll-padding-top`, which covers the TOC, a permalink, a citation and a cross-reference; a script that scrolls uses `scrollIntoView`, which respects it.
 - **Every section, subsection and appendix heading has a Permalink control.** It copies the address with the section's LaTeXML id and the version: `…/2604.22725v1#S2`.
 - **The accessible name starts with the visible word**, then names the section.
 - **Copying is announced in words** in a `role="status"` region. A changed label alone is not read out.
@@ -944,15 +950,19 @@ A citation or footnote marker opens a popover that repeats the reference or the 
 - **Closing returns focus to what opened the viewer.**
 - **Zoom is animated only when reduced motion is not set.**
 - **One popover per citation cluster**, listing every reference in it, each with its own Jump to reference link.
+- **The popover comes straight after the number in the tab order.** Tab moves from the number into the popover, and Tab past its last link goes on to the text after the citation. Opening it does not move focus.
 - **The popover repeats each entry as the bibliography shows it**, never rebuilt, reordered or shortened. If the entry cannot be found, the citation stays a plain link to the reference list.
 - **It opens next to the citation and never covers it**: below the line if it fits, else above, else just under the TOC bar.
 - **A cluster of seven or more may use two columns on a wide screen.**
 - **Below 48rem a popover is a bottom sheet.** The script and the CSS read the same threshold.
 - **Escape returns focus to the number that was pressed.**
-- **Jump to reference lands on the entry**, with the accent wash and keyboard focus, and the address gets its id. The scroll is smooth only when reduced motion is not set.
-- **Back to your place shows only during a jump.** It returns focus and scroll to the citation. The browser's Back button does the same.
+- **Jump to reference lands on the entry**, with the accent wash and keyboard focus, and the address gets its id. The entry is a `.ds-paper-element` with `tabindex="-1"`, and the wash is its `:target` style, so the link changes the address itself: `history.pushState` does not update `:target`. The scroll is smooth only when reduced motion is not set.
+- **A cross-reference works the same way.** A link to a section, equation, figure, table or theorem lands below the TOC bar, and a `.ds-paper-element` it lands on shows the wash.
+- **Every jump adds an entry to the browser history**, from a citation or a cross-reference, so the browser's Back button returns to the link. With JavaScript, Back also returns focus to the link.
+- **Back to your place shows only during a jump**, from a citation or a cross-reference. It returns focus and scroll to the link the reader followed.
+- **Without JavaScript, a citation is LaTeXML's link to its entry.** The entry shows the wash through `:target`, and the browser's Back button returns to the citation.
 - **A bibliography entry is highlighted as one box**, number included, never line by line.
-- **A footnote stays where LaTeXML puts it**: the marker, then the note itself, in one `.ltx_note`. At wide widths the note is shown in the margin beside its marker, with CSS only, at the width of a margin note (`--ds-marginalia-width`) and at the same widths. Narrower, a script makes the marker a button that opens the note in a popover. Without JavaScript the note shows after its marker.
+- **A footnote stays where LaTeXML puts it**: the marker, then the note itself, in one `.ltx_note`. At wide widths the note is shown in the margin beside its marker, with CSS only, at the width of a margin note (`--ds-marginalia-width`) and at the same widths. Narrower, a script makes the marker a button that opens the note in a popover. The popover opens on a click, Enter or a tap, never on hover, and stays open while the reader uses the links in it. Without JavaScript the note shows after its marker.
 - **Print hides the TOC bar, the permalinks, the element pills and every popover.** The identity line prints at 10pt.
 - **No page break inside an equation, table or figure, and none straight after a heading.** Sections may break.
 - **Submitted [v1 date] UTC · Announced [announcement date and time] UTC** are always shown, in that order, separated by a dot. Announced is when the paper first entered the public listing. Revision dates are when subsequent versions of the same paper went public. Dates use `<time datetime>`.
