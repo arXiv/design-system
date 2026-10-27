@@ -6,12 +6,12 @@ stylesheet: design-system.css
 components:
   - id: announcement-band
     title: "Announcement band"
-    summary: "The announcement band is minimal but gets a lot of attention. Use sparingly to maintain its impact. If it is frequently deployed then our users will get used to it and tune it out. It sits above the site header as part of the header unit (full demo on [the header reference page](header.html)). The dismissal action persists across all repositories, but only for that particular banner. A new banner with a new message should display again for all users even if they dismissed the previous one. To put one up, see [Banner announcements](doc.html?src=templates/BANNER_ANNOUNCEMENTS.md): the shared announcements file, its fields, and how an entry is checked, previewed and published."
+    summary: "The announcement band is minimal but gets a lot of attention. Use sparingly to maintain its impact. If it is frequently deployed then our users will get used to it and tune it out. It sits above the site header as part of the header unit (full demo on [the header reference page](header.md)). The dismissal action persists across all repositories, but only for that particular banner. A new banner with a new message should display again for all users even if they dismissed the previous one. To put one up, see [Banner announcements](../doc.html?src=templates/BANNER_ANNOUNCEMENTS.md): the shared announcements file, its fields, and how an entry is checked, previewed and published."
     classes:
       - name: ".ds-announcement"
         does: "The band. Takes `role=\"region\"` and an `aria-label` so a screen reader user can find it and skip it. Goes directly above `.ds-site-header`."
       - name: ".ds-announcement-glyph"
-        does: "The icon: an inline SVG from the [icon set](icons.html) with `aria-hidden=\"true\"`, or an `<img>` with an empty `alt` for one of the bones. Either way it is decoration; the sentence conveys the meaning. It goes first inside `.ds-announcement-text`, so on a narrow screen it stays on the sentence’s first line."
+        does: "The icon: an inline SVG from the [icon set](icons.md) with `aria-hidden=\"true\"`, or an `<img>` with an empty `alt` for one of the bones. Either way it is decoration; the sentence conveys the meaning. It goes first inside `.ds-announcement-text`, so on a narrow screen it stays on the sentence’s first line."
       - name: ".ds-announcement-text"
         does: "The one sentence, after the glyph."
       - name: ".ds-announcement-link"
@@ -26,7 +26,7 @@ components:
       - "Alert vs announcement? An alert belongs to the page’s content and is specific to that user’s journey. The announcement belongs to the site and is for all users."
   - id: notes
     title: "Notes"
-    summary: "A box in the flow of a page that names its own register before the reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on the internal surface. The tab is the whole design. It is also what keeps a note from reading as an [alert](alerts.html) — an alert reports a state as of right now and can be dismissed, a note is always true and stays. A note keeps its colours on every surface; `.ds-internal` does not change them."
+    summary: "A box in the flow of a page that names its own register before the reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on the internal surface. The tab is the whole design. It is also what keeps a note from reading as an [alert](alerts.md) — an alert reports a state as of right now and can be dismissed, a note is always true and stays. A note keeps its colours on every surface; `.ds-internal` does not change them."
     classes:
       - name: ".ds-note"
         does: "The box, on a `<div>` in the flow of the page. On its own it is the grey register: guidance."
@@ -71,7 +71,7 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 ## Announcement band
 
-The announcement band is minimal but gets a lot of attention. Use sparingly to maintain its impact. If it is frequently deployed then our users will get used to it and tune it out. It sits above the site header as part of the header unit (full demo on [the header reference page](header.html)). The dismissal action persists across all repositories, but only for that particular banner. A new banner with a new message should display again for all users even if they dismissed the previous one. To put one up, see [Banner announcements](doc.html?src=templates/BANNER_ANNOUNCEMENTS.md): the shared announcements file, its fields, and how an entry is checked, previewed and published.
+The announcement band is minimal but gets a lot of attention. Use sparingly to maintain its impact. If it is frequently deployed then our users will get used to it and tune it out. It sits above the site header as part of the header unit (full demo on [the header reference page](header.md)). The dismissal action persists across all repositories, but only for that particular banner. A new banner with a new message should display again for all users even if they dismissed the previous one. To put one up, see [Banner announcements](../doc.html?src=templates/BANNER_ANNOUNCEMENTS.md): the shared announcements file, its fields, and how an entry is checked, previewed and published.
 
 ```html
 <div class="ds-announcement" role="region" aria-label="Announcement">
@@ -91,7 +91,7 @@ The announcement band is minimal but gets a lot of attention. Use sparingly to m
 ```
 
 - `.ds-announcement` — The band. Takes `role="region"` and an `aria-label` so a screen reader user can find it and skip it. Goes directly above `.ds-site-header`.
-- `.ds-announcement-glyph` — The icon: an inline SVG from the [icon set](icons.html) with `aria-hidden="true"`, or an `<img>` with an empty `alt` for one of the bones. Either way it is decoration; the sentence conveys the meaning. It goes first inside `.ds-announcement-text`, so on a narrow screen it stays on the sentence’s first line.
+- `.ds-announcement-glyph` — The icon: an inline SVG from the [icon set](icons.md) with `aria-hidden="true"`, or an `<img>` with an empty `alt` for one of the bones. Either way it is decoration; the sentence conveys the meaning. It goes first inside `.ds-announcement-text`, so on a narrow screen it stays on the sentence’s first line.
 - `.ds-announcement-text` — The one sentence, after the glyph.
 - `.ds-announcement-link` — The link. An `<a>` with a real `href`.
 - `.ds-announcement-links` — Holds the link, or two, so they wrap together, under the text when it does not fit.
@@ -102,7 +102,7 @@ The announcement band is minimal but gets a lot of attention. Use sparingly to m
 
 ## Notes
 
-A box in the flow of a page that names its own register before the reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on the internal surface. The tab is the whole design. It is also what keeps a note from reading as an [alert](alerts.html) — an alert reports a state as of right now and can be dismissed, a note is always true and stays. A note keeps its colours on every surface; `.ds-internal` does not change them.
+A box in the flow of a page that names its own register before the reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on the internal surface. The tab is the whole design. It is also what keeps a note from reading as an [alert](alerts.md) — an alert reports a state as of right now and can be dismissed, a note is always true and stays. A note keeps its colours on every surface; `.ds-internal` does not change them.
 
 ```html
 <div class="ds-note ds-note--essential">

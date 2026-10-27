@@ -263,10 +263,10 @@
             <dd>A dropdown&#39;s menu: square corners and rows with hairlines, 32px with a mouse and 44px
             on a touch screen, hanging from its control. A menu matches its control, so the section
             menu&#39;s is in the same tint and the View menu&#39;s is white.</dd>
-            <dt>The views</dt>
+            <dt>&lt;a&gt; for each view</dt>
             <dd>The row&#39;s own links, after the section menu, in the <a href="#secondary-navigation">tab
             style</a>. Each view is its own page.</dd>
-            <dt>subnav.js, .ds-subnav-views, .is-views-folded, .is-menu-row</dt>
+            <dt>&lt;script src="subnav.js" defer&gt;, .ds-subnav-views, .is-views-folded, .is-menu-row</dt>
             <dd>The script, once per page. It builds the View menu (<code>.ds-subnav-views</code>) from the
             row&#39;s links and sets the state classes on the row: <code>.is-views-folded</code> when the views
             do not fit beside the section menu, and <code>.is-menu-row</code> when the section menu takes a
@@ -319,14 +319,14 @@
             <dt>.ds-step-number</dt>
             <dd>The step number in a circle, hidden from screen readers because the list gives the
             position. A complete step shows a check mark instead of its number.</dd>
-            <dt>Complete step</dt>
+            <dt>&lt;a&gt; for a complete step</dt>
             <dd>A link, with the check mark and <code>.is-sr-only</code> text “, completed”.</dd>
             <dt>aria-current="step"</dt>
             <dd>On the link for the current step. It shows in bold with an underline bar and a heavier
             circle.</dd>
-            <dt>Available step</dt>
+            <dt>&lt;a&gt; for an available step</dt>
             <dd>A link with its number.</dd>
-            <dt>Step not available yet</dt>
+            <dt>&lt;span&gt; for a step not available yet</dt>
             <dd>A <code>&lt;span&gt;</code>, not a link, so it is not a tab stop. A dashed circle and
             <code>.is-sr-only</code> text “, not available yet”.</dd>
           </dl>
@@ -337,6 +337,26 @@
       <li><strong>One bar under the header.</strong> A page shows either secondary navigation or steps, never both.</li>
     </ul>
   </section>
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>Name each bar.</strong> The <code>&lt;nav&gt;</code> takes an
+      <code>aria-label</code> that names the area, such as “Account sections” or “Submission
+      steps”, so a screen reader can tell it from the header's navigation.</li>
+      <li><strong>Mark the current page or step with <code>aria-current</code>.</strong> The tab's
+      shape and weight show it too, so the current section never depends on colour alone.</li>
+      <li><strong>Links, not tabs.</strong> Each view is its own page, so the row holds plain links
+      and never <code>role="tab"</code>, which would promise arrow-key behaviour that page links do
+      not have.</li>
+      <li><strong>The menus close from the keyboard.</strong> The section menu and the View menu are
+      <code>&lt;details&gt;</code>, so they open and close with no script; <code>subnav.js</code>
+      also closes an open menu on Escape and returns focus to its summary.</li>
+      <li><strong>A step not available yet is not a tab stop.</strong> It is a
+      <code>&lt;span&gt;</code>, and its <code>.is-sr-only</code> text says “, not available
+      yet”.</li>
+    </ul>
+  </div>
 
 
   <div class="ds-full ds-zone-secondary">
