@@ -11,7 +11,7 @@ components:
       - name: ".ds-acc"
         does: "On a `<details>`. Ruled: no box, no fill, no horizontal padding. The label sits on the same left edge as the prose around it, with a rule above and below. The `<summary>` is the label; the +/− marker comes from the stylesheet."
       - name: ".ds-acc-body"
-        does: "Holds the panel content, directly after the `<summary>`. A `<dl>` inside it renders as label and value pairs, one column on a narrow screen."
+        does: "Holds the panel content, directly after the `<summary>`. A `<dl>` inside it renders as label and value pairs, one column on a narrow screen. Each label is grey and a step smaller than the value."
       - name: ".ds-acc-stack"
         does: "The container for a list of disclosures. Stacked in it they butt together and read as one ruled list: each shared edge is a single line, because the preceding item's lower rule is the next item's upper one."
       - name: "[open]"
@@ -89,12 +89,12 @@ components:
         does: "The second level. Indented one step, its label a step smaller."
       - name: ".ds-card > .ds-acc-stack:last-child"
         does: "A stack that ends a card drops the last disclosure's lower rule, because the card's edge closes it. With content below the stack, the rule stays."
-      - name: "h3 before the stack"
-        does: "The heading names the group, so it is found by heading navigation and every disclosure inside it is announced under that name."
+      - name: "h3.ds-panel-label before the stack"
+        does: "The heading names the group, so it is found by heading navigation and every disclosure inside it is announced under that name. It is a panel label, so it reads as a level above the accordion labels below it."
   - id: one-panel-open-at-a-time
     title: "One panel open at a time"
     group: "Variants"
-    summary: "Opening one panel closes the panel that was open. For a group of short reference panels in a narrow column, such as Paper information in the paper sidebar, where every open panel makes the column longer and harder to read. There is no class: give every `<details>` in the group the same `name` attribute, and the browser does the rest without JavaScript."
+    summary: "Opening one panel closes the panel that was open. There is no class: give every `<details>` in the group the same `name` attribute, and the browser does the rest without JavaScript."
     classes:
       - name: "[name]"
         does: "The same value on every `<details>` in the group, and a value no other group on the page uses. Opening one closes the others. In a browser too old to support it, every panel opens on its own, as in a plain stack."
@@ -164,7 +164,7 @@ Using the native `<details>/<summary>` elements means no JavaScript is needed, a
 ```
 
 - `.ds-acc` — On a `<details>`. Ruled: no box, no fill, no horizontal padding. The label sits on the same left edge as the prose around it, with a rule above and below. The `<summary>` is the label; the +/− marker comes from the stylesheet.
-- `.ds-acc-body` — Holds the panel content, directly after the `<summary>`. A `<dl>` inside it renders as label and value pairs, one column on a narrow screen.
+- `.ds-acc-body` — Holds the panel content, directly after the `<summary>`. A `<dl>` inside it renders as label and value pairs, one column on a narrow screen. Each label is grey and a step smaller than the value.
 - `.ds-acc-stack` — The container for a list of disclosures. Stacked in it they butt together and read as one ruled list: each shared edge is a single line, because the preceding item's lower rule is the next item's upper one.
 - `[open]` — Present on the one panel that starts open, if any. See [Which affordance](#which-affordance) under Rules.
 
@@ -298,7 +298,7 @@ A disclosure inside another one is the second level: indented one step, its labe
 
 ```html
 <div class="ds-card">
-  <h3>Paper information</h3>
+  <h3 class="ds-panel-label">Paper information</h3>
   <div class="ds-acc-stack">
     <details class="ds-acc" open>
       <summary>Versions</summary>
@@ -338,15 +338,15 @@ A disclosure inside another one is the second level: indented one step, its labe
 
 - `.ds-acc inside .ds-acc-body` — The second level. Indented one step, its label a step smaller.
 - `.ds-card > .ds-acc-stack:last-child` — A stack that ends a card drops the last disclosure's lower rule, because the card's edge closes it. With content below the stack, the rule stays.
-- `h3 before the stack` — The heading names the group, so it is found by heading navigation and every disclosure inside it is announced under that name.
+- `h3.ds-panel-label before the stack` — The heading names the group, so it is found by heading navigation and every disclosure inside it is announced under that name. It is a panel label, so it reads as a level above the accordion labels below it.
 
 ## One panel open at a time  (Variants)
 
-Opening one panel closes the panel that was open. For a group of short reference panels in a narrow column, such as Paper information in the paper sidebar, where every open panel makes the column longer and harder to read. There is no class: give every `<details>` in the group the same `name` attribute, and the browser does the rest without JavaScript.
+Opening one panel closes the panel that was open. There is no class: give every `<details>` in the group the same `name` attribute, and the browser does the rest without JavaScript.
 
 ```html
 <div class="ds-card">
-  <h3>Paper information</h3>
+  <h3 class="ds-panel-label">Paper information</h3>
   <div class="ds-acc-stack">
     <details class="ds-acc" name="paper-info">
       <summary>Versions</summary>

@@ -94,8 +94,6 @@ components:
     classes:
       - name: ".ds-panel-label"
         does: "One class for the whole system: 0.75rem · 600 · Condensed · uppercase · 0.04em · `--ds-text-muted`. Use it wherever this treatment appears — panel headings, column labels, the label above a group of controls — on whichever element is semantically right. A component that owns its internal spacing takes the margin back."
-      - name: "<dt>"
-        does: "A definition term inside `.ds-acc-body` is this label, and has no class."
     notes:
       - "Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading."
 rules:
@@ -266,7 +264,6 @@ The small uppercase Condensed label that names a panel, a column or a group. It 
 ```
 
 - `.ds-panel-label` — One class for the whole system: 0.75rem · 600 · Condensed · uppercase · 0.04em · `--ds-text-muted`. Use it wherever this treatment appears — panel headings, column labels, the label above a group of controls — on whichever element is semantically right. A component that owns its internal spacing takes the margin back.
-- `<dt>` — A definition term inside `.ds-acc-body` is this label, and has no class.
 
 > Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading.
 
