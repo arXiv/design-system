@@ -20,8 +20,6 @@ components:
         does: "The annotation voice: `--ds-font-serif`, italic, 400, 0.8125rem, `--ds-text-muted`. It is a voice, not a layout role; where it sits is the consumer's decision."
       - name: "--ds-font-serif"
         does: "The serif stack. On the public site and in internal tools it is used only through `.ds-annotation`."
-      - name: "--ds-font-serif"
-        does: "Upright, weights 400 and 600. Outreach properties only; see [outreach sites](outreach.html)."
       - name: "<math>"
         does: "No font token exists for math; use the stack directly on the notation. Loads with `font-display: auto` per DESIGN-POLICIES."
   - id: the-type-scale
@@ -40,6 +38,8 @@ components:
         does: "0.75rem, condensed, uppercase."
       - name: "<code>"
         does: "0.9em, so it follows the size of its parent."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 1.4.4](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html) Resize Text (Level AA)"
   - id: the-heading-scale
     title: "The heading scale"
     summary: "Four levels, each level is a quarter larger than the one below it, which puts h1 at exactly twice body size. Sizes are in rem so they follow the user's base setting. That base is 16px unless the reader has changed the browser's default, so the pixel sizes below assume 16px."
@@ -64,12 +64,16 @@ components:
         does: "The 3px keyboard focus ring, drawn on `:focus-visible` only."
       - name: ".ds-link-list"
         does: "On the element that holds a list in which every item is a link, such as an author list or a column of footer links. The links drop the underline at rest and keep everything else: Link Blue, the underline on hover, the focus ring and the visited colour. There is no ordinary text beside them for the underline to separate them from, so colour alone is enough here."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
   - id: matched-words
     title: "Search-matched words"
     summary: "The words that matched a search are marked with `<mark>`, in the accent wash and a heavier weight."
     classes:
       - name: "<mark>"
         does: "One matched word or phrase. No class: the element is styled inside `.ds-page`. The weight marks it as well as the colour, so it is never colour alone. In internal tools the wash is Access Lime."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA)"
   - id: code-blocks-and-the-copy-button
     title: "Code blocks and the copy button"
     summary: "A code block uses Plex Mono on Repository Brown, and always includes a copy button."
@@ -82,6 +86,8 @@ components:
         does: "The wrapper and the button. The script writes both; never hand-build them."
       - name: "[data-no-copy]"
         does: "On a `<pre>`, opts that block out — for a block that is an illustration of output rather than something to take away."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A) and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)"
   - id: panel-label
     title: "Panel label"
     summary: "The small uppercase Condensed label that names a panel, a column or a group. It is not a heading level and stays out of the document outline — if a reader needs to navigate to it, it is an `h3` or an `h4` at the sizes above."
@@ -91,7 +97,7 @@ components:
       - name: "<dt>"
         does: "A definition term inside `.ds-acc-body` is this label, and has no class."
     notes:
-      - "Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading, and belongs in the outline."
+      - "Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading."
 rules:
   - "**700 is the ceiling.** IBM Plex ships no heavier weight, so a CSS `800` either falls back or gets faux-bolded, differently per browser. Ask for the weight that exists."
   - "**Two serif jobs, kept apart.** Upright serif is the editorial voice — headlines, quotes, drop caps. Italic serif stays the annotation voice everywhere. A heading that must not read as \"another article\" uses the heavy *sans* instead, which is why 700 exists in this context at all."
@@ -108,6 +114,7 @@ rules:
   - "**Success is announced, not just shown.** The icon becomes a green tick, and a visually hidden `role=\"status\"` region says “Copied to clipboard”. Both are needed: a tick is invisible to a screen reader, and the button’s own name does not change because its action did not change — it is still the copy button. Both reset after two seconds."
   - "**The name stays put while the icon moves.** Relabelling a control to report a result is the same mistake as bolding a switch label on toggle: the name of a control is what it does, not what just happened. The result belongs in the live region."
   - "**It works from disk.** The asynchronous Clipboard API needs a secure context, which `file://` is not, and it rejects when the window is not focused. Both cases fall back to `execCommand`, and if that fails too the status region says so rather than the button quietly doing nothing."
+  - "**A block wider than its box can be reached by keyboard.** When a line of code is too long to show, the script adds `tabindex=\"0\"` to the block, so a keyboard user can tab to it and scroll it with the arrow keys. It does this for every block, opted out or not, and takes it away again when the window is wide enough to show the whole block."
   - "**Without JavaScript there is no button** and the code is still selectable. The button is a convenience; it is never the only way to get the text."
   - "**Opt a block out with `<pre data-no-copy>`** — for a block that is an illustration of output rather than something to take away."
   - "A browser font-size setting has to reach arXiv content (accessibility-priorities.md, cognitive/dyslexia section), so every type size is `rem`. But a label that grows inside a box that does not is no better than a label that never grew: set a control's padding and minimum width in `em`, against its own label, and the whole control follows the reader. Absolute floors stay absolute — `min-height: 24px` is a WCAG target size, not a type size. Body text never scales fluidly — it follows the user's base size exactly."
@@ -148,10 +155,6 @@ font-family: var(--ds-font-mono);
 ```
 
 ```html
-font-family: var(--ds-font-serif);
-```
-
-```html
 font-family: "STIX Two Math", "Cambria Math", math;
 ```
 
@@ -161,7 +164,6 @@ font-family: "STIX Two Math", "Cambria Math", math;
 - `--ds-font-mono` — Identifiers and code. Weights 400 / 500. Inline `<code>` and `<pre>` already use it; see [Code blocks](#code-blocks-and-the-copy-button) below.
 - `.ds-annotation` — The annotation voice: `--ds-font-serif`, italic, 400, 0.8125rem, `--ds-text-muted`. It is a voice, not a layout role; where it sits is the consumer's decision.
 - `--ds-font-serif` — The serif stack. On the public site and in internal tools it is used only through `.ds-annotation`.
-- `--ds-font-serif` — Upright, weights 400 and 600. Outreach properties only; see [outreach sites](outreach.html).
 - `<math>` — No font token exists for math; use the stack directly on the notation. Loads with `font-display: auto` per DESIGN-POLICIES.
 
 ## The body text scale
@@ -182,6 +184,8 @@ The text sizes are set in rem so they move with the reader's base size. Browsers
 - `.ds-annotation` — 0.8125rem, serif italic, line-height 1.45.
 - `.ds-panel-label` — 0.75rem, condensed, uppercase.
 - `<code>` — 0.9em, so it follows the size of its parent.
+
+> Meets accessibility guideline [WCAG 2.2 SC 1.4.4](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html) Resize Text (Level AA)
 
 ## The heading scale
 
@@ -220,6 +224,8 @@ Reading text with <a href="/abs/2604.22725">an inline link</a> in it.
 - `--ds-focus-ring` — The 3px keyboard focus ring, drawn on `:focus-visible` only.
 - `.ds-link-list` — On the element that holds a list in which every item is a link, such as an author list or a column of footer links. The links drop the underline at rest and keep everything else: Link Blue, the underline on hover, the focus ring and the visited colour. There is no ordinary text beside them for the underline to separate them from, so colour alone is enough here.
 
+> Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)
+
 ## Search-matched words
 
 The words that matched a search are marked with `<mark>`, in the accent wash and a heavier weight.
@@ -229,6 +235,8 @@ The words that matched a search are marked with `<mark>`, in the accent wash and
 ```
 
 - `<mark>` — One matched word or phrase. No class: the element is styled inside `.ds-page`. The weight marks it as well as the colour, so it is never colour alone. In internal tools the wash is Access Lime.
+
+> Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA)
 
 ## Code blocks and the copy button
 
@@ -247,6 +255,8 @@ A code block uses Plex Mono on Repository Brown, and always includes a copy butt
 - `.ds-code, .ds-code-copy` — The wrapper and the button. The script writes both; never hand-build them.
 - `[data-no-copy]` — On a `<pre>`, opts that block out — for a block that is an illustration of output rather than something to take away.
 
+> Meets accessibility guidelines [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A) and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)
+
 ## Panel label
 
 The small uppercase Condensed label that names a panel, a column or a group. It is not a heading level and stays out of the document outline — if a reader needs to navigate to it, it is an `h3` or an `h4` at the sizes above.
@@ -258,7 +268,7 @@ The small uppercase Condensed label that names a panel, a column or a group. It 
 - `.ds-panel-label` — One class for the whole system: 0.75rem · 600 · Condensed · uppercase · 0.04em · `--ds-text-muted`. Use it wherever this treatment appears — panel headings, column labels, the label above a group of controls — on whichever element is semantically right. A component that owns its internal spacing takes the margin back.
 - `<dt>` — A definition term inside `.ds-acc-body` is this label, and has no class.
 
-> Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading, and belongs in the outline.
+> Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading.
 
 ## Rules
 
@@ -277,6 +287,7 @@ The small uppercase Condensed label that names a panel, a column or a group. It 
 - **Success is announced, not just shown.** The icon becomes a green tick, and a visually hidden `role="status"` region says “Copied to clipboard”. Both are needed: a tick is invisible to a screen reader, and the button’s own name does not change because its action did not change — it is still the copy button. Both reset after two seconds.
 - **The name stays put while the icon moves.** Relabelling a control to report a result is the same mistake as bolding a switch label on toggle: the name of a control is what it does, not what just happened. The result belongs in the live region.
 - **It works from disk.** The asynchronous Clipboard API needs a secure context, which `file://` is not, and it rejects when the window is not focused. Both cases fall back to `execCommand`, and if that fails too the status region says so rather than the button quietly doing nothing.
+- **A block wider than its box can be reached by keyboard.** When a line of code is too long to show, the script adds `tabindex="0"` to the block, so a keyboard user can tab to it and scroll it with the arrow keys. It does this for every block, opted out or not, and takes it away again when the window is wide enough to show the whole block.
 - **Without JavaScript there is no button** and the code is still selectable. The button is a convenience; it is never the only way to get the text.
 - **Opt a block out with `<pre data-no-copy>`** — for a block that is an illustration of output rather than something to take away.
 - A browser font-size setting has to reach arXiv content (accessibility-priorities.md, cognitive/dyslexia section), so every type size is `rem`. But a label that grows inside a box that does not is no better than a label that never grew: set a control's padding and minimum width in `em`, against its own label, and the whole control follows the reader. Absolute floors stay absolute — `min-height: 24px` is a WCAG target size, not a type size. Body text never scales fluidly — it follows the user's base size exactly.

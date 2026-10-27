@@ -13,8 +13,32 @@
  * nothing is lost; the button is an enhancement, never the only way to copy.
  *
  * Opt a block out with <pre data-no-copy>.
+ *
+ * A block wider than its box scrolls sideways, and a keyboard can only scroll
+ * what it can focus. So every block that overflows, opted out or not, joins
+ * the tab order, and leaves it again when the window is wide enough to show it.
  */
 (function () {
+  function reachable(pre) {
+    if (pre.hasAttribute('tabindex') && !pre.hasAttribute('data-ds-scroll')) return;   // the author's own
+    if (pre.scrollWidth > pre.clientWidth) {
+      pre.setAttribute('tabindex', '0');
+      pre.setAttribute('data-ds-scroll', '');
+    } else {
+      pre.removeAttribute('tabindex');
+      pre.removeAttribute('data-ds-scroll');
+    }
+  }
+  var blocks = document.querySelectorAll('pre');
+  if ('ResizeObserver' in window) {
+    var watcher = new ResizeObserver(function (entries) {
+      entries.forEach(function (entry) { reachable(entry.target); });
+    });
+    blocks.forEach(function (pre) { watcher.observe(pre); });
+  } else {
+    blocks.forEach(reachable);
+  }
+
   // Two overlapping sheets, then a tick. aria-hidden on both: the button's
   // name comes from aria-label and never changes, because its action never
   // changes — what changed is the result, and that goes to the live region.
