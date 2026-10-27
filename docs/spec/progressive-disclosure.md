@@ -36,14 +36,14 @@ components:
       - "A tail cannot be a details element, because a summary would put a heading in the middle of a sentence."
   - id: popover
     title: "Popover"
-    summary: "A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers. The filter panel, a popover of filters for a set of data, is on [Filters](filters.html)."
+    summary: "A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers. The filter panel, a popover of filters for a set of data, is on [Filters](filters.md)."
     classes:
       - name: ".ds-popover"
         does: "The panel. It is `position: fixed`: the host sets `top` and `left`, and moves it to `<body>` if the trigger has a transformed ancestor. Closed, it has the `hidden` attribute."
       - name: ".ds-popover-title"
         does: "The label line at the top of the panel. It leaves room for the close control."
       - name: ".ds-close"
-        does: "The close control, the same one the alert and the announcement band use, documented on [Buttons](buttons.html#the-close-control). The popover supplies its corner position and nothing else. It needs a `<span class=\"is-sr-only\">` that says what it closes."
+        does: "The close control, the same one the alert and the announcement band use, documented on [Buttons](buttons.md#the-close-control). The popover supplies its corner position and nothing else. It needs a `<span class=\"is-sr-only\">` that says what it closes."
       - name: "[role=\"region\"], [aria-label]"
         does: "Together they make the panel a named landmark, so a screen reader user can find it and hear what it holds."
       - name: "--ds-popover-width, --ds-popover-max-height"
@@ -54,7 +54,7 @@ components:
       - "Popovers resize to the content but should be reserved for short pieces of information. If the content gets too long it may not be contained within the viewport."
   - id: tabs
     title: "Tabs"
-    summary: "Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](navigation.html#secondary-navigation) instead; it looks the same."
+    summary: "Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](navigation.md#secondary-navigation) instead; it looks the same but provides different signals to screen readers."
     classes:
       - name: ".ds-tabs"
         does: "Holds two or more panels. `data-label` names the set for a screen reader."
@@ -63,7 +63,7 @@ components:
       - name: "tabs.js"
         does: "Builds the tab list from the panel headings and adds the roles, the selected state and the keyboard: Tab reaches the selected tab, the arrow keys move between tabs, Home and End go to the first and last. Moving to a tab shows its panel. Without the script, every panel shows under its own heading."
       - name: ".ds-tabs-list"
-        does: "The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. The row wraps on a narrow screen."
+        does: "The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. It takes the background of the zone it sits in: the page ground (white in light mode), or the secondary zone's tint (light grey in light mode) inside a [secondary band](layout-patterns.md#page-zones). The row wraps on a narrow screen."
   - id: toc-bar
     title: "TOC bar"
     summary: "Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. The bar is always sticky and it stays at the top of the viewport while the reader scrolls through the page."
@@ -75,7 +75,7 @@ components:
       - name: ".ds-toc-menu"
         does: "The list, a `<nav>` holding an `<ol>`. The link to the current section gets `.is-current`. A page whose sections are numbered puts each number in `.ds-toc-num`."
       - name: ".ds-toc-bar"
-        does: "The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly after a `.ds-zone-secondary` band, it sits on that band’s bottom edge. The bar is always sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. Sticky chrome is governed by [DESIGN-POLICIES](doc.html?src=docs/DESIGN-POLICIES.md); check there before adding the bar to a page."
+        does: "The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly after a `.ds-zone-secondary` band, it sits on that band’s bottom edge. The bar is always sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. Sticky chrome is governed by [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md); check there before adding the bar to a page."
       - name: ".ds-toc-bar-inner"
         does: "The bar’s three-slot grid, which keeps the control centred whatever sits beside it."
       - name: "[data-toc-scope]"
@@ -111,7 +111,7 @@ rules:
   - "**Show more among links is grey and italic.** At the end of a run of links — author names, category links — a Link Blue “show all 22 authors” is one more link in that run, indistinguishable from a name. It is not a link: it goes nowhere, it changes this page. Reading as a different *kind* of thing than its neighbours is the whole job, which is what `.ds-show-more--among-links` is for. Anywhere else, the default link colour is right."
   - "**Never put content in a popover that exists nowhere else.** A popover is a shortcut to something already on the page or already at a URL — the reference list, the footnote. It is not a place to store text."
   - "**Nothing animates.** These components have no transitions, so there is nothing for `prefers-reduced-motion` to switch off. An accordion that animates its height also animates the position of everything below it, which is motion a reader did not ask for."
-  - "**A popover sits above sticky chrome** (`z-index: 110`, per the [Z-layer scale](doc.html?src=docs/DESIGN-POLICIES.md)). A popover is always the thing the reader just asked for, so it is never the thing that gets hidden."
+  - "**A popover sits above sticky chrome** (`z-index: 110`, per the [Z-layer scale](../doc.html?src=docs/DESIGN-POLICIES.md)). A popover is always the thing the reader just asked for, so it is never the thing that gets hidden."
   - "**Prefer native markup.** Where a disclosure can be a `<details>` element, as the accordion and the TOC bar are, use it. It includes the expanded state, the keyboard behaviour and the announcement without any script, and find-in-page can open a closed panel to reveal a match. A hand-built accordion loses all four, and losing find-in-page on a research site is the expensive one."
   - "**In a `<details>`, the summary is the whole label.** Never put a second interactive control inside it — a link or button in a `<summary>` is reachable but its activation fights the disclosure's own."
   - "**Hide with the `hidden` attribute, not with a class.** Content hidden by a class that fails to load is invisible but still tabbable, which puts a keyboard user in a place they cannot see."
@@ -203,7 +203,7 @@ While an accordion hides an entire labelled section, the 'show more' control rev
 
 ## Popover
 
-A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers. The filter panel, a popover of filters for a set of data, is on [Filters](filters.html).
+A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers. The filter panel, a popover of filters for a set of data, is on [Filters](filters.md).
 
 ```html
 <span class="ds-popover" role="region" aria-label="Reference 47">
@@ -220,7 +220,7 @@ A quick lookup the reader can access without losing their place. Popovers are us
 
 - `.ds-popover` — The panel. It is `position: fixed`: the host sets `top` and `left`, and moves it to `<body>` if the trigger has a transformed ancestor. Closed, it has the `hidden` attribute.
 - `.ds-popover-title` — The label line at the top of the panel. It leaves room for the close control.
-- `.ds-close` — The close control, the same one the alert and the announcement band use, documented on [Buttons](buttons.html#the-close-control). The popover supplies its corner position and nothing else. It needs a `<span class="is-sr-only">` that says what it closes.
+- `.ds-close` — The close control, the same one the alert and the announcement band use, documented on [Buttons](buttons.md#the-close-control). The popover supplies its corner position and nothing else. It needs a `<span class="is-sr-only">` that says what it closes.
 - `[role="region"], [aria-label]` — Together they make the panel a named landmark, so a screen reader user can find it and hear what it holds.
 - `--ds-popover-width, --ds-popover-max-height` — Set per use; past that height it scrolls, and `overscroll-behavior: contain` stops that scroll running on into the page beneath once it reaches the end.
 - `.ds-inline-active` — On the trigger while its popover is open: a light-blue wash and an underline, so a reader glancing back at the paragraph can see which citation the panel belongs to. Pair it with `aria-expanded` on the trigger, which is what gives the same fact to a screen reader; the wash is the visible half of one state, not a decoration.
@@ -229,7 +229,7 @@ A quick lookup the reader can access without losing their place. Popovers are us
 
 ## Tabs
 
-Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](navigation.html#secondary-navigation) instead; it looks the same.
+Tabs switch between views of the same page. Each tab shows one panel and hides the others. To move between pages, use the [secondary navigation](navigation.md#secondary-navigation) instead; it looks the same but provides different signals to screen readers.
 
 ```html
 <div class="ds-tabs" data-label="Membership activity">
@@ -253,7 +253,7 @@ Tabs switch between views of the same page. Each tab shows one panel and hides t
 - `.ds-tabs` — Holds two or more panels. `data-label` names the set for a screen reader.
 - `.ds-tabs-panel` — One view, a `<section>` that starts with a heading. The heading becomes the tab label.
 - `tabs.js` — Builds the tab list from the panel headings and adds the roles, the selected state and the keyboard: Tab reaches the selected tab, the arrow keys move between tabs, Home and End go to the first and last. Moving to a tab shows its panel. Without the script, every panel shows under its own heading.
-- `.ds-tabs-list` — The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. The row wraps on a narrow screen.
+- `.ds-tabs-list` — The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. It takes the background of the zone it sits in: the page ground (white in light mode), or the secondary zone's tint (light grey in light mode) inside a [secondary band](layout-patterns.md#page-zones). The row wraps on a narrow screen.
 
 ## TOC bar
 
@@ -288,7 +288,7 @@ Need in-page navigation? The TOC bar is a row that holds a single disclosure con
 - `.ds-toc` — The control, a `<details>`. It works on its own anywhere, and it opens with JavaScript off.
 - `.ds-toc-trigger` — The `<summary>`. Holds the list icon, `.ds-toc-text` with its `.ds-toc-prefix`, and `.ds-toc-chevron`.
 - `.ds-toc-menu` — The list, a `<nav>` holding an `<ol>`. The link to the current section gets `.is-current`. A page whose sections are numbered puts each number in `.ds-toc-num`.
-- `.ds-toc-bar` — The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly after a `.ds-zone-secondary` band, it sits on that band’s bottom edge. The bar is always sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. Sticky chrome is governed by [DESIGN-POLICIES](doc.html?src=docs/DESIGN-POLICIES.md); check there before adding the bar to a page.
+- `.ds-toc-bar` — The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly after a `.ds-zone-secondary` band, it sits on that band’s bottom edge. The bar is always sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. Sticky chrome is governed by [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md); check there before adding the bar to a page.
 - `.ds-toc-bar-inner` — The bar’s three-slot grid, which keeps the control centred whatever sits beside it.
 - `[data-toc-scope]` — Optional, on `.ds-toc`: a selector for the element whose headings fill an empty list. Without it, `toc.js` reads `<main>`, or the whole page when there is no `<main>`.
 
@@ -379,7 +379,7 @@ Opening one panel closes the panel that was open. There is no class: give every 
 - **Show more among links is grey and italic.** At the end of a run of links — author names, category links — a Link Blue “show all 22 authors” is one more link in that run, indistinguishable from a name. It is not a link: it goes nowhere, it changes this page. Reading as a different *kind* of thing than its neighbours is the whole job, which is what `.ds-show-more--among-links` is for. Anywhere else, the default link colour is right.
 - **Never put content in a popover that exists nowhere else.** A popover is a shortcut to something already on the page or already at a URL — the reference list, the footnote. It is not a place to store text.
 - **Nothing animates.** These components have no transitions, so there is nothing for `prefers-reduced-motion` to switch off. An accordion that animates its height also animates the position of everything below it, which is motion a reader did not ask for.
-- **A popover sits above sticky chrome** (`z-index: 110`, per the [Z-layer scale](doc.html?src=docs/DESIGN-POLICIES.md)). A popover is always the thing the reader just asked for, so it is never the thing that gets hidden.
+- **A popover sits above sticky chrome** (`z-index: 110`, per the [Z-layer scale](../doc.html?src=docs/DESIGN-POLICIES.md)). A popover is always the thing the reader just asked for, so it is never the thing that gets hidden.
 - **Prefer native markup.** Where a disclosure can be a `<details>` element, as the accordion and the TOC bar are, use it. It includes the expanded state, the keyboard behaviour and the announcement without any script, and find-in-page can open a closed panel to reveal a match. A hand-built accordion loses all four, and losing find-in-page on a research site is the expensive one.
 - **In a `<details>`, the summary is the whole label.** Never put a second interactive control inside it — a link or button in a `<summary>` is reachable but its activation fights the disclosure's own.
 - **Hide with the `hidden` attribute, not with a class.** Content hidden by a class that fails to load is invisible but still tabbable, which puts a keyboard user in a place they cannot see.

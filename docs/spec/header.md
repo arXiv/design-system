@@ -1,12 +1,12 @@
 ---
 page: header.html
 title: "Site header"
-summary: "The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left, and navigation, search, and account links on the right. An optional, dismissible announcement banner can be displayed above the header. Absolute consistency across all pages is critical. The header is in transition. Pages on arxiv.org use the [transitional header](#transitional-header) from `templates/` now, and will move to the [aspirational header](#aspirational-header) after the migration. Internal pages have their own header and variations, see [Internal header](#internal-headers) for an example. The bars under the header, such as secondary navigation and steps, are on [Navigation](navigation.html)."
+summary: "The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left, and navigation, search, and account links on the right. An optional, dismissible announcement banner can be displayed above the header. Absolute consistency across all pages is critical. The header is in transition. Pages on arxiv.org use the [transitional header](#transitional-header) from `templates/` now, and will move to the [aspirational header](#aspirational-header) after the migration. Internal pages have their own header and variations, see [Internal header](#internal-headers) for an example. The bars under the header, such as secondary navigation and steps, are on [Navigation](navigation.md)."
 stylesheet: design-system.css
 components:
   - id: transitional-header
     title: "Transitional header (currently in production)"
-    summary: "The header in production now. A page includes it from `templates/` rather than copying its markup; the [templates README](doc.html?src=templates/README.md) says how to install it and what each variable does. The examples are a copy of the template’s markup taken on 21 October 2026; when they differ from the template, the template is right. In production, the navigation folds behind the menu button when the window is narrower than 600px, as the phone example shows."
+    summary: "The header in production now. A page includes it from `templates/` rather than copying its markup; the [templates README](../doc.html?src=templates/README.md) says how to install it and what each variable does. The examples are a copy of the template’s markup taken on 21 October 2026; when they differ from the template, the template is right. In production, the navigation folds behind the menu button when the window is narrower than 600px, as the phone example shows."
     classes:
       - name: "signed_in"
         does: "Per session: one \"Account\" link (auth_url + account_path, where the reader logs out) instead of \"Log in\"."
@@ -36,7 +36,7 @@ components:
       - name: ".ds-site-header-tools"
         does: "After the navigation: the theme control."
       - name: ".ds-theme-toggle"
-        does: "The theme control, with its live region `#ds-theme-status`. See [The theme control](dark-mode.html#the-theme-control)."
+        does: "The theme control, with its live region `#ds-theme-status`. See [The theme control](dark-mode.md#the-theme-control)."
       - name: ".ds-site-header-account"
         does: "The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section."
       - name: ".ds-site-header-login"
@@ -82,10 +82,10 @@ components:
   - id: with-the-announcement-band
     title: "With the announcement band"
     group: "Modifiers"
-    summary: "When arXiv has something to say to everyone, an announcement band shows above the bar, and the two scroll away together. See [Announcement band](messages.html#announcement-band)."
+    summary: "When arXiv has something to say to everyone, an announcement band shows above the bar, and the two scroll away together. See [Announcement band](messages.md#announcement-band)."
     classes:
       - name: "#ds-announcement"
-        does: "The mount, which the header template writes before the bar. While an announcement is active, `banner.js` draws the band into it; the host writes only the skip link and the include. The band’s parts are on [Special messages](messages.html#announcement-band)."
+        does: "The mount, which the header template writes before the bar. While an announcement is active, `banner.js` draws the band into it; the host writes only the skip link and the include. The band’s parts are on [Special messages](messages.md#announcement-band)."
   - id: the-light-variant
     title: "The light variant"
     group: "Modifiers"
@@ -113,17 +113,17 @@ components:
     group: "Modifiers"
     summary: "Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top of the viewport while the page scrolls, and the stylesheet sets `scroll-padding-top` on the page so a link to a section does not land under the bar. A page that uses it keeps no other sticky bar. It is not applied to the examples on this page, which already keeps the TOC bar in view."
 rules:
-  - "A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The [templates README](doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement."
+  - "A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The [templates README](../doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](../doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement."
   - "**Regions, in one order.** Logo, search (the Search link on public pages, search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it."
   - "**Navigation sits on the right.** The space after the logo stays empty, apart from the centred space below."
-  - "**An optional centred space** holds one site-wide tool or filter. Use it sparingly. It is for the aspirational header; see [Where controls go](layout-patterns.html#where-controls-go)."
+  - "**An optional centred space** holds one site-wide tool or filter. Use it sparingly. It is for the aspirational header; see [Where controls go](layout-patterns.md#where-controls-go)."
   - "**No more than four links in arxiv.org’s navigation.** The logo and Log in do not count (DESIGN-POLICIES). A host does not change the template’s navigation."
   - "**Tools holds the theme control.** The transitional header also puts a page’s actions there; in the aspirational header they move to the TOC bar. A control that acts on the page’s data, such as Refresh, goes beside the page heading, with the time the data was last updated."
   - "**Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in the bar while they fit."
   - "**Log out.** Today a signed-in reader logs out on the account page. In the aspirational header, Log out is in the Account menu, one menu away on every page."
   - "**The greeting is the first name.** The aspirational public header shows the given name only, capped at 14 characters. Internal headers use the compact account area, with the name in its menu."
   - "**Sticky on internal tools only.** arxiv.org’s public header scrolls away (DESIGN-POLICIES)."
-  - "**No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the [secondary navigation](navigation.html#secondary-navigation) show the reader’s place."
+  - "**No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the [secondary navigation](navigation.md#secondary-navigation) show the reader’s place."
   - "**Type sizes are rem**, so a reader’s browser font size applies. In print the header keeps only its logo, 28px tall."
   - "**The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content."
   - "**Name the navigation.** The bar’s links sit in a `<nav>` with an `aria-label`, such as “Main navigation”, so a screen reader user can tell it from the other landmarks on the page."
@@ -135,14 +135,14 @@ rules:
 
 # Site header
 
-The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left, and navigation, search, and account links on the right. An optional, dismissible announcement banner can be displayed above the header. Absolute consistency across all pages is critical. The header is in transition. Pages on arxiv.org use the [transitional header](#transitional-header) from `templates/` now, and will move to the [aspirational header](#aspirational-header) after the migration. Internal pages have their own header and variations, see [Internal header](#internal-headers) for an example. The bars under the header, such as secondary navigation and steps, are on [Navigation](navigation.html).
+The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left, and navigation, search, and account links on the right. An optional, dismissible announcement banner can be displayed above the header. Absolute consistency across all pages is critical. The header is in transition. Pages on arxiv.org use the [transitional header](#transitional-header) from `templates/` now, and will move to the [aspirational header](#aspirational-header) after the migration. Internal pages have their own header and variations, see [Internal header](#internal-headers) for an example. The bars under the header, such as secondary navigation and steps, are on [Navigation](navigation.md).
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
 
 ## Transitional header (currently in production)
 
-The header in production now. A page includes it from `templates/` rather than copying its markup; the [templates README](doc.html?src=templates/README.md) says how to install it and what each variable does. The examples are a copy of the template’s markup taken on 21 October 2026; when they differ from the template, the template is right. In production, the navigation folds behind the menu button when the window is narrower than 600px, as the phone example shows.
+The header in production now. A page includes it from `templates/` rather than copying its markup; the [templates README](../doc.html?src=templates/README.md) says how to install it and what each variable does. The examples are a copy of the template’s markup taken on 21 October 2026; when they differ from the template, the template is right. In production, the navigation folds behind the menu button when the window is narrower than 600px, as the phone example shows.
 
 ```html
 <div id="ds-announcement"></div>
@@ -238,7 +238,7 @@ Every header has the same regions, in this order: Logo, Search, Nav, Tools, and 
 - `.ds-nav-icon` — An icon beside a link label, sized by the stylesheet and quieter than the text. `aria-hidden="true"`; the label gives the name.
 - `.ds-site-header-divider` — A vertical hairline between groups of links or between regions, on the bar’s own divider token. Takes `aria-hidden="true"`. Hidden while the navigation is folded away.
 - `.ds-site-header-tools` — After the navigation: the theme control.
-- `.ds-theme-toggle` — The theme control, with its live region `#ds-theme-status`. See [The theme control](dark-mode.html#the-theme-control).
+- `.ds-theme-toggle` — The theme control, with its live region `#ds-theme-status`. See [The theme control](dark-mode.md#the-theme-control).
 - `.ds-site-header-account` — The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section.
 - `.ds-site-header-login` — The only item in the bar with heavier text: Log in, or the Account menu’s `<summary>`.
 - `.ds-site-header-dropdown` — A menu group in the bar, built on `<details>`. See [Header dropdown menus](#header-dropdown-menus).
@@ -318,7 +318,7 @@ A property whose sections need grouping adds `.ds-site-header-dropdown`, built o
 
 ## With the announcement band  (Modifiers)
 
-When arXiv has something to say to everyone, an announcement band shows above the bar, and the two scroll away together. See [Announcement band](messages.html#announcement-band).
+When arXiv has something to say to everyone, an announcement band shows above the bar, and the two scroll away together. See [Announcement band](messages.md#announcement-band).
 
 ```html
 <a class="ds-skip-link" href="#main">Skip to main content</a>
@@ -326,7 +326,7 @@ When arXiv has something to say to everyone, an announcement band shows above th
 <header class="ds-site-header">…</header>
 ```
 
-- `#ds-announcement` — The mount, which the header template writes before the bar. While an announcement is active, `banner.js` draws the band into it; the host writes only the skip link and the include. The band’s parts are on [Special messages](messages.html#announcement-band).
+- `#ds-announcement` — The mount, which the header template writes before the bar. While an announcement is active, `banner.js` draws the band into it; the host writes only the skip link and the include. The band’s parts are on [Special messages](messages.md#announcement-band).
 
 ## The light variant  (Modifiers)
 
@@ -405,17 +405,17 @@ Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top o
 
 ## Rules
 
-- A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The [templates README](doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement.
+- A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The [templates README](../doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](../doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement.
 - **Regions, in one order.** Logo, search (the Search link on public pages, search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it.
 - **Navigation sits on the right.** The space after the logo stays empty, apart from the centred space below.
-- **An optional centred space** holds one site-wide tool or filter. Use it sparingly. It is for the aspirational header; see [Where controls go](layout-patterns.html#where-controls-go).
+- **An optional centred space** holds one site-wide tool or filter. Use it sparingly. It is for the aspirational header; see [Where controls go](layout-patterns.md#where-controls-go).
 - **No more than four links in arxiv.org’s navigation.** The logo and Log in do not count (DESIGN-POLICIES). A host does not change the template’s navigation.
 - **Tools holds the theme control.** The transitional header also puts a page’s actions there; in the aspirational header they move to the TOC bar. A control that acts on the page’s data, such as Refresh, goes beside the page heading, with the time the data was last updated.
 - **Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in the bar while they fit.
 - **Log out.** Today a signed-in reader logs out on the account page. In the aspirational header, Log out is in the Account menu, one menu away on every page.
 - **The greeting is the first name.** The aspirational public header shows the given name only, capped at 14 characters. Internal headers use the compact account area, with the name in its menu.
 - **Sticky on internal tools only.** arxiv.org’s public header scrolls away (DESIGN-POLICIES).
-- **No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the [secondary navigation](navigation.html#secondary-navigation) show the reader’s place.
+- **No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the [secondary navigation](navigation.md#secondary-navigation) show the reader’s place.
 - **Type sizes are rem**, so a reader’s browser font size applies. In print the header keeps only its logo, 28px tall.
 - **The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content.
 - **Name the navigation.** The bar’s links sit in a `<nav>` with an `aria-label`, such as “Main navigation”, so a screen reader user can tell it from the other landmarks on the page.

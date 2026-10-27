@@ -17,9 +17,9 @@ components:
       - name: ".ds-pagination"
         does: "Steps through the requests. It sits above the card, because it changes everything in it: the table and its actions change together when the reader moves on."
       - name: ".ds-card-bar"
-        does: "The header bar of the current request: the group actions and the selection count at its start, and a filter at its end. See [Bulk actions](tables.html#bulk-actions)."
+        does: "The header bar of the current request: the group actions and the selection count at its start, and a filter at its end. See [Bulk actions](tables.md#bulk-actions)."
       - name: ".ds-table, .is-selected"
-        does: "The papers in the current request, with a checkbox per row. See [Row selection](tables.html#row-selection)."
+        does: "The papers in the current request, with a checkbox per row. See [Row selection](tables.md#row-selection)."
     notes:
       - "Only use a pager when the user can focus on just one item at a time without needing context from others in the set."
   - id: numbered-pages
@@ -37,7 +37,7 @@ components:
       - name: ".ds-pagination-label"
         does: "The words Previous and Next, on every pager. On a narrow screen only the arrows show, and screen readers still read the words."
       - name: ".ds-card-bar"
-        does: "The filters, with results per page at the end of the row, and the total at the end of the bar. See [Filters](filters.html)."
+        does: "The filters, with results per page at the end of the row, and the total at the end of the bar. See [Filters](filters.md)."
       - name: ".ds-pagination as the card's last row"
         does: "The pager, below the list only, edge to edge like the header bar: the position on the left, the page numbers on the right."
       - name: ".ds-pagination--top"
@@ -101,8 +101,8 @@ This component group is for moving through items one at a time, such as a modera
 - `.ds-pagination-position` — The counter. Takes `aria-live="polite"`: without it a reader who cannot see the counter has no way to know that the Next they just pressed did anything. The wording is the host's to choose; the counter takes the slack before the buttons, so the buttons stay put as the number grows.
 - `.ds-btn.ds-btn-text` — The two buttons, text-only, so they read as navigation rather than as actions. At either end of the set the button is `disabled`, not removed: a control that vanishes changes the shape of the toolbar under the reader, and a disabled one says “there is nothing before this”, which is the actual information.
 - `.ds-pagination` — Steps through the requests. It sits above the card, because it changes everything in it: the table and its actions change together when the reader moves on.
-- `.ds-card-bar` — The header bar of the current request: the group actions and the selection count at its start, and a filter at its end. See [Bulk actions](tables.html#bulk-actions).
-- `.ds-table, .is-selected` — The papers in the current request, with a checkbox per row. See [Row selection](tables.html#row-selection).
+- `.ds-card-bar` — The header bar of the current request: the group actions and the selection count at its start, and a filter at its end. See [Bulk actions](tables.md#bulk-actions).
+- `.ds-table, .is-selected` — The papers in the current request, with a checkbox per row. See [Row selection](tables.md#row-selection).
 
 > Only use a pager when the user can focus on just one item at a time without needing context from others in the set.
 
@@ -219,7 +219,7 @@ Numbered pages are for a long list split across pages, such as search results, w
 - `.ds-pagination-pages` — An `<ol>` of links, one for each page shown. The current page takes `aria-current="page"`. Each link includes the word “Page” in `.is-sr-only` text, so a screen reader says “Page 2” and not “2”. A gap in the numbers is a list item holding an ellipsis. On a narrow screen the page numbers are hidden, and the pager is one row: Previous, the position, Next.
 - `a.ds-btn.ds-btn-text` — Previous and Next are links, because each page has its own address. At either end of the list the link has no `href` and takes `aria-disabled="true"` and `.is-disabled`.
 - `.ds-pagination-label` — The words Previous and Next, on every pager. On a narrow screen only the arrows show, and screen readers still read the words.
-- `.ds-card-bar` — The filters, with results per page at the end of the row, and the total at the end of the bar. See [Filters](filters.html).
+- `.ds-card-bar` — The filters, with results per page at the end of the row, and the total at the end of the bar. See [Filters](filters.md).
 - `.ds-pagination as the card's last row` — The pager, below the list only, edge to edge like the header bar: the position on the left, the page numbers on the right.
 - `.ds-pagination--top` — A pager above a list, in a tinted bar.
 - `.ds-pagination--bottom` — A pager below a list, in a tinted bar. With the bar above, it bookends the list.
