@@ -1842,7 +1842,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 @media (forced-colors: active) { .ds-page mark { background: Mark; color: MarkText; } }
 
 /* A PAPER  (.ds-paper-list, .ds-paper, .ds-paper-when, .ds-paper-identity,
-   .ds-paper-versions, .ds-paper-files, .ds-paper-cite, .ds-paper-cite-head, .ds-paper-cite-block, .ds-paper-capabilities,
+   .ds-paper-versions, .ds-paper-files, .ds-paper-cite, .ds-paper-cite-head, .ds-paper-cite-code, .ds-paper-capabilities,
    .ds-paper-element, .ds-paper-bar-logo,
    .ds-paper-tools) — papers.html
    Only what is particular to a paper has a paper class; the rest is built
@@ -1902,12 +1902,14 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 .ds-paper-cite > * + * { margin-top: var(--ds-space-2); }
 .ds-paper-cite-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-space-2); }
 html:not(.js) .ds-paper-cite-tools { display: none; }
-/* The citation's code area: the bar, then the text, in one light box. */
-.ds-paper-cite-block { padding: var(--ds-space-2) var(--ds-space-3); background: var(--ds-tint-warm); border-radius: 6px; }
-.ds-paper-cite-block .ds-btn-text { gap: var(--ds-space-1); font-size: inherit; }
-.ds-paper-cite-block figure { margin: var(--ds-space-2) 0 0; }
-html.js .ds-paper-cite-block figcaption { display: none; }
-.ds-paper-cite pre { margin: 0; padding: 0; background: none; color: var(--ds-text); white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.75rem; }
+/* The citation is a standard code block that wraps, with room on the right
+   for its copy button. Closed, it shows its first two lines. */
+.ds-paper-cite-code { contain: inline-size; }   /* a long DOI must not widen the sidebar */
+.ds-paper-cite-code figure { margin: 0; }
+.ds-paper-cite > .ds-show-more { margin-left: 0; }
+html.js .ds-paper-cite-code figcaption { display: none; }
+.ds-paper-cite pre { margin: 0; padding: var(--ds-space-3); padding-inline-end: calc(28px + var(--ds-space-3)); font-size: 0.75rem; white-space: pre-wrap; overflow-wrap: break-word; }
+html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2em; overflow: hidden; }   /* two lines */
 .ds-paper-capabilities { list-style: none; margin: 0; padding: 0; font-size: 0.8125rem; }
 .ds-paper-capabilities > li { display: flex; align-items: flex-start; gap: var(--ds-space-2); }
 .ds-paper-capabilities > li + li { margin-top: var(--ds-space-2); }
