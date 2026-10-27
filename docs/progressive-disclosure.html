@@ -185,7 +185,7 @@
             <dt>.ds-acc-body</dt>
             <dd>Holds the panel content, directly after the <code>&lt;summary&gt;</code>. A
             <code>&lt;dl&gt;</code> inside it renders as label and value pairs, one column on a narrow
-            screen.</dd>
+            screen. Each label is grey and a step smaller than the value.</dd>
             <dt>.ds-acc-stack</dt>
             <dd>The container for a list of disclosures. Stacked in it they butt together and read as one
             ruled list: each shared edge is a single line, because the preceding item's lower rule is the
@@ -564,7 +564,7 @@
     heading, the paper reader's sidebar, where the stack ends the card and the card's own edge closes it.</p>
     <div class="ds-card">
       <div class="ds-card">
-        <h3>Paper information</h3>
+        <h3 class="ds-panel-label">Paper information</h3>
         <div class="ds-acc-stack">
           <details class="ds-acc" open>
             <summary>Versions</summary>
@@ -603,7 +603,7 @@
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;div class="ds-card"&gt;
-  &lt;h3&gt;Paper information&lt;/h3&gt;
+  &lt;h3 class="ds-panel-label"&gt;Paper information&lt;/h3&gt;
   &lt;div class="ds-acc-stack"&gt;
     &lt;details class="ds-acc" open&gt;
       &lt;summary&gt;Versions&lt;/summary&gt;
@@ -645,9 +645,10 @@
             <dt>.ds-card &gt; .ds-acc-stack:last-child</dt>
             <dd>A stack that ends a card drops the last disclosure's lower rule, because the card's edge
             closes it. With content below the stack, the rule stays.</dd>
-            <dt>h3 before the stack</dt>
+            <dt>h3.ds-panel-label before the stack</dt>
             <dd>The heading names the group, so it is found by heading navigation and every disclosure
-            inside it is announced under that name.</dd>
+            inside it is announced under that name. It is a panel label, so it reads as a level above
+            the accordion labels below it.</dd>
           </dl>
         </div>
       </details>
@@ -657,14 +658,12 @@
   <!-- ───────── One panel open at a time ───────── -->
   <section>
     <h3 id="one-panel-open-at-a-time">One panel open at a time</h3>
-    <p class="ds-section-desc">Opening one panel closes the panel that was open. For a group of short
-    reference panels in a narrow column, such as Paper information in the paper sidebar, where every
-    open panel makes the column longer and harder to read. There is no class: give every
+    <p class="ds-section-desc">Opening one panel closes the panel that was open. There is no class: give every
     <code>&lt;details&gt;</code> in the group the same <code>name</code> attribute, and the browser does
     the rest without JavaScript.</p>
     <div class="ds-card">
       <div class="ds-card">
-        <h3>Paper information</h3>
+        <h3 class="ds-panel-label">Paper information</h3>
         <div class="ds-acc-stack">
           <details class="ds-acc" name="demo-paper-info">
             <summary>Versions</summary>
@@ -695,7 +694,7 @@
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;div class="ds-card"&gt;
-  &lt;h3&gt;Paper information&lt;/h3&gt;
+  &lt;h3 class="ds-panel-label"&gt;Paper information&lt;/h3&gt;
   &lt;div class="ds-acc-stack"&gt;
     &lt;details class="ds-acc" name="paper-info"&gt;
       &lt;summary&gt;Versions&lt;/summary&gt;
