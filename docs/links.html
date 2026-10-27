@@ -274,7 +274,7 @@
       someone who hears only the links on the page: “Endorsement policy”, not “click here”,
       “here” or “read more”. Put the name of the destination inside the
       <code>&lt;a&gt;</code>, not beside it.</li>
-      <li><strong>A link always has an <code>href</code>.</strong> Without one the element is not
+      <li><strong>A link always has an <code>href</code>, unless it is disabled.</strong> Without one the element is not
       focusable, has no visited state, and does not announce as a link. Something that acts on this
       page rather than going somewhere is a <a href="buttons.html">button</a>, not a link with a
       click handler.</li>
@@ -308,9 +308,13 @@
   <!-- ───────── Disabled state ───────── -->
   <section>
     <h3 id="disabled-state">Disabled state</h3>
-    <p>Use <code>--ds-text-disabled</code> (<code>#aeaaa4</code>) for the disabled color and set
-    <code>pointer-events: none</code>. The underline stays so it is still recognisable as a
-    (currently-unavailable) link. The disabled state falls below AA on contrast — WCAG exempts
+    <p>A disabled link has no <code>href</code>, so it cannot be reached or followed by keyboard
+    or pointer. <code>pointer-events: none</code> alone is not enough: it stops a mouse, but a
+    keyboard can still follow the link. Add <code>role="link"</code> and
+    <code>aria-disabled="true"</code>, so a screen reader still announces it as a link that is
+    unavailable, and the stylesheet colours it <code>--ds-text-disabled</code>
+    (<code>#aeaaa4</code>). The underline stays so it is still recognisable as a
+    (currently unavailable) link. The disabled state falls below AA on contrast — WCAG exempts
     disabled controls from contrast requirements.</p>
   </section>
 
