@@ -12,6 +12,8 @@ components:
         does: "A `<nav>` directly after the header, with an `aria-label` that names the area, such as “Account sections”. Plain links; never `role=\"tab\"`, which would promise arrow-key behaviour that page links do not have. Hidden in print."
       - name: "aria-current=\"page\""
         does: "On the link for the current page. It shows as a bold tab joined to the page below, with the accent along its top, so the current section never depends on colour alone, and a screen reader announces it. The current tab takes the background of the zone below it: the page ground (white in light mode) above primary content, or the secondary zone's tint (light grey in light mode) when the page opens with a [secondary band](layout-patterns.md#page-zones)."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
   - id: two-levels-of-navigation
     title: "Two levels of navigation"
     summary: "An area with its own sections, each with several views, such as a report with parts and views. A section menu starts the row, and the views of the current section follow it as tabs. The row keeps to one line by folding: first the views fold into a View menu beside the section menu, then the section menu takes a row of its own."
@@ -42,6 +44,8 @@ components:
         does: "A link with its number."
       - name: "<span> for a step not available yet"
         does: "A `<span>`, not a link, so it is not a tab stop. A dashed circle and `.is-sr-only` text “, not available yet”."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A)"
   - id: internal
     title: "Internal"
     group: "Modifiers"
@@ -84,6 +88,8 @@ A row of section links directly under the header, for an area that has its own s
 
 - `.ds-subnav` — A `<nav>` directly after the header, with an `aria-label` that names the area, such as “Account sections”. Plain links; never `role="tab"`, which would promise arrow-key behaviour that page links do not have. Hidden in print.
 - `aria-current="page"` — On the link for the current page. It shows as a bold tab joined to the page below, with the accent along its top, so the current section never depends on colour alone, and a screen reader announces it. The current tab takes the background of the zone below it: the page ground (white in light mode) above primary content, or the secondary zone's tint (light grey in light mode) when the page opens with a [secondary band](layout-patterns.md#page-zones).
+
+> Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)
 
 ## Two levels of navigation
 
@@ -134,6 +140,8 @@ The steps of one ordered process, such as a submission, and which one the reader
 - `aria-current="step"` — On the link for the current step. It shows in bold, and its circle has a heavier border in the accent colour.
 - `<a> for an available step` — A link with its number.
 - `<span> for a step not available yet` — A `<span>`, not a link, so it is not a tab stop. A dashed circle and `.is-sr-only` text “, not available yet”.
+
+> Meets accessibility guideline [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A)
 
 ## Internal  (Modifiers)
 
