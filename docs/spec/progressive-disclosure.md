@@ -91,11 +91,21 @@ components:
         does: "A stack that ends a card drops the last disclosure's lower rule, because the card's edge closes it. With content below the stack, the rule stays."
       - name: "h3 before the stack"
         does: "The heading names the group, so it is found by heading navigation and every disclosure inside it is announced under that name."
+  - id: one-panel-open-at-a-time
+    title: "One panel open at a time"
+    group: "Variants"
+    summary: "Opening one panel closes the panel that was open. For a group of short reference panels in a narrow column, such as Paper information in the paper sidebar, where every open panel makes the column longer and harder to read. The browser does this without JavaScript."
+    classes:
+      - name: "[name]"
+        does: "The same value on every `<details>` in the group, and a value no other group on the page uses. Opening one closes the others. In a browser too old to support it, every panel opens on its own, as in a plain stack."
+      - name: "[open]"
+        does: "On one panel in the group at most, if one starts open."
 rules:
   - "A view has one level of tabs. Tabs inside a tab panel are not used."
   - "**Never put must-see information only behind a disclosure.** The older-version warning appears in the main column even though the full history lives in the Versions accordion. A reader who never opens anything must still meet everything that matters."
   - "**Disclosure is not a fix for too much content.** If a page needs six accordions to be tolerable, the page has a structure problem and hiding things postpones it. Ask what can be cut or moved before asking what can be collapsed."
   - "**Default state is closed**, except that a single most-relevant panel may start open. Open state is not persisted — predictability beats memory here."
+  - "**One panel open at a time is for panels read one at a time.** When a reader needs two panels open together to compare them, leave the group without a `name`."
   - "**One panel, one label.** If a summary needs a sentence to explain what is inside, the content is not a section and probably wants show-more or a page of its own."
   - "**An abstract cut short is show more, not an accordion.** This holds when the excerpt starts partway through the abstract, as a search result’s can: the full abstract replaces the excerpt in place, and Show less puts the excerpt back."
   - "**Show more among links is grey and italic.** At the end of a run of links — author names, category links — a Link Blue “show all 22 authors” is one more link in that run, indistinguishable from a name. It is not a link: it goes nowhere, it changes this page. Reading as a different *kind* of thing than its neighbours is the whole job, which is what `.ds-show-more--among-links` is for. Anywhere else, the default link colour is right."
@@ -330,12 +340,37 @@ A disclosure inside another one is the second level: indented one step, its labe
 - `.ds-card > .ds-acc-stack:last-child` — A stack that ends a card drops the last disclosure's lower rule, because the card's edge closes it. With content below the stack, the rule stays.
 - `h3 before the stack` — The heading names the group, so it is found by heading navigation and every disclosure inside it is announced under that name.
 
+## One panel open at a time  (Variants)
+
+Opening one panel closes the panel that was open. For a group of short reference panels in a narrow column, such as Paper information in the paper sidebar, where every open panel makes the column longer and harder to read. The browser does this without JavaScript.
+
+```html
+<div class="ds-acc-stack">
+  <details class="ds-acc" name="paper-info">
+    <summary>Versions</summary>
+    <div class="ds-acc-body">…</div>
+  </details>
+  <details class="ds-acc" name="paper-info">
+    <summary>Paper information</summary>
+    <div class="ds-acc-body">…</div>
+  </details>
+  <details class="ds-acc" name="paper-info">
+    <summary>Related</summary>
+    <div class="ds-acc-body">…</div>
+  </details>
+</div>
+```
+
+- `[name]` — The same value on every `<details>` in the group, and a value no other group on the page uses. Opening one closes the others. In a browser too old to support it, every panel opens on its own, as in a plain stack.
+- `[open]` — On one panel in the group at most, if one starts open.
+
 ## Rules
 
 - A view has one level of tabs. Tabs inside a tab panel are not used.
 - **Never put must-see information only behind a disclosure.** The older-version warning appears in the main column even though the full history lives in the Versions accordion. A reader who never opens anything must still meet everything that matters.
 - **Disclosure is not a fix for too much content.** If a page needs six accordions to be tolerable, the page has a structure problem and hiding things postpones it. Ask what can be cut or moved before asking what can be collapsed.
 - **Default state is closed**, except that a single most-relevant panel may start open. Open state is not persisted — predictability beats memory here.
+- **One panel open at a time is for panels read one at a time.** When a reader needs two panels open together to compare them, leave the group without a `name`.
 - **One panel, one label.** If a summary needs a sentence to explain what is inside, the content is not a section and probably wants show-more or a page of its own.
 - **An abstract cut short is show more, not an accordion.** This holds when the excerpt starts partway through the abstract, as a search result’s can: the full abstract replaces the excerpt in place, and Show less puts the excerpt back.
 - **Show more among links is grey and italic.** At the end of a run of links — author names, category links — a Link Blue “show all 22 authors” is one more link in that run, indistinguishable from a name. It is not a link: it goes nowhere, it changes this page. Reading as a different *kind* of thing than its neighbours is the whole job, which is what `.ds-show-more--among-links` is for. Anywhere else, the default link colour is right.
