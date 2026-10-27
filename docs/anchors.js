@@ -32,10 +32,12 @@
     ta.setAttribute('readonly', '');
     ta.style.cssText = 'position:fixed;top:-1000px;opacity:0';
     document.body.appendChild(ta);
+    var back = document.activeElement;   // select() moves focus; it goes back to the button
     ta.select();
     var ok = false;
     try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
     document.body.removeChild(ta);
+    if (back && back.focus) back.focus();
     return ok ? Promise.resolve() : Promise.reject();
   }
 
