@@ -4206,7 +4206,8 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   border-color: var(--ds-border);
   box-shadow: inset 0 3px 0 var(--ds-tab-current, var(--ds-accent));
 }
-body:has(.ds-container > .ds-zone-secondary:first-child) .ds-subnav { --ds-tab-ground: var(--ds-zone-secondary-bg); }
+.ds-subnav:has(+ .ds-container > .ds-zone-secondary:first-child, + .ds-zone-secondary) { --ds-tab-ground: var(--ds-zone-secondary-bg); }   /* the zone directly below the bar */
+.ds-zone-secondary { --ds-tab-ground: var(--ds-zone-secondary-bg); }   /* tabs inside a secondary band open into its tint */
 
 /* SECTION MENU (.ds-subnav-section) AND MENU (.ds-menu) — navigation.html
    An area whose sections each have several views: the section menu starts the
@@ -4256,7 +4257,7 @@ body:has(.ds-container > .ds-zone-secondary:first-child) .ds-subnav { --ds-tab-g
 .ds-menu {
   position: absolute;
   top: 100%;
-  left: var(--ds-row-pad, 0);
+  left: 0;   /* a menu attaches to its control's edge */
   z-index: 60;
   display: flex;
   flex-direction: column;
@@ -4290,6 +4291,7 @@ body:has(.ds-container > .ds-zone-secondary:first-child) .ds-subnav { --ds-tab-g
 .ds-subnav-views { display: none; position: relative; }
 .ds-subnav.is-views-folded:not(.ds-subnav--steps) > a { display: none; }   /* outranks the tab style's display */
 .ds-subnav.is-views-folded > .ds-subnav-views { display: flex; }
+.ds-subnav:not(.is-menu-row) > .ds-subnav-views { margin-inline-start: var(--ds-space-4); }   /* the tabs' own side padding, after the section menu */
 .ds-subnav-views > summary {
   display: flex;
   align-items: center;
@@ -4305,7 +4307,6 @@ body:has(.ds-container > .ds-zone-secondary:first-child) .ds-subnav { --ds-tab-g
 .ds-subnav-views > summary > svg { width: 1.1em; height: 1.1em; flex: none; }
 .ds-subnav-views > summary:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 2px; border-radius: 2px; }
 .ds-subnav-views > summary::after { color: var(--ds-text); }
-.ds-subnav-views > .ds-menu { left: calc(-1 * var(--ds-row-pad)); }
 .ds-subnav.is-menu-row > .ds-subnav-section { flex: 1 0 100%; margin-inline: calc(-1 * var(--ds-row-pad)); }
 .ds-subnav.is-menu-row > .ds-subnav-section > summary { flex: 1; padding-inline: var(--ds-row-pad); border-inline-end: 0; border-bottom: 1px solid var(--ds-border); }
 .ds-subnav.is-menu-row > .ds-subnav-section > .ds-menu,
@@ -4328,6 +4329,7 @@ body:has(.ds-container > .ds-zone-secondary:first-child) .ds-subnav { --ds-tab-g
 .ds-subnav--steps li > a,
 .ds-subnav--steps li > span {
   gap: var(--ds-space-2);
+  border-bottom: 0;
 }
 .ds-subnav--steps li > span {
   display: inline-flex;
@@ -4335,7 +4337,6 @@ body:has(.ds-container > .ds-zone-secondary:first-child) .ds-subnav { --ds-tab-g
   min-height: 2.5rem;
   font-size: 0.875rem;
   color: var(--ds-text-muted);
-  border-bottom: 3px solid transparent;
   cursor: default;
 }
 .ds-step-number {
@@ -4355,11 +4356,8 @@ body:has(.ds-container > .ds-zone-secondary:first-child) .ds-subnav { --ds-tab-g
 .ds-subnav--steps a[aria-current="step"] {
   color: var(--ds-text);
   text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;
-  border-bottom-color: var(--ds-subnav-current, var(--ds-accent-strong));
 }
-.ds-subnav--steps a[aria-current="step"] .ds-step-number {
-  border: 2px solid var(--ds-subnav-current, var(--ds-accent-strong));
-}
+.ds-subnav--steps a[aria-current="step"] .ds-step-number { border: 3px solid var(--ds-accent); }
 
 /* TABS  (.ds-tabs) — progressive-disclosure.html
    Views of one page's content. tabs.js builds the tab list from each

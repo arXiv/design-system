@@ -167,7 +167,10 @@
             <dt>aria-current="page"</dt>
             <dd>On the link for the current page. It shows as a bold tab joined to the page below,
             with the accent along its top, so the current section never depends on colour alone, and a
-            screen reader announces it.</dd>
+            screen reader announces it. The current tab takes the background of the zone below it: the
+            page ground (white in light mode) above primary content, or the secondary zone's tint (light
+            grey in light mode) when the page opens with a <a href="layout-patterns.html#page-zones">secondary
+            band</a>.</dd>
           </dl>
         </div>
       </details>
@@ -183,7 +186,6 @@
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
         <p class="ds-marginalia-body ds-annotation">The script answers to the width of the row, so the narrower examples fold inside narrower boxes. Open the menus to see their colours.</p>
       </details>
-      <div class="ds-internal">
         <p class="ds-panel-label">Full width</p>
         <nav class="ds-subnav" aria-label="Moderator reports, full width">
           <details class="ds-subnav-section">
@@ -237,7 +239,6 @@
             <a href="#">Recent releases</a>
           </nav>
         </div>
-      </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;nav class="ds-subnav" aria-label="Moderator reports"&gt;
@@ -322,8 +323,8 @@
             <dt>&lt;a&gt; for a complete step</dt>
             <dd>A link, with the check mark and <code>.is-sr-only</code> text “, completed”.</dd>
             <dt>aria-current="step"</dt>
-            <dd>On the link for the current step. It shows in bold with an underline bar and a heavier
-            circle.</dd>
+            <dd>On the link for the current step. It shows in bold, and its circle has a heavier
+            border in the accent colour.</dd>
             <dt>&lt;a&gt; for an available step</dt>
             <dd>A link with its number.</dd>
             <dt>&lt;span&gt; for a step not available yet</dt>
@@ -365,7 +366,7 @@
   <!-- ───────── Internal ───────── -->
   <section>
     <h3 id="internal">Internal</h3>
-    <p class="ds-section-desc">The secondary navigation and steps in an internal tool. <code>.ds-internal</code> on a parent turns the current tab’s top line Access Lime, and the current step’s marking Access Lime Deep.</p>
+    <p class="ds-section-desc">The secondary navigation and steps in an internal tool. <code>.ds-internal</code> on a parent turns the current tab’s top line and the current step’s circle Access Lime, and the section menu’s background and lines the Access Lime washes.</p>
     <div class="ds-card">
       <p class="ds-panel-label">Secondary navigation</p>
       <div class="ds-internal">
@@ -395,6 +396,52 @@
     </div>
 
     <div class="ds-card">
+      <p class="ds-panel-label">Two levels of navigation</p>
+      <div class="ds-internal">
+        <nav class="ds-subnav" aria-label="Moderator reports, internal">
+          <details class="ds-subnav-section">
+            <summary>Submissions and holds</summary>
+            <div class="ds-menu">
+              <a href="#" aria-current="true">Submissions and holds</a>
+              <a href="#">Moderators</a>
+              <a href="#">Recruitment</a>
+            </div>
+          </details>
+          <a href="#">Overview</a>
+          <a href="#" aria-current="page">Activity charts</a>
+          <a href="#">Recent holds</a>
+        </nav>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-internal"&gt;
+  &lt;nav class="ds-subnav" aria-label="Moderator reports"&gt;
+    &lt;details class="ds-subnav-section"&gt;
+      &lt;summary&gt;Submissions and holds&lt;/summary&gt;
+      &lt;div class="ds-menu"&gt;
+        &lt;a href="…" aria-current="true"&gt;Submissions and holds&lt;/a&gt;
+        &lt;a href="…"&gt;Moderators&lt;/a&gt;
+        &lt;a href="…"&gt;Recruitment&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/details&gt;
+    &lt;a href="…"&gt;Overview&lt;/a&gt;
+    &lt;a href="…" aria-current="page"&gt;Activity charts&lt;/a&gt;
+    &lt;a href="…"&gt;Recent holds&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/div&gt;
+&lt;script src="subnav.js" defer&gt;&lt;/script&gt;</code></pre>
+          <dl>
+            <dt>.ds-internal</dt>
+            <dd>On a parent, it turns the section menu&#39;s background, its hover and open state and its
+            edge line to the Access Lime washes, and the current view&#39;s top line and the current
+            row&#39;s bar in the open menu Access Lime. The markup and the folding are the same as in
+            <a href="#two-levels-of-navigation">Two levels of navigation</a>.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <div class="ds-card">
       <p class="ds-panel-label">Steps</p>
       <div class="ds-internal">
         <nav class="ds-subnav ds-subnav--steps" aria-label="Review steps">
@@ -418,7 +465,7 @@
 &lt;/div&gt;</code></pre>
           <dl>
             <dt>.ds-internal</dt>
-            <dd>On a parent, it turns the underline bar and the current circle Access Lime Deep.</dd>
+            <dd>On a parent, it turns the current step’s circle Access Lime.</dd>
           </dl>
         </div>
       </details>
