@@ -29,7 +29,7 @@ components:
     summary: "A set of data with its own controls, such as a table with a filter, is a card whose first row is a header bar. The bar holds the controls for that set only."
     classes:
       - name: ".ds-card-bar"
-        does: "The first child of the card. It holds the controls for the set: filters, as a [compact form](forms.html#compact-form) or a [Filters button](filters.html#multiple-choice-filters) with its tags, a sort, and [group actions](tables.html#bulk-actions). They are compact and sit at its start. A total sits at its end when the reader cannot see the whole set: the set runs over more than one page, or the filters hide part of it. When the controls do not fit on one line, the bar wraps and the total takes a line of its own. Its tint is half a table header's, so the two stay apart. A [pager](pager.html#numbered-pages) for the set is the card's last row, below the list."
+        does: "The first child of the card. It holds the controls for the set: filters, as a [compact form](forms.md#compact-form) or a [Filters button](filters.md#multiple-choice-filters) with its tags, a sort, and [group actions](tables.md#bulk-actions). They are compact and sit at its start. A total sits at its end when the reader cannot see the whole set: the set runs over more than one page, or the filters hide part of it. When the controls do not fit on one line, the bar wraps and the total takes a line of its own. Its tint is half a table header's, so the two stay apart. A [pager](pager.md#numbered-pages) for the set is the card's last row, below the list."
       - name: ".ds-card"
         does: "The frame. With a header bar it has no padding of its own: a table inside it runs to its edges with no border of its own, and any other content keeps the card's padding."
   - id: stat-cards
@@ -59,7 +59,7 @@ components:
       - name: "The heading's <a>"
         does: "The only link in the card. A second link or a button inside it cannot be reached by pointer, because the heading's link lies over it."
       - name: ".ds-tag--warning"
-        does: "A card that needs attention says so on the card itself. A tag placed first in the card sits in its top corner, beside the heading, so the rest of the card lines up with its neighbours. See [Tags](tags.html)."
+        does: "A card that needs attention says so on the card itself. A tag placed first in the card sits in its top corner, beside the heading, so the rest of the card lines up with its neighbours. See [Tags](tags.md)."
   - id: data-list
     title: "Data list"
     summary: "A few short details as label and value pairs, each label beside its value, without a card: for example under an item in a list. Inside an accordion, a plain `<dl>` already lays out pairs."
@@ -164,7 +164,7 @@ A set of data with its own controls, such as a table with a filter, is a card wh
 </div>
 ```
 
-- `.ds-card-bar` — The first child of the card. It holds the controls for the set: filters, as a [compact form](forms.html#compact-form) or a [Filters button](filters.html#multiple-choice-filters) with its tags, a sort, and [group actions](tables.html#bulk-actions). They are compact and sit at its start. A total sits at its end when the reader cannot see the whole set: the set runs over more than one page, or the filters hide part of it. When the controls do not fit on one line, the bar wraps and the total takes a line of its own. Its tint is half a table header's, so the two stay apart. A [pager](pager.html#numbered-pages) for the set is the card's last row, below the list.
+- `.ds-card-bar` — The first child of the card. It holds the controls for the set: filters, as a [compact form](forms.md#compact-form) or a [Filters button](filters.md#multiple-choice-filters) with its tags, a sort, and [group actions](tables.md#bulk-actions). They are compact and sit at its start. A total sits at its end when the reader cannot see the whole set: the set runs over more than one page, or the filters hide part of it. When the controls do not fit on one line, the bar wraps and the total takes a line of its own. Its tint is half a table header's, so the two stay apart. A [pager](pager.md#numbered-pages) for the set is the card's last row, below the list.
 - `.ds-card` — The frame. With a header bar it has no padding of its own: a table inside it runs to its edges with no border of its own, and any other content keeps the card's padding.
 
 ## Stat cards
@@ -225,7 +225,7 @@ A card that is one link, for a page whose job is to send the reader somewhere el
 
 - `.ds-card--link` — The heading's link covers the whole card, so the card is one target and one tab stop. Hover and keyboard focus mark the whole card.
 - `The heading's <a>` — The only link in the card. A second link or a button inside it cannot be reached by pointer, because the heading's link lies over it.
-- `.ds-tag--warning` — A card that needs attention says so on the card itself. A tag placed first in the card sits in its top corner, beside the heading, so the rest of the card lines up with its neighbours. See [Tags](tags.html).
+- `.ds-tag--warning` — A card that needs attention says so on the card itself. A tag placed first in the card sits in its top corner, beside the heading, so the rest of the card lines up with its neighbours. See [Tags](tags.md).
 
 ## Data list
 

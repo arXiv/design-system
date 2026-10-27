@@ -17,7 +17,7 @@ components:
       - name: ".ds-table-footer"
         does: "A `<div>` below the table for row counts or pagination."
       - name: ".ds-tag--rectangle"
-        does: "The Type column: a rectangular tag at the default level, one per row, documented on [Tags](tags.html#rectangular-labels). No colour is mapped to New, Rep or Wdr."
+        does: "The Type column: a rectangular tag at the default level, one per row, documented on [Tags](tags.md#rectangular-labels). No colour is mapped to New, Rep or Wdr."
       - name: "scope=\"col\""
         does: "Required on every `<th>` in the header row, so a screen reader reads the column name with each cell."
       - name: ".ds-table-scroll"
@@ -25,7 +25,7 @@ components:
       - name: "scope=\"row\""
         does: "A `<th>` in the body is a row header: it names its row, in the cell type at full weight on a tinted ground, and a screen reader reads it with each cell in the row. The tint comes from the element, so no class is needed."
     notes:
-      - "The Type column uses rectangular tags at the default level, documented on [Tags](tags.html#rectangular-labels)."
+      - "The Type column uses rectangular tags at the default level, documented on [Tags](tags.md#rectangular-labels)."
   - id: outside-borders
     title: "Outside borders"
     summary: "A table has a border all the way round, except directly inside a card, where the card is the frame and the table has none."
@@ -49,7 +49,7 @@ components:
       - "Sort logic is application-specific; the CSS only handles visual states."
   - id: filters
     title: "Filters"
-    summary: "Filters for a table go in the header bar of the card that holds it. For a demo, see [Filters](filters.html)."
+    summary: "Filters for a table go in the header bar of the card that holds it. For a demo, see [Filters](filters.md)."
   - id: row-selection
     title: "Row selection"
     summary: "Rows a reader can choose, one checkbox per row, so an action can apply to several at once."
@@ -63,11 +63,11 @@ components:
     summary: "Actions that apply to every selected row at once, as in moderation queues and ownership lists. The actions sit in the header bar of the card that holds a table with [row selection](#row-selection)."
     classes:
       - name: ".ds-card-bar"
-        does: "The header bar of the card that holds the table: the actions and the selection count at its start, and any filter at its end. It wraps on a narrow screen. See [Cards with a header bar](cards.html#cards-with-a-header-bar)."
+        does: "The header bar of the card that holds the table: the actions and the selection count at its start, and any filter at its end. It wraps on a narrow screen. See [Cards with a header bar](cards.md#cards-with-a-header-bar)."
       - name: ".ds-btn-group"
         does: "The actions and the selection count, kept together."
       - name: ".ds-btn-primary, .ds-btn, .ds-btn-destructive, with .ds-btn-compact"
-        does: "The actions, in the tiers documented on [Buttons](buttons.html), compact like every control in a header bar. The destructive action comes last."
+        does: "The actions, in the tiers documented on [Buttons](buttons.md), compact like every control in a header bar. The destructive action comes last."
       - name: ".ds-bulk-count"
         does: "The selection count and the “Clear selection” link, beside the actions. Takes `role=\"status\"` so a change in the count is announced."
       - name: "<button disabled>"
@@ -156,12 +156,12 @@ One table, `.ds-table`, on the public site and in internal tools. It has row div
 - `<thead>` — Draws the header row. Leave it out and the table has none; no class turns the header row on or off.
 - `style="table-layout: fixed"` — Add it inline on the `<table>` when fixed column widths are needed. The table defaults to auto layout.
 - `.ds-table-footer` — A `<div>` below the table for row counts or pagination.
-- `.ds-tag--rectangle` — The Type column: a rectangular tag at the default level, one per row, documented on [Tags](tags.html#rectangular-labels). No colour is mapped to New, Rep or Wdr.
+- `.ds-tag--rectangle` — The Type column: a rectangular tag at the default level, one per row, documented on [Tags](tags.md#rectangular-labels). No colour is mapped to New, Rep or Wdr.
 - `scope="col"` — Required on every `<th>` in the header row, so a screen reader reads the column name with each cell.
 - `.ds-table-scroll` — The wrapper. A table wider than the viewport scrolls inside it, so the page never scrolls sideways. It takes `role="region"`, an `aria-label` that names the table, and `tabindex="0"` so a keyboard user can reach it to scroll.
 - `scope="row"` — A `<th>` in the body is a row header: it names its row, in the cell type at full weight on a tinted ground, and a screen reader reads it with each cell in the row. The tint comes from the element, so no class is needed.
 
-> The Type column uses rectangular tags at the default level, documented on [Tags](tags.html#rectangular-labels).
+> The Type column uses rectangular tags at the default level, documented on [Tags](tags.md#rectangular-labels).
 
 ## Outside borders
 
@@ -215,7 +215,7 @@ A sortable column has a `<button class="sortable">` inside its `<th>`, holding t
 
 ## Filters
 
-Filters for a table go in the header bar of the card that holds it. For a demo, see [Filters](filters.html).
+Filters for a table go in the header bar of the card that holds it. For a demo, see [Filters](filters.md).
 
 ## Row selection
 
@@ -300,9 +300,9 @@ Actions that apply to every selected row at once, as in moderation queues and ow
 </div>
 ```
 
-- `.ds-card-bar` — The header bar of the card that holds the table: the actions and the selection count at its start, and any filter at its end. It wraps on a narrow screen. See [Cards with a header bar](cards.html#cards-with-a-header-bar).
+- `.ds-card-bar` — The header bar of the card that holds the table: the actions and the selection count at its start, and any filter at its end. It wraps on a narrow screen. See [Cards with a header bar](cards.md#cards-with-a-header-bar).
 - `.ds-btn-group` — The actions and the selection count, kept together.
-- `.ds-btn-primary, .ds-btn, .ds-btn-destructive, with .ds-btn-compact` — The actions, in the tiers documented on [Buttons](buttons.html), compact like every control in a header bar. The destructive action comes last.
+- `.ds-btn-primary, .ds-btn, .ds-btn-destructive, with .ds-btn-compact` — The actions, in the tiers documented on [Buttons](buttons.md), compact like every control in a header bar. The destructive action comes last.
 - `.ds-bulk-count` — The selection count and the “Clear selection” link, beside the actions. Takes `role="status"` so a change in the count is announced.
 - `<button disabled>` — The `disabled` attribute on every action button while nothing is selected. The buttons stay in place; the filter stays live, because it does not depend on a selection.
 

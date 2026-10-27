@@ -142,7 +142,7 @@ def md_inline(node):
             out.append("*" + md_inline(c) + "*")
         elif c.tag == "a":
             href = c.attrs.get("href", "")
-            out.append(f"[{md_inline(c)}]({href})" if href else md_inline(c))
+            out.append(f"[{md_inline(c)}]({digest_href(href)})" if href else md_inline(c))
         elif c.tag in ("svg", "button", "details", "summary"):
             continue
         else:
@@ -160,11 +160,26 @@ def yaml_str(s):
 
 
 # ── Extraction ───────────────────────────────────────────────────────────
+def digest_href(href):
+    # The pages link relative to docs/; a digest lives in docs/spec/. A link to a
+    # page that has a digest goes to the digest, any other link inside docs/ goes
+    # up a level, and links off the site or within the page are left alone.
+    if re.match(r"^(?:[a-z]+:|#|/)", href):
+        return href
+    m = re.match(r"^([a-z0-9-]+)\.html(#.*)?$", href)
+    if m and f"{m.group(1)}.html" in reviewed():
+        return f"{m.group(1)}.md{m.group(2) or ''}"
+    return "../" + href
+
+
 def section_title(node):
     # A section heading is the h2 or h3 that opens a plain <section>; component
     # sections (a data card) always have a class, so they never match.
     parent = node.parent
     if node.tag not in ("h2", "h3") or parent is None or parent.tag != "section" or parent.attrs.get("class"):
+        return False
+    # a section inside a whole-page demo is part of the demo, not a component
+    if parent.ancestor(lambda n: n.has("page-demo")) is not None:
         return False
     first = next((c for c in parent.children if isinstance(c, Node)), None)
     return first is node
@@ -415,7 +430,7 @@ def reviewed():
 
 
 def all_pages():
-    skip = {"doc.html", "icons.html", "using.html", "index.html"}
+    skip = {"doc.html", "icons.html", "using.html", "index.html", "brand.html", "outreach.html"}   # not component pages
     return sorted(p.relative_to(DOCS).as_posix() for p in DOCS.rglob("*.html") if p.name not in skip and "sharing" not in p.parts)
 
 
