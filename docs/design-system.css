@@ -3202,7 +3202,8 @@ html:has(.ds-modal[open]) {
 /* SIDEBAR  (.ds-sidebar) — layout-patterns.html
    Beside the reading column, for supplementary content. The sidebar's
    parent becomes the two-column layout; the sidebar wraps below the
-   content when both no longer fit. Blocks are separated by spacing only. */
+   content when both no longer fit. A border frames it and a rule separates
+   its blocks. */
 :where(:has(> .ds-sidebar)) {
   display: flex;
   flex-wrap: wrap;
@@ -3217,14 +3218,15 @@ html:has(.ds-modal[open]) {
   flex: 1 0 17rem;
   display: flex;
   flex-direction: column;
-  gap: var(--ds-space-6);
+  gap: var(--ds-space-4);
+  padding: var(--ds-space-2);
+  border: 1px solid var(--ds-border);
+  border-radius: 8px;
+  font-size: 0.8125rem;
 }
 .ds-sidebar > * { margin: 0; }
+.ds-sidebar > * + * { padding-top: var(--ds-space-4); border-top: 1px solid var(--ds-border); }
 .ds-sidebar > * > :first-child { margin-block-start: 0; }
-/* Framed: a border round the sidebar and a rule between its blocks. */
-.ds-sidebar--framed { gap: var(--ds-space-4); padding: var(--ds-space-2); border: 1px solid var(--ds-border); border-radius: 8px; }
-.ds-sidebar--framed > * + * { padding-top: var(--ds-space-4); border-top: 1px solid var(--ds-border); }
-.ds-sidebar--framed { font-size: 0.8125rem; }
 
 /* An accordion in the sidebar: no rules, because spacing already separates the
    blocks; single-column internals for the narrow measure; a Link Blue +/−

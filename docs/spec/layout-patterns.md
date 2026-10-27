@@ -29,7 +29,7 @@ components:
     summary: "A sidebar sits to the right of the main column and contains supplementary content. If the content is secondary, distinct from the main content, and it is important that it not be pushed far down the page, then a sidebar is appropriate."
     classes:
       - name: ".ds-sidebar"
-        does: "On an `<aside>` with an `aria-label` that names what it holds: a complementary landmark. Its parent becomes the two-column layout, with the main content taking the spare width, the sidebar 17rem wide, and `--ds-space-section` between them. Blocks inside the sidebar are 24px apart (`--ds-space-6`). Nothing in it is sticky."
+        does: "On an `<aside>` with an `aria-label` that names what it holds: a complementary landmark. Its parent becomes the two-column layout, with the main content taking the spare width, the sidebar 17rem wide, and `--ds-space-section` between them. A border frames it, with 8px inside (`--ds-space-2`), and a line separates its blocks, 16px apart (`--ds-space-4`). Its text is 13px. Nothing in it is sticky."
       - name: "<aside>"
         does: "The sidebar comes after the main content in the markup. When the two no longer fit side by side, the sidebar wraps below the content at full width, and a screen reader meets the article first."
       - name: ".ds-acc"
@@ -148,7 +148,7 @@ A sidebar sits to the right of the main column and contains supplementary conten
 </div>
 ```
 
-- `.ds-sidebar` — On an `<aside>` with an `aria-label` that names what it holds: a complementary landmark. Its parent becomes the two-column layout, with the main content taking the spare width, the sidebar 17rem wide, and `--ds-space-section` between them. Blocks inside the sidebar are 24px apart (`--ds-space-6`). Nothing in it is sticky.
+- `.ds-sidebar` — On an `<aside>` with an `aria-label` that names what it holds: a complementary landmark. Its parent becomes the two-column layout, with the main content taking the spare width, the sidebar 17rem wide, and `--ds-space-section` between them. A border frames it, with 8px inside (`--ds-space-2`), and a line separates its blocks, 16px apart (`--ds-space-4`). Its text is 13px. Nothing in it is sticky.
 - `<aside>` — The sidebar comes after the main content in the markup. When the two no longer fit side by side, the sidebar wraps below the content at full width, and a screen reader meets the article first.
 - `.ds-acc` — An accordion inside the sidebar drops its rules, goes single-column for the narrow measure, and turns its +/− marker Link Blue so a closed one still reads as interactive. No extra class.
 
