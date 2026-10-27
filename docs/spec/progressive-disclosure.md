@@ -94,7 +94,7 @@ components:
   - id: one-panel-open-at-a-time
     title: "One panel open at a time"
     group: "Variants"
-    summary: "Opening one panel closes the panel that was open. For a group of short reference panels in a narrow column, such as Paper information in the paper sidebar, where every open panel makes the column longer and harder to read. The browser does this without JavaScript."
+    summary: "Opening one panel closes the panel that was open. For a group of short reference panels in a narrow column, such as Paper information in the paper sidebar, where every open panel makes the column longer and harder to read. There is no class: give every `<details>` in the group the same `name` attribute, and the browser does the rest without JavaScript."
     classes:
       - name: "[name]"
         does: "The same value on every `<details>` in the group, and a value no other group on the page uses. Opening one closes the others. In a browser too old to support it, every panel opens on its own, as in a plain stack."
@@ -342,22 +342,25 @@ A disclosure inside another one is the second level: indented one step, its labe
 
 ## One panel open at a time  (Variants)
 
-Opening one panel closes the panel that was open. For a group of short reference panels in a narrow column, such as Paper information in the paper sidebar, where every open panel makes the column longer and harder to read. The browser does this without JavaScript.
+Opening one panel closes the panel that was open. For a group of short reference panels in a narrow column, such as Paper information in the paper sidebar, where every open panel makes the column longer and harder to read. There is no class: give every `<details>` in the group the same `name` attribute, and the browser does the rest without JavaScript.
 
 ```html
-<div class="ds-acc-stack">
-  <details class="ds-acc" name="paper-info">
-    <summary>Versions</summary>
-    <div class="ds-acc-body">…</div>
-  </details>
-  <details class="ds-acc" name="paper-info">
-    <summary>Paper information</summary>
-    <div class="ds-acc-body">…</div>
-  </details>
-  <details class="ds-acc" name="paper-info">
-    <summary>Related</summary>
-    <div class="ds-acc-body">…</div>
-  </details>
+<div class="ds-card">
+  <h3>Paper information</h3>
+  <div class="ds-acc-stack">
+    <details class="ds-acc" name="paper-info">
+      <summary>Versions</summary>
+      <div class="ds-acc-body">…</div>
+    </details>
+    <details class="ds-acc" name="paper-info">
+      <summary>Metadata</summary>
+      <div class="ds-acc-body">…</div>
+    </details>
+    <details class="ds-acc" name="paper-info">
+      <summary>Related</summary>
+      <div class="ds-acc-body">…</div>
+    </details>
+  </div>
 </div>
 ```
 
