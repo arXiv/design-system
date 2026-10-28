@@ -9654,11 +9654,12 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
 .mg-states nav a[aria-current] { font-weight: 700; color: var(--ds-text); text-decoration: none; }
 .mg-states h3 { font-size: 0.8125rem; font-weight: 600; margin: 10px 0 2px; }
 .mg-states ul.mg-states-list { margin: 0; padding-left: 1.2em; }
-.mg-states-alert { max-width: 48rem; margin: 12px 0 0; }
+.mg-states-alert { max-width: 48rem; margin: 12px 0; }
+.mg-states-alert h2.ds-alert-title { font-family: var(--ds-font-sans); font-size: inherit; line-height: inherit; margin: 0; }
 .mg-ver-tag--withdrawn, .mg-ver-withdrawn { color: var(--ds-error-fg); }
 .mg-ver-withdrawn { font-family: var(--ds-font-sans); font-size: 0.8125rem; font-weight: 600; }
 .mg-state-hidden { display: none !important; }
-body.mg-state-withdrawn .ftn-marginalia, body.mg-state-tombstone .ftn-marginalia { display: none !important; }
+body.mg-state-withdrawn .ftn-marginalia, body.mg-state-withdrawn-admin .ftn-marginalia, body.mg-state-tombstone .ftn-marginalia { display: none !important; }
 /* Tombstone: no abstract, so the card takes the whole row, Files beside Paper information. */
 body.mg-state-tombstone .mg-top-main { display: none; }
 body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y: visible; }
@@ -9677,6 +9678,7 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
   var STATES = {
     withdrawn: 'Withdrawn',
     'withdrawn-earlier': 'Withdrawn, earlier version',
+    'withdrawn-admin': 'Withdrawn by arXiv',
     tombstone: 'Removed by arXiv (tombstone)',
     reclassified: 'Reclassified'
   };
@@ -9687,6 +9689,7 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
   var ALERT_ICON = '<svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
   var REASON = 'The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.';
   var ADMIN_NOTE = 'arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission';
+  var ADMIN_WD = 'arXiv admin note: This submission has been withdrawn by arXiv administrators due to inappropriate text reuse from external sources';
   var ABS = 'https://arxiv.org/abs/2604.22725';
 
   function $(sel) { return document.querySelector(sel); }
@@ -9706,7 +9709,8 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
         'An error-tier notice by the title says who withdrew it and quotes the reason unchanged, and links the earlier versions, which stay available by policy.',
         'Title, authors and abstract stay, as on live withdrawn papers (math/9810162v3, 2501.11218v3, and the admin withdrawal 2412.17866v2). The paper text, the contents bar, the files and the reader view are gone, because this version has no full text.',
         'The wording follows the abstract page: "withdrawn by" the person who withdrew it (the submitter, or "arXiv Admin"), the reason as written in Comments, and "(withdrawn)" in red beside the version.',
-        'The citation carries the withdrawal in a note; the title is never changed.'
+        'The citation carries the withdrawal in a note; the title is never changed.',
+        'For screen reader users: the page title starts with &ldquo;Withdrawn:&rdquo;, the spoken identity line starts with the status, and the notice is a heading straight after the paper title, so it comes second in reading order and in the headings list, before the dates, authors and abstract.'
       ],
       ask: ['The abstract page still offers "Cite as" for withdrawn papers, while one author\'s reason says they "do not wish this work to be cited". Should Cite stay, with the note?', 'The abstract page puts the withdrawal date in "last revised … (this version)". The mockup says "Withdrawn 22 Oct 2026 (this version)". Which is clearer?', 'Error tier or warning tier for the notice?']
     },
@@ -9714,18 +9718,29 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
       shows: [
         'Version 3 of the same paper, from before the withdrawal. Its full text stays available: policy says existing versions cannot be removed or changed.',
         'The notice uses the abstract page\'s own words: "A newer version of this paper has been withdrawn by …", then the reason, quoted unchanged, and a link to the withdrawal notice.',
-        'Today this page shows the full text with no notice at all (checked on gr-qc/0110023v1).'
+        'Today this page shows the full text with no notice at all (checked on gr-qc/0110023v1).',
+        'For screen reader users: the page title starts with &ldquo;Version 3 of a withdrawn paper:&rdquo;, the spoken identity line starts with the status, and the notice is a heading straight after the paper title, so it comes second in reading order and in the headings list, before the dates, authors and abstract.'
       ],
       ask: ['Is the error tier right on a page whose text is still readable, or is that the warning tier\'s job?', 'Should the notice say what changed since this version, or only that a newer one withdrew it?']
+    },
+    'withdrawn-admin': {
+      shows: [
+        'The same paper, withdrawn by arXiv instead of by its submitter: version 4 is a withdrawal version submitted by arXiv Admin, used when arXiv wants to leave a trail of evidence, for example for text reuse. Earlier versions stay available.',
+        'The notice and the version history say &ldquo;withdrawn by arXiv Admin&rdquo;, and the reason is arXiv&rsquo;s own note, starting &ldquo;arXiv admin note:&rdquo;, as on 2412.17866v2.',
+        'This is not a tombstone: the title, authors and abstract stay, and nothing is erased.',
+        'For screen reader users: the page title starts with &ldquo;Withdrawn:&rdquo;, the spoken identity line starts with the status, and the notice is a heading straight after the paper title, so it comes second in reading order and in the headings list, before the dates, authors and abstract.'
+      ],
+      ask: ['Should an admin withdrawal look different from an author withdrawal, or only read differently?', 'Error tier or warning tier for the notice?']
     },
     tombstone: {
       shows: [
         'arXiv removed this version (here, because the submitter did not have the right to agree to the license). The full text is erased; the metadata page stays with arXiv\'s reason.',
         'As the runbook says: the authors are cut to the submitter, cross-lists and the journal reference are removed, and there are no files. The arXiv DOI still resolves here.',
         'The abstract is gone, as on arXiv:0709.4652. The title stays.',
-        'There is no Cite, no paper text and no reader view.'
+        'There is no Cite, no paper text and no reader view.',
+        'For screen reader users: the page title starts with &ldquo;Removed:&rdquo;, the spoken identity line starts with the status, and the notice is a heading straight after the paper title, so it comes second in reading order and in the headings list, before the dates, authors and abstract.'
       ],
-      ask: ['Should the page say the author list was cut to the submitter? Some admin notes say "Author list truncated"; the default does not.', 'Should a removed version be citable?', 'Removed or withdrawn: which word does the reader see? The abstract page says "(withdrawn)" in the history.']
+      ask: ['Is every tombstone reason meant for readers? The runbook puts it in the public Comments field and live tombstones show it, but no document says so outright. Confirm with the editorial team.', 'Should the page say the author list was cut to the submitter? Some admin notes say "Author list truncated"; the default does not.', 'Should a removed version be citable?', 'Removed or withdrawn: which word does the reader see? The abstract page says "(withdrawn)" in the history.']
     },
     reclassified: {
       shows: [
@@ -9763,19 +9778,25 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
     if (!water) return;
     var spans = water.querySelectorAll('span');
     spans[0].textContent = 'arXiv:2604.22725v' + version + ' [' + catCode + '] ' + catName + (label ? ' · ' + label : '');
-    spans[1].textContent = 'archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version ' + version + ', primary category ' + catName + (label ? ', ' + label : '');
+    spans[1].textContent = (label ? label + '. ' : '') + 'archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version ' + version + ', primary category ' + catName;
   }
   function setAbsLinks(v) {
     $$('a[href="' + ABS + 'v1"]').forEach(function (a) { a.href = ABS + 'v' + v; });
   }
+  /* The notice sits straight after the title, before the dates, and its first
+     line is a heading, so a screen reader reaches it second, after the title,
+     and lists it in the headings menu. No role="alert": a live region in the
+     HTML as served is not announced on load; order and the page title do it. */
   function replaceWarning(alertHtml) {
-    var w = $('.mg-verwarn');
-    var box = document.createElement('div');
+    hide($('.mg-verwarn'));
+    var box = document.createElement('section');
     box.className = 'ds-alert ds-alert--error mg-states-alert';
-    box.setAttribute('role', 'alert');
-    box.innerHTML = ALERT_ICON + '<div class="ds-alert-content">' + alertHtml + '</div>';
-    if (w) w.replaceWith(box); else $('.mg-verline').after(box);
+    box.setAttribute('aria-labelledby', 'mg-notice-h');
+    box.innerHTML = ALERT_ICON + '<div class="ds-alert-content">' +
+      alertHtml.replace('<p class="ds-alert-title">', '<h2 class="ds-alert-title" id="mg-notice-h">').replace(/<\/p>/, '</h2>') + '</div>';
+    $('.mg-top h1.ltx_title_document').after(box);
   }
+  function pageTitle(prefix) { document.title = prefix + ': ' + document.title; }
   function hideBody() {
     $$('.ltx_section, .ltx_appendix, .ltx_bibliography, .ltx_acknowledgements, aside.footnote, .ftn-marginalia, #mg-toc-bar, .mg-skip-wrap, .arxiv-html-header').forEach(hide);
   }
@@ -9832,33 +9853,37 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
   var ANN = 'Announced <time datetime="2026-04-25T02:07Z">25 Apr 2026,&nbsp;02:07</time>&nbsp;UTC';
   var V3NOTE = 'Revised the scalar spectral-index discussion; added the Planck 2018 comparison in Sec.&nbsp;4.';
 
-  /* ── Withdrawn: the latest version is the authors' withdrawal ── */
-  if (state === 'withdrawn') {
+  /* ── Withdrawn: the latest version is a withdrawal, by the submitter or by arXiv ── */
+  function withdrawnLatest(by, reason) {
+    pageTitle('Withdrawn');
     identity(4, 'gr-qc', 'General Relativity and Quantum Cosmology', 'Withdrawn');
     setAbsLinks(4);
     verline(SUB + DOT + ANN + DOT + 'Withdrawn <time datetime="2026-10-22">22 Oct 2026</time>&nbsp;UTC (this version)',
       vl(1) + ' ' + vl(2) + ' ' + vl(3) + ' ' + vl(4, true, ', withdrawn') + WD);
-    replaceWarning('<p class="ds-alert-title">This paper has been withdrawn by Adrian Palomares.</p>' +
-      '<p>Reason given: &ldquo;' + REASON + '&rdquo;</p>' +
+    replaceWarning('<p class="ds-alert-title">This paper has been withdrawn by ' + by + '.</p>' +
+      '<p>Reason given: &ldquo;' + reason + '&rdquo;</p>' +
       '<p>Earlier versions are still available: <a href="' + ABS + 'v3">version 3, revised 28 Jun 2026</a>, <a href="' + ABS + 'v2">version 2</a> and <a href="' + ABS + 'v1">version 1</a>.</p>');
     hideBody();
     files('<p class="mg-files-note">This version is a withdrawal notice and has no files. Earlier versions have their own files on their pages.</p>');
     citeNote('Withdrawn, 22 Oct 2026');
     versionHistory([
-      verItem(4, '22 Oct 2026', 'Withdrawn by Adrian Palomares: &ldquo;' + REASON + '&rdquo;', 'withdrawn', true),
+      verItem(4, '22 Oct 2026', 'Withdrawn by ' + by + ': &ldquo;' + reason + '&rdquo;', 'withdrawn', true),
       verItem(3, '28 Jun 2026', V3NOTE),
       verItem(2, '19 May 2026', 'Corrected Eq.&nbsp;(4.7).'),
       verItem(1, '24 Apr 2026', 'Original submission.')
     ]);
     metaRow('Journal', null);
-    metaRow('Comments', REASON);
+    metaRow('Comments', reason);
     document.getElementById('mg-versions').open = true;
     hide($$('.mg-acc-a11y').map(function (b) { return b.closest('details'); })[0]);
   }
+  if (state === 'withdrawn') withdrawnLatest('Adrian Palomares', REASON);
+  if (state === 'withdrawn-admin') withdrawnLatest('arXiv Admin', ADMIN_WD);
 
   /* ── Withdrawn, earlier version: version 3 of the same paper ── */
   if (state === 'withdrawn-earlier') {
-    identity(3, 'gr-qc', 'General Relativity and Quantum Cosmology');
+    pageTitle('Version 3 of a withdrawn paper');
+    identity(3, 'gr-qc', 'General Relativity and Quantum Cosmology', 'A newer version is withdrawn');
     setAbsLinks(3);
     verline(SUB + DOT + ANN + DOT + 'Revised <time datetime="2026-06-28">28 Jun 2026</time>&nbsp;UTC (this version)',
       vl(1) + ' ' + vl(2) + ' ' + vl(3, true) + ' ' + vl(4, false, ', withdrawn') + WD);
@@ -9879,6 +9904,7 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
 
   /* ── Tombstone: arXiv removed the version ── */
   if (state === 'tombstone') {
+    pageTitle('Removed');
     identity(1, 'gr-qc', 'General Relativity and Quantum Cosmology', 'Removed');
     verline(SUB + DOT + ANN + DOT + 'Removed <time datetime="2026-10-23">23 Oct 2026</time>&nbsp;UTC', '');
     replaceWarning('<p class="ds-alert-title">This version has been removed by arXiv.</p>' +
