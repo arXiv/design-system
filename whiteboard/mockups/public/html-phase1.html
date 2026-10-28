@@ -9655,7 +9655,9 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
 .mg-state-hidden { display: none !important; }
 .ds-site-header-nav a[aria-current="page"] { font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
 body.mg-state-withdrawn .ftn-marginalia, body.mg-state-withdrawn-admin .ftn-marginalia, body.mg-state-tombstone .ftn-marginalia { display: none !important; }
-/* Tombstone: no abstract, so the card takes the whole row, Files beside Paper information. */
+/* Without full text the card holds only Paper information, so it loses the dividers that separated it from Files and Cite. */
+body:is(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) .mg-rail > .mg-paper-info { border: 0 !important; padding: 0 !important; }
+/* Tombstone: no abstract, so the card takes the whole row. */
 body.mg-state-tombstone .mg-top-main { display: none; }
 body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y: visible; }
 @media (min-width: 48.01rem) {
@@ -9663,7 +9665,6 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
   body.mg-state-tombstone .mg-rail > * { flex: 1 1 0; min-width: 0; }
   body.mg-state-tombstone .mg-rail > * + * { border-top: 0; padding-top: 0; border-left: 1px solid var(--ds-border); padding-left: 24px; }
 }
-.mg-files-note { margin: 0; font-size: 0.8125rem; line-height: 1.5; color: var(--ds-text-muted); }
 </style>
 <script>
 (function () {
@@ -9752,9 +9753,6 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
     var dd = dt.nextElementSibling;
     if (newHtml === null) { hide(dt); hide(dd); } else dd.innerHTML = newHtml;
   }
-  function files(htmlStr) {
-    var f = $('.mg-files'); if (f) f.innerHTML = htmlStr;
-  }
   var VER = {
     1: '<a class="mg-ver-id" href="' + ABS + 'v1">[v1]</a>',
     2: '<a class="mg-ver-id" href="' + ABS + 'v2">[v2]</a>',
@@ -9764,8 +9762,17 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
   function verItem(n, date, noteText, tag, current) {
     return '<li class="mg-ver' + (current ? ' mg-ver-current" aria-current="true' : '') + '"><div class="mg-ver-top">' +
       (current ? '<span class="mg-ver-id">[v' + n + ']</span>' : VER[n]) +
-      (tag ? '<span class="mg-ver-tag' + (tag === 'withdrawn' ? ' mg-ver-tag--withdrawn' : '') + '">' + tag + '</span>' : '') +
+      (tag ? '<span class="mg-ver-tag' + (tag === 'withdrawn' || tag === 'removed' ? ' mg-ver-tag--withdrawn' : '') + '">' + tag + '</span>' : '') +
       '<span class="mg-ver-date">' + date + '&nbsp;UTC</span></div><p class="mg-ver-note">' + noteText + '</p></li>';
+  }
+  /* No full text: the sidebar keeps only Version History, open. */
+  function sidebarVersionsOnly() {
+    hide($('.mg-files-col'));
+    hide($('.mg-cite'));
+    $$('.mg-paper-info details.mg-acc').forEach(function (d) { if (d.id !== 'mg-versions') hide(d); });
+    var v = document.getElementById('mg-versions');
+    v.classList.remove('mg-state-hidden');
+    v.open = true;
   }
   function versionHistory(items) {
     var ol = $('.mg-ver-list'); if (ol) ol.innerHTML = items.join('');
@@ -9797,18 +9804,13 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
       '<p>Reason given: &ldquo;' + reason + '&rdquo;</p>' +
       '<p>Earlier versions are still available: <a href="' + ABS + 'v3">version 3, revised 28 Jun 2026</a>, <a href="' + ABS + 'v2">version 2</a> and <a href="' + ABS + 'v1">version 1</a>.</p>');
     hideBody();
-    files('<p class="mg-files-note">This version is a withdrawal notice and has no files. Earlier versions have their own files on their pages.</p>');
-    citeNote('Withdrawn, 22 Oct 2026');
     versionHistory([
       verItem(4, '22 Oct 2026', 'Withdrawn by ' + by + ': &ldquo;' + reason + '&rdquo;', 'withdrawn', true),
       verItem(3, '28 Jun 2026', V3NOTE),
       verItem(2, '19 May 2026', 'Corrected Eq.&nbsp;(4.7).'),
       verItem(1, '24 Apr 2026', 'Original submission.')
     ]);
-    metaRow('Journal', null);
-    metaRow('Comments', reason);
-    document.getElementById('mg-versions').open = true;
-    hide($$('.mg-acc-a11y').map(function (b) { return b.closest('details'); })[0]);
+    sidebarVersionsOnly();
   }
   if (state === 'withdrawn') withdrawnLatest('Adrian Palomares', REASON);
   if (state === 'withdrawn-admin') withdrawnLatest('arXiv Admin', ADMIN_WD);
@@ -9849,14 +9851,10 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
     hide(document.getElementById('html-authors-overflow'));
     hide(document.getElementById('abstract1'));
     hideBody();
-    files('<p class="mg-files-note">No files. This version was removed by arXiv.</p>');
-    hide($('.mg-cite'));
-    hide(document.getElementById('mg-versions'));
-    hide($$('.mg-acc-a11y').map(function (b) { return b.closest('details'); })[0]);
-    metaRow('Subjects', 'General Relativity and Quantum Cosmology (<a href="#">gr-qc</a>)');
-    metaRow('Journal', null);
-    metaRow('Comments', ADMIN_NOTE);
-    $$('.mg-acc-body dl')[0].closest('details').open = true;
+    versionHistory([
+      verItem(1, '24 Apr 2026', 'Removed by arXiv on 23 Oct 2026: &ldquo;' + ADMIN_NOTE + '&rdquo;', 'removed', true)
+    ]);
+    sidebarVersionsOnly();
   }
 
   /* ── Reclassified: primary category changed after announcement ── */
