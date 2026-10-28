@@ -47,7 +47,7 @@ components:
       - name: "<span> for a step not available yet"
         does: "A `<span>`, not a link, so it is not a tab stop. A dashed circle and `.is-sr-only` text “, not available yet”."
     notes:
-      - "Meets accessibility guideline [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A)"
+      - "Meets accessibility guidelines [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A) and [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
   - id: internal
     title: "Internal"
     group: "Modifiers"
@@ -144,7 +144,7 @@ The steps of one ordered process, such as a submission, and which one the reader
 - `<a> for an available step` — A link with its number.
 - `<span> for a step not available yet` — A `<span>`, not a link, so it is not a tab stop. A dashed circle and `.is-sr-only` text “, not available yet”.
 
-> Meets accessibility guideline [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A)
+> Meets accessibility guidelines [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A) and [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)
 
 ## Internal  (Modifiers)
 
