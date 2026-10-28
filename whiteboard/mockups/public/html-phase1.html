@@ -720,11 +720,7 @@ a.mg-ver-id:hover { color: var(--ds-link-hover); }
 .mg-ver-foot { margin: 13px 0 0; font-size: 0.78rem; }
 
 .mg-top > .ds-date-row { margin: 10px 0 0; }
-.mg-verwarn { display: flex; align-items: flex-start; gap: 10px; max-width: 48rem; margin: 12px 0 0; background: var(--ds-warning-bg); border: 1px solid var(--ds-warning-border); border-radius: 4px; padding: 10px 14px; font-size: 0.8125rem; color: var(--ds-warning-fg); }
-.mg-verwarn-icon { flex-shrink: 0; width: 1.38em; height: 1.38em; color: #b88c00; margin-top: 1px; }
-.mg-verwarn p { margin: 0; line-height: 1.5; }
-.mg-verwarn a { color: var(--ds-warning-fg); font-weight: 600; text-decoration: underline; }
-.mg-verwarn a:hover { color: #5a4400; }
+.mg-top > .ds-alert { max-width: 48rem; margin: 12px 0 0; }
 /* ══ CENTERED STICKY TOC BAR — full-bleed, semi-transparent ══
    z-index: 100 (sticky-headers tier per DESIGN-POLICIES.md Z-layer scale).
    The TOC bar is functionally sticky header chrome, so it sits at the
@@ -4159,9 +4155,11 @@ html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
   <a class="ds-version" href="https://arxiv.org/abs/2604.22725v3">v3<span class="is-sr-only">, version 3</span></a>
   </span>
 </p>
-<div class="mg-verwarn" role="status">
-  <svg class="mg-verwarn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-  <p><strong>You are viewing version 1.</strong> A newer version is available &mdash; <a href="https://arxiv.org/abs/2604.22725v3">version 3, revised 28 Jun 2026</a>.</p>
+<div class="ds-alert ds-alert--warning" role="alert">
+  <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+  <div class="ds-alert-content">
+    <p><strong>You are viewing version 1.</strong> A newer version is available — <a href="https://arxiv.org/abs/2604.22725v3">version 3, revised 28&nbsp;Jun&nbsp;2026</a>.</p>
+  </div>
 </div>
 <div class="ltx_authors">
   <ul class="ltx_authors-list">
@@ -9712,7 +9710,7 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
      and lists it in the headings menu. No role="alert": a live region in the
      HTML as served is not announced on load; order and the page title do it. */
   function replaceWarning(alertHtml) {
-    hide($('.mg-verwarn'));
+    hide($('.mg-top > .ds-alert--warning'));
     var box = document.createElement('section');
     box.className = 'ds-alert ds-alert--error mg-states-alert';
     box.setAttribute('aria-labelledby', 'mg-notice-h');
@@ -9853,7 +9851,7 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
     setAbsLinks(3);
     verline(SUB + DOT + ANN + DOT + 'Revised <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC (this version)',
       vl(1) + ' ' + vl(2) + ' ' + vl(3, true));
-    hide($('.mg-verwarn'));
+    hide($('.mg-top > .ds-alert--warning'));
     $$('a[href*="/pdf/2604.22725v1"], a[href*="/src/2604.22725v1"]').forEach(function (a) { a.href = a.href.replace('v1', 'v3'); });
     versionHistory([
       verItem(3, '28 Jun 2026', V3NOTE, 'viewing', true),
