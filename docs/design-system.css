@@ -1055,7 +1055,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   flex-wrap: wrap;
   container-type: inline-size;
 }
-.ds-pagination .ds-btn { min-width: 0; }   /* before the narrow rules, so their 44px wins */
+.ds-pagination .ds-btn { min-width: 0; min-height: var(--ds-target); }   /* before the narrow rules, so their 44px wins */
 /* Narrow: one row, the position between Previous and Next. Numbered pages
    hide the page numbers, and the words Previous and Next are read out but not
    shown, so the arrows hold the ends. */
@@ -1117,16 +1117,16 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 2rem;
-  min-height: 2rem;
+  min-width: max(2rem, var(--ds-target));
+  min-height: max(2rem, var(--ds-target));
   margin: 0;
 }
 .ds-pagination-pages a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 2rem;
-  min-height: 2rem;
+  min-width: max(2rem, var(--ds-target));
+  min-height: max(2rem, var(--ds-target));
   padding: 0 var(--ds-space-1);
   color: var(--ds-text-muted);
   text-decoration: none;
@@ -2026,14 +2026,15 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 .ds-form--compact .ds-input.is-warning:not(textarea, .ds-input-group > *) { box-shadow: inset 0 0 0 2px var(--ds-warning-border); }
 /* Typed text under 16px makes iOS zoom the page on focus. */
 @media (pointer: coarse) { .ds-form--compact .ds-input { font-size: 1rem; } }
+@media (pointer: coarse) { .ds-form--compact > :is(.ds-check, a) { min-height: var(--ds-target); } }
 /* In a toolbar, a compact form takes the row's far end. */
 .ds-btn-group > .ds-form--compact { margin-inline-start: auto; }
 /* With a joined input, the input takes the spare width and leaves room for
    the button and nothing else, so whatever follows the button starts a new line. */
 .ds-form--compact > .ds-input-group { flex: 1 1 calc(100% - 12rem); min-width: 0; }
-.ds-form--compact > .ds-input-group + .ds-btn { flex: none; align-self: stretch; margin-inline-start: calc(var(--ds-space-2) - var(--ds-space-4)); }
-/* Secondary options under the row: each is a 24px box with its content
-   centred, so a checkbox and a link line up. */
+.ds-form--compact > .ds-input-group + .ds-btn { flex: none; align-self: stretch; min-height: var(--ds-target); margin-inline-start: calc(var(--ds-space-2) - var(--ds-space-4)); }
+/* Secondary options under the row: each is a 24px box (the full target on a
+   touch screen) with its content centred, so a checkbox and a link line up. */
 .ds-form--compact > .ds-check { margin: 0; align-items: center; }
 .ds-form--compact > .ds-check input { margin: 0; }
 .ds-form--compact > a { display: inline-flex; align-items: center; min-height: 24px; font-size: 0.875rem; }
@@ -2041,8 +2042,8 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 .ds-form--compact > a { margin-inline-start: auto; }
 .ds-input-group { display: flex; }
 .ds-input-group > .ds-input { width: auto; min-width: 0; border-radius: 0; }
-.ds-input-group > .ds-input:not(select) { flex: 1 1 auto; }
-.ds-input-group > select.ds-input { flex: 0 1 auto; max-width: 50%; }
+.ds-input-group > .ds-input:not(select) { flex: 1 1 0; }
+.ds-input-group > select.ds-input { flex: none; max-width: 50%; }
 .ds-input-group > .ds-input ~ .ds-input { margin-inline-start: -1px; }
 /* Rounded only on the outside, like a button group: the first control has no
    control before it, the last has none after it. */
@@ -2056,13 +2057,16 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 }
 /* Narrow: one short column, labels in one column and fields in the other. */
 @container (max-width: 34em) {
-  .ds-form--compact:not(:has(> .ds-input-group)) { display: grid; grid-template-columns: fit-content(9rem) minmax(0, 1fr); column-gap: var(--ds-space-3); width: 100%; }   /* a long label wraps rather than squeezing its field */
-  .ds-form--compact:not(:has(> .ds-input-group)) > label:not(.ds-label, .ds-check, .is-sr-only) { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; }
-  .ds-form--compact:not(:has(> .ds-input-group)) .ds-input { width: 100%; }
-  .ds-form--compact:not(:has(> .ds-input-group)) > .ds-btn { grid-column: 2; justify-self: start; }
-  .ds-form--compact:not(:has(> .ds-input-group)) > :not(label, .ds-btn) { grid-column: 1 / -1; }
+  .ds-form--compact { display: grid; grid-template-columns: fit-content(9rem) minmax(0, 1fr); column-gap: var(--ds-space-3); width: 100%; }   /* a long label wraps rather than squeezing its field */
+  .ds-form--compact > label:not(.ds-label, .ds-check, .is-sr-only) { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; }
+  .ds-form--compact .ds-input:not(.ds-input-group > *) { width: 100%; }
+  .ds-form--compact > .ds-btn { grid-column: 2; justify-self: start; }
+  .ds-form--compact > :not(label, .ds-btn),
+  .ds-form--compact > .ds-check,
+  .ds-form--compact > .ds-input-group + .ds-btn { grid-column: 1 / -1; }
+  .ds-form--compact > .ds-input-group + .ds-btn { justify-self: stretch; margin-inline-start: 0; }
   /* A fieldset: its legend on a line of its own, its controls one under another. */
-  .ds-form--compact:not(:has(> .ds-input-group)) > fieldset { flex-direction: column; align-items: flex-start; }
+  .ds-form--compact > fieldset { flex-direction: column; align-items: flex-start; }
 }
 
 /* Room on the right for the arrow, which renders inside the control's own
