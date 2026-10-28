@@ -37,10 +37,12 @@ components:
         does: "Every date. Announced is a full instant (`2026-01-11T01:32Z`); Submitted and Revised are date-only (`2026-01-10`). In the visible text, bind the day, month, year and clock time to each other with `&nbsp;`, and bind UTC to its date the same way, outside the element."
       - name: ".is-sr-only"
         does: "The separator. The visible \"·\" is `aria-hidden`, and the sr-only comma beside it is what a screen reader gets between one date and the next."
+      - name: ".ds-version-list"
+        does: "The versions. A `<span>` at the end of the `.ds-date-row`, after a dot: every version, oldest first. A taller line and wider word spacing keep the version links 24px apart."
       - name: ".ds-version"
-        does: "One version number in the row, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link colour and underline. The version being viewed is a `<strong>`, not a link."
+        does: "One version number, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link colour and underline. The version being viewed is a `<strong>`, not a link, in a box: the accent tint, edged in the strong accent."
       - name: "aria-current=\"true\""
-        does: "On the version being viewed. Goes with the bold, so the current version is marked twice and never by colour alone. The `.is-sr-only` span inside it says \", this version\", because the attribute alone is not announced by every screen reader."
+        does: "On the version being viewed, which draws the box. The current version is marked by the box, the bold and the missing underline, never by colour alone. The `.is-sr-only` span inside it says \", this version\", because the attribute alone is not announced by every screen reader."
       - name: ".is-sr-only"
         does: "Inside every prior-version link, after the visible \"v1\": \", version 1\". The visible \"v1\" on its own does not say which version the link opens. A screen reader reads the link as \"v1, version 1\"."
       - name: ".ds-alert.ds-alert--warning"
@@ -92,6 +94,8 @@ components:
         does: "The abstract, in full."
       - name: ".ds-sidebar"
         does: "The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
+      - name: ".ds-panel-label"
+        does: "On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page."
       - name: ".ds-paper-files"
         does: "The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count."
       - name: "[aria-describedby]"
@@ -112,6 +116,8 @@ components:
     classes:
       - name: ".ds-sidebar"
         does: "The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
+      - name: ".ds-panel-label"
+        does: "On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page."
       - name: ".ds-paper-files"
         does: "The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count."
       - name: "[aria-describedby]"
@@ -133,7 +139,7 @@ components:
       - name: ".ds-paper-bar-logo"
         does: "The one-colour Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill=\"currentColor\"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”."
       - name: ".ds-toc-menu"
-        does: "The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list."
+        does: "The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list. Subsections are an `<ol>` inside their section's `<li>`, indented to the section's title in smaller type."
       - name: ".ds-paper-tools"
         does: "Abstract, PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `arrow-left`, `file-text` and `tex` from `docs/icons/`."
   - id: paper-permalinks
@@ -189,6 +195,8 @@ rules:
   - "**Every date has its label.** Readers confuse submitted and announced dates when either stands alone."
   - "**The primary category comes first** and is told apart by more than colour: its tooltip names it as primary."
   - "**The identity line comes first.** Many readers arrive at a paper directly, without passing its abstract page."
+  - "**The paper follows its abstract on the same page.** A reader reaches the first section by scrolling, by the TOC bar or by the skip link, with no click to open the paper."
+  - "**The page has one `<main>`**, from the area above the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it. When LaTeXML's output has no `<main>`, the page around the paper supplies it."
   - "**An optional area above the identity line** holds a temporary message or link, such as Back to abstract while readers move to HTML papers. It is `.ds-btn-text` for a link, or an alert for a message."
   - "**The licence is a link, with no explanation.**"
   - "**Version links go to abstract pages.**"
@@ -210,14 +218,15 @@ rules:
   - "**A figure caption is Plex Sans at 0.875rem, left-aligned, the width of the figure.** Its label, text and punctuation are as the author wrote them."
   - "**Paper figures keep ar5iv's white background in dark mode; arXiv's own images do not.** Clear it on the header, TOC bar and footer images."
   - "**LaTeXML's beta badge and conversion logo are not shown.**"
-  - "**The contents list repeats the author's headings exactly**, including appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML's contents entries with their MathML. A script that reads a heading's words leaves out the TeX annotation, as `toc.js` and `anchors.js` do."
+  - "**The contents list repeats the author's headings exactly**, including subsections, appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML's contents entries with their MathML. A script that reads a heading's words leaves out the TeX annotation, as `toc.js` and `anchors.js` do."
   - "**LaTeXML's own sidebar is not shown.** The `.ds-toc` list replaces it."
   - "**Each link in the bar shows an icon and its name.**"
   - "**PDF opens in a new tab, in the bar and in the sidebar**, so the reader keeps their place in the HTML paper. It has the external-link icon and “(opens in a new tab)”, as on [Links](links.md)."
   - "**A second skip link goes to the paper's first section**, before the sidebar, so a keyboard user can pass it."
+  - "**Every link to a place in the paper lands below the TOC bar.** The bar sets `scroll-padding-top`, which covers the TOC, a permalink, a citation and a cross-reference; a script that scrolls uses `scrollIntoView`, which respects it."
   - "**Every section, subsection and appendix heading has a Permalink control.** It copies the address with the section's LaTeXML id and the version: `…/2604.22725v1#S2`."
   - "**The accessible name starts with the visible word**, then names the section."
-  - "**Copying is announced in words** in a `role=\"status\"` region. A changed label alone is not read out."
+  - "**Copying is announced in words**, as in [Announce the result of an action](alerts.md#announce-results)."
   - "**One action gets the Permalink control; several get the element pill.**"
   - "**Inline math gets nothing from arXiv**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly."
   - "**View TeX swaps the equation for its TeX in place**, in plain monospace with no code box. The TeX view is hidden until asked for, and MathML annotations are never displayed."
@@ -236,15 +245,19 @@ rules:
   - "**Closing returns focus to what opened the viewer.**"
   - "**Zoom is animated only when reduced motion is not set.**"
   - "**One popover per citation cluster**, listing every reference in it, each with its own Jump to reference link."
+  - "**The popover comes straight after the number in the tab order.** Tab moves from the number into the popover, and Tab past its last link goes on to the text after the citation. Opening it does not move focus."
   - "**The popover repeats each entry as the bibliography shows it**, never rebuilt, reordered or shortened. If the entry cannot be found, the citation stays a plain link to the reference list."
   - "**It opens next to the citation and never covers it**: below the line if it fits, else above, else just under the TOC bar."
   - "**A cluster of seven or more may use two columns on a wide screen.**"
   - "**Below 48rem a popover is a bottom sheet.** The script and the CSS read the same threshold."
   - "**Escape returns focus to the number that was pressed.**"
-  - "**Jump to reference lands on the entry**, with the accent wash and keyboard focus, and the address gets its id. The scroll is smooth only when reduced motion is not set."
-  - "**Back to your place shows only during a jump.** It returns focus and scroll to the citation. The browser's Back button does the same."
+  - "**Jump to reference lands on the entry**, with the accent wash and keyboard focus, and the address gets its id. The entry is a `.ds-paper-element` with `tabindex=\"-1\"`, and the wash is its `:target` style, so the link changes the address itself: `history.pushState` does not update `:target`. The scroll is smooth only when reduced motion is not set."
+  - "**A cross-reference works the same way.** A link to a section, equation, figure, table or theorem lands below the TOC bar, and a `.ds-paper-element` it lands on shows the wash."
+  - "**Every jump adds an entry to the browser history**, from a citation or a cross-reference, so the browser's Back button returns to the link. With JavaScript, Back also returns focus to the link."
+  - "**Back to your place shows only during a jump**, from a citation or a cross-reference. It returns focus and scroll to the link the reader followed. It is an action in the element pill of the entry the reader landed on, and the pill stays shown while that entry is the target."
+  - "**Without JavaScript, a citation is LaTeXML's link to its entry.** The entry shows the wash through `:target`, and the browser's Back button returns to the citation."
   - "**A bibliography entry is highlighted as one box**, number included, never line by line."
-  - "**A footnote stays where LaTeXML puts it**: the marker, then the note itself, in one `.ltx_note`. At wide widths the note is shown in the margin beside its marker, with CSS only, at the width of a margin note (`--ds-marginalia-width`) and at the same widths. Narrower, a script makes the marker a button that opens the note in a popover. Without JavaScript the note shows after its marker."
+  - "**A footnote stays where LaTeXML puts it**: the marker, then the note itself, in one `.ltx_note`. At wide widths the note is shown in the margin beside its marker, with CSS only, at the width of a margin note (`--ds-marginalia-width`) and at the same widths. Narrower, a script makes the marker a button that opens the note in a popover. The popover opens on a click, Enter or a tap, never on hover, and stays open while the reader uses the links in it. Without JavaScript the note shows after its marker. A footnote needs no Back to your place: it stays after its marker, so reading it moves the reader nowhere."
   - "**Print hides the TOC bar, the permalinks, the element pills and every popover.** The identity line prints at 10pt."
   - "**No page break inside an equation, table or figure, and none straight after a heading.** Sections may break."
   - "**Submitted [v1 date] UTC · Announced [announcement date and time] UTC** are always shown, in that order, separated by a dot. Announced is when the paper first entered the public listing. Revision dates are when subsequent versions of the same paper went public. Dates use `<time datetime>`."
@@ -253,7 +266,7 @@ rules:
   - "arXiv's platform serves a global audience across all timezones. UTC was chosen as the universal standard to ensure consistency and clarity for all users. It is a group decision, made with arXiv staff."
   - "Times are rendered in plain-text **UTC** bound to its date with `&nbsp;` so a wrap never separates them. The `<time>` element is not bound to the date."
   - "Inside `datetime`, announced is a full instant (`2026-01-11T01:32Z`), Submitted and Revised stay date-only (`2026-01-10`)."
-  - "The version being viewed is distinguished by weight and by `aria-current` and does not depend on color alone. It is deliberately not a link because the reader is already viewing it."
+  - "The version being viewed is distinguished by a box, by weight and by `aria-current` and does not depend on color alone. It is deliberately not a link because the reader is already viewing it."
   - "Prior versions are inline links alongside other text, so they are underlined. Each also has a hidden span that says which version it opens, so a screen reader reads \"v1, version 1\"."
   - "The ellipsis is decoration (`aria-hidden`) with an sr-only count of what is hidden; the working affordance is a text button showing the explicit total (\"show all 127 versions\"), toggling `aria-expanded`. The full list is server-rendered and collapsed by the script in `html.js`. Without JavaScript, the fallback is that readers see the full list of versions."
   - "**Paper titles are always a heading**, so a screen reader user can easily find it and move from paper to paper in a list."
@@ -350,9 +363,11 @@ Every paper shows its dates, and its versions once there is more than one. What 
   Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
   Revised <time datetime="2026-04-24">24 Apr 2026</time> UTC (this version)
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <strong class="ds-version" aria-current="true">v3<span class="is-sr-only">, this version</span></strong>
+  </span>
 </p>
 ```
 
@@ -363,9 +378,11 @@ Every paper shows its dates, and its versions once there is more than one. What 
   Submitted <time datetime="2026-01-10">10 Jan 2026</time> UTC (this version)
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
   Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <strong class="ds-version" aria-current="true">v1<span class="is-sr-only">, this version</span></strong>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
+  </span>
 </p>
 <div class="ds-alert ds-alert--warning" role="alert">
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -388,6 +405,7 @@ Every paper shows its dates, and its versions once there is more than one. What 
   Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
   Revised <time datetime="2026-06-30">30 Jun 2026</time> UTC (this version)
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
@@ -404,6 +422,7 @@ Every paper shows its dates, and its versions once there is more than one. What 
   <a class="ds-version" href="#v11">v11<span class="is-sr-only">, version 11</span></a>
   <strong class="ds-version" aria-current="true">v12<span class="is-sr-only">, this version</span></strong>
   <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v12-elide v12-tail">show all 12 versions</button>
+  </span>
 </p>
 ```
 
@@ -416,6 +435,7 @@ Every paper shows its dates, and its versions once there is more than one. What 
   Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
   Revised <time datetime="2026-03-12">12 Mar 2026</time> UTC (this version)
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
@@ -435,6 +455,7 @@ Every paper shows its dates, and its versions once there is more than one. What 
   <a class="ds-version" href="#v11">v11<span class="is-sr-only">, version 11</span></a>
   <a class="ds-version" href="#v12">v12<span class="is-sr-only">, version 12</span></a>
   <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b">show all 12 versions</button>
+  </span>
 </p>
 <div class="ds-alert ds-alert--warning" role="alert">
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -457,6 +478,7 @@ Every paper shows its dates, and its versions once there is more than one. What 
   Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
   Revised <time datetime="2026-06-30">30 Jun 2026</time> UTC (this version)
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
@@ -485,14 +507,16 @@ Every paper shows its dates, and its versions once there is more than one. What 
   <a class="ds-version" href="#v23">v23<span class="is-sr-only">, version 23</span></a>
   <strong class="ds-version" aria-current="true">v24<span class="is-sr-only">, this version</span></strong>
   <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="true" aria-controls="v24-elide v24-tail" data-closed-label="show all 24 versions">show fewer</button>
+  </span>
 </p>
 ```
 
 - `.ds-date-row` — The row. One `<p>` that holds the dates and, after them, the version links. Small type in the muted colour, with tabular figures so the digits line up.
 - `<time datetime>` — Every date. Announced is a full instant (`2026-01-11T01:32Z`); Submitted and Revised are date-only (`2026-01-10`). In the visible text, bind the day, month, year and clock time to each other with `&nbsp;`, and bind UTC to its date the same way, outside the element.
 - `.is-sr-only` — The separator. The visible "·" is `aria-hidden`, and the sr-only comma beside it is what a screen reader gets between one date and the next.
-- `.ds-version` — One version number in the row, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link colour and underline. The version being viewed is a `<strong>`, not a link.
-- `aria-current="true"` — On the version being viewed. Goes with the bold, so the current version is marked twice and never by colour alone. The `.is-sr-only` span inside it says ", this version", because the attribute alone is not announced by every screen reader.
+- `.ds-version-list` — The versions. A `<span>` at the end of the `.ds-date-row`, after a dot: every version, oldest first. A taller line and wider word spacing keep the version links 24px apart.
+- `.ds-version` — One version number, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link colour and underline. The version being viewed is a `<strong>`, not a link, in a box: the accent tint, edged in the strong accent.
+- `aria-current="true"` — On the version being viewed, which draws the box. The current version is marked by the box, the bold and the missing underline, never by colour alone. The `.is-sr-only` span inside it says ", this version", because the attribute alone is not announced by every screen reader.
 - `.is-sr-only` — Inside every prior-version link, after the visible "v1": ", version 1". The visible "v1" on its own does not say which version the link opens. A screen reader reads the link as "v1, version 1".
 - `.ds-alert.ds-alert--warning` — The older-version warning, documented on [Alerts](alerts.md): the warning state, the triangle icon copied whole, and `role="alert"`. Render it only when the version being viewed is not the latest. One sentence that names the version being viewed, then a link straight to the latest one.
 - `aria-current="true"` — On v1 here, since v1 is the version being viewed. "(this version)" moves to the Submitted date for the same reason.
@@ -544,9 +568,11 @@ On a paper's own page the order is the identity line, the title, the dates and v
   Submitted <time datetime="2026-04-24">24 Apr 2026</time> UTC (this version)
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
   Announced <time datetime="2026-04-25T02:07Z">25 Apr 2026, 02:07</time> UTC
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <strong class="ds-version" aria-current="true">v1<span class="is-sr-only">, this version</span></strong>
   <a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="https://arxiv.org/abs/2604.22725v3">v3<span class="is-sr-only">, version 3</span></a>
+  </span>
 </p>
 <div class="ds-alert ds-alert--warning" role="alert">
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
@@ -563,7 +589,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 <div>…the paper…</div>
 <aside class="ds-sidebar" aria-label="About this paper">
   <section aria-labelledby="files-h">
-    <h3 class="ds-panel-label" id="files-h">Files</h3>
+    <h2 class="ds-panel-label" id="files-h">Files</h2>
     <ul class="ds-paper-files">
       <li><a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="paper-title-demo"><svg aria-hidden="true">…</svg> Download PDF <small>· 1.2 MB</small><span class="is-sr-only"> (opens in a new tab)</span></a></li>
       <li><a href="https://arxiv.org/src/2604.22725v1" aria-describedby="paper-title-demo">TeX Source</a> <small>.tar.gz · 286 KB</small></li>
@@ -573,7 +599,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
   </section>
   <section aria-labelledby="cite-h" class="ds-paper-cite">
     <div class="ds-paper-cite-head">
-      <h3 class="ds-panel-label" id="cite-h">Cite</h3>
+      <h2 class="ds-panel-label" id="cite-h">Cite</h2>
       <div class="ds-form--compact ds-paper-cite-tools">
         <label class="is-sr-only" for="cite-format">Citation format</label>
         <select class="ds-input" id="cite-format">
@@ -605,7 +631,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
     <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="cite-code" hidden>Show full citation</button>
   </section>
   <section aria-labelledby="info-h">
-    <h3 class="ds-panel-label" id="info-h">Paper information</h3>
+    <h2 class="ds-panel-label" id="info-h">Paper information</h2>
     <details class="ds-acc" name="paper-info">
       <summary>Version history</summary>
       <div class="ds-acc-body">
@@ -658,6 +684,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 - `.ds-link-list` — On a `<p>`: the authors, with Show more after eight.
 - `<p>` — The abstract, in full.
 - `.ds-sidebar` — The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
+- `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link.
 - `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy-code.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
@@ -677,7 +704,7 @@ Beside a full paper, the sidebar holds the paper's files, its citation and its i
 <div>…the paper…</div>
 <aside class="ds-sidebar" aria-label="About this paper">
   <section aria-labelledby="files-h">
-    <h3 class="ds-panel-label" id="files-h">Files</h3>
+    <h2 class="ds-panel-label" id="files-h">Files</h2>
     <ul class="ds-paper-files">
       <li><a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="paper-title-demo"><svg aria-hidden="true">…</svg> Download PDF <small>· 1.2 MB</small><span class="is-sr-only"> (opens in a new tab)</span></a></li>
       <li><a href="https://arxiv.org/src/2604.22725v1" aria-describedby="paper-title-demo">TeX Source</a> <small>.tar.gz · 286 KB</small></li>
@@ -687,7 +714,7 @@ Beside a full paper, the sidebar holds the paper's files, its citation and its i
   </section>
   <section aria-labelledby="cite-h" class="ds-paper-cite">
     <div class="ds-paper-cite-head">
-      <h3 class="ds-panel-label" id="cite-h">Cite</h3>
+      <h2 class="ds-panel-label" id="cite-h">Cite</h2>
       <div class="ds-form--compact ds-paper-cite-tools">
         <label class="is-sr-only" for="cite-format">Citation format</label>
         <select class="ds-input" id="cite-format">
@@ -719,7 +746,7 @@ Beside a full paper, the sidebar holds the paper's files, its citation and its i
     <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="cite-code" hidden>Show full citation</button>
   </section>
   <section aria-labelledby="info-h">
-    <h3 class="ds-panel-label" id="info-h">Paper information</h3>
+    <h2 class="ds-panel-label" id="info-h">Paper information</h2>
     <details class="ds-acc" name="paper-info">
       <summary>Version history</summary>
       <div class="ds-acc-body">
@@ -766,6 +793,7 @@ Beside a full paper, the sidebar holds the paper's files, its citation and its i
 ```
 
 - `.ds-sidebar` — The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
+- `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link.
 - `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy-code.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
@@ -791,7 +819,12 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
       <nav class="ds-toc-menu" aria-label="Contents">
         <ol>
           <li><a href="#"><span class="ds-toc-num">1</span>Introduction</a></li>
-          <li><a href="#"><span class="ds-toc-num">2</span>Setup</a></li>
+          <li><a href="#"><span class="ds-toc-num">2</span>Setup</a>
+            <ol>
+              <li><a href="#"><span class="ds-toc-num">2.1</span>Background equations</a></li>
+              <li><a href="#"><span class="ds-toc-num">2.2</span>Perturbed equations</a></li>
+            </ol>
+          </li>
           <li><a href="#"><span class="ds-toc-num">3</span>Evolution of gauge-invariant variables</a></li>
           <li><a href="#"><span class="ds-toc-num">4</span>Analysis of gauges</a></li>
           <li><a href="#"><span class="ds-toc-num">5</span>Conclusion</a></li>
@@ -812,7 +845,7 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
 
 - `.ds-toc-bar` — The bar, as on [Progressive disclosure](progressive-disclosure.md#toc-bar). On a paper it is `.ds-full`, the full width of the page.
 - `.ds-paper-bar-logo` — The one-colour Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill="currentColor"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”.
-- `.ds-toc-menu` — The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list.
+- `.ds-toc-menu` — The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list. Subsections are an `<ol>` inside their section's `<li>`, indented to the section's title in smaller type.
 - `.ds-paper-tools` — Abstract, PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `arrow-left`, `file-text` and `tex` from `docs/icons/`.
 
 ## Section permalinks
@@ -901,6 +934,8 @@ A citation or footnote marker opens a popover that repeats the reference or the 
 - **Every date has its label.** Readers confuse submitted and announced dates when either stands alone.
 - **The primary category comes first** and is told apart by more than colour: its tooltip names it as primary.
 - **The identity line comes first.** Many readers arrive at a paper directly, without passing its abstract page.
+- **The paper follows its abstract on the same page.** A reader reaches the first section by scrolling, by the TOC bar or by the skip link, with no click to open the paper.
+- **The page has one `<main>`**, from the area above the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it. When LaTeXML's output has no `<main>`, the page around the paper supplies it.
 - **An optional area above the identity line** holds a temporary message or link, such as Back to abstract while readers move to HTML papers. It is `.ds-btn-text` for a link, or an alert for a message.
 - **The licence is a link, with no explanation.**
 - **Version links go to abstract pages.**
@@ -922,14 +957,15 @@ A citation or footnote marker opens a popover that repeats the reference or the 
 - **A figure caption is Plex Sans at 0.875rem, left-aligned, the width of the figure.** Its label, text and punctuation are as the author wrote them.
 - **Paper figures keep ar5iv's white background in dark mode; arXiv's own images do not.** Clear it on the header, TOC bar and footer images.
 - **LaTeXML's beta badge and conversion logo are not shown.**
-- **The contents list repeats the author's headings exactly**, including appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML's contents entries with their MathML. A script that reads a heading's words leaves out the TeX annotation, as `toc.js` and `anchors.js` do.
+- **The contents list repeats the author's headings exactly**, including subsections, appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML's contents entries with their MathML. A script that reads a heading's words leaves out the TeX annotation, as `toc.js` and `anchors.js` do.
 - **LaTeXML's own sidebar is not shown.** The `.ds-toc` list replaces it.
 - **Each link in the bar shows an icon and its name.**
 - **PDF opens in a new tab, in the bar and in the sidebar**, so the reader keeps their place in the HTML paper. It has the external-link icon and “(opens in a new tab)”, as on [Links](links.md).
 - **A second skip link goes to the paper's first section**, before the sidebar, so a keyboard user can pass it.
+- **Every link to a place in the paper lands below the TOC bar.** The bar sets `scroll-padding-top`, which covers the TOC, a permalink, a citation and a cross-reference; a script that scrolls uses `scrollIntoView`, which respects it.
 - **Every section, subsection and appendix heading has a Permalink control.** It copies the address with the section's LaTeXML id and the version: `…/2604.22725v1#S2`.
 - **The accessible name starts with the visible word**, then names the section.
-- **Copying is announced in words** in a `role="status"` region. A changed label alone is not read out.
+- **Copying is announced in words**, as in [Announce the result of an action](alerts.md#announce-results).
 - **One action gets the Permalink control; several get the element pill.**
 - **Inline math gets nothing from arXiv**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly.
 - **View TeX swaps the equation for its TeX in place**, in plain monospace with no code box. The TeX view is hidden until asked for, and MathML annotations are never displayed.
@@ -948,15 +984,19 @@ A citation or footnote marker opens a popover that repeats the reference or the 
 - **Closing returns focus to what opened the viewer.**
 - **Zoom is animated only when reduced motion is not set.**
 - **One popover per citation cluster**, listing every reference in it, each with its own Jump to reference link.
+- **The popover comes straight after the number in the tab order.** Tab moves from the number into the popover, and Tab past its last link goes on to the text after the citation. Opening it does not move focus.
 - **The popover repeats each entry as the bibliography shows it**, never rebuilt, reordered or shortened. If the entry cannot be found, the citation stays a plain link to the reference list.
 - **It opens next to the citation and never covers it**: below the line if it fits, else above, else just under the TOC bar.
 - **A cluster of seven or more may use two columns on a wide screen.**
 - **Below 48rem a popover is a bottom sheet.** The script and the CSS read the same threshold.
 - **Escape returns focus to the number that was pressed.**
-- **Jump to reference lands on the entry**, with the accent wash and keyboard focus, and the address gets its id. The scroll is smooth only when reduced motion is not set.
-- **Back to your place shows only during a jump.** It returns focus and scroll to the citation. The browser's Back button does the same.
+- **Jump to reference lands on the entry**, with the accent wash and keyboard focus, and the address gets its id. The entry is a `.ds-paper-element` with `tabindex="-1"`, and the wash is its `:target` style, so the link changes the address itself: `history.pushState` does not update `:target`. The scroll is smooth only when reduced motion is not set.
+- **A cross-reference works the same way.** A link to a section, equation, figure, table or theorem lands below the TOC bar, and a `.ds-paper-element` it lands on shows the wash.
+- **Every jump adds an entry to the browser history**, from a citation or a cross-reference, so the browser's Back button returns to the link. With JavaScript, Back also returns focus to the link.
+- **Back to your place shows only during a jump**, from a citation or a cross-reference. It returns focus and scroll to the link the reader followed. It is an action in the element pill of the entry the reader landed on, and the pill stays shown while that entry is the target.
+- **Without JavaScript, a citation is LaTeXML's link to its entry.** The entry shows the wash through `:target`, and the browser's Back button returns to the citation.
 - **A bibliography entry is highlighted as one box**, number included, never line by line.
-- **A footnote stays where LaTeXML puts it**: the marker, then the note itself, in one `.ltx_note`. At wide widths the note is shown in the margin beside its marker, with CSS only, at the width of a margin note (`--ds-marginalia-width`) and at the same widths. Narrower, a script makes the marker a button that opens the note in a popover. Without JavaScript the note shows after its marker.
+- **A footnote stays where LaTeXML puts it**: the marker, then the note itself, in one `.ltx_note`. At wide widths the note is shown in the margin beside its marker, with CSS only, at the width of a margin note (`--ds-marginalia-width`) and at the same widths. Narrower, a script makes the marker a button that opens the note in a popover. The popover opens on a click, Enter or a tap, never on hover, and stays open while the reader uses the links in it. Without JavaScript the note shows after its marker. A footnote needs no Back to your place: it stays after its marker, so reading it moves the reader nowhere.
 - **Print hides the TOC bar, the permalinks, the element pills and every popover.** The identity line prints at 10pt.
 - **No page break inside an equation, table or figure, and none straight after a heading.** Sections may break.
 - **Submitted [v1 date] UTC · Announced [announcement date and time] UTC** are always shown, in that order, separated by a dot. Announced is when the paper first entered the public listing. Revision dates are when subsequent versions of the same paper went public. Dates use `<time datetime>`.
@@ -965,7 +1005,7 @@ A citation or footnote marker opens a popover that repeats the reference or the 
 - arXiv's platform serves a global audience across all timezones. UTC was chosen as the universal standard to ensure consistency and clarity for all users. It is a group decision, made with arXiv staff.
 - Times are rendered in plain-text **UTC** bound to its date with `&nbsp;` so a wrap never separates them. The `<time>` element is not bound to the date.
 - Inside `datetime`, announced is a full instant (`2026-01-11T01:32Z`), Submitted and Revised stay date-only (`2026-01-10`).
-- The version being viewed is distinguished by weight and by `aria-current` and does not depend on color alone. It is deliberately not a link because the reader is already viewing it.
+- The version being viewed is distinguished by a box, by weight and by `aria-current` and does not depend on color alone. It is deliberately not a link because the reader is already viewing it.
 - Prior versions are inline links alongside other text, so they are underlined. Each also has a hidden span that says which version it opens, so a screen reader reads "v1, version 1".
 - The ellipsis is decoration (`aria-hidden`) with an sr-only count of what is hidden; the working affordance is a text button showing the explicit total ("show all 127 versions"), toggling `aria-expanded`. The full list is server-rendered and collapsed by the script in `html.js`. Without JavaScript, the fallback is that readers see the full list of versions.
 - **Paper titles are always a heading**, so a screen reader user can easily find it and move from paper to paper in a list.

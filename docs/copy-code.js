@@ -61,10 +61,12 @@
     ta.setAttribute('readonly', '');
     ta.style.cssText = 'position:fixed;top:-1000px;opacity:0';
     document.body.appendChild(ta);
+    var back = document.activeElement;   // select() moves focus; it goes back to the button
     ta.select();
     var ok = false;
     try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
     document.body.removeChild(ta);
+    if (back && back.focus) back.focus();
     return ok ? Promise.resolve() : Promise.reject();
   }
 
@@ -89,7 +91,9 @@
     btn.type = 'button';
     btn.className = 'ds-code-copy';
     btn.innerHTML = ICONS;
-    btn.setAttribute('aria-label', 'Copy code');
+    // A block in a figure is named by its caption: "Copy BibTeX", not "Copy code".
+    var caption = pre.closest('figure') && pre.closest('figure').querySelector('figcaption');
+    btn.setAttribute('aria-label', caption ? 'Copy ' + caption.textContent.trim() : 'Copy code');
     btn.title = 'Copy';       // the pointer affordance; assistive technology
                               // takes aria-label and ignores this
 

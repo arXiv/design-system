@@ -1055,7 +1055,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   flex-wrap: wrap;
   container-type: inline-size;
 }
-.ds-pagination .ds-btn { min-width: 0; }   /* before the narrow rules, so their 44px wins */
+.ds-pagination .ds-btn { min-width: 0; min-height: var(--ds-target); }   /* before the narrow rules, so their 44px wins */
 /* Narrow: one row, the position between Previous and Next. Numbered pages
    hide the page numbers, and the words Previous and Next are read out but not
    shown, so the arrows hold the ends. */
@@ -1117,16 +1117,16 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 2rem;
-  min-height: 2rem;
+  min-width: max(2rem, var(--ds-target));
+  min-height: max(2rem, var(--ds-target));
   margin: 0;
 }
 .ds-pagination-pages a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 2rem;
-  min-height: 2rem;
+  min-width: max(2rem, var(--ds-target));
+  min-height: max(2rem, var(--ds-target));
   padding: 0 var(--ds-space-1);
   color: var(--ds-text-muted);
   text-decoration: none;
@@ -1874,6 +1874,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
   margin: 0 0 var(--ds-space-2);
   font-size: 0.875rem;
   color: var(--ds-text-muted);
+  overflow-wrap: anywhere;   /* the DOI breaks rather than widen the page at large text sizes */
 }
 /* A paper's version history, newest first; the version being viewed is marked. */
 .ds-paper-versions { list-style: none; margin: 0; padding: 0; }
@@ -1898,7 +1899,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 .ds-paper-cite .ds-paper-cite-head > .ds-form--compact .ds-input { width: auto; }
 .ds-paper-cite > * + * { margin-top: var(--ds-space-2); }
 .ds-paper-cite-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-space-2); }
-html:not(.js) .ds-paper-cite-tools { display: none; }
+html:not(.js) .ds-paper-cite .ds-paper-cite-tools { display: none; }   /* outranks the display: flex above */
 /* The citation is a standard code block that wraps, with room on the right
    for its copy button. Closed, it shows its first two lines. */
 .ds-paper-cite-code { contain: inline-size; }   /* a long DOI must not widen the sidebar */
@@ -1920,9 +1921,12 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 .ds-paper-element:is(:hover, :focus-within, .is-active) > .ds-element-pill { opacity: 1; pointer-events: auto; }
 .ds-paper-element > .ds-element-pill { bottom: 0; left: 50%; translate: -50% 50%; }
 .ds-paper-element img { max-width: 100%; height: auto; }
+/* The element a link in the paper has just landed on. :target, so it works without JavaScript. */
+.ds-paper-element:target { background: var(--ds-accent-wash); border-color: transparent; outline: none; }
+.ds-paper-element:target > .ds-element-pill { opacity: 1; pointer-events: auto; }
 @media (hover: none) {
-  .ds-paper-element:hover:not(.is-active, :focus-within) { border-color: transparent; }
-  .ds-paper-element:hover:not(.is-active, :focus-within) > .ds-element-pill { opacity: 0; pointer-events: none; }
+  .ds-paper-element:hover:not(.is-active, :focus-within, :target) { border-color: transparent; }
+  .ds-paper-element:hover:not(.is-active, :focus-within, :target) > .ds-element-pill { opacity: 0; pointer-events: none; }
 }
 /* A paper's TOC bar: the logo in the start slot, the other formats in the end slot. */
 .ds-paper-bar-logo { grid-column: 1; justify-self: start; display: inline-flex; color: var(--ds-text-muted); }
@@ -1944,6 +1948,7 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 @media (max-width: 40rem) {
   .ds-toc-bar-inner:has(> .ds-paper-tools) { grid-template-columns: auto 1fr; row-gap: var(--ds-space-1); }
   .ds-toc-bar-inner > .ds-paper-tools { grid-column: 1 / -1; grid-row: 2; justify-self: start; flex-wrap: wrap; }
+  .ds-toc-bar-inner:has(> .ds-paper-tools) > .ds-toc { position: static; }   /* the list centres on the bar, not on the off-centre control, so it stays on screen */
 }
 @media print {
   .ds-toc-bar, .ds-permalink, .ds-element-pill { display: none; }
@@ -1966,14 +1971,27 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 .ds-data-list dt { flex: none; font-weight: 600; color: var(--ds-text); }
 .ds-data-list dd { margin: 0; overflow-wrap: anywhere; }
 
-/* VERSION DISPLAY  (.ds-date-row, .ds-version) — papers.html#paper-versions */
+/* VERSION DISPLAY  (.ds-date-row, .ds-version-list, .ds-version) — papers.html#paper-versions */
 .ds-date-row {
   font-size: 0.8125rem;
   line-height: 1.5;
   color: var(--ds-text-muted);
   font-variant-numeric: tabular-nums;
 }
+/* The taller line and the word spacing keep 24px between version links (WCAG 2.5.8). */
+.ds-version-list { line-height: 2; word-spacing: var(--ds-space-2); }
+.ds-version-list > .ds-show-more { word-spacing: normal; }
 .ds-version { font-family: var(--ds-font-mono); }
+.ds-version-list > .ds-version,
+.ds-paper-versions > li[aria-current] .ds-version { white-space: nowrap; }   /* the box around the current version never splits across lines */
+.ds-version[aria-current],
+.ds-paper-versions > li[aria-current] .ds-version {
+  padding: 0 var(--ds-space-1);
+  border: 1px solid var(--ds-accent-strong);
+  border-radius: 3px;
+  background: var(--ds-tint-accent);
+  color: var(--ds-text);
+}
 
 /* COMPACT FORM  (.ds-form--compact, .ds-input-group) — forms.html
    A form that supports the main content: one row, or one short column when
@@ -2026,14 +2044,15 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 .ds-form--compact .ds-input.is-warning:not(textarea, .ds-input-group > *) { box-shadow: inset 0 0 0 2px var(--ds-warning-border); }
 /* Typed text under 16px makes iOS zoom the page on focus. */
 @media (pointer: coarse) { .ds-form--compact .ds-input { font-size: 1rem; } }
+@media (pointer: coarse) { .ds-form--compact > :is(.ds-check, a) { min-height: var(--ds-target); } }
 /* In a toolbar, a compact form takes the row's far end. */
 .ds-btn-group > .ds-form--compact { margin-inline-start: auto; }
 /* With a joined input, the input takes the spare width and leaves room for
    the button and nothing else, so whatever follows the button starts a new line. */
 .ds-form--compact > .ds-input-group { flex: 1 1 calc(100% - 12rem); min-width: 0; }
-.ds-form--compact > .ds-input-group + .ds-btn { flex: none; align-self: stretch; margin-inline-start: calc(var(--ds-space-2) - var(--ds-space-4)); }
-/* Secondary options under the row: each is a 24px box with its content
-   centred, so a checkbox and a link line up. */
+.ds-form--compact > .ds-input-group + .ds-btn { flex: none; align-self: stretch; min-height: var(--ds-target); margin-inline-start: calc(var(--ds-space-2) - var(--ds-space-4)); }
+/* Secondary options under the row: each is a 24px box (the full target on a
+   touch screen) with its content centred, so a checkbox and a link line up. */
 .ds-form--compact > .ds-check { margin: 0; align-items: center; }
 .ds-form--compact > .ds-check input { margin: 0; }
 .ds-form--compact > a { display: inline-flex; align-items: center; min-height: 24px; font-size: 0.875rem; }
@@ -2041,8 +2060,8 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 .ds-form--compact > a { margin-inline-start: auto; }
 .ds-input-group { display: flex; }
 .ds-input-group > .ds-input { width: auto; min-width: 0; border-radius: 0; }
-.ds-input-group > .ds-input:not(select) { flex: 1 1 auto; }
-.ds-input-group > select.ds-input { flex: 0 1 auto; max-width: 50%; }
+.ds-input-group > .ds-input:not(select) { flex: 1 1 0; }
+.ds-input-group > select.ds-input { flex: none; max-width: 50%; }
 .ds-input-group > .ds-input ~ .ds-input { margin-inline-start: -1px; }
 /* Rounded only on the outside, like a button group: the first control has no
    control before it, the last has none after it. */
@@ -2056,13 +2075,16 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 }
 /* Narrow: one short column, labels in one column and fields in the other. */
 @container (max-width: 34em) {
-  .ds-form--compact:not(:has(> .ds-input-group)) { display: grid; grid-template-columns: fit-content(9rem) minmax(0, 1fr); column-gap: var(--ds-space-3); width: 100%; }   /* a long label wraps rather than squeezing its field */
-  .ds-form--compact:not(:has(> .ds-input-group)) > label:not(.ds-label, .ds-check, .is-sr-only) { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; }
-  .ds-form--compact:not(:has(> .ds-input-group)) .ds-input { width: 100%; }
-  .ds-form--compact:not(:has(> .ds-input-group)) > .ds-btn { grid-column: 2; justify-self: start; }
-  .ds-form--compact:not(:has(> .ds-input-group)) > :not(label, .ds-btn) { grid-column: 1 / -1; }
+  .ds-form--compact { display: grid; grid-template-columns: fit-content(9rem) minmax(0, 1fr); column-gap: var(--ds-space-3); width: 100%; }   /* a long label wraps rather than squeezing its field */
+  .ds-form--compact > label:not(.ds-label, .ds-check, .is-sr-only) { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; }
+  .ds-form--compact .ds-input:not(.ds-input-group > *) { width: 100%; }
+  .ds-form--compact > .ds-btn { grid-column: 2; justify-self: start; }
+  .ds-form--compact > :not(label, .ds-btn),
+  .ds-form--compact > .ds-check,
+  .ds-form--compact > .ds-input-group + .ds-btn { grid-column: 1 / -1; }
+  .ds-form--compact > .ds-input-group + .ds-btn { justify-self: stretch; margin-inline-start: 0; }
   /* A fieldset: its legend on a line of its own, its controls one under another. */
-  .ds-form--compact:not(:has(> .ds-input-group)) > fieldset { flex-direction: column; align-items: flex-start; }
+  .ds-form--compact > fieldset { flex-direction: column; align-items: flex-start; }
 }
 
 /* Room on the right for the arrow, which renders inside the control's own
@@ -3214,7 +3236,9 @@ html:has(.ds-modal[open]) {
 /* Both columns start on the same line. */
 :where(:has(> .ds-sidebar)) > :not(.ds-sidebar) > :first-child { margin-block-start: 0; }
 .ds-sidebar {
-  flex: 1 0 17rem;
+  flex: 1 1 17rem;
+  min-width: 0;   /* alone on its row, it narrows to the screen at 320px and at large text sizes */
+  overflow-wrap: anywhere;
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-4);
@@ -3297,6 +3321,11 @@ html:has(.ds-modal[open]) {
 }
 /* A sticky bar covers the top of the viewport, so an anchor has to land below it. */
 html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
+/* On a short viewport (a phone on its side, a laptop at 400% zoom) the bar scrolls away with the page. */
+@media (max-height: 30rem) {
+  .ds-toc-bar { position: relative; }
+  html:has(.ds-toc-bar) { scroll-padding-top: var(--ds-space-3); }
+}
 
 .ds-toc { position: relative; }
 .ds-toc-trigger {
@@ -3335,7 +3364,9 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   left: 50%;
   transform: translateX(-50%);
   z-index: 60;
-  min-width: 17.5rem;
+  min-width: min(17.5rem, 100vw - 2rem);
+  width: max-content;
+  max-width: min(26rem, 100vw - 2rem);
   max-height: 60vh;
   overflow-y: auto;
   padding: var(--ds-space-2) 0;
@@ -3347,7 +3378,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 .ds-toc-menu ol { list-style: none; margin: 0; padding: 0; }
 .ds-toc-menu a {
   display: flex;
-  gap: 10px;
+  gap: 6px;
   padding: 6px 18px;
   font-size: 0.85rem;
   line-height: 1.4;
@@ -3357,8 +3388,10 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 .ds-toc-menu a:hover { background: var(--ds-surface-hover); }
 .ds-toc-menu a:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: -3px; }
 .ds-toc-menu a.is-current { background: var(--ds-accent-wash); color: var(--ds-link); font-weight: 600; }
-.ds-toc-num { min-width: 22px; color: var(--ds-text-muted); font-variant-numeric: tabular-nums; }
+.ds-toc-num { flex: none; min-width: 0.9rem; color: var(--ds-text-muted); font-variant-numeric: tabular-nums; }
 .ds-toc-menu a.is-current .ds-toc-num { color: var(--ds-link); }
+.ds-toc-menu ol ol a { padding-inline-start: calc(18px + 0.9rem + 6px); font-size: 0.8125rem; }
+.ds-toc-menu ol ol .ds-toc-num { min-width: 1.65rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .ds-toc-bar, .ds-toc-trigger, .ds-toc-trigger .ds-toc-chevron { transition: none; }
@@ -3394,6 +3427,8 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   cursor: pointer;
   white-space: nowrap;
 }
+/* theme.js sets html.js in the head, so the tail is closed before the first paint. */
+html.js .ds-show-more-tail:not(.is-open) { display: none; }
 .ds-show-more:hover {
   color: var(--ds-link-hover);
   text-decoration-thickness: 0.15em;
@@ -4452,6 +4487,9 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   transition: opacity 0.12s;
 }
 .ds-permalink svg { width: 1.05em; height: 1.05em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ds-permalink .ds-permalink-done,
+.ds-permalink.is-done svg:not(.ds-permalink-done) { display: none; }
+.ds-permalink.is-done .ds-permalink-done { display: block; color: var(--ds-success-border); }
 :is(h2, h3, h4):is(:hover, .is-active) > .ds-permalink,
 .ds-permalink:focus-visible { opacity: 1; }
 @media (hover: none) {
@@ -4526,6 +4564,9 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
    at the moment of the click. The host sets data-theme-choice; the script that
    sets it is the same one that sets the attribute on <html>. */
 .ds-theme-toggle > svg { display: none; }
+/* Until theme.js sets it up the button is empty and nameless, and without
+   JavaScript it would stay that way. */
+.ds-theme-toggle:not([data-theme-choice]) { display: none; }
 .ds-theme-toggle[data-theme-choice="system"] > .ds-theme-icon-system,
 .ds-theme-toggle[data-theme-choice="light"]  > .ds-theme-icon-light,
 .ds-theme-toggle[data-theme-choice="dark"]   > .ds-theme-icon-dark { display: block; }

@@ -33,7 +33,7 @@ components:
       - name: "<h2>"
         does: "The results heading, “Results for” and the query. It gives no count: the count is in the bar below it."
       - name: ".ds-alert"
-        does: "A message about the whole set of results, such as a limit on how many can be reached. It goes above the page numbers."
+        does: "A message about the whole set of results, such as a limit on how many can be reached. It goes above the page numbers. See [Single line](alerts.md#single-line)."
       - name: ".ds-pagination--top, .ds-pagination--bottom"
         does: "The range and page numbers above and below the results, in tinted bars. See [Numbered pages](pager.md#numbered-pages)."
       - name: "<section aria-labelledby> for the results"
@@ -113,7 +113,10 @@ After a search, the form stays where it was, on the page ground. A heading names
   </form>
   <section aria-labelledby="results">
     <h2 id="results">Results for “lensing”</h2>
-    <div class="ds-alert" role="status"><p>Search shows the first 10,000 results. To see the rest, narrow the search.</p></div>
+    <div class="ds-alert" role="status">
+      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <div class="ds-alert-content"><p>Search shows the first 10,000 results. To see the rest, narrow the search.</p></div>
+    </div>
     <nav class="ds-pagination ds-pagination--top" aria-label="Search results pages">
       <span class="ds-pagination-position">1–50 of 18,659 results</span>
       <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
@@ -155,7 +158,7 @@ After a search, the form stays where it was, on the page ground. A heading names
 - `<label> with a select` — The settings for the results, such as order and results per page, as compact selects beside the other options under the search row. A link to another page, such as Advanced search, takes the end of that line.
 - `<section>` — The results: the heading, the notice, the two bars and the list are one region of the page, named by the heading. Inside it, the bars keep the list's own spacing.
 - `<h2>` — The results heading, “Results for” and the query. It gives no count: the count is in the bar below it.
-- `.ds-alert` — A message about the whole set of results, such as a limit on how many can be reached. It goes above the page numbers.
+- `.ds-alert` — A message about the whole set of results, such as a limit on how many can be reached. It goes above the page numbers. See [Single line](alerts.md#single-line).
 - `.ds-pagination--top, .ds-pagination--bottom` — The range and page numbers above and below the results, in tinted bars. See [Numbered pages](pager.md#numbered-pages).
 - `<section aria-labelledby> for the results` — Whatever the search finds. A paper is shown as on [Papers](papers.md#a-paper-in-a-list); another kind of record has its own pattern.
 
