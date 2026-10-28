@@ -16,6 +16,8 @@ components:
         does: "The container for a list of disclosures. Stacked in it they butt together and read as one ruled list: each shared edge is a single line, because the preceding item's lower rule is the next item's upper one."
       - name: "[open]"
         does: "Present on the one panel that starts open, if any. See [Which affordance](#which-affordance) under Rules."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
   - id: show-more
     title: "Show more"
     summary: "While an accordion hides an entire labelled section, the 'show more' control reveals the hidden *tail end* of partially displayed content. When hiding the remainder of a list we display the additional item count in the link."
@@ -37,7 +39,7 @@ components:
       - name: "[data-open-label]"
         does: "Read by the script on this page: the label while the tail is open. The closed label is the button's own text."
     notes:
-      - "A tail cannot be a details element, because a summary would put a heading in the middle of a sentence."
+      - "\"Show more\" is a button, not a `<details>` element (the element the accordion uses). A `<details>` element cannot sit inside a paragraph, and its label must come before the hidden text, not after it."
   - id: popover
     title: "Popover"
     summary: "A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers. The filter panel, a popover of filters for a set of data, is on [Filters](filters.md)."
@@ -68,6 +70,8 @@ components:
         does: "Builds the tab list from the panel headings and adds the roles, the selected state and the keyboard: Tab reaches the selected tab, the arrow keys move between tabs, Home and End go to the first and last. Moving to a tab shows its panel. Without the script, every panel shows under its own heading."
       - name: ".ds-tabs-list"
         does: "The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. It takes the background of the zone it sits in: the page ground (white in light mode), or the secondary zone's tint (light grey in light mode) inside a [secondary band](layout-patterns.md#page-zones). The row wraps on a narrow screen."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
   - id: toc-bar
     title: "TOC bar"
     summary: "Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. The bar is always sticky and it stays at the top of the viewport while the reader scrolls through the page."
@@ -172,6 +176,8 @@ Using the native `<details>/<summary>` elements means no JavaScript is needed, a
 - `.ds-acc-stack` — The container for a list of disclosures. Stacked in it they butt together and read as one ruled list: each shared edge is a single line, because the preceding item's lower rule is the next item's upper one.
 - `[open]` — Present on the one panel that starts open, if any. See [Which affordance](#which-affordance) under Rules.
 
+> Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)
+
 ## Show more
 
 While an accordion hides an entire labelled section, the 'show more' control reveals the hidden *tail end* of partially displayed content. When hiding the remainder of a list we display the additional item count in the link.
@@ -205,7 +211,7 @@ While an accordion hides an entire labelled section, the 'show more' control rev
 - `[hidden]` — On the region, the attribute and not a class, set by the script when it shows the button. Without JavaScript the region is never hidden, so the whole text shows and there is no button. While hidden, the names are out of the tab order and out of find-in-page, and the collapse still works with no CSS loaded at all.
 - `[data-open-label]` — Read by the script on this page: the label while the tail is open. The closed label is the button's own text.
 
-> A tail cannot be a details element, because a summary would put a heading in the middle of a sentence.
+> "Show more" is a button, not a `<details>` element (the element the accordion uses). A `<details>` element cannot sit inside a paragraph, and its label must come before the hidden text, not after it.
 
 ## Popover
 
@@ -260,6 +266,8 @@ Tabs switch between views of the same page. Each tab shows one panel and hides t
 - `.ds-tabs-panel` — One view, a `<section>` that starts with a heading. The heading becomes the tab label.
 - `tabs.js` — Builds the tab list from the panel headings and adds the roles, the selected state and the keyboard: Tab reaches the selected tab, the arrow keys move between tabs, Home and End go to the first and last. Moving to a tab shows its panel. Without the script, every panel shows under its own heading.
 - `.ds-tabs-list` — The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. It takes the background of the zone it sits in: the page ground (white in light mode), or the secondary zone's tint (light grey in light mode) inside a [secondary band](layout-patterns.md#page-zones). The row wraps on a narrow screen.
+
+> Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)
 
 ## TOC bar
 
