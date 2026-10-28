@@ -18,7 +18,9 @@
   var LINK_ICON =
     '<svg viewBox="0 0 24 24" aria-hidden="true">' +
       '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>' +
-      '<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
+      '<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>' +
+    '<svg class="ds-permalink-done" viewBox="0 0 24 24" aria-hidden="true">' +
+      '<path d="m20 6-11 11-5-5"/></svg>';
 
   function write(text) {
     if (navigator.clipboard && window.isSecureContext) {
@@ -60,11 +62,20 @@
       btn.className = 'ds-permalink';
       // The visible word starts the name; the hidden part says which section.
       btn.innerHTML = LINK_ICON + 'Permalink<span class="is-sr-only"> to ' + name.replace(/[&<>]/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }) + '</span>';
+      var timer;
       btn.addEventListener('click', function (e) {
         e.stopPropagation();
         var url = location.href.split('#')[0] + '#' + h.id;
         write(url).then(
-          function () { status.textContent = 'Link to ' + name + ' copied'; },
+          function () {
+            btn.classList.add('is-done');
+            status.textContent = 'Link to ' + name + ' copied';
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+              btn.classList.remove('is-done');
+              status.textContent = '';
+            }, 2000);
+          },
           function () { status.textContent = 'Copy failed — the address is ' + url; }
         );
       });

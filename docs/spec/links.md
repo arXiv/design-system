@@ -33,11 +33,11 @@ components:
       - name: "id"
         does: "Written into the HTML, by hand or by whatever builds the page. These docs use `verification/gen-anchors.py`, which makes it from the heading text."
       - name: ".ds-permalink"
-        does: "The control, a `<button>` with the link icon and the word “Permalink”, that `anchors.js` adds to every section heading with an `id`. It shows while the heading is hovered, while it has focus, and after a tap on a screen without hover. It stays in the tab order while it is hidden."
+        does: "The control, a `<button>` with the link icon and the word “Permalink”, that `anchors.js` adds to every section heading with an `id`. It shows while the heading is hovered, while it has focus, and after a tap on a screen without hover. It stays in the tab order while it is hidden. After a copy, the link icon is a green tick (`.ds-permalink-done`, added by the script) for 2 seconds, in the same space, so the word does not move."
       - name: ".is-sr-only"
         does: "Completes the accessible name with the section: “Permalink to Dividers”. The name starts with the visible word."
       - name: "[role=\"status\"]"
-        does: "One region on the page. The script writes “Link to Dividers copied” into it."
+        does: "One region on the page. The script writes “Link to Dividers copied” into it and clears it with the tick."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A) and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)"
 rules:
@@ -114,9 +114,9 @@ A section heading can include a control that copies a link to that section. It i
 
 - `<section> > h2, h3` — The section heading: the `<h2>` or `<h3>` that is the first element in a `<section>`. `anchors.js` adds the control to every section heading that has an `id`. No class is needed.
 - `id` — Written into the HTML, by hand or by whatever builds the page. These docs use `verification/gen-anchors.py`, which makes it from the heading text.
-- `.ds-permalink` — The control, a `<button>` with the link icon and the word “Permalink”, that `anchors.js` adds to every section heading with an `id`. It shows while the heading is hovered, while it has focus, and after a tap on a screen without hover. It stays in the tab order while it is hidden.
+- `.ds-permalink` — The control, a `<button>` with the link icon and the word “Permalink”, that `anchors.js` adds to every section heading with an `id`. It shows while the heading is hovered, while it has focus, and after a tap on a screen without hover. It stays in the tab order while it is hidden. After a copy, the link icon is a green tick (`.ds-permalink-done`, added by the script) for 2 seconds, in the same space, so the word does not move.
 - `.is-sr-only` — Completes the accessible name with the section: “Permalink to Dividers”. The name starts with the visible word.
-- `[role="status"]` — One region on the page. The script writes “Link to Dividers copied” into it.
+- `[role="status"]` — One region on the page. The script writes “Link to Dividers copied” into it and clears it with the tick.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A) and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)
 
