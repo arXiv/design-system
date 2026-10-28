@@ -16,6 +16,8 @@ components:
         does: "The search form. See [Compact form](forms.md#compact-form)."
       - name: ".ds-full.ds-zone-secondary"
         does: "The help, in a tinted band. See [Page zones](layout-patterns.md#page-zones)."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A)"
   - id: after-a-search
     title: "After a search"
     summary: "After a search, the form stays where it was, on the page ground. A heading names the query, and tinted bars with the range and page numbers bookend the results."
@@ -86,6 +88,8 @@ Before a search, the form is the primary content so it sits on the default page 
 - `<h2> in the band` — The heading for the help.
 - `.ds-form--compact` — The search form. See [Compact form](forms.md#compact-form).
 - `.ds-full.ds-zone-secondary` — The help, in a tinted band. See [Page zones](layout-patterns.md#page-zones).
+
+> Meets accessibility guideline [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A)
 
 ## After a search
 
