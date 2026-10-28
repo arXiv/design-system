@@ -1874,6 +1874,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
   margin: 0 0 var(--ds-space-2);
   font-size: 0.875rem;
   color: var(--ds-text-muted);
+  overflow-wrap: anywhere;   /* the DOI breaks rather than widen the page at large text sizes */
 }
 /* A paper's version history, newest first; the version being viewed is marked. */
 .ds-paper-versions { list-style: none; margin: 0; padding: 0; }
@@ -1920,9 +1921,12 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 .ds-paper-element:is(:hover, :focus-within, .is-active) > .ds-element-pill { opacity: 1; pointer-events: auto; }
 .ds-paper-element > .ds-element-pill { bottom: 0; left: 50%; translate: -50% 50%; }
 .ds-paper-element img { max-width: 100%; height: auto; }
+/* The element a link in the paper has just landed on. :target, so it works without JavaScript. */
+.ds-paper-element:target { background: var(--ds-accent-wash); border-color: transparent; outline: none; }
+.ds-paper-element:target > .ds-element-pill { opacity: 1; pointer-events: auto; }
 @media (hover: none) {
-  .ds-paper-element:hover:not(.is-active, :focus-within) { border-color: transparent; }
-  .ds-paper-element:hover:not(.is-active, :focus-within) > .ds-element-pill { opacity: 0; pointer-events: none; }
+  .ds-paper-element:hover:not(.is-active, :focus-within, :target) { border-color: transparent; }
+  .ds-paper-element:hover:not(.is-active, :focus-within, :target) > .ds-element-pill { opacity: 0; pointer-events: none; }
 }
 /* A paper's TOC bar: the logo in the start slot, the other formats in the end slot. */
 .ds-paper-bar-logo { grid-column: 1; justify-self: start; display: inline-flex; color: var(--ds-text-muted); }
@@ -1944,6 +1948,7 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 @media (max-width: 40rem) {
   .ds-toc-bar-inner:has(> .ds-paper-tools) { grid-template-columns: auto 1fr; row-gap: var(--ds-space-1); }
   .ds-toc-bar-inner > .ds-paper-tools { grid-column: 1 / -1; grid-row: 2; justify-self: start; flex-wrap: wrap; }
+  .ds-toc-bar-inner:has(> .ds-paper-tools) > .ds-toc { position: static; }   /* the list centres on the bar, not on the off-centre control, so it stays on screen */
 }
 @media print {
   .ds-toc-bar, .ds-permalink, .ds-element-pill { display: none; }
@@ -3231,7 +3236,9 @@ html:has(.ds-modal[open]) {
 /* Both columns start on the same line. */
 :where(:has(> .ds-sidebar)) > :not(.ds-sidebar) > :first-child { margin-block-start: 0; }
 .ds-sidebar {
-  flex: 1 0 17rem;
+  flex: 1 1 17rem;
+  min-width: 0;   /* alone on its row, it narrows to the screen at 320px and at large text sizes */
+  overflow-wrap: anywhere;
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-4);
@@ -3314,6 +3321,11 @@ html:has(.ds-modal[open]) {
 }
 /* A sticky bar covers the top of the viewport, so an anchor has to land below it. */
 html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
+/* On a short viewport (a phone on its side, a laptop at 400% zoom) the bar scrolls away with the page. */
+@media (max-height: 30rem) {
+  .ds-toc-bar { position: relative; }
+  html:has(.ds-toc-bar) { scroll-padding-top: var(--ds-space-3); }
+}
 
 .ds-toc { position: relative; }
 .ds-toc-trigger {
@@ -3352,7 +3364,9 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   left: 50%;
   transform: translateX(-50%);
   z-index: 60;
-  min-width: 17.5rem;
+  min-width: min(17.5rem, 100vw - 2rem);
+  width: max-content;
+  max-width: min(26rem, 100vw - 2rem);
   max-height: 60vh;
   overflow-y: auto;
   padding: var(--ds-space-2) 0;
@@ -3364,7 +3378,7 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 .ds-toc-menu ol { list-style: none; margin: 0; padding: 0; }
 .ds-toc-menu a {
   display: flex;
-  gap: 10px;
+  gap: 6px;
   padding: 6px 18px;
   font-size: 0.85rem;
   line-height: 1.4;
@@ -3374,8 +3388,10 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
 .ds-toc-menu a:hover { background: var(--ds-surface-hover); }
 .ds-toc-menu a:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: -3px; }
 .ds-toc-menu a.is-current { background: var(--ds-accent-wash); color: var(--ds-link); font-weight: 600; }
-.ds-toc-num { min-width: 22px; color: var(--ds-text-muted); font-variant-numeric: tabular-nums; }
+.ds-toc-num { flex: none; min-width: 0.9rem; color: var(--ds-text-muted); font-variant-numeric: tabular-nums; }
 .ds-toc-menu a.is-current .ds-toc-num { color: var(--ds-link); }
+.ds-toc-menu ol ol a { padding-inline-start: calc(18px + 0.9rem + 6px); font-size: 0.8125rem; }
+.ds-toc-menu ol ol .ds-toc-num { min-width: 1.65rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .ds-toc-bar, .ds-toc-trigger, .ds-toc-trigger .ds-toc-chevron { transition: none; }
