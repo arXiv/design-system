@@ -28,6 +28,10 @@ components:
         does: "`\"false\"` / `\"true\"`, flipped on every toggle. Without it the control announces as a button that does something unspecified."
       - name: "[aria-controls]"
         does: "The id of the region it reveals."
+      - name: ".ds-show-more-tail"
+        does: "On the region. While the page loads, it keeps the tail closed before the script runs, so a long author list does not show in full and then collapse. Without JavaScript it does nothing, and the whole text shows."
+      - name: ".is-open"
+        does: "Set on the region by the script while the tail is open, together with removing `hidden`."
       - name: "[hidden]"
         does: "On the region, the attribute and not a class, set by the script when it shows the button. Without JavaScript the region is never hidden, so the whole text shows and there is no button. While hidden, the names are out of the tab order and out of find-in-page, and the collapse still works with no CSS loaded at all."
       - name: "[data-open-label]"
@@ -174,12 +178,12 @@ While an accordion hides an entire labelled section, the 'show more' control rev
 
 ```html
 <!-- The rest of a paragraph -->
-<p>We study the convergence … under heavy-tailed noise<span id="abstract-tail">, and show that …</span>.
+<p>We study the convergence … under heavy-tailed noise<span id="abstract-tail" class="ds-show-more-tail">, and show that …</span>.
 <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="abstract-tail"
         data-open-label="show less" hidden>show more</button></p>
 
 <!-- The rest of a countable list: the label carries the count -->
-<p>Keywords: stochastic optimisation, …<span id="keywords-tail">, non-convex analysis, …</span>
+<p>Keywords: stochastic optimisation, …<span id="keywords-tail" class="ds-show-more-tail">, non-convex analysis, …</span>
 <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="keywords-tail"
         data-open-label="show fewer" hidden>show 4 more keywords</button></p>
 
@@ -187,7 +191,7 @@ While an accordion hides an entire labelled section, the 'show more' control rev
 <ul>
   <li><a href="#">R. Almeida</a></li>
   …
-  <li><a href="#">L. Cheng</a></li></ul><span id="authors-tail">, <a href="#">T. Okonkwo</a>, …</span>
+  <li><a href="#">L. Cheng</a></li></ul><span id="authors-tail" class="ds-show-more-tail">, <a href="#">T. Okonkwo</a>, …</span>
 <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false"
         aria-controls="authors-tail" data-open-label="show fewer" hidden>… show all 22 authors</button>
 ```
@@ -196,6 +200,8 @@ While an accordion hides an entire labelled section, the 'show more' control rev
 - `.ds-show-more--among-links` — For a tail at the end of a run of links, such as an author list: grey and italic, so the control does not read as one more link.
 - `[aria-expanded]` — `"false"` / `"true"`, flipped on every toggle. Without it the control announces as a button that does something unspecified.
 - `[aria-controls]` — The id of the region it reveals.
+- `.ds-show-more-tail` — On the region. While the page loads, it keeps the tail closed before the script runs, so a long author list does not show in full and then collapse. Without JavaScript it does nothing, and the whole text shows.
+- `.is-open` — Set on the region by the script while the tail is open, together with removing `hidden`.
 - `[hidden]` — On the region, the attribute and not a class, set by the script when it shows the button. Without JavaScript the region is never hidden, so the whole text shows and there is no button. While hidden, the names are out of the tab order and out of find-in-page, and the collapse still works with no CSS loaded at all.
 - `[data-open-label]` — Read by the script on this page: the label while the tail is open. The closed label is the button's own text.
 
