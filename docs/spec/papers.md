@@ -215,7 +215,7 @@ rules:
   - "**A second skip link goes to the paper's first section**, before the sidebar, so a keyboard user can pass it."
   - "**Every section, subsection and appendix heading has a Permalink control.** It copies the address with the section's LaTeXML id and the version: `…/2604.22725v1#S2`."
   - "**The accessible name starts with the visible word**, then names the section."
-  - "**Copying is announced in words** in a `role=\"status\"` region. A changed label alone is not read out."
+  - "**Copying is announced in words**, as in [Announce the result of an action](alerts.md#announce-results)."
   - "**One action gets the Permalink control; several get the element pill.**"
   - "**Inline math gets nothing from arXiv**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly."
   - "**View TeX swaps the equation for its TeX in place**, in plain monospace with no code box. The TeX view is hidden until asked for, and MathML annotations are never displayed."
@@ -925,7 +925,7 @@ A citation or footnote marker opens a popover that repeats the reference or the 
 - **A second skip link goes to the paper's first section**, before the sidebar, so a keyboard user can pass it.
 - **Every section, subsection and appendix heading has a Permalink control.** It copies the address with the section's LaTeXML id and the version: `…/2604.22725v1#S2`.
 - **The accessible name starts with the visible word**, then names the section.
-- **Copying is announced in words** in a `role="status"` region. A changed label alone is not read out.
+- **Copying is announced in words**, as in [Announce the result of an action](alerts.md#announce-results).
 - **One action gets the Permalink control; several get the element pill.**
 - **Inline math gets nothing from arXiv**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly.
 - **View TeX swaps the equation for its TeX in place**, in plain monospace with no code box. The TeX view is hidden until asked for, and MathML annotations are never displayed.
