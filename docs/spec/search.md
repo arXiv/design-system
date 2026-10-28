@@ -9,7 +9,9 @@ components:
     summary: "Before a search, the form is the primary content so it sits on the default page ground (white in light mode). Tips for searching are secondary content and sit in a tinted band below it."
     classes:
       - name: "<h1>"
-        does: "The page heading. The demo here uses a smaller heading because it sits inside this page."
+        does: "The page heading. The demo here uses smaller headings because it sits inside this page."
+      - name: "<h2> in the band"
+        does: "The heading for the help."
       - name: ".ds-form--compact"
         does: "The search form. See [Compact form](forms.md#compact-form)."
       - name: ".ds-full.ds-zone-secondary"
@@ -74,13 +76,14 @@ Before a search, the form is the primary content so it sits on the default page 
     <a href="search.html">Advanced search</a>
   </form>
   <div class="ds-full ds-zone-secondary">
-    <p><strong>Search tips</strong></p>
+    <h2>Search tips</h2>
     <p>How to search by author, by category, with wildcards and phrases.</p>
   </div>
 </div>
 ```
 
-- `<h1>` — The page heading. The demo here uses a smaller heading because it sits inside this page.
+- `<h1>` — The page heading. The demo here uses smaller headings because it sits inside this page.
+- `<h2> in the band` — The heading for the help.
 - `.ds-form--compact` — The search form. See [Compact form](forms.md#compact-form).
 - `.ds-full.ds-zone-secondary` — The help, in a tinted band. See [Page zones](layout-patterns.md#page-zones).
 
