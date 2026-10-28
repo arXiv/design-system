@@ -4355,9 +4355,18 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 }
 .ds-step-number svg { width: 0.875rem; height: 0.875rem; stroke: currentColor; stroke-width: 2.5; fill: none; }
 .ds-subnav--steps li > span .ds-step-number { border-style: dashed; }
+.ds-step-label { display: inline-block; }
+.ds-step-label::after {   /* reserves the bold width, so the row does not move */
+  content: attr(data-label);
+  display: block;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  font-weight: 600;
+}
 .ds-subnav--steps a[aria-current="step"] {
   color: var(--ds-text);
-  text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;
+  font-weight: 600;
 }
 .ds-subnav--steps a[aria-current="step"] .ds-step-number { border: 3px solid var(--ds-accent); }
 

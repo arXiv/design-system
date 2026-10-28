@@ -57,6 +57,8 @@ components:
         does: "When the viewed version falls inside the elision there are two ellipses and two hidden spans. List all four ids, separated by spaces, so one press opens the whole list."
       - name: "[hidden]"
         does: "Absent. This is the row as the server sends it: every version in the list, no elision, no button. The row wraps like any other line of text."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)"
     rules:
       - "**You are viewing version 1.** A newer version is available — [version 3, revised 24 Apr 2026](#v3)."
       - "**You are viewing version 7.** A newer version is available — [version 12, revised 30 Jun 2026](#v12)."
@@ -499,6 +501,8 @@ Every paper shows its dates, and its versions once there is more than one. What 
 - `aria-hidden="true"` — On the ellipsis, which is decoration. The `.is-sr-only` span beside it says which versions are hidden. Both sit in one span that the button hides when the list opens.
 - `aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b"` — When the viewed version falls inside the elision there are two ellipses and two hidden spans. List all four ids, separated by spaces, so one press opens the whole list.
 - `[hidden]` — Absent. This is the row as the server sends it: every version in the list, no elision, no button. The row wraps like any other line of text.
+
+> Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)
 
 **Rule.** **You are viewing version 1.** A newer version is available — [version 3, revised 24 Apr 2026](#v3).
 
