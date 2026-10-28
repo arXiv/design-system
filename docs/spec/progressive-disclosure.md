@@ -23,15 +23,19 @@ components:
     summary: "While an accordion hides an entire labelled section, the 'show more' control reveals the hidden *tail end* of partially displayed content. When hiding the remainder of a list we display the additional item count in the link."
     classes:
       - name: ".ds-show-more"
-        does: "On a `<button type=\"button\">` at the end of the visible part. It takes the link colour, because in running text it is the one thing a reader can act on. An accordion is `<details>`, so the browser supplies the semantics; a tail cannot be, so this is a real `<button>` that has to declare for itself what the browser would otherwise have said, with the three attributes below."
+        does: "On a `<button type=\"button\">` at the end of the visible part. It takes the link colour, because in running text it is the one thing a reader can act on. An accordion is `<details>`, so the browser supplies the semantics; a tail cannot be, so this is a real `<button>` that has to declare for itself what the browser would otherwise have said, with the three attributes below. It starts `hidden`, and the script shows it."
       - name: ".ds-show-more--among-links"
         does: "For a tail at the end of a run of links, such as an author list: grey and italic, so the control does not read as one more link."
       - name: "[aria-expanded]"
         does: "`\"false\"` / `\"true\"`, flipped on every toggle. Without it the control announces as a button that does something unspecified."
       - name: "[aria-controls]"
         does: "The id of the region it reveals."
+      - name: ".ds-show-more-tail"
+        does: "On the region. While the page loads, it keeps the tail closed before the script runs, so a long author list does not show in full and then collapse. Without JavaScript it does nothing, and the whole text shows."
+      - name: ".is-open"
+        does: "Set on the region by the script while the tail is open, together with removing `hidden`."
       - name: "[hidden]"
-        does: "On the region, the attribute and not a class. The hidden names are then out of the tab order and out of find-in-page while they are off screen, and the collapse still works with no CSS loaded at all."
+        does: "On the region, the attribute and not a class, set by the script when it shows the button. Without JavaScript the region is never hidden, so the whole text shows and there is no button. While hidden, the names are out of the tab order and out of find-in-page, and the collapse still works with no CSS loaded at all."
       - name: "[data-open-label]"
         does: "Read by the script on this page: the label while the tail is open. The closed label is the button's own text."
     notes:
@@ -124,7 +128,7 @@ rules:
   - "**Escape closes a popover and returns focus** to the chip that opened it. A reader who opened it from the keyboard must not be stranded at the end of the document. Close it on outside click and on scroll as well: the panel is `position: fixed`, so left open it would follow the viewport while the sentence it belongs to scrolls away."
   - "**The TOC bar's list is a disclosure, not an ARIA menu.** `role=\"menu\"` is for application menus — the kind with arrow-key roving focus and menu items that are not links. A list of links is a disclosure, and W3C’s own guidance is to build it this way. Using `role=\"menu\"` here would make a screen reader promise keyboard behaviour the component does not have."
   - "**Mark where the reader is.** `toc.js` gives the TOC bar's link to the current section `aria-current=\"location\"`."
-  - "**Everything is reachable from the keyboard, with JavaScript off.** Open, close and keyboard operation are native; outside-click and Escape are enhancements layered on top. Escape closes the TOC bar's list and returns focus to its control, but only when focus was inside the list — Escape pressed elsewhere on the page must not move it."
+  - "**Everything is reachable from the keyboard, with JavaScript off.** Open, close and keyboard operation are native; outside-click and Escape are enhancements layered on top. Show more needs a script, so its script does the hiding: without JavaScript the tail shows and the button does not. Escape closes the TOC bar's list and returns focus to its control, but only when focus was inside the list — Escape pressed elsewhere on the page must not move it."
 ---
 
 # Progressive disclosure
@@ -180,29 +184,31 @@ While an accordion hides an entire labelled section, the 'show more' control rev
 
 ```html
 <!-- The rest of a paragraph -->
-<p>We study the convergence … under heavy-tailed noise<span id="abstract-tail" hidden>, and show that …</span>.
+<p>We study the convergence … under heavy-tailed noise<span id="abstract-tail" class="ds-show-more-tail">, and show that …</span>.
 <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="abstract-tail"
-        data-open-label="show less">show more</button></p>
+        data-open-label="show less" hidden>show more</button></p>
 
 <!-- The rest of a countable list: the label carries the count -->
-<p>Keywords: stochastic optimisation, …<span id="keywords-tail" hidden>, non-convex analysis, …</span>
+<p>Keywords: stochastic optimisation, …<span id="keywords-tail" class="ds-show-more-tail">, non-convex analysis, …</span>
 <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="keywords-tail"
-        data-open-label="show fewer">show 4 more keywords</button></p>
+        data-open-label="show fewer" hidden>show 4 more keywords</button></p>
 
 <!-- The rest of a list of links -->
 <ul>
   <li><a href="#">R. Almeida</a></li>
   …
-  <li><a href="#">L. Cheng</a></li></ul><span id="authors-tail" hidden>, <a href="#">T. Okonkwo</a>, …</span>
+  <li><a href="#">L. Cheng</a></li></ul><span id="authors-tail" class="ds-show-more-tail">, <a href="#">T. Okonkwo</a>, …</span>
 <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false"
-        aria-controls="authors-tail" data-open-label="show fewer">… show all 22 authors</button>
+        aria-controls="authors-tail" data-open-label="show fewer" hidden>… show all 22 authors</button>
 ```
 
-- `.ds-show-more` — On a `<button type="button">` at the end of the visible part. It takes the link colour, because in running text it is the one thing a reader can act on. An accordion is `<details>`, so the browser supplies the semantics; a tail cannot be, so this is a real `<button>` that has to declare for itself what the browser would otherwise have said, with the three attributes below.
+- `.ds-show-more` — On a `<button type="button">` at the end of the visible part. It takes the link colour, because in running text it is the one thing a reader can act on. An accordion is `<details>`, so the browser supplies the semantics; a tail cannot be, so this is a real `<button>` that has to declare for itself what the browser would otherwise have said, with the three attributes below. It starts `hidden`, and the script shows it.
 - `.ds-show-more--among-links` — For a tail at the end of a run of links, such as an author list: grey and italic, so the control does not read as one more link.
 - `[aria-expanded]` — `"false"` / `"true"`, flipped on every toggle. Without it the control announces as a button that does something unspecified.
 - `[aria-controls]` — The id of the region it reveals.
-- `[hidden]` — On the region, the attribute and not a class. The hidden names are then out of the tab order and out of find-in-page while they are off screen, and the collapse still works with no CSS loaded at all.
+- `.ds-show-more-tail` — On the region. While the page loads, it keeps the tail closed before the script runs, so a long author list does not show in full and then collapse. Without JavaScript it does nothing, and the whole text shows.
+- `.is-open` — Set on the region by the script while the tail is open, together with removing `hidden`.
+- `[hidden]` — On the region, the attribute and not a class, set by the script when it shows the button. Without JavaScript the region is never hidden, so the whole text shows and there is no button. While hidden, the names are out of the tab order and out of find-in-page, and the collapse still works with no CSS loaded at all.
 - `[data-open-label]` — Read by the script on this page: the label while the tail is open. The closed label is the button's own text.
 
 > "Show more" is a button, not a `<details>` element (the element the accordion uses). A `<details>` element cannot sit inside a paragraph, and its label must come before the hidden text, not after it.
@@ -396,4 +402,4 @@ Opening one panel closes the panel that was open. There is no class: give every 
 - **Escape closes a popover and returns focus** to the chip that opened it. A reader who opened it from the keyboard must not be stranded at the end of the document. Close it on outside click and on scroll as well: the panel is `position: fixed`, so left open it would follow the viewport while the sentence it belongs to scrolls away.
 - **The TOC bar's list is a disclosure, not an ARIA menu.** `role="menu"` is for application menus — the kind with arrow-key roving focus and menu items that are not links. A list of links is a disclosure, and W3C’s own guidance is to build it this way. Using `role="menu"` here would make a screen reader promise keyboard behaviour the component does not have.
 - **Mark where the reader is.** `toc.js` gives the TOC bar's link to the current section `aria-current="location"`.
-- **Everything is reachable from the keyboard, with JavaScript off.** Open, close and keyboard operation are native; outside-click and Escape are enhancements layered on top. Escape closes the TOC bar's list and returns focus to its control, but only when focus was inside the list — Escape pressed elsewhere on the page must not move it.
+- **Everything is reachable from the keyboard, with JavaScript off.** Open, close and keyboard operation are native; outside-click and Escape are enhancements layered on top. Show more needs a script, so its script does the hiding: without JavaScript the tail shows and the button does not. Escape closes the TOC bar's list and returns focus to its control, but only when focus was inside the list — Escape pressed elsewhere on the page must not move it.

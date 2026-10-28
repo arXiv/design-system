@@ -172,17 +172,18 @@
             <dd>Goes in the head, and it is not deferred; that is load-bearing. The attribute has to be on
             <code>&lt;html&gt;</code> before the first paint or the page renders light and then flips — worst for
             exactly the reader who chose dark because light hurts. <code>check-policies.py</code> fails on a page
-            that defers it.</dd>
+            that defers it. It also puts the class <code>js</code> on <code>&lt;html&gt;</code>, so the stylesheet
+            can draw scripted states from the first paint, such as a closed Show more tail.</dd>
             <dt>.ds-theme-toggle</dt>
             <dd>The control. Three states, not two: follow the system, always light, always dark — and
             <em>follow the system</em> is the default a reader has to be able to get back to. A two-way switch
             cannot express it, so the first touch would lose the machine's setting for good. That is also why it
             is a <code>&lt;button&gt;</code> cycling a value rather than <a href="forms.html">the switch</a>, which
-            means on or off. Leave the element empty: the script fills in the icon, the accessible name and the state as hidden text. In the header bar it follows the navigation and comes before the account area, as on <a href="header.html#the-header-unit">the header unit</a>; it is one button, and the three states are never shown side by side. When a public header folds on a phone, it is a row in the menu, and the hidden text shows beside the icon: “Theme: following the system”.</dd>
+            means on or off. Leave the element empty: the script fills in the icon, the accessible name and the state as hidden text. Until it does, the stylesheet hides the button, so without JavaScript there is no empty control in the tab order. In the header bar it follows the navigation and comes before the account area, as on <a href="header.html#the-header-unit">the header unit</a>; it is one button, and the three states are never shown side by side. When a public header folds on a phone, it is a row in the menu, and the hidden text shows beside the icon: “Theme: following the system”.</dd>
             <dt>id="ds-theme-status"</dt>
-            <dd>The live region the result goes to. The button's name does not change when the theme does — the
-            name of a control is what it does, and it is still the theme control; the live region says “Theme is
-            now dark”. Same rule as the copy button and the switch.</dd>
+            <dd>The live region the result goes to: “Theme is now dark”. The button's name says which state
+            is on, “Theme: dark. Activate to change.”, because the icon is the only visible part; the live
+            region says what a press did, because a changed name is not reliably read out.</dd>
           </dl>
         </div>
       </details>
@@ -299,7 +300,7 @@
       and the page follows the OS: the control is an addition, never the only route to a readable page.</li>
       <li><strong>The icon is the only visible part, so the name gives the state.</strong> The button's
       accessible name says which state is on (“Theme: following the system. Activate to change.”), and a press
-      announces its result in the live region. A sighted reader learns the three icons from the cards above; a
+      announces its result in the live region, as in <a href="alerts.html#announce-results">Announce the result of an action</a>. A sighted reader learns the three icons from the cards above; a
       screen reader user is told, and is never guessing whether the moon means “it is dark” or “make it dark”.</li>
       <li><strong>Never a dark value by hand.</strong> Take every colour from a token and it flips with the rest of
       the page. A hex written into a page or a component cannot flip, and it will not announce itself.</li>

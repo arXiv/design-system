@@ -1899,7 +1899,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 .ds-paper-cite .ds-paper-cite-head > .ds-form--compact .ds-input { width: auto; }
 .ds-paper-cite > * + * { margin-top: var(--ds-space-2); }
 .ds-paper-cite-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-space-2); }
-html:not(.js) .ds-paper-cite-tools { display: none; }
+html:not(.js) .ds-paper-cite .ds-paper-cite-tools { display: none; }   /* outranks the display: flex above */
 /* The citation is a standard code block that wraps, with room on the right
    for its copy button. Closed, it shows its first two lines. */
 .ds-paper-cite-code { contain: inline-size; }   /* a long DOI must not widen the sidebar */
@@ -3427,6 +3427,8 @@ html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
   cursor: pointer;
   white-space: nowrap;
 }
+/* theme.js sets html.js in the head, so the tail is closed before the first paint. */
+html.js .ds-show-more-tail:not(.is-open) { display: none; }
 .ds-show-more:hover {
   color: var(--ds-link-hover);
   text-decoration-thickness: 0.15em;
@@ -4485,6 +4487,9 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   transition: opacity 0.12s;
 }
 .ds-permalink svg { width: 1.05em; height: 1.05em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ds-permalink .ds-permalink-done,
+.ds-permalink.is-done svg:not(.ds-permalink-done) { display: none; }
+.ds-permalink.is-done .ds-permalink-done { display: block; color: var(--ds-success-border); }
 :is(h2, h3, h4):is(:hover, .is-active) > .ds-permalink,
 .ds-permalink:focus-visible { opacity: 1; }
 @media (hover: none) {
@@ -4559,6 +4564,9 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
    at the moment of the click. The host sets data-theme-choice; the script that
    sets it is the same one that sets the attribute on <html>. */
 .ds-theme-toggle > svg { display: none; }
+/* Until theme.js sets it up the button is empty and nameless, and without
+   JavaScript it would stay that way. */
+.ds-theme-toggle:not([data-theme-choice]) { display: none; }
 .ds-theme-toggle[data-theme-choice="system"] > .ds-theme-icon-system,
 .ds-theme-toggle[data-theme-choice="light"]  > .ds-theme-icon-light,
 .ds-theme-toggle[data-theme-choice="dark"]   > .ds-theme-icon-dark { display: block; }
