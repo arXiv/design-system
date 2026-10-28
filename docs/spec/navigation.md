@@ -39,7 +39,9 @@ components:
       - name: "<a> for a complete step"
         does: "A link, with the check mark and `.is-sr-only` text “, completed”."
       - name: "aria-current=\"step\""
-        does: "On the link for the current step. It shows in bold, and its circle has a heavier border in the accent colour."
+        does: "On the link for the current step. Its name is bold, and its circle has a heavier border in the accent colour."
+      - name: ".ds-step-label"
+        does: "The step's name, with the same name in `data-label`. Every step keeps the width of its name in bold, so the row does not move when the current step changes."
       - name: "<a> for an available step"
         does: "A link with its number."
       - name: "<span> for a step not available yet"
@@ -126,10 +128,10 @@ The steps of one ordered process, such as a submission, and which one the reader
 ```html
 <nav class="ds-subnav ds-subnav--steps" aria-label="Submission steps">
   <ol role="list">
-    <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg …check…></span>Start<span class="is-sr-only">, completed</span></a></li>
-    <li><a href="#" aria-current="step"><span class="ds-step-number" aria-hidden="true">5</span>Metadata</a></li>
-    <li><a href="#"><span class="ds-step-number" aria-hidden="true">6</span>Categories</a></li>
-    <li><span><span class="ds-step-number" aria-hidden="true">7</span>Preview<span class="is-sr-only">, not available yet</span></span></li>
+    <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg …check…></span><span class="ds-step-label" data-label="Start">Start</span><span class="is-sr-only">, completed</span></a></li>
+    <li><a href="#" aria-current="step"><span class="ds-step-number" aria-hidden="true">5</span><span class="ds-step-label" data-label="Metadata">Metadata</span></a></li>
+    <li><a href="#"><span class="ds-step-number" aria-hidden="true">6</span><span class="ds-step-label" data-label="Categories">Categories</span></a></li>
+    <li><span><span class="ds-step-number" aria-hidden="true">7</span><span class="ds-step-label" data-label="Preview">Preview</span><span class="is-sr-only">, not available yet</span></span></li>
   </ol>
 </nav>
 ```
@@ -137,7 +139,8 @@ The steps of one ordered process, such as a submission, and which one the reader
 - `.ds-subnav--steps` — On the secondary navigation bar. It holds an `<ol role="list">`, one `<li>` per step. It wraps onto more lines on a narrow screen, so every step stays visible.
 - `.ds-step-number` — The step number in a circle, hidden from screen readers because the list gives the position. A complete step shows a check mark instead of its number.
 - `<a> for a complete step` — A link, with the check mark and `.is-sr-only` text “, completed”.
-- `aria-current="step"` — On the link for the current step. It shows in bold, and its circle has a heavier border in the accent colour.
+- `aria-current="step"` — On the link for the current step. Its name is bold, and its circle has a heavier border in the accent colour.
+- `.ds-step-label` — The step's name, with the same name in `data-label`. Every step keeps the width of its name in bold, so the row does not move when the current step changes.
 - `<a> for an available step` — A link with its number.
 - `<span> for a step not available yet` — A `<span>`, not a link, so it is not a tab stop. A dashed circle and `.is-sr-only` text “, not available yet”.
 
@@ -181,9 +184,9 @@ The secondary navigation and steps in an internal tool. `.ds-internal` on a pare
 <div class="ds-internal">
   <nav class="ds-subnav ds-subnav--steps" aria-label="Review steps">
     <ol role="list">
-      <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg …check…></span>Check<span class="is-sr-only">, completed</span></a></li>
-      <li><a href="#" aria-current="step"><span class="ds-step-number" aria-hidden="true">2</span>Classify</a></li>
-      <li><span><span class="ds-step-number" aria-hidden="true">3</span>Announce<span class="is-sr-only">, not available yet</span></span></li>
+      <li><a href="#"><span class="ds-step-number" aria-hidden="true"><svg …check…></span><span class="ds-step-label" data-label="Check">Check</span><span class="is-sr-only">, completed</span></a></li>
+      <li><a href="#" aria-current="step"><span class="ds-step-number" aria-hidden="true">2</span><span class="ds-step-label" data-label="Classify">Classify</span></a></li>
+      <li><span><span class="ds-step-number" aria-hidden="true">3</span><span class="ds-step-label" data-label="Announce">Announce</span><span class="is-sr-only">, not available yet</span></span></li>
     </ol>
   </nav>
 </div>
