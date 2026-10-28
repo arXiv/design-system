@@ -1966,14 +1966,27 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 .ds-data-list dt { flex: none; font-weight: 600; color: var(--ds-text); }
 .ds-data-list dd { margin: 0; overflow-wrap: anywhere; }
 
-/* VERSION DISPLAY  (.ds-date-row, .ds-version) — papers.html#paper-versions */
+/* VERSION DISPLAY  (.ds-date-row, .ds-version-list, .ds-version) — papers.html#paper-versions */
 .ds-date-row {
   font-size: 0.8125rem;
   line-height: 1.5;
   color: var(--ds-text-muted);
   font-variant-numeric: tabular-nums;
 }
+/* The taller line and the word spacing keep 24px between version links (WCAG 2.5.8). */
+.ds-version-list { line-height: 2; word-spacing: var(--ds-space-2); }
+.ds-version-list > .ds-show-more { word-spacing: normal; }
 .ds-version { font-family: var(--ds-font-mono); }
+.ds-version-list > .ds-version,
+.ds-paper-versions > li[aria-current] .ds-version { white-space: nowrap; }   /* the box around the current version never splits across lines */
+.ds-version[aria-current],
+.ds-paper-versions > li[aria-current] .ds-version {
+  padding: 0 var(--ds-space-1);
+  border: 1px solid var(--ds-accent-strong);
+  border-radius: 3px;
+  background: var(--ds-tint-accent);
+  color: var(--ds-text);
+}
 
 /* COMPACT FORM  (.ds-form--compact, .ds-input-group) — forms.html
    A form that supports the main content: one row, or one short column when

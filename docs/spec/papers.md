@@ -37,10 +37,12 @@ components:
         does: "Every date. Announced is a full instant (`2026-01-11T01:32Z`); Submitted and Revised are date-only (`2026-01-10`). In the visible text, bind the day, month, year and clock time to each other with `&nbsp;`, and bind UTC to its date the same way, outside the element."
       - name: ".is-sr-only"
         does: "The separator. The visible \"·\" is `aria-hidden`, and the sr-only comma beside it is what a screen reader gets between one date and the next."
+      - name: ".ds-version-list"
+        does: "The versions. A `<span>` at the end of the `.ds-date-row`, after a dot: every version, oldest first. A taller line and wider word spacing keep the version links 24px apart."
       - name: ".ds-version"
-        does: "One version number in the row, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link colour and underline. The version being viewed is a `<strong>`, not a link."
+        does: "One version number, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link colour and underline. The version being viewed is a `<strong>`, not a link, in a box: the accent tint, edged in the strong accent."
       - name: "aria-current=\"true\""
-        does: "On the version being viewed. Goes with the bold, so the current version is marked twice and never by colour alone. The `.is-sr-only` span inside it says \", this version\", because the attribute alone is not announced by every screen reader."
+        does: "On the version being viewed, which draws the box. The current version is marked by the box, the bold and the missing underline, never by colour alone. The `.is-sr-only` span inside it says \", this version\", because the attribute alone is not announced by every screen reader."
       - name: ".is-sr-only"
         does: "Inside every prior-version link, after the visible \"v1\": \", version 1\". The visible \"v1\" on its own does not say which version the link opens. A screen reader reads the link as \"v1, version 1\"."
       - name: ".ds-alert.ds-alert--warning"
@@ -253,7 +255,7 @@ rules:
   - "arXiv's platform serves a global audience across all timezones. UTC was chosen as the universal standard to ensure consistency and clarity for all users. It is a group decision, made with arXiv staff."
   - "Times are rendered in plain-text **UTC** bound to its date with `&nbsp;` so a wrap never separates them. The `<time>` element is not bound to the date."
   - "Inside `datetime`, announced is a full instant (`2026-01-11T01:32Z`), Submitted and Revised stay date-only (`2026-01-10`)."
-  - "The version being viewed is distinguished by weight and by `aria-current` and does not depend on color alone. It is deliberately not a link because the reader is already viewing it."
+  - "The version being viewed is distinguished by a box, by weight and by `aria-current` and does not depend on color alone. It is deliberately not a link because the reader is already viewing it."
   - "Prior versions are inline links alongside other text, so they are underlined. Each also has a hidden span that says which version it opens, so a screen reader reads \"v1, version 1\"."
   - "The ellipsis is decoration (`aria-hidden`) with an sr-only count of what is hidden; the working affordance is a text button showing the explicit total (\"show all 127 versions\"), toggling `aria-expanded`. The full list is server-rendered and collapsed by the script in `html.js`. Without JavaScript, the fallback is that readers see the full list of versions."
   - "**Paper titles are always a heading**, so a screen reader user can easily find it and move from paper to paper in a list."
@@ -350,9 +352,11 @@ Every paper shows its dates, and its versions once there is more than one. What 
   Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
   Revised <time datetime="2026-04-24">24 Apr 2026</time> UTC (this version)
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <strong class="ds-version" aria-current="true">v3<span class="is-sr-only">, this version</span></strong>
+  </span>
 </p>
 ```
 
@@ -363,9 +367,11 @@ Every paper shows its dates, and its versions once there is more than one. What 
   Submitted <time datetime="2026-01-10">10 Jan 2026</time> UTC (this version)
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
   Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <strong class="ds-version" aria-current="true">v1<span class="is-sr-only">, this version</span></strong>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
+  </span>
 </p>
 <div class="ds-alert ds-alert--warning" role="alert">
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -388,6 +394,7 @@ Every paper shows its dates, and its versions once there is more than one. What 
   Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
   Revised <time datetime="2026-06-30">30 Jun 2026</time> UTC (this version)
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
@@ -404,6 +411,7 @@ Every paper shows its dates, and its versions once there is more than one. What 
   <a class="ds-version" href="#v11">v11<span class="is-sr-only">, version 11</span></a>
   <strong class="ds-version" aria-current="true">v12<span class="is-sr-only">, this version</span></strong>
   <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v12-elide v12-tail">show all 12 versions</button>
+  </span>
 </p>
 ```
 
@@ -416,6 +424,7 @@ Every paper shows its dates, and its versions once there is more than one. What 
   Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
   Revised <time datetime="2026-03-12">12 Mar 2026</time> UTC (this version)
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
@@ -435,6 +444,7 @@ Every paper shows its dates, and its versions once there is more than one. What 
   <a class="ds-version" href="#v11">v11<span class="is-sr-only">, version 11</span></a>
   <a class="ds-version" href="#v12">v12<span class="is-sr-only">, version 12</span></a>
   <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b">show all 12 versions</button>
+  </span>
 </p>
 <div class="ds-alert ds-alert--warning" role="alert">
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -457,6 +467,7 @@ Every paper shows its dates, and its versions once there is more than one. What 
   Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
   Revised <time datetime="2026-06-30">30 Jun 2026</time> UTC (this version)
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
@@ -485,14 +496,16 @@ Every paper shows its dates, and its versions once there is more than one. What 
   <a class="ds-version" href="#v23">v23<span class="is-sr-only">, version 23</span></a>
   <strong class="ds-version" aria-current="true">v24<span class="is-sr-only">, this version</span></strong>
   <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="true" aria-controls="v24-elide v24-tail" data-closed-label="show all 24 versions">show fewer</button>
+  </span>
 </p>
 ```
 
 - `.ds-date-row` — The row. One `<p>` that holds the dates and, after them, the version links. Small type in the muted colour, with tabular figures so the digits line up.
 - `<time datetime>` — Every date. Announced is a full instant (`2026-01-11T01:32Z`); Submitted and Revised are date-only (`2026-01-10`). In the visible text, bind the day, month, year and clock time to each other with `&nbsp;`, and bind UTC to its date the same way, outside the element.
 - `.is-sr-only` — The separator. The visible "·" is `aria-hidden`, and the sr-only comma beside it is what a screen reader gets between one date and the next.
-- `.ds-version` — One version number in the row, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link colour and underline. The version being viewed is a `<strong>`, not a link.
-- `aria-current="true"` — On the version being viewed. Goes with the bold, so the current version is marked twice and never by colour alone. The `.is-sr-only` span inside it says ", this version", because the attribute alone is not announced by every screen reader.
+- `.ds-version-list` — The versions. A `<span>` at the end of the `.ds-date-row`, after a dot: every version, oldest first. A taller line and wider word spacing keep the version links 24px apart.
+- `.ds-version` — One version number, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link colour and underline. The version being viewed is a `<strong>`, not a link, in a box: the accent tint, edged in the strong accent.
+- `aria-current="true"` — On the version being viewed, which draws the box. The current version is marked by the box, the bold and the missing underline, never by colour alone. The `.is-sr-only` span inside it says ", this version", because the attribute alone is not announced by every screen reader.
 - `.is-sr-only` — Inside every prior-version link, after the visible "v1": ", version 1". The visible "v1" on its own does not say which version the link opens. A screen reader reads the link as "v1, version 1".
 - `.ds-alert.ds-alert--warning` — The older-version warning, documented on [Alerts](alerts.md): the warning state, the triangle icon copied whole, and `role="alert"`. Render it only when the version being viewed is not the latest. One sentence that names the version being viewed, then a link straight to the latest one.
 - `aria-current="true"` — On v1 here, since v1 is the version being viewed. "(this version)" moves to the Submitted date for the same reason.
@@ -544,9 +557,11 @@ On a paper's own page the order is the identity line, the title, the dates and v
   Submitted <time datetime="2026-04-24">24 Apr 2026</time> UTC (this version)
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
   Announced <time datetime="2026-04-25T02:07Z">25 Apr 2026, 02:07</time> UTC
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <strong class="ds-version" aria-current="true">v1<span class="is-sr-only">, this version</span></strong>
   <a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="https://arxiv.org/abs/2604.22725v3">v3<span class="is-sr-only">, version 3</span></a>
+  </span>
 </p>
 <div class="ds-alert ds-alert--warning" role="alert">
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
@@ -965,7 +980,7 @@ A citation or footnote marker opens a popover that repeats the reference or the 
 - arXiv's platform serves a global audience across all timezones. UTC was chosen as the universal standard to ensure consistency and clarity for all users. It is a group decision, made with arXiv staff.
 - Times are rendered in plain-text **UTC** bound to its date with `&nbsp;` so a wrap never separates them. The `<time>` element is not bound to the date.
 - Inside `datetime`, announced is a full instant (`2026-01-11T01:32Z`), Submitted and Revised stay date-only (`2026-01-10`).
-- The version being viewed is distinguished by weight and by `aria-current` and does not depend on color alone. It is deliberately not a link because the reader is already viewing it.
+- The version being viewed is distinguished by a box, by weight and by `aria-current` and does not depend on color alone. It is deliberately not a link because the reader is already viewing it.
 - Prior versions are inline links alongside other text, so they are underlined. Each also has a hidden span that says which version it opens, so a screen reader reads "v1, version 1".
 - The ellipsis is decoration (`aria-hidden`) with an sr-only count of what is hidden; the working affordance is a text button showing the explicit total ("show all 127 versions"), toggling `aria-expanded`. The full list is server-rendered and collapsed by the script in `html.js`. Without JavaScript, the fallback is that readers see the full list of versions.
 - **Paper titles are always a heading**, so a screen reader user can easily find it and move from paper to paper in a list.
