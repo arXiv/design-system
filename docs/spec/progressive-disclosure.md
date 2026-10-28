@@ -35,7 +35,7 @@ components:
       - name: "[data-open-label]"
         does: "Read by the script on this page: the label while the tail is open. The closed label is the button's own text."
     notes:
-      - "A tail cannot be a details element, because a summary would put a heading in the middle of a sentence."
+      - "\"Show more\" is a button, not a `<details>` element (the element the accordion uses). A `<details>` element cannot sit inside a paragraph, and its label must come before the hidden text, not after it."
   - id: popover
     title: "Popover"
     summary: "A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers. The filter panel, a popover of filters for a set of data, is on [Filters](filters.md)."
@@ -205,7 +205,7 @@ While an accordion hides an entire labelled section, the 'show more' control rev
 - `[hidden]` — On the region, the attribute and not a class. The hidden names are then out of the tab order and out of find-in-page while they are off screen, and the collapse still works with no CSS loaded at all.
 - `[data-open-label]` — Read by the script on this page: the label while the tail is open. The closed label is the button's own text.
 
-> A tail cannot be a details element, because a summary would put a heading in the middle of a sentence.
+> "Show more" is a button, not a `<details>` element (the element the accordion uses). A `<details>` element cannot sit inside a paragraph, and its label must come before the hidden text, not after it.
 
 ## Popover
 
