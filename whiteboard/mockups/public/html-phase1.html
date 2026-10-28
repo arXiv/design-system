@@ -244,7 +244,7 @@
    Layout ():
      ABSTRACT MODE
        1. Black ds-site-header with Reader-view toggle in the center
-       2. Reader's native .new-watermark (ID line) + .ltx_title + authors + .ltx_abstract
+       2. .ds-paper-identity (ID line) + .ltx_title + authors + .ltx_abstract
        3. Tinted band (Warm Wash) full-bleed:
           row1: Cite (BibTeX/APA/Chicago/MLA select) | A11y | Files
           row2: <details> Paper Information | <details> Related (closed)
@@ -601,68 +601,7 @@ body.mg-reader .mg-top-cols { display: block; }
    The .mg-* and .toc-* icons below still carry their own: they are this
    page's components, not the design system's. */
 
-/* Tertiary button — PROPOSED variant, not yet in design-system.css.
-   DESIGN-POLICIES.md already anticipates it ("No shadow on tertiary or
-   text-only buttons"). Lowest-emphasis BUTTON, deliberately distinct
-   from the link grammar: a first iteration used transparent fill with a
-   Link Blue label, which read as a text link with padding — and blue
-   text WITHOUT an underline undermines the codified link treatment
-   (link-styles.html: links are underlined). So the tertiary gets a
-   persistent quiet container instead: flat Card Grey fill, Repository Brown label,
-   no border. The emphasis ladder stays legible — primary = Open Blue
-   fill + gradient border, secondary = white fill + gradient border +
-   shadow, tertiary = flat grey fill, no border, no shadow (per policy).
-   Inline destinations in prose remain underlined links, never buttons.
-   Candidate for promotion to the canonical design system once
-   validated here. */
-.mg-btn-quiet {
-  background: var(--ds-surface-muted);
-  color: var(--ds-text);
-  box-shadow: none;
-}
-.mg-btn-quiet:hover { background: var(--ds-border-muted); }
-.mg-btn-quiet:active { transform: translateY(1px); background: var(--ds-border); }
-.mg-btn-quiet .btn-arrow { width: 1.07em; height: 1.07em; flex: none; }
-/* Label contrast (WCAG AA text needs 4.5:1):
-   Repository Brown on Card Grey 15.0:1 (rest) · Pill Border 13.2:1 (hover) ·
-   Border Light 12.3:1 (active). The FILL is deliberately quiet —
-   1.16:1 against the white page — which is fine per 1.4.11 because
-   the label + arrow identify the control, not the boundary. */
-
-/* Tertiary on tinted surface (.on-tint modifier) — same pattern as
-   .ds-btn-secondary.on-tint. The default Card Grey fill measures only
-   1.04:1 against tint-light (light blue) and 1.08:1 against warm-wash
-   (light brown), so on the warm tint the pill disappears entirely
-   (on the blue tint the warm hue still differentiates it, barely).
-   On tint, step the fill one rung down the warm-grey ladder; the label
-   stays Repository Brown and passes AA in every state (12.3:1+). Visually tested on both tints. */
-.mg-btn-quiet.on-tint { background: var(--ds-border-muted); }
-.mg-btn-quiet.on-tint:hover { background: var(--ds-border); }
-.mg-btn-quiet.on-tint:active { background: var(--ds-border); }
-
-/* Row that holds the back-to-abstract tertiary button: directly below
-   the site header, above the watermark line, centered on the page —
-   matching the centered watermark / identity column below it
-   (a first pass used top-left back-link
-   convention). */
-/* "Back to abstract" moved into the document-tools rail, above the tinted
-   band. In the rail
-   it sits below the title instead of pushing it down, and it is the quiet
-   text tier rather than a tertiary button — the loudest control in this
-   column should be Download PDF, not a way back out. */
-.mg-abs-return { margin: 0; padding: 14px 24px 0; text-align: center; }
-.mg-abs-return .ds-btn { white-space: nowrap; }
-/* Icon sizing now matches the canonical rule (.ds-btn svg in
-   docs/design-system.css), which sizes icons for EVERY button tier
-   rather than only the tertiary one. This mockup inlines its own button
-   CSS and had never copied that rule, so an arrow in any other tier fell
-   back to its intrinsic size and wrapped the label. Not a gap in the
-   design system — a gap in this copy of it. */
-
-/* The announcement is an occasional banner, not page furniture. Showing it
-   on every load of the mockup implies it is permanent and costs 30px above
-   the title. Markup kept so the pattern stays visible in source. */
-@media (max-width: 48rem) { .mg-abs-return { padding: 10px 12px 0; } }
+.mg-abs-return { margin: 0 0 8px -8px; }
 
 /* Accordions — codified as .ds-acc in
    docs/design-system.css (.mg-accordions → .ds-acc-stack,
@@ -1668,7 +1607,7 @@ h1.ltx_title.ltx_title_document {
   color: var(--ds-text);
   margin-top: 12px;
 }
-/* The gap between the watermark and the title was 32px, and none of it
+/* The gap between the identity line and the title was 32px, and none of it
    came from the title. ar5iv gives .ltx_document a 32px top margin and
    .ltx_page_content 16px; those collapse together with the title's own
    margin and the largest one wins, so shrinking the title margin alone
@@ -1795,11 +1734,10 @@ article.ltx_document { margin-top: 0; }
 }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
-   │  5.  WATERMARK + REFERENCE-BAND LAYOUT                           │
+   │  5.  INFOBOX + REFERENCE-BAND LAYOUT                             │
    ├──────────────────────────────────────────────────────────────────┤
-   │  Replaces the ar5iv "infobox" (the small floating "arXiv:..."    │
-   │  pill at the top of the page) with a centered horizontal line    │
-   │  that evokes the watermark on the PDF first page.                │
+   │  The ar5iv "infobox" (the small floating "arXiv:..." pill at the │
+   │  top of the page) is replaced by the .ds-paper-identity line.    │
    │                                                                  │
    │  The references section gets a full-bleed warm-tinted band so it │
    │  visually closes the article. Matches the abstract page's        │
@@ -1807,71 +1745,6 @@ article.ltx_document { margin-top: 0; }
    └──────────────────────────────────────────────────────────────────┘ */
 
 #infobox { display: none; }
-
-.new-watermark {
-  text-align: center;
-  /* Tightened from 10px padding and the browser default 15px paragraph
-     margin. */
-  margin: 6px 0;
-  padding: 6px 24px;
-  font-family: "IBM Plex Sans", -apple-system, sans-serif;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  line-height: 1.45;
-  /* Was --ds-text-disabled, the disabled tier: 2.1:1 in light and 2.05:1 in
-     dark, failing in both. This line carries the paper's identity and is
-     not disabled text. Library Grey is the quiet-but-readable tier —
-     5.7:1 light, 7.6:1 dark. */
-  color: var(--ds-text-muted);
-  /* Wraps naturally at narrow widths — the &ensp; between the
-     identifier and the license link breaks across lines so the two
-     parts stack vertically when there isn't room for one row. */
-}
-@media (max-width: 48rem) {
-  .new-watermark {
-    padding: 10px 12px;
-    font-size: 0.8125rem;
-  }
-  /* Force the two pieces (ID/date and license) onto separate lines so
-     the stack is deterministic — natural wrapping depends on content
-     length and can leave the license trailing on the first line. */
-  .new-watermark a {
-    display: block;
-    margin-top: 2px;
-    font-size: 0.8125rem;
-  }
-}
-.new-watermark img {
-  height: 14px;
-  width: auto;
-  vertical-align: middle;
-  margin-right: 6px;
-}
-/* Watermark links (DOI, License) use the canonical design-system link
-   treatment (.ds-link: Link Blue, underlined, hover/visited states) — An earlier iteration styled them as quiet grey
-   chrome links, which left the DOI and License visibly inconsistent
-   with each other and with the same DOI link on the abstract page.
-   These are genuine destinations (doi.org, the license page), not
-   chrome navigation — they get the real link grammar. */
-.new-watermark a {
-  color: var(--ds-link);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  font-size: 0.9375rem;
-  font-weight: 500;
-}
-.new-watermark a:hover { color: var(--ds-link-hover); }
-.new-watermark a:visited { color: var(--ds-link-visited); }
-.new-watermark a:focus-visible {
-  outline: 3px solid var(--ds-link);
-  outline-offset: 1px;
-  border-radius: 2px;
-}
-/* Kill the abbr's browser-default dotted underline so it doesn't stack
-   with the link underline (it rendered like a strikethrough at this
-   size). The parent link's underline
-   still draws through the abbr; the title tooltip is unaffected. */
-.new-watermark a abbr[title] { text-decoration: none; }
 
 /* Upstream defect, not ours, and it is live on arxiv.org today.
    ar5iv sets `.ltx_bibitem { display: table; width: 100% }` and arXiv's own
@@ -3382,12 +3255,6 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
     box-shadow: none;
     clip-path: none;
   }
-  .new-watermark {
-    position: static;
-    page-break-after: avoid;
-    font-size: 10pt;
-    color: #555;
-  }
   .ltx_section, .ltx_subsection, .ltx_appendix {
     page-break-before: auto;
     page-break-inside: avoid;
@@ -4103,39 +3970,7 @@ html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
      footer) already uses real landmark elements. -->
 <div class="ltx_page_main" role="main" id="main">
 <div id="infobox" class="infobox"></div>
-<!-- Route back to the abstract, above the watermark. This is the correct
-     place for it: the abstract page is still the paper's canonical home,
-     and a reader who lands here needs the way back before they need the
-     paper's identity line.
-
-     It is also the entire remaining cost of this page's title placement.
-     Measured at 1225x744: the title sits at 156px with this control and
-     104px without it, so the control costs 52px on its own. 104px would
-     beat the live abstract page's 108px and lead every platform in the
-     clicks-to-content audit.
-
-     That is the argument for making the merged abstract-and-paper page
-     the default. If it is the default there is no second page to go back
-     to, this control retires, and the page is best-in-class on every
-     measure in the audit.
-
-     A quiet text-tier version was trialled and cost 30px
-     rather than 52px, but the button form was kept deliberately: the
-     route back is load-bearing while two pages exist. -->
-<p class="mg-abs-return">
-  <a class="ds-btn mg-btn-quiet" href="https://arxiv.org/abs/2604.22725v1">
-    <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-    Back to abstract
-  </a>
-</p>
-<!-- Watermark line carries the full identity of the paper: arXiv ID,
-     full category name (one tester missed
-     the category when only the [gr-qc] code was shown), DOI (many
-     readers land here directly without passing the abstract page —: and license. (The "Back to abstract"
-     route is not in this line: a first iteration put it here and it
-     disappeared among the small print. It sits in the tertiary button
-     directly above — see .mg-abs-return.) -->
-<p class="new-watermark"><img src="images/smileybones-small-grayscale.svg" alt=""><span aria-hidden="true">arXiv:2604.22725v1 [gr-qc] General Relativity and Quantum Cosmology</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1, primary category General Relativity and Quantum Cosmology</span> &ensp; <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a> &ensp; <a href="https://info.arxiv.org/help/license/index.html#licenses-available"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">License: CC BY 4.0</abbr></a></p><div class="ltx_page_content">
+<div class="ltx_page_content">
 <article class="ltx_document ltx_authors_1line" lang="en">
 <!-- mg-top: title spans full content width; the row below puts
      authors+abstract (left) beside the document-tools rail (right). In
@@ -4144,6 +3979,15 @@ html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
      code blocks) for the chrome above the paper. The paper body below is
      LaTeXML's and keeps the ar5iv styles. -->
 <div class="mg-top ds-page">
+<!-- The optional area above the identity line: the route back to the
+     abstract page while it is still the paper's canonical home. -->
+<p class="mg-abs-return"><a class="ds-btn ds-btn-text" href="https://arxiv.org/abs/2604.22725v1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Back to abstract</a></p>
+<p class="ds-paper-identity">
+  <span><span class="ds-version" aria-hidden="true">arXiv:2604.22725v1</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1</span></span>
+  <span>[gr-qc] General Relativity and Quantum Cosmology</span>
+  <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a>
+  <a href="https://creativecommons.org/licenses/by/4.0/">License: CC BY 4.0</a>
+</p>
 <h1 class="ltx_title ltx_title_document" lang="en">Gauge-independent approach to inflation in quadratic gravity</h1>
 <p class="ds-date-row">
   Submitted <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC (this version)
@@ -9695,12 +9539,21 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
   document.body.classList.add('mg-state-' + state);
 
   /* ── Shared pieces ── */
-  var water = $('.new-watermark');
+  /* The spoken identity line starts with the status; the visible status
+     follows the category. */
   function identity(version, catCode, catName, label) {
-    if (!water) return;
-    var spans = water.querySelectorAll('span');
-    spans[0].textContent = 'arXiv:2604.22725v' + version + ' [' + catCode + '] ' + catName + (label ? ' · ' + label : '');
-    spans[1].textContent = (label ? label + '. ' : '') + 'archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version ' + version + ', primary category ' + catName;
+    var line = $('.ds-paper-identity');
+    if (!line) return;
+    var shown = line.querySelector('.ds-version');
+    shown.textContent = 'arXiv:2604.22725v' + version;
+    shown.nextElementSibling.textContent = (label ? label + '. ' : '') + 'archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version ' + version;
+    line.children[1].textContent = '[' + catCode + '] ' + catName;
+    if (label) {
+      var tag = document.createElement('span');
+      tag.setAttribute('aria-hidden', 'true');
+      tag.textContent = label;
+      line.children[1].after(tag);
+    }
   }
   function setAbsLinks(v) {
     $$('a[href="' + ABS + 'v1"]').forEach(function (a) { a.href = ABS + 'v' + v; });
