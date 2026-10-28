@@ -135,7 +135,7 @@ components:
       - name: ".ds-paper-bar-logo"
         does: "The one-colour Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill=\"currentColor\"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”."
       - name: ".ds-toc-menu"
-        does: "The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list."
+        does: "The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list. Subsections are an `<ol>` inside their section's `<li>`, indented to the section's title in smaller type."
       - name: ".ds-paper-tools"
         does: "Abstract, PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `arrow-left`, `file-text` and `tex` from `docs/icons/`."
   - id: paper-permalinks
@@ -214,7 +214,7 @@ rules:
   - "**A figure caption is Plex Sans at 0.875rem, left-aligned, the width of the figure.** Its label, text and punctuation are as the author wrote them."
   - "**Paper figures keep ar5iv's white background in dark mode; arXiv's own images do not.** Clear it on the header, TOC bar and footer images."
   - "**LaTeXML's beta badge and conversion logo are not shown.**"
-  - "**The contents list repeats the author's headings exactly**, including appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML's contents entries with their MathML. A script that reads a heading's words leaves out the TeX annotation, as `toc.js` and `anchors.js` do."
+  - "**The contents list repeats the author's headings exactly**, including subsections, appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML's contents entries with their MathML. A script that reads a heading's words leaves out the TeX annotation, as `toc.js` and `anchors.js` do."
   - "**LaTeXML's own sidebar is not shown.** The `.ds-toc` list replaces it."
   - "**Each link in the bar shows an icon and its name.**"
   - "**PDF opens in a new tab, in the bar and in the sidebar**, so the reader keeps their place in the HTML paper. It has the external-link icon and “(opens in a new tab)”, as on [Links](links.md)."
@@ -800,7 +800,12 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
       <nav class="ds-toc-menu" aria-label="Contents">
         <ol>
           <li><a href="#"><span class="ds-toc-num">1</span>Introduction</a></li>
-          <li><a href="#"><span class="ds-toc-num">2</span>Setup</a></li>
+          <li><a href="#"><span class="ds-toc-num">2</span>Setup</a>
+            <ol>
+              <li><a href="#"><span class="ds-toc-num">2.1</span>Background equations</a></li>
+              <li><a href="#"><span class="ds-toc-num">2.2</span>Perturbed equations</a></li>
+            </ol>
+          </li>
           <li><a href="#"><span class="ds-toc-num">3</span>Evolution of gauge-invariant variables</a></li>
           <li><a href="#"><span class="ds-toc-num">4</span>Analysis of gauges</a></li>
           <li><a href="#"><span class="ds-toc-num">5</span>Conclusion</a></li>
@@ -821,7 +826,7 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
 
 - `.ds-toc-bar` — The bar, as on [Progressive disclosure](progressive-disclosure.md#toc-bar). On a paper it is `.ds-full`, the full width of the page.
 - `.ds-paper-bar-logo` — The one-colour Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill="currentColor"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”.
-- `.ds-toc-menu` — The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list.
+- `.ds-toc-menu` — The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list. Subsections are an `<ol>` inside their section's `<li>`, indented to the section's title in smaller type.
 - `.ds-paper-tools` — Abstract, PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `arrow-left`, `file-text` and `tex` from `docs/icons/`.
 
 ## Section permalinks
@@ -933,7 +938,7 @@ A citation or footnote marker opens a popover that repeats the reference or the 
 - **A figure caption is Plex Sans at 0.875rem, left-aligned, the width of the figure.** Its label, text and punctuation are as the author wrote them.
 - **Paper figures keep ar5iv's white background in dark mode; arXiv's own images do not.** Clear it on the header, TOC bar and footer images.
 - **LaTeXML's beta badge and conversion logo are not shown.**
-- **The contents list repeats the author's headings exactly**, including appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML's contents entries with their MathML. A script that reads a heading's words leaves out the TeX annotation, as `toc.js` and `anchors.js` do.
+- **The contents list repeats the author's headings exactly**, including subsections, appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML's contents entries with their MathML. A script that reads a heading's words leaves out the TeX annotation, as `toc.js` and `anchors.js` do.
 - **LaTeXML's own sidebar is not shown.** The `.ds-toc` list replaces it.
 - **Each link in the bar shows an icon and its name.**
 - **PDF opens in a new tab, in the bar and in the sidebar**, so the reader keeps their place in the HTML paper. It has the external-link icon and “(opens in a new tab)”, as on [Links](links.md).
