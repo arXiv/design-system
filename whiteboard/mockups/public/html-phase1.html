@@ -425,11 +425,6 @@ body:not(.mg-reader) .ltx_authors {
   margin-left: 0; margin-right: 0;
   justify-content: flex-start;
 }
-/* The author NAMES live in an inner list that carries its own
-   text-align:center — override it too so they left-align in abstract mode.
-   The "show all authors" toggle is display:block with margin:auto — pin it
-   left as well. */
-body:not(.mg-reader) .ltx_authors-list { text-align: left; }
 /* Abstract: drop the centered 12% indent AND the narrow-width box border
    (the box was a phone treatment for the centered layout; in the left
    column it isn't needed and looked flush with padding:0). */
@@ -1849,56 +1844,7 @@ section.ltx_bibliography {
   border-top: 2px solid var(--ds-accent);
 }
 
-/* ┌──────────────────────────────────────────────────────────────────┐
-   │  7.  AUTHORS-LIST INTERACTION                                    │
-   ├──────────────────────────────────────────────────────────────────┤
-   │  Same as the abstract page: first 8 authors visible, rest hidden │
-   │  behind a "show all N authors" toggle. The list is a <ul> with   │
-   │  inline-styled items so it reads as a comma-separated paragraph  │
-   │  visually but is a real list semantically for AT.                │
-   └──────────────────────────────────────────────────────────────────┘ */
-
-.ltx_authors-list {
-  display: inline;   /* flow inline so the "show all" toggle can sit at the end of the list */
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-  line-height: 1.6;
-}
-.ltx_authors-list li {
-  display: inline;
-  padding: 0;
-  margin: 0;
-}
-.ltx_authors-list li:not(:last-child)::after { content: ', '; }
-.ltx_authors-list li a {
-  color: var(--ds-link);
-  text-decoration: none;
-  font-size: 1rem;
-}
-.ltx_authors-list li a:hover { text-decoration: underline; }
-.ltx_authors-overflow { display: none; }
-.ltx_authors-overflow.is-expanded { display: inline; }
-.ltx_authors-toggle {
-  font-family: inherit;
-  font-size: 1rem;
-  color: var(--ds-text-muted);
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font-style: italic;
-  display: inline;            /* sit inline at the end of the author list */
-  white-space: nowrap;
-  margin: 0 0 0 6px;
-}
-.ltx_authors-toggle:hover { color: var(--ds-text); text-decoration: underline; }
-.ltx_authors-toggle:focus-visible {
-  outline: 3px solid var(--ds-link);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
+.ltx_authors > .ds-link-list { margin: 0; }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  8.  CITATION POPOVER                                            │
@@ -4006,10 +3952,7 @@ html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
   </div>
 </div>
 <div class="ltx_authors">
-  <ul class="ltx_authors-list">
-    <li class="ltx_authors-shown"><a href="#">Adrian Palomares</a></li><li class="ltx_authors-shown"><a href="#">Ilya L. Shapiro</a></li><li class="ltx_authors-shown"><a href="#">Maria C. Gonzalez-Garcia</a></li><li class="ltx_authors-shown"><a href="#">Tomohiro Harada</a></li><li class="ltx_authors-shown"><a href="#">Elena Castellani</a></li><li class="ltx_authors-shown"><a href="#">Kei-ichi Maeda</a></li><li class="ltx_authors-shown"><a href="#">Francesca Vidotto</a></li><li class="ltx_authors-shown"><a href="#">Abhay Ashtekar</a></li><li class="ltx_authors-overflow" id="html-authors-overflow"><a href="#">Roberto Emparan</a></li><li class="ltx_authors-overflow"><a href="#">Alejandra Castro</a></li><li class="ltx_authors-overflow"><a href="#">Jan de Boer</a></li><li class="ltx_authors-overflow"><a href="#">Shin'ichi Nojiri</a></li><li class="ltx_authors-overflow"><a href="#">Sergei D. Odintsov</a></li><li class="ltx_authors-overflow"><a href="#">Viatcheslav Mukhanov</a></li><li class="ltx_authors-overflow"><a href="#">Misao Sasaki</a></li><li class="ltx_authors-overflow"><a href="#">Jiro Soda</a></li><li class="ltx_authors-overflow"><a href="#">Shinji Tsujikawa</a></li><li class="ltx_authors-overflow"><a href="#">Antonio Padilla</a></li><li class="ltx_authors-overflow"><a href="#">Ruth Gregory</a></li><li class="ltx_authors-overflow"><a href="#">Karim A. Malik</a></li><li class="ltx_authors-overflow"><a href="#">David Wands</a></li><li class="ltx_authors-overflow"><a href="#">Takahiro Tanaka</a></li>
-  </ul>
-  <button type="button" class="ltx_authors-toggle" id="html-authors-toggle" aria-expanded="false" aria-controls="html-authors-overflow">&hellip; show all 22 authors</button>
+  <p class="ds-link-list"><a href="#">Adrian Palomares</a>, <a href="#">Ilya L. Shapiro</a>, <a href="#">Maria C. Gonzalez-Garcia</a>, <a href="#">Tomohiro Harada</a>, <a href="#">Elena Castellani</a>, <a href="#">Kei-ichi Maeda</a>, <a href="#">Francesca Vidotto</a>, <a href="#">Abhay Ashtekar</a><span id="html-authors-overflow" class="ds-show-more-tail">, <a href="#">Roberto Emparan</a>, <a href="#">Alejandra Castro</a>, <a href="#">Jan de Boer</a>, <a href="#">Shin'ichi Nojiri</a>, <a href="#">Sergei D. Odintsov</a>, <a href="#">Viatcheslav Mukhanov</a>, <a href="#">Misao Sasaki</a>, <a href="#">Jiro Soda</a>, <a href="#">Shinji Tsujikawa</a>, <a href="#">Antonio Padilla</a>, <a href="#">Ruth Gregory</a>, <a href="#">Karim A. Malik</a>, <a href="#">David Wands</a>, <a href="#">Takahiro Tanaka</a></span> <button type="button" class="ds-show-more ds-show-more--among-links" id="html-authors-toggle" aria-expanded="false" aria-controls="html-authors-overflow" data-open-label="show fewer" hidden>show all 22 authors</button></p>
 </div>
 
 <!-- Two-column row (abstract mode): abstract on the left, the document-tools
@@ -7234,21 +7177,23 @@ We thus see that</p>
    BEHAVIOR 1: Authors list show/hide toggle
    ─────────────────────────────────────────────────────────────────
    Intent
-     Same pattern as the abstract page. First 8 authors visible, the
-     overflow tail revealed by clicking "show all N authors." aria-expanded
-     updated so AT users hear the state change. */
+     First 8 authors visible, the tail revealed by "show all N authors". */
 (function() {
+  /* Show more, as on the design system's progressive-disclosure page: the
+     script hides the tail with the attribute and shows the button, so
+     without JavaScript every author shows and there is no button. */
   var toggle = document.getElementById('html-authors-toggle');
   if (!toggle) return;
-  var overflow = document.querySelectorAll('.ltx_authors-overflow');
+  var tail = document.getElementById(toggle.getAttribute('aria-controls'));
+  var closedLabel = toggle.textContent;
+  tail.hidden = true;
+  toggle.hidden = false;
   toggle.addEventListener('click', function() {
-    var expanded = toggle.getAttribute('aria-expanded') === 'true';
-    var newState = !expanded;
-    toggle.setAttribute('aria-expanded', newState ? 'true' : 'false');
-    overflow.forEach(function(el) {
-      el.classList.toggle('is-expanded', newState);
-    });
-    toggle.textContent = newState ? 'show fewer' : '… show all 22 authors';
+    var open = toggle.getAttribute('aria-expanded') !== 'true';
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    tail.hidden = !open;
+    tail.classList.toggle('is-open', open);
+    toggle.textContent = open ? toggle.dataset.openLabel : closedLabel;
   });
 })();
 </script>
@@ -9686,10 +9631,8 @@ body.mg-state-tombstone .mg-band { flex: 1 1 auto; max-height: none; overflow-y:
     replaceWarning('<p class="ds-alert-title">This version has been removed by arXiv.</p>' +
       '<p>&ldquo;' + ADMIN_NOTE + '&rdquo;</p>' +
       '<p>The full text and files are no longer available.</p>');
-    var shown = $$('.ltx_authors-list > li');
-    shown.forEach(function (li, i) { if (i > 0) li.remove(); });
-    hide(document.getElementById('html-authors-toggle'));
-    hide(document.getElementById('html-authors-overflow'));
+    var authors = $('.ltx_authors .ds-link-list');
+    while (authors.firstElementChild.nextSibling) authors.firstElementChild.nextSibling.remove();
     hide(document.getElementById('abstract1'));
     hideBody();
     versionHistory([
