@@ -16,6 +16,9 @@ components:
         does: "The info tint, the same blue the info alert uses. Categories, topics, and neutral states."
       - name: ".ds-tag--success, .ds-tag--warning, .ds-tag--error"
         does: "Only when the label reports a condition."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA)"
+      - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA)"
   - id: a-list-of-tags
     title: "A list of tags"
     summary: "Several tags that belong together, such as a paper's categories, go in a list that wraps."
@@ -29,6 +32,8 @@ components:
     classes:
       - name: "<a>, <button>"
         does: "The element gives the tag its hover, its focus ring, and its keyboard behaviour; no class does. A link has an `href`; a button has `type=\"button\"`, and `aria-pressed` if it switches something on and off."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)"
     rules:
       - "A tag should not stand in for a link: A tag labels or categorizes the thing it sits on. A label might be a link when it makes sense, but it should never replace a text link as the better way to navigate off the page."
   - id: rectangular-labels
@@ -49,6 +54,8 @@ components:
         does: "The ✕ control inside an editable tag. A `<button type=\"button\">` that is the last child of the tag. Removing the tag is the host’s job. Its target is 24px, and 44px on a touch screen, without changing the tag's size. A removable tag is also used for applied filter options, next to the [filter control](filters.md#multiple-choice-filters) that sets it."
       - name: ".is-sr-only"
         does: "Required inside the remove control. The ✕ glyph is `aria-hidden`, so without this span the button announces as “button” and nothing more. Say what it removes: “Remove math.AP”."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
     rules:
       - "The remove control is the only editing the tag knows about: Anything else a person can do to a tag, such as drag it into a different order or pick it from a search box, belongs to the editor around the tags, not to `.ds-tag`. That editor is not documented yet."
 rules:
@@ -102,6 +109,10 @@ Size and shape remain the same across all levels, prominence comes from color an
 - `.ds-tag--info` — The info tint, the same blue the info alert uses. Categories, topics, and neutral states.
 - `.ds-tag--success, .ds-tag--warning, .ds-tag--error` — Only when the label reports a condition.
 
+> Meets accessibility guideline [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA)
+
+> Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA)
+
 ## A list of tags
 
 Several tags that belong together, such as a paper's categories, go in a list that wraps.
@@ -129,6 +140,8 @@ A tag is a `<span>` unless it does something. A tag that goes somewhere is an `<
 ```
 
 - `<a>, <button>` — The element gives the tag its hover, its focus ring, and its keyboard behaviour; no class does. A link has an `href`; a button has `type="button"`, and `aria-pressed` if it switches something on and off.
+
+> Meets accessibility guideline [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)
 
 **Rule.** A tag should not stand in for a link: A tag labels or categorizes the thing it sits on. A label might be a link when it makes sense, but it should never replace a text link as the better way to navigate off the page.
 
@@ -176,6 +189,8 @@ Different parts of a tag can be combined, even doubled, for more complex uses. C
 - `.ds-tag-note--auto` — The same badge in italic, for provenance the system set rather than a person. “auto” is a fact about the row; a username is someone to ask.
 - `.ds-tag-remove` — The ✕ control inside an editable tag. A `<button type="button">` that is the last child of the tag. Removing the tag is the host’s job. Its target is 24px, and 44px on a touch screen, without changing the tag's size. A removable tag is also used for applied filter options, next to the [filter control](filters.md#multiple-choice-filters) that sets it.
 - `.is-sr-only` — Required inside the remove control. The ✕ glyph is `aria-hidden`, so without this span the button announces as “button” and nothing more. Say what it removes: “Remove math.AP”.
+
+> Meets accessibility guidelines [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)
 
 **Rule.** The remove control is the only editing the tag knows about: Anything else a person can do to a tag, such as drag it into a different order or pick it from a search box, belongs to the editor around the tags, not to `.ds-tag`. That editor is not documented yet.
 

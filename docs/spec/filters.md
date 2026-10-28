@@ -16,6 +16,9 @@ components:
         does: "Apply: a compact secondary button (`.ds-btn-compact`), at the end of the row."
       - name: "<fieldset>, <legend>"
         does: "The two dates of a range are one fieldset, so they stay together on the row and a screen reader reads each with the range's name: “Submitted, from”."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 3.3.2](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html) Labels or Instructions (Level A)"
+      - "Meets accessibility guidelines [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A) and [WCAG 2.2 SC 3.3.2](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html) Labels or Instructions (Level A)"
   - id: multiple-choice-filters
     title: "Multiple-choice filters"
     summary: "A filter that takes several choices at once is a group of checkboxes, in a filter panel opened by a Filters button. The panel holds every filter for the set, including single-choice ones, so it is also the home for more filters than fit in a row. The filters that are applied show beside the button as tags, with Clear all after them."
@@ -36,6 +39,8 @@ components:
         does: "A link to the page without filters, after the tags, while a filter is applied."
       - name: "<script src=\"filter-panel.js\" defer>"
         does: "Places the panel at the button's edge and keeps `aria-expanded` current. Without it the panel opens in the centre of the window."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
 rules:
   - "**One set of filters for each set of data**, in the set's header bar. A filter applies to everything in the set."
   - "**A total ends the header bar only when the reader cannot see the whole set**: the set runs over more than one page, as in “1,669 submissions”, or the filters hide part of it, as in “3 of 120 holds”. A set with every item in view needs no total. When the controls do not fit on one line, the bar wraps and the total takes a line of its own."
@@ -89,6 +94,10 @@ Each filter takes one choice, so each is a select. Two or three selects sit in a
 - `<button type="submit">` — Apply: a compact secondary button (`.ds-btn-compact`), at the end of the row.
 - `<fieldset>, <legend>` — The two dates of a range are one fieldset, so they stay together on the row and a screen reader reads each with the range's name: “Submitted, from”.
 
+> Meets accessibility guideline [WCAG 2.2 SC 3.3.2](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html) Labels or Instructions (Level A)
+
+> Meets accessibility guidelines [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A) and [WCAG 2.2 SC 3.3.2](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html) Labels or Instructions (Level A)
+
 ## Multiple-choice filters
 
 A filter that takes several choices at once is a group of checkboxes, in a filter panel opened by a Filters button. The panel holds every filter for the set, including single-choice ones, so it is also the home for more filters than fit in a row. The filters that are applied show beside the button as tags, with Clear all after them.
@@ -133,6 +142,8 @@ A filter that takes several choices at once is a group of checkboxes, in a filte
 - `.ds-tag, .ds-tag-remove` — One tag for each applied filter, after the button. Its remove control is a link to the page without that filter. See [Tags](tags.md#complex-tags).
 - `<a> Clear all` — A link to the page without filters, after the tags, while a filter is applied.
 - `<script src="filter-panel.js" defer>` — Places the panel at the button's edge and keeps `aria-expanded` current. Without it the panel opens in the centre of the window.
+
+> Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)
 
 ## Rules
 
