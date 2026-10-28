@@ -18,6 +18,8 @@
   function plain(el) {
     var c = el.cloneNode(true);
     Array.prototype.forEach.call(c.querySelectorAll('annotation, annotation-xml, .ds-permalink'), function (n) { n.remove(); });
+    // A section number is its own span: keep a space after it, "1 Introduction", not "1Introduction".
+    Array.prototype.forEach.call(c.querySelectorAll('.ds-toc-num'), function (n) { n.append(' '); });
     return c.textContent.replace(/\s+/g, ' ').trim();
   }
   var toc = document.querySelector('.ds-toc');
