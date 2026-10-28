@@ -9636,4 +9636,282 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") clearActive(); });
 })();
 </script>
+<!-- ══ PAPER STATES (?state=…) ══
+     One mockup, five views, so reviewers can react to how arXiv shows a
+     paper that is withdrawn, removed or reclassified:
+       (none)            the normal page, unchanged
+       ?state=withdrawn  the latest version is the authors' withdrawal
+       ?state=withdrawn-earlier  an earlier version of that withdrawn paper
+       ?state=tombstone  the version was removed by arXiv (full text erased)
+       ?state=reclassified  the primary category changed after announcement
+     The states follow arXiv's own processes (the admin withdrawal and
+     tombstone runbook; support policy T17). Everything below is mockup
+     chrome; the panel names each view's assumptions so they can be checked. -->
+<style>
+.mg-states { font-family: var(--ds-font-sans); max-width: 48rem; margin: 16px 0 20px; padding: 14px 18px; border: 1px dashed var(--ds-border-strong, var(--ds-border)); border-radius: 8px; background: var(--ds-surface); font-size: 0.8125rem; line-height: 1.5; }
+.mg-states h2 { font-size: 0.875rem; font-weight: 600; margin: 0 0 6px; }
+.mg-states nav ul { list-style: none; margin: 0 0 10px; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.mg-states nav a[aria-current] { font-weight: 700; color: var(--ds-text); text-decoration: none; }
+.mg-states h3 { font-size: 0.8125rem; font-weight: 600; margin: 10px 0 2px; }
+.mg-states ul.mg-states-list { margin: 0; padding-left: 1.2em; }
+.mg-states-alert { max-width: 48rem; margin: 12px 0 0; }
+.mg-ver-tag--withdrawn { color: var(--ds-error-fg); }
+.mg-state-hidden { display: none !important; }
+body.mg-state-withdrawn .ftn-marginalia, body.mg-state-tombstone .ftn-marginalia { display: none !important; }
+.mg-files-note { margin: 0; font-size: 0.8125rem; line-height: 1.5; color: var(--ds-text-muted); }
+</style>
+<script>
+(function () {
+  var state = new URLSearchParams(location.search).get('state');
+  /* Without ?state the page is the Phase 1 mockup, untouched. */
+  if (state === null) return;
+  var STATES = {
+    withdrawn: 'Withdrawn',
+    'withdrawn-earlier': 'Withdrawn, earlier version',
+    tombstone: 'Removed by arXiv (tombstone)',
+    reclassified: 'Reclassified'
+  };
+  if (!STATES[state]) state = null;
+  var main = document.getElementById('main');
+  if (!main) return;
+
+  var ALERT_ICON = '<svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
+  var REASON = 'The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.';
+  var ADMIN_NOTE = 'arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission';
+  var ABS = 'https://arxiv.org/abs/2604.22725';
+
+  function $(sel) { return document.querySelector(sel); }
+  function $$(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+  function hide(el) { if (el) el.classList.add('mg-state-hidden'); }
+  function html(el, s) { if (el) el.innerHTML = s; }
+
+  /* ── The panel: which view this is, and what it assumes ── */
+  var NOTES = {
+    none: {
+      shows: ['The normal page: version 1 of 3, with the newer-version warning.'],
+      ask: []
+    },
+    withdrawn: {
+      shows: [
+        'The paper has four versions. Version 4 is the authors\' withdrawal: an empty version with their reason in Comments. This is the page a reader gets from the plain address, which today shows version 1\'s full text, or a bare "withdrawn and is unavailable" page for older papers.',
+        'An error-tier notice by the title says who withdrew it and quotes the reason unchanged, and links the earlier versions, which stay available by policy.',
+        'Title, authors and abstract stay. The paper text, the contents bar, the files and the reader view are gone, because this version has no full text.',
+        'The citation carries the withdrawal in a note; the title is never changed.'
+      ],
+      ask: ['Does a withdrawal version keep its abstract, or is the abstract replaced by the reason, as for gr-qc/0110023?', 'Should Cite be offered at all for a withdrawal version?', 'Error tier or warning tier for the notice?']
+    },
+    'withdrawn-earlier': {
+      shows: [
+        'Version 3 of the same paper, from before the withdrawal. Its full text stays available: policy says existing versions cannot be removed or changed.',
+        'The notice uses the abstract page\'s own words: "A newer version of this paper has been withdrawn by …", then the reason, quoted unchanged, and a link to the withdrawal notice.',
+        'Today this page shows the full text with no notice at all (checked on gr-qc/0110023v1).'
+      ],
+      ask: ['Is the error tier right on a page whose text is still readable, or is that the warning tier\'s job?', 'Should the notice say what changed since this version, or only that a newer one withdrew it?']
+    },
+    tombstone: {
+      shows: [
+        'arXiv removed this version (here, because the submitter did not have the right to agree to the license). The full text is erased; the metadata page stays with arXiv\'s reason.',
+        'As the runbook says: the authors are cut to the submitter, cross-lists and the journal reference are removed, and there are no files. The arXiv DOI still resolves here.',
+        'The abstract is gone, as on arXiv:0709.4652. The title stays.',
+        'There is no Cite, no paper text and no reader view.'
+      ],
+      ask: ['Should the page say the author list was cut to the submitter? Some admin notes say "Author list truncated"; the default does not.', 'Should a removed version be citable?', 'Removed or withdrawn: which word does the reader see? The abstract page says "(withdrawn)" in the history.']
+    },
+    reclassified: {
+      shows: [
+        'Version 3, the latest. Moderators moved the paper\'s primary category from gr-qc to astro-ph.CO after it was announced. gr-qc is now a cross-list.',
+        'Every place that names a category shows the current one: the identity line and Paper information, Metadata.',
+        'A "Category history" line in Metadata records the change. arXiv does not show this today; it is a proposal.',
+        'Reclassification does not rebuild the HTML, so production would have to read categories from live metadata when the page is served, not from the converted file.'
+      ],
+      ask: ['Should readers see the category history at all, and where?', 'Does the PDF stamp, which names the primary category, change on reclassification?']
+    }
+  };
+  var key = state || 'none';
+  var note = NOTES[key];
+  var panel = document.createElement('section');
+  panel.className = 'mg-states';
+  panel.setAttribute('aria-labelledby', 'mg-states-h');
+  var links = [['', 'Normal']].concat(Object.keys(STATES).map(function (k) { return [k, STATES[k]]; })).map(function (p) {
+    var href = '?state=' + (p[0] || 'normal');
+    var cur = (p[0] || null) === state ? ' aria-current="page"' : '';
+    return '<li><a href="' + href + '"' + cur + '>' + p[1] + '</a></li>';
+  }).join('');
+  panel.innerHTML = '<h2 id="mg-states-h">Mockup: paper states</h2>' +
+    '<nav aria-label="Paper states"><ul>' + links + '</ul></nav>' +
+    '<h3>What this view shows</h3><ul class="mg-states-list">' + note.shows.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ul>' +
+    (note.ask.length ? '<h3>Questions to check</h3><ul class="mg-states-list">' + note.ask.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ul>' : '');
+  var anchor = main.querySelector('.mg-abs-return') || main.firstChild;
+  main.insertBefore(panel, anchor);
+
+  if (!state) return;
+  document.body.classList.add('mg-state-' + state);
+
+  /* ── Shared pieces ── */
+  var water = $('.new-watermark');
+  function identity(version, catCode, catName, label) {
+    if (!water) return;
+    var spans = water.querySelectorAll('span');
+    spans[0].textContent = 'arXiv:2604.22725v' + version + ' [' + catCode + '] ' + catName + (label ? ' · ' + label : '');
+    spans[1].textContent = 'archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version ' + version + ', primary category ' + catName + (label ? ', ' + label : '');
+  }
+  function setAbsLinks(v) {
+    $$('a[href="' + ABS + 'v1"]').forEach(function (a) { a.href = ABS + 'v' + v; });
+  }
+  function replaceWarning(alertHtml) {
+    var w = $('.mg-verwarn');
+    var box = document.createElement('div');
+    box.className = 'ds-alert ds-alert--error mg-states-alert';
+    box.setAttribute('role', 'alert');
+    box.innerHTML = ALERT_ICON + '<div class="ds-alert-content">' + alertHtml + '</div>';
+    if (w) w.replaceWith(box); else $('.mg-verline').after(box);
+  }
+  function hideBody() {
+    $$('.ltx_section, .ltx_appendix, .ltx_bibliography, .ltx_acknowledgements, aside.footnote, .ftn-marginalia, #mg-toc-bar, .mg-skip-wrap, .arxiv-html-header').forEach(hide);
+  }
+  function citeNote(text) {
+    var sel = document.getElementById('mg-cite-style');
+    var code = document.querySelector('#mg-cite-code code');
+    if (!code) return;
+    function apply() {
+      var t = code.textContent;
+      if (t.indexOf(text) > -1) return;
+      if (/^@/.test(t)) code.textContent = t.replace(/\n\}\s*$/, ',\n  note = {' + text + '}\n}');
+      else code.textContent = t.replace(/\.?\s*$/, '. ' + text + '.');
+    }
+    apply();
+    if (sel) sel.addEventListener('change', apply);
+  }
+  function metaRow(label, newHtml) {
+    var dt = $$('.mg-acc-body dl dt').filter(function (d) { return d.textContent.trim() === label; })[0];
+    if (!dt) return;
+    var dd = dt.nextElementSibling;
+    if (newHtml === null) { hide(dt); hide(dd); } else dd.innerHTML = newHtml;
+  }
+  function files(htmlStr) {
+    var f = $('.mg-files'); if (f) f.innerHTML = htmlStr;
+  }
+  var VER = {
+    1: '<a class="mg-ver-id" href="' + ABS + 'v1">[v1]</a>',
+    2: '<a class="mg-ver-id" href="' + ABS + 'v2">[v2]</a>',
+    3: '<a class="mg-ver-id" href="' + ABS + 'v3">[v3]</a>',
+    4: '<a class="mg-ver-id" href="' + ABS + 'v4">[v4]</a>'
+  };
+  function verItem(n, date, noteText, tag, current) {
+    return '<li class="mg-ver' + (current ? ' mg-ver-current" aria-current="true' : '') + '"><div class="mg-ver-top">' +
+      (current ? '<span class="mg-ver-id">[v' + n + ']</span>' : VER[n]) +
+      (tag ? '<span class="mg-ver-tag' + (tag === 'withdrawn' ? ' mg-ver-tag--withdrawn' : '') + '">' + tag + '</span>' : '') +
+      '<span class="mg-ver-date">' + date + '&nbsp;UTC</span></div><p class="mg-ver-note">' + noteText + '</p></li>';
+  }
+  function versionHistory(items) {
+    var ol = $('.mg-ver-list'); if (ol) ol.innerHTML = items.join('');
+  }
+  function verline(dates, versions) {
+    var p = $('.mg-verline');
+    if (!p) return;
+    p.innerHTML = dates + (versions ? '&nbsp; ' + versions : '');
+  }
+  function vl(n, current, extraSr) {
+    return current
+      ? '<span class="mg-vl is-current" aria-current="true" aria-label="Version ' + n + ', the version you are viewing' + (extraSr || '') + '">v' + n + '</span>'
+      : '<a href="' + ABS + 'v' + n + '" class="mg-vl is-other" aria-label="View version ' + n + (extraSr || '') + '">v' + n + '</a>';
+  }
+  var DOT = '<span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>';
+  var SUB = 'Submitted <time datetime="2026-04-24">24 Apr 2026</time>&nbsp;UTC';
+  var ANN = 'Announced <time datetime="2026-04-25T02:07Z">25 Apr 2026,&nbsp;02:07</time>&nbsp;UTC';
+  var V3NOTE = 'Revised the scalar spectral-index discussion; added the Planck 2018 comparison in Sec.&nbsp;4.';
+
+  /* ── Withdrawn: the latest version is the authors' withdrawal ── */
+  if (state === 'withdrawn') {
+    identity(4, 'gr-qc', 'General Relativity and Quantum Cosmology', 'Withdrawn');
+    setAbsLinks(4);
+    verline(SUB + DOT + ANN + DOT + 'Withdrawn <time datetime="2026-10-22">22 Oct 2026</time>&nbsp;UTC (this version)',
+      vl(1) + ' ' + vl(2) + ' ' + vl(3) + ' ' + vl(4, true, ', withdrawn'));
+    replaceWarning('<p class="ds-alert-title">This paper has been withdrawn by its authors.</p>' +
+      '<p>Their reason: &ldquo;' + REASON + '&rdquo;</p>' +
+      '<p>Earlier versions are still available: <a href="' + ABS + 'v3">version 3, revised 28 Jun 2026</a>, <a href="' + ABS + 'v2">version 2</a> and <a href="' + ABS + 'v1">version 1</a>.</p>');
+    hideBody();
+    files('<p class="mg-files-note">This version is a withdrawal notice and has no files. Earlier versions have their own files on their pages.</p>');
+    citeNote('Withdrawn by the authors, 22 Oct 2026');
+    versionHistory([
+      verItem(4, '22 Oct 2026', 'Withdrawn by the authors: &ldquo;' + REASON + '&rdquo;', 'withdrawn', true),
+      verItem(3, '28 Jun 2026', V3NOTE),
+      verItem(2, '19 May 2026', 'Corrected Eq.&nbsp;(4.7).'),
+      verItem(1, '24 Apr 2026', 'Original submission.')
+    ]);
+    metaRow('Journal', null);
+    metaRow('Comments', 'v4: withdrawn by the authors. ' + REASON);
+    document.getElementById('mg-versions').open = true;
+    hide($$('.mg-acc-a11y').map(function (b) { return b.closest('details'); })[0]);
+  }
+
+  /* ── Withdrawn, earlier version: version 3 of the same paper ── */
+  if (state === 'withdrawn-earlier') {
+    identity(3, 'gr-qc', 'General Relativity and Quantum Cosmology');
+    setAbsLinks(3);
+    verline(SUB + DOT + ANN + DOT + 'Revised <time datetime="2026-06-28">28 Jun 2026</time>&nbsp;UTC (this version)',
+      vl(1) + ' ' + vl(2) + ' ' + vl(3, true) + ' ' + vl(4, false, ', withdrawn'));
+    replaceWarning('<p class="ds-alert-title">A newer version of this paper has been withdrawn by its authors.</p>' +
+      '<p>You are reading version 3, from before the withdrawal. Their reason: &ldquo;' + REASON + '&rdquo;</p>' +
+      '<p><a href="?state=withdrawn">Read the withdrawal notice (version 4)</a></p>');
+    $$('a[href*="/pdf/2604.22725v1"], a[href*="/src/2604.22725v1"]').forEach(function (a) { a.href = a.href.replace('v1', 'v3'); });
+    citeNote('A newer version was withdrawn by the authors, 22 Oct 2026');
+    versionHistory([
+      verItem(4, '22 Oct 2026', 'Withdrawn by the authors.', 'withdrawn'),
+      verItem(3, '28 Jun 2026', V3NOTE, 'viewing', true),
+      verItem(2, '19 May 2026', 'Corrected Eq.&nbsp;(4.7).'),
+      verItem(1, '24 Apr 2026', 'Original submission.')
+    ]);
+    metaRow('Journal', null);
+    metaRow('Comments', 'v3: 18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data.');
+  }
+
+  /* ── Tombstone: arXiv removed the version ── */
+  if (state === 'tombstone') {
+    identity(1, 'gr-qc', 'General Relativity and Quantum Cosmology', 'Removed');
+    verline(SUB + DOT + ANN + DOT + 'Removed <time datetime="2026-10-23">23 Oct 2026</time>&nbsp;UTC', '');
+    replaceWarning('<p class="ds-alert-title">This version has been removed by arXiv.</p>' +
+      '<p>&ldquo;' + ADMIN_NOTE + '&rdquo;</p>' +
+      '<p>The full text and files are no longer available.</p>');
+    var shown = $$('.ltx_authors-list > li');
+    shown.forEach(function (li, i) { if (i > 0) li.remove(); });
+    hide(document.getElementById('html-authors-toggle'));
+    hide(document.getElementById('html-authors-overflow'));
+    hide(document.getElementById('abstract1'));
+    hideBody();
+    files('<p class="mg-files-note">No files. This version was removed by arXiv.</p>');
+    hide($('.mg-cite'));
+    hide(document.getElementById('mg-versions'));
+    hide($$('.mg-acc-a11y').map(function (b) { return b.closest('details'); })[0]);
+    metaRow('Subjects', 'General Relativity and Quantum Cosmology (<a href="#">gr-qc</a>)');
+    metaRow('Journal', null);
+    metaRow('Comments', ADMIN_NOTE);
+    $$('.mg-acc-body dl')[0].closest('details').open = true;
+  }
+
+  /* ── Reclassified: primary category changed after announcement ── */
+  if (state === 'reclassified') {
+    identity(3, 'astro-ph.CO', 'Cosmology and Nongalactic Astrophysics');
+    setAbsLinks(3);
+    verline(SUB + DOT + ANN + DOT + 'Revised <time datetime="2026-06-28">28 Jun 2026</time>&nbsp;UTC (this version)',
+      vl(1) + ' ' + vl(2) + ' ' + vl(3, true));
+    hide($('.mg-verwarn'));
+    $$('a[href*="/pdf/2604.22725v1"], a[href*="/src/2604.22725v1"]').forEach(function (a) { a.href = a.href.replace('v1', 'v3'); });
+    versionHistory([
+      verItem(3, '28 Jun 2026', V3NOTE, 'viewing', true),
+      verItem(2, '19 May 2026', 'Corrected Eq.&nbsp;(4.7).'),
+      verItem(1, '24 Apr 2026', 'Original submission.')
+    ]);
+    metaRow('Subjects', 'Cosmology and Nongalactic Astrophysics (<a href="#">astro-ph.CO</a>); General Relativity and Quantum Cosmology (<a href="#">gr-qc</a>); High Energy Physics &mdash; Theory (<a href="#">hep-th</a>)');
+    var subjDt = $$('.mg-acc-body dl dt').filter(function (d) { return d.textContent.trim() === 'Subjects'; })[0];
+    if (subjDt) {
+      var dt = document.createElement('dt'); dt.textContent = 'Category history';
+      var dd = document.createElement('dd');
+      dd.innerHTML = 'Primary category changed from gr-qc to astro-ph.CO on <time datetime="2026-08-12">12 Aug 2026</time>, after announcement.';
+      subjDt.nextElementSibling.after(dt, dd);
+      subjDt.closest('details').open = true;
+    }
+  }
+})();
+</script>
 </body></html>
