@@ -50,6 +50,8 @@
 
   // ── Before first paint ──
   apply(read());
+  // Lets the stylesheet draw scripted states (a closed Show more tail) from the first paint.
+  document.documentElement.classList.add('js');
 
   // ── The control ──
   function paint(btn, choice) {

@@ -210,13 +210,13 @@
         <p class="ds-marginalia-body ds-annotation">A tail cannot be a details element, because a summary would put a heading in the middle of a sentence.</p>
       </details>
       <p class="ds-panel-label">The rest of a paragraph</p>
-      <p>We study the convergence of stochastic gradient methods under heavy-tailed noise<span id="abstract-tail">,
+      <p>We study the convergence of stochastic gradient methods under heavy-tailed noise<span id="abstract-tail" class="ds-show-more-tail">,
       and show that gradient clipping restores the optimal rate for a broad class of non-convex objectives, with
       matching lower bounds</span>. <button type="button" class="ds-show-more" aria-expanded="false"
       aria-controls="abstract-tail" data-open-label="show less" hidden>show more</button></p>
 
       <p class="ds-panel-label">The rest of a countable list</p>
-      <p>Keywords: stochastic optimisation, heavy-tailed noise, gradient clipping<span id="keywords-tail">,
+      <p>Keywords: stochastic optimisation, heavy-tailed noise, gradient clipping<span id="keywords-tail" class="ds-show-more-tail">,
       non-convex analysis, lower bounds, sample complexity, robust statistics</span>
       <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="keywords-tail"
       data-open-label="show fewer" hidden>show 4 more keywords</button></p>
@@ -231,7 +231,7 @@
           <li><a href="#">J. Petrov</a></li>
           <li><a href="#">M. Dupont</a></li>
           <li><a href="#">A. Haddad</a></li>
-          <li><a href="#">L. Cheng</a></li></ul><span id="authors-tail">, <a href="#">T. Okonkwo</a>,
+          <li><a href="#">L. Cheng</a></li></ul><span id="authors-tail" class="ds-show-more-tail">, <a href="#">T. Okonkwo</a>,
           <a href="#">E. Lindqvist</a>, <a href="#">N. Ravindran</a>, <a href="#">C. Müller</a>,
           <a href="#">D. Ferreira</a>, <a href="#">B. Szász</a>, <a href="#">G. Yilmaz</a>,
           <a href="#">H. Iwata</a>, <a href="#">V. Novotná</a>, <a href="#">O. Adeyemi</a>,
@@ -243,12 +243,12 @@
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;!-- The rest of a paragraph --&gt;
-&lt;p&gt;We study the convergence … under heavy-tailed noise&lt;span id="abstract-tail"&gt;, and show that …&lt;/span&gt;.
+&lt;p&gt;We study the convergence … under heavy-tailed noise&lt;span id="abstract-tail" class="ds-show-more-tail"&gt;, and show that …&lt;/span&gt;.
 &lt;button type="button" class="ds-show-more" aria-expanded="false" aria-controls="abstract-tail"
         data-open-label="show less" hidden&gt;show more&lt;/button&gt;&lt;/p&gt;
 
 &lt;!-- The rest of a countable list: the label carries the count --&gt;
-&lt;p&gt;Keywords: stochastic optimisation, …&lt;span id="keywords-tail"&gt;, non-convex analysis, …&lt;/span&gt;
+&lt;p&gt;Keywords: stochastic optimisation, …&lt;span id="keywords-tail" class="ds-show-more-tail"&gt;, non-convex analysis, …&lt;/span&gt;
 &lt;button type="button" class="ds-show-more" aria-expanded="false" aria-controls="keywords-tail"
         data-open-label="show fewer" hidden&gt;show 4 more keywords&lt;/button&gt;&lt;/p&gt;
 
@@ -256,7 +256,7 @@
 &lt;ul&gt;
   &lt;li&gt;&lt;a href="#"&gt;R. Almeida&lt;/a&gt;&lt;/li&gt;
   …
-  &lt;li&gt;&lt;a href="#"&gt;L. Cheng&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;span id="authors-tail"&gt;, &lt;a href="#"&gt;T. Okonkwo&lt;/a&gt;, …&lt;/span&gt;
+  &lt;li&gt;&lt;a href="#"&gt;L. Cheng&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;span id="authors-tail" class="ds-show-more-tail"&gt;, &lt;a href="#"&gt;T. Okonkwo&lt;/a&gt;, …&lt;/span&gt;
 &lt;button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false"
         aria-controls="authors-tail" data-open-label="show fewer" hidden&gt;… show all 22 authors&lt;/button&gt;</code></pre>
           <dl>
@@ -275,6 +275,13 @@
             announces as a button that does something unspecified.</dd>
             <dt>[aria-controls]</dt>
             <dd>The id of the region it reveals.</dd>
+            <dt>.ds-show-more-tail</dt>
+            <dd>On the region. While the page loads, it keeps the tail closed before the script runs,
+            so a long author list does not show in full and then collapse. Without JavaScript it does
+            nothing, and the whole text shows.</dd>
+            <dt>.is-open</dt>
+            <dd>Set on the region by the script while the tail is open, together with removing
+            <code>hidden</code>.</dd>
             <dt>[hidden]</dt>
             <dd>On the region, the attribute and not a class, set by the script when it shows the
             button. Without JavaScript the region is never hidden, so the whole text shows and there is
@@ -858,6 +865,7 @@
       var expanded = toggle.getAttribute('aria-expanded') === 'true';
       toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
       tail.hidden = expanded;
+      tail.classList.toggle('is-open', !expanded);
       toggle.textContent = expanded ? closedLabel : openLabel;
     });
   });
