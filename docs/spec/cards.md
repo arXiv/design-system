@@ -24,6 +24,8 @@ components:
         does: "The label is small, condensed and uppercased by CSS: type it in sentence case. The value is in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A value that goes somewhere is an `<a href>` and takes the ordinary link colours."
       - name: ".ds-internal"
         does: "The top edge takes Access Lime. The markup is the public one."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A)"
   - id: cards-with-a-header-bar
     title: "Cards with a header bar"
     summary: "A set of data with its own controls, such as a table with a filter, is a card whose first row is a header bar. The bar holds the controls for that set only."
@@ -32,6 +34,8 @@ components:
         does: "The first child of the card. It holds the controls for the set: filters, as a [compact form](forms.md#compact-form) or a [Filters button](filters.md#multiple-choice-filters) with its tags, a sort, and [group actions](tables.md#bulk-actions). They are compact and sit at its start. A total sits at its end when the reader cannot see the whole set: the set runs over more than one page, or the filters hide part of it. When the controls do not fit on one line, the bar wraps and the total takes a line of its own. Its tint is half a table header's, so the two stay apart. A [pager](pager.md#numbered-pages) for the set is the card's last row, below the list."
       - name: ".ds-card"
         does: "The frame. With a header bar it has no padding of its own: a table inside it runs to its edges with no border of its own, and any other content keeps the card's padding."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 3.3.2](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html) Labels or Instructions (Level A)"
   - id: stat-cards
     title: "Stat cards"
     summary: "One number with its label, on the warm tint. Use a group of them for a summary at the top of a dashboard."
@@ -50,6 +54,8 @@ components:
     classes:
       - name: ".ds-card-grid"
         does: "Cards side by side. The grid supplies the gap, so a card inside it takes no top margin of its own. Any card goes in it, a data card included, and it is the same on both surfaces."
+    notes:
+      - "Meets accessibility guideline [WCAG 2.2 SC 1.4.10](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html) Reflow (Level AA)"
   - id: cards-that-link
     title: "Cards that link"
     summary: "A card that is one link, for a page whose job is to send the reader somewhere else: the whole card opens the page its heading names."
@@ -60,6 +66,8 @@ components:
         does: "The only link in the card. A second link or a button inside it cannot be reached by pointer, because the heading's link lies over it."
       - name: ".ds-tag--warning"
         does: "A card that needs attention says so on the card itself. A tag placed first in the card sits in its top corner, beside the heading, so the rest of the card lines up with its neighbours. See [Tags](tags.md)."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) Focus Visible (Level AA) and [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)"
   - id: data-list
     title: "Data list"
     summary: "A few short details as label and value pairs, each label beside its value, without a card: for example under an item in a list. Inside an accordion, a plain `<dl>` already lays out pairs."
@@ -145,6 +153,8 @@ Intended for organizing metadata and other reference information: the facts abou
 - `dt, dd` — The label is small, condensed and uppercased by CSS: type it in sentence case. The value is in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A value that goes somewhere is an `<a href>` and takes the ordinary link colours.
 - `.ds-internal` — The top edge takes Access Lime. The markup is the public one.
 
+> Meets accessibility guideline [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A)
+
 ## Cards with a header bar
 
 A set of data with its own controls, such as a table with a filter, is a card whose first row is a header bar. The bar holds the controls for that set only.
@@ -166,6 +176,8 @@ A set of data with its own controls, such as a table with a filter, is a card wh
 
 - `.ds-card-bar` — The first child of the card. It holds the controls for the set: filters, as a [compact form](forms.md#compact-form) or a [Filters button](filters.md#multiple-choice-filters) with its tags, a sort, and [group actions](tables.md#bulk-actions). They are compact and sit at its start. A total sits at its end when the reader cannot see the whole set: the set runs over more than one page, or the filters hide part of it. When the controls do not fit on one line, the bar wraps and the total takes a line of its own. Its tint is half a table header's, so the two stay apart. A [pager](pager.md#numbered-pages) for the set is the card's last row, below the list.
 - `.ds-card` — The frame. With a header bar it has no padding of its own: a table inside it runs to its edges with no border of its own, and any other content keeps the card's padding.
+
+> Meets accessibility guideline [WCAG 2.2 SC 3.3.2](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html) Labels or Instructions (Level A)
 
 ## Stat cards
 
@@ -201,6 +213,8 @@ Peers in a set share one grid. The count of columns does not follow a breakpoint
 
 - `.ds-card-grid` — Cards side by side. The grid supplies the gap, so a card inside it takes no top margin of its own. Any card goes in it, a data card included, and it is the same on both surfaces.
 
+> Meets accessibility guideline [WCAG 2.2 SC 1.4.10](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html) Reflow (Level AA)
+
 ## Cards that link
 
 A card that is one link, for a page whose job is to send the reader somewhere else: the whole card opens the page its heading names.
@@ -226,6 +240,8 @@ A card that is one link, for a page whose job is to send the reader somewhere el
 - `.ds-card--link` — The heading's link covers the whole card, so the card is one target and one tab stop. Hover and keyboard focus mark the whole card.
 - `The heading's <a>` — The only link in the card. A second link or a button inside it cannot be reached by pointer, because the heading's link lies over it.
 - `.ds-tag--warning` — A card that needs attention says so on the card itself. A tag placed first in the card sits in its top corner, beside the heading, so the rest of the card lines up with its neighbours. See [Tags](tags.md).
+
+> Meets accessibility guidelines [WCAG 2.2 SC 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) Focus Visible (Level AA) and [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)
 
 ## Data list
 
