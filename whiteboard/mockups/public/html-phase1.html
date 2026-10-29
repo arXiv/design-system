@@ -2684,21 +2684,9 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
    │  title; "Copied!" feedback swaps the icon for a brief check.     │
    └──────────────────────────────────────────────────────────────────┘ */
 
-/* The script gives every heading permalink both classes, so the button IS
-   an .mg-mark: cursor, icon size, focus ring and motion kill all come from
-   the pill rules and are not repeated here. What is left is the part that
-   is specific to sitting beside a heading. */
-
-/* Touch devices have no hover: headings reveal their pill by tap
-   (is-active), the same grammar as figures, formulas, and paragraphs. */
-@media (hover: none) {
-  :is(h2, h3, h4).is-active .mg-mark { opacity: 1; }
-}
-@media print {
-  /* !important: the permalink also carries .mg-mark, whose later
-     display: inline-flex would otherwise print it. */
-  .heading-permalink { display: none !important; }
-}
+/* The heading control is the design system's .ds-permalink (see BEHAVIOR 5b).
+   ar5iv's svg { z-index: -1 } would paint its icon behind its fill. */
+.ds-permalink svg { position: relative; z-index: 1; }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  10b. FIGURE LIGHTBOX                                            │
@@ -2986,13 +2974,6 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
 /* Joined to the footnote/citation popover family: tint-light
    surface, family title and close-button classes reused verbatim, so all
    arXiv-layer transient panels read as one system. */
-/* Headings join the same language: their permalink button moves from
-   inline-after-text into the margin pill position. Icon plus the word
-   "Permalink", matching the formula and figure chips — icon-only proved
-   too small to notice. */
-h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { position: relative; }
-.heading-permalink.mg-mark { top: 50%; transform: translateY(-50%); margin: 0; padding: 7px 8px; opacity: 0; }
-:is(h2, h3, h4):hover .mg-mark { opacity: 1; }
 /* Two independent variables, kept independent: viewport WIDTH decides where an affordance
    can live — margin pills above 1200px, tab-on-outline below. Input
    capability decides how it reveals — (hover: hover) reveals on hover
@@ -3011,10 +2992,6 @@ h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { posi
   .mg-stick { top: 56px; }
   .ltx_para.is-active .mg-mark { display: inline-flex; opacity: 1; }
   .ltx_para::before { display: none; }
-  /* Heading pill placement on narrow: inline after the heading text
-     (headings are one-liners and self-delimiting, so they skip the
-     outline). Reveal is governed by the input rules, not forced on. */
-  .heading-permalink.mg-mark { position: static; transform: none; margin-left: 8px; }
 }
 @media (max-width: 999px) and (hover: hover) {
   /* Narrow window, mouse present: hover works, so hover reveals —
@@ -7994,19 +7971,43 @@ We thus see that</p>
 /* ─────────────────────────────────────────────────────────────────
    BEHAVIOR 5b: Section-heading permalinks
    ─────────────────────────────────────────────────────────────────
-   See the SECTION-HEADING PERMALINKS CSS block.
-   For each section/subsection/appendix heading whose enclosing
-   <section> carries a LaTeXML id (S1, S2.SS1, A1 …), append an
-   icon-only button that copies the heading's deep link. The accessible
-   name includes the section's own title ("Copy link to section
-   2.1 Background equations") so the buttons are distinguishable in a
-   screen reader's controls list. Pure enhancement — absent without JS.
+   The design system's Permalink control (.ds-permalink), as anchors.js
+   draws it. anchors.js looks for an id on the heading; LaTeXML puts the
+   id on the <section>, so this page adds the control itself. The name
+   starts with the visible word: "Permalink to section 2, Setup". A copy
+   shows the tick for 2 seconds and is announced in words.
 */
 (function() {
-  var ICON_LINK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
-  var ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12"/></svg>';
+  var ICONS = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>' +
+    '<svg class="ds-permalink-done" viewBox="0 0 24 24" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>';
+  function words(el) {
+    var c = el.cloneNode(true);
+    Array.prototype.forEach.call(c.querySelectorAll('annotation, annotation-xml, .ds-permalink, .ltx_tag'), function (n) { n.remove(); });
+    return c.textContent.replace(/\s+/g, ' ').trim();
+  }
+  function copy(text) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:-1000px;opacity:0';
+    document.body.appendChild(ta);
+    var back = document.activeElement;
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    if (back && back.focus) back.focus();
+    return ok ? Promise.resolve() : Promise.reject();
+  }
 
   document.addEventListener('DOMContentLoaded', function() {
+    var status = document.getElementById('ds-anchor-status');
+    if (!status) {
+      status = document.createElement('span');
+      status.id = 'ds-anchor-status';
+      status.className = 'is-sr-only';
+      status.setAttribute('role', 'status');
+      document.body.appendChild(status);
+    }
     var headings = document.querySelectorAll(
       'article .ltx_section > .ltx_title, article .ltx_subsection > .ltx_title, article .ltx_appendix > .ltx_title'
     );
@@ -8014,26 +8015,25 @@ We thus see that</p>
       var sectionEl = h.closest('section, .ltx_appendix');
       var id = sectionEl && sectionEl.id;
       if (!id) return;
-      var titleClone = h.cloneNode(true);
-      Array.prototype.forEach.call(titleClone.querySelectorAll('annotation, annotation-xml'), function (n) { n.remove(); });
-      var titleText = titleClone.textContent.replace(/\s+/g, ' ').trim();
+      var tag = h.querySelector('.ltx_tag');
+      var num = tag ? tag.textContent.replace(/\s+/g, ' ').trim() : '';
+      var kind = sectionEl.classList.contains('ltx_appendix') ? 'appendix ' : 'section ';
+      var name = (num ? kind + num.replace(/^Appendix\s*/i, '') + ', ' : '') + words(h);
       var btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'heading-permalink mg-mark';
-      btn.setAttribute('aria-label', 'Copy link to section ' + titleText);
-      btn.setAttribute('title', 'Copy link to this section');
-      btn.innerHTML = ICON_LINK + '<span>Permalink</span>';
+      btn.className = 'ds-permalink';
+      btn.innerHTML = ICONS + 'Permalink<span class="is-sr-only"> to ' + name.replace(/[&<>]/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }) + '</span>';
+      var timer;
       btn.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         var url = window.location.href.split('#')[0] + '#' + id;
-        if (navigator.clipboard) navigator.clipboard.writeText(url);
-        btn.innerHTML = ICON_CHECK + '<span>Copied</span>';
-        btn.setAttribute('title', 'Copied!');
-        setTimeout(function() {
-          btn.innerHTML = ICON_LINK + '<span>Permalink</span>';
-          btn.setAttribute('title', 'Copy link to this section');
-        }, 1500);
+        copy(url).then(function () {
+          btn.classList.add('is-done');
+          status.textContent = 'Link to ' + name + ' copied';
+          clearTimeout(timer);
+          timer = setTimeout(function () { btn.classList.remove('is-done'); status.textContent = ''; }, 2000);
+        }, function () { status.textContent = 'Copy failed. The address is ' + url; });
       });
       h.appendChild(btn);
     });
@@ -8840,7 +8840,7 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
     if (!window.matchMedia("(hover: none)").matches) return;
     if (e.target.closest("a, button")) return;
     var el = e.target.closest(HOVER_TARGETS + ", li.ltx_bibitem[id], h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection");
-    if (el && /^H[234]$/.test(el.tagName) && !el.querySelector(".heading-permalink")) el = null;
+    if (el && /^H[234]$/.test(el.tagName) && !el.querySelector(".ds-permalink")) el = null;
     if (!el) { clearActive(); return; }
     if (el === activeEl) { clearActive(); return; }
     clearActive();
