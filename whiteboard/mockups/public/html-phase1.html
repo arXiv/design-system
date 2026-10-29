@@ -449,6 +449,9 @@ body.mg-reader .mg-top-cols { display: block; }
 .mg-top > .ds-alert { max-width: 48rem; margin: 12px 0 0; }
 /* Reader mode centres the title and authors, so the rows around them follow. */
 .mg-top { padding-top: var(--ds-space-6); }   /* the space above the identity line */
+/* The identity line runs past the column to the viewport's right gutter, so it wraps only on narrow screens. */
+.mg-top > .ds-paper-identity { margin-inline-end: min(0px, calc(50% - 50vw + 16px)); }
+body.mg-reader .mg-top > .ds-paper-identity { margin-inline: min(0px, calc(50% - 50vw + 16px)); }
 body.mg-reader .mg-top > .ds-date-row { text-align: center; }
 body.mg-reader .mg-top > .ds-paper-identity { justify-content: center; }
 body.mg-reader .mg-top > .ds-alert { margin-inline: auto; }
@@ -8719,8 +8722,8 @@ body.mg-state-tombstone .mg-top-main { display: none; }
 
   var ALERT_ICON = '<svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
   var REASON = 'The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.';
-  var ADMIN_NOTE = 'arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission';
-  var ADMIN_WD = 'arXiv admin note: This submission has been withdrawn by arXiv administrators due to inappropriate text reuse from external sources';
+  var ADMIN_NOTE = 'arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission.';
+  var ADMIN_WD = 'arXiv admin note: This submission has been withdrawn by arXiv administrators due to inappropriate text reuse from external sources.';
   var ABS = 'https://arxiv.org/abs/2604.22725';
 
   function $(sel) { return document.querySelector(sel); }
@@ -8816,9 +8819,7 @@ body.mg-state-tombstone .mg-top-main { display: none; }
     $$('#mg-info details.ds-acc').forEach(function (d) {
       if (d.id !== 'mg-versions' && d.querySelector('summary').textContent.trim() !== 'Metadata') hide(d);
     });
-    var v = document.getElementById('mg-versions');
-    v.classList.remove('mg-state-hidden');
-    v.open = true;
+    document.getElementById('mg-versions').classList.remove('mg-state-hidden');
   }
   function versionHistory(items) {
     var ol = $('#mg-versions .ds-paper-versions'); if (ol) ol.innerHTML = items.join('');
@@ -8894,8 +8895,7 @@ body.mg-state-tombstone .mg-top-main { display: none; }
     identity(1, 'gr-qc', 'General Relativity and Quantum Cosmology', 'Removed');
     verline(SUB + DOT + ANN + DOT + 'Removed <time datetime="2026-10-23">23&nbsp;Oct&nbsp;2026</time>&nbsp;UTC', '');
     replaceWarning('<p class="ds-alert-title">This version has been removed by arXiv.</p>' +
-      '<p>&ldquo;' + ADMIN_NOTE + '&rdquo;</p>' +
-      '<p>The full text and files are no longer available.</p>');
+      '<p>&ldquo;' + ADMIN_NOTE + '&rdquo; The full text and files are no longer available.</p>');
     identityLinksOff();
     var authors = $('.ltx_authors .ds-link-list');
     while (authors.firstElementChild.nextSibling) authors.firstElementChild.nextSibling.remove();
@@ -8933,7 +8933,6 @@ body.mg-state-tombstone .mg-top-main { display: none; }
       var dd = document.createElement('dd');
       dd.innerHTML = 'Primary category changed from gr-qc to astro-ph.CO on <time datetime="2026-08-12">12 Aug 2026</time>, after announcement.';
       subjDt.nextElementSibling.after(dt, dd);
-      subjDt.closest('details').open = true;
     }
   }
 })();
