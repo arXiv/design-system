@@ -244,7 +244,7 @@
    Layout ():
      ABSTRACT MODE
        1. Black ds-site-header with Reader-view toggle in the center
-       2. Reader's native .new-watermark (ID line) + .ltx_title + authors + .ltx_abstract
+       2. .ds-paper-identity (ID line) + .ltx_title + authors + .ltx_abstract
        3. Tinted band (Warm Wash) full-bleed:
           row1: Cite (BibTeX/APA/Chicago/MLA select) | A11y | Files
           row2: <details> Paper Information | <details> Related (closed)
@@ -268,7 +268,6 @@
    this stylesheet). Everything else in the injected chrome stays
    transparent — the arXiv logo is white ink and needs nothing behind it. */
 .mg-shell img, .ds-site-header-logo img,
-.mg-band img, .mg-toc-bar img,
 /* ar5iv paints white behind EVERY <img> (--image-background-color) so a
    transparent figure PNG stays readable on a dark canvas. That is right for
    paper figures and wrong for chrome: a logo is an SVG that must sit on
@@ -277,7 +276,6 @@
    need a light ground of their own. */
 .ds-site-header img,
 .arxiv-html-header img,
-.mg-toc-bar img,
 .mg-shell img,
 footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent; }
 
@@ -370,52 +368,10 @@ footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent; 
    aligns with the viewport's center. */
 .ltx_page_content { margin-right: 0; }
 
-/* A LIGHT vertical stack of
-   document tools. In ABSTRACT mode it sits in the right column of a two-up
-   top layout (authors+abstract on the left, rail on the right) INSIDE the
-   normal content width — so it never competes with the figure marginalia
-   in the outer margin. Never sticky — it scrolls away (the reader header carries persistent
-   PDF / Abstract access once you scroll). (metadata felt like a scroll interruption; raw BibTeX needn't be open by
-   default; rail should live within the content width, content left-aligned,
-   title full width.) */
-/* Default the whole rail to IBM Plex Sans (typography.html body face).
-   Without this, text without its own font-family (files links, a11y lines,
-   accordion <dd>, labs items) inherits the ar5iv article's serif and renders
-   in Times. Explicit condensed (labels) and mono (cite code) children keep
-   their own faces — inheritance only fills in the un-set ones. */
-/* The rail is a tinted CARD (warm-wash) so it reads as a distinct "document
-   tools" surface; Open Blue accents (PDF button, cite chip, a11y shields)
-   pop against the neutral tint. font-family defaults the card to IBM Plex
-   Sans (typography.html body face) so un-set text doesn't inherit the ar5iv
-   article's serif. */
-.mg-band {
-  margin: 0; box-sizing: border-box;
-  font-family: var(--ds-font-sans);
-  /* --ds-surface, not --ds-canvas: the wash is a pale tint in
-     light but IS the canvas in dark, so a card filled with it disappears
-     (docs/dark-mode.html, trap 2). Surface is white in light and a
-     lifted surface in dark. */
-  background: var(--ds-surface);
-  border: 1px solid var(--ds-border-muted);
-  border-radius: 10px;
-  padding: 16px;
-  /* Cap the card height and scroll internally so expanding a disclosure
-     never pushes the paper down / leaves whitespace beside the abstract.
-     Unset when the card stacks full-width on narrow screens. */
-  max-height: 70vh;
-  overflow-y: auto;
-}
-.mg-rail { display: flex; flex-direction: column; gap: 18px; }
-/* Hairline separators between sections within the card. */
-.mg-rail > * + * { border-top: 1px solid var(--ds-border); padding-top: 16px; }
-
 /* ══ ABSTRACT-MODE TOP LAYOUT ══
    Title spans the full content width (titles can be very long). Below it, a
    two-column row: authors+abstract (left, fluid) and the rail (right, fixed
    width), both within the centered article column. */
-.mg-top-cols { display: flex; gap: 36px; align-items: flex-start; }
-.mg-top-main { flex: 1 1 auto; min-width: 0; }
-.mg-band { flex: 0 0 275px; }   /* card outer width (border-box; ~243px content after padding) */
 
 /* Left-justify the title / authors / abstract in abstract mode (overriding
    the centered reader defaults below) so they read cleanly beside the rail. */
@@ -425,27 +381,18 @@ body:not(.mg-reader) .ltx_authors {
   margin-left: 0; margin-right: 0;
   justify-content: flex-start;
 }
-/* The author NAMES live in an inner list that carries its own
-   text-align:center — override it too so they left-align in abstract mode.
-   The "show all authors" toggle is display:block with margin:auto — pin it
-   left as well. */
-body:not(.mg-reader) .ltx_authors-list { text-align: left; }
 /* Abstract: drop the centered 12% indent AND the narrow-width box border
    (the box was a phone treatment for the centered layout; in the left
    column it isn't needed and looked flush with padding:0). */
-body:not(.mg-reader) .mg-top-main .ltx_abstract { padding: 0; margin: 1rem 0 0; border: 0; }
+body:not(.mg-reader) .mg-top-main .ltx_abstract { padding: 0; margin: 0; border: 0; }
 
-/* Reader mode: collapse to one centered column; rail hides via the existing
-   `body.mg-reader .mg-band { display:none }` rule. Title/authors/abstract
-   keep their centered reader styling. */
+/* Stacked on narrow screens, the sidebar sits closer to the abstract and clear of the contents bar. */
+.mg-top-cols { row-gap: var(--ds-space-2); }   /* the abstract's own 16px margin makes 24px */
+body:not(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) .mg-top-cols > .ds-sidebar { margin-bottom: var(--ds-space-6); }
+
+/* Reader mode: one centred column; the sidebar hides with .mg-abs-only. */
 body.mg-reader .mg-top-cols { display: block; }
 
-/* Narrow: stack the card beneath the abstract (full width, capped). */
-@media (max-width: 48rem) {
-  .mg-top-cols { flex-direction: column; gap: 0; }
-  .mg-band { flex-basis: auto; width: 100%; max-width: 560px; margin-top: 24px; max-height: none; overflow-y: visible; }
-}
-.mg-band h3 { font-family: var(--ds-font-condensed); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ds-text-muted); margin: 0 0 10px; }
 
 /* ══ CANONICAL SKIP LINK (.ds-skip-link, ported from design-system.css) ══
    The FIRST focusable element on the page — keyboard users hit it on the
@@ -491,106 +438,6 @@ body.mg-reader .mg-top-cols { display: block; }
 }
 .mg-skip-wrap { text-align: center; }
 
-/* Cite — heading + a minimal format dropdown on one row; below it a tinted
-   "codeblock" that is one row tall until expanded. The bar carries a
-   "Display <format>" toggle (left) and a codeblock-style copy button
-   (right). Copy works whether or not the code is shown. (raw BibTeX needn't be open by default; one-click
-   copy; codeblock affordances; minimal dropdown.) */
-.mg-cite-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 10px; }
-.mg-cite-head h3 { margin: 0; }
-/* Minimal native <select>: no border/fill, link-blue, tight padding. Keeps
-   the OS dropdown affordance (semantic <select>) while reading as light
-   inline chrome. */
-/* Open Blue chip: Repository Brown text on the light Open-Blue fill (same contrast-safe
-   pairing as the PDF button) so the format selector reads as "good stuff".
-   Still a semantic native <select>. */
-.mg-cite-select { font-family: var(--ds-font-sans); font-size: 0.78rem; font-weight: 600; padding: 3px 6px; border: none; border-radius: 5px; background: var(--ds-accent); color: var(--ds-text-on-accent); cursor: pointer; }
-.mg-cite-select:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 2px; border-radius: 3px; }
-
-/* Codeblock styled as an "empty field" when collapsed: a tinted, dashed-
-   border drop-zone whose muted IBM-Plex-Mono prompt invites a click to
-   reveal the citation (the file-upload-dropzone idiom, adapted to a
-   click-to-expand disclosure). When open it firms up to a solid-border code
-   block. overflow:hidden keeps the rounded corners clean as it grows. */
-.mg-cite-block {
-  background: var(--ds-surface-muted);
-  border: 1px dashed var(--ds-border-strong); border-radius: 6px; overflow: hidden;
-  transition: border-color .12s, background .12s;
-}
-.mg-cite-block.is-open { border-style: solid; border-color: var(--ds-border); }
-.mg-cite-block-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 5px 6px 5px 10px; }
-/* "Display <format>" prompt — muted mono placeholder text (NOT a link),
-   leading caret. flex:1 so the whole field width is the click target. */
-.mg-cite-show {
-  display: inline-flex; align-items: center; gap: 8px; flex: 1 1 auto; min-height: 26px;
-  font-family: var(--ds-font-mono); font-size: 0.73rem; font-weight: 400;
-  color: var(--ds-text-muted); background: none; border: none; padding: 2px 4px;
-  cursor: pointer; text-align: left;
-}
-.mg-cite-show::before { content: "▸"; font-size: 0.85em; color: var(--ds-border-strong); }
-.mg-cite-show[aria-expanded="true"]::before { content: "▾"; }
-.mg-cite-show:hover { color: var(--ds-text); }
-.mg-cite-show:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 2px; border-radius: 3px; }
-/* Hover the collapsed field → dropzone-style highlight (whole field cue). */
-.mg-cite-block:not(.is-open):has(.mg-cite-show:hover) { border-color: var(--ds-text-muted); background: var(--ds-canvas); }
-/* Codeblock-style copy button (icon + small label), top-right of the bar.
-   The svg needs an explicit z-index because ar5iv sets `svg { z-index:-1 }`
-   globally, which otherwise paints the icon behind the tinted block. */
-.mg-cite-copy {
-  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
-  min-height: 26px; padding: 4px 7px;
-  font-family: var(--ds-font-sans); font-size: 0.72rem; font-weight: 600;
-  color: var(--ds-text-muted); background: none; border: none; border-radius: 4px;
-  cursor: pointer;
-}
-.mg-cite-copy svg { width: 1.22em; height: 1.22em; flex: none; position: relative; z-index: 1; }
-.mg-cite-copy:hover { color: var(--ds-text); background: rgba(0,0,0,0.05); }
-.mg-cite-copy:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 1px; }
-.mg-cite-copy.is-copied { color: var(--ds-success-fg); }
-/* Code region: IBM Plex Mono, sits inside the block, no own background. */
-.mg-cite-code { background: none; margin: 0; padding: 2px 10px 12px; font-family: var(--ds-font-mono); font-size: 0.72rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ds-text); max-height: 260px; overflow-y: auto; }
-.mg-cite-code[hidden] { display: none; }
-
-/* Accessibility — condensed to two status lines (present / missing) instead
-   of a full checklist, to keep the rail light. */
-.mg-a11y-line { display: flex; align-items: flex-start; gap: 8px; line-height: 1.45; font-size: 0.82rem; margin: 0; }
-.mg-a11y-line + .mg-a11y-line { margin-top: 7px; }
-/* The ar5iv stylesheet sets `svg { z-index: -1 }` globally (to keep
-   LaTeXML-emitted SVG content under text). Lift these shield icons with
-   explicit positioning so they paint above their background. */
-.mg-a11y-line .ic { width: 1.07em; height: 1.07em; flex: none; margin-top: 2px; position: relative; z-index: 1; }
-/* Greens map to the canonical --ds-success-* tokens
-   (color-mapping.md "Status & alert colors — shared"). */
-/* "Present" rows use an Open Blue shield badge as the positive signal:
-   light Open-Blue fill with a link-blue outline/check (the fill alone is
-   too light to meet 3:1, so the darker stroke carries the contrast). Text
-   stays Repository Brown for readability. */
-.mg-a11y-line.present { color: var(--ds-text); }
-.mg-a11y-line.present .ic { color: var(--ds-link); fill: var(--ds-accent); }
-/* "Partial" (e.g. some figures lack alt text) stays muted grey. */
-.mg-a11y-line.partial { color: var(--ds-text-muted); }
-.mg-a11y-line.partial .ic { color: var(--ds-border-strong); }
-.mg-a11y-fix { color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; margin-left: 4px; }
-
-/* Files column. Primary action uses the canonical `.ds-btn-primary`
-   (defined below) — DESIGN-POLICIES.md → Buttons + buttons.html
-   are the source of truth. */
-.mg-files { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
-/* PDF is the primary action — full rail width so it reads as the anchor. */
-.mg-files .ds-btn-primary { min-width: 0; width: 100%; }
-.mg-files .ds-btn-primary small { font-weight: 400; color: var(--ds-text-on-accent); margin-left: 4px; }
-.mg-files-links { display: flex; flex-direction: column; gap: 8px; }
-.mg-files-link { font-size: 0.82rem; }
-.mg-files-link a { color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; }
-.mg-files-link small { color: var(--ds-text-muted); font-size: 0.74rem; margin-left: 6px; }
-
-/* Ancillary files (>2): one compact line — label + total beside it, with a
-   right-aligned "Download all" link. (≤2 files would list each by name+size.) */
-.mg-anc { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 0.82rem; }
-.mg-anc-label { color: var(--ds-text); }
-.mg-anc-total { color: var(--ds-text-muted); font-size: 0.74rem; }
-.mg-anc-all { flex: none; font-size: 0.78rem; color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
-
 /* ══ CANONICAL BUTTONS (ported from docs/design-system.css) ══
    Source of truth: buttons.html. Construction = 1.5px transparent border
    + dual-background gradient + inset vignette + outer drop. Hover BRIGHTENS;
@@ -601,277 +448,22 @@ body.mg-reader .mg-top-cols { display: block; }
    The .mg-* and .toc-* icons below still carry their own: they are this
    page's components, not the design system's. */
 
-/* Tertiary button — PROPOSED variant, not yet in design-system.css.
-   DESIGN-POLICIES.md already anticipates it ("No shadow on tertiary or
-   text-only buttons"). Lowest-emphasis BUTTON, deliberately distinct
-   from the link grammar: a first iteration used transparent fill with a
-   Link Blue label, which read as a text link with padding — and blue
-   text WITHOUT an underline undermines the codified link treatment
-   (link-styles.html: links are underlined). So the tertiary gets a
-   persistent quiet container instead: flat Card Grey fill, Repository Brown label,
-   no border. The emphasis ladder stays legible — primary = Open Blue
-   fill + gradient border, secondary = white fill + gradient border +
-   shadow, tertiary = flat grey fill, no border, no shadow (per policy).
-   Inline destinations in prose remain underlined links, never buttons.
-   Candidate for promotion to the canonical design system once
-   validated here. */
-.mg-btn-quiet {
-  background: var(--ds-surface-muted);
-  color: var(--ds-text);
-  box-shadow: none;
-}
-.mg-btn-quiet:hover { background: var(--ds-border-muted); }
-.mg-btn-quiet:active { transform: translateY(1px); background: var(--ds-border); }
-.mg-btn-quiet .btn-arrow { width: 1.07em; height: 1.07em; flex: none; }
-/* Label contrast (WCAG AA text needs 4.5:1):
-   Repository Brown on Card Grey 15.0:1 (rest) · Pill Border 13.2:1 (hover) ·
-   Border Light 12.3:1 (active). The FILL is deliberately quiet —
-   1.16:1 against the white page — which is fine per 1.4.11 because
-   the label + arrow identify the control, not the boundary. */
 
-/* Tertiary on tinted surface (.on-tint modifier) — same pattern as
-   .ds-btn-secondary.on-tint. The default Card Grey fill measures only
-   1.04:1 against tint-light (light blue) and 1.08:1 against warm-wash
-   (light brown), so on the warm tint the pill disappears entirely
-   (on the blue tint the warm hue still differentiates it, barely).
-   On tint, step the fill one rung down the warm-grey ladder; the label
-   stays Repository Brown and passes AA in every state (12.3:1+). Visually tested on both tints. */
-.mg-btn-quiet.on-tint { background: var(--ds-border-muted); }
-.mg-btn-quiet.on-tint:hover { background: var(--ds-border); }
-.mg-btn-quiet.on-tint:active { background: var(--ds-border); }
-
-/* Row that holds the back-to-abstract tertiary button: directly below
-   the site header, above the watermark line, centered on the page —
-   matching the centered watermark / identity column below it
-   (a first pass used top-left back-link
-   convention). */
-/* "Back to abstract" moved into the document-tools rail, above the tinted
-   band. In the rail
-   it sits below the title instead of pushing it down, and it is the quiet
-   text tier rather than a tertiary button — the loudest control in this
-   column should be Download PDF, not a way back out. */
-.mg-abs-return { margin: 0; padding: 14px 24px 0; text-align: center; }
-.mg-abs-return .ds-btn { white-space: nowrap; }
-/* Icon sizing now matches the canonical rule (.ds-btn svg in
-   docs/design-system.css), which sizes icons for EVERY button tier
-   rather than only the tertiary one. This mockup inlines its own button
-   CSS and had never copied that rule, so an arrow in any other tier fell
-   back to its intrinsic size and wrapped the label. Not a gap in the
-   design system — a gap in this copy of it. */
-
-/* The announcement is an occasional banner, not page furniture. Showing it
-   on every load of the mockup implies it is permanent and costs 30px above
-   the title. Markup kept so the pattern stays visible in source. */
-@media (max-width: 48rem) { .mg-abs-return { padding: 10px 12px 0; } }
-
-/* Accordions — codified as .ds-acc in
-   docs/design-system.css (.mg-accordions → .ds-acc-stack,
-   rail scoping → .ds-acc-rail). The codified version is the source of
-   truth — never fork values; this local copy exists only because the
-   mockup predates the promotion. */
-.mg-accordions { display: flex; flex-direction: column; gap: 8px; }
-.mg-acc { background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 6px; }
-.mg-acc > summary { cursor: pointer; list-style: none; font-family: var(--ds-font-sans); font-size: 0.92rem; font-weight: 600; color: var(--ds-text); padding: 11px 16px; display: flex; align-items: center; gap: 10px; }
-.mg-acc > summary::-webkit-details-marker { display: none; }
-.mg-acc > summary::marker { content: ""; }
-.mg-acc > summary::after { content: "+"; margin-left: auto; font-weight: 400; color: var(--ds-text-muted); font-size: 1.25rem; line-height: 1; }
-.mg-acc[open] > summary::after { content: "−"; }
-.mg-acc[open] > summary { border-bottom: 1px solid var(--ds-border); }
-.mg-acc-body { padding: 14px 16px 16px; font-size: 0.85rem; color: var(--ds-text); }
-.mg-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: 7px 18px; margin: 0; }
-.mg-acc-body dt { font-family: var(--ds-font-condensed); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.04em; color: var(--ds-text-muted); white-space: nowrap; padding-top: 2px; }
-.mg-acc-body dd { margin: 0; }
-.mg-acc-body a { color: var(--ds-link); }
-.mg-acc-body .mg-who-row { display: flex; flex-wrap: wrap; gap: 6px 16px; }
-
-/* ── Accordions INSIDE the rail: drop the card chrome so they read as part
-   of the light hairline-separated stack (the rail provides the dividers).
-   Their internals go single-column to fit the narrow rail. ── */
-.mg-rail .mg-acc { background: transparent; border: 0; border-radius: 0; }
-.mg-rail .mg-acc > summary { padding: 0; font-size: 0.82rem; }
-/* Blue +/- marker so the disclosures read as interactive "good stuff"
-   (Open Blue itself is too light for a glyph; link-blue is its readable
-   sibling). Hovering tints the label to match. */
-.mg-rail .mg-acc > summary::after { font-size: 1.1rem; color: var(--ds-link); }
-.mg-rail .mg-acc > summary:hover { color: var(--ds-link); }
-.mg-rail .mg-acc[open] > summary { border-bottom: 0; margin-bottom: 10px; }
-.mg-rail .mg-acc-body { padding: 0; }
-.mg-rail .mg-acc-body dl { grid-template-columns: 1fr; gap: 0; }
-.mg-rail .mg-acc-body dt { margin-top: 10px; }
-.mg-rail .mg-acc-body dt:first-child { margin-top: 0; }
-.mg-rail .mg-acc-body dd { margin: 1px 0 0; }
-
-/* ── Versions accordion (rail) — inline version links per the version-display
-   pattern (docs/version-display.html): the current version is bold
-   ink + aria-current and is NOT a link; prior versions are Link Blue links. A
-   quiet left rule gives the list a timeline feel; the current row's rule is
-   Link Blue. ── */
-.mg-ver-count { font-family: var(--ds-font-condensed); text-transform: uppercase; font-size: 0.66rem; letter-spacing: 0.04em; color: var(--ds-text-muted); font-weight: 600; }
-.mg-ver-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-.mg-ver { padding-left: 12px; border-left: 2px solid var(--ds-border); }
-.mg-ver-current { border-left-color: var(--ds-link); }
-.mg-ver-top { display: flex; align-items: baseline; flex-wrap: wrap; gap: 3px 8px; }
-.mg-ver-id { font-family: var(--ds-font-mono); font-size: 0.82rem; font-weight: 700; color: var(--ds-text); text-decoration: none; }
-a.mg-ver-id { color: var(--ds-link); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
-a.mg-ver-id:hover { color: var(--ds-link-hover); }
-.mg-ver-tag { font-family: var(--ds-font-condensed); text-transform: uppercase; font-size: 0.6rem; letter-spacing: 0.05em; font-weight: 700; color: var(--ds-link); }
-.mg-ver-date { font-size: 0.72rem; color: var(--ds-text-muted); font-variant-numeric: tabular-nums; }
-.mg-ver-note { margin: 3px 0 0; font-size: 0.78rem; color: var(--ds-text); line-height: 1.45; }
-.mg-ver-foot { margin: 13px 0 0; font-size: 0.78rem; }
-
-/* ── In-flow version line + older-version warning (main reading column).
-   The rich version history lives in the sidebar "Versions" accordion; the
-   two time-critical pieces — the dates and the newer-version warning —
-   surface here in the reading column so every reader (AT, mobile,
-   citation-arrival) meets them near the title. ── */
-.mg-verline { font-size: 0.9rem; color: var(--ds-text-muted); margin: 10px 0 0; font-variant-numeric: tabular-nums; }
-.mg-verline time { color: inherit; }
-.mg-vl { font-family: var(--ds-font-mono); font-size: 0.9rem; margin-left: 6px; }
-.mg-vl.is-other { color: var(--ds-link); text-decoration: underline; text-underline-offset: 3px; }
-.mg-vl.is-other:hover { color: var(--ds-link-hover); }
-.mg-vl.is-current { color: var(--ds-text); font-weight: 700; }
-.mg-vl:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 2px; border-radius: 2px; }
-.mg-verwarn { display: flex; align-items: flex-start; gap: 10px; max-width: 48rem; margin: 12px 0 0; background: var(--ds-warning-bg); border: 1px solid var(--ds-warning-border); border-radius: 4px; padding: 10px 14px; font-size: 0.8125rem; color: var(--ds-warning-fg); }
-.mg-verwarn-icon { flex-shrink: 0; width: 1.38em; height: 1.38em; color: #b88c00; margin-top: 1px; }
-.mg-verwarn p { margin: 0; line-height: 1.5; }
-.mg-verwarn a { color: var(--ds-warning-fg); font-weight: 600; text-decoration: underline; }
-.mg-verwarn a:hover { color: #5a4400; }
-/* ══ CENTERED STICKY TOC BAR — full-bleed, semi-transparent ══
-   z-index: 100 (sticky-headers tier per DESIGN-POLICIES.md Z-layer scale).
-   The TOC bar is functionally sticky header chrome, so it sits at the
-   sticky-header tier (100), and its dropdown sits just above (110).
-
-   box-sizing: border-box so the 24px horizontal padding is INCLUDED in
-   width: 100vw. Without this the bar was 100vw + 48px wide, overflowing
-   the viewport by 48px at every width — which expanded the body's scroll
-   width, shifted the article's center, and made the band's symmetric
-   negative-margin trick (calc(50% - 50vw)) come out asymmetric. Caught
-   in browser review at 1025-1199px. */
-.mg-toc-bar { box-sizing: border-box; position: sticky; top: 0; z-index: 100; padding: 10px 0;
-  /* full-bleed: break out of any constrained parent so the bar spans the viewport */
-  width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
-  /* Frosted glass, driven from the token so it flips. color-mix keeps the single source of truth — the alpha rides on
-     whatever --ds-surface-muted currently is — instead of hand-picking a
-     dark rgba, which docs/dark-mode.html forbids. Text sits on this bar, and figures
-     in the paper carry white backgrounds for legibility, so a white
-     figure scrolling underneath lightens the bar. Measured over white:
-     55% is nowhere near passing, 82% gives 3.5:1, 92% holds 5.05:1. The
-     blur still reads as glass; the transparency is just subtler than
-     before. */
-  background: color-mix(in srgb, var(--ds-surface-muted) 92%, transparent);
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-  /* Top hairline: marks the threshold where the abstract/tools zone ends and
-     the paper begins, and gives the row a shared edge so the Contents lozenge
-     and Abstract / PDF / TeX tools don't read as floating. */
-  border-top: 1px solid var(--ds-border);
-  border-bottom: 1px solid transparent;
-  /* Transition padding so the compact-on-scroll state animates smoothly. */
-  transition: padding .2s ease, background .25s ease, backdrop-filter .25s ease, border-color .15s; }
-/* Stuck state sits over dense body text, so it goes nearly opaque. */
-.mg-toc-bar.is-stuck { background: color-mix(in srgb, var(--ds-surface-muted) 96%, transparent); border-bottom-color: var(--ds-border); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-/* 1fr | auto | 1fr keeps the TOC lozenge centered in the viewport (the left
-   spacer balances the right-hand tools column). */
-.mg-toc-bar-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; }
-/* .mg-toc-bar scope beats the base `.new-html-nav { justify-self: end }`. */
-.mg-toc-bar .mg-toc-spacer { justify-self: start; }
-/* 18px mark + padding clears the 24px hit-area floor (padding +
-   negative margin, per DESIGN-POLICIES.md target-size technique). */
-.mg-toc-logo { display: inline-flex; align-items: center; padding: 4px 6px; margin: -4px -6px; border-radius: 4px; }
-.mg-toc-logo img { height: 18px; width: auto; display: block; }
-.mg-toc-logo .mg-toc-logo-dark { display: none; }
-.mg-toc-logo:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 1px; }
-.mg-toc-wrap { justify-self: center; }
-.mg-toc-tools { justify-self: end; }
-.mg-toc-bar .nav-icon { width: 1.25em; height: 1.25em; opacity: 0.65; flex-shrink: 0; }
-/* */
-.mg-toc-bar.is-stuck { padding: 4px 0; }
-.mg-toc-bar.is-stuck .nav-label { display: none; }
-/* Exception: the Abstract link keeps its text label even in the compact
-   state. It's navigation, not a format download — a bare ← reads as
-   browser-back, and no icon unambiguously means "abstract page". The
-   PDF / TeX glyphs survive compaction because they're recognizable
-   format marks; a direction arrow isn't. */
-.mg-toc-bar.is-stuck .mg-abs-link .nav-label { display: inline; }
-.mg-toc-bar.is-stuck .mg-toc-trigger { padding: 4px 13px; font-size: 0.8rem; }
-/* On narrow viewports the labels would crowd the lozenge — show icons only. */
-@media (max-width: 48rem) {
-  .mg-toc-bar .nav-label { display: none; }
-  .mg-toc-bar-inner { gap: 6px; padding: 0 12px; }
-}
-/* In reader mode the sticky reader header is at top:0; push the sticky TOC
-   below it. Use 36px to match the COMPACT header height (the reader's
-   compact-on-scroll script shrinks the 52px header to 36px when the page is
-   scrolled — which is when the TOC is sticking). At top of page the TOC is
-   in its natural position (below the abstract), so the larger header height
-   doesn't matter there. */
-body.mg-reader .mg-toc-bar { top: 36px; }
-
-/* ══ TOC SCROLL-SWAP (reader mode only) ══
-   When the user scrolls past the abstract in reader view, animate the TOC
-   bar UP from `top: 36px` to `top: 0` so its trigger visually slides into
-   the header's center cell — and simultaneously fade+translate the
-   Reader-view toggle out. Pure CSS transitions; no DOM mutation. The bar's
-   padding also tightens to 2px so the trigger sits centered in the 36px
-   header area instead of protruding below it, and the bar's background
-   fades to transparent so the header chrome (logo, nav) shows through.
-   JS just toggles `body.mg-toc-stuck` past the threshold. */
-body.mg-reader.mg-toc-stuck .mg-toc-bar {
-  top: 0;
-  padding: 2px 24px;
-  background: transparent;
-  -webkit-backdrop-filter: none; backdrop-filter: none;
-  border-bottom-color: transparent;
-  box-shadow: none;
-}
-/* .ltx_page_main has `contain: layout` (ar5iv default), which creates a
-   stacking context — trapping the bar's z-index: 100 INSIDE the page-main,
-   below the header's z-index: 2 at body level. When stuck, the bar needs
-   to paint OVER the header chrome, so drop containment so the bar's
-   z-index works at body level. (At rest, the bar is at top: 36px and
-   never overlaps the header, so containment doesn't matter there.) */
-body.mg-reader.mg-toc-stuck .ltx_page_main { contain: none; }
-/* When riding in the header chrome, the trigger drops its shadow and
-   tightens — reads as chrome, not a card-on-page button. The transition
-   matches the bar's so they animate together. */
-.mg-toc-trigger {
-  transition: padding .25s ease, font-size .25s ease, box-shadow .25s ease;
-  min-height: 24px;      /* WCAG 2.5.8 target floor, stated not implied */
-}
-body.mg-reader.mg-toc-stuck .mg-toc-trigger {
-  padding: 4px 12px;
-  font-size: 0.78rem;
-  box-shadow: none;
-}
-/* Reader-view toggle fades + slides up out of view, with pointer-events
-   disabled so it can't be clicked through during/after the fade. */
-body.mg-reader .arxiv-html-header .mg-reader-toggle {
-  transition: opacity .2s ease, transform .2s ease;
-}
-body.mg-reader.mg-toc-stuck .arxiv-html-header .mg-reader-toggle {
-  opacity: 0;
-  transform: translateY(-30px);
-  pointer-events: none;
-}
-.mg-toc-wrap { position: relative; }
-.mg-toc-trigger { display: inline-flex; align-items: center; gap: 9px; font-family: var(--ds-font-sans); font-size: 0.85rem; font-weight: 600; background: var(--ds-surface); color: var(--ds-text); border: 1px solid var(--ds-border-muted); border-radius: 22px; padding: 7px 14px 7px 14px; cursor: pointer; max-width: min(480px, calc(100vw - 48px)); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-.mg-toc-trigger:hover { background: var(--ds-canvas); }
-.mg-toc-trigger:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 2px; }
-/* position:relative + z-index lift both icons above the pill background;
-   ar5iv's global `svg { z-index:-1 }` otherwise hides them. */
-.mg-toc-trigger .toc-ic { width: 1.25em; height: 1.25em; flex: none; color: var(--ds-text-muted); position: relative; z-index: 1; }
-.mg-toc-trigger .toc-prefix { font-weight: 400; color: var(--ds-text-muted); }
-.mg-toc-trigger .toc-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mg-toc-trigger .toc-chev { width: 1.09em; height: 1.09em; flex: none; color: var(--ds-text-muted); transition: transform .15s; position: relative; z-index: 1; }
-.mg-toc-trigger[aria-expanded="true"] .toc-chev { transform: rotate(180deg); }
-.mg-toc-dropdown { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; box-shadow: 0 8px 28px rgba(0,0,0,0.14); padding: 8px 0; min-width: 280px; max-height: 60vh; overflow-y: auto; z-index: 110; }
-.mg-toc-dropdown[hidden] { display: none; }
-.mg-toc-dropdown ol { list-style: none; margin: 0; padding: 0; counter-reset: tocsec; }
-.mg-toc-dropdown li { counter-increment: tocsec; }
-.mg-toc-dropdown a { display: flex; gap: 10px; padding: 6px 18px; text-decoration: none; color: var(--ds-text); font-size: 0.85rem; line-height: 1.4; }
-.mg-toc-dropdown a:hover { background: var(--ds-canvas); }
-.mg-toc-dropdown a.is-current { background: var(--ds-accent-wash); color: var(--ds-link); font-weight: 600; }
-.mg-toc-dropdown a .toc-num { color: var(--ds-text-muted); font-variant-numeric: tabular-nums; min-width: 22px; }
-.mg-toc-dropdown a.is-current .toc-num { color: var(--ds-link); }
+.mg-top > .ds-date-row { margin: 10px 0 0; }
+.mg-top > .ds-alert { max-width: 48rem; margin: 12px 0 0; }
+/* Reader mode centres the title and authors, so the rows around them follow. */
+.mg-top { padding-top: var(--ds-space-6); }   /* the space above the identity line */
+/* The identity line spans the viewport, 24px in from each edge like the contents bar, and is centred, so it wraps only on narrow screens. */
+.mg-top > .ds-paper-identity { margin-inline: min(0px, calc(50% - 50vw + 24px)); justify-content: center; }
+body.mg-reader .mg-top > .ds-date-row { text-align: center; }
+body.mg-reader .mg-top > .ds-alert { margin-inline: auto; }
+/* The TOC bar runs edge to edge: this page has no .ds-container for .ds-full to work in. */
+#mg-toc-bar { width: 100vw; margin-inline: calc(50% - 50vw); padding-inline: 24px; font-family: var(--ds-font-sans); }   /* the contents list sets no face and would take ar5iv's serif */
+@media (max-width: 48rem) { #mg-toc-bar { padding-inline: 12px; } }
+/* ar5iv's svg { z-index: -1 } paints these icons behind the trigger's fill. */
+#mg-toc-bar svg { position: relative; z-index: 1; }
+/* In reader mode the sticky reader header (36px once compact) is above it. */
+body.mg-reader #mg-toc-bar { top: 36px; }
 
 /* ══ FOOTER (ported from abstract-phase2.html) ══ */
 .arxiv-html-footer { display: none; }
@@ -911,7 +503,6 @@ footer.ds-site-footer .ds-site-footer-sep {
 body:not(.mg-reader) .arxiv-html-header { display: none; }
 /* Reader mode: hide ds-* abstract chrome and the tinted band; white reading canvas. */
 body.mg-reader .mg-abs-only { display: none; }
-body.mg-reader .mg-band { display: none; }
 body.mg-reader { background: var(--ds-canvas); }
 /* (Old reader-mode top padding removed — once grid-template-areas put the
    reader header in its own grid row above .ltx_page_main, the padding-top
@@ -979,8 +570,6 @@ footer.ds-site-footer { grid-area: footer; }
    DESIGN-POLICIES.md → Chrome and interaction structure. */
 @media (prefers-reduced-motion: reduce) {
   .mg-reader-toggle, .mg-reader-toggle .tk, .mg-reader-toggle .tk::after,
-  .mg-toc-bar, .mg-toc-trigger, .mg-toc-trigger .toc-chev,
-  .mg-cite-copy, .mg-acc,
   .ds-btn, .ds-btn-primary { transition: none !important; }
 }
 
@@ -1683,7 +1272,7 @@ h1.ltx_title.ltx_title_document {
   color: var(--ds-text);
   margin-top: 12px;
 }
-/* The gap between the watermark and the title was 32px, and none of it
+/* The gap between the identity line and the title was 32px, and none of it
    came from the title. ar5iv gives .ltx_document a 32px top margin and
    .ltx_page_content 16px; those collapse together with the title's own
    margin and the largest one wins, so shrinking the title margin alone
@@ -1810,11 +1399,10 @@ article.ltx_document { margin-top: 0; }
 }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
-   │  5.  WATERMARK + REFERENCE-BAND LAYOUT                           │
+   │  5.  INFOBOX + REFERENCE-BAND LAYOUT                             │
    ├──────────────────────────────────────────────────────────────────┤
-   │  Replaces the ar5iv "infobox" (the small floating "arXiv:..."    │
-   │  pill at the top of the page) with a centered horizontal line    │
-   │  that evokes the watermark on the PDF first page.                │
+   │  The ar5iv "infobox" (the small floating "arXiv:..." pill at the │
+   │  top of the page) is replaced by the .ds-paper-identity line.    │
    │                                                                  │
    │  The references section gets a full-bleed warm-tinted band so it │
    │  visually closes the article. Matches the abstract page's        │
@@ -1822,71 +1410,6 @@ article.ltx_document { margin-top: 0; }
    └──────────────────────────────────────────────────────────────────┘ */
 
 #infobox { display: none; }
-
-.new-watermark {
-  text-align: center;
-  /* Tightened from 10px padding and the browser default 15px paragraph
-     margin. */
-  margin: 6px 0;
-  padding: 6px 24px;
-  font-family: "IBM Plex Sans", -apple-system, sans-serif;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  line-height: 1.45;
-  /* Was --ds-text-disabled, the disabled tier: 2.1:1 in light and 2.05:1 in
-     dark, failing in both. This line carries the paper's identity and is
-     not disabled text. Library Grey is the quiet-but-readable tier —
-     5.7:1 light, 7.6:1 dark. */
-  color: var(--ds-text-muted);
-  /* Wraps naturally at narrow widths — the &ensp; between the
-     identifier and the license link breaks across lines so the two
-     parts stack vertically when there isn't room for one row. */
-}
-@media (max-width: 48rem) {
-  .new-watermark {
-    padding: 10px 12px;
-    font-size: 0.8125rem;
-  }
-  /* Force the two pieces (ID/date and license) onto separate lines so
-     the stack is deterministic — natural wrapping depends on content
-     length and can leave the license trailing on the first line. */
-  .new-watermark a {
-    display: block;
-    margin-top: 2px;
-    font-size: 0.8125rem;
-  }
-}
-.new-watermark img {
-  height: 14px;
-  width: auto;
-  vertical-align: middle;
-  margin-right: 6px;
-}
-/* Watermark links (DOI, License) use the canonical design-system link
-   treatment (.ds-link: Link Blue, underlined, hover/visited states) — An earlier iteration styled them as quiet grey
-   chrome links, which left the DOI and License visibly inconsistent
-   with each other and with the same DOI link on the abstract page.
-   These are genuine destinations (doi.org, the license page), not
-   chrome navigation — they get the real link grammar. */
-.new-watermark a {
-  color: var(--ds-link);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  font-size: 0.9375rem;
-  font-weight: 500;
-}
-.new-watermark a:hover { color: var(--ds-link-hover); }
-.new-watermark a:visited { color: var(--ds-link-visited); }
-.new-watermark a:focus-visible {
-  outline: 3px solid var(--ds-link);
-  outline-offset: 1px;
-  border-radius: 2px;
-}
-/* Kill the abbr's browser-default dotted underline so it doesn't stack
-   with the link underline (it rendered like a strikethrough at this
-   size). The parent link's underline
-   still draws through the abbr; the title tooltip is unaffected. */
-.new-watermark a abbr[title] { text-decoration: none; }
 
 /* Upstream defect, not ours, and it is live on arxiv.org today.
    ar5iv sets `.ltx_bibitem { display: table; width: 100% }` and arXiv's own
@@ -1991,56 +1514,7 @@ section.ltx_bibliography {
   border-top: 2px solid var(--ds-accent);
 }
 
-/* ┌──────────────────────────────────────────────────────────────────┐
-   │  7.  AUTHORS-LIST INTERACTION                                    │
-   ├──────────────────────────────────────────────────────────────────┤
-   │  Same as the abstract page: first 8 authors visible, rest hidden │
-   │  behind a "show all N authors" toggle. The list is a <ul> with   │
-   │  inline-styled items so it reads as a comma-separated paragraph  │
-   │  visually but is a real list semantically for AT.                │
-   └──────────────────────────────────────────────────────────────────┘ */
-
-.ltx_authors-list {
-  display: inline;   /* flow inline so the "show all" toggle can sit at the end of the list */
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-  line-height: 1.6;
-}
-.ltx_authors-list li {
-  display: inline;
-  padding: 0;
-  margin: 0;
-}
-.ltx_authors-list li:not(:last-child)::after { content: ', '; }
-.ltx_authors-list li a {
-  color: var(--ds-link);
-  text-decoration: none;
-  font-size: 1rem;
-}
-.ltx_authors-list li a:hover { text-decoration: underline; }
-.ltx_authors-overflow { display: none; }
-.ltx_authors-overflow.is-expanded { display: inline; }
-.ltx_authors-toggle {
-  font-family: inherit;
-  font-size: 1rem;
-  color: var(--ds-text-muted);
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font-style: italic;
-  display: inline;            /* sit inline at the end of the author list */
-  white-space: nowrap;
-  margin: 0 0 0 6px;
-}
-.ltx_authors-toggle:hover { color: var(--ds-text); text-decoration: underline; }
-.ltx_authors-toggle:focus-visible {
-  outline: 3px solid var(--ds-link);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
+.ltx_authors > .ds-link-list { margin: 0; }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  8.  CITATION POPOVER                                            │
@@ -2078,7 +1552,7 @@ cite.cite-chip {
   font-style: normal;
   position: relative;
 }
-.cite-chip a.ltx_ref {
+.cite-chip a.ltx_ref:not(.mg-cite-pop a) {
   color: var(--ds-link);
   text-decoration: none;
   font-size: 0.9em;
@@ -2093,144 +1567,36 @@ cite.cite-chip {
    The aria-expanded="true" state (source of an open popover) keeps a
    subtle background so the user can see which citation owns the
    currently-open popover. */
-.cite-chip a.ltx_ref:hover,
-.cite-chip a.ltx_ref:focus-visible {
+.cite-chip a.ltx_ref:not(.mg-cite-pop a):hover,
+.cite-chip a.ltx_ref:not(.mg-cite-pop a):focus-visible {
   color: var(--ds-link-hover);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.cite-chip a.ltx_ref[aria-expanded="true"] {
-  color: var(--ds-link);
-  background: var(--ds-accent-wash);
-  text-decoration: underline;
-}
-
-.cite-popover {
-  position: fixed;
-  z-index: 110;          /* summoned-surfaces tier — see .toc-dropdown note */
-  width: 360px;
-  max-width: calc(100vw - 32px);
-  max-height: 60vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  /* Light-blue tint matches the formula hover band — visual consistency
-     across the two "arXiv layer" surfaces (formula chrome + citation
-     popover). Solid (not semitransparent) since the popover is a
-     floating panel on top of other content. */
-  background: var(--ds-accent-surface);
-  border: 1px solid var(--ds-accent-border);
-  border-radius: 6px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  padding: 12px 14px 8px;
-  font-family: "IBM Plex Sans", -apple-system, sans-serif;
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  color: var(--ds-text);
-  text-align: left;
-  font-style: normal;
-}
-.cite-popover[hidden] { display: none; }
-
-/* Wide-mode popover (2-column) for clusters of 7+ refs on wide viewports. */
+/* Citation, footnote and alt-text popovers are the design system's
+   .ds-popover; what follows is only what this page adds to it. */
+/* ar5iv's contain: layout on the page column would make it the box a
+   fixed popover is placed in, so the popover could not stay beside its
+   citation. position and flow-root keep the rest of what containment did. */
+.ltx_page_main { contain: none; position: relative; display: flow-root; }
+.mg-cite-pop, .mg-ftn-pop { text-align: left; font-style: normal; font-weight: 400; text-indent: 0; }
+.mg-cite-pop-list, .mg-cite-pop-entry, .mg-ftn-pop-body { display: block; }
+.mg-cite-pop-entry + .mg-cite-pop-entry { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--ds-accent-border); }
 @media (min-width: 56.25rem) {
-  .cite-popover.is-wide { width: 600px; }
-  .cite-popover.is-wide .cite-popover-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4px 16px;
-  }
+  .mg-cite-pop.is-wide { --ds-popover-width: 37.5rem; }
+  .mg-cite-pop.is-wide .mg-cite-pop-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; }
+  .mg-cite-pop.is-wide .mg-cite-pop-entry + .mg-cite-pop-entry { margin-top: 0; }
 }
-
-.cite-popover-title {
-  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
-  font-weight: 600;
-  font-size: 0.6875rem;
-  color: var(--ds-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin: 0 0 8px;
-  padding-right: 28px;  /* room for the close button */
-}
-.cite-popover-list { list-style: none; margin: 0; padding: 0; }
-.cite-popover-item {
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  margin: 0 0 8px;
-  padding: 6px 0;
-  border-top: 1px solid var(--ds-surface-muted);
-  break-inside: avoid;
-}
-.cite-popover-item:first-child { border-top: none; padding-top: 0; }
-.cite-popover-item:last-child { margin-bottom: 0; }
-.cite-popover-item-num {
-  font-family: "IBM Plex Mono", monospace;
-  color: var(--ds-link);
-  font-weight: 600;
-  margin-right: 4px;
-}
-.cite-popover-item-text { color: var(--ds-text); }
-
-.cite-popover-item-jump {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: 6px;
-  padding: 1px 6px;
-  font-size: 0.75rem;
-  color: var(--ds-link);
-  text-decoration: none;
-  border-radius: 3px;
-  white-space: nowrap;
-  min-height: 24px;      /* WCAG 2.5.8 target floor */
-  margin-block: -4px;    /* keeps the list line-height unchanged */
-}
-.cite-popover-item-jump:hover {
-  color: var(--ds-link-hover);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.cite-popover-item-jump:focus-visible {
-  outline: 2px solid var(--ds-link);
-  outline-offset: 1px;
-}
-.cite-popover-item-jump svg { width: 0.92em; height: 0.92em; }
-
-.cite-popover-close {
-  position: absolute;
-  top: 6px; right: 8px;
-  background: none;
-  border: none;
-  font-size: 1.375rem;
-  line-height: 1;
-  color: var(--ds-text-muted);
-  cursor: pointer;
-  padding: 2px 8px;
-  border-radius: 4px;
-}
-.cite-popover-close:hover { color: var(--ds-text); background: var(--ds-accent-wash); }
-.cite-popover-close:focus-visible {
-  outline: 2px solid var(--ds-link);
-  outline-offset: 1px;
-}
-
-/* Bottom-sheet popover on narrow viewports. No !important needed: the
-   positioning JS clears its own inline top/left below 700px, so these
-   rules are unopposed. */
+/* Below 48rem a popover is a bottom sheet. The scripts read the same threshold. */
 @media (max-width: 48rem) {
-  .cite-popover {
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: auto;
-    width: 100%;
-    max-width: none;
-    border-radius: 12px 12px 0 0;
-    border-bottom: none;
+  .mg-cite-pop, .mg-ftn-pop {
+    top: auto; right: 0; bottom: 0; left: 0;
+    width: 100%; max-width: none;
+    border-radius: 12px 12px 0 0; border-bottom: none;
     padding: 16px 16px 20px;
     box-shadow: 0 -4px 16px rgba(0,0,0,0.15);
-    max-height: 60vh;
   }
-  .cite-popover.is-wide .cite-popover-list { display: block; }
+  .mg-cite-pop.is-wide .mg-cite-pop-list { display: block; }
 }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
@@ -2818,51 +2184,6 @@ html:not(.js) .reading-progress { display: none !important; }
   z-index: -1;
 }
 
-/* Popover (narrow viewports): styled like the citation popover so the
-   visual language is consistent. */
-.ftn-popover {
-  position: fixed;
-  z-index: 110;          /* summoned-surfaces tier — see .toc-dropdown note */
-  width: 320px;
-  max-width: calc(100vw - 32px);
-  max-height: 50vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  background: var(--ds-accent-surface);
-  border: 1px solid var(--ds-accent-border);
-  border-radius: 6px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  padding: 12px 14px;
-  font-family: "IBM Plex Sans", -apple-system, sans-serif;
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  color: var(--ds-text);
-}
-.ftn-popover[hidden] { display: none; }
-.ftn-popover-title {
-  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
-  font-weight: 600;
-  font-size: 0.6875rem;
-  color: var(--ds-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin: 0 0 8px;
-  padding-right: 24px;
-}
-.ftn-popover-close {
-  position: absolute;
-  top: 6px; right: 8px;
-  background: none;
-  border: none;
-  font-size: 1.375rem;
-  line-height: 1;
-  color: var(--ds-text-muted);
-  cursor: pointer;
-  padding: 0 6px;
-  border-radius: 4px;
-}
-.ftn-popover-close:hover { color: var(--ds-text); background: var(--ds-accent-wash); }
-
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  10c. FIGURE MARGINALIA — image accessibility surface            │
    ├──────────────────────────────────────────────────────────────────┤
@@ -3219,21 +2540,9 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
    │  title; "Copied!" feedback swaps the icon for a brief check.     │
    └──────────────────────────────────────────────────────────────────┘ */
 
-/* The script gives every heading permalink both classes, so the button IS
-   an .mg-mark: cursor, icon size, focus ring and motion kill all come from
-   the pill rules and are not repeated here. What is left is the part that
-   is specific to sitting beside a heading. */
-
-/* Touch devices have no hover: headings reveal their pill by tap
-   (is-active), the same grammar as figures, formulas, and paragraphs. */
-@media (hover: none) {
-  :is(h2, h3, h4).is-active .mg-mark { opacity: 1; }
-}
-@media print {
-  /* !important: the permalink also carries .mg-mark, whose later
-     display: inline-flex would otherwise print it. */
-  .heading-permalink { display: none !important; }
-}
+/* The heading control is the design system's .ds-permalink (see BEHAVIOR 5b).
+   ar5iv's svg { z-index: -1 } would paint its icon behind its fill. */
+.ds-permalink svg { position: relative; z-index: 1; }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  10b. FIGURE LIGHTBOX                                            │
@@ -3397,12 +2706,6 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
     box-shadow: none;
     clip-path: none;
   }
-  .new-watermark {
-    position: static;
-    page-break-after: avoid;
-    font-size: 10pt;
-    color: #555;
-  }
   .ltx_section, .ltx_subsection, .ltx_appendix {
     page-break-before: auto;
     page-break-inside: avoid;
@@ -3490,7 +2793,7 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
 /* ar5iv sets svg { z-index:-1 } globally; without the explicit lift the
    chain icon renders BEHIND the pill's surface and the pill shows only
    its number. Same
-   countermeasure as .ds-btn svg and .mg-cite-copy svg. */
+   countermeasure as .ds-btn svg. */
 .mg-mark svg { width: 1.05em; height: 1.05em; flex: none; position: relative; z-index: 1; }
 /* Long-paragraph fix: the pill rides a zero-width rail that
    spans the paragraph's full height and sticks just below the reader
@@ -3527,13 +2830,6 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
 /* Joined to the footnote/citation popover family: tint-light
    surface, family title and close-button classes reused verbatim, so all
    arXiv-layer transient panels read as one system. */
-/* Headings join the same language: their permalink button moves from
-   inline-after-text into the margin pill position. Icon plus the word
-   "Permalink", matching the formula and figure chips — icon-only proved
-   too small to notice. */
-h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { position: relative; }
-.heading-permalink.mg-mark { top: 50%; transform: translateY(-50%); margin: 0; padding: 7px 8px; opacity: 0; }
-:is(h2, h3, h4):hover .mg-mark { opacity: 1; }
 /* Two independent variables, kept independent: viewport WIDTH decides where an affordance
    can live — margin pills above 1200px, tab-on-outline below. Input
    capability decides how it reveals — (hover: hover) reveals on hover
@@ -3552,10 +2848,6 @@ h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { posi
   .mg-stick { top: 56px; }
   .ltx_para.is-active .mg-mark { display: inline-flex; opacity: 1; }
   .ltx_para::before { display: none; }
-  /* Heading pill placement on narrow: inline after the heading text
-     (headings are one-liners and self-delimiting, so they skip the
-     outline). Reveal is governed by the input rules, not forced on. */
-  .heading-permalink.mg-mark { position: static; transform: none; margin-left: 8px; }
 }
 @media (max-width: 999px) and (hover: hover) {
   /* Narrow window, mouse present: hover works, so hover reveals —
@@ -3605,8 +2897,6 @@ h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { posi
   }
   /* TOC-bar mark: Library Grey ink is too dim on the dark canvas, so
      the light variant takes over (see the markup note at the bar). */
-  html:not([data-theme="light"]) .mg-toc-logo .mg-toc-logo-light { display: none; }
-  html:not([data-theme="light"]) .mg-toc-logo .mg-toc-logo-dark { display: block; }
 }
 
 /* Mirror of the block above, keyed to the attribute instead of the OS. Required here, not optional: the ar5iv reader ships its own theme
@@ -3627,8 +2917,6 @@ html[data-theme="dark"] .ds-funder-logo {
   background: #f0eeec;
   border-color: #d5d0c9;
 }
-html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-light { display: none; }
-html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
 
 </style>
 
@@ -4118,66 +3406,40 @@ html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
      footer) already uses real landmark elements. -->
 <div class="ltx_page_main" role="main" id="main">
 <div id="infobox" class="infobox"></div>
-<!-- Route back to the abstract, above the watermark. This is the correct
-     place for it: the abstract page is still the paper's canonical home,
-     and a reader who lands here needs the way back before they need the
-     paper's identity line.
-
-     It is also the entire remaining cost of this page's title placement.
-     Measured at 1225x744: the title sits at 156px with this control and
-     104px without it, so the control costs 52px on its own. 104px would
-     beat the live abstract page's 108px and lead every platform in the
-     clicks-to-content audit.
-
-     That is the argument for making the merged abstract-and-paper page
-     the default. If it is the default there is no second page to go back
-     to, this control retires, and the page is best-in-class on every
-     measure in the audit.
-
-     A quiet text-tier version was trialled and cost 30px
-     rather than 52px, but the button form was kept deliberately: the
-     route back is load-bearing while two pages exist. -->
-<p class="mg-abs-return">
-  <a class="ds-btn mg-btn-quiet" href="https://arxiv.org/abs/2604.22725v1">
-    <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-    Back to abstract
-  </a>
-</p>
-<!-- Watermark line carries the full identity of the paper: arXiv ID,
-     full category name (one tester missed
-     the category when only the [gr-qc] code was shown), DOI (many
-     readers land here directly without passing the abstract page —: and license. (The "Back to abstract"
-     route is not in this line: a first iteration put it here and it
-     disappeared among the small print. It sits in the tertiary button
-     directly above — see .mg-abs-return.) -->
-<p class="new-watermark"><img src="images/smileybones-small-grayscale.svg" alt=""><span aria-hidden="true">arXiv:2604.22725v1 [gr-qc] General Relativity and Quantum Cosmology</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1, primary category General Relativity and Quantum Cosmology</span> &ensp; <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a> &ensp; <a href="https://info.arxiv.org/help/license/index.html#licenses-available"><abbr title="Creative Commons Attribution 4.0 — anyone can share or adapt with credit">License: CC BY 4.0</abbr></a></p><div class="ltx_page_content">
+<div class="ltx_page_content">
 <article class="ltx_document ltx_authors_1line" lang="en">
 <!-- mg-top: title spans full content width; the row below puts
      authors+abstract (left) beside the document-tools rail (right). In
      reader mode .mg-top-cols collapses to a single centered column. -->
-<div class="mg-top">
-<h1 class="ltx_title ltx_title_document" lang="en">Gauge-independent approach to inflation in quadratic gravity</h1>
-<p class="mg-verline">
-  Submitted <time datetime="2026-04-24">24 Apr 2026</time>&nbsp;UTC (this version)
-  <span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>
-  Announced <time datetime="2026-04-25T02:07Z">25 Apr 2026,&nbsp;02:07</time>&nbsp;UTC
-  &nbsp;
-  <span class="mg-vl is-current" aria-current="true" aria-label="Version 1, the version you are viewing">v1</span>
-  <!-- Phase 1 rule: version links always target /abs/ pages, never /html/ —
-       an HTML rendering may not exist for a given version (no-TeX or
-       failed-conversion papers), while the abstract page always exists. -->
-  <a href="https://arxiv.org/abs/2604.22725v2" class="mg-vl is-other" aria-label="View version 2">v2</a>
-  <a href="https://arxiv.org/abs/2604.22725v3" class="mg-vl is-other" aria-label="View version 3">v3</a>
+<!-- .ds-page: the design system's foundation (sans text, link treatment,
+     code blocks) for the chrome above the paper. The paper body below is
+     LaTeXML's and keeps the ar5iv styles. -->
+<div class="mg-top ds-page">
+<p class="ds-paper-identity">
+  <span><span class="ds-version" aria-hidden="true">arXiv:2604.22725v1</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1</span></span>
+  <span>[gr-qc] General Relativity and Quantum Cosmology</span>
+  <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a>
+  <a href="https://creativecommons.org/licenses/by/4.0/">License: CC BY 4.0</a>
 </p>
-<div class="mg-verwarn" role="status">
-  <svg class="mg-verwarn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-  <p><strong>You are viewing version 1.</strong> A newer version is available &mdash; <a href="https://arxiv.org/abs/2604.22725v3">version 3, revised 28 Jun 2026</a>.</p>
+<h1 class="ltx_title ltx_title_document" lang="en" id="mg-paper-title">Gauge-independent approach to inflation in quadratic gravity</h1>
+<p class="ds-date-row">
+  Submitted <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC (this version)
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+  Announced <time datetime="2026-04-25T02:07Z">25&nbsp;Apr&nbsp;2026,&nbsp;02:07</time>&nbsp;UTC
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
+  <strong class="ds-version" aria-current="true">v1<span class="is-sr-only">, this version</span></strong>
+  <a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a>
+  <a class="ds-version" href="https://arxiv.org/abs/2604.22725v3">v3<span class="is-sr-only">, version 3</span></a>
+  </span>
+</p>
+<div class="ds-alert ds-alert--warning" role="alert">
+  <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+  <div class="ds-alert-content">
+    <p><strong>You are viewing version 1.</strong> A newer version is available — <a href="https://arxiv.org/abs/2604.22725v3">version 3, revised 28&nbsp;Jun&nbsp;2026</a>.</p>
+  </div>
 </div>
 <div class="ltx_authors">
-  <ul class="ltx_authors-list">
-    <li class="ltx_authors-shown"><a href="#">Adrian Palomares</a></li><li class="ltx_authors-shown"><a href="#">Ilya L. Shapiro</a></li><li class="ltx_authors-shown"><a href="#">Maria C. Gonzalez-Garcia</a></li><li class="ltx_authors-shown"><a href="#">Tomohiro Harada</a></li><li class="ltx_authors-shown"><a href="#">Elena Castellani</a></li><li class="ltx_authors-shown"><a href="#">Kei-ichi Maeda</a></li><li class="ltx_authors-shown"><a href="#">Francesca Vidotto</a></li><li class="ltx_authors-shown"><a href="#">Abhay Ashtekar</a></li><li class="ltx_authors-overflow" id="html-authors-overflow"><a href="#">Roberto Emparan</a></li><li class="ltx_authors-overflow"><a href="#">Alejandra Castro</a></li><li class="ltx_authors-overflow"><a href="#">Jan de Boer</a></li><li class="ltx_authors-overflow"><a href="#">Shin'ichi Nojiri</a></li><li class="ltx_authors-overflow"><a href="#">Sergei D. Odintsov</a></li><li class="ltx_authors-overflow"><a href="#">Viatcheslav Mukhanov</a></li><li class="ltx_authors-overflow"><a href="#">Misao Sasaki</a></li><li class="ltx_authors-overflow"><a href="#">Jiro Soda</a></li><li class="ltx_authors-overflow"><a href="#">Shinji Tsujikawa</a></li><li class="ltx_authors-overflow"><a href="#">Antonio Padilla</a></li><li class="ltx_authors-overflow"><a href="#">Ruth Gregory</a></li><li class="ltx_authors-overflow"><a href="#">Karim A. Malik</a></li><li class="ltx_authors-overflow"><a href="#">David Wands</a></li><li class="ltx_authors-overflow"><a href="#">Takahiro Tanaka</a></li>
-  </ul>
-  <button type="button" class="ltx_authors-toggle" id="html-authors-toggle" aria-expanded="false" aria-controls="html-authors-overflow">&hellip; show all 22 authors</button>
+  <p class="ds-link-list"><a href="#">Adrian Palomares</a>, <a href="#">Ilya L. Shapiro</a>, <a href="#">Maria C. Gonzalez-Garcia</a>, <a href="#">Tomohiro Harada</a>, <a href="#">Elena Castellani</a>, <a href="#">Kei-ichi Maeda</a>, <a href="#">Francesca Vidotto</a>, <a href="#">Abhay Ashtekar</a><span id="html-authors-overflow" class="ds-show-more-tail">, <a href="#">Roberto Emparan</a>, <a href="#">Alejandra Castro</a>, <a href="#">Jan de Boer</a>, <a href="#">Shin'ichi Nojiri</a>, <a href="#">Sergei D. Odintsov</a>, <a href="#">Viatcheslav Mukhanov</a>, <a href="#">Misao Sasaki</a>, <a href="#">Jiro Soda</a>, <a href="#">Shinji Tsujikawa</a>, <a href="#">Antonio Padilla</a>, <a href="#">Ruth Gregory</a>, <a href="#">Karim A. Malik</a>, <a href="#">David Wands</a>, <a href="#">Takahiro Tanaka</a></span> <button type="button" class="ds-show-more ds-show-more--among-links" id="html-authors-toggle" aria-expanded="false" aria-controls="html-authors-overflow" data-open-label="show fewer" hidden>show all 22 authors</button></p>
 </div>
 
 <!-- Two-column row (abstract mode): abstract on the left, the document-tools
@@ -4192,7 +3454,7 @@ html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
 <p class="ltx_p">We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
 </div>
 
-<!-- Skip-to-paper link: positioned right before the tinted-band aside so
+<!-- Skip-to-paper link: positioned right before the sidebar so
      keyboard / screen-reader users can jump past the metadata directly
      into the paper. Visually hidden by default; visible on focus. -->
 <p class="mg-abs-only mg-skip-wrap">
@@ -4200,217 +3462,145 @@ html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
 </p>
 </div><!-- /.mg-top-main -->
 
-<!-- ══ MERGED LAYER: the document-tools rail (an <aside> "complementary"
-        landmark so screen readers announce it as supplementary content).
-        Right column of the abstract-mode top row; hidden in reader mode
-        (the .mg-band rule). DOM order is Files → Cite → Accessibility →
-        disclosures (Files first for screen readers). ══ -->
-<aside class="mg-band mg-abs-only" aria-label="Document tools and metadata">
-  <div class="mg-rail">
-
-    <!-- Files / actions — DOM-first so screen readers reach the PDF first. -->
-    <section class="mg-files-col" aria-labelledby="mg-files-heading">
-      <h3 id="mg-files-heading">Files</h3>
-      <div class="mg-files">
-        <a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
-          Download PDF <small>&middot; 1.2&nbsp;MB</small>
-        </a>
-        <div class="mg-files-links">
-          <div class="mg-files-link">
-            <a href="https://arxiv.org/src/2604.22725v1">TeX Source</a>
-            <small>.tar.gz &middot; 286&nbsp;KB</small>
-          </div>
-        </div>
-        <!-- Ancillary files — with >2 files we keep it to one line: the
-             label + total (count · size) and a "Download all" link, rather
-             than listing every file (keeps the card short). With ≤2 files
-             we'd list them individually by name.ext + size. -->
-        <div class="mg-anc">
-          <span class="mg-anc-label">Ancillary files <span class="mg-anc-total">&middot; 3.6&nbsp;MB</span></span>
-          <a class="mg-anc-all" href="https://arxiv.org/src/2604.22725v1/anc">Download all</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Cite — COLLAPSED by default. Copy works without expanding (copies
-         the selected format); Show toggles the raw code (JS in section 6). -->
-    <section class="mg-cite" aria-labelledby="mg-cite-heading">
-      <div class="mg-cite-head">
-        <h3 id="mg-cite-heading">Cite</h3>
-        <label class="is-sr-only" for="mg-cite-style">Citation style</label>
-        <select class="mg-cite-select" id="mg-cite-style" aria-controls="mg-cite-code">
+<!-- The sidebar (.ds-sidebar): Files, Cite and Paper information, in that
+     order. Beside the abstract; hidden in reader mode (.mg-abs-only). -->
+<aside class="ds-sidebar mg-abs-only" aria-label="About this paper">
+  <section aria-labelledby="mg-files-h" id="mg-files">
+    <h2 class="ds-panel-label" id="mg-files-h">Files</h2>
+    <ul class="ds-paper-files">
+      <li><a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="mg-paper-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg> Download PDF <small>· 1.2&nbsp;MB</small><span class="is-sr-only"> (opens in a new tab)</span></a></li>
+      <li><a href="https://arxiv.org/src/2604.22725v1" aria-describedby="mg-paper-title">TeX Source</a> <small>.tar.gz · 286&nbsp;KB</small></li>
+      <li>Ancillary files <small>· 3.6&nbsp;MB</small> <a href="https://arxiv.org/src/2604.22725v1/anc">Download all<span class="is-sr-only"> 3 ancillary files</span></a></li>
+    </ul>
+  </section>
+  <section aria-labelledby="mg-cite-h" class="ds-paper-cite" id="mg-cite">
+    <div class="ds-paper-cite-head">
+      <h2 class="ds-panel-label" id="mg-cite-h">Cite</h2>
+      <div class="ds-form--compact ds-paper-cite-tools">
+        <label class="is-sr-only" for="mg-cite-format">Citation format</label>
+        <select class="ds-input" id="mg-cite-format">
           <option value="bibtex" selected>BibTeX</option>
           <option value="apa">APA</option>
           <option value="chicago">Chicago</option>
           <option value="mla">MLA</option>
         </select>
       </div>
-      <div class="mg-cite-block">
-        <div class="mg-cite-block-bar">
-          <button class="mg-cite-show" id="mg-cite-show" type="button" aria-expanded="false" aria-controls="mg-cite-code">Display BibTeX</button>
-          <button class="mg-cite-copy" id="mg-cite-copy" type="button" aria-label="Copy citation to clipboard">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            <span class="mg-cite-copy-label">Copy</span>
-          </button>
-        </div>
-        <pre class="mg-cite-code" id="mg-cite-code" hidden><code>@article{palomares2026gauge,
+    </div>
+    <div id="mg-cite-code" class="ds-paper-cite-code">
+      <figure data-format="bibtex">
+        <figcaption>BibTeX</figcaption>
+        <pre><code>@article{palomares2026gauge,
   title = {Gauge-independent approach to inflation in quadratic gravity},
-  author = {Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and others},
+  author = {Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and Castellani, Elena and Maeda, Kei-ichi and Vidotto, Francesca and Ashtekar, Abhay and Emparan, Roberto and Castro, Alejandra and Boer, Jan de and Nojiri, Shin'ichi and Odintsov, Sergei D. and Mukhanov, Viatcheslav and Sasaki, Misao and Soda, Jiro and Tsujikawa, Shinji and Padilla, Antonio and Gregory, Ruth and Malik, Karim A. and Wands, David and Tanaka, Takahiro},
   journal = {arXiv preprint arXiv:2604.22725},
   year = {2026},
   doi = {10.48550/arXiv.2604.22725}
 }</code></pre>
-      </div>
-    </section>
-
-    <!-- Paper Information — a collapsible group (Accessibility, Metadata,
-         Related). Deferring the detail to disclosures keeps the card short. -->
-    <section class="mg-paper-info" aria-labelledby="mg-pi-heading">
-      <h3 id="mg-pi-heading">Paper Information</h3>
-      <div class="mg-accordions">
-        <details class="mg-acc" id="mg-versions">
-          <summary>Version History</summary>
-          <div class="mg-acc-body">
-            <ol class="mg-ver-list">
-              <li class="mg-ver">
-                <div class="mg-ver-top">
-                  <a class="mg-ver-id" href="https://arxiv.org/abs/2604.22725v3">[v3]</a>
-                  <span class="mg-ver-tag">latest</span>
-                  <span class="mg-ver-date">28 Jun 2026&nbsp;UTC</span>
-                </div>
-                <p class="mg-ver-note">Latest &mdash; matches the published version (JCAP). Added the Planck 2018 comparison in Sec.&nbsp;4.</p>
-              </li>
-              <li class="mg-ver">
-                <div class="mg-ver-top">
-                  <a class="mg-ver-id" href="https://arxiv.org/abs/2604.22725v2">[v2]</a>
-                  <span class="mg-ver-date">19 May 2026&nbsp;UTC</span>
-                </div>
-                <p class="mg-ver-note">Revised the scalar spectral-index discussion; corrected Eq.&nbsp;(4.7).</p>
-              </li>
-              <li class="mg-ver mg-ver-current" aria-current="true">
-                <div class="mg-ver-top">
-                  <span class="mg-ver-id">[v1]</span>
-                  <span class="mg-ver-tag">viewing</span>
-                  <span class="mg-ver-date">24 Apr 2026&nbsp;UTC</span>
-                </div>
-                <p class="mg-ver-note">Original submission &mdash; the version you're viewing.</p>
-              </li>
-            </ol>
-            <p class="mg-ver-foot"><a href="https://arxiv.org/abs/2604.22725">Full version history</a></p>
-          </div>
-        </details>
-        <details class="mg-acc">
-          <summary>Accessibility</summary>
-          <div class="mg-acc-body mg-acc-a11y">
-            <p class="mg-a11y-line present">
-              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
-              <span>HTML, PDF &amp; LaTeX</span>
-            </p>
-            <p class="mg-a11y-line present">
-              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
-              <span>Structured math</span>
-            </p>
-            <p class="mg-a11y-line partial">
-              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-dasharray="2.5 2.5"/></svg>
-              <span>Alt text (partial)</span>
-            </p>
-          </div>
-        </details>
-        <details class="mg-acc">
-          <summary>Metadata</summary>
-        <div class="mg-acc-body">
-          <dl>
-            <dt>Subjects</dt>
-            <dd>General Relativity and Quantum Cosmology (<a href="#">gr-qc</a>); Cosmology and Nongalactic Astrophysics (<a href="#">astro-ph.CO</a>); High Energy Physics &mdash; Theory (<a href="#">hep-th</a>)</dd>
-            <dt>arXiv DOI</dt>
-            <dd><a href="https://doi.org/10.48550/arXiv.2604.22725">10.48550/arXiv.2604.22725</a></dd>
-            <dt>License</dt>
-            <dd><a href="https://creativecommons.org/licenses/by/4.0/"><abbr title="Creative Commons Attribution 4.0">CC BY 4.0</abbr></a></dd>
-            <dt>Journal</dt>
-            <dd><a href="https://doi.org/10.1088/1475-7516/2026/05/012">Journal of Cosmology and Astroparticle Physics, 2026(05), 012</a></dd>
-            <dt>Comments</dt>
-            <dd>v3: 18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.</dd>
-            <dt>Who cites this</dt>
-            <dd class="mg-who-row">
-              <a href="#">Google Scholar</a>
-              <a href="#">NASA ADS</a>
-              <a href="#">Semantic Scholar</a>
-            </dd>
-          </dl>
-        </div>
-      </details>
-      <!-- "Related" (arXiv Labs) is absent in phase 1: the full-width
-           band it had moved to was removed — labs integration is
-           deferred (not all labs act locally on this page; some modify
-           the /abs/ sidebar). See the parent mockup for the band. -->
-
+      </figure>
+      <figure data-format="apa">
+        <figcaption>APA</figcaption>
+        <pre><code>Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., Castellani, E., Maeda, K., Vidotto, F., Ashtekar, A., Emparan, R., Castro, A., Boer, J. d., Nojiri, S., Odintsov, S. D., Mukhanov, V., Sasaki, M., Soda, J., Tsujikawa, S., Padilla, A., Gregory, R., … Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. arXiv. https://doi.org/10.48550/arXiv.2604.22725</code></pre>
+      </figure>
+      <figure data-format="chicago">
+        <figcaption>Chicago</figcaption>
+        <pre><code>Palomares, Adrian, Ilya L. Shapiro, Maria C. Gonzalez-Garcia, Tomohiro Harada, Elena Castellani, Kei-ichi Maeda, Francesca Vidotto, et al. 2026. “Gauge-independent approach to inflation in quadratic gravity.” arXiv. https://doi.org/10.48550/arXiv.2604.22725.</code></pre>
+      </figure>
+      <figure data-format="mla">
+        <figcaption>MLA</figcaption>
+        <pre><code>Palomares, Adrian, et al. “Gauge-independent approach to inflation in quadratic gravity.” arXiv, 2026, https://doi.org/10.48550/arXiv.2604.22725.</code></pre>
+      </figure>
     </div>
-    </section>
-  </div>
+    <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="mg-cite-code" hidden>Show full citation</button>
+  </section>
+  <section aria-labelledby="mg-info-h" id="mg-info">
+    <h2 class="ds-panel-label" id="mg-info-h">Paper information</h2>
+    <details class="ds-acc" name="paper-info" id="mg-versions">
+      <summary>Version history</summary>
+      <div class="ds-acc-body">
+        <ol class="ds-paper-versions">
+          <li>
+            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v3">v3<span class="is-sr-only">, version 3</span></a> · <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC · Latest</p>
+            <p>18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.</p>
+          </li>
+          <li>
+            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a> · <time datetime="2026-05-19">19&nbsp;May&nbsp;2026</time>&nbsp;UTC</p>
+            <p>17 pages, 6 figures. Corrected Eq. (4.7).</p>
+          </li>
+          <li aria-current="true">
+            <p class="ds-date-row"><strong class="ds-version">v1</strong> · <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC · Viewing</p>
+            <p>16 pages, 5 figures.</p>
+          </li>
+        </ol>
+      </div>
+    </details>
+    <details class="ds-acc" name="paper-info">
+      <summary>Accessibility</summary>
+      <div class="ds-acc-body">
+        <ul class="ds-paper-capabilities">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg> HTML, PDF and TeX Source</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg> Structured math</li>
+        </ul>
+      </div>
+    </details>
+    <details class="ds-acc" name="paper-info">
+      <summary>Metadata</summary>
+      <div class="ds-acc-body">
+        <dl>
+          <dt>Subjects</dt><dd>General Relativity and Quantum Cosmology (<a href="https://arxiv.org/list/gr-qc/recent">gr-qc</a>); Cosmology and Nongalactic Astrophysics (<a href="https://arxiv.org/list/astro-ph.CO/recent">astro-ph.CO</a>); High Energy Physics — Theory (<a href="https://arxiv.org/list/hep-th/recent">hep-th</a>)</dd>
+          <dt>arXiv DOI</dt><dd><a href="https://doi.org/10.48550/arXiv.2604.22725">10.48550/arXiv.2604.22725</a></dd>
+          <dt>License</dt><dd><a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></dd>
+          <dt>Journal</dt><dd><a href="https://doi.org/10.1088/1475-7516/2026/05/012">Journal of Cosmology and Astroparticle Physics, 2026(05), 012</a></dd>
+          <dt>Comments</dt><dd>v3: 18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.</dd>
+          <dt>Who cites this</dt><dd class="mg-who-row"><a href="#">Google Scholar</a> <a href="#">NASA ADS</a> <a href="#">Semantic Scholar</a></dd>
+        </dl>
+      </div>
+    </details>
+  </section>
 </aside>
 </div><!-- /.mg-top-cols -->
 </div><!-- /.mg-top -->
 
-<!-- ══ Sticky paper-tools bar: TOC lozenge (centered, emphasis) flanked by
-        plain-text Abstract / PDF / TeX Source tools (right). Borrows the
-        reader-view nav, minus the logo. Compacts on scroll (see
-        .mg-toc-bar.is-stuck). The left spacer keeps the lozenge centered in
-        the viewport via the 1fr | auto | 1fr grid. ══ -->
-<div class="mg-toc-bar" id="mg-toc-bar">
-  <div class="mg-toc-bar-inner">
-    <!-- Left cell: the arXiv mark (single-color Library Grey). Once the reader scrolls, this bar is the
-         only chrome on screen — most readers arrive at papers from
-         search and links, and nothing else says where they are. The
-         quiet one-color variant orients without competing with the
-         paper; the full-color mark stays reserved for the top-of-page
-         header. Links home, per universal logo convention. (This cell
-         held the Listen control before phase 1 trimmed it.) -->
-    <div class="mg-toc-spacer">
-      <a href="https://arxiv.org/" class="mg-toc-logo" aria-label="archive home">
-        <!-- Two imgs because CSS cannot rewrite a src: Library Grey is
-             too dim on the dark canvas, so dark mode shows the light
-             variant instead. display:none keeps
-             the hidden one out of the accessibility tree. -->
-        <img src="images/logo_arxiv-library-grey.svg" alt="archive" class="mg-toc-logo-light">
-        <img src="images/logo_arxiv-light.svg" alt="archive" class="mg-toc-logo-dark">
-      </a>
-    </div>
-    <div class="mg-toc-wrap">
-      <button class="mg-toc-trigger" id="mg-toc-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mg-toc-dropdown">
-        <svg class="toc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
-        <span class="toc-text" id="mg-toc-text"><span class="toc-prefix">Contents</span></span>
-        <svg class="toc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <nav class="mg-toc-dropdown" id="mg-toc-dropdown" aria-label="Table of contents" hidden>
+<!-- The TOC bar on a paper (.ds-toc-bar): the logo, the contents list
+     written from LaTeXML's contents list, and the other formats. -->
+<div class="ds-full ds-toc-bar" id="mg-toc-bar">
+  <div class="ds-toc-bar-inner">
+    <a class="ds-paper-bar-logo" href="https://arxiv.org/" aria-label="archive home"><svg viewBox="0 0 246.98 111.12" fill="currentColor" aria-hidden="true"><path d="M134.81,46.73l24.36-29.89c1.49-1.99,2.2-3.03,1.49-4.72-.74-1.77-2.59-3.16-4.48-3.16h0c-1.06,0-1.72.09-3.01,1.11l-26.14,28.26,7.78,8.41Z" /><path d="M168.11,102.57l-32.36-38.28-.97,1.03-7.79-9.21-7.74-9.36-4.69,5.08c-1.72,1.84-1.71,4.7.02,6.53l47.79,51.07c1.02,1.05,2.05,1.19,3.14,1.19,1.93,0,3.19-1.14,4.03-2.82.72-1.73-.08-3.44-1.4-5.23Z" /><path d="M121.05,65.32l6.05,6.48-26.55,28.13c-.99,1-1.59,1.19-2.27,1.19-1.45,0-2.69-.82-3.24-2.14-.51-1.23.17-3.15,1.12-4.17l.02-.02.02-.03,24.85-29.45M121,63.43l-25.76,30.52c-1.29,1.37-2.08,3.78-1.36,5.5.75,1.8,2.46,2.91,4.4,2.91,1.09,0,1.99-.38,3.16-1.56l27.38-29.01-7.81-8.37h0Z" /><path d="M69.41,32.38c1.86,0,3.1,1.24,3.99,3.45,1.06-2.21,2.57-3.45,4.69-3.45h14.88c2.3,0,4.07,1.86,4.07,4.07v7.83c0,2.66-1.33,4.07-4.07,4.07s-4.07-1.42-4.07-4.07v-3.75h-10.54c-1.77,0-2.66.97-2.66,2.75v27.19h10.01c2.66,0,4.07,1.33,4.07,4.07s-1.42,4.07-4.07,4.07h-26.39c-2.66,0-3.99-1.33-3.99-4.07s1.33-4.07,3.99-4.07h8.24v-29.93h-7.26c-2.66,0-3.99-1.33-3.99-4.07s1.33-4.07,3.99-4.07h9.12Z" /><path d="M181.07,32.38c2.66,0,4.07,1.42,4.07,4.07v34.01h10.1c2.75,0,4.07,1.33,4.07,4.07s-1.33,4.07-4.07,4.07h-28.6c-2.66,0-4.07-1.33-4.07-4.07s1.42-4.07,4.07-4.07h10.36v-29.93h-8.53c-2.74,0-4.07-1.33-4.07-4.07s1.33-4.07,4.07-4.07h12.61ZM185.29,14.77c0,3.19-2.71,5.82-5.82,5.82s-5.9-2.63-5.9-5.82,2.71-5.82,5.9-5.82,5.82,2.63,5.82,5.82Z" /><path d="M246.98,36.46c0,.53-.09,1.15-.27,1.59l-14.88,38.08c-.71,1.68-1.95,2.48-3.72,2.48h-5.93c-1.86,0-3.19-.8-3.81-2.48l-15.05-38.08c-.27-.44-.36-1.06-.36-1.59,0-2.3,1.86-4.07,4.16-4.07,1.86,0,3.01.97,3.72,2.66l14.35,36.13,13.9-36.13c.71-1.68,1.86-2.66,3.72-2.66,2.3,0,4.16,1.77,4.16,4.07Z" /><path d="M32.45,32.38c5.02,0,8.21,3.31,8.21,8.4v37.83H5.14c-2.88,0-5.14-1.87-5.14-4.93v-13.03c0-4.07,2.83-7.35,7-8.15l25.51-3.57v-8.41H4.14c-2.05,0-4.14-1.45-4.14-4.07,0-2.87,2.14-4.07,4.36-4.07h28.09ZM32.5,70.47v-13.29l-24.35,3.4v9.9h24.35Z" /><path d="M90.37,1.75h.08c1,.02,2.24,1.25,2.59,1.67l.02.03.02.03,46.66,50.43c1.13,1.22,1.12,3.12-.03,4.34l-4.89,5.2-6.88-8.13L88.49,7.63c-1.51-2.17-1.62-2.84-1.19-3.86.5-1.21,1.74-2.02,3.08-2.02M90.37.5c-1.77,0-3.51,1.06-4.23,2.79-.7,1.69-.2,2.88,1.35,5.1l39.49,47.72,7.79,9.21,5.85-6.22c1.6-1.69,1.62-4.33.04-6.04L94,2.63s-1.71-2.08-3.52-2.12c-.04,0-.07,0-.11,0h0Z" /></svg></a>
+    <details class="ds-toc">
+      <summary class="ds-toc-trigger">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+        <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+        <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <nav class="ds-toc-menu" aria-label="Contents">
         <ol>
-          <li><a href="#S1"><span class="toc-num">1.</span>Introduction</a></li>
-          <li><a href="#S2"><span class="toc-num">2.</span>Background</a></li>
-          <li><a href="#S3"><span class="toc-num">3.</span>Gauge-invariant perturbations in quadratic gravity</a></li>
-          <li><a href="#S4"><span class="toc-num">4.</span>Constrained optimization</a></li>
-          <li><a href="#S5"><span class="toc-num">5.</span>Conclusions and future research</a></li>
-        </ol>
+    <li><a href="#S1"><span class="ds-toc-num">1</span>Introduction</a></li>
+    <li><a href="#S2"><span class="ds-toc-num">2</span>Setup</a>
+    <ol>
+<li><a href="#S2.SS1"><span class="ds-toc-num">2.1</span>Background equations</a></li>
+<li><a href="#S2.SS2"><span class="ds-toc-num">2.2</span>Perturbed equations</a></li></ol></li>
+    <li><a href="#S3"><span class="ds-toc-num">3</span>Evolution of gauge-invariant variables</a>
+    <ol>
+<li><a href="#S3.SS1"><span class="ds-toc-num">3.1</span>Evolution of <math class="ltx_Math" alttext="\Psi" display="inline" intent=":literal"><semantics><mi mathvariant="normal">Ψ</mi><annotation encoding="application/x-tex">\Psi</annotation></semantics></math> and <math class="ltx_Math" alttext="\Phi" display="inline" intent=":literal"><semantics><mi mathvariant="normal">Φ</mi><annotation encoding="application/x-tex">\Phi</annotation></semantics></math></a></li>
+<li><a href="#S3.SS2"><span class="ds-toc-num">3.2</span>Evolution of <math class="ltx_Math" alttext="\mathcal{R}" display="inline" intent=":literal"><semantics><mi class="ltx_font_mathcaligraphic">ℛ</mi><annotation encoding="application/x-tex">\mathcal{R}</annotation></semantics></math></a></li>
+<li><a href="#S3.SS3"><span class="ds-toc-num">3.3</span>Evolution of <math class="ltx_Math" alttext="\chi" display="inline" intent=":literal"><semantics><mi>χ</mi><annotation encoding="application/x-tex">\chi</annotation></semantics></math></a></li>
+<li><a href="#S3.SS4"><span class="ds-toc-num">3.4</span>Evolution of <math class="ltx_Math" alttext="\mathcal{A}" display="inline" intent=":literal"><semantics><mi class="ltx_font_mathcaligraphic">𝒜</mi><annotation encoding="application/x-tex">\mathcal{A}</annotation></semantics></math></a></li>
+<li><a href="#S3.SS5"><span class="ds-toc-num">3.5</span>Evolution of <math class="ltx_Math" alttext="\mathcal{A}_{\psi}" display="inline" intent=":literal"><semantics><msub><mi class="ltx_font_mathcaligraphic">𝒜</mi><mi>ψ</mi></msub><annotation encoding="application/x-tex">\mathcal{A}_{\psi}</annotation></semantics></math></a></li></ol></li>
+    <li><a href="#S4"><span class="ds-toc-num">4</span>Analysis of gauges</a>
+    <ol>
+<li><a href="#S4.SS0.SSS0.Px1">Newtonian gauge</a></li>
+<li><a href="#S4.SS0.SSS0.Px2">Synchronous gauge</a></li>
+<li><a href="#S4.SS0.SSS0.Px3">Flat slicing</a></li>
+<li><a href="#S4.SS0.SSS0.Px4">Comoving slicing</a></li></ol></li>
+    <li><a href="#S5"><span class="ds-toc-num">5</span>Conclusion</a></li>
+    <li><a href="#A1"><span class="ds-toc-num">A</span>Evolution equations</a></li>
+    <li><a href="#A2"><span class="ds-toc-num">B</span>Conformal transformation</a></li>
+    <li><a href="#bib">References</a></li></ol>
       </nav>
-    </div>
-    <nav class="new-html-nav mg-toc-tools" aria-label="Paper tools">
-      <!-- Back to abstract (phase 1): the abstract page stays the paper's
-           canonical home, so the route back rides in the always-visible
-           tools bar. Arrow icon + text label — the label carries the
-           meaning; an arrow alone reads as browser-back. -->
-      <a class="mg-abs-link" href="https://arxiv.org/abs/2604.22725v1" title="Back to abstract">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-        <span class="nav-label">Abstract</span>
-      </a>
-      <a href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener noreferrer" title="Download PDF">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
-        <span class="nav-label">PDF</span>
-        <span class="is-sr-only">(opens in new tab)</span>
-      </a>
-      <a href="https://arxiv.org/src/2604.22725v1" title="Download TeX source">
-        <span class="tex-logo" aria-hidden="true">T<span class="tex-logo-e">E</span>X</span>
-        <span class="nav-label">Source</span>
-        <span class="is-sr-only">TeX source</span>
-      </a>
+    </details>
+    <nav class="ds-paper-tools" aria-label="Other formats">
+      <a href="https://arxiv.org/abs/2604.22725v1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Abstract</a>
+      <a href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>PDF<span class="is-sr-only"> (opens in a new tab)</span></a>
+      <a href="https://arxiv.org/src/2604.22725v1"><svg viewBox="-20 70 680 500" fill="currentColor" stroke="currentColor" stroke-width="28" stroke-linejoin="round" aria-hidden="true"><path d="M620.8 159.4C590 159.8 578.7 176 573.1 183.9L573 184L517.3 264.5L600.1 385.6C607.6 396.2 611.4 398.1 635.5 398.1L635.5 407.2C626.4 406.5 607.5 406.5 597.8 406.5C585.4 406.5 567 406.5 554.9 407.2L554.9 398.1C568.1 397.3 571.5 390.8 571.5 387.9C571.5 386.8 571.5 385.6 568.5 381.5L503 285.2L442.8 373.1C440.9 375.8 439 378.5 439 383.3C439 389.4 442.4 396.9 454 398L454 407.1C444.6 406.4 426.9 406.4 416.8 406.4L414 406.4L402.3 489L206.4 489L206.4 479.9C233.1 479.9 237.3 479.9 237.3 463L237.3 259.8C237.3 242.9 233 242.9 206.4 242.9L206.4 232.6L226.2 232.6C221.4 171.5 215.4 160.9 158.2 160.8L137.5 160.8C130.7 162.3 130.7 166.9 130.7 175.2L130.7 380.2C130.7 393.8 131.8 398 163.1 398L173.6 398L173.6 407.1L173.2 407.1C155.3 406.8 136.5 406.4 118.3 406.4C100.1 406.4 81.4 406.7 63.5 407.1L62.9 407.1L62.9 398L73.6 398C105.3 398 106.4 393.9 106.4 380.2L106.4 175.2C106.4 166.5 106.4 162 99.2 160.9L78.4 160.9C20 160.9 14.7 171.8 9.8 234.2L3 234.2L9.3 150.9L226.8 150.9L232.9 232.7L397 232.7L406 316L399.2 316C393.9 266.2 387.1 243 328.9 243L277.4 243C262.4 243 261.6 244.9 261.6 257.6L261.6 350.9L297.1 350.9C332.6 350.9 336 338.1 336 306.9L342 306.9L342 404.8L336 404.8C336 373 332.6 360 297.1 360L261.6 360L261.6 465.2C261.6 478.2 262.3 480 277.4 480L329.6 480C390.7 480 399.5 454.2 407 406.4C399.3 406.4 390.7 406.6 384.8 407.1L384.8 398C392 398 416.5 397.6 432.6 374.2L498.1 278.5L425.4 171.8C417.1 160.1 410.3 159.3 389.6 159.3L389.6 150.2C398.7 150.9 417.5 150.9 427.3 150.9C439.7 150.9 458.1 150.9 470.2 150.2L470.2 159.3C457.7 159.7 453.6 166.1 453.6 169.5C453.6 170.6 454 171.8 456.6 175.9L512.3 257.5L562 185.4C564.7 181.7 566.5 178.6 566.5 174.1C566.5 168 563.5 160.5 551.5 159.3L551.5 150.2C560.9 150.9 576.3 150.9 588.7 150.9C597.7 150.9 612 150.9 620.7 150.2L620.7 159.3z"/></svg><span class="is-sr-only">TeX </span>Source</a>
     </nav>
   </div>
 </div>
@@ -7402,21 +6592,23 @@ We thus see that</p>
    BEHAVIOR 1: Authors list show/hide toggle
    ─────────────────────────────────────────────────────────────────
    Intent
-     Same pattern as the abstract page. First 8 authors visible, the
-     overflow tail revealed by clicking "show all N authors." aria-expanded
-     updated so AT users hear the state change. */
+     First 8 authors visible, the tail revealed by "show all N authors". */
 (function() {
+  /* Show more, as on the design system's progressive-disclosure page: the
+     script hides the tail with the attribute and shows the button, so
+     without JavaScript every author shows and there is no button. */
   var toggle = document.getElementById('html-authors-toggle');
   if (!toggle) return;
-  var overflow = document.querySelectorAll('.ltx_authors-overflow');
+  var tail = document.getElementById(toggle.getAttribute('aria-controls'));
+  var closedLabel = toggle.textContent;
+  tail.hidden = true;
+  toggle.hidden = false;
   toggle.addEventListener('click', function() {
-    var expanded = toggle.getAttribute('aria-expanded') === 'true';
-    var newState = !expanded;
-    toggle.setAttribute('aria-expanded', newState ? 'true' : 'false');
-    overflow.forEach(function(el) {
-      el.classList.toggle('is-expanded', newState);
-    });
-    toggle.textContent = newState ? 'show fewer' : '… show all 22 authors';
+    var open = toggle.getAttribute('aria-expanded') !== 'true';
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    tail.hidden = !open;
+    tail.classList.toggle('is-open', open);
+    toggle.textContent = open ? toggle.dataset.openLabel : closedLabel;
   });
 })();
 </script>
@@ -7456,6 +6648,7 @@ We thus see that</p>
   var jumpSource = {};   // bib id -> id of the citation the reader jumped from
   var openCite = null;
   var openScrollY = 0;
+  var openTrigger = null;   // the number that was pressed
 
   // prefers-reduced-motion: the CSS media query kills CSS animations,
   // but scrollIntoView({behavior:'smooth'}) is JS-driven motion that
@@ -7484,33 +6677,30 @@ We thus see that</p>
     return hashIdx >= 0 ? href.substring(hashIdx + 1) : null;
   }
 
-  // Pull author / year / title / journal out of a bibliography entry's
-  // LaTeXML-emitted <span> structure and assemble a compact summary line
-  // for the popover. Falls back to the anchor's title attr if the bibitem
-  // isn't found (shouldn't happen in well-formed LaTeXML output).
-  function extractRefText(bibItem) {
-    if (!bibItem) return '';
-    var author = bibItem.querySelector('.ltx_bib_author');
-    var year = bibItem.querySelector('.ltx_bib_year');
-    var title = bibItem.querySelector('.ltx_bib_title');
-    var journal = bibItem.querySelector('.ltx_bib_journal');
-    var publisher = bibItem.querySelector('.ltx_bib_publisher');
-    var parts = [];
-    var authorYear = '';
-    if (author) authorYear = author.textContent.replace(/\s+/g, ' ').trim();
-    if (year) {
-      var y = year.textContent.replace(/[()]/g, '').replace(/\s+/g, ' ').trim();
-      if (y) authorYear = (authorYear ? authorYear + ' ' : '') + '(' + y + ')';
-    }
-    if (authorYear) parts.push(authorYear);
-    if (title) parts.push(title.textContent.replace(/\s+/g, ' ').trim());
-    if (journal) parts.push(journal.textContent.replace(/\s+/g, ' ').trim());
-    else if (publisher) parts.push(publisher.textContent.replace(/\s+/g, ' ').trim());
-    return parts.join(' · ');
+  // A bibliography entry's own words, for the citation's accessible name:
+  // the entry unchanged, without its number and without the page's chips.
+  function entryText(bibItem) {
+    var c = bibItem.cloneNode(true);
+    Array.prototype.forEach.call(c.querySelectorAll('.ltx_tag_bibitem, .bib-chips, .fig-chips, button, annotation, annotation-xml'), function (n) { n.remove(); });
+    return c.textContent.replace(/\s+/g, ' ').trim();
+  }
+  // The entry copied whole, as the bibliography shows it: never rebuilt.
+  function entryCopy(bibItem) {
+    var c = bibItem.cloneNode(true);
+    Array.prototype.forEach.call(c.querySelectorAll('.bib-chips, .fig-chips, button, .mg-rail-anchor'), function (n) { n.remove(); });
+    Array.prototype.forEach.call(c.querySelectorAll('[id]'), function (n) { n.removeAttribute('id'); });
+    var out = document.createDocumentFragment();
+    while (c.firstChild) out.appendChild(c.firstChild);
+    return out;
+  }
+
+  // The cite's own numbers: not the links inside its popover's copied entries.
+  function numbers(cite) {
+    return Array.prototype.filter.call(cite.querySelectorAll('a.ltx_ref'), function (a) { return !a.closest('.mg-cite-pop'); });
   }
 
   function getRefsData(cite) {
-    var anchors = cite.querySelectorAll('a.ltx_ref');
+    var anchors = numbers(cite);
     return Array.prototype.map.call(anchors, function(a) {
       var href = a.getAttribute('href');
       var bibId = getBibIdFromHref(href);
@@ -7519,7 +6709,8 @@ We thus see that</p>
         num: a.textContent.replace(/[\[\]]/g, '').trim(),
         href: href,
         bibId: bibId,
-        text: bibItem ? extractRefText(bibItem) : (a.getAttribute('title') || ''),
+        bibItem: bibItem,
+        text: bibItem ? entryText(bibItem) : '',
         anchor: a
       };
     });
@@ -7540,74 +6731,61 @@ We thus see that</p>
     });
   }
 
+  /* One .ds-popover per citation cluster, as on the design system's papers
+     page: the title, the close control, then each entry copied whole with its
+     own Jump to reference. It stays in the cite, straight after the numbers,
+     so Tab moves from them into it and on to the text after the citation. */
   function buildPopover(cite, refs, citeId) {
     var popId = 'cite-pop-' + (++idCounter);
+    var name = refs.length === 1 ? 'Reference ' + refs[0].num : refs.length + ' references';
     var pop = document.createElement('span');
     pop.id = popId;
-    pop.className = 'cite-popover';
+    pop.className = 'ds-popover mg-cite-pop';
     pop.setAttribute('role', 'region');
-    pop.setAttribute('aria-label',
-      refs.length === 1 ? 'Reference ' + refs[0].num : refs.length + ' references');
+    pop.setAttribute('aria-label', name);
     pop.hidden = true;
     if (refs.length >= 7) pop.classList.add('is-wide');
 
-    var titleEl = document.createElement('div');
-    titleEl.className = 'cite-popover-title';
-    titleEl.textContent = refs.length === 1
-      ? 'Reference ' + refs[0].num
-      : refs.length + ' references';
+    var titleEl = document.createElement('span');
+    titleEl.className = 'ds-popover-title';
+    titleEl.textContent = name;
     pop.appendChild(titleEl);
-
-    var list = document.createElement('ul');
-    list.className = 'cite-popover-list';
-    refs.forEach(function(ref) {
-      var li = document.createElement('li');
-      li.className = 'cite-popover-item';
-
-      var num = document.createElement('span');
-      num.className = 'cite-popover-item-num';
-      num.textContent = '[' + ref.num + ']';
-      li.appendChild(num);
-
-      var text = document.createElement('span');
-      text.className = 'cite-popover-item-text';
-      text.textContent = ref.text || '(reference details unavailable)';
-      li.appendChild(text);
-
-      var jump = document.createElement('a');
-      jump.className = 'cite-popover-item-jump';
-      jump.href = ref.href || '#';
-      jump.setAttribute('aria-label', 'Jump to reference ' + ref.num);
-      jump.innerHTML = 'Jump to reference' + ARROW_SVG;
-      jump.setAttribute('data-cite-jump', '');
-      jump.setAttribute('data-cite-source', citeId);
-      jump.setAttribute('data-cite-target', ref.bibId || '');
-      li.appendChild(jump);
-
-      list.appendChild(li);
-    });
-    pop.appendChild(list);
 
     var closeBtn = document.createElement('button');
     closeBtn.type = 'button';
-    closeBtn.className = 'cite-popover-close';
-    closeBtn.setAttribute('aria-label', 'Close reference details');
-    closeBtn.innerHTML = '&times;';
+    closeBtn.className = 'ds-close';
+    closeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close ' + (refs.length === 1 ? 'reference ' + refs[0].num : 'references') + '</span>';
     closeBtn.addEventListener('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
+      var back = openTrigger;
       closeOpenPopover();
-      var firstAnchor = cite.querySelector('a.ltx_ref');
-      if (firstAnchor) firstAnchor.focus();
+      if (back) back.focus();
     });
     pop.appendChild(closeBtn);
+
+    var list = document.createElement('span');
+    list.className = 'mg-cite-pop-list';
+    refs.forEach(function(ref) {
+      var entry = document.createElement('span');
+      entry.className = 'mg-cite-pop-entry';
+      entry.appendChild(entryCopy(ref.bibItem));
+      entry.appendChild(document.createTextNode(' '));
+      var jump = document.createElement('a');
+      jump.href = ref.href || '#';
+      jump.innerHTML = 'Jump to reference<span class="is-sr-only"> ' + ref.num + '</span>';
+      jump.setAttribute('data-cite-jump', '');
+      jump.setAttribute('data-cite-source', citeId);
+      jump.setAttribute('data-cite-target', ref.bibId || '');
+      entry.appendChild(jump);
+      list.appendChild(entry);
+    });
+    pop.appendChild(list);
 
     cite.appendChild(pop);
 
     // Contextual accessible names — see ARIA wiring note above. The
-    // visible "[46]" stays compact; the label carries author/year/title
-    // pulled from the bibliography entry. No role override, no resting
-    // aria-expanded: chips announce as ordinary links with rich names.
+    // visible "[46]" stays compact; the name repeats the entry unchanged.
     refs.forEach(function(ref) {
       if (ref.text && ref.anchor) {
         ref.anchor.setAttribute('aria-label', 'Reference ' + ref.num + ': ' + ref.text);
@@ -7626,7 +6804,7 @@ We thus see that</p>
          clicked. - Click coordinates are exactly what the user expects the popup
          to appear near. No rect interpretation needed. */
   function positionPopover(pop, e) {
-    if (window.innerWidth <= 700) {
+    if (window.matchMedia('(max-width: 48rem)').matches) {   /* the bottom sheet, at the same threshold as the CSS */
       pop.style.top = '';
       pop.style.left = '';
       pop.style.maxHeight = '';
@@ -7648,7 +6826,7 @@ We thus see that</p>
     // anchor the user clicked, so its rect is the single line we want.
     var anchorRect = null;
     if (e && e.target && e.target.closest) {
-      var clickedAnchor = e.target.closest('a.ltx_ref') || e.target;
+      var clickedAnchor = (!e.target.closest('.mg-cite-pop') && e.target.closest('a.ltx_ref')) || e.target;
       if (clickedAnchor.getBoundingClientRect) {
         anchorRect = clickedAnchor.getBoundingClientRect();
       }
@@ -7697,35 +6875,27 @@ We thus see that</p>
     pop.style.setProperty('left', left + 'px', 'important');
   }
 
-  // Find a cite's popover whether it still lives inside the cite or has
-  // been portaled to <body>. After first open, the popover is reparented
-  // to <body> (see openCitePopover), so a plain `:scope > .cite-popover`
-  // lookup stops working — fall back to the data-owner-cite hook.
+  // A cite's popover lives inside the cite, straight after its numbers.
   function getCitePopover(cite) {
-    return cite.querySelector(':scope > .cite-popover') ||
-           document.querySelector('.cite-popover[data-owner-cite="' + cite.id + '"]');
+    return cite.querySelector(':scope > .mg-cite-pop');
   }
 
   function openCitePopover(cite, e) {
     if (openPopover && openCite !== cite) closeOpenPopover();
-    // The popover is BUILT inside the cite but PORTALED to document.body
-    // before display. Any ancestor with transform/filter/will-change
-    // would otherwise demote position:fixed to absolute-relative-to-
-    // ancestor, dropping the popover hundreds of px from the click.
+    // The popover stays in the cite. Nothing above it may make a box for
+    // position: fixed (see the .ltx_page_main rule).
     var pop = getCitePopover(cite);
     if (!pop) return;
-    if (pop.parentElement !== document.body) {
-      pop.dataset.ownerCite = cite.id;
-      document.body.appendChild(pop);
-    }
+    openTrigger = (e && e.target && e.target.closest && numbers(cite).indexOf(e.target.closest('a.ltx_ref')) > -1 && e.target.closest('a.ltx_ref')) || numbers(cite)[0];
     pop.hidden = false;
     openCite = cite;            // set before position so resize fallback works
     positionPopover(pop, e);
     // aria-expanded/-controls exist only while the popover is open —
     // resting chips stay aurally compact (see ARIA wiring note).
-    Array.prototype.forEach.call(cite.querySelectorAll('a.ltx_ref'), function(a) {
+    numbers(cite).forEach(function(a) {
       a.setAttribute('aria-expanded', 'true');
       a.setAttribute('aria-controls', pop.id);
+      a.classList.add('ds-inline-active');
     });
     openPopover = pop;
     openScrollY = window.pageYOffset;
@@ -7737,9 +6907,10 @@ We thus see that</p>
     openPopover.style.top = '';
     openPopover.style.left = '';
     openPopover.style.maxHeight = '';
-    Array.prototype.forEach.call(openCite.querySelectorAll('a.ltx_ref'), function(a) {
+    numbers(openCite).forEach(function(a) {
       a.removeAttribute('aria-expanded');
       a.removeAttribute('aria-controls');
+      a.classList.remove('ds-inline-active');
     });
     openPopover = null;
     openCite = null;
@@ -7756,13 +6927,14 @@ We thus see that</p>
       cite.classList.add('cite-chip');
       if (!cite.id) cite.id = 'cite-src-' + (++citeIdCounter);
       var refs = getRefsData(cite);
-      if (refs.length === 0) return;
+      // An entry that cannot be found leaves the citation a plain link to the reference list.
+      if (refs.length === 0 || refs.some(function (r) { return !r.bibItem; })) return;
       buildPopover(cite, refs, cite.id);
 
       // Click toggles. No hover-open, no focus-open. Click is the only entry.
       // The click event is forwarded so the popover can position itself
       // at the actual click coordinates.
-      Array.prototype.forEach.call(cite.querySelectorAll('a.ltx_ref'), function(a) {
+      numbers(cite).forEach(function(a) {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           var pop = getCitePopover(cite);
@@ -7815,7 +6987,7 @@ We thus see that</p>
           el.classList.remove('cite-active-source');
         });
         src.classList.add('cite-active-source');
-        var firstAnchor = src.querySelector('a.ltx_ref');
+        var firstAnchor = numbers(src)[0];
         if (firstAnchor) firstAnchor.focus({ preventScroll: true });
         src.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
         if (window.history && window.history.replaceState) {
@@ -7829,12 +7001,9 @@ We thus see that</p>
     // Esc → close + return focus to source
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && openPopover) {
-        var citeToFocus = openCite;
+        var back = openTrigger;
         closeOpenPopover();
-        if (citeToFocus) {
-          var firstAnchor = citeToFocus.querySelector('a.ltx_ref');
-          if (firstAnchor) firstAnchor.focus();
-        }
+        if (back) back.focus();
       }
     });
 
@@ -7856,8 +7025,7 @@ We thus see that</p>
     });
 
     // Click outside both popover and source chip → close.
-    // Popover is now portaled to <body>, so check containment in BOTH
-    // the source cite (the chip the user clicked) AND the popover itself.
+    // A click outside the cite and its popover closes it.
     document.addEventListener('click', function(e) {
       if (!openPopover) return;
       var insideCite = openCite && openCite.contains(e.target);
@@ -7920,7 +7088,7 @@ We thus see that</p>
     // have their own handlers — we skip those so the highlight survives
     // through the navigation flow. Esc also clears.
     document.addEventListener('click', function(e) {
-      if (e.target.closest('cite.ltx_cite, .cite-popover, .bib-chips, [data-cite-jump]')) return;
+      if (e.target.closest('cite.ltx_cite, .mg-cite-pop, .bib-chips, [data-cite-jump]')) return;
       var sources = document.querySelectorAll('.cite-active-source');
       if (sources.length === 0) return;
       Array.prototype.forEach.call(sources, function(el) {
@@ -8106,6 +7274,7 @@ We thus see that</p>
   function buildTeXView(region, table) {
     var pre = document.createElement('pre');
     pre.className = 'eqn-tex-view';
+    pre.setAttribute('data-no-copy', '');
     pre.textContent = getTeXSource(table);
     region.appendChild(pre);
   }
@@ -8328,16 +7497,22 @@ We thus see that</p>
     if (!content) return;
     var num = marker.textContent.trim();
 
-    var pop = document.createElement('div');
-    pop.className = 'ftn-popover';
+    var pop = document.createElement('span');
+    pop.className = 'ds-popover mg-ftn-pop';
     pop.setAttribute('role', 'region');
     pop.setAttribute('aria-label', 'Footnote ' + num);
     pop.innerHTML =
-      '<div class="ftn-popover-title">Footnote ' + num + '</div>' +
-      '<button type="button" class="ftn-popover-close" aria-label="Close footnote">&times;</button>' +
-      '<div>' + content + '</div>';
+      '<span class="ds-popover-title">Footnote ' + num + '</span>' +
+      '<button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close footnote ' + num + '</span></button>' +
+      '<span class="mg-ftn-pop-body">' + content + '</span>';
 
-    document.body.appendChild(pop);
+    // Straight after its marker, so Tab moves from the marker into it.
+    marker.after(pop);
+    if (window.matchMedia('(max-width: 48rem)').matches) {   /* the bottom sheet */
+      pop.querySelector('.ds-close').addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); closeOpenPop(); marker.focus(); });
+      openPop = pop;
+      return;
+    }
 
     // Position relative to the marker
     var rect = marker.getBoundingClientRect();
@@ -8351,7 +7526,7 @@ We thus see that</p>
     pop.style.left = left + 'px';
     pop.style.top = top + 'px';
 
-    pop.querySelector('.ftn-popover-close').addEventListener('click', function(e) {
+    pop.querySelector('.ds-close').addEventListener('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
       closeOpenPop();
@@ -8408,7 +7583,7 @@ We thus see that</p>
   // state at wide viewports).
   document.addEventListener('click', function(e) {
     var onMarker = e.target.closest('.ftn-marker');
-    var inPopover = e.target.closest('.ftn-popover');
+    var inPopover = e.target.closest('.mg-ftn-pop');
     var inMarginalia = e.target.closest('.ftn-marginalia');
     if (openPop && !inPopover && !onMarker) closeOpenPop();
     if (activeSource && !onMarker && !inMarginalia) clearActiveSource();
@@ -8528,12 +7703,12 @@ We thus see that</p>
         var prev = document.querySelector('.alt-popover');
         if (prev) { prev.remove(); return; }
         var pop = document.createElement('div');
-        pop.className = 'ftn-popover alt-popover';
+        pop.className = 'ds-popover mg-ftn-pop alt-popover';
         pop.setAttribute('role', 'region');
         pop.setAttribute('aria-label', 'Alt text for this figure');
         pop.innerHTML =
-          '<div class="ftn-popover-title">Alt text</div>' +
-          '<button type="button" class="ftn-popover-close" aria-label="Close alt text">&times;</button>' +
+          '<div class="ds-popover-title">Alt text</div>' +
+          '<button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close alt text</span></button>' +
           '<div></div>';
         pop.lastElementChild.textContent = altText;
         document.body.appendChild(pop);
@@ -8551,10 +7726,10 @@ We thus see that</p>
         }
         function onDoc(ev) { if (!pop.contains(ev.target) && ev.target !== viewAlt) close(); }
         function onKey(ev) { if (ev.key === 'Escape') close(); }
-        pop.querySelector('.ftn-popover-close').addEventListener('click', function(ev) { ev.stopPropagation(); close(); });
+        pop.querySelector('.ds-close').addEventListener('click', function(ev) { ev.stopPropagation(); close(); });
         setTimeout(function() { document.addEventListener('click', onDoc, true); }, 0);
         document.addEventListener('keydown', onKey);
-        pop.querySelector('.ftn-popover-close').focus();
+        pop.querySelector('.ds-close').focus();
       });
       chips.appendChild(viewAlt);
     } else {
@@ -8620,7 +7795,7 @@ We thus see that</p>
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('article figure').forEach(buildFigureRegion);
+    document.querySelectorAll('article figure:not(.ds-sidebar figure)').forEach(buildFigureRegion);
   });
 })();
 
@@ -8631,19 +7806,43 @@ We thus see that</p>
 /* ─────────────────────────────────────────────────────────────────
    BEHAVIOR 5b: Section-heading permalinks
    ─────────────────────────────────────────────────────────────────
-   See the SECTION-HEADING PERMALINKS CSS block.
-   For each section/subsection/appendix heading whose enclosing
-   <section> carries a LaTeXML id (S1, S2.SS1, A1 …), append an
-   icon-only button that copies the heading's deep link. The accessible
-   name includes the section's own title ("Copy link to section
-   2.1 Background equations") so the buttons are distinguishable in a
-   screen reader's controls list. Pure enhancement — absent without JS.
+   The design system's Permalink control (.ds-permalink), as anchors.js
+   draws it. anchors.js looks for an id on the heading; LaTeXML puts the
+   id on the <section>, so this page adds the control itself. The name
+   starts with the visible word: "Permalink to section 2, Setup". A copy
+   shows the tick for 2 seconds and is announced in words.
 */
 (function() {
-  var ICON_LINK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
-  var ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12"/></svg>';
+  var ICONS = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>' +
+    '<svg class="ds-permalink-done" viewBox="0 0 24 24" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>';
+  function words(el) {
+    var c = el.cloneNode(true);
+    Array.prototype.forEach.call(c.querySelectorAll('annotation, annotation-xml, .ds-permalink, .ltx_tag'), function (n) { n.remove(); });
+    return c.textContent.replace(/\s+/g, ' ').trim();
+  }
+  function copy(text) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:-1000px;opacity:0';
+    document.body.appendChild(ta);
+    var back = document.activeElement;
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    if (back && back.focus) back.focus();
+    return ok ? Promise.resolve() : Promise.reject();
+  }
 
   document.addEventListener('DOMContentLoaded', function() {
+    var status = document.getElementById('ds-anchor-status');
+    if (!status) {
+      status = document.createElement('span');
+      status.id = 'ds-anchor-status';
+      status.className = 'is-sr-only';
+      status.setAttribute('role', 'status');
+      document.body.appendChild(status);
+    }
     var headings = document.querySelectorAll(
       'article .ltx_section > .ltx_title, article .ltx_subsection > .ltx_title, article .ltx_appendix > .ltx_title'
     );
@@ -8651,26 +7850,25 @@ We thus see that</p>
       var sectionEl = h.closest('section, .ltx_appendix');
       var id = sectionEl && sectionEl.id;
       if (!id) return;
-      var titleClone = h.cloneNode(true);
-      Array.prototype.forEach.call(titleClone.querySelectorAll('annotation, annotation-xml'), function (n) { n.remove(); });
-      var titleText = titleClone.textContent.replace(/\s+/g, ' ').trim();
+      var tag = h.querySelector('.ltx_tag');
+      var num = tag ? tag.textContent.replace(/\s+/g, ' ').trim() : '';
+      var kind = sectionEl.classList.contains('ltx_appendix') ? 'appendix ' : 'section ';
+      var name = (num ? kind + num.replace(/^Appendix\s*/i, '') + ', ' : '') + words(h);
       var btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'heading-permalink mg-mark';
-      btn.setAttribute('aria-label', 'Copy link to section ' + titleText);
-      btn.setAttribute('title', 'Copy link to this section');
-      btn.innerHTML = ICON_LINK + '<span>Permalink</span>';
+      btn.className = 'ds-permalink';
+      btn.innerHTML = ICONS + 'Permalink<span class="is-sr-only"> to ' + name.replace(/[&<>]/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }) + '</span>';
+      var timer;
       btn.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         var url = window.location.href.split('#')[0] + '#' + id;
-        if (navigator.clipboard) navigator.clipboard.writeText(url);
-        btn.innerHTML = ICON_CHECK + '<span>Copied</span>';
-        btn.setAttribute('title', 'Copied!');
-        setTimeout(function() {
-          btn.innerHTML = ICON_LINK + '<span>Permalink</span>';
-          btn.setAttribute('title', 'Copy link to this section');
-        }, 1500);
+        copy(url).then(function () {
+          btn.classList.add('is-done');
+          status.textContent = 'Link to ' + name + ' copied';
+          clearTimeout(timer);
+          timer = setTimeout(function () { btn.classList.remove('is-done'); status.textContent = ''; }, 2000);
+        }, function () { status.textContent = 'Copy failed. The address is ' + url; });
       });
       h.appendChild(btn);
     });
@@ -9328,13 +8526,6 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
         <a href="https://status.arxiv.org/" target="_blank" rel="noopener noreferrer">Operational Status</a>
       </nav>
     </div>
-    <div class="ds-site-footer-funders">
-      <div class="ds-site-footer-funders-label">Major funding support from</div>
-      <div class="ds-site-footer-funders-logos">
-        <img class="ds-funder-logo" src="images/Simons-wordmark.png" alt="Simons Foundation">
-        <img class="ds-funder-logo" src="images/Schmidt-wordmark.png" alt="Schmidt Sciences">
-      </div>
-    </div>
   </div>
 </footer>
 
@@ -9342,189 +8533,41 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
 /* ════════════════════════════════════════════════════════════════════
    MERGED PAGE — added behaviors
    1) Reader-view toggle (two buttons, one per header; they stay in sync)
-   2) Cite dropdown (native <select> swaps the displayed citation)
-   3) Centered sticky TOC button (open/close dropdown; sticky-state class;
-      highlight the current section as user scrolls)
+   2) Cite (the select chooses which citation format shows)
+   3) (The TOC bar: toc.js)
    ════════════════════════════════════════════════════════════════════ */
 (function () {
 
   /* ── 1. (Reader-view toggle removed — single default page. The sticky TOC
         bar below carries the paper tools and compacts on scroll.) ── */
 
-  /* ── 2. Cite dropdown: swap the displayed code AND the "Display <format>"
-        toggle label by selected style ── */
-  var citeSel = document.getElementById('mg-cite-style');
-  var citeCode = document.getElementById('mg-cite-code');
-  var citeShow = document.getElementById('mg-cite-show');
-  var CITES = {
-    bibtex: "@article{palomares2026gauge,\n  title = {Gauge-independent approach to inflation in quadratic gravity},\n  author = {Palomares, Adrian and Shapiro, Ilya L. and Gonzalez-Garcia, Maria C. and Harada, Tomohiro and others},\n  journal = {arXiv preprint arXiv:2604.22725},\n  year = {2026},\n  doi = {10.48550/arXiv.2604.22725}\n}",
-    apa: "Palomares, A., Shapiro, I. L., Gonzalez-Garcia, M. C., Harada, T., … & Tanaka, T. (2026). Gauge-independent approach to inflation in quadratic gravity. arXiv preprint arXiv:2604.22725. https://doi.org/10.48550/arXiv.2604.22725",
-    chicago: "Palomares, Adrian, Ilya L. Shapiro, Maria C. Gonzalez-Garcia, Tomohiro Harada, et al. “Gauge-Independent Approach to Inflation in Quadratic Gravity.” arXiv preprint arXiv:2604.22725, 2026. https://doi.org/10.48550/arXiv.2604.22725.",
-    mla: "Palomares, Adrian, et al. “Gauge-Independent Approach to Inflation in Quadratic Gravity.” arXiv, 2026, arXiv:2604.22725, https://doi.org/10.48550/arXiv.2604.22725."
-  };
-  var CITE_NAMES = { bibtex: "BibTeX", apa: "APA", chicago: "Chicago", mla: "MLA" };
-  /* Label tracks both the selected format and the open/closed state. The
-     leading caret is a CSS ::before pseudo-element, so setting textContent
-     here leaves it intact. */
-  function updateCiteShowLabel() {
-    if (!citeShow || !citeSel) return;
-    var name = CITE_NAMES[citeSel.value] || "citation";
-    var shown = citeShow.getAttribute('aria-expanded') === 'true';
-    citeShow.textContent = (shown ? "Hide " : "Display ") + name;
-  }
-  if (citeSel && citeCode) {
-    citeSel.addEventListener('change', function () {
-      var code = citeCode.querySelector('code') || citeCode;
-      code.textContent = CITES[citeSel.value] || CITES.bibtex;
-      updateCiteShowLabel();
+  /* ── 2. Cite, as on the design system's papers page: the chosen format is
+        the one shown and copied (copy-code.js gives each block its copy
+        button). Without this script every format is shown in full, each with
+        its name, and the select and the button are hidden. ── */
+  document.querySelectorAll('.ds-paper-cite').forEach(function (cite) {
+    var select = cite.querySelector('select');
+    var toggle = cite.querySelector('.ds-show-more');
+    var region = document.getElementById(toggle.getAttribute('aria-controls'));
+    var figures = cite.querySelectorAll('figure[data-format]');
+    function show() { figures.forEach(function (f) { f.hidden = f.dataset.format !== select.value; }); }
+    select.addEventListener('change', show); show();
+    toggle.hidden = false;
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      region.classList.toggle('is-open', open);
+      toggle.textContent = open ? 'Show less' : 'Show full citation';
     });
-  }
-  updateCiteShowLabel();
-
-  /* ── 3. Centered TOC: open/close + sticky-state + current-section sync ── */
-  var tocBar = document.getElementById('mg-toc-bar');
-  var tocTrig = document.getElementById('mg-toc-trigger');
-  var tocDrop = document.getElementById('mg-toc-dropdown');
-  var tocText = document.getElementById('mg-toc-text');
-  function closeToc() {
-    if (!tocDrop) return;
-    tocDrop.hidden = true;
-    tocTrig.setAttribute('aria-expanded', 'false');
-  }
-  function openToc() {
-    if (!tocDrop) return;
-    tocDrop.hidden = false;
-    tocTrig.setAttribute('aria-expanded', 'true');
-  }
-  if (tocTrig && tocDrop) {
-    tocTrig.addEventListener('click', function (e) {
-      e.stopPropagation();
-      if (tocDrop.hidden) openToc(); else closeToc();
-    });
-    document.addEventListener('click', function (e) {
-      if (!tocDrop.hidden && !tocDrop.contains(e.target) && e.target !== tocTrig) closeToc();
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && !tocDrop.hidden) { closeToc(); tocTrig.focus(); }
-    });
-    // Close on link click (and let the anchor navigate)
-    tocDrop.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () { closeToc(); });
-    });
-  }
-
-  // Sticky/compact state: add .is-stuck once the bar reaches the viewport top
-  var tocBarTop = 0;
-  function measureTocBar() {
-    if (!tocBar) return;
-    var prev = tocBar.style.position; tocBar.style.position = 'static';
-    tocBarTop = tocBar.getBoundingClientRect().top + window.pageYOffset;
-    tocBar.style.position = prev;
-  }
-
-  function onScroll() {
-    if (!tocBar) return;
-    // .is-stuck drives both the stuck styling and the compact-on-scroll row.
-    tocBar.classList.toggle('is-stuck', window.pageYOffset >= tocBarTop - 1);
-    syncCurrentSection();
-  }
-
-  // Highlight current section in the TOC + update the button label
-  var sections = Array.prototype.slice.call(document.querySelectorAll('section.ltx_section'));
-  var tocLinks = tocDrop ? Array.prototype.slice.call(tocDrop.querySelectorAll('a')) : [];
-  var linksById = {};
-  tocLinks.forEach(function (a) {
-    var id = (a.getAttribute('href') || '').slice(1);
-    if (id) linksById[id] = a;
   });
-  function syncCurrentSection() {
-    if (!sections.length || !tocText) return;
-    var current = null;
-    var threshold = window.pageYOffset + 120;
-    for (var i = 0; i < sections.length; i++) {
-      if (sections[i].offsetTop <= threshold) current = sections[i];
-      else break;
-    }
-    tocLinks.forEach(function (a) { a.classList.remove('is-current'); });
-    if (current) {
-      var link = linksById[current.id];
-      if (link) link.classList.add('is-current');
-      var title = current.querySelector('.ltx_title_section');
-      // The heading's words only: not the TeX annotation, not the Permalink button.
-      var text = 'Contents';
-      if (title) {
-        var clone = title.cloneNode(true);
-        Array.prototype.forEach.call(clone.querySelectorAll('annotation, annotation-xml, button'), function (n) { n.remove(); });
-        text = clone.textContent.replace(/\s+/g, ' ').trim();
-      }
-      // Trim long titles to fit the trigger button
-      if (text.length > 64) text = text.slice(0, 61) + '…';
-      tocText.innerHTML = '<span class="toc-prefix">Contents ·</span> ' + text;
-    } else {
-      tocText.innerHTML = '<span class="toc-prefix">Contents</span>';
-    }
-  }
 
-  // Recompute on resize (layout shifts move the bar's home position)
-  window.addEventListener('resize', function () { measureTocBar(); onScroll(); });
-  window.addEventListener('scroll', onScroll, { passive: true });
-  // Initial pass after layout settles
-  setTimeout(function () { measureTocBar(); onScroll(); }, 50);
+  /* ── 3. The TOC bar's behaviour comes from the design system's toc.js. ── */
 
   /* ── 4. Announcement close button: hide the banner on click ── */
   var annClose = document.getElementById('mg-announcement-close');
   var annEl = document.getElementById('mg-announcement');
   if (annClose && annEl) {
     annClose.addEventListener('click', function () { annEl.style.display = 'none'; });
-  }
-
-  /* ── 5. Citation Copy button: copy the visible code to the clipboard,
-        with a short "Copied!" success state. ── */
-  var copyBtn = document.getElementById('mg-cite-copy');
-  var copyCode = document.getElementById('mg-cite-code');
-  if (copyBtn && copyCode) {
-    var copyLabel = copyBtn.querySelector('.mg-cite-copy-label');
-    copyBtn.addEventListener('click', function () {
-      var text = copyCode.textContent;
-      var done = function () {
-        copyBtn.classList.add('is-copied');
-        if (copyLabel) copyLabel.textContent = 'Copied!';
-        setTimeout(function () {
-          copyBtn.classList.remove('is-copied');
-          if (copyLabel) copyLabel.textContent = 'Copy';
-        }, 1500);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done, function () {
-          // fallback: select the text so the user can Ctrl/Cmd-C
-          var range = document.createRange();
-          range.selectNodeContents(copyCode);
-          var sel = window.getSelection();
-          sel.removeAllRanges(); sel.addRange(range);
-        });
-      } else {
-        var range = document.createRange();
-        range.selectNodeContents(copyCode);
-        var sel = window.getSelection();
-        sel.removeAllRanges(); sel.addRange(range);
-        done();
-      }
-    });
-  }
-
-  /* ── 5b. Citation Show/Hide: reveal the raw code on demand. Copy (above)
-        works whether or not the code is shown, so the common path is a
-        single click with the code kept out of the way by default. ── */
-  var showBtn = document.getElementById('mg-cite-show');
-  var citeBlock = document.querySelector('.mg-cite-block');
-  if (showBtn && copyCode) {
-    showBtn.addEventListener('click', function () {
-      var nowHidden = copyCode.hasAttribute('hidden');
-      if (nowHidden) { copyCode.removeAttribute('hidden'); } else { copyCode.setAttribute('hidden', ''); }
-      showBtn.setAttribute('aria-expanded', nowHidden ? 'true' : 'false');
-      if (citeBlock) citeBlock.classList.toggle('is-open', nowHidden);
-      updateCiteShowLabel();
-    });
   }
 
   /* ── 6. Labs toggles — REMOVED for phase 1 along with the Related
@@ -9625,7 +8668,7 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
     if (!window.matchMedia("(hover: none)").matches) return;
     if (e.target.closest("a, button")) return;
     var el = e.target.closest(HOVER_TARGETS + ", li.ltx_bibitem[id], h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection");
-    if (el && /^H[234]$/.test(el.tagName) && !el.querySelector(".heading-permalink")) el = null;
+    if (el && /^H[234]$/.test(el.tagName) && !el.querySelector(".ds-permalink")) el = null;
     if (!el) { clearActive(); return; }
     if (el === activeEl) { clearActive(); return; }
     clearActive();
@@ -9636,4 +8679,266 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") clearActive(); });
 })();
 </script>
+<!-- ══ PAPER STATES (?state=…) ══
+     One mockup, five views, so reviewers can react to how arXiv shows a
+     paper that is withdrawn, removed or reclassified:
+       (none)            the normal page, unchanged
+       ?state=withdrawn  the latest version is the authors' withdrawal
+       ?state=withdrawn-earlier  an earlier version of that withdrawn paper
+       ?state=tombstone  the version was removed by arXiv (full text erased)
+       ?state=reclassified  the primary category changed after announcement
+     The states follow arXiv's own processes (the admin withdrawal and
+     tombstone runbook; support policy T17). Everything below is mockup
+     chrome; in these views the header's navigation switches between them. -->
+<style>
+.mg-states-alert { max-width: 48rem; margin: 12px 0; }
+.mg-states-alert h2.ds-alert-title { font-family: var(--ds-font-sans); font-size: inherit; line-height: inherit; color: inherit; margin: 0; }
+.mg-ver-withdrawn { color: var(--ds-error-fg); font-weight: 600; }
+/* A withdrawn version carries its label inside the version box or link, in the error colours. */
+.ds-version.mg-ver-wd { color: var(--ds-error-fg); word-spacing: normal; }
+.ds-version.mg-ver-wd[aria-current] { background: var(--ds-error-bg); border-color: var(--ds-error-border); }
+.mg-state-hidden { display: none !important; }
+.ds-site-header-nav a[aria-current="page"] { font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+body.mg-state-withdrawn .ftn-marginalia, body.mg-state-withdrawn-admin .ftn-marginalia, body.mg-state-tombstone .ftn-marginalia { display: none !important; }
+/* Without full text the sidebar holds only Paper information, so it loses the rule that separated it from Files and Cite. */
+body:is(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) .ds-sidebar > #mg-info { border: 0; padding: 0; }
+body:is(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) .mg-top { margin-bottom: var(--ds-space-section); }
+/* Tombstone: no abstract, so the sidebar takes the whole row. */
+body.mg-state-tombstone .mg-top-main { display: none; }
+</style>
+<script>
+(function () {
+  var state = new URLSearchParams(location.search).get('state');
+  /* Without ?state the page is the Phase 1 mockup, untouched. */
+  if (state === null) return;
+  var STATES = {
+    withdrawn: 'Withdrawn',
+    'withdrawn-earlier': 'Withdrawn, earlier version',
+    'withdrawn-admin': 'Withdrawn by arXiv',
+    tombstone: 'Removed by arXiv (tombstone)',
+    reclassified: 'Reclassified'
+  };
+  if (!STATES[state]) state = null;
+  var main = document.getElementById('main');
+  if (!main) return;
+
+  var ALERT_ICON = '<svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
+  var REASON = 'The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.';
+  var ADMIN_NOTE = 'arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission.';
+  var ADMIN_WD = 'arXiv admin note: This submission has been withdrawn by arXiv administrators due to inappropriate text reuse from external sources.';
+  var ABS = 'https://arxiv.org/abs/2604.22725';
+
+  function $(sel) { return document.querySelector(sel); }
+  function $$(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+  function hide(el) { if (el) el.classList.add('mg-state-hidden'); }
+  function html(el, s) { if (el) el.innerHTML = s; }
+
+  /* ── The header's navigation becomes the switcher between views ── */
+  var LABELS = [['normal', 'Normal'], ['withdrawn', 'Withdrawn'], ['withdrawn-earlier', 'Earlier version'], ['withdrawn-admin', 'Withdrawn by arXiv'], ['tombstone', 'Removed'], ['reclassified', 'Reclassified']];
+  var nav = document.querySelector('.ds-site-header .ds-site-header-nav');
+  if (nav) {
+    nav.setAttribute('aria-label', 'Paper states (mockup)');
+    nav.innerHTML = LABELS.map(function (l) {
+      return '<a href="?state=' + l[0] + '"' + ((state || 'normal') === l[0] ? ' aria-current="page"' : '') + '>' + l[1] + '</a>';
+    }).join('');
+  }
+
+  if (!state) return;
+  document.body.classList.add('mg-state-' + state);
+
+  /* ── Shared pieces ── */
+  /* The spoken identity line starts with the status; the visible status
+     follows the category. */
+  function identity(version, catCode, catName, label) {
+    var line = $('.ds-paper-identity');
+    if (!line) return;
+    var shown = line.querySelector('.ds-version');
+    shown.textContent = 'arXiv:2604.22725v' + version;
+    shown.nextElementSibling.textContent = (label ? label + '. ' : '') + 'archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version ' + version;
+    line.children[1].textContent = '[' + catCode + '] ' + catName;
+    if (label) {
+      var tag = document.createElement('span');
+      tag.className = 'mg-ver-withdrawn';
+      tag.setAttribute('aria-hidden', 'true');
+      tag.textContent = label;
+      line.children[1].after(tag);
+    }
+  }
+  /* Without a text to read, the DOI and licence links leave the identity line; Metadata still has the DOI. */
+  function identityLinksOff() {
+    $$('.ds-paper-identity > a').forEach(hide);
+  }
+  function setAbsLinks(v) {
+    $$('a[href="' + ABS + 'v1"]').forEach(function (a) { a.href = ABS + 'v' + v; });
+  }
+  /* The notice sits straight after the title, before the dates, and its first
+     line is a heading, so a screen reader reaches it second, after the title,
+     and lists it in the headings menu. No role="alert": a live region in the
+     HTML as served is not announced on load; order and the page title do it. */
+  function replaceWarning(alertHtml) {
+    hide($('.mg-top > .ds-alert--warning'));
+    var box = document.createElement('section');
+    box.className = 'ds-alert ds-alert--error mg-states-alert';
+    box.setAttribute('aria-labelledby', 'mg-notice-h');
+    box.innerHTML = ALERT_ICON + '<div class="ds-alert-content">' +
+      alertHtml.replace('<p class="ds-alert-title">', '<h2 class="ds-alert-title" id="mg-notice-h">').replace(/<\/p>/, '</h2>') + '</div>';
+    $('.mg-top h1.ltx_title_document').after(box);
+  }
+  function pageTitle(prefix) { document.title = prefix + ': ' + document.title; }
+  function hideBody() {
+    $$('.ltx_section, .ltx_appendix, .ltx_bibliography, .ltx_acknowledgements, aside.footnote, .ftn-marginalia, #mg-toc-bar, .mg-skip-wrap, .arxiv-html-header').forEach(hide);
+  }
+  function citeNote(text) {
+    $$('#mg-cite-code code').forEach(function (code) {
+      var t = code.textContent;
+      if (t.indexOf(text) > -1) return;
+      if (/^@/.test(t)) code.textContent = t.replace(/\n\}\s*$/, ',\n  note = {' + text + '}\n}');
+      else code.textContent = t.replace(/\.?\s*$/, '. ' + text + '.');
+    });
+  }
+  function metaRow(label, newHtml) {
+    var dt = $$('.ds-sidebar .ds-acc-body dl dt').filter(function (d) { return d.textContent.trim() === label; })[0];
+    if (!dt) return;
+    var dd = dt.nextElementSibling;
+    if (newHtml === null) { hide(dt); hide(dd); } else dd.innerHTML = newHtml;
+  }
+  var MONTHS = { Jan: '01', Feb: '02', Mar: '03', Apr: '04', May: '05', Jun: '06', Jul: '07', Aug: '08', Sep: '09', Oct: '10', Nov: '11', Dec: '12' };
+  function iso(date) { var d = date.split(' '); return d[2] + '-' + MONTHS[d[1]] + '-' + ('0' + d[0]).slice(-2); }
+  var TAGS = { withdrawn: '<span class="mg-ver-withdrawn">Withdrawn</span>', removed: '<span class="mg-ver-withdrawn">Removed</span>', viewing: 'Viewing' };
+  /* One entry of .ds-paper-versions, as on the design system's papers page. */
+  function verItem(n, date, noteText, tag, current) {
+    var id = current ? '<strong class="ds-version">v' + n + '</strong>'
+      : '<a class="ds-version" href="' + ABS + 'v' + n + '">v' + n + '<span class="is-sr-only">, version ' + n + '</span></a>';
+    return '<li' + (current ? ' aria-current="true"' : '') + '><p class="ds-date-row">' + id +
+      ' · <time datetime="' + iso(date) + '">' + date.replace(/ /g, '&nbsp;') + '</time>&nbsp;UTC' +
+      (tag ? ' · ' + TAGS[tag] : '') + '</p><p>' + noteText + '</p></li>';
+  }
+  /* No full text: the sidebar keeps only Version history, open. */
+  function sidebarVersionsOnly() {
+    hide(document.getElementById('mg-files'));
+    hide(document.getElementById('mg-cite'));
+    /* Version history (open) and Metadata (closed) stay; Accessibility describes a full text that is not there. */
+    $$('#mg-info details.ds-acc').forEach(function (d) {
+      if (d.id !== 'mg-versions' && d.querySelector('summary').textContent.trim() !== 'Metadata') hide(d);
+    });
+    document.getElementById('mg-versions').classList.remove('mg-state-hidden');
+  }
+  function versionHistory(items) {
+    var ol = $('#mg-versions .ds-paper-versions'); if (ol) ol.innerHTML = items.join('');
+  }
+  function verline(dates, versions) {
+    var p = $('.mg-top > .ds-date-row');
+    if (!p) return;
+    p.innerHTML = dates + (versions ? DOT + '<span class="ds-version-list">' + versions + '</span>' : '');
+  }
+  function vl(n, current, withdrawn) {
+    var cls = 'ds-version' + (withdrawn ? ' mg-ver-wd' : '');
+    var tail = withdrawn ? ',</span> withdrawn' : '</span>';
+    return current
+      ? '<strong class="' + cls + '" aria-current="true">v' + n + '<span class="is-sr-only">, this version' + tail + '</strong>'
+      : '<a class="' + cls + '" href="' + ABS + 'v' + n + '">v' + n + '<span class="is-sr-only">, version ' + n + tail + '</a>';
+  }
+  var DOT = '<span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>';
+  var SUB = 'Submitted <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC';
+  var ANN = 'Announced <time datetime="2026-04-25T02:07Z">25&nbsp;Apr&nbsp;2026,&nbsp;02:07</time>&nbsp;UTC';
+  /* Each version shows its own comments, as the author wrote them. */
+  var V3NOTE = '18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data.';
+  var V2NOTE = '17 pages, 6 figures. Corrected Eq. (4.7).';
+  var V1NOTE = '16 pages, 5 figures.';
+
+  /* ── Withdrawn: the latest version is a withdrawal, by the submitter or by arXiv ── */
+  function withdrawnLatest(by, reason) {
+    pageTitle('Withdrawn');
+    identity(4, 'gr-qc', 'General Relativity and Quantum Cosmology', 'Withdrawn');
+    setAbsLinks(4);
+    verline(SUB + DOT + ANN + DOT + 'Withdrawn <time datetime="2026-10-22">22&nbsp;Oct&nbsp;2026</time>&nbsp;UTC (this version)',
+      vl(1) + ' ' + vl(2) + ' ' + vl(3) + ' ' + vl(4, true, true));
+    replaceWarning('<p class="ds-alert-title">This paper has been withdrawn by ' + by + '.</p>' +
+      '<p>Reason given: &ldquo;' + reason + '&rdquo; Earlier versions are still available.</p>');
+    identityLinksOff();
+    hideBody();
+    versionHistory([
+      verItem(4, '22 Oct 2026', 'Withdrawn by ' + by + ': &ldquo;' + reason + '&rdquo;', 'withdrawn', true),
+      verItem(3, '28 Jun 2026', V3NOTE),
+      verItem(2, '19 May 2026', V2NOTE),
+      verItem(1, '24 Apr 2026', V1NOTE)
+    ]);
+    sidebarVersionsOnly();
+    metaRow('Journal', null);
+    metaRow('Comments', 'v4: ' + reason);
+  }
+  if (state === 'withdrawn') withdrawnLatest('Adrian Palomares', REASON);
+  if (state === 'withdrawn-admin') withdrawnLatest('arXiv Admin', ADMIN_WD);
+
+  /* ── Withdrawn, earlier version: version 3 of the same paper ── */
+  if (state === 'withdrawn-earlier') {
+    pageTitle('Version 3 of a withdrawn paper');
+    identity(3, 'gr-qc', 'General Relativity and Quantum Cosmology', 'A newer version is withdrawn');
+    setAbsLinks(3);
+    verline(SUB + DOT + ANN + DOT + 'Revised <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC (this version)',
+      vl(1) + ' ' + vl(2) + ' ' + vl(3, true) + ' ' + vl(4, false, true));
+    replaceWarning('<p class="ds-alert-title">A newer version of this paper has been withdrawn by Adrian Palomares.</p>' +
+      '<p>You are reading version 3, from before the withdrawal. Reason given: &ldquo;' + REASON + '&rdquo;</p>');
+    $$('a[href*="/pdf/2604.22725v1"], a[href*="/src/2604.22725v1"]').forEach(function (a) { a.href = a.href.replace('v1', 'v3'); });
+    citeNote('A newer version was withdrawn, 22 Oct 2026');
+    versionHistory([
+      verItem(4, '22 Oct 2026', 'Withdrawn by Adrian Palomares.', 'withdrawn'),
+      verItem(3, '28 Jun 2026', V3NOTE, 'viewing', true),
+      verItem(2, '19 May 2026', V2NOTE),
+      verItem(1, '24 Apr 2026', V1NOTE)
+    ]);
+    metaRow('Journal', null);
+    metaRow('Comments', 'v3: 18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data.');
+  }
+
+  /* ── Tombstone: arXiv removed the version ── */
+  if (state === 'tombstone') {
+    pageTitle('Removed');
+    identity(1, 'gr-qc', 'General Relativity and Quantum Cosmology', 'Removed');
+    verline(SUB + DOT + ANN + DOT + 'Removed <time datetime="2026-10-23">23&nbsp;Oct&nbsp;2026</time>&nbsp;UTC', '');
+    replaceWarning('<p class="ds-alert-title">This version has been removed by arXiv.</p>' +
+      '<p>&ldquo;' + ADMIN_NOTE + '&rdquo; The full text and files are no longer available.</p>');
+    identityLinksOff();
+    var authors = $('.ltx_authors .ds-link-list');
+    while (authors.firstElementChild.nextSibling) authors.firstElementChild.nextSibling.remove();
+    hide(document.getElementById('abstract1'));
+    hideBody();
+    versionHistory([
+      verItem(1, '24 Apr 2026', 'Removed by arXiv on 23 Oct 2026: &ldquo;' + ADMIN_NOTE + '&rdquo;', 'removed', true)
+    ]);
+    sidebarVersionsOnly();
+    /* The runbook removes cross-lists and the journal reference; with no files, no license applies. */
+    metaRow('Subjects', 'General Relativity and Quantum Cosmology (<a href="https://arxiv.org/list/gr-qc/recent">gr-qc</a>)');
+    metaRow('License', null);
+    metaRow('Journal', null);
+    metaRow('Comments', ADMIN_NOTE);
+    metaRow('Who cites this', null);
+  }
+
+  /* ── Reclassified: primary category changed after announcement ── */
+  if (state === 'reclassified') {
+    identity(3, 'astro-ph.CO', 'Cosmology and Nongalactic Astrophysics');
+    setAbsLinks(3);
+    verline(SUB + DOT + ANN + DOT + 'Revised <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC (this version)',
+      vl(1) + ' ' + vl(2) + ' ' + vl(3, true));
+    hide($('.mg-top > .ds-alert--warning'));
+    $$('a[href*="/pdf/2604.22725v1"], a[href*="/src/2604.22725v1"]').forEach(function (a) { a.href = a.href.replace('v1', 'v3'); });
+    versionHistory([
+      verItem(3, '28 Jun 2026', V3NOTE + ' Matches published version.', 'viewing', true),
+      verItem(2, '19 May 2026', V2NOTE),
+      verItem(1, '24 Apr 2026', V1NOTE)
+    ]);
+    metaRow('Subjects', 'Cosmology and Nongalactic Astrophysics (<a href="#">astro-ph.CO</a>); General Relativity and Quantum Cosmology (<a href="#">gr-qc</a>); High Energy Physics &mdash; Theory (<a href="#">hep-th</a>)');
+    var subjDt = $$('.ds-sidebar .ds-acc-body dl dt').filter(function (d) { return d.textContent.trim() === 'Subjects'; })[0];
+    if (subjDt) {
+      var dt = document.createElement('dt'); dt.textContent = 'Category history';
+      var dd = document.createElement('dd');
+      dd.innerHTML = 'Primary category changed from gr-qc to astro-ph.CO on <time datetime="2026-08-12">12 Aug 2026</time>, after announcement.';
+      subjDt.nextElementSibling.after(dt, dd);
+    }
+  }
+})();
+</script>
+<script src="../../../docs/copy-code.js" defer></script>
+<script src="../../../docs/toc.js" defer></script>
 </body></html>
