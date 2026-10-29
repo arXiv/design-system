@@ -1543,7 +1543,7 @@ cite.cite-chip {
   font-style: normal;
   position: relative;
 }
-.cite-chip a.ltx_ref {
+.cite-chip a.ltx_ref:not(.mg-cite-pop a) {
   color: var(--ds-link);
   text-decoration: none;
   font-size: 0.9em;
@@ -1558,144 +1558,36 @@ cite.cite-chip {
    The aria-expanded="true" state (source of an open popover) keeps a
    subtle background so the user can see which citation owns the
    currently-open popover. */
-.cite-chip a.ltx_ref:hover,
-.cite-chip a.ltx_ref:focus-visible {
+.cite-chip a.ltx_ref:not(.mg-cite-pop a):hover,
+.cite-chip a.ltx_ref:not(.mg-cite-pop a):focus-visible {
   color: var(--ds-link-hover);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.cite-chip a.ltx_ref[aria-expanded="true"] {
-  color: var(--ds-link);
-  background: var(--ds-accent-wash);
-  text-decoration: underline;
-}
-
-.cite-popover {
-  position: fixed;
-  z-index: 110;          /* summoned-surfaces tier — see .toc-dropdown note */
-  width: 360px;
-  max-width: calc(100vw - 32px);
-  max-height: 60vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  /* Light-blue tint matches the formula hover band — visual consistency
-     across the two "arXiv layer" surfaces (formula chrome + citation
-     popover). Solid (not semitransparent) since the popover is a
-     floating panel on top of other content. */
-  background: var(--ds-accent-surface);
-  border: 1px solid var(--ds-accent-border);
-  border-radius: 6px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  padding: 12px 14px 8px;
-  font-family: "IBM Plex Sans", -apple-system, sans-serif;
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  color: var(--ds-text);
-  text-align: left;
-  font-style: normal;
-}
-.cite-popover[hidden] { display: none; }
-
-/* Wide-mode popover (2-column) for clusters of 7+ refs on wide viewports. */
+/* Citation, footnote and alt-text popovers are the design system's
+   .ds-popover; what follows is only what this page adds to it. */
+/* ar5iv's contain: layout on the page column would make it the box a
+   fixed popover is placed in, so the popover could not stay beside its
+   citation. position and flow-root keep the rest of what containment did. */
+.ltx_page_main { contain: none; position: relative; display: flow-root; }
+.mg-cite-pop, .mg-ftn-pop { text-align: left; font-style: normal; font-weight: 400; text-indent: 0; }
+.mg-cite-pop-list, .mg-cite-pop-entry, .mg-ftn-pop-body { display: block; }
+.mg-cite-pop-entry + .mg-cite-pop-entry { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--ds-accent-border); }
 @media (min-width: 56.25rem) {
-  .cite-popover.is-wide { width: 600px; }
-  .cite-popover.is-wide .cite-popover-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4px 16px;
-  }
+  .mg-cite-pop.is-wide { --ds-popover-width: 37.5rem; }
+  .mg-cite-pop.is-wide .mg-cite-pop-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; }
+  .mg-cite-pop.is-wide .mg-cite-pop-entry + .mg-cite-pop-entry { margin-top: 0; }
 }
-
-.cite-popover-title {
-  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
-  font-weight: 600;
-  font-size: 0.6875rem;
-  color: var(--ds-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin: 0 0 8px;
-  padding-right: 28px;  /* room for the close button */
-}
-.cite-popover-list { list-style: none; margin: 0; padding: 0; }
-.cite-popover-item {
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  margin: 0 0 8px;
-  padding: 6px 0;
-  border-top: 1px solid var(--ds-surface-muted);
-  break-inside: avoid;
-}
-.cite-popover-item:first-child { border-top: none; padding-top: 0; }
-.cite-popover-item:last-child { margin-bottom: 0; }
-.cite-popover-item-num {
-  font-family: "IBM Plex Mono", monospace;
-  color: var(--ds-link);
-  font-weight: 600;
-  margin-right: 4px;
-}
-.cite-popover-item-text { color: var(--ds-text); }
-
-.cite-popover-item-jump {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: 6px;
-  padding: 1px 6px;
-  font-size: 0.75rem;
-  color: var(--ds-link);
-  text-decoration: none;
-  border-radius: 3px;
-  white-space: nowrap;
-  min-height: 24px;      /* WCAG 2.5.8 target floor */
-  margin-block: -4px;    /* keeps the list line-height unchanged */
-}
-.cite-popover-item-jump:hover {
-  color: var(--ds-link-hover);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.cite-popover-item-jump:focus-visible {
-  outline: 2px solid var(--ds-link);
-  outline-offset: 1px;
-}
-.cite-popover-item-jump svg { width: 0.92em; height: 0.92em; }
-
-.cite-popover-close {
-  position: absolute;
-  top: 6px; right: 8px;
-  background: none;
-  border: none;
-  font-size: 1.375rem;
-  line-height: 1;
-  color: var(--ds-text-muted);
-  cursor: pointer;
-  padding: 2px 8px;
-  border-radius: 4px;
-}
-.cite-popover-close:hover { color: var(--ds-text); background: var(--ds-accent-wash); }
-.cite-popover-close:focus-visible {
-  outline: 2px solid var(--ds-link);
-  outline-offset: 1px;
-}
-
-/* Bottom-sheet popover on narrow viewports. No !important needed: the
-   positioning JS clears its own inline top/left below 700px, so these
-   rules are unopposed. */
+/* Below 48rem a popover is a bottom sheet. The scripts read the same threshold. */
 @media (max-width: 48rem) {
-  .cite-popover {
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: auto;
-    width: 100%;
-    max-width: none;
-    border-radius: 12px 12px 0 0;
-    border-bottom: none;
+  .mg-cite-pop, .mg-ftn-pop {
+    top: auto; right: 0; bottom: 0; left: 0;
+    width: 100%; max-width: none;
+    border-radius: 12px 12px 0 0; border-bottom: none;
     padding: 16px 16px 20px;
     box-shadow: 0 -4px 16px rgba(0,0,0,0.15);
-    max-height: 60vh;
   }
-  .cite-popover.is-wide .cite-popover-list { display: block; }
+  .mg-cite-pop.is-wide .mg-cite-pop-list { display: block; }
 }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
@@ -2282,51 +2174,6 @@ html:not(.js) .reading-progress { display: none !important; }
   border-radius: 4px;
   z-index: -1;
 }
-
-/* Popover (narrow viewports): styled like the citation popover so the
-   visual language is consistent. */
-.ftn-popover {
-  position: fixed;
-  z-index: 110;          /* summoned-surfaces tier — see .toc-dropdown note */
-  width: 320px;
-  max-width: calc(100vw - 32px);
-  max-height: 50vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  background: var(--ds-accent-surface);
-  border: 1px solid var(--ds-accent-border);
-  border-radius: 6px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  padding: 12px 14px;
-  font-family: "IBM Plex Sans", -apple-system, sans-serif;
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  color: var(--ds-text);
-}
-.ftn-popover[hidden] { display: none; }
-.ftn-popover-title {
-  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
-  font-weight: 600;
-  font-size: 0.6875rem;
-  color: var(--ds-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin: 0 0 8px;
-  padding-right: 24px;
-}
-.ftn-popover-close {
-  position: absolute;
-  top: 6px; right: 8px;
-  background: none;
-  border: none;
-  font-size: 1.375rem;
-  line-height: 1;
-  color: var(--ds-text-muted);
-  cursor: pointer;
-  padding: 0 6px;
-  border-radius: 4px;
-}
-.ftn-popover-close:hover { color: var(--ds-text); background: var(--ds-accent-wash); }
 
 /* ┌──────────────────────────────────────────────────────────────────┐
    │  10c. FIGURE MARGINALIA — image accessibility surface            │
@@ -6795,6 +6642,7 @@ We thus see that</p>
   var jumpSource = {};   // bib id -> id of the citation the reader jumped from
   var openCite = null;
   var openScrollY = 0;
+  var openTrigger = null;   // the number that was pressed
 
   // prefers-reduced-motion: the CSS media query kills CSS animations,
   // but scrollIntoView({behavior:'smooth'}) is JS-driven motion that
@@ -6823,33 +6671,30 @@ We thus see that</p>
     return hashIdx >= 0 ? href.substring(hashIdx + 1) : null;
   }
 
-  // Pull author / year / title / journal out of a bibliography entry's
-  // LaTeXML-emitted <span> structure and assemble a compact summary line
-  // for the popover. Falls back to the anchor's title attr if the bibitem
-  // isn't found (shouldn't happen in well-formed LaTeXML output).
-  function extractRefText(bibItem) {
-    if (!bibItem) return '';
-    var author = bibItem.querySelector('.ltx_bib_author');
-    var year = bibItem.querySelector('.ltx_bib_year');
-    var title = bibItem.querySelector('.ltx_bib_title');
-    var journal = bibItem.querySelector('.ltx_bib_journal');
-    var publisher = bibItem.querySelector('.ltx_bib_publisher');
-    var parts = [];
-    var authorYear = '';
-    if (author) authorYear = author.textContent.replace(/\s+/g, ' ').trim();
-    if (year) {
-      var y = year.textContent.replace(/[()]/g, '').replace(/\s+/g, ' ').trim();
-      if (y) authorYear = (authorYear ? authorYear + ' ' : '') + '(' + y + ')';
-    }
-    if (authorYear) parts.push(authorYear);
-    if (title) parts.push(title.textContent.replace(/\s+/g, ' ').trim());
-    if (journal) parts.push(journal.textContent.replace(/\s+/g, ' ').trim());
-    else if (publisher) parts.push(publisher.textContent.replace(/\s+/g, ' ').trim());
-    return parts.join(' · ');
+  // A bibliography entry's own words, for the citation's accessible name:
+  // the entry unchanged, without its number and without the page's chips.
+  function entryText(bibItem) {
+    var c = bibItem.cloneNode(true);
+    Array.prototype.forEach.call(c.querySelectorAll('.ltx_tag_bibitem, .bib-chips, .fig-chips, button, annotation, annotation-xml'), function (n) { n.remove(); });
+    return c.textContent.replace(/\s+/g, ' ').trim();
+  }
+  // The entry copied whole, as the bibliography shows it: never rebuilt.
+  function entryCopy(bibItem) {
+    var c = bibItem.cloneNode(true);
+    Array.prototype.forEach.call(c.querySelectorAll('.bib-chips, .fig-chips, button, .mg-rail-anchor'), function (n) { n.remove(); });
+    Array.prototype.forEach.call(c.querySelectorAll('[id]'), function (n) { n.removeAttribute('id'); });
+    var out = document.createDocumentFragment();
+    while (c.firstChild) out.appendChild(c.firstChild);
+    return out;
+  }
+
+  // The cite's own numbers: not the links inside its popover's copied entries.
+  function numbers(cite) {
+    return Array.prototype.filter.call(cite.querySelectorAll('a.ltx_ref'), function (a) { return !a.closest('.mg-cite-pop'); });
   }
 
   function getRefsData(cite) {
-    var anchors = cite.querySelectorAll('a.ltx_ref');
+    var anchors = numbers(cite);
     return Array.prototype.map.call(anchors, function(a) {
       var href = a.getAttribute('href');
       var bibId = getBibIdFromHref(href);
@@ -6858,7 +6703,8 @@ We thus see that</p>
         num: a.textContent.replace(/[\[\]]/g, '').trim(),
         href: href,
         bibId: bibId,
-        text: bibItem ? extractRefText(bibItem) : (a.getAttribute('title') || ''),
+        bibItem: bibItem,
+        text: bibItem ? entryText(bibItem) : '',
         anchor: a
       };
     });
@@ -6879,74 +6725,61 @@ We thus see that</p>
     });
   }
 
+  /* One .ds-popover per citation cluster, as on the design system's papers
+     page: the title, the close control, then each entry copied whole with its
+     own Jump to reference. It stays in the cite, straight after the numbers,
+     so Tab moves from them into it and on to the text after the citation. */
   function buildPopover(cite, refs, citeId) {
     var popId = 'cite-pop-' + (++idCounter);
+    var name = refs.length === 1 ? 'Reference ' + refs[0].num : refs.length + ' references';
     var pop = document.createElement('span');
     pop.id = popId;
-    pop.className = 'cite-popover';
+    pop.className = 'ds-popover mg-cite-pop';
     pop.setAttribute('role', 'region');
-    pop.setAttribute('aria-label',
-      refs.length === 1 ? 'Reference ' + refs[0].num : refs.length + ' references');
+    pop.setAttribute('aria-label', name);
     pop.hidden = true;
     if (refs.length >= 7) pop.classList.add('is-wide');
 
-    var titleEl = document.createElement('div');
-    titleEl.className = 'cite-popover-title';
-    titleEl.textContent = refs.length === 1
-      ? 'Reference ' + refs[0].num
-      : refs.length + ' references';
+    var titleEl = document.createElement('span');
+    titleEl.className = 'ds-popover-title';
+    titleEl.textContent = name;
     pop.appendChild(titleEl);
-
-    var list = document.createElement('ul');
-    list.className = 'cite-popover-list';
-    refs.forEach(function(ref) {
-      var li = document.createElement('li');
-      li.className = 'cite-popover-item';
-
-      var num = document.createElement('span');
-      num.className = 'cite-popover-item-num';
-      num.textContent = '[' + ref.num + ']';
-      li.appendChild(num);
-
-      var text = document.createElement('span');
-      text.className = 'cite-popover-item-text';
-      text.textContent = ref.text || '(reference details unavailable)';
-      li.appendChild(text);
-
-      var jump = document.createElement('a');
-      jump.className = 'cite-popover-item-jump';
-      jump.href = ref.href || '#';
-      jump.setAttribute('aria-label', 'Jump to reference ' + ref.num);
-      jump.innerHTML = 'Jump to reference' + ARROW_SVG;
-      jump.setAttribute('data-cite-jump', '');
-      jump.setAttribute('data-cite-source', citeId);
-      jump.setAttribute('data-cite-target', ref.bibId || '');
-      li.appendChild(jump);
-
-      list.appendChild(li);
-    });
-    pop.appendChild(list);
 
     var closeBtn = document.createElement('button');
     closeBtn.type = 'button';
-    closeBtn.className = 'cite-popover-close';
-    closeBtn.setAttribute('aria-label', 'Close reference details');
-    closeBtn.innerHTML = '&times;';
+    closeBtn.className = 'ds-close';
+    closeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close ' + (refs.length === 1 ? 'reference ' + refs[0].num : 'references') + '</span>';
     closeBtn.addEventListener('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
+      var back = openTrigger;
       closeOpenPopover();
-      var firstAnchor = cite.querySelector('a.ltx_ref');
-      if (firstAnchor) firstAnchor.focus();
+      if (back) back.focus();
     });
     pop.appendChild(closeBtn);
+
+    var list = document.createElement('span');
+    list.className = 'mg-cite-pop-list';
+    refs.forEach(function(ref) {
+      var entry = document.createElement('span');
+      entry.className = 'mg-cite-pop-entry';
+      entry.appendChild(entryCopy(ref.bibItem));
+      entry.appendChild(document.createTextNode(' '));
+      var jump = document.createElement('a');
+      jump.href = ref.href || '#';
+      jump.innerHTML = 'Jump to reference<span class="is-sr-only"> ' + ref.num + '</span>';
+      jump.setAttribute('data-cite-jump', '');
+      jump.setAttribute('data-cite-source', citeId);
+      jump.setAttribute('data-cite-target', ref.bibId || '');
+      entry.appendChild(jump);
+      list.appendChild(entry);
+    });
+    pop.appendChild(list);
 
     cite.appendChild(pop);
 
     // Contextual accessible names — see ARIA wiring note above. The
-    // visible "[46]" stays compact; the label carries author/year/title
-    // pulled from the bibliography entry. No role override, no resting
-    // aria-expanded: chips announce as ordinary links with rich names.
+    // visible "[46]" stays compact; the name repeats the entry unchanged.
     refs.forEach(function(ref) {
       if (ref.text && ref.anchor) {
         ref.anchor.setAttribute('aria-label', 'Reference ' + ref.num + ': ' + ref.text);
@@ -6965,7 +6798,7 @@ We thus see that</p>
          clicked. - Click coordinates are exactly what the user expects the popup
          to appear near. No rect interpretation needed. */
   function positionPopover(pop, e) {
-    if (window.innerWidth <= 700) {
+    if (window.matchMedia('(max-width: 48rem)').matches) {   /* the bottom sheet, at the same threshold as the CSS */
       pop.style.top = '';
       pop.style.left = '';
       pop.style.maxHeight = '';
@@ -6987,7 +6820,7 @@ We thus see that</p>
     // anchor the user clicked, so its rect is the single line we want.
     var anchorRect = null;
     if (e && e.target && e.target.closest) {
-      var clickedAnchor = e.target.closest('a.ltx_ref') || e.target;
+      var clickedAnchor = (!e.target.closest('.mg-cite-pop') && e.target.closest('a.ltx_ref')) || e.target;
       if (clickedAnchor.getBoundingClientRect) {
         anchorRect = clickedAnchor.getBoundingClientRect();
       }
@@ -7036,35 +6869,27 @@ We thus see that</p>
     pop.style.setProperty('left', left + 'px', 'important');
   }
 
-  // Find a cite's popover whether it still lives inside the cite or has
-  // been portaled to <body>. After first open, the popover is reparented
-  // to <body> (see openCitePopover), so a plain `:scope > .cite-popover`
-  // lookup stops working — fall back to the data-owner-cite hook.
+  // A cite's popover lives inside the cite, straight after its numbers.
   function getCitePopover(cite) {
-    return cite.querySelector(':scope > .cite-popover') ||
-           document.querySelector('.cite-popover[data-owner-cite="' + cite.id + '"]');
+    return cite.querySelector(':scope > .mg-cite-pop');
   }
 
   function openCitePopover(cite, e) {
     if (openPopover && openCite !== cite) closeOpenPopover();
-    // The popover is BUILT inside the cite but PORTALED to document.body
-    // before display. Any ancestor with transform/filter/will-change
-    // would otherwise demote position:fixed to absolute-relative-to-
-    // ancestor, dropping the popover hundreds of px from the click.
+    // The popover stays in the cite. Nothing above it may make a box for
+    // position: fixed (see the .ltx_page_main rule).
     var pop = getCitePopover(cite);
     if (!pop) return;
-    if (pop.parentElement !== document.body) {
-      pop.dataset.ownerCite = cite.id;
-      document.body.appendChild(pop);
-    }
+    openTrigger = (e && e.target && e.target.closest && numbers(cite).indexOf(e.target.closest('a.ltx_ref')) > -1 && e.target.closest('a.ltx_ref')) || numbers(cite)[0];
     pop.hidden = false;
     openCite = cite;            // set before position so resize fallback works
     positionPopover(pop, e);
     // aria-expanded/-controls exist only while the popover is open —
     // resting chips stay aurally compact (see ARIA wiring note).
-    Array.prototype.forEach.call(cite.querySelectorAll('a.ltx_ref'), function(a) {
+    numbers(cite).forEach(function(a) {
       a.setAttribute('aria-expanded', 'true');
       a.setAttribute('aria-controls', pop.id);
+      a.classList.add('ds-inline-active');
     });
     openPopover = pop;
     openScrollY = window.pageYOffset;
@@ -7076,9 +6901,10 @@ We thus see that</p>
     openPopover.style.top = '';
     openPopover.style.left = '';
     openPopover.style.maxHeight = '';
-    Array.prototype.forEach.call(openCite.querySelectorAll('a.ltx_ref'), function(a) {
+    numbers(openCite).forEach(function(a) {
       a.removeAttribute('aria-expanded');
       a.removeAttribute('aria-controls');
+      a.classList.remove('ds-inline-active');
     });
     openPopover = null;
     openCite = null;
@@ -7095,13 +6921,14 @@ We thus see that</p>
       cite.classList.add('cite-chip');
       if (!cite.id) cite.id = 'cite-src-' + (++citeIdCounter);
       var refs = getRefsData(cite);
-      if (refs.length === 0) return;
+      // An entry that cannot be found leaves the citation a plain link to the reference list.
+      if (refs.length === 0 || refs.some(function (r) { return !r.bibItem; })) return;
       buildPopover(cite, refs, cite.id);
 
       // Click toggles. No hover-open, no focus-open. Click is the only entry.
       // The click event is forwarded so the popover can position itself
       // at the actual click coordinates.
-      Array.prototype.forEach.call(cite.querySelectorAll('a.ltx_ref'), function(a) {
+      numbers(cite).forEach(function(a) {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           var pop = getCitePopover(cite);
@@ -7154,7 +6981,7 @@ We thus see that</p>
           el.classList.remove('cite-active-source');
         });
         src.classList.add('cite-active-source');
-        var firstAnchor = src.querySelector('a.ltx_ref');
+        var firstAnchor = numbers(src)[0];
         if (firstAnchor) firstAnchor.focus({ preventScroll: true });
         src.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
         if (window.history && window.history.replaceState) {
@@ -7168,12 +6995,9 @@ We thus see that</p>
     // Esc → close + return focus to source
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && openPopover) {
-        var citeToFocus = openCite;
+        var back = openTrigger;
         closeOpenPopover();
-        if (citeToFocus) {
-          var firstAnchor = citeToFocus.querySelector('a.ltx_ref');
-          if (firstAnchor) firstAnchor.focus();
-        }
+        if (back) back.focus();
       }
     });
 
@@ -7195,8 +7019,7 @@ We thus see that</p>
     });
 
     // Click outside both popover and source chip → close.
-    // Popover is now portaled to <body>, so check containment in BOTH
-    // the source cite (the chip the user clicked) AND the popover itself.
+    // A click outside the cite and its popover closes it.
     document.addEventListener('click', function(e) {
       if (!openPopover) return;
       var insideCite = openCite && openCite.contains(e.target);
@@ -7259,7 +7082,7 @@ We thus see that</p>
     // have their own handlers — we skip those so the highlight survives
     // through the navigation flow. Esc also clears.
     document.addEventListener('click', function(e) {
-      if (e.target.closest('cite.ltx_cite, .cite-popover, .bib-chips, [data-cite-jump]')) return;
+      if (e.target.closest('cite.ltx_cite, .mg-cite-pop, .bib-chips, [data-cite-jump]')) return;
       var sources = document.querySelectorAll('.cite-active-source');
       if (sources.length === 0) return;
       Array.prototype.forEach.call(sources, function(el) {
@@ -7668,16 +7491,22 @@ We thus see that</p>
     if (!content) return;
     var num = marker.textContent.trim();
 
-    var pop = document.createElement('div');
-    pop.className = 'ftn-popover';
+    var pop = document.createElement('span');
+    pop.className = 'ds-popover mg-ftn-pop';
     pop.setAttribute('role', 'region');
     pop.setAttribute('aria-label', 'Footnote ' + num);
     pop.innerHTML =
-      '<div class="ftn-popover-title">Footnote ' + num + '</div>' +
-      '<button type="button" class="ftn-popover-close" aria-label="Close footnote">&times;</button>' +
-      '<div>' + content + '</div>';
+      '<span class="ds-popover-title">Footnote ' + num + '</span>' +
+      '<button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close footnote ' + num + '</span></button>' +
+      '<span class="mg-ftn-pop-body">' + content + '</span>';
 
-    document.body.appendChild(pop);
+    // Straight after its marker, so Tab moves from the marker into it.
+    marker.after(pop);
+    if (window.matchMedia('(max-width: 48rem)').matches) {   /* the bottom sheet */
+      pop.querySelector('.ds-close').addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); closeOpenPop(); marker.focus(); });
+      openPop = pop;
+      return;
+    }
 
     // Position relative to the marker
     var rect = marker.getBoundingClientRect();
@@ -7691,7 +7520,7 @@ We thus see that</p>
     pop.style.left = left + 'px';
     pop.style.top = top + 'px';
 
-    pop.querySelector('.ftn-popover-close').addEventListener('click', function(e) {
+    pop.querySelector('.ds-close').addEventListener('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
       closeOpenPop();
@@ -7748,7 +7577,7 @@ We thus see that</p>
   // state at wide viewports).
   document.addEventListener('click', function(e) {
     var onMarker = e.target.closest('.ftn-marker');
-    var inPopover = e.target.closest('.ftn-popover');
+    var inPopover = e.target.closest('.mg-ftn-pop');
     var inMarginalia = e.target.closest('.ftn-marginalia');
     if (openPop && !inPopover && !onMarker) closeOpenPop();
     if (activeSource && !onMarker && !inMarginalia) clearActiveSource();
@@ -7868,12 +7697,12 @@ We thus see that</p>
         var prev = document.querySelector('.alt-popover');
         if (prev) { prev.remove(); return; }
         var pop = document.createElement('div');
-        pop.className = 'ftn-popover alt-popover';
+        pop.className = 'ds-popover mg-ftn-pop alt-popover';
         pop.setAttribute('role', 'region');
         pop.setAttribute('aria-label', 'Alt text for this figure');
         pop.innerHTML =
-          '<div class="ftn-popover-title">Alt text</div>' +
-          '<button type="button" class="ftn-popover-close" aria-label="Close alt text">&times;</button>' +
+          '<div class="ds-popover-title">Alt text</div>' +
+          '<button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close alt text</span></button>' +
           '<div></div>';
         pop.lastElementChild.textContent = altText;
         document.body.appendChild(pop);
@@ -7891,10 +7720,10 @@ We thus see that</p>
         }
         function onDoc(ev) { if (!pop.contains(ev.target) && ev.target !== viewAlt) close(); }
         function onKey(ev) { if (ev.key === 'Escape') close(); }
-        pop.querySelector('.ftn-popover-close').addEventListener('click', function(ev) { ev.stopPropagation(); close(); });
+        pop.querySelector('.ds-close').addEventListener('click', function(ev) { ev.stopPropagation(); close(); });
         setTimeout(function() { document.addEventListener('click', onDoc, true); }, 0);
         document.addEventListener('keydown', onKey);
-        pop.querySelector('.ftn-popover-close').focus();
+        pop.querySelector('.ds-close').focus();
       });
       chips.appendChild(viewAlt);
     } else {
