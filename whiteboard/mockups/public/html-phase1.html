@@ -8697,7 +8697,6 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
 body.mg-state-withdrawn .ftn-marginalia, body.mg-state-withdrawn-admin .ftn-marginalia, body.mg-state-tombstone .ftn-marginalia { display: none !important; }
 /* Without full text the sidebar holds only Paper information, so it loses the rule that separated it from Files and Cite. */
 body:is(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) .ds-sidebar > #mg-info { border: 0; padding: 0; }
-body:is(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) #mg-versions { border-bottom: 0; }
 body:is(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) .mg-top { margin-bottom: var(--ds-space-section); }
 /* Tombstone: no abstract, so the sidebar takes the whole row. */
 body.mg-state-tombstone .mg-top-main { display: none; }
@@ -8808,7 +8807,10 @@ body.mg-state-tombstone .mg-top-main { display: none; }
   function sidebarVersionsOnly() {
     hide(document.getElementById('mg-files'));
     hide(document.getElementById('mg-cite'));
-    $$('#mg-info details.ds-acc').forEach(function (d) { if (d.id !== 'mg-versions') hide(d); });
+    /* Version history (open) and Metadata (closed) stay; Accessibility describes a full text that is not there. */
+    $$('#mg-info details.ds-acc').forEach(function (d) {
+      if (d.id !== 'mg-versions' && d.querySelector('summary').textContent.trim() !== 'Metadata') hide(d);
+    });
     var v = document.getElementById('mg-versions');
     v.classList.remove('mg-state-hidden');
     v.open = true;
@@ -8854,6 +8856,8 @@ body.mg-state-tombstone .mg-top-main { display: none; }
       verItem(1, '24 Apr 2026', V1NOTE)
     ]);
     sidebarVersionsOnly();
+    metaRow('Journal', null);
+    metaRow('Comments', 'v4: ' + reason);
   }
   if (state === 'withdrawn') withdrawnLatest('Adrian Palomares', REASON);
   if (state === 'withdrawn-admin') withdrawnLatest('arXiv Admin', ADMIN_WD);
@@ -8896,6 +8900,12 @@ body.mg-state-tombstone .mg-top-main { display: none; }
       verItem(1, '24 Apr 2026', 'Removed by arXiv on 23 Oct 2026: &ldquo;' + ADMIN_NOTE + '&rdquo;', 'removed', true)
     ]);
     sidebarVersionsOnly();
+    /* The runbook removes cross-lists and the journal reference; with no files, no license applies. */
+    metaRow('Subjects', 'General Relativity and Quantum Cosmology (<a href="https://arxiv.org/list/gr-qc/recent">gr-qc</a>)');
+    metaRow('License', null);
+    metaRow('Journal', null);
+    metaRow('Comments', ADMIN_NOTE);
+    metaRow('Who cites this', null);
   }
 
   /* ── Reclassified: primary category changed after announcement ── */
