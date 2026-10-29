@@ -1,0 +1,539 @@
+/* One version of the filter bar, the sort bar and forms (option G). Candidates
+   for docs/; the x- names would become ds- names there.
+
+   Size comes from the pointer: 28px controls for a mouse, 44px with 16px
+   text for a finger (smaller text makes iOS zoom the page on focus).
+   Layout comes from the width each component has, through container queries.
+   Each component's font size is the control text, so a breakpoint in em
+   moves with the pointer and with text zoom: one breakpoint, not one per size. */
+:root {
+  --x-control: 1.75rem;
+  --x-control-text: 0.8125rem;
+  --x-control-box: 1.75rem;   /* the drawn box of a button that is not a form field */
+}
+@media (pointer: coarse) {
+  :root { --x-control: 2.75rem; --x-control-text: 1rem; --x-control-box: 2rem; }
+}
+/* Demo only: index.html asks for touch sizes, because a frame on a laptop cannot report a finger. */
+:root[data-pointer="coarse"] { --x-control: 2.75rem; --x-control-text: 1rem; --x-control-box: 2rem; }
+/* A button drawn smaller than its target: the target grows past the box, unseen,
+   to the full control height (DESIGN-POLICIES, Target size). */
+:root {
+  --x-compact-h: 1.9375rem;   /* a compact control's drawn height: .ds-btn-compact's 31px */
+  --x-reach: max(0px, (var(--x-control) - var(--x-compact-h)) / 2);   /* 0 with a mouse; on touch, what makes 44px */
+}
+.x-hit { position: relative; }
+.x-hit::after { content: ""; position: absolute; inset: min(0px, (100% - var(--x-control)) / 2) 0; }   /* at least the control height, whatever the box */
+
+
+/* ── Full forms keep the design system's sizes. On touch, every control is at
+   least 44px and typed text is 16px. ── */
+:root { --x-control-min: 0px; }
+@media (pointer: coarse) { :root { --x-control-min: 2.75rem; } }
+:root[data-pointer="coarse"] { --x-control-min: 2.75rem; }
+.ds-form :is(.ds-input:not(textarea), .ds-btn, .ds-check) { min-height: var(--x-control-min); }
+.ds-form .ds-input { font-size: max(0.875rem, var(--x-control-text)); }
+
+
+/* ── Small form: a few fields that adjust what is already on the page ──
+   The same fields, labels and buttons as a full form, with the labels above. Three things
+   change: the padding inside controls (the compact values), the spacing between fields,
+   and how wide a field is (its content); the submit shares the fields' row. */
+.x-form-small {
+  --ds-input-padding: 0.37em 0.643em;   /* compact, as .ds-btn-compact is for buttons */
+  container: x-form-small / inline-size;
+  margin: 0;
+  font-size: 0.875rem;
+}
+.x-form-small-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--ds-space-3) var(--ds-space-4);
+}
+/* A field: the full form's label, above it, with a smaller gap. */
+.x-form-small .x-filter { display: grid; grid-template-columns: max-content max-content; align-items: center; gap: max(0px, var(--ds-space-1) - var(--x-reach)) 0.4em; }
+.x-form-small .x-filter > label { grid-column: 1 / -1; font-size: 0.8125rem; font-weight: 600; color: var(--ds-text); }
+.x-form-small .x-filter > span { color: var(--ds-text-muted); }
+/* As wide as what goes in it: a select fits its longest choice, a date its own picker. */
+.x-form-small .ds-input { width: auto; font-size: max(0.875rem, var(--x-control-text)); }
+.x-form-small .ds-input[type="number"] { width: 5em; }
+.x-form-small .ds-input[type="search"] { width: 24em; max-width: 100%; }
+.x-form-small-body + .x-form-small-body { margin-top: var(--ds-space-3); }
+.x-form-small select.ds-input:not([multiple]):not([size]) { padding-right: 2.25em; background-position: right 0.75em center; }
+/* The submit, compact and secondary, on the fields' row. */
+.x-form-small-actions { display: flex; align-items: center; gap: var(--ds-space-4); margin-bottom: var(--x-reach); }
+/* Narrow: each field takes the full width, and the submit ends the form on the right. */
+@container x-form-small (max-width: 30em) {
+  .x-form-small-body { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .x-form-small .x-filter { grid-template-columns: minmax(0, 1fr) auto; }
+  .x-form-small .x-filter > .ds-input { width: 100%; min-width: 0; }
+  .x-form-small .x-filter > .ds-input:only-of-type:not(:has(~ span)) { grid-column: 1 / -1; }
+  .x-form-small-actions { justify-content: flex-end; }
+}
+
+
+/* ── A compact field: drawn at the compact size, with a full touch target ──
+   A field cannot carry an unseen ::after like a button, so its target grows another way:
+   on touch it has a transparent border above and below (the reach), its fill stops inside that
+   border, and its visible edge is an inset line. The box looks compact; the field itself,
+   and so its target, is the full control height. With a mouse the reach is 0. */
+:is(.x-form-small, .x-sentence) .ds-input:not(textarea) {
+  border: solid transparent;
+  border-width: var(--x-reach) 0;   /* above and below only, so its edges line up with its label */
+  border-radius: 6px / calc(6px + var(--x-reach));   /* the inner corners stay a 6px circle */
+  background-clip: padding-box;
+  box-shadow: inset 0 0 0 1px var(--ds-border-strong);
+  min-height: calc(var(--x-compact-h) + 2 * var(--x-reach));
+  padding-block: 0;
+}
+:is(.x-form-small, .x-sentence) .ds-input:not(textarea):focus-visible {
+  /* The ring on the visible edge; the transparent outline is what forced-colours mode draws. */
+  outline: 2px solid transparent;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px var(--ds-focus-ring);
+}
+:is(.x-form-small, .x-sentence) .ds-input:not(textarea).is-invalid { box-shadow: inset 0 0 0 2px var(--ds-error-border, var(--ds-border-strong)); }
+/* Its buttons: drawn compact, the target grown unseen (.x-hit); level with the field's visible box. */
+:is(.x-form-small, .x-sentence) .ds-btn { min-height: 0; }
+
+
+/* ── The second row: the section menu, then the views ──
+   Three looks for three jobs: a dropdown is a filled cell with a chevron; navigation
+   is text links; a filter control is an outlined box with the filter icon. */
+.ds-subnav:has(.x-section-menu) {
+  --x-row-pad: 24px;
+  column-gap: var(--ds-space-8);
+}
+@media (max-width: 599px) { .ds-subnav:has(.x-section-menu) { --x-row-pad: 12px; } }
+.ds-subnav > nav.x-subnav-nav { display: contents; }
+
+/* The dropdown fills its cell from the row's edge, top to bottom. */
+.x-section-menu { position: relative; display: flex; margin-inline-start: calc(-1 * var(--x-row-pad)); }
+.x-section-menu > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  min-height: max(var(--x-control), 2.5rem);
+  padding: 0 var(--ds-space-4) 0 var(--x-row-pad);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ds-text);
+  background: var(--ds-tint-accent);   /* the accent's light tint: on internal tools, the lime wash */
+  border-inline-end: 1px solid var(--ds-border);   /* the edge between the menu and the views */
+  list-style: none;
+  cursor: pointer;
+}
+.x-section-menu > summary::-webkit-details-marker { display: none; }
+.x-section-menu > summary:hover,
+.x-section-menu[open] > summary { background: var(--ds-accent-wash-hover, var(--ds-accent-wash)); }
+.x-section-menu > summary:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: -2px; }
+.x-section-menu > summary svg { transition: transform 0.15s; }
+/* The chevron says "this is a dropdown": heavier and darker than any other icon in the row. */
+.x-section-menu > summary svg,
+.x-views-menu > summary .x-chevron { width: 1.25em; height: 1.25em; stroke-width: 3; color: var(--ds-text); }
+.x-section-menu[open] > summary svg { transform: rotate(180deg); }
+/* A navigation menu is a sheet: square corners, 44px rows with hairlines. It hangs from its
+   control, at least 18rem wide; when its row is the full width of the screen, so is the sheet.
+   It takes the colour of the control it drops from: white from the white row, the accent's
+   light tint from the section menu, dark from the header. (A filter panel is a light, rounded popover.) */
+.ds-subnav { position: relative; }
+.x-section-menu-list {
+  --x-menu-bg: var(--ds-surface);
+  --x-menu-fg-strong: var(--ds-text);
+  --x-menu-hover: var(--ds-surface-hover);
+  --x-menu-divider: var(--ds-border);
+  --x-menu-current: var(--ds-subnav-current, var(--ds-accent-strong));   /* the current tab's colour */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 50;
+  display: grid;
+  min-width: 18rem;
+  padding: 0;
+  background: var(--x-menu-bg);
+  border: 1px solid var(--x-menu-divider);
+  border-top: 0;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+/* From the section menu: its light accent tint. */
+.x-section-menu > .x-section-menu-list {
+  --x-menu-bg: var(--ds-tint-accent);
+  --x-menu-hover: var(--ds-accent-wash-hover, var(--ds-accent-wash));
+  --x-menu-divider: var(--ds-accent-border);
+}
+.ds-subnav .x-section-menu-list a {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 var(--ds-space-4) 0 var(--x-row-pad);
+  color: var(--x-menu-fg-strong);
+  font-size: 0.875rem;
+  text-decoration: none;
+  border-bottom: 1px solid var(--x-menu-divider);
+}
+.ds-subnav .x-section-menu-list a:last-child { border-bottom: 0; }
+.ds-subnav .x-section-menu-list a:visited { color: var(--x-menu-fg-strong); }
+.ds-subnav .x-section-menu-list a:hover { color: var(--x-menu-fg-strong); background: var(--x-menu-hover); }
+.ds-subnav .x-section-menu-list a:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: -2px; }
+.ds-subnav .x-section-menu-list a:is([aria-current="true"], [aria-current="page"]) { font-weight: 600; box-shadow: inset 3px 0 0 var(--x-menu-current); }
+
+/* The views are tabs. The current tab is a box joined to the page below it, with an
+   accent line along its top; the others are text on the row, tinted under the pointer. */
+.ds-subnav .x-views { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--ds-space-1) var(--ds-space-1); align-self: flex-end; }
+.ds-subnav .x-views a,
+.ds-subnav .x-views a:visited {
+  min-height: 2.25rem;
+  margin-top: var(--ds-space-1);
+  margin-bottom: -1px;
+  padding: 0 var(--ds-space-4);
+  color: var(--ds-text-muted);
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+}
+.ds-subnav .x-views a:hover { color: var(--ds-text); background: var(--ds-tint-warm); border-bottom-color: transparent; }
+.ds-subnav .x-views a[aria-current="page"] {
+  color: var(--ds-text);
+  background: var(--x-tab-joins, var(--ds-canvas));   /* the ground of what comes below it */
+  border-color: var(--ds-border);
+  box-shadow: inset 0 3px 0 var(--ds-subnav-current, var(--ds-accent-strong));
+  text-shadow: none;
+  font-weight: 600;
+}
+
+/* The views folded into one menu, when the tabs do not fit beside the section menu.
+   The script sets .is-views-folded; without it the tabs wrap. */
+.x-views-menu { display: none; position: relative; }
+.ds-subnav.is-views-folded .x-views { display: none; }
+.ds-subnav.is-views-folded .x-views-menu { display: flex; }
+.x-views-menu > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  min-height: max(var(--x-control), 2.5rem);
+  font-size: 0.875rem;
+  color: var(--ds-text-muted);
+  list-style: none;
+  cursor: pointer;
+}
+.x-views-menu > summary::-webkit-details-marker { display: none; }
+.x-views-menu > summary b { color: var(--ds-text); font-weight: 600; }
+.x-views-menu > summary:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 2px; border-radius: 2px; }
+.x-views-menu > summary svg { width: 1.1em; height: 1.1em; flex: none; }
+.x-views-menu > summary .x-chevron { transition: transform 0.15s; }
+.x-views-menu[open] > summary .x-chevron { transform: rotate(180deg); }
+.x-views-menu > .x-section-menu-list { left: calc(-1 * var(--x-row-pad)); }
+.x-views-menu > .x-section-menu-list a { padding-inline-start: var(--x-row-pad); }
+
+/* When even the View menu does not fit beside the section menu, the section menu
+   takes a row of its own, filled edge to edge. The script sets .is-menu-row. */
+.ds-subnav.is-menu-row .x-section-menu { flex: 1 0 100%; margin-inline: calc(-1 * var(--x-row-pad)); }
+.ds-subnav.is-menu-row .x-section-menu > summary { flex: 1; padding-inline: var(--x-row-pad); border-inline-end: 0; border-bottom: 1px solid var(--ds-border); }
+/* Then each menu is a sheet across the whole row, under its own control. */
+.ds-subnav.is-menu-row .x-section-menu > .x-section-menu-list { right: 0; }
+.ds-subnav.is-menu-row .x-views-menu { position: static; }
+.ds-subnav.is-menu-row .x-views-menu > .x-section-menu-list { left: 0; right: 0; top: 100%; }
+
+
+/* ── Filter control: a boxed button with the filter icon, the name and what is applied ──
+   It opens the filter panel. A dropdown that navigates has a chevron and no box;
+   a control that filters has a box and this icon, never a chevron. */
+.x-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* Rows far enough apart that the unseen targets of two rows never overlap. */
+  gap: max(var(--ds-space-2), calc(var(--x-control) - var(--x-control-box) + 2px)) var(--ds-space-2);
+  font-size: 0.875rem;
+}
+/* The control is a compact secondary button (.ds-btn .ds-btn-compact), so it reads as
+   something to press, like every other button on the page; it adds the icon, the name
+   and the applied value. Its filter icon, not a chevron, says what it opens. */
+.x-filter-trigger { gap: 0.5em; min-width: 0; max-width: 100%; font-size: 0.875rem; }
+/* Open: the button's own pressed colours, set through its tokens so its gradient rim stays. */
+.x-filter-trigger[aria-expanded="true"]:not(.on-dark) {
+  --ds-btn-secondary-bg: var(--ds-btn-secondary-bg-active);
+  --ds-btn-secondary-bg-hover: var(--ds-btn-secondary-bg-active);
+  --ds-btn-secondary-rim-a: var(--ds-btn-secondary-rim-active);
+  --ds-btn-secondary-rim-b: var(--ds-btn-secondary-rim-active);
+}
+.x-filter-trigger > svg { width: 1em; height: 1em; flex: none; }
+/* What is applied: for a subject, a path from broad to narrow. */
+.x-filter-value { min-width: 0; font-weight: 400; color: var(--ds-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.x-filter-value b { font-weight: 600; color: var(--ds-text); }
+.x-path-sep { margin-inline: 0.3em; color: var(--ds-text-muted); }
+
+/* The page heading, with the subject control at its far end. */
+.x-heading-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--ds-space-tight) var(--ds-space-block); }
+.x-heading-row > h1 { margin: 0; }
+/* The page's freshness sits in the top corner of the content, still after the title in reading order. */
+.x-heading-row > .x-updated-line { align-self: flex-start; }
+
+/* The page's own data controls, at the heading's far end. */
+/* The date range: labels above, then the two fields and Apply joined into one control,
+   as .ds-input-group joins controls (shared edges, outer corners rounded). */
+.x-date-group {
+  --ds-input-padding: 0.37em 0.643em;   /* a small form: compact */
+  display: grid;
+  grid-template-columns: auto auto auto;
+  column-gap: 0;
+  row-gap: var(--ds-space-1);
+  align-items: stretch;
+  margin: 0;
+}
+.x-date-group > label { grid-row: 1; font-size: 0.8125rem; font-weight: 600; color: var(--ds-text); }
+.x-date-group > .ds-input { grid-row: 2; width: auto; min-width: 0; font-size: max(0.875rem, var(--x-control-text)); min-height: var(--x-control-min); border-radius: 0; }
+.x-date-group > .ds-input:first-of-type { border-start-start-radius: 6px; border-end-start-radius: 6px; }
+.x-date-group > .ds-input + .ds-input { margin-inline-start: -1px; }
+.x-date-group > .ds-input:focus-visible { position: relative; z-index: 1; }
+.x-date-group > .ds-btn { grid-row: 2; margin-inline-start: -1px; min-height: var(--x-control-min); border-start-start-radius: 0; border-end-start-radius: 0; }
+/* On a phone the two fields share the width, and Apply takes its own row. */
+@media (max-width: 30rem) {
+  .x-date-group { grid-template-columns: 1fr 1fr; width: 100%; }
+  .x-date-group > .ds-input { width: 100%; }
+  .x-date-group > .ds-input:last-of-type { border-start-end-radius: 6px; border-end-end-radius: 6px; }
+  .x-date-group > .ds-btn { grid-row: 3; grid-column: 1 / -1; margin: var(--ds-space-2) 0 0; border-radius: 6px; justify-self: end; }
+}
+.x-heading-tools { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2) var(--ds-space-4); font-size: 0.875rem; }
+.x-updated { color: var(--ds-text-muted); }
+.x-heading-tools .ds-btn svg { width: 1em; height: 1em; }
+
+/* In the dark header: the subject as the bar's scope, between the logo and the links. The same control,
+   drawn with the bar's colours. It stays in the bar at every width. */
+/* Centred in the space between the logo and the rest of the bar: the logo and the scope
+   each take an auto margin, so the free space splits evenly on either side. */
+.ds-site-header > .x-scope { margin-right: auto; }
+.ds-site-header > .x-scope .x-filter-value,
+.ds-site-header > .x-scope .x-path-sep { color: var(--ds-hdr-fg); }
+.ds-site-header > .x-scope .x-filter-value b { color: var(--ds-hdr-fg-strong); }
+/* On a phone the scope shows its value alone; the word stays for screen readers. */
+@media (max-width: 599px) {
+  .ds-site-header > .x-scope { min-width: 0; flex: 0 1 auto; }
+  .x-scope-label,
+  .x-scope-rest { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+
+
+/* ── A set of data with its controls: one box, the controls in its header bar ──
+   The toolbar is the box's top edge, so the controls read as part of what they change.
+   It says what is shown (a count, the order) on the left; the controls go where they fit. */
+.x-data { border: 1px solid var(--ds-border-strong); border-radius: 8px; overflow: hidden; }
+.x-data-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-2) var(--ds-space-block);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  background: color-mix(in srgb, var(--ds-tint-warm) 50%, var(--ds-surface));   /* half the table header's tint, so the two stay apart */
+  border-bottom: 1px solid var(--ds-border);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);   /* lifts the controls off the data beneath */
+  position: relative;
+  z-index: 1;
+  font-size: 0.875rem;
+}
+.x-data-state { margin: 0; color: var(--ds-text); font-weight: 600; }
+.x-data-state span { font-weight: 400; color: var(--ds-text-muted); }
+.x-data-body { padding: var(--ds-space-3); }
+.x-data > .ds-table-scroll > .ds-table { border: 0; border-radius: 0; }
+/* The sort bar takes the rest of the row, or a row of its own when it does not fit
+   beside the count; then it joins or splits by its own width. */
+.x-data-toolbar > .x-sort { flex: 1 1 44rem; }
+.x-data-toolbar .x-sort .ds-btn-group { justify-content: flex-end; }
+.x-data-toolbar .x-sort .ds-btn[aria-pressed="false"] { background: var(--ds-surface); }
+
+/* Applied filters that do not depend on each other: one chip each, and its × removes it. */
+.x-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--x-control-box);
+  padding-inline-start: 0.75em;
+  background: var(--ds-surface);   /* white on the toolbar's tint */
+  border: 1px solid var(--ds-border);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.x-chip-name { color: var(--ds-text-muted); margin-inline-end: 0.3em; }
+.x-chip-remove {
+  display: inline-grid;
+  place-items: center;
+  align-self: stretch;
+  min-width: var(--x-control-box);
+  margin-inline-start: 0.15em;
+  color: var(--ds-text-muted);
+  border-radius: 999px;
+}
+.x-chip-remove::after { inset: calc((var(--x-control-box) - var(--x-control)) / 2 - 1px) calc((var(--x-control-box) - var(--x-control)) / 2); }   /* the chip's border makes the button 2px shorter than the box */
+.x-chip-remove:hover { color: var(--ds-text); background: var(--ds-surface-hover); }
+.x-chip-remove:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: -2px; }
+.x-chip-remove svg { width: 1em; height: 1em; }
+.x-filter-row > .x-clear { margin-inline-start: var(--ds-space-2); }
+
+
+/* ── Filter panel: a popover that opens directly below its control ──
+   Aligned to the control's edge, and the control stays visible in its open state,
+   so the reader sees which control opened it. Nothing dims the page. */
+.x-filter-panel {
+  position: absolute;
+  inset: auto;
+  top: var(--x-panel-top, 0);
+  left: var(--x-panel-left, 0);
+  margin: 0;
+  width: min(calc(100vw - 2rem), var(--x-panel-width, 46rem));
+  padding: var(--ds-space-4);
+  color: var(--ds-text);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+.x-filter-panel.is-attached { border-top-left-radius: 0; border-top-right-radius: 0; }
+/* Without the script the popover still opens, centred by the browser. */
+.x-filter-panel:not([style*="--x-panel-top"]) { inset: 0; margin: auto; height: fit-content; }
+
+
+/* ── Sort bar: two to four keys. With more, sort from the table's column headers. ──
+   Wide: one joined bar. Narrower than four keys need: two buttons to a row,
+   the full width between them, so the joined bar never wraps. */
+.x-sort { container: x-sort / inline-size; margin: 0; font-size: 0.875rem; }
+.x-sort .ds-btn-group > span { color: var(--ds-text-muted); }
+/* Buttons, so the second row's text size, and drawn at the box height with the full target. */
+.x-sort .ds-btn-group > .ds-btn[aria-pressed][name] {
+  min-height: var(--x-control-box);
+  min-width: 0;
+  padding: 0 0.9em;
+  font-size: 0.875rem;
+}
+@container x-sort (max-width: 48em) {
+  .x-sort .ds-btn-group:has(> .ds-btn) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: max(var(--ds-space-2), calc(var(--x-control) - var(--x-control-box) + 2px)) var(--ds-space-2); }
+  .x-sort .ds-btn-group > span { grid-column: 1 / -1; margin: 0; }
+  .x-sort .ds-btn-group > .ds-btn[aria-pressed][name] {
+    justify-content: space-between;
+    margin: 0;
+    padding-block: 0.3em;
+    border-radius: 6px;
+    white-space: normal;
+    text-align: start;
+    line-height: 1.25;
+  }
+}
+
+
+/* ── Forms: a button straight after a field shares its row, so a one-field
+   form such as search needs nothing of its own. ── */
+.ds-form > .ds-field:has(> .ds-input[type="search"]) { flex: 1 1 10rem; }
+.ds-form > .ds-field + .ds-btn { flex: none; align-self: flex-end; margin-bottom: var(--ds-space-4); }
+
+
+/* ── The header's dropdowns, on a wide screen: dark sheets, as the header's menu is on a
+   phone — square corners, 44px rows with hairlines, hanging from the bar's bottom edge.
+   (docs/design-system.css draws them as light panels on purpose; this tries the other way.) ── */
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu {
+  top: var(--x-menu-top, calc(100% + 13px));   /* the bar's bottom edge; the script measures it */
+  min-width: 16rem;
+  padding: 0;
+  background: var(--ds-hdr-bg);
+  border: 0;
+  border-top: 1px solid var(--ds-hdr-divider);
+  border-radius: 0;
+}
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > a,
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > p,
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > form > button {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  margin: 0;
+  padding: 0 var(--ds-space-4);
+  color: var(--ds-hdr-fg-strong);
+  font-size: 0.875rem;
+  text-decoration: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--ds-hdr-divider);
+}
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > form > button { width: 100%; background: none; border-left: 0; border-right: 0; border-top: 0; font-family: inherit; font-size: 0.875rem; cursor: pointer; }
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > :last-child,
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > form:last-child > button { border-bottom: 0; }
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > p { gap: 0.3em; color: var(--ds-hdr-fg); }
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > p > b { color: var(--ds-hdr-fg-strong); }
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > a:hover,
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > form > button:hover { color: var(--ds-hdr-fg-strong); background: var(--ds-hdr-hover); }
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > a:focus-visible,
+.ds-site-header:not(.is-nav-collapsed) .ds-site-header-dropdown > .ds-site-header-menu > form > button:focus-visible { outline: 2px solid var(--ds-hdr-ring); outline-offset: -2px; }
+
+
+/* ── The page's heading block: title, description and freshness, tight together ── */
+.x-page-head { display: grid; gap: var(--ds-space-tight); }
+.x-page-head > * { margin: 0; }
+.x-updated-line { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2); font-size: 0.875rem; color: var(--ds-text-muted); }
+.x-updated-line .ds-btn svg { width: 1em; height: 1em; }
+/* The heading block, with the page's dates, is a section's gap above the first set of data,
+   the same gap as between sets, so the dates read as the page's and not one set's. */
+.mock-section:has(> .x-page-head) { gap: var(--ds-space-section); }
+.x-subsection { display: grid; gap: var(--ds-space-block); }
+.x-subsection > header { display: grid; gap: var(--ds-space-tight); }
+.x-subsection > header > * { margin: 0; }
+
+/* The page's context line: its dates on the left, its freshness at the right end. */
+.x-page-context { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-space-2) var(--ds-space-block); }
+.x-page-context > .x-updated-line { margin: 0; }
+
+
+/* ── The sentence toolbar: the controls inside a sentence that says what is shown ── */
+.x-sentence {
+  --ds-input-padding: 0.37em 0.643em;
+  justify-content: flex-start;
+  gap: var(--ds-space-2);
+  margin: 0;
+  color: var(--ds-text);
+}
+.x-sentence { display: flex; flex-wrap: wrap; align-items: center; font-size: 0.875rem; }
+.x-sentence label { font-weight: 400; color: var(--ds-text); }
+/* A label and its field wrap together, so a word is never left at the end of a line. */
+.x-pair { display: inline-flex; align-items: center; gap: var(--ds-space-2); }
+.x-sentence .ds-input { width: auto; font-size: max(0.875rem, var(--x-control-text)); }
+.x-sentence select.ds-input { padding-right: 2.25em; background-position: right 0.75em center; }
+/* On a phone a sentence stops reading as one: labels take a column, each field and the
+   button fill the other, so the form is one tidy block instead of ragged lines. */
+@media (max-width: 30rem) {
+  .x-sentence { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--ds-space-2) var(--ds-space-3); width: 100%; }
+  .x-sentence .x-pair { display: contents; }
+  .x-sentence label { display: block; }
+  .x-sentence label::first-letter { text-transform: uppercase; }   /* "to" becomes "To" once it starts a row */
+  .x-sentence .ds-input { width: 100%; }
+  .x-sentence > .ds-btn { grid-column: 2; }
+  .x-sentence > span:not(.x-pair) { grid-column: 1 / -1; }
+  .x-page-context { display: block; }
+}
+
+
+/* A page that opens with a secondary band: the current tab joins the band, not the white page. */
+body:has(main > .ds-zone-secondary:first-child) { --x-tab-joins: var(--ds-zone-secondary-bg); }
+
+/* The header's dropdown arrow: the second row's heavy chevron (docs/icons/chevron-down.svg at
+   stroke 3), not the 10px "▾" character, so every dropdown on the page says it the same way. */
+.ds-site-header .ds-site-header-dropdown > summary::after {
+  content: "";
+  display: inline-block;
+  font-size: inherit;   /* design-system.css sets 0.625rem here, for the character */
+  width: 1.35em;
+  height: 1.35em;
+  margin-inline-start: 0.3em;
+  vertical-align: -0.35em;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform 0.15s;
+}
+.ds-site-header .ds-site-header-dropdown[open] > summary::after { transform: rotate(180deg); }
+/* Forced colours drop backgrounds, so the drawn chevron would vanish: the character instead. */
+@media (forced-colors: active) {
+  .ds-site-header .ds-site-header-dropdown > summary::after { content: " \25BE"; width: auto; height: auto; background: none; -webkit-mask: none; mask: none; }
+}
+
+
+/* The current tab's top line and the menus' current bar in the accent itself, not its deepest
+   step: one green fewer. The line is not the only cue (the tab's shape, its bold label and
+   aria-current are), so it need not meet 3:1 on its own. */
+.ds-subnav:has(.x-views) { --ds-subnav-current: var(--ds-accent); }
