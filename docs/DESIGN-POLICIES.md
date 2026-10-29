@@ -69,7 +69,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
   - `--ds-border-strong` (`#89837a`) — interactive UI boundaries: borders, switch edges, arrows (3.76:1 on white, passes 3:1)
   - `--ds-text-muted` (`#6b6459`) — body-weight text, muted labels (5.83:1 on white, passes 4.5:1)
 - **Semantic colors:** Use danger tokens (`--ds-danger`) only for destructive actions and error states. Not for brand accents.
-- **Red means one thing: error.** Nothing else may use it — not required-field markers, not inline `<code>`, not emphasis. A form that spends red on a non-error state cannot then use red to mean "you cannot proceed."
+- **Red means an error, or a paper that has been withdrawn or removed.** Nothing else may use it — not required-field markers, not inline `<code>`, not emphasis. A form that spends red on a non-error state cannot then use red to mean "you cannot proceed." A withdrawn or removed paper uses red because a reader must not rely on it.
 - **Dimming:** Use `opacity` only for *transient or recoverable* dimming — a secondary control quieted until hover or focus returns it to full strength (`.ds-tag-remove`), or presence animated between 0 and 1. Persistent states use explicit colours. Opacity dims fill, border, shadow and label by the same amount, which is rarely what a state wants; it can render a light fill nearly invisible; and it creates a stacking context.
 - **Campus Red (`#b31b1b`):** Heritage color only. Use for the logo X mark and rare accents. Never for headers, buttons, large color fields, or text.
 - **Internal vs public:** Internal tools use Access Lime as the primary button color. Public pages use Open Blue. Do not cross these — the color difference signals which context the user is in.
