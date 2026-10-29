@@ -6,7 +6,7 @@ stylesheet: design-system.css
 components:
   - id: the-four-states
     title: "The four alert states"
-    summary: "arXiv's design system contains four alerts that align with user expectations and established UI practices. Each state conveys a tone through color: **Success** uses green to signal that all is well, **info** is a calm blue, **warning** is an attention-grabbing yellow, while **error** is a powerful red and is reserved for blocking or failed states. Color sets the tone; the icon and the title convey the meaning, so a reader who cannot see the color still knows what kind of message it is."
+    summary: "arXiv's design system contains four alerts that align with user expectations and established UI practices. Each state conveys a tone through color: **Success** uses green to signal that all is well, **info** is a calm blue, **warning** is an attention-grabbing yellow, while **error** is a powerful red and is reserved for blocking or failed states, and for a paper that has been withdrawn or removed. Color sets the tone; the icon and the title convey the meaning, so a reader who cannot see the color still knows what kind of message it is."
     classes:
       - name: ".ds-alert"
         does: "The container. On its own it is the info state; add a state class for success, warning or error. Takes `role=\"status\"` for success and info, `role=\"alert\"` for warning and error."
@@ -71,7 +71,7 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 ## The four alert states
 
-arXiv's design system contains four alerts that align with user expectations and established UI practices. Each state conveys a tone through color: **Success** uses green to signal that all is well, **info** is a calm blue, **warning** is an attention-grabbing yellow, while **error** is a powerful red and is reserved for blocking or failed states. Color sets the tone; the icon and the title convey the meaning, so a reader who cannot see the color still knows what kind of message it is.
+arXiv's design system contains four alerts that align with user expectations and established UI practices. Each state conveys a tone through color: **Success** uses green to signal that all is well, **info** is a calm blue, **warning** is an attention-grabbing yellow, while **error** is a powerful red and is reserved for blocking or failed states, and for a paper that has been withdrawn or removed. Color sets the tone; the icon and the title convey the meaning, so a reader who cannot see the color still knows what kind of message it is.
 
 ```html
 <div class="ds-alert ds-alert--warning" role="alert">
