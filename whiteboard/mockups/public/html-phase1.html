@@ -8694,9 +8694,12 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
 .mg-states-alert { max-width: 48rem; margin: 12px 0; }
 .mg-states-alert h2.ds-alert-title { font-family: var(--ds-font-sans); font-size: inherit; line-height: inherit; color: inherit; margin: 0; }
 .mg-ver-withdrawn { color: var(--ds-error-fg); font-weight: 600; }
-/* A withdrawn version carries its label inside the version box or link, in the error colours. */
+/* "Withdrawn:" before the display title, in the same red as the other status labels. */
+.mg-title-status { color: var(--ds-error-fg); }
+/* The withdrawal notice is named inside the version box or link, in the error colours. */
 .ds-version.mg-ver-wd { color: var(--ds-error-fg); word-spacing: normal; }
-.ds-version.mg-ver-wd[aria-current] { background: var(--ds-error-bg); border-color: var(--ds-error-border); }
+.ds-version.mg-ver-wd[aria-current],
+.ds-paper-versions > li[aria-current] .ds-version.mg-ver-wd { color: var(--ds-error-fg); background: var(--ds-error-bg); border-color: var(--ds-error-border); }
 .mg-state-hidden { display: none !important; }
 .ds-site-header-nav a[aria-current="page"] { font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
 body.mg-state-withdrawn .ftn-marginalia, body.mg-state-withdrawn-admin .ftn-marginalia, body.mg-state-tombstone .ftn-marginalia { display: none !important; }
@@ -8722,7 +8725,8 @@ body.mg-state-tombstone .mg-top-main { display: none; }
   var main = document.getElementById('main');
   if (!main) return;
 
-  var ALERT_ICON = '<svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
+  /* Lucide octagon-alert, on trial in place of circle-x, which readers took for a close button. */
+  var ALERT_ICON = '<svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>';
   var REASON = 'The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.';
   var ADMIN_NOTE = 'arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission.';
   var ADMIN_WD = 'arXiv admin note: This submission has been withdrawn by arXiv administrators due to inappropriate text reuse from external sources.';
@@ -8747,22 +8751,14 @@ body.mg-state-tombstone .mg-top-main { display: none; }
   document.body.classList.add('mg-state-' + state);
 
   /* ── Shared pieces ── */
-  /* The spoken identity line starts with the status; the visible status
-     follows the category. */
-  function identity(version, catCode, catName, label) {
+  /* The identity line holds no status: "Withdrawn:" or "Removed:" before the title says it. */
+  function identity(version, catCode, catName) {
     var line = $('.ds-paper-identity');
     if (!line) return;
     var shown = line.querySelector('.ds-version');
     shown.textContent = 'arXiv:2604.22725v' + version;
-    shown.nextElementSibling.textContent = (label ? label + '. ' : '') + 'archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version ' + version;
+    shown.nextElementSibling.textContent = 'archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version ' + version;
     line.children[1].textContent = '[' + catCode + '] ' + catName;
-    if (label) {
-      var tag = document.createElement('span');
-      tag.className = 'mg-ver-withdrawn';
-      tag.setAttribute('aria-hidden', 'true');
-      tag.textContent = label;
-      line.children[1].after(tag);
-    }
   }
   /* Without a text to read, the DOI and licence links leave the identity line; Metadata still has the DOI. */
   function identityLinksOff() {
@@ -8785,6 +8781,12 @@ body.mg-state-tombstone .mg-top-main { display: none; }
     $('.mg-top h1.ltx_title_document').after(box);
   }
   function pageTitle(prefix) { document.title = prefix + ': ' + document.title; }
+  /* The status goes before the author's title in its own element, so the title itself is never edited.
+     lang="en" because the title may be in another language. */
+  function titleStatus(label) {
+    var h1 = $('.mg-top h1.ltx_title_document');
+    if (h1) h1.insertAdjacentHTML('afterbegin', '<span class="mg-title-status" lang="en">' + label + ':</span> ');
+  }
   function hideBody() {
     $$('.ltx_section, .ltx_appendix, .ltx_bibliography, .ltx_acknowledgements, aside.footnote, .ftn-marginalia, #mg-toc-bar, .mg-skip-wrap, .arxiv-html-header').forEach(hide);
   }
@@ -8804,14 +8806,20 @@ body.mg-state-tombstone .mg-top-main { display: none; }
   }
   var MONTHS = { Jan: '01', Feb: '02', Mar: '03', Apr: '04', May: '05', Jun: '06', Jul: '07', Aug: '08', Sep: '09', Oct: '10', Nov: '11', Dec: '12' };
   function iso(date) { var d = date.split(' '); return d[2] + '-' + MONTHS[d[1]] + '-' + ('0' + d[0]).slice(-2); }
-  var TAGS = { withdrawn: '<span class="mg-ver-withdrawn">Withdrawn</span>', removed: '<span class="mg-ver-withdrawn">Removed</span>', viewing: 'Viewing' };
+  var TAGS = { removed: '<span class="mg-ver-withdrawn">Removed</span>', viewing: 'Viewing' };
+  /* The withdrawal is a notice, not a revision, so it is named rather than numbered.
+     Its links open the mockup's withdrawn view, which is the page they stand for. */
+  var NOTICE = 'Withdrawal notice';
   /* One entry of .ds-paper-versions, as on the design system's papers page. */
   function verItem(n, date, noteText, tag, current) {
-    var id = current ? '<strong class="ds-version">v' + n + '</strong>'
-      : '<a class="ds-version" href="' + ABS + 'v' + n + '">v' + n + '<span class="is-sr-only">, version ' + n + '</span></a>';
+    var notice = tag === 'withdrawn';
+    var cls = 'ds-version' + (notice ? ' mg-ver-wd' : '');
+    var id = current ? '<strong class="' + cls + '">' + (notice ? NOTICE : 'v' + n) + '</strong>'
+      : notice ? '<a class="' + cls + '" href="?state=withdrawn">' + NOTICE + '</a>'
+      : '<a class="' + cls + '" href="' + ABS + 'v' + n + '">v' + n + '<span class="is-sr-only">, version ' + n + '</span></a>';
     return '<li' + (current ? ' aria-current="true"' : '') + '><p class="ds-date-row">' + id +
       ' · <time datetime="' + iso(date) + '">' + date.replace(/ /g, '&nbsp;') + '</time>&nbsp;UTC' +
-      (tag ? ' · ' + TAGS[tag] : '') + '</p><p>' + noteText + '</p></li>';
+      (TAGS[tag] ? ' · ' + TAGS[tag] : '') + '</p><p>' + noteText + '</p></li>';
   }
   /* No full text: the sidebar keeps only Version history, open. */
   function sidebarVersionsOnly() {
@@ -8832,11 +8840,12 @@ body.mg-state-tombstone .mg-top-main { display: none; }
     p.innerHTML = dates + (versions ? DOT + '<span class="ds-version-list">' + versions + '</span>' : '');
   }
   function vl(n, current, withdrawn) {
-    var cls = 'ds-version' + (withdrawn ? ' mg-ver-wd' : '');
-    var tail = withdrawn ? ',</span> withdrawn' : '</span>';
+    if (withdrawn) return current
+      ? '<strong class="ds-version mg-ver-wd" aria-current="true">' + NOTICE + '</strong>'
+      : '<a class="ds-version mg-ver-wd" href="?state=withdrawn">' + NOTICE + '</a>';
     return current
-      ? '<strong class="' + cls + '" aria-current="true">v' + n + '<span class="is-sr-only">, this version' + tail + '</strong>'
-      : '<a class="' + cls + '" href="' + ABS + 'v' + n + '">v' + n + '<span class="is-sr-only">, version ' + n + tail + '</a>';
+      ? '<strong class="ds-version" aria-current="true">v' + n + '<span class="is-sr-only">, this version</span></strong>'
+      : '<a class="ds-version" href="' + ABS + 'v' + n + '">v' + n + '<span class="is-sr-only">, version ' + n + '</span></a>';
   }
   var DOT = '<span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>';
   var SUB = 'Submitted <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC';
@@ -8849,12 +8858,13 @@ body.mg-state-tombstone .mg-top-main { display: none; }
   /* ── Withdrawn: the latest version is a withdrawal, by the submitter or by arXiv ── */
   function withdrawnLatest(by, reason) {
     pageTitle('Withdrawn');
-    identity(4, 'gr-qc', 'General Relativity and Quantum Cosmology', 'Withdrawn');
+    titleStatus('Withdrawn');
+    identity(4, 'gr-qc', 'General Relativity and Quantum Cosmology');
     setAbsLinks(4);
-    verline(SUB + DOT + ANN + DOT + 'Withdrawn <time datetime="2026-10-22">22&nbsp;Oct&nbsp;2026</time>&nbsp;UTC (this version)',
+    verline(SUB + DOT + ANN + DOT + 'Withdrawn <time datetime="2026-10-22">22&nbsp;Oct&nbsp;2026</time>&nbsp;UTC',
       vl(1) + ' ' + vl(2) + ' ' + vl(3) + ' ' + vl(4, true, true));
     replaceWarning('<p class="ds-alert-title">This paper has been withdrawn by ' + by + '.</p>' +
-      '<p>Reason given: &ldquo;' + reason + '&rdquo; Earlier versions are still available.</p>');
+      '<p>Reason given: &ldquo;' + reason + '&rdquo; The withdrawn paper can still be read in <a href="?state=withdrawn-earlier">version 3</a>.</p>');
     identityLinksOff();
     hideBody();
     versionHistory([
@@ -8864,7 +8874,6 @@ body.mg-state-tombstone .mg-top-main { display: none; }
       verItem(1, '24 Apr 2026', V1NOTE)
     ]);
     sidebarVersionsOnly();
-    metaRow('Journal', null);
     metaRow('Comments', 'v4: ' + reason);
   }
   if (state === 'withdrawn') withdrawnLatest('Adrian Palomares', REASON);
@@ -8873,12 +8882,13 @@ body.mg-state-tombstone .mg-top-main { display: none; }
   /* ── Withdrawn, earlier version: version 3 of the same paper ── */
   if (state === 'withdrawn-earlier') {
     pageTitle('Version 3 of a withdrawn paper');
-    identity(3, 'gr-qc', 'General Relativity and Quantum Cosmology', 'A newer version is withdrawn');
+    titleStatus('Withdrawn');
+    identity(3, 'gr-qc', 'General Relativity and Quantum Cosmology');
     setAbsLinks(3);
     verline(SUB + DOT + ANN + DOT + 'Revised <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC (this version)',
       vl(1) + ' ' + vl(2) + ' ' + vl(3, true) + ' ' + vl(4, false, true));
-    replaceWarning('<p class="ds-alert-title">A newer version of this paper has been withdrawn by Adrian Palomares.</p>' +
-      '<p>You are reading version 3, from before the withdrawal. Reason given: &ldquo;' + REASON + '&rdquo;</p>');
+    replaceWarning('<p class="ds-alert-title">This paper has been withdrawn by Adrian Palomares.</p>' +
+      '<p>Reason given: &ldquo;' + REASON + '&rdquo;</p>');
     $$('a[href*="/pdf/2604.22725v1"], a[href*="/src/2604.22725v1"]').forEach(function (a) { a.href = a.href.replace('v1', 'v3'); });
     citeNote('A newer version was withdrawn, 22 Oct 2026');
     versionHistory([
@@ -8887,14 +8897,14 @@ body.mg-state-tombstone .mg-top-main { display: none; }
       verItem(2, '19 May 2026', V2NOTE),
       verItem(1, '24 Apr 2026', V1NOTE)
     ]);
-    metaRow('Journal', null);
     metaRow('Comments', 'v3: 18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data.');
   }
 
   /* ── Tombstone: arXiv removed the version ── */
   if (state === 'tombstone') {
     pageTitle('Removed');
-    identity(1, 'gr-qc', 'General Relativity and Quantum Cosmology', 'Removed');
+    titleStatus('Removed');
+    identity(1, 'gr-qc', 'General Relativity and Quantum Cosmology');
     verline(SUB + DOT + ANN + DOT + 'Removed <time datetime="2026-10-23">23&nbsp;Oct&nbsp;2026</time>&nbsp;UTC', '');
     replaceWarning('<p class="ds-alert-title">This version has been removed by arXiv.</p>' +
       '<p>&ldquo;' + ADMIN_NOTE + '&rdquo; The full text and files are no longer available.</p>');
