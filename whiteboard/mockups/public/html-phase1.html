@@ -268,7 +268,6 @@
    this stylesheet). Everything else in the injected chrome stays
    transparent — the arXiv logo is white ink and needs nothing behind it. */
 .mg-shell img, .ds-site-header-logo img,
-.mg-toc-bar img,
 /* ar5iv paints white behind EVERY <img> (--image-background-color) so a
    transparent figure PNG stays readable on a dark canvas. That is right for
    paper figures and wrong for chrome: a logo is an SVG that must sit on
@@ -277,7 +276,6 @@
    need a light ground of their own. */
 .ds-site-header img,
 .arxiv-html-header img,
-.mg-toc-bar img,
 .mg-shell img,
 footer.ds-site-footer img:not(.ds-funder-logo) { background-color: transparent; }
 
@@ -450,142 +448,13 @@ body.mg-reader .mg-top-cols { display: block; }
 
 .mg-top > .ds-date-row { margin: 10px 0 0; }
 .mg-top > .ds-alert { max-width: 48rem; margin: 12px 0 0; }
-/* ══ CENTERED STICKY TOC BAR — full-bleed, semi-transparent ══
-   z-index: 100 (sticky-headers tier per DESIGN-POLICIES.md Z-layer scale).
-   The TOC bar is functionally sticky header chrome, so it sits at the
-   sticky-header tier (100), and its dropdown sits just above (110).
-
-   box-sizing: border-box so the 24px horizontal padding is INCLUDED in
-   width: 100vw. Without this the bar was 100vw + 48px wide, overflowing
-   the viewport by 48px at every width — which expanded the body's scroll
-   width, shifted the article's center, and made the band's symmetric
-   negative-margin trick (calc(50% - 50vw)) come out asymmetric. Caught
-   in browser review at 1025-1199px. */
-.mg-toc-bar { box-sizing: border-box; position: sticky; top: 0; z-index: 100; padding: 10px 0;
-  /* full-bleed: break out of any constrained parent so the bar spans the viewport */
-  width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
-  /* Frosted glass, driven from the token so it flips. color-mix keeps the single source of truth — the alpha rides on
-     whatever --ds-surface-muted currently is — instead of hand-picking a
-     dark rgba, which docs/dark-mode.html forbids. Text sits on this bar, and figures
-     in the paper carry white backgrounds for legibility, so a white
-     figure scrolling underneath lightens the bar. Measured over white:
-     55% is nowhere near passing, 82% gives 3.5:1, 92% holds 5.05:1. The
-     blur still reads as glass; the transparency is just subtler than
-     before. */
-  background: color-mix(in srgb, var(--ds-surface-muted) 92%, transparent);
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-  /* Top hairline: marks the threshold where the abstract/tools zone ends and
-     the paper begins, and gives the row a shared edge so the Contents lozenge
-     and Abstract / PDF / TeX tools don't read as floating. */
-  border-top: 1px solid var(--ds-border);
-  border-bottom: 1px solid transparent;
-  /* Transition padding so the compact-on-scroll state animates smoothly. */
-  transition: padding .2s ease, background .25s ease, backdrop-filter .25s ease, border-color .15s; }
-/* Stuck state sits over dense body text, so it goes nearly opaque. */
-.mg-toc-bar.is-stuck { background: color-mix(in srgb, var(--ds-surface-muted) 96%, transparent); border-bottom-color: var(--ds-border); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-/* 1fr | auto | 1fr keeps the TOC lozenge centered in the viewport (the left
-   spacer balances the right-hand tools column). */
-.mg-toc-bar-inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 0 24px; }
-/* .mg-toc-bar scope beats the base `.new-html-nav { justify-self: end }`. */
-.mg-toc-bar .mg-toc-spacer { justify-self: start; }
-/* 18px mark + padding clears the 24px hit-area floor (padding +
-   negative margin, per DESIGN-POLICIES.md target-size technique). */
-.mg-toc-logo { display: inline-flex; align-items: center; padding: 4px 6px; margin: -4px -6px; border-radius: 4px; }
-.mg-toc-logo img { height: 18px; width: auto; display: block; }
-.mg-toc-logo .mg-toc-logo-dark { display: none; }
-.mg-toc-logo:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 1px; }
-.mg-toc-wrap { justify-self: center; }
-.mg-toc-tools { justify-self: end; }
-.mg-toc-bar .nav-icon { width: 1.25em; height: 1.25em; opacity: 0.65; flex-shrink: 0; }
-/* */
-.mg-toc-bar.is-stuck { padding: 4px 0; }
-.mg-toc-bar.is-stuck .nav-label { display: none; }
-/* Exception: the Abstract link keeps its text label even in the compact
-   state. It's navigation, not a format download — a bare ← reads as
-   browser-back, and no icon unambiguously means "abstract page". The
-   PDF / TeX glyphs survive compaction because they're recognizable
-   format marks; a direction arrow isn't. */
-.mg-toc-bar.is-stuck .mg-abs-link .nav-label { display: inline; }
-.mg-toc-bar.is-stuck .mg-toc-trigger { padding: 4px 13px; font-size: 0.8rem; }
-/* On narrow viewports the labels would crowd the lozenge — show icons only. */
-@media (max-width: 48rem) {
-  .mg-toc-bar .nav-label { display: none; }
-  .mg-toc-bar-inner { gap: 6px; padding: 0 12px; }
-}
-/* In reader mode the sticky reader header is at top:0; push the sticky TOC
-   below it. Use 36px to match the COMPACT header height (the reader's
-   compact-on-scroll script shrinks the 52px header to 36px when the page is
-   scrolled — which is when the TOC is sticking). At top of page the TOC is
-   in its natural position (below the abstract), so the larger header height
-   doesn't matter there. */
-body.mg-reader .mg-toc-bar { top: 36px; }
-
-/* ══ TOC SCROLL-SWAP (reader mode only) ══
-   When the user scrolls past the abstract in reader view, animate the TOC
-   bar UP from `top: 36px` to `top: 0` so its trigger visually slides into
-   the header's center cell — and simultaneously fade+translate the
-   Reader-view toggle out. Pure CSS transitions; no DOM mutation. The bar's
-   padding also tightens to 2px so the trigger sits centered in the 36px
-   header area instead of protruding below it, and the bar's background
-   fades to transparent so the header chrome (logo, nav) shows through.
-   JS just toggles `body.mg-toc-stuck` past the threshold. */
-body.mg-reader.mg-toc-stuck .mg-toc-bar {
-  top: 0;
-  padding: 2px 24px;
-  background: transparent;
-  -webkit-backdrop-filter: none; backdrop-filter: none;
-  border-bottom-color: transparent;
-  box-shadow: none;
-}
-/* .ltx_page_main has `contain: layout` (ar5iv default), which creates a
-   stacking context — trapping the bar's z-index: 100 INSIDE the page-main,
-   below the header's z-index: 2 at body level. When stuck, the bar needs
-   to paint OVER the header chrome, so drop containment so the bar's
-   z-index works at body level. (At rest, the bar is at top: 36px and
-   never overlaps the header, so containment doesn't matter there.) */
-body.mg-reader.mg-toc-stuck .ltx_page_main { contain: none; }
-/* When riding in the header chrome, the trigger drops its shadow and
-   tightens — reads as chrome, not a card-on-page button. The transition
-   matches the bar's so they animate together. */
-.mg-toc-trigger {
-  transition: padding .25s ease, font-size .25s ease, box-shadow .25s ease;
-  min-height: 24px;      /* WCAG 2.5.8 target floor, stated not implied */
-}
-body.mg-reader.mg-toc-stuck .mg-toc-trigger {
-  padding: 4px 12px;
-  font-size: 0.78rem;
-  box-shadow: none;
-}
-/* Reader-view toggle fades + slides up out of view, with pointer-events
-   disabled so it can't be clicked through during/after the fade. */
-body.mg-reader .arxiv-html-header .mg-reader-toggle {
-  transition: opacity .2s ease, transform .2s ease;
-}
-body.mg-reader.mg-toc-stuck .arxiv-html-header .mg-reader-toggle {
-  opacity: 0;
-  transform: translateY(-30px);
-  pointer-events: none;
-}
-.mg-toc-wrap { position: relative; }
-.mg-toc-trigger { display: inline-flex; align-items: center; gap: 9px; font-family: var(--ds-font-sans); font-size: 0.85rem; font-weight: 600; background: var(--ds-surface); color: var(--ds-text); border: 1px solid var(--ds-border-muted); border-radius: 22px; padding: 7px 14px 7px 14px; cursor: pointer; max-width: min(480px, calc(100vw - 48px)); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-.mg-toc-trigger:hover { background: var(--ds-canvas); }
-.mg-toc-trigger:focus-visible { outline: 2px solid var(--ds-link); outline-offset: 2px; }
-/* position:relative + z-index lift both icons above the pill background;
-   ar5iv's global `svg { z-index:-1 }` otherwise hides them. */
-.mg-toc-trigger .toc-ic { width: 1.25em; height: 1.25em; flex: none; color: var(--ds-text-muted); position: relative; z-index: 1; }
-.mg-toc-trigger .toc-prefix { font-weight: 400; color: var(--ds-text-muted); }
-.mg-toc-trigger .toc-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mg-toc-trigger .toc-chev { width: 1.09em; height: 1.09em; flex: none; color: var(--ds-text-muted); transition: transform .15s; position: relative; z-index: 1; }
-.mg-toc-trigger[aria-expanded="true"] .toc-chev { transform: rotate(180deg); }
-.mg-toc-dropdown { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--ds-surface); border: 1px solid var(--ds-border); border-radius: 8px; box-shadow: 0 8px 28px rgba(0,0,0,0.14); padding: 8px 0; min-width: 280px; max-height: 60vh; overflow-y: auto; z-index: 110; }
-.mg-toc-dropdown[hidden] { display: none; }
-.mg-toc-dropdown ol { list-style: none; margin: 0; padding: 0; counter-reset: tocsec; }
-.mg-toc-dropdown li { counter-increment: tocsec; }
-.mg-toc-dropdown a { display: flex; gap: 10px; padding: 6px 18px; text-decoration: none; color: var(--ds-text); font-size: 0.85rem; line-height: 1.4; }
-.mg-toc-dropdown a:hover { background: var(--ds-canvas); }
-.mg-toc-dropdown a.is-current { background: var(--ds-accent-wash); color: var(--ds-link); font-weight: 600; }
-.mg-toc-dropdown a .toc-num { color: var(--ds-text-muted); font-variant-numeric: tabular-nums; min-width: 22px; }
-.mg-toc-dropdown a.is-current .toc-num { color: var(--ds-link); }
+/* The TOC bar runs edge to edge: this page has no .ds-container for .ds-full to work in. */
+#mg-toc-bar { width: 100vw; margin-inline: calc(50% - 50vw); padding-inline: 24px; font-family: var(--ds-font-sans); }   /* the contents list sets no face and would take ar5iv's serif */
+@media (max-width: 48rem) { #mg-toc-bar { padding-inline: 12px; } }
+/* ar5iv's svg { z-index: -1 } paints these icons behind the trigger's fill. */
+#mg-toc-bar svg { position: relative; z-index: 1; }
+/* In reader mode the sticky reader header (36px once compact) is above it. */
+body.mg-reader #mg-toc-bar { top: 36px; }
 
 /* ══ FOOTER (ported from abstract-phase2.html) ══ */
 .arxiv-html-footer { display: none; }
@@ -692,7 +561,6 @@ footer.ds-site-footer { grid-area: footer; }
    DESIGN-POLICIES.md → Chrome and interaction structure. */
 @media (prefers-reduced-motion: reduce) {
   .mg-reader-toggle, .mg-reader-toggle .tk, .mg-reader-toggle .tk::after,
-  .mg-toc-bar, .mg-toc-trigger, .mg-toc-trigger .toc-chev,
   .ds-btn, .ds-btn-primary { transition: none !important; }
 }
 
@@ -3196,8 +3064,6 @@ h2.ltx_title_section, h3.ltx_title_subsection, h4.ltx_title_subsubsection { posi
   }
   /* TOC-bar mark: Library Grey ink is too dim on the dark canvas, so
      the light variant takes over (see the markup note at the bar). */
-  html:not([data-theme="light"]) .mg-toc-logo .mg-toc-logo-light { display: none; }
-  html:not([data-theme="light"]) .mg-toc-logo .mg-toc-logo-dark { display: block; }
 }
 
 /* Mirror of the block above, keyed to the attribute instead of the OS. Required here, not optional: the ar5iv reader ships its own theme
@@ -3218,8 +3084,6 @@ html[data-theme="dark"] .ds-funder-logo {
   background: #f0eeec;
   border-color: #d5d0c9;
 }
-html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-light { display: none; }
-html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
 
 </style>
 
@@ -3866,65 +3730,47 @@ html[data-theme="dark"] .mg-toc-logo .mg-toc-logo-dark { display: block; }
 </div><!-- /.mg-top-cols -->
 </div><!-- /.mg-top -->
 
-<!-- ══ Sticky paper-tools bar: TOC lozenge (centered, emphasis) flanked by
-        plain-text Abstract / PDF / TeX Source tools (right). Borrows the
-        reader-view nav, minus the logo. Compacts on scroll (see
-        .mg-toc-bar.is-stuck). The left spacer keeps the lozenge centered in
-        the viewport via the 1fr | auto | 1fr grid. ══ -->
-<div class="mg-toc-bar" id="mg-toc-bar">
-  <div class="mg-toc-bar-inner">
-    <!-- Left cell: the arXiv mark (single-color Library Grey). Once the reader scrolls, this bar is the
-         only chrome on screen — most readers arrive at papers from
-         search and links, and nothing else says where they are. The
-         quiet one-color variant orients without competing with the
-         paper; the full-color mark stays reserved for the top-of-page
-         header. Links home, per universal logo convention. (This cell
-         held the Listen control before phase 1 trimmed it.) -->
-    <div class="mg-toc-spacer">
-      <a href="https://arxiv.org/" class="mg-toc-logo" aria-label="archive home">
-        <!-- Two imgs because CSS cannot rewrite a src: Library Grey is
-             too dim on the dark canvas, so dark mode shows the light
-             variant instead. display:none keeps
-             the hidden one out of the accessibility tree. -->
-        <img src="images/logo_arxiv-library-grey.svg" alt="archive" class="mg-toc-logo-light">
-        <img src="images/logo_arxiv-light.svg" alt="archive" class="mg-toc-logo-dark">
-      </a>
-    </div>
-    <div class="mg-toc-wrap">
-      <button class="mg-toc-trigger" id="mg-toc-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mg-toc-dropdown">
-        <svg class="toc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
-        <span class="toc-text" id="mg-toc-text"><span class="toc-prefix">Contents</span></span>
-        <svg class="toc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <nav class="mg-toc-dropdown" id="mg-toc-dropdown" aria-label="Table of contents" hidden>
+<!-- The TOC bar on a paper (.ds-toc-bar): the logo, the contents list
+     written from LaTeXML's contents list, and the other formats. -->
+<div class="ds-full ds-toc-bar" id="mg-toc-bar">
+  <div class="ds-toc-bar-inner">
+    <a class="ds-paper-bar-logo" href="https://arxiv.org/" aria-label="archive home"><svg viewBox="0 0 246.98 111.12" fill="currentColor" aria-hidden="true"><path d="M134.81,46.73l24.36-29.89c1.49-1.99,2.2-3.03,1.49-4.72-.74-1.77-2.59-3.16-4.48-3.16h0c-1.06,0-1.72.09-3.01,1.11l-26.14,28.26,7.78,8.41Z" /><path d="M168.11,102.57l-32.36-38.28-.97,1.03-7.79-9.21-7.74-9.36-4.69,5.08c-1.72,1.84-1.71,4.7.02,6.53l47.79,51.07c1.02,1.05,2.05,1.19,3.14,1.19,1.93,0,3.19-1.14,4.03-2.82.72-1.73-.08-3.44-1.4-5.23Z" /><path d="M121.05,65.32l6.05,6.48-26.55,28.13c-.99,1-1.59,1.19-2.27,1.19-1.45,0-2.69-.82-3.24-2.14-.51-1.23.17-3.15,1.12-4.17l.02-.02.02-.03,24.85-29.45M121,63.43l-25.76,30.52c-1.29,1.37-2.08,3.78-1.36,5.5.75,1.8,2.46,2.91,4.4,2.91,1.09,0,1.99-.38,3.16-1.56l27.38-29.01-7.81-8.37h0Z" /><path d="M69.41,32.38c1.86,0,3.1,1.24,3.99,3.45,1.06-2.21,2.57-3.45,4.69-3.45h14.88c2.3,0,4.07,1.86,4.07,4.07v7.83c0,2.66-1.33,4.07-4.07,4.07s-4.07-1.42-4.07-4.07v-3.75h-10.54c-1.77,0-2.66.97-2.66,2.75v27.19h10.01c2.66,0,4.07,1.33,4.07,4.07s-1.42,4.07-4.07,4.07h-26.39c-2.66,0-3.99-1.33-3.99-4.07s1.33-4.07,3.99-4.07h8.24v-29.93h-7.26c-2.66,0-3.99-1.33-3.99-4.07s1.33-4.07,3.99-4.07h9.12Z" /><path d="M181.07,32.38c2.66,0,4.07,1.42,4.07,4.07v34.01h10.1c2.75,0,4.07,1.33,4.07,4.07s-1.33,4.07-4.07,4.07h-28.6c-2.66,0-4.07-1.33-4.07-4.07s1.42-4.07,4.07-4.07h10.36v-29.93h-8.53c-2.74,0-4.07-1.33-4.07-4.07s1.33-4.07,4.07-4.07h12.61ZM185.29,14.77c0,3.19-2.71,5.82-5.82,5.82s-5.9-2.63-5.9-5.82,2.71-5.82,5.9-5.82,5.82,2.63,5.82,5.82Z" /><path d="M246.98,36.46c0,.53-.09,1.15-.27,1.59l-14.88,38.08c-.71,1.68-1.95,2.48-3.72,2.48h-5.93c-1.86,0-3.19-.8-3.81-2.48l-15.05-38.08c-.27-.44-.36-1.06-.36-1.59,0-2.3,1.86-4.07,4.16-4.07,1.86,0,3.01.97,3.72,2.66l14.35,36.13,13.9-36.13c.71-1.68,1.86-2.66,3.72-2.66,2.3,0,4.16,1.77,4.16,4.07Z" /><path d="M32.45,32.38c5.02,0,8.21,3.31,8.21,8.4v37.83H5.14c-2.88,0-5.14-1.87-5.14-4.93v-13.03c0-4.07,2.83-7.35,7-8.15l25.51-3.57v-8.41H4.14c-2.05,0-4.14-1.45-4.14-4.07,0-2.87,2.14-4.07,4.36-4.07h28.09ZM32.5,70.47v-13.29l-24.35,3.4v9.9h24.35Z" /><path d="M90.37,1.75h.08c1,.02,2.24,1.25,2.59,1.67l.02.03.02.03,46.66,50.43c1.13,1.22,1.12,3.12-.03,4.34l-4.89,5.2-6.88-8.13L88.49,7.63c-1.51-2.17-1.62-2.84-1.19-3.86.5-1.21,1.74-2.02,3.08-2.02M90.37.5c-1.77,0-3.51,1.06-4.23,2.79-.7,1.69-.2,2.88,1.35,5.1l39.49,47.72,7.79,9.21,5.85-6.22c1.6-1.69,1.62-4.33.04-6.04L94,2.63s-1.71-2.08-3.52-2.12c-.04,0-.07,0-.11,0h0Z" /></svg></a>
+    <details class="ds-toc">
+      <summary class="ds-toc-trigger">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+        <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+        <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <nav class="ds-toc-menu" aria-label="Contents">
         <ol>
-          <li><a href="#S1"><span class="toc-num">1.</span>Introduction</a></li>
-          <li><a href="#S2"><span class="toc-num">2.</span>Background</a></li>
-          <li><a href="#S3"><span class="toc-num">3.</span>Gauge-invariant perturbations in quadratic gravity</a></li>
-          <li><a href="#S4"><span class="toc-num">4.</span>Constrained optimization</a></li>
-          <li><a href="#S5"><span class="toc-num">5.</span>Conclusions and future research</a></li>
-        </ol>
+    <li><a href="#S1"><span class="ds-toc-num">1</span>Introduction</a></li>
+    <li><a href="#S2"><span class="ds-toc-num">2</span>Setup</a>
+    <ol>
+<li><a href="#S2.SS1"><span class="ds-toc-num">2.1</span>Background equations</a></li>
+<li><a href="#S2.SS2"><span class="ds-toc-num">2.2</span>Perturbed equations</a></li></ol></li>
+    <li><a href="#S3"><span class="ds-toc-num">3</span>Evolution of gauge-invariant variables</a>
+    <ol>
+<li><a href="#S3.SS1"><span class="ds-toc-num">3.1</span>Evolution of <math class="ltx_Math" alttext="\Psi" display="inline" intent=":literal"><semantics><mi mathvariant="normal">Ψ</mi><annotation encoding="application/x-tex">\Psi</annotation></semantics></math> and <math class="ltx_Math" alttext="\Phi" display="inline" intent=":literal"><semantics><mi mathvariant="normal">Φ</mi><annotation encoding="application/x-tex">\Phi</annotation></semantics></math></a></li>
+<li><a href="#S3.SS2"><span class="ds-toc-num">3.2</span>Evolution of <math class="ltx_Math" alttext="\mathcal{R}" display="inline" intent=":literal"><semantics><mi class="ltx_font_mathcaligraphic">ℛ</mi><annotation encoding="application/x-tex">\mathcal{R}</annotation></semantics></math></a></li>
+<li><a href="#S3.SS3"><span class="ds-toc-num">3.3</span>Evolution of <math class="ltx_Math" alttext="\chi" display="inline" intent=":literal"><semantics><mi>χ</mi><annotation encoding="application/x-tex">\chi</annotation></semantics></math></a></li>
+<li><a href="#S3.SS4"><span class="ds-toc-num">3.4</span>Evolution of <math class="ltx_Math" alttext="\mathcal{A}" display="inline" intent=":literal"><semantics><mi class="ltx_font_mathcaligraphic">𝒜</mi><annotation encoding="application/x-tex">\mathcal{A}</annotation></semantics></math></a></li>
+<li><a href="#S3.SS5"><span class="ds-toc-num">3.5</span>Evolution of <math class="ltx_Math" alttext="\mathcal{A}_{\psi}" display="inline" intent=":literal"><semantics><msub><mi class="ltx_font_mathcaligraphic">𝒜</mi><mi>ψ</mi></msub><annotation encoding="application/x-tex">\mathcal{A}_{\psi}</annotation></semantics></math></a></li></ol></li>
+    <li><a href="#S4"><span class="ds-toc-num">4</span>Analysis of gauges</a>
+    <ol>
+<li><a href="#S4.SS0.SSS0.Px1">Newtonian gauge</a></li>
+<li><a href="#S4.SS0.SSS0.Px2">Synchronous gauge</a></li>
+<li><a href="#S4.SS0.SSS0.Px3">Flat slicing</a></li>
+<li><a href="#S4.SS0.SSS0.Px4">Comoving slicing</a></li></ol></li>
+    <li><a href="#S5"><span class="ds-toc-num">5</span>Conclusion</a></li>
+    <li><a href="#A1"><span class="ds-toc-num">A</span>Evolution equations</a></li>
+    <li><a href="#A2"><span class="ds-toc-num">B</span>Conformal transformation</a></li>
+    <li><a href="#bib">References</a></li></ol>
       </nav>
-    </div>
-    <nav class="new-html-nav mg-toc-tools" aria-label="Paper tools">
-      <!-- Back to abstract (phase 1): the abstract page stays the paper's
-           canonical home, so the route back rides in the always-visible
-           tools bar. Arrow icon + text label — the label carries the
-           meaning; an arrow alone reads as browser-back. -->
-      <a class="mg-abs-link" href="https://arxiv.org/abs/2604.22725v1" title="Back to abstract">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-        <span class="nav-label">Abstract</span>
-      </a>
-      <a href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener noreferrer" title="Download PDF">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
-        <span class="nav-label">PDF</span>
-        <span class="is-sr-only">(opens in new tab)</span>
-      </a>
-      <a href="https://arxiv.org/src/2604.22725v1" title="Download TeX source">
-        <span class="tex-logo" aria-hidden="true">T<span class="tex-logo-e">E</span>X</span>
-        <span class="nav-label">Source</span>
-        <span class="is-sr-only">TeX source</span>
-      </a>
+    </details>
+    <nav class="ds-paper-tools" aria-label="Other formats">
+      <a href="https://arxiv.org/abs/2604.22725v1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Abstract</a>
+      <a href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>PDF<span class="is-sr-only"> (opens in a new tab)</span></a>
+      <a href="https://arxiv.org/src/2604.22725v1"><svg viewBox="-20 70 680 500" fill="currentColor" stroke="currentColor" stroke-width="28" stroke-linejoin="round" aria-hidden="true"><path d="M620.8 159.4C590 159.8 578.7 176 573.1 183.9L573 184L517.3 264.5L600.1 385.6C607.6 396.2 611.4 398.1 635.5 398.1L635.5 407.2C626.4 406.5 607.5 406.5 597.8 406.5C585.4 406.5 567 406.5 554.9 407.2L554.9 398.1C568.1 397.3 571.5 390.8 571.5 387.9C571.5 386.8 571.5 385.6 568.5 381.5L503 285.2L442.8 373.1C440.9 375.8 439 378.5 439 383.3C439 389.4 442.4 396.9 454 398L454 407.1C444.6 406.4 426.9 406.4 416.8 406.4L414 406.4L402.3 489L206.4 489L206.4 479.9C233.1 479.9 237.3 479.9 237.3 463L237.3 259.8C237.3 242.9 233 242.9 206.4 242.9L206.4 232.6L226.2 232.6C221.4 171.5 215.4 160.9 158.2 160.8L137.5 160.8C130.7 162.3 130.7 166.9 130.7 175.2L130.7 380.2C130.7 393.8 131.8 398 163.1 398L173.6 398L173.6 407.1L173.2 407.1C155.3 406.8 136.5 406.4 118.3 406.4C100.1 406.4 81.4 406.7 63.5 407.1L62.9 407.1L62.9 398L73.6 398C105.3 398 106.4 393.9 106.4 380.2L106.4 175.2C106.4 166.5 106.4 162 99.2 160.9L78.4 160.9C20 160.9 14.7 171.8 9.8 234.2L3 234.2L9.3 150.9L226.8 150.9L232.9 232.7L397 232.7L406 316L399.2 316C393.9 266.2 387.1 243 328.9 243L277.4 243C262.4 243 261.6 244.9 261.6 257.6L261.6 350.9L297.1 350.9C332.6 350.9 336 338.1 336 306.9L342 306.9L342 404.8L336 404.8C336 373 332.6 360 297.1 360L261.6 360L261.6 465.2C261.6 478.2 262.3 480 277.4 480L329.6 480C390.7 480 399.5 454.2 407 406.4C399.3 406.4 390.7 406.6 384.8 407.1L384.8 398C392 398 416.5 397.6 432.6 374.2L498.1 278.5L425.4 171.8C417.1 160.1 410.3 159.3 389.6 159.3L389.6 150.2C398.7 150.9 417.5 150.9 427.3 150.9C439.7 150.9 458.1 150.9 470.2 150.2L470.2 159.3C457.7 159.7 453.6 166.1 453.6 169.5C453.6 170.6 454 171.8 456.6 175.9L512.3 257.5L562 185.4C564.7 181.7 566.5 178.6 566.5 174.1C566.5 168 563.5 160.5 551.5 159.3L551.5 150.2C560.9 150.9 576.3 150.9 588.7 150.9C597.7 150.9 612 150.9 620.7 150.2L620.7 159.3z"/></svg><span class="is-sr-only">TeX </span>Source</a>
     </nav>
   </div>
 </div>
@@ -8860,8 +8706,7 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
    MERGED PAGE — added behaviors
    1) Reader-view toggle (two buttons, one per header; they stay in sync)
    2) Cite (the select chooses which citation format shows)
-   3) Centered sticky TOC button (open/close dropdown; sticky-state class;
-      highlight the current section as user scrolls)
+   3) (The TOC bar: toc.js)
    ════════════════════════════════════════════════════════════════════ */
 (function () {
 
@@ -8888,95 +8733,7 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
     });
   });
 
-  /* ── 3. Centered TOC: open/close + sticky-state + current-section sync ── */
-  var tocBar = document.getElementById('mg-toc-bar');
-  var tocTrig = document.getElementById('mg-toc-trigger');
-  var tocDrop = document.getElementById('mg-toc-dropdown');
-  var tocText = document.getElementById('mg-toc-text');
-  function closeToc() {
-    if (!tocDrop) return;
-    tocDrop.hidden = true;
-    tocTrig.setAttribute('aria-expanded', 'false');
-  }
-  function openToc() {
-    if (!tocDrop) return;
-    tocDrop.hidden = false;
-    tocTrig.setAttribute('aria-expanded', 'true');
-  }
-  if (tocTrig && tocDrop) {
-    tocTrig.addEventListener('click', function (e) {
-      e.stopPropagation();
-      if (tocDrop.hidden) openToc(); else closeToc();
-    });
-    document.addEventListener('click', function (e) {
-      if (!tocDrop.hidden && !tocDrop.contains(e.target) && e.target !== tocTrig) closeToc();
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && !tocDrop.hidden) { closeToc(); tocTrig.focus(); }
-    });
-    // Close on link click (and let the anchor navigate)
-    tocDrop.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () { closeToc(); });
-    });
-  }
-
-  // Sticky/compact state: add .is-stuck once the bar reaches the viewport top
-  var tocBarTop = 0;
-  function measureTocBar() {
-    if (!tocBar) return;
-    var prev = tocBar.style.position; tocBar.style.position = 'static';
-    tocBarTop = tocBar.getBoundingClientRect().top + window.pageYOffset;
-    tocBar.style.position = prev;
-  }
-
-  function onScroll() {
-    if (!tocBar) return;
-    // .is-stuck drives both the stuck styling and the compact-on-scroll row.
-    tocBar.classList.toggle('is-stuck', window.pageYOffset >= tocBarTop - 1);
-    syncCurrentSection();
-  }
-
-  // Highlight current section in the TOC + update the button label
-  var sections = Array.prototype.slice.call(document.querySelectorAll('section.ltx_section'));
-  var tocLinks = tocDrop ? Array.prototype.slice.call(tocDrop.querySelectorAll('a')) : [];
-  var linksById = {};
-  tocLinks.forEach(function (a) {
-    var id = (a.getAttribute('href') || '').slice(1);
-    if (id) linksById[id] = a;
-  });
-  function syncCurrentSection() {
-    if (!sections.length || !tocText) return;
-    var current = null;
-    var threshold = window.pageYOffset + 120;
-    for (var i = 0; i < sections.length; i++) {
-      if (sections[i].offsetTop <= threshold) current = sections[i];
-      else break;
-    }
-    tocLinks.forEach(function (a) { a.classList.remove('is-current'); });
-    if (current) {
-      var link = linksById[current.id];
-      if (link) link.classList.add('is-current');
-      var title = current.querySelector('.ltx_title_section');
-      // The heading's words only: not the TeX annotation, not the Permalink button.
-      var text = 'Contents';
-      if (title) {
-        var clone = title.cloneNode(true);
-        Array.prototype.forEach.call(clone.querySelectorAll('annotation, annotation-xml, button'), function (n) { n.remove(); });
-        text = clone.textContent.replace(/\s+/g, ' ').trim();
-      }
-      // Trim long titles to fit the trigger button
-      if (text.length > 64) text = text.slice(0, 61) + '…';
-      tocText.innerHTML = '<span class="toc-prefix">Contents ·</span> ' + text;
-    } else {
-      tocText.innerHTML = '<span class="toc-prefix">Contents</span>';
-    }
-  }
-
-  // Recompute on resize (layout shifts move the bar's home position)
-  window.addEventListener('resize', function () { measureTocBar(); onScroll(); });
-  window.addEventListener('scroll', onScroll, { passive: true });
-  // Initial pass after layout settles
-  setTimeout(function () { measureTocBar(); onScroll(); }, 50);
+  /* ── 3. The TOC bar's behaviour comes from the design system's toc.js. ── */
 
   /* ── 4. Announcement close button: hide the banner on click ── */
   var annClose = document.getElementById('mg-announcement-close');
@@ -9339,4 +9096,5 @@ body.mg-state-tombstone .mg-top-main { display: none; }
 })();
 </script>
 <script src="../../../docs/copy-code.js" defer></script>
+<script src="../../../docs/toc.js" defer></script>
 </body></html>
