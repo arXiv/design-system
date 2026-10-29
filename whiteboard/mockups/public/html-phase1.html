@@ -8700,6 +8700,8 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
 .ds-version.mg-ver-wd { color: var(--ds-error-fg); word-spacing: normal; }
 .ds-version.mg-ver-wd[aria-current],
 .ds-paper-versions > li[aria-current] .ds-version.mg-ver-wd { color: var(--ds-error-fg); background: var(--ds-error-bg); border-color: var(--ds-error-border); }
+/* The version being read belongs to a withdrawn paper, so its box and its Version history bar are red too. */
+.ds-paper-versions > li[aria-current].mg-ver-wd { border-inline-start-color: var(--ds-error-border); }
 .mg-state-hidden { display: none !important; }
 .ds-site-header-nav a[aria-current="page"] { font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
 body.mg-state-withdrawn .ftn-marginalia, body.mg-state-withdrawn-admin .ftn-marginalia, body.mg-state-tombstone .ftn-marginalia { display: none !important; }
@@ -8811,13 +8813,14 @@ body.mg-state-tombstone .mg-top-main { display: none; }
      Its links open the mockup's withdrawn view, which is the page they stand for. */
   var NOTICE = 'Withdrawal notice';
   /* One entry of .ds-paper-versions, as on the design system's papers page. */
-  function verItem(n, date, noteText, tag, current) {
+  function verItem(n, date, noteText, tag, current, wd) {
     var notice = tag === 'withdrawn';
-    var cls = 'ds-version' + (notice ? ' mg-ver-wd' : '');
+    var red = notice || wd;
+    var cls = 'ds-version' + (red ? ' mg-ver-wd' : '');
     var id = current ? '<strong class="' + cls + '">' + (notice ? NOTICE : 'v' + n) + '</strong>'
       : notice ? '<a class="' + cls + '" href="?state=withdrawn">' + NOTICE + '</a>'
       : '<a class="' + cls + '" href="' + ABS + 'v' + n + '">v' + n + '<span class="is-sr-only">, version ' + n + '</span></a>';
-    return '<li' + (current ? ' aria-current="true"' : '') + '><p class="ds-date-row">' + id +
+    return '<li' + (current ? ' aria-current="true"' : '') + (red ? ' class="mg-ver-wd"' : '') + '><p class="ds-date-row">' + id +
       ' · <time datetime="' + iso(date) + '">' + date.replace(/ /g, '&nbsp;') + '</time>&nbsp;UTC' +
       (TAGS[tag] ? ' · ' + TAGS[tag] : '') + '</p><p>' + noteText + '</p></li>';
   }
@@ -8839,12 +8842,12 @@ body.mg-state-tombstone .mg-top-main { display: none; }
     if (!p) return;
     p.innerHTML = dates + (versions ? DOT + '<span class="ds-version-list">' + versions + '</span>' : '');
   }
-  function vl(n, current, withdrawn) {
+  function vl(n, current, withdrawn, wd) {
     if (withdrawn) return current
       ? '<strong class="ds-version mg-ver-wd" aria-current="true">' + NOTICE + '</strong>'
       : '<a class="ds-version mg-ver-wd" href="?state=withdrawn">' + NOTICE + '</a>';
     return current
-      ? '<strong class="ds-version" aria-current="true">v' + n + '<span class="is-sr-only">, this version</span></strong>'
+      ? '<strong class="ds-version' + (wd ? ' mg-ver-wd' : '') + '" aria-current="true">v' + n + '<span class="is-sr-only">, this version</span></strong>'
       : '<a class="ds-version" href="' + ABS + 'v' + n + '">v' + n + '<span class="is-sr-only">, version ' + n + '</span></a>';
   }
   var DOT = '<span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>';
@@ -8886,14 +8889,14 @@ body.mg-state-tombstone .mg-top-main { display: none; }
     identity(3, 'gr-qc', 'General Relativity and Quantum Cosmology');
     setAbsLinks(3);
     verline(SUB + DOT + ANN + DOT + 'Revised <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC (this version)',
-      vl(1) + ' ' + vl(2) + ' ' + vl(3, true) + ' ' + vl(4, false, true));
+      vl(1) + ' ' + vl(2) + ' ' + vl(3, true, false, true) + ' ' + vl(4, false, true));
     replaceWarning('<p class="ds-alert-title">This paper has been withdrawn by Adrian Palomares.</p>' +
       '<p>Reason given: &ldquo;' + REASON + '&rdquo;</p>');
     $$('a[href*="/pdf/2604.22725v1"], a[href*="/src/2604.22725v1"]').forEach(function (a) { a.href = a.href.replace('v1', 'v3'); });
     citeNote('A newer version was withdrawn, 22 Oct 2026');
     versionHistory([
       verItem(4, '22 Oct 2026', 'Withdrawn by Adrian Palomares.', 'withdrawn'),
-      verItem(3, '28 Jun 2026', V3NOTE, 'viewing', true),
+      verItem(3, '28 Jun 2026', V3NOTE, 'viewing', true, true),
       verItem(2, '19 May 2026', V2NOTE),
       verItem(1, '24 Apr 2026', V1NOTE)
     ]);
