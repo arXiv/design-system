@@ -444,12 +444,12 @@ body.mg-reader .mg-top-cols { display: block; }
    The .mg-* and .toc-* icons below still carry their own: they are this
    page's components, not the design system's. */
 
-.mg-abs-return { margin: 0 0 8px -8px; }
 
 .mg-top > .ds-date-row { margin: 10px 0 0; }
 .mg-top > .ds-alert { max-width: 48rem; margin: 12px 0 0; }
 /* Reader mode centres the title and authors, so the rows around them follow. */
-body.mg-reader .mg-top > :is(.mg-abs-return, .ds-date-row) { text-align: center; }
+.mg-top { padding-top: var(--ds-space-6); }   /* the space above the identity line */
+body.mg-reader .mg-top > .ds-date-row { text-align: center; }
 body.mg-reader .mg-top > .ds-paper-identity { justify-content: center; }
 body.mg-reader .mg-top > .ds-alert { margin-inline: auto; }
 /* The TOC bar runs edge to edge: this page has no .ds-container for .ds-full to work in. */
@@ -3410,9 +3410,6 @@ html[data-theme="dark"] .ds-funder-logo {
      code blocks) for the chrome above the paper. The paper body below is
      LaTeXML's and keeps the ar5iv styles. -->
 <div class="mg-top ds-page">
-<!-- The optional area above the identity line: the route back to the
-     abstract page while it is still the paper's canonical home. -->
-<p class="mg-abs-return"><a class="ds-btn ds-btn-text" href="https://arxiv.org/abs/2604.22725v1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Back to abstract</a></p>
 <p class="ds-paper-identity">
   <span><span class="ds-version" aria-hidden="true">arXiv:2604.22725v1</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1</span></span>
   <span>[gr-qc] General Relativity and Quantum Cosmology</span>
@@ -8524,13 +8521,6 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
         <a href="https://status.arxiv.org/" target="_blank" rel="noopener noreferrer">Operational Status</a>
       </nav>
     </div>
-    <div class="ds-site-footer-funders">
-      <div class="ds-site-footer-funders-label">Major funding support from</div>
-      <div class="ds-site-footer-funders-logos">
-        <img class="ds-funder-logo" src="images/Simons-wordmark.png" alt="Simons Foundation">
-        <img class="ds-funder-logo" src="images/Schmidt-wordmark.png" alt="Schmidt Sciences">
-      </div>
-    </div>
   </div>
 </footer>
 
@@ -8697,7 +8687,7 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
      chrome; in these views the header's navigation switches between them. -->
 <style>
 .mg-states-alert { max-width: 48rem; margin: 12px 0; }
-.mg-states-alert h2.ds-alert-title { font-family: var(--ds-font-sans); font-size: inherit; line-height: inherit; margin: 0; }
+.mg-states-alert h2.ds-alert-title { font-family: var(--ds-font-sans); font-size: inherit; line-height: inherit; color: inherit; margin: 0; }
 .mg-ver-withdrawn { color: var(--ds-error-fg); font-weight: 600; }
 .mg-state-hidden { display: none !important; }
 .ds-site-header-nav a[aria-current="page"] { font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
@@ -8705,6 +8695,7 @@ body.mg-state-withdrawn .ftn-marginalia, body.mg-state-withdrawn-admin .ftn-marg
 /* Without full text the sidebar holds only Paper information, so it loses the rule that separated it from Files and Cite. */
 body:is(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) .ds-sidebar > #mg-info { border: 0; padding: 0; }
 body:is(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) #mg-versions { border-bottom: 0; }
+body:is(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) .mg-top { margin-bottom: var(--ds-space-section); }
 /* Tombstone: no abstract, so the sidebar takes the whole row. */
 body.mg-state-tombstone .mg-top-main { display: none; }
 </style>
