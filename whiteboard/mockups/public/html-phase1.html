@@ -386,8 +386,7 @@ body:not(.mg-reader) .ltx_authors {
    column it isn't needed and looked flush with padding:0). */
 body:not(.mg-reader) .mg-top-main .ltx_abstract { padding: 0; margin: 0; border: 0; }
 
-/* Stacked on narrow screens, the sidebar sits closer to the abstract and clear of the contents bar. */
-.mg-top-cols { row-gap: var(--ds-space-2); }   /* the abstract's own 16px margin makes 24px */
+/* Stacked on narrow screens, the sidebar sits clear of the contents bar. design-system.css puts it 24px below the abstract. */
 body:not(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) .mg-top-cols > .ds-sidebar { margin-bottom: var(--ds-space-6); }
 
 /* Reader mode: one centred column; the sidebar hides with .mg-abs-only. */
@@ -3432,7 +3431,7 @@ html[data-theme="dark"] .ds-funder-logo {
   <a class="ds-version" href="https://arxiv.org/abs/2604.22725v3">v3<span class="is-sr-only">, version 3</span></a>
   </span>
 </p>
-<div class="ds-alert ds-alert--warning" role="alert">
+<div class="ds-alert ds-alert--warning">
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
   <div class="ds-alert-content">
     <p><strong>You are viewing version 1.</strong> A newer version is available — <a href="https://arxiv.org/abs/2604.22725v3">version 3, revised 28&nbsp;Jun&nbsp;2026</a>.</p>
@@ -8694,22 +8693,12 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
 .mg-states-alert { max-width: 48rem; margin: 12px 0; }
 .mg-states-alert h2.ds-alert-title { font-family: var(--ds-font-sans); font-size: inherit; line-height: inherit; color: inherit; margin: 0; }
 .mg-ver-withdrawn { color: var(--ds-error-fg); font-weight: 600; }
-/* "Withdrawn:" before the display title, in the same red as the other status labels. */
-.mg-title-status { color: var(--ds-error-fg); }
-/* The withdrawal notice is named inside the version box or link, in the error colours. */
-.ds-version.mg-ver-wd { color: var(--ds-error-fg); word-spacing: normal; }
-.ds-version.mg-ver-wd[aria-current],
-.ds-paper-versions > li[aria-current] .ds-version.mg-ver-wd { color: var(--ds-error-fg); background: var(--ds-error-bg); border-color: var(--ds-error-border); }
-/* The version being read belongs to a withdrawn paper, so its box and its Version history bar are red too. */
-.ds-paper-versions > li[aria-current].mg-ver-wd { border-inline-start-color: var(--ds-error-border); }
 .mg-state-hidden { display: none !important; }
 .ds-site-header-nav a[aria-current="page"] { font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
 body.mg-state-withdrawn .ftn-marginalia, body.mg-state-withdrawn-admin .ftn-marginalia, body.mg-state-tombstone .ftn-marginalia { display: none !important; }
 /* Without full text the sidebar holds only Paper information, so it loses the rule that separated it from Files and Cite. */
 body:is(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) .ds-sidebar > #mg-info { border: 0; padding: 0; }
 body:is(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) .mg-top { margin-bottom: var(--ds-space-section); }
-/* Tombstone: no abstract, so the sidebar takes the whole row. */
-body.mg-state-tombstone .mg-top-main { display: none; }
 </style>
 <script>
 (function () {
@@ -8727,7 +8716,7 @@ body.mg-state-tombstone .mg-top-main { display: none; }
   var main = document.getElementById('main');
   if (!main) return;
 
-  /* Lucide octagon-alert, on trial in place of circle-x, which readers took for a close button. */
+  /* The error alert icon, octagon-alert (docs/icons/). */
   var ALERT_ICON = '<svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>';
   var REASON = 'The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.';
   var ADMIN_NOTE = 'arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission.';
@@ -8787,7 +8776,7 @@ body.mg-state-tombstone .mg-top-main { display: none; }
      lang="en" because the title may be in another language. */
   function titleStatus(label) {
     var h1 = $('.mg-top h1.ltx_title_document');
-    if (h1) h1.insertAdjacentHTML('afterbegin', '<span class="mg-title-status" lang="en">' + label + ':</span> ');
+    if (h1) h1.insertAdjacentHTML('afterbegin', '<span class="ds-paper-status" lang="en">' + label + ':</span> ');
   }
   function hideBody() {
     $$('.ltx_section, .ltx_appendix, .ltx_bibliography, .ltx_acknowledgements, aside.footnote, .ftn-marginalia, #mg-toc-bar, .mg-skip-wrap, .arxiv-html-header').forEach(hide);
@@ -8816,11 +8805,11 @@ body.mg-state-tombstone .mg-top-main { display: none; }
   function verItem(n, date, noteText, tag, current, wd) {
     var notice = tag === 'withdrawn';
     var red = notice || wd;
-    var cls = 'ds-version' + (red ? ' mg-ver-wd' : '');
+    var cls = 'ds-version' + (red ? ' ds-version--withdrawn' : '');
     var id = current ? '<strong class="' + cls + '">' + (notice ? NOTICE : 'v' + n) + '</strong>'
       : notice ? '<a class="' + cls + '" href="?state=withdrawn">' + NOTICE + '</a>'
       : '<a class="' + cls + '" href="' + ABS + 'v' + n + '">v' + n + '<span class="is-sr-only">, version ' + n + '</span></a>';
-    return '<li' + (current ? ' aria-current="true"' : '') + (red ? ' class="mg-ver-wd"' : '') + '><p class="ds-date-row">' + id +
+    return '<li' + (current ? ' aria-current="true"' : '') + (red ? ' class="ds-version--withdrawn"' : '') + '><p class="ds-date-row">' + id +
       ' · <time datetime="' + iso(date) + '">' + date.replace(/ /g, '&nbsp;') + '</time>&nbsp;UTC' +
       (TAGS[tag] ? ' · ' + TAGS[tag] : '') + '</p><p>' + noteText + '</p></li>';
   }
@@ -8844,10 +8833,10 @@ body.mg-state-tombstone .mg-top-main { display: none; }
   }
   function vl(n, current, withdrawn, wd) {
     if (withdrawn) return current
-      ? '<strong class="ds-version mg-ver-wd" aria-current="true">' + NOTICE + '</strong>'
-      : '<a class="ds-version mg-ver-wd" href="?state=withdrawn">' + NOTICE + '</a>';
+      ? '<strong class="ds-version ds-version--withdrawn" aria-current="true">' + NOTICE + '</strong>'
+      : '<a class="ds-version ds-version--withdrawn" href="?state=withdrawn">' + NOTICE + '</a>';
     return current
-      ? '<strong class="ds-version' + (wd ? ' mg-ver-wd' : '') + '" aria-current="true">v' + n + '<span class="is-sr-only">, this version</span></strong>'
+      ? '<strong class="ds-version' + (wd ? ' ds-version--withdrawn' : '') + '" aria-current="true">v' + n + '<span class="is-sr-only">, this version</span></strong>'
       : '<a class="ds-version" href="' + ABS + 'v' + n + '">v' + n + '<span class="is-sr-only">, version ' + n + '</span></a>';
   }
   var DOT = '<span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>';
@@ -8912,9 +8901,7 @@ body.mg-state-tombstone .mg-top-main { display: none; }
     replaceWarning('<p class="ds-alert-title">This version has been removed by arXiv.</p>' +
       '<p>&ldquo;' + ADMIN_NOTE + '&rdquo; The full text and files are no longer available.</p>');
     identityLinksOff();
-    var authors = $('.ltx_authors .ds-link-list');
-    while (authors.firstElementChild.nextSibling) authors.firstElementChild.nextSibling.remove();
-    hide(document.getElementById('abstract1'));
+    /* The title, the authors and the abstract stay unless arXiv has a legal reason to remove them (NISO RP-45-2024 4.5). */
     hideBody();
     versionHistory([
       verItem(1, '24 Apr 2026', 'Removed by arXiv on 23 Oct 2026: &ldquo;' + ADMIN_NOTE + '&rdquo;', 'removed', true)

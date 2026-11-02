@@ -9,15 +9,15 @@ components:
     summary: "arXiv's design system contains four alerts that align with user expectations and established UI practices. Each state conveys a tone through color: **Success** uses green to signal that all is well, **info** is a calm blue, **warning** is an attention-grabbing yellow, while **error** is a powerful red and is reserved for blocking or failed states, and for a paper that has been withdrawn or removed. Color sets the tone; the icon and the title convey the meaning, so a reader who cannot see the color still knows what kind of message it is."
     classes:
       - name: ".ds-alert"
-        does: "The container. On its own it is the info state; add a state class for success, warning or error. Takes `role=\"status\"` for success and info, `role=\"alert\"` for warning and error."
+        does: "The container. On its own it is the info state; add a state class for success, warning or error. An alert that appears after the page has loaded takes `role=\"status\"` for success and info, `role=\"alert\"` for warning and error. An alert that is in the page as it loads, such as the warning above, takes no role."
       - name: ".ds-alert--success, --warning, --error"
         does: "The state: `.ds-alert--success`, `.ds-alert--warning`, or `.ds-alert--error`. Sets the background, border, and text colour from the status tokens. There is no info class: info is the container's own colours. The same classes and the same colours on both surfaces."
       - name: ".ds-alert-icon"
-        does: "The icon, an inline SVG with `aria-hidden=\"true\"`. Each state has its own shape: a check, an “i”, a triangle, an “x”. Copy the icon element whole, attributes included: Lucide draws each “!” or “i” dot as a 0.01-unit path that only renders with `stroke-linecap=\"round\"`. Without these attributes it renders as an empty hairline outline."
+        does: "The icon, an inline SVG with `aria-hidden=\"true\"`. Each state has its own shape: a check, an “i”, a triangle, an octagon with a “!”; an “x” would read as a close control. Copy the icon element whole, attributes included: Lucide draws each “!” or “i” dot as a 0.01-unit path that only renders with `stroke-linecap=\"round\"`. Without these attributes it renders as an empty hairline outline."
       - name: ".ds-alert-content"
         does: "Holds the text. One or more `<p>` elements; a link inside it takes the alert’s own colour."
       - name: ".ds-alert-title"
-        does: "The leading line, in bold. It names the situation, and it is what conveys the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert."
+        does: "The leading line, in bold. It names the situation, and it is what conveys the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert. On a notice that changes how the whole page is read, such as a [withdrawn paper's](papers.md#withdrawn-papers), it is a heading one level below the page heading, and keeps the alert's size and colour."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A), [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA), and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)"
     rules:
@@ -55,6 +55,7 @@ rules:
   - "**arXiv’s voice:** Plain, jargon-free, contraction-free, and we never blame the user. “The file failed to render” is better than “You uploaded a bad file”."
   - "**One row when possible:** Shorter is better. Alerts should not crowd out the content they are supporting."
   - "**Choose the role by state.** Put `role=\"status\"` on a success or info alert: it is polite, and a screen reader announces it when idle. Put `role=\"alert\"` on a warning or error alert: it is assertive, and a screen reader announces it immediately. Do not use `role=\"alert\"` for anything that can wait."
+  - "**No role on an alert that is in the page as it loads.** A role announces a change, and a screen reader does not reliably announce an alert that was there from the start, such as the warning on an older version of a paper. Put that alert where the reader meets it early, straight after the page heading."
   - "**Announce the result of an action.** When an action changes something without loading a page, such as Copy, Permalink or the theme control, a visually hidden `role=\"status\"` region says what happened: “Copied to clipboard”. Focus stays on the control. A one-time action keeps its name, because the name says what it does: Copy is still Copy after copying. Where a sighted reader would see nothing change, a visible sign goes with it, such as a green tick, and both reset after two seconds."
   - "**Say the state in words.** The icon is `aria-hidden=\"true\"` and the colour is invisible to a screen reader, so the title or the first words of the message must convey the meaning: “Could not load the PDF”, not “Oops”."
   - "**Copy the icon whole.** Each state has its own icon shape, and the shape is part of the meaning. Copy the `<svg>` element with every attribute it has: the “i” and “!” dots are drawn as tiny paths that only render with `stroke-linecap=\"round\"`, and without it the icon is an empty outline."
@@ -74,7 +75,7 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 arXiv's design system contains four alerts that align with user expectations and established UI practices. Each state conveys a tone through color: **Success** uses green to signal that all is well, **info** is a calm blue, **warning** is an attention-grabbing yellow, while **error** is a powerful red and is reserved for blocking or failed states, and for a paper that has been withdrawn or removed. Color sets the tone; the icon and the title convey the meaning, so a reader who cannot see the color still knows what kind of message it is.
 
 ```html
-<div class="ds-alert ds-alert--warning" role="alert">
+<div class="ds-alert ds-alert--warning">
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2"
        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <!-- Lucide icon paths -->
@@ -86,11 +87,11 @@ arXiv's design system contains four alerts that align with user expectations and
 </div>
 ```
 
-- `.ds-alert` — The container. On its own it is the info state; add a state class for success, warning or error. Takes `role="status"` for success and info, `role="alert"` for warning and error.
+- `.ds-alert` — The container. On its own it is the info state; add a state class for success, warning or error. An alert that appears after the page has loaded takes `role="status"` for success and info, `role="alert"` for warning and error. An alert that is in the page as it loads, such as the warning above, takes no role.
 - `.ds-alert--success, --warning, --error` — The state: `.ds-alert--success`, `.ds-alert--warning`, or `.ds-alert--error`. Sets the background, border, and text colour from the status tokens. There is no info class: info is the container's own colours. The same classes and the same colours on both surfaces.
-- `.ds-alert-icon` — The icon, an inline SVG with `aria-hidden="true"`. Each state has its own shape: a check, an “i”, a triangle, an “x”. Copy the icon element whole, attributes included: Lucide draws each “!” or “i” dot as a 0.01-unit path that only renders with `stroke-linecap="round"`. Without these attributes it renders as an empty hairline outline.
+- `.ds-alert-icon` — The icon, an inline SVG with `aria-hidden="true"`. Each state has its own shape: a check, an “i”, a triangle, an octagon with a “!”; an “x” would read as a close control. Copy the icon element whole, attributes included: Lucide draws each “!” or “i” dot as a 0.01-unit path that only renders with `stroke-linecap="round"`. Without these attributes it renders as an empty hairline outline.
 - `.ds-alert-content` — Holds the text. One or more `<p>` elements; a link inside it takes the alert’s own colour.
-- `.ds-alert-title` — The leading line, in bold. It names the situation, and it is what conveys the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert.
+- `.ds-alert-title` — The leading line, in bold. It names the situation, and it is what conveys the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert. On a notice that changes how the whole page is read, such as a [withdrawn paper's](papers.md#withdrawn-papers), it is a heading one level below the page heading, and keeps the alert's size and colour.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A), [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA), and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)
 
@@ -162,6 +163,7 @@ The dismiss control, fully documented on [Buttons](buttons.md#the-close-control)
 - **arXiv’s voice:** Plain, jargon-free, contraction-free, and we never blame the user. “The file failed to render” is better than “You uploaded a bad file”.
 - **One row when possible:** Shorter is better. Alerts should not crowd out the content they are supporting.
 - **Choose the role by state.** Put `role="status"` on a success or info alert: it is polite, and a screen reader announces it when idle. Put `role="alert"` on a warning or error alert: it is assertive, and a screen reader announces it immediately. Do not use `role="alert"` for anything that can wait.
+- **No role on an alert that is in the page as it loads.** A role announces a change, and a screen reader does not reliably announce an alert that was there from the start, such as the warning on an older version of a paper. Put that alert where the reader meets it early, straight after the page heading.
 - **Announce the result of an action.** When an action changes something without loading a page, such as Copy, Permalink or the theme control, a visually hidden `role="status"` region says what happened: “Copied to clipboard”. Focus stays on the control. A one-time action keeps its name, because the name says what it does: Copy is still Copy after copying. Where a sighted reader would see nothing change, a visible sign goes with it, such as a green tick, and both reset after two seconds.
 - **Say the state in words.** The icon is `aria-hidden="true"` and the colour is invisible to a screen reader, so the title or the first words of the message must convey the meaning: “Could not load the PDF”, not “Oops”.
 - **Copy the icon whole.** Each state has its own icon shape, and the shape is part of the meaning. Copy the `<svg>` element with every attribute it has: the “i” and “!” dots are drawn as tiny paths that only render with `stroke-linecap="round"`, and without it the icon is an empty outline.
