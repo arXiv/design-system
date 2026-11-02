@@ -371,7 +371,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 /* ── Headings ────────────────────────────────────────────────────────
    The scale published in typography.html: 2 / 1.5 / 1.25 / 1rem, at 700 for
    h1 and 600 below it, on a 1.25 line-height except h4. Sizes are rem so
-   they track the reader's base size. */
+   they track the reader's base size. The h1 scales from 1.5rem on a phone to
+   2rem from about 800px wide, so a long paper title is not six lines on a
+   phone; most of it is rem, so zoom still scales it. */
 :where(.ds-page) :is(h1, h2, h3, h4) {
   font-family: var(--ds-font-sans);
   color: var(--ds-text);
@@ -381,7 +383,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   text-wrap: pretty;
 }
 
-:where(.ds-page) h1 { font-size: 2rem;    font-weight: 700; line-height: 1.25; margin: 0 0 var(--ds-space-4); }
+:where(.ds-page) h1 { font-size: clamp(1.5rem, 1rem + 2vw, 2rem); font-weight: 700; line-height: 1.25; margin: 0 0 var(--ds-space-4); }
 :where(.ds-page) h2 { font-size: 1.5rem;  font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-3); }
 :where(.ds-page) h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-2); }
 :where(.ds-page) h4 { font-size: 1rem;    font-weight: 600; line-height: 1.25; margin: var(--ds-space-4) 0 var(--ds-space-2); }
