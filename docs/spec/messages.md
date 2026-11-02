@@ -38,6 +38,9 @@ components:
         does: "The lime register: how the component differs in internal tools."
       - name: ".ds-note-gotcha"
         does: "A ruled-off warning at the foot of the note, on a `<p>` whose first child is a `<strong>` lead."
+    rules:
+      - "**Three registers, and the set is closed on purpose.** Adding one is three custom properties — `--ds-note-tint`, `--ds-note-line`, `--ds-note-mark` — but a colour only earns a register when it has a job. There is no background-colour utility class, because a tint that a page picks freely teaches the reader nothing."
+      - "**No left edge and no icon.** Both belong to the alert, and the tab already does the work of saying what kind of box this is — in words, so nothing has to be read out of a colour."
   - id: suggested-icons
     title: "Icon options"
     group: "Modifiers"
@@ -119,6 +122,10 @@ A box in the flow of a page that names its own register before the reader starts
 - `.ds-note-gotcha` — A ruled-off warning at the foot of the note, on a `<p>` whose first child is a `<strong>` lead.
 
 **Internal variant.** Lime. How this component or rule differs in internal tools, shown in the section it belongs to rather than on a separate page. This is the one place a public page may show Access Lime, because here the internal surface is the subject rather than the accent.
+
+**Rule.** **Three registers, and the set is closed on purpose.** Adding one is three custom properties — `--ds-note-tint`, `--ds-note-line`, `--ds-note-mark` — but a colour only earns a register when it has a job. There is no background-colour utility class, because a tint that a page picks freely teaches the reader nothing.
+
+**Rule.** **No left edge and no icon.** Both belong to the alert, and the tab already does the work of saying what kind of box this is — in words, so nothing has to be read out of a colour.
 
 ## Icon options  (Modifiers)
 

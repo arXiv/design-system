@@ -26,6 +26,13 @@ components:
         does: "The top edge takes Access Lime. The markup is the public one."
     notes:
       - "Meets accessibility guideline [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A)"
+    rules:
+      - "**Read-only only.** Never place editable fields inside a data card. The filled surface signals “this is system context, not something you control here.”"
+      - "**Editable content uses the basic card.** When a group of *editable* fields needs a boundary, use a plain `.ds-card`, a white panel with a hairline and an 8px radius, and not a data card. Keeping the two visually distinct is deliberate: a filled surface reads as read-only system context; a plain bordered panel reads as “you can edit this.”"
+      - "**Sidebar placement.** A data card sets no width of its own; the sidebar it sits in does. The contrast between the tinted card and the Canvas creates the visual hierarchy."
+      - "**Links in the card.** A value that navigates to a related record (user profile, submission detail) is a link. Limit links to navigational items and do not use them for inline actions."
+      - "**Monospace IDs.** Every value renders in IBM Plex Mono (“monospace signals read-only system data”), so an arXiv ID needs no override."
+      - "**Row count.** 2–6 pairs is the intended range. If more fields are needed, consider grouping into two separate cards rather than a very tall single card."
   - id: cards-with-a-header-bar
     title: "Cards with a header bar"
     summary: "A set of data with its own controls, such as a table with a filter, is a card whose first row is a header bar. The bar holds the controls for that set only."
@@ -154,6 +161,18 @@ Intended for organizing metadata and other reference information: the facts abou
 - `.ds-internal` — The top edge takes Access Lime. The markup is the public one.
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A)
+
+**Rule.** **Read-only only.** Never place editable fields inside a data card. The filled surface signals “this is system context, not something you control here.”
+
+**Rule.** **Editable content uses the basic card.** When a group of *editable* fields needs a boundary, use a plain `.ds-card`, a white panel with a hairline and an 8px radius, and not a data card. Keeping the two visually distinct is deliberate: a filled surface reads as read-only system context; a plain bordered panel reads as “you can edit this.”
+
+**Rule.** **Sidebar placement.** A data card sets no width of its own; the sidebar it sits in does. The contrast between the tinted card and the Canvas creates the visual hierarchy.
+
+**Rule.** **Links in the card.** A value that navigates to a related record (user profile, submission detail) is a link. Limit links to navigational items and do not use them for inline actions.
+
+**Rule.** **Monospace IDs.** Every value renders in IBM Plex Mono (“monospace signals read-only system data”), so an arXiv ID needs no override.
+
+**Rule.** **Row count.** 2–6 pairs is the intended range. If more fields are needed, consider grouping into two separate cards rather than a very tall single card.
 
 ## Cards with a header bar
 
