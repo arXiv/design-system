@@ -2010,12 +2010,16 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 .ds-form--compact > label:not(.ds-label, .ds-check, .is-sr-only),
 .ds-form--compact > fieldset > label:not(.ds-check, .is-sr-only) { display: inline-flex; align-items: center; gap: var(--ds-space-2); font-weight: 600; }
 /* A fieldset, for a date range or a group of checkboxes: its legend and its
-   controls on one line, wrapping when they do not fit. A floated legend
-   becomes an item of the line. */
-.ds-form--compact > fieldset { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2) var(--ds-space-3); min-width: 0; margin: 0; padding: 0; border: 0; }
-.ds-form--compact > fieldset > legend { float: left; padding: 0; font-weight: 600; }
+   controls on one line, wrapping when they do not fit. The fieldset is a
+   block: its legend floats at the start of the line, at a control's height,
+   and the controls flow after it. Not a flex fieldset, because Safari keeps a
+   legend on a line of its own there. Half the row gap above and below each
+   item, taken back by the fieldset, spaces wrapped lines evenly. */
+.ds-form--compact > fieldset { min-width: 0; margin: calc(var(--ds-space-2) / -2) 0; padding: 0; border: 0; }
+.ds-form--compact > fieldset > legend { float: left; margin: calc(var(--ds-space-2) / 2) var(--ds-space-3) calc(var(--ds-space-2) / 2) 0; padding: 0; font-weight: 600; line-height: var(--ds-compact-h); }
+.ds-form--compact > fieldset > :not(legend, .is-sr-only) { display: inline-flex; align-items: center; vertical-align: top; min-height: var(--ds-compact-h); margin: calc(var(--ds-space-2) / 2) 0; }
+.ds-form--compact > fieldset > :not(legend, .is-sr-only, :last-child) { margin-inline-end: var(--ds-space-3); }
 .ds-form--compact > fieldset > label:not(.ds-check) { font-weight: 400; }
-.ds-form--compact > fieldset > .ds-check { margin: 0; }
 .ds-form--compact .ds-input { width: auto; font-weight: 400; }
 .ds-form--compact select.ds-input { padding-right: 2.25em; background-position: right 0.75em center; }
 .ds-form--compact > .ds-label,
@@ -2084,7 +2088,9 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
   .ds-form--compact > .ds-input-group + .ds-btn { grid-column: 1 / -1; }
   .ds-form--compact > .ds-input-group + .ds-btn { justify-self: stretch; margin-inline-start: 0; }
   /* A fieldset: its legend on a line of its own, its controls one under another. */
-  .ds-form--compact > fieldset { flex-direction: column; align-items: flex-start; }
+  .ds-form--compact > fieldset { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ds-space-2); margin: 0; }
+  .ds-form--compact > fieldset > legend { float: none; margin: 0 0 var(--ds-space-2); line-height: inherit; }
+  .ds-form--compact > fieldset > :not(legend, .is-sr-only) { min-height: 0; margin: 0; }
 }
 
 /* Room on the right for the arrow, which renders inside the control's own
