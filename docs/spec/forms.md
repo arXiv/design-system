@@ -67,7 +67,9 @@ components:
     summary: "Repeat the problems below the page heading using an alert component. Errors are grouped into alerts by disposition (error, warning, info) and are not mixed. Each alert holds an ordered list of items. See [Alerts](alerts.md) for full documentation. Below is an example of using an alert specifically for validation."
     classes:
       - name: ".ds-alert--error, .ds-alert--warning, .ds-alert"
-        does: "One alert per severity, never a mixed one: red has to mean “you cannot proceed”, and a non-blocking item inside a red alert destroys that. Two problems of two severities means two alerts, in severity order. A warning summary is the same construction in `.ds-alert--warning`, and an automatic change is a bare `.ds-alert`, which is the info state. Takes `role=\"alert\"` for error and warning, `role=\"status\"` for info. See [Alerts](alerts.md) for the four severities and their markup."
+        does: "One alert per severity, never a mixed one: red has to mean “you cannot proceed”, and a non-blocking item inside a red alert destroys that. Two problems of two severities means two alerts, in severity order. A warning summary is the same construction in `.ds-alert--warning`, and an automatic change is a bare `.ds-alert`, which is the info state. No role: focus moves to the summary, and that is what makes a screen reader read it. See [Alerts](alerts.md) for the four severities and their markup."
+      - name: "tabindex=\"-1\""
+        does: "On the summary, so a script can move focus to it when a submit fails, whether a script showed the summary or the server sent the page back with it. A `<div>` cannot take focus without it, and the `-1` keeps it out of the tab order."
       - name: ".ds-alert-title"
         does: "Includes the count. The body under it says what that severity means for the reader: whether they may continue."
       - name: "<ol>"
@@ -145,8 +147,8 @@ rules:
   - "**Connect every hint and message to its control.** Give each `.ds-hint` and each message an `id`, and list them in the control's `aria-describedby`. Without that a screen reader announces the field and nothing else."
   - "**Use `aria-invalid` for errors only.** Set `aria-invalid=\"true\"` on a control in the error tier and remove it when the error clears. A warning is not invalid, and an info message is not a problem at all."
   - "**Say the tier in words.** Colour and a border are never the only signal (WCAG 1.4.1). The message says what is wrong or what changed, or includes a visually hidden “Error:” or “Warning:” prefix."
-  - "**Validate on submit, then move focus.** Do not tell someone they are wrong while they are still typing. Once a field is invalid, re-check it on every `input` event so the error clears the moment it is fixed. When submission fails, move focus to the first invalid field."
-  - "**Give the summary its role.** The alert above the form takes `role=\"alert\"` for errors and warnings, so a screen reader announces it at once, and every row in it links to its field."
+  - "**Validate on submit, then move focus.** Do not tell someone they are wrong while they are still typing. Once a field is invalid, re-check it on every `input` event so the error clears the moment it is fixed. When submission fails, move focus to the summary."
+  - "**Focus the summary, and name the failure in the page title.** The summary takes focus when a submit fails, so a screen reader reads the count and the list before anything else, and every row links to its field. When the server sends the page back with errors, the page's `<title>` starts with “Error:”, the first thing a screen reader announces on the new page. The summary takes no role: focus already makes it heard, and a role on an alert that is in the page as it loads is not reliably announced (see [Alerts](alerts.md))."
   - "**Prefer `aria-disabled` to `disabled` for a control that could explain itself.** `disabled` leaves the tab order entirely, so a user who cannot proceed finds nothing there and no reason why. The two must look identical."
 ---
 
@@ -294,7 +296,7 @@ Fields can be in three possible states: normal, validated, or disabled. Validati
 Repeat the problems below the page heading using an alert component. Errors are grouped into alerts by disposition (error, warning, info) and are not mixed. Each alert holds an ordered list of items. See [Alerts](alerts.md) for full documentation. Below is an example of using an alert specifically for validation.
 
 ```html
-<div class="ds-alert ds-alert--error" role="alert">
+<div class="ds-alert ds-alert--error" tabindex="-1">
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true">
     <path d="M12 16h.01"/>
     <path d="M12 8v4"/>
@@ -311,7 +313,8 @@ Repeat the problems below the page heading using an alert component. Errors are 
 </div>
 ```
 
-- `.ds-alert--error, .ds-alert--warning, .ds-alert` — One alert per severity, never a mixed one: red has to mean “you cannot proceed”, and a non-blocking item inside a red alert destroys that. Two problems of two severities means two alerts, in severity order. A warning summary is the same construction in `.ds-alert--warning`, and an automatic change is a bare `.ds-alert`, which is the info state. Takes `role="alert"` for error and warning, `role="status"` for info. See [Alerts](alerts.md) for the four severities and their markup.
+- `.ds-alert--error, .ds-alert--warning, .ds-alert` — One alert per severity, never a mixed one: red has to mean “you cannot proceed”, and a non-blocking item inside a red alert destroys that. Two problems of two severities means two alerts, in severity order. A warning summary is the same construction in `.ds-alert--warning`, and an automatic change is a bare `.ds-alert`, which is the info state. No role: focus moves to the summary, and that is what makes a screen reader read it. See [Alerts](alerts.md) for the four severities and their markup.
+- `tabindex="-1"` — On the summary, so a script can move focus to it when a submit fails, whether a script showed the summary or the server sent the page back with it. A `<div>` cannot take focus without it, and the `-1` keeps it out of the tab order.
 - `.ds-alert-title` — Includes the count. The body under it says what that severity means for the reader: whether they may continue.
 - `<ol>` — One row per problem, each an `<a>` linking to its field. Rows repeat the field name even when several name the same field: without it the reader cannot tell whether three problems mean one field to visit or three. Derive every count and every row from the field results; a summary written by hand can disagree with the fields it describes, and eventually will.
 
@@ -447,6 +450,6 @@ Default field widths are set to follow the expected amount of content and are an
 - **Connect every hint and message to its control.** Give each `.ds-hint` and each message an `id`, and list them in the control's `aria-describedby`. Without that a screen reader announces the field and nothing else.
 - **Use `aria-invalid` for errors only.** Set `aria-invalid="true"` on a control in the error tier and remove it when the error clears. A warning is not invalid, and an info message is not a problem at all.
 - **Say the tier in words.** Colour and a border are never the only signal (WCAG 1.4.1). The message says what is wrong or what changed, or includes a visually hidden “Error:” or “Warning:” prefix.
-- **Validate on submit, then move focus.** Do not tell someone they are wrong while they are still typing. Once a field is invalid, re-check it on every `input` event so the error clears the moment it is fixed. When submission fails, move focus to the first invalid field.
-- **Give the summary its role.** The alert above the form takes `role="alert"` for errors and warnings, so a screen reader announces it at once, and every row in it links to its field.
+- **Validate on submit, then move focus.** Do not tell someone they are wrong while they are still typing. Once a field is invalid, re-check it on every `input` event so the error clears the moment it is fixed. When submission fails, move focus to the summary.
+- **Focus the summary, and name the failure in the page title.** The summary takes focus when a submit fails, so a screen reader reads the count and the list before anything else, and every row links to its field. When the server sends the page back with errors, the page's `<title>` starts with “Error:”, the first thing a screen reader announces on the new page. The summary takes no role: focus already makes it heard, and a role on an alert that is in the page as it loads is not reliably announced (see [Alerts](alerts.md)).
 - **Prefer `aria-disabled` to `disabled` for a control that could explain itself.** `disabled` leaves the tab order entirely, so a user who cannot proceed finds nothing there and no reason why. The two must look identical.

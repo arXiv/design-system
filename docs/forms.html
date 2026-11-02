@@ -514,7 +514,7 @@
     <p class="ds-section-desc">Repeat the problems below the page heading using an alert component. Errors are grouped into alerts by disposition (error, warning, info) and are not mixed. Each alert holds an ordered list of items. See <a href="alerts.html">Alerts</a> for full documentation. Below is an example of using an alert specifically for validation.</p>
 
     <div class="ds-card">
-      <div class="ds-alert ds-alert--error" role="alert">
+      <div class="ds-alert ds-alert--error" tabindex="-1">
         <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>
         <div class="ds-alert-content">
           <p class="ds-alert-title">2 blocking errors</p>
@@ -527,7 +527,7 @@
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-alert ds-alert--error" role="alert"&gt;
+<pre><code>&lt;div class="ds-alert ds-alert--error" tabindex="-1"&gt;
   &lt;svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true"&gt;
     &lt;path d="M12 16h.01"/&gt;
     &lt;path d="M12 8v4"/&gt;
@@ -548,8 +548,12 @@
             a non-blocking item inside a red alert destroys that. Two problems of two severities means
             two alerts, in severity order. A warning summary is the same construction in
             <code>.ds-alert--warning</code>, and an automatic change is a bare <code>.ds-alert</code>, which is the info state.
-            Takes <code>role="alert"</code> for error and warning, <code>role="status"</code> for
-            info. See <a href="alerts.html">Alerts</a> for the four severities and their markup.</dd>
+            No role: focus moves to the summary, and that is what makes a screen reader read it. See
+            <a href="alerts.html">Alerts</a> for the four severities and their markup.</dd>
+            <dt>tabindex="-1"</dt>
+            <dd>On the summary, so a script can move focus to it when a submit fails, whether a script
+            showed the summary or the server sent the page back with it. A <code>&lt;div&gt;</code>
+            cannot take focus without it, and the <code>-1</code> keeps it out of the tab order.</dd>
             <dt>.ds-alert-title</dt>
             <dd>Includes the count. The body under it says what that severity means for the reader:
             whether they may continue.</dd>
@@ -918,10 +922,14 @@
       <li><strong>Validate on submit, then move focus.</strong> Do not tell someone they are wrong
       while they are still typing. Once a field is invalid, re-check it on every <code>input</code>
       event so the error clears the moment it is fixed. When submission fails, move focus to the
-      first invalid field.</li>
-      <li><strong>Give the summary its role.</strong> The alert above the form takes
-      <code>role="alert"</code> for errors and warnings, so a screen reader announces it at once,
-      and every row in it links to its field.</li>
+      summary.</li>
+      <li><strong>Focus the summary, and name the failure in the page title.</strong> The summary
+      takes focus when a submit fails, so a screen reader reads the count and the list before
+      anything else, and every row links to its field. When the server sends the page back with
+      errors, the page&#39;s <code>&lt;title&gt;</code> starts with “Error:”, the first thing a screen
+      reader announces on the new page. The summary takes no role: focus already makes it heard,
+      and a role on an alert that is in the page as it loads is not reliably announced (see
+      <a href="alerts.html">Alerts</a>).</li>
       <li><strong>Prefer <code>aria-disabled</code> to <code>disabled</code> for a control that could
       explain itself.</strong> <code>disabled</code> leaves the tab order entirely, so a user who
       cannot proceed finds nothing there and no reason why. The two must look identical.</li>
