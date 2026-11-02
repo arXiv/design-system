@@ -9,7 +9,7 @@ components:
     summary: "arXiv's design system contains four alerts that align with user expectations and established UI practices. Each state conveys a tone through color: **Success** uses green to signal that all is well, **info** is a calm blue, **warning** is an attention-grabbing yellow, while **error** is a powerful red and is reserved for blocking or failed states, and for a paper that has been withdrawn or removed. Color sets the tone; the icon and the title convey the meaning, so a reader who cannot see the color still knows what kind of message it is."
     classes:
       - name: ".ds-alert"
-        does: "The container. On its own it is the info state; add a state class for success, warning or error. An alert that appears after the page has loaded takes `role=\"status\"` for success and info, `role=\"alert\"` for warning and error. An alert that is in the page as it loads, such as the warning above, takes no role."
+        does: "The container. On its own it is the info state; add a state class for success, warning or error. An alert that appears after the page has loaded takes `role=\"status\"` for success and info, `role=\"alert\"` for warning and error. An alert that is in the page as it loads, such as the warning above, takes no role, and neither does one that focus moves to, such as a [form's error summary](forms.md#alerts-in-forms): focus already makes it heard."
       - name: ".ds-alert--success, --warning, --error"
         does: "The state: `.ds-alert--success`, `.ds-alert--warning`, or `.ds-alert--error`. Sets the background, border, and text colour from the status tokens. There is no info class: info is the container's own colours. The same classes and the same colours on both surfaces."
       - name: ".ds-alert-icon"
@@ -87,7 +87,7 @@ arXiv's design system contains four alerts that align with user expectations and
 </div>
 ```
 
-- `.ds-alert` — The container. On its own it is the info state; add a state class for success, warning or error. An alert that appears after the page has loaded takes `role="status"` for success and info, `role="alert"` for warning and error. An alert that is in the page as it loads, such as the warning above, takes no role.
+- `.ds-alert` — The container. On its own it is the info state; add a state class for success, warning or error. An alert that appears after the page has loaded takes `role="status"` for success and info, `role="alert"` for warning and error. An alert that is in the page as it loads, such as the warning above, takes no role, and neither does one that focus moves to, such as a [form's error summary](forms.md#alerts-in-forms): focus already makes it heard.
 - `.ds-alert--success, --warning, --error` — The state: `.ds-alert--success`, `.ds-alert--warning`, or `.ds-alert--error`. Sets the background, border, and text colour from the status tokens. There is no info class: info is the container's own colours. The same classes and the same colours on both surfaces.
 - `.ds-alert-icon` — The icon, an inline SVG with `aria-hidden="true"`. Each state has its own shape: a check, an “i”, a triangle, an octagon with a “!”; an “x” would read as a close control. Copy the icon element whole, attributes included: Lucide draws each “!” or “i” dot as a 0.01-unit path that only renders with `stroke-linecap="round"`. Without these attributes it renders as an empty hairline outline.
 - `.ds-alert-content` — Holds the text. One or more `<p>` elements; a link inside it takes the alert’s own colour.
