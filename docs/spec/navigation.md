@@ -28,6 +28,11 @@ components:
         does: "The script, once per page. It builds the View menu (`.ds-subnav-views`) from the row's links and sets the state classes on the row: `.is-views-folded` when the views do not fit beside the section menu, and `.is-menu-row` when the section menu takes a row of its own. It closes an open menu on Escape and on a click outside. Without the script the tabs wrap."
     notes:
       - "The script answers to the width of the row, so the narrower examples fold inside narrower boxes. Open the menus to see their colours."
+    rules:
+      - "**Two levels at most.** A third level is a sign the content needs restructuring."
+      - "**Each row keeps the same links on every page it appears on.** Only the current link changes."
+      - "**Choices that apply to one view go inside that view**, below the row."
+      - "**When the views share one address** and swap in place, use [tabs](progressive-disclosure.md#tabs) for the second level instead."
   - id: steps
     title: "Steps"
     summary: "The steps of one ordered process, such as a submission, and which one the reader is on. Steps is a variant of the secondary navigation bar. To move through a queue one item at a time, use the [pager](pager.md). Which steps are available is the application's logic: submission, for example, lets the reader go back to a complete step but not jump ahead."
@@ -48,6 +53,8 @@ components:
         does: "A `<span>`, not a link, so it is not a tab stop. A dashed circle and `.is-sr-only` text “, not available yet”."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A) and [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
+    rules:
+      - "**One bar under the header.** A page shows either secondary navigation or steps, never both."
   - id: internal
     title: "Internal"
     group: "Modifiers"
@@ -121,6 +128,14 @@ An area with its own sections, each with several views, such as a report with pa
 
 > The script answers to the width of the row, so the narrower examples fold inside narrower boxes. Open the menus to see their colours.
 
+**Rule.** **Two levels at most.** A third level is a sign the content needs restructuring.
+
+**Rule.** **Each row keeps the same links on every page it appears on.** Only the current link changes.
+
+**Rule.** **Choices that apply to one view go inside that view**, below the row.
+
+**Rule.** **When the views share one address** and swap in place, use [tabs](progressive-disclosure.md#tabs) for the second level instead.
+
 ## Steps
 
 The steps of one ordered process, such as a submission, and which one the reader is on. Steps is a variant of the secondary navigation bar. To move through a queue one item at a time, use the [pager](pager.md). Which steps are available is the application's logic: submission, for example, lets the reader go back to a complete step but not jump ahead.
@@ -145,6 +160,8 @@ The steps of one ordered process, such as a submission, and which one the reader
 - `<span> for a step not available yet` — A `<span>`, not a link, so it is not a tab stop. A dashed circle and `.is-sr-only` text “, not available yet”.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A) and [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)
+
+**Rule.** **One bar under the header.** A page shows either secondary navigation or steps, never both.
 
 ## Internal  (Modifiers)
 

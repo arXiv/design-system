@@ -40,6 +40,12 @@ components:
         does: "One region on the page. The script writes “Link to Dividers copied” into it and clears it with the tick."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A) and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)"
+    rules:
+      - "**The ids are written into the HTML, not added by a script.** In these docs, `verification/gen-anchors.py` writes them, and `--check` fails when a heading has none. A real id works with JavaScript off, works for a link arriving from another page, and exists when the browser resolves the fragment on first load — none of which a script running at `DOMContentLoaded` can promise."
+      - "**The control is a button, not a link.** An `<a href=\"#here\">` inside a heading is a tab stop that goes nowhere the reader wanted to go — they are already looking at the section. What they want is the address, so it copies it."
+      - "**An id follows its heading**, so rewording a heading changes its anchor. That is the right trade while nothing links in from outside; re-run the generator after editing a heading and the check will tell you if you forget."
+      - "**Its accessible name includes the section.** Twelve buttons all called “Permalink” are useless in a list of controls, so each says which section it belongs to."
+      - "**The control is the same wherever it is used**, on a docs page or in an HTML paper. A heading that has one action uses this control; an element with several actions, such as an equation, uses the [element pill](buttons.md#small-actions-attached-to-content)."
 rules:
   - "A disabled link has no `href`, so it cannot be reached or followed by keyboard or pointer. `pointer-events: none` alone is not enough: it stops a mouse, but a keyboard can still follow the link. Add `role=\"link\"` and `aria-disabled=\"true\"`, so a screen reader still announces it as a link that is unavailable, and the stylesheet colours it `--ds-text-disabled` (`#aeaaa4`). The underline stays so it is still recognisable as a (currently unavailable) link. The disabled state falls below AA on contrast — WCAG exempts disabled controls from contrast requirements."
   - "A list of author names, a navigation bar, a footer column: these are lists in which every item is a link, and none of them is underlined. The underline exists to tell a link apart from the text around it, and in a list of links there is no such text; underlining every item would add visual noise and tell the reader nothing. WCAG asks for the underline only where colour alone would have to separate a link from ordinary text, which is the case for an inline link and not for a list. The links keep Link Blue, the hover and focus states, and the visited colour where it means something. Put `.ds-link-list` on the element that holds the list."
@@ -119,6 +125,16 @@ A section heading can include a control that copies a link to that section. It i
 - `[role="status"]` — One region on the page. The script writes “Link to Dividers copied” into it and clears it with the tick.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A) and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)
+
+**Rule.** **The ids are written into the HTML, not added by a script.** In these docs, `verification/gen-anchors.py` writes them, and `--check` fails when a heading has none. A real id works with JavaScript off, works for a link arriving from another page, and exists when the browser resolves the fragment on first load — none of which a script running at `DOMContentLoaded` can promise.
+
+**Rule.** **The control is a button, not a link.** An `<a href="#here">` inside a heading is a tab stop that goes nowhere the reader wanted to go — they are already looking at the section. What they want is the address, so it copies it.
+
+**Rule.** **An id follows its heading**, so rewording a heading changes its anchor. That is the right trade while nothing links in from outside; re-run the generator after editing a heading and the check will tell you if you forget.
+
+**Rule.** **Its accessible name includes the section.** Twelve buttons all called “Permalink” are useless in a list of controls, so each says which section it belongs to.
+
+**Rule.** **The control is the same wherever it is used**, on a docs page or in an HTML paper. A heading that has one action uses this control; an element with several actions, such as an equation, uses the [element pill](buttons.md#small-actions-attached-to-content).
 
 ## Rules
 

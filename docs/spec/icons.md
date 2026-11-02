@@ -7,6 +7,8 @@ components:
   - id: the-set
     title: "The set"
     summary: "Selected icons currently in use. The name under each is the file name."
+    notes:
+      - "app-window; arrow-down; arrow-left; arrow-up; calendar; check; chevron-down; chevron-left; chevron-right; circle-alert; circle-check; circle-question-mark; circle-user; circle-x; clipboard; code; copy; download; external-link; eye; file-text; info; link; list-filter; list; maximize-2; menu; message-square; minimize-2; octagon-alert; paperclip; pencil; plus; refresh-cw; search; send; shield-check; tex; trash; triangle-alert; x; zoom-in; zoom-out"
   - id: using-an-icon
     title: "Using an icon"
     summary: "The icon inherits the text colour around it, and it is hidden from assistive technology, so the control or text beside it conveys the meaning."
@@ -22,6 +24,10 @@ components:
   - id: adding-an-icon
     title: "Adding an icon"
     summary: ""
+    rules:
+      - "**From the Lucide set.** Find the file in the Lucide release named in `docs/icons/VERSION`, keep its name unchanged, and put it in `docs/icons/`. This page will update automatically the next time it is built."
+      - "**Drawing a custom icon.** Follow these specs: A 24-unit grid, a 2-unit stroke, round caps and joins, no fills, no ids or styles. Export an svg from Illustrator and add it to the icon folder. You know it is working when it cannot be told apart from the original Lucide set."
+      - "**Rebuilding this page.** Then run `python3 verification/gen-icons.py`. The icon list will update itself based on the folder contents."
 rules:
   - "**Color is inherited.** If not otherwise specified, the icon inherits the text colour around it. Using the Design System and not overriding colors ensures accessible contrast in both light and dark modes."
   - "**Icons are decorative, not informative.** In our markup icons are hidden from assistive technology by default, so the text beside it or control it is inside of must convey the meaning."
@@ -38,6 +44,8 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 ## The set
 
 Selected icons currently in use. The name under each is the file name.
+
+> app-window; arrow-down; arrow-left; arrow-up; calendar; check; chevron-down; chevron-left; chevron-right; circle-alert; circle-check; circle-question-mark; circle-user; circle-x; clipboard; code; copy; download; external-link; eye; file-text; info; link; list-filter; list; maximize-2; menu; message-square; minimize-2; octagon-alert; paperclip; pencil; plus; refresh-cw; search; send; shield-check; tex; trash; triangle-alert; x; zoom-in; zoom-out
 
 ## Using an icon
 
@@ -60,6 +68,12 @@ The icon inherits the text colour around it, and it is hidden from assistive tec
 ## Adding an icon
 
 
+
+**Rule.** **From the Lucide set.** Find the file in the Lucide release named in `docs/icons/VERSION`, keep its name unchanged, and put it in `docs/icons/`. This page will update automatically the next time it is built.
+
+**Rule.** **Drawing a custom icon.** Follow these specs: A 24-unit grid, a 2-unit stroke, round caps and joins, no fills, no ids or styles. Export an svg from Illustrator and add it to the icon folder. You know it is working when it cannot be told apart from the original Lucide set.
+
+**Rule.** **Rebuilding this page.** Then run `python3 verification/gen-icons.py`. The icon list will update itself based on the folder contents.
 
 ## Rules
 
