@@ -296,9 +296,9 @@ Repeat the problems below the page heading using an alert component. Errors are 
 ```html
 <div class="ds-alert ds-alert--error" role="alert">
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-hidden="true">
-    <circle cx="12" cy="12" r="10"/>
-    <path d="m15 9-6 6"/>
-    <path d="m9 9 6 6"/>
+    <path d="M12 16h.01"/>
+    <path d="M12 8v4"/>
+    <path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/>
   </svg>
   <div class="ds-alert-content">
     <p class="ds-alert-title">2 blocking errors</p>
