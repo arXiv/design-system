@@ -30,3 +30,12 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Navigation | [navigation.md](navigation.md) | The bars under the [site header](header.md) that tell a reader where they are inside an area: secondary navigation, two levels of it, and steps. |
 | Search | [search.md](search.md) | A search page contains many components and elements documented elsewhere. This page is about how to put them together, the hierarchy of content, and other desig |
 | Papers | [papers.md](papers.md) | Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us displ |
+
+## Not yet digested
+
+These pages have not had their review pass. Read the page itself, and expect the shape to differ.
+
+- action-feedback.html
+- long-pages.html
+- references.html
+- versions.html

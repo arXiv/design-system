@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Confirm an action that changes nothing on screen — arXiv Design System</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
+<script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
+</head>
+<body class="ds-page">
+<!-- The docs site's own header (the light variant). It is not a pattern: build pages from the header in templates/ and docs/header.html. -->
+<header class="ds-site-header ds-site-header--light">
+  <span class="ds-site-header-logo ds-tooltip-host"><a href="../index.html" aria-describedby="ds-logo-tip"><img class="ds-theme-light-only" src="assets/images/logos/logo_smileybones-ds.svg" alt="Smileybones"><img class="ds-theme-dark-only" src="assets/images/logos/logo_smileybones-ds-light.svg" alt="Smileybones"></a><span class="ds-tooltip" id="ds-logo-tip" role="tooltip"><span class="ds-tooltip-body">Smileybones Design System from arXiv</span></span></span>
+  <nav class="ds-site-header-nav" aria-label="Design system">
+    <details class="ds-site-header-dropdown">
+      <summary>Components</summary>
+      <div class="ds-site-header-menu">
+        <span class="ds-panel-label">Foundations</span>
+        <a href="colors.html">Colors</a>
+        <a href="dark-mode.html">Dark mode</a>
+        <a href="typography.html">Typography</a>
+        <a href="spacing.html">Spacing</a>
+        <a href="layout-patterns.html">Layouts</a>
+        <a href="icons.html">Icons</a>
+        <span class="ds-panel-label">Components</span>
+        <a href="alerts.html">Alerts</a>
+        <a href="buttons.html">Buttons</a>
+        <a href="cards.html">Cards</a>
+        <a href="filters.html">Filters</a>
+        <a href="forms.html">Forms &amp; validation</a>
+        <a href="links.html">Links</a>
+        <a href="messages.html">Messaging</a>
+        <a href="modals.html">Modal dialogs</a>
+        <a href="navigation.html">Navigation</a>
+        <a href="pager.html">Pager</a>
+        <a href="papers.html">Papers</a>
+        <a href="progressive-disclosure.html">Progressive disclosure</a>
+        <a href="footer.html">Site footer</a>
+        <a href="header.html">Site header</a>
+        <a href="tables.html">Tables</a>
+        <a href="tags.html">Tags</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Patterns</summary>
+      <div class="ds-site-header-menu">
+        <a href="action-feedback.html" aria-current="page">Confirm an action that changes nothing on screen</a>
+        <a href="versions.html">Indicate which version is being read</a>
+        <a href="long-pages.html">Make a long page navigable</a>
+        <a href="references.html">Show a reference without losing the reader&#39;s place</a>
+        <span class="ds-panel-label">Pages</span>
+        <a href="search.html">Search</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Mockups</summary>
+      <div class="ds-site-header-menu">
+        <a href="../whiteboard/mockups/">All mockups</a>
+        <span class="ds-panel-label">Public</span>
+        <a href="../whiteboard/mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+        <a href="../whiteboard/mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+        <a href="../whiteboard/mockups/public/optin-modal/">Labs opt-in modal</a>
+        <a href="../whiteboard/mockups/public/submission-metadata/">Submission — Metadata Form</a>
+        <span class="ds-panel-label">Internal</span>
+        <a href="../whiteboard/mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+        <a href="../whiteboard/mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+        <a href="../whiteboard/mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+        <a href="../whiteboard/mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+        <a href="../whiteboard/mockups/internal/activity-dashboard/">Activity dashboard</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Docs</summary>
+      <div class="ds-site-header-menu">
+        <a href="using.html">Using the system</a>
+        <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+        <a href="doc.html?src=docs/accessibility-priorities.md">Accessibility priorities</a>
+        <a href="doc.html?src=docs/STYLE.md">Writing style</a>
+        <a href="brand.html">Brand &amp; vision</a>
+        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
+        <a href="doc.html?src=README.md">About this repo</a>
+      </div>
+    </details>
+  </nav>
+  <div class="ds-site-header-tools">
+    <button type="button" class="ds-theme-toggle"></button>
+    <span id="ds-theme-status" class="is-sr-only" role="status"></span>
+  </div>
+</header>
+
+<div class="ds-container">
+
+  <div class="ds-full ds-zone-secondary">
+  <header class="ds-page-header">
+    <h1>Confirm an action that changes nothing on screen</h1>
+    <p>Copy, Permalink and similar actions do their work out of sight: nothing on the page changes. Say what happened, in words for a screen reader and with a visible sign for everyone, and leave focus where it was.</p>
+  </header>
+  </div>
+
+
+  <!-- ═════════ TOC ═════════ -->
+  <div class="ds-full ds-toc-bar">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#where-it-is-used">Where it is used</a></li>
+            <li><a href="#copying">Copying</a></li>
+            <li><a href="#confirming-rules">Copy, Permalink and similar actions</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <section>
+    <h2 id="where-it-is-used">Where it is used</h2>
+    <ul>
+      <li>The copy button on every code block, including each citation format in a paper&#39;s Cite. See <a href="typography.html#code-blocks-and-the-copy-button">Typography</a>.</li>
+      <li>Copy and Permalink on an equation, a figure or a reference, and Permalink on a section heading. See <a href="buttons.html#small-actions-attached-to-content">Buttons</a> and <a href="papers.html">Papers</a>.</li>
+      <li>The theme control, which says which theme is now in use. See <a href="dark-mode.html#the-theme-control">Dark mode</a>.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 id="copying">Copying</h2>
+    <p class="ds-section-desc">The copy button on a code block, the one most pages use. Press it: the icon becomes a tick, and a screen reader hears &ldquo;Copied to clipboard&rdquo;.</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Meets accessibility guideline <a href="https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html">WCAG 2.2 SC 4.1.3</a> Status Messages (Level AA)</p>
+      </details>
+<pre><code>@article{palomares2026gauge,
+  title = {Gauge-independent approach to inflation in quadratic gravity},
+  journal = {arXiv preprint arXiv:2604.22725},
+  year = {2026}
+}</code></pre>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;pre&gt;&lt;code&gt;@article{palomares2026gauge, …}&lt;/code&gt;&lt;/pre&gt;
+&lt;script src="copy-code.js" defer&gt;&lt;/script&gt;</code></pre>
+          <dl>
+            <dt>copy-code.js</dt>
+            <dd>Once per page. It adds the copy button to every <code>&lt;pre&gt;&lt;code&gt;</code>. After a copy the icon becomes a tick, and a visually hidden <code>role="status"</code> region beside the button says &ldquo;Copied to clipboard&rdquo;; both clear after two seconds. If the copy fails, the region says &ldquo;Copy failed — select the code and copy it manually&rdquo;.</dd>
+            <dt>[role="status"]</dt>
+            <dd>Written by the script, never by hand. A status region is announced without moving focus.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <div class="ds-full ds-zone-secondary">
+  <h2>Rules</h2>
+
+  <section>
+    <h3 id="confirming-rules">Copy, Permalink and similar actions</h3>
+    <ul class="notes">
+      <li><strong>Say what happened, in words.</strong> A visually hidden <code>role="status"</code> region says it: &ldquo;Copied to clipboard&rdquo;. Where a page has many controls that do the same thing, it names what was copied: &ldquo;Link to equation 2.14 copied&rdquo;.</li>
+      <li><strong>Focus stays on the control.</strong></li>
+      <li><strong>The control keeps its name.</strong> The name says what it does: Copy is still Copy after copying.</li>
+      <li><strong>Show it too, where nothing else on the page changes.</strong> A visible sign goes with the words, such as a green tick, and both reset after two seconds.</li>
+      <li><strong>Say when it fails, and what to do instead</strong>: &ldquo;Copy failed — select the code and copy it manually&rdquo;.</li>
+    </ul>
+  </section>
+  </div>
+
+</div>
+
+<script>
+  // Nav dropdowns: close on outside click and Esc (enhancement only —
+  // the <details> menus work without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      // Return focus to the trigger, but only if it was inside the menu we are
+      // closing — otherwise Escape anywhere on the page would steal focus.
+      // Without this a keyboard user is left on a link that no longer exists.
+      var wasInside = d.contains(document.activeElement);
+      d.removeAttribute('open');
+      if (wasInside) d.querySelector('summary').focus();
+    });
+  });
+</script>
+<script src="header.js" defer></script>
+<script src="tooltip.js" defer></script>
+<script src="copy-code.js" defer></script>
+<script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
+</body>
+</html>
