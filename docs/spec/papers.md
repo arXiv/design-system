@@ -62,9 +62,9 @@ components:
       - name: ".ds-version--withdrawn"
         does: "With `.ds-version`: the withdrawal notice, in the error colours. Being viewed, it is a `<strong>` in a red box; anywhere else, a red link to the notice."
       - name: ".ds-date-row"
-        does: "Ends with Withdrawn and the date of the withdrawal. It takes the place of Revised: the notice is not a version of the paper."
+        does: "Ends with Withdrawn and the date of the withdrawal. It takes the place of Revised: the notice is not a revision of the paper."
       - name: ".is-sr-only"
-        does: "\", this page\" on the notice being viewed. It is not a version, so it does not say \", this version\"."
+        does: "\", this page\" on the notice being viewed. It is a notice, not a revision, so it does not say \", this version\"."
       - name: ".ds-version--withdrawn"
         does: "On the version being viewed, because the paper has been withdrawn, and on the link to the notice. The other versions keep the link colour. The paper's withdrawal notice, under its title, says the same in words, so the colour is never the only sign."
       - name: ".ds-paper-versions"
@@ -272,7 +272,7 @@ rules:
   - "**The notice comes straight after the title, before the dates.** It says who withdrew or removed the paper and gives the reason as written, in quotes."
   - "**Every version of a withdrawn paper shows the notice.** On an earlier version it takes the place of the older-version warning. A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn."
   - "**The withdrawal notice links to the last version that can be read.**"
-  - "**A withdrawal is named, never numbered.** It is “Withdrawal notice” in the dates and in Version history, because it is not a version of the paper."
+  - "**A withdrawal is a notice, not a revision, so it is named rather than numbered.** It is “Withdrawal notice” in the dates and in Version history. The identity line still shows the version number arXiv gives it, such as v4."
   - "**Without a text, what acts on a text goes.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all."
   - "**The metadata stays.** The title, the authors, the abstract, the DOI and the journal reference stay, unless arXiv has a legal reason to remove them. Without a text, the DOI and the licence leave the identity line; Metadata keeps the DOI."
   - "**A removed version loses its licence, its cross-listed categories and its journal reference**, which arXiv removes with the files."
@@ -644,8 +644,8 @@ Every paper shows its dates, and its versions once there is more than one. What 
 - `aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b"` — When the viewed version falls inside the elision there are two ellipses and two hidden spans. List all four ids, separated by spaces, so one press opens the whole list.
 - `[hidden]` — Absent. This is the row as the server sends it: every version in the list, no elision, no button. The row wraps like any other line of text.
 - `.ds-version--withdrawn` — With `.ds-version`: the withdrawal notice, in the error colours. Being viewed, it is a `<strong>` in a red box; anywhere else, a red link to the notice.
-- `.ds-date-row` — Ends with Withdrawn and the date of the withdrawal. It takes the place of Revised: the notice is not a version of the paper.
-- `.is-sr-only` — ", this page" on the notice being viewed. It is not a version, so it does not say ", this version".
+- `.ds-date-row` — Ends with Withdrawn and the date of the withdrawal. It takes the place of Revised: the notice is not a revision of the paper.
+- `.is-sr-only` — ", this page" on the notice being viewed. It is a notice, not a revision, so it does not say ", this version".
 - `.ds-version--withdrawn` — On the version being viewed, because the paper has been withdrawn, and on the link to the notice. The other versions keep the link colour. The paper's withdrawal notice, under its title, says the same in words, so the colour is never the only sign.
 - `.ds-paper-versions` — Newest first, as on any paper, with the withdrawal notice first, in its place in the paper's history. Its line says who withdrew the paper.
 - `.ds-version--withdrawn` — On the notice's `<li>` and its link, and on the `<li>` and the version being viewed. On the `<li>` being viewed it turns the bar beside the entry red.
@@ -1200,7 +1200,7 @@ A citation or footnote marker opens a popover that repeats the reference or the 
 - **The notice comes straight after the title, before the dates.** It says who withdrew or removed the paper and gives the reason as written, in quotes.
 - **Every version of a withdrawn paper shows the notice.** On an earlier version it takes the place of the older-version warning. A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn.
 - **The withdrawal notice links to the last version that can be read.**
-- **A withdrawal is named, never numbered.** It is “Withdrawal notice” in the dates and in Version history, because it is not a version of the paper.
+- **A withdrawal is a notice, not a revision, so it is named rather than numbered.** It is “Withdrawal notice” in the dates and in Version history. The identity line still shows the version number arXiv gives it, such as v4.
 - **Without a text, what acts on a text goes.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all.
 - **The metadata stays.** The title, the authors, the abstract, the DOI and the journal reference stay, unless arXiv has a legal reason to remove them. Without a text, the DOI and the licence leave the identity line; Metadata keeps the DOI.
 - **A removed version loses its licence, its cross-listed categories and its journal reference**, which arXiv removes with the files.
