@@ -1867,10 +1867,12 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 .ds-paper-when > .ds-link-list { display: inline-flex; flex-wrap: wrap; gap: var(--ds-space-3); font-size: 0.8125rem; font-weight: 600; }
 .ds-paper > p.ds-link-list { font-size: 0.875rem; }
 .ds-paper > .ds-tag-list { margin-top: var(--ds-space-1); }
-/* The identity line above a paper's title: identifier, primary category, DOI, licence. */
+/* The identity line above a paper's title: identifier, primary category, DOI, licence.
+   Centred, and on a page it spans the viewport to the gutters, so it wraps only on narrow screens. */
 .ds-paper-identity {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   align-items: baseline;
   gap: var(--ds-space-1) var(--ds-space-4);
   margin: 0 0 var(--ds-space-2);
@@ -1878,6 +1880,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
   color: var(--ds-text-muted);
   overflow-wrap: anywhere;   /* the DOI breaks rather than widen the page at large text sizes */
 }
+.ds-container > .ds-paper-identity { grid-column: full; padding-inline: var(--ds-gutter); }
 /* "Withdrawn:" or "Removed:" before a paper's title, in its own element so the author's title is never edited. */
 .ds-paper-status { color: var(--ds-error-fg); }
 /* A paper's version history, newest first; the version being viewed is marked. */
@@ -3757,6 +3760,11 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
   color: var(--ds-hdr-fg-strong);
 }
 .ds-site-header-logo img { height: 39px; width: auto; }
+/* The centred space (.ds-site-header-center): one tool or filter for every page under the
+   header. The logo and the space each take an auto margin, so the free room splits evenly
+   on either side of it. A filter button in it is .on-dark; open, it keeps its pressed look. */
+.ds-site-header-center { display: flex; align-items: center; min-width: 0; margin-right: auto; }
+.ds-site-header-center .ds-btn.on-dark[aria-expanded="true"] { background: rgba(255, 255, 255, 0.14); border-color: #fff; }
 .ds-site-header-nav {
   display: flex;
   align-items: center;
@@ -3991,6 +3999,17 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
 }
 .ds-site-header.is-nav-collapsed .ds-site-header-search-link .ds-nav-icon { width: 22px; height: 22px; opacity: 1; }
 .ds-site-header.is-nav-collapsed .ds-site-header-search-link > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+/* The centred space folds last: its label goes, then a filter's value, leaving the icon.
+   Both stay in the button's name. */
+.ds-site-header.is-center-compact .ds-site-header-center-label,
+.ds-site-header.is-center-folded .ds-site-header-center .ds-filter-value {
   position: absolute;
   width: 1px;
   height: 1px;

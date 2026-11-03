@@ -44,7 +44,7 @@ components:
     summary: "On a paper's own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The version history and the paper's details sit in the sidebar."
     classes:
       - name: ".ds-paper-identity"
-        does: "The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the licence as a link. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers."
+        does: "The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the licence as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers."
       - name: "<h1>"
         does: "The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page."
       - name: ".ds-date-row"
@@ -53,6 +53,8 @@ components:
         does: "Only when an older version is being viewed. See [Indicate which version is being read](../versions.html#dates-and-versions)."
       - name: ".ds-link-list"
         does: "On a `<p>`: the authors, with Show more after eight."
+      - name: "<h2 class=\"is-sr-only\">"
+        does: "The abstract's heading, “Abstract”, hidden from sight. Sighted readers know the paragraph after the authors is the abstract; screen-reader users can still jump to it by heading. The demo uses an `<h3>`, because its title is an `<h2>`."
       - name: "<p>"
         does: "The abstract, in full."
       - name: ".ds-sidebar"
@@ -140,7 +142,8 @@ rules:
   - "**Leave out what a paper does not have.** No empty labels and no placeholders."
   - "**Every date has its label.** Readers confuse submitted and announced dates when either stands alone."
   - "**The primary category comes first** and is told apart by more than colour: its tooltip names it as primary."
-  - "**The identity line comes first.** Many readers arrive at a paper directly, without passing its abstract page."
+  - "**The identity line comes first.** Many readers arrive at a paper directly, without passing its abstract page. It is centred and spans the page to the gutters."
+  - "**The abstract has a heading, hidden from sight.** An `<h2 class=\"is-sr-only\">Abstract</h2>` puts it in the heading outline without adding a line above it."
   - "**The paper follows its abstract on the same page.** A reader reaches the first section by scrolling, by the TOC bar or by the skip link, with no click to open the paper."
   - "**The page has one `<main>`**, from the area above the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it. When LaTeXML's output has no `<main>`, the page around the paper supplies it."
   - "**An optional area above the identity line** holds a temporary message or link, such as Back to abstract while readers move to HTML papers. It is `.ds-btn-text` for a link, or an alert for a message."
@@ -306,6 +309,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
   </div>
 </div>
 <p class="ds-link-list"><a href="#">Adrian Palomares</a>, <a href="#">Ilya L. Shapiro</a>, <a href="#">Maria C. Gonzalez-Garcia</a>, <a href="#">Tomohiro Harada</a>, <a href="#">Elena Castellani</a>, <a href="#">Kei-ichi Maeda</a>, <a href="#">Francesca Vidotto</a>, <a href="#">Abhay Ashtekar</a> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false">show all 22 authors</button></p>
+<h2 class="is-sr-only">Abstract</h2>
 <p>We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
 ```
 
@@ -402,11 +406,12 @@ On a paper's own page the order is the identity line, the title, the dates and v
 </div>
 ```
 
-- `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the licence as a link. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
+- `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the licence as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
 - `<h1>` — The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page.
 - `.ds-date-row` — The dates and the version links, as in [Indicate which version is being read](../versions.html#dates-and-versions). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version.
 - `.ds-alert--warning` — Only when an older version is being viewed. See [Indicate which version is being read](../versions.html#dates-and-versions).
 - `.ds-link-list` — On a `<p>`: the authors, with Show more after eight.
+- `<h2 class="is-sr-only">` — The abstract's heading, “Abstract”, hidden from sight. Sighted readers know the paragraph after the authors is the abstract; screen-reader users can still jump to it by heading. The demo uses an `<h3>`, because its title is an `<h2>`.
 - `<p>` — The abstract, in full.
 - `.ds-sidebar` — The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
 - `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
@@ -636,7 +641,8 @@ A display equation, a figure and a bibliography entry each have a small row of a
 - **Leave out what a paper does not have.** No empty labels and no placeholders.
 - **Every date has its label.** Readers confuse submitted and announced dates when either stands alone.
 - **The primary category comes first** and is told apart by more than colour: its tooltip names it as primary.
-- **The identity line comes first.** Many readers arrive at a paper directly, without passing its abstract page.
+- **The identity line comes first.** Many readers arrive at a paper directly, without passing its abstract page. It is centred and spans the page to the gutters.
+- **The abstract has a heading, hidden from sight.** An `<h2 class="is-sr-only">Abstract</h2>` puts it in the heading outline without adding a line above it.
 - **The paper follows its abstract on the same page.** A reader reaches the first section by scrolling, by the TOC bar or by the skip link, with no click to open the paper.
 - **The page has one `<main>`**, from the area above the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it. When LaTeXML's output has no `<main>`, the page around the paper supplies it.
 - **An optional area above the identity line** holds a temporary message or link, such as Back to abstract while readers move to HTML papers. It is `.ds-btn-text` for a link, or an alert for a message.

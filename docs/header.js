@@ -7,8 +7,9 @@
    On a bar with an account area, the tools and the account area go into the
    same menu. Search fields stay in the bar while they fit, then go behind a
    Search button, so the narrowest bar is the logo, Search and the menu. On a
-   bar without an account area the tools collapse behind a second button. The
-   script adds the buttons itself, and it answers to the width of the bar, not of the window, so a bar in a narrow
+   bar without an account area the tools collapse behind a second button. A
+   centred tool or filter folds last: its label goes, then its value, leaving
+   the icon that opens it. The script adds the buttons itself, and it answers to the width of the bar, not of the window, so a bar in a narrow
    column collapses too. Without the script the bar wraps onto more rows and
    nothing is hidden.
 
@@ -38,7 +39,8 @@
     var tools = header.querySelector(':scope > .ds-site-header-tools');
     var account = header.querySelector(':scope > .ds-site-header-account');
     var fields = Array.prototype.slice.call(header.querySelectorAll(':scope > .ds-site-header-search'));
-    if (!nav && !tools && !fields.length) return;
+    var center = header.querySelector(':scope > .ds-site-header-center');
+    if (!nav && !tools && !fields.length && !center) return;
     count += 1;
 
     // A bar with an account area has one menu: folded, it holds the
@@ -85,13 +87,16 @@
     // Each level folds one more thing away: the greeting first, because the
     // reader already knows their own name, then the navigation (with the tools
     // and the account area, on a bar with one menu), then the search fields,
-    // then the tools.
+    // then the tools. The centred space changes every page, so it folds last:
+    // its label, then its value. Its button stays, and its name stays whole.
     var greeting = header.querySelector('.ds-site-header-greeting');
     var steps = [];
     if (greeting) steps.push('is-greeting-hidden');
     if (nav) steps.push('is-nav-collapsed');
     if (fields.length) steps.push('is-search-collapsed');
     if (tools && !single) steps.push('is-tools-collapsed');
+    if (center && center.querySelector('.ds-site-header-center-label')) steps.push('is-center-compact');
+    if (center && center.querySelector('.ds-filter-value')) steps.push('is-center-folded');
     var all = [];
     for (var n = 0; n <= steps.length; n++) all.push(n);
     var levels = all;
