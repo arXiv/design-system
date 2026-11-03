@@ -2018,7 +2018,10 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 .ds-form--compact > fieldset { min-width: 0; margin: calc(var(--ds-space-2) / -2) 0; padding: 0; border: 0; }
 .ds-form--compact > fieldset > legend { float: left; margin: calc(var(--ds-space-2) / 2) var(--ds-space-3) calc(var(--ds-space-2) / 2) 0; padding: 0; font-weight: 600; line-height: var(--ds-compact-h); }
 .ds-form--compact > fieldset > :not(legend, .is-sr-only) { display: inline-flex; align-items: center; vertical-align: top; min-height: var(--ds-compact-h); margin: calc(var(--ds-space-2) / 2) 0; }
-.ds-form--compact > fieldset > :not(legend, .is-sr-only, :last-child) { margin-inline-end: var(--ds-space-3); }
+/* 8px between controls, plus the space between them in the markup (about 4px),
+   so they sit about 12px apart, as the legend does from the first. Only a
+   control with another after it, so the last one has no trailing margin. */
+.ds-form--compact > fieldset > :not(legend, .is-sr-only):where(:has(~ :not(legend, .is-sr-only))) { margin-inline-end: var(--ds-space-2); }
 .ds-form--compact > fieldset > label:not(.ds-check) { font-weight: 400; }
 .ds-form--compact .ds-input { width: auto; font-weight: 400; }
 .ds-form--compact select.ds-input { padding-right: 2.25em; background-position: right 0.75em center; }
