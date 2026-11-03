@@ -4,7 +4,6 @@ Open items only. Finished items are removed; the git history keeps them. The cur
 
 ## Decisions for Shamsi
 
-- **The abstract heading level**, from Deyan's answers in `live-html-markup-2026-10-06.md`.
 - **The direction for the Papers rules:** three to five rules per section for people; the detail in each demo's class key; LaTeXML-specific rules moved to the renderer.
 - **DESIGN-POLICIES duplicates:** `design-policies-audit-2026-10-13.md` proposes one or two sentences per rule, with a link to the page that holds the detail. It also lists errors to fix whatever is decided (button padding, `.btn-tertiary`, a doubled token name).
 - **The spacing scale:** is it too sparse in the middle? Deferred 2026-09-16 by Shamsi: judge it in a real page, not from a frequency table.
@@ -24,6 +23,8 @@ Open items only. Finished items are removed; the git history keeps them. The cur
 - **Type:** finalize the weight set; decide whether headings get a display treatment; build and measure a subsetted variable font.
 - **Patterns still to build:** the author list for the 100+ author case; the Labs opt-in section.
 - **`docs/examples/`:** stable full-page examples built only from documented components, starting with form validation (approved in principle 2026-10-02).
+- **The abstract heading in HTML papers** (decided 2026-11-03): an `<h2>`, hidden with `.is-sr-only`, as Papers now documents. LaTeXML outputs a visible `<h6>`; ask Deyan to promote it to `<h2>`, and the page hides it. See `live-html-markup-2026-10-06.md`.
+- **The header's centred space, last fold step:** a centred space that holds links, not one button, should fold into the menu. `docs/header.js` does not do this yet, and Header says to keep links out of it until it does.
 - **Old links:** notes and the mockups README still point at files removed before the October reorganisation (`docs/public/`, `metadata-panel.html`, `BRAND.md`).
 
 ## Compact elements (its own session)

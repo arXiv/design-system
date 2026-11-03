@@ -57,7 +57,7 @@ components:
         does: "Log out is a button in a form that posts, never a link, because a browser can follow a link by itself, and logging out changes the reader’s state."
   - id: on-small-screens
     title: "On small screens"
-    summary: "When the header does not fit on one row, it folds. The greeting goes first. Then the navigation, tools and account area fold into one menu, leaving the logo, Search and the menu button. Internal headers keep their search fields in the bar while they fit, then open them from a Search button. The transitional header folds when the window is narrower than 600px."
+    summary: "When the header does not fit on one row, it folds. The greeting goes first. Then the navigation, tools and account area fold into one menu, leaving the logo, Search and the menu button. Internal headers keep their search fields in the bar while they fit, then open them from a Search button. A [centred tool or filter](#a-centred-tool-or-filter) folds last. The transitional header folds when the window is narrower than 600px."
     classes:
       - name: "header.js"
         does: "These docs’ fold-by-fit script, `docs/header.js`, once per page. It finds every `.ds-site-header` and keeps each one on a single row, with no breakpoint to choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The templates load their own script, so a page that uses them adds none."
@@ -108,6 +108,21 @@ components:
         does: "A `<form role=\"search\">` holding one `.ds-input` and its label, before the navigation, where public pages have the Search link. Two kinds of search are two of these. They stay in the bar while they fit, after the navigation and the account area have folded into the menu; on a phone they open from a Search button."
       - name: ".ds-site-header-account--compact"
         does: "The account area as one icon button, for internal tools, where everyone is signed in and the account is rarely what they came for. The button’s name, “Account, signed in as Shamsi”, is `.is-sr-only` text; the menu’s first line shows the name, so a person on a shared computer can check whose account they are in. On a phone it folds into the menu, where the name shows beside the icon."
+  - id: a-centred-tool-or-filter
+    title: "A centred tool or filter"
+    group: "Modifiers"
+    summary: "The aspirational header has an optional centred space, `.ds-site-header-center`, for one tool or filter that changes every page under the header, such as the subject every report in a dashboard is about. Nothing on the page sits higher, so nothing else may claim it. It comes straight after the logo and is centred in the room between the logo and the regions on the right. It folds last. Once the navigation, the tools and the account area have gone into the menu, its label goes, then its value, leaving the icon that opens it. Its full name stays for screen readers at every step."
+    classes:
+      - name: ".ds-site-header-center"
+        does: "The centred space, straight after the logo. It holds one button. A filter is a [Filters button](filters.md#multiple-choice-filters) with `.on-dark`, and its panel hangs from the bar's bottom edge."
+      - name: ".ds-site-header-center-label"
+        does: "The button's word, such as “Subject”. The first thing to fold."
+      - name: ".ds-filter-value"
+        does: "What is chosen, after the word. It folds next, leaving the icon. The page heading names the choice too, so the reader can still see it: see [Layouts](layout-patterns.md#the-main-content-comes-first)."
+      - name: ".is-center-compact, .is-center-folded"
+        does: "State classes `header.js` sets on the bar as it folds the label, then the value. They are never written by hand."
+    notes:
+      - "Meets accessibility guidelines [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A): what the button shows at each width is part of its spoken name."
   - id: sticky-header
     title: "Sticky header"
     group: "Modifiers"
@@ -116,9 +131,10 @@ rules:
   - "A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The [templates README](../doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](../doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement."
   - "**Regions, in one order.** Logo, search (the Search link on public pages, search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it."
   - "**Navigation sits on the right.** The space after the logo stays empty, apart from the centred space below."
-  - "**An optional centred space** holds one site-wide tool or filter. Use it sparingly. It is for the aspirational header; see [Where controls go](layout-patterns.md#where-controls-go)."
+  - "**An optional centred space** holds one tool or filter that changes every page under the header, whether a whole site or a whole tool. Use it sparingly. It is for the aspirational header; see [A centred tool or filter](#a-centred-tool-or-filter) and [Where controls go](layout-patterns.md#where-controls-go)."
+  - "**The centred space folds last.** Its label goes, then its value, leaving the icon that opens it. A centred space that holds links, not one button, would fold into the menu instead; `header.js` does not do that yet, so keep links out of it."
   - "**No more than four links in arxiv.org’s navigation.** The logo and Log in do not count (DESIGN-POLICIES). A host does not change the template’s navigation."
-  - "**Tools holds the theme control.** The transitional header also puts a page’s actions there; in the aspirational header they move to the TOC bar. A control that acts on the page’s data, such as Refresh, goes beside the page heading, with the time the data was last updated."
+  - "**Tools holds the theme control.** The transitional header also puts a page’s actions there; in the aspirational header they move to the TOC bar. A control that acts on the page’s data, such as Refresh, goes on the line above the page heading, after the time the data was last updated; see [Layouts](layout-patterns.md#the-main-content-comes-first)."
   - "**Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in the bar while they fit."
   - "**Log out.** Today a signed-in reader logs out on the account page. In the aspirational header, Log out is in the Account menu, one menu away on every page."
   - "**The greeting is the first name.** The aspirational public header shows the given name only, capped at 14 characters. Internal headers use the compact account area, with the name in its menu."
@@ -270,7 +286,7 @@ Signed in, the account area shows a greeting with the reader’s given name and 
 
 ## On small screens
 
-When the header does not fit on one row, it folds. The greeting goes first. Then the navigation, tools and account area fold into one menu, leaving the logo, Search and the menu button. Internal headers keep their search fields in the bar while they fit, then open them from a Search button. The transitional header folds when the window is narrower than 600px.
+When the header does not fit on one row, it folds. The greeting goes first. Then the navigation, tools and account area fold into one menu, leaving the logo, Search and the menu button. Internal headers keep their search fields in the bar while they fit, then open them from a Search button. A [centred tool or filter](#a-centred-tool-or-filter) folds last. The transitional header folds when the window is narrower than 600px.
 
 ```html
 <!-- Once per page, after the header. Nothing else changes. -->
@@ -400,6 +416,37 @@ Each internal tool chooses the search fields, navigation and wordmark its users 
 - `.ds-site-header-search` — A `<form role="search">` holding one `.ds-input` and its label, before the navigation, where public pages have the Search link. Two kinds of search are two of these. They stay in the bar while they fit, after the navigation and the account area have folded into the menu; on a phone they open from a Search button.
 - `.ds-site-header-account--compact` — The account area as one icon button, for internal tools, where everyone is signed in and the account is rarely what they came for. The button’s name, “Account, signed in as Shamsi”, is `.is-sr-only` text; the menu’s first line shows the name, so a person on a shared computer can check whose account they are in. On a phone it folds into the menu, where the name shows beside the icon.
 
+## A centred tool or filter  (Modifiers)
+
+The aspirational header has an optional centred space, `.ds-site-header-center`, for one tool or filter that changes every page under the header, such as the subject every report in a dashboard is about. Nothing on the page sits higher, so nothing else may claim it. It comes straight after the logo and is centred in the room between the logo and the regions on the right. It folds last. Once the navigation, the tools and the account area have gone into the menu, its label goes, then its value, leaving the icon that opens it. Its full name stays for screen readers at every step.
+
+```html
+<header class="ds-site-header">
+  <a href="/" class="ds-site-header-logo">…</a>
+  <div class="ds-site-header-center">
+    <button type="button" class="ds-btn ds-btn-compact on-dark ds-filter-button" popovertarget="subject-panel" aria-expanded="false">
+      <svg …the list-filter icon… aria-hidden="true">…</svg>
+      <span class="ds-site-header-center-label">Subject</span>
+      <span class="ds-filter-value">cs</span>
+    </button>
+  </div>
+  <nav class="ds-site-header-nav" aria-label="Dashboard">…</nav>
+  …
+</header>
+<div class="ds-filter-panel" id="subject-panel" popover role="dialog" aria-label="Subject">
+  <form class="ds-form--compact" method="get" action="…">…</form>
+</div>
+<script src="header.js" defer></script>
+<script src="filter-panel.js" defer></script>
+```
+
+- `.ds-site-header-center` — The centred space, straight after the logo. It holds one button. A filter is a [Filters button](filters.md#multiple-choice-filters) with `.on-dark`, and its panel hangs from the bar's bottom edge.
+- `.ds-site-header-center-label` — The button's word, such as “Subject”. The first thing to fold.
+- `.ds-filter-value` — What is chosen, after the word. It folds next, leaving the icon. The page heading names the choice too, so the reader can still see it: see [Layouts](layout-patterns.md#the-main-content-comes-first).
+- `.is-center-compact, .is-center-folded` — State classes `header.js` sets on the bar as it folds the label, then the value. They are never written by hand.
+
+> Meets accessibility guidelines [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A): what the button shows at each width is part of its spoken name.
+
 ## Sticky header  (Modifiers)
 
 Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top of the viewport while the page scrolls, and the stylesheet sets `scroll-padding-top` on the page so a link to a section does not land under the bar. A page that uses it keeps no other sticky bar. It is not applied to the examples on this page, which already keeps the TOC bar in view.
@@ -409,9 +456,10 @@ Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top o
 - A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The [templates README](../doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](../doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement.
 - **Regions, in one order.** Logo, search (the Search link on public pages, search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it.
 - **Navigation sits on the right.** The space after the logo stays empty, apart from the centred space below.
-- **An optional centred space** holds one site-wide tool or filter. Use it sparingly. It is for the aspirational header; see [Where controls go](layout-patterns.md#where-controls-go).
+- **An optional centred space** holds one tool or filter that changes every page under the header, whether a whole site or a whole tool. Use it sparingly. It is for the aspirational header; see [A centred tool or filter](#a-centred-tool-or-filter) and [Where controls go](layout-patterns.md#where-controls-go).
+- **The centred space folds last.** Its label goes, then its value, leaving the icon that opens it. A centred space that holds links, not one button, would fold into the menu instead; `header.js` does not do that yet, so keep links out of it.
 - **No more than four links in arxiv.org’s navigation.** The logo and Log in do not count (DESIGN-POLICIES). A host does not change the template’s navigation.
-- **Tools holds the theme control.** The transitional header also puts a page’s actions there; in the aspirational header they move to the TOC bar. A control that acts on the page’s data, such as Refresh, goes beside the page heading, with the time the data was last updated.
+- **Tools holds the theme control.** The transitional header also puts a page’s actions there; in the aspirational header they move to the TOC bar. A control that acts on the page’s data, such as Refresh, goes on the line above the page heading, after the time the data was last updated; see [Layouts](layout-patterns.md#the-main-content-comes-first).
 - **Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in the bar while they fit.
 - **Log out.** Today a signed-in reader logs out on the account page. In the aspirational header, Log out is in the Account menu, one menu away on every page.
 - **The greeting is the first name.** The aspirational public header shows the given name only, capped at 14 characters. Internal headers use the compact account area, with the name in its menu.
