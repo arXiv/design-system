@@ -60,20 +60,20 @@ components:
       - name: "[hidden]"
         does: "Absent. This is the row as the server sends it: every version in the list, no elision, no button. The row wraps like any other line of text."
       - name: ".ds-version--withdrawn"
-        does: "With `.ds-version`: the withdrawal notice, in the error colours. Being viewed, it is a `<strong>` in a red box; anywhere else, a red link to the notice."
+        does: "With `.ds-version`: the withdrawal notice, in the error colors. Being viewed, it is a `<strong>` in a red box; anywhere else, a red link to the notice."
       - name: ".ds-date-row"
-        does: "Ends with Withdrawn and the date of the withdrawal. It takes the place of Revised: the notice is not a revision of the paper."
+        does: "Ends with “Withdrawn” and the date of the withdrawal."
       - name: ".is-sr-only"
         does: "\", this page\" on the notice being viewed. It is a notice, not a revision, so it does not say \", this version\"."
       - name: ".ds-version--withdrawn"
-        does: "On the version being viewed, because the paper has been withdrawn, and on the link to the notice. The other versions keep the link colour. The paper's withdrawal notice, under its title, says the same in words, so the colour is never the only sign."
+        does: "On the version being viewed, because the paper has been withdrawn, and on the link to the notice. The other versions keep the link color. The paper's withdrawal notice, under its title, says the same in words, so the color is never the only sign."
       - name: ".ds-paper-versions"
         does: "Newest first, as on any paper, with the withdrawal notice first, in its place in the paper's history. Its line says who withdrew the paper."
       - name: ".ds-version--withdrawn"
         does: "On the notice's `<li>` and its link, and on the `<li>` and the version being viewed. On the `<li>` being viewed it turns the bar beside the entry red."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)"
-      - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §1.2, where a retraction notice is “a distinct publication”: the withdrawal is named, not numbered."
+      - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §1.2, which states that a retraction notice is “a distinct publication”."
       - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2, which sets a retracted publication apart “in a different color from other site elements”."
       - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2: “Display related links and updates chronologically to tell the retracted publication’s story over time.”"
     rules:
@@ -126,7 +126,7 @@ components:
       - name: ".ds-paper-identity"
         does: "The identifier with the notice's version, and the category. With no text to read, the DOI and the licence leave the line; Metadata, in the sidebar, still has the DOI."
       - name: ".ds-paper-status"
-        does: "“Withdrawn:” before the title, inside the heading, in the error colour. It is its own element, so the author's title is not edited, and it has `lang=\"en\"` because the title may be in another language."
+        does: "“Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author's title is not edited, and it has `lang=\"en\"` because the title may be in another language."
       - name: ".ds-alert--error"
         does: "On a `<section>`: the notice, straight after the title and before the dates. It says who withdrew the paper, gives the reason as they wrote it, in quotes, and links to the last version that can be read. A `<section>` named by its heading, so a screen reader reaches it second and lists it among the headings. No role, because it is in the page as it loads (see [Alerts](alerts.md))."
       - name: ".ds-alert-title"
@@ -138,7 +138,7 @@ components:
       - name: ".ds-date-row"
         does: "Ends with Removed and its date. A removal changes the version in place, so no version is added to the list."
     notes:
-      - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2: the status goes “before the original main title”, and the notice is “a clearly signposted box” in its own colour."
+      - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2: the status goes “before the original main title”, and the notice is “a clearly signposted box” in its own color."
       - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.5: a removed article keeps “the article’s title, author list, and relevant metadata”, and only “the main text” goes."
     rules:
       - "**You are viewing version 1.** A newer version is available — [version 3, revised 28 Jun 2026](https://arxiv.org/abs/2604.22725v3)."
@@ -164,14 +164,14 @@ components:
         does: "Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label. They share `name=\"paper-info\"`, so only one is open at a time."
   - id: withdrawn-papers
     title: "Withdrawn and removed papers"
-    summary: "A withdrawn paper keeps its title, authors, abstract and metadata, and its earlier versions can still be read. A removed version keeps its title, authors, abstract and metadata, but its full text and files are gone. Either way, a status before the title and a notice after it say what happened."
+    summary: "A withdrawn paper keeps its title, authors, abstract and metadata, and its earlier versions can still be read. A removed version keeps its title, authors, abstract and metadata, but its full text and files are gone. In both cases, a status before the title and a notice after it say what happened."
     classes:
       - name: "<title>"
         does: "Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first."
       - name: ".ds-paper-identity"
         does: "The identifier with the notice's version, and the category. With no text to read, the DOI and the licence leave the line; Metadata, in the sidebar, still has the DOI."
       - name: ".ds-paper-status"
-        does: "“Withdrawn:” before the title, inside the heading, in the error colour. It is its own element, so the author's title is not edited, and it has `lang=\"en\"` because the title may be in another language."
+        does: "“Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author's title is not edited, and it has `lang=\"en\"` because the title may be in another language."
       - name: ".ds-alert--error"
         does: "On a `<section>`: the notice, straight after the title and before the dates. It says who withdrew the paper, gives the reason as they wrote it, in quotes, and links to the last version that can be read. A `<section>` named by its heading, so a screen reader reaches it second and lists it among the headings. No role, because it is in the page as it loads (see [Alerts](alerts.md))."
       - name: ".ds-alert-title"
@@ -183,7 +183,7 @@ components:
       - name: ".ds-date-row"
         does: "Ends with Removed and its date. A removal changes the version in place, so no version is added to the list."
     notes:
-      - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2: the status goes “before the original main title”, and the notice is “a clearly signposted box” in its own colour."
+      - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2: the status goes “before the original main title”, and the notice is “a clearly signposted box” in its own color."
       - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.5: a removed article keeps “the article’s title, author list, and relevant metadata”, and only “the main text” goes."
     rules:
       - "This paper has been withdrawn by Adrian Palomares.: Reason given: “The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.” The withdrawn paper can still be read in [version 3](#v3)."
@@ -272,12 +272,11 @@ rules:
   - "**The notice comes straight after the title, before the dates.** It says who withdrew or removed the paper and gives the reason as written, in quotes."
   - "**Every version of a withdrawn paper shows the notice.** On an earlier version it takes the place of the older-version warning. A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn."
   - "**The withdrawal notice links to the last version that can be read.**"
-  - "**A withdrawal is a notice, not a revision, so it is named rather than numbered.** It is “Withdrawal notice” in the dates and in Version history. The identity line still shows the version number arXiv gives it, such as v4."
+  - "**We use the term “Withdrawal notice” in the version dates and Version history**, because that is a more accurate description of its role. The identity line still shows the version number."
   - "**Without a text, what acts on a text goes.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all."
-  - "**The metadata stays.** The title, the authors, the abstract, the DOI and the journal reference stay, unless arXiv has a legal reason to remove them. Without a text, the DOI and the licence leave the identity line; Metadata keeps the DOI."
-  - "**A removed version loses its licence, its cross-listed categories and its journal reference**, which arXiv removes with the files."
+  - "**A removed version does not display its license or its cross-listed categories.**"
   - "**A citation of an earlier version says the paper was withdrawn.** Each format ends with a note, such as “A newer version was withdrawn, 22 Oct 2026”, so the status travels with the citation."
-  - "These follow [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf), which is written for publishers that retract articles; arXiv applies it to a withdrawal and to a removal. The word for the state is “withdrawn”, as in [arXiv's help](https://info.arxiv.org/help/withdraw.html)."
+  - "Display guidelines for withdrawn and removed papers follow [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf)."
   - "**The body markup is LaTeXML's, unchanged.** arXiv styles it from outside with CSS and never rewrites, reorders or wraps the author's elements."
   - "**ar5iv's stylesheet is in a cascade layer**, so an ordinary rule outranks it without `!important`. The `arxiv-override` layer is only for a property ar5iv itself marks `!important`."
   - "**Body text is set as on [Typography](typography.md).** ar5iv sets weight 300, so set 400."
@@ -643,16 +642,16 @@ Every paper shows its dates, and its versions once there is more than one. What 
 - `aria-hidden="true"` — On the ellipsis, which is decoration. The `.is-sr-only` span beside it says which versions are hidden. Both sit in one span that the button hides when the list opens.
 - `aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b"` — When the viewed version falls inside the elision there are two ellipses and two hidden spans. List all four ids, separated by spaces, so one press opens the whole list.
 - `[hidden]` — Absent. This is the row as the server sends it: every version in the list, no elision, no button. The row wraps like any other line of text.
-- `.ds-version--withdrawn` — With `.ds-version`: the withdrawal notice, in the error colours. Being viewed, it is a `<strong>` in a red box; anywhere else, a red link to the notice.
-- `.ds-date-row` — Ends with Withdrawn and the date of the withdrawal. It takes the place of Revised: the notice is not a revision of the paper.
+- `.ds-version--withdrawn` — With `.ds-version`: the withdrawal notice, in the error colors. Being viewed, it is a `<strong>` in a red box; anywhere else, a red link to the notice.
+- `.ds-date-row` — Ends with “Withdrawn” and the date of the withdrawal.
 - `.is-sr-only` — ", this page" on the notice being viewed. It is a notice, not a revision, so it does not say ", this version".
-- `.ds-version--withdrawn` — On the version being viewed, because the paper has been withdrawn, and on the link to the notice. The other versions keep the link colour. The paper's withdrawal notice, under its title, says the same in words, so the colour is never the only sign.
+- `.ds-version--withdrawn` — On the version being viewed, because the paper has been withdrawn, and on the link to the notice. The other versions keep the link color. The paper's withdrawal notice, under its title, says the same in words, so the color is never the only sign.
 - `.ds-paper-versions` — Newest first, as on any paper, with the withdrawal notice first, in its place in the paper's history. Its line says who withdrew the paper.
 - `.ds-version--withdrawn` — On the notice's `<li>` and its link, and on the `<li>` and the version being viewed. On the `<li>` being viewed it turns the bar beside the entry red.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)
 
-> Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §1.2, where a retraction notice is “a distinct publication”: the withdrawal is named, not numbered.
+> Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §1.2, which states that a retraction notice is “a distinct publication”.
 
 > Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2, which sets a retracted publication apart “in a different color from other site elements”.
 
@@ -864,14 +863,14 @@ On a paper's own page the order is the identity line, the title, the dates and v
 - `.ds-acc` — Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label. They share `name="paper-info"`, so only one is open at a time.
 - `<title>` — Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first.
 - `.ds-paper-identity` — The identifier with the notice's version, and the category. With no text to read, the DOI and the licence leave the line; Metadata, in the sidebar, still has the DOI.
-- `.ds-paper-status` — “Withdrawn:” before the title, inside the heading, in the error colour. It is its own element, so the author's title is not edited, and it has `lang="en"` because the title may be in another language.
+- `.ds-paper-status` — “Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author's title is not edited, and it has `lang="en"` because the title may be in another language.
 - `.ds-alert--error` — On a `<section>`: the notice, straight after the title and before the dates. It says who withdrew the paper, gives the reason as they wrote it, in quotes, and links to the last version that can be read. A `<section>` named by its heading, so a screen reader reaches it second and lists it among the headings. No role, because it is in the page as it loads (see [Alerts](alerts.md)).
 - `.ds-alert-title` — On a heading, one level below the title: an `<h2>` on the page. The demo uses an `<h3>` because it sits inside this page.
 - `.ds-paper-status` — “Removed:”, built as “Withdrawn:” is.
 - `.ds-alert--error` — Says that arXiv removed the version, quotes arXiv's comment as written, and says that the full text and files are gone.
 - `.ds-date-row` — Ends with Removed and its date. A removal changes the version in place, so no version is added to the list.
 
-> Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2: the status goes “before the original main title”, and the notice is “a clearly signposted box” in its own colour.
+> Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2: the status goes “before the original main title”, and the notice is “a clearly signposted box” in its own color.
 
 > Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.5: a removed article keeps “the article’s title, author list, and relevant metadata”, and only “the main text” goes.
 
@@ -988,7 +987,7 @@ Beside a full paper, the sidebar holds the paper's files, its citation and its i
 
 ## Withdrawn and removed papers
 
-A withdrawn paper keeps its title, authors, abstract and metadata, and its earlier versions can still be read. A removed version keeps its title, authors, abstract and metadata, but its full text and files are gone. Either way, a status before the title and a notice after it say what happened.
+A withdrawn paper keeps its title, authors, abstract and metadata, and its earlier versions can still be read. A removed version keeps its title, authors, abstract and metadata, but its full text and files are gone. In both cases, a status before the title and a notice after it say what happened.
 
 **The top of a withdrawn paper, viewing the withdrawal notice**
 
@@ -1034,14 +1033,14 @@ A withdrawn paper keeps its title, authors, abstract and metadata, and its earli
 
 - `<title>` — Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first.
 - `.ds-paper-identity` — The identifier with the notice's version, and the category. With no text to read, the DOI and the licence leave the line; Metadata, in the sidebar, still has the DOI.
-- `.ds-paper-status` — “Withdrawn:” before the title, inside the heading, in the error colour. It is its own element, so the author's title is not edited, and it has `lang="en"` because the title may be in another language.
+- `.ds-paper-status` — “Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author's title is not edited, and it has `lang="en"` because the title may be in another language.
 - `.ds-alert--error` — On a `<section>`: the notice, straight after the title and before the dates. It says who withdrew the paper, gives the reason as they wrote it, in quotes, and links to the last version that can be read. A `<section>` named by its heading, so a screen reader reaches it second and lists it among the headings. No role, because it is in the page as it loads (see [Alerts](alerts.md)).
 - `.ds-alert-title` — On a heading, one level below the title: an `<h2>` on the page. The demo uses an `<h3>` because it sits inside this page.
 - `.ds-paper-status` — “Removed:”, built as “Withdrawn:” is.
 - `.ds-alert--error` — Says that arXiv removed the version, quotes arXiv's comment as written, and says that the full text and files are gone.
 - `.ds-date-row` — Ends with Removed and its date. A removal changes the version in place, so no version is added to the list.
 
-> Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2: the status goes “before the original main title”, and the notice is “a clearly signposted box” in its own colour.
+> Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2: the status goes “before the original main title”, and the notice is “a clearly signposted box” in its own color.
 
 > Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.5: a removed article keeps “the article’s title, author list, and relevant metadata”, and only “the main text” goes.
 
@@ -1200,12 +1199,11 @@ A citation or footnote marker opens a popover that repeats the reference or the 
 - **The notice comes straight after the title, before the dates.** It says who withdrew or removed the paper and gives the reason as written, in quotes.
 - **Every version of a withdrawn paper shows the notice.** On an earlier version it takes the place of the older-version warning. A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn.
 - **The withdrawal notice links to the last version that can be read.**
-- **A withdrawal is a notice, not a revision, so it is named rather than numbered.** It is “Withdrawal notice” in the dates and in Version history. The identity line still shows the version number arXiv gives it, such as v4.
+- **We use the term “Withdrawal notice” in the version dates and Version history**, because that is a more accurate description of its role. The identity line still shows the version number.
 - **Without a text, what acts on a text goes.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all.
-- **The metadata stays.** The title, the authors, the abstract, the DOI and the journal reference stay, unless arXiv has a legal reason to remove them. Without a text, the DOI and the licence leave the identity line; Metadata keeps the DOI.
-- **A removed version loses its licence, its cross-listed categories and its journal reference**, which arXiv removes with the files.
+- **A removed version does not display its license or its cross-listed categories.**
 - **A citation of an earlier version says the paper was withdrawn.** Each format ends with a note, such as “A newer version was withdrawn, 22 Oct 2026”, so the status travels with the citation.
-- These follow [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf), which is written for publishers that retract articles; arXiv applies it to a withdrawal and to a removal. The word for the state is “withdrawn”, as in [arXiv's help](https://info.arxiv.org/help/withdraw.html).
+- Display guidelines for withdrawn and removed papers follow [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf).
 - **The body markup is LaTeXML's, unchanged.** arXiv styles it from outside with CSS and never rewrites, reorders or wraps the author's elements.
 - **ar5iv's stylesheet is in a cascade layer**, so an ordinary rule outranks it without `!important`. The `arxiv-override` layer is only for a property ar5iv itself marks `!important`.
 - **Body text is set as on [Typography](typography.md).** ar5iv sets weight 300, so set 400.
