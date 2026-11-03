@@ -282,6 +282,29 @@ def check_tier2_keeps_dark():
     ok(name)
 
 
+# ── 6. The docs' copy of the page-heading size ──────────────────────
+# papers.html shows a paper title inside a card, and a card would shrink a
+# heading to a card title, so docs.css gives .demo-h1 the h1's size again.
+# When the h1 changes in design-system.css, this copy has to change with it.
+DOCS_CSS = REPO / "docs" / "docs.css"
+
+
+def check_demo_h1():
+    name = "docs.css .demo-h1 has the h1 size from design-system.css"
+
+    def font_size(path, selector):
+        decls = rules(path.read_text()).get(selector)
+        return dict(decls).get("font-size") if decls else None
+
+    h1 = font_size(PUBLIC_CSS, ":where(.ds-page) h1")
+    demo = font_size(DOCS_CSS, ".ds-card > .demo-h1")
+    if h1 is None or demo is None:
+        return fail(name, f"rule not found (h1: {h1!r}, .demo-h1: {demo!r}); if a selector was renamed, update this check")
+    if h1 != demo:
+        return fail(name, f"design-system.css h1 is {h1}, docs.css .demo-h1 is {demo}")
+    ok(name)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--consumer", type=Path, default=DEFAULT_CONSUMER)
@@ -294,6 +317,7 @@ def main():
     check_tier2_keeps_dark()
     check_bundled_copy(args.consumer)
     check_shared_names()
+    check_demo_h1()
 
     print()
     if FAILS:

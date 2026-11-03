@@ -67,6 +67,8 @@ components:
         does: "\", this page\" on the notice being viewed. It is a notice, not a revision, so it does not say \", this version\"."
       - name: ".ds-version--withdrawn"
         does: "On the version being viewed, because the paper has been withdrawn, and on the link to the notice. The other versions keep the link color. The paper's withdrawal notice, under its title, says the same in words, so the color is never the only sign."
+      - name: ".ds-alert--error"
+        does: "The withdrawal notice, as on the notice's own page, without the link to the last version that can be read: this is that version."
       - name: ".ds-paper-versions"
         does: "Newest first, as on any paper, with the withdrawal notice first, in its place in the paper's history. Its line says who withdrew the paper."
       - name: ".ds-version--withdrawn"
@@ -79,6 +81,7 @@ components:
     rules:
       - "**You are viewing version 1.** A newer version is available — [version 3, revised 24 Apr 2026](#v3)."
       - "**You are viewing version 7.** A newer version is available — [version 12, revised 30 Jun 2026](#v12)."
+      - "This paper has been withdrawn by Adrian Palomares.: Reason given: “The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.”"
   - id: paper-categories
     title: "Displaying categories"
     summary: "A paper's subject categories show as tags, primary first. Each code links to its listing, and its full name appears in a tooltip."
@@ -271,11 +274,11 @@ rules:
   - "**The status goes before the title, never into it.** “Withdrawn:” or “Removed:” is its own element inside the heading, and the page's `<title>` starts with it. The author's title is not edited."
   - "**The notice comes straight after the title, before the dates.** It says who withdrew or removed the paper and gives the reason as written, in quotes."
   - "**Every version of a withdrawn paper shows the notice.** On an earlier version it takes the place of the older-version warning. A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn."
-  - "**The withdrawal notice links to the last version that can be read.**"
+  - "**The withdrawal notice links to the last version that can be read, except on that version.**"
   - "**We use the term “Withdrawal notice” in the version dates and Version history**, because that is a more accurate description of its role. The identity line still shows the version number."
   - "**Without a text, what acts on a text goes.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all."
   - "**A removed version does not display its license or its cross-listed categories.**"
-  - "**A citation of an earlier version says the paper was withdrawn.** Each format ends with a note, such as “A newer version was withdrawn, 22 Oct 2026”, so the status travels with the citation."
+  - "**A citation of an earlier version says the paper was withdrawn.** Each format ends with a note, such as “This paper was withdrawn, 22 Oct 2026”, so the status travels with the citation."
   - "Display guidelines for withdrawn and removed papers follow [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf)."
   - "**The body markup is LaTeXML's, unchanged.** arXiv styles it from outside with CSS and never rewrites, reorders or wraps the author's elements."
   - "**ar5iv's stylesheet is in a cascade layer**, so an ordinary rule outranks it without `!important`. The `arxiv-override` layer is only for a property ar5iv itself marks `!important`."
@@ -600,6 +603,13 @@ Every paper shows its dates, and its versions once there is more than one. What 
 **Viewing v3 of a withdrawn paper**
 
 ```html
+<section class="ds-alert ds-alert--error" aria-labelledby="notice-h">
+  …the icon, as on the withdrawal notice…
+  <div class="ds-alert-content">
+    <h2 class="ds-alert-title" id="notice-h">This paper has been withdrawn by Adrian Palomares.</h2>
+    <p>Reason given: “…”</p>
+  </div>
+</section>
 <p class="ds-date-row">
   …Submitted and Announced, as above…
   Revised <time datetime="2026-06-28">28 Jun 2026</time> UTC (this version)
@@ -646,6 +656,7 @@ Every paper shows its dates, and its versions once there is more than one. What 
 - `.ds-date-row` — Ends with “Withdrawn” and the date of the withdrawal.
 - `.is-sr-only` — ", this page" on the notice being viewed. It is a notice, not a revision, so it does not say ", this version".
 - `.ds-version--withdrawn` — On the version being viewed, because the paper has been withdrawn, and on the link to the notice. The other versions keep the link color. The paper's withdrawal notice, under its title, says the same in words, so the color is never the only sign.
+- `.ds-alert--error` — The withdrawal notice, as on the notice's own page, without the link to the last version that can be read: this is that version.
 - `.ds-paper-versions` — Newest first, as on any paper, with the withdrawal notice first, in its place in the paper's history. Its line says who withdrew the paper.
 - `.ds-version--withdrawn` — On the notice's `<li>` and its link, and on the `<li>` and the version being viewed. On the `<li>` being viewed it turns the bar beside the entry red.
 
@@ -660,6 +671,8 @@ Every paper shows its dates, and its versions once there is more than one. What 
 **Rule.** **You are viewing version 1.** A newer version is available — [version 3, revised 24 Apr 2026](#v3).
 
 **Rule.** **You are viewing version 7.** A newer version is available — [version 12, revised 30 Jun 2026](#v12).
+
+**Rule.** This paper has been withdrawn by Adrian Palomares.: Reason given: “The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.”
 
 ## Displaying categories
 
@@ -1198,11 +1211,11 @@ A citation or footnote marker opens a popover that repeats the reference or the 
 - **The status goes before the title, never into it.** “Withdrawn:” or “Removed:” is its own element inside the heading, and the page's `<title>` starts with it. The author's title is not edited.
 - **The notice comes straight after the title, before the dates.** It says who withdrew or removed the paper and gives the reason as written, in quotes.
 - **Every version of a withdrawn paper shows the notice.** On an earlier version it takes the place of the older-version warning. A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn.
-- **The withdrawal notice links to the last version that can be read.**
+- **The withdrawal notice links to the last version that can be read, except on that version.**
 - **We use the term “Withdrawal notice” in the version dates and Version history**, because that is a more accurate description of its role. The identity line still shows the version number.
 - **Without a text, what acts on a text goes.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all.
 - **A removed version does not display its license or its cross-listed categories.**
-- **A citation of an earlier version says the paper was withdrawn.** Each format ends with a note, such as “A newer version was withdrawn, 22 Oct 2026”, so the status travels with the citation.
+- **A citation of an earlier version says the paper was withdrawn.** Each format ends with a note, such as “This paper was withdrawn, 22 Oct 2026”, so the status travels with the citation.
 - Display guidelines for withdrawn and removed papers follow [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf).
 - **The body markup is LaTeXML's, unchanged.** arXiv styles it from outside with CSS and never rewrites, reorders or wraps the author's elements.
 - **ar5iv's stylesheet is in a cascade layer**, so an ordinary rule outranks it without `!important`. The `arxiv-override` layer is only for a property ar5iv itself marks `!important`.
