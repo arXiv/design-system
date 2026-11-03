@@ -66,13 +66,13 @@ components:
       - name: ".is-sr-only"
         does: "\", this page\" on the notice being viewed. It is a notice, not a revision, so it does not say \", this version\"."
       - name: ".ds-version--withdrawn"
-        does: "On the version being viewed, because the paper has been withdrawn, and on the link to the notice. The other versions keep the link color. The paper's withdrawal notice, under its title, says the same in words, so the color is never the only sign."
+        does: "On the withdrawn version when it is being viewed, and on the link to the notice. Any other version keeps its usual look. The paper's withdrawal notice, under its title, says the same in words, so the color is never the only sign."
       - name: ".ds-alert--error"
         does: "The withdrawal notice, as on the notice's own page, without the link to the last version that can be read: this is that version."
       - name: ".ds-paper-versions"
         does: "Newest first, as on any paper, with the withdrawal notice first, in its place in the paper's history. Its line says who withdrew the paper."
       - name: ".ds-version--withdrawn"
-        does: "On the notice's `<li>` and its link, and on the `<li>` and the version being viewed. On the `<li>` being viewed it turns the bar beside the entry red."
+        does: "On the notice's `<li>` and its link. When the withdrawn version is being viewed, also on its `<li>` and its number, which turns the bar beside the entry red."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)"
       - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §1.2, which states that a retraction notice is “a distinct publication”."
@@ -277,7 +277,7 @@ rules:
   - "**The withdrawal notice links to the last version that can be read, except on that version.**"
   - "**We use the term “Withdrawal notice” in the version dates and Version history**, because that is a more accurate description of its role. The identity line still shows the version number."
   - "**Without a text, what acts on a text goes.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all."
-  - "**A removed version does not display its license or its cross-listed categories.**"
+  - "**A removed version keeps its license, but not its cross-listed categories.** arXiv may remove the license, or any other metadata, when there is a legal reason to, as [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2 allows."
   - "**A citation of an earlier version says the paper was withdrawn.** Each format ends with a note, such as “This paper was withdrawn, 22 Oct 2026”, so the status travels with the citation."
   - "Display guidelines for withdrawn and removed papers follow [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf)."
   - "**The body markup is LaTeXML's, unchanged.** arXiv styles it from outside with CSS and never rewrites, reorders or wraps the author's elements."
@@ -655,10 +655,10 @@ Every paper shows its dates, and its versions once there is more than one. What 
 - `.ds-version--withdrawn` — With `.ds-version`: the withdrawal notice, in the error colors. Being viewed, it is a `<strong>` in a red box; anywhere else, a red link to the notice.
 - `.ds-date-row` — Ends with “Withdrawn” and the date of the withdrawal.
 - `.is-sr-only` — ", this page" on the notice being viewed. It is a notice, not a revision, so it does not say ", this version".
-- `.ds-version--withdrawn` — On the version being viewed, because the paper has been withdrawn, and on the link to the notice. The other versions keep the link color. The paper's withdrawal notice, under its title, says the same in words, so the color is never the only sign.
+- `.ds-version--withdrawn` — On the withdrawn version when it is being viewed, and on the link to the notice. Any other version keeps its usual look. The paper's withdrawal notice, under its title, says the same in words, so the color is never the only sign.
 - `.ds-alert--error` — The withdrawal notice, as on the notice's own page, without the link to the last version that can be read: this is that version.
 - `.ds-paper-versions` — Newest first, as on any paper, with the withdrawal notice first, in its place in the paper's history. Its line says who withdrew the paper.
-- `.ds-version--withdrawn` — On the notice's `<li>` and its link, and on the `<li>` and the version being viewed. On the `<li>` being viewed it turns the bar beside the entry red.
+- `.ds-version--withdrawn` — On the notice's `<li>` and its link. When the withdrawn version is being viewed, also on its `<li>` and its number, which turns the bar beside the entry red.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)
 
@@ -1214,7 +1214,7 @@ A citation or footnote marker opens a popover that repeats the reference or the 
 - **The withdrawal notice links to the last version that can be read, except on that version.**
 - **We use the term “Withdrawal notice” in the version dates and Version history**, because that is a more accurate description of its role. The identity line still shows the version number.
 - **Without a text, what acts on a text goes.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all.
-- **A removed version does not display its license or its cross-listed categories.**
+- **A removed version keeps its license, but not its cross-listed categories.** arXiv may remove the license, or any other metadata, when there is a legal reason to, as [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2 allows.
 - **A citation of an earlier version says the paper was withdrawn.** Each format ends with a note, such as “This paper was withdrawn, 22 Oct 2026”, so the status travels with the citation.
 - Display guidelines for withdrawn and removed papers follow [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf).
 - **The body markup is LaTeXML's, unchanged.** arXiv styles it from outside with CSS and never rewrites, reorders or wraps the author's elements.
