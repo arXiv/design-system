@@ -259,16 +259,7 @@
   --ds-btn-secondary-rim-b: var(--ds-btn-secondary-rim-active);
 }
 .x-filter-trigger > svg { width: 1em; height: 1em; flex: none; }
-/* What is applied: for a subject, a path from broad to narrow. */
-.x-filter-value { min-width: 0; font-weight: 400; color: var(--ds-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.x-filter-value b { font-weight: 600; color: var(--ds-text); }
-.x-path-sep { margin-inline: 0.3em; color: var(--ds-text-muted); }
 
-/* The page heading, with the subject control at its far end. */
-.x-heading-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--ds-space-tight) var(--ds-space-block); }
-.x-heading-row > h1 { margin: 0; }
-/* The page's freshness sits in the top corner of the content, still after the title in reading order. */
-.x-heading-row > .x-updated-line { align-self: flex-start; }
 
 /* The page's own data controls, at the heading's far end. */
 /* The date range: labels above, then the two fields and Apply joined into one control,
@@ -299,25 +290,11 @@
 .x-updated { color: var(--ds-text-muted); }
 .x-heading-tools .ds-btn svg { width: 1em; height: 1em; }
 
-/* In the dark header: the subject as the bar's scope, between the logo and the links. The same control,
-   drawn with the bar's colours. It stays in the bar at every width. */
-/* Centred in the space between the logo and the rest of the bar: the logo and the scope
-   each take an auto margin, so the free space splits evenly on either side. */
-.ds-site-header > .x-scope { margin-right: auto; }
-.ds-site-header > .x-scope .x-filter-value,
-.ds-site-header > .x-scope .x-path-sep { color: var(--ds-hdr-fg); }
-.ds-site-header > .x-scope .x-filter-value b { color: var(--ds-hdr-fg-strong); }
-/* On a phone the scope shows its value alone; the word stays for screen readers. */
-@media (max-width: 599px) {
-  .ds-site-header > .x-scope { min-width: 0; flex: 0 1 auto; }
-  .x-scope-label,
-  .x-scope-rest { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-}
-
 
 /* ── A set of data with its controls: one box, the controls in its header bar ──
    The toolbar is the box's top edge, so the controls read as part of what they change.
-   It says what is shown (a count, the order) on the left; the controls go where they fit. */
+   It says what is shown (the order, and a count only when part of the set is out of view) on the left;
+   the controls go where they fit. */
 .x-data { border: 1px solid var(--ds-border-strong); border-radius: 8px; overflow: hidden; }
 .x-data-toolbar {
   display: flex;
@@ -466,6 +443,8 @@
 /* ── The page's heading block: title, description and freshness, tight together ── */
 .x-page-head { display: grid; gap: var(--ds-space-tight); }
 .x-page-head > * { margin: 0; }
+/* How fresh the data is: its own line above the heading, at the right (layout-patterns.html). */
+.x-page-head > .x-updated-line { justify-self: end; }
 .x-updated-line { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ds-space-2); font-size: 0.875rem; color: var(--ds-text-muted); }
 .x-updated-line .ds-btn svg { width: 1em; height: 1em; }
 /* The heading block, with the page's dates, is a section's gap above the first set of data,
