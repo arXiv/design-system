@@ -111,7 +111,7 @@ components:
   - id: a-centred-tool-or-filter
     title: "A centred tool or filter"
     group: "Modifiers"
-    summary: "The aspirational header has an optional centred space, `.ds-site-header-center`, for one tool or filter that changes every page under the header, such as the subject every report in a dashboard is about. Nothing on the page sits higher, so nothing else may claim it. It comes straight after the logo and is centred in the room between the logo and the regions on the right. It folds last. Once the navigation, the tools and the account area have gone into the menu, its label goes, then its value, leaving the icon that opens it. Its full name stays for screen readers at every step."
+    summary: "The aspirational header has an optional centred space, `.ds-site-header-center`, for one tool or filter that changes every page under the header, such as the subject every report in a dashboard is about. This space is reserved for tools that change or impact the entire site (or the portion of the site that uses that particular header). It comes straight after the logo and is centred in the room between the logo and the regions on the right. It folds last. As the viewport width decreases, the label is hidden first, then the value, leaving just an icon button on the narrowest of screens. Its full name stays for screen readers at every step."
     classes:
       - name: ".ds-site-header-center"
         does: "The centred space, straight after the logo. It holds one button. A filter is a [Filters button](filters.md#multiple-choice-filters) with `.on-dark`, and its panel hangs from the bar's bottom edge."
@@ -418,7 +418,7 @@ Each internal tool chooses the search fields, navigation and wordmark its users 
 
 ## A centred tool or filter  (Modifiers)
 
-The aspirational header has an optional centred space, `.ds-site-header-center`, for one tool or filter that changes every page under the header, such as the subject every report in a dashboard is about. Nothing on the page sits higher, so nothing else may claim it. It comes straight after the logo and is centred in the room between the logo and the regions on the right. It folds last. Once the navigation, the tools and the account area have gone into the menu, its label goes, then its value, leaving the icon that opens it. Its full name stays for screen readers at every step.
+The aspirational header has an optional centred space, `.ds-site-header-center`, for one tool or filter that changes every page under the header, such as the subject every report in a dashboard is about. This space is reserved for tools that change or impact the entire site (or the portion of the site that uses that particular header). It comes straight after the logo and is centred in the room between the logo and the regions on the right. It folds last. As the viewport width decreases, the label is hidden first, then the value, leaving just an icon button on the narrowest of screens. Its full name stays for screen readers at every step.
 
 ```html
 <header class="ds-site-header">
