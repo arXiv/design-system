@@ -140,7 +140,7 @@
         </div>
       </div>
 
-      <div class="ds-alert ds-alert--warning" role="alert">
+      <div class="ds-alert ds-alert--warning">
         <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
         <div class="ds-alert-content">
           <p class="ds-alert-title">You are viewing version 1</p>
@@ -149,7 +149,7 @@
       </div>
 
       <div class="ds-alert ds-alert--error" role="alert">
-        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>
         <div class="ds-alert-content">
           <p class="ds-alert-title">Could not load the PDF</p>
           <p>The file failed to render. <a href="#">Try the HTML version</a> instead.</p>
@@ -158,7 +158,7 @@
 
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-alert ds-alert--warning" role="alert"&gt;
+<pre><code>&lt;div class="ds-alert ds-alert--warning"&gt;
   &lt;svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2"
        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
     &lt;!-- Lucide icon paths --&gt;
@@ -171,8 +171,9 @@
           <dl>
             <dt>.ds-alert</dt>
             <dd>The container. On its own it is the info state; add a state class for success,
-            warning or error. Takes <code>role="status"</code> for success and info, <code>role="alert"</code> for
-            warning and error.</dd>
+            warning or error. An alert that appears after the page has loaded takes <code>role="status"</code>
+            for success and info, <code>role="alert"</code> for warning and error. An alert that is in the
+            page as it loads, such as the warning above, takes no role.</dd>
             <dt>.ds-alert--success, --warning, --error</dt>
             <dd>The state: <code>.ds-alert--success</code>,
             <code>.ds-alert--warning</code>, or <code>.ds-alert--error</code>. Sets the background,
@@ -180,7 +181,7 @@
             container's own colours. The same classes and the same colours on both surfaces.</dd>
             <dt>.ds-alert-icon</dt>
             <dd>The icon, an inline SVG with <code>aria-hidden="true"</code>. Each state has its own
-            shape: a check, an “i”, a triangle, an “x”. Copy the icon element whole, attributes
+            shape: a check, an “i”, a triangle, an octagon with a “!”; an “x” would read as a close control. Copy the icon element whole, attributes
             included: Lucide draws each “!” or “i” dot as a 0.01-unit path that only renders with
             <code>stroke-linecap="round"</code>. Without these attributes it renders as an empty
             hairline outline.</dd>
@@ -190,7 +191,9 @@
             <dt>.ds-alert-title</dt>
             <dd>The leading line, in bold. It names the situation, and it is what conveys the
             meaning for a reader who cannot see the icon or the colour. Optional on a one-line
-            alert.</dd>
+            alert. On a notice that changes how the whole page is read, such as a
+            <a href="papers.html#withdrawn-papers">withdrawn paper's</a>, it is a heading one level
+            below the page heading, and keeps the alert's size and colour.</dd>
           </dl>
         </div>
       </details>
@@ -205,6 +208,10 @@
       info alert: it is polite, and a screen reader announces it when idle. Put
       <code>role="alert"</code> on a warning or error alert: it is assertive, and a screen reader
       announces it immediately. Do not use <code>role="alert"</code> for anything that can wait.</li>
+      <li><strong>No role on an alert that is in the page as it loads.</strong> A role announces a
+      change, and a screen reader does not reliably announce an alert that was there from the start,
+      such as the warning on an older version of a paper. Put that alert where the reader meets it
+      early, straight after the page heading.</li>
       <li id="announce-results"><strong>Announce the result of an action.</strong> When an action
       changes something without loading a page, such as Copy, Permalink or the theme control, a
       visually hidden <code>role="status"</code> region says what happened: “Copied to clipboard”.

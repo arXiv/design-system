@@ -261,6 +261,19 @@ body > .ds-site-header > .ds-site-header-logo img { height: 26px; }
 /* ─── search.html: a page at the real page width, as far as the card allows ─── */
 .ds-container.page-demo--wide { --ds-width-page: inherit; }
 
+/* ─── papers.html: a page title shown inside a card. It keeps the <h1> size
+   from design-system.css, which a card would otherwise shrink to a card title.
+   check-drift.py fails if the two sizes differ ─── */
+.ds-card > .demo-h1 { font-size: clamp(1.75rem, 1rem + 2vw, 2rem); font-weight: 700; margin: 0 0 var(--ds-space-4); }
+/* ─── papers.html: a margin note on a figure inside a card. In a paper the
+   figure is the block it sits beside; here the card is, so the note clears
+   the card's border, padding and gap, as every other note on the page does ─── */
+@media (min-width: 82.125rem) {
+  @supports selector(::details-content) {
+    .ds-card > .ds-paper-element > .ds-marginalia { left: calc(100% + 1px + var(--ds-space-6) + var(--ds-space-4)); }
+  }
+}
+
 /* ─── doc.html: the Markdown viewer. A Markdown file stays the source; the
    viewer renders it with the design system's type and the docs header.
    Usage: doc.html?src=<path from the repository root> ─── */
