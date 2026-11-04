@@ -1,7 +1,7 @@
 ---
 page: papers.html
 title: "Papers"
-summary: "Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to HTML papers pages, search results and more. How a paper shows which version is being read is on [Indicate which version is being read](../versions.html), and how its citations and footnotes work is on [Show a reference without losing the reader's place](../references.html)."
+summary: "Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to both HTML papers pages and search results. More relevant documentation: [Indicating which version is being read](../versions.html) and [following references without losing your place](../references.html)."
 stylesheet: design-system.css
 components:
   - id: the-metadata-hierarchy
@@ -40,7 +40,7 @@ components:
     notes:
       - "Meets accessibility guideline [WCAG 2.2 SC 1.4.13](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html) Content on Hover or Focus (Level AA)"
   - id: full-papers
-    title: "Displaying full papers"
+    title: "Displaying abstract and primary metadata"
     summary: "On a paper's own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The version history and the paper's details sit in the sidebar."
     classes:
       - name: ".ds-paper-identity"
@@ -74,7 +74,7 @@ components:
       - name: ".ds-date-row"
         does: "Ends with Removed and its date. A removal changes the version in place, so no version is added to the list."
       - name: ".ds-sidebar"
-        does: "The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
+        does: "The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
       - name: ".ds-panel-label"
         does: "On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page."
       - name: ".ds-paper-files"
@@ -124,11 +124,11 @@ components:
       - "This paper has been withdrawn by Adrian Palomares.: Reason given: “The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.” The withdrawn paper can still be read in [version 3](#v3)."
       - "This version has been removed by arXiv.: “arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission.” The full text and files are no longer available."
   - id: the-sidebar
-    title: "The sidebar"
-    summary: "Beside a full paper, the sidebar holds the paper's files, its citation and its information, in that order."
+    title: "Displaying paper actions and full metadata"
+    summary: "Beside the abstract, the sidebar holds downloadable files, a citation tool, and additional paper information, in that order."
     classes:
       - name: ".ds-sidebar"
-        does: "The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
+        does: "The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
       - name: ".ds-panel-label"
         does: "On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page."
       - name: ".ds-paper-files"
@@ -143,7 +143,7 @@ components:
         does: "Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label. They share `name=\"paper-info\"`, so only one is open at a time."
   - id: paper-toc-bar
     title: "The TOC bar on a paper"
-    summary: "On a paper, the TOC bar also has the arXiv logo on the left and links to the paper's abstract page, PDF and TeX source on the right."
+    summary: "On a paper, the TOC bar also has the arXiv logo on the left and links to the paper's PDF and TeX source on the right."
     classes:
       - name: ".ds-toc-bar"
         does: "The bar, as on [Progressive disclosure](progressive-disclosure.md#toc-bar). On a paper it is `.ds-full`, the full width of the page."
@@ -152,7 +152,7 @@ components:
       - name: ".ds-toc-menu"
         does: "The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list. Subsections are an `<ol>` inside their section's `<li>`, indented to the section's title in smaller type."
       - name: ".ds-paper-tools"
-        does: "Abstract, PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `arrow-left`, `file-text` and `tex` from `docs/icons/`."
+        does: "PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `file-text` and `tex` from `docs/icons/`."
   - id: paper-permalinks
     title: "Section permalinks"
     summary: "Each section heading in a paper has a Permalink control that copies the link to that section, including the version."
@@ -162,7 +162,7 @@ components:
       - name: ".is-sr-only"
         does: "Completes the name: “Permalink to section 2, Setup”. The name starts with the visible word."
       - name: "[role=\"status\"]"
-        does: "One region on the page. The script writes “Link to section 2, Setup copied” into it, as `anchors.js` does."
+        does: "One region on the page. `anchors.js` writes “Link to section 2, Setup copied” into it, shows the green tick in place of the link icon, and clears both after 2 seconds."
       - name: ".is-active"
         does: "Set on the heading by a tap, on screens without hover."
     notes:
@@ -188,7 +188,7 @@ components:
     notes:
       - "**Alt text**Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently."
 rules:
-  - "**Show the author's text as written.** A title or abstract is never shortened, reworded or corrected; TeX shows as the author wrote it. An excerpt is cut, never edited."
+  - "**Show the author's text as written.** A title or abstract is never shortened, reworded or corrected. When we display TeX, it is shown exactly as the author wrote it. We excerpt formulas, but never edit them."
   - "**Leave out what a paper does not have.** No empty labels and no placeholders."
   - "**Every date has its label.** Readers confuse submitted and announced dates when either stands alone."
   - "**The primary category comes first** and is told apart by more than colour: its tooltip names it as primary."
@@ -259,7 +259,7 @@ rules:
 
 # Papers
 
-Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to HTML papers pages, search results and more. How a paper shows which version is being read is on [Indicate which version is being read](../versions.html), and how its citations and footnotes work is on [Show a reference without losing the reader's place](../references.html).
+Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to both HTML papers pages and search results. More relevant documentation: [Indicating which version is being read](../versions.html) and [following references without losing your place](../references.html).
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
@@ -337,7 +337,7 @@ A paper's subject categories show as tags, primary first. Each code links to its
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.4.13](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html) Content on Hover or Focus (Level AA)
 
-## Displaying full papers
+## Displaying abstract and primary metadata
 
 On a paper's own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The version history and the paper's details sit in the sidebar.
 
@@ -416,7 +416,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 
 ```html
 <div>
-<div>…the paper…</div>
+<div>…the abstract…</div>
 <aside class="ds-sidebar" aria-label="About this paper">
   <section aria-labelledby="files-h">
     <h2 class="ds-panel-label" id="files-h">Files</h2>
@@ -522,7 +522,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 - `.ds-paper-status` — “Removed:”, built as “Withdrawn:” is.
 - `.ds-alert--error` — Says that arXiv removed the version, quotes arXiv's comment as written, and says that the full text and files are gone.
 - `.ds-date-row` — Ends with Removed and its date. A removal changes the version in place, so no version is added to the list.
-- `.ds-sidebar` — The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
+- `.ds-sidebar` — The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
 - `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
@@ -607,13 +607,13 @@ A withdrawn paper keeps its title, authors, abstract and metadata, and its earli
 
 **Rule.** This version has been removed by arXiv.: “arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission.” The full text and files are no longer available.
 
-## The sidebar
+## Displaying paper actions and full metadata
 
-Beside a full paper, the sidebar holds the paper's files, its citation and its information, in that order.
+Beside the abstract, the sidebar holds downloadable files, a citation tool, and additional paper information, in that order.
 
 ```html
 <div>
-<div>…the paper…</div>
+<div>…the abstract…</div>
 <aside class="ds-sidebar" aria-label="About this paper">
   <section aria-labelledby="files-h">
     <h2 class="ds-panel-label" id="files-h">Files</h2>
@@ -704,7 +704,7 @@ Beside a full paper, the sidebar holds the paper's files, its citation and its i
 </div>
 ```
 
-- `.ds-sidebar` — The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
+- `.ds-sidebar` — The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
 - `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
@@ -714,7 +714,7 @@ Beside a full paper, the sidebar holds the paper's files, its citation and its i
 
 ## The TOC bar on a paper
 
-On a paper, the TOC bar also has the arXiv logo on the left and links to the paper's abstract page, PDF and TeX source on the right.
+On a paper, the TOC bar also has the arXiv logo on the left and links to the paper's PDF and TeX source on the right.
 
 ```html
 <div class="ds-full ds-toc-bar">
@@ -745,7 +745,6 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
       </nav>
     </details>
     <nav class="ds-paper-tools" aria-label="Other formats">
-      <a href="https://arxiv.org/abs/2604.22725v1"><svg aria-hidden="true">…</svg>Abstract</a>
       <a href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener"><svg aria-hidden="true">…</svg>PDF<span class="is-sr-only"> (opens in a new tab)</span></a>
       <a href="https://arxiv.org/src/2604.22725v1"><svg aria-hidden="true">…</svg><span class="is-sr-only">TeX </span>Source</a>
     </nav>
@@ -756,7 +755,7 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
 - `.ds-toc-bar` — The bar, as on [Progressive disclosure](progressive-disclosure.md#toc-bar). On a paper it is `.ds-full`, the full width of the page.
 - `.ds-paper-bar-logo` — The one-colour Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill="currentColor"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”.
 - `.ds-toc-menu` — The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list. Subsections are an `<ol>` inside their section's `<li>`, indented to the section's title in smaller type.
-- `.ds-paper-tools` — Abstract, PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `arrow-left`, `file-text` and `tex` from `docs/icons/`.
+- `.ds-paper-tools` — PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `file-text` and `tex` from `docs/icons/`.
 
 ## Section permalinks
 
@@ -770,7 +769,7 @@ Each section heading in a paper has a Permalink control that copies the link to 
 
 - `.ds-permalink` — The Permalink control from [Linking to a section](links.md#linking-to-a-section), the same as on every other page. The demo holds it open.
 - `.is-sr-only` — Completes the name: “Permalink to section 2, Setup”. The name starts with the visible word.
-- `[role="status"]` — One region on the page. The script writes “Link to section 2, Setup copied” into it, as `anchors.js` does.
+- `[role="status"]` — One region on the page. `anchors.js` writes “Link to section 2, Setup copied” into it, shows the green tick in place of the link icon, and clears both after 2 seconds.
 - `.is-active` — Set on the heading by a tap, on screens without hover.
 
 > Meets accessibility guideline [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)
@@ -821,7 +820,7 @@ A display equation, a figure and a bibliography entry each have a small row of a
 
 ## Rules
 
-- **Show the author's text as written.** A title or abstract is never shortened, reworded or corrected; TeX shows as the author wrote it. An excerpt is cut, never edited.
+- **Show the author's text as written.** A title or abstract is never shortened, reworded or corrected. When we display TeX, it is shown exactly as the author wrote it. We excerpt formulas, but never edit them.
 - **Leave out what a paper does not have.** No empty labels and no placeholders.
 - **Every date has its label.** Readers confuse submitted and announced dates when either stands alone.
 - **The primary category comes first** and is told apart by more than colour: its tooltip names it as primary.
