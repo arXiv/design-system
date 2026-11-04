@@ -274,11 +274,11 @@
   <!-- ───────── The heading scale ───────── -->
   <section>
     <h2 id="the-heading-scale">The heading scale</h2>
-    <p class="ds-section-desc">Four levels, each level is a quarter larger than the one below it, which
-    puts h1 at exactly twice body size. Sizes are in rem so they follow the user's base setting. That base is 16px unless the reader has changed the browser's default, so the pixel sizes below assume 16px.</p>
+    <p class="ds-section-desc">Four levels, each larger than the one below it. On a laptop the step is about a quarter, which
+    puts h1 at twice body size; on a phone it is 4px, so a long title takes fewer lines. Sizes are in rem so they follow the user's base setting. That base is 16px unless the reader has changed the browser's default, so the pixel sizes below assume 16px.</p>
     <div class="ds-card">
       <dl class="size-ladder">
-        <dt>h1 · 2rem · 700</dt>
+        <dt>h1 · 1.75–2rem · 700</dt>
         <dd><div style="font-size:2rem; font-weight:700; line-height:1.25">Gauge-independent approach to inflation</div></dd>
         <dt>h2 · 1.5rem · 600</dt>
         <dd><div style="font-size:1.5rem; font-weight:600; line-height:1.25">Submission history</div></dd>
@@ -296,7 +296,7 @@
           <dl>
             <dt>&lt;h1&gt;</dt>
             <dd>The page's one subject: what the page is about, stated once — a paper title, a form name, a console view.
-            A page that seems to need two h1s is two pages. 2rem (32px) · 700 · line-height 1.25 · space above 0, below <code>--ds-space-4</code>.</dd>
+            A page that seems to need two h1s is two pages. <code>clamp(1.75rem, 1rem + 2vw, 2rem)</code>: 28px on a phone, 32px from about 800px wide · 700 · line-height 1.25 · space above 0, below <code>--ds-space-4</code>.</dd>
             <dt>&lt;h2&gt;</dt>
             <dd>A major section: a top-level division of that subject — Abstract, Submission history, References,
             each step of a submission form. 1.5rem (24px) · 600 · line-height 1.25 · space above <code>--ds-space-8</code>, below <code>--ds-space-3</code>.</dd>
@@ -522,7 +522,7 @@
     what <code>design-system.css</code> implements — <code>--ds-space-8</code> is 2rem, <code>--ds-space-6</code>
     is 1.5rem, and so on down the scale.</p>
     <ul class="notes">
-      <li><strong>The ratio is 1.25</strong> — a major third — rounded to quarter-rem steps: 1, 1.25, 1.5, 2rem.
+      <li><strong>On a laptop, the ratio is 1.25</strong> — a major third — rounded to quarter-rem steps: 1, 1.25, 1.5, 2rem.
       A strict geometric run would put h2 at 1.5625rem; a quarter of a rem is the number a person can hold in
       their head and type without checking. The rounding is what makes h1 land on exactly double the body size.</li>
       <li><strong>700 appears once, at h1.</strong> IBM Plex ships nothing heavier, so 700 is the ceiling and it
@@ -532,8 +532,11 @@
       <li><strong>Space above is at least twice the space below.</strong> A heading belongs to the text it
       introduces, not the text it follows, and the gap has to say so. The values sit on the 4px rhythm in
       <a href="spacing.html">Spacing</a>.</li>
-      <li><strong>Long titles clamp.</strong> An h1 that can run to seven words uses <code>clamp()</code> between
-      rem bounds rather than a fixed 2rem — see "Fluid where titles meet phones" below.</li>
+      <li><strong>The page heading scales with the screen, and the steps shrink with it.</strong> A step can
+      shrink but never disappear: each level is at least a quarter of a rem (4px) larger than the one below.
+      Most of its size is in rem
+      and the largest is less than 2.5 times the smallest, so browser zoom scales it fully (WCAG 1.4.4); text-only
+      zoom scales only the rem part, so there it grows a little less than body text.</li>
       <li><strong>The 11px uppercase Condensed label is not a heading level.</strong> Set in
       <code>--ds-font-condensed</code> and <code>--ds-text-muted</code>, it marks a panel or a column and
       stays out of the document outline. If a reader needs to navigate to it, it is an h3 or an h4 at the size
@@ -728,7 +731,7 @@
       <table class="ds-table">
         <thead><tr><th>Use</th><th>Size</th><th>Weight</th><th>Face</th></tr></thead>
         <tbody>
-          <tr><td>Page heading (h1)</td><td>2rem · 32px</td><td>700</td><td>Plex Sans</td></tr>
+          <tr><td>Page heading (h1)</td><td>1.75–2rem · 28–32px</td><td>700</td><td>Plex Sans</td></tr>
           <tr><td>Section heading (h2)</td><td>1.5rem · 24px</td><td>600</td><td>Plex Sans</td></tr>
           <tr><td>Subsection heading (h3)</td><td>1.25rem · 20px</td><td>600</td><td>Plex Sans</td></tr>
           <tr><td>h4; body text</td><td>1rem · 16px</td><td>600; 400</td><td>Plex Sans</td></tr>

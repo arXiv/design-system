@@ -81,7 +81,8 @@ def ratio(fg, bg):
 PUBLIC_TEXT = ["text", "text-muted", "link", "link-hover", "link-visited"]
 PUBLIC_SURF = ["canvas", "surface", "tint-warm", "accent-surface", "accent-wash"]
 PUBLIC_SPECIAL = [("text-on-accent", "accent"), ("text-on-accent", "accent-hover")]
-PUBLIC_STATUS = [("info-fg", "info-bg"), ("success-fg", "success-bg"), ("warning-fg", "warning-bg"), ("error-fg", "error-bg")]
+PUBLIC_STATUS = [("info-fg", "info-bg"), ("success-fg", "success-bg"), ("warning-fg", "warning-bg"), ("error-fg", "error-bg"),
+                 ("error-fg", "canvas"), ("error-fg", "surface")]   # a withdrawn paper's status label and version links, on the page ground
 PUBLIC_NEVER = [("border-strong", "interactive borders, tracks, and arrows (3:1 non-text minimum)"),
                 ("text-disabled", "disabled text only — exempt from AA, never for content"),
                 ("border", "decorative hairlines and component borders")]

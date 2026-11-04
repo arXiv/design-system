@@ -42,10 +42,10 @@ components:
       - "Meets accessibility guideline [WCAG 2.2 SC 1.4.4](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html) Resize Text (Level AA)"
   - id: the-heading-scale
     title: "The heading scale"
-    summary: "Four levels, each level is a quarter larger than the one below it, which puts h1 at exactly twice body size. Sizes are in rem so they follow the user's base setting. That base is 16px unless the reader has changed the browser's default, so the pixel sizes below assume 16px."
+    summary: "Four levels, each larger than the one below it. On a laptop the step is about a quarter, which puts h1 at twice body size; on a phone it is 4px, so a long title takes fewer lines. Sizes are in rem so they follow the user's base setting. That base is 16px unless the reader has changed the browser's default, so the pixel sizes below assume 16px."
     classes:
       - name: "<h1>"
-        does: "The page's one subject: what the page is about, stated once — a paper title, a form name, a console view. A page that seems to need two h1s is two pages. 2rem (32px) · 700 · line-height 1.25 · space above 0, below `--ds-space-4`."
+        does: "The page's one subject: what the page is about, stated once — a paper title, a form name, a console view. A page that seems to need two h1s is two pages. `clamp(1.75rem, 1rem + 2vw, 2rem)`: 28px on a phone, 32px from about 800px wide · 700 · line-height 1.25 · space above 0, below `--ds-space-4`."
       - name: "<h2>"
         does: "A major section: a top-level division of that subject — Abstract, Submission history, References, each step of a submission form. 1.5rem (24px) · 600 · line-height 1.25 · space above `--ds-space-8`, below `--ds-space-3`."
       - name: "<h3>"
@@ -100,10 +100,10 @@ rules:
   - "**700 is the ceiling.** IBM Plex ships no heavier weight, so a CSS `800` either falls back or gets faux-bolded, differently per browser. Ask for the weight that exists."
   - "**Two serif jobs, kept apart.** Upright serif is the editorial voice — headlines, quotes, drop caps. Italic serif stays the annotation voice everywhere. A heading that must not read as \"another article\" uses the heavy *sans* instead, which is why 700 exists in this context at all."
   - "**Mono as display type** is an outreach liberty: the typewriter register echoes the main site's identifiers. On the public site, mono still means \"this is an identifier or code.\""
-  - "**The ratio is 1.25** — a major third — rounded to quarter-rem steps: 1, 1.25, 1.5, 2rem. A strict geometric run would put h2 at 1.5625rem; a quarter of a rem is the number a person can hold in their head and type without checking. The rounding is what makes h1 land on exactly double the body size."
+  - "**On a laptop, the ratio is 1.25** — a major third — rounded to quarter-rem steps: 1, 1.25, 1.5, 2rem. A strict geometric run would put h2 at 1.5625rem; a quarter of a rem is the number a person can hold in their head and type without checking. The rounding is what makes h1 land on exactly double the body size."
   - "**700 appears once, at h1.** IBM Plex ships nothing heavier, so 700 is the ceiling and it is spent on the one heading that names the page. Everything below is 600. Always state the weight: a rule that sets only `font-size` inherits the browser default bold, which is how several pages ended up with an h3 heavier than the h2 above it."
   - "**Space above is at least twice the space below.** A heading belongs to the text it introduces, not the text it follows, and the gap has to say so. The values sit on the 4px rhythm in [Spacing](spacing.md)."
-  - "**Long titles clamp.** An h1 that can run to seven words uses `clamp()` between rem bounds rather than a fixed 2rem — see \"Fluid where titles meet phones\" below."
+  - "**The page heading scales with the screen, and the steps shrink with it.** A step can shrink but never disappear: each level is at least a quarter of a rem (4px) larger than the one below. Most of its size is in rem and the largest is less than 2.5 times the smallest, so browser zoom scales it fully (WCAG 1.4.4); text-only zoom scales only the rem part, so there it grows a little less than body text."
   - "**The 11px uppercase Condensed label is not a heading level.** Set in `--ds-font-condensed` and `--ds-text-muted`, it marks a panel or a column and stays out of the document outline. If a reader needs to navigate to it, it is an h3 or an h4 at the size above, not a label."
   - "Space is given as spacing tokens, not pixels, because that is what `design-system.css` implements — `--ds-space-8` is 2rem, `--ds-space-6` is 1.5rem, and so on down the scale."
   - "**There is no markup for the button**, and that is the design. `copy-code.js` finds every `<pre>` on the page, wraps it in `.ds-code` and inserts the control, which is `.ds-code-copy`. A block added next year is covered without anyone remembering, which a per-block wrapper would not be. Every page under `docs/` already loads the script."
@@ -186,7 +186,7 @@ The text sizes are set in rem so they move with the reader's base size. Browsers
 
 ## The heading scale
 
-Four levels, each level is a quarter larger than the one below it, which puts h1 at exactly twice body size. Sizes are in rem so they follow the user's base setting. That base is 16px unless the reader has changed the browser's default, so the pixel sizes below assume 16px.
+Four levels, each larger than the one below it. On a laptop the step is about a quarter, which puts h1 at twice body size; on a phone it is 4px, so a long title takes fewer lines. Sizes are in rem so they follow the user's base setting. That base is 16px unless the reader has changed the browser's default, so the pixel sizes below assume 16px.
 
 ```html
 <h1>Gauge-independent approach to inflation</h1>
@@ -195,7 +195,7 @@ Four levels, each level is a quarter larger than the one below it, which puts h1
       <h4>Boundary conditions</h4>
 ```
 
-- `<h1>` — The page's one subject: what the page is about, stated once — a paper title, a form name, a console view. A page that seems to need two h1s is two pages. 2rem (32px) · 700 · line-height 1.25 · space above 0, below `--ds-space-4`.
+- `<h1>` — The page's one subject: what the page is about, stated once — a paper title, a form name, a console view. A page that seems to need two h1s is two pages. `clamp(1.75rem, 1rem + 2vw, 2rem)`: 28px on a phone, 32px from about 800px wide · 700 · line-height 1.25 · space above 0, below `--ds-space-4`.
 - `<h2>` — A major section: a top-level division of that subject — Abstract, Submission history, References, each step of a submission form. 1.5rem (24px) · 600 · line-height 1.25 · space above `--ds-space-8`, below `--ds-space-3`.
 - `<h3>` — A division inside one section: a subsection of a paper, or a card heading inside a panel. It only exists where an h2 already does. 1.25rem (20px) · 600 · line-height 1.25 · space above `--ds-space-8`, below `--ds-space-2`.
 - `<h4>` — The smallest named step: a named paragraph in a paper, a field group in a form. This is the last level the scale defines; needing an h5 is a sign the content wants restructuring, not a fifth size. 1rem (16px) · 600 · line-height 1.25 · space above `--ds-space-4`, below `--ds-space-2`.
@@ -271,10 +271,10 @@ The small uppercase Condensed label that names a panel, a column or a group. It 
 - **700 is the ceiling.** IBM Plex ships no heavier weight, so a CSS `800` either falls back or gets faux-bolded, differently per browser. Ask for the weight that exists.
 - **Two serif jobs, kept apart.** Upright serif is the editorial voice — headlines, quotes, drop caps. Italic serif stays the annotation voice everywhere. A heading that must not read as "another article" uses the heavy *sans* instead, which is why 700 exists in this context at all.
 - **Mono as display type** is an outreach liberty: the typewriter register echoes the main site's identifiers. On the public site, mono still means "this is an identifier or code."
-- **The ratio is 1.25** — a major third — rounded to quarter-rem steps: 1, 1.25, 1.5, 2rem. A strict geometric run would put h2 at 1.5625rem; a quarter of a rem is the number a person can hold in their head and type without checking. The rounding is what makes h1 land on exactly double the body size.
+- **On a laptop, the ratio is 1.25** — a major third — rounded to quarter-rem steps: 1, 1.25, 1.5, 2rem. A strict geometric run would put h2 at 1.5625rem; a quarter of a rem is the number a person can hold in their head and type without checking. The rounding is what makes h1 land on exactly double the body size.
 - **700 appears once, at h1.** IBM Plex ships nothing heavier, so 700 is the ceiling and it is spent on the one heading that names the page. Everything below is 600. Always state the weight: a rule that sets only `font-size` inherits the browser default bold, which is how several pages ended up with an h3 heavier than the h2 above it.
 - **Space above is at least twice the space below.** A heading belongs to the text it introduces, not the text it follows, and the gap has to say so. The values sit on the 4px rhythm in [Spacing](spacing.md).
-- **Long titles clamp.** An h1 that can run to seven words uses `clamp()` between rem bounds rather than a fixed 2rem — see "Fluid where titles meet phones" below.
+- **The page heading scales with the screen, and the steps shrink with it.** A step can shrink but never disappear: each level is at least a quarter of a rem (4px) larger than the one below. Most of its size is in rem and the largest is less than 2.5 times the smallest, so browser zoom scales it fully (WCAG 1.4.4); text-only zoom scales only the rem part, so there it grows a little less than body text.
 - **The 11px uppercase Condensed label is not a heading level.** Set in `--ds-font-condensed` and `--ds-text-muted`, it marks a panel or a column and stays out of the document outline. If a reader needs to navigate to it, it is an h3 or an h4 at the size above, not a label.
 - Space is given as spacing tokens, not pixels, because that is what `design-system.css` implements — `--ds-space-8` is 2rem, `--ds-space-6` is 1.5rem, and so on down the scale.
 - **There is no markup for the button**, and that is the design. `copy-code.js` finds every `<pre>` on the page, wraps it in `.ds-code` and inserts the control, which is `.ds-code-copy`. A block added next year is covered without anyone remembering, which a per-block wrapper would not be. Every page under `docs/` already loads the script.

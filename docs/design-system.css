@@ -371,7 +371,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 /* ── Headings ────────────────────────────────────────────────────────
    The scale published in typography.html: 2 / 1.5 / 1.25 / 1rem, at 700 for
    h1 and 600 below it, on a 1.25 line-height except h4. Sizes are rem so
-   they track the reader's base size. */
+   they track the reader's base size. The h1 scales from 1.75rem on a phone to
+   2rem from about 800px wide, so a long paper title takes fewer lines on a
+   phone; most of it is rem, so zoom still scales it. */
 :where(.ds-page) :is(h1, h2, h3, h4) {
   font-family: var(--ds-font-sans);
   color: var(--ds-text);
@@ -381,7 +383,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   text-wrap: pretty;
 }
 
-:where(.ds-page) h1 { font-size: 2rem;    font-weight: 700; line-height: 1.25; margin: 0 0 var(--ds-space-4); }
+:where(.ds-page) h1 { font-size: clamp(1.75rem, 1rem + 2vw, 2rem); font-weight: 700; line-height: 1.25; margin: 0 0 var(--ds-space-4); }
 :where(.ds-page) h2 { font-size: 1.5rem;  font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-3); }
 :where(.ds-page) h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.25; margin: var(--ds-space-8) 0 var(--ds-space-2); }
 :where(.ds-page) h4 { font-size: 1rem;    font-weight: 600; line-height: 1.25; margin: var(--ds-space-4) 0 var(--ds-space-2); }
@@ -1838,7 +1840,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 }
 @media (forced-colors: active) { .ds-page mark { background: Mark; color: MarkText; } }
 
-/* A PAPER  (.ds-paper-list, .ds-paper, .ds-paper-when, .ds-paper-identity,
+/* A PAPER  (.ds-paper-list, .ds-paper, .ds-paper-when, .ds-paper-identity, .ds-paper-status,
    .ds-paper-versions, .ds-paper-files, .ds-paper-cite, .ds-paper-cite-head, .ds-paper-cite-code, .ds-paper-capabilities,
    .ds-paper-element, .ds-paper-bar-logo,
    .ds-paper-tools) — papers.html
@@ -1876,6 +1878,8 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
   color: var(--ds-text-muted);
   overflow-wrap: anywhere;   /* the DOI breaks rather than widen the page at large text sizes */
 }
+/* "Withdrawn:" or "Removed:" before a paper's title, in its own element so the author's title is never edited. */
+.ds-paper-status { color: var(--ds-error-fg); }
 /* A paper's version history, newest first; the version being viewed is marked. */
 .ds-paper-versions { list-style: none; margin: 0; padding: 0; }
 .ds-paper-versions > li { padding-inline-start: var(--ds-space-3); border-inline-start: 2px solid var(--ds-border); }
@@ -1971,7 +1975,7 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 .ds-data-list dt { flex: none; font-weight: 600; color: var(--ds-text); }
 .ds-data-list dd { margin: 0; overflow-wrap: anywhere; }
 
-/* VERSION DISPLAY  (.ds-date-row, .ds-version-list, .ds-version) — papers.html#paper-versions */
+/* VERSION DISPLAY  (.ds-date-row, .ds-version-list, .ds-version, .ds-version--withdrawn) — papers.html#paper-versions */
 .ds-date-row {
   font-size: 0.8125rem;
   line-height: 1.5;
@@ -1992,6 +1996,17 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
   background: var(--ds-tint-accent);
   color: var(--ds-text);
 }
+/* A withdrawn paper (.ds-version--withdrawn): the withdrawal notice, named
+   rather than numbered, and the withdrawn version when it is being read, in
+   the error colours. On that version's Version history <li> it turns the bar red. */
+.ds-version.ds-version--withdrawn { color: var(--ds-error-fg); word-spacing: normal; }
+.ds-version.ds-version--withdrawn[aria-current],
+.ds-paper-versions > li[aria-current] .ds-version.ds-version--withdrawn {
+  border-color: var(--ds-error-border);
+  background: var(--ds-error-bg);
+  color: var(--ds-error-fg);
+}
+.ds-paper-versions > li[aria-current].ds-version--withdrawn { border-inline-start-color: var(--ds-error-border); }
 
 /* COMPACT FORM  (.ds-form--compact, .ds-input-group) — forms.html
    A form that supports the main content: one row, or one short column when
@@ -2628,7 +2643,7 @@ html:has(.ds-modal[open]) {
   fill: none;
 }
 .ds-alert-content { margin: 0; min-width: 0; }
-.ds-alert-title { font-weight: 700; margin: 0 0 2px; }
+.ds-alert-title { font-weight: 700; margin: 0 0 2px; font-size: inherit; line-height: inherit; color: inherit; }   /* also on a heading, for a notice that changes how the page is read */
 .ds-alert-content p { margin: 0; }
 .ds-alert a {
   color: inherit;
@@ -3238,12 +3253,13 @@ html:has(.ds-modal[open]) {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: var(--ds-space-section);
+  gap: var(--ds-space-6) var(--ds-space-section);   /* stacked, the sidebar sits 24px below the content */
 }
 /* The content takes all the spare width; alone on its row, the sidebar takes it all. */
 :where(:has(> .ds-sidebar)) > :not(.ds-sidebar) { flex: 999 1 24rem; min-width: 0; }
-/* Both columns start on the same line. */
+/* Both columns start on the same line, and the content's last margin does not add to the gap. */
 :where(:has(> .ds-sidebar)) > :not(.ds-sidebar) > :first-child { margin-block-start: 0; }
+:where(:has(> .ds-sidebar)) > :not(.ds-sidebar) > :last-child { margin-block-end: 0; }
 .ds-sidebar {
   flex: 1 1 17rem;
   min-width: 0;   /* alone on its row, it narrows to the screen at 320px and at large text sizes */

@@ -31,7 +31,7 @@ components:
       - name: ".ds-sidebar"
         does: "On an `<aside>` with an `aria-label` that names what it holds: a complementary landmark. Its parent becomes the two-column layout, with the main content taking the spare width, the sidebar 17rem wide, and `--ds-space-section` between them. A border frames it, with 8px inside (`--ds-space-2`), and a line separates its blocks, 16px apart (`--ds-space-4`). Its text is 13px. Nothing in it is sticky."
       - name: "<aside>"
-        does: "The sidebar comes after the main content in the markup. When the two no longer fit side by side, the sidebar wraps below the content at full width, and a screen reader meets the article first."
+        does: "The sidebar comes after the main content in the markup. When the two no longer fit side by side, the sidebar wraps below the content at full width, 24px below it (`--ds-space-6`), and a screen reader meets the article first."
       - name: ".ds-acc"
         does: "An accordion inside the sidebar is the same ruled accordion as anywhere else, a step smaller to match the sidebar's text, and single-column for the narrow measure. Several in a row go in a `.ds-acc-stack`. No extra class."
   - id: dividers
@@ -151,7 +151,7 @@ A sidebar sits to the right of the main column and contains supplementary conten
 ```
 
 - `.ds-sidebar` — On an `<aside>` with an `aria-label` that names what it holds: a complementary landmark. Its parent becomes the two-column layout, with the main content taking the spare width, the sidebar 17rem wide, and `--ds-space-section` between them. A border frames it, with 8px inside (`--ds-space-2`), and a line separates its blocks, 16px apart (`--ds-space-4`). Its text is 13px. Nothing in it is sticky.
-- `<aside>` — The sidebar comes after the main content in the markup. When the two no longer fit side by side, the sidebar wraps below the content at full width, and a screen reader meets the article first.
+- `<aside>` — The sidebar comes after the main content in the markup. When the two no longer fit side by side, the sidebar wraps below the content at full width, 24px below it (`--ds-space-6`), and a screen reader meets the article first.
 - `.ds-acc` — An accordion inside the sidebar is the same ruled accordion as anywhere else, a step smaller to match the sidebar's text, and single-column for the narrow measure. Several in a row go in a `.ds-acc-stack`. No extra class.
 
 ## Dividers
