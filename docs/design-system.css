@@ -50,6 +50,7 @@
   --ds-link-blue:         #1565c0;
   --ds-link-blue-hover:   #1050a0;
   --ds-link-blue-dark:    #64b5f6;
+  --ds-danger-red-dark:   #e57373;   /* red on a dark ground: dark mode, and the code block in both */
   --ds-visited-purple:    #7b2fbe;
   /* Access Lime, the whole ramp. Tier 1 names it for the same reason it names
      Open Blue's: a primitive names a COLOUR, and a colour is nameable whether
@@ -481,14 +482,32 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-/* COPY FEEDBACK  (.ds-copy-done) — action-feedback.html
+/* COPY FEEDBACK  (.ds-copy-done, .ds-copy-failed) — action-feedback.html
    Every button that copies holds its own icon and a tick, .ds-copy-done.
    copy.js adds .is-done for two seconds after a copy, and the tick takes the
    icon's place. Both glyphs are always in the DOM, so nothing is fetched or
-   measured at the moment of the click. */
+   measured at the moment of the click.
+   If the copy fails, copy.js adds an alert, .ds-copy-failed, and .is-failed:
+   the alert takes the icon's place until the button is pressed again, and a
+   line under the control, .ds-copy-failed-message, says what to do instead. */
 button:not(.is-done) > svg.ds-copy-done,
-.is-done > svg:not(.ds-copy-done) { display: none; }   /* outranks a button's own svg rule, such as .ds-btn svg */
+button:not(.is-failed) > svg.ds-copy-failed,
+.is-done > svg:not(.ds-copy-done),
+.is-failed > svg:not(.ds-copy-failed) { display: none; }   /* outranks a button's own svg rule, such as .ds-btn svg */
 .is-done > svg.ds-copy-done { color: var(--ds-success-border); }
+.is-failed > svg.ds-copy-failed { color: var(--ds-error-border); }
+/* The code ground is dark in both modes; light mode's red is 2.4:1 on it,
+   short of the 3:1 an icon needs. */
+.ds-code-copy.is-failed > svg.ds-copy-failed { color: var(--ds-danger-red-dark); }
+/* In the margin, copy.js sets the line's width to what the margin holds. */
+.ds-copy-failed-message {
+  display: block;
+  margin-top: var(--ds-space-1);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--ds-error-border);
+  overflow-wrap: anywhere;   /* a long word in a data-copy-failed message must not widen the page */
+}
 .ds-code-copy:hover { background: rgba(255, 255, 255, 0.16); }
 .ds-code-copy:focus-visible {
   outline: 3px solid var(--ds-focus-ring-on-dark);
@@ -1926,16 +1945,17 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
    (set by a tap). */
 /* The bottom padding keeps the content clear of the pill. */
 .ds-paper-element { position: relative; margin: var(--ds-space-block) 0; padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-4); border: 1px solid transparent; border-radius: 6px; }
-.ds-paper-element:is(:hover, :focus-within, .is-active) { border-color: var(--ds-border); }
-.ds-paper-element:is(:hover, :focus-within, .is-active) > .ds-element-pill { opacity: 1; pointer-events: auto; }
+/* A failed copy keeps the pill in view with its line until it is pressed again. */
+.ds-paper-element:is(:hover, :focus-within, .is-active, :has(.is-failed)) { border-color: var(--ds-border); }
+.ds-paper-element:is(:hover, :focus-within, .is-active, :has(.is-failed)) > .ds-element-pill { opacity: 1; pointer-events: auto; }
 .ds-paper-element > .ds-element-pill { bottom: 0; left: 50%; translate: -50% 50%; }
 .ds-paper-element img { max-width: 100%; height: auto; }
 /* The element a link in the paper has just landed on. :target, so it works without JavaScript. */
 .ds-paper-element:target { background: var(--ds-accent-wash); border-color: transparent; outline: none; }
 .ds-paper-element:target > .ds-element-pill { opacity: 1; pointer-events: auto; }
 @media (hover: none) {
-  .ds-paper-element:hover:not(.is-active, :focus-within, :target) { border-color: transparent; }
-  .ds-paper-element:hover:not(.is-active, :focus-within, :target) > .ds-element-pill { opacity: 0; pointer-events: none; }
+  .ds-paper-element:hover:not(.is-active, :focus-within, :target, :has(.is-failed)) { border-color: transparent; }
+  .ds-paper-element:hover:not(.is-active, :focus-within, :target, :has(.is-failed)) > .ds-element-pill { opacity: 0; pointer-events: none; }
 }
 /* A paper's TOC bar: the logo in the start slot, the other formats in the end slot. */
 .ds-paper-bar-logo { grid-column: 1; justify-self: start; display: inline-flex; color: var(--ds-text-muted); }
@@ -1960,7 +1980,7 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
   .ds-toc-bar-inner:has(> .ds-paper-tools) > .ds-toc { position: static; }   /* the list centres on the bar, not on the off-centre control, so it stays on screen */
 }
 @media print {
-  .ds-toc-bar, .ds-permalink, .ds-element-pill { display: none; }
+  .ds-toc-bar, .ds-permalink, .ds-element-pill, .ds-copy-failed-message { display: none; }
   .ds-paper-identity { font-size: 10pt; }
   .ds-paper-element, .ds-page :is(figure, table) { break-inside: avoid; }
   .ds-page :is(h2, h3, h4) { break-after: avoid; }
@@ -4538,9 +4558,10 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 }
 .ds-permalink svg { width: 1.05em; height: 1.05em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 :is(h2, h3, h4):is(:hover, .is-active) > .ds-permalink,
-.ds-permalink:focus-visible { opacity: 1; }
+.ds-permalink:focus-visible,
+.ds-permalink.is-failed { opacity: 1; }   /* a failed copy keeps it in view with its line */
 @media (hover: none) {
-  :is(h2, h3, h4):hover:not(.is-active) > .ds-permalink:not(:focus-visible) { opacity: 0; }
+  :is(h2, h3, h4):hover:not(.is-active) > .ds-permalink:not(:focus-visible, .is-failed) { opacity: 0; }
 }
 .ds-permalink:hover { color: var(--ds-link); }
 .ds-permalink:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }

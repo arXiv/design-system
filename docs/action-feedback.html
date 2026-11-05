@@ -95,7 +95,7 @@
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
     <h1>Show that something was copied</h1>
-    <p>Copy and Permalink do their work out of sight: nothing on the page changes. Say that it worked, in words for a screen reader and with a tick for everyone, and leave focus where it was. The same rules apply to any action whose result is not otherwise announced, such as the theme control.</p>
+    <p>Copy and Permalink do their work out of sight: nothing on the page changes. Say that it worked, in words for a screen reader and with a tick for everyone, and leave focus where it was. If it failed, show that too, and say what to do instead. The same rules apply to any action whose result is not otherwise announced, such as the theme control.</p>
   </header>
   </div>
 
@@ -134,7 +134,7 @@
 
   <section>
     <h2 id="a-copy-button">A copy button</h2>
-    <p class="ds-section-desc">Any button that copies, here one that copies an identifier. Press Copy: the tick takes the icon&#39;s place for two seconds, a screen reader hears &ldquo;Identifier copied&rdquo;, and focus stays on the button, which is still called Copy.</p>
+    <p class="ds-section-desc">Any button that copies, here one that copies an identifier. Press Copy: the tick takes the icon&#39;s place for two seconds, a screen reader hears &ldquo;Identifier copied&rdquo;, and focus stays on the button, which is still called Copy. Below it, the same button after a copy that failed; pressing it tries again.</p>
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
@@ -159,10 +159,19 @@
             <dt>.ds-copy-done</dt>
             <dd>The tick, beside the button&#39;s own icon. For two seconds after a copy the script adds <code>.is-done</code> to the button, and the tick takes the icon&#39;s place.</dd>
             <dt>data-copy-failed</dt>
-            <dd>Optional: what to do if the copy fails. Without it, a link says “Copy failed — the address is” and the address, and other text says “Copy failed — select the text and copy it manually”.</dd>
+            <dd>Optional: what to do if the copy fails. Without it, a link says “Copy failed — copy the link from the address bar”, after the script has put the link there, and other text says “Copy failed — select the text and copy it manually”.</dd>
+            <dt>.ds-copy-failed</dt>
+            <dd>The alert. The script adds it to the button the first time a copy fails, and adds <code>.is-failed</code>: the alert takes the icon&#39;s place until the button is pressed again.</dd>
+            <dt>.ds-copy-failed-message</dt>
+            <dd>The line that says what to do instead, which also describes the button. The script puts it under the code block, heading, equation or paragraph the button belongs to, or under the button itself when the button is in the margin.</dd>
           </dl>
         </div>
       </details>
+    </div>
+
+    <p class="ds-panel-label">After a copy that failed</p>
+    <div class="ds-card">
+      <p><code>arXiv:2604.22725</code> <button type="button" class="ds-btn ds-btn-compact is-failed" data-copy="arXiv:2604.22725" data-copied="Identifier copied" aria-describedby="copy-failed-example"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><svg class="ds-copy-done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg><svg class="ds-copy-failed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>Copy<span class="is-sr-only"> identifier</span></button><span class="ds-copy-failed-message" id="copy-failed-example">Copy failed — select the text and copy it manually</span></p>
     </div>
   </section>
 
@@ -176,7 +185,9 @@
       <li><strong>Focus stays on the control.</strong></li>
       <li><strong>The control keeps its name.</strong> The name says what it does: Copy is still Copy after copying.</li>
       <li><strong>Show it too, where nothing else on the page changes.</strong> A visible sign goes with the words, such as a green tick, and both reset after two seconds.</li>
-      <li><strong>Say when it fails, and what to do instead</strong>: &ldquo;Copy failed — select the code and copy it manually&rdquo;.</li>
+      <li><strong>Show a failure, and say what to do instead.</strong> An alert takes the icon&#39;s place, and a line under the control says it: &ldquo;Copy failed — select the code and copy it manually&rdquo;. Both stay until the control is pressed again, and a control that shows on hover stays in view while they do.</li>
+      <li><strong>A link that could not be copied goes in the address bar.</strong> The address is not on the page, so the script puts it where people already copy links from, without moving the page, and the line says &ldquo;Copy failed — copy the link from the address bar&rdquo;.</li>
+      <li><strong>The line goes under the control&#39;s line</strong>, as a field&#39;s error goes under the field: under the code block, heading, equation or paragraph. A control in the margin keeps the line under itself, in the margin, so it stays beside the control however long the paragraph.</li>
       <li><strong>Every copy button uses <code>copy.js</code>.</strong> A page never writes its own copy handler, so every copy gives the same feedback.</li>
     </ul>
   </section>
