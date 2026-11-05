@@ -195,7 +195,7 @@ rules:
   - "**BibTeX lists every author**, because a reference manager turns “and others” into “et al.” and the other authors are lost. APA, Chicago and MLA follow their own style rules for long author lists."
   - "**Every version of a withdrawn paper shows the notice.** A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn. The notice takes the place of the older-version warning, and links to the last version that can be read, except on that version."
   - "**When there is no full text, affordances related to full text are also removed.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all."
-  - "**A removed version keeps its license, but not its cross-listed categories.**"
+  - "**A removed version keeps its license, but not its cross-listed categories.** This is arXiv's current practice."
   - "**arXiv staff may decide to remove the license or other metadata** when there is a legal reason to do so, as allowed under [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2."
   - "**A citation of an earlier version says the paper was withdrawn.** Each format ends with a note, such as “This paper was withdrawn, 22 Oct 2026”, so the status travels with the citation."
   - "Display guidelines for withdrawn and removed papers follow [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf)."
@@ -798,7 +798,7 @@ A display equation, a figure and a bibliography entry each have a small row of a
 - **BibTeX lists every author**, because a reference manager turns “and others” into “et al.” and the other authors are lost. APA, Chicago and MLA follow their own style rules for long author lists.
 - **Every version of a withdrawn paper shows the notice.** A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn. The notice takes the place of the older-version warning, and links to the last version that can be read, except on that version.
 - **When there is no full text, affordances related to full text are also removed.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all.
-- **A removed version keeps its license, but not its cross-listed categories.**
+- **A removed version keeps its license, but not its cross-listed categories.** This is arXiv's current practice.
 - **arXiv staff may decide to remove the license or other metadata** when there is a legal reason to do so, as allowed under [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2.
 - **A citation of an earlier version says the paper was withdrawn.** Each format ends with a note, such as “This paper was withdrawn, 22 Oct 2026”, so the status travels with the citation.
 - Display guidelines for withdrawn and removed papers follow [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf).
