@@ -2825,6 +2825,14 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
   opacity: 0; transition: opacity 0.12s; pointer-events: none;
 }
 .ltx_para:hover::before, .ltx_para.is-active::before { opacity: 1; }
+/* A failed copy (copy.js) keeps the pill in view with its scope rule until
+   it is pressed again. In the margin the line sits under the pill, clear of
+   the scope rule; without a margin it goes under the paragraph, with room
+   before the next one, so it reads as this paragraph's. */
+.mg-mark.is-failed { opacity: 1; }
+.ltx_para:has(.mg-mark.is-failed)::before { opacity: 1; }
+.mg-stick .ds-copy-failed-message { margin-inline-end: 8px; }
+.ltx_para + .ds-copy-failed-message { margin: calc(8px + var(--ds-space-2)) 0 var(--ds-space-6); }
 /* Joined to the footnote/citation popover family: tint-light
    surface, family title and close-button classes reused verbatim, so all
    arXiv-layer transient panels read as one system. */
@@ -2837,14 +2845,14 @@ li.ltx_bibitem.cite-active-target .bib-chip-return { display: inline-flex; }
    already taught. Conflating the two was the original bug. */
 @media (max-width: 999px) {
   .ltx_para .mg-mark { display: none; }
-  .ltx_para.is-active {
+  .ltx_para:is(.is-active, :has(.mg-mark.is-failed)) {
     outline: 1px solid var(--ds-border-muted); outline-offset: 8px; border-radius: 2px;
   }
   /* No left margin: the rail hugs the paragraph's right edge, and the
      sticky pill rides it while a long paragraph scrolls. */
   .mg-rail-anchor { right: 2px; }
   .mg-stick { top: 56px; }
-  .ltx_para.is-active .mg-mark { display: inline-flex; opacity: 1; }
+  .ltx_para.is-active .mg-mark, .ltx_para .mg-mark.is-failed { display: inline-flex; opacity: 1; }
   .ltx_para::before { display: none; }
 }
 @media (max-width: 999px) and (hover: hover) {
@@ -7807,40 +7815,19 @@ We thus see that</p>
    The design system's Permalink control (.ds-permalink), as anchors.js
    draws it. anchors.js looks for an id on the heading; LaTeXML puts the
    id on the <section>, so this page adds the control itself. The name
-   starts with the visible word: "Permalink to section 2, Setup". A copy
-   shows the tick for 2 seconds and is announced in words.
+   starts with the visible word: "Permalink to section 2, Setup". The
+   design system's copy.js copies the link and gives the feedback.
 */
 (function() {
   var ICONS = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>' +
-    '<svg class="ds-permalink-done" viewBox="0 0 24 24" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>';
+    '<svg class="ds-copy-done" viewBox="0 0 24 24" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>';
   function words(el) {
     var c = el.cloneNode(true);
     Array.prototype.forEach.call(c.querySelectorAll('annotation, annotation-xml, .ds-permalink, .ltx_tag'), function (n) { n.remove(); });
     return c.textContent.replace(/\s+/g, ' ').trim();
   }
-  function copy(text) {
-    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
-    var ta = document.createElement('textarea');
-    ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:-1000px;opacity:0';
-    document.body.appendChild(ta);
-    var back = document.activeElement;
-    ta.select();
-    var ok = false;
-    try { ok = document.execCommand('copy'); } catch (e) {}
-    document.body.removeChild(ta);
-    if (back && back.focus) back.focus();
-    return ok ? Promise.resolve() : Promise.reject();
-  }
 
   document.addEventListener('DOMContentLoaded', function() {
-    var status = document.getElementById('ds-anchor-status');
-    if (!status) {
-      status = document.createElement('span');
-      status.id = 'ds-anchor-status';
-      status.className = 'is-sr-only';
-      status.setAttribute('role', 'status');
-      document.body.appendChild(status);
-    }
     var headings = document.querySelectorAll(
       'article .ltx_section > .ltx_title, article .ltx_subsection > .ltx_title, article .ltx_appendix > .ltx_title'
     );
@@ -7856,18 +7843,11 @@ We thus see that</p>
       btn.type = 'button';
       btn.className = 'ds-permalink';
       btn.innerHTML = ICONS + 'Permalink<span class="is-sr-only"> to ' + name.replace(/[&<>]/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }) + '</span>';
-      var timer;
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var url = window.location.href.split('#')[0] + '#' + id;
-        copy(url).then(function () {
-          btn.classList.add('is-done');
-          status.textContent = 'Link to ' + name + ' copied';
-          clearTimeout(timer);
-          timer = setTimeout(function () { btn.classList.remove('is-done'); status.textContent = ''; }, 2000);
-        }, function () { status.textContent = 'Copy failed. The address is ' + url; });
-      });
+      btn.setAttribute('data-copy-link', '#' + id);
+      btn.setAttribute('data-copied', 'Link to ' + name + ' copied');
+      // copy.js listens on the document, ahead of this; the tap stops here so
+      // it is not also a tap on the heading.
+      btn.addEventListener('click', function(e) { e.stopPropagation(); });
       h.appendChild(btn);
     });
   });
@@ -8587,17 +8567,7 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
     return { sec: sec, para: m[5] };
   }
   function num(id) { var q = parts(id); return q ? q.sec + "." + q.para : ""; }
-  function locator(id) { var q = parts(id); return q ? "\u00a7" + q.sec + " \u00b6" + q.para : id; }
-  function copyText(t, done) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(t).then(done, done);
-    } else {
-      var ta = document.createElement("textarea");
-      ta.value = t; document.body.appendChild(ta); ta.select();
-      try { document.execCommand("copy"); } catch (e) {}
-      document.body.removeChild(ta); done();
-    }
-  }
+  var TICK = '<svg class="ds-copy-done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m20 6-11 11-5-5"/></svg>';
   function makeRail(para) {
     var rail = document.createElement("div");
     rail.className = "mg-rail-anchor";
@@ -8610,24 +8580,18 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
   function makePill(el) {
     /* One word, one behavior : every
        permalink pill reads "Permalink" and immediately copies the link,
-       like the heading, figure, and equation chips. Identity lives in
-       the copy feedback — "Copied \u00b6 2.3" — never crowding the
-       button. The written locator retires from this path; it belongs
-       to future Cite-panel work. */
-    var identity = "\u00b6 " + num(el.id);
+       like the heading, figure, and equation chips. The design system's
+       copy.js copies it and gives the feedback. Which paragraph it is
+       lives in the hidden end of the name and in the announcement, "Link
+       to paragraph 2.3 copied", never crowding the button. The written
+       locator retires from this path; it belongs to future Cite-panel
+       work. */
+    var which = num(el.id) ? "paragraph " + num(el.id) : "this paragraph";
     var b = document.createElement("button");
     b.className = "mg-mark"; b.type = "button";
-    b.innerHTML = ICON + "<span>Permalink</span>";
-    b.setAttribute("aria-label", "Paragraph permalink \u2014 " + locator(el.id));
-    b.setAttribute("title", "Copy link to this paragraph");
-    b.addEventListener("click", function () {
-      var url = location.origin + location.pathname + "#" + el.id;
-      copyText(url, function () {
-        var span = b.querySelector("span");
-        span.textContent = "Copied" + (identity ? " " + identity : "") + " \u2713";
-        setTimeout(function () { span.textContent = "Permalink"; }, 1500);
-      });
-    });
+    b.innerHTML = ICON + TICK + '<span>Permalink</span><span class="is-sr-only"> to ' + which + '</span>';
+    b.setAttribute("data-copy-link", "#" + el.id);
+    b.setAttribute("data-copied", "Link to " + which + " copied");
     return b;
   }
 
@@ -8640,11 +8604,11 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
   document.addEventListener("mouseover", function (e) {
     var el = e.target.closest ? e.target.closest(HOVER_TARGETS) : null;
     if (!el) return;
-    if (!hoverRail || hoverRail.parentElement !== el) {
-      if (hoverRail) hoverRail.remove();
-      hoverRail = makeRail(el);
-      el.appendChild(hoverRail);
-    }
+    if (hoverRail && hoverRail.parentElement === el) return;
+    // A rail whose copy failed stays with its paragraph, alert and line
+    // together, until its pill is pressed again.
+    if (hoverRail && !hoverRail.querySelector(".is-failed")) hoverRail.remove();
+    hoverRail = el.querySelector(":scope > .mg-rail-anchor") || el.appendChild(makeRail(el));
   });
 
   /* Tap-to-activate, gated on INPUT capability rather than width: it
@@ -8658,7 +8622,7 @@ article.ltx_document > .ltx_bibliography ~ .ltx_para {
     if (activeEl) {
       activeEl.classList.remove("is-active");
       var rail = activeEl.querySelector(".mg-rail-anchor");
-      if (rail && rail !== hoverRail) rail.remove();
+      if (rail && rail !== hoverRail && !rail.querySelector(".is-failed")) rail.remove();
       activeEl = null;
     }
   }
