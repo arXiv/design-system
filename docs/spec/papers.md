@@ -188,41 +188,43 @@ components:
     notes:
       - "**Alt text**Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently."
 rules:
-  - "**Show the author's text as written.** A title or abstract is never shortened, reworded or corrected. When we display TeX, it is shown exactly as the author wrote it. We excerpt abstracts, but never edit them."
+  - "**Show the author's text as written.** A title or abstract is never shortened, reworded or corrected. When we display TeX, it is shown exactly as the author wrote it. We may excerpt a long abstract in search results, but never edit it."
   - "**Leave out what a paper does not have.** No empty labels and no placeholders."
   - "**Every date has its label.** Readers confuse submitted and announced dates when either stands alone."
-  - "**The paper follows its abstract on the same page.** A reader reaches the first section by scrolling, by the TOC bar or by the skip link, with no click to open the paper."
-  - "**An optional area above the identity line** holds a temporary message or link, such as Back to abstract while readers move to HTML papers. It is `.ds-btn-text` for a link, or an alert for a message."
-  - "**A citation names the arXiv identifier and the arXiv DOI**, never the HTML page, even when the paper has a journal reference. BibTeX lists every author, because a reference manager turns “and others” into “et al.” and the other authors are lost. APA, Chicago and MLA follow their own style rules for long author lists."
+  - "**A citation names the arXiv identifier and the arXiv DOI**, never the HTML page or a journal reference."
+  - "**BibTeX lists every author**, because a reference manager turns “and others” into “et al.” and the other authors are lost. APA, Chicago and MLA follow their own style rules for long author lists."
   - "**Every version of a withdrawn paper shows the notice.** A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn. The notice takes the place of the older-version warning, and links to the last version that can be read, except on that version."
-  - "**Without a text, what acts on a text goes.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all."
-  - "**A removed version keeps its license, but not its cross-listed categories.** arXiv may remove the license, or any other metadata, when there is a legal reason to, as [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2 allows."
+  - "**When there is no full text, affordances related to full text are also removed.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all."
+  - "**A removed version keeps its license, but not its cross-listed categories.**"
+  - "**arXiv staff may decide to remove the license or other metadata** when there is a legal reason to do so, as allowed under [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2."
   - "**A citation of an earlier version says the paper was withdrawn.** Each format ends with a note, such as “This paper was withdrawn, 22 Oct 2026”, so the status travels with the citation."
   - "Display guidelines for withdrawn and removed papers follow [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf)."
+  - "**The paper follows its abstract on the same page.** A reader reaches the first section by scrolling, the TOC bar or the skip link, with no click to open the paper."
   - "**The body markup is LaTeXML's, unchanged.** arXiv styles it from outside with CSS and never rewrites, reorders or wraps the author's elements."
-  - "**Body text is set as on [Typography](typography.md), left-aligned and hyphenated.** ar5iv sets weight 300, so set 400. A justified line has nowhere to break around inline math, and `hyphens: auto` needs the page's `lang` attribute to know which language to hyphenate."
+  - "**Body text is set per rules in [Typography](typography.md).**"
+  - "**Body text is left-aligned and hyphenated, never justified.** A justified line has nowhere to break around inline math, so it opens wide gaps between words. Set `hyphens: auto`, and the page's `lang` attribute, which tells the browser which language to hyphenate."
   - "**A figure caption is Plex Sans at 0.875rem, left-aligned, the width of the figure.** Its label, text and punctuation are as the author wrote them."
-  - "**Paper figures keep ar5iv's white background in dark mode; arXiv's own images do not.** Clear it on the header, TOC bar and footer images."
-  - "**LaTeXML's beta badge, conversion logo and own sidebar are not shown.** The `.ds-toc` list replaces the sidebar."
+  - "**Paper figures maintain a white background in dark mode.**"
   - "**The contents list repeats the author's headings exactly**, including subsections, appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML's contents entries with their MathML. A script that reads a heading's words leaves out the TeX annotation, as `toc.js` and `anchors.js` do."
-  - "**PDF opens in a new tab, in the bar and in the sidebar**, so the reader keeps their place in the HTML paper. It has the external-link icon and “(opens in a new tab)”, as on [Links](links.md)."
-  - "**Every section, subsection and appendix heading has a Permalink control.** It copies the address with the section's LaTeXML id and the version: `…/2604.22725v1#S2`. A heading has one action, so it gets the Permalink control; an equation, figure or reference has several, so it gets the element pill."
+  - "**The paper PDF always opens in a new tab**, so the reader keeps their place in the HTML paper."
+  - "**Every link to a place in the paper lands below the TOC bar.** The bar sets `scroll-padding-top`, which covers the TOC, a permalink, a citation and a cross-reference; a script that scrolls uses `scrollIntoView`, which respects it."
+  - "**Every section, subsection and appendix heading has a Permalink control.** It copies the address with the section's LaTeXML id and the version: `…/2604.22725v1#S2`."
+  - "**Permalinks can appear in two places**: in the Permalink control after a section heading, or in the element pill below a specific content block. A heading has one action, so it gets the Permalink control; an equation, figure or reference has several, so it gets the element pill."
+  - "**A wide equation scrolls inside its own box; it never scrolls the page.** The equation number stays pinned to the right edge while it scrolls."
   - "**View TeX swaps the equation for its TeX in place**, in plain monospace with no code box, and MathML annotations are never displayed. Copy copies what is on screen: the MathML in math view, the TeX in TeX view."
   - "**View TeX and Copy use the TeX that LaTeXML keeps with the equation.** LaTeXML expands the author's own macros into standard TeX, so the copy works outside the paper. The author's own files are the TeX Source download."
   - "**Only the author's alt text is shown**, whole and unchanged, however long. No reader-written or machine-written description is added, and the image's `alt` is never changed; write it in with `textContent`. A figure without alt text says “No alt text provided”, in `--ds-text-muted`, with a link to how to add alt text."
   - "**Expand opens the figure viewer**, a [wide modal](modals.md#wide-for-a-viewer), and clicking the image opens it too; Expand is the keyboard path. The viewer shows a copy of the figure with its caption exactly as the author wrote it, and the figure in the paper is never moved or changed."
   - "**Zoom stays until the reader closes the viewer.** Zoom in, Zoom out and Fit buttons, the wheel, double-click, pinch and the +, - and 0 keys all work; drag or the arrow keys pan."
   - "**Print hides the TOC bar, the permalinks, the element pills and every popover.** The identity line prints at 10pt. No page break falls inside an equation, table or figure, or straight after a heading; sections may break."
-  - "**Paper titles are always a heading**, so a screen reader user can easily find it and move from paper to paper in a list."
-  - "**Name each format link's paper.** In a list, “PDF” alone is the same link text fifty times; an `.is-sr-only` span adds the identifier."
+  - "**The title of each paper is a heading**, in a list as on its own page, so a screen reader user can find it and move from paper to paper."
+  - "**Format links name their paper for screen reader users.** In the markup the paper title comes just before the format links, though the dates are shown first, with the CSS `order` property. Each link also has an `.is-sr-only` span with the paper's identifier, so a screen reader user who lists the page's links hears “PDF of 2609.36857”, not “PDF” fifty times."
   - "**Category names are in the tooltip, never only in a `title` attribute.** See [Tooltip](forms.md#tooltip)."
-  - "**Paper title just before links.** For screen reader users, to maintain context, the title should appear before the format links, and just before them, so that the context is not forgotten. That means displaying the row with dates and links using the CSS `order` property (ie: the visual display will show the dates first, but the DOM order lists the links first)."
-  - "**Say a withdrawal in words.** On a withdrawn or removed paper the status starts the title and the page's `<title>`, and the notice follows the title as a heading, so a screen reader meets both first. The red adds to the words and never replaces them."
-  - "**The page has one `<main>`**, from the area above the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it. When LaTeXML's output has no `<main>`, the page around the paper supplies it."
-  - "**A second skip link goes to the paper's first section**, before the sidebar, so a keyboard user can pass it."
-  - "**Every link to a place in the paper lands below the TOC bar.** The bar sets `scroll-padding-top`, which covers the TOC, a permalink, a citation and a cross-reference; a script that scrolls uses `scrollIntoView`, which respects it."
-  - "**Inline math gets nothing from arXiv**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly."
-  - "**A wide equation scrolls inside its own box, never the page.** The box has `tabindex=\"0\"`, `role=\"region\"` and a name: “Equation 2.14, scrolls sideways”. The equation number stays pinned to the right edge while it scrolls."
+  - "**On a withdrawn or removed paper, the status appears before the paper title**, so it is seen or spoken out loud early in the reading experience. The alert red color of the status enhances the label but is never the only signal."
+  - "**The page has one `<main>`**, from the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it."
+  - "**A second skip link before the sidebar goes to the paper's first section**, so a keyboard user can skip the content in between."
+  - "**Inline math gets no additional markup**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly."
+  - "**A scrolling equation box can be reached by keyboard and has a name.** It has `tabindex=\"0\"`, `role=\"region\"` and a name: “Equation 2.14, scrolls sideways”."
   - "**The figure viewer is named by the caption's own label**, such as “Figure 1:”, with `aria-labelledby`. Its zoom level is shown and announced, with `aria-live=\"polite\"`, and zoom is animated only when reduced motion is not set."
 ---
 
@@ -789,39 +791,41 @@ A display equation, a figure and a bibliography entry each have a small row of a
 
 ## Rules
 
-- **Show the author's text as written.** A title or abstract is never shortened, reworded or corrected. When we display TeX, it is shown exactly as the author wrote it. We excerpt abstracts, but never edit them.
+- **Show the author's text as written.** A title or abstract is never shortened, reworded or corrected. When we display TeX, it is shown exactly as the author wrote it. We may excerpt a long abstract in search results, but never edit it.
 - **Leave out what a paper does not have.** No empty labels and no placeholders.
 - **Every date has its label.** Readers confuse submitted and announced dates when either stands alone.
-- **The paper follows its abstract on the same page.** A reader reaches the first section by scrolling, by the TOC bar or by the skip link, with no click to open the paper.
-- **An optional area above the identity line** holds a temporary message or link, such as Back to abstract while readers move to HTML papers. It is `.ds-btn-text` for a link, or an alert for a message.
-- **A citation names the arXiv identifier and the arXiv DOI**, never the HTML page, even when the paper has a journal reference. BibTeX lists every author, because a reference manager turns “and others” into “et al.” and the other authors are lost. APA, Chicago and MLA follow their own style rules for long author lists.
+- **A citation names the arXiv identifier and the arXiv DOI**, never the HTML page or a journal reference.
+- **BibTeX lists every author**, because a reference manager turns “and others” into “et al.” and the other authors are lost. APA, Chicago and MLA follow their own style rules for long author lists.
 - **Every version of a withdrawn paper shows the notice.** A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn. The notice takes the place of the older-version warning, and links to the last version that can be read, except on that version.
-- **Without a text, what acts on a text goes.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all.
-- **A removed version keeps its license, but not its cross-listed categories.** arXiv may remove the license, or any other metadata, when there is a legal reason to, as [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2 allows.
+- **When there is no full text, affordances related to full text are also removed.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all.
+- **A removed version keeps its license, but not its cross-listed categories.**
+- **arXiv staff may decide to remove the license or other metadata** when there is a legal reason to do so, as allowed under [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2.
 - **A citation of an earlier version says the paper was withdrawn.** Each format ends with a note, such as “This paper was withdrawn, 22 Oct 2026”, so the status travels with the citation.
 - Display guidelines for withdrawn and removed papers follow [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf).
+- **The paper follows its abstract on the same page.** A reader reaches the first section by scrolling, the TOC bar or the skip link, with no click to open the paper.
 - **The body markup is LaTeXML's, unchanged.** arXiv styles it from outside with CSS and never rewrites, reorders or wraps the author's elements.
-- **Body text is set as on [Typography](typography.md), left-aligned and hyphenated.** ar5iv sets weight 300, so set 400. A justified line has nowhere to break around inline math, and `hyphens: auto` needs the page's `lang` attribute to know which language to hyphenate.
+- **Body text is set per rules in [Typography](typography.md).**
+- **Body text is left-aligned and hyphenated, never justified.** A justified line has nowhere to break around inline math, so it opens wide gaps between words. Set `hyphens: auto`, and the page's `lang` attribute, which tells the browser which language to hyphenate.
 - **A figure caption is Plex Sans at 0.875rem, left-aligned, the width of the figure.** Its label, text and punctuation are as the author wrote them.
-- **Paper figures keep ar5iv's white background in dark mode; arXiv's own images do not.** Clear it on the header, TOC bar and footer images.
-- **LaTeXML's beta badge, conversion logo and own sidebar are not shown.** The `.ds-toc` list replaces the sidebar.
+- **Paper figures maintain a white background in dark mode.**
 - **The contents list repeats the author's headings exactly**, including subsections, appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML's contents entries with their MathML. A script that reads a heading's words leaves out the TeX annotation, as `toc.js` and `anchors.js` do.
-- **PDF opens in a new tab, in the bar and in the sidebar**, so the reader keeps their place in the HTML paper. It has the external-link icon and “(opens in a new tab)”, as on [Links](links.md).
-- **Every section, subsection and appendix heading has a Permalink control.** It copies the address with the section's LaTeXML id and the version: `…/2604.22725v1#S2`. A heading has one action, so it gets the Permalink control; an equation, figure or reference has several, so it gets the element pill.
+- **The paper PDF always opens in a new tab**, so the reader keeps their place in the HTML paper.
+- **Every link to a place in the paper lands below the TOC bar.** The bar sets `scroll-padding-top`, which covers the TOC, a permalink, a citation and a cross-reference; a script that scrolls uses `scrollIntoView`, which respects it.
+- **Every section, subsection and appendix heading has a Permalink control.** It copies the address with the section's LaTeXML id and the version: `…/2604.22725v1#S2`.
+- **Permalinks can appear in two places**: in the Permalink control after a section heading, or in the element pill below a specific content block. A heading has one action, so it gets the Permalink control; an equation, figure or reference has several, so it gets the element pill.
+- **A wide equation scrolls inside its own box; it never scrolls the page.** The equation number stays pinned to the right edge while it scrolls.
 - **View TeX swaps the equation for its TeX in place**, in plain monospace with no code box, and MathML annotations are never displayed. Copy copies what is on screen: the MathML in math view, the TeX in TeX view.
 - **View TeX and Copy use the TeX that LaTeXML keeps with the equation.** LaTeXML expands the author's own macros into standard TeX, so the copy works outside the paper. The author's own files are the TeX Source download.
 - **Only the author's alt text is shown**, whole and unchanged, however long. No reader-written or machine-written description is added, and the image's `alt` is never changed; write it in with `textContent`. A figure without alt text says “No alt text provided”, in `--ds-text-muted`, with a link to how to add alt text.
 - **Expand opens the figure viewer**, a [wide modal](modals.md#wide-for-a-viewer), and clicking the image opens it too; Expand is the keyboard path. The viewer shows a copy of the figure with its caption exactly as the author wrote it, and the figure in the paper is never moved or changed.
 - **Zoom stays until the reader closes the viewer.** Zoom in, Zoom out and Fit buttons, the wheel, double-click, pinch and the +, - and 0 keys all work; drag or the arrow keys pan.
 - **Print hides the TOC bar, the permalinks, the element pills and every popover.** The identity line prints at 10pt. No page break falls inside an equation, table or figure, or straight after a heading; sections may break.
-- **Paper titles are always a heading**, so a screen reader user can easily find it and move from paper to paper in a list.
-- **Name each format link's paper.** In a list, “PDF” alone is the same link text fifty times; an `.is-sr-only` span adds the identifier.
+- **The title of each paper is a heading**, in a list as on its own page, so a screen reader user can find it and move from paper to paper.
+- **Format links name their paper for screen reader users.** In the markup the paper title comes just before the format links, though the dates are shown first, with the CSS `order` property. Each link also has an `.is-sr-only` span with the paper's identifier, so a screen reader user who lists the page's links hears “PDF of 2609.36857”, not “PDF” fifty times.
 - **Category names are in the tooltip, never only in a `title` attribute.** See [Tooltip](forms.md#tooltip).
-- **Paper title just before links.** For screen reader users, to maintain context, the title should appear before the format links, and just before them, so that the context is not forgotten. That means displaying the row with dates and links using the CSS `order` property (ie: the visual display will show the dates first, but the DOM order lists the links first).
-- **Say a withdrawal in words.** On a withdrawn or removed paper the status starts the title and the page's `<title>`, and the notice follows the title as a heading, so a screen reader meets both first. The red adds to the words and never replaces them.
-- **The page has one `<main>`**, from the area above the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it. When LaTeXML's output has no `<main>`, the page around the paper supplies it.
-- **A second skip link goes to the paper's first section**, before the sidebar, so a keyboard user can pass it.
-- **Every link to a place in the paper lands below the TOC bar.** The bar sets `scroll-padding-top`, which covers the TOC, a permalink, a citation and a cross-reference; a script that scrolls uses `scrollIntoView`, which respects it.
-- **Inline math gets nothing from arXiv**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly.
-- **A wide equation scrolls inside its own box, never the page.** The box has `tabindex="0"`, `role="region"` and a name: “Equation 2.14, scrolls sideways”. The equation number stays pinned to the right edge while it scrolls.
+- **On a withdrawn or removed paper, the status appears before the paper title**, so it is seen or spoken out loud early in the reading experience. The alert red color of the status enhances the label but is never the only signal.
+- **The page has one `<main>`**, from the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it.
+- **A second skip link before the sidebar goes to the paper's first section**, so a keyboard user can skip the content in between.
+- **Inline math gets no additional markup**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly.
+- **A scrolling equation box can be reached by keyboard and has a name.** It has `tabindex="0"`, `role="region"` and a name: “Equation 2.14, scrolls sideways”.
 - **The figure viewer is named by the caption's own label**, such as “Figure 1:”, with `aria-labelledby`. Its zoom level is shown and announced, with `aria-live="polite"`, and zoom is animated only when reduced motion is not set.
