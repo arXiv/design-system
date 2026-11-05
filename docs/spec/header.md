@@ -69,7 +69,7 @@ components:
       - "The script answers to the width of the bar, not of the window, so the phone example folds inside a narrower box on a wide screen. Open the menu to see the folded rows."
   - id: header-dropdown-menus
     title: "Header dropdown menus"
-    summary: "A property whose sections need grouping adds `.ds-site-header-dropdown`, built on `<details>` so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The Account menu is the same component. A dropdown matches its control: its background is the control’s background, and it attaches to the control’s edge, with no gap."
+    summary: "A property whose sections need grouping adds `.ds-site-header-dropdown`, built on `<details>` so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The Account menu is the same component. A dropdown matches the row it opens from: its background is the row’s background, and it attaches to the row’s bottom edge, with no gap."
     classes:
       - name: ".ds-site-header-dropdown"
         does: "A `<details>` group in the bar. Optional. The summary sits in the bar and takes the surface tokens, so it is correct on either variant."
@@ -114,7 +114,7 @@ components:
     summary: "The aspirational header has an optional centred space, `.ds-site-header-center`, for one tool or filter that changes every page under the header, such as the subject every report in a dashboard is about. This space is reserved for tools that change or impact the entire site (or the portion of the site that uses that particular header). It comes straight after the logo and is centred in the room between the logo and the regions on the right. It folds last. As the viewport width decreases, the label is hidden first, then the value, leaving just an icon button on the narrowest of screens. Its full name stays for screen readers at every step."
     classes:
       - name: ".ds-site-header-center"
-        does: "The centred space, straight after the logo. It holds one button. A filter is a [Filters button](filters.md#multiple-choice-filters) with `.on-dark`, and its panel hangs from the bar's bottom edge."
+        does: "The centred space, straight after the logo. It holds one button. A filter is a [Filters button](filters.md#multiple-choice-filters) with `.on-dark`, and its panel hangs from the bar's bottom edge in the bar's own dark background, with dark-mode fields."
       - name: ".ds-site-header-center-label"
         does: "The button's word, such as “Subject”. The first thing to fold."
       - name: ".ds-filter-value"
@@ -301,7 +301,7 @@ When the header does not fit on one row, it folds. The greeting goes first. Then
 
 ## Header dropdown menus
 
-A property whose sections need grouping adds `.ds-site-header-dropdown`, built on `<details>` so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The Account menu is the same component. A dropdown matches its control: its background is the control’s background, and it attaches to the control’s edge, with no gap.
+A property whose sections need grouping adds `.ds-site-header-dropdown`, built on `<details>` so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The Account menu is the same component. A dropdown matches the row it opens from: its background is the row’s background, and it attaches to the row’s bottom edge, with no gap.
 
 ```html
 <header class="ds-site-header ds-site-header--light">
@@ -440,7 +440,7 @@ The aspirational header has an optional centred space, `.ds-site-header-center`,
 <script src="filter-panel.js" defer></script>
 ```
 
-- `.ds-site-header-center` — The centred space, straight after the logo. It holds one button. A filter is a [Filters button](filters.md#multiple-choice-filters) with `.on-dark`, and its panel hangs from the bar's bottom edge.
+- `.ds-site-header-center` — The centred space, straight after the logo. It holds one button. A filter is a [Filters button](filters.md#multiple-choice-filters) with `.on-dark`, and its panel hangs from the bar's bottom edge in the bar's own dark background, with dark-mode fields.
 - `.ds-site-header-center-label` — The button's word, such as “Subject”. The first thing to fold.
 - `.ds-filter-value` — What is chosen, after the word. It folds next, leaving the icon. The page heading names the choice too, so the reader can still see it: see [Layouts](layout-patterns.md#the-main-content-comes-first).
 - `.is-center-compact, .is-center-folded` — State classes `header.js` sets on the bar as it folds the label, then the value. They are never written by hand.

@@ -28,7 +28,7 @@ components:
       - name: ".ds-filter-value"
         does: "Optional, inside the button: what is applied, after the button's name. It shortens with an ellipsis when the row is narrow."
       - name: ".ds-filter-panel"
-        does: "The filter panel, a `popover` with `role=\"dialog\"` and a name. Its background is the open button's background, and it attaches to the button's bottom edge. It holds a [compact form](forms.md#compact-form), one short column. `--ds-panel-width` sets its width."
+        does: "The filter panel, a `popover` with `role=\"dialog\"` and a name. It opens in the background of the row its button sits in, such as the card's header bar, and attaches to that row's bottom edge; `filter-panel.js` does both. It holds a [compact form](forms.md#compact-form), one short column. `--ds-panel-width` sets its width."
       - name: "<fieldset> with checkboxes"
         does: "A filter that takes several values, such as categories, is a fieldset of `.ds-check` checkboxes."
       - name: "<fieldset> with the legend Settings"
@@ -137,7 +137,7 @@ A filter that takes several choices at once is a group of checkboxes, in a filte
 
 - `.ds-filter-button` — A compact secondary button with the filter icon (`list-filter`) and no chevron. `popovertarget` names its panel. While the panel is open the button shows its pressed state.
 - `.ds-filter-value` — Optional, inside the button: what is applied, after the button's name. It shortens with an ellipsis when the row is narrow.
-- `.ds-filter-panel` — The filter panel, a `popover` with `role="dialog"` and a name. Its background is the open button's background, and it attaches to the button's bottom edge. It holds a [compact form](forms.md#compact-form), one short column. `--ds-panel-width` sets its width.
+- `.ds-filter-panel` — The filter panel, a `popover` with `role="dialog"` and a name. It opens in the background of the row its button sits in, such as the card's header bar, and attaches to that row's bottom edge; `filter-panel.js` does both. It holds a [compact form](forms.md#compact-form), one short column. `--ds-panel-width` sets its width.
 - `<fieldset> with checkboxes` — A filter that takes several values, such as categories, is a fieldset of `.ds-check` checkboxes.
 - `<fieldset> with the legend Settings` — A setting, such as threshold days, changes a calculation and is not a filter. It goes after the filters, in a fieldset of its own, and is not shown as a tag.
 - `.ds-tag, .ds-tag-remove` — One tag for each applied filter, after the button. Its remove control is a link to the page without that filter. See [Tags](tags.md#complex-tags).

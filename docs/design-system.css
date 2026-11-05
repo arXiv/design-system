@@ -1303,7 +1303,8 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   justify-content: space-between;
   gap: var(--ds-space-2) var(--ds-space-block);
   padding: var(--ds-space-2) var(--ds-space-3);
-  background: color-mix(in srgb, var(--ds-tint-warm) 50%, var(--ds-surface));   /* half a table header's tint, so the two stay apart */
+  --ds-menu-bg: color-mix(in srgb, var(--ds-tint-warm) 50%, var(--ds-surface));   /* half a table header's tint, so the two stay apart */
+  background: var(--ds-menu-bg);   /* a panel from the bar opens in it */
   border-bottom: 1px solid var(--ds-border);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   position: relative;
@@ -2257,7 +2258,9 @@ select.ds-input:not([multiple]):not([size]) {
 /* FILTER BUTTON AND FILTER PANEL  (.ds-filter-button, .ds-filter-panel) — filters.html
    A compact secondary button that opens a popover of filters for one set of
    data. Its filter icon, not a chevron, says what it opens. filter-panel.js
-   places the panel at the button's edge; without it the browser centres it. */
+   hangs the panel from the bottom edge of the row the button sits in and gives
+   it that row's --ds-menu-bg, and dark mode from a dark row; without the
+   script the browser centres it on the page's own surface. */
 .ds-filter-button { gap: 0.5em; min-width: 0; max-width: 100%; }
 .ds-filter-value { min-width: 0; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* Open: the button's own pressed colours, through its tokens, so its rim stays. */
@@ -2276,7 +2279,7 @@ select.ds-input:not([multiple]):not([size]) {
   width: min(calc(100vw - 2rem), var(--ds-panel-width, 22rem));
   padding: var(--ds-space-4);
   color: var(--ds-text);
-  background: var(--ds-btn-secondary-bg-active);   /* the open button's own background */
+  background: var(--ds-menu-bg, var(--ds-surface));   /* the row it opens from */
   border: 1px solid var(--ds-border);
   border-radius: 0 0 8px 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
@@ -3738,6 +3741,7 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
      no property at all. One set of rules, two surfaces, no specificity to
      reason about. */
   --ds-hdr-bg:        var(--ds-chrome);   /* the bar is dark in both themes; --ds-text would flip it light */
+  --ds-menu-bg:       var(--ds-hdr-bg);   /* a panel from the bar opens in it */
   --ds-hdr-fg:        var(--ds-grey-55);    /* a fixed step, 7.3:1 on the bar; --ds-text-disabled would go dark in dark mode */
   --ds-hdr-fg-strong: var(--ds-grey-10);       /* hover, active, Log in — fixed for the same reason */
   --ds-hdr-hover:     #302c28;
@@ -4290,8 +4294,9 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 /* SECTION MENU (.ds-subnav-section) AND MENU (.ds-menu) — navigation.html
    An area whose sections each have several views: the section menu starts the
    row, a cell in the accent's light tint from the row's edge, and the views of
-   the current section follow it as tabs. A menu matches its control: the
-   section menu's opens in the same tint; a menu from the white row is white. */
+   the current section follow it as tabs. A menu opens in the background of
+   the row it comes from: the tinted section cell counts as a row of its own,
+   so its menu is tinted; a menu from the white row is white. */
 .ds-subnav-section {
   --ds-menu-bg: var(--ds-tint-accent);
   --ds-menu-hover: var(--ds-accent-wash-hover, var(--ds-accent-wash));
