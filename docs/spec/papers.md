@@ -82,7 +82,7 @@ components:
       - name: "[aria-describedby]"
         does: "On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)."
       - name: ".ds-paper-cite"
-        does: "The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy-code.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden."
+        does: "The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden."
       - name: ".ds-paper-capabilities"
         does: "The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score."
       - name: ".ds-acc"
@@ -136,7 +136,7 @@ components:
       - name: "[aria-describedby]"
         does: "On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)."
       - name: ".ds-paper-cite"
-        does: "The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy-code.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden."
+        does: "The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden."
       - name: ".ds-paper-capabilities"
         does: "The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score."
       - name: ".ds-acc"
@@ -162,7 +162,7 @@ components:
       - name: ".is-sr-only"
         does: "Completes the name: “Permalink to section 2, Setup”. The name starts with the visible word."
       - name: "[role=\"status\"]"
-        does: "One region on the page. `anchors.js` writes “Link to section 2, Setup copied” into it, shows the green tick in place of the link icon, and clears both after 2 seconds."
+        does: "One region on the page, which `copy.js` makes. After a copy it says “Link to section 2, Setup copied”, the green tick takes the link icon's place, and both clear after 2 seconds. `anchors.js` adds the control and its attributes to every section heading. See [Show that something was copied](../action-feedback.html)."
       - name: ".is-active"
         does: "Set on the heading by a tap, on screens without hover."
     notes:
@@ -183,8 +183,8 @@ components:
         does: "The figure's alt text, under the label “Alt text”, in the margin at wide widths and folded to its info mark when narrower. See [Marginalia](layout-patterns.md#marginalia)."
       - name: ".is-cta"
         does: "Expand, the one main action on a figure. It opens the figure viewer."
-      - name: "[role=\"status\"]"
-        does: "One region on the page, where the script confirms a copy in words: “Link to equation 2.14 copied”."
+      - name: "data-copy-link, data-copy-from"
+        does: "Copy and Permalink, as on [Show that something was copied](../action-feedback.html): `copy.js` copies the equation's MathML or the link with the element's id, shows the tick in place of the icon, and says “Link to equation 2.14 copied” for 2 seconds."
     notes:
       - "**Alt text**Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently."
 rules:
@@ -497,7 +497,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 - `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
-- `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy-code.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
+- `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
 - `.ds-paper-capabilities` — The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score.
 - `.ds-acc` — Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label. They share `name="paper-info"`, so only one is open at a time.
 
@@ -679,7 +679,7 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
 - `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
-- `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy-code.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
+- `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
 - `.ds-paper-capabilities` — The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score.
 - `.ds-acc` — Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label. They share `name="paper-info"`, so only one is open at a time.
 
@@ -733,14 +733,13 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
 Each section heading in a paper has a Permalink control that copies the link to that section, including the version.
 
 ```html
-<h3 id="S2"><span class="ltx_tag">2 </span>Setup<button type="button" class="ds-permalink"><svg aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to section 2, Setup</span></button></h3>
+<h3 id="S2"><span class="ltx_tag">2 </span>Setup<button type="button" class="ds-permalink" data-copy-link="#S2" data-copied="Link to section 2, Setup copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to section 2, Setup</span></button></h3>
 <p>We consider quadratic gravity in four dimensions and work in the Einstein frame throughout.</p>
-<span class="is-sr-only" role="status"></span>
 ```
 
 - `.ds-permalink` — The Permalink control from [Linking to a section](links.md#linking-to-a-section), the same as on every other page. The demo holds it open.
 - `.is-sr-only` — Completes the name: “Permalink to section 2, Setup”. The name starts with the visible word.
-- `[role="status"]` — One region on the page. `anchors.js` writes “Link to section 2, Setup copied” into it, shows the green tick in place of the link icon, and clears both after 2 seconds.
+- `[role="status"]` — One region on the page, which `copy.js` makes. After a copy it says “Link to section 2, Setup copied”, the green tick takes the link icon's place, and both clear after 2 seconds. `anchors.js` adds the control and its attributes to every section heading. See [Show that something was copied](../action-feedback.html).
 - `.is-active` — Set on the heading by a tap, on screens without hover.
 
 > Meets accessibility guideline [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)
@@ -750,15 +749,15 @@ Each section heading in a paper has a Permalink control that copies the link to 
 A display equation, a figure and a bibliography entry each have a small row of actions on their bottom edge. The row shows on hover, on keyboard focus and after a tap.
 
 ```html
-<div class="ds-paper-element">
+<div class="ds-paper-element" id="S2.E14">
   <!-- LaTeXML's MathML, unchanged -->
   <div class="ds-element-pill" role="toolbar" aria-label="Equation 2.14">
     <button type="button" aria-pressed="false"><svg aria-hidden="true">…</svg>View TeX<span class="is-sr-only"> of equation 2.14</span></button>
-    <button type="button"><svg aria-hidden="true">…</svg>Copy<span class="is-sr-only"> equation 2.14</span></button>
-    <button type="button"><svg aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to equation 2.14</span></button>
+    <button type="button" data-copy-from="S2.E14" data-copied="Equation 2.14 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Copy<span class="is-sr-only"> equation 2.14</span></button>
+    <button type="button" data-copy-link="#S2.E14" data-copied="Link to equation 2.14 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to equation 2.14</span></button>
   </div>
 </div>
-<figure class="ds-paper-element">
+<figure class="ds-paper-element" id="S2.F1">
   <details class="ds-marginalia">
     <summary><svg aria-hidden="true">…</svg><span class="is-sr-only">Alt text</span></summary>
     <p class="ds-marginalia-body ds-annotation"><strong>Alt text</strong><br>Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently.</p>
@@ -767,16 +766,15 @@ A display equation, a figure and a bibliography entry each have a small row of a
   <figcaption>Figure 1: The scalar power spectrum in the Newtonian gauge (solid) and the comoving gauge (dashed).</figcaption>
   <div class="ds-element-pill" role="toolbar" aria-label="Figure 1">
     <button type="button" class="is-cta"><svg aria-hidden="true">…</svg>Expand<span class="is-sr-only"> figure 1</span></button>
-    <button type="button"><svg aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to figure 1</span></button>
+    <button type="button" data-copy-link="#S2.F1" data-copied="Link to figure 1 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to figure 1</span></button>
   </div>
 </figure>
-<div class="ds-paper-element">
+<div class="ds-paper-element" id="bib.bib30">
   <p>[30] A. Ashtekar and M. Bojowald. Quantum geometry and the Schwarzschild singularity. <em>Class. Quantum Grav.</em> 23 (2006) 391.</p>
   <div class="ds-element-pill" role="toolbar" aria-label="Reference 30">
-    <button type="button"><svg aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to reference 30</span></button>
+    <button type="button" data-copy-link="#bib.bib30" data-copied="Link to reference 30 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to reference 30</span></button>
   </div>
 </div>
-<span class="is-sr-only" role="status"></span>
 ```
 
 - `.ds-paper-element` — The wrapper round one equation, figure or entry. Hovering it, focusing anything inside it, or tapping it shows a hairline border and the pill. The demo holds all three open.
@@ -785,7 +783,7 @@ A display equation, a figure and a bibliography entry each have a small row of a
 - `[aria-pressed]` — On View TeX, which switches the equation to its TeX and back. Its label becomes “View math”.
 - `.ds-marginalia` — The figure's alt text, under the label “Alt text”, in the margin at wide widths and folded to its info mark when narrower. See [Marginalia](layout-patterns.md#marginalia).
 - `.is-cta` — Expand, the one main action on a figure. It opens the figure viewer.
-- `[role="status"]` — One region on the page, where the script confirms a copy in words: “Link to equation 2.14 copied”.
+- `data-copy-link, data-copy-from` — Copy and Permalink, as on [Show that something was copied](../action-feedback.html): `copy.js` copies the equation's MathML or the link with the element's id, shows the tick in place of the icon, and says “Link to equation 2.14 copied” for 2 seconds.
 
 > **Alt text**Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently.
 

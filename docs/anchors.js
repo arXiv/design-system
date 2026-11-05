@@ -5,7 +5,8 @@
  * The ids themselves are NOT this script's job — they are written into the
  * HTML by verification/gen-anchors.py, so a fragment works with JavaScript
  * off, works for a link arriving from another page, and is resolved by the
- * browser on first load. This adds only the control that copies the link.
+ * browser on first load. This adds only the control; copy.js, on the same page,
+ * copies the link and says so.
  */
 (function () {
   // The words of a heading or link as shown: MathML's TeX annotation is never
@@ -15,67 +16,22 @@
     Array.prototype.forEach.call(c.querySelectorAll('annotation, annotation-xml, .ds-permalink'), function (n) { n.remove(); });
     return c.textContent.replace(/\s+/g, ' ').trim();
   }
-  var DONE_ICON =
-    '<svg class="ds-permalink-done" viewBox="0 0 24 24" aria-hidden="true">' +
-      '<path d="m20 6-11 11-5-5"/></svg>';
   var LINK_ICON =
     '<svg viewBox="0 0 24 24" aria-hidden="true">' +
       '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>' +
       '<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>' +
-    DONE_ICON;
+    '<svg class="ds-copy-done" viewBox="0 0 24 24" aria-hidden="true">' +
+      '<path d="m20 6-11 11-5-5"/></svg>';
 
-  function write(text) {
-    if (navigator.clipboard && window.isSecureContext) {
-      return navigator.clipboard.writeText(text).catch(function () { return legacy(text); });
-    }
-    return legacy(text);
-  }
-  function legacy(text) {
-    var ta = document.createElement('textarea');
-    ta.value = text;
-    ta.setAttribute('readonly', '');
-    ta.style.cssText = 'position:fixed;top:-1000px;opacity:0';
-    document.body.appendChild(ta);
-    var back = document.activeElement;   // select() moves focus; it goes back to the button
-    ta.select();
-    var ok = false;
-    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
-    document.body.removeChild(ta);
-    if (back && back.focus) back.focus();
-    return ok ? Promise.resolve() : Promise.reject();
-  }
-
-  // A copy shows the tick for 2 seconds and says so in words; a failure gives the address.
-  function wire(btn, h, name, status) {
-    var timer;
-    btn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var url = location.href.split('#')[0] + '#' + h.id;
-      write(url).then(
-        function () {
-          btn.classList.add('is-done');
-          status.textContent = 'Link to ' + name + ' copied';
-          clearTimeout(timer);
-          timer = setTimeout(function () {
-            btn.classList.remove('is-done');
-            status.textContent = '';
-          }, 2000);
-        },
-        function () { status.textContent = 'Copy failed — the address is ' + url; }
-      );
-    });
+  // copy.js does the copying and says so; this says what to copy and what to say.
+  // The click stops here, so a tap on the control is not also a tap on its heading.
+  function wire(btn, h, name) {
+    btn.setAttribute('data-copy-link', '#' + h.id);
+    btn.setAttribute('data-copied', 'Link to ' + name + ' copied');
+    btn.addEventListener('click', function (e) { e.stopPropagation(); });
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    var status = document.getElementById('ds-anchor-status');
-    if (!status) {
-      status = document.createElement('span');
-      status.id = 'ds-anchor-status';
-      status.className = 'is-sr-only';
-      status.setAttribute('role', 'status');
-      document.body.appendChild(status);
-    }
-
     document.querySelectorAll('section > :is(h2, h3):first-child[id]').forEach(function (h) {
       // A label inside a demo or a sidebar names a block, not a section of the page.
       if (h.querySelector('.ds-permalink') || h.closest('aside, .ds-card')) return;
@@ -85,14 +41,13 @@
       btn.className = 'ds-permalink';
       // The visible word starts the name; the hidden part says which section.
       btn.innerHTML = LINK_ICON + 'Permalink<span class="is-sr-only"> to ' + name.replace(/[&<>]/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }) + '</span>';
-      wire(btn, h, name, status);
+      wire(btn, h, name);
       h.appendChild(btn);
     });
 
     // A demo that writes its control into a heading with an id gets the same behaviour.
     document.querySelectorAll('.ds-card :is(h2, h3, h4)[id] > .ds-permalink').forEach(function (btn) {
-      if (!btn.querySelector('.ds-permalink-done')) btn.querySelector('svg').insertAdjacentHTML('afterend', DONE_ICON);
-      wire(btn, btn.parentElement, btn.querySelector('.is-sr-only').textContent.replace(/^ to /, ''), status);
+      wire(btn, btn.parentElement, btn.querySelector('.is-sr-only').textContent.replace(/^ to /, ''));
     });
 
     // Without hover, a tap on a heading shows its Permalink; a tap elsewhere hides it.

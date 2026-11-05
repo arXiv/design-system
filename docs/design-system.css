@@ -448,7 +448,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 /* CODE BLOCK COPY  (.ds-code / .ds-code-copy) — typography.html
    Every code block gets a copy button, and no page has to remember to add
-   one: copy-code.js wraps each <pre> and inserts the control. A <pre> cannot
+   one: copy.js wraps each <pre> and inserts the control. A <pre> cannot
    host the button itself, because it scrolls — an absolutely positioned child
    would scroll out of view with the code. */
 .ds-code { position: relative; }
@@ -481,12 +481,14 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-/* The tick replaces the sheets for two seconds. Both glyphs are always in
-   the DOM, so nothing is fetched or measured at the moment of the click. */
-.ds-code-copy .ds-code-copy-done,
-.ds-code-copy.is-done .ds-code-copy-idle { display: none; }
-.ds-code-copy.is-done .ds-code-copy-done { display: block; }
-.ds-code-copy.is-done { color: var(--ds-success-border); }
+/* COPY FEEDBACK  (.ds-copy-done) — action-feedback.html
+   Every button that copies holds its own icon and a tick, .ds-copy-done.
+   copy.js adds .is-done for two seconds after a copy, and the tick takes the
+   icon's place. Both glyphs are always in the DOM, so nothing is fetched or
+   measured at the moment of the click. */
+button:not(.is-done) > svg.ds-copy-done,
+.is-done > svg:not(.ds-copy-done) { display: none; }   /* outranks a button's own svg rule, such as .ds-btn svg */
+.is-done > svg.ds-copy-done { color: var(--ds-success-border); }
 .ds-code-copy:hover { background: rgba(255, 255, 255, 0.16); }
 .ds-code-copy:focus-visible {
   outline: 3px solid var(--ds-focus-ring-on-dark);
@@ -4535,9 +4537,6 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   transition: opacity 0.12s;
 }
 .ds-permalink svg { width: 1.05em; height: 1.05em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.ds-permalink .ds-permalink-done,
-.ds-permalink.is-done svg:not(.ds-permalink-done) { display: none; }
-.ds-permalink.is-done .ds-permalink-done { display: block; color: var(--ds-success-border); }
 :is(h2, h3, h4):is(:hover, .is-active) > .ds-permalink,
 .ds-permalink:focus-visible { opacity: 1; }
 @media (hover: none) {
