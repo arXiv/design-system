@@ -21,7 +21,7 @@ components:
       - name: ".ds-subnav-section"
         does: "The section menu, a `<details>` at the start of the row: a cell in the accent's light tint, from the row's edge, with a hairline after it. Its summary names the current section; `aria-current=\"true\"` marks it in the menu."
       - name: ".ds-menu"
-        does: "A dropdown's menu: square corners and rows with hairlines, 32px with a mouse and 44px on a touch screen, hanging from its control. A menu matches its control, so the section menu's is in the same tint and the View menu's is white."
+        does: "A dropdown's menu: square corners and rows with hairlines, 32px with a mouse and 44px on a touch screen, hanging from its control. A menu opens in the background of the row it comes from. The tinted section cell counts as a row of its own, so its menu is tinted; the View menu, from the white row, is white."
       - name: "<a> for each view"
         does: "The row's own links, after the section menu, in the [tab style](#secondary-navigation). Each view is its own page."
       - name: "<script src=\"subnav.js\" defer>, .ds-subnav-views, .is-views-folded, .is-menu-row"
@@ -122,7 +122,7 @@ An area with its own sections, each with several views, such as a report with pa
 ```
 
 - `.ds-subnav-section` — The section menu, a `<details>` at the start of the row: a cell in the accent's light tint, from the row's edge, with a hairline after it. Its summary names the current section; `aria-current="true"` marks it in the menu.
-- `.ds-menu` — A dropdown's menu: square corners and rows with hairlines, 32px with a mouse and 44px on a touch screen, hanging from its control. A menu matches its control, so the section menu's is in the same tint and the View menu's is white.
+- `.ds-menu` — A dropdown's menu: square corners and rows with hairlines, 32px with a mouse and 44px on a touch screen, hanging from its control. A menu opens in the background of the row it comes from. The tinted section cell counts as a row of its own, so its menu is tinted; the View menu, from the white row, is white.
 - `<a> for each view` — The row's own links, after the section menu, in the [tab style](#secondary-navigation). Each view is its own page.
 - `<script src="subnav.js" defer>, .ds-subnav-views, .is-views-folded, .is-menu-row` — The script, once per page. It builds the View menu (`.ds-subnav-views`) from the row's links and sets the state classes on the row: `.is-views-folded` when the views do not fit beside the section menu, and `.is-menu-row` when the section menu takes a row of its own. It closes an open menu on Escape and on a click outside. Without the script the tabs wrap.
 
