@@ -23,6 +23,11 @@
  * the tick takes the icon's place and a status region says what was copied; both
  * clear after two seconds. Focus and the button's name stay as they were.
  *
+ * If the copy fails, an alert takes the icon's place, the status region says so,
+ * and a line under the control, .ds-copy-failed-message, says what to do instead.
+ * Both stay until the button is pressed again. A link that could not be copied is
+ * put in the address bar, where people already copy links from.
+ *
  * With no JavaScript there is no copy button on a code block and the code is still
  * selectable, so nothing is lost; the button is an enhancement, never the only way
  * to copy.
@@ -64,6 +69,15 @@
       '<path d="m20 6-11 11-5-5"/>' +
     '</svg>';
 
+  // The error alert's icon. It is added the first time a copy fails, so no
+  // button's markup has to carry it, and it carries its own stroke because
+  // it can land in any button.
+  var ALERT =
+    '<svg class="ds-copy-failed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M12 16h.01"/><path d="M12 8v4"/>' +
+      '<path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/>' +
+    '</svg>';
+
   // The async clipboard is the right API and the wrong one to rely on alone:
   // it needs a secure context, which file:// is not, and it rejects when the
   // document is not focused. So it is tried first and execCommand catches
@@ -92,14 +106,68 @@
     return legacyWrite(text);
   }
 
-  // The tick for two seconds, and the words in a status region. A second copy
-  // within the two seconds starts them again rather than stacking timers; a
-  // failure takes down a tick still showing from the copy before.
+  // The line goes where a field's error goes, under the control's line: under
+  // what the button links to or copies from, where it names one, and otherwise
+  // under the code block, heading or paragraph that holds it. A button in the
+  // margin, beside that block rather than over it, keeps the line under
+  // itself, as wide as the margin allows.
+  function place(btn, line) {
+    var id = (btn.getAttribute('data-copy-link') || '').replace(/^#/, '') || btn.getAttribute('data-copy-from');
+    var block = (id && document.getElementById(id)) || btn.closest('.ds-code, h1, h2, h3, h4, h5, h6, p, li');
+    var after = btn;
+    if (block) {
+      var b = btn.getBoundingClientRect(), r = block.getBoundingClientRect();
+      if (b.right <= r.left || b.left >= r.right) {
+        line.style.width = 'min(12rem, ' + Math.floor(b.right <= r.left ? b.right - 16 : window.innerWidth - b.left - 16) + 'px)';
+      } else if (block.matches('p, li')) {
+        block.appendChild(line);
+        return;
+      } else {
+        after = block;
+      }
+    }
+    // After any line already there, so two lines keep the order of the presses.
+    while (after.nextElementSibling && after.nextElementSibling.classList.contains('ds-copy-failed-message')) after = after.nextElementSibling;
+    after.insertAdjacentElement('afterend', line);
+  }
+
+  // Pressing the button again takes down a failure, whatever happens next.
+  function reset(btn) {
+    btn.classList.remove('is-failed');
+    var keep = (btn.getAttribute('aria-describedby') || '').split(' ').filter(function (id) {
+      var line = id && document.getElementById(id);
+      if (line && line.classList.contains('ds-copy-failed-message')) { line.remove(); return false; }
+      return Boolean(id);
+    });
+    if (keep.length) btn.setAttribute('aria-describedby', keep.join(' '));
+    else btn.removeAttribute('aria-describedby');
+  }
+
+  // A failure stays until the button is pressed again: the alert in the
+  // icon's place, and the line, which also describes the button, so someone
+  // who comes back to it with a screen reader hears what went wrong. A failure
+  // takes down a tick still showing from the copy before.
+  var lines = 0;
   function failed(btn, status, message) {
     clearTimeout(btn.dsCopyTimer);
     btn.classList.remove('is-done');
     status.textContent = message;
+    if (!btn.querySelector('svg.ds-copy-failed')) {
+      var tick = btn.querySelector('svg.ds-copy-done');
+      if (tick) tick.insertAdjacentHTML('afterend', ALERT);
+      else btn.insertAdjacentHTML('afterbegin', ALERT);
+    }
+    btn.classList.add('is-failed');
+    var line = document.createElement('span');
+    line.className = 'ds-copy-failed-message';
+    line.id = 'ds-copy-failed-' + (++lines);
+    line.textContent = message;
+    place(btn, line);
+    btn.setAttribute('aria-describedby', ((btn.getAttribute('aria-describedby') || '') + ' ' + line.id).trim());
   }
+
+  // The tick for two seconds, and the words in a status region. A second copy
+  // within the two seconds starts them again rather than stacking timers.
   function done(btn, status, message) {
     btn.classList.add('is-done');
     status.textContent = message;
@@ -142,6 +210,7 @@
     wrap.appendChild(status);
 
     btn.addEventListener('click', function () {
+      reset(btn);
       var code = pre.querySelector('code') || pre;
       write(code.innerText || code.textContent).then(   // innerText keeps the line breaks as shown
         function () { done(btn, status, 'Copied to clipboard'); },
@@ -158,10 +227,11 @@
   document.addEventListener('click', function (e) {
     var btn = e.target.closest && e.target.closest('[data-copy], [data-copy-link], [data-copy-from]');
     if (!btn) return;
-    var text, otherwise;
-    if (btn.hasAttribute('data-copy-link')) {
+    reset(btn);
+    var text, otherwise, link = btn.hasAttribute('data-copy-link');
+    if (link) {
       text = location.href.split('#')[0] + btn.getAttribute('data-copy-link');
-      otherwise = 'Copy failed — the address is ' + text;
+      otherwise = 'Copy failed — copy the link from the address bar';
     } else if (btn.hasAttribute('data-copy-from')) {
       var from = document.getElementById(btn.getAttribute('data-copy-from'));
       if (!from) return;
@@ -173,7 +243,15 @@
     otherwise = btn.getAttribute('data-copy-failed') || otherwise || 'Copy failed — select the text and copy it manually';
     write(text).then(
       function () { done(btn, page, btn.getAttribute('data-copied') || 'Copied to clipboard'); },
-      function () { failed(btn, page, otherwise); }
+      function () {
+        // The link goes in the address bar without moving the page or adding
+        // a step to Back. Where the browser refuses that, as some do for a
+        // file:// page, going to the fragment puts it there instead.
+        if (link) {
+          try { history.replaceState(history.state, '', text); } catch (e) { location.replace(text); }
+        }
+        failed(btn, page, otherwise);
+      }
     );
   }, true);
 })();
