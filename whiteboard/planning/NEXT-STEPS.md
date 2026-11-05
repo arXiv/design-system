@@ -24,7 +24,6 @@ Open items only. Finished items are removed; the git history keeps them. The cur
 - **Patterns still to build:** the author list for the 100+ author case; the Labs opt-in section.
 - **`docs/examples/`:** stable full-page examples built only from documented components, starting with form validation (approved in principle 2026-10-02).
 - **The abstract heading in HTML papers** (decided 2026-11-03): an `<h2>`, hidden with `.is-sr-only`, as Papers now documents. LaTeXML outputs a visible `<h6>`; ask Deyan to promote it to `<h2>`, and the page hides it. See `live-html-markup-2026-10-06.md`.
-- **The header's centred space, last fold step:** a centred space that holds links, not one button, should fold into the menu. `docs/header.js` does not do this yet, and Header says to keep links out of it until it does.
 - **Old links:** notes and the mockups README still point at files removed before the October reorganisation (`docs/public/`, `metadata-panel.html`, `BRAND.md`).
 
 ## Compact elements (its own session)
