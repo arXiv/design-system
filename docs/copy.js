@@ -107,13 +107,17 @@
   }
 
   // The line goes where a field's error goes, under the control's line: under
-  // what the button links to or copies from, where it names one, and otherwise
-  // under the code block, heading or paragraph that holds it. A button in the
-  // margin, beside that block rather than over it, keeps the line under
-  // itself, as wide as the margin allows.
+  // the code block, paper element, heading or paragraph that holds the button.
+  // Where none does, or the one that does is wider than what the button links
+  // to or copies from, it goes under that instead: a paragraph whose
+  // Permalink sits in its margin. A button in the margin, beside that block
+  // rather than over it, keeps the line under itself, as wide as the margin
+  // allows.
   function place(btn, line) {
     var id = (btn.getAttribute('data-copy-link') || '').replace(/^#/, '') || btn.getAttribute('data-copy-from');
-    var block = (id && document.getElementById(id)) || btn.closest('.ds-code, h1, h2, h3, h4, h5, h6, p, li');
+    var target = id && document.getElementById(id);
+    var block = btn.closest('.ds-code, .ds-paper-element, h1, h2, h3, h4, h5, h6, p, li');
+    if (target && target.contains(btn) && (!block || block.contains(target))) block = target;
     var after = btn;
     if (block) {
       var b = btn.getBoundingClientRect(), r = block.getBoundingClientRect();
@@ -124,6 +128,12 @@
         return;
       } else {
         after = block;
+        // Under a heading, the line takes over the heading's space below it,
+        // so it sits against the heading rather than midway to what follows.
+        if (/^H[1-6]$/.test(block.tagName)) {
+          var below = parseFloat(window.getComputedStyle(block).marginBottom) || 0;
+          line.style.margin = 'calc(var(--ds-space-1) - ' + below + 'px) 0 ' + below + 'px';
+        }
       }
     }
     // After any line already there, so two lines keep the order of the presses.
