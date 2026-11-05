@@ -44,7 +44,7 @@ components:
     summary: "On a paper's own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The version history and the paper's details sit in the sidebar."
     classes:
       - name: ".ds-paper-identity"
-        does: "The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the licence as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers."
+        does: "The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers."
       - name: "<h1>"
         does: "The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page."
       - name: ".ds-date-row"
@@ -60,7 +60,7 @@ components:
       - name: "<title>"
         does: "Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first."
       - name: ".ds-paper-identity"
-        does: "The identifier with the notice's version, and the category. With no text to read, the DOI and the licence leave the line; Metadata, in the sidebar, still has the DOI."
+        does: "The identifier with the notice's version, and the category. With no text to read, the DOI and the license leave the line; Metadata, in the sidebar, still has the DOI."
       - name: ".ds-paper-status"
         does: "“Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author's title is not edited, and it has `lang=\"en\"` because the title may be in another language."
       - name: ".ds-alert--error"
@@ -104,7 +104,7 @@ components:
       - name: "<title>"
         does: "Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first."
       - name: ".ds-paper-identity"
-        does: "The identifier with the notice's version, and the category. With no text to read, the DOI and the licence leave the line; Metadata, in the sidebar, still has the DOI."
+        does: "The identifier with the notice's version, and the category. With no text to read, the DOI and the license leave the line; Metadata, in the sidebar, still has the DOI."
       - name: ".ds-paper-status"
         does: "“Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author's title is not edited, and it has `lang=\"en\"` because the title may be in another language."
       - name: ".ds-alert--error"
@@ -478,7 +478,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 </div>
 ```
 
-- `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the licence as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
+- `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
 - `<h1>` — The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page.
 - `.ds-date-row` — The dates and the version links, as in [Indicate which version is being read](../versions.html#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version.
 - `.ds-alert--warning` — Only when an older version is being viewed. See [Indicate which version is being read](../versions.html#version-row).
@@ -486,7 +486,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 - `<h2 class="is-sr-only">` — The abstract's heading, “Abstract”, hidden from sight. Sighted readers know the paragraph after the authors is the abstract; screen-reader users can still jump to it by heading. The demo uses an `<h3>`, because its title is an `<h2>`.
 - `<p>` — The abstract, in full.
 - `<title>` — Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first.
-- `.ds-paper-identity` — The identifier with the notice's version, and the category. With no text to read, the DOI and the licence leave the line; Metadata, in the sidebar, still has the DOI.
+- `.ds-paper-identity` — The identifier with the notice's version, and the category. With no text to read, the DOI and the license leave the line; Metadata, in the sidebar, still has the DOI.
 - `.ds-paper-status` — “Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author's title is not edited, and it has `lang="en"` because the title may be in another language.
 - `.ds-alert--error` — On a `<section>`: the notice, straight after the title and before the dates. It says who withdrew the paper, gives the reason as they wrote it, in quotes, and links to the last version that can be read. A `<section>` named by its heading, so a screen reader reaches it second and lists it among the headings. No role, because it is in the page as it loads (see [Alerts](alerts.md)).
 - `.ds-alert-title` — On a heading, one level below the title: an `<h2>` on the page. The demo uses an `<h3>` because it sits inside this page.
@@ -562,7 +562,7 @@ A withdrawn paper keeps its title, authors, abstract and metadata, and its earli
 ```
 
 - `<title>` — Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first.
-- `.ds-paper-identity` — The identifier with the notice's version, and the category. With no text to read, the DOI and the licence leave the line; Metadata, in the sidebar, still has the DOI.
+- `.ds-paper-identity` — The identifier with the notice's version, and the category. With no text to read, the DOI and the license leave the line; Metadata, in the sidebar, still has the DOI.
 - `.ds-paper-status` — “Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author's title is not edited, and it has `lang="en"` because the title may be in another language.
 - `.ds-alert--error` — On a `<section>`: the notice, straight after the title and before the dates. It says who withdrew the paper, gives the reason as they wrote it, in quotes, and links to the last version that can be read. A `<section>` named by its heading, so a screen reader reaches it second and lists it among the headings. No role, because it is in the page as it loads (see [Alerts](alerts.md)).
 - `.ds-alert-title` — On a heading, one level below the title: an `<h2>` on the page. The demo uses an `<h3>` because it sits inside this page.
