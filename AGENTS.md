@@ -43,6 +43,7 @@ Look at each page you built as a reader would, on a laptop screen, and revise it
 | Anything with color | `docs/color-mapping.md`, `docs/colors.html` | tokens in that context's stylesheet |
 | Typography, text sizes | `docs/typography.html` | `--ds-font-*` |
 | Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--ds-space-*` |
+| A line between sections, between items in a group, or between controls in a row | `docs/dividers.html` | a bare `<hr>`, no class; `.ds-divider--tight` between items in a group, `.ds-divider--flush` when the caller owns the spacing; in a row of controls, a `<span class="ds-divider ds-divider--vertical" aria-hidden="true">`; group with space first |
 | Buttons | `docs/buttons.html` — both surfaces | bare `.ds-btn` is the secondary tier; `.ds-btn-primary`, `.ds-btn-text`, `.ds-btn-destructive`, `.ds-btn-icon`, `.on-tint` / `.on-dark` override it; `.ds-btn-compact` makes any of them smaller, for a small form; internal tools get their colour from `.ds-internal` on a parent, never from a second class family. Internal-only: `[aria-pressed]` on an icon button, in tier 2 |
 | Alerts, status & feedback messages | `docs/alerts.html` — one page, both surfaces | `.ds-alert*` — never rebuild its chrome |
 | Organizing a page: start here | `docs/organize-content.html` *Evaluating user needs* | the four questions and their tests; its Rules are firm |

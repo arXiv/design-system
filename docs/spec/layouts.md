@@ -24,20 +24,6 @@ components:
       - "**Use a sidebar next to content that will have a similar height as the sidebar.**"
       - "**When the main content needs the width or is much longer or shorter, use a different content organization pattern.** See [Where secondary content goes](../organize-content.html#where-secondary-content-goes)."
       - "**The sidebar sits next to and starts level with a text block.** To aid readability, put page headings and other one-line content above the sidebar so they have the width they need to wrap."
-  - id: dividers
-    title: "Dividers"
-    summary: "A rule between things. It belongs in the same conversation as the card, because both answer the same question and the answer is usually neither: this system groups with space first, and a line drawn where space would have done adds noise without adding meaning."
-    classes:
-      - name: "<hr>"
-        does: "The preferred form. Styled by the foundation with 32px above and below (`--ds-space-8`), no class needed, and it includes `role=\"separator\"` for free."
-      - name: ".ds-divider--tight"
-        does: "Between items in a group rather than between sections: 16px above and below (`--ds-space-block`). It works on an `<hr>`, which keeps the separator meaning."
-      - name: ".ds-divider--flush"
-        does: "No margin at all; the caller owns the spacing."
-      - name: ".ds-divider"
-        does: "The class form, for where an `<hr>` will not fit: inside a flex row, or on an element that is already there. It is decorative, so mark it `aria-hidden` — a real separator should be an `<hr>`."
-      - name: ".ds-divider--vertical"
-        does: "For a row of controls. Height is in `em`, so it follows the row's own text instead of needing a value per context."
   - id: marginalia
     title: "Marginalia and gutter space"
     summary: "At wide screen widths, our max content width leaves enough gutter space on the sides for marginalia. A short note beside the block it belongs to is appropriate for annotation-style content. At narrower widths, it is hidden in an info icon in the block’s top-right corner. Try it by widening and narrowing your screen."
@@ -132,42 +118,6 @@ A sidebar sits to the right of the main column and contains supplementary conten
 **Rule.** **When the main content needs the width or is much longer or shorter, use a different content organization pattern.** See [Where secondary content goes](../organize-content.html#where-secondary-content-goes).
 
 **Rule.** **The sidebar sits next to and starts level with a text block.** To aid readability, put page headings and other one-line content above the sidebar so they have the width they need to wrap.
-
-## Dividers
-
-A rule between things. It belongs in the same conversation as the card, because both answer the same question and the answer is usually neither: this system groups with space first, and a line drawn where space would have done adds noise without adding meaning.
-
-```html
-<p>A section of content.</p>
-<hr>
-<p>The next section.</p>
-<hr>
-<p>And the one after it.</p>
-```
-
-```html
-<p>An item in a group.</p>
-<hr class="ds-divider ds-divider--tight">
-<p>The next item in the same group.</p>
-<hr class="ds-divider ds-divider--tight">
-<p>And the one after it.</p>
-```
-
-```html
-<div class="ds-btn-group">
-<span>Search</span>
-<span class="ds-divider ds-divider--vertical" aria-hidden="true"></span>
-<span>Submit</span>
-<span class="ds-divider ds-divider--vertical" aria-hidden="true"></span>
-<span>Donate</span>
-</div>
-```
-
-- `<hr>` — The preferred form. Styled by the foundation with 32px above and below (`--ds-space-8`), no class needed, and it includes `role="separator"` for free.
-- `.ds-divider--tight` — Between items in a group rather than between sections: 16px above and below (`--ds-space-block`). It works on an `<hr>`, which keeps the separator meaning.
-- `.ds-divider--flush` — No margin at all; the caller owns the spacing.
-- `.ds-divider` — The class form, for where an `<hr>` will not fit: inside a flex row, or on an element that is already there. It is decorative, so mark it `aria-hidden` — a real separator should be an `<hr>`.
-- `.ds-divider--vertical` — For a row of controls. Height is in `em`, so it follows the row's own text instead of needing a value per context.
 
 ## Marginalia and gutter space
 
