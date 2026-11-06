@@ -1,7 +1,7 @@
 ---
 page: papers.html
 title: "Papers"
-summary: "Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to both HTML papers pages and search results. More relevant documentation: [Indicating which version is being read](../versions.html) and [following references without losing your place](../references.html)."
+summary: "Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to both HTML papers pages and search results. More relevant documentation: [Indicating which version is being read](versions.md) and [following references without losing your place](../references.html)."
 stylesheet: design-system.css
 components:
   - id: the-metadata-hierarchy
@@ -48,9 +48,9 @@ components:
       - name: "<h1>"
         does: "The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page."
       - name: ".ds-date-row"
-        does: "The dates and the version links, as in [Indicate which version is being read](../versions.html#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version."
+        does: "The dates and the version links, as in [Indicate which version is being read](versions.md#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version."
       - name: ".ds-alert--warning"
-        does: "Only when an older version is being viewed. See [Indicate which version is being read](../versions.html#version-row)."
+        does: "Only when an older version is being viewed. See [Indicate which version is being read](versions.md#version-row)."
       - name: ".ds-link-list"
         does: "On a `<p>`: the authors, with Show more after eight."
       - name: "<h2 class=\"is-sr-only\">"
@@ -96,7 +96,7 @@ components:
       - "This version has been removed by arXiv.: “arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission.” The full text and files are no longer available."
   - id: the-version-row
     title: "The version row"
-    summary: "The row under the title gives the paper's dates and links to its other versions; the version being read is in a box. The row changes with the number of versions, with the version being read, and when a paper is withdrawn or removed: [Indicate which version is being read](../versions.html#version-row) shows each case."
+    summary: "The row under the title gives the paper's dates and links to its other versions; the version being read is in a box. The row changes with the number of versions, with the version being read, and when a paper is withdrawn or removed: [Indicate which version is being read](versions.md#version-row) shows each case."
   - id: withdrawn-papers
     title: "Withdrawn and removed papers"
     summary: "A withdrawn paper keeps its title, authors, abstract and metadata, and its earlier versions can still be read. A removed version keeps its title, authors, abstract and metadata, but its full text and files are gone. In both cases, a status before the title and a notice after it say what happened."
@@ -162,7 +162,7 @@ components:
       - name: ".is-sr-only"
         does: "Completes the name: “Permalink to section 2, Setup”. The name starts with the visible word."
       - name: "[role=\"status\"]"
-        does: "One region on the page, which `copy.js` makes. After a copy it says “Link to section 2, Setup copied”, the green tick takes the link icon's place, and both clear after 2 seconds. `anchors.js` adds the control and its attributes to every section heading. See [Show that something was copied](../action-feedback.html)."
+        does: "One region on the page, which `copy.js` makes. After a copy it says “Link to section 2, Setup copied”, the green tick takes the link icon's place, and both clear after 2 seconds. `anchors.js` adds the control and its attributes to every section heading. See [Show that something was copied](action-feedback.md)."
       - name: ".is-active"
         does: "Set on the heading by a tap, on screens without hover."
     notes:
@@ -184,7 +184,7 @@ components:
       - name: ".is-cta"
         does: "Expand, the one main action on a figure. It opens the figure viewer."
       - name: "data-copy-link, data-copy-from"
-        does: "Copy and Permalink, as on [Show that something was copied](../action-feedback.html): `copy.js` copies the equation's MathML or the link with the element's id, shows the tick in place of the icon, and says “Link to equation 2.14 copied” for 2 seconds."
+        does: "Copy and Permalink, as on [Show that something was copied](action-feedback.md): `copy.js` copies the equation's MathML or the link with the element's id, shows the tick in place of the icon, and says “Link to equation 2.14 copied” for 2 seconds."
     notes:
       - "**Alt text**Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently."
 rules:
@@ -230,7 +230,7 @@ rules:
 
 # Papers
 
-Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to both HTML papers pages and search results. More relevant documentation: [Indicating which version is being read](../versions.html) and [following references without losing your place](../references.html).
+Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to both HTML papers pages and search results. More relevant documentation: [Indicating which version is being read](versions.md) and [following references without losing your place](../references.html).
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
@@ -480,8 +480,8 @@ On a paper's own page the order is the identity line, the title, the dates and v
 
 - `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
 - `<h1>` — The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page.
-- `.ds-date-row` — The dates and the version links, as in [Indicate which version is being read](../versions.html#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version.
-- `.ds-alert--warning` — Only when an older version is being viewed. See [Indicate which version is being read](../versions.html#version-row).
+- `.ds-date-row` — The dates and the version links, as in [Indicate which version is being read](versions.md#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version.
+- `.ds-alert--warning` — Only when an older version is being viewed. See [Indicate which version is being read](versions.md#version-row).
 - `.ds-link-list` — On a `<p>`: the authors, with Show more after eight.
 - `<h2 class="is-sr-only">` — The abstract's heading, “Abstract”, hidden from sight. Sighted readers know the paragraph after the authors is the abstract; screen-reader users can still jump to it by heading. The demo uses an `<h3>`, because its title is an `<h2>`.
 - `<p>` — The abstract, in full.
@@ -513,7 +513,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 
 ## The version row
 
-The row under the title gives the paper's dates and links to its other versions; the version being read is in a box. The row changes with the number of versions, with the version being read, and when a paper is withdrawn or removed: [Indicate which version is being read](../versions.html#version-row) shows each case.
+The row under the title gives the paper's dates and links to its other versions; the version being read is in a box. The row changes with the number of versions, with the version being read, and when a paper is withdrawn or removed: [Indicate which version is being read](versions.md#version-row) shows each case.
 
 ## Withdrawn and removed papers
 
@@ -739,7 +739,7 @@ Each section heading in a paper has a Permalink control that copies the link to 
 
 - `.ds-permalink` — The Permalink control from [Linking to a section](links.md#linking-to-a-section), the same as on every other page. The demo holds it open.
 - `.is-sr-only` — Completes the name: “Permalink to section 2, Setup”. The name starts with the visible word.
-- `[role="status"]` — One region on the page, which `copy.js` makes. After a copy it says “Link to section 2, Setup copied”, the green tick takes the link icon's place, and both clear after 2 seconds. `anchors.js` adds the control and its attributes to every section heading. See [Show that something was copied](../action-feedback.html).
+- `[role="status"]` — One region on the page, which `copy.js` makes. After a copy it says “Link to section 2, Setup copied”, the green tick takes the link icon's place, and both clear after 2 seconds. `anchors.js` adds the control and its attributes to every section heading. See [Show that something was copied](action-feedback.md).
 - `.is-active` — Set on the heading by a tap, on screens without hover.
 
 > Meets accessibility guideline [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)
@@ -783,7 +783,7 @@ A display equation, a figure and a bibliography entry each have a small row of a
 - `[aria-pressed]` — On View TeX, which switches the equation to its TeX and back. Its label becomes “View math”.
 - `.ds-marginalia` — The figure's alt text, under the label “Alt text”, in the margin at wide widths and folded to its info mark when narrower. See [Marginalia](layouts.md#marginalia).
 - `.is-cta` — Expand, the one main action on a figure. It opens the figure viewer.
-- `data-copy-link, data-copy-from` — Copy and Permalink, as on [Show that something was copied](../action-feedback.html): `copy.js` copies the equation's MathML or the link with the element's id, shows the tick in place of the icon, and says “Link to equation 2.14 copied” for 2 seconds.
+- `data-copy-link, data-copy-from` — Copy and Permalink, as on [Show that something was copied](action-feedback.md): `copy.js` copies the equation's MathML or the link with the element's id, shows the tick in place of the icon, and says “Link to equation 2.14 copied” for 2 seconds.
 
 > **Alt text**Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently.
 

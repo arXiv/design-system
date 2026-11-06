@@ -1,7 +1,7 @@
 ---
 page: layouts.html
 title: "Layouts"
-summary: "How to use the page container and other page zones. For guidance on where to put content see the patterns under [Organize complex page content](../organize-content.html)."
+summary: "How to use the page container and other page zones. For guidance on where to put content see the patterns under [Organize complex page content](organize-content.md)."
 stylesheet: design-system.css
 components:
   - id: the-page-container
@@ -24,7 +24,7 @@ components:
         does: "An accordion inside the sidebar is the same ruled accordion as anywhere else, a step smaller to match the sidebar's text, and single-column for the narrow measure. Several in a row go in a `.ds-acc-stack`. No extra class."
     rules:
       - "**Use a sidebar next to content that will have a similar height as the sidebar.**"
-      - "**When the main content needs the width or is much longer or shorter, use a different content organization pattern.** See [Where secondary content goes](../organize-content.html#where-secondary-content-goes)."
+      - "**When the main content needs the width or is much longer or shorter, use a different content organization pattern.** See [Where secondary content goes](organize-content.md#where-secondary-content-goes)."
       - "**The sidebar sits next to and starts level with a text block.** To aid readability, put page headings and other one-line content above the sidebar so they have the width they need to wrap."
   - id: marginalia
     title: "Marginalia and gutter space"
@@ -57,7 +57,7 @@ components:
         does: "On a direct child of `.ds-container`. The child runs across all three columns, from edge to edge, and its padding brings its own content back in line with the centre column. It has no background of its own."
     rules:
       - "**Never a band across the main content.** A band between two parts of the main content interrupts the reading."
-      - "**On an admin tool or a data view**, where the reader needs to find and act on content quickly, a tinted band pushes the main content too far down the page. Separate content with spacing and headings instead. The one exception is an opening band that holds a filter for the whole page, as in [Where controls go](../organize-content.html#where-controls-go)."
+      - "**On an admin tool or a data view**, where the reader needs to find and act on content quickly, a tinted band pushes the main content too far down the page. Separate content with spacing and headings instead. The one exception is an opening band that holds a filter for the whole page, as in [Where controls go](organize-content.md#where-controls-go)."
       - "**Only a direct child can run full width.** `.ds-full` works on children of `.ds-container`; nested deeper it does nothing."
       - "**Do not build a full-width band with negative margins and `100vw`.** `.ds-full` measures the container, so it fits exactly; see [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md), *Never size a full-bleed band in viewport units*."
   - id: wide-page
@@ -71,7 +71,7 @@ rules:
 
 # Layouts
 
-How to use the page container and other page zones. For guidance on where to put content see the patterns under [Organize complex page content](../organize-content.html).
+How to use the page container and other page zones. For guidance on where to put content see the patterns under [Organize complex page content](organize-content.md).
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
@@ -119,7 +119,7 @@ A sidebar sits to the right of the main column and contains supplementary conten
 
 **Rule.** **Use a sidebar next to content that will have a similar height as the sidebar.**
 
-**Rule.** **When the main content needs the width or is much longer or shorter, use a different content organization pattern.** See [Where secondary content goes](../organize-content.html#where-secondary-content-goes).
+**Rule.** **When the main content needs the width or is much longer or shorter, use a different content organization pattern.** See [Where secondary content goes](organize-content.md#where-secondary-content-goes).
 
 **Rule.** **The sidebar sits next to and starts level with a text block.** To aid readability, put page headings and other one-line content above the sidebar so they have the width they need to wrap.
 
@@ -174,7 +174,7 @@ The default page background is white, and that is the color that primary page co
 
 **Rule.** **Never a band across the main content.** A band between two parts of the main content interrupts the reading.
 
-**Rule.** **On an admin tool or a data view**, where the reader needs to find and act on content quickly, a tinted band pushes the main content too far down the page. Separate content with spacing and headings instead. The one exception is an opening band that holds a filter for the whole page, as in [Where controls go](../organize-content.html#where-controls-go).
+**Rule.** **On an admin tool or a data view**, where the reader needs to find and act on content quickly, a tinted band pushes the main content too far down the page. Separate content with spacing and headings instead. The one exception is an opening band that holds a filter for the whole page, as in [Where controls go](organize-content.md#where-controls-go).
 
 **Rule.** **Only a direct child can run full width.** `.ds-full` works on children of `.ds-container`; nested deeper it does nothing.
 
