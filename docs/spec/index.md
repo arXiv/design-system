@@ -27,7 +27,7 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Typography | [typography.md](typography.md) | arXiv sets all text in the IBM Plex family with STIX Two Math for notation. All fonts are self-hosted and open source with no external font services. |
 | Layouts | [layout-patterns.md](layout-patterns.md) | The frame every page is built in: the page container and its widths, page zones, the sidebar, dividers and margin notes. How to arrange a page's content in that |
 | Filters | [filters.md](filters.md) | Filters narrow a set of data, such as a table, a list of cards or a chart, to the items a reader wants. When each filter takes one choice, such as one status, t |
-| Navigation | [navigation.md](navigation.md) | The bars under the [site header](header.md) that tell a reader where they are inside an area: secondary navigation, two levels of it, and steps. |
+| Navigation | [navigation.md](navigation.md) | The bars under the [site header](header.md) that tell a reader where they are inside an area or on a page: secondary navigation, two levels of it, steps, and th |
 | Search | [search.md](search.md) | A search page contains many components and elements documented elsewhere. This page is about how to put them together, the hierarchy of content, and other desig |
 | Papers | [papers.md](papers.md) | Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us displ |
 

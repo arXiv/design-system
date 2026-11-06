@@ -146,7 +146,7 @@ components:
     summary: "On a paper, the TOC bar also has the arXiv logo on the left and links to the paper's PDF and TeX source on the right."
     classes:
       - name: ".ds-toc-bar"
-        does: "The bar, as on [Progressive disclosure](progressive-disclosure.md#toc-bar). On a paper it is `.ds-full`, the full width of the page."
+        does: "The bar, as on [Navigation](navigation.md#toc-bar). On a paper it is `.ds-full`, the full width of the page."
       - name: ".ds-paper-bar-logo"
         does: "The one-colour Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill=\"currentColor\"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”."
       - name: ".ds-toc-menu"
@@ -723,7 +723,7 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
 </div>
 ```
 
-- `.ds-toc-bar` — The bar, as on [Progressive disclosure](progressive-disclosure.md#toc-bar). On a paper it is `.ds-full`, the full width of the page.
+- `.ds-toc-bar` — The bar, as on [Navigation](navigation.md#toc-bar). On a paper it is `.ds-full`, the full width of the page.
 - `.ds-paper-bar-logo` — The one-colour Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill="currentColor"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”.
 - `.ds-toc-menu` — The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list. Subsections are an `<ol>` inside their section's `<li>`, indented to the section's title in smaller type.
 - `.ds-paper-tools` — PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `file-text` and `tex` from `docs/icons/`.

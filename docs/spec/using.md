@@ -11,7 +11,7 @@ components:
       - "**`fonts.css`.** Include this file before `design-system.css`. The font file declares the faces, the stylesheet names them. Either order renders but we have chosen this way for consistency."
       - "**`design-system.css`.** The foundational tier 1 stylesheet. When working on internal pages, there is a tier 2 stylesheet that builds on this one."
       - "**`theme.js`.** The foundational tier 1 JavaScript. Internal tools add no JavaScript of their own."
-      - "**`toc.js`, optional.** Add it when the page has a TOC bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See [Contents bar](progressive-disclosure.md#toc-bar)."
+      - "**`toc.js`, optional.** Add it when the page has a TOC bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See [TOC bar](navigation.md#toc-bar)."
       - "**`copy.js`, optional.** Add it when the page shows code a reader might take away, or has any other copy button. It needs no markup for code: it finds every `<pre>` on the page and puts a copy button on each one. Other copy buttons are on [Show that something was copied](../action-feedback.html)."
   - id: basic-page-markup
     title: "Basic page markup"
@@ -72,7 +72,7 @@ Every core file you need to include in your repo, and in what order.
 
 **Rule.** **`theme.js`.** The foundational tier 1 JavaScript. Internal tools add no JavaScript of their own.
 
-**Rule.** **`toc.js`, optional.** Add it when the page has a TOC bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See [Contents bar](progressive-disclosure.md#toc-bar).
+**Rule.** **`toc.js`, optional.** Add it when the page has a TOC bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See [TOC bar](navigation.md#toc-bar).
 
 **Rule.** **`copy.js`, optional.** Add it when the page shows code a reader might take away, or has any other copy button. It needs no markup for code: it finds every `<pre>` on the page and puts a copy button on each one. Other copy buttons are on [Show that something was copied](../action-feedback.html).
 
