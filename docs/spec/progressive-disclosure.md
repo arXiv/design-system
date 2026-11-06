@@ -88,6 +88,10 @@ components:
         does: "The bar’s three-slot grid, which keeps the control centred whatever sits beside it."
       - name: "[data-toc-scope]"
         does: "Optional, on `.ds-toc`: a selector for the element whose headings fill an empty list. Without it, `toc.js` reads `<main>`, or the whole page when there is no `<main>`."
+    rules:
+      - "**The list is written or generated.** Write the `<ol>` by hand, or leave it empty and `toc.js` fills it when the page loads, with one link for every `h2` and `h3` that has an `id`. A written list works with JavaScript off, so these docs write theirs: `verification/gen-anchors.py` fills the `<ol>` from the page’s section headings, and `--check` fails when the two disagree."
+      - "**It opens without JavaScript.** `toc.js` adds closing on Escape, closing on a click outside, and the name of the current section on the control."
+      - "**One per page.** `toc.js` drives the first `.ds-toc` it finds, which on this page is the bar at the top; the control in the card above comes later in the document, so it opens and closes on its own and nothing else."
   - id: accordion-inside-a-card
     title: "Accordion inside a card"
     group: "Variants"
@@ -305,6 +309,12 @@ Need in-page navigation? The TOC bar is a row that holds a single disclosure con
 - `.ds-toc-bar` — The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly after a `.ds-zone-secondary` band, it sits on that band’s bottom edge. The bar is sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. On a viewport shorter than 30rem, such as a phone on its side or a laptop at 400% zoom, it scrolls away with the page instead, so the reader keeps the height for the text. Sticky chrome is governed by [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md); check there before adding the bar to a page.
 - `.ds-toc-bar-inner` — The bar’s three-slot grid, which keeps the control centred whatever sits beside it.
 - `[data-toc-scope]` — Optional, on `.ds-toc`: a selector for the element whose headings fill an empty list. Without it, `toc.js` reads `<main>`, or the whole page when there is no `<main>`.
+
+**Rule.** **The list is written or generated.** Write the `<ol>` by hand, or leave it empty and `toc.js` fills it when the page loads, with one link for every `h2` and `h3` that has an `id`. A written list works with JavaScript off, so these docs write theirs: `verification/gen-anchors.py` fills the `<ol>` from the page’s section headings, and `--check` fails when the two disagree.
+
+**Rule.** **It opens without JavaScript.** `toc.js` adds closing on Escape, closing on a click outside, and the name of the current section on the control.
+
+**Rule.** **One per page.** `toc.js` drives the first `.ds-toc` it finds, which on this page is the bar at the top; the control in the card above comes later in the document, so it opens and closes on its own and nothing else.
 
 ## Accordion inside a card  (Variants)
 
