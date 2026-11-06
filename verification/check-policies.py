@@ -406,7 +406,6 @@ def check_no_changelog_prose():
 # a page author never writes them, so there is nothing for the docs to say.
 CLASS_RE = re.compile(r"\.((?:ds-|btn-|type-|info-|seg-)[\w-]+)")
 SCRIPT_OWNED = {
-    "ds-code-copy-idle", "ds-code-copy-done",      # copy-code.js swaps these
     "ds-theme-icon-system", "ds-theme-icon-light", "ds-theme-icon-dark",  # theme.js
     "ds-toc-sentinel",                              # toc.js
 }

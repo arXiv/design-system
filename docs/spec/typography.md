@@ -80,7 +80,7 @@ components:
     classes:
       - name: "<pre><code>"
         does: "The block. Escape `<`, `>` and `&` inside it. No wrapper and no button of your own."
-      - name: "<script src=\"copy-code.js\" defer>"
+      - name: "<script src=\"copy.js\" defer>"
         does: "Once per page, at the foot. It finds every `<pre>` on the page and adds the control."
       - name: ".ds-code, .ds-code-copy"
         does: "The wrapper and the button. The script writes both; never hand-build them."
@@ -106,10 +106,10 @@ rules:
   - "**The page heading scales with the screen, and the steps shrink with it.** A step can shrink but never disappear: each level is at least a quarter of a rem (4px) larger than the one below. Most of its size is in rem and the largest is less than 2.5 times the smallest, so browser zoom scales it fully (WCAG 1.4.4); text-only zoom scales only the rem part, so there it grows a little less than body text."
   - "**The 11px uppercase Condensed label is not a heading level.** Set in `--ds-font-condensed` and `--ds-text-muted`, it marks a panel or a column and stays out of the document outline. If a reader needs to navigate to it, it is an h3 or an h4 at the size above, not a label."
   - "Space is given as spacing tokens, not pixels, because that is what `design-system.css` implements — `--ds-space-8` is 2rem, `--ds-space-6` is 1.5rem, and so on down the scale."
-  - "**There is no markup for the button**, and that is the design. `copy-code.js` finds every `<pre>` on the page, wraps it in `.ds-code` and inserts the control, which is `.ds-code-copy`. A block added next year is covered without anyone remembering, which a per-block wrapper would not be. Every page under `docs/` already loads the script."
+  - "**There is no markup for the button**, and that is the design. `copy.js` finds every `<pre>` on the page, wraps it in `.ds-code` and inserts the control, which is `.ds-code-copy`. A block added next year is covered without anyone remembering, which a per-block wrapper would not be. Every page under `docs/` already loads the script."
   - "**The button sits over the top corner of the code, on a solid ground.** The block keeps even padding, and a long line that scrolls under the button is hidden behind it rather than showing through."
   - "**It is an icon, and it still says “Copy”.** The two overlapping sheets are the glyph people already know, so the control needs no label taking up room over the code. Both SVGs are `aria-hidden` and the button has `aria-label=\"Copy code\"`, which is what a screen reader announces. A block inside a `<figure>` is named by its `<figcaption>` instead: “Copy BibTeX” for a paper's citation. The `title` is the pointer affordance only — assistive technology takes the `aria-label` and ignores it."
-  - "**Success is announced, not just shown.** The icon becomes a green tick, and the status region says “Copied to clipboard”, as in [Confirm an action that changes nothing on screen](../action-feedback.html)."
+  - "**Success is announced, not just shown.** The icon becomes a green tick, and the status region says “Copied to clipboard”, as in [Show that something was copied](../action-feedback.html)."
   - "**It works from disk.** The asynchronous Clipboard API needs a secure context, which `file://` is not, and it rejects when the window is not focused. Both cases fall back to `execCommand`, and if that fails too the status region says so rather than the button quietly doing nothing. Either way, focus stays on the button."
   - "**A block wider than its box can be reached by keyboard.** When a line of code is too long to show, the script adds `tabindex=\"0\"` to the block, so a keyboard user can tab to it and scroll it with the arrow keys. It does this for every block, opted out or not, and takes it away again when the window is wide enough to show the whole block."
   - "**Without JavaScript there is no button** and the code is still selectable. The button is a convenience; it is never the only way to get the text."
@@ -244,11 +244,11 @@ A code block uses Plex Mono on Repository Brown, and always includes a copy butt
 <pre><button class="ds-btn">Save</button></pre>
 
 <!-- And include the script once, at the foot of the page -->
-<script src="copy-code.js" defer></script>
+<script src="copy.js" defer></script>
 ```
 
 - `<pre><code>` — The block. Escape `<`, `>` and `&` inside it. No wrapper and no button of your own.
-- `<script src="copy-code.js" defer>` — Once per page, at the foot. It finds every `<pre>` on the page and adds the control.
+- `<script src="copy.js" defer>` — Once per page, at the foot. It finds every `<pre>` on the page and adds the control.
 - `.ds-code, .ds-code-copy` — The wrapper and the button. The script writes both; never hand-build them.
 - `[data-no-copy]` — On a `<pre>`, opts that block out — for a block that is an illustration of output rather than something to take away.
 
@@ -277,10 +277,10 @@ The small uppercase Condensed label that names a panel, a column or a group. It 
 - **The page heading scales with the screen, and the steps shrink with it.** A step can shrink but never disappear: each level is at least a quarter of a rem (4px) larger than the one below. Most of its size is in rem and the largest is less than 2.5 times the smallest, so browser zoom scales it fully (WCAG 1.4.4); text-only zoom scales only the rem part, so there it grows a little less than body text.
 - **The 11px uppercase Condensed label is not a heading level.** Set in `--ds-font-condensed` and `--ds-text-muted`, it marks a panel or a column and stays out of the document outline. If a reader needs to navigate to it, it is an h3 or an h4 at the size above, not a label.
 - Space is given as spacing tokens, not pixels, because that is what `design-system.css` implements — `--ds-space-8` is 2rem, `--ds-space-6` is 1.5rem, and so on down the scale.
-- **There is no markup for the button**, and that is the design. `copy-code.js` finds every `<pre>` on the page, wraps it in `.ds-code` and inserts the control, which is `.ds-code-copy`. A block added next year is covered without anyone remembering, which a per-block wrapper would not be. Every page under `docs/` already loads the script.
+- **There is no markup for the button**, and that is the design. `copy.js` finds every `<pre>` on the page, wraps it in `.ds-code` and inserts the control, which is `.ds-code-copy`. A block added next year is covered without anyone remembering, which a per-block wrapper would not be. Every page under `docs/` already loads the script.
 - **The button sits over the top corner of the code, on a solid ground.** The block keeps even padding, and a long line that scrolls under the button is hidden behind it rather than showing through.
 - **It is an icon, and it still says “Copy”.** The two overlapping sheets are the glyph people already know, so the control needs no label taking up room over the code. Both SVGs are `aria-hidden` and the button has `aria-label="Copy code"`, which is what a screen reader announces. A block inside a `<figure>` is named by its `<figcaption>` instead: “Copy BibTeX” for a paper's citation. The `title` is the pointer affordance only — assistive technology takes the `aria-label` and ignores it.
-- **Success is announced, not just shown.** The icon becomes a green tick, and the status region says “Copied to clipboard”, as in [Confirm an action that changes nothing on screen](../action-feedback.html).
+- **Success is announced, not just shown.** The icon becomes a green tick, and the status region says “Copied to clipboard”, as in [Show that something was copied](../action-feedback.html).
 - **It works from disk.** The asynchronous Clipboard API needs a secure context, which `file://` is not, and it rejects when the window is not focused. Both cases fall back to `execCommand`, and if that fails too the status region says so rather than the button quietly doing nothing. Either way, focus stays on the button.
 - **A block wider than its box can be reached by keyboard.** When a line of code is too long to show, the script adds `tabindex="0"` to the block, so a keyboard user can tab to it and scroll it with the arrow keys. It does this for every block, opted out or not, and takes it away again when the window is wide enough to show the whole block.
 - **Without JavaScript there is no button** and the code is still selectable. The button is a convenience; it is never the only way to get the text.
