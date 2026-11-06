@@ -12,7 +12,7 @@ components:
       - "**`design-system.css`.** The foundational tier 1 stylesheet. When working on internal pages, there is a tier 2 stylesheet that builds on this one."
       - "**`theme.js`.** The foundational tier 1 JavaScript. Internal tools add no JavaScript of their own."
       - "**`toc.js`, optional.** Add it when the page has a TOC bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See [TOC bar](navigation.md#toc-bar)."
-      - "**`copy.js`, optional.** Add it when the page shows code a reader might take away, or has any other copy button. It needs no markup for code: it finds every `<pre>` on the page and puts a copy button on each one. Other copy buttons are on [Show that something was copied](../action-feedback.html)."
+      - "**`copy.js`, optional.** Add it when the page shows code a reader might take away, or has any other copy button. It needs no markup for code: it finds every `<pre>` on the page and puts a copy button on each one. Other copy buttons are on [Show that something was copied](action-feedback.md)."
   - id: basic-page-markup
     title: "Basic page markup"
     summary: "This is all you need for a public arXiv page. Copy it and follow the comments."
@@ -74,7 +74,7 @@ Every core file you need to include in your repo, and in what order.
 
 **Rule.** **`toc.js`, optional.** Add it when the page has a TOC bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See [TOC bar](navigation.md#toc-bar).
 
-**Rule.** **`copy.js`, optional.** Add it when the page shows code a reader might take away, or has any other copy button. It needs no markup for code: it finds every `<pre>` on the page and puts a copy button on each one. Other copy buttons are on [Show that something was copied](../action-feedback.html).
+**Rule.** **`copy.js`, optional.** Add it when the page shows code a reader might take away, or has any other copy button. It needs no markup for code: it finds every `<pre>` on the page and puts a copy button on each one. Other copy buttons are on [Show that something was copied](action-feedback.md).
 
 ## Basic page markup
 
