@@ -1,18 +1,15 @@
 ---
 page: layout-patterns.html
 title: "Layouts"
-summary: "The frame every page is built in: the page container and its widths, page zones, the sidebar, dividers and margin notes. How to arrange a page's content in that frame is on [Organize complex page content](../organize-content.html)."
+summary: "How to use the page container and other page zones. For guidance on where to put content see the patterns under [Organize complex page content](../organize-content.html)."
 stylesheet: design-system.css
 components:
   - id: the-page-container
     title: "The page container"
-    summary: "Every page sits in `.ds-container`. It centres the content in a column at the standard reading width, 850px at most, with a margin of at least 24px on each side. For a band that runs edge to edge, see [Page zones](#page-zones)."
+    summary: "Every page sits in `.ds-container`. It centres the content in a column at the standard reading width, 850px at most, with a margin of at least 24px on each side. For a band that runs edge to edge, see [Full-width bands](#full-width-bands)."
     rules:
-      - "**One width per page.** Prose, tables, demos, code and callouts share the reading column, so everything on a page has the same left and right edge. A page that needs a different width changes the width token; it does not add a second width."
-      - "**Long-form reading is narrower.** An abstract, a paper body or an explanation read from start to finish targets a line of about 65 characters, set on the page, not on the paragraph."
-      - "**Reference pages accept a longer line.** At 850px a line is about 109 characters. That suits short reference paragraphs and two-column layouts; it is not a reason to set long text that wide."
-      - "**Few breakpoints, each for a change in structure.** Prefer a layout that needs no query, then a container query, then a media query. Breakpoints about text are in rem; breakpoints about fixed widths are in px. A threshold that CSS and JavaScript share is a custom property, read by the script with `getComputedStyle`."
-      - "**Width decides where a control sits; the pointer decides its size.** A narrow window on a laptop still has a mouse. Give larger targets and tap-to-reveal where the pointer is coarse, never because the window is narrow."
+      - "**One width per page.** Everything on a page has the same left and right edge. A page that needs a different width changes the width token; it does not add a second width."
+      - "**Long-form reading is narrower.** For an abstract, a full HTML paper, or wherever we need to support an optimal reading experience, we target a line width of about 65 characters. This is narrower than the standard content width."
   - id: sidebar
     title: "Sidebar"
     summary: "A sidebar sits to the right of the main column and contains supplementary content. If the content is secondary, distinct from the main content, and it is important that it not be pushed far down the page, then a sidebar is appropriate."
@@ -24,9 +21,9 @@ components:
       - name: ".ds-acc"
         does: "An accordion inside the sidebar is the same ruled accordion as anywhere else, a step smaller to match the sidebar's text, and single-column for the narrow measure. Several in a row go in a `.ds-acc-stack`. No extra class."
     rules:
-      - "**A sidebar is for a page whose main content is about as long as the sidebar**, such as an abstract page beside its versions and citation. The main content gives up the sidebar's width and the gap, about 22rem."
-      - "**When the main content needs its width or runs long, choose another home.** Charts, tables and wide pages need the width, and beside a long main column a sidebar leaves an empty column for most of the page. See [Where secondary content goes](../organize-content.html#where-secondary-content-goes)."
-      - "**A sidebar starts level with the block it supports.** Above it, the page heading and any long one-line content, such as a paper's title and authors, use the full width: titles can be very long, and an author list reads better on one wide line."
+      - "**Use a sidebar next to content that will have a similar height as the sidebar.**"
+      - "**When the main content needs the width or is much longer or shorter, use a different content organization pattern.** See [Where secondary content goes](../organize-content.html#where-secondary-content-goes)."
+      - "**The sidebar sits next to and starts level with a text block.** To aid readability, put page headings and other one-line content above the sidebar so they have the width they need to wrap."
   - id: dividers
     title: "Dividers"
     summary: "A rule between things. It belongs in the same conversation as the card, because both answer the same question and the answer is usually neither: this system groups with space first, and a line drawn where space would have done adds noise without adding meaning."
@@ -57,18 +54,22 @@ components:
       - "**No JavaScript required.** Even the info links use a native disclosure."
       - "**The marginalia appear at 1314px width.** The page width plus a note and its gaps on each side. Below that width, marginal notes are hidden behind an info icon."
       - "**A note should never contain required information.** A reader on a narrow screen may never open or see it, so annotations must contain only optional content."
+  - id: full-width-bands
+    title: "Full-width bands"
+    group: "Modifiers"
+    summary: "`.ds-full` lets a direct child of the container run edge to edge, while its own content lines up with the reading column. It adds no background color of its own."
   - id: page-zones
     title: "Page zones"
     group: "Modifiers"
-    summary: "The default page background is white, and that is the color that primary page content sits on. The **secondary** zone is a tinted band for what introduces or supports that content: the opening of the page, and any closing material. The zone is named for its role, because the ground changes in dark mode."
+    summary: "The default page background is white, and that is the color that primary page content sits on. The **secondary** zone is a tinted band for what introduces or supports that content: the opening of the page, and any closing material."
     classes:
       - name: ".ds-zone-secondary"
         does: "Goes on a `.ds-full` band and gives it the tinted ground and its own top and bottom padding. A band that opens or closes the page runs to the container’s edge. The colour is the token `--ds-zone-secondary-bg`: the class is what you write, and the token is the colour the class applies, which changes in dark mode."
       - name: ".ds-full"
         does: "On a direct child of `.ds-container`. The child runs across all three columns, from edge to edge, and its padding brings its own content back in line with the centre column. It has no background of its own."
     rules:
-      - "**Never a band across the main content.** Supporting material goes beside the opening, in a sidebar, or after all of the main content, in a closing band. A band between two parts of the main content interrupts the reading."
-      - "**Dense pages do not use page zones**, and neither do the lighter pages of the same tool, so every page of the tool looks the same. On an admin tool or a data view, where the reader needs to find and act on content quickly, a tinted band pushes the main content too far down the page. Separate content with spacing and headings instead. The one exception is an opening band that holds a filter for the whole page, as in [Where controls go](../organize-content.html#where-controls-go)."
+      - "**Never a band across the main content.** A band between two parts of the main content interrupts the reading."
+      - "**On an admin tool or a data view**, where the reader needs to find and act on content quickly, a tinted band pushes the main content too far down the page. Separate content with spacing and headings instead. The one exception is an opening band that holds a filter for the whole page, as in [Where controls go](../organize-content.html#where-controls-go)."
       - "**Only a direct child can run full width.** `.ds-full` works on children of `.ds-container`; nested deeper it does nothing."
       - "**Do not build a full-width band with negative margins and `100vw`.** `.ds-full` measures the container, so it fits exactly; see [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md), *Never size a full-bleed band in viewport units*."
   - id: wide-page
@@ -82,24 +83,18 @@ rules:
 
 # Layouts
 
-The frame every page is built in: the page container and its widths, page zones, the sidebar, dividers and margin notes. How to arrange a page's content in that frame is on [Organize complex page content](../organize-content.html).
+How to use the page container and other page zones. For guidance on where to put content see the patterns under [Organize complex page content](../organize-content.html).
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
 
 ## The page container
 
-Every page sits in `.ds-container`. It centres the content in a column at the standard reading width, 850px at most, with a margin of at least 24px on each side. For a band that runs edge to edge, see [Page zones](#page-zones).
+Every page sits in `.ds-container`. It centres the content in a column at the standard reading width, 850px at most, with a margin of at least 24px on each side. For a band that runs edge to edge, see [Full-width bands](#full-width-bands).
 
-**Rule.** **One width per page.** Prose, tables, demos, code and callouts share the reading column, so everything on a page has the same left and right edge. A page that needs a different width changes the width token; it does not add a second width.
+**Rule.** **One width per page.** Everything on a page has the same left and right edge. A page that needs a different width changes the width token; it does not add a second width.
 
-**Rule.** **Long-form reading is narrower.** An abstract, a paper body or an explanation read from start to finish targets a line of about 65 characters, set on the page, not on the paragraph.
-
-**Rule.** **Reference pages accept a longer line.** At 850px a line is about 109 characters. That suits short reference paragraphs and two-column layouts; it is not a reason to set long text that wide.
-
-**Rule.** **Few breakpoints, each for a change in structure.** Prefer a layout that needs no query, then a container query, then a media query. Breakpoints about text are in rem; breakpoints about fixed widths are in px. A threshold that CSS and JavaScript share is a custom property, read by the script with `getComputedStyle`.
-
-**Rule.** **Width decides where a control sits; the pointer decides its size.** A narrow window on a laptop still has a mouse. Give larger targets and tap-to-reveal where the pointer is coarse, never because the window is narrow.
+**Rule.** **Long-form reading is narrower.** For an abstract, a full HTML paper, or wherever we need to support an optimal reading experience, we target a line width of about 65 characters. This is narrower than the standard content width.
 
 ## Sidebar
 
@@ -132,11 +127,11 @@ A sidebar sits to the right of the main column and contains supplementary conten
 - `<aside>` — The sidebar comes after the main content in the markup. When the two no longer fit side by side, the sidebar wraps below the content at full width, 24px below it (`--ds-space-6`), and a screen reader meets the article first.
 - `.ds-acc` — An accordion inside the sidebar is the same ruled accordion as anywhere else, a step smaller to match the sidebar's text, and single-column for the narrow measure. Several in a row go in a `.ds-acc-stack`. No extra class.
 
-**Rule.** **A sidebar is for a page whose main content is about as long as the sidebar**, such as an abstract page beside its versions and citation. The main content gives up the sidebar's width and the gap, about 22rem.
+**Rule.** **Use a sidebar next to content that will have a similar height as the sidebar.**
 
-**Rule.** **When the main content needs its width or runs long, choose another home.** Charts, tables and wide pages need the width, and beside a long main column a sidebar leaves an empty column for most of the page. See [Where secondary content goes](../organize-content.html#where-secondary-content-goes).
+**Rule.** **When the main content needs the width or is much longer or shorter, use a different content organization pattern.** See [Where secondary content goes](../organize-content.html#where-secondary-content-goes).
 
-**Rule.** **A sidebar starts level with the block it supports.** Above it, the page heading and any long one-line content, such as a paper's title and authors, use the full width: titles can be very long, and an author list reads better on one wide line.
+**Rule.** **The sidebar sits next to and starts level with a text block.** To aid readability, put page headings and other one-line content above the sidebar so they have the width they need to wrap.
 
 ## Dividers
 
@@ -200,9 +195,13 @@ At wide screen widths, our max content width leaves enough gutter space on the s
 
 **Rule.** **A note should never contain required information.** A reader on a narrow screen may never open or see it, so annotations must contain only optional content.
 
+## Full-width bands  (Modifiers)
+
+`.ds-full` lets a direct child of the container run edge to edge, while its own content lines up with the reading column. It adds no background color of its own.
+
 ## Page zones  (Modifiers)
 
-The default page background is white, and that is the color that primary page content sits on. The **secondary** zone is a tinted band for what introduces or supports that content: the opening of the page, and any closing material. The zone is named for its role, because the ground changes in dark mode.
+The default page background is white, and that is the color that primary page content sits on. The **secondary** zone is a tinted band for what introduces or supports that content: the opening of the page, and any closing material.
 
 ```html
 <div class="ds-container">
@@ -219,9 +218,9 @@ The default page background is white, and that is the color that primary page co
 - `.ds-zone-secondary` — Goes on a `.ds-full` band and gives it the tinted ground and its own top and bottom padding. A band that opens or closes the page runs to the container’s edge. The colour is the token `--ds-zone-secondary-bg`: the class is what you write, and the token is the colour the class applies, which changes in dark mode.
 - `.ds-full` — On a direct child of `.ds-container`. The child runs across all three columns, from edge to edge, and its padding brings its own content back in line with the centre column. It has no background of its own.
 
-**Rule.** **Never a band across the main content.** Supporting material goes beside the opening, in a sidebar, or after all of the main content, in a closing band. A band between two parts of the main content interrupts the reading.
+**Rule.** **Never a band across the main content.** A band between two parts of the main content interrupts the reading.
 
-**Rule.** **Dense pages do not use page zones**, and neither do the lighter pages of the same tool, so every page of the tool looks the same. On an admin tool or a data view, where the reader needs to find and act on content quickly, a tinted band pushes the main content too far down the page. Separate content with spacing and headings instead. The one exception is an opening band that holds a filter for the whole page, as in [Where controls go](../organize-content.html#where-controls-go).
+**Rule.** **On an admin tool or a data view**, where the reader needs to find and act on content quickly, a tinted band pushes the main content too far down the page. Separate content with spacing and headings instead. The one exception is an opening band that holds a filter for the whole page, as in [Where controls go](../organize-content.html#where-controls-go).
 
 **Rule.** **Only a direct child can run full width.** `.ds-full` works on children of `.ds-container`; nested deeper it does nothing.
 

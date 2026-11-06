@@ -50,8 +50,7 @@
         <a href="versions.html">Indicate which version is being read</a>
         <a href="organize-content.html">Organize complex page content</a>
         <a href="references.html">Show a reference without losing the reader&#39;s place</a>
-        <span class="ds-panel-label">Pages</span>
-        <a href="search.html">Search</a>
+        <a href="search.html">The search experience</a>
       </div>
     </details>
     <details class="ds-site-header-dropdown">
@@ -95,7 +94,7 @@
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
     <h1>Layouts</h1>
-    <p>The frame every page is built in: the page container and its widths, page zones, the sidebar, dividers and margin notes. How to arrange a page&#39;s content in that frame is on <a href="organize-content.html">Organize complex page content</a>.</p>
+    <p>How to use the page container and other page zones. For guidance on where to put content see the patterns under <a href="organize-content.html">Organize complex page content</a>.</p>
   </header>
   </div>
 
@@ -115,6 +114,7 @@
             <li><a href="#sidebar">Sidebar</a></li>
             <li><a href="#dividers">Dividers</a></li>
             <li><a href="#marginalia">Marginalia and gutter space</a></li>
+            <li><a href="#full-width-bands">Full-width bands</a></li>
             <li><a href="#page-zones">Page zones</a></li>
             <li><a href="#wide-page">Wide page</a></li>
           </ol>
@@ -128,16 +128,13 @@
     <h2 id="the-page-container">The page container</h2>
     <p class="ds-section-desc">Every page sits in <code>.ds-container</code>. It centres the content in a
     column at the standard reading width, 850px at most, with a margin of at least 24px on each side.
-    For a band that runs edge to edge, see <a href="#page-zones">Page zones</a>.</p>
+    For a band that runs edge to edge, see <a href="#full-width-bands">Full-width bands</a>.</p>
 <pre><code>&lt;main class="ds-container"&gt;…&lt;/main&gt;</code></pre>
     <p><code>.ds-container</code> places every direct child in the reading column and puts
     <code>--ds-space-section</code> (48px) between them, so a section has no margin of its own.</p>
     <ul class="notes">
-      <li><strong>One width per page.</strong> Prose, tables, demos, code and callouts share the reading column, so everything on a page has the same left and right edge. A page that needs a different width changes the width token; it does not add a second width.</li>
-      <li><strong>Long-form reading is narrower.</strong> An abstract, a paper body or an explanation read from start to finish targets a line of about 65 characters, set on the page, not on the paragraph.</li>
-      <li><strong>Reference pages accept a longer line.</strong> At 850px a line is about 109 characters. That suits short reference paragraphs and two-column layouts; it is not a reason to set long text that wide.</li>
-      <li><strong>Few breakpoints, each for a change in structure.</strong> Prefer a layout that needs no query, then a container query, then a media query. Breakpoints about text are in rem; breakpoints about fixed widths are in px. A threshold that CSS and JavaScript share is a custom property, read by the script with <code>getComputedStyle</code>.</li>
-      <li><strong>Width decides where a control sits; the pointer decides its size.</strong> A narrow window on a laptop still has a mouse. Give larger targets and tap-to-reveal where the pointer is coarse, never because the window is narrow.</li>
+      <li><strong>One width per page.</strong> Everything on a page has the same left and right edge. A page that needs a different width changes the width token; it does not add a second width.</li>
+      <li><strong>Long-form reading is narrower.</strong> For an abstract, a full HTML paper, or wherever we need to support an optimal reading experience, we target a line width of about 65 characters. This is narrower than the standard content width.</li>
     </ul>
   </section>
 
@@ -220,9 +217,9 @@
       </details>
     </div>
     <ul class="notes">
-      <li><strong>A sidebar is for a page whose main content is about as long as the sidebar</strong>, such as an abstract page beside its versions and citation. The main content gives up the sidebar&#39;s width and the gap, about 22rem.</li>
-      <li><strong>When the main content needs its width or runs long, choose another home.</strong> Charts, tables and wide pages need the width, and beside a long main column a sidebar leaves an empty column for most of the page. See <a href="organize-content.html#where-secondary-content-goes">Where secondary content goes</a>.</li>
-      <li><strong>A sidebar starts level with the block it supports.</strong> Above it, the page heading and any long one-line content, such as a paper&#39;s title and authors, use the full width: titles can be very long, and an author list reads better on one wide line.</li>
+      <li><strong>Use a sidebar next to content that will have a similar height as the sidebar.</strong></li>
+      <li><strong>When the main content needs the width or is much longer or shorter, use a different content organization pattern.</strong> See <a href="organize-content.html#where-secondary-content-goes">Where secondary content goes</a>.</li>
+      <li><strong>The sidebar sits next to and starts level with a text block.</strong> To aid readability, put page headings and other one-line content above the sidebar so they have the width they need to wrap.</li>
     </ul>
   </section>
 
@@ -374,20 +371,25 @@
   <div class="ds-full ds-zone-secondary">
   <h2>Modifiers</h2>
 
+  <!-- ───────── Full-width bands ───────── -->
+  <section>
+    <h3 id="full-width-bands">Full-width bands</h3>
+    <p class="ds-section-desc"><code>.ds-full</code> lets a direct child of the container run edge to edge,
+    while its own content lines up with the reading column. It adds no background color of its own.</p>
+<pre><code>&lt;main class="ds-container"&gt;
+  &lt;div class="ds-full"&gt;…&lt;/div&gt;
+&lt;/main&gt;</code></pre>
+  </section>
+
   <!-- ───────── Page zones ───────── -->
   <section>
     <h3 id="page-zones">Page zones</h3>
     <p class="ds-section-desc">The default page background is white, and that is the color that primary page content sits on.
     The <strong>secondary</strong> zone is a tinted band for what introduces or supports that content:
-    the opening of the page, and any closing material. The zone is named for its role, because the
-    ground changes in dark mode.</p>
+    the opening of the page, and any closing material.</p>
     <p>A zone is optional. Without one, the whole page is on the page ground, <code>--ds-canvas</code>
     (white in light mode).</p>
-    <p>The secondary zone is a full band: a direct child of the container marked <code>.ds-full</code>,
-    which runs edge to edge while its own content lines up with the reading column. Note that
-    <code>.ds-full</code> adds no background colour. A band is coloured only by a page zone, or by a
-    component with its own background such as the TOC bar. On this page you are looking at, the tinted
-    band behind the title and the TOC bar are <code>.ds-full</code> bands.</p>
+    <p>The secondary zone is a direct child of the container marked <a href="#full-width-bands"><code>.ds-full</code></a>. A page zone band is colored by <code>.ds-zone-secondary</code>.</p>
     <div class="ds-card">
       <div class="ds-container page-demo">
         <div class="ds-full ds-zone-secondary">The opening of the page, in a secondary band.</div>
@@ -421,9 +423,8 @@
     </div>
 
     <ul class="notes">
-      <li><strong>Never a band across the main content.</strong> Supporting material goes beside the opening, in a sidebar, or after all of the main content, in a closing band. A band between two parts of the main content interrupts the reading.</li>
-      <li><strong>Dense pages do not use page zones</strong>, and neither do the lighter pages of the same
-      tool, so every page of the tool looks the same. On an admin tool or a data view, where the
+      <li><strong>Never a band across the main content.</strong> A band between two parts of the main content interrupts the reading.</li>
+      <li><strong>On an admin tool or a data view</strong>, where the
       reader needs to find and act on content quickly, a tinted band pushes the main content too far down
       the page. Separate content with spacing and headings instead. The one exception is an opening band
       that holds a filter for the whole page, as in <a href="organize-content.html#where-controls-go">Where controls go</a>.</li>
