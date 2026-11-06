@@ -29,7 +29,7 @@ components:
       - "**Only the page's main action is a primary button.** Refresh, export and other secondary actions are text buttons."
       - "**Show readers what they can use, without labelling their access.** A page shows each reader only what their permissions allow. It does not label parts of the page with who is allowed to see them."
       - "**Dense pages do not organise content with [page zones](#page-zones)**, and neither do the lighter pages of the same tool, so every page of the tool looks the same. The one band a dense page uses is an opening band that holds a filter for the whole page."
-      - "**A state that changes how the whole page reads is met first.** The page's `<title>` starts with it, and its notice comes straight after the page heading, before anything else; on a paper the heading starts with it too. A reader, and a screen reader, meets it before reading on. See [a withdrawn paper](../versions.html#withdrawn-papers) and [a form with errors](forms.md#alerts-in-forms)."
+      - "**A state that changes how the whole page reads is met first.** The page's `<title>` starts with it, and its notice comes straight after the page heading, before anything else; on a paper the heading starts with it too. A reader, and a screen reader, meets it before reading on. See [a withdrawn paper](papers.md#withdrawn-papers) and [a form with errors](forms.md#alerts-in-forms)."
       - "**When a record's main content is gone, what acts on it goes too.** Its name, identity and details stay. No column is left empty: what remains takes the row."
   - id: where-secondary-content-goes
     title: "Where secondary content goes"
@@ -192,7 +192,7 @@ Before choosing components, decide what the page is for and which content is pri
 
 **Rule.** **Dense pages do not organise content with [page zones](#page-zones)**, and neither do the lighter pages of the same tool, so every page of the tool looks the same. The one band a dense page uses is an opening band that holds a filter for the whole page.
 
-**Rule.** **A state that changes how the whole page reads is met first.** The page's `<title>` starts with it, and its notice comes straight after the page heading, before anything else; on a paper the heading starts with it too. A reader, and a screen reader, meets it before reading on. See [a withdrawn paper](../versions.html#withdrawn-papers) and [a form with errors](forms.md#alerts-in-forms).
+**Rule.** **A state that changes how the whole page reads is met first.** The page's `<title>` starts with it, and its notice comes straight after the page heading, before anything else; on a paper the heading starts with it too. A reader, and a screen reader, meets it before reading on. See [a withdrawn paper](papers.md#withdrawn-papers) and [a form with errors](forms.md#alerts-in-forms).
 
 **Rule.** **When a record's main content is gone, what acts on it goes too.** Its name, identity and details stay. No column is left empty: what remains takes the row.
 

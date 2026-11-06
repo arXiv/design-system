@@ -17,7 +17,7 @@ components:
       - name: ".ds-alert-content"
         does: "Holds the text. One or more `<p>` elements; a link inside it takes the alert’s own colour."
       - name: ".ds-alert-title"
-        does: "The leading line, in bold. It names the situation, and it is what conveys the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert. On a notice that changes how the whole page is read, such as a [withdrawn paper's](../versions.html#withdrawn-papers), it is a heading one level below the page heading, and keeps the alert's size and colour."
+        does: "The leading line, in bold. It names the situation, and it is what conveys the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert. On a notice that changes how the whole page is read, such as a [withdrawn paper's](papers.md#withdrawn-papers), it is a heading one level below the page heading, and keeps the alert's size and colour."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A), [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA), and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)"
     rules:
@@ -91,7 +91,7 @@ arXiv's design system contains four alerts that align with user expectations and
 - `.ds-alert--success, --warning, --error` — The state: `.ds-alert--success`, `.ds-alert--warning`, or `.ds-alert--error`. Sets the background, border, and text colour from the status tokens. There is no info class: info is the container's own colours. The same classes and the same colours on both surfaces.
 - `.ds-alert-icon` — The icon, an inline SVG with `aria-hidden="true"`. Each state has its own shape: a check, an “i”, a triangle, an octagon with a “!”; an “x” would read as a close control. Copy the icon element whole, attributes included: Lucide draws each “!” or “i” dot as a 0.01-unit path that only renders with `stroke-linecap="round"`. Without these attributes it renders as an empty hairline outline.
 - `.ds-alert-content` — Holds the text. One or more `<p>` elements; a link inside it takes the alert’s own colour.
-- `.ds-alert-title` — The leading line, in bold. It names the situation, and it is what conveys the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert. On a notice that changes how the whole page is read, such as a [withdrawn paper's](../versions.html#withdrawn-papers), it is a heading one level below the page heading, and keeps the alert's size and colour.
+- `.ds-alert-title` — The leading line, in bold. It names the situation, and it is what conveys the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert. On a notice that changes how the whole page is read, such as a [withdrawn paper's](papers.md#withdrawn-papers), it is a heading one level below the page heading, and keeps the alert's size and colour.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A), [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA), and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)
 
