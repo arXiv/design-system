@@ -8,7 +8,7 @@ components:
     title: "The page container"
     summary: "Every page sits in `.ds-container`. It centres the content in a column at the standard reading width, 850px at most, with a margin of at least 24px on each side. For a band that runs edge to edge, see [Full-width bands](#full-width-bands)."
     notes:
-      - "On screen, lines of 55 characters gave better comprehension than lines of 100 ([Dyson and Haselgrove, 2001](https://doi.org/10.1006/ijhc.2001.0458)). A literature review recommends no more than about 70 characters ([Nanavati and Bias, 2005](https://journals.uc.edu/index.php/vl/article/view/5765))."
+      - "Research on optimal line width:[Dyson and Haselgrove (2001)](https://doi.org/10.1006/ijhc.2001.0458)[Nanavati and Bias (2005)](https://journals.uc.edu/index.php/vl/article/view/5765)"
     rules:
       - "**One width per page.** Everything on a page has the same left and right edge. A page that needs a different width changes the width token; it does not add a second width."
       - "**Long-form reading is narrower.** For an abstract, a full HTML paper, or wherever we need to support an optimal reading experience, we target a line width of about 65 characters. This is narrower than the standard content width."
@@ -80,7 +80,7 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 Every page sits in `.ds-container`. It centres the content in a column at the standard reading width, 850px at most, with a margin of at least 24px on each side. For a band that runs edge to edge, see [Full-width bands](#full-width-bands).
 
-> On screen, lines of 55 characters gave better comprehension than lines of 100 ([Dyson and Haselgrove, 2001](https://doi.org/10.1006/ijhc.2001.0458)). A literature review recommends no more than about 70 characters ([Nanavati and Bias, 2005](https://journals.uc.edu/index.php/vl/article/view/5765)).
+> Research on optimal line width:[Dyson and Haselgrove (2001)](https://doi.org/10.1006/ijhc.2001.0458)[Nanavati and Bias (2005)](https://journals.uc.edu/index.php/vl/article/view/5765)
 
 **Rule.** **One width per page.** Everything on a page has the same left and right edge. A page that needs a different width changes the width token; it does not add a second width.
 
