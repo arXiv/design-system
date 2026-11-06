@@ -11,7 +11,7 @@ components:
       - name: ".ds-subnav"
         does: "A `<nav>` directly after the header, with an `aria-label` that names the area, such as “Account sections”. Plain links; never `role=\"tab\"`, which would promise arrow-key behaviour that page links do not have. Hidden in print."
       - name: "aria-current=\"page\""
-        does: "On the link for the current page. It shows as a bold tab joined to the page below, with the accent along its top, so the current section never depends on colour alone, and a screen reader announces it. The current tab takes the background of the zone below it: the page ground (white in light mode) above primary content, or the secondary zone's tint (light grey in light mode) when the page opens with a [secondary band](layout-patterns.md#page-zones)."
+        does: "On the link for the current page. It shows as a bold tab joined to the page below, with the accent along its top, so the current section never depends on colour alone, and a screen reader announces it. The current tab takes the background of the zone below it: the page ground (white in light mode) above primary content, or the secondary zone's tint (light grey in light mode) when the page opens with a [secondary band](layout-patterns.md#secondary-zones)."
     notes:
       - "Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
   - id: two-levels-of-navigation
@@ -122,7 +122,7 @@ A row of section links directly under the header, for an area that has its own s
 ```
 
 - `.ds-subnav` — A `<nav>` directly after the header, with an `aria-label` that names the area, such as “Account sections”. Plain links; never `role="tab"`, which would promise arrow-key behaviour that page links do not have. Hidden in print.
-- `aria-current="page"` — On the link for the current page. It shows as a bold tab joined to the page below, with the accent along its top, so the current section never depends on colour alone, and a screen reader announces it. The current tab takes the background of the zone below it: the page ground (white in light mode) above primary content, or the secondary zone's tint (light grey in light mode) when the page opens with a [secondary band](layout-patterns.md#page-zones).
+- `aria-current="page"` — On the link for the current page. It shows as a bold tab joined to the page below, with the accent along its top, so the current section never depends on colour alone, and a screen reader announces it. The current tab takes the background of the zone below it: the page ground (white in light mode) above primary content, or the secondary zone's tint (light grey in light mode) when the page opens with a [secondary band](layout-patterns.md#secondary-zones).
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)
 

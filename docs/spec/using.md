@@ -35,7 +35,7 @@ components:
     summary: "`.ds-container` is a grid with various options for managing section layout."
     rules:
       - "**Sections.** The container's direct children are `<section>` elements, and the container sets the gap between them. Do not add top or bottom margins to sections, the container already does."
-      - "**Full width.** A coloured band that runs edge to edge gets `.ds-full` with a zone class (see [Page zones](layout-patterns.md#page-zones)). Do not add negative margins or use viewport units for placement. Using a calculation like `calc(-50vw + 50%)` overhangs the section band and causes the page to scroll sideways in some environments."
+      - "**Full width.** A coloured band that runs edge to edge gets `.ds-full` with a zone class (see [Secondary zones](layout-patterns.md#secondary-zones)). Do not add negative margins or use viewport units for placement. Using a calculation like `calc(-50vw + 50%)` overhangs the section band and causes the page to scroll sideways in some environments."
       - "**Page width.** Width comes from `--ds-width-page` and `--ds-gutter`. Need to change the page width? Repoint one of the tokens, do not add a second width beside it."
   - id: combining-components
     title: "Combining components"
@@ -104,7 +104,7 @@ When building internal tools like arXiv Check or Admin Console pages, one class 
 
 **Rule.** **Sections.** The container's direct children are `<section>` elements, and the container sets the gap between them. Do not add top or bottom margins to sections, the container already does.
 
-**Rule.** **Full width.** A coloured band that runs edge to edge gets `.ds-full` with a zone class (see [Page zones](layout-patterns.md#page-zones)). Do not add negative margins or use viewport units for placement. Using a calculation like `calc(-50vw + 50%)` overhangs the section band and causes the page to scroll sideways in some environments.
+**Rule.** **Full width.** A coloured band that runs edge to edge gets `.ds-full` with a zone class (see [Secondary zones](layout-patterns.md#secondary-zones)). Do not add negative margins or use viewport units for placement. Using a calculation like `calc(-50vw + 50%)` overhangs the section band and causes the page to scroll sideways in some environments.
 
 **Rule.** **Page width.** Width comes from `--ds-width-page` and `--ds-gutter`. Need to change the page width? Repoint one of the tokens, do not add a second width beside it.
 
