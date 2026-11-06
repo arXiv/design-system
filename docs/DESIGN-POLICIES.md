@@ -58,7 +58,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 - **Organizing a page starts from the four questions** on [Organize complex page content](organize-content.html#evaluating-user-needs). Its [Rules](organize-content.html#rules) are firm; the rest of that page is guidance.
 - **Content-driven, not audience-driven.** The same usability principle applies in every context; only the content differs, so there is no separate rule for "public" vs "internal."
-- **One width per page,** from the width tokens. Dense internal tools may use the wide page. See `layout-patterns.html`, *The page container*.
+- **One width per page,** from the width tokens. Dense internal tools may use the wide page. See `layouts.html`, *The page container*.
 
 ## Colors
 

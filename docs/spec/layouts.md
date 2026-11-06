@@ -1,5 +1,5 @@
 ---
-page: layout-patterns.html
+page: layouts.html
 title: "Layouts"
 summary: "How to use the page container and other page zones. For guidance on where to put content see the patterns under [Organize complex page content](../organize-content.html)."
 stylesheet: design-system.css
