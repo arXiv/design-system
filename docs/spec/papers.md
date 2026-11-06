@@ -74,7 +74,7 @@ components:
       - name: ".ds-date-row"
         does: "Ends with Removed and its date. A removal changes the version in place, so no version is added to the list."
       - name: ".ds-sidebar"
-        does: "The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
+        does: "The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layouts.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
       - name: ".ds-panel-label"
         does: "On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page."
       - name: ".ds-paper-files"
@@ -128,7 +128,7 @@ components:
     summary: "Beside the abstract, the sidebar holds downloadable files, a citation tool, and additional paper information, in that order."
     classes:
       - name: ".ds-sidebar"
-        does: "The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
+        does: "The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layouts.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
       - name: ".ds-panel-label"
         does: "On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page."
       - name: ".ds-paper-files"
@@ -180,7 +180,7 @@ components:
       - name: "[aria-pressed]"
         does: "On View TeX, which switches the equation to its TeX and back. Its label becomes “View math”."
       - name: ".ds-marginalia"
-        does: "The figure's alt text, under the label “Alt text”, in the margin at wide widths and folded to its info mark when narrower. See [Marginalia](layout-patterns.md#marginalia)."
+        does: "The figure's alt text, under the label “Alt text”, in the margin at wide widths and folded to its info mark when narrower. See [Marginalia](layouts.md#marginalia)."
       - name: ".is-cta"
         does: "Expand, the one main action on a figure. It opens the figure viewer."
       - name: "data-copy-link, data-copy-from"
@@ -493,7 +493,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 - `.ds-paper-status` — “Removed:”, built as “Withdrawn:” is.
 - `.ds-alert--error` — Says that arXiv removed the version, quotes arXiv's comment as written, and says that the full text and files are gone.
 - `.ds-date-row` — Ends with Removed and its date. A removal changes the version in place, so no version is added to the list.
-- `.ds-sidebar` — The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
+- `.ds-sidebar` — The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layouts.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
 - `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
@@ -675,7 +675,7 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
 </div>
 ```
 
-- `.ds-sidebar` — The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
+- `.ds-sidebar` — The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layouts.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
 - `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
@@ -781,7 +781,7 @@ A display equation, a figure and a bibliography entry each have a small row of a
 - `.ds-element-pill` — The actions, as on [Buttons](buttons.md#small-actions-attached-to-content): one tab stop per element, with the arrow keys moving between its actions. Focusing an action shows the pill.
 - `.is-sr-only` — Each action's name says which element it acts on: “Permalink to equation 2.14”, not “Permalink” a hundred times.
 - `[aria-pressed]` — On View TeX, which switches the equation to its TeX and back. Its label becomes “View math”.
-- `.ds-marginalia` — The figure's alt text, under the label “Alt text”, in the margin at wide widths and folded to its info mark when narrower. See [Marginalia](layout-patterns.md#marginalia).
+- `.ds-marginalia` — The figure's alt text, under the label “Alt text”, in the margin at wide widths and folded to its info mark when narrower. See [Marginalia](layouts.md#marginalia).
 - `.is-cta` — Expand, the one main action on a figure. It opens the figure viewer.
 - `data-copy-link, data-copy-from` — Copy and Permalink, as on [Show that something was copied](../action-feedback.html): `copy.js` copies the equation's MathML or the link with the element's id, shows the tick in place of the icon, and says “Link to equation 2.14 copied” for 2 seconds.
 
