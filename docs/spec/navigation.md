@@ -57,7 +57,7 @@ components:
       - "**One bar under the header.** A page shows either secondary navigation or steps, never both."
   - id: toc-bar
     title: "TOC bar"
-    summary: "Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. The bar is sticky and it stays at the top of the viewport while the reader scrolls through the page."
+    summary: "Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. By default the bar is sticky: it stays at the top of the viewport while the reader scrolls through the page. It can scroll away with the page instead."
     classes:
       - name: ".ds-toc"
         does: "The control, a `<details>`. It works on its own anywhere, and it opens with JavaScript off."
@@ -66,7 +66,9 @@ components:
       - name: ".ds-toc-menu"
         does: "The list, a `<nav>` holding an `<ol>`. The link to the current section gets `.is-current`. A page whose sections are numbered puts each number in `.ds-toc-num`."
       - name: ".ds-toc-bar"
-        does: "The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly after a `.ds-zone-secondary` band, it sits on that band’s bottom edge. The bar is sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. On a viewport shorter than 30rem, such as a phone on its side or a laptop at 400% zoom, it scrolls away with the page instead, so the reader keeps the height for the text. Sticky chrome is governed by [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md); check there before adding the bar to a page."
+        does: "The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly after a `.ds-zone-secondary` band, it sits on that band’s bottom edge. By default the bar is sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. On a viewport shorter than 30rem, such as a phone on its side or a laptop at 400% zoom, it scrolls away with the page instead, so the reader keeps the height for the text. Whether a page has the bar, and whether it sticks, is the developer’s call; a page keeps at most one sticky bar ([DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md))."
+      - name: ".ds-toc-bar--scrolls"
+        does: "The bar scrolls away with the page instead of sticking, for a page that does not need its sections in view all the way down. An anchor then lands at the top of the viewport."
       - name: ".ds-toc-bar-inner"
         does: "The bar’s three-slot grid, which keeps the control centred whatever sits beside it."
       - name: "[data-toc-scope]"
@@ -189,7 +191,7 @@ The steps of one ordered process, such as a submission, and which one the reader
 
 ## TOC bar
 
-Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. The bar is sticky and it stays at the top of the viewport while the reader scrolls through the page.
+Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. By default the bar is sticky: it stays at the top of the viewport while the reader scrolls through the page. It can scroll away with the page instead.
 
 ```html
 <div class="ds-container">
@@ -220,7 +222,8 @@ Need in-page navigation? The TOC bar is a row that holds a single disclosure con
 - `.ds-toc` — The control, a `<details>`. It works on its own anywhere, and it opens with JavaScript off.
 - `.ds-toc-trigger` — The `<summary>`. Holds the list icon, `.ds-toc-text` with its `.ds-toc-prefix`, and `.ds-toc-chevron`.
 - `.ds-toc-menu` — The list, a `<nav>` holding an `<ol>`. The link to the current section gets `.is-current`. A page whose sections are numbered puts each number in `.ds-toc-num`.
-- `.ds-toc-bar` — The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly after a `.ds-zone-secondary` band, it sits on that band’s bottom edge. The bar is sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. On a viewport shorter than 30rem, such as a phone on its side or a laptop at 400% zoom, it scrolls away with the page instead, so the reader keeps the height for the text. Sticky chrome is governed by [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md); check there before adding the bar to a page.
+- `.ds-toc-bar` — The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly after a `.ds-zone-secondary` band, it sits on that band’s bottom edge. By default the bar is sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. On a viewport shorter than 30rem, such as a phone on its side or a laptop at 400% zoom, it scrolls away with the page instead, so the reader keeps the height for the text. Whether a page has the bar, and whether it sticks, is the developer’s call; a page keeps at most one sticky bar ([DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md)).
+- `.ds-toc-bar--scrolls` — The bar scrolls away with the page instead of sticking, for a page that does not need its sections in view all the way down. An anchor then lands at the top of the viewport.
 - `.ds-toc-bar-inner` — The bar’s three-slot grid, which keeps the control centred whatever sits beside it.
 - `[data-toc-scope]` — Optional, on `.ds-toc`: a selector for the element whose headings fill an empty list. Without it, `toc.js` reads `<main>`, or the whole page when there is no `<main>`.
 
