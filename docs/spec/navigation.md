@@ -75,6 +75,7 @@ components:
       - "**The list is written or generated.** Write the `<ol>` by hand, or leave it empty and `toc.js` fills it when the page loads, with one link for every `h2` and `h3` that has an `id`. A written list works with JavaScript off, so these docs write theirs: `verification/gen-anchors.py` fills the `<ol>` from the page’s section headings, and `--check` fails when the two disagree."
       - "**It opens without JavaScript.** `toc.js` adds closing on Escape, closing on a click outside, and the name of the current section on the control."
       - "**One per page.** `toc.js` drives the first `.ds-toc` it finds, which on this page is the bar at the top; the control in the card above comes later in the document, so it opens and closes on its own and nothing else."
+      - "**The contents list repeats the page's headings exactly**, in the same words and the same order. On a paper, the list is the author's headings; see [Papers](papers.md#paper-toc-bar-rules)."
   - id: internal
     title: "Internal"
     group: "Modifiers"
@@ -228,6 +229,8 @@ Need in-page navigation? The TOC bar is a row that holds a single disclosure con
 **Rule.** **It opens without JavaScript.** `toc.js` adds closing on Escape, closing on a click outside, and the name of the current section on the control.
 
 **Rule.** **One per page.** `toc.js` drives the first `.ds-toc` it finds, which on this page is the bar at the top; the control in the card above comes later in the document, so it opens and closes on its own and nothing else.
+
+**Rule.** **The contents list repeats the page's headings exactly**, in the same words and the same order. On a paper, the list is the author's headings; see [Papers](papers.md#paper-toc-bar-rules).
 
 ## Internal  (Modifiers)
 
