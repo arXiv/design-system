@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Layouts — arXiv Design System</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
+<script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
+</head>
+<body class="ds-page">
+<!-- The docs site's own header (the light variant). It is not a pattern: build pages from the header in templates/ and docs/header.html. -->
+<header class="ds-site-header ds-site-header--light">
+  <span class="ds-site-header-logo ds-tooltip-host"><a href="../index.html" aria-describedby="ds-logo-tip"><img class="ds-theme-light-only" src="assets/images/logos/logo_smileybones-ds.svg" alt="Smileybones"><img class="ds-theme-dark-only" src="assets/images/logos/logo_smileybones-ds-light.svg" alt="Smileybones"></a><span class="ds-tooltip" id="ds-logo-tip" role="tooltip"><span class="ds-tooltip-body">Smileybones Design System from arXiv</span></span></span>
+  <nav class="ds-site-header-nav" aria-label="Design system">
+    <details class="ds-site-header-dropdown">
+      <summary>Components</summary>
+      <div class="ds-site-header-menu">
+        <span class="ds-panel-label">Foundations</span>
+        <a href="colors.html">Colors</a>
+        <a href="dark-mode.html">Dark mode</a>
+        <a href="typography.html">Typography</a>
+        <a href="spacing.html">Spacing</a>
+        <a href="layouts.html" aria-current="page">Layouts</a>
+        <a href="icons.html">Icons</a>
+        <span class="ds-panel-label">Components</span>
+        <a href="alerts.html">Alerts</a>
+        <a href="buttons.html">Buttons</a>
+        <a href="cards.html">Cards</a>
+        <a href="dividers.html">Dividers</a>
+        <a href="filters.html">Filters</a>
+        <a href="forms.html">Forms &amp; validation</a>
+        <a href="links.html">Links</a>
+        <a href="messages.html">Messaging</a>
+        <a href="modals.html">Modal dialogs</a>
+        <a href="navigation.html">Navigation</a>
+        <a href="pager.html">Pager</a>
+        <a href="papers.html">Papers</a>
+        <a href="progressive-disclosure.html">Progressive disclosure</a>
+        <a href="footer.html">Site footer</a>
+        <a href="header.html">Site header</a>
+        <a href="tables.html">Tables</a>
+        <a href="tags.html">Tags</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Patterns</summary>
+      <div class="ds-site-header-menu">
+        <a href="action-feedback.html">Show that something was copied</a>
+        <a href="versions.html">Indicate which version is being read</a>
+        <a href="organize-content.html">Organize complex page content</a>
+        <a href="references.html">Show a reference without losing the reader&#39;s place</a>
+        <a href="search.html">The search experience</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Mockups</summary>
+      <div class="ds-site-header-menu">
+        <a href="../whiteboard/mockups/">All mockups</a>
+        <span class="ds-panel-label">Public</span>
+        <a href="../whiteboard/mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+        <a href="../whiteboard/mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+        <a href="../whiteboard/mockups/public/optin-modal/">Labs opt-in modal</a>
+        <a href="../whiteboard/mockups/public/submission-metadata/">Submission — Metadata Form</a>
+        <span class="ds-panel-label">Internal</span>
+        <a href="../whiteboard/mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+        <a href="../whiteboard/mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+        <a href="../whiteboard/mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+        <a href="../whiteboard/mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+        <a href="../whiteboard/mockups/internal/activity-dashboard/">Activity dashboard</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Docs</summary>
+      <div class="ds-site-header-menu">
+        <a href="using.html">Using the system</a>
+        <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+        <a href="doc.html?src=docs/accessibility-priorities.md">Accessibility priorities</a>
+        <a href="doc.html?src=docs/STYLE.md">Writing style</a>
+        <a href="brand.html">Brand &amp; vision</a>
+        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
+        <a href="doc.html?src=README.md">About this repo</a>
+      </div>
+    </details>
+  </nav>
+  <div class="ds-site-header-tools">
+    <button type="button" class="ds-theme-toggle"></button>
+    <span id="ds-theme-status" class="is-sr-only" role="status"></span>
+  </div>
+</header>
+
+<div class="ds-container">
+
+  <div class="ds-full ds-zone-secondary">
+  <header class="ds-page-header">
+    <h1>Layouts</h1>
+    <p>How to use the page container and other page zones. For guidance on where to put content see the patterns under <a href="organize-content.html">Organize complex page content</a>.</p>
+  </header>
+  </div>
+
+
+  <!-- ═════════ TOC ═════════ -->
+  <div class="ds-full ds-toc-bar">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#the-page-container">The page container</a></li>
+            <li><a href="#sidebar">Sidebar</a></li>
+            <li><a href="#marginalia">Marginalia and gutter space</a></li>
+            <li><a href="#full-width-bands">Full-width bands</a></li>
+            <li><a href="#secondary-zones">Secondary zones</a></li>
+            <li><a href="#wide-page">Wide page</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <!-- ───────── The page container ───────── -->
+  <section>
+    <h2 id="the-page-container">The page container</h2>
+    <p class="ds-section-desc">Every page sits in <code>.ds-container</code>. It centres the content in a
+    column at the standard reading width, 850px at most, with a margin of at least 24px on each side.
+    For a band that runs edge to edge, see <a href="#full-width-bands">Full-width bands</a>.</p>
+<pre><code>&lt;main class="ds-container"&gt;…&lt;/main&gt;</code></pre>
+    <p><code>.ds-container</code> places every direct child in the reading column and puts
+    <code>--ds-space-section</code> (48px) between them, so a section has no margin of its own.</p>
+    <ul class="notes">
+      <li><strong>One width per page.</strong> Everything on a page has the same left and right edge. A page that needs a different width changes the width token; it does not add a second width.</li>
+      <li><details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Source</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Research on optimal line width:<br><a href="https://doi.org/10.1006/ijhc.2001.0458">Dyson and Haselgrove (2001)</a><br><a href="https://journals.uc.edu/index.php/vl/article/view/5765">Nanavati and Bias (2005)</a></p>
+      </details><strong>Long-form reading is narrower.</strong> For an abstract, a full HTML paper, or wherever we need to support an optimal reading experience, we target a line width of about 65 characters. This is narrower than the standard content width.</li>
+    </ul>
+  </section>
+
+  <!-- ───────── Sidebar ───────── -->
+  <section>
+    <h2 id="sidebar">Sidebar</h2>
+    <p class="ds-section-desc">A sidebar sits to the right of the main column and contains supplementary
+    content. If the content is secondary, distinct from the main content, and it is important that it not be pushed far down the page, then a sidebar is appropriate.</p>
+    <p>The sidebar has a border and no background. Space separates it from the reading column, and a
+    line separates its blocks from each other.</p>
+    <div class="ds-card">
+      <div>
+        <div>
+          <h3>Heavy-tailed gradients in deep networks</h3>
+          <p>We study the convergence of stochastic gradient methods when the gradient noise is
+          heavy-tailed, and show that the step size must shrink with the tail index.</p>
+        </div>
+        <aside class="ds-sidebar" aria-label="Paper details">
+          <div class="ds-acc-stack">
+            <details class="ds-acc" open>
+              <summary>Versions</summary>
+              <div class="ds-acc-body">
+                <dl>
+                  <dt>v3 · current</dt><dd>24 Apr 2026</dd>
+                  <dt>v2</dt><dd><a href="#">2 Mar 2026</a></dd>
+                </dl>
+              </div>
+            </details>
+            <details class="ds-acc">
+              <summary>Paper information</summary>
+              <div class="ds-acc-body">Single-column inside the narrow sidebar.</div>
+            </details>
+            <details class="ds-acc">
+              <summary>Cite as</summary>
+              <div class="ds-acc-body">arXiv:2604.01234</div>
+            </details>
+          </div>
+        </aside>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div&gt;
+&lt;article&gt;…&lt;/article&gt;
+&lt;aside class="ds-sidebar" aria-label="Paper details"&gt;
+  &lt;div class="ds-acc-stack"&gt;
+    &lt;details class="ds-acc" open&gt;
+      &lt;summary&gt;Versions&lt;/summary&gt;
+      &lt;div class="ds-acc-body"&gt;
+        &lt;dl&gt;
+          &lt;dt&gt;v3 · current&lt;/dt&gt;&lt;dd&gt;24 Apr 2026&lt;/dd&gt;
+          &lt;dt&gt;v2&lt;/dt&gt;&lt;dd&gt;&lt;a href="#"&gt;2 Mar 2026&lt;/a&gt;&lt;/dd&gt;
+        &lt;/dl&gt;
+      &lt;/div&gt;
+    &lt;/details&gt;
+    &lt;details class="ds-acc"&gt;
+      &lt;summary&gt;Paper information&lt;/summary&gt;
+      &lt;div class="ds-acc-body"&gt;…&lt;/div&gt;
+    &lt;/details&gt;
+  &lt;/div&gt;
+&lt;/aside&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-sidebar</dt>
+            <dd>On an <code>&lt;aside&gt;</code> with an <code>aria-label</code> (see Accessibility
+            essentials). Its parent becomes the two-column layout, with the main content
+            taking the spare width, the sidebar 17rem wide, and <code>--ds-space-section</code> between
+            them. A border frames it, with 8px inside (<code>--ds-space-2</code>), and a line separates its
+            blocks, 16px apart (<code>--ds-space-4</code>). Its text is 13px. Nothing in it is
+            sticky.</dd>
+            <dt>&lt;aside&gt;</dt>
+            <dd>The sidebar comes after the main content in the markup. When the two no longer fit side by
+            side, the sidebar wraps below the content at full width, 24px below it (<code>--ds-space-6</code>),
+            and a screen reader meets the article first.</dd>
+            <dt>.ds-acc</dt>
+            <dd>An accordion inside the sidebar is the same ruled accordion as anywhere else, a step
+            smaller to match the sidebar's text, and single-column for the narrow measure. Several in a
+            row go in a <code>.ds-acc-stack</code>. No extra class.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+    <ul class="notes">
+      <li><strong>Use a sidebar next to content that will have a similar height as the sidebar.</strong></li>
+      <li><strong>When the main content needs the width or is much longer or shorter, use a different content organization pattern.</strong> See <a href="organize-content.html#where-secondary-content-goes">Where secondary content goes</a>.</li>
+      <li><strong>The sidebar sits next to and starts level with a text block.</strong> To aid readability, put page headings and other one-line content above the sidebar so they have the width they need to wrap.</li>
+    </ul>
+  </section>
+
+  <!-- ───────── Marginalia ───────── -->
+  <section>
+    <h2 id="marginalia">Marginalia and gutter space</h2>
+    <p class="ds-section-desc">At wide screen widths, our max content width leaves enough gutter space on the sides for marginalia. A short note beside the block it belongs to is appropriate for annotation-style content. At narrower widths, it is hidden in an info icon in the block’s top-right corner. Try it by widening and narrowing your screen.</p>
+
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">A margin note is one or two sentences. Anything longer belongs in the main content.</p>
+      </details>
+      <p>The block the note belongs to: a paragraph, a figure, a table or a card. Any block works once it is positioned (<code>position: relative</code>); a card already is.</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-card"&gt;
+&lt;details class="ds-marginalia"&gt;
+  &lt;summary&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;&lt;span class="is-sr-only"&gt;Note&lt;/span&gt;&lt;/summary&gt;
+  &lt;p class="ds-marginalia-body ds-annotation"&gt;The note.&lt;/p&gt;
+&lt;/details&gt;
+…
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-marginalia</dt>
+            <dd>The note, a <code>&lt;details&gt;</code>. Its first child in the block, so it is read
+            before the thing it annotates. The block supplies <code>position: relative</code>;
+            <code>.ds-card</code> already does.</dd>
+            <dt>.ds-marginalia-body</dt>
+            <dd>The text, with <code>.ds-annotation</code> for the voice. In the margin it has no
+            chrome; folded, it opens as a small panel under the mark.</dd>
+            <dt>.is-sr-only</dt>
+            <dd>Required on the mark. The icon is <code>aria-hidden</code>, so without it the control
+            announces as nothing.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <ul class="notes">
+      <li><strong>No JavaScript required.</strong> Even the info links use a native disclosure.</li>
+      <li><strong>The marginalia appear at 1314px width.</strong> The page width plus a note and its gaps on
+      each side. Below that width, marginal notes are hidden behind an info icon.</li>
+      <li><strong>A note should never contain required information.</strong> A reader on a narrow screen may never open or see it, so
+      annotations must contain only optional content.</li>
+    </ul>
+  </section>
+
+  <div class="ds-note ds-note--essential">
+    <h3 class="ds-note-label">Accessibility essentials</h3>
+    <ul class="notes">
+      <li><strong>One main landmark.</strong> Put the page's content in a single
+      <code>&lt;main&gt;</code>. A page with two, or with none, gives a screen-reader user nothing to
+      jump to.</li>
+      <li><strong>Label every aside.</strong> A sidebar is an <code>&lt;aside&gt;</code> with an
+      <code>aria-label</code> that says what it holds, so it announces as a complementary landmark
+      with a name, not as part of the article.</li>
+    </ul>
+  </div>
+
+  <div class="ds-full ds-zone-secondary">
+  <h2>Modifiers</h2>
+
+  <!-- ───────── Full-width bands ───────── -->
+  <section>
+    <h3 id="full-width-bands">Full-width bands</h3>
+    <p class="ds-section-desc"><code>.ds-full</code> lets a direct child of the container run edge to edge,
+    while its own content lines up with the reading column. It adds no background color of its own.</p>
+<pre><code>&lt;main class="ds-container"&gt;
+  &lt;div class="ds-full"&gt;…&lt;/div&gt;
+&lt;/main&gt;</code></pre>
+  </section>
+
+  <!-- ───────── Secondary zones ───────── -->
+  <section>
+    <h3 id="secondary-zones">Secondary zones</h3>
+    <p class="ds-section-desc">The default page background is white, and that is the color that primary page content sits on.
+    The <strong>secondary</strong> zone is a tinted band for what introduces or supports that content:
+    the opening of the page, and any closing material.</p>
+    <p>A zone is optional. Without one, the whole page is on the page ground, <code>--ds-canvas</code>
+    (white in light mode).</p>
+    <p>The secondary zone is a direct child of the container marked <a href="#full-width-bands"><code>.ds-full</code></a>. A page zone band is colored by <code>.ds-zone-secondary</code>.</p>
+    <div class="ds-card">
+      <div class="ds-container page-demo">
+        <div class="ds-full ds-zone-secondary">The opening of the page, in a secondary band.</div>
+        <p>The thing the page is about, on the page ground.</p>
+        <div class="ds-full ds-zone-secondary">Closing material, in a secondary band.</div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-container"&gt;
+  &lt;div class="ds-full ds-zone-secondary"&gt;               &lt;!-- tinted: introduces --&gt;
+    &lt;header class="ds-page-header"&gt;…&lt;/header&gt;
+  &lt;/div&gt;
+  &lt;section&gt;…&lt;/section&gt;                                  &lt;!-- page ground: the thing itself --&gt;
+  &lt;div class="ds-full ds-zone-secondary"&gt;               &lt;!-- tinted: supports --&gt;
+    &lt;section&gt;…&lt;/section&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-zone-secondary</dt>
+            <dd>Goes on a <code>.ds-full</code> band and gives it the tinted ground and its own top and
+            bottom padding. A band that opens or closes the page runs to the container’s edge. The
+            colour is the token <code>--ds-zone-secondary-bg</code>: the class is what you write, and
+            the token is the colour the class applies, which changes in dark mode.</dd>
+            <dt>.ds-full</dt>
+            <dd>On a direct child of <code>.ds-container</code>. The child runs across all three
+            columns, from edge to edge, and its padding brings its own content back in line with the
+            centre column. It has no background of its own.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <ul class="notes">
+      <li><strong>Never a band across the main content.</strong> A band between two parts of the main content interrupts the reading.</li>
+      <li><strong>On an admin tool or a data view</strong>, where the
+      reader needs to find and act on content quickly, a tinted band pushes the main content too far down
+      the page. Separate content with spacing and headings instead. The one exception is an opening band
+      that holds a filter for the whole page, as in <a href="organize-content.html#where-controls-go">Where controls go</a>.</li>
+      <li><strong>Only a direct child can run full width.</strong> <code>.ds-full</code> works on
+      children of <code>.ds-container</code>; nested deeper it does nothing.</li>
+      <li><strong>Do not build a full-width band with negative margins and <code>100vw</code>.</strong>
+      <code>.ds-full</code> measures the container, so it fits exactly; see
+      <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>, <em>Never size a full-bleed band in viewport units</em>.</li>
+    </ul>
+  </section>
+
+  <!-- ───────── Wide page ───────── -->
+  <section>
+    <h3 id="wide-page">Wide page</h3>
+    <p class="ds-section-desc">A dense internal tool can use a wider page: 1080px instead of 850px. Use it for tables and filters that do not fit the standard width, not for prose.</p>
+<pre><code>&lt;main class="ds-container ds-container--wide"&gt;…&lt;/main&gt;</code></pre>
+    <p><code>.ds-container--wide</code> sets the reading column to <code>--ds-width-wide</code> (1080px). Full-width bands follow it.</p>
+  </section>
+
+  </div>
+
+</div>
+
+<script>
+  // Nav dropdowns: close on outside click and Esc (enhancement only —
+  // the <details> menus work without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      // Return focus to the trigger, but only if it was inside the menu we are
+      // closing — otherwise Escape anywhere on the page would steal focus.
+      // Without this a keyboard user is left on a link that no longer exists.
+      var wasInside = d.contains(document.activeElement);
+      d.removeAttribute('open');
+      if (wasInside) d.querySelector('summary').focus();
+    });
+  });
+</script>
+<script src="header.js" defer></script>
+<script src="tooltip.js" defer></script>
+<script src="copy.js" defer></script>
+<script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
+</body>
+</html>

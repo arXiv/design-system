@@ -1,6 +1,6 @@
 ---
 page: search.html
-title: "Search"
+title: "The search experience"
 summary: "A search page contains many components and elements documented elsewhere. This page is about how to put them together, the hierarchy of content, and other design considerations when building a search form and results page."
 stylesheet: design-system.css
 components:
@@ -15,7 +15,7 @@ components:
       - name: ".ds-form--compact"
         does: "The search form. See [Compact form](forms.md#compact-form)."
       - name: ".ds-full.ds-zone-secondary"
-        does: "The help, in a tinted band. See [Page zones](layout-patterns.md#page-zones)."
+        does: "The help, in a tinted band. See [Secondary zones](layouts.md#secondary-zones)."
     notes:
       - "Meets accessibility guideline [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A)"
   - id: after-a-search
@@ -52,7 +52,7 @@ rules:
   - "**Say what was found in the page title.** The `<title>` names the query and the number of results, so a screen reader announces both when the page loads."
 ---
 
-# Search
+# The search experience
 
 A search page contains many components and elements documented elsewhere. This page is about how to put them together, the hierarchy of content, and other design considerations when building a search form and results page.
 
@@ -87,7 +87,7 @@ Before a search, the form is the primary content so it sits on the default page 
 - `<h1>` — The page heading. The demo here uses smaller headings because it sits inside this page.
 - `<h2> in the band` — The heading for the help.
 - `.ds-form--compact` — The search form. See [Compact form](forms.md#compact-form).
-- `.ds-full.ds-zone-secondary` — The help, in a tinted band. See [Page zones](layout-patterns.md#page-zones).
+- `.ds-full.ds-zone-secondary` — The help, in a tinted band. See [Secondary zones](layouts.md#secondary-zones).
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A)
 
