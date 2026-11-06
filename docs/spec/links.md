@@ -109,7 +109,8 @@ A section heading can include a control that copies a link to that section, so a
   …
 </section>
 
-<!-- 2. The script, once per page -->
+<!-- 2. The scripts, once per page: copy.js copies, anchors.js adds the control -->
+<script src="copy.js" defer></script>
 <script src="anchors.js" defer></script>
 
 <!-- What renders -->
