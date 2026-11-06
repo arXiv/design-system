@@ -3326,9 +3326,10 @@ html:has(.ds-modal[open]) {
 
    .ds-toc alone is the control and works anywhere. .ds-toc-bar is the
    edge-to-edge row that carries it, a direct child of .ds-container with
-   .ds-full, and it is sticky: the one bar a page may keep in view.
-   STICKY CHROME IS GOVERNED BY DESIGN-POLICIES (Chrome and interaction
-   structure): one sticky bar per page, and only on the pages named there. */
+   .ds-full, and it is sticky by default: the one bar a page may keep in view.
+   .ds-toc-bar--scrolls lets it scroll away with the page instead; which one a
+   page needs is the developer's call. STICKY CHROME IS GOVERNED BY
+   DESIGN-POLICIES (Chrome and interaction structure): one sticky bar per page. */
 
 .ds-toc-bar {
   position: sticky;
@@ -3374,6 +3375,9 @@ html:has(.ds-modal[open]) {
 }
 /* A sticky bar covers the top of the viewport, so an anchor has to land below it. */
 html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
+/* A bar the page does not need in view scrolls away with it, and an anchor lands at the top. */
+.ds-toc-bar--scrolls { position: relative; }
+html:has(.ds-toc-bar--scrolls) { scroll-padding-top: var(--ds-space-3); }
 /* On a short viewport (a phone on its side, a laptop at 400% zoom) the bar scrolls away with the page. */
 @media (max-height: 30rem) {
   .ds-toc-bar { position: relative; }
