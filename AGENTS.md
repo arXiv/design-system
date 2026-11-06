@@ -33,7 +33,7 @@ Look at each page you built as a reader would, on a laptop screen, and revise it
 1. **Name the primary content** of each page: the primary thing the reader came for. Write it down in a sentence.
 2. **Check that it starts as high as it can.** Everything above it must earn its place.
 3. **Evaluate each element or content that displays above it** and ask: "Is this the right place in the content hierarchy for this content? Should this content be in a sidebar, inside an accordion, behind a control, or in a tooltip? Is it needed at all?"
-4. **Check each component against the alternatives.** For each choice, name the other components the docs offer for that job, and keep yours only if it is the better fit (`docs/layout-patterns.html`, *Evaluating user needs*, *The main content comes first* and *Where secondary content goes*).
+4. **Check each component against the alternatives.** For each choice, name the other components the docs offer for that job, and keep yours only if it is the better fit (`docs/organize-content.html`, *Evaluating user needs*, *The main content comes first* and *Where secondary content goes*).
 5. **Change the pages** where the review shows a better arrangement. Then look at the changed pages again: nothing overlaps, wraps badly or is misaligned. End with a short list of what you changed and why.
 
 ## Routing — building X? read Y, reuse Z
@@ -45,8 +45,8 @@ Look at each page you built as a reader would, on a laptop screen, and revise it
 | Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--ds-space-*` |
 | Buttons | `docs/buttons.html` — both surfaces | bare `.ds-btn` is the secondary tier; `.ds-btn-primary`, `.ds-btn-text`, `.ds-btn-destructive`, `.ds-btn-icon`, `.on-tint` / `.on-dark` override it; `.ds-btn-compact` makes any of them smaller, for a small form; internal tools get their colour from `.ds-internal` on a parent, never from a second class family. Internal-only: `[aria-pressed]` on an icon button, in tier 2 |
 | Alerts, status & feedback messages | `docs/alerts.html` — one page, both surfaces | `.ds-alert*` — never rebuild its chrome |
-| Organizing a page: start here | `docs/layout-patterns.html` *Evaluating user needs* | the four questions and their tests; its Rules are firm |
-| Cards, sidebars, page organization | `docs/layout-patterns.html` | `.ds-sidebar` (always framed; accordions inside it need no class); `.ds-full` for an edge-to-edge band; the page ground is white; `.ds-full.ds-zone-secondary` is a tinted band for what introduces or supports the page |
+| Organizing a page: start here | `docs/organize-content.html` *Evaluating user needs* | the four questions and their tests; its Rules are firm |
+| The page container and its widths, sidebars, page zones | `docs/layout-patterns.html` | `.ds-sidebar` (always framed; accordions inside it need no class); `.ds-full` for an edge-to-edge band; the page ground is white; `.ds-full.ds-zone-secondary` is a tinted band for what introduces or supports the page |
 | A labelled aside — a requirement, guidance, or how a component differs in internal tools | `docs/messages.html` *Notes* | `.ds-note` (+ `--essential` / `--internal`), `.ds-note-label`, `.ds-note-gotcha` — never a bespoke tinted box, and never an alert |
 | A one-sentence note beside a block (a demo, a figure) | `docs/layout-patterns.html` *Marginalia* | `.ds-marginalia` inside a `.ds-card`, text in `.ds-marginalia-body.ds-annotation`; sits in the margin when there is one, folds to an info mark when there is not |
 | A table of contents for a long page | `docs/progressive-disclosure.html` *TOC bar* | `.ds-toc` in a `.ds-toc-bar`, plus `toc.js`; leave the `<ol>` empty and run `verification/gen-anchors.py`. Sticky only where DESIGN-POLICIES allows it |
@@ -101,7 +101,7 @@ A tier 2 file may re-point a tier 1 token where its surface needs a different va
 - **Two accent colors, never crossed.** Internal tools: Access Lime primary. Public pages: Open Blue primary. The accent tells people where they are. Outreach sites (blog, mini-sites) use the public design and may differ from it only in the ways listed in `docs/outreach.html`.
 - **Palette and type stack only.** No one-off hex values, no new font families.
 - **Reuse before rebuilding.** If a `.ds-` component exists for your need, use its documented construction — don't re-style its tokens onto new markup.
-- **Actions disable, they don't disappear.** Contextual actions render disabled when unavailable, not removed. Across a group of pages, prefer disabling a control on the one page that cannot use it; leave it out only where a disabled one would mislead (`docs/layout-patterns.html#where-controls-go`).
+- **Actions disable, they don't disappear.** Contextual actions render disabled when unavailable, not removed. Across a group of pages, prefer disabling a control on the one page that cannot use it; leave it out only where a disabled one would mislead (`docs/organize-content.html#where-controls-go`).
 
 ## Guardrails — conflicts
 

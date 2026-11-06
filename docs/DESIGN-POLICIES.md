@@ -56,7 +56,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 ## Layout and content width
 
-- **Organizing a page starts from the four questions** on [Layout patterns](layout-patterns.html#evaluating-user-needs). Its [Rules](layout-patterns.html#rules) are firm; the rest of that page is guidance.
+- **Organizing a page starts from the four questions** on [Organize complex page content](organize-content.html#evaluating-user-needs). Its [Rules](organize-content.html#rules) are firm; the rest of that page is guidance.
 - **Content-driven, not audience-driven.** The same usability principle applies in every context; only the content differs, so there is no separate rule for "public" vs "internal."
 - **One width per page,** from the width tokens. Dense internal tools may use the wide page. See `layout-patterns.html`, *The page container*.
 
@@ -97,7 +97,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 ## Writing
 
 - **No contractions.** Write "do not," not "don't." arXiv's audience is international and many readers have limited English, so the compressed form costs them a parsing step. Applies to everything with words — interface copy, error messages, documentation, alt text, commit messages. Possessives are unaffected ("arXiv's palette" is correct).
-- **One name per thing.** A component is called what the stylesheet calls it, in every document and every string. On a page, the same holds for the page's own content; see `layout-patterns.html`, *The main content comes first*.
+- **One name per thing.** A component is called what the stylesheet calls it, in every document and every string. On a page, the same holds for the page's own content; see `organize-content.html`, *The main content comes first*.
 - **Load-bearing text is stricter.** Error messages, form help, and instructions follow the additional rules in [STYLE.md](STYLE.md), which includes the full set and the reasoning behind it.
 
 ## Public pages — additional policies

@@ -114,7 +114,7 @@ components:
         does: "On one panel in the group at most, if one starts open."
 rules:
   - "A view has one level of tabs. Tabs inside a tab panel are not used."
-  - "**Never put must-see information only behind a disclosure.** The older-version warning appears in the main column even though the full history lives in the Versions accordion. A reader who never opens anything must still meet everything that matters."
+  - "**Never put must-see information only behind a disclosure.** Anything legally or practically required, such as a warning or a licence, also appears in the page's always-visible flow: the older-version warning is in the main column even though the full history lives in the Versions accordion. A closed accordion, a folded margin note and a popover are all places a reader may never open."
   - "**Disclosure is not a fix for too much content.** If a page needs six accordions to be tolerable, the page has a structure problem and hiding things postpones it. Ask what can be cut or moved before asking what can be collapsed."
   - "**Default state is closed**, except that a single most-relevant panel may start open. Open state is not persisted — predictability beats memory here."
   - "**One panel open at a time is for panels read one at a time.** When a reader needs two panels open together to compare them, leave the group without a `name`."
@@ -394,7 +394,7 @@ Opening one panel closes the panel that was open. There is no class: give every 
 ## Rules
 
 - A view has one level of tabs. Tabs inside a tab panel are not used.
-- **Never put must-see information only behind a disclosure.** The older-version warning appears in the main column even though the full history lives in the Versions accordion. A reader who never opens anything must still meet everything that matters.
+- **Never put must-see information only behind a disclosure.** Anything legally or practically required, such as a warning or a licence, also appears in the page's always-visible flow: the older-version warning is in the main column even though the full history lives in the Versions accordion. A closed accordion, a folded margin note and a popover are all places a reader may never open.
 - **Disclosure is not a fix for too much content.** If a page needs six accordions to be tolerable, the page has a structure problem and hiding things postpones it. Ask what can be cut or moved before asking what can be collapsed.
 - **Default state is closed**, except that a single most-relevant panel may start open. Open state is not persisted — predictability beats memory here.
 - **One panel open at a time is for panels read one at a time.** When a reader needs two panels open together to compare them, leave the group without a `name`.

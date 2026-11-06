@@ -48,6 +48,7 @@ components:
     rules:
       - "Choosing the wrong category may delay announcement."
 rules:
+  - "**Mark what needs attention where it is.** When some items in a set need attention, put a [status tag](tags.md) on each card or row, not an alert that lists the items, which the reader then has to find."
   - "**Title:** Announce the situation in a few words, for example “No files found”."
   - "**Body:** What the user should do about it, for example “Check the contents of the tarball or zip.”"
   - "**Links help:** When available, offer links inside the body that take the user to the next step."
@@ -156,6 +157,7 @@ The dismiss control, fully documented on [Buttons](buttons.md#the-close-control)
 
 ## Rules
 
+- **Mark what needs attention where it is.** When some items in a set need attention, put a [status tag](tags.md) on each card or row, not an alert that lists the items, which the reader then has to find.
 - **Title:** Announce the situation in a few words, for example “No files found”.
 - **Body:** What the user should do about it, for example “Check the contents of the tarball or zip.”
 - **Links help:** When available, offer links inside the body that take the user to the next step.

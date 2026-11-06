@@ -25,7 +25,7 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Spacing | [spacing.md](spacing.md) | Every gap on arXiv pages comes from the scale defined below. The scale is a 4px-based / 8-point scale, with no off-scale values permitted. More details in [DESI |
 | Pager | [pager.md](pager.md) | Controls for moving through a list: one item at a time with the pager, or a group of items at a time with numbered pages. |
 | Typography | [typography.md](typography.md) | arXiv sets all text in the IBM Plex family with STIX Two Math for notation. All fonts are self-hosted and open source with no external font services. |
-| Layout patterns | [layout-patterns.md](layout-patterns.md) | This section covers our primary patterns for differentiating and organizing content based on user needs. The organizing principle to follow throughout: Choose t |
+| Layouts | [layout-patterns.md](layout-patterns.md) | The frame every page is built in: the page container and its widths, page zones, the sidebar, dividers and margin notes. How to arrange a page's content in that |
 | Filters | [filters.md](filters.md) | Filters narrow a set of data, such as a table, a list of cards or a chart, to the items a reader wants. When each filter takes one choice, such as one status, t |
 | Navigation | [navigation.md](navigation.md) | The bars under the [site header](header.md) that tell a reader where they are inside an area: secondary navigation, two levels of it, and steps. |
 | Search | [search.md](search.md) | A search page contains many components and elements documented elsewhere. This page is about how to put them together, the hierarchy of content, and other desig |
@@ -37,5 +37,6 @@ These pages have not had their review pass. Read the page itself, and expect the
 
 - action-feedback.html
 - long-pages.html
+- organize-content.html
 - references.html
 - versions.html
