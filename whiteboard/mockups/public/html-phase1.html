@@ -1907,6 +1907,25 @@ table.ltx_equationgroup math.ltx_math_unparsed {
   pointer-events: auto;
   transition: opacity 0.18s ease, visibility 0s linear 0s;
 }
+/* A failed copy (copy.js) keeps an equation's, figure's or reference's
+   chips in view with the line until the chip is pressed again. The line
+   goes under the element, clear of the pill on its edge; a reference's goes
+   under the entry, with room before the next one. */
+.eqn-region:has(.is-failed) .eqn-chips,
+.fig-region:has(.is-failed) .fig-chips,
+li.ltx_bibitem:has(.is-failed) .fig-chips {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.18s ease, visibility 0s linear 0s;
+}
+.eqn-region:has(.is-failed) { border-color: var(--ds-border-muted); }
+.eqn-region + .ds-copy-failed-message { margin-top: calc(14px + var(--ds-space-2)); }
+.eqn-region ~ .ds-copy-failed-message:not(:has(+ .ds-copy-failed-message)) { margin-bottom: var(--ds-space-4); }
+li.ltx_bibitem:has(.is-failed) { z-index: 1; }
+li.ltx_bibitem:has(.is-failed)::after { border-color: var(--ds-text-disabled); }
+li.ltx_bibitem:has(> .ds-copy-failed-message) { margin-bottom: 2.5em; }
+li.ltx_bibitem > .ds-copy-failed-message { position: absolute; top: calc(100% + 14px); left: -40px; }   /* the list's edge, where its rules start; the list clips past it */
 
 /* Individual chip — styled as marginalia link: icon + label, no
    background, no border. Compact (small font, tight line-height,
@@ -6671,11 +6690,7 @@ We thus see that</p>
   var BACK_ARROW_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
   var LINK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
 
-  function copyText(text, done) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done, done);
-    } else { done(); }
-  }
+  var TICK = '<svg class="ds-copy-done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m20 6-11 11-5-5"/></svg>';
 
   function getBibIdFromHref(href) {
     if (!href) return null;
@@ -6966,17 +6981,12 @@ We thus see that</p>
       var perma = document.createElement('button');
       perma.type = 'button';
       perma.className = 'fig-chip';
-      perma.innerHTML = LINK_SVG + '<span class="fig-chip-label">Permalink</span>';
+      perma.innerHTML = LINK_SVG + TICK + '<span class="fig-chip-label">Permalink</span>';
       perma.setAttribute('aria-label', 'Permalink \u2014 reference ' + tag);
       perma.setAttribute('title', 'Copy link to this reference');
-      perma.addEventListener('click', function() {
-        var url = location.origin + location.pathname + '#' + bib.id;
-        copyText(url, function() {
-          var span = perma.querySelector('.fig-chip-label');
-          span.textContent = 'Copied ' + tag + ' \u2713';
-          setTimeout(function() { span.textContent = 'Permalink'; }, 1500);
-        });
-      });
+      // The design system's copy.js copies the link and gives the feedback.
+      perma.setAttribute('data-copy-link', '#' + bib.id);
+      perma.setAttribute('data-copied', 'Link to reference ' + tag.replace(/[\[\]]/g, '') + ' copied');
       chips.appendChild(perma);
 
       var back = document.createElement('button');
@@ -7193,14 +7203,7 @@ We thus see that</p>
     }).join('\n\n');
   }
 
-  // Brief "Copied!" feedback on a chip's label.
-  function flashCopied(chip) {
-    var label = chip.querySelector('.eqn-chip-label');
-    if (!label) return;
-    var original = label.textContent;
-    label.textContent = 'Copied!';
-    setTimeout(function() { label.textContent = original; }, 1500);
-  }
+  var TICK = '<svg class="ds-copy-done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m20 6-11 11-5-5"/></svg>';
 
   function makeChip(opts) {
     var btn = document.createElement('button');
@@ -7211,13 +7214,18 @@ We thus see that</p>
       btn.setAttribute('title', opts.disabledHint || 'Coming soon');
     }
     btn.setAttribute('aria-label', opts.ariaLabel || opts.label);
-    btn.innerHTML = opts.icon + '<span class="eqn-chip-label">' + opts.label + '</span>';
+    btn.innerHTML = opts.icon + (opts.copies ? TICK : '') + '<span class="eqn-chip-label">' + opts.label + '</span>';
+    // copy.js does the copying; the tap stops here so it does not also
+    // toggle the region.
+    if (opts.copies) btn.addEventListener('click', function(e) { e.stopPropagation(); });
     return btn;
   }
 
   function buildChips(region, table) {
     var chips = document.createElement('div');
     chips.className = 'eqn-chips';
+    var tagEl = table.querySelector('.ltx_tag_equation');
+    var which = tagEl ? 'equation ' + tagEl.textContent.replace(/[()\s]/g, '') : 'this equation';
 
     // 1. Toggle View TeX / View math.
     var toggleChip = makeChip({
@@ -7232,24 +7240,21 @@ We thus see that</p>
       var labelEl = toggleChip.querySelector('.eqn-chip-label');
       if (labelEl) labelEl.textContent = showingTeX ? 'View math' : 'View TeX';
       toggleChip.setAttribute('aria-label', showingTeX ? 'View rendered math' : 'View TeX source');
+      copyChip.setAttribute('data-copy', showingTeX ? getTeXSource(table) : getMathMLSource(table));
+      copyChip.setAttribute('data-copied', showingTeX ? 'TeX of ' + which + ' copied' : which.charAt(0).toUpperCase() + which.slice(1) + ' copied');
     });
     chips.appendChild(toggleChip);
 
-    // 2. Copy whatever's currently displayed (TeX or MathML).
+    // 2. Copy whatever's currently displayed (TeX or MathML): the View TeX
+    //    toggle keeps data-copy current, and copy.js copies it.
     var copyChip = makeChip({
       icon: ICON_COPY,
       label: 'Copy',
-      ariaLabel: 'Copy this equation'
+      ariaLabel: 'Copy this equation',
+      copies: true
     });
-    copyChip.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      var showingTeX = region.classList.contains('show-tex');
-      var content = showingTeX ? getTeXSource(table) : getMathMLSource(table);
-      if (!content) return;
-      if (navigator.clipboard) navigator.clipboard.writeText(content);
-      flashCopied(copyChip);
-    });
+    copyChip.setAttribute('data-copy', getMathMLSource(table));
+    copyChip.setAttribute('data-copied', which.charAt(0).toUpperCase() + which.slice(1) + ' copied');
     chips.appendChild(copyChip);
 
     // 3. Permalink (only when we can resolve an equation id).
@@ -7258,15 +7263,11 @@ We thus see that</p>
       var linkChip = makeChip({
         icon: ICON_LINK,
         label: 'Permalink',
-        ariaLabel: 'Copy permalink to this equation'
+        ariaLabel: 'Copy permalink to this equation',
+        copies: true
       });
-      linkChip.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var url = window.location.href.split('#')[0] + '#' + eqId;
-        if (navigator.clipboard) navigator.clipboard.writeText(url);
-        flashCopied(linkChip);
-      });
+      linkChip.setAttribute('data-copy-link', '#' + eqId);
+      linkChip.setAttribute('data-copied', 'Link to ' + which + ' copied');
       chips.appendChild(linkChip);
     }
 
@@ -7636,9 +7637,10 @@ We thus see that</p>
     btn.className = 'fig-chip' + (opts.cta ? ' is-cta' : '');
     if (opts.href) btn.href = opts.href;
     btn.setAttribute('aria-label', opts.ariaLabel || opts.label);
-    btn.innerHTML = (opts.icon || '') + '<span class="fig-chip-label">' + opts.label + '</span>';
+    btn.innerHTML = (opts.icon || '') + (opts.copies ? TICK : '') + '<span class="fig-chip-label">' + opts.label + '</span>';
     return btn;
   }
+  var TICK = '<svg class="ds-copy-done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m20 6-11 11-5-5"/></svg>';
 
   function buildFigureRegion(figure) {
     if (figure.parentNode.classList && figure.parentNode.classList.contains('fig-region')) return;
@@ -7676,18 +7678,16 @@ We thus see that</p>
       var linkChip = buildChip({
         icon: ICON_LINK,
         label: 'Permalink',
-        ariaLabel: 'Copy permalink to this figure'
+        ariaLabel: 'Copy permalink to this figure',
+        copies: true
       });
-      linkChip.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var url = window.location.href.split('#')[0] + '#' + figId;
-        if (navigator.clipboard) navigator.clipboard.writeText(url);
-        var span = linkChip.querySelector('.fig-chip-label');
-        var orig = span.textContent;
-        span.textContent = 'Copied!';
-        setTimeout(function() { span.textContent = orig; }, 1500);
-      });
+      // copy.js copies the link and gives the feedback; the tap stops here
+      // so it does not also toggle the figure.
+      var figTag = figure.querySelector('.ltx_tag_figure, figcaption > strong:first-child');
+      var figName = figTag ? figTag.textContent.replace(/[.:\s]+$/, '').toLowerCase() : 'this figure';
+      linkChip.setAttribute('data-copy-link', '#' + figId);
+      linkChip.setAttribute('data-copied', 'Link to ' + figName + ' copied');
+      linkChip.addEventListener('click', function(e) { e.stopPropagation(); });
       chips.appendChild(linkChip);
     }
 
