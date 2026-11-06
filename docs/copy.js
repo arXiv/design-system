@@ -110,14 +110,20 @@
   // the code block, paper element, heading or paragraph that holds the button.
   // Where none does, or the one that does is wider than what the button links
   // to or copies from, it goes under that instead: a paragraph whose
-  // Permalink sits in its margin. A button in the margin, beside that block
-  // rather than over it, keeps the line under itself, as wide as the margin
-  // allows.
+  // Permalink sits in its margin. Failing both, it goes under the nearest
+  // block in the text, past a row that floats on an element's edge. A button
+  // in the margin, beside that block rather than over it, keeps the line
+  // under itself, as wide as the margin allows.
   function place(btn, line) {
     var id = (btn.getAttribute('data-copy-link') || '').replace(/^#/, '') || btn.getAttribute('data-copy-from');
     var target = id && document.getElementById(id);
     var block = btn.closest('.ds-code, .ds-paper-element, h1, h2, h3, h4, h5, h6, p, li');
     if (target && target.contains(btn) && (!block || block.contains(target))) block = target;
+    if (!block) {
+      block = btn.parentElement;
+      while (block && block !== document.body && /^(absolute|fixed)$/.test(window.getComputedStyle(block).position)) block = block.parentElement;
+      if (block === document.body) block = null;
+    }
     var after = btn;
     if (block) {
       var b = btn.getBoundingClientRect(), r = block.getBoundingClientRect();
