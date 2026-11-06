@@ -58,8 +58,8 @@ components:
     title: "Full-width bands"
     group: "Modifiers"
     summary: "`.ds-full` lets a direct child of the container run edge to edge, while its own content lines up with the reading column. It adds no background color of its own."
-  - id: page-zones
-    title: "Page zones"
+  - id: secondary-zones
+    title: "Secondary zones"
     group: "Modifiers"
     summary: "The default page background is white, and that is the color that primary page content sits on. The **secondary** zone is a tinted band for what introduces or supports that content: the opening of the page, and any closing material."
     classes:
@@ -199,7 +199,7 @@ At wide screen widths, our max content width leaves enough gutter space on the s
 
 `.ds-full` lets a direct child of the container run edge to edge, while its own content lines up with the reading column. It adds no background color of its own.
 
-## Page zones  (Modifiers)
+## Secondary zones  (Modifiers)
 
 The default page background is white, and that is the color that primary page content sits on. The **secondary** zone is a tinted band for what introduces or supports that content: the opening of the page, and any closing material.
 
