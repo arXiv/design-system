@@ -11,7 +11,7 @@
   function write(v) { try { sessionStorage.setItem(KEY, v); } catch (e) {} }
   function forget() { try { sessionStorage.removeItem(KEY); } catch (e) {} }
 
-  // Show the chosen group in the filter bar and in the page heading.
+  // Show the chosen group in the header's Subject filter and in the page heading.
   function apply(group) {
     var select = document.getElementById('f-group');
     if (select) select.value = group;

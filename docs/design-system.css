@@ -361,12 +361,11 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   padding-bottom: var(--ds-space-6);
 }
 .ds-page-header h1 { margin-bottom: var(--ds-space-tight); }
-.ds-page-header p  { color: var(--ds-text-muted); }
 
-/* The lede under a section heading. Quieter than body copy, same size —
-   it introduces rather than competes. Takes no margin of its own; paragraph
-   rhythm comes from the foundation. */
-.ds-section-desc { color: var(--ds-text-muted); }
+/* The lede under a page title or a section heading (.ds-section-desc) is body
+   text, in body colour: it often says the most important thing in the section.
+   The class has no styles of its own; it marks the section's summary for the
+   digests. */
 
 /* ── Headings ────────────────────────────────────────────────────────
    The scale published in typography.html: 2 / 1.5 / 1.25 / 1rem, at 700 for
@@ -1304,7 +1303,8 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   justify-content: space-between;
   gap: var(--ds-space-2) var(--ds-space-block);
   padding: var(--ds-space-2) var(--ds-space-3);
-  background: color-mix(in srgb, var(--ds-tint-warm) 50%, var(--ds-surface));   /* half a table header's tint, so the two stay apart */
+  --ds-menu-bg: color-mix(in srgb, var(--ds-tint-warm) 50%, var(--ds-surface));   /* half a table header's tint, so the two stay apart */
+  background: var(--ds-menu-bg);   /* a panel from the bar opens in it */
   border-bottom: 1px solid var(--ds-border);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   position: relative;
@@ -1867,10 +1867,12 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 .ds-paper-when > .ds-link-list { display: inline-flex; flex-wrap: wrap; gap: var(--ds-space-3); font-size: 0.8125rem; font-weight: 600; }
 .ds-paper > p.ds-link-list { font-size: 0.875rem; }
 .ds-paper > .ds-tag-list { margin-top: var(--ds-space-1); }
-/* The identity line above a paper's title: identifier, primary category, DOI, licence. */
+/* The identity line above a paper's title: identifier, primary category, DOI, licence.
+   Centred, and on a page it spans the viewport to the gutters, so it wraps only on narrow screens. */
 .ds-paper-identity {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   align-items: baseline;
   gap: var(--ds-space-1) var(--ds-space-4);
   margin: 0 0 var(--ds-space-2);
@@ -1878,6 +1880,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
   color: var(--ds-text-muted);
   overflow-wrap: anywhere;   /* the DOI breaks rather than widen the page at large text sizes */
 }
+.ds-container > .ds-paper-identity { grid-column: full; padding-inline: var(--ds-gutter); }
 /* "Withdrawn:" or "Removed:" before a paper's title, in its own element so the author's title is never edited. */
 .ds-paper-status { color: var(--ds-error-fg); }
 /* A paper's version history, newest first; the version being viewed is marked. */
@@ -2255,7 +2258,9 @@ select.ds-input:not([multiple]):not([size]) {
 /* FILTER BUTTON AND FILTER PANEL  (.ds-filter-button, .ds-filter-panel) — filters.html
    A compact secondary button that opens a popover of filters for one set of
    data. Its filter icon, not a chevron, says what it opens. filter-panel.js
-   places the panel at the button's edge; without it the browser centres it. */
+   hangs the panel from the bottom edge of the row the button sits in and gives
+   it that row's --ds-menu-bg, and dark mode from a dark row; without the
+   script the browser centres it on the page's own surface. */
 .ds-filter-button { gap: 0.5em; min-width: 0; max-width: 100%; }
 .ds-filter-value { min-width: 0; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* Open: the button's own pressed colours, through its tokens, so its rim stays. */
@@ -2274,7 +2279,7 @@ select.ds-input:not([multiple]):not([size]) {
   width: min(calc(100vw - 2rem), var(--ds-panel-width, 22rem));
   padding: var(--ds-space-4);
   color: var(--ds-text);
-  background: var(--ds-btn-secondary-bg-active);   /* the open button's own background */
+  background: var(--ds-menu-bg, var(--ds-surface));   /* the row it opens from */
   border: 1px solid var(--ds-border);
   border-radius: 0 0 8px 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
@@ -3736,6 +3741,7 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
      no property at all. One set of rules, two surfaces, no specificity to
      reason about. */
   --ds-hdr-bg:        var(--ds-chrome);   /* the bar is dark in both themes; --ds-text would flip it light */
+  --ds-menu-bg:       var(--ds-hdr-bg);   /* a panel from the bar opens in it */
   --ds-hdr-fg:        var(--ds-grey-55);    /* a fixed step, 7.3:1 on the bar; --ds-text-disabled would go dark in dark mode */
   --ds-hdr-fg-strong: var(--ds-grey-10);       /* hover, active, Log in — fixed for the same reason */
   --ds-hdr-hover:     #302c28;
@@ -3757,6 +3763,11 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
   color: var(--ds-hdr-fg-strong);
 }
 .ds-site-header-logo img { height: 39px; width: auto; }
+/* The centred space (.ds-site-header-center): one tool or filter for every page under the
+   header. The logo and the space each take an auto margin, so the free room splits evenly
+   on either side of it. A filter button in it is .on-dark; open, it keeps its pressed look. */
+.ds-site-header-center { display: flex; align-items: center; min-width: 0; margin-right: auto; }
+.ds-site-header-center .ds-btn.on-dark[aria-expanded="true"] { background: rgba(255, 255, 255, 0.14); border-color: #fff; }
 .ds-site-header-nav {
   display: flex;
   align-items: center;
@@ -3991,6 +4002,17 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
 }
 .ds-site-header.is-nav-collapsed .ds-site-header-search-link .ds-nav-icon { width: 22px; height: 22px; opacity: 1; }
 .ds-site-header.is-nav-collapsed .ds-site-header-search-link > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+/* The centred space folds last: its label goes, then a filter's value, leaving the icon.
+   Both stay in the button's name. */
+.ds-site-header.is-center-compact .ds-site-header-center-label,
+.ds-site-header.is-center-folded .ds-site-header-center .ds-filter-value {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -4272,8 +4294,9 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 /* SECTION MENU (.ds-subnav-section) AND MENU (.ds-menu) — navigation.html
    An area whose sections each have several views: the section menu starts the
    row, a cell in the accent's light tint from the row's edge, and the views of
-   the current section follow it as tabs. A menu matches its control: the
-   section menu's opens in the same tint; a menu from the white row is white. */
+   the current section follow it as tabs. A menu opens in the background of
+   the row it comes from: the tinted section cell counts as a row of its own,
+   so its menu is tinted; a menu from the white row is white. */
 .ds-subnav-section {
   --ds-menu-bg: var(--ds-tint-accent);
   --ds-menu-hover: var(--ds-accent-wash-hover, var(--ds-accent-wash));
