@@ -1,65 +1,9 @@
 ---
 page: layout-patterns.html
-title: "Layout patterns"
-summary: "This section covers our primary patterns for differentiating and organizing content based on user needs. The organizing principle to follow throughout: Choose typographic and proximity-based organization patterns first, reach for visible containers only when called for."
+title: "Layouts"
+summary: "The frame every page is built in: the page container and its widths, page zones, the sidebar, dividers and margin notes. How to arrange a page's content in that frame is on [Organize complex page content](../organize-content.html)."
 stylesheet: design-system.css
 components:
-  - id: evaluating-user-needs
-    title: "Evaluating user needs"
-    summary: "What a user needs to learn determines the right organizational pattern to employ for any group of content. Use the four questions below as a starting point. Each question has a test and a set of patterns that answer it. Most content will fit under one of these questions. Have an edge case? Discuss it with the design team."
-    notes:
-      - "Where am I? (The address or the item changes): [Header](header.md) and [secondary navigation](navigation.md#secondary-navigation): sections of a site or tool; [Steps](navigation.md#steps): an ordered process; [Pager](pager.md): a queue, one item at a time; [Numbered pages](pager.md#numbered-pages): a long list split across pages; [TOC bar](progressive-disclosure.md#toc-bar): sections of one long page"
-      - "What matters here? (Directing user attention): [Spacing](spacing.md) and [dividers](#dividers): separate content; [Page container](#the-page-container), [page zones](#page-zones) and [wide page](#wide-page): the page frame; [Sidebar](#sidebar) and [marginalia](#marginalia): supporting content; [Cards](cards.md) and [tables](tables.md): records; [Cards that link](cards.md#cards-that-link): a page that sends the reader on"
-      - "Which part do I need? (The content swaps in place): [Tabs](progressive-disclosure.md#tabs): one view at a time; [Filters](filters.md): narrowed data; [Sections of one page](typography.md#the-heading-scale): views to compare"
-      - "Can I learn more? (Richer details are revealed upon request): [Tooltip](forms.md#tooltip) and [popover](progressive-disclosure.md#popover): detail on request; [Show more](progressive-disclosure.md#show-more) and [accordion](progressive-disclosure.md#accordion): more in the flow; [Modal](modals.md): a decision first; [Actions attached to content](buttons.md#small-actions-attached-to-content): act on one item"
-  - id: the-main-content-comes-first
-    title: "The main content comes first"
-    summary: "Before choosing components, decide what the page is for and which content is primary. Everything else is arranged so it does not push the primary content down."
-    rules:
-      - "**A page either sends the reader on or is where they work.** A page that sends the reader on, such as a list of sections or reports, shows each destination as a [card that links](cards.md#cards-that-link), with only what helps the reader choose. A page where the reader reads, compares or acts on records uses [tables](tables.md) and [filters](filters.md)."
-      - "**Leave detailed figures for the page they belong to.** A card shows a name and, at most, a count or a mark that something needs attention; the figures are on the page it opens."
-      - "**The page heading is followed by the main content.** At most one short line comes between them: a line that sets the data in context, such as the period it covers. An explanation of the figures is secondary: see [Where secondary content goes](#where-secondary-content-goes)."
-      - "**When the data was last updated goes on its own line above the page heading**, aligned right: the sentence first, such as “Updated 2 hours ago”, then the refresh control, a text button with the refresh icon (`refresh-cw`). The line comes before the heading in the markup too, so a screen reader meets it in the order it is shown. Headings vary in length, so the heading's own row has no room to rely on."
-      - "**Controls for a list sit on one line in its header bar.** See [Where controls go](#where-controls-go)."
-      - "**When a filter sets what the whole page is about, the page heading names the choice**, as in “Charts for cs”, and so does the page's `<title>`, so tabs, history and bookmarks tell the choices apart. With nothing chosen, the heading is the view alone. A filter that narrows one set on the page never changes the heading."
-      - "**A page with little on it needs no section headings.** The page heading names it; a heading such as “Subject groups” under “All sections” adds nothing."
-      - "**A link in the header navigation is not repeated on the page**, and no link on the page repeats the page heading."
-      - "**One name for one thing.** Choose one word for each kind of thing, such as “section”, and use it in every heading, link and sentence."
-      - "**Mark what needs attention where it is.** A status tag on the card or row, not an alert that lists the items, which the reader then has to find."
-      - "**Only the page's main action is a primary button.** Refresh, export and other secondary actions are text buttons."
-      - "**Show readers what they can use, without labelling their access.** A page shows each reader only what their permissions allow. It does not label parts of the page with who is allowed to see them."
-      - "**Dense pages do not organise content with [page zones](#page-zones)**, and neither do the lighter pages of the same tool, so every page of the tool looks the same. The one band a dense page uses is an opening band that holds a filter for the whole page."
-      - "**A state that changes how the whole page reads is met first.** The page's `<title>` starts with it, and its notice comes straight after the page heading, before anything else; on a paper the heading starts with it too. A reader, and a screen reader, meets it before reading on. See [a withdrawn paper](papers.md#withdrawn-papers) and [a form with errors](forms.md#alerts-in-forms)."
-      - "**When a record's main content is gone, what acts on it goes too.** Its name, identity and details stay. No column is left empty: what remains takes the row."
-  - id: where-secondary-content-goes
-    title: "Where secondary content goes"
-    summary: "Each kind of secondary content has a home that keeps the main content high and wide. Compare at least two homes for each piece, and keep the one that leaves the main content highest and widest."
-    rules:
-      - "**A line or two: a line below the main content.** A short note, such as what the figures count, reads as a footnote. It needs no heading and no accordion."
-      - "**A labelled section the reader may want: an [accordion](progressive-disclosure.md#accordion)** below the main content. An accordion holds more than a line or two."
-      - "**The rest of a list whose first items matter most: [show more](progressive-disclosure.md#show-more)**, such as authors after the first eight. A list of equal items, such as the categories a report covers, is shown or hidden whole."
-      - "**A list or explanation the reader opens when needed: a [popover](progressive-disclosure.md#popover) or a [modal](modals.md)**, opened from a button with a visible label, such as “Categories (40)” or “About these charts” beside the heading; an icon on its own is easy to miss. A popover opens beside its button and leaves the page usable; a modal takes over the page while the reader looks through it."
-      - "**A sentence about one label or control: a [tooltip](forms.md#tooltip).**"
-      - "**Supporting content beside short main content: a [sidebar](#sidebar).**"
-      - "**Never a band across the main content.** Supporting material goes beside the opening, in a sidebar, or after all of the main content, in a closing band. A band between two parts of the main content interrupts the reading."
-      - "**A sidebar starts level with the block it supports.** Above it, the page heading and any long one-line content, such as a paper's title and authors, use the full width: titles can be very long, and an author list reads better on one wide line."
-      - "**Reveal on request rather than add a setting.** Something a reader needs now and then opens when they ask for it, as a popover or a tooltip does. A setting that keeps it on screen adds noise for everyone else."
-  - id: where-controls-go
-    title: "Where controls go"
-    summary: "A control sits with what it changes. The more of the site it changes, the higher it sits on the page."
-    rules:
-      - "**A tool or filter for every page under the header, whether a whole site or a whole tool: the header's centred space**, on the header's background. Nothing sits higher. Use it sparingly. See [Header](header.md#design-rules)."
-      - "**A choice between the sections of a tool: the section menu**, at the start of the second row, on the accent tint. It is navigation. See [Two levels of navigation](navigation.md#two-levels-of-navigation)."
-      - "**A filter for the whole page: the page's opening band**, a `.ds-full.ds-zone-secondary` band under the page heading. See [Page zones](#page-zones)."
-      - "**Filters, sort and group actions for one set of data: the set's header bar**, on one line, even when the set's only control is one action, such as Copy emails. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers)."
-      - "**A set with no controls is not in a card.** It sits on the page ground under its heading."
-      - "**A count says what the reader cannot see for themselves.** Search results always have one, even for a few results: the range at the top of the results, “1–3 of 3 results”. See [Search](search.md#results); no results is a message. A set the reader has filtered ends its header bar with how much is left, “3 of 120 holds”. See [Filters](filters.md#rules). A list longer than one page states its range in its [pager](pager.md), “1–50 of 18,659”. A set shown whole that the reader did not search or filter, such as a short table, a paper's versions or a group's categories, has no count."
-      - "**A control for the whole page sits at least as far above the first set of data as the sets sit from each other**, so it reads as the page's and not the first set's."
-      - "**A control is filed under what it does.** A Permalink switch is a reading feature, not an accessibility one, and a way to add alt text sits beside the figures. Filed under another topic, a control is both hidden and mislabelled."
-      - "**A group of blocks, such as a sidebar, is ordered by value**, the most used first, and shown in the same order as the markup, so a screen reader meets the main action first too."
-      - "**When chrome has to shrink, keep the control readers use often** and let one they use rarely go, as a paper's TOC bar keeps its contents list before a mode switch."
-      - "**Prefer disabling to removing.** When one page of a group cannot use a control the other pages have, show it disabled there, so every page of the group keeps one layout and the reader learns where the control lives. This is a default, not a rule: leave the control out where a disabled one would mislead."
-      - "**Width decides where a control sits; the pointer decides its size.** A narrow window on a laptop still has a mouse. Give larger targets and tap-to-reveal where the pointer is coarse, never because the window is narrow."
   - id: the-page-container
     title: "The page container"
     summary: "Every page sits in `.ds-container`. It centres the content in a column at the standard reading width, 850px at most, with a margin of at least 24px on each side. For a band that runs edge to edge, see [Page zones](#page-zones)."
@@ -68,19 +12,21 @@ components:
       - "**Long-form reading is narrower.** An abstract, a paper body or an explanation read from start to finish targets a line of about 65 characters, set on the page, not on the paragraph."
       - "**Reference pages accept a longer line.** At 850px a line is about 109 characters. That suits short reference paragraphs and two-column layouts; it is not a reason to set long text that wide."
       - "**Few breakpoints, each for a change in structure.** Prefer a layout that needs no query, then a container query, then a media query. Breakpoints about text are in rem; breakpoints about fixed widths are in px. A threshold that CSS and JavaScript share is a custom property, read by the script with `getComputedStyle`."
+      - "**Width decides where a control sits; the pointer decides its size.** A narrow window on a laptop still has a mouse. Give larger targets and tap-to-reveal where the pointer is coarse, never because the window is narrow."
   - id: sidebar
     title: "Sidebar"
     summary: "A sidebar sits to the right of the main column and contains supplementary content. If the content is secondary, distinct from the main content, and it is important that it not be pushed far down the page, then a sidebar is appropriate."
     classes:
       - name: ".ds-sidebar"
-        does: "On an `<aside>` with an `aria-label` that names what it holds: a complementary landmark. Its parent becomes the two-column layout, with the main content taking the spare width, the sidebar 17rem wide, and `--ds-space-section` between them. A border frames it, with 8px inside (`--ds-space-2`), and a line separates its blocks, 16px apart (`--ds-space-4`). Its text is 13px. Nothing in it is sticky."
+        does: "On an `<aside>` with an `aria-label` (see Accessibility essentials). Its parent becomes the two-column layout, with the main content taking the spare width, the sidebar 17rem wide, and `--ds-space-section` between them. A border frames it, with 8px inside (`--ds-space-2`), and a line separates its blocks, 16px apart (`--ds-space-4`). Its text is 13px. Nothing in it is sticky."
       - name: "<aside>"
         does: "The sidebar comes after the main content in the markup. When the two no longer fit side by side, the sidebar wraps below the content at full width, 24px below it (`--ds-space-6`), and a screen reader meets the article first."
       - name: ".ds-acc"
         does: "An accordion inside the sidebar is the same ruled accordion as anywhere else, a step smaller to match the sidebar's text, and single-column for the narrow measure. Several in a row go in a `.ds-acc-stack`. No extra class."
     rules:
       - "**A sidebar is for a page whose main content is about as long as the sidebar**, such as an abstract page beside its versions and citation. The main content gives up the sidebar's width and the gap, about 22rem."
-      - "**When the main content needs its width or runs long, choose another home.** Charts, tables and wide pages need the width, and beside a long main column a sidebar leaves an empty column for most of the page. See [Where secondary content goes](#where-secondary-content-goes)."
+      - "**When the main content needs its width or runs long, choose another home.** Charts, tables and wide pages need the width, and beside a long main column a sidebar leaves an empty column for most of the page. See [Where secondary content goes](../organize-content.html#where-secondary-content-goes)."
+      - "**A sidebar starts level with the block it supports.** Above it, the page heading and any long one-line content, such as a paper's title and authors, use the full width: titles can be very long, and an author list reads better on one wide line."
   - id: dividers
     title: "Dividers"
     summary: "A rule between things. It belongs in the same conversation as the card, because both answer the same question and the answer is usually neither: this system groups with space first, and a line drawn where space would have done adds noise without adding meaning."
@@ -121,130 +67,25 @@ components:
       - name: ".ds-full"
         does: "On a direct child of `.ds-container`. The child runs across all three columns, from edge to edge, and its padding brings its own content back in line with the centre column. It has no background of its own."
     rules:
-      - "**Dense pages do not use page zones.** On an admin tool or a data view, where the reader needs to find and act on content quickly, a tinted band pushes the main content too far down the page. Separate content with spacing and headings instead. The one exception is an opening band that holds a filter for the whole page, as in [Where controls go](#where-controls-go)."
+      - "**Never a band across the main content.** Supporting material goes beside the opening, in a sidebar, or after all of the main content, in a closing band. A band between two parts of the main content interrupts the reading."
+      - "**Dense pages do not use page zones**, and neither do the lighter pages of the same tool, so every page of the tool looks the same. On an admin tool or a data view, where the reader needs to find and act on content quickly, a tinted band pushes the main content too far down the page. Separate content with spacing and headings instead. The one exception is an opening band that holds a filter for the whole page, as in [Where controls go](../organize-content.html#where-controls-go)."
       - "**Only a direct child can run full width.** `.ds-full` works on children of `.ds-container`; nested deeper it does nothing."
-      - "**Do not build a full-width band with negative margins and `100vw`.** `100vw` includes the scrollbar, so a band built that way is wider than the page, and the page scrolls sideways on Windows and Linux. `.ds-full` measures the container instead, so it fits exactly."
+      - "**Do not build a full-width band with negative margins and `100vw`.** `.ds-full` measures the container, so it fits exactly; see [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md), *Never size a full-bleed band in viewport units*."
   - id: wide-page
     title: "Wide page"
     group: "Modifiers"
     summary: "A dense internal tool can use a wider page: 1080px instead of 850px. Use it for tables and filters that do not fit the standard width, not for prose."
 rules:
-  - "**Use only the questions the content raises.** When a page uses more than one layer, they stack in this order: navigation, then tabs, then filters."
-  - "**One control of each kind per view.** Never two rows of tabs, and never two filter bars."
-  - "**No tabs inside a tab panel.**"
-  - "**Filters apply to everything below them.**"
-  - "**One Apply button per filter bar.**"
-  - "**A number that changes a calculation is a setting, not a filter.**"
-  - "**No breadcrumbs.** See [Header](header.md), *Rules*."
   - "**One main landmark.** Put the page's content in a single `<main>`. A page with two, or with none, gives a screen-reader user nothing to jump to."
   - "**Label every aside.** A sidebar is an `<aside>` with an `aria-label` that says what it holds, so it announces as a complementary landmark with a name, not as part of the article."
-  - "**Headings continue the outline inside a card.** A heading inside a container takes the next level down from the section it sits in. Do not skip a level because the content is in a card."
-  - "**Use native disclosure.** Build accordions, margin notes and the TOC bar on `<details>` and `<summary>`: the summary is focusable and toggles with Enter and Space for free. Do not rebuild them from `<div>` elements and click handlers."
-  - "**Nothing required lives only in a collapsed panel.** Anything legally or practically required, such as a warning or a licence, must also exist in always-visible flow. A closed accordion, a folded margin note and a popover are all places a reader may never open."
 ---
 
-# Layout patterns
+# Layouts
 
-This section covers our primary patterns for differentiating and organizing content based on user needs. The organizing principle to follow throughout: Choose typographic and proximity-based organization patterns first, reach for visible containers only when called for.
+The frame every page is built in: the page container and its widths, page zones, the sidebar, dividers and margin notes. How to arrange a page's content in that frame is on [Organize complex page content](../organize-content.html).
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
-
-## Evaluating user needs
-
-What a user needs to learn determines the right organizational pattern to employ for any group of content. Use the four questions below as a starting point. Each question has a test and a set of patterns that answer it. Most content will fit under one of these questions. Have an edge case? Discuss it with the design team.
-
-> Where am I? (The address or the item changes): [Header](header.md) and [secondary navigation](navigation.md#secondary-navigation): sections of a site or tool; [Steps](navigation.md#steps): an ordered process; [Pager](pager.md): a queue, one item at a time; [Numbered pages](pager.md#numbered-pages): a long list split across pages; [TOC bar](progressive-disclosure.md#toc-bar): sections of one long page
-
-> What matters here? (Directing user attention): [Spacing](spacing.md) and [dividers](#dividers): separate content; [Page container](#the-page-container), [page zones](#page-zones) and [wide page](#wide-page): the page frame; [Sidebar](#sidebar) and [marginalia](#marginalia): supporting content; [Cards](cards.md) and [tables](tables.md): records; [Cards that link](cards.md#cards-that-link): a page that sends the reader on
-
-> Which part do I need? (The content swaps in place): [Tabs](progressive-disclosure.md#tabs): one view at a time; [Filters](filters.md): narrowed data; [Sections of one page](typography.md#the-heading-scale): views to compare
-
-> Can I learn more? (Richer details are revealed upon request): [Tooltip](forms.md#tooltip) and [popover](progressive-disclosure.md#popover): detail on request; [Show more](progressive-disclosure.md#show-more) and [accordion](progressive-disclosure.md#accordion): more in the flow; [Modal](modals.md): a decision first; [Actions attached to content](buttons.md#small-actions-attached-to-content): act on one item
-
-## The main content comes first
-
-Before choosing components, decide what the page is for and which content is primary. Everything else is arranged so it does not push the primary content down.
-
-**Rule.** **A page either sends the reader on or is where they work.** A page that sends the reader on, such as a list of sections or reports, shows each destination as a [card that links](cards.md#cards-that-link), with only what helps the reader choose. A page where the reader reads, compares or acts on records uses [tables](tables.md) and [filters](filters.md).
-
-**Rule.** **Leave detailed figures for the page they belong to.** A card shows a name and, at most, a count or a mark that something needs attention; the figures are on the page it opens.
-
-**Rule.** **The page heading is followed by the main content.** At most one short line comes between them: a line that sets the data in context, such as the period it covers. An explanation of the figures is secondary: see [Where secondary content goes](#where-secondary-content-goes).
-
-**Rule.** **When the data was last updated goes on its own line above the page heading**, aligned right: the sentence first, such as “Updated 2 hours ago”, then the refresh control, a text button with the refresh icon (`refresh-cw`). The line comes before the heading in the markup too, so a screen reader meets it in the order it is shown. Headings vary in length, so the heading's own row has no room to rely on.
-
-**Rule.** **Controls for a list sit on one line in its header bar.** See [Where controls go](#where-controls-go).
-
-**Rule.** **When a filter sets what the whole page is about, the page heading names the choice**, as in “Charts for cs”, and so does the page's `<title>`, so tabs, history and bookmarks tell the choices apart. With nothing chosen, the heading is the view alone. A filter that narrows one set on the page never changes the heading.
-
-**Rule.** **A page with little on it needs no section headings.** The page heading names it; a heading such as “Subject groups” under “All sections” adds nothing.
-
-**Rule.** **A link in the header navigation is not repeated on the page**, and no link on the page repeats the page heading.
-
-**Rule.** **One name for one thing.** Choose one word for each kind of thing, such as “section”, and use it in every heading, link and sentence.
-
-**Rule.** **Mark what needs attention where it is.** A status tag on the card or row, not an alert that lists the items, which the reader then has to find.
-
-**Rule.** **Only the page's main action is a primary button.** Refresh, export and other secondary actions are text buttons.
-
-**Rule.** **Show readers what they can use, without labelling their access.** A page shows each reader only what their permissions allow. It does not label parts of the page with who is allowed to see them.
-
-**Rule.** **Dense pages do not organise content with [page zones](#page-zones)**, and neither do the lighter pages of the same tool, so every page of the tool looks the same. The one band a dense page uses is an opening band that holds a filter for the whole page.
-
-**Rule.** **A state that changes how the whole page reads is met first.** The page's `<title>` starts with it, and its notice comes straight after the page heading, before anything else; on a paper the heading starts with it too. A reader, and a screen reader, meets it before reading on. See [a withdrawn paper](papers.md#withdrawn-papers) and [a form with errors](forms.md#alerts-in-forms).
-
-**Rule.** **When a record's main content is gone, what acts on it goes too.** Its name, identity and details stay. No column is left empty: what remains takes the row.
-
-## Where secondary content goes
-
-Each kind of secondary content has a home that keeps the main content high and wide. Compare at least two homes for each piece, and keep the one that leaves the main content highest and widest.
-
-**Rule.** **A line or two: a line below the main content.** A short note, such as what the figures count, reads as a footnote. It needs no heading and no accordion.
-
-**Rule.** **A labelled section the reader may want: an [accordion](progressive-disclosure.md#accordion)** below the main content. An accordion holds more than a line or two.
-
-**Rule.** **The rest of a list whose first items matter most: [show more](progressive-disclosure.md#show-more)**, such as authors after the first eight. A list of equal items, such as the categories a report covers, is shown or hidden whole.
-
-**Rule.** **A list or explanation the reader opens when needed: a [popover](progressive-disclosure.md#popover) or a [modal](modals.md)**, opened from a button with a visible label, such as “Categories (40)” or “About these charts” beside the heading; an icon on its own is easy to miss. A popover opens beside its button and leaves the page usable; a modal takes over the page while the reader looks through it.
-
-**Rule.** **A sentence about one label or control: a [tooltip](forms.md#tooltip).**
-
-**Rule.** **Supporting content beside short main content: a [sidebar](#sidebar).**
-
-**Rule.** **Never a band across the main content.** Supporting material goes beside the opening, in a sidebar, or after all of the main content, in a closing band. A band between two parts of the main content interrupts the reading.
-
-**Rule.** **A sidebar starts level with the block it supports.** Above it, the page heading and any long one-line content, such as a paper's title and authors, use the full width: titles can be very long, and an author list reads better on one wide line.
-
-**Rule.** **Reveal on request rather than add a setting.** Something a reader needs now and then opens when they ask for it, as a popover or a tooltip does. A setting that keeps it on screen adds noise for everyone else.
-
-## Where controls go
-
-A control sits with what it changes. The more of the site it changes, the higher it sits on the page.
-
-**Rule.** **A tool or filter for every page under the header, whether a whole site or a whole tool: the header's centred space**, on the header's background. Nothing sits higher. Use it sparingly. See [Header](header.md#design-rules).
-
-**Rule.** **A choice between the sections of a tool: the section menu**, at the start of the second row, on the accent tint. It is navigation. See [Two levels of navigation](navigation.md#two-levels-of-navigation).
-
-**Rule.** **A filter for the whole page: the page's opening band**, a `.ds-full.ds-zone-secondary` band under the page heading. See [Page zones](#page-zones).
-
-**Rule.** **Filters, sort and group actions for one set of data: the set's header bar**, on one line, even when the set's only control is one action, such as Copy emails. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers).
-
-**Rule.** **A set with no controls is not in a card.** It sits on the page ground under its heading.
-
-**Rule.** **A count says what the reader cannot see for themselves.** Search results always have one, even for a few results: the range at the top of the results, “1–3 of 3 results”. See [Search](search.md#results); no results is a message. A set the reader has filtered ends its header bar with how much is left, “3 of 120 holds”. See [Filters](filters.md#rules). A list longer than one page states its range in its [pager](pager.md), “1–50 of 18,659”. A set shown whole that the reader did not search or filter, such as a short table, a paper's versions or a group's categories, has no count.
-
-**Rule.** **A control for the whole page sits at least as far above the first set of data as the sets sit from each other**, so it reads as the page's and not the first set's.
-
-**Rule.** **A control is filed under what it does.** A Permalink switch is a reading feature, not an accessibility one, and a way to add alt text sits beside the figures. Filed under another topic, a control is both hidden and mislabelled.
-
-**Rule.** **A group of blocks, such as a sidebar, is ordered by value**, the most used first, and shown in the same order as the markup, so a screen reader meets the main action first too.
-
-**Rule.** **When chrome has to shrink, keep the control readers use often** and let one they use rarely go, as a paper's TOC bar keeps its contents list before a mode switch.
-
-**Rule.** **Prefer disabling to removing.** When one page of a group cannot use a control the other pages have, show it disabled there, so every page of the group keeps one layout and the reader learns where the control lives. This is a default, not a rule: leave the control out where a disabled one would mislead.
-
-**Rule.** **Width decides where a control sits; the pointer decides its size.** A narrow window on a laptop still has a mouse. Give larger targets and tap-to-reveal where the pointer is coarse, never because the window is narrow.
 
 ## The page container
 
@@ -257,6 +98,8 @@ Every page sits in `.ds-container`. It centres the content in a column at the st
 **Rule.** **Reference pages accept a longer line.** At 850px a line is about 109 characters. That suits short reference paragraphs and two-column layouts; it is not a reason to set long text that wide.
 
 **Rule.** **Few breakpoints, each for a change in structure.** Prefer a layout that needs no query, then a container query, then a media query. Breakpoints about text are in rem; breakpoints about fixed widths are in px. A threshold that CSS and JavaScript share is a custom property, read by the script with `getComputedStyle`.
+
+**Rule.** **Width decides where a control sits; the pointer decides its size.** A narrow window on a laptop still has a mouse. Give larger targets and tap-to-reveal where the pointer is coarse, never because the window is narrow.
 
 ## Sidebar
 
@@ -285,13 +128,15 @@ A sidebar sits to the right of the main column and contains supplementary conten
 </div>
 ```
 
-- `.ds-sidebar` — On an `<aside>` with an `aria-label` that names what it holds: a complementary landmark. Its parent becomes the two-column layout, with the main content taking the spare width, the sidebar 17rem wide, and `--ds-space-section` between them. A border frames it, with 8px inside (`--ds-space-2`), and a line separates its blocks, 16px apart (`--ds-space-4`). Its text is 13px. Nothing in it is sticky.
+- `.ds-sidebar` — On an `<aside>` with an `aria-label` (see Accessibility essentials). Its parent becomes the two-column layout, with the main content taking the spare width, the sidebar 17rem wide, and `--ds-space-section` between them. A border frames it, with 8px inside (`--ds-space-2`), and a line separates its blocks, 16px apart (`--ds-space-4`). Its text is 13px. Nothing in it is sticky.
 - `<aside>` — The sidebar comes after the main content in the markup. When the two no longer fit side by side, the sidebar wraps below the content at full width, 24px below it (`--ds-space-6`), and a screen reader meets the article first.
 - `.ds-acc` — An accordion inside the sidebar is the same ruled accordion as anywhere else, a step smaller to match the sidebar's text, and single-column for the narrow measure. Several in a row go in a `.ds-acc-stack`. No extra class.
 
 **Rule.** **A sidebar is for a page whose main content is about as long as the sidebar**, such as an abstract page beside its versions and citation. The main content gives up the sidebar's width and the gap, about 22rem.
 
-**Rule.** **When the main content needs its width or runs long, choose another home.** Charts, tables and wide pages need the width, and beside a long main column a sidebar leaves an empty column for most of the page. See [Where secondary content goes](#where-secondary-content-goes).
+**Rule.** **When the main content needs its width or runs long, choose another home.** Charts, tables and wide pages need the width, and beside a long main column a sidebar leaves an empty column for most of the page. See [Where secondary content goes](../organize-content.html#where-secondary-content-goes).
+
+**Rule.** **A sidebar starts level with the block it supports.** Above it, the page heading and any long one-line content, such as a paper's title and authors, use the full width: titles can be very long, and an author list reads better on one wide line.
 
 ## Dividers
 
@@ -374,11 +219,13 @@ The default page background is white, and that is the color that primary page co
 - `.ds-zone-secondary` — Goes on a `.ds-full` band and gives it the tinted ground and its own top and bottom padding. A band that opens or closes the page runs to the container’s edge. The colour is the token `--ds-zone-secondary-bg`: the class is what you write, and the token is the colour the class applies, which changes in dark mode.
 - `.ds-full` — On a direct child of `.ds-container`. The child runs across all three columns, from edge to edge, and its padding brings its own content back in line with the centre column. It has no background of its own.
 
-**Rule.** **Dense pages do not use page zones.** On an admin tool or a data view, where the reader needs to find and act on content quickly, a tinted band pushes the main content too far down the page. Separate content with spacing and headings instead. The one exception is an opening band that holds a filter for the whole page, as in [Where controls go](#where-controls-go).
+**Rule.** **Never a band across the main content.** Supporting material goes beside the opening, in a sidebar, or after all of the main content, in a closing band. A band between two parts of the main content interrupts the reading.
+
+**Rule.** **Dense pages do not use page zones**, and neither do the lighter pages of the same tool, so every page of the tool looks the same. On an admin tool or a data view, where the reader needs to find and act on content quickly, a tinted band pushes the main content too far down the page. Separate content with spacing and headings instead. The one exception is an opening band that holds a filter for the whole page, as in [Where controls go](../organize-content.html#where-controls-go).
 
 **Rule.** **Only a direct child can run full width.** `.ds-full` works on children of `.ds-container`; nested deeper it does nothing.
 
-**Rule.** **Do not build a full-width band with negative margins and `100vw`.** `100vw` includes the scrollbar, so a band built that way is wider than the page, and the page scrolls sideways on Windows and Linux. `.ds-full` measures the container instead, so it fits exactly.
+**Rule.** **Do not build a full-width band with negative margins and `100vw`.** `.ds-full` measures the container, so it fits exactly; see [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md), *Never size a full-bleed band in viewport units*.
 
 ## Wide page  (Modifiers)
 
@@ -386,15 +233,5 @@ A dense internal tool can use a wider page: 1080px instead of 850px. Use it for 
 
 ## Rules
 
-- **Use only the questions the content raises.** When a page uses more than one layer, they stack in this order: navigation, then tabs, then filters.
-- **One control of each kind per view.** Never two rows of tabs, and never two filter bars.
-- **No tabs inside a tab panel.**
-- **Filters apply to everything below them.**
-- **One Apply button per filter bar.**
-- **A number that changes a calculation is a setting, not a filter.**
-- **No breadcrumbs.** See [Header](header.md), *Rules*.
 - **One main landmark.** Put the page's content in a single `<main>`. A page with two, or with none, gives a screen-reader user nothing to jump to.
 - **Label every aside.** A sidebar is an `<aside>` with an `aria-label` that says what it holds, so it announces as a complementary landmark with a name, not as part of the article.
-- **Headings continue the outline inside a card.** A heading inside a container takes the next level down from the section it sits in. Do not skip a level because the content is in a card.
-- **Use native disclosure.** Build accordions, margin notes and the TOC bar on `<details>` and `<summary>`: the summary is focusable and toggles with Enter and Space for free. Do not rebuild them from `<div>` elements and click handlers.
-- **Nothing required lives only in a collapsed panel.** Anything legally or practically required, such as a warning or a licence, must also exist in always-visible flow. A closed accordion, a folded margin note and a popover are all places a reader may never open.
