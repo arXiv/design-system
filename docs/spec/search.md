@@ -1,6 +1,6 @@
 ---
 page: search.html
-title: "Search"
+title: "The search experience"
 summary: "A search page contains many components and elements documented elsewhere. This page is about how to put them together, the hierarchy of content, and other design considerations when building a search form and results page."
 stylesheet: design-system.css
 components:
@@ -52,7 +52,7 @@ rules:
   - "**Say what was found in the page title.** The `<title>` names the query and the number of results, so a screen reader announces both when the page loads."
 ---
 
-# Search
+# The search experience
 
 A search page contains many components and elements documented elsewhere. This page is about how to put them together, the hierarchy of content, and other design considerations when building a search form and results page.
 
