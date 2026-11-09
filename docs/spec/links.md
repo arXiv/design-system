@@ -57,7 +57,7 @@ components:
       - name: "role=\"list\""
         does: "Keeps a list without bullets announced as a list: VoiceOver in Safari may not announce it otherwise."
       - name: "<nav aria-label>"
-        does: "When the list is navigation, such as the other pages in a set, it sits in a `<nav>` with a name of its own."
+        does: "When the list is navigation, such as the other pages in a set, it sits in a `<nav>` with a name of its own. Use `aria-label`, not `aria-labelledby` pointing at the list's heading: a heading with a Permalink would add the Permalink's words to the name."
     rules:
       - "**The current page stays in the list, as a link.** Mark it with `aria-current=\"page\"` and add nothing else: no bold of your own, and no plain text in its place. The list then reads the same on every page of the set, and a screen reader says which page is open."
 rules:
@@ -170,7 +170,7 @@ A long list of links, such as the other pages in a set, is a list of links set i
 - `.ds-link-list--columns` — With `.ds-link-list`, on a `<ul>` with one link in each item. No bullets, and as many columns as fit, each at least 14rem wide: one column on a phone. The links run down each column, then across, in the order of the markup.
 - `aria-current="page"` — On the link to the page the reader is on, in any `.ds-link-list`. It stays a link. The stylesheet sets it in `--ds-text` and bold, so it does not rest on colour alone, and a screen reader announces it as the current page.
 - `role="list"` — Keeps a list without bullets announced as a list: VoiceOver in Safari may not announce it otherwise.
-- `<nav aria-label>` — When the list is navigation, such as the other pages in a set, it sits in a `<nav>` with a name of its own.
+- `<nav aria-label>` — When the list is navigation, such as the other pages in a set, it sits in a `<nav>` with a name of its own. Use `aria-label`, not `aria-labelledby` pointing at the list's heading: a heading with a Permalink would add the Permalink's words to the name.
 
 **Rule.** **The current page stays in the list, as a link.** Mark it with `aria-current="page"` and add nothing else: no bold of your own, and no plain text in its place. The list then reads the same on every page of the set, and a screen reader says which page is open.
 
