@@ -50,6 +50,10 @@ components:
         does: "The pill is one tab stop. Tab reaches its first action, or the one used last, even while the pill is hidden; the arrow keys, Home and End move between its actions. The label names the element: “Equation 2.14”. `element-pill.js`, loaded once on the page, does this. Without it, every action is its own tab stop."
       - name: "The actions"
         does: "Plain `<button>` or `<a>` elements, with no class of their own. The pill gives each its small type, muted colour, a wash on hover and a 24px target floor. `.is-cta` marks the one main action in Link Blue."
+    rules:
+      - "**Input decides how the pill appears, not width.** Test `(hover: hover)` and `(hover: none)`: a narrow window can still have a mouse."
+      - "**On a touch-only device, a tap on the content shows the pill** (`.is-revealed`), and a tap elsewhere hides it."
+      - "**Short content behind an action opens in a [popover](progressive-disclosure.md#popover)**, never in a browser `alert()`."
   - id: the-close-control
     title: "The close control"
     summary: "Dismissing something is a simple job, but it needs a clear and consistent control everywhere it appears. Wether in an alert, a popover, an announcement banner, or an expanded figure, `.ds-close` supplies the right style."
@@ -196,6 +200,12 @@ This component is a variant of text-only buttons and attach a row of tiny contro
 - `.is-revealed` — The pill is hidden at rest and shown while the wrapped content is hovered or holds focus. The consumer adds and removes this class; the demo above keeps it on. The pill also shows whenever one of its own actions has keyboard focus. The pill fades in, and under `prefers-reduced-motion` it appears without the fade.
 - `role="toolbar", aria-label` — The pill is one tab stop. Tab reaches its first action, or the one used last, even while the pill is hidden; the arrow keys, Home and End move between its actions. The label names the element: “Equation 2.14”. `element-pill.js`, loaded once on the page, does this. Without it, every action is its own tab stop.
 - `The actions` — Plain `<button>` or `<a>` elements, with no class of their own. The pill gives each its small type, muted colour, a wash on hover and a 24px target floor. `.is-cta` marks the one main action in Link Blue.
+
+**Rule.** **Input decides how the pill appears, not width.** Test `(hover: hover)` and `(hover: none)`: a narrow window can still have a mouse.
+
+**Rule.** **On a touch-only device, a tap on the content shows the pill** (`.is-revealed`), and a tap elsewhere hides it.
+
+**Rule.** **Short content behind an action opens in a [popover](progressive-disclosure.md#popover)**, never in a browser `alert()`.
 
 ## The close control
 
