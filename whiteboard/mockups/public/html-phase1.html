@@ -8804,11 +8804,11 @@ body:is(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) .mg
   function verItem(n, date, noteText, tag, current, wd) {
     var notice = tag === 'withdrawn';
     var red = notice || wd;
-    var cls = 'ds-version' + (red ? ' ds-version--withdrawn' : '');
+    var cls = 'ds-version' + (red ? ' ds-version--error' : '');
     var id = current ? '<strong class="' + cls + '">' + (notice ? NOTICE : 'v' + n) + '</strong>'
       : notice ? '<a class="' + cls + '" href="?state=withdrawn">' + NOTICE + '</a>'
       : '<a class="' + cls + '" href="' + ABS + 'v' + n + '">v' + n + '<span class="is-sr-only">, version ' + n + '</span></a>';
-    return '<li' + (current ? ' aria-current="true"' : '') + (red ? ' class="ds-version--withdrawn"' : '') + '><p class="ds-date-row">' + id +
+    return '<li' + (current ? ' aria-current="true"' : '') + (red ? ' class="ds-version--error"' : '') + '><p class="ds-date-row">' + id +
       ' · <time datetime="' + iso(date) + '">' + date.replace(/ /g, '&nbsp;') + '</time>&nbsp;UTC' +
       (TAGS[tag] ? ' · ' + TAGS[tag] : '') + '</p><p>' + noteText + '</p></li>';
   }
@@ -8832,10 +8832,10 @@ body:is(.mg-state-withdrawn, .mg-state-withdrawn-admin, .mg-state-tombstone) .mg
   }
   function vl(n, current, withdrawn, wd) {
     if (withdrawn) return current
-      ? '<strong class="ds-version ds-version--withdrawn" aria-current="true">' + NOTICE + '</strong>'
-      : '<a class="ds-version ds-version--withdrawn" href="?state=withdrawn">' + NOTICE + '</a>';
+      ? '<strong class="ds-version ds-version--error" aria-current="true">' + NOTICE + '</strong>'
+      : '<a class="ds-version ds-version--error" href="?state=withdrawn">' + NOTICE + '</a>';
     return current
-      ? '<strong class="ds-version' + (wd ? ' ds-version--withdrawn' : '') + '" aria-current="true">v' + n + '<span class="is-sr-only">, this version</span></strong>'
+      ? '<strong class="ds-version' + (wd ? ' ds-version--error' : '') + '" aria-current="true">v' + n + '<span class="is-sr-only">, this version</span></strong>'
       : '<a class="ds-version" href="' + ABS + 'v' + n + '">v' + n + '<span class="is-sr-only">, version ' + n + '</span></a>';
   }
   var DOT = '<span aria-hidden="true"> &middot; </span><span class="is-sr-only">, </span>';

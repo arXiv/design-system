@@ -95,7 +95,7 @@
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
     <h1>Papers</h1>
-    <p>Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to HTML papers pages, search results and more. How a paper shows which version is being read is on <a href="versions.html">Indicate which version is being read</a>, and how its citations and footnotes work is on <a href="references.html">Show a reference without losing the reader&#39;s place</a>.</p>
+    <p>Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to both HTML papers pages and search results. More relevant documentation: <a href="versions.html">Indicating which version is being read</a> and <a href="references.html">following references without losing your place</a>.</p>
   </header>
   </div>
 
@@ -113,13 +113,16 @@
             <li><a href="#the-metadata-hierarchy">The metadata hierarchy</a></li>
             <li><a href="#a-paper-in-a-list">A paper in a list</a></li>
             <li><a href="#paper-categories">Displaying categories</a></li>
-            <li><a href="#full-papers">Displaying full papers</a></li>
-            <li><a href="#the-sidebar">The sidebar</a></li>
+            <li><a href="#full-papers">Displaying abstract and primary metadata</a></li>
+            <li><a href="#the-version-row">The version row</a></li>
+            <li><a href="#withdrawn-papers">Withdrawn and removed papers</a></li>
+            <li><a href="#the-sidebar">Displaying paper actions and full metadata</a></li>
             <li><a href="#paper-toc-bar">The TOC bar on a paper</a></li>
             <li><a href="#paper-permalinks">Section permalinks</a></li>
             <li><a href="#paper-elements">Equations, figures and references</a></li>
             <li><a href="#paper-rules">Metadata</a></li>
-            <li><a href="#full-paper-rules">Full papers</a></li>
+            <li><a href="#citation-rules">Citations and references</a></li>
+            <li><a href="#withdrawn-paper-rules">Withdrawn and removed papers</a></li>
             <li><a href="#paper-body-rules">Paper body</a></li>
             <li><a href="#paper-toc-bar-rules">TOC bar</a></li>
             <li><a href="#paper-permalink-rules">Permalinks</a></li>
@@ -280,7 +283,7 @@
   </section>
 
   <section>
-    <h2 id="full-papers">Displaying full papers</h2>
+    <h2 id="full-papers">Displaying abstract and primary metadata</h2>
     <p class="ds-section-desc">On a paper&#39;s own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The version history and the paper&#39;s details sit in the sidebar.</p>
 
     <p class="ds-panel-label">The top of a paper, viewing an older version</p>
@@ -341,13 +344,13 @@
 &lt;p&gt;We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.&lt;/p&gt;</code></pre>
           <dl>
             <dt>.ds-paper-identity</dt>
-            <dd>The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the licence as a link. It is centred, and as a child of <code>.ds-container</code> it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an <code>.is-sr-only</code> span; the visible one is hidden from screen readers.</dd>
+            <dd>The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of <code>.ds-container</code> it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an <code>.is-sr-only</code> span; the visible one is hidden from screen readers.</dd>
             <dt>&lt;h1&gt;</dt>
             <dd>The paper title. The demo here uses an <code>&lt;h2&gt;</code> at the size of an <code>&lt;h1&gt;</code>, because it sits inside this page.</dd>
             <dt>.ds-date-row</dt>
-            <dd>The dates and the version links, as in <a href="versions.html#dates-and-versions">Indicate which version is being read</a>. Each version link goes to that version&#39;s abstract page, never its HTML: an HTML version may not exist for every version.</dd>
+            <dd>The dates and the version links, as in <a href="versions.html#version-row">Indicate which version is being read</a>. Each version link goes to that version&#39;s abstract page, never its HTML: an HTML version may not exist for every version.</dd>
             <dt>.ds-alert--warning</dt>
-            <dd>Only when an older version is being viewed. See <a href="versions.html#dates-and-versions">Indicate which version is being read</a>.</dd>
+            <dd>Only when an older version is being viewed. See <a href="versions.html#version-row">Indicate which version is being read</a>.</dd>
             <dt>.ds-link-list</dt>
             <dd>On a <code>&lt;p&gt;</code>: the authors, with Show more after eight.</dd>
             <dt>&lt;h2 class="is-sr-only"&gt;</dt>
@@ -360,13 +363,161 @@
     </div>
 
     <section>
-    <h3 id="the-sidebar">The sidebar</h3>
-    <p class="ds-section-desc">Beside a full paper, the sidebar holds the paper's files, its citation and its information, in that order.</p>
+    <h3 id="the-version-row">The version row</h3>
+    <p class="ds-section-desc">The row under the title gives the paper&#39;s dates and links to its other versions; the version being read is in a box. The row changes with the number of versions, with the version being read, and when a paper is withdrawn or removed: <a href="versions.html#version-row">Indicate which version is being read</a> shows each case.</p>
+    <p class="ds-panel-label">Viewing v3 of 3 (latest)</p>
+    <div class="ds-card">
+      <p class="ds-date-row">
+        Submitted <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Announced <time datetime="2026-04-25T02:07Z">25&nbsp;Apr&nbsp;2026,&nbsp;02:07</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Revised <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC (this version)
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
+        <a class="ds-version" href="https://arxiv.org/abs/2604.22725v1">v1<span class="is-sr-only">, version 1</span></a>
+        <a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a>
+        <strong class="ds-version" aria-current="true">v3<span class="is-sr-only">, this version</span></strong>
+        </span>
+      </p>
+    </div>
+    </section>
+
+    <section>
+    <h3 id="withdrawn-papers">Withdrawn and removed papers</h3>
+    <p class="ds-section-desc">A withdrawn paper keeps its title, authors, abstract and metadata, and its earlier versions can still be read. A removed version keeps its title, authors, abstract and metadata, but its full text and files are gone. In both cases, a status before the title and a notice after it say what happened.</p>
+
+    <p class="ds-panel-label">The top of a withdrawn paper, viewing the withdrawal notice</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Follows <a href="https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf">NISO RP-45-2024</a> §4.2: the status goes “before the original main title”, and the notice is “a clearly signposted box” in its own color.</p>
+      </details>
+      <p class="ds-paper-identity">
+        <span><span class="ds-version" aria-hidden="true">arXiv:2604.22725v4</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 4</span></span>
+        <span>[gr-qc] General Relativity and Quantum Cosmology</span>
+      </p>
+      <h2 class="demo-h1"><span class="ds-paper-status" lang="en">Withdrawn:</span> Gauge-independent approach to inflation in quadratic gravity</h2>
+      <section class="ds-alert ds-alert--error" aria-labelledby="wd-notice-h">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>
+        <div class="ds-alert-content">
+          <h3 class="ds-alert-title" id="wd-notice-h">This paper has been withdrawn by Adrian Palomares.</h3>
+          <p>Reason given: &ldquo;The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.&rdquo; The withdrawn paper can still be read in <a href="#v3">version 3</a>.</p>
+        </div>
+      </section>
+      <p class="ds-date-row">
+        Submitted <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Announced <time datetime="2026-04-25T02:07Z">25&nbsp;Apr&nbsp;2026,&nbsp;02:07</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Withdrawn <time datetime="2026-10-22">22&nbsp;Oct&nbsp;2026</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
+        <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
+        <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
+        <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
+        <strong class="ds-version ds-version--error" aria-current="true">Withdrawal notice<span class="is-sr-only">, this page</span></strong>
+        </span>
+      </p>
+      <p class="ds-link-list"><a href="#">Adrian Palomares</a>, <a href="#">Ilya L. Shapiro</a>, <a href="#">Maria C. Gonzalez-Garcia</a>, <a href="#">Tomohiro Harada</a>, <a href="#">Elena Castellani</a>, <a href="#">Kei-ichi Maeda</a>, <a href="#">Francesca Vidotto</a>, <a href="#">Abhay Ashtekar</a> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false">show all 22 authors</button></p>
+      <p>We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;title&gt;Withdrawn: Gauge-independent approach to inflation in quadratic gravity&lt;/title&gt;
+…
+&lt;p class="ds-paper-identity"&gt;
+  &lt;span&gt;&lt;span class="ds-version" aria-hidden="true"&gt;arXiv:2604.22725v4&lt;/span&gt;&lt;span class="is-sr-only"&gt;archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 4&lt;/span&gt;&lt;/span&gt;
+  &lt;span&gt;[gr-qc] General Relativity and Quantum Cosmology&lt;/span&gt;
+&lt;/p&gt;
+&lt;h1&gt;&lt;span class="ds-paper-status" lang="en"&gt;Withdrawn:&lt;/span&gt; Gauge-independent approach to inflation in quadratic gravity&lt;/h1&gt;
+&lt;section class="ds-alert ds-alert--error" aria-labelledby="notice-h"&gt;
+  &lt;svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="M12 16h.01"/&gt;&lt;path d="M12 8v4"/&gt;&lt;path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/&gt;&lt;/svg&gt;
+  &lt;div class="ds-alert-content"&gt;
+    &lt;h2 class="ds-alert-title" id="notice-h"&gt;This paper has been withdrawn by Adrian Palomares.&lt;/h2&gt;
+    &lt;p&gt;Reason given: &amp;ldquo;The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.&amp;rdquo; The withdrawn paper can still be read in &lt;a href="https://arxiv.org/abs/2604.22725v3"&gt;version 3&lt;/a&gt;.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+&lt;p class="ds-date-row"&gt;…the dates, ending with Withdrawn, and the versions, as in &lt;a href="versions.html#version-row"&gt;Version row&lt;/a&gt;…&lt;/p&gt;
+&lt;p class="ds-link-list"&gt;…the authors…&lt;/p&gt;
+&lt;p&gt;…the abstract…&lt;/p&gt;</code></pre>
+          <dl>
+            <dt>&lt;title&gt;</dt>
+            <dd>Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first.</dd>
+            <dt>.ds-paper-identity</dt>
+            <dd>The identifier with the notice&#39;s version, and the category. With no text to read, the DOI and the license leave the line; Metadata, in the sidebar, still has the DOI.</dd>
+            <dt>.ds-paper-status</dt>
+            <dd>“Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author&#39;s title is not edited, and it has <code>lang="en"</code> because the title may be in another language.</dd>
+            <dt>.ds-alert--error</dt>
+            <dd>On a <code>&lt;section&gt;</code>: the notice, straight after the title and before the dates. It says who withdrew the paper, gives the reason as they wrote it, in quotes, and links to the last version that can be read. A <code>&lt;section&gt;</code> named by its heading, so a screen reader reaches it second and lists it among the headings. No role, because it is in the page as it loads (see <a href="alerts.html">Alerts</a>).</dd>
+            <dt>.ds-alert-title</dt>
+            <dd>On a heading, one level below the title: an <code>&lt;h2&gt;</code> on the page. The demo uses an <code>&lt;h3&gt;</code> because it sits inside this page.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <p class="ds-panel-label">The top of a removed version</p>
+    <div class="ds-card">
+      <details class="ds-marginalia">
+        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
+        <p class="ds-marginalia-body ds-annotation">Follows <a href="https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf">NISO RP-45-2024</a> §4.5: a removed article keeps “the article’s title, author list, and relevant metadata”, and only “the main text” goes.</p>
+      </details>
+      <p class="ds-paper-identity">
+        <span><span class="ds-version" aria-hidden="true">arXiv:2604.22725v1</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1</span></span>
+        <span>[gr-qc] General Relativity and Quantum Cosmology</span>
+      </p>
+      <h2 class="demo-h1"><span class="ds-paper-status" lang="en">Removed:</span> Gauge-independent approach to inflation in quadratic gravity</h2>
+      <section class="ds-alert ds-alert--error" aria-labelledby="rm-notice-h">
+        <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>
+        <div class="ds-alert-content">
+          <h3 class="ds-alert-title" id="rm-notice-h">This version has been removed by arXiv.</h3>
+          <p>&ldquo;arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission.&rdquo; The full text and files are no longer available.</p>
+        </div>
+      </section>
+      <p class="ds-date-row">
+        Submitted <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Announced <time datetime="2026-04-25T02:07Z">25&nbsp;Apr&nbsp;2026,&nbsp;02:07</time>&nbsp;UTC
+        <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+        Removed <time datetime="2026-10-23">23&nbsp;Oct&nbsp;2026</time>&nbsp;UTC
+      </p>
+      <p class="ds-link-list"><a href="#">Adrian Palomares</a>, <a href="#">Ilya L. Shapiro</a>, <a href="#">Maria C. Gonzalez-Garcia</a>, <a href="#">Tomohiro Harada</a>, <a href="#">Elena Castellani</a>, <a href="#">Kei-ichi Maeda</a>, <a href="#">Francesca Vidotto</a>, <a href="#">Abhay Ashtekar</a> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false">show all 22 authors</button></p>
+      <p>We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;title&gt;Removed: Gauge-independent approach to inflation in quadratic gravity&lt;/title&gt;
+…
+&lt;h1&gt;&lt;span class="ds-paper-status" lang="en"&gt;Removed:&lt;/span&gt; Gauge-independent approach to inflation in quadratic gravity&lt;/h1&gt;
+&lt;section class="ds-alert ds-alert--error" aria-labelledby="notice-h"&gt;
+  &lt;svg class="ds-alert-icon" …&gt;…&lt;/svg&gt;
+  &lt;div class="ds-alert-content"&gt;
+    &lt;h2 class="ds-alert-title" id="notice-h"&gt;This version has been removed by arXiv.&lt;/h2&gt;
+    &lt;p&gt;&amp;ldquo;arXiv admin comment: …&amp;rdquo; The full text and files are no longer available.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+&lt;p class="ds-date-row"&gt;
+  …Submitted and Announced…
+  &lt;span aria-hidden="true"&gt; · &lt;/span&gt;&lt;span class="is-sr-only"&gt;, &lt;/span&gt;
+  Removed &lt;time datetime="2026-10-23"&gt;23&amp;nbsp;Oct&amp;nbsp;2026&lt;/time&gt;&amp;nbsp;UTC
+&lt;/p&gt;</code></pre>
+          <dl>
+            <dt>.ds-paper-status</dt>
+            <dd>“Removed:”, built as “Withdrawn:” is.</dd>
+            <dt>.ds-alert--error</dt>
+            <dd>Says that arXiv removed the version, quotes arXiv&#39;s comment as written, and says that the full text and files are gone.</dd>
+            <dt>.ds-date-row</dt>
+            <dd>Ends with Removed and its date. A removal changes the version in place, so no version is added to the list.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+    </section>
+
+    <section>
+    <h3 id="the-sidebar">Displaying paper actions and full metadata</h3>
+    <p class="ds-section-desc">Beside the abstract, the sidebar holds downloadable files, a citation tool, and additional paper information, in that order.</p>
     <div class="ds-card">
       <div>
       <div>
-        <p><strong>The paper</strong></p>
-        <p>The identity line, the title, the dates, the authors and the abstract, then the paper itself. The sidebar sits beside the abstract, separated from it by the page&#39;s section spacing, and moves below it when both no longer fit. The paper follows below at full width.</p>
+        <p>This space holds the paper abstract. The sidebar and the abstract occupy the same row. Sometimes one will be longer than the other, and that is OK.</p>
       </div>
       <aside class="ds-sidebar" aria-label="About this paper">
         <section aria-labelledby="files-h">
@@ -465,7 +616,7 @@
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;div&gt;
-&lt;div&gt;…the paper…&lt;/div&gt;
+&lt;div&gt;…the abstract…&lt;/div&gt;
 &lt;aside class="ds-sidebar" aria-label="About this paper"&gt;
   &lt;section aria-labelledby="files-h"&gt;
     &lt;h2 class="ds-panel-label" id="files-h"&gt;Files&lt;/h2&gt;
@@ -556,7 +707,7 @@
 &lt;/div&gt;</code></pre>
           <dl>
             <dt>.ds-sidebar</dt>
-            <dd>The column beside the paper: Files, Cite and Paper information, in that order. See <a href="layout-patterns.html#sidebar">Sidebar</a>. Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.</dd>
+            <dd>The column beside the abstract: Files, Cite and Paper information, in that order. See <a href="layout-patterns.html#sidebar">Sidebar</a>. Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.</dd>
             <dt>.ds-panel-label</dt>
             <dd>On an <code>&lt;h2&gt;</code>: the label of each block, one level below the paper title, so the outline skips no level. The demo uses <code>&lt;h3&gt;</code> because it sits inside this page.</dd>
             <dt>.ds-paper-files</dt>
@@ -578,7 +729,7 @@
 
   <section>
     <h2 id="paper-toc-bar">The TOC bar on a paper</h2>
-    <p class="ds-section-desc">On a paper, the TOC bar also has the arXiv logo on the left and links to the paper&#39;s abstract page, PDF and TeX source on the right.</p>
+    <p class="ds-section-desc">On a paper, the TOC bar also has the arXiv logo on the left and links to the paper&#39;s PDF and TeX source on the right.</p>
 
     <div class="ds-card chrome-demo toc-demo">
       <div class="ds-toc-bar">
@@ -609,7 +760,6 @@
             </nav>
           </details>
           <nav class="ds-paper-tools" aria-label="Other formats">
-            <a href="https://arxiv.org/abs/2604.22725v1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Abstract</a>
             <a href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>PDF<span class="is-sr-only"> (opens in a new tab)</span></a>
             <a href="https://arxiv.org/src/2604.22725v1"><svg viewBox="-20 70 680 500" fill="currentColor" stroke="currentColor" stroke-width="28" stroke-linejoin="round" aria-hidden="true"><path d="M620.8 159.4C590 159.8 578.7 176 573.1 183.9L573 184L517.3 264.5L600.1 385.6C607.6 396.2 611.4 398.1 635.5 398.1L635.5 407.2C626.4 406.5 607.5 406.5 597.8 406.5C585.4 406.5 567 406.5 554.9 407.2L554.9 398.1C568.1 397.3 571.5 390.8 571.5 387.9C571.5 386.8 571.5 385.6 568.5 381.5L503 285.2L442.8 373.1C440.9 375.8 439 378.5 439 383.3C439 389.4 442.4 396.9 454 398L454 407.1C444.6 406.4 426.9 406.4 416.8 406.4L414 406.4L402.3 489L206.4 489L206.4 479.9C233.1 479.9 237.3 479.9 237.3 463L237.3 259.8C237.3 242.9 233 242.9 206.4 242.9L206.4 232.6L226.2 232.6C221.4 171.5 215.4 160.9 158.2 160.8L137.5 160.8C130.7 162.3 130.7 166.9 130.7 175.2L130.7 380.2C130.7 393.8 131.8 398 163.1 398L173.6 398L173.6 407.1L173.2 407.1C155.3 406.8 136.5 406.4 118.3 406.4C100.1 406.4 81.4 406.7 63.5 407.1L62.9 407.1L62.9 398L73.6 398C105.3 398 106.4 393.9 106.4 380.2L106.4 175.2C106.4 166.5 106.4 162 99.2 160.9L78.4 160.9C20 160.9 14.7 171.8 9.8 234.2L3 234.2L9.3 150.9L226.8 150.9L232.9 232.7L397 232.7L406 316L399.2 316C393.9 266.2 387.1 243 328.9 243L277.4 243C262.4 243 261.6 244.9 261.6 257.6L261.6 350.9L297.1 350.9C332.6 350.9 336 338.1 336 306.9L342 306.9L342 404.8L336 404.8C336 373 332.6 360 297.1 360L261.6 360L261.6 465.2C261.6 478.2 262.3 480 277.4 480L329.6 480C390.7 480 399.5 454.2 407 406.4C399.3 406.4 390.7 406.6 384.8 407.1L384.8 398C392 398 416.5 397.6 432.6 374.2L498.1 278.5L425.4 171.8C417.1 160.1 410.3 159.3 389.6 159.3L389.6 150.2C398.7 150.9 417.5 150.9 427.3 150.9C439.7 150.9 458.1 150.9 470.2 150.2L470.2 159.3C457.7 159.7 453.6 166.1 453.6 169.5C453.6 170.6 454 171.8 456.6 175.9L512.3 257.5L562 185.4C564.7 181.7 566.5 178.6 566.5 174.1C566.5 168 563.5 160.5 551.5 159.3L551.5 150.2C560.9 150.9 576.3 150.9 588.7 150.9C597.7 150.9 612 150.9 620.7 150.2L620.7 159.3z"/></svg><span class="is-sr-only">TeX </span>Source</a>
           </nav>
@@ -645,7 +795,6 @@
       &lt;/nav&gt;
     &lt;/details&gt;
     &lt;nav class="ds-paper-tools" aria-label="Other formats"&gt;
-      &lt;a href="https://arxiv.org/abs/2604.22725v1"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;Abstract&lt;/a&gt;
       &lt;a href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;PDF&lt;span class="is-sr-only"&gt; (opens in a new tab)&lt;/span&gt;&lt;/a&gt;
       &lt;a href="https://arxiv.org/src/2604.22725v1"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;&lt;span class="is-sr-only"&gt;TeX &lt;/span&gt;Source&lt;/a&gt;
     &lt;/nav&gt;
@@ -659,7 +808,7 @@
             <dt>.ds-toc-menu</dt>
             <dd>The paper&#39;s own headings, numbers in <code>.ds-toc-num</code>, written into the HTML from LaTeXML&#39;s contents list. Subsections are an <code>&lt;ol&gt;</code> inside their section&#39;s <code>&lt;li&gt;</code>, indented to the section&#39;s title in smaller type.</dd>
             <dt>.ds-paper-tools</dt>
-            <dd>Abstract, PDF and Source, each an icon and its name, in a <code>&lt;nav&gt;</code> named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an <code>.is-sr-only</code> “TeX” makes the spoken name “TeX Source”. The icons are <code>arrow-left</code>, <code>file-text</code> and <code>tex</code> from <code>docs/icons/</code>.</dd>
+            <dd>PDF and Source, each an icon and its name, in a <code>&lt;nav&gt;</code> named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an <code>.is-sr-only</code> “TeX” makes the spoken name “TeX Source”. The icons are <code>file-text</code> and <code>tex</code> from <code>docs/icons/</code>.</dd>
           </dl>
         </div>
       </details>
@@ -688,7 +837,7 @@
             <dt>.is-sr-only</dt>
             <dd>Completes the name: “Permalink to section 2, Setup”. The name starts with the visible word.</dd>
             <dt>[role="status"]</dt>
-            <dd>One region on the page. The script writes “Link to section 2, Setup copied” into it, as <code>anchors.js</code> does.</dd>
+            <dd>One region on the page. <code>anchors.js</code> writes “Link to section 2, Setup copied” into it, shows the green tick in place of the link icon, and clears both after 2 seconds.</dd>
             <dt>.is-active</dt>
             <dd>Set on the heading by a tap, on screens without hover.</dd>
           </dl>
@@ -783,11 +932,15 @@
   <div class="ds-note ds-note--essential">
     <h3 class="ds-note-label">Accessibility essentials</h3>
     <ul class="notes">
-      <li><strong>Paper titles are always a heading</strong>, so a screen reader user can easily find it and move from paper to paper in a list.</li>
-      <li><strong>Name each format link's paper.</strong> In a list, “PDF” alone is the same link text fifty times; an <code>.is-sr-only</code> span adds the identifier.</li>
+      <li><strong>The title of each paper is a heading</strong>, in a list as on its own page, so a screen reader user can find it and move from paper to paper.</li>
+      <li><strong>Format links name their paper for screen reader users.</strong> In the markup the paper title comes just before the format links, though the dates are shown first, with the CSS <code>order</code> property. Each link also has an <code>.is-sr-only</code> span with the paper&#39;s identifier, so a screen reader user who lists the page&#39;s links hears “PDF of 2609.36857”, not “PDF” fifty times.</li>
       <li><strong>Category names are in the tooltip, never only in a <code>title</code> attribute.</strong> See <a href="forms.html#tooltip">Tooltip</a>.</li>
-      <li><strong>Paper title just before links.</strong> For screen reader users, to maintain context, the title should appear before the format links, and just before them, so that the context is not forgotten. That means displaying the row with dates and links using the CSS <code>order</code> property (ie: the visual display will show the dates first, but the DOM order lists the links first).</li>
-    
+      <li><strong>On a withdrawn or removed paper, the status appears before the paper title</strong>, so it is seen or spoken out loud early in the reading experience. The alert red color of the status enhances the label but is never the only signal.</li>
+      <li><strong>The page has one <code>&lt;main&gt;</code></strong>, from the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it.</li>
+      <li><strong>A second skip link before the sidebar goes to the paper&#39;s first section</strong>, so a keyboard user can skip the content in between.</li>
+      <li><strong>Inline math gets no additional markup</strong>: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly.</li>
+      <li><strong>A scrolling equation box can be reached by keyboard and has a name.</strong> It has <code>tabindex="0"</code>, <code>role="region"</code> and a name: “Equation 2.14, scrolls sideways”.</li>
+      <li><strong>The figure viewer is named by the caption&#39;s own label</strong>, such as “Figure 1:”, with <code>aria-labelledby</code>. Its zoom level is shown and announced, with <code>aria-live="polite"</code>, and zoom is animated only when reduced motion is not set.</li>
     </ul>
   </div>
 
@@ -798,32 +951,30 @@
   <section>
     <h3 id="paper-rules">Metadata</h3>
     <ul class="notes">
-      <li><strong>Show the author's text as written.</strong> A title or abstract is never shortened, reworded or corrected; TeX shows as the author wrote it. An excerpt is cut, never edited.</li>
+      <li><strong>Show the author's text as written.</strong> A title or abstract is never shortened, reworded or corrected. When we display TeX, it is shown exactly as the author wrote it. We may excerpt a long abstract in search results, but never edit it.</li>
       <li><strong>Leave out what a paper does not have.</strong> No empty labels and no placeholders.</li>
       <li><strong>Every date has its label.</strong> Readers confuse submitted and announced dates when either stands alone.</li>
-      <li><strong>The primary category comes first</strong> and is told apart by more than colour: its tooltip names it as primary.</li>
     </ul>
   </section>
 
 
-  <!-- ───────── Full papers ───────── -->
+  <!-- ───────── Citations and references ───────── -->
   <section>
-    <h3 id="full-paper-rules">Full papers</h3>
+    <h3 id="citation-rules">Citations and references</h3>
     <ul class="notes">
-      <li><strong>The identity line comes first.</strong> Many readers arrive at a paper directly, without passing its abstract page. It is centred and spans the page to the gutters.</li>
-      <li><strong>The abstract has a heading, hidden from sight.</strong> An <code>&lt;h2 class="is-sr-only"&gt;Abstract&lt;/h2&gt;</code> puts it in the heading outline without adding a line above it.</li>
-      <li><strong>The paper follows its abstract on the same page.</strong> A reader reaches the first section by scrolling, by the TOC bar or by the skip link, with no click to open the paper.</li>
-      <li><strong>The page has one <code>&lt;main&gt;</code></strong>, from the area above the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it. When LaTeXML&#39;s output has no <code>&lt;main&gt;</code>, the page around the paper supplies it.</li>
-      <li><strong>An optional area above the identity line</strong> holds a temporary message or link, such as Back to abstract while readers move to HTML papers. It is <code>.ds-btn-text</code> for a link, or an alert for a message.</li>
-      <li><strong>The licence is a link, with no explanation.</strong></li>
-      <li><strong>Other formats, when a paper has them, are a link in the sidebar</strong>, under TeX Source and above Ancillary Files.</li>
-      <li><strong>The sidebar order is Files, Cite, Paper information.</strong> Files and Cite are always open; Version history, Accessibility and Metadata, under Paper information, start closed, and only one is open at a time (see <a href="progressive-disclosure.html#one-panel-open-at-a-time">One panel open at a time</a>).</li>
-      <li><strong>Every download shows its size.</strong></li>
-      <li><strong>A citation names the arXiv identifier and the arXiv DOI</strong>, never the HTML page, even when the paper has a journal reference.</li>
-      <li><strong>BibTeX lists every author.</strong> “and others” becomes “et al.” in a reference manager, and the other authors are lost.</li>
-      <li><strong>APA, Chicago and MLA follow their own style rules</strong> for long author lists.</li>
-      <li><strong>Every citation format is in the page.</strong> The script only chooses which one shows.</li>
-      <li><strong>The accessibility panel lists only what the paper has.</strong> A missing capability has no line, and there is no overall score.</li>
+      <li><strong>A citation names the arXiv identifier and the arXiv DOI</strong>, never the HTML page or a journal reference.</li>
+      <li><strong>BibTeX lists every author</strong>, because a reference manager turns “and others” into “et al.” and the other authors are lost. APA, Chicago and MLA follow their own style rules for long author lists.</li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="withdrawn-paper-rules">Withdrawn and removed papers</h3>
+    <p>Display guidelines for withdrawn and removed papers follow <a href="https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf">NISO RP-45-2024</a>.</p>
+    <ul class="notes">
+      <li><strong>Every version of a withdrawn paper shows the notice.</strong> A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn. The notice takes the place of the older-version warning, and links to the last version that can be read, except on that version.</li>
+      <li><strong>When there is no full text, affordances related to full text are also removed.</strong> The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all.</li>
+      <li><strong>A removed version keeps its license, but not its cross-listed categories.</strong> This is arXiv&#39;s current practice.</li>
+      <li><strong>arXiv staff may decide to remove the license or other metadata</strong> when there is a legal reason to do so, as allowed under <a href="https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf">NISO RP-45-2024</a> §4.2.</li>
+      <li><strong>A citation of an earlier version says the paper was withdrawn.</strong> Each format ends with a note, such as &ldquo;This paper was withdrawn, 22 Oct 2026&rdquo;, so the status travels with the citation.</li>
     </ul>
   </section>
 
@@ -831,30 +982,19 @@
   <section>
     <h3 id="paper-body-rules">Paper body</h3>
     <ul class="notes">
+      <li><strong>The paper follows its abstract on the same page.</strong> A reader reaches the first section by scrolling, the TOC bar or the skip link, with no click to open the paper.</li>
       <li><strong>The body markup is LaTeXML&#39;s, unchanged.</strong> arXiv styles it from outside with CSS and never rewrites, reorders or wraps the author&#39;s elements.</li>
-      <li><strong>ar5iv&#39;s stylesheet is in a cascade layer</strong>, so an ordinary rule outranks it without <code>!important</code>. The <code>arxiv-override</code> layer is only for a property ar5iv itself marks <code>!important</code>.</li>
-      <li><strong>Body text is set as on <a href="typography.html">Typography</a>.</strong> ar5iv sets weight 300, so set 400.</li>
-      <li><strong>Body text is left-aligned, never justified.</strong> Inline math gives a justified line nowhere to break.</li>
-      <li><strong>Body text is hyphenated</strong> with <code>hyphens: auto</code>. It needs the page&#39;s <code>lang</code> attribute, which tells the browser which language to hyphenate.</li>
+      <li><strong>Body text is set per rules in <a href="typography.html">Typography</a>.</strong></li>
+      <li><strong>Body text is left-aligned and hyphenated, never justified.</strong> A justified line has nowhere to break around inline math, so it opens wide gaps between words. Set <code>hyphens: auto</code>, and the page&#39;s <code>lang</code> attribute, which tells the browser which language to hyphenate.</li>
       <li><strong>A figure caption is Plex Sans at 0.875rem, left-aligned, the width of the figure.</strong> Its label, text and punctuation are as the author wrote them.</li>
-      <li><strong>Paper figures keep ar5iv&#39;s white background in dark mode; arXiv&#39;s own images do not.</strong> Clear it on the header, TOC bar and footer images.</li>
-      <li><strong>LaTeXML&#39;s beta badge and conversion logo are not shown.</strong></li>
+      <li><strong>Paper figures maintain a white background in dark mode.</strong></li>
     </ul>
-    <pre><code>&lt;style&gt;@layer arxiv-override, ar5iv, arxiv-theme;&lt;/style&gt;
-&lt;link rel="stylesheet" href="design-system.css"&gt;
-&lt;!-- the papers stylesheet starts with:
-     @import "ar5iv.css" layer(ar5iv);
-     @import "arxiv-html-papers-theme.css" layer(arxiv-theme); --&gt;
-&lt;link rel="stylesheet" href="arxiv-html-papers.css"&gt;</code></pre>
   </section>
   <section>
     <h3 id="paper-toc-bar-rules">TOC bar</h3>
     <ul class="notes">
       <li><strong>The contents list repeats the author&#39;s headings exactly</strong>, including subsections, appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML&#39;s contents entries with their MathML. A script that reads a heading&#39;s words leaves out the TeX annotation, as <code>toc.js</code> and <code>anchors.js</code> do.</li>
-      <li><strong>LaTeXML&#39;s own sidebar is not shown.</strong> The <code>.ds-toc</code> list replaces it.</li>
-      <li><strong>Each link in the bar shows an icon and its name.</strong></li>
-      <li><strong>PDF opens in a new tab, in the bar and in the sidebar</strong>, so the reader keeps their place in the HTML paper. It has the external-link icon and “(opens in a new tab)”, as on <a href="links.html">Links</a>.</li>
-      <li><strong>A second skip link goes to the paper&#39;s first section</strong>, before the sidebar, so a keyboard user can pass it.</li>
+      <li><strong>The paper PDF always opens in a new tab</strong>, so the reader keeps their place in the HTML paper.</li>
       <li><strong>Every link to a place in the paper lands below the TOC bar.</strong> The bar sets <code>scroll-padding-top</code>, which covers the TOC, a permalink, a citation and a cross-reference; a script that scrolls uses <code>scrollIntoView</code>, which respects it.</li>
     </ul>
   </section>
@@ -862,42 +1002,29 @@
     <h3 id="paper-permalink-rules">Permalinks</h3>
     <ul class="notes">
       <li><strong>Every section, subsection and appendix heading has a Permalink control.</strong> It copies the address with the section&#39;s LaTeXML id and the version: <code>…/2604.22725v1#S2</code>.</li>
-      <li><strong>The accessible name starts with the visible word</strong>, then names the section.</li>
-      <li><strong>Copying is announced in words</strong>, as in <a href="action-feedback.html">Confirm an action that changes nothing on screen</a>.</li>
-      <li><strong>One action gets the Permalink control; several get the element pill.</strong></li>
+      <li><strong>Permalinks can appear in two places</strong>: in the Permalink control after a section heading, or in the element pill below a specific content block. A heading has one action, so it gets the Permalink control; an equation, figure or reference has several, so it gets the element pill.</li>
     </ul>
   </section>
   <section>
     <h3 id="paper-equation-rules">Equations</h3>
     <ul class="notes">
-      <li><strong>Inline math gets nothing from arXiv</strong>: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly.</li>
-      <li><strong>View TeX swaps the equation for its TeX in place</strong>, in plain monospace with no code box. The TeX view is hidden until asked for, and MathML annotations are never displayed.</li>
+      <li><strong>A wide equation scrolls inside its own box; it never scrolls the page.</strong> The equation number stays pinned to the right edge while it scrolls.</li>
+      <li><strong>View TeX swaps the equation for its TeX in place</strong>, in plain monospace with no code box, and MathML annotations are never displayed. Copy copies what is on screen: the MathML in math view, the TeX in TeX view.</li>
       <li><strong>View TeX and Copy use the TeX that LaTeXML keeps with the equation.</strong> LaTeXML expands the author&#39;s own macros into standard TeX, so the copy works outside the paper. The author&#39;s own files are the TeX Source download.</li>
-      <li><strong>Copy copies what is on screen</strong>: the MathML in math view, the TeX in TeX view.</li>
-      <li><strong>A wide equation scrolls inside its own box, never the page.</strong> The box has <code>tabindex="0"</code>, <code>role="region"</code> and a name: “Equation 2.14, scrolls sideways”.</li>
-      <li><strong>The equation number stays in view</strong>, pinned to the right edge while the equation scrolls.</li>
     </ul>
   </section>
   <section>
     <h3 id="paper-figure-rules">Figures</h3>
     <ul class="notes">
-      <li><strong>Only the author&#39;s alt text is shown</strong>, whole and unchanged. The image&#39;s <code>alt</code> is never changed, and no reader-written or machine-written description is added. Write it in with <code>textContent</code>.</li>
-      <li><strong>Long alt text is not shortened.</strong> This is the one margin note longer than two sentences.</li>
-      <li><strong>A figure without alt text says so.</strong> Its margin note reads “No alt text provided”, in <code>--ds-text-muted</code>, with a link to how to add alt text.</li>
-      <li><strong>Expand opens the figure viewer</strong>, a <code>.ds-modal.ds-modal--wide</code> with <code>closedby="any"</code>. Clicking the image opens it too; Expand is the keyboard path.</li>
-      <li><strong>The viewer shows a copy.</strong> The figure in the paper is never moved or changed.</li>
-      <li><strong>The viewer shows the caption exactly as the author wrote it</strong>, under the figure. The dialog is named by the caption&#39;s own label, such as “Figure 1:”, with <code>aria-labelledby</code>.</li>
+      <li><strong>Only the author&#39;s alt text is shown</strong>, whole and unchanged, however long. No reader-written or machine-written description is added, and the image&#39;s <code>alt</code> is never changed; write it in with <code>textContent</code>. A figure without alt text says “No alt text provided”, in <code>--ds-text-muted</code>, with a link to how to add alt text.</li>
+      <li><strong>Expand opens the figure viewer</strong>, a <a href="modals.html#wide-for-a-viewer">wide modal</a>, and clicking the image opens it too; Expand is the keyboard path. The viewer shows a copy of the figure with its caption exactly as the author wrote it, and the figure in the paper is never moved or changed.</li>
       <li><strong>Zoom stays until the reader closes the viewer.</strong> Zoom in, Zoom out and Fit buttons, the wheel, double-click, pinch and the <kbd>+</kbd>, <kbd>-</kbd> and <kbd>0</kbd> keys all work; drag or the arrow keys pan.</li>
-      <li><strong>The zoom level is shown and announced</strong>, with <code>aria-live="polite"</code>.</li>
-      <li><strong>Closing returns focus to what opened the viewer.</strong></li>
-      <li><strong>Zoom is animated only when reduced motion is not set.</strong></li>
     </ul>
   </section>
   <section>
     <h3 id="paper-print-rules">Printing</h3>
     <ul class="notes">
-      <li><strong>Print hides the TOC bar, the permalinks, the element pills and every popover.</strong> The identity line prints at 10pt.</li>
-      <li><strong>No page break inside an equation, table or figure, and none straight after a heading.</strong> Sections may break.</li>
+      <li><strong>Print hides the TOC bar, the permalinks, the element pills and every popover.</strong> The identity line prints at 10pt. No page break falls inside an equation, table or figure, or straight after a heading; sections may break.</li>
     </ul>
   </section>
 
@@ -944,24 +1071,6 @@
       var wasInside = d.contains(document.activeElement);
       d.removeAttribute('open');
       if (wasInside) d.querySelector('summary').focus();
-    });
-  });
-</script>
-<script>
-  // The permalink demo: anchors.js leaves headings inside a demo alone, so the
-  // demo's control copies its link and announces it here, as anchors.js does.
-  document.querySelectorAll('.ds-card h3[id] > .ds-permalink').forEach(function (btn) {
-    var h = btn.parentElement;
-    var name = btn.querySelector('.is-sr-only').textContent.replace(/^ to /, '');
-    btn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var status = document.getElementById('ds-anchor-status');
-      var url = location.href.split('#')[0] + '#' + h.id;
-      if (!navigator.clipboard || !status) return;
-      navigator.clipboard.writeText(url).then(
-        function () { status.textContent = 'Link to ' + name + ' copied'; },
-        function () { status.textContent = 'Copy failed. The address is ' + url; }
-      );
     });
   });
 </script>
