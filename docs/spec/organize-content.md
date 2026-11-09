@@ -40,9 +40,15 @@ components:
   - id: long-pages
     title: "Long pages"
     summary: "Long pages need special consideration of their organization. The longer the page, the more we need to think about [navigation](navigation.md), defining [page zones](layouts.md#secondary-zones), and [not losing your place](../references.html#getting-back-after-a-jump)."
+    rules:
+      - "**The contents bar hangs from the opening band.** A page with a contents bar has an opening band with its title and an introduction of one to five sentences. See [Secondary zones](layouts.md#secondary-zones)."
+      - "**On a page with a contents bar, all content sits under headings**, so the bar lists every part of the page. An introduction longer than five sentences keeps its first sentences in the band; the rest goes under a heading of its own."
 rules:
   - "**Choose typographic and proximity-based organization patterns first**, and reach for visible containers only when called for. This is the organizing principle to follow throughout."
   - "**Use only the questions the content raises.** When a page uses more than one layer, they stack in this order: navigation, then tabs, then filters."
+  - "**A page in a set follows the set.** Pages in one section of a site, such as arXiv's help pages, share one template: the opening band and the contents bar are on every page of the set or on none. Before choosing, find out whether the page belongs to a set and what the set already uses. If no one has said, ask; if you cannot ask, say what you assumed."
+  - "**In a set that uses the opening band, every page has an introduction.** Take it from the page's own text first, and write new text only when there is none."
+  - "**A page outside a set, or in a set without the band, decides for itself.** Without the band it has no contents bar and no introduction."
   - "**When a filter sets what the whole page is about, the page heading names the choice**, as in “Charts for cs”, and so does the page's `<title>`, so tabs, history and bookmarks tell the choices apart. With nothing chosen, the heading is the view alone. A filter that narrows one set on the page never changes the heading."
   - "**A page with little on it needs no section headings.** The page heading names it; a heading such as “Subject groups” under “All sections” adds nothing."
   - "**A link in the header navigation is not repeated on the page**, and no link on the page repeats the page heading."
@@ -117,10 +123,17 @@ A control sits with what it changes. The more of the site it changes, the higher
 
 Long pages need special consideration of their organization. The longer the page, the more we need to think about [navigation](navigation.md), defining [page zones](layouts.md#secondary-zones), and [not losing your place](../references.html#getting-back-after-a-jump).
 
+**Rule.** **The contents bar hangs from the opening band.** A page with a contents bar has an opening band with its title and an introduction of one to five sentences. See [Secondary zones](layouts.md#secondary-zones).
+
+**Rule.** **On a page with a contents bar, all content sits under headings**, so the bar lists every part of the page. An introduction longer than five sentences keeps its first sentences in the band; the rest goes under a heading of its own.
+
 ## Rules
 
 - **Choose typographic and proximity-based organization patterns first**, and reach for visible containers only when called for. This is the organizing principle to follow throughout.
 - **Use only the questions the content raises.** When a page uses more than one layer, they stack in this order: navigation, then tabs, then filters.
+- **A page in a set follows the set.** Pages in one section of a site, such as arXiv's help pages, share one template: the opening band and the contents bar are on every page of the set or on none. Before choosing, find out whether the page belongs to a set and what the set already uses. If no one has said, ask; if you cannot ask, say what you assumed.
+- **In a set that uses the opening band, every page has an introduction.** Take it from the page's own text first, and write new text only when there is none.
+- **A page outside a set, or in a set without the band, decides for itself.** Without the band it has no contents bar and no introduction.
 - **When a filter sets what the whole page is about, the page heading names the choice**, as in “Charts for cs”, and so does the page's `<title>`, so tabs, history and bookmarks tell the choices apart. With nothing chosen, the heading is the view alone. A filter that narrows one set on the page never changes the heading.
 - **A page with little on it needs no section headings.** The page heading names it; a heading such as “Subject groups” under “All sections” adds nothing.
 - **A link in the header navigation is not repeated on the page**, and no link on the page repeats the page heading.
