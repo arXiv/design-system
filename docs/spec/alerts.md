@@ -48,6 +48,7 @@ components:
     rules:
       - "Choosing the wrong category may delay announcement."
 rules:
+  - "**Mark what needs attention where it is.** When some items in a set need attention, put a [status tag](tags.md) on each card or row, not an alert that lists the items, which the reader then has to find."
   - "**Title:** Announce the situation in a few words, for example “No files found”."
   - "**Body:** What the user should do about it, for example “Check the contents of the tarball or zip.”"
   - "**Links help:** When available, offer links inside the body that take the user to the next step."
@@ -56,7 +57,7 @@ rules:
   - "**One row when possible:** Shorter is better. Alerts should not crowd out the content they are supporting."
   - "**Choose the role by state.** Put `role=\"status\"` on a success or info alert: it is polite, and a screen reader announces it when idle. Put `role=\"alert\"` on a warning or error alert: it is assertive, and a screen reader announces it immediately. Do not use `role=\"alert\"` for anything that can wait."
   - "**No role on an alert that is in the page as it loads, or that focus moves to.** A role announces a change, and a screen reader does not reliably announce an alert that was there from the start, such as the warning on an older version of a paper. Put that alert where the reader meets it early, straight after the page heading. An alert that focus moves to, such as a [form's error summary](forms.md#alerts-in-forms), needs no role either: focus already makes it heard."
-  - "**Announce the result of an action.** Copy, Permalink and the theme control change nothing a reader can see: see [Confirm an action that changes nothing on screen](../action-feedback.html)."
+  - "**Announce the result of an action.** Copy, Permalink and the theme control change nothing a reader can see: see [Show that something was copied](action-feedback.md)."
   - "**Say the state in words.** The icon is `aria-hidden=\"true\"` and the colour is invisible to a screen reader, so the title or the first words of the message must convey the meaning: “Could not load the PDF”, not “Oops”."
   - "**Copy the icon whole.** Each state has its own icon shape, and the shape is part of the meaning. Copy the `<svg>` element with every attribute it has: the “i” and “!” dots are drawn as tiny paths that only render with `stroke-linecap=\"round\"`, and without it the icon is an empty outline."
   - "**Name the dismiss control.** The `.ds-close` button needs a `<span class=\"is-sr-only\">` that says what it dismisses, such as “Dismiss this message”. Do not use `title` or `aria-label` for this, because page translation tools skip attributes."
@@ -156,6 +157,7 @@ The dismiss control, fully documented on [Buttons](buttons.md#the-close-control)
 
 ## Rules
 
+- **Mark what needs attention where it is.** When some items in a set need attention, put a [status tag](tags.md) on each card or row, not an alert that lists the items, which the reader then has to find.
 - **Title:** Announce the situation in a few words, for example “No files found”.
 - **Body:** What the user should do about it, for example “Check the contents of the tarball or zip.”
 - **Links help:** When available, offer links inside the body that take the user to the next step.
@@ -164,7 +166,7 @@ The dismiss control, fully documented on [Buttons](buttons.md#the-close-control)
 - **One row when possible:** Shorter is better. Alerts should not crowd out the content they are supporting.
 - **Choose the role by state.** Put `role="status"` on a success or info alert: it is polite, and a screen reader announces it when idle. Put `role="alert"` on a warning or error alert: it is assertive, and a screen reader announces it immediately. Do not use `role="alert"` for anything that can wait.
 - **No role on an alert that is in the page as it loads, or that focus moves to.** A role announces a change, and a screen reader does not reliably announce an alert that was there from the start, such as the warning on an older version of a paper. Put that alert where the reader meets it early, straight after the page heading. An alert that focus moves to, such as a [form's error summary](forms.md#alerts-in-forms), needs no role either: focus already makes it heard.
-- **Announce the result of an action.** Copy, Permalink and the theme control change nothing a reader can see: see [Confirm an action that changes nothing on screen](../action-feedback.html).
+- **Announce the result of an action.** Copy, Permalink and the theme control change nothing a reader can see: see [Show that something was copied](action-feedback.md).
 - **Say the state in words.** The icon is `aria-hidden="true"` and the colour is invisible to a screen reader, so the title or the first words of the message must convey the meaning: “Could not load the PDF”, not “Oops”.
 - **Copy the icon whole.** Each state has its own icon shape, and the shape is part of the meaning. Copy the `<svg>` element with every attribute it has: the “i” and “!” dots are drawn as tiny paths that only render with `stroke-linecap="round"`, and without it the icon is an empty outline.
 - **Name the dismiss control.** The `.ds-close` button needs a `<span class="is-sr-only">` that says what it dismisses, such as “Dismiss this message”. Do not use `title` or `aria-label` for this, because page translation tools skip attributes.

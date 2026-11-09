@@ -50,6 +50,7 @@
   --ds-link-blue:         #1565c0;
   --ds-link-blue-hover:   #1050a0;
   --ds-link-blue-dark:    #64b5f6;
+  --ds-danger-red-dark:   #e57373;   /* red on a dark ground: dark mode, and the code block in both */
   --ds-visited-purple:    #7b2fbe;
   /* Access Lime, the whole ramp. Tier 1 names it for the same reason it names
      Open Blue's: a primitive names a COLOUR, and a colour is nameable whether
@@ -81,7 +82,7 @@
   --ds-surface:           #ffffff;
   --ds-surface-hover:     var(--ds-tint-warm);         /* a row or control under the pointer */
   --ds-surface-muted:     var(--ds-tint-warm);         /* old name for --ds-tint-warm */
-  --ds-zone-secondary-bg: var(--ds-tint-warm);     /* the tinted band — PAGE ZONES */
+  --ds-zone-secondary-bg: var(--ds-tint-warm);     /* the tinted band — SECONDARY ZONES */
 
   /* Destructive: delete, withdraw, revoke. One tier on every surface. */
   --ds-danger:                #c62828;   /* white on it 5.62:1 */
@@ -236,7 +237,7 @@
 }
 
 
-/* FOUNDATION  (.ds-page / .ds-container) — layout-patterns.html
+/* FOUNDATION  (.ds-page / .ds-container) — layouts.html
    Scoped to .ds-page so a legacy page can link this stylesheet without
    its own body rules being overwritten. .ds-container is a two-track
    grid: content at the reading width, full to the viewport edges.
@@ -327,7 +328,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 /* A dense internal tool: the same container at the wider width. */
 .ds-container--wide { --ds-width-page: var(--ds-width-wide); }
 
-/* PAGE ZONES  (.ds-zone-secondary) — layout-patterns.html
+/* SECONDARY ZONES  (.ds-zone-secondary) — layouts.html
    The page ground is white. A tinted band holds what introduces or supports
    the page: put .ds-zone-secondary on a .ds-full band. Named for role, not
    colour, because the ground changes in dark mode. */
@@ -448,7 +449,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 }
 /* CODE BLOCK COPY  (.ds-code / .ds-code-copy) — typography.html
    Every code block gets a copy button, and no page has to remember to add
-   one: copy-code.js wraps each <pre> and inserts the control. A <pre> cannot
+   one: copy.js wraps each <pre> and inserts the control. A <pre> cannot
    host the button itself, because it scrolls — an absolutely positioned child
    would scroll out of view with the code. */
 .ds-code { position: relative; }
@@ -481,12 +482,33 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-/* The tick replaces the sheets for two seconds. Both glyphs are always in
-   the DOM, so nothing is fetched or measured at the moment of the click. */
-.ds-code-copy .ds-code-copy-done,
-.ds-code-copy.is-done .ds-code-copy-idle { display: none; }
-.ds-code-copy.is-done .ds-code-copy-done { display: block; }
-.ds-code-copy.is-done { color: var(--ds-success-border); }
+/* COPY FEEDBACK  (.ds-copy-done, .ds-copy-failed) — action-feedback.html
+   Every button that copies holds its own icon and a tick, .ds-copy-done.
+   copy.js adds .is-done for two seconds after a copy, and the tick takes the
+   icon's place. Both glyphs are always in the DOM, so nothing is fetched or
+   measured at the moment of the click.
+   If the copy fails, copy.js adds an alert, .ds-copy-failed, and .is-failed:
+   the alert takes the icon's place until the button is pressed again, and a
+   line under the control, .ds-copy-failed-message, says what to do instead. */
+button:not(.is-done) > svg.ds-copy-done,
+button:not(.is-failed) > svg.ds-copy-failed,
+.is-done > svg:not(.ds-copy-done),
+.is-failed > svg:not(.ds-copy-failed) { display: none; }   /* outranks a button's own svg rule, such as .ds-btn svg */
+.is-done > svg.ds-copy-done { color: var(--ds-success-border); }
+.is-failed > svg.ds-copy-failed { color: var(--ds-error-border); }
+/* The code ground is dark in both modes; light mode's red is 2.4:1 on it,
+   short of the 3:1 an icon needs. */
+.ds-code-copy.is-failed > svg.ds-copy-failed { color: var(--ds-danger-red-dark); }
+/* In the margin, copy.js sets the line's width to what the margin holds. */
+.ds-copy-failed-message {
+  display: block;
+  margin-top: var(--ds-space-1);
+  font-family: var(--ds-font-sans);   /* arXiv's words, so not in a paper's own type */
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--ds-error-border);
+  overflow-wrap: anywhere;   /* a long word in a data-copy-failed message must not widen the page */
+}
 .ds-code-copy:hover { background: rgba(255, 255, 255, 0.16); }
 .ds-code-copy:focus-visible {
   outline: 3px solid var(--ds-focus-ring-on-dark);
@@ -1225,7 +1247,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   .ds-switch-track, .ds-switch-thumb, .ds-switch-label { transition: none; }
 }
 
-/* DIVIDER  (.ds-divider) — layout-patterns.html
+/* DIVIDER  (.ds-divider) — dividers.html
    A rule between things. Reach for it only when whitespace has already
    failed: the system groups with space first, and a line drawn where
    space would have done adds noise without adding meaning.
@@ -1924,16 +1946,17 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
    (set by a tap). */
 /* The bottom padding keeps the content clear of the pill. */
 .ds-paper-element { position: relative; margin: var(--ds-space-block) 0; padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-4); border: 1px solid transparent; border-radius: 6px; }
-.ds-paper-element:is(:hover, :focus-within, .is-active) { border-color: var(--ds-border); }
-.ds-paper-element:is(:hover, :focus-within, .is-active) > .ds-element-pill { opacity: 1; pointer-events: auto; }
+/* A failed copy keeps the pill in view with its line until it is pressed again. */
+.ds-paper-element:is(:hover, :focus-within, .is-active, :has(.is-failed)) { border-color: var(--ds-border); }
+.ds-paper-element:is(:hover, :focus-within, .is-active, :has(.is-failed)) > .ds-element-pill { opacity: 1; pointer-events: auto; }
 .ds-paper-element > .ds-element-pill { bottom: 0; left: 50%; translate: -50% 50%; }
 .ds-paper-element img { max-width: 100%; height: auto; }
 /* The element a link in the paper has just landed on. :target, so it works without JavaScript. */
 .ds-paper-element:target { background: var(--ds-accent-wash); border-color: transparent; outline: none; }
 .ds-paper-element:target > .ds-element-pill { opacity: 1; pointer-events: auto; }
 @media (hover: none) {
-  .ds-paper-element:hover:not(.is-active, :focus-within, :target) { border-color: transparent; }
-  .ds-paper-element:hover:not(.is-active, :focus-within, :target) > .ds-element-pill { opacity: 0; pointer-events: none; }
+  .ds-paper-element:hover:not(.is-active, :focus-within, :target, :has(.is-failed)) { border-color: transparent; }
+  .ds-paper-element:hover:not(.is-active, :focus-within, :target, :has(.is-failed)) > .ds-element-pill { opacity: 0; pointer-events: none; }
 }
 /* A paper's TOC bar: the logo in the start slot, the other formats in the end slot. */
 .ds-paper-bar-logo { grid-column: 1; justify-self: start; display: inline-flex; color: var(--ds-text-muted); }
@@ -1958,7 +1981,7 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
   .ds-toc-bar-inner:has(> .ds-paper-tools) > .ds-toc { position: static; }   /* the list centres on the bar, not on the off-centre control, so it stays on screen */
 }
 @media print {
-  .ds-toc-bar, .ds-permalink, .ds-element-pill { display: none; }
+  .ds-toc-bar, .ds-permalink, .ds-element-pill, .ds-copy-failed-message { display: none; }
   .ds-paper-identity { font-size: 10pt; }
   .ds-paper-element, .ds-page :is(figure, table) { break-inside: avoid; }
   .ds-page :is(h2, h3, h4) { break-after: avoid; }
@@ -2471,7 +2494,7 @@ html:has(.ds-modal[open]) {
   .ds-modal-body { flex: none; overflow: visible; }
 }
 
-/* ELEMENT PILL  (.ds-element-pill) — layout-patterns.html
+/* ELEMENT PILL  (.ds-element-pill) — layouts.html
    Floats anchored to a piece of content to carry actions for it. The
    consumer owns the positioning context (position: relative on the
    wrapper) — the pill only positions itself within one. */
@@ -2540,7 +2563,7 @@ html:has(.ds-modal[open]) {
 }
 
 
-/* MARGINALIA  (.ds-marginalia) — layout-patterns.html
+/* MARGINALIA  (.ds-marginalia) — layouts.html
    A short note beside the block it belongs to, in the annotation voice.
    Where the viewport has a margin it sits there, open, with no control.
    Narrower, it folds to an info mark in the block's top-right corner that
@@ -3249,7 +3272,7 @@ html:has(.ds-modal[open]) {
   .ds-acc-body dd { grid-column: auto; }
 }
 
-/* SIDEBAR  (.ds-sidebar) — layout-patterns.html
+/* SIDEBAR  (.ds-sidebar) — layouts.html
    Beside the reading column, for supplementary content. The sidebar's
    parent becomes the two-column layout; the sidebar wraps below the
    content when both no longer fit. A border frames it and a rule separates
@@ -3295,7 +3318,7 @@ html:has(.ds-modal[open]) {
 .ds-sidebar .ds-acc-body dt:first-child { margin-top: 0; }
 .ds-sidebar .ds-acc-body dd { margin: 1px 0 0; grid-column: auto; }
 
-/* TOC BAR  (.ds-toc-bar / .ds-toc / .ds-toc-trigger / .ds-toc-menu) — progressive-disclosure.html
+/* TOC BAR  (.ds-toc-bar / .ds-toc / .ds-toc-trigger / .ds-toc-menu) — navigation.html
    A page's own table of contents: one control that names the section the
    reader is in and opens the list of the others. Built on <details>, the
    same as the site header's menus, so it opens with JavaScript off; toc.js
@@ -3303,9 +3326,10 @@ html:has(.ds-modal[open]) {
 
    .ds-toc alone is the control and works anywhere. .ds-toc-bar is the
    edge-to-edge row that carries it, a direct child of .ds-container with
-   .ds-full, and it is sticky: the one bar a page may keep in view.
-   STICKY CHROME IS GOVERNED BY DESIGN-POLICIES (Chrome and interaction
-   structure): one sticky bar per page, and only on the pages named there. */
+   .ds-full, and it is sticky by default: the one bar a page may keep in view.
+   .ds-toc-bar--scrolls lets it scroll away with the page instead; which one a
+   page needs is the developer's call. STICKY CHROME IS GOVERNED BY
+   DESIGN-POLICIES (Chrome and interaction structure): one sticky bar per page. */
 
 .ds-toc-bar {
   position: sticky;
@@ -3351,6 +3375,9 @@ html:has(.ds-modal[open]) {
 }
 /* A sticky bar covers the top of the viewport, so an anchor has to land below it. */
 html:has(.ds-toc-bar) { scroll-padding-top: 5rem; }
+/* A bar the page does not need in view scrolls away with it, and an anchor lands at the top. */
+.ds-toc-bar--scrolls { position: relative; }
+html:has(.ds-toc-bar--scrolls) { scroll-padding-top: var(--ds-space-3); }
 /* On a short viewport (a phone on its side, a laptop at 400% zoom) the bar scrolls away with the page. */
 @media (max-height: 30rem) {
   .ds-toc-bar { position: relative; }
@@ -4535,13 +4562,11 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   transition: opacity 0.12s;
 }
 .ds-permalink svg { width: 1.05em; height: 1.05em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.ds-permalink .ds-permalink-done,
-.ds-permalink.is-done svg:not(.ds-permalink-done) { display: none; }
-.ds-permalink.is-done .ds-permalink-done { display: block; color: var(--ds-success-border); }
 :is(h2, h3, h4):is(:hover, .is-active) > .ds-permalink,
-.ds-permalink:focus-visible { opacity: 1; }
+.ds-permalink:focus-visible,
+.ds-permalink.is-failed { opacity: 1; }   /* a failed copy keeps it in view with its line */
 @media (hover: none) {
-  :is(h2, h3, h4):hover:not(.is-active) > .ds-permalink:not(:focus-visible) { opacity: 0; }
+  :is(h2, h3, h4):hover:not(.is-active) > .ds-permalink:not(:focus-visible, .is-failed) { opacity: 0; }
 }
 .ds-permalink:hover { color: var(--ds-link); }
 .ds-permalink:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }

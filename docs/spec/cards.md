@@ -43,6 +43,8 @@ components:
         does: "The frame. With a header bar it has no padding of its own: a table inside it runs to its edges with no border of its own, and any other content keeps the card's padding."
     notes:
       - "Meets accessibility guideline [WCAG 2.2 SC 3.3.2](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html) Labels or Instructions (Level A)"
+    rules:
+      - "**A set with no controls is not in a card.** It sits on the page ground under its heading."
   - id: stat-cards
     title: "Stat cards"
     summary: "One number with its label, on the warm tint. Use a group of them for a summary at the top of a dashboard."
@@ -75,6 +77,8 @@ components:
         does: "A card that needs attention says so on the card itself. A tag placed first in the card sits in its top corner, beside the heading, so the rest of the card lines up with its neighbours. See [Tags](tags.md)."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) Focus Visible (Level AA) and [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)"
+    rules:
+      - "**Leave detailed figures for the page the card opens.** The card shows its name and, at most, a count or a mark that something needs attention."
   - id: data-list
     title: "Data list"
     summary: "A few short details as label and value pairs, each label beside its value, without a card: for example under an item in a list. Inside an accordion, a plain `<dl>` already lays out pairs."
@@ -198,6 +202,8 @@ A set of data with its own controls, such as a table with a filter, is a card wh
 
 > Meets accessibility guideline [WCAG 2.2 SC 3.3.2](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html) Labels or Instructions (Level A)
 
+**Rule.** **A set with no controls is not in a card.** It sits on the page ground under its heading.
+
 ## Stat cards
 
 One number with its label, on the warm tint. Use a group of them for a summary at the top of a dashboard.
@@ -261,6 +267,8 @@ A card that is one link, for a page whose job is to send the reader somewhere el
 - `.ds-tag--warning` — A card that needs attention says so on the card itself. A tag placed first in the card sits in its top corner, beside the heading, so the rest of the card lines up with its neighbours. See [Tags](tags.md).
 
 > Meets accessibility guidelines [WCAG 2.2 SC 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) Focus Visible (Level AA) and [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)
+
+**Rule.** **Leave detailed figures for the page the card opens.** The card shows its name and, at most, a count or a mark that something needs attention.
 
 ## Data list
 
