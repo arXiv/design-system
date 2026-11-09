@@ -203,7 +203,7 @@ The header in production now. A page includes it from `templates/` rather than c
       <input type="hidden" name="source" value="header">
     </form>
     <p class="ds-hint">
-      Press Enter to search · <a href="https://arxiv.org/search/advanced">Advanced search</a>
+      Press Enter to search &middot; <a href="https://arxiv.org/search/advanced">Advanced search</a>
     </p>
   </div>
 </div>
@@ -258,7 +258,7 @@ Every header has the same regions, in this order: Logo, Search, Nav, Tools, and 
       <input type="hidden" name="source" value="header">
     </form>
     <p class="ds-hint">
-      Press Enter to search · <a href="https://arxiv.org/search/advanced">Advanced search</a>
+      Press Enter to search &middot; <a href="https://arxiv.org/search/advanced">Advanced search</a>
     </p>
   </div>
 </div>

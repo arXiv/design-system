@@ -138,9 +138,9 @@ Every paper shows its dates under the title, and its versions once there is more
 
 ```html
 <p class="ds-date-row">
-  Submitted <time datetime="2026-01-10">10 Jan 2026</time> UTC
+  Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
+  Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
 </p>
 ```
 
@@ -148,11 +148,11 @@ Every paper shows its dates under the title, and its versions once there is more
 
 ```html
 <p class="ds-date-row">
-  Submitted <time datetime="2026-01-10">10 Jan 2026</time> UTC
+  Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
+  Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Revised <time datetime="2026-04-24">24 Apr 2026</time> UTC (this version)
+  Revised <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC (this version)
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
@@ -165,9 +165,9 @@ Every paper shows its dates under the title, and its versions once there is more
 
 ```html
 <p class="ds-date-row">
-  Submitted <time datetime="2026-01-10">10 Jan 2026</time> UTC (this version)
+  Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC (this version)
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
+  Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <strong class="ds-version" aria-current="true">v1<span class="is-sr-only">, this version</span></strong>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
@@ -181,7 +181,7 @@ Every paper shows its dates under the title, and its versions once there is more
     <path d="M12 17h.01"/>
   </svg>
   <div class="ds-alert-content">
-    <p><strong>You are viewing version 1.</strong> A newer version is available — <a href="#v3">version 3, revised 24 Apr 2026</a>.</p>
+    <p><strong>You are viewing version 1.</strong> A newer version is available — <a href="#v3">version 3, revised 24&nbsp;Apr&nbsp;2026</a>.</p>
   </div>
 </div>
 ```
@@ -190,11 +190,11 @@ Every paper shows its dates under the title, and its versions once there is more
 
 ```html
 <p class="ds-date-row">
-  Submitted <time datetime="2026-01-10">10 Jan 2026</time> UTC
+  Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
+  Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Revised <time datetime="2026-06-30">30 Jun 2026</time> UTC (this version)
+  Revised <time datetime="2026-06-30">30&nbsp;Jun&nbsp;2026</time>&nbsp;UTC (this version)
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
@@ -220,11 +220,11 @@ Every paper shows its dates under the title, and its versions once there is more
 
 ```html
 <p class="ds-date-row">
-  Submitted <time datetime="2026-01-10">10 Jan 2026</time> UTC
+  Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
+  Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Revised <time datetime="2026-03-12">12 Mar 2026</time> UTC (this version)
+  Revised <time datetime="2026-03-12">12&nbsp;Mar&nbsp;2026</time>&nbsp;UTC (this version)
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
@@ -254,7 +254,7 @@ Every paper shows its dates under the title, and its versions once there is more
     <path d="M12 17h.01"/>
   </svg>
   <div class="ds-alert-content">
-    <p><strong>You are viewing version 7.</strong> A newer version is available — <a href="#v12">version 12, revised 30 Jun 2026</a>.</p>
+    <p><strong>You are viewing version 7.</strong> A newer version is available — <a href="#v12">version 12, revised 30&nbsp;Jun&nbsp;2026</a>.</p>
   </div>
 </div>
 ```
@@ -263,11 +263,11 @@ Every paper shows its dates under the title, and its versions once there is more
 
 ```html
 <p class="ds-date-row">
-  Submitted <time datetime="2026-01-10">10 Jan 2026</time> UTC
+  Submitted <time datetime="2026-01-10">10&nbsp;Jan&nbsp;2026</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Announced <time datetime="2026-01-11T01:32Z">11 Jan 2026, 01:32</time> UTC
+  Announced <time datetime="2026-01-11T01:32Z">11&nbsp;Jan&nbsp;2026,&nbsp;01:32</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Revised <time datetime="2026-06-30">30 Jun 2026</time> UTC (this version)
+  Revised <time datetime="2026-06-30">30&nbsp;Jun&nbsp;2026</time>&nbsp;UTC (this version)
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
@@ -305,11 +305,11 @@ Every paper shows its dates under the title, and its versions once there is more
 
 ```html
 <p class="ds-date-row">
-  Submitted <time datetime="2026-04-24">24 Apr 2026</time> UTC
+  Submitted <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Announced <time datetime="2026-04-25T02:07Z">25 Apr 2026, 02:07</time> UTC
+  Announced <time datetime="2026-04-25T02:07Z">25&nbsp;Apr&nbsp;2026,&nbsp;02:07</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Withdrawn <time datetime="2026-10-22">22 Oct 2026</time> UTC
+  Withdrawn <time datetime="2026-10-22">22&nbsp;Oct&nbsp;2026</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
@@ -324,7 +324,7 @@ Every paper shows its dates under the title, and its versions once there is more
 ```html
 <p class="ds-date-row">
   …Submitted and Announced, as above…
-  Revised <time datetime="2026-06-28">28 Jun 2026</time> UTC (this version)
+  Revised <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC (this version)
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
@@ -339,7 +339,7 @@ Every paper shows its dates under the title, and its versions once there is more
 ```html
 <p class="ds-date-row">
   …Submitted and Announced, as above…
-  Revised <time datetime="2026-05-19">19 May 2026</time> UTC (this version)
+  Revised <time datetime="2026-05-19">19&nbsp;May&nbsp;2026</time>&nbsp;UTC (this version)
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <strong class="ds-version" aria-current="true">v2<span class="is-sr-only">, this version</span></strong>
@@ -355,7 +355,7 @@ Every paper shows its dates under the title, and its versions once there is more
 <p class="ds-date-row">
   …Submitted and Announced…
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Removed <time datetime="2026-10-23">23 Oct 2026</time> UTC
+  Removed <time datetime="2026-10-23">23&nbsp;Oct&nbsp;2026</time>&nbsp;UTC
 </p>
 ```
 
@@ -364,9 +364,9 @@ Every paper shows its dates under the title, and its versions once there is more
 ```html
 <p class="ds-date-row">
   …Submitted and Announced, as above…
-  Revised <time datetime="2026-05-19">19 May 2026</time> UTC (this version)
+  Revised <time datetime="2026-05-19">19&nbsp;May&nbsp;2026</time>&nbsp;UTC (this version)
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Removed <time datetime="2026-10-23">23 Oct 2026</time> UTC
+  Removed <time datetime="2026-10-23">23&nbsp;Oct&nbsp;2026</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <strong class="ds-version ds-version--error" aria-current="true">v2<span class="is-sr-only">, this version</span></strong>
@@ -426,11 +426,11 @@ In the sidebar, Version history lists every version, newest first, with its date
   <div class="ds-acc-body">
     <ol class="ds-paper-versions">
       <li aria-current="true">
-        <p class="ds-date-row"><strong class="ds-version">v3</strong> · <time datetime="2026-06-28">28 Jun 2026</time> UTC · Latest · Viewing</p>
+        <p class="ds-date-row"><strong class="ds-version">v3</strong> · <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC · Latest · Viewing</p>
         <p>18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.</p>
       </li>
       <li>
-        <p class="ds-date-row"><a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a> · <time datetime="2026-05-19">19 May 2026</time> UTC</p>
+        <p class="ds-date-row"><a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a> · <time datetime="2026-05-19">19&nbsp;May&nbsp;2026</time>&nbsp;UTC</p>
         <p>17 pages, 6 figures. Corrected Eq. (4.7).</p>
       </li>
       <li>…v1, as v2…</li>
@@ -444,12 +444,12 @@ In the sidebar, Version history lists every version, newest first, with its date
 ```html
 <ol class="ds-paper-versions">
   <li>
-    <p class="ds-date-row"><a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a> · <time datetime="2026-06-28">28 Jun 2026</time> UTC · Latest</p>
+    <p class="ds-date-row"><a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a> · <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC · Latest</p>
     <p>18 pages, 6 figures. …</p>
   </li>
   <li>…v2…</li>
   <li aria-current="true">
-    <p class="ds-date-row"><strong class="ds-version">v1</strong> · <time datetime="2026-04-24">24 Apr 2026</time> UTC · Viewing</p>
+    <p class="ds-date-row"><strong class="ds-version">v1</strong> · <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC · Viewing</p>
     <p>16 pages, 5 figures.</p>
   </li>
 </ol>
@@ -460,7 +460,7 @@ In the sidebar, Version history lists every version, newest first, with its date
 ```html
 <ol class="ds-paper-versions">
   <li class="ds-version--error" aria-current="true">
-    <p class="ds-date-row"><strong class="ds-version ds-version--error">Withdrawal notice</strong> · <time datetime="2026-10-22">22 Oct 2026</time> UTC · Viewing</p>
+    <p class="ds-date-row"><strong class="ds-version ds-version--error">Withdrawal notice</strong> · <time datetime="2026-10-22">22&nbsp;Oct&nbsp;2026</time>&nbsp;UTC · Viewing</p>
     <p>Withdrawn by Adrian Palomares.</p>
   </li>
   <li>…v3, v2 and v1, as on any paper…</li>
@@ -472,11 +472,11 @@ In the sidebar, Version history lists every version, newest first, with its date
 ```html
 <ol class="ds-paper-versions">
   <li class="ds-version--error">
-    <p class="ds-date-row"><a class="ds-version ds-version--error" href="…">Withdrawal notice</a> · <time datetime="2026-10-22">22 Oct 2026</time> UTC</p>
+    <p class="ds-date-row"><a class="ds-version ds-version--error" href="…">Withdrawal notice</a> · <time datetime="2026-10-22">22&nbsp;Oct&nbsp;2026</time>&nbsp;UTC</p>
     <p>Withdrawn by Adrian Palomares.</p>
   </li>
   <li class="ds-version--error" aria-current="true">
-    <p class="ds-date-row"><strong class="ds-version ds-version--error">v3</strong> · <time datetime="2026-06-28">28 Jun 2026</time> UTC · Viewing</p>
+    <p class="ds-date-row"><strong class="ds-version ds-version--error">v3</strong> · <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC · Viewing</p>
     <p>18 pages, 6 figures. …</p>
   </li>
   <li>…v2 and v1, as on any paper…</li>
@@ -488,12 +488,12 @@ In the sidebar, Version history lists every version, newest first, with its date
 ```html
 <ol class="ds-paper-versions">
   <li class="ds-version--error">
-    <p class="ds-date-row"><a class="ds-version ds-version--error" href="…">Withdrawal notice</a> · <time datetime="2026-10-22">22 Oct 2026</time> UTC</p>
+    <p class="ds-date-row"><a class="ds-version ds-version--error" href="…">Withdrawal notice</a> · <time datetime="2026-10-22">22&nbsp;Oct&nbsp;2026</time>&nbsp;UTC</p>
     <p>Withdrawn by Adrian Palomares.</p>
   </li>
   <li>…v3, as on any paper…</li>
   <li aria-current="true">
-    <p class="ds-date-row"><strong class="ds-version">v2</strong> · <time datetime="2026-05-19">19 May 2026</time> UTC · Viewing</p>
+    <p class="ds-date-row"><strong class="ds-version">v2</strong> · <time datetime="2026-05-19">19&nbsp;May&nbsp;2026</time>&nbsp;UTC · Viewing</p>
     <p>17 pages, 6 figures. Corrected Eq. (4.7).</p>
   </li>
   <li>…v1…</li>
@@ -506,8 +506,8 @@ In the sidebar, Version history lists every version, newest first, with its date
 <ol class="ds-paper-versions">
   <li>…v3, as on any paper…</li>
   <li class="ds-version--error" aria-current="true">
-    <p class="ds-date-row"><strong class="ds-version ds-version--error">v2</strong> · <time datetime="2026-05-19">19 May 2026</time> UTC · Viewing</p>
-    <p>Removed by arXiv on <time datetime="2026-10-23">23 Oct 2026</time> UTC.</p>
+    <p class="ds-date-row"><strong class="ds-version ds-version--error">v2</strong> · <time datetime="2026-05-19">19&nbsp;May&nbsp;2026</time>&nbsp;UTC · Viewing</p>
+    <p>Removed by arXiv on <time datetime="2026-10-23">23&nbsp;Oct&nbsp;2026</time>&nbsp;UTC.</p>
     <p>17 pages, 6 figures. Corrected Eq. (4.7).</p>
   </li>
   <li>…v1…</li>

@@ -248,7 +248,7 @@ Search results and listings use the metadata hierarchy. We rely on proximity to 
   <li class="ds-paper">
     <h3><a href="#">LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging</a></h3>
     <p class="ds-paper-when"><span class="ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.36857</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.36857</span></a> <a href="#">TeX Source<span class="is-sr-only"> of 2609.36857</span></a></span>
-      <span class="ds-date-row">Submitted <time datetime="2026-09-29">29 Sep 2026</time> UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep 2026</time></span></p>
+      <span class="ds-date-row">Submitted <time datetime="2026-09-29">29&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time></span></p>
     <p class="ds-link-list"><a href="#">Giovanni Vincenzo Donatiello</a>, <a href="#">Achille A. Nucita</a>, <a href="#">Francesco De Paolis</a>, <a href="#">Antonio Franco</a>, <a href="#">Francesco Strafella</a></p>
     <p>We present LUMA, a convolutional neural network (CNN) pipeline for the automated detection of strong gravitational <mark>lenses</mark> in simulated astronomical imaging. The method combines a physically motivated preprocessing stage, which enhances faint arc and ring features, with a compact three-block CNN trained using class reweighting and modern learning-rate schedul… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p>
     <dl class="ds-data-list">
@@ -264,7 +264,7 @@ Search results and listings use the metadata hierarchy. We rely on proximity to 
   <li class="ds-paper">
     <h3><a href="#">SN Helios: A Multiply Imaged Type II Supernova Opening Time-Delay Cosmography beyond redshift of 3</a></h3>
     <p class="ds-paper-when"><span class="ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.30440</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.30440</span></a> <a href="#">TeX Source<span class="is-sr-only"> of 2609.30440</span></a></span>
-      <span class="ds-date-row">Submitted <time datetime="2026-09-24">24 Sep 2026</time> UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep 2026</time></span></p>
+      <span class="ds-date-row">Submitted <time datetime="2026-09-24">24&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time></span></p>
     <p class="ds-link-list"><a href="#">Seiji Fujimoto</a>, <a href="#">Conor Larison</a>, <a href="#">Justin D. R. Pierel</a>, <a href="#">Lukas J. Furtak</a>, <a href="#">Masamune Oguri</a>, <a href="#">Adi Zitrin</a>, <a href="#">Jose M. Diego</a>, <a href="#">Keren Sharon</a> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false">show all 67 authors</button></p>
     <p>We report the discovery and spectroscopic confirmation of SN Helios, a strongly <mark>lensed</mark>, multiply imaged Type II supernova (SN) at behind the galaxy cluster RXC J0018.5+1626. The transient was identified as a red F150W-dropout source (F277W = 26.1 mag) in JWST/NIRCam imaging taken on 2026 July 3 for the VENUS survey, with no counterpart in 2024 Decem… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p>
     <dl class="ds-data-list">
@@ -323,9 +323,9 @@ On a paper's own page the order is the identity line, the title, the dates and v
 </p>
 <h1>Gauge-independent approach to inflation in quadratic gravity</h1>
 <p class="ds-date-row">
-  Submitted <time datetime="2026-04-24">24 Apr 2026</time> UTC (this version)
+  Submitted <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC (this version)
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Announced <time datetime="2026-04-25T02:07Z">25 Apr 2026, 02:07</time> UTC
+  Announced <time datetime="2026-04-25T02:07Z">25&nbsp;Apr&nbsp;2026,&nbsp;02:07</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <strong class="ds-version" aria-current="true">v1<span class="is-sr-only">, this version</span></strong>
   <a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a>
@@ -335,7 +335,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 <div class="ds-alert ds-alert--warning">
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
   <div class="ds-alert-content">
-    <p><strong>You are viewing version 1.</strong> A newer version is available — <a href="https://arxiv.org/abs/2604.22725v3">version 3, revised 28 Jun 2026</a>.</p>
+    <p><strong>You are viewing version 1.</strong> A newer version is available — <a href="https://arxiv.org/abs/2604.22725v3">version 3, revised 28&nbsp;Jun&nbsp;2026</a>.</p>
   </div>
 </div>
 <p class="ds-link-list"><a href="#">Adrian Palomares</a>, <a href="#">Ilya L. Shapiro</a>, <a href="#">Maria C. Gonzalez-Garcia</a>, <a href="#">Tomohiro Harada</a>, <a href="#">Elena Castellani</a>, <a href="#">Kei-ichi Maeda</a>, <a href="#">Francesca Vidotto</a>, <a href="#">Abhay Ashtekar</a> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false">show all 22 authors</button></p>
@@ -357,7 +357,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>
   <div class="ds-alert-content">
     <h2 class="ds-alert-title" id="notice-h">This paper has been withdrawn by Adrian Palomares.</h2>
-    <p>Reason given: “The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.” The withdrawn paper can still be read in <a href="https://arxiv.org/abs/2604.22725v3">version 3</a>.</p>
+    <p>Reason given: &ldquo;The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.&rdquo; The withdrawn paper can still be read in <a href="https://arxiv.org/abs/2604.22725v3">version 3</a>.</p>
   </div>
 </section>
 <p class="ds-date-row">…the dates, ending with Withdrawn, and the versions, as in <a href="versions.html#version-row">Version row</a>…</p>
@@ -375,13 +375,13 @@ On a paper's own page the order is the identity line, the title, the dates and v
   <svg class="ds-alert-icon" …>…</svg>
   <div class="ds-alert-content">
     <h2 class="ds-alert-title" id="notice-h">This version has been removed by arXiv.</h2>
-    <p>“arXiv admin comment: …” The full text and files are no longer available.</p>
+    <p>&ldquo;arXiv admin comment: …&rdquo; The full text and files are no longer available.</p>
   </div>
 </section>
 <p class="ds-date-row">
   …Submitted and Announced…
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Removed <time datetime="2026-10-23">23 Oct 2026</time> UTC
+  Removed <time datetime="2026-10-23">23&nbsp;Oct&nbsp;2026</time>&nbsp;UTC
 </p>
 ```
 
@@ -392,10 +392,10 @@ On a paper's own page the order is the identity line, the title, the dates and v
   <section aria-labelledby="files-h">
     <h2 class="ds-panel-label" id="files-h">Files</h2>
     <ul class="ds-paper-files">
-      <li><a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="paper-title-demo"><svg aria-hidden="true">…</svg> Download PDF <small>· 1.2 MB</small><span class="is-sr-only"> (opens in a new tab)</span></a></li>
-      <li><a href="https://arxiv.org/src/2604.22725v1" aria-describedby="paper-title-demo">TeX Source</a> <small>.tar.gz · 286 KB</small></li>
+      <li><a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="paper-title-demo"><svg aria-hidden="true">…</svg> Download PDF <small>· 1.2&nbsp;MB</small><span class="is-sr-only"> (opens in a new tab)</span></a></li>
+      <li><a href="https://arxiv.org/src/2604.22725v1" aria-describedby="paper-title-demo">TeX Source</a> <small>.tar.gz · 286&nbsp;KB</small></li>
       <li><a href="https://arxiv.org/format/2604.22725v1">Other formats</a></li>
-      <li>Ancillary files <small>· 3.6 MB</small> <a href="https://arxiv.org/src/2604.22725v1/anc">Download all<span class="is-sr-only"> 3 ancillary files</span></a></li>
+      <li>Ancillary files <small>· 3.6&nbsp;MB</small> <a href="https://arxiv.org/src/2604.22725v1/anc">Download all<span class="is-sr-only"> 3 ancillary files</span></a></li>
     </ul>
   </section>
   <section aria-labelledby="cite-h" class="ds-paper-cite">
@@ -414,19 +414,19 @@ On a paper's own page the order is the identity line, the title, the dates and v
     <div id="cite-code" class="ds-paper-cite-code">
       <figure data-format="bibtex">
         <figcaption>BibTeX</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
       <figure data-format="apa">
         <figcaption>APA</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
       <figure data-format="chicago">
         <figcaption>Chicago</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
       <figure data-format="mla">
         <figcaption>MLA</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
     </div>
     <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="cite-code" hidden>Show full citation</button>
@@ -438,15 +438,15 @@ On a paper's own page the order is the identity line, the title, the dates and v
       <div class="ds-acc-body">
         <ol class="ds-paper-versions">
           <li>
-            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v3">v3<span class="is-sr-only">, version 3</span></a> · <time datetime="2026-06-28">28 Jun 2026</time> UTC · Latest</p>
+            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v3">v3<span class="is-sr-only">, version 3</span></a> · <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC · Latest</p>
             <p>18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.</p>
           </li>
           <li>
-            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a> · <time datetime="2026-05-19">19 May 2026</time> UTC</p>
+            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a> · <time datetime="2026-05-19">19&nbsp;May&nbsp;2026</time>&nbsp;UTC</p>
             <p>17 pages, 6 figures. Corrected Eq. (4.7).</p>
           </li>
           <li aria-current="true">
-            <p class="ds-date-row"><strong class="ds-version">v1</strong> · <time datetime="2026-04-24">24 Apr 2026</time> UTC · Viewing</p>
+            <p class="ds-date-row"><strong class="ds-version">v1</strong> · <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC · Viewing</p>
             <p>16 pages, 5 figures.</p>
           </li>
         </ol>
@@ -533,7 +533,7 @@ A withdrawn paper keeps its title, authors, abstract and metadata, and its earli
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>
   <div class="ds-alert-content">
     <h2 class="ds-alert-title" id="notice-h">This paper has been withdrawn by Adrian Palomares.</h2>
-    <p>Reason given: “The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.” The withdrawn paper can still be read in <a href="https://arxiv.org/abs/2604.22725v3">version 3</a>.</p>
+    <p>Reason given: &ldquo;The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.&rdquo; The withdrawn paper can still be read in <a href="https://arxiv.org/abs/2604.22725v3">version 3</a>.</p>
   </div>
 </section>
 <p class="ds-date-row">…the dates, ending with Withdrawn, and the versions, as in <a href="versions.html#version-row">Version row</a>…</p>
@@ -551,13 +551,13 @@ A withdrawn paper keeps its title, authors, abstract and metadata, and its earli
   <svg class="ds-alert-icon" …>…</svg>
   <div class="ds-alert-content">
     <h2 class="ds-alert-title" id="notice-h">This version has been removed by arXiv.</h2>
-    <p>“arXiv admin comment: …” The full text and files are no longer available.</p>
+    <p>&ldquo;arXiv admin comment: …&rdquo; The full text and files are no longer available.</p>
   </div>
 </section>
 <p class="ds-date-row">
   …Submitted and Announced…
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Removed <time datetime="2026-10-23">23 Oct 2026</time> UTC
+  Removed <time datetime="2026-10-23">23&nbsp;Oct&nbsp;2026</time>&nbsp;UTC
 </p>
 ```
 
@@ -589,10 +589,10 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
   <section aria-labelledby="files-h">
     <h2 class="ds-panel-label" id="files-h">Files</h2>
     <ul class="ds-paper-files">
-      <li><a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="paper-title-demo"><svg aria-hidden="true">…</svg> Download PDF <small>· 1.2 MB</small><span class="is-sr-only"> (opens in a new tab)</span></a></li>
-      <li><a href="https://arxiv.org/src/2604.22725v1" aria-describedby="paper-title-demo">TeX Source</a> <small>.tar.gz · 286 KB</small></li>
+      <li><a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="paper-title-demo"><svg aria-hidden="true">…</svg> Download PDF <small>· 1.2&nbsp;MB</small><span class="is-sr-only"> (opens in a new tab)</span></a></li>
+      <li><a href="https://arxiv.org/src/2604.22725v1" aria-describedby="paper-title-demo">TeX Source</a> <small>.tar.gz · 286&nbsp;KB</small></li>
       <li><a href="https://arxiv.org/format/2604.22725v1">Other formats</a></li>
-      <li>Ancillary files <small>· 3.6 MB</small> <a href="https://arxiv.org/src/2604.22725v1/anc">Download all<span class="is-sr-only"> 3 ancillary files</span></a></li>
+      <li>Ancillary files <small>· 3.6&nbsp;MB</small> <a href="https://arxiv.org/src/2604.22725v1/anc">Download all<span class="is-sr-only"> 3 ancillary files</span></a></li>
     </ul>
   </section>
   <section aria-labelledby="cite-h" class="ds-paper-cite">
@@ -611,19 +611,19 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
     <div id="cite-code" class="ds-paper-cite-code">
       <figure data-format="bibtex">
         <figcaption>BibTeX</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
       <figure data-format="apa">
         <figcaption>APA</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
       <figure data-format="chicago">
         <figcaption>Chicago</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
       <figure data-format="mla">
         <figcaption>MLA</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
     </div>
     <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="cite-code" hidden>Show full citation</button>
@@ -635,15 +635,15 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
       <div class="ds-acc-body">
         <ol class="ds-paper-versions">
           <li>
-            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v3">v3<span class="is-sr-only">, version 3</span></a> · <time datetime="2026-06-28">28 Jun 2026</time> UTC · Latest</p>
+            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v3">v3<span class="is-sr-only">, version 3</span></a> · <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC · Latest</p>
             <p>18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.</p>
           </li>
           <li>
-            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a> · <time datetime="2026-05-19">19 May 2026</time> UTC</p>
+            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a> · <time datetime="2026-05-19">19&nbsp;May&nbsp;2026</time>&nbsp;UTC</p>
             <p>17 pages, 6 figures. Corrected Eq. (4.7).</p>
           </li>
           <li aria-current="true">
-            <p class="ds-date-row"><strong class="ds-version">v1</strong> · <time datetime="2026-04-24">24 Apr 2026</time> UTC · Viewing</p>
+            <p class="ds-date-row"><strong class="ds-version">v1</strong> · <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC · Viewing</p>
             <p>16 pages, 5 figures.</p>
           </li>
         </ol>
