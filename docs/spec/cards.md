@@ -9,7 +9,7 @@ components:
     summary: "A flexible and unopinionated white surface with a hairline border and 8px radius."
     classes:
       - name: ".ds-card"
-        does: "The box: white surface, hairline `--ds-border`, 8px radius, padding from the scale. Its first and last children have no outer margin, because the padding is the space at the edges. It sets `position: relative`, so a margin note or an anchored pill measures from it."
+        does: "The box: white surface, hairline `--ds-border`, 8px radius, padding from the scale. Its first and last children have no outer margin, because the padding is the space at the edges. It sets `position: relative`, so a margin note or an anchored pill measures from it. Its own paragraphs, the `<p>` elements directly inside it, are already in `--ds-text-muted`; a component inside keeps its own colour. Set between paragraphs, the card keeps a paragraph’s space below it."
       - name: ".ds-internal"
         does: "On a parent, usually `<html>` or `<body>`. Re-points the accent to Access Lime for everything inside. Nothing on the card itself changes. The basic card has no accent of its own, so it looks the same on both surfaces; what changes is everything inside it that reaches for the accent, such as the button."
   - id: data-cards
@@ -124,7 +124,7 @@ A flexible and unopinionated white surface with a hairline border and 8px radius
   </div>
 ```
 
-- `.ds-card` — The box: white surface, hairline `--ds-border`, 8px radius, padding from the scale. Its first and last children have no outer margin, because the padding is the space at the edges. It sets `position: relative`, so a margin note or an anchored pill measures from it.
+- `.ds-card` — The box: white surface, hairline `--ds-border`, 8px radius, padding from the scale. Its first and last children have no outer margin, because the padding is the space at the edges. It sets `position: relative`, so a margin note or an anchored pill measures from it. Its own paragraphs, the `<p>` elements directly inside it, are already in `--ds-text-muted`; a component inside keeps its own colour. Set between paragraphs, the card keeps a paragraph’s space below it.
 - `.ds-internal` — On a parent, usually `<html>` or `<body>`. Re-points the accent to Access Lime for everything inside. Nothing on the card itself changes. The basic card has no accent of its own, so it looks the same on both surfaces; what changes is everything inside it that reaches for the accent, such as the button.
 
 ## Data cards

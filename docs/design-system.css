@@ -1310,6 +1310,10 @@ button:not(.is-failed) > svg.ds-copy-failed,
 .ds-card > :first-child { margin-block-start: 0; }
 .ds-card > .ds-marginalia:first-child + * { margin-block-start: 0; }   /* a margin note sits beside the card */
 .ds-card > :last-child  { margin-block-end: 0; }
+/* A card set in running text keeps a paragraph's space below it. The card has
+   no outer margin, so the prose after it takes the gap; :where() lets any
+   component's own margin win. */
+:where(.ds-card + p, .ds-card + ul, .ds-card + ol, .ds-card + dl) { margin-top: var(--ds-space-4); }
 
 /* A card whose first row is a header bar (.ds-card-bar): the bar holds the
    controls for the set of data in the card, on one line while they fit. A
