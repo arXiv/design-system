@@ -24,7 +24,8 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 1. Read `docs/DESIGN-POLICIES.md` — hard constraints. Non-negotiable.
 2. Read `docs/brand.html` — the *why*; use it when no explicit rule covers your case.
 3. Use the routing table to read **only** what your task touches. Do not read the whole repo.
-4. For each pattern page the table names, read its digest first: `docs/spec/<page>.md`, such as `docs/spec/filters.md` for `docs/filters.html`. Open the HTML page when the digest does not answer your question, or when the page has no digest yet (`docs/spec/index.md` lists those).
+4. **Find out whether the page belongs to a set**, such as arXiv's help pages, and what the set already uses: the opening band and the contents bar are on every page of a set or on none. If the brief does not say, ask; if you cannot ask, say in your final message what you assumed (`docs/organize-content.html#rules`).
+5. For each pattern page the table names, read its digest first: `docs/spec/<page>.md`, such as `docs/spec/filters.md` for `docs/filters.html`. Open the HTML page when the digest does not answer your question, or when the page has no digest yet (`docs/spec/index.md` lists those).
 
 ## Before you finish: review the layout
 
@@ -52,7 +53,7 @@ Render each page if you can: a headless browser can open it from a `file://` add
 | The page container and its widths, full-width bands, secondary zones, sidebars | `docs/layouts.html` | `.ds-sidebar` (always framed; accordions inside it need no class); `.ds-full` for an edge-to-edge band; the page ground is white; `.ds-full.ds-zone-secondary` is a tinted band for what introduces or supports the page |
 | A labelled aside — a requirement, guidance, or how a component differs in internal tools | `docs/messages.html` *Notes* | `.ds-note` (+ `--essential` / `--internal`), `.ds-note-label`, `.ds-note-gotcha` — never a bespoke tinted box, and never an alert |
 | A one-sentence note beside a block (a demo, a figure) | `docs/layouts.html` *Marginalia* | `.ds-marginalia` inside a `.ds-card`, text in `.ds-marginalia-body.ds-annotation`; sits in the margin when there is one, folds to an info mark when there is not |
-| A table of contents for a long page | `docs/navigation.html` *TOC bar* | `.ds-toc` in a `.ds-toc-bar`, plus `toc.js`; write the `<ol>`: one link for each section heading, in the heading's exact words, to its `id`, so the list works without JavaScript; `toc.js` fills an empty `<ol>` as a fallback. Sticky by default; `.ds-toc-bar--scrolls` scrolls away. Whether a page has one, and whether it sticks, is the builder's call |
+| A table of contents for a long page | `docs/navigation.html` *TOC bar* | `.ds-toc` in a `.ds-toc-bar`, plus `toc.js`; write the `<ol>`: one link for each section heading, in the heading's exact words, to its `id`, so the list works without JavaScript; `toc.js` fills an empty `<ol>` as a fallback. Sticky by default; `.ds-toc-bar--scrolls` scrolls away. It hangs from the opening band, so the page has an introduction. A page in a set follows the set; whether the bar sticks is the builder's call |
 | Accordions, show more, popovers — anything hiding content behind a control | `docs/progressive-disclosure.html` | `.ds-acc*`, `.ds-show-more`, `.ds-popover` |
 | A tooltip: a short explanation on hover and focus | `docs/forms.html` *Tooltip* | `.ds-tooltip-host`, `.ds-tooltip`, `.ds-tooltip-body`, plus `tooltip.js` once per page (Escape, and keeping the bubble on screen); never position it yourself |
 | A modal, dialog, confirmation, or anything that takes over the page | `docs/modals.html` | `.ds-modal*` on a native `<dialog>` + `showModal()` — never a `<div role="dialog">`, never `show()` |
