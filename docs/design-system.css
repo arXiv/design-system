@@ -417,6 +417,13 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 /* A list in which every item is a link: no underline at rest, since no ordinary text sits beside it. */
 .ds-link-list a { text-decoration: none; }
 .ds-link-list a:hover { text-decoration: underline; }
+/* The page the reader is on stays in the list as a link: the text colour and
+   bold, so it does not rest on colour alone; aria-current names it. */
+.ds-link-list a[aria-current="page"] { color: var(--ds-text); font-weight: 600; }
+/* A long list of links, on a <ul>: no bullets, and as many columns as fit,
+   each at least 14rem, so the list reads down each column, then across. */
+.ds-link-list--columns { list-style: none; padding-left: 0; columns: 14rem; column-gap: var(--ds-space-8); }
+.ds-link-list--columns > li { break-inside: avoid; }
 :where(.ds-page) a[aria-disabled="true"] { color: var(--ds-text-disabled); cursor: default; }   /* a disabled link has no href; links.html */
 :where(.ds-page) a:focus-visible {
   outline: 3px solid var(--ds-focus-ring);
