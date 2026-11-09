@@ -30,6 +30,8 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 
 Look at each page you built as a reader would, on a laptop screen, and revise it before you finish.
 
+Render each page if you can: a headless browser can open it from a `file://` address, with no server. If you cannot, go through the steps below in the markup instead, against the rules each step names.
+
 1. **Name the primary content** of each page: the primary thing the reader came for. Write it down in a sentence.
 2. **Check that it starts as high as it can.** Everything above it must earn its place.
 3. **Evaluate each element or content that displays above it** and ask: "Is this the right place in the content hierarchy for this content? Should this content be in a sidebar, inside an accordion, behind a control, or in a tooltip? Is it needed at all?"
