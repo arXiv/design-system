@@ -6,7 +6,7 @@ stylesheet: design-system.css
 components:
   - id: the-metadata-hierarchy
     title: "The metadata hierarchy"
-    summary: "This order is based on what we hear from arXiv readers. They focus in on certain information first and want it easy to find, while other content is lower in their reading order. Look for guidance on visual display? This table is purely about hierarchy and content flow. You will find design and display notes elsewhere on this page and in mockups, ."
+    summary: "This order is based on what we hear from arXiv readers. They focus in on certain information first and want it easy to find, while other content is lower in their reading order. Look for guidance on visual display? This table is purely about hierarchy and content flow. You will find design and display notes elsewhere on this page."
   - id: a-paper-in-a-list
     title: "A paper in a list"
     summary: "Search results and listings use the metadata hierarchy. We rely on proximity to define rows instead of relying on visual blocks or dividers. Information is close together within each result and with a comfortable gap between result rows."
@@ -237,7 +237,7 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 ## The metadata hierarchy
 
-This order is based on what we hear from arXiv readers. They focus in on certain information first and want it easy to find, while other content is lower in their reading order. Look for guidance on visual display? This table is purely about hierarchy and content flow. You will find design and display notes elsewhere on this page and in mockups, .
+This order is based on what we hear from arXiv readers. They focus in on certain information first and want it easy to find, while other content is lower in their reading order. Look for guidance on visual display? This table is purely about hierarchy and content flow. You will find design and display notes elsewhere on this page.
 
 ## A paper in a list
 
