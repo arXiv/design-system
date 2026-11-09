@@ -1,7 +1,7 @@
 ---
 page: papers.html
 title: "Papers"
-summary: "Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to both HTML papers pages and search results. More relevant documentation: [Indicating which version is being read](../versions.html) and [following references without losing your place](../references.html)."
+summary: "Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to both HTML papers pages and search results. More relevant documentation: [Indicating which version is being read](versions.md) and [following references without losing your place](../references.html)."
 stylesheet: design-system.css
 components:
   - id: the-metadata-hierarchy
@@ -48,9 +48,9 @@ components:
       - name: "<h1>"
         does: "The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page."
       - name: ".ds-date-row"
-        does: "The dates and the version links, as in [Indicate which version is being read](../versions.html#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version."
+        does: "The dates and the version links, as in [Indicate which version is being read](versions.md#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version."
       - name: ".ds-alert--warning"
-        does: "Only when an older version is being viewed. See [Indicate which version is being read](../versions.html#version-row)."
+        does: "Only when an older version is being viewed. See [Indicate which version is being read](versions.md#version-row)."
       - name: ".ds-link-list"
         does: "On a `<p>`: the authors, with Show more after eight."
       - name: "<h2 class=\"is-sr-only\">"
@@ -74,7 +74,7 @@ components:
       - name: ".ds-date-row"
         does: "Ends with Removed and its date. A removal changes the version in place, so no version is added to the list."
       - name: ".ds-sidebar"
-        does: "The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
+        does: "The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layouts.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
       - name: ".ds-panel-label"
         does: "On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page."
       - name: ".ds-paper-files"
@@ -82,7 +82,7 @@ components:
       - name: "[aria-describedby]"
         does: "On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)."
       - name: ".ds-paper-cite"
-        does: "The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy-code.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden."
+        does: "The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden."
       - name: ".ds-paper-capabilities"
         does: "The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score."
       - name: ".ds-acc"
@@ -96,7 +96,7 @@ components:
       - "This version has been removed by arXiv.: “arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission.” The full text and files are no longer available."
   - id: the-version-row
     title: "The version row"
-    summary: "The row under the title gives the paper's dates and links to its other versions; the version being read is in a box. The row changes with the number of versions, with the version being read, and when a paper is withdrawn or removed: [Indicate which version is being read](../versions.html#version-row) shows each case."
+    summary: "The row under the title gives the paper's dates and links to its other versions; the version being read is in a box. The row changes with the number of versions, with the version being read, and when a paper is withdrawn or removed: [Indicate which version is being read](versions.md#version-row) shows each case."
   - id: withdrawn-papers
     title: "Withdrawn and removed papers"
     summary: "A withdrawn paper keeps its title, authors, abstract and metadata, and its earlier versions can still be read. A removed version keeps its title, authors, abstract and metadata, but its full text and files are gone. In both cases, a status before the title and a notice after it say what happened."
@@ -128,7 +128,7 @@ components:
     summary: "Beside the abstract, the sidebar holds downloadable files, a citation tool, and additional paper information, in that order."
     classes:
       - name: ".ds-sidebar"
-        does: "The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
+        does: "The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layouts.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
       - name: ".ds-panel-label"
         does: "On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page."
       - name: ".ds-paper-files"
@@ -136,7 +136,7 @@ components:
       - name: "[aria-describedby]"
         does: "On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)."
       - name: ".ds-paper-cite"
-        does: "The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy-code.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden."
+        does: "The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden."
       - name: ".ds-paper-capabilities"
         does: "The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score."
       - name: ".ds-acc"
@@ -146,7 +146,7 @@ components:
     summary: "On a paper, the TOC bar also has the arXiv logo on the left and links to the paper's PDF and TeX source on the right."
     classes:
       - name: ".ds-toc-bar"
-        does: "The bar, as on [Progressive disclosure](progressive-disclosure.md#toc-bar). On a paper it is `.ds-full`, the full width of the page."
+        does: "The bar, as on [Navigation](navigation.md#toc-bar). On a paper it is `.ds-full`, the full width of the page."
       - name: ".ds-paper-bar-logo"
         does: "The one-colour Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill=\"currentColor\"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”."
       - name: ".ds-toc-menu"
@@ -162,7 +162,7 @@ components:
       - name: ".is-sr-only"
         does: "Completes the name: “Permalink to section 2, Setup”. The name starts with the visible word."
       - name: "[role=\"status\"]"
-        does: "One region on the page. `anchors.js` writes “Link to section 2, Setup copied” into it, shows the green tick in place of the link icon, and clears both after 2 seconds."
+        does: "One region on the page, which `copy.js` makes. After a copy it says “Link to section 2, Setup copied”, the green tick takes the link icon's place, and both clear after 2 seconds. `anchors.js` adds the control and its attributes to every section heading. See [Show that something was copied](action-feedback.md)."
       - name: ".is-active"
         does: "Set on the heading by a tap, on screens without hover."
     notes:
@@ -180,11 +180,11 @@ components:
       - name: "[aria-pressed]"
         does: "On View TeX, which switches the equation to its TeX and back. Its label becomes “View math”."
       - name: ".ds-marginalia"
-        does: "The figure's alt text, under the label “Alt text”, in the margin at wide widths and folded to its info mark when narrower. See [Marginalia](layout-patterns.md#marginalia)."
+        does: "The figure's alt text, under the label “Alt text”, in the margin at wide widths and folded to its info mark when narrower. See [Marginalia](layouts.md#marginalia)."
       - name: ".is-cta"
         does: "Expand, the one main action on a figure. It opens the figure viewer."
-      - name: "[role=\"status\"]"
-        does: "One region on the page, where the script confirms a copy in words: “Link to equation 2.14 copied”."
+      - name: "data-copy-link, data-copy-from"
+        does: "Copy and Permalink, as on [Show that something was copied](action-feedback.md): `copy.js` copies the equation's MathML or the link with the element's id, shows the tick in place of the icon, and says “Link to equation 2.14 copied” for 2 seconds."
     notes:
       - "**Alt text**Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently."
 rules:
@@ -230,7 +230,7 @@ rules:
 
 # Papers
 
-Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to both HTML papers pages and search results. More relevant documentation: [Indicating which version is being read](../versions.html) and [following references without losing your place](../references.html).
+Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to both HTML papers pages and search results. More relevant documentation: [Indicating which version is being read](versions.md) and [following references without losing your place](../references.html).
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
@@ -480,8 +480,8 @@ On a paper's own page the order is the identity line, the title, the dates and v
 
 - `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
 - `<h1>` — The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page.
-- `.ds-date-row` — The dates and the version links, as in [Indicate which version is being read](../versions.html#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version.
-- `.ds-alert--warning` — Only when an older version is being viewed. See [Indicate which version is being read](../versions.html#version-row).
+- `.ds-date-row` — The dates and the version links, as in [Indicate which version is being read](versions.md#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version.
+- `.ds-alert--warning` — Only when an older version is being viewed. See [Indicate which version is being read](versions.md#version-row).
 - `.ds-link-list` — On a `<p>`: the authors, with Show more after eight.
 - `<h2 class="is-sr-only">` — The abstract's heading, “Abstract”, hidden from sight. Sighted readers know the paragraph after the authors is the abstract; screen-reader users can still jump to it by heading. The demo uses an `<h3>`, because its title is an `<h2>`.
 - `<p>` — The abstract, in full.
@@ -493,11 +493,11 @@ On a paper's own page the order is the identity line, the title, the dates and v
 - `.ds-paper-status` — “Removed:”, built as “Withdrawn:” is.
 - `.ds-alert--error` — Says that arXiv removed the version, quotes arXiv's comment as written, and says that the full text and files are gone.
 - `.ds-date-row` — Ends with Removed and its date. A removal changes the version in place, so no version is added to the list.
-- `.ds-sidebar` — The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
+- `.ds-sidebar` — The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layouts.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
 - `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
-- `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy-code.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
+- `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
 - `.ds-paper-capabilities` — The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score.
 - `.ds-acc` — Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label. They share `name="paper-info"`, so only one is open at a time.
 
@@ -513,7 +513,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 
 ## The version row
 
-The row under the title gives the paper's dates and links to its other versions; the version being read is in a box. The row changes with the number of versions, with the version being read, and when a paper is withdrawn or removed: [Indicate which version is being read](../versions.html#version-row) shows each case.
+The row under the title gives the paper's dates and links to its other versions; the version being read is in a box. The row changes with the number of versions, with the version being read, and when a paper is withdrawn or removed: [Indicate which version is being read](versions.md#version-row) shows each case.
 
 ## Withdrawn and removed papers
 
@@ -675,11 +675,11 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
 </div>
 ```
 
-- `.ds-sidebar` — The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
+- `.ds-sidebar` — The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layouts.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
 - `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
-- `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy-code.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
+- `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
 - `.ds-paper-capabilities` — The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score.
 - `.ds-acc` — Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label. They share `name="paper-info"`, so only one is open at a time.
 
@@ -723,7 +723,7 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
 </div>
 ```
 
-- `.ds-toc-bar` — The bar, as on [Progressive disclosure](progressive-disclosure.md#toc-bar). On a paper it is `.ds-full`, the full width of the page.
+- `.ds-toc-bar` — The bar, as on [Navigation](navigation.md#toc-bar). On a paper it is `.ds-full`, the full width of the page.
 - `.ds-paper-bar-logo` — The one-colour Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill="currentColor"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”.
 - `.ds-toc-menu` — The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list. Subsections are an `<ol>` inside their section's `<li>`, indented to the section's title in smaller type.
 - `.ds-paper-tools` — PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `file-text` and `tex` from `docs/icons/`.
@@ -733,14 +733,13 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
 Each section heading in a paper has a Permalink control that copies the link to that section, including the version.
 
 ```html
-<h3 id="S2"><span class="ltx_tag">2 </span>Setup<button type="button" class="ds-permalink"><svg aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to section 2, Setup</span></button></h3>
+<h3 id="S2"><span class="ltx_tag">2 </span>Setup<button type="button" class="ds-permalink" data-copy-link="#S2" data-copied="Link to section 2, Setup copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to section 2, Setup</span></button></h3>
 <p>We consider quadratic gravity in four dimensions and work in the Einstein frame throughout.</p>
-<span class="is-sr-only" role="status"></span>
 ```
 
 - `.ds-permalink` — The Permalink control from [Linking to a section](links.md#linking-to-a-section), the same as on every other page. The demo holds it open.
 - `.is-sr-only` — Completes the name: “Permalink to section 2, Setup”. The name starts with the visible word.
-- `[role="status"]` — One region on the page. `anchors.js` writes “Link to section 2, Setup copied” into it, shows the green tick in place of the link icon, and clears both after 2 seconds.
+- `[role="status"]` — One region on the page, which `copy.js` makes. After a copy it says “Link to section 2, Setup copied”, the green tick takes the link icon's place, and both clear after 2 seconds. `anchors.js` adds the control and its attributes to every section heading. See [Show that something was copied](action-feedback.md).
 - `.is-active` — Set on the heading by a tap, on screens without hover.
 
 > Meets accessibility guideline [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)
@@ -750,15 +749,15 @@ Each section heading in a paper has a Permalink control that copies the link to 
 A display equation, a figure and a bibliography entry each have a small row of actions on their bottom edge. The row shows on hover, on keyboard focus and after a tap.
 
 ```html
-<div class="ds-paper-element">
+<div class="ds-paper-element" id="S2.E14">
   <!-- LaTeXML's MathML, unchanged -->
   <div class="ds-element-pill" role="toolbar" aria-label="Equation 2.14">
     <button type="button" aria-pressed="false"><svg aria-hidden="true">…</svg>View TeX<span class="is-sr-only"> of equation 2.14</span></button>
-    <button type="button"><svg aria-hidden="true">…</svg>Copy<span class="is-sr-only"> equation 2.14</span></button>
-    <button type="button"><svg aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to equation 2.14</span></button>
+    <button type="button" data-copy-from="S2.E14" data-copied="Equation 2.14 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Copy<span class="is-sr-only"> equation 2.14</span></button>
+    <button type="button" data-copy-link="#S2.E14" data-copied="Link to equation 2.14 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to equation 2.14</span></button>
   </div>
 </div>
-<figure class="ds-paper-element">
+<figure class="ds-paper-element" id="S2.F1">
   <details class="ds-marginalia">
     <summary><svg aria-hidden="true">…</svg><span class="is-sr-only">Alt text</span></summary>
     <p class="ds-marginalia-body ds-annotation"><strong>Alt text</strong><br>Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently.</p>
@@ -767,25 +766,24 @@ A display equation, a figure and a bibliography entry each have a small row of a
   <figcaption>Figure 1: The scalar power spectrum in the Newtonian gauge (solid) and the comoving gauge (dashed).</figcaption>
   <div class="ds-element-pill" role="toolbar" aria-label="Figure 1">
     <button type="button" class="is-cta"><svg aria-hidden="true">…</svg>Expand<span class="is-sr-only"> figure 1</span></button>
-    <button type="button"><svg aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to figure 1</span></button>
+    <button type="button" data-copy-link="#S2.F1" data-copied="Link to figure 1 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to figure 1</span></button>
   </div>
 </figure>
-<div class="ds-paper-element">
+<div class="ds-paper-element" id="bib.bib30">
   <p>[30] A. Ashtekar and M. Bojowald. Quantum geometry and the Schwarzschild singularity. <em>Class. Quantum Grav.</em> 23 (2006) 391.</p>
   <div class="ds-element-pill" role="toolbar" aria-label="Reference 30">
-    <button type="button"><svg aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to reference 30</span></button>
+    <button type="button" data-copy-link="#bib.bib30" data-copied="Link to reference 30 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to reference 30</span></button>
   </div>
 </div>
-<span class="is-sr-only" role="status"></span>
 ```
 
 - `.ds-paper-element` — The wrapper round one equation, figure or entry. Hovering it, focusing anything inside it, or tapping it shows a hairline border and the pill. The demo holds all three open.
 - `.ds-element-pill` — The actions, as on [Buttons](buttons.md#small-actions-attached-to-content): one tab stop per element, with the arrow keys moving between its actions. Focusing an action shows the pill.
 - `.is-sr-only` — Each action's name says which element it acts on: “Permalink to equation 2.14”, not “Permalink” a hundred times.
 - `[aria-pressed]` — On View TeX, which switches the equation to its TeX and back. Its label becomes “View math”.
-- `.ds-marginalia` — The figure's alt text, under the label “Alt text”, in the margin at wide widths and folded to its info mark when narrower. See [Marginalia](layout-patterns.md#marginalia).
+- `.ds-marginalia` — The figure's alt text, under the label “Alt text”, in the margin at wide widths and folded to its info mark when narrower. See [Marginalia](layouts.md#marginalia).
 - `.is-cta` — Expand, the one main action on a figure. It opens the figure viewer.
-- `[role="status"]` — One region on the page, where the script confirms a copy in words: “Link to equation 2.14 copied”.
+- `data-copy-link, data-copy-from` — Copy and Permalink, as on [Show that something was copied](action-feedback.md): `copy.js` copies the equation's MathML or the link with the element's id, shows the tick in place of the icon, and says “Link to equation 2.14 copied” for 2 seconds.
 
 > **Alt text**Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently.
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Make a long page navigable — arXiv Design System</title>
+  <title>Dividers — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
   <link rel="stylesheet" href="docs.css">
@@ -22,12 +22,13 @@
         <a href="dark-mode.html">Dark mode</a>
         <a href="typography.html">Typography</a>
         <a href="spacing.html">Spacing</a>
-        <a href="layout-patterns.html">Layouts</a>
+        <a href="layouts.html">Layouts</a>
         <a href="icons.html">Icons</a>
         <span class="ds-panel-label">Components</span>
         <a href="alerts.html">Alerts</a>
         <a href="buttons.html">Buttons</a>
         <a href="cards.html">Cards</a>
+        <a href="dividers.html" aria-current="page">Dividers</a>
         <a href="filters.html">Filters</a>
         <a href="forms.html">Forms &amp; validation</a>
         <a href="links.html">Links</a>
@@ -46,12 +47,11 @@
     <details class="ds-site-header-dropdown">
       <summary>Patterns</summary>
       <div class="ds-site-header-menu">
-        <a href="action-feedback.html">Confirm an action that changes nothing on screen</a>
+        <a href="action-feedback.html">Show that something was copied</a>
         <a href="versions.html">Indicate which version is being read</a>
-        <a href="long-pages.html" aria-current="page">Make a long page navigable</a>
+        <a href="organize-content.html">Organize complex page content</a>
         <a href="references.html">Show a reference without losing the reader&#39;s place</a>
-        <span class="ds-panel-label">Pages</span>
-        <a href="search.html">Search</a>
+        <a href="search.html">The search experience</a>
       </div>
     </details>
     <details class="ds-site-header-dropdown">
@@ -94,8 +94,8 @@
 
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
-    <h1>Make a long page navigable</h1>
-    <p>A page that readers scan, come back to or link into, such as a paper or one of these docs pages, needs a way to see its sections, move between them, link to one and get back after a jump.</p>
+    <h1>Dividers</h1>
+    <p>A line between things: between sections, between items in a group, or between controls in a row. Reach for proximity first, with gaps and margins; when a line is still needed, use this component.</p>
   </header>
   </div>
 
@@ -111,46 +111,108 @@
         </summary>
         <nav class="ds-toc-menu" aria-label="Contents">
           <ol>
-            <li><a href="#where-it-is-used">Where it is used</a></li>
-            <li><a href="#the-parts">The parts</a></li>
-            <li><a href="#long-page-rules">A long page</a></li>
+            <li><a href="#the-divider">The divider</a></li>
+            <li><a href="#tight-gap">Tight gap</a></li>
+            <li><a href="#vertical-dividers">Vertical dividers</a></li>
           </ol>
         </nav>
       </details>
     </div>
   </div>
 
+  <!-- ───────── The divider ───────── -->
   <section>
-    <h2 id="where-it-is-used">Where it is used</h2>
-    <ul>
-      <li>HTML papers.</li>
-      <li>These docs pages.</li>
-      <li>Any long page of text, such as a help page or a policy.</li>
-    </ul>
-  </section>
+    <h2 id="the-divider">The divider</h2>
+    <p class="ds-section-desc">The same divider works anywhere: in the main content, in a sidebar, in a card.
+    It is an <code>&lt;hr&gt;</code>, with the standard gap above and below it.</p>
 
-  <section>
-    <h2 id="the-parts">The parts</h2>
-    <p class="ds-section-desc">In the order a reader meets them. Each part is documented on its own page; this page puts them together. This page is an example: its TOC bar is above, and each heading has a Permalink control.</p>
-    <ol>
-      <li><strong>A skip link</strong>, first on the page, to the main content. A paper has a second one, to its first section, past the sidebar. See <a href="header.html">Site header</a>.</li>
-      <li><strong>The page heading, then section headings in order.</strong> A screen reader user moves through a long page by its headings, as through a contents list. See <a href="typography.html#the-heading-scale">Typography</a>.</li>
-      <li><strong>The TOC bar</strong>, under the page heading: the list of sections, which marks the one being read. See <a href="progressive-disclosure.html#toc-bar">Progressive disclosure</a>. On a paper the bar also holds the arXiv logo and the paper&#39;s formats; see <a href="papers.html#paper-toc-bar">Papers</a>.</li>
-      <li><strong>A link to each section</strong>: a Permalink control on its heading, so a reader can point a colleague at the exact place. See <a href="links.html#linking-to-a-section">Links</a> and, on a paper, <a href="papers.html#paper-permalinks">Papers</a>.</li>
-      <li><strong>A way back after a jump</strong>, when a link moves the reader to another part of the page. See <a href="references.html">Show a reference without losing the reader&#39;s place</a>.</li>
-    </ol>
+    <div class="ds-card">
+      <p class="ds-panel-label">Standard gap</p>
+      <p>A section of content.</p>
+      <hr>
+      <p>The next section.</p>
+      <hr>
+      <p>And the one after it.</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p&gt;A section of content.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;The next section.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;And the one after it.&lt;/p&gt;</code></pre>
+          <dl>
+            <dt>&lt;hr&gt;</dt><dd>The preferred form. Styled by the foundation with 32px above and
+            below (<code>--ds-space-8</code>), no class needed, and it includes
+            <code>role="separator"</code> for free.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
   </section>
 
   <div class="ds-full ds-zone-secondary">
-  <h2>Rules</h2>
+  <h2>Modifiers</h2>
 
+  <!-- ───────── Tight gap ───────── -->
   <section>
-    <h3 id="long-page-rules">A long page</h3>
-    <ul class="notes">
-      <li><strong>A long page has all five parts, in that order.</strong> Each answers a different need: passing the header, scanning, moving, sharing a place, and returning.</li>
-      <li><strong>The contents list repeats the page&#39;s headings exactly</strong>, in the same words and the same order.</li>
-      <li><strong>One sticky bar, and only on a long page.</strong> The TOC bar is that bar. See <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>.</li>
-    </ul>
+    <h3 id="tight-gap">Tight gap</h3>
+    <p class="ds-section-desc">A smaller gap, for a line between items in a group.</p>
+    <div class="ds-card">
+      <p>An item in a group.</p>
+      <hr class="ds-divider ds-divider--tight">
+      <p>The next item in the same group.</p>
+      <hr class="ds-divider ds-divider--tight">
+      <p>And the one after it.</p>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;p&gt;An item in a group.&lt;/p&gt;
+&lt;hr class="ds-divider ds-divider--tight"&gt;
+&lt;p&gt;The next item in the same group.&lt;/p&gt;
+&lt;hr class="ds-divider ds-divider--tight"&gt;
+&lt;p&gt;And the one after it.&lt;/p&gt;</code></pre>
+          <dl>
+            <dt>.ds-divider--tight</dt><dd>Between items in a group rather than between sections:
+            16px above and below (<code>--ds-space-block</code>). It works on an
+            <code>&lt;hr&gt;</code>, which keeps the separator meaning.</dd>
+            <dt>.ds-divider--flush</dt><dd>No margin at all; the caller owns the spacing.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ───────── Vertical dividers ───────── -->
+  <section>
+    <h3 id="vertical-dividers">Vertical dividers</h3>
+    <p class="ds-section-desc">For a row of controls, where an <code>&lt;hr&gt;</code> will not fit.</p>
+    <div class="ds-card">
+      <div class="ds-btn-group">
+        <span>Search</span>
+        <span class="ds-divider ds-divider--vertical" aria-hidden="true"></span>
+        <span>Submit</span>
+        <span class="ds-divider ds-divider--vertical" aria-hidden="true"></span>
+        <span>Donate</span>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-btn-group"&gt;
+&lt;span&gt;Search&lt;/span&gt;
+&lt;span class="ds-divider ds-divider--vertical" aria-hidden="true"&gt;&lt;/span&gt;
+&lt;span&gt;Submit&lt;/span&gt;
+&lt;span class="ds-divider ds-divider--vertical" aria-hidden="true"&gt;&lt;/span&gt;
+&lt;span&gt;Donate&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+          <dl>
+            <dt>.ds-divider</dt><dd>The class form, for where an <code>&lt;hr&gt;</code> will not fit:
+            inside a flex row, or on an element that is already there. It is
+            decorative, so mark it <code>aria-hidden</code> — a real separator should be an
+            <code>&lt;hr&gt;</code>.</dd>
+            <dt>.ds-divider--vertical</dt><dd>For a row of controls. Height is in <code>em</code>, so it
+            follows the row's own text instead of needing a value per context.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
   </section>
   </div>
 
@@ -178,7 +240,7 @@
 </script>
 <script src="header.js" defer></script>
 <script src="tooltip.js" defer></script>
-<script src="copy-code.js" defer></script>
+<script src="copy.js" defer></script>
 <script src="anchors.js" defer></script>
 <script src="toc.js" defer></script>
 </body>

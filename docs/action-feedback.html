@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Confirm an action that changes nothing on screen — arXiv Design System</title>
+  <title>Show that something was copied — arXiv Design System</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="design-system.css">
   <link rel="stylesheet" href="docs.css">
@@ -22,12 +22,13 @@
         <a href="dark-mode.html">Dark mode</a>
         <a href="typography.html">Typography</a>
         <a href="spacing.html">Spacing</a>
-        <a href="layout-patterns.html">Layouts</a>
+        <a href="layouts.html">Layouts</a>
         <a href="icons.html">Icons</a>
         <span class="ds-panel-label">Components</span>
         <a href="alerts.html">Alerts</a>
         <a href="buttons.html">Buttons</a>
         <a href="cards.html">Cards</a>
+        <a href="dividers.html">Dividers</a>
         <a href="filters.html">Filters</a>
         <a href="forms.html">Forms &amp; validation</a>
         <a href="links.html">Links</a>
@@ -46,12 +47,11 @@
     <details class="ds-site-header-dropdown">
       <summary>Patterns</summary>
       <div class="ds-site-header-menu">
-        <a href="action-feedback.html" aria-current="page">Confirm an action that changes nothing on screen</a>
+        <a href="action-feedback.html" aria-current="page">Show that something was copied</a>
         <a href="versions.html">Indicate which version is being read</a>
-        <a href="long-pages.html">Make a long page navigable</a>
+        <a href="organize-content.html">Organize complex page content</a>
         <a href="references.html">Show a reference without losing the reader&#39;s place</a>
-        <span class="ds-panel-label">Pages</span>
-        <a href="search.html">Search</a>
+        <a href="search.html">The search experience</a>
       </div>
     </details>
     <details class="ds-site-header-dropdown">
@@ -94,8 +94,8 @@
 
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
-    <h1>Confirm an action that changes nothing on screen</h1>
-    <p>Copy, Permalink and similar actions do their work out of sight: nothing on the page changes. Say what happened, in words for a screen reader and with a visible sign for everyone, and leave focus where it was.</p>
+    <h1>Show that something was copied</h1>
+    <p>Copy and Permalink do their work out of sight: nothing on the page changes. Say that it worked, in words for a screen reader and with a tick for everyone, and leave focus where it was. If it failed, show that too, and say what to do instead. The same rules apply to any action whose result is not otherwise announced, such as the theme control.</p>
   </header>
   </div>
 
@@ -112,7 +112,7 @@
         <nav class="ds-toc-menu" aria-label="Contents">
           <ol>
             <li><a href="#where-it-is-used">Where it is used</a></li>
-            <li><a href="#copying">Copying</a></li>
+            <li><a href="#a-copy-button">A copy button</a></li>
             <li><a href="#confirming-rules">Copy, Permalink and similar actions</a></li>
           </ol>
         </nav>
@@ -122,38 +122,56 @@
 
   <section>
     <h2 id="where-it-is-used">Where it is used</h2>
+    <p>Every copy button in the docs uses <code>copy.js</code>, so each gives the same feedback.</p>
     <ul>
       <li>The copy button on every code block, including each citation format in a paper&#39;s Cite. See <a href="typography.html#code-blocks-and-the-copy-button">Typography</a>.</li>
-      <li>Copy and Permalink on an equation, a figure or a reference, and Permalink on a section heading. See <a href="buttons.html#small-actions-attached-to-content">Buttons</a> and <a href="papers.html">Papers</a>.</li>
-      <li>The theme control, which says which theme is now in use. See <a href="dark-mode.html#the-theme-control">Dark mode</a>.</li>
+      <li>Permalink on a section heading, on a docs page and in a paper. See <a href="links.html#linking-to-a-section">Linking to a section</a>.</li>
+      <li>Copy and Permalink on an equation, a figure or a reference. See <a href="papers.html#paper-elements">Equations, figures and references</a>.</li>
+      <li>Copy emails, the one action in a list&#39;s header bar on the moderators dashboard. The mockup has its own script for now.</li>
+      <li>The theme control, which says which theme is now in use. It changes the page, but not in a way a screen reader hears. See <a href="dark-mode.html#the-theme-control">Dark mode</a>.</li>
     </ul>
   </section>
 
   <section>
-    <h2 id="copying">Copying</h2>
-    <p class="ds-section-desc">The copy button on a code block, the one most pages use. Press it: the icon becomes a tick, and a screen reader hears &ldquo;Copied to clipboard&rdquo;.</p>
+    <h2 id="a-copy-button">A copy button</h2>
+    <p class="ds-section-desc">Any button that copies, here one that copies an identifier. Press Copy: the tick takes the icon&#39;s place for two seconds, a screen reader hears &ldquo;Identifier copied&rdquo;, and focus stays on the button, which is still called Copy. Below it, the same button after a copy that failed; pressing it tries again.</p>
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
         <p class="ds-marginalia-body ds-annotation">Meets accessibility guideline <a href="https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html">WCAG 2.2 SC 4.1.3</a> Status Messages (Level AA)</p>
       </details>
-<pre><code>@article{palomares2026gauge,
-  title = {Gauge-independent approach to inflation in quadratic gravity},
-  journal = {arXiv preprint arXiv:2604.22725},
-  year = {2026}
-}</code></pre>
+      <p><code>arXiv:2604.22725</code> <button type="button" class="ds-btn ds-btn-compact" data-copy="arXiv:2604.22725" data-copied="Identifier copied"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><svg class="ds-copy-done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>Copy<span class="is-sr-only"> identifier</span></button></p>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;pre&gt;&lt;code&gt;@article{palomares2026gauge, …}&lt;/code&gt;&lt;/pre&gt;
-&lt;script src="copy-code.js" defer&gt;&lt;/script&gt;</code></pre>
+<pre><code>&lt;button type="button" class="ds-btn ds-btn-compact" data-copy="arXiv:2604.22725" data-copied="Identifier copied"&gt;
+  &lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;
+  &lt;svg class="ds-copy-done" aria-hidden="true"&gt;…&lt;/svg&gt;
+  Copy&lt;span class="is-sr-only"&gt; identifier&lt;/span&gt;
+&lt;/button&gt;
+&lt;script src="copy.js" defer&gt;&lt;/script&gt;</code></pre>
           <dl>
-            <dt>copy-code.js</dt>
-            <dd>Once per page. It adds the copy button to every <code>&lt;pre&gt;&lt;code&gt;</code>. After a copy the icon becomes a tick, and a visually hidden <code>role="status"</code> region beside the button says &ldquo;Copied to clipboard&rdquo;; both clear after two seconds. If the copy fails, the region says &ldquo;Copy failed — select the code and copy it manually&rdquo;.</dd>
-            <dt>[role="status"]</dt>
-            <dd>Written by the script, never by hand. A status region is announced without moving focus.</dd>
+            <dt>copy.js</dt>
+            <dd>Once per page. It copies for every button below, adds the copy button to every code block, and makes the page&#39;s status region.</dd>
+            <dt>[data-copy]</dt>
+            <dd>The text to copy. <code>data-copy-link="#S2"</code> copies the page&#39;s address with that fragment instead, and <code>data-copy-from="S2.E14"</code> copies that element&#39;s text, or an equation&#39;s MathML.</dd>
+            <dt>[data-copied]</dt>
+            <dd>What a screen reader hears after the copy. It names what was copied where a page has many such buttons. Without it, “Copied to clipboard”.</dd>
+            <dt>.ds-copy-done</dt>
+            <dd>The tick, beside the button&#39;s own icon. For two seconds after a copy the script adds <code>.is-done</code> to the button, and the tick takes the icon&#39;s place.</dd>
+            <dt>[data-copy-failed]</dt>
+            <dd>Optional: what to do if the copy fails. Without it, a link says “Copy failed — copy the link from the address bar”, after the script has put the link there, and other text says “Copy failed — select the text and copy it manually”.</dd>
+            <dt>.ds-copy-failed</dt>
+            <dd>The alert. The script adds it to the button the first time a copy fails, and adds <code>.is-failed</code>: the alert takes the icon&#39;s place until the button is pressed again.</dd>
+            <dt>.ds-copy-failed-message</dt>
+            <dd>The line that says what to do instead, which also describes the button. The script puts it under the code block, heading, equation or paragraph the button belongs to, or under the button itself when the button is in the margin.</dd>
           </dl>
         </div>
       </details>
+    </div>
+
+    <p class="ds-panel-label">After a copy that failed</p>
+    <div class="ds-card">
+      <p><code>arXiv:2604.22725</code> <button type="button" class="ds-btn ds-btn-compact is-failed" data-copy="arXiv:2604.22725" data-copied="Identifier copied" aria-describedby="copy-failed-example"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><svg class="ds-copy-done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg><svg class="ds-copy-failed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>Copy<span class="is-sr-only"> identifier</span></button><span class="ds-copy-failed-message" id="copy-failed-example">Copy failed — select the text and copy it manually</span></p>
     </div>
   </section>
 
@@ -167,7 +185,10 @@
       <li><strong>Focus stays on the control.</strong></li>
       <li><strong>The control keeps its name.</strong> The name says what it does: Copy is still Copy after copying.</li>
       <li><strong>Show it too, where nothing else on the page changes.</strong> A visible sign goes with the words, such as a green tick, and both reset after two seconds.</li>
-      <li><strong>Say when it fails, and what to do instead</strong>: &ldquo;Copy failed — select the code and copy it manually&rdquo;.</li>
+      <li><strong>Show a failure, and say what to do instead.</strong> An alert takes the icon&#39;s place, and a line under the control says it: &ldquo;Copy failed — select the code and copy it manually&rdquo;. Both stay until the control is pressed again, and a control that shows on hover stays in view while they do.</li>
+      <li><strong>A link that could not be copied goes in the address bar.</strong> The address is not on the page, so the script puts it where people already copy links from, without moving the page, and the line says &ldquo;Copy failed — copy the link from the address bar&rdquo;.</li>
+      <li><strong>The line goes under the control&#39;s line</strong>, as a field&#39;s error goes under the field: under the code block, heading, equation or paragraph. A control in the margin keeps the line under itself, in the margin, so it stays beside the control however long the paragraph.</li>
+      <li><strong>Every copy button uses <code>copy.js</code>.</strong> A page never writes its own copy handler, so every copy gives the same feedback.</li>
     </ul>
   </section>
   </div>
@@ -196,7 +217,7 @@
 </script>
 <script src="header.js" defer></script>
 <script src="tooltip.js" defer></script>
-<script src="copy-code.js" defer></script>
+<script src="copy.js" defer></script>
 <script src="anchors.js" defer></script>
 <script src="toc.js" defer></script>
 </body>

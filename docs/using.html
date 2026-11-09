@@ -22,12 +22,13 @@
         <a href="dark-mode.html">Dark mode</a>
         <a href="typography.html">Typography</a>
         <a href="spacing.html">Spacing</a>
-        <a href="layout-patterns.html">Layouts</a>
+        <a href="layouts.html">Layouts</a>
         <a href="icons.html">Icons</a>
         <span class="ds-panel-label">Components</span>
         <a href="alerts.html">Alerts</a>
         <a href="buttons.html">Buttons</a>
         <a href="cards.html">Cards</a>
+        <a href="dividers.html">Dividers</a>
         <a href="filters.html">Filters</a>
         <a href="forms.html">Forms &amp; validation</a>
         <a href="links.html">Links</a>
@@ -46,12 +47,11 @@
     <details class="ds-site-header-dropdown">
       <summary>Patterns</summary>
       <div class="ds-site-header-menu">
-        <a href="action-feedback.html">Confirm an action that changes nothing on screen</a>
+        <a href="action-feedback.html">Show that something was copied</a>
         <a href="versions.html">Indicate which version is being read</a>
-        <a href="long-pages.html">Make a long page navigable</a>
+        <a href="organize-content.html">Organize complex page content</a>
         <a href="references.html">Show a reference without losing the reader&#39;s place</a>
-        <span class="ds-panel-label">Pages</span>
-        <a href="search.html">Search</a>
+        <a href="search.html">The search experience</a>
       </div>
     </details>
     <details class="ds-site-header-dropdown">
@@ -133,8 +133,8 @@
       <li><strong><code>fonts.css</code>.</strong> Include this file before <code>design-system.css</code>. The font file declares the faces, the stylesheet names them. Either order renders but we have chosen this way for consistency.</li>
       <li><strong><code>design-system.css</code>.</strong> The foundational tier 1 stylesheet. When working on internal pages, there is a tier 2 stylesheet that builds on this one.</li>
       <li><strong><code>theme.js</code>.</strong> The foundational tier 1 JavaScript. Internal tools add no JavaScript of their own.</li>
-      <li><strong><code>toc.js</code>, optional.</strong> Add it when the page has a TOC bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See <a href="progressive-disclosure.html#toc-bar">Contents bar</a>.</li>
-      <li><strong><code>copy-code.js</code>, optional.</strong> Add it when the page shows code a reader might take away. It needs no markup: it finds every <code>&lt;pre&gt;</code> on the page and puts a copy button on each one.</li>
+      <li><strong><code>toc.js</code>, optional.</strong> Add it when the page has a TOC bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See <a href="navigation.html#toc-bar">TOC bar</a>.</li>
+      <li><strong><code>copy.js</code>, optional.</strong> Add it when the page shows code a reader might take away, or has any other copy button. It needs no markup for code: it finds every <code>&lt;pre&gt;</code> on the page and puts a copy button on each one. Other copy buttons are on <a href="action-feedback.html">Show that something was copied</a>.</li>
     </ul>
 
     <div class="ds-note ds-note--essential">
@@ -230,7 +230,7 @@
 
     <ul class="notes">
       <li><strong>Sections.</strong> The container's direct children are <code>&lt;section&gt;</code> elements, and the container sets the gap between them. Do not add top or bottom margins to sections, the container already does.</li>
-      <li><strong>Full width.</strong> A coloured band that runs edge to edge gets <code>.ds-full</code> with a zone class (see <a href="layout-patterns.html#page-zones">Page zones</a>). Do not add negative margins or use viewport units for placement. Using a calculation like <code>calc(-50vw + 50%)</code> overhangs the section band and causes the page to scroll sideways in some environments.</li>
+      <li><strong>Full width.</strong> A coloured band that runs edge to edge gets <code>.ds-full</code> with a zone class (see <a href="layouts.html#secondary-zones">Secondary zones</a>). Do not add negative margins or use viewport units for placement. Using a calculation like <code>calc(-50vw + 50%)</code> overhangs the section band and causes the page to scroll sideways in some environments.</li>
       <li><strong>Page width.</strong> Width comes from <code>--ds-width-page</code> and <code>--ds-gutter</code>.
       Need to change the page width? Repoint one of the tokens, do not add a second width beside it.</li>
     </ul>
@@ -245,7 +245,7 @@
     <h3 id="combining-components">Combining components</h3>
     <p class="ds-section-desc">Most areas of a page can be built by putting existing components together. Look for a combination before inventing a component.</p>
     <ul class="notes">
-      <li><strong>Examples in these docs.</strong> The <a href="search.html">search form</a> with the results&#39; settings under it; a <a href="tables.html">table</a> with its toolbar of filters and bulk actions; a <a href="layout-patterns.html#sidebar">sidebar</a> of accordions; a <a href="cards.html#cards-that-link">card that links</a>, with a tag; <a href="navigation.html#two-levels-of-navigation">secondary navigation with a compact filter bar</a>.</li>
+      <li><strong>Examples in these docs.</strong> The <a href="search.html">search form</a> with the results&#39; settings under it; a <a href="tables.html">table</a> with its toolbar of filters and bulk actions; a <a href="layouts.html#sidebar">sidebar</a> of accordions; a <a href="cards.html#cards-that-link">card that links</a>, with a tag; <a href="navigation.html#two-levels-of-navigation">secondary navigation with a compact filter bar</a>.</li>
       <li><strong>Each component works inside another.</strong> Use a component&#39;s documented markup unchanged inside the other.</li>
       <li><strong>A new class is the last step.</strong> If a combination needs CSS, it is a rule on the outer component about what it can hold, written in the design system. Ask before adding a component.</li>
     </ul>
@@ -256,7 +256,7 @@
 
 <script src="header.js" defer></script>
 <script src="tooltip.js" defer></script>
-<script src="copy-code.js" defer></script>
+<script src="copy.js" defer></script>
 <script src="anchors.js" defer></script>
 <script src="toc.js" defer></script>
 </body>

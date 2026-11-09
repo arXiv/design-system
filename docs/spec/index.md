@@ -25,17 +25,18 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Spacing | [spacing.md](spacing.md) | Every gap on arXiv pages comes from the scale defined below. The scale is a 4px-based / 8-point scale, with no off-scale values permitted. More details in [DESI |
 | Pager | [pager.md](pager.md) | Controls for moving through a list: one item at a time with the pager, or a group of items at a time with numbered pages. |
 | Typography | [typography.md](typography.md) | arXiv sets all text in the IBM Plex family with STIX Two Math for notation. All fonts are self-hosted and open source with no external font services. |
-| Layout patterns | [layout-patterns.md](layout-patterns.md) | This section covers our primary patterns for differentiating and organizing content based on user needs. The organizing principle to follow throughout: Choose t |
+| Layouts | [layouts.md](layouts.md) | How to use the page container and other page zones. For guidance on where to put content see the patterns under [Organize complex page content](organize-content |
 | Filters | [filters.md](filters.md) | Filters narrow a set of data, such as a table, a list of cards or a chart, to the items a reader wants. When each filter takes one choice, such as one status, t |
-| Navigation | [navigation.md](navigation.md) | The bars under the [site header](header.md) that tell a reader where they are inside an area: secondary navigation, two levels of it, and steps. |
-| Search | [search.md](search.md) | A search page contains many components and elements documented elsewhere. This page is about how to put them together, the hierarchy of content, and other desig |
+| Navigation | [navigation.md](navigation.md) | The bars under the [site header](header.md) that tell a reader where they are inside an area or on a page: secondary navigation, two levels of it, steps, and th |
+| The search experience | [search.md](search.md) | A search page contains many components and elements documented elsewhere. This page is about how to put them together, the hierarchy of content, and other desig |
 | Papers | [papers.md](papers.md) | Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us displ |
+| Organize complex page content | [organize-content.md](organize-content.md) | How to arrange a page around what its users need and what patterns and components to reach for. This page does not show the patterns themselves. It provides gui |
+| Dividers | [dividers.md](dividers.md) | A line between things: between sections, between items in a group, or between controls in a row. Reach for proximity first, with gaps and margins; when a line i |
+| Indicate which version is being read | [versions.md](versions.md) | A paper can have many versions, and a reader can arrive at any of them from a link. Show which version is open, how it relates to the others and whether the pap |
+| Show that something was copied | [action-feedback.md](action-feedback.md) | Copy and Permalink do their work out of sight: nothing on the page changes. Say that it worked, in words for a screen reader and with a tick for everyone, and l |
 
 ## Not yet digested
 
 These pages have not had their review pass. Read the page itself, and expect the shape to differ.
 
-- action-feedback.html
-- long-pages.html
 - references.html
-- versions.html

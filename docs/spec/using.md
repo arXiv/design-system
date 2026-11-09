@@ -11,8 +11,8 @@ components:
       - "**`fonts.css`.** Include this file before `design-system.css`. The font file declares the faces, the stylesheet names them. Either order renders but we have chosen this way for consistency."
       - "**`design-system.css`.** The foundational tier 1 stylesheet. When working on internal pages, there is a tier 2 stylesheet that builds on this one."
       - "**`theme.js`.** The foundational tier 1 JavaScript. Internal tools add no JavaScript of their own."
-      - "**`toc.js`, optional.** Add it when the page has a TOC bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See [Contents bar](progressive-disclosure.md#toc-bar)."
-      - "**`copy-code.js`, optional.** Add it when the page shows code a reader might take away. It needs no markup: it finds every `<pre>` on the page and puts a copy button on each one."
+      - "**`toc.js`, optional.** Add it when the page has a TOC bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See [TOC bar](navigation.md#toc-bar)."
+      - "**`copy.js`, optional.** Add it when the page shows code a reader might take away, or has any other copy button. It needs no markup for code: it finds every `<pre>` on the page and puts a copy button on each one. Other copy buttons are on [Show that something was copied](action-feedback.md)."
   - id: basic-page-markup
     title: "Basic page markup"
     summary: "This is all you need for a public arXiv page. Copy it and follow the comments."
@@ -35,14 +35,14 @@ components:
     summary: "`.ds-container` is a grid with various options for managing section layout."
     rules:
       - "**Sections.** The container's direct children are `<section>` elements, and the container sets the gap between them. Do not add top or bottom margins to sections, the container already does."
-      - "**Full width.** A coloured band that runs edge to edge gets `.ds-full` with a zone class (see [Page zones](layout-patterns.md#page-zones)). Do not add negative margins or use viewport units for placement. Using a calculation like `calc(-50vw + 50%)` overhangs the section band and causes the page to scroll sideways in some environments."
+      - "**Full width.** A coloured band that runs edge to edge gets `.ds-full` with a zone class (see [Secondary zones](layouts.md#secondary-zones)). Do not add negative margins or use viewport units for placement. Using a calculation like `calc(-50vw + 50%)` overhangs the section band and causes the page to scroll sideways in some environments."
       - "**Page width.** Width comes from `--ds-width-page` and `--ds-gutter`. Need to change the page width? Repoint one of the tokens, do not add a second width beside it."
   - id: combining-components
     title: "Combining components"
     group: "Building on the foundation"
     summary: "Most areas of a page can be built by putting existing components together. Look for a combination before inventing a component."
     rules:
-      - "**Examples in these docs.** The [search form](search.md) with the results' settings under it; a [table](tables.md) with its toolbar of filters and bulk actions; a [sidebar](layout-patterns.md#sidebar) of accordions; a [card that links](cards.md#cards-that-link), with a tag; [secondary navigation with a compact filter bar](navigation.md#two-levels-of-navigation)."
+      - "**Examples in these docs.** The [search form](search.md) with the results' settings under it; a [table](tables.md) with its toolbar of filters and bulk actions; a [sidebar](layouts.md#sidebar) of accordions; a [card that links](cards.md#cards-that-link), with a tag; [secondary navigation with a compact filter bar](navigation.md#two-levels-of-navigation)."
       - "**Each component works inside another.** Use a component's documented markup unchanged inside the other."
       - "**A new class is the last step.** If a combination needs CSS, it is a rule on the outer component about what it can hold, written in the design system. Ask before adding a component."
 rules:
@@ -72,9 +72,9 @@ Every core file you need to include in your repo, and in what order.
 
 **Rule.** **`theme.js`.** The foundational tier 1 JavaScript. Internal tools add no JavaScript of their own.
 
-**Rule.** **`toc.js`, optional.** Add it when the page has a TOC bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See [Contents bar](progressive-disclosure.md#toc-bar).
+**Rule.** **`toc.js`, optional.** Add it when the page has a TOC bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See [TOC bar](navigation.md#toc-bar).
 
-**Rule.** **`copy-code.js`, optional.** Add it when the page shows code a reader might take away. It needs no markup: it finds every `<pre>` on the page and puts a copy button on each one.
+**Rule.** **`copy.js`, optional.** Add it when the page shows code a reader might take away, or has any other copy button. It needs no markup for code: it finds every `<pre>` on the page and puts a copy button on each one. Other copy buttons are on [Show that something was copied](action-feedback.md).
 
 ## Basic page markup
 
@@ -104,7 +104,7 @@ When building internal tools like arXiv Check or Admin Console pages, one class 
 
 **Rule.** **Sections.** The container's direct children are `<section>` elements, and the container sets the gap between them. Do not add top or bottom margins to sections, the container already does.
 
-**Rule.** **Full width.** A coloured band that runs edge to edge gets `.ds-full` with a zone class (see [Page zones](layout-patterns.md#page-zones)). Do not add negative margins or use viewport units for placement. Using a calculation like `calc(-50vw + 50%)` overhangs the section band and causes the page to scroll sideways in some environments.
+**Rule.** **Full width.** A coloured band that runs edge to edge gets `.ds-full` with a zone class (see [Secondary zones](layouts.md#secondary-zones)). Do not add negative margins or use viewport units for placement. Using a calculation like `calc(-50vw + 50%)` overhangs the section band and causes the page to scroll sideways in some environments.
 
 **Rule.** **Page width.** Width comes from `--ds-width-page` and `--ds-gutter`. Need to change the page width? Repoint one of the tokens, do not add a second width beside it.
 
@@ -112,7 +112,7 @@ When building internal tools like arXiv Check or Admin Console pages, one class 
 
 Most areas of a page can be built by putting existing components together. Look for a combination before inventing a component.
 
-**Rule.** **Examples in these docs.** The [search form](search.md) with the results' settings under it; a [table](tables.md) with its toolbar of filters and bulk actions; a [sidebar](layout-patterns.md#sidebar) of accordions; a [card that links](cards.md#cards-that-link), with a tag; [secondary navigation with a compact filter bar](navigation.md#two-levels-of-navigation).
+**Rule.** **Examples in these docs.** The [search form](search.md) with the results' settings under it; a [table](tables.md) with its toolbar of filters and bulk actions; a [sidebar](layouts.md#sidebar) of accordions; a [card that links](cards.md#cards-that-link), with a tag; [secondary navigation with a compact filter bar](navigation.md#two-levels-of-navigation).
 
 **Rule.** **Each component works inside another.** Use a component's documented markup unchanged inside the other.
 
