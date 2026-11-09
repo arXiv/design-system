@@ -59,7 +59,7 @@ components:
         does: "On a direct child of `.ds-container`. The child runs across all three columns, from edge to edge, and its padding brings its own content back in line with the centre column. It has no background of its own."
     rules:
       - "**The opening band holds the page title and an introduction of one to five sentences**, never the title alone. A title on its own in a tinted band looks unfinished and takes height the reader does not need. Without an introduction, a page has no opening band, unless its [set](organize-content.md#rules) uses one; then it needs an introduction."
-      - "**A contents bar hangs from the opening band's bottom edge.** So a page with a [contents bar](navigation.md#toc-bar) has an opening band, and an introduction in it. A paper is the exception: its contents bar carries the paper's tools and sits under the site header ([The TOC bar on a paper](papers.md#paper-toc-bar))."
+      - "**A contents bar hangs from the opening band's bottom edge.** So a page with a [contents bar](navigation.md#toc-bar) has an opening band, and an introduction in it. A paper is the exception: its contents bar holds the paper's tools and sits under the site header ([The TOC bar on a paper](papers.md#paper-toc-bar))."
       - "**Never a band across the main content.** A band between two parts of the main content interrupts the reading."
       - "**On an admin tool or a data view**, where the reader needs to find and act on content quickly, a tinted band pushes the main content too far down the page. Separate content with spacing and headings instead. The one exception is an opening band that holds a filter for the whole page, as in [Where controls go](organize-content.md#where-controls-go)."
       - "**Only a direct child can run full width.** `.ds-full` works on children of `.ds-container`; nested deeper it does nothing."
@@ -182,7 +182,7 @@ The default page background is white, and that is the color that primary page co
 
 **Rule.** **The opening band holds the page title and an introduction of one to five sentences**, never the title alone. A title on its own in a tinted band looks unfinished and takes height the reader does not need. Without an introduction, a page has no opening band, unless its [set](organize-content.md#rules) uses one; then it needs an introduction.
 
-**Rule.** **A contents bar hangs from the opening band's bottom edge.** So a page with a [contents bar](navigation.md#toc-bar) has an opening band, and an introduction in it. A paper is the exception: its contents bar carries the paper's tools and sits under the site header ([The TOC bar on a paper](papers.md#paper-toc-bar)).
+**Rule.** **A contents bar hangs from the opening band's bottom edge.** So a page with a [contents bar](navigation.md#toc-bar) has an opening band, and an introduction in it. A paper is the exception: its contents bar holds the paper's tools and sits under the site header ([The TOC bar on a paper](papers.md#paper-toc-bar)).
 
 **Rule.** **Never a band across the main content.** A band between two parts of the main content interrupts the reading.
 
