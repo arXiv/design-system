@@ -196,7 +196,10 @@ Need in-page navigation? The TOC bar is a row that holds a single disclosure con
 ```html
 <div class="ds-container">
   <div class="ds-full ds-zone-secondary">
-    <header class="ds-page-header">…</header>
+    <header class="ds-page-header">
+      <h1>Page title</h1>
+      <p>One to five sentences that say what the page is for.</p>
+    </header>
   </div>
 
   <div class="ds-full ds-toc-bar">

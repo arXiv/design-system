@@ -17,6 +17,7 @@ components:
     summary: "Before choosing components, decide what the page is for and which content is primary. Everything else is arranged so it does not push the primary content down."
     rules:
       - "**The page heading is followed by the main content.** At most one short line comes between them: a line that sets the data in context, such as the period it covers. An explanation of the figures is secondary: see [Where secondary content goes](#where-secondary-content-goes)."
+      - "**What the reader must know before acting comes before the steps it governs**, even when the steps are what they came for. On a withdrawal page, what makes a withdrawal reason acceptable comes before how to submit one."
       - "**A state that changes how the whole page reads is met first.** The page's `<title>` starts with it, and its notice comes straight after the page heading, before anything else; on a paper the heading starts with it too. A reader, and a screen reader, meets it before reading on. See [a withdrawn paper](papers.md#withdrawn-papers) and [a form with errors](forms.md#alerts-in-forms)."
   - id: where-secondary-content-goes
     title: "Where secondary content goes"
@@ -47,7 +48,7 @@ rules:
   - "**Choose typographic and proximity-based organization patterns first**, and reach for visible containers only when called for. This is the organizing principle to follow throughout."
   - "**Use only the questions the content raises.** When a page uses more than one layer, they stack in this order: navigation, then tabs, then filters."
   - "**A page in a set follows the set.** Pages in one section of a site, such as arXiv's help pages, share one template: the opening band and the contents bar are on every page of the set or on none. Before choosing, find out whether the page belongs to a set and what the set already uses. If no one has said, ask; if you cannot ask, say what you assumed."
-  - "**In a set that uses the opening band, every page has an introduction.** Take it from the page's own text first, and write new text only when there is none."
+  - "**In a set that uses the opening band, every page has an introduction**: one to five sentences that say what the whole page is for. Use the page's own text only if it introduces the whole page; a sentence that opens a section introduces that section, not the page. Otherwise write a sentence or two."
   - "**A page outside a set, or in a set without the band, decides for itself.** Without the band it has no contents bar and no introduction."
   - "**When a filter sets what the whole page is about, the page heading names the choice**, as in “Charts for cs”, and so does the page's `<title>`, so tabs, history and bookmarks tell the choices apart. With nothing chosen, the heading is the view alone. A filter that narrows one set on the page never changes the heading."
   - "**A page with little on it needs no section headings.** The page heading names it; a heading such as “Subject groups” under “All sections” adds nothing."
@@ -86,6 +87,8 @@ What a user needs to learn determines the right organizational pattern to employ
 Before choosing components, decide what the page is for and which content is primary. Everything else is arranged so it does not push the primary content down.
 
 **Rule.** **The page heading is followed by the main content.** At most one short line comes between them: a line that sets the data in context, such as the period it covers. An explanation of the figures is secondary: see [Where secondary content goes](#where-secondary-content-goes).
+
+**Rule.** **What the reader must know before acting comes before the steps it governs**, even when the steps are what they came for. On a withdrawal page, what makes a withdrawal reason acceptable comes before how to submit one.
 
 **Rule.** **A state that changes how the whole page reads is met first.** The page's `<title>` starts with it, and its notice comes straight after the page heading, before anything else; on a paper the heading starts with it too. A reader, and a screen reader, meets it before reading on. See [a withdrawn paper](papers.md#withdrawn-papers) and [a form with errors](forms.md#alerts-in-forms).
 
@@ -132,7 +135,7 @@ Long pages need special consideration of their organization. The longer the page
 - **Choose typographic and proximity-based organization patterns first**, and reach for visible containers only when called for. This is the organizing principle to follow throughout.
 - **Use only the questions the content raises.** When a page uses more than one layer, they stack in this order: navigation, then tabs, then filters.
 - **A page in a set follows the set.** Pages in one section of a site, such as arXiv's help pages, share one template: the opening band and the contents bar are on every page of the set or on none. Before choosing, find out whether the page belongs to a set and what the set already uses. If no one has said, ask; if you cannot ask, say what you assumed.
-- **In a set that uses the opening band, every page has an introduction.** Take it from the page's own text first, and write new text only when there is none.
+- **In a set that uses the opening band, every page has an introduction**: one to five sentences that say what the whole page is for. Use the page's own text only if it introduces the whole page; a sentence that opens a section introduces that section, not the page. Otherwise write a sentence or two.
 - **A page outside a set, or in a set without the band, decides for itself.** Without the band it has no contents bar and no introduction.
 - **When a filter sets what the whole page is about, the page heading names the choice**, as in “Charts for cs”, and so does the page's `<title>`, so tabs, history and bookmarks tell the choices apart. With nothing chosen, the heading is the view alone. A filter that narrows one set on the page never changes the heading.
 - **A page with little on it needs no section headings.** The page heading names it; a heading such as “Subject groups” under “All sections” adds nothing.
