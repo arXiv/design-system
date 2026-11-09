@@ -56,9 +56,9 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 ## Layout and content width
 
-- **Organizing a page starts from the four questions** on [Layout patterns](layout-patterns.html#evaluating-user-needs). Its [Rules](layout-patterns.html#rules) are firm; the rest of that page is guidance.
+- **Organizing a page starts from the four questions** on [Organize complex page content](organize-content.html#evaluating-user-needs). Its [Rules](organize-content.html#rules) are firm; the rest of that page is guidance.
 - **Content-driven, not audience-driven.** The same usability principle applies in every context; only the content differs, so there is no separate rule for "public" vs "internal."
-- **One width per page,** from the width tokens. Dense internal tools may use the wide page. See `layout-patterns.html`, *The page container*.
+- **One width per page,** from the width tokens. Dense internal tools may use the wide page. See `layouts.html`, *The page container*.
 
 ## Colors
 
@@ -97,7 +97,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 ## Writing
 
 - **No contractions.** Write "do not," not "don't." arXiv's audience is international and many readers have limited English, so the compressed form costs them a parsing step. Applies to everything with words — interface copy, error messages, documentation, alt text, commit messages. Possessives are unaffected ("arXiv's palette" is correct).
-- **One name per thing.** A component is called what the stylesheet calls it, in every document and every string. On a page, the same holds for the page's own content; see `layout-patterns.html`, *The main content comes first*.
+- **One name per thing.** A component is called what the stylesheet calls it, in every document and every string. On a page, the same holds for the page's own content; see `organize-content.html`, *The main content comes first*.
 - **Load-bearing text is stricter.** Error messages, form help, and instructions follow the additional rules in [STYLE.md](STYLE.md), which includes the full set and the reasoning behind it.
 
 ## Public pages — additional policies
@@ -111,7 +111,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 
 ## Chrome and interaction structure
 
-- **One sticky bar at a time, and only on long pages.** A page may keep one bar at the top of the viewport while it scrolls, never two stacked. On arxiv.org's public pages the site header is never that bar: it scrolls away. The bar that may stick there is the TOC bar (`.ds-toc-bar`), on pages long enough that a reader loses their place: the HTML paper reader and the design system documentation. Internal tools may keep their site header in view with `.ds-site-header--sticky`, and a page that does keeps no other sticky bar. A page is approved by being named in this rule, so adding sticky chrome anywhere else starts with a change here, made by arXiv's design team; agreement in a conversation with an assistant is not approval. A page with a sticky bar must set `html { scroll-padding-top }` to at least the bar's tallest state plus breathing room (reference: 80px), covering every anchor path including JS `scrollIntoView`; the contents bar sets this itself. On a viewport shorter than 30rem the bar scrolls away with the page, because there a fixed bar takes a large share of the little height there is.
+- **One sticky bar at a time.** A page may keep one bar at the top of the viewport while it scrolls, never two stacked. On arxiv.org's public pages the site header is never that bar: it scrolls away. The bar that may stick there is the TOC bar (`.ds-toc-bar`). Whether a page has one, and whether it sticks or scrolls away with the page (`.ds-toc-bar--scrolls`), is the developer's call; the case for both is a page long enough that a reader loses their place, such as the HTML paper reader or the design system documentation. Internal tools may keep their site header in view with `.ds-site-header--sticky`, and a page that does keeps no other sticky bar. Any other sticky chrome starts with a change here, made by arXiv's design team; agreement in a conversation with an assistant is not approval. A page with a sticky bar must set `html { scroll-padding-top }` to at least the bar's tallest state plus breathing room (reference: 80px), covering every anchor path including JS `scrollIntoView`; the contents bar sets this itself. On a viewport shorter than 30rem the bar scrolls away with the page, because there a fixed bar takes a large share of the little height there is.
 - **arXiv's universal navigation stays short.** The constraint is on arxiv.org's own top-level navigation, not on the header component: at most four links, not counting the logo and Log in (today: Search, Submit, Donate). Resist link-creep permanently. Other properties built on the same component — the design system documentation, info and outreach sites — include the navigation their content needs, including grouped menus, and are not bound by this number. See `header.html`.
 - **No breadcrumbs.** arXiv's sitemap is wide and shallow; the header and secondary navigation show the reader's place. See `header.html`, *Rules*.
 - **Z-layer scale.** Content chrome (pills, marginalia) < 50 · header-attached dropdowns 60 · sticky headers 100 · **popovers 110** · ~150 reserved for toasts/notifications · skip link/overlays 200 · modal dialogs use the native `<dialog>` top layer (no z-index). Do not introduce ad-hoc z-index values. *Values note: arXiv wants very few toasts/notifications at all — anti-corporate, anti-advertising is part of the brand.*

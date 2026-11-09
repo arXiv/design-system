@@ -305,7 +305,7 @@ def extract(path):
             if body:
                 comp["notes"].append(md_inline(body))
         # a list straight under the section, outside any demo, card or note, is its guidance:
-        # a .notes list holds the section's rules (the arrangement rules on layout-patterns.html),
+        # a .notes list holds the section's rules (the arrangement rules on organize-content.html),
         # any other list is a note (where a pattern is used, the parts it is made of)
         for lst in [c for c in section.children if isinstance(c, Node) and c.tag in ("ul", "ol")]:
             items = [md_inline(li) for li in lst.children if isinstance(li, Node) and li.tag == "li"]
@@ -313,7 +313,7 @@ def extract(path):
                 comp["rules"].extend(items)
             elif items:
                 comp["notes"].append("; ".join(items))
-        # a titled card holding a list (the questions on layout-patterns.html) is guidance for this section
+        # a titled card holding a list (the questions on organize-content.html) is guidance for this section
         for card in section.find_all(lambda n: n.has("ds-card")):
             ct = next((c for c in card.children if isinstance(c, Node) and c.tag == "h3"), None)
             ul = next((c for c in card.children if isinstance(c, Node) and c.tag == "ul"), None)

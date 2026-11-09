@@ -69,29 +69,9 @@ components:
       - name: "tabs.js"
         does: "Builds the tab list from the panel headings and adds the roles, the selected state and the keyboard: Tab reaches the selected tab, the arrow keys move between tabs, Home and End go to the first and last. Moving to a tab shows its panel. Without the script, every panel shows under its own heading."
       - name: ".ds-tabs-list"
-        does: "The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. It takes the background of the zone it sits in: the page ground (white in light mode), or the secondary zone's tint (light grey in light mode) inside a [secondary band](layout-patterns.md#page-zones). The row wraps on a narrow screen."
+        does: "The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. It takes the background of the zone it sits in: the page ground (white in light mode), or the secondary zone's tint (light grey in light mode) inside a [secondary band](layouts.md#secondary-zones). The row wraps on a narrow screen."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
-  - id: toc-bar
-    title: "TOC bar"
-    summary: "Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. The bar is sticky and it stays at the top of the viewport while the reader scrolls through the page."
-    classes:
-      - name: ".ds-toc"
-        does: "The control, a `<details>`. It works on its own anywhere, and it opens with JavaScript off."
-      - name: ".ds-toc-trigger"
-        does: "The `<summary>`. Holds the list icon, `.ds-toc-text` with its `.ds-toc-prefix`, and `.ds-toc-chevron`."
-      - name: ".ds-toc-menu"
-        does: "The list, a `<nav>` holding an `<ol>`. The link to the current section gets `.is-current`. A page whose sections are numbered puts each number in `.ds-toc-num`."
-      - name: ".ds-toc-bar"
-        does: "The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly after a `.ds-zone-secondary` band, it sits on that band’s bottom edge. The bar is sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. On a viewport shorter than 30rem, such as a phone on its side or a laptop at 400% zoom, it scrolls away with the page instead, so the reader keeps the height for the text. Sticky chrome is governed by [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md); check there before adding the bar to a page."
-      - name: ".ds-toc-bar-inner"
-        does: "The bar’s three-slot grid, which keeps the control centred whatever sits beside it."
-      - name: "[data-toc-scope]"
-        does: "Optional, on `.ds-toc`: a selector for the element whose headings fill an empty list. Without it, `toc.js` reads `<main>`, or the whole page when there is no `<main>`."
-    rules:
-      - "**The list is written or generated.** Write the `<ol>` by hand, or leave it empty and `toc.js` fills it when the page loads, with one link for every `h2` and `h3` that has an `id`. A written list works with JavaScript off, so these docs write theirs: `verification/gen-anchors.py` fills the `<ol>` from the page’s section headings, and `--check` fails when the two disagree."
-      - "**It opens without JavaScript.** `toc.js` adds closing on Escape, closing on a click outside, and the name of the current section on the control."
-      - "**One per page.** `toc.js` drives the first `.ds-toc` it finds, which on this page is the bar at the top; the control in the card above comes later in the document, so it opens and closes on its own and nothing else."
   - id: accordion-inside-a-card
     title: "Accordion inside a card"
     group: "Variants"
@@ -114,7 +94,7 @@ components:
         does: "On one panel in the group at most, if one starts open."
 rules:
   - "A view has one level of tabs. Tabs inside a tab panel are not used."
-  - "**Never put must-see information only behind a disclosure.** The older-version warning appears in the main column even though the full history lives in the Versions accordion. A reader who never opens anything must still meet everything that matters."
+  - "**Never put must-see information only behind a disclosure.** Anything legally or practically required, such as a warning or a licence, also appears in the page's always-visible flow: the older-version warning is in the main column even though the full history lives in the Versions accordion. A closed accordion, a folded margin note and a popover are all places a reader may never open."
   - "**Disclosure is not a fix for too much content.** If a page needs six accordions to be tolerable, the page has a structure problem and hiding things postpones it. Ask what can be cut or moved before asking what can be collapsed."
   - "**Default state is closed**, except that a single most-relevant panel may start open. Open state is not persisted — predictability beats memory here."
   - "**One panel open at a time is for panels read one at a time.** When a reader needs two panels open together to compare them, leave the group without a `name`."
@@ -130,9 +110,7 @@ rules:
   - "**Every custom toggle owns `aria-expanded`.** A show-more button and a popover trigger are not `<details>`, so they state it themselves. Its absence is the single most common defect in this pattern: the control announces as a button, does something visible to everyone else, and says nothing."
   - "**A show-more label counts what it hides.** “show all 22 authors”, not “show more”, whenever the hidden part is a list. A reader deciding whether to expand is asking how much is behind it, and someone using a screen reader hears the control with no view of the list at all. Return the label to “show fewer” when open."
   - "**Escape closes a popover and returns focus** to the chip that opened it. A reader who opened it from the keyboard must not be stranded at the end of the document. Close it on outside click and on scroll as well: the panel is `position: fixed`, so left open it would follow the viewport while the sentence it belongs to scrolls away."
-  - "**The TOC bar's list is a disclosure, not an ARIA menu.** `role=\"menu\"` is for application menus — the kind with arrow-key roving focus and menu items that are not links. A list of links is a disclosure, and W3C’s own guidance is to build it this way. Using `role=\"menu\"` here would make a screen reader promise keyboard behaviour the component does not have."
-  - "**Mark where the reader is.** `toc.js` gives the TOC bar's link to the current section `aria-current=\"location\"`."
-  - "**Everything is reachable from the keyboard, with JavaScript off.** Open, close and keyboard operation are native; outside-click and Escape are enhancements layered on top. Show more needs a script, so its script does the hiding: without JavaScript the tail shows and the button does not. Escape closes the TOC bar's list and returns focus to its control, but only when focus was inside the list — Escape pressed elsewhere on the page must not move it."
+  - "**Everything is reachable from the keyboard, with JavaScript off.** Open, close and keyboard operation are native; outside-click and Escape are enhancements layered on top. Show more needs a script, so its script does the hiding: without JavaScript the tail shows and the button does not."
 ---
 
 # Progressive disclosure
@@ -269,52 +247,9 @@ Tabs switch between views of the same page. Each tab shows one panel and hides t
 - `.ds-tabs` — Holds two or more panels. `data-label` names the set for a screen reader.
 - `.ds-tabs-panel` — One view, a `<section>` that starts with a heading. The heading becomes the tab label.
 - `tabs.js` — Builds the tab list from the panel headings and adds the roles, the selected state and the keyboard: Tab reaches the selected tab, the arrow keys move between tabs, Home and End go to the first and last. Moving to a tab shows its panel. Without the script, every panel shows under its own heading.
-- `.ds-tabs-list` — The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. It takes the background of the zone it sits in: the page ground (white in light mode), or the secondary zone's tint (light grey in light mode) inside a [secondary band](layout-patterns.md#page-zones). The row wraps on a narrow screen.
+- `.ds-tabs-list` — The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. It takes the background of the zone it sits in: the page ground (white in light mode), or the secondary zone's tint (light grey in light mode) inside a [secondary band](layouts.md#secondary-zones). The row wraps on a narrow screen.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)
-
-## TOC bar
-
-Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. The bar is sticky and it stays at the top of the viewport while the reader scrolls through the page.
-
-```html
-<div class="ds-container">
-  <div class="ds-full ds-zone-secondary">
-    <header class="ds-page-header">…</header>
-  </div>
-
-  <div class="ds-full ds-toc-bar">
-    <div class="ds-toc-bar-inner">
-      <details class="ds-toc">
-        <summary class="ds-toc-trigger">
-          <svg aria-hidden="true">…</svg>
-          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
-          <svg class="ds-toc-chevron" aria-hidden="true">…</svg>
-        </summary>
-        <nav class="ds-toc-menu" aria-label="Contents">
-          <ol></ol>      <!-- written by hand, or left empty for toc.js to fill -->
-        </nav>
-      </details>
-    </div>
-  </div>
-
-  <section>…</section>
-</div>
-<script src="toc.js" defer></script>
-```
-
-- `.ds-toc` — The control, a `<details>`. It works on its own anywhere, and it opens with JavaScript off.
-- `.ds-toc-trigger` — The `<summary>`. Holds the list icon, `.ds-toc-text` with its `.ds-toc-prefix`, and `.ds-toc-chevron`.
-- `.ds-toc-menu` — The list, a `<nav>` holding an `<ol>`. The link to the current section gets `.is-current`. A page whose sections are numbered puts each number in `.ds-toc-num`.
-- `.ds-toc-bar` — The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. Placed directly after a `.ds-zone-secondary` band, it sits on that band’s bottom edge. The bar is sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. On a viewport shorter than 30rem, such as a phone on its side or a laptop at 400% zoom, it scrolls away with the page instead, so the reader keeps the height for the text. Sticky chrome is governed by [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md); check there before adding the bar to a page.
-- `.ds-toc-bar-inner` — The bar’s three-slot grid, which keeps the control centred whatever sits beside it.
-- `[data-toc-scope]` — Optional, on `.ds-toc`: a selector for the element whose headings fill an empty list. Without it, `toc.js` reads `<main>`, or the whole page when there is no `<main>`.
-
-**Rule.** **The list is written or generated.** Write the `<ol>` by hand, or leave it empty and `toc.js` fills it when the page loads, with one link for every `h2` and `h3` that has an `id`. A written list works with JavaScript off, so these docs write theirs: `verification/gen-anchors.py` fills the `<ol>` from the page’s section headings, and `--check` fails when the two disagree.
-
-**Rule.** **It opens without JavaScript.** `toc.js` adds closing on Escape, closing on a click outside, and the name of the current section on the control.
-
-**Rule.** **One per page.** `toc.js` drives the first `.ds-toc` it finds, which on this page is the bar at the top; the control in the card above comes later in the document, so it opens and closes on its own and nothing else.
 
 ## Accordion inside a card  (Variants)
 
@@ -394,7 +329,7 @@ Opening one panel closes the panel that was open. There is no class: give every 
 ## Rules
 
 - A view has one level of tabs. Tabs inside a tab panel are not used.
-- **Never put must-see information only behind a disclosure.** The older-version warning appears in the main column even though the full history lives in the Versions accordion. A reader who never opens anything must still meet everything that matters.
+- **Never put must-see information only behind a disclosure.** Anything legally or practically required, such as a warning or a licence, also appears in the page's always-visible flow: the older-version warning is in the main column even though the full history lives in the Versions accordion. A closed accordion, a folded margin note and a popover are all places a reader may never open.
 - **Disclosure is not a fix for too much content.** If a page needs six accordions to be tolerable, the page has a structure problem and hiding things postpones it. Ask what can be cut or moved before asking what can be collapsed.
 - **Default state is closed**, except that a single most-relevant panel may start open. Open state is not persisted — predictability beats memory here.
 - **One panel open at a time is for panels read one at a time.** When a reader needs two panels open together to compare them, leave the group without a `name`.
@@ -410,6 +345,4 @@ Opening one panel closes the panel that was open. There is no class: give every 
 - **Every custom toggle owns `aria-expanded`.** A show-more button and a popover trigger are not `<details>`, so they state it themselves. Its absence is the single most common defect in this pattern: the control announces as a button, does something visible to everyone else, and says nothing.
 - **A show-more label counts what it hides.** “show all 22 authors”, not “show more”, whenever the hidden part is a list. A reader deciding whether to expand is asking how much is behind it, and someone using a screen reader hears the control with no view of the list at all. Return the label to “show fewer” when open.
 - **Escape closes a popover and returns focus** to the chip that opened it. A reader who opened it from the keyboard must not be stranded at the end of the document. Close it on outside click and on scroll as well: the panel is `position: fixed`, so left open it would follow the viewport while the sentence it belongs to scrolls away.
-- **The TOC bar's list is a disclosure, not an ARIA menu.** `role="menu"` is for application menus — the kind with arrow-key roving focus and menu items that are not links. A list of links is a disclosure, and W3C’s own guidance is to build it this way. Using `role="menu"` here would make a screen reader promise keyboard behaviour the component does not have.
-- **Mark where the reader is.** `toc.js` gives the TOC bar's link to the current section `aria-current="location"`.
-- **Everything is reachable from the keyboard, with JavaScript off.** Open, close and keyboard operation are native; outside-click and Escape are enhancements layered on top. Show more needs a script, so its script does the hiding: without JavaScript the tail shows and the button does not. Escape closes the TOC bar's list and returns focus to its control, but only when focus was inside the list — Escape pressed elsewhere on the page must not move it.
+- **Everything is reachable from the keyboard, with JavaScript off.** Open, close and keyboard operation are native; outside-click and Escape are enhancements layered on top. Show more needs a script, so its script does the hiding: without JavaScript the tail shows and the button does not.

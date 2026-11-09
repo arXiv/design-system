@@ -112,6 +112,10 @@
 }
 .ds-card > strong + code, .ds-card > code + code { margin-left: var(--ds-space-tight); }
 .notes li { margin-bottom: var(--ds-space-1); }
+/* A rule with a margin note is the note's block. Folded, the mark takes the
+   rule's top-right corner, so the text keeps clear of it. */
+.notes > li:has(> .ds-marginalia) { position: relative; padding-right: calc(24px + var(--ds-space-2)); }
+@media (min-width: 82.125rem) { @supports selector(::details-content) { .notes > li:has(> .ds-marginalia) { padding-right: 0; } } }
 .ds-card + .notes { margin-top: var(--ds-space-4); }   /* notes that follow an example keep the card's gap */
 
 
@@ -243,7 +247,7 @@ body > .ds-site-header > .ds-site-header-logo img { height: 26px; }
   margin-inline: calc(50% - 50vw + var(--ds-gutter));
 }
 
-/* ─── layout-patterns.html: a page drawn small inside a card. The reading
+/* ─── layouts.html: a page drawn small inside a card. The reading
    width is narrowed so a band's reach past the column shows. ─── */
 .ds-container.page-demo { --ds-width-page: 18rem; padding-block: var(--ds-space-4); row-gap: var(--ds-space-block); }
 .ds-container.page-demo > .ds-zone-secondary { margin-block: 0; padding-block: var(--ds-space-3); }

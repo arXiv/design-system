@@ -36,7 +36,7 @@ components:
       - "The markup is plain headings and paragraphs with no classes. The spacing is the design system's own default for those elements."
   - id: the-layout-tokens
     title: "The layout tokens"
-    summary: "Three tokens set the shape of every page: the width of the content column, the gutter that keeps it off the viewport edge, and the space the container puts between one region and the next. The container that reads them is documented on [Layout patterns](layout-patterns.md#the-page-container)."
+    summary: "Three tokens set the shape of every page: the width of the content column, the gutter that keeps it off the viewport edge, and the space the container puts between one region and the next. The container that reads them is documented on [Layouts](layouts.md#the-page-container)."
     classes:
       - name: "--ds-width-page"
         does: "850px. The width of the content column, and the one width on a page: prose, tables, demo blocks, code and callouts all share it. An element never declares its own."
@@ -108,7 +108,7 @@ The gap *between* sections should be clearly larger than the gap *within* a sect
 
 ## The layout tokens
 
-Three tokens set the shape of every page: the width of the content column, the gutter that keeps it off the viewport edge, and the space the container puts between one region and the next. The container that reads them is documented on [Layout patterns](layout-patterns.md#the-page-container).
+Three tokens set the shape of every page: the width of the content column, the gutter that keeps it off the viewport edge, and the space the container puts between one region and the next. The container that reads them is documented on [Layouts](layouts.md#the-page-container).
 
 ```html
 <div class="ds-container">

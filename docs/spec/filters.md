@@ -44,6 +44,7 @@ components:
 rules:
   - "**One set of filters for each set of data**, in the set's header bar. A filter applies to everything in the set."
   - "**A total ends the header bar only when the reader cannot see the whole set**: the set runs over more than one page, as in “1,669 submissions”, or the filters hide part of it, as in “3 of 120 holds”. A set with every item in view needs no total. When the controls do not fit on one line, the bar wraps and the total takes a line of its own."
+  - "**One Apply button for each set of filters.**"
   - "**Keep Apply when a change reloads the page.** See [Compact form](forms.md#compact-form)."
   - "**After Apply, the page shows what was applied**: the server writes the chosen values back into the fields, and into the tags."
   - "**Sorting is not filtering.** A Sort by select can end the row of filters; a table sorts from its [column headers](tables.md#sortable-column-headers)."
@@ -150,6 +151,7 @@ A filter that takes several choices at once is a group of checkboxes, in a filte
 
 - **One set of filters for each set of data**, in the set's header bar. A filter applies to everything in the set.
 - **A total ends the header bar only when the reader cannot see the whole set**: the set runs over more than one page, as in “1,669 submissions”, or the filters hide part of it, as in “3 of 120 holds”. A set with every item in view needs no total. When the controls do not fit on one line, the bar wraps and the total takes a line of its own.
+- **One Apply button for each set of filters.**
 - **Keep Apply when a change reloads the page.** See [Compact form](forms.md#compact-form).
 - **After Apply, the page shows what was applied**: the server writes the chosen values back into the fields, and into the tags.
 - **Sorting is not filtering.** A Sort by select can end the row of filters; a table sorts from its [column headers](tables.md#sortable-column-headers).

@@ -26,7 +26,7 @@ components:
       - "Meets accessibility guideline [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
   - id: linking-to-a-section
     title: "Linking to a section"
-    summary: "A section heading can include a control that copies a link to that section. It is an option for long pages that readers cite or share in parts, such as HTML papers and these docs; most headings do not need it. Hover a heading on this page, or tab to it, and the control appears."
+    summary: "A section heading can include a control that copies a link to that section, so a reader can point a colleague at the exact place. It is an option for long pages that readers cite or share in parts, such as HTML papers and these docs; most headings do not need it. Hover a heading on this page, or tab to it, and the control appears."
     classes:
       - name: "<section> > h2, h3"
         does: "The section heading: the `<h2>` or `<h3>` that is the first element in a `<section>`. `anchors.js` adds the control to every section heading that has an `id`. No class is needed."
@@ -100,7 +100,7 @@ A link goes somewhere: it has an `href`, it is underlined, and it remembers bein
 
 ## Linking to a section
 
-A section heading can include a control that copies a link to that section. It is an option for long pages that readers cite or share in parts, such as HTML papers and these docs; most headings do not need it. Hover a heading on this page, or tab to it, and the control appears.
+A section heading can include a control that copies a link to that section, so a reader can point a colleague at the exact place. It is an option for long pages that readers cite or share in parts, such as HTML papers and these docs; most headings do not need it. Hover a heading on this page, or tab to it, and the control appears.
 
 ```html
 <!-- 1. The section heading, with an id -->
@@ -109,7 +109,8 @@ A section heading can include a control that copies a link to that section. It i
   …
 </section>
 
-<!-- 2. The script, once per page -->
+<!-- 2. The scripts, once per page: copy.js copies, anchors.js adds the control -->
+<script src="copy.js" defer></script>
 <script src="anchors.js" defer></script>
 
 <!-- What renders -->
