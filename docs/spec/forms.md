@@ -44,6 +44,15 @@ components:
         does: "A message goes directly after the button and shows under the row, so the button stays beside the field. The rest follows [Validation](#validation)."
       - name: ".is-sr-only"
         does: "On each `<label>` when a heading or the button already says what the form does. The label is read out and not shown."
+    rules:
+      - "**Use it for a form that supports the main content.** A form with long text or detailed help uses the standard fields."
+      - "**Every control has a label beside it.** Hide it with `.is-sr-only` only when a heading or the button says what the form does. Never use a placeholder as the label."
+      - "**The button names the action.** “Search” or “Apply”, not “Go” or “Submit”."
+      - "**Keep Apply when a change reloads the page, or when the form has several fields.** A reader expects a change of page only when they ask for it. Leave Apply out only when the page updates in place, and keep a submit button for a page without script."
+      - "**Join only the controls that make one input.** Controls that could be filled in separately stay separate."
+      - "**Secondary options go below the row.** A checkbox or a link there never moves the button away from its field."
+      - "**On a narrow screen the form is one short column.** Labels in one column, fields in the other. With joined controls, the joined controls share one row and the button takes its own line."
+      - "**On a touch screen every target is 44px.** A compact field and a compact button keep their drawn size; the target reaches, unseen, above and below. Typed text is 16px, so the page does not zoom when a field takes focus."
   - id: validation
     title: "Validation"
     summary: "Fields can be in three possible states: normal, validated, or disabled. Validation styles change based on the error [disposition](#disposition-tiers), that is, its severity."
@@ -244,6 +253,22 @@ A normal form is the main content of the page, or an important part of it. A com
 - `.ds-input-group` — Joins the controls that make one input, such as a search term and the field it searches. The text input takes the spare width and the select takes what it needs. Joined controls and the button after them keep the full size, because they are the form's main input.
 - `.field-error` — A message goes directly after the button and shows under the row, so the button stays beside the field. The rest follows [Validation](#validation).
 - `.is-sr-only` — On each `<label>` when a heading or the button already says what the form does. The label is read out and not shown.
+
+**Rule.** **Use it for a form that supports the main content.** A form with long text or detailed help uses the standard fields.
+
+**Rule.** **Every control has a label beside it.** Hide it with `.is-sr-only` only when a heading or the button says what the form does. Never use a placeholder as the label.
+
+**Rule.** **The button names the action.** “Search” or “Apply”, not “Go” or “Submit”.
+
+**Rule.** **Keep Apply when a change reloads the page, or when the form has several fields.** A reader expects a change of page only when they ask for it. Leave Apply out only when the page updates in place, and keep a submit button for a page without script.
+
+**Rule.** **Join only the controls that make one input.** Controls that could be filled in separately stay separate.
+
+**Rule.** **Secondary options go below the row.** A checkbox or a link there never moves the button away from its field.
+
+**Rule.** **On a narrow screen the form is one short column.** Labels in one column, fields in the other. With joined controls, the joined controls share one row and the button takes its own line.
+
+**Rule.** **On a touch screen every target is 44px.** A compact field and a compact button keep their drawn size; the target reaches, unseen, above and below. Typed text is 16px, so the page does not zoom when a field takes focus.
 
 ## Validation
 

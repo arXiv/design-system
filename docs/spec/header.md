@@ -292,10 +292,11 @@ A property whose sections need grouping adds `.ds-site-header-dropdown`, built o
   <a href="/" class="ds-site-header-logo">arXiv Design System</a>
   <nav class="ds-site-header-nav" aria-label="Design system">
     <details class="ds-site-header-dropdown">
-      <summary>Design Patterns</summary>
+      <summary>Components</summary>
       <div class="ds-site-header-menu">
-        <span class="ds-panel-label">Components</span>
+        <span class="ds-panel-label">Foundations</span>
         <a href="colors.html">Colors</a>
+        <span class="ds-panel-label">Components</span>
         <a href="header.html" aria-current="page">Site header</a>
         <!-- … -->
       </div>

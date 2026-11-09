@@ -14,7 +14,7 @@ Build only from the canonical folders. Everything else is for exploring ideas, p
 
 | Folder | Status | What it holds |
 |---|---|---|
-| `docs/` | Canonical | The documentation: rules, pattern pages, and the stylesheets. Every pattern page shows both surfaces; `docs/sharing/` holds audience-specific pages. |
+| `docs/` | Canonical | The documentation: rules, pattern pages, and the stylesheets. Every pattern page shows both surfaces; `docs/examples/` holds whole pages built from them. |
 | `docs/assets/` | Canonical, for images | arXiv's official image library: logos, illustrations, backgrounds, and photos. Other repositories link to these files by URL, so keep every file and path. |
 | `templates/` | Canonical, for markup | The shared head, header, and footer that other arXiv apps install (`templates/README.md`), and the announcement banner's file (`templates/BANNER_ANNOUNCEMENTS.md`). Their styles come from `docs/`. |
 | `verification/` | Testing | The automated checks, audits, design reviews, and agent tests. |

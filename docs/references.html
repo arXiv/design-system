@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Show a reference without losing the reader&#39;s place — arXiv Design System</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="docs.css">
+<script src="theme.js"></script>  <!-- not deferred: the attribute must land before first paint -->
+</head>
+<body class="ds-page">
+<!-- The docs site's own header (the light variant). It is not a pattern: build pages from the header in templates/ and docs/header.html. -->
+<header class="ds-site-header ds-site-header--light">
+  <span class="ds-site-header-logo ds-tooltip-host"><a href="../index.html" aria-describedby="ds-logo-tip"><img class="ds-theme-light-only" src="assets/images/logos/logo_smileybones-ds.svg" alt="Smileybones"><img class="ds-theme-dark-only" src="assets/images/logos/logo_smileybones-ds-light.svg" alt="Smileybones"></a><span class="ds-tooltip" id="ds-logo-tip" role="tooltip"><span class="ds-tooltip-body">Smileybones Design System from arXiv</span></span></span>
+  <nav class="ds-site-header-nav" aria-label="Design system">
+    <details class="ds-site-header-dropdown">
+      <summary>Components</summary>
+      <div class="ds-site-header-menu">
+        <span class="ds-panel-label">Foundations</span>
+        <a href="colors.html">Colors</a>
+        <a href="dark-mode.html">Dark mode</a>
+        <a href="typography.html">Typography</a>
+        <a href="spacing.html">Spacing</a>
+        <a href="layout-patterns.html">Layouts</a>
+        <a href="icons.html">Icons</a>
+        <span class="ds-panel-label">Components</span>
+        <a href="alerts.html">Alerts</a>
+        <a href="buttons.html">Buttons</a>
+        <a href="cards.html">Cards</a>
+        <a href="filters.html">Filters</a>
+        <a href="forms.html">Forms &amp; validation</a>
+        <a href="links.html">Links</a>
+        <a href="messages.html">Messaging</a>
+        <a href="modals.html">Modal dialogs</a>
+        <a href="navigation.html">Navigation</a>
+        <a href="pager.html">Pager</a>
+        <a href="papers.html">Papers</a>
+        <a href="progressive-disclosure.html">Progressive disclosure</a>
+        <a href="footer.html">Site footer</a>
+        <a href="header.html">Site header</a>
+        <a href="tables.html">Tables</a>
+        <a href="tags.html">Tags</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Patterns</summary>
+      <div class="ds-site-header-menu">
+        <a href="action-feedback.html">Confirm an action that changes nothing on screen</a>
+        <a href="versions.html">Indicate which version is being read</a>
+        <a href="long-pages.html">Make a long page navigable</a>
+        <a href="references.html" aria-current="page">Show a reference without losing the reader&#39;s place</a>
+        <span class="ds-panel-label">Pages</span>
+        <a href="search.html">Search</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Mockups</summary>
+      <div class="ds-site-header-menu">
+        <a href="../whiteboard/mockups/">All mockups</a>
+        <span class="ds-panel-label">Public</span>
+        <a href="../whiteboard/mockups/public/abstract-phase2.html">Abstract page — Phase 2</a>
+        <a href="../whiteboard/mockups/public/html-phase1.html">HTML paper — Phase 1</a>
+        <a href="../whiteboard/mockups/public/optin-modal/">Labs opt-in modal</a>
+        <a href="../whiteboard/mockups/public/submission-metadata/">Submission — Metadata Form</a>
+        <span class="ds-panel-label">Internal</span>
+        <a href="../whiteboard/mockups/internal/admin-console/user-page/">Admin Console — user page</a>
+        <a href="../whiteboard/mockups/internal/admin-console/paper-details/">Admin Console — paper details</a>
+        <a href="../whiteboard/mockups/internal/admin-console/ownership-requests/">Admin Console — ownership requests</a>
+        <a href="../whiteboard/mockups/internal/arxiv-check/checkmark-buttons.html">arXiv Check — checkmark &amp; save</a>
+        <a href="../whiteboard/mockups/internal/activity-dashboard/">Activity dashboard</a>
+      </div>
+    </details>
+    <details class="ds-site-header-dropdown">
+      <summary>Docs</summary>
+      <div class="ds-site-header-menu">
+        <a href="using.html">Using the system</a>
+        <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
+        <a href="doc.html?src=docs/accessibility-priorities.md">Accessibility priorities</a>
+        <a href="doc.html?src=docs/STYLE.md">Writing style</a>
+        <a href="brand.html">Brand &amp; vision</a>
+        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
+        <a href="doc.html?src=README.md">About this repo</a>
+      </div>
+    </details>
+  </nav>
+  <div class="ds-site-header-tools">
+    <button type="button" class="ds-theme-toggle"></button>
+    <span id="ds-theme-status" class="is-sr-only" role="status"></span>
+  </div>
+</header>
+
+<div class="ds-container">
+
+  <div class="ds-full ds-zone-secondary">
+  <header class="ds-page-header">
+    <h1>Show a reference without losing the reader&#39;s place</h1>
+    <p>A citation, a footnote or a cross-reference points somewhere else in a long text. Show what it points to where the reader is, and when they follow it, bring them back to the place they left.</p>
+  </header>
+  </div>
+
+
+  <!-- ═════════ TOC ═════════ -->
+  <div class="ds-full ds-toc-bar">
+    <div class="ds-toc-bar-inner">
+      <details class="ds-toc">
+        <summary class="ds-toc-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+          <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+          <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <nav class="ds-toc-menu" aria-label="Contents">
+          <ol>
+            <li><a href="#where-it-is-used">Where it is used</a></li>
+            <li><a href="#citations-and-footnotes">Citations and footnotes</a></li>
+            <li><a href="#citation-rules">Citations and footnotes</a></li>
+          </ol>
+        </nav>
+      </details>
+    </div>
+  </div>
+
+  <section>
+    <h2 id="where-it-is-used">Where it is used</h2>
+    <ul>
+      <li>HTML papers: citations, footnotes, and cross-references to sections, equations, figures, tables and theorems.</li>
+      <li>No other arXiv page has these yet. Any long text that refers to its own parts can use the same approach.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 id="citations-and-footnotes">Citations and footnotes</h2>
+    <p class="ds-section-desc">A citation or footnote marker opens a popover that repeats the reference or the note, with a way to the full entry and back.</p>
+
+    <div class="ds-card">
+      <div class="popover-demo">
+        <div class="ds-popover" role="region" aria-label="2 references">
+          <div class="ds-popover-title">2 references</div>
+          <button type="button" class="ds-close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span class="is-sr-only">Close references</span></button>
+          <p>[46] A. Salvio. Quadratic gravity. <em>Front. Phys.</em> 6 (2018) 77. <a href="#">Jump to reference<span class="is-sr-only"> 46</span></a></p>
+          <p>[47] K. S. Stelle. Renormalization of higher-derivative quantum gravity. <em>Phys. Rev. D</em> 16 (1977) 953. <a href="#">Jump to reference<span class="is-sr-only"> 47</span></a></p>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-popover" role="region" aria-label="2 references"&gt;
+  &lt;div class="ds-popover-title"&gt;2 references&lt;/div&gt;
+  &lt;button type="button" class="ds-close"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;&lt;span class="is-sr-only"&gt;Close references&lt;/span&gt;&lt;/button&gt;
+  &lt;p&gt;[46] A. Salvio. Quadratic gravity. &lt;em&gt;Front. Phys.&lt;/em&gt; 6 (2018) 77. &lt;a href="#"&gt;Jump to reference&lt;span class="is-sr-only"&gt; 46&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+  &lt;p&gt;[47] K. S. Stelle. Renormalization of higher-derivative quantum gravity. &lt;em&gt;Phys. Rev. D&lt;/em&gt; 16 (1977) 953. &lt;a href="#"&gt;Jump to reference&lt;span class="is-sr-only"&gt; 47&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;</code></pre>
+          <dl>
+            <dt>.ds-popover</dt>
+            <dd>One popover per citation cluster, as on <a href="progressive-disclosure.html#popover">Progressive disclosure</a>. It opens on a click, Enter or a tap, never on hover or focus.</dd>
+            <dt>.ds-popover-title</dt>
+            <dd>“Reference 46” for one entry, “2 references” for more.</dd>
+            <dt>&lt;p&gt;</dt>
+            <dd>Each entry, copied whole from the bibliography, then its own Jump to reference link.</dd>
+            <dt>.ds-close</dt>
+            <dd>Closes the popover and returns focus to the number that was pressed.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <div class="ds-full ds-zone-secondary">
+  <h2>Rules</h2>
+
+  <section>
+    <h3 id="citation-rules">Citations and footnotes</h3>
+    <ul class="notes">
+      <li><strong>References are shown as the author wrote them.</strong> Each field formats references in its own way, and arXiv has no reference format. A bibliography entry, a citation popover and a citation&#39;s accessible name all repeat the author&#39;s entry unchanged. This is separate from Cite, which gives the formats for citing the paper itself.</li>
+      <li><strong>One popover per citation cluster</strong>, listing every reference in it, each with its own Jump to reference link.</li>
+      <li><strong>The popover comes straight after the number in the tab order.</strong> Tab moves from the number into the popover, and Tab past its last link goes on to the text after the citation. Opening it does not move focus.</li>
+      <li><strong>The popover repeats each entry as the bibliography shows it</strong>, never rebuilt, reordered or shortened. If the entry cannot be found, the citation stays a plain link to the reference list.</li>
+      <li><strong>It opens next to the citation and never covers it</strong>: below the line if it fits, else above, else just under the TOC bar.</li>
+      <li><strong>A cluster of seven or more may use two columns on a wide screen.</strong></li>
+      <li><strong>Below 48rem a popover is a bottom sheet.</strong> The script and the CSS read the same threshold.</li>
+      <li><strong>Escape returns focus to the number that was pressed.</strong></li>
+      <li><strong>Jump to reference lands on the entry</strong>, with the accent wash and keyboard focus, and the address gets its id. The entry is a <code>.ds-paper-element</code> with <code>tabindex="-1"</code>, and the wash is its <code>:target</code> style, so the link changes the address itself: <code>history.pushState</code> does not update <code>:target</code>. The scroll is smooth only when reduced motion is not set.</li>
+      <li><strong>A cross-reference works the same way.</strong> A link to a section, equation, figure, table or theorem lands below the TOC bar, and a <code>.ds-paper-element</code> it lands on shows the wash.</li>
+      <li><strong>Every jump adds an entry to the browser history</strong>, from a citation or a cross-reference, so the browser&#39;s Back button returns to the link. With JavaScript, Back also returns focus to the link.</li>
+      <li><strong>Back to your place shows only during a jump</strong>, from a citation or a cross-reference. It returns focus and scroll to the link the reader followed. It is an action in the element pill of the entry the reader landed on, and the pill stays shown while that entry is the target.</li>
+      <li><strong>Without JavaScript, a citation is LaTeXML&#39;s link to its entry.</strong> The entry shows the wash through <code>:target</code>, and the browser&#39;s Back button returns to the citation.</li>
+      <li><strong>A bibliography entry is highlighted as one box</strong>, number included, never line by line.</li>
+      <li><strong>A footnote stays where LaTeXML puts it</strong>: the marker, then the note itself, in one <code>.ltx_note</code>. At wide widths the note is shown in the margin beside its marker, with CSS only, at the width of a margin note (<code>--ds-marginalia-width</code>) and at the same widths. Narrower, a script makes the marker a button that opens the note in a popover. The popover opens on a click, Enter or a tap, never on hover, and stays open while the reader uses the links in it. Without JavaScript the note shows after its marker. A footnote needs no Back to your place: it stays after its marker, so reading it moves the reader nowhere.</li>
+    </ul>
+  </section>
+  </div>
+
+</div>
+
+<script>
+  // Nav dropdowns: close on outside click and Esc (enhancement only —
+  // the <details> menus work without this).
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.ds-site-header-dropdown[open]').forEach(function (d) {
+      // Return focus to the trigger, but only if it was inside the menu we are
+      // closing — otherwise Escape anywhere on the page would steal focus.
+      // Without this a keyboard user is left on a link that no longer exists.
+      var wasInside = d.contains(document.activeElement);
+      d.removeAttribute('open');
+      if (wasInside) d.querySelector('summary').focus();
+    });
+  });
+</script>
+<script src="header.js" defer></script>
+<script src="tooltip.js" defer></script>
+<script src="copy-code.js" defer></script>
+<script src="anchors.js" defer></script>
+<script src="toc.js" defer></script>
+</body>
+</html>

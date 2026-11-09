@@ -46,6 +46,14 @@ components:
         does: "A pager below a list, in a tinted bar. With the bar above, it bookends the list."
       - name: ".ds-pagination-position"
         does: "On its own when the whole list fits on one page: the count still shows, in its bar, and there are no controls and no pager below the list."
+    rules:
+      - "**Tinted bars bookend the list.** Each bar keeps `--ds-space-8` between itself and the list, the same space as between papers in a list. Inside a bar, the current page takes the page ground."
+      - "**Which page numbers to show:** the first page, the last page, and the current page with one page either side. On the first three pages, show pages 1 to 5; on the last three, the last five. An ellipsis stands for two or more pages; a gap of one page shows that page instead."
+      - "**A message about the whole list goes above the pager**, such as a limit on how many results can be reached."
+      - "**Results per page and order are not in the pager.** They go with the search or the filters that produced the list."
+      - "**In a card with a header bar, the pager is below the list only**, as the card's last row. The header bar shows the total."
+      - "**On the page ground, above and below a long list; below a short one.** A list of more than about 25 rows, such as search results, has the pager above and below it, so a reader at the end can go on without scrolling back up. A shorter list has the pager below it only."
+      - "**A pager that steps from one set to the next goes above the set's card**, as in a moderation queue, because it changes everything in the card."
 rules:
   - "**Name the set.** The `<nav>` takes an `aria-label` that says what it steps through, such as “Queue navigation”."
   - "**Announce the position.** The counter is a polite live region, so each step is announced without moving focus."
@@ -224,6 +232,20 @@ Numbered pages are for a long list split across pages, such as search results, w
 - `.ds-pagination--top` — A pager above a list, in a tinted bar.
 - `.ds-pagination--bottom` — A pager below a list, in a tinted bar. With the bar above, it bookends the list.
 - `.ds-pagination-position` — On its own when the whole list fits on one page: the count still shows, in its bar, and there are no controls and no pager below the list.
+
+**Rule.** **Tinted bars bookend the list.** Each bar keeps `--ds-space-8` between itself and the list, the same space as between papers in a list. Inside a bar, the current page takes the page ground.
+
+**Rule.** **Which page numbers to show:** the first page, the last page, and the current page with one page either side. On the first three pages, show pages 1 to 5; on the last three, the last five. An ellipsis stands for two or more pages; a gap of one page shows that page instead.
+
+**Rule.** **A message about the whole list goes above the pager**, such as a limit on how many results can be reached.
+
+**Rule.** **Results per page and order are not in the pager.** They go with the search or the filters that produced the list.
+
+**Rule.** **In a card with a header bar, the pager is below the list only**, as the card's last row. The header bar shows the total.
+
+**Rule.** **On the page ground, above and below a long list; below a short one.** A list of more than about 25 rows, such as search results, has the pager above and below it, so a reader at the end can go on without scrolling back up. A shorter list has the pager below it only.
+
+**Rule.** **A pager that steps from one set to the next goes above the set's card**, as in a moderation queue, because it changes everything in the card.
 
 ## Rules
 
