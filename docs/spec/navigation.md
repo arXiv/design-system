@@ -74,7 +74,7 @@ components:
       - name: "[data-toc-scope]"
         does: "Optional, on `.ds-toc`: a selector for the element whose headings fill an empty list. Without it, `toc.js` reads `<main>`, or the whole page when there is no `<main>`."
     rules:
-      - "**The list is written or generated.** Write the `<ol>` by hand, or leave it empty and `toc.js` fills it when the page loads, with one link for every `h2` and `h3` that has an `id`. A written list works with JavaScript off, so these docs write theirs: `verification/gen-anchors.py` fills the `<ol>` from the page’s section headings, and `--check` fails when the two disagree."
+      - "**Write the list.** Write the `<ol>` in the page, with one link for every `h2` and `h3` that has an `id`, so the list works with JavaScript off. `toc.js` fills an empty list when the page loads, as a fallback. These docs write theirs with `verification/gen-anchors.py`, which fills the `<ol>` from the page’s section headings; `--check` fails when the two disagree."
       - "**It opens without JavaScript.** `toc.js` adds closing on Escape, closing on a click outside, and the name of the current section on the control."
       - "**One per page.** `toc.js` drives the first `.ds-toc` it finds, which on this page is the bar at the top; the control in the card above comes later in the document, so it opens and closes on its own and nothing else."
       - "**The contents list repeats the page's headings exactly**, in the same words and the same order. On a paper, the list is the author's headings; see [Papers](papers.md#paper-toc-bar-rules)."
@@ -208,7 +208,10 @@ Need in-page navigation? The TOC bar is a row that holds a single disclosure con
           <svg class="ds-toc-chevron" aria-hidden="true">…</svg>
         </summary>
         <nav class="ds-toc-menu" aria-label="Contents">
-          <ol></ol>      <!-- written by hand, or left empty for toc.js to fill -->
+          <ol>      <!-- each section heading, word for word -->
+            <li><a href="#secondary-navigation">Secondary navigation</a></li>
+            …
+          </ol>
         </nav>
       </details>
     </div>
@@ -227,7 +230,7 @@ Need in-page navigation? The TOC bar is a row that holds a single disclosure con
 - `.ds-toc-bar-inner` — The bar’s three-slot grid, which keeps the control centred whatever sits beside it.
 - `[data-toc-scope]` — Optional, on `.ds-toc`: a selector for the element whose headings fill an empty list. Without it, `toc.js` reads `<main>`, or the whole page when there is no `<main>`.
 
-**Rule.** **The list is written or generated.** Write the `<ol>` by hand, or leave it empty and `toc.js` fills it when the page loads, with one link for every `h2` and `h3` that has an `id`. A written list works with JavaScript off, so these docs write theirs: `verification/gen-anchors.py` fills the `<ol>` from the page’s section headings, and `--check` fails when the two disagree.
+**Rule.** **Write the list.** Write the `<ol>` in the page, with one link for every `h2` and `h3` that has an `id`, so the list works with JavaScript off. `toc.js` fills an empty list when the page loads, as a fallback. These docs write theirs with `verification/gen-anchors.py`, which fills the `<ol>` from the page’s section headings; `--check` fails when the two disagree.
 
 **Rule.** **It opens without JavaScript.** `toc.js` adds closing on Escape, closing on a click outside, and the name of the current section on the control.
 
