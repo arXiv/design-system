@@ -172,7 +172,7 @@ The text sizes are set in rem so they move with the reader's base size. Browsers
 <small>Secondary text.</small>
 <p class="ds-annotation">A margin footnote.</p>
 <p class="ds-panel-label">Paper information</p>
-<p>An identifier: arXiv:2604.22725</p>
+<p>An identifier: <code>arXiv:2604.22725</code></p>
 ```
 
 - `<p>` — 1rem, the reader's base size. Nothing sets it; the browser does.
@@ -241,7 +241,7 @@ A code block uses Plex Mono on Repository Brown, and always includes a copy butt
 
 ```html
 <!-- Write the block the way you already do -->
-<pre><button class="ds-btn">Save</button></pre>
+<pre><code>&lt;button class="ds-btn"&gt;Save&lt;/button&gt;</code></pre>
 
 <!-- And include the script once, at the foot of the page -->
 <script src="copy.js" defer></script>

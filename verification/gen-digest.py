@@ -260,8 +260,10 @@ def extract(path):
                             label = squash(s.text())
                         break
             for pre in acc.find_all(lambda n: n.tag == "pre"):
-                code = html.unescape(re.sub(r"</?span[^>]*>", "", pre.inner_html()))
-                code = html.unescape(code) if "<code" not in code else html.unescape(re.sub(r"</?code[^>]*>", "", code))
+                # The block's text as a reader sees it: the <code> wrapper and any
+                # highlighting spans go, and what the page escapes stays escaped.
+                raw = re.sub(r"</?span[^>]*>", "", pre.inner_html())
+                code = html.unescape(re.sub(r"^\s*<code[^>]*>|</code>\s*$", "", raw))
                 if "\n" not in code.strip() and len(code) > 90:
                     warn.append(f"{comp['title']}: a code block is a single line")
                 target["markup"].append({"label": label, "code": code.strip("\n")})

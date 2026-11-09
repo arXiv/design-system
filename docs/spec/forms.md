@@ -278,13 +278,13 @@ Fields can be in three possible states: normal, validated, or disabled. Validati
 <div class="ds-field ds-field--full">
   <label class="ds-label" for="v3">Abstract</label>
   <input class="ds-input is-invalid" id="v3" type="text" aria-invalid="true" aria-describedby="v3-m" value="<br>Our analysis introduces">
-  <p class="field-error" id="v3-m">Remove the HTML markup <br>.</p>
+  <p class="field-error" id="v3-m">Remove the HTML markup <code><br></code>.</p>
 </div>
 
 <div class="ds-field ds-field--full">
   <label class="ds-label" for="v4">ACM classification<span class="label-optional">(optional)</span></label>
   <input class="ds-input is-warning" id="v4" type="text" aria-describedby="v4-m" value="s 25">
-  <p class="field-warning" id="v4-m">This does not look like an ACM code. Expected form: F.2.2.</p>
+  <p class="field-warning" id="v4-m">This does not look like an ACM code. Expected form: <code>F.2.2</code>.</p>
 </div>
 
 <div class="ds-field ds-field--full">
@@ -292,7 +292,7 @@ Fields can be in three possible states: normal, validated, or disabled. Validati
   <textarea class="ds-input is-invalid" id="m1" rows="3" aria-invalid="true" aria-describedby="m1-m">Abstract: We study the convergence of stochastic gradient methods.<br>Data at https://example.org/sgd.</textarea>
   <ol class="field-messages" id="m1-m">
     <li class="field-error">Do not begin the abstract with the word “Abstract”.</li>
-    <li class="field-error">Remove the HTML markup <br>.</li>
+    <li class="field-error">Remove the HTML markup <code><br></code>.</li>
     <li class="field-warning">Font commands are not processed and appear literally.</li>
     <li class="field-warning">Add a space between a URL and the punctuation after it.</li>
   </ol>
@@ -303,8 +303,8 @@ Fields can be in three possible states: normal, validated, or disabled. Validati
 <div class="ds-field ds-field--full">
   <label class="ds-label" for="hb">ACM classification<span class="label-optional">(optional)</span></label>
   <input class="ds-input is-warning" id="hb" type="text" aria-describedby="hb-h hb-m" value="s 25">
-  <p class="ds-hint" id="hb-h">Example: F.2.2; I.2.7</p>
-  <p class="field-warning" id="hb-m">This does not look like an ACM code. Expected form: F.2.2.</p>
+  <p class="ds-hint" id="hb-h">Example: <code>F.2.2; I.2.7</code></p>
+  <p class="field-warning" id="hb-m">This does not look like an ACM code. Expected form: <code>F.2.2</code>.</p>
 </div>
 ```
 
@@ -332,7 +332,7 @@ Repeat the problems below the page heading using an alert component. Errors are 
     <p>Blocking errors must be corrected before you can continue. Select an item to jump to that field.</p>
     <ol>
       <li><a href="#m1">Abstract — do not begin with the word “Abstract”</a></li>
-      <li><a href="#m1">Abstract — remove the HTML markup <br></a></li>
+      <li><a href="#m1">Abstract — remove the HTML markup <code><br></code></a></li>
     </ol>
   </div>
 </div>
