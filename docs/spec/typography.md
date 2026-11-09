@@ -37,7 +37,7 @@ components:
       - name: ".ds-panel-label"
         does: "0.75rem, condensed, uppercase."
       - name: "<code>"
-        does: "0.9em, so it follows the size of its parent."
+        does: "0.9em, so it follows the size of its parent. When to use it rather than a block: [Code blocks and the copy button](#code-blocks-and-the-copy-button)."
     notes:
       - "Meets accessibility guideline [WCAG 2.2 SC 1.4.4](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html) Resize Text (Level AA)"
   - id: the-heading-scale
@@ -76,10 +76,12 @@ components:
       - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA)"
   - id: code-blocks-and-the-copy-button
     title: "Code blocks and the copy button"
-    summary: "A code block uses Plex Mono on Repository Brown, and always includes a copy button."
+    summary: "A code block uses Plex Mono on Repository Brown, and always includes a copy button. Use a block for code a reader copies, or code that runs over more than one line. A short name or example in running text that a reader would not copy, such as a file name or a list of allowed characters, is inline `<code>`, which has no button."
     classes:
+      - name: "<code>"
+        does: "Inline code: a short name or example inside a sentence, which a reader would not copy. No copy button."
       - name: "<pre><code>"
-        does: "The block. Escape `<`, `>` and `&` inside it. No wrapper and no button of your own."
+        does: "The block, for code a reader copies or code that runs over more than one line. Escape `<`, `>` and `&` inside it. No wrapper and no button of your own."
       - name: "<script src=\"copy.js\" defer>"
         does: "Once per page, at the foot. It finds every `<pre>` on the page and adds the control."
       - name: ".ds-code, .ds-code-copy"
@@ -180,7 +182,7 @@ The text sizes are set in rem so they move with the reader's base size. Browsers
 - `<pre>` — 0.875rem, line-height 1.6, on the dark chrome ground.
 - `.ds-annotation` — 0.8125rem, serif italic, line-height 1.45.
 - `.ds-panel-label` — 0.75rem, condensed, uppercase.
-- `<code>` — 0.9em, so it follows the size of its parent.
+- `<code>` — 0.9em, so it follows the size of its parent. When to use it rather than a block: [Code blocks and the copy button](#code-blocks-and-the-copy-button).
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.4.4](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html) Resize Text (Level AA)
 
@@ -237,17 +239,21 @@ The words that matched a search are marked with `<mark>`, in the accent wash and
 
 ## Code blocks and the copy button
 
-A code block uses Plex Mono on Repository Brown, and always includes a copy button.
+A code block uses Plex Mono on Repository Brown, and always includes a copy button. Use a block for code a reader copies, or code that runs over more than one line. A short name or example in running text that a reader would not copy, such as a file name or a list of allowed characters, is inline `<code>`, which has no button.
 
 ```html
-<!-- Write the block the way you already do -->
-<pre><code>&lt;button class="ds-btn"&gt;Save&lt;/button&gt;</code></pre>
+<!-- A name in running text: inline -->
+<p>The main action on a page takes <code>.ds-btn-primary</code>:</p>
+
+<!-- Code to copy: a block, written the way you already do -->
+<pre><code>&lt;button class="ds-btn ds-btn-primary" type="button"&gt;Save&lt;/button&gt;</code></pre>
 
 <!-- And include the script once, at the foot of the page -->
 <script src="copy.js" defer></script>
 ```
 
-- `<pre><code>` — The block. Escape `<`, `>` and `&` inside it. No wrapper and no button of your own.
+- `<code>` — Inline code: a short name or example inside a sentence, which a reader would not copy. No copy button.
+- `<pre><code>` — The block, for code a reader copies or code that runs over more than one line. Escape `<`, `>` and `&` inside it. No wrapper and no button of your own.
 - `<script src="copy.js" defer>` — Once per page, at the foot. It finds every `<pre>` on the page and adds the control.
 - `.ds-code, .ds-code-copy` — The wrapper and the button. The script writes both; never hand-build them.
 - `[data-no-copy]` — On a `<pre>`, opts that block out — for a block that is an illustration of output rather than something to take away.
