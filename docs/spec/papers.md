@@ -1,7 +1,7 @@
 ---
 page: papers.html
 title: "Papers"
-summary: "Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to HTML papers pages, search results and more. How a paper shows which version is being read is on [Indicate which version is being read](../versions.html), and how its citations and footnotes work is on [Show a reference without losing the reader's place](../references.html)."
+summary: "Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to both HTML papers pages and search results. More relevant documentation: [Indicating which version is being read](../versions.html) and [following references without losing your place](../references.html)."
 stylesheet: design-system.css
 components:
   - id: the-metadata-hierarchy
@@ -40,25 +40,41 @@ components:
     notes:
       - "Meets accessibility guideline [WCAG 2.2 SC 1.4.13](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html) Content on Hover or Focus (Level AA)"
   - id: full-papers
-    title: "Displaying full papers"
+    title: "Displaying abstract and primary metadata"
     summary: "On a paper's own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The version history and the paper's details sit in the sidebar."
     classes:
       - name: ".ds-paper-identity"
-        does: "The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the licence as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers."
+        does: "The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers."
       - name: "<h1>"
         does: "The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page."
       - name: ".ds-date-row"
-        does: "The dates and the version links, as in [Indicate which version is being read](../versions.html#dates-and-versions). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version."
+        does: "The dates and the version links, as in [Indicate which version is being read](../versions.html#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version."
       - name: ".ds-alert--warning"
-        does: "Only when an older version is being viewed. See [Indicate which version is being read](../versions.html#dates-and-versions)."
+        does: "Only when an older version is being viewed. See [Indicate which version is being read](../versions.html#version-row)."
       - name: ".ds-link-list"
         does: "On a `<p>`: the authors, with Show more after eight."
       - name: "<h2 class=\"is-sr-only\">"
         does: "The abstract's heading, “Abstract”, hidden from sight. Sighted readers know the paragraph after the authors is the abstract; screen-reader users can still jump to it by heading. The demo uses an `<h3>`, because its title is an `<h2>`."
       - name: "<p>"
         does: "The abstract, in full."
+      - name: "<title>"
+        does: "Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first."
+      - name: ".ds-paper-identity"
+        does: "The identifier with the notice's version, and the category. With no text to read, the DOI and the license leave the line; Metadata, in the sidebar, still has the DOI."
+      - name: ".ds-paper-status"
+        does: "“Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author's title is not edited, and it has `lang=\"en\"` because the title may be in another language."
+      - name: ".ds-alert--error"
+        does: "On a `<section>`: the notice, straight after the title and before the dates. It says who withdrew the paper, gives the reason as they wrote it, in quotes, and links to the last version that can be read. A `<section>` named by its heading, so a screen reader reaches it second and lists it among the headings. No role, because it is in the page as it loads (see [Alerts](alerts.md))."
+      - name: ".ds-alert-title"
+        does: "On a heading, one level below the title: an `<h2>` on the page. The demo uses an `<h3>` because it sits inside this page."
+      - name: ".ds-paper-status"
+        does: "“Removed:”, built as “Withdrawn:” is."
+      - name: ".ds-alert--error"
+        does: "Says that arXiv removed the version, quotes arXiv's comment as written, and says that the full text and files are gone."
+      - name: ".ds-date-row"
+        does: "Ends with Removed and its date. A removal changes the version in place, so no version is added to the list."
       - name: ".ds-sidebar"
-        does: "The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
+        does: "The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
       - name: ".ds-panel-label"
         does: "On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page."
       - name: ".ds-paper-files"
@@ -71,14 +87,48 @@ components:
         does: "The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score."
       - name: ".ds-acc"
         does: "Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label. They share `name=\"paper-info\"`, so only one is open at a time."
+    notes:
+      - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2: the status goes “before the original main title”, and the notice is “a clearly signposted box” in its own color."
+      - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.5: a removed article keeps “the article’s title, author list, and relevant metadata”, and only “the main text” goes."
     rules:
       - "**You are viewing version 1.** A newer version is available — [version 3, revised 28 Jun 2026](https://arxiv.org/abs/2604.22725v3)."
+      - "This paper has been withdrawn by Adrian Palomares.: Reason given: “The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.” The withdrawn paper can still be read in [version 3](#v3)."
+      - "This version has been removed by arXiv.: “arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission.” The full text and files are no longer available."
+  - id: the-version-row
+    title: "The version row"
+    summary: "The row under the title gives the paper's dates and links to its other versions; the version being read is in a box. The row changes with the number of versions, with the version being read, and when a paper is withdrawn or removed: [Indicate which version is being read](../versions.html#version-row) shows each case."
+  - id: withdrawn-papers
+    title: "Withdrawn and removed papers"
+    summary: "A withdrawn paper keeps its title, authors, abstract and metadata, and its earlier versions can still be read. A removed version keeps its title, authors, abstract and metadata, but its full text and files are gone. In both cases, a status before the title and a notice after it say what happened."
+    classes:
+      - name: "<title>"
+        does: "Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first."
+      - name: ".ds-paper-identity"
+        does: "The identifier with the notice's version, and the category. With no text to read, the DOI and the license leave the line; Metadata, in the sidebar, still has the DOI."
+      - name: ".ds-paper-status"
+        does: "“Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author's title is not edited, and it has `lang=\"en\"` because the title may be in another language."
+      - name: ".ds-alert--error"
+        does: "On a `<section>`: the notice, straight after the title and before the dates. It says who withdrew the paper, gives the reason as they wrote it, in quotes, and links to the last version that can be read. A `<section>` named by its heading, so a screen reader reaches it second and lists it among the headings. No role, because it is in the page as it loads (see [Alerts](alerts.md))."
+      - name: ".ds-alert-title"
+        does: "On a heading, one level below the title: an `<h2>` on the page. The demo uses an `<h3>` because it sits inside this page."
+      - name: ".ds-paper-status"
+        does: "“Removed:”, built as “Withdrawn:” is."
+      - name: ".ds-alert--error"
+        does: "Says that arXiv removed the version, quotes arXiv's comment as written, and says that the full text and files are gone."
+      - name: ".ds-date-row"
+        does: "Ends with Removed and its date. A removal changes the version in place, so no version is added to the list."
+    notes:
+      - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2: the status goes “before the original main title”, and the notice is “a clearly signposted box” in its own color."
+      - "Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.5: a removed article keeps “the article’s title, author list, and relevant metadata”, and only “the main text” goes."
+    rules:
+      - "This paper has been withdrawn by Adrian Palomares.: Reason given: “The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.” The withdrawn paper can still be read in [version 3](#v3)."
+      - "This version has been removed by arXiv.: “arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission.” The full text and files are no longer available."
   - id: the-sidebar
-    title: "The sidebar"
-    summary: "Beside a full paper, the sidebar holds the paper's files, its citation and its information, in that order."
+    title: "Displaying paper actions and full metadata"
+    summary: "Beside the abstract, the sidebar holds downloadable files, a citation tool, and additional paper information, in that order."
     classes:
       - name: ".ds-sidebar"
-        does: "The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
+        does: "The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself."
       - name: ".ds-panel-label"
         does: "On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page."
       - name: ".ds-paper-files"
@@ -93,7 +143,7 @@ components:
         does: "Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label. They share `name=\"paper-info\"`, so only one is open at a time."
   - id: paper-toc-bar
     title: "The TOC bar on a paper"
-    summary: "On a paper, the TOC bar also has the arXiv logo on the left and links to the paper's abstract page, PDF and TeX source on the right."
+    summary: "On a paper, the TOC bar also has the arXiv logo on the left and links to the paper's PDF and TeX source on the right."
     classes:
       - name: ".ds-toc-bar"
         does: "The bar, as on [Progressive disclosure](progressive-disclosure.md#toc-bar). On a paper it is `.ds-full`, the full width of the page."
@@ -102,7 +152,7 @@ components:
       - name: ".ds-toc-menu"
         does: "The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list. Subsections are an `<ol>` inside their section's `<li>`, indented to the section's title in smaller type."
       - name: ".ds-paper-tools"
-        does: "Abstract, PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `arrow-left`, `file-text` and `tex` from `docs/icons/`."
+        does: "PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `file-text` and `tex` from `docs/icons/`."
   - id: paper-permalinks
     title: "Section permalinks"
     summary: "Each section heading in a paper has a Permalink control that copies the link to that section, including the version."
@@ -112,7 +162,7 @@ components:
       - name: ".is-sr-only"
         does: "Completes the name: “Permalink to section 2, Setup”. The name starts with the visible word."
       - name: "[role=\"status\"]"
-        does: "One region on the page. The script writes “Link to section 2, Setup copied” into it, as `anchors.js` does."
+        does: "One region on the page. `anchors.js` writes “Link to section 2, Setup copied” into it, shows the green tick in place of the link icon, and clears both after 2 seconds."
       - name: ".is-active"
         does: "Set on the heading by a tap, on screens without hover."
     notes:
@@ -138,69 +188,49 @@ components:
     notes:
       - "**Alt text**Line chart of the power spectrum against scale. The solid blue line rises steeply; the dashed red line rises gently."
 rules:
-  - "**Show the author's text as written.** A title or abstract is never shortened, reworded or corrected; TeX shows as the author wrote it. An excerpt is cut, never edited."
+  - "**Show the author's text as written.** A title or abstract is never shortened, reworded or corrected. When we display TeX, it is shown exactly as the author wrote it. We may excerpt a long abstract in search results, but never edit it."
   - "**Leave out what a paper does not have.** No empty labels and no placeholders."
   - "**Every date has its label.** Readers confuse submitted and announced dates when either stands alone."
-  - "**The primary category comes first** and is told apart by more than colour: its tooltip names it as primary."
-  - "**The identity line comes first.** Many readers arrive at a paper directly, without passing its abstract page. It is centred and spans the page to the gutters."
-  - "**The abstract has a heading, hidden from sight.** An `<h2 class=\"is-sr-only\">Abstract</h2>` puts it in the heading outline without adding a line above it."
-  - "**The paper follows its abstract on the same page.** A reader reaches the first section by scrolling, by the TOC bar or by the skip link, with no click to open the paper."
-  - "**The page has one `<main>`**, from the area above the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it. When LaTeXML's output has no `<main>`, the page around the paper supplies it."
-  - "**An optional area above the identity line** holds a temporary message or link, such as Back to abstract while readers move to HTML papers. It is `.ds-btn-text` for a link, or an alert for a message."
-  - "**The licence is a link, with no explanation.**"
-  - "**Other formats, when a paper has them, are a link in the sidebar**, under TeX Source and above Ancillary Files."
-  - "**The sidebar order is Files, Cite, Paper information.** Files and Cite are always open; Version history, Accessibility and Metadata, under Paper information, start closed, and only one is open at a time (see [One panel open at a time](progressive-disclosure.md#one-panel-open-at-a-time))."
-  - "**Every download shows its size.**"
-  - "**A citation names the arXiv identifier and the arXiv DOI**, never the HTML page, even when the paper has a journal reference."
-  - "**BibTeX lists every author.** “and others” becomes “et al.” in a reference manager, and the other authors are lost."
-  - "**APA, Chicago and MLA follow their own style rules** for long author lists."
-  - "**Every citation format is in the page.** The script only chooses which one shows."
-  - "**The accessibility panel lists only what the paper has.** A missing capability has no line, and there is no overall score."
+  - "**A citation names the arXiv identifier and the arXiv DOI**, never the HTML page or a journal reference."
+  - "**BibTeX lists every author**, because a reference manager turns “and others” into “et al.” and the other authors are lost. APA, Chicago and MLA follow their own style rules for long author lists."
+  - "**Every version of a withdrawn paper shows the notice.** A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn. The notice takes the place of the older-version warning, and links to the last version that can be read, except on that version."
+  - "**When there is no full text, affordances related to full text are also removed.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all."
+  - "**A removed version keeps its license, but not its cross-listed categories.** This is arXiv's current practice."
+  - "**arXiv staff may decide to remove the license or other metadata** when there is a legal reason to do so, as allowed under [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2."
+  - "**A citation of an earlier version says the paper was withdrawn.** Each format ends with a note, such as “This paper was withdrawn, 22 Oct 2026”, so the status travels with the citation."
+  - "Display guidelines for withdrawn and removed papers follow [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf)."
+  - "**The paper follows its abstract on the same page.** A reader reaches the first section by scrolling, the TOC bar or the skip link, with no click to open the paper."
   - "**The body markup is LaTeXML's, unchanged.** arXiv styles it from outside with CSS and never rewrites, reorders or wraps the author's elements."
-  - "**ar5iv's stylesheet is in a cascade layer**, so an ordinary rule outranks it without `!important`. The `arxiv-override` layer is only for a property ar5iv itself marks `!important`."
-  - "**Body text is set as on [Typography](typography.md).** ar5iv sets weight 300, so set 400."
-  - "**Body text is left-aligned, never justified.** Inline math gives a justified line nowhere to break."
-  - "**Body text is hyphenated** with `hyphens: auto`. It needs the page's `lang` attribute, which tells the browser which language to hyphenate."
+  - "**Body text is set per rules in [Typography](typography.md).**"
+  - "**Body text is left-aligned and hyphenated, never justified.** A justified line has nowhere to break around inline math, so it opens wide gaps between words. Set `hyphens: auto`, and the page's `lang` attribute, which tells the browser which language to hyphenate."
   - "**A figure caption is Plex Sans at 0.875rem, left-aligned, the width of the figure.** Its label, text and punctuation are as the author wrote them."
-  - "**Paper figures keep ar5iv's white background in dark mode; arXiv's own images do not.** Clear it on the header, TOC bar and footer images."
-  - "**LaTeXML's beta badge and conversion logo are not shown.**"
+  - "**Paper figures maintain a white background in dark mode.**"
   - "**The contents list repeats the author's headings exactly**, including subsections, appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML's contents entries with their MathML. A script that reads a heading's words leaves out the TeX annotation, as `toc.js` and `anchors.js` do."
-  - "**LaTeXML's own sidebar is not shown.** The `.ds-toc` list replaces it."
-  - "**Each link in the bar shows an icon and its name.**"
-  - "**PDF opens in a new tab, in the bar and in the sidebar**, so the reader keeps their place in the HTML paper. It has the external-link icon and “(opens in a new tab)”, as on [Links](links.md)."
-  - "**A second skip link goes to the paper's first section**, before the sidebar, so a keyboard user can pass it."
+  - "**The paper PDF always opens in a new tab**, so the reader keeps their place in the HTML paper."
   - "**Every link to a place in the paper lands below the TOC bar.** The bar sets `scroll-padding-top`, which covers the TOC, a permalink, a citation and a cross-reference; a script that scrolls uses `scrollIntoView`, which respects it."
   - "**Every section, subsection and appendix heading has a Permalink control.** It copies the address with the section's LaTeXML id and the version: `…/2604.22725v1#S2`."
-  - "**The accessible name starts with the visible word**, then names the section."
-  - "**Copying is announced in words**, as in [Confirm an action that changes nothing on screen](../action-feedback.html)."
-  - "**One action gets the Permalink control; several get the element pill.**"
-  - "**Inline math gets nothing from arXiv**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly."
-  - "**View TeX swaps the equation for its TeX in place**, in plain monospace with no code box. The TeX view is hidden until asked for, and MathML annotations are never displayed."
+  - "**Permalinks can appear in two places**: in the Permalink control after a section heading, or in the element pill below a specific content block. A heading has one action, so it gets the Permalink control; an equation, figure or reference has several, so it gets the element pill."
+  - "**A wide equation scrolls inside its own box; it never scrolls the page.** The equation number stays pinned to the right edge while it scrolls."
+  - "**View TeX swaps the equation for its TeX in place**, in plain monospace with no code box, and MathML annotations are never displayed. Copy copies what is on screen: the MathML in math view, the TeX in TeX view."
   - "**View TeX and Copy use the TeX that LaTeXML keeps with the equation.** LaTeXML expands the author's own macros into standard TeX, so the copy works outside the paper. The author's own files are the TeX Source download."
-  - "**Copy copies what is on screen**: the MathML in math view, the TeX in TeX view."
-  - "**A wide equation scrolls inside its own box, never the page.** The box has `tabindex=\"0\"`, `role=\"region\"` and a name: “Equation 2.14, scrolls sideways”."
-  - "**The equation number stays in view**, pinned to the right edge while the equation scrolls."
-  - "**Only the author's alt text is shown**, whole and unchanged. The image's `alt` is never changed, and no reader-written or machine-written description is added. Write it in with `textContent`."
-  - "**Long alt text is not shortened.** This is the one margin note longer than two sentences."
-  - "**A figure without alt text says so.** Its margin note reads “No alt text provided”, in `--ds-text-muted`, with a link to how to add alt text."
-  - "**Expand opens the figure viewer**, a `.ds-modal.ds-modal--wide` with `closedby=\"any\"`. Clicking the image opens it too; Expand is the keyboard path."
-  - "**The viewer shows a copy.** The figure in the paper is never moved or changed."
-  - "**The viewer shows the caption exactly as the author wrote it**, under the figure. The dialog is named by the caption's own label, such as “Figure 1:”, with `aria-labelledby`."
+  - "**Only the author's alt text is shown**, whole and unchanged, however long. No reader-written or machine-written description is added, and the image's `alt` is never changed; write it in with `textContent`. A figure without alt text says “No alt text provided”, in `--ds-text-muted`, with a link to how to add alt text."
+  - "**Expand opens the figure viewer**, a [wide modal](modals.md#wide-for-a-viewer), and clicking the image opens it too; Expand is the keyboard path. The viewer shows a copy of the figure with its caption exactly as the author wrote it, and the figure in the paper is never moved or changed."
   - "**Zoom stays until the reader closes the viewer.** Zoom in, Zoom out and Fit buttons, the wheel, double-click, pinch and the +, - and 0 keys all work; drag or the arrow keys pan."
-  - "**The zoom level is shown and announced**, with `aria-live=\"polite\"`."
-  - "**Closing returns focus to what opened the viewer.**"
-  - "**Zoom is animated only when reduced motion is not set.**"
-  - "**Print hides the TOC bar, the permalinks, the element pills and every popover.** The identity line prints at 10pt."
-  - "**No page break inside an equation, table or figure, and none straight after a heading.** Sections may break."
-  - "**Paper titles are always a heading**, so a screen reader user can easily find it and move from paper to paper in a list."
-  - "**Name each format link's paper.** In a list, “PDF” alone is the same link text fifty times; an `.is-sr-only` span adds the identifier."
+  - "**Print hides the TOC bar, the permalinks, the element pills and every popover.** The identity line prints at 10pt. No page break falls inside an equation, table or figure, or straight after a heading; sections may break."
+  - "**The title of each paper is a heading**, in a list as on its own page, so a screen reader user can find it and move from paper to paper."
+  - "**Format links name their paper for screen reader users.** In the markup the paper title comes just before the format links, though the dates are shown first, with the CSS `order` property. Each link also has an `.is-sr-only` span with the paper's identifier, so a screen reader user who lists the page's links hears “PDF of 2609.36857”, not “PDF” fifty times."
   - "**Category names are in the tooltip, never only in a `title` attribute.** See [Tooltip](forms.md#tooltip)."
-  - "**Paper title just before links.** For screen reader users, to maintain context, the title should appear before the format links, and just before them, so that the context is not forgotten. That means displaying the row with dates and links using the CSS `order` property (ie: the visual display will show the dates first, but the DOM order lists the links first)."
+  - "**On a withdrawn or removed paper, the status appears before the paper title**, so it is seen or spoken out loud early in the reading experience. The alert red color of the status enhances the label but is never the only signal."
+  - "**The page has one `<main>`**, from the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it."
+  - "**A second skip link before the sidebar goes to the paper's first section**, so a keyboard user can skip the content in between."
+  - "**Inline math gets no additional markup**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly."
+  - "**A scrolling equation box can be reached by keyboard and has a name.** It has `tabindex=\"0\"`, `role=\"region\"` and a name: “Equation 2.14, scrolls sideways”."
+  - "**The figure viewer is named by the caption's own label**, such as “Figure 1:”, with `aria-labelledby`. Its zoom level is shown and announced, with `aria-live=\"polite\"`, and zoom is animated only when reduced motion is not set."
 ---
 
 # Papers
 
-Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to HTML papers pages, search results and more. How a paper shows which version is being read is on [Indicate which version is being read](../versions.html), and how its citations and footnotes work is on [Show a reference without losing the reader's place](../references.html).
+Displaying paper-related content is arXiv's richest, most complex, and highest stakes design challenge. This page gathers together guidelines that help us display papers and paper-related content consistently and accessibly. It is applicable to both HTML papers pages and search results. More relevant documentation: [Indicating which version is being read](../versions.html) and [following references without losing your place](../references.html).
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
@@ -278,7 +308,7 @@ A paper's subject categories show as tags, primary first. Each code links to its
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.4.13](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html) Content on Hover or Focus (Level AA)
 
-## Displaying full papers
+## Displaying abstract and primary metadata
 
 On a paper's own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The version history and the paper's details sit in the sidebar.
 
@@ -313,9 +343,51 @@ On a paper's own page the order is the identity line, the title, the dates and v
 <p>We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
 ```
 
+**The top of a withdrawn paper, viewing the withdrawal notice**
+
+```html
+<title>Withdrawn: Gauge-independent approach to inflation in quadratic gravity</title>
+…
+<p class="ds-paper-identity">
+  <span><span class="ds-version" aria-hidden="true">arXiv:2604.22725v4</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 4</span></span>
+  <span>[gr-qc] General Relativity and Quantum Cosmology</span>
+</p>
+<h1><span class="ds-paper-status" lang="en">Withdrawn:</span> Gauge-independent approach to inflation in quadratic gravity</h1>
+<section class="ds-alert ds-alert--error" aria-labelledby="notice-h">
+  <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>
+  <div class="ds-alert-content">
+    <h2 class="ds-alert-title" id="notice-h">This paper has been withdrawn by Adrian Palomares.</h2>
+    <p>Reason given: “The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.” The withdrawn paper can still be read in <a href="https://arxiv.org/abs/2604.22725v3">version 3</a>.</p>
+  </div>
+</section>
+<p class="ds-date-row">…the dates, ending with Withdrawn, and the versions, as in <a href="versions.html#version-row">Version row</a>…</p>
+<p class="ds-link-list">…the authors…</p>
+<p>…the abstract…</p>
+```
+
+**The top of a removed version**
+
+```html
+<title>Removed: Gauge-independent approach to inflation in quadratic gravity</title>
+…
+<h1><span class="ds-paper-status" lang="en">Removed:</span> Gauge-independent approach to inflation in quadratic gravity</h1>
+<section class="ds-alert ds-alert--error" aria-labelledby="notice-h">
+  <svg class="ds-alert-icon" …>…</svg>
+  <div class="ds-alert-content">
+    <h2 class="ds-alert-title" id="notice-h">This version has been removed by arXiv.</h2>
+    <p>“arXiv admin comment: …” The full text and files are no longer available.</p>
+  </div>
+</section>
+<p class="ds-date-row">
+  …Submitted and Announced…
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+  Removed <time datetime="2026-10-23">23 Oct 2026</time> UTC
+</p>
+```
+
 ```html
 <div>
-<div>…the paper…</div>
+<div>…the abstract…</div>
 <aside class="ds-sidebar" aria-label="About this paper">
   <section aria-labelledby="files-h">
     <h2 class="ds-panel-label" id="files-h">Files</h2>
@@ -406,14 +478,22 @@ On a paper's own page the order is the identity line, the title, the dates and v
 </div>
 ```
 
-- `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the licence as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
+- `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
 - `<h1>` — The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page.
-- `.ds-date-row` — The dates and the version links, as in [Indicate which version is being read](../versions.html#dates-and-versions). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version.
-- `.ds-alert--warning` — Only when an older version is being viewed. See [Indicate which version is being read](../versions.html#dates-and-versions).
+- `.ds-date-row` — The dates and the version links, as in [Indicate which version is being read](../versions.html#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version.
+- `.ds-alert--warning` — Only when an older version is being viewed. See [Indicate which version is being read](../versions.html#version-row).
 - `.ds-link-list` — On a `<p>`: the authors, with Show more after eight.
 - `<h2 class="is-sr-only">` — The abstract's heading, “Abstract”, hidden from sight. Sighted readers know the paragraph after the authors is the abstract; screen-reader users can still jump to it by heading. The demo uses an `<h3>`, because its title is an `<h2>`.
 - `<p>` — The abstract, in full.
-- `.ds-sidebar` — The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
+- `<title>` — Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first.
+- `.ds-paper-identity` — The identifier with the notice's version, and the category. With no text to read, the DOI and the license leave the line; Metadata, in the sidebar, still has the DOI.
+- `.ds-paper-status` — “Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author's title is not edited, and it has `lang="en"` because the title may be in another language.
+- `.ds-alert--error` — On a `<section>`: the notice, straight after the title and before the dates. It says who withdrew the paper, gives the reason as they wrote it, in quotes, and links to the last version that can be read. A `<section>` named by its heading, so a screen reader reaches it second and lists it among the headings. No role, because it is in the page as it loads (see [Alerts](alerts.md)).
+- `.ds-alert-title` — On a heading, one level below the title: an `<h2>` on the page. The demo uses an `<h3>` because it sits inside this page.
+- `.ds-paper-status` — “Removed:”, built as “Withdrawn:” is.
+- `.ds-alert--error` — Says that arXiv removed the version, quotes arXiv's comment as written, and says that the full text and files are gone.
+- `.ds-date-row` — Ends with Removed and its date. A removal changes the version in place, so no version is added to the list.
+- `.ds-sidebar` — The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
 - `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
@@ -421,15 +501,90 @@ On a paper's own page the order is the identity line, the title, the dates and v
 - `.ds-paper-capabilities` — The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score.
 - `.ds-acc` — Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label. They share `name="paper-info"`, so only one is open at a time.
 
+> Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2: the status goes “before the original main title”, and the notice is “a clearly signposted box” in its own color.
+
+> Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.5: a removed article keeps “the article’s title, author list, and relevant metadata”, and only “the main text” goes.
+
 **Rule.** **You are viewing version 1.** A newer version is available — [version 3, revised 28 Jun 2026](https://arxiv.org/abs/2604.22725v3).
 
-## The sidebar
+**Rule.** This paper has been withdrawn by Adrian Palomares.: Reason given: “The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.” The withdrawn paper can still be read in [version 3](#v3).
 
-Beside a full paper, the sidebar holds the paper's files, its citation and its information, in that order.
+**Rule.** This version has been removed by arXiv.: “arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission.” The full text and files are no longer available.
+
+## The version row
+
+The row under the title gives the paper's dates and links to its other versions; the version being read is in a box. The row changes with the number of versions, with the version being read, and when a paper is withdrawn or removed: [Indicate which version is being read](../versions.html#version-row) shows each case.
+
+## Withdrawn and removed papers
+
+A withdrawn paper keeps its title, authors, abstract and metadata, and its earlier versions can still be read. A removed version keeps its title, authors, abstract and metadata, but its full text and files are gone. In both cases, a status before the title and a notice after it say what happened.
+
+**The top of a withdrawn paper, viewing the withdrawal notice**
+
+```html
+<title>Withdrawn: Gauge-independent approach to inflation in quadratic gravity</title>
+…
+<p class="ds-paper-identity">
+  <span><span class="ds-version" aria-hidden="true">arXiv:2604.22725v4</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 4</span></span>
+  <span>[gr-qc] General Relativity and Quantum Cosmology</span>
+</p>
+<h1><span class="ds-paper-status" lang="en">Withdrawn:</span> Gauge-independent approach to inflation in quadratic gravity</h1>
+<section class="ds-alert ds-alert--error" aria-labelledby="notice-h">
+  <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>
+  <div class="ds-alert-content">
+    <h2 class="ds-alert-title" id="notice-h">This paper has been withdrawn by Adrian Palomares.</h2>
+    <p>Reason given: “The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.” The withdrawn paper can still be read in <a href="https://arxiv.org/abs/2604.22725v3">version 3</a>.</p>
+  </div>
+</section>
+<p class="ds-date-row">…the dates, ending with Withdrawn, and the versions, as in <a href="versions.html#version-row">Version row</a>…</p>
+<p class="ds-link-list">…the authors…</p>
+<p>…the abstract…</p>
+```
+
+**The top of a removed version**
+
+```html
+<title>Removed: Gauge-independent approach to inflation in quadratic gravity</title>
+…
+<h1><span class="ds-paper-status" lang="en">Removed:</span> Gauge-independent approach to inflation in quadratic gravity</h1>
+<section class="ds-alert ds-alert--error" aria-labelledby="notice-h">
+  <svg class="ds-alert-icon" …>…</svg>
+  <div class="ds-alert-content">
+    <h2 class="ds-alert-title" id="notice-h">This version has been removed by arXiv.</h2>
+    <p>“arXiv admin comment: …” The full text and files are no longer available.</p>
+  </div>
+</section>
+<p class="ds-date-row">
+  …Submitted and Announced…
+  <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
+  Removed <time datetime="2026-10-23">23 Oct 2026</time> UTC
+</p>
+```
+
+- `<title>` — Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first.
+- `.ds-paper-identity` — The identifier with the notice's version, and the category. With no text to read, the DOI and the license leave the line; Metadata, in the sidebar, still has the DOI.
+- `.ds-paper-status` — “Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author's title is not edited, and it has `lang="en"` because the title may be in another language.
+- `.ds-alert--error` — On a `<section>`: the notice, straight after the title and before the dates. It says who withdrew the paper, gives the reason as they wrote it, in quotes, and links to the last version that can be read. A `<section>` named by its heading, so a screen reader reaches it second and lists it among the headings. No role, because it is in the page as it loads (see [Alerts](alerts.md)).
+- `.ds-alert-title` — On a heading, one level below the title: an `<h2>` on the page. The demo uses an `<h3>` because it sits inside this page.
+- `.ds-paper-status` — “Removed:”, built as “Withdrawn:” is.
+- `.ds-alert--error` — Says that arXiv removed the version, quotes arXiv's comment as written, and says that the full text and files are gone.
+- `.ds-date-row` — Ends with Removed and its date. A removal changes the version in place, so no version is added to the list.
+
+> Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2: the status goes “before the original main title”, and the notice is “a clearly signposted box” in its own color.
+
+> Follows [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.5: a removed article keeps “the article’s title, author list, and relevant metadata”, and only “the main text” goes.
+
+**Rule.** This paper has been withdrawn by Adrian Palomares.: Reason given: “The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.” The withdrawn paper can still be read in [version 3](#v3).
+
+**Rule.** This version has been removed by arXiv.: “arXiv admin comment: This version has been removed by arXiv administrators as the submitter did not have the rights to agree to the license at the time of submission.” The full text and files are no longer available.
+
+## Displaying paper actions and full metadata
+
+Beside the abstract, the sidebar holds downloadable files, a citation tool, and additional paper information, in that order.
 
 ```html
 <div>
-<div>…the paper…</div>
+<div>…the abstract…</div>
 <aside class="ds-sidebar" aria-label="About this paper">
   <section aria-labelledby="files-h">
     <h2 class="ds-panel-label" id="files-h">Files</h2>
@@ -520,7 +675,7 @@ Beside a full paper, the sidebar holds the paper's files, its citation and its i
 </div>
 ```
 
-- `.ds-sidebar` — The column beside the paper: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
+- `.ds-sidebar` — The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layout-patterns.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
 - `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
@@ -530,7 +685,7 @@ Beside a full paper, the sidebar holds the paper's files, its citation and its i
 
 ## The TOC bar on a paper
 
-On a paper, the TOC bar also has the arXiv logo on the left and links to the paper's abstract page, PDF and TeX source on the right.
+On a paper, the TOC bar also has the arXiv logo on the left and links to the paper's PDF and TeX source on the right.
 
 ```html
 <div class="ds-full ds-toc-bar">
@@ -561,7 +716,6 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
       </nav>
     </details>
     <nav class="ds-paper-tools" aria-label="Other formats">
-      <a href="https://arxiv.org/abs/2604.22725v1"><svg aria-hidden="true">…</svg>Abstract</a>
       <a href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener"><svg aria-hidden="true">…</svg>PDF<span class="is-sr-only"> (opens in a new tab)</span></a>
       <a href="https://arxiv.org/src/2604.22725v1"><svg aria-hidden="true">…</svg><span class="is-sr-only">TeX </span>Source</a>
     </nav>
@@ -572,7 +726,7 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
 - `.ds-toc-bar` — The bar, as on [Progressive disclosure](progressive-disclosure.md#toc-bar). On a paper it is `.ds-full`, the full width of the page.
 - `.ds-paper-bar-logo` — The one-colour Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill="currentColor"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”.
 - `.ds-toc-menu` — The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list. Subsections are an `<ol>` inside their section's `<li>`, indented to the section's title in smaller type.
-- `.ds-paper-tools` — Abstract, PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `arrow-left`, `file-text` and `tex` from `docs/icons/`.
+- `.ds-paper-tools` — PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `file-text` and `tex` from `docs/icons/`.
 
 ## Section permalinks
 
@@ -586,7 +740,7 @@ Each section heading in a paper has a Permalink control that copies the link to 
 
 - `.ds-permalink` — The Permalink control from [Linking to a section](links.md#linking-to-a-section), the same as on every other page. The demo holds it open.
 - `.is-sr-only` — Completes the name: “Permalink to section 2, Setup”. The name starts with the visible word.
-- `[role="status"]` — One region on the page. The script writes “Link to section 2, Setup copied” into it, as `anchors.js` does.
+- `[role="status"]` — One region on the page. `anchors.js` writes “Link to section 2, Setup copied” into it, shows the green tick in place of the link icon, and clears both after 2 seconds.
 - `.is-active` — Set on the heading by a tap, on screens without hover.
 
 > Meets accessibility guideline [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)
@@ -637,61 +791,41 @@ A display equation, a figure and a bibliography entry each have a small row of a
 
 ## Rules
 
-- **Show the author's text as written.** A title or abstract is never shortened, reworded or corrected; TeX shows as the author wrote it. An excerpt is cut, never edited.
+- **Show the author's text as written.** A title or abstract is never shortened, reworded or corrected. When we display TeX, it is shown exactly as the author wrote it. We may excerpt a long abstract in search results, but never edit it.
 - **Leave out what a paper does not have.** No empty labels and no placeholders.
 - **Every date has its label.** Readers confuse submitted and announced dates when either stands alone.
-- **The primary category comes first** and is told apart by more than colour: its tooltip names it as primary.
-- **The identity line comes first.** Many readers arrive at a paper directly, without passing its abstract page. It is centred and spans the page to the gutters.
-- **The abstract has a heading, hidden from sight.** An `<h2 class="is-sr-only">Abstract</h2>` puts it in the heading outline without adding a line above it.
-- **The paper follows its abstract on the same page.** A reader reaches the first section by scrolling, by the TOC bar or by the skip link, with no click to open the paper.
-- **The page has one `<main>`**, from the area above the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it. When LaTeXML's output has no `<main>`, the page around the paper supplies it.
-- **An optional area above the identity line** holds a temporary message or link, such as Back to abstract while readers move to HTML papers. It is `.ds-btn-text` for a link, or an alert for a message.
-- **The licence is a link, with no explanation.**
-- **Other formats, when a paper has them, are a link in the sidebar**, under TeX Source and above Ancillary Files.
-- **The sidebar order is Files, Cite, Paper information.** Files and Cite are always open; Version history, Accessibility and Metadata, under Paper information, start closed, and only one is open at a time (see [One panel open at a time](progressive-disclosure.md#one-panel-open-at-a-time)).
-- **Every download shows its size.**
-- **A citation names the arXiv identifier and the arXiv DOI**, never the HTML page, even when the paper has a journal reference.
-- **BibTeX lists every author.** “and others” becomes “et al.” in a reference manager, and the other authors are lost.
-- **APA, Chicago and MLA follow their own style rules** for long author lists.
-- **Every citation format is in the page.** The script only chooses which one shows.
-- **The accessibility panel lists only what the paper has.** A missing capability has no line, and there is no overall score.
+- **A citation names the arXiv identifier and the arXiv DOI**, never the HTML page or a journal reference.
+- **BibTeX lists every author**, because a reference manager turns “and others” into “et al.” and the other authors are lost. APA, Chicago and MLA follow their own style rules for long author lists.
+- **Every version of a withdrawn paper shows the notice.** A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn. The notice takes the place of the older-version warning, and links to the last version that can be read, except on that version.
+- **When there is no full text, affordances related to full text are also removed.** The paper body, the TOC bar, Files, Cite and the Accessibility panel are left out; the sidebar holds Paper information alone. An earlier version of a withdrawn paper keeps them all.
+- **A removed version keeps its license, but not its cross-listed categories.** This is arXiv's current practice.
+- **arXiv staff may decide to remove the license or other metadata** when there is a legal reason to do so, as allowed under [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf) §4.2.
+- **A citation of an earlier version says the paper was withdrawn.** Each format ends with a note, such as “This paper was withdrawn, 22 Oct 2026”, so the status travels with the citation.
+- Display guidelines for withdrawn and removed papers follow [NISO RP-45-2024](https://groups.niso.org/higherlogic/ws/public/download/30869/NISO_RP-45-2024_CREC.pdf).
+- **The paper follows its abstract on the same page.** A reader reaches the first section by scrolling, the TOC bar or the skip link, with no click to open the paper.
 - **The body markup is LaTeXML's, unchanged.** arXiv styles it from outside with CSS and never rewrites, reorders or wraps the author's elements.
-- **ar5iv's stylesheet is in a cascade layer**, so an ordinary rule outranks it without `!important`. The `arxiv-override` layer is only for a property ar5iv itself marks `!important`.
-- **Body text is set as on [Typography](typography.md).** ar5iv sets weight 300, so set 400.
-- **Body text is left-aligned, never justified.** Inline math gives a justified line nowhere to break.
-- **Body text is hyphenated** with `hyphens: auto`. It needs the page's `lang` attribute, which tells the browser which language to hyphenate.
+- **Body text is set per rules in [Typography](typography.md).**
+- **Body text is left-aligned and hyphenated, never justified.** A justified line has nowhere to break around inline math, so it opens wide gaps between words. Set `hyphens: auto`, and the page's `lang` attribute, which tells the browser which language to hyphenate.
 - **A figure caption is Plex Sans at 0.875rem, left-aligned, the width of the figure.** Its label, text and punctuation are as the author wrote them.
-- **Paper figures keep ar5iv's white background in dark mode; arXiv's own images do not.** Clear it on the header, TOC bar and footer images.
-- **LaTeXML's beta badge and conversion logo are not shown.**
+- **Paper figures maintain a white background in dark mode.**
 - **The contents list repeats the author's headings exactly**, including subsections, appendices, acknowledgements and references. Math in a heading appears as it renders, never as its TeX: copy LaTeXML's contents entries with their MathML. A script that reads a heading's words leaves out the TeX annotation, as `toc.js` and `anchors.js` do.
-- **LaTeXML's own sidebar is not shown.** The `.ds-toc` list replaces it.
-- **Each link in the bar shows an icon and its name.**
-- **PDF opens in a new tab, in the bar and in the sidebar**, so the reader keeps their place in the HTML paper. It has the external-link icon and “(opens in a new tab)”, as on [Links](links.md).
-- **A second skip link goes to the paper's first section**, before the sidebar, so a keyboard user can pass it.
+- **The paper PDF always opens in a new tab**, so the reader keeps their place in the HTML paper.
 - **Every link to a place in the paper lands below the TOC bar.** The bar sets `scroll-padding-top`, which covers the TOC, a permalink, a citation and a cross-reference; a script that scrolls uses `scrollIntoView`, which respects it.
 - **Every section, subsection and appendix heading has a Permalink control.** It copies the address with the section's LaTeXML id and the version: `…/2604.22725v1#S2`.
-- **The accessible name starts with the visible word**, then names the section.
-- **Copying is announced in words**, as in [Confirm an action that changes nothing on screen](../action-feedback.html).
-- **One action gets the Permalink control; several get the element pill.**
-- **Inline math gets nothing from arXiv**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly.
-- **View TeX swaps the equation for its TeX in place**, in plain monospace with no code box. The TeX view is hidden until asked for, and MathML annotations are never displayed.
+- **Permalinks can appear in two places**: in the Permalink control after a section heading, or in the element pill below a specific content block. A heading has one action, so it gets the Permalink control; an equation, figure or reference has several, so it gets the element pill.
+- **A wide equation scrolls inside its own box; it never scrolls the page.** The equation number stays pinned to the right edge while it scrolls.
+- **View TeX swaps the equation for its TeX in place**, in plain monospace with no code box, and MathML annotations are never displayed. Copy copies what is on screen: the MathML in math view, the TeX in TeX view.
 - **View TeX and Copy use the TeX that LaTeXML keeps with the equation.** LaTeXML expands the author's own macros into standard TeX, so the copy works outside the paper. The author's own files are the TeX Source download.
-- **Copy copies what is on screen**: the MathML in math view, the TeX in TeX view.
-- **A wide equation scrolls inside its own box, never the page.** The box has `tabindex="0"`, `role="region"` and a name: “Equation 2.14, scrolls sideways”.
-- **The equation number stays in view**, pinned to the right edge while the equation scrolls.
-- **Only the author's alt text is shown**, whole and unchanged. The image's `alt` is never changed, and no reader-written or machine-written description is added. Write it in with `textContent`.
-- **Long alt text is not shortened.** This is the one margin note longer than two sentences.
-- **A figure without alt text says so.** Its margin note reads “No alt text provided”, in `--ds-text-muted`, with a link to how to add alt text.
-- **Expand opens the figure viewer**, a `.ds-modal.ds-modal--wide` with `closedby="any"`. Clicking the image opens it too; Expand is the keyboard path.
-- **The viewer shows a copy.** The figure in the paper is never moved or changed.
-- **The viewer shows the caption exactly as the author wrote it**, under the figure. The dialog is named by the caption's own label, such as “Figure 1:”, with `aria-labelledby`.
+- **Only the author's alt text is shown**, whole and unchanged, however long. No reader-written or machine-written description is added, and the image's `alt` is never changed; write it in with `textContent`. A figure without alt text says “No alt text provided”, in `--ds-text-muted`, with a link to how to add alt text.
+- **Expand opens the figure viewer**, a [wide modal](modals.md#wide-for-a-viewer), and clicking the image opens it too; Expand is the keyboard path. The viewer shows a copy of the figure with its caption exactly as the author wrote it, and the figure in the paper is never moved or changed.
 - **Zoom stays until the reader closes the viewer.** Zoom in, Zoom out and Fit buttons, the wheel, double-click, pinch and the +, - and 0 keys all work; drag or the arrow keys pan.
-- **The zoom level is shown and announced**, with `aria-live="polite"`.
-- **Closing returns focus to what opened the viewer.**
-- **Zoom is animated only when reduced motion is not set.**
-- **Print hides the TOC bar, the permalinks, the element pills and every popover.** The identity line prints at 10pt.
-- **No page break inside an equation, table or figure, and none straight after a heading.** Sections may break.
-- **Paper titles are always a heading**, so a screen reader user can easily find it and move from paper to paper in a list.
-- **Name each format link's paper.** In a list, “PDF” alone is the same link text fifty times; an `.is-sr-only` span adds the identifier.
+- **Print hides the TOC bar, the permalinks, the element pills and every popover.** The identity line prints at 10pt. No page break falls inside an equation, table or figure, or straight after a heading; sections may break.
+- **The title of each paper is a heading**, in a list as on its own page, so a screen reader user can find it and move from paper to paper.
+- **Format links name their paper for screen reader users.** In the markup the paper title comes just before the format links, though the dates are shown first, with the CSS `order` property. Each link also has an `.is-sr-only` span with the paper's identifier, so a screen reader user who lists the page's links hears “PDF of 2609.36857”, not “PDF” fifty times.
 - **Category names are in the tooltip, never only in a `title` attribute.** See [Tooltip](forms.md#tooltip).
-- **Paper title just before links.** For screen reader users, to maintain context, the title should appear before the format links, and just before them, so that the context is not forgotten. That means displaying the row with dates and links using the CSS `order` property (ie: the visual display will show the dates first, but the DOM order lists the links first).
+- **On a withdrawn or removed paper, the status appears before the paper title**, so it is seen or spoken out loud early in the reading experience. The alert red color of the status enhances the label but is never the only signal.
+- **The page has one `<main>`**, from the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it.
+- **A second skip link before the sidebar goes to the paper's first section**, so a keyboard user can skip the content in between.
+- **Inline math gets no additional markup**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly.
+- **A scrolling equation box can be reached by keyboard and has a name.** It has `tabindex="0"`, `role="region"` and a name: “Equation 2.14, scrolls sideways”.
+- **The figure viewer is named by the caption's own label**, such as “Figure 1:”, with `aria-labelledby`. Its zoom level is shown and announced, with `aria-live="polite"`, and zoom is animated only when reduced motion is not set.
