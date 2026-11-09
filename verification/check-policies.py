@@ -369,6 +369,31 @@ def check_toc_script():
         ok(rule, f"{n} pages")
 
 
+
+# ── A Permalink needs copy.js ──
+# anchors.js adds the Permalink control; copy.js does the copying, the tick and
+# the spoken message. A page that loads the one without the other shows a
+# Permalink that does nothing when pressed. index.html is checked too: it sits
+# outside docs/ but carries section Permalinks.
+ANCHORS_SCRIPT = re.compile(r"<script[^>]*src=\"[^\"]*anchors\.js\"")
+COPY_SCRIPT = re.compile(r"<script[^>]*src=\"[^\"]*copy\.js\"")
+
+
+def check_permalink_script():
+    rule = "every page that loads anchors.js loads copy.js"
+    n = 0
+    paths = [REPO / "index.html"] + [p for p, _ in pages()]
+    for path in paths:
+        text = path.read_text(encoding="utf-8", errors="replace")
+        text = re.sub(r"<pre\b.*?</pre>", "", text, flags=re.S)
+        if not ANCHORS_SCRIPT.search(text):
+            continue
+        n += 1
+        if not COPY_SCRIPT.search(text):
+            fail(rule, str(path.relative_to(REPO)), "loads anchors.js but not copy.js")
+    if rule not in FAILS:
+        ok(rule, f"{n} pages")
+
 # ── The docs do not narrate their own history ──
 # The system is new and in use nowhere, so a reader needs to know what a thing
 # IS. "Previously", "we dropped", a decision date in the prose — all of it is
@@ -531,6 +556,7 @@ def main():
     check_theme_control()
     check_docs_menu()
     check_toc_script()
+    check_permalink_script()
     check_no_changelog_prose()
     check_plain_words()
     check_classes_documented()

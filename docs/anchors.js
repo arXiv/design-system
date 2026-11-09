@@ -1,5 +1,6 @@
 /* A Permalink in every section heading, added to the page rather than written into it.
  *
+ *   <script src="copy.js" defer></script>
  *   <script src="anchors.js" defer></script>
  *
  * The ids themselves are NOT this script's job — they are written into the
