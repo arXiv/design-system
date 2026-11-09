@@ -22,12 +22,13 @@
         <a href="dark-mode.html">Dark mode</a>
         <a href="typography.html">Typography</a>
         <a href="spacing.html">Spacing</a>
-        <a href="layout-patterns.html">Layouts</a>
+        <a href="layouts.html">Layouts</a>
         <a href="icons.html">Icons</a>
         <span class="ds-panel-label">Components</span>
         <a href="alerts.html">Alerts</a>
         <a href="buttons.html">Buttons</a>
         <a href="cards.html">Cards</a>
+        <a href="dividers.html">Dividers</a>
         <a href="filters.html">Filters</a>
         <a href="forms.html">Forms &amp; validation</a>
         <a href="links.html">Links</a>
@@ -48,10 +49,9 @@
       <div class="ds-site-header-menu">
         <a href="action-feedback.html">Show that something was copied</a>
         <a href="versions.html">Indicate which version is being read</a>
-        <a href="long-pages.html">Make a long page navigable</a>
+        <a href="organize-content.html">Organize complex page content</a>
         <a href="references.html">Show a reference without losing the reader&#39;s place</a>
-        <span class="ds-panel-label">Pages</span>
-        <a href="search.html">Search</a>
+        <a href="search.html">The search experience</a>
       </div>
     </details>
     <details class="ds-site-header-dropdown">
@@ -95,7 +95,7 @@
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
     <h1>Navigation</h1>
-    <p>The bars under the <a href="header.html">site header</a> that tell a reader where they are inside an area: secondary navigation, two levels of it, and steps.</p>
+    <p>The bars under the <a href="header.html">site header</a> that tell a reader where they are inside an area or on a page: secondary navigation, two levels of it, steps, and the TOC bar.</p>
   </header>
   </div>
 
@@ -114,6 +114,7 @@
             <li><a href="#secondary-navigation">Secondary navigation</a></li>
             <li><a href="#two-levels-of-navigation">Two levels of navigation</a></li>
             <li><a href="#steps">Steps</a></li>
+            <li><a href="#toc-bar">TOC bar</a></li>
             <li><a href="#internal">Internal</a></li>
           </ol>
         </nav>
@@ -184,7 +185,7 @@
             with the accent along its top, so the current section never depends on colour alone, and a
             screen reader announces it. The current tab takes the background of the zone below it: the
             page ground (white in light mode) above primary content, or the secondary zone's tint (light
-            grey in light mode) when the page opens with a <a href="layout-patterns.html#page-zones">secondary
+            grey in light mode) when the page opens with a <a href="layouts.html#secondary-zones">secondary
             band</a>.</dd>
           </dl>
         </div>
@@ -361,6 +362,107 @@
     </ul>
   </section>
 
+  <!-- ───────── TOC bar ───────── -->
+  <section>
+    <h2 id="toc-bar">TOC bar</h2>
+    <p class="ds-section-desc">Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. By default the bar is sticky: it stays at the top of the viewport while the reader scrolls through the page. It can scroll away with the page instead.</p>
+
+    <div class="ds-card chrome-demo toc-demo">
+      <div class="ds-toc-bar">
+        <div class="ds-toc-bar-inner">
+          <details class="ds-toc">
+            <summary class="ds-toc-trigger">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/></svg>
+              <span class="ds-toc-text"><span class="ds-toc-prefix">Contents</span></span>
+              <svg class="ds-toc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <nav class="ds-toc-menu" aria-label="Contents, example">
+              <ol>
+                <li><a href="#secondary-navigation">Secondary navigation</a></li>
+                <li><a href="#two-levels-of-navigation">Two levels of navigation</a></li>
+                <li><a href="#steps">Steps</a></li>
+                <li><a href="#toc-bar">TOC bar</a></li>
+              </ol>
+            </nav>
+          </details>
+        </div>
+      </div>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;div class="ds-container"&gt;
+  &lt;div class="ds-full ds-zone-secondary"&gt;
+    &lt;header class="ds-page-header"&gt;…&lt;/header&gt;
+  &lt;/div&gt;
+
+  &lt;div class="ds-full ds-toc-bar"&gt;
+    &lt;div class="ds-toc-bar-inner"&gt;
+      &lt;details class="ds-toc"&gt;
+        &lt;summary class="ds-toc-trigger"&gt;
+          &lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;
+          &lt;span class="ds-toc-text"&gt;&lt;span class="ds-toc-prefix"&gt;Contents&lt;/span&gt;&lt;/span&gt;
+          &lt;svg class="ds-toc-chevron" aria-hidden="true"&gt;…&lt;/svg&gt;
+        &lt;/summary&gt;
+        &lt;nav class="ds-toc-menu" aria-label="Contents"&gt;
+          &lt;ol&gt;&lt;/ol&gt;      &lt;!-- written by hand, or left empty for toc.js to fill --&gt;
+        &lt;/nav&gt;
+      &lt;/details&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;section&gt;…&lt;/section&gt;
+&lt;/div&gt;
+&lt;script src="toc.js" defer&gt;&lt;/script&gt;</code></pre>
+          <dl>
+            <dt>.ds-toc</dt>
+            <dd>The control, a <code>&lt;details&gt;</code>. It works on its own anywhere, and it opens
+            with JavaScript off.</dd>
+            <dt>.ds-toc-trigger</dt>
+            <dd>The <code>&lt;summary&gt;</code>. Holds the list icon, <code>.ds-toc-text</code> with
+            its <code>.ds-toc-prefix</code>, and <code>.ds-toc-chevron</code>.</dd>
+            <dt>.ds-toc-menu</dt>
+            <dd>The list, a <code>&lt;nav&gt;</code> holding an <code>&lt;ol&gt;</code>. The link to the
+            current section gets <code>.is-current</code>. A page whose sections are numbered puts each
+            number in <code>.ds-toc-num</code>.</dd>
+            <dt>.ds-toc-bar</dt>
+            <dd>The edge-to-edge row that holds the control. A direct child of
+            <code>.ds-container</code>, with <code>.ds-full</code>. Placed directly after a
+            <code>.ds-zone-secondary</code> band, it sits on that band’s bottom edge. By default the bar is sticky:
+            it keeps to the top of the viewport, where it becomes <code>.is-stuck</code> and
+            tightens, and it sets <code>scroll-padding-top</code> so an anchor lands below it. On a
+            viewport shorter than 30rem, such as a phone on its side or a laptop at 400% zoom, it
+            scrolls away with the page instead, so the reader keeps the height for the text. Whether a page has the bar, and whether it sticks, is the developer’s call; a page keeps at most one sticky bar (<a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>).</dd>
+            <dt>.ds-toc-bar--scrolls</dt>
+            <dd>The bar scrolls away with the page instead of sticking, for a page that does not need its sections in view all the way down. An anchor then lands at the top of the viewport.</dd>
+            <dt>.ds-toc-bar-inner</dt>
+            <dd>The bar’s three-slot grid, which keeps the control centred whatever sits beside
+            it.</dd>
+            <dt>[data-toc-scope]</dt>
+            <dd>Optional, on <code>.ds-toc</code>: a selector for the element whose headings fill an
+            empty list. Without it, <code>toc.js</code> reads <code>&lt;main&gt;</code>, or the whole
+            page when there is no <code>&lt;main&gt;</code>.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+
+    <ul class="notes">
+      <li><strong>The list is written or generated.</strong> Write the <code>&lt;ol&gt;</code> by
+      hand, or leave it empty and <code>toc.js</code> fills it when the page loads, with one link for every
+      <code>h2</code> and <code>h3</code> that has an <code>id</code>. A written list works with
+      JavaScript off, so these docs write theirs: <code>verification/gen-anchors.py</code> fills the
+      <code>&lt;ol&gt;</code> from the page’s section headings, and <code>--check</code> fails when the two
+      disagree.</li>
+      <li><strong>It opens without JavaScript.</strong> <code>toc.js</code> adds closing on Escape,
+      closing on a click outside, and the name of the current section on the control.</li>
+      <li><strong>One per page.</strong> <code>toc.js</code> drives the first
+      <code>.ds-toc</code> it finds, which on this page is the bar at the top; the control in the
+      card above comes later in the document, so it opens and closes on its own and nothing else.</li>
+      <li><strong>The contents list repeats the page&#39;s headings exactly</strong>, in the same words
+      and the same order. On a paper, the list is the author&#39;s headings; see
+      <a href="papers.html#paper-toc-bar-rules">Papers</a>.</li>
+    </ul>
+  </section>
+
   <div class="ds-note ds-note--essential">
     <h3 class="ds-note-label">Accessibility essentials</h3>
     <ul class="notes">
@@ -375,6 +477,15 @@
       <li><strong>The menus close from the keyboard.</strong> The section menu and the View menu are
       <code>&lt;details&gt;</code>, so they open and close with no script; <code>subnav.js</code>
       also closes an open menu on Escape and returns focus to its summary.</li>
+      <li><strong>The TOC bar's list is a disclosure, not an ARIA menu.</strong> <code>role="menu"</code>
+      is for application menus — the kind with arrow-key roving focus and menu items that are not links. A
+      list of links is a disclosure, and W3C’s own guidance is to build it this way. Using
+      <code>role="menu"</code> here would make a screen reader promise keyboard behaviour the
+      component does not have.</li>
+      <li><strong>Mark where the reader is in the TOC bar.</strong> <code>toc.js</code> gives the link to the
+      current section <code>aria-current="location"</code>.</li>
+      <li><strong>Escape closes the TOC bar&#39;s list</strong> and returns focus to its control, but only
+      when focus was inside the list — Escape pressed elsewhere on the page must not move it.</li>
       <li><strong>A step not available yet is not a tab stop.</strong> It is a
       <code>&lt;span&gt;</code>, and its <code>.is-sr-only</code> text says “, not available
       yet”.</li>

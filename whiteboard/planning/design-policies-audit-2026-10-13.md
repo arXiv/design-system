@@ -9,7 +9,7 @@ The idea: `DESIGN-POLICIES.md` keeps each non-negotiable as one or two sentences
 - **Buttons, padding:** the policy says `10px 20px`; the stylesheet uses `0.715em 1.43em`, so it grows with text size. The policy is out of date.
 - **Buttons, third tier:** the policy names `.btn-tertiary`, which no longer exists. There is one `.ds-btn*` family for both surfaces.
 - **Dark mode:** "`--ds-text-on-accent` / `--ds-text-on-accent`" names the same token twice (a typo).
-- **One name per thing:** now in both *Writing* and layout-patterns.html (added today). Keep it in one place.
+- **One name per thing:** now in both *Writing* and layouts.html (added today). Keep it in one place.
 
 ## 2. Duplicated: shorten to one line and a link
 
@@ -18,8 +18,8 @@ The idea: `DESIGN-POLICIES.md` keeps each non-negotiable as one or two sentences
 | Typography, what each family is for | typography.html | "IBM Plex and STIX Two Math only; adding a face is a decision recorded here. See typography.html." |
 | Font display, system fallbacks | typography.html | Drop; the stylesheet already sets them. |
 | Spacing: scale, rem, break names, proximity, gap | spacing.html | "Use the named breaks, never a pixel value; gaps between groups are at least twice the gaps inside one. See spacing.html." |
-| Layout: 850px, 1080px, long-form measure | layout-patterns.html, spacing.html | "One width per page, from the width tokens. See Layout patterns." |
-| Breakpoints (three bullets) | only component-level mentions (cards.html, header.html) | Move to layout-patterns.html, keep one line here. |
+| Layout: 850px, 1080px, long-form measure | layouts.html, spacing.html | "One width per page, from the width tokens. See Layout patterns." |
+| Breakpoints (three bullets) | only component-level mentions (cards.html, header.html) | Move to layouts.html, keep one line here. |
 | Buttons (whole section, 10 bullets) | buttons.html | "Three tiers; disabled is a flat grey, never opacity; a control that navigates is a link. See buttons.html." |
 | Segmented controls, filter dropdowns, switches | forms.html | Drop; forms.html holds them. |
 | Rectangular labels | tags.html | Drop. |
