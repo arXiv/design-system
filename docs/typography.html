@@ -275,7 +275,8 @@
             <dt>.ds-panel-label</dt>
             <dd>0.75rem, condensed, uppercase.</dd>
             <dt>&lt;code&gt;</dt>
-            <dd>0.9em, so it follows the size of its parent.</dd>
+            <dd>0.9em, so it follows the size of its parent. When to use it rather than a block:
+            <a href="#code-blocks-and-the-copy-button">Code blocks and the copy button</a>.</dd>
           </dl>
         </div>
       </details>
@@ -406,23 +407,31 @@
   <section>
     <h2 id="code-blocks-and-the-copy-button">Code blocks and the copy button</h2>
     <p class="ds-section-desc">A code block uses Plex Mono on Repository Brown, and always
-    includes a copy button.</p>
+    includes a copy button. Use a block for code a reader copies, or code that runs over more than
+    one line. A short name or example in running text that a reader would not copy, such as a file name
+    or a list of allowed characters, is inline <code>&lt;code&gt;</code>, which has no button.</p>
     <div class="ds-card">
 <details class="ds-marginalia">
   <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
   <p class="ds-marginalia-body ds-annotation">Meets accessibility guidelines <a href="https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html">WCAG 2.2 SC 4.1.2</a> Name, Role, Value (Level A) and <a href="https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html">WCAG 2.2 SC 4.1.3</a> Status Messages (Level AA)</p>
 </details>
+<p>The main action on a page takes <code>.ds-btn-primary</code>:</p>
 <pre><code>&lt;button class="ds-btn ds-btn-primary" type="button"&gt;Save&lt;/button&gt;</code></pre>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;!-- Write the block the way you already do --&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;button class="ds-btn"&amp;gt;Save&amp;lt;/button&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+<pre><code>&lt;!-- A name in running text: inline --&gt;
+&lt;p&gt;The main action on a page takes &lt;code&gt;.ds-btn-primary&lt;/code&gt;:&lt;/p&gt;
+
+&lt;!-- Code to copy: a block, written the way you already do --&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;button class="ds-btn ds-btn-primary" type="button"&amp;gt;Save&amp;lt;/button&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 
 &lt;!-- And include the script once, at the foot of the page --&gt;
 &lt;script src="copy.js" defer&gt;&lt;/script&gt;</code></pre>
           <dl>
+            <dt>&lt;code&gt;</dt>
+            <dd>Inline code: a short name or example inside a sentence, which a reader would not copy. No copy button.</dd>
             <dt>&lt;pre&gt;&lt;code&gt;</dt>
-            <dd>The block. Escape <code>&lt;</code>, <code>&gt;</code> and <code>&amp;</code> inside it. No wrapper and no button of your own.</dd>
+            <dd>The block, for code a reader copies or code that runs over more than one line. Escape <code>&lt;</code>, <code>&gt;</code> and <code>&amp;</code> inside it. No wrapper and no button of your own.</dd>
             <dt>&lt;script src="copy.js" defer&gt;</dt>
             <dd>Once per page, at the foot. It finds every <code>&lt;pre&gt;</code> on the page and adds the control.</dd>
             <dt>.ds-code, .ds-code-copy</dt>
