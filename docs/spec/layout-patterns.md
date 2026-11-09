@@ -18,8 +18,10 @@ components:
     rules:
       - "**A page either sends the reader on or is where they work.** A page that sends the reader on, such as a list of sections or reports, shows each destination as a [card that links](cards.md#cards-that-link), with only what helps the reader choose. A page where the reader reads, compares or acts on records uses [tables](tables.md) and [filters](filters.md)."
       - "**Leave detailed figures for the page they belong to.** A card shows a name and, at most, a count or a mark that something needs attention; the figures are on the page it opens."
-      - "**The page heading is followed by the main content.** At most one short line comes between them. A line that sets the data in context, such as the period it covers and when it was last updated, goes there, just above the main content. The refresh control ends that line: a text button with the refresh icon (`refresh-cw`). An explanation of the figures is secondary: see [Where secondary content goes](#where-secondary-content-goes)."
+      - "**The page heading is followed by the main content.** At most one short line comes between them: a line that sets the data in context, such as the period it covers. An explanation of the figures is secondary: see [Where secondary content goes](#where-secondary-content-goes)."
+      - "**When the data was last updated goes on its own line above the page heading**, aligned right: the sentence first, such as “Updated 2 hours ago”, then the refresh control, a text button with the refresh icon (`refresh-cw`). The line comes before the heading in the markup too, so a screen reader meets it in the order it is shown. Headings vary in length, so the heading's own row has no room to rely on."
       - "**Controls for a list sit on one line in its header bar.** See [Where controls go](#where-controls-go)."
+      - "**When a filter sets what the whole page is about, the page heading names the choice**, as in “Charts for cs”, and so does the page's `<title>`, so tabs, history and bookmarks tell the choices apart. With nothing chosen, the heading is the view alone. A filter that narrows one set on the page never changes the heading."
       - "**A page with little on it needs no section headings.** The page heading names it; a heading such as “Subject groups” under “All sections” adds nothing."
       - "**A link in the header navigation is not repeated on the page**, and no link on the page repeats the page heading."
       - "**One name for one thing.** Choose one word for each kind of thing, such as “section”, and use it in every heading, link and sentence."
@@ -27,7 +29,7 @@ components:
       - "**Only the page's main action is a primary button.** Refresh, export and other secondary actions are text buttons."
       - "**Show readers what they can use, without labelling their access.** A page shows each reader only what their permissions allow. It does not label parts of the page with who is allowed to see them."
       - "**Dense pages do not organise content with [page zones](#page-zones)**, and neither do the lighter pages of the same tool, so every page of the tool looks the same. The one band a dense page uses is an opening band that holds a filter for the whole page."
-      - "**A state that changes how the whole page reads is met first.** The page's `<title>` starts with it, and its notice comes straight after the page heading, before anything else; on a paper the heading starts with it too. A reader, and a screen reader, meets it before reading on. See [a withdrawn paper](../versions.html#withdrawn-papers) and [a form with errors](forms.md#alerts-in-forms)."
+      - "**A state that changes how the whole page reads is met first.** The page's `<title>` starts with it, and its notice comes straight after the page heading, before anything else; on a paper the heading starts with it too. A reader, and a screen reader, meets it before reading on. See [a withdrawn paper](papers.md#withdrawn-papers) and [a form with errors](forms.md#alerts-in-forms)."
       - "**When a record's main content is gone, what acts on it goes too.** Its name, identity and details stay. No column is left empty: what remains takes the row."
   - id: where-secondary-content-goes
     title: "Where secondary content goes"
@@ -46,15 +48,17 @@ components:
     title: "Where controls go"
     summary: "A control sits with what it changes. The more of the site it changes, the higher it sits on the page."
     rules:
-      - "**A tool or filter for the whole site: the header's centred space**, on the header's background. Use it sparingly. See [Header](header.md#design-rules)."
+      - "**A tool or filter for every page under the header, whether a whole site or a whole tool: the header's centred space**, on the header's background. Nothing sits higher. Use it sparingly. See [Header](header.md#design-rules)."
       - "**A choice between the sections of a tool: the section menu**, at the start of the second row, on the accent tint. It is navigation. See [Two levels of navigation](navigation.md#two-levels-of-navigation)."
       - "**A filter for the whole page: the page's opening band**, a `.ds-full.ds-zone-secondary` band under the page heading. See [Page zones](#page-zones)."
-      - "**Filters, sort and group actions for one set of data: the set's header bar**, on one line. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers)."
+      - "**Filters, sort and group actions for one set of data: the set's header bar**, on one line, even when the set's only control is one action, such as Copy emails. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers)."
       - "**A set with no controls is not in a card.** It sits on the page ground under its heading."
+      - "**A count says what the reader cannot see for themselves.** Search results always have one, even for a few results: the range at the top of the results, “1–3 of 3 results”. See [Search](search.md#results); no results is a message. A set the reader has filtered ends its header bar with how much is left, “3 of 120 holds”. See [Filters](filters.md#rules). A list longer than one page states its range in its [pager](pager.md), “1–50 of 18,659”. A set shown whole that the reader did not search or filter, such as a short table, a paper's versions or a group's categories, has no count."
       - "**A control for the whole page sits at least as far above the first set of data as the sets sit from each other**, so it reads as the page's and not the first set's."
       - "**A control is filed under what it does.** A Permalink switch is a reading feature, not an accessibility one, and a way to add alt text sits beside the figures. Filed under another topic, a control is both hidden and mislabelled."
       - "**A group of blocks, such as a sidebar, is ordered by value**, the most used first, and shown in the same order as the markup, so a screen reader meets the main action first too."
       - "**When chrome has to shrink, keep the control readers use often** and let one they use rarely go, as a paper's TOC bar keeps its contents list before a mode switch."
+      - "**Prefer disabling to removing.** When one page of a group cannot use a control the other pages have, show it disabled there, so every page of the group keeps one layout and the reader learns where the control lives. This is a default, not a rule: leave the control out where a disabled one would mislead."
       - "**Width decides where a control sits; the pointer decides its size.** A narrow window on a laptop still has a mouse. Give larger targets and tap-to-reveal where the pointer is coarse, never because the window is narrow."
   - id: the-page-container
     title: "The page container"
@@ -166,9 +170,13 @@ Before choosing components, decide what the page is for and which content is pri
 
 **Rule.** **Leave detailed figures for the page they belong to.** A card shows a name and, at most, a count or a mark that something needs attention; the figures are on the page it opens.
 
-**Rule.** **The page heading is followed by the main content.** At most one short line comes between them. A line that sets the data in context, such as the period it covers and when it was last updated, goes there, just above the main content. The refresh control ends that line: a text button with the refresh icon (`refresh-cw`). An explanation of the figures is secondary: see [Where secondary content goes](#where-secondary-content-goes).
+**Rule.** **The page heading is followed by the main content.** At most one short line comes between them: a line that sets the data in context, such as the period it covers. An explanation of the figures is secondary: see [Where secondary content goes](#where-secondary-content-goes).
+
+**Rule.** **When the data was last updated goes on its own line above the page heading**, aligned right: the sentence first, such as “Updated 2 hours ago”, then the refresh control, a text button with the refresh icon (`refresh-cw`). The line comes before the heading in the markup too, so a screen reader meets it in the order it is shown. Headings vary in length, so the heading's own row has no room to rely on.
 
 **Rule.** **Controls for a list sit on one line in its header bar.** See [Where controls go](#where-controls-go).
+
+**Rule.** **When a filter sets what the whole page is about, the page heading names the choice**, as in “Charts for cs”, and so does the page's `<title>`, so tabs, history and bookmarks tell the choices apart. With nothing chosen, the heading is the view alone. A filter that narrows one set on the page never changes the heading.
 
 **Rule.** **A page with little on it needs no section headings.** The page heading names it; a heading such as “Subject groups” under “All sections” adds nothing.
 
@@ -184,7 +192,7 @@ Before choosing components, decide what the page is for and which content is pri
 
 **Rule.** **Dense pages do not organise content with [page zones](#page-zones)**, and neither do the lighter pages of the same tool, so every page of the tool looks the same. The one band a dense page uses is an opening band that holds a filter for the whole page.
 
-**Rule.** **A state that changes how the whole page reads is met first.** The page's `<title>` starts with it, and its notice comes straight after the page heading, before anything else; on a paper the heading starts with it too. A reader, and a screen reader, meets it before reading on. See [a withdrawn paper](../versions.html#withdrawn-papers) and [a form with errors](forms.md#alerts-in-forms).
+**Rule.** **A state that changes how the whole page reads is met first.** The page's `<title>` starts with it, and its notice comes straight after the page heading, before anything else; on a paper the heading starts with it too. A reader, and a screen reader, meets it before reading on. See [a withdrawn paper](papers.md#withdrawn-papers) and [a form with errors](forms.md#alerts-in-forms).
 
 **Rule.** **When a record's main content is gone, what acts on it goes too.** Its name, identity and details stay. No column is left empty: what remains takes the row.
 
@@ -214,15 +222,17 @@ Each kind of secondary content has a home that keeps the main content high and w
 
 A control sits with what it changes. The more of the site it changes, the higher it sits on the page.
 
-**Rule.** **A tool or filter for the whole site: the header's centred space**, on the header's background. Use it sparingly. See [Header](header.md#design-rules).
+**Rule.** **A tool or filter for every page under the header, whether a whole site or a whole tool: the header's centred space**, on the header's background. Nothing sits higher. Use it sparingly. See [Header](header.md#design-rules).
 
 **Rule.** **A choice between the sections of a tool: the section menu**, at the start of the second row, on the accent tint. It is navigation. See [Two levels of navigation](navigation.md#two-levels-of-navigation).
 
 **Rule.** **A filter for the whole page: the page's opening band**, a `.ds-full.ds-zone-secondary` band under the page heading. See [Page zones](#page-zones).
 
-**Rule.** **Filters, sort and group actions for one set of data: the set's header bar**, on one line. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers).
+**Rule.** **Filters, sort and group actions for one set of data: the set's header bar**, on one line, even when the set's only control is one action, such as Copy emails. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers).
 
 **Rule.** **A set with no controls is not in a card.** It sits on the page ground under its heading.
+
+**Rule.** **A count says what the reader cannot see for themselves.** Search results always have one, even for a few results: the range at the top of the results, “1–3 of 3 results”. See [Search](search.md#results); no results is a message. A set the reader has filtered ends its header bar with how much is left, “3 of 120 holds”. See [Filters](filters.md#rules). A list longer than one page states its range in its [pager](pager.md), “1–50 of 18,659”. A set shown whole that the reader did not search or filter, such as a short table, a paper's versions or a group's categories, has no count.
 
 **Rule.** **A control for the whole page sits at least as far above the first set of data as the sets sit from each other**, so it reads as the page's and not the first set's.
 
@@ -231,6 +241,8 @@ A control sits with what it changes. The more of the site it changes, the higher
 **Rule.** **A group of blocks, such as a sidebar, is ordered by value**, the most used first, and shown in the same order as the markup, so a screen reader meets the main action first too.
 
 **Rule.** **When chrome has to shrink, keep the control readers use often** and let one they use rarely go, as a paper's TOC bar keeps its contents list before a mode switch.
+
+**Rule.** **Prefer disabling to removing.** When one page of a group cannot use a control the other pages have, show it disabled there, so every page of the group keeps one layout and the reader learns where the control lives. This is a default, not a rule: leave the control out where a disabled one would mislead.
 
 **Rule.** **Width decides where a control sits; the pointer decides its size.** A narrow window on a laptop still has a mouse. Give larger targets and tap-to-reveal where the pointer is coarse, never because the window is narrow.
 

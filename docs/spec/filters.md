@@ -28,7 +28,7 @@ components:
       - name: ".ds-filter-value"
         does: "Optional, inside the button: what is applied, after the button's name. It shortens with an ellipsis when the row is narrow."
       - name: ".ds-filter-panel"
-        does: "The filter panel, a `popover` with `role=\"dialog\"` and a name. Its background is the open button's background, and it attaches to the button's bottom edge. It holds a [compact form](forms.md#compact-form), one short column. `--ds-panel-width` sets its width."
+        does: "The filter panel, a `popover` with `role=\"dialog\"` and a name. It opens in the background of the row its button sits in, such as the card's header bar, and attaches to that row's bottom edge; `filter-panel.js` does both. It holds a [compact form](forms.md#compact-form), one short column. `--ds-panel-width` sets its width."
       - name: "<fieldset> with checkboxes"
         does: "A filter that takes several values, such as categories, is a fieldset of `.ds-check` checkboxes."
       - name: "<fieldset> with the legend Settings"
@@ -47,6 +47,7 @@ rules:
   - "**Keep Apply when a change reloads the page.** See [Compact form](forms.md#compact-form)."
   - "**After Apply, the page shows what was applied**: the server writes the chosen values back into the fields, and into the tags."
   - "**Sorting is not filtering.** A Sort by select can end the row of filters; a table sorts from its [column headers](tables.md#sortable-column-headers)."
+  - "**Filters whose levels narrow each other are one control**, such as group, archive and category. It shows one path, broad to narrow, and it is changed, never removed. Filters that do not depend on each other each get a tag the reader can remove."
   - "**Every control sits inside its label.** A date range or a group of checkboxes is a fieldset with a legend."
   - "**The filter panel is a named dialog.** The button reports whether it is open with `aria-expanded`. Escape closes the panel and returns focus to the button."
   - "**Each remove control says what it removes**, in a `<span class=\"is-sr-only\">`: “Remove the filter Status: On hold”."
@@ -136,7 +137,7 @@ A filter that takes several choices at once is a group of checkboxes, in a filte
 
 - `.ds-filter-button` — A compact secondary button with the filter icon (`list-filter`) and no chevron. `popovertarget` names its panel. While the panel is open the button shows its pressed state.
 - `.ds-filter-value` — Optional, inside the button: what is applied, after the button's name. It shortens with an ellipsis when the row is narrow.
-- `.ds-filter-panel` — The filter panel, a `popover` with `role="dialog"` and a name. Its background is the open button's background, and it attaches to the button's bottom edge. It holds a [compact form](forms.md#compact-form), one short column. `--ds-panel-width` sets its width.
+- `.ds-filter-panel` — The filter panel, a `popover` with `role="dialog"` and a name. It opens in the background of the row its button sits in, such as the card's header bar, and attaches to that row's bottom edge; `filter-panel.js` does both. It holds a [compact form](forms.md#compact-form), one short column. `--ds-panel-width` sets its width.
 - `<fieldset> with checkboxes` — A filter that takes several values, such as categories, is a fieldset of `.ds-check` checkboxes.
 - `<fieldset> with the legend Settings` — A setting, such as threshold days, changes a calculation and is not a filter. It goes after the filters, in a fieldset of its own, and is not shown as a tag.
 - `.ds-tag, .ds-tag-remove` — One tag for each applied filter, after the button. Its remove control is a link to the page without that filter. See [Tags](tags.md#complex-tags).
@@ -152,6 +153,7 @@ A filter that takes several choices at once is a group of checkboxes, in a filte
 - **Keep Apply when a change reloads the page.** See [Compact form](forms.md#compact-form).
 - **After Apply, the page shows what was applied**: the server writes the chosen values back into the fields, and into the tags.
 - **Sorting is not filtering.** A Sort by select can end the row of filters; a table sorts from its [column headers](tables.md#sortable-column-headers).
+- **Filters whose levels narrow each other are one control**, such as group, archive and category. It shows one path, broad to narrow, and it is changed, never removed. Filters that do not depend on each other each get a tag the reader can remove.
 - **Every control sits inside its label.** A date range or a group of checkboxes is a fieldset with a legend.
 - **The filter panel is a named dialog.** The button reports whether it is open with `aria-expanded`. Escape closes the panel and returns focus to the button.
 - **Each remove control says what it removes**, in a `<span class="is-sr-only">`: “Remove the filter Status: On hold”.

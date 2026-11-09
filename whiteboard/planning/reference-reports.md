@@ -17,11 +17,11 @@
 
 `reports.css` beside the pages holds what the design system does not provide yet:
 
-1. **The page heading with "Last updated" and Refresh at its right end**, the same on every page of the tool. The time uses `.ds-date-row`, the style of a paper's submitted date.
+1. **"Last updated" and Refresh on a line of their own above the page heading, at the right**, the same on every page of the tool (now a Layouts rule, 2026-11-03). The time uses `.ds-date-row`, the style of a paper's submitted date.
 2. **A text button at the end of a sentence**, such as "About these charts": no box of its own, on the text's line.
 3. **The heading group**: a heading and what introduces it, close together, with the main content a block below.
 4. **A footnote** under the main content: smaller muted text.
-5. **The filter at the right end of the second row**, after the views.
+5. ~~The filter at the right end of the second row.~~ Since 2026-11-03 the subject is in the header's centred space (`.ds-site-header-center`, Header), and the second row holds the views only.
 
 ## Welcome dialog (2026-10-15)
 
@@ -39,7 +39,7 @@ All repo checks pass. axe finds nothing on either page in light or dark mode, an
 
 The live tool put three reports under an All sections page, with a fourth, staff-only area beside them. The reports are now the tool's sections, in the header:
 
-| Header (right-aligned) | Second row: views, then the shared filter | Example page |
+| Header (right-aligned) | Second row: views (the shared filter is in the header) | Example page |
 |---|---|---|
 | Staff reports (menu, staff only): User activity, Section health, Admin effort, Suspicious activity | none: each report has its own controls inside the page | — |
 | Submissions | Overview, Charts, Category stats, Workload stats, Releases, Submissions; Group, Archive, Category (not on Overview) | `index.html`, `charts.html` |
@@ -47,8 +47,8 @@ The live tool put three reports under an All sections page, with a fourth, staff
 | Recruitment | Frequent authors, Endorsers; the same filter | — |
 
 - Staff reports comes first: the navigation is right-aligned, so the three shared reports keep their place for readers who do not see it.
-- Overview replaces All sections and is the Submissions landing page. It shows every section, so it has no filter.
-- Every view stays visible: no "More" menu. When the views and the filter do not fit on one line, the filter moves to a line of its own.
+- Overview replaces All sections and is the Submissions landing page. It shows every section, so its subject filter is disabled (Layouts: prefer disabling to removing).
+- Every view stays visible: no "More" menu.
 - The filter narrows the page the reader is on; it never moves them to another page.
 - Headings: the view and the reader's choice, such as "Charts for cs" and "Moderator contacts for cs".
 - How each level displays (for example Physics and its archives) is for the lead developer.
