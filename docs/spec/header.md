@@ -26,7 +26,7 @@ components:
       - name: ".ds-site-header-logo"
         does: "The brand slot, image or wordmark. Takes `margin-right: auto`. On arxiv.org it is the logo image, never the word typed out; its alt text says “archive”."
       - name: ".ds-site-header-search-link"
-        does: "arxiv.org’s Search: an `<a href=\"/search\">` before the navigation and outside it, so it stays in the bar when the navigation folds. JavaScript upgrades it to open the search overlay; without JavaScript it goes to the search page."
+        does: "arxiv.org’s Search: a link to the search page before the navigation and outside it, so it stays in the bar when the navigation folds. With `id=\"ds-search-toggle\"` and `aria-controls=\"ds-search-overlay\"`, the header’s script opens the search overlay from it; without JavaScript it goes to the search page."
       - name: ".ds-site-header-nav"
         does: "The site’s sections, in a `<nav>` with an `aria-label`."
       - name: ".ds-nav-icon"
@@ -44,9 +44,13 @@ components:
       - name: ".ds-site-header-dropdown"
         does: "A menu group in the bar, built on `<details>`. See [Header dropdown menus](#header-dropdown-menus)."
       - name: ".ds-search-overlay"
-        does: "The search overlay, after the header. The template’s `header.js` opens it from the Search link or Ctrl/Cmd+K, and closes it on Escape, a click outside the panel, or focus leaving it."
+        does: "The search overlay, after the header, with `id=\"ds-search-overlay\"` and its field `id=\"ds-search-input\"`. The header’s script opens it from the Search link or Ctrl/Cmd+K, and closes it on Escape, a click outside the panel, or focus leaving it."
       - name: ".ds-search-overlay-panel"
         does: "The overlay’s panel, hanging from the bottom of the bar at every width. Opening it closes the menu. Its field and hint are the ordinary `.ds-input` and `.ds-hint`."
+      - name: "templates/assets/chrome/header.js"
+        does: "The header’s script, which opens the search overlay. Load it once per page; without it the Search link goes to the search page and the overlay never opens. From `docs/` it is `../templates/assets/chrome/header.js`; on arxiv.org it is `chrome/header.js` on the static asset route, as the [transitional header’s](#transitional-header) code shows."
+      - name: "header.js"
+        does: "`docs/header.js`, which folds the bar when it does not fit on one row. See [On small screens](#on-small-screens)."
   - id: signed-in
     title: "Signed in"
     summary: "Signed in, the account area shows a greeting with the reader’s given name and an **Account** menu that holds Log out. A long name is cut to 14 characters."
@@ -60,7 +64,7 @@ components:
     summary: "When the header does not fit on one row, it folds. The greeting goes first. Then the navigation, tools and account area fold into one menu, leaving the logo, Search and the menu button. Internal headers keep their search fields in the bar while they fit, then open them from a Search button. A [centred tool or filter](#a-centred-tool-or-filter) folds last. The transitional header folds when the window is narrower than 600px."
     classes:
       - name: "header.js"
-        does: "These docs’ fold-by-fit script, `docs/header.js`, once per page. It finds every `.ds-site-header` and keeps each one on a single row, with no breakpoint to choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The templates load their own script, so a page that uses them adds none."
+        does: "These docs’ fold-by-fit script, `docs/header.js`, once per page. It finds every `.ds-site-header` and keeps each one on a single row, with no breakpoint to choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The templates load their own script, so a page that uses them adds none. A page with the aspirational header loads this script and the one that opens the search overlay, as [The header unit](#the-header-unit) shows."
       - name: ".ds-site-header-nav-toggle, .ds-site-header-search-toggle, .ds-site-header-tools-toggle"
         does: "The menu button, the Search button for search fields, and the Tools button on a bar without an account area. The script adds each one, so they are not in the markup. Each has `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button."
       - name: ".is-collapsible, .is-single-menu, .is-greeting-hidden, .is-nav-collapsed, .is-search-collapsed, .is-tools-collapsed, .is-menu-open, .is-search-open, .is-overfull, .is-open, .is-measuring"
@@ -221,10 +225,10 @@ Every header has the same regions, in this order: Logo, Search, Nav, Tools, and 
 <a class="ds-skip-link" href="#main">Skip to main content</a>
 
 <header class="ds-site-header">
-  <a href="/" class="ds-site-header-logo" aria-label="archive home">
-    <img src="logo_arxiv-primary.svg" alt="archive">
+  <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
+    <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
   </a>
-  <a id="ds-search-toggle" class="ds-site-header-search-link" href="/search" aria-controls="ds-search-overlay" aria-expanded="false">
+  <a id="ds-search-toggle" class="ds-site-header-search-link" href="https://arxiv.org/search" aria-controls="ds-search-overlay" aria-expanded="false">
     <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
       <circle cx="11" cy="11" r="8"/>
       <line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -232,8 +236,8 @@ Every header has the same regions, in this order: Logo, Search, Nav, Tools, and 
     <span>Search</span>
   </a>
   <nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation">
-    <a href="/submit">Submit</a>
-    <a href="/about/donate">Donate</a>
+    <a href="https://arxiv.org/submit">Submit</a>
+    <a href="https://info.arxiv.org/about/donate.html">Donate</a>
   </nav>
   <div class="ds-site-header-tools">
     <button type="button" class="ds-theme-toggle"></button>
@@ -241,15 +245,33 @@ Every header has the same regions, in this order: Logo, Search, Nav, Tools, and 
   </div>
   <span class="ds-site-header-divider" aria-hidden="true"></span>
   <div class="ds-site-header-account">
-    <a href="/login" class="ds-site-header-login">Log in</a>
+    <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
   </div>
 </header>
+<div class="ds-search-overlay" id="ds-search-overlay" hidden>
+  <div class="ds-search-overlay-panel" role="search">
+    <form method="GET" action="https://arxiv.org/search">
+      <label for="ds-search-input" class="is-sr-only">Search arXiv</label>
+      <input type="text" name="query" id="ds-search-input" class="ds-input" autocomplete="off"
+        placeholder="Search papers by title, author, abstract, or ID...">
+      <input type="hidden" name="searchtype" value="all">
+      <input type="hidden" name="source" value="header">
+    </form>
+    <p class="ds-hint">
+      Press Enter to search · <a href="https://arxiv.org/search/advanced">Advanced search</a>
+    </p>
+  </div>
+</div>
+
+<!-- Once per page, at the foot. Paths are relative to docs/. -->
+<script src="../templates/assets/chrome/header.js" defer></script>
+<script src="header.js" defer></script>
 ```
 
 - `.ds-skip-link` — The skip link. The first focusable element on the page, visible only on keyboard focus. Its `href` is the id of the main content.
 - `.ds-site-header` — The bar. With no modifier it is the arxiv.org header.
 - `.ds-site-header-logo` — The brand slot, image or wordmark. Takes `margin-right: auto`. On arxiv.org it is the logo image, never the word typed out; its alt text says “archive”.
-- `.ds-site-header-search-link` — arxiv.org’s Search: an `<a href="/search">` before the navigation and outside it, so it stays in the bar when the navigation folds. JavaScript upgrades it to open the search overlay; without JavaScript it goes to the search page.
+- `.ds-site-header-search-link` — arxiv.org’s Search: a link to the search page before the navigation and outside it, so it stays in the bar when the navigation folds. With `id="ds-search-toggle"` and `aria-controls="ds-search-overlay"`, the header’s script opens the search overlay from it; without JavaScript it goes to the search page.
 - `.ds-site-header-nav` — The site’s sections, in a `<nav>` with an `aria-label`.
 - `.ds-nav-icon` — An icon beside a link label, sized by the stylesheet and quieter than the text. `aria-hidden="true"`; the label gives the name.
 - `.ds-site-header-divider` — A vertical hairline between groups of links or between regions, on the bar’s own divider token. Takes `aria-hidden="true"`. Hidden while the navigation is folded away.
@@ -258,8 +280,10 @@ Every header has the same regions, in this order: Logo, Search, Nav, Tools, and 
 - `.ds-site-header-account` — The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section.
 - `.ds-site-header-login` — The only item in the bar with heavier text: Log in, or the Account menu’s `<summary>`.
 - `.ds-site-header-dropdown` — A menu group in the bar, built on `<details>`. See [Header dropdown menus](#header-dropdown-menus).
-- `.ds-search-overlay` — The search overlay, after the header. The template’s `header.js` opens it from the Search link or Ctrl/Cmd+K, and closes it on Escape, a click outside the panel, or focus leaving it.
+- `.ds-search-overlay` — The search overlay, after the header, with `id="ds-search-overlay"` and its field `id="ds-search-input"`. The header’s script opens it from the Search link or Ctrl/Cmd+K, and closes it on Escape, a click outside the panel, or focus leaving it.
 - `.ds-search-overlay-panel` — The overlay’s panel, hanging from the bottom of the bar at every width. Opening it closes the menu. Its field and hint are the ordinary `.ds-input` and `.ds-hint`.
+- `templates/assets/chrome/header.js` — The header’s script, which opens the search overlay. Load it once per page; without it the Search link goes to the search page and the overlay never opens. From `docs/` it is `../templates/assets/chrome/header.js`; on arxiv.org it is `chrome/header.js` on the static asset route, as the [transitional header’s](#transitional-header) code shows.
+- `header.js` — `docs/header.js`, which folds the bar when it does not fit on one row. See [On small screens](#on-small-screens).
 
 ## Signed in
 
@@ -293,7 +317,7 @@ When the header does not fit on one row, it folds. The greeting goes first. Then
 <script src="header.js" defer></script>
 ```
 
-- `header.js` — These docs’ fold-by-fit script, `docs/header.js`, once per page. It finds every `.ds-site-header` and keeps each one on a single row, with no breakpoint to choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The templates load their own script, so a page that uses them adds none.
+- `header.js` — These docs’ fold-by-fit script, `docs/header.js`, once per page. It finds every `.ds-site-header` and keeps each one on a single row, with no breakpoint to choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The templates load their own script, so a page that uses them adds none. A page with the aspirational header loads this script and the one that opens the search overlay, as [The header unit](#the-header-unit) shows.
 - `.ds-site-header-nav-toggle, .ds-site-header-search-toggle, .ds-site-header-tools-toggle` — The menu button, the Search button for search fields, and the Tools button on a bar without an account area. The script adds each one, so they are not in the markup. Each has `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button.
 - `.is-collapsible, .is-single-menu, .is-greeting-hidden, .is-nav-collapsed, .is-search-collapsed, .is-tools-collapsed, .is-menu-open, .is-search-open, .is-overfull, .is-open, .is-measuring` — State classes the script sets on the bar and on an open region. They are never written by hand. `.is-single-menu` marks a bar with an account area, whose menu holds the navigation, the tools and the account area. `.is-overfull` lets the bar wrap when even the folded bar is too wide for its space.
 

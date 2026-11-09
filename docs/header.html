@@ -370,12 +370,17 @@
     <h3 id="the-header-unit">The header unit</h3>
     <p class="ds-section-desc">Every header has the same regions, in this order: Logo, Search, Nav, Tools, and Account. Tools currently holds only the theme control but is a flexible region for future use.</p>
     <div class="ds-card">
+      <!-- The Relevant code below, as it renders. Left out here: the skip link, and the theme
+           control's live region, which this page already has in its own header. -->
       <header class="ds-site-header">
         <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
           <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
         </a>
-        <a href="https://arxiv.org/search" class="ds-site-header-search-link">
-          <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <a id="ds-search-toggle" class="ds-site-header-search-link" href="https://arxiv.org/search" aria-controls="ds-search-overlay" aria-expanded="false">
+          <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
           <span>Search</span>
         </a>
         <nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation">
@@ -390,16 +395,30 @@
           <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
         </div>
       </header>
+      <div class="ds-search-overlay" id="ds-search-overlay" hidden>
+        <div class="ds-search-overlay-panel" role="search">
+          <form method="GET" action="https://arxiv.org/search">
+            <label for="ds-search-input" class="is-sr-only">Search arXiv</label>
+            <input type="text" name="query" id="ds-search-input" class="ds-input" autocomplete="off"
+              placeholder="Search papers by title, author, abstract, or ID...">
+            <input type="hidden" name="searchtype" value="all">
+            <input type="hidden" name="source" value="header">
+          </form>
+          <p class="ds-hint">
+            Press Enter to search &middot; <a href="https://arxiv.org/search/advanced">Advanced search</a>
+          </p>
+        </div>
+      </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;!-- First focusable element on the page --&gt;
 &lt;a class="ds-skip-link" href="#main"&gt;Skip to main content&lt;/a&gt;
 
 &lt;header class="ds-site-header"&gt;
-  &lt;a href="/" class="ds-site-header-logo" aria-label="archive home"&gt;
-    &lt;img src="logo_arxiv-primary.svg" alt="archive"&gt;
+  &lt;a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home"&gt;
+    &lt;img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive"&gt;
   &lt;/a&gt;
-  &lt;a id="ds-search-toggle" class="ds-site-header-search-link" href="/search" aria-controls="ds-search-overlay" aria-expanded="false"&gt;
+  &lt;a id="ds-search-toggle" class="ds-site-header-search-link" href="https://arxiv.org/search" aria-controls="ds-search-overlay" aria-expanded="false"&gt;
     &lt;svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"&gt;
       &lt;circle cx="11" cy="11" r="8"/&gt;
       &lt;line x1="21" y1="21" x2="16.65" y2="16.65"/&gt;
@@ -407,8 +426,8 @@
     &lt;span&gt;Search&lt;/span&gt;
   &lt;/a&gt;
   &lt;nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation"&gt;
-    &lt;a href="/submit"&gt;Submit&lt;/a&gt;
-    &lt;a href="/about/donate"&gt;Donate&lt;/a&gt;
+    &lt;a href="https://arxiv.org/submit"&gt;Submit&lt;/a&gt;
+    &lt;a href="https://info.arxiv.org/about/donate.html"&gt;Donate&lt;/a&gt;
   &lt;/nav&gt;
   &lt;div class="ds-site-header-tools"&gt;
     &lt;button type="button" class="ds-theme-toggle"&gt;&lt;/button&gt;
@@ -416,9 +435,27 @@
   &lt;/div&gt;
   &lt;span class="ds-site-header-divider" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;div class="ds-site-header-account"&gt;
-    &lt;a href="/login" class="ds-site-header-login"&gt;Log in&lt;/a&gt;
+    &lt;a href="https://arxiv.org/login" class="ds-site-header-login"&gt;Log in&lt;/a&gt;
   &lt;/div&gt;
-&lt;/header&gt;</code></pre>
+&lt;/header&gt;
+&lt;div class="ds-search-overlay" id="ds-search-overlay" hidden&gt;
+  &lt;div class="ds-search-overlay-panel" role="search"&gt;
+    &lt;form method="GET" action="https://arxiv.org/search"&gt;
+      &lt;label for="ds-search-input" class="is-sr-only"&gt;Search arXiv&lt;/label&gt;
+      &lt;input type="text" name="query" id="ds-search-input" class="ds-input" autocomplete="off"
+        placeholder="Search papers by title, author, abstract, or ID..."&gt;
+      &lt;input type="hidden" name="searchtype" value="all"&gt;
+      &lt;input type="hidden" name="source" value="header"&gt;
+    &lt;/form&gt;
+    &lt;p class="ds-hint"&gt;
+      Press Enter to search &amp;middot; &lt;a href="https://arxiv.org/search/advanced"&gt;Advanced search&lt;/a&gt;
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Once per page, at the foot. Paths are relative to docs/. --&gt;
+&lt;script src="../templates/assets/chrome/header.js" defer&gt;&lt;/script&gt;
+&lt;script src="header.js" defer&gt;&lt;/script&gt;</code></pre>
           <dl>
             <dt>.ds-skip-link</dt>
             <dd>The skip link. The first focusable element on the page, visible only on keyboard
@@ -429,9 +466,11 @@
             <dd>The brand slot, image or wordmark. Takes <code>margin-right: auto</code>. On arxiv.org it
             is the logo image, never the word typed out; its alt text says “archive”.</dd>
             <dt>.ds-site-header-search-link</dt>
-            <dd>arxiv.org’s Search: an <code>&lt;a href="/search"&gt;</code> before the navigation and
-            outside it, so it stays in the bar when the navigation folds. JavaScript upgrades it to open
-            the search overlay; without JavaScript it goes to the search page.</dd>
+            <dd>arxiv.org’s Search: a link to the search page before the navigation and
+            outside it, so it stays in the bar when the navigation folds. With
+            <code>id="ds-search-toggle"</code> and <code>aria-controls="ds-search-overlay"</code>, the
+            header’s script opens the search overlay from it; without JavaScript it goes to the search
+            page.</dd>
             <dt>.ds-site-header-nav</dt>
             <dd>The site’s sections, in a <code>&lt;nav&gt;</code> with an
             <code>aria-label</code>.</dd>
@@ -457,13 +496,23 @@
             <dd>A menu group in the bar, built on <code>&lt;details&gt;</code>. See
             <a href="#header-dropdown-menus">Header dropdown menus</a>.</dd>
             <dt>.ds-search-overlay</dt>
-            <dd>The search overlay, after the header. The template’s <code>header.js</code> opens it from
-            the Search link or Ctrl/Cmd+K, and closes it on Escape, a click outside the panel, or focus
-            leaving it.</dd>
+            <dd>The search overlay, after the header, with <code>id="ds-search-overlay"</code> and
+            its field <code>id="ds-search-input"</code>. The header’s script opens it from the Search
+            link or Ctrl/Cmd+K, and closes it on Escape, a click outside the panel, or focus leaving
+            it.</dd>
             <dt>.ds-search-overlay-panel</dt>
             <dd>The overlay’s panel, hanging from the bottom of the bar at every width. Opening it
             closes the menu. Its field and hint are the ordinary <code>.ds-input</code> and
             <code>.ds-hint</code>.</dd>
+            <dt>templates/assets/chrome/header.js</dt>
+            <dd>The header’s script, which opens the search overlay. Load it once per page; without it
+            the Search link goes to the search page and the overlay never opens. From
+            <code>docs/</code> it is <code>../templates/assets/chrome/header.js</code>; on arxiv.org it
+            is <code>chrome/header.js</code> on the static asset route, as the
+            <a href="#transitional-header">transitional header’s</a> code shows.</dd>
+            <dt>header.js</dt>
+            <dd><code>docs/header.js</code>, which folds the bar when it does not fit on one row. See
+            <a href="#on-small-screens">On small screens</a>.</dd>
           </dl>
         </div>
       </details>
@@ -596,7 +645,9 @@
             <dd>These docs’ fold-by-fit script, <code>docs/header.js</code>, once per page. It finds
             every <code>.ds-site-header</code> and keeps each one on a single row, with no breakpoint to
             choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The
-            templates load their own script, so a page that uses them adds none.</dd>
+            templates load their own script, so a page that uses them adds none. A page with the
+            aspirational header loads this script and the one that opens the search overlay, as
+            <a href="#the-header-unit">The header unit</a> shows.</dd>
             <dt>.ds-site-header-nav-toggle, .ds-site-header-search-toggle, .ds-site-header-tools-toggle</dt>
             <dd>The menu button, the Search button for search fields, and the Tools button on a bar
             without an account area. The script adds each one, so they are not in the
@@ -1209,6 +1260,7 @@
     });
   });
 </script>
+<script src="../templates/assets/chrome/header.js" defer></script>  <!-- opens the search overlay in The header unit -->
 <script src="header.js" defer></script>
 <script src="filter-panel.js" defer></script>
 <script src="tooltip.js" defer></script>
