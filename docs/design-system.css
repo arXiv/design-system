@@ -362,6 +362,12 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   padding-bottom: var(--ds-space-6);
 }
 .ds-page-header h1 { margin-bottom: var(--ds-space-tight); }
+/* In the opening band, the band's own padding is the only space below the page
+   header, the same as the space above the title: the header and its last
+   paragraph add none, so the introduction does not sit high in a deep band. */
+.ds-page-header > :last-child { margin-bottom: 0; }
+.ds-zone-secondary > .ds-page-header { padding-bottom: 0; }
+.ds-container > .ds-zone-secondary:first-child:has(> .ds-page-header) { padding-bottom: var(--ds-space-8); }
 
 /* The lede under a page title or a section heading (.ds-section-desc) is body
    text, in body colour: it often says the most important thing in the section.
