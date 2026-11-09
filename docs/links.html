@@ -114,6 +114,7 @@
             <li><a href="#the-inline-link">The inline link</a></li>
             <li><a href="#links-and-text-only-buttons">Links and text-only buttons</a></li>
             <li><a href="#linking-to-a-section">Linking to a section</a></li>
+            <li><a href="#long-lists-of-links">Long lists of links</a></li>
             <li><a href="#disabled-state">Disabled state</a></li>
             <li><a href="#lists-of-links">Lists of links</a></li>
             <li><a href="#visited-memory">Visited memory</a></li>
@@ -283,6 +284,76 @@
     </ul>
   </section>
 
+  <!-- ───────── Long lists of links ───────── -->
+  <section>
+    <h2 id="long-lists-of-links">Long lists of links</h2>
+    <p class="ds-section-desc">A long list of links, such as the other pages in a set, is a list of
+    links set in columns: no bullets, and as many columns as the width holds, so twenty links take a
+    few lines rather than twenty. The page the reader is on stays in the list as a link, and the
+    stylesheet sets it apart.</p>
+    <div class="ds-card">
+      <nav aria-label="Archives, example">
+        <ul class="ds-link-list ds-link-list--columns" role="list">
+          <li><a href="#long-lists-of-links">Astrophysics</a></li>
+          <li><a href="#long-lists-of-links">Condensed Matter</a></li>
+          <li><a href="#long-lists-of-links">General Relativity and Quantum Cosmology</a></li>
+          <li><a href="#long-lists-of-links">High Energy Physics - Experiment</a></li>
+          <li><a href="#long-lists-of-links">High Energy Physics - Lattice</a></li>
+          <li><a href="#long-lists-of-links">High Energy Physics - Phenomenology</a></li>
+          <li><a href="#long-lists-of-links">High Energy Physics - Theory</a></li>
+          <li><a href="#long-lists-of-links">Mathematical Physics</a></li>
+          <li><a href="#long-lists-of-links">Nonlinear Sciences</a></li>
+          <li><a href="#long-lists-of-links">Nuclear Experiment</a></li>
+          <li><a href="#long-lists-of-links">Nuclear Theory</a></li>
+          <li><a href="#long-lists-of-links">Physics</a></li>
+          <li><a href="#long-lists-of-links">Quantum Physics</a></li>
+          <li><a href="#long-lists-of-links" aria-current="page">Mathematics</a></li>
+          <li><a href="#long-lists-of-links">Computer Science</a></li>
+          <li><a href="#long-lists-of-links">Quantitative Biology</a></li>
+          <li><a href="#long-lists-of-links">Quantitative Finance</a></li>
+          <li><a href="#long-lists-of-links">Statistics</a></li>
+          <li><a href="#long-lists-of-links">Electrical Engineering and Systems Science</a></li>
+          <li><a href="#long-lists-of-links">Economics</a></li>
+        </ul>
+      </nav>
+      <details class="ds-acc"><summary>Relevant code</summary>
+        <div class="ds-acc-body">
+<pre><code>&lt;nav aria-label="Archives"&gt;
+  &lt;ul class="ds-link-list ds-link-list--columns" role="list"&gt;
+    &lt;li&gt;&lt;a href="/archive/astro-ph"&gt;Astrophysics&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/archive/cond-mat"&gt;Condensed Matter&lt;/a&gt;&lt;/li&gt;
+    …
+    &lt;li&gt;&lt;a href="/archive/math" aria-current="page"&gt;Mathematics&lt;/a&gt;&lt;/li&gt;
+    …
+  &lt;/ul&gt;
+&lt;/nav&gt;</code></pre>
+          <dl>
+            <dt>.ds-link-list--columns</dt>
+            <dd>With <code>.ds-link-list</code>, on a <code>&lt;ul&gt;</code> with one link in each item.
+            No bullets, and as many columns as fit, each at least 14rem wide: one column on a phone.
+            The links run down each column, then across, in the order of the markup.</dd>
+            <dt>aria-current="page"</dt>
+            <dd>On the link to the page the reader is on, in any <code>.ds-link-list</code>. It stays
+            a link. The stylesheet sets it in <code>--ds-text</code> and bold, so it does not rest on
+            colour alone, and a screen reader announces it as the current page.</dd>
+            <dt>role="list"</dt>
+            <dd>Keeps a list without bullets announced as a list: VoiceOver in Safari may not
+            announce it otherwise.</dd>
+            <dt>&lt;nav aria-label&gt;</dt>
+            <dd>When the list is navigation, such as the other pages in a set, it sits in a
+            <code>&lt;nav&gt;</code> with a name of its own.</dd>
+          </dl>
+        </div>
+      </details>
+    </div>
+    <ul class="notes">
+      <li><strong>The current page stays in the list, as a link.</strong> Mark it with
+      <code>aria-current="page"</code> and add nothing else: no bold of your own, and no plain text in
+      its place. The list then reads the same on every page of the set, and a screen reader says
+      which page is open.</li>
+    </ul>
+  </section>
+
   <div class="ds-note ds-note--essential">
     <h3 class="ds-note-label">Accessibility essentials</h3>
     <ul class="notes">
@@ -343,7 +414,8 @@
     visual noise and tell the reader nothing. WCAG asks for the underline only where colour alone
     would have to separate a link from ordinary text, which is the case for an inline link and not
     for a list. The links keep Link Blue, the hover and focus states, and the visited colour where
-    it means something. Put <code>.ds-link-list</code> on the element that holds the list.</p>
+    it means something. Put <code>.ds-link-list</code> on the element that holds the list. A long
+    list is set in columns, as <a href="#long-lists-of-links">Long lists of links</a> shows.</p>
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
