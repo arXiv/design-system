@@ -18,9 +18,9 @@ components:
       - name: ".ds-paper-when"
         does: "The format links (a `.ds-link-list`) and the dates (`.ds-date-row`) on one line. The links come first in the markup, so a screen reader reaches them straight after the title; the dates are shown first. On a narrow screen the links wrap below the dates."
       - name: ".ds-link-list"
-        does: "On a `<p>`: the authors. After eight names, Show more for the rest."
+        does: "On a `<p>`: the authors. After eight names, Show more for the rest: every other name is in the HTML, in a `.ds-show-more-tail`. See [Show more](progressive-disclosure.md#show-more)."
       - name: "<p>"
-        does: "The abstract excerpt and its Show more. See [Show more](progressive-disclosure.md#show-more)."
+        does: "The abstract excerpt and its Show more: the rest of the abstract is in the HTML, in a `.ds-show-more-tail`. See [Show more](progressive-disclosure.md#show-more)."
       - name: ".ds-data-list"
         does: "Comments, journal reference, DOI and the arXiv ID, in that order, each label beside its value. A paper shows only the rows it has. See [Data list](cards.md#data-list)."
       - name: ".ds-tag-list"
@@ -52,7 +52,7 @@ components:
       - name: ".ds-alert--warning"
         does: "Only when an older version is being viewed. See [Indicate which version is being read](versions.md#version-row)."
       - name: ".ds-link-list"
-        does: "On a `<p>`: the authors, with Show more after eight."
+        does: "On a `<p>`: the authors, with Show more after eight, as for [a paper in a list](#a-paper-in-a-list)."
       - name: "<h2 class=\"is-sr-only\">"
         does: "The abstract's heading, “Abstract”, hidden from sight. Sighted readers know the paragraph after the authors is the abstract; screen-reader users can still jump to it by heading. The demo uses an `<h3>`, because its title is an `<h2>`."
       - name: "<p>"
@@ -258,7 +258,7 @@ Search results and listings use the metadata hierarchy. We rely on proximity to 
     <p class="ds-paper-when"><span class="ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.36857</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.36857</span></a> <a href="#">TeX Source<span class="is-sr-only"> of 2609.36857</span></a></span>
       <span class="ds-date-row">Submitted <time datetime="2026-09-29">29&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time></span></p>
     <p class="ds-link-list"><a href="#">Giovanni Vincenzo Donatiello</a>, <a href="#">Achille A. Nucita</a>, <a href="#">Francesco De Paolis</a>, <a href="#">Antonio Franco</a>, <a href="#">Francesco Strafella</a></p>
-    <p>We present LUMA, a convolutional neural network (CNN) pipeline for the automated detection of strong gravitational <mark>lenses</mark> in simulated astronomical imaging. The method combines a physically motivated preprocessing stage, which enhances faint arc and ring features, with a compact three-block CNN trained using class reweighting and modern learning-rate schedul… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p>
+    <p>We present LUMA, a convolutional neural network (CNN) pipeline for the automated detection of strong gravitational <mark>lenses</mark> in simulated astronomical imaging. The method combines a physically motivated preprocessing stage, which enhances faint arc and ring features, with a compact three-block CNN trained using class reweighting and modern learning-rate scheduling.<span id="abstract-tail-1" class="ds-show-more-tail"> On simulated data, …</span> <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="abstract-tail-1" data-open-label="show less" hidden>show more</button></p>
     <dl class="ds-data-list">
       <div><dt>Comments</dt><dd>Accepted for publication in Astronomy and Computing, 2027, Corresponding Author: G.V. Donatiello (see associated pdf for useful e-mail addresses). 14 Pages, 8 Figures, 3 Tables</dd></div>
       <div><dt>DOI</dt><dd><a href="https://doi.org/10.1016/j.ascom.2026.101198">10.1016/j.ascom.2026.101198</a></dd></div>
@@ -273,8 +273,8 @@ Search results and listings use the metadata hierarchy. We rely on proximity to 
     <h3><a href="#">SN Helios: A Multiply Imaged Type II Supernova Opening Time-Delay Cosmography beyond redshift of 3</a></h3>
     <p class="ds-paper-when"><span class="ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.30440</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.30440</span></a> <a href="#">TeX Source<span class="is-sr-only"> of 2609.30440</span></a></span>
       <span class="ds-date-row">Submitted <time datetime="2026-09-24">24&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time></span></p>
-    <p class="ds-link-list"><a href="#">Seiji Fujimoto</a>, <a href="#">Conor Larison</a>, <a href="#">Justin D. R. Pierel</a>, <a href="#">Lukas J. Furtak</a>, <a href="#">Masamune Oguri</a>, <a href="#">Adi Zitrin</a>, <a href="#">Jose M. Diego</a>, <a href="#">Keren Sharon</a> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false">show all 67 authors</button></p>
-    <p>We report the discovery and spectroscopic confirmation of SN Helios, a strongly <mark>lensed</mark>, multiply imaged Type II supernova (SN) at behind the galaxy cluster RXC J0018.5+1626. The transient was identified as a red F150W-dropout source (F277W = 26.1 mag) in JWST/NIRCam imaging taken on 2026 July 3 for the VENUS survey, with no counterpart in 2024 Decem… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p>
+    <p class="ds-link-list"><a href="#">Seiji Fujimoto</a>, <a href="#">Conor Larison</a>, <a href="#">Justin D. R. Pierel</a>, <a href="#">Lukas J. Furtak</a>, <a href="#">Masamune Oguri</a>, <a href="#">Adi Zitrin</a>, <a href="#">Jose M. Diego</a>, <a href="#">Keren Sharon</a><span id="authors-tail-2" class="ds-show-more-tail">, <a href="#">David A. Coulter</a>, …</span> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="authors-tail-2" data-open-label="show fewer" hidden>show all 67 authors</button></p>
+    <p>We report the discovery and spectroscopic confirmation of SN Helios, a strongly <mark>lensed</mark>, multiply imaged Type II supernova (SN) at $z=3.34$ behind the galaxy cluster RXC J0018.5+1626. The transient was identified as a red F150W-dropout source (F277W = 26.1 mag) in JWST/NIRCam imaging taken on 2026 July 3 for the VENUS survey, with no counterpart in 2024 December imaging.<span id="abstract-tail-2" class="ds-show-more-tail"> Director&#39;s Discretionary Time observations on 2026 August 17 added …</span> <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="abstract-tail-2" data-open-label="show less" hidden>show more</button></p>
     <dl class="ds-data-list">
       <div><dt>Comments</dt><dd>14 pages, 9 figures, 5 tables. Comments welcome!</dd></div>
       <div><dt>arXiv ID</dt><dd><a href="#">2609.30440</a></dd></div>
@@ -286,13 +286,14 @@ Search results and listings use the metadata hierarchy. We rely on proximity to 
     </ul>
   </li>
 </ol>
+<script src="show-more.js" defer></script>
 ```
 
 - `.ds-paper-list` — An `<ol>` of papers. Papers are separated by space, four times the space inside one, with no lines or boxes.
 - `.ds-paper` — One paper, an `<li>`. Its first child is the title: a heading one level below the list's own heading, linked to the abstract page.
 - `.ds-paper-when` — The format links (a `.ds-link-list`) and the dates (`.ds-date-row`) on one line. The links come first in the markup, so a screen reader reaches them straight after the title; the dates are shown first. On a narrow screen the links wrap below the dates.
-- `.ds-link-list` — On a `<p>`: the authors. After eight names, Show more for the rest.
-- `<p>` — The abstract excerpt and its Show more. See [Show more](progressive-disclosure.md#show-more).
+- `.ds-link-list` — On a `<p>`: the authors. After eight names, Show more for the rest: every other name is in the HTML, in a `.ds-show-more-tail`. See [Show more](progressive-disclosure.md#show-more).
+- `<p>` — The abstract excerpt and its Show more: the rest of the abstract is in the HTML, in a `.ds-show-more-tail`. See [Show more](progressive-disclosure.md#show-more).
 - `.ds-data-list` — Comments, journal reference, DOI and the arXiv ID, in that order, each label beside its value. A paper shows only the rows it has. See [Data list](cards.md#data-list).
 - `.ds-tag-list` — The category tags, primary first. See [Displaying categories](#paper-categories). It sits close under the metadata.
 
@@ -346,9 +347,10 @@ On a paper's own page the order is the identity line, the title, the dates and v
     <p><strong>You are viewing version 1.</strong> A newer version is available — <a href="https://arxiv.org/abs/2604.22725v3">version 3, revised 28&nbsp;Jun&nbsp;2026</a>.</p>
   </div>
 </div>
-<p class="ds-link-list"><a href="#">Adrian Palomares</a>, <a href="#">Ilya L. Shapiro</a>, <a href="#">Maria C. Gonzalez-Garcia</a>, <a href="#">Tomohiro Harada</a>, <a href="#">Elena Castellani</a>, <a href="#">Kei-ichi Maeda</a>, <a href="#">Francesca Vidotto</a>, <a href="#">Abhay Ashtekar</a> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false">show all 22 authors</button></p>
+<p class="ds-link-list"><a href="#">Adrian Palomares</a>, <a href="#">Ilya L. Shapiro</a>, <a href="#">Maria C. Gonzalez-Garcia</a>, <a href="#">Tomohiro Harada</a>, <a href="#">Elena Castellani</a>, <a href="#">Kei-ichi Maeda</a>, <a href="#">Francesca Vidotto</a>, <a href="#">Abhay Ashtekar</a><span id="authors-tail" class="ds-show-more-tail">, <a href="#">Roberto Emparan</a>, …</span> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="authors-tail" data-open-label="show fewer" hidden>show all 22 authors</button></p>
 <h2 class="is-sr-only">Abstract</h2>
 <p>We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
+<script src="show-more.js" defer></script>
 ```
 
 **The top of a withdrawn paper, viewing the withdrawal notice**
@@ -492,7 +494,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 - `<h1>` — The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page.
 - `.ds-date-row` — The dates and the version links, as in [Indicate which version is being read](versions.md#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version.
 - `.ds-alert--warning` — Only when an older version is being viewed. See [Indicate which version is being read](versions.md#version-row).
-- `.ds-link-list` — On a `<p>`: the authors, with Show more after eight.
+- `.ds-link-list` — On a `<p>`: the authors, with Show more after eight, as for [a paper in a list](#a-paper-in-a-list).
 - `<h2 class="is-sr-only">` — The abstract's heading, “Abstract”, hidden from sight. Sighted readers know the paragraph after the authors is the abstract; screen-reader users can still jump to it by heading. The demo uses an `<h3>`, because its title is an `<h2>`.
 - `<p>` — The abstract, in full.
 - `<title>` — Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first.
