@@ -23,13 +23,13 @@ components:
     summary: "While an accordion hides an entire labelled section, the 'show more' control reveals the hidden *tail end* of partially displayed content. When hiding the remainder of a list we display the additional item count in the link."
     classes:
       - name: ".ds-show-more"
-        does: "On a `<button type=\"button\">` at the end of the visible part. It takes the link colour, because in running text it is the one thing a reader can act on. An accordion is `<details>`, so the browser supplies the semantics; a tail cannot be, so this is a real `<button>` that has to declare for itself what the browser would otherwise have said, with the three attributes below. It starts `hidden`, and the script shows it."
+        does: "On a `<button type=\"button\">` at the end of the visible part. It takes the link colour, because in running text it is the one thing a reader can act on. An accordion is `<details>`, so the browser supplies the semantics; a tail cannot be, so this is a real `<button>` that has to declare for itself what the browser would otherwise have said, with the three attributes below. It starts `hidden`, and `show-more.js` shows it."
       - name: ".ds-show-more--among-links"
         does: "For a tail at the end of a run of links, such as an author list: grey and italic, so the control does not read as one more link."
       - name: "[aria-expanded]"
         does: "`\"false\"` / `\"true\"`, flipped on every toggle. Without it the control announces as a button that does something unspecified."
       - name: "[aria-controls]"
-        does: "The id of the region it reveals."
+        does: "The id of the region it reveals. Several ids, separated by spaces, open and close together, as a version list's ellipsis and the versions behind it do ([Indicate which version is being read](versions.md#version-row))."
       - name: ".ds-show-more-tail"
         does: "On the region. While the page loads, it keeps the tail closed before the script runs, so a long author list does not show in full and then collapse. Without JavaScript it does nothing, and the whole text shows."
       - name: ".is-open"
@@ -37,7 +37,11 @@ components:
       - name: "[hidden]"
         does: "On the region, the attribute and not a class, set by the script when it shows the button. Without JavaScript the region is never hidden, so the whole text shows and there is no button. While hidden, the names are out of the tab order and out of find-in-page, and the collapse still works with no CSS loaded at all."
       - name: "[data-open-label]"
-        does: "Read by the script on this page: the label while the tail is open. The closed label is the button's own text."
+        does: "The label while the tail is open; without it, “show fewer”. The closed label is the button's own text."
+      - name: "[data-closed-label]"
+        does: "Only on a button that starts open, with `aria-expanded=\"true\"`: the label once it closes."
+      - name: "<script src=\"show-more.js\" defer>"
+        does: "Once per page, at the foot. It works on every `.ds-show-more` with `aria-controls`: it hides each tail and shows its button, and each press flips `aria-expanded`, the label and `hidden` on every region the button names. A page writes no script of its own."
     notes:
       - "\"Show more\" is a button, not a `<details>` element (the element the accordion uses). A `<details>` element cannot sit inside a paragraph, and its label must come before the hidden text, not after it."
   - id: popover
@@ -182,16 +186,21 @@ While an accordion hides an entire labelled section, the 'show more' control rev
   <li><a href="#">L. Cheng</a></li></ul><span id="authors-tail" class="ds-show-more-tail">, <a href="#">T. Okonkwo</a>, …</span>
 <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false"
         aria-controls="authors-tail" data-open-label="show fewer" hidden>… show all 22 authors</button>
+
+<!-- And include the script once, at the foot of the page -->
+<script src="show-more.js" defer></script>
 ```
 
-- `.ds-show-more` — On a `<button type="button">` at the end of the visible part. It takes the link colour, because in running text it is the one thing a reader can act on. An accordion is `<details>`, so the browser supplies the semantics; a tail cannot be, so this is a real `<button>` that has to declare for itself what the browser would otherwise have said, with the three attributes below. It starts `hidden`, and the script shows it.
+- `.ds-show-more` — On a `<button type="button">` at the end of the visible part. It takes the link colour, because in running text it is the one thing a reader can act on. An accordion is `<details>`, so the browser supplies the semantics; a tail cannot be, so this is a real `<button>` that has to declare for itself what the browser would otherwise have said, with the three attributes below. It starts `hidden`, and `show-more.js` shows it.
 - `.ds-show-more--among-links` — For a tail at the end of a run of links, such as an author list: grey and italic, so the control does not read as one more link.
 - `[aria-expanded]` — `"false"` / `"true"`, flipped on every toggle. Without it the control announces as a button that does something unspecified.
-- `[aria-controls]` — The id of the region it reveals.
+- `[aria-controls]` — The id of the region it reveals. Several ids, separated by spaces, open and close together, as a version list's ellipsis and the versions behind it do ([Indicate which version is being read](versions.md#version-row)).
 - `.ds-show-more-tail` — On the region. While the page loads, it keeps the tail closed before the script runs, so a long author list does not show in full and then collapse. Without JavaScript it does nothing, and the whole text shows.
 - `.is-open` — Set on the region by the script while the tail is open, together with removing `hidden`.
 - `[hidden]` — On the region, the attribute and not a class, set by the script when it shows the button. Without JavaScript the region is never hidden, so the whole text shows and there is no button. While hidden, the names are out of the tab order and out of find-in-page, and the collapse still works with no CSS loaded at all.
-- `[data-open-label]` — Read by the script on this page: the label while the tail is open. The closed label is the button's own text.
+- `[data-open-label]` — The label while the tail is open; without it, “show fewer”. The closed label is the button's own text.
+- `[data-closed-label]` — Only on a button that starts open, with `aria-expanded="true"`: the label once it closes.
+- `<script src="show-more.js" defer>` — Once per page, at the foot. It works on every `.ds-show-more` with `aria-controls`: it hides each tail and shows its button, and each press flips `aria-expanded`, the label and `hidden` on every region the button names. A page writes no script of its own.
 
 > "Show more" is a button, not a `<details>` element (the element the accordion uses). A `<details>` element cannot sit inside a paragraph, and its label must come before the hidden text, not after it.
 

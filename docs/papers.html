@@ -704,7 +704,9 @@
     &lt;/details&gt;
   &lt;/section&gt;
 &lt;/aside&gt;
-&lt;/div&gt;</code></pre>
+&lt;/div&gt;
+&lt;script src="cite.js" defer&gt;&lt;/script&gt;
+&lt;script src="copy.js" defer&gt;&lt;/script&gt;</code></pre>
           <dl>
             <dt>.ds-sidebar</dt>
             <dd>The column beside the abstract: Files, Cite and Paper information, in that order. See <a href="layouts.html#sidebar">Sidebar</a>. Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.</dd>
@@ -716,6 +718,10 @@
             <dd>On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link&#39;s name, which meets <a href="https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html">WCAG 2.2 SC 2.5.3</a> Label in Name (Level A).</dd>
             <dt>.ds-paper-cite</dt>
             <dd>The citation. <code>.ds-paper-cite-head</code> holds the Cite label and, on the same line, a compact select (<code>.ds-form--compact</code>) to choose the format. Each format is a standard code block, so <code>copy.js</code> gives it the copy button and its &ldquo;Copied to clipboard&rdquo; announcement, and the citation wraps rather than scrolling. <code>.ds-paper-cite-code</code> shows the first two lines until the <code>.ds-show-more</code> below it opens the rest. Every format is in the page, one <code>&lt;figure&gt;</code> each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.</dd>
+            <dt>[data-format]</dt>
+            <dd>On each <code>&lt;figure&gt;</code>: the value of that format&#39;s <code>&lt;option&gt;</code> in the select. Only the figure the select names is shown.</dd>
+            <dt>&lt;script src="cite.js" defer&gt;</dt>
+            <dd>Once per page, with <code>copy.js</code>. It shows the format chosen in the select, so the copy button copies the format shown, and makes the <code>.ds-show-more</code> open the full citation: the button&#39;s own text is its label while the citation is closed, and &ldquo;Show less&rdquo; while it is open.</dd>
             <dt>.ds-paper-capabilities</dt>
             <dd>The accessibility panel: one line per capability the paper has, each a <code>shield-check</code> icon from <code>docs/icons/</code> and words. Only what is present is listed, and there is no score.</dd>
             <dt>.ds-acc</dt>
@@ -1033,26 +1039,6 @@
 
 
 <script>
-  // Cite: the chosen format is the one shown and copied. Without this script
-  // every format is shown in full, each with its name, and the select and button are hidden.
-  document.querySelectorAll('.ds-paper-cite').forEach(function (cite) {
-    var select = cite.querySelector('select');
-    var toggle = cite.querySelector('.ds-show-more');
-    var region = document.getElementById(toggle.getAttribute('aria-controls'));
-    var figures = cite.querySelectorAll('figure[data-format]');
-    function show() { figures.forEach(function (f) { f.hidden = f.dataset.format !== select.value; }); }
-    select.addEventListener('change', show); show();
-    toggle.hidden = false;
-    toggle.addEventListener('click', function () {
-      var open = toggle.getAttribute('aria-expanded') !== 'true';
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      region.classList.toggle('is-open', open);
-      toggle.textContent = open ? 'Show less' : 'Show full citation';
-    });
-  });
-</script>
-
-<script>
   // Nav dropdowns: close on outside click and Esc (enhancement only —
   // the <details> menus work without this).
   document.addEventListener('click', function (e) {
@@ -1079,5 +1065,6 @@
 <script src="element-pill.js" defer></script>
 <script src="anchors.js" defer></script>
 <script src="toc.js" defer></script>
+<script src="cite.js" defer></script>
 </body>
 </html>

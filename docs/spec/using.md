@@ -13,6 +13,8 @@ components:
       - "**`theme.js`.** The foundational tier 1 JavaScript. Internal tools add no JavaScript of their own."
       - "**`toc.js`, optional.** Add it when the page has a TOC bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See [TOC bar](navigation.md#toc-bar)."
       - "**`copy.js`, optional.** Add it when the page shows code a reader might take away, or has any other copy button. It needs no markup for code: it finds every `<pre>` on the page and puts a copy button on each one. Other copy buttons are on [Show that something was copied](action-feedback.md)."
+      - "**`show-more.js`, optional.** Add it when the page has a Show more, such as the authors after the first eight. The button and the tail are tier 1; the script hides the tail, shows the button and opens and closes the tail. See [Show more](progressive-disclosure.md#show-more)."
+      - "**`cite.js`, optional.** Add it, with `copy.js`, when the page has a paper's Cite. The script shows the format chosen in the select and opens the full citation. See [Displaying paper actions and full metadata](papers.md#the-sidebar)."
   - id: basic-page-markup
     title: "Basic page markup"
     summary: "This is all you need for a public arXiv page. Copy it and follow the comments."
@@ -75,6 +77,10 @@ Every core file you need to include in your repo, and in what order.
 **Rule.** **`toc.js`, optional.** Add it when the page has a TOC bar. The bar itself is tier 1; the script closes the menu after a choice and names the section the reader is in. See [TOC bar](navigation.md#toc-bar).
 
 **Rule.** **`copy.js`, optional.** Add it when the page shows code a reader might take away, or has any other copy button. It needs no markup for code: it finds every `<pre>` on the page and puts a copy button on each one. Other copy buttons are on [Show that something was copied](action-feedback.md).
+
+**Rule.** **`show-more.js`, optional.** Add it when the page has a Show more, such as the authors after the first eight. The button and the tail are tier 1; the script hides the tail, shows the button and opens and closes the tail. See [Show more](progressive-disclosure.md#show-more).
+
+**Rule.** **`cite.js`, optional.** Add it, with `copy.js`, when the page has a paper's Cite. The script shows the format chosen in the select and opens the full citation. See [Displaying paper actions and full metadata](papers.md#the-sidebar).
 
 ## Basic page markup
 
