@@ -358,13 +358,14 @@
   &lt;button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v12-elide v12-tail"&gt;show all 12 versions&lt;/button&gt;
   &lt;/span&gt;
 &lt;/p&gt;
-</code></pre>
+&lt;script src="show-more.js" defer&gt;&lt;/script&gt;</code></pre>
           <dl>
             <dt>.ds-show-more</dt>
             <dd>The control that expands the list, documented on
             <a href="progressive-disclosure.html#show-more">Progressive disclosure</a>. Requires
             <code>aria-expanded</code>, flipped on every press, and <code>aria-controls</code> naming
-            every region it shows or hides. The label includes the total: "show all 12 versions", and
+            every region it shows or hides; <code>show-more.js</code>, once per page, does the
+            flipping. The label includes the total: "show all 12 versions", and
             "show fewer" once open.</dd>
             <dt>[hidden]</dt>
             <dd>On the span that holds the elided versions. The attribute, not a class: the hidden links
@@ -1190,30 +1191,11 @@
     });
   });
 </script>
-<script>
-  // The elision demos: the same three things the show-more reference
-  // implementation on progressive-disclosure.html does — flip aria-expanded,
-  // toggle the `hidden` ATTRIBUTE, re-label with the count — except that
-  // here a press hides the ellipsis as well as showing the tail, so every id
-  // in aria-controls is toggled.
-  document.querySelectorAll('.ds-show-more[aria-controls]:not(.ds-paper-cite .ds-show-more)').forEach(function (toggle) {
-    var regions = toggle.getAttribute('aria-controls').split(/\s+/).map(function (id) {
-      return document.getElementById(id);
-    });
-    // A toggle that starts open names its closed label in data-closed-label.
-    var collapsedLabel = toggle.dataset.closedLabel || toggle.textContent;
-    toggle.addEventListener('click', function () {
-      var expanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-      regions.forEach(function (r) { if (r) r.hidden = !r.hidden; });
-      toggle.textContent = expanded ? collapsedLabel : 'show fewer';
-    });
-  });
-</script>
 <script src="header.js" defer></script>
 <script src="tooltip.js" defer></script>
 <script src="copy.js" defer></script>
 <script src="anchors.js" defer></script>
 <script src="toc.js" defer></script>
+<script src="show-more.js" defer></script>
 </body>
 </html>

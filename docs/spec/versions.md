@@ -32,7 +32,7 @@ components:
       - name: "aria-current=\"true\""
         does: "On v1 here, since v1 is the version being viewed. \"(this version)\" moves to the Submitted date for the same reason."
       - name: ".ds-show-more"
-        does: "The control that expands the list, documented on [Progressive disclosure](progressive-disclosure.md#show-more). Requires `aria-expanded`, flipped on every press, and `aria-controls` naming every region it shows or hides. The label includes the total: \"show all 12 versions\", and \"show fewer\" once open."
+        does: "The control that expands the list, documented on [Progressive disclosure](progressive-disclosure.md#show-more). Requires `aria-expanded`, flipped on every press, and `aria-controls` naming every region it shows or hides; `show-more.js`, once per page, does the flipping. The label includes the total: \"show all 12 versions\", and \"show fewer\" once open."
       - name: "[hidden]"
         does: "On the span that holds the elided versions. The attribute, not a class: the hidden links are out of the tab order while they are off screen. The full list is in the HTML the server sends; a script adds `hidden` and the button, so with no JavaScript the reader gets every version."
       - name: "aria-hidden=\"true\""
@@ -214,6 +214,7 @@ Every paper shows its dates under the title, and its versions once there is more
   <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v12-elide v12-tail">show all 12 versions</button>
   </span>
 </p>
+<script src="show-more.js" defer></script>
 ```
 
 **Viewing v7 of 12**
@@ -384,7 +385,7 @@ Every paper shows its dates under the title, and its versions once there is more
 - `.is-sr-only` — Inside every prior-version link, after the visible "v1": ", version 1". The visible "v1" on its own does not say which version the link opens. A screen reader reads the link as "v1, version 1".
 - `.ds-alert.ds-alert--warning` — The older-version warning, documented on [Alerts](alerts.md): the warning state, the triangle icon copied whole, and no role, because it is in the page as it loads. Render it only when the version being viewed is not the latest. One sentence that names the version being viewed, then a link straight to the latest one.
 - `aria-current="true"` — On v1 here, since v1 is the version being viewed. "(this version)" moves to the Submitted date for the same reason.
-- `.ds-show-more` — The control that expands the list, documented on [Progressive disclosure](progressive-disclosure.md#show-more). Requires `aria-expanded`, flipped on every press, and `aria-controls` naming every region it shows or hides. The label includes the total: "show all 12 versions", and "show fewer" once open.
+- `.ds-show-more` — The control that expands the list, documented on [Progressive disclosure](progressive-disclosure.md#show-more). Requires `aria-expanded`, flipped on every press, and `aria-controls` naming every region it shows or hides; `show-more.js`, once per page, does the flipping. The label includes the total: "show all 12 versions", and "show fewer" once open.
 - `[hidden]` — On the span that holds the elided versions. The attribute, not a class: the hidden links are out of the tab order while they are off screen. The full list is in the HTML the server sends; a script adds `hidden` and the button, so with no JavaScript the reader gets every version.
 - `aria-hidden="true"` — On the ellipsis, which is decoration. The `.is-sr-only` span beside it says which versions are hidden. Both sit in one span that the button hides when the list opens.
 - `aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b"` — When the viewed version falls inside the elision there are two ellipses and two hidden spans. List all four ids, separated by spaces, so one press opens the whole list.

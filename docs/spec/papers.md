@@ -83,6 +83,10 @@ components:
         does: "On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)."
       - name: ".ds-paper-cite"
         does: "The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden."
+      - name: "[data-format]"
+        does: "On each `<figure>`: the value of that format's `<option>` in the select. Only the figure the select names is shown."
+      - name: "<script src=\"cite.js\" defer>"
+        does: "Once per page, with `copy.js`. It shows the format chosen in the select, so the copy button copies the format shown, and makes the `.ds-show-more` open the full citation: the button's own text is its label while the citation is closed, and “Show less” while it is open."
       - name: ".ds-paper-capabilities"
         does: "The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score."
       - name: ".ds-acc"
@@ -137,6 +141,10 @@ components:
         does: "On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)."
       - name: ".ds-paper-cite"
         does: "The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden."
+      - name: "[data-format]"
+        does: "On each `<figure>`: the value of that format's `<option>` in the select. Only the figure the select names is shown."
+      - name: "<script src=\"cite.js\" defer>"
+        does: "Once per page, with `copy.js`. It shows the format chosen in the select, so the copy button copies the format shown, and makes the `.ds-show-more` open the full citation: the button's own text is its label while the citation is closed, and “Show less” while it is open."
       - name: ".ds-paper-capabilities"
         does: "The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score."
       - name: ".ds-acc"
@@ -476,6 +484,8 @@ On a paper's own page the order is the identity line, the title, the dates and v
   </section>
 </aside>
 </div>
+<script src="cite.js" defer></script>
+<script src="copy.js" defer></script>
 ```
 
 - `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
@@ -498,6 +508,8 @@ On a paper's own page the order is the identity line, the title, the dates and v
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
 - `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
+- `[data-format]` — On each `<figure>`: the value of that format's `<option>` in the select. Only the figure the select names is shown.
+- `<script src="cite.js" defer>` — Once per page, with `copy.js`. It shows the format chosen in the select, so the copy button copies the format shown, and makes the `.ds-show-more` open the full citation: the button's own text is its label while the citation is closed, and “Show less” while it is open.
 - `.ds-paper-capabilities` — The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score.
 - `.ds-acc` — Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label. They share `name="paper-info"`, so only one is open at a time.
 
@@ -673,6 +685,8 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
   </section>
 </aside>
 </div>
+<script src="cite.js" defer></script>
+<script src="copy.js" defer></script>
 ```
 
 - `.ds-sidebar` — The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layouts.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
@@ -680,6 +694,8 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
 - `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
+- `[data-format]` — On each `<figure>`: the value of that format's `<option>` in the select. Only the figure the select names is shown.
+- `<script src="cite.js" defer>` — Once per page, with `copy.js`. It shows the format chosen in the select, so the copy button copies the format shown, and makes the `.ds-show-more` open the full citation: the button's own text is its label while the citation is closed, and “Show less” while it is open.
 - `.ds-paper-capabilities` — The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score.
 - `.ds-acc` — Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label. They share `name="paper-info"`, so only one is open at a time.
 
