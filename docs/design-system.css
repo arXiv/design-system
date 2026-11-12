@@ -362,6 +362,12 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   padding-bottom: var(--ds-space-6);
 }
 .ds-page-header h1 { margin-bottom: var(--ds-space-tight); }
+/* In the opening band, the band's own padding is the only space below the page
+   header, the same as the space above the title: the header and its last
+   paragraph add none, so the introduction does not sit high in a deep band. */
+.ds-page-header > :last-child { margin-bottom: 0; }
+.ds-zone-secondary > .ds-page-header { padding-bottom: 0; }
+.ds-container > .ds-zone-secondary:first-child:has(> .ds-page-header) { padding-bottom: var(--ds-space-8); }
 
 /* The lede under a page title or a section heading (.ds-section-desc) is body
    text, in body colour: it often says the most important thing in the section.
@@ -417,6 +423,13 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 /* A list in which every item is a link: no underline at rest, since no ordinary text sits beside it. */
 .ds-link-list a { text-decoration: none; }
 .ds-link-list a:hover { text-decoration: underline; }
+/* The page the reader is on stays in the list as a link: the text colour and
+   bold, so it does not rest on colour alone; aria-current names it. */
+.ds-link-list a[aria-current="page"] { color: var(--ds-text); font-weight: 600; }
+/* A long list of links, on a <ul>: no bullets, and as many columns as fit,
+   each at least 14rem, so the list reads down each column, then across. */
+.ds-link-list--columns { list-style: none; padding-left: 0; columns: 14rem; column-gap: var(--ds-space-8); }
+.ds-link-list--columns > li { break-inside: avoid; }
 :where(.ds-page) a[aria-disabled="true"] { color: var(--ds-text-disabled); cursor: default; }   /* a disabled link has no href; links.html */
 :where(.ds-page) a:focus-visible {
   outline: 3px solid var(--ds-focus-ring);
@@ -1310,6 +1323,10 @@ button:not(.is-failed) > svg.ds-copy-failed,
 .ds-card > :first-child { margin-block-start: 0; }
 .ds-card > .ds-marginalia:first-child + * { margin-block-start: 0; }   /* a margin note sits beside the card */
 .ds-card > :last-child  { margin-block-end: 0; }
+/* A card set in running text keeps a paragraph's space below it. The card has
+   no outer margin, so the prose after it takes the gap; :where() lets any
+   component's own margin win. */
+:where(.ds-card + p, .ds-card + ul, .ds-card + ol, .ds-card + dl) { margin-top: var(--ds-space-4); }
 
 /* A card whose first row is a header bar (.ds-card-bar): the bar holds the
    controls for the set of data in the card, on one line while they fit. A
@@ -1903,6 +1920,9 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
   overflow-wrap: anywhere;   /* the DOI breaks rather than widen the page at large text sizes */
 }
 .ds-container > .ds-paper-identity { grid-column: full; padding-inline: var(--ds-gutter); }
+/* The identity line is a full-width row, and it belongs to the title below it: the container's
+   space between sections does not come after it, so its own margin is the gap. */
+.ds-container > .ds-paper-identity + * { margin-top: calc(-1 * var(--ds-space-section)); }
 /* "Withdrawn:" or "Removed:" before a paper's title, in its own element so the author's title is never edited. */
 .ds-paper-status { color: var(--ds-error-fg); }
 /* A paper's version history, newest first; the version being viewed is marked. */
@@ -3657,11 +3677,17 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
    own, so no rule in the variant can lose a specificity argument.
    Focus rings on the dark bar use --ds-focus-ring-on-dark. */
 
-/* ── Skip link ── */
+/* ── Skip link ──
+   For a reader who moves through the page with the Tab key: the first one passes the header,
+   and a second, part way down a page, passes a block of controls such as a paper's sidebar.
+   It is out of the flow and has no position of its own, so on focus it shows where it stands
+   and nothing else moves: the first in the page's top corner, a later one in its place in the
+   text. Until then it is clipped where it stands. Sent off the top of the page instead, a
+   later one would take the view to the top when it took focus. */
 .ds-skip-link {
   position: absolute;
-  top: -100px; left: 8px;
   z-index: 200;
+  margin: var(--ds-space-2);
   /* Repository Brown and the Canvas invert together between modes, so
      pairing them keeps this chip legible in both: light-on-dark in light
      mode, dark-on-light in dark. It was previously paired with a literal
@@ -3676,8 +3702,14 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
   font-family: var(--ds-font-sans);
   font-weight: 600;
 }
+.ds-skip-link:not(:focus-visible) {
+  width: 1px; height: 1px;
+  margin: 0; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .ds-skip-link:focus-visible {
-  top: 8px;
   outline: 3px solid var(--ds-focus-ring);   /* the link sits outside the header, so the header's ring token is not set here */
   outline-offset: 2px;
 }

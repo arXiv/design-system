@@ -31,7 +31,7 @@ components:
       - name: ".ds-note"
         does: "The box, on a `<div>` in the flow of the page. On its own it is the grey register: guidance."
       - name: ".ds-note-label"
-        does: "The tab, and the note's first child. The label is a heading, at whatever level the page is up to: `.ds-note-label` resets the type completely, so `h2` through `h4` all render the same tab. Keeping it a heading keeps the note in the document outline, which is how a screen-reader user finds it."
+        does: "The tab, and the note's first child. The label is a heading, at whatever level the page is up to: `.ds-note-label` resets the type completely, so `h2` through `h4` all render the same tab. Keeping it a heading keeps the note in the document outline, which is how a screen-reader user finds it. When the passage has no label of its own, write a short one that names what the reader must know, such as “Before you change your email address”."
       - name: ".ds-note--essential"
         does: "The blue register: a requirement. It uses the info status colours."
       - name: ".ds-note--internal"
@@ -116,7 +116,7 @@ A box in the flow of a page that names its own register before the reader starts
 ```
 
 - `.ds-note` — The box, on a `<div>` in the flow of the page. On its own it is the grey register: guidance.
-- `.ds-note-label` — The tab, and the note's first child. The label is a heading, at whatever level the page is up to: `.ds-note-label` resets the type completely, so `h2` through `h4` all render the same tab. Keeping it a heading keeps the note in the document outline, which is how a screen-reader user finds it.
+- `.ds-note-label` — The tab, and the note's first child. The label is a heading, at whatever level the page is up to: `.ds-note-label` resets the type completely, so `h2` through `h4` all render the same tab. Keeping it a heading keeps the note in the document outline, which is how a screen-reader user finds it. When the passage has no label of its own, write a short one that names what the reader must know, such as “Before you change your email address”.
 - `.ds-note--essential` — The blue register: a requirement. It uses the info status colours.
 - `.ds-note--internal` — The lime register: how the component differs in internal tools.
 - `.ds-note-gotcha` — A ruled-off warning at the foot of the note, on a `<p>` whose first child is a `<strong>` lead.

@@ -46,9 +46,23 @@ components:
       - "**An id follows its heading**, so rewording a heading changes its anchor. That is the right trade while nothing links in from outside; re-run the generator after editing a heading and the check will tell you if you forget."
       - "**Its accessible name includes the section.** Twelve buttons all called “Permalink” are useless in a list of controls, so each says which section it belongs to."
       - "**The control is the same wherever it is used**, on a docs page or in an HTML paper. A heading that has one action uses this control; an element with several actions, such as an equation, uses the [element pill](buttons.md#small-actions-attached-to-content)."
+  - id: long-lists-of-links
+    title: "Long lists of links"
+    summary: "A long list of links, such as the other pages in a set, is a list of links set in columns: no bullets, and as many columns as the width holds, so twenty links take a few lines rather than twenty. The page the reader is on stays in the list as a link, and the stylesheet sets it apart."
+    classes:
+      - name: ".ds-link-list--columns"
+        does: "With `.ds-link-list`, on a `<ul>` with one link in each item. No bullets, and as many columns as fit, each at least 14rem wide: one column on a phone. The links run down each column, then across, in the order of the markup."
+      - name: "aria-current=\"page\""
+        does: "On the link to the page the reader is on, in any `.ds-link-list`. It stays a link. The stylesheet sets it in `--ds-text` and bold, so it does not rest on colour alone, and a screen reader announces it as the current page."
+      - name: "role=\"list\""
+        does: "Keeps a list without bullets announced as a list: VoiceOver in Safari may not announce it otherwise."
+      - name: "<nav aria-label>"
+        does: "When the list is navigation, such as the other pages in a set, it sits in a `<nav>` with a name of its own. Use `aria-label`, not `aria-labelledby` pointing at the list's heading: a heading with a Permalink would add the Permalink's words to the name."
+    rules:
+      - "**The current page stays in the list, as a link.** Mark it with `aria-current=\"page\"` and add nothing else: no bold of your own, and no plain text in its place. The list then reads the same on every page of the set, and a screen reader says which page is open."
 rules:
   - "A disabled link has no `href`, so it cannot be reached or followed by keyboard or pointer. `pointer-events: none` alone is not enough: it stops a mouse, but a keyboard can still follow the link. Add `role=\"link\"` and `aria-disabled=\"true\"`, so a screen reader still announces it as a link that is unavailable, and the stylesheet colours it `--ds-text-disabled` (`#aeaaa4`). The underline stays so it is still recognisable as a (currently unavailable) link. The disabled state falls below AA on contrast — WCAG exempts disabled controls from contrast requirements."
-  - "A list of author names, a navigation bar, a footer column: these are lists in which every item is a link, and none of them is underlined. The underline exists to tell a link apart from the text around it, and in a list of links there is no such text; underlining every item would add visual noise and tell the reader nothing. WCAG asks for the underline only where colour alone would have to separate a link from ordinary text, which is the case for an inline link and not for a list. The links keep Link Blue, the hover and focus states, and the visited colour where it means something. Put `.ds-link-list` on the element that holds the list."
+  - "A list of author names, a navigation bar, a footer column: these are lists in which every item is a link, and none of them is underlined. The underline exists to tell a link apart from the text around it, and in a list of links there is no such text; underlining every item would add visual noise and tell the reader nothing. WCAG asks for the underline only where colour alone would have to separate a link from ordinary text, which is the case for an inline link and not for a list. The links keep Link Blue, the hover and focus states, and the visited colour where it means something. Put `.ds-link-list` on the element that holds the list. A long list is set in columns, as [Long lists of links](#long-lists-of-links) shows."
   - "Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A). An underline is needed only where a link sits in running text; in a list, the layout shows which words are links."
   - "[Adrian Palomares](#lists-of-links), [Mei Lin Chen](#lists-of-links), [Kwame Mensah](#lists-of-links)"
   - "The Visited Purple is intentionally strong, not a faint after-state. Researchers reading long bibliographies and listings benefit from seeing what they have already followed up on; a too-subtle visited treatment defeats the purpose. If a specific surface (e.g., a navigation breadcrumb) needs to suppress visited styling, override `:visited { color: inherit }` locally."
@@ -137,10 +151,33 @@ A section heading can include a control that copies a link to that section, so a
 
 **Rule.** **The control is the same wherever it is used**, on a docs page or in an HTML paper. A heading that has one action uses this control; an element with several actions, such as an equation, uses the [element pill](buttons.md#small-actions-attached-to-content).
 
+## Long lists of links
+
+A long list of links, such as the other pages in a set, is a list of links set in columns: no bullets, and as many columns as the width holds, so twenty links take a few lines rather than twenty. The page the reader is on stays in the list as a link, and the stylesheet sets it apart.
+
+```html
+<nav aria-label="Archives">
+  <ul class="ds-link-list ds-link-list--columns" role="list">
+    <li><a href="/archive/astro-ph">Astrophysics</a></li>
+    <li><a href="/archive/cond-mat">Condensed Matter</a></li>
+    …
+    <li><a href="/archive/math" aria-current="page">Mathematics</a></li>
+    …
+  </ul>
+</nav>
+```
+
+- `.ds-link-list--columns` — With `.ds-link-list`, on a `<ul>` with one link in each item. No bullets, and as many columns as fit, each at least 14rem wide: one column on a phone. The links run down each column, then across, in the order of the markup.
+- `aria-current="page"` — On the link to the page the reader is on, in any `.ds-link-list`. It stays a link. The stylesheet sets it in `--ds-text` and bold, so it does not rest on colour alone, and a screen reader announces it as the current page.
+- `role="list"` — Keeps a list without bullets announced as a list: VoiceOver in Safari may not announce it otherwise.
+- `<nav aria-label>` — When the list is navigation, such as the other pages in a set, it sits in a `<nav>` with a name of its own. Use `aria-label`, not `aria-labelledby` pointing at the list's heading: a heading with a Permalink would add the Permalink's words to the name.
+
+**Rule.** **The current page stays in the list, as a link.** Mark it with `aria-current="page"` and add nothing else: no bold of your own, and no plain text in its place. The list then reads the same on every page of the set, and a screen reader says which page is open.
+
 ## Rules
 
 - A disabled link has no `href`, so it cannot be reached or followed by keyboard or pointer. `pointer-events: none` alone is not enough: it stops a mouse, but a keyboard can still follow the link. Add `role="link"` and `aria-disabled="true"`, so a screen reader still announces it as a link that is unavailable, and the stylesheet colours it `--ds-text-disabled` (`#aeaaa4`). The underline stays so it is still recognisable as a (currently unavailable) link. The disabled state falls below AA on contrast — WCAG exempts disabled controls from contrast requirements.
-- A list of author names, a navigation bar, a footer column: these are lists in which every item is a link, and none of them is underlined. The underline exists to tell a link apart from the text around it, and in a list of links there is no such text; underlining every item would add visual noise and tell the reader nothing. WCAG asks for the underline only where colour alone would have to separate a link from ordinary text, which is the case for an inline link and not for a list. The links keep Link Blue, the hover and focus states, and the visited colour where it means something. Put `.ds-link-list` on the element that holds the list.
+- A list of author names, a navigation bar, a footer column: these are lists in which every item is a link, and none of them is underlined. The underline exists to tell a link apart from the text around it, and in a list of links there is no such text; underlining every item would add visual noise and tell the reader nothing. WCAG asks for the underline only where colour alone would have to separate a link from ordinary text, which is the case for an inline link and not for a list. The links keep Link Blue, the hover and focus states, and the visited colour where it means something. Put `.ds-link-list` on the element that holds the list. A long list is set in columns, as [Long lists of links](#long-lists-of-links) shows.
 - Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A). An underline is needed only where a link sits in running text; in a list, the layout shows which words are links.
 - [Adrian Palomares](#lists-of-links), [Mei Lin Chen](#lists-of-links), [Kwame Mensah](#lists-of-links)
 - The Visited Purple is intentionally strong, not a faint after-state. Researchers reading long bibliographies and listings benefit from seeing what they have already followed up on; a too-subtle visited treatment defeats the purpose. If a specific surface (e.g., a navigation breadcrumb) needs to suppress visited styling, override `:visited { color: inherit }` locally.

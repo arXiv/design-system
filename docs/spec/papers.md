@@ -6,7 +6,7 @@ stylesheet: design-system.css
 components:
   - id: the-metadata-hierarchy
     title: "The metadata hierarchy"
-    summary: "This order is based on what we hear from arXiv readers. They focus in on certain information first and want it easy to find, while other content is lower in their reading order. Look for guidance on visual display? This table is purely about hierarchy and content flow. You will find design and display notes elsewhere on this page and in mockups, ."
+    summary: "This order is based on what we hear from arXiv readers. They focus in on certain information first and want it easy to find, while other content is lower in their reading order. Look for guidance on visual display? This table is purely about hierarchy and content flow. You will find design and display notes elsewhere on this page."
   - id: a-paper-in-a-list
     title: "A paper in a list"
     summary: "Search results and listings use the metadata hierarchy. We rely on proximity to define rows instead of relying on visual blocks or dividers. Information is close together within each result and with a comfortable gap between result rows."
@@ -18,9 +18,9 @@ components:
       - name: ".ds-paper-when"
         does: "The format links (a `.ds-link-list`) and the dates (`.ds-date-row`) on one line. The links come first in the markup, so a screen reader reaches them straight after the title; the dates are shown first. On a narrow screen the links wrap below the dates."
       - name: ".ds-link-list"
-        does: "On a `<p>`: the authors. After eight names, Show more for the rest."
+        does: "On a `<p>`: the authors. After eight names, Show more for the rest: every other name is in the HTML, in a `.ds-show-more-tail`. See [Show more](progressive-disclosure.md#show-more)."
       - name: "<p>"
-        does: "The abstract excerpt and its Show more. See [Show more](progressive-disclosure.md#show-more)."
+        does: "The abstract excerpt and its Show more: the rest of the abstract is in the HTML, in a `.ds-show-more-tail`. See [Show more](progressive-disclosure.md#show-more)."
       - name: ".ds-data-list"
         does: "Comments, journal reference, DOI and the arXiv ID, in that order, each label beside its value. A paper shows only the rows it has. See [Data list](cards.md#data-list)."
       - name: ".ds-tag-list"
@@ -41,10 +41,14 @@ components:
       - "Meets accessibility guideline [WCAG 2.2 SC 1.4.13](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html) Content on Hover or Focus (Level AA)"
   - id: full-papers
     title: "Displaying abstract and primary metadata"
-    summary: "On a paper's own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The version history and the paper's details sit in the sidebar."
+    summary: "On a paper's own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The identity line is a row of the full width. The title, the dates, the warning and the authors are one section, and the sidebar, with the version history and the paper's details, starts beside the abstract."
     classes:
+      - name: "<main>"
+        does: "The page's one `<main>`, and its `.ds-container`. Its children are the identity line, one section, the row that holds the abstract, and then the paper."
       - name: ".ds-paper-identity"
-        does: "The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers."
+        does: "The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it is a row of the full width, to the gutters, so it wraps only on narrow screens. It belongs to the title: the container's space between sections does not come after it. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers."
+      - name: "<section>"
+        does: "The title, the dates, the warning and the authors: one section, like any other child of the container, with no class. The space between its parts is each part's own."
       - name: "<h1>"
         does: "The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page."
       - name: ".ds-date-row"
@@ -52,11 +56,15 @@ components:
       - name: ".ds-alert--warning"
         does: "Only when an older version is being viewed. See [Indicate which version is being read](versions.md#version-row)."
       - name: ".ds-link-list"
-        does: "On a `<p>`: the authors, with Show more after eight."
+        does: "On a `<p>`: the authors, with Show more after eight, as for [a paper in a list](#a-paper-in-a-list)."
       - name: "<h2 class=\"is-sr-only\">"
         does: "The abstract's heading, “Abstract”, hidden from sight. Sighted readers know the paragraph after the authors is the abstract; screen-reader users can still jump to it by heading. The demo uses an `<h3>`, because its title is an `<h2>`."
       - name: "<p>"
         does: "The abstract, in full."
+      - name: "<div>"
+        does: "A row with no class: the abstract's column and, after it, the sidebar, which starts beside the abstract and wraps below it on a narrow screen ([Sidebar](layouts.md#sidebar)). The sidebar in this demo is a stand-in."
+      - name: ".ds-skip-link"
+        does: "The second skip link, the last thing in the abstract's column: it goes to the paper's first section, past the sidebar. It is hidden until it has keyboard focus and then shows where it stands. In this demo it goes to the next section of this page. See the accessibility essentials on [Header](header.md) for what a skip link is for."
       - name: "<title>"
         does: "Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first."
       - name: ".ds-paper-identity"
@@ -83,6 +91,10 @@ components:
         does: "On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)."
       - name: ".ds-paper-cite"
         does: "The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden."
+      - name: "[data-format]"
+        does: "On each `<figure>`: the value of that format's `<option>` in the select. Only the figure the select names is shown."
+      - name: "<script src=\"cite.js\" defer>"
+        does: "Once per page, with `copy.js`. It shows the format chosen in the select, so the copy button copies the format shown, and makes the `.ds-show-more` open the full citation: the button's own text is its label while the citation is closed, and “Show less” while it is open."
       - name: ".ds-paper-capabilities"
         does: "The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score."
       - name: ".ds-acc"
@@ -137,6 +149,10 @@ components:
         does: "On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)."
       - name: ".ds-paper-cite"
         does: "The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden."
+      - name: "[data-format]"
+        does: "On each `<figure>`: the value of that format's `<option>` in the select. Only the figure the select names is shown."
+      - name: "<script src=\"cite.js\" defer>"
+        does: "Once per page, with `copy.js`. It shows the format chosen in the select, so the copy button copies the format shown, and makes the `.ds-show-more` open the full citation: the button's own text is its label while the citation is closed, and “Show less” while it is open."
       - name: ".ds-paper-capabilities"
         does: "The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score."
       - name: ".ds-acc"
@@ -191,6 +207,7 @@ rules:
   - "**Show the author's text as written.** A title or abstract is never shortened, reworded or corrected. When we display TeX, it is shown exactly as the author wrote it. We may excerpt a long abstract in search results, but never edit it."
   - "**Leave out what a paper does not have.** No empty labels and no placeholders."
   - "**Every date has its label.** Readers confuse submitted and announced dates when either stands alone."
+  - "**The author list takes the full width of the reading column,** above the abstract and the sidebar. A list can run to thousands of names; beside the sidebar it would be a narrow column that pushes the abstract down."
   - "**A citation names the arXiv identifier and the arXiv DOI**, never the HTML page or a journal reference."
   - "**BibTeX lists every author**, because a reference manager turns “and others” into “et al.” and the other authors are lost. APA, Chicago and MLA follow their own style rules for long author lists."
   - "**Every version of a withdrawn paper shows the notice.** A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn. The notice takes the place of the older-version warning, and links to the last version that can be read, except on that version."
@@ -222,7 +239,7 @@ rules:
   - "**Category names are in the tooltip, never only in a `title` attribute.** See [Tooltip](forms.md#tooltip)."
   - "**On a withdrawn or removed paper, the status appears before the paper title**, so it is seen or spoken out loud early in the reading experience. The alert red color of the status enhances the label but is never the only signal."
   - "**The page has one `<main>`**, from the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it."
-  - "**A second skip link before the sidebar goes to the paper's first section**, so a keyboard user can skip the content in between."
+  - "**A second skip link before the sidebar goes to the paper's first section**, so a reader using the Tab key can pass the sidebar's controls. It is the last thing in the abstract's column and, like the first, shows where it stands when it has focus."
   - "**Inline math gets no additional markup**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly."
   - "**A scrolling equation box can be reached by keyboard and has a name.** It has `tabindex=\"0\"`, `role=\"region\"` and a name: “Equation 2.14, scrolls sideways”."
   - "**The figure viewer is named by the caption's own label**, such as “Figure 1:”, with `aria-labelledby`. Its zoom level is shown and announced, with `aria-live=\"polite\"`, and zoom is animated only when reduced motion is not set."
@@ -237,7 +254,7 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 ## The metadata hierarchy
 
-This order is based on what we hear from arXiv readers. They focus in on certain information first and want it easy to find, while other content is lower in their reading order. Look for guidance on visual display? This table is purely about hierarchy and content flow. You will find design and display notes elsewhere on this page and in mockups, .
+This order is based on what we hear from arXiv readers. They focus in on certain information first and want it easy to find, while other content is lower in their reading order. Look for guidance on visual display? This table is purely about hierarchy and content flow. You will find design and display notes elsewhere on this page.
 
 ## A paper in a list
 
@@ -248,9 +265,9 @@ Search results and listings use the metadata hierarchy. We rely on proximity to 
   <li class="ds-paper">
     <h3><a href="#">LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging</a></h3>
     <p class="ds-paper-when"><span class="ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.36857</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.36857</span></a> <a href="#">TeX Source<span class="is-sr-only"> of 2609.36857</span></a></span>
-      <span class="ds-date-row">Submitted <time datetime="2026-09-29">29 Sep 2026</time> UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep 2026</time></span></p>
+      <span class="ds-date-row">Submitted <time datetime="2026-09-29">29&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time></span></p>
     <p class="ds-link-list"><a href="#">Giovanni Vincenzo Donatiello</a>, <a href="#">Achille A. Nucita</a>, <a href="#">Francesco De Paolis</a>, <a href="#">Antonio Franco</a>, <a href="#">Francesco Strafella</a></p>
-    <p>We present LUMA, a convolutional neural network (CNN) pipeline for the automated detection of strong gravitational <mark>lenses</mark> in simulated astronomical imaging. The method combines a physically motivated preprocessing stage, which enhances faint arc and ring features, with a compact three-block CNN trained using class reweighting and modern learning-rate schedul… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p>
+    <p>We present LUMA, a convolutional neural network (CNN) pipeline for the automated detection of strong gravitational <mark>lenses</mark> in simulated astronomical imaging. The method combines a physically motivated preprocessing stage, which enhances faint arc and ring features, with a compact three-block CNN trained using class reweighting and modern learning-rate scheduling.<span id="abstract-tail-1" class="ds-show-more-tail"> On simulated data, …</span> <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="abstract-tail-1" data-open-label="show less" hidden>show more</button></p>
     <dl class="ds-data-list">
       <div><dt>Comments</dt><dd>Accepted for publication in Astronomy and Computing, 2027, Corresponding Author: G.V. Donatiello (see associated pdf for useful e-mail addresses). 14 Pages, 8 Figures, 3 Tables</dd></div>
       <div><dt>DOI</dt><dd><a href="https://doi.org/10.1016/j.ascom.2026.101198">10.1016/j.ascom.2026.101198</a></dd></div>
@@ -264,9 +281,9 @@ Search results and listings use the metadata hierarchy. We rely on proximity to 
   <li class="ds-paper">
     <h3><a href="#">SN Helios: A Multiply Imaged Type II Supernova Opening Time-Delay Cosmography beyond redshift of 3</a></h3>
     <p class="ds-paper-when"><span class="ds-link-list"><a href="#">PDF<span class="is-sr-only"> of 2609.30440</span></a> <a href="#">HTML<span class="is-sr-only"> of 2609.30440</span></a> <a href="#">TeX Source<span class="is-sr-only"> of 2609.30440</span></a></span>
-      <span class="ds-date-row">Submitted <time datetime="2026-09-24">24 Sep 2026</time> UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep 2026</time></span></p>
-    <p class="ds-link-list"><a href="#">Seiji Fujimoto</a>, <a href="#">Conor Larison</a>, <a href="#">Justin D. R. Pierel</a>, <a href="#">Lukas J. Furtak</a>, <a href="#">Masamune Oguri</a>, <a href="#">Adi Zitrin</a>, <a href="#">Jose M. Diego</a>, <a href="#">Keren Sharon</a> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false">show all 67 authors</button></p>
-    <p>We report the discovery and spectroscopic confirmation of SN Helios, a strongly <mark>lensed</mark>, multiply imaged Type II supernova (SN) at behind the galaxy cluster RXC J0018.5+1626. The transient was identified as a red F150W-dropout source (F277W = 26.1 mag) in JWST/NIRCam imaging taken on 2026 July 3 for the VENUS survey, with no counterpart in 2024 Decem… <button type="button" class="ds-show-more" aria-expanded="false">show more</button></p>
+      <span class="ds-date-row">Submitted <time datetime="2026-09-24">24&nbsp;Sep&nbsp;2026</time>&nbsp;UTC <span aria-hidden="true">·</span><span class="is-sr-only">,</span> Announced <time datetime="2026-09">Sep&nbsp;2026</time></span></p>
+    <p class="ds-link-list"><a href="#">Seiji Fujimoto</a>, <a href="#">Conor Larison</a>, <a href="#">Justin D. R. Pierel</a>, <a href="#">Lukas J. Furtak</a>, <a href="#">Masamune Oguri</a>, <a href="#">Adi Zitrin</a>, <a href="#">Jose M. Diego</a>, <a href="#">Keren Sharon</a><span id="authors-tail-2" class="ds-show-more-tail">, <a href="#">David A. Coulter</a>, …</span> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="authors-tail-2" data-open-label="show fewer" hidden>show all 67 authors</button></p>
+    <p>We report the discovery and spectroscopic confirmation of SN Helios, a strongly <mark>lensed</mark>, multiply imaged Type II supernova (SN) at $z=3.34$ behind the galaxy cluster RXC J0018.5+1626. The transient was identified as a red F150W-dropout source (F277W = 26.1 mag) in JWST/NIRCam imaging taken on 2026 July 3 for the VENUS survey, with no counterpart in 2024 December imaging.<span id="abstract-tail-2" class="ds-show-more-tail"> Director&#39;s Discretionary Time observations on 2026 August 17 added …</span> <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="abstract-tail-2" data-open-label="show less" hidden>show more</button></p>
     <dl class="ds-data-list">
       <div><dt>Comments</dt><dd>14 pages, 9 figures, 5 tables. Comments welcome!</dd></div>
       <div><dt>arXiv ID</dt><dd><a href="#">2609.30440</a></dd></div>
@@ -278,13 +295,14 @@ Search results and listings use the metadata hierarchy. We rely on proximity to 
     </ul>
   </li>
 </ol>
+<script src="show-more.js" defer></script>
 ```
 
 - `.ds-paper-list` — An `<ol>` of papers. Papers are separated by space, four times the space inside one, with no lines or boxes.
 - `.ds-paper` — One paper, an `<li>`. Its first child is the title: a heading one level below the list's own heading, linked to the abstract page.
 - `.ds-paper-when` — The format links (a `.ds-link-list`) and the dates (`.ds-date-row`) on one line. The links come first in the markup, so a screen reader reaches them straight after the title; the dates are shown first. On a narrow screen the links wrap below the dates.
-- `.ds-link-list` — On a `<p>`: the authors. After eight names, Show more for the rest.
-- `<p>` — The abstract excerpt and its Show more. See [Show more](progressive-disclosure.md#show-more).
+- `.ds-link-list` — On a `<p>`: the authors. After eight names, Show more for the rest: every other name is in the HTML, in a `.ds-show-more-tail`. See [Show more](progressive-disclosure.md#show-more).
+- `<p>` — The abstract excerpt and its Show more: the rest of the abstract is in the HTML, in a `.ds-show-more-tail`. See [Show more](progressive-disclosure.md#show-more).
 - `.ds-data-list` — Comments, journal reference, DOI and the arXiv ID, in that order, each label beside its value. A paper shows only the rows it has. See [Data list](cards.md#data-list).
 - `.ds-tag-list` — The category tags, primary first. See [Displaying categories](#paper-categories). It sits close under the metadata.
 
@@ -310,22 +328,24 @@ A paper's subject categories show as tags, primary first. Each code links to its
 
 ## Displaying abstract and primary metadata
 
-On a paper's own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The version history and the paper's details sit in the sidebar.
+On a paper's own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The identity line is a row of the full width. The title, the dates, the warning and the authors are one section, and the sidebar, with the version history and the paper's details, starts beside the abstract.
 
 **The top of a paper, viewing an older version**
 
 ```html
+<main id="main" class="ds-container">
 <p class="ds-paper-identity">
   <span><span class="ds-version" aria-hidden="true">arXiv:2604.22725v1</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1</span></span>
   <span>[gr-qc] General Relativity and Quantum Cosmology</span>
   <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a>
   <a href="https://creativecommons.org/licenses/by/4.0/">License: CC BY 4.0</a>
 </p>
+<section>
 <h1>Gauge-independent approach to inflation in quadratic gravity</h1>
 <p class="ds-date-row">
-  Submitted <time datetime="2026-04-24">24 Apr 2026</time> UTC (this version)
+  Submitted <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC (this version)
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Announced <time datetime="2026-04-25T02:07Z">25 Apr 2026, 02:07</time> UTC
+  Announced <time datetime="2026-04-25T02:07Z">25&nbsp;Apr&nbsp;2026,&nbsp;02:07</time>&nbsp;UTC
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span><span class="ds-version-list">
   <strong class="ds-version" aria-current="true">v1<span class="is-sr-only">, this version</span></strong>
   <a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a>
@@ -335,12 +355,22 @@ On a paper's own page the order is the identity line, the title, the dates and v
 <div class="ds-alert ds-alert--warning">
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
   <div class="ds-alert-content">
-    <p><strong>You are viewing version 1.</strong> A newer version is available — <a href="https://arxiv.org/abs/2604.22725v3">version 3, revised 28 Jun 2026</a>.</p>
+    <p><strong>You are viewing version 1.</strong> A newer version is available — <a href="https://arxiv.org/abs/2604.22725v3">version 3, revised 28&nbsp;Jun&nbsp;2026</a>.</p>
   </div>
 </div>
-<p class="ds-link-list"><a href="#">Adrian Palomares</a>, <a href="#">Ilya L. Shapiro</a>, <a href="#">Maria C. Gonzalez-Garcia</a>, <a href="#">Tomohiro Harada</a>, <a href="#">Elena Castellani</a>, <a href="#">Kei-ichi Maeda</a>, <a href="#">Francesca Vidotto</a>, <a href="#">Abhay Ashtekar</a> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false">show all 22 authors</button></p>
-<h2 class="is-sr-only">Abstract</h2>
-<p>We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
+<p class="ds-link-list"><a href="#">Adrian Palomares</a>, <a href="#">Ilya L. Shapiro</a>, <a href="#">Maria C. Gonzalez-Garcia</a>, <a href="#">Tomohiro Harada</a>, <a href="#">Elena Castellani</a>, <a href="#">Kei-ichi Maeda</a>, <a href="#">Francesca Vidotto</a>, <a href="#">Abhay Ashtekar</a><span id="authors-tail" class="ds-show-more-tail">, <a href="#">Roberto Emparan</a>, …</span> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="authors-tail" data-open-label="show fewer" hidden>show all 22 authors</button></p>
+</section>
+<div>
+  <div>
+    <h2 class="is-sr-only">Abstract</h2>
+    <p>We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
+    <a class="ds-skip-link" href="#S1">Skip to the text of the paper</a>
+  </div>
+  <aside class="ds-sidebar" aria-label="About this paper">…</aside>
+</div>
+<!-- the paper follows, from its first section, id="S1" here -->
+</main>
+<script src="show-more.js" defer></script>
 ```
 
 **The top of a withdrawn paper, viewing the withdrawal notice**
@@ -357,7 +387,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>
   <div class="ds-alert-content">
     <h2 class="ds-alert-title" id="notice-h">This paper has been withdrawn by Adrian Palomares.</h2>
-    <p>Reason given: “The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.” The withdrawn paper can still be read in <a href="https://arxiv.org/abs/2604.22725v3">version 3</a>.</p>
+    <p>Reason given: &ldquo;The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.&rdquo; The withdrawn paper can still be read in <a href="https://arxiv.org/abs/2604.22725v3">version 3</a>.</p>
   </div>
 </section>
 <p class="ds-date-row">…the dates, ending with Withdrawn, and the versions, as in <a href="versions.html#version-row">Version row</a>…</p>
@@ -375,13 +405,13 @@ On a paper's own page the order is the identity line, the title, the dates and v
   <svg class="ds-alert-icon" …>…</svg>
   <div class="ds-alert-content">
     <h2 class="ds-alert-title" id="notice-h">This version has been removed by arXiv.</h2>
-    <p>“arXiv admin comment: …” The full text and files are no longer available.</p>
+    <p>&ldquo;arXiv admin comment: …&rdquo; The full text and files are no longer available.</p>
   </div>
 </section>
 <p class="ds-date-row">
   …Submitted and Announced…
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Removed <time datetime="2026-10-23">23 Oct 2026</time> UTC
+  Removed <time datetime="2026-10-23">23&nbsp;Oct&nbsp;2026</time>&nbsp;UTC
 </p>
 ```
 
@@ -392,10 +422,10 @@ On a paper's own page the order is the identity line, the title, the dates and v
   <section aria-labelledby="files-h">
     <h2 class="ds-panel-label" id="files-h">Files</h2>
     <ul class="ds-paper-files">
-      <li><a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="paper-title-demo"><svg aria-hidden="true">…</svg> Download PDF <small>· 1.2 MB</small><span class="is-sr-only"> (opens in a new tab)</span></a></li>
-      <li><a href="https://arxiv.org/src/2604.22725v1" aria-describedby="paper-title-demo">TeX Source</a> <small>.tar.gz · 286 KB</small></li>
+      <li><a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="paper-title-demo"><svg aria-hidden="true">…</svg> Download PDF <small>· 1.2&nbsp;MB</small><span class="is-sr-only"> (opens in a new tab)</span></a></li>
+      <li><a href="https://arxiv.org/src/2604.22725v1" aria-describedby="paper-title-demo">TeX Source</a> <small>.tar.gz · 286&nbsp;KB</small></li>
       <li><a href="https://arxiv.org/format/2604.22725v1">Other formats</a></li>
-      <li>Ancillary files <small>· 3.6 MB</small> <a href="https://arxiv.org/src/2604.22725v1/anc">Download all<span class="is-sr-only"> 3 ancillary files</span></a></li>
+      <li>Ancillary files <small>· 3.6&nbsp;MB</small> <a href="https://arxiv.org/src/2604.22725v1/anc">Download all<span class="is-sr-only"> 3 ancillary files</span></a></li>
     </ul>
   </section>
   <section aria-labelledby="cite-h" class="ds-paper-cite">
@@ -414,19 +444,19 @@ On a paper's own page the order is the identity line, the title, the dates and v
     <div id="cite-code" class="ds-paper-cite-code">
       <figure data-format="bibtex">
         <figcaption>BibTeX</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
       <figure data-format="apa">
         <figcaption>APA</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
       <figure data-format="chicago">
         <figcaption>Chicago</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
       <figure data-format="mla">
         <figcaption>MLA</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
     </div>
     <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="cite-code" hidden>Show full citation</button>
@@ -438,15 +468,15 @@ On a paper's own page the order is the identity line, the title, the dates and v
       <div class="ds-acc-body">
         <ol class="ds-paper-versions">
           <li>
-            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v3">v3<span class="is-sr-only">, version 3</span></a> · <time datetime="2026-06-28">28 Jun 2026</time> UTC · Latest</p>
+            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v3">v3<span class="is-sr-only">, version 3</span></a> · <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC · Latest</p>
             <p>18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.</p>
           </li>
           <li>
-            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a> · <time datetime="2026-05-19">19 May 2026</time> UTC</p>
+            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a> · <time datetime="2026-05-19">19&nbsp;May&nbsp;2026</time>&nbsp;UTC</p>
             <p>17 pages, 6 figures. Corrected Eq. (4.7).</p>
           </li>
           <li aria-current="true">
-            <p class="ds-date-row"><strong class="ds-version">v1</strong> · <time datetime="2026-04-24">24 Apr 2026</time> UTC · Viewing</p>
+            <p class="ds-date-row"><strong class="ds-version">v1</strong> · <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC · Viewing</p>
             <p>16 pages, 5 figures.</p>
           </li>
         </ol>
@@ -476,15 +506,21 @@ On a paper's own page the order is the identity line, the title, the dates and v
   </section>
 </aside>
 </div>
+<script src="cite.js" defer></script>
+<script src="copy.js" defer></script>
 ```
 
-- `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
+- `<main>` — The page's one `<main>`, and its `.ds-container`. Its children are the identity line, one section, the row that holds the abstract, and then the paper.
+- `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it is a row of the full width, to the gutters, so it wraps only on narrow screens. It belongs to the title: the container's space between sections does not come after it. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
+- `<section>` — The title, the dates, the warning and the authors: one section, like any other child of the container, with no class. The space between its parts is each part's own.
 - `<h1>` — The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page.
 - `.ds-date-row` — The dates and the version links, as in [Indicate which version is being read](versions.md#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version.
 - `.ds-alert--warning` — Only when an older version is being viewed. See [Indicate which version is being read](versions.md#version-row).
-- `.ds-link-list` — On a `<p>`: the authors, with Show more after eight.
+- `.ds-link-list` — On a `<p>`: the authors, with Show more after eight, as for [a paper in a list](#a-paper-in-a-list).
 - `<h2 class="is-sr-only">` — The abstract's heading, “Abstract”, hidden from sight. Sighted readers know the paragraph after the authors is the abstract; screen-reader users can still jump to it by heading. The demo uses an `<h3>`, because its title is an `<h2>`.
 - `<p>` — The abstract, in full.
+- `<div>` — A row with no class: the abstract's column and, after it, the sidebar, which starts beside the abstract and wraps below it on a narrow screen ([Sidebar](layouts.md#sidebar)). The sidebar in this demo is a stand-in.
+- `.ds-skip-link` — The second skip link, the last thing in the abstract's column: it goes to the paper's first section, past the sidebar. It is hidden until it has keyboard focus and then shows where it stands. In this demo it goes to the next section of this page. See the accessibility essentials on [Header](header.md) for what a skip link is for.
 - `<title>` — Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first.
 - `.ds-paper-identity` — The identifier with the notice's version, and the category. With no text to read, the DOI and the license leave the line; Metadata, in the sidebar, still has the DOI.
 - `.ds-paper-status` — “Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author's title is not edited, and it has `lang="en"` because the title may be in another language.
@@ -498,6 +534,8 @@ On a paper's own page the order is the identity line, the title, the dates and v
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
 - `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
+- `[data-format]` — On each `<figure>`: the value of that format's `<option>` in the select. Only the figure the select names is shown.
+- `<script src="cite.js" defer>` — Once per page, with `copy.js`. It shows the format chosen in the select, so the copy button copies the format shown, and makes the `.ds-show-more` open the full citation: the button's own text is its label while the citation is closed, and “Show less” while it is open.
 - `.ds-paper-capabilities` — The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score.
 - `.ds-acc` — Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label. They share `name="paper-info"`, so only one is open at a time.
 
@@ -533,7 +571,7 @@ A withdrawn paper keeps its title, authors, abstract and metadata, and its earli
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>
   <div class="ds-alert-content">
     <h2 class="ds-alert-title" id="notice-h">This paper has been withdrawn by Adrian Palomares.</h2>
-    <p>Reason given: “The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.” The withdrawn paper can still be read in <a href="https://arxiv.org/abs/2604.22725v3">version 3</a>.</p>
+    <p>Reason given: &ldquo;The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.&rdquo; The withdrawn paper can still be read in <a href="https://arxiv.org/abs/2604.22725v3">version 3</a>.</p>
   </div>
 </section>
 <p class="ds-date-row">…the dates, ending with Withdrawn, and the versions, as in <a href="versions.html#version-row">Version row</a>…</p>
@@ -551,13 +589,13 @@ A withdrawn paper keeps its title, authors, abstract and metadata, and its earli
   <svg class="ds-alert-icon" …>…</svg>
   <div class="ds-alert-content">
     <h2 class="ds-alert-title" id="notice-h">This version has been removed by arXiv.</h2>
-    <p>“arXiv admin comment: …” The full text and files are no longer available.</p>
+    <p>&ldquo;arXiv admin comment: …&rdquo; The full text and files are no longer available.</p>
   </div>
 </section>
 <p class="ds-date-row">
   …Submitted and Announced…
   <span aria-hidden="true"> · </span><span class="is-sr-only">, </span>
-  Removed <time datetime="2026-10-23">23 Oct 2026</time> UTC
+  Removed <time datetime="2026-10-23">23&nbsp;Oct&nbsp;2026</time>&nbsp;UTC
 </p>
 ```
 
@@ -589,10 +627,10 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
   <section aria-labelledby="files-h">
     <h2 class="ds-panel-label" id="files-h">Files</h2>
     <ul class="ds-paper-files">
-      <li><a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="paper-title-demo"><svg aria-hidden="true">…</svg> Download PDF <small>· 1.2 MB</small><span class="is-sr-only"> (opens in a new tab)</span></a></li>
-      <li><a href="https://arxiv.org/src/2604.22725v1" aria-describedby="paper-title-demo">TeX Source</a> <small>.tar.gz · 286 KB</small></li>
+      <li><a class="ds-btn ds-btn-primary" href="https://arxiv.org/pdf/2604.22725v1" target="_blank" rel="noopener" aria-describedby="paper-title-demo"><svg aria-hidden="true">…</svg> Download PDF <small>· 1.2&nbsp;MB</small><span class="is-sr-only"> (opens in a new tab)</span></a></li>
+      <li><a href="https://arxiv.org/src/2604.22725v1" aria-describedby="paper-title-demo">TeX Source</a> <small>.tar.gz · 286&nbsp;KB</small></li>
       <li><a href="https://arxiv.org/format/2604.22725v1">Other formats</a></li>
-      <li>Ancillary files <small>· 3.6 MB</small> <a href="https://arxiv.org/src/2604.22725v1/anc">Download all<span class="is-sr-only"> 3 ancillary files</span></a></li>
+      <li>Ancillary files <small>· 3.6&nbsp;MB</small> <a href="https://arxiv.org/src/2604.22725v1/anc">Download all<span class="is-sr-only"> 3 ancillary files</span></a></li>
     </ul>
   </section>
   <section aria-labelledby="cite-h" class="ds-paper-cite">
@@ -611,19 +649,19 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
     <div id="cite-code" class="ds-paper-cite-code">
       <figure data-format="bibtex">
         <figcaption>BibTeX</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
       <figure data-format="apa">
         <figcaption>APA</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
       <figure data-format="chicago">
         <figcaption>Chicago</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
       <figure data-format="mla">
         <figcaption>MLA</figcaption>
-        <pre>…</pre>
+        <pre><code>…</code></pre>
       </figure>
     </div>
     <button type="button" class="ds-show-more" aria-expanded="false" aria-controls="cite-code" hidden>Show full citation</button>
@@ -635,15 +673,15 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
       <div class="ds-acc-body">
         <ol class="ds-paper-versions">
           <li>
-            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v3">v3<span class="is-sr-only">, version 3</span></a> · <time datetime="2026-06-28">28 Jun 2026</time> UTC · Latest</p>
+            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v3">v3<span class="is-sr-only">, version 3</span></a> · <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC · Latest</p>
             <p>18 pages, 6 figures. Updated discussion of scalar spectral index in Sec. 4. Added comparison with Planck 2018 data. Matches published version.</p>
           </li>
           <li>
-            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a> · <time datetime="2026-05-19">19 May 2026</time> UTC</p>
+            <p class="ds-date-row"><a class="ds-version" href="https://arxiv.org/abs/2604.22725v2">v2<span class="is-sr-only">, version 2</span></a> · <time datetime="2026-05-19">19&nbsp;May&nbsp;2026</time>&nbsp;UTC</p>
             <p>17 pages, 6 figures. Corrected Eq. (4.7).</p>
           </li>
           <li aria-current="true">
-            <p class="ds-date-row"><strong class="ds-version">v1</strong> · <time datetime="2026-04-24">24 Apr 2026</time> UTC · Viewing</p>
+            <p class="ds-date-row"><strong class="ds-version">v1</strong> · <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC · Viewing</p>
             <p>16 pages, 5 figures.</p>
           </li>
         </ol>
@@ -673,6 +711,8 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
   </section>
 </aside>
 </div>
+<script src="cite.js" defer></script>
+<script src="copy.js" defer></script>
 ```
 
 - `.ds-sidebar` — The column beside the abstract: Files, Cite and Paper information, in that order. See [Sidebar](layouts.md#sidebar). Beside a long paper, its frame keeps the controls together. It grows with its content; it never scrolls inside itself.
@@ -680,6 +720,8 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
 - `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
+- `[data-format]` — On each `<figure>`: the value of that format's `<option>` in the select. Only the figure the select names is shown.
+- `<script src="cite.js" defer>` — Once per page, with `copy.js`. It shows the format chosen in the select, so the copy button copies the format shown, and makes the `.ds-show-more` open the full citation: the button's own text is its label while the citation is closed, and “Show less” while it is open.
 - `.ds-paper-capabilities` — The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score.
 - `.ds-acc` — Version history, Accessibility and Metadata are accordions, closed by default, grouped under the Paper information label. They share `name="paper-info"`, so only one is open at a time.
 
@@ -792,6 +834,7 @@ A display equation, a figure and a bibliography entry each have a small row of a
 - **Show the author's text as written.** A title or abstract is never shortened, reworded or corrected. When we display TeX, it is shown exactly as the author wrote it. We may excerpt a long abstract in search results, but never edit it.
 - **Leave out what a paper does not have.** No empty labels and no placeholders.
 - **Every date has its label.** Readers confuse submitted and announced dates when either stands alone.
+- **The author list takes the full width of the reading column,** above the abstract and the sidebar. A list can run to thousands of names; beside the sidebar it would be a narrow column that pushes the abstract down.
 - **A citation names the arXiv identifier and the arXiv DOI**, never the HTML page or a journal reference.
 - **BibTeX lists every author**, because a reference manager turns “and others” into “et al.” and the other authors are lost. APA, Chicago and MLA follow their own style rules for long author lists.
 - **Every version of a withdrawn paper shows the notice.** A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn. The notice takes the place of the older-version warning, and links to the last version that can be read, except on that version.
@@ -823,7 +866,7 @@ A display equation, a figure and a bibliography entry each have a small row of a
 - **Category names are in the tooltip, never only in a `title` attribute.** See [Tooltip](forms.md#tooltip).
 - **On a withdrawn or removed paper, the status appears before the paper title**, so it is seen or spoken out loud early in the reading experience. The alert red color of the status enhances the label but is never the only signal.
 - **The page has one `<main>`**, from the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it.
-- **A second skip link before the sidebar goes to the paper's first section**, so a keyboard user can skip the content in between.
+- **A second skip link before the sidebar goes to the paper's first section**, so a reader using the Tab key can pass the sidebar's controls. It is the last thing in the abstract's column and, like the first, shows where it stands when it has focus.
 - **Inline math gets no additional markup**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly.
 - **A scrolling equation box can be reached by keyboard and has a name.** It has `tabindex="0"`, `role="region"` and a name: “Equation 2.14, scrolls sideways”.
 - **The figure viewer is named by the caption's own label**, such as “Figure 1:”, with `aria-labelledby`. Its zoom level is shown and announced, with `aria-live="polite"`, and zoom is animated only when reduced motion is not set.
