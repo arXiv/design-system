@@ -41,10 +41,14 @@ components:
       - "Meets accessibility guideline [WCAG 2.2 SC 1.4.13](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html) Content on Hover or Focus (Level AA)"
   - id: full-papers
     title: "Displaying abstract and primary metadata"
-    summary: "On a paper's own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The version history and the paper's details sit in the sidebar."
+    summary: "On a paper's own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The identity line is a row of the full width. The title, the dates, the warning and the authors are one section, and the sidebar, with the version history and the paper's details, starts beside the abstract."
     classes:
+      - name: "<main>"
+        does: "The page's one `<main>`, and its `.ds-container`. Its children are the identity line, one section, the row that holds the abstract, and then the paper."
       - name: ".ds-paper-identity"
-        does: "The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers."
+        does: "The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it is a row of the full width, to the gutters, so it wraps only on narrow screens. It belongs to the title: the container's space between sections does not come after it. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers."
+      - name: "<section>"
+        does: "The title, the dates, the warning and the authors: one section, like any other child of the container, with no class. The space between its parts is each part's own."
       - name: "<h1>"
         does: "The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page."
       - name: ".ds-date-row"
@@ -57,6 +61,10 @@ components:
         does: "The abstract's heading, “Abstract”, hidden from sight. Sighted readers know the paragraph after the authors is the abstract; screen-reader users can still jump to it by heading. The demo uses an `<h3>`, because its title is an `<h2>`."
       - name: "<p>"
         does: "The abstract, in full."
+      - name: "<div>"
+        does: "A row with no class: the abstract's column and, after it, the sidebar, which starts beside the abstract and wraps below it on a narrow screen ([Sidebar](layouts.md#sidebar)). The sidebar in this demo is a stand-in."
+      - name: ".ds-skip-link"
+        does: "The second skip link, the last thing in the abstract's column: it goes to the paper's first section, past the sidebar. It is hidden until it has keyboard focus and then shows where it stands. In this demo it goes to the next section of this page. See the accessibility essentials on [Header](header.md) for what a skip link is for."
       - name: "<title>"
         does: "Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first."
       - name: ".ds-paper-identity"
@@ -199,6 +207,7 @@ rules:
   - "**Show the author's text as written.** A title or abstract is never shortened, reworded or corrected. When we display TeX, it is shown exactly as the author wrote it. We may excerpt a long abstract in search results, but never edit it."
   - "**Leave out what a paper does not have.** No empty labels and no placeholders."
   - "**Every date has its label.** Readers confuse submitted and announced dates when either stands alone."
+  - "**The author list takes the full width of the reading column,** above the abstract and the sidebar. A list can run to thousands of names; beside the sidebar it would be a narrow column that pushes the abstract down."
   - "**A citation names the arXiv identifier and the arXiv DOI**, never the HTML page or a journal reference."
   - "**BibTeX lists every author**, because a reference manager turns “and others” into “et al.” and the other authors are lost. APA, Chicago and MLA follow their own style rules for long author lists."
   - "**Every version of a withdrawn paper shows the notice.** A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn. The notice takes the place of the older-version warning, and links to the last version that can be read, except on that version."
@@ -230,7 +239,7 @@ rules:
   - "**Category names are in the tooltip, never only in a `title` attribute.** See [Tooltip](forms.md#tooltip)."
   - "**On a withdrawn or removed paper, the status appears before the paper title**, so it is seen or spoken out loud early in the reading experience. The alert red color of the status enhances the label but is never the only signal."
   - "**The page has one `<main>`**, from the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it."
-  - "**A second skip link before the sidebar goes to the paper's first section**, so a keyboard user can skip the content in between."
+  - "**A second skip link before the sidebar goes to the paper's first section**, so a reader using the Tab key can pass the sidebar's controls. It is the last thing in the abstract's column and, like the first, shows where it stands when it has focus."
   - "**Inline math gets no additional markup**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly."
   - "**A scrolling equation box can be reached by keyboard and has a name.** It has `tabindex=\"0\"`, `role=\"region\"` and a name: “Equation 2.14, scrolls sideways”."
   - "**The figure viewer is named by the caption's own label**, such as “Figure 1:”, with `aria-labelledby`. Its zoom level is shown and announced, with `aria-live=\"polite\"`, and zoom is animated only when reduced motion is not set."
@@ -319,17 +328,19 @@ A paper's subject categories show as tags, primary first. Each code links to its
 
 ## Displaying abstract and primary metadata
 
-On a paper's own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The version history and the paper's details sit in the sidebar.
+On a paper's own page the order is the identity line, the title, the dates and versions, a warning when an older version is open, the authors and the abstract. The identity line is a row of the full width. The title, the dates, the warning and the authors are one section, and the sidebar, with the version history and the paper's details, starts beside the abstract.
 
 **The top of a paper, viewing an older version**
 
 ```html
+<main id="main" class="ds-container">
 <p class="ds-paper-identity">
   <span><span class="ds-version" aria-hidden="true">arXiv:2604.22725v1</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 1</span></span>
   <span>[gr-qc] General Relativity and Quantum Cosmology</span>
   <a href="https://doi.org/10.48550/arXiv.2604.22725">doi:10.48550/arXiv.2604.22725</a>
   <a href="https://creativecommons.org/licenses/by/4.0/">License: CC BY 4.0</a>
 </p>
+<section>
 <h1>Gauge-independent approach to inflation in quadratic gravity</h1>
 <p class="ds-date-row">
   Submitted <time datetime="2026-04-24">24&nbsp;Apr&nbsp;2026</time>&nbsp;UTC (this version)
@@ -348,8 +359,17 @@ On a paper's own page the order is the identity line, the title, the dates and v
   </div>
 </div>
 <p class="ds-link-list"><a href="#">Adrian Palomares</a>, <a href="#">Ilya L. Shapiro</a>, <a href="#">Maria C. Gonzalez-Garcia</a>, <a href="#">Tomohiro Harada</a>, <a href="#">Elena Castellani</a>, <a href="#">Kei-ichi Maeda</a>, <a href="#">Francesca Vidotto</a>, <a href="#">Abhay Ashtekar</a><span id="authors-tail" class="ds-show-more-tail">, <a href="#">Roberto Emparan</a>, …</span> <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="authors-tail" data-open-label="show fewer" hidden>show all 22 authors</button></p>
-<h2 class="is-sr-only">Abstract</h2>
-<p>We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
+</section>
+<div>
+  <div>
+    <h2 class="is-sr-only">Abstract</h2>
+    <p>We investigate the scalar sector of linear cosmological perturbations in quadratic gravity. Working in the Einstein frame, we derive the equations of motion in a gauge-independent manner and express them in terms of three sets of gauge-invariant variables. This approach allows us to distinguish genuine physical effects from gauge artefacts, which is particularly relevant for assessing the stability of perturbations in this theory. In the superhorizon limit, we obtain the leading-order behaviour of the relevant gauge-invariant variables and analyse the perturbations in several commonly used gauges. We find that the Newtonian gauge exhibits an apparent instability, characterised by the exponential growth of the metric perturbations. However, this growth is non-generic and gauge-dependent; in the other gauges analysed in this work, the perturbations remain well behaved within the perturbative regime. Physical observables can thus be consistently computed, and the apparent instability is identified as a gauge artefact rather than a pathology of the theory. Our analysis also demonstrates how the evolution behaviour of a gauge-invariant variable changes under the frame transformation and clarifies the relation between results obtained in the Jordan and Einstein frames.</p>
+    <a class="ds-skip-link" href="#S1">Skip to the text of the paper</a>
+  </div>
+  <aside class="ds-sidebar" aria-label="About this paper">…</aside>
+</div>
+<!-- the paper follows, from its first section, id="S1" here -->
+</main>
 <script src="show-more.js" defer></script>
 ```
 
@@ -490,13 +510,17 @@ On a paper's own page the order is the identity line, the title, the dates and v
 <script src="copy.js" defer></script>
 ```
 
-- `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it spans the viewport to the gutters, so it wraps only on narrow screens. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
+- `<main>` — The page's one `<main>`, and its `.ds-container`. Its children are the identity line, one section, the row that holds the abstract, and then the paper.
+- `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it is a row of the full width, to the gutters, so it wraps only on narrow screens. It belongs to the title: the container's space between sections does not come after it. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
+- `<section>` — The title, the dates, the warning and the authors: one section, like any other child of the container, with no class. The space between its parts is each part's own.
 - `<h1>` — The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page.
 - `.ds-date-row` — The dates and the version links, as in [Indicate which version is being read](versions.md#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version.
 - `.ds-alert--warning` — Only when an older version is being viewed. See [Indicate which version is being read](versions.md#version-row).
 - `.ds-link-list` — On a `<p>`: the authors, with Show more after eight, as for [a paper in a list](#a-paper-in-a-list).
 - `<h2 class="is-sr-only">` — The abstract's heading, “Abstract”, hidden from sight. Sighted readers know the paragraph after the authors is the abstract; screen-reader users can still jump to it by heading. The demo uses an `<h3>`, because its title is an `<h2>`.
 - `<p>` — The abstract, in full.
+- `<div>` — A row with no class: the abstract's column and, after it, the sidebar, which starts beside the abstract and wraps below it on a narrow screen ([Sidebar](layouts.md#sidebar)). The sidebar in this demo is a stand-in.
+- `.ds-skip-link` — The second skip link, the last thing in the abstract's column: it goes to the paper's first section, past the sidebar. It is hidden until it has keyboard focus and then shows where it stands. In this demo it goes to the next section of this page. See the accessibility essentials on [Header](header.md) for what a skip link is for.
 - `<title>` — Starts with the status, “Withdrawn:”, so a reader sees it in the browser tab and a screen reader announces it first.
 - `.ds-paper-identity` — The identifier with the notice's version, and the category. With no text to read, the DOI and the license leave the line; Metadata, in the sidebar, still has the DOI.
 - `.ds-paper-status` — “Withdrawn:” before the title, inside the heading, in the error color. It is its own element, so the author's title is not edited, and it has `lang="en"` because the title may be in another language.
@@ -810,6 +834,7 @@ A display equation, a figure and a bibliography entry each have a small row of a
 - **Show the author's text as written.** A title or abstract is never shortened, reworded or corrected. When we display TeX, it is shown exactly as the author wrote it. We may excerpt a long abstract in search results, but never edit it.
 - **Leave out what a paper does not have.** No empty labels and no placeholders.
 - **Every date has its label.** Readers confuse submitted and announced dates when either stands alone.
+- **The author list takes the full width of the reading column,** above the abstract and the sidebar. A list can run to thousands of names; beside the sidebar it would be a narrow column that pushes the abstract down.
 - **A citation names the arXiv identifier and the arXiv DOI**, never the HTML page or a journal reference.
 - **BibTeX lists every author**, because a reference manager turns “and others” into “et al.” and the other authors are lost. APA, Chicago and MLA follow their own style rules for long author lists.
 - **Every version of a withdrawn paper shows the notice.** A reader who arrives at an earlier version by a link must still learn that the paper was withdrawn. The notice takes the place of the older-version warning, and links to the last version that can be read, except on that version.
@@ -841,7 +866,7 @@ A display equation, a figure and a bibliography entry each have a small row of a
 - **Category names are in the tooltip, never only in a `title` attribute.** See [Tooltip](forms.md#tooltip).
 - **On a withdrawn or removed paper, the status appears before the paper title**, so it is seen or spoken out loud early in the reading experience. The alert red color of the status enhances the label but is never the only signal.
 - **The page has one `<main>`**, from the identity line to the end of the paper, the sidebar included. The site header, the TOC bar and the footer are outside it, and the first skip link goes to it.
-- **A second skip link before the sidebar goes to the paper's first section**, so a keyboard user can skip the content in between.
+- **A second skip link before the sidebar goes to the paper's first section**, so a reader using the Tab key can pass the sidebar's controls. It is the last thing in the abstract's column and, like the first, shows where it stands when it has focus.
 - **Inline math gets no additional markup**: no tabindex, role, ARIA or actions. Assistive technology reads its MathML directly.
 - **A scrolling equation box can be reached by keyboard and has a name.** It has `tabindex="0"`, `role="region"` and a name: “Equation 2.14, scrolls sideways”.
 - **The figure viewer is named by the caption's own label**, such as “Figure 1:”, with `aria-labelledby`. Its zoom level is shown and announced, with `aria-live="polite"`, and zoom is animated only when reduced motion is not set.
