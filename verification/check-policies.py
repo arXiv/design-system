@@ -474,6 +474,22 @@ def check_section_anchors():
     ok(rule, "checked by gen-anchors.py")
 
 
+# ── The generated files follow their pages ──
+# The digests in docs/spec/ and the icons page are written by scripts. A page edited without
+# running its script leaves the old file in place, and agents are told to read the digest first.
+def check_generated_current():
+    import subprocess
+    for rule, script in (("the digests match their pages", "gen-digest.py"),
+                         ("the icons page matches the icons", "gen-icons.py")):
+        r = subprocess.run([sys.executable, str(REPO / "verification" / script), "--check"],
+                           capture_output=True, text=True)
+        if r.returncode != 0:
+            said = next((l for l in r.stdout.splitlines() if l.startswith("FAIL")), "").replace("FAIL", "").strip()
+            fail(rule, said.split("—")[0].strip() or "docs/", f"run: python3 verification/{script}")
+        else:
+            ok(rule, f"checked by {script}")
+
+
 # ── One docs menu, on every page ──
 # The shared nav is copied into each page by hand, so copies drift: pages
 # went missing from it, a deleted page stayed in it, and one page carried an
@@ -561,6 +577,7 @@ def main():
     check_plain_words()
     check_classes_documented()
     check_section_anchors()
+    check_generated_current()
     print()
     if FAILS:
         print(f"{len(FAILS)} FAIL")

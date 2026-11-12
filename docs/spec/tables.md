@@ -140,6 +140,14 @@ One table, `.ds-table`, on the public site and in internal tools. It has row div
 </div>
 ```
 
+- `.ds-table` — The whole table, on the `<table>` element: the frame, the row dividers and the row hover. Directly inside a card it has no frame of its own; the card is the frame.
+- `<thead>` — Draws the header row. Leave it out and the table has none; no class turns the header row on or off.
+- `style="table-layout: fixed"` — Add it inline on the `<table>` when fixed column widths are needed. The table defaults to auto layout.
+- `.ds-table-footer` — A `<div>` below the table for row counts or pagination.
+- `.ds-tag--rectangle` — The Type column: a rectangular tag at the default level, one per row, documented on [Tags](tags.md#rectangular-labels). No colour is mapped to New, Rep or Wdr.
+- `scope="col"` — Required on every `<th>` in the header row, so a screen reader reads the column name with each cell.
+- `.ds-table-scroll` — The wrapper. A table wider than the viewport scrolls inside it, so the page never scrolls sideways. It takes `role="region"`, an `aria-label` that names the table, and `tabindex="0"` so a keyboard user can reach it to scroll.
+
 **With a header column**
 
 ```html
@@ -152,13 +160,6 @@ One table, `.ds-table`, on the public site and in internal tools. It has row div
 </table>
 ```
 
-- `.ds-table` — The whole table, on the `<table>` element: the frame, the row dividers and the row hover. Directly inside a card it has no frame of its own; the card is the frame.
-- `<thead>` — Draws the header row. Leave it out and the table has none; no class turns the header row on or off.
-- `style="table-layout: fixed"` — Add it inline on the `<table>` when fixed column widths are needed. The table defaults to auto layout.
-- `.ds-table-footer` — A `<div>` below the table for row counts or pagination.
-- `.ds-tag--rectangle` — The Type column: a rectangular tag at the default level, one per row, documented on [Tags](tags.md#rectangular-labels). No colour is mapped to New, Rep or Wdr.
-- `scope="col"` — Required on every `<th>` in the header row, so a screen reader reads the column name with each cell.
-- `.ds-table-scroll` — The wrapper. A table wider than the viewport scrolls inside it, so the page never scrolls sideways. It takes `role="region"`, an `aria-label` that names the table, and `tabindex="0"` so a keyboard user can reach it to scroll.
 - `scope="row"` — A `<th>` in the body is a row header: it names its row, in the cell type at full weight on a tinted ground, and a screen reader reads it with each cell in the row. The tint comes from the element, so no class is needed.
 
 > The Type column uses rectangular tags at the default level, documented on [Tags](tags.md#rectangular-labels).
@@ -286,6 +287,11 @@ Actions that apply to every selected row at once, as in moderation queues and ow
 </div>
 ```
 
+- `.ds-card-bar` — The header bar of the card that holds the table: the actions and the selection count at its start, and any filter at its end. It wraps on a narrow screen. See [Cards with a header bar](cards.md#cards-with-a-header-bar).
+- `.ds-btn-group` — The actions and the selection count, kept together.
+- `.ds-btn-primary, .ds-btn, .ds-btn-destructive, with .ds-btn-compact` — The actions, in the tiers documented on [Buttons](buttons.md), compact like every control in a header bar. The destructive action comes last.
+- `.ds-bulk-count` — The selection count and the “Clear selection” link, beside the actions. Takes `role="status"` so a change in the count is announced.
+
 **Nothing selected**
 
 ```html
@@ -300,10 +306,6 @@ Actions that apply to every selected row at once, as in moderation queues and ow
 </div>
 ```
 
-- `.ds-card-bar` — The header bar of the card that holds the table: the actions and the selection count at its start, and any filter at its end. It wraps on a narrow screen. See [Cards with a header bar](cards.md#cards-with-a-header-bar).
-- `.ds-btn-group` — The actions and the selection count, kept together.
-- `.ds-btn-primary, .ds-btn, .ds-btn-destructive, with .ds-btn-compact` — The actions, in the tiers documented on [Buttons](buttons.md), compact like every control in a header bar. The destructive action comes last.
-- `.ds-bulk-count` — The selection count and the “Clear selection” link, beside the actions. Takes `role="status"` so a change in the count is announced.
 - `<button disabled>` — The `disabled` attribute on every action button while nothing is selected. The buttons stay in place; the filter stays live, because it does not depend on a selection.
 
 ## Striped rows  (Modifiers)
@@ -332,8 +334,16 @@ Numbers align on the right, and their digits line up from row to row.
 
 ## Rules
 
-- Pressing a sortable header, by mouse or keyboard, toggles through: descending → ascending → descending. Clicking a different column resets the previous column to unsorted. Sort logic is application-specific; the CSS only handles visual states.
-- Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row, all in the header bar of the card that holds the table. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step.
+### Sort interaction
+
+Pressing a sortable header, by mouse or keyboard, toggles through: descending → ascending → descending. Clicking a different column resets the previous column to unsorted. Sort logic is application-specific; the CSS only handles visual states.
+
+### Bulk-action bar layout
+
+Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row, all in the header bar of the card that holds the table. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step.
+
+### Accessibility essentials
+
 - **Mark the header cells.** Put `scope="col"` on every `<th>` in the header row, so a screen reader reads the column name with each cell instead of a bare value.
 - **Give the table a name.** A `<caption>`, or an `aria-label` on the scrolling region around the table, as the examples on this page do. Without one, a screen reader user lands in “table, 4 columns” with no idea which table it is.
 - **Say which column is sorted.** Put `aria-sort="ascending"` or `aria-sort="descending"` on the sorted `<th>` and remove it from the others when the sort changes. The arrow is a glyph, and the class is invisible to a screen reader.

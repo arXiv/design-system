@@ -77,6 +77,12 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 Size and shape remain the same across all levels, prominence comes from color and text. Reach for the quietest one that still does the job.
 
+Warm grey creates quiet labels that organize without claiming attention: counts, search filters, ancillary labels. Use for labels that are not particularly notable.
+
+Use these labels when “arXiv is speaking”. For example, arXiv's subject categories are a key part of our taxonomy and make sense in this color.
+
+An alert color is used only when it reports a *condition*, like a status. Neutral conditions use blue because they are informative, just as we do with neutral alert messages.
+
 ```html
 <span class="ds-tag">Preprint</span>
 <span class="ds-tag">12 requests</span>
@@ -84,6 +90,9 @@ Size and shape remain the same across all levels, prominence comes from color an
 <!-- A category. Always --keep-case. -->
 <span class="ds-tag ds-tag--keep-case">cs.AI</span>
 ```
+
+- `.ds-tag` — Base. Mono, uppercase, 999px, `min-height: 24px` for the WCAG 2.2 target floor. Goes on a `<span>`, an `<a>`, or a `<button>`.
+- `.ds-tag--keep-case` — Opt out of uppercase. Required for identifiers, and for long labels: past roughly three words, or with mixed-case names inside, caps slow reading down.
 
 ```html
 <span class="ds-tag ds-tag--info">Policy</span>
@@ -95,6 +104,8 @@ Size and shape remain the same across all levels, prominence comes from color an
 <a class="ds-tag ds-tag--info" href="/list/policy">Policy</a>
 ```
 
+- `.ds-tag--info` — The info tint, the same blue the info alert uses. Categories, topics, and neutral states.
+
 ```html
 <span class="ds-tag ds-tag--success">Valid</span>
 <span class="ds-tag ds-tag--warning">On hold</span>
@@ -104,9 +115,6 @@ Size and shape remain the same across all levels, prominence comes from color an
 <span class="ds-tag ds-tag--info">Under review</span>
 ```
 
-- `.ds-tag` — Base. Mono, uppercase, 999px, `min-height: 24px` for the WCAG 2.2 target floor. Goes on a `<span>`, an `<a>`, or a `<button>`.
-- `.ds-tag--keep-case` — Opt out of uppercase. Required for identifiers, and for long labels: past roughly three words, or with mixed-case names inside, caps slow reading down.
-- `.ds-tag--info` — The info tint, the same blue the info alert uses. Categories, topics, and neutral states.
 - `.ds-tag--success, .ds-tag--warning, .ds-tag--error` — Only when the label reports a condition.
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA)
@@ -195,6 +203,8 @@ Different parts of a tag can be combined, even doubled, for more complex uses. C
 **Rule.** The remove control is the only editing the tag knows about: Anything else a person can do to a tag, such as drag it into a different order or pick it from a search box, belongs to the editor around the tags, not to `.ds-tag`. That editor is not documented yet.
 
 ## Rules
+
+### Accessibility essentials
 
 - **Use the element that matches the job.** Use tags for labels, not to replace content that should be buttons or links instead.
 - **Uppercase is applied with CSS, never typed.** The underlying text then stays correct for copy-and-paste, in-page search, and screen readers.

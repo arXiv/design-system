@@ -80,6 +80,10 @@ Each filter takes one choice, so each is a select. Two or three selects sit in a
 </div>
 ```
 
+- `.ds-card-bar` — The header bar of the set, with the filters at its start. A total ends it only when the reader cannot see the whole set; here every category is in view, so there is none. See [Cards with a header bar](cards.md#cards-with-a-header-bar).
+- `.ds-form--compact` — The filters, as a [compact form](forms.md#compact-form): one row, each select inside its label. It is a `<form method="get">`, so the choices go in the page address and a filtered view can be linked.
+- `<button type="submit">` — Apply: a compact secondary button (`.ds-btn-compact`), at the end of the row.
+
 ```html
 <form class="ds-form--compact" method="get" action="…" aria-label="Filter submissions by date">
   <fieldset>
@@ -91,9 +95,6 @@ Each filter takes one choice, so each is a select. Two or three selects sit in a
 </form>
 ```
 
-- `.ds-card-bar` — The header bar of the set, with the filters at its start. A total ends it only when the reader cannot see the whole set; here every category is in view, so there is none. See [Cards with a header bar](cards.md#cards-with-a-header-bar).
-- `.ds-form--compact` — The filters, as a [compact form](forms.md#compact-form): one row, each select inside its label. It is a `<form method="get">`, so the choices go in the page address and a filtered view can be linked.
-- `<button type="submit">` — Apply: a compact secondary button (`.ds-btn-compact`), at the end of the row.
 - `<fieldset>, <legend>` — The two dates of a range are one fieldset, so they stay together on the row and a screen reader reads each with the range's name: “Submitted, from”.
 
 > Meets accessibility guideline [WCAG 2.2 SC 3.3.2](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html) Labels or Instructions (Level A)
@@ -156,6 +157,9 @@ A filter that takes several choices at once is a group of checkboxes, in a filte
 - **After Apply, the page shows what was applied**: the server writes the chosen values back into the fields, and into the tags.
 - **Sorting is not filtering.** A Sort by select can end the row of filters; a table sorts from its [column headers](tables.md#sortable-column-headers).
 - **Filters whose levels narrow each other are one control**, such as group, archive and category. It shows one path, broad to narrow, and it is changed, never removed. Filters that do not depend on each other each get a tag the reader can remove.
+
+### Accessibility essentials
+
 - **Every control sits inside its label.** A date range or a group of checkboxes is a fieldset with a legend.
 - **The filter panel is a named dialog.** The button reports whether it is open with `aria-expanded`. Escape closes the panel and returns focus to the button.
 - **Each remove control says what it removes**, in a `<span class="is-sr-only">`: “Remove the filter Status: On hold”.
