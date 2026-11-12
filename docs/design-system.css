@@ -1920,6 +1920,9 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
   overflow-wrap: anywhere;   /* the DOI breaks rather than widen the page at large text sizes */
 }
 .ds-container > .ds-paper-identity { grid-column: full; padding-inline: var(--ds-gutter); }
+/* The identity line is a full-width row, and it belongs to the title below it: the container's
+   space between sections does not come after it, so its own margin is the gap. */
+.ds-container > .ds-paper-identity + * { margin-top: calc(-1 * var(--ds-space-section)); }
 /* "Withdrawn:" or "Removed:" before a paper's title, in its own element so the author's title is never edited. */
 .ds-paper-status { color: var(--ds-error-fg); }
 /* A paper's version history, newest first; the version being viewed is marked. */
@@ -3674,11 +3677,17 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
    own, so no rule in the variant can lose a specificity argument.
    Focus rings on the dark bar use --ds-focus-ring-on-dark. */
 
-/* ── Skip link ── */
+/* ── Skip link ──
+   For a reader who moves through the page with the Tab key: the first one passes the header,
+   and a second, part way down a page, passes a block of controls such as a paper's sidebar.
+   It is out of the flow and has no position of its own, so on focus it shows where it stands
+   and nothing else moves: the first in the page's top corner, a later one in its place in the
+   text. Until then it is clipped where it stands. Sent off the top of the page instead, a
+   later one would take the view to the top when it took focus. */
 .ds-skip-link {
   position: absolute;
-  top: -100px; left: 8px;
   z-index: 200;
+  margin: var(--ds-space-2);
   /* Repository Brown and the Canvas invert together between modes, so
      pairing them keeps this chip legible in both: light-on-dark in light
      mode, dark-on-light in dark. It was previously paired with a literal
@@ -3693,8 +3702,14 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
   font-family: var(--ds-font-sans);
   font-weight: 600;
 }
+.ds-skip-link:not(:focus-visible) {
+  width: 1px; height: 1px;
+  margin: 0; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .ds-skip-link:focus-visible {
-  top: 8px;
   outline: 3px solid var(--ds-focus-ring);   /* the link sits outside the header, so the header's ring token is not set here */
   outline-offset: 2px;
 }
