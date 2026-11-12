@@ -78,6 +78,8 @@ Any button that copies, here one that copies an identifier. Press Copy: the tick
 
 ## Rules
 
+### Copy, Permalink and similar actions
+
 - **Say what happened, in words.** A visually hidden `role="status"` region says it: “Copied to clipboard”. Where a page has many controls that do the same thing, it names what was copied: “Link to equation 2.14 copied”.
 - **Focus stays on the control.**
 - **The control keeps its name.** The name says what it does: Copy is still Copy after copying.

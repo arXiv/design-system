@@ -38,8 +38,6 @@ components:
         does: "The range and page numbers above and below the results, in tinted bars. See [Numbered pages](pager.md#numbered-pages)."
       - name: "<section aria-labelledby> for the results"
         does: "Whatever the search finds. A paper is shown as on [Papers](papers.md#a-paper-in-a-list); another kind of record has its own pattern."
-    rules:
-      - "Search shows the first 10,000 results. To see the rest, narrow the search."
 rules:
   - "**The search form stays on the page ground**, before and after a search."
   - "**A heading names the results:** “Results for” and the query, with no count."
@@ -162,8 +160,6 @@ After a search, the form stays where it was, on the page ground. A heading names
 - `.ds-pagination--top, .ds-pagination--bottom` — The range and page numbers above and below the results, in tinted bars. See [Numbered pages](pager.md#numbered-pages).
 - `<section aria-labelledby> for the results` — Whatever the search finds. A paper is shown as on [Papers](papers.md#a-paper-in-a-list); another kind of record has its own pattern.
 
-**Rule.** Search shows the first 10,000 results. To see the rest, narrow the search.
-
 ## Rules
 
 - **The search form stays on the page ground**, before and after a search.
@@ -173,5 +169,8 @@ After a search, the form stays where it was, on the page ground. A heading names
 - **The range and page numbers belong to the results.** They sit in tinted bars above and below the results, under the results heading.
 - **Matched words are marked** with `<mark>`. See [Search-matched words](typography.md#matched-words).
 - **No results is a message, not an empty page.** An info alert where the results would be says what was searched for, and the help for searching follows it.
+
+### Accessibility essentials
+
 - **Name the form.** The search form takes `role="search"` and an `aria-label`.
 - **Say what was found in the page title.** The `<title>` names the query and the number of results, so a screen reader announces both when the page loads.

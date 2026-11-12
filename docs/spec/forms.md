@@ -83,8 +83,6 @@ components:
         does: "Includes the count. The body under it says what that severity means for the reader: whether they may continue."
       - name: "<ol>"
         does: "One row per problem, each an `<a>` linking to its field. Rows repeat the field name even when several name the same field: without it the reader cannot tell whether three problems mean one field to visit or three. Derive every count and every row from the field results; a summary written by hand can disagree with the fields it describes, and eventually will."
-    rules:
-      - "2 blocking errors: Blocking errors must be corrected before you can continue. Select an item to jump to that field."
   - id: switch
     title: "Switch"
     summary: "A boolean that applies the moment it is flipped. If the change needs a Save step then use a checkbox, not a switch."
@@ -147,6 +145,7 @@ components:
       - name: ".ds-field--sm, .ds-field--md, .ds-field--lg"
         does: "Internal tools only, in `internal-tools.css`: caps the control at 240px, 360px or 480px. Internal screens are dense enough to need field widths chosen rather than inferred, so on an internal form a person picks the size instead of the input `type` picking it. Use the pair above on public pages and this trio on internal pages, and do not mix them on one form."
 rules:
+  - "What each tier means for the person filling the form in."
   - "**Labels go above the control.** A label-left, field-right layout gives a ragged edge and reads badly on a phone."
   - "**Group related content with spacing**, not by adding more bordered divs. If spacing is insufficient then the form might be calling for subsections or to be broken up into different pages."
   - "**The action bar is right-aligned**, with the primary action button (Save, Continue, etc.) the last one on the right. On long forms, consider repeating it at the top so the user does not need to scroll as much."
@@ -229,6 +228,11 @@ A normal form is the main content of the page, or an important part of it. A com
 </div>
 ```
 
+- `.ds-form--compact` — On the `<form>`. Puts the controls and the button on one row, and makes each field compact. When the form's container is narrow, the labels make one column and the fields another.
+- `<label>` — Each control sits inside its own label, the label's words before it. No wrapper class is needed.
+- `.ds-btn-compact` — The button. Secondary when it changes the view, such as Apply; primary when sending the form is the form's job.
+- `.ds-card-bar` — The header bar of the set the form changes. See [Cards with a header bar](cards.md#cards-with-a-header-bar).
+
 ```html
 <form class="ds-form--compact" method="get" action="forms.html#compact-form" role="search" aria-label="Search arXiv">
   <div class="ds-input-group">
@@ -245,10 +249,6 @@ A normal form is the main content of the page, or an important part of it. A com
 </form>
 ```
 
-- `.ds-form--compact` — On the `<form>`. Puts the controls and the button on one row, and makes each field compact. When the form's container is narrow, the labels make one column and the fields another.
-- `<label>` — Each control sits inside its own label, the label's words before it. No wrapper class is needed.
-- `.ds-btn-compact` — The button. Secondary when it changes the view, such as Apply; primary when sending the form is the form's job.
-- `.ds-card-bar` — The header bar of the set the form changes. See [Cards with a header bar](cards.md#cards-with-a-header-bar).
 - `.ds-form--compact` — With joined controls, the joined input takes the spare width of the row. Anything after the button goes on the line below: a message first, then secondary options, such as Show abstracts and the settings for the results (compact selects for order and results per page). A link to another page, such as Advanced search, sits at the end of that line.
 - `.ds-input-group` — Joins the controls that make one input, such as a search term and the field it searches. The text input takes the spare width and the select takes what it needs. Joined controls and the button after them keep the full size, because they are the form's main input.
 - `.field-error` — A message goes directly after the button and shows under the row, so the button stays beside the field. The rest follows [Validation](#validation).
@@ -299,6 +299,13 @@ Fields can be in three possible states: normal, validated, or disabled. Validati
 </div>
 ```
 
+- `.is-invalid` — On the control, for the error tier. Pair with `aria-invalid="true"`.
+- `.is-warning` — On the control, for the warning tier. No `aria-invalid`: the value is accepted.
+- `.is-info` — On the control, for the info tier: arXiv changed the value and is telling the author. No `aria-invalid`.
+- `.field-error, .field-warning, .field-info` — The message, **after** the control and after the hint when there is one, one class per tier. Needs an `id` that the control's `aria-describedby` names. Keep it `hidden` until it applies.
+- `.field-messages` — An `<ol>` when one field has several problems. Each `<li>` takes its own tier class, and the list takes the `id` the control points at. The control takes the class of the worst tier in the list.
+- `[disabled]` — On the control. The label and hint stay; the control greys out and leaves the tab order. For a control that could explain why it is unavailable, prefer `aria-disabled="true"`, which looks the same; on a field, pair it with `readonly`, because `aria-disabled` alone does not stop typing. See the accessibility essentials.
+
 ```html
 <div class="ds-field ds-field--full">
   <label class="ds-label" for="hb">ACM classification<span class="label-optional">(optional)</span></label>
@@ -308,12 +315,6 @@ Fields can be in three possible states: normal, validated, or disabled. Validati
 </div>
 ```
 
-- `.is-invalid` — On the control, for the error tier. Pair with `aria-invalid="true"`.
-- `.is-warning` — On the control, for the warning tier. No `aria-invalid`: the value is accepted.
-- `.is-info` — On the control, for the info tier: arXiv changed the value and is telling the author. No `aria-invalid`.
-- `.field-error, .field-warning, .field-info` — The message, **after** the control and after the hint when there is one, one class per tier. Needs an `id` that the control's `aria-describedby` names. Keep it `hidden` until it applies.
-- `.field-messages` — An `<ol>` when one field has several problems. Each `<li>` takes its own tier class, and the list takes the `id` the control points at. The control takes the class of the worst tier in the list.
-- `[disabled]` — On the control. The label and hint stay; the control greys out and leaves the tab order. For a control that could explain why it is unavailable, prefer `aria-disabled="true"`, which looks the same; on a field, pair it with `readonly`, because `aria-disabled` alone does not stop typing. See the accessibility essentials.
 - `aria-describedby="hb-h hb-m"` — Names the hint first, then the message, so a screen reader reads them in the order they appear.
 
 ## Alerts in forms
@@ -343,7 +344,28 @@ Repeat the problems below the page heading using an alert component. Errors are 
 - `.ds-alert-title` — Includes the count. The body under it says what that severity means for the reader: whether they may continue.
 - `<ol>` — One row per problem, each an `<a>` linking to its field. Rows repeat the field name even when several name the same field: without it the reader cannot tell whether three problems mean one field to visit or three. Derive every count and every row from the field results; a summary written by hand can disagree with the fields it describes, and eventually will.
 
-**Rule.** 2 blocking errors: Blocking errors must be corrected before you can continue. Select an item to jump to that field.
+**Validation message language and tone**
+
+arXiv's general style rules all apply: no contractions, no jargon, keep it brief. See [STYLE.md](../doc.html?src=docs/STYLE.md) for full guidelines. In addition, these rules are specific to validation messages and will help users take action quickly.
+
+- **One instruction per sentence.** Each bullet should point out one thing and be tied to one action.
+- **Never blame the reader.** "Upload processing failed" is neutral, while "You uploaded an invalid file type" is blaming.
+- **Use an issue count as the title.** "2 blocking errors" gives the user a lot of important information about scope and severity upfront.
+- **Write actionable messages.** Help the user take the next step by describing the problem as an action to take, rather than a passive error report. See the examples below.
+
+| Too passive | More actionable |
+|---|---|
+| Invalid email. | Enter an email address, like name@university.edu. |
+| This field is required. | Give a reason before saving. |
+| Password does not meet requirements. | Use at least 12 characters. |
+| Check this field. | You may continue, but your submission may be delayed. |
+| Title was invalid. | Extra spaces were removed. Please confirm it reads correctly. |
+
+These guidelines are specific to the severity level of each validation message:
+
+- **Error messages:** Tell the user how to fix the problem without over-describing technical details. "Remove the HTML markup" is actionable and explanatory, but describing the invalid markup would be too much detail.
+- **Warning messages:** The user is not blocked, but tell them what happens if they choose to continue. “Your submission may be held for moderator review” gives important context and can nudge behavior, while “check this field for accuracy” is a lost opportunity.
+- **Info messages:** Useful when the system has autocorrected content from the user. "Extra spaces were removed. Please confirm it reads correctly" tells the user what changed, does not imply something is wrong, and includes a clear ask.
 
 ## Switch
 
@@ -466,10 +488,25 @@ Default field widths are set to follow the expected amount of content and are an
 
 ## Rules
 
+### Disposition tiers
+
+What each tier means for the person filling the form in.
+
+| Disposition | Can they continue? | What it means |
+|---|---|---|
+| **Error** | No | Blocking. The value is not acceptable and must be corrected. |
+| **Warning** | Yes | Accepted, but the value may be suspect or cause issues later on. |
+| **Info** | Yes | When used in validation it means arXiv changed the value automatically (for example, normalising whitespace). Nothing is wrong; the author is being informed. |
+
+### Layout
+
 - **Labels go above the control.** A label-left, field-right layout gives a ragged edge and reads badly on a phone.
 - **Group related content with spacing**, not by adding more bordered divs. If spacing is insufficient then the form might be calling for subsections or to be broken up into different pages.
 - **The action bar is right-aligned**, with the primary action button (Save, Continue, etc.) the last one on the right. On long forms, consider repeating it at the top so the user does not need to scroll as much.
 - **Disabled, not missing.** An action that is unavailable renders disabled, with the reason in a tooltip, or as help text under the actions where there is room (see [Tooltip](#tooltip)). The reader can see it exists and is not left wondering what is happening.
+
+### Accessibility essentials
+
 - **Every control has a label.** Put a real `<label for>` on every control, pointing at the control's `id`. Hide it with `.is-sr-only` when there is no room for it; do not leave it out.
 - **Mark the optional fields, not the required ones.** Put `(optional)` inside the visible label of an optional field. Put `required` and `aria-required="true"` on every required control: required fields have no visual marker, so this pair is the only signal a screen reader gets. Never put either word in `aria-label` or `title`.
 - **Connect every hint and message to its control.** Give each `.ds-hint` and each message an `id`, and list them in the control's `aria-describedby`. Without that a screen reader announces the field and nothing else.

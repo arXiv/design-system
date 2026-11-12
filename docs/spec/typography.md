@@ -99,15 +99,16 @@ components:
     notes:
       - "Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading."
 rules:
+  - "One family, three contexts. Internal tools and the public site share the working set; [outreach properties](../outreach.html) add the upright serif and the heaviest sans. A face without a mark is not used in that context."
   - "**700 is the ceiling.** IBM Plex ships no heavier weight, so a CSS `800` either falls back or gets faux-bolded, differently per browser. Ask for the weight that exists."
   - "**Two serif jobs, kept apart.** Upright serif is the editorial voice — headlines, quotes, drop caps. Italic serif stays the annotation voice everywhere. A heading that must not read as \"another article\" uses the heavy *sans* instead, which is why 700 exists in this context at all."
   - "**Mono as display type** is an outreach liberty: the typewriter register echoes the main site's identifiers. On the public site, mono still means \"this is an identifier or code.\""
+  - "Space is given as spacing tokens, not pixels, because that is what `design-system.css` implements — `--ds-space-8` is 2rem, `--ds-space-6` is 1.5rem, and so on down the scale."
   - "**On a laptop, the ratio is 1.25** — a major third — rounded to quarter-rem steps: 1, 1.25, 1.5, 2rem. A strict geometric run would put h2 at 1.5625rem; a quarter of a rem is the number a person can hold in their head and type without checking. The rounding is what makes h1 land on exactly double the body size."
   - "**700 appears once, at h1.** IBM Plex ships nothing heavier, so 700 is the ceiling and it is spent on the one heading that names the page. Everything below is 600. Always state the weight: a rule that sets only `font-size` inherits the browser default bold, which is how several pages ended up with an h3 heavier than the h2 above it."
   - "**Space above is at least twice the space below.** A heading belongs to the text it introduces, not the text it follows, and the gap has to say so. The values sit on the 4px rhythm in [Spacing](spacing.md)."
   - "**The page heading scales with the screen, and the steps shrink with it.** A step can shrink but never disappear: each level is at least a quarter of a rem (4px) larger than the one below. Most of its size is in rem and the largest is less than 2.5 times the smallest, so browser zoom scales it fully (WCAG 1.4.4); text-only zoom scales only the rem part, so there it grows a little less than body text."
   - "**The 11px uppercase Condensed label is not a heading level.** Set in `--ds-font-condensed` and `--ds-text-muted`, it marks a panel or a column and stays out of the document outline. If a reader needs to navigate to it, it is an h3 or an h4 at the size above, not a label."
-  - "Space is given as spacing tokens, not pixels, because that is what `design-system.css` implements — `--ds-space-8` is 2rem, `--ds-space-6` is 1.5rem, and so on down the scale."
   - "**There is no markup for the button**, and that is the design. `copy.js` finds every `<pre>` on the page, wraps it in `.ds-code` and inserts the control, which is `.ds-code-copy`. A block added next year is covered without anyone remembering, which a per-block wrapper would not be. Every page under `docs/` already loads the script."
   - "**The button sits over the top corner of the code, on a solid ground.** The block keeps even padding, and a long line that scrolls under the button is hidden behind it rather than showing through."
   - "**It is an icon, and it still says “Copy”.** The two overlapping sheets are the glyph people already know, so the control needs no label taking up room over the code. Both SVGs are `aria-hidden` and the button has `aria-label=\"Copy code\"`, which is what a screen reader announces. A block inside a `<figure>` is named by its `<figcaption>` instead: “Copy BibTeX” for a paper's citation. The `title` is the pointer affordance only — assistive technology takes the `aria-label` and ignores it."
@@ -137,32 +138,46 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 The type family is IBM Plex, plus STIX Two Math for notation. Each face has a job.
 
+Body text — paragraphs, author names, abstracts, UI.
+
+Labels — metadata labels, table headers, uppercase section labels.
+
+Code & identifiers — arXiv IDs, DOIs, BibTeX, code blocks.
+
+Annotation voice — footnote text and figure alt-text in the reader margins. “The editor speaking quietly next to the body text.”
+
+Mathematical notation.
+
 ```html
 font-family: var(--ds-font-sans);
 ```
+
+- `--ds-font-sans` — The default: where no other face applies, this is the answer. Weights 400 / 500 / 600.
 
 ```html
 font-family: var(--ds-font-condensed);
 ```
 
+- `--ds-font-condensed` — Labels, table headers and metadata, usually small and uppercase. Weights 500 / 600.
+- `.ds-panel-label` — The ready-made label in this face; see [Panel label](#panel-label) below.
+
 ```html
 font-family: var(--ds-font-mono);
 ```
+
+- `--ds-font-mono` — Identifiers and code. Weights 400 / 500. Inline `<code>` and `<pre>` already use it; see [Code blocks](#code-blocks-and-the-copy-button) below.
 
 ```html
 <p class="ds-annotation">Figure 2: the scalaron potential.</p>
 ```
 
+- `.ds-annotation` — The annotation voice: `--ds-font-serif`, italic, 400, 0.8125rem, `--ds-text-muted`. It is a voice, not a layout role; where it sits is the consumer's decision.
+- `--ds-font-serif` — The serif stack. On the public site and in internal tools it is used only through `.ds-annotation`.
+
 ```html
 font-family: "STIX Two Math", "Cambria Math", math;
 ```
 
-- `--ds-font-sans` — The default: where no other face applies, this is the answer. Weights 400 / 500 / 600.
-- `--ds-font-condensed` — Labels, table headers and metadata, usually small and uppercase. Weights 500 / 600.
-- `.ds-panel-label` — The ready-made label in this face; see [Panel label](#panel-label) below.
-- `--ds-font-mono` — Identifiers and code. Weights 400 / 500. Inline `<code>` and `<pre>` already use it; see [Code blocks](#code-blocks-and-the-copy-button) below.
-- `.ds-annotation` — The annotation voice: `--ds-font-serif`, italic, 400, 0.8125rem, `--ds-text-muted`. It is a voice, not a layout role; where it sits is the consumer's decision.
-- `--ds-font-serif` — The serif stack. On the public site and in internal tools it is used only through `.ds-annotation`.
 - `<math>` — No font token exists for math; use the stack directly on the notation. Loads with `font-display: auto` per DESIGN-POLICIES.
 
 ## The body text scale
@@ -206,9 +221,15 @@ Four levels, each larger than the one below it. On a laptop the step is about a 
 
 Links are typography too. Inline links in body text are always underlined (to pass WCAG 1.4.1). Standalone navigation links and groups of links that are not part of body text (headers, footers, author list) drop the underline to reduce noise.
 
+Full state-by-state references (rest / hover / visited / focus / disabled, light and dark): [Links](links.md). Link color tokens with ratios: [Colors](colors.md).
+
 ```html
 Reading text with <a href="/abs/2604.22725">an inline link</a> in it.
 ```
+
+- `.ds-link` — The inline text link. Both surfaces use `.ds-link` and the `--ds-link-*` tokens: the same grammar, the same names and the same values. Inside a `.ds-page` a bare `<a>` gets the same treatment without the class.
+- `--ds-link, --ds-link-hover, --ds-link-visited` — Rest, hover and visited colours. The underline does not change between states.
+- `--ds-focus-ring` — The 3px keyboard focus ring, drawn on `:focus-visible` only.
 
 ```html
 <p class="ds-link-list">
@@ -218,9 +239,6 @@ Reading text with <a href="/abs/2604.22725">an inline link</a> in it.
 </p>
 ```
 
-- `.ds-link` — The inline text link. Both surfaces use `.ds-link` and the `--ds-link-*` tokens: the same grammar, the same names and the same values. Inside a `.ds-page` a bare `<a>` gets the same treatment without the class.
-- `--ds-link, --ds-link-hover, --ds-link-visited` — Rest, hover and visited colours. The underline does not change between states.
-- `--ds-focus-ring` — The 3px keyboard focus ring, drawn on `:focus-visible` only.
 - `.ds-link-list` — On the element that holds a list in which every item is a link, such as an author list or a column of footer links. The links drop the underline at rest and keep everything else: Link Blue, the underline on hover, the focus ring and the visited colour. There is no ordinary text beside them for the underline to separate them from, so colour alone is enough here.
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)
@@ -264,6 +282,8 @@ A code block uses Plex Mono on Repository Brown, and always includes a copy butt
 
 The small uppercase Condensed label that names a panel, a column or a group. It is not a heading level and stays out of the document outline — if a reader needs to navigate to it, it is an `h3` or an `h4` at the sizes above.
 
+The test: if a paragraph follows it, or it covers several examples, it is a heading. Otherwise it is a panel label, naming the one example directly below it. A panel label is a few words, never a sentence. Public and internal versions of one example take panel labels.
+
 ```html
 <p class="ds-panel-label">Paper information</p>
 ```
@@ -274,15 +294,36 @@ The small uppercase Condensed label that names a panel, a column or a group. It 
 
 ## Rules
 
+### Which faces where — the three contexts
+
+One family, three contexts. Internal tools and the public site share the working set; [outreach properties](../outreach.html) add the upright serif and the heaviest sans. A face without a mark is not used in that context.
+
+| Face · weights | Internal tools | Public site | Outreach |
+|---|---|---|---|
+| IBM Plex Sans · 400 / 500 / 600 | ✓ all text | ✓ all text | ✓ all text |
+| IBM Plex Sans · 700 + 700 *italic* | ✓ h1 only | ✓ h1 only | ✓ the one heading that must not read as an article |
+| IBM Plex Sans Condensed · 500 / 600 | ✓ labels, table headers | ✓ labels | ✓ labels |
+| IBM Plex Mono · 400 / 500 | ✓ IDs, code | ✓ arXiv IDs, code | ✓ code, plus a display register (wordmark, standfirst) |
+| IBM Plex Serif · 400 *italic* | annotation voice only (`.ds-annotation`) | annotation voice only (`.ds-annotation`) | ✓ emphasis, bylines, prev/next |
+| IBM Plex Serif · 400 / 600 upright | — | — | ✓ headlines to display size, pull quotes, drop caps |
+| STIX Two Math · 400 | — | ✓ math in HTML papers | — |
+
 - **700 is the ceiling.** IBM Plex ships no heavier weight, so a CSS `800` either falls back or gets faux-bolded, differently per browser. Ask for the weight that exists.
 - **Two serif jobs, kept apart.** Upright serif is the editorial voice — headlines, quotes, drop caps. Italic serif stays the annotation voice everywhere. A heading that must not read as "another article" uses the heavy *sans* instead, which is why 700 exists in this context at all.
 - **Mono as display type** is an outreach liberty: the typewriter register echoes the main site's identifiers. On the public site, mono still means "this is an identifier or code."
+
+### Headings
+
+Space is given as spacing tokens, not pixels, because that is what `design-system.css` implements — `--ds-space-8` is 2rem, `--ds-space-6` is 1.5rem, and so on down the scale.
+
 - **On a laptop, the ratio is 1.25** — a major third — rounded to quarter-rem steps: 1, 1.25, 1.5, 2rem. A strict geometric run would put h2 at 1.5625rem; a quarter of a rem is the number a person can hold in their head and type without checking. The rounding is what makes h1 land on exactly double the body size.
 - **700 appears once, at h1.** IBM Plex ships nothing heavier, so 700 is the ceiling and it is spent on the one heading that names the page. Everything below is 600. Always state the weight: a rule that sets only `font-size` inherits the browser default bold, which is how several pages ended up with an h3 heavier than the h2 above it.
 - **Space above is at least twice the space below.** A heading belongs to the text it introduces, not the text it follows, and the gap has to say so. The values sit on the 4px rhythm in [Spacing](spacing.md).
 - **The page heading scales with the screen, and the steps shrink with it.** A step can shrink but never disappear: each level is at least a quarter of a rem (4px) larger than the one below. Most of its size is in rem and the largest is less than 2.5 times the smallest, so browser zoom scales it fully (WCAG 1.4.4); text-only zoom scales only the rem part, so there it grows a little less than body text.
 - **The 11px uppercase Condensed label is not a heading level.** Set in `--ds-font-condensed` and `--ds-text-muted`, it marks a panel or a column and stays out of the document outline. If a reader needs to navigate to it, it is an h3 or an h4 at the size above, not a label.
-- Space is given as spacing tokens, not pixels, because that is what `design-system.css` implements — `--ds-space-8` is 2rem, `--ds-space-6` is 1.5rem, and so on down the scale.
+
+### The copy button
+
 - **There is no markup for the button**, and that is the design. `copy.js` finds every `<pre>` on the page, wraps it in `.ds-code` and inserts the control, which is `.ds-code-copy`. A block added next year is covered without anyone remembering, which a per-block wrapper would not be. Every page under `docs/` already loads the script.
 - **The button sits over the top corner of the code, on a solid ground.** The block keeps even padding, and a long line that scrolls under the button is hidden behind it rather than showing through.
 - **It is an icon, and it still says “Copy”.** The two overlapping sheets are the glyph people already know, so the control needs no label taking up room over the code. Both SVGs are `aria-hidden` and the button has `aria-label="Copy code"`, which is what a screen reader announces. A block inside a `<figure>` is named by its `<figcaption>` instead: “Copy BibTeX” for a paper's citation. The `title` is the pointer affordance only — assistive technology takes the `aria-label` and ignores it.
@@ -291,9 +332,21 @@ The small uppercase Condensed label that names a panel, a column or a group. It 
 - **A block wider than its box can be reached by keyboard.** When a line of code is too long to show, the script adds `tabindex="0"` to the block, so a keyboard user can tab to it and scroll it with the arrow keys. It does this for every block, opted out or not, and takes it away again when the window is wide enough to show the whole block.
 - **Without JavaScript there is no button** and the code is still selectable. The button is a convenience; it is never the only way to get the text.
 - **Opt a block out with `<pre data-no-copy>`** — for a block that is an illustration of output rather than something to take away.
-- A browser font-size setting has to reach arXiv content (accessibility-priorities.md, cognitive/dyslexia section), so every type size is `rem`. But a label that grows inside a box that does not is no better than a label that never grew: set a control's padding and minimum width in `em`, against its own label, and the whole control follows the reader. Absolute floors stay absolute — `min-height: 24px` is a WCAG target size, not a type size. Body text never scales fluidly — it follows the user's base size exactly.
-- No Google Fonts, no Typekit, no CDN fonts (DESIGN-POLICIES.md). Every `font-family` declaration includes system fallbacks; text fonts load with `font-display: swap` (readability first), STIX Two Math with `font-display: auto` (math must render in the correct face).
-- No fixed line-heights, no pinned letter-spacing, no `!important` on font-family in content areas. User stylesheets, reader-mode extensions, and OS settings win — "HTML gives you freedom: you can use software to change colors or typefaces" (research, dyslexia section).
+
+### Sizes are rem, and a box that holds text scales with its text
+
+A browser font-size setting has to reach arXiv content (accessibility-priorities.md, cognitive/dyslexia section), so every type size is `rem`. But a label that grows inside a box that does not is no better than a label that never grew: set a control's padding and minimum width in `em`, against its own label, and the whole control follows the reader. Absolute floors stay absolute — `min-height: 24px` is a WCAG target size, not a type size. Body text never scales fluidly — it follows the user's base size exactly.
+
+### Self-hosted, with honest fallbacks
+
+No Google Fonts, no Typekit, no CDN fonts (DESIGN-POLICIES.md). Every `font-family` declaration includes system fallbacks; text fonts load with `font-display: swap` (readability first), STIX Two Math with `font-display: auto` (math must render in the correct face).
+
+### Do not fight the reader
+
+No fixed line-heights, no pinned letter-spacing, no `!important` on font-family in content areas. User stylesheets, reader-mode extensions, and OS settings win — "HTML gives you freedom: you can use software to change colors or typefaces" (research, dyslexia section).
+
+### Accessibility essentials
+
 - **Keep the heading order.** One `<h1>` per page, then `<h2>`, `<h3>` and `<h4>` in order, without skipping a level, inside a card too. Choose the level from the outline, not from the size you want; the scale gives each level its size. A screen reader user moves through the page by these levels.
 - **Write sizes in rem, never in px.** A reader who raises the browser font size must see every piece of text grow. Give a control its padding and minimum width in `em`, so the box grows with its label.
 - **Let text reflow at 200% zoom.** Do not give a box that holds text a fixed height, and do not cut text off with `overflow: hidden` unless there is another way to read all of it. At 400% page zoom a 1280px screen is a 320px screen, and the page must not scroll sideways there.

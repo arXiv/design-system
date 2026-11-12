@@ -266,9 +266,20 @@ A smaller button for a [compact form](forms.md#compact-form), such as a filter o
 
 A set of related buttons with a parent container class that spaces them appropriately.
 
+**Side by side**
+
 - `.ds-btn-group` — The container. Flex, wrapping, vertically centred, gap `--ds-space-tight`. Nothing about buttons makes their spacing special: two side by side are siblings that belong together, so they take the same gap as any other such pair.
+
+**Stacked — .ds-btn-group--stack**
+
 - `.ds-btn-group--stack` — The same relationship on the other axis. Items align to the start rather than stretching.
+
+**A form’s action area — .ds-btn-group--end**
+
 - `.ds-btn-group--end` — Pushes the group to the trailing edge. This is the action area at the end of a form, where the primary action comes last.
+
+**One choice at each end — .ds-btn-group--split**
+
 - `.ds-btn-group--split` — One choice at each end, for a pair that goes opposite ways — Back against Continue in a stepped form.
 
 ## A group of toggles  (Modifiers)
@@ -290,6 +301,11 @@ Buttons that each turn on one choice, such as a sort bar: the buttons join into 
 </form>
 ```
 
+- `.ds-btn-group with role="group"` — The bar, named by its label through `aria-labelledby`. When its buttons have `aria-pressed`, they join, and the bar is compact. Here the bar sits in a GET form, so it works without JavaScript; hidden inputs keep the reader's other choices in the address. The group role goes on the bar, not on the form.
+- `type="submit" with name and value` — Each button sends its sort. The button that is on sends the reverse direction, so pressing it again reverses the order.
+- `aria-pressed` — On every button: `"true"` on the one that is on, `"false"` on the rest. Off is plain; on takes the accent tint.
+- `.sort-asc, .sort-desc, .sort-arrow` — For a sort, the arrow shows the direction on the button that is on, as in a [sortable column header](tables.md#sortable-column-headers). Pressing it again reverses the direction. An `.is-sr-only` span says the direction in words.
+
 **A sort bar with another control**
 
 ```html
@@ -305,13 +321,11 @@ Buttons that each turn on one choice, such as a sort bar: the buttons join into 
 </div>
 ```
 
-- `.ds-btn-group with role="group"` — The bar, named by its label through `aria-labelledby`. When its buttons have `aria-pressed`, they join, and the bar is compact. Here the bar sits in a GET form, so it works without JavaScript; hidden inputs keep the reader's other choices in the address. The group role goes on the bar, not on the form.
-- `type="submit" with name and value` — Each button sends its sort. The button that is on sends the reverse direction, so pressing it again reverses the order.
-- `aria-pressed` — On every button: `"true"` on the one that is on, `"false"` on the rest. Off is plain; on takes the accent tint.
-- `.sort-asc, .sort-desc, .sort-arrow` — For a sort, the arrow shows the direction on the button that is on, as in a [sortable column header](tables.md#sortable-column-headers). Pressing it again reverses the direction. An `.is-sr-only` span says the direction in words.
 - `.ds-btn-group--split` — Two groups of controls for one list, on one row: the sort bar at the left edge, the other control at the right edge.
 
 ## Rules
+
+### Accessibility essentials
 
 - **Use the right element.** Use a `<button>` for an action that happens on this page, and an `<a>` for anything that goes to another page or another place on this one. Both take the same classes. Do not put a click handler on a link or an `href` on a button.
 - **Every button needs a text label.** An icon-only button gets its name from a `<span class="is-sr-only">` inside it that says what the button does, such as “Copy link”. Without it, a screen reader says only “button”. Do not use `title` for this, and prefer the span to `aria-label`, because page translation tools skip attributes.

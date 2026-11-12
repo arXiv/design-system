@@ -77,6 +77,8 @@ The icon inherits the text colour around it, and it is hidden from assistive tec
 
 ## Rules
 
+### Accessibility essentials
+
 - **Color is inherited.** If not otherwise specified, the icon inherits the text colour around it. Using the Design System and not overriding colors ensures accessible contrast in both light and dark modes.
 - **Icons are decorative, not informative.** In our markup icons are hidden from assistive technology by default, so the text beside it or control it is inside of must convey the meaning.
 - **Automated sizing.** Do not set explicit width or height. Icons are sized by the text or component it is inside of. This allows content to reflow naturally and supports assistive magnification tools.
